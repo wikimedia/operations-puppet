@@ -106,6 +106,10 @@ OPTS = [
                       '(by default), the user executing the L3 agent will be '
                       'passed. If "root" specified, because radvd is spawned '
                       'as root, no "username" parameter will be passed.')),
+    cfg.StrOpt('routing_source_ip', default='',
+               help=_('WMF defined src nat IP option')),
+    cfg.StrOpt('dmz_cidr', default='',
+               help=_('WMF defined src nat exclusions "src_range:dst_range,<repeat>')),
 ]
 
 
