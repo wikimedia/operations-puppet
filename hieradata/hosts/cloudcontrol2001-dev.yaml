@@ -17,3 +17,5 @@ profile::openstack::codfw1dev::galera::server_id: 1
 profile::backup::enable: true
 
 profile::wmcs::backy2::backup_time: '*-*-* 1:00:00'
+
+profile::openstack::codfw1dev::version: 'stein'
