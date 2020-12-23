@@ -1,16 +1,17 @@
 class profile::pybaltest (
-    $pybaltest_hosts_ferm = join(lookup('pybaltest::hosts'),  {default_value => ' '}),
-){
+    Array[Stdlib::Host] $hosts = lookup('profile::pybaltest::hosts'),
+) {
+    $hosts_str = $hosts.join(' ')
     ferm::service { 'pybaltest-http':
         proto  => 'tcp',
         port   => '80',
-        srange => "(@resolve((${pybaltest_hosts_ferm})) @resolve((${pybaltest_hosts_ferm}), AAAA))",
+        srange => "(@resolve((${hosts_str})) @resolve((${hosts_str}), AAAA))",
     }
 
     ferm::service { 'pybaltest-bgp':
         proto  => 'tcp',
         port   => '179',
-        srange => "(@resolve((${pybaltest_hosts_ferm})) @resolve((${pybaltest_hosts_ferm}), AAAA))",
+        srange => "(@resolve((${hosts_str})) @resolve((${hosts_str}), AAAA))",
     }
 
     # If the host considers itself as a router (IP forwarding enabled), it will
@@ -23,7 +24,7 @@ class profile::pybaltest (
     }
 
     # Install conftool-master for conftool testing
-    class  { '::puppetmaster::base_repo':
+    class  { 'puppetmaster::base_repo':
         gitdir   => '/var/lib/git',
         gitowner => 'root',
     }

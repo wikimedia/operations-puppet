@@ -1,4 +1,4 @@
-pybaltest::hosts:
+profile::pybaltest::hosts:
   - pybal-test2001.codfw.wmnet
   - pybal-test2002.codfw.wmnet
   - pybal-test2003.codfw.wmnet
