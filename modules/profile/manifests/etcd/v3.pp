@@ -30,13 +30,13 @@
 #
 class profile::etcd::v3(
     # Configuration
-    String $cluster_name = hiera('profile::etcd::v3::cluster_name'),
-    Boolean $cluster_bootstrap = hiera('profile::etcd::v3::cluster_bootstrap', false),
-    String $discovery = hiera('profile::etcd::v3::discovery'),
-    Boolean $use_client_certs = hiera('profile::etcd::v3::use_client_certs'),
-    String $allow_from = hiera('profile::etcd::v3::allow_from'),
-    Integer $max_latency = hiera('profile::etcd::v3::max_latency'),
-    Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port')
+    String $cluster_name = lookup('profile::etcd::v3::cluster_name'),
+    Boolean $cluster_bootstrap = lookup('profile::etcd::v3::cluster_bootstrap', {'default_value' => false}),
+    String $discovery = lookup('profile::etcd::v3::discovery'),
+    Boolean $use_client_certs = lookup('profile::etcd::v3::use_client_certs'),
+    String $allow_from = lookup('profile::etcd::v3::allow_from'),
+    Integer $max_latency = lookup('profile::etcd::v3::max_latency'),
+    Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port'),
 ) {
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
