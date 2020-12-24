@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import flask
 from netaddr import IPNetwork, IPAddress
 
 from oslo_log import log
@@ -59,13 +60,12 @@ def check_safelist(user_id, remote_addr):
 
 class PasswordSafelist(password.Password):
 
-    def authenticate(self, request, auth_payload):
+    def authenticate(self, auth_payload):
         """Verify username and password but only allow access for configured
            accounts and from configured IP ranges."""
 
         user_info = auth_plugins.UserAuthInfo.create(auth_payload, METHOD_NAME)
         check_safelist(user_info.user_id,
-                       request.environ['REMOTE_ADDR'])
+                       flask.request.environ.get('REMOTE_ADDR'))
 
-        return super(PasswordSafelist, self).authenticate(request,
-                                                          auth_payload)
+        return super(PasswordSafelist, self).authenticate(auth_payload)
