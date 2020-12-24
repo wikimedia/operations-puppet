@@ -67,6 +67,7 @@ class profile::wmcs::nfs::primary(
     package { [
             'python3-paramiko',
             'python3-pymysql',
+            'bdsync',
         ]:
         ensure => present,
     }
