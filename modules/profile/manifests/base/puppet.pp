@@ -6,8 +6,6 @@ class profile::base::puppet(
   Boolean             $manage_ca_file         = lookup('manage_puppet_ca_file'),
   Integer[1,59]       $interval               = lookup('profile::base::puppet::interval'),
   String              $environment            = lookup('profile::base::puppet::environment'),
-  Integer[2,3]        $facter_major_version   = lookup('profile::base::puppet::facter_major_version'),
-  Integer[4,5]        $puppet_major_version   = lookup('profile::base::puppet::puppet_major_version'),
   String              $serialization_format   = lookup('profile::base::puppet::serialization_format'),
   Array[Stdlib::Fqdn] $dns_alt_names          = lookup('profile::base::puppet::dns_alt_names'),
   Optional[String]    $certificate_revocation = lookup('profile::base::puppet::certificate_revocation'),
@@ -21,8 +19,6 @@ class profile::base::puppet(
       dns_alt_names          => $dns_alt_names,
       environment            => $environment,
       interval               => $interval,
-      facter_major_version   => $facter_major_version,
-      puppet_major_version   => $puppet_major_version,
       certificate_revocation => $certificate_revocation,
   }
   class { 'puppet_statsd':

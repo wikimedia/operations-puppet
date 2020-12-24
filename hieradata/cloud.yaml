@@ -15,8 +15,6 @@ profile::base::mirror_server: 'mirrors.wikimedia.org'
 
 profile::base::puppet::interval: 30
 profile::base::puppet::environment: production
-profile::base::puppet::puppet_major_version: 5
-profile::base::puppet::facter_major_version: 3
 profile::base::puppet::serialization_format: pson
 profile::base::puppet::certificate_revocation: ~
 profile::base::puppet::dns_alt_names: []
