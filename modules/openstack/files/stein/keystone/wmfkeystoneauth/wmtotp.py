@@ -74,7 +74,6 @@ class Wmtotp(base.AuthMethodHandler):
 
         try:
             PROVIDERS.identity_api.authenticate(
-                request,
                 user_id=user_info.user_id,
                 password=user_info.password)
         except AssertionError:
