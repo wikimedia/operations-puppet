@@ -62,6 +62,8 @@ def format_console_output(text):
     newlines = []
     for line in text.splitlines():
         line = line.strip()
+        if not line or line[0] != '[':
+            continue
         if 'INFO' in line:
             newlines.append(blue(line))
         elif 'WARNING' in line:
