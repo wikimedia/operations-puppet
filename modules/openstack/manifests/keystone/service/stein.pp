@@ -37,19 +37,6 @@ class openstack::keystone::service::stein(
     $prod_networks = $network::constants::production_networks
     $labs_networks = $network::constants::labs_networks
 
-    # This is a backport of https://review.opendev.org/#/c/665617/
-    # Without this change we encounter a lot of encoding errors when validating fernet tokens.
-    #
-    # This patch was backported to upstream Stein so probably not needed in the next upgrade cycle.
-    file { '/usr/lib/python3/dist-packages/keystone/token/token_formatters.py':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            source  => 'puppet:///modules/openstack/stein/keystone/token_formatters-fixed.py',
-            require => Package['keystone'];
-    }
-
     # Fernet key count.  We rotate once per day on each host.  That means that
     #  for our keys to live a week, we need at least 7*(number of hosts) keys
     #  at any one time.  Using 9 here instead because it costs us nothing
