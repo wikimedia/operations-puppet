@@ -18,6 +18,7 @@ class profile::wmcs::nfs::secondary(
     package { [
             'python3-paramiko',
             'python3-pymysql',
+            'python3-dateutil',
         ]:
         ensure => present,
     }
