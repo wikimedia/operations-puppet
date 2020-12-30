@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Set up scalable network stuff (RPS/RSS/XPS) for a given interface.
 #
@@ -76,7 +76,7 @@ import glob
 import sys
 import re
 import warnings
-import ConfigParser
+import configparser
 import subprocess
 
 
@@ -87,19 +87,19 @@ def get_value(path):
 
 def write_value(path, value):
     """Write a (sysfs) value to path"""
-    print '%s = %s' % (path, value)
+    print('%s = %s' % (path, value))
     open(path, 'w').write(value)
 
 
 def cmd_nofail(cmd):
     """echo + exec cmd with normal output, raises on rv!=0"""
-    print 'Executing: %s' % cmd
+    print('Executing: %s' % cmd)
     subprocess.check_call(cmd, shell=True)
 
 
 def cmd_failable(cmd):
     """echo + exec cmd with normal output, ignores errors"""
-    print 'Executing: %s' % cmd
+    print('Executing: %s' % cmd)
     subprocess.call(cmd, shell=True)
 
 
@@ -251,7 +251,7 @@ def get_options(device):
     }
     config_file = os.path.join('/etc/interface-rps.d/', device)
     if os.path.isfile(config_file):
-        config = ConfigParser.SafeConfigParser()
+        config = configparser.ConfigParser()
         config.read(config_file)
         if config.has_option('Options', 'rss_pattern'):
             opts['rss_pattern'] = config.get('Options', 'rss_pattern')
