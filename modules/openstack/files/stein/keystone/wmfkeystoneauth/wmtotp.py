@@ -14,6 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import flask
+
 from oslo_log import log
 from oslo_config import cfg
 
@@ -62,7 +64,7 @@ class Wmtotp(base.AuthMethodHandler):
 
     method = METHOD_NAME
 
-    def authenticate(self, request, auth_payload):
+    def authenticate(self, auth_payload):
         """Try to authenticate against the identity backend."""
         response_data = {}
         user_info = auth_plugins.UserAuthInfo.create(auth_payload, self.method)
@@ -70,7 +72,7 @@ class Wmtotp(base.AuthMethodHandler):
         # Before we do anything else, make sure that this user is allowed
         #  access from their source IP
         password_safelist.check_safelist(user_info.user_id,
-                                         request.environ['REMOTE_ADDR'])
+                                         flask.request.environ.get('REMOTE_ADDR'))
 
         try:
             PROVIDERS.identity_api.authenticate(
