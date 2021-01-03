@@ -36,7 +36,22 @@ class openstack::nova::common(
         ensure => absent,
     }
 
-    $vendor_data = {domain => $dhcp_domain}
+    $vm_firstboot_script = file('openstack/nova/firstboot.sh')
+    $vendor_data = {
+        'domain' => $dhcp_domain,
+        'packages' => ['gpg','curl','nscd','lvm2','parted'],
+        'growpart' => {'mode' => false},
+        'manage_etc_hosts' => false,
+        'apt' => {
+            'sources' => {
+                'wikimedia.list' => {
+                    'source' => 'deb-src http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main',
+                    'filename' => 'wikimedia.list'
+                }
+            }
+        },
+        'cloud_init' => $vm_firstboot_script
+    }
 
     file { '/etc/nova/policy.yaml':
         source  => "puppet:///modules/openstack/${version}/nova/common/policy.yaml",
@@ -54,12 +69,6 @@ class openstack::nova::common(
             mode      => '0440',
             show_diff => false,
             require   => Package['nova-common'];
-        '/etc/nova/api-paste.ini':
-            content => template("openstack/${version}/nova/common/api-paste.ini.erb"),
-            owner   => 'nova',
-            group   => 'nogroup',
-            mode    => '0440',
-            require => Package['nova-common'];
         '/etc/nova/vendor_data.json':
             content => to_json_pretty($vendor_data),
             owner   => 'nova',
