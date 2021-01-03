@@ -267,6 +267,112 @@ class ImageBackups:
 
         return dangling_snapshots
 
+    def create_next_backup(self, noop: bool = True) -> ImageBackup:
+        """
+        It also cleans up any expired backups if everything went well.
+        """
+        last_backup_with_snapshot = next(
+            (
+                backup
+                for backup in sorted(
+                    self.backups,
+                    key=lambda backup: backup.backup_entry.date,
+                    reverse=True,
+                )
+                if backup.backup_entry.get_snapshot(pool=self.config.ceph_pool)
+                is not None
+            ),
+            None,
+        )
+
+        if (
+            last_backup_with_snapshot is None
+            or not last_backup_with_snapshot.backup_entry.valid
+        ):
+            if (
+                last_backup_with_snapshot
+                and not last_backup_with_snapshot.valid
+            ):
+                logging.info(
+                    "Forcing a full backup as the previous one is not valid."
+                )
+            else:
+                logging.info(
+                    "Forcing a full backup as there's no previous one with a "
+                    "snapshot."
+                )
+
+            new_backup = ImageBackup.create_full_backup(
+                pool=self.config.ceph_pool,
+                image_id=self.image_id,
+                image_info=self.image_info,
+                live_for_days=self.config.live_for_days,
+                noop=noop,
+            )
+
+        else:
+            new_backup = ImageBackup.create_diff_backup(
+                pool=self.config.ceph_pool,
+                image_id=self.image_id,
+                image_info=self.image_info,
+                reference_backup=last_backup_with_snapshot,
+                live_for_days=self.config.live_for_days,
+                noop=noop,
+            )
+
+        self.add_backup(backup=new_backup, noop=noop)
+        self.cleanup_expired_backups(noop=noop)
+        return new_backup
+
+    def cleanup_expired_backups(
+        self, force: bool = False, noop: bool = True
+    ) -> None:
+        logging.info(
+            "Cleaning up expired backups for image %s(%s)",
+            self.image_info.get("name", "no_name"),
+            self.image_id,
+        )
+        last_valid_date = datetime.datetime.now() - datetime.timedelta(
+            days=self.config.live_for_days
+        )
+        to_delete = []
+        for backup in sorted(
+            self.backups,
+            key=lambda backup: backup.backup_entry.date,
+        ):
+            if backup.backup_entry.date < last_valid_date:
+                if force or len(self.backups) > len(to_delete) + 1:
+                    to_delete.append(backup)
+                elif len(self.backups) > len(to_delete) + 1:
+                    logging.warning(
+                        (
+                            "Skipping removal of expired backup %s(%s), as "
+                            "there's no other backups and force was False."
+                        ),
+                        self.image_info.get("name", "no_name"),
+                        self.image_id,
+                    )
+
+        for backup in to_delete:
+            logging.debug("Removing expired backup %s...", backup)
+            self.remove_backup(backup=backup, noop=noop)
+
+        logging.info(
+            "Cleaned up %d expired backups for image %s(%s)",
+            len(to_delete),
+            self.image_info.get("name", "no_name"),
+            self.image_id,
+        )
+
+    def remove_backup(self, backup: ImageBackup, noop: bool = True) -> None:
+        if backup in self.backups:
+            self.backups.pop(self.backups.index(backup))
+            self.size_mb -= backup.size_mb
+            backup.remove(pool=self.config.ceph_pool, noop=noop)
+
+        else:
+            raise Exception(f"Backup {backup} is not known to {self}")
+
     def __str__(self) -> str:
         # we don't have diff backups
         backups_strings = sorted(
@@ -396,9 +502,7 @@ class VMBackup:
         )
 
     def remove(self, pool: str, noop: bool = True) -> None:
-        maybe_snapshot = self.backup_entry.get_snapshot(
-            pool=pool
-        )
+        maybe_snapshot = self.backup_entry.get_snapshot(pool=pool)
         self.backup_entry.remove(noop=noop)
         if maybe_snapshot is not None:
             maybe_snapshot.remove(noop=noop)
@@ -527,7 +631,7 @@ class VMBackups:
         logging.info(
             "Cleaning up expired backups for VM %s.%s(%s)",
             self.project,
-            self.vm_info.get("name", "unknown name"),
+            self.vm_info.get("name", "no_name"),
             self.vm_id,
         )
         last_valid_date = datetime.datetime.now() - datetime.timedelta(
@@ -548,7 +652,7 @@ class VMBackups:
                             "there's no other backups and force was False."
                         ),
                         self.project,
-                        self.vm_info.get("name", "unknown name"),
+                        self.vm_info.get("name", "no_name"),
                         self.vm_id,
                     )
 
@@ -560,7 +664,7 @@ class VMBackups:
             "Cleaned up %d expired backups for VM %s.%s(%s)",
             len(to_delete),
             self.project,
-            self.vm_info.get("name", "unknown name"),
+            self.vm_info.get("name", "no_name"),
             self.vm_id,
         )
 
@@ -606,7 +710,7 @@ class VMBackups:
             "%sRemoving invalid backups for VM %s.%s(%s)",
             "NOOP:" if noop else "",
             self.project,
-            self.vm_info.get("name", "unknown name"),
+            self.vm_info.get("name", "no_name"),
             self.vm_id,
         )
         if not force and not any(
@@ -615,7 +719,7 @@ class VMBackups:
             logging.warning(
                 "Skipping VM backups for %s.%s(%s), not enough valid backups.",
                 self.project,
-                self.vm_info.get("name", "unknown name"),
+                self.vm_info.get("name", "no_name"),
                 self.vm_id,
             )
             return 0
@@ -628,7 +732,7 @@ class VMBackups:
                     "valid."
                 ),
                 self.project,
-                self.vm_info.get("name", "unknown name"),
+                self.vm_info.get("name", "no_name"),
                 self.vm_id,
             )
 
@@ -738,7 +842,7 @@ class VMBackups:
         backups_strings = sorted([f" {entry}" for entry in self.backups])
         return (
             bold("VM:")
-            + f" {self.vm_info.get('name', 'unknown name')}(id:{self.vm_id})\n"
+            + f" {self.vm_info.get('name', 'no_name')}(id:{self.vm_id})\n"
             + f"Total Size: {self.size_mb}MB"
             + (
                 f"\nSize percent: {self.size_percent:.2f}%"
@@ -968,7 +1072,7 @@ class InstanceBackupsState:
             list(
                 (
                     f"{vm.size_percent:.2f}% - "
-                    f"{vm.vm_info.get('name', 'unknown name')}({vm.vm_id})"
+                    f"{vm.vm_info.get('name', 'no_name')}({vm.vm_id})"
                 )
                 for vm in sorted(
                     chain(
@@ -1233,6 +1337,52 @@ class ImageBackupsState:
         )
         if failed_snapshots:
             sys.exit(1)
+
+    def backup_image(
+        self, image_info: Dict[str, Any], noop: bool = True
+    ) -> None:
+        image_id = image_info["id"]
+        logging.info(
+            "%sBacking up image %s(%s)",
+            "NOOP:" if noop else "",
+            image_id,
+            image_info.get('name', 'no_name'),
+        )
+        if image_id not in self.image_backups:
+            self.image_backups[image_id] = ImageBackups(
+                config=self.config,
+                backups=[],
+                image_name=image_info.get("name", "no_name"),
+                image_id=image_id,
+                image_info=image_info,
+            )
+
+        self.image_backups[image_id].create_next_backup(noop=noop)
+
+        logging.info(
+            "%sBacked up image %s(%s)",
+            "NOOP:" if noop else "",
+            image_id,
+            image_info.get('name', 'no_name'),
+        )
+
+    def backup_all_images(
+        self, from_cache: bool = False, noop: bool = True
+    ) -> None:
+        all_images = get_images_info(from_cache)
+        logging.info(
+            "%sBacking up %d images...",
+            "NOOP:" if noop else "",
+            len(all_images),
+        )
+        for image_info in get_images_info(from_cache):
+            self.backup_image(image_info=image_info, noop=noop)
+
+        logging.info(
+            "%sBacked up %d images.",
+            "NOOP:" if noop else "",
+            len(all_images),
+        )
 
     def __str__(self) -> str:
         self.update_usages()
