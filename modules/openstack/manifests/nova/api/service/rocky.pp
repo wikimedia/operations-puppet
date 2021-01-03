@@ -10,11 +10,19 @@ class openstack::nova::api::service::rocky(
 
     # firstboot/user_data things:
     file { '/usr/lib/python3/dist-packages/wmfnovamiddleware':
-        ensure  => 'absent',
+        source  => 'puppet:///modules/openstack/rocky/nova/api/wmfnovamiddleware',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
         recurse => true,
     }
     file { '/etc/nova/userdata.txt':
-        ensure  => 'absent',
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/openstack/nova/userdata.txt',
+        require => Package['nova-api'],
     }
 
     # Hack in regex validation for instance names.

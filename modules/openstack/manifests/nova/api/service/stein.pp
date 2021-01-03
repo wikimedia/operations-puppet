@@ -8,13 +8,21 @@ class openstack::nova::api::service::stein(
         ensure => 'present',
     }
 
-    # clean up old middleware hack if present.  T271056
+    # firstboot/user_data things:
     file { '/usr/lib/python3/dist-packages/wmfnovamiddleware':
-        ensure  => 'absent',
+        source  => 'puppet:///modules/openstack/stein/nova/api/wmfnovamiddleware',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
         recurse => true,
     }
     file { '/etc/nova/userdata.txt':
-        ensure  => 'absent',
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => 'puppet:///modules/openstack/nova/userdata.txt',
+        require => Package['nova-api'],
     }
 
     file { '/etc/init.d/nova-api':

@@ -27,15 +27,4 @@ class openstack::nova::common::rocky::buster(
         require => Package['nova-common'],
         source  => 'puppet:///modules/openstack/rocky/toozpatch/tooz-memcached.py';
     }
-
-    # We need to manage this file in Rocky because it was previously managed
-    #  for the wmfmiddleware injection hack.  In the future we can just
-    #  leave whatever file gets installed by the nova package in place.
-    file { '/etc/nova/api-paste.ini':
-            content => template('openstack/rocky/nova/common/api-paste.ini.erb'),
-            owner   => 'nova',
-            group   => 'nogroup',
-            mode    => '0440',
-            require => Package['nova-common'];
-    }
 }
