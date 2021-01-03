@@ -25,7 +25,7 @@ class profile::openldap (
         suffix         => $suffix,
         datadir        => '/var/lib/ldap/labs',
         ca             => '/etc/ssl/certs/ca-certificates.crt',
-        certificate    => "/etc/acmecerts/${certname}/live/rsa-2048.crt",
+        certificate    => "/etc/acmecerts/${certname}/live/rsa-2048.chained.crt",
         key            => "/etc/acmecerts/${certname}/live/rsa-2048.key",
         extra_schemas  => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema', 'wmf-user.schema'],
