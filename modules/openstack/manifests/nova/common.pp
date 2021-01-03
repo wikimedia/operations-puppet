@@ -36,6 +36,8 @@ class openstack::nova::common(
         ensure => absent,
     }
 
+    $vendor_data = {domain => $dhcp_domain}
+
     file { '/etc/nova/policy.yaml':
         source  => "puppet:///modules/openstack/${version}/nova/common/policy.yaml",
         mode    => '0644',
@@ -59,7 +61,7 @@ class openstack::nova::common(
             mode    => '0440',
             require => Package['nova-common'];
         '/etc/nova/vendor_data.json':
-            content => template('openstack/nova/vendor_data.json.erb'),
+            content => to_json_pretty($vendor_data),
             owner   => 'nova',
             group   => 'nogroup',
             mode    => '0444',
