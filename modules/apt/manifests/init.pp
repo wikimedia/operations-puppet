@@ -1,9 +1,10 @@
 class apt(
-    Boolean $purge_sources     = false,
-    Boolean $purge_preferences = false,
-    Boolean $use_proxy         = true,
-    Boolean $manage_apt_source = false,
-    String  $mirror            = 'mirrors.wikimedia.org',
+    Boolean $purge_sources           = false,
+    Boolean $purge_preferences       = false,
+    Boolean $use_proxy               = true,
+    Boolean $manage_apt_source       = false,
+    Boolean $install_audit_installed = false,
+    String  $mirror                  = 'mirrors.wikimedia.org',
 ) {
     if debian::codename::eq('jessie') {
         $components = 'main backports thirdparty'
@@ -140,5 +141,20 @@ class apt(
     file { '/etc/apt/apt.conf':
         ensure => absent,
         notify => Exec['apt-get update'],
+    }
+    if $install_audit_installed {
+        file {'/usr/local/bin/apt-audit-installed':
+            ensure => file,
+            mode   => '0555',
+            source => 'puppet:///modules/apt/apt_audit_installed.py',
+        }
+        file {'/usr/local/share/apt':
+            ensure => directory,
+        }
+        file {'/usr/local/share/apt/base_packages.txt':
+            ensure => file,
+            mode   => '0555',
+            source => "puppet:///modules/apt/base_packages.${facts['os']['distro']['codename']}",
+        }
     }
 }
