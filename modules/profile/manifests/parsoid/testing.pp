@@ -23,15 +23,13 @@ class profile::parsoid::testing (
             'mysql-client',
             ]: ensure => present,
         }
-    } else {
-        ensure_packages('mariadb-client')
-    }
 
-    file { '/etc/my.cnf':
-        content => template('role/mariadb/mysqld_config/parsoid_testing.my.cnf'),
-        owner   => 'root',
-        group   => 'parsoid-test-roots',
-        mode    => '0440',
+        file { '/etc/my.cnf':
+            content => template('role/mariadb/mysqld_config/parsoid_testing.my.cnf'),
+            owner   => 'root',
+            group   => 'parsoid-test-roots',
+            mode    => '0440',
+        }
     }
 
     nginx::site { 'nginx-parsoid-testing':
