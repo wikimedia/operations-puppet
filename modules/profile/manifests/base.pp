@@ -53,11 +53,12 @@ class profile::base(
     # Ensure we update the CA certificates before managing any services
     Exec['update-ca-certificates'] -> Service<| |>
     class { 'apt':
-        use_proxy         => $use_apt_proxy,
-        purge_sources     => $purge_apt_sources,
-        purge_preferences => $purge_apt_preferences,
-        manage_apt_source => $manage_apt_source,
-        mirror            => $mirror_server,
+        use_proxy               => $use_apt_proxy,
+        purge_sources           => $purge_apt_sources,
+        purge_preferences       => $purge_apt_preferences,
+        manage_apt_source       => $manage_apt_source,
+        mirror                  => $mirror_server,
+        install_audit_installed => $apt_install_audit_installed,
     }
 
     file { ['/usr/local/sbin', '/usr/local/share/bash']:
