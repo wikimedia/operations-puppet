@@ -1,11 +1,10 @@
 require 'open3'
 Puppet::Type.type(:logical_volume).provide :aix do
-  desc "Manages LVM logical volumes on AIX"
-  defaultfor :operatingsystem => :AIX
-  confine :operatingsystem => :AIX
+  desc 'Manages LVM logical volumes on AIX'
+  defaultfor operatingsystem: :AIX
+  confine operatingsystem: :AIX
 
-
-  commands :mklv => 'mklv'
+  commands mklv: 'mklv'
 
   def create
     # Dont use auto-generated LG names as we need to know what resource

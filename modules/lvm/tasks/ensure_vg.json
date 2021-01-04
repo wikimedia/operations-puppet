@@ -1,0 +1,26 @@
+{
+  "description": "Ensures settings on a volume group using the type & provider",
+  "input_method": "stdin",
+  "parameters": {
+    "name": {
+      "description": "The name of the volume group",
+      "type": "String[1]"
+    },
+    "ensure": {
+      "description": "Present or absent",
+      "type": "Enum[present,absent]"
+    },
+    "createonly": {
+      "description": "If set to true the volume group will be created if it does not exist. If the volume group does exist no action will be taken",
+      "type": "Optional[Boolean]"
+    },
+    "followsymlinks": {
+      "description": "If set to true all current and wanted values of the physical_volumes property will be followed to their real files on disk if they are in fact symlinks. This is useful to have Puppet determine what the actual PV device is if the property value is a symlink, like '/dev/disk/by-path/xxxx -> ../../sda'",
+      "type": "Optional[Boolean]"
+    },
+    "physical_volumes": {
+      "description": "The list of physical volumes to be included in the volume group",
+      "type": "Array[String]"
+    }
+  }
+}

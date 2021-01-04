@@ -1,13 +1,12 @@
 require 'open3'
 Puppet::Type.type(:filesystem).provide :aix do
+  desc 'Manages logical volume filesystems on AIX'
 
-  desc "Manages logical volume filesystems on AIX"
+  confine operatingsystem: :AIX
+  defaultfor operatingsystem: :AIX
 
-  confine :operatingsystem => :AIX
-  defaultfor :operatingsystem => :AIX
-
-  commands :crfs => 'crfs',
-           :chfs => 'chfs'
+  commands crfs: 'crfs',
+           chfs: 'chfs'
 
   def exists?
     Open3.popen3("lsfs #{@resource[:name]}")[3].value.success?
@@ -16,7 +15,7 @@ Puppet::Type.type(:filesystem).provide :aix do
   def create
     args = []
 
-    attributes=[
+    attributes = [
       :ag_size,
       :large_files,
       :compress,
@@ -33,7 +32,7 @@ Puppet::Type.type(:filesystem).provide :aix do
       :agblksize,
       :extended_attributes,
       :mount_options,
-      :vix
+      :vix,
     ]
 
     args.push(*add_attributes(*attributes))
@@ -52,37 +51,37 @@ Puppet::Type.type(:filesystem).provide :aix do
     # size property after creation
     if @resource[:size]
       if size != @resource[:size]
-        self.size= (@resource[:size])
+        self.size = (@resource[:size])
       end
     end
   end
 
   def attribute_flag(pvalue)
     {
-      :ag_size              => 'ag',
-      :large_file           => 'bf',
-      :initial_size         => 'size',
-      :size                 => 'size',
-      :extended_attributes  => 'ea',
-      :mount_options        => 'options',
-      :encrypted            => 'efs'
+      ag_size: 'ag',
+      large_file: 'bf',
+      initial_size: 'size',
+      size: 'size',
+      extended_attributes: 'ea',
+      mount_options: 'options',
+      encrypted: 'efs',
     }[pvalue] || pvalue.to_s
   end
 
   def add_attributes(*args)
-    attr_args=[]
+    attr_args = []
     args.each do |arg|
       if @resource[arg]
-        ans=parse_boolean(@resource[arg])
+        ans = parse_boolean(@resource[arg])
         attr_args.push('-a', "#{attribute_flag(arg)}=#{@resource[arg]}")
       end
     end
     attr_args
   end
 
-  def add_flag(flag,param)
+  def add_flag(flag, param)
     if @resource[param]
-      [ "-#{flag.to_s}", "#{parse_boolean(@resource[param])}" ]
+      ["-#{flag}", parse_boolean(@resource[param]).to_s]
     end
   end
 
@@ -98,14 +97,14 @@ Puppet::Type.type(:filesystem).provide :aix do
   end
 
   def size
-    cursize=0
-    reqsize=blk_roundup(val_to_blk(@resource[:size]))
+    cursize = 0
+    reqsize = blk_roundup(val_to_blk(@resource[:size]))
 
-    Open3.popen3("lsfs -q #{@resource[:name]}") do |stdin, stdout, stderr|
+    Open3.popen3("lsfs -q #{@resource[:name]}") do |_stdin, stdout, _stderr|
       stdout.each do |line|
-        elements=line.split(/\s+/)
+        elements = line.split(%r{\s+})
         if elements[2] == @resource[:name]
-          cursize=elements[4].to_i
+          cursize = elements[4].to_i
         end
       end
     end
@@ -113,56 +112,56 @@ Puppet::Type.type(:filesystem).provide :aix do
     if cursize == reqsize
       @resource[:size]
     else
-      blk_to_val(cursize,@resource[:size][-1,1])
+      blk_to_val(cursize, @resource[:size][-1, 1])
     end
   end
 
-  def size=(newsize)
-    chfs('-a',"size=#{@resource[:size]}", @resource[:name])
+  def size=(_newsize)
+    chfs('-a', "size=#{@resource[:size]}", @resource[:name])
   end
 
   def val_to_blk(val)
-    input = val.match(/(\d+)([^0-9]|)/).to_a
+    input = val.match(%r{(\d+)([^0-9]|)}).to_a
     case input[2]
     when 'M'
-      input[1].to_i*1024*2
+      input[1].to_i * 1024 * 2
     when 'G'
-      input[1].to_i*1024*1024*2
+      input[1].to_i * 1024 * 1024 * 2
     else
       input[1].to_i
     end
   end
 
-  def blk_to_val(blocks,units=nil)
+  def blk_to_val(blocks, units = nil)
     case units
     when 'M'
-      sprintf('%gM', Float(blocks.to_i/2/1024))
+      '%gM' % Float(blocks.to_i / 2 / 1024)
     when 'G'
-      sprintf('%gG', Float(blocks.to_i/2/1024/1024))
+      '%gG' % Float(blocks.to_i / 2 / 1024 / 1024)
     else
       blocks
     end
   end
 
   def blk_roundup(blocks)
-    ppsize=Integer(pp_size*1024*2)
-    ppsize*Float(Float(blocks)/ppsize).ceil.to_i
+    ppsize = Integer(pp_size * 1024 * 2)
+    ppsize * Float(Float(blocks) / ppsize).ceil.to_i
   end
 
   def pp_size
     vg = @resource[:volume_group] || 'rootvg'
-    Open3.capture2("lsvg #{vg} | /bin/grep 'PP SIZE'")[0].split(/\s+/)[5].to_i
+    Open3.capture2("lsvg #{vg} | /bin/grep 'PP SIZE'")[0].split(%r{\s+})[5].to_i
   end
 
   def attribute_flag(pvalue)
     {
-      :ag_size              => 'ag',
-      :large_file           => 'bf',
-      :initial_size         => 'size',
-      :size                 => 'size',
-      :extended_attributes  => 'ea',
-      :mount_options        => 'options',
-      :encrypted            => 'efs'
+      ag_size: 'ag',
+      large_file: 'bf',
+      initial_size: 'size',
+      size: 'size',
+      extended_attributes: 'ea',
+      mount_options: 'options',
+      encrypted: 'efs',
     }[pvalue] || pvalue.to_s
   end
 end

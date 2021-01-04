@@ -1,0 +1,22 @@
+{
+  "description": "Ensures settings on a physical volumes using the type & provider",
+  "input_method": "stdin",
+  "parameters": {
+    "name": {
+      "description": "The name of the physical volume",
+      "type": "String[1]"
+    },
+    "ensure": {
+      "description": "Present or absent",
+      "type": "Enum[present,absent]"
+    },
+    "unless_vg": {
+      "description": "Do not do anything if the VG already exists.  The value should be the name of the volume group to check for.",
+      "type": "Optional[String]"
+    },
+    "force": {
+      "description": "Force the creation without any confirmation",
+      "type": "Optional[Boolean]"
+    }
+  }
+}

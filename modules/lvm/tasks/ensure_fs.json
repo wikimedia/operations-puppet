@@ -1,0 +1,122 @@
+{
+  "description": "Ensures settings on a filesystem using the type & provider",
+  "input_method": "stdin",
+  "parameters": {
+    "fs_type": {
+      "description": "The file system type. eg. ext3.",
+      "type": "String"
+    },
+    "name": {
+      "description": "Fully qualified name",
+      "type": "String"
+    },
+    "mkfs_cmd": {
+      "description": "Command to use to create the file system. Defaults to mkswap for fs_type=swap, otherwise mkfs.{{fs_type}}",
+      "type": "Optional[String]"
+    },
+    "options": {
+      "description": "Params for the mkfs command. eg. -l internal,agcount=x",
+      "type": "Optional[String]"
+    },
+    "initial_size": {
+      "description": "Initial size of the filesystem, Used only for resource creation, when using this option Puppet will not manage or maintain the size. To resize filesystems see the size property. AIX only.",
+      "type": "Optional[String]"
+    },
+    "size": {
+      "description": "Configures the size of the filesystem.  Supports filesystem resizing.  The size will be rounded up to the nearest multiple of the partition size. AIX only.",
+      "type": "Optional[String]"
+    },
+    "ag_size": {
+      "description": "Specify the allocation group size in megabytes, AIX only.",
+      "type": "Optional[Integer]"
+    },
+    "large_files": {
+      "description": "Large file enabled file system.  AIX only",
+      "type": "Optional[Boolean]"
+    },
+    "compress": {
+      "description": "Data compression, LZ or no. AIX only",
+      "type": "Optional[Enum[LG,no]]"
+    },
+    "frag": {
+      "description": "JFS fragment size in bytes. AIX only",
+      "type": "Optional[Integer]"
+    },
+    "nbpi": {
+      "description": "Bytes per inode. AIX only",
+      "type": "Optional[Integer]"
+    },
+    "logname": {
+      "description": "Configure the log logical volume. AIX only",
+      "type": "Optional[String]"
+    },
+    "logsize": {
+      "description": "Size for an inline log in MB, AIX only",
+      "type": "Optional[Integer]"
+    },
+    "maxext": {
+      "description": "Size of a file extent in file system blocks, AIX only",
+      "type": "Optional[Integer]"
+    },
+    "mountguard": {
+      "description": "Enable the mountguard. AIX only",
+      "type": "Optional[Boolean]"
+    },
+    "agblksize": {
+      "description": "JFS2 block size in bytes, AIX only",
+      "type": "Optional[Integer]"
+    },
+    "extended_attributes": {
+      "description": "Format to be used to store extended attributes. AIX only",
+      "type": "Optional[Enum[v1,v2]]"
+    },
+    "encrypted": {
+      "description": "Specify and encrypted filesystem. AIX only",
+      "type": "Optional[Boolean]"
+    },
+    "isnapshot": {
+      "description": "Specify whether the filesystem supports internal snapshots, AIX only",
+      "type": "Optional[Boolean]"
+    },
+    "mount_options": {
+      "description": "Specify the options to be passed to the mount command. AIX only",
+      "type": "Optional[String]"
+    },
+    "vix": {
+      "description": "Specify that the file system can allocate inode extents smaller than the default, AIX only",
+      "type": "Optional[Boolean]"
+    },
+    "log_partitions": {
+      "description": "Specify the size of the log logical volume as number of logical partitions, AIX only",
+      "type": "Optional[String]"
+    },
+    "nodename": {
+      "description": "Specify the remote host where the filesystem resides. AIX only",
+      "type": "Optional[String]"
+    },
+    "accounting": {
+      "description": "Specify accounting subsystem support, AIX only",
+      "type": "Optional[Boolean]"
+    },
+    "mountgroup": {
+      "description": "Mount group for the filesystem, AIX only",
+      "type": "Optional[String]"
+    },
+    "atboot": {
+      "description": "Specify whether the file system is mounted at boot time, AIX only",
+      "type": "Optional[Boolean]"
+    },
+    "perms": {
+      "description": "Permissions for the filesystem, AIX only",
+      "type": "Optional[Enum[ro,rw]]"
+    },
+    "device": {
+      "description": "Device to create the filesystem on, this can be a device or a logical volume. AIX only",
+      "type": "Optional[String]"
+    },
+    "volume_group": {
+      "description": "Volume group that the file system should be greated on. AIX only.",
+      "type": "Optional[String]"
+    }
+  }
+}

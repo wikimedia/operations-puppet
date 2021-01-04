@@ -199,7 +199,7 @@ resources out yourself.
 * size_is_minsize (Parameter) Default value: `false` - Set to true if the ‘size’ parameter specified, is just the minimum size you need (if the LV found is larger then the size requests this is just logged not causing a FAIL)
 * stripes (Parameter) - The number of stripes to allocate for the new logical volume.
 * stripesize (Parameter) - The stripesize to use for the new logical volume.
-* thinpool (Parameter) - Default value: `false` - Set to true to create a thin pool
+* thinpool (Parameter) - Default value: `false` - Set to true to create a thin pool or to pool name to create thin volume
 * volume_group (Parameter) - The volume group name associated with this logical volume. This will automatically set this volume group as a dependency, but it must be defined elsewhere using the volume_group resource type.
 
 ### physical_volume
@@ -287,6 +287,40 @@ parameters documented above also apply to AIX systems.
 * range (Parameter) - Sets the inter-physical volume allocation policy. AIX only
 * type (Parameter) - Configures the logical volume type. AIX only
 
+## Functions
+
+`lvm::bytes_to_size`: Converts a number of bytes to a size format that LVM can understand e.g. `lvm::bytes_to_size(214748364800)` would return `200g`
+
+`lvm::size_to_bytes`: Converts an LVM size to bytes, the opposite of `lvm::bytes_to_size`.
+
+## Tasks
+
+Documented in the ["Tasks" tab](https://forge.puppet.com/puppetlabs/lvm/tasks) on the forge
+
+## Plans
+
+### `lvm::expand`
+
+Executes common tasks for expanding mounts, this can include:
+
+* Creating PVs
+* Adding PVs to VG
+* Extending LV
+* Extending filesystem
+
+**Parameters:**
+
+`server`: *String* The target for the plan
+
+`volume_group`: *String* The volume group to which the logical volume belongs
+
+`logical_volume`: *String* The logical volume which is to be expanded
+
+`additional_size`: *String* How much size to add to the LV. This should be specified in LVM format i.e. "200m" or "2.5g"
+
+`disks`: *Array[String]* Any physical disks that should be added to the volume group as part of the expand process
+
+`resize_fs`: *Boolean* Whether or not to resize the filesystem
 
 ## Limitations
 

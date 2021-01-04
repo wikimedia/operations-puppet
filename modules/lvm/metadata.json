@@ -1,19 +1,18 @@
 {
   "name": "puppetlabs-lvm",
-  "version": "1.0.1",
-  "author": "Puppet Labs",
+  "version": "1.4.0",
+  "author": "puppetlabs",
   "summary": "Provides Puppet types and providers to manage Logical Resource Management (LVM) features.",
   "license": "GPL-2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-lvm",
   "project_page": "https://github.com/puppetlabs/puppetlabs-lvm",
-  "issues_url": "https://tickets.puppetlabs.com/browse/MODULES/component/11456/",
+  "issues_url": "https://tickets.puppetlabs.com",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.13.1 < 5.0.0"
+      "version_requirement": ">= 4.13.1 < 7.0.0"
     }
   ],
-  "data_provider": null,
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat"
@@ -43,7 +42,10 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.6.1 < 5.0.0"
+      "version_requirement": ">= 4.6.1 < 7.0.0"
     }
-  ]
+  ],
+  "pdk-version": "1.16.0",
+  "template-url": "pdk-default#1.16.0",
+  "template-ref": "tags/1.16.0-0-gaf44904"
 }

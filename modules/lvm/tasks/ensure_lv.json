@@ -1,0 +1,85 @@
+{
+  "description": "Ensures settings on a logical volume using the type & provider",
+  "input_method": "stdin",
+  "parameters": {
+    "ensure": {
+      "description": "Present or absent",
+      "type": "Enum[present,absent]"
+    },
+    "name": {
+      "description": "The name of the logical volume.  This is the unqualified name and will be automatically added to the volume group's device path (e.g., '/dev/$vg/$lv').",
+      "type": "String[1]"
+    },
+    "volume_group": {
+      "description": "The volume group name associated with this logical volume",
+      "type": "Optional[String[1]]"
+    },
+    "size": {
+      "description": "The size of the logical volume. Set to undef to use all available space",
+      "type": "Optional[Pattern[/^[0-9]+(\\.[0-9]+)?[KMGTPEkmgtpe]/]]"
+    },
+    "extents": {
+      "description": "The number of logical extents to allocate for the new logical volume. Set to undef to use all available space",
+      "type": "Optional[Pattern[/^\\d+(%(?:vg|pvs|free|origin)?)?$/]]"
+    },
+    "persistent": {
+      "description": "Set to true to make the block device persistent",
+      "type": "Optional[Boolean]"
+    },
+    "thinpool": {
+      "description": "Set to true to create a thin pool or to pool name to create thin volume",
+      "type": "Optional[Boolean]"
+    },
+    "poolmetadatasize": {
+      "description": "Change the size of logical volume pool metadata",
+      "type": "Optional[Pattern[/^[0-9]+(\\.[0-9]+)?[KMGTPEkmgtpe]/]]"
+    },
+    "minor": {
+      "description": "Set the minor number",
+      "type": "Optional[Integer[0,255]]"
+    },
+    "type": {
+      "description": "Configures the logical volume type",
+      "type": "Optional[String[1]]"
+    },
+    "range": {
+      "description": "Sets the inter-physical volume allocation policy. AIX only",
+      "type": "Optional[Enum[maximum,minimum]]"
+    },
+    "stripes": {
+      "description": "The number of stripes to allocate for the new logical volume",
+      "type": "Optional[Integer]"
+    },
+    "stripesize": {
+      "description": "The stripesize to use for the new logical volume",
+      "type": "Optional[Integer]"
+    },
+    "readahead": {
+      "description": "The readahead count to use for the new logical volume",
+      "type": "Optional[String]"
+    },
+    "resize_fs": {
+      "description": "Whether or not to resize the underlying filesystem when resizing the logical volume",
+      "type": "Optional[Boolean]"
+    },
+    "mirror": {
+      "description": "The number of mirrors of the volume",
+      "type": "Optional[Integer[0,4]]"
+    },
+    "mirrorlog": {
+      "description": "How to store the mirror log",
+      "type": "Optional[Enum[core,disk,mirrored]]"
+    },
+    "alloc": {
+      "description": "Selects the allocation policy when a command needs to allocate Physical Extents from the Volume Group",
+      "type": "Optional[Enum[anywhere,contiguous,cling,inherit,normal]]"
+    },
+    "no_sync": {
+      "description": "An optimization in lvcreate, at least on Linux"
+    },
+    "region_size": {
+      "description": "A mirror is divided into regions of this size (in MB), the mirror log uses this granularity to track which regions are in sync. CAN NOT BE CHANGED on already mirrored volume. Take your mirror size in terabytes and round up that number to the next power of 2, using that number as the -R argument.",
+      "type": "Optional[Integer]"
+    } 
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "description": "Mounts a logical volume",
+  "input_method": "stdin",
+  "parameters": {
+    "volume_group": {
+      "description": "The name of the volume group",
+      "type": "String[1]"
+    },
+    "logical_volume": {
+      "description": "The name of the logical_volume to mount",
+      "type": "String[1]"
+    },
+    "mountpoint": {
+      "description": "Where to mount the logical volume",
+      "type": "String[1]"
+    },
+    "fstype": {
+      "description": "The mount type. Valid values depend on the operating system. This is a required option.",
+      "type": "String"
+    },
+    "options": {
+      "description": "A single string containing options for the mount, as they would appear in fstab on Linux. For many platforms this is a comma-delimited string",
+      "type": "Optional[String]"
+    },
+    "atboot": {
+      "description": "Whether to mount the mount at boot. Not all platforms support this.",
+      "type": "Optional[Boolean]"
+    },
+    "owner": {
+      "description": "Owner for the mountpoint",
+      "type": "Optional[String]"
+    },
+    "group": {
+      "description": "Group for the mountpoint",
+      "type": "Optional[String]"
+    },
+    "mode": {
+      "description": "Permissions for the mountpoint",
+      "type": "Optional[String]"
+    }
+  }
+}

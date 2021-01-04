@@ -1,0 +1,14 @@
+{
+  "description": "Adds physical volumes to a volume group",
+  "input_method": "stdin",
+  "parameters": {
+    "volume_group": {
+      "description": "The name of the volume group",
+      "type": "String[1]"
+    },
+    "physical_volumes": {
+      "description": "The list of physical volumes to be included in the volume group",
+      "type": "Array[String]"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "description": "Extends a logical volume",
+  "input_method": "stdin",
+  "parameters": {
+    "size": {
+      "description": "Intended size or 'full'",
+      "type": "String[1]"
+    },
+    "logical_volume": {
+      "description": "Name of the logical volume to extend",
+      "type": "String[1]"
+    },
+    "volume_group": {
+      "description": "Name of the volume group on which the logical volume resides",
+      "type": "String[1]"
+    }
+  }
+}
