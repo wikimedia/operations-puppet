@@ -106,6 +106,7 @@ class ImageBackup:
     image_info: Dict[str, Any]
     backup_entry: BackupEntry
     size_mb: int
+    snapshot_entry: Optional[RBDSnapshot]
     size_percent: Optional[float] = None
 
     @classmethod
@@ -123,6 +124,7 @@ class ImageBackup:
             image_id=image_id,
             image_name=image_info.get("name", "no_name"),
             image_info=image_info,
+            snapshot_entry=None,
             size_mb=entry.size_mb,
         )
 
@@ -133,6 +135,92 @@ class ImageBackup:
         self.backup_entry.remove(noop=noop)
         if maybe_snapshot is not None:
             maybe_snapshot.remove(noop=noop)
+
+    @classmethod
+    def create_diff_backup(
+        cls,
+        pool: str,
+        image_id: str,
+        image_info: Dict[str, Dict[str, Any]],
+        reference_backup: "ImageBackup",
+        live_for_days: int,
+        noop: bool = True,
+    ):
+        image_name = f"{image_id}"
+        snapshot_name = (
+            datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            + f"_{socket.gethostname()}"
+        )
+        expire_date = datetime.datetime.now() + datetime.timedelta(
+            days=live_for_days,
+        )
+
+        if reference_backup.image_id != image_id:
+            raise Exception(
+                f"Invalid reference backup passed for image id {image_id}: "
+                f"{reference_backup}"
+            )
+
+        new_entry = BackupEntry.create_diff_backup(
+            image_name=image_name,
+            snapshot_name=snapshot_name,
+            pool=pool,
+            rbd_reference_snapshot=reference_backup.backup_entry.get_snapshot(
+                pool=pool
+            ),
+            backy_reference_uid=reference_backup.backup_entry.uid,
+            expire=expire_date,
+            noop=noop,
+        )
+
+        return cls(
+            image_id=image_id,
+            image_name=image_info.get("name", "no_name"),
+            image_info=image_info,
+            backup_entry=new_entry,
+            snapshot_entry=None,
+            size_mb=new_entry.size_mb,
+        )
+
+    def load_snapshot(self, pool: str) -> Optional[RBDSnapshot]:
+        self.snapshot = self.backup_entry.get_snapshot(pool=pool)
+        return self.snapshot
+
+    @classmethod
+    def create_full_backup(
+        cls,
+        pool: str,
+        image_id: str,
+        image_info: Dict[str, Dict[str, Any]],
+        project: str,
+        live_for_days: int,
+        noop: bool = True,
+    ):
+        image_name = f"{image_id}"
+        snapshot_name = (
+            datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            + f"_{socket.gethostname()}"
+        )
+        expire_date = datetime.datetime.now() + datetime.timedelta(
+            days=live_for_days
+        )
+
+        new_entry = BackupEntry.create_full_backup(
+            image_name=image_name,
+            snapshot_name=snapshot_name,
+            pool=pool,
+            expire=expire_date,
+            noop=noop,
+        )
+
+        return cls(
+            image_id=image_id,
+            image_info=image_info,
+            project=project,
+            backup_entry=new_entry,
+            snapshot_entry=new_entry.get_snapshot(pool=pool),
+            size_mb=new_entry.size_mb,
+        )
 
     def __str__(self) -> str:
         percent_str = (
@@ -327,7 +415,7 @@ class ImageBackups:
                 noop=noop,
             )
 
-        self.add_backup(backup=new_backup, noop=noop)
+        self.add_backup(backup=new_backup)
         self.cleanup_expired_backups(noop=noop)
         return new_backup
 
@@ -634,7 +722,7 @@ class VMBackups:
                 noop=noop,
             )
 
-        self.add_backup(backup=new_backup, noop=noop)
+        self.add_backup(backup=new_backup)
         self.cleanup_expired_backups(noop=noop)
         return new_backup
 
@@ -681,7 +769,7 @@ class VMBackups:
             self.vm_id,
         )
 
-    def add_backup(self, backup: VMBackup, noop: bool) -> bool:
+    def add_backup(self, backup: VMBackup) -> bool:
         if backup.vm_id != self.vm_id:
             raise Exception(
                 "Invalid backup, non-matching vm_id "
@@ -885,9 +973,7 @@ class ProjectBackups:
                 config=self.config,
             )
 
-        was_added = self.vms_backups[backup.vm_id].add_backup(
-            backup, noop=noop
-        )
+        was_added = self.vms_backups[backup.vm_id].add_backup(backup)
         if was_added:
             self.size_mb += backup.backup_entry.size_mb
 
@@ -1352,17 +1438,25 @@ class ImageBackupsState:
         if failed_snapshots:
             sys.exit(1)
 
-    def backup_image(
-        self, image_info: Dict[str, Any], noop: bool = True
+    def create_image_backup(
+        self, image_id: str, noop: bool = True, from_cache: bool = True
     ) -> None:
-        image_id = image_info["id"]
         logging.info(
-            "%sBacking up image %s(%s)",
+            "%sBacking up image %s",
             "NOOP:" if noop else "",
             image_id,
-            image_info.get("name", "no_name"),
         )
         if image_id not in self.image_backups:
+            all_images = get_images_info(from_cache)
+            if image_id not in all_images:
+                raise Exception(
+                    f"Image with ID {image_id} not found, known images:\n"
+                    + "\n".join(
+                        f"{info['id']}({info.get('name', 'no_name')})"
+                        for info in all_images.values()
+                    )
+                )
+            image_info = all_images[image_id]
             self.image_backups[image_id] = ImageBackups(
                 config=self.config,
                 backups=[],
@@ -1370,6 +1464,8 @@ class ImageBackupsState:
                 image_id=image_id,
                 image_info=image_info,
             )
+        else:
+            image_info = self.image_backups[image_id].image_info
 
         self.image_backups[image_id].create_next_backup(noop=noop)
 
@@ -1389,8 +1485,10 @@ class ImageBackupsState:
             "NOOP:" if noop else "",
             len(all_images),
         )
-        for image_info in get_images_info(from_cache):
-            self.backup_image(image_info=image_info, noop=noop)
+        for image_id in get_images_info(from_cache):
+            self.create_image_backup(
+                image_id=image_id, noop=noop, from_cache=True
+            )
 
         logging.info(
             "%sBacked up %d images.",
@@ -1827,6 +1925,58 @@ def _add_images_parser(subparser: argparse.ArgumentParser) -> None:
             get_current_images_state(
                 from_cache=args.from_cache
             ).remove_dangling_snapshots(noop=args.noop)
+        )
+    )
+
+    backup_image_parser = images_subparser.add_parser(
+        "backup-image",
+        help=(
+            "Trigger a backup for the given image, removing old backups and "
+            "snapshots if needed"
+        ),
+    )
+    backup_image_parser.add_argument(
+        "image_id",
+        help="image id to backup",
+    )
+    backup_image_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=(
+            "If set, will not really do anything, just tell you what "
+            "would be done."
+        ),
+    )
+    backup_image_parser.set_defaults(
+        func=lambda: get_current_images_state(
+            from_cache=args.from_cache
+        ).create_image_backup(
+            noop=args.noop,
+            image_id=args.image_id,
+            from_cache=args.from_cache,
+        )
+    )
+
+    backup_image_parser = images_subparser.add_parser(
+        "backup-all-images",
+        help="Trigger a backup for all the images",
+    )
+    backup_image_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help=(
+            "If set, will not really do anything, just tell you what "
+            "would be done."
+        ),
+    )
+    backup_image_parser.set_defaults(
+        func=lambda: get_current_images_state(
+            from_cache=args.from_cache
+        ).backup_all_images(
+            noop=args.noop,
+            from_cache=args.from_cache,
         )
     )
 
