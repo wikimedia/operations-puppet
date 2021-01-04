@@ -128,4 +128,8 @@ class profile::openstack::base::nova::compute::service(
         enable_nova_rbd      => $enable_nova_rbd,
     }
     contain 'openstack::nova::compute::service'
+
+    class { 'prometheus::node_cloudvirt_ceph_network':
+        ensure => present,
+    }
 }
