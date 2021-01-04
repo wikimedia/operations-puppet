@@ -3,15 +3,17 @@ class profile::openstack::base::nova::api::service(
     $labs_hosts_range = lookup('profile::openstack::base::labs_hosts_range'),
     $labs_hosts_range_v6 = lookup('profile::openstack::base::labs_hosts_range_v6'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::nova::osapi_compute_listen_port'),
+    Stdlib::Port $metadata_bind_port = lookup('profile::openstack::base::nova::metadata_listen_port'),
     ) {
 
     $prod_networks = join($::network::constants::production_networks, ' ')
     $labs_networks = join($::network::constants::labs_networks, ' ')
 
     class {'::openstack::nova::api::service':
-        version       => $version,
-        active        => true,
-        api_bind_port => $api_bind_port,
+        version            => $version,
+        active             => true,
+        api_bind_port      => $api_bind_port,
+        metadata_bind_port => $metadata_bind_port,
     }
     contain '::openstack::nova::api::service'
 
