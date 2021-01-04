@@ -16,7 +16,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine]
+              dstrine, kaldari]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -296,7 +296,7 @@ groups:
               bmansurov, amire80, kartik, pcoombe, foks, kemayo,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, ladsgroup, musikanimal,
-              kaldari, goransm, ema, dsaez, rho, mirrys, slaporte, jk,
+              goransm, ema, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
@@ -1165,13 +1165,12 @@ users:
     uid: 2133
     email: marius.hoch@wikimedia.de
   kaldari:
-    ensure: present
+    ensure: absent
     gid: 500
     name: kaldari
     realname: Ryan Kaldari
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQClVymV2aHXU4fObcvJa5XxnPApYSChQb82/xjuH4i6FbineFlXQMOs1MFDAcYlgZV0vDaWajR9rAAdUHdpUXMmD1e2FpJmNjvM/jFyUoJmN7stJGWNRYG23KaueRI7FKg/eF+QGWYwaITGC/tRusRb5fxwgmsJ2hmvnmpp8HzqnyNq7ZMUegAZyjD4wKHnLW+rWHCM5poUCPgXj3jg1sFLBJ3LIR02G43/0nGIfg8R/MfdHtLi7FJeR51OxefZ3bDfVzeEp+eeRkXURjjQyYZK0yda55uAvS+NrCYDkiEmUwgqtqrP5oZ61qgbmtuedZkO5YE0cClqSRLG/s4ICBR65TqgkDkenhCA5sFcFYKLcfK2VZYHd2nbZ++tTkSB+X+zWcEfSu7t3V3S/Nxzq3yza/X36aPKfIgA1uw8nXoJZQldlW0u3b7CLImvxNXHwod1q9jjpnCF0A3ykQZLmYqLTjX7dUnGVX4QIo6KqaXD2EBf8NcxPVNMIbKiEWiCbUKcDI4zXRJ6bT7oYVVyMLuiMLTY0Gxf3EMb8QcN2ADf8AH3afCmzg4ohVKzQxKGuRdHZu3cLiMxVm8cPYlcbEZ+sgdR1QJyEY9fjPneez4FpaTC8QRSUNNxq/8wC+Kj08b25Tl3sMGjuYL6P3Y/eadJGcolSbaKQLbCdp9eWLdcGw== kaldari@WMF645]
+    ssh_keys: []
     uid: 1271
-    email: rkaldari@wikimedia.org
   kartik:
     ensure: present
     gid: 500
