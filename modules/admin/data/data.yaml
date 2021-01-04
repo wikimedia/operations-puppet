@@ -178,8 +178,7 @@ groups:
                  if you need to add users to it please ping Luca/Andrew/Razzi first
                  or comment in https://phabricator.wikimedia.org/T268801.
     members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
-              jhernandez, daisy, etonkovidova, risler,
-              matmarex, jdittrich, debt,
+              jhernandez, daisy, etonkovidova, risler, jdittrich, debt,
               mlitn, sharvaniharan, kharlan]
   ldap-admins:
     gid: 715
@@ -300,7 +299,8 @@ groups:
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp]
+              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
+              matmarex]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
