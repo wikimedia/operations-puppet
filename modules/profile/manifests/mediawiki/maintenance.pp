@@ -83,11 +83,18 @@ class profile::mediawiki::maintenance {
     include ::profile::mediawiki::maintenance::updatequerypages
 
     # Readline support for PHP maintenance scripts (T126262)
-    require_package('php-readline')
+    ensure_packages('php-readline')
+
+    # Make sure to install php-readline from the component/php72, otherwise this picks up
+    # the 7.3 version from default buster
+    apt::package_from_component { 'php-readline':
+        component => 'component/php72',
+        packages  => ['php-readline']
+    }
 
     # GNU version of 'time' provides extra info like peak resident memory
     # anomie needs it, as opposed to the shell built-in time command
-    require_package('time')
+    ensure_packages('time')
 
     # T112660 - kafka support
     # The eventlogging code is useful for scripting
