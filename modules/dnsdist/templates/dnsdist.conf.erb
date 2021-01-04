@@ -62,6 +62,9 @@ optionsDOH = {
 <% if @tls_common.has_key?('ocsp_response_path') -%>
   ocspResponses={'<%= @tls_common['ocsp_response_path'] %>'},
 <% end -%>
+<% if @enable_hsts -%>
+  customResponseHeaders={["strict-transport-security"]="max-age=<%= @hsts_max_age %>; includeSubDomains; preload"},
+<% end -%>
 }
 
 -- enable DoH (default port is 443)

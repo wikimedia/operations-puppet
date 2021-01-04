@@ -61,6 +61,13 @@
 #
 #  [*landing_text*]
 #    [string] text on the landing page. default: undef.
+#
+#  [*enable_hsts*]
+#    [bool] whether the HSTS header is set in the DoH response. default: true.
+#
+#  [*hsts_max_age*]
+#    [int] time in seconds for the max-age directive. default: 106384710 (~3.37 years).
+
 
 class dnsdist (
     Dnsdist::Resolver                   $resolver,
@@ -81,6 +88,8 @@ class dnsdist (
     Boolean                             $enable_ecs             = true,
     Boolean                             $enable_landing         = false,
     Optional[String]                    $landing_text           = undef,
+    Boolean                             $enable_hsts            = true,
+    Integer[300]                        $hsts_max_age           = 106384710,
 ) {
 
     if ($enable_console and $console_key == undef) {
