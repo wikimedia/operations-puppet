@@ -72,4 +72,17 @@ class profile::acme_chief::cloud (
             'OS_REGION_NAME'   => $designate_sync_region_name
         })
     }
+
+    file { '/usr/local/bin/create_acme_le_account.py':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0544',
+        require => [
+            Package['acme-chief'],
+            Package['python3-keystoneauth1'],
+            Package['python3-designateclient'],
+        ],
+        content => template('acme_chief/create_acme_le_account.py.erb'),
+    }
 }

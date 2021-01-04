@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+
+######################################
+# This script is included as a convenience; it should only be run once
+#  during setup to create the LE account used by acme-chief.
+#
+# Detailed instructions can be found at
+#   https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup
+#
+######################################
+
+from acme_chief import acme_requests
+from cryptography.hazmat.primitives import serialization
+
+acc = acme_requests.ACMEAccount.create(
+    "acmechiefletsencrypt@<%= @labsproject %>.wmflabs.org",
+    directory_url="https://acme-v02.api.letsencrypt.org/directory",
+)
+print(
+    "This is your account ID and goes in the hiera as the hash: {}".format(
+        acc.account_id
+    )
+)
+print(
+    "This goes in labs/private.git modules/secret/secrets/acme_chief/accounts/{}/regr.json: {}".format(
+        acc.account_id, acc.regr.json_dumps()
+    )
+)
+print(
+    "This goes in labs/private.git modules/secret/secrets/acme_chief/accounts/{}/private_key.pem:".format(
+        acc.account_id
+    )
+)
+print(
+    acc.key.key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=serialization.NoEncryption(),
+    ).decode("ascii")
+)
