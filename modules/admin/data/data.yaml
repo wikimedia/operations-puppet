@@ -16,7 +16,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine, kaldari, dcipoletti, mhurd]
+              dstrine, kaldari, dcipoletti, mhurd, jhernandez]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -178,7 +178,7 @@ groups:
                  if you need to add users to it please ping Luca/Andrew/Razzi first
                  or comment in https://phabricator.wikimedia.org/T268801.
     members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
-              jhernandez, daisy, etonkovidova, risler, jdittrich, debt,
+              daisy, etonkovidova, risler, jdittrich, debt,
               mlitn, sharvaniharan, kharlan]
   ldap-admins:
     gid: 715
@@ -1834,11 +1834,11 @@ users:
     expiry_contact: halfak@wikimedia.org
     email: rwest@wikimedia.org
   jhernandez:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jhernandez
     realname: Joaquin Oltra Hernandez
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtMQRDSRzNKBgNQQWt3IW7+pKx7KN6QVxc+b2z7pH+ZstwGBJZhl2W/tZtsZEE1Hfm9slPddcVnYPoNezZuT6dpq0V1im3PHizproc2JIbqjN9A/omrux1tvatwphKpYCCGflbFv1o8tqIzU/HneMsgg79BmU+u8qcZjG9ZMaqavcpOOLqLDz0y79uoNtFWUqBptDCR8fy1ju6sIW7LL8U5uHT8VBnART0MhUxzttd34m73mA9ncNkLN5WqjS/cqAgm1O8zm/bnSEFWTW6SUbQ3NPeW+E6UUrPLCrj8MGFHBtK8cn8YGPmh3Di2VhL5jmE2Ugz2OIxx3VL61dw8LM9 jhernandez@mba.local]
+    ssh_keys: []
     uid: 10733
     email: jhernandez@wikimedia.org
   smalyshev:
@@ -4093,6 +4093,11 @@ ldap_only_users:
   jaufrecht:
     ensure: absent
     realname: Joel Aufrecht
+  jhernandez:
+    ensure: present
+    name: jhernandez
+    realname: Joaquin Oltra Hernandez
+    email: jhernandez@wikimedia.org
   jrabah:
     ensure: present
     realname: Jack Rabah
