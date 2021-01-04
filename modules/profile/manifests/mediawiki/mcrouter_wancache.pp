@@ -89,11 +89,11 @@ class profile::mediawiki::mcrouter_wancache(
     .reduce($onhost_pool + $local_gutter_pool) |$memo, $value| { $memo + $value }
 
     $routes = union(
-        # local cache for each region
+        # Local cache for each region
         $servers_by_datacenter.map |$region, $servers| {
             {
                 'aliases' => [ "/${region}/mw/" ],
-                'route' => profile::mcrouter_route($region, $gutter_ttl)  # @TODO: force $::site like mw-wan default?
+                'route' => profile::mcrouter_route($region, $gutter_ttl)
             }
         },
         # WAN cache: issues reads and add/cas/touch locally and issues set/delete everywhere.
@@ -105,7 +105,7 @@ class profile::mediawiki::mcrouter_wancache(
                 'aliases' => [ "/${region}/mw-wan/" ],
                 'route'   => {
                     'type'               => 'OperationSelectorRoute',
-                    'default_policy'     => profile::mcrouter_route($::site, $gutter_ttl), # We want reads to always be local!
+                    'default_policy'     => profile::mcrouter_route($region, $gutter_ttl),
                     # AllAsyncRoute is used by mcrouter when replicating data to the non-active DC:
                     # https://github.com/facebook/mcrouter/wiki/List-of-Route-Handles#allasyncroute
                     # More info in T225642
