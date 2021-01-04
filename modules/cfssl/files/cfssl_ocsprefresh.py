@@ -104,7 +104,7 @@ def update_required(responses_file: Path, dbconfig: str, primary: bool) -> bool:
     logging.debug('%s last updated: %s', responses_file, last_update)
 
     config = json.loads(Path(dbconfig).read_bytes())
-    db_conn = pymysql.connect(*config)
+    db_conn = pymysql.connect(**config)
     try:
         return last_update < get_db_update_time(db_conn, config['db'], table_name)
     finally:
