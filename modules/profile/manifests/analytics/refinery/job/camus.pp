@@ -108,8 +108,6 @@ class profile::analytics::refinery::job::camus(
             'mapred.map.tasks'                => '48',
             # This camus runs every 10 minutes, so limiting it to 9 should keep runs fresh.
             'kafka.max.pull.minutes.per.task' => '9',
-            # Set HDFS umask so that webrequest files and directories created by Camus are not world readable.
-            'fs.permissions.umask-mode'       => '027'
         },
         interval         => '*-*-* *:00/10:00',
     }

@@ -1095,6 +1095,7 @@ hadoop_clusters:
       hadoop.proxyuser.presto.groups: '*'
       hadoop.proxyuser.superset.hosts: '*'
       hadoop.proxyuser.superset.groups: '*'
+      fs.permissions.umask-mode: '027'
 
 deployment_server: deploy1001.eqiad.wmnet
 
