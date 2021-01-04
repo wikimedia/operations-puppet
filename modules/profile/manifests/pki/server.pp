@@ -36,6 +36,8 @@ class profile::pki::server(
         host           => $db_host,
         conf_file      => $db_conf_file,
         notify_service => $multirootca_service,
+        python_config  => true,
+        ssl_ca         => $facts['puppet_config']['localcacert'],
     }
 
     $_root_ca_profiles = $root_ca_profiles.empty? {
@@ -108,7 +110,7 @@ class profile::pki::server(
             common_name      => 'pki.discovery.wmnet',
             additional_names => [$facts['fqdn']],
             listen_port      => $config['ocsp_port'],
-            db_conf_file     => $db_conf_file,
+            db_conf_file     => "${db_conf_file}.json",
             ca_file          => $ca_file,
         }
         $memo + {

@@ -7,7 +7,6 @@ for now this is an acceptable trade off.
 import json
 import logging
 import pymysql
-import re
 import shlex
 
 from argparse import ArgumentParser
@@ -73,24 +72,9 @@ def ocspdump(dbconfig, responses_file):
     responses_file.write_bytes(responses)
 
 
-def get_db_connection(dbconfig):
-    config = json.loads(Path(dbconfig).read_bytes())
-    pattern = re.compile(
-        r'(?P<user>[^:]+):(?P<pass>[^@]+)@tcp\((?P<host>[^:]+):(?P<port>\d+)\)\/(?P<db>[^\?]+)')
-    match = pattern.search(config['data_source'])
-    ssl = {'ca': '/etc/ssl/certs/Puppet_Internal_CA.pem', 'check_hostname': False}
-    return (pymysql.connect(host=match['host'],
-                            port=int(match['port']),
-                            user=match['user'],
-                            password=match['pass'],
-                            db='information_schema',
-                            charset="utf8mb4",
-                            ssl=ssl),
-            match['db'])
-
-
 def get_db_update_time(db_conn, db_name, table_name):
-    sql = 'SELECT `UPDATE_TIME` FROM tables WHERE `TABLE_SCHEMA` = %s AND `TABLE_NAME` = %s'
+    sql = ('SELECT `UPDATE_TIME` FROM information_schema.tables '
+           'WHERE `TABLE_SCHEMA` = %s AND `TABLE_NAME` = %s')
     with db_conn.cursor() as cursor:
         cursor.execute(sql, (db_name, table_name))
         result = cursor.fetchone()
@@ -118,9 +102,11 @@ def update_required(responses_file: Path, dbconfig: str, primary: bool) -> bool:
     responses_meta = responses_file.stat()
     last_update = datetime.fromtimestamp(responses_meta.st_mtime)
     logging.debug('%s last updated: %s', responses_file, last_update)
-    (db_conn, db_name) = get_db_connection(dbconfig)
+
+    config = json.loads(Path(dbconfig).read_bytes())
+    db_conn = pymysql.connect(*config)
     try:
-        return last_update < get_db_update_time(db_conn, db_name, table_name)
+        return last_update < get_db_update_time(db_conn, config['db'], table_name)
     finally:
         db_conn.close()
 
@@ -153,7 +139,7 @@ def main():
         return 1
     try:
         dbconfig = config[args.signer]['dbconfig']
-        if not update_required(responses_file, dbconfig, primary):
+        if not update_required(responses_file, f'{dbconfig}.json', primary):
             logging.debug('%s: no update required', args.signer)
             return 0
     except KeyError:
