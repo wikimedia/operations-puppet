@@ -99,6 +99,10 @@ sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 echo "$ip       $fqdn $hostname" >> /etc/hosts
 echo $hostname > /etc/hostname
 
+# There's a timing issue that causes us to sometimes have 127.0.0.1 associated
+# with $hostname.novalocal instead of the proper fqdn
+sed -i "s/novalocal/${project}.${domain}/g" /etc/hosts
+
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
 # it isn't perfect
