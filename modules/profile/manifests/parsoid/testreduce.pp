@@ -5,5 +5,5 @@ class profile::parsoid::testreduce(
         install_node => $install_node,
     }
 
-    ensure_packages(['make'])
+    ensure_packages(['make', 'g++'])
 }
