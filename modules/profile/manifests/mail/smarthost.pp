@@ -74,6 +74,11 @@ class profile::mail::smarthost (
       }
     }
 
+    acme_chief::cert { $cert_name:
+        key_group  => 'Debian-exim',
+        puppet_svc => 'nginx',
+    }
+
     letsencrypt::cert::integrated { $cert_name:
         subjects   => $cert_subjects,
         key_group  => 'Debian-exim',
