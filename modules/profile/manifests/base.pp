@@ -3,6 +3,7 @@ class profile::base(
     Boolean $purge_apt_sources = lookup('profile::base::purge_apt_sources'),
     Boolean $purge_apt_preferences = lookup('profile::base::purge_apt_preferences'),
     Boolean $manage_apt_source = lookup('profile::base::manage_apt_source'),
+    Boolean $apt_install_audit_installed = lookup('profile::base::apt_install_audit_installed'),
     String  $mirror_server = lookup('profile::base::mirror_server'),
     $domain_search = hiera('profile::base::domain_search', $::domain), # lint:ignore:wmf_styleguide
     $nameservers   = hiera('profile::base::nameservers', $::nameservers), # lint:ignore:wmf_styleguide
