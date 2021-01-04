@@ -94,6 +94,8 @@ class profile::debmonitor::server (
     }
 
     base::service_auto_restart { 'uwsgi-debmonitor': }
+    base::service_auto_restart { 'apache2': }
+    base::service_auto_restart { 'nginx': }
 
     # Public endpoint: incoming traffic from cache_text for the Web UI
     ferm::service { 'nginx-cdn-https':
