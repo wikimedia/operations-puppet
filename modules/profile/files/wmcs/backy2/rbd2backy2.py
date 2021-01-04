@@ -43,9 +43,12 @@ class RBDSnapshot:
         Parses one line from the command:
         >> rbd ls -l <pool_name>
 
-        Example of line:
+        Example of supported lines:
 
         009f0826-b09c-49a2-96d9-c93c690fc6b8_disk@2020-12-04T02:01:19\
+            \t300 GiB\t2\texcl
+
+        009f0826-b09c-49a2-96d9-c93c690fc6b8_disk@2020-12-04T02:01:19_cloudvirt1024\
             \t300 GiB\t2\texcl
         """
         if "@" not in rbd_ls_line:
@@ -54,7 +57,8 @@ class RBDSnapshot:
             )
 
         full_name = rbd_ls_line.split(maxsplit=1)[0]
-        image, snapshot = full_name.split("@")
+        image, snapshot = full_name.split("@", 1)
+
         return cls(image=image, snapshot=snapshot, pool=pool)
 
     @classmethod
@@ -67,6 +71,7 @@ class RBDSnapshot:
 
         Example of line:
             60784 2020-12-04T05:03:23 20 GiB           Fri Dec  4 05:03:23 2020
+            60784 2020-12-04T05:03:23_cloudvirt1024 20 GiB           Fri Dec  4 05:03:23 2020
         """
         _, snapshot_name, _ = rbd_snap_ls_line.split(maxsplit=2)
 

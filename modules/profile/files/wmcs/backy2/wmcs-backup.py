@@ -257,11 +257,18 @@ class ImageBackups:
                 all_snapshots_for_image,
             )
 
+        def is_from_this_host(snapshot_name) -> bool:
+            if "_" not in snapshot_name:
+                # if there's no hostname, we consider it to be for this host
+                return True
+
+            return snapshot_name.endswith(f"_{socket.gethostname()}")
+
         # Get all the other snapshots
         for snapshot in all_snapshots_for_image:
-            if (
-                last_snapshot_with_backup is None
-                or snapshot.snapshot != last_snapshot_with_backup.snapshot
+            if last_snapshot_with_backup is None or (
+                snapshot.snapshot != last_snapshot_with_backup.snapshot
+                and is_from_this_host(snapshot.snapshot)
             ):
                 dangling_snapshots.append(snapshot)
 
@@ -432,7 +439,10 @@ class VMBackup:
         noop: bool = True,
     ):
         image_name = f"{vm_id}_disk"
-        snapshot_name = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        snapshot_name = (
+            datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            + f"_{socket.gethostname()}"
+        )
         expire_date = datetime.datetime.now() + datetime.timedelta(
             days=live_for_days,
         )
@@ -479,7 +489,10 @@ class VMBackup:
         noop: bool = True,
     ):
         image_name = f"{vm_id}_disk"
-        snapshot_name = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        snapshot_name = (
+            datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            + f"_{socket.gethostname()}"
+        )
         expire_date = datetime.datetime.now() + datetime.timedelta(
             days=live_for_days
         )
@@ -1303,7 +1316,8 @@ class ImageBackupsState:
         order to be able to get hints when doing differential backups.
 
         This snapshot has to be the oldest one that has a matching backups for
-        that image/vm.
+        that image/vm. And it will ignore snapshots that have a diffirent
+        '@<hosntname>' suffix
         """
         dangling_snapshots = []
         for image_backups in self.image_backups.values():
@@ -1346,7 +1360,7 @@ class ImageBackupsState:
             "%sBacking up image %s(%s)",
             "NOOP:" if noop else "",
             image_id,
-            image_info.get('name', 'no_name'),
+            image_info.get("name", "no_name"),
         )
         if image_id not in self.image_backups:
             self.image_backups[image_id] = ImageBackups(
@@ -1363,7 +1377,7 @@ class ImageBackupsState:
             "%sBacked up image %s(%s)",
             "NOOP:" if noop else "",
             image_id,
-            image_info.get('name', 'no_name'),
+            image_info.get("name", "no_name"),
         )
 
     def backup_all_images(
