@@ -177,9 +177,8 @@ groups:
                  Please note that we (Analytics) are trying to deprecate the group,
                  if you need to add users to it please ping Luca/Andrew/Razzi first
                  or comment in https://phabricator.wikimedia.org/T268801.
-    members: [catrope, dduvall, mattflaschen, cooltey, marktraceur,
-              daisy, etonkovidova, risler, jdittrich, debt,
-              mlitn, sharvaniharan, kharlan]
+    members: [mattflaschen, daisy, etonkovidova, risler, jdittrich, debt,
+              kharlan]
   ldap-admins:
     gid: 715
     description: ldap admins
