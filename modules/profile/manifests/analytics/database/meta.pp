@@ -90,12 +90,5 @@ class profile::analytics::database::meta(
             require       => Class['mariadb::service'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Mysql_Meta',
         }
-
-        nrpe::monitor_service { 'mysql_analytics-meta_disk_space':
-            description   => 'MySQL disk space for analytics-meta instance',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_disk -w 10g -c 5g -l -p /var/lib/mysql',
-            contact_group => 'admins,analytics',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Mysql_Meta',
-        }
     }
 }
