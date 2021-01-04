@@ -52,7 +52,7 @@ define cfssl::db (
             group     => 'root',
             mode      => '0440',
             show_diff => false,
-            content   => Sensitive($db_config.to_json()),
+            content   => Sensitive($config.to_json()),
         }
     }
     $db_config = {'driver' => $driver, 'data_source' => $db_data_source}
