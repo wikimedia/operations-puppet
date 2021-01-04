@@ -3,7 +3,6 @@ cluster: analytics
 profile::standard::admin_groups:
   - analytics-admins
 profile::standard::admin_groups_no_ssh:
-  - analytics-users
   - analytics-privatedata-users
   # elasticsearch::analytics creates the analytics-search user and group
   # that analytics-search-users are allowed to sudo to.  This is used
