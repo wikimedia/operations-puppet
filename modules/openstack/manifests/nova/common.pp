@@ -36,21 +36,13 @@ class openstack::nova::common(
         ensure => absent,
     }
 
-    $vm_firstboot_script = file('openstack/nova/firstboot.sh')
+    # vendor data needs to be in json format. vendordata.txt
+    #  contains all of our cloud-init settings and firstboot script;
+    #  jamming it all into one giant json field seems to work.
+    $vendordata_file_contents = file('openstack/nova/vendordata.txt')
     $vendor_data = {
-        'domain' => $dhcp_domain,
-        'packages' => ['gpg','curl','nscd','lvm2','parted'],
-        'growpart' => {'mode' => false},
-        'manage_etc_hosts' => false,
-        'apt' => {
-            'sources' => {
-                'wikimedia.list' => {
-                    'source' => 'deb-src http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main',
-                    'filename' => 'wikimedia.list'
-                }
-            }
-        },
-        'cloud-init' => $vm_firstboot_script
+        'domain'     => $dhcp_domain,
+        'cloud-init' => $vendordata_file_contents,
     }
 
     file { '/etc/nova/policy.yaml':

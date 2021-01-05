@@ -1,3 +1,36 @@
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="XXXXboundary text"
+
+This is a multipart config in MIME format.
+It contains a cloud-init config followed by
+a first boot script.
+
+--XXXXboundary text
+MIME-Version: 1.0
+Content-Type: text/cloud-config; charset="us-ascii"
+
+#cloud-config
+packages:
+    - gpg
+    - curl
+    - nscd
+    - lvm2
+    - parted
+
+growpart:
+    mode: false
+
+manage_etc_hosts: false
+
+apt:
+    sources:
+        wikimedia.list:
+            source: deb-src http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main
+            filename: wikimedia.list
+
+--XXXXboundary text
+MIME-Version: 1.0
+Content-Type: text/text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 
 set -x
@@ -99,10 +132,6 @@ sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
 echo "$ip       $fqdn $hostname" >> /etc/hosts
 echo $hostname > /etc/hostname
 
-# There's a timing issue that causes us to sometimes have 127.0.0.1 associated
-# with $hostname.novalocal instead of the proper fqdn
-sed -i "s/novalocal/${project}.${domain}/g" /etc/hosts
-
 # This is only needed when running bootstrap-vz on
 # a puppetmaster::self instance, and even then
 # it isn't perfect
@@ -163,3 +192,4 @@ systemctl restart serial-getty@ttyS0.service
 
 # Remove the non-root login restriction
 rm /etc/block-ldap-key-lookup
+--XXXXboundary text
