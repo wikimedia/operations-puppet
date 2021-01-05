@@ -143,7 +143,7 @@ class apt(
         notify => Exec['apt-get update'],
     }
     if $install_audit_installed {
-        file {'/usr/local/bin/apt-audit-installed':
+        file {'/usr/local/sbin/apt-audit-installed':
             ensure => file,
             mode   => '0555',
             source => 'puppet:///modules/apt/apt_audit_installed.py',
