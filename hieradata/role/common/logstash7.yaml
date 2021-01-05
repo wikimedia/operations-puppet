@@ -1,5 +1,5 @@
 profile::lvs::realserver::pools:
-  kibana-next:
+  kibana7:
     services:
       - kibana
       - apache2

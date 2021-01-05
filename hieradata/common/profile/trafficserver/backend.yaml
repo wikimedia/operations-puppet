@@ -111,7 +111,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://kibana.discovery.wmnet
     - type: map
       target: http://logstash-next.wikimedia.org
-      replacement: https://kibana-next.svc.eqiad.wmnet
+      replacement: https://kibana7.svc.eqiad.wmnet
     - type: map
       target: http://maps.wikimedia.org
       replacement: https://kartotherian.discovery.wmnet

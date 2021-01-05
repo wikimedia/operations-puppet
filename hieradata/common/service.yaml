@@ -1050,8 +1050,8 @@ service::catalog:
     discovery:
       - dnsdisc: kibana
         active_active: false
-  kibana-next:
-    description: Kibana upgrade env - HTTPS
+  kibana7:
+    description: Kibana v7 env - HTTPS
     encryption: true
     ip:
       codfw:
@@ -1061,8 +1061,8 @@ service::catalog:
     lvs:
       class: low-traffic
       conftool:
-        cluster: kibana
-        service: kibana-next
+        cluster: kibana7
+        service: kibana7
       depool_threshold: ".5"
       enabled: true
       monitors:
@@ -1078,9 +1078,9 @@ service::catalog:
       critical: false
       sites:
         codfw:
-          hostname: kibana-next.svc.codfw.wmnet
+          hostname: kibana7.svc.codfw.wmnet
         eqiad:
-          hostname: kibana-next.svc.eqiad.wmnet
+          hostname: kibana7.svc.eqiad.wmnet
     port: 443
     sites:
       - eqiad
