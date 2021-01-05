@@ -327,12 +327,6 @@ codfw:
     logstash2004.codfw.wmnet: [kibana, kibana-ssl]
     logstash2005.codfw.wmnet: [kibana, kibana-ssl]
     logstash2006.codfw.wmnet: [kibana, kibana-ssl]
-  kibana:
-    logstash2023.codfw.wmnet: [kibana-next]
-    logstash2024.codfw.wmnet: [kibana-next]
-    logstash2025.codfw.wmnet: [kibana-next]
-    logstash2030.codfw.wmnet: [kibana-next]
-    logstash2031.codfw.wmnet: [kibana-next]
   kibana7:
     logstash2023.codfw.wmnet: [kibana7]
     logstash2024.codfw.wmnet: [kibana7]

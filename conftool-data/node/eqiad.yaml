@@ -314,12 +314,6 @@ eqiad:
     logstash1007.eqiad.wmnet: [kibana, kibana-ssl, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-udp2log]
     logstash1008.eqiad.wmnet: [kibana, kibana-ssl, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-udp2log]
     logstash1009.eqiad.wmnet: [kibana, kibana-ssl, logstash, logstash-log4j, logstash-gelf, logstash-json, logstash-udp2log]
-  kibana:
-    logstash1023.eqiad.wmnet: [kibana-next]
-    logstash1024.eqiad.wmnet: [kibana-next]
-    logstash1025.eqiad.wmnet: [kibana-next]
-    logstash1030.eqiad.wmnet: [kibana-next]
-    logstash1031.eqiad.wmnet: [kibana-next]
   kibana7:
     logstash1023.eqiad.wmnet: [kibana7]
     logstash1024.eqiad.wmnet: [kibana7]
