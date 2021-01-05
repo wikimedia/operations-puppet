@@ -30,7 +30,7 @@ def main():
     loss = '&max_packet_loss=%s' % (loss_allowed)
     url = ripeurl + failures + loss
 
-    data = urlopen(Request(url), timeout=120).read().encode('utf-8')
+    data = urlopen(Request(url), timeout=120).read().decode()
     jout = json.loads(data)
     total_probes = len(list(jout['probes'].keys()))
     failed_probes = [k for k, v in jout['probes'].items() if v['alert']]
