@@ -27,7 +27,7 @@ define cfssl::ocsp (
     $_ca_file        = pick($ca_file, "${cfssl::conf_dir}/ca/ca.pem")
     $_responses_file = pick($responses_file, "${cfssl::ocsp_dir}/${safe_title}.ocsp")
 
-    ensure_packages(['python3-pymysql'])
+    ensure_packages(['python3-pymysql', 'python3-cryptography'])
     ensure_resource('file', '/usr/local/sbin/cfssl-ocsprefresh', {
                       ensure => file,
                       mode   => '0550',
