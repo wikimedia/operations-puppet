@@ -360,6 +360,12 @@ codfw:
     logstash2025.codfw.wmnet: [kibana-next]
     logstash2030.codfw.wmnet: [kibana-next]
     logstash2031.codfw.wmnet: [kibana-next]
+  kibana7:
+    logstash2023.codfw.wmnet: [kibana7]
+    logstash2024.codfw.wmnet: [kibana7]
+    logstash2025.codfw.wmnet: [kibana7]
+    logstash2030.codfw.wmnet: [kibana7]
+    logstash2031.codfw.wmnet: [kibana7]
   docker-registry:
     registry2001.codfw.wmnet: [docker-registry]
     registry2002.codfw.wmnet: [docker-registry]
