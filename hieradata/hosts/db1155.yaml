@@ -1,3 +1,8 @@
 # db1155
-# Replacement for db1125
+# Buffer pool sizes/instance enabled
+profile::mariadb::sanitarium_multiinstance::instances:
+  s2: 38G
+  s4: 46G
+  s6: 30G
+  s7: 38G
 profile::base::notifications: disabled

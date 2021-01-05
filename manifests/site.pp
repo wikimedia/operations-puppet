@@ -680,7 +680,7 @@ node 'db2078.codfw.wmnet' {
 }
 
 # sanitarium hosts
-node /^db1(124|125|154)\.eqiad\.wmnet/ {
+node /^db1(124|125|154|155)\.eqiad\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
@@ -1072,7 +1072,7 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 # New hosts to refresh db1074-db1095 T264584 T267043
 # 2 hosts (db1154 and db1155) will be used to temporary test sanitarium upgrades to 10.4 T268742
 # Set them to spare individually as it will take take to transfer the data
-node /^db11(55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75)\.eqiad\.wmnet$/ {
+node /^db11(56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
