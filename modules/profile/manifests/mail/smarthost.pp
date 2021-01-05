@@ -29,7 +29,6 @@ class profile::mail::smarthost (
     $prometheus_nodes         = hiera('prometheus_nodes', []),
     $dkim_domains             = hiera('profile::mail::smarthost::dkim_domains', []),
     $cert_name                = hiera('profile::mail::smarthost::cert_name', $facts['hostname']),
-    $cert_subjects            = hiera('profile::mail::smarthost::cert_subjects', $facts['fqdn']),
     $relay_from_hosts         = hiera('profile::mail::smarthost::relay_from_hosts', []),
     $envelope_rewrite_rules   = hiera('profile::mail::smarthost::envelope_rewrite_rules', []),
     $root_alias_rcpt          = hiera('profile::mail::smarthost::root_alias_rcpt', ':blackhole:'),
@@ -76,27 +75,7 @@ class profile::mail::smarthost (
 
     acme_chief::cert { $cert_name:
         key_group  => 'Debian-exim',
-        puppet_svc => 'nginx',
-    }
-
-    letsencrypt::cert::integrated { $cert_name:
-        subjects   => $cert_subjects,
-        key_group  => 'Debian-exim',
-        puppet_svc => 'nginx',
-        system_svc => 'nginx',
-    }
-
-    class { 'nginx':
-        variant => 'light',
-    }
-
-    nginx::site { 'letsencrypt-standalone':
-        content => template('letsencrypt/cert/integrated/standalone.nginx.erb'),
-    }
-
-    ferm::service { 'nginx-http':
-        proto => 'tcp',
-        port  => '80',
+        puppet_svc => 'exim4',
     }
 
     ferm::service { 'mtail':
