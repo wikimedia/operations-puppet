@@ -44,4 +44,6 @@ class profile::thanos::httpd (
         port   => 80,
         srange => '$DOMAIN_NETWORKS',
     }
+
+    base::service_auto_restart { 'apache2': }
 }
