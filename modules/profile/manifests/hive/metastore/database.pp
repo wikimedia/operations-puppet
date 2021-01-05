@@ -8,9 +8,9 @@
 # set so that configured hosts can properly connect to this database.
 #
 class profile::hive::metastore::database(
-    $jdbc_database = hiera('profile::hive::metastore::database::jdbc_database', 'hive_metastore'),
-    $jdbc_username = hiera('profile::hive::metastore::database::jdbc_username', 'hive'),
-    $jdbc_password = hiera('profile::hive::metastore::database::jdbc_password', 'hive'),
+    String $jdbc_database = lookup('profile::hive::metastore::database::jdbc_database', {'default_value' => 'hive_metastore'}),
+    String $jdbc_username = lookup('profile::hive::metastore::database::jdbc_username', {'default_value' => 'hive'}),
+    String $jdbc_password = lookup('profile::hive::metastore::database::jdbc_password', {'default_value' => 'hive'}),
 ) {
 
     # Install a database server (MariaDB)

@@ -3,8 +3,8 @@
 # Sets up Hive Metastore service
 #
 class profile::hive::metastore(
-    $monitoring_enabled = hiera('profile::hive::metastore::monitoring_enabled', false),
-    $ferm_srange        = hiera('profile::hive::metastore::ferm_srange', '$DOMAIN_NETWORKS'),
+    Boolean $monitoring_enabled = lookup('profile::hive::metastore::monitoring_enabled', {'default_value' => false}),
+    String $ferm_srange         = lookup('profile::hive::metastore::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
 ) {
 
     require ::profile::hive::client
