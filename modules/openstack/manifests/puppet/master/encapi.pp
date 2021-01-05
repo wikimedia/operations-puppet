@@ -1,22 +1,37 @@
 class openstack::puppet::master::encapi(
-    $mysql_host,
-    $mysql_db,
-    $mysql_username,
-    $statsd_host,
-    $statsd_prefix,
-    $mysql_password,
-    $puppetmasters,
-    $labweb_hosts,
-    $openstack_controllers,
+    String $mysql_host,
+    String $mysql_db,
+    String $mysql_username,
+    String $statsd_host,
+    String $statsd_prefix,
+    String $mysql_password,
+    Hash[Stdlib::Fqdn, Puppetmaster::Backends] $puppetmasters,
+    Array[Stdlib::Fqdn] $labweb_hosts,
+    Array[Stdlib::Fqdn] $openstack_controllers,
     Array[Stdlib::Fqdn] $designate_hosts,
+    Array[String] $labs_instance_ranges = $network::constants::labs_networks
 ) {
-    require_package('python3-pymysql',
+    $exposed_certs_dir = '/etc/nginx'
+    $puppet_cert_pub  = "${exposed_certs_dir}/ssl/cert.pem"
+    $puppet_cert_priv = "${exposed_certs_dir}/ssl/server.key"
+    $puppet_cert_ca   = "${exposed_certs_dir}/ssl/ca.pem"
+    base::expose_puppet_certs { $exposed_certs_dir:
+      provide_private => true,
+    }
+    file { $puppet_cert_ca:
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => $facts['puppet_config']['localcacert'],
+    }
+
+    ensure_packages(['python3-pymysql',
                     'python3-statsd',
                     'python3-flask',
                     'python3-yaml',
                     'python-flask',
                     'python-pymysql',
-                    'python-statsd')
+                    'python-statsd'])
 
     $python_version = $::lsbdistcodename ? {
         'jessie'  => 'python3.4',
@@ -84,11 +99,15 @@ class openstack::puppet::master::encapi(
         before => Nginx::Site['labspuppetbackendgetter'],
     }
 
-    $labs_instance_ranges = $network::constants::labs_networks
     # This is a GET-only front end that sits on port 8100.  We can
     #  open this up to the public even though the actual API has no
     #  auth protections.
     nginx::site { 'labspuppetbackendgetter':
         content => template('openstack/puppet/master/encapi/labspuppetbackendgetter.conf.erb'),
     }
+
+    # make sure that the nginx service gets notified when the certs change
+    File[$puppet_cert_pub] ~> Service['nginx']
+    File[$puppet_cert_priv] ~> Service['nginx']
+    File[$puppet_cert_ca] ~> Service['nginx']
 }

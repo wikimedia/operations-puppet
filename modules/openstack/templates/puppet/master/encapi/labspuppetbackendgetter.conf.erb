@@ -1,5 +1,14 @@
 server {
-    listen 8100;
+    listen [::]:8100 ipv6only=off;
+    listen [::]:8143 ssl ipv6only=off;
+
+    # SSL settings
+    ssl_certificate     <%= @puppet_cert_pub %>;
+    ssl_certificate_key <%= @puppet_cert_priv %>;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 5m;
+    ssl_verify_client optional;
+    ssl_client_certificate <%= @puppet_cert_ca %>;
 
     # Wrap the normal API but only allow GETs.
     location / {
