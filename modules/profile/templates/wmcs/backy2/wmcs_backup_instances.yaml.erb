@@ -1,52 +1,52 @@
 ceph_pool: <%= @ceph_vm_pool %>
 exclude_servers:
- admin:
-   - ".*"
- admin-monitoring:
-   - ".*"
- cloudvirt-canary:
-   - ".*"
- codesearch:
-   - ".*"
- deployment-prep:
-   - "^.*snapshot02.*$"
-   - "^deployment-docker.*$"
-   - "^deployment-elastic.*$"
-   - "^deployment-mediawiki-.*"
-   - "^deployment-mwmaint.*"
-dumps:
-  # negative lookahead, maybe we should use an include_servers too
-  - "^(?!dumps-0).*"
- extdist:
-   - ".*"
- integration:
-   - "^integration-agent.*$"
- mwoffliner:
-   - ".*"
- paws:
-   - "^paws-k8s-worker.*$"
- sre-sandbox:
-   - ".*"
- testlabs:
-   - ".*"
- tools:
-   - "^.*worker.*$"
-   - "^tools-sgeexec-.*$"
-   - "^.*sgewebgrid-lighttpd.*$"
- toolsbeta:
-   - ".*"
- transferpy-test:
-   - ".*"
- video:
-   - "encoding.*$"
- wmf-research-tools:
-   - "^.*-test.*$"
-   - "^.*-prototype.*$"
-   - "^.*-build.*$"
- recommendation-api:
-   - "^.*-test.*$"
-   - "^.*-prototype.*$"
-   - "^.*-build.*$"
+  admin:
+    - ".*"
+  admin-monitoring:
+    - ".*"
+  cloudvirt-canary:
+    - ".*"
+  codesearch:
+    - ".*"
+  deployment-prep:
+    - "^.*snapshot02.*$"
+    - "^deployment-docker.*$"
+    - "^deployment-elastic.*$"
+    - "^deployment-mediawiki-.*"
+    - "^deployment-mwmaint.*"
+  dumps:
+    # negative lookahead, maybe we should use an include_servers too
+    - "^(?!dumps-0).*"
+  extdist:
+    - ".*"
+  integration:
+    - "^integration-agent.*$"
+  mwoffliner:
+    - ".*"
+  paws:
+    - "^paws-k8s-worker.*$"
+  sre-sandbox:
+    - ".*"
+  testlabs:
+    - ".*"
+  tools:
+    - "^.*worker.*$"
+    - "^tools-sgeexec-.*$"
+    - "^.*sgewebgrid-lighttpd.*$"
+  toolsbeta:
+    - ".*"
+  transferpy-test:
+    - ".*"
+  video:
+    - "encoding.*$"
+  wmf-research-tools:
+    - "^.*-test.*$"
+    - "^.*-prototype.*$"
+    - "^.*-build.*$"
+  recommendation-api:
+    - "^.*-test.*$"
+    - "^.*-prototype.*$"
+    - "^.*-build.*$"
 
 project_assignments:
   admin: ignore
