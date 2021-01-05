@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from glob import glob
 from datetime import date
@@ -227,7 +227,7 @@ def main():
         :param lfile: str
         :return: bool
         """
-        return any(map(lambda x: lfile.endswith(x), rotation_guide))
+        return any([lfile.endswith(x) for x in rotation_guide])
 
     def rotate():
         """ is today rotation day?
@@ -269,7 +269,7 @@ def main():
         for file in candidate_logs:
             if any(map(file.endswith, extensions)):
                 valid_logs.append(file)
-        logging.debug("Found {} valid files from ".format(len(valid_logs), config['end_with']))
+        logging.debug("Found {} valid files from {}".format(len(valid_logs), config['end_with']))
         return valid_logs
 
     def process_logfile(fpath):
@@ -296,8 +296,8 @@ def main():
 
             logging.debug('{} tailed to {}'.format(fpath, fpath_new))
             with open(fpath_new, 'w') as f:
-                for l in tailed:
-                    f.write('{}\n'.format(l))
+                for line in tailed:
+                    f.write('{}\n'.format(line))
 
             set_perms(fpath, fpath_new)
             truncate(fpath)
@@ -342,7 +342,7 @@ def main():
             logging.debug(pfull)
             try:
                 process_logfile(pfull)
-            except Exception as e:
+            except Exception:
                 logging.exception('{} failed'.format(pfull))
     logging.debug("processed {} logs".format(all_logs))
 
