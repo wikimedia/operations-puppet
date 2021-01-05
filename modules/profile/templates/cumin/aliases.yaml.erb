@@ -164,6 +164,7 @@ ldap-replicas-eqiad: A:ldap-replicas and A:eqiad
 ldap-replicas-codfw: A:ldap-replicas and A:codfw
 ldap-main: P{O:openldap::labs}
 ldap-all: A:ldap-corp or A:ldap-replicas or A:ldap-main
+lists: P{O:lists}
 logstash: P{C:logstash or O:logstash::elasticsearch or O:logstash::elasticsearch7}
 logstash-canary: P{logstash1007.eqiad.wmnet}
 lvs: P{O:lvs::balancer}
@@ -219,6 +220,7 @@ ores-canary: P{ores1001.eqiad.wmnet}
 ores-eqiad: A:ores and A:eqiad
 ores-codfw: A:ores and A:codfw
 ores-poolcounter: P{O:orespoolcounter}
+otrs: P{O:otrs}
 parsoid: P{O:parsoid}
 parsoid-canary: P{wtp1025.eqiad.wmnet or wtp1026.eqiad.wmnet or parse2001.codfw.wmnet or parse2002.codfw.wmnet}
 parsoid-codfw: A:parsoid and A:codfw
@@ -294,6 +296,7 @@ wdqs-internal: P{O:wdqs::internal}
 wdqs-public: P{O:wdqs::public}
 wdqs-test: P{O:wdqs::test}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
+wikidough: P{O:wikidough}
 wikireplicas-all: A:wikireplicas-analytics or A:wikireplicas-dedicated or A:wikireplicas-web or A:wikireplicas-multiinstance
 wikireplicas-analytics: P{O:wmcs::db::wikireplicas::analytics}
 wikireplicas-dedicated: P{O:wmcs::db::wikireplicas::dedicated::analytics}
