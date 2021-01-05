@@ -12,4 +12,6 @@ class profile::netmon::httpd (
         modules    => ['headers','rewrite','proxy','proxy_http','ssl','fcgid', "php${php_version}"],
         extra_pkgs => ['libapache2-mod-fcgid'],
     }
+
+    base::service_auto_restart { 'apache2': }
 }
