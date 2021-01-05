@@ -17,7 +17,7 @@ fi
 # db1124 and db2094 replicate s1 s3 s5 and s8 in a multi-instance setup
 # db1154 is a temporary sanitarium running MariaDB 10.4
 
-if [ "$HOSTNAME" == "db1124" ] || [ "$HOSTNAME" == "db2094" ] || [ "$HOSTNAME" == "db1154" ]
+if [ "$HOSTNAME" == "db1124" ] || [ "$HOSTNAME" == "db2094" ] || [ "$HOSTNAME" == "db1154" ] || [ "$HOSTNAME" == "db1155" ]
 then
 	for SECTION in s1 s3 s5 s8
 	do
