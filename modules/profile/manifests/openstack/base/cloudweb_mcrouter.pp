@@ -35,7 +35,7 @@ class profile::openstack::base::cloudweb_mcrouter(
                 operation_policies => {
                     add    => 'AllFastestRoute|Pool|cloudweb',
                     delete => 'AllFastestRoute|Pool|cloudweb',
-                    get    => 'MissFailoverRoute|Pool|cloudweb',
+                    get    => 'LatestRoute|Pool|cloudweb',
                     set    => 'AllFastestRoute|Pool|cloudweb'
                 }
             }
