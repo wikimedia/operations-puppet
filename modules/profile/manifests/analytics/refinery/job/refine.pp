@@ -92,11 +92,18 @@ class profile::analytics::refinery::job::refine(
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
             schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
+            # Set max parallelism to 64.  This is the max number of Refines that can run at once.
+            # This will only be reached if there are at least this many tables to refine.
+            # Each table is refined in serial.  I.e. if there are 10 hours for a given table,
+            # each of those will be launched in serial in the same thread.
+            parallelism                     => 64,
         }),
         interval                 => '*-*-* *:20:00',
         monitor_interval         => '*-*-* 01:15:00',
         monitor_failure_interval => '*-*-* 01:45:00',
-        spark_executor_memory    => '4G',
+        spark_executor_memory    => '6G',
+        spark_max_executors      => 128,
+        spark_extra_opts         => '--conf spark.executor.memoryOverhead=1024',
         use_keytab               => $use_kerberos_keytab,
     }
 
