@@ -13,10 +13,10 @@
 #   }
 #
 class profile::eventschemas::repositories(
-    $repositories = hiera('profile::eventschemas::repositories', {
+    Hash[String, String] $repositories = lookup('profile::eventschemas::repositories', {default_value => {
         'primary'   => 'schemas/event/primary',
         'secondary' => 'schemas/event/secondary',
-    })
+    }})
 ) {
     keys($repositories).each |String $name| {
         eventschemas::repository { $name:

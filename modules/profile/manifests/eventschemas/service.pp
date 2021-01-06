@@ -6,11 +6,11 @@
 class profile::eventschemas::service(
     # Linter thinks that $::site is a parameter, but it isn't.
     # lint:ignore:wmf_styleguide
-    $server_name  = hiera('profile::eventschemas::service::server_name', "schema.svc.${::site}.wmnet"),
+    Stdlib::Fqdn $server_name      = lookup('profile::eventschemas::service::server_name', {default_value => "schema.svc.${::site}.wmnet"}),
     # lint:endignore
-    $server_alias = hiera('profile::eventschemas::service::server_alias', undef),
-    $port         = hiera('profile::eventschemas::service::port', 8190),
-    $allow_origin = hiera('profile::eventschemas::service::allow_origin', undef),
+    Optional[Array] $server_alias  = lookup('profile::eventschemas::service::server_alias', {default_value => undef}),
+    Stdlib::Port $port             = lookup('profile::eventschemas::service::port', {default_value => 8190}),
+    Optional[String] $allow_origin = lookup('profile::eventschemas::service::allow_origin', {default_value => undef}),
 ) {
     include ::profile::eventschemas::repositories
     class { '::eventschemas::service':
