@@ -89,7 +89,7 @@ class striker::uwsgi(
     require_package(
         'libffi6',
         'libldap-2.4-2',
-        'libmariadbclient18',
+        'libmariadb3',
         'libsasl2-2',
         'python3-venv',
         'python3-virtualenv',
