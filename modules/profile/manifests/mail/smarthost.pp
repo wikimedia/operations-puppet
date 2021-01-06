@@ -26,13 +26,13 @@
 # * $exim_primary_hostname    - The desired hostname of the exim mail system.  Useful if hostname is within .wmflabs
 
 class profile::mail::smarthost (
-    $prometheus_nodes         = hiera('prometheus_nodes', []),
-    $dkim_domains             = hiera('profile::mail::smarthost::dkim_domains', []),
-    $cert_name                = hiera('profile::mail::smarthost::cert_name', $facts['hostname']),
-    $relay_from_hosts         = hiera('profile::mail::smarthost::relay_from_hosts', []),
-    $envelope_rewrite_rules   = hiera('profile::mail::smarthost::envelope_rewrite_rules', []),
-    $root_alias_rcpt          = hiera('profile::mail::smarthost::root_alias_rcpt', ':blackhole:'),
-    $exim_primary_hostname    = hiera('profile::mail::smarthost::exim_primary_hostname', $facts['fqdn']),
+    $prometheus_nodes         = lookup('prometheus_nodes', {'default_value' => []}),
+    $dkim_domains             = lookup('profile::mail::smarthost::dkim_domains', {'default_value' => []}),
+    $cert_name                = lookup('profile::mail::smarthost::cert_name', {'default_value' => $facts['hostname']}),
+    $relay_from_hosts         = lookup('profile::mail::smarthost::relay_from_hosts', {'default_value' => []}),
+    $envelope_rewrite_rules   = lookup('profile::mail::smarthost::envelope_rewrite_rules', {'default_value' => []}),
+    $root_alias_rcpt          = lookup('profile::mail::smarthost::root_alias_rcpt', {'default_value' => ':blackhole:'}),
+    $exim_primary_hostname    = lookup('profile::mail::smarthost::exim_primary_hostname', {'default_value' => $facts['fqdn']}),
 ) {
 
     class { 'exim4':
