@@ -9,7 +9,7 @@ class profile::homer (
     String $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
 ){
 
-    require_package('virtualenv', 'make')
+    ensure_packages(['virtualenv', 'make'])
 
     # Install the app itself
     scap::target { 'homer/deploy':
