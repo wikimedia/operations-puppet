@@ -33,10 +33,10 @@ class profile::openstack::base::cloudweb_mcrouter(
                 type               => 'OperationSelectorRoute',
                 default_policy     => 'PoolRoute|cloudweb',
                 operation_policies => {
-                    add    => 'AllSyncRoute|Pool|cloudweb',
-                    delete => 'AllSyncRoute|Pool|cloudweb',
-                    get    => 'LatestRoute|Pool|cloudweb',
-                    set    => 'AllSyncRoute|Pool|cloudweb'
+                    add    => 'AllFastestRoute|Pool|cloudweb',
+                    delete => 'AllFastestRoute|Pool|cloudweb',
+                    get    => 'MissFailoverRoute|Pool|cloudweb',
+                    set    => 'AllFastestRoute|Pool|cloudweb'
                 }
             }
         ]
