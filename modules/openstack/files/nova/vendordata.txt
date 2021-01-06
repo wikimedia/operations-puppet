@@ -16,6 +16,7 @@ packages:
     - nscd
     - lvm2
     - parted
+    - puppet
 
 growpart:
     mode: false
@@ -23,10 +24,18 @@ growpart:
 manage_etc_hosts: false
 
 apt:
+    preserve_sources_list: false
     sources:
         wikimedia.list:
-            source: deb-src http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main
+            source: >
+                deb http://apt.wikimedia.org/wikimedia buster-wikimedia main
+                deb-src http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main
             filename: wikimedia.list
+            keyid: 9D392D3FFADF18FB
+
+package_update: true
+package_upgrade: true
+
 
 --XXXXboundary text
 MIME-Version: 1.0
@@ -144,18 +153,6 @@ nscd -i hosts
 
 # set mailname
 echo $fqdn > /etc/mailname
-
-# Prepare the key for the wikimedia repos, then update packages
-cd /tmp
-wget -O wikimedia-apt-key "https://wikitech.wikimedia.org/w/index.php?title=APT_repository/Stretch-Key&action=raw"
-apt-key add wikimedia-apt-key
-apt-get update
-
-# Install puppet from the wikimedia repo
-export DEBIAN_FRONTEND=noninteractive
-apt-get -yq install puppet
-
-DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
 
 # Make sure nothing has leaked in certwise
 rm -rf /var/lib/puppet/ssl
