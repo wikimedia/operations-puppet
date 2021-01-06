@@ -84,7 +84,8 @@ scap::dsh::groups:
       - an-airflow1001.eqiad.wmnet
   wdqs:
     conftool:
-      - {'cluster': ['wdqs', 'wdqs-internal'], 'service': 'wdqs'}
+      - {'cluster': 'wdqs', 'service': 'wdqs'}
+      - {'cluster': 'wdqs-internal', 'service': 'wdqs'}
     hosts:
       - wdqs1009.eqiad.wmnet
       - wdqs1010.eqiad.wmnet
