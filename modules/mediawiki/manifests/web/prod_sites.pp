@@ -483,6 +483,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
                 'tr.wikimedia.org',
                 'ua.wikimedia.org',
                 'us.wikimedia.org',
+                'uz.wikimedia.org',
                 'wb.wikimedia.org',
                 'za.wikimedia.org',
             ],
