@@ -18,6 +18,6 @@ class profile::iegreview (
         smtp_host  => 'localhost',
     }
 
-    require_package('mariadb-client')
+    ensure_packages('mariadb-client')
 }
 # vim:sw=4 ts=4 sts=4 et:
