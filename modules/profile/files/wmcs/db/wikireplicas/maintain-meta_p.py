@@ -19,7 +19,6 @@
 #
 
 import argparse
-import json
 import logging
 import os
 import re
@@ -322,8 +321,7 @@ def main():
                     url_tail = "/w/api.php?action=query&meta=siteinfo&siprop=general&format=json"
                     header = {"User-Agent": "Labsdb maintain-meta_p.py"}
                     r = requests.get(canon + url_tail, headers=header)
-                    request = r.content
-                    siteinfo = json.loads(request)
+                    siteinfo = r.json()
                     name = force_to_unicode(
                         siteinfo["query"]["general"]["sitename"]
                     )
