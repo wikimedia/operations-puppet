@@ -16,7 +16,7 @@ class profile::parsoid::testing (
     # parsoid testing database
     include passwords::testreduce::mysql
     $parsoid_cli_password = $passwords::testreduce::mysql::mysql_client_pass
-    $parsoid_test_db_host = 'm5-master.eqiad.wmnet'
+    $parsoid_test_db_host = 'localhost'
 
     if debian::codename::le('stretch') {
         package { [
