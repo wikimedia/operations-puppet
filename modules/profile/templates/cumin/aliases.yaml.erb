@@ -304,7 +304,7 @@ webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
 wikidough: P{O:wikidough}
 wikireplicas-all: A:wikireplicas-analytics or A:wikireplicas-dedicated or A:wikireplicas-web or A:wikireplicas-multiinstance
 wikireplicas-analytics: P{O:wmcs::db::wikireplicas::analytics}
-wikireplicas-dedicated: P{O:wmcs::db::wikireplicas::dedicated::analytics}
+wikireplicas-dedicated: P{O:wmcs::db::wikireplicas::dedicated::analytics or O:wmcs::db::wikireplicas::dedicated::analytics_multiinstance}
 wikireplicas-multiinstance: P{P:wmcs::db::wikireplicas::mariadb_multiinstance}
 wikireplicas-web: P{O:wmcs::db::wikireplicas::web}
 xhgui: P{O:webperf::xhgui}
