@@ -260,10 +260,7 @@ class profile::mediawiki::php(
         true    => 'present',
         default => 'absent'
     }
-    php::extension { 'mongodb':
-        ensure   => 'absent',
-        priority => 30,
-    }
+
     php::extension { 'tideways-xhprof':
         ensure   => $profiling_ensure,
         priority => 30,
