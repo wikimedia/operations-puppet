@@ -19,4 +19,6 @@ class profile::hadoop::yarn_proxy_testcluster (
     httpd::site { 'yarn.wikimedia.org':
         content => template('profile/hadoop/yarn-testcluster.vhost.erb'),
     }
+
+    base::service_auto_restart { 'apache2': }
 }
