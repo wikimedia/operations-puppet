@@ -233,7 +233,7 @@ profile::idp::services:
   grafana:
     class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 16
-    service_id: 'https://grafana-rw.wikimedia.org(/.*)?'
+    service_id: 'https://grafana(-rw)?.wikimedia.org(/.*)?'
     attribute_release_policy:
       '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
     access_strategy:
