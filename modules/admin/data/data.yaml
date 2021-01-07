@@ -16,7 +16,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine, kaldari, dcipoletti, mhurd, jhernandez]
+              dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -177,7 +177,7 @@ groups:
                  Please note that we (Analytics) are trying to deprecate the group,
                  if you need to add users to it please ping Luca/Andrew/Razzi first
                  or comment in https://phabricator.wikimedia.org/T268801.
-    members: [mattflaschen, daisy, etonkovidova, risler, jdittrich, debt]
+    members: [daisy, etonkovidova, risler, jdittrich, debt]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1206,12 +1206,11 @@ users:
     ssh_keys: []
     uid: 3304
   mattflaschen:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mattflaschen
     realname: Matthew Flaschen
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHESn/vYQ5F7M1fOWjQMKnTe83DpT0GSlDmJW9rhJO4GEX4VT2P/csQsNPjYHD4zqJyYf49mk1idldxg7QFjoZCeLvlw0QHcg+pTOh91IE2fP+V6qLErIs0VHW7pzPb4slevKqxYpKJKY2P4qvviulfENg4XoqkH8szfPdN0L0iouVZVLxIB2jjD561Zc0ytc1Kg4QW9dXZi3Jb7ukxdVC7v7Sipz/H8ge4urc4Y4BCbTPciRf30Ne5sRjqlR0qDvmeUhi9AOz/qmLqj4lmYRJ+OaaLat2ejyAFF0HAI/uZjtNgpvkaV85FlIahqKgVGKlCaV0fXOQP9oRUkvLPKsd
-        mflaschen@wikimedia.org]
+    ssh_keys: []
     uid: 2662
     email: matthew.flaschen@gatech.edu
   marktraceur:
@@ -4135,6 +4134,10 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
+  mattflaschen:
+    ensure: present
+    realname: Matthew Flaschen
+    email: matthew.flaschen@gatech.edu
   maxsem:
     ensure: present
     realname: Max Semenik
