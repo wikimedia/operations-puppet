@@ -31,15 +31,6 @@ class profile::wmcs::backup_glance_images(
         source => 'puppet:///modules/profile/wmcs/backy2/rbd2backy2.py';
     }
 
-    # Script to backup all glance images
-    file { '/usr/local/sbin/wmcs-backup-images':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/profile/wmcs/backy2/wmcs-backup-images.py';
-    }
-
     # Script to cleanup expired backups.  Expiration date is
     #   set when the backups are first created.
     file { '/usr/local/sbin/wmcs-purge-backups':
@@ -50,18 +41,28 @@ class profile::wmcs::backup_glance_images(
         source => 'puppet:///modules/profile/wmcs/backy2/wmcs-purge-backups.sh';
     }
 
+    # Script to manage backups
+    file { '/usr/local/sbin/wmcs-backup':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/profile/wmcs/backy2/wmcs-backup.py';
+    }
+
     systemd::timer::job { 'backup_glance_images':
         ensure                    => present,
-        description               => 'backup glance images',
-        command                   => '/usr/local/sbin/wmcs-backup-images',
+        description               => 'backup images',
+        command                   => '/usr/local/sbin/wmcs-backup images backup-all-images',
         interval                  => {
-        'start'    => 'OnCalendar',
-        'interval' => $backup_interval,
+          'start'    => 'OnCalendar',
+          'interval' => $backup_interval,
         },
         logging_enabled           => true,
         monitoring_enabled        => true,
         monitoring_contact_groups => 'wmcs-team-email',
         user                      => 'root',
+        require                   => File['/usr/local/sbin/wmcs-backup'],
     }
 
     systemd::timer::job { 'purge_vm_backup':
@@ -69,8 +70,8 @@ class profile::wmcs::backup_glance_images(
         description               => 'purge old VM backups; allow backy2 to decide what is too old',
         command                   => '/usr/local/sbin/wmcs-purge-backups',
         interval                  => {
-        'start'    => 'OnCalendar',
-        'interval' => '*-*-* 00:05:00', # daily at five past midnight
+          'start'    => 'OnCalendar',
+          'interval' => '*-*-* 00:05:00', # daily at five past midnight
         },
         logging_enabled           => true,
         monitoring_enabled        => true,

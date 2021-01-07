@@ -31,7 +31,7 @@ class profile::wmcs::backy2(
         source => 'puppet:///modules/profile/wmcs/backy2/rbd2backy2.py';
     }
 
-    # Script to manage backups for VMs that are in ceph
+    # Script to manage backups
     file { '/usr/local/sbin/wmcs-backup':
         ensure => 'present',
         owner  => 'root',
