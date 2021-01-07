@@ -76,4 +76,6 @@ class profile::webperf::xhgui (
     httpd::site { 'xhgui_apache_site':
         content => template('profile/webperf/xhgui/httpd.conf.erb'),
     }
+
+    base::service_auto_restart { 'apache2': }
 }
