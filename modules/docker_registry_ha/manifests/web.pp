@@ -39,4 +39,38 @@ class docker_registry_ha::web (
         }
     }
 
+    ensure_package(['python3-docker-report'])
+
+    file { '/usr/local/bin/registry-homepage-builder':
+        mode    => '0744',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/docker_registry_ha/registry-homepage-builder.py',
+        require => Package['python3-docker-report'],
+    }
+
+    file { '/usr/local/lib/registry-homepage-builder.css':
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/docker_registry_ha/style.css',
+    }
+
+    file { '/srv/homepage':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    systemd::timer::job {'build-homepage':
+        ensure      => 'present',
+        description => 'Build docker-registry homepage',
+        command     => '/usr/local/bin/registry-homepage-builder http://localhost:5000 /srv/homepage',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:00:00', # every hour
+        },
+        require     => File['/usr/local/bin/registry-homepage-builder'],
+    }
 }
