@@ -153,4 +153,6 @@ class profile::hue (
             require => File['/var/www/health_check'],
         }
     }
+
+    base::service_auto_restart { 'apache2': }
 }
