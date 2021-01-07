@@ -152,7 +152,7 @@ def get_phabricator_project_ids(phab_client, datacenter):
     """
 
     project_name = '{}{}'.format(PHABRICATOR_TAG_PREFIX, datacenter)
-    projects = phab_client.project.query(names=[project_name, 'Operations'])
+    projects = phab_client.project.query(names=[project_name, 'SRE'])
 
     if len(projects.data.keys()) != 2:
         logger.error("Unable to find PHID for project '{}', found: {}".format(
