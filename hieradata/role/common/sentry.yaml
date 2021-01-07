@@ -1,2 +1,0 @@
-sentry::server_name: 'sentry.wikimedia.org'
-sentry::admin_email: 'gtisza@wikimedia.org'
