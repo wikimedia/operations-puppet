@@ -160,7 +160,7 @@ host deneb {
 
 # ganeti VM used for d-i testing
 host d-i-test {
-    hardware ethernet aa:00:00:3b:60:cb;
+    hardware ethernet aa:00:00:9f:4d:f6;
     fixed-address d-i-test.eqiad.wmnet;
 }
 
