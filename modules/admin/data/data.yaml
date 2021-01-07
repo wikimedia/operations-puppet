@@ -16,7 +16,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen]
+              dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen, daisy]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -177,7 +177,7 @@ groups:
                  Please note that we (Analytics) are trying to deprecate the group,
                  if you need to add users to it please ping Luca/Andrew/Razzi first
                  or comment in https://phabricator.wikimedia.org/T268801.
-    members: [daisy, etonkovidova, risler, jdittrich, debt]
+    members: [etonkovidova, risler, jdittrich, debt]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -1909,11 +1909,11 @@ users:
     email: jallemandou@wikimedia.org
     krb: present
   daisy:
-    ensure: present
+    ensure: absent
     gid: 500
     name: daisy
     realname: Daisy Chen
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUclfor3OQB2OESj9YTf5tyGY1y6gygSBFSWjpMP3rC2qxjQbmkRNnT0wrkBOywbB2e9gkBRiPr8rV/zUQbhs3frFba4CHDI8OQ6F5ymhEWQiXz7EaFLS+whCkZwyUwqmcurfGArZxZE/floe3+3GBxU0fNtAnzOFo1QaEX5W6uy1QhLXv1K/t5Ra8+Y0CU+doGKEuor/QyuMeCOIKeSV9G+3O/jgcxMSZDgMgLgIK21bye3Mnk7fprYP6aO5uPWyDiiwToniTCR2cy7vBpHUawRi6JHJ2qhfaJAFyNOkEIm8dKLTFLVmCa+NMi4cr60SpS8HLDd2v2tsRHQhLpqqh dchen@wikimedia.org]
+    ssh_keys: []
     uid: 11669
     email: dchen@wikimedia.org
   thcipriani:
@@ -4036,6 +4036,10 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: daimona.wiki@gmail.com
+  daisy:
+    ensure: present
+    realname: Daisy Chen
+    email: dchen@wikimedia.org
   datn:
     ensure: present
     realname: Dan Shick
