@@ -1,0 +1,15 @@
+[Unit]
+Description=pt-kill based long running query killer
+After=network.target mariadb.target
+
+[Service]
+Type=forking
+User=wmf-pt-kill
+EnvironmentFile=/etc/default/wmf-pt-kill
+ExecStart=/usr/bin/wmf-pt-kill --daemon --print --kill --victims ${VICTIMS} --interval ${INTERVAL} --busy-time ${BUSY_TIME} --match-command ${MATCH_COMMAND} --match-user ${MATCH_USER} --log ${LOG} -S <%= @instance_socket %> F=/dev/null
+KillMode=process
+Restart=on-failure
+RestartPreventExitStatus=255
+
+[Install]
+WantedBy=multi-user.target

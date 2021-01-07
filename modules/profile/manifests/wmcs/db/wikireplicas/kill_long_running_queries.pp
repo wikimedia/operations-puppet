@@ -12,6 +12,7 @@ class profile::wmcs::db::wikireplicas::kill_long_running_queries (
     $match_user     = lookup(profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_match_user,),
     $log            = lookup(profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_log,),
     $socket         = lookup(profile::wmcs::db::wikireplicas::kill_long_running_queries::pt_kill_socket,),
+    Optional[Hash[String, Stdlib::Datasize]] $instances = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances', {default_value => undef}),
 ){
     require ::profile::wmcs::db::scriptconfig
 
@@ -25,8 +26,22 @@ class profile::wmcs::db::wikireplicas::kill_long_running_queries (
     package { 'wmf-pt-kill':
         ensure => present,
     }
-    service { 'wmf-pt-kill':
-        ensure => running,
+    if $instances {
+        service { 'wmf-pt-kill':
+            ensure => stopped,
+            enable => false,
+        }
+        $instances.each |$section, $buffer_pool| {
+            $instance_socket = "/var/run/mysqld/mysqld.${section}.sock"
+            systemd::service { "wmf-pt-kill@${section}":
+                ensure  => present,
+                restart => true,
+                content => systemd_template('wmcs/db/wikireplicas/wmf-pt-kill@'),
+            }
+        }
+    } else {
+        service { 'wmf-pt-kill':
+            ensure => running,
+        }
     }
-
 }
