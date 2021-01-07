@@ -16,7 +16,8 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen, daisy, etonkovidova]
+              dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen, daisy, etonkovidova,
+              risler]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -177,7 +178,7 @@ groups:
                  Please note that we (Analytics) are trying to deprecate the group,
                  if you need to add users to it please ping Luca/Andrew/Razzi first
                  or comment in https://phabricator.wikimedia.org/T268801.
-    members: [risler, jdittrich, debt]
+    members: [jdittrich, debt]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -2894,12 +2895,11 @@ users:
     email: mneisler@wikimedia.org
     krb: present
   risler:
-    ensure: present
+    ensure: absent
     gid: 500
     name: risler
     realname: Ramsey Isler
-    ssh_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN7/rMDCncb17UZvNwiSTRnrs2ouQbvobZJy0UfOeXCb ed25519-key-20180119
+    ssh_keys: []
     uid: 17779
     email: risler@wikimedia.org
   bstorm:
@@ -4219,6 +4219,10 @@ ldap_only_users:
   raz-shuty:
     ensure: absent
     realname: Raz Shuty
+  risler:
+    ensure: present
+    realname: Ramsey Isler
+    email: risler@wikimedia.org
   rmaung:
     ensure: present
     realname: Rebecca Maung
