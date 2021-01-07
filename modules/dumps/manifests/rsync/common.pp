@@ -2,7 +2,7 @@ class dumps::rsync::common(
     $user = undef,
     $group = undef,
 ) {
-    require_package('rsync')
+    ensure_packages('rsync')
 
     file { '/etc/rsyncd.d':
         ensure => 'directory',

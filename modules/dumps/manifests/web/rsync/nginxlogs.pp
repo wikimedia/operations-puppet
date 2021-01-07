@@ -2,7 +2,7 @@ class dumps::web::rsync::nginxlogs (
     $dest   = undef,
 )
 {
-    require_package('rsync')
+    ensure_packages('rsync')
 
     $rsync_args = '-rt --perms --chmod=go+r --bwlimit=50000'
     cron { 'rsync_nginxlogs':

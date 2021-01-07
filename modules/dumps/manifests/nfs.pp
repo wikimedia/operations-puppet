@@ -15,7 +15,7 @@ class dumps::nfs(
         require => Package['nfs-kernel-server'],
     }
 
-    require_package('nfs-kernel-server', 'nfs-common', 'rpcbind')
+    ensure_packages(['nfs-kernel-server', 'nfs-common', 'rpcbind'])
 
     service { 'nfs-kernel-server':
         ensure    => 'running',
