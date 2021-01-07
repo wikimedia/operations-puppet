@@ -307,8 +307,6 @@ def validate_duplicated_ops_permissions(users):
                 # ops and gitpuppet are default for all ops users
                 # analytics-privatedata-users enables mysql access in addition to
                 #    cluster-wide root permissions, so might be used in addition to ops privs
-                # researchers enables mysql access in addition to cluster-wide root permissions,
-                #    so might be used in addition to ops privs
                 # ops-adm-group is auto-generated from the ops membership
                 # deploy-phabricator concerns handling of keyholder for deployment
                 # analytics-search-users concerns user creation in HDFS
@@ -316,7 +314,7 @@ def validate_duplicated_ops_permissions(users):
                 # builder-docker is about being able to issue docker commands
                 # directly and execute scripts issuing docker commands
                 groups.difference_update(['analytics-privatedata-users', 'gitpuppet', 'ops',
-                                          'researchers', 'ops-adm-group', 'gpu-users',
+                                          'ops-adm-group', 'gpu-users',
                                           'contint-docker', 'builder-docker',
                                           'deploy-phabricator', 'analytics-search-users'])
                 if len(set(groups)) > 0:

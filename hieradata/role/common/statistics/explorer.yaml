@@ -1,8 +1,6 @@
 profile::standard::admin_groups:
   - analytics-privatedata-users
   - analytics-admins
-  - researchers
-  - gpu-testers
   - gpu-users
   # elasticsearch::analytics creates the analytics-search user and group
   # that analytics-search-users are allowed to sudo to.  This is used

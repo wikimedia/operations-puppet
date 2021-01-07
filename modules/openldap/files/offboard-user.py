@@ -348,8 +348,9 @@ def get_phabricator_subproject(phab_client, group_name):
 
 
 def offboard_analytics(username):
-    pii_sensitive_groups = ['researchers', 'analytics-privatedata-users',
-                            'analytics-admins', 'analytics-wmde-users', 'ops']
+    pii_sensitive_groups = ['analytics-privatedata-users', 'analytics-search-users',
+                            'analytics-product-users', 'analytics-admins',
+                            'analytics-wmde-users', 'ops']
 
     yamldata = fetch_yaml_data()
     users = parse_users(yamldata)

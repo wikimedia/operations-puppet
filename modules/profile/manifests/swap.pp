@@ -63,9 +63,6 @@ class profile::swap(
         $web_proxy = "http://webproxy.${::site}.wmnet:8080"
 
         if $deploy_research_cred {
-            statistics::mysql_credentials { 'research':
-                group => 'researchers',
-            }
             statistics::mysql_credentials { 'analytics-research':
                 group => 'analytics-privatedata-users',
             }
