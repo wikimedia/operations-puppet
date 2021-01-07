@@ -16,7 +16,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen, daisy]
+              dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen, daisy, etonkovidova]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -177,7 +177,7 @@ groups:
                  Please note that we (Analytics) are trying to deprecate the group,
                  if you need to add users to it please ping Luca/Andrew/Razzi first
                  or comment in https://phabricator.wikimedia.org/T268801.
-    members: [etonkovidova, risler, jdittrich, debt]
+    members: [risler, jdittrich, debt]
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -2199,11 +2199,11 @@ users:
     uid: 10275
     email: ptshibamba@wikimedia.org
   etonkovidova:
-    ensure: present
+    ensure: absent
     gid: 500
     name: etonkovidova
     realname: Elena Tonkovidova
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCl3i/0QY3As6en/7JFxP+IkriwwMu6l4ILjcHEc0pGkFoFJDUIZUgEKk0hgOehGjiEXioNDHbnkCUy7pfBNYvLh8KU3KnYO3gEXEc2NlyCgwP2Q2hXsVDFO5y8vq9pR99O9s/5X7tw8YdH9XRYwPOumJX8RxXDS2Cn6hvod439YkwzDMKSOhUZq3/Y1zhMi/E3KsyUv7XJp9b6PbZqcNKsYMFsoh4OlYQKl16sVdyBIO1cREMSDIdGXdFOaVYLxfs4pa5oEV08Xb1QxIn6vepToGqU/jrBb5BK05E40WYT7CQLmDDtlD14DL5HKWDMFRD7Snj82wZ3dzgCF1FZOeu1 etonkovidova@AdministorsAir2.corp.wikimedia.org]
+    ssh_keys: []
     uid: 11400
     email: etonkovidova@wikimedia.org
   sbisson:
@@ -4064,6 +4064,10 @@ ldap_only_users:
     ensure: present
     realname: Eduardo Medina
     email: eamedina@wikimedia.org
+  etonkovidova:
+    ensure: present
+    realname: Elena Tonkovidova
+    email: etonkovidova@wikimedia.org
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
