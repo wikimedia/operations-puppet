@@ -25,4 +25,6 @@ class profile::hadoop::yarn_proxy (
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
         ],
     }
+
+    base::service_auto_restart { 'apache2': }
 }
