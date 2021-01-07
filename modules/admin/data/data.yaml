@@ -17,7 +17,7 @@ groups:
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen, daisy, etonkovidova,
-              risler, jdittrich]
+              risler, jdittrich, debt]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -172,13 +172,8 @@ groups:
   researchers:
     gid: 714
     description: Access statistics hosts and also provides
-                 access to research mysql credentials.
-                 If a user is added to this group it should not
-                 need to be in analytics-users or analytics-privatedata-users.
-                 Please note that we (Analytics) are trying to deprecate the group,
-                 if you need to add users to it please ping Luca/Andrew/Razzi first
-                 or comment in https://phabricator.wikimedia.org/T268801.
-    members: [debt]
+                 access to research mysql credentials. Deprecated.
+    members: []
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -2565,12 +2560,11 @@ users:
     ssh_keys: []
     uid: 15329
   debt:
-    ensure: present
+    ensure: absent
     gid: 500
     name: debt
     realname: Deborah Tankersley
-    ssh_keys:
-      - ssh-rsa ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEUXW3TsDb+IfVFZEMbwW2SUidorZ4C7yszXdNU9lUSmpcFAcZSnHSaHL1HbU+30DsBKUjAx4HHQiZJg6c3pnaaD5NqfOaPMG0blRWRGBDUhBHfWGTv4jBF8JVyhN61NnoaJ8NJOxyf/Bf/RQIOkHrBHs3Vr+W9qA7yMporcb36gU/nhzm1TdrZ10JyjPcKDpISDUA+6h0pKvD6uKTCRHCUYh9uLhf62NBjM6GW0ISGKs3l0Vp7c9tvpTkUNzAc4YAbsDTAQ0ueBi9siKpdCMsyGkGESNYPNdrlbKPBCGKaGtyDlIOHTLbrep1qLONUJDT/rpI7KonYukrLAgrv7q5+iR/r36knjIekWpnKpU8DLbB6V2yZhGzkxTCT/2/J6LujW/lI2ug0JXzroFl9ykaA/SulqLKCg+3uo+n1WFe/V0I1g5MfHanaMNHHt3GF92d/XIUUAIFWpg0bUUvOKT4ThWM3B9/lrOzxrHXLPnSuQhLSewN6k8gx5R4rhpllmipqt6nvE4LTeaVvzKhtOaJveW2VO/uwUoHOO1YLyjqkSFJG9e4lhjHxiOOY583ei5L//cJa2aoWjMrO1KxqMmLf2y4qA4SKpPcVrgL7wmpvsExdZQ7DDpn6PFYjwwRyTC7z7J82jqVc1B0oSewbqU03J0FYrdlN0z0GA7sQMy9yQ== dtankersley@wikimedia.org
+    ssh_keys: []
     uid: 15213
     email: dtankersley@wikimedia.org
   melodykramer:
@@ -4043,6 +4037,10 @@ ldap_only_users:
     ensure: present
     realname: Dan Shick
     email: dan.shick@wikimedia.de
+  debt:
+    ensure: present
+    realname: Deborah Tankersley
+    email: dtankersley@wikimedia.org
   delphinepro:
     ensure: present
     realname: Delphine Menard
