@@ -203,9 +203,11 @@ if AUTHENTICATOR == 'ldap':
 # We want the attack to be as confined as possible. We'll need auditing and
 # what not built eventually, but here are some basic rudimentary protections.
 
-# Give each user their own /tmp! Prevents data leaks via accidentally writing
-# to /tmp
-c.SystemdSpawner.isolate_tmp = True
+# We don't use PrivateTmp settings for systemd units since it clashes with
+# Kerberos credential caches, that are stored under /tmp (requiring a double kinit).
+# The Debian OS implements a lot of /tmp hardening features that avoid common attacks
+# (symlinking/hardlinking), plus our users using Notebooks have all signed NDAs for private data.
+c.SystemdSpawner.isolate_tmp = False
 
 # Disable users from ever gaining root privilages for anything at all.
 # This protects against the notebook of a privilaged user being compromised
