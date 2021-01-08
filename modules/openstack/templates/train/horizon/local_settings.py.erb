@@ -117,12 +117,7 @@ LOGIN_URL='/auth/login/'
 LOGOUT_URL='/auth/logout/'
 LOGIN_REDIRECT_URL='/'
 
-# This is turned off for Train because of an intermittent bug that crashes
-#  offline compression. I'm optimistic that the bug will not be present
-#  post-train.
-COMPRESS_OFFLINE = False
-
-
+COMPRESS_OFFLINE = True
 COMPRESS_ENABLED = True
 
 # By default, validation of the HTTP Host header is disabled.  Production
