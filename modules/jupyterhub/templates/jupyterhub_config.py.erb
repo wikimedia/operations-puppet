@@ -214,6 +214,6 @@ c.SystemdSpawner.isolate_tmp = False
 # to gain root
 c.SystemdSpawner.disable_user_sudo = True
 
-# We allow users to only write to their homedirs and /dev/shm, and nowhere else
+# Only allow specific directories to be written to
 c.SystemdSpawner.readonly_paths = ['/']
-c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user']
+c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user', '/tmp']
