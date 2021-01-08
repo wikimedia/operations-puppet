@@ -117,7 +117,7 @@ class profile::mediawiki::deployment::server(
 
     class { '::deployment::rsync':
         deployment_server => $deployment_server,
-        cron_ensure       => $deploy_ensure,
+        job_ensure        => $deploy_ensure,
         deployment_hosts  => $deployment_hosts,
     }
 
