@@ -3,8 +3,8 @@
 # Sets up Hive Server2 (no metastore, needs another profile).
 #
 class profile::hive::server(
-    $monitoring_enabled  = hiera('profile::hive::server::monitoring_enabled', false),
-    $ferm_srange         = hiera('profile::hive::server::ferm_srange', '$DOMAIN_NETWORKS'),
+    Boolean $monitoring_enabled = lookup('profile::hive::server::monitoring_enabled', {default_value => false}),
+    String $ferm_srange         = lookup('profile::hive::server::ferm_srange', {default_value => '$DOMAIN_NETWORKS'}),
 ) {
     include ::profile::hive::client
 

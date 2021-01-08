@@ -5,7 +5,7 @@
 # up its configuration file, but it does not instruct the target JVM to use it.
 #
 class profile::hive::monitoring::server(
-    $prometheus_nodes        = hiera('prometheus_nodes'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     $jmx_exporter_config_file = '/etc/prometheus/hive_server_jmx_exporter.yaml'
     $prometheus_jmx_exporter_hive_server_port = 10100
