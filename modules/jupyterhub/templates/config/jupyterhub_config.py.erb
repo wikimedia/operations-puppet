@@ -254,8 +254,8 @@ c.SystemdSpawner.isolate_tmp = False
 # This protects against the notebook of a privilaged user being compromised
 # to gain root
 c.SystemdSpawner.disable_user_sudo = True
-# We allow users to only write to their homedirs and /dev/shm, and nowhere else
-c.SystemdSpawner.readonly_paths = ['/']
-c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user']
 
-# TODO: can we use existing user kerberos ticket?
+# Only allow specific directories to be written to
+c.SystemdSpawner.readonly_paths = ['/']
+c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user', '/tmp']
+
