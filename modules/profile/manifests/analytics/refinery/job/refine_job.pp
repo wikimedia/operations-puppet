@@ -33,7 +33,7 @@ define profile::analytics::refinery::job::refine_job (
     $monitor_class                    = 'org.wikimedia.analytics.refinery.job.refine.RefineMonitor',
     $monitor_failure_class            = 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
     $queue                            = 'production',
-    $spark_executor_memory            = '2G',
+    $spark_executor_memory            = '4G',
     $spark_driver_memory              = '8G',
     $spark_max_executors              = 64,
     $spark_extra_files                = undef,
