@@ -4,6 +4,7 @@
 #
 class profile::trafficserver::backend (
     String $user=lookup('profile::trafficserver::user', {default_value => 'trafficserver'}),
+    Integer $max_lua_states=lookup('profile::trafficserver::max_lua_states', {default_value => 256}),
     Stdlib::Port $http_port=lookup('profile::trafficserver::backend::http_port', {default_value => 3128}),
     Trafficserver::Outbound_TLS_settings $outbound_tls_settings=lookup('profile::trafficserver::backend::outbound_tls_settings'),
     Optional[Trafficserver::Network_settings] $network_settings=lookup('profile::trafficserver::backend::network_settings', {default_value => undef}),
@@ -94,6 +95,7 @@ class profile::trafficserver::backend (
         enable_compress         => $enable_compress,
         origin_coalescing       => $origin_coalescing,
         global_lua_script       => $global_lua_script,
+        max_lua_states          => $max_lua_states,
         storage                 => $storage,
         ram_cache_size          => 2147483648, # 2G
         mapping_rules           => $mapping_rules,

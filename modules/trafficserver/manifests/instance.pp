@@ -100,6 +100,10 @@
 # [*global_lua_script*]
 #   The name of the global Lua script to define in plugin.config. (default: '').
 #
+# [*max_lua_states*]
+#   The maximum number of allowed Lua states. (default: 256).
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/lua.en.html
+#
 # [*mapping_rules*]
 #   An array of Trafficserver::Mapping_rules, each representing a mapping rule. (default: []).
 #   See https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html
@@ -219,6 +223,7 @@ define trafficserver::instance(
     Boolean $collapsed_forwarding = false,
     Boolean $origin_coalescing = true,
     String $global_lua_script = '',
+    Integer $max_lua_states = 256,
     Array[Trafficserver::Mapping_rule] $mapping_rules = [],
     Boolean $enable_caching = true,
     Optional[Integer[0,2]] $required_headers = undef,

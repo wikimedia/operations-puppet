@@ -4,7 +4,6 @@
 # traffic_manager TCP ports
 CONFIG proxy.config.http.server_ports STRING<% if @https_port -%> <%= @https_port %>:ssl <%= @https_port %>:ipv6:ssl<% end -%><% if @http_port -%> <%= @http_port %> <%= @http_port %>:ipv6<% end -%>
 
-
 CONFIG proxy.config.admin.user_id STRING <%= @user %>
 
 CONFIG proxy.config.http.insert_request_via_str INT 0
@@ -14,6 +13,8 @@ CONFIG proxy.config.http.response_server_enabled INT 2
 
 CONFIG proxy.config.url_remap.pristine_host_hdr INT 1
 CONFIG proxy.config.disable_configuration_modification INT 1
+
+CONFIG proxy.config.plugin.lua.max_states INT <%= @max_lua_states %>
 
 <% if @res_track_memory -%>
 CONFIG proxy.config.res_track_memory INT <%= @res_track_memory %>
