@@ -1,1 +1,2 @@
 profile::cache::kafka::webrequest::atskafka_enabled: true
+profile::trafficserver::max_lua_states: 64
