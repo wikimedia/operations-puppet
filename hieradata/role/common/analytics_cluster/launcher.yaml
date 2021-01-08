@@ -44,3 +44,6 @@ profile::java::java_packages:
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 
 profile::analytics::geoip::archive::ensure: 'present'
+
+# Temporary workaround for https://phabricator.wikimedia.org/T270629
+profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: absent
