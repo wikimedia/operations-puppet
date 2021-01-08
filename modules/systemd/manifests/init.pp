@@ -34,4 +34,12 @@ class systemd {
         owner  => 'root',
         group  => 'root',
     }
+
+    file { '/usr/local/bin/systemd-timer-mail-wrapper':
+        ensure => file,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/systemd/systemd-timer-mail-wrapper.py',
+    }
 }
