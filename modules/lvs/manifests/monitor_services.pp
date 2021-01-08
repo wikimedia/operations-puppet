@@ -24,12 +24,6 @@ class lvs::monitor_services(
                 contact_group => 'admins,mobileapps',
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Mobileapps_(service)',
                 ;
-            "check_graphoid_cluster_${dc}":
-                host        => "graphoid.svc.${dc}.wmnet",
-                description => "Graphoid LVS ${dc}",
-                target      => "http://graphoid.svc.${dc}.wmnet:19000",
-                notes_url   => 'https://wikitech.wikimedia.org/wiki/Graphoid',
-                ;
             "check_citoid_cluster_${dc}":
                 host        => "citoid.svc.${dc}.wmnet",
                 description => "Citoid LVS ${dc}",
