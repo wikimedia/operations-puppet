@@ -15,12 +15,9 @@ class toolserver_legacy {
 
     system::role { 'toolserver_legacy': description => 'Toolserver legacy server' }
 
-    letsencrypt::cert::integrated { 'toolserver':
-        subjects   => 'toolserver.org,www.toolserver.org,wiki.toolserver.org,stable.toolserver.org,status.toolserver.org',
+    acme_chief::cert { 'toolserver':
         puppet_svc => 'apache2',
-        system_svc => 'apache2',
     }
-    # Monitored externally by icinga::monitor::certs due to this being run in labs...
 
     httpd::site { 'www.toolserver.org':
         content => template('toolserver_legacy/www.toolserver.org.erb'),
