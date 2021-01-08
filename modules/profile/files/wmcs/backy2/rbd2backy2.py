@@ -28,7 +28,9 @@ def run_command(
 
         return ""
     else:
-        return subprocess.check_output(args).decode("utf8")
+        output = subprocess.check_output(args).decode("utf8")
+        logging.debug(f"Output: {output}")
+        return output
 
 
 @dataclass
