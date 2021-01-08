@@ -353,10 +353,10 @@ profile::kubernetes::deployment_server::services:
     namespace: linkrecommendation
     mode: '0640'
     owner: mwdeploy
-  sockpuppet-api:
-    username: sockpuppet-api
+  similar-users:
+    username: similar-users
     group: wikidev
-    namespace: sockpuppet-api
+    namespace: similar-users
     mode: '0640'
     owner: mwdeploy
 
@@ -453,4 +453,3 @@ profile::mediawiki::php::icu63: true
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M
-

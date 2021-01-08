@@ -156,8 +156,8 @@ profile::kubernetes::deployment_server::services:
     username: linkrecommendation
     group: wikidev
     mode: '0640'
-  sockpuppet-api:
-    username: sockpuppet-api
+  similar-users:
+    username: similar-users
     group: wikidev
     mode: '0640'
 
@@ -228,7 +228,7 @@ profile::kubernetes::deployment_server::services:
 #    token: dummy
 #  linkrecommendation:
 #    token: dummy
-#  sockpuppet-api:
+#  similar-users:
 #    token: dummy
 #
 
