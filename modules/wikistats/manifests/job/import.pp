@@ -9,7 +9,7 @@ define wikistats::job::import(
 
     systemd::timer::job { "wikistats-import-${name}":
         ensure            => $ensure,
-        user              => 'wikistatsuser',
+        user              => 'root',
         description       => "import a fresh list of wikis into table ${name}",
         command           => "/usr/local/bin/wikistats/import_${project}.sh",
         logging_enabled   => true,
