@@ -8,6 +8,8 @@ class profile::wmcs::db::wikireplicas::proxy (
             ipv4 => $ip,
         }
     }
+    class { 'haproxy::cloud::base': }
+
     file { '/etc/haproxy/conf.d/upstream-proxies.cfg':
         owner   => 'root',
         group   => 'root',
