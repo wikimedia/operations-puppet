@@ -10,11 +10,11 @@
 #   Hosts must be in this srange to contact Hadoop as a client.
 #
 class profile::hadoop::firewall::master(
-    $cluster_ferm_srange    = hiera('profile::hadoop::firewall::master::cluster_ferm_srange', '$DOMAIN_NETWORKS'),
-    $client_ferm_srange     = hiera('profile::hadoop::firewall::master::client_ferm_srange', '$DOMAIN_NETWORKS'),
-    $hdfs_ssl_enabled       = hiera('profile::hadoop::firewall::master::hdfs::ssl_enabled', false),
-    $yarn_ssl_enabled       = hiera('profile::hadoop::firewall::master::yarn::ssl_enabled', false),
-    $mapred_ssl_enabled     = hiera('profile::hadoop::firewall::master::mapred::ssl_enabled', false),
+    String $cluster_ferm_srange = lookup('profile::hadoop::firewall::master::cluster_ferm_srange', {default_value => '$DOMAIN_NETWORKS'}),
+    String $client_ferm_srange  = lookup('profile::hadoop::firewall::master::client_ferm_srange', {default_value => '$DOMAIN_NETWORKS'}),
+    Boolean $hdfs_ssl_enabled   = lookup('profile::hadoop::firewall::master::hdfs::ssl_enabled', {default_value => false}),
+    Boolean $yarn_ssl_enabled   = lookup('profile::hadoop::firewall::master::yarn::ssl_enabled', {default_value => false}),
+    Boolean $mapred_ssl_enabled = lookup('profile::hadoop::firewall::master::mapred::ssl_enabled', {default_value => false}),
 ) {
 
     # This port is also used by the HDFS Checkpoint

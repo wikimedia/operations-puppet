@@ -5,7 +5,7 @@
 # in the case we need to recover if both Hadoop NameNodes.
 #
 class profile::hadoop::backup::namenode(
-    $monitoring_enabled = hiera('profile::hadoop::backup::namenode::monitoring_enabled', false),
+    Boolean $monitoring_enabled = lookup('profile::hadoop::backup::namenode::monitoring_enabled', {default_value => false}),
 ) {
     require ::profile::hadoop::common
 
