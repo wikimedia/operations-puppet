@@ -18,18 +18,34 @@ class profile::mariadb::proxy::multiinstance_replicas(
                     ['fqdn', 'ipaddress']
                 )}
     }
+
+    # Generate a hash of default standby servers for each section, which is the
+    # "other" replica type.
+    $standby_type = $replica_type ? {
+        'web'       => 'analytics',
+        'analytics' => 'web',
+    }
+    $default_standby_servers = $replica_sections.reduce({}) |$memo, $section|{
+        $memo + {$section =>  query_facts(
+                    "Class['role::wmcs::db::wikireplicas::${standby_type}_multiinstance'] and Profile::Mariadb::Section[${section}]",
+                    ['fqdn', 'ipaddress']
+                ) + {'standby' => true}}
+    }
     # This next part is mostly necessary so that the puppet catalog compiler
     # works as expected. Without it, it either errors or does odd things because
     # it lacks puppetdb.
     $scrubbed_servers = $default_backend_servers.filter |$section|{
         !$section[1].empty
     }
+    $scrubbed_standbys = $default_standby_servers.filter |$section|{
+        !$section[1].empty
+    }
 
     # Merge $section_overrides to provide weights and depoolings
     if $section_overrides {
-        $section_servers = $scrubbed_servers + $section_overrides
+        $section_servers = $scrubbed_servers + $scrubbed_standbys + $section_overrides
     } else {
-        $section_servers = $scrubbed_servers
+        $section_servers = $scrubbed_servers + $scrubbed_standbys
     }
     file { '/etc/haproxy/conf.d/multi-db-replicas.cfg':
         owner   => 'root',
