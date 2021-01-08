@@ -38,7 +38,7 @@ def find_cluster(hostname):
 
 
 def get_pcc_url(hostname, patch_id, pcc):
-    cmd = " ".join((pcc, patch_id, hostname))
+    cmd = " ".join((pcc, '-N', patch_id, hostname))
     for line in os.popen(cmd).readlines():
         match = COMPILER_RE.match(line)
         if match:
