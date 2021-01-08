@@ -5,6 +5,7 @@ class profile::wmcs::backup_glance_images(
     String               $admin_keydata   = lookup('profile::ceph::admin_keydata'),
     String               $ceph_image_pool = lookup('profile::ceph::client::rbd::pool'),
     String               $backup_interval = lookup('profile::wmcs::backy2::backup_time'),
+    Boolean              $enabled         = lookup('profile::wmcs::backy2::backup_glance_images::enabled'),
 ) {
     class {'::backy2':
         cluster_name => $cluster_name,
@@ -50,8 +51,13 @@ class profile::wmcs::backup_glance_images(
         source => 'puppet:///modules/profile/wmcs/backy2/wmcs-backup.py';
     }
 
+    $timers_ensure = $enabled ? {
+      true  => present,
+      false => absent,
+    }
+
     systemd::timer::job { 'backup_glance_images':
-        ensure                    => present,
+        ensure                    => $timers_ensure,
         description               => 'backup images',
         command                   => '/usr/local/sbin/wmcs-backup images backup-all-images',
         interval                  => {
@@ -66,7 +72,7 @@ class profile::wmcs::backup_glance_images(
     }
 
     systemd::timer::job { 'purge_vm_backup':
-        ensure                    => present,
+        ensure                    => $timers_ensure,
         description               => 'purge old VM backups; allow backy2 to decide what is too old',
         command                   => '/usr/local/sbin/wmcs-purge-backups',
         interval                  => {
