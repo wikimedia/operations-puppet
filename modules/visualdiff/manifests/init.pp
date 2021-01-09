@@ -9,7 +9,7 @@ class visualdiff {
         'uprightdiff',
     ]
 
-    require_package($visualdiff_packages)
+    ensure_packages($visualdiff_packages)
 
     group { 'visualdiff':
         ensure => present,
