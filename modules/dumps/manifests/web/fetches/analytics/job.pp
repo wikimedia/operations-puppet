@@ -58,7 +58,7 @@ define dumps::web::fetches::analytics::job(
 
     # If $ignore_missing_source is enabled, add a check that prevents
     # hdfs-rsync to fail when the source directory is missing.
-    $rsync_command = "/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --chmod=go-w hdfs://${hdfs_source} file://${local_destination}"
+    $rsync_command = "/usr/local/bin/hdfs-rsync -r -t ${delete_option}${exclude_option} --perms --chmod D755,F644 hdfs://${hdfs_source} file://${local_destination}"
     $ignore_msg = "Ignoring missing hdfs source hdfs://${hdfs_source}"
     $head = "#!/bin/bash\n"
     $script_content = $ignore_missing_source ? {
