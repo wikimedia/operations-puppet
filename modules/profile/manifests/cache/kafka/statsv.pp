@@ -9,7 +9,7 @@
 #
 # [*cache_cluster*]
 #   Used in when naming varnishkafka metrics.
-#   Default:  hiera('cache::cluster')
+#   Default:  lookup('cache::cluster')
 #
 # [*kafka_cluster_name*]
 #   The name of the kafka cluster to use from the kafka_clusters hiera variable.
@@ -21,9 +21,9 @@
 #   True if the varnishkafka instance should be monitored.  Default: false
 #
 class profile::cache::kafka::statsv(
-    $cache_cluster      = hiera('cache::cluster'),
-    $kafka_cluster_name = hiera('profile::cache::kafka::statsv::kafka_cluster_name'),
-    $monitoring_enabled = hiera('profile::cache::kafka::statsv::monitoring_enabled', false),
+    String $cache_cluster       = lookup('cache::cluster'),
+    String $kafka_cluster_name  = lookup('profile::cache::kafka::statsv::kafka_cluster_name'),
+    Boolean $monitoring_enabled = lookup('profile::cache::kafka::statsv::monitoring_enabled', {default_value => false}),
 )
 {
     $kafka_config  = kafka_config($kafka_cluster_name)
