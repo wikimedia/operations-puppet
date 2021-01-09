@@ -11,7 +11,7 @@ class zuul ( ){
 
     include zuul::user
 
-    require_package('virtualenv', 'make')
+    ensure_packages(['virtualenv', 'make'])
 
     # Both merger and server require the zuul class
     if !defined(Scap::Target['zuul/deploy']) {
