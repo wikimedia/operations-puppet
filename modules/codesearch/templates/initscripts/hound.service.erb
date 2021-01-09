@@ -13,7 +13,6 @@ ExecStartPre=/srv/codesearch/wait.py
 ExecStart=/usr/bin/docker run -p <%= @port %>:6080 --name hound-<%= @name %> \
     -v /srv/hound/hound-<%= @name %>:/data \
     -v /etc/hound-gitconfig:/root/.gitconfig \
-    -v /srv/puppet:/operations/puppet \
     etsy/hound
 ExecStop=/usr/bin/docker stop hound-<%= @name %>
 Restart=on-failure

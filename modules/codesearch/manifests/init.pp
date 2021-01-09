@@ -9,7 +9,6 @@ class codesearch(
 ){
     $hound_dir  = "${base_dir}/hound"
     $clone_dir  = "${base_dir}/codesearch"
-    $puppet_dir = "${base_dir}/puppet"
 
     apt::package_from_component { 'thirdparty-kubeadm-k8s':
         component => 'thirdparty/kubeadm-k8s-1-15',
@@ -63,32 +62,6 @@ class codesearch(
         group     => 'codesearch',
     }
 
-    git::clone {'operations/puppet':
-        ensure    => latest,
-        directory => $puppet_dir,
-        branch    => 'production',
-        require   => User['codesearch'],
-        owner     => 'codesearch',
-        group     => 'codesearch',
-    }
-
-    # Alias production to master for puppet
-    exec { 'puppet alias origin/master':
-        command => '/usr/bin/git symbolic-ref refs/remotes/origin/master refs/remotes/origin/production',
-        cwd     => $puppet_dir,
-        user    => 'codesearch',
-        creates => "${puppet_dir}/.git/refs/remotes/origin/master",
-        require => Git::Clone['operations/puppet'],
-    }
-
-    exec { 'puppet alias master':
-        command => '/usr/bin/git symbolic-ref refs/heads/master refs/heads/production',
-        cwd     => $puppet_dir,
-        user    => 'codesearch',
-        creates => "${puppet_dir}/.git/refs/heads/master",
-        require => Git::Clone['operations/puppet'],
-    }
-
     file { '/etc/hound-gitconfig':
         ensure => present,
         owner  => 'root',
@@ -136,7 +109,6 @@ class codesearch(
             restart => true,
             require => [
                 Package['docker-ce'],
-                Git::Clone['operations/puppet'],
                 Systemd::Service['hound_proxy'],
                 Systemd::Timer::Job['codesearch-write-config'],
                 File['/etc/hound-gitconfig'],
