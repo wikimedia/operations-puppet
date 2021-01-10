@@ -11,7 +11,7 @@ backend <%= @title %>_backend
 <% end -%>
     option httpchk <%= @healthcheck_method %> <%= @healthcheck_path %> HTTP/1.0\r\nUser-agent:\ haproxy-healthcheck
 <% @servers.each do |server| -%>
-    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check inter 1s rise 2 fall 4
+    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check inter 3s rise 2 fall 4
 <% end -%>
     stick store-request src
     stick-table type ip size 256k expire 30m
