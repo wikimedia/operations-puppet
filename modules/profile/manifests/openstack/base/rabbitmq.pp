@@ -22,10 +22,12 @@ class profile::openstack::base::rabbitmq(
     contain '::rabbitmq::plugins'
 
     file { '/etc/rabbitmq/rabbitmq-env.conf':
-        owner  => 'rabbitmq',
-        group  => 'rabbitmq',
-        mode   => '0644',
-        source => 'puppet:///modules/profile/openstack/base/rabbitmq/rabbitmq-env.conf',
+        owner   => 'rabbitmq',
+        group   => 'rabbitmq',
+        mode    => '0644',
+        source  => 'puppet:///modules/profile/openstack/base/rabbitmq/rabbitmq-env.conf',
+        require => Package['rabbitmq-server'],
+        notify  => Service['rabbitmq-server'],
     }
 
     # We want this job to run on only one host; it doesn't matter which.
