@@ -21,6 +21,13 @@ class profile::openstack::base::rabbitmq(
     class{'::rabbitmq::plugins':}
     contain '::rabbitmq::plugins'
 
+    file { '/etc/rabbitmq/rabbitmq-env.conf':
+        owner  => 'rabbitmq',
+        group  => 'rabbitmq',
+        mode   => '0644',
+        source => 'puppet:///modules/profile/openstack/base/rabbitmq/rabbitmq-env.conf',
+    }
+
     # We want this job to run on only one host; it doesn't matter which.
     class {'::rabbitmq::cleanup':
         password => $cleanup_password,
