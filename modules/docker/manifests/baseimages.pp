@@ -24,7 +24,7 @@ class docker::baseimages(
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
 
-    require_package('bootstrap-vz')
+    ensure_packages(['bootstrap-vz'])
 
     file { '/srv/images':
         ensure => directory,

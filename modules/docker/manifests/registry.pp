@@ -8,7 +8,7 @@ class docker::registry(
     Optional[String] $swift_container = undef,
 ){
 
-    require_package('docker-registry')
+    ensure_packages(['docker-registry'])
 
     case $storage_backend {
         'filebackend': {
