@@ -1,9 +1,9 @@
 class profile::redis::slave(
-    $settings = hiera('profile::redis::slave::settings'),
-    $instance_overrides = lookup('profile::redis::slave::instance_overrides', {'default_value' => {}}),
-    $master = hiera('profile::redis::slave::master'),
-    $aof = hiera('profile::redis::slave::aof', false),
-    $prometheus_nodes = hiera('prometheus_nodes'),
+    Optional[Hash] $settings = lookup('profile::redis::slave::settings'),
+    Hash $instance_overrides = lookup('profile::redis::slave::instance_overrides', {'default_value' => {}}),
+    Stdlib::Host $master = lookup('profile::redis::slave::master'),
+    Boolean $aof = lookup('profile::redis::slave::aof', {'default_value' => false}),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     # Figure out the redis instances running on the master from Puppetdb
     $resources = query_resources(
