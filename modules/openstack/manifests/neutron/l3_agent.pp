@@ -48,10 +48,10 @@ class openstack::neutron::l3_agent(
             # Increase connection tracking size
             # and bucket since all of CloudVPS VM instances ingress/egress
             # are flowing through cloudnet servers
-            # default buckets is 65536. Let's use x4; 65536 * 4 = 262144
-            # default max is buckets x4; 262144 * 4 = 1048576
-            'net.netfilter.nf_conntrack_buckets' => 262144,
-            'net.netfilter.nf_conntrack_max'     => 1048576,
+            # default buckets is 65536. Let's use x8; 65536 * 8 = 524288
+            # default max is buckets x4; 524288 * 4 = 2097152
+            'net.netfilter.nf_conntrack_buckets' => 524288,
+            'net.netfilter.nf_conntrack_max'     => 2097152,
         },
         priority => 50,
     }
