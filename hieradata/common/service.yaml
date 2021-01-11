@@ -3065,3 +3065,327 @@ service::catalog:
     discovery:
       - dnsdisc: linkrecommendation
         active_active: true
+  wikireplicas-a-s1:
+    description: "lvs for a-side wikireplicas section s1"
+    encryption: false
+    ip: &wikireplicas_a_ips
+      eqiad:
+        default: 208.80.154.242
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-a
+        service: wikireplicas-a
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3311
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-a-s2:
+    description: "lvs for a-side wikireplicas section s2"
+    encryption: false
+    ip: *wikireplicas_a_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-a
+        service: wikireplicas-a
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3312
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-a-s3:
+    description: "lvs for a-side wikireplicas section s3"
+    encryption: false
+    ip: *wikireplicas_a_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-a
+        service: wikireplicas-a
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3313
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-a-s4:
+    description: "lvs for a-side wikireplicas section s4"
+    encryption: false
+    ip: *wikireplicas_a_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-a
+        service: wikireplicas-a
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3314
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-a-s5:
+    description: "lvs for a-side wikireplicas section s5"
+    encryption: false
+    ip: *wikireplicas_a_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-a
+        service: wikireplicas-a
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3315
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-a-s6:
+    description: "lvs for a-side wikireplicas section s6"
+    encryption: false
+    ip: *wikireplicas_a_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-a
+        service: wikireplicas-a
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3316
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-a-s7:
+    description: "lvs for a-side wikireplicas section s7"
+    encryption: false
+    ip: *wikireplicas_a_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-a
+        service: wikireplicas-a
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3317
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-a-s8:
+    description: "lvs for a-side wikireplicas section s8"
+    encryption: false
+    ip: *wikireplicas_a_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-a
+        service: wikireplicas-a
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3318
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-b-s1:
+    description: "lvs for b-side wikireplicas section s1"
+    encryption: false
+    ip: &wikireplicas_b_ips
+      eqiad:
+        default: 208.80.154.243
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-b
+        service: wikireplicas-b
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3311
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-b-s2:
+    description: "lvs for b-side wikireplicas section s2"
+    encryption: false
+    ip: *wikireplicas_b_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-b
+        service: wikireplicas-b
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3312
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-b-s3:
+    description: "lvs for b-side wikireplicas section s3"
+    encryption: false
+    ip: *wikireplicas_b_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-b
+        service: wikireplicas-b
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3313
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-b-s4:
+    description: "lvs for b-side wikireplicas section s4"
+    encryption: false
+    ip: *wikireplicas_b_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-b
+        service: wikireplicas-b
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3314
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-b-s5:
+    description: "lvs for b-side wikireplicas section s5"
+    encryption: false
+    ip: *wikireplicas_b_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-b
+        service: wikireplicas-b
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3315
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-b-s6:
+    description: "lvs for b-side wikireplicas section s6"
+    encryption: false
+    ip: *wikireplicas_b_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-b
+        service: wikireplicas-b
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3316
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-b-s7:
+    description: "lvs for b-side wikireplicas section s7"
+    encryption: false
+    ip: *wikireplicas_b_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-b
+        service: wikireplicas-b
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3317
+    sites:
+      - eqiad
+    state: service_setup
+  wikireplicas-b-s8:
+    description: "lvs for b-side wikireplicas section s8"
+    encryption: false
+    ip: *wikireplicas_b_ips
+    lvs:
+      class: high-traffic2
+      conftool:
+        cluster: wikireplicas-b
+        service: wikireplicas-b
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 3318
+    sites:
+      - eqiad
+    state: service_setup

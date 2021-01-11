@@ -8,3 +8,7 @@ profile::mariadb::proxy::replicas::servers:
     weight: 1
 profile::mariadb::proxy::firewall: 'public'
 profile::mariadb::proxy::multiinstance_replicas::replica_type: 'analytics'
+profile::lvs::realserver::pools:
+  wikireplicas-a-s1:
+    services:
+      - wikireplicas-a
