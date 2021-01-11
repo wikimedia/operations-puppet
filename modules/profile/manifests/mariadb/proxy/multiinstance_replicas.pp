@@ -31,28 +31,32 @@ class profile::mariadb::proxy::multiinstance_replicas(
                     ['fqdn', 'ipaddress']
                 )}
     }
+
+    # Keep Puppet Catalog Compiler happy. No puppetdb
+    $scrubbed_standbys = $base_standby_servers.filter |$section|{
+        !$section[1].empty
+    }
     # Inserting a hash key into an existing nested hash in puppet is interesting
-    $default_standby_servers = $base_standby_servers.reduce({}) |$memo, $section|{
+    $standby_servers = $scrubbed_standbys.reduce({}) |$memo, $section|{
         $memo + {$section[0] => $section[1].reduce({}) |$x, $config| {
             $x + {$config[0] => $config[1] + {'standby' => true}}
             }
         }
     }
-    # This next part is mostly necessary so that the puppet catalog compiler
-    # works as expected. Without it, it either errors or does odd things because
-    # it lacks puppetdb.
+
+    # Keep Puppet Catalog Compiler happy. No puppetdb
     $scrubbed_servers = $default_backend_servers.filter |$section|{
         !$section[1].empty
     }
-    $scrubbed_standbys = $default_standby_servers.filter |$section|{
-        !$section[1].empty
-    }
+
+    $base_section_servers = deep_merge($scrubbed_servers, $standby_servers)
 
     # Merge $section_overrides to provide weights and depoolings
+    # NOTE: Overrides an entire section config intentionally, not server by server
     if $section_overrides {
-        $section_servers = $scrubbed_servers + $scrubbed_standbys + $section_overrides
+        $section_servers = $base_section_servers + $section_overrides
     } else {
-        $section_servers = $scrubbed_servers + $scrubbed_standbys
+        $section_servers = $base_section_servers
     }
     file { '/etc/haproxy/conf.d/multi-db-replicas.cfg':
         owner   => 'root',
