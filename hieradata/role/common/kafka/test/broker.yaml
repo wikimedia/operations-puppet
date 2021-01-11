@@ -19,7 +19,7 @@ profile::kafka::mirror::destination_cluster_name: test-eqiad
 profile::kafka::mirror::monitoring_enabled: false
 
 profile::kafka::mirror::properties:
-  whitelist: '^(eqiad|codfw)\.mediawiki\.revision-create$'
+  whitelist: '^((eqiad|codfw)\.mediawiki\.revision-create|eventlogging_SearchSatisfaction)$'
   num_streams: 1
   offset_commit_interval_ms: 5000
   heap_opts: '-Xmx2G -Xms2G'
