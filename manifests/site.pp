@@ -228,6 +228,11 @@ node 'bast3004.wikimedia.org' {
     role(bastionhost)
 }
 
+# esams/bastion on Ganeti
+node 'bast3005.wikimedia.org' {
+    role(insetup)
+}
+
 # Bastion in California
 node 'bast4002.wikimedia.org' {
     role(bastionhost)

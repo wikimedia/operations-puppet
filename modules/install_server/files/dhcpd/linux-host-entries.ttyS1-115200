@@ -560,6 +560,11 @@ host bast3004 {
     fixed-address bast3004.wikimedia.org;
 }
 
+host bast3005 {
+    hardware ethernet AA:00:00:62:97:9B;
+    fixed-address bast3005.wikimedia.org;
+}
+
 host bast4002 {
     hardware ethernet F4:E9:D4:BA:EE:D0;
     fixed-address bast4002.wikimedia.org;
