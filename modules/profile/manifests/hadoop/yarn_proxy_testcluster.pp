@@ -20,5 +20,7 @@ class profile::hadoop::yarn_proxy_testcluster (
         content => template('profile/hadoop/yarn-testcluster.vhost.erb'),
     }
 
-    base::service_auto_restart { 'apache2': }
+    if !defined(Base::Service_auto_restart['apache2']) {
+        base::service_auto_restart { 'apache2': }
+    }
 }
