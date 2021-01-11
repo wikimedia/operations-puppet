@@ -8,5 +8,5 @@ class icinga::elasticsearch::cirrus_settings_plugin {
         mode   => '0755',
         source => 'puppet:///modules/icinga/elasticsearch/check_cirrus_settings.py',
     }
-    require_package('python3-requests', 'python3-yaml', 'python3-jsonpath-rw')
+    ensure_packages(['python3-requests', 'python3-yaml', 'python3-jsonpath-rw'])
 }
