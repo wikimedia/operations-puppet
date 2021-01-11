@@ -19,6 +19,7 @@ import logging
 import re
 import subprocess
 import sys
+import time
 import xml.etree.ElementTree as ET
 
 from prometheus_client import CollectorRegistry
@@ -34,9 +35,39 @@ RE_JOBLINE = re.compile(r"\s+\d")
 
 
 def get_job_count():
-    """Get sequential all time job count"""
-    with open("{}/spool/qmaster/jobseqnum".format(SGE_ROOT), "r") as f:
-        return int(f.read().strip())
+    """
+    Get sequential all time job count. This might be empty temporarily as
+    there's a race condition on write/read from it, so we retry a couple times.
+    """
+    retries = 3
+    jobseqnum_path = SGE_ROOT + "/spool/qmaster/jobseqnum"
+    while retries:
+        with open(jobseqnum_path, "r") as f:
+            try:
+                return int(f.read().strip())
+            except ValueError as err:
+                retries -= 1
+                if retries:
+                    logger.error(
+                        (
+                            "Error while trying to read jobseqnum from "
+                            "{}, {} retries remaining"
+                        ).format(jobseqnum_path, retries)
+                    )
+                    time.sleep(0.1)
+
+                else:
+                    # raising here to retain the previous exception context
+                    raise Exception(
+                        "Failed all tries to get jobseqnum from "
+                        + jobseqnum_path
+                    ) from err
+
+    # Should never get here
+    raise Exception(
+        "Failed all tries to get jobseqnum from "
+        + jobseqnum_path
+    )
 
 
 def grid_cmd(cmd):
