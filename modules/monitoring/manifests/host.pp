@@ -13,6 +13,8 @@ define monitoring::host (
     $mgmt_contact_group    = 'admins',
     $notifications_enabled = '1',
     Hash[String, String] $mgmt_parents = lookup('monitoring::mgmt_parents', {'default_value' => {}}), # lint:ignore:wmf_styleguide
+    String $cluster = lookup('cluster'),
+    String $hostgroup_default = lookup('nagios_group', {'default_value' => "${cluster}_${::site}"}), # lint:ignore:wmf_styleguide
 ){
 
     $nagios_address = $host_fqdn ? {
@@ -23,10 +25,9 @@ define monitoring::host (
     # Determine the hostgroup:
     # If defined in the declaration of resource, we use it;
     # If not, adopt the standard format
-    $cluster_name = lookup('cluster')
     $hostgroup = $group ? {
         /.+/    => $group,
-        default => hiera('nagios_group',"${cluster_name}_${::site}")
+        default => $hostgroup_default,
     }
 
     $real_contact_groups = $critical ? {
