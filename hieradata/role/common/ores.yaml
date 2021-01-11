@@ -14,7 +14,6 @@ profile::ores::celery::queue_maxsize: 405
 
 profile::ores::web::workers: 50
 
-profile::ores::web::redis_host: "oresrdb.svc.%{::site}.wmnet"
 profile::ores::web::redis_queue_port: 6380
 profile::ores::web::redis_cache_port: 6378
 # The password is in the private store, this is here for completeness
