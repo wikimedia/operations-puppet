@@ -9,7 +9,7 @@
 # [*watch_interval*] The interval in seconds for checks on etcd. Defaults to 5
 #
 class profile::discovery::client(
-    $path=hiera('profile::discovery::path'),
+    Stdlib::Unixpath $path=lookup('profile::discovery::path'),
 ){
     # We need confd
     require ::profile::conftool::state
