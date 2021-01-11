@@ -32,7 +32,7 @@ class bird(
   $routerid= $::ipaddress,
   ){
 
-  require_package('bird', 'prometheus-bird-exporter')
+  ensure_packages(['bird', 'prometheus-bird-exporter'])
 
   if $bind_service != '' {
     exec { 'bird-systemd-reload-enable':

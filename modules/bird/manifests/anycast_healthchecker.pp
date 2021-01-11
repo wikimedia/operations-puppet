@@ -16,7 +16,7 @@ class bird::anycast_healthchecker(
   Optional[String] $bind_service = undef,
 ){
 
-  require_package('anycast-healthchecker')
+  ensure_packages(['anycast-healthchecker'])
 
   file { '/etc/anycast-healthchecker.conf':
       ensure  => present,
