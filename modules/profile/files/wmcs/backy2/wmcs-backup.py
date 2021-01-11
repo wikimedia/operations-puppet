@@ -128,9 +128,9 @@ class ImageBackup:
             size_mb=entry.size_mb,
         )
 
-    def remove(self, noop: bool = True) -> None:
+    def remove(self, pool: str, noop: bool = True) -> None:
         maybe_snapshot = self.backup_entry.get_snapshot(
-            pool=self.config.ceph_pool
+            pool=pool
         )
         self.backup_entry.remove(noop=noop)
         if maybe_snapshot is not None:
@@ -291,8 +291,7 @@ class ImageBackups:
             self.image_id,
         )
         for backup in to_delete:
-            backup.remove(noop=noop)
-            self.backups.pop(self.backups.index(backup))
+            self.remove_backup(backup=backup, noop=noop)
 
     def get_dangling_snapshots(self):
         """
@@ -937,7 +936,7 @@ class VMBackups:
             )
 
         self.backups.pop(self.backups.index(vm_backup))
-        vm_backup.remove(noop=noop)
+        vm_backup.remove(pool=self.config.ceph_pool, noop=noop)
 
     def __str__(self) -> str:
         backups_strings = sorted([f" {entry}" for entry in self.backups])
