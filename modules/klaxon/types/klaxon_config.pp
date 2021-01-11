@@ -15,7 +15,11 @@
 #    [string] Some random secret data used by Flask to secure client-side session data. required.
 #
 #  [*admin_contact_email*]
-#    [array] list of IP addresses allowed to access the webserver. required.
+#    [string] email contact address for the instance administrator. required.
+#
+#  [*team_ids_filter*]
+#    [string] If provided, a comma-separated list of team IDs for which to display pages.
+#             If unset, no filter. optional.
 
 type Klaxon::Klaxon_config = Struct[{
     vo_api_id              => String[1],
@@ -23,4 +27,5 @@ type Klaxon::Klaxon_config = Struct[{
     vo_create_incident_url => Stdlib::HTTPUrl,
     secret_key             => String[1],
     admin_contact_email    => String[1],
+    team_ids_filter        => Optional[String[1]],
 }]
