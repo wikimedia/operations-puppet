@@ -22,12 +22,13 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 
-from prometheus_client import CollectorRegistry
-from prometheus_client import Counter
-from prometheus_client import Gauge
-from prometheus_client import write_to_textfile
+from prometheus_client import (
+    CollectorRegistry,
+    Counter,
+    Gauge,
+    write_to_textfile,
+)
 from prometheus_client.exposition import generate_latest
-
 
 logger = logging.getLogger(__name__)
 SGE_ROOT = "/data/project/.system_sge/gridengine"
@@ -64,10 +65,7 @@ def get_job_count():
                     ) from err
 
     # Should never get here
-    raise Exception(
-        "Failed all tries to get jobseqnum from "
-        + jobseqnum_path
-    )
+    raise Exception("Failed all tries to get jobseqnum from " + jobseqnum_path)
 
 
 def grid_cmd(cmd):
@@ -77,13 +75,17 @@ def grid_cmd(cmd):
             cmd, env={"SGE_ROOT": SGE_ROOT}, universal_newlines=True
         )
     except subprocess.CalledProcessError as e:
-        logger.warning("Output from failed shell command %s: %s", cmd, e.output)
+        logger.warning(
+            "Output from failed shell command %s: %s", cmd, e.output
+        )
         raise e
 
 
 def get_jobs(queue):
     """Retrieve all users job output for a queue."""
-    return grid_cmd(["/usr/bin/qstat", "-q", queue, "-u", "*"]).splitlines()[1:]
+    return grid_cmd(["/usr/bin/qstat", "-q", queue, "-u", "*"]).splitlines()[
+        1:
+    ]
 
 
 def get_queues():
@@ -121,7 +123,11 @@ def get_queue_problems():
 
             queue_name_fields = queue.find("name").text.split("@")
             queue_problems.append(
-                [queue_name_fields[1], queue_name_fields[0], queue.find("state").text]
+                [
+                    queue_name_fields[1],
+                    queue_name_fields[0],
+                    queue.find("state").text,
+                ]
             )
     return queue_problems
 
@@ -197,7 +203,9 @@ def collect_sge_stats(registry):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--outfile", metavar="FILE.prom", help="Output file (stdout)")
+    parser.add_argument(
+        "--outfile", metavar="FILE.prom", help="Output file (stdout)"
+    )
     parser.add_argument(
         "-d",
         "--debug",
