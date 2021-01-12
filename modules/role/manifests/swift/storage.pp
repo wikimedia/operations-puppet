@@ -16,4 +16,9 @@ class role::swift::storage {
     }
 
     include ::profile::swift::storage::expirer
+
+    # Temporary partial rollout in eqiad, a mix of new and old hosts
+    if $::hostname =~ /^ms-be10(50|55|60|61)/ {
+        include ::profile::swift::performance
+    }
 }
