@@ -158,14 +158,7 @@ define tlsproxy::localssl(
         }
     }
     if !empty($acme_subjects) {
-        if !defined(Letsencrypt::Cert::Integrated[$server_name]) {
-            letsencrypt::cert::integrated { $server_name:
-                subjects   => join($acme_subjects, ','),
-                puppet_svc => 'nginx',
-                system_svc => 'nginx',
-            }
-        }
-        # TODO: Maybe add monitoring to this in role::cache::ssl::unified
+        fail('This code path is no longer supported. Certs must be managed using acme_chief.')
     }
 
     if $do_ocsp {
