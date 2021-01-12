@@ -3115,6 +3115,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHZqJOizHso9YldV5FMsnoJnWfLIno11qlXjVGfSBWb5 kharlan@wikimedia.org
     uid: 19582
     email: kharlan@wikimedia.org
+    krb: present
   nathante:
     ensure: absent
     realname: Nathan TeBlunthuis
