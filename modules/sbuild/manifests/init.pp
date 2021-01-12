@@ -1,6 +1,8 @@
 class sbuild (
 ) {
-    require_package('sbuild')
-    require_package('apt-cacher-ng')
-    require_package('schroot')
+    ensure_packages([
+        'sbuild',
+        'apt-cacher-ng',
+        'schroot',
+    ])
 }
