@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
   check_grafana_alert
@@ -19,17 +19,12 @@
     GRAFANA_URL           URL of grafana
 
 """
-from __future__ import print_function
-
 import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
 
 import argparse
 import json
 import os
-import urllib2
-
+import urllib.request as request
 
 ap = argparse.ArgumentParser(description='Grafana dashboard alert')
 ap.add_argument('dashboard_uid', help='dashboard ID')
@@ -41,13 +36,13 @@ dashboard_id = ''
 dashboard_url = ''
 dashboard_title = ''
 try:
-    req = urllib2.Request('{}/api/dashboards/uid/{}'.format(
+    req = request.Request('{}/api/dashboards/uid/{}'.format(
         args.grafana_url,
         args.dashboard_uid))
     req.add_header(
         'User-Agent',
         'wmf-icinga/{} root@wikimedia.org'.format(os.path.basename(__file__)))
-    dashboard_info = json.load(urllib2.urlopen(req))
+    dashboard_info = json.load(request.urlopen(req))
     dashboard_id = dashboard_info['dashboard']['id']
     dashboard_url = '%s%s' % (
         args.grafana_url,
@@ -61,13 +56,13 @@ except Exception as e:
 
 alerting_names = []
 try:
-    req = urllib2.Request('{}/api/alerts?dashboardId={}&state=alerting'.format(
+    req = request.Request('{}/api/alerts?dashboardId={}&state=alerting'.format(
         args.grafana_url,
         dashboard_id))
     req.add_header(
         'User-Agent',
         'wmf-icinga/{} root@wikimedia.org'.format(os.path.basename(__file__)))
-    data = json.load(urllib2.urlopen(req))
+    data = json.load(request.urlopen(req))
     alerting_names = list(map(lambda alert: alert['name'], data))
 except Exception as e:
     print('UNKNOWN: failed to check dashboard %s ( %s ) due to exception: %s' % (
