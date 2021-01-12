@@ -108,9 +108,6 @@ profile::trafficserver::backend::mapping_rules:
       replacement: http://cloudweb2001-dev.wikimedia.org
     - type: map
       target: http://logstash.wikimedia.org
-      replacement: https://kibana.discovery.wmnet
-    - type: map
-      target: http://logstash-next.wikimedia.org
       replacement: https://kibana7.svc.eqiad.wmnet
     - type: map
       target: http://maps.wikimedia.org
