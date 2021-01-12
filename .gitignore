@@ -5,7 +5,7 @@
 .project
 
 # vim swap files are unwanted
-*.swp
+*.sw?
 
 # Compiled Python files are useless
 *.pyc
