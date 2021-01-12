@@ -28,7 +28,7 @@ class dnsrecursor(
     $allow_edns_whitelist     = true,
     $allow_incoming_ecs       = false,
     $allow_qname_minimisation = false,
-    $enable_pdns43            = false, # enable pdns-recursor 4.3.3, used by wikidough
+    $install_from_component   = false, # for buster, enable pdns-recursor from component
 ) {
 
     include ::network::constants
@@ -66,7 +66,7 @@ class dnsrecursor(
         before      => Service['pdns-recursor'],
     }
 
-    if debian::codename::eq('buster') and $enable_pdns43 {
+    if debian::codename::eq('buster') and $install_from_component {
         apt::package_from_component { 'pdns-recursor':
             component => 'component/pdns-recursor',
         }

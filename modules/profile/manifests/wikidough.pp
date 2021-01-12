@@ -37,7 +37,7 @@ class profile::wikidough (
         allow_forward_zones      => false,
         allow_incoming_ecs       => true,
         allow_qname_minimisation => true,
-        enable_pdns43            => true,
+        install_from_component   => true,
     }
 
     acme_chief::cert { 'wikidough':

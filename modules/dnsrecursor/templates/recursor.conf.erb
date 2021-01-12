@@ -98,7 +98,7 @@ client-tcp-timeout=<%= @client_tcp_timeout %>
 stats-ringbuffer-entries=1000
 
 # where the controlsocket will live
-<% if @enable_pdns43 -%>
+<% if @install_from_component -%>
 # the location of the socket-dir was changed in 4.3.0
 socket-dir=/var/run/pdns-recursor/
 <% else -%>
@@ -120,7 +120,7 @@ security-poll-suffix=
 # Root hints distributed by Debian w/ 4.x
 hint-file=/usr/share/dns/root.hints
 
-<% if @enable_pdns43 and @allow_qname_minimisation -%>
+<% if @install_from_component and @allow_qname_minimisation -%>
 # QNAME minimisation support was added in pdns 4.3.0.
 qname-minimization=yes
 <% end -%>
