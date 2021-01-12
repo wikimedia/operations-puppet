@@ -113,13 +113,6 @@ node 'analytics-tool1001.eqiad.wmnet' {
     role(analytics_cluster::hadoop::ui)
 }
 
-# superset.wikimedia.org
-# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
-# T212243
-node 'analytics-tool1004.eqiad.wmnet' {
-    role(analytics_cluster::superset)
-}
-
 # Staging environment of Superset and Turnilo
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo
