@@ -159,10 +159,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://wdqs1005.eqiad.wmnet/bigdata/ldf
     - type: map
       target: http://query.wikidata.org/sparql
-      replacement: https://wdqs.discovery.wmnet
+      replacement: https://wdqs.discovery.wmnet/sparql
     - type: map
       target: http://query.wikidata.org/bigdata
-      replacement: https://wdqs.discovery.wmnet
+      replacement: https://wdqs.discovery.wmnet/bigdata
     - type: map
       target: http://query.wikidata.org
       replacement: https://webserver-misc-apps.discovery.wmnet
