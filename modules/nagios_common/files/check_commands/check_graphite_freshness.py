@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
   check_graphite_freshness
@@ -21,17 +21,13 @@
                                         is older than this value
 
 """
-from __future__ import print_function
-
 import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
 
 import argparse
 import datetime
 import json
 import os
-import urllib2
+import urllib.request as request
 
 
 def time_spec(spec_string):
@@ -60,17 +56,17 @@ if args.critical is None and args.warning is None:
 
 
 try:
-    req = urllib2.Request('{}?format=json&target={}'.format(
+    req = request.Request('{}?format=json&target={}'.format(
         args.render_url,
         args.metric))
     req.add_header(
         'User-Agent',
         'wmf-icinga/{} root@wikimedia.org'.format(os.path.basename(__file__)))
-    data = json.load(urllib2.urlopen(req))[0]
+    data = json.load(request.urlopen(req))[0]
     most_recent = datetime.datetime.utcfromtimestamp(max(
             ts for value, ts in data['datapoints'] if value is not None))
     staleness = datetime.datetime.utcnow() - most_recent
-except Exception as e:
+except Exception:
     print('UNKNOWN: failed to check %s' % args.metric)
     raise
     sys.exit(3)
