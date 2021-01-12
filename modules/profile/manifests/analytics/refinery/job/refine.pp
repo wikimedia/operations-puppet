@@ -134,6 +134,7 @@ class profile::analytics::refinery::job::refine(
         'SpecialMuteSubmit',
         'TemplateWizard',
         'Test',
+        'UniversalLanguageSelector',
     ]
     $eventlogging_legacy_table_includelist_regex = "^(${join($eventlogging_legacy_table_includelist, '|')})$"
 

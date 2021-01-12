@@ -22,6 +22,7 @@ eventlogging_schemas_disabled = (
     'SearchSatisfaction',
     'TemplateWizard',
     'Test',
+    'UniversalLanguageSelector',
 )
 
 
