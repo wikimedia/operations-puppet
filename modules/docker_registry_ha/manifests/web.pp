@@ -8,6 +8,7 @@ class docker_registry_ha::web (
     Boolean $http_endpoint=false,
     Array[Stdlib::Host] $http_allowed_hosts=[],
     Boolean $read_only_mode=false,
+    String $homepage='/srv/homepage',
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')
@@ -56,7 +57,7 @@ class docker_registry_ha::web (
         source => 'puppet:///modules/docker_registry_ha/style.css',
     }
 
-    file { '/srv/homepage':
+    file { $homepage:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
@@ -66,7 +67,7 @@ class docker_registry_ha::web (
     systemd::timer::job {'build-homepage':
         ensure      => 'present',
         description => 'Build docker-registry homepage',
-        command     => '/usr/local/bin/registry-homepage-builder docker-registry.discovery.wmnet /srv/homepage',
+        command     => "/usr/local/bin/registry-homepage-builder docker-registry.discovery.wmnet ${homepage}",
         user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',
