@@ -17,7 +17,11 @@ SyslogIdentifier=<%= @syslog_identifier %>
 <%- if @slice -%>
 Slice=<%= @slice %>
 <%- end -%>
+<%- if @send_mail -%>
+ExecStart=/usr/local/bin/systemd-timer-mail-wrapper <%= @command %>
+<%- else -%>
 ExecStart=<%= @command %>
+<%- end -%>
 <%- if @max_runtime_seconds -%>
 RuntimeMaxSec=<%= @max_runtime_seconds %>
 <%- end -%>
