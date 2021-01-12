@@ -29,7 +29,7 @@ class scap (
         mode    => '0444',
     }
 
-    require_package([
+    ensure_packages([
         'python-psutil',
         'python-netifaces',
         'python-yaml',
