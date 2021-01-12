@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
 check_graphite
 ~~~~~~~
@@ -19,20 +19,13 @@ import json
 import os
 import re
 import sys
-import urllib2
+import urllib.request as request
 
 from collections import defaultdict
 from numbers import Real
 
-try:
-    # python 3.x compat
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
-try:
-    from urllib.parse import urlencode
-except ImportError:
-    from urllib import urlencode
+from urllib.parse import urlparse
+from urllib.parse import urlencode
 
 
 class NagiosException(Exception):
@@ -73,7 +66,7 @@ class GraphiteCheck(object):
         # subclasses should just implement get_all here.
         self.get_all(args)
 
-        # Dumb urllib2 basic auth support.
+        # Dumb urllib basic auth support.
         if self.credentials:
             self._create_auth()
 
@@ -81,11 +74,11 @@ class GraphiteCheck(object):
 
     def _create_auth(self):
         user, password = self.credentials.split(':', 1)
-        pwd_manager = urllib2.HTTPPasswordMgrWithDefaultRealm()
+        pwd_manager = request.HTTPPasswordMgrWithDefaultRealm()
         pwd_manager.add_password(None, self.base_url, user, password)
-        handler = urllib2.HTTPBasicAuthHandler(pwd_manager)
-        opener = urllib2.build_opener(handler)
-        urllib2.install_opener(opener)
+        handler = request.HTTPBasicAuthHandler(pwd_manager)
+        opener = request.build_opener(handler)
+        request.install_opener(opener)
 
     def get_all(self, args):
         # This should be implemented in subclasses
@@ -105,13 +98,13 @@ class GraphiteCheck(object):
         full_url = '%s/render?%s' % (self.base_url, urlencode(self.params))
 
         try:
-            req = urllib2.Request(full_url, None, header)
-            response = urllib2.urlopen(req, None, self.http_timeout)
-        except urllib2.HTTPError as e:
+            req = request.Request(full_url, None, header)
+            response = request.urlopen(req, None, self.http_timeout)
+        except request.HTTPError as e:
             raise NagiosException(
                 'UNKNOWN', 'Got status %d from the graphite server at %s' %
                 (e.code, full_url))
-        except urllib2.URLError as e:
+        except request.URLError as e:
             raise NagiosException(
                 'UNKNOWN', 'Could not reach the graphite server at %s, reason: %s' %
                 (full_url, e.reason[1]))
@@ -476,7 +469,7 @@ sampling (we will still require 1w of data)''',
         measures = result[0]['datapoints'][my_slice:]
         lowerbound = result[1]['datapoints'][my_slice:]
         upperbound = result[2]['datapoints'][my_slice:]
-        for i in xrange(self.check_window):
+        for i in range(self.check_window):
             data, time = measures[i]
             lower = lowerbound[i][0]
             upper = upperbound[i][0]
