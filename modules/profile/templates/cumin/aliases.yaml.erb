@@ -94,6 +94,7 @@ druid-analytics: P{O:druid::analytics::worker}
 druid-public: P{O:druid::public::worker}
 druid: A:druid-analytics or A:druid-public
 druid-canary: P{druid1003.eqiad.wmnet}
+druid-test: P{O:druid::test_analytics::worker}
 dumps: P{O:dumps::generation::server:alldumps or O:dumps::generation::server::misccrons or O:dumps::generation::server::xmldumps or O:dumps::generation::server::xmlfallback or O:dumps::web::htmldumps}
 elastic: P{O:elasticsearch::cirrus}
 elastic-canary: P{elastic1051.eqiad.wmnet}
@@ -128,6 +129,11 @@ hadoop-worker-canary: P{analytics1058.eqiad.wmnet}
 hadoop-worker-test: P{O:analytics_test_cluster::hadoop::worker}
 hadoop-hdfs-journal-test: P{C:cdh::hadoop::journalnode} and A:hadoop-worker-test
 hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator or O:analytics_test_cluster::client or O:druid::test_analytics::worker}
+hadoop-client: P{O:statistics::explorer}
+hadoop-client-test: P{O:analytics_test_cluster::client}
+hadoop-ui: P{O:analytics_test_cluster::hadoop::ui or O:analytics_cluster::hadoop::yarn}
+hadoop-ui-test: P{O:analytics_test_cluster::hadoop::ui}
+hadoop-dumps-client: P{O:dumps::distribution::server}
 icinga: P{O:alerting_host}
 idp: P{O:idp} or A:idp-test
 idp-test: P{O:idp_test}
@@ -267,8 +273,7 @@ snapshot: P{O:dumps::generation::worker::dumper or O:dumps::generation::worker::
 snapshot-canary: P{O:dumps::generation::worker::testbed}
 spare: P{O:spare::system}
 sretest: P{O:sretest}
-stat: P{O:statistics::private or O:statistics::cruncher or O:statistics::explorer::gpu or O:statistics::explorer}
-stat-hdfs: P{O:statistics::private or O:statistics::explorer}
+stat: P{O:statistics::explorer}
 swift: A:swift-fe or A:swift-be
 swift-be: P{O:swift::storage}
 swift-be-canary: P{ms-be1019.eqiad.wmnet}
