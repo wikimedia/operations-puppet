@@ -3886,6 +3886,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKvCFMCy3pSykDaNq++CC1o+WzmegoyGROM7N4uoGvnO dumisani@MacBook-Pro.local
+    krb: present
   janstee:
     ensure: present
     name: janstee
