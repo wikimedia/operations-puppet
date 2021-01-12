@@ -5027,18 +5027,6 @@ host mwlog2002 {
     fixed-address mwlog2002.codfw.wmnet;
 }
 
-host mw1259 {
-    hardware ethernet 18:03:73:f1:4f:82;
-    fixed-address mw1259.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host mw1260 {
-    hardware ethernet 18:03:73:f1:59:5a;
-    fixed-address mw1260.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host mw1261 {
     hardware ethernet 14:18:77:61:4B:03;
     fixed-address mw1261.eqiad.wmnet;
