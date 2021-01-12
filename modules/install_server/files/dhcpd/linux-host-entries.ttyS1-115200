@@ -4396,6 +4396,26 @@ host mc-gp2003 {
     fixed-address mc-gp2003.codfw.wmnet;
 }
 
+host ml-serve1001 {
+    hardware ethernet BC:97:E1:9F:AB:24;
+    fixed-address ml-serve1001.eqiad.wmnet;
+}
+
+host ml-serve1002 {
+    hardware ethernet BC:97:E1:9F:A0:3E;
+    fixed-address ml-serve1002.eqiad.wmnet;
+}
+
+host ml-serve1003 {
+    hardware ethernet BC:97:E1:9F:7D:28;
+    fixed-address ml-serve1003.eqiad.wmnet;
+}
+
+host ml-serve1004 {
+    hardware ethernet BC:97:E1:9F:A7:B3;
+    fixed-address ml-serve1004.eqiad.wmnet;
+}
+
 host ml-serve2001 {
     hardware ethernet BC:97:E1:9F:68:A0;
     fixed-address ml-serve2001.codfw.wmnet;
