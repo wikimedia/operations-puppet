@@ -107,6 +107,11 @@ host argon {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host bast3005 {
+    hardware ethernet AA:00:00:62:97:9B;
+    fixed-address bast3005.wikimedia.org;
+}
+
 host chlorine {
     hardware ethernet aa:00:00:37:a8:4d;
     fixed-address chlorine.eqiad.wmnet;
