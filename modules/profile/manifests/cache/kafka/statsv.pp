@@ -24,6 +24,7 @@ class profile::cache::kafka::statsv(
     String $cache_cluster       = lookup('cache::cluster'),
     String $kafka_cluster_name  = lookup('profile::cache::kafka::statsv::kafka_cluster_name'),
     Boolean $monitoring_enabled = lookup('profile::cache::kafka::statsv::monitoring_enabled', {default_value => false}),
+    String $statsd              = lookup('statsd')
 )
 {
     $kafka_config  = kafka_config($kafka_cluster_name)
@@ -65,7 +66,7 @@ class profile::cache::kafka::statsv(
         varnishkafka::monitor::statsd { 'statsv':
             ensure                 => 'absent',
             graphite_metric_prefix => "varnishkafka.${::hostname}.statsv.${cache_cluster}",
-            statsd_host_port       => hiera('statsd'),
+            statsd_host_port       => $statsd,
         }
     }
 }
