@@ -100,7 +100,7 @@ server {
 
     rewrite ^/readiness-probe$ /sparql?query=%20ASK%7B%20%3Fx%20%3Fy%20%3Fz%20%7D;
 
-    rewrite ^/sparql$ /bigdata/namespace/<%= @blazegraph_main_ns %>/sparql last;
+    rewrite ^/sparql$ /bigdata/namespace/<%= @blazegraph_main_ns %>/sparql;
 
     # Check whether we're dealing with a namespace
     if ( $uri ~ ^/bigdata/namespace/([a-zA-Z0-9_]+)/sparql$) {
