@@ -7,4 +7,10 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteOldSurveys.php --cutoff 240',
         interval => '*-*-01,15 03:15:00',
     }
+
+    # Ensure that a sufficiently large pool of link recommendations is available.
+    profile::mediawiki::periodic_job { 'growthexperiments-refreshLinkRecommendations':
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshLinkRecommendations.php',
+        interval => '*-*-* *:27:00',
+    }
 }
