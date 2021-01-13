@@ -145,6 +145,7 @@ class profile::cumin::master (
         user        => 'root',
         description => 'Checks the cumin aliases file for problems.',
         command     => '/usr/local/sbin/check-cumin-aliases',
+        send_mail   => true,
         interval    => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']}
     }
 
