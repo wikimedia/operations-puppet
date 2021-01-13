@@ -13,6 +13,7 @@ class profile::ceph::osd(
     String               $fsid              = lookup('profile::ceph::fsid'),
     Stdlib::AbsolutePath $bootstrap_keyring = lookup('profile::ceph::osd::bootstrap_keyring'),
     String               $bootstrap_keydata = lookup('profile::ceph::osd::bootstrap_keydata'),
+    Array[String]        $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
 ) {
     # Ceph OSDs should use the performance governor, not the default 'powersave'
     # governor
@@ -122,5 +123,17 @@ class profile::ceph::osd(
     ceph::keyring { 'client.bootstrap-osd':
         keyring => $bootstrap_keyring,
         keydata => $bootstrap_keydata,
+    }
+
+    $facts['disks'].each |String $device, Hash $device_info| {
+        if ('model' in $device_info and $device_info['model'] in
+        $disk_models_without_write_cache) {
+            exec { "Disable write cache on device /dev/${device}":
+                command => "hdparm -W 1 /dev/${device}",
+                user    => 'root',
+                unless  => "hdparm -W /dev/${device} | grep write-caching | grep -q off",
+                path    => ['/usr/sbin', '/usr/bin'],
+            }
+        }
     }
 }

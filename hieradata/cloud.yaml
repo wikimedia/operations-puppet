@@ -243,3 +243,6 @@ profile::pki::server::db_host: localhost
 profile::pki::server::root_ca_profiles: {}
 profile::pki::server::default_profiles: {}
 profile::pki::server::vhost: "%{facts.networking.fqdn}"
+profile::ceph::osd::bootstrap_keyring: BOOTSRAP_KEYRING_DEFAULT_PLACEHOLDER
+profile::ceph::osd::disk_models_without_write_cache:
+  - DISK_MODEL_DEFAULT_PLACEHOLDER

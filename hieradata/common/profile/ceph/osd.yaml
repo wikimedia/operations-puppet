@@ -1,1 +1,5 @@
 profile::ceph::osd::bootstrap_keyring: '/var/lib/ceph/bootstrap-osd/ceph.keyring'
+profile::ceph::osd::disk_models_without_write_cache:
+  - SSDSC2KG019T8R  # cloudcephosd1001
+  - MTFDDAK1T9TDN  # cloudcephosd1015
+  - MTFDDAK960TDN  # cloudcephosd2001
