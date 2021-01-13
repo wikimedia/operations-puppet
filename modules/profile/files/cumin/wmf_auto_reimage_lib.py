@@ -913,7 +913,10 @@ def update_netbox(host):
     result = requests.post(api_url, headers=headers, json=data)
     if result.ok:
         print_line('Updated Netbox:')
-        for log_line in result.json()['log']:
+        api_url = '{}api/extras/job-results/{job_id}/'.format(
+            config['api_url'], job_id=result.json()['result']['id'])
+        result = requests.get(api_url, headers=headers)
+        for log_line in result.json()['data']['log']:
             message = '[{status}] {msg}'.format(status=log_line['status'], msg=log_line['message'])
             print_line(message, host=host)
     else:
