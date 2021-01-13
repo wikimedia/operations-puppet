@@ -53,7 +53,7 @@ logstash::logstash_version: 7
 logstash::logstash_package: logstash-oss
 
 # Kibana
-profile::kibana::httpd_proxy::vhost: logstash-next.wikimedia.org
+profile::kibana::httpd_proxy::vhost: logstash.wikimedia.org
 profile::kibana::httpd_proxy::serveradmin: noc@wikimedia.org
 profile::kibana::httpd_proxy::auth_type: ldap
 profile::kibana::httpd_proxy::auth_realm: Developer account (use wiki login name not shell) - nda/ops/wmf
