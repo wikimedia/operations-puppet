@@ -4412,7 +4412,7 @@ host ml-serve1003 {
 }
 
 host ml-serve1004 {
-    hardware ethernet BC:97:E1:9F:A7:B3;
+    hardware ethernet BC:97:E1:9F:A7:B2;
     fixed-address ml-serve1004.eqiad.wmnet;
 }
 
