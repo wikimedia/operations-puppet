@@ -2,6 +2,10 @@
 -- map / https://appservers-rw.discovery.wmnet @plugin=/usr/lib/trafficserver/modules/tslua.so \
 --     @pparam=/etc/trafficserver/lua/normalize-path.lua @pparam="3A 2F 40 21 24 28 29 2A 2C 3B" @pparam="5B 5D 26 27 2B 3D"
 
+-- The JIT compiler is causing severe performance issues:
+-- https://phabricator.wikimedia.org/T265625
+jit.off(true, true)
+
 -- For example:
 -- DECODESET = Set { "3A", "2F", "40", "21", "24", "28", "29", "2A", "2C", "3B" }
 -- ENCODESET = Set { "[", "]", "&", "'", "+", "=" }

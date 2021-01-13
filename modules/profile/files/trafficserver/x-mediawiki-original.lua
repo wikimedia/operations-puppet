@@ -10,6 +10,10 @@
 
 require 'string'
 
+-- The JIT compiler is causing severe performance issues:
+-- https://phabricator.wikimedia.org/T265625
+jit.off(true, true)
+
 function gen_x_mediawiki_original(uri)
     if string.match(uri, "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/[0-9]+px-") then
         prefix, postfix = string.match(uri, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$")

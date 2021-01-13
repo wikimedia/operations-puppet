@@ -3,6 +3,10 @@
 -- This file is managed by Puppet.
 --
 
+-- The JIT compiler is causing severe performance issues:
+-- https://phabricator.wikimedia.org/T265625
+jit.off(true, true)
+
 function read_config()
     local configfile = ts.get_config_dir() .. "/lua/default.lua.conf"
 

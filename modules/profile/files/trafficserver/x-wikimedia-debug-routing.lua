@@ -8,6 +8,10 @@
 --
 -- See https://wikitech.wikimedia.org/wiki/X-Wikimedia-Debug
 
+-- The JIT compiler is causing severe performance issues:
+-- https://phabricator.wikimedia.org/T265625
+jit.off(true, true)
+
 function do_remap()
     local xwd = ts.client_request.header['X-Wikimedia-Debug']
     if not xwd then

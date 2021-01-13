@@ -7,3 +7,5 @@ _G.dofile = function()
     lua_websocket_support = false
     lua_keepalive_support = false
 end
+_G.jit = {}
+_G.jit.off = function (a, b) return true end
