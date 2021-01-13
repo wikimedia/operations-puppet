@@ -114,7 +114,7 @@ def main():
             "Netbox exception getting report data for report {}".format(report)
         )
 
-    if robj.result.failed:
+    if robj.result.status.value != 'completed':
         return print_status(STATUS_CRITICAL, failedstatus, "Netbox report {}".format(report))
 
     return print_status(STATUS_OK, failedstatus, "Netbox report {}".format(report))
