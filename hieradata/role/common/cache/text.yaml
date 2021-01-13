@@ -83,8 +83,6 @@ cache::alternate_domains:
     caching: 'normal'
   logstash.wikimedia.org:
     caching: 'normal'
-  logstash-next.wikimedia.org:
-    caching: 'normal'
   noc.wikimedia.org:
     caching: 'pass'
   ores.wikimedia.org:
