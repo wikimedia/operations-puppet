@@ -20,15 +20,12 @@ function wmflib::dir::mkdir_p(
 ) {
     $all_dirs = wmflib::dir::split($dirs)
     # ensure all parent directories exist
-    @file{$all_dirs:
-        ensure => directory,
-    }
+    ensure_resource('file', $all_dirs, {'ensure' => 'directory'})
     # Apply params only to the actual directories
     [$dirs].flatten.unique.each |$dir| {
         File[$dir] {
             * => $params,
         }
     }
-    realize(File[$all_dirs])
 }
 
