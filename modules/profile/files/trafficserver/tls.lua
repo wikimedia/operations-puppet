@@ -1,3 +1,7 @@
+-- The JIT compiler is causing severe performance issues:
+-- https://phabricator.wikimedia.org/T265625
+jit.off(true, true)
+
 function do_global_send_request()
     local ssl_reused = ts.client_request.get_ssl_reused()
     local ssl_protocol = ts.client_request.get_ssl_protocol()
