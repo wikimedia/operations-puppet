@@ -18,7 +18,6 @@ eventlogging_schemas_disabled = (
     'HomepageModule',
     'NewcomerTask',
     'SpecialInvestigate',
-    'SpecialMuteSubmit',
     'SearchSatisfaction',
     'TemplateWizard',
     'Test',

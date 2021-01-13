@@ -131,7 +131,6 @@ class profile::analytics::refinery::job::refine(
         'NewcomerTask',
         'SearchSatisfaction',
         'SpecialInvestigate',
-        'SpecialMuteSubmit',
         'TemplateWizard',
         'Test',
         'UniversalLanguageSelector',
