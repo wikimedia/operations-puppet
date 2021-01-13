@@ -29,9 +29,8 @@ class profile::microsites::peopleweb (
 
     base::service_auto_restart { 'apache2': }
 
-    file{$docroot.wmflib::dirtree() + $docroot:
-        ensure => directory
-    }
+    wmflib::dir::mkdir_p($docroot)
+
     file { "${docroot}/index.html":
         content => template('profile/microsites/peopleweb/index.html.erb'),
         mode    => '0444',
