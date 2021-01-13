@@ -9,6 +9,32 @@ from socket import getservbyname
 from subprocess import check_output
 
 
+def get_quoted_string(words_array, idx):
+    """read words array for a quoted string starting at idx
+
+    This functions will parse words array looking for a quoted string starting
+    at words_array[idx]. if we do find a quoted string, keep scanning
+    words_array until we find the string terminator and return the found string.
+    Otherwise return words_array[idx].
+
+    Arguments:
+        words_array (list): the words array to search
+        idx (int): the idx pointing to the beginning of the quoted string
+
+    Returns:
+        str: if a quote string is found return that otherwise return words_array[idx]
+    """
+    if words_array[idx][0] not in ['"', "'"]:
+        return words_array[idx]
+    quote_mark = words_array[idx][0]
+    msg = []
+    for word in words_array[idx:]:
+        msg.append(word)
+        if word.endswith(quote_mark) and word[-2] != '\\':
+            break
+    return ' '.join(msg).strip(quote_mark)
+
+
 class Tables(dict):
     """class to hold all tables"""
 
@@ -136,6 +162,7 @@ class Rule:
         '--sport': 'sport',
         '-m': 'match',
         '--match': 'match',
+        '--comment': 'comments',
         '--state': 'state',
         '--limit': 'limit',
         # limit burst is not present in iptables-save
@@ -156,6 +183,7 @@ class Rule:
         self.sport = None
         self.match = None
         self.state = None
+        self.comments = []
         self.limit = None
         self.limit_burst = None
         self.pkt_type = None
@@ -166,13 +194,14 @@ class Rule:
         return hash(str(self))
 
     def __str__(self):
-        output = '-A {}'.format(self.chain)
+        output = ['-A {}'.format(self.chain)]
         for token, value in vars(self).items():
-            if token.startswith('_raw') or token == 'chain':
+            if isinstance(value, str):
+                value = [value]
+            if token.startswith('_raw') or token == 'chain' or not isinstance(value, list):
                 continue
-            if value is not None:
-                output += ' --{} {}'.format(token.replace('_', '-'), value)
-        return output
+            output += ['--{} {}'.format(token.replace('_', '-'), element) for element in value]
+        return ' '.join(output)
 
     def __repr__(self):
         return 'Rule("{}")'.format(self._raw)
@@ -202,6 +231,10 @@ class Rule:
                 # don't track -m (tcp|udp)
                 if word in ['-m', '--match'] and self._raw_words[idx + 1] in ['tcp', 'udp']:
                     continue
+                if word == '--comment':
+                    # We can have multiple comments so this is an array
+                    self.comments.append(get_quoted_string(self._raw_words, idx + 1))
+                    continue
                 vars(self)[self.argument_switch.get(word)] = self._raw_words[idx + 1]
 
         # perform a bit of normalisation
@@ -230,11 +263,13 @@ class Parser:
         '-': 'rule',
     }
 
-    def __init__(self, lines, ignored_chain_prefixes=None, autoparse=True):
+    def __init__(self, lines, ignored_chain_prefixes=(),
+                 ignored_comment_prefixs=(), autoparse=True):
         self._lines = lines
         self._table = None
         self._chain = None
-        self.ignored_chain_prefixes = ignored_chain_prefixes if ignored_chain_prefixes else ()
+        self.ignored_chain_prefixes = ignored_chain_prefixes
+        self.ignored_comment_prefixs = ignored_comment_prefixs
         self._tables = Tables()
         if autoparse:
             self.parse()
@@ -294,8 +329,12 @@ class Parser:
     def _parse_rule(self, line):
         chain = line.split()[1]
         rule = Rule(line)
-        if (chain.startswith(self.ignored_chain_prefixes)
-                or (rule.jump and rule.jump.startswith(self.ignored_chain_prefixes))):
+        if chain.startswith(self.ignored_chain_prefixes):
+            return
+        if rule.jump and rule.jump.startswith(self.ignored_chain_prefixes):
+            return
+        if rule.comments and any(comment for comment in rule.comments
+                                 if comment.startswith(self.ignored_comment_prefixs)):
             return
         self._chain = self._table.chains[chain]
         self._chain.add(Rule(line))
@@ -316,16 +355,17 @@ def main():
     # as well as the following chains  KUBE-SERVICES, KUBE-FIREWALL and KUBE-FORWARD
     # docker creates DOCKER and DOCKER_USER
     ignored_chain_prefix = ('DOCKER', 'cali-', 'KUBE-')
+    ignored_comment_prefixs = ('cali:')
 
     iptables = check_output(['/sbin/iptables-save'])
     ferm = check_output('/usr/sbin/ferm -nl --domain ip /etc/ferm/ferm.conf'.split())
     ip6tables = check_output(['/sbin/ip6tables-save'])
     ferm6 = check_output('/usr/sbin/ferm -nl --domain ip6 /etc/ferm/ferm.conf'.split())
 
-    ferm_parsed = Parser(ferm.decode(), ignored_chain_prefix)
-    iptables_parsed = Parser(iptables.decode(), ignored_chain_prefix)
-    ferm6_parsed = Parser(ferm6.decode(), ignored_chain_prefix)
-    ip6tables_parsed = Parser(ip6tables.decode(), ignored_chain_prefix)
+    ferm_parsed = Parser(ferm.decode(), ignored_chain_prefix, ignored_comment_prefixs)
+    iptables_parsed = Parser(iptables.decode(), ignored_chain_prefix, ignored_comment_prefixs)
+    ferm6_parsed = Parser(ferm6.decode(), ignored_chain_prefix, ignored_comment_prefixs)
+    ip6tables_parsed = Parser(ip6tables.decode(), ignored_chain_prefix, ignored_comment_prefixs)
 
     ret_code = 0
     if ferm6_parsed != ip6tables_parsed:
