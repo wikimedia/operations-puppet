@@ -36,9 +36,6 @@ netbox_frontend:
 
 # List of all prometheus nodes (ops instance)
 prometheus_all_nodes:
-  - bast3004.wikimedia.org
-  - bast4002.wikimedia.org
-  - bast5001.wikimedia.org
   - prometheus1003.eqiad.wmnet
   - prometheus1004.eqiad.wmnet
   - prometheus2003.codfw.wmnet
