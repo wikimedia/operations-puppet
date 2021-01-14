@@ -35,7 +35,7 @@ class profile::logstash::alerts {
     # Logstash Elasticsearch indexing failures - T236343 T240667
     monitoring::check_prometheus { 'logstash_ingestion_errors':
         description     => 'Logstash Elasticsearch indexing errors #o11y',
-        dashboard_links => ['https://logstash.wikimedia.org/goto/1cee1f1b5d4e6c5e06edb3353a2a4b83', 'https://grafana.wikimedia.org/dashboard/db/logstash'],
+        dashboard_links => ['https://logstash.wikimedia.org/goto/3283cc1372b7df18f26128163125cf45', 'https://grafana.wikimedia.org/dashboard/db/logstash'],
         query           => 'sum(rate(logstash_elasticsearch_index_failure_total[5m]))',
         warning         => 1,
         critical        => 8,
