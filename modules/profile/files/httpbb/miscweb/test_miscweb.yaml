@@ -101,3 +101,10 @@ https://www.wikiworkshop.org:
   assert_status: 301
   assert_headers:
     Location: https://wikiworkshop.org/
+
+https://query.wikidata.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikidata_Query_Service
+- path: /embed.html
+  assert_status: 200
