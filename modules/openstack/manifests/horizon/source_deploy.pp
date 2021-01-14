@@ -83,6 +83,13 @@ class openstack::horizon::source_deploy(
         notify => Service['apache2'],
     }
 
+    file { '/etc/openstack-dashboard/cinder_policy.yaml':
+        source => "puppet:///modules/openstack/${openstack_version}/cinder/policy.yaml",
+        owner  => 'root',
+        mode   => '0444',
+        notify => Service['apache2'],
+    }
+
     file { '/etc/openstack-dashboard/keystone_policy.json':
         ensure => absent,
     }
