@@ -11,8 +11,8 @@
 class labstore::monitoring::interfaces(
     String $monitor_iface = 'eth0',
     String $contact_groups='wmcs-team,admins',
-    Integer $int_throughput_warn = 93750000,  # 750Mbps
-    Integer $int_throughput_crit = 106250000, # 850Mbps
+    Integer $int_throughput_warn = 937500000,  # 7.5Gbps
+    Integer $int_throughput_crit = 1062500000, # 8.5Gbps
 ){
 
     # In minutes, how long icinga will wait before considering HARD state, see also T188624
