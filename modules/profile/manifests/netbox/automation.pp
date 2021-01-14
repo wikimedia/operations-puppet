@@ -50,6 +50,12 @@ class profile::netbox::automation (
         content => template('profile/netbox/dns.cfg.erb'),
     }
 
+    file { $icinga_state_file:
+        owner => 'netbox',
+        group => 'netbox',
+        mode  => '0644',
+    }
+
     if $active_server == $::fqdn {
         $active_ensure = 'present'
     } else {
