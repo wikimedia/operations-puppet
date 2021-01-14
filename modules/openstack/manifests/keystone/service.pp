@@ -112,9 +112,4 @@ class openstack::keystone::service(
         ensure  => 'absent',
         require => Package['keystone'],
     }
-
-    service { 'keystone':
-        ensure  => $active,
-        require => Package['keystone'];
-    }
 }
