@@ -326,9 +326,9 @@ def harvest_cnf_files(config, account_type="tool"):
 
 
 def harvest_replica_accts(config):
+    labsdbs = []
     try:
         acct_db = get_accounts_db_conn(config)
-        labsdbs = []
         for host in config["labsdbs"]["hosts"]:
             if ":" in host:
                 hostnm = host.split(":")[0]
@@ -357,30 +357,27 @@ def harvest_replica_accts(config):
                     sqlhost = labsdb.host
                     if labsdb.port != 3306:
                         sqlhost = "{}:{}".format(labsdb.host, labsdb.port)
-                    try:
-                        with labsdb.cursor() as labsdb_cur:
-                            try:
-                                labsdb_cur.execute(
-                                    """
-                                SHOW GRANTS FOR %s@'%%'
-                                """,
-                                    (row["mysql_username"]),
-                                )
-                                labsdb_cur.fetchone()
-                                status = "present"
-                            except pymysql.err.InternalError as e:
-                                # Error code for when no grants exist for user
-                                if e.args[0] != 1141:
-                                    raise
-                                logging.info(
-                                    "No acct found for %s %s in %s",
-                                    row["type"],
-                                    row["username"],
-                                    sqlhost,
-                                )
-                                status = "absent"
-                    finally:
-                        labsdb.close()
+                    with labsdb.cursor() as labsdb_cur:
+                        try:
+                            labsdb_cur.execute(
+                                """
+                            SHOW GRANTS FOR %s@'%%'
+                            """,
+                                (row["mysql_username"]),
+                            )
+                            labsdb_cur.fetchone()
+                            status = "present"
+                        except pymysql.err.InternalError as e:
+                            # Error code for when no grants exist for user
+                            if e.args[0] != 1141:
+                                raise
+                            logging.info(
+                                "No acct found for %s %s in %s",
+                                row["type"],
+                                row["username"],
+                                sqlhost,
+                            )
+                            status = "absent"
 
                     with acct_db.cursor() as write_cur:
                         write_cur.execute(
@@ -395,6 +392,8 @@ def harvest_replica_accts(config):
         acct_db.commit()
     finally:
         acct_db.close()
+        for ldb in labsdbs:
+            ldb.close()
 
 
 def populate_new_accounts(config, account_type="tool"):
@@ -499,26 +498,20 @@ def create_accounts(config):
                     config["labsdbs"]["password"],
                     port=port,
                 )
-            except pymysql.err.OperationalError as exc:
-                logging.warning(
-                    "Could not connect to %s due to %s.  Skipping.", host, exc
-                )
-                continue
 
-            grant_type = config["labsdbs"]["hosts"][host]["grant-type"]
-            with acct_db.cursor() as cur:
-                cur.execute(
-                    """
-                SELECT mysql_username, password_hash, username, hostname, type,
-                    account_host.id as account_host_id
-                FROM account JOIN account_host on account.id = account_host.account_id
-                WHERE hostname = %s AND status = 'absent'
-                """,
-                    (host,),
-                )
-                for row in cur:
-                    with labsdb.cursor() as labsdb_cur:
-                        try:
+                grant_type = config["labsdbs"]["hosts"][host]["grant-type"]
+                with acct_db.cursor() as cur:
+                    cur.execute(
+                        """
+                    SELECT mysql_username, password_hash, username, hostname, type,
+                        account_host.id as account_host_id
+                    FROM account JOIN account_host on account.id = account_host.account_id
+                    WHERE hostname = %s AND status = 'absent'
+                    """,
+                        (host,),
+                    )
+                    for row in cur:
+                        with labsdb.cursor() as labsdb_cur:
                             create_acct_string = ACCOUNT_CREATION_SQL[
                                 grant_type
                             ].format(
@@ -549,25 +542,31 @@ def create_accounts(config):
                                     raise
 
                             labsdb.commit()
-                        finally:
-                            labsdb.close()
 
-                    with acct_db.cursor() as write_cur:
-                        write_cur.execute(
-                            """
-                        UPDATE account_host
-                        SET status='present'
-                        WHERE id = %s
-                        """,
-                            (row["account_host_id"],),
-                        )
-                        acct_db.commit()
-                        logging.info(
-                            "Created account in %s for %s %s",
-                            host,
-                            row["type"],
-                            row["username"],
-                        )
+                        with acct_db.cursor() as write_cur:
+                            write_cur.execute(
+                                """
+                            UPDATE account_host
+                            SET status='present'
+                            WHERE id = %s
+                            """,
+                                (row["account_host_id"],),
+                            )
+                            acct_db.commit()
+                            logging.info(
+                                "Created account in %s for %s %s",
+                                host,
+                                row["type"],
+                                row["username"],
+                            )
+
+            except pymysql.err.OperationalError as exc:
+                logging.warning(
+                    "Could not connect to %s due to %s.  Skipping.", host, exc
+                )
+                continue
+            finally:
+                labsdb.close()
     finally:
         acct_db.close()
 
