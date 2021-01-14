@@ -249,6 +249,10 @@ node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(chartmuseum)
 }
 
+node 'cloudgw2001-dev.codfw.wmnet' {
+    role(wmcs::openstack::codfw1dev::cloudgw)
+}
+
 node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
     role(wmcs::ceph::osd)
 }
