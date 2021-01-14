@@ -112,6 +112,16 @@ host bast3005 {
     fixed-address bast3005.wikimedia.org;
 }
 
+host bast4003 {
+    hardware ethernet AA:00:00:5D:6C:11;
+    fixed-address bast4003.wikimedia.org;
+}
+
+host bast5002 {
+    hardware ethernet AA:00:00:13:81:A2;
+    fixed-address bast5002.wikimedia.org;
+}
+
 host chlorine {
     hardware ethernet aa:00:00:37:a8:4d;
     fixed-address chlorine.eqiad.wmnet;

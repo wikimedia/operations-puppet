@@ -231,9 +231,19 @@ node 'bast4002.wikimedia.org' {
     role(bastionhost)
 }
 
+# ulsfo/bastion on Ganeti
+node 'bast4003.wikimedia.org' {
+    role(insetup)
+}
+
 # Bastion in Singapore
 node 'bast5001.wikimedia.org' {
     role(bastionhost)
+}
+
+# eqsin/bastion on Ganeti
+node 'bast5002.wikimedia.org' {
+    role(insetup)
 }
 
 node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
