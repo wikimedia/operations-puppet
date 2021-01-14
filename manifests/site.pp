@@ -1221,10 +1221,6 @@ node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::net)
 }
 
-node /^labtestvirt2003\.codfw\.wmnet$/ {
-    role(wmcs::openstack::codfw1dev::cloudgw)
-}
-
 node 'clouddb2001-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }
