@@ -75,6 +75,7 @@ class profile::puppetboard (
     }
 
     base::service_auto_restart { 'uwsgi-puppetboard': }
+    base::service_auto_restart { 'apache2': }
 
     ferm::service { 'apache2-http':
         proto => 'tcp',
