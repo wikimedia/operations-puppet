@@ -14,7 +14,7 @@ define monitoring::alerts::http_availability(
         critical        => $critical,
         nagios_critical => true,
         dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/frontend-traffic?panelId=3&fullscreen&refresh=1m&orgId=1',
-                            'https://logstash.wikimedia.org/goto/60aa05b6e1129b475fbf4e7be868c67d'],
+                            'https://logstash.wikimedia.org/goto/fe494e83d04fee66c8f0958bfc28451f'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
 
