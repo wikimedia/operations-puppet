@@ -116,6 +116,10 @@ profile::kubernetes::deployment_server::services:
     username: eventstreams
     group: wikidev
     mode: '0640'
+  eventstreams-internal:
+    username: eventstreams-internal
+    group: wikidev
+    mode: '0640'
   eventgate-analytics-external:
     username: eventgate-analytics-external
     group: wikidev
