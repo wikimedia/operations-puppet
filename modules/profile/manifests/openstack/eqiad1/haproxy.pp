@@ -3,6 +3,7 @@ class profile::openstack::eqiad1::haproxy(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::eqiad1::glance::api_bind_port'),
     Stdlib::Port $glance_registry_bind_port = lookup('profile::openstack::eqiad1::glance::registry_bind_port'),
+    Stdlib::Port $cinder_api_bind_port = lookup('profile::openstack::eqiad1::cinder::api_bind_port'),
     Stdlib::Port $keystone_admin_bind_port = lookup('profile::openstack::eqiad1::keystone::admin_bind_port'),
     Stdlib::Port $keystone_public_bind_port = lookup('profile::openstack::eqiad1::keystone::public_bind_port'),
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::eqiad1::neutron::bind_port'),
@@ -43,6 +44,14 @@ class profile::openstack::eqiad1::haproxy(
         healthcheck_path   => '/',
         port_frontend      => 9292,
         port_backend       => $glance_api_bind_port,
+    }
+
+    profile::openstack::base::haproxy::site { 'cinder_api':
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_frontend      => 8776,
+        port_backend       => $cinder_api_bind_port,
     }
 
     profile::openstack::base::haproxy::site { 'glance_registry':
