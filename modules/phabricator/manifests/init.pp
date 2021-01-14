@@ -189,10 +189,6 @@ class phabricator (
         require => $base_requirements,
     }
 
-    file { '/etc/apache2/phabbanlist.conf':
-        ensure  => absent,
-    }
-
     file { $confdir:
         ensure => 'directory',
         owner  => 'root',
