@@ -18,7 +18,16 @@ class openstack::nova::api::monitor(
         ensure        => $ensure,
         critical      => $critical,
         description   => 'nova-api process',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /usr/bin/nova-api'",
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /etc/nova/nova-api-uwsgi.ini'",
+        contact_group => $contact_groups,
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin',
+    }
+
+    nrpe::monitor_service { 'check_novametadata_api_process':
+        ensure        => $ensure,
+        critical      => $critical,
+        description   => 'nova metadata api process',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array '^/usr/bin/python.* /etc/nova/nova-api-metadata-uwsgi.ini'",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin',
     }
