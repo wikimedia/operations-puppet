@@ -7,6 +7,7 @@ class profile::kubernetes::deployment_server::global_config(
     $general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
     Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_all_nodes'),
+    Hash[String, Any] $kafka_clusters = lookup('kafka_clusters', {'default_value' => {}}),
 ) {
     # General directory holding all configurations managed by puppet
     # that are used in helmfiles
@@ -54,11 +55,35 @@ class profile::kubernetes::deployment_server::global_config(
             }.filter |$key, $val| { $val =~ NotUndef }
         }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
+
+
+    # We'll render Kafka cluster connection info into all general-*.yaml files.
+    $kafka_cluster_names = keys($kafka_clusters)
+    # Convert the list of Kafka cluster names into a hash of
+    # kafka_cluster_name => {...} including settings we need for services to use Kafka.
+    $kafka_clusters_info = $kafka_cluster_names.reduce({}) |$infos, $kafka_cluster_name| {
+        $kafka_cluster_config = kafka_config($kafka_cluster_name)
+
+        # Kafka clients should only need the list of Kafka brokers as a string to connect to Kafka.
+        # e.g.
+        #   kafka-main1001.eqiad.wmnet:9092,kafka-main1002.eqiad.wmnet:9092,... # for plaintext
+        # or
+        #   kafka-jumbo1001.eqiad.wmnet:9093,kafka-jumbo1003.eqiad.wmnet:9093,.... # for ssl
+        $kafka_cluster_info = {
+            'brokers_list' => {
+                'plaintext' => $kafka_cluster_config['brokers']['string'],
+                'ssl' => $kafka_cluster_config['brokers']['ssl_string'],
+            }
+        }
+        $infos + { $kafka_cluster_name => $kafka_cluster_info }
+    }
+
     # TODO: remove this
     file { '/etc/helmfile-defaults/service-proxy.yaml':
         ensure  => present,
         content => to_yaml({'services_proxy' => $proxies}),
     }
+
     # Per-cluster general defaults.
     $clusters.each |String $environment, $dc| {
         $puppet_ca_data = file($facts['puppet_config']['localcacert'])
@@ -80,7 +105,13 @@ class profile::kubernetes::deployment_server::global_config(
             }
         }
         # Merge default and environment specific general values with deployment config and service proxies
-        $opts = deep_merge($general_values['default'], $general_values[$environment], $deployment_config_opts, {'services_proxy' => $proxies})
+        $opts = deep_merge(
+            $general_values['default'],
+            $general_values[$environment],
+            $deployment_config_opts,
+            {'services_proxy' => $proxies},
+            {'kafka_clusters' => $kafka_clusters_info },
+        )
         file { "${general_dir}/general-${environment}.yaml":
             content => to_yaml($opts),
             mode    => '0444'
