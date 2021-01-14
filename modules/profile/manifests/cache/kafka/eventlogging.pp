@@ -26,11 +26,11 @@
 #   True if the varnishkafka instance should be monitored.  Default: false
 #
 class profile::cache::kafka::eventlogging(
-    $cache_cluster      = hiera('cache::cluster'),
-    $statsd             = hiera('statsd'),
-    $kafka_cluster_name = hiera('profile::cache::kafka::eventlogging::kafka_cluster_name'),
-    $ssl_enabled        = hiera('profile::cache::kafka::eventlogging::ssl_enabled', false),
-    $monitoring_enabled = hiera('profile::cache::kafka::eventlogging::monitoring_enabled', false),
+    String $cache_cluster       = lookup('cache::cluster'),
+    String $statsd              = lookup('statsd'),
+    String $kafka_cluster_name  = lookup('profile::cache::kafka::eventlogging::kafka_cluster_name'),
+    Boolean $ssl_enabled        = lookup('profile::cache::kafka::eventlogging::ssl_enabled', {'default_value' => false}),
+    Boolean $monitoring_enabled = lookup('profile::cache::kafka::eventlogging::monitoring_enabled', {'default_value' => false}),
 ) {
     $kafka_config = kafka_config($kafka_cluster_name)
 
