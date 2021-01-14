@@ -51,9 +51,10 @@ class profile::netbox::automation (
     }
 
     file { $icinga_state_file:
-        owner => 'netbox',
-        group => 'netbox',
-        mode  => '0644',
+        ensure => 'present',
+        owner  => 'netbox',
+        group  => 'netbox',
+        mode   => '0644',
     }
 
     if $active_server == $::fqdn {
