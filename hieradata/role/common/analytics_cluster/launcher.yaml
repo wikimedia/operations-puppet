@@ -47,5 +47,4 @@ profile::analytics::geoip::archive::ensure: 'present'
 
 profile::analytics::refinery::ensure_hdfs_dirs: true
 
-# Temporary workaround for https://phabricator.wikimedia.org/T270629
-profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: absent
+profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: present
