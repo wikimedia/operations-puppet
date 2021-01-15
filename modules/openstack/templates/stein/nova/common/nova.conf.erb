@@ -10,7 +10,6 @@ rootwrap_config = /etc/nova/rootwrap.conf
 log_dir=/var/log/nova
 pybasedir = /usr/lib/python2.7/dist-packages
 #use_rootwrap_daemon = True ### FIXME may be used only in compute nodes?
-notification_driver = messagingv2
 
 use_syslog = True
 syslog_log_facility = LOG_LOCAL0
@@ -34,7 +33,6 @@ default_schedule_zone = <%= @default_schedule_zone %>
 
 # compute
 compute_driver=libvirt.LibvirtDriver
-notification_topics=notifications
 connection_type=libvirt
 instance_name_template=i-%08x
 #daemonize=1 ### FIXME unknown yet, it seems like 'daemon' in some configs
@@ -69,7 +67,7 @@ connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%=
 max_overflow = 25
 max_pool_size = 3
 pool_timeout = 60
-idle_timeout = 1800
+connection_recycle_time = 1800
 
 [scheduler]
 driver=filter_scheduler
@@ -110,6 +108,16 @@ ssl = False
 
 [oslo_concurrency]
 lock_path = /var/lock/nova
+
+[oslo_messaging_notifications]
+# The Drivers(s) to handle sending notifications. Possible values are messaging,
+# messagingv2, routing, log, test, noop (multi valued)
+driver = messagingv2
+
+# AMQP topic used for OpenStack notifications. (list value)
+# Deprecated group/name - [rpc_notifier2]/topics
+# Deprecated group/name - [DEFAULT]/notification_topics
+topics = notifications
 
 [vnc]
 enabled=False
