@@ -26,6 +26,7 @@ class profile::maps::osm_master (
     }
 
     $pgversion = $::lsbdistcodename ? {
+        'buster'  => 11,
         'stretch' => 9.6,
     }
 

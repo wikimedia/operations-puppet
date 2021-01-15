@@ -1,2 +1,13 @@
-cassandra::rack: b3
+# maps2.0 uses abcd rather than a4/a5 etc.
+cassandra::rack: a
+cassandra::target_version: '3.x'
+
 do_paging: false
+
+profile::maps::apps::redis_server: 'redis://maps1009.eqiad.wmnet'
+# Disable tilerator while testing
+profile::maps::apps::tilerator_enable: false
+
+# maps1009 is the master for a separate maps cluster
+profile::cassandra::single_instance::seeds:
+  - '10.64.32.8' # maps1009.eqiad.wmnet

@@ -1596,11 +1596,16 @@ node /^lvs500[123]\.eqsin\.wmnet$/ {
     role(lvs::balancer)
 }
 
-node /^maps10(0[1-3]|0[5-9]|1[0])\.eqiad\.wmnet/ {
+node /^maps10(0[1-3]|0[5-8]|1[0])\.eqiad\.wmnet/ {
     role(maps::replica)
 }
 
 node 'maps1004.eqiad.wmnet' {
+    role(maps::master)
+}
+
+# testing buster master - maps2.0 migration
+node 'maps1009.eqiad.wmnet' {
     role(maps::master)
 }
 
