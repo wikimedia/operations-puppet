@@ -8,6 +8,11 @@ ProxyPass       <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %
 ProxyPassReverse    <%= @prefix -%> http://localhost:<%= @http_port -%><%= @prefix %>
 ProxyRequests       Off
 
+# Note the proxy file is included in the <VirtualHost> section and thus applies
+# to every sites (integration docroot, zuul status) beside just Jenkins. But
+# that should cause any problem.
+AllowEncodedSlashes NoDecode
+
 # Local reverse proxy authorization override
 # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Debian)
 
