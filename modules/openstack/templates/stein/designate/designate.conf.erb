@@ -152,11 +152,10 @@ enabled_notification_handlers = nova_fixed_multi, wmf_sink
 #-----------------------
 [service:mdns]
 #workers = None
-#port = 5354
 #tcp_backlog = 100
 
 # Setting this allows us to listen on ipv6 as well as ipv4
-host = ::
+listen = [::0]:5354
 
 #-----------------------
 # Agent Service
