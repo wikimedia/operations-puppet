@@ -18,7 +18,6 @@
 #  context for the policies that follow
 "admin_or_owner": "rule:admin_required or rule:owner"
 "admin_required": "role:admin or is_admin:1"
-"owner": "user_id:%(user_id)s"
 "service_or_admin": "rule:admin_required or rule:service_role"
 "service_role": "role:service"
 "projectadmin_role": "role:projectadmin"
@@ -37,7 +36,11 @@
 #   - restrictive admin-only policies that disable features we don't
 #     use in wmcs
 #
-"identity:change_password": "rule:admin_or_owner"
+
+# keystone can't change passwords, it regards ldap as read-only.
+"identity:change_password": "!"
+
+
 "identity:get_auth_catalog": ""
 "identity:get_auth_domains": ""
 "identity:get_auth_projects": ""
