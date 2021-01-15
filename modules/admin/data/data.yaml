@@ -294,7 +294,7 @@ groups:
               chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
-              matmarex, kharlan]
+              matmarex, kharlan, nikkin]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -3512,6 +3512,7 @@ users:
     uid: 22261
     gid: 500
     name: nikkin
+    krb: present
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjpUNj7h4VqfTXaV30XanPldBV8IW1tb8LGEkv8eYn7TXW/LhOnUsx5ql9pQBoXP6yZN/ijDsbAaUOucJzrgh321WokoJGasUAQmfRbOA2yzNWBn1D4PFqBruzFtgM9gsHjPO0JVHfAOvH2ugklLEEhOav3ZzACtykNqPJDJ6v5kq+lCJzr9Dg11tjeNZ/QcaImOT7DuUMNcKxu7rF/Ju9sTsoy4R0G0CQjervTA1SPt1kLXEqBCWeg8b21zal701chFnCPnZFp0xou5+jrWih3x5TgTKTkBqGF+TPfmTNAij5mwWGc9a9Ywum7zGWwagJ1ZgyEqNKQelZgXZ0Q3Vl3qWaAzMWN8Ut6YtfjU/QSjG9in2lRzrbh8HfHrbTO9vgPgmxtFXdpVYQLzP6V5R/v/BFHvoHsivnARQXSlPdCOevdclPfCIdUZ1UegZGuUP4CQhnBO/vgX4daYNRcBNU6yWXp+WL/ptBQn5R7TTbXXQIXL2653PikrciJ10/lQ91bLs86SugpPWsk5c+NmYe+jwcua30JS8qgdkYZeBK4xlbDaVFvv6oOq7mIHNoWav4IHhUDw57YRaYn6Q6brNEgg9sjOkv0fJ/tLFLgqlUiKSgLQh7JhMuKB3q0CVwCMYCwPLhttRg7DTYgWRzHI3PZxToXvRs+gCsxpq3JIGbgw== nnikkhoui@wikimedia.org
   kzeta:
