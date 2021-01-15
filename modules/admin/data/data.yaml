@@ -294,7 +294,7 @@ groups:
               chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
-              matmarex, kharlan, nikkin]
+              matmarex, kharlan, nikkin, bpirkle]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -3031,6 +3031,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDbltutX5diB3UPRq+rUBdWmK/wgjq7gQASlWAJLXqNDfV3gLSZ9SlneE6fEx91RlodXMgRC7PuPxzCj+39pNS+mtX+53+pf7gHO8vtb1Bsqa4+EaWxBgEvybmdOpFOmmhevZSBRtV882RhppOwSw62YannwT9eMOUKKDixZHaXA94gFVTIAjASY7bSI2+VwSFCKskjC+qHSIzh9AkkkKONMuU+meCFSqR/V47t5lVm/DjIPfZq7cSnlemvV/p1+hgLiCGIA3DufUYnTxiyoNPaAHJRyXmFwTxChogwMBJnMVyXqabsN75hIf1DdyTmT0TB+Wn3cu+Mqjz1E7GUaDJAhmWTBjM1ulvQgrMiPxsxU1QiAfqwgmtC56D/oajCniiDbCqV1+9SwtsdEAQUIO142+n5sR4he5Z/3t3Z6NUaowbKHwxgRyjSOaS7REXzC5jzk+1RmZ24vdViWXxodFqDXZz2JjzPNR1IsSsZusvwjMOIezHRZxp1EnH6g3o01zJedYqvA717He1ONDXW+FfisZwxe2Tejmqb6xGhhvfQgLIslxeXKPGGaQwruN6L9+ijpatsjXaVCY6odhmR3D6WG1mUcZg2stngKUNMKZqovruTBJK3cbPBdKCCXs3M/52v7qq2fykwii1kN9CVVv4YoYDyukZ2UqxMW1yMNqirhw== bpirkle@wikimedia.org
     uid: 19714
     email: bpirkle@wikimedia.org
+    krb: present
   sguebo:
     ensure: present
     realname: Samuel Guebo
