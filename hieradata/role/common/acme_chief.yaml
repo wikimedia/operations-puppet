@@ -168,6 +168,14 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'netbox-dev2001.wikimedia.org'
+    orchestrator:
+        CN: 'orchestrator.wikimedia.org'
+        SNI:
+        - 'orchestrator.wikimedia.org'
+        - 'dborch1001.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'dborch1001.wikimedia.org'
     smokeping:
         CN: 'smokeping.wikimedia.org'
         SNI:

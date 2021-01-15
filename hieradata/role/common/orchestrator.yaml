@@ -4,4 +4,12 @@ profile::base::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 profile::orchestrator::server::db_backend_host: db2093.codfw.wmnet
+
 monitor_screens: false
+
+profile::idp::client::httpd::sites:
+  'orchestrator.wikimedia.org':
+    vhost_content: 'profile/idp/client/httpd-orchestrator.erb'
+    acme_chief_cert: 'orchestrator'
+    required_groups:
+      - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
