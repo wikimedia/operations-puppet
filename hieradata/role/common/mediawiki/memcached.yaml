@@ -17,10 +17,12 @@ profile::redis::multidc::settings:
   slave_read_only: false
   stop_writes_on_bgsave_error: false
 profile::redis::multidc::aof: false
-profile::memcached::version: present
-profile::memcached::growth_factor: 1.05
-profile::memcached::min_slab_size: 5
-profile::memcached::size: 89088
+profile::redis::multidc::version_override: 2
+profile::memcached::version: 'present'
+profile::memcached::threads: 16
+profile::memcached::growth_factor: 1.15
+profile::memcached::min_slab_size: 48
+profile::memcached::size: 109568  # multiple of 1024
 profile::memcached::extended_options:
-  - 'slab_reassign'
+  - 'modern'
 profile::memcached::port: 11211
