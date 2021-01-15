@@ -4,7 +4,8 @@
 # and using the analytics/refinery repository.
 #
 class profile::analytics::refinery (
-    Boolean $deploy_hadoop_config = hiera('profile::analytics::refinery::deploy_hadoop_config', true)
+    Boolean $deploy_hadoop_config = lookup('profile::analytics::refinery::deploy_hadoop_config', { 'default_value' => true }),
+    Boolean $ensure_hdfs_dirs     = lookup('profile::analytics::refinery::ensure_hdfs_dirs', { 'default_value' => false })
 ) {
     if $deploy_hadoop_config {
         # Make this class depend on hadoop::common configs.  Refinery
@@ -60,6 +61,28 @@ class profile::analytics::refinery (
         logrotate::conf { 'refinery':
             source  => 'puppet:///modules/profile/analytics/refinery-logrotate.conf',
             require => File[$log_dir],
+        }
+    }
+
+    # Create HDFS directories for refinery temporary data
+    # Those directories are needed to enforce correct ownership of the data
+    if $ensure_hdfs_dirs {
+        # sudo -u hdfs hdfs dfs -mkdir /wmf/tmp/druid
+        # sudo -u hdfs hdfs dfs -chmod 0750 /wmf/tmp/druid
+        # sudo -u hdfs hdfs dfs -chown analytics:druid /wmf/tmp/druid
+        cdh::hadoop::directory { '/wmf/tmp/druid':
+            owner => 'analytics',
+            group => 'druid',
+            mode  => '0750',
+        }
+
+        # sudo -u hdfs hdfs dfs -mkdir /wmf/tmp/analytics
+        # sudo -u hdfs hdfs dfs -chmod 0750 /wmf/tmp/analytics
+        # sudo -u hdfs hdfs dfs -chown analytics:analytics-privatedata-users /wmf/tmp/analytics
+        cdh::hadoop::directory { '/wmf/tmp/analytics':
+            owner => 'analytics',
+            group => 'analytics-privatedata-users',
+            mode  => '0750',
         }
     }
 }
