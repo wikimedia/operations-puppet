@@ -22,7 +22,4 @@ profile::openstack::base::nova::scheduler_filters: [
   'ImagePropertiesFilter', # supports requested image properties
   'ComputeCapabilitiesFilter', # matches requested extra specs
   'AggregateInstanceExtraSpecsFilter', # matches host aggregate extra specs
-  'RamFilter', # under overcommit ratios
-  'CoreFilter', # under overcommit ratios
-  'DiskFilter', # under overcommit ratios
 ]
