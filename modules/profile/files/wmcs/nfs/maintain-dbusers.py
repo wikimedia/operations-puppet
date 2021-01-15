@@ -566,7 +566,12 @@ def create_accounts(config):
                 )
                 continue
             finally:
-                labsdb.close()
+                try:
+                    labsdb.close()
+                except pymysql.err.Error as err:
+                    logging.warning(
+                        "Could not close connection to %s: %s", host, err
+                    )
     finally:
         acct_db.close()
 
