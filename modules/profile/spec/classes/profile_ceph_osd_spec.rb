@@ -74,7 +74,7 @@ describe 'profile::ceph::osd' do
           'disk_models_without_write_cache' => ['dummymodel']
         }) }
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_exec('Disable write cache on device /dev/sda') }
+        it { is_expected.to contain_exec('Disable write cache on device /dev/sda').with_command('hdparm -W 0 /dev/sda') }
       end
     end
   end

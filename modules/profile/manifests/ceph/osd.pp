@@ -129,7 +129,8 @@ class profile::ceph::osd(
         if ('model' in $device_info and $device_info['model'] in
         $disk_models_without_write_cache) {
             exec { "Disable write cache on device /dev/${device}":
-                command => "hdparm -W 1 /dev/${device}",
+                # 0->disable, 1->enable
+                command => "hdparm -W 0 /dev/${device}",
                 user    => 'root',
                 unless  => "hdparm -W /dev/${device} | grep write-caching | grep -q off",
                 path    => ['/usr/sbin', '/usr/bin'],
