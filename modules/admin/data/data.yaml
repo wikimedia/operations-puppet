@@ -16,7 +16,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine, kaldari, dcipoletti, mhurd, jhernandez, mattflaschen, daisy, etonkovidova,
+              dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova,
               risler, jdittrich, debt]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
@@ -93,7 +93,7 @@ groups:
               kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, daniel, bpirkle, cicalese, dancy, chrisalbon,
-              jdl, holger, annet, jgiannelos, kharlan, stran]
+              jdl, holger, annet, jgiannelos, kharlan, stran, jhernandez]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -1827,11 +1827,11 @@ users:
     expiry_contact: halfak@wikimedia.org
     email: rwest@wikimedia.org
   jhernandez:
-    ensure: absent
+    ensure: present
     gid: 500
     name: jhernandez
     realname: Joaquin Oltra Hernandez
-    ssh_keys: []
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFay7brSap8ALMkuqdnOQ+nQJefZUCGzNS5dhHzHeNzq joakin@DESKTOP-THEJR4U]
     uid: 10733
     email: jhernandez@wikimedia.org
   smalyshev:
@@ -4098,11 +4098,6 @@ ldap_only_users:
   jaufrecht:
     ensure: absent
     realname: Joel Aufrecht
-  jhernandez:
-    ensure: present
-    name: jhernandez
-    realname: Joaquin Oltra Hernandez
-    email: jhernandez@wikimedia.org
   jrabah:
     ensure: present
     realname: Jack Rabah
