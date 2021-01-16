@@ -46,34 +46,28 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         return data
 
     def _create_record(self, context, format, zone, event_data, addr,
-                       managed, resource_type, resource_id):
+                       resource_type, resource_id):
         recordset_values = {
             'zone_id': zone['id'],
             'name': format % event_data,
             'type': 'A' if addr['version'] == 4 else 'AAAA'}
 
-        recordset = self._find_or_create_recordset(
-            context, **recordset_values)
-
         record_values = {
-            'data': addr['address']}
+            'data': addr['address'],
+            'managed': True,
+            'managed_plugin_name': self.get_plugin_name(),
+            'managed_plugin_type': self.get_plugin_type(),
+            'managed_resource_type': resource_type,
+            'managed_resource_id': resource_id
+        }
+        LOG.warn('Creating record in %s with values %r',
+                 zone['id'], record_values)
 
-        if managed:
-            record_values.update({
-                'managed': managed,
-                'managed_plugin_name': self.get_plugin_name(),
-                'managed_plugin_type': self.get_plugin_type(),
-                'managed_resource_type': resource_type,
-                'managed_resource_id': resource_id})
+        self._create_or_update_recordset(
+            context, [Record(**record_values)], **recordset_values
+        )
 
-        LOG.warn('Creating record in %s / %s with values %r',
-                 zone['id'], recordset['id'], record_values)
-        central_api.create_record(context,
-                                  zone['id'],
-                                  recordset['id'],
-                                  Record(**record_values))
-
-    def _create(self, addresses, extra, managed=True,
+    def _create(self, addresses, extra,
                 resource_type=None, resource_id=None):
         """
         Create a record from addresses
@@ -81,7 +75,6 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         :param addresses: Address objects like
                           {'version': 4, 'ip': '10.0.0.1'}
         :param extra: Extra data to use when formatting the record
-        :param managed: Is it a managed resource
         :param resource_type: The managed resource type
         :param resource_id: The managed resource ID
         """
@@ -119,26 +112,21 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                         'name': name,
                         'type': 'PTR',
                     }
-                    recordset = self._find_or_create_recordset(
-                        context, **recordset_values)
 
-                    record_values = {'data': reverse_format % event_data}
+                    record_values = {
+                        'data': reverse_format % event_data,
+                        'managed': True,
+                        'managed_plugin_name': self.get_plugin_name(),
+                        'managed_plugin_type': self.get_plugin_type(),
+                        'managed_resource_type': resource_type,
+                        'managed_resource_id': resource_id
+                    }
 
-                    if managed:
-                        record_values.update({
-                            'managed': managed,
-                            'managed_plugin_name': self.get_plugin_name(),
-                            'managed_plugin_type': self.get_plugin_type(),
-                            'managed_resource_type': resource_type,
-                            'managed_resource_id': resource_id})
-
-                    LOG.warn('Creating reverse record in %s / %s with values %r',
-                             reverse_zone['id'],
-                             recordset['id'], record_values)
-                    central_api.create_record(context,
-                                              reverse_zone['id'],
-                                              recordset['id'],
-                                              Record(**record_values))
+                    LOG.warn('Creating reverse record in %s with values %r',
+                             reverse_zone['id'], record_values)
+                    self._create_or_update_recordset(
+                        context, [Record(**record_values)], **recordset_values
+                    )
 
             for fmt in cfg.CONF[self.name].get('format'):
                 self._create_record(context,
@@ -146,7 +134,6 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                                     zone,
                                     event_data,
                                     addr,
-                                    managed,
                                     resource_type,
                                     resource_id)
 
@@ -160,11 +147,10 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                                         legacy_zone,
                                         event_data,
                                         addr,
-                                        managed,
                                         resource_type,
                                         resource_id)
 
-    def _delete(self, managed=True, resource_id=None, resource_type='instance',
+    def _delete(self, resource_id=None, resource_type='instance',
                 criterion={}):
         """
         Handle a generic delete of a fixed ip within a zone
@@ -176,16 +162,14 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         context.edit_managed_records = True
 
         forward_crit = criterion.copy()
-        forward_crit['zone_id'] = cfg.CONF[self.name].domain_id
-
-        if managed:
-            forward_crit.update({
-                'managed': managed,
-                'managed_plugin_name': self.get_plugin_name(),
-                'managed_plugin_type': self.get_plugin_type(),
-                'managed_resource_id': resource_id,
-                'managed_resource_type': resource_type
-            })
+        forward_crit.update({
+            'zone_id': cfg.CONF[self.name].domain_id,
+            'managed': True,
+            'managed_plugin_name': self.get_plugin_name(),
+            'managed_plugin_type': self.get_plugin_type(),
+            'managed_resource_id': resource_id,
+            'managed_resource_type': resource_type
+        })
 
         records = central_api.find_records(context, forward_crit)
 
@@ -199,16 +183,15 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         legacy_zone_id = cfg.CONF[self.name].get('legacy_domain_id')
         if legacy_zone_id:
             legacy_crit = criterion.copy()
-            legacy_crit['zone_id'] = legacy_zone_id
 
-            if managed:
-                legacy_crit.update({
-                    'managed': managed,
-                    'managed_plugin_name': self.get_plugin_name(),
-                    'managed_plugin_type': self.get_plugin_type(),
-                    'managed_resource_id': resource_id,
-                    'managed_resource_type': resource_type
-                })
+            legacy_crit.update({
+                'zone_id': legacy_zone_id,
+                'managed': True,
+                'managed_plugin_name': self.get_plugin_name(),
+                'managed_plugin_type': self.get_plugin_type(),
+                'managed_resource_id': resource_id,
+                'managed_resource_type': resource_type
+            })
 
             records = central_api.find_records(context, legacy_crit)
 
@@ -222,16 +205,14 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         reverse_zone_id = cfg.CONF[self.name].get('reverse_domain_id')
         if reverse_zone_id:
             reverse_crit = criterion.copy()
-            reverse_crit.update({'zone_id': reverse_zone_id})
-
-            if managed:
-                reverse_crit.update({
-                    'managed': managed,
-                    'managed_plugin_name': self.get_plugin_name(),
-                    'managed_plugin_type': self.get_plugin_type(),
-                    'managed_resource_id': resource_id,
-                    'managed_resource_type': resource_type
-                })
+            reverse_crit.update({
+                'zone_id': reverse_zone_id,
+                'managed': True,
+                'managed_plugin_name': self.get_plugin_name(),
+                'managed_plugin_type': self.get_plugin_type(),
+                'managed_resource_id': resource_id,
+                'managed_resource_type': resource_type
+            })
 
             records = central_api.find_records(context, reverse_crit)
 
