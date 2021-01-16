@@ -13,9 +13,9 @@
 #   only need to define this here.
 #
 class profile::eventlogging::analytics::processor(
-    $client_side_processors     = hiera('profile::eventlogging::analytics::processor::client_side_processors', ['client-side-00', 'client-side-01']),
-    $kafka_consumer_group       = hiera('profile::eventlogging::analytics::processor::kafka_consumer_group', 'eventlogging_processor_client_side_00'),
-    $kafka_producer_scheme      = hiera('profile::eventlogging::analytics::processor::kafka_producer_scheme', 'kafka://'),
+    Array[String] $client_side_processors = lookup('profile::eventlogging::analytics::processor::client_side_processors', {'default_value' => ['client-side-00', 'client-side-01']}),
+    String $kafka_consumer_group          = lookup('profile::eventlogging::analytics::processor::kafka_consumer_group', {'default_value' => 'eventlogging_processor_client_side_00'}),
+    String $kafka_producer_scheme         = lookup('profile::eventlogging::analytics::processor::kafka_producer_scheme', {'default_value' => 'kafka://'}),
 ){
 
     include profile::eventlogging::analytics::server
