@@ -51,7 +51,9 @@ profile::mediawiki::php::fpm_config:
   max_execution_time: 210 # we don't really want max_execution_time to kick in ever, see T248564
 
 # Configure php-fpm restarts
-profile::mediawiki::php::restarts::ensure: present
+# Temporary measure to avoid depooling servers during the weekend
+profile::mediawiki::php::restarts::ensure: absent
+
 # We set the restart watermark at 200 MB, which is approximately how much
 # opcache one full day of deployments consume.
 profile::mediawiki::php::restarts::opcache_limit: 200
