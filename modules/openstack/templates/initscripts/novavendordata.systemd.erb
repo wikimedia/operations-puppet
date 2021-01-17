@@ -1,0 +1,8 @@
+[Unit]
+Description=Service instance-appropriate vendordata to the nova metadata api
+
+[Service]
+ExecStart=/usr/local/sbin/novavendordata.py --config-file /etc/novavendordata/novavendordata.conf
+
+[Install]
+WantedBy=multi-user.target

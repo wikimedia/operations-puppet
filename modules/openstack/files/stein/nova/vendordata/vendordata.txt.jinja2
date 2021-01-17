@@ -1,0 +1,197 @@
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="XXXXboundary text"
+
+This is a multipart config in MIME format.
+It contains a cloud-init config followed by
+a first boot script.
+
+--XXXXboundary text
+MIME-Version: 1.0
+Content-Type: text/cloud-config; charset="us-ascii"
+
+#cloud-config
+packages:
+    - gpg
+    - curl
+    - nscd
+    - lvm2
+    - parted
+    - puppet
+
+hostname:
+    preserve_hostname: false
+    hostname: {{instance['hostname']}}
+    fqdn: {{fqdn}}
+
+growpart:
+    mode: false
+
+manage_etc_hosts: false
+
+apt:
+    preserve_sources_list: false
+    sources:
+        wikimedia.list:
+            source: >
+                deb http://apt.wikimedia.org/wikimedia buster-wikimedia main
+                deb-src http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main
+            filename: wikimedia.list
+            keyid: 9D392D3FFADF18FB
+
+package_update: true
+package_upgrade: true
+
+
+--XXXXboundary text
+MIME-Version: 1.0
+Content-Type: text/text/x-shellscript; charset="us-ascii"
+#!/bin/bash
+
+set -x
+
+# Prevent non-root logins while the VM is being setup
+# The ssh-key-ldap-lookup script rejects non-root user logins if this file
+# is present.
+echo "VM is work in progress" > /etc/block-ldap-key-lookup
+
+echo 'Enabling console logging for puppet while it does the initial run'
+echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
+systemctl restart rsyslog.service
+
+echo "Enabling root console on serial0"
+mkdir /etc/systemd/system/serial-getty@ttyS0.service.d
+cat <<EOT >> /etc/systemd/system/serial-getty@ttyS0.service.d/override.conf
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
+EOT
+
+# If we don't have a LVM volume group, we'll create it,
+# and allocate the remainder of the disk to it,
+if ! /sbin/vgdisplay -c vd
+then
+  # Locate root device, can be vda or sda depending on OS image
+  root_dev=$(lsblk --nodeps -o NAME -n | head -n 1)
+
+  echo 'Creating the volume group'
+  # There seems to be a bug in bootstrapvz that (can?)
+  # create the gpt of the image with the "wrong" size,
+  # where the extent of the disk is the sum of the
+  # existing partitions rather than the actual size of
+  # the image.  Sadly, the only way to fix this is
+  # by invoking parted "interactively" and accept an
+  # error if that is not the case (because then the
+  # 'fix' parameter becomes an answer to a question
+  # that is never asked.)
+  script -c "/sbin/parted /dev/$root_dev print fix" /dev/null
+
+  # the tail|sed|cut is just to get the start and
+  # end of the last unpartitioned span on the disk
+  /sbin/parted -s /dev/$root_dev print
+  /sbin/parted -ms /dev/$root_dev print
+  /sbin/parted -s /dev/$root_dev print free
+  /sbin/parted -ms /dev/$root_dev print free
+  if /sbin/parted -s /dev/$root_dev mkpart primary $(
+      /sbin/parted -ms /dev/$root_dev print free |
+      /usr/bin/tail -n 1 |
+      /usr/bin/cut -d : -f 2,3 --output-delimiter=' '
+    )
+  then
+    # this tail|cut is to to grab the partition
+    # number of the space we just allocated (which
+    # is, by necessity, the last partition
+    part=$( /sbin/parted -ms /dev/$root_dev print |
+            /usr/bin/tail -n 1 |
+            /usr/bin/cut -d : -f 1 )
+
+    if [ "$part" != "" ]; then
+      if [ "$part" -gt 1 ]; then
+        /sbin/parted -s /dev/$root_dev set $part lvm on
+        /sbin/pvcreate /dev/$root_dev$part
+        /sbin/vgcreate vd /dev/$root_dev$part
+        /sbin/partprobe
+      fi
+    fi
+  fi
+
+  # Debian has an lvm bug that foils many a boot.  This hack should
+  # work around that.
+  sed -i '/GRUB_CMDLINE_LINUX_DEFAULT.*/c\GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0 rootdelay=20"' /etc/default/grub
+  /usr/sbin/update-grub
+fi
+# At this point, all (the rest of) our disk are belong to LVM.
+
+# Get hostname and domain from metadata
+domain="$(curl http://169.254.169.254/openstack/latest/vendor_data.json | sed -r 's/^.*domain\": \"//' | sed -r 's/\".*//g')"
+hostname=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*hostname\": \"//'  | sed -r 's/[\"\.].*$//g'`
+project=`curl http://169.254.169.254/openstack/latest/meta_data.json/ | sed -r 's/^.*project_id\": \"//'  | sed -r 's/\".*$//g'`
+ip=`curl http://169.254.169.254/1.0/meta-data/local-ipv4 2> /dev/null`
+
+# from here on out make sure our hostname is the hostname from metadata:
+hostnamectl set-hostname $hostname
+
+# Double check the domain makes sense
+dhcp_domain=$(grep "option domain-name " /var/lib/dhcp/dhclient.*.leases | head -n1 | cut -d \" -f2)
+if [ "$domain" != "$dhcp_domain" ] ; then
+    echo "WARNING: the metadata domain (${domain}) and DHCP domain (${dhcp_domain}) don't match" >&2
+fi
+
+fqdn=${hostname}.${project}.${domain}
+master="puppet"
+
+sed -i "s/_PROJECT_/${project}/g" /etc/security/access.conf
+sed -i "s/_FQDN_/${fqdn}/g" /etc/puppet/puppet.conf
+sed -i "s/_MASTER_/${master}/g" /etc/puppet/puppet.conf
+
+echo "$ip       $fqdn $hostname" >> /etc/hosts
+echo $hostname > /etc/hostname
+
+# This is only needed when running bootstrap-vz on
+# a puppetmaster::self instance, and even then
+# it isn't perfect
+mkdir /var/lib/puppet/client
+
+systemctl restart nscd.service
+dpkg-reconfigure -fnoninteractive -pcritical openssh-server
+systemctl restart ssh.service
+nscd -i hosts
+
+# set mailname
+echo $fqdn > /etc/mailname
+
+# Make sure nothing has leaked in certwise
+rm -rf /var/lib/puppet/ssl
+
+puppet agent --enable
+# Run puppet, twice.  The second time is just to pick up packages
+#  that may have been unavailable in apt before the first puppet run
+#  updated sources.list
+puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --certname=${fqdn} --server=${master}
+
+# Refresh ldap now that puppet has updated our ldap.conf
+systemctl restart nslcd.service
+
+# Ensure all NFS mounts are mounted
+mount_attempts=1
+until [ $mount_attempts -gt 10 ]
+do
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
+    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/block-ldap-key-lookup
+    ((mount_attempts++))
+    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
+    # Sleep for 10s before next attempt
+    sleep 10
+done
+
+# Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
+# before, the puppet code that ensures the symlinks are created, etc may not
+# have run)
+puppet agent -t
+
+@log resetting ttys0
+systemctl enable serial-getty@ttyS0.service
+systemctl restart serial-getty@ttyS0.service
+
+# Remove the non-root login restriction
+rm /etc/block-ldap-key-lookup
+--XXXXboundary text
