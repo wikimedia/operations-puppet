@@ -81,6 +81,18 @@ class ServiceRestarter(ToolCliBase):
             key='-'.join(sorted(lvs_pools))
         )
 
+    def run_and_raise(self):
+        """Restart the service, raise an exception if failed."""
+        # ServiceRestarter.run returns an integer, while
+        # poolcounter.client.Client run will only report an
+        # error if the callback raises an exception.
+        # So write a simple wrapper that will raise an exception on non-zero
+        # exit code, so that the systemd timer will fail, and monitoring will
+        # notice.
+        rc = self.run()
+        if rc != 0:
+            raise RuntimeError("Failed executing ServiceRunner.run, return code %d", rc)
+
     def run(self):
         """
         Finds if a service for a host is pooled or not.
@@ -388,7 +400,7 @@ def poolcounter_run(args, sr):
     if pc.run(
             RequestType.LOCK_EXC,
             key,
-            sr.run,
+            sr.run_and_raise,
             concurrency=args.max_concurrency,
             max_queue=10000,
             timeout=600,
