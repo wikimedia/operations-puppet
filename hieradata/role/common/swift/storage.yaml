@@ -1,5 +1,8 @@
 cluster: swift
 nagios_group: swift
+
+profile::swift::storage::object_replicator_concurrency: 3
+
 profile::statsite::ensure: 'absent'
 profile::prometheus::statsd_exporter::mappings:
   # Account-related services
