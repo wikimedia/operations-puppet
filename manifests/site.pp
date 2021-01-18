@@ -718,7 +718,7 @@ node 'db2093.codfw.wmnet' {
 }
 
 # Orchestrator central node (VM on ganeti)
-node 'dborch1001.eqiad.wmnet' {
+node 'dborch1001.wikimedia.org' {
     role(orchestrator)
 }
 

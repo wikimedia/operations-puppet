@@ -1,9 +1,9 @@
--- dborch1001.eqiad.wmnet
+-- dborch1001.wikimedia.org
 
 CREATE USER 'orchestrator_srv'@'208.80.155.103' IDENTIFIED BY '<%= @db_backend_password %>';
 GRANT ALL PRIVILEGES ON `orchestrator`.* TO 'orchestrator_srv'@'208.80.155.103';
 
--- Grants for being able to discover hosts from dborch1001.eqiad.wmnet
+-- Grants for being able to discover hosts from dborch1001.wikimedia.org
 CREATE USER 'orchestrator'@'208.80.155.103' IDENTIFIED BY '<%= @db_topology_password %>';
 GRANT SUPER, PROCESS, REPLICATION SLAVE, REPLICATION CLIENT, RELOAD ON *.* TO 'orchestrator'@'208.80.155.103';
 GRANT SELECT ON mysql.slave_master_info TO 'orchestrator'@'208.80.155.103';

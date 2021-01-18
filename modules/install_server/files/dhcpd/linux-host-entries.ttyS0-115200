@@ -139,8 +139,8 @@ host chartmuseum2001 {
 }
 
 host dborch1001 {
-    hardware ethernet aa:00:00:27:dc:04;
-    fixed-address dborch1001.eqiad.wmnet;
+    hardware ethernet aa:00:00:a1:94:8f;
+    fixed-address dborch1001.wikimedia.org;
 }
 
 host dbmonitor1001 {
