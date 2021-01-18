@@ -139,7 +139,7 @@ host chartmuseum2001 {
 }
 
 host dborch1001 {
-    hardware ethernet aa:00:00:1d:b3:9b;
+    hardware ethernet aa:00:00:27:dc:04;
     fixed-address dborch1001.eqiad.wmnet;
 }
 
