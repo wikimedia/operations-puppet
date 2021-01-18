@@ -1,7 +1,7 @@
 class profile::query_service::updater (
     String $username = lookup('profile::query_service::username'),
     String $options = lookup('profile::query_service::updater_options'),
-    Boolean $async_import = lookup('profile::query_service::async_import', {'default_value' => true}),
+    Boolean $async_import = lookup('profile::query_service::async_import', {'default_value' => false}),
     Stdlib::Port $logstash_logback_port = lookup('logstash_logback_port'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
