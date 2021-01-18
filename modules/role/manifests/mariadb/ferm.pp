@@ -10,6 +10,13 @@ class role::mariadb::ferm {
         srange  => '$INTERNAL',
     }
 
+    ferm::service{ 'orchestrator':
+        proto   => 'tcp',
+        port    => '3306',
+        notrack => true,
+        srange  => '@resolve((dborch1001.wikimedia.org))',
+    }
+
     # for DBA purposes
     ferm::rule { 'mariadb_dba':
         rule => 'saddr ($MYSQL_ROOT_CLIENTS) proto tcp dport (3307) ACCEPT;',

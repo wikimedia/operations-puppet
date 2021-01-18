@@ -12,16 +12,22 @@
 define profile::mariadb::ferm (
     $port = '3306',
 ) {
-    if $port == '3306' {
-        $rule_name = 'mariadb_internal'
-    } else {
-        $rule_name = "${title}_mariadb_internal"
+    $prefix = $port ? {
+        '3306' => '',
+        default => "${title}_",
     }
-    ferm::service{ $rule_name:
+
+    ferm::service{ "${prefix}mariadb_internal":
         proto   => 'tcp',
         port    => $port,
         notrack => true,
         srange  => '$INTERNAL',
+    }
+    ferm::service{ "${prefix}orchestrator":
+        proto   => 'tcp',
+        port    => $port,
+        notrack => true,
+        srange  => '@resolve((dborch1001.wikimedia.org))',
     }
 
     # auxiliary port
