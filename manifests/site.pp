@@ -222,9 +222,8 @@ node 'bast2002.wikimedia.org' {
     role(bastionhost)
 }
 
-# Bastion in the Netherlands (replaced bast3002)
 node 'bast3004.wikimedia.org' {
-    role(bastionhost)
+    role(spare::system)
 }
 
 # esams/bastion on Ganeti
@@ -232,9 +231,8 @@ node 'bast3005.wikimedia.org' {
     role(bastionhost)
 }
 
-# Bastion in California
 node 'bast4002.wikimedia.org' {
-    role(bastionhost)
+    role(spare::system)
 }
 
 # ulsfo/bastion on Ganeti
@@ -242,9 +240,8 @@ node 'bast4003.wikimedia.org' {
     role(bastionhost)
 }
 
-# Bastion in Singapore
 node 'bast5001.wikimedia.org' {
-    role(bastionhost)
+    role(spare::system)
 }
 
 # eqsin/bastion on Ganeti
