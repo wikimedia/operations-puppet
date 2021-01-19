@@ -3,10 +3,10 @@
 # Consumes the mixed stream of events and writes them to MySQL
 #
 class profile::eventlogging::analytics::mysql(
-    $mysql_consumers = hiera('profile::eventlogging::analytics::mysql::consumers'),
-    $mysql_db        = hiera('profile::eventlogging::analytics::mysql::db', '127.0.0.1/log'),
-    $statsd_host     = hiera('profile::eventlogging::analytics::mysql::statsd_host', 'statsd.eqiad.wmnet'),
-    $ensure          = hiera('profile::eventlogging::analytics::mysql::ensure', 'present'),
+    Array[String] $mysql_consumers = lookup('profile::eventlogging::analytics::mysql::consumers'),
+    String $mysql_db               = lookup('profile::eventlogging::analytics::mysql::db', {'default_value' => '127.0.0.1/log'}),
+    Stdlib::Host $statsd_host      = lookup('profile::eventlogging::analytics::mysql::statsd_host', {'default_value' => 'statsd.eqiad.wmnet'}),
+    Wmflib::Ensure $ensure         = lookup('profile::eventlogging::analytics::mysql::ensure', {'default_value' =>  'present'}),
 ) {
 
     include profile::eventlogging::analytics::server
