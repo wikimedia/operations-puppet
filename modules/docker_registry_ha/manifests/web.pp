@@ -67,6 +67,7 @@ class docker_registry_ha::web (
         ensure      => 'present',
         description => 'Build docker-registry homepage',
         command     => '/usr/local/bin/registry-homepage-builder http://localhost:5000 /srv/homepage',
+        user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:00:00', # every hour
