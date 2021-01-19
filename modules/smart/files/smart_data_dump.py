@@ -132,7 +132,7 @@ def _check_output(cmd, timeout=60, suppress_errors=False, stderr=subprocess.STDO
 def get_raid_drivers():
     """Ask facter script for the raid drivers. Return the fact's value or None."""
     command = '/usr/bin/ruby /var/lib/puppet/lib/facter/raid.rb'
-    raw_output = _check_output(command, timeout=60, stderr=subprocess.DEVNULL)
+    raw_output = _check_output(command, timeout=120, stderr=subprocess.DEVNULL)
     try:
         fact_value = json.loads(raw_output).get('raid', None)
     except ValueError:
