@@ -45,4 +45,6 @@ class profile::webperf::arclamp (
     }
 
     backup::set { 'arclamp-application-data': }
+
+    base::service_auto_restart { 'apache2': }
 }
