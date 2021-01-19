@@ -569,3 +569,110 @@ profile::prometheus::memcached_exporter::arguments: ''
 
 # Somehow missing value on deployment-prep / labs
 etcd::autogen_pwd_seed: ''
+# MediaWiki apache configuration
+mediawiki::sites:
+  - name: beta-specific
+    source: mediawiki/apache/beta/sites/beta_specific.conf
+    priority: 1
+  - name: main
+    source: mediawiki/apache/beta/sites/main.conf
+    priority: 1
+  # the sites in beta are now organized like in production
+  # this is slightly more complicated but ultimately worth it.
+  - name: beta_sites
+    priority: 2
+    defaults:
+      docroot: "/srv/mediawiki/docroot/standard-docroot"
+      legacy_rewrites: false
+      public_rewrites: true
+      short_urls: false
+      declare_site: false
+      domain_suffix: "beta.wmflabs.org"
+      variant_aliases:
+        [
+          "sr",
+          "sr-ec",
+          "sr-el",
+          "zh",
+          "zh-hans",
+          "zh-hant",
+          "zh-cn",
+          "zh-hk",
+          "zh-sg",
+          "zh-tw",
+        ]
+    vhosts:
+      - name: wikibooks
+        params:
+          server_aliases: ["*.wikibooks.beta.wmflabs.org"]
+      - name: wikipedia
+        params:
+          docroot: "/srv/mediawiki/docroot/wikipedia.org"
+          server_aliases: ["*.wikipedia.beta.wmflabs.org"]
+          additional_rewrites:
+            early: []
+            late:
+              [
+                "    # Redirect commons.wikipedia to commons.wikimedia",
+                "    RewriteCond %%{}{HTTP_HOST} =commons.wikipedia.beta.wmflabs.org",
+                "    RewriteRule ^(.*)$ http://commons.wikimedia.beta.wmflabs.org$1 [R=301,L,NE]",
+                "    RewriteRule ^/data/(.*)/(.*)$ /wiki/Special:PageData/$1/$2 [R=303,QSA]",
+              ]
+      - name: wikidata
+        params:
+          server_aliases:
+            ["wikidata.beta.wmflabs.org", "*.wikidata.beta.wmflabs.org"]
+          additional_rewrites:
+            early: []
+            late:
+              [
+                "    # https://meta.wikimedia.org/wiki/Wikidata/Notes/URI_scheme",
+                '    Include "sites-enabled/wikidata-uris.incl"',
+              ]
+      - name: wikisource
+        params:
+          server_aliases: ["*.wikisource.beta.wmflabs.org"]
+      - name: wikiversity
+        params:
+          server_aliases: ["*.wikiversity.beta.wmflabs.org"]
+      - name: wikiquote
+        params:
+          server_aliases: ["*.wikiquote.beta.wmflabs.org"]
+      - name: wiktionary
+        params:
+          server_aliases: ["*.wiktionary.beta.wmflabs.org"]
+      - name: wikinews
+        params:
+          server_aliases: ["*.wikinews.beta.wmflabs.org"]
+      - name: loginwiki
+        params:
+          server_name: "login.wikimedia.beta.wmflabs.org"
+          public_rewrites: false
+          variant_aliases: []
+      - name: wikimedia
+        params:
+          server_name: "misc-sites"
+          server_aliases:
+            [
+              "commons.wikimedia.beta.wmflabs.org",
+              "deployment.wikimedia.beta.wmflabs.org",
+              "meta.wikimedia.beta.wmflabs.org",
+              "api.wikimedia.beta.wmflabs.org",
+              "vote.wikimedia.beta.wmflabs.org"
+            ]
+          variant_aliases: []
+      - name: wikivoyage
+        params:
+          server_aliases: ["*.wikivoyage.beta.wmflabs.org"]
+          variant_aliases:
+            [
+              "zh",
+              "zh-hans",
+              "zh-hant",
+              "zh-cn",
+              "zh-hk",
+              "zh-mo",
+              "zh-my",
+              "zh-sg",
+              "zh-tw",
+            ]

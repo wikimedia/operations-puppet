@@ -1,0 +1,3 @@
+<%- @siteconfig['vhosts'].each do |v|%>
+Include "sites-available/<%= v['name'] %>.conf"
+<%- end -%>

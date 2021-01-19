@@ -1,13 +1,8 @@
 class mediawiki::web::sites (
+    Array[Mediawiki::SiteCollection] $siteconfigs,
     String $domain_suffix = 'org',
 ) {
     tag 'mediawiki', 'mw-apache-config'
-
-    #common code snippets that were included in the virtualhosts. They now need to be removed from disk
-    file { ['/etc/apache2/sites-enabled/wikimedia-common.incl', '/etc/apache2/sites-enabled/wikimedia-legacy.incl',
-            '/etc/apache2/sites-enabled/api-rewrites.incl', '/etc/apache2/sites-enabled/public-wiki-rewrites.incl']:
-        ensure  => absent,
-    }
 
     file { '/etc/apache2/sites-enabled/wikidata-uris.incl':
         ensure => present,
@@ -15,13 +10,38 @@ class mediawiki::web::sites (
         before => Service['apache2'],
     }
 
-    ::httpd::site { 'nonexistent':
-        source   => 'puppet:///modules/mediawiki/apache/sites/nonexistent.conf',
-        priority => 0,
-    }
-
-    ::httpd::site { 'wwwportals':
-        content  => template('mediawiki/apache/sites/wwwportals.conf.erb'),
-        priority => 1,
+    # Define all mediawiki sites used in the site, and the site itself.
+    $siteconfigs.each |$siteconfig| {
+        $sitename = $siteconfig['name']
+        # Generic sites get declared pretty simply:
+        # We either compile the template indicated in the data, interpolating with the 
+        # variables above, or we just source the file it's pointing at.
+        if $siteconfig['template'] {
+            ::httpd::site { $sitename:
+                content  => template($siteconfig['template']),
+                priority => $siteconfig['priority']
+            }
+        } elsif $siteconfig['source'] {
+            ::httpd::site { $sitename:
+                source   =>  "puppet:///modules/${siteconfig['source']}",
+                priority => $siteconfig['priority']
+            }
+        } else {
+            # the individual virtualhosts
+            $siteconfig['vhosts'].each |$data| {
+                $params = $data['params']
+                $label = $data['name']
+                $complete = merge($siteconfig['defaults'], $params)
+                mediawiki::web::vhost { $label:
+                    before => Httpd::Site[$sitename],
+                    *      => $complete
+                }
+            }
+            # This file just includes all the vhosts declared above.
+            ::httpd::site { $sitename:
+                content  => template('mediawiki/apache/sitecollection.conf.erb'),
+                priority => $siteconfig['priority'],
+            }
+        }
     }
 }

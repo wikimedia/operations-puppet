@@ -6,6 +6,10 @@ class profile::mediawiki::webserver(
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = lookup('profile::mediawiki::vhost_feature_flags', {'default_value' => {}}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
+    # Sites shared between different installations
+    Array[Mediawiki::SiteCollection] $common_sites = lookup('mediawiki::common_sites'),
+    # Installation/site dependent sites
+    Array[Mediawiki::SiteCollection] $sites = lookup('mediawiki::sites')
 ) {
     include ::profile::mediawiki::httpd
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
@@ -25,16 +29,9 @@ class profile::mediawiki::webserver(
         feature_flags         => $vhost_feature_flags,
     }
 
-    # Basic web sites
-    class { '::mediawiki::web::sites': }
-
-    if $::realm == 'labs' {
-        class { '::mediawiki::web::beta_sites': }
-    }
-    else {
-        class { '::mediawiki::web::prod_sites':
-            fcgi_proxy => $fcgi_proxy,
-        }
+    # Define all websites for apache, as the sum of general and env-specific stuff.
+    class { '::mediawiki::web::sites':
+        siteconfigs => $common_sites + $sites
     }
 
     if $has_lvs {

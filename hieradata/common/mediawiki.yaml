@@ -1,0 +1,491 @@
+# This is a collection of all the sites declared in
+# the apache configuration for MediaWiki.
+
+# This is a list of sites that are shared between installations.
+# they can be erb inline templates, or just plain strings.
+mediawiki::common_sites:
+  # Catchall for any domain-name not caught by virtualhosts below.
+  - name: nonexistent
+    priority: 0
+    source: mediawiki/apache/sites/nonexistent.conf
+  - name: wwwportals
+    priority: 1
+    template: mediawiki/apache/sites/wwwportals.conf.erb
+
+# Specifically the top-level entries are the main containers,
+# and their priority relative to one another is determined by the
+# 'priority' parameter.
+# Within each container, the declared virtual hosts will be set up
+# according to the sequence in this yaml document.
+mediawiki::sites:
+  # Non-wiki vhosts
+  - name: redirects
+    priority: 2
+    # Redirects are a bit forced here, basically we just use a dumb template that calls
+    # the compile_redirects
+    template: mediawiki/apache/sites/compile_redirects.erb
+  # Main sites
+  - name: main
+    priority: 3
+    defaults:
+      ensure: present
+      public_rewrites: true
+      declare_site: false
+    vhosts:
+      # The vhosts are ordered from top to bottom.
+      - name: mediawiki.org
+        params:
+          server_name: "www.mediawiki.org"
+          docroot: "/srv/mediawiki/docroot/mediawiki.org"
+          server_aliases: ["download.mediawiki.org"]
+          canonical_name: "On"
+          upload_rewrite:
+            rewrite_prefix: "mediawiki"
+          additional_rewrites:
+            early:
+              - "# Our FAQ"
+              - "    RewriteRule ^/FAQ$ %%{}{ENV:RW_PROTO}://www.mediawiki.org/wiki/Help:FAQ [R=301,L]"
+            late: []
+      - name: test.wikidata.org
+        params:
+          docroot: "/srv/mediawiki/docroot/wikidata.org"
+          additional_rewrites:
+            early:
+              - '    Include "sites-enabled/wikidata-uris.incl"'
+            late: []
+      - name: wikidata.org
+        params:
+          server_name: www.wikidata.org
+          server_aliases: ["*.wikidata.org"]
+          docroot: "/srv/mediawiki/docroot/wikidata.org"
+          canonical_name: "On"
+          additional_rewrites:
+            early:
+              - '    Include "sites-enabled/wikidata-uris.incl"'
+            late: []
+          legacy_rewrites: false
+      - name: wiktionary.org
+        params:
+          server_name: "wiktionary"
+          server_aliases: ["*.wiktionary.org"]
+          docroot: "/srv/mediawiki/docroot/wiktionary.org"
+          short_urls: true
+          upload_rewrite:
+            domain_catchall: "wiktionary.org"
+            rewrite_prefix: "wiktionary"
+          variant_aliases:
+            &default_variants [
+              "sr",
+              "sr-ec",
+              "sr-el",
+              "zh",
+              "zh-hans",
+              "zh-hant",
+              "zh-cn",
+              "zh-hk",
+              "zh-sg",
+              "zh-tw",
+            ]
+      - name: wikiquote.org
+        params:
+          server_name: "wikiquote"
+          server_aliases: ["*.wikiquote.org"]
+          docroot: "/srv/mediawiki/docroot/wikiquote.org"
+          short_urls: true
+          upload_rewrite:
+            domain_catchall: "wikiquote.org"
+            rewrite_prefix: "wikiquote"
+          legacy_rewrites: true
+          variant_aliases: *default_variants
+      # Donate wiki is here instead of remnants, because it needs to catch donate.wikipedia.org
+      # and the 'wikipedia' server's wildcard ServerAlias would otherwise apply
+      - name: donate.wikimedia.org
+        params:
+          docroot: "/srv/mediawiki/docroot/wikimedia.org"
+          server_aliases: ["donate.wikipedia.org"]
+          canonical_name: "On"
+          https_only: true
+          legacy_rewrites: true
+          short_urls: true
+          additional_rewrites:
+            "early":
+              - "RewriteRule ^/$ https://donate.wikimedia.org/wiki/Special:FundraiserRedirector [R=302,L]"
+            "late": []
+      - name: thankyou.wikipedia.org
+        params:
+          docroot: "/srv/mediawiki/docroot/thankyou"
+          https_only: true
+          legacy_rewrites: false
+          short_urls: false
+      - name: vote.wikimedia.org
+        params:
+          docroot: "/srv/mediawiki/docroot/wikimedia.org"
+          short_urls: true
+          https_only: true
+          legacy_rewrites: false
+      - name: wikipedia.org
+        params:
+          server_name: "wikipedia"
+          server_aliases: ["*.wikipedia.org"]
+          docroot: "/srv/mediawiki/docroot/wikipedia.org"
+          short_urls: true
+          upload_rewrite:
+            domain_catchall: "wikipedia.org"
+            rewrite_prefix: "wikipedia"
+          legacy_rewrites: true
+          variant_aliases:
+            [
+              "sr",
+              "sr-ec",
+              "sr-el",
+              "zh",
+              "zh-hans",
+              "zh-hant",
+              "zh-cn",
+              "zh-hk",
+              "zh-my",
+              "zh-mo",
+              "zh-sg",
+              "zh-tw",
+            ]
+          additional_rewrites:
+            "early": []
+            "late":
+              - "    # moved wikistats off NFS"
+              - "    RewriteRule ^/wikistats(/(.*$)|$) %%{}{ENV:RW_PROTO}://stats.wikimedia.org/$2 [R=302,L]"
+      - name: wikibooks.org
+        params:
+          server_name: "wikibooks"
+          server_aliases: ["*.wikibooks.org"]
+          docroot: "/srv/mediawiki/docroot/wikibooks.org"
+          short_urls: true
+          upload_rewrite:
+            domain_catchall: "wikibooks.org"
+            rewrite_prefix: "wikibooks"
+          legacy_rewrites: true
+          variant_aliases: *default_variants
+      - name: wikisource.org
+        params:
+          server_name: "wikisource"
+          server_aliases: ["*.wikisource.org"]
+          docroot: "/srv/mediawiki/docroot/wikisource.org"
+          short_urls: true
+          upload_rewrite:
+            domain_catchall: "wikisource.org"
+            rewrite_prefix: "wikisource"
+          legacy_rewrites: true
+          variant_aliases: *default_variants
+      - name: wikinews.org
+        params:
+          server_name: "wikinews"
+          server_aliases: ["*.wikinews.org"]
+          docroot: "/srv/mediawiki/docroot/wikinews.org"
+          short_urls: true
+          upload_rewrite:
+            "domain_catchall": "wikinews.org"
+            "rewrite_prefix": "wikinews"
+          legacy_rewrites: true
+          variant_aliases: *default_variants
+      - name: wikiversity.org
+        params:
+          server_name: "wikiversity"
+          server_aliases: ["*.wikiversity.org"]
+          docroot: "/srv/mediawiki/docroot/wikiversity.org"
+          legacy_rewrites: true
+          short_urls: true
+          upload_rewrite:
+            domain_catchall: "wikiversity.org"
+            rewrite_prefix: "wikiversity"
+          variant_aliases: *default_variants
+      - name: wikivoyage.org
+        params:
+          server_name: "wikivoyage"
+          server_aliases: ["*.wikivoyage.org"]
+          docroot: "/srv/mediawiki/docroot/wikivoyage.org"
+          variant_aliases:
+            [
+              "zh",
+              "zh-hans",
+              "zh-hant",
+              "zh-cn",
+              "zh-hk",
+              "zh-mo",
+              "zh-my",
+              "zh-sg",
+              "zh-tw",
+            ]
+          legacy_rewrites: false
+  # other important wikis
+  - name: "remnant"
+    priority: 4
+    defaults:
+      ensure: present
+      short_urls: false
+      docroot: "/srv/mediawiki/docroot/wikimedia.org"
+      legacy_rewrites: true
+      declare_site: false
+      public_rewrites: true
+    vhosts:
+      - name: meta.wikimedia.org
+        params:
+          short_urls: true
+          upload_rewrite:
+            rewrite_prefix: "wikipedia/meta"
+          additional_rewrites:
+            early: []
+            late:
+              - "    # Used for Firefox OS web application manifest living on meta.wikimedia.org"
+              - "    AddType application/x-web-app-manifest+json .webapp"
+      - name: _wikisource.org
+        params:
+          docroot: "/srv/mediawiki/docroot/wikisource.org"
+          server_name: "wikisource.org"
+          upload_rewrite:
+            rewrite_prefix: "wikipedia/sources"
+      - name: commons.wikimedia.org
+        params:
+          upload_rewrite:
+            rewrite_prefix: "wikipedia/commons"
+          additional_rewrites:
+            early:
+              - '    Include "sites-enabled/wikidata-uris.incl"'
+            late:
+              - "    # /data/ path T163922"
+              - "    RewriteRule ^/data/(.*)/(.*)$ %%{}{ENV:RW_PROTO}://commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]"
+      - name: grants.wikimedia.org
+        params: &private_wiki
+          legacy_rewrites: false
+          short_urls: true
+          https_only: true
+      - name: fdc.wikimedia.org
+        params: *private_wiki
+      - name: internal.wikimedia.org
+        params: *private_wiki
+      - name: board.wikimedia.org
+        params: *private_wiki
+      - name: boardgovcom.wikimedia.org
+        params: *private_wiki
+      - name: spcom.wikimedia.org
+        params: *private_wiki
+      - name: affcom.wikimedia.org
+        params: *private_wiki
+      - name: incubator.wikimedia.org
+        params:
+          short_urls: true
+      - name: species.wikimedia.org
+        params:
+          upload_rewrite:
+            rewrite_prefix: "wikipedia/species"
+      - name: searchcom.wikimedia.org
+        params: *private_wiki
+      - name: usability.wikimedia.org
+        params: {}
+      - name: strategy.wikimedia.org
+        params:
+          short_urls: true
+      - name: office.wikimedia.org
+        params: *private_wiki
+      - name: chair.wikimedia.org
+        params: *private_wiki
+      - name: advisory.wikimedia.org
+        params:
+          short_urls: true
+      - name: auditcom.wikimedia.org
+        params: *private_wiki
+      - name: quality.wikimedia.org
+        params:
+          short_urls: true
+      - name: otrs-wiki.wikimedia.org
+        params: *private_wiki
+      - name: exec.wikimedia.org
+        params: *private_wiki
+      - name: collab.wikimedia.org
+        params: *private_wiki
+      - name: outreach.wikimedia.org
+        params:
+          short_urls: true
+      - name: movementroles.wikimedia.org
+        params: *private_wiki
+      - name: checkuser.wikimedia.org
+        params: *private_wiki
+      - name: steward.wikimedia.org
+        params: *private_wiki
+      - name: ombudsmen.wikimedia.org
+        params: *private_wiki
+      - name: projectcom.wikimedia.org
+        params: *private_wiki
+      - name: techconduct.wikimedia.org
+        params: *private_wiki
+      - name: electcom.wikimedia.org
+        params: *private_wiki
+      - name: advisors.wikimedia.org
+        params: *private_wiki
+      - name: test-commons.wikimedia.org
+        params:
+          upload_rewrite:
+            rewrite_prefix: "wikipedia/testcommons"
+          additional_rewrites:
+            early:
+              - '    Include "sites-enabled/wikidata-uris.incl"'
+            late:
+              - "    # /data/ path T163922"
+              - "    RewriteRule ^/data/(.*)/(.*)$ %%{}{ENV:RW_PROTO}://test-commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]"
+
+  # search vhost
+  - name: search.wikimedia
+    priority: 5
+    source: mediawiki/apache/sites/search.wikimedia.conf
+  # Old secure redirects. These happen *after* the main and remnant containers.
+  - name: secure.wikimedia
+    source: mediawiki/apache/sites/secure.wikimedia.conf
+    priority: 6
+  # Wikimania related wikis
+  - name: wikimania
+    priority: 7
+    defaults:
+      ensure: present
+      docroot: "/srv/mediawiki/docroot/wikimedia.org"
+      declare_site: false
+      legacy_rewrites: false
+    vhosts:
+      - name: wikimania
+        params:
+          server_aliases:
+            [
+              "wikimania.wikimedia.org",
+              "wikimania2005.wikimedia.org",
+              "wikimania2006.wikimedia.org",
+              "wikimania2007.wikimedia.org",
+              "wikimania2008.wikimedia.org",
+              "wikimania2009.wikimedia.org",
+              "wikimania2010.wikimedia.org",
+              "wikimania2011.wikimedia.org",
+              "wikimania2012.wikimedia.org",
+              "wikimania2013.wikimedia.org",
+              "wikimania2014.wikimedia.org",
+              "wikimania2015.wikimedia.org",
+              "wikimania2016.wikimedia.org",
+              "wikimania2017.wikimedia.org",
+              "wikimania2018.wikimedia.org",
+            ]
+          upload_rewrite:
+            domain_catchall: "wikimedia.org"
+            rewrite_prefix: "wikipedia"
+      - name: wikimaniateam.wikimedia.org
+        params:
+          https_only: true
+          short_urls: true
+  - name: foundation
+    priority: 8
+    defaults: {}
+    vhosts:
+      - name: _foundation
+        params:
+          ensure: present
+          server_name: foundation.wikimedia.org
+          server_aliases:
+            - wikimediafoundation.org
+          canonical_name: "On"
+          docroot: "/srv/mediawiki/docroot/wikimediafoundation.org"
+          declare_site: false
+          additional_rewrites:
+            early:
+              [
+                "# extract.php pages redirected to new pages",
+                '    RewriteRule ^/fundraising(\.html)?$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Fundraising [R=301,L]',
+                '    RewriteRule ^/index(\.html)?$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Home [R=301,L]',
+                '    RewriteRule ^/GNU_FDL(\.html)?$ %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/GNU_Free_Documentation_License [R=301,L]',
+                "    # Obsolete PDF redirected to current wiki page",
+                '    RewriteRule ^/bylaws\.pdf %{ENV:RW_PROTO}://%{SERVER_NAME}/wiki/Wikimedia_Foundation_bylaws [R,L]',
+                "    RewriteRule ^/wiki/Donate$ https://donate.wikimedia.org/ [R=301,L]",
+              ]
+            late: []
+  - name: wikimedia
+    priority: 9
+    defaults:
+      ensure: present
+      docroot: "/srv/mediawiki/docroot/wikimedia.org"
+      legacy_rewrites: false
+      declare_site: false
+      short_urls: true
+    vhosts:
+      - name: wikimedia-chapter
+        params:
+          server_aliases:
+            [
+              "ar.wikimedia.org",
+              "am.wikimedia.org",
+              "bd.wikimedia.org",
+              "be.wikimedia.org",
+              "br.wikimedia.org",
+              "ca.wikimedia.org",
+              "cn.wikimedia.org",
+              "co.wikimedia.org",
+              "dk.wikimedia.org",
+              "ec.wikimedia.org",
+              "ee.wikimedia.org",
+              "fi.wikimedia.org",
+              "ge.wikimedia.org",
+              "gr.wikimedia.org",
+              "hi.wikimedia.org",
+              "id.wikimedia.org",
+              "id-internal.wikimedia.org",
+              "il.wikimedia.org",
+              "mai.wikimedia.org",
+              "mk.wikimedia.org",
+              "mx.wikimedia.org",
+              "ng.wikimedia.org",
+              "nl.wikimedia.org",
+              "no.wikimedia.org",
+              "noboard-chapters.wikimedia.org",
+              "nyc.wikimedia.org",
+              "nz.wikimedia.org",
+              "pa-us.wikimedia.org",
+              "pl.wikimedia.org",
+              "pt.wikimedia.org",
+              "punjabi.wikimedia.org",
+              "romd.wikimedia.org",
+              "rs.wikimedia.org",
+              "ru.wikimedia.org",
+              "se.wikimedia.org",
+              "tr.wikimedia.org",
+              "ua.wikimedia.org",
+              "us.wikimedia.org",
+              "uz.wikimedia.org",
+              "wb.wikimedia.org",
+              "za.wikimedia.org",
+            ]
+          legacy_rewrites: true
+          upload_rewrite:
+            domain_catchall: "wikimedia.org"
+            rewrite_prefix: "wikimedia.org"
+          additional_rewrites:
+            early:
+              [
+                "# www. prefix",
+                'RewriteCond %%{}{HTTP_HOST} ^www.([a-z\-]+)\.wikimedia\.org$',
+                "RewriteRule ^(.*)$ %%{}{ENV:RW_PROTO}://%1.wikimedia.org$1 [R=301,L]",
+              ]
+            late: []
+      - name: login.wikimedia.org
+        params: {}
+      - name: transitionteam.wikimedia.org
+        params:
+          https_only: true
+      - name: iegcom.wikimedia.org
+        params:
+          https_only: true
+      - name: legalteam.wikimedia.org
+        params:
+          https_only: true
+      - name: fixcopyright.wikimedia.org
+        params:
+          https_only: true
+      - name: api.wikimedia.org
+        params:
+          https_only: true
+  # www.wikimedia.org also catches *.wikimedia.org
+  # so it needs to come last.
+  - name: www.wikimedia.org
+    template: mediawiki/apache/sites/included/www.wikimedia.org.conf.erb
+    priority: 10

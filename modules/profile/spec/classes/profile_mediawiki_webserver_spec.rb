@@ -32,13 +32,10 @@ describe 'profile::mediawiki::webserver' do
                               .with_ensure('present')
         }
         it { is_expected.to contain_class('mediawiki::packages::fonts') }
-        it { is_expected.to contain_class('mediawiki::web::prod_sites') }
+        it { is_expected.to contain_class('mediawiki::web::sites') }
         it { is_expected.to contain_mediawiki__web__vhost('wikipedia.org')
                               .with_feature_flags({})
         }
-      end
-      context "without hhvm" do
-        it { is_expected.to compile.with_all_deps }
       end
       context "with tls" do
         let(:facts) { super().merge({'cluster' => 'appserver'}) }
