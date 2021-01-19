@@ -2,7 +2,7 @@
 # Bandaid while https://phabricator.wikimedia.org/T199406 is fixed
 
 class toil::rsyslog_tls_remedy (
-  $ensure = present,
+  $ensure = absent,
 ) {
 
   systemd::timer::job { 'rsyslog-tls-remedy':
