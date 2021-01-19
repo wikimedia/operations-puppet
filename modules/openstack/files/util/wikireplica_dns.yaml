@@ -61,15 +61,57 @@ zones:
       - 10.64.37.28
     s8:
       - 10.64.37.28
+  analytics.db.svc.wikimedia.cloud.:
+    s1:
+      - 172.16.1.6
+    s2:
+      - 172.16.0.111
+    s3:
+      - 172.16.1.129
+    s4:
+      - 172.16.1.221
+    s5:
+      - 172.16.0.220
+    s6:
+      - 172.16.2.12
+    s7:
+      - 172.16.1.152
+    s8:
+      - 172.16.2.31
+  web.db.svc.wikimedia.cloud.:
+    s1:
+      - 172.16.2.36
+    s2:
+      - 172.16.1.206
+    s3:
+      - 172.16.2.50
+    s4:
+      - 172.16.2.53
+    s5:
+      - 172.16.0.157
+    s6:
+      - 172.16.1.246
+    s7:
+      - 172.16.2.51
+    s8:
+      - 172.16.1.148
 cnames:
   s7.analytics.db.svc.eqiad.wmflabs.:
     - centralauth.analytics.db.svc.eqiad.wmflabs.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
     - meta.analytics.db.svc.eqiad.wmflabs.
+  s7.analytics.db.svc.wikimedia.cloud.:
+    - centralauth.analytics.db.svc.wikimedia.cloud.
+    # [[wikitech:Help:Toolforge/Database#Metadata_database]]
+    - meta.analytics.db.svc.wikimedia.cloud.
   s7.web.db.svc.eqiad.wmflabs.:
     - centralauth.web.db.svc.eqiad.wmflabs.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
     - meta.web.db.svc.eqiad.wmflabs.
+  s7.web.db.svc.wikimedia.cloud.:
+    - centralauth.analytics.db.svc.wikimedia.cloud.
+    # [[wikitech:Help:Toolforge/Database#Metadata_database]]
+    - meta.analytics.db.svc.wikimedia.cloud.
   tools-redis.svc.eqiad.wmflabs.:
     - tools-redis.tools.eqiad.wmflabs.
     - tools-redis.eqiad.wmflabs.
