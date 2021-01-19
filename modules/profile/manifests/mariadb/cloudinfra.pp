@@ -1,5 +1,5 @@
 class profile::mariadb::cloudinfra (
-    Boolean $master = hiera('profile::mariadb::cloudinfra::master'),
+    Boolean $master = lookup('profile::mariadb::cloudinfra::master'),
     Array[Stdlib::Fqdn] $puppetmasters = lookup('profile::mariadb::cloudinfra::puppetmasters'),
     Array[Stdlib::Fqdn] $cloudinfra_dbs = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
 ) {
