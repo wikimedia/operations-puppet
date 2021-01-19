@@ -1,6 +1,6 @@
 class profile::orchestrator::web {
     class { '::httpd':
-        modules => ['headers', 'proxy', 'proxy_http', 'rewrite']
+        modules => ['headers', 'proxy', 'proxy_http', 'rewrite', 'ssl']
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
