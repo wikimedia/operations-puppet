@@ -369,6 +369,10 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(cluster::management)
 }
 
+node 'cuminunpriv1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 # MariaDB 10
 
 # s1 (enwiki) core production dbs on eqiad
