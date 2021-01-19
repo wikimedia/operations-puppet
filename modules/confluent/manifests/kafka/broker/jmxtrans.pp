@@ -31,7 +31,7 @@
 # == Usage
 # class { '::confluent::kafka::broker::jmxtrans':
 #     group_prefix => 'kafka.cluster.example',
-#     statsd       => hiera('statsd', undef),
+#     statsd       => lookup('statsd', {'default_value' => undef}),
 # }
 #
 class confluent::kafka::broker::jmxtrans(
