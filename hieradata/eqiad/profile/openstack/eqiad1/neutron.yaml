@@ -68,10 +68,6 @@ profile::openstack::eqiad1::neutron::dmz_cidr:
  - 172.16.0.0/21:208.80.153.252
  # VMs --> nfs-maps.wikimedia.org
  - 172.16.0.0/21:208.80.155.119
- # VMs --> labstore1007.wikimedia.org
- - 172.16.0.0/21:208.80.155.106
- # VMs --> labstore1006.wikimedia.org
- - 172.16.0.0/21:208.80.154.7
  # VMs --> cloudstore1009.wikimedia.org
  - 172.16.0.0/21:208.80.155.126
  # VMs --> cloudstore1008.wikimedia.org
