@@ -342,6 +342,23 @@ class profile::logstash::collector (
       force   => true,
     }
 
+    # Drop ECS messages on the legacy cluster
+    logstash::conf { 'drop_ecs':
+      source   => 'puppet:///modules/profile/logstash/drop_ecs.conf',
+      priority => 11
+    }
+
+    file { '/etc/logstash/filter_scripts':
+      ensure  => directory,
+      source  => 'puppet:///modules/profile/logstash/filter_scripts',
+      owner   => 'logstash',
+      group   => 'logstash',
+      mode    => '0444',
+      recurse => true,
+      purge   => true,
+      force   => true,
+    }
+
     file { '/etc/logstash/templates':
         ensure  => directory,
         source  => 'puppet:///modules/profile/logstash/templates',
