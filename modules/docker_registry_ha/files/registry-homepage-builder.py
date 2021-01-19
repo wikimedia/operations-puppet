@@ -33,7 +33,7 @@ logger = logging.getLogger()
 
 def header(title) -> str:
     return textwrap.dedent(
-        f"""\
+        """\
         <!doctype html5>
         <html>
         <head>
@@ -44,7 +44,7 @@ def header(title) -> str:
             <link rel="stylesheet" href="/style.css" type="text/css" />
         </head>
         <body>
-        """
+        """.format(title=title)
     )
 
 
@@ -56,8 +56,8 @@ def build_index(images) -> str:
         """
     )
     for image in images:
-        text += f'{" " * 8}<li><a href="{image}/tags/">{image}</a></li>\n'
-    text += f'{" " * 4}</ul>\n</body></html>\n'
+        text += '        <li><a href="{image}/tags/">{image}</a></li>\n'.format(image=image)
+    text += '    </ul>\n</body></html>\n'
     return text
 
 
@@ -73,8 +73,8 @@ def get_latest(tags) -> str:
 def build_tags(image, tags) -> str:
     # Get the highest tag that isn't "latest"
     latest = get_latest(tags)
-    text = header(f"Wikimedia Docker - Image: {image}") + textwrap.dedent(
-        f"""\
+    text = header("Wikimedia Docker - Image: {image}".format(image=image)) + textwrap.dedent(
+        """\
         <h1><a href="/">Wikimedia Docker</a> - Image: {image}</h1>
         <div class="download">
             <h2>Download:</h2>
@@ -83,11 +83,11 @@ def build_tags(image, tags) -> str:
         <div class="tags">
             <h2>Tags:</h2>
             <ul>
-        """
+        """.format(image=image, latest=latest)
     )
     for tag in tags:
-        text += f"{' ' * 8}<li>{tag}</li>\n"
-    text += f"{' ' * 4}</ul>\n</div></body></html>\n"
+        text += "        <li>{tag}</li>\n".format(tag=tag)
+    text += "    </ul>\n</div></body></html>\n"
     return text
 
 
@@ -115,7 +115,7 @@ def main():
     registry = browser.RegistryBrowser(args.registry, logger=logger)
     images = []
     # sort=True is very slow, for now we alphasort in get_latest()
-    for image, tags in registry.get_image_tags(sort=False).items():
+    for image, tags in sorted(registry.get_image_tags(sort=False).items()):
         images.append(image)
         subpath = args.path / image / "tags"
         subpath.mkdir(parents=True, exist_ok=True)
@@ -125,7 +125,7 @@ def main():
     index = build_index(images)
     (args.path / "index.html").write_text(index)
     # Copy CSS
-    shutil.copy(args.css, (args.path / "style.css"))
+    shutil.copy(str(args.css), str(args.path / "style.css"))
 
 
 if __name__ == "__main__":
