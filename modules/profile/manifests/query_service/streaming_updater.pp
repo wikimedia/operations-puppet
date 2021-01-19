@@ -4,7 +4,7 @@ class profile::query_service::streaming_updater (
     String $kafka_topic = lookup('profile::query_service::streaming_updater_kafka_topic'),
     Stdlib::Port $logstash_logback_port = lookup('logstash_logback_port'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
-    Stdlib::Unixpath $data_dir = hiera('profile::query_service::data_dir'),
+    Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
