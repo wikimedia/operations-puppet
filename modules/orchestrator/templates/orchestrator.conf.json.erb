@@ -1,9 +1,15 @@
 {
   "Debug": true,
   "ListenAddress": "localhost:3000",
-  "ReadOnly": true,
   "EnableSyslog": true,
   "AuditToSyslog": true,
+
+  "AuthenticationMethod": "proxy",
+  "AuthUserHeader": "X-Cas-Uid",
+  "PowerAuthUsers": [
+    "kormat",
+    "marostegui"
+  ],
 
 <% if @db_backend == 'mysql' -%>
   "BackendDB": "mysql",
