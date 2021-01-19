@@ -2,4 +2,3 @@
 # Broken BBU T258336 T258910
 mariadb::shard: 's5'
 mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
