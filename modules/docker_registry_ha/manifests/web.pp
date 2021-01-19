@@ -39,7 +39,7 @@ class docker_registry_ha::web (
         }
     }
 
-    ensure_package(['python3-docker-report'])
+    ensure_packages(['python3-docker-report'])
 
     file { '/usr/local/bin/registry-homepage-builder':
         mode    => '0744',
