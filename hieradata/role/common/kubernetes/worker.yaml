@@ -53,6 +53,7 @@ profile::lvs::realserver::pools:
   push-notifications: {}
   recommendation-api: {}
   apertium: {}
+  similar-users: {}
 prometheus::node_exporter::collectors_extra:
   - processes
 # Remove once the clusters have been reinitialized
