@@ -64,7 +64,7 @@ class docker_registry_ha::web (
     }
 
     systemd::timer::job {'build-homepage':
-        ensure      => 'present',
+        ensure      => 'absent',
         description => 'Build docker-registry homepage',
         command     => '/usr/local/bin/registry-homepage-builder http://localhost:5000 /srv/homepage',
         user        => 'root',
