@@ -67,22 +67,33 @@ class profile::analytics::refinery (
     # Create HDFS directories for refinery temporary data
     # Those directories are needed to enforce correct ownership of the data
     if $ensure_hdfs_dirs {
+        # sudo -u hdfs hdfs dfs -mkdir /wmf/tmp
+        # sudo -u hdfs hdfs dfs -chmod 0755 /wmf/tmp
+        # sudo -u hdfs hdfs dfs -chown hdfs:hadoop /wmf/tmp
+        cdh::hadoop::directory { '/wmf/tmp':
+            owner => 'hdfs',
+            group => 'hadoop',
+            mode  => '0755',
+        }
+
         # sudo -u hdfs hdfs dfs -mkdir /wmf/tmp/druid
         # sudo -u hdfs hdfs dfs -chmod 0750 /wmf/tmp/druid
         # sudo -u hdfs hdfs dfs -chown analytics:druid /wmf/tmp/druid
         cdh::hadoop::directory { '/wmf/tmp/druid':
-            owner => 'analytics',
-            group => 'druid',
-            mode  => '0750',
+            owner   => 'analytics',
+            group   => 'druid',
+            mode    => '0750',
+            require => Cdh::Hadoop::Directory['/wmf/tmp'],
         }
 
         # sudo -u hdfs hdfs dfs -mkdir /wmf/tmp/analytics
         # sudo -u hdfs hdfs dfs -chmod 0750 /wmf/tmp/analytics
         # sudo -u hdfs hdfs dfs -chown analytics:analytics-privatedata-users /wmf/tmp/analytics
         cdh::hadoop::directory { '/wmf/tmp/analytics':
-            owner => 'analytics',
-            group => 'analytics-privatedata-users',
-            mode  => '0750',
+            owner   => 'analytics',
+            group   => 'analytics-privatedata-users',
+            mode    => '0750',
+            require => Cdh::Hadoop::Directory['/wmf/tmp'],
         }
     }
 }
