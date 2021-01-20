@@ -64,6 +64,8 @@ class docker_registry_ha::web (
         mode   => '0755',
     }
 
+    # Spread out jobs so they don't all run at the same time, leading to 504s from the registry
+    $minute = Integer(seeded_rand(60, "${::fqdn}-build-homepage"))
     systemd::timer::job {'build-homepage':
         ensure      => 'present',
         description => 'Build docker-registry homepage',
@@ -71,7 +73,7 @@ class docker_registry_ha::web (
         user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:00:00', # every hour
+            'interval' => "*-*-* *:${minute}:00", # every hour
         },
         require     => File['/usr/local/bin/registry-homepage-builder'],
     }
