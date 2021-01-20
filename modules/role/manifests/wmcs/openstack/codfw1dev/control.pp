@@ -20,7 +20,6 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::nova::conductor::service
     include ::profile::openstack::codfw1dev::nova::scheduler::service
     include ::profile::openstack::codfw1dev::nova::api::service
-    include ::profile::openstack::codfw1dev::nova::vendordataapi::service
     include ::profile::openstack::codfw1dev::nova::placement::service
     include ::profile::openstack::codfw1dev::neutron::common
     include ::profile::openstack::codfw1dev::neutron::service
