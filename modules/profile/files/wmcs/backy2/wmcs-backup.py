@@ -192,7 +192,6 @@ class ImageBackup:
         pool: str,
         image_id: str,
         image_info: Dict[str, Dict[str, Any]],
-        project: str,
         live_for_days: int,
         noop: bool = True,
     ):
@@ -216,7 +215,6 @@ class ImageBackup:
         return cls(
             image_id=image_id,
             image_info=image_info,
-            project=project,
             backup_entry=new_entry,
             snapshot_entry=new_entry.get_snapshot(pool=pool),
             size_mb=new_entry.size_mb,
