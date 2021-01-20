@@ -1,8 +1,10 @@
 varnishtest "Block requests from specific networks T231063"
 
 server s1 {
-    rxreq
-    txresp
+    loop 4 {
+        rxreq
+        txresp
+    }
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -48,4 +50,16 @@ client c1 {
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.241.194.113"
     rxresp
     expect resp.status == 403
+
+    txreq -req POST -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: PostmanRuntime/7.26.8"
+    rxresp
+    expect resp.status == 403
+
+    txreq -req POST -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
+    rxresp
+    expect resp.status == 200
+
+    txreq -req POST -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192" -hdr "User-Agent: PostmanRuntime/7.26.8"
+    rxresp
+    expect resp.status == 200
 } -run
