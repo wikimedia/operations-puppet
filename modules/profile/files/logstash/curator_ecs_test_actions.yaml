@@ -1,0 +1,19 @@
+actions:
+  1:
+    action: delete_indices
+    description: >-
+      Delete indices older than 2 weeks (based on index name), for ecs test indices
+      prefixed indices. Ignore the error if the filter does not result in an
+      actionable list of indices (ignore_empty_list) and exit cleanly.
+    options:
+      ignore_empty_list: True
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^ecs-(.*)-test-(.*)'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 2
