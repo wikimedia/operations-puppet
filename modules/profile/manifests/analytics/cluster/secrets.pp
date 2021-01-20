@@ -17,7 +17,7 @@
 # [*swift_accounts_keys*]
 #   The accounts keys map to use for swift.
 class profile::analytics::cluster::secrets(
-    String $swift_group = hiera('profile::analytics::cluster::secrets::swift_group', 'analytics-privatedata-users'),
+    String $swift_group = lookup('profile::analytics::cluster::secrets::swift_group', {'default_value' => 'analytics-privatedata-users'}),
     Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
     Hash[String, String] $swift_account_keys = lookup('profile::swift::accounts_keys'),
 ) {
