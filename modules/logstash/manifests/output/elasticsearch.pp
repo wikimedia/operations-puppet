@@ -18,6 +18,10 @@
 # - $template_name: Name of Elasticsearch mapping template.
 #       Default $title.
 # - $plugin_id: Name associated with Logstash metrics
+# - $cleanup_template: curator actions template file
+# - $timestring: curator age filter `timestring`
+# - $unit: curator age filter `unit`
+# - $unit_count: curator age filter `unit_count`
 #
 # == Sample usage:
 #
@@ -28,18 +32,21 @@
 #   }
 #
 define logstash::output::elasticsearch(
-    $ensure           = present,
-    $host             = '127.0.0.1',
-    $index            = "${title}-%{+YYYY.MM.dd}",
-    $prefix           = "${title}-",
-    $port             = 9200,
-    $guard_condition  = undef,
-    $manage_indices   = false,
-    $priority         = 10,
-    $template         = undef,
-    $template_name    = $title,
-    $plugin_id        = "output/elasticsearch/${title}",
-    $cleanup_template = 'logstash/curator/cleanup.yaml.erb',
+    Wmflib::Ensure                             $ensure           = present,
+    Variant[Stdlib::IP::Address, Stdlib::Fqdn] $host             = '127.0.0.1',
+    String                                     $index            = "${title}-%{+YYYY.MM.dd}",
+    String                                     $prefix           = "${title}-",
+    Integer                                    $port             = 9200,
+    Optional[String]                           $guard_condition  = undef,
+    Boolean                                    $manage_indices   = false,
+    Integer                                    $priority         = 10,
+    Optional[String]                           $template         = undef,
+    String                                     $template_name    = $title,
+    String                                     $plugin_id        = "output/elasticsearch/${title}",
+    String                                     $cleanup_template = 'logstash/curator/cleanup.yaml.erb',
+    String                                     $timestring       = '%Y.%m.%d',
+    Integer                                    $unit_count       = 91,
+    Enum['seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years'] $unit = 'days',
 ) {
     require ::logstash::output::elasticsearch::scripts
 

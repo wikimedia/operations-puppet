@@ -2,7 +2,7 @@ actions:
   1:
     action: delete_indices
     description: >-
-      Delete indices older than 91 days (based on index name), for <%= @prefix %>
+      Delete indices older than <%= @unit_count %> <%= @unit %> (based on index name), for <%= @prefix %>
       prefixed indices. Ignore the error if the filter does not result in an
       actionable list of indices (ignore_empty_list) and exit cleanly.
     options:
@@ -14,9 +14,9 @@ actions:
     - filtertype: age
       source: name
       direction: older
-      timestring: '%Y.%m.%d'
-      unit: days
-      unit_count: 91
+      timestring: '<%= @timestring %>'
+      unit: <%= @unit %>
+      unit_count: <%= @unit_count %>
   2:
     action: replicas
     description: >-
