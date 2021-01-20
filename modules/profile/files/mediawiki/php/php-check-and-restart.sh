@@ -37,7 +37,7 @@ else
     echo "Fragmentation is at ${APCU_FRAGMENTATION%.*}%, nothing to do here"
 fi
 
-MAX_CACHED_KEYS=$(($(php7adm /opcache-info |jq .opcache_statistics.max_cached_keys  2>&1)-2000))
+MAX_CACHED_KEYS=$(($(php7adm /opcache-info |jq .opcache_statistics.max_cached_keys  2>&1)-5000))
 NUM_CACHED_KEYS=$(php7adm /opcache-info |jq .opcache_statistics.num_cached_keys  2>&1)
 
 if [ "$NUM_CACHED_KEYS" -ge "$MAX_CACHED_KEYS" ]; then
