@@ -39,7 +39,7 @@ class openstack::nova::common(
     # vendor data needs to be in json format. vendordata.txt
     #  contains all of our cloud-init settings and firstboot script;
     #  jamming it all into one giant json field seems to work.
-    $vendordata_file_contents = file('openstack/nova/vendordata.txt')
+    $vendordata_file_contents = template('openstack/nova/vendordata.txt.erb')
     $vendor_data = {
         'domain'     => $dhcp_domain,
         'cloud-init' => $vendordata_file_contents,
