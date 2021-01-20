@@ -345,6 +345,7 @@ groups:
                  * Silence notifications for maniphest bulk jobs
                  * Disable Herald rules
     members: [aklapper, gjg]
+    approval: Tyler Cipriani
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/cache purge --caches user',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/herald',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/move_project',
@@ -362,11 +363,13 @@ groups:
                  * Configure a bulk job to execute silently.
     members: [mbinder]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/bulk make-silent --id *']
+    approval: Tyler Cipriani
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
     members: [twentyafterfour, thcipriani, brennen]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Tyler Cipriani
   htmldumps-admin:
     gid: 749
     description: users who maintain HTML/ZIM dumps
