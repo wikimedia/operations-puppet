@@ -139,7 +139,7 @@ host chartmuseum2001 {
 }
 
 host cuminunpriv1001 {
-    hardware ethernet aa:00:00:67:7a:3;
+    hardware ethernet aa:00:00:67:7a:39;
     fixed-address cuminunpriv1001.eqiad.wmnet;
 }
 
