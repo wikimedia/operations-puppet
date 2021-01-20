@@ -59,6 +59,7 @@ function do_global_send_request()
     header_content = string.format("H2=%i; SSR=%i; SSL=%s; C=%s; EC=%s;",
                                    http2, ssl_reused, ssl_protocol, ssl_cipher, ssl_curve)
     ts.server_request.header['X-Client-IP'] = client_ip
+    ts.server_request.header['X-Client-Port'] = client_port
     ts.server_request.header['X-Connection-Properties'] = header_content
     ts.server_request.header['X-Forwarded-Proto'] = 'https'
 end

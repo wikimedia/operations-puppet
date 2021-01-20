@@ -24,6 +24,7 @@ describe("Busted unit testing framework", function()
       _G.ts.http.get_client_protocol_stack = function() return "ipv4", "tcp", "tls/1.2", "h2" end
       do_global_send_request()
       assert.are.equals('127.0.0.1', _G.ts.server_request.header['X-Client-IP'])
+      assert.are.equals(1234, _G.ts.server_request.header['X-Client-Port'])
       assert.are.equals('vers=TLSv1.2;keyx=X25519;auth=ECDSA;ciph=AES256-GCM-SHA384;prot=h2;sess=new', _G.ts.server_request.header['X-Analytics-TLS'])
       assert.are.equals('H2=1; SSR=0; SSL=TLSv1.2; C=ECDHE-ECDSA-AES256-GCM-SHA384; EC=X25519;', _G.ts.server_request.header['X-Connection-Properties'])
       assert.are.equals('https', _G.ts.server_request.header['X-Forwarded-Proto'])
