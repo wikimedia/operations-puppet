@@ -4307,6 +4307,10 @@ ldap_only_users:
     ensure: present
     realname: Gregory Varnum
     email: gvarnum@wikimedia.org
+  wikitrent:
+    ensure: present
+    realname: Trent Hand
+    email: thand@wikimedia.org
   wpao:
     ensure: present
     realname: Willy Pao
