@@ -44,10 +44,12 @@ class klaxon(
         ensure    => 'present',
         content   => systemd_template('klaxon'),
         restart   => true,
-        subscribe => Exec['git_pull_operations/software/klaxon'],
+        subscribe => [
+            Exec['git_pull_operations/software/klaxon'],
+            File[$environ_file],
+        ],
         require   => [
           User['klaxon'],
-          File[$environ_file],
         ],
     }
 }
