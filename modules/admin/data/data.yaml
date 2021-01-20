@@ -294,7 +294,7 @@ groups:
               chrisalbon, wikigit, nahidunlimited, swagoel,
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
-              matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung]
+              matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -3963,6 +3963,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICpqwO761eLDHfC7ZiUFLW4d8BLWO3lqYeioD7nnESvc rmaung@Rebeccas-MBP
+  lilients:
+    ensure: present
+    realname: Svantje Lilienthal
+    email: svantje.lilienthal@wikimedia.de
+    uid: 26748
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdBF7Hz7C9dQY9aGovFU4f6wq5lnglrRh0AJ1JIj3b9qSr02UJWp4SqG1ApA+095jRwGfQxj09YeiT60tMo5ceNoxT+DVYtE75a4EWBv7TMyrRWArGeN5YlT4rpqmIonUGTnbSIacSZW51mC+gUyVvm32m0LgeI//Ay365atMarI1CYsMK2KiPmZPybUgRtrIaqk6kbvV5Mt/KABMjMResx69JcgABJh7mCleCWrhj2WXmTNfZxVytHbGe5kEMjIpImqcjoxbawBEAlLQQLrR4QRyilrmtn+0cegUqP/gndOriRWbbbsvoqZ0z1EnwLnMj5jyOPIpGLjzrKE33IrwVIH/G+swEyTE09AJWo2Z15Ecr8mi98+KE9GWSzTztvQc1lisdH5C53I+NWhwWp0BN/eauOSwrsn6fYJsLtKYSecRBKtZn3sktQHDjKwcjWFcdmdAF25p7svYl5N19ez7RJmNJ4wjyRPvP5/TUdEGhV8NBodUZ2iA7DE5FPF/lHKIW9PPp78JubrdngudXwmHQ+C+rtynHvm0dpok6ZY5ek1o7WckPrVUOhTFKs4tEK5PIPNcZHSEK/ki5zznzLHvq2LxMDJDNMR+P8g2o7LedL0Qbn/jxI+JFD6Zua37fOsuTwFgMEIykK//9+vTbnZ4hg4eHMd91WzXZcToxwKU6Bw==
 
 ldap_only_users:
   abartov:
@@ -4646,10 +4655,6 @@ ldap_only_users:
     ensure: present
     realname: Mohammed Sadat Abdulai
     email: mohammed.sadat_ext@wikimedia.de
-  lilients:
-    ensure: present
-    realname: Svantje Lilienthal
-    email: svantje.lilienthal@wikimedia.de
   apine:
     ensure: present
     realname: Cory Massaro
