@@ -4077,6 +4077,10 @@ ldap_only_users:
     ensure: present
     realname: David Strine
     email: dstrine@wikimedia.org
+  dwalden:
+    ensure: present
+    realname: Dominic Walden
+    email: dwalden@wikimedia.org
   egardner:
     ensure: present
     realname: Eric Gardner
