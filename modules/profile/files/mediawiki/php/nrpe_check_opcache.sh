@@ -25,7 +25,7 @@ if [ -z "$warning" ] || [ -z "$critical" ]; then
     usage
 fi
 
-OUT=$(php7adm /opcache-info | jq . 2>&1)
+OUT=$(/usr/local/bin/php7adm /opcache-info | jq . 2>&1)
 retval=$?
 if [ $retval -ne 0 ]; then
    echo "UNKNOWN: Failed to parse output - $OUT"
