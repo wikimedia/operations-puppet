@@ -7290,18 +7290,6 @@ host rdb2003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host relforge1001 {
-    hardware ethernet 14:58:d0:49:08:c4;
-    fixed-address relforge1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host relforge1002 {
-    hardware ethernet 14:58:d0:49:c8:ec;
-    fixed-address relforge1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host relforge1003 {
     hardware ethernet 48:DF:37:C0:B0:D0;
     fixed-address relforge1003.eqiad.wmnet;

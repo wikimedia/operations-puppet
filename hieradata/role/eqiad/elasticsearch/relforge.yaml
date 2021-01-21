@@ -1,14 +1,4 @@
-profile::elasticsearch::dc_settings:
-    # ES-specific: Not default
-    unicast_hosts:
-      - relforge1002.eqiad.wmnet
-
-    cluster_hosts:
-      - relforge1001.eqiad.wmnet
-      - relforge1002.eqiad.wmnet
-
-    expected_nodes: 2
-    minimum_master_nodes: 1
+profile::elasticsearch::dc_settings: {}
 
 has_lvs: false
 

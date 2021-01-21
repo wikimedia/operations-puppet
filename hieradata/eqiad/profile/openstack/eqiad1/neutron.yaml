@@ -86,9 +86,6 @@ profile::openstack::eqiad1::neutron::dmz_cidr:
  # VMs --> cloudmetrics1001 / cloudmetrics1002
  - 172.16.0.0/21:10.64.37.13/32
  - 172.16.0.0/21:10.64.4.15/32
- # VMs --> relforge1001 / relforge1002
- - 172.16.0.0/21:10.64.4.13/32
- - 172.16.0.0/21:10.64.37.21/32
 profile::openstack::eqiad1::neutron::l3_agent_bridges:
   br-external:
     addif: 'eno50.1120'

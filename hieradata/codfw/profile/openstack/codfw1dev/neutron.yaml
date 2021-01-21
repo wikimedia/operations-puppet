@@ -87,9 +87,6 @@ profile::openstack::codfw1dev::neutron::dmz_cidr:
  # VMs --> cloudmetrics1001 / cloudmetrics1002
  - 172.16.128.0/24:10.64.37.13/32
  - 172.16.128.0/24:10.64.4.15/32
- # VMs --> relforge1001 / relforge1002
- - 172.16.128.0/24:10.64.4.13/32
- - 172.16.128.0/24:10.64.37.21/32
 
 profile::openstack::codfw1dev::neutron::l3_agent_bridges:
   br-external:

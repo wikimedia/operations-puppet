@@ -2279,8 +2279,9 @@ node /^releases[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(releases)
 }
 
+# Currently being decommissioned in https://phabricator.wikimedia.org/T272444, remove this block afterwards
 node /^relforge100[1-2]\.eqiad\.wmnet/ {
-    role(elasticsearch::relforge)
+    role(spare::system)
 }
 
 # New relforge servers T241791
