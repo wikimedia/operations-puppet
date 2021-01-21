@@ -25,6 +25,8 @@ class role::logging::mediawiki::udp2log(
         default_instance => false,
     }
 
+    class { '::bsection': }
+
     if $::hostname == 'mwlog1001' {
         class {'profile::logster_alarm':}
     }
