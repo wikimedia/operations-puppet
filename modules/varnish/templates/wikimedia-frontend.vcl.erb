@@ -645,8 +645,8 @@ sub vcl_recv {
 		// Block POST requests from bot User-Agents which originate from bot_posts_blocked_nets.
 		// For now, we define our list of common bot UAs as just one that has often been
 		// associated with trouble in the past, plus the blank or empty UA.
-		// 'PostmanRuntime/' comes from https://phabricator.wikimedia.org/T272330
-		if (req.method == "POST" && std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_posts_blocked_nets && (!req.http.User-Agent || req.http.User-Agent ~ "^(PostmanRuntime/)")) {
+		// 'PostmanRuntime/' and variants come from https://phabricator.wikimedia.org/T272330
+		if (req.method == "POST" && std.ip(req.http.X-Client-IP, "192.0.2.1") ~ bot_posts_blocked_nets && (!req.http.User-Agent || req.http.User-Agent ~ "^([PRK]ostmanRuntime/)")) {
 			return (synth(403, "Scripted requests from your IP have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
 		}
 
