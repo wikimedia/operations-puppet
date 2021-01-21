@@ -3341,7 +3341,7 @@ users:
     name: accraze
     realname: Andy Craze
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDoseoHpPEYpbXzJZ6FL+R7S3AKk3nv7lGoVzCTJF8Br acraze@Andys-MacBook-Pro.local
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDXA9CvE7dcs4WAy9fvVwS9FfUurxyrxRmayXHv74oO7RBUGiigp5JzRxEPDFJC4uzf+ESiNkeJrmz9QBYESM2/ALdQga+2ChVGrEC5e3OCE8cLQpuM+sGoq3mFfq4dBQVM18UDIQ50+M7Ya5OFXqjI5c/3R4N+A8qvepkqMuCagr/exM9eIc5ZhYLiy40yUTJCvsbF0GeDLoMeBl80Iqd/JUxLTGJvyDXL2q78ek3Ou5tiX8rJj8B9Yvy2cV/zd8EYKzGiiQTlZoXCAMhFlRB8FIFzPChSzpvKt6IPYGVluxbrbS3WxoWVYh2/gaXmp+ueJVPZOQTU8PoHWln6eCcVukW6ZIAoNjicsbD0VhOWo3Zw8I4DeEHB8YtsUOOhTUZHDlfyap74wWWTkFZxj3lnP97fNEpzTUnfuMaQ4fKzv7bnR+nydXs6B4ht5uK6ss1V3ETV20QHq3GjUaRc6CXOymATdHg8/vL5Y+bDWn+AfOt8lA1ulNqAnNEp12XLADIw7nNntKsJnHlHbscL0n6WLEjar1Y0/PLJ8jJYYg1C6/qv3spfu0ycO4ukMVNSkXolaCuwMeiHotCIUMT5NLdos175bmwUwduSOt3+FwfR5vnYTC3CeCtvYbKEOHWJLpIu9i0QJqmggl8DQ+LtYSwUpYr9i8K1a5DyowM9D3Sgzw== acraze@earth-coincidence-control-office
     uid: 21437
     email: acraze@wikimedia.org
     krb: present
