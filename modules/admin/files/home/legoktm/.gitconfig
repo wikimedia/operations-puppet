@@ -1,4 +1,10 @@
 [user]
 	name = Kunal Mehta
 	email = legoktm@wikimedia.org
+[help]
+	autocorrect = 20
+[advice]
+	detachedHead = false
+[pull]
+	ff = only
 
