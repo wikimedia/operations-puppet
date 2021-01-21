@@ -417,11 +417,8 @@ nav ~ ul li a:hover {
   overflow-y: auto;
 }
 
-footer {
-  clear: both;
-  padding: 2rem;
-  font-size: 0.8rem;
-  text-align: right;
+.updated {
+    float: right;
+    font-size: 1em;
+    font-weight: 80;
 }
-
-#powered-by { float: left; }

@@ -24,6 +24,7 @@ import shutil
 import sys
 import textwrap
 
+from datetime import datetime
 from pathlib import Path
 
 from docker_report.registry import browser
@@ -48,12 +49,13 @@ def header(title) -> str:
     )
 
 
-def build_index(images) -> str:
+def build_index(images, timestamp) -> str:
     text = header("Wikimedia Docker - Images") + textwrap.dedent(
         """\
         <h1>Wikimedia Docker - Images</h1>
+            <p class="updated">Last updated at: {timestamp}.</p>
             <ul>
-        """
+        """.format(timestamp=timestamp)
     )
     for image in images:
         text += '        <li><a href="{image}/tags/">{image}</a></li>\n'.format(image=image)
@@ -70,12 +72,13 @@ def get_latest(tags) -> str:
     return max(tag for tag in tags if tag != "latest")
 
 
-def build_tags(image, tags) -> str:
+def build_tags(image, tags, timestamp) -> str:
     # Get the highest tag that isn't "latest"
     latest = get_latest(tags)
     text = header("Wikimedia Docker - Image: {image}".format(image=image)) + textwrap.dedent(
         """\
         <h1><a href="/">Wikimedia Docker</a> - Image: {image}</h1>
+        <p class="updated">Last updated at: {timestamp}.</p>
         <div class="download">
             <h2>Download:</h2>
             <code><pre>docker pull docker-registry.wikimedia.org/{image}:{latest}</pre></code>
@@ -83,7 +86,7 @@ def build_tags(image, tags) -> str:
         <div class="tags">
             <h2>Tags:</h2>
             <ul>
-        """.format(image=image, latest=latest)
+        """.format(image=image, latest=latest, timestamp=timestamp)
     )
     for tag in tags:
         text += "        <li>{tag}</li>\n".format(tag=tag)
@@ -114,15 +117,16 @@ def main():
 
     registry = browser.RegistryBrowser(args.registry, logger=logger)
     images = []
+    timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
     # sort=True is very slow, for now we alphasort in get_latest()
     for image, tags in sorted(registry.get_image_tags(sort=False).items()):
         images.append(image)
         subpath = args.path / image / "tags"
         subpath.mkdir(parents=True, exist_ok=True)
-        html = build_tags(image, tags)
+        html = build_tags(image, tags, timestamp)
         (subpath / "index.html").write_text(html)
     # TODO: handle deletion of images (see T242604)
-    index = build_index(images)
+    index = build_index(images, timestamp)
     (args.path / "index.html").write_text(index)
     # Copy CSS
     shutil.copy(str(args.css), str(args.path / "style.css"))
