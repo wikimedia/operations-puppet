@@ -17,7 +17,6 @@ class openstack::nova::common(
     $metadata_workers,
     Stdlib::Port $metadata_listen_port,
     Stdlib::Port $osapi_compute_listen_port,
-    String       $dhcp_domain,
     ) {
 
     class { "openstack::nova::common::${version}::${::lsbdistcodename}": }
@@ -36,15 +35,6 @@ class openstack::nova::common(
         ensure => absent,
     }
 
-    # vendor data needs to be in json format. vendordata.txt
-    #  contains all of our cloud-init settings and firstboot script;
-    #  jamming it all into one giant json field seems to work.
-    $vendordata_file_contents = template('openstack/nova/vendordata.txt.erb')
-    $vendor_data = {
-        'domain'     => $dhcp_domain,
-        'cloud-init' => $vendordata_file_contents,
-    }
-
     file { '/etc/nova/policy.yaml':
         source  => "puppet:///modules/openstack/${version}/nova/common/policy.yaml",
         mode    => '0644',
@@ -53,21 +43,13 @@ class openstack::nova::common(
         require => Package['nova-common'],
     }
 
-    file {
-        '/etc/nova/nova.conf':
-            content   => template("openstack/${version}/nova/common/nova.conf.erb"),
-            owner     => 'nova',
-            group     => 'nogroup',
-            mode      => '0440',
-            show_diff => false,
-            require   => Package['nova-common'];
-        '/etc/nova/vendor_data.json':
-            content => to_json_pretty($vendor_data),
-            owner   => 'nova',
-            group   => 'nogroup',
-            mode    => '0444',
-            require => Package['nova-common'],
-            notify  => Service['nova-api-metadata', 'nova-api'];
+    file { '/etc/nova/nova.conf':
+        content   => template("openstack/${version}/nova/common/nova.conf.erb"),
+        owner     => 'nova',
+        group     => 'nogroup',
+        mode      => '0440',
+        show_diff => false,
+        require   => Package['nova-common'];
     }
 
     if debian::codename::ge('buster') {
