@@ -28,9 +28,17 @@ class profile::analytics::cluster::users {
     # The analytics user will be used to run any Analytics
     # job running on Yarn/HDFS (as replacement for 'hdfs').
     # T220971
+    # The analytics user needs to be able to change group ownership of
+    # directories that it owns to analytics:druid. The Hive workflows/actions
+    # that we use for Druid leverage a separate scratch dir to work on the data,
+    # that is moved and chowned as last step to its final location on HDFS.
+    # If the analytics user is not in the druid group it will not be able (via Hive etc..)
+    # to chgrp the final directory (and its files) to a group like 'druid'.
     user { 'analytics':
-        ensure => present,
-        system => true,
+        ensure  => present,
+        system  => true,
+        groups  => 'druid',
+        require => Class['::druid::cdh::hadoop::user'],
     }
 
     # The analytics-privatedata user will be used to run
