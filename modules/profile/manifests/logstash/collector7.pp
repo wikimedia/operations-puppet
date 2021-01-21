@@ -181,7 +181,7 @@ class profile::logstash::collector7 (
         kafka_cluster_name                    => 'logging-eqiad',
         topic                                 => 'eqiad.w3c.reportingapi.network_error',
         group_id                              => $input_kafka_consumer_group_id,
-        tags                                  => ['input-kafka-networkerror-eqiad', 'kafka', 'es', 'w3creportingapi'],
+        tags                                  => ['input-kafka-networkerror-eqiad', 'kafka', 'throttle-exempt'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
         ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
@@ -193,7 +193,7 @@ class profile::logstash::collector7 (
         kafka_cluster_name                    => 'logging-codfw',
         topic                                 => 'codfw.w3c.reportingapi.network_error',
         group_id                              => $input_kafka_consumer_group_id,
-        tags                                  => ['input-kafka-networkerror-codfw', 'kafka', 'es', 'w3creportingapi'],
+        tags                                  => ['input-kafka-networkerror-codfw', 'kafka', 'throttle-exempt'],
         codec                                 => 'json',
         security_protocol                     => 'SSL',
         ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
@@ -370,6 +370,25 @@ class profile::logstash::collector7 (
         hour    => 0,
         minute  => 42,
         require => Elasticsearch::Curator::Config['cleanup_ecs-test'],
+    }
+
+    $w3creportingapi_versions = {
+        # version => revision
+        '1.0.0' => '1'
+    }
+    $w3creportingapi_versions.each |String $w3creportingapi_version, String $w3creportingapi_revision| {
+        logstash::output::elasticsearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
+          host            => '127.0.0.1',
+          guard_condition => "[\$schema] == \"/w3c/reportingapi/network_error/${w3creportingapi_version}\"",
+          index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+YYYY.MM}",
+          manage_indices  => true,
+          priority        => 90,
+          template        => "/etc/logstash/templates/w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}.json",
+          require         => File['/etc/logstash/templates'],
+          timestring      => '%Y.%m',
+          unit            => 'months',
+          unit_count      => 3,
+        }
     }
 
     # TODO: cleanup -- T256418

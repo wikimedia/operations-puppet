@@ -1,7 +1,7 @@
 fields:
   type: "network-error"
   tags:
-    - "w3creportingapi"
+    - "throttle-exempt"
     - "kafka"
     - "input-kafka-networkerror-eqiad"
 codec: "json_lines"
@@ -12,17 +12,58 @@ testcases:
   - input:
       - >
         {
-          "body": { "type": "tcp.connectionrefused" }
+          "http": {
+            "client_ip": "127.0.0.1",
+            "request_headers": {
+              "user-agent": "Mozilla/0.0 (Linux) AppleWebKit/000.00 (KHTML, like Gecko) Chrome/00.0.0000.000 Mobile Safari/000.00"
+            }
+          },
+          "age": 58,
+          "user_agent": "Mozilla/0.0 (Linux) AppleWebKit/000.00 (KHTML, like Gecko) Chrome/00.0.0000.000 Mobile Safari/000.00",
+          "url": "https://en.wikipedia.org/wiki/Main_Page",
+          "meta": {
+            "request_id": "2867d5bb-de4b-4e3e-abc3-4ed966becd46",
+            "stream": "w3c.reportingapi.network_error",
+            "dt": "2021-01-20T23:51:13.213Z",
+            "id": "528eed9d-e9dc-4058-88b4-eb8730e759f4"
+          },
+          "body": {
+            "server_ip": "172.0.0.1",
+            "elapsed_time": -1121268051,
+            "protocol": "h2",
+            "type": "unknown",
+            "referrer": "https://wikipedia.org",
+            "method": "GET",
+            "status_code": 200,
+            "phase": "application",
+            "sampling_fraction": 0.05
+          }
         }
     expected:
-      - report_body:
-          type: "tcp.connectionrefused"
-        normalized_message: "%{message}"
+      - http:
+          client_ip: "127.0.0.1"
+          request_headers:
+            user-agent: "Mozilla/0.0 (Linux) AppleWebKit/000.00 (KHTML, like Gecko) Chrome/00.0.0000.000 Mobile Safari/000.00"
+        age: 58
+        type: "network-error"
+        user_agent: "Mozilla/0.0 (Linux) AppleWebKit/000.00 (KHTML, like Gecko) Chrome/00.0.0000.000 Mobile Safari/000.00"
+        url: "https://en.wikipedia.org/wiki/Main_Page"
+        meta:
+          request_id: "2867d5bb-de4b-4e3e-abc3-4ed966becd46"
+          stream: "w3c.reportingapi.network_error"
+          dt: "2021-01-20T23:51:13.213Z"
+          id: "528eed9d-e9dc-4058-88b4-eb8730e759f4"
+        body:
+          server_ip: "172.0.0.1"
+          elapsed_time: -1121268051
+          protocol: "h2"
+          type: "unknown"
+          referrer: "https://wikipedia.org"
+          method: "GET"
+          status_code: 200
+          phase: "application"
+          sampling_fraction: 0.05
         tags:
-          - "w3creportingapi"
+          - "throttle-exempt"
           - "kafka"
           - "input-kafka-networkerror-eqiad"
-          - "es"
-          - "throttle-exempt"
-          - "normalized_message_untrimmed"
-        type: "network-error"
