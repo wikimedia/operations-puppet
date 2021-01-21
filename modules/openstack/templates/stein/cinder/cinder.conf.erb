@@ -215,7 +215,7 @@ project_name = service
 region_name = <%= @region %>
 user_domain_id = default
 username = cinder
-memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
+#memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
 
 
 [nova]
