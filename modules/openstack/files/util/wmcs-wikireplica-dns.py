@@ -32,10 +32,10 @@ def find_zone_for_fqdn(client, fqdn):
 
     Searches for the longest existing zone that the record could be placed in.
     """
-    parts = fqdn.split('.')
+    parts = fqdn.split(".")
     host = parts.pop(0)  # noqa: F841 local variable never used
     for i in range(len(parts)):
-        domain = '.'.join(parts[i:])
+        domain = ".".join(parts[i:])
         if domain:
             r = client.zones(name=domain)
             if r:
@@ -45,121 +45,134 @@ def find_zone_for_fqdn(client, fqdn):
 
 def main():
     """Manage Designate DNS records for Wiki Replicas."""
-    parser = argparse.ArgumentParser(description='Wiki Replica DNS Manager')
+    parser = argparse.ArgumentParser(description="Wiki Replica DNS Manager")
     parser.add_argument(
-        '-v', '--verbose', action='count', default=0, dest='loglevel',
-        help='Increase logging verbosity')
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        dest="loglevel",
+        help="Increase logging verbosity",
+    )
     parser.add_argument(
-        '--config', default='/etc/wikireplica_dns.yaml',
-        help='Path to YAML config file')
+        "--config", default="/etc/wikireplica_dns.yaml", help="Path to YAML config file"
+    )
     parser.add_argument(
-        '--envfile', default='/etc/novaadmin.yaml',
-        help='Path to OpenStack authentication YAML file')
+        "--envfile",
+        default="/etc/novaadmin.yaml",
+        help="Path to OpenStack authentication YAML file",
+    )
+    parser.add_argument("--zone", help="limit changes to the given zone")
     parser.add_argument(
-        '--zone',
-        help='limit changes to the given zone')
-    parser.add_argument(
-        '--aliases', action='store_true',
-        help='Update per-wiki CNAME records')
-    parser.add_argument(
-        '--shard',
-        help='limit changes to the given shard')
+        "--aliases", action="store_true", help="Update per-wiki CNAME records"
+    )
+    parser.add_argument("--shard", help="limit changes to the given shard")
     args = parser.parse_args()
 
     logging.basicConfig(
         level=max(logging.DEBUG, logging.WARNING - (10 * args.loglevel)),
-        format='%(asctime)s %(name)-12s %(levelname)-8s: %(message)s',
-        datefmt='%Y-%m-%dT%H:%M:%SZ'
+        format="%(asctime)s %(name)-12s %(levelname)-8s: %(message)s",
+        datefmt="%Y-%m-%dT%H:%M:%SZ",
     )
     logging.captureWarnings(True)
     # Quiet some noisy 3rd-party loggers
-    logging.getLogger('requests').setLevel(logging.WARNING)
-    logging.getLogger('urllib3').setLevel(logging.WARNING)
-    logging.getLogger('iso8601.iso8601').setLevel(logging.WARNING)
+    logging.getLogger("requests").setLevel(logging.WARNING)
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
+    logging.getLogger("iso8601.iso8601").setLevel(logging.WARNING)
 
     with open(args.config) as f:
         config = yaml.safe_load(f)
 
-    all_zones = [z for z in config['zones']]
+    all_zones = [z for z in config["zones"]]
     if args.zone:
         if args.zone not in all_zones:
             parser.error(
                 'Unknown zone "{}". Expected one of:\n\t- {}'.format(
-                    args.zone, '\n\t- '.join(all_zones)))
+                    args.zone, "\n\t- ".join(all_zones)
+                )
+            )
         zones = [args.zone]
     else:
         zones = all_zones
 
-    all_shards = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8']
+    all_shards = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]
     if args.shard:
         if args.shard not in all_shards:
             parser.error(
                 'Unknown shard "{}". Expected one of:\n\t- {}'.format(
-                    args.shard, '\n\t- '.join(all_shards)))
+                    args.shard, "\n\t- ".join(all_shards)
+                )
+            )
         shards = [args.shard]
     else:
         shards = all_shards
 
     wmflabsdns = mwopenstackclients.DnsManager(
-        mwopenstackclients.Clients(envfile=args.envfile), 'noauth-project')
+        mwopenstackclients.Clients(envfile=args.envfile), "noauth-project"
+    )
     wikimediaclouddns = mwopenstackclients.DnsManager(
-        mwopenstackclients.Clients(envfile=args.envfile), 'clouddb-services')
+        mwopenstackclients.Clients(envfile=args.envfile), "clouddb-services"
+    )
 
     for zone in zones:
         logger.warning("Ensuring %s" % zone)
 
-        if zone.endswith('wmflabs.'):
+        if zone.endswith("wmflabs."):
             dns = wmflabsdns
-        elif zone.endswith('db.svc.wikimedia.cloud.'):
+        elif zone.endswith("db.svc.wikimedia.cloud."):
             dns = wikimediaclouddns
         else:
-            logging.error("This zone is in an unknown tld; supported are wmflabs and "
-                          "wikimidia.cloud")
+            logging.error(
+                "This zone is in an unknown tld; supported are wmflabs and "
+                "wikimidia.cloud"
+            )
             continue
 
         r = dns.zones(name=zone)
         if not r:
-            logging.error("Zone %s does not exist.  Please create it and re-run.\n"
-                          "Example: \n\n"
-                          "openstack zone create --sudo-project-id "
-                          "clouddb-services --email root@wmcloud.org %s\n" % (zone, zone))
+            logging.error(
+                "Zone %s does not exist.  Please create it and re-run.\n"
+                "Example: \n\n"
+                "openstack zone create --sudo-project-id "
+                "clouddb-services --email root@wmcloud.org %s\n" % (zone, zone)
+            )
             continue
         else:
             z = r[0]
-        zone_id = z['id']
+        zone_id = z["id"]
 
-        for svc, ips in config['zones'][zone].items():
+        for svc, ips in config["zones"][zone].items():
             # Goofy, but true -- Designate needs FQDNs for names.
-            fqdn = '{}.{}'.format(svc, zone)
-            dns.ensure_recordset(zone_id, fqdn, 'A', ips)
+            fqdn = "{}.{}".format(svc, zone)
+            dns.ensure_recordset(zone_id, fqdn, "A", ips)
 
             if args.aliases and svc in shards:
                 # Ensure that there are wikidb aliases for shards
                 dblist = requests.get(
-                    'https://noc.wikimedia.org/conf/dblists/{}.dblist'.format(svc))
+                    "https://noc.wikimedia.org/conf/dblists/{}.dblist".format(svc)
+                )
                 try:
                     dblist.raise_for_status()
                 except requests.exceptions.HTTPError:
                     logger.warning('DBList "%s" not found', svc)
                 else:
                     for wikidb in dblist.text.splitlines():
-                        if wikidb.startswith('#'):
+                        if wikidb.startswith("#"):
                             continue
-                        db_fqdn = '{}.{}'.format(wikidb, zone)
-                        dns.ensure_recordset(zone_id, db_fqdn, 'CNAME', [fqdn])
+                        db_fqdn = "{}.{}".format(wikidb, zone)
+                        dns.ensure_recordset(zone_id, db_fqdn, "CNAME", [fqdn])
                         # Take a small break to be nicer to Designate
                         time.sleep(0.25)
 
-            if fqdn in config['cnames']:
+            if fqdn in config["cnames"]:
                 # Add additional aliases for this fqdn
-                for cname in config['cnames'][fqdn]:
+                for cname in config["cnames"][fqdn]:
                     cname_zone = find_zone_for_fqdn(dns, cname)
                     if cname_zone:
-                        dns.ensure_recordset(
-                            cname_zone['id'], cname, 'CNAME', [fqdn])
+                        dns.ensure_recordset(cname_zone["id"], cname, "CNAME", [fqdn])
                     else:
-                        logger.warning('Failed to find zone for %s', cname)
+                        logger.warning("Failed to find zone for %s", cname)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
