@@ -129,6 +129,8 @@ class profile::analytics::refinery::job::refine(
         'HelpPanel',
         'HomepageModule',
         'NewcomerTask',
+        'QuickSurveyInitiation',
+        'QuickSurveysResponses',
         'SearchSatisfaction',
         'SpecialInvestigate',
         'TemplateWizard',

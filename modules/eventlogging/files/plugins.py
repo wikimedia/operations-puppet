@@ -17,6 +17,8 @@ eventlogging_schemas_disabled = (
     'HelpPanel',
     'HomepageModule',
     'NewcomerTask',
+    'QuickSurveyInitiation',
+    'QuickSurveysResponses',
     'SpecialInvestigate',
     'SearchSatisfaction',
     'TemplateWizard',
