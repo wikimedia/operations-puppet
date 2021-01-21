@@ -12,11 +12,11 @@
 #
 # filtertags: labs-project-deployment-prep
 class profile::logstash::collector (
-    $prometheus_nodes = hiera('prometheus_nodes', []),
-    $input_kafka_ssl_truststore_passwords = hiera('profile::logstash::collector::input_kafka_ssl_truststore_passwords'),
-    $input_kafka_consumer_group_id = hiera('profile::logstash::collector::input_kafka_consumer_group_id', undef),
-    $jmx_exporter_port = hiera('profile::logstash::collector::jmx_exporter_port', 7800),
-    $maintenance_hosts = hiera('maintenance_hosts', []),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => []}),
+    Hash[String, String] $input_kafka_ssl_truststore_passwords = lookup('profile::logstash::collector::input_kafka_ssl_truststore_passwords'),
+    Optional[String] $input_kafka_consumer_group_id = lookup('profile::logstash::collector::input_kafka_consumer_group_id', {'default_value' => undef}),
+    Stdlib::Port $jmx_exporter_port = lookup('profile::logstash::collector::jmx_exporter_port', {'default_value' => 7800}),
+    Array[Stdlib::Host] $maintenance_hosts = lookup('maintenance_hosts', {'default_value' => []}),
 ) {
 
     require ::profile::java
