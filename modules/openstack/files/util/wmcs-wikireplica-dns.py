@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (c) 2017 Wikimedia Foundation and contributors
 #
@@ -13,7 +13,7 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-from __future__ import print_function
+
 
 import argparse
 import logging
@@ -100,18 +100,35 @@ def main():
     else:
         shards = all_shards
 
-    dns = mwopenstackclients.DnsManager(
+    wmflabsdns = mwopenstackclients.DnsManager(
         mwopenstackclients.Clients(envfile=args.envfile), 'noauth-project')
+    wikimediaclouddns = mwopenstackclients.DnsManager(
+        mwopenstackclients.Clients(envfile=args.envfile), 'clouddb-services')
+
     for zone in zones:
+        logger.warning("Ensuring %s" % zone)
+
+        if zone.endswith('wmflabs.'):
+            dns = wmflabsdns
+        elif zone.endswith('db.svc.wikimedia.cloud.'):
+            dns = wikimediaclouddns
+        else:
+            logging.error("This zone is in an unknown tld; supported are wmflabs and "
+                          "wikimidia.cloud")
+            continue
+
         r = dns.zones(name=zone)
         if not r:
-            logger.warning('Creating zone %s', zone)
-            z = dns.create_zone(zone, email='root@wmflabs.org', ttl=60)
+            logging.error("Zone %s does not exist.  Please create it and re-run.\n"
+                          "Example: \n\n"
+                          "openstack zone create --sudo-project-id "
+                          "clouddb-services --email root@wmcloud.org %s\n" % (zone, zone))
+            continue
         else:
             z = r[0]
         zone_id = z['id']
 
-        for svc, ips in config['zones'][zone].iteritems():
+        for svc, ips in config['zones'][zone].items():
             # Goofy, but true -- Designate needs FQDNs for names.
             fqdn = '{}.{}'.format(svc, zone)
             dns.ensure_recordset(zone_id, fqdn, 'A', ips)
