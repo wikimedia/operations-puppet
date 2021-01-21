@@ -66,7 +66,8 @@ class openstack::nova::common(
             owner   => 'nova',
             group   => 'nogroup',
             mode    => '0444',
-            require => Package['nova-common'];
+            require => Package['nova-common'],
+            notify  => Service['nova-api-metadata', 'nova-api'];
     }
 
     if debian::codename::ge('buster') {
