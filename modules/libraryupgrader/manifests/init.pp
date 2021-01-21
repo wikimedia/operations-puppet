@@ -80,7 +80,7 @@ class libraryupgrader(
 
     # Install libup into venv
     exec { 'install libup':
-        command => "${clone_dir}/venv/bin/python install setup.py",
+        command => "${clone_dir}/venv/bin/pip install -e .",
         cwd     => $clone_dir,
         user    => 'libup',
         # Just one example file created after libup is installed
@@ -91,6 +91,15 @@ class libraryupgrader(
     systemd::service { 'libup-celery':
         ensure  => present,
         content => template('libraryupgrader/initscripts/libup-celery.service.erb'),
+        require => [
+            Exec['install libup'],
+            Package['rabbitmq-server'],
+        ]
+    }
+
+    systemd::service { 'libup-push':
+        ensure  => present,
+        content => template('libraryupgrader/initscripts/libup-push.service.erb'),
         require => [
             Exec['install libup'],
             Package['rabbitmq-server'],
