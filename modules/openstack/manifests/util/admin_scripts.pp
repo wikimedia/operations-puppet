@@ -268,4 +268,13 @@ class openstack::util::admin_scripts(
         mode   => '0755',
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-instancepurge.py",
     }
+
+    # Script to interact with the puppet enc api
+    file { '/usr/local/sbin/wmcs-enc-cli':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/openstack/util/wmcs-enc-cli.py',
+    }
 }
