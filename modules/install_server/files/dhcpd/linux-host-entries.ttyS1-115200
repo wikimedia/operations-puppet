@@ -1936,6 +1936,106 @@ host db1155 {
 	fixed-address db1155.eqiad.wmnet;
 }
 
+host db1156 {
+	hardware ethernet 2C:EA:7F:68:E6:B3;
+	fixed-address db1156.eqiad.wmnet;
+}
+
+host db1157 {
+	hardware ethernet 2C:EA:7F:68:EC:EB;
+	fixed-address db1157.eqiad.wmnet;
+}
+
+host db1158 {
+	hardware ethernet 2C:EA:7F:69:05:AD;
+	fixed-address db1158.eqiad.wmnet;
+}
+
+host db1159 {
+	hardware ethernet 2C:EA:7F:68:F3:2B;
+	fixed-address db1159.eqiad.wmnet;
+}
+
+host db1160 {
+	hardware ethernet 2C:EA:7F:68:BB:09;
+	fixed-address db1160.eqiad.wmnet;
+}
+
+host db1161 {
+	hardware ethernet 2C:EA:7F:68:CC:59;
+	fixed-address db1161.eqiad.wmnet;
+}
+
+host db1162 {
+	hardware ethernet 2C:EA:7F:68:D9:2A;
+	fixed-address db1162.eqiad.wmnet;
+}
+
+host db1163 {
+	hardware ethernet 2C:EA:7F:68:F3:43;
+	fixed-address db1163.eqiad.wmnet;
+}
+
+host db1164 {
+	hardware ethernet 2C:EA:7F:68:BE:00;
+	fixed-address db1164.eqiad.wmnet;
+}
+
+host db1165 {
+	hardware ethernet 2C:EA:7F:68:F3:1B;
+	fixed-address db1165.eqiad.wmnet;
+}
+
+host db1166 {
+	hardware ethernet 2C:EA:7F:68:EF:B3;
+	fixed-address db1166.eqiad.wmnet;
+}
+
+host db1167 {
+	hardware ethernet 2C:EA:7F:68:AF:40;
+	fixed-address db1167.eqiad.wmnet;
+}
+
+host db1168 {
+	hardware ethernet 2C:EA:7F:68:AB:F9;
+	fixed-address db1168.eqiad.wmnet;
+}
+
+host db1169 {
+	hardware ethernet 2C:EA:7F:68:F8:3B;
+	fixed-address db1169.eqiad.wmnet;
+}
+
+host db1170 {
+	hardware ethernet 2C:EA:7F:68:D2:9A;
+	fixed-address db1170.eqiad.wmnet;
+}
+
+host db1171 {
+	hardware ethernet 2C:EA:7F:69:1C:3E;
+	fixed-address db1171.eqiad.wmnet;
+}
+
+host db1172 {
+	hardware ethernet 2C:EA:7F:68:EA:13;
+	fixed-address db1172.eqiad.wmnet;
+}
+
+host db1173 {
+	hardware ethernet 2C:EA:7F:68:AE:69;
+	fixed-address db1173.eqiad.wmnet;
+}
+
+host db1174 {
+	hardware ethernet 2C:EA:7F:68:C6:F0;
+	fixed-address db1174.eqiad.wmnet;
+}
+
+host db1175 {
+	hardware ethernet 2C:EA:7F:68:EF:AB;
+	fixed-address db1175.eqiad.wmnet;
+}
+
 host db2071 {
     hardware ethernet 18:66:DA:F8:F2:20;
     fixed-address db2071.codfw.wmnet;
