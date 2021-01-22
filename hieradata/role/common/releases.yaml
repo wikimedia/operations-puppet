@@ -10,6 +10,7 @@ profile::standard::admin_groups:
   - contint-roots
 profile::docker::engine::packagename: "docker.io"
 profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u2"
+profile::docker::engine::declare_service: false
 profile::docker::engine::settings:
   data-root: '/srv/docker'
   live-restore: true
