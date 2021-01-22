@@ -25,7 +25,7 @@ class snapshot::cron::wikibase(
     }
 
     # serdi for translating ttl to nt
-    require_package('serdi')
+    ensure_packages(['serdi'])
 
     # dcat software setup and configuration for wikibase dumps, see
     # https://www.w3.org/TR/vocab-dcat/

@@ -25,7 +25,7 @@ define snapshot::dumps::datamount(
         $mountopts = $standard_mountopts
     }
     if ($mount_type == 'nfs') {
-        require_package('nfs-common')
+        ensure_packages(['nfs-common'])
 
         mount { $mountpoint:
             ensure   => 'mounted',
