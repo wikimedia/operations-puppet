@@ -28,7 +28,10 @@ test -e "${PUPPET_DISABLEDLOCK}" || exit 0
 # If a message is specified, check for it, fail if the message is different
 if [ "${FORCE}" -ne 1 ]; then
     jq -r '.disabled_message' < "${PUPPET_DISABLEDLOCK}" |
-        grep -Fxq "$MESSAGE" || exit 1
+        grep -Fxq "$MESSAGE" ||
+        jq -r '.disabled_message' < "${PUPPET_DISABLEDLOCK}" |
+        grep -Fxq "$1" ||
+        exit 1
 fi
 
 wait_for_puppet "$ATTEMPTS"
