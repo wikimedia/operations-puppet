@@ -43,7 +43,11 @@ profile::wmcs::nfs::primary::drbd_cluster:
 
 profile::wmcs::nfs::primary::cluster_ip: 10.64.37.18
 profile::wmcs::nfs::primary::subnet_gateway_ip: 10.64.37.1
-
+profile::wmcs::nfs::primary::mysql_variances:
+  s52788: 48 # Quarry T180141
+  u12903: 15 # wikiscan T227462
+  s51156: 40 # petscan T255730
+  
 prometheus::node_exporter::collectors_extra:
   - drbd
 

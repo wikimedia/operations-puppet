@@ -72,6 +72,7 @@ from systemd import journal, daemon
 PROJECT = "tools"
 PASSWORD_LENGTH = 16
 PASSWORD_CHARS = string.ascii_letters + string.digits
+DEFAULT_MAX_CONNECTIONS = 10
 ACCOUNT_CREATION_SQL = {
     "role": """
         GRANT USAGE ON *.* TO '{username}'@'%'
@@ -511,15 +512,24 @@ def create_accounts(config):
                         (host,),
                     )
                     for row in cur:
+                        username = row["mysql_username"]
+                        max_connections = DEFAULT_MAX_CONNECTIONS
+                        if username in config["variances"]:
+                            # Leaving open the idea that there could be other
+                            # variances in the future
+                            max_connections = config["variances"][username].get(
+                                "max_connections", DEFAULT_MAX_CONNECTIONS
+                            )
+
                         with labsdb.cursor() as labsdb_cur:
                             create_acct_string = ACCOUNT_CREATION_SQL[
                                 grant_type
                             ].format(
-                                username=row["mysql_username"],
+                                username,
+                                max_connections,
                                 password_hash=row["password_hash"].decode(
                                     "utf-8"
                                 ),
-                                max_connections=10,
                             )
                             try:
                                 labsdb_cur.execute(create_acct_string)

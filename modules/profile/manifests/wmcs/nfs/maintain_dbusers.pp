@@ -12,6 +12,7 @@ class profile::wmcs::nfs::maintain_dbusers (
     Hash                    $production_ldap_config = lookup('ldap', {'merge' => hash}),
     Stdlib::IP::Address::V4 $cluster_ip             = lookup('profile::wmcs::nfs::primary::cluster_ip'),
     Hash[String,Stdlib::Port] $section_ports        = lookup('profile::mariadb::section_ports'),
+    Hash[String,Integer]    $variances              = lookup('profile::wmcs::nfs::primary::mysql_variances'),
 ){
     package { [
         'python3-ldap3',
@@ -88,6 +89,7 @@ class profile::wmcs::nfs::maintain_dbusers (
             'password' => $::passwords::labsdbaccounts::db_password,
         },
         'nfs-cluster-ip'   => $cluster_ip,
+        'variances'        => $variances,
     }
 
     file { '/etc/dbusers.yaml':
