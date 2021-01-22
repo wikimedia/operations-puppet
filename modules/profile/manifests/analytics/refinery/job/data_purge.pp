@@ -180,7 +180,7 @@ class profile::analytics::refinery::job::data_purge (
     # keep this many public druid mediawiki history refined snapshots
     # runs once a month
     if $public_druid_host {
-        $druid_public_keep_snapshots = 4
+        $druid_public_keep_snapshots = 3
         $mediawiki_history_reduced_basename = 'mediawiki_history_reduced'
         kerberos::systemd_timer { 'refinery-druid-drop-public-snapshots':
             ensure      => $ensure_timers,
