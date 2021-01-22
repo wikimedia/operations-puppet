@@ -867,10 +867,20 @@ host puppetboard1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host puppetboard1002 {
+    hardware ethernet aa:00:00:15:89:65;
+    fixed-address puppetboard1002.eqiad.wmnet;
+}
+
 host puppetboard2001 {
     hardware ethernet aa:00:00:e0:47:7f;
     fixed-address puppetboard2001.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host puppetboard2002 {
+    hardware ethernet aa:00:00:76:84:f8;
+    fixed-address puppetboard2002.codfw.wmnet;
 }
 
 host puppetdb1002 {

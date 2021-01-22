@@ -2232,6 +2232,10 @@ node /^puppetboard[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(puppetboard)
 }
 
+node /^puppetboard[12]002\.(codfw|eqiad)\.wmnet$/ {
+    role(insetup)
+}
+
 node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetmaster::puppetdb)
 }
