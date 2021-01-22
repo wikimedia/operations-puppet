@@ -158,6 +158,24 @@ class profile::prometheus::analytics (
         site       => $::site,
     }
 
+    prometheus::jmx_exporter_config{ "hadoop_worker_backup_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_worker_backup_${::site}.yaml",
+        class_name => 'role::analytics_backup_cluster::hadoop::worker',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "hadoop_master_backup_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_master_backup_${::site}.yaml",
+        class_name => 'role::analytics_backup_cluster::hadoop::master',
+        site       => $::site,
+    }
+
+    prometheus::jmx_exporter_config{ "hadoop_standby_backup_${::site}":
+        dest       => "${targets_path}/jmx_hadoop_standby_backup_${::site}.yaml",
+        class_name => 'role::analytics_backup_cluster::hadoop::standby',
+        site       => $::site,
+    }
+
     prometheus::jmx_exporter_config{ "druid_public_${::site}":
         dest       => "${targets_path}/jmx_druid_public_${::site}.yaml",
         class_name => 'role::druid::public::worker',
