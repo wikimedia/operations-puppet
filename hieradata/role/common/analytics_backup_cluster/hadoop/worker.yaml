@@ -1,7 +1,6 @@
 nagios_group: analytics_eqiad
 cluster: analytics
-
-admin::groups:
+profile::standard::admin_groups:
   - analytics-admins
 
 # Testing Apache BigTop in T244499
