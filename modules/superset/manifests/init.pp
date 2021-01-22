@@ -81,17 +81,17 @@ class superset(
     $enable_cas        = false,
     $cache_uri         = undef,
 ) {
-    require_package(
+    ensure_packages([
         'virtualenv',
         'firejail',
-    )
+    ])
 
     if $cache_uri {
-        require_package('python3-pylibmc')
+        ensure_packages(['python3-pylibmc'])
     }
 
     if $worker_class == 'gevent' {
-        require_package('python-gevent')
+        ensure_packages(['python-gevent'])
     }
 
     $deployment_dir = '/srv/deployment/analytics/superset/deploy'
