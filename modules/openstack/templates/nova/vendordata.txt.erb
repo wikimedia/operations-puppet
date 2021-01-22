@@ -57,11 +57,17 @@ packages:
 growpart:
     mode: false
 
+# You'll see that we're setting apt_preserve_sources_list twice here.  That's
+#  because there's a bug in cloud-init where it tries to reconcile the
+#  two settings and if they're different the stage fails. That means that
+#  if one of them is set differently from the default (True) then nothing
+#  works.
+apt_preserve_sources_list: False
 apt:
-    preserve_sources_list: false
+    preserve_sources_list: False
     sources:
         wikimedia.list:
-            source: >
+            source: |
                 deb http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main
                 deb-src http://apt.wikimedia.org/wikimedia $RELEASE-wikimedia main
             filename: wikimedia.list
