@@ -38,5 +38,4 @@ class profile::query_service::gui (
         }
     }
 
-    class { 'query_service::monitor::gui': }
 }
