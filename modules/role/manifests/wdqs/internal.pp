@@ -12,6 +12,9 @@ class role::wdqs::internal {
     # Production specific profiles
     include ::profile::lvs::realserver
 
+    # wdqs-internal specific profiles
+    include ::profile::tlsproxy::envoy # TLS termination
+
     system::role { 'wdqs::internal':
         ensure      => 'present',
         description => 'Wikidata Query Service - internally available service',
