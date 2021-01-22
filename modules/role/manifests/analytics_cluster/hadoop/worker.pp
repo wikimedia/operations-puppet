@@ -8,6 +8,7 @@ class role::analytics_cluster::hadoop::worker {
 
     include ::profile::java
     include ::profile::hadoop::worker
+    include ::profile::hadoop::worker::clients
     include ::profile::amd_gpu
     include ::profile::analytics::cluster::users
     include ::profile::kerberos::client

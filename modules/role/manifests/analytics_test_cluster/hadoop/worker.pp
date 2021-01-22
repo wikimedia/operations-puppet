@@ -8,6 +8,7 @@ class role::analytics_test_cluster::hadoop::worker {
 
     include ::profile::java
     include ::profile::hadoop::worker
+    include ::profile::hadoop::worker::clients
     include ::profile::analytics::cluster::users
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
