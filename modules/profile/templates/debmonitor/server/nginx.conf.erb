@@ -61,8 +61,6 @@ server {
 
     keepalive_timeout 10;
 
-    include /etc/nginx/snippets/debmonitor_static.conf;
-
     location / {
         proxy_pass http://debmonitor;
         include /etc/nginx/snippets/debmonitor_proxy.conf;
