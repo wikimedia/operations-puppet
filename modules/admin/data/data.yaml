@@ -774,6 +774,11 @@ groups:
     description: People who can run any command as the peek user on peek servers
     members: [reedy, sbassett]
     privileges: ['ALL = (peek) NOPASSWD: ALL']
+  ml-team-admins:
+    gid: 823
+    description: Group of users that have access to ML Team's machines
+    members: [accraze, chrisalbon, kevinbazira]
+    approval: Chris Albon
   reprepro:
     gid: 901
     system: true

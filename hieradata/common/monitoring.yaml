@@ -436,6 +436,12 @@ monitoring::groups:
   syslog_codfw:
     description: Syslog servers (codfw)
 
+  # ml_serve machines
+  ml_serve_eqiad:
+    description: ML Team serving machines (eqiad)
+  ml_serve_codfw:
+    description: ML Team serving machines (codfw)
+
 monitoring::mgmt_parents:
   eqiad: msw1-eqiad
   codfw: msw1-codfw

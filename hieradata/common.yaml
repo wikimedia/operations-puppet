@@ -475,6 +475,12 @@ wikimedia_clusters:
     id: 92
     sites:
       eqiad: []
+  ml_serve:
+    description: "ML Team serving clusters"
+    id: 93
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet

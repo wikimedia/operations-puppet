@@ -1640,14 +1640,11 @@ node /^mc-gp200[1-3]\.codfw\.wmnet/ {
     role(mediawiki::memcached::gutter)
 }
 
-# New ml-serve T267050
-node /^ml-serve100[1234]\.eqiad\.wmnet/ {
-    role(insetup)
-}
-
-# New ml-serve T267670
 node /^ml-serve200[1234]\.codfw\.wmnet/ {
-    role(insetup)
+    role(ml_serve)
+}
+node /^ml-serve100[1234]\.eqiad\.wmnet/ {
+    role(ml_serve)
 }
 
 # RT, replaced ununpentium

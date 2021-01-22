@@ -1,0 +1,3 @@
+profile::standard::admin_groups:
+  - ml-team-admins
+cluster: ml_serve
