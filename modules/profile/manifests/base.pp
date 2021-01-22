@@ -35,7 +35,6 @@ class profile::base(
     $monitoring_hosts = hiera('monitoring_hosts', []),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
-    Boolean $enable_adduser = lookup('profile::base::enable_adduser'),
     Wmflib::Ensure $hardware_monitoring = lookup('profile::base::hardware_monitoring', {'default_value' => 'present'}),
     String $legacy_cloud_search_domain = lookup('profile::base::legacy_cloud_search_domain', {'default_value' => ''}),
 ) {
@@ -68,10 +67,7 @@ class profile::base(
         mode   => '0755',
     }
 
-    if $enable_adduser {
-        class {'adduser': }
-    }
-
+    class {'adduser': }
 
     class { 'grub::defaults': }
 
