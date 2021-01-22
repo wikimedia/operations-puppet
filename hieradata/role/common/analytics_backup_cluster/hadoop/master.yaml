@@ -7,6 +7,7 @@ profile::standard::admin_groups:
 profile::cdh::apt::bigtop_component: 'bigtop15'
 profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
+profile::hadoop::master::use_kerberos: true
 profile::hadoop::master::monitoring_enabled: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-backup-hadoop'
