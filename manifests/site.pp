@@ -108,11 +108,30 @@ node /^an-worker11(0[0-9]|1[0-7])\.eqiad\.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
 }
 
-# New AN workers via T260445
-node /^an-worker11(1[89]|[23][0-9]|4[01])\.eqiad\.wmnet$/ {
-    role(insetup)
+# Analytics Hadoop Backup cluster
+# This cluster is temporary to ease the migration of the Analytics hadoop cluster
+# to Apache Bigtop.
+# NOTE:  If you add, remove or move Hadoop nodes, you should edit
+# hieradata/common.yaml hadoop_clusters net_topology
+# to make sure the hostname -> /datacenter/rack/row id is correct.
+# This is used for Hadoop network topology awareness.
+
+node 'an-worker1118.eqiad.wmnet' {
+    role(analytics_backup_cluster::hadoop::master)
 }
 
+node 'an-worker1124.eqiad.wmnet' {
+    role(analytics_backup_cluster::hadoop::standby)
+}
+
+node /^an-worker11(2[0-3]|2[5-8]|3[025678])\.eqiad\.wmnet$/ {
+    role(analytics_backup_cluster::hadoop::worker)
+}
+
+# Waiting for maintenance
+node /^an-worker11(19|31)\.eqiad\.wmnet$/ {
+    role(insetup)
+}
 
 # hue.wikimedia.org
 node 'analytics-tool1001.eqiad.wmnet' {
