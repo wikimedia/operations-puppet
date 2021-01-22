@@ -16,10 +16,11 @@ class profile::hadoop::backup::namenode(
 
     if !defined(File['/srv/backup']) {
         file { '/srv/backup':
-            ensure => 'directory',
-            owner  => 'root',
-            group  => $backup_dir_group,
-            mode   => '0755',
+            ensure  => 'directory',
+            owner   => 'root',
+            group   => $backup_dir_group,
+            mode    => '0755',
+            require => Group[$backup_dir_group],
         }
     }
 
