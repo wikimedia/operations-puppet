@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import yaml
 from argparse import ArgumentParser, Namespace
 
 import requests
@@ -46,7 +47,8 @@ class EncConnection:
                 self.openstack_project,
                 prefix,
             ),
-            data,
+            # make sure it's pretty formatted
+            yaml.dump(yaml.load(data, Loader=yaml.SafeLoader)),
         )
         if not response.ok:
             raise EncError(
