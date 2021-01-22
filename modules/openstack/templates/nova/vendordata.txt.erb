@@ -15,6 +15,35 @@ Content-Type: text/cloud-config; charset="us-ascii"
 hostname: {{ds.meta_data.name}}
 fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 
+
+# /etc/block-ldap-key-lookup:
+#   Prevent non-root logins while the VM is being setup
+#   The ssh-key-ldap-lookup script rejects non-root user logins if this file
+#   is present.
+#
+# /etc/rsyslog.d/60-puppet.conf:
+#   Enable console logging for puppet
+#
+# /etc/systemd/system/serial-getty@ttyS0.service.d/override.conf:
+#   Enable root console on serial0
+#   (cloud-init will create any needed parent dirs)
+write_files:
+    - content: "VM is work in progress"
+      path: /etc/block-ldap-key-lookup
+    - content: "daemon.* |/dev/console"
+      path: /etc/rsyslog.d/60-puppet.conf
+    - content: |
+        [Service]
+        ExecStart=
+        ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
+      path: /etc/systemd/system/serial-getty@ttyS0.service.d/override.conf
+
+# resetting ttys0 so root is logged in
+runcmd:
+    - [systemctl, enable, serial-getty@ttyS0.service]
+    - [systemctl, restart, serial-getty@ttyS0.service]
+
+
 manage_etc_hosts: true
 
 packages:
@@ -56,23 +85,6 @@ Content-Type: text/text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 
 set -x
-
-# Prevent non-root logins while the VM is being setup
-# The ssh-key-ldap-lookup script rejects non-root user logins if this file
-# is present.
-echo "VM is work in progress" > /etc/block-ldap-key-lookup
-
-echo 'Enabling console logging for puppet while it does the initial run'
-echo 'daemon.* |/dev/console' > /etc/rsyslog.d/60-puppet.conf
-systemctl restart rsyslog.service
-
-echo "Enabling root console on serial0"
-mkdir /etc/systemd/system/serial-getty@ttyS0.service.d
-cat <<EOT >> /etc/systemd/system/serial-getty@ttyS0.service.d/override.conf
-[Service]
-ExecStart=
-ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
-EOT
 
 # If we don't have a LVM volume group, we'll create it,
 # and allocate the remainder of the disk to it,
@@ -159,10 +171,6 @@ done
 # before, the puppet code that ensures the symlinks are created, etc may not
 # have run)
 puppet agent -t
-
-@log resetting ttys0
-systemctl enable serial-getty@ttyS0.service
-systemctl restart serial-getty@ttyS0.service
 
 # Remove the non-root login restriction
 rm /etc/block-ldap-key-lookup
