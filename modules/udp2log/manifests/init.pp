@@ -43,7 +43,7 @@ class udp2log(
     }
 
     # make sure the udplog package is installed
-    require_package('udplog')
+    ensure_packages(['udplog'])
 
     if !$default_instance {
         file { '/etc/init.d/udp2log':

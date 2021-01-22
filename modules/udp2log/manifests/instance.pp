@@ -45,9 +45,7 @@ define udp2log::instance(
 
     # Default template (udp2log/logrotate_udp2log.erb) required killall command
     # which comes from the psmisc package
-    require_package('psmisc')
-
-    require_package('udplog')
+    ensure_packages(['psmisc', 'udplog'])
 
     base::service_unit { "udp2log-${name}":
         ensure    => $ensure,
