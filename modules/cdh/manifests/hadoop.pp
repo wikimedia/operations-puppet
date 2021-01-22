@@ -374,6 +374,7 @@ class cdh::hadoop(
     $yarn_scheduler_maximum_allocation_mb        = undef,
     $yarn_scheduler_minimum_allocation_vcores    = undef,
     $yarn_scheduler_maximum_allocation_vcores    = undef,
+    $yarn_use_spark_shuffle                      = false,
     $hadoop_heapsize                             = undef,
     $hadoop_namenode_opts                        = undef,
     $hadoop_datanode_opts                        = undef,

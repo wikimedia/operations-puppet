@@ -199,7 +199,11 @@ end
 
   <property>
     <name>yarn.nodemanager.aux-services</name>
+<% if @yarn_use_spark_shuffle -%>
     <value>mapreduce_shuffle,spark_shuffle</value>
+<%  else -%>
+    <value>mapreduce_shuffle</value>
+<% end -%>
   </property>
 
   <property>
@@ -207,10 +211,12 @@ end
     <value>org.apache.hadoop.mapred.ShuffleHandler</value>
   </property>
 
+<% if @yarn_use_spark_shuffle -%>
   <property>
     <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>
     <value>org.apache.spark.network.yarn.YarnShuffleService</value>
   </property>
+<% end -%>
 
   <property>
     <description>RSS usage of a process computed via /proc/pid/stat is not very accurate as it includes shared pages of a process. /proc/pid/smaps provides useful information like Private_Dirty, Private_Clean, Shared_Dirty, Shared_Clean which can be used for computing more accurate RSS. When this flag is enabled, RSS is computed as Min(Shared_Dirty, Pss) + Private_Clean + Private_Dirty. It excludes read-only shared mappings in RSS computation.</description>

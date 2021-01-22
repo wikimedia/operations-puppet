@@ -285,6 +285,10 @@ class profile::hadoop::common (
     }
     $yarn_nm_container_executor_config        = $hadoop_config['yarn_nodemanager_container_executor_config']
 
+    $yarn_use_spark_shuffle                   = $hadoop_config['yarn_use_spark_shuffle'] ? {
+        undef   => false,
+        default => $hadoop_config['yarn_use_spark_shuffle'],
+    }
 
     # The datanode mountpoints are retrieved from facter, among the list of mounted
     # partitions on the host. Once a partition is not available anymore (disk broken for example),
@@ -384,6 +388,7 @@ class profile::hadoop::common (
         yarn_scheduler_maximum_allocation_mb             => $yarn_scheduler_maximum_allocation_mb,
         yarn_scheduler_minimum_allocation_vcores         => $yarn_scheduler_minimum_allocation_vcores,
         yarn_scheduler_maximum_allocation_vcores         => $yarn_scheduler_maximum_allocation_vcores,
+        yarn_use_spark_shuffle                           => $yarn_use_spark_shuffle,
 
         dfs_block_size                                   => 268435456, # 256 MB
         io_file_buffer_size                              => 131072,
