@@ -58,7 +58,7 @@ cache::alternate_domains:
   graphite.wikimedia.org:
     caching: 'normal'
   helm-charts.wikimedia.org:
-    caching: 'normal'
+    caching: 'pass'
   horizon.wikimedia.org:
     caching: 'normal'
   wikitech.wikimedia.org:
