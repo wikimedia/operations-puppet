@@ -1,0 +1,3 @@
+-- Grants for '<%= @dump_user %>'@'10.192.0.190'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.192.0.190` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `%wik%`.* TO `<%= @dump_user %>`@`10.192.0.190`;

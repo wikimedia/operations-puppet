@@ -1,0 +1,15 @@
+-- Grants for '<%= @dump_user %>'@'10.64.0.95'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.64.0.95` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `labsdbaccounts`.* TO `<%= @dump_user %>`@`10.64.0.95`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `labswiki`.* TO `<%= @dump_user %>`@`10.64.0.95`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `striker`.* TO `<%= @dump_user %>`@`10.64.0.95`;
+-- Grants for '<%= @dump_user %>'@'10.64.16.31'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.64.16.31` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `labsdbaccounts`.* TO `<%= @dump_user %>`@`10.64.16.31`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `labswiki`.* TO `<%= @dump_user %>`@`10.64.16.31`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `striker`.* TO `<%= @dump_user %>`@`10.64.16.31`;
+-- Grants for '<%= @dump_user %>'@'10.64.32.26'
+GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`10.64.32.26` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `labsdbaccounts`.* TO `<%= @dump_user %>`@`10.64.32.26`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `labswiki`.* TO `<%= @dump_user %>`@`10.64.32.26`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `striker`.* TO `<%= @dump_user %>`@`10.64.32.26`;
