@@ -778,6 +778,7 @@ groups:
     gid: 823
     description: Group of users that have access to ML Team's machines
     members: [accraze, chrisalbon, kevinbazira]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Chris Albon
   reprepro:
     gid: 901
