@@ -12,7 +12,7 @@ class mailman3::web (
 ) {
 
     ensure_packages([
-        'python3-pymysql',
+        'python3-mysqldb',
         'dbconfig-mysql',
     ])
 
