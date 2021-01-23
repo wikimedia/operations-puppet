@@ -16,4 +16,11 @@ class profile::mailman3 (
         archiver_key    => $archiver_key,
         web_secret      => $web_secret,
     }
+
+    class { '::httpd':
+        modules => ['rewrite', 'ssl', 'proxy', 'proxy_http', 'proxy_uwsgi'],
+    }
+    httpd::site { $host:
+        content => template('mailman3/apache.conf.erb'),
+    }
 }
