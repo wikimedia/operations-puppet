@@ -215,6 +215,7 @@ class ImageBackup:
         return cls(
             image_id=image_id,
             image_info=image_info,
+            image_name=image_info.get("name", "no_name"),
             backup_entry=new_entry,
             snapshot_entry=new_entry.get_snapshot(pool=pool),
             size_mb=new_entry.size_mb,
