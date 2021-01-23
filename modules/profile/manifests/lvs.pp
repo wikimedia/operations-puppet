@@ -3,9 +3,9 @@
 # Sets up a linux load-balancer.
 #
 class profile::lvs(
-    $tagged_subnets = hiera('profile::lvs::tagged_subnets'),
-    $vlan_data = hiera('lvs::interfaces::vlan_data'),
-    $interface_tweaks = hiera('profile::lvs::interface_tweaks'),
+    Array[String] $tagged_subnets = lookup('profile::lvs::tagged_subnets'),
+    Hash[String, Hash] $vlan_data = lookup('lvs::interfaces::vlan_data'),
+    Hash[String, Hash] $interface_tweaks = lookup('profile::lvs::interface_tweaks'),
 ){
     require ::lvs::configuration
 
