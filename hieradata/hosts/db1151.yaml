@@ -2,4 +2,3 @@
 mariadb::shard: 'x2'
 mariadb::binlog_format: 'ROW'
 profile::mariadb::mysql_role: 'master'
-profile::base::notifications: disabled
