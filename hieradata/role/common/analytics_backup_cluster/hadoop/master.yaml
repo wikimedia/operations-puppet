@@ -51,3 +51,9 @@ profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
+
+# Extra settings for the Worker daemons
+profile::hadoop::common::ensure_ssl_config: true
+profile::hadoop::worker::monitoring_enabled: true
+profile::hadoop::worker::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::hadoop::worker::check_mountpoints_disk_space: false
