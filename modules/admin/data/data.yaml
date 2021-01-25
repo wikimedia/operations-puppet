@@ -3800,7 +3800,7 @@ users:
     email: alberto.duran@epfl.ch
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC6gNunbAKKoO/FBh0y7gImIeiiIx5V974urZNNmClQg agaduran@Air-de-Alberto.home
-    expiry_date: 2021-1-30
+    expiry_date: 2021-02-28
     expiry_contact: mgerlach@wikimedia.org
     comment: Research fellow
     krb: present
