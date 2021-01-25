@@ -1,7 +1,7 @@
 # Note: This file is managed by puppet.
 <% @haproxy_vips.each_pair do |section, ip| -%>
 listen mariadb-<%= section %>
-    bind <%= @ip %>:3306
+    bind <%= ip %>:3306
     mode tcp
     option tcplog
     balance roundrobin
