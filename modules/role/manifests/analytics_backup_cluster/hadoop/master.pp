@@ -17,6 +17,8 @@ class role::analytics_backup_cluster::hadoop::master {
     include ::profile::analytics::cluster::users
     include ::profile::hadoop::firewall::master
 
+    include profile::hadoop::balancer
+
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
