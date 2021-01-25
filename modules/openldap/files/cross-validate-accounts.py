@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright (c) 2018 Wikimedia Foundation, Inc.
 
@@ -14,18 +14,18 @@ import sys
 LDAP_SERVER_URI = "ldaps://ldap-ro.eqiad.wikimedia.org:636"
 
 
-def flatten(l, a=None):
-    '''
+def flatten(list_, a=None):
+    """
     Flatten a list recursively. Make sure to only flatten list elements, which
     is a problem with itertools.chain which also flattens strings. a defaults
     to None instead of the empty list to avoid issues with Copy by reference
     which is the default in python
-    '''
+    """
 
     if a is None:
         a = []
 
-    for i in l:
+    for i in list_:
         if isinstance(i, list):
             flatten(i, a)
         else:
@@ -46,7 +46,7 @@ def get_ldap_group_members(group_name):
     )
 
     for member_dn in ldapdata[0][1]['member']:
-        members.append(member_dn.split(",")[0].split("=")[1])
+        members.append(member_dn.decode().split(",")[0].split("=")[1])
 
     return members
 
@@ -59,7 +59,7 @@ def fetch_yaml_data():
                                  "https://gerrit.wikimedia.org/r/operations/puppet.git"],
                                 stderr=subprocess.STDOUT, shell=False)
     except subprocess.CalledProcessError as e:
-        print "git checkout failed", e.returncode
+        print("git checkout failed", e.returncode)
         shutil.rmtree(tmp_dir)
         sys.exit(1)
 
@@ -133,9 +133,7 @@ def parse_users(yamldata):
 # Every account needs an email address
 def validate_email_addresses(users):
     log = ""
-    for i in users.keys():
-        attrs = users[i]
-
+    for i, attrs in users.items():
         if attrs['email'] == 'undefined' and not attrs['system']:
             log += i + " has no email address specified in data.yaml\n"
     return log
@@ -144,8 +142,7 @@ def validate_email_addresses(users):
 # Every time-limited account needs an expiry date
 def validate_expiry_contacts(users):
     log = ""
-    for i in users.keys():
-        attrs = users[i]
+    for i, attrs in users.items():
         if 'expiry_contact' in attrs and attrs['expiry_contact'] == 'undefined':
             log += i + " has an expiry date, but no contact address\n"
     return log
@@ -165,8 +162,9 @@ def validate_mutually_exclusive_privileged_ldap_groups():
 # Every account in the LDAP ops should be in either the ops or datacenter-ops YAML group
 def validate_common_ops_group(yamldata):
     ldap_ops = set(get_ldap_group_members('ops'))
-    yml_ops = set(yamldata['groups']['ops']['members'] +
-                  yamldata['groups']['datacenter-ops']['members'])
+    yml_ops = set(
+        yamldata['groups']['ops']['members'] + yamldata['groups']['datacenter-ops']['members']
+    )
     if ldap_ops != yml_ops:
         ops_diff = list(ldap_ops.symmetric_difference(yml_ops))
         return "Membership of ops group in LDAP and YAML are not identical: " + str(ops_diff)
@@ -180,14 +178,14 @@ def validate_privileged_ldap_groups_memberships(users):
     log = ""
 
     for member in get_ldap_group_members('wmf'):
-        if member in users.keys():  # flagged via different account check
-            if 'email' in users[member].keys():
+        if member in users:  # flagged via different account check
+            if 'email' in users[member]:
                 if not users[member]['email'].endswith('wikimedia.org'):
                     log += member + " is in wmf group, but not registered with a WMF account\n"
 
     for member in get_ldap_group_members('nda'):
-        if member in users.keys():  # flagged via different account check
-            if 'email' in users[member].keys():
+        if member in users:  # flagged via different account check
+            if 'email' in users[member]:
                 if users[member]['email'].endswith('wikimedia.org'):
                     log += member + " is in nda group, but registered with a WMF account\n"
     return log
@@ -223,9 +221,8 @@ def validate_all_ldap_group_members_are_defined(known_users):
 def print_pending_account_expirys(users):
     log = ""
     current_date = datetime.datetime.now().date()
-    for i in users.keys():
-        attrs = users[i]
-        if 'expiry_date' in attrs.keys():
+    for i, attrs in users.items():
+        if 'expiry_date' in attrs:
             expiry = datetime.datetime.strptime(str(attrs['expiry_date']), "%Y-%m-%d").date()
             delta = expiry - current_date
             if delta.days > 7:
@@ -283,7 +280,7 @@ def check_ssh_keys(yamldata):
             if ldapdata:
                 if ldapdata[0][1]:
                     for i in ldapdata[0][1]['sshPublicKey']:
-                        wmcs_ssh_keys.add(i.split()[1])
+                        wmcs_ssh_keys.add(i.decode().split()[1])
 
             if wmcs_ssh_keys & prod_ssh_keys and username not in whitelisted_users:
                 log += username + " uses the same SSH key(s) in WMCS and production:\n"
@@ -295,9 +292,8 @@ def check_ssh_keys(yamldata):
 # Check duplicated ops permissions
 def validate_duplicated_ops_permissions(users):
     log = ""
-    for i in users.keys():
-        attrs = users[i]
-        if 'ldap_only' in attrs.keys() and not attrs['ldap_only']:
+    for i, attrs in users.items():
+        if 'ldap_only' in attrs and not attrs['ldap_only']:
             if "ops" in attrs['prod_groups']:
                 ops_default_groups = set(['gitpuppet', 'ops'])
                 groups = set(attrs['prod_groups'])
@@ -327,14 +323,14 @@ def run_test(output):
     if output == "":
         return
     else:
-        print output.rstrip('\n')
+        print(output.rstrip('\n'))
 
 
 def main():
 
     yamldata = fetch_yaml_data()
     users = parse_users(yamldata)
-    known_users = users.keys()
+    known_users = list(users)
 
     run_test(validate_absented_users(yamldata))
     run_test(validate_email_addresses(users))

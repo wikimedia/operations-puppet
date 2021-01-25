@@ -24,7 +24,10 @@ class profile::openldap::management(
         password => $ldapconfig['script_user_pass'],
     }
 
-    require_package('python-yaml', 'python-ldap', 'python-phabricator')
+    ensure_packages([
+        'python-yaml', 'python-ldap', 'python-phabricator',
+        'python3-yaml', 'python3-ldap'
+    ])
 
     file { '/usr/local/bin/cross-validate-accounts':
         ensure => present,
