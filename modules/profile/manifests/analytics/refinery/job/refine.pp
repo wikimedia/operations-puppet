@@ -133,6 +133,7 @@ class profile::analytics::refinery::job::refine(
         'QuickSurveysResponses',
         'SearchSatisfaction',
         'SpecialInvestigate',
+        'SuggestedTagsAction',
         'TemplateWizard',
         'Test',
         'UniversalLanguageSelector',

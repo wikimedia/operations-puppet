@@ -21,6 +21,7 @@ eventlogging_schemas_disabled = (
     'QuickSurveysResponses',
     'SpecialInvestigate',
     'SearchSatisfaction',
+    'SuggestedTagsAction',
     'TemplateWizard',
     'Test',
     'UniversalLanguageSelector',
