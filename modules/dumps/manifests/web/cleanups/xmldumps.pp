@@ -51,9 +51,13 @@ class dumps::web::cleanups::xmldumps(
     # which can be stolen from for the next dump run.  This is due to
     # the way we run dumps: one full run, then one run without full
     # revision content, etc.
-    # we also need to keep partials of 2 dumps, for prefetch purposes,
-    # just in case there's an issue with the last full run.
-    $keep_generator = ['hugewikis.dblist:3:2', 'bigwikis.dblist:3:2', 'default:3:2']
+    # we would like to keep partials of 2 dumps, for prefetch purposes,
+    # just in case there's an issue with the last full run. This is most important
+    # for the small wikis, for which we don't generate page dumps in small pieces
+    # and so broken prefetch files mean pulling all historical revision content
+    # directly from the database.
+
+    $keep_generator = ['hugewikis.dblist:3:1', 'bigwikis.dblist:3:1', 'default:3:2']
     $keep_replicas = ['hugewikis.dblist:7', 'bigwikis.dblist:8', 'default:10']
 
     if ($isreplica == true) {
