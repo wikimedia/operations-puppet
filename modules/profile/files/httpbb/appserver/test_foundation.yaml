@@ -10,6 +10,13 @@ https://foundation.wikimedia.org:
   assert_status: 302
   assert_headers:
     Location: https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?rdfrom=%2F%2Ffoundation.wikimedia.org%2Fw%2Findex.php%3Ftitle%3DFundraising%26redirect%3Dno
+- path: /static/current/skins/Timeless/resources/print.css
+  assert_status: 200
+  request_headers: {Accept-Encoding: "deflate, gzip"}
+  assert_headers:
+    Content-Encoding: gzip
+    Vary: Accept-Encoding
+    Content-Type: text/css
 
 https://donate.wikimedia.org:
 - path: /
