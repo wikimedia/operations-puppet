@@ -123,4 +123,13 @@ class profile::wmcs::instance(
         ensure  => present,
         content => '',
     }
+
+    ensure_packages(['lvm2'])
+    file { '/usr/sbin/prepare_cinder_volume':
+        ensure => present,
+        source => 'puppet:///modules/profile/wmcs/instance/prepare_cinder_volume.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+    }
 }
