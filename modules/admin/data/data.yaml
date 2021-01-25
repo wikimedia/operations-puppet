@@ -3830,7 +3830,7 @@ users:
     name: dvrandecic
     realname: Denny Vrandecic
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCiiWPaPdEGsyjzpM2nzJjH7Mu9vMCqdhKFcdpbHu/UeiXKhAwUdy6prPkLlSwO69KKr2DUGAwgPforDxSEJ9UdaWlXmmDkxNlYo9htryusAMwRJKPXB7VaRWogek/eIvBzI1H2KNTD1Zc0PEVcD+b0wdwlaJWpWo/X5vPVQl5utbmW7EOjqwl79kqv43O4dcH2RsT9+jjRdDMNRV9EfL2mLZ2ZvypqHafxLNUukZMCGaTD7ToFgvjpwcXtshOJVE438uvk74nVmgDlEgvLyHRE5rwcO/uJMR7mFDikVxo1j9zmg3So9ug5iqYzgzBhKOhIcFWxmmP199FiE2WVdMoBMMLIaeOoLZ4HXarwSATQGEuhNu2lt2uO/0ZBJa44yE14T6Wwdw/or/ux4TA3vrnK95SEuwSYiHnWyzzQAnUJpST6fR3RMDysRxIYIGQLdDlyi9Z9qs7k/vxwZ0wFPnvoI5eXDaAcxEO7Ncm9tMG2GmGL9utRuL4qSuUWzbfVW28= dvrandecic@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMRihE3zB2bsCukBf66hsrAldxQ19HfcXQKbXlSbFIr8 dvrandecic@wikimedia.org
     uid: 25198
     email: dvrandecic@wikimedia.org
     krb: present
