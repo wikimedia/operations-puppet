@@ -1,7 +1,7 @@
 class profile::wmcs::nfs::primary(
-  $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
-  $data_iface    = hiera('profile::wmcs::nfs::primary::data_iface', 'eth1'),
-  $backup_servers = hiera('profile::wmcs::nfs::primary::backup_servers'),
+  String $observer_pass = lookup('profile::openstack::eqiad1::observer_password'),
+  String $data_iface    = lookup('profile::wmcs::nfs::primary::data_iface', {'default_value' => 'eth1'}),
+  Array[Stdlib::Fqdn] $backup_servers = lookup('profile::wmcs::nfs::primary::backup_servers'),
   Hash[String, Hash[String, Variant[Integer,String]]] $drbd_resource_config = lookup('profile::wmcs::nfs::primary::drbd_resource_config'),
   Stdlib::Fqdn $standby_server     = lookup('profile::wmcs::nfs::primary_standby'),
   Array[Stdlib::Fqdn] $nfs_cluster = lookup('profile::wmcs::nfs::primary_cluster'),
