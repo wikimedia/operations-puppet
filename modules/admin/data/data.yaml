@@ -23,7 +23,7 @@ groups:
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
-              pgrass, moushirael, evanp, dz1]
+              pgrass, moushirael, evanp, dz1, risler]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -4249,7 +4249,7 @@ ldap_only_users:
     ensure: absent
     realname: Raz Shuty
   risler:
-    ensure: present
+    ensure: absent
     realname: Ramsey Isler
     email: risler@wikimedia.org
   ryasmeen:
