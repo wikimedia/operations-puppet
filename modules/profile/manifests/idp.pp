@@ -76,6 +76,7 @@ class profile::idp(
         ldap_uris              => ["ldaps://${ldap_config[ro-server]}:636",
                                     "ldaps://${ldap_config[ro-server-fallback]}:636",],
         ldap_base_dn           => $ldap_config['base-dn'],
+        ldap_group_cn          => $ldap_config['group_cn'],
         ldap_attribute_list    => $ldap_attribute_list,
         log_level              => 'DEBUG',
         ldap_bind_pass         => $passwords::ldap::production::proxypass,

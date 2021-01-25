@@ -13,300 +13,146 @@ profile::idp::cors_allowed_origins:
   - 'https://thanos.wikimedia.org'
 profile::idp::services:
   icinga:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 1
     service_id: 'https://icinga.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
     properties:
       '@class': 'java.util.HashMap'
       httpHeaderEnableXFrameOptions:
         '@class': 'org.apereo.cas.services.DefaultRegisteredServiceProperty'
         values:
           - java.util.HashSet
-          - [ "false" ]
+          - ["false"]
   debmonitor:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 2
     service_id: '^https://debmonitor.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', ['cn=wmf,ou=groups,dc=wikimedia,dc=org', 'cn=nda,ou=groups,dc=wikimedia,dc=org']]
+    required_groups:
+      - wmf
+      - nda
   puppetboard:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 3
     service_id: 'https://(cas-)?puppetboard.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', ['cn=ops,ou=groups,dc=wikimedia,dc=org']]
+    required_groups:
+      - ops
   graphite:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 4
     service_id: 'https://(cas-)?graphite.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   tendril:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 5
     service_id: '^https://tendril.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   logstash:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 6
     service_id: 'https://(cas-)?logstash.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   people:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 7
     service_id: 'https://people.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-    # No requiredAttributes is defined for people.wikimedia.org as access is
+    # No required_groups is defined for people.wikimedia.org as access is
     # controlled via local .htaccess files for specific sub pages
   librenms:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 8
     service_id: 'https://librenms.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org'
-        ]]
+    required_groups:
+      - ops
+      - librenms-readers
   piwik:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 9
     service_id: 'https://piwik.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   yarn:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 10
     service_id: 'https://yarn.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   turnilo:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 11
     service_id: 'https://turnilo.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   superset:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 12
     service_id: 'https://superset.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   thanos:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 13
     service_id: 'https://thanos.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   hue:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 14
     service_id: 'https://hue-next.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   alerts:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 15
     service_id: 'https://alerts.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   grafana:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 16
     service_id: 'https://grafana(-rw)?.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-          'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
+      - grafana-admin
   orchestrator:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 17
     service_id: '^https://orchestrator.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
   racktables:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 18
     service_id: 'https://racktables.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', ['cn=ops,ou=groups,dc=wikimedia,dc=org']]
+    required_groups:
+      - ops
   rt:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 19
     service_id: 'https://rt.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', ['cn=ops,ou=groups,dc=wikimedia,dc=org']]
+    required_groups:
+      - ops
   config-master:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 20
     service_id: 'https://config-master.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   klaxon:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 21
     service_id: 'https://klaxon.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-    # No requiredAttributes is defined for klaxon.wikimedia.org as access is
+    # No required_groups is defined for klaxon.wikimedia.org as access is
     # controlled via local mod_auth_cas Apache config for specific subtrees
-
 profile::idp::ldap_attributes:
   - cn
   - memberOf

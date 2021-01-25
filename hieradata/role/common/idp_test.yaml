@@ -12,96 +12,46 @@ profile::idp::cors_allowed_origins:
   - 'https://alerts.wikimedia.org'
 profile::idp::services:
   icinga:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 1
     service_id: 'https://(cas-)?icinga.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
   debmonitor:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 2
     service_id: '^https://debmonitor.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', ['cn=wmf,ou=groups,dc=wikimedia,dc=org', 'cn=nda,ou=groups,dc=wikimedia,dc=org']]
+    required_groups:
+      - nda
+      - wmf
   puppetboard:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 3
     service_id: 'https://(cas-)?puppetboard.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', ['cn=ops,ou=groups,dc=wikimedia,dc=org']]
+    required_groups:
+      - ops
   graphite:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 4
     service_id: 'https://(cas-)?graphite.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   tendril:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 5
     service_id: '^https://tendril.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   logstash:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 6
     service_id: 'https://(cas-)?logstash.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
-      'requiredAttributes':
-        '@class': 'java.util.HashMap'
-        'memberOf': ['java.util.HashSet', [
-          'cn=ops,ou=groups,dc=wikimedia,dc=org',
-          'cn=nda,ou=groups,dc=wikimedia,dc=org',
-          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-        ]]
+    required_groups:
+      - ops
+      - nda
+      - wmf
   people:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 7
     service_id: 'https://people.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
   librenms:
-    class: 'org.apereo.cas.services.RegexRegisteredService'
     id: 8
     service_id: 'https://librenms.wikimedia.org(/.*)?'
-    attribute_release_policy:
-      '@class': 'org.apereo.cas.services.ReturnAllAttributeReleasePolicy'
-    access_strategy:
-      '@class': 'org.apereo.cas.services.DefaultRegisteredServiceAccessStrategy'
 profile::idp::ldap_attributes:
   - cn
   - memberOf

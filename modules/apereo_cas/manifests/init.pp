@@ -36,6 +36,7 @@ class apereo_cas (
     Apereo_cas::Ldapconnection        $ldap_connection               = 'ACTIVE_PASSIVE',
     Boolean                           $ldap_start_tls                = true,
     String                            $ldap_base_dn                  = 'dc=example,dc=org',
+    String                            $ldap_group_cn                 = 'ou=groups',
     String                            $ldap_search_filter            = 'cn={user}',
     String                            $ldap_bind_dn                  = 'cn=user,dc=example,dc=org',
     String                            $ldap_bind_pass                = 'changeme',
@@ -62,10 +63,10 @@ class apereo_cas (
     Array[Wmflib::HTTP::Method]       $cors_allowed_methods          = ['GET'],
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
-        error('you must provide either $keystore_source or $keystore_content')
+        fail('you must provide either $keystore_source or $keystore_content')
     }
     if $keystore_source and $keystore_content {
-        error('you cannot provide $keystore_source and $keystore_content')
+        fail('you cannot provide $keystore_source and $keystore_content')
     }
     $config_dir = "${base_dir}/config"
     $services_dir = "${base_dir}/services"

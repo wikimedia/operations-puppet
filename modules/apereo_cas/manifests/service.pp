@@ -1,26 +1,44 @@
 define apereo_cas::service (
-    String         $class,
-    Integer        $id,
-    String         $service_id,
-    Hash           $attribute_release_policy,
-    Hash           $access_strategy,
-    Optional[Hash] $properties = {}
+  Integer                              $id,
+  String                               $service_id,
+  Apereo_cas::Service::Class           $service_class   = 'RegexRegisteredService',
+  Apereo_cas::Service::Release_policy  $release_policy  = 'ReturnAllAttributeReleasePolicy',
+  Apereo_cas::Service::Access_strategy $access_strategy = 'DefaultRegisteredServiceAccessStrategy',
+  Array[String]                        $required_groups = [],
+  Hash                                 $properties      = {},
 ) {
-    include apereo_cas
-    $base_data = {
-        '@class'                 => $class,
-        'name'                   => $title,
-        'serviceId'              => $service_id,
-        'attributeReleasePolicy' => $attribute_release_policy,
-        'id'                     => $id,
-        'accessStrategy'         => $access_strategy,
+  include apereo_cas
+  $ldap_root = "${apereo_cas::ldap_group_cn},${apereo_cas::ldap_base_dn}"
+  if $required_groups.empty() {
+    $_access_strategy = {'@class' => "org.apereo.cas.services.${access_strategy}"}
+  } else {
+    $ldap_groups = $required_groups.map |$group| { "cn=${group},${ldap_root}" }
+    $_access_strategy = {
+      '@class'             => "org.apereo.cas.services.${access_strategy}",
+      'requiredAttributes' => {
+        '@class'   => 'java.util.HashMap',
+        'memberOf' => [
+          'java.util.HashSet',
+          $ldap_groups,
+        ]
+      }
     }
-    $data = $properties.empty ? {
-        true    => $base_data,
-        default => $base_data + {'properties' => $properties},
-    }
-    file {"${apereo_cas::services_dir}/${title}-${id}.json":
-        ensure  => file,
-        content => $data.to_json()
-    }
+  }
+
+  $base_data = {
+    '@class'                 => "org.apereo.cas.services.${service_class}",
+    'name'                   => $title,
+    'serviceId'              => $service_id,
+    'attributeReleasePolicy' => {'@class' => "org.apereo.cas.services.${release_policy}"},
+    'id'                     => $id,
+    'accessStrategy'         => $_access_strategy,
+  }
+  $data = $properties.empty ? {
+    true    => $base_data,
+    default => $base_data + {'properties' => $properties},
+  }
+  file {"${apereo_cas::services_dir}/${title}-${id}.json":
+    ensure  => file,
+    content => $data.to_json()
+  }
 }
