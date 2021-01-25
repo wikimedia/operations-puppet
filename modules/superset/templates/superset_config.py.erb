@@ -19,7 +19,10 @@ SQLLAB_TIMEOUT=60
 # This is used to support superset CSV uploads.
 UPLOAD_FOLDER = '/tmp/superset_uploads/'
 
-DRUID_IS_ACTIVE = True
+# We explicitly disable the old Druid interface to define datasources to favor
+# the Druid tables (via SQLAlchemy), since the latter are the only supported
+# ones by upstream.
+DRUID_IS_ACTIVE = False
 
 <% if @auth_type -%>
 from flask_appbuilder.security.manager import <%= @auth_type %>
