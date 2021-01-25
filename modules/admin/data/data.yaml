@@ -4006,6 +4006,12 @@ ldap_only_users:
     ensure: present
     realname: Angela Muigai
     email: angie@wikimedia.org
+  amy-wmde:
+    ensure: present
+    realname: Amrutha Varshini Chandra
+    email: amrutha.chandra@wikimedia.de
+    expiry_date: 2021-03-31
+    expiry_contact: lea.voget@wikimedia.de
   apalmer:
     ensure: present
     realname: Aeryn Palmer
