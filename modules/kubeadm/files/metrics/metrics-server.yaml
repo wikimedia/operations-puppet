@@ -96,16 +96,33 @@ spec:
           secretName: metrics-server-certs
       containers:
       - name: metrics-server
-        image: docker-registry.tools.wmflabs.org/metrics-server-amd64:v0.3.6
+        image: docker-registry.tools.wmflabs.org/metrics-server:v0.4.1
         args:
           - --secure-port=4443
           - --kubelet-insecure-tls
+          - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+          - --kubelet-use-node-status-port
           - --tls-cert-file=/etc/certs/cert.pem
           - --tls-private-key-file=/etc/certs/key.pem
+          - --authorization-always-allow-paths=/livez,/readyz
         ports:
         - name: main-port
           containerPort: 4443
           protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /readyz
+            port: main-port
+            scheme: HTTPS
+          periodSeconds: 10
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /livez
+            port: main-port
+            scheme: HTTPS
+          periodSeconds: 10
         securityContext:
           readOnlyRootFilesystem: true
           runAsNonRoot: true
@@ -117,6 +134,7 @@ spec:
         - name: metrics-server-certs
           mountPath: /etc/certs
           readOnly: true
+      priorityClassName: system-cluster-critical
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
