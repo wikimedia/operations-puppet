@@ -74,13 +74,6 @@ node 'an-test-ui1001.eqiad.wmnet' {
     role(analytics_test_cluster::hadoop::ui)
 }
 
-# Hadoop nodes that will be part of the future
-# backup cluster.
-# T260411
-node /^analytics10(5[1-7]).eqiad.wmnet$/ {
-    role(insetup)
-}
-
 # analytics1058-analytics1077 and an-worker10XX
 # are Analytics Hadoop worker nodes.
 #
