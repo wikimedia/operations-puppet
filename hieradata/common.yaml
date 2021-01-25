@@ -881,6 +881,7 @@ hadoop_clusters:
       hadoop.ssl.enabled.protocols: 'TLSv1.2'
       hadoop.rpc.protection: 'privacy'
       hadoop.security.authentication: 'kerberos'
+      fs.permissions.umask-mode: '027'
 
   analytics-test-hadoop:
     zookeeper_cluster_name: analytics-eqiad
