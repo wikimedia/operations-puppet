@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Confd attempts to replace each file atomically and
 # can abort for safety reasons if a specified check script
@@ -29,7 +29,7 @@ def touch(fname, times=None):
 
 
 def log(msg):
-    print msg
+    print(msg)
     syslog(msg)
 
 
@@ -46,7 +46,8 @@ def main():
     p = subprocess.Popen(target,
                          shell=False,
                          stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
+                         stderr=subprocess.PIPE,
+                         universal_newlines=True)
     out, err = p.communicate()
     retcode = p.wait()
     duration = time.time() - start
@@ -66,7 +67,7 @@ def main():
     else:
         if os.path.exists(error_file):
             os.remove(error_file)
-            print msg
+            print(msg)
         sys.exit(0)
 
 
