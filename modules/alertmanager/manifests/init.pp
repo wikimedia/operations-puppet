@@ -5,9 +5,13 @@ class alertmanager (
     Optional[String] $victorops_api_key = undef,
     Optional[String] $vhost = undef,
 ) {
-    require_package('prometheus-alertmanager')
+    ensure_packages(['prometheus-alertmanager', 'alertmanager-webhook-logger'])
 
     service { 'prometheus-alertmanager':
+        ensure => running,
+    }
+
+    service { 'alertmanager-webhook-logger':
         ensure => running,
     }
 

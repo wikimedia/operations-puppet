@@ -18,6 +18,10 @@ route:
   receiver: default
   group_by: ['alertname', 'cluster', 'scope']
   routes:
+    # Log all notifications
+    - receiver: 'logger'
+      continue: true
+
     - match:
         team: 'dcops'
       receiver: 'dcops-mail'
@@ -39,6 +43,11 @@ route:
       receiver: 'sre-irc'
 
 receivers:
+# alertmanager-webhook-logger endpoint
+- name: 'logger'
+  webhook_configs:
+    - url: 'http://localhost:6725'
+
 - name: 'default'
 
 - name: 'sre-irc'
