@@ -17,6 +17,7 @@
     {"index" : "prometheus-node-exporter",     "value" : "kafka local" },
     {"index" : "prometheus-blackbox-exporter", "value" : "kafka local" },
     {"index" : "prometheus",                   "value" : "kafka local" },
+    {"index" : "alertmanager-webhook-logger",  "value" : "kafka local" },
     {"index" : "input-file-etherpad-multiline","value" : "kafka" },
     {"index" : "input-file-logstash-multiline","value" : "kafka" },
     {"index" : "input-file-gerrit-multiline",  "value" : "kafka" },
