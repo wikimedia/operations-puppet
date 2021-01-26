@@ -1,6 +1,6 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 """Easily trigger zuul pipelines for a Gerrit repository."""
-# Copyright 2015 Legoktm
+# Copyright 2015, 2021 Kunal Mehta <legoktm@member.fsf.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -13,8 +13,6 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-
-from __future__ import print_function
 
 import json
 import requests
@@ -42,7 +40,7 @@ else:
     repos = [repo]
 
 
-def test_repo(repo):
+def test_repo(repo, pipeline):
     # Fetch the latest change for the repo from the Gerrit API
     r = requests.get('https://gerrit.wikimedia.org/r/changes/?'
                      'q=status:merged+project:%s&n=1&o=CURRENT_REVISION'
@@ -54,14 +52,14 @@ def test_repo(repo):
     change = data[0]
     change_number = change['_number']
     patchset = change['revisions'][change['current_revision']]['_number']
-    print('Going to test %s@%s,%s' % (repo, change_number, patchset))
+    print(f'Going to test {repo}@{change_number},{patchset}')
     subprocess.call(['zuul', 'enqueue',
                      '--trigger', 'gerrit',
                      '--pipeline', pipeline,
                      '--project', repo,
-                     '--change', '%s,%s' % (change_number, patchset)])
+                     '--change', f'{change_number},{patchset}'])
 
 
 if __name__ == '__main__':
     for repo in repos:
-        test_repo(repo)
+        test_repo(repo, pipeline)
