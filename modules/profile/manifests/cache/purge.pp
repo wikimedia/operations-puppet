@@ -1,7 +1,7 @@
 # Profile to manage the daemon for cache invalidation
 
 class profile::cache::purge(
-    $host_regex = hiera('profile::cache::purge::host_regex', undef),
+    Optional[String] $host_regex = lookup('profile::cache::purge::host_regex', {'default_value' => undef}),
     Array[String] $kafka_topics = lookup('profile::cache::purge::kafka_topics', {'default_value' => []}),
     Boolean $kafka_tls = lookup('profile::cache::purge::kafka_tls', {'default_value' => false}),
     String $kafka_cluster_name = lookup('profile::cache::purge::kafka_cluster_name', {'default_value' => 'main-eqiad'}),
