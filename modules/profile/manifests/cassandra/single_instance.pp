@@ -1,6 +1,6 @@
 class profile::cassandra::single_instance(
   Stdlib::Host        $graphite_host        = lookup('graphite_host'),
-  String              $cluster_name         = lookup('cluster'),
+  String              $cluster_name         = lookup('profile::cassandra::single_instance::cluster'),
   Array[Stdlib::Host] $prometheus_nodes     = lookup('prometheus_nodes'),
   Array[Stdlib::Host] $cassandra_hosts      = lookup('profile::cassandra::single_instance::seeds'),
   String              $dc                   = lookup('profile::cassandra::single_instance::dc'),
