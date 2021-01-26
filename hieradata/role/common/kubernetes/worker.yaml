@@ -54,6 +54,7 @@ profile::lvs::realserver::pools:
   recommendation-api: {}
   apertium: {}
   similar-users: {}
+  linkrecommendation: {}
 prometheus::node_exporter::collectors_extra:
   - processes
 # Remove once the clusters have been reinitialized

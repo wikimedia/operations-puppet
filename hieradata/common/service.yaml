@@ -2955,3 +2955,73 @@ service::catalog:
     discovery:
       - dnsdisc: similar-users
         active_active: true
+  linkrecommendation:
+    description: Link Recommendation, linkrecommendation.svc.%{::site}.wmnet
+    encryption: true
+    ip: &linkrecommendation_ips
+      codfw:
+        default: 10.2.1.23
+      eqiad:
+        default: 10.2.2.23
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!linkrecommendation.discovery.wmnet!4005!/healthz
+      critical: false # don't enable paging while setting up
+      sites:
+        codfw:
+          hostname: linkrecommendation.svc.codfw.wmnet
+        eqiad:
+          hostname: linkrecommendation.svc.eqiad.wmnet
+    port: 4005
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup # Still in configuration stage
+    discovery:
+      - dnsdisc: linkrecommendation
+        active_active: true
+  linkrecommendation-external:
+    description: Link Recommendation, public release, linkrecommendation.svc.%{::site}.wmnet
+    encryption: true
+    ip: *linkrecommendation_ips
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!linkrecommendation.discovery.wmnet!4006!/healthz
+      critical: false # don't enable paging while setting up
+      sites:
+        codfw:
+          hostname: linkrecommendation.svc.codfw.wmnet
+        eqiad:
+          hostname: linkrecommendation.svc.eqiad.wmnet
+    port: 4006
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup # Still in configuration stage
+    discovery:
+      - dnsdisc: linkrecommendation
+        active_active: true
