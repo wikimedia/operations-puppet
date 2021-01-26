@@ -49,6 +49,12 @@ groups:
     description: Use the standard system provided staff group to provide ops with privileges that would allow easier administrative tasks
     members: *ops_members
     posix_name: adm
+  platform-engineering:
+    description: People in the Platform Engineering team.
+    gid: 824
+    # ariel, hnowlan, tstarling not included because of ops membership
+    members: &platform_engineering_members [bpirkle, cicalese, clarakosi,
+              daniel, eevans, holger, kevinbazira, ppchelko]
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -78,22 +84,22 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [bd808, brion, cscott, ebernhardson,
+    members: [*platform_engineering_members, bd808, brion, cscott, ebernhardson,
               gilles, gjg, halfak, hashar, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
               andyrussg, nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, twentyafterfour, catrope,
-              mobrovac, nuria, thcipriani, joal, eevans,
+              mobrovac, nuria, thcipriani, joal,
               mforns, dcausse, bsitzmann, mholloway-shell, dduvall,
-              ladsgroup, zfilipin, addshore, niharika29, ppchelko,
+              ladsgroup, zfilipin, addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, tarrow, lucaswerkmeister-wmde,
               jhuneidi, wmde-fisch, mvolz, brennen, cparle,
               urbanecm, awight, jakob, accraze, andrew-wmde,
-              kevinbazira, mstyles, zpapierski, clarakosi, dpifke,
+              mstyles, zpapierski, dpifke,
               phuedx, samwilson, dmaza, tchanders,
-              wikigit, arlolra, daniel, bpirkle, cicalese, dancy, chrisalbon,
-              jdl, holger, annet, jgiannelos, kharlan, stran, jhernandez]
+              wikigit, arlolra, dancy, chrisalbon,
+              jdl, annet, jgiannelos, kharlan, stran, jhernandez]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -323,13 +329,6 @@ groups:
     description: Full root on EventLogging servers. (Deprecated)
     members: []
     privileges: []
-  platform-engineering:
-    description: People in the Platform Engineering team.
-    gid: 824
-    # ariel, hnowlan, tstarling not included because of ops membership
-    members: &platform_engineering_members [bpirkle, cicalese, clarakosi,
-              daniel, eevans, gmodena, holger, kevinbazira, nikkin,
-              ppchelko]
   snapshot-admins:
     gid: 743
     description: People who can sudo into the dumpsgen user on snapshot hosts.
