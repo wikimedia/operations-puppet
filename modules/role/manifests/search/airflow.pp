@@ -14,7 +14,7 @@ class role::search::airflow {
     include ::profile::analytics::cluster::gitconfig
     include ::profile::analytics::cluster::repositories::statistics
     include ::profile::analytics::refinery
-    include ::profile::analytics::search::airflow
+    include ::profile::analytics::airflow
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs

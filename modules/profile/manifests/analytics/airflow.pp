@@ -1,26 +1,26 @@
-# == Class profile::analytics::search::airflow
+# == Class profile::analytics::airflow
 #
 # Set up an apache-airflow instance to coordinate tasks
 # in the analytics cluster.
 #
-class profile::analytics::search::airflow(
-    String $service_user          = lookup('profile::analytics::search::airflow::service_user'),
-    String $service_group         = lookup('profile::analytics::search::airflow::service_group'),
-    Stdlib::Port $webserver_port  = lookup('profile::analytics::search::airflow::webserver_port'),
-    Stdlib::Fqdn $mysql_host      = lookup('profile::analytics::search::airflow::mysql_host'),
-    String $db_name               = lookup('profile::analytics::search::airflow::db_name'),
-    String $deploy_target         = lookup('profile::analytics::search::airflow::deploy_target'),
-    String $deploy_target_plugins = lookup('profile::analytics::search::airflow::deploy_target_plugins'),
-    String $deploy_user           = lookup('profile::analytics::search::airflow::deploy_user'),
-    Stdlib::Unixpath $deploy_dir  = lookup('profile::analytics::search::airflow::deploy_dir'),
-    Stdlib::Unixpath $airflow_dir = lookup('profile::analytics::search::airflow::airflow_dir'),
-    Stdlib::Unixpath $log_dir     = lookup('profile::analytics::search::airflow::log_dir'),
-    Stdlib::Unixpath $run_dir     = lookup('profile::analytics::search::airflow::run_dir'),
-    Stdlib::Unixpath $conf_dir    = lookup('profile::analytics::search::airflow::conf_dir'),
-    String $conf_file             = lookup('profile::analytics::search::airflow::conf_file'),
+class profile::analytics::airflow(
+    String $service_user          = lookup('profile::analytics::airflow::service_user'),
+    String $service_group         = lookup('profile::analytics::airflow::service_group'),
+    Stdlib::Port $webserver_port  = lookup('profile::analytics::airflow::webserver_port'),
+    Stdlib::Fqdn $mysql_host      = lookup('profile::analytics::airflow::mysql_host'),
+    String $db_name               = lookup('profile::analytics::airflow::db_name'),
+    String $deploy_target         = lookup('profile::analytics::airflow::deploy_target'),
+    String $deploy_target_plugins = lookup('profile::analytics::airflow::deploy_target_plugins'),
+    String $deploy_user           = lookup('profile::analytics::airflow::deploy_user'),
+    Stdlib::Unixpath $deploy_dir  = lookup('profile::analytics::airflow::deploy_dir'),
+    Stdlib::Unixpath $airflow_dir = lookup('profile::analytics::airflow::airflow_dir'),
+    Stdlib::Unixpath $log_dir     = lookup('profile::analytics::airflow::log_dir'),
+    Stdlib::Unixpath $run_dir     = lookup('profile::analytics::airflow::run_dir'),
+    Stdlib::Unixpath $conf_dir    = lookup('profile::analytics::airflow::conf_dir'),
+    String $conf_file             = lookup('profile::analytics::airflow::conf_file'),
+    String $db_user               = lookup('profile::analytics::airflow::db_user'),
+    String $db_password           = lookup('profile::analytics::airflow::db_password'),
 ) {
-    include ::passwords::mysql::airflow::search
-
     require_package([
         'python3',
         'python3-virtualenv',
@@ -36,7 +36,7 @@ class profile::analytics::search::airflow(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('profile/analytics/search/airflow/airflow.sh.erb'),
+        content => template('profile/analytics/airflow/airflow.sh.erb'),
     }
 
     # Deploy upstream airflow code + dependencies
@@ -64,9 +64,7 @@ class profile::analytics::search::airflow(
         mode   => '0755',
     }
 
-    $sql_user = $::passwords::mysql::airflow::search::user
-    $sql_pass = $::passwords::mysql::airflow::search::password
-    $sql_alchemy_conn = "mysql://${sql_user}:${sql_pass}@${mysql_host}/${db_name}?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem"
+    $sql_alchemy_conn = "mysql://${db_user}:${db_password}@${mysql_host}/${db_name}?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem"
 
     file { "${conf_dir}/${conf_file}":
         ensure  => present,
@@ -74,7 +72,7 @@ class profile::analytics::search::airflow(
         owner   => 'root',
         group   => $service_group,
         mode    => '0440',
-        content => template('profile/analytics/search/airflow/airflow.cfg.erb'),
+        content => template('profile/analytics/airflow/airflow.cfg.erb'),
         require => Group[$service_group],
     }
 
@@ -87,7 +85,7 @@ class profile::analytics::search::airflow(
     }
 
     file { '/usr/local/bin/airflow-clean-log-dirs':
-        content => template('profile/analytics/search/airflow/airflow-clean-log-dirs.erb'),
+        content => template('profile/analytics/airflow/airflow-clean-log-dirs.erb'),
         mode    => '0550',
         owner   => 'root',
         group   => 'root',
@@ -105,21 +103,21 @@ class profile::analytics::search::airflow(
     }
 
     systemd::service { 'airflow-webserver':
-        content => template('profile/analytics/search/airflow/webserver.service.erb'),
+        content => template('profile/analytics/airflow/webserver.service.erb'),
         require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 
     base::service_auto_restart { 'airflow-webserver': }
 
     systemd::service { 'airflow-scheduler':
-        content => template('profile/analytics/search/airflow/scheduler.service.erb'),
+        content => template('profile/analytics/airflow/scheduler.service.erb'),
         require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 
     base::service_auto_restart { 'airflow-scheduler': }
 
     systemd::service { 'airflow-kerberos':
-        content => template('profile/analytics/search/airflow/kerberos.service.erb'),
+        content => template('profile/analytics/airflow/kerberos.service.erb'),
         require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 

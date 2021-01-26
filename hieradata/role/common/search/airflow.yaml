@@ -8,20 +8,20 @@ profile::oozie::client::oozie_service: 'analytics-oozie'
 profile::hive::client::hive_service_name: 'analytics-hive'
 
 # Airflow settings and defaults.
-profile::analytics::search::airflow::service_user: analytics-search
-profile::analytics::search::airflow::service_group: analytics-search
-profile::analytics::search::airflow::webserver_port: 8778
-profile::analytics::search::airflow::mysql_host: 'an-coord1001.eqiad.wmnet'
-profile::analytics::search::airflow::db_name: 'search_airflow'
-profile::analytics::search::airflow::deploy_target: 'search/airflow'
-profile::analytics::search::airflow::deploy_target_plugins: 'wikimedia/discovery/analytics'
-profile::analytics::search::airflow::deploy_user: 'deploy-service'
-profile::analytics::search::airflow::deploy_dir: '/srv/deployment/search/airflow'
-profile::analytics::search::airflow::airflow_dir: '/srv/deployment/wikimedia/discovery/analytics/airflow'
-profile::analytics::search::airflow::log_dir: '/var/log/airflow'
-profile::analytics::search::airflow::run_dir: '/var/run/airflow'
-profile::analytics::search::airflow::conf_dir: '/etc/airflow'
-profile::analytics::search::airflow::conf_file: 'airflow.cfg'
+profile::analytics::airflow::service_user: analytics-search
+profile::analytics::airflow::service_group: analytics-search
+profile::analytics::airflow::webserver_port: 8778
+profile::analytics::airflow::mysql_host: 'an-coord1001.eqiad.wmnet'
+profile::analytics::airflow::db_name: 'search_airflow'
+profile::analytics::airflow::deploy_target: 'search/airflow'
+profile::analytics::airflow::deploy_target_plugins: 'wikimedia/discovery/analytics'
+profile::analytics::airflow::deploy_user: 'deploy-service'
+profile::analytics::airflow::deploy_dir: '/srv/deployment/search/airflow'
+profile::analytics::airflow::airflow_dir: '/srv/deployment/wikimedia/discovery/analytics/airflow'
+profile::analytics::airflow::log_dir: '/var/log/airflow'
+profile::analytics::airflow::run_dir: '/var/run/airflow'
+profile::analytics::airflow::conf_dir: '/etc/airflow'
+profile::analytics::airflow::conf_file: 'airflow.cfg'
 
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
