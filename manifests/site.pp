@@ -117,13 +117,8 @@ node 'an-worker1124.eqiad.wmnet' {
     role(analytics_backup_cluster::hadoop::standby)
 }
 
-node /^an-worker11(2[0-3]|2[5-8]|3[025678])\.eqiad\.wmnet$/ {
+node /^an-worker11(19|2[0-3]|2[5-8]|3[0125678])\.eqiad\.wmnet$/ {
     role(analytics_backup_cluster::hadoop::worker)
-}
-
-# Waiting for maintenance
-node /^an-worker11(19|31)\.eqiad\.wmnet$/ {
-    role(insetup)
 }
 
 # hue.wikimedia.org
