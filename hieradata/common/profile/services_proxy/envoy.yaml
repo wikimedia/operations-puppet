@@ -190,6 +190,11 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s" # this is needed to avoid reusing upstream-closed connections - see T263043
     upstream: restbase.discovery.wmnet
     xfp: https # this is needed for private wikis - see T249535
+  - name: apertium
+    port: 6504
+    service: apertium
+    timeout: "120s"
+    keepalive: "4.5s" # this is needed to avoid reusing upstream-closed connections - see T263043
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
