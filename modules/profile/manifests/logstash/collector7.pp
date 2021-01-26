@@ -351,6 +351,11 @@ class profile::logstash::collector7 (
         }
     }
 
+    # curator cluster config template require a list of hosts
+    $http_port = 9200
+    $cluster_name = 'config-ecs-test'
+    $curator_hosts = [ '127.0.0.1' ]
+
     elasticsearch::curator::config {
         'config-ecs-test':
             content => template('elasticsearch/curator_cluster.yaml.erb');
