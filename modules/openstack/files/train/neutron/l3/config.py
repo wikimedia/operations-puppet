@@ -105,7 +105,11 @@ OPTS = [
                 help=_('If keepalived without support for "no_track" option '
                        'is used, this should be set to False. '
                        'Support for this option was introduced in keepalived '
-                       '2.x'))
+                       '2.x')),
+    cfg.StrOpt('routing_source_ip', default='',
+               help=_('WMF defined src nat IP option')),
+    cfg.StrOpt('dmz_cidr', default='',
+               help=_('WMF defined src nat exclusions "src_range:dst_range,<repeat>')),
 ]
 
 
