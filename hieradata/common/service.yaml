@@ -2991,7 +2991,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup # Still in configuration stage
+    state: lvs_setup # Still in configuration stage
     discovery:
       - dnsdisc: similar-users
         active_active: true
@@ -3028,7 +3028,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup # Still in configuration stage
+    state: lvs_setup # Still in configuration stage
     discovery:
       - dnsdisc: linkrecommendation
         active_active: true
@@ -3061,7 +3061,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup # Still in configuration stage
+    state: lvs_setup # Still in configuration stage
     discovery:
       - dnsdisc: linkrecommendation
         active_active: true
