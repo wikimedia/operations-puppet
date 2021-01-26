@@ -22,6 +22,8 @@ route:
     - receiver: 'logger'
       continue: true
 
+
+    # Team routes
     - match:
         team: 'dcops'
       receiver: 'dcops-mail'
@@ -35,12 +37,20 @@ route:
         team: 'peering'
       receiver: 'peering-mail'
 
+
+
+    # Default routing for page/critical alerts
     - match:
         severity: 'page'
       receiver: 'sre-irc'
     - match:
         severity: 'critical'
       receiver: 'sre-irc'
+
+
+
+    # Force 'default' receiver as last and catch-all child route
+    - receiver: 'default'
 
 receivers:
 # alertmanager-webhook-logger endpoint
