@@ -241,6 +241,7 @@ $private_tables = [
     'text',
     'titlekey',
     'transcache',
+    'translate_cache',
     'uploadstash',
     'urlshortcodes', # This table could be public if needed # T219777#5073729
     'user_newtalk',
