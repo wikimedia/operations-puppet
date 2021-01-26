@@ -15,7 +15,6 @@
 #    under the License.
 
 import copy
-import re
 
 from oslo_log import log as logging
 import oslo_messaging as messaging
@@ -34,7 +33,7 @@ from nova.api.openstack.compute.views import servers as views_servers
 from nova.api.openstack import wsgi
 from nova.api import validation
 from nova import block_device
-from nova import compute
+from nova.compute import api as compute
 from nova.compute import flavors
 from nova.compute import utils as compute_utils
 import nova.conf
@@ -44,12 +43,10 @@ from nova.i18n import _
 from nova.image import api as image_api
 from nova import network as network_api
 from nova import objects
-from nova.objects import service as service_obj
 from nova.policies import servers as server_policies
 from nova import utils
 
 TAG_SEARCH_FILTERS = ('tags', 'tags-any', 'not-tags', 'not-tags-any')
-DEVICE_TAGGING_MIN_COMPUTE_VERSION = 14
 PARTIAL_CONSTRUCT_FOR_CELL_DOWN_MIN_VERSION = '2.69'
 PAGING_SORTING_PARAMS = ('sort_key', 'sort_dir', 'limit', 'marker')
 
@@ -60,6 +57,7 @@ LOG = logging.getLogger(__name__)
 INVALID_FLAVOR_IMAGE_EXCEPTIONS = (
     exception.BadRequirementEmulatorThreadsPolicy,
     exception.CPUThreadPolicyConfigurationInvalid,
+    exception.FlavorImageConflict,
     exception.ImageCPUPinningForbidden,
     exception.ImageCPUThreadPolicyForbidden,
     exception.ImageNUMATopologyAsymmetric,
@@ -70,6 +68,7 @@ INVALID_FLAVOR_IMAGE_EXCEPTIONS = (
     exception.ImageNUMATopologyIncomplete,
     exception.ImageNUMATopologyMemoryOutOfRange,
     exception.ImageNUMATopologyRebuildConflict,
+    exception.ImagePMUConflict,
     exception.ImageSerialPortNumberExceedFlavorValue,
     exception.ImageSerialPortNumberInvalid,
     exception.ImageVCPULimitsRangeExceeded,
@@ -77,6 +76,7 @@ INVALID_FLAVOR_IMAGE_EXCEPTIONS = (
     exception.InvalidCPUAllocationPolicy,
     exception.InvalidCPUThreadAllocationPolicy,
     exception.InvalidEmulatorThreadsPolicy,
+    exception.InvalidMachineType,
     exception.InvalidNUMANodesNumber,
     exception.InvalidRequest,
     exception.MemoryPageSizeForbidden,
@@ -86,6 +86,8 @@ INVALID_FLAVOR_IMAGE_EXCEPTIONS = (
     exception.RealtimeConfigurationInvalid,
     exception.RealtimeMaskNotFoundOrInvalid,
 )
+
+MIN_COMPUTE_MOVE_BANDWIDTH = 39
 
 
 class ServersController(wsgi.Controller):
@@ -106,14 +108,15 @@ class ServersController(wsgi.Controller):
         # Convenience return
         return robj
 
-    def __init__(self, **kwargs):
-
-        super(ServersController, self).__init__(**kwargs)
+    def __init__(self):
+        super(ServersController, self).__init__()
         self.compute_api = compute.API()
         self.network_api = network_api.API()
 
     @wsgi.expected_errors((400, 403))
-    @validation.query_schema(schema_servers.query_params_v266, '2.66')
+    @validation.query_schema(schema_servers.query_params_v275, '2.75')
+    @validation.query_schema(schema_servers.query_params_v273, '2.73', '2.74')
+    @validation.query_schema(schema_servers.query_params_v266, '2.66', '2.72')
     @validation.query_schema(schema_servers.query_params_v226, '2.26', '2.65')
     @validation.query_schema(schema_servers.query_params_v21, '2.1', '2.25')
     def index(self, req):
@@ -127,7 +130,9 @@ class ServersController(wsgi.Controller):
         return servers
 
     @wsgi.expected_errors((400, 403))
-    @validation.query_schema(schema_servers.query_params_v266, '2.66')
+    @validation.query_schema(schema_servers.query_params_v275, '2.75')
+    @validation.query_schema(schema_servers.query_params_v273, '2.73', '2.74')
+    @validation.query_schema(schema_servers.query_params_v266, '2.66', '2.72')
     @validation.query_schema(schema_servers.query_params_v226, '2.26', '2.65')
     @validation.query_schema(schema_servers.query_params_v21, '2.1', '2.25')
     def detail(self, req):
@@ -275,6 +280,9 @@ class ServersController(wsgi.Controller):
         # further down the stack.
         search_opts.pop('all_tenants', None)
 
+        if 'locked' in search_opts:
+            search_opts['locked'] = common.is_locked(search_opts)
+
         elevated = None
         if all_tenants:
             if is_detail:
@@ -293,9 +301,11 @@ class ServersController(wsgi.Controller):
 
         limit, marker = common.get_limit_and_marker(req)
         sort_keys, sort_dirs = common.get_sort_params(req.params)
+        blacklist = schema_servers.SERVER_LIST_IGNORE_SORT_KEY
+        if api_version_request.is_supported(req, min_version='2.73'):
+            blacklist = schema_servers.SERVER_LIST_IGNORE_SORT_KEY_V273
         sort_keys, sort_dirs = remove_invalid_sort_keys(
-            context, sort_keys, sort_dirs,
-            schema_servers.SERVER_LIST_IGNORE_SORT_KEY, ('host', 'node'))
+            context, sort_keys, sort_dirs, blacklist, ('host', 'node'))
 
         expected_attrs = []
         if is_detail:
@@ -305,6 +315,8 @@ class ServersController(wsgi.Controller):
                 expected_attrs.append("tags")
             if api_version_request.is_supported(req, '2.63'):
                 expected_attrs.append("trusted_certs")
+            if api_version_request.is_supported(req, '2.73'):
+                expected_attrs.append("system_metadata")
 
             # merge our expected attrs with what the view builder needs for
             # showing details
@@ -336,7 +348,7 @@ class ServersController(wsgi.Controller):
         return response
 
     def _get_server(self, context, req, instance_uuid, is_detail=False,
-                    cell_down_support=False):
+                    cell_down_support=False, columns_to_join=None):
         """Utility function for looking up an instance by uuid.
 
         :param context: request context for auth
@@ -348,6 +360,8 @@ class ServersController(wsgi.Controller):
                                   returning a minimal instance
                                   construct if the relevant cell is
                                   down.
+        :param columns_to_join: optional list of extra fields to join on the
+            Instance object
         """
         expected_attrs = ['flavor', 'numa_topology']
         if is_detail:
@@ -357,6 +371,8 @@ class ServersController(wsgi.Controller):
                 expected_attrs.append("trusted_certs")
             expected_attrs = self._view_builder.get_show_expected_attrs(
                                                             expected_attrs)
+        if columns_to_join:
+            expected_attrs.extend(columns_to_join)
         instance = common.get_instance(self.compute_api, context,
                                        instance_uuid,
                                        expected_attrs=expected_attrs,
@@ -392,8 +408,7 @@ class ServersController(wsgi.Controller):
             expl = _("Duplicate networks (%s) are not allowed") % net_id
             raise exc.HTTPBadRequest(explanation=expl)
 
-    def _get_requested_networks(self, requested_networks,
-                                supports_device_tagging=False):
+    def _get_requested_networks(self, requested_networks):
         """Create a list of requested networks from the networks attribute."""
 
         # Starting in the 2.37 microversion, requested_networks is either a
@@ -416,9 +431,6 @@ class ServersController(wsgi.Controller):
                 request.port_id = network.get('port', None)
 
                 request.tag = network.get('tag', None)
-                if request.tag and not supports_device_tagging:
-                    msg = _('Network interface tags are not yet supported.')
-                    raise exc.HTTPBadRequest(explanation=msg)
 
                 if request.port_id:
                     request.network_id = None
@@ -468,8 +480,7 @@ class ServersController(wsgi.Controller):
 
     @staticmethod
     def _process_bdms_for_create(
-            context, target, server_dict, create_kwargs,
-            supports_device_tagging):
+            context, target, server_dict, create_kwargs):
         """Processes block_device_mapping(_v2) req parameters for server create
 
         :param context: The nova auth request context
@@ -477,8 +488,6 @@ class ServersController(wsgi.Controller):
         :param server_dict: The POST /servers request body "server" entry
         :param create_kwargs: dict that gets populated by this method and
             passed to nova.comptue.api.API.create()
-        :param supports_device_tagging: True if a suitable microversion was
-            provided for bdm tags during server create, False otherwise
         :raises: webob.exc.HTTPBadRequest if the request parameters are invalid
         :raises: nova.exception.Forbidden if a policy check fails
         """
@@ -520,14 +529,9 @@ class ServersController(wsgi.Controller):
         if block_device_mapping:
             context.can(server_policies.SERVERS % 'create:attach_volume',
                         target)
-            for bdm in block_device_mapping:
-                if bdm.get('tag', None) and not supports_device_tagging:
-                    msg = _('Block device tags are not yet supported.')
-                    raise exc.HTTPBadRequest(explanation=msg)
 
     def _process_networks_for_create(
-            self, context, target, server_dict, create_kwargs,
-            supports_device_tagging):
+            self, context, target, server_dict, create_kwargs):
         """Processes networks request parameter for server create
 
         :param context: The nova auth request context
@@ -535,8 +539,6 @@ class ServersController(wsgi.Controller):
         :param server_dict: The POST /servers request body "server" entry
         :param create_kwargs: dict that gets populated by this method and
             passed to nova.comptue.api.API.create()
-        :param supports_device_tagging: True if a suitable microversion was
-            provided for VIF tags during server create, False otherwise
         :raises: webob.exc.HTTPBadRequest if the request parameters are invalid
         :raises: nova.exception.Forbidden if a policy check fails
         """
@@ -544,7 +546,7 @@ class ServersController(wsgi.Controller):
 
         if requested_networks is not None:
             requested_networks = self._get_requested_networks(
-                requested_networks, supports_device_tagging)
+                requested_networks)
 
         # Skip policy check for 'create:attach_network' if there is no
         # network allocation request.
@@ -554,6 +556,35 @@ class ServersController(wsgi.Controller):
                         target)
 
         create_kwargs['requested_networks'] = requested_networks
+
+    @staticmethod
+    def _process_hosts_for_create(
+            context, target, server_dict, create_kwargs, host, node):
+        """Processes hosts request parameter for server create
+
+        :param context: The nova auth request context
+        :param target: The target dict for ``context.can`` policy checks
+        :param server_dict: The POST /servers request body "server" entry
+        :param create_kwargs: dict that gets populated by this method and
+            passed to nova.comptue.api.API.create()
+        :param host: Forced host of availability_zone
+        :param node: Forced node of availability_zone
+        :raise: webob.exc.HTTPBadRequest if the request parameters are invalid
+        :raise: nova.exception.Forbidden if a policy check fails
+        """
+        requested_host = server_dict.get('host')
+        requested_hypervisor_hostname = server_dict.get('hypervisor_hostname')
+        if requested_host or requested_hypervisor_hostname:
+            # If the policy check fails, this will raise Forbidden exception.
+            context.can(server_policies.REQUESTED_DESTINATION, target=target)
+            if host or node:
+                msg = _("One mechanism with host and/or "
+                        "hypervisor_hostname and another mechanism "
+                        "with zone:host:node are mutually exclusive.")
+                raise exc.HTTPBadRequest(explanation=msg)
+        create_kwargs['requested_host'] = requested_host
+        create_kwargs['requested_hypervisor_hostname'] = (
+            requested_hypervisor_hostname)
 
     @wsgi.response(202)
     @wsgi.expected_errors((400, 403, 409))
@@ -567,7 +598,8 @@ class ServersController(wsgi.Controller):
     @validation.schema(schema_servers.base_create_v252, '2.52', '2.56')
     @validation.schema(schema_servers.base_create_v257, '2.57', '2.62')
     @validation.schema(schema_servers.base_create_v263, '2.63', '2.66')
-    @validation.schema(schema_servers.base_create_v267, '2.67')
+    @validation.schema(schema_servers.base_create_v267, '2.67', '2.73')
+    @validation.schema(schema_servers.base_create_v274, '2.74')
     def create(self, req, body):
         """Creates a new server for a given user."""
         context = req.environ['nova.context']
@@ -642,8 +674,6 @@ class ServersController(wsgi.Controller):
             context.can(server_policies.SERVERS % 'create:trusted_certs',
                         target=target)
 
-        # TODO(Shao He, Feng) move this policy check to os-availability-zone
-        # extension after refactor it.
         parse_az = self.compute_api.parse_availability_zone
         try:
             availability_zone, host, node = parse_az(context,
@@ -653,23 +683,17 @@ class ServersController(wsgi.Controller):
         if host or node:
             context.can(server_policies.SERVERS % 'create:forced_host', {})
 
-        # NOTE(danms): Don't require an answer from all cells here, as
-        # we assume that if a cell isn't reporting we won't schedule into
-        # it anyway. A bit of a gamble, but a reasonable one.
-        min_compute_version = service_obj.get_minimum_version_all_cells(
-            nova_context.get_admin_context(), ['nova-compute'])
-        supports_device_tagging = (min_compute_version >=
-                                   DEVICE_TAGGING_MIN_COMPUTE_VERSION)
+        if api_version_request.is_supported(req, min_version='2.74'):
+            self._process_hosts_for_create(context, target, server_dict,
+                                           create_kwargs, host, node)
 
         self._process_bdms_for_create(
-            context, target, server_dict, create_kwargs,
-            supports_device_tagging)
+            context, target, server_dict, create_kwargs)
 
         image_uuid = self._image_from_req_data(server_dict, create_kwargs)
 
         self._process_networks_for_create(
-            context, target, server_dict, create_kwargs,
-            supports_device_tagging)
+            context, target, server_dict, create_kwargs)
 
         flavor_id = self._flavor_id_from_req_data(body)
         try:
@@ -744,6 +768,7 @@ class ServersController(wsgi.Controller):
                 exception.InvalidBDMEphemeralSize,
                 exception.InvalidBDMFormat,
                 exception.InvalidBDMSwapSize,
+                exception.InvalidBDMDiskBus,
                 exception.VolumeTypeNotFound,
                 exception.AutoDiskConfigDisabledByImage,
                 exception.InstanceGroupNotFound,
@@ -751,7 +776,8 @@ class ServersController(wsgi.Controller):
                 exception.UnableToAutoAllocateNetwork,
                 exception.MultiattachNotSupportedOldMicroversion,
                 exception.CertificateValidationFailed,
-                exception.CreateWithPortResourceRequestOldVersion) as error:
+                exception.CreateWithPortResourceRequestOldVersion,
+                exception.ComputeHostNotFound) as error:
             raise exc.HTTPBadRequest(explanation=error.format_message())
         except INVALID_FLAVOR_IMAGE_EXCEPTIONS as error:
             raise exc.HTTPBadRequest(explanation=error.format_message())
@@ -759,9 +785,7 @@ class ServersController(wsgi.Controller):
                 exception.InstanceExists,
                 exception.NetworkAmbiguous,
                 exception.NoUniqueMatch,
-                exception.MultiattachSupportNotYetAvailable,
-                exception.VolumeTypeSupportNotYetAvailable,
-                exception.CertificateValidationNotYetAvailable) as error:
+                exception.VolumeTypeSupportNotYetAvailable) as error:
             raise exc.HTTPConflict(explanation=error.format_message())
 
         # If the caller wanted a reservation_id, return it
@@ -824,19 +848,38 @@ class ServersController(wsgi.Controller):
         try:
             instance = self.compute_api.update_instance(ctxt, instance,
                                                         update_dict)
+
+            # NOTE(gmann): Starting from microversion 2.75, PUT and Rebuild
+            # API response will show all attributes like GET /servers API.
+            show_all_attributes = api_version_request.is_supported(
+                req, min_version='2.75')
+            extend_address = show_all_attributes
+            show_AZ = show_all_attributes
+            show_config_drive = show_all_attributes
+            show_keypair = show_all_attributes
+            show_srv_usg = show_all_attributes
+            show_sec_grp = show_all_attributes
+            show_extended_status = show_all_attributes
+            show_extended_volumes = show_all_attributes
+            # NOTE(gmann): Below attributes need to be added in response
+            # if respective policy allows.So setting these as None
+            # to perform the policy check in view builder.
+            show_extended_attr = None if show_all_attributes else False
+            show_host_status = None if show_all_attributes else False
+
             return self._view_builder.show(
-                                      req, instance,
-                                      extend_address=False,
-                                      show_AZ=False,
-                                      show_config_drive=False,
-                                      show_extended_attr=False,
-                                      show_host_status=False,
-                                      show_keypair=False,
-                                      show_srv_usg=False,
-                                      show_sec_grp=False,
-                                      show_extended_status=False,
-                                      show_extended_volumes=False,
-                                      show_server_groups=show_server_groups)
+                req, instance,
+                extend_address=extend_address,
+                show_AZ=show_AZ,
+                show_config_drive=show_config_drive,
+                show_extended_attr=show_extended_attr,
+                show_host_status=show_host_status,
+                show_keypair=show_keypair,
+                show_srv_usg=show_srv_usg,
+                show_sec_grp=show_sec_grp,
+                show_extended_status=show_extended_status,
+                show_extended_volumes=show_extended_volumes,
+                show_server_groups=show_server_groups)
         except exception.InstanceNotFound:
             msg = _("Instance could not be found")
             raise exc.HTTPNotFound(explanation=msg)
@@ -853,8 +896,6 @@ class ServersController(wsgi.Controller):
         instance = self._get_server(context, req, id)
         try:
             self.compute_api.confirm_resize(context, instance)
-        except exception.InstanceUnknownCell as e:
-            raise exc.HTTPNotFound(explanation=e.format_message())
         except exception.MigrationNotFound:
             msg = _("Instance has not been resized.")
             raise exc.HTTPBadRequest(explanation=msg)
@@ -873,8 +914,6 @@ class ServersController(wsgi.Controller):
         instance = self._get_server(context, req, id)
         try:
             self.compute_api.revert_resize(context, instance)
-        except exception.InstanceUnknownCell as e:
-            raise exc.HTTPNotFound(explanation=e.format_message())
         except exception.MigrationNotFound:
             msg = _("Instance has not been resized.")
             raise exc.HTTPBadRequest(explanation=msg)
@@ -909,32 +948,33 @@ class ServersController(wsgi.Controller):
     def _resize(self, req, instance_id, flavor_id, **kwargs):
         """Begin the resize process with given instance/flavor."""
         context = req.environ["nova.context"]
-        instance = self._get_server(context, req, instance_id)
+        instance = self._get_server(context, req, instance_id,
+                                    columns_to_join=['services'])
         context.can(server_policies.SERVERS % 'resize',
                     target={'user_id': instance.user_id,
                             'project_id': instance.project_id})
 
-        # We could potentially move this check to conductor and avoid the
-        # extra API call to neutron when we support move operations with ports
-        # having resource requests.
-        if (common.instance_has_port_with_resource_request(
-                    instance_id, self.network_api) and not
-                common.supports_port_resource_request_during_move(req)):
-            msg = _("The resize action on a server with ports having "
-                    "resource requests, like a port with a QoS minimum "
-                    "bandwidth policy, is not supported with this "
-                    "microversion")
-            raise exc.HTTPBadRequest(explanation=msg)
+        if common.instance_has_port_with_resource_request(
+                instance_id, self.network_api):
+            # TODO(gibi): Remove when nova only supports compute newer than
+            # Train
+            source_service = objects.Service.get_by_host_and_binary(
+                context, instance.host, 'nova-compute')
+            if source_service.version < MIN_COMPUTE_MOVE_BANDWIDTH:
+                msg = _("The resize action on a server with ports having "
+                        "resource requests, like a port with a QoS "
+                        "minimum bandwidth policy, is not yet supported.")
+                raise exc.HTTPConflict(explanation=msg)
 
         try:
             self.compute_api.resize(context, instance, flavor_id, **kwargs)
-        except exception.InstanceUnknownCell as e:
-            raise exc.HTTPNotFound(explanation=e.format_message())
         except exception.QuotaError as error:
             raise exc.HTTPForbidden(
                 explanation=error.format_message())
         except (exception.InstanceIsLocked,
-                exception.AllocationMoveFailed) as e:
+                exception.AllocationMoveFailed,
+                exception.InstanceNotReady,
+                exception.ServiceUnavailable) as e:
             raise exc.HTTPConflict(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
@@ -968,8 +1008,6 @@ class ServersController(wsgi.Controller):
         except exception.InstanceNotFound:
             msg = _("Instance could not be found")
             raise exc.HTTPNotFound(explanation=msg)
-        except exception.InstanceUnknownCell as e:
-            raise exc.HTTPNotFound(explanation=e.format_message())
         except (exception.InstanceIsLocked,
                 exception.AllocationDeleteFailed) as e:
             raise exc.HTTPConflict(explanation=e.format_message())
@@ -1044,8 +1082,8 @@ class ServersController(wsgi.Controller):
 
         helpers.translate_attributes(helpers.REBUILD, rebuild_dict, kwargs)
 
-        if (api_version_request.is_supported(req, min_version='2.54')
-                and 'key_name' in rebuild_dict):
+        if (api_version_request.is_supported(req, min_version='2.54') and
+                'key_name' in rebuild_dict):
             kwargs['key_name'] = rebuild_dict.get('key_name')
 
         # If user_data is not specified, we don't include it in kwargs because
@@ -1057,12 +1095,12 @@ class ServersController(wsgi.Controller):
 
         # Skip policy check for 'rebuild:trusted_certs' if no trusted
         # certificate IDs were provided.
-        if ((api_version_request.is_supported(req, min_version='2.63'))
+        if ((api_version_request.is_supported(req, min_version='2.63')) and
                 # Note that this is different from server create since with
                 # rebuild a user can unset/reset the trusted certs by
                 # specifying trusted_image_certificates=None, similar to
                 # key_name.
-                and ('trusted_image_certificates' in rebuild_dict)):
+                ('trusted_image_certificates' in rebuild_dict)):
             kwargs['trusted_certs'] = rebuild_dict.get(
                 'trusted_image_certificates')
             context.can(server_policies.SERVERS % 'rebuild:trusted_certs',
@@ -1085,8 +1123,7 @@ class ServersController(wsgi.Controller):
                                      image_href,
                                      password,
                                      **kwargs)
-        except (exception.InstanceIsLocked,
-                exception.CertificateValidationNotYetAvailable) as e:
+        except exception.InstanceIsLocked as e:
             raise exc.HTTPConflict(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
@@ -1094,8 +1131,6 @@ class ServersController(wsgi.Controller):
         except exception.InstanceNotFound:
             msg = _("Instance could not be found")
             raise exc.HTTPNotFound(explanation=msg)
-        except exception.InstanceUnknownCell as e:
-            raise exc.HTTPNotFound(explanation=e.format_message())
         except exception.ImageNotFound:
             msg = _("Cannot find image for rebuild")
             raise exc.HTTPBadRequest(explanation=msg)
@@ -1111,6 +1146,7 @@ class ServersController(wsgi.Controller):
                 exception.ImageNotActive,
                 exception.ImageUnacceptable,
                 exception.InvalidMetadata,
+                exception.InvalidVolume,
                 ) as error:
             raise exc.HTTPBadRequest(explanation=error.format_message())
         except INVALID_FLAVOR_IMAGE_EXCEPTIONS as error:
@@ -1125,17 +1161,40 @@ class ServersController(wsgi.Controller):
         show_server_groups = api_version_request.is_supported(
                            req, min_version='2.71')
 
-        view = self._view_builder.show(req, instance, extend_address=False,
-                                       show_AZ=False,
-                                       show_config_drive=False,
-                                       show_extended_attr=False,
-                                       show_host_status=False,
-                                       show_keypair=show_keypair,
-                                       show_srv_usg=False,
-                                       show_sec_grp=False,
-                                       show_extended_status=False,
-                                       show_extended_volumes=False,
-                                       show_server_groups=show_server_groups)
+        # NOTE(gmann): Starting from microversion 2.75, PUT and Rebuild
+        # API response will show all attributes like GET /servers API.
+        show_all_attributes = api_version_request.is_supported(
+            req, min_version='2.75')
+        extend_address = show_all_attributes
+        show_AZ = show_all_attributes
+        show_config_drive = show_all_attributes
+        show_srv_usg = show_all_attributes
+        show_sec_grp = show_all_attributes
+        show_extended_status = show_all_attributes
+        show_extended_volumes = show_all_attributes
+        # NOTE(gmann): Below attributes need to be added in response
+        # if respective policy allows.So setting these as None
+        # to perform the policy check in view builder.
+        show_extended_attr = None if show_all_attributes else False
+        show_host_status = None if show_all_attributes else False
+
+        view = self._view_builder.show(
+            req, instance,
+            extend_address=extend_address,
+            show_AZ=show_AZ,
+            show_config_drive=show_config_drive,
+            show_extended_attr=show_extended_attr,
+            show_host_status=show_host_status,
+            show_keypair=show_keypair,
+            show_srv_usg=show_srv_usg,
+            show_sec_grp=show_sec_grp,
+            show_extended_status=show_extended_status,
+            show_extended_volumes=show_extended_volumes,
+            show_server_groups=show_server_groups,
+            # NOTE(gmann): user_data has been added in response (by code at
+            # the end of this API method) since microversion 2.57 so tell
+            # view builder not to include it.
+            show_user_data=False)
 
         # Add on the admin_password attribute since the view doesn't do it
         # unless instance passwords are disabled
@@ -1189,8 +1248,6 @@ class ServersController(wsgi.Controller):
                                                   instance,
                                                   image_name,
                                                   extra_properties=metadata)
-        except exception.InstanceUnknownCell as e:
-            raise exc.HTTPNotFound(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
                         'createImage', id)
@@ -1222,6 +1279,11 @@ class ServersController(wsgi.Controller):
 
     def _get_server_search_options(self, req):
         """Return server search options allowed by non-admin."""
+        # NOTE(mriedem): all_tenants is admin-only by default but because of
+        # tight-coupling between this method, the remove_invalid_options method
+        # and how _get_servers uses them, we include all_tenants here but it
+        # will be removed later for non-admins. Fixing this would be nice but
+        # probably not trivial.
         opt_list = ('reservation_id', 'name', 'status', 'image', 'flavor',
                     'ip', 'changes-since', 'all_tenants')
         if api_version_request.is_supported(req, min_version='2.5'):
@@ -1230,17 +1292,16 @@ class ServersController(wsgi.Controller):
             opt_list += TAG_SEARCH_FILTERS
         if api_version_request.is_supported(req, min_version='2.66'):
             opt_list += ('changes-before',)
+        if api_version_request.is_supported(req, min_version='2.73'):
+            opt_list += ('locked',)
         return opt_list
 
     def _get_instance(self, context, instance_uuid):
         try:
             attrs = ['system_metadata', 'metadata']
-            if not CONF.cells.enable:
-                # NOTE(danms): We can't target a cell database if we're
-                # in cellsv1 otherwise we'll short-circuit the replication.
-                mapping = objects.InstanceMapping.get_by_instance_uuid(
-                    context, instance_uuid)
-                nova_context.set_target_cell(context, mapping.cell_mapping)
+            mapping = objects.InstanceMapping.get_by_instance_uuid(
+                context, instance_uuid)
+            nova_context.set_target_cell(context, mapping.cell_mapping)
             return objects.Instance.get_by_uuid(
                 context, instance_uuid, expected_attrs=attrs)
         except (exception.InstanceNotFound,
@@ -1259,8 +1320,6 @@ class ServersController(wsgi.Controller):
             self.compute_api.start(context, instance)
         except (exception.InstanceNotReady, exception.InstanceIsLocked) as e:
             raise webob.exc.HTTPConflict(explanation=e.format_message())
-        except exception.InstanceUnknownCell as e:
-            raise exc.HTTPNotFound(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
                 'start', id)
@@ -1279,8 +1338,6 @@ class ServersController(wsgi.Controller):
             self.compute_api.stop(context, instance)
         except (exception.InstanceNotReady, exception.InstanceIsLocked) as e:
             raise webob.exc.HTTPConflict(explanation=e.format_message())
-        except exception.InstanceUnknownCell as e:
-            raise exc.HTTPNotFound(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
                 'stop', id)
