@@ -1,0 +1,12 @@
+#####################################################################
+##### THIS FILE IS MANAGED BY PUPPET
+#####  as template('profile/wmcs/db/wikireplicas/querysampler-config.yaml.erb')
+#####################################################################
+
+localdb: /srv/queries/sampler.db
+password: <%= @replicapass %>
+user: <%= @replicauser %>
+hosts:
+  - dbproxy1018.eqiad.wmnet
+  - dbproxy1019.eqiad.wmnet
+  - dbproxy1018.eqiad.wmnet

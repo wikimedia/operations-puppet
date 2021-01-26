@@ -1,0 +1,10 @@
+[Unit]
+Description=Randomly sample the queries that are running on wikireplicas
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/querysampler -d
+Restart=always
+StartLimitInterval=90
+StartLimitBurst=3

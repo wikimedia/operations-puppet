@@ -45,3 +45,6 @@ GRANT USAGE ON *.* TO 's51156'@'%' WITH MAX_USER_CONNECTIONS 40;
 -- wmf-pt-kill user has to be granted SUPER and SHOW PROCESSLIST and should be able to login via unix_socket (T203674)
 
 GRANT PROCESS, SUPER ON *.* TO 'wmf-pt-kill'@'localhost' IDENTIFIED VIA unix_socket;
+
+-- Currently only on the legacy wikireplicas for information gathering. T272723
+GRANT PROCESS ON *.* TO 'querysampler'@'%';
