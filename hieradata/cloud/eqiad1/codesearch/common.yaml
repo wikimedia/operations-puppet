@@ -15,3 +15,4 @@ profile::codesearch::ports:
     services: 6092
     libraries: 6093
     analytics: 6094
+    puppet: 6095
