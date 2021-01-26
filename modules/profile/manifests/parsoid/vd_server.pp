@@ -9,7 +9,7 @@ class profile::parsoid::vd_server(
 
     testreduce::server { 'parsoid-vd':
         instance_name  => 'parsoid-vd',
-        db_host        => 'm5-master.eqiad.wmnet',
+        db_host        => 'localhost',
         db_name        => 'testreduce_vd',
         db_user        => 'testreduce',
         db_pass        => $passwords::testreduce::mysql::db_pass,
