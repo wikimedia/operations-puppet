@@ -56,7 +56,7 @@ class profile::kubernetes::deployment_server::global_config(
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
     # TODO: remove this
     file { '/etc/helmfile-defaults/service-proxy.yaml':
-        ensure  => present,
+        ensure  => absent,
         content => to_yaml({'services_proxy' => $proxies}),
     }
     # Per-cluster general defaults.
