@@ -4700,3 +4700,7 @@ ldap_only_users:
     ensure: present
     realname: Mew Ophaswongse
     email: mophaswongse@wikimedia.org
+  jaz:
+    ensure: present
+    realname: Jazmin Tanner
+    email: jtanner@wikimedia.org
