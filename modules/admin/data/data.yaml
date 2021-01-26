@@ -4696,3 +4696,7 @@ ldap_only_users:
     ensure: present
     realname: Cory Massaro
     email: cmassaro@wikimedia.org
+  mewoph:
+    ensure: present
+    realname: Mew Ophaswongse
+    email: mophaswongse@wikimedia.org
