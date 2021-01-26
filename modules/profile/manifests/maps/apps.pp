@@ -15,7 +15,10 @@ class profile::maps::apps(
     Boolean $tilerator_enable = lookup('profile::maps::apps::tilerator_enable'),
 ) {
 
-    $use_nodejs10 = true
+    $use_nodejs10 = $::lsbdistcodename ? {
+        'buster'  => false,
+        'stretch' => true,
+    }
 
     $contact_groups = 'admins,team-interactive'
 
