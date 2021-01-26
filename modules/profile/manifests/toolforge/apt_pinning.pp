@@ -20,7 +20,7 @@ class profile::toolforge::apt_pinning {
             $libnss3_pkg_version      = 'version 2:3.42.1-1+deb10u1'
             $libnfsidmap2_pkg_version = 'version 0.25-5.1'
             $ldapvi_pkg_version       = 'version 1.7-10*'
-            $sudo_ldap_pkg_version    = 'version 1.8.27-1'
+            $sudo_ldap_pkg_version    = 'version 1.8.27-1+deb10u3'
             $nscd_pkg_version         = 'version 2.28-10'
             $python_ldap_pkg_version  = 'version 3.1.0-2'
             $libnss_db_pkg_version    = 'version 2.2.3pre1-6+b6'
@@ -36,7 +36,7 @@ class profile::toolforge::apt_pinning {
             $libnss3_pkg_version      = 'version xxx'
             $libnfsidmap2_pkg_version = 'version 0.25-5.1'
             $ldapvi_pkg_version       = 'version 1.7-10*'
-            $sudo_ldap_pkg_version    = 'version 1.8.19p1-2.1'
+            $sudo_ldap_pkg_version    = 'version 1.8.19p1-2.1+deb9u3'
             $nscd_pkg_version         = 'version 2.24-11+deb9u1'
             $nfs_common_pkg_version   = 'version 1:1.3.4-2.1'
         }
