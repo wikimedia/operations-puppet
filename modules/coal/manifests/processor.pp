@@ -45,7 +45,7 @@ class coal::processor(
     # Include common elements
     include ::coal::common
 
-    ensure_packages(['python3-kafka', 'python3-dateutil', 'python3-etcd', 'python3-tz'])
+    ensure_packages(['python3-kafka', 'python3-dateutil', 'python3-etcd', 'python3-tz', 'python3-snappy'])
 
     file { $log_dir:
         ensure => directory,
