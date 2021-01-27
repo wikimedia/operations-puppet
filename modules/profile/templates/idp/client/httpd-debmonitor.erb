@@ -26,6 +26,7 @@
     ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
     LogLevel warn
 
+    ProxyPreserveHost On
     ProxyPass / http://localhost:<%= @vhost_settings['uwsgi_port'] %>/
     ProxyPassReverse / http://localhost:<%= @vhost_settings['uwsgi_port'] %>/
 </VirtualHost>
