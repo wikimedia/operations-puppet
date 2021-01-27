@@ -1061,7 +1061,6 @@ hadoop_clusters:
       an-worker1098.eqiad.wmnet:  /eqiad/B/7
       analytics1061.eqiad.wmnet:  /eqiad/B/8
       analytics1062.eqiad.wmnet:  /eqiad/B/8
-      analytics1062.eqiad.wmnet:  /eqiad/B/8
       analytics1063.eqiad.wmnet:  /eqiad/B/8
 
       an-worker1088.eqiad.wmnet:  /eqiad/C/2
