@@ -25,3 +25,5 @@ profile::base::notifications: disabled
 profile::mediawiki::php::monitoring::monitor_opcache: false
 
 profile::parsoid::testreduce::install_node: true
+
+profile::tlsproxy::envoy::global_cert_name: "testreduce.discovery.wmnet"

@@ -18,4 +18,6 @@ class role::parsoid::testreduce {
     include ::profile::parsoid::rt_server
 
     include ::profile::mariadb::generic_server
+
+    include ::profile::tlsproxy::envoy # TLS termination
 }
