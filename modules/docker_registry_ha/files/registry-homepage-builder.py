@@ -115,7 +115,7 @@ def main():
         logger.error("Error: CSS path %s doesn't exist.", args.css)
         sys.exit(1)
 
-    registry = browser.RegistryBrowser(args.registry, logger=logger)
+    registry = browser.RegistryBrowser(args.registry, logger=logger, protocol="http")
     images = []
     timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
     # sort=True is very slow, for now we alphasort in get_latest()

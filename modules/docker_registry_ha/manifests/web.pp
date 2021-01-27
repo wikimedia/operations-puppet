@@ -69,7 +69,7 @@ class docker_registry_ha::web (
     systemd::timer::job {'build-homepage':
         ensure      => 'present',
         description => 'Build docker-registry homepage',
-        command     => "/usr/local/bin/registry-homepage-builder docker-registry.discovery.wmnet ${homepage}",
+        command     => "/usr/local/bin/registry-homepage-builder localhost:5000 ${homepage}",
         user        => 'root',
         interval    => {
             'start'    => 'OnCalendar',
