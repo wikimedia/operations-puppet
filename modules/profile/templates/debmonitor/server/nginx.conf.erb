@@ -26,7 +26,7 @@ server {
     include /etc/nginx/snippets/debmonitor_static.conf;
 
     location / {
-        proxy_pass http://debmonitor;
+        proxy_pass http://debmonitor-cas;
         include /etc/nginx/snippets/debmonitor_proxy.conf;
 
         proxy_set_header X-Client-IP $remote_addr;
