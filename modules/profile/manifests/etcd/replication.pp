@@ -23,12 +23,12 @@
 #              Default: 2379
 #
 class profile::etcd::replication(
-    $origin = hiera('profile::etcd::replication::origin'),
-    $destination_path = hiera('profile::etcd::replication::destination_path'),
-    $prometheus_nodes = hiera('prometheus_nodes'),
-    $active = hiera('profile::etcd::replication::active'),
-    $dst_url = hiera('profile::etcd::replication::dst_url', 'http://localhost:2378'),
-    $src_port = hiera('profile::etcd::replication::src_port', 2379),
+    Hash $origin = lookup('profile::etcd::replication::origin'),
+    Stdlib::Unixpath $destination_path = lookup('profile::etcd::replication::destination_path'),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+    Boolean $active = lookup('profile::etcd::replication::active'),
+    Stdlib::Httpurl $dst_url = lookup('profile::etcd::replication::dst_url', {'default_value' => 'http://localhost:2378'}),
+    Stdlib::Port $src_port = lookup('profile::etcd::replication::src_port', {'default_value' => 2379})
 ) {
     require ::passwords::etcd
     $accounts = $::passwords::etcd::accounts
