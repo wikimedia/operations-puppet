@@ -25,7 +25,6 @@ def ok(msg):
 
 
 def main():
-    hostname = os.uname().nodename
     kernel_version_uname = os.uname().version
 
     for i in kernel_version_uname.split():
@@ -50,10 +49,6 @@ def main():
     if systemd_detect_virt in ['qemu', 'kvm']:
         virtual_host = True
 
-    # CPUs which were not fixed for SSBD (which was the first) are also not
-    # fixed for L1TF/MDS
-    blacklist_mds = ['helium']
-
     if apt_pkg.version_compare(current_kernelpackage_version, '4.9.107-1') > 0:
         expected_cpu_flags.add('ssbd')
     else:
@@ -70,7 +65,7 @@ def main():
         expected_cpu_flags.remove('ssbd')
 
     for flag in ['flush_l1d', 'md_clear']:
-        if flag in expected_cpu_flags and hostname in blacklist_mds:
+        if flag in expected_cpu_flags:
             expected_cpu_flags.remove(flag)
 
     if not expected_cpu_flags:

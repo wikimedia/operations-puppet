@@ -1217,16 +1217,6 @@ node 'grafana2001.codfw.wmnet' {
     role(grafana)
 }
 
-# Old backup storage and active director: substituted by backup1001
-node 'helium.eqiad.wmnet' {
-    role(backup::offsite)
-}
-
-# Old bacula storage replica: substituted by backup2001
-node 'heze.codfw.wmnet' {
-    role(backup::offsite)
-}
-
 # new host that needs to be turned over to service owner
 node 'htmldumper1001.eqiad.wmnet' {
     role(dumps::web::htmldumps)
