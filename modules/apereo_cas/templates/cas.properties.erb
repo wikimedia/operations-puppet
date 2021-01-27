@@ -30,7 +30,7 @@ cas.server.prefix=<%= @server_name %><%= @server_prefix %>
 server.tomcat.basedir=<%= @tomcat_basedir %>
 <%- if @tomcat_proxy -%>
 # we proxy from nginx over localhost
-server.tomcat.internal-proxies=127\\.0\\.0\\.1
+server.tomcat.remoteip.internal-proxies=127\\.0\\.0\\.1
 management.endpoints.web.base-path=/api
 
 cas.server.tomcat.http.enabled=false
