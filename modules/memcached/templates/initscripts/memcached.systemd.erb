@@ -11,14 +11,19 @@ CapabilityBoundingSet=CAP_DAC_OVERRIDE
 ReadOnlyPaths=/var/lib/puppet/ssl/certs /var/lib/puppet/ssl/private_keys
 <% end -%>
 ExecStart=/usr/bin/memcached \
-          -p <%= @port -%> \
-          -u nobody \
-          -m <%= @size %> \
-          -c 25000 \
-          -f <%= @growth_factor -%> \
+          <%- if @unix_socket -%>
+          -s /var/run/memcached/<%= @unix_socket_name %> \
+          -a 0666 \
+          <%- else -%>
           <%- @listen.sort.each do |listen| -%>
           -l <%= listen %> \
           <%- end -%>
+          -p <%= @port -%> \
+          <%- end -%>
+          -m <%= @size %> \
+          -u nobody \
+          -c 25000 \
+          -f <%= @growth_factor -%> \
           <%- @extra_options.sort.each do |option,value| -%>
           <%= option %> <%= value %> \
           <%- end -%>

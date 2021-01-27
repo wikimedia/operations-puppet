@@ -53,6 +53,13 @@
 # [*extra_options*]
 #   A hash of additional command-line options and values.
 #
+# [*enable_unix_socket*]
+#   Listen to a unix socket, disables listening to TCP.
+#
+# [*unix_socket_name*]
+#   Name of the unix socket, eg memcached.sock
+#
+
 # === Examples
 #
 #  class { '::memcached':
@@ -62,18 +69,20 @@
 #  }
 #
 class memcached(
-    Integer                    $size                 = 2000,
-    Stdlib::Port               $port                 = 11000,
-    Stdlib::IP::Address        $ip                   = '0.0.0.0',
-    String                     $version              = 'present',
-    Integer                    $min_slab_size        = 48,
-    Float                      $growth_factor        = 1.25,
-    Hash[String, Any]          $extra_options        = {},
-    Boolean                    $enable_16            = false,
-    Boolean                    $enable_tls           = false,
-    Boolean                    $enable_tls_localhost = false,
-    Optional[Stdlib::Unixpath] $ssl_cert             = undef,
-    Optional[Stdlib::Unixpath] $ssl_key              = undef,
+    Integer                    $size                  = 2000,
+    Stdlib::Port               $port                  = 11000,
+    Stdlib::IP::Address        $ip                    = '0.0.0.0',
+    String                     $version               = 'present',
+    Integer                    $min_slab_size         = 48,
+    Float                      $growth_factor         = 1.25,
+    Hash[String, Any]          $extra_options         = {},
+    Boolean                    $enable_16             = false,
+    Boolean                    $enable_tls            = false,
+    Boolean                    $enable_tls_localhost  = false,
+    Boolean                    $enable_unix_socket    = false,
+    String                     $unix_socket_name      = 'memcached.sock',
+    Optional[Stdlib::Unixpath] $ssl_cert              = undef,
+    Optional[Stdlib::Unixpath] $ssl_key               = undef,
 ) {
     if $enable_tls and ! $enable_16 {
         fail('you can only enable tls with memcached1.6')
@@ -81,7 +90,14 @@ class memcached(
     if $enable_tls and (!$ssl_key or !$ssl_key) {
         fail('you must provide ssl_cert and ssl_key if you enable_tls')
     }
-    if $ip == '0.0.0.0' and $enable_tls and !$enable_tls_localhost {
+    if $enable_tls and $enable_unix_socket {
+        fail('enabling TLS and using a unix socket are mutually exclusive')
+    }
+    if $enable_unix_socket {
+        systemd::tmpfile { 'memcached':
+            content => 'd /run/memcached 0755 nobody nogroup - -'
+        }
+    } elsif ($ip == '0.0.0.0' and $enable_tls and !$enable_tls_localhost) {
         # if the ip is 0.0.0.0, indicating all ipv4 interfaces,
         # then we need to split theses addresses out to ensure we
         # have notls on localhost
@@ -111,8 +127,14 @@ class memcached(
     }
 
     # Prefer a direct check if memcached is not running on localhost.
-
-    if $ip == '127.0.0.1' {
+    if $enable_unix_socket {
+        nrpe::monitor_service { 'memcached_socket':
+            description  => 'memcached socket',
+            nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H /run/memcached/${$unix_socket_name} --timeout=2",
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Memcached',
+        }
+    # Prefer a direct check if memcached is not running on localhost.
+    } elsif $ip == '127.0.0.1' {
         nrpe::monitor_service { 'memcached':
             description  => 'Memcached',
             nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
