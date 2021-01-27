@@ -2,6 +2,7 @@ server {
     server_name parsoid-rt-tests.wikimedia.org;
 
     listen   8001; ## listen for ipv4; this line is default and implied
+    listen   [::]:8001; ## listen for ipv6
 
     # parsoid (used for a specific test case below)
     location  /parsoid {
