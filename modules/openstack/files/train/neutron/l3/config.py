@@ -56,12 +56,6 @@ OPTS = [
                        "single agent in a Neutron deployment, and may be "
                        "False for all agents if all routers must have an "
                        "external network gateway.")),
-    cfg.StrOpt('gateway_external_network_id', default='',
-               help=_("To allow the L3 agent to support multiple external "
-                      "networks, gateway_external_network_id must be left "
-                      "empty. Otherwise this value should be set to the UUID "
-                      "of the single external network to be used."),
-               deprecated_for_removal=True),
     cfg.StrOpt('ipv6_gateway', default='',
                help=_("With IPv6, the network used for the external gateway "
                       "does not need to have an associated subnet, since the "
@@ -106,10 +100,12 @@ OPTS = [
                       '(by default), the user executing the L3 agent will be '
                       'passed. If "root" specified, because radvd is spawned '
                       'as root, no "username" parameter will be passed.')),
-    cfg.StrOpt('routing_source_ip', default='',
-               help=_('WMF defined src nat IP option')),
-    cfg.StrOpt('dmz_cidr', default='',
-               help=_('WMF defined src nat exclusions "src_range:dst_range,<repeat>')),
+    cfg.BoolOpt('keepalived_use_no_track',
+                default=True,
+                help=_('If keepalived without support for "no_track" option '
+                       'is used, this should be set to False. '
+                       'Support for this option was introduced in keepalived '
+                       '2.x'))
 ]
 
 

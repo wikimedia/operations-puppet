@@ -12,6 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import abc
 import collections
 
 import netaddr
@@ -19,13 +20,13 @@ from neutron_lib import constants as lib_constants
 from neutron_lib.exceptions import l3 as l3_exc
 from neutron_lib.utils import helpers
 from oslo_log import log as logging
+import six
 
 from neutron._i18n import _
 from neutron.agent.l3 import namespaces
 from neutron.agent.linux import ip_lib
 from neutron.agent.linux import iptables_manager
 from neutron.agent.linux import ra
-from neutron.common import constants as n_const
 from neutron.common import ipv6_utils
 from neutron.common import utils as common_utils
 from neutron.ipam import utils as ipam_utils
@@ -41,7 +42,8 @@ ADDRESS_SCOPE_MARK_ID_MAX = 2048
 DEFAULT_ADDRESS_SCOPE = "noscope"
 
 
-class RouterInfo(object):
+@six.add_metaclass(abc.ABCMeta)
+class BaseRouterInfo(object):
 
     def __init__(self,
                  agent,
@@ -52,16 +54,88 @@ class RouterInfo(object):
                  use_ipv6=False):
         self.agent = agent
         self.router_id = router_id
-        self.agent_conf = agent_conf
-        self.ex_gw_port = None
+        # Invoke the setter for establishing initial SNAT action
         self._snat_enabled = None
-        self.fip_map = {}
+        self.router = router
+        self.agent_conf = agent_conf
+        self.driver = interface_driver
+        self.use_ipv6 = use_ipv6
+
         self.internal_ports = []
+        self.ns_name = None
+        self.process_monitor = None
+
+    def initialize(self, process_monitor):
+        """Initialize the router on the system.
+
+        This differs from __init__ in that this method actually affects the
+        system creating namespaces, starting processes, etc.  The other merely
+        initializes the python object.  This separates in-memory object
+        initialization from methods that actually go do stuff to the system.
+
+        :param process_monitor: The agent's process monitor instance.
+        """
+        self.process_monitor = process_monitor
+
+    @property
+    def router(self):
+        return self._router
+
+    @router.setter
+    def router(self, value):
+        self._router = value
+        if not self._router:
+            return
+        # enable_snat by default if it wasn't specified by plugin
+        self._snat_enabled = self._router.get('enable_snat', True)
+
+    @abc.abstractmethod
+    def delete(self, agent):
+        pass
+
+    @abc.abstractmethod
+    def process(self, agent):
+        """Process updates to this router
+
+        This method is the point where the agent requests that updates be
+        applied to this router.
+
+        :param agent: Passes the agent in order to send RPC messages.
+        """
+        pass
+
+    def get_ex_gw_port(self):
+        return self.router.get('gw_port')
+
+    def get_gw_ns_name(self):
+        return self.ns_name
+
+    def get_internal_device_name(self, port_id):
+        return (INTERNAL_DEV_PREFIX + port_id)[:self.driver.DEV_NAME_LEN]
+
+    def get_external_device_name(self, port_id):
+        return (EXTERNAL_DEV_PREFIX + port_id)[:self.driver.DEV_NAME_LEN]
+
+    def get_external_device_interface_name(self, ex_gw_port):
+        return self.get_external_device_name(ex_gw_port['id'])
+
+
+class RouterInfo(BaseRouterInfo):
+
+    def __init__(self,
+                 agent,
+                 router_id,
+                 router,
+                 agent_conf,
+                 interface_driver,
+                 use_ipv6=False):
+        super(RouterInfo, self).__init__(agent, router_id, router, agent_conf,
+                                         interface_driver, use_ipv6)
+
+        self.ex_gw_port = None
+        self.fip_map = {}
         self.pd_subnets = {}
         self.floating_ips = set()
-        # Invoke the setter for establishing initial SNAT action
-        self.router = router
-        self.use_ipv6 = use_ipv6
         ns = self.create_router_namespace_object(
             router_id, agent_conf, interface_driver, use_ipv6)
         self.router_namespace = ns
@@ -76,8 +150,6 @@ class RouterInfo(object):
         self.initialize_address_scope_iptables()
         self.initialize_metadata_iptables()
         self.routes = []
-        self.driver = interface_driver
-        self.process_monitor = None
         # radvd is a neutron.agent.linux.ra.DaemonMonitor
         self.radvd = None
         self.centralized_port_forwarding_fip_set = set()
@@ -85,16 +157,7 @@ class RouterInfo(object):
         self.qos_gateway_ips = set()
 
     def initialize(self, process_monitor):
-        """Initialize the router on the system.
-
-        This differs from __init__ in that this method actually affects the
-        system creating namespaces, starting processes, etc.  The other merely
-        initializes the python object.  This separates in-memory object
-        initialization from methods that actually go do stuff to the system.
-
-        :param process_monitor: The agent's process monitor instance.
-        """
-        self.process_monitor = process_monitor
+        super(RouterInfo, self).initialize(process_monitor)
         self.radvd = ra.DaemonMonitor(self.router_id,
                                       self.ns_name,
                                       process_monitor,
@@ -108,32 +171,8 @@ class RouterInfo(object):
         return namespaces.RouterNamespace(
             router_id, agent_conf, iface_driver, use_ipv6)
 
-    @property
-    def router(self):
-        return self._router
-
-    @router.setter
-    def router(self, value):
-        self._router = value
-        if not self._router:
-            return
-        # enable_snat by default if it wasn't specified by plugin
-        self._snat_enabled = self._router.get('enable_snat', True)
-
     def is_router_master(self):
         return True
-
-    def get_internal_device_name(self, port_id):
-        return (INTERNAL_DEV_PREFIX + port_id)[:self.driver.DEV_NAME_LEN]
-
-    def get_external_device_name(self, port_id):
-        return (EXTERNAL_DEV_PREFIX + port_id)[:self.driver.DEV_NAME_LEN]
-
-    def get_external_device_interface_name(self, ex_gw_port):
-        return self.get_external_device_name(ex_gw_port['id'])
-
-    def get_gw_ns_name(self):
-        return self.ns_name
 
     def _update_routing_table(self, operation, route, namespace):
         cmd = ['ip', 'route', operation, 'to', route['destination'],
@@ -158,9 +197,6 @@ class RouterInfo(object):
         for route in removes:
             LOG.debug("Removed route entry is '%s'", route)
             self.update_routing_table('delete', route)
-
-    def get_ex_gw_port(self):
-        return self.router.get('gw_port')
 
     def get_floating_ips(self):
         """Filter Floating IPs to be hosted on this agent."""
@@ -588,7 +624,7 @@ class RouterInfo(object):
             for subnet in p['subnets']:
                 if ipv6_utils.is_ipv6_pd_enabled(subnet):
                     self.agent.pd.disable_subnet(self.router_id, subnet['id'])
-                    del self.pd_subnets[subnet['id']]
+                    self.pd_subnets.pop(subnet['id'], None)
 
         for p in new_ports:
             self.internal_network_added(p)
@@ -623,9 +659,9 @@ class RouterInfo(object):
                 for subnet in p.get('subnets', []):
                     if ipv6_utils.is_ipv6_pd_enabled(subnet):
                         old_prefix = self.agent.pd.update_subnet(
-                            self.router_id,
-                            subnet['id'],
-                            subnet['cidr'])
+                                                      self.router_id,
+                                                      subnet['id'],
+                                                      subnet['cidr'])
                         if old_prefix:
                             self._internal_network_updated(p, subnet['id'],
                                                            subnet['cidr'],
@@ -691,8 +727,8 @@ class RouterInfo(object):
         for subnet in ex_gw_port.get('subnets', []):
             is_gateway_not_in_subnet = (subnet['gateway_ip'] and
                                         not ipam_utils.check_subnet_ip(
-                                            subnet['cidr'],
-                                            subnet['gateway_ip']))
+                                                subnet['cidr'],
+                                                subnet['gateway_ip']))
             if is_gateway_not_in_subnet:
                 preserve_ips.append(subnet['gateway_ip'])
                 device = ip_lib.IPDevice(device_name, namespace=namespace)
@@ -709,13 +745,14 @@ class RouterInfo(object):
             if not self.is_v6_gateway_set(gateway_ips):
                 # There is no IPv6 gw_ip, use RouterAdvt for default route.
                 self.driver.configure_ipv6_ra(
-                    ns_name, interface_name, n_const.ACCEPT_RA_WITH_FORWARDING)
+                    ns_name, interface_name,
+                    lib_constants.ACCEPT_RA_WITH_FORWARDING)
             else:
                 # Otherwise, disable it
                 disable_ra = True
         if disable_ra:
             self.driver.configure_ipv6_ra(ns_name, interface_name,
-                                          n_const.ACCEPT_RA_DISABLED)
+                                          lib_constants.ACCEPT_RA_DISABLED)
         self.driver.configure_ipv6_forwarding(ns_name, interface_name, enabled)
         # This will make sure the 'all' setting is the same as the interface,
         # which is needed for forwarding to work.  Don't disable once it's
@@ -754,8 +791,8 @@ class RouterInfo(object):
         for ip_version in (lib_constants.IP_VERSION_4,
                            lib_constants.IP_VERSION_6):
             gateway = device.route.get_gateway(ip_version=ip_version)
-            if gateway and gateway.get('gateway'):
-                current_gateways.add(gateway.get('gateway'))
+            if gateway and gateway.get('via'):
+                current_gateways.add(gateway.get('via'))
         for ip in current_gateways - set(gateway_ips):
             device.route.delete_gateway(ip)
         for ip in gateway_ips:
@@ -858,20 +895,9 @@ class RouterInfo(object):
                            '! --ctstate DNAT -j ACCEPT' %
                            {'interface_name': interface_name})
 
-    def external_gateway_nat_fip_rules(self, ex_gw_ip, interface_name, dmz_cidr, src_ip):
-        rules = []
-        # Avoid behavior where NAT applies to the actual router IP
-        rules.append(('POSTROUTING', '-s %s -j ACCEPT' % (ex_gw_ip)))
-        if dmz_cidr:
-            for nat_exclusion in dmz_cidr.split(','):
-                src_range, dst_range = nat_exclusion.split(':')
-                rules.append(('POSTROUTING', '-s %s -d %s -j ACCEPT' % (src_range, dst_range)))
-
+    def external_gateway_nat_fip_rules(self, ex_gw_ip, interface_name):
         dont_snat_traffic_to_internal_ports_if_not_to_floating_ip = (
             self._prevent_snat_for_internal_traffic_rule(interface_name))
-
-        rules.append(dont_snat_traffic_to_internal_ports_if_not_to_floating_ip)
-
         # Makes replies come back through the router to reverse DNAT
         ext_in_mark = self.agent_conf.external_ingress_mark
         to_source = ('-m mark ! --mark %s/%s '
@@ -881,9 +907,8 @@ class RouterInfo(object):
         if self.iptables_manager.random_fully:
             to_source += ' --random-fully'
         snat_internal_traffic_to_floating_ip = ('snat', to_source)
-
-        rules.append(snat_internal_traffic_to_floating_ip)
-        return rules
+        return [dont_snat_traffic_to_internal_ports_if_not_to_floating_ip,
+                snat_internal_traffic_to_floating_ip]
 
     def external_gateway_nat_snat_rules(self, ex_gw_ip, interface_name):
         to_source = '-o %s -j SNAT --to-source %s' % (interface_name, ex_gw_ip)
@@ -895,7 +920,7 @@ class RouterInfo(object):
         mark = self.agent_conf.external_ingress_mark
         mark_packets_entering_external_gateway_port = (
             'mark', '-i %s -j MARK --set-xmark %s/%s' %
-                    (interface_name, mark, n_const.ROUTER_MARK_MASK))
+                    (interface_name, mark, lib_constants.ROUTER_MARK_MASK))
         return [mark_packets_entering_external_gateway_port]
 
     def _empty_snat_chains(self, iptables_manager):
@@ -906,45 +931,29 @@ class RouterInfo(object):
 
     def _add_snat_rules(self, ex_gw_port, iptables_manager,
                         interface_name):
-
         self.process_external_port_address_scope_routing(iptables_manager)
 
         if ex_gw_port:
-            for ip_addr in ex_gw_port['fixed_ips']:
-                ex_gw_ip = ip_addr['ip_address']
-                if netaddr.IPAddress(ex_gw_ip).version != 4:
-                    msg = 'WMF: only ipv4 is supported'
-                    raise l3_exc.FloatingIpSetupException(msg)
-                break
-
             # ex_gw_port should not be None in this case
             # NAT rules are added only if ex_gw_port has an IPv4 address
-            if self._snat_enabled and self.agent_conf.routing_source_ip:
-                LOG.debug('external_gateway_ip: %s', ex_gw_ip)
-                LOG.debug('routing_source_ip: %s', self.agent_conf.routing_source_ip)
-                self.routing_source_ip = self.agent_conf.routing_source_ip
-                self.dmz_cidr = self.agent_conf.dmz_cidr
+            for ip_addr in ex_gw_port['fixed_ips']:
+                ex_gw_ip = ip_addr['ip_address']
+                if netaddr.IPAddress(ex_gw_ip).version == 4:
+                    if self._snat_enabled:
+                        rules = self.external_gateway_nat_snat_rules(
+                            ex_gw_ip, interface_name)
+                        for rule in rules:
+                            iptables_manager.ipv4['nat'].add_rule(*rule)
 
-                if not netaddr.IPAddress(self.routing_source_ip).version == 4:
-                    msg = 'foo %s is not ipv4' % (self.routing_source_ip)
-                    raise l3_exc.FloatingIpSetupException(msg)
+                    rules = self.external_gateway_nat_fip_rules(
+                        ex_gw_ip, interface_name)
+                    for rule in rules:
+                        iptables_manager.ipv4['nat'].add_rule(*rule)
+                    rules = self.external_gateway_mangle_rules(interface_name)
+                    for rule in rules:
+                        iptables_manager.ipv4['mangle'].add_rule(*rule)
 
-                rules = self.external_gateway_nat_snat_rules(
-                    self.routing_source_ip, interface_name)
-                for rule in rules:
-                    iptables_manager.ipv4['nat'].add_rule(*rule)
-
-                rules = self.external_gateway_nat_fip_rules(ex_gw_ip,
-                                                            interface_name,
-                                                            self.dmz_cidr,
-                                                            self.routing_source_ip)
-                for rule in rules:
-                    LOG.debug('foo self.external_gateway_nat_fip_rules rule: %s', str(rule))
-                    iptables_manager.ipv4['nat'].add_rule(*rule)
-
-                rules = self.external_gateway_mangle_rules(interface_name)
-                for rule in rules:
-                    iptables_manager.ipv4['mangle'].add_rule(*rule)
+                    break
 
     def _handle_router_snat_rules(self, ex_gw_port, interface_name):
         self._empty_snat_chains(self.iptables_manager)
@@ -1074,7 +1083,7 @@ class RouterInfo(object):
             '-j MARK --set-xmark %(value)s/%(mask)s' %
             {'interface_name': INTERNAL_DEV_PREFIX + '+',
              'value': self.agent_conf.metadata_access_mark,
-             'mask': n_const.ROUTER_MARK_MASK})
+             'mask': lib_constants.ROUTER_MARK_MASK})
         self.iptables_manager.ipv4['mangle'].add_rule(
             'PREROUTING', mark_metadata_for_internal_interfaces)
 
@@ -1209,13 +1218,6 @@ class RouterInfo(object):
 
     @common_utils.exception_logger()
     def process(self):
-        """Process updates to this router
-
-        This method is the point where the agent requests that updates be
-        applied to this router.
-
-        :param agent: Passes the agent in order to send RPC messages.
-        """
         LOG.debug("Process updates, router %s", self.router['id'])
         self.centralized_port_forwarding_fip_set = set(self.router.get(
             'port_forwardings_fip_set', set()))
