@@ -343,7 +343,7 @@ class profile::logstash::collector (
     }
 
     # Drop ECS messages on the legacy cluster
-    logstash::conf { 'ecs':
+    logstash::conf { 'filter_ecs':
       source   => 'puppet:///modules/profile/logstash/drop_ecs.conf',
       priority => 17
     }
