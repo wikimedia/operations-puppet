@@ -38,8 +38,12 @@ route:
       receiver: 'peering-mail'
 
 
+    # Compat Icinga alerts are routed to a 'sink' channel
+    - match_re:
+        alertname: '^Icinga/.*'
+      receiver: 'irc-spam'
 
-    # Default routing for page/critical alerts
+    # Default routing for page/critical alerts, if no team could be routed
     - match:
         severity: 'page'
       receiver: 'sre-irc'
@@ -60,11 +64,15 @@ receivers:
 
 - name: 'default'
 
-- name: 'sre-irc'
+- name: 'irc-spam'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/<%= @irc_channel %>'
 
 # team-based receivers
+- name: 'sre-irc'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+
 - name: 'noc-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
