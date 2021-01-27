@@ -1,0 +1,2 @@
+profile::alertmanager::phab::url: 'https://phabricator.wikimedia.org'
+profile::alertmanager::phab::username: 'phaultfinder'
