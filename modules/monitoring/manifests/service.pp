@@ -37,7 +37,7 @@ define monitoring::service(
 
     $servicegroups = $group ? {
         /.+/    => $group,
-        default => hiera('nagios_group',"${cluster_name}_${::site}")
+        default => lookup('nagios_group', {'default_value' => "${cluster_name}_${::site}"}),
     }
 
     $notification_interval = $critical ? {
@@ -48,7 +48,7 @@ define monitoring::service(
     # If a service is set to critical and
     # paging is not disabled for this machine in hiera,
     # then use the "sms" contact group which creates pages.
-    $do_paging = hiera('do_paging', true)
+    $do_paging = lookup('do_paging', {'default_value' => true})
 
     case $critical {
         true: {
