@@ -620,6 +620,13 @@ class profile::prometheus::ops (
         port       => 19195,
     }
 
+    prometheus::class_config{ "alertmanager_phab_${::site}":
+        dest       => "${targets_path}/alertmanager_phab_${::site}.yaml",
+        site       => $::site,
+        class_name => 'profile::alertmanager::phab',
+        port       => 8292,
+    }
+
     # Job definition for alertmanager
     $pushgateway_jobs = [
       {
