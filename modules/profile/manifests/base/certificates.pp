@@ -4,8 +4,8 @@
 # with the new one. This will make it able to talk to the new puppetmaster on its next run.
 # A puppetmaster's CA cert can be found at /var/lib/puppet/server/ssl/certs/ca.pem
 class profile::base::certificates (
-    $puppet_ca_content = hiera('profile::base::certificates::puppet_ca_content', {}),
-    $puppetmaster_key = hiera('puppetmaster', undef),
+    Hash $puppet_ca_content = lookup('profile::base::certificates::puppet_ca_content', {'default_value' => {}}),
+    Optional[String] $puppetmaster_key = lookup('puppetmaster', {'default_value' => undef}),
 ) {
     include ::sslcert
 
