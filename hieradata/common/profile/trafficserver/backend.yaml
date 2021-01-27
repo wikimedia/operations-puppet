@@ -123,7 +123,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://ores.discovery.wmnet
     - type: map
       target: http://parsoid-rt-tests.wikimedia.org
-      replacement: https://testreduce.discovery.wmnet:8001
+      replacement: https://testreduce.discovery.wmnet
     - type: map
       target: http://people.wikimedia.org
       replacement: https://peopleweb.discovery.wmnet
