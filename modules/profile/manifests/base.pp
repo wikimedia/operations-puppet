@@ -27,7 +27,7 @@ class profile::base(
     Boolean $overlayfs = lookup('profile::base::overlayfs', {default_value => false}),
     Array $debdeploy_exclude_mounts = lookup('profile::base::debdeploy::exclude_mounts'),
     Array $debdeploy_exclude_filesystems = lookup('profile::base::debdeploy::exclude_filesystems'),
-    Hash $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', Hash, 'hash', {default_value => {}}),
+    Hash $debdeploy_filter_services = lookup('profile::base::debdeploy::filter_services', {value_type=>Hash, merge => 'hash', default_value => {}}),
     Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
