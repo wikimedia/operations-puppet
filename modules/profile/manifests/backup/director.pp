@@ -23,17 +23,11 @@ class profile::backup::director(
         max_dir_concur_jobs => '10',
     }
 
-    if debian::codename::ge('buster') {
-        $file_storage_production = 'FileStorageProduction'
-        $file_storage_archive = 'FileStorageArchive'
-        $file_storage_databases = 'FileStorageDatabases'
-        $file_storage_databases_codfw = 'FileStorageDatabasesCodfw'
-        $scheduled_pools = [ $pool, 'Databases', 'DatabasesCodfw', ]
-    } else {
-        $file_storage_production = 'FileStorage1'
-        $file_storage_archive = 'FileStorage2'
-        $scheduled_pools = [ $pool, ]
-    }
+    $file_storage_production = 'FileStorageProduction'
+    $file_storage_archive = 'FileStorageArchive'
+    $file_storage_databases = 'FileStorageDatabases'
+    $file_storage_databases_codfw = 'FileStorageDatabasesCodfw'
+    $scheduled_pools = [ $pool, 'Databases', 'DatabasesCodfw', ]
 
     # One pool for all, except databases
     bacula::director::pool { $pool:
@@ -62,21 +56,19 @@ class profile::backup::director(
     }
 
     # Databases-only pool
-    if debian::codename::ge('buster') {
-        bacula::director::pool { 'Databases':
-            max_vols         => 80,
-            storage          => "${onsite_sd}-${file_storage_databases}",
-            volume_retention => '90 days',
-            label_fmt        => 'databases',
-            max_vol_bytes    => '536870912000',
-        }
-        bacula::director::pool { 'DatabasesCodfw':
-            max_vols         => 80,
-            storage          => "${offsite_sd}-${file_storage_databases_codfw}",
-            volume_retention => '90 days',
-            label_fmt        => 'databases-codfw',
-            max_vol_bytes    => '536870912000',
-        }
+    bacula::director::pool { 'Databases':
+        max_vols         => 80,
+        storage          => "${onsite_sd}-${file_storage_databases}",
+        volume_retention => '90 days',
+        label_fmt        => 'databases',
+        max_vol_bytes    => '536870912000',
+    }
+    bacula::director::pool { 'DatabasesCodfw':
+        max_vols         => 80,
+        storage          => "${offsite_sd}-${file_storage_databases_codfw}",
+        volume_retention => '90 days',
+        label_fmt        => 'databases-codfw',
+        max_vol_bytes    => '536870912000',
     }
 
     # Off site pool for off site backups

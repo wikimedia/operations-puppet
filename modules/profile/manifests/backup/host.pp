@@ -12,15 +12,12 @@
 # effectively a noop
 class profile::backup::host(
     Boolean             $enable         = lookup('profile::backup::enable'),
-    Array[Stdlib::Host] $ferm_directors = lookup('profile::backup::ferm_directors'),
     String              $pool           = lookup('profile::backup::pool'),
     Stdlib::Host        $director       = lookup('profile::backup::director'),
     Array[String]       $days           = lookup('profile::backup::days'),
     String              $director_seed  = lookup('profile::backup::director_seed'),
 ){
 
-    # TODO: $ferm_directors is temporary to help with the migration, we should
-    # fall back to $director and remove this hiera call when done
     if $enable {
         class { 'bacula::client':
             director         => $director,
@@ -43,13 +40,10 @@ class profile::backup::host(
         Motd::Script <| tag == 'backup-motd' |>
 
         # If the machine includes ::profile::base::firewall then let director connect to us
-        $ferm_directors.each |$ferm_director| {
-            ferm::service { "bacula-file-daemon-${ferm_director}":
-                proto  => 'tcp',
-                port   => '9102',
-                srange => "(@resolve(${ferm_director}) @resolve(${ferm_director}, AAAA))",
-            }
+        ferm::service { "bacula-file-daemon-${director}":
+            proto  => 'tcp',
+            port   => '9102',
+            srange => "(@resolve(${director}) @resolve(${director}, AAAA))",
         }
     }
 }
-

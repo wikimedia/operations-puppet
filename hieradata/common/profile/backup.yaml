@@ -1,5 +1,4 @@
 profile::backup::enable: true
 profile::backup::pool: production
 profile::backup::director: backup1001.eqiad.wmnet
-profile::backup::ferm_directors: [backup1001.eqiad.wmnet]
 profile::backup::days: [ Sat, Sun, Mon, Tue, Wed, Thu, Fri ]
