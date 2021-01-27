@@ -64,4 +64,12 @@ class profile::mariadb::proxy::multiinstance_replicas(
         mode    => '0444',
         content => template("profile/mariadb/proxy/${replicas_template}"),
     }
+    # Open the ports to the cloud only
+    $replica_sections.each |$section| {
+        ferm::service { "${section}-proxy-serv":
+            proto  => 'tcp',
+            port   => $section_ports[$section],
+            srange => '$CLOUD_NETWORKS_PUBLIC',
+        }
+    }
 }
