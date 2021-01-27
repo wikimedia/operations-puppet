@@ -90,3 +90,13 @@ receivers:
 - name: 'peering-mail'
   email_configs:
     - to: 'peering@<%= scope.lookupvar('::domain') %>'
+
+- name: 'sre-o11y-task'
+  webhook_configs:
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-dwtj3e5mikntyhdbnohb'
+      send_resolved: false
+
+- name: 'sre-task'
+  webhook_configs:
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-5hj6ygnanfu23mmnlvmd'
+      send_resolved: false
