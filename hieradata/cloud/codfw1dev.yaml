@@ -15,6 +15,12 @@ labsldapconfig:
   hostname: "cloudservices2002-dev.wikimedia.org"
   secondary_hostname: "cloudservices2002-dev.wikimedia.org"
 
+ldap:
+  ro-server: ldap-ro.codfw.wikimedia.org
+  ro-server-fallback: ldap-ro.eqiad.wikimedia.org
+  ro-server: ldap-labs.codfw.wikimedia.org
+  ro-server-fallback: ldap-labs.eqiad.wikimedia.org
+
 labs_site: "codfw1dev"
 
 ntp_peers:

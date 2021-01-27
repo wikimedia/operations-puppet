@@ -7,6 +7,11 @@ labsdnsconfig:
   recursor: 'ns-recursor0.openstack.eqiad1.wikimediacloud.org'
   recursor_secondary: 'ns-recursor1.openstack.eqiad1.wikimediacloud.org'
 
+ldap:
+  ro-server: ldap-ro.eqiad.wikimedia.org
+  ro-server-fallback: ldap-ro.codfw.wikimedia.org
+  rw-server: ldap-labs.eqiad.wikimedia.org
+  rw-server-fallback: ldap-labs.codfw.wikimedia.org
 profile::base::overlayfs: true
 profile::base::check_raid: false
 profile::base::legacy_cloud_search_domain: 'eqiad.wmflabs'
