@@ -1,8 +1,9 @@
 # @summary profile to configure the idp
 # @param ldap_config a hash containing the ldap configeration
 class profile::idp(
-    Hash                        $ldap_config            = lookup('ldap', Hash, hash, {}),
     Array[Stdlib::Host]         $prometheus_nodes       = lookup('prometheus_nodes'),
+    Hash                        $ldap_config            = lookup('ldap', Hash, hash, {}),
+    Enum['ldaps', 'starttls']   $ldap_encryption        = lookup('profile::idp::ldap_encryption'),
     String                      $keystore_password      = lookup('profile::idp::keystore_password'),
     String                      $key_password           = lookup('profile::idp::key_password'),
     String                      $tgc_signing_key        = lookup('profile::idp::tgc_signing_key'),
@@ -58,6 +59,17 @@ class profile::idp(
         }
     }
 
+    if $ldap_encryption == 'starttls' {
+      $ldap_schema    = 'ldap'
+      $ldap_start_tls = true
+      $ldap_port      = 389
+    } else {
+      $ldap_schema    = 'ldaps'
+      $ldap_start_tls = false
+      $ldap_port      = 636
+    }
+    $ldap_uris = ["${ldap_schema}://${ldap_config[ro-server]}:${ldap_port}",
+                  "${ldap_schema}://${ldap_config[ro-server-fallback]}:${ldap_port}"]
     class { 'apereo_cas':
         server_name            => $server_name,
         server_prefix          => '/',
@@ -75,9 +87,8 @@ class profile::idp(
         webflow_encryption_key => $webflow_encryption_key,
         u2f_signing_key        => $u2f_signing_key,
         u2f_encryption_key     => $u2f_encryption_key,
-        ldap_start_tls         => false,
-        ldap_uris              => ["ldaps://${ldap_config[ro-server]}:636",
-                                    "ldaps://${ldap_config[ro-server-fallback]}:636",],
+        ldap_start_tls         => $ldap_start_tls,
+        ldap_uris              => $ldap_uris,
         ldap_base_dn           => $ldap_config['base-dn'],
         ldap_group_cn          => $ldap_config['group_cn'],
         ldap_attribute_list    => $ldap_attribute_list,

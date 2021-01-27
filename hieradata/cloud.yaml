@@ -112,6 +112,7 @@ profile::base::firewall::default_reject: false
 profile::backup::director_seed: changeme
 profile::base::debdeploy::exclude_mounts: []
 profile::base::debdeploy::exclude_filesystems: []
+profile::idp::ldap_encryption: starttls
 profile::idp::key_password: changeit
 profile::idp::keystore_password: changeit
 profile::idp::tgc_encryption_key: changeit
@@ -141,7 +142,7 @@ profile::idp::client::httpd::apache_group: www-data
 profile::idp::client::httpd::sites: {}
 profile::idp::max_session_length: 604800
 profile::idp::actuators: []
-profile::idp::server_name: "https://${lookup(fqdn)}"
+profile::idp::server_name: "https://${lookup('facts.fqdn')}"
 profile::idp::is_staging_host: false
 profile::idp::memcached_enable: false
 profile::idp::enable_cors: false

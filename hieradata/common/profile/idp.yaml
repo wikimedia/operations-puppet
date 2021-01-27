@@ -1,3 +1,4 @@
+profile::idp::ldap_encryption: ldaps
 profile::idp::key_password: changeit
 profile::idp::keystore_password: changeit
 profile::idp::tgc_encryption_key: changeit
