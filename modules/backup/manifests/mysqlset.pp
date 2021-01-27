@@ -54,5 +54,12 @@ define backup::mysqlset(
             jobdefaults => $jobdefaults,
             extras      => $extras,
         }
+        $motd_content = "#!/bin/sh\necho \"Backed up MySQL on this host: ${name}\""
+        @motd::script { "backups-mysql-${name}":
+            ensure   => present,
+            priority => 6,
+            content  => $motd_content,
+            tag      => 'backup-motd',
+        }
     }
 }

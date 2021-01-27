@@ -40,7 +40,7 @@ class profile::backup::host(
         Bacula::Client::Job <| |> {
             require => Class['bacula::client'],
         }
-        File <| tag == 'backup-motd' |>
+        Motd::Script <| tag == 'backup-motd' |>
 
         # If the machine includes ::profile::base::firewall then let director connect to us
         $ferm_directors.each |$ferm_director| {
