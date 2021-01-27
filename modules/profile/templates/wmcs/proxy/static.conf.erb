@@ -32,7 +32,7 @@ server {
 
     <% if @blocked_referer_regex != "" %>
     if ($http_referer ~* "<%= @blocked_referer_regex -%>") {
-        return 403 "Blocked referer";
+        return 403 "Blocked";
     }
     <% end -%>
 
