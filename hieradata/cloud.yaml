@@ -142,7 +142,7 @@ profile::idp::client::httpd::apache_group: www-data
 profile::idp::client::httpd::sites: {}
 profile::idp::max_session_length: 604800
 profile::idp::actuators: []
-profile::idp::server_name: "https://${lookup('facts.fqdn')}"
+profile::idp::server_name: "https://${facts.fqdn}"
 profile::idp::is_staging_host: false
 profile::idp::memcached_enable: false
 profile::idp::enable_cors: false
