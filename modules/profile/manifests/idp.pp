@@ -30,11 +30,14 @@ class profile::idp(
     Array[String]               $cors_allowed_headers   = lookup('profile::idp::cors_allowed_headers'),
     Array[Wmflib::HTTP::Method] $cors_allowed_methods   = lookup('profile::idp::cors_allowed_methods'),
     Optional[Integer]           $u2f_token_expiry_days  = lookup('profile::idp::u2f_token_expiry_days'),
+    Boolean                     $envoy_termination      = lookup('profile:idp::envoy_termination'),
 ){
 
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
-    include profile::tlsproxy::envoy
+    if $envoy_termination {
+      include profile::tlsproxy::envoy
+    }
 
     class {'tomcat':}
 

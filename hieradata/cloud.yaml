@@ -133,11 +133,29 @@ profile::idp::u2f_jpa_username: cas
 profile::idp::u2f_jpa_password: changeme
 profile::idp::u2f_jpa_server: 127.0.0.1
 profile::idp::u2f_jpa_db: cas
+profile::idp::u2f_token_expiry_days: 3650
 profile::idp::client::httpd::cookie_path: /var/cache/apache2/mod_auth_cas
 profile::idp::client::httpd::certificate_path: /etc/ssl/certs
 profile::idp::client::httpd::apache_owner: www-data
 profile::idp::client::httpd::apache_group: www-data
 profile::idp::client::httpd::sites: {}
+profile::idp::max_session_length: 604800
+profile::idp::actuators: []
+profile::idp::server_name: "https://${lookup(fqdn)}"
+profile::idp::is_staging_host: false
+profile::idp::memcached_enable: false
+profile::idp::enable_cors: false
+profile::idp::cors_allow_credentials: false
+profile::idp::cors_allowed_origins: []
+profile::idp::cors_allowed_headers: []
+profile::idp::cors_allowed_methods:
+  - 'GET'
+profile::idp::ldap_attributes:
+  - cn
+  - memberOf
+  - mail
+  - uid
+profile::idp::envoy_termination: false
 # Service proxy
 profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners: []

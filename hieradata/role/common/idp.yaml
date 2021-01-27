@@ -164,7 +164,6 @@ profile::idp::server_name: https://idp.wikimedia.org
 profile::idp::idp_nodes:
   - idp1001.wikimedia.org
   - idp2001.wikimedia.org
-profile::idp::max_session_length: 604800
 profile::idp::deploy_deb: true
 profile::idp::actuators:
   - sso
@@ -176,7 +175,7 @@ profile::idp::memcached::enable_tls: true
 profile::idp::u2f_jpa_enable: true
 profile::idp::u2f_jpa_server: m1-master.eqiad.wmnet
 profile::idp::u2f_jpa_db: cas
+profile::idp::u2f_token_expiry_days: 3650
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::java::hardened_tls: true
 profile::java::egd_source: '/dev/urandom'
-profile::idp::u2f_token_expiry_days: 3650

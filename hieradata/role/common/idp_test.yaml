@@ -59,7 +59,6 @@ profile::idp::ldap_attributes:
   - mfa-method
   - uid
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
-profile::idp::max_session_length: 604800
 profile::idp::actuators:
   - sso
   - ssoSessions

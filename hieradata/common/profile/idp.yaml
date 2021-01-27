@@ -8,7 +8,6 @@ profile::idp::u2f_encryption_key: changeit
 profile::idp::u2f_signing_key: changeit
 profile::idp::idp_nodes:
   - "%{facts.fqdn}"
-profile::idp::memcached_enable: false
 profile::idp::u2f_jpa_enable: false
 profile::idp::u2f_jpa_username: cas
 profile::idp::u2f_jpa_password: changeme
@@ -21,3 +20,14 @@ profile::idp::cors_allowed_headers: []
 profile::idp::cors_allowed_methods:
   - 'GET'
 profile::idp::u2f_token_expiry_days: ~
+profile::idp::max_session_length: 604800
+profile::idp::actuators: []
+profile::idp::server_name: "https://${lookup(fqdn)}"
+profile::idp::is_staging_host: false
+profile::idp::memcached_enable: false
+profile::idp::ldap_attributes:
+  - cn
+  - memberOf
+  - mail
+  - uid
+profile::idp::envoy_termination: true
