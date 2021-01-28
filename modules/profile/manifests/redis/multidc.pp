@@ -1,12 +1,12 @@
 class profile::redis::multidc(
-    $category = hiera('profile::redis::multidc::category'),
-    $all_shards = hiera('redis::shards'),
-    $conftool_prefix = hiera('conftool_prefix'),
-    $settings = hiera('profile::redis::multidc::settings'),
-    $discovery = hiera('profile::redis::multidc::discovery'),
-    $aof = hiera('profile::redis::multidc::aof', false),
-    $prometheus_nodes = hiera('prometheus_nodes'),
-    $version_override = lookup('profile::redis::multidc::version_override')
+    String $category = lookup('profile::redis::multidc::category'),
+    Hash[String, Hash] $all_shards = lookup('redis::shards'),
+    String $conftool_prefix = lookup('conftool_prefix'),
+    Hash $settings = lookup('profile::redis::multidc::settings'),
+    String $discovery = lookup('profile::redis::multidc::discovery'),
+    Boolean $aof = lookup('profile::redis::multidc::aof', {default_value => false}),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    Optional[Integer] $version_override = lookup('profile::redis::multidc::version_override'),
 ) {
     # Hosts where we will install redis multidc are either jessie
     # or buster hosts where profile::redis::multidc::version_override
