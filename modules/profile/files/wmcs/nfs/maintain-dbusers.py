@@ -525,8 +525,8 @@ def create_accounts(config):
                             create_acct_string = ACCOUNT_CREATION_SQL[
                                 grant_type
                             ].format(
-                                username,
-                                max_connections,
+                                username=username,
+                                max_connections=max_connections,
                                 password_hash=row["password_hash"].decode(
                                     "utf-8"
                                 ),
