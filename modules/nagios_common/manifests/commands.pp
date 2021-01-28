@@ -18,10 +18,10 @@ class nagios_common::commands(
     $owner = 'icinga',
     $group = 'icinga',
 ) {
-    # Workaround for T205091
-    require_package('python3-snimpy')
 
-    require_package([
+    ensure_packages([
+        # workaround for T205091
+        'python3-snimpy',
         # check_ssl
         'libmonitoring-plugin-perl',
         'libtimedate-perl',
@@ -37,6 +37,13 @@ class nagios_common::commands(
         'python3-requests',
         # check_bfd
         'python3-cffi-backend',
+        # perl dependencies for check_galera_nodes.pl
+        'libdbi-perl',
+        'libdbd-mysql-perl',
+        # used for cluster checks of "modern" wmf services
+        'python3-service-checker',
+        # to check prometheus metrics
+        'python3-requests',
     ])
 
     file { "${config_dir}/commands":
@@ -120,9 +127,6 @@ class nagios_common::commands(
     # the config is in the list above
     include ::nagios_common::check_dns_query
 
-    # Used for cluster checks of "modern" wmf services
-    require_package('python3-service-checker')
-
     nagios_common::check_command::config { 'check_wmf_service':
         ensure     => present,
         source     => 'puppet:///modules/nagios_common/check_commands/check_wmf_service.cfg',
@@ -133,7 +137,6 @@ class nagios_common::commands(
     }
 
     # Check Prometheus metrics
-    require_package('python3-requests')
     nagios_common::check_command { 'check_prometheus_metric.py':
         require       => File["${config_dir}/commands"],
         config_source => 'puppet:///modules/nagios_common/check_commands/check_prometheus_metric.cfg',
@@ -151,10 +154,6 @@ class nagios_common::commands(
         group          => $group,
         require        => File["${config_dir}/commands"],
     }
-
-    # perl dependencies for check_galera_nodes.pl
-    require_package('libdbi-perl')
-    require_package('libdbd-mysql-perl')
 
     # Check a galera cluster
     nagios_common::check_command { 'check_galera_nodes.pl':
