@@ -72,4 +72,13 @@ class profile::mariadb::proxy::multiinstance_replicas(
             srange => '$CLOUD_NETWORKS_PUBLIC',
         }
     }
+
+    # Open the ports to pybal via prod networks as well
+    $replica_sections.each |$section| {
+        ferm::service { "${section}-pybal":
+            proto  => 'tcp',
+            port   => $section_ports[$section],
+            srange => '$PRODUCTION_NETWORKS',
+        }
+    }
 }
