@@ -1,6 +1,6 @@
 class profile::wmcs::nfs::secondary(
-    $observer_pass = hiera('profile::openstack::eqiad1::observer_password'),
-    $monitor_iface = hiera('profile::wmcs::nfs::secondary::monitor_iface', 'eno0'),
+    String $observer_pass = lookup('profile::openstack::eqiad1::observer_password'),
+    String $monitor_iface = lookup('profile::wmcs::nfs::secondary::monitor_iface', {'default_value' => 'eno0'}),
     Stdlib::Host $scratch_active_server = lookup('scratch_active_server'),
     # The following is intentionally using the same value as for scratch.  This may not always
     # be desireable, so a separate parameter is offered.
