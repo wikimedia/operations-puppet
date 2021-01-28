@@ -180,7 +180,4 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'analytics-meta-mysql-lvm-backup':
         includes => [ '/srv/backup/mysql/analytics-meta' ]
     }
-    bacula::director::fileset { 'archive-backup':
-        includes => [ '/srv/baculasd2' ]
-    }
 }
