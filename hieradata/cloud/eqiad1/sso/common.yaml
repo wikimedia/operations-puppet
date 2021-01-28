@@ -1,5 +1,5 @@
 profile::idp::u2f_jpa_enable: true
-cloud.yaml:profile::idp::u2f_jpa_server: 172.16.4.3
+profile::idp::u2f_jpa_server: 172.16.4.3
 profile::idp::services:
   cloud:
     id: 1
