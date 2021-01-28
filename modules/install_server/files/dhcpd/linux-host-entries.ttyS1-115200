@@ -3276,12 +3276,6 @@ host flerovium {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host francium {
-    hardware ethernet C8:1F:66:BF:88:52;
-    fixed-address francium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host furud {
     hardware ethernet F4:E9:D4:CD:BA:A0;
     fixed-address furud.codfw.wmnet;
