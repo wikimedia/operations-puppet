@@ -24,6 +24,19 @@ eventlogging_schemas_disabled = (
     'TemplateWizard',
     'Test',
     'UniversalLanguageSelector',
+
+    # NavigationTiming extension legacy schemas
+    'CentralNoticeTiming',
+    'CpuBenchmark',
+    'ElementTiming',
+    'FeaturePolicyViolation',
+    'FirstInputTiming',
+    'LayoutShift',
+    'NavigationTiming',
+    'PaintTiming',
+    'ResourceTiming',
+    'RUMSpeedIndex',
+    'SaveTiming',
 )
 
 

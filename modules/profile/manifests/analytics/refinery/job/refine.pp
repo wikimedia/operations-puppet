@@ -136,6 +136,19 @@ class profile::analytics::refinery::job::refine(
         'TemplateWizard',
         'Test',
         'UniversalLanguageSelector',
+
+        # NavigationTiming extension legacy schemas
+        'CentralNoticeTiming',
+        'CpuBenchmark',
+        'ElementTiming',
+        'FeaturePolicyViolation',
+        'FirstInputTiming',
+        'LayoutShift',
+        'NavigationTiming',
+        'PaintTiming',
+        'ResourceTiming',
+        'RUMSpeedIndex',
+        'SaveTiming',
     ]
     $eventlogging_legacy_table_includelist_regex = "^(${join($eventlogging_legacy_table_includelist, '|')})$"
 
