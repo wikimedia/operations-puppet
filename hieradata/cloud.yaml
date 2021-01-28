@@ -166,6 +166,7 @@ profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners: []
 profile::services_proxy::envoy::enabled_listeners: []
 graphite_host: localhost
+profile::prometheus::memcached_exporter::arguments: ''
 profile::prometheus::mcrouter_exporter::mcrouter_port: 11213
 profile::prometheus::mcrouter_exporter::listen_port: 9151
 profile::prometheus::pushgateway_host: 'invalid'
