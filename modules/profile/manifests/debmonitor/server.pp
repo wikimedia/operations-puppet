@@ -134,7 +134,7 @@ class profile::debmonitor::server (
 
     monitoring::service { 'debmonitor-cdn-https':
         description   => 'debmonitor.wikimedia.org:7443 CDN',
-        check_command => 'check_https_redirect!7443!debmonitor.wikimedia.org!/!302!/login/?next=/',
+        check_command => 'check_https_redirect!7443!debmonitor.wikimedia.org!/!302!ocation: https://idp.wikimedia.org/',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
     }
 
@@ -157,6 +157,7 @@ class profile::debmonitor::server (
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
             'cn=nda,ou=groups,dc=wikimedia,dc=org',
         ],
+        enable_monitor   => false,
     }
 
     # Maintenance script
