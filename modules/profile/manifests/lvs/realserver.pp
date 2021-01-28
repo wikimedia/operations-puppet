@@ -14,8 +14,8 @@
 #                          Poolcounter::Backends for the format.
 #
 class profile::lvs::realserver(
-    Hash $pools = hiera('profile::lvs::realserver::pools', {}),
-    Boolean $use_conftool = hiera('profile::lvs::realserver::use_conftool'),
+    Hash $pools = lookup('profile::lvs::realserver::pools', {'default_value' => {}}),
+    Boolean $use_conftool = lookup('profile::lvs::realserver::use_conftool'),
     Optional[Poolcounter::Backends] $poolcounter_backends = lookup('profile::lvs::realserver::poolcounter_backends'),
 ) {
     $present_pools = $pools.keys()
