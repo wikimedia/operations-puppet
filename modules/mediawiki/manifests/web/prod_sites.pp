@@ -20,7 +20,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
 
     ### BEGIN main
     ::httpd::site { 'main':
-        source   => 'puppet:///modules/mediawiki/apache/sites/main.conf',
+        content  => template('mediawiki/apache/sites/main.conf'),
         priority => 3,
     }
 
@@ -235,7 +235,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
     ### BEGIN remnant
     # Other wikis
     ::httpd::site { 'remnant':
-        source   => 'puppet:///modules/mediawiki/apache/sites/remnant.conf',
+        content  => template('mediawiki/apache/sites/remnant.conf'),
         priority => 4,
     }
 
@@ -349,7 +349,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
     ### BEGIN wikimania
     # Wikimania sites, plus one wiki for wikimaniateam
     ::httpd::site { 'wikimania':
-        source   => 'puppet:///modules/mediawiki/apache/sites/wikimania.conf',
+        content  => template('mediawiki/apache/sites/wikimania.conf'),
         priority => 7,
     }
 
@@ -412,7 +412,7 @@ class mediawiki::web::prod_sites(String $fcgi_proxy) {
     #### BEGIN wikimedia
     # Some other wikis, plus loginwiki, and www.wikimedia.org
     ::httpd::site { 'wikimedia':
-        source   => 'puppet:///modules/mediawiki/apache/sites/wikimedia.conf',
+        content  => template('mediawiki/apache/sites/wikimedia.conf'),
         priority => 9,
     }
 
