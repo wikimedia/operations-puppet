@@ -5,8 +5,8 @@ class profile::wmcs::nfsclient(
     # This is experimental and should be opt-in. /home on a busy server should be a hard mount.
     String $home_mode = lookup('profile::wmcs::nfsclient::home_mode', {'default_value' => 'hard'}),
     Pattern[/^4(:?\.[0-2])?$/] $nfs_version = lookup('profile::wmcs::nfsclient::nfs_version', {'default_value' => '4'}),
-    Array[Stdlib::Host] $dumps_servers = hiera('dumps_dist_nfs_servers'),
-    Stdlib::Host $dumps_active_server = hiera('dumps_dist_active_vps'),
+    Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
+    Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_vps'),
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers', {'default_value' => []}),
     Stdlib::Host $scratch_active_server = lookup('scratch_active_server'),
     # The following is intentionally using the same value as for scratch.  This may not always
