@@ -88,7 +88,18 @@ class profile::backup::director(
         max_vol_bytes    => '536870912000',
     }
 
-    # One schedule per day of the week.
+    # Jobdefaults ready for one time Archive backups
+    # Use it like this on a profile:
+    #     backup::set { '<set-of-files-and-dirs-name>':
+    #         jobdefaults => 'Archive',
+    #     }
+    # then execute 'run' on the backup director
+    backup::weeklyjobdefaults { 'Archive':
+        day  => 'Mon',
+        pool => 'Archive',
+    }
+
+    # Regularly scheduled backups: One schedule per day of the week.
     # Setting execution times so that it is unlikely jobs will run concurrently
     # with cron.{hourly,daily,monthly} or other cronscripts
     $days.each |String $day| {
@@ -122,11 +133,6 @@ class profile::backup::director(
                 pool => $scheduled_pool,
             }
         }
-    }
-    # Temporary jobdefault addition for one time Archive backup
-    backup::monthlyjobdefaults { 'Monthly-1st-Wed-Archive':
-        day  => 'Wed',
-        pool => 'Archive',
     }
 
     bacula::director::catalog { 'production':
