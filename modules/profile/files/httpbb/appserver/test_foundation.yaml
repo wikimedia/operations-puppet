@@ -13,9 +13,10 @@ https://foundation.wikimedia.org:
 - path: /static/current/skins/Timeless/resources/print.css
   assert_status: 200
   request_headers: {Accept-Encoding: "deflate, gzip"}
+  assert_headers_absent:
+    - Content-Encoding
+    - Vary
   assert_headers:
-    Content-Encoding: gzip
-    Vary: Accept-Encoding
     Content-Type: text/css
 
 https://donate.wikimedia.org:
