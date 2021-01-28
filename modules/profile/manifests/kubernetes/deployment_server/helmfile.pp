@@ -3,9 +3,9 @@
 #
 class profile::kubernetes::deployment_server::helmfile(
     Hash[String, String] $clusters = lookup('kubernetes_clusters'),
-    Hash[String, Any] $services=hiera('profile::kubernetes::deployment_server::services', {}),
-    Hash[String, Any] $services_secrets=hiera('profile::kubernetes::deployment_server_secrets::services', {}),
-    Hash[String, Any] $admin_services_secrets=hiera('profile::kubernetes::deployment_server_secrets::admin_services', {}),
+    Hash[String, Any] $services=lookup('profile::kubernetes::deployment_server::services', {'default_value' => {}}),
+    Hash[String, Any] $services_secrets=lookup('profile::kubernetes::deployment_server_secrets::services', {'default_value' => {}}),
+    Hash[String, Any] $admin_services_secrets=lookup('profile::kubernetes::deployment_server_secrets::admin_services', {'default_value' => {}}),
     Hash[String, Any] $default_secrets=lookup('profile::kubernetes::deployment_server_secrets::defaults', {'default_value' => {}}),
 
 ){
