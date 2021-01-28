@@ -117,6 +117,11 @@ class profile::elasticsearch(
         before     => Class['::elasticsearch::curator'],
     }
 
+    # Originally added as part of T265113 - userland util to interact with kernel EDAC drivers
+    package { 'edac-util':
+        ensure => latest,
+    }
+
     # ensure that apt is refreshed before installing elasticsearch
     Exec['apt-get update'] -> Class['::elasticsearch']
 
