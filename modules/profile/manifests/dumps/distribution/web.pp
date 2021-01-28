@@ -16,7 +16,7 @@ class profile::dumps::distribution::web (
         datadir                  => $datadir,
         xmldumpsdir              => $xmldumpsdir,
         miscdatasetsdir          => $miscdatasetsdir,
-        htmldumps_server         => 'francium.eqiad.wmnet',
+        htmldumps_server         => 'htmldumper1001.eqiad.wmnet',
         xmldumps_server          => 'dumps.wikimedia.org',
         webuser                  => 'dumpsgen',
         webgroup                 => 'dumpsgen',

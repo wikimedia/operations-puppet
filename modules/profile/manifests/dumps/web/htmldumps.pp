@@ -1,7 +1,7 @@
 class profile::dumps::web::htmldumps {
     require profile::dumps::web::nginx
 
-    class {'::dumps::web::htmldumps': htmldumps_server => 'francium.eqiad.wmnet'}
+    class {'::dumps::web::htmldumps': htmldumps_server => 'htmldumper1001.eqiad.wmnet'}
 
     ferm::service { 'html_dumps_http':
         proto => 'tcp',
