@@ -1221,7 +1221,8 @@ node 'grafana2001.codfw.wmnet' {
     role(grafana)
 }
 
-# new host that needs to be turned over to service owner
+# Serves dumps of revision content from restbase, in HTML format
+# T245567 - replaced francium.eqiad.wmnet 
 node 'htmldumper1001.eqiad.wmnet' {
     role(dumps::web::htmldumps)
 }
