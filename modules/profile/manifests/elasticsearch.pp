@@ -118,7 +118,7 @@ class profile::elasticsearch(
     }
 
     # Originally added as part of T265113 - userland util to interact with kernel EDAC drivers
-    package { 'edac-util':
+    package { 'edac-utils':
         ensure => latest,
     }
 
