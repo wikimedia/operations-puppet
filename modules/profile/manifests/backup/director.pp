@@ -123,6 +123,11 @@ class profile::backup::director(
             }
         }
     }
+    # Temporary jobdefault addition for one time Archive backup
+    backup::monthlyjobdefaults { 'Monthly-1st-Wed-Archive':
+        day  => 'Wed',
+        pool => 'Archive',
+    }
 
     bacula::director::catalog { 'production':
         dbname     => $dbschema,
