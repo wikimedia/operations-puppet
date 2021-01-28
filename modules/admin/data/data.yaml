@@ -2169,6 +2169,7 @@ users:
     realname: Lucas Werkmeister
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEX0SYMIuG9K+uTJRd1zVc0W+zFQvvdPyEaomSy07KO lucas.werkmeister@wikimedia.de
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCZxk9E7d2qNGlTWlp2zzXTTzVdt69ZPMwvSAwGcE9MV8ARTd5yrXx0qBfd9+MnmnKwlqb5aKXbJ0sgA9bvUkKeXiJLOdm3pzKF4J6ukwZSqxbch3mI60uYmOORCjDDAQtDZWYU6d8M93f9+dINbFLma1P+hHmY6u0/g2VG0Bb1x2Nr6A4OK6OW1oSiokN3y6Z/yTajfE8Eff4T5p8AUZwJ2nGExfskI5810I6sxDFwSi+Uop+zx1/jQVOyDBlpV+O2NA9oiwjOnCLBQptFw7Bdo6MpXRdC6Sm4GqGwepg0z00fCvpcJC+v4aRi12n7ZyL8Bb0YrxExaDzoLFgaxX9uVKmiFgYnVMKNc2fZEE2LEPUMwC3rvh1TiyE5VkEX/YNbV33GVFW9MVgthX4A5moXEfz9DHYr+CEuHUJCDS+0MFvHf5UJFN8SocvGFL6tXEWFY+oLH/jZ97iDR1sfvUsmkh6Wav1suSXlcPm6VvrDvTGFYllGkBXgqUH/HgeMlmfBv4c+z8IueOXOxjMTebKzAidAMHsbJ2fA84kESIev39NunjI4Tds3ijR1Ya5Hs3GPp5IdnkzSG/Vjf5q0IlVxIpKoNtReQCW6hjD0yWNqBZEio7YHhaoJqRaiycYLRNo6XynyaXhnGpGLfgc54mdh9Fvw2GJOODG/puuO+gCWSw== cardno:000614303574
     uid: 16753
     email: lucas.werkmeister@wikimedia.de
   wmde-leszek:
