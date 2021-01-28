@@ -15,7 +15,7 @@ class role::postgres::master {
         description => 'Postgres db master',
     }
 
-    $postgres_slave = hiera('role::postgres::master::slave', undef)
+    $postgres_slave = lookup('role::postgres::master::slave', {default_value => undef})
     if $postgres_slave {
         $postgres_slave_v4 = ipresolve($postgres_slave, 4)
         if $postgres_slave_v4 {
