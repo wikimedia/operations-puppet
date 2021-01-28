@@ -5,7 +5,7 @@
 # https://github.com/prymitive/kthxbye
 
 class alertmanager::ack (
-    Stdlib::Host $listen_host = 'localhost',
+    Optional[Stdlib::Host] $listen_host = undef,
     Stdlib::Port $listen_port = 19195,
     Wmflib::Ensure $ensure = absent,
 ) {
