@@ -39,9 +39,11 @@ class profile::idp(
     if $envoy_termination {
       include profile::tlsproxy::envoy
       $tomcat_apr_listener = false
+      $ferm_port = 443
     } else {
       # used in cloud
       $tomcat_apr_listener = true
+      $ferm_port = 8443
       base::expose_puppet_certs {'/etc/tomcat9':
         provide_private => true,
         user            => 'tomcat',
@@ -130,7 +132,7 @@ class profile::idp(
 
     ferm::service {'cas-https':
         proto => 'tcp',
-        port  => 443,
+        port  => $ferm_port,
     }
 
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
