@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# This file comes from operations/puppet/modules/role/files/logging/logspam-watch.sh
+
 # Watch error log spam.  See /usr/bin/logspam for log-filtering implementation
 # details.
 
@@ -124,7 +126,7 @@ while [ -z "$quit" ]; do
 
       w)
         echo
-        read -r -p "Time window (minutes, 0 to disable): " -ei "$LOGSPAM_WINDOW" LOGSPAM_WINDOW
+        read -r -p "Time window (minutes, 0 to disable): " -e LOGSPAM_WINDOW
         if [ -z "$LOGSPAM_WINDOW" ]; then
             LOGSPAM_WINDOW=0
         fi
