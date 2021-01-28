@@ -3086,7 +3086,7 @@ service::catalog:
     port: 3311
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-a-s2:
     description: "lvs for a-side wikireplicas section s2"
     encryption: false
@@ -3106,7 +3106,7 @@ service::catalog:
     port: 3312
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-a-s3:
     description: "lvs for a-side wikireplicas section s3"
     encryption: false
@@ -3126,7 +3126,7 @@ service::catalog:
     port: 3313
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-a-s4:
     description: "lvs for a-side wikireplicas section s4"
     encryption: false
@@ -3146,7 +3146,7 @@ service::catalog:
     port: 3314
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-a-s5:
     description: "lvs for a-side wikireplicas section s5"
     encryption: false
@@ -3166,7 +3166,7 @@ service::catalog:
     port: 3315
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-a-s6:
     description: "lvs for a-side wikireplicas section s6"
     encryption: false
@@ -3186,7 +3186,7 @@ service::catalog:
     port: 3316
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-a-s7:
     description: "lvs for a-side wikireplicas section s7"
     encryption: false
@@ -3206,7 +3206,7 @@ service::catalog:
     port: 3317
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-a-s8:
     description: "lvs for a-side wikireplicas section s8"
     encryption: false
@@ -3226,7 +3226,7 @@ service::catalog:
     port: 3318
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-b-s1:
     description: "lvs for b-side wikireplicas section s1"
     encryption: false
@@ -3248,7 +3248,7 @@ service::catalog:
     port: 3311
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-b-s2:
     description: "lvs for b-side wikireplicas section s2"
     encryption: false
@@ -3268,7 +3268,7 @@ service::catalog:
     port: 3312
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-b-s3:
     description: "lvs for b-side wikireplicas section s3"
     encryption: false
@@ -3288,7 +3288,7 @@ service::catalog:
     port: 3313
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-b-s4:
     description: "lvs for b-side wikireplicas section s4"
     encryption: false
@@ -3308,7 +3308,7 @@ service::catalog:
     port: 3314
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-b-s5:
     description: "lvs for b-side wikireplicas section s5"
     encryption: false
@@ -3328,7 +3328,7 @@ service::catalog:
     port: 3315
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-b-s6:
     description: "lvs for b-side wikireplicas section s6"
     encryption: false
@@ -3348,7 +3348,7 @@ service::catalog:
     port: 3316
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-b-s7:
     description: "lvs for b-side wikireplicas section s7"
     encryption: false
@@ -3368,7 +3368,7 @@ service::catalog:
     port: 3317
     sites:
       - eqiad
-    state: service_setup
+    state: production
   wikireplicas-b-s8:
     description: "lvs for b-side wikireplicas section s8"
     encryption: false
@@ -3388,4 +3388,4 @@ service::catalog:
     port: 3318
     sites:
       - eqiad
-    state: service_setup
+    state: production
