@@ -9,7 +9,7 @@
     "logo": "logo.svg",
     "favicon": "favicon.ico",
     "title": "Wikidata Query Service",
-    "copyrightUrl": "https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Copyright"
+    "copyrightUrl": "https://www.wikidata.org/wiki/Special:MyLanguage/Wikidata:SPARQL_query_service/Copyright"
   },
   "location": {
     "root": "https://query.wikidata.org/",
