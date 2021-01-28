@@ -2158,6 +2158,7 @@ users:
     realname: Thomas Arrow
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMz9obHO+vDMTPbP6av+fTEYwGcJZrtor/nifNWPGLfV 20181101_tarrow_wikiprod
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCm4T5ui1TJ9vyZGqfwioSqG00ggV9uN6CU1rZ03bI01Dt9Wnmm0LhaYK2OcK3LZLUlV3QefFW+htlXlfhuHLodMvDEJUol9l/se7PW9gpgr11Us/BxVfSejNRJGrwFcxUBUWGYJOdDm2xJo9f/P8OuvLhPp/YpN/GYivDn2hSFOdyA0gfFIyc0ltR8M5/9RfViKioDZxSAqSTVwfY63cU/gE30OT/c+OMP9Bj0lNvLPfxbYjFGai13cjjwgWoBu8Cd0eTbAvq1Qp2KHaH9j/KgZYUQbhOlBLirVPvLfJSLNHxniijocmeGo7a45D1SMqWfKgTgn/MHLZ7EdIKFr4QP49dGKvNQUOq0Ns8efsSE7RqFAwsJoUn+hRq5KjStg9DSRZ2XW6wtkIpEz8elR+Xe5mpFnBBNJRBhWCNULoLgzVw9TTI4DiKrXUYkNdFhskDL90rMR/+Q9g0o3618mUvOYUsuukRdRcDvfK1tfao+n5sYOPAB0alErALOxxnbwL6oGbXK1R3FmNFCE/iAA2XFL7rh8oMheg1Tvcto9QYH+6dwyazzmgLI4At5AvLrrBZYqFEik5kGFbwvADeeril8sujq5Bd5LMJjtXQpkkdWxIQ7VmTxLJNFdwtLTU2B3cnO0Rli1K/RuHTEIxXHtNzvqB6lSGMfBwDZbddUSMx5jw== cardno:000614303561
     uid: 3393
     email: thomas.arrow_ext@wikimedia.de
     krb: present
