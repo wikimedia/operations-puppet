@@ -6,14 +6,14 @@
 class profile::docker::storage::thinpool {
     # Parameters that need to be defined in hiera
     # list of physical volumes to use. Common to all the storage profiles
-    $physical_volumes = hiera('profile::docker::storage::physical_volumes')
+    $physical_volumes = lookup('profile::docker::storage::physical_volumes')
 
     # Optional parameters
     # Volume group to substitute. Common to all the storage profiles
-    $vg_to_remove = hiera('profile::docker::storage::vg_to_remove', undef)
+    $vg_to_remove = lookup('profile::docker::storage::vg_to_remove', {default_value => undef})
     # Size of the thin pool and the metadata pool.
-    $extents = hiera('profile::docker::storage::extents', '95%VG')
-    $metadata_size = hiera('profile::docker::storage::metadata_size', undef)
+    $extents = lookup('profile::docker::storage::extents', {default_value => '95%VG'})
+    $metadata_size = lookup('profile::docker::storage::metadata_size', {default_value => undef})
 
     Class['::profile::docker::storage::thinpool'] -> Service['docker']
 
