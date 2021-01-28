@@ -39,6 +39,10 @@ class tomcat (
     Optional[Stdlib::Port] $shutdown_port           = undef,
 ){
     ensure_packages(['tomcat9'])
+    if $apr_listener {
+      ensure_packages(['libtcnative-1'])
+    }
+
     file{
         default:
             ensure => file,
