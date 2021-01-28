@@ -1219,7 +1219,7 @@ node 'grafana2001.codfw.wmnet' {
 
 # Old backup storage and active director: substituted by backup1001
 node 'helium.eqiad.wmnet' {
-    role(backup::offsite)
+    role(backup::archive_backup)
 }
 
 # Old bacula storage replica: substituted by backup2001
