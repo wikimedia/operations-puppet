@@ -117,14 +117,6 @@ profile::backup::director_seed: changeme
 profile::base::debdeploy::exclude_mounts: []
 profile::base::debdeploy::exclude_filesystems: []
 profile::idp::ldap_encryption: starttls
-profile::idp::key_password: changeit
-profile::idp::keystore_password: changeit
-profile::idp::tgc_encryption_key: changeit
-profile::idp::tgc_signing_key: changeit
-profile::idp::webflow_encryption_key: changeit
-profile::idp::webflow_signing_key: changeit
-profile::idp::u2f_encryption_key: changeit
-profile::idp::u2f_signing_key: changeit
 profile::idp::idp_nodes:
   - "%{facts.fqdn}"
 profile::idp::memcached::ensure: present
