@@ -2,6 +2,8 @@ class alertmanager::phab (
     Stdlib::HTTPSUrl $url,
     String $username,
     String $token,
+    String $listen_host = '::',
+    Stdlib::Port $listen_port = 8292,
 ) {
     require_package('phalerts')
 
