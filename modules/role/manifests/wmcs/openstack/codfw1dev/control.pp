@@ -10,6 +10,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::envscripts
     include ::profile::openstack::codfw1dev::keystone::bootstrap
     include ::profile::openstack::codfw1dev::glance
+    include ::profile::openstack::codfw1dev::placement
     include ::profile::openstack::codfw1dev::cinder
     include ::profile::ceph::client::rbd_glance
 
@@ -20,7 +21,6 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::nova::conductor::service
     include ::profile::openstack::codfw1dev::nova::scheduler::service
     include ::profile::openstack::codfw1dev::nova::api::service
-    include ::profile::openstack::codfw1dev::nova::placement::service
     include ::profile::openstack::codfw1dev::neutron::common
     include ::profile::openstack::codfw1dev::neutron::service
     include ::profile::openstack::codfw1dev::haproxy

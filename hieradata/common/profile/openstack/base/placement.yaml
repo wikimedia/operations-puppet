@@ -1,0 +1,4 @@
+profile::openstack::base::placement::api_bind_port: 18778
+profile::openstack::base::placement::data_dir: '/srv/placement'
+profile::openstack::base::placement::db_name: 'placement'
+profile::openstack::base::placement::db_user: 'placement'

@@ -3,6 +3,7 @@ class profile::openstack::codfw1dev::haproxy(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
     Stdlib::Port $glance_registry_bind_port = lookup('profile::openstack::codfw1dev::glance::registry_bind_port'),
+    Stdlib::Port $placement_api_bind_port = lookup('profile::openstack::codfw1dev::placement::api_bind_port'),
     Stdlib::Port $cinder_api_bind_port = lookup('profile::openstack::codfw1dev::cinder::api_bind_port'),
     Stdlib::Port $barbican_bind_port = lookup('profile::openstack::codfw1dev::barbican::bind_port'),
     Stdlib::Port $keystone_admin_bind_port = lookup('profile::openstack::codfw1dev::keystone::admin_bind_port'),
@@ -12,7 +13,6 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $galera_listen_port = lookup('profile::openstack::codfw1dev::galera::listen_port'),
     Stdlib::Fqdn $galera_primary_host = lookup('profile::openstack::codfw1dev::galera::primary_host'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
-    Stdlib::Port $placement_api_port = lookup('profile::openstack::codfw1dev::nova::placement_api_port'),
 ) {
     profile::openstack::base::haproxy::site { 'designate':
         servers            => $designate_hosts,
@@ -86,16 +86,12 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $nova_osapi_compute_listen_port,
     }
 
-    # Unlike other nova services, the port used by the placement
-    #  service is determined by the debian packaged init script.
-    #  Rather than try to re-puppetize that file I'm
-    #  just hard-coding the backend port (8778) here
-    profile::openstack::base::haproxy::site { 'nova_placement':
+    profile::openstack::base::haproxy::site { 'placement_api':
         servers            => $openstack_controllers,
         healthcheck_method => 'GET',
         healthcheck_path   => '/',
         port_frontend      => 8778,
-        port_backend       => $placement_api_port,
+        port_backend       => $placement_api_bind_port,
     }
 
     profile::openstack::base::haproxy::site { 'nova_metadata':
