@@ -1,4 +1,10 @@
 lvs::interfaces::vlan_data:
+  cloud-support1-c-eqiad:
+    id: "1119"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1014': 'enp5s0f0:10.64.37.14'
+      'lvs1016': 'enp5s0f1:10.64.37.16'
   private1-a-eqiad:
     id: "1017"
     netmask: 255.255.252.0
