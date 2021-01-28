@@ -13,6 +13,7 @@ class tomcat (
     Boolean                $security_listener        = false,
     Boolean                $apr_listener             = false,
     Boolean                $apr_sslengine            = false,
+    Stdlib::Port::User     $apr_port                 = 8443,
     Boolean                $userdatabase_realm       = false,
     String[1]              $userdatabase_file        = 'tomcat-users.xml',
     String[1]              $logs_dir                 = 'logs',
@@ -28,6 +29,8 @@ class tomcat (
     Array[String[1]]       $welcome_files            = ['index.html', 'index.htm', 'index.jsp'],
     Stdlib::Host           $shutdown_address         = 'localhost',
     String                 $shutdown_string          = 'SHUTDOWN',
+    Stdlib::Unixpath       $public_key_path          = '/etc/tomcat9/ssl/cert.pem',
+    Stdlib::Unixpath       $private_key_path         = '/etc/tomcat9/ssl/server.key',
     Array[String[1]]       $watched_resources        = ['WEB-INF/web.xml',
                                                         'WEB-INF/tomcat-web.xml',
     # lint:ignore:single_quote_string_with_variables

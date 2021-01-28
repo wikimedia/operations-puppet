@@ -8,7 +8,7 @@
     <Listener className="org.apache.catalina.security.SecurityListener" />
 <%- end -%>
 <%- if $apr_listener -%>
-    <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="off" -%>
+    <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" -%>
 <%- end -%>
     <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
     <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
@@ -25,6 +25,17 @@
     <Service name="Catalina">
         <Connector port="<%= @connector_port %>" protocol="HTTP/1.1"
                   connectionTimeout="<%= @connector_timeout %>" />
+<%- if $apr_listener -%>
+        <Connector port="<%= @apr_port %>" protocol="org.apache.coyote.http11.Http11AprProtocol"
+               maxThreads="150" SSLEnabled="true" >
+        <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+        <SSLHostConfig>
+            <Certificate certificateKeyFile="<%= @private_key_path %>"
+                         certificateFile="<%= @public_key_path %>"
+                         type="RSA" />
+        </SSLHostConfig>
+    </Connector>
+<%- end -%>
         <Engine name="Catalina" defaultHost="localhost">
 <%- if @userdatabase_realm -%>
             <Realm className="org.apache.catalina.realm.LockOutRealm">
