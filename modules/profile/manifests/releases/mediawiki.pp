@@ -14,9 +14,13 @@ class profile::releases::mediawiki (
     $jenkins_java_home = lookup('profile::releases::mediawiki::jenkins_java_home'),
 ){
 
+    include ::profile::ci::kubernetes_config
+    include ::profile::ci::pipeline::publisher
     include ::profile::docker::engine
     include ::profile::java
     Class['::profile::java'] ~> Class['::jenkins']
+
+    class { '::helm': }
 
     class { '::jenkins':
         access_log      => true,
