@@ -38,6 +38,9 @@ addAction(MaxQPSIPRule(<%= @qps_max %>, 32, 64), DropAction())
 addAction(QTypeRule(DNSQType.ANY), RCodeAction(DNSRCode.NOTIMP))
 <% end -%>
 
+-- disable broken security polling due to custom Debian build (see T273322)
+setSecurityPollSuffix("")
+
 -- == Performance Tuning ==
 
 -- set the maximum number of TCP client threads (dnsdist's default is 10)
