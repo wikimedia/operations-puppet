@@ -104,7 +104,8 @@ cas.authn.mfa.globalPrincipalAttributeValueRegex=<%= @mfa_attribut_value.join('|
 cas.authn.mfa.u2f.jpa.user=<%= @u2f_jpa_username %>
 cas.authn.mfa.u2f.jpa.password=<%= @u2f_jpa_password %>
 cas.authn.mfa.u2f.jpa.driver-class=org.mariadb.jdbc.Driver
-cas.authn.mfa.u2f.jpa.url=jdbc:mysql://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %>?useSSL=true&disableSslHostnameVerification=true
+<%# dont't bother with ssl if db is local (cloud) %>
+cas.authn.mfa.u2f.jpa.url=jdbc:mysql://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %><% unless @u2f_jpa_server == '127.0.0.1' %>?useSSL=true&disableSslHostnameVerification=true<% end %>
 cas.authn.mfa.u2f.jpa.dialect=org.hibernate.dialect.MariaDBDialect
   <%- end -%>
 <%- end -%>
