@@ -1,15 +1,17 @@
 class profile::maps::tlsproxy(
-    String $servicename = lookup('profile::maps::tlsproxy::servicename'),
-    String $ocsp_proxy  = lookup('http_proxy', {'default_value' => ''}),
+    String $servicename      = lookup('profile::maps::tlsproxy::servicename'),
+    String $ocsp_proxy       = lookup('http_proxy', {'default_value' => ''}),
+    Boolean $ssl_ecdhe_curve = lookup('profile::maps::tlsproxy::ssl_ecdhe_curve', {'default_value' => true}),
 ){
 
     tlsproxy::localssl { $servicename:
-        server_name    => $servicename,
-        certs          => [$servicename],
-        upstream_ports => [6533],
-        default_server => true,
-        do_ocsp        => false,
-        ocsp_proxy     => $ocsp_proxy,
+        server_name     => $servicename,
+        certs           => [$servicename],
+        upstream_ports  => [6533],
+        default_server  => true,
+        do_ocsp         => false,
+        ocsp_proxy      => $ocsp_proxy,
+        ssl_ecdhe_curve => $ssl_ecdhe_curve,
     }
 
     monitoring::service { 'maps-https':
