@@ -37,7 +37,7 @@ profile::presto::server::config_properties:
   # since we only run presto as a single node on the coordinator
   # on the test cluster, set this to allow the coordinator to
   # also handle queries.
-  node-scheduler.include-coordinator: true
+  node-scheduler.include-coordinator: false
   discovery-server.enabled: true
   # Set network-topology to legacy since we are not (yet?) running
   # presto co-located with HDFS nodes. If we were, we would

@@ -1,0 +1,69 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+profile::standard::admin_groups:
+  - analytics-admins
+
+# Hadoop settings, presto server needs Hadoop client configs
+profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
+
+# Presto (worker) Server settings
+profile::presto::monitoring_enabled: true
+profile::presto::use_kerberos: true
+profile::presto::cluster_name: analytics-test-presto
+profile::presto::discovery_uri: https://an-test-coord1001.eqiad.wmnet:8281
+profile::presto::server::heap_max: 4G
+profile::presto::server::config_properties:
+  # Set network-topology to legacy since we are not (yet?) running
+  # presto co-located with HDFS nodes. If we were, we would
+  # set this to 'flat'.
+  node-scheduler.network-topology: legacy
+  query.max-memory: 2GB
+  query.max-memory-per-node: 2GB
+  query.max-total-memory-per-node: 2GB
+profile::presto::server::catalogs:
+  # Each catalog hash should contain a single properties has that will
+  # end up being passed to the presto::properties define.  This will render
+  # a properties file at /etc/presto/catalog/$name.properties.
+  analytics_hive:
+    properties:
+      connector.name: hive-hadoop2
+      hive.security: read-only
+      # Add Hadoop config files so Hive connector can work with HA Hadoop NameNodes.
+      hive.config.resources: /etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml
+      hive.metastore.uri: thrift://analytics-test-hive.eqiad.wmnet:9083
+      hive.metastore.username: presto
+      hive.storage-format: PARQUET
+      hive.compression-codec: SNAPPY
+      # We do not (yet) colocate workers with Hadoop DataNodes.
+      # When we tested 0.246 the option parser rejected setting the option to its
+      # default, so we removed it but we left this comment for documentation purposes.
+      # hive.force-local-scheduling: false
+      # Allow presto-cli to impersonate the user running the process
+      # Allow presto-cli to impersonate the user running the process
+      hive.hdfs.impersonation.enabled: true
+      # TODO: do we want to disable non managed tables?
+      hive.non-managed-table-writes-enabled: true
+      hive.non-managed-table-creates-enabled: true
+      hive.metastore.authentication.type: 'KERBEROS'
+      hive.metastore.service.principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.client.principal: 'presto/an-test-coord1001.eqiad.wmnet@WIKIMEDIA'
+      hive.metastore.client.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.hdfs.authentication.type: 'KERBEROS'
+      hive.hdfs.impersonation.enabled: true
+      hive.hdfs.presto.principal: "presto/%{::hostname}.eqiad.wmnet@WIKIMEDIA"
+      hive.hdfs.presto.keytab: '/etc/security/keytabs/presto/presto.keytab'
+      hive.hdfs.wire-encryption.enabled: true
+      hive.parquet.fail-on-corrupted-statistics: false
+      hive.parquet.use-column-names: true
+profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'presto'
+    owner: 'presto'
+    group: 'presto'
+    filename: 'presto.keytab'
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'

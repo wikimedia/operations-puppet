@@ -75,7 +75,7 @@ node 'an-test-ui1001.eqiad.wmnet' {
 }
 
 node 'an-test-presto1001.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_test_cluster::presto::server)
 }
 
 # analytics1058-analytics1077 and an-worker10XX
