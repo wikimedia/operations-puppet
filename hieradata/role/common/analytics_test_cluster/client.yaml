@@ -35,3 +35,7 @@ profile::java::java_packages:
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 
 profile::base::notifications: disabled
+
+profile::presto::cluster_name: analytics-test-presto
+profile::presto::discovery_uri: https://an-test-coord1001.eqiad.wmnet:8281
+profile::presto::use_kerberos: true
