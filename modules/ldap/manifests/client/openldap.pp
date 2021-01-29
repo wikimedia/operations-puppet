@@ -1,13 +1,15 @@
-class ldap::client::openldap($ldapconfig, $ldapincludes) {
-    package { 'ldap-utils':
-        ensure => latest,
-    }
+class ldap::client::openldap(
+  Hash          $ldapconfig   = {},
+  Array[String] $ldapincludes = []
+) {
 
-    file { '/etc/ldap/ldap.conf':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('ldap/open_ldap.erb'),
-    }
+  ensure_packages(['ldap-utils'])
+
+  file { '/etc/ldap/ldap.conf':
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      content => template('ldap/open_ldap.erb'),
+  }
 }
 
