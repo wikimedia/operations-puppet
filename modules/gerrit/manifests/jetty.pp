@@ -52,7 +52,6 @@ class gerrit::jetty(
         "-Xmx${heap_limit} -Xms${heap_limit}",
         '-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance',
         '-Dflogger.logging_context=com.google.gerrit.server.logging.LoggingContext#getInstance',
-        '-Dlog4j.configuration=file:///var/lib/gerrit2/review_site/etc/log4j.xml',
         # These settings apart from the bottom control logging for gc
         '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
         '-XX:+UnlockExperimentalVMOptions',
@@ -139,6 +138,10 @@ class gerrit::jetty(
         owner   => $scap_user,
         group   => $scap_user,
         source  => 'puppet:///modules/gerrit/homedir',
+    }
+    # We no more use custom log4j config
+    file { '/var/lib/gerrit2/review_site/etc/log4j.xml':
+        ensure => absent,
     }
 
     file { '/var/lib/gerrit2/review_site/bin':

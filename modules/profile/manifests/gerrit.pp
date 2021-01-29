@@ -103,10 +103,9 @@ class profile::gerrit(
         require => Class['gerrit'],
     }
 
-    # Ship gerrit logs to ELK, everything should be in the JSON file now.
-    # Just the sshd_log has a custom format.
+    # Ship Gerrit built-in logs to ELK
     rsyslog::input::file { 'gerrit-json':
-        path => '/var/log/gerrit/gerrit.json',
+        path => '/var/log/gerrit/*_log.json',
     }
 
     # Apache reverse proxies to jetty
