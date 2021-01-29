@@ -31,9 +31,11 @@ fi
 
 dumpName=all
 entityTypes=("--entity-type" "item" "--entity-type" "property")
+minSize=58000000000 # across all shards (to be divided by $shards)
 if [[ "$1" == "lexemes" ]]; then
 	entityTypes=("--entity-type" "lexeme")
 	dumpName=lexemes
+	minSize=100000000
 fi
 
 if [ $continue -eq 0 ]; then
@@ -115,12 +117,13 @@ fi
 # Open the json list
 echo '[' | gzip -f > $tempDir/wikidataJson$dumpName.gz
 
+minSizePerShard=$((minSize / shards))
 i=0
 while [ $i -lt $shards ]; do
 	getTempFiles "$tempDir/wikidataJson$dumpName.$i-batch*.gz"
 	getFileSize "$tempFiles"
-	if [ $fileSize -lt `expr 58000000000 / $shards` ]; then
-		echo "File size for shard $i is only $fileSize. Aborting." >> $mainLogFile
+	if (( fileSize < minSizePerShard )); then
+		echo "File size for shard $i is only $fileSize, expecting at least $minSizePerShard. Aborting." >> $mainLogFile
 		exit 1
 	fi
 	cat $tempFiles >> $tempDir/wikidataJson$dumpName.gz
