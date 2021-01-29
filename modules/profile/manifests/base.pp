@@ -168,6 +168,8 @@ class profile::base(
         hardware_monitoring      => $hardware_monitoring
     }
 
+    class { 'prometheus::node_debian_version': }
+
     if $facts['is_virtual'] and debian::codename::le('buster') {
             class {'haveged': }
     } elsif !$facts['is_virtual'] {
