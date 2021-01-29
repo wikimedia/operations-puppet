@@ -1,5 +1,5 @@
 # clouddb1017
 profile::base::notifications: disabled
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
-  s1: 200G
-  s3: 85G
+  s1: 303G
+  s3: 100G
