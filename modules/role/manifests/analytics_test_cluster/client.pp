@@ -19,6 +19,7 @@ class role::analytics_test_cluster::client {
 
     include ::profile::analytics::cluster::gitconfig
 
+    include ::profile::presto::client
     include ::profile::swap
 
     # Need refinery to test Refine jobs
