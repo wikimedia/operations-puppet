@@ -161,6 +161,16 @@ user_domain_name = default
 username = novaadmin
 default_floating_pool = ext-nat
 
+[placement]
+region_name = <%= @region %>
+project_domain_name = Default
+project_name = admin
+auth_type = password
+user_domain_name = Default
+auth_url = http://<%= @keystone_api_fqdn %>:35357/v3
+username = novaadmin
+password = <%= @ldap_user_pass %>
+
 [wsgi]
 api_paste_config=/etc/nova/api-paste.ini
 
