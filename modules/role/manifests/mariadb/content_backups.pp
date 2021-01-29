@@ -14,5 +14,7 @@ class role::mariadb::content_backups {
 
     include ::profile::mariadb::backup::mydumper
     include ::profile::mariadb::backup::snapshot
-    # TODO: Include client and sd bacula profiles
+    include ::profile::backup::storage::es
+    include ::profile::backup::host
+    include ::profile::mariadb::backup::bacula_es
 }
