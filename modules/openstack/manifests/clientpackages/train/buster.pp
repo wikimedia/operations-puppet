@@ -21,6 +21,7 @@ class openstack::clientpackages::train::buster(
         'python3-openstackclient',
         'python3-designateclient',
         'python3-neutronclient',
+        'python3-osc-placement',
     ]
 
     package{ $py3packages:
