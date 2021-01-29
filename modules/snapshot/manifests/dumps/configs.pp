@@ -8,6 +8,14 @@ class snapshot::dumps::configs(
     $privatedir = $snapshot::dumps::dirs::xmldumpsprivatedir
     $tempdir = $snapshot::dumps::dirs::dumpstempdir
 
+    # test config file provided as a convenience to allow
+    # production-like runs to land in other directories
+    # for live testing; these directories can be created
+    # manually and cleaned up after tests
+    $testpublicdir = '/mnt/dumpsdata/temp/dumpsgen/public'
+    $testprivatedir = '/mnt/dumpsdata/temp/dumpsgen/private'
+    $testtempdir = '/mnt/dumpsdata/temp/dumpsgen/temp'
+
     $enchunkhistory1 = '41242,110331,159756,247062,399654,525616,650450,802149,1109142,1353964,1655493,2117929,2486894,2664920'
     $enchunkhistory2 = '3135550,3110240,3145805,3405653,4186592,4213990,4473813,4792696,5775612,6461102,5560195,1390059,1390050'
 
@@ -226,6 +234,15 @@ class snapshot::dumps::configs(
         publicdir  => $publicdir,
         privatedir => $privatedir,
         tempdir    => $tempdir,
+    }
+
+    # for xml/sql dumps debugging or live prod tests
+    snapshot::dumps::wikiconf { 'wikidump.conf.tests':
+        configtype => 'allwikis',
+        config     => $config,
+        publicdir  => $testpublicdir,
+        privatedir => $testprivatedir,
+        tempdir    => $testtempdir,
     }
 
     file { "${confsdir}/table_jobs.yaml":
