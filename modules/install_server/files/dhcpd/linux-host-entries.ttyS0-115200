@@ -91,6 +91,11 @@ host an-test-druid1001 {
     fixed-address an-test-druid1001.eqiad.wmnet;
 }
 
+host an-test-presto1001 {
+    hardware ethernet aa:00:00:fb:7f:1e;
+    fixed-address an-test-presto1001.eqiad.wmnet;
+}
+
 host apt1001 {
     hardware ethernet aa:00:00:ff:c9:11;
     fixed-address apt1001.wikimedia.org;

@@ -74,6 +74,10 @@ node 'an-test-ui1001.eqiad.wmnet' {
     role(analytics_test_cluster::hadoop::ui)
 }
 
+node 'an-test-presto1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 # analytics1058-analytics1077 and an-worker10XX
 # are Analytics Hadoop worker nodes.
 #
