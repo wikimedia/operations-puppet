@@ -45,3 +45,7 @@ profile::java::java_packages:
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 
 profile::hadoop::worker::check_mountpoints_disk_space: false
+
+# The Backup cluster is going to be filled almost completely before the Apache BigTop
+# upgrade of the main Analytics one, overriding the default alerts to avoid icinga noise.
+profile::base::check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs -i "/var/lib/hadoop/data/[a-z]"
