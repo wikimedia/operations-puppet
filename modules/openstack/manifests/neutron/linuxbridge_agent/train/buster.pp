@@ -28,10 +28,12 @@ class openstack::neutron::linuxbridge_agent::train::buster(
     # We'll need to check to see if it's present in U and V.
     #
     file { '/usr/lib/python3/dist-packages/neutron/agent/linux/ip_lib.py':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => 'puppet:///modules/openstack/train/neutron/hacks/ip_lib.py';
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['neutron-linuxbridge-agent'],
+        notify  => Service['neutron-linuxbridge-agent'],
+        source  => 'puppet:///modules/openstack/train/neutron/hacks/ip_lib.py';
     }
 }
