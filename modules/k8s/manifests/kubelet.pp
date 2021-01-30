@@ -28,8 +28,9 @@ class k8s::kubelet(
         require_package('kubernetes-node')
     }
 
-    # Needed on k8s nodes for kubectl proxying to work
-    ensure_packages(['socat'])
+    # socat is needed on k8s nodes for kubectl proxying to work
+    # apparmor is needed for PodSecurityPolicy to be able to enforce profiles
+    ensure_packages(['socat', 'apparmor'])
 
     file { '/etc/default/kubelet':
         ensure  => file,
