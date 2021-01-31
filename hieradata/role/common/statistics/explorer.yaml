@@ -18,7 +18,7 @@ profile::oozie::client::oozie_service: 'analytics-oozie'
 
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
-profile::presto::use_kerberos: true
+profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 
 profile::statistics::explorer::misc_jobs::hosts_with_jobs:
   - 'stat1007'

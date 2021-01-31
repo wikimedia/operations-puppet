@@ -38,4 +38,3 @@ profile::base::notifications: disabled
 
 profile::presto::cluster_name: analytics-test-presto
 profile::presto::discovery_uri: https://an-test-coord1001.eqiad.wmnet:8281
-profile::presto::use_kerberos: true

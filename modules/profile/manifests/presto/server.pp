@@ -48,7 +48,7 @@ class profile::presto::server(
     Hash   $log_properties      = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
     String $heap_max            = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
     String $ferm_srange         = lookup('profile::presto::server::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
-    Boolean $use_kerberos       = lookup('profile::presto::use_kerberos', { 'default_value' => false }),
+    Boolean $use_kerberos       = lookup('profile::presto::use_kerberos', { 'default_value' => true }),
     Boolean $monitoring_enabled = lookup('profile::presto::monitoring_enabled', { 'default_value' => false }),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = lookup('presto_clusters_secrets', { 'default_value' => {} }),
 ) {

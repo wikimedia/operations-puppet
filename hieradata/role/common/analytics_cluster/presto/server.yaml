@@ -8,7 +8,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 # Presto (worker) Server settings
 profile::presto::monitoring_enabled: true
-profile::presto::use_kerberos: true
 profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
 profile::presto::server::heap_max: 100G
