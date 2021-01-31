@@ -70,6 +70,10 @@
 #                                                    but with lower priviledged ones. These jobs needs, most of the times, to read
 #                                                    files like hive-site.xml, so proper group permissions are needed.
 #                                                    Default: 'hdfs'
+# hive_metastore_disallow_incompatible_col_type_changes - If true, the Metastore will disallow incompatible column type changes through
+#                                                         alter table. This is a new setting in Hive 2.x.
+#                                                         Hive Default: true (was: false in Hive 1.x)
+#                                                         Default: undef (we don't want to render it with Hive 1.x)
 #
 class cdh::hive(
     $metastore_host,
@@ -126,6 +130,8 @@ class cdh::hive(
     $hive_cluster_delegation_token_store_class = undef,
 
     $config_files_group_ownership = 'hdfs',
+
+    $hive_metastore_disallow_incompatible_col_type_changes = undef,
 
 ) {
     Class['cdh::hadoop'] -> Class['cdh::hive']

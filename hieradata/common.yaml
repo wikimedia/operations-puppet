@@ -719,6 +719,7 @@ hive_services:
     metastore_kerberos_keytab_file: '/etc/security/keytabs/hive/hive.keytab'
     server_authentication_kerberos_principal: 'hive/analytics-test-hive.eqiad.wmnet@WIKIMEDIA'
     server_authentication_kerberos_keytab: '/etc/security/keytabs/hive/hive.keytab'
+    hive_metastore_disallow_incompatible_col_type_changes: false
     java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
     metastore_opts: '-Xms4g -Xmx4g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
     server_opts: '-Xms6g -Xmx6g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
