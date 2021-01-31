@@ -22,7 +22,7 @@ Expects env variables inline with our other nova tooling:
 
 import argparse
 from keystoneclient.auth.identity import generic
-from keystoneclient import session as keystone_session
+from keystoneauth1 import session as keystone_session
 import logging
 import novaclient
 from novaclient import client as nova_client
