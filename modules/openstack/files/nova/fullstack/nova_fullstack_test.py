@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Full stack instance life cycle testing.  Meant to be run
 as a daemon and then also adhoc for testing.
@@ -65,8 +65,8 @@ def get_verify(prompt, invalid, valid):
     """
     while True:
         try:
-            input = raw_input("{} {}:".format(prompt, valid))
-            if input.lower() not in valid:
+            inp = input("{} {}:".format(prompt, valid))
+            if inp.lower() not in valid:
                 raise ValueError(invalid)
         except ValueError:
             continue
@@ -247,7 +247,7 @@ def verify_puppet(address, user, keyfile, timeout):
     logging.debug(out)
     try:
         yprun = yaml.safe_load(out)
-    except:
+    except yaml.YAMLError:
         logging.warning("Yaml conversion failed for Puppet results")
         yprun = {}
 
@@ -320,7 +320,7 @@ def verify_deletion(nova_connection, server, timeout):
 
             dwait = dw.progress()
             if dwait > timeout:
-                raise Exception("deletion timed out".format(server.human_id))
+                raise Exception("{} deletion timed out".format(server.human_id))
             time.sleep(30)
     return dw.interval
 
@@ -532,7 +532,7 @@ def main():
     try:
         with open(args.keyfile, 'r') as f:
             f.read()
-    except:
+    except OSError:
         logging.error("keyfile {} cannot be read".format(args.keyfile))
         sys.exit(1)
 
@@ -650,7 +650,7 @@ def main():
                               'time']
 
                 for d in categories:
-                    for k, v in puppetrun[d].iteritems():
+                    for k, v in puppetrun[d].items():
                         stat('puppet.{}.{}'.format(d, k), v)
 
             if args.pause_for_deletion:
@@ -690,7 +690,7 @@ def main():
                 return
 
             stat('verify.success', 1)
-        except:
+        except:  # noqa: E722
             logging.exception("{} failed, leaking".format(name))
             stat('verify.success', 0)
 
