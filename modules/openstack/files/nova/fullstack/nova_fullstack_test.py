@@ -344,7 +344,7 @@ def submit_stat(host, port, prepend, metric, value):
     fmetric = '{}.{}'.format(prepend, metric)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
     s.connect((host, port))
-    s.send("{}:{}|g".format(fmetric, value))
+    s.send("{}:{}|g".format(fmetric, value).encode('utf8'))
     logging.info('{} => {} {}'.format(fmetric, value, int(time.time())))
 
 
