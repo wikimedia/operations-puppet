@@ -2370,10 +2370,10 @@ node /^stat100[4-8]\.eqiad\.wmnet/ {
 # hieradata/common.yaml:dumps_nfs_clients for dump nfs mount,
 # hieradata/common/scap/dsh.yaml for mediawiki installation,
 # and to hieradata/hosts/ if running dumps for enwiki or wikidata.
-node /^snapshot100[569]\.eqiad\.wmnet/ {
+node /^snapshot100[679]\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper)
 }
-node /^snapshot1007\.eqiad\.wmnet/ {
+node /^snapshot1005\.eqiad\.wmnet/ {
     role(dumps::generation::worker::testbed)
 }
 node /^snapshot1008\.eqiad\.wmnet/ {
