@@ -700,6 +700,7 @@ def main():
                                                    host,
                                                    args.certmanager,
                                                    args.certkeyfile,
+                                                   args.bastion_ip,
                                                    timeout=20.0)
                 stat('verify.puppet-cert-cleanup', certs)
 
