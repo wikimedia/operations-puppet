@@ -4,6 +4,7 @@ class profile::openstack::base::nova::fullstack::service(
     $region = lookup('profile::openstack::base::region'),
     $network = lookup('profile::openstack::base::nova::instance_network_id'),
     $puppetmaster = lookup('profile::openstack::base::puppetmaster_hostname'),
+    $bastion_ip = lookup('profile::openstack::base::nova::fullstack_bastion_ip'),
     ) {
 
     # We only want this running in one place; just pick the first
@@ -14,6 +15,7 @@ class profile::openstack::base::nova::fullstack::service(
         region       => $region,
         network      => $network,
         puppetmaster => $puppetmaster,
+        bastion_ip   => $bastion_ip,
     }
     contain '::openstack::nova::fullstack::service'
 }

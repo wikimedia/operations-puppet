@@ -77,6 +77,7 @@ def get_verify(prompt, invalid, valid):
 def run_remote(node,
                username,
                keyfile,
+               bastion_ip,
                cmd,
                debug=False):
     """ Execute a remote command using SSH
@@ -102,6 +103,9 @@ def run_remote(node,
         'NumberOfPasswordPrompts=0',
         '-o',
         'LogLevel={}'.format('DEBUG' if debug else 'ERROR'),
+        '-o',
+        'ProxyCommand="ssh -o StrictHostKeyChecking=no -i {} -W %h:%p {}@{}"'.format(
+            keyfile, username, bastion_ip),
         '-i',
         keyfile,
         '{}@{}'.format(username, node),
@@ -109,7 +113,11 @@ def run_remote(node,
 
     fullcmd = ssh + cmd.split(' ')
     logging.debug(' '.join(fullcmd))
-    return subprocess.check_output(fullcmd, stderr=subprocess.STDOUT)
+
+    # The nested nature of the proxycommand line is baffling to
+    #  subprocess and/or ssh; joining a full shell commandline
+    #  works and gives us something we can actually test by hand.
+    return subprocess.check_output(' '.join(fullcmd), shell=True, stderr=subprocess.STDOUT)
 
 
 def run_local(cmd):
@@ -165,7 +173,7 @@ def verify_dns_cleanup(hostname, nameservers, timeout=2.0):
     return ns.interval
 
 
-def verify_ssh(address, user, keyfile, timeout):
+def verify_ssh(address, user, keyfile, bastion_ip, timeout):
     """ ensure SSH works to an instance
     :param address: str
     :param timeout: int
@@ -176,7 +184,7 @@ def verify_ssh(address, user, keyfile, timeout):
         while True:
             time.sleep(10)
             try:
-                run_remote(address, user, keyfile, '/bin/true')
+                run_remote(address, user, keyfile, bastion_ip, '/bin/true')
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug(e)
@@ -188,7 +196,7 @@ def verify_ssh(address, user, keyfile, timeout):
     return vs.interval
 
 
-def verify_puppet_cert_cleanup(puppetmaster, fqdn, user, keyfile, timeout):
+def verify_puppet_cert_cleanup(puppetmaster, fqdn, user, keyfile, bastion_ip, timeout):
     """ ensure that the puppet cert for a deleted VM was also deleted
     :param puppetmaster: str
     :param user: str
@@ -203,7 +211,7 @@ def verify_puppet_cert_cleanup(puppetmaster, fqdn, user, keyfile, timeout):
                 # The 'echo' gymanstics here are to capture the output but also return 0 (if the
                 #  cert is missing) so we can check the output rather than having run_remote
                 #  throw an exception.
-                out = run_remote(puppetmaster, user, keyfile,
+                out = run_remote(puppetmaster, user, keyfile, bastion_ip,
                                  'echo `sudo puppet cert list {}`'.format(fqdn))
                 break
             except subprocess.CalledProcessError as e:
@@ -222,7 +230,7 @@ def verify_puppet_cert_cleanup(puppetmaster, fqdn, user, keyfile, timeout):
     return vs.interval
 
 
-def verify_puppet(address, user, keyfile, timeout):
+def verify_puppet(address, user, keyfile, bastion_ip, timeout):
     """ Ensure Puppet has run on an instance
     :param address: str
     :param timeout: init
@@ -233,7 +241,7 @@ def verify_puppet(address, user, keyfile, timeout):
         while True:
             try:
                 cp = 'sudo cat /var/lib/puppet/state/last_run_summary.yaml'
-                out = run_remote(address, user, keyfile, cp)
+                out = run_remote(address, user, keyfile, bastion_ip, cp)
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug(e)
@@ -366,6 +374,12 @@ def main():
         '--certkeyfile',
         default='',
         help='Path to SSH key file for puppet cert checking',
+    )
+
+    argparser.add_argument(
+        '--bastion-ip',
+        default='',
+        help='IP of bastion to use for ssh tests',
     )
 
     argparser.add_argument(
@@ -626,6 +640,7 @@ def main():
                 vs = verify_ssh(addr,
                                 user,
                                 args.keyfile,
+                                args.bastion_ip,
                                 args.ssh_timeout)
 
                 stat('verify.ssh', vs)
@@ -633,6 +648,7 @@ def main():
                     sshout = run_remote(addr,
                                         user,
                                         args.keyfile,
+                                        args.bastion_ip,
                                         args.adhoc_command,
                                         debug=args.debug)
                     logging.debug(sshout)
@@ -641,6 +657,7 @@ def main():
                 ps, puppetrun = verify_puppet(addr,
                                               user,
                                               args.keyfile,
+                                              args.bastion_ip,
                                               args.puppet_timeout)
                 stat('verify.puppet', ps)
 

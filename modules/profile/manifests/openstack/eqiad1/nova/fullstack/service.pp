@@ -4,6 +4,7 @@ class profile::openstack::eqiad1::nova::fullstack::service(
     $region = lookup('profile::openstack::eqiad1::region'),
     $network = lookup('profile::openstack::eqiad1::nova::instance_network_id'),
     $puppetmaster = lookup('profile::openstack::eqiad1::puppetmaster_hostname'),
+    $bastion_ip = lookup('profile::openstack::eqiad1::nova::fullstack_bastion_ip'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -13,6 +14,7 @@ class profile::openstack::eqiad1::nova::fullstack::service(
         region                => $region,
         network               => $network,
         puppetmaster          => $puppetmaster,
+        bastion_ip            => $bastion_ip,
     }
 
     # We only want this running in one place; just pick the first

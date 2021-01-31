@@ -9,6 +9,7 @@ class openstack::nova::fullstack::service(
     $password,
     $region,
     $puppetmaster,
+    $bastion_ip,
     $interval = 300,
     $max_pool = 11,
     $creation_timeout = 900,
