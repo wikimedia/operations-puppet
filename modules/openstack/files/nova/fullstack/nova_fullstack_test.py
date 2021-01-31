@@ -196,40 +196,6 @@ def verify_ssh(address, user, keyfile, bastion_ip, timeout):
     return vs.interval
 
 
-def verify_puppet_cert_cleanup(puppetmaster, fqdn, user, keyfile, bastion_ip, timeout):
-    """ ensure that the puppet cert for a deleted VM was also deleted
-    :param puppetmaster: str
-    :param user: str
-    :param keyfile: str
-    :param timeout: int
-    :return: float
-    """
-    with Timer() as vs:
-        logging.info('SSH to {} to check puppet cert'.format(puppetmaster))
-        while True:
-            try:
-                # The 'echo' gymanstics here are to capture the output but also return 0 (if the
-                #  cert is missing) so we can check the output rather than having run_remote
-                #  throw an exception.
-                out = run_remote(puppetmaster, user, keyfile, bastion_ip,
-                                 'echo `sudo puppet cert list {}`'.format(fqdn))
-                break
-            except subprocess.CalledProcessError as e:
-                logging.debug('SSH wait for {}'.format(vs.progress()))
-                logging.debug(e)
-
-            sshwait = vs.progress()
-            if sshwait >= timeout:
-                raise Exception("SSH for {} timed out".format(puppetmaster))
-
-    logging.debug('cert check returned {}'.format(out))
-
-    if 'Error: Could not find' not in out:
-        raise Exception("Puppet cert leaked for {}".format(fqdn))
-
-    return vs.interval
-
-
 def verify_puppet(address, user, keyfile, bastion_ip, timeout):
     """ Ensure Puppet has run on an instance
     :param address: str
@@ -371,12 +337,6 @@ def main():
     )
 
     argparser.add_argument(
-        '--certkeyfile',
-        default='',
-        help='Path to SSH key file for puppet cert checking',
-    )
-
-    argparser.add_argument(
         '--bastion-ip',
         default='',
         help='IP of bastion to use for ssh tests',
@@ -386,12 +346,6 @@ def main():
         '--user',
         default='',
         help='Set username (Expected to be the same across all backends)',
-    )
-
-    argparser.add_argument(
-        '--certmanager',
-        default='',
-        help='Set username for the puppetmaster certmanager',
     )
 
     argparser.add_argument(
@@ -693,16 +647,6 @@ def main():
                                           dnsd,
                                           timeout=60.0)
                 stat('verify.dns-cleanup', vdns)
-
-            if not args.skip_puppet:
-                host = '{}.{}.eqiad1.wikimedia.cloud'.format(server.name, server.tenant_id)
-                certs = verify_puppet_cert_cleanup(args.puppetmaster,
-                                                   host,
-                                                   args.certmanager,
-                                                   args.certkeyfile,
-                                                   args.bastion_ip,
-                                                   timeout=20.0)
-                stat('verify.puppet-cert-cleanup', certs)
 
             if not args.interval:
                 return

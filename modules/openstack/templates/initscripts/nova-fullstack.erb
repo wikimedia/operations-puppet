@@ -15,8 +15,6 @@ export OS_REGION_NAME="<%= @region %>"
                                    --image debian-10.0-buster \
                                    --flavor g2.cores1.ram2.disk20 \
                                    --keyfile <%= @keyfile %> \
-                                   --certkeyfile <%= @certkeyfile %> \
-                                   --certmanager <%= @certmanager %> \
                                    --puppetmaster <%= @puppetmaster %> \
                                    --bastion-ip <%= @bastion_ip %> \
                                    --statsd statsd.eqiad.wmnet
