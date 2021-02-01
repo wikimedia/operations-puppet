@@ -1,7 +1,7 @@
 class role::wikidough {
 
     system::role { 'wikidough':
-        description => 'Experimental DoH Resolver'
+        description => 'DoH and DoT Resolver'
     }
 
     include ::profile::standard
