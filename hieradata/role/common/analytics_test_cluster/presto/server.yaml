@@ -19,6 +19,10 @@ profile::presto::server::config_properties:
   query.max-memory: 2GB
   query.max-memory-per-node: 2GB
   query.max-total-memory-per-node: 2GB
+  # Testing 0.246, see https://phabricator.wikimedia.org/T266640#6790318
+  internal-communication.https.trust-store-path: '/etc/ssl/certs/java/cacerts'
+  internal-communication.https.trust-store-password: 'changeit'
+
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::properties define.  This will render
