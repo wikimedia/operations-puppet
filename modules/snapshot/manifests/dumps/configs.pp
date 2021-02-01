@@ -213,7 +213,9 @@ class snapshot::dumps::configs(
             en => {},
             wd => {},
             monitor => {},
-            media => {},
+            media => {
+                skipdblist    => "${dblistsdir}/globalusage.dblist",
+            },
         },
     }
 
