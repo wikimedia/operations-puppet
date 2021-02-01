@@ -15,7 +15,8 @@ class profile::swift::storage (
     Optional[Integer] $object_replicator_interval    = lookup('profile::swift::storage::object_replicator_interval'),
     Optional[Integer] $servers_per_port              = lookup('profile::swift::storage::servers_per_port'),
     Optional[Stdlib::Host] $statsd_host              = lookup('profile::swift::storage::statsd_host'),
-    Optional[Integer] $container_replicator_interval = lookup('profile::swift::storage::container_replicator_interval')
+    Optional[Integer] $container_replicator_interval = lookup('profile::swift::storage::container_replicator_interval'),
+    Optional[Integer] $rsync_limit_memory_percent    = lookup('profile::swift::storage::rsync_limit_memory_percent'),
 ){
 
     $site_backends = $swift_backends.filter |$host| { $host =~ Regexp("${::domain}$") }
@@ -40,6 +41,7 @@ class profile::swift::storage (
         servers_per_port                 => $servers_per_port,
         container_replicator_interval    => $container_replicator_interval,
         backends                         => $site_backends,
+        rsync_limit_memory_percent       => $rsync_limit_memory_percent,
     }
 
     class { 'swift::container_sync':

@@ -1,3 +1,5 @@
 profile::standard::admin_groups:
   - swift-roots
 profile::swift::cluster: codfw-prod
+
+profile::swift::storage::rsync_limit_memory_percent: 10
