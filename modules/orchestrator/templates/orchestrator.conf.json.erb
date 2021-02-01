@@ -31,6 +31,9 @@
   "HostnameResolveMethod": "cname",
   "MysqlHostnameResolveMethod": "@@report_host",
   "DiscoverByShowSlaveHosts": true,
+  "DiscoveryIgnoreHostnameFilters": [
+    "^labsdb"
+   ],
 
   "CandidateInstanceExpireMinutes": 60,
   "FailureDetectionPeriodBlockMinutes": 60,
