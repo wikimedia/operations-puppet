@@ -9,7 +9,9 @@ class network::constants {
     $external_networks = $network_data['network::external']
 
     $network_infra = $network_data['network::infrastructure']
-    $mgmt_networks = $network_data['network::management']
+
+    $mgmt_networks_bydc = $network_data['network::management']
+    $mgmt_networks = $mgmt_networks_bydc.values.flatten
 
     # Per realm aggregate networks
     $aggregate_networks = flatten($network_data['network::aggregate_networks'][$::realm])

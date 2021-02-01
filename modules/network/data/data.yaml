@@ -47,11 +47,16 @@ network::infrastructure:
     - 2001:df2:e500:fe00::/55
 
 network::management:
-  - 10.65.0.0/16 # eqiad
-  - 10.128.128.0/17 # ulsfo
-  - 10.193.0.0/16 # codfw
-  - 10.21.0.0/24 # esams
-  - 10.132.128.0/17 # eqsin
+  eqiad:
+    - 10.65.0.0/16
+  ulsfo:
+    - 10.128.128.0/17
+  codfw:
+    - 10.193.0.0/16
+  esams:
+    - 10.21.0.0/24
+  eqsin:
+    - 10.132.128.0/17
 
 network::subnets:
   production:
