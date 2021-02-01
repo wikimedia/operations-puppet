@@ -10,7 +10,7 @@
 # [*dm_source*] Source device for the /var/lib/docker directory
 #
 class profile::docker::storage::loopback(
-    $dm_source=hiera('profile::docker::storage::loopback::dm_source', undef)
+    Optional[String] $dm_source=lookup('profile::docker::storage::loopback::dm_source', {'default_value' => undef})
 ) {
     $dm_target = '/var/lib/docker'
 
