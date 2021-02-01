@@ -9,14 +9,16 @@ class snapshot::addschanges(
     $templsdir = $snapshot::dumps::dirs::templsdir
     $cronsdir = $snapshot::dumps::dirs::cronsdir
 
-    file { "${confsdir}/addschanges.conf":
-        ensure  => 'present',
-        path    => "${confsdir}/addschanges.conf",
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        content => template('snapshot/addschanges.conf.erb'),
+    # for adds/changes dumps in production
+    snapshot::addschangesconf { 'addschanges.conf':
+        alldblist => 'all.dblist',
     }
+
+    # for adds/changes dumps in deployment-prep
+    snapshot::addschangesconf { 'addschanges.conf.labs':
+        alldblist => 'all-labs.dblist',
+    }
+
     file { "${templsdir}/incrs-index.html":
         ensure => 'present',
         path   => "${templsdir}/incrs-index.html",
