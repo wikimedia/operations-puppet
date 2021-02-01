@@ -524,7 +524,7 @@ dumps_dist_nfs_servers: [labstore1006.wikimedia.org, labstore1007.wikimedia.org]
 dumps_dist_active_vps: labstore1007.wikimedia.org
 # Dumps distribution server currently serving web and rsync mirror traffic
 # Also serves stat* hosts over nfs
-dumps_dist_active_web: labstore1007.wikimedia.org
+dumps_dist_active_web: labstore1006.wikimedia.org
 
 # Cloud Services <
 #
