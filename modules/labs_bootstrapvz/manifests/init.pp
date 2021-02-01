@@ -31,7 +31,7 @@ class labs_bootstrapvz() {
 
     # We can't just use $::servername here because the master
     #  returns cloud-puppetmaster-03 vs. the service name, puppetmaster.cloudinfra.wmflabs.org
-    $puppetmaster = hiera('puppetmaster')
+    $puppetmaster = lookup('puppetmaster')
     $masterregex = "s/${puppetmaster}/_MASTER_/g"
 
     Exec { path => '/bin' }
