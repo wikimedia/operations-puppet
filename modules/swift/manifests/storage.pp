@@ -12,6 +12,7 @@ class swift::storage (
     $object_server_default_workers    = undef,
     $servers_per_port                 = 3,
     $backends                         = [],
+    $rsync_limit_memory_percent       = 0,
 ) {
     package {
         [ 'swift-account',
@@ -22,6 +23,15 @@ class swift::storage (
     }
 
     $memcached_addresses = $memcached_servers.map |$s| { "${s}:${memcached_port}" }
+
+    if $rsync_limit_memory_percent > 0 {
+        systemd::service { 'rsync':
+            ensure   => present,
+            content  => init_template('rsync', 'systemd_override'),
+            override => true,
+            restart  => true,
+        }
+    }
 
     class { 'rsync::server':
         log_file => '/var/log/rsyncd.log',
