@@ -94,6 +94,7 @@ class mediawiki::web::beta_sites {
                 'deployment.wikimedia.beta.wmflabs.org',
                 'meta.wikimedia.beta.wmflabs.org',
                 'api.wikimedia.beta.wmflabs.org',
+                'vote.wikimedia.beta.wmflabs.org',
             ],
             priority        => 16,
             variant_aliases => [],
