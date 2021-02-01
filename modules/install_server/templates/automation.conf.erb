@@ -1,0 +1,22 @@
+#
+# Managed by Puppet and automatically generated
+# see modules/install_server/manifests/dhcp_server.pp
+#
+<%
+require 'ipaddr'
+@mgmt_networks.each do |netname, netlist|
+# FIXME We only support the first network for each DC; we need a better way to define the includes
+# if there are more in the future (probably labelling them with the actual network label).
+addr = IPAddr.new(netlist[0])
+nm = 0xffffffff >> (32 - addr.prefix) << (32 - addr.prefix)
+netmask = (0..3).map { |i| (nm >> (24 - 8 * i)) & 0xff}.join('.')
+-%>
+subnet <%= addr.to_s %> netmask <%= netmask %> {
+     authoratative;
+
+     option subnet-mask <%= netmask %>;
+     option domain-name "mgmt.<%= netname %>.wmnet";
+
+     include "/etc/dhcp/automation/proxies/proxy-mgmt.<%= netname %>.conf";
+}
+<% end -%>

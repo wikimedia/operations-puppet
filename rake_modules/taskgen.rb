@@ -165,9 +165,13 @@ class TaskGen < ::Rake::TaskLib
         dhcp_config = File.read(dhcp_config_file)
         dhcp_config.gsub!(%r{/etc/dhcp}, dhcp_config_dir)
         File.open(dhcp_config_file, "w") {|file| file.puts dhcp_config }
-        FileUtils.touch(File.join(dhcp_config_dir, "opt82-entries.ttyS0-115200"))
-        FileUtils.touch(File.join(dhcp_config_dir, "opt82-entries.ttyS1-115200"))
-
+        # Any includes that may be generated or provided by puppet outside of the files/dhcpd tree will be essentially
+        # ignored by this test.
+        dhcp_config.scan(/include\s+\"(.+)\";/).each do |fname|
+          next if File.file?(fname[0])
+          print "DHCP include file '#{fname[0]}' does not exist. Touching for CI.\n"
+          FileUtils.touch(fname[0])
+        end
         begin
           puts "dhcp configuration: BEGIN TEST"
           puts "=============================="

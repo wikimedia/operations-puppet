@@ -1,23 +1,16 @@
-# Class: install_server::dhcp_server
-#
-# This class installs isc-dhcp-server and configures it
-#
-# Parameters:
-#
-# Actions:
-#       Install isc-dhcp-server and populate configuration directory
-#
-# Requires:
-#
-# Sample Usage:
-#   include install_server::dhcp_server
+# @summary This class installs isc-dhcp-server and configures it
+# @param ensure_service indicate if the service should be stopped or running
+# @param a hash of managment networks
 
 class install_server::dhcp_server (
-    Stdlib::Ensure::Service $ensure_service = 'running',
+    Stdlib::Ensure::Service                  $ensure_service = 'running',
+    Hash[String, Array[Stdlib::IP::Address]] $mgmt_networks = {}
 ){
+
+    ensure_packages(['isc-dhcp-server'])
+
     file { '/etc/dhcp':
         ensure  => directory,
-        require => Package['isc-dhcp-server'],
         recurse => true,
         owner   => 'root',
         group   => 'root',
@@ -36,27 +29,50 @@ class install_server::dhcp_server (
         require => Package['isc-dhcp-server'],
     }
 
-    package { 'isc-dhcp-server':
-        ensure => present,
+    # Generate include proxies for each management network for automation.
+    file { '/etc/dhcp/automation.conf':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      content => template('install_server/automation.conf.erb')
     }
 
-    service { 'isc-dhcp-server':
-        ensure    => $ensure_service,
-        require   => [
-            Package['isc-dhcp-server'],
-            File['/etc/dhcp']
-        ],
-        subscribe => File['/etc/dhcp'],
+    wmflib::dir::mkdir_p('/etc/dhcp/automation/proxies/')
+
+    $mgmt_networks.keys.each | $netname | {
+      file { "/etc/dhcp/automation/proxies/proxy-mgmt.${netname}.conf":
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444'
+      }
+
+      file { "/etc/dhcp/automation/mgmt-${netname}/":
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
     }
 
     # TODO: Fold this into modules/install/dhcpd once
     # all jessie-based install servers are replaced.
     if debian::codename::ge('buster') {
         file_line { 'dhcpd_interfaces':
-          ensure => present,
-          path   => '/etc/default/isc-dhcp-server',
-          line   => "INTERFACESv4=\"${facts['interface_primary']}\"  # Managed by puppet",
-          match  => "INTERFACESv4=\"\"",
+          ensure  => present,
+          path    => '/etc/default/isc-dhcp-server',
+          line    => "INTERFACESv4=\"${facts['interface_primary']}\"  # Managed by puppet",
+          match   => "INTERFACESv4=\"\"",
+          require => Package['isc-dhcp-server'],
+          notify  => Service['isc-dhcp-server'],
         }
     }
+
+    service { 'isc-dhcp-server':
+        ensure    => $ensure_service,
+        require   => Package['isc-dhcp-server'],
+        subscribe => File['/etc/dhcp'],
+    }
+
 }
