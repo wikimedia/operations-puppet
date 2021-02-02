@@ -773,7 +773,10 @@ node 'db1145.eqiad.wmnet' {
 node 'db1150.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-
+## s2 & s3, stretch
+node 'db1171.eqiad.wmnet' {
+    role(mariadb::dbstore_multiinstance)
+}
 
 # codfw backup sources
 ## s1 & s6, stretch
@@ -1110,7 +1113,7 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 # New hosts to refresh db1074-db1095 T264584 T267043
 # 2 hosts (db1154 and db1155) will be used to temporary test sanitarium upgrades to 10.4 T268742
 # Set them to spare individually as it will take take to transfer the data
-node /^db11(56|57|58|59|61|62|63|64|65|67|68|70|71|72|73|74)\.eqiad\.wmnet$/ {
+node /^db11(56|57|58|59|61|62|63|64|65|67|68|70|72|73|74)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
