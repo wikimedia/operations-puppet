@@ -102,11 +102,11 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.5.10 < 7.0.0"
+      "version_requirement": ">= 5.5.10 < 8.0.0"
     }
   ],
   "description": "Standard Library for Puppet Modules",
   "pdk-version": "1.18.1",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#master",
-  "template-ref": "heads/master-0-gd610ead"
+  "template-url": "https://github.com/puppetlabs/pdk-templates#main",
+  "template-ref": "heads/main-0-g5afcd3d"
 }

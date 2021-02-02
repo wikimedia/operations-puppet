@@ -5,7 +5,7 @@
   default_configs:
     inherit_from: ".rubocop_todo.yml"
 ".travis.yml":
-  global_env: 
+  global_env:
     - HONEYCOMB_WRITEKEY="7f3c63a70eecc61d635917de46bea4e6",HONEYCOMB_DATASET="litmus tests"
   deploy_to_forge:
     enabled: false
@@ -19,7 +19,6 @@
     provision_list:
     - ---travis_el
     - travis_deb
-    - travis_el6
     - travis_el7
     - travis_el8
     complex:
@@ -65,3 +64,12 @@ Rakefile:
 spec/spec_helper.rb:
   mock_with: ":rspec"
   coverage_report: true
+.gitpod.Dockerfile:
+  unmanaged: false
+.gitpod.yml:
+  unmanaged: false
+
+.github/workflows/nightly.yml:
+  unmanaged: false
+.github/workflows/pr_test.yml:
+  unmanaged: false
