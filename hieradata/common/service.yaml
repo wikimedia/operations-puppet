@@ -837,6 +837,45 @@ service::catalog:
     discovery:
       - dnsdisc: eventstreams
         active_active: true
+  eventstreams-internal:
+    description: Internal streams of events via HTTP + SSE, backed by Kafka. eventstreams-internal.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.35
+      eqiad:
+        default: 10.2.2.35
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - https://localhost/_info
+      scheduler: wrr
+    monitoring:
+      check_command: check_https_lvs_on_port!eventstreams-internal.discovery.wmnet!4992!/_info
+      critical: false
+      sites:
+        codfw:
+          hostname: eventstreams-internal.svc.codfw.wmnet
+        eqiad:
+          hostname: eventstreams-internal.svc.eqiad.wmnet
+    port: 4992
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: eventstreams-internal
+        active_active: true
   git-ssh:
     description: Git - to Phabricator hosting, git-ssh.wikimedia.org
     encryption: true
