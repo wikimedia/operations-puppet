@@ -2,11 +2,10 @@
 #
 # Nginx ERb template for a simple reverse proxy site.
 # Parameters:
-#   @listen                     - Example:  host:port
-#   @server_properties          - Example: ['client_max_body_size 256M;', 'other_thing 123;']
-#   @location_properties        - Example: ['this_prop yes;', 'one_more_prop 456;']
-#   @archiva_host_port          - Example: 'http://127.0.0.1:8080'
-#   @archiva_repositories_path  - Example: '/var/lib/archiva/repositories'
+#   @listen              - Example:  host:port
+#   @proxy_pass          - Example:  http://host:port/
+#   @server_properties   - Example: ['client_max_body_size 256M;', 'other_thing 123;']
+#   @location_properties - Example: ['this_prop yes;', 'one_more_prop 456;']
 #
 
 
@@ -28,43 +27,11 @@ server {
 <% end -%>
 
   location / {
+    proxy_pass <%= @proxy_pass %>;
     proxy_redirect off;
     proxy_buffering off;
     proxy_set_header Host $host;
-    proxy_pass <%= @archiva_host_port %>;
-    proxy_set_header Proxy ""; # https://httpproxy.example.org/
-<% if @location_properties -%>
-    <%= @location_properties.sort.join("\n    ") -%>
-<% end -%>
-  }
-
-  # The next two locations try to do the following:
-  # 1) check if the URI starts with /repository
-  # 2) if so, check under /var/lib/archiva/repositories/$1
-  #    (with $1 == to what follows /repository in the URI)
-  # 3) if a file is found, then serve it directly bypassing Archiva.
-  # 4) if not, proxy to archiva.
-  #
-  # The main note to remember is that on disk files are under
-  # the "repositories/name-of-the-repo" directory, meanwhile the URI mention
-  # "/repository/name-of-the-repo" so some path mangling is needed.
-  #
-  # TODO: there is probably a better way to avoid replicating the proxy_pass
-  # rule two times, but I didn't find any. Also note that in the @archiva
-  # location block, the proxy_pass rule is without any extra URI
-  # (so only host:port) as requested by nginx, meanwhile the "location /"
-  # can use it.
-
-  location ~ /repository/(.*) {
-    root <%= @archiva_repositories_path %>
-    sendfile           on;
-    sendfile_max_chunk 1m;
-    try_files /$1 @archiva
-  }
-
-  location @archiva {
-    proxy_pass <%= @archiva_host_port.chomp("/") %>;
-    proxy_set_header Proxy ""; # https://httpproxy.example.org/
+    proxy_set_header Proxy ""; # https://httpoxy.org/
 <% if @location_properties -%>
     <%= @location_properties.sort.join("\n    ") -%>
 <% end -%>

@@ -75,8 +75,7 @@ class archiva::proxy(
         $server_properties = $archiva_server_properties
     }
 
-    $archiva_host_port = "http://127.0.0.1:${::archiva::port}/"
-    $archiva_repositories_path = '/var/lib/archiva/repositories'
+    $proxy_pass = "http://127.0.0.1:${::archiva::port}/"
 
     nginx::site { 'archiva':
         content => template('archiva/proxy.nginx.erb'),
