@@ -56,10 +56,10 @@ server {
   # can use it.
 
   location ~ /repository/(.*) {
-    root <%= @archiva_repositories_path %>;
+    root <%= @archiva_repositories_path %>
     sendfile           on;
     sendfile_max_chunk 1m;
-    try_files /$1 @archiva;
+    try_files /$1 @archiva
   }
 
   location @archiva {
