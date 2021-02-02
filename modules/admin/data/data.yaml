@@ -17,7 +17,7 @@ groups:
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova,
-              risler, jdittrich, debt, bsitzmann]
+              risler, jdittrich, debt, bsitzmann, zfilipin]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -79,7 +79,7 @@ groups:
     description: assist in managing gerrit server
     # qchris is RT 6720
     # Rest is the Release Engineering team
-    members: [qchris, dduvall, zfilipin, brennen]
+    members: [qchris, dduvall, brennen]
     approval: Tyler Cipriani
   deployment:
     gid: 705
@@ -91,7 +91,7 @@ groups:
               tgr, ejegg, twentyafterfour, catrope,
               mobrovac, nuria, thcipriani, joal,
               mforns, dcausse, mholloway-shell, dduvall,
-              ladsgroup, zfilipin, addshore, niharika29,
+              ladsgroup, addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, tarrow, lucaswerkmeister-wmde,
               jhuneidi, wmde-fisch, mvolz, brennen, cparle,
@@ -201,7 +201,7 @@ groups:
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     approval: Tyler Cipriani
     members: [bd808, cscott, dduvall, krinkle, reedy, marktraceur,
-              twentyafterfour, zfilipin, thcipriani, gjg,
+              twentyafterfour, thcipriani, gjg,
               hashar, addshore, liw, jhuneidi, brennen,
               jforrester, dancy]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
@@ -617,7 +617,7 @@ groups:
   labnet-users:
     description: unprivileged access on labnet servers
     gid: 781
-    members: [thcipriani, hashar, dduvall, twentyafterfour, zfilipin, liw]
+    members: [thcipriani, hashar, dduvall, twentyafterfour, liw]
   ores-admin:
     description: ORES admins
     gid: 782
@@ -716,7 +716,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, zfilipin, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
+    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
     system_members: [jenkins-slave]
   builder-docker:
     # There is no gid on purpose, same as above
@@ -1909,13 +1909,12 @@ users:
     uid: 11187
     email: mobrovac@wikimedia.org
   zfilipin:
-    ensure: present
+    ensure: absent
     gid: 500
     name: zfilipin
     realname: Zeljko Filipin
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0EYlgOW63HKlQz7OduxiH1NM4NPxgjxci8qznJdlo75f54mFT308wFlI7DYL/JFkv6yoELEu/xzazRybWu7kpQdL6j95CUkQypOZ+dLMvBbtH1MZROyP/KO1ngwJH9KAmvwlFJ11JD2oCFqZIXtUNueAo5VJM0986JGAyEaIsUqaCNtXBaWKMreLv5nR347nZVKTp8/397buoFGwP3VnU6sbwZcsY8li9GyS6QKplxxe1TAKiOxfg9uaMgD1r6lGoAi6sxrislVZRBj+3PPyemyGraLKLmEaehQNZCp9spSv1rtjA5dl+I73g4v76lxExNJraDMyMdvxXxp6K6J5x zfilipin@wmf_prod]
+    ssh_keys: []
     uid: 2580
-    email: zfilipin@wikimedia.org
   joal:
     ensure: present
     gid: 500
@@ -4706,3 +4705,7 @@ ldap_only_users:
     ensure: present
     realname: Jazmin Tanner
     email: jtanner@wikimedia.org
+  zfilipin:
+    ensure: present
+    realname: Zeljko Filipin
+    email: zfilipin@wikimedia.org
