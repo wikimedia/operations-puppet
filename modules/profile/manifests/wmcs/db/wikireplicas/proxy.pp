@@ -8,15 +8,16 @@ class profile::wmcs::db::wikireplicas::proxy (
             ipv4 => $ip,
         }
     }
-    class { 'haproxy::cloud::base': }
+    class { 'haproxy::cloud::base':
+        mainfile => 'puppet:///modules/profile/wmcs/db/wikireplicas/proxy/haproxy.cfg',
+    }
 
     file { '/etc/haproxy/conf.d/upstream-proxies.cfg':
-        owner    => 'root',
-        group    => 'root',
-        mode     => '0444',
-        content  => template('profile/wmcs/db/wikireplicas/proxy/upstream-proxies.cfg.erb'),
-        notify   => Service['haproxy'],
-        mainfile => 'puppet:///modules/profile/wmcs/db/wikireplicas/proxy/haproxy.cfg',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('profile/wmcs/db/wikireplicas/proxy/upstream-proxies.cfg.erb'),
+        notify  => Service['haproxy'],
     }
     class { 'prometheus::haproxy_exporter': }
 }
