@@ -112,7 +112,7 @@ def transform_data_to_prometheus(data):
     #     master:          <-- role
     #       - db1083:9104  <-- list of sockets
     #     slave:
-    #       - db1089:11311
+    #       - db1169:11311
     #       - db1134:9104
     # labsdb:
     #   multi:
@@ -163,7 +163,7 @@ def transform_data_to_prometheus(data):
     #     shard: s1
     #     role: slave
     #   targets:
-    #     - db1089:11311
+    #     - db1169:11311
     #     - db1134:9104
     prometheus = dict()
     for group, sections in sorted(instances.items()):
