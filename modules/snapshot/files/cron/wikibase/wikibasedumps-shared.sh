@@ -9,9 +9,6 @@
 #
 # Marius Hoch < hoo@online.de >
 
-source /usr/local/etc/dump_functions.sh
-configfile="${confsdir}/wikidump.conf.other"
-
 today=`date +'%Y%m%d'`
 daysToKeep=70
 pagesPerBatch=200000

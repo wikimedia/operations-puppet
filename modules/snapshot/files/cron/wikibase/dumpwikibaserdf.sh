@@ -16,43 +16,98 @@
 
 PROJECTS="wikidata|commons"
 
-if [[ "$1" == '--help' ]]; then
-    echo -e "$0 $PROJECTS --help for help"
-    exit 1
-fi
+source /usr/local/etc/dump_functions.sh
 
-projectName=$1
+usage() {
+    echo "Usage: $0 --project <name> --dump <name> --format <name> [--config <path>]" >& 2
+    echo "[--continue] [--dryrun] [--help]" >& 2
+    echo >& 2
+    echo "Args: " >& 2
+    echo "  --config  (-c) path to configuration file for dump generation" >& 2
+    echo "                 (default value: ${confsdir}/wikidump.conf.other" >& 2
+    echo "  --project (-p) one of 'wikidata' or 'commons'" >& 2
+    echo "  --dump    (-d) one of 'all', 'truthy', 'lexemes' (for wikidata)" >& 2
+    echo "                 or 'mediainfo' (for commons)" >& 2
+    echo "  --format  (-f) output format, one of 'ttl' or 'nt'" >& 2
+    echo "  --extra   (-e) convert to this format, one of 'ttl' or 'nt'" >& 2
+    echo >& 2
+    echo "Flags: " >& 2
+    echo "  --continue (-C) resume the specified dump from where it left off" >& 2
+    echo "                  (default value: false)" >& 2
+    echo "  --dryrun   (-D) don't run dump, show what would have been done" >& 2
+    echo "                  (default value: false)" >& 2
+    echo "  --help     (-h) show this help message" >& 2
+    exit 1
+}
+
+configfile="${confsdir}/wikidump.conf.other"
+dryrun="false"
+continue=0
+extraFormat=""
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+	"--config"|"-c")
+            configfile="$2"
+            shift; shift
+	    ;;
+	"--project"|"-p")
+            projectName="$2"
+            shift; shift
+	    ;;
+	"--dump"|"-d")
+            dumpName="$2"
+            shift; shift
+	    ;;
+	"--format"|"-f")
+            dumpFormat="$2"
+            shift; shift
+	    ;;
+	"--extra"|"-e")
+            extraFormat="$2"
+            shift; shift
+	    ;;
+	"--dryrun"|"-D")
+            dryrun="true"
+            shift
+	    ;;
+	"--continue"|"-C")
+            continue=1
+            shift
+	    ;;
+	"--help"|"-h")
+	    usage && exit 1
+	    ;;
+	*)
+            echo "$0: Unknown option $1" >& 2
+            usage && exit 1
+	    ;;
+    esac
+done
+
 if [ -z "$projectName" ]; then
-    echo -e "Missing project name."
-    echo -e "$0 $PROJECTS --help for help"
+    echo -e "Mandatory arg --project not specified."
+    usage
     exit 1
 fi
 if [ "$projectName" != "wikidata" -a  "$projectName" != "commons" ]; then
     echo -e "Unknown project name."
-    echo -e "$0 $PROJECTS --help for help"
+    usage
     exit 1
+fi
+if [ -z "$dumpName" ]; then
+	echo "Mandatory arg --dump not specified."
+	usage
+	exit 1
+fi
+if [ -z "$dumpFormat" ]; then
+	echo "Mandatory arg --format not specified."
+	usage
+	exit 1
 fi
 
 . /usr/local/bin/wikibasedumps-shared.sh
 . /usr/local/bin/${projectName}rdf_functions.sh
-
-if [[ "$2" == '--help' ]]; then
-     usage
-     exit 1
-fi
-
-continue=0
-if [[ "$2" == '--continue' ]]; then
-	shift
-	continue=1
-fi
-
-dumpName=$2
-if [ -z "$dumpName" ]; then
-	echo "No dump name given."
-	usage
-	exit 1
-fi
 
 if [ $continue -gt 0 ]; then
 	# Remove old leftovers, as we start from scratch.
@@ -60,9 +115,6 @@ if [ $continue -gt 0 ]; then
 fi
 
 setDumpFlavor
-
-dumpFormat=$3
-extraFormat=$4
 
 if [[ "$dumpFormat" != "ttl" ]] && [[ "$dumpFormat" != "nt" ]]; then
 	echo "Unknown format: $dumpFormat"

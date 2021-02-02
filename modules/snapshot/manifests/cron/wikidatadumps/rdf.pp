@@ -14,7 +14,7 @@ class snapshot::cron::wikidatadumps::rdf(
     if !$filesonly {
         cron { 'wikidatardf-all-dumps':
             ensure      => 'present',
-            command     => "${scriptpath} wikidata all ttl nt",
+            command     => "${scriptpath} -p wikidata -d all -f ttl -e nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',
@@ -24,7 +24,7 @@ class snapshot::cron::wikidatadumps::rdf(
         }
         cron { 'wikidatardf-truthy-dumps':
             ensure      => 'present',
-            command     => "${scriptpath} wikidata truthy nt",
+            command     => "${scriptpath} -p wikidata -d truthy -f nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',
@@ -34,7 +34,7 @@ class snapshot::cron::wikidatadumps::rdf(
         }
         cron { 'wikidatardf-lexemes-dumps':
             ensure      => 'present',
-            command     => "${scriptpath} wikidata lexemes ttl nt",
+            command     => "${scriptpath} -p wikidata -d lexemes -f ttl -e nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',

@@ -5,16 +5,6 @@
 #############################################################
 # function used by wikibase rdf dumps, customized for wikidata
 
-usage() {
-    echo -e "Usage: $0 wikidata [--continue] all|truthy|lexemes ttl|nt [nt|ttl]\n"
-    echo -e "\t--continue\tAttempt to continue a previous dump run."
-    echo -e "\tall|truthy|lexemes\tType of dump to produce."
-    echo -e "\tttl|nt\t\tOutput format."
-    echo -e "\t[nt|ttl]\t\tOutput format for extra dump, converted from above (optional)."
-
-    exit 1
-}
-
 setProjectName() {
     projectName="wikidata"
 }

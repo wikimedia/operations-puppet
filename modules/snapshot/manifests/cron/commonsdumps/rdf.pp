@@ -14,7 +14,7 @@ class snapshot::cron::commonsdumps::rdf(
     if !$filesonly {
         cron { 'commonsrdf-dumps':
             ensure      => 'present',
-            command     => "${scriptpath} commons mediainfo ttl nt",
+            command     => "${scriptpath} -p commons -d mediainfo -f ttl -e nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',
