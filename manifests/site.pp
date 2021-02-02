@@ -1638,6 +1638,14 @@ node /^ml-serve100[1234]\.eqiad\.wmnet/ {
     role(ml_serve)
 }
 
+node /^ml-etcd100[1234]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
+node /^ml-etcd200[1234]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # RT, replaced ununpentium
 node 'moscovium.eqiad.wmnet' {
     role(requesttracker)

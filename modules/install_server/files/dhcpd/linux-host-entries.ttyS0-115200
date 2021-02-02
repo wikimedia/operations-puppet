@@ -615,6 +615,36 @@ host miscweb2002 {
     fixed-address miscweb2002.codfw.wmnet;
 }
 
+host ml-etcd1001 {
+    hardware ethernet aa:00:00:ef:5f:2d;
+    fixed-address ml-etcd1001.eqiad.wmnet;
+}
+
+host ml-etcd1002 {
+    hardware ethernet aa:00:00:39:8b:7d;
+    fixed-address ml-etcd1002.eqiad.wmnet;
+}
+
+host ml-etcd1003 {
+    hardware ethernet aa:00:00:c4:e7:ec;
+    fixed-address ml-etcd1003.eqiad.wmnet;
+}
+
+host ml-etcd2001 {
+    hardware ethernet aa:00:00:71:6a:f3;
+    fixed-address ml-etcd2001.codfw.wmnet;
+}
+
+host ml-etcd2002 {
+    hardware ethernet aa:00:00:a7:b7:49;
+    fixed-address ml-etcd2002.codfw.wmnet;
+}
+
+host ml-etcd2003 {
+    hardware ethernet aa:00:00:8e:8a:8d;
+    fixed-address ml-etcd2003.codfw.wmnet;
+}
+
 host moscovium {
     hardware ethernet aa:00:00:b5:db:29;
     fixed-address moscovium.eqiad.wmnet;
