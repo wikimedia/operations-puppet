@@ -123,10 +123,10 @@ define tlsproxy::localssl(
     # TODO: move this define to the profile module too?
     require ::profile::tlsproxy::instance
 
-    $nginx_proxy_request_buffering = hiera('tlsproxy::localssl::proxy_request_buffering', 'on')
+    $nginx_proxy_request_buffering = lookup('tlsproxy::localssl::proxy_request_buffering', {'default_value' => 'on'})
     # Maximum number of pending TCP Fast Open requests before falling back to
     # regular 3WHS. https://tools.ietf.org/html/rfc7413#section-5.1
-    $fastopen_pending_max = hiera('tlsproxy::localssl::fastopen_pending_max', 150)
+    $fastopen_pending_max = lookup('tlsproxy::localssl::fastopen_pending_max', {'default_value' => 150})
 
     # Ensure that exactly one definition exists with default_server = true
     # for a given port. If multiple defines on the same port have default_server
