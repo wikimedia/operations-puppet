@@ -85,7 +85,7 @@ receivers:
 
 - name: 'dcops-mail'
   email_configs:
-    - to: 'datacenterops@<%= scope.lookupvar('::domain') %>'
+    - to: 'datacenter-ops@<%= scope.lookupvar('::domain') %>'
 
 - name: 'peering-mail'
   email_configs:
