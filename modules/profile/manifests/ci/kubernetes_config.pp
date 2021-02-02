@@ -4,6 +4,9 @@ class profile::ci::kubernetes_config(
     Stdlib::Fqdn $master = lookup('profile::ci::kubernetes_config::master'),
     String $token = lookup('profile::ci::kubernetes_config::token')
 ) {
+
+    ensure_resource('file', '/etc/kubernetes', {'ensure' => 'directory' })
+
     # the file is visible to jenkins-slave and to contint-admins
     k8s::kubeconfig { '/etc/kubernetes/ci-staging.config':
         master_host => $master,
