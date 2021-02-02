@@ -47,6 +47,7 @@ profile::lvs::realserver::pools:
   wikifeeds: {}
   echostore: {}
   eventstreams: {}
+  eventstreams-internal: {}
   proton: {}
   mobileapps: {}
   api-gateway: {}
