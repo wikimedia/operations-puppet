@@ -185,7 +185,7 @@ class profile::hadoop::master(
             critical        => 20,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Namenode_RPC_length_queue_alerts',
         }
 
         monitoring::check_prometheus { 'hadoop-yarn-unhealthy-workers':
