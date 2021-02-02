@@ -9,10 +9,19 @@ geo $bad_user {
 }
 
 
+server {
+    listen 80 default_server;
+    server_name _;
+    # 308 is the more proper return code, but lots of crappy old clients do
+    # not understand it. So we will instead stick with the ancient 301 and
+    # hope that not too many things break on POST.
+    return 301 https://$host$request_uri;
+}
+
 <% @proxy_mappings.each do |frontend,backend| %>
 server {
-
     listen 443 ssl http2;
+    server_name <%= frontend %>;
 
     ssl_certificate /etc/acmecerts/<%= backend['certname'] -%>/live/ec-prime256v1.chained.crt;
     ssl_certificate_key /etc/acmecerts/<%= backend['certname'] -%>/live/ec-prime256v1.key;
@@ -21,12 +30,13 @@ server {
     ssl_session_timeout 5m;
     <%= @ssl_settings.join("\n    ") %>
 
-    listen 80;
-    server_name <%= frontend %>;
+    # http -> https redirects handled by separate server block above.
+    # T273648: 366 days
+    add_header Strict-Transport-Security "max-age=31622400";
 
     <% if @blocked_user_agent_regex != "" %>
     if ($http_user_agent ~* "<%= @blocked_user_agent_regex -%>") {
-        return 403 "Blocked user agent";
+        return 403 "Blocked";
     }
     <% end -%>
 
