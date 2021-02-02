@@ -1,5 +1,4 @@
 # clouddb1019
-profile::base::notifications: disabled
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s4: 313G
   s6: 90G
