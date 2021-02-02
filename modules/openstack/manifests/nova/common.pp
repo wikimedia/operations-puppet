@@ -67,7 +67,8 @@ class openstack::nova::common(
             name       => 'nova',
             comment    => 'nova system user',
             gid        => 'nova',
-            managehome => true,
+            home       => '/var/lib/nova',
+            managehome => false,
             before     => Package['nova-common'],
             system     => true,
         }
