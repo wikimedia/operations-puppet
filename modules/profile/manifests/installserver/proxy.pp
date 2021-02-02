@@ -11,11 +11,19 @@ class profile::installserver::proxy(
     base::service_auto_restart { 'squid': }
 
     cron { 'squid-logrotate':
-        ensure  => $ensure,
+        ensure  => 'absent',
         command => '/usr/sbin/squid -k rotate',
         user    => 'root',
         hour    => '17',
         minute  => '15',
+    }
+
+    systemd::timer::job { 'squid-logrotate':
+        ensure      => $ensure,
+        user        => 'root',
+        description => 'rotate squid proxy log files',
+        command     => '/usr/sbin/squid -k rotate',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 17:15:00'},
     }
 
     ferm::service { 'proxy':
