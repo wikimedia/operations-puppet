@@ -2,4 +2,4 @@ profile::standard::admin_groups:
   - swift-roots
 profile::swift::cluster: eqiad-prod
 
-profile::swift::storage::rsync_limit_memory_percent: 0
+profile::swift::storage::replication_limit_memory_percent: 0

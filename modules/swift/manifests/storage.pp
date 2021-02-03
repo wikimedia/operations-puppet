@@ -12,7 +12,7 @@ class swift::storage (
     $object_server_default_workers    = undef,
     $servers_per_port                 = 3,
     $backends                         = [],
-    $rsync_limit_memory_percent       = 0,
+    $replication_limit_memory_percent = 0,
 ) {
     package {
         [ 'swift-account',
@@ -24,13 +24,20 @@ class swift::storage (
 
     $memcached_addresses = $memcached_servers.map |$s| { "${s}:${memcached_port}" }
 
-    if $rsync_limit_memory_percent > 0 {
-        systemd::service { 'rsync':
-            ensure   => present,
-            content  => init_template('rsync', 'systemd_override'),
-            override => true,
-            restart  => true,
-        }
+    # Install overrides for object replication daemons (rsync, swift-object-replicator) to be able
+    # to limit their memory usage
+    systemd::service { 'rsync':
+        ensure   => present,
+        content  => init_template('rsync', 'systemd_override'),
+        override => true,
+        restart  => true,
+    }
+
+    systemd::service { 'swift-object-replicator':
+        ensure   => present,
+        content  => init_template('swift-object-replicator', 'systemd_override'),
+        override => true,
+        restart  => true,
     }
 
     class { 'rsync::server':
@@ -94,7 +101,6 @@ class swift::storage (
         'swift-container-updater',
         'swift-object',
         'swift-object-auditor',
-        'swift-object-replicator',
         'swift-object-updater',
     ]:
         ensure => running,
