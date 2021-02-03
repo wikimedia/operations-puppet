@@ -32,7 +32,7 @@ class profile::wmcs::db::wikireplicas::querysampler (
         ensure         => 'present',
         content        => systemd_template('wmcs/db/wikireplicas/querysampler'),
         require        => File['/usr/local/sbin/querysampler'],
-        subscribe      => File['/etc/querysampler.yaml'],
+        subscribe      => File['/etc/querysampler-conf.yaml'],
         service_params => {
             ensure => $ensure,
         }
