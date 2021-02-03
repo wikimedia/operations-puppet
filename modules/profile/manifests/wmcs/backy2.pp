@@ -62,11 +62,11 @@ class profile::wmcs::backy2(
 
     systemd::timer::job { 'backup_vms':
         ensure                    => present,
-        description               => 'snapshot and backup vms in specified projects',
-        command                   => '/usr/local/sbin/wmcs-backup-instances',
+        description               => 'Backup vms assigned to this host',
+        command                   => '/usr/local/sbin/wmcs-backup instances backup-assigned-vms',
         interval                  => {
-        'start'    => 'OnCalendar',
-        'interval' => $backup_interval,
+          'start'    => 'OnCalendar',
+          'interval' => $backup_interval,
         },
         logging_enabled           => true,
         monitoring_enabled        => true,
@@ -79,8 +79,8 @@ class profile::wmcs::backy2(
         description               => 'purge old VM backups; allow backy2 to decide what is too old',
         command                   => '/usr/local/sbin/wmcs-purge-backups',
         interval                  => {
-        'start'    => 'OnCalendar',
-        'interval' => '*-*-* 00:05:00', # daily at five past midnight
+          'start'    => 'OnCalendar',
+          'interval' => '*-*-* 00:05:00', # daily at five past midnight
         },
         logging_enabled           => true,
         monitoring_enabled        => true,
