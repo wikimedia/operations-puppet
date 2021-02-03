@@ -1,2 +1,5 @@
 # db1173
+# candidate master for s6
+mariadb::shard: 's6'
+mariadb::binlog_format: 'STATEMENT'
 profile::base::notifications: disabled
