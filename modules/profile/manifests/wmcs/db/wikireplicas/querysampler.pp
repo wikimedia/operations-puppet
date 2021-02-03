@@ -19,14 +19,6 @@ class profile::wmcs::db::wikireplicas::querysampler (
         group   => 'root',
         mode    => '0400',
     }
-
-    file { '/etc/querysampler.yaml':
-        ensure  => file,
-        content => template('profile/wmcs/db/wikireplicas/maintain-views.yaml'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-    }
     file { '/usr/local/sbin/querysampler':
         ensure  => file,
         source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/querysampler.py',
