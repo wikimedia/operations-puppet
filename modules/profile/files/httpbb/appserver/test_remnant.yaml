@@ -148,7 +148,7 @@ https://steward.wikimedia.org:
 https://ombudsmen.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 200
-  assert_body_contains: Ombudsmen Wiki
+  assert_body_contains: Ombuds
 
 https://projectcom.wikimedia.org:
 - path: /wiki/Main_Page
