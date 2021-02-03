@@ -1,31 +1,9 @@
-# Profile class for adding backup director functionalities to a host
-#
-# Note that of hiera key lookups have a name space of profile::backup instead
-# of profile::backup::director. That's cause they are reused in other profile
-# classes in the same hierarchy and is consistent with our code guidelines
-class profile::backup::storage(
-    $director = lookup('profile::backup::director'),
-) {
-    include profile::base::firewall
-    include profile::standard
+# Profile class for adding a storage daemon service to a host
 
+class profile::backup::storage::main {
+    include profile::backup::storage::common
 
-    class { 'bacula::storage':
-        director           => $director,
-        sd_max_concur_jobs => 5,
-        sqlvariant         => 'mysql',
-    }
-
-    # TODO: Revert TLS downgrade from 1.2 to 1
-    file { '/etc/ssl/openssl.cnf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => 'puppet:///modules/profile/backup/openssl.cnf',
-    }
-
-    # New setup:
+    # Main setup:
     # 3 storage devices separated on 2 physical arrays
     mount { '/srv/archive' :
         ensure  => mounted,
@@ -83,17 +61,5 @@ class profile::backup::storage(
         }
     } else {
         fail('Only eqiad or codfw pools are configured for database backups.')
-    }
-
-    nrpe::monitor_service { 'bacula_sd':
-        description  => 'bacula sd process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Bacula',
-    }
-
-    ferm::service { 'bacula-storage-demon':
-        proto  => 'tcp',
-        port   => '9103',
-        srange => '$PRODUCTION_NETWORKS',
     }
 }

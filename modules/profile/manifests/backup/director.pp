@@ -25,11 +25,8 @@ class profile::backup::director(
 
     $file_storage_production = 'FileStorageProduction'
     $file_storage_archive = 'FileStorageArchive'
-    $file_storage_databases = 'FileStorageDatabases'
-    $file_storage_databases_codfw = 'FileStorageDatabasesCodfw'
-    $scheduled_pools = [ $pool, 'Databases', 'DatabasesCodfw', ]
 
-    # One pool for all, except databases
+    # Default pool for "normal" backups (not archivals or database-related)
     bacula::director::pool { $pool:
         max_vols         => 70,
         storage          => "${onsite_sd}-${file_storage_production}",
@@ -58,14 +55,14 @@ class profile::backup::director(
     # Databases-only pool
     bacula::director::pool { 'Databases':
         max_vols         => 80,
-        storage          => "${onsite_sd}-${file_storage_databases}",
+        storage          => "${onsite_sd}-FileStorageDatabases",
         volume_retention => '90 days',
         label_fmt        => 'databases',
         max_vol_bytes    => '536870912000',
     }
     bacula::director::pool { 'DatabasesCodfw':
         max_vols         => 80,
-        storage          => "${offsite_sd}-${file_storage_databases_codfw}",
+        storage          => "${offsite_sd}-FileStorageDatabasesCodfw",
         volume_retention => '90 days',
         label_fmt        => 'databases-codfw',
         max_vol_bytes    => '536870912000',
@@ -80,51 +77,110 @@ class profile::backup::director(
         max_vol_bytes    => '536870912000',
     }
 
-    # Jobdefaults ready for one time Archive backups
-    # Use it like this on a profile:
-    #     backup::set { '<set-of-files-and-dirs-name>':
-    #         jobdefaults => 'Archive',
-    #     }
-    # then execute 'run' on the backup director
-    backup::weeklyjobdefaults { 'Archive':
-        day  => 'Mon',
-        pool => 'Archive',
+    # Eqiad pool for read-only External Storage backups
+    bacula::director::pool { 'EsRoEqiad':
+        max_vols         => 80,
+        storage          => 'backup1002-FileStorageEsRoEqiad',
+        volume_retention => '5 years',
+        label_fmt        => 'es-ro-eqiad',
+        max_vol_bytes    => '536870912000',
+    }
+    # Codfw pool for read-only External Storage backups
+    bacula::director::pool { 'EsRoCodfw':
+        max_vols         => 80,
+        storage          => 'backup2002-FileStorageEsRoCodfw',
+        volume_retention => '5 years',
+        label_fmt        => 'es-ro-codfw',
+        max_vol_bytes    => '536870912000',
+    }
+    # Eqiad pool for read-write External storage backups
+    bacula::director::pool { 'EsRwEqiad':
+        max_vols         => 80,
+        storage          => 'backup1002-FileStorageEsRwEqiad',
+        volume_retention => '90 days',
+        label_fmt        => 'es-rw-eqiad',
+        max_vol_bytes    => '536870912000',
+    }
+    # Codfw pool for read-write External storage backups
+    bacula::director::pool { 'EsRwCodfw':
+        max_vols         => 80,
+        storage          => 'backup2002-FileStorageEsRwCodfw',
+        volume_retention => '90 days',
+        label_fmt        => 'es-rw-codfw',
+        max_vol_bytes    => '536870912000',
     }
 
-    # Regularly scheduled backups: One schedule per day of the week.
-    # Setting execution times so that it is unlikely jobs will run concurrently
-    # with cron.{hourly,daily,monthly} or other cronscripts
+    # Predefined schedules
     $days.each |String $day| {
         # monthly
         backup::monthlyschedule { $day:  # schedules are pool-independent
             day => $day,
         }
-        $scheduled_pools.each |String $scheduled_pool| {
-            backup::monthlyjobdefaults { "${scheduled_pool}-${day}":
-                day  => $day,
-                pool => $scheduled_pool,
-            }
-        }
         # weekly
         backup::weeklyschedule { $day:
             day => $day,
-        }
-        $scheduled_pools.each |String $scheduled_pool| {
-            backup::weeklyjobdefaults { "${scheduled_pool}-${day}":
-                day  => $day,
-                pool => $scheduled_pool,
-            }
         }
         # hourly
         backup::hourlyschedule { $day:
             day => $day,
         }
-        $scheduled_pools.each |String $scheduled_pool| {
-            backup::hourlyjobdefaults { "${scheduled_pool}-${day}":
-                day  => $day,
-                pool => $scheduled_pool,
-            }
+    }
+
+    # Predefined jobdefaults for the default pool.
+    $days.each |String $day| {
+        # monthly
+        backup::monthlyjobdefaults { "${pool}-${day}":
+            day  => $day,
+            pool => $pool,
         }
+        backup::weeklyjobdefaults { "${pool}-${day}":
+            day  => $day,
+            pool => $pool,
+        }
+        backup::hourlyjobdefaults { "${pool}-${day}":
+            day  => $day,
+            pool => $pool,
+        }
+    }
+
+    # Jobdefaults ready for one time Archive-like backups
+    # Use it like this on a profile:
+    #     backup::set { '<set-of-files-and-dirs-name>':
+    #         jobdefaults => 'Weekly-Mon-Archive',
+    #     }
+    # then execute 'run' on the backup director
+    $one_time_backup_day = 'Mon'
+    backup::weeklyjobdefaults { "Weekly-${one_time_backup_day}-Archive":
+        day  => $one_time_backup_day,
+        pool => 'Archive',
+    }
+    # jobdefaults ready for one time ro backups
+    backup::weeklyjobdefaults { "Weekly-${one_time_backup_day}-EsRoEqiad":
+        day  => $one_time_backup_day,
+        pool => 'EsRoEqiad',
+    }
+    backup::weeklyjobdefaults { "Weekly-${one_time_backup_day}-EsRoCodfw":
+        day  => $one_time_backup_day,
+        pool => 'EsRoCodfw',
+    }
+
+    # Jobdefaults for regular Database backups
+    $db_backup_day = 'Wed'
+    backup::monthlyjobdefaults { "Monthly-1st-${db_backup_day}-Databases":
+        day  => $db_backup_day,
+        pool => 'Databases',  # pending pool rename
+    }
+    backup::monthlyjobdefaults { "Monthly-1st-${db_backup_day}-DatabasesCodfw":
+        day  => $db_backup_day,
+        pool => 'DatabasesCodfw',
+    }
+    backup::monthlyjobdefaults { "Monthly-1st-${db_backup_day}-EsRwEqiad":
+        day  => $db_backup_day,
+        pool => 'EsRwEqiad',
+    }
+    backup::monthlyjobdefaults { "Monthly-1st-${db_backup_day}-EsRwCodfw":
+        day  => $db_backup_day,
+        pool => 'EsRwCodfw',
     }
 
     bacula::director::catalog { 'production':
