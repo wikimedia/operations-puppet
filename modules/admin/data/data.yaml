@@ -17,7 +17,7 @@ groups:
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova,
-              risler, jdittrich, debt]
+              risler, jdittrich, debt, bsitzmann]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -90,7 +90,7 @@ groups:
               andyrussg, nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, twentyafterfour, catrope,
               mobrovac, nuria, thcipriani, joal,
-              mforns, dcausse, bsitzmann, mholloway-shell, dduvall,
+              mforns, dcausse, mholloway-shell, dduvall,
               ladsgroup, zfilipin, addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, liw, sbassett, tarrow, lucaswerkmeister-wmde,
@@ -144,7 +144,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [brion, bsitzmann, dbrant, mholloway-shell, cooltey, sharvaniharan]
+    members: [brion, dbrant, mholloway-shell, cooltey, sharvaniharan]
   releasers-parsoid:
     gid: 802
     description: people who upload parsoid releases (T150672)
@@ -280,7 +280,7 @@ groups:
     members: &analytics_privatedata_users [milimetric, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, ppchelko, mneisler,
               nuria, otto, jgreen, sguebo, zxane,
-              bsitzmann, dbrant, nettrom, leizi, jmm,
+              dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
               andyrussg, hoo, daniel, krinkle, tgr,
@@ -493,7 +493,7 @@ groups:
     gid: 763
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, twentyafterfour, thcipriani, dduvall,
-              bsitzmann, mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
+              mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
               kevinbazira, clarakosi, chrisalbon, jgiannelos]
@@ -1710,13 +1710,12 @@ users:
     ssh_keys: []
     uid: 633
   bsitzmann:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bsitzmann
     realname: Bernd Sitzmann
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCtXfxL/esjFQbskJlnO1q0cBwXOww12q5IBxm/Lwv3k157Klb3AG0syPTvxJF/JvuMCZZZpEKQL6NaySXj4b8ZaQZmF0WePfrauUT8iSDhjS4Bii2RtZ0WhM9o7cqONetZ6w9xHYTR4i+fF4iu3sK+zjST8+0tEQd/G5k9sMloZj7DN+Zt1nDgHftAo6iAyIApKSanVi6vu15p3HryNPsWM5HEy3dJ3I2wGbjvtzLbaFO/ItdZkZvUZGSMuwy67bdTZNpaaw5GtmyPDWENtJJXgDXV2rOFADBTQoCpMe2iU79UWWQ6B9LWSUMbXCeOBvNDlA0XoqO+syjbfC0iMpG2u+r/eG2AcDlMvadHN8hVYUMQn06WE2Pt4f3/7+JH/WQSoZPA8YgR1AUrlQh2563xa+dx9mWFkmX3NY/ZNMi4INPvqt+Ls/7/PudhF00HSs7/LvAPHkiEfmsxfyODQPpmPaF/j8FDVT3pEZR8GwyPKsOC2xhdVIbGFftc5HchtHU9LmUEJaQrOPYyBuMbbl5DUwQ9JE2VveHYLeQP+h05WDAIdFH83IobXldCG2xa/B5ltJ5/e6yrlQ15b4ZFy8YJ+owbgOmQSazXpbluJuTqXINMozyErW6yphs+MY64LKhShYb5ZLJvf7kTCc11vspDQyZ1pFNJ5Hitm/CCm8tdjw== besi@besiair.local]
+    ssh_keys: []
     uid: 5037
-    email: bsitzmann@wikimedia.org
   deskana:
     ensure: absent
     gid: 500
