@@ -19,7 +19,7 @@ define ntp::daemon(
     }
 
     service { 'ntp':
-        ensure    => ensure_service($ensure),
+        ensure    => stdlib::ensure($ensure, 'service'),
         require   => [ File['ntp.conf'], Package['ntp'] ],
         subscribe => File['ntp.conf'],
     }

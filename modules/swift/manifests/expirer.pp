@@ -23,6 +23,6 @@ class swift::expirer (
     }
 
     service { 'swift-object-expirer':
-        ensure => ensure_service($ensure),
+        ensure => stdlib::ensure($ensure, 'service'),
     }
 }

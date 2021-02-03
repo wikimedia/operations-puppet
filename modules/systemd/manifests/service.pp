@@ -45,7 +45,7 @@ define systemd::service(
     }
 
     $base_params = {
-        ensure   => ensure_service($ensure),
+        ensure   => stdlib::ensure($ensure, 'service'),
         enable   => $enable,
         provider => $provider
     }

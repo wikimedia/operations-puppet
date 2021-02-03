@@ -61,7 +61,7 @@ define druid::service(
     }
 
     service { "druid-${service}":
-        ensure     => ensure_service($enable),
+        ensure     => stdlib::ensure($enable, 'service'),
         enable     => $enable,
         hasrestart => true,
     }

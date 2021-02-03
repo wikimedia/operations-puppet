@@ -162,7 +162,7 @@ define base::service_unit (
             default   => false,
         }
         $base_params = {
-            ensure   => ensure_service($ensure),
+            ensure   => stdlib::ensure($ensure, 'service'),
             provider => $::initsystem,
             enable   => $enable,
         }

@@ -6,7 +6,7 @@ class prometheus::swagger_exporter(
   }
 
   service { 'prometheus-swagger-exporter':
-    ensure => ensure_service($ensure),
+    ensure => stdlib::ensure($ensure, 'service'),
     enable => true,
   }
 

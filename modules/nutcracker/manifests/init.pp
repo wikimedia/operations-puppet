@@ -59,7 +59,7 @@ class nutcracker(
             content => "limit nofile 64000 64000\n";
     }
     service { 'nutcracker':
-        ensure  => ensure_service($ensure),
+        ensure  => stdlib::ensure($ensure, 'service'),
         require => Package['nutcracker'],
     }
 }

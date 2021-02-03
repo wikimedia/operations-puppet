@@ -49,7 +49,7 @@ class statsd_proxy(
     }
 
     service { 'statsd-proxy':
-        ensure    => ensure_service($ensure),
+        ensure    => stdlib::ensure($ensure, 'service'),
         enable    => $ensure == 'present',
         provider  => $::initsystem,
         subscribe => [

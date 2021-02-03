@@ -31,7 +31,7 @@ class stunnel (
         purge   => true,
     }
     service {$service_name:
-        ensure  => ensure_service($ensure),
+        ensure  => stdlib::ensure($ensure, 'service'),
         require => [
             File['/etc/default/stunnel4'],
             Package['stunnel4'],

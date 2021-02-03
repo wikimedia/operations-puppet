@@ -112,7 +112,7 @@ class postgresql::server(
     }
 
     service { $service_name:
-        ensure  => ensure_service($ensure),
+        ensure  => stdlib::ensure($ensure, 'service'),
     }
 
     file { "/etc/postgresql/${_pgversion}/main/postgresql.conf":

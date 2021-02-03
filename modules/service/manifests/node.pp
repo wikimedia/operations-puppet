@@ -366,7 +366,7 @@ define service::node(
         refresh        => $auto_refresh,
         service_params => {
             enable     => $enable,
-            ensure     => ensure_service($enable),
+            ensure     => stdlib::ensure($enable, 'service'),
             hasstatus  => true,
             hasrestart => true,
         },

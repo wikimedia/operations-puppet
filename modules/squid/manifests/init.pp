@@ -40,7 +40,7 @@ class squid(
     }
 
     service { 'squid':
-        ensure    => ensure_service($ensure),
+        ensure    => stdlib::ensure($ensure, 'service'),
         require   => File['/etc/squid/squid.conf'],
         subscribe => File['/etc/squid/squid.conf'],
     }

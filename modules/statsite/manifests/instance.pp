@@ -46,7 +46,7 @@ define statsite::instance(
     }
 
     service { "statsite@${port}":
-        ensure   => ensure_service($ensure),
+        ensure   => stdlib::ensure($ensure, 'service'),
         provider => 'systemd',
         enable   => $service_enable,
         require  => File['/lib/systemd/system/statsite@.service'],

@@ -2056,7 +2056,7 @@ class profile::prometheus::ops (
 
     # Used for  migrations / hardware refresh, but not continuously
     class {'rsync::server':
-        ensure_service => ensure_service($ensure_rsync)
+        ensure_service => stdlib::ensure($ensure_rsync, 'service')
     }
     rsync::server::module { 'prometheus-ops':
         ensure         => $ensure_rsync,

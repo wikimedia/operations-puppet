@@ -75,31 +75,6 @@ Otherwise, the return value is the unmodified `$ensure` parameter.
     }
 
 
-## ensure_service
-
-`ensure_service( string|bool $ensure )`
-
-Takes a generic 'ensure' parameter value and convert it to an
-appropriate value for use with a service declaration.
-
-If $ensure is 'true' or 'present', the return value is 'running'.
-Otherwise, the return value is 'stopped'.
-
-### Examples
-
-    # Sample class which starts or stops the redis service
-    # based on the class's generic $ensure parameter:
-    class redis( $ensure = present ) {
-        package { 'redis-server':
-            ensure => $ensure,
-        }
-        service { 'redis':
-            ensure  => ensure_service($ensure),
-            require => Package['redis-server'],
-        }
-    }
-
-
 ## hash_deselect_re
 
 `hash_deselect_re( string $regex, hash $input )`
