@@ -4222,9 +4222,7 @@ ldap_only_users:
   mraish:
     ensure: present
     realname: Michael Raish
-    email: mraish@gmail.com
-    expiry_date: 2021-02-15
-    expiry_contact: mnovotny@wikimedia.org
+    email: mraish@wikimedia.org
   moushirael:
     ensure: absent
     realname: Moushira Elamrawy
