@@ -10,6 +10,6 @@
 #   or Expires.
 
 type Trafficserver::Negative_Caching = Struct[{
-    'status_codes' => Array[Wmflib::HttpStatus],
+    'status_codes' => Array[Stdlib::HttpStatus],
     'lifetime'     => Integer,
 }]
