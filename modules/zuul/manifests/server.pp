@@ -30,24 +30,24 @@
 # Passed to Service['zuul'] as 'enable'. Default: true.
 #
 class zuul::server (
-    $gerrit_server,
-    $gerrit_user,
-    $gearman_server,
-    $gearman_server_start,
-    $url_pattern,
-    $service_ensure  = 'running',
-    $service_enable = true,
-    $statsd_host    = '',
-    $gerrit_baseurl = 'https://gerrit.wikimedia.org/r',
-    $gerrit_event_delay = '5',
-    $status_url     = "https://${::fqdn}/zuul/status",
-    $email_server = undef,
-    $email_server_port = 25,
-    $email_default_from = 'jenkins-bot@wikimedia.org',
-    $email_default_to = 'qa-alerts@lists.wikimedia.org',
+    Stdlib::Host            $gerrit_server,
+    String                  $gerrit_user,
+    Stdlib::Host            $gearman_server,
+    Boolean                 $gearman_server_start,
+    String                  $url_pattern,
+    Stdlib::Ensure::Service $service_ensure     = 'running',
+    Wmflib::Enable_Service  $service_enable     = true,
+    Optional[Stdlib::Host]  $statsd_host        = undef,
+    Stdlib::HTTPUrl         $gerrit_baseurl     = 'https://gerrit.wikimedia.org/r',
+    Integer                 $gerrit_event_delay = 5,
+    Stdlib::HTTPUrl         $status_url         = "https://${facts['fqdn']}/zuul/status",
+    Optional[Stdlib::Host]  $email_server       = undef,
+    Stdlib::Port            $email_server_port  = 25,
+    String                  $email_default_from = 'jenkins-bot@wikimedia.org',
+    String                  $email_default_to   = 'qa-alerts@lists.wikimedia.org',
 ) {
 
-    require ::zuul
+    require zuul
 
     file { '/etc/default/zuul':
         ensure  => present,
@@ -128,7 +128,7 @@ class zuul::server (
         restart        => false,
         service_params => {
             enable     => $service_enable,
-            ensure     => ensure_service($service_ensure),
+            ensure     => $service_ensure,
             hasrestart => true,
         },
         require        => [
