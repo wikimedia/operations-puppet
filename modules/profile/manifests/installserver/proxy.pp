@@ -10,14 +10,6 @@ class profile::installserver::proxy(
 
     base::service_auto_restart { 'squid': }
 
-    cron { 'squid-logrotate':
-        ensure  => 'absent',
-        command => '/usr/sbin/squid -k rotate',
-        user    => 'root',
-        hour    => '17',
-        minute  => '15',
-    }
-
     systemd::timer::job { 'squid-logrotate':
         ensure      => $ensure,
         user        => 'root',
