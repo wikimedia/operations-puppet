@@ -4076,6 +4076,11 @@ host clouddb1020 {
     fixed-address clouddb1020.eqiad.wmnet;
 }
 
+host clouddb1021 {
+    hardware ethernet b8:83:03:53:f0:48;
+    fixed-address clouddb1021.eqiad.wmnet;
+}
+
 host cloudweb2001-dev {
     hardware ethernet 30:e1:71:63:e6:c4;
     fixed-address cloudweb2001-dev.wikimedia.org;

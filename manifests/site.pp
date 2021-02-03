@@ -1464,6 +1464,10 @@ node /^clouddb10(17|18|19|20)\.eqiad\.wmnet$/ {
     role(wmcs::db::wikireplicas::analytics_multiinstance)
 }
 
+node 'clouddb1021.eqiad.wmnet' {
+    role(insetup)
+}
+
 node /labstore100[45]\.eqiad\.wmnet/ {
     role(wmcs::nfs::primary)
     # Do not enable yet
