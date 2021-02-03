@@ -40,7 +40,7 @@ define php::extension(
     # the catalog will fail to apply correctly.
     $_sapis.each |$sapi| {
         file { "${php::config_dir}/${sapi}/conf.d/${conf_file}":
-            ensure => ensure_link($ensure),
+            ensure => stdlib::ensure($ensure, 'link'),
             target => $mod_file,
         }
     }

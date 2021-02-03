@@ -66,7 +66,7 @@ class arclamp(
     }
 
     file { '/srv/arclamp':
-        ensure => ensure_link($ensure),
+        ensure => stdlib::ensure($ensure, 'link'),
         target => '/srv/xenon',
     }
 
@@ -76,7 +76,7 @@ class arclamp(
     }
 
     file { '/usr/local/bin/arclamp-grep':
-        ensure => ensure_link($ensure),
+        ensure => stdlib::ensure($ensure, 'link'),
         target => '/srv/deployment/performance/arc-lamp/arclamp-grep.py',
     }
 

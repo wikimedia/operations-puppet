@@ -77,7 +77,7 @@ define httpd::conf(
     }
 
     file { "/etc/apache2/${conf_type}-enabled/${conf_file}":
-        ensure => ensure_link($ensure),
+        ensure => stdlib::ensure($ensure, 'link'),
         target => "/etc/apache2/${conf_type}-available/${conf_file}",
         notify => Service['apache2'],
     }
