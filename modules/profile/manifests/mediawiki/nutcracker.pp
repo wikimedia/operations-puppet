@@ -19,8 +19,8 @@ class profile::mediawiki::nutcracker(
         listen               => '/var/run/nutcracker/redis_eqiad.sock 0666',
         server_connections   => 1,
         server_failure_limit => 3,
-        server_retry_timeout => to_milliseconds('30s'),
-        timeout              => 1000,
+        server_retry_timeout => 30000,  # milliseconds
+        timeout              => 1000,   # milliseconds
         server_map           => $redis_servers['eqiad'],
     }
 
@@ -38,8 +38,8 @@ class profile::mediawiki::nutcracker(
                 preconnect           => true,
                 server_connections   => 1,
                 server_failure_limit => 3,
-                server_retry_timeout => to_milliseconds('30s'),
-                timeout              => 250,
+                server_retry_timeout => 30000,  # milliseconds
+                timeout              => 250,    # milliseconds
                 servers              => $memcached_servers,
             },
 
@@ -51,8 +51,8 @@ class profile::mediawiki::nutcracker(
                 preconnect           => true,
                 server_connections   => 1,
                 server_failure_limit => 3,
-                server_retry_timeout => to_milliseconds('30s'),
-                timeout              => 250,
+                server_retry_timeout => 30000,  # milliseconds
+                timeout              => 250,    # milliseconds
                 servers              => $memcached_servers,
             },
 
@@ -71,8 +71,8 @@ class profile::mediawiki::nutcracker(
                 listen               => '/var/run/nutcracker/redis_codfw.sock 0666',
                 server_connections   => 1,
                 server_failure_limit => 3,
-                server_retry_timeout => to_milliseconds('30s'),
-                timeout              => 1000,
+                server_retry_timeout => 30000,  # milliseconds
+                timeout              => 1000,   # milliseconds
                 server_map           => $redis_servers['codfw'],
             },
         }

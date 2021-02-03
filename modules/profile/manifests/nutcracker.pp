@@ -18,8 +18,8 @@ class profile::nutcracker(
         hash                 => 'md5',
         server_connections   => 1,
         server_failure_limit => 3,
-        server_retry_timeout => to_milliseconds('30s'),
-        timeout              => 1000,
+        server_retry_timeout => 30000,  # milliseconds
+        timeout              => 1000,   # milliseconds
     }
 
     $memcached_base_settings = {
@@ -29,8 +29,8 @@ class profile::nutcracker(
         preconnect           => true,
         server_connections   => 1,
         server_failure_limit => 3,
-        server_retry_timeout => to_milliseconds('30s'),
-        timeout              => 250,
+        server_retry_timeout => 30000,  # milliseconds
+        timeout              => 250,    # milliseconds
     }
 
     # TODO: this is now a parser function, should be doable with map()

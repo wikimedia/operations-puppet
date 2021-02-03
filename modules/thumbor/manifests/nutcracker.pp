@@ -10,7 +10,7 @@
 class thumbor::nutcracker(
     $thumbor_memcached_servers = {}
     ) {
-    include ::nutcracker::monitoring
+    include nutcracker::monitoring
 
     $pools = {
         'memcached'     => {
@@ -21,13 +21,13 @@ class thumbor::nutcracker(
             preconnect           => true,
             server_connections   => 1,
             server_failure_limit => 3,
-            server_retry_timeout => to_milliseconds('30s'),
-            timeout              => 250,
+            server_retry_timeout => 30000,  # milliseconds
+            timeout              => 250,    # milliseconds
             servers              => $thumbor_memcached_servers,
         },
     }
 
-    class { '::nutcracker':
+    class { 'nutcracker':
         mbuf_size => '64k',
         pools     => $pools,
     }
