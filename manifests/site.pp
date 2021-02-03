@@ -2281,9 +2281,9 @@ node /^releases[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(releases)
 }
 
-# New relforge servers T241791
+# New relforge servers T241791 (provision), T262211 (service impl.)
 node /^relforge100[3-4]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(elasticsearch::relforge)
 }
 
 # restbase eqiad cluster

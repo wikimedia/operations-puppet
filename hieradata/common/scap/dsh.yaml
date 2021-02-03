@@ -98,6 +98,10 @@ scap::dsh::groups:
   logstash:
     conftool:
       - {'cluster': 'logstash', 'service': 'kibana'}
+  relforge:
+    hosts:
+      - relforge1003.eqiad.wmnet
+      - relforge1004.eqiad.wmnet
   webperf:
     hosts:
       - webperf1001.eqiad.wmnet
