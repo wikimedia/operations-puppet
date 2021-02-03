@@ -52,7 +52,7 @@ define service::docker(
     }
     # The config file will be mounted as a read-only volume inside the container
     file { "/etc/${title}":
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => 'root',
         group  => 'root',
         mode   => '0755',

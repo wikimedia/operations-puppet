@@ -61,7 +61,7 @@ define cfssl::cert (
     }
     unless defined(File[$_outdir]) {
         file {$_outdir:
-            ensure  => ensure_directory($ensure),
+            ensure  => stdlib::ensure($ensure, 'directory'),
             owner   => $owner,
             group   => $group,
             mode    => '0440',

@@ -21,7 +21,7 @@ class profile::conftool::state(
 
     $base_dir = '/etc/conftool-state'
     file { $base_dir:
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => 'root',
         group  => 'root',
         mode   => '0755'

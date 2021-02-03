@@ -13,7 +13,7 @@ class puppet_compiler(
     $vardir = "${libdir}/puppet"
 
     file { [$libdir, $vardir, $workdir]:
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => $user,
         mode   => '0644',
     }

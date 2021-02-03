@@ -28,7 +28,7 @@ module Puppet::Parser::Functions
     case ensure_param
     when 'present', 'true', true then 'mounted'
     when 'absent', 'false', false then ensure_param
-    else fail(ArgumentError, "ensure_directory(): invalid argument: '#{ensure_param}'.")
+    else fail(ArgumentError, "ensure_mounted(): invalid argument: '#{ensure_param}'.")
     end
   end
 end

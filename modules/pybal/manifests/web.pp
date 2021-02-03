@@ -22,7 +22,7 @@ class pybal::web (
     $dc_dirs = prefix($datacenters, "${pools_dir}/")
 
     file { $pools_dir:
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
@@ -30,7 +30,7 @@ class pybal::web (
 
     # All the subdirectories
     file { $dc_dirs:
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => 'root',
         group  => 'root',
         mode   => '0755',

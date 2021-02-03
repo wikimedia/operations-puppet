@@ -79,7 +79,7 @@ class php::fpm(
     # We want pools to be explicitly managed by puppet, and we don't want packages etc
     # to mess with it.
     file { "${php::config_dir}/fpm/pool.d":
-        ensure  => ensure_directory($ensure),
+        ensure  => stdlib::ensure($ensure, 'directory'),
         owner   => 'root',
         group   => 'root',
         mode    => '0755',

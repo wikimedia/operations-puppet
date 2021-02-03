@@ -28,7 +28,7 @@ class statsite (
     }
 
     file { '/etc/statsite':
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         force  => true,
         owner  => 'root',
         group  => 'root',

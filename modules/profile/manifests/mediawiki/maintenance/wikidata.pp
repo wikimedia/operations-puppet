@@ -45,7 +45,7 @@ class profile::mediawiki::maintenance::wikidata {
     }
 
     file { '/var/log/wikidata':
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => $mediawiki::users::web,
         group  => $mediawiki::users::web,
         mode   => '0664',

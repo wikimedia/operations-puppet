@@ -22,31 +22,6 @@ Throw an error if a resource is declared.
     conflicts(Class['::redis-server'])
 
 
-## ensure_directory
-
-`ensure_directory( string|bool $ensure )`
-
-Takes a generic 'ensure' parameter value and convert it to an
-appropriate value for use with a directory declaration.
-
-If $ensure is 'true' or 'present', the return value is 'directory'.
-Otherwise, the return value is the unmodified $ensure parameter.
-
-### Examples
-
-    # Sample class which creates or removes '/srv/redis'
-    # based on the class's generic $ensure parameter:
-    class redis( $ensure = present ) {
-        package { 'redis-server':
-            ensure => $ensure,
-        }
-
-        file { '/srv/redis':
-          ensure => ensure_directory($ensure),
-        }
-    }
-
-
 ## ensure_link
 
 `ensure_link( string|bool $ensure )`

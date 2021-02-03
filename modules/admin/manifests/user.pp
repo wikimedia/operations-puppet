@@ -69,7 +69,7 @@ define admin::user (
     # Puppet chokes if we try to absent subfiles to /home/${user}
     if $ensure == 'present' {
         file { $home_dir:
-            ensure       => ensure_directory($ensure),
+            ensure       => stdlib::ensure($ensure, 'directory'),
             source       => [
                 "puppet:///modules/admin/home/${name}/",
                 'puppet:///modules/admin/home/skel/',

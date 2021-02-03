@@ -36,7 +36,7 @@ define acme_chief::cert (
 
     # lint:ignore:puppet_url_without_modules
     file { "/etc/acmecerts/${title}":
-        ensure    => ensure_directory($ensure),
+        ensure    => stdlib::ensure($ensure, 'directory'),
         owner     => 'root',
         group     => $key_group,
         mode      => '0640',

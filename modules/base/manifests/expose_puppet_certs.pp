@@ -57,7 +57,7 @@ define base::expose_puppet_certs (
     }
 
     file { "${target_basedir}/ssl":
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         mode   => '0555',
     }
 

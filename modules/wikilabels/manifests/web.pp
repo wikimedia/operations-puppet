@@ -60,7 +60,7 @@ class wikilabels::web (
     }
 
     file { '/var/log/wikilabels':
-        ensure => ensure_directory(present),
+        ensure => stdlib::ensure(present, 'directory'),
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0664',

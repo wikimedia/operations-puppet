@@ -83,7 +83,7 @@ class eventlogging::server(
 
     # Instance definition files.
     file { $eventlogging_directories:
-        ensure  => ensure_directory($ensure),
+        ensure  => stdlib::ensure($ensure, 'directory'),
         recurse => true,
         purge   => true,
         force   => true,
@@ -92,7 +92,7 @@ class eventlogging::server(
 
     # Plug-ins placed in this directory are loaded automatically.
     file { '/usr/local/lib/eventlogging':
-        ensure => ensure_directory($ensure)
+        ensure => stdlib::ensure($ensure, 'directory')
     }
 
     # This directory is useful for various components of
@@ -101,7 +101,7 @@ class eventlogging::server(
     # everywhere.
     if !defined(File['/srv/log']) {
         file { '/srv/log':
-            ensure => ensure_directory($ensure),
+            ensure => stdlib::ensure($ensure, 'directory'),
             mode   => '0755',
             owner  => 'root',
             group  => 'root',
@@ -110,7 +110,7 @@ class eventlogging::server(
 
     # Logs are collected in <$log_dir> and rotated daily.
     file { $log_dir:
-        ensure  => ensure_directory($ensure),
+        ensure  => stdlib::ensure($ensure, 'directory'),
         owner   => 'eventlogging',
         group   => 'eventlogging',
         recurse => true,

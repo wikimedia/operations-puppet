@@ -58,7 +58,7 @@ class arclamp(
     }
 
     file { '/srv/xenon':
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         links  => 'follow',
         owner  => 'xenon',
         group  => 'xenon',
@@ -95,7 +95,7 @@ class arclamp(
         # or debugging:
         $account_file = "/etc/swift/account_${swift_account_name}.env"
         file { '/etc/swift':
-            ensure => ensure_directory($ensure),
+            ensure => stdlib::ensure($ensure, 'directory'),
             owner  => 'root',
             group  => 'root',
             mode   => '0750',

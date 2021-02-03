@@ -10,7 +10,7 @@ class envoyproxy(
     $service_node = $::fqdn
     $service_zone = $::site
     $envoy_directory = '/etc/envoy'
-    $dir_ensure = ensure_directory($ensure)
+    $dir_ensure = stdlib::ensure($ensure, 'directory')
 
     ensure_packages('python3-yaml')
     package { $pkg_name:

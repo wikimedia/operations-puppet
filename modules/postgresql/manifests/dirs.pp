@@ -37,14 +37,14 @@ class postgresql::dirs(
     }
     $data_dir = "${root_dir}/${_pgversion}/main"
     file {  [ $root_dir, "${root_dir}/${_pgversion}" ] :
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => 'postgres',
         group  => 'postgres',
         mode   => '0755',
     }
 
     file { $data_dir:
-        ensure => ensure_directory($ensure),
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => 'postgres',
         group  => 'postgres',
         mode   => '0700',

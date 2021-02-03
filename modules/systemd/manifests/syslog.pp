@@ -66,7 +66,7 @@ define systemd::syslog(
 
     if ! defined(File[$local_logdir]) {
         file { $local_logdir:
-            ensure => ensure_directory($ensure),
+            ensure => stdlib::ensure($ensure, 'directory'),
             owner  => $owner,
             group  => $group,
             mode   => $dirmode,

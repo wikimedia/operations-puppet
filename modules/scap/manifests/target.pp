@@ -89,7 +89,7 @@ define scap::target(
                 system => true,
             }
             file { "/var/lib/${deploy_user}":
-                ensure => ensure_directory($ensure),
+                ensure => stdlib::ensure($ensure, 'directory'),
                 owner  => $deploy_user,
                 group  => $deploy_user,
                 mode   => '0755',

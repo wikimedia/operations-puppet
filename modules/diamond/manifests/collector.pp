@@ -100,7 +100,7 @@ define diamond::collector(
     # Install a custom diamond collector if $source or $content were provided.
     if $source or $content {
         file { "/usr/share/diamond/collectors/${name}":
-            ensure  => ensure_directory($ensure),
+            ensure  => stdlib::ensure($ensure, 'directory'),
             owner   => 'root',
             group   => 'root',
             mode    => '0755',

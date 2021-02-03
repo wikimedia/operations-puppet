@@ -59,7 +59,7 @@ class nginx(
     }
 
     file { [ '/etc/nginx/conf.d', '/etc/nginx/sites-available', '/etc/nginx/sites-enabled' ]:
-        ensure  => ensure_directory($ensure),
+        ensure  => stdlib::ensure($ensure, 'directory'),
         recurse => true,
         purge   => true,
         force   => true,

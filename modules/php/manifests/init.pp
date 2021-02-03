@@ -56,7 +56,7 @@ class php(
         # This means that rogue configurations added by
         # packages will be actively removed.
         file { "${config_dir}/${sapi}/conf.d":
-            ensure  => ensure_directory($ensure),
+            ensure  => stdlib::ensure($ensure, 'directory'),
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
