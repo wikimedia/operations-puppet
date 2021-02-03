@@ -2210,7 +2210,7 @@ service::catalog:
       - dnsdisc: sessionstore
         active_active: true
   swift:
-    description: Swift/Ceph media storage
+    description: Swift media storage
     encryption: false
     ip:
       codfw:
@@ -2230,10 +2230,10 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - http://localhost/monitoring/backend
+            - http://localhost/monitoring/frontend
       scheduler: wrr
     monitoring:
-      check_command: check_http_lvs!localhost!/monitoring/backend
+      check_command: check_http_lvs!localhost!/monitoring/frontend
       critical: true
       sites:
         codfw:
@@ -2246,7 +2246,7 @@ service::catalog:
       - eqiad
     state: production
   swift-https:
-    description: Swift/Ceph media storage
+    description: Swift media storage
     encryption: true
     ip:
       codfw:
@@ -2266,10 +2266,10 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://localhost/monitoring/backend
+            - https://localhost/monitoring/frontend
       scheduler: wrr
     monitoring:
-      check_command: check_https_url!localhost!/monitoring/backend
+      check_command: check_https_url!localhost!/monitoring/frontend
       critical: true
       sites:
         codfw:
