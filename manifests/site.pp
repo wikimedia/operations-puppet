@@ -745,10 +745,6 @@ node 'dborch1001.wikimedia.org' {
 
 
 # eqiad backup sources
-## s2 & s3, stretch
-node 'db1095.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
-}
 ## x1, buster
 node 'db1102.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)

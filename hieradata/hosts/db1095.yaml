@@ -1,5 +1,0 @@
-# db1095
-# Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::instances:
-  s2: 150G
-  s3: 200G
