@@ -524,7 +524,7 @@ class profile::phabricator::main (
         ensure           => $logmail_ensure,
         rcpt_address     => [ 'phabricator-reports@lists.wikimedia.org' ],
         sndr_address     => 'aklapper@wikimedia.org',
-        weekday          => 1, # Monday
+        weekday          => 'Monday',
         require          => Package[$deploy_target],
         mysql_slave      => $mysql_slave,
         mysql_slave_port => $mysql_slave_port,
