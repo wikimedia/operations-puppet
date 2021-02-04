@@ -59,9 +59,17 @@ define package_builder::pbuilder_base(
                         --debootstrapopts --variant=buildd \
                         ${arg}"
 
+    file{ "/var/cache/pbuilder/aptcache/${distribution}-${architecture}":
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     exec { "cowbuilder_init_${distribution}-${architecture}":
         command => $command,
         creates => $cowdir,
+        require => File["/var/cache/pbuilder/aptcache/${distribution}-${architecture}"]
     }
 
     # --no-cowdancer-update is used to workaround #970555.
