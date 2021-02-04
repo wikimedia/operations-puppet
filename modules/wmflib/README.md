@@ -180,32 +180,6 @@ Abort catalog compilation if it is not.
     requires_realm('labs')
 
 
-## shell_exports
-
-`shell_exports( hash $variables [, bool $uppercase_keys = true ] )`
-
-Generate shell environment variable declarations out of a Puppet hash.
-
-The hash keys are used as the variable names, and the values as
-the variable's values. Values are automatically quoted with double
-quotes. If the second parameter is true (the default), keys are
-automatically uppercased.
-
-### Examples
-
-Invocation:
-
-    shell_exports({
-        apache_run_user => 'apache',
-        apache_pid_file => '/var/run/apache2/apache2.pid',
-    })
-
-Output:
-
-    export APACHE_RUN_USER="apache"
-    export APACHE_PID_FILE="/var/run/apache2/apache2.pid"
-
-
 ## ssl_ciphersuite
 
 `ssl_ciphersuite( string $servercode, string $encryption_type, boolean $hsts )`
