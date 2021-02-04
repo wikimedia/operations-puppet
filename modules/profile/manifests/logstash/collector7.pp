@@ -383,7 +383,7 @@ class profile::logstash::collector7 (
           index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+YYYY.MM}",
           manage_indices  => true,
           priority        => 90,
-          template        => "/etc/logstash/templates/w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}.json",
+          template        => "/etc/logstash/templates/w3creportingapi_${w3creportingapi_version}-${w3creportingapi_revision}.json",
           require         => File['/etc/logstash/templates'],
           timestring      => '%Y.%m',
           unit            => 'months',
