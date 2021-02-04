@@ -6,6 +6,7 @@
 #
 class profile::hadoop::backup::namenode(
     Boolean $monitoring_enabled = lookup('profile::hadoop::backup::namenode::monitoring_enabled', {default_value => false}),
+    Integer $fsimage_retention_days = lookup('profile::hadoop::backup::namenode::fsimage_retention_days', {default_value => 20}),
 ) {
     require ::profile::hadoop::common
 
@@ -43,10 +44,9 @@ class profile::hadoop::backup::namenode(
         user        => 'hdfs',
     }
 
-    $retention_days = 20
     systemd::timer::job { 'hadoop-namenode-backup-prune':
-        description               => "Deletes namenode's fsimage backups in ${destination} older than ${retention_days} days.",
-        command                   => "/usr/bin/find ${destination} -mtime +${retention_days} -delete",
+        description               => "Deletes namenode's fsimage backups in ${destination} older than ${fsimage_retention_days} days.",
+        command                   => "/usr/bin/find ${destination} -mtime +${fsimage_retention_days} -delete",
         interval                  => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 01:00:00',
