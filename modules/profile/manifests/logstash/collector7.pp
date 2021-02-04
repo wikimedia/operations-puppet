@@ -339,7 +339,7 @@ class profile::logstash::collector7 (
     $ecs_versions.each |String $ecs_version, String $ecs_revision| {
         logstash::output::elasticsearch { "ecs_${ecs_version}-${ecs_revision}":
           host            => '127.0.0.1',
-          guard_condition => "\"es\" in [tags] and [ecs] == \"${ecs_version}\"",
+          guard_condition => "\"es\" in [tags] and [ecs][version] == \"${ecs_version}\"",
           index           => "ecs-${ecs_version}-${ecs_revision}-%{[@metadata][partition]}-%{+YYYY.ww}",
           manage_indices  => true,
           priority        => 90,
