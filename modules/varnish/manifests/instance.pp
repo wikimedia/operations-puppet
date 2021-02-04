@@ -58,7 +58,7 @@ define varnish::instance(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
     }
 
-    array_concat([$vcl], $separate_vcl).each |String $vcl_name| {
+    ([$vcl] + $separate_vcl).each |String $vcl_name| {
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl_name}.vcl":
             require         => File["/etc/varnish/${vcl_name}.inc.vcl"],
             template_path   => "${module_name}/wikimedia-frontend.vcl.erb",
@@ -113,13 +113,13 @@ define varnish::instance(
     # Array of VCL files required by Varnish systemd::service.
     # load-new-vcl-file below subscribes to these too, reload-vcl needs to be
     # run when they change.
-    $vcl_files = array_concat([
-        File["/etc/varnish/${vcl}.inc.vcl"],
-        File["/etc/varnish/wikimedia_${vcl}.vcl"],
-        File[suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl')],
-    ], $separate_vcl.map |$vcl_name| {
-        File["/etc/varnish/wikimedia_${vcl_name}.vcl"]
-    })
+    $vcl_files = [
+        "/etc/varnish/${vcl}.inc.vcl",
+        "/etc/varnish/wikimedia_${vcl}.vcl",
+        suffix(prefix($extra_vcl, '/etc/varnish/'),'.inc.vcl'),
+    ] + $separate_vcl.map |$vcl_name| {
+        "/etc/varnish/wikimedia_${vcl_name}.vcl"
+    }
 
     $enable_geoiplookup = $vcl == 'text-frontend'
 
@@ -128,10 +128,11 @@ define varnish::instance(
         service_params => {
             tag     => 'varnish_instance',
             enable  => true,
-            require => array_concat([
+            require => [
                 Package['varnish'],
                 Mount['/var/lib/varnish'],
-            ], $vcl_files),
+                File[$vcl_files],
+            ]
         },
     }
 
@@ -191,11 +192,12 @@ define varnish::instance(
 
     exec { "load-new-vcl-file${instancesuffix}":
         require     => Service["varnish${instancesuffix}"],
-        subscribe   => array_concat([
+        subscribe   => [
                 Class['varnish::common::vcl'],
                 Class['varnish::common::errorpage'],
                 Class['varnish::common::browsersec'],
-            ], $vcl_files),
+                File[$vcl_files],
+            ],
         command     => "/usr/local/sbin/reload-vcl ${reload_vcl_opts} || (touch ${vcl_failed_file}; false)",
         unless      => "test -f ${vcl_failed_file}",
         path        => '/bin:/usr/bin',
