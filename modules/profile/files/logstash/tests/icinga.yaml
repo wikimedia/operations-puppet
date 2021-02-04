@@ -11,13 +11,15 @@ testcases:
         {
           "message":"SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production).",
           "level": "INFO",
-          "facility": "local1"
+          "facility": "local1",
+          "type": "syslog"
         }
       - >
         {
           "message": "HOST ALERT: mw2280;DOWN;HARD;2;PING CRITICAL - Packet loss = 100%",
           "level": "INFO",
-          "facility": "local1"
+          "facility": "local1",
+          "type": "syslog"
         }
     expected:
       - labels:
