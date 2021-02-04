@@ -180,11 +180,11 @@ class profile::wmcs::prometheus(
         storage_retention     => $storage_retention,
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
-        scrape_configs_extra  => array_concat(
+        scrape_configs_extra  => [
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $redis_jobs,
             $ceph_jobs, $galera_jobs,
-        ),
+        ].flatten,
     }
 
     httpd::site{ 'prometheus':

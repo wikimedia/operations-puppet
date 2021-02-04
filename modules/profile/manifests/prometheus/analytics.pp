@@ -253,7 +253,7 @@ class profile::prometheus::analytics (
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
-        scrape_configs_extra  => array_concat($jmx_exporter_jobs, $druid_jobs, $mysql_jobs),
+        scrape_configs_extra  => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs].flatten,
         min_block_duration    => '2h',
         max_block_duration    => $max_block_duration,
         alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },

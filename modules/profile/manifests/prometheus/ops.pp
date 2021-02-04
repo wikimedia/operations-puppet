@@ -1941,7 +1941,7 @@ class profile::prometheus::ops (
         min_block_duration    => '2h',
         max_block_duration    => $max_block_duration,
         alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
-        scrape_configs_extra  => array_concat(
+        scrape_configs_extra  => [
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
@@ -1955,7 +1955,7 @@ class profile::prometheus::ops (
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs
-        ),
+        ].flatten,
         global_config_extra   => $config_extra,
     }
 

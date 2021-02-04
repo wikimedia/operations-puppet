@@ -127,8 +127,10 @@ class profile::prometheus::beta (
     prometheus::server { 'beta':
         listen_address       => '127.0.0.1:9903',
         external_url         => 'https://beta-prometheus.wmflabs.org/beta',
-        scrape_configs_extra => array_concat($varnish_jobs, $mysql_jobs, $web_jobs,
-            $cassandra_jobs, $jmx_exporter_jobs, $memcached_jobs, $mcrouter_jobs),
+        scrape_configs_extra => [
+          $varnish_jobs, $mysql_jobs, $web_jobs, $cassandra_jobs,
+          $jmx_exporter_jobs, $memcached_jobs, $mcrouter_jobs
+        ].flatten,
         storage_retention    => $storage_retention,
         alertmanagers        => $alertmanagers.map |$a| { "${a}:9093" },
     }
