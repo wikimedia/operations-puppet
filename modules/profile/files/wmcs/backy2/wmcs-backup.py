@@ -1022,6 +1022,7 @@ class ProjectBackups:
             self.vms_backups[vm_id] = VMBackups(
                 backups=[],
                 vm_id=vm_id,
+                vm_info=vm_info,
                 project=self.project,
                 config=self.config,
             )
