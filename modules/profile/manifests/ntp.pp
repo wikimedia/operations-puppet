@@ -7,13 +7,13 @@ class profile::ntp (
 ){
     contain standard::ntp
     # A list of all global peers, used in the core sites' case below
-    $wmf_all_peers = array_concat(
+    $wmf_all_peers = [
         $::ntp_peers['eqiad'],
         $::ntp_peers['codfw'],
         $::ntp_peers['esams'],
         $::ntp_peers['ulsfo'],
         $::ntp_peers['eqsin']
-    )
+    ].flatten
 
     # ntp_peers is a list of peer servers that exist within each site,
     # while wmf_server_peers here is a list of servers a given server should
@@ -22,9 +22,9 @@ class profile::ntp (
     # 2) For core sites: All peers at all non-core sites
     # 3) Exclude self from final list
     $wmf_server_peers_plus_self = $::site ? {
-        esams   => array_concat($::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['esams']),
-        ulsfo   => array_concat($::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['ulsfo']),
-        eqsin   => array_concat($::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['eqsin']),
+        esams   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['esams']].flatten,
+        ulsfo   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['ulsfo']].flatten,
+        eqsin   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['eqsin']].flatten,
         default => $wmf_all_peers, # core sites
     }
     $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
@@ -71,7 +71,7 @@ class profile::ntp (
 
     if $use_chrony {
         require ::network::constants
-        $chrony_networks_acl = array_concat(['10.0.0.0/8'], $::network::constants::external_networks)
+        $chrony_networks_acl = ['10.0.0.0/8'] + $::network::constants::external_networks
 
         class { 'ntp::chrony':
             pool               => $wmf_server_upstream_pools,
