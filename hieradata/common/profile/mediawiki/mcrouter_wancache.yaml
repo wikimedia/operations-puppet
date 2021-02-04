@@ -80,9 +80,6 @@ profile::mediawiki::mcrouter_wancache::shards:
       shard05:
         host: 10.64.0.84
         port: 11211
-      shard06:
-        host: 10.64.16.107
-        port: 11211
       shard07:
         host: 10.64.16.108
         port: 11211
