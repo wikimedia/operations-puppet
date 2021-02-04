@@ -4,18 +4,56 @@ codec: "json_lines"
 ignore:
   - "@timestamp"
   - "host"
+  - "tags"
 testcases:
   - input:
       - >
         {
-          "message":"SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
+          "message":"SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production).",
+          "level": "INFO",
+          "facility": "local1"
+        }
+      - >
+        {
+          "message": "HOST ALERT: mw2280;DOWN;HARD;2;PING CRITICAL - Packet loss = 100%",
+          "level": "INFO",
+          "facility": "local1"
         }
     expected:
-      - icinga_check_descr: "Unmerged changes on repository puppet"
-        icinga_contact: "irc"
-        icinga_host: "labtestpuppetmaster2001"
-        icinga_message: "There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
-        icinga_notif_cmd: "notify-service-by-irc"
-        icinga_state: "CRITICAL"
-        message: "SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
-        program: "icinga"
+      - labels:
+          check_name: "Unmerged changes on repository puppet"
+          check_status: "CRITICAL"
+          contact_group: "irc"
+          target_host: "labtestpuppetmaster2001"
+          notification_command: "notify-service-by-irc"
+        message: "There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
+        log:
+          original: "SERVICE NOTIFICATION: irc;labtestpuppetmaster2001;Unmerged changes on repository puppet;CRITICAL;notify-service-by-irc;There is one unmerged change in puppet (dir /var/lib/git/operations/puppet, ref HEAD..origin/production)."
+          level: "INFO"
+          syslog:
+            facility:
+              code: 17
+              name: "local1"
+            priority: 142
+            severity:
+              code: 6
+              name: "informational"
+        service:
+          type: "icinga"
+        ecs:
+          version: "1.7.0"
+      - message: "HOST ALERT: mw2280;DOWN;HARD;2;PING CRITICAL - Packet loss = 100%"
+        service:
+          type: "icinga"
+        log:
+          level: "INFO"
+          syslog:
+            facility:
+              code: 17
+              name: "local1"
+            priority: 142
+            severity:
+              code: 6
+              name: "informational"
+        ecs:
+          version: "1.7.0"
