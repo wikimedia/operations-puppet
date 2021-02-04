@@ -142,8 +142,7 @@ define scap::target(
     }
 
     if $service_name {
-        $all_services_names = array_concat($additional_services_names, $service_name)
-        $all_services_names.each |String $svc_name| {
+        ($additional_services_names + [$service_name]).each |String $svc_name| {
             $service_privileges = [
                 "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} start",
                 "ALL=(root) NOPASSWD: /usr/sbin/service ${svc_name} stop",
