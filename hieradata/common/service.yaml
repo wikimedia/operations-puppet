@@ -872,7 +872,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: monitoring_setup
+    state: production
     discovery:
       - dnsdisc: eventstreams-internal
         active_active: true
