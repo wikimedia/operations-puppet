@@ -3604,17 +3604,17 @@ host logstash1029 {
 }
 
 host logstash1033 {
-    hardware ethernet 2C:EA:7F:68:F3:FB;
+    hardware ethernet BC:97:E1:C0:2C:50;
     fixed-address logstash1033.eqiad.wmnet;
 }
 
 host logstash1034 {
-    hardware ethernet 2C:EA:7F:68:F4:E3;
+    hardware ethernet BC:97:E1:C0:29:E0;
     fixed-address logstash1034.eqiad.wmnet;
 }
 
 host logstash1035 {
-    hardware ethernet 2C:EA:7F:68:C4:40;
+    hardware ethernet BC:97:E1:C0:3F:F0;
     fixed-address logstash1035.eqiad.wmnet;
 }
 
