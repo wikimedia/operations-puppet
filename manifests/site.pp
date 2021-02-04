@@ -1538,6 +1538,10 @@ node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
+# eqiad new logstash nodes T267666
+node /^logstash103[345]\.eqiad\.wmnet/ {
+    role(insetup)
+}
 
 # codfw logstash kafka/elasticsearch
 node /^logstash200[1-3]\.codfw\.wmnet$/ {
