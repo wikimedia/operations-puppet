@@ -9,7 +9,8 @@ profile::superset::database_uri: mysql://superset@an-coord1001.eqiad.wmnet/super
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::enable_cas: true
-profile::superset::cache_uri: 'localhost'
+# Temporary disabled, see https://phabricator.wikimedia.org/T273850
+#profile::superset::cache_uri: 'localhost'
 
 # TLS Terminator settings
 # Please note: the service name is used to pick up the
