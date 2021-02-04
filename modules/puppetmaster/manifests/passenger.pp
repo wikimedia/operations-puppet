@@ -26,11 +26,10 @@ class puppetmaster::passenger(
     # US-ASCII" errors when puppetmaster is started with LANG that doesn't
     # support non-ASCII encoding.
     # See <https://tickets.puppetlabs.com/browse/PUP-1386#comment-62325>
-    $vars = { 'LANG' => 'en_US.UTF-8' }
     httpd::conf { 'use-utf-locale':
         ensure    => present,
         conf_type => 'env',
-        content   => shell_exports($vars),
+        content   => "export LANG=\"en_US.UTF-8\"\n",
     }
 
     httpd::conf { 'passenger':
