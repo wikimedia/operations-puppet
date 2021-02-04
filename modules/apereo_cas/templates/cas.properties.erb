@@ -19,9 +19,9 @@ spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.web.embedded
 
 server.ssl.enabled=<%= @server_enable_ssl %>
 <%- if @server_enable_ssl -%>
-server.ssl.keyStore=file:<%= @keystore_path %>
-server.ssl.keyStorePassword=<%= @keystore_password %>
-server.ssl.keyPassword=<%= @key_password %>
+server.ssl.key-store-file:<%= @keystore_path %>
+server.ssl.key-store-password=<%= @keystore_password %>
+server.ssl.key-password=<%= @key_password %>
 <%- end -%>
 server.port=<%= @server_port %>
 server.servlet.context-path=<%= @server_prefix %>
@@ -34,10 +34,10 @@ server.tomcat.remoteip.internal-proxies=127\\.0\\.0\\.1
 management.endpoints.web.base-path=/api
 
 cas.server.tomcat.http.enabled=false
-cas.server.tomcat.httpProxy.enabled=true
-cas.server.tomcat.httpProxy.secure=true
-cas.server.tomcat.httpProxy.scheme=https
-cas.server.tomcat.httpProxy.protocol=HTTP/1.1
+cas.server.tomcat.http-proxy.enabled=true
+cas.server.tomcat.http-proxy.secure=true
+cas.server.tomcat.http-proxy.scheme=https
+cas.server.tomcat.http-proxy.protocol=HTTP/1.1
 <%- end -%>
 
 
@@ -50,8 +50,8 @@ management.endpoint.<%= actuator %>.enabled=true
 <%- unless @prometheus_nodes.empty? %>
 management.metrics.tags.application=${spring.application.name}
 management.metrics.export.prometheus.enabled=true
-cas.monitor.endpoints.endpoint.prometheus.access=IP_ADDRESS
-cas.monitor.endpoints.endpoint.prometheus.requiredIpAddresses=::1,127.0.0.1,<%= get_addresses(@prometheus_nodes).join(',') %>
+cas.monitor.endpoints.endpoint.prometheus.access[0]=IP_ADDRESS
+cas.monitor.endpoints.endpoint.prometheus.required-ip-addresses[0]=::1,127.0.0.1,<%= get_addresses(@prometheus_nodes).join(',') %>
 <%- end -%>
 <%- end -%>
 
@@ -65,36 +65,36 @@ cas.monitor.endpoints.endpoint.sso.access=ANONYMOUS
 <%- end -%>
 
 <%- if @actuators.include?('ssoSessions') -%>
-cas.monitor.endpoints.endpoint.ssoSessions.access=IP_ADDRESS
-cas.monitor.endpoints.endpoint.ssoSessions.requiredIpAddresses=::1,127.0.0.1,<%= get_addresses(@idp_nodes).join(',') %>
+cas.monitor.endpoints.endpoint.ssoSessions.access[0]=IP_ADDRESS
+cas.monitor.endpoints.endpoint.ssoSessions.required-ip-addresses=::1,127.0.0.1,<%= get_addresses(@idp_nodes).join(',') %>
 <%- end -%>
 
-cas.serviceRegistry.json.location=file:<%= @services_dir %>
+cas.service-registry.json.location=file:<%= @services_dir %>
 logging.config: file:/etc/cas/config/log4j2.xml
 logging.level.org.apereo=<%= @log_level %>
 
 cas.authn.accept.users=
 
-cas.ticket.tgt.rememberMe.enabled=true
-cas.ticket.tgt.rememberMe.timeToKillInSeconds=<%= @max_rememberme_session_length %>
-cas.ticket.tgt.timeToKillInSeconds=<%= @session_inactivity_timeout %>
-cas.ticket.tgt.maxTimeToLiveInSeconds=<%= @max_session_length %>
+cas.ticket.tgt.remember-me.enabled=true
+cas.ticket.tgt.remember-me.time-to-kill-in-seconds=<%= @max_rememberme_session_length %>
+cas.ticket.tgt.time-to-kill-in-seconds=<%= @session_inactivity_timeout %>
+cas.ticket.tgt.max-time-to-live-in-seconds=<%= @max_session_length %>
 
-cas.authn.ldap[0].principalAttributeList=<%= @ldap_attribute_list.join(',') %>
+cas.authn.ldap[0].principal-attribute-list=<%= @ldap_attribute_list.join(',') %>
 cas.authn.ldap[0].type=<%= @ldap_auth %>
-cas.authn.ldap[0].connectionStrategy=<%= @ldap_connection %>
+cas.authn.ldap[0].connection-strategy=<%= @ldap_connection %>
 cas.authn.ldap[0].ldapurl=<%= @ldap_uris.join(' ') %>
-cas.authn.ldap[0].useStartTLS=<%= @ldap_start_tls %>
+cas.authn.ldap[0].use-start-tls=<%= @ldap_start_tls %>
 cas.authn.ldap[0].basedn=<%= @ldap_base_dn %>
-cas.authn.ldap[0].searchFilter=<%= @ldap_search_filter %>
+cas.authn.ldap[0].search-filter=<%= @ldap_search_filter %>
 cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
 cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
 
 <%- if @groovy_source -%>
-cas.authn.mfa.globalPrincipalAttributePredicate=file:<%= @groovy_file -%>
+cas.authn.mfa.globalprincipalattributepredicate=file:<%= @groovy_file -%>
 <%- else -%>
-cas.authn.mfa.globalPrincipalAttributeNameTriggers=<%= @mfa_attribute_trigger %>
-cas.authn.mfa.globalPrincipalAttributeValueRegex=<%= @mfa_attribut_value.join('|') %>
+cas.authn.mfa.global-principal-attribute-name-triggers=<%= @mfa_attribute_trigger %>
+cas.authn.mfa.global-principal-attribute-value-regex=<%= @mfa_attribut_value.join('|') %>
 <%- end -%>
 
 <%- if @enable_u2f -%>
@@ -111,8 +111,8 @@ cas.authn.mfa.u2f.jpa.dialect=org.hibernate.dialect.MariaDBDialect
 <%- end -%>
 
 <%- if @u2f_token_expiry_days -%>
-cas.authn.mfa.u2f.expireDevices=<%= @u2f_token_expiry_days %>
-cas.authn.mfa.u2f.expireDevicesTimeUnit=DAYS
+cas.authn.mfa.u2f.expire-devices=<%= @u2f_token_expiry_days %>
+cas.authn.mfa.u2f.expire-devices-time-unit=DAYS
 <%- end -%>
 <% if @tgc_signing_key %>cas.tgc.crypto.signing.key=<%= @tgc_signing_key %><% end %>
 <% if @tgc_encryption_key %>cas.tgc.crypto.encryption.key=<%= @tgc_encryption_key %><% end %>
@@ -126,23 +126,23 @@ cas.ticket.registry.memcached.transcoder=<%= @memcached_transcoder %>
 
 <%- if @enable_cors -%>
 cas.http-web-request.cors.enabled=true
-cas.http-web-request.cors.allowCredentials=<%= @cors_allow_credentials.to_s %>
+cas.http-web-request.cors.allow-credentials=<%= @cors_allow_credentials.to_s %>
 <%# if cors is enabled but no origins provided allow all origins %>
   <%- if @cors_allowed_origins.empty? -%>
-cas.http-web-request.cors.allowOrigins[0]=*
+cas.http-web-request.cors.allow-origins[0]=*
   <%- else -%>
     <%- @cors_allowed_origins.each_with_index do |origin, idx| -%>
-cas.http-web-request.cors.allowOrigins[<%= idx %>]=<%= origin %>
+cas.http-web-request.cors.allow-origins[<%= idx %>]=<%= origin %>
     <%- end -%>
   <%- end -%>
   <%- if @cors_allowed_headers.empty? -%>
-cas.http-web-request.cors.allowHeaders[0]=*
+cas.http-web-request.cors.allow-headers[0]=*
   <%- else -%>
     <%- @cors_allowed_headers.each_with_index do |header, idx| -%>
-cas.http-web-request.cors.allowHeaders[<%= idx %>]=<%= header %>
+cas.http-web-request.cors.allow-headers[<%= idx %>]=<%= header %>
     <%- end -%>
   <%- end -%>
   <%- @cors_allowed_methods.each_with_index do |method, idx| -%>
-cas.http-web-request.cors.allowMethods[<%= idx %>]=<%= method %>
+cas.http-web-request.cors.allow-methods[<%= idx %>]=<%= method %>
   <%- end -%>
 <%- end -%>

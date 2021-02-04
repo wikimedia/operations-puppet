@@ -38,21 +38,21 @@ describe 'apereo_cas' do
           ).with_content(
             %r{^cas\.server\.prefix=https://foo.example.com:8443/cas$}
           ).with_content(
-            %r{^cas\.serviceRegistry\.json\.location=file:/etc/cas/services$}
+            %r{^cas\.service-registry\.json\.location=file:/etc/cas/services$}
           ).with_content(
-            /^cas\.authn\.ldap\[0\]\.principalAttributeList=cn,memberOf,mail$/
+            /^cas\.authn\.ldap\[0\]\.principal-attribute-list=cn,memberOf,mail$/
           ).with_content(
             /^cas\.authn\.ldap\[0\]\.type=AUTHENTICATED$/
           ).with_content(
-            /^cas\.authn\.ldap\[0\]\.connectionStrategy=ACTIVE_PASSIVE$/
+            /^cas\.authn\.ldap\[0\]\.connection-strategy=ACTIVE_PASSIVE$/
           ).with_content(
             /^cas\.authn\.ldap\[0\]\.ldapurl=$/
           ).with_content(
-            /^cas\.authn\.ldap\[0\]\.useStartTLS=true$/
+            /^cas\.authn\.ldap\[0\]\.use-start-tls=true$/
           ).with_content(
             /^cas\.authn\.ldap\[0\]\.basedn=dc=example,dc=org/
           ).with_content(
-            /^cas\.authn\.ldap\[0\]\.searchFilter=cn={user}$/
+            /^cas\.authn\.ldap\[0\]\.search-filter=cn={user}$/
           ).with_content(
             /^cas\.authn\.ldap\[0\]\.binddn=cn=user,dc=example,dc=org$/
           ).with_content(
