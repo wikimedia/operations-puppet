@@ -3,7 +3,11 @@ define sbuild::chroot(
 ) {
     require ::sbuild
 
-    $sbuild_cmd    = '/usr/sbin/sbuild-createchroot --include=eatmydata,ccache'
+    if debian::codename::ge('buster'){
+        $sbuild_cmd    = '/usr/bin/sbuild-createchroot --include=eatmydata,ccache'
+    } else {
+        $sbuild_cmd    = '/usr/sbin/sbuild-createchroot --include=eatmydata,ccache'
+    }
     $sbuild_mirror = 'http://127.0.0.1:3142/deb.debian.org/debian'
 
     $chroot_name = "${distribution}-amd64-sbuild"
