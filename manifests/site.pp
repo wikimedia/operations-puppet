@@ -101,7 +101,7 @@ node /an-worker10(7[89]|8[0-9]|9[0-9]).eqiad.wmnet/ {
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /^an-worker11(0[0-9]|1[0-7])\.eqiad\.wmnet$/ {
+node /^an-worker11(0[0-9]|1[0-6])\.eqiad\.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
 }
 
@@ -121,7 +121,7 @@ node 'an-worker1124.eqiad.wmnet' {
     role(analytics_backup_cluster::hadoop::standby)
 }
 
-node /^an-worker11(19|2[0-3]|2[5-8]|3[0125678])\.eqiad\.wmnet$/ {
+node /^an-worker11(1[79]|2[0-3]|2[5-8]|3[0125678])\.eqiad\.wmnet$/ {
     role(analytics_backup_cluster::hadoop::worker)
 }
 
@@ -1220,7 +1220,7 @@ node 'grafana2001.codfw.wmnet' {
 }
 
 # Serves dumps of revision content from restbase, in HTML format
-# T245567 - replaced francium.eqiad.wmnet 
+# T245567 - replaced francium.eqiad.wmnet
 node 'htmldumper1001.eqiad.wmnet' {
     role(dumps::web::htmldumps)
 }
