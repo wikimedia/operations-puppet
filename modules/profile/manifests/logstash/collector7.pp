@@ -387,7 +387,7 @@ class profile::logstash::collector7 (
           require         => File['/etc/logstash/templates'],
           timestring      => '%Y.%m',
           unit            => 'months',
-          unit_count      => 3,
+          unit_count      => 4,
         }
     }
 
