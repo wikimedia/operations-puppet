@@ -1301,7 +1301,7 @@ jenkins_agent_username: 'jenkins-slave'
 http_proxy_host: webproxy.%{::site}.wmnet
 http_proxy_port: 8080
 # And as a url (can be used as an env variable).
-http_proxy: "http://%{hiera('http_proxy_host')}:%{hiera('http_proxy_port')}"
+http_proxy: "http://%{lookup('http_proxy_host')}:%{lookup('http_proxy_port')}"
 
 # This is the "live" authdns server set, which feeds into any other tooling
 # that needs to operate on them (including themselves).  It includes redundant
@@ -1380,7 +1380,7 @@ ntp_peers:
 # Url to use for reaching graphite
 
 graphite_host: 'graphite-in.eqiad.wmnet'
-graphite_url: "http://%{hiera('graphite_host')}"
+graphite_url: "http://%{lookup('graphite_host')}"
 
 cumin_masters:
 - 10.64.32.25                 # cumin1001.eqiad.wmnet
