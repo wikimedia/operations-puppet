@@ -60,30 +60,6 @@ class profile::logstash::collector (
         srange  => '$DOMAIN_NETWORKS',
     }
 
-    logstash::input::syslog { 'syslog':
-        port => 10514,
-        tags => ['input-syslog-10514'],
-    }
-
-    ferm::service { 'logstash_syslog_udp':
-        proto   => 'udp',
-        port    => '10514',
-        notrack => true,
-        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
-    }
-
-    ferm::service { 'logstash_syslog_tcp':
-        proto   => 'tcp',
-        port    => '10514',
-        notrack => true,
-        srange  => '($DOMAIN_NETWORKS $NETWORK_INFRA $MGMT_NETWORKS)',
-    }
-    nrpe::monitor_service { 'logstash_syslog_tcp':
-        description  => 'logstash syslog TCP port',
-        nrpe_command => '/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p 10514',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Logstash',
-    }
-
     ferm::service { 'grafana_dashboard_definition_storage':
         proto  => 'tcp',
         port   => '9200',

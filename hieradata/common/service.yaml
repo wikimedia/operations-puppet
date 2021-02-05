@@ -1332,58 +1332,6 @@ service::catalog:
     sites:
       - eqiad
     state: production
-  logstash-syslog-tcp:
-    description: Logstash ingestion syslog tcp
-    encryption: false
-    ip:
-      eqiad:
-        default: 10.2.2.36
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: logstash
-        service: logstash-syslog
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-      protocol: tcp
-      scheduler: wrr
-    monitoring:
-      check_command: check_tcp!10514
-      critical: true
-      sites:
-        eqiad:
-          hostname: logstash.svc.eqiad.wmnet
-    port: 10514
-    sites:
-      - eqiad
-    state: service_setup
-  logstash-syslog-udp:
-    description: Logstash ingestion syslog udp
-    encryption: false
-    ip:
-      eqiad:
-        default: 10.2.2.36
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: logstash
-        service: logstash-syslog
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        UDP:
-          icmp-timeout: 20
-          interval: 10
-      protocol: udp
-      scheduler: wrr
-    port: 10514
-    sites:
-      - eqiad
-    state: service_setup
   logstash-udp2log:
     description: Logstash ingestion udp2log
     encryption: false
