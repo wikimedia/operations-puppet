@@ -1945,6 +1945,7 @@ ldap:
   base-dn: 'dc=wikimedia,dc=org'
   groups_cn: 'ou=groups'
   users_cn: 'ou=people'
+  proxyagent: 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
 apereo_cas:
   production:
     login_url: 'https://idp.wikimedia.org/login'
