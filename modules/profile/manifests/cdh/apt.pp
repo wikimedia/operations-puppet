@@ -10,7 +10,7 @@
 #
 class profile::cdh::apt (
     Boolean $pin_release = lookup('profile::cdh::apt::pin_release', { 'default_value' => true }),
-    Optional[String] $bigtop_component = lookup('profile::cdh::apt::bigtop_component', { 'default_value' => undef }),
+    Optional[String] $bigtop_component = lookup('profile::cdh::apt::bigtop_component', { 'default_value' => 'bigtop15' }),
 ){
 
     if $bigtop_component {

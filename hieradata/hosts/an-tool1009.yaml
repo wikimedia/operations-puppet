@@ -3,3 +3,6 @@ profile::hue::servername: 'hue-next.wikimedia.org'
 profile::hue::use_hue4_settings: true
 profile::hue::enable_cas: true
 profile::hue::auth_backend: 'remote_user'
+
+profile::cdh::apt::bigtop_component: 'bigtop15'
+profile::analytics::cluster::packages::common::use_bigtop_settings: true

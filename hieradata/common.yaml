@@ -737,6 +737,7 @@ hive_services:
     server_authentication: 'KERBEROS'
     server_authentication_kerberos_principal: 'hive/analytics-hive.eqiad.wmnet@WIKIMEDIA'
     server_authentication_kerberos_keytab: '/etc/security/keytabs/hive/hive.keytab'
+    hive_metastore_disallow_incompatible_col_type_changes: false
     java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
     metastore_opts: '-Xms4g -Xmx4g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
     server_opts: '-Xms8g -Xmx8g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
@@ -1210,6 +1211,10 @@ hadoop_clusters:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
       spark.authenticate: true
       spark.network.crypto.enabled: true
+      # When testing spark2 on yarn, the AM was often killed
+      # due to virtual memory usage.
+      # More info: https://phabricator.wikimedia.org/T244499#6378887
+      yarn.nodemanager.vmem-pmem-ratio: 5.1
 
     yarn_nodemanager_container_executor_config:
       yarn.nodemanager.linux-container-executor.group: 'yarn'
