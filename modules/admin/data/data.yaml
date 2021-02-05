@@ -4719,3 +4719,7 @@ ldap_only_users:
     ensure: present
     realname: Zeljko Filipin
     email: zfilipin@wikimedia.org
+  agueyte:
+    ensure: present
+    realname: Anaïs Gueyte
+    email: agueyte@wikimedia.org
