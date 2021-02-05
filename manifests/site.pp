@@ -1107,9 +1107,10 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 }
 
 # New hosts to refresh db1074-db1095 T264584 T267043
+# 9 expansion hosts T273566
 # 2 hosts (db1154 and db1155) will be used to temporary test sanitarium upgrades to 10.4 T268742
 # Set them to spare individually as it will take take to transfer the data
-node /^db11(56|58|59|61|62|63|64|65|67|68|70|72)\.eqiad\.wmnet$/ {
+node /^db11(56|58|59|61|62|63|64|65|67|68|70|72|76|77|78|79|80|81|82|83|84)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
