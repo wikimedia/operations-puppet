@@ -1,6 +1,6 @@
 profile::query_service::updater_type: 'streaming'
-profile::query_service::streaming_updater_kafka_cluster: jumbo
-profile::query_service::streaming_updater_kafka_topic: wdqs_streaming_updater_test
+profile::query_service::streaming_updater_kafka_cluster: main
+profile::query_service::streaming_updater_kafka_topic: eqiad.rdf-streaming-updater.mutation
 # switch wikibase:isSomeValue function to use skolem IRIs (T244341)
 # hopefully should be enabled by default
 profile::query_service::blazegraph_extra_jvm_opts: ["-DwikibaseSomeValueMode=skolem"]
