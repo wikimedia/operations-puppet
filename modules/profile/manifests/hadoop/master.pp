@@ -126,14 +126,14 @@ class profile::hadoop::master(
             retries        => 2,
             contact_group  => 'analytics',
             require        => File['/usr/local/lib/nagios/plugins/check_hdfs_topology'],
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_topology_check',
         }
         # Alert if there is no active NameNode
         nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
             description   => 'At least one Hadoop HDFS NameNode is active',
             nrpe_command  => "/usr/bin/sudo ${kerberos_prefix}/usr/local/bin/check_hdfs_active_namenode",
             contact_group => 'analytics',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#No_active_HDFS_Namenode_running',
             require       => [
                 Class['cdh::hadoop::master'],
                 Sudo::User['nagios-check_hdfs_active_namenode'],
@@ -163,7 +163,7 @@ class profile::hadoop::master(
             critical        => 5,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_corrupt_blocks',
         }
 
         monitoring::check_prometheus { 'hadoop-hdfs-missing-blocks':
@@ -174,7 +174,7 @@ class profile::hadoop::master(
             critical        => 5,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_missing_blocks',
         }
 
         monitoring::check_prometheus { 'hadoop-hdfs-rpc-queue-length':
@@ -196,6 +196,7 @@ class profile::hadoop::master(
             critical        => 3,
             contact_group   => 'analytics',
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Unhealthy_Yarn_Nodemanagers',
         }
 
         # Thresholds for the HDFS namenode are higher since it has always
