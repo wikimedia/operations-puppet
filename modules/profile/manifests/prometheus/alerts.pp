@@ -136,6 +136,55 @@ class profile::prometheus::alerts (
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration',
     }
 
+
+    # Declare validation error rate alerts for each eventgate service.
+    # https://phabricator.wikimedia.org/T257237
+    $eventgate_services_validation_error_thresholds = {
+        # eventgate-main should have no validation errors.
+        'eventgate-main' => {
+            'warning' => 0.0,
+            'critical' => 0.5,
+            'contact_group' => 'admins',
+        },
+        # eventgate-analytics usually has no validation errors,
+        # but if it does it isn't a critical production problem.
+        'eventgate-analytics' => {
+            'warning' => 0.0,
+            'critical' => 1.0,
+            'contact_group' => 'analytics',
+        },
+        # eventgate-analytics-external will almost always have validation errors,
+        # since we accept events from external client.
+        'eventgate-analytics-external' => {
+            'warning' => 1.0,
+            'critical' => 2.0,
+            'contact_group' => 'analytics',
+        },
+        # eventgate-analytics-external will probably have validation errors,
+        # since we accept events from external client, but so far it doesn't have many if any.
+        'eventgate-logging-external' => {
+            'warning' => 0.1,
+            'critical' => 0.5,
+            'contact_group' => 'admins',
+        },
+    }
+    $eventgate_services_validation_error_thresholds.each |String $eventgate_service, Hash $params| {
+        # Alert if validation error rate throughput goes above thresholds in a 15 minute period.
+        monitoring::check_prometheus { "${eventgate_service}_validation_error_rate":
+            description     => "${eventgate_service} validation error rate too high",
+            query           => "sum(rate(eventgate_validation_errors_total{service=\"${eventgate_service}\"} [15m]))",
+            prometheus_url  => 'https://thanos-query.discovery.wmnet',
+            warning         => $params['warning'],
+            critical        => $params['critical'],
+            method          => 'gt',
+            dashboard_links => ["https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?orgId=1&refresh=1m&var-service=${eventgate_service}&var-stream=All&var-kafka_broker=All&var-kafka_producer_type=All&var-dc=thanos"],
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate',
+            contact_group   => $params['contact_group']
+        }
+    }
+
+
+    # NOTE: To be removed in favor of the eventgate_validation_errors_total based alerts above.
     monitoring::alerts::kafka_topic_throughput { 'eventgate-analytics_validation_errors':
         kafka_cluster_name => 'jumbo-eqiad',
         topic              => '.*\.eventgate-analytics\.error\.validation',
