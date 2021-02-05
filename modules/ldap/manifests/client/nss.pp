@@ -41,7 +41,7 @@ class ldap::client::nss(
     include ::ldap::yamlcreds
 
     # Allow labs projects to give people custom shells
-    $shell_override = hiera('user_login_shell', false)
+    $shell_override = lookup('user_login_shell', {'default_value' => false})
     file { '/etc/nslcd.conf':
         content => template('ldap/nslcd.conf.erb'),
         mode    => '0440',
