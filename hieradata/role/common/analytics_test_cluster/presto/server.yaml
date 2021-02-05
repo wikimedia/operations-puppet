@@ -62,7 +62,7 @@ profile::presto::server::catalogs:
       # Attempt to enforce some sort of partition predicate,
       # by making the maximum partitions per scan the number of hours in 5 weeks.
       # This way at least for hourly data a month filter will need to be applied.
-      hive.max-pertitions-per-scan: 840
+      hive.max-partitions-per-scan: 840
 
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
