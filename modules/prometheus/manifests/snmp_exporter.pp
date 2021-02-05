@@ -16,10 +16,8 @@ class prometheus::snmp_exporter {
         template => 'default',
     }
 
-    base::service_unit { 'prometheus-snmp-exporter':
-        ensure    => present,
-        refresh   => true,
-        strict    => false,
+    service { 'prometheus-snmp-exporter':
+        ensure    => running,
         require   => Package['prometheus-snmp-exporter'],
         subscribe => Exec['prometheus-snmp-exporter-config'],
     }

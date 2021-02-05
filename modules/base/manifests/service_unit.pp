@@ -24,18 +24,6 @@
 #  by a Debian package, while applying an override file with site-
 #  specific changes.
 #
-# [*upstart*]
-#  As the preceding param, but for upstart scripts
-#
-# [*sysvinit*]
-#  As the preceding param, but for traditional sysvinit scripts
-#
-# [*strict*]
-#  Boolean - if true (default), forces you to declare customized scripts
-#  for all init systems; if false allows to use standard scripts from
-#  the distro (e.g. memcached will need a custom systemd unit, but use
-#  the standard init file on upstart).
-#
 # [*refresh*]
 #  Boolean - tells puppet if a change in the config should notify the service
 #  directly
@@ -57,7 +45,7 @@
 # class foo {
 #     base::service_unit { 'apache2':
 #         ensure          => present,
-#         sysvinit        => sysvinit_template('apache2'),
+#         systemd         => systemd_template('apache2'),
 #         service_params  => {
 #             hasrestart => true,
 #             restart => '/usr/sbin/service apache2 restart'
@@ -66,107 +54,80 @@
 # }
 
 define base::service_unit (
-    Wmflib::Ensure $ensure             = present,
-    Optional[String] $systemd          = undef,
-    Optional[String] $systemd_override = undef,
-    Optional[String] $upstart          = undef,
-    Optional[String] $sysvinit         = undef,
-    Boolean $strict                    = true,
-    Boolean $refresh                   = true,
-    Boolean $declare_service           = true,
-    Boolean $mask                      = false,
-    Hash $service_params               = {},
+  Wmflib::Ensure $ensure             = present,
+  Optional[String] $systemd          = undef,
+  Optional[String] $systemd_override = undef,
+  Boolean $refresh                   = true,
+  Boolean $declare_service           = true,
+  Boolean $mask                      = false,
+  Hash $service_params               = {},
 ) {
 
-    $custom_inits = {
-        'systemd'          => $systemd,
-        'systemd_override' => $systemd_override,
-        'upstart'          => $upstart,
-        'sysvinit'         => $sysvinit
+  $unit_content = pick($systemd_override, $systemd, false)
+
+  # we assume init scripts are templated
+  if $unit_content {
+    $path = $systemd_override ? {
+      undef   => "/lib/systemd/system/${name}.service",
+      default => "/etc/systemd/system/${name}.service.d/puppet-override.conf",
+    }
+    $systemd_mask_path = "/etc/systemd/system/${name}.service"
+
+    if $systemd_override {
+      file { "/etc/systemd/system/${name}.service.d":
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        before => File[$path],
+      }
     }
 
-    # Validates the service name, and picks the valid init script
-    $initscript = pick_initscript(
-        $name, $::initsystem, !empty($systemd), !empty($systemd_override), !empty($upstart),
-        !empty($sysvinit), $strict)
+    file { $path:
+      ensure  => $ensure,
+      content => $unit_content,
+      mode    => '0444',
+      owner   => 'root',
+      group   => 'root',
+    }
 
-    # we assume init scripts are templated
-    if $initscript {
-        $content = $custom_inits[$initscript]
-
-        $path = $initscript ? {
-            'systemd'          => "/lib/systemd/system/${name}.service",
-            'systemd_override' => "/etc/systemd/system/${name}.service.d/puppet-override.conf",
-            'upstart'          => "/etc/init/${name}.conf",
-            default            => "/etc/init.d/${name}"
-        }
-        $systemd_mask_path = "/etc/systemd/system/${name}.service"
-
-        # systemd complains if unit files are executable
-        if $initscript == 'systemd' or $initscript == 'systemd_override' {
-            $i_mode = '0444'
-        } else {
-            $i_mode = '0544'
-        }
-
-        if $systemd_override {
-            file { "/etc/systemd/system/${name}.service.d":
-                ensure => directory,
-                owner  => 'root',
-                group  => 'root',
-                mode   => '0555',
-                before => File[$path],
-            }
-        }
-
-        file { $path:
-            ensure  => $ensure,
-            content => $content,
-            mode    => $i_mode,
-            owner   => 'root',
-            group   => 'root',
-        }
-
-        if $initscript == 'systemd' and $mask {
-            file { $systemd_mask_path:
-                ensure => 'link',
-                target => '/dev/null',
-                owner  => 'root',
-                group  => 'root',
-            }
-        }
-
-        if $declare_service {
-            if $refresh {
-                File[$path] ~> Service[$name]
-            } else {
-                File[$path] -> Service[$name]
-            }
-        }
-
-        if $::initsystem == 'systemd' {
-            exec { "systemd reload for ${name}":
-                refreshonly => true,
-                command     => '/bin/systemctl daemon-reload',
-                subscribe   => File[$path],
-            }
-            if $declare_service {
-                Exec["systemd reload for ${name}"] -> Service[$name]
-            }
-        }
+    if $mask {
+      file { $systemd_mask_path:
+        ensure => 'link',
+        target => '/dev/null',
+        owner  => 'root',
+        group  => 'root',
+      }
     }
 
     if $declare_service {
-        $enable = $ensure ? {
-            'present' => true,
-            default   => false,
-        }
-        $base_params = {
-            ensure   => stdlib::ensure($ensure, 'service'),
-            provider => $::initsystem,
-            enable   => $enable,
-        }
-        $params = merge($base_params, $service_params)
-        ensure_resource('service', $name, $params)
+      if $refresh {
+        File[$path] ~> Service[$name]
+      } else {
+        File[$path] -> Service[$name]
+      }
     }
+
+    exec { "systemd reload for ${name}":
+      refreshonly => true,
+      command     => '/bin/systemctl daemon-reload',
+      subscribe   => File[$path],
+    }
+    if $declare_service {
+      Exec["systemd reload for ${name}"] -> Service[$name]
+    }
+  }
+
+  if $declare_service {
+    $enable = $ensure ? {
+      'present' => true,
+      default   => false,
+    }
+    $base_params = {
+      ensure   => stdlib::ensure($ensure, 'service'),
+      enable   => $enable,
+    }
+    $params = merge($base_params, $service_params)
+    ensure_resource('service', $name, $params)
+  }
 }
