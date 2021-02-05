@@ -374,20 +374,20 @@ class profile::logstash::collector7 (
 
     $w3creportingapi_versions = {
         # version => revision
-        '1.0.0' => '1'
+        '1.0.0' => '2'
     }
     $w3creportingapi_versions.each |String $w3creportingapi_version, String $w3creportingapi_revision| {
         logstash::output::elasticsearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
           host            => '127.0.0.1',
           guard_condition => "[\$schema] == \"/w3c/reportingapi/network_error/${w3creportingapi_version}\"",
-          index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+YYYY.MM}",
+          index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+YYYY.ww}",
           manage_indices  => true,
           priority        => 90,
           template        => "/etc/logstash/templates/w3creportingapi_${w3creportingapi_version}-${w3creportingapi_revision}.json",
           require         => File['/etc/logstash/templates'],
-          timestring      => '%Y.%m',
-          unit            => 'months',
-          unit_count      => 4,
+          timestring      => '%Y.%W',
+          unit            => 'weeks',
+          unit_count      => 12,
         }
     }
 
