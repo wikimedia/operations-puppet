@@ -73,7 +73,25 @@ class profile::kafka::broker::monitoring (
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
 
+
+    # Alert replica lag is increasing (positive slope) for multiple after multiple retries.
+    monitoring::check_prometheus { 'kafka_broker_replica_lag_increasing':
+        description     => 'Kafka Broker Replica Max Lag is increasing',
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
+        query           => "scalar(deriv(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[2m]))",
+        warning         => 0,
+        critical        => 0,
+        method          => 'gt',
+        # We only want to alert if lag is steadily increasing.  6 retries over 5 minutes should
+        # alert if is increasing (positive slope) for at least 30 minutes.
+        retries         => 6,
+        retry_interval  => 5,
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
+    }
+
     # Alert on the average max replica lag over the last 30 minutes.
+    # TODO: This will be removed in favor of the above check, or we'll just increase thresholds for this.
     monitoring::check_prometheus { 'kafka_broker_replica_max_lag':
         description     => 'Kafka Broker Replica Max Lag',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
