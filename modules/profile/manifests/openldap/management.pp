@@ -9,19 +9,17 @@
 # [*cron_active*] Whether to activate the daily account consistency check or not.
 #
 class profile::openldap::management(
-    Boolean $cron_active         = lookup('profile::openldap::management::cron_active'),
-    Hash $production_ldap_config = lookup('ldap', Hash, hash, {}),
+    Hash    $ldap        = lookup('ldap', Hash, hash, {}),
+    Boolean $cron_active = lookup('profile::openldap::management::cron_active'),
 ) {
-    require ::profile::ldap::client::labs
+    include profile::openldap::client
     include passwords::phabricator
 
-    $ldapconfig = $::ldap::config::labs::ldapconfig
-
-    class { '::ldap::management':
-        server   => $production_ldap_config['rw-server'],
-        basedn   => $production_ldap_config['base-dn'],
-        user     => $ldapconfig['script_user_dn'],
-        password => $ldapconfig['script_user_pass'],
+    class { 'ldap::management':
+        server   => $ldap['rw-server'],
+        basedn   => $ldap['base-dn'],
+        user     => $ldap['script_user_dn'],
+        password => $ldap['script_user_pass'],
     }
 
     ensure_packages([
@@ -65,7 +63,7 @@ class profile::openldap::management(
         require       => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']],
     }
 
-    class { '::phabricator::bot':
+    class { 'phabricator::bot':
         username => 'offboarding',
         token    => $passwords::phabricator::offboarding_script_token,
         owner    => 'root',
