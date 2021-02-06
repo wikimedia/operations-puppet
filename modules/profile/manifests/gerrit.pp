@@ -74,10 +74,19 @@ class profile::gerrit(
     } else {
         ensure_packages('certbot')
         cron { 'certbot_renew':
+            ensure  => absent,
             command => "/usr/bin/certbot -q renew --post-hook \"systemctl reload apache\" 2> /var/log/certbot.log",
             minute  => 4,
             hour    => 4,
             user    => 'root',
+        }
+
+        systemd::timer::job { 'certbot-renew':
+            ensure      => present,
+            user        => 'root',
+            description => 'renew TLS certificate using certbot',
+            command     => "/usr/bin/certbot -q renew --post-hook \"systemctl reload apache\"",
+            interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 04:04:00'},
         }
     }
 
