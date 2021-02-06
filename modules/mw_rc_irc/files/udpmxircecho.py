@@ -3,6 +3,7 @@ try:
     from irc.bot import SingleServerIRCBot
 except ImportError:
     from ircbot import SingleServerIRCBot
+import prometheus_client
 import argparse
 import json
 import threading
@@ -20,6 +21,11 @@ argparser.add_argument(
 )
 args = argparser.parse_args()
 config_data = json.load(args.config_file)
+messages_counter = prometheus_client.Counter(
+    'udpmxircecho_messages_relayed_total',
+    'Total relayed messages',
+    ['channel']
+)
 
 
 class EchoReader(threading.Thread):
@@ -50,6 +56,7 @@ class EchoReader(threading.Thread):
                         self.bot.connection.join(channel)
                     # this throws an exception if not connected.
                     self.bot.connection.privmsg(channel, text)
+                    messages_counter.labels(channel).inc()
             except EOFError:
                 # Once the input is finished, the bot should exit
                 sys.exit()
@@ -81,6 +88,7 @@ class EchoBot(SingleServerIRCBot):
 
 
 def main():
+    prometheus_client.start_http_server(config_data['metrics_port'])
     bot = EchoBot()
     sthr = EchoReader(bot)
     sthr.start()

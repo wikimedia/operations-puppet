@@ -13,7 +13,8 @@ class mw_rc_irc::irc_echo(
             irc_server    => 'localhost',
             irc_port      => 6667,
             irc_realname  => 'IRC echo bot',
-            udp_port      => 9390
+            udp_port      => 9390,
+            metrics_port  => 9221
         }),
         mode    => '0444',
         owner   => 'irc',
