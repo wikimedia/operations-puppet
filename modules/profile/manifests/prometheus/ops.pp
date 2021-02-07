@@ -581,6 +581,22 @@ class profile::prometheus::ops (
         port       => 9206
     }
 
+    # Job definition for udpmxircecho
+    $udpmxircecho_jobs = [
+        {
+            'job_name'        => 'udpmxircecho',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/udpmxircecho_*.yaml" ] },
+            ],
+        },
+    ]
+    prometheus::class_config { "udpmxircecho_${::site}":
+        dest       => "${targets_path}/udpmxircecho_${::site}.yaml",
+        site       => $::site,
+        class_name => 'mw_rc_irc::irc_echo',
+        port       => 9221
+    }
+
     # Job definition for alertmanager
     $alertmanager_jobs = [
       {
@@ -1954,7 +1970,8 @@ class profile::prometheus::ops (
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
-            $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs
+            $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
+            $udpmxircecho_jobs
         ].flatten,
         global_config_extra   => $config_extra,
     }

@@ -1,7 +1,8 @@
 # A basic relay client that accept changes via udp and echo's them to an irc server
 
 class mw_rc_irc::irc_echo(
-    $ircpassword,
+    String       $ircpassword,
+    Stdlib::Port $metrics_port,
 ) {
 
     ensure_packages(['python-irc'])
@@ -14,7 +15,7 @@ class mw_rc_irc::irc_echo(
             irc_port      => 6667,
             irc_realname  => 'IRC echo bot',
             udp_port      => 9390,
-            metrics_port  => 9221
+            metrics_port  => $metrics_port,
         }),
         mode    => '0444',
         owner   => 'irc',

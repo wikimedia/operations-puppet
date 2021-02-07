@@ -1,9 +1,13 @@
-class profile::mw_rc_irc {
-
+class profile::mw_rc_irc (
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    Stdlib::Port        $metrics_port     = lookup('profile::mw_rc_irc::metrics_port', { default_value => 9221 }),
+) {
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
     $udpmxircecho_pass = $passwords::udpmxircecho::udpmxircecho_pass
 
     class { '::mw_rc_irc::irc_echo':
-        ircpassword => $udpmxircecho_pass,
+        ircpassword  => $udpmxircecho_pass,
+        metrics_port => $metrics_port,
     }
 
     class { 'mw_rc_irc::ircserver': }
@@ -21,4 +25,9 @@ class profile::mw_rc_irc {
         srange => '$MW_APPSERVER_NETWORKS',
     }
 
+    ferm::service { 'prometheus_metrics_endpoint':
+      proto  => 'tcp',
+      port   => $metrics_port,
+      srange => "@resolve((${prometheus_nodes_ferm}))",
+    }
 }
