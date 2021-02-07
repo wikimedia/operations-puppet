@@ -116,7 +116,9 @@ hadoop: A:hadoop-worker or A:hadoop-master or A:hadoop-standby
 hadoop-all: A:hadoop or A:hadoop-coordinator or A:hadoop-hdfs-backup
 hadoop-test: A:hadoop-worker-test or A:hadoop-master-test or A:hadoop-standby-test
 hadoop-all-test: A:hadoop-test or A:hadoop-coordinator-test
-hadoop-coordinator: P{O:analytics_cluster::coordinator or O:analytics_cluster::coordinator::replica}
+hadoop-coordinator: A:hadoop-coordinator-primary or A:hadoop-coordinator-secondary
+hadoop-coordinator-primary: P{O:analytics_cluster::coordinator}
+hadoop-coordinator-secondary: P{O:analytics_cluster::coordinator::replica}
 hadoop-coordinator-test: P{O:analytics_test_cluster::coordinator}
 hadoop-hdfs-backup: P{flerovium.eqiad.wmnet or furud.codfw.wmnet}
 hadoop-hdfs-journal: P{C:cdh::hadoop::journalnode} and A:hadoop-worker
@@ -131,7 +133,10 @@ hadoop-hdfs-journal-test: P{C:cdh::hadoop::journalnode} and A:hadoop-worker-test
 hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator or O:analytics_test_cluster::client or O:druid::test_analytics::worker}
 hadoop-client: P{O:statistics::explorer}
 hadoop-client-test: P{O:analytics_test_cluster::client}
-hadoop-ui: P{O:analytics_test_cluster::hadoop::ui or O:analytics_cluster::hadoop::yarn}
+hadoop-ui: A:hadoop-hue-cdh or A:hadoop-hue or A:hadoop-yarn
+hadoop-yarn: P{O:analytics_cluster::hadoop::yarn}
+hadoop-hue-cdh: P{analytics-tool1001.eqiad.wmnet}
+hadoop-hue: P{an-tool1009.eqiad.wmnet}
 hadoop-ui-test: P{O:analytics_test_cluster::hadoop::ui}
 hadoop-dumps-client: P{O:dumps::distribution::server}
 icinga: P{O:alerting_host}
