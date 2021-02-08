@@ -88,5 +88,6 @@ class profile::debmonitor::client (
         description => 'reconciliation job in case any debmonitor update fails',
         command     => $debmon_client_job,
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hour}:${minute}:00"},
+        require     => Package['debmonitor-client'],
     }
 }
