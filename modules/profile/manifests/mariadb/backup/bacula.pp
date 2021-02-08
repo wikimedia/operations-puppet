@@ -10,7 +10,7 @@ class profile::mariadb::backup::bacula (
             $jobdefaults = 'Monthly-1st-Wed-DatabasesCodfw'
         } elsif $::site == 'codfw' {
             # dbprovs on codfw store data on eqiad (cross-dc)
-            $jobdefaults = 'Monthly-1st-Wed-DatabasesEqiad'
+            $jobdefaults = 'Monthly-1st-Wed-Databases' # to be DatabasesEqiad
         } else {
             fail('Only eqiad or codfw pools are configured for database backups.')
         }
