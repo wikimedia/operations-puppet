@@ -11,7 +11,10 @@ class raid::md (
       values => { 'dev.raid.speed_limit_max' => '20000' },
   }
   # Only run on a weekday of our choice, and vary it between servers
-  $dow = fqdn_rand(5, 'md_checkarray') + 1
+  $dow = fqdn_rand(5, 'md_checkarray_dow') + 1
+  # Only run within a specific (February compatible) day of month range
+  $dom_start = fqdn_rand(28 - 7, 'md_checkarray_dom') + 1
+  $dom_end = $dom_start + 7
   # Replace the default mdadm script from upstream with our own
   file { '/etc/cron.d/mdadm':
       ensure  => $cron_ensure,
