@@ -9,6 +9,7 @@ class profile::parsoid::rt_server (
 
     testreduce::server { 'parsoid-rt':
         instance_name  => 'parsoid-rt',
+        db_socket      => '/run/mysqld/mysqld.sock',
         db_host        => 'localhost',
         db_name        => 'testreduce',
         db_user        => 'testreduce',

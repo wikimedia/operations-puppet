@@ -31,6 +31,7 @@ define testreduce::server(
     String $db_name,
     String $db_user,
     String $db_pass,
+    Stdlib::Unixpath $db_socket,
     Stdlib::Fqdn $db_host = 'localhost',
     Stdlib::Port $db_port = 3306,
     Stdlib::Port $coord_port = 8002,
