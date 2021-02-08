@@ -146,8 +146,8 @@ define host {
 }
 
 define host {
-    host_name                frdata1001
-    address                  208.80.155.10
+    host_name                frdata1002
+    address                  10.64.40.131
     check_command            check_ping!500,20%!2000,100%
     max_check_attempts       2
     notification_options     d,u,r,f
@@ -158,6 +158,18 @@ define host {
     hostgroups               fundraising-misc
 }
 
+define host {
+    host_name                frdata2001
+    address                  10.195.0.85
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-misc
+}
 
 define host {
     host_name                frdb1002
@@ -693,12 +705,12 @@ define service {
     contact_groups           fr-tech,fr-tech-ops
 }
 
-# frdata1001
+# frdata1002
 
 define service {
     use                      passive-service
     service_description      check_ssl
-    host_name                frdata1001
+    host_name                frdata1002
     contact_groups           fr-tech,fr-tech-ops
 }
 
