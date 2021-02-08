@@ -803,8 +803,8 @@ node 'db2139.codfw.wmnet' {
 node 'db2141.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-# Codfw new database nodes T267041
-node /^db214[234]\.codfw\.wmnet/ {
+# Codfw new database nodes T273568
+node /^db21[45|46|47|48|49|50|51|52]\.codfw\.wmnet/ {
     role(insetup)
 }
 
