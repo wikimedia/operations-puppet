@@ -6,3 +6,4 @@ profile::swift::storage::object_replicator_concurrency: 6
 profile::swift::storage::object_replicator_interval: ~
 profile::swift::storage::servers_per_port: ~
 profile::swift::storage::container_replicator_interval: ~
+profile::swift::storage::replication_limit_memory_percent: 0
