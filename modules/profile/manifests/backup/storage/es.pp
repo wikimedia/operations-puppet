@@ -9,11 +9,10 @@ class profile::backup::storage::es {
     # and read-write backups)
 
     file { '/srv/bacula':
-        ensure  => directory,
-        owner   => 'bacula',
-        group   => 'bacula',
-        mode    => '0660',
-        require => Class['bacula::storage'],
+        ensure => directory,
+        owner  => 'bacula',
+        group  => 'bacula',
+        mode   => '0660',
     }
     file { [ '/srv/bacula/es-readonly',
           '/srv/bacula/es-readwrite', ]:
