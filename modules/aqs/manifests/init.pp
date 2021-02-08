@@ -55,6 +55,11 @@
 #   Deploy an apt component for nodejs 10 for hosts running Debian Stretch.
 #   Default: false
 #
+# [*git_deploy*]
+#   Avoid scap and use git to deploy the repository. This is useful when dealing
+#   with testing environments like cloud where it is not easy to bootstrap
+#   a deployment server.
+#
 class aqs(
     $cassandra_user                = 'cassandra',
     $cassandra_password            = 'cassandra',
@@ -74,7 +79,13 @@ class aqs(
     $druid_uri_pattern             = undef,
     $use_nodejs10                  = false,
     $contact_groups                = 'admins,analytics',
+    Boolean $git_deploy            = false,
 ) {
+
+    $deployment = $git_deploy ? {
+        true  => 'git',
+        false => 'scap3',
+    }
 
     service::node { 'aqs':
         port            => $port,
@@ -87,7 +98,7 @@ class aqs(
         local_logging   => false,
         auto_refresh    => false,
         init_restart    => false,
-        deployment      => 'scap3',
+        deployment      => $deployment,
         use_nodejs10    => $use_nodejs10,
         contact_groups  => $contact_groups,
     }
