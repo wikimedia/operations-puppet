@@ -13,7 +13,7 @@ class role::maps::replica {
 
     system::role { 'maps::replica':
       ensure      => 'present',
-      description => 'Maps master (postgresql, cassandra, tilerator, kartotherian)',
+      description => 'Maps replica (postgresql, cassandra, tilerator, kartotherian)',
     }
 
 }
