@@ -79,6 +79,8 @@ import warnings
 import configparser
 import subprocess
 
+from time import sleep
+
 
 def get_value(path):
     """Read a (sysfs) value from path"""
@@ -91,16 +93,16 @@ def write_value(path, value):
     open(path, 'w').write(value)
 
 
-def cmd_nofail(cmd):
+def cmd_nofail(cmd, capture_output=False):
     """echo + exec cmd with normal output, raises on rv!=0"""
     print('Executing: %s' % cmd)
-    subprocess.check_call(cmd, shell=True)
+    return subprocess.run(cmd, shell=True, check=True, capture_output=capture_output)
 
 
-def cmd_failable(cmd):
+def cmd_failable(cmd, capture_output=False):
     """echo + exec cmd with normal output, ignores errors"""
     print('Executing: %s' % cmd)
-    subprocess.call(cmd, shell=True)
+    return subprocess.run(cmd, shell=True, check=False, capture_output=capture_output)
 
 
 def get_cpu_list(device, numa_filter, avoid_cpu0):
@@ -155,6 +157,54 @@ def get_queues(device, qtype):
     queues = [int(os.path.basename(q)[3:]) for q in nodes]
 
     return sorted(queues)
+
+
+def get_ethtool_queues(device):
+    """Use ethtool to get the number of queues
+
+    Arguments:
+        device (str): the device name to configure
+
+    Returns:
+        int: The number of queues configured
+    """
+    current_config = cmd_nofail('ethtool -l {}'.format(device), True)
+    for line in current_config.stdout.decode().splitlines()[-4:]:
+        if line.startswith('Combined:'):
+            return int(line.split()[-1])
+    raise KeyError('{}:unable to get current queue count from ethtool'.format(device))
+
+
+def set_ethtool_queues(device, desired_queues):
+    """Use ethtool to set the number of queues
+
+    Arguments:
+        device (str): the device name to configure
+        desired_queues (int): The number of queues to configure
+
+    """
+    supported_driver_prefix = ('bnx2x', 'bnxt_en', 'i40e')
+    if not device.startswith(supported_driver_prefix):
+        print('Interface ({}) has unsuported driver, not setting queue count'.format(device))
+        return
+
+    if desired_queues == get_ethtool_queues(device):
+        return
+
+    cmd_nofail(
+        'ethtool -L {device} combined {num_queues}'.format(
+            device=device, num_queues=desired_queues
+        )
+    )
+
+    for _ in range(10):
+        if desired_queues == get_ethtool_queues(device):
+            return
+        # sleep for a second before re-probing
+        sleep(1)
+    raise RuntimeError(
+        '{}: unable to set current queue count with ethtool'.format(device)
+    )
 
 
 def get_bnx2x_cos_queue_map(tx_queues, rx_queues):
@@ -288,12 +338,14 @@ def main():
 
     opts = get_options(device)
 
-    cpu_list = get_cpu_list(device, opts['numa_filter'], opts['avoid_cpu0'])
-    rx_queues = get_queues(device, 'rx')
-    tx_queues = get_queues(device, 'tx')
     driver = os.path.basename(
         os.readlink('/sys/class/net/%s/device/driver/module' % device)
     )
+
+    cpu_list = get_cpu_list(device, opts['numa_filter'], opts['avoid_cpu0'])
+    set_ethtool_queues(driver, len(cpu_list))
+    rx_queues = get_queues(device, 'rx')
+    tx_queues = get_queues(device, 'tx')
 
     # TG3: it numbers queues 0-3, but then the naming pattern in
     # /proc/interrupts uses numbering 1-4 :P
