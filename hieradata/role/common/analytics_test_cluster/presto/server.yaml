@@ -27,7 +27,7 @@ profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::properties define.  This will render
   # a properties file at /etc/presto/catalog/$name.properties.
-  analytics_hive:
+  analytics_test_hive:
     properties:
       connector.name: hive-hadoop2
       hive.security: read-only
@@ -37,11 +37,6 @@ profile::presto::server::catalogs:
       hive.metastore.username: presto
       hive.storage-format: PARQUET
       hive.compression-codec: SNAPPY
-      # We do not (yet) colocate workers with Hadoop DataNodes.
-      # When we tested 0.246 the option parser rejected setting the option to its
-      # default, so we removed it but we left this comment for documentation purposes.
-      # hive.force-local-scheduling: false
-      # Allow presto-cli to impersonate the user running the process
       # Allow presto-cli to impersonate the user running the process
       hive.hdfs.impersonation.enabled: true
       # TODO: do we want to disable non managed tables?
