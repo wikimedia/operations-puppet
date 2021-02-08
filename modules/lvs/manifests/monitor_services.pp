@@ -54,7 +54,6 @@ class lvs::monitor_services(
                 target        => "http://kartotherian.svc.${dc}.wmnet:6533",
                 contact_group => 'admins,team-interactive',
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Maps#Kartotherian',
-                critical      => true,
                 ;
             "check_eventgate_analytics_cluster_${dc}":
                 host        => "eventgate-analytics.svc.${dc}.wmnet",
