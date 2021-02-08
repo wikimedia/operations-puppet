@@ -16,6 +16,7 @@ class profile::toolforge::proxy (
         acme_chief::cert { $ssl_cert_name:
             puppet_rsc => Exec['nginx-reload'],
         }
+        class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
     } else {
         $ssl_cert_name = undef
     }
