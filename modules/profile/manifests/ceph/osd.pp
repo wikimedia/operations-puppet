@@ -14,6 +14,8 @@ class profile::ceph::osd(
     Stdlib::AbsolutePath $bootstrap_keyring = lookup('profile::ceph::osd::bootstrap_keyring'),
     String               $bootstrap_keydata = lookup('profile::ceph::osd::bootstrap_keydata'),
     Array[String]        $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
+    Array[String]        $os_disks = lookup('profile::ceph::osd::os_disks'),
+    String               $disks_io_scheduler = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
 ) {
     # Ceph OSDs should use the performance governor, not the default 'powersave'
     # governor
@@ -126,13 +128,21 @@ class profile::ceph::osd(
     }
 
     $facts['disks'].each |String $device, Hash $device_info| {
-        if ('model' in $device_info and $device_info['model'] in
-        $disk_models_without_write_cache) {
-            exec { "Disable write cache on device /dev/${device}":
-                # 0->disable, 1->enable
-                command => "hdparm -W 0 /dev/${device}",
+        if ! ( $device in $os_disks) {
+            if ('model' in $device_info and $device_info['model'] in $disk_models_without_write_cache) {
+                exec { "Disable write cache on device /dev/${device}":
+                    # 0->disable, 1->enable
+                    command => "hdparm -W 0 /dev/${device}",
+                    user    => 'root',
+                    unless  => "hdparm -W /dev/${device} | grep write-caching | grep -q off",
+                    path    => ['/usr/sbin', '/usr/bin'],
+                }
+            }
+
+            exec { "Set IO scheduler on device /dev/${device} to ${disks_io_scheduler}":
+                command => "echo ${disks_io_scheduler} > /sys/block/${device}/queue/scheduler",
                 user    => 'root',
-                unless  => "hdparm -W /dev/${device} | grep write-caching | grep -q off",
+                unless  => "grep -q '\\[${disks_io_scheduler}\\]' /sys/block/${device}/queue/scheduler",
                 path    => ['/usr/sbin', '/usr/bin'],
             }
         }

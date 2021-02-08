@@ -18,63 +18,128 @@ describe 'profile::ceph::osd' do
               'iface'  => 'ens3f1np1',
             }
           }
-        }
+        },
+        'disk_models_without_write_cache' => ['matchingmodel'],
+        'os_disks' => [],
+        'disks_io_scheduler' => 'dummy_io_scheduler',
       }
       let(:facts) { facts.merge({
         'fqdn' => 'dummyhost1',
-      }) }
-      let(:node_params) {{ '_role' => 'ceph::osd' }}
+      })  }
       let(:params) { base_params }
+      let(:node_params) {{ '_role' => 'ceph::osd' }}
       it { is_expected.to compile.with_all_deps }
 
-      context "when empty disks fact" do
-        let(:facts) { facts.merge({
-          'fqdn' => 'dummyhost1',
-          'disks' => {}
-        }) }
-        it { is_expected.to compile.with_all_deps }
-      end
-
-      context "when no disk model facts" do
-        let(:facts) { facts.merge({
-          'fqdn' => 'dummyhost1',
-          'disks' => {
-            'sda' => {}
-          }
-        }) }
-        it { is_expected.to compile.with_all_deps }
-      end
-
-      context "when disk model write cache should be enabled" do
+      context "when empty os_disks" do
         let(:params) { base_params.merge({
-          'disk_models_without_write_cache' => ['imnotdummymodel']
+          'os_disks' => []
         }) }
-        let(:facts) { facts.merge({
-          'fqdn' => 'dummyhost1',
-          'disks' => {
-            'sda' => {
-              'model' => 'dummymodel',
+
+        context "when empty disks fact" do
+          let(:facts) { facts.merge({
+            'fqdn' => 'dummyhost1',
+            'disks' => {}
+          }) }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_exec(/Disable write cache on device/) }
+          it { is_expected.not_to contain_exec(/Set IO scheduler on device /) }
+        end
+
+        context "when non empty disks fact and no model" do
+          let(:facts) { facts.merge({
+            'fqdn' => 'dummyhost1',
+            'disks' => {
+              'sda' => {}
             }
-          }
-        }) }
-        it { is_expected.to compile.with_all_deps }
-        it { is_expected.not_to contain_exec('Disable write cache on device /dev/sda') }
+          }) }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_exec('Disable write cache on device /dev/sda') }
+          it { is_expected.to contain_exec('Set IO scheduler on device /dev/sda to dummy_io_scheduler') }
+        end
+
+        context "when non empty disks fact and non matching model" do
+          let(:facts) { facts.merge({
+            'fqdn' => 'dummyhost1',
+            'disks' => {
+              'sda' => {
+                'model' => 'idontmatch',
+              }
+            }
+          }) }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_exec('Disable write cache on device /dev/sda') }
+          it { is_expected.to contain_exec('Set IO scheduler on device /dev/sda to dummy_io_scheduler') }
+        end
+
+        context "when non empty disks fact and matching model" do
+          let(:facts) { facts.merge({
+            'fqdn' => 'dummyhost1',
+            'disks' => {
+              'sda' => {
+                'model' => 'matchingmodel',
+              }
+            }
+          }) }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_exec('Disable write cache on device /dev/sda') }
+          it { is_expected.to contain_exec('Set IO scheduler on device /dev/sda to dummy_io_scheduler') }
+        end
       end
 
-      context "when disk model is supported" do
-        let(:facts) { facts.merge({
-          'fqdn' => 'dummyhost1',
-          'disks' => {
-            'sda' => {
-              'model' => 'dummymodel',
-            }
-          }
-        }) }
+      context "when non empty os_disks" do
         let(:params) { base_params.merge({
-          'disk_models_without_write_cache' => ['dummymodel']
+          'os_disks' => ['sda'],
         }) }
-        it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_exec('Disable write cache on device /dev/sda').with_command('hdparm -W 0 /dev/sda') }
+
+        context "when empty disks fact" do
+          let(:facts) { facts.merge({
+            'fqdn' => 'dummyhost1',
+            'disks' => {}
+          }) }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_exec(/Disable write cache on device/) }
+          it { is_expected.not_to contain_exec(/Set IO scheduler on device /) }
+        end
+
+        context "when non empty disks fact and no model" do
+          let(:facts) { facts.merge({
+            'fqdn' => 'dummyhost1',
+            'disks' => {
+              'sda' => {}
+            }
+          }) }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_exec('Disable write cache on device /dev/sda') }
+          it { is_expected.not_to contain_exec('Set IO scheduler on device /dev/sda to dummy_io_scheduler') }
+        end
+
+        context "when non empty disks fact and non matching model" do
+          let(:facts) { facts.merge({
+            'fqdn' => 'dummyhost1',
+            'disks' => {
+              'sda' => {
+                'model' => 'idontmatch',
+              }
+            }
+          }) }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_exec('Disable write cache on device /dev/sda') }
+          it { is_expected.not_to contain_exec('Set IO scheduler on device /dev/sda to dummy_io_scheduler') }
+        end
+
+        context "when non empty disks fact and matching model" do
+          let(:facts) { facts.merge({
+            'fqdn' => 'dummyhost1',
+            'disks' => {
+              'sda' => {
+                'model' => 'matchingmodel',
+              }
+            }
+          }) }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_exec('Disable write cache on device /dev/sda') }
+          it { is_expected.not_to contain_exec('Set IO scheduler on device /dev/sda to dummy_io_scheduler') }
+        end
       end
     end
   end

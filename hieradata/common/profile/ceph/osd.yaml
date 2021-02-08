@@ -3,3 +3,7 @@ profile::ceph::osd::disk_models_without_write_cache:
   - SSDSC2KG019T8R  # cloudcephosd1001
   - MTFDDAK1T9TDN  # cloudcephosd1015
   - MTFDDAK960TDN  # cloudcephosd2001
+profile::ceph::osd::disks_io_scheduler: 'none'
+profile::ceph::osd::os_disks:
+  - sda
+  - sdb
