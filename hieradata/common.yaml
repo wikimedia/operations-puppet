@@ -1631,10 +1631,11 @@ labstore_hosts:
 mysql_root_clients:
 # ipv6 interfaces are not yet allowed due to mysql grants
 # do not put dns names or hostnames here, only ipv4
-- 10.64.0.122  # db1115.eqiad.wmnet
-- 10.192.48.91 # db2093.codfw.wmnet
-- 10.64.32.25  # cumin1001.eqiad.wmnet
-- 10.192.48.16 # cumin2001.codfw.wmnet
+- 10.64.0.122    # db1115.eqiad.wmnet
+- 10.192.48.91   # db2093.codfw.wmnet
+- 10.64.32.25    # cumin1001.eqiad.wmnet
+- 10.192.48.16   # cumin2001.codfw.wmnet
+- 208.80.155.103 # dborch1001.wikimedia.org
 
 monitoring_hosts:
 - 208.80.154.84              # icinga1001.wikimedia.org
