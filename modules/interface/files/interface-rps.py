@@ -183,7 +183,7 @@ def get_rx_irqs(rss_pattern, rx_queues, q_offset):
     # create a dictionary of rxq:rx_irq, e.g.
     #   { 0: '128', 1: '129', 2: '130', ... }
     irqs = {}
-    rss_pat_asre = re.sub('%d', r'(\d+)', rss_pattern)
+    rss_pat_asre = re.sub('%d', r'(\\d+)', rss_pattern)
     rss_re = re.compile(r'^\s*([0-9]+):.*\s' + rss_pat_asre + r'\n$')
     irq_file = open('/proc/interrupts', 'r')
     for line in irq_file:
