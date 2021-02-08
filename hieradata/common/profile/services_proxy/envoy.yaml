@@ -70,6 +70,14 @@ profile::services_proxy::envoy::listeners:
     service: push-notifications
     keepalive: "4.5s"
     timeout: "2.5s"
+  - name: eventgate-analytics-external
+    port: 6013
+    timeout: "5s"
+    service: eventgate-analytics-external
+    keepalive: "4.5s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -202,6 +210,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - parsoid-php
   - mathoid
   - eventgate-analytics
+  - eventgate-analytics-external
   - eventgate-main
   - sessionstore
   - echostore
