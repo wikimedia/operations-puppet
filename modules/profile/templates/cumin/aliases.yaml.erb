@@ -80,7 +80,7 @@ db-role-<%= role %>: P{P:mariadb::mysql_role%role = <%= role %>}
 db-section-<%= section %>: P{R:profile::mariadb::section%section = <%= section %>}
 <% end -%>
 <% end -%>
-db-backups: P{O:mariadb::backups}
+db-backups: P{O:dbbackups::metadata or O:dbbackups::content}
 db-proxy: P{O:mariadb::proxy::master or O:mariadb::proxy::replicas}
 dbmonitor: P{O:tendril}
 debmonitor: P{O:debmonitor::server}

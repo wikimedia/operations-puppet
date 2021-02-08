@@ -29,7 +29,7 @@ profile::alertmanager::allow_from:
 profile::alertmanager::web::vhost: 'alerts.%{facts.domain}'
 
 profile::mariadb::wmfmariadbpy::role: 'library'
-profile::mariadb::backup::check::backups:
+profile::dbbackups::check::backups:
   s1:
     dump:
     - eqiad
@@ -127,14 +127,14 @@ profile::mariadb::backup::check::backups:
   analytics_meta:
     dump:
     - eqiad
-profile::mariadb::backup::check::freshness:
+profile::dbbackups::check::freshness:
   dump: 691200
   snapshot: 259200
-profile::mariadb::backup::check::db_host: db1080.eqiad.wmnet
-profile::mariadb::backup::check::db_user: backupcheck
-profile::mariadb::backup::check::db_database: dbbackups
-profile::mariadb::backup::check::warn_size_percentage: 5
-profile::mariadb::backup::check::crit_size_percentage: 15
+profile::dbbackups::check::db_host: db1080.eqiad.wmnet
+profile::dbbackups::check::db_user: backupcheck
+profile::dbbackups::check::db_database: dbbackups
+profile::dbbackups::check::warn_size_percentage: 5
+profile::dbbackups::check::crit_size_percentage: 15
 
 profile::klaxon::klaxon_config:
   admin_contact_email: root@wikimedia.org

@@ -1,10 +1,10 @@
 # If active, send the backups generated on /srv/backup to long term storage
-# This class is similar to P::mariadb::backup:bacula, but differs in that
+# This class is similar to P::dbbackups:bacula, but differs in that
 # it is specific for configuration of external store database (wiki content)
 # backups
 # Requires including ::profile::backup::host on the role that uses it
-class profile::mariadb::backup::bacula_es (
-    Boolean $active = lookup('profile::mariadb::backup::bacula_es::active'),
+class profile::dbbackups::bacula_es (
+    Boolean $active = lookup('profile::dbbackups::bacula_es::active'),
 ) {
     if $active {
         # Warning: because we do-cross dc backups, this can get confusing:

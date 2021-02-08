@@ -211,7 +211,7 @@ node 'backup1001.eqiad.wmnet' {
 }
 # eqiad storage daemon and backup generation for ES databases
 node 'backup1002.eqiad.wmnet' {
-    role(mariadb::content_backups)
+    role(dbbackups::content)
 }
 
 # codfw storage daemon
@@ -220,7 +220,7 @@ node 'backup2001.codfw.wmnet' {
 }
 # codfw storage daemon and backup generation for ES databases
 node 'backup2002.codfw.wmnet' {
-    role(mariadb::content_backups)
+    role(dbbackups::content)
 }
 
 # Bastion in Virginia
@@ -826,22 +826,22 @@ node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
 # database-provisioning and short-term/postprocessing backups servers
 
 node 'dbprov1001.eqiad.wmnet' {
-    role(mariadb::backups)
+    role(dbbackups::metadata)
 }
 node 'dbprov1002.eqiad.wmnet' {
-    role(mariadb::backups)
+    role(dbbackups::metadata)
 }
 node 'dbprov1003.eqiad.wmnet' {
-    role(mariadb::backups)
+    role(dbbackups::metadata)
 }
 node 'dbprov2001.codfw.wmnet' {
-    role(mariadb::backups)
+    role(dbbackups::metadata)
 }
 node 'dbprov2002.codfw.wmnet' {
-    role(mariadb::backups)
+    role(dbbackups::metadata)
 }
 node 'dbprov2003.codfw.wmnet' {
-    role(mariadb::backups)
+    role(dbbackups::metadata)
 }
 # Active eqiad proxies for misc databases
 node /^dbproxy10(12|13|14|15|16|17|20|21)\.eqiad\.wmnet$/ {

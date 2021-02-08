@@ -3,15 +3,15 @@
 # correct. Generate an icinga alert if not.
 # Only metadata checks are done- full backup tests are to be
 # done on a separate class.
-class profile::mariadb::backup::check (
-    $backups              = lookup('profile::mariadb::backup::check::backups', Hash, ),
-    $freshness            = lookup('profile::mariadb::backup::check::freshness', Hash[String, Integer], ),
-    $warn_size_percentage = lookup('profile::mariadb::backup::check::warn_size_percentage', Float[0, 100]),
-    $crit_size_percentage = lookup('profile::mariadb::backup::check::crit_size_percentage', Float[0, 100]),
-    $db_host              = lookup('profile::mariadb::backup::check::db_host', String, ),
-    $db_user              = lookup('profile::mariadb::backup::check::db_user', String, ),
-    $db_password          = lookup('profile::mariadb::backup::check::db_password', String, ),
-    $db_database          = lookup('profile::mariadb::backup::check::db_database', String, ),
+class profile::dbbackups::check (
+    $backups              = lookup('profile::dbbackups::check::backups', Hash, ),
+    $freshness            = lookup('profile::dbbackups::check::freshness', Hash[String, Integer], ),
+    $warn_size_percentage = lookup('profile::dbbackups::check::warn_size_percentage', Float[0, 100]),
+    $crit_size_percentage = lookup('profile::dbbackups::check::crit_size_percentage', Float[0, 100]),
+    $db_host              = lookup('profile::dbbackups::check::db_host', String, ),
+    $db_user              = lookup('profile::dbbackups::check::db_user', String, ),
+    $db_password          = lookup('profile::dbbackups::check::db_password', String, ),
+    $db_database          = lookup('profile::dbbackups::check::db_database', String, ),
 ) {
     require ::profile::mariadb::wmfmariadbpy
 

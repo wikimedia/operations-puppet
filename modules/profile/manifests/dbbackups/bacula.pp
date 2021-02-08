@@ -1,7 +1,7 @@
 # If active, send the backups generated on /srv/backup to long term storage
 # Requires including ::profile::backup::host on the role that uses it
-class profile::mariadb::backup::bacula (
-    Boolean $active = lookup('profile::mariadb::backup::bacula::active'),
+class profile::dbbackups::bacula (
+    Boolean $active = lookup('profile::dbbackups::bacula::active'),
 ) {
     if $active {
         # Warning: because we do-cross dc backups, this can get confusing:

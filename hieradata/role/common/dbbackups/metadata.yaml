@@ -1,0 +1,2 @@
+monitor_screens: false
+profile::mariadb::wmfmariadbpy::role: 'library'

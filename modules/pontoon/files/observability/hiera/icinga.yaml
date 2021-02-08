@@ -6,7 +6,7 @@ profile::icinga::virtual_host: o11y-icinga.wmflabs.org
 profile::icinga::max_concurrent_checks: 5
 
 # Required by the alerting_host role
-profile::mariadb::backup::check::db_password: 'foo'
+profile::dbbackups::check::db_password: 'foo'
 
 # Icinga o11y specific
 profile::icinga::stub_contactgroups: true

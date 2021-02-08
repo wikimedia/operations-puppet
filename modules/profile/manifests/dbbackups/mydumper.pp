@@ -3,8 +3,8 @@
 # Do that using a cron job on all backup hosts, all datacenters.
 # Note this profile creates the backups, but does not send them
 # to bacula or other long-term storage, that is handled by the
-# mariadb::backup::bacula class.
-class profile::mariadb::backup::mydumper {
+# dbbackups::bacula class.
+class profile::dbbackups::mydumper {
     include ::passwords::mysql::dump
 
     require_package(

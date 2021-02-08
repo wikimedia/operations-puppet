@@ -23,7 +23,7 @@ class role::cluster::management {
     include profile::pwstore
 
     include profile::mariadb::wmf_root_client
-    include profile::mariadb::backup::transfer
+    include profile::dbbackups::transfer
 
     include profile::netops::ripeatlas::cli
     include profile::homer

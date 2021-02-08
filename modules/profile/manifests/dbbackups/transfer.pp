@@ -1,6 +1,6 @@
 # Create remote xtrabackup/mariabackup backups
 # By using transfer.py
-class profile::mariadb::backup::transfer {
+class profile::dbbackups::transfer {
     require ::profile::mariadb::wmfmariadbpy
     ensure_packages([
         'wmfbackups-remote',  # will install also wmfmariadbpy-remote and transferpy
