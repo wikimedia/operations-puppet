@@ -2,7 +2,6 @@ class profile::toolforge::proxy (
     Array[String]       $proxies      = lookup('profile::toolforge::proxies',           {default_value => ['tools-proxy-03']}),
     String              $active_proxy = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
     Stdlib::Fqdn        $web_domain   = lookup('profile::toolforge::web_domain',        {default_value => 'tools.wmflabs.org'}),
-    Boolean             $do_https     = lookup('profile::toolforge::proxy::do_https',   {default_value => true}),
     Array[Stdlib::Fqdn] $prometheus   = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
     String              $statsd       = lookup('statsd',                                {default_value => 'localhost:8125'}),
     Stdlib::Fqdn        $k8s_vip_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
@@ -10,16 +9,11 @@ class profile::toolforge::proxy (
 ) {
     class { '::redis::client::python': }
 
-    # toolsbeta support: running without SSL
-    if $do_https {
-        $ssl_cert_name = 'toolforge'
-        acme_chief::cert { $ssl_cert_name:
-            puppet_rsc => Exec['nginx-reload'],
-        }
-        class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
-    } else {
-        $ssl_cert_name = undef
+    $ssl_cert_name = 'toolforge'
+    acme_chief::cert { $ssl_cert_name:
+        puppet_rsc => Exec['nginx-reload'],
     }
+    class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
 
     if $::hostname != $active_proxy {
         $redis_replication = {
@@ -48,7 +42,7 @@ class profile::toolforge::proxy (
         },
         banned_description   => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
         web_domain           => $web_domain,
-        https_upgrade        => $do_https,
+        https_upgrade        => true,
         use_acme_chief       => true,
     }
 
@@ -142,12 +136,10 @@ class profile::toolforge::proxy (
         desc  => 'HTTP webserver for the entire world',
     }
 
-    if $do_https {
-        ferm::service { 'https':
-            proto => 'tcp',
-            port  => '443',
-            desc  => 'HTTPS webserver for the entire world',
-        }
+    ferm::service { 'https':
+        proto => 'tcp',
+        port  => '443',
+        desc  => 'HTTPS webserver for the entire world',
     }
 
     # prometheus nginx metrics
