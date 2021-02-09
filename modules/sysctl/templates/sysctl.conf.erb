@@ -1,6 +1,6 @@
 # sysctl parameters managed by Puppet.
 <%=
-    @values.sort.map { |k, v|
+  @values.reject { |k,v| v.nil? }.sort.map { |k, v|
       if v.is_a?(Array)
         v = v.join(' ')
       elsif v.is_a?(TrueClass)
