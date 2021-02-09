@@ -3,3 +3,11 @@ profile::idp::services:
   cloud:
     id: 1
     service_id: 'https://(.*)\.eqiad1\.wikimedia\.cloud(/.*)?'
+  wmcloud_org:
+    id: 1
+    service_id: 'https://(.*)\.wmcloud\.org(/.*)?'
+ldap:
+    ro-server: localhost
+    ro-server-fallback: localhost
+    rw-server: localhost
+    rw-server-fallback: localhost
