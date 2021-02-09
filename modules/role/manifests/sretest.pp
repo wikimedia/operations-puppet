@@ -14,5 +14,6 @@ class role::sretest {
     include profile::base::firewall
     if debian::codename::ge('buster') {
         include profile::docker::firewall
+        include profile::base::cuminunpriv
     }
 }
