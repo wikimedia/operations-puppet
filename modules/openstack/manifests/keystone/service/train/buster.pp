@@ -23,7 +23,6 @@ class openstack::keystone::service::train::buster(
         'python-migrate',
         'python-openssl',
         'python-pyasn1',
-        'python-pycadf',
         'python-pyinotify',
         'python-pymysql',
         'python-pyparsing',
