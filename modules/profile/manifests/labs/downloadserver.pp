@@ -3,11 +3,10 @@
 # filtertags: labs-project-download
 class profile::labs::downloadserver {
     file { '/srv/public_files':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        require => Labs_lvm::Volume['srv'],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
     }
 
     nginx::site { 'downloadserver':
