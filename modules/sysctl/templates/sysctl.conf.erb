@@ -1,7 +1,13 @@
 # sysctl parameters managed by Puppet.
 <%=
     @values.sort.map { |k, v|
-        v = v.join(' ') if v.is_a?(Array)
-        [ k, v ].join(' = ')
+      if v.is_a?(Array)
+        v = v.join(' ')
+      elsif v.is_a?(TrueClass)
+        v = 1
+      elsif v.is_a?(FalseClass)
+        v = 0
+      end
+      [ k, v ].join(' = ')
     }.join("\n")
 %>
