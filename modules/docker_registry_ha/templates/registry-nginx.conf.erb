@@ -84,12 +84,49 @@ server {
       allow all;
 
       auth_basic "docker-registry";
-      auth_basic_user_file /etc/nginx/htpasswd.registry;
+      auth_basic_user_file <%= @regular_push_file %>;
 
       proxy_pass http://registry;
       proxy_redirect off;
       proxy_buffering off;
       proxy_http_version 1.1;
+      proxy_set_header Host $host;
+
+      # Some responses are very slow (e.g. T179696#6772661)
+      proxy_connect_timeout       120;
+      proxy_send_timeout          120;
+      proxy_read_timeout          120;
+      send_timeout                120;
+    }
+
+    location /v2/restricted/ {
+      # Only "restricted-read" user can read images (includes "restricted-push")
+      if $request_method ~ ^(GET|HEAD)$ {
+        auth_basic "docker-registry restricted";
+        auth_basic_user_file <%= @restricted_read_file %>;
+      }
+
+      # Only "restricted-push" user can push images
+      if $request_method !~ ^(GET|HEAD)$ {
+      <%- if @read_only_mode %>
+        # this docker registry is in read only mode
+        # and it will not accept pushing new images.
+        deny all;
+      <%- else -%>
+        auth_basic "docker-registry restricted (push)";
+        auth_basic_user_file <%= @restricted_push_file %>;
+      <%- end -%>
+      }
+
+      proxy_pass http://registry;
+      proxy_redirect off;
+      proxy_buffering off;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
+      proxy_set_header Proxy-Connection "Keep-Alive";
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header Host $host;
 
       # Some responses are very slow (e.g. T179696#6772661)
@@ -108,7 +145,7 @@ server {
         deny all;
       <%- else -%>
         auth_basic "docker-registry";
-        auth_basic_user_file /etc/nginx/htpasswd.registry;
+        auth_basic_user_file <%= @regular_push_file %>;
       <%- end -%>
       }
 
