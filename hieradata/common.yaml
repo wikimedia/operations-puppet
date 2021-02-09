@@ -1158,7 +1158,9 @@ hadoop_clusters:
 
     # yarn_nodemanager_resource_memory_mb is set using the formula:
     # total-memory - yarn_nodemanager_os_reserved_memory_mb
-    yarn_nodemanager_os_reserved_memory_mb: 16000
+    # Used memory is: datanode + nodemanager + journalnode on some
+    #                   8G     +     8G      +        4G
+    yarn_nodemanager_os_reserved_memory_mb: 20000
 
     yarn_use_spark_shuffle: true
 
