@@ -13,8 +13,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from six.moves import http_client
-
 from keystoneauth1.identity import v3
 from keystone.common import rbac_enforcer
 from keystoneauth1 import session as keystone_session
@@ -26,12 +24,6 @@ from neutronclient.common import exceptions
 from oslo_log import log as logging
 from oslo_config import cfg
 from oslo_messaging.notify import notifier
-
-# These imports are for the id monkeypatch at the bottom of this
-#  file.  Including up here to make flake8 happy
-import keystone.api.projects
-from keystone.common import validation
-from keystone.resource import schema
 
 import designatemakedomain
 from . import ldapgroups
@@ -412,52 +404,3 @@ class KeystoneHooks(notifier.Driver):
                     break
 
             self._on_member_update(project_id, assignments)
-
-
-# HACK ALERT
-#
-#  Ensure that project id == project name, which supports reverse-
-#   compatibility for a bunch of our custom code and tools.
-#
-#  We can't alter the project ID in a notification hook, because
-#   by that time the record has already been created and the old
-#   ID returned to Horizon.  So, instead, monkeypatch the function
-#   that creates the project and modify the ID.
-#
-def post(self):
-    """Create project.
-
-    POST /v3/projects
-    """
-    LOG.warn("Monkypatch in action!  Hacking the new project id to equal "
-             "the new project name.")
-
-    project = self.request_body_json.get('project', {})
-    target = {'project': project}
-    ENFORCER.enforce_call(
-        action='identity:create_project', target_attr=target
-    )
-    validation.lazy_validate(schema.project_create, project)
-    project = self._assign_unique_id(project)
-    if not project.get('is_domain'):
-        project = self._normalize_domain_id(project)
-        # Our API requires that you specify the location in the hierarchy
-        # unambiguously. This could be by parent_id or, if it is a top
-        # level project, just by providing a domain_id.
-
-        # This is the only line that's different
-        project['id'] = project['name']
-    if not project.get('parent_id'):
-        project['parent_id'] = project.get('domain_id')
-    project = self._normalize_dict(project)
-    try:
-        ref = PROVIDERS.resource_api.create_project(
-            project['id'],
-            project,
-            initiator=self.audit_initiator)
-    except (exception.DomainNotFound, exception.ProjectNotFound) as e:
-        raise exception.ValidationError(e)
-    return self.wrap_member(ref), http_client.CREATED
-
-
-keystone.api.projects.ProjectResource.post = post

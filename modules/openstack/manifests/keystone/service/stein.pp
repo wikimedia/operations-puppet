@@ -109,6 +109,15 @@ class openstack::keystone::service::stein(
             mode    => '0644',
             notify  => Service[$wsgi_server],
             recurse => true;
+        '/usr/lib/python3/dist-packages/keystone/api/projects.py':
+            # This is the same as the upstream Stein projects.py, with one line added.
+            #  that line is there to ensure that project_id == project_name
+            ensure => 'present',
+            source => 'puppet:///modules/openstack/stein/keystone/projects.py',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+            notify => Service[$wsgi_server],
     }
 
 
