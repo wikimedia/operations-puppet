@@ -2,10 +2,6 @@
 #
 # filtertags: labs-project-download
 class profile::labs::downloadserver {
-    labs_lvm::volume { 'srv':
-        mountat => '/srv',
-    }
-
     file { '/srv/public_files':
         ensure  => directory,
         owner   => 'root',
