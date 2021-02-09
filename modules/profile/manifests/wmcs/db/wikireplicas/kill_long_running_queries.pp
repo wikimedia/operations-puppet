@@ -29,14 +29,29 @@ class profile::wmcs::db::wikireplicas::kill_long_running_queries (
     if $instances {
         service { 'wmf-pt-kill':
             ensure => stopped,
-            enable => false,
+            enable => 'mask',
         }
+        file { '/etc/logrotate.d/wmf-pt-kill':
+            ensure => absent,
+        }
+
         $instances.each |$section, $buffer_pool| {
+            $logfile = "/var/log/wmf-pt-kill/wmf-pt-kill-${section}.log"
             $instance_socket = "/var/run/mysqld/mysqld.${section}.sock"
             systemd::service { "wmf-pt-kill@${section}":
                 ensure  => present,
                 restart => true,
                 content => systemd_template('wmcs/db/wikireplicas/wmf-pt-kill@'),
+            }
+            logrotate::rule { "wmf-pt-kill-${section}":
+                ensure        => present,
+                file_glob     => $logfile,
+                frequency     => 'weekly',
+                copy_truncate => true,
+                missing_ok    => true,
+                not_if_empty  => true,
+                rotate        => 4,
+                create        => '640 wmf-pt-kill wmf-pt-kill'
             }
         }
     } else {
