@@ -7,7 +7,6 @@ class swift (
         values => {
             'net.ipv4.tcp_syncookies'      => '0',
             # Disable TIME_WAIT
-            'net.ipv4.tcp_tw_recycle'      => '1',
             'net.ipv4.tcp_tw_reuse'        => '1',
 
             # Other general network/TCP tuning
@@ -29,6 +28,16 @@ class swift (
             'net.ipv4.tcp_synack_retries'  => 2,
             'net.ipv4.tcp_syn_retries'     => 2,
         },
+    }
+
+    # Got removed in Linux 4.12 with
+    # https://git.kernel.org/linus/4396e46187ca5070219b81773c4e65088dac50cc
+    if debian::codename::eq('stretch') {
+        sysctl::parameters { 'swift_performance_rw_recycle':
+            values => {
+                'net.ipv4.tcp_tw_recycle'      => '1',
+            },
+        }
     }
 
     package { [
