@@ -1535,12 +1535,6 @@ host db1080 {
     fixed-address db1080.eqiad.wmnet;
 }
 
-host db1081 {
-    hardware ethernet 1C:98:EC:2A:B1:40;
-    fixed-address db1081.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host db1082 {
     hardware ethernet 1C:98:EC:2A:B1:98;
     fixed-address db1082.eqiad.wmnet;

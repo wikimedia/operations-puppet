@@ -1,5 +1,0 @@
-# db1081
-# candidate master for s4
-mariadb::shard: 's4'
-mariadb::binlog_format: 'STATEMENT'
-profile::base::notifications: disabled
