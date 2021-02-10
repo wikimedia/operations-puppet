@@ -21,6 +21,7 @@ class profile::idp(
     Array[Stdlib::Fqdn]         $idp_nodes              = lookup('profile::idp::idp_nodes'),
     Boolean                     $is_staging_host        = lookup('profile::idp::is_staging_host'),
     Boolean                     $memcached_enable       = lookup('profile::idp::memcached_enable'),
+    Stdlib::Port                $memcached_port         = lookup('profile::idp::memcached_port'),
     Boolean                     $u2f_jpa_enable         = lookup('profile::idp::u2f_jpa_enable'),
     String                      $u2f_jpa_username       = lookup('profile::idp::u2f_jpa_username'),
     String                      $u2f_jpa_password       = lookup('profile::idp::u2f_jpa_password'),
@@ -103,7 +104,7 @@ class profile::idp(
         daemon_user            => $cas_daemon_user,
         log_dir                => $log_dir,
         memcached_enable       => $memcached_enable,
-        memcached_port         => 11213,  # we use mcrouter which is on this port
+        memcached_port         => $memcached_port,
         u2f_jpa_enable         => $u2f_jpa_enable,
         u2f_jpa_username       => $u2f_jpa_username,
         u2f_jpa_password       => $u2f_jpa_password,

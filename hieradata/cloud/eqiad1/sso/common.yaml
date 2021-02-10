@@ -1,3 +1,4 @@
+profile::idp::memcached_port: 11211
 profile::idp::u2f_jpa_enable: true
 profile::idp::ldap_start_tls: false
 profile::idp::services:

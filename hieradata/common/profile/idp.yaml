@@ -27,6 +27,8 @@ profile::idp::actuators: []
 profile::idp::server_name: "https://${lookup(fqdn)}"
 profile::idp::is_staging_host: false
 profile::idp::memcached_enable: false
+# We use mcrouter in production
+profile::idp::memcached_port: 11213
 profile::idp::ldap_attributes:
   - cn
   - memberOf
