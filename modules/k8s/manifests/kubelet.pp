@@ -4,6 +4,7 @@ class k8s::kubelet(
     String $pod_infra_container_image,
     String $listen_address,
     Boolean $cni,
+    Optional[String] $docker_kubernetes_user_password = undef,
     Optional[Stdlib::Port] $listen_port = undef,
     String $cluster_domain = 'kube',
     Optional[String] $cluster_dns = undef,
@@ -55,6 +56,17 @@ class k8s::kubelet(
         owner  => 'root',
         group  => 'root',
         mode   => '0700',
+    }
+
+    if $docker_kubernetes_user_password {
+        $docker_auth = "kubernetes:${docker_kubernetes_user_password}";
+        file { '/var/lib/kubelet/config.json':
+          content => template('k8s/docker_config.json.erb'),
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0440',
+          require => File['/var/lib/kubelet'],
+        }
     }
 
     service { 'kubelet':

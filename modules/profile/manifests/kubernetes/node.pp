@@ -20,6 +20,7 @@ class profile::kubernetes::node(
     Boolean $packages_from_future = lookup('profile::kubernetes::node::packages_from_future', {default_value => false}),
     Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => undef}),
     Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', {default_value => false}),
+    Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', {default_value => undef}),
 ) {
     require ::profile::rsyslog::kubernetes
 
@@ -51,19 +52,20 @@ class profile::kubernetes::node(
         token       => $kubelet_token,
     }
     class { '::k8s::kubelet':
-        listen_address            => '0.0.0.0',
-        cni                       => $use_cni,
-        cluster_domain            => $kubelet_cluster_domain,
-        cluster_dns               => $kubelet_cluster_dns,
-        pod_infra_container_image => $infra_pod,
-        tls_cert                  => '/etc/kubernetes/ssl/cert.pem',
-        tls_key                   => '/etc/kubernetes/ssl/server.key',
-        kubeconfig                => $kubelet_config,
-        node_labels               => $kubelet_node_labels,
-        node_taints               => $kubelet_node_taints,
-        extra_params              => $kubelet_extra_params,
-        packages_from_future      => $packages_from_future,
-        kubelet_ipv6              => $kubelet_ipv6,
+        listen_address                  => '0.0.0.0',
+        cni                             => $use_cni,
+        cluster_domain                  => $kubelet_cluster_domain,
+        cluster_dns                     => $kubelet_cluster_dns,
+        pod_infra_container_image       => $infra_pod,
+        tls_cert                        => '/etc/kubernetes/ssl/cert.pem',
+        tls_key                         => '/etc/kubernetes/ssl/server.key',
+        kubeconfig                      => $kubelet_config,
+        node_labels                     => $kubelet_node_labels,
+        node_taints                     => $kubelet_node_taints,
+        extra_params                    => $kubelet_extra_params,
+        packages_from_future            => $packages_from_future,
+        kubelet_ipv6                    => $kubelet_ipv6,
+        docker_kubernetes_user_password => $docker_kubernetes_user_password,
     }
 
     k8s::kubeconfig { $kubeproxy_config:
