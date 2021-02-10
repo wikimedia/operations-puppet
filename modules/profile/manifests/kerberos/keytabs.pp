@@ -39,7 +39,7 @@ class profile::kerberos::keytabs (
             mode      => '0440',
             content   => secret("kerberos/keytabs/${::fqdn}/${keytab_metadata['role']}/${keytab_metadata['filename']}"),
             show_diff => false,
-            require   => [File["/etc/security/keytabs/${keytab_metadata['role']}"], User[$keytab_metadata['owner']]]
+            require   => File["/etc/security/keytabs/${keytab_metadata['role']}"]
         }
     }
 }
