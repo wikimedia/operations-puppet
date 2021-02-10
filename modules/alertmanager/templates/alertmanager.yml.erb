@@ -36,6 +36,9 @@ route:
     - match:
         team: 'peering'
       receiver: 'peering-mail'
+    - match:
+        team: 'perf'
+      receiver: 'perf-ircmail'
 
 
     # Compat Icinga alerts are routed to a 'sink' channel
@@ -100,3 +103,9 @@ receivers:
   webhook_configs:
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-5hj6ygnanfu23mmnlvmd'
       send_resolved: false
+
+- name: 'perf-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-perf-bots'
+  email_configs:
+    - to: 'performance-team@<%= scope.lookupvar('::domain') %>'
