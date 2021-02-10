@@ -25,6 +25,15 @@ class install_server::dhcp_server (
         source  => 'puppet:///modules/install_server/dhcpd',
     }
 
+    # Files with the entries matching DHCP option 82, those are managed by the automation Cookbooks
+    # and included in the dhcpd.conf file. Puppet should not manage those but create them empty if
+    # not present and fix their permissionsnd if different.
+    file { ['/etc/dhcp/opt82-entries.ttyS0-115200', '/etc/dhcp/opt82-entries.ttyS1-115200']:
+        ensure  => file,
+        mode    => '0644',
+        require => Package['isc-dhcp-server'],
+    }
+
     package { 'isc-dhcp-server':
         ensure => present,
     }

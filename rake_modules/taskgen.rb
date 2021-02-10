@@ -164,8 +164,10 @@ class TaskGen < ::Rake::TaskLib
         dhcp_config_file = File.join dhcp_config_dir, "dhcpd.conf"
         dhcp_config = File.read(dhcp_config_file)
         dhcp_config.gsub!(%r{/etc/dhcp}, dhcp_config_dir)
-
         File.open(dhcp_config_file, "w") {|file| file.puts dhcp_config }
+        FileUtils.touch(File.join(dhcp_config_dir, "opt82-entries.ttyS0-115200"))
+        FileUtils.touch(File.join(dhcp_config_dir, "opt82-entries.ttyS1-115200"))
+
         begin
           puts "dhcp configuration: BEGIN TEST"
           puts "=============================="
