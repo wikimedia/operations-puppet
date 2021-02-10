@@ -139,8 +139,8 @@ class arclamp(
         require     => Package['performance/arc-lamp']
     }
 
-    # This supports running multiple pipelines; we currently have extra
-    # pipelines to observe the migration from stretch to buster (T273312).
+    # This supports running multiple pipelines; in the past we had one
+    # for HHVM and one for PHP7.  Currently only the latter is needed.
     arclamp::profiler {
         default:
             ensure     => present,
@@ -148,7 +148,5 @@ class arclamp(
             redis_port => $redis_port;
         'excimer':
             description => 'PHP Excimer';
-        'excimer-buster':
-            description => 'PHP Excimer (buster channel)';
     }
 }
