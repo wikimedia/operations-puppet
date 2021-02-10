@@ -23,6 +23,7 @@
 "service_role": "role:service"
 "projectadmin_role": "role:projectadmin"
 "projectadmin_or_admin": "rule:admin_required or rule:projectadmin_role"
+"default": "rule:admin_or_projectadmin"
 
 
 #  There are a few reasons why we override default policies:
