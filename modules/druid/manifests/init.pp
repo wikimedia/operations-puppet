@@ -63,14 +63,6 @@
 #   This is done because default Java on Debian (Jessie) systems is Java 7, and Druid 0.10+
 #   requires Java 8.
 #
-# [*use_cdh*]
-#   If this is true, the druid::cdh::hadoop::dependencies class
-#   will be included, and deep storage will be configured to use
-#   a special druid-hdfs-storage-cdh extension.  If you set this,
-#   make sure to include the druid::cdh::hadoop::user class on your
-#   Hadoop NameNodes.  Default: false.
-#
-#
 # === Default $properties
 #
 # The properties listed here are only the defaults.
@@ -152,11 +144,6 @@ class druid(
     $use_cdh    = false,
 )
 {
-    if $use_cdh {
-        # Create links to CDH Hadoop Client dependencies.
-        include ::druid::cdh::hadoop::dependencies
-    }
-
     # If metadata storage is in MySQL, set some nice defaults.  Note that
     # these can still be overridden by setting them in $properties.
     if $properties['druid.metadata.storage.type'] == 'mysql' {

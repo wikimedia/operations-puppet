@@ -41,11 +41,6 @@ profile::druid::common::druid_cluster_name: public-eqiad
 # The logical name of the zookeeper cluster that druid should use
 profile::druid::common::zookeeper_cluster_name: druid-public-eqiad
 
-# Deploy the Hadoop CDH configuration and packages to the Druid nodes,
-# so things like cluster name etc.. can be used in Druid's config as well.
-# The hadoop hdfs cdh extension is not included anymore.
-profile::druid::common::use_cdh_hadoop_config: true
-
 # Use this as the metadata storage database name in MySQL.
 profile::druid::common::metadata_storage_database_name: 'druid_public_eqiad'
 

@@ -17,15 +17,14 @@ class profile::druid::common(
     Hash[String, Any] $zookeeper_clusters  = lookup('zookeeper_clusters'),
     String $metadata_storage_database_name = lookup('profile::druid::common:metadata_storage_database_name', {'default_value' => 'druid'}),
     Stdlib::Unixpath $java_home            = lookup('profile::druid::common::java_home', {'default_value' => '/usr/lib/jvm/java-8-openjdk-amd64'}),
-    Boolean $use_cdh_hadoop_config         = lookup('profile::druid::common::use_cdh_hadoop_config', {'default_value' => false}),
-    Boolean $use_cdh                       = lookup('profile::druid::common::use_cdh', {'default_value' => false}),
+    Boolean $use_hadoop_config             = lookup('profile::druid::common::use_hadoop_config', {'default_value' => true}),
 ) {
 
     # Need Java before Druid is installed.
     Class['profile::java'] -> Class['profile::druid::common']
 
     # Only need a Hadoop client if we are using CDH.
-    if $use_cdh_hadoop_config or $use_cdh {
+    if $use_hadoop_config {
         require ::profile::hadoop::common
     }
 
@@ -41,7 +40,6 @@ class profile::druid::common(
     class { '::druid':
         metadata_storage_database_name => $metadata_storage_database_name,
         java_home                      => $java_home,
-        use_cdh                        => $use_cdh,
         # Merge our auto configured zookeeper properties
         # with the properties from hiera.
         properties                     => merge(

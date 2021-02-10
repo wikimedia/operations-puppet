@@ -48,11 +48,6 @@ profile::druid::common::druid_cluster_name: analytics-test-eqiad
 # The logical name of the zookeeper cluster that druid should use
 profile::druid::common::zookeeper_cluster_name: druid-analytics-test-eqiad
 
-# Deploy the Hadoop CDH configuration and packages to the Druid nodes,
-# so things like cluster name etc.. can be used in Druid's config as well.
-# The hadoop hdfs cdh extension is not included anymore.
-profile::druid::common::use_cdh_hadoop_config: true
-
 # The default MySQL Druid metadata storage database name is just 'druid'.
 # Since the analytics-eqiad Druid cluster was originally the only one,
 # We set this to the default of 'druid', just to be explicit about it.
