@@ -105,7 +105,7 @@ class profile::analytics::refinery::job::refine(
         spark_max_executors      => 128,
         # TO FIX: After bigtop upgrade, it looks like we can't use spark assembly jar with included
         # hadoop jars.  Need to formalize this.  https://phabricator.wikimedia.org/T273711
-        spark_extra_opts         => '--conf spark.yarn.archive=\'hdfs:///user/otto/spark-2.4.4-no-hadoop-assembly.zip\'--conf spark.executor.memoryOverhead=1024',
+        spark_extra_opts         => '--conf spark.yarn.archive=\'hdfs:///user/otto/spark-2.4.4-no-hadoop-assembly.zip\' --conf spark.executor.memoryOverhead=1024',
         use_keytab               => $use_kerberos_keytab,
     }
 
