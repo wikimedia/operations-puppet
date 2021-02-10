@@ -1,3 +1,4 @@
+#!/bin/bash
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
@@ -26,21 +27,6 @@ hiveserver2() {
     HIVE_LIB=`cygpath -w "$HIVE_LIB"`
   fi
   JAR=${HIVE_LIB}/hive-service-[0-9].*.jar
-
-  # Set SENTRY_HOME if possible and add Sentry jars to classpath
-  if [[ -z "$SENTRY_HOME" ]]
-  then
-    if [[ -d ${HIVE_HOME}/../sentry ]]
-    then
-      export SENTRY_HOME=`readlink -m ${HIVE_HOME}/../sentry`
-    fi
-  fi
-  if [[ -n "$SENTRY_HOME" ]]
-  then
-    for f in ${SENTRY_HOME}/lib/*.jar; do
-      export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}:${f}
-    done
-  fi
 
   # Patch not included in standard hive versions:
   # https://issues.apache.org/jira/browse/HIVE-12582
