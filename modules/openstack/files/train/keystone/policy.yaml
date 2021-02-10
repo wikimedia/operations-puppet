@@ -22,7 +22,7 @@
 "service_or_admin": "rule:admin_required or rule:service_role"
 "service_role": "role:service"
 "projectadmin_role": "role:projectadmin"
-"projectadmin_or_admin": "rule:admin_required or rule:projectadmin_role"
+"admin_or_projectadmin": "rule:admin_required or rule:projectadmin_role"
 "default": "rule:admin_or_projectadmin"
 
 
@@ -71,6 +71,6 @@
 
 # These are custom rules added by WMF to manage the member
 #  panel in Horizon
-"members:grant_membership": "rule:projectadmin_or_admin"
-"members:revoke_membership": "rule:projectadmin_or_admin"
-"members:toggle_projectadmin": "rule:projectadmin_or_admin"
+"members:grant_membership": "rule:admin_or_projectadmin"
+"members:revoke_membership": "rule:admin_or_projectadmin"
+"members:toggle_projectadmin": "rule:admin_or_projectadmin"
