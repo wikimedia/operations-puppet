@@ -1,5 +1,7 @@
 class toolforge::k8s::nginx_ingress_yaml (
-    Integer $ingress_replicas = 2
+    Integer      $ingress_replicas = 2,
+    Stdlib::Port $jobs_port        = 30001,
+    Stdlib::Fqdn $jobs_fqdn        = 'jobs.toolforge.org',
 ) {
     # make sure you declare ::kubeadm::core somewhere in the calling profile
     # because /etc/kubernetes
@@ -14,5 +16,13 @@ class toolforge::k8s::nginx_ingress_yaml (
         ensure  => present,
         content => template('toolforge/k8s/nginx-ingress.yaml.erb'),
         require => File['/etc/kubernetes'],
+    }
+
+    if $::labsproject == 'toolsbeta' {
+        file { '/etc/kubernetes/nginx-ingress-jobs.yaml':
+            ensure  => present,
+            content => template('toolforge/k8s/nginx-ingress-jobs.yaml.erb'),
+            require => File['/etc/kubernetes'],
+        }
     }
 }

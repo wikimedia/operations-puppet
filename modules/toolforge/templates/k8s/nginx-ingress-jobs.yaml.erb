@@ -1,0 +1,353 @@
+---
+# This file was generated reading the documentation and concatenating the
+# required yaml files together. The source repo is:
+# https://github.com/kubernetes/ingress-nginx
+#
+# from https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-configuration
+  namespace: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+data:
+  # TODO: include client TLS settings here
+  # T241310: pass the incoming X-Forwarded-* headers to upstreams
+  use-forwarded-headers: "true"
+  # T243580: set default client_max_body_size to match dynamicproxy's setting
+  proxy-body-size: 128M
+  # T245426: set proxy_read_timeout to match dynamicproxy's setting
+  proxy-read-timeout: "3600"
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: tcp-services
+  namespace: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: udp-services
+  namespace: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nginx-ingress-jobs
+  namespace: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: nginx-ingress-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - endpoints
+      - nodes
+      - pods
+      - secrets
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+  - apiGroups:
+      - "extensions"
+      - "networking.k8s.io"
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "extensions"
+      - "networking.k8s.io"
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: nginx-ingress-jobs
+  namespace: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - pods
+      - secrets
+      - namespaces
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    resourceNames:
+      # Defaults to "<election-id>-<ingress-class>"
+      # Here: "<ingress-controller-leader>-<nginx>"
+      # This has to be adapted if you change either parameter
+      # when launching the nginx-ingress-controller.
+      - "ingress-controller-leader-nginx"
+    verbs:
+      - get
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - create
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+    verbs:
+      - get
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: nginx-ingress-jobs
+  namespace: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: nginx-ingress-jobs
+subjects:
+  - kind: ServiceAccount
+    name: nginx-ingress-jobs
+    namespace: ingress-nginx-jobs
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: nginx-ingress-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nginx-ingress-jobs
+subjects:
+  - kind: ServiceAccount
+    name: nginx-ingress-jobs
+    namespace: ingress-nginx-jobs
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-ingress-jobs
+  namespace: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+spec:
+  replicas: <%= @ingress_replicas %>
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingress-nginx-jobs
+      app.kubernetes.io/part-of: ingress-nginx-jobs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingress-nginx-jobs
+        app.kubernetes.io/part-of: ingress-nginx-jobs
+      annotations:
+        prometheus.io/port: "10254"
+        prometheus.io/scrape: "true"
+    spec:
+      serviceAccountName: nginx-ingress-jobs
+      # affinity and taints, only schedule pods in ingress nodes
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/role
+                    operator: In
+                    values:
+                      - ingress
+      tolerations:
+        - key: "ingress"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: nginx-ingress-controller
+          image: docker-registry.tools.wmflabs.org/nginx-ingress-controller:0.25.1
+          args:
+            - /nginx-ingress-controller
+            - --http-port=<%= @jobs_port %>
+            - --configmap=$(POD_NAMESPACE)/nginx-configuration
+            - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
+            - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
+            - --publish-service=$(POD_NAMESPACE)/ingress-nginx-jobs
+            - --annotations-prefix=nginx.ingress.kubernetes.io
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_BIND_SERVICE
+            # www-data -> 33
+            runAsUser: 33
+          resources:
+            requests:
+              cpu: "0.5"
+              memory: "1Gi"
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+            - name: http
+              containerPort: <%= @jobs_port %>
+            - name: metrics
+              containerPort: 10254
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+
+---
+
+# from https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
+# change: ports definitions for our needs.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-nginx-jobs
+  namespace: ingress-nginx-jobs
+  labels:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      nodePort: <%= @jobs_port %>
+      port: <%= @jobs_port %>
+      targetPort: <%= @jobs_port %>
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: ingress-nginx-jobs
+    app.kubernetes.io/part-of: ingress-nginx-jobs
+
+---
+# from https://kubernetes.github.io/ingress-nginx/examples/auth/client-certs/
+# TODO: we may want this in the toolforge-jobs-api.git repository instead?
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    # Enable client certificate authentication
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    # Create the secret containing the trusted ca certificates
+    # TODO: what to do with this
+    nginx.ingress.kubernetes.io/auth-tls-secret: "default/ca-secret"
+    # Specify the verification depth in the client certificates chain
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+    # Specify an error page to be redirected to verification errors
+    nginx.ingress.kubernetes.io/auth-tls-error-page: "https://<%= @jobs_fqdn %>/"
+    # Specify if certificates are passed to upstream server
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+  name: toolforge-jobs-api
+  namespace: ingress-nginx-jobs
+spec:
+  rules:
+  - host: <%= @jobs_fqdn %>
+    http:
+      paths:
+      - backend:
+          serviceName: http-svc
+          servicePort: 8080
+        path: /

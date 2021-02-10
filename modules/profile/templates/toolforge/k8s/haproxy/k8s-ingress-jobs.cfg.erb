@@ -1,0 +1,18 @@
+# Note: This file is managed by puppet.
+frontend k8s-jobs
+    bind 0.0.0.0:<%= @jobs_port %>
+    mode tcp
+    option tcplog
+    timeout client 1h
+    default_backend k8s-jobs
+
+backend k8s-jobs
+    mode tcp
+    option tcplog
+    option tcp-check
+    balance roundrobin
+    timeout server 1h
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
+<% @ingress_nodes.each do |server| -%>
+    server <%= server %> <%= server %>:<%= @jobs_port %> check
+<% end -%>
