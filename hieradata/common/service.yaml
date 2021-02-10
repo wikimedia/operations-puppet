@@ -1400,7 +1400,7 @@ service::catalog:
     port: 10514
     sites:
       - eqiad
-    state: production
+    state: lvs_setup
   logstash-syslog-udp:
     description: Logstash ingestion syslog udp
     encryption: false
@@ -1423,7 +1423,7 @@ service::catalog:
     port: 10514
     sites:
       - eqiad
-    state: production
+    state: lvs_setup
   logstash-udp2log:
     description: Logstash ingestion udp2log
     encryption: false
