@@ -116,7 +116,9 @@ profile::base::firewall::default_reject: false
 profile::backup::director_seed: changeme
 profile::base::debdeploy::exclude_mounts: []
 profile::base::debdeploy::exclude_filesystems: []
-profile::idp::ldap_encryption: starttls
+profile::idp::ldap_schema: ldap
+# We set this to true so one has to consciously disable it
+profile::idp::ldap_start_tls: true
 profile::idp::idp_nodes:
   - "%{facts.fqdn}"
 profile::idp::memcached::ensure: present

@@ -3,7 +3,8 @@
 class profile::idp(
     Array[Stdlib::Host]         $prometheus_nodes       = lookup('prometheus_nodes'),
     Hash                        $ldap_config            = lookup('ldap', Hash, hash, {}),
-    Enum['ldaps', 'starttls']   $ldap_encryption        = lookup('profile::idp::ldap_encryption'),
+    Enum['ldaps', 'ldap']       $ldap_schema            = lookup('profile::idp::ldap_schema'),
+    Boolean                     $ldap_start_tls         = lookup('profile::idp::ldap_start_tls'),
     String                      $keystore_password      = lookup('profile::idp::keystore_password'),
     String                      $key_password           = lookup('profile::idp::key_password'),
     String                      $tgc_signing_key        = lookup('profile::idp::tgc_signing_key'),
@@ -63,14 +64,9 @@ class profile::idp(
         }
     }
 
-    if $ldap_encryption == 'starttls' {
-      $ldap_schema    = 'ldap'
-      $ldap_start_tls = true
-      $ldap_port      = 389
-    } else {
-      $ldap_schema    = 'ldaps'
-      $ldap_start_tls = false
-      $ldap_port      = 636
+    $ldap_port = $ldap_schema ? {
+      'ldap'  => 389,
+      default => 636,
     }
     $ldap_uris = ["${ldap_schema}://${ldap_config[ro-server]}:${ldap_port}",
                   "${ldap_schema}://${ldap_config[ro-server-fallback]}:${ldap_port}"]

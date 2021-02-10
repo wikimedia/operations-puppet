@@ -1,4 +1,5 @@
-profile::idp::ldap_encryption: ldaps
+profile::idp::ldap_schema: ldaps
+profile::idp::ldap_start_tls: false
 profile::idp::key_password: changeit
 profile::idp::keystore_password: changeit
 profile::idp::tgc_encryption_key: changeit
