@@ -154,6 +154,8 @@ def run(args, user, log_path):
                 time.sleep(args.sleep)
             else:
                 procs[host] = proc
+                lib.print_line('Splaying the start of the next reimage by 2 minutes')
+                time.sleep(120)
 
         if procs:
             retcodes = wait_for_childrens(procs)
