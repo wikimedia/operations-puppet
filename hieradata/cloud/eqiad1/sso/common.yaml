@@ -12,3 +12,4 @@ ldap:
     ro-server-fallback: localhost
     rw-server: localhost
     rw-server-fallback: localhost
+    proxyagent: 'cn=proxyagent,ou=users,dc=sso,dc=eqiad1,dc=wikimedia,dc=cloud'

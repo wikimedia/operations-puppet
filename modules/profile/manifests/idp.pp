@@ -94,7 +94,7 @@ class profile::idp(
         ldap_attribute_list    => $ldap_attribute_list,
         log_level              => 'DEBUG',
         ldap_bind_pass         => $passwords::ldap::production::proxypass,
-        ldap_bind_dn           => "cn=proxyagent,ou=profile,${ldap_config['base-dn']}",
+        ldap_bind_dn           => $ldap_config['proxyagent'],
         services               => $services,
         idp_nodes              => $idp_nodes,
         java_opts              => $java_opts,
