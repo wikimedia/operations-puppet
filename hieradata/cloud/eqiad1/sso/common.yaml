@@ -14,3 +14,11 @@ ldap:
     rw-server-fallback: localhost
     proxyagent: 'cn=proxyagent,ou=users,dc=sso,dc=eqiad1,dc=wikimedia,dc=cloud'
     base-dn: 'dc=sso,dc=eqiad1,dc=wikimedia,dc=cloud'
+profile::idp::client::httpd::sites:
+  'idp-test-login.wmcloud.org':
+    vhost_content: 'profile/idp/client/httpd-uwsgi.erb'
+    document_root: /srv/
+    proxied_as_https: true
+    enable_monitor: false
+    vhost_settings:
+      uwsgi_port: 8081
