@@ -38,22 +38,13 @@ class profile::idp(
     class{ 'sslcert::dhparam': }
     if $envoy_termination {
       include profile::tlsproxy::envoy
-      $tomcat_apr_listener = false
       $ferm_port = 443
     } else {
-      # used in cloud
-      $tomcat_apr_listener = true
-      $ferm_port = 8443
-      base::expose_puppet_certs {'/etc/tomcat9':
-        provide_private => true,
-        user            => 'tomcat',
-        group           => 'tomcat',
-      }
+      # In cloud we use the shared wmfcloud proxy for tls termination
+      $ferm_port = 8080
     }
 
-    class {'tomcat':
-      apr_listener   => $tomcat_apr_listener,
-    }
+    class {'tomcat': }
 
     $jmx_port = 9200
     $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'
