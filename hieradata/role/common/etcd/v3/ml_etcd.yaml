@@ -1,0 +1,13 @@
+cluster: ml_etcd
+
+profile::etcd::v3::cluster_name: "ml_etcd.%{::site}"
+profile::etcd::v3::cluster_bootstrap: true
+profile::etcd::v3::discovery: "dns:ml_etcd.%{::site}.wmnet"
+profile::etcd::v3::use_client_certs: false
+profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
+profile::etcd::v3::max_latency: 10
+# We use the v3 api directly.
+profile::etcd::v3::adv_client_port: 2379
+
+profile::standard::admin_groups:
+  - ml-team-admins

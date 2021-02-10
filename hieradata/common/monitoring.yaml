@@ -442,6 +442,12 @@ monitoring::groups:
   ml_serve_codfw:
     description: ML Team serving machines (codfw)
 
+  # ml_etcd cluster
+  ml_etcd_eqiad:
+    description: ML Team etcd machines (eqiad)
+  ml_etcd_codfw:
+    description: ML Team etcd machines (codfw)
+
 monitoring::mgmt_parents:
   eqiad: msw1-eqiad
   codfw: msw1-codfw

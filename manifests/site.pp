@@ -1640,7 +1640,7 @@ node /^ml-serve100[1234]\.eqiad\.wmnet/ {
 }
 
 node /^ml-etcd100[123]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(etcd::v3::ml_etcd)
 }
 
 node /^ml-etcd200[123]\.codfw\.wmnet/ {

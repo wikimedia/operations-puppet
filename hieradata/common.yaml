@@ -485,6 +485,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  ml_etcd:
+    description: "ML Team etcd clusters"
+    id: 94
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
