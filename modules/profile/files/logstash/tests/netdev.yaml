@@ -9,7 +9,12 @@ testcases:
   - input:
       - >
         {
-          "log.original": "PFE_FW_SYSLOG_ETH_IP: FW: xe-3/0/4.1103 A 044f:0800 de:ad:be:ee:ee:ff -> de:ad:be:ee:ff:ff  tcp 127.0.0.1 127.0.1.1  9999 65535 (1 packets)"
+          "log.original": "PFE_FW_SYSLOG_ETH_IP: FW: xe-3/0/4.1103 A 044f:0800 de:ad:be:ee:ee:ff -> de:ad:be:ee:ff:ff  tcp 127.0.0.1 127.0.1.1  9999 65535 (1 packets)",
+          "log.syslog.severity.code": "4",
+          "log.syslog.severity.name": "warning",
+          "log.syslog.priority": "156",
+          "log.syslog.facility.code": "19",
+          "log.syslog.facility.name": "local3"
         }
     expected:
       - labels:
@@ -35,6 +40,14 @@ testcases:
           port: "65535"
         log:
           original: "PFE_FW_SYSLOG_ETH_IP: FW: xe-3/0/4.1103 A 044f:0800 de:ad:be:ee:ee:ff -> de:ad:be:ee:ff:ff  tcp 127.0.0.1 127.0.1.1  9999 65535 (1 packets)"
+          syslog:
+            facility:
+              code: "19"
+              name: "local3"
+            priority: "156"
+            severity:
+              "code": "4"
+              "name": "warning"
         service:
           type: "netdev"
         host:

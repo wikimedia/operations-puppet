@@ -55,6 +55,8 @@ def deep_merge(source, dest)
         end
       end
     end
+  else
+    dest = source
   end
   dest
 end
