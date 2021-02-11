@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 '''
 Archives graphite metrics for labs hosts that have been deleted.
 
@@ -24,7 +24,7 @@ import yaml
 from keystoneclient.auth.identity.v3 import Password as KeystonePassword
 from keystoneclient.client import Client as KeystoneClient
 from keystoneclient.exceptions import Unauthorized as KeystoneUnauthorisedException
-from keystoneauth1.session import Session as KeystoneSession
+from keystoneauth1 import session as keystone_session
 from novaclient import client as novaclient
 
 WHISPER_PATH = '/srv/carbon/whisper'
@@ -36,7 +36,7 @@ def get_keystone_session(project_name):
         nova_observer = yaml.safe_load(n)
         observer_pass = nova_observer['OS_PASSWORD']
 
-    return KeystoneSession(auth=KeystonePassword(
+    return keystone_session(auth=KeystonePassword(
         auth_url="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
         username="novaobserver",
         password=observer_pass,
@@ -143,8 +143,8 @@ if __name__ == '__main__':
         else:
             logging.info('Found %d host(s) in %d project(s) to archive',
                          len(deleted_hosts),
-                         sum([len(hosts) for hosts in deleted_hosts.values()]))
-            for project, hosts in deleted_hosts.items():
+                         sum([len(hosts) for hosts in list(deleted_hosts.values())]))
+            for project, hosts in list(deleted_hosts.items()):
                 for host in hosts:
                     archived_name = archive_host(project, host)
     except Exception:
