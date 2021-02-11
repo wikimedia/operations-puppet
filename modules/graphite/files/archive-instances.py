@@ -21,10 +21,10 @@ import time
 
 import yaml
 
-from keystoneclient.auth.identity.v3 import Password as KeystonePassword
+from keystoneauth1.identity.v3 import Password as KeystonePassword
+from keystoneauth1.session import Session as KeystoneSession
 from keystoneclient.client import Client as KeystoneClient
 from keystoneclient.exceptions import Unauthorized as KeystoneUnauthorisedException
-from keystoneauth1 import session as keystone_session
 from novaclient import client as novaclient
 
 WHISPER_PATH = '/srv/carbon/whisper'
@@ -36,7 +36,7 @@ def get_keystone_session(project_name):
         nova_observer = yaml.safe_load(n)
         observer_pass = nova_observer['OS_PASSWORD']
 
-    return keystone_session(auth=KeystonePassword(
+    return KeystoneSession(auth=KeystonePassword(
         auth_url="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
         username="novaobserver",
         password=observer_pass,
