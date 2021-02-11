@@ -10,7 +10,7 @@ profile::idp::services:
     id: 1
     service_id: 'https://(.*)\.eqiad1\.wikimedia\.cloud(/.*)?'
   wmcloud_org:
-    id: 1
+    id: 2
     service_id: 'https://(.*)\.wmcloud\.org(/.*)?'
 ldap:
     ro-server: localhost
