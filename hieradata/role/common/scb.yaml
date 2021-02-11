@@ -4,9 +4,6 @@ profile::standard::admin_groups:
   - apertium-admins
   - graphoid-admin
 profile::lvs::realserver::pools:
-  apertium:
-    services:
-      - "apertium-apy"
   graphoid:
     services:
       - graphoid
