@@ -136,8 +136,7 @@ class apereo_cas (
 
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
-            notify => Service['tomcat9'],
-            *      => $config
+            * => $config
         }
     }
 }
