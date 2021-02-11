@@ -2064,19 +2064,24 @@ node /^mw22(7[8-9]|8[0-2])\.codfw\.wmnet$/ {
 
 ## END MEDIAWIKI APPLICATION SERVERS
 
+# mw logging host eqiad
+node 'mwlog1001.eqiad.wmnet' {
+    role(logging::mediawiki::udp2log)
+}
+
+# New mwlog node T267271
+node 'mwlog1002.eqiad.wmnet' {
+    role(insetup)
+}
+
 # mw logging host codfw
 node 'mwlog2001.codfw.wmnet' {
     role(logging::mediawiki::udp2log)
 }
 
-# Nes mwlog node T267272
+# New mwlog node T267272
 node 'mwlog2002.codfw.wmnet' {
     role(insetup)
-}
-
-# mw logging host eqiad
-node 'mwlog1001.eqiad.wmnet' {
-    role(logging::mediawiki::udp2log)
 }
 
 node 'mx1001.wikimedia.org' {
