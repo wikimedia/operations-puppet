@@ -18,7 +18,7 @@ class profile::dbbackups::check (
     $backups.each |String $section, Hash $section_hash| {
         $section_hash.each |String $type, Array[String] $type_array| {
             $type_array.each |String $dc| {
-                mariadb::monitor_backup { "${dc}-${section}-${type}":
+                dbbackups::check { "${dc}-${section}-${type}":
                     section              => $section,
                     datacenter           => $dc,
                     type                 => $type,

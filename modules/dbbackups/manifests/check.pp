@@ -1,6 +1,6 @@
 # Checks the metadata database backups of a particular section, datacenter
 # and type, and sets up an icinga alert about it
-define mariadb::monitor_backup (
+define dbbackups::check (
     $db_host,
     $db_user,
     $db_password,
