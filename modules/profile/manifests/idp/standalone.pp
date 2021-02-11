@@ -40,14 +40,7 @@ class profile::idp::standalone {
     content => $simple_flask_debug_app,
   }
   uwsgi::app {'idp-test':
-    settings => {
-      'uwsgi' => {
-        'plugins'   => 'python3',
-        'socket'    => '/run/uwsgi/idp-test.sock',
-        'wsgi-file' => $wsgi_file,
-        'master'    => true,
-      }
-    }
+    ensure   => absent,
   }
 
   class {'httpd': modules => ['proxy_http', 'proxy']}
