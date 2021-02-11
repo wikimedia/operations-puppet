@@ -46,6 +46,27 @@ end
     <value><%= @namenode_hosts.sort.collect { |host| namenode_host_to_id(host) }.join(',') %></value>
   </property>
 
+  <% if @dfs_namenode_service_port %>
+  <property>
+    <name>dfs.internal.nameservices</name>
+    <value><%= @nameservice_id %></value>
+  </property>
+
+  <% if @dfs_namenode_service_handler_count -%>
+  <property>
+   <name>dfs.namenode.service.handler.count</name>
+   <value><%= @dfs_namenode_service_handler_count %></value>
+  </property>
+  <% end -%>
+
+  <% @namenode_hosts.sort.each do |host| -%>
+  <property>
+    <name>dfs.namenode.servicerpc-address.<%= @nameservice_id %>.<%= namenode_host_to_id(host) %></name>
+    <value><%= host %>:<%= @dfs_namenode_service_port %></value>
+  </property>
+  <% end # @namenode_hosts.eac -%>
+  <% end -%>
+
 <% @namenode_hosts.sort.each do |host| -%>
   <property>
     <name>dfs.namenode.rpc-address.<%= @nameservice_id %>.<%= namenode_host_to_id(host) %></name>

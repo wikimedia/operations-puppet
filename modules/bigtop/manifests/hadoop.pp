@@ -323,6 +323,8 @@ class bigtop::hadoop(
     $dfs_data_path                               = 'hdfs/dn',
     $dfs_datanode_failed_volumes_tolerated       = undef,
     $dfs_namenode_handler_count                  = undef,
+    $dfs_namenode_service_handler_count          = undef,
+    $dfs_namenode_service_port                   = undef,
 
     $resourcemanager_hosts                       = $namenode_hosts,
     $zookeeper_hosts                             = undef,

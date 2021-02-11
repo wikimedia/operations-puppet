@@ -10,11 +10,12 @@
 #   Hosts must be in this srange to contact Hadoop as a client.
 #
 class profile::hadoop::firewall::master(
-    String $cluster_ferm_srange = lookup('profile::hadoop::firewall::master::cluster_ferm_srange', {default_value => '$DOMAIN_NETWORKS'}),
-    String $client_ferm_srange  = lookup('profile::hadoop::firewall::master::client_ferm_srange', {default_value => '$DOMAIN_NETWORKS'}),
-    Boolean $hdfs_ssl_enabled   = lookup('profile::hadoop::firewall::master::hdfs::ssl_enabled', {default_value => false}),
-    Boolean $yarn_ssl_enabled   = lookup('profile::hadoop::firewall::master::yarn::ssl_enabled', {default_value => false}),
-    Boolean $mapred_ssl_enabled = lookup('profile::hadoop::firewall::master::mapred::ssl_enabled', {default_value => false}),
+    String $cluster_ferm_srange             = lookup('profile::hadoop::firewall::master::cluster_ferm_srange', {default_value => '$DOMAIN_NETWORKS'}),
+    String $client_ferm_srange              = lookup('profile::hadoop::firewall::master::client_ferm_srange', {default_value => '$DOMAIN_NETWORKS'}),
+    Boolean $hdfs_ssl_enabled               = lookup('profile::hadoop::firewall::master::hdfs::ssl_enabled', {default_value => false}),
+    Boolean $yarn_ssl_enabled               = lookup('profile::hadoop::firewall::master::yarn::ssl_enabled', {default_value => false}),
+    Boolean $mapred_ssl_enabled             = lookup('profile::hadoop::firewall::master::mapred::ssl_enabled', {default_value => false}),
+    Optional[Integer] $hdfs_nn_service_port = lookup('profile::hadoop::firewall::master::hdfs_nn_service_port', {default_value => undef}),
 ) {
 
     # This port is also used by the HDFS Checkpoint
@@ -43,6 +44,15 @@ class profile::hadoop::firewall::master(
         proto  => 'tcp',
         port   => '8020',
         srange => $client_ferm_srange,
+    }
+
+    if $hdfs_nn_service_port {
+      ferm::service{ 'hadoop-hdfs-namenode-service':
+          proto  => tcp,
+          port   => $hdfs_nn_service_port,
+          srange => $client_ferm_srange,
+
+      }
     }
 
     ferm::service{ 'hadoop-hdfs-zkfc':

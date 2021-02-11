@@ -226,6 +226,8 @@ class profile::hadoop::common (
     $hadoop_var_directory                     = $hadoop_config['hadoop_var_directory']
     $datanode_volumes_failed_tolerated        = $hadoop_config['datanode_volumes_failed_tolerated']
     $dfs_namenode_handler_count               = $hadoop_config['dfs_namenode_handler_count']
+    $dfs_namenode_service_handler_count       = $hadoop_config['dfs_namenode_service_handler_count']
+    $dfs_namenode_service_port                = $hadoop_config['dfs_namenode_service_port']
     $hdfs_trash_checkpoint_interval           = $hadoop_config['hdfs_trash_checkpoint_interval']
     $hdfs_trash_interval                      = $hadoop_config['hdfs_trash_interval']
     $mapreduce_reduce_shuffle_parallelcopies  = $hadoop_config['mapreduce_reduce_shuffle_parallelcopies']
@@ -364,6 +366,8 @@ class profile::hadoop::common (
         fs_trash_checkpoint_interval                     => $hdfs_trash_checkpoint_interval,
         fs_trash_interval                                => $hdfs_trash_interval,
         dfs_namenode_handler_count                       => $dfs_namenode_handler_count,
+        dfs_namenode_service_handler_count               => $dfs_namenode_service_handler_count,
+        dfs_namenode_service_port                        => $dfs_namenode_service_port,
 
         cluster_name                                     => $cluster_name,
         namenode_hosts                                   => $namenode_hosts,
