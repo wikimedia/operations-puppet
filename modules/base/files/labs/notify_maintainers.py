@@ -25,8 +25,8 @@ import socket
 import yaml
 import subprocess
 
-from keystoneclient.auth.identity.v3 import Password as KeystonePassword
-from keystoneclient.session import Session as KeystoneSession
+from keystoneauth1.identity.v3 import Password as KeystonePassword
+from keystoneauth1.session import Session as KeystoneSession
 from keystoneclient.v3 import client as keystone_client
 
 # Don't bother to notify the novaadmin and nova-tools-bot user as it spams ops@

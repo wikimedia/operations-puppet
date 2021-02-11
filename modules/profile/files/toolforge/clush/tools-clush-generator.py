@@ -13,8 +13,8 @@ import argparse
 
 import yaml
 
-from keystoneclient.auth.identity.v3 import Password as KeystonePassword
-from keystoneclient.session import Session as KeystoneSession
+from keystoneauth1.identity.v3 import Password as KeystonePassword
+from keystoneauth1.session import Session as KeystoneSession
 from keystoneclient.v3 import client as keystone_client
 from novaclient import client as novaclient
 

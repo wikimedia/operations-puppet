@@ -27,9 +27,9 @@ import logging
 import sys
 import subprocess
 
-import keystoneauth1
-from keystoneclient.auth.identity.v3 import Password as KeystonePassword
-from keystoneclient.session import Session as KeystoneSession
+from keystoneauth1.exceptions.http import Unauthorized
+from keystoneauth1.identity.v3 import Password as KeystonePassword
+from keystoneauth1.session import Session as KeystoneSession
 from keystoneclient.v3 import client as keystone_client
 
 from novaclient import client as novaclient
@@ -125,7 +125,7 @@ def get_instance_ips(project, observer_pass, regions, auth_url):
                             ] == "fixed" and is_valid_ipv4(ip["addr"]):
                                 ips.append(str(ip["addr"]))
 
-        except keystoneauth1.exceptions.http.Unauthorized:
+        except Unauthorized:
             logging.error(
                 "Failed to get server list for project %s."
                 "  Maybe the project was deleted." % project
