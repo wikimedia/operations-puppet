@@ -2,14 +2,15 @@
 #
 # Configures a mcrouter instance for multi-datacenter caching
 class profile::mediawiki::mcrouter_wancache(
-    Stdlib::Port $port                 = lookup('profile::mediawiki::mcrouter_wancache::port'),
-    Boolean      $has_ssl              = lookup('profile::mediawiki::mcrouter_wancache::has_ssl'),
-    Stdlib::Port $ssl_port             = lookup('profile::mediawiki::mcrouter_wancache::ssl_port'),
-    Integer      $num_proxies          = lookup('profile::mediawiki::mcrouter_wancache::num_proxies'),
-    Integer      $timeouts_until_tko   = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko'),
-    Integer      $gutter_ttl           = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl'),
-    Boolean      $use_onhost_memcached = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcached'),
-    Boolean      $prometheus_exporter  = lookup('profile::mediawiki::mcrouter_wancache::prometheus_exporter'),
+    Stdlib::Port $port                           = lookup('profile::mediawiki::mcrouter_wancache::port'),
+    Boolean      $has_ssl                        = lookup('profile::mediawiki::mcrouter_wancache::has_ssl'),
+    Stdlib::Port $ssl_port                       = lookup('profile::mediawiki::mcrouter_wancache::ssl_port'),
+    Integer      $num_proxies                    = lookup('profile::mediawiki::mcrouter_wancache::num_proxies'),
+    Integer      $timeouts_until_tko             = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko'),
+    Integer      $gutter_ttl                     = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl'),
+    Boolean      $use_onhost_memcached           = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcached'),
+    Boolean      $use_onhost_memcached_socket    = lookup('profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket'),
+    Boolean      $prometheus_exporter            = lookup('profile::mediawiki::mcrouter_wancache::prometheus_exporter'),
     Hash         $servers_by_datacenter_category = lookup('profile::mediawiki::mcrouter_wancache::shards')
 ) {
 
@@ -21,10 +22,11 @@ class profile::mediawiki::mcrouter_wancache(
 
     if $use_onhost_memcached {
         class { '::memcached':
-            size          => floor($facts['memorysize_mb'] * 0.25),
-            port          => $onhost_port,
-            growth_factor => 1.25,
-            min_slab_size => 48,
+            size               => floor($facts['memorysize_mb'] * 0.25),
+            port               => $onhost_port,
+            enable_unix_socket => $use_onhost_memcached_socket,
+            growth_factor      => 1.25,
+            min_slab_size      => 48,
         }
         include ::profile::prometheus::memcached_exporter
     }
@@ -32,8 +34,11 @@ class profile::mediawiki::mcrouter_wancache(
     $servers_by_datacenter = $servers_by_datacenter_category['wancache']
     $proxies_by_datacenter = pick($servers_by_datacenter_category['proxies'], {})
     if $use_onhost_memcached {
-        # TODO: Consider using a unix socket instead of a loopback address.
-        $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'host' => '127.0.0.1', 'port' => $onhost_port}})
+        if $use_onhost_memcached_socket {
+            $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'socket' => '/var/run/memcached/memcached.sock'}})
+        } else {
+            $onhost_pool = profile::mcrouter_pools('onhost', {'' => {'host' => '127.0.0.1', 'port' => $onhost_port}})
+        }
     } else {
         $onhost_pool = {}
     }

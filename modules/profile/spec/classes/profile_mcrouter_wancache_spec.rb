@@ -19,6 +19,16 @@ describe 'profile::mediawiki::mcrouter_wancache' do
         it { is_expected.to contain_package('memcached') }
         it { is_expected.to contain_class('memcached') }
       end
+      context "with onhost memcached socket" do
+        let(:params) { super().merge({use_onhost_memcached: true, use_onhost_memcached_socket: true }) }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/etc/tmpfiles.d/memcached.conf').with_ensure('present')
+                            .with_content(%r%^d /run/memcached 0755 nobody nogroup - -$%)
+        }
+        it { is_expected.to contain_file('/etc/mcrouter/config.json').with_ensure('present')
+        .with_content(%r%unix:\/var\/run\/memcached\/memcached.sock:ascii:plain%)
+        }
+      end
     end
   end
 end
