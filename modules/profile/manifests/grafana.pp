@@ -14,6 +14,7 @@ class profile::grafana (
     Boolean      $enable_cas     = lookup('profile::grafana::enable_cas'),
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port',
                                                             {'default_value' => undef}),
+    Array[Stdlib::Fqdn] $server_aliases = lookup('profile::grafana::server_aliases'),
 ) {
 
     include profile::backup::host

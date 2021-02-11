@@ -10,6 +10,7 @@ profile::base::domain_search:
 
 
 profile::grafana::domain: grafana-labs.wikimedia.org
+profile::grafana::server_aliases: []
 
 profile::wmcs::monitoring::statsd_master: cloudmetrics1002.eqiad.wmnet
 profile::wmcs::monitoring::statsd_standby: cloudmetrics1001.eqiad.wmnet

@@ -2,6 +2,9 @@
 # This file is managed by Puppet.
 <VirtualHost *:80>
   ServerName <%= @domain %>
+<%- @server_aliases.each do |name| -%>
+  ServerAlias <%= name %>
+<%- end -%>
   DocumentRoot /usr/share/grafana/public
 
 <% if @enable_cas %>
