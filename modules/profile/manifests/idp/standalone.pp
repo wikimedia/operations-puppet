@@ -27,32 +27,33 @@ class profile::idp::standalone {
   @app.route("/")
   def root():
     return '<br />'.join(['{}={}'.format(k,v) for k,v in request.environ.items()])
-    application = app
-    | APP
-    # BUG: need to use dirname() vs dirname
-    # https://github.com/rodjek/puppet-lint/issues/937
-    file {$wsgi_file.dirname():
-      ensure => directory,
-    }
-    file {$wsgi_file:
-      ensure  => file,
-      content => $simple_flask_debug_app,
-    }
-    uwsgi::app {'idp-test':
-      settings => {
-        'uwsgi' => {
-          'plugins'   => 'python3',
-          'socket'    => '/run/uwsgi/idp-test.sock',
-          'wsgi-file' => $wsgi_file,
-          'master'    => true,
-        }
+  application = app
+  | APP
+
+  # BUG: need to use dirname() vs dirname
+  # https://github.com/rodjek/puppet-lint/issues/937
+  file {$wsgi_file.dirname():
+    ensure => directory,
+  }
+  file {$wsgi_file:
+    ensure  => file,
+    content => $simple_flask_debug_app,
+  }
+  uwsgi::app {'idp-test':
+    settings => {
+      'uwsgi' => {
+        'plugins'   => 'python3',
+        'socket'    => '/run/uwsgi/idp-test.sock',
+        'wsgi-file' => $wsgi_file,
+        'master'    => true,
       }
     }
+  }
 
-    class {'httpd': modules => ['proxy_http', 'proxy']}
-    include profile::idp::client::httpd
-    ferm::service {'http-idp-test-login':
-      proto => 'tcp',
-      port  => 80,
-    }
+  class {'httpd': modules => ['proxy_http', 'proxy']}
+  include profile::idp::client::httpd
+  ferm::service {'http-idp-test-login':
+    proto => 'tcp',
+    port  => 80,
+  }
 }
