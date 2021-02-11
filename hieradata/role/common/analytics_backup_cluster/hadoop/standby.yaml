@@ -22,7 +22,7 @@ profile::hadoop::master::standby::monitoring_enabled: true
 
 profile::hadoop::firewall::master::hdfs::ssl_enabled: true
 
-#profile::hadoop::firewall::master::hdfs_nn_service_port: 8050
+profile::hadoop::firewall::master::hdfs_nn_service_port: 8050
 
 # Hadoop Services must be in this srange to be part of Hadoop.
 profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'

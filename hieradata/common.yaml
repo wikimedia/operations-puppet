@@ -786,8 +786,8 @@ hadoop_clusters:
     dfs_namenode_handler_count: 115
     # The default port is 8040 but since we co-locate the Yarn Nodemanager
     # on all nodes (that uses port 8040), we use 8050.
-    # dfs_namenode_service_port: 8050
-    # dfs_namenode_service_handler_count: 50
+    dfs_namenode_service_port: 8050
+    dfs_namenode_service_handler_count: 50
 
     mapreduce_reduce_shuffle_parallelcopies: 10
     mapreduce_task_io_sort_mb: 200
