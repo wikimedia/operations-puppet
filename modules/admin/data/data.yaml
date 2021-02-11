@@ -301,7 +301,7 @@ groups:
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
-              kzeta]
+              kzeta, urbanecm]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -3326,6 +3326,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKBGnnWotDTo/92I2MakxTAoBDYLbFA/+0uT2F5y4U5 urbanecm@LAPTOP-A3BHKQ07
     uid: 13367
     email: martin.urbanec@wikimedia.cz
+    krb: present
   iflorez:
     ensure: present
     gid: 500
