@@ -18,6 +18,9 @@ class install_server::dhcp_server (
         source  => 'puppet:///modules/install_server/dhcpd',
     }
 
+    # This is the general path of proxies for the automation include system.
+    wmflib::dir::mkdir_p('/etc/dhcp/automation/proxies/')
+
     # Files with the entries matching DHCP option 82, those are managed by the automation Cookbooks
     # and included in the dhcpd.conf file. Puppet should not manage those but create them empty if
     # not present and fix their permissionsnd if different.
@@ -29,6 +32,13 @@ class install_server::dhcp_server (
         require => Package['isc-dhcp-server'],
     }
 
+    file { ['/etc/dhcp/automation/opt82-entries.ttyS0-115200/', '/etc/dhcp/automation/opt82-entries.ttyS1-115200/']:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     # Generate include proxies for each management network for automation.
     file { '/etc/dhcp/automation.conf':
       ensure  => file,
@@ -37,8 +47,6 @@ class install_server::dhcp_server (
       mode    => '0444',
       content => template('install_server/automation.conf.erb')
     }
-
-    wmflib::dir::mkdir_p('/etc/dhcp/automation/proxies/')
 
     $mgmt_networks.keys.each | $netname | {
       file { "/etc/dhcp/automation/proxies/proxy-mgmt.${netname}.conf":
@@ -54,6 +62,25 @@ class install_server::dhcp_server (
         group  => 'root',
         mode   => '0755',
       }
+    }
+
+    # DHCP configuration include compiler
+    file { '/usr/local/sbin/dhcpincludes':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0555',
+      source => 'puppet:///modules/install_server/dhcpincludes.py'
+    }
+
+    # Configuration file for DHCP configuration include compiler
+    # depends on $mgmt_networks variable above.
+    file { '/etc/dhcp/dhcpincludes.yaml':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      content => template('install_server/dhcpincludes.yaml.erb')
     }
 
     # TODO: Fold this into modules/install/dhcpd once
@@ -74,5 +101,4 @@ class install_server::dhcp_server (
         require   => Package['isc-dhcp-server'],
         subscribe => File['/etc/dhcp'],
     }
-
 }
