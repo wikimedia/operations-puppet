@@ -148,5 +148,8 @@ class arclamp(
             redis_port => $redis_port;
         'excimer':
             description => 'PHP Excimer';
+        'excimer-buster':
+            ensure      => absent,
+            description => 'Removed';
     }
 }
