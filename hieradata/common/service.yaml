@@ -75,7 +75,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: lvs_setup # Skipping monitoring_setup, we actually want to kill monitoring
+    state: service_setup # Ready to be removed
     discovery:
       - dnsdisc: apertium
         active_active: true
