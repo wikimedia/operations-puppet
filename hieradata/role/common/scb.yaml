@@ -1,7 +1,6 @@
 cluster: scb
 profile::standard::admin_groups:
   - sc-admins
-  - apertium-admins
   - graphoid-admin
 profile::lvs::realserver::pools:
   graphoid:

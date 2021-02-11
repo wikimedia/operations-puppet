@@ -484,12 +484,6 @@ groups:
     description: users who can login on mwlog hosts and read mediawiki logs
     members: [tjones, matanya, holger]
 
-  apertium-admins:
-    description: Group of apertium admins
-    gid: 761
-    members: [kartik]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service apertium-apy *',
-                 'ALL = (apertium) NOPASSWD: ALL']
   deploy-service:
     gid: 763
     description: Service deploy users
