@@ -56,7 +56,7 @@ def validate_mountpoint(devdict, mountpoint):
 
     with open("/etc/fstab") as fstab:
         for _cnt, line in enumerate(fstab):
-            if mountpoint in line:
+            if len(line.split()) > 1 and line.split()[1] == mountpoint:
                 print(
                     "Mountpoint %s appears in /etc/fstab:\n\n"
                     "%s\n\nYou will need to use a different mountpoint "
