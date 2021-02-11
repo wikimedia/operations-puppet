@@ -12,9 +12,10 @@ class snapshot::cron::wikidatadumps::json(
     }
 
     if !$filesonly {
+        # project: wikidata, dump type: all, entities to be dumped (default): item|property
         cron { 'wikidatajson-dump':
             ensure      => 'present',
-            command     => $scriptpath,
+            command     => "${scriptpath} -p wikidata -d all",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '15',
@@ -22,9 +23,10 @@ class snapshot::cron::wikidatadumps::json(
             weekday     => '1',
             require     => File[$scriptpath],
         }
+        # project: wikidata, dump type: lexemes, entity to be dumped: lexeme
         cron { 'wikidatajson-lexemes-dump':
             ensure      => 'present',
-            command     => "${scriptpath} lexemes",
+            command     => "${scriptpath} -p wikidata -d lexemes -e lexeme",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '15',

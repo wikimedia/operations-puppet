@@ -13,28 +13,105 @@
 # functions analogous to the rdf dumps. For now however, hardcode
 # the projectName here and leave the rest alone.
 
+PROJECTS=("wikidata")
+
+source /usr/local/etc/dump_functions.sh
+
+usage() {
+    echo "Usage: $0 --project <name> --dump <name> --format <name> [--config <path>]" >& 2
+    echo "[--continue] [--dryrun] [--help]" >& 2
+    echo >& 2
+    echo "Args: " >& 2
+    echo "  --config   (-c) path to configuration file for dump generation" >& 2
+    echo "                  (default value: ${confsdir}/wikidump.conf.other" >& 2
+    echo "  --project  (-p) 'wikidata' (soon to be expanded)" >& 2
+    echo "                  (default value: wikidata)" >& 2
+    echo "  --dump     (-d) 'all' or 'lexemes' (for wikidata)" >& 2
+    echo "                  (default value: all)" >& 2
+    echo "  --entities (-e) one of 'item|property' or 'lexemes' (for wikidata)" >& 2
+    echo >& 2
+    echo "Flags: " >& 2
+    echo "  --continue (-C) resume the specified dump from where it left off" >& 2
+    echo "                  (default value: false)" >& 2
+    echo "  --dryrun   (-D) don't run dump, show what would have been done" >& 2
+    echo "                  (default value: false)" >& 2
+    echo "  --help     (-h) show this help message" >& 2
+    exit 1
+}
+
+configfile="${confsdir}/wikidump.conf.other"
 projectName="wikidata"
-. /usr/local/bin/wikibasedumps-shared.sh
-
-if [[ "$1" == '--help' ]]; then
-	echo -e "Usage: $0 [--continue] [lexemes]\n"
-	echo -e "\t--continue\tAttempt to continue a previous dump run."
-
-	exit
-fi
-
+dumpName="all"
+entities="item|property"
+dryrun="false"
 continue=0
-if [[ "$1" == '--continue' ]]; then
-	shift
-	continue=1
+
+#. /usr/local/bin/wikibasedumps-shared.sh
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+	"--config"|"-c")
+            configfile="$2"
+            shift; shift
+	    ;;
+	"--project"|"-p")
+            projectName="$2"
+            shift; shift
+	    ;;
+	"--dump"|"-d")
+            dumpName="$2"
+            shift; shift
+	    ;;
+	"--entities"|"-e")
+            entities="$2"
+            shift; shift
+	    ;;
+	"--dryrun"|"-D")
+            dryrun="true"
+            shift
+	    ;;
+	"--continue"|"-C")
+            continue=1
+            shift
+	    ;;
+	"--help"|"-h")
+	    usage && exit 1
+	    ;;
+	*)
+            echo "$0: Unknown option $1" >& 2
+            usage && exit 1
+	    ;;
+    esac
+done
+
+if [ -z "$projectName" ]; then
+    echo -e "Mandatory arg --project not specified."
+    usage
+    exit 1
 fi
 
-dumpName=all
-entityTypes=("--entity-type" "item" "--entity-type" "property")
+projectOK=""
+for value in "${PROJECTS[@]}"; do
+  if [ "$value" == "$projectName" ]; then
+      projectOK="true"
+      break;
+  fi
+done
+if [ -z "$projectOK" ]; then
+    echo -e "Unknown project name."
+    usage
+    exit 1
+fi
+
+IFS='|' read -r -a entityArray <<< "$entities"
+entityTypes=()
+for value in "${entityArray[@]}"; do
+  entityTypes+=("--entity-type")
+  entityTypes+=("$value")
+done
+
 minSize=58000000000 # across all shards (to be divided by $shards)
-if [[ "$1" == "lexemes" ]]; then
-	entityTypes=("--entity-type" "lexeme")
-	dumpName=lexemes
+if [[ "$dumpName" == "lexemes" ]]; then
 	minSize=100000000
 fi
 
