@@ -41,8 +41,6 @@ class role::analytics_cluster::launcher {
     include ::profile::analytics::refinery::job::druid_load
     include ::profile::analytics::refinery::job::data_purge
 
-    include ::profile::analytics::geoip::archive
-
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
