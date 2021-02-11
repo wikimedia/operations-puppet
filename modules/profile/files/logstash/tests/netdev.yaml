@@ -14,7 +14,8 @@ testcases:
           "log.syslog.severity.name": "warning",
           "log.syslog.priority": "156",
           "log.syslog.facility.code": "19",
-          "log.syslog.facility.name": "local3"
+          "log.syslog.facility.name": "local3",
+          "type": "syslog"
         }
     expected:
       - labels:
