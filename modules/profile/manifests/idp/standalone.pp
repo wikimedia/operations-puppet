@@ -9,7 +9,7 @@ class profile::idp::standalone {
     class {'mariadb::service': }
     class {'mariadb::config':
       basedir => '/usr',
-      config  => 'role/mariadb/mysqld_config/misc.my.cnf.erbrole/mariadb/mysqld_config/misc.my.cnf.erb',
+      config  => 'role/mariadb/mysqld_config/misc.my.cnf.erb',
       datadir => '/srv/sqldata',
     }
     # TODO: configure openldap
