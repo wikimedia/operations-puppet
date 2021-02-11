@@ -23,8 +23,8 @@ import yaml
 
 from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1.session import Session as KeystoneSession
+from keystoneauth1.exceptions.http import Unauthorized as KeystoneUnauthorisedException
 from keystoneclient.client import Client as KeystoneClient
-from keystoneclient.exceptions import Unauthorized as KeystoneUnauthorisedException
 from novaclient import client as novaclient
 
 WHISPER_PATH = '/srv/carbon/whisper'
