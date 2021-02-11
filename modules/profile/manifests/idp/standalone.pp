@@ -40,12 +40,14 @@ class profile::idp::standalone {
     content => $simple_flask_debug_app,
   }
   uwsgi::app{'idp-test':
-    config       => {
-      'plugins'     => 'python3',
-      'master'      => true,
-      'http-socket' => '127.0.0.1:8081',
-      'wsgi-file'   => $wsgi_file,
-      'die-on-term' => true,
+    settings => {
+      uwsgi => {
+        'plugins'     => 'python3',
+        'master'      => true,
+        'http-socket' => '127.0.0.1:8081',
+        'wsgi-file'   => $wsgi_file,
+        'die-on-term' => true,
+      }
     }
   }
 
