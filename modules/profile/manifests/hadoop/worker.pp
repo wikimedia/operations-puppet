@@ -25,15 +25,15 @@ class profile::hadoop::worker(
         require ::profile::hadoop::monitoring::nodemanager
     }
 
-    class { '::cdh::hadoop::worker': }
+    class { '::bigtop::hadoop::worker': }
 
     # The HDFS journalnodes are co-located for convenience,
     # but it is not a strict requirement.
-    if $::fqdn in $::cdh::hadoop::journalnode_hosts {
+    if $::fqdn in $::bigtop::hadoop::journalnode_hosts {
         if $monitoring_enabled {
             require profile::hadoop::monitoring::journalnode
         }
-        class { 'cdh::hadoop::journalnode': }
+        class { 'bigtop::hadoop::journalnode': }
     }
 
 
@@ -59,23 +59,23 @@ class profile::hadoop::worker(
             description   => 'Hadoop DataNode',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop::worker'],
+            require       => Class['bigtop::hadoop::worker'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-yarn-nodemanager':
             description   => 'Hadoop NodeManager',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop::worker'],
+            require       => Class['bigtop::hadoop::worker'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
-        if $::fqdn in $::cdh::hadoop::journalnode_hosts {
+        if $::fqdn in $::bigtop::hadoop::journalnode_hosts {
             nrpe::monitor_service { 'hadoop-hdfs-journalnode':
                 description   => 'Hadoop JournalNode',
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
                 contact_group => 'admins,analytics',
-                require       => Class['cdh::hadoop'],
+                require       => Class['bigtop::hadoop'],
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
             }
         }

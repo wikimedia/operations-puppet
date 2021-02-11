@@ -31,7 +31,7 @@ class profile::hadoop::master(
         require ::profile::hadoop::monitoring::history
     }
 
-    class { '::cdh::hadoop::master':
+    class { '::bigtop::hadoop::master':
         excluded_hosts => $excluded_hosts,
     }
 
@@ -40,9 +40,9 @@ class profile::hadoop::master(
     # This only needs to be run on the NameNode
     # where all users that want to use Hadoop
     # must have shell accounts anyway.
-    class { '::cdh::hadoop::users':
+    class { '::bigtop::hadoop::users':
         groups  => $hadoop_user_groups,
-        require => Class['cdh::hadoop::master'],
+        require => Class['bigtop::hadoop::master'],
     }
 
     # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
@@ -52,7 +52,7 @@ class profile::hadoop::master(
         command => 'test -d /var/log/hadoop-yarn/fairscheduler && /usr/bin/find /var/log/hadoop-yarn/fairscheduler -type f -mtime +14 -exec rm {} >/dev/null \;',
         minute  => 5,
         hour    => 0,
-        require => Class['cdh::hadoop::master'],
+        require => Class['bigtop::hadoop::master'],
     }
 
     file { '/usr/local/lib/nagios/plugins/check_hdfs_topology':
@@ -70,28 +70,28 @@ class profile::hadoop::master(
             description   => 'Hadoop Namenode - Primary',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop::master'],
+            require       => Class['bigtop::hadoop::master'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-hdfs-zkfc':
             description   => 'Hadoop HDFS Zookeeper failover controller',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop::master'],
+            require       => Class['bigtop::hadoop::master'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
             description   => 'Hadoop ResourceManager',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop::master'],
+            require       => Class['bigtop::hadoop::master'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
             description   => 'Hadoop HistoryServer',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop::master'],
+            require       => Class['bigtop::hadoop::master'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
@@ -135,7 +135,7 @@ class profile::hadoop::master(
             contact_group => 'analytics',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#No_active_HDFS_Namenode_running',
             require       => [
-                Class['cdh::hadoop::master'],
+                Class['bigtop::hadoop::master'],
                 Sudo::User['nagios-check_hdfs_active_namenode'],
             ],
         }

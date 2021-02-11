@@ -8,15 +8,15 @@
 # the analytics_cluster::mysql_password class.
 #
 class profile::hive::site_hdfs {
-    Class['cdh::hive'] -> Class['profile::hive::site_hdfs']
+    Class['bigtop::hive'] -> Class['profile::hive::site_hdfs']
 
     $hdfs_path = '/user/hive/hive-site.xml'
     # Put /etc/hive/conf/hive-site.xml in HDFS whenever puppet
     # notices that it has changed.
     kerberos::exec { 'put-hive-site-in-hdfs':
-        command     => "/bin/bash -c '/usr/bin/hdfs dfs -put -f ${cdh::hive::config_directory}/hive-site.xml ${hdfs_path} && /usr/bin/hdfs dfs -chmod 664 ${hdfs_path} && /usr/bin/hdfs dfs -chown hive:analytics ${hdfs_path}'",
+        command     => "/bin/bash -c '/usr/bin/hdfs dfs -put -f ${bigtop::hive::config_directory}/hive-site.xml ${hdfs_path} && /usr/bin/hdfs dfs -chmod 664 ${hdfs_path} && /usr/bin/hdfs dfs -chown hive:analytics ${hdfs_path}'",
         user        => 'hdfs',
         refreshonly => true,
-        subscribe   => File["${cdh::hive::config_directory}/hive-site.xml"],
+        subscribe   => File["${bigtop::hive::config_directory}/hive-site.xml"],
     }
 }

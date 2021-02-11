@@ -141,7 +141,6 @@ class druid(
     $properties = {},
     $metadata_storage_database_name = 'druid',
     $java_home  = '/usr/lib/jvm/java-1.8.0-openjdk-amd64',
-    $use_cdh    = false,
 )
 {
     # If metadata storage is in MySQL, set some nice defaults.  Note that
@@ -190,20 +189,12 @@ class druid(
 
         $default_deep_storage_properties = {
             # If using CDH, make sure these directories exists in HDFS by declaring
-            # druid::cdh::hadoop::deep_storage on your Hadoop NameNodes.
+            # druid::bigtop::hadoop::deep_storage on your Hadoop NameNodes.
             'druid.storage.storageDirectory' => '/user/druid/deep-storage',
         }
 
-        # If using CDH, then use special CDH settings and dependencies.
-        if $use_cdh {
-            # Load the special druid-hdfs-storage-cdh extension created by
-            # the druid::cdh::hadoop::dependencies class.
-            $storage_extensions = ['druid-hdfs-storage-cdh']
-        }
-        # Else just use the hadoop dependencies shipped by the druid package
-        else {
-            $storage_extensions = ['druid-hdfs-storage']
-        }
+        # Use the Hadoop dependencies shipped with the Druid packages.
+        $storage_extensions = ['druid-hdfs-storage']
     }
     # Else use local deep storage defaulting storageDirectory to
     # /srv/druid/deep-storage.

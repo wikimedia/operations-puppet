@@ -203,13 +203,13 @@ send_puppet_failure_emails: true
 profile::wmcs::services::oidentd::client::proxy: 172.16.0.1
 
 # For any Analytics Cluster in labs:
-cdh::hadoop::datanode_mounts:
+bigtop::hadoop::datanode_mounts:
     - /var/lib/hadoop/data/a
     - /var/lib/hadoop/data/b
 
 # Default to creating home directories for all
 # users in the current Labs Project.
-cdh::hadoop::users::groups: project-%{::labsproject}
+bigtop::hadoop::users::groups: project-%{::labsproject}
 
 sudo_flavor: 'sudoldap'
 labsldapconfig:

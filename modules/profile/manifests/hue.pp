@@ -42,15 +42,15 @@ class profile::hue (
 
     # These don't require any extra configuration,
     # so no role class is needed.
-    class { '::cdh::sqoop': }
-    class { '::cdh::mahout': }
+    class { '::bigtop::sqoop': }
+    class { '::bigtop::mahout': }
 
     class { '::passwords::ldap::production': }
 
     # For snappy support with Hue.
     require_package('python-snappy')
 
-    class { '::cdh::hue':
+    class { '::bigtop::hue':
         # We always host hive-server on the same node as hive-metastore.
         hive_server_host           => $hive_server_host,
         hive_thrift_version        => $hive_thrift_version,
@@ -96,7 +96,7 @@ class profile::hue (
                 description   => 'Hue Gunicorn Python server',
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -a "/usr/lib/hue/build/env/bin/python3.7 /usr/lib/hue/build/env/bin/hue rungunicornserver"',
                 contact_group => 'analytics',
-                require       => Class['cdh::hue'],
+                require       => Class['bigtop::hue'],
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
             }
             if $kerberos_kinit_path {
@@ -104,7 +104,7 @@ class profile::hue (
                     description   => 'Hue Kerberos keytab renewer',
                     nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/lib/hue/build/env/bin/python3.7 /usr/lib/hue/build/env/bin/hue kt_renewer"',
                     contact_group => 'analytics',
-                    require       => Class['cdh::hue'],
+                    require       => Class['bigtop::hue'],
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
                 }
             }
@@ -115,7 +115,7 @@ class profile::hue (
                 description   => 'Hue CherryPy python server',
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue runcherrypyserver"',
                 contact_group => 'analytics',
-                require       => Class['cdh::hue'],
+                require       => Class['bigtop::hue'],
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
             }
             if $kerberos_kinit_path {
@@ -123,7 +123,7 @@ class profile::hue (
                     description   => 'Hue Kerberos keytab renewer',
                     nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue kt_renewer"',
                     contact_group => 'analytics',
-                    require       => Class['cdh::hue'],
+                    require       => Class['bigtop::hue'],
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
                 }
             }
@@ -133,7 +133,7 @@ class profile::hue (
     # Vhost proxy to Hue app server.
     # This is not for LDAP auth, LDAP is done by Hue itself.
 
-    $hue_port = $::cdh::hue::http_port
+    $hue_port = $::bigtop::hue::http_port
 
     if $enable_cas {
         profile::idp::client::httpd::site {$server_name:

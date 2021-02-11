@@ -69,7 +69,7 @@ class profile::hive::client(
 
     # You must set at least:
     #   metastore_host
-    class { '::cdh::hive':
+    class { '::bigtop::hive':
         # Hive uses Zookeeper for table locking.
         zookeeper_hosts                                       => $zookeeper_hosts,
         # We set support concurrency to false by default.

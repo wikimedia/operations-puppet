@@ -18,5 +18,5 @@ class profile::hadoop::worker::clients {
 
     # sqoop needs to be on worker nodes if Oozie is to
     # launch sqoop jobs.
-    class { '::cdh::sqoop': }
+    class { '::bigtop::sqoop': }
 }

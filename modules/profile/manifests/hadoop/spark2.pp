@@ -99,11 +99,11 @@ class profile::hadoop::spark2(
 
     # Ensure that a symlink to hive-site.xml exists so that
     # spark2 will automatically get Hive support.
-    if defined(Class['::cdh::hive']) {
+    if defined(Class['::bigtop::hive']) {
         $hive_enabled = true
         file { '/etc/spark2/conf/hive-site.xml':
             ensure => 'link',
-            target => "${::cdh::hive::config_directory}/hive-site.xml",
+            target => "${::bigtop::hive::config_directory}/hive-site.xml",
         }
     }
     else {

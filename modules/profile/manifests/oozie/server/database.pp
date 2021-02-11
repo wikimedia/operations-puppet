@@ -2,7 +2,7 @@
 #
 # Includes the role::analytics_cluster::database::meta class
 # to install a database for analytics cluster meta data,
-# includes the cdh::oozie::database::mysql
+# includes the bigtop::oozie::database::mysql
 # to ensure that the hive_metastore database is created,
 # and then finally ensures grants and permissions are
 # set so that configured hosts can properly connect to this database.
@@ -16,7 +16,7 @@ class profile::oozie::server::database(
     require ::profile::analytics::database::meta
 
     # Ensure that the oozie db is created.
-    class { '::cdh::oozie::database::mysql':
+    class { '::bigtop::oozie::database::mysql':
         db_root_username => undef,
         db_root_password => undef,
         jdbc_database    => $jdbc_database,
@@ -31,7 +31,7 @@ class profile::oozie::server::database(
     # The WF_JOBS table was 38G, and oozie was getting stuck
     # on long running queries sorting by created_time.
 
-    # cdh::oozie::database::mysql only ensures that
+    # bigtop::oozie::database::mysql only ensures that
     # the Oozie MySQL user has permissions to connect
     # via localhost.  If you plan on running
     # the oozie server daemon on a different node
@@ -41,6 +41,6 @@ class profile::oozie::server::database(
 
     # If labs, just allow access from all hosts
     if $::realm == 'labs' {
-        cdh::oozie::database::mysql::grant { '%': }
+        bigtop::oozie::database::mysql::grant { '%': }
     }
 }

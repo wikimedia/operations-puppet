@@ -9,7 +9,7 @@ class profile::hive::server(
     include ::profile::hive::client
 
     # Setup hive-server
-    class { '::cdh::hive::server': }
+    class { '::bigtop::hive::server': }
 
     ferm::service{ 'hive_server':
         proto  => 'tcp',
@@ -26,7 +26,7 @@ class profile::hive::server(
             description   => 'Hive Server',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hive.service.server.HiveServer2"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hive::server'],
+            require       => Class['bigtop::hive::server'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hive',
         }
 

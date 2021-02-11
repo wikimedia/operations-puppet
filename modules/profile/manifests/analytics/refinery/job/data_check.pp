@@ -10,8 +10,8 @@ class profile::analytics::refinery::job::data_check (
     require ::profile::analytics::refinery
 
     # This should not be hardcoded.  Instead, one should be able to use
-    # $::cdh::hadoop::mount::mount_point to reference the user supplied
-    # parameter when the cdh::hadoop::mount class is evaluated.
+    # $::bigtop::hadoop::mount::mount_point to reference the user supplied
+    # parameter when the bigtop::hadoop::mount class is evaluated.
     # I am not sure why this is not working.
     $hdfs_mount_point = '/mnt/hdfs'
 

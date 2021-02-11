@@ -9,7 +9,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 # the Cloudera ones for the time being.
 # We force Bigtop for Hue 4 / next on an-tool1009
 # with a specific hiera host setting.
-profile::cdh::apt::bigtop_component: 'cloudera'
+profile::bigtop::apt::component: 'cloudera'
 profile::analytics::cluster::packages::common::use_bigtop_settings: false
 
 profile::hive::client::hive_service_name: 'analytics-hive'

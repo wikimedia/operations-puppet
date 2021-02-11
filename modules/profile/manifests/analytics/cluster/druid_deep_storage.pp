@@ -9,12 +9,12 @@
 #
 class profile::analytics::cluster::druid_deep_storage {
     # Ensure that druid deep storage directories exist for all Druid clusters.
-    ::druid::cdh::hadoop::deep_storage { 'analytics-eqiad':
+    ::druid::bigtop::hadoop::deep_storage { 'analytics-eqiad':
         # analytics-eqiad predates the time when there were multiple Druid clusters.
         # It's deep storage directory will be /user/druid/deep-storage.
         path => '/user/druid/deep-storage',
     }
     # The Druid public-eqiad cluster's deep storage
     # directory will be /user/druid/deep-storage-public-eqiad
-    ::druid::cdh::hadoop::deep_storage { 'public-eqiad': }
+    ::druid::bigtop::hadoop::deep_storage { 'public-eqiad': }
 }

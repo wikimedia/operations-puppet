@@ -10,7 +10,7 @@ class profile::hive::metastore(
     require ::profile::hive::client
 
     # Setup hive-metastore
-    class { '::cdh::hive::metastore': }
+    class { '::bigtop::hive::metastore': }
 
     ferm::service{ 'hive_metastore':
         proto  => 'tcp',
@@ -27,7 +27,7 @@ class profile::hive::metastore(
             description   => 'Hive Metastore',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hive.metastore.HiveMetaStore"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hive::metastore'],
+            require       => Class['bigtop::hive::metastore'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hive',
         }
 

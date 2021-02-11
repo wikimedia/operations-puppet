@@ -1,5 +1,5 @@
 # == Class role::analytics_cluster::hadoop::master
-# Includes cdh::hadoop::master classes
+# Includes bigtop::hadoop::master classes
 #
 # filtertags: labs-project-analytics labs-project-math
 class role::analytics_cluster::hadoop::master {

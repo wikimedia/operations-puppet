@@ -38,7 +38,7 @@ class profile::analytics::cluster::users {
         ensure  => present,
         system  => true,
         groups  => 'druid',
-        require => Class['::druid::cdh::hadoop::user'],
+        require => Class['::druid::bigtop::hadoop::user'],
     }
 
     # The analytics-privatedata user will be used to run
@@ -59,5 +59,5 @@ class profile::analytics::cluster::users {
 
     # When Kerberos is enabled, indexation jobs will run on workers
     # as user 'druid'.
-    class { '::druid::cdh::hadoop::user': }
+    class { '::druid::bigtop::hadoop::user': }
 }

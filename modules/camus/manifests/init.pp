@@ -1,9 +1,9 @@
 # == Class camus
 #
 class camus {
-    # Require that an HDFS client is installed by ensuring that cdh::hadoop
+    # Require that an HDFS client is installed by ensuring that bigtop::hadoop
     # is included on this node.
-    Class['cdh::hadoop'] -> Class['camus']
+    Class['bigtop::hadoop'] -> Class['camus']
 
     $config_directory = '/etc/camus.d'
     $log_directory    = '/var/log/camus'

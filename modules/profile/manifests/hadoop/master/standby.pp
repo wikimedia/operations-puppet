@@ -18,7 +18,7 @@ class profile::hadoop::master::standby(
         require ::profile::hadoop::monitoring::resourcemanager
     }
 
-    class { '::cdh::hadoop::namenode::standby':
+    class { '::bigtop::hadoop::namenode::standby':
         excluded_hosts => $excluded_hosts,
     }
 
@@ -29,14 +29,14 @@ class profile::hadoop::master::standby(
             description   => 'Hadoop Namenode - Stand By',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop::namenode::standby'],
+            require       => Class['bigtop::hadoop::namenode::standby'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-hdfs-zkfc':
             description   => 'Hadoop HDFS Zookeeper failover controller',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hadoop::namenode::standby'],
+            require       => Class['bigtop::hadoop::namenode::standby'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
 
@@ -55,7 +55,7 @@ class profile::hadoop::master::standby(
         }
     }
 
-    class { '::cdh::hadoop::resourcemanager': }
+    class { '::bigtop::hadoop::resourcemanager': }
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {

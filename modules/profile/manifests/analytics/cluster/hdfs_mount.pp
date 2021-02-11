@@ -12,7 +12,7 @@ class profile::analytics::cluster::hdfs_mount(
 
     # Mount HDFS via Fuse on Analytics client nodes.
     # This will mount HDFS at /mnt/hdfs read only.
-    class { '::cdh::hadoop::mount': }
+    class { '::bigtop::hadoop::mount': }
 
     if $monitoring_enabled {
         if $kerberos_enabled {
@@ -22,7 +22,7 @@ class profile::analytics::cluster::hdfs_mount(
             $kerberos_prefix = "/usr/bin/sudo -u ${monitoring_user} ${::profile::kerberos::client::run_command_script} ${monitoring_user} "
             sudo::user { 'nagios-check_hadoop_mount_readability':
                 user       => 'nagios',
-                privileges => ["ALL = (${monitoring_user}) NOPASSWD: ${::profile::kerberos::client::run_command_script} ${monitoring_user} /usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}"],
+                privileges => ["ALL = (${monitoring_user}) NOPASSWD: ${::profile::kerberos::client::run_command_script} ${monitoring_user} /usr/local/lib/nagios/plugins/check_mountpoint_readability ${bigtop::hadoop::mount::mount_point}"],
             }
         } else {
             $kerberos_prefix = ''
@@ -37,7 +37,7 @@ class profile::analytics::cluster::hdfs_mount(
         }
         nrpe::monitor_service { 'check_hadoop_mount_readability':
             description    => 'Check if the Hadoop HDFS Fuse mountpoint is readable',
-            nrpe_command   => "${kerberos_prefix}/usr/local/lib/nagios/plugins/check_mountpoint_readability ${cdh::hadoop::mount::mount_point}",
+            nrpe_command   => "${kerberos_prefix}/usr/local/lib/nagios/plugins/check_mountpoint_readability ${bigtop::hadoop::mount::mount_point}",
             check_interval => 30,
             retries        => 2,
             contact_group  => 'analytics',

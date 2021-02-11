@@ -16,8 +16,8 @@ class profile::analytics::cluster::client {
 
     # These don't require any extra configuration,
     # so no role class is needed.
-    class { '::cdh::sqoop': }
-    class { '::cdh::mahout': }
+    class { '::bigtop::sqoop': }
+    class { '::bigtop::mahout': }
 
     include ::profile::analytics::hdfs_tools
     include ::profile::analytics::cluster::hdfs_mount

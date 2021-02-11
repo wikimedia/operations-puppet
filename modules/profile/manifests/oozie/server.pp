@@ -29,12 +29,12 @@ class profile::oozie::server(
 
     require ::profile::oozie::client
 
-    # cdh::oozie::server will ensure that its MySQL DB is
+    # bigtop::oozie::server will ensure that its MySQL DB is
     # properly initialized.  For puppet to do this,
     # it needs a mysql client.
     require_package('mysql-client')
 
-    class { '::cdh::oozie::server':
+    class { '::bigtop::oozie::server':
         smtp_host                                   => 'localhost',
         smtp_from_email                             => "oozie@${::fqdn}",
         authorization_service_authorization_enabled => $use_admins_list,
@@ -73,7 +73,7 @@ class profile::oozie::server(
             description   => 'Oozie Server',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.catalina.startup.Bootstrap"',
             contact_group => 'admins,analytics',
-            require       => Class['cdh::hive::metastore'],
+            require       => Class['bigtop::hive::metastore'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Oozie',
         }
     }

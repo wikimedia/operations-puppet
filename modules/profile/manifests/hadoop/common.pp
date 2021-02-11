@@ -28,7 +28,7 @@
 #
 #  [*hadoop_cluster_name*]
 #    The Hadoop cluster name to pick up config properties from.
-#    Default: 'cdh'
+#    Default: 'bigtop'
 #
 #  [*config_override*]
 #    Hash of Hadoop properties that override the ones defined in the
@@ -306,7 +306,7 @@ class profile::hadoop::common (
     # Include Wikimedia's thirdparty/cloudera apt component
     # as an apt source on all Hadoop hosts.  This is needed
     # to install CDH packages from our apt repo mirror.
-    require ::profile::cdh::apt
+    require ::profile::bigtop::apt
 
     # Need Java before Hadoop is installed.
     Class['profile::java'] -> Class['profile::hadoop::common']
@@ -348,7 +348,7 @@ class profile::hadoop::common (
     $hdfs_site_extra_properties_default = {}
     $mapred_site_extra_properties_default = {}
 
-    class { 'cdh::hadoop':
+    class { 'bigtop::hadoop':
         # Default to using running resourcemanager on the same hosts
         # as the namenodes.
         resourcemanager_hosts                            => $resourcemanager_hosts,
@@ -464,9 +464,9 @@ class profile::hadoop::common (
         # the setting needs to be present anyway. Upstream tutorials suggest to
         # put this value equal to the value of the keystore password.
         $keystore_keypassword = $hadoop_secrets_config['ssl_keystore_keypassword']
-        $keystore_path = "${cdh::hadoop::config_directory}/ssl/server.p12"
+        $keystore_path = "${bigtop::hadoop::config_directory}/ssl/server.p12"
 
-        base::expose_puppet_certs{$cdh::hadoop::config_directory:
+        base::expose_puppet_certs{$bigtop::hadoop::config_directory:
             user         => 'root',
             group        => 'hadoop',
             provide_p12  => true,
@@ -483,8 +483,8 @@ class profile::hadoop::common (
 
         # By default we ensure that the puppet CA is trusted in the default
         # JVM's truststore. No need for ssl-client.xml config in this case.
-        class { 'cdh::hadoop::ssl_config':
-            config_directory  => $::cdh::hadoop::config_directory,
+        class { 'bigtop::hadoop::ssl_config':
+            config_directory  => $::bigtop::hadoop::config_directory,
             ssl_server_config => $ssl_server_config,
         }
 
@@ -506,8 +506,8 @@ class profile::hadoop::common (
             $hadoop_data_directory,
         ]:
             ensure => 'directory',
-            before => Class['cdh::hadoop'],
+            before => Class['bigtop::hadoop'],
         }
     }
-    contain 'cdh::hadoop'
+    contain 'bigtop::hadoop'
 }

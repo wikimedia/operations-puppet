@@ -9,10 +9,10 @@ prometheus::node_exporter::collectors_extra:
 # Avoid an explicit pin to the cloudera apt component that can
 # force packages shared between the cdh and debian upstream distribution
 # to prefer the cdh version (we do it only for Hadoop nodes).
-profile::cdh::apt::pin_release: false
+profile::bigtop::apt::pin_release: false
 
 # Testing Apache BigTop in T244499
-profile::cdh::apt::bigtop_component: 'bigtop15'
+profile::bigtop::apt::component: 'bigtop15'
 profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
@@ -69,7 +69,7 @@ profile::druid::common::properties:
   # and as such had a deep storage directory in HDFS without
   # the cluster name in the path.
   # NOTE: This directory is ensured to exist by usage of the
-  # druid::cdh::hadoop::deep_storage define included in the
+  # druid::bigtop::hadoop::deep_storage define included in the
   # role::analytics_cluster::hadoop::master class.
   druid.storage.storageDirectory: /user/druid/deep-storage
   druid.extensions.loadList:
