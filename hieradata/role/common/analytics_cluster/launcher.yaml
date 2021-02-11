@@ -43,7 +43,7 @@ profile::java::java_packages:
     variant: 'jdk'
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 
-profile::analytics::geoip::archive::ensure: 'present'
+profile::analytics::geoip::archive::ensure: 'absent'
 
 profile::analytics::refinery::ensure_hdfs_dirs: true
 
