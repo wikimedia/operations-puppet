@@ -65,5 +65,3 @@ profile::mediawiki::php::fpm_workers_multiplier: 4.5
 profile::mediawiki::php::slowlog_limit: 5
 # Enable ICU 63 T264991
 profile::mediawiki::php::icu63: true
-
-profile::mediawiki::mwdebug_homes::backup_mwdebug_host: 'mwdebug1003.eqiad.wmnet'

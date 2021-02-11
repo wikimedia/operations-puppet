@@ -10,9 +10,4 @@ class role::mediawiki::canary_appserver {
     class { 'scap::scripts':
         sql_scripts => absent,
     }
-
-    # on mwdebug hosts allow rsyncing home dirs
-    if $::fqdn[0,7] == 'mwdebug' {
-        include ::profile::mediawiki::mwdebug_homes
-    }
 }
