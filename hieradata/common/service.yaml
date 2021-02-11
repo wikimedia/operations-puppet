@@ -65,7 +65,6 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!apertium.discovery.wmnet!4737!/listPairs
-      check_command: check_http_lvs_on_port!apertium.discovery.wmnet!2737!/listPairs
       critical: false
       sites:
         codfw:
