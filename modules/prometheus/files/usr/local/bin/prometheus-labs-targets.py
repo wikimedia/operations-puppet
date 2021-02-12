@@ -8,7 +8,7 @@ import yaml
 
 from keystoneclient import client as keystone_client
 from keystoneauth1 import session as keystone_session
-from keystoneclient.auth.identity import generic
+from keystoneauth1.identity.v3 import Password as KeystonePassword
 from novaclient import client as nova_client
 
 
@@ -31,7 +31,7 @@ def get_session(env, project):
         "user_domain_name": env["OS_USER_DOMAIN_NAME"],
         "project_name": project,
     }
-    auth = generic.Password(**nova_connection)
+    auth = KeystonePassword(**nova_connection)
     return keystone_session.Session(auth=auth)
 
 
