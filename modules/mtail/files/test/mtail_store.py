@@ -1,6 +1,8 @@
 import json
-import subprocess
 import logging
+import shutil
+import subprocess
+import sys
 
 
 log = logging.getLogger(__name__)
@@ -34,7 +36,9 @@ class MtailMetricStore(object):
         try:
             self._store = json.loads(''.join(metrics_store))
         except ValueError as e:
-            log.warn(subprocess.check_output(['dpkg-query', '-W', 'mtail']))
+            log.warn("mtail path: {}".format(shutil.which("mtail")))
+            if sys.platform.startswith("linux"):
+                log.warn(subprocess.check_output(['dpkg-query', '-W', 'mtail']))
             log.warn(stderr)
             raise ValueError('Error parsing metric store: %r' % e)
 
