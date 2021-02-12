@@ -21,7 +21,7 @@ Expects env variables inline with our other nova tooling:
 """
 
 import argparse
-from keystoneclient.auth.identity import generic
+from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1 import session as keystone_session
 import logging
 import novaclient
@@ -524,7 +524,7 @@ def main():
 
         loop_start = round(time.time(), 2)
 
-        auth = generic.Password(auth_url=args.keystone_url,
+        auth = KeystonePassword(auth_url=args.keystone_url,
                                 username=user,
                                 password=pw,
                                 user_domain_name='Default',
