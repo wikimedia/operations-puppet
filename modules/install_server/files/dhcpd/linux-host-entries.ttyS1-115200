@@ -611,6 +611,36 @@ host aqs1009 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host aqs1010 {
+    hardware ethernet 2C:EA:7F:67:80:DB;
+    fixed-address aqs1010.eqiad.wmnet;
+}
+
+host aqs1011 {
+    hardware ethernet 2C:EA:7F:68:DA:EA;
+    fixed-address aqs1011.eqiad.wmnet;
+}
+
+host aqs1012 {
+    hardware ethernet 2C:EA:7F:68:CB:51;
+    fixed-address aqs1012.eqiad.wmnet;
+}
+
+host aqs1013 {
+    hardware ethernet 2C:EA:7F:68:E4:C2;
+    fixed-address aqs1013.eqiad.wmnet;
+}
+
+host aqs1014 {
+    hardware ethernet 2C:EA:7F:68:D9:22;
+    fixed-address aqs1014.eqiad.wmnet;
+}
+
+host aqs1015 {
+    hardware ethernet 2C:EA:7F:68:D2:6A;
+    fixed-address aqs1015.eqiad.wmnet;
+}
+
 host auth1002 {
     hardware ethernet D0:94:66:5F:55:90;
     fixed-address auth1002.eqiad.wmnet;

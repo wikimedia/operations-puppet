@@ -187,6 +187,11 @@ node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
 }
 
+# New AQS Nodes T267414
+node /aqs101[0-5]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # New Archiva host on Buster
 # T254890
 node 'archiva1002.wikimedia.org' {
