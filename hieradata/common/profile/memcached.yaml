@@ -1,5 +1,6 @@
 profile::standard::admin_groups:
   - perf-roots
+profile::memcached::enable_16: false
 profile::memcached::threads: ~
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.25

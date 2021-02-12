@@ -47,6 +47,7 @@ class profile::memcached::instance (
     Integer           $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs'),
     Integer           $min_slab_size    = lookup('profile::memcached::min_slab_size'),
     Float             $growth_factor    = lookup('profile::memcached::growth_factor'),
+    Optional[Boolean] $enable_16        = lookup('profile::memcached::enable_16'),
     Optional[Integer] $threads          = lookup('profile::memcached::threads'),
 ) {
     include ::profile::prometheus::memcached_exporter
@@ -73,6 +74,7 @@ class profile::memcached::instance (
     class { '::memcached':
         size          => $size,
         port          => $port,
+        enable_16     => $enable_16,
         version       => $version,
         growth_factor => $growth_factor,
         min_slab_size => $min_slab_size,
