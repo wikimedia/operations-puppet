@@ -44,7 +44,7 @@ import time
 
 from designateclient.v2 import client as designateclient
 import glanceclient
-from keystoneclient.auth.identity import generic
+from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1 import session as keystone_session
 from keystoneclient.v3 import client as keystoneclient
 from neutronclient.v2_0 import client as neutronclient
@@ -65,7 +65,7 @@ class NovaInstance(object):
         self.dest_config = dest_config
         self.common_config = common_config
 
-        source_auth = generic.Password(
+        source_auth = KeystonePassword(
             auth_url=self.common_config['keystone_url'],
             username=self.common_config['user'],
             password=self.common_config['password'],
@@ -80,7 +80,7 @@ class NovaInstance(object):
         self.project_id = self.source_instance.tenant_id
         self.user_id = self.source_instance.user_id
 
-        project_auth = generic.Password(
+        project_auth = KeystonePassword(
             auth_url=self.common_config['keystone_url'],
             username=self.common_config['user'],
             password=self.common_config['password'],
@@ -94,7 +94,7 @@ class NovaInstance(object):
         self.novaclient_projectscope = novaclient.Client('2', session=project_session,
                                                          region_name=dest_config['region'])
 
-        wmflabs_auth = generic.Password(
+        wmflabs_auth = KeystonePassword(
             auth_url=self.common_config['keystone_url'],
             username=self.common_config['user'],
             password=self.common_config['password'],
@@ -105,7 +105,7 @@ class NovaInstance(object):
         self.wmflabsdesignateclient = designateclient.Client(session=wmflabs_session,
                                                              region_name=source_config['region'])
 
-        dest_auth = generic.Password(
+        dest_auth = KeystonePassword(
             auth_url=self.common_config['keystone_url'],
             username=self.common_config['user'],
             password=self.common_config['password'],
@@ -362,7 +362,7 @@ class NovaInstance(object):
 
     def make_destination_vm(self, name, image_id, flavor_id):
         # we need a project-scoped session to create the VM in the right project
-        create_auth = generic.Password(
+        create_auth = KeystonePassword(
             auth_url=self.common_config['keystone_url'],
             username=self.common_config['user'],
             password=self.common_config['password'],
