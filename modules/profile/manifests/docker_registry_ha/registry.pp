@@ -1,10 +1,7 @@
 class profile::docker_registry_ha::registry(
     # The following variables might be useful elsewhere too
-    String $legacy_uploader_hash = lookup('docker_registry_ha::hash'),
-    String $restricted_push_password = lookup('profile::docker_registry_ha::restricted_push_password'),
-    String $restricted_read_password = lookup('profile::docker_registry_ha::restricted_read_password'),
-    String $regular_push_password = lookup('profile::docker_registry_ha::regular_push_password'),
-    String $password_salt = lookup('profile::docker_registry_ha::password_salt'),
+    String $username = lookup('docker_registry_ha::username'),
+    String $hash = lookup('docker_registry_ha::hash'),
     # Which machines are allowed to build images.
     Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker_registry_ha::registry::image_builders', { 'default_value' => undef }),
     # cache text nodes are allowed to connect via HTTP, if defined
@@ -73,18 +70,15 @@ class profile::docker_registry_ha::registry(
     }
 
     class { '::docker_registry_ha::web':
-        legacy_uploader_hash     => $legacy_uploader_hash,
-        restricted_push_password => $restricted_push_password,
-        restricted_read_password => $restricted_read_password,
-        regular_push_password    => $regular_push_password,
-        password_salt            => $password_salt,
-        allow_push_from          => $image_builders,
-        ssl_settings             => ssl_ciphersuite('nginx', 'mid'),
-        use_puppet_certs         => $use_puppet,
-        ssl_certificate_name     => $certname,
-        http_endpoint            => true,
-        http_allowed_hosts       => $cache_nodes['text']['eqiad'] + $cache_nodes['text']['codfw'],
-        read_only_mode           => $registry_read_only_mode,
+        docker_username      => $username,
+        docker_password_hash => $hash,
+        allow_push_from      => $image_builders,
+        ssl_settings         => ssl_ciphersuite('nginx', 'mid'),
+        use_puppet_certs     => $use_puppet,
+        ssl_certificate_name => $certname,
+        http_endpoint        => true,
+        http_allowed_hosts   => $cache_nodes['text']['eqiad'] + $cache_nodes['text']['codfw'],
+        read_only_mode       => $registry_read_only_mode,
     }
 
     # T209709

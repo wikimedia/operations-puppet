@@ -1,19 +1,6 @@
-# = Class: docker_registry_ha::web
-#
-# This class sets up nginx to proxy and provide access control
-# in front of a docker-registry.
-#
-# There are 3 users:
-# * restricted-push - can push any image
-# * restricted-read - can read restricted images (includes restricted-push)
-# * regular-push - can push non-restricted images (includes restricted-push)
-#
 class docker_registry_ha::web (
-    String $legacy_uploader_hash,
-    String $restricted_push_password,
-    String $restricted_read_password,
-    String $regular_push_password,
-    String $password_salt,
+    String $docker_username,
+    String $docker_password_hash,
     Array[Stdlib::Host] $allow_push_from,
     Array[String] $ssl_settings,
     Boolean $use_puppet_certs=false,
@@ -35,45 +22,14 @@ class docker_registry_ha::web (
         }
     }
 
-    # Legacy credentials
     file { '/etc/nginx/htpasswd.registry':
-        ensure => absent,
-    }
-
-    $restricted_push_file = '/etc/nginx/restricted-push.htpasswd';
-    $restricted_push_hash = htpasswd($restricted_push_password, $password_salt);
-    file { $restricted_push_file:
-        content => "restricted-push:${restricted_push_hash}",
+        content => "${docker_username}:${docker_password_hash}",
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0440',
         before  => Service['nginx'],
         require => Package['nginx-common'],
     }
-
-    $restricted_read_file = '/etc/nginx/restricted-read.htpasswd';
-    $restricted_read_hash = htpasswd($restricted_read_password, $password_salt);
-    file { $restricted_read_file:
-        content => "restricted-read:${restricted_read_hash}\nrestricted-push:${restricted_push_hash}",
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0440',
-        before  => Service['nginx'],
-        require => Package['nginx-common'],
-    }
-
-    $regular_push_file = '/etc/nginx/regular-push.htpasswd';
-    $regular_push_hash = htpasswd($regular_push_password, $password_salt);
-    file { $regular_push_file:
-        # TODO: phase out legacy "uploader" account
-        content => "regular-push:${regular_push_hash}\nrestricted-push:${restricted_push_hash}\nuploader:${legacy_uploader_hash}",
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => '0440',
-        before  => Service['nginx'],
-        require => Package['nginx-common'],
-    }
-
     nginx::site { 'registry':
         content => template('docker_registry_ha/registry-nginx.conf.erb'),
     }
