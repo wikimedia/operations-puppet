@@ -1,0 +1,155 @@
+fields:
+  program: "input-file-gerrit-json"
+  host: "gerrit1001"
+  logsource: "gerrit1001"
+  facility: "local0"
+  severity: "NOTICE"
+codec: "json_lines"
+ignore:
+  - "labels"
+  - "@timestamp"
+testcases:
+  - input:
+      - >
+        {
+          "timestamp":"2021-02-12T17:06:58.670+0000",
+          "session":"12345678",
+          "thread":"SSH git-upload-pack /mediawiki/extensions/IPInfo.git (user-name)",
+          "user":"user-name",
+          "account_id":"a/0000",
+          "message":"git-upload-pack./mediawiki/extensions/IPInfo.git",
+          "wait_time":"4ms",
+          "exec_time":"336ms",
+          "status":"0",
+          "time_negotiating":"-1",
+          "time_search_reuse":"-1",
+          "time_search_sizes":"-1",
+          "time_counting":"-1",
+          "time_compressing":"-1",
+          "time_writing":"-1",
+          "time_total":"-1",
+          "bitmap_index_misses":"-1",
+          "deltas_total":"-1",
+          "objects_total":"-1",
+          "bytes_total":"-1"
+        }
+      - >
+        {
+          "@timestamp": "2021-02-12T17:35:04.423+0000",
+          "source_host": "208.80.154.136",
+          "message": "Internal error during upload-pack from /srv/gerrit/git/mediawiki/core.git",
+          "file": "ContextHandler.java",
+          "line_number": "2372",
+          "class": "org.eclipse.jetty.server.handler.ContextHandler$Context",
+          "method": "log",
+          "logger_name": "org.eclipse.jetty.server.handler.ContextHandler.r",
+          "mdc": {},
+          "level": "WARN",
+          "thread_name": "HTTP POST /r/mediawiki/core/git-upload-pack (N/A from 0.0.0.0)",
+          "@version": 2,
+          "exception": {
+            "stacktrace": "org.eclipse.jetty.io.EofException\n\tat org.eclipse.jetty.io.ChannelEndPoint.flush(ChannelEndPoint.java:279)\n\tat org...",
+            "exception_class": "org.eclipse.jetty.io.EofException"
+          }
+        }
+
+    expected:
+      - message: "git-upload-pack./mediawiki/extensions/IPInfo.git"
+        # "@timestamp": "2021-02-12T17:06:58.670Z"
+        process:
+          thread:
+            name: "SSH git-upload-pack /mediawiki/extensions/IPInfo.git (user-name)"
+        user:
+          name: "user-name"
+          id: "a/0000"
+        service:
+          type: "gerrit"
+        host:
+          name: "gerrit1001"
+        log:
+          level: "NOTICE"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 133
+            severity:
+              code: 5
+              name: "notice"
+        ecs:
+          version: "1.7.0"
+      - message: "git-upload-pack./mediawiki/extensions/IPInfo.git"
+        timestamp: "2021-02-12T17:06:58.670+0000"
+        session: "12345678"
+        thread: "SSH git-upload-pack /mediawiki/extensions/IPInfo.git (user-name)"
+        user: "user-name"
+        account_id: "a/0000"
+        wait_time: "4ms"
+        exec_time: "336ms"
+        status: "0"
+        time_negotiating: "-1"
+        time_search_reuse: "-1"
+        time_search_sizes: "-1"
+        time_counting: "-1"
+        time_compressing: "-1"
+        time_writing: "-1"
+        time_total: "-1"
+        bitmap_index_misses: "-1"
+        deltas_total: "-1"
+        objects_total: "-1"
+        bytes_total: "-1"
+        program: "input-file-gerrit-json"
+        severity: "NOTICE"
+        logsource: "gerrit1001"
+        host: "gerrit1001"
+        facility: "local0"
+      - message: "Internal error during upload-pack from /srv/gerrit/git/mediawiki/core.git"
+        # "@timestamp": "2021-02-12T17:35:04.423Z"
+        server:
+          ip: "208.80.154.136"
+        service:
+          type: "gerrit"
+        host:
+          name: "gerrit1001"
+        log:
+          level: "WARN"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 132
+            severity:
+              code: 4
+              name: "warning"
+          origin:
+            file:
+              name: "ContextHandler.java"
+              line: "2372"
+            function: "log"
+          logger: "org.eclipse.jetty.server.handler.ContextHandler$Context"
+        process:
+          thread:
+            name: "HTTP POST /r/mediawiki/core/git-upload-pack (N/A from 0.0.0.0)"
+        error:
+          stack_trace: "org.eclipse.jetty.io.EofException\n\tat org.eclipse.jetty.io.ChannelEndPoint.flush(ChannelEndPoint.java:279)\n\tat org..."
+          type: "org.eclipse.jetty.io.EofException"
+        ecs:
+          version: "1.7.0"
+      - message: "Internal error during upload-pack from /srv/gerrit/git/mediawiki/core.git"
+        source_host: "208.80.154.136"
+        file: "ContextHandler.java"
+        line_number: "2372"
+        class: "org.eclipse.jetty.server.handler.ContextHandler$Context"
+        method: "log"
+        logger_name: "org.eclipse.jetty.server.handler.ContextHandler.r"
+        mdc: {}
+        level: "WARN"
+        thread_name: "HTTP POST /r/mediawiki/core/git-upload-pack (N/A from 0.0.0.0)"
+        exception:
+          stacktrace: "org.eclipse.jetty.io.EofException\n\tat org.eclipse.jetty.io.ChannelEndPoint.flush(ChannelEndPoint.java:279)\n\tat org..."
+          exception_class: "org.eclipse.jetty.io.EofException"
+        facility: "local0"
+        host: "gerrit1001"
+        logsource: "gerrit1001"
+        program: "input-file-gerrit-json"
+        severity: "NOTICE"
