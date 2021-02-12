@@ -27,7 +27,6 @@ profile::services_proxy::envoy::enabled_listeners:
  - parsoid-php
  - mathoid
  - mobileapps
- - graphoid
  - aqs
  - proton
  - citoid

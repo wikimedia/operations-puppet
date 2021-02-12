@@ -142,10 +142,6 @@ profile::services_proxy::envoy::listeners:
     port: 6012
     service: mobileapps
     timeout: "120s"
-  - name: graphoid
-    port: 6666
-    service: graphoid
-    timeout: "120s"
   - name: aqs
     port: 6020
     service: aqs

@@ -68,10 +68,6 @@ profile::kubernetes::deployment_server::services:
     username: zotero
     group: wikidev
     mode: '0640'
-  graphoid:
-    username: graphoid
-    group: wikidev
-    mode: '0640'
   blubberoid:
     username: blubberoid
     group: wikidev
@@ -189,8 +185,6 @@ profile::kubernetes::deployment_server::services:
 #  mathoid:
 #    token: dummy
 #  zotero:
-#    token: dummy
-#  graphoid
 #    token: dummy
 #  blubberoid:
 #    token: dummy
