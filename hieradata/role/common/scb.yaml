@@ -2,10 +2,6 @@ cluster: scb
 profile::standard::admin_groups:
   - sc-admins
   - graphoid-admin
-profile::lvs::realserver::pools:
-  graphoid:
-    services:
-      - graphoid
 
 ### BEGIN GRAPHOID
 profile::graphoid::allowed_domains:
