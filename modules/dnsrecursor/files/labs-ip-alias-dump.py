@@ -6,7 +6,7 @@ import yaml
 import argparse
 import itertools
 
-from keystoneclient.auth.identity import generic
+from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1 import session as keystone_session
 
 from keystoneclient.v3 import client as keystone_client
@@ -15,7 +15,7 @@ from novaclient import client as novaclient
 
 
 def new_session(project):
-    auth = generic.Password(
+    auth = KeystonePassword(
         auth_url=config['nova_api_url'],
         username=config['username'],
         password=config['password'],
