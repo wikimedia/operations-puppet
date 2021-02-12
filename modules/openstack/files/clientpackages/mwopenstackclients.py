@@ -6,7 +6,7 @@ import yaml
 import requests
 
 import glanceclient
-from keystoneclient.auth.identity import generic
+from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1 import session as keystone_session
 from keystoneclient.v3 import client as keystone_client
 from novaclient import client as nova_client
@@ -94,7 +94,7 @@ class Clients(object):
 
         if project not in self.sessions:
 
-            auth = generic.Password(
+            auth = KeystonePassword(
                 auth_url=self.url,
                 username=self.username,
                 password=self.password,
