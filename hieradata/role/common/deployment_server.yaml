@@ -127,9 +127,6 @@ scap::sources:
     repository: operations/software/gerrit
   gervert/deploy:
     repository: operations/software/gerrit/tools/gervert/deploy
-  graphoid/deploy:
-    repository: mediawiki/services/graphoid/deploy
-#    lvs_service: graphoid
   iegreview/iegreview:
     repository: iegreview
     origin: phabricator
@@ -220,12 +217,6 @@ profile::kubernetes::deployment_server::services:
     group: wikidev
     mode: '0640'
     namespace: zotero
-    owner: mwdeploy
-  graphoid:
-    username: graphoid
-    group: wikidev
-    mode: '0640'
-    namespace: graphoid
     owner: mwdeploy
   blubberoid:
     username: blubberoid
@@ -385,8 +376,6 @@ profile::kubernetes::deployment_server::general:
 #  mathoid:
 #    token: dummy
 #  zotero:
-#    token: dummy
-#  graphoid:
 #    token: dummy
 #  blubberoid:
 #    token: dummy
