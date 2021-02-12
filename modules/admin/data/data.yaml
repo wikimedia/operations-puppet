@@ -4027,6 +4027,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICft3iBlNm+b0OoW7LoITaG1+5X5S02pQVdRwQfEzaTE arielchou@AIJOUde-MacBook-Pro.local
     expiry_date: 2021-06-30
     expiry_contact: mredi@wikimedia.org
+  paragon:
+    ensure: present
+    realname: Pablo Aragon
+    email: paragon@wikimedia.org
+    uid: 29872
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxm5+ggosgP8vUBpRjwOvwl2d3/lclYkuryLz1hmPrO paragon@lenovo
+    krb: present
 
 ldap_only_users:
   abartov:
