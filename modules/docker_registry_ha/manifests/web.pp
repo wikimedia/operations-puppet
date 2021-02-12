@@ -1,6 +1,22 @@
+# = Class: docker_registry_ha::web
+#
+# This class sets up nginx to proxy and provide access control
+# in front of a docker-registry.
+#
+# There are 3 groups of users:
+# * restricted-push - can push any image
+# * restricted-read - can read restricted images
+# * regular-push - can push non-restricted images
+#
+# TODO: Refactor this to be a flexible ACL system, similar to etcd::tlsproxy
+#
 class docker_registry_ha::web (
-    String $docker_username,
-    String $docker_password_hash,
+    String $legacy_uploader_hash,
+    String $ci_restricted_user_password,
+    String $kubernetes_user_password,
+    String $ci_build_user_password,
+    String $prod_build_user_password,
+    String $password_salt,
     Array[Stdlib::Host] $allow_push_from,
     Array[String] $ssl_settings,
     Boolean $use_puppet_certs=false,
@@ -22,14 +38,49 @@ class docker_registry_ha::web (
         }
     }
 
+    # Legacy credentials
     file { '/etc/nginx/htpasswd.registry':
-        content => "${docker_username}:${docker_password_hash}",
+        ensure => absent,
+    }
+
+    # Push access to /restricted/
+    $restricted_push_file = '/etc/nginx/restricted-push.htpasswd';
+    $ci_restricted_user_hash = htpasswd($ci_restricted_user_password, $password_salt);
+    file { $restricted_push_file:
+        content => "ci-restricted:${ci_restricted_user_hash}",
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0440',
         before  => Service['nginx'],
         require => Package['nginx-common'],
     }
+
+    # Read access to /restricted/
+    $restricted_read_file = '/etc/nginx/restricted-read.htpasswd';
+    $kubernetes_user_hash = htpasswd($kubernetes_user_password, $password_salt);
+    file { $restricted_read_file:
+        content => "kubernetes:${kubernetes_user_hash}\nci-restricted:${ci_restricted_user_hash}",
+        owner   => 'www-data',
+        group   => 'www-data',
+        mode    => '0440',
+        before  => Service['nginx'],
+        require => Package['nginx-common'],
+    }
+
+    # Push access to /
+    $regular_push_file = '/etc/nginx/regular-push.htpasswd';
+    $ci_build_user_hash = htpasswd($ci_build_user_password, $password_salt);
+    $prod_build_user_hash = htpasswd($prod_build_user_password, $password_salt);
+    file { $regular_push_file:
+        # TODO: phase out legacy "uploader" account
+        content => "ci-build:${ci_build_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}\nuploader:${legacy_uploader_hash}",
+        owner   => 'www-data',
+        group   => 'www-data',
+        mode    => '0440',
+        before  => Service['nginx'],
+        require => Package['nginx-common'],
+    }
+
     nginx::site { 'registry':
         content => template('docker_registry_ha/registry-nginx.conf.erb'),
     }
