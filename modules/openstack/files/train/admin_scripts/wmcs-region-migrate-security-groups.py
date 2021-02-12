@@ -9,7 +9,7 @@ except ImportError:
     import ConfigParser as configparser
 import argparse
 
-from keystoneclient.auth.identity import generic
+from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1 import session as keystone_session
 from novaclient import client
 from neutronclient.v2_0 import client as neutronclient
@@ -27,7 +27,7 @@ class NovaProject(object):
         self.dest_config = dest_config
         self.common_config = common_config
 
-        source_auth = generic.Password(
+        source_auth = KeystonePassword(
             auth_url=self.common_config['keystone_url'],
             username=self.common_config['user'],
             password=self.common_config['password'],
@@ -38,7 +38,7 @@ class NovaProject(object):
         self.source_novaclient = client.Client('2', session=source_session,
                                                region_name=source_config['region'])
 
-        dest_auth = generic.Password(
+        dest_auth = KeystonePassword(
             auth_url=self.common_config['keystone_url'],
             username=self.common_config['user'],
             password=self.common_config['password'],
