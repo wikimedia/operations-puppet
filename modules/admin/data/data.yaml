@@ -386,12 +386,6 @@ groups:
     gid: 749
     description: users who maintain HTML/ZIM dumps
     members: [mobrovac, eevans]
-  graphoid-admin:
-    gid: 750
-    description: group of graphoid admins
-    members: [mobrovac]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service graphoid *',
-                 'ALL = (graphoid) NOPASSWD: ALL']
   traceback-roots:
     gid: 751
     description: people who have full root on traceback hosts

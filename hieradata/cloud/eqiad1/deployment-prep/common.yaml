@@ -17,35 +17,6 @@ profile::cache::purge::kafka_cluster_name: main-deployment-prep
 profile::envoy::ensure: absent
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
-profile::graphoid::allowed_domains:
-  http:
-    - wmflabs.org
-  https:
-    - mediawiki.org
-    - wikibooks.org
-    - wikidata.org
-    - wikimedia.org
-    - wikimediafoundation.org
-    - wikinews.org
-    - wikipedia.org
-    - wikiquote.org
-    - wikisource.org
-    - wikiversity.org
-    - wikivoyage.org
-    - wiktionary.org
-    - beta.wmflabs.org
-  wikirawupload:
-    - upload.wikimedia.org
-    - upload.beta.wmflabs.org
-  wikidatasparql:
-    - query.wikidata.org
-    - wdqs-test.wmflabs.org
-  geoshape:
-    - maps.wikimedia.org
-profile::graphoid::headers:
-  'Cache-Control': 'public, s-maxage=360, max-age=360'
-profile::graphoid::error_headers:
-  'Cache-Control': 'public, s-maxage=30, max-age=30'
 # AQS
 aqs_hosts:
   - deployment-aqs01.deployment-prep.eqiad.wmflabs
@@ -62,7 +33,6 @@ profile::restbase::cassandra_datacenters:
     - "datacenter1"
 profile::restbase::cassandra_local_dc: "datacenter1"
 profile::restbase::parsoid_uri: http://deployment-parsoid11.deployment-prep.eqiad.wmflabs/w/rest.php
-profile::restbase::graphoid_uri: http://deployment-sca01.deployment-prep.eqiad.wmflabs:19000
 profile::restbase::mobileapps_uri: http://deployment-docker-mobileapps01.deployment-prep.eqiad1.wikimedia.cloud:8888
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid01.deployment-prep.eqiad.wmflabs:10044
 profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics

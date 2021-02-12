@@ -1,35 +1,6 @@
 cluster: scb
 profile::standard::admin_groups:
   - sc-admins
-  - graphoid-admin
-
-### BEGIN GRAPHOID
-profile::graphoid::allowed_domains:
-  https:
-    - mediawiki.org
-    - wikibooks.org
-    - wikidata.org
-    - wikimedia.org
-    - wikimediafoundation.org
-    - wikinews.org
-    - wikipedia.org
-    - wikiquote.org
-    - wikisource.org
-    - wikiversity.org
-    - wikivoyage.org
-    - wiktionary.org
-  wikirawupload:
-    - upload.wikimedia.org
-  wikidatasparql:
-    - query.wikidata.org
-  geoshape:
-    - maps.wikimedia.org
-profile::graphoid::headers:
-  'Cache-Control': 'public, s-maxage=3600, max-age=3600'
-profile::graphoid::error_headers:
-  'Cache-Control': 'public, s-maxage=300, max-age=300'
-### END GRAPHOID ###
-
 
 profile::nutcracker::memcached_pools: {}
 profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp

@@ -85,7 +85,6 @@ debmonitor
 trebuchet
 hue
 airflow
-graphoid
 aphlict
 xenon
 analytics

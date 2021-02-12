@@ -863,46 +863,6 @@ service::catalog:
       - eqiad
       - codfw
     state: production
-  graphoid:
-    description: Graph-rendering service, graphoid.svc.%{::site}.wmnet
-    encryption: false
-    ip:
-      codfw:
-        default: 10.2.1.15
-      eqiad:
-        default: 10.2.2.15
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: scb
-        service: graphoid
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - http://localhost/_info
-      scheduler: wrr
-    monitoring:
-      check_command: check_http_lvs_on_port!graphoid.discovery.wmnet!19000!/_info
-      contact_group: admins,parsoid
-      critical: true
-      sites:
-        codfw:
-          hostname: graphoid.svc.codfw.wmnet
-        eqiad:
-          hostname: graphoid.svc.eqiad.wmnet
-    port: 19000
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-    discovery:
-      - dnsdisc: graphoid
-        active_active: true
   jobrunner:
     description: JobRunner LVS interface (https). jobrunner.svc.%{::site}.wmnet
     encryption: true

@@ -2,10 +2,7 @@
 # This class is an intermediate step to better design
 class role::scb {
 
-    $services = [
-        'graphoid',
-    ]
-    $msg_services = join($services, "\n\t")
+    $msg_services = 'None whatsoever!!!'
 
     system::role { 'scb':
         description => "Service cluster B; includes:\n\t${msg_services}"
@@ -18,6 +15,4 @@ class role::scb {
     include ::profile::rsyslog::udp_localhost_compat
 
     include ::profile::nutcracker
-
-    include ::profile::graphoid
 }
