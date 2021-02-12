@@ -1039,6 +1039,26 @@ sub deliver_synth_ {
 		set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"""};
 	}
 
+	// 5xx should not carry set-cookies, this seems risky in general
+	if (resp.status >= 500 && resp.http.Set-Cookie) {
+		// Log it for cases we care about more:
+		if (req.http.Host !~ "^.*\.wikimedia\.org$" || req.http.Host ~ "^(meta|commons)\.wikimedia\.org$") {
+			std.syslog(27, "5XX with Set-Cookie found!" +
+				" req.http.Host: " + req.http.Host +
+				" req.url: " + req.url +
+				" req.http.Cookie: " + req.http.Cookie +
+				" resp.status: " + resp.status +
+				" Cache-Control: " + resp.http.Cache-Control +
+				" Set-Cookie: " + resp.http.Set-Cookie +
+				" Server: " + resp.http.Server +
+				" ReqId: " + resp.http.X-Request-Id +
+				" Age: " + resp.http.Age +
+				" X-Cache: " + resp.http.X-Cache);
+		}
+		// Clear it for all traffic.  It's a 5xx, nothing was guaranteed to work anyways
+		unset resp.http.Set-Cookie;
+	}
+
 	std.collect(resp.http.X-Varnish);
 
 	call https_deliver_hsts;
