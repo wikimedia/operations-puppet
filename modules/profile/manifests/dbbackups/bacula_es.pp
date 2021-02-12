@@ -24,8 +24,8 @@ class profile::dbbackups::bacula_es (
         #}
         # read only databases have normally backups disabled, and only are
         # enabled when one-time backups are taken, or every 5 years
-        backup::set { 'mysql-srv-backups-dumps-latest':
-            jobdefaults => $jobdefaults_ro,
-        }
+        #backup::set { 'mysql-srv-backups-dumps-latest':
+        #    jobdefaults => $jobdefaults_ro,
+        #}
     }
 }
