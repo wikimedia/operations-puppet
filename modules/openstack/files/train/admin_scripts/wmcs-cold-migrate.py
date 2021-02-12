@@ -16,7 +16,8 @@ import logging
 import sys
 
 import glanceclient
-from keystoneclient.auth.identity import generic
+
+from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1 import session as keystone_session
 from novaclient import client
 
@@ -290,7 +291,7 @@ if __name__ == "__main__":
         logging.error("remote execution failed; this whole enterprise is doomed.")
         exit(1)
 
-    auth = generic.Password(
+    auth = KeystonePassword(
         auth_url=args.nova_url,
         username=args.nova_user,
         password=args.nova_pass,
