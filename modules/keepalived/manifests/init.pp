@@ -26,9 +26,17 @@ class keepalived(
     String              $interface            = 'eth0',
     Integer             $priority             = fqdn_rand(100),
     Integer             $virtual_router_id    = 51,
+    String              $config               = '',
 ) {
     package { 'keepalived':
         ensure => present,
+    }
+
+    # support for arbitrary config file
+    if $config == '' {
+        $content = template('keepalived/keepalived.conf.erb')
+    } else {
+        $content = $config
     }
 
     file { '/etc/keepalived/keepalived.conf':
@@ -36,7 +44,7 @@ class keepalived(
         mode      => '0444',
         owner     => 'root',
         group     => 'root',
-        content   => template('keepalived/keepalived.conf.erb'),
+        content   => $content,
         show_diff => false,
         require   => Package['keepalived'],
         notify    => Exec['restart-keepalived'],
