@@ -1,0 +1,114 @@
+profile::base::notifications: disabled
+profile::openstack::codfw1dev::cloudgw::dmz_cidr:
+ # VMs --> wiki (text-lb.eqiad)
+ - "172.16.128.0/24 . 208.80.154.224"
+ # VMs --> wiki (upload-lb.eqiad)
+ - "172.16.128.0/24 . 208.80.154.240"
+ # VMs --> wiki (text-lb.codfw)
+ - "172.16.128.0/24 . 208.80.153.224"
+ # VMs --> wiki (upload-lb.codfw)
+ - "172.16.128.0/24 . 208.80.153.240"
+ # VMs --> wiki (text-lb.ulsfo)
+ - "172.16.128.0/24 . 198.35.26.96"
+ # VMs --> wiki (upload-lb.ulsfo)
+ - "172.16.128.0/24 . 198.35.26.112"
+ # VMs --> wiki (text-lb.eqsin)
+ - "172.16.128.0/24 . 103.102.166.224"
+ # VMs --> wiki (upload-lb.eqsin)
+ - "172.16.128.0/24 . 103.102.166.240"
+ # VMs --> wiki (text-lb.esams)
+ - "172.16.128.0/24 . 91.198.174.192"
+ # VMs --> wiki (upload-lb.esams)
+ - "172.16.128.0/24 . 91.198.174.208"
+ # VMs --> ns-recursor1.openstack.eqiad1.wikimediacloud.org
+ - "172.16.128.0/24 . 208.80.154.24"
+ # VMs --> ns-recursor0.openstack.eqiad1.wikimediacloud.org
+ - "172.16.128.0/24 . 208.80.154.143"
+ # VMs --> ns-recursor1.openstack.codfw1dev.wikimediacloud.org
+ - "172.16.128.0/24 . 208.80.153.118"
+ # VMs --> ns-recursor0.openstack.codfw1dev.wikimediacloud.org
+ - "172.16.128.0/24 . 208.80.153.78"
+ # VMs --> gerrit-replica.wikimedia.org
+ - "172.16.128.0/24 . 208.80.153.107"
+ # VMs --> gerrit.wikimedia.org
+ - "172.16.128.0/24 . 208.80.154.137"
+ # VMs --> apt1001.wikimedia.org
+ - "172.16.128.0/24 . 208.80.154.30"
+ # VMs --> apt2001.wikimedia.org
+ - "172.16.128.0/24 . 208.80.153.42"
+ # VMs --> sodium.wikimedia.org
+ - "172.16.128.0/24 . 208.80.154.15"
+ # VMs --> cloudcontrol1003.wikimedia.org
+ - "172.16.128.0/24 . 208.80.154.23"
+ # VMs --> cloudcontrol1004.wikimedia.org
+ - "172.16.128.0/24 . 208.80.154.132"
+ # VMs --> cloudcontrol1005.wikimedia.org
+ - "172.16.128.0/24 . 208.80.154.85"
+ # VMs --> cloudcontrol2001-dev.wikimedia.org
+ - "172.16.128.0/24 . 208.80.153.59"
+ # VMs --> cloudcontrol2003-dev.wikimedia.org
+ - "172.16.128.0/24 . 208.80.153.75"
+ # VMs --> cloudcontrol2004-dev.wikimedia.org
+ - "172.16.128.0/24 . 208.80.153.116"
+ # VMs --> contint2001.wikimedia.org
+ - "172.16.128.0/24 . 208.80.153.15"
+ # VMs --> kraz.wikimedia.org
+ - "172.16.128.0/24 . 208.80.153.44"
+ # VMs --> ldap-ro.eqiad.wikimedia.org
+ - "172.16.128.0/24 . 208.80.154.252"
+ # VMs --> ldap-ro.codfw.wikimedia.org
+ - "172.16.128.0/24 . 208.80.153.252"
+ # VMs --> nfs-maps.wikimedia.org
+ - "172.16.128.0/24 . 208.80.155.119"
+ # VMs --> labstore1007.wikimedia.org
+ - "172.16.128.0/24 . 208.80.155.106"
+ # VMs --> labstore1006.wikimedia.org
+ - "172.16.128.0/24 . 208.80.154.7"
+ # VMs --> cloudstore1009.wikimedia.org
+ - "172.16.128.0/24 . 208.80.155.126"
+ # VMs --> cloudstore1008.wikimedia.org
+ - "172.16.128.0/24 . 208.80.155.125"
+ # the following should match what's in homer/public.git cloud-in4 filter
+ # there is no other access (NAT or not) to other 10.x.x.x services anyway
+ # VMs --> nfs-tools-project.svc.eqiad.wmnet
+ - "172.16.128.0/24 . 10.64.37.18/32"
+ # VMs --> wiki replicas (dbproxy1019 & dbproxy1018)
+ - "172.16.128.0/24 . 10.64.37.28/32"
+ - "172.16.128.0/24 . 10.64.37.27/32"
+ # VMs --> cloudmetrics1001 / cloudmetrics1002
+ - "172.16.128.0/24 . 10.64.37.13/32"
+ - "172.16.128.0/24 . 10.64.4.15/32"
+
+profile::openstack::codfw1dev::cloudgw::routing_source_ip: 185.15.57.1
+profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr: 172.16.128.0/24
+
+# network settings
+profile::standard::enable_ip6_mapped: false
+profile::openstack::codfw1dev::cloudgw::nic_controlplane: eno1
+profile::openstack::codfw1dev::cloudgw::nic_dataplane: eno2
+profile::openstack::codfw1dev::cloudgw::all_phy_nics:
+ - "eno1"
+ - "eno2"
+
+# leg in the cloud-hosts1-b-codfw (vlan 2118) 10.192.20.0/24 (native vlan!)
+profile::openstack::codfw1dev::cloudgw::host_addr: 10.192.20.18
+profile::openstack::codfw1dev::cloudgw::host_netm: 24
+# this is vrrp-gw-2118.codfw.wmnet
+profile::openstack::codfw1dev::cloudgw::host_gw: 10.192.20.1
+profile::openstack::codfw1dev::cloudgw::host_prefixv6: 2620:0:860:118
+
+# leg in the cloud-gw-transport-codfw (vlan 2107) 185.15.57.8/30
+profile::openstack::codfw1dev::cloudgw::virt_vlan: 2107
+# TODO: HA setup
+#profile::openstack::codfw1dev::cloudgw::virt_addr: 185.15.57.9
+profile::openstack::codfw1dev::cloudgw::virt_netm: 30
+profile::openstack::codfw1dev::cloudgw::virt_peer: 185.15.57.10
+profile::openstack::codfw1dev::cloudgw::virt_floating: 185.15.57.0/29
+
+# leg in the cloud-instances-transport1-b-codfw (vlan 2120) 185.15.57.128/29
+# for now using the old 208.80.153.184/29
+profile::openstack::codfw1dev::cloudgw::wan_vlan: 2120
+profile::openstack::codfw1dev::cloudgw::wan_addr: 208.80.153.189
+profile::openstack::codfw1dev::cloudgw::wan_netm: 29
+# this is vrrp-gw-2120.wikimedia.org
+profile::openstack::codfw1dev::cloudgw::wan_gw: 208.80.153.185
