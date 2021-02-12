@@ -1,0 +1,11 @@
+# clouddb1021
+profile::base::notifications: disabled
+profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
+  s1: 50G
+  s2: 50G
+  s3: 50G
+  s4: 50G
+  s5: 50G
+  s6: 50G
+  s7: 50G
+  s8: 50G

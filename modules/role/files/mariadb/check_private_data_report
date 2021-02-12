@@ -50,7 +50,7 @@ fi
 
 # labs hosts replicate all the sections in a multi-source setup
 
-if [ "$HOSTNAME" == "labsdb1009" ] || [ "$HOSTNAME" == "labsdb1010" ] || [ "$HOSTNAME" == "labsdb1011" ] || [ "$HOSTNAME" == "labsdb1012" ]
+if [ "$HOSTNAME" == "labsdb1009" ] || [ "$HOSTNAME" == "labsdb1010" ] || [ "$HOSTNAME" == "labsdb1011" ]
 then
 	echo "Start time: $(date)" > "$REPORT_PATH"
 	$PRIVATE_DATA >> "$REPORT_PATH" 2>&1
@@ -109,6 +109,21 @@ fi
 if [ "$HOSTNAME" == "clouddb1016" ] || [ "$HOSTNAME" == "clouddb1020" ]
 then
 	for SECTION in s5 s8
+	do
+		echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
+		$PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1
+		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
+		if [ "$DATA" -gt "0" ]
+		then
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		fi
+	done
+fi
+
+# clouddb1021 replicates all sections in a multi-instance setup, for analytics
+if [ "$HOSTNAME" == "clouddb1021" ]
+then
+	for SECTION in s1 s2 s3 s4 s5 s6 s7 s8
 	do
 		echo "Start time: $(date)" > "${REPORT_PATH}_${SECTION}"
 		$PRIVATE_DATA -S ${SOCKET}.${SECTION}.sock >> "${REPORT_PATH}_${SECTION}" 2>&1

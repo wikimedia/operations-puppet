@@ -55,9 +55,6 @@ class profile::wmcs::nfs::maintain_dbusers (
         'labsdb1011.eqiad.wmnet' => {
             'grant-type' => 'role',
         },
-        'labsdb1012.eqiad.wmnet' => {
-            'grant-type' => 'role',
-        },
     }
 
     if !empty($multiinstance_connect_addresses) {

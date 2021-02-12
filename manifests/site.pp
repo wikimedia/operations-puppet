@@ -1450,8 +1450,9 @@ node 'labsdb1011.eqiad.wmnet' {
     role(wmcs::db::wikireplicas::analytics)
 }
 
-node 'labsdb1012.eqiad.wmnet'{
-    role(wmcs::db::wikireplicas::dedicated::analytics)
+# TODO remove this after decommissioning
+node 'labsdb1012.eqiad.wmnet' {
+    role(insetup)
 }
 
 ## Multi-instance wikireplica dbs

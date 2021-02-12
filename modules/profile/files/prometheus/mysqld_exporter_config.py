@@ -18,7 +18,7 @@ DB_CONFIG_FILE = '/etc/prometheus/zarcillo.cnf'
 # TODO: Detect multisource hosts automatically. The main issues preventing that is the
 #       possibility of multisource hosts with only 1 connection. For now, just hardcoded them,
 #       as they are scheduled to be decommed soon(TM), not needed an exception.
-SPECIAL_MULTISOURCE_HOSTS = ['labsdb1009', 'labsdb1010', 'labsdb1011', 'labsdb1012']
+SPECIAL_MULTISOURCE_HOSTS = ['labsdb1009', 'labsdb1010', 'labsdb1011']
 DATACENTERS = ['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin']
 
 
