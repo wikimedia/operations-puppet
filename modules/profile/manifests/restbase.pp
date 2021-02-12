@@ -43,9 +43,6 @@
 # [*parsoid_uri*]
 #   URI to reach Parsoid. Format: http://parsoid.svc.eqiad.wmnet:8000
 #
-# [*graphoid_uri*]
-#   graphoid host + port. Format: http://graphoid.svc.eqiad.wmnet:19000
-#
 # [*mobileapps_uri*]
 #   MobileApps service URI. Format: https://mobileapps.svc.eqiad.wmnet:4102
 #
@@ -89,10 +86,6 @@ class profile::restbase(
     $parsoid_uri = lookup(
         'profile::restbase::parsoid_uri',
         {'default_value' => wmflib::service::get_url('parsoid-async', '/w/rest.php', $listeners)}
-    ),
-    $graphoid_uri = lookup(
-        'profile::restbase::graphoid_uri',
-        {'default_value' => wmflib::service::get_url('graphoid', '', $listeners)}
     ),
     $mobileapps_uri = lookup(
         'profile::restbase::mobileapps_uri',
@@ -157,7 +150,6 @@ class profile::restbase(
             cassandra_password    => $cassandra_password,
             cassandra_tls         => $cassandra_tls,
             parsoid_uri           => $parsoid_uri,
-            graphoid_uri          => $graphoid_uri,
             mathoid_uri           => $mathoid_uri,
             mobileapps_uri        => $mobileapps_uri,
             citoid_uri            => $citoid_uri,
