@@ -277,6 +277,23 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName
 END
 )
 
+# echo "result_cookie_licked_tasks_bz"
+# see https://phabricator.wikimedia.org/T274711
+result_cookie_licked_tasks_bz=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName
+    FROM phabricator_maniphest.maniphest_task t
+    JOIN phabricator_user.user u
+    WHERE t.id < 75681
+    AND t.ownerPHID IS NOT NULL
+    AND t.ownerPHID = u.phid
+    AND (t.status = "open" OR t.status = "stalled")
+    AND t.phid NOT IN (SELECT ta.objectPHID FROM phabricator_maniphest.maniphest_transaction ta WHERE ta.transactionType = "reassign")
+    ORDER BY t.id;
+
+END
+)
+
 # echo "result_old_stalled_tasks"
 # see https://phabricator.wikimedia.org/T252522
 result_old_stalled_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
@@ -370,6 +387,7 @@ ${result_herald_rules}
 
 OPEN TASKS THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
 ${result_cookie_licked_tasks}
+${result_cookie_licked_tasks_bz}
 Note: Tasks might have been un- and re-assigned to same user in the meantime.
 
 
