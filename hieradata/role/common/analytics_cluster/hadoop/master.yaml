@@ -59,7 +59,3 @@ profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'
 # Clients must be in this srange to use Hadoop.
 profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS $LABSTORE_HOSTS))'
-
-profile::hadoop::master::excluded_hosts:
-  - an-worker1117.eqiad.wmnet
-  - an-worker1117

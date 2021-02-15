@@ -1056,7 +1056,11 @@ hadoop_clusters:
       an-worker1078.eqiad.wmnet:  /eqiad/A/2
       an-worker1079.eqiad.wmnet:  /eqiad/A/2
       an-worker1096.eqiad.wmnet:  /eqiad/A/2
+      an-worker1118.eqiad.wmnet:  /eqiad/A/2
+      an-worker1119.eqiad.wmnet:  /eqiad/A/2
       an-worker1080.eqiad.wmnet:  /eqiad/A/4
+      an-worker1120.eqiad.wmnet:  /eqiad/A/4
+      an-worker1121.eqiad.wmnet:  /eqiad/A/4
       analytics1059.eqiad.wmnet:  /eqiad/A/3
       analytics1060.eqiad.wmnet:  /eqiad/A/3
       an-worker1102.eqiad.wmnet:  /eqiad/A/4
@@ -1065,17 +1069,25 @@ hadoop_clusters:
       an-worker1081.eqiad.wmnet:  /eqiad/A/7
       an-worker1082.eqiad.wmnet:  /eqiad/A/7
       an-worker1103.eqiad.wmnet:  /eqiad/A/7
+      an-worker1122.eqiad.wmnet:  /eqiad/A/7
+      an-worker1123.eqiad.wmnet:  /eqiad/A/7
 
       an-worker1083.eqiad.wmnet:  /eqiad/B/2
       an-worker1084.eqiad.wmnet:  /eqiad/B/2
+      an-worker1124.eqiad.wmnet:  /eqiad/B/2
+      an-worker1125.eqiad.wmnet:  /eqiad/B/2
+      an-worker1126.eqiad.wmnet:  /eqiad/B/2
       analytics1072.eqiad.wmnet:  /eqiad/B/3
       an-worker1085.eqiad.wmnet:  /eqiad/B/4
       an-worker1097.eqiad.wmnet:  /eqiad/B/4
       an-worker1117.eqiad.wmnet:  /eqiad/B/4
+      an-worker1127.eqiad.wmnet:  /eqiad/B/4
+      an-worker1128.eqiad.wmnet:  /eqiad/B/4
       analytics1073.eqiad.wmnet:  /eqiad/B/7
       an-worker1086.eqiad.wmnet:  /eqiad/B/7
       an-worker1087.eqiad.wmnet:  /eqiad/B/7
       an-worker1098.eqiad.wmnet:  /eqiad/B/7
+      an-worker1130.eqiad.wmnet:  /eqiad/B/7
       analytics1061.eqiad.wmnet:  /eqiad/B/8
       analytics1062.eqiad.wmnet:  /eqiad/B/8
       analytics1063.eqiad.wmnet:  /eqiad/B/8
@@ -1083,6 +1095,8 @@ hadoop_clusters:
       an-worker1088.eqiad.wmnet:  /eqiad/C/2
       an-worker1099.eqiad.wmnet:  /eqiad/C/2
       an-worker1104.eqiad.wmnet:  /eqiad/C/2
+      an-worker1131.eqiad.wmnet:  /eqiad/C/2
+      an-worker1132.eqiad.wmnet:  /eqiad/C/2
       analytics1064.eqiad.wmnet:  /eqiad/C/3
       analytics1065.eqiad.wmnet:  /eqiad/C/3
       analytics1066.eqiad.wmnet:  /eqiad/C/3
@@ -1106,6 +1120,10 @@ hadoop_clusters:
       an-worker1092.eqiad.wmnet:  /eqiad/D/2
       an-worker1093.eqiad.wmnet:  /eqiad/D/2
       an-worker1112.eqiad.wmnet:  /eqiad/D/2
+      an-worker1135.eqiad.wmnet:  /eqiad/D/4
+      an-worker1136.eqiad.wmnet:  /eqiad/D/4
+      an-worker1137.eqiad.wmnet:  /eqiad/D/4
+      an-worker1138.eqiad.wmnet:  /eqiad/D/4
       an-worker1113.eqiad.wmnet:  /eqiad/D/5
       an-worker1114.eqiad.wmnet:  /eqiad/D/5
       analytics1077.eqiad.wmnet:  /eqiad/D/7
