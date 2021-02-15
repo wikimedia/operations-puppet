@@ -90,7 +90,7 @@ profile::openstack::codfw1dev::neutron::dmz_cidr:
 
 profile::openstack::codfw1dev::neutron::l3_agent_bridges:
   br-external:
-    addif: 'eno2.2120'
+    addif: 'eno2.2107'
   br-internal:
     addif: 'eno2.2105'
 profile::openstack::codfw1dev::neutron::l3_agent_bridge_mappings:
