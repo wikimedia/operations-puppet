@@ -2,7 +2,7 @@ profile::openstack::codfw1dev::neutron::enable_hacks: true
 profile::openstack::codfw1dev::neutron::db_host: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::neutron::base_interface: 'eno2'
 profile::openstack::codfw1dev::neutron::network_flat_interface_vlan: '2105'
-profile::openstack::codfw1dev::neutron::network_flat_interface_vlan_external: '2120'
+profile::openstack::codfw1dev::neutron::network_flat_interface_vlan_external: '2107'
 profile::openstack::codfw1dev::neutron::rabbit_user: 'neutron'
 profile::openstack::codfw1dev::neutron::network_flat_name: 'cloudinstances2b'
 profile::openstack::codfw1dev::neutron::network_public_ip: '185.15.57.1'
