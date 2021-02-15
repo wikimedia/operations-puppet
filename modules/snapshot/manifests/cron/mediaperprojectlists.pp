@@ -18,7 +18,7 @@ class snapshot::cron::mediaperprojectlists(
             user        => $user,
             command     => '/usr/local/bin/create-media-per-project-lists.sh',
             minute      => '10',
-            hour        => '11',
+            hour        => '7',
             weekday     => '7',
         }
     }

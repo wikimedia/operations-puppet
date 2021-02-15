@@ -18,7 +18,7 @@ class snapshot::cron::commonsdumps::rdf(
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',
-            hour        => '15',
+            hour        => '19',
             weekday     => '0',
             require     => File[$scriptpath],
         }
