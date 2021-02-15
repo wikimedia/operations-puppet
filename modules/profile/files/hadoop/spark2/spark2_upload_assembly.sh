@@ -13,5 +13,6 @@ spark2_assembly_hdfs_path="${spark2_sharelib_dir}/spark-${spark2_version}-assemb
 # If the $spark2_sharelib_dir already exists, it doesn't need installed, exit 0.
 hdfs dfs -test -e $spark2_assembly_hdfs_path && echo "No need to deploy ${spark2_assembly_local_path} on HDFS, ${spark2_assembly_hdfs_path} already exists." && exit 0
 
-/usr/bin/hdfs dfs -mkdir -p $spark2_sharelib_dir
-/usr/bin/hdfs dfs -put $spark2_assembly_local_path $spark2_assembly_hdfs_path
+# Use -D fs.permissions.umask-mode=022 to make assembly file readable by all
+/usr/bin/hdfs dfs -D fs.permissions.umask-mode=022 -mkdir -p $spark2_sharelib_dir
+/usr/bin/hdfs dfs -D fs.permissions.umask-mode=022 -put $spark2_assembly_local_path $spark2_assembly_hdfs_path

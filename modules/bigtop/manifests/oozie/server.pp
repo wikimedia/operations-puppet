@@ -88,7 +88,7 @@ class bigtop::oozie::server(
     $oozie_authentication_kerberos_principal     = "HTTP/localhost@${local_realm}",
     $oozie_authentication_kerberos_name_rules    = 'DEFAULT',
     $spark_defaults_config_dir                   = undef,
-    $oozie_sharelib_archive                      = '/usr/lib/oozie/oozie-sharelib-yarn',
+    $oozie_sharelib_archive                      = '/usr/lib/oozie/lib',
 ) {
     # bigtop::oozie::server requires Hadoop client and configs are installed.
     Class['bigtop::hadoop'] -> Class['bigtop::oozie::server']

@@ -21,7 +21,7 @@ class profile::oozie::server(
     Optional[String] $jdbc_username                            = lookup('profile::oozie::server::jdbc_username', { 'default_value' => undef }),
     Optional[String] $jdbc_password                            = lookup('profile::oozie::server::jdbc_password', { 'default_value' => undef }),
     Optional[Stdlib::Unixpath] $spark_defaults_config_dir      = lookup('profile::oozie::server::spark_defaults_config_dir', { 'default_value' => undef }),
-    Stdlib::Unixpath $oozie_sharelib_archive                   = lookup('profile::oozie::server::oozie_sharelib_archive', { 'default_value' => '/usr/lib/oozie/oozie-sharelib-yarn' }),
+    Stdlib::Unixpath $oozie_sharelib_archive                   = lookup('profile::oozie::server::oozie_sharelib_archive', { 'default_value' => '/usr/lib/oozie/lib' }),
     Array[String] $oozie_admin_users                           = lookup('profile::oozie::server::admin_users', { 'default_value' => ['hdfs'] }),
     Boolean $use_admins_list                                   = lookup('profile::oozie::server::use_admins_list', { 'default_value' => false }),
     Array[String] $oozie_admin_groups                          = lookup('profile::oozie::server::admin_groups', { 'default_value' => [] }),

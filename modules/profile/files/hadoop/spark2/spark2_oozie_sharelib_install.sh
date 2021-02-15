@@ -48,21 +48,22 @@ set -x
 
 # copy current sharelib to new sharelib dir
 # hdfs dfs -cp $curr_sharelib_dir $new_sharelib_dir
+# Use '-D fs.permissions.umask-mode=022' to make the sharelib readable by all
 
 # Make the spark2 sharelib dir
-/usr/bin/hdfs dfs -mkdir -p $spark2_sharelib_dir
+/usr/bin/hdfs dfs -D fs.permissions.umask-mode=022 -mkdir -p $spark2_sharelib_dir
 
 # Copy spark2 jar files from the spark2 jar directory
-/usr/bin/hdfs dfs -put /usr/lib/spark2/jars/* $spark2_sharelib_dir/
+/usr/bin/hdfs dfs -D fs.permissions.umask-mode=022 -put /usr/lib/spark2/jars/* $spark2_sharelib_dir/
 
 # Copy Python libraries
-/usr/bin/hdfs dfs -put  /usr/lib/spark2/python/lib/py* $spark2_sharelib_dir/
+/usr/bin/hdfs dfs -D fs.permissions.umask-mode=022 -put /usr/lib/spark2/python/lib/py* $spark2_sharelib_dir/
 
 # Copy the oozie-sharelib-spark jar file from the spark 1 oozie sharelib
-/usr/bin/hdfs dfs -put /usr/lib/oozie/lib/oozie-sharelib-spark*.jar $spark2_sharelib_dir/
+/usr/bin/hdfs dfs -D fs.permissions.umask-mode=022 -put /usr/lib/oozie/lib/oozie-sharelib-spark*.jar $spark2_sharelib_dir/
 
 # Copy hive-site.xml (assumes this exists in /user/hive)
-/usr/bin/hdfs dfs -test -e /user/hive/hive-site.xml && /usr/bin/hdfs dfs -cp /user/hive/hive-site.xml $spark2_sharelib_dir/ || echo "Warning: could not install hive-site.xml into ${spark2_sharelib_dir}.  You might have to do this manually."
+/usr/bin/hdfs dfs -test -e /user/hive/hive-site.xml && /usr/bin/hdfs dfs -D fs.permissions.umask-mode=022 -cp /user/hive/hive-site.xml $spark2_sharelib_dir/ || echo "Warning: could not install hive-site.xml into ${spark2_sharelib_dir}.  You might have to do this manually."
 
 # For unknown reasons, oozie admin -sharelibupdate is really flaky.
 # Sometimes it succeeds, sometimes it does nothing. We use the Oozie REST API
