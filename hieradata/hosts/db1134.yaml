@@ -1,5 +1,3 @@
 # db1134
-# old candidate master for s1 (now under maintenance)
 mariadb::shard: 's1'
-mariadb::binlog_format: 'STATEMENT'
 profile::base::notifications: disabled
