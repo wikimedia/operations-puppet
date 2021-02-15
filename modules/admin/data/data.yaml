@@ -4036,6 +4036,17 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxm5+ggosgP8vUBpRjwOvwl2d3/lclYkuryLz1hmPrO paragon@lenovo
     krb: present
+  christinedk:
+    ensure: present
+    realname: Christine De Kock
+    email: christinedekock11@gmail.com
+    expiry_date: 2021-04-11
+    expiry_contact: diego@wikimedia.org
+    uid: 29809
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILiOBrHGHChC2y9I7grsl4jCB3ziaLaVni/oUvQN+IS4 cd700@cam.ac.uk
+    krb: present
 
 ldap_only_users:
   abartov:
