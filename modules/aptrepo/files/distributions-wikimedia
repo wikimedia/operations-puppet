@@ -27,7 +27,6 @@ UDebComponents: main backports thirdparty experimental
 Update:
 # sorted list, leading whitespace matters!
  cassandra
- cloudera-jessie
  elastic
  elastic55
  envoyproxy
@@ -120,7 +119,6 @@ Update:
 # which is not available in Stretch.  Once Cloudera releases Stretch packages, we can
 # use updates to mirror from Cloudera, rather than pulling them into stretch from
 # jessie-wikimedia distribution.
-Pull: cloudera-jessie-pull
 Description: Wikimedia packages for Debian stretch
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
@@ -211,7 +209,6 @@ Update:
 # which is not available in Stretch.  Once Cloudera releases Stretch/Buster packages, we can
 # use updates to mirror from Cloudera, rather than pulling them into buster from
 # jessie-wikimedia distribution.
-Pull: cloudera-jessie-pull
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override

@@ -7,15 +7,6 @@ Architectures: all>amd64
 VerifyRelease: FCEF32E745F2C3D5
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
-Name: cloudera-jessie
-Method: http://archive.cloudera.com/cdh5/debian/jessie/amd64/cdh/
-Components: contrib>thirdparty/cloudera
-UDebComponents:
-Suite: jessie-cdh5.16.1
-Architectures: amd64 source
-VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper)$' || [ $? -eq 1 ]
-
 Name: hwraid
 Method: http://hwraid.le-vert.net/debian
 Components: main>thirdparty
