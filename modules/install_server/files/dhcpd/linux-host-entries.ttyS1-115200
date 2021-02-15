@@ -7587,13 +7587,11 @@ host sessionstore2003 {
 host snapshot1005 {
     hardware ethernet 30:e1:71:5d:e0:b8;
     fixed-address snapshot1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host snapshot1006 {
     hardware ethernet 14:02:EC:3E:F6:0C;
     fixed-address snapshot1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host snapshot1007 {
