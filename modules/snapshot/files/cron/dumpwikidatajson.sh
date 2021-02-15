@@ -46,8 +46,6 @@ entities="item|property"
 dryrun="false"
 continue=0
 
-#. /usr/local/bin/wikibasedumps-shared.sh
-
 while [ $# -gt 0 ]; do
     case "$1" in
 	"--config"|"-c")
@@ -109,6 +107,8 @@ for value in "${entityArray[@]}"; do
   entityTypes+=("--entity-type")
   entityTypes+=("$value")
 done
+
+. /usr/local/bin/wikibasedumps-shared.sh
 
 minSize=58000000000 # across all shards (to be divided by $shards)
 if [[ "$dumpName" == "lexemes" ]]; then
