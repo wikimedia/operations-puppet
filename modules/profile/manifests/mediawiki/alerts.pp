@@ -43,6 +43,18 @@ class profile::mediawiki::alerts {
         dashboard_links => ["https://grafana.wikimedia.org/d/RIA1lzDZk/application-servers-red-dashboard?panelId=54&fullscreen&orgId=1&from=now-3h&to=now&var-datasource=${site} prometheus/ops&var-cluster=${cluster}"],
         nagios_critical => true,
       }
+      monitoring::check_prometheus { "mediawiki_workers_saturated_servers_ratio_${cluster}_${site}":
+        description     => "Some MediaWiki servers are running out of idle PHP-FPM workers in ${cluster} at ${site}",
+        query           => "count(sum by (instance) (phpfpm_statustext_processes{cluster=\"${cluster}\", state=\"active\"}) / sum by (instance) (phpfpm_statustext_processes{cluster=\"${cluster}\"}) > .6) / count(sum by (instance) (phpfpm_statustext_processes{cluster=\"${cluster}\"}))",
+        prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
+        retries         => 3,
+        method          => 'lt',
+        warning         => 0.1,  # Ratio of # of servers with 60% workers busy to Total number of servers
+        critical        => 0.3,
+        notes_link      => 'https://bit.ly/wmf-fpmsat',
+        dashboard_links => ["https://grafana.wikimedia.org/d/fRn9VEPMz/application-servers-use-dashboard-wip&from=now-3h&to=now&var-datasource=${site}"],
+        nagios_critical => false,
+      }
     }
   }
 
