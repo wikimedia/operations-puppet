@@ -1124,7 +1124,9 @@ hadoop_clusters:
 
     # https://community.hortonworks.com/articles/43839/scaling-the-hdfs-namenode-part-2.html
     # 20 * log2(Cluster Size)
-    dfs_namenode_handler_count: 115
+    dfs_namenode_handler_count: 127
+    dfs_namenode_service_port: 8040
+    dfs_namenode_service_handler_count: 60
 
     mapreduce_reduce_shuffle_parallelcopies: 10
     mapreduce_task_io_sort_mb: 200

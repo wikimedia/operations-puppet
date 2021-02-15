@@ -15,7 +15,7 @@ class profile::hadoop::firewall::master(
     Boolean $hdfs_ssl_enabled               = lookup('profile::hadoop::firewall::master::hdfs::ssl_enabled', {default_value => false}),
     Boolean $yarn_ssl_enabled               = lookup('profile::hadoop::firewall::master::yarn::ssl_enabled', {default_value => false}),
     Boolean $mapred_ssl_enabled             = lookup('profile::hadoop::firewall::master::mapred::ssl_enabled', {default_value => false}),
-    Optional[Integer] $hdfs_nn_service_port = lookup('profile::hadoop::firewall::master::hdfs_nn_service_port', {default_value => undef}),
+    Optional[Integer] $hdfs_nn_service_port = lookup('profile::hadoop::firewall::master::hdfs_nn_service_port', {default_value => 8040}),
 ) {
 
     # This port is also used by the HDFS Checkpoint
