@@ -27,6 +27,9 @@
 #   Port to advertise to clients. If you're using an auth/TLS terminator
 #   (as we do in v2 for RBAC) you will need to advertise its port to the public
 #   rather than port 2379 (where etcd listens). Required
+# [*do_backup*]
+#   Boolean. Whether to back up the data on etcd or not. Defaults to false on
+#   first deploy for backwards compatibility.
 #
 class profile::etcd::v3(
     # Configuration
@@ -37,6 +40,7 @@ class profile::etcd::v3(
     String $allow_from = lookup('profile::etcd::v3::allow_from'),
     Integer $max_latency = lookup('profile::etcd::v3::max_latency'),
     Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port'),
+    Boolean $do_backup = lookup('profile::etcd::v3::do_backup', {'default_value' => false}),
 ) {
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -90,6 +94,15 @@ class profile::etcd::v3(
         srange => '$DOMAIN_NETWORKS',
     }
 
+    # Backup
+    if $do_backup {
+        # Back up etcd
+        class { '::etcd::backup':
+            cluster_name => $cluster_name,
+        }
+
+        backup::set { 'etcd': }
+    }
     # TLS certs *for etcd use* in peer-to-peer communications.
     # Tlsproxy will use other certificates.
 

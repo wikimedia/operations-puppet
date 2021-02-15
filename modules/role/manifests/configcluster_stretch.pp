@@ -11,4 +11,6 @@ class role::configcluster_stretch {
     include ::profile::etcd::v3
     include ::profile::etcd::tlsproxy
     include ::profile::etcd::replication
+    # etcd backup
+    include ::profile::backup::host
 }
