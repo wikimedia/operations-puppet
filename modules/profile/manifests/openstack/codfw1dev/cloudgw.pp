@@ -18,6 +18,9 @@ class profile::openstack::codfw1dev::cloudgw (
     Stdlib::IP::Address           $wan_gw         = lookup('profile::openstack::codfw1dev::cloudgw::wan_gw',           {default_value => '127.0.0.1'}),
     String                        $nic_sshplane   = lookup('profile::openstack::codfw1dev::cloudgw::nic_controlplane', {default_value => 'eno1'}),
     String                        $nic_dataplane  = lookup('profile::openstack::codfw1dev::cloudgw::nic_dataplane',    {default_value => 'eno2'}),
+    Array[String]                 $vrrp_vips      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_vips',        {default_value => ['127.0.0.1 dev eno2']}),
+    Stdlib::Fqdn                  $vrrp_peer      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_peer',        {default_value => 'example.com'}),
+    Hash                          $conntrackd     = lookup('profile::openstack::codfw1dev::cloudgw::conntrackd',       {default_value => {}}),
 ) {
     class { '::profile::openstack::base::cloudgw':
         host_addr     => $host_addr,
@@ -37,6 +40,9 @@ class profile::openstack::codfw1dev::cloudgw (
         all_phy_nics  => $all_phy_nics,
         nic_sshplane  => $nic_sshplane,
         nic_dataplane => $nic_dataplane,
+        vrrp_vips     => $vrrp_vips,
+        vrrp_peer     => $vrrp_peer,
+        conntrackd    => $conntrackd,
     }
     contain '::profile::openstack::base::cloudgw'
 

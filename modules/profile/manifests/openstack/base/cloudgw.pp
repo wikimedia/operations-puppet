@@ -16,6 +16,10 @@ class profile::openstack::base::cloudgw (
     Stdlib::IP::Address $wan_gw       = lookup('profile::openstack::base::cloudgw::wan_gw',       {default_value => '127.0.0.4'}),
     String              $nic_sshplane = lookup('profile::openstack::base::cloudgw::nic_controlplane', {default_value => 'eno1'}),
     String              $nic_dataplane= lookup('profile::openstack::base::cloudgw::nic_dataplane',    {default_value => 'eno2'}),
+    String              $vrrp_passwd  = lookup('profile::openstack::base::cloudgw::vrrp_passwd',  {default_value => 'dummy'}),
+    Array[String]       $vrrp_vips    = lookup('profile::openstack::base::cloudgw::vrrp_vips',    {default_value => ['127.0.0.1 dev eno2']}),
+    Stdlib::Fqdn        $vrrp_peer    = lookup('profile::openstack::base::cloudgw::vrrp_peer',    {default_value => 'example.com'}),
+    Hash                $conntrackd   = lookup('profile::openstack::base::cloudgw::conntrackd',   {default_value => {}}),
 ) {
     # need nft >= 0.9.6 and kernel >= 5.6 to use some of the concatenated rules
     apt::pin { 'nft-from-buster-bpo':
@@ -62,5 +66,37 @@ class profile::openstack::base::cloudgw (
         }
     }
 
-    # placeholder for HA stuff: keepalived and conntrackd
+    class { 'keepalived':
+        peers     => ['example.com'], # overriden by config template
+        auth_pass => 'ignored',       # overriden by config template
+        vips      => ['127.0.0.1'],   # overriden by config template
+        config    => template('profile/openstack/base/cloudgw/keepalived.conf.erb'),
+    }
+
+    # this expects a data structure like this:
+    # profile::openstack::base::cloudgw::conntrackd_conf:
+    #   node1:
+    #     nic: eno0
+    #     local_addr: x.x.x.x
+    #     remote_addr: x.x.x.x
+    #     filter_ipv4:
+    #      - x.x.x.x
+    #      - y.y.y.y
+    #   node2:
+    #     nic: eno0
+    #     local_addr: y.y.y.y
+    #     remote_addr: y.y.y.y
+    #     filter_ipv4:
+    #      - x.x.x.x
+    #      - y.y.y.y
+
+    $conntrackd_nic            = $conntrackd[$::hostname]['nic']
+    $conntrackd_local_address  = $conntrackd[$::hostname]['local_addr']
+    $conntrackd_remote_address = $conntrackd[$::hostname]['remote_addr']
+    $conntrackd_filter_ipv4    = $conntrackd[$::hostname]['filter_ipv4']
+
+    class { 'conntrackd':
+        conntrackd_cfg => template('profile/openstack/base/cloudgw/conntrackd.conf.erb'),
+        systemd_cfg    => file('profile/openstack/base/cloudgw/conntrackd.service'),
+    }
 }

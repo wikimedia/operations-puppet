@@ -30,3 +30,5 @@ profile::openstack::codfw1dev::cloudgw::wan_addr: 208.80.153.189
 profile::openstack::codfw1dev::cloudgw::wan_netm: 29
 # this is vrrp-gw-2120.wikimedia.org
 profile::openstack::codfw1dev::cloudgw::wan_gw: 208.80.153.185
+
+profile::openstack::codfw1dev::cloudgw::vrrp_peer: cloudgw2001-dev.codfw.wmnet
