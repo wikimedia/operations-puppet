@@ -24,8 +24,7 @@ iface vrf-cloudgw inet manual
 
 auto <%= @nic_dataplane %>.<%= @virt_vlan %>
 iface <%= @nic_dataplane %>.<%= @virt_vlan %> inet static
-    address <%= @virt_addr %>
-    netmask <%= @virt_netm %>
+    # no address given the VIP is handle by keepalived / VRRP
     post-up ip link set <%= @nic_dataplane %>.<%= @virt_vlan %> master vrf-cloudgw
     # route floating IPs to neutron
     post-up ip route add table cloudgw <%= @virt_floating %> nexthop via <%= @virt_peer %>
@@ -34,8 +33,7 @@ iface <%= @nic_dataplane %>.<%= @virt_vlan %> inet static
 
 auto <%= @nic_dataplane %>.<%= @wan_vlan %>
 iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet static
-    address <%= @wan_addr %>
-    netmask <%= @wan_netm %>
+    # no address given the VIP is handle by keepalived / VRRP
     post-up ip link set <%= @nic_dataplane %>.<%= @wan_vlan %> master vrf-cloudgw
     # route default to the core router
     post-up ip route add table cloudgw default via <%= @wan_gw %>
