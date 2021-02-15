@@ -12,15 +12,6 @@ class profile::backup::storage::common(
         sqlvariant         => 'mysql',
     }
 
-    # TODO: Revert TLS downgrade from 1.2 to 1
-    file { '/etc/ssl/openssl.cnf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => 'puppet:///modules/profile/backup/openssl.cnf',
-    }
-
     nrpe::monitor_service { 'bacula_sd':
         description  => 'bacula sd process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd',
