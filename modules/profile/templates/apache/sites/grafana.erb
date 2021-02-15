@@ -9,6 +9,7 @@
 
   RewriteEngine On
 
+  # Needed to address CVE-2019-1504 with public auth:
   RewriteCond %{REQUEST_METHOD} POST
   RewriteCond %{REQUEST_URI} ^/api/snapshots
   RewriteRule .* - [F,L]
