@@ -7,9 +7,13 @@
 <%- end -%>
   DocumentRoot /usr/share/grafana/public
 
-<% if @enable_cas %>
   RewriteEngine On
 
+  RewriteCond %{REQUEST_METHOD} POST
+  RewriteCond %{REQUEST_URI} ^/api/snapshots
+  RewriteRule .* - [F,L]
+
+<% if @enable_cas %>
   # User has clicked 'login' on a dashboard.
   # Redirect to the same dashboard on the 'rw' vhost.
   RewriteCond "%{REQUEST_URI}" "^/login"
