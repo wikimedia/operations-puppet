@@ -1644,7 +1644,7 @@ node /^ml-etcd100[123]\.eqiad\.wmnet/ {
 }
 
 node /^ml-etcd200[123]\.codfw\.wmnet/ {
-    role(insetup)
+    role(etcd::v3::ml_etcd)
 }
 
 # RT, replaced ununpentium
