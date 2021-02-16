@@ -19,3 +19,6 @@ kibana.index: <%= @kibana_index %>
 <%- unless @enable_warnings.nil? or @enable_warnings == :undef -%>
 security.showInsecureClusterWarning: <%= @enable_warnings %>
 <%- end -%>
+<%- unless @vega_enabled.nil? or @vega_enabled == :undef -%>
+vega.enabled: <%= @vega_enabled %>
+<%- end -%>
