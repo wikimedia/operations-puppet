@@ -16,13 +16,15 @@ class profile::puppet_compiler(
 
   # delete output files older than a month (T222072)
   $output_dir = '/srv/jenkins-workspace/puppet-compiler/output'
-  cron { 'delete-old-output-files':
+  systemd::timer::job {'delete-old-output-files':
     ensure   => 'present',
     command  => "find ${output_dir} -ctime +31 -delete",
     user     => 'root',
-    monthday => '1',
-    hour     => '1',
-    minute   => '30',
+    interval => {'start' => 'OnCalendar', 'interval' => '*-30 01:30'},  # Every month
+  }
+
+  puppet_compileron { 'delete-old-output-files':
+    ensure   => 'absent',
   }
 
   class {'puppet_compiler': }
