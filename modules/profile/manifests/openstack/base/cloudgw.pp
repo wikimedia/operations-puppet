@@ -95,4 +95,9 @@ class profile::openstack::base::cloudgw (
         conntrackd_cfg => template('profile/openstack/base/cloudgw/conntrackd.conf.erb'),
         systemd_cfg    => file('profile/openstack/base/cloudgw/conntrackd.service'),
     }
+
+    nftables::file { 'conntrackd_tcp_3780':
+        order   => 1,
+        content => "add rule inet basefirewall input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept",
+    }
 }
