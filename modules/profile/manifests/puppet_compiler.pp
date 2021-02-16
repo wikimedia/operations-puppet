@@ -19,7 +19,7 @@ class profile::puppet_compiler(
   systemd::timer::job {'delete-old-output-files':
     ensure      => 'present',
     description => 'Clean up old PCC reports',
-    command     => "find ${output_dir} -ctime +31 -delete",
+    command     => "/usr/bin/find ${output_dir} -ctime +31 -delete",
     user        => 'root',
     interval    => {'start' => 'OnCalendar', 'interval' => '*-30 01:30'},  # Every month
   }
