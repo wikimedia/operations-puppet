@@ -6,9 +6,7 @@ global_defs {
 
 vrrp_instance VRRP1 {
   state BACKUP
-  # we are not interested in tracking the state of control plane interface <%= @nic_sshplanae %>
-  dont_track_primary
-  interface <%= @nic_sshplane %>
+  interface <%= @nic_dataplane %>.<%= @wan_vlan %>
   virtual_router_id 52
   priority <%= scope.call_function('fqdn_rand', [100]) %>
   advert_int 1
@@ -16,10 +14,9 @@ vrrp_instance VRRP1 {
     auth_type PASS
     auth_pass <%= @vrrp_passwd %>
   }
-  # go to FAULT state if the NICs go down
+  # go to FAULT state if the cloud-facing NIC goes down
   track_interface {
     <%= @nic_dataplane %>.<%= @virt_vlan %>
-    <%= @nic_dataplane %>.<%= @wan_vlan %>
   }
   virtual_ipaddress {
 <% @vrrp_vips.each do |vip| -%>
@@ -27,6 +24,6 @@ vrrp_instance VRRP1 {
 <% end -%>
   }
   unicast_peer {
-    <%= scope.function_ipresolve([@vrrp_peer, 4]) %>
+    <%= @vrrp_peer %>
   }
 }

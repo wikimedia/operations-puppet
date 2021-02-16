@@ -32,8 +32,9 @@ iface <%= @nic_dataplane %>.<%= @virt_vlan %> inet manual
     post-up ip route add table cloudgw <%= @virt_cidr %> nexthop via <%= @virt_peer %> dev <%= @nic_dataplane %>.<%= @virt_vlan %> onlink
 
 auto <%= @nic_dataplane %>.<%= @wan_vlan %>
-iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet manual
-    # no address given the VIP is handle by keepalived / VRRP
+iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet static
+    address <%= @wan_addr %>
+    netmask <%= @wan_netm %>
     post-up ip link set <%= @nic_dataplane %>.<%= @wan_vlan %> master vrf-cloudgw
     # route default to the core router
     post-up ip route add table cloudgw default via <%= @wan_gw %> dev <%= @nic_dataplane %>.<%= @wan_vlan %> onlink

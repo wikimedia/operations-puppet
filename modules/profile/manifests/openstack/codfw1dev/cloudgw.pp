@@ -11,11 +11,13 @@ class profile::openstack::codfw1dev::cloudgw (
     Stdlib::IP::Address           $virt_peer      = lookup('profile::openstack::codfw1dev::cloudgw::virt_peer',        {default_value => '127.0.0.5'}),
     Stdlib::IP::Address::V4::CIDR $virt_floating  = lookup('profile::openstack::codfw1dev::cloudgw::virt_floating',    {default_value => '127.0.0.5/24'}),
     Integer                       $wan_vlan       = lookup('profile::openstack::codfw1dev::cloudgw::wan_vlan',         {default_value => 2120}),
+    Stdlib::IP::Address           $wan_addr       = lookup('profile::openstack::codfw1dev::cloudgw::wan_addr',         {default_value => '127.0.0.4'}),
+    Integer                       $wan_netm       = lookup('profile::openstack::codfw1dev::cloudgw::wan_netm',         {default_value => 8}),
     Stdlib::IP::Address           $wan_gw         = lookup('profile::openstack::codfw1dev::cloudgw::wan_gw',           {default_value => '127.0.0.1'}),
     String                        $nic_sshplane   = lookup('profile::openstack::codfw1dev::cloudgw::nic_controlplane', {default_value => 'eno1'}),
     String                        $nic_dataplane  = lookup('profile::openstack::codfw1dev::cloudgw::nic_dataplane',    {default_value => 'eno2'}),
     Array[String]                 $vrrp_vips      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_vips',        {default_value => ['127.0.0.1 dev eno2']}),
-    Stdlib::Fqdn                  $vrrp_peer      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_peer',        {default_value => 'example.com'}),
+    Stdlib::IP::Address           $vrrp_peer      = lookup('profile::openstack::codfw1dev::cloudgw::vrrp_peer',        {default_value => '127.0.0.1'}),
     Hash                          $conntrackd     = lookup('profile::openstack::codfw1dev::cloudgw::conntrackd',       {default_value => {}}),
 ) {
     class { '::profile::openstack::base::cloudgw':
@@ -28,6 +30,8 @@ class profile::openstack::codfw1dev::cloudgw (
         virt_floating => $virt_floating,
         virt_cidr     => $virt_subnet,
         wan_vlan      => $wan_vlan,
+        wan_addr      => $wan_addr,
+        wan_netm      => $wan_netm,
         wan_gw        => $wan_gw,
         all_phy_nics  => $all_phy_nics,
         nic_sshplane  => $nic_sshplane,
