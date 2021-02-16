@@ -26,10 +26,6 @@ auto <%= @nic_dataplane %>.<%= @virt_vlan %>
 iface <%= @nic_dataplane %>.<%= @virt_vlan %> inet manual
     # no address given the VIP is handle by keepalived / VRRP
     post-up ip link set <%= @nic_dataplane %>.<%= @virt_vlan %> master vrf-cloudgw
-    # route floating IPs to neutron
-    post-up ip route add table cloudgw <%= @virt_floating %> nexthop via <%= @virt_peer %> dev <%= @nic_dataplane %>.<%= @virt_vlan %> onlink
-    # route internal VM network to neutron
-    post-up ip route add table cloudgw <%= @virt_cidr %> nexthop via <%= @virt_peer %> dev <%= @nic_dataplane %>.<%= @virt_vlan %> onlink
 
 auto <%= @nic_dataplane %>.<%= @wan_vlan %>
 iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet static

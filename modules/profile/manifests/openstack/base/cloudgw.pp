@@ -53,9 +53,10 @@ class profile::openstack::base::cloudgw (
         content => template('profile/openstack/base/cloudgw/interfaces.erb'),
     }
 
+    $rt_table = 10
     file { '/etc/iproute2/rt_tables.d/cloudgw.conf':
         ensure  => present,
-        content => '10 cloudgw',
+        content => "${rt_table} cloudgw\n",
     }
 
     sysctl::parameters { 'forwarding':
@@ -63,6 +64,13 @@ class profile::openstack::base::cloudgw (
             'net.ipv4.ip_forward' => '1',
         }
     }
+
+    $keepalived_routes = [
+        # route floating IPs to neutron
+        "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
+        # route internal VM network to neutron
+        "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_dataplane}.${virt_vlan} onlink",
+    ]
 
     class { 'keepalived':
         peers     => ['example.com'], # overriden by config template
