@@ -301,7 +301,7 @@ groups:
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
-              kzeta, urbanecm]
+              kzeta, urbanecm, vthamaini]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -3922,6 +3922,13 @@ users:
     realname: Runjini Murthy
     email: rmurthy-ctr@wikimedia.org
     uid: 26831
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  vthamaini:
+    ensure: present
+    realname: Veronica Thamaini
+    email: vthamaini@wikimedia.org
+    uid: 29446
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   gmodena:
