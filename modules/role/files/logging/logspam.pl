@@ -8,7 +8,7 @@ logspam - summarize exceptions from production logs
 
 =head1 USAGE
 
-    logspam [ --window MINUTES ] [ filter-pattern ... ]
+    logspam [ --window MINUTES ] [ --minimum-hits N ] [ filter-pattern ... ]
 
 =head2 EXAMPLES
 
@@ -20,6 +20,10 @@ logspam - summarize exceptions from production logs
 
     # Get a list of exceptions for the last hour:
     logspam --window 60
+
+    # Get a list of exceptions for the half hour, hiding any exceptions
+    # that only occurred once.
+    logspam --window 60 --minimum-hits 2
 
     # A shell wrapper with interactive sorting and filtering: 
     logspam-watch
@@ -56,9 +60,11 @@ use Getopt::Long;
 use Pod::Usage;
 
 my $window = 0; # minutes.  0 means no window defined
+my $minimum_hits = 0;
 
 GetOptions(
   "window=i" => \$window,
+  "minimum-hits=i" => \$minimum_hits,
 ) or pod2usage();
 
 # Convert minutes to seconds
@@ -175,28 +181,57 @@ close($logstream);
 my $max_exception_len = 20;
 my $trace_width = $terminal_width - (30 + $max_exception_len);
 
-foreach (keys %error_count) {
-  my ($exception, $trace) = split "\t";
+my $hidden = 0;
 
-  # https://perldoc.perl.org/functions/sprintf.html
-  # Pad/trim display name, then fill in some underscores for easier reading:
-  my $display_exception = sprintf("%-${max_exception_len}s", $exception);
-  $display_exception = substr($display_exception, 0, 20);
-  $display_exception =~ tr/ /./;
+foreach (keys %error_count) {
+
+  if ($error_count{$_} < $minimum_hits) {
+    $hidden++;
+    next;
+  }
+
+  my ($exception, $trace) = split "\t";
 
   # Our line template, essentially.  Separate fields with tabs for easy use
   # of sort(1) / cut(1) / awk(1) and friends:
   say join "\t", (
     $error_count{$_},
     display_time($first_dates{$_}, $last_dates{$_}),
-    $display_exception,
+    pad_exception($exception),
     substr($trace, 0, $trace_width),
   );
+}
+
+if ($hidden) {
+  say join "\t", (
+    $hidden,
+    "0000", "9999",
+    pad_exception("<HIDDEN>"),
+    "$hidden errors occuring less than $minimum_hits times each");
 }
 
 =head1 SUBROUTINES
 
 =over
+
+=item pad_exception($exception)
+
+Returns a version of $exception which has been trimmed/padded to
+$max_exception_len characters.
+
+=cut
+
+sub pad_exception {
+  my ($exception) = @_;
+
+  # https://perldoc.perl.org/functions/sprintf.html
+  # Pad/trim display name, then fill in some dots for easier reading:
+  my $display_exception = sprintf("%-${max_exception_len}s", $exception);
+  $display_exception = substr($display_exception, 0, $max_exception_len);
+  $display_exception =~ tr/ /./;
+
+  return $display_exception;
+}
 
 =item shorten($stack_trace)
 
