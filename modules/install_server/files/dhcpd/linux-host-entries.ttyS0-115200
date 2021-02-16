@@ -656,7 +656,7 @@ host mwdebug1001 {
 }
 
 host mwdebug1002 {
-    hardware ethernet aa:00:00:14:d6:e0;
+    hardware ethernet aa:00:00:6e:81:8f;
     fixed-address mwdebug1002.eqiad.wmnet;
 }
 
