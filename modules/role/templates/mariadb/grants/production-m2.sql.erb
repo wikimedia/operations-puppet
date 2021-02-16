@@ -324,11 +324,11 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 
 -- Grants for 'adminlinkrecommendation'@'10.64.0.135' -- dbproxy1013
 GRANT USAGE ON *.* TO `adminlinkrecommendation`@`10.64.0.135` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT DROP, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.64.0.135`;
+GRANT DROP, SELECT, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.64.0.135`;
 
 -- Grants for 'adminlinkrecommendation'@'10.64.16.19' -- dbproxy1015
 GRANT USAGE ON *.* TO `adminlinkrecommendation`@`10.64.16.19` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT DROP, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.64.16.19`;
+GRANT DROP, CREATE, SELECT, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.64.16.19`;
 
 -- Grants for 'linkrecommendation'@'10.64.0.135' -- dbproxy1013
 GRANT USAGE ON *.* TO `linkrecommendation`@`10.64.0.135` IDENTIFIED BY PASSWORD 'REDACTED';
@@ -340,7 +340,7 @@ GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.64.16.19`;
 
 -- Grants for 'adminlinkrecommendation'@'10.192.16.9' -- dbproxy2002
 GRANT USAGE ON *.* TO `adminlinkrecommendation`@`10.192.16.9` IDENTIFIED BY PASSWORD 'REDACTED';
-GRANT DROP, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.192.16.9`;
+GRANT DROP, SELECT, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.192.16.9`;
 
 -- Grants for 'linkrecommendation'@'10.192.16.9' -- dbproxy2002
 GRANT USAGE ON *.* TO `linkrecommendation`@`10.192.16.9` IDENTIFIED BY PASSWORD 'REDACTED';
