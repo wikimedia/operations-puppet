@@ -23,7 +23,7 @@ class profile::puppet_compiler(
     interval => {'start' => 'OnCalendar', 'interval' => '*-30 01:30'},  # Every month
   }
 
-  puppet_compileron { 'delete-old-output-files':
+  cron { 'delete-old-output-files':
     ensure   => 'absent',
   }
 
