@@ -1,68 +1,130 @@
 {
-  "title": "Home",
-  "tags": [],
-  "style": "light",
-  "timezone": "browser",
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
   "editable": false,
-  "hideControls": true,
-  "rows": [
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 1010,
+  "links": [],
+  "panels": [
     {
-      "title": "New row",
-      "height": "60px",
-      "collapse": false,
-      "transparent": true,
+      "datasource": null,
       "editable": true,
-      "panels": [
-        {
-          "id": 1,
-          "span": 12,
-          "editable": true,
-          "type": "text",
-          "transparent": true,
-          "mode": "html",
-          "content": "<h1 id=\"wikimedia-header\" style=\"font-weight: normal;\">Wikimedia Metrics<img src=\"//upload.wikimedia.org/wikipedia/commons/8/81/Wikimedia-logo.svg\" alt=\"Wikimedia logo\" style=\"float: left; width: 40px; margin-right: 10px; position: relative; top: 2px;\"></h1>\n<script>\n\t( function () {\n\t\tvar header, p;\n\t\tif ( window.location.hostname === 'grafana.wikimedia.org' ) {\n\t\t\theader = document.getElementById( 'wikimedia-header' );\n\t\t\tp = document.createElement( 'p' );\n\t\t\tp.innerHTML = 'Welcome to the Wikimedia grafana installation.';\n\t\t\theader.parentNode.insertBefore( p, header.nextSibling );\n\t\t}\n\t}() );\n</script>",
-          "style": {},
-          "title": ""
-        }
-      ]
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "content": "<h1 id=\"wikimedia-header\" style=\"font-weight: normal;\">Wikimedia Metrics<img src=\"//upload.wikimedia.org/wikipedia/commons/8/81/Wikimedia-logo.svg\" alt=\"Wikimedia logo\" style=\"float: left; width: 40px; margin-right: 10px; position: relative; top: 2px;\"></h1>\n<script>\n\t( function () {\n\t\tvar header, p;\n\t\tif ( window.location.hostname === 'grafana.wikimedia.org' ) {\n\t\t\theader = document.getElementById( 'wikimedia-header' );\n\t\t\tp = document.createElement( 'p' );\n\t\t\tp.innerHTML = 'Welcome to the Wikimedia grafana installation.';\n\t\t\theader.parentNode.insertBefore( p, header.nextSibling );\n\t\t}\n\t}() );\n</script>",
+        "mode": "html"
+      },
+      "pluginVersion": "7.4.1",
+      "style": {},
+      "title": "",
+      "transparent": true,
+      "type": "text"
     },
     {
-      "height": "610px",
-      "panels": [
-        {
-          "id": 2,
-          "span": 6,
-          "type": "dashlist",
-          "mode": "search",
-          "tags": [
-            "featured"
-          ],
-          "title": "Featured dashboards",
-          "limit": 100
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
         },
-        {
-          "id": 3,
-          "span": 6,
-          "type": "dashlist",
-          "mode": "starred",
-          "title": "Starred dashboards",
-          "limit": 100
-        }
-      ]
-    }
-  ],
-  "nav": [
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 12,
+        "x": 0,
+        "y": 3
+      },
+      "id": 2,
+      "mode": "search",
+      "options": {
+        "folderId": null,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false,
+        "tags": [
+          "featured"
+        ]
+      },
+      "pluginVersion": "7.4.1",
+      "tags": [
+        "featured"
+      ],
+      "title": "Featured dashboards",
+      "type": "dashlist"
+    },
     {
-      "type": "timepicker",
-      "enable": false
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 12,
+        "x": 12,
+        "y": 3
+      },
+      "id": 3,
+      "mode": "starred",
+      "options": {
+        "folderId": null,
+        "maxItems": 100,
+        "query": "",
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": false,
+        "showStarred": true,
+        "tags": []
+      },
+      "pluginVersion": "7.4.1",
+      "title": "Starred dashboards",
+      "type": "dashlist"
     }
   ],
+  "schemaVersion": 27,
+  "style": "light",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
   "time": {
     "from": "now-6h",
     "to": "now"
   },
-  "templating": {
-    "list": []
+  "timepicker": {
+    "enable": false,
+    "type": "timepicker"
   },
-  "version": 5
+  "timezone": "browser",
+  "title": "Home",
+  "version": 2
 }
