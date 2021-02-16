@@ -14,6 +14,8 @@ profile::standard::admin_groups_no_ssh:
 profile::bigtop::apt::component: 'bigtop15'
 profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
+profile::base::linux419::enable: true
+
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-test-hive'

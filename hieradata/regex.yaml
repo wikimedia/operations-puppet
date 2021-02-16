@@ -296,7 +296,6 @@ mediawiki_test_environment:
 
 hadoop_gpu_workers:
   __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
-  profile::base::linux419::enable: true
   profile::hadoop::common::min_datanode_mounts: 20
   profile::amd_gpu::rocm_version: '33'
   # On Debian Stretch the 'render' group is not present, so our

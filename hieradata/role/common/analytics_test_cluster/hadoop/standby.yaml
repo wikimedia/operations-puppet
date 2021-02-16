@@ -13,6 +13,8 @@ profile::standard::admin_groups_no_ssh:
 profile::bigtop::apt::component: 'bigtop15'
 profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
+profile::base::linux419::enable: true
+
 # We add hive settings to this node since:
 # 1) it is one of the few with a hdfs keytab
 # 2) the hive-site.xml does not contain the password for the hive db (like on an-test-coord)

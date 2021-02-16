@@ -22,6 +22,8 @@ profile::hadoop::common::ensure_ssl_config: true
 
 profile::hadoop::master::use_kerberos: true
 
+profile::base::linux419::enable: true
+
 # Ensure that users in these posix groups have home directories in HDFS.
 profile::hadoop::master::hadoop_user_groups: "analytics-privatedata-users analytics-admins analytics-search-users druid"
 
