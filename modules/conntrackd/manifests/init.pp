@@ -2,7 +2,12 @@ class conntrackd (
     String $conntrackd_cfg,
     String $systemd_cfg,
 ) {
-    package { 'conntrackd':
+    $packages = [
+        'conntrack',
+        'conntrackd',
+    ]
+
+    package { $packages:
         ensure => present,
     }
 
