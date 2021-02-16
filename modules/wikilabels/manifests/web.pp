@@ -76,10 +76,11 @@ class wikilabels::web (
     }
 
     systemd::timer::job { 'wikilabels-remove_expired_tasks':
-        ensure   => present,
-        command  => '/srv/wikilabels/venv/bin/python /srv/wikilabels/config/submodules/wikilabels/utility remove_expired_tasks --config=/srv/wikilabels/config/config/',
-        user     => 'www-data',
-        interval => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+        ensure      => present,
+        description => 'Remove tasks that a user assigned to themself but did not finish for long time.',
+        command     => '/srv/wikilabels/venv/bin/python /srv/wikilabels/config/submodules/wikilabels/utility remove_expired_tasks --config=/srv/wikilabels/config/config/',
+        user        => 'www-data',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
     }
 
 }
