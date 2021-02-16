@@ -139,14 +139,16 @@ class arclamp(
         require     => Package['performance/arc-lamp']
     }
 
-    # This supports running multiple pipelines; in the past we had one
-    # for HHVM and one for PHP7.  Currently only the latter is needed.
+    # This supports running multiple pipelines; we profile CPU and
+    # wall clock time separately.
     arclamp::profiler {
         default:
             ensure     => present,
             redis_host => $redis_host,
             redis_port => $redis_port;
         'excimer':
-            description => 'PHP Excimer';
+            description => 'PHP Excimer (CPU)';
+        'excimer-wall':
+            description => 'PHP Excimer (wall clock)';
     }
 }
