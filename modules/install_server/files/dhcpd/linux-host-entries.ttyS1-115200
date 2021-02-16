@@ -1615,12 +1615,6 @@ host db1092 {
     fixed-address db1092.eqiad.wmnet;
 }
 
-host db1093 {
-    hardware ethernet 14:02:EC:06:E3:F4;
-    fixed-address db1093.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host db1096 {
     hardware ethernet 18:66:DA:F8:EA:8C;
     fixed-address db1096.eqiad.wmnet;
