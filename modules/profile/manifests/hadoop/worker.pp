@@ -60,14 +60,14 @@ class profile::hadoop::worker(
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
             contact_group => 'admins,analytics',
             require       => Class['bigtop::hadoop::worker'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Datanode_process',
         }
         nrpe::monitor_service { 'hadoop-yarn-nodemanager':
             description   => 'Hadoop NodeManager',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
             contact_group => 'admins,analytics',
             require       => Class['bigtop::hadoop::worker'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Yarn_Nodemanager_process',
         }
 
         if $::fqdn in $::bigtop::hadoop::journalnode_hosts {
@@ -76,7 +76,7 @@ class profile::hadoop::worker(
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
                 contact_group => 'admins,analytics',
                 require       => Class['bigtop::hadoop'],
-                notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Journalnode_process',
             }
         }
 
