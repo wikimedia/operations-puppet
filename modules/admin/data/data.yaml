@@ -286,7 +286,7 @@ groups:
               andyrussg, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
-              bmansurov, amire80, kartik, pcoombe, foks, kemayo,
+              bmansurov, amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, fdans, eevans, ladsgroup, musikanimal,
               goransm, ema, dsaez, rho, mirrys, slaporte, jk,
@@ -3917,6 +3917,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHANABlTMFTI2RSUFDnz8yV+Ew74/zho1rXS7HHF+9/3 janstee@Jaimes-MBP
     krb: present
+  rmurthy:
+    ensure: present
+    realname: Runjini Murthy
+    email: rmurthy-ctr@wikimedia.org
+    uid: 26831
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   gmodena:
     ensure: present
     name: gmodena
