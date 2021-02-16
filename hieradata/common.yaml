@@ -5,6 +5,10 @@ lookup_options:
     convert_to: 'Sensitive'
   profile::pki::client::auth_key:
     convert_to: 'Sensitive'
+  profile::cache::varnish::frontend::runtime_params:
+    merge: deep
+  profile::cache::varnish::frontend::fe_vcl_config:
+    merge: hash
 
 # General variables that once would have been in realm.pp
 cluster: misc
