@@ -326,7 +326,7 @@ class profile::logstash::collector (
 
     # disable 15-filter_ulogd_ecs.conf
     logstash::conf { 'filter_ulogd_ecs':
-      content  => '',
+      content  => '# disabled',
       priority => 15
     }
 
