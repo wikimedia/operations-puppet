@@ -11,7 +11,7 @@ iface <%= @nic_controlplane %> inet static
     gateway <%= @host_gw %>
     dns-nameservers<% @nameservers.each do |nameserver| -%> <%= nameserver -%><% end %>
     dns-search <%= @site %>.wmnet
-    up ip token set ::<%= @host_addr %> dev <%= @nic_controlplane %>
+    up ip token set ::<%= @host_addr %> dev <%= @nic_controlplane %> || true
     up ip addr add <%= @host_prefixv6 %>:<%= scope.call_function('regsubst', [@host_addr, '\.', ':', 'G']) %>/64 dev <%= @nic_controlplane %>
 
 # in the PoC we are using this iface for data plane (vlan-trunked)
