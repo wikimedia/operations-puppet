@@ -1,0 +1,3 @@
+cluster: misc
+profile::standard::admin_groups:
+  - gitlab-roots
