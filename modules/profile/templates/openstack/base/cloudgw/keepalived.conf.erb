@@ -8,6 +8,8 @@ vrrp_instance VRRP1 {
   state BACKUP
   interface <%= @nic_dataplane %>.<%= @wan_vlan %>
   virtual_router_id 52
+  # leave primary peer as is even if lower priority: avoids some flapping
+  nopreempt
   priority <%= scope.call_function('fqdn_rand', [100]) %>
   advert_int 1
   authentication {
