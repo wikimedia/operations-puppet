@@ -42,4 +42,12 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         port   => '80',
         srange => '$DOMAIN_NETWORKS'
     }
+
+    # Horizon error logs to ELK.  The Apache log is called horizon_error
+    #  but it contains anything that the Horizon python code logs.
+    rsyslog::input::file { 'horizon_error':
+        path           => '/var/log/apache2/horizon_error.log',
+        syslog_tag     => 'horizon',
+        startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
+    }
 }
