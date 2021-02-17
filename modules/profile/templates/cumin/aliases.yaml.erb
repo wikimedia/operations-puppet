@@ -45,7 +45,8 @@ cloudservices-codfw1dev: P{O:wmcs::openstack::codfw1dev::services}
 cloudstore: P{O:wmcs::nfs::secondary}
 cloudvirt-codfw1dev: P{O:wmcs::openstack::codfw1dev::virt_ceph}
 clouddb-codfw1dev: P{O:wmcs::openstack::codfw1dev::db}
-cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev
+cloudgw-codfw1dev: P{O:wmcs::openstack::codfw1dev::cloudgw}
+cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev or A:cloudgw-codfw1dev
 conf: P{O:configcluster or O:configcluster_stretch}
 conf-canary: P{conf2001.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
