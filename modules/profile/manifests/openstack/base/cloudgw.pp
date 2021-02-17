@@ -59,11 +59,39 @@ class profile::openstack::base::cloudgw (
         content => "${rt_table} cloudgw\n",
     }
 
-    sysctl::parameters { 'forwarding':
-        values => {
-            'net.ipv4.ip_forward' => '1',
-        }
+    # ensure the module is loaded at boot, otherwise sysctl parameters might be ignored
+    kmod::module { 'nf_conntrack':
+        ensure => present,
     }
+
+    sysctl::parameters { 'cloudgw':
+        values   => {
+            # Turn off IP filter
+            'net.ipv4.conf.default.rp_filter'           => 0,
+            'net.ipv4.conf.all.rp_filter'               => 0,
+
+            # Enable IP forwarding
+            'net.ipv4.ip_forward'                       => 1,
+            'net.ipv6.conf.all.forwarding'              => 1,
+
+            # Disable RA
+            'net.ipv6.conf.all.accept_ra'               => 0,
+
+            # Enable TCP be liberal option. This increases chances of a NAT
+            # flow surviving a failover scenario
+            'net.netfilter.nf_conntrack_tcp_be_liberal' => 1,
+
+            # Increase connection tracking size
+            # and bucket since all of CloudVPS VM instances ingress/egress
+            # are flowing through cloudgw servers
+            # default buckets is 65536. Let's use x8; 65536 * 8 = 524288
+            # default max is buckets x4; 524288 * 4 = 2097152
+            'net.netfilter.nf_conntrack_buckets'        => 524288,
+            'net.netfilter.nf_conntrack_max'            => 2097152,
+        },
+        priority => 50,
+    }
+
 
     $keepalived_routes = [
         # route floating IPs to neutron
