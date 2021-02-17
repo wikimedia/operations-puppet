@@ -28,6 +28,7 @@
     {"index" : "input-file-apache2-access", "value" : "kafka" },
     {"index" : "input-file-puppetdb", "value" : "kafka" },
     {"index" : "input-file-kubernetes", "value" : "kafka" },
+    {"index" : "input-file-horizon", "value" : "kafka" },
     {"index" : "scap", "value" : "kafka" },
     {"index" : "apache2", "value" : "kafka" },
     {"index" : "input-file-api-mw-access", "value" : "kafka" },
