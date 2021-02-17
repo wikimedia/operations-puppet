@@ -780,6 +780,12 @@ groups:
     members: [accraze, chrisalbon, kevinbazira]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Chris Albon
+  gitlab-roots:
+    gid: 826
+    description: Group of users with full root access on gitlab machines
+    members: []
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Wolfgang Kandek
   reprepro:
     gid: 901
     system: true
