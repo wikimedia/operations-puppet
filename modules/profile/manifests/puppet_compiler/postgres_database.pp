@@ -6,13 +6,16 @@ class profile::puppet_compiler::postgres_database {
 
     # here a ca_path is specificed so that the ca cert copied below
     # is used to validate connection to nginx puppetdb frontend
-    class { '::profile::puppetdb':
+    class { 'profile::puppetdb':
         ssldir  => $ssldir,
         ca_path => '/etc/puppetdb/ssl/ca.pem',
+        master  => $facts['fqdn'],
     }
 
-    class { '::profile::puppetdb::database':
-        ssldir => $ssldir,
+    class { 'profile::puppetdb::database':
+        master         => $facts['fqdn'],
+        ssldir         => $ssldir,
+        shared_buffers => '2048MB',
     }
 
     # copy the catalog-differ puppet CA to validate connections to puppetdb

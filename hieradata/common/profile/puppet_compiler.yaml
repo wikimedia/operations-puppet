@@ -1,0 +1,1 @@
+profile::puppet_compiler::cloud_puppetmaster: "%{facts.fqdn}"

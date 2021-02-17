@@ -1,8 +1,9 @@
+# @summary profiletp configure the compiler nodes
 class profile::puppet_compiler(
   Stdlib::Fqdn $cloud_puppetmaster = lookup('profile::puppet_compiler::cloud_puppetmaster')
 ) {
 
-  requires_realm( 'labs' )
+  requires_realm('labs')
 
   require profile::ci::slave::labs::common
 
@@ -23,10 +24,10 @@ class profile::puppet_compiler(
     user        => 'root',
     interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'daily'},
   }
-  $large_cleanup_cmd = @("CLEANUP_CMD")
-  /usr/bin/find ${output_dir} -mindepth 1 -maxdepth 1 -type d -ctime +7 -exec du -ks {} + |
-   awk '\$1 >= 1000000 {print \$2}' |
-   xargs rm -rf
+  $large_cleanup_cmd = @("CLEANUP_CMD"/L$)
+  /usr/bin/find ${output_dir} -mindepth 1 -maxdepth 1 -type d -ctime +7 -exec du -ks {} + | \
+   awk '\$1 >= 1000000 {print \$2}' | \
+   xargs rm -rf \
   | CLEANUP_CMD
   systemd::timer::job {'delete-old-output-large-reports':
     ensure      => 'present',
@@ -39,13 +40,20 @@ class profile::puppet_compiler(
   class {'puppet_compiler': }
   include profile::puppet_compiler::postgres_database
 
+  # The conftool parser function needs
+  # An etcd instance running populated with (fake? synced?) data
+
+  class {'etcd':
+    peers_list => "${facts['hostname']}=http://127.0.0.1:2380",
+    use_ssl    => true,
+  }
   # Conftool + etcd are needed for the conftool function to work
   # do not bother with hiera here, for now.
   class { 'profile::conftool::client':
     srv_domain => 'puppet-diffs.eqiad.wmflabs',
     host       => '127.0.0.1',
     port       => 2379,
-    namespace  => dirname('/conftool/v1'),
+    namespace  => '/conftool',
   }
 
   class {'openstack::puppet::master::enc':

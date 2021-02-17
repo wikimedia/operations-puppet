@@ -87,10 +87,6 @@ class puppet_compiler(
     }
 
 
-    # The conftool parser function needs
-    # An etcd instance running populated with (fake? synced?) data
-
-    include etcd
     # A new, better approach is to just use confd independently. Here we
     # fake it with a file on disk
     file { '/etc/conftool-state':

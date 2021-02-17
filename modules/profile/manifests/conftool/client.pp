@@ -20,7 +20,7 @@
 #
 class profile::conftool::client(
     Stdlib::Host           $srv_domain     = lookup('etcd_client_srv_domain'),
-    Stdlib::Unixpath       $namespace      = dirname(lookup('conftool_prefix')),
+    Stdlib::Unixpath       $namespace      = lookup('conftool_prefix').dirname(),
     Stdlib::Host           $tcpircbot_host = lookup('tcpircbot_host'),
     Stdlib::Port           $tcpircbot_port = lookup('tcpircbot_port'),
     Optional[Stdlib::Host] $host           = lookup('etcd_host', {'default_value' => undef}),
