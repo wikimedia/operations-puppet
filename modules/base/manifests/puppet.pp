@@ -1,5 +1,4 @@
 class base::puppet(
-    Stdlib::Filesource              $ca_source,
     Boolean                         $manage_ca_file         = false,
     Stdlib::Unixpath                $ca_file_path           = '/var/lib/puppet/ssl/certs/ca.pem',
     String                          $ca_server              = '',
@@ -9,6 +8,7 @@ class base::puppet(
     Optional[String]                $environment            = undef,
     Integer                         $interval               = 30,
     Enum['pson', 'json', 'msgpack'] $serialization_format   = 'json',
+    Optional[Stdlib::Filesource]    $ca_source              = undef,
     Optional[Enum['chain', 'leaf']] $certificate_revocation = undef,
 ) {
     include ::passwords::puppet::database # lint:ignore:wmf_styleguide
@@ -22,6 +22,9 @@ class base::puppet(
     }
 
     if $manage_ca_file {
+        unless $ca_source {
+          fail('require ca_source when manage_ca: true')
+        }
         file{ $ca_file_path:
             ensure => file,
             owner  => 'puppet',
