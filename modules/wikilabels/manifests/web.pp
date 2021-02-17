@@ -59,22 +59,6 @@ class wikilabels::web (
         },
     }
 
-    file { '/var/log/wikilabels':
-        ensure => stdlib::ensure(present, 'directory'),
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0664',
-    }
-
-    cron { 'wikilabels-remove_expired_tasks':
-        ensure  => absent,
-        command => '/srv/wikilabels/venv/bin/python /srv/wikilabels/config/submodules/wikilabels/utility remove_expired_tasks --config=/srv/wikilabels/config/config/ > /var/log/wikilabels/remove_expired_tasks.log 2>&1',
-        user    => 'www-data',
-        hour    => 0,
-        minute  => 0,
-        require => File['/var/log/wikilabels'],
-    }
-
     systemd::timer::job { 'wikilabels-remove_expired_tasks':
         ensure      => present,
         description => 'Remove tasks that a user assigned to themself but did not finish for long time.',
