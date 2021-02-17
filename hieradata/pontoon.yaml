@@ -1,7 +1,7 @@
 ## Minimal defaults to get catalogs to compile
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
-profile::openstack::eqiad1::version: 'rocky'
+profile::openstack::eqiad1::version: 'stein'
 profile::base::labs::clean_kernels: false
 
 labs_tld: 'wikimedia.cloud'
