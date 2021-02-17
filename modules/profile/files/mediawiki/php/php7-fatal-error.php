@@ -5,54 +5,78 @@ $err = error_get_last();
 
 // What can $err look like?
 //
-// == Fatal during main stack ==
+// == Unrecoverable ==
 //
-// Last confirmed: December 2019 (PHP 7.2.24).
+// Last confirmed: February 2021 (PHP 7.2.31).
 //
-// When a fatal exception happens during the main stack,
-// then $err is populated with the properties of the Exception
-// object. $err has no trace field, but the stack is still intact
-// in this scenario, so we can get it the normal way.
+// When an unrecoverable error happens, the stack is left intact when
+// the php-wmerrors extension executes this error page, so we can obtain
+// the stack manually from debug_backtrace() still.
 //
-// file: /srv/mediawiki/php-.../vendor/guzzlehttp/psr7/src/Stream.php
-// line: 73
-// message: Maximum execution time of 180 seconds exceeded
-// --
-// debug_backtrace:
-//     #1 /srv/mediawiki/php-/extensions/.../CheckConstraintsJob.php(74): CheckConstraintsJob->checkConstraints()
-//     #2 /srv/mediawiki/php-/JobExecutor.php(70): CheckConstraintsJob->run()
+// For example:
+//
+//   $err['file'] => /srv/mediawiki/php-.../includes/Example.php
+//   $err['line'] => 39
+//   $err['message'] => Allowed memory size of 698351616 bytes exhausted
+//   debug_backtrace =>
+//     #1 /srv/mediawiki/php-.../.../Wikibase/ChangeNotificationJob.php(120): array_map()
+//     #2 /srv/mediawiki/php-.../JobExecutor.php(70): ChangeNotificationJob->run()
 //     #3 /srv/mediawiki/rpc/RunSingleJob.php(76): JobExecutor->execute()
 //
-// == Fatal during shutdown ==
+// Reproduce:
 //
-// Last confirmed: December 2019 (PHP 7.2.24).
+//   Use w/fatal-error.php?action=oom
+//   The source can be anything (main, postsend, shutdown etc.) as in all cases it will
+//   be handled by php-wmerrors. Note that in most cases, unrecoverable errors are also
+//   observed by MediaWiki's MWExceptionHandler as well and thus reported twice to
+//   Logstash.
 //
-// When a fatal exception happens during request process shutdown.
-// This is post-send and after the main call stack has unwound.
-// This new stack stack will originate from one of the __destruct() methods,
-// or from a register_shutdown_function callback.
+// == Throwable ==
 //
-// For this scenario, PHP does not expose its new stack through normal means,
-// ie. debug_backtrace, or '(new Exception)->getTrace()'. Instead, it is exposed
-// through the $err['message'] field.
+// Last confirmed: February 2021 (PHP 7.2.31).
 //
-// file: /srv/mediawiki/wmf-config/set-time-limit.php
-// line: 39
-// message: |
-//     PHP Fatal error:  Uncaught WMFTimeoutException: the execution time limit of 60 seconds was exceeded in /srv/mediawiki/wmf-config/set-time-limit.php:39
+// It is rare for a fatal error to be rendered for an Exception or other runtime
+// Throwable, as these can and should almost always be handled by the MediaWiki
+// application instead. However, it can sometimes happen from a `__destruct`
+// or `register_shutdown_function` callback.
+//
+// In this scenario, Zend PHP seems to have unwound its call stack, i.e. as
+// seen from debug_backtrace or '(new Exception)->getTrace()'. But, the trace is
+// given to us by Zend PHP as part of the $err['message'] string.
+//
+// For example:
+//
+//   $err['file'] => /srv/mediawiki/Example.php
+//   $err['line'] => 140
+//   $err['message'] =>
+//     Uncaught Exception: Foo in /srv/mediawiki/Example.php:140
+//
 //     Stack trace:
-//     #0 /srv/mediawiki/php-/includes/parser/Parser.php(414): {closure}(1)
-//     #1 [internal function]: Parser->__destruct()
-//     #2 {main}
-//       thrown in /srv/mediawiki/wmf-config/set-time-limit.php on line 39
+//     #1 /srv/mediawiki/Example.php(80): Example->checkFoo()
+//     #2 /srv/mediawiki/php-/JobExecutor.php(70): Example->run()
+//     #3 /srv/mediawiki/rpc/RunSingleJob.php(76): JobExecutor->execute()
+//
+// Reproduce:
+//
+//   Use w/fatal-error.php?action=exception&source=destruct or source=shutdown.
+//
+//   The source needs to be late as for earlier stages MediaWiki can and will
+//   report the error on its own, and then signal to PHP that it does not need
+//   further handling and thus does not make its way here.
 //
 $messageParts = explode( "\nStack trace:\n", $err['message'], 2 );
 $message = $messageParts[0];
 $trace = $messageParts[1] ?? '';
 unset( $messageParts );
+$messageLong = $message;
+$messageNorm = $message;
 
-// Obtain a trace
 if ( $trace === '' ) {
+	// No trace, assume "Unrecoverable" error.
+	// This is the most common use of this script.
+	$messageLong = "PHP Fatal error: {$message} in {$err['file']}:{$err['line']}";
+	$messageNorm = $message . ' in ' . basename( $err['file'] );
+
 	$traceData = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 500 );
 	// Based on mediawiki-core: MWExceptionHandler::prettyPrintTrace()
 	foreach ( $traceData as $level => $frame ) {
@@ -131,11 +155,11 @@ $reqId = $_SERVER['HTTP_X_REQUEST_ID'] ?? $_SERVER['UNIQUE_ID'] ?? null;
 $info = [
 	// Match mediawiki/core: MWExceptionHandler
 	'channel' => 'exception',
-	'message' => "PHP Fatal error: {$message} in {$err['file']} on line {$err['line']}",
+	'message' => $messageLong,
 	'exception' => [
 		'message' => $message,
 		'file' => "{$err['file']}:{$err['line']}",
-		'trace' => $trace ?: '{unknown}',
+		'trace' => $trace ?: 'unknown',
 	],
 	'caught_by' => '/etc/php/php7-fatal-error.php via php-wmerrors',
 	// Match wmf-config: logging.php
@@ -145,7 +169,7 @@ $info = [
 	// Match wmf-config: logging.php
 	// Match mediawiki/core: CeeFormatter
 	'type' => 'mediawiki',
-	'normalized_message' => $message . ' in ' . basename( $err['file'] ),
+	'normalized_message' => $messageNorm,
 ];
 if ( $reqId ) {
 	// Match mediawiki/core: MediaWiki\Logger\Monolog\WikiProcessor
