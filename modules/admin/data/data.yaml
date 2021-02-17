@@ -4753,3 +4753,7 @@ ldap_only_users:
     ensure: present
     realname: Anaïs Gueyte
     email: agueyte@wikimedia.org
+  georginaburnett-wmde:
+    ensure: present
+    realname: Georgina Burnett
+    email: georgina.burnett@wikimedia.de
