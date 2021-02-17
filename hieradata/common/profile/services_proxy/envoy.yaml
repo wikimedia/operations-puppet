@@ -64,6 +64,7 @@ profile::services_proxy::envoy::listeners:
     service: restbase-https
     upstream: restbase.discovery.wmnet
     timeout: "10s"
+    keepalive: "4s" # this is needed to avoid reusing upstream-closed connections - see T263043, also T266855
     xfp: https # this is needed for private wikis - see T249535
   - name: push-notifications
     port: 6012
