@@ -35,7 +35,7 @@ profile::mediawiki::mcrouter_wancache::shards:
         port: 11214
         ssl: true
       B:
-        host: 10.64.16.52 # mw1287, B7
+        host: 10.64.16.53 # mw1288, B6
         port: 11214
         ssl: true
       C:
