@@ -54,7 +54,7 @@ groups:
     gid: 824
     # ariel, hnowlan, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese, clarakosi,
-              daniel, eevans, holger, kevinbazira, ppchelko]
+              daniel, eevans, holger, kevinbazira, ppchelko, nikkin, gmodena]
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -96,7 +96,7 @@ groups:
               aaron, liw, sbassett, tarrow, lucaswerkmeister-wmde,
               jhuneidi, wmde-fisch, mvolz, brennen, cparle,
               urbanecm, awight, jakob, accraze, andrew-wmde,
-              mstyles, zpapierski, dpifke, nikkin, gmodena,
+              mstyles, zpapierski, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
               jdl, annet, jgiannelos, kharlan, stran, jhernandez]
