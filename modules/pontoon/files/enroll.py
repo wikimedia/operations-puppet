@@ -81,15 +81,10 @@ class Enroller(object):
             "sudo puppet config --section agent set ca_server %s" % self.agent_server
         )
         wipe_puppet_certs_cmd = "sudo find /var/lib/puppet/ssl -type f -delete"
-        client_certs_cmd = """
-        [ -h /var/lib/puppet/client/ssl ] || { \
-            sudo ln -s ../ssl /var/lib/puppet/client/ssl; \
-        }
-        """
 
         # flip master and wipe certs
         enroll_cmd = "&&".join(
-            (set_master_cmd, set_ca_server_cmd, wipe_puppet_certs_cmd, client_certs_cmd)
+            (set_master_cmd, set_ca_server_cmd, wipe_puppet_certs_cmd)
         )
 
         log.info("Enrolling %s to %s", host, self.agent_server)
