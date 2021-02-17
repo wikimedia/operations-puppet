@@ -324,6 +324,12 @@ class profile::logstash::collector (
       priority => 17
     }
 
+    # disable 15-filter_ulogd_ecs.conf
+    logstash::conf { 'filter_ulogd_ecs':
+      content  => '',
+      priority => 15
+    }
+
     file { '/etc/logstash/filter_scripts':
       ensure  => directory,
       source  => 'puppet:///modules/profile/logstash/filter_scripts',
