@@ -31,7 +31,7 @@ profile::mediawiki::mcrouter_wancache::shards:
   proxies:
     eqiad:
       A:
-        host: 10.64.0.65 # mw1270, A7
+        host: 10.64.0.66 # mw1271, A7
         port: 11214
         ssl: true
       B:
