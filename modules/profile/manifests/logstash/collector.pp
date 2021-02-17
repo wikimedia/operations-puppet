@@ -325,9 +325,13 @@ class profile::logstash::collector (
     }
 
     # disable 15-filter_ulogd_ecs.conf
-    logstash::conf { 'filter_ulogd_ecs':
-      content  => '# disabled',
-      priority => 15
+    file { '/etc/logstash/conf.d/15-filter_ulogd_ecs.conf':
+      ensure  => 'present',
+      content => '',
+      owner   => 'logstash',
+      group   => 'logstash',
+      mode    => '0440',
+      notify  => Service['logstash'],
     }
 
     file { '/etc/logstash/filter_scripts':
