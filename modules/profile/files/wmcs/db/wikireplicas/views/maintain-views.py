@@ -720,7 +720,11 @@ def main():
         # At this point we are on a multi-instance replica
         dbs_in_scope = set(dbs_with_metadata.keys())
         for inst in config["mysql_instances"]:
-            dbs_in_section = set(read_dblist(inst, args.mediawiki_config))
+            dbs_for_section = read_dblist(inst, args.mediawiki_config)
+            if inst == "s7":
+                dbs_for_section.extend(config["add_to_all_dbs"])
+
+            dbs_in_section = set(dbs_for_section)
             instance_dbs = dbs_in_scope.intersection(dbs_in_section)
             instance_dbs_with_metadata = {
                 db: meta
