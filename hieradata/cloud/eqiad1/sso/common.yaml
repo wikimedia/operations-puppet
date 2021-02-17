@@ -5,6 +5,12 @@ apereo_cas:
     validate_url: 'https://idp.wmcloud.org/serviceValidate'
 profile::idp::u2f_jpa_enable: true
 profile::idp::ldap_start_tls: false
+profile::idp::ldap_attributes:
+  - cn
+  - memberOf
+  - mail
+  - uid
+  - sshPublicKey
 profile::idp::services:
   cloud:
     id: 1
