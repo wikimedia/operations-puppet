@@ -1,6 +1,8 @@
 [Unit]
 Description=Conntrack Daemon
 Documentation=man:conntrackd(8) man:conntrackd.conf(5)
+After=networking.service
+Before=keepalived.service
 
 [Service]
 Type=notify
