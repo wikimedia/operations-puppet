@@ -386,7 +386,7 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
 }
 
 node 'cuminunpriv1001.eqiad.wmnet' {
-    role(insetup)
+    role(cluster::unprivmanagement)
 }
 
 # MariaDB 10
