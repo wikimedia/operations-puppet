@@ -1,5 +1,5 @@
 # T274888
 profile::cache::varnish::frontend::runtime_params:
-  - nuke_limit=5000
+  - nuke_limit=1000
 profile::cache::varnish::frontend::fe_vcl_config:
   large_objects_cutoff: 4194304  # 4 MiB
