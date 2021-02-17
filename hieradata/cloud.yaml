@@ -353,3 +353,6 @@ profile::rsyslog::kafka_shipper::kafka_brokers:
 profile::openstack::base::radosgw::service_user: 'swift'
 profile::openstack::base::radosgw::service_user_project: 'swift'
 profile::openstack::base::radosgw::api_bind_port: '18080'
+
+# To be overridden in Pontoon stacks
+public_domain: "%{::labsproject}.wmcloud.org"

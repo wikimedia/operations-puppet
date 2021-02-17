@@ -23,6 +23,8 @@ datacenters:
   - ulsfo
   - eqsin
 
+public_domain: 'wikimedia.org'
+
 # List of kubernetes clusters installed in production.
 # the format is cluster_name => datacenter
 kubernetes_clusters:
