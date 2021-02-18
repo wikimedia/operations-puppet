@@ -133,10 +133,4 @@ class profile::reportupdater::jobs(
         output_dir   => 'metrics/cx',
         use_kerberos => false,
     }
-
-    reportupdater::job { 'ee':
-        ensure       => $ensure_jobs,
-        output_dir   => 'metrics/echo',
-        use_kerberos => false,
-    }
 }
