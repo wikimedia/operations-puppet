@@ -301,7 +301,7 @@ groups:
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
-              kzeta, urbanecm, vthamaini, paragon, christinedk]
+              kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4047,6 +4047,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILiOBrHGHChC2y9I7grsl4jCB3ziaLaVni/oUvQN+IS4 cd700@cam.ac.uk
     krb: present
+  mattcleinman:
+    ensure: present
+    realname: Matt Cleinman
+    email: mcleinman@wikimedia.org
+    uid: 23724
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -4725,10 +4732,6 @@ ldap_only_users:
     ensure: present
     realname: Genoveva Galarza
     email: ggalarzaheredero@wikimedia.org
-  mattcleinman:
-    ensure: present
-    realname: Matt Cleinman
-    email: mcleinman@wikimedia.org
   mosa:
     ensure: present
     realname: Mohammed Sadat Abdulai
