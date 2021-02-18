@@ -6774,7 +6774,6 @@ host mwmaint1002 {
 host mwmaint2001 {
     hardware ethernet 14:02:ec:3f:47:8c;
     fixed-address mwmaint2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host netmon1002 {
