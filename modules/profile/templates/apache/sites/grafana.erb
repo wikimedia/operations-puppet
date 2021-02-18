@@ -9,7 +9,7 @@
 
   RewriteEngine On
 
-  # Needed to address CVE-2019-1504 with public auth:
+  # Reject access to snapshots API to prevent similar issues to CVE-2019-1504:
   RewriteCond %{REQUEST_METHOD} POST
   RewriteCond %{REQUEST_URI} ^/api/snapshots
   RewriteRule .* - [F,L]
