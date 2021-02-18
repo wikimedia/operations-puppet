@@ -462,7 +462,6 @@ host an-worker1128 {
 host an-worker1129 {
     hardware ethernet BC:97:E1:53:AF:A0;
     fixed-address an-worker1129.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-worker1130 {
@@ -483,13 +482,11 @@ host an-worker1132 {
 host an-worker1133 {
     hardware ethernet BC:97:E1:5A:FB:74;
     fixed-address an-worker1133.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-worker1134 {
     hardware ethernet BC:97:E1:5A:8F:AA;
     fixed-address an-worker1134.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-worker1135 {
@@ -515,19 +512,16 @@ host an-worker1138 {
 host an-worker1139 {
     hardware ethernet BC:97:E1:58:33:AC;
     fixed-address an-worker1139.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-worker1140 {
     hardware ethernet BC:97:E1:54:5E:A2;
     fixed-address an-worker1140.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-worker1141 {
     hardware ethernet BC:97:E1:53:60:F2;
     fixed-address an-worker1141.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host aqs1004 {
