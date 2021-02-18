@@ -1822,7 +1822,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
   restbase-backend:
     description: RESTBase backend, restbase.svc.%{::site}.wmnet
     encryption: false
