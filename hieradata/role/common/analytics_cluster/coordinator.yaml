@@ -58,9 +58,9 @@ profile::presto::server::catalogs:
       hive.storage-format: PARQUET
       hive.compression-codec: SNAPPY
       # We do not (yet) colocate workers with Hadoop DataNodes.
-      # When we tested 0.246 the option parser rejected setting the option to its
-      # default, so we removed it but we left this comment for documentation purposes.
-      # hive.force-local-scheduling: false
+      # When we tested 0.246 the option parser rejected hive.force-local-scheduling
+      # since it was deprecated, so the defaults are enough for the moment:
+      # https://github.com/prestodb/presto/blob/master/presto-docs/src/main/sphinx/release/release-0.233.rst#hive-changes
       # Allow presto-cli to impersonate the user running the process
       hive.hdfs.impersonation.enabled: true
       # TODO: do we want to disable non managed tables?
