@@ -4040,7 +4040,7 @@ users:
   rmurthy:
     ensure: present
     realname: Runjini Murthy
-    email: rmurthy-ctr@wikimedia.org
+    email: rmurthy@wikimedia.org
     uid: 26831
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
