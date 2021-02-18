@@ -76,7 +76,7 @@ class profile::netbox (
     $proxypass = $passwords::ldap::production::proxypass
 
     # packages required by netbox-extras
-    ensure_packages(['python3-git', 'python3-pynetbox', 'python3-requests', 'python3-wmflib'])
+    ensure_packages(['python3-git', 'python3-pynetbox', 'python3-requests'])
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { '::profile::rsyslog::udp_json_logback_compat': }

@@ -13,6 +13,10 @@ class base::standard_packages {
     debconf::seen { 'wireshark-common/install-setuid': }
     package { 'tshark': ensure => present }
 
+    # packages only available in buster
+    if debian::codename::ge('buster') {
+        ensure_packages(['python3-wmflib'])
+    }
     # ack-grep was renamed to ack
     if debian::codename::ge('stretch') {
         ensure_packages('ack')
