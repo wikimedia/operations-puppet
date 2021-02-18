@@ -278,13 +278,6 @@ def main():
         ]:
             read_list(family, "family", family)
 
-        # case sensitivity of titles isn't in a .dblist, nor is it
-        # exposed through the API so we have to hardcode it here to match
-        # what is in InitialiseSettings.php
-        read_list("wiktionary", "sensitive", True)
-        if "jbowiki" in dbs:
-            dbs["jbowiki"]["sensitive"] = True
-
         # Per T219374, temporarily changing to VariantSettings.php since that is
         # the current file for this information.  Fall back to the original file
         # when that file goes away.
@@ -326,8 +319,11 @@ def main():
                         siteinfo["query"]["general"]["sitename"]
                     )
                     lang = force_to_unicode(siteinfo["query"]["general"]["lang"])
+                    case = force_to_unicode(siteinfo["query"]["general"]["case"])
                     dbInfo["name"] = name
                     dbInfo["lang"] = lang
+                    if case == "case-sensitive":
+                        dbInfo["sensitive"] = True
                 except Exception as e:
                     logging.warning("failed request for {}: {}".format(canon, e))
 
