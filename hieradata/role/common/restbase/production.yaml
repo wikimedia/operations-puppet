@@ -1,7 +1,7 @@
 cluster: restbase
 
 # Icinga
-contactgroups: 'admins,team-services'
+contactgroups: "admins,team-services"
 
 #
 # RESTBase
@@ -9,8 +9,8 @@ contactgroups: 'admins,team-services'
 profile::restbase::cassandra_local_dc: "%{::site}"
 profile::restbase::logging_label: restbase
 profile::restbase::cassandra_datacenters:
-    - "eqiad"
-    - "codfw"
+  - "eqiad"
+  - "codfw"
 profile::restbase::cassandra_user: restb
 profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 profile::restbase::monitor_domain: en.wikipedia.org
@@ -18,23 +18,23 @@ profile::restbase::cassandra_tls:
   ca: /dev/null
 profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::enabled_listeners:
- - parsoid-php
- - mathoid
- - mobileapps
- - aqs
- - proton
- - citoid
- - cxserver
- - recommendation
- - wikifeeds
- - eventgate-main
- - parsoid-async
- - mwapi-async
-service::configuration::mwapi_host: 'http://localhost:6500'
+  - parsoid-php
+  - mathoid
+  - mobileapps
+  - aqs
+  - proton
+  - citoid
+  - cxserver
+  - recommendation
+  - wikifeeds
+  - eventgate-main
+  - parsoid-async
+  - mwapi-async
+service::configuration::mwapi_host: "http://localhost:6500"
 #
 # Cassandra
 # FIXME: no graphite_host since graphite1003 decom'ed in T209357
-graphite_host: 'none'
+graphite_host: "none"
 profile::cassandra::allow_analytics: false
 profile::cassandra::disable_graphite_metrics: true
 profile::cassandra::client_ips:
@@ -1096,7 +1096,6 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
       jmx_exporter_enabled: true
 
-
 profile::cassandra::settings:
   start_rpc: false
   tls_cluster_name: "restbase"
@@ -1104,7 +1103,7 @@ profile::cassandra::settings:
   cluster_name: "restbase"
   application_username: restb
   application_password: "%{passwords::cassandra::restbase}"
-  target_version: '3.x'
+  target_version: "3.x"
   default_instance_params:
     max_heap_size: 12g
     # 1/4 heap size, no more than 100m/thread
@@ -1119,7 +1118,6 @@ profile::cassandra::settings:
     client_encryption_enabled: true
     disk_failure_policy: best_effort
 
-
 #
 # General
 #
@@ -1128,9 +1126,6 @@ profile::lvs::realserver::pools:
     services:
       - restbase
       - envoyproxy
-  restbase:
-    services:
-      - restbase
     # TODO: add cassandra instances?
 service::configuration::log_dir: "/var/log"
 
@@ -1139,6 +1134,6 @@ profile::standard::admin_groups:
   - restbase-admins
 profile::tlsproxy::envoy::tls_port: 7443
 profile::tlsproxy::envoy::services:
-  - server_names: ['*']
+  - server_names: ["*"]
     port: 7231
 profile::tlsproxy::envoy::global_cert_name: "restbase.discovery.wmnet"

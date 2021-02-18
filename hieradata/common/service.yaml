@@ -1795,34 +1795,6 @@ service::catalog:
     discovery:
       - dnsdisc: recommendation-api
         active_active: true
-  restbase:
-    description: RESTBase, restbase.svc.%{::site}.wmnet
-    encryption: false
-    ip:
-      codfw:
-        default: 10.2.1.17
-      eqiad:
-        default: 10.2.2.17
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: restbase
-        service: restbase
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - http://localhost/
-      scheduler: wrr
-    port: 7231
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
   restbase-backend:
     description: RESTBase backend, restbase.svc.%{::site}.wmnet
     encryption: false
