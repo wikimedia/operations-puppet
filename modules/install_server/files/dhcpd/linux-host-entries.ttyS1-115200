@@ -460,7 +460,7 @@ host an-worker1128 {
 }
 
 host an-worker1129 {
-    hardware ethernet BC:97:E1:53:AF:A0;
+    hardware ethernet BC:97:E1:53:AF:A2;
     fixed-address an-worker1129.eqiad.wmnet;
 }
 
@@ -480,12 +480,12 @@ host an-worker1132 {
 }
 
 host an-worker1133 {
-    hardware ethernet BC:97:E1:5A:FB:74;
+    hardware ethernet BC:97:E1:5A:FB:76;
     fixed-address an-worker1133.eqiad.wmnet;
 }
 
 host an-worker1134 {
-    hardware ethernet BC:97:E1:5A:8F:AA;
+    hardware ethernet BC:97:E1:5A:8F:AC;
     fixed-address an-worker1134.eqiad.wmnet;
 }
 
@@ -510,17 +510,17 @@ host an-worker1138 {
 }
 
 host an-worker1139 {
-    hardware ethernet BC:97:E1:58:33:AC;
+    hardware ethernet BC:97:E1:58:33:AE;
     fixed-address an-worker1139.eqiad.wmnet;
 }
 
 host an-worker1140 {
-    hardware ethernet BC:97:E1:54:5E:A2;
+    hardware ethernet BC:97:E1:54:5E:A4;
     fixed-address an-worker1140.eqiad.wmnet;
 }
 
 host an-worker1141 {
-    hardware ethernet BC:97:E1:53:60:F2;
+    hardware ethernet BC:97:E1:53:60:F4;
     fixed-address an-worker1141.eqiad.wmnet;
 }
 
