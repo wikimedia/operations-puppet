@@ -1537,12 +1537,6 @@ host db1074 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host db1075 {
-    hardware ethernet 14:02:EC:3D:4D:A0;
-    fixed-address db1075.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host db1076 {
     hardware ethernet 14:02:EC:3F:DA:DC;
     fixed-address db1076.eqiad.wmnet;
