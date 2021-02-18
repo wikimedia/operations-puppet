@@ -4054,6 +4054,13 @@ users:
     uid: 23724
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  cbogen:
+    ensure: present
+    realname: Carly Bogen
+    email: cbogen@wikimedia.org
+    uid: 24481
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -4116,10 +4123,6 @@ ldap_only_users:
     ensure: absent
     realname: Matthias Geisler
     email: matthias.geisler@wikimedia.de
-  cbogen:
-    ensure: present
-    realname: Carly Bogen
-    email: cbogen@wikimedia.org
   cmadeo:
     ensure: present
     realname: Carolyn Li-Madeo
