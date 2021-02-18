@@ -51,4 +51,16 @@ class mw_rc_irc::irc_echo(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Ircecho',
     }
 
+    monitoring::check_prometheus { "udpmxircecho_throughput_${::site}":
+        description     => "ircecho is not relaying messages - ${::site}",
+        dashboard_links => ['https://grafana.wikimedia.org/d/XyXn_CPMz/ircecho'],
+        query           => 'sum(irate(udpmxircecho_messages_relayed_total[5m]))',
+        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+        method          => 'lt',
+        critical        => 1,
+        warning         => 2,
+        contact_group   => 'admins',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Irc.wikimedia.org',
+    }
+
 }
