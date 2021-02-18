@@ -43,6 +43,9 @@ profile::presto::server::config_properties:
   http.server.authentication.krb5.service-name: 'presto'
   http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
   http.authentication.krb5.config: '/etc/krb5.conf'
+  # Testing 0.246, see https://phabricator.wikimedia.org/T266640#6790318
+  internal-communication.https.trust-store-path: '/etc/ssl/certs/java/cacerts'
+  internal-communication.https.trust-store-password: 'changeit'
 profile::presto::server::catalogs:
   # Each catalog hash should contain a single properties has that will
   # end up being passed to the presto::properties define.  This will render
