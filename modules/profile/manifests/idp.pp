@@ -36,6 +36,7 @@ class profile::idp(
     Boolean                     $envoy_termination      = lookup('profile:idp::envoy_termination'),
 ){
 
+    ensure_packages(['python3-pymysql'])
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
     if $envoy_termination {
@@ -136,5 +137,10 @@ class profile::idp(
             idp_nodes => $idp_nodes,
         }
     }
-
+    file {'/usr/local/sbin/cas-manage-u2f':
+      ensure => file,
+      owner  => root,
+      mode   => '0500',
+      source => 'puppet:///modules/profile/idp/cas_manage_u2f.py',
+    }
 }
