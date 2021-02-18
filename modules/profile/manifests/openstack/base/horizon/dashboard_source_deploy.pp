@@ -45,9 +45,14 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
 
     # Horizon error logs to ELK.  The Apache log is called horizon_error
     #  but it contains anything that the Horizon python code logs.
+    #
+    # The arcane startmsg_regex is meant to detect continued lines
+    #  in python stack-traces. It declares a new message to begine
+    #  with a timestamp followed by a single space; two spaces
+    #  is taken to be the indented continuation of a message.
     rsyslog::input::file { 'horizon_error':
         path           => '/var/log/apache2/horizon_error.log',
         syslog_tag     => 'horizon',
-        startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
+        startmsg_regex => '^[[:digit:]-]{10} [[:digit:]:]{8}.[[:digit:]]* [^ ]',
     }
 }
