@@ -116,7 +116,6 @@ graphite: P{O:graphite::production}
 hadoop: A:hadoop-worker or A:hadoop-master or A:hadoop-standby
 hadoop-all: A:hadoop or A:hadoop-coordinator or A:hadoop-hdfs-backup
 hadoop-test: A:hadoop-worker-test or A:hadoop-master-test or A:hadoop-standby-test
-hadoop-backup: A:hadoop-worker-backup or A:hadoop-master-backup or A:hadoop-standby-backup
 hadoop-all-test: A:hadoop-test or A:hadoop-coordinator-test
 hadoop-coordinator: A:hadoop-coordinator-primary or A:hadoop-coordinator-secondary
 hadoop-coordinator-primary: P{O:analytics_cluster::coordinator}
@@ -133,9 +132,7 @@ hadoop-standby-backup: P{O:analytics_backup_cluster::hadoop::standby}
 hadoop-worker: P{O:analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{analytics1058.eqiad.wmnet}
 hadoop-worker-test: P{O:analytics_test_cluster::hadoop::worker}
-hadoop-worker-backup: P{O:analytics_backup_cluster::hadoop::worker}
 hadoop-hdfs-journal-test: P{C:bigtop::hadoop::journalnode} and A:hadoop-worker-test
-hadoop-hdfs-journal-backup: P{C:bigtop::hadoop::journalnode} and A:hadoop-worker-backup
 hadoop-testcluster: P{O:analytics_test_cluster::hadoop::master or O:analytics_test_cluster::hadoop::standby or O:analytics_test_cluster::hadoop::worker or O:analytics_test_cluster::hadoop::ui or O:analytics_test_cluster::coordinator or O:analytics_test_cluster::client or O:druid::test_analytics::worker}
 hadoop-client: P{O:statistics::explorer}
 hadoop-client-test: P{O:analytics_test_cluster::client}
