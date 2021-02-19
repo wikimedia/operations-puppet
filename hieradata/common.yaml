@@ -9,7 +9,8 @@ lookup_options:
     merge: deep
   profile::cache::varnish::frontend::fe_vcl_config:
     merge: hash
-
+  profile::docker::engine::settings:
+    merge: hash
 # General variables that once would have been in realm.pp
 cluster: misc
 datacenters:
