@@ -345,7 +345,7 @@ class profile::analytics::refinery::job::data_purge (
     # So, if you want to make changes to this job, make sure to execute all tests (DRY-RUN) with just 1
     # single $ sign, to get the correct checksum. And then add the double $$ sign here.
     kerberos::systemd_timer { 'drop-el-helppanel-events':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Drop HelpPanel data from the event_sanitized database after 270 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='event_sanitized' --tables='^helppanel$$' --base-path='/wmf/data/event_sanitized/HelpPanel' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='270' --skip-trash --execute='e1447ccd3a6f808d038e2f4656e5a016'",
         interval    => '*-*-* 04:40:00',
@@ -353,7 +353,7 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
     kerberos::systemd_timer { 'drop-el-homepagevisit-events':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Drop HomepageVisit data from the event_sanitized database after 270 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='event_sanitized' --tables='^homepagevisit$$' --base-path='/wmf/data/event_sanitized/HomepageVisit' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='270' --skip-trash --execute='22e0daca11d3085a43149b3bf963b392'",
         interval    => '*-*-* 04:45:00',
@@ -361,7 +361,7 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
     kerberos::systemd_timer { 'drop-el-homepagemodule-events':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Drop HomepageModule data from the event_sanitized database after 270 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='event_sanitized' --tables='^homepagemodule$$' --base-path='/wmf/data/event_sanitized/HomepageModule' --path-format='year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='270' --skip-trash --execute='98a07ca21191bdaf1e6ce8c59093377a'",
         interval    => '*-*-* 04:50:00',
