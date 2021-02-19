@@ -114,8 +114,8 @@ class profile::wmcs::instance(
 
     class { 'prometheus::node_ssh_open_sessions': }
 
-    # TODO: is this still the most uptodate function?
-    hiera_include('classes', [])
+    # TODO: move this so it doesn't need a lint:ignore for a lookup in the middle of a class
+    lookup('classes', {default_value => []}).include()  # lint:ignore:wmf_styleguide
 
     # Signal to rc.local that this VM is up and we don't need to run the firstboot
     #  script anymore

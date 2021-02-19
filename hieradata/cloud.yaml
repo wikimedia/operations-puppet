@@ -1,3 +1,6 @@
+lookup_options:
+  classes:
+    merge: unique
 ldap:
   base-dn: dc=wikimedia,dc=org
   users_cn: ou=people
