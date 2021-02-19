@@ -299,7 +299,7 @@ groups:
               agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
-              kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen]
+              kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen, amuigai]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4007,6 +4007,13 @@ users:
     uid: 20959
     gid: 500
     ssh_keys: [] # Added with no SSH access, for membership in analytics-privatedata-users.
+  amuigai:
+    ensure: present
+    realname: Angela Muigai
+    email: angie@wikimedia.org
+    uid: 21007
+    gid: 500
+    ssh_keys: [] # Added with no SSH access, for membership in analytics-privatedata-users.
   seve-kim:
     ensure: present
     realname: Seve Kim
@@ -4079,10 +4086,6 @@ ldap_only_users:
     ensure: absent
     realname: Aleksey Bekh-Ivanov
     email: aleksey.bekh-ivanov@wikimedia.de
-  amuigai:
-    ensure: present
-    realname: Angela Muigai
-    email: angie@wikimedia.org
   amy-wmde:
     ensure: present
     realname: Amrutha Varshini Chandra
