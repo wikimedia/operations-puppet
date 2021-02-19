@@ -131,6 +131,24 @@ class profile::analytics::refinery::job::camus(
         interval         => '*-*-* *:05:00',
     }
 
+    # Import atskafka_test_webrequest_text topic into
+    # /wmf/data/raw/atskafka_test_webrequest_text every 10 minutes, check runs
+    # and flag fully imported hours.
+    # TODO(klausman): Remove this once we are confident that ATSKafka and
+    # VarnishKafka report the same event streams (cf. T254317)
+    camus::job { 'atskafka_test_webrequest_text':
+        camus_properties => {
+            'kafka.whitelist.topics'          => 'atskafka_test_webrequest_text',
+            'mapreduce.job.queuename'         => 'essential',
+            'camus.message.timestamp.field'   => 'dt',
+            # Set this to at least the number of topic/partitions you will be importing.
+            'mapred.map.tasks'                => '12',
+            # This camus runs every 10 minutes, so limiting it to 9 should keep runs fresh.
+            'kafka.max.pull.minutes.per.task' => '9',
+        },
+        interval         => '*-*-* *:00/30:00',
+    }
+
     # Used to determine the topic prefixes of topics used for the CamusPartitionChecker
     # kafka.whitelist.topics on the eventgate-main event serivce job.
     # If a Datacenter is deactivated due to e.g. a datacenter switchover, you should comment
