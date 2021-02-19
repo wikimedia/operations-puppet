@@ -77,9 +77,7 @@ groups:
   gerrit-admin:
     gid: 704
     description: assist in managing gerrit server
-    # qchris is RT 6720
-    # Rest is the Release Engineering team
-    members: [qchris, dduvall, brennen]
+    members: [dduvall]
     approval: Tyler Cipriani
   deployment:
     gid: 705
