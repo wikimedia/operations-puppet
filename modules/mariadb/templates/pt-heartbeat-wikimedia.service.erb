@@ -1,0 +1,23 @@
+# This file is managed by Puppet
+
+[Unit]
+Description="pt-heartbeat-wikimedia"
+After=mariadb.service
+
+[Service]
+ExecStart=/usr/local/bin/pt-heartbeat-wikimedia \
+            --update \
+            --replace \
+            --host=localhost \
+            --socket <%= @socket %> \
+            --user=root \
+            --database heartbeat \
+            --interval=<%= @interval %> \
+            --shard=<%= @shard %> \
+            --datacenter=<%= @datacenter %> \
+            --defaults-file=/dev/null \
+            --set-vars="binlog_format=<%= @binlog_format %>"
+Restart=always
+
+# No [Install] section, this service should never be started
+# automatically by systemd.
