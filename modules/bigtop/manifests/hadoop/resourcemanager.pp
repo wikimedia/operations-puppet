@@ -30,6 +30,7 @@ class bigtop::hadoop::resourcemanager {
 
     package { 'hadoop-yarn-resourcemanager':
         ensure  => 'installed',
+        require => User['yarn'],
     }
 
     service { 'hadoop-yarn-resourcemanager':

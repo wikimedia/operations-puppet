@@ -5,7 +5,8 @@ class bigtop::hadoop::journalnode {
 
     # install jobtracker daemon package
     package { 'hadoop-hdfs-journalnode':
-        ensure => 'installed'
+        ensure  => 'installed',
+        require => User['hdfs'],
     }
 
     # Ensure that the journanode edits directory has the correct permissions.

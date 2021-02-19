@@ -23,7 +23,10 @@ class bigtop::hadoop::namenode(
     # install namenode daemon package
     package { 'hadoop-hdfs-namenode':
         ensure  => 'installed',
-        require => File["${::bigtop::hadoop::config_directory}/hosts.exclude"],
+        require => [
+          File["${::bigtop::hadoop::config_directory}/hosts.exclude"],
+          User['hdfs']
+        ],
     }
 
     if ($::bigtop::hadoop::ha_enabled and $::bigtop::hadoop::zookeeper_hosts) {
@@ -34,7 +37,8 @@ class bigtop::hadoop::namenode(
         }
 
         package { 'hadoop-hdfs-zkfc':
-            ensure => 'installed',
+            ensure  => 'installed',
+            require => User['hdfs'],
         }
     }
 

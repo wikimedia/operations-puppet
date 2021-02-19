@@ -6,7 +6,8 @@ class bigtop::hadoop::nodemanager {
 
 
     package { ['hadoop-yarn-nodemanager', 'hadoop-mapreduce']:
-        ensure => 'installed',
+        ensure  => 'installed',
+        require => User['yarn'],
     }
 
     $nofiles_ulimit = $bigtop::hadoop::yarn_nodemanager_nofiles_ulimit

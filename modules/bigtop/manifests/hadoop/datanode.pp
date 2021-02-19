@@ -6,7 +6,8 @@ class bigtop::hadoop::datanode {
 
     # install jobtracker daemon package
     package { 'hadoop-hdfs-datanode':
-        ensure => 'installed'
+        ensure  => 'installed',
+        require => User['hdfs'],
     }
 
     # install datanode daemon package

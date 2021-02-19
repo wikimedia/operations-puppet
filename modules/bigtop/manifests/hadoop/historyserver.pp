@@ -24,7 +24,10 @@ class bigtop::hadoop::historyserver {
 
     package { 'hadoop-mapreduce-historyserver':
         ensure  => 'installed',
-        require => Bigtop::Hadoop::Directory['/user/history'],
+        require => [
+          Bigtop::Hadoop::Directory['/user/history'],
+          User['mapred'],
+        ],
     }
 
     service { 'hadoop-mapreduce-historyserver':
