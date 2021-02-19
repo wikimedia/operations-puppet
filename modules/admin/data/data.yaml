@@ -4763,3 +4763,7 @@ ldap_only_users:
     ensure: present
     realname: Georgina Burnett
     email: georgina.burnett@wikimedia.de
+  uzoma:
+    ensure: present
+    realname: Uzoma Ozurumba
+    email: uozurumba-ctr@wikimedia.org
