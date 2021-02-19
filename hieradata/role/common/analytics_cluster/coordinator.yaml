@@ -93,6 +93,7 @@ profile::analytics::database::meta::innodb_pool_size: '8G'
 profile::oozie::server::monitoring_enabled: true
 profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
 
+profile::oozie::server::use_admins_list: true
 profile::oozie::server::admin_users: []
 profile::oozie::server::admin_groups: ['analytics-admins', 'ops']
 profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
