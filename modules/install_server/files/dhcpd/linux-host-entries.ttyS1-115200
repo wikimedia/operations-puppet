@@ -7538,7 +7538,6 @@ host snapshot1007 {
 host snapshot1008 {
     hardware ethernet D0:94:66:53:8D:0E;
     fixed-address snapshot1008.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host snapshot1009 {
