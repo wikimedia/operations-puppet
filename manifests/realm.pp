@@ -196,6 +196,8 @@ $private_tables = [
     'exarchive',
     'exrevision',
     'globalnames',
+    'growthexperiments_link_recommendations',
+    'growthexperiments_link_submissions',
     'hidden',
     'image_old',
     'job',
