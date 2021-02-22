@@ -103,7 +103,7 @@ scap::sources:
   phabricator/deployment:
     repository: phabricator/deployment
 
-mediawiki::sites: {}
+mediawiki::sites: []
 
 # Gerrit
 
