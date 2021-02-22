@@ -103,6 +103,7 @@ class profile::analytics::refinery::job::refine(
         monitor_failure_interval => '*-*-* 01:45:00',
         spark_executor_memory    => '6G',
         spark_max_executors      => 128,
+        spark_extra_opts         => '--conf spark.executor.memoryOverhead=1024',
         use_keytab               => $use_kerberos_keytab,
     }
 
