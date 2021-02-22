@@ -168,11 +168,13 @@ define prometheus::server (
         refreshonly => true,
     }
 
-    # default server instance
+    # Avoid double declaration in the multiple-instance Prometheus case
     if !defined(Service['prometheus']) {
+        # The default server instance must be stopped and masked to avoid conflicts.
         service { 'prometheus':
-            ensure => stopped,
+            ensure         => stopped,
         }
+        systemd::mask { 'prometheus.service': }
     }
 
     systemd::service { $service_name:
