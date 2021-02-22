@@ -482,9 +482,15 @@ class bigtop::hadoop(
         ensure => 'installed'
     }
 
-    # Explicitly adding the 'hdfs'/'yarn'/'mapred' users
+    # Explicitly adding the 'hdfs'/'yarn'/'mapred' users and groups
     # to the catalog, even if created by the hadoop-common package,
     # to allow other resources to require them if needed.
+
+    group { 'hadoop': }
+    group { 'yarn': }
+    group { 'mapred': }
+    group { 'hdfs': }
+
     user { 'yarn':
         gid        => 'yarn',
         comment    => 'Hadoop YARN',
@@ -492,7 +498,9 @@ class bigtop::hadoop(
         shell      => '/bin/bash',
         managehome => false,
         system     => true,
-        require    => Package['hadoop-client'],
+        require    => [
+            Package['hadoop-client'], Group['hadoop'], Group['yarn'],
+        ],
     }
 
     user { 'hdfs':
@@ -502,7 +510,9 @@ class bigtop::hadoop(
         shell      => '/bin/bash',
         managehome => false,
         system     => true,
-        require    => Package['hadoop-client'],
+        require    => [
+            Package['hadoop-client'], Group['hadoop'], Group['hdfs']
+        ],
     }
 
     user { 'mapred':
@@ -512,7 +522,9 @@ class bigtop::hadoop(
         shell      => '/bin/bash',
         managehome => false,
         system     => true,
-        require    => Package['hadoop-client'],
+        require    => [
+            Package['hadoop-client'], Group['hadoop'], Group['mapred'],
+        ],
     }
 
     # Create the $cluster_name based $config_directory.
