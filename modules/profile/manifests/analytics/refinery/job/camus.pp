@@ -146,6 +146,8 @@ class profile::analytics::refinery::job::camus(
             # This camus runs every 30 minutes, so limiting it to 29 should keep runs fresh.
             'kafka.max.pull.minutes.per.task' => '29',
         },
+        # Don't want to check this job, it is temporary and for testing.
+        check            => false,
         interval         => '*-*-* *:00/30:00',
     }
 
