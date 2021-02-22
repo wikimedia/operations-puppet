@@ -129,7 +129,7 @@ define profile::analytics::refinery::job::refine_job (
 
     # Look back over a 24 period before 4 hours ago and ensure that all expected
     # refined datasets for this job are present.
-    if $ensure and $refine_monitor_enabled {
+    if $ensure == 'present' and $refine_monitor_enabled {
         $ensure_monitor = 'present'
     }
     else {
