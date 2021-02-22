@@ -103,9 +103,6 @@ class profile::analytics::refinery::job::refine(
         monitor_failure_interval => '*-*-* 01:45:00',
         spark_executor_memory    => '6G',
         spark_max_executors      => 128,
-        # TO FIX: After bigtop upgrade, it looks like we can't use spark assembly jar with included
-        # hadoop jars.  Need to formalize this.  https://phabricator.wikimedia.org/T273711
-        spark_extra_opts         => '--conf spark.yarn.archive=\'hdfs:///user/otto/spark-2.4.4-no-hadoop-assembly.zip\' --conf spark.executor.memoryOverhead=1024',
         use_keytab               => $use_kerberos_keytab,
     }
 
@@ -186,9 +183,6 @@ class profile::analytics::refinery::job::refine(
             schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
 
         }),
-        # TO FIX: After bigtop upgrade, it looks like we can't use spark assembly jar with included
-        # hadoop jars.  Need to formalize this.  https://phabricator.wikimedia.org/T273711
-        spark_extra_opts         => '--conf spark.yarn.archive=\'hdfs:///user/otto/spark-2.4.4-no-hadoop-assembly.zip\'',
         interval                 => '*-*-* *:15:00',
         monitor_interval         => '*-*-* 00:30:00',
         monitor_failure_interval => '*-*-* 00:45:00',
@@ -222,9 +216,7 @@ class profile::analytics::refinery::job::refine(
             schema_base_uris                => 'eventlogging',
         }),
         # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
-        # TO FIX: After bigtop upgrade, it looks like we can't use spark assembly jar with included
-        # hadoop jars.  Need to formalize this.  https://phabricator.wikimedia.org/T273711
-        spark_extra_opts               => '--conf spark.yarn.archive=\'hdfs:///user/otto/spark-2.4.4-no-hadoop-assembly.zip\' --driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
+        spark_extra_opts               => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
         interval                       => '*-*-* *:30:00',
         monitor_interval               => '*-*-* 00:15:00',
         monitor_failure_interval       => '*-*-* 00:45:00',
