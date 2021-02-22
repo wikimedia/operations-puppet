@@ -1,5 +1,9 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
+"""
+This script checks whether any dependant library has been refreshed and if
+that's the case, a restart is triggered.
+"""
 
 import subprocess
 import sys
@@ -135,7 +139,7 @@ def check_restart(service_name, dry_run, exclude_mounts=None, exclude_filesystem
 
 def main():
     """Main method"""
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('-s', '--servicename',
                         help='The name of the service for which a restart should be tested',
                         required=True)
