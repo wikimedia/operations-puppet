@@ -10,11 +10,21 @@ class snapshot::cron::configure(
             dblist => "${apachedir}/dblists/all.dblist",
         },
         wikidata => {
+            # settings for wikidata entity dumps
             shards   => 8,
-            fileSize_json => 20000000000,
-            fileSize_all => 23500000000,
-            fileSize_truthy => 14000000000,
-            fileSize_lexemes => 1000,
+            # when updating these size santy checks, look at current production sizes of
+            # ttl json filesizes, since those are smallest, or ttl rdf if no json
+            # dump is produced (i.e. for "truthy").
+            fileSizes => 'all:90000000000,truthy:40000000000,lexemes:150000000',
+            pagesPerBatch => 200000,
+        },
+        commons => {
+            # settings for commons entity dumps
+            shards   => 8,
+            # when updating these size sanity checks, look at current production sizes of
+            # ttl json filesizes, since those are smallest
+            fileSizes => 'all:15000000000',
+            pagesPerBatch => 200000,
         },
     }
     $config_labs = {
@@ -23,10 +33,13 @@ class snapshot::cron::configure(
         },
         wikidata => {
             shards   => 2,
-            fileSize_json => 2000,
-            fileSize_all => 2000,
-            fileSize_truthy => 2000,
-            fileSize_lexemes => 100,
+            fileSizes => 'all:10000000,truthy:30000000,lexemes:600000',
+            pagesPerBatch => 20000,
+        },
+        commons => {
+            shards   => 2,
+            fileSize => 'mediainfo:1000000',
+            pagesPerBatch => 20000,
         },
     }
     snapshot::cron::configfile{ 'wikidump.conf.other':

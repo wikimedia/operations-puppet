@@ -138,8 +138,6 @@ failureFile="/tmp/dump${projectName}${dumpFormat}-${dumpName}-failure"
 logLocation="/var/log/${projectName}dump"
 mainLogFile="${logLocation}/dump${projectName}${dumpFormat}-${filename}-main.log"
 
-shards=8
-
 i=0
 rm -f $failureFile
 

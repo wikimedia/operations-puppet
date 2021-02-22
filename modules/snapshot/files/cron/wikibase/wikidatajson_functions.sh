@@ -5,10 +5,6 @@
 #############################################################
 # function used by wikibase json dumps, customized for wikidata
 
-setDumpNameToMinSize() {
-    dumpNameToMinSize=(["all"]=`expr 58000000000 / $shards` ["lexemes"]=`expr 100000000 / $shards`)
-}
-
 setDcatConfig() {
     dcatConfig=""
 }

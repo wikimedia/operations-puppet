@@ -11,17 +11,19 @@
 
 today=`date +'%Y%m%d'`
 daysToKeep=70
-pagesPerBatch=200000
 
-args="wiki:multiversion;output:temp;tools:php,lbzip2"
+args="wiki:multiversion;output:temp;tools:php,lbzip2;${projectName}:shards,fileSizes,pagesPerBatch"
 results=`python3 "${repodir}/getconfigvals.py" --configfile "$configfile" --args "$args"`
 
 multiversion=`getsetting "$results" "wiki" "multiversion"` || exit 1
 tempDir=`getsetting "$results" "output" "temp"` || exit 1
 php=`getsetting "$results" "tools" "php"` || exit 1
 lbzip2=`getsetting "$results" "tools" "lbzip2"` || exit 1
+shards=`getsetting "$results" "$projectName" "shards"` || exit 1
+fileSizes=`getsetting "$results" "$projectName" "fileSizes"` || exit 1
+pagesPerBatch=`getsetting "$results" "$projectName" "pagesPerBatch"` || exit 1
 
-for settingname in "multiversion" "tempDir"; do
+for settingname in "multiversion" "tempDir" "shards" "fileSizes" "pagesPerBatch"; do
     checkval "$settingname" "${!settingname}"
 done
 
@@ -123,4 +125,14 @@ function moveLinkFile {
 	mv "$tempDir/$tempFile" "$targetDir/$targetFile"
 	ln -fs "$today/$targetFile" "$targetDirBase/$latestFile"
 	putDumpChecksums "$targetDir/$targetFile"
+}
+
+setDumpNameToMinSize() {
+    # format: dumpName:size,dumpName:size...
+    declare -g -A dumpNameToMinSize
+    IFS=',' read -r -a namesSizesArray <<< "$fileSizes"
+    for nameValue in "${namesSizesArray[@]}"; do
+        IFS=':' read -r key value <<<"$nameValue"
+        dumpNameToMinSize[$key]=$(( $value / $shards ))
+    done
 }

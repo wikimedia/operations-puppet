@@ -32,10 +32,6 @@ setFilename() {
     filename=wikidata-$today-$dumpName-BETA
 }
 
-setDumpNameToMinSize() {
-    dumpNameToMinSize=(["all"]=`expr 56000000000 / $shards` ["truthy"]=`expr 30000000000 / $shards` ["lexemes"]=`expr 9000000 / $shards`)
-}
-
 setDcatConfig() {
     dcatConfig="/usr/local/etc/dcat_wikidata_config.json"
 }

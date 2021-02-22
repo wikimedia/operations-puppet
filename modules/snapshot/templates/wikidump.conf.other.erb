@@ -27,3 +27,11 @@ lbzip2=/usr/bin/lbzip2
 <%= wdsetting %>=<%= @configvals['wikidata'][wdsetting] %>
 <% end -%>
 <% end -%>
+
+<% if @configvals.has_key?('commons') -%>
+# specific settings for commons entity dumps
+[commons]
+<% @configvals['commons'].keys.sort.each do |commonssetting| -%>
+<%= commonssetting %>=<%= @configvals['commons'][commonssetting] %>
+<% end -%>
+<% end -%>

@@ -21,11 +21,6 @@ setFilename() {
     filename=commons-$today-$dumpName
 }
 
-setDumpNameToMinSize() {
-	# TODO: figure out what number makes sense here
-    dumpNameToMinSize=(["mediainfo"]=1000)
-}
-
 setDcatConfig() {
 	# TODO: add DCAT info
     dcatConfig=""

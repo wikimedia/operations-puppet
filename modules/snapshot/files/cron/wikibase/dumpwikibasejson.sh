@@ -123,8 +123,6 @@ failureFile=/tmp/dump${projectName}json-$dumpName-failure
 logLocation="/var/log/${projectName}dump"
 mainLogFile="${logLocation}/dump${projectName}-${filename}-main.json.log"
 
-shards=8
-
 setDumpNameToMinSize
 
 i=0
