@@ -34,8 +34,20 @@ class profile::analytics::cluster::users {
     # that is moved and chowned as last step to its final location on HDFS.
     # If the analytics user is not in the druid group it will not be able (via Hive etc..)
     # to chgrp the final directory (and its files) to a group like 'druid'.
+    if debian::codename::ge('buster') {
+        $analytics_uid = 906
+        $analytics_gid = 906
+    } else {
+        $analytics_uid = undef
+        $analytics_gid = undef
+    }
+    group { 'analytics':
+        gid => $analytics_gid,
+    }
     user { 'analytics':
         ensure  => present,
+        uid     => $analytics_uid,
+        gid     => $analytics_gid,
         system  => true,
         groups  => 'druid',
         require => Class['::druid::bigtop::hadoop::user'],

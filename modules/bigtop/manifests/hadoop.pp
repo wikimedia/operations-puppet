@@ -486,13 +486,44 @@ class bigtop::hadoop(
     # to the catalog, even if created by the hadoop-common package,
     # to allow other resources to require them if needed.
 
-    group { 'hadoop': }
-    group { 'yarn': }
-    group { 'mapred': }
-    group { 'hdfs': }
+    # From Buster onward, we want to have fixed uid/gids for Hadoop daemons.
+    # T231067
+    if debian::codename::ge('buster') {
+        $hdfs_uid = 903
+        $yarn_uid = 904
+        $mapred_uid = 905
+
+        $hdfs_gid = 903
+        $yarn_gid = 904
+        $mapred_gid = 905
+        $hadoop_gid = 908
+    } else {
+        $hdfs_uid = undef
+        $yarn_uid = undef
+        $mapred_uid = undef
+
+        $hdfs_gid = undef
+        $yarn_gid = undef
+        $mapred_gid = undef
+        $hadoop_gid = undef
+    }
+
+    group { 'hadoop':
+        gid => $hadoop_gid,
+    }
+    group { 'yarn':
+        gid => $yarn_gid,
+    }
+    group { 'mapred':
+        gid => $mapred_gid,
+    }
+    group { 'hdfs':
+        gid => $hdfs_gid,
+    }
 
     user { 'yarn':
         gid        => 'yarn',
+        uid        => $yarn_uid,
         comment    => 'Hadoop YARN',
         home       => '/var/lib/hadoop-yarn',
         shell      => '/bin/bash',
@@ -505,6 +536,7 @@ class bigtop::hadoop(
 
     user { 'hdfs':
         gid        => 'hdfs',
+        uid        => $hdfs_uid,
         comment    => 'Hadoop HDFS',
         home       => '/var/lib/hadoop-hdfs',
         shell      => '/bin/bash',
@@ -517,6 +549,7 @@ class bigtop::hadoop(
 
     user { 'mapred':
         gid        => 'mapred',
+        uid        => $mapred_uid,
         comment    => 'Hadoop MapReduce',
         home       => '/var/lib/hadoop-mapreduce',
         shell      => '/bin/bash',
