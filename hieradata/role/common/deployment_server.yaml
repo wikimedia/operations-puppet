@@ -367,8 +367,9 @@ profile::kubernetes::deployment_server::general:
     # envoy
     tls:
       image_version: 1.15.1-4
+    # prometheus-statsd-exporter
     monitoring:
-      image_version: 0.0.7
+      image_version: 0.0.9
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
