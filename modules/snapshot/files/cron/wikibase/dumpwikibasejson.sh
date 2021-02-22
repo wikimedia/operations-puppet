@@ -22,7 +22,7 @@ usage() {
     echo "  --project  (-p) 'wikidata' or 'commons'" >& 2
     echo "                  (default value: wikidata)" >& 2
     echo "  --dump     (-d) 'all' or 'lexemes' (for wikidata)" >& 2
-    echo "                  'all' (for commons)" >&2
+    echo "                  'mediainfo' (for commons)" >&2
     echo "                  (default value: all)" >& 2
     echo "  --entities (-e) one of 'item|property' or 'lexemes' (for wikidata)" >& 2
     echo "                  'mediainfo' (for commons)" >& 2

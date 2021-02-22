@@ -16,7 +16,7 @@ class snapshot::cron::commonsdumps::json(
         # extra args: ignore-missing
         cron { 'commonsjson-dump':
             ensure      => 'present',
-            command     => "${scriptpath} -p commons -d all -e mediainfo -E --ignore-missing",
+            command     => "${scriptpath} -p commons -d mediainfo -e mediainfo -E --ignore-missing",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '15',

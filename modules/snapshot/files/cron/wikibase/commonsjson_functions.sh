@@ -6,7 +6,7 @@
 # function used by wikibase json dumps, customized for Commons
 
 setDumpNameToMinSize() {
-    dumpNameToMinSize=(["all"]=`expr 1000 / $shards`)
+    dumpNameToMinSize=(["mediainfo"]=`expr 1000 / $shards`)
 }
 
 setDcatConfig() {
