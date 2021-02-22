@@ -364,8 +364,9 @@ profile::kubernetes::deployment_server::services:
 #   ..
 profile::kubernetes::deployment_server::general:
   default:
+    # envoy
     tls:
-      image_version: 1.15.1-2
+      image_version: 1.15.1-4
     monitoring:
       image_version: 0.0.7
 
