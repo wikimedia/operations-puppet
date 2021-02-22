@@ -796,6 +796,42 @@ groups:
   #   gid: 902
   #   system: true
   #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # hdfs:
+  #   gid: 903
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # yarn:
+  #   gid: 904
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # mapred:
+  #   gid: 905
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # analytics:
+  #   gid: 906
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # druid:
+  #   gid: 907
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # hadoop:
+  #   gid: 908
+  #   system: true
+  #   members: []
 
 users:
   reprepro:
@@ -814,6 +850,52 @@ users:
   #   gid: 902
   #   home_dir: '/var/lib/swift'
   #   shell: '/bin/false'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # hdfs:
+  #   ensure: present
+  #   system: true
+  #   uid: 903
+  #   gid: 903
+  #   home_dir: '/var/lib/hadoop-hdfs'
+  #   shell: '/bin/bash'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # yarn:
+  #   ensure: present
+  #   system: true
+  #   uid: 904
+  #   gid: 904
+  #   home_dir: '/var/lib/hadoop-yarn'
+  #   shell: '/bin/bash'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # mapred:
+  #   ensure: present
+  #   system: true
+  #   uid: 905
+  #   gid: 905
+  #   home_dir: '/var/lib/hadoop-mapreduce'
+  #   shell: '/bin/bash'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # analytics:
+  #   ensure: present
+  #   system: true
+  #   uid: 906
+  #   gid: 906
+  #   home_dir: '/var/lib/analytics'
+  #   shell: '/bin/bash'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # druid:
+  #   ensure: present
+  #   system: true
+  #   uid: 907
+  #   gid: 907
+  #   home_dir: '/var/lib/druid'
+  #   shell: '/bin/bash'
+
   rush:
     ensure: absent
     gid: 500
