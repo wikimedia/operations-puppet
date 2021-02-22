@@ -1,0 +1,5 @@
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'host'
+    owner: 'root'
+    group: 'root'
+    filename: 'host.keytab'
