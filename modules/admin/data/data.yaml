@@ -3868,7 +3868,7 @@ users:
     uid: 21849
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAG6XeNu2cHXzdcTYGlMcLldBAzYT3eEeoLwJzZCma29 atomasevich@MacBook-Pro.localdomain
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHtQi5VrwcytnPjlukPutI/vj1eqmflB2JPcTTEgWcYq atomasevich@wmf2441
   dcaro:
     ensure: present
     name: dcaro
