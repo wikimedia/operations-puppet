@@ -143,8 +143,8 @@ class profile::analytics::refinery::job::camus(
             'camus.message.timestamp.field'   => 'dt',
             # Set this to at least the number of topic/partitions you will be importing.
             'mapred.map.tasks'                => '12',
-            # This camus runs every 10 minutes, so limiting it to 9 should keep runs fresh.
-            'kafka.max.pull.minutes.per.task' => '9',
+            # This camus runs every 30 minutes, so limiting it to 29 should keep runs fresh.
+            'kafka.max.pull.minutes.per.task' => '29',
         },
         interval         => '*-*-* *:00/30:00',
     }
