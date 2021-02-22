@@ -71,6 +71,14 @@ class postgresql::slave(
         ssldir    => $ssldir,
     }
 
+    file { '/usr/local/bin/resync_replica':
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/postgresql/resync_replica.sh',
+    }
+
     file { "/etc/postgresql/${_pgversion}/main/slave.conf":
         ensure  => $ensure,
         owner   => 'root',
