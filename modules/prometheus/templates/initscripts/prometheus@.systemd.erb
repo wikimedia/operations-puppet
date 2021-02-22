@@ -1,5 +1,5 @@
 [Unit]
-Description=prometheus server (instance %i)
+Description=Prometheus server (instance %i)
 
 [Service]
 User=prometheus
@@ -10,3 +10,6 @@ TimeoutStopSec=10m
 LimitNOFILE=32768
 SyslogIdentifier=prometheus@%i
 ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
