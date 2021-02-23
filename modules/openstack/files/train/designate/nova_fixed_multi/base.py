@@ -137,19 +137,6 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                                     resource_type,
                                     resource_id)
 
-            legacy_zone_id = cfg.CONF[self.name].get('legacy_domain_id')
-            if legacy_zone_id:
-                legacy_zone = self.get_zone(legacy_zone_id)
-                event_data['zone'] = legacy_zone['name']
-                for fmt in cfg.CONF[self.name].get('legacy_format'):
-                    self._create_record(context,
-                                        fmt,
-                                        legacy_zone,
-                                        event_data,
-                                        addr,
-                                        resource_type,
-                                        resource_id)
-
     def _delete(self, resource_id=None, resource_type='instance',
                 criterion={}):
         """
