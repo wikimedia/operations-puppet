@@ -3,11 +3,32 @@ class profile::doc (
     Stdlib::Unixpath $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/doc'}),
 ) {
 
+    $deploy_user = 'deploy-ci-docroot'
+
     scap::target { 'integration/docroot':
-        deploy_user => 'deploy-ci-docroot',
+        deploy_user => $deploy_user,
     }
 
-    require_package(['php-fpm', 'php-xml'])
+    $php = 'php7.0'
+
+    ensure_packages(["${php}-fpm", "${php}-xml"])
+
+    $restart_cmd = "/bin/systemctl restart ${php}-fpm"
+
+    # scap deployment swap symlink which confuses PHP opcache. On promote
+    # stage, scap invoke this script to clear the opcache.
+    file { '/usr/local/sbin/restart-php-fpm-unsafe':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => "#!/bin/bash\nexec sudo -u root -- ${restart_cmd}\n"
+    }
+
+    sudo::user { 'deploy_restart_fpm':
+        user       => $deploy_user,
+        privileges => ["ALL = NOPASSWD: ${restart_cmd}"],
+    }
 
     class { '::httpd':
         modules => ['setenvif',
