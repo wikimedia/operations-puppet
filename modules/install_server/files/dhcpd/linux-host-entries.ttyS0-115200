@@ -214,6 +214,11 @@ host flowspec1001 {
     fixed-address flowspec1001.eqiad.wmnet;
 }
 
+host gitlab1001 {
+    hardware ethernet aa:00:00:a2:35:02;
+    fixed-address gitlab1001.eqiad.wmnet;
+}
+
 host grafana1002 {
     hardware ethernet aa:00:00:52:b7:27;
     fixed-address grafana1002.eqiad.wmnet;
