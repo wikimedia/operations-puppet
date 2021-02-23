@@ -16,4 +16,11 @@ class profile::base::cuminunpriv(
         port   => '22',
         srange => "(${cumin_hosts_ferm})",
     }
+
+    # OpenSSH searches for the host keytab in /etc/keytab. We deploy all keytabs
+    # centrally via Puppet in /etc/security/keytabs, so add a symlink as a fallback
+    file { '/etc/krb5.keytab':
+        ensure => link,
+        target => '/etc/security/keytabs/host/host.keytab',
+    }
 }
