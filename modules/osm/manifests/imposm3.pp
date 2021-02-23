@@ -34,13 +34,13 @@ class osm::imposm3 (
             content => template('osm/imposm_config.json.erb');
         $imposm_mapping_file:
             mode   => '0444',
-            source => 'puppet:///modules/profile/maps/imposm_mapping.yml';
+            source => 'puppet:///modules/osm/imposm_mapping.yml';
         '/usr/local/bin/imposm-initial-import':
-            source => 'puppet:///modules/profile/maps/imposm-initial-import';
+            source => 'puppet:///modules/osm/imposm-initial-import';
         '/usr/local/bin/imposm-rollback-import':
-            source => 'puppet:///modules/profile/maps/imposm-rollback-import';
+            source => 'puppet:///modules/osm/imposm-rollback-import';
         '/usr/local/bin/imposm-removebackup-import':
-            source => 'puppet:///modules/profile/maps/imposm-removebackup-import';
+            source => 'puppet:///modules/osm/imposm-removebackup-import';
     }
 
     $ensure_replication = $disable_replication_cron ? {
