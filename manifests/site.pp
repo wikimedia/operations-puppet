@@ -1198,6 +1198,11 @@ node /^ganeti500[123]\.eqsin\.wmnet$/ {
     role(ganeti)
 }
 
+# Virtual machines for Gitlab (T274459)
+node /^gitlab100[12].\eqiad\.wmnet$/ {
+    role(gitlab)
+}
+
 # Virtual machines for Grafana 6.x (T220838, T244357)
 node 'grafana1002.eqiad.wmnet' {
     role(grafana)
