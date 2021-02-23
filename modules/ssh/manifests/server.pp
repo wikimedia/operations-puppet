@@ -7,6 +7,7 @@ class ssh::server (
     $disable_nist_kex = true, # Allow labs projects to temporarily opt out of nist kex disabling
     $explicit_macs = true, # Allow labs projects to temporarily opt out of more secure MACs
     $enable_hba = false,
+    Boolean $enable_kerberos = false,
     $disable_agent_forwarding = true,
     $challenge_response_auth = true,  # Disable all password auth in labs, we don't use 2fa there
     $max_sessions = undef,  # Allow Cloud VPS restricted bastions to override it for Cumin

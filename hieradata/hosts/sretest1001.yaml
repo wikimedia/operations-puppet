@@ -4,4 +4,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'root'
     filename: 'host.keytab'
 profile::kerberos::client::dns_canonicalize_hostname: true
+profile::base::ssh_server_settings:
+  enable_kerberos: true
 
