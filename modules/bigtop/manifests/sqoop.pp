@@ -14,6 +14,36 @@ class bigtop::sqoop {
         ensure => 'installed',
     }
 
+    # Temporary workaround for https://issues.apache.org/jira/browse/BIGTOP-3508
+    $sqoop_bin = @("SCRIPT"/$)
+    #!/bin/bash
+
+    # Autodetect JAVA_HOME if not defined
+    . /usr/lib/bigtop-utils/bigtop-detect-javahome
+
+    # BIGTOP-3508 - Prevent IllegalStateException on Debian systems
+    if [[ -f /usr/share/java/slf4j-log4j12.jar && -f /usr/share/java/log4j-over-slf4j.jar ]]; then
+        SQOOP_JARS=`ls /var/lib/sqoop/*.jar /usr/share/java/*.jar 2>/dev/null | grep -v log4j-over-slf4j`
+    else
+        SQOOP_JARS=`ls /var/lib/sqoop/*.jar /usr/share/java/*.jar 2>/dev/null`
+    fi
+
+    if [ -n "\${SQOOP_JARS}" ]; then
+        export HADOOP_CLASSPATH=\$(JARS=(\${SQOOP_JARS}); IFS=:; echo "\${HADOOP_CLASSPATH}:\${JARS[*]}")
+    fi
+
+    export SQOOP_HOME=/usr/lib/sqoop
+    exec /usr/lib/sqoop/bin/sqoop "$@"
+    | SCRIPT
+
+    file { '/usr/bin/sqoop':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        content => $sqoop_bin,
+        require => Package['sqoop'],
+    }
+
     # symlink the Mysql/Mariadb JDBC connector into /usr/lib/sqoop/lib
     # TODO: Can I create this symlink as mysql.jar?
     bigtop::mysql_jdbc { 'sqoop-mysql-connector':
