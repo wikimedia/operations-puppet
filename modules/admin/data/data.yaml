@@ -4148,6 +4148,13 @@ users:
     uid: 24481
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  pginer:
+    ensure: present
+    realname: Pau Giner
+    email: pginer@wikimedia.org
+    uid: 2427
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -4358,10 +4365,6 @@ ldap_only_users:
   moushirael:
     ensure: absent
     realname: Moushira Elamrawy
-  pginer:
-    ensure: present
-    realname: Pau Giner
-    email: pginer@wikimedia.org
   skvjold:
     ensure: present
     realname: Margeigh Novotny
