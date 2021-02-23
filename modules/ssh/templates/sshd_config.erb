@@ -82,12 +82,6 @@ PasswordAuthentication no
 AllowAgentForwarding no
 <% end -%>
 
-# Kerberos options
-#KerberosAuthentication no
-#KerberosGetAFSToken no
-#KerberosOrLocalPasswd yes
-#KerberosTicketCleanup yes
-
 # GSSAPIAuthentication off by default, GSSAPICleanupCredentials enabled by default
 <% if @enable_kerberos -%>
 GSSAPIAuthentication yes
