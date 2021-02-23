@@ -1,0 +1,4 @@
+apereo_cas:
+  production:
+    login_url: 'https://idp.wmcloud.org/login'
+    validate_url: 'https://idp.wmcloud.org/serviceValidate'
