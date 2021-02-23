@@ -219,6 +219,11 @@ host gitlab1001 {
     fixed-address gitlab1001.eqiad.wmnet;
 }
 
+host gitlab1002 {
+    hardware ethernet aa:00:00:fa:89:2b;
+    fixed-address gitlab1002.eqiad.wmnet;
+}
+
 host grafana1002 {
     hardware ethernet aa:00:00:52:b7:27;
     fixed-address grafana1002.eqiad.wmnet;
