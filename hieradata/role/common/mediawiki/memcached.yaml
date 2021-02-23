@@ -18,6 +18,7 @@ profile::redis::multidc::settings:
   stop_writes_on_bgsave_error: false
 profile::redis::multidc::aof: false
 profile::redis::multidc::version_override: 2
+profile::memcached::enable_16: true
 profile::memcached::version: 'present'
 profile::memcached::threads: 16
 profile::memcached::growth_factor: 1.15
