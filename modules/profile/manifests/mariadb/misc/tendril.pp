@@ -10,6 +10,6 @@ class profile::mariadb::misc::tendril {
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve((dbmonitor1001.wikimedia.org dbmonitor2001.wikimedia.org dborch1001.wikimedia.org))',
+        srange  => '@resolve((dbmonitor1001.wikimedia.org dborch1001.wikimedia.org))',
     }
 }

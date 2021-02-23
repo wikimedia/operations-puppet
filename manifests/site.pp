@@ -861,7 +861,7 @@ node /^dbproxy200[4]\.codfw\.wmnet$/ {
     role(insetup)
 }
 
-node /^dbmonitor[12]001\.wikimedia\.org$/ {
+node 'dbmonitor1001.wikimedia.org' {
     role(tendril)
 }
 

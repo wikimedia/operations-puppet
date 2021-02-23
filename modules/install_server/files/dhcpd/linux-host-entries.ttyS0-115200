@@ -158,11 +158,6 @@ host dbmonitor1001 {
     fixed-address dbmonitor1001.wikimedia.org;
 }
 
-host dbmonitor2001 {
-    hardware ethernet aa:00:00:de:d7:57;
-    fixed-address dbmonitor2001.wikimedia.org;
-}
-
 host debmonitor1002 {
     hardware ethernet aa:00:00:c6:96:00;
     fixed-address debmonitor1002.eqiad.wmnet;
