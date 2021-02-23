@@ -173,14 +173,6 @@ class logstash (
         ensure  => absent,
     }
 
-    service { 'logstash':
-        ensure     => running,
-        provider   => systemd,
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
-    }
-
     file { '/etc/init/logstash.conf':
         ensure  => absent,
         require => Package['logstash'],

@@ -17,6 +17,7 @@ class profile::logstash::collector7 (
     Optional[String] $input_kafka_consumer_group_id = lookup('profile::logstash::collector::input_kafka_consumer_group_id', {'default_value' => undef}),
     Stdlib::Port $jmx_exporter_port = lookup('profile::logstash::collector::jmx_exporter_port', {'default_value' => 7800}),
     Array[Stdlib::Host] $maintenance_hosts = lookup('maintenance_hosts', {'default_value' => []}),
+    Elasticsearch::InstanceParams $dc_settings = lookup('profile::elasticsearch::dc_settings'),
 ) {
 
     require ::profile::java
@@ -44,6 +45,16 @@ class profile::logstash::collector7 (
         values => {
             'net.core.rmem_default' => 8388608,
         },
+    }
+
+    # Logstash will prevent shutdown indefinitely if elasticsearch is stopped before it.
+    # Set systemd ordering to manage logstash after ES startup and before ES shutdown
+    $systemd_after = "elasticsearch_7@${dc_settings['cluster_name']}"
+    systemd::service { 'logstash':
+        ensure   => present,
+        content  => init_template('logstash', 'systemd_override'),
+        override => true,
+        restart  => true,
     }
 
     ## Inputs (10)
