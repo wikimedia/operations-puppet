@@ -80,27 +80,32 @@
 # @param max_requests_per_conn
 #     The maximum number of requests to send over a connection
 define envoyproxy::tls_terminator(
-    Array[Envoyproxy::Tlsconfig] $upstreams                 = [],
-    Boolean                      $access_log                = false,
-    Boolean                      $websockets                = false,
-    Boolean                      $use_remote_address        = true,
-    Integer                      $fast_open_queue           = 0,
-    Float                        $connect_timeout           = 1.0,
-    Float                        $upstream_response_timeout = 65.0,
-    Boolean                      $capitalize_headers        = false,
-    Boolean                      $listen_ipv6               = false,
-    Hash[String, String]         $response_headers_to_add   = {},
-    Optional[Hash]               $retry_policy              = undef,
-    Optional[Stdlib::Port]       $redir_port                = undef,
-    Optional[String]             $global_cert_path          = undef,
-    Optional[String]             $global_key_path           = undef,
-    Optional[Float]              $idle_timeout              = undef,
-    Optional[Integer]            $max_requests_per_conn     = undef,
+    Variant[Array[Envoyproxy::Tlsconfig], Array[Envoyproxy::TlsconfigV3]] $upstreams                 = [],
+    Boolean                                                               $access_log                = false,
+    Boolean                                                               $websockets                = false,
+    Boolean                                                               $use_remote_address        = true,
+    Integer                                                               $fast_open_queue           = 0,
+    Float                                                                 $connect_timeout           = 1.0,
+    Float                                                                 $upstream_response_timeout = 65.0,
+    Boolean                                                               $capitalize_headers        = false,
+    Boolean                                                               $listen_ipv6               = false,
+    Hash[String, String]                                                  $response_headers_to_add   = {},
+    Optional[Hash]                                                        $retry_policy              = undef,
+    Optional[Stdlib::Port]                                                $redir_port                = undef,
+    Optional[String]                                                      $global_cert_path          = undef,
+    Optional[String]                                                      $global_key_path           = undef,
+    Optional[Float]                                                       $idle_timeout              = undef,
+    Optional[Integer]                                                     $max_requests_per_conn     = undef,
 ) {
 
     # First of all, we can't configure a tls terminator if envoy is not installed.
     if !defined(Class['envoyproxy']) {
         fail('envoyproxy::tls_terminator should only be used once the envoyproxy class is declared.')
+    }
+
+    $listeners_template = $upstreams[0] ? {
+        Envoyproxy::Tlsconfig   => 'envoyproxy/tls_terminator/listener.yaml.erb',
+        Envoyproxy::TlsconfigV3 => 'envoyproxy/tls_terminator/listener.v3.yaml.erb',
     }
 
     # As this is a fundamental function, install it with high priority
@@ -116,7 +121,7 @@ define envoyproxy::tls_terminator(
     }
     envoyproxy::listener { "tls_terminator_${name}":
         priority => 0,
-        content  => template('envoyproxy/tls_terminator/listener.yaml.erb'),
+        content  => template($listeners_template),
     }
     if $redir_port {
         # Redirection is less important, install it at the bottom of the pyle.
