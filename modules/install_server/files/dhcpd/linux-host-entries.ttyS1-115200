@@ -2379,6 +2379,46 @@ host db2144 {
     fixed-address db2144.codfw.wmnet;
 }
 
+host db2145 {
+    hardware ethernet 2C:EA:7F:85:93:8A;
+    fixed-address db2145.codfw.wmnet;
+}
+
+host db2146 {
+    hardware ethernet 2C:EA:7F:85:90:D8;
+    fixed-address db2146.codfw.wmnet;
+}
+
+host db2147 {
+    hardware ethernet 2C:EA:7F:85:37:E7;
+    fixed-address db2147.codfw.wmnet;
+}
+
+host db2148 {
+    hardware ethernet 2C:EA:7F:83:B7:B5;
+    fixed-address db2148.codfw.wmnet;
+}
+
+host db2149 {
+    hardware ethernet 2C:EA:7F:85:59:2A;
+    fixed-address db2149.codfw.wmnet;
+}
+
+host db2150 {
+    hardware ethernet 2C:EA:7F:85:24:07;
+    fixed-address db2150.codfw.wmnet;
+}
+
+host db2151 {
+    hardware ethernet 2C:EA:7F:85:2D:77;
+    fixed-address db2151.codfw.wmnet;
+}
+
+host db2152 {
+    hardware ethernet 2C:EA:7F:85:49:B8;
+    fixed-address db2152.codfw.wmnet;
+}
+
 host dbprov1001 {
     hardware ethernet B0:26:28:23:50:90;
     fixed-address dbprov1001.eqiad.wmnet;
