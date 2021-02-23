@@ -80,6 +80,11 @@ enabled_backends = file:file
 enabled_backends = rbd:rbd
 <% end -%>
 
+<% if @glance_backends.include? 'rbd' %>
+# In ceph, we need to expose the direct URL so images don't download to local
+show_image_direct_url = True
+<% end %>
+
 # ================= Syslog Options ============================
 
 # Send logs to syslog (/dev/log) instead of to file specified
