@@ -212,7 +212,7 @@ retry_interval = 10
 # Domain ID of domain to create records in. For a pre-existing domain,
 #  in this case eqiad1.wikimedia.cloud
 domain_id = '<%= @domain_id_internal_forward %>'
-legacy_domain_id = ''
+legacy_domain_id = '<%= @domain_id_internal_forward_legacy %>'
 site = '<%= scope.lookupvar("::site") %>'
 notification_topics = monitor
 notification_topics = notifications
