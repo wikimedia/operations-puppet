@@ -3,7 +3,6 @@ profile::alertmanager::irc::nickname_password: 'dummy'
 profile::alertmanager::irc::channel: 'wikimedia-o11y-test'
 
 profile::alertmanager::web::vhost: o11y-alerts.wmflabs.org
-profile::alertmanager::web::enable_sso: false
 
 alertmanagers: "%{alias('__hosts_for_role_alerting_host')}"
 
