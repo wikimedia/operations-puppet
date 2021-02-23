@@ -1199,7 +1199,7 @@ node /^ganeti500[123]\.eqsin\.wmnet$/ {
 }
 
 # Virtual machines for Gitlab (T274459)
-node /^gitlab100[12].\eqiad\.wmnet$/ {
+node /^gitlab100[12]\.eqiad\.wmnet$/ {
     role(gitlab)
 }
 
