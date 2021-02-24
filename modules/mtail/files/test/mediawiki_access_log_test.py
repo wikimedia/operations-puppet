@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import mtail_store
 import unittest
 import os
@@ -16,12 +15,11 @@ class MediaWikiAccessLogTest(unittest.TestCase):
                 os.path.join(test_dir, '../programs/mediawiki_access_log.mtail'),
                 os.path.join(test_dir, 'logs/mediawiki_access_log.test'))
 
-    def id_str(self, handler, method='GET', code=200, endpoint=None):
-        return "handler=%s,method=%s,code=%d%s" % (
+    def id_str(self, handler, method='GET', code=200):
+        return "handler=%s,method=%s,code=%d" % (
             self._handler_codes[handler],
             method,
-            code,
-            f",endpoint={endpoint}" if endpoint else ""
+            code
         )
 
     def testByHandler(self):
@@ -29,7 +27,7 @@ class MediaWikiAccessLogTest(unittest.TestCase):
         s = self.store.get_samples('mediawiki_http_requests_duration')
         for sample in s:
             if sample[0] == self.id_str('php7'):
-                self.assertEqual(sample[1]['count'], 6)
+                self.assertEqual(sample[1]['count'], 5)
             elif sample[0] == self.id_str('static', code=301):
                 self.assertEqual(sample[1]['count'], 1)
 
@@ -48,26 +46,6 @@ class MediaWikiAccessLogTest(unittest.TestCase):
         # now verify the distribution of requests in the histogram
         bucket = my_sample[1]['buckets']
         self.assertEqual(bucket['0.05'], 2)
-        self.assertEqual(bucket['0.1'], 2)
+        self.assertEqual(bucket['0.1'], 1)
         self.assertEqual(bucket['0.25'], 2)
-        self.assertEqual(my_sample[1]['count'], 6)
-
-    def testByEndpoint(self):
-        """Test that per-endpoint breakdowns are bucketed correctly."""
-
-        expected_counts = {
-            "load": 2, "rest_api": 1, "website": 3}
-        actual_counts = {
-            "load": 0, "rest_api": 0, "website": 0}
-
-        s = self.store.get_samples('mediawiki_requests_by_endpoint_duration')
-        endpoint_ids = {
-            self.id_str("php7", endpoint=endpoint):
-            endpoint for endpoint in expected_counts.keys()
-        }
-
-        for sample in s:
-            if sample[0] in endpoint_ids.keys():
-                actual_counts[endpoint_ids[sample[0]]] += sample[1]["count"]
-
-        self.assertEqual(expected_counts, actual_counts)
+        self.assertEqual(my_sample[1]['count'], 5)
