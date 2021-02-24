@@ -1,0 +1,5 @@
+Host *
+    BatchMode yes
+    ConnectTimeout 2
+    StrictHostKeyChecking yes
+    UserKnownHostsFile /dev/null
