@@ -126,9 +126,6 @@ class profile::analytics::refinery::job::refine(
     # EventLogging streams that have been migrated to EventGate.
     $eventlogging_legacy_table_includelist = [
         'ContentTranslationAbuseFilter',
-        'HelpPanel',
-        'HomepageModule',
-        'NewcomerTask',
         'QuickSurveyInitiation',
         'QuickSurveysResponses',
         'SearchSatisfaction',
@@ -138,6 +135,13 @@ class profile::analytics::refinery::job::refine(
         'TemplateWizard',
         'Test',
         'UniversalLanguageSelector',
+
+        # Growth team schemas
+        'HelpPanel',
+        'HomepageModule',
+        'NewcomerTask',
+        'HomepageVisit',
+        'ServerSideAccountCreation',
 
         # NavigationTiming extension legacy schemas
         'CentralNoticeTiming',
@@ -152,7 +156,7 @@ class profile::analytics::refinery::job::refine(
         'RUMSpeedIndex',
         'SaveTiming',
 
-        # WMDE Technical Wishes schemas
+        # WMDE Technical Wishes team schemas
         'CodeMirrorUsage',
         'ReferencePreviewsBaseline',
         'ReferencePreviewsCite',

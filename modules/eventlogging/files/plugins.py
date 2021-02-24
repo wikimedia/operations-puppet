@@ -14,9 +14,6 @@ See: https://phabricator.wikimedia.org/T259163
 """
 eventlogging_schemas_disabled = (
     'ContentTranslationAbuseFilter',
-    'HelpPanel',
-    'HomepageModule',
-    'NewcomerTask',
     'QuickSurveyInitiation',
     'QuickSurveysResponses',
     'SpecialInvestigate',
@@ -26,6 +23,13 @@ eventlogging_schemas_disabled = (
     'TemplateWizard',
     'Test',
     'UniversalLanguageSelector',
+
+    # Growth team schemas
+    'HelpPanel',
+    'HomepageModule',
+    'NewcomerTask',
+    'HomepageVisit',
+    'ServerSideAccountCreation',
 
     # NavigationTiming extension legacy schemas
     'CentralNoticeTiming',
