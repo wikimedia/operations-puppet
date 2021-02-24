@@ -120,6 +120,7 @@ function cleanup() {
 
 download_pbf
 initial_osm_import
+osm_production_deploy
 import_water_lines
 custom_functions_and_indexes
 cleanup
