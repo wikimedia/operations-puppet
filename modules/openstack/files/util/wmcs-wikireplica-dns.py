@@ -107,20 +107,17 @@ def main():
     else:
         shards = all_shards
 
-    wmflabsdns = mwopenstackclients.DnsManager(
-        mwopenstackclients.Clients(envfile=args.envfile), "noauth-project"
-    )
-    wikimediaclouddns = mwopenstackclients.DnsManager(
-        mwopenstackclients.Clients(envfile=args.envfile), "clouddb-services"
-    )
-
     for zone in zones:
         logger.warning("Ensuring %s" % zone)
 
         if zone.endswith("wmflabs."):
-            dns = wmflabsdns
+            dns = mwopenstackclients.DnsManager(
+                mwopenstackclients.Clients(envfile=args.envfile), "noauth-project"
+            )
         elif zone.endswith("db.svc.wikimedia.cloud."):
-            dns = wikimediaclouddns
+            dns = mwopenstackclients.DnsManager(
+                mwopenstackclients.Clients(envfile=args.envfile), "clouddb-services"
+            )
         else:
             logging.error(
                 "This zone is in an unknown tld; supported are wmflabs and "
