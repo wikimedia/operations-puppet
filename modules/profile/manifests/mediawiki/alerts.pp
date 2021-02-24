@@ -79,16 +79,19 @@ class profile::mediawiki::alerts {
     dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=1&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops"],
   }
 
-  # Monitor MediaWiki fatals and exceptions.
-  monitoring::check_prometheus { 'mediawiki-error-rate':
-    description     => 'MediaWiki exceptions and fatals per minute',
-    prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-    retries         => 2,
-    method          => 'gt',
-    query           => 'sum(log_mediawiki_level_channel_doc_count{channel=~"(fatal|exception)", level="ERROR"})',
-    warning         => 50,
-    critical        => 100,
-    notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-    dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=2&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops"],
+  # Monitor MediaWiki fatals and exceptions per MediaWiki cluster.
+  # From the logstash perspective, cluster is in the "servergroup" field
+  ['appserver', 'api_appserver', 'jobrunner', 'parsoid'].each |String $cluster| {
+    monitoring::check_prometheus { 'mediawiki-error-rate':
+      description     => "MediaWiki exceptions and fatals per minute for ${cluster}",
+      prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+      retries         => 2,
+      method          => 'gt',
+      query           => "sum(log_mediawiki_servergroup_level_channel_doc_count{channel=~\"(fatal|exception)\", level=\"ERROR\", servergroup=\"${cluster}\"})",
+      warning         => 50,
+      critical        => 100,
+      notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
+      dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=2&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops"],
+    }
   }
 }
