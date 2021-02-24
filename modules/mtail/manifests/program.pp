@@ -39,11 +39,17 @@ define mtail::program(
         }
     }
 
+    if $notify == undef {
+        $notify_to = Service['mtail']
+    } else {
+        $notify_to = $notify
+    }
+
     file { $filename:
         ensure  => $ensure,
         content => $content,
         source  => $source,
-        notify  => $notify,
+        notify  => $notify_to,
         require => File[$destination],
     }
 }
