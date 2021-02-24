@@ -32,6 +32,7 @@ class logstash (
     Integer $jmx_exporter_port     = undef,
     String $jmx_exporter_config    = undef,
     Integer[5,7] $logstash_version = 5,
+    Boolean $manage_service        = true,
 ) {
     #TODO: fully remove when java installed with ::profile::java
     #require_package($java_package)
@@ -171,6 +172,16 @@ class logstash (
     # in /etc/systemd/logstash.service
     file { '/lib/systemd/system/logstash.service':
         ensure  => absent,
+    }
+
+    if ($manage_service) {
+        service { 'logstash':
+            ensure     => running,
+            provider   => systemd,
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => true,
+        }
     }
 
     file { '/etc/init/logstash.conf':
