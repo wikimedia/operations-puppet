@@ -105,6 +105,18 @@ profile::druid::broker::properties:
   druid.server.http.defaultQueryTimeout: 5000
   # https://druid.apache.org/docs/latest/operations/basic-cluster-tuning.html#broker-backpressure
   druid.broker.http.maxQueuedBytes: 10485760 # 5 * 2MB
+  # https://druid.apache.org/docs/latest/querying/caching.html#query-caching-on-brokers
+  # For clusters of 5+ nodes (and I suspect also big datasets with a lot of segments)
+  # upstream suggests to avoid segment caching for brokers, since it will force Historicals
+  # to skip merge/pre-processing before returning data to brokers. We had some performance
+  # issues in the past due to historicals stopping/slowing-down for maintenance and brokers
+  # piling up requests becoming unresponsive. See T270173
+  # If you change any of these, please also remember to adjust (if needed) the related
+  # settings for Historicals.
+  druid.broker.cache.useCache: false
+  druid.broker.cache.populateCache: false
+  druid.broker.cache.useResultLevelCache: true
+  druid.broker.cache.populateResultLevelCache: true
   # Increase druid broker query cache size to 2G.
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
@@ -146,10 +158,14 @@ profile::druid::historical::properties:
   druid.server.http.numThreads: 120
   druid.server.maxSize: 2748779069440 # 2.5 TB
   druid.segmentCache.locations: '[{"path":"/srv/druid/segment-cache","maxSize"\:2748779069440}]'
-  # For small clusters it is reccomended to only enable caching on brokers
-  # See: http://druid.io/docs/latest/querying/caching.html
-  druid.historical.cache.useCache: false
-  druid.historical.cache.populateCache: false
+  # https://druid.apache.org/docs/latest/querying/caching.html#query-caching-on-historicals
+  # For clusters of 5+ nodes it is recommended to enable segment query caching on Historicals
+  # and not on brokers.
+  # If you change any of these, please also remember to adjust (if needed) the related
+  # settings for Brokers.
+  druid.historical.cache.useCache: true
+  druid.historical.cache.populateCache: true
+  druid.cache.sizeInBytes: 2147483648
   # Sane value to abort a query that takes more than 5s to complete
   druid.server.http.defaultQueryTimeout: 5000
   druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
