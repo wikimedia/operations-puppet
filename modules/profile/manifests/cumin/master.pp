@@ -7,7 +7,7 @@ class profile::cumin::master (
     $cumin_log_path = '/var/log/cumin'
     $ssh_config_path = '/etc/cumin/ssh_config'
     # Ensure to add FQDN of the current host also the first time the role is applied
-    $cumin_masters = unique(concat(query_nodes('Class[Role::Cumin::Master]'), [$::fqdn]))
+    $cumin_masters = unique(concat(query_nodes('Class[Role::Cluster::Management'), [$::fqdn]))
     $mariadb_roles = Profile::Mariadb::Role
     $mariadb_sections = Profile::Mariadb::Valid_section
 
