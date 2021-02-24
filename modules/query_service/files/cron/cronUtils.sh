@@ -53,7 +53,11 @@ function replaceNamespace {
 	# Bump nginx to reload config
 	sudo systemctl reload nginx
 	if [ -n "${oldNamespace}" ]; then
-		# Drop old namespace
-		curl -s -X DELETE "${endpoint}${NAMESPACE_URL}${oldNamespace}"
+	  if [ "$(curl -sLI -o /dev/null --fail --write-out "%{http_code}" "${endpoint}${NAMESPACE_URL}${oldNamespace}/sparql")" -eq "200" ]; then
+		  # Drop old namespace
+		  curl -s -X DELETE "${endpoint}${NAMESPACE_URL}${oldNamespace}"
+	  else
+	    echo "Namespace ${oldNamespace} is in the alias file, but does not appear to be present in Blazegraph."
+	  fi
 	fi
 }
