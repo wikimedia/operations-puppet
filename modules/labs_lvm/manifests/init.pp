@@ -10,7 +10,7 @@
 #              unallocated segment of the disk)
 #
 
-class labs_lvm($disk = '/dev/vda') {
+class labs_lvm($disk = '/dev/sda') {
 
     package { ['lvm2', 'parted']:
         ensure => present,
