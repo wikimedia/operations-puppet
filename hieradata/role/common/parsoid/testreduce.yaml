@@ -27,7 +27,6 @@ profile::mediawiki::php::monitoring::monitor_opcache: false
 profile::parsoid::testreduce::install_node: true
 
 profile::tlsproxy::envoy::global_cert_name: "testreduce.discovery.wmnet"
-profile::tlsproxy::envoy::listen_ipv6: true
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 8001
