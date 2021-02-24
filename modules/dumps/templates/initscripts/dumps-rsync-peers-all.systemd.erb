@@ -8,7 +8,11 @@ After=network.target
 
 [Service]
 User=root
+<% if @miscremotesubs != '' -%>
 ExecStart=/bin/bash /usr/local/bin/rsync-via-primary.sh --do_tarball --do_rsync_xml --do_rsync_misc --do_rsync_miscsubs --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%> --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs %> --miscsubdirs <%= @miscsubdirs %> --miscremotesubs <%= @miscremotesubs %>
+<% else -%>
+ExecStart=/bin/bash /usr/local/bin/rsync-via-primary.sh --do_tarball --do_rsync_xml --do_rsync_misc --xmldumpsdir <%= @xmldumpsdir %>  --xmlremotedirs <%= @xmlremotedirs -%> --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs %>
+<% end -%>
 
 SyslogIdentifier=%N
 

@@ -8,7 +8,11 @@ After=network.target
 
 [Service]
 User=root
+<% if @miscremotesubs != '' -%>
 ExecStart=/bin/bash /usr/local/bin/rsync-via-primary.sh --do_rsync_misc --do_rsync_miscsubs --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs %> --miscsubdirs <%= @miscsubdirs %> --miscremotesubs <%= @miscremotesubs %>
+<% else -%>
+ExecStart=/bin/bash /usr/local/bin/rsync-via-primary.sh --do_rsync_misc --miscdumpsdir <%= @miscdumpsdir %>  --miscremotedirs <%= @miscremotedirs %>
+<% end -%>
 
 SyslogIdentifier=%N
 

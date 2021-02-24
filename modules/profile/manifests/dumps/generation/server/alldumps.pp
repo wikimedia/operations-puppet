@@ -9,14 +9,19 @@ class profile::dumps::generation::server::alldumps(
     require profile::dumps::generation::server::common
 
     if (!$dumps_single_backend) {
-        $internaldests = $internals.map |$i| {"${i}::data/xmldatadumps/public/"}.join(',')
         $xmlpublicdests = $publics.map |$p| {"${p}::data/xmldatadumps/public/"}.join(',')
-        $miscinternaldests = $internals.map |$i| {"${i}::data/otherdumps/"}.join(',')
+        if !empty($internals) {
+            $internaldests = $internals.map |$i| {"${i}::data/xmldatadumps/public/"}.join(',')
+            $xmlremotedirs = "${internaldests},${xmlpublicdests}"
+            $miscinternaldests = $internals.map |$i| {"${i}::data/otherdumps/"}.join(',')
+        } else {
+            $miscinternaldests = ''
+            $xmlremotedirs = $xmlpublicdests
+        }
         $miscpublicdests = $publics.map |$p| {"${p}::data/xmldatadumps/public/other/"}.join(',')
-
         class { '::dumps::generation::server::rsyncer_all':
             xmldumpsdir    => $xmldumpsdir,
-            xmlremotedirs  => "${internaldests},${xmlpublicdests}",
+            xmlremotedirs  => $xmlremotedirs,
             miscdumpsdir   => $miscdumpsdir,
             miscremotedirs => $miscpublicdests,
             miscsubdirs    => $miscsubdirs,

@@ -8,12 +8,18 @@ class profile::dumps::generation::server::xmldumps(
 
     if (!$dumps_single_backend) {
 
-        $internaldests = $internals.map |$i| {"${i}::data/xmldatadumps/public/"}.join(',')
         $xmlpublicdests = $publics.map |$p| {"${p}::data/xmldatadumps/public/"}.join(',')
+
+        if !empty($internals) {
+            $internaldests = $internals.map |$i| {"${i}::data/xmldatadumps/public/"}.join(',')
+            $xmlremotedirs = "${internaldests},${xmlpublicdests}"
+        } else {
+            $xmlremotedirs = $xmlpublicdests
+        }
 
         class { '::dumps::generation::server::rsyncer_xml':
             xmldumpsdir   => $xmldumpsdir,
-            xmlremotedirs => "${internaldests},${xmlpublicdests}",
+            xmlremotedirs => $xmlremotedirs,
         }
     }
 

@@ -31,7 +31,7 @@ Usage: $0 --xmldumpsdir <path> --xmlremotedirs <path>,<path>,<path>...  \\
                        which to rsync
   --miscsubdirs        comma-separated list of subdirs under miscdumpsdir root for
                        rsync to internal hosts (i.e. fallback dumpsdata hosts)
-  --miscremotesubs     comma-separated list of remote destinations to which to rsync
+  --miscremotesubs     comma-separated list of remote internal destinations to which to rsync
 
   --do_xml_tarball     make a tarball of xml/sql dump index.html files; you will want
                        to do this only if the xml files are generated on this host

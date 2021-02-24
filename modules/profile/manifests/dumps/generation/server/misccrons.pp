@@ -8,7 +8,11 @@ class profile::dumps::generation::server::misccrons(
     require profile::dumps::generation::server::common
 
     if (!$dumps_single_backend) {
-        $miscinternaldests = $internals.map |$i| {"${i}::data/otherdumps/"}.join(',')
+        if !empty($internals) {
+            $miscinternaldests = $internals.map |$i| {"${i}::data/otherdumps/"}.join(',')
+        } else {
+            $miscinternaldests = ''
+        }
         $miscpublicdests = $publics.map |$p| {"${p}::data/xmldatadumps/public/other/"}.join(',')
 
         class { '::dumps::generation::server::rsyncer_misc':
