@@ -22,3 +22,29 @@ profile::mariadb::section_ports:
   staging: 3350
   matomo: 3351
   analytics_meta: 3352
+profile::mariadb::section_params:
+  _defaults_:
+    writeable_dc: 'mwprimary'
+    replication_type: 'unidir'
+  x2:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  es1:
+    writeable_dc: 'none'
+    replication_type: 'none'
+  es2:
+    writeable_dc: 'none'
+    replication_type: 'none'
+  es3:
+    writeable_dc: 'none'
+    replication_type: 'none'
+  m1:
+    writeable_dc: 'eqiad'
+  m2:
+    writeable_dc: 'eqiad'
+  m3:
+    writeable_dc: 'eqiad'
+  m5:
+    writeable_dc: 'eqiad'
+  tendril:
+    writeable_dc: 'both'

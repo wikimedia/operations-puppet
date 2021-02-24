@@ -48,40 +48,36 @@ class profile::mariadb::core (
         password => $passwords::misc::scripts::mysql_root_pass,
     }
 
-    $is_on_primary_dc = (mediawiki::state('primary_dc') == $::site)
-    $is_master = ($mysql_role == 'master')
-    $contact_group = 'admins'
+    $is_writeable_dc = profile::mariadb::section_params::is_writeable_dc($shard)
 
-    mariadb::monitor_replication { [ $shard ]:
-        multisource   => false,
-        is_critical   => $is_on_primary_dc,
-        contact_group => $contact_group,
-    }
-    $read_only = !($is_on_primary_dc and $is_master)
-    $read_only_is_critical = ($is_master and $is_on_primary_dc)
-    mariadb::monitor_readonly { [ $shard ]:
-        read_only     => $read_only,
-        is_critical   => $read_only_is_critical,
-        contact_group => $contact_group,
+    if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
+        $source_dc = profile::mariadb::section_params::get_repl_src_dc($mysql_role)
+        mariadb::monitor_replication { $shard:
+            is_critical => $is_writeable_dc,
+            source_dc   => $source_dc,
+        }
+        profile::mariadb::replication_lag { $shard: }
     }
 
-    profile::mariadb::replication_lag { [ $shard ]: }
+    $is_read_only = profile::mariadb::section_params::is_read_only($shard, $mysql_role)
+    $is_critical = profile::mariadb::section_params::is_alert_critical($shard, $mysql_role)
+    mariadb::monitor_readonly { $shard:
+        read_only   => $is_read_only,
+        is_critical => ($is_critical and $mysql_role == 'master'),
+    }
 
     class { 'mariadb::monitor_disk':
-        is_critical   => $is_on_primary_dc,
-        contact_group => $contact_group,
+        is_critical   => $is_critical,
     }
 
     class { 'mariadb::monitor_process':
-        is_critical   => $is_on_primary_dc,
-        contact_group => $contact_group,
+        is_critical   => $is_critical,
     }
 
-    $heartbeat_enabled = $is_master
     class { 'mariadb::heartbeat':
         shard      => $shard,
         datacenter => $::site,
-        enabled    => $heartbeat_enabled,
+        enabled    => $mysql_role == 'master',
     }
 
     class { 'mariadb::monitor_memory': }

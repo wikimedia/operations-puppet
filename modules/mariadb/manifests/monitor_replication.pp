@@ -9,6 +9,7 @@ define mariadb::monitor_replication(
     $socket        = '/run/mysqld/mysqld.sock',
     $multisource   = false,
     $warn_stopped  = true,
+    $source_dc     = mediawiki::state('primary_dc'),
     ) {
 
     include passwords::nagios::mysql
@@ -44,12 +45,11 @@ define mariadb::monitor_replication(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
     }
 
-    # check the lag towards the mw_primary datacenter's master
-    $mw_primary = mediawiki::state('primary_dc')
+    # check the lag towards the $source_dc's master
     nrpe::monitor_service { "mariadb_replica_sql_lag_${name}":
         description   => "MariaDB Replica Lag: ${name}",
         nrpe_command  => "${check_mariadb} --check=slave_sql_lag \
-                          --shard=${name} --datacenter=${mw_primary} \
+                          --shard=${name} --datacenter=${source_dc} \
                           --sql-lag-warn=${lag_warn} \
                           --sql-lag-crit=${lag_crit}",
         retries       => 10,
