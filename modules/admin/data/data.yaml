@@ -832,6 +832,25 @@ groups:
   #   gid: 908
   #   system: true
   #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # analytics-privatedata:
+  #   gid: 909
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # analytics-product:
+  #   gid: 910
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # analytics-search:
+  #   gid: 911
+  #   system: true
+  #   members: []
+
 
 users:
   reprepro:
@@ -895,6 +914,30 @@ users:
   #   gid: 907
   #   home_dir: '/var/lib/druid'
   #   shell: '/bin/bash'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # analytics-privatedata:
+  #   ensure: present
+  #   system: true
+  #   uid: 909
+  #   gid: 909
+  #   shell: '/bin/false'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # analytics-product:
+  #   ensure: present
+  #   system: true
+  #   uid: 910
+  #   gid: 910
+  #   shell: '/bin/false'
+  # Placeholder to reserve the uid/gid, to be uncommented
+  # once T231067 is complete
+  # analytics-search:
+  #   ensure: present
+  #   system: true
+  #   uid: 911
+  #   gid: 911
+  #   shell: '/bin/false'
 
   rush:
     ensure: absent
