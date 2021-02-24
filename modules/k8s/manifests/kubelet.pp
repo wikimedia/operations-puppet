@@ -15,6 +15,7 @@ class k8s::kubelet(
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
     Boolean $packages_from_future=false,
+    Boolean $kubelet_ipv6=false,
     Optional[Array[String]] $node_labels = [],
     Optional[Array[String]] $node_taints = [],
     Optional[Array[String]] $extra_params = undef,

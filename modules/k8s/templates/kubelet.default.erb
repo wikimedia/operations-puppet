@@ -34,6 +34,9 @@ if @cni
 	daemon_args.push("--cni-bin-dir=#{@cni_bin_dir}")
 	daemon_args.push("--cni-conf-dir=#{@cni_conf_dir}")
 end
+if @kubelet_ipv6
+	daemon_args.push("--feature-gates=IPv6DualStack=true")
+end
 if !@node_labels.empty?
   daemon_args.push("--node_labels=#{@node_labels.join(',')}")
 end

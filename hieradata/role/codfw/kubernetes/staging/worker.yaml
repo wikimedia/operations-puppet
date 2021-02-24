@@ -18,3 +18,4 @@ profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.codfw.
 profile::base::notifications: disabled
 profile::docker::engine::version: "18.06.3~ce~3-0~debian"
 profile::docker::engine::packagename: "docker-ce"
+profile::kubernetes::node::kubelet_ipv6: true

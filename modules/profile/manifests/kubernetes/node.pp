@@ -19,6 +19,7 @@ class profile::kubernetes::node(
     String $kubeproxy_token = lookup('profile::kubernetes::node::kubeproxy_token'),
     Boolean $packages_from_future = lookup('profile::kubernetes::node::packages_from_future', {default_value => false}),
     Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => undef}),
+    Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', {default_value => false}),
 ) {
     require ::profile::rsyslog::kubernetes
 
@@ -62,6 +63,7 @@ class profile::kubernetes::node(
         node_taints               => $kubelet_node_taints,
         extra_params              => $kubelet_extra_params,
         packages_from_future      => $packages_from_future,
+        kubelet_ipv6              => $kubelet_ipv6,
     }
 
     k8s::kubeconfig { $kubeproxy_config:

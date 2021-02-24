@@ -60,3 +60,4 @@ prometheus::node_exporter::collectors_extra:
   - processes
 # Remove once the clusters have been reinitialized
 profile::kubernetes::node::cni_config: /etc/kubernetes/kubelet_config
+profile::kubernetes::node::kubelet_ipv6: false
