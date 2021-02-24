@@ -18,7 +18,8 @@
 #
 class profile::local_dev::docker_publish(
     Stdlib::Host $registry = lookup('docker::registry'),
-    String $password = lookup('profile::local_dev::ci_build_user_password'),
+    String $username = lookup('docker::registry::username'),
+    String $password = lookup('docker::registry::password'),
     Optional[Stdlib::Httpurl] $http_proxy = lookup('http_proxy', {'default_value' => undef})
 ){
 

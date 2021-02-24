@@ -1,6 +1,7 @@
 class profile::ci::shipyard(
     Stdlib::Fqdn $registry = lookup('docker::registry'),
-    String $password = lookup('profile::ci::shipyard::ci_build_user_password'),
+    String $username = lookup('docker::registry::username'),
+    String $password = lookup('docker::registry::password'),
     Optional[Stdlib::HTTPUrl] $http_proxy = lookup('http_proxy', {default_value => undef}),
 ){
 

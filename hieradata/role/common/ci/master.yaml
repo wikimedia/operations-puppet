@@ -52,9 +52,9 @@ profile::zuul::merger::ferm_srange: >-
 
 profile::zuul::server::email_server: localhost
 
+# TODO: create specific credentials for CI
 docker::registry: docker-registry.discovery.wmnet
-# profile::ci::shipyard::ci_build_user_password: defined in the private repo
-# profile::local_dev::ci_build_user_password: defined in the private repo
+docker::registry::username: uploader
 profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|mnt|run|srv)/docker/.*' --exclude-type=tracefs
 
 profile::kubernetes::deployment_server::git_owner: root

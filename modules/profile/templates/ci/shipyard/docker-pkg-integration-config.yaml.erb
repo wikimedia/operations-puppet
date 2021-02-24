@@ -2,7 +2,7 @@ registry: <%= @registry %>
 namespace: releng
 # CI uses several base images and does the pull before building
 seed_image: ''
-username: ci-build
+username: <%= @username %>
 password: <%= @password %>
 http_proxy: <%= @http_proxy %>
 ca_bundle: /etc/ssl/certs/ca-certificates.crt
