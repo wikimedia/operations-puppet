@@ -4898,7 +4898,6 @@ host ms-be1063 {
 host ms-be2016 {
     hardware ethernet 3C:A8:2A:17:85:B8;
     fixed-address ms-be2016.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ms-be2017 {

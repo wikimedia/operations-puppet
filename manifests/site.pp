@@ -1675,6 +1675,11 @@ node /^ms-fe2\d\d\d\.codfw\.wmnet$/ {
     include ::lvs::realserver
 }
 
+# Soon to be decommed node, temporarily used for testing: T272837
+node 'ms-be2016.codfw.wmnet' {
+    role(insetup)
+}
+
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
 node /^ms-be2\d\d\d\.codfw\.wmnet$/ {
     role(swift::storage)
