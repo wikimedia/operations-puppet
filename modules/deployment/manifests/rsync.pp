@@ -11,13 +11,13 @@ class deployment::rsync(
 
     include ::rsync::server
 
-    rsync::server::module { 'trebuchet_server':
+    rsync::server::module { 'deployment_module':
         path        => $deployment_path,
         read_only   => 'yes',
         hosts_allow => $deployment_hosts,
     }
 
-    $sync_command = "/usr/bin/rsync -avz --delete ${deployment_server}::trebuchet_server ${deployment_path}"
+    $sync_command = "/usr/bin/rsync -avz --delete ${deployment_server}::deployment_module ${deployment_path}"
 
     systemd::timer::job { 'sync_deployment_dir':
         ensure      => $job_ensure,
