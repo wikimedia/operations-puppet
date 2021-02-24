@@ -39,7 +39,7 @@
 #    day of the week script is executed, string, Mon-Fri
 #
 # [*ensure*]
-#    Whether to enable the periodic job (formerly cron) or not, default present
+#    Whether to enable the periodic job or not, default present
 
 define phabricator::logmail (
     String $sndr_address,
@@ -71,16 +71,6 @@ define phabricator::logmail (
         group   => 'root',
         mode    => '0550',
         content => file("phabricator/${title}.sh"),
-    }
-
-    cron { "phabstatscron_${title}":
-        ensure   => absent,
-        command  => "${basedir}/${title}.sh",
-        user     => 'root',
-        hour     => $hour,
-        minute   => $minute,
-        weekday  => $weekday,
-        monthday => $monthday,
     }
 
     if $weekday == undef {
