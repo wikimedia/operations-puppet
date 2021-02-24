@@ -17,12 +17,6 @@ class deployment::rsync(
         hosts_allow => $deployment_hosts,
     }
 
-    cron { 'sync_deployment_dir':
-        ensure  => 'absent',
-        command => "/usr/bin/rsync -avz --delete ${deployment_server}::trebuchet_server /srv/deployment > /dev/null 2>&1",
-        minute  => 0,
-    }
-
     $sync_command = "/usr/bin/rsync -avz --delete ${deployment_server}::trebuchet_server ${deployment_path}"
 
     systemd::timer::job { 'sync_deployment_dir':
