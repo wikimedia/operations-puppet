@@ -76,6 +76,7 @@ class profile::releases::mediawiki (
         mode   => '0440',
     }
 
+    $docker_auth = "ci-restricted:${ci_restricted_user_password}";
     file { '/root/.docker/config.json':
         content => template('releases/docker_config.json.erb'),
         owner   => 'root',
