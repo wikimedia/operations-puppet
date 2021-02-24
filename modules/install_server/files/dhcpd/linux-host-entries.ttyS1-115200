@@ -1548,11 +1548,6 @@ host db1088 {
     fixed-address db1088.eqiad.wmnet;
 }
 
-host db1090 {
-    hardware ethernet 1C:98:EC:2A:A1:50;
-    fixed-address db1090.eqiad.wmnet;
-}
-
 host db1092 {
     hardware ethernet 1C:98:EC:2A:A1:38;
     fixed-address db1092.eqiad.wmnet;
