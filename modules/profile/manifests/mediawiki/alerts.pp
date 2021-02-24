@@ -48,11 +48,11 @@ class profile::mediawiki::alerts {
         query           => "count(sum by (instance) (phpfpm_statustext_processes{cluster=\"${cluster}\", state=\"active\"}) / sum by (instance) (phpfpm_statustext_processes{cluster=\"${cluster}\"}) > .6) / count(sum by (instance) (phpfpm_statustext_processes{cluster=\"${cluster}\"}))",
         prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
         retries         => 3,
-        method          => 'lt',
+        method          => 'gt',
         warning         => 0.1,  # Ratio of # of servers with 60% workers busy to Total number of servers
         critical        => 0.3,
         notes_link      => 'https://bit.ly/wmf-fpmsat',
-        dashboard_links => ["https://grafana.wikimedia.org/d/fRn9VEPMz/application-servers-use-dashboard-wip&from=now-3h&to=now&var-datasource=${site}"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/fRn9VEPMz/application-servers-use-dashboard-wip?orgId=1&var-datasource=${site}%20prometheus%2Fops"],
         nagios_critical => false,
       }
     }
