@@ -47,3 +47,5 @@ profile::java::java_packages:
   # The Jenkins master runs on Java 8
   - version: '8'
     variant: 'jdk'
+
+#profile::releases::mediawiki::ci_restricted_user_password: defined in the private repo

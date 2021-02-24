@@ -1,0 +1,7 @@
+{
+	"auths": {
+		"https://docker-registry.discovery.wmnet": {
+			"auth": "<%= require 'base64'; Base64.strict_encode64('ci-restricted:${ci_restricted_user_password}') -%>"
+		}
+	}
+}
