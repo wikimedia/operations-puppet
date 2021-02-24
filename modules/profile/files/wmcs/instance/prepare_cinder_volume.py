@@ -18,7 +18,7 @@ def block_dev_dict():
         dev["canformat"] = True
         dev["caption"] = ""
 
-        if dev["name"] == "vda":
+        if dev["name"] == "vda" or dev["name"] == "sda":
             dev["canformat"] = False
             dev["caption"] = "the primary volume containing /"
         elif "children" in dev:
