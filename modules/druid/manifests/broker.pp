@@ -58,7 +58,7 @@
 #   Populate the query cache on the broker. Default: true
 #
 # [*druid.cache.type*]
-#   The type of cache to use for queries. Default: local
+#   The type of cache to use for queries. Default: caffeine
 #
 # [*druid.cache.sizeInBytes*]
 #   Maximum cache size in bytes. Zero disables caching. Default: 10000000
@@ -83,7 +83,7 @@ class druid::broker(
 
         'druid.broker.cache.useCache'       => true,
         'druid.broker.cache.populateCache'  => true,
-        'druid.cache.type'                  => 'local',
+        'druid.cache.type'                  => 'caffeine',
         'druid.cache.sizeInBytes'           => '10000000',
     }
 
