@@ -39,6 +39,17 @@ eventlogging_schemas_disabled = (
     'ResourceTiming',
     'RUMSpeedIndex',
     'SaveTiming',
+
+    # WMDE Technical Wishes schemas
+    'CodeMirrorUsage',
+    'ReferencePreviewsBaseline',
+    'ReferencePreviewsCite',
+    'ReferencePreviewsPopups',
+    'TemplateDataApi',
+    'TemplateDataEditor',
+    'TwoColConflictConflict',
+    'TwoColConflictExit',
+    'VisualEditorTemplateDialogUse'
 )
 
 

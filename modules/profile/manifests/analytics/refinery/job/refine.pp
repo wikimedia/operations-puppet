@@ -151,6 +151,17 @@ class profile::analytics::refinery::job::refine(
         'ResourceTiming',
         'RUMSpeedIndex',
         'SaveTiming',
+
+        # WMDE Technical Wishes schemas
+        'CodeMirrorUsage',
+        'ReferencePreviewsBaseline',
+        'ReferencePreviewsCite',
+        'ReferencePreviewsPopups',
+        'TemplateDataApi',
+        'TemplateDataEditor',
+        'TwoColConflictConflict',
+        'TwoColConflictExit',
+        'VisualEditorTemplateDialogUse'
     ]
     $eventlogging_legacy_table_includelist_regex = "^(${join($eventlogging_legacy_table_includelist, '|')})$"
 
