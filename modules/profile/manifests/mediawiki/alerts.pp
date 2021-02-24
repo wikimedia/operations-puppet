@@ -52,7 +52,7 @@ class profile::mediawiki::alerts {
         warning         => 0.1,  # Ratio of # of servers with 60% workers busy to Total number of servers
         critical        => 0.3,
         notes_link      => 'https://bit.ly/wmf-fpmsat',
-        dashboard_links => ["https://grafana.wikimedia.org/d/fRn9VEPMz/application-servers-use-dashboard-wip?orgId=1&var-datasource=${site}%20prometheus%2Fops"],
+        dashboard_links => ['https://grafana.wikimedia.org/d/fRn9VEPMz/application-servers-use-dashboard-wip?orgId=1'],
         nagios_critical => false,
       }
     }
