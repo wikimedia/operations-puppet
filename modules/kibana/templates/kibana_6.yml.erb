@@ -1,0 +1,22 @@
+kibana.defaultAppId: <%= @default_app_id %>
+logging.quiet: <%= @logging_quiet %>
+metrics.enabled: <%= @metrics_enabled %>
+<%- unless @region_map_enabled.nil? or @region_map_enabled == :undef -%>
+region_map.enabled: <%= @region_map_enabled %>
+<%- end -%>
+server.maxPayloadBytes: <%= @server_max_payload_bytes %>
+<%- unless @tile_map_enabled.nil? or @tile_map_enabled == :undef -%>
+tile_map.enabled: <%= @tile_map_enabled %>
+<%- end -%>
+<%- unless @timelion_enabled.nil? or @timelion_enabled == :undef -%>
+timelion.enabled: <%= @timelion_enabled %>
+<%- end -%>
+<%- unless @kibana_index.nil? or @kibana_index == :undef -%>
+kibana.index: <%= @kibana_index %>
+<%- end -%>
+<%- unless @enable_warnings.nil? or @enable_warnings == :undef -%>
+security.showInsecureClusterWarning: <%= @enable_warnings %>
+<%- end -%>
+<%- unless @vega_enabled.nil? or @vega_enabled == :undef -%>
+vega.enabled: <%= @vega_enabled %>
+<%- end -%>

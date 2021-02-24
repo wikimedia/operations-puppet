@@ -1,9 +1,10 @@
 # == Class: kibana
 #
 # Kibana is a JavaScript web application for visualizing log data and other
-# types of time-stamped data. It integrates with ElasticSearch and LogStash.
+# types of time-stamped data. It integrates with Elasticsearch and Logstash.
 #
 # == Parameters:
+# - $config_version: Kibana major version, used to decide which template to use to render /etc/kibana/kibana.yml
 # - $default_app_id: Default landing page. You can specify files, scripts or
 #     saved dashboards here. Default: '/dashboard/file/default.json'.
 # - $enable_phatality: Defaults to true. Adds the phatality package to kibana
@@ -22,6 +23,7 @@
 #   }
 #
 class kibana (
+    Enum['5', '6', '7'] $config_version,           #T275658
     String $default_app_id           = 'dashboard/default',
     String $kibana_package           = 'kibana',
     String $server_max_payload_bytes = '4194304',  #4MB (yes, this is a crazy limit, we need to reduce the number of fields)
@@ -50,11 +52,17 @@ class kibana (
         mode   => '0664',
     }
 
+    # https://phabricator.wikimedia.org/T275658 (need different kibana.yml based off ES version)
+    $kibana_template_filepath = $config_version ? {
+        '6'     => 'kibana/kibana_6.yml.erb',
+        default => 'kibana/kibana.yml.erb',
+    }
+
     file { '/etc/kibana/kibana.yml':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => template('kibana/kibana.yml.erb'),
+        content => template($kibana_template_filepath),
         mode    => '0444',
         require => Package['kibana'],
     }
