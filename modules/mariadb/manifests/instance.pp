@@ -19,6 +19,7 @@ define mariadb::instance(
     $template = 'mariadb/instance.cnf.erb',
     $is_critical = false,
     $read_only = 1,
+    $source_dc = mediawiki::state('primary_dc'),
 ) {
     if $datadir == 'undefined' {
         $datadir_instance = "/srv/sqldata.${title}"
@@ -60,6 +61,7 @@ define mariadb::instance(
     mariadb::monitor_replication{ $title:
         socket      => $socket_instance,
         is_critical => $is_critical,
+        source_dc   => $source_dc,
     }
     mariadb::monitor_readonly{ $title:
         port      => $port,
