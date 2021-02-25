@@ -80,12 +80,20 @@ define package_builder::pbuilder_base(
                     >/dev/null 2>&1"
 
     cron { "cowbuilder_update_${distribution}-${architecture}":
+        ensure      => absent,
         command     => $update_command,
         environment => ['PATH=/usr/bin:/bin:/usr/sbin'],
         hour        => 7,
         minute      => 34,
     }
 
+    systemd::timer::job { "cowbuilder_update_${distribution}-${architecture}":
+        ensure      => present,
+        user        => 'root',
+        description => 'updates cowbuilder base images',
+        command     => $update_command,
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 07:34:00'},
+    }
     if $distribution_alias {
         file { "${basepath}/base-${distribution_alias}-${architecture}.cow":
             ensure => link,
