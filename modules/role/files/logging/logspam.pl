@@ -25,11 +25,11 @@ logspam - summarize exceptions from production logs
     # that only occurred once.
     logspam --window 60 --minimum-hits 2
 
-    # A shell wrapper with interactive sorting and filtering: 
-    logspam-watch
-
     # Monitor logspam output every 30 seconds, sorted:
     watch -n 30 sh -c "./bin/logspam | sort -nr"
+
+    # A shell wrapper with interactive sorting and filtering:
+    logspam-watch
 
 =head1 DESCRIPTION
 
@@ -49,10 +49,10 @@ use warnings;
 use strict;
 use 5.10.0;
 use utf8;
-# Avoid messages like: utf8 "\xD7" does not map to Unicode at ./modules/role/files/logging/logspam.pl line 124, <$logstream> line 129347.
-no warnings 'utf8';
-use open qw(:std :utf8);
 
+use open ':encoding(UTF-8)';
+
+use Encode qw(decode encode);
 use List::Util qw(min max);
 use Time::Piece;
 use Time::Seconds;
@@ -63,8 +63,9 @@ my $window = 0; # minutes.  0 means no window defined
 my $minimum_hits = 0;
 
 GetOptions(
-  "window=i" => \$window,
-  "minimum-hits=i" => \$minimum_hits,
+  'window=i'       => \$window,
+  'minimum-hits=i' => \$minimum_hits,
+  help             => sub { pod2usage(0) },
 ) or pod2usage();
 
 # Convert minutes to seconds
@@ -83,12 +84,11 @@ if (defined $ARGV[0]) {
     # We got a fatal error, probably meaning that the user-supplied pattern
     # couldn't be compiled for one reason or another.  Fall back to using it as
     # a literal string.
-    $filter_pattern = qr/\Q$user_pattern\E/
+    $filter_pattern = qr/\Q$user_pattern\E/;
   }
 }
 
-my $terminal_width = `tput cols`;
-chomp $terminal_width;
+chomp(my $terminal_width = `tput cols`);
 
 # Default to /srv/mw-log, use MW_LOG_DIRECTORY if available from
 # environment:
@@ -105,6 +105,7 @@ my %consolidate_patterns = (
   qr/Allowed memory size of/                               => '[mem]',
   qr/the execution time limit of \d+ seconds was exceeded/ => '[time]',
   qr/Memcached::setMulti\(\): failed to set key/           => '[memcache]',
+  qr/Cannot access the database:/                          => '[db]',
 );
 
 my $timestamp_pat = qr{^([\d-]{10} [\d:]{8})};
@@ -130,59 +131,88 @@ my $exception_pat = qr{
 
 # Count times each error message appears.
 # Values are Time::Piece objects.
-my (%error_count, %first_dates, %last_dates);
+my (%error_count, %error_timestamps, %first_dates, %last_dates);
 
 my $now = localtime();
+my $start_time;
+if ($window) {
+  $start_time = $now - $window;
+}
 my $timestamp;
 
-while (<$logstream>) {
-  if (/$timestamp_pat/) {
+while (my $line = <$logstream>) {
+  # Encode log lines as UTF-8 - not totally clear why this is needed despite
+  # the `use open` pragma:
+  $line = encode('UTF-8', $line);
+
+  if ($line =~ /$timestamp_pat/) {
+    # Set timestamp then skip ahead to look for Exception:
     $timestamp = Time::Piece->strptime($1, "%Y-%m-%d %T");
+
+    # If we haven't got a start time, use with the first thing in the log:
+    $start_time //= $timestamp;
     next;
   }
 
-  if (/$exception_pat/) {
-   if ($window > 0) {
-     my $age = $now - $timestamp;
-     next if $age > $window;
-   }
+  # Skip anything that doesn't match user-supplied filter:
+  next unless $line =~ $filter_pattern;
 
-   my $exception_class = $2;
-   my $stack_trace = shorten($3);
-   my $matched_line = $&; # (the whole match)
+  next unless $line =~ $exception_pat;
 
-   # Make sure any user-supplied filter matches:
-   next unless $matched_line =~ $filter_pattern;
-
-   # Condense some common errors:
-   for my $pattern (keys %consolidate_patterns) {
-     if ($stack_trace =~ $pattern) {
-       $exception_class = $consolidate_patterns{$pattern};
-       $stack_trace = $pattern;
-     }
-   }
-
-   # Drop the namespace of the exception class and chop off the typical
-   # trailing "Exception":
-   $exception_class =~ s{[a-z] [a-z]+ \\}{}xgi;
-   $exception_class =~ s{Exception$}{};
-
-   my $error_key = "$exception_class\t$stack_trace";
-   $error_count{$error_key}++;
-
-   # If a first-seen date isn't defined, set it:
-   $first_dates{$error_key} //= $timestamp;
-   $last_dates{$error_key} = $timestamp;
+  if ($window > 0) {
+    my $age = $now - $timestamp;
+    next if $age > $window;
   }
+
+  my $exception_class = $2;
+  my $stack_trace = shorten($3);
+
+  # Condense some common errors:
+  for my $pattern (keys %consolidate_patterns) {
+    if ($stack_trace =~ $pattern) {
+      $exception_class = $consolidate_patterns{$pattern};
+      $stack_trace = $pattern;
+    }
+  }
+
+  # Drop the namespace of the exception class and chop off the typical
+  # trailing "Exception":
+  $exception_class =~ s{[a-z] [a-z]+ \\}{}xgi;
+  $exception_class =~ s{Exception$}{};
+
+  my $error_key = "$exception_class\t$stack_trace";
+  $error_count{$error_key}++;
+
+  # Assure that we have an empty arrayref if we haven't already stashed a
+  # value, then add error's timestamp to list for histograms:
+  $error_timestamps{$error_key} //= [ ];
+  push @{ $error_timestamps{$error_key} }, $timestamp->epoch;
+
+  # If a first-seen date isn't defined, set it:
+  $first_dates{$error_key} //= $timestamp;
+  $last_dates{$error_key} = $timestamp;
 }
 close($logstream);
 
+# Collect max bin height and histogram rendering closures:
+my $max_bin_height = 0;
+my %histograms;
+foreach (keys %error_timestamps) {
+  my ($renderer, $max_bin_for_error) = histogram(
+    $start_time->epoch,
+    $now->epoch,
+    @{ $error_timestamps{$_} }
+  );
+  $histograms{$_} = $renderer;
+  $max_bin_height = max($max_bin_height, $max_bin_for_error);
+}
+
 # Set a hard limit of 20 characters for exceptions, for pathological cases:
 my $max_exception_len = 20;
-my $trace_width = $terminal_width - (30 + $max_exception_len);
-
+my $trace_width = $terminal_width - (38 + $max_exception_len);
 my $hidden = 0;
 
+# Display loop:
 foreach (keys %error_count) {
 
   if ($error_count{$_} < $minimum_hits) {
@@ -196,18 +226,23 @@ foreach (keys %error_count) {
   # of sort(1) / cut(1) / awk(1) and friends:
   say join "\t", (
     $error_count{$_},
+    encode('UTF-8', $histograms{$_}->($max_bin_height)),
     display_time($first_dates{$_}, $last_dates{$_}),
     pad_exception($exception),
     substr($trace, 0, $trace_width),
   );
+
 }
 
 if ($hidden) {
   say join "\t", (
     $hidden,
-    "0000", "9999",
+    '',
+    "0000",
+    "9999",
     pad_exception("<HIDDEN>"),
-    "$hidden errors occuring less than $minimum_hits times each");
+    "$hidden errors occuring less than $minimum_hits times each"
+  );
 }
 
 =head1 SUBROUTINES
@@ -243,7 +278,6 @@ sub shorten {
   my ($stack_trace) = @_;
 
   my $mw_root = '/srv/mediawiki/';
-  my $parsoid_root = '/srv/deployment/parsoid/deploy-cache/revs/';
 
   # Strip trailing / leading whitespace:
   $stack_trace =~ s/^ \s+ | \s+ $//gx;
@@ -252,12 +286,6 @@ sub shorten {
     my ($version, $path, $trace) = ($1, $2, $3);
     $path = condense_path($path);
     $stack_trace = "$version $path $trace";
-  }
-
-  if ( $stack_trace =~ m{^ \( $parsoid_root ([a-z0-9]{6}) .*? / (.*?) \) (.*) $}x) {
-    my ($rev, $path, $trace) = ($1, $2, $3);
-    $path = condense_path($path);
-    $stack_trace = "parsoid:$rev $path $trace";
   }
 
   return $stack_trace;
@@ -296,17 +324,92 @@ glyphs to flag especially recent events.
 =cut
 
 sub display_time {
+  # Set this once, keep it around as a state var:
   state $now = localtime;
+
   return join "\t", map {
-    # Indicate recency with a one or two character glyph:
+    # Indicate recency with glyph:
     my $t = $_;
     my $age = $now - $t;
     my $glyph = ' ';
-    $glyph = '.' if $age < 420;
-    $glyph = '?' if $age < 240;
-    $glyph = '!' if $age < 60;
+    $glyph = '◦' if $age < 600; # 10 min
+    $glyph = '○' if $age < 300; # 5 min
+    $glyph = '◍' if $age < 150; # 2.5 min
+    $glyph = '●' if $age < 60;  # 1 min
+
     $t->strftime("%H%M $glyph");
   } @_;
+}
+
+=item histogram($start, $end, @timestamps)
+
+Takes start and end of range in epoch time and an array of timestamps.
+
+Returns a callback to render a 7-character histogram scaled to max value, and
+the value of the largest bin for the given error.
+
+=cut
+
+sub histogram {
+  my $start = shift;
+  my $end = shift;
+  my (@timestamps) = @_;
+
+  my @bars = qw( ▁ ▂ ▃ ▄ ▅ ▆ ▇ );
+  my $bin_count = 7;
+  my $range = $end - $start;
+  my $bin_width = $range / $bin_count;
+
+  # Divide time range into bins:
+  my %bins;
+  for (0..($bin_count - 1)) {
+    my $bin_start = $start + ($_ * $bin_width);
+    $bins{$bin_start} = 0;
+  }
+
+  # Count events falling into each bin:
+  foreach my $event (@timestamps) {
+    foreach my $bin (keys %bins) {
+      if (($event > $bin) && ($event < ($bin + $bin_width))) {
+        $bins{$bin}++;
+        next;
+      }
+    }
+  }
+
+  my $biggest_bin = max(values %bins);
+
+  # A closure which will render %bins into a histogram, scaled to the
+  # provided max bin height - this way we can use the same scale for all
+  # errors when we display them:
+  my $renderer = sub {
+    my ($max_bin_height) = @_;
+
+    my $output;
+
+    # Display a bar for each bin:
+    foreach my $bin (sort keys %bins) {
+      my $bar_level = 0;
+      if ($max_bin_height == 1) {
+        if ($bins{$bin}) {
+          $bar_level = 1;
+        }
+      } else {
+        $bar_level = int(
+          (log($bins{$bin} + 1) / log($max_bin_height)) * (scalar @bars)
+        );
+      }
+      my $bar = '_';
+      if ($bar_level) {
+        $bar = $bars[$bar_level - 1];
+      }
+      $output .= $bar;
+    }
+
+    return $output;
+  };
+
+  return ($renderer, $biggest_bin);
 }
 
 =back

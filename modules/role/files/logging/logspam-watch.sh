@@ -14,14 +14,24 @@ set -eu
 readonly BOLD=$(tput bold)
 readonly UNDERL=$(tput smul)
 readonly NORMAL=$(tput sgr0)
-readonly COLOR=$(tput setaf 2)
+
+readonly BLACK=$(tput setaf 0)
+readonly RED=$(tput setaf 1)
+readonly GREEN=$(tput setaf 2)
+readonly YELLOW=$(tput setaf 3)
+readonly BLUE=$(tput setaf 4)
+readonly MAGENTA=$(tput setaf 5)
+readonly CYAN=$(tput setaf 6)
+readonly WHITE=$(tput setaf 7)
+readonly WHITE_BG=$(tput setab 7)
 
 COLUMN_LABELS=(
   [1]="count"
-  [2]="first"
-  [3]="last"
-  [4]="exception          "
-  [5]="message"
+  [2]="histo"
+  [3]="first"
+  [4]="last"
+  [5]="exception          "
+  [6]="message"
 )
 
 MINIMUM_HITS=1
@@ -31,31 +41,45 @@ LOGSPAM_WINDOW=60
 # Our "view":
 function display {
   logspam_output=$(run_logspam)
+  distinct_errors="$(echo -n "$logspam_output" | wc -l)"
+  total_errors="$(echo -n "$logspam_output" | awk '{ s+=$1 } END { print s }')"
 
   tput clear
+
+  # Current timestamp and status summary:
+  titlebar "$( \
+    printf '⌚ %s  distinct errors: %d %s  total errors: %d %s '  \
+    "$(date '+%H:%M:%S %Z')" \
+    "$distinct_errors" \
+    "$(get_cat "$distinct_errors")" \
+    "$total_errors" \
+    "$(get_cat "$total_errors")" \
+  )"
+
   # Print column headers, highlighting the currently-selected sort and bolding
   # column numbers to indicate that they're hotkeys:
   for column in ${!COLUMN_LABELS[*]}; do
     printf '%s%s%s' "$BOLD" "$column" "$NORMAL"
     if [ "$sort_key" == "$column" ]; then
-      printf "%s" "$COLOR$UNDERL"
+      printf "%s" "$GREEN$UNDERL"
     fi
     printf '%s%s\t' "${COLUMN_LABELS[$column]}" "$NORMAL"
   done
 
   printf '\n%s\n' "$logspam_output"
 
-  # Current date and pattern, plus some pointers to hotkeys:
-  printf '[%s]' "$COLOR$(date '+%H:%M:%S %Z')$NORMAL"
-  printf '  [%sp%sattern: %s]' "$BOLD" "$NORMAL" "$COLOR$filter$NORMAL"
-  printf '  [%sw%sindow: %d mins]' "$BOLD" "$NORMAL" "$LOGSPAM_WINDOW"
-  printf '  [%sm%sinimum hits: %d]' "$BOLD" "$NORMAL" "$MINIMUM_HITS"
-  printf '  [%s12345%s sort]  [%sq%suit] ' "$BOLD" "$NORMAL" "$BOLD" "$NORMAL"
+  # Pointers to hotkeys and current settings:
+  printf '[%sp%sattern: %s]' "$BOLD" "$NORMAL" "$GREEN$filter$NORMAL"
+  printf '  [%sw%sindow: %s%d%s mins]' "$BOLD" "$NORMAL" "$GREEN" "$LOGSPAM_WINDOW" "$NORMAL"
+  printf '  [%sm%sinimum hits: %s%d%s]' "$BOLD" "$NORMAL" "$GREEN" "$MINIMUM_HITS" "$NORMAL"
+  printf '  [%s123456%s sort]' "$BOLD" "$NORMAL"
+  printf '  [%sh%selp]' "$BOLD" "$NORMAL"
+  printf '  [%sq%suit] ' "$BOLD" "$NORMAL"
 }
 
 function run_logspam {
   # shellcheck disable=SC2086
-  logspam --window $LOGSPAM_WINDOW --minimum-hits $MINIMUM_HITS "$filter" | \
+  logspam --window "$LOGSPAM_WINDOW" --minimum-hits "$MINIMUM_HITS" "$filter" | \
     sort $sort_dir $sort_type -t$'\t' -k "$sort_key" | \
     head -n "$(listing_height)"
 }
@@ -65,7 +89,7 @@ function run_logspam {
 function listing_height {
   local lines
   lines="$(tput lines)"
-  printf "%d" $((lines - 3))
+  printf "%d" $((lines - 4))
 }
 
 function flip_sort {
@@ -74,6 +98,72 @@ function flip_sort {
   else
     sort_dir='-r'
   fi
+}
+
+function titlebar {
+  # Text written into the horizontal rule, left justified:
+  text=${1:-}
+  length=${#text}
+
+  # Set color, print message:
+  printf '%s%s' "$WHITE_BG$BLACK" "$text"
+
+  # Finish the line across the console
+  cols=$(expr "$(tput cols)" - $length)
+  printf "%${cols}s"
+
+  # Clear the background color and start a new line
+  printf '%s\n' "$NORMAL"
+}
+
+# Get a status indicator for a given count of errors:
+function get_cat {
+  count="$1"
+
+  if (($count <= 4)); then
+    printf '😎'
+  elif (($count <= 6)); then
+    printf '☺️'
+  elif (($count <= 10)); then
+    printf '😐'
+  elif (($count <= 20)); then
+    printf '😑'
+  elif (($count <= 700)); then
+    printf '😾'
+  elif (($count <= 1000)); then
+    printf '😿'
+  elif (($count <= 5000)); then
+    printf '😱'
+  else
+    printf '☠️'
+  fi
+}
+
+function helptext {
+  tput clear
+  titlebar "logspam-watch help"
+  cat <<HELPTEXT
+logspam-watch is a wrapper around the logspam command.
+
+Glyphs in the "first" and "last" columns indicate the recency of the event:
+
+  ◦ means seen less than 10 minutes ago
+  ○ means seen < 5 min ago
+  ◍ means seen < 2.5 min ago
+  ● means seen < 1 min ago'
+
+Keys:
+
+  p:   set a Perl regular expression to match
+  w:   set a time window to view in minutes
+  m:   set a minimm error threshold
+  1-5: sort on a column, or invert existing sort
+  h:   read this help page
+  q:   quit
+
+HELPTEXT
+
+  read -n 1 -s -r -p "Press a key to continue"
 }
 
 # State variables:
@@ -143,6 +233,11 @@ while [ -z "$quit" ]; do
         fi
         ticks="$MAXTICKS"
         ;;
+
+      [hH?])
+        helptext
+        ticks="$MAXTICKS"
+	;;
 
       [qQ])
         quit="yep"
