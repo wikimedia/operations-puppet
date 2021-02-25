@@ -198,7 +198,7 @@ groups:
     gid: 719
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     approval: Tyler Cipriani
-    members: [bd808, cscott, dduvall, krinkle, reedy, marktraceur,
+    members: [*ops_members, bd808, cscott, dduvall, krinkle, reedy, marktraceur,
               twentyafterfour, thcipriani, gjg,
               hashar, addshore, liw, jhuneidi, brennen,
               jforrester, dancy]

@@ -310,7 +310,7 @@ def validate_duplicated_ops_permissions(users):
                 # builder-docker is about being able to issue docker commands
                 # directly and execute scripts issuing docker commands
                 groups.difference_update(['analytics-privatedata-users', 'gitpuppet', 'ops',
-                                          'ops-adm-group', 'gpu-users',
+                                          'ops-adm-group', 'gpu-users', 'contint-admins'
                                           'contint-docker', 'builder-docker',
                                           'deploy-phabricator', 'analytics-search-users'])
                 if len(set(groups)) > 0:
