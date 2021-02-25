@@ -1643,6 +1643,10 @@ node /^ml-etcd200[123]\.codfw\.wmnet/ {
     role(etcd::v3::ml_etcd)
 }
 
+node /^ml-serve-ctrl200[12]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # RT, replaced ununpentium
 node 'moscovium.eqiad.wmnet' {
     role(requesttracker)

@@ -650,6 +650,16 @@ host ml-etcd2003 {
     fixed-address ml-etcd2003.codfw.wmnet;
 }
 
+host ml-serve-ctrl2001 {
+    hardware ethernet aa:00:00:b7:68:4;
+    fixed-address ml-serve-ctrl2001.codfw.wmnet;
+}
+
+host ml-serve-ctrl2002 {
+    hardware ethernet aa:00:00:fe:95:00;
+    fixed-address ml-serve-ctrl2002.codfw.wmnet;
+}
+
 host moscovium {
     hardware ethernet aa:00:00:b5:db:29;
     fixed-address moscovium.eqiad.wmnet;
