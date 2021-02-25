@@ -194,14 +194,19 @@ groups:
     description: users with accounts on jenkins hosts
     members: []
     approval: Tyler Cipriani
+  contint-roots:
+    gid: 720
+    description: users who have full root on jenkins servers
+    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, twentyafterfour]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Tyler Cipriani
   contint-admins:
     gid: 719
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
     approval: Tyler Cipriani
-    members: [*ops_members, bd808, cscott, dduvall, krinkle, reedy, marktraceur,
-              twentyafterfour, thcipriani, gjg,
-              hashar, addshore, liw, jhuneidi, brennen,
-              jforrester, dancy]
+    members: [*ops_members, *contint_roots_members,
+              bd808, cscott, krinkle, reedy, marktraceur,
+              gjg, addshore, liw, jhuneidi, dancy]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (gerritslave) NOPASSWD: ALL',
@@ -224,12 +229,6 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service zuul-merger status',
                  'ALL = NOPASSWD: /bin/journalctl*',
                  'ALL = NOPASSWD: /usr/local/sbin/puppet-run']
-  contint-roots:
-    gid: 720
-    description: users who have full root on jenkins servers
-    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, twentyafterfour]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Tyler Cipriani
   logstash-roots:
     gid: 722
     description: users with root access on logstash nodes (rt 6366, 6896)
