@@ -3,7 +3,7 @@ cluster: relforge
 profile::standard::admin_groups:
   - elasticsearch-roots
 
-profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $LABS_NETWORKS @resolve((contint1001.wikimedia.org contint2001.wikimedia.org))))'
+profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWORKS @resolve((contint1001.wikimedia.org contint2001.wikimedia.org))))'
 profile::elasticsearch::cirrus::expose_http: false
 
 # T130329
