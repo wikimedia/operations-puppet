@@ -661,7 +661,7 @@ host ml-serve-ctrl1002 {
 }
 
 host ml-serve-ctrl2001 {
-    hardware ethernet aa:00:00:b7:68:4;
+    hardware ethernet aa:00:00:b7:68:43;
     fixed-address ml-serve-ctrl2001.codfw.wmnet;
 }
 
