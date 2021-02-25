@@ -101,13 +101,13 @@ node /an-worker10(7[89]|8[0-9]|9[0-9]).eqiad.wmnet/ {
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /^an-worker11(0[0-9]|1[0-6])\.eqiad\.wmnet$/ {
+node /^an-worker11(0[0-9]|1[0-8])\.eqiad\.wmnet$/ {
     role(analytics_cluster::hadoop::worker)
 }
 
 # New hadoop worker nodes to add to the main Analytics cluster.
 # Previously part of the Backup cluster.
-node /^an-worker11(1[789]|2[0-8]|3[0125678])\.eqiad\.wmnet$/ {
+node /^an-worker11(19|2[0-8]|3[0125678])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
