@@ -58,6 +58,18 @@
             "labels": [],
             "description": "Number of cache errors."
         },
+        "query/cache/total/hitRate": {
+            "prometheus_metric_name": "druid_broker_query_cache_hit_rate",
+            "type": "gauge",
+            "labels": [],
+            "description": "The cache hit rate."
+        },
+        "query/cache/caffeine/total/requests": {
+            "prometheus_metric_name": "druid_broker_query_caffeine_cache_requests_count",
+            "type": "counter",
+            "labels": [],
+            "description": "The total amount of requests seen by the Caffeine cache."
+        },
 
         "query/count": {
             "prometheus_metric_name": "druid_broker_query_count",
