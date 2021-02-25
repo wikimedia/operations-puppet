@@ -7,16 +7,6 @@ Architectures: all>amd64
 VerifyRelease: FCEF32E745F2C3D5
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
-Name: hwraid
-Method: http://hwraid.le-vert.net/debian
-Components: main>thirdparty
-UDebComponents:
-GetInRelease: no
-Suite: jessie
-Architectures: amd64 source
-VerifyRelease: 6005210E23B3D3B4
-ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
-
 Name: hwraid-stretch
 Method: http://hwraid.le-vert.net/debian
 Components: main>thirdparty/hwraid
@@ -26,17 +16,6 @@ Suite: stretch
 Architectures: amd64 source
 VerifyRelease: 6005210E23B3D3B4
 ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
-
-Name: hp-mcp-jessie
-Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
-Components: non-free>thirdparty
-UDebComponents:
-GetInRelease: no
-Suite: jessie/current
-Architectures: amd64
-# Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
-VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
-ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssacli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-stretch
 Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
@@ -59,26 +38,6 @@ Architectures: amd64
 # Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
 VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
-
-Name: cassandra
-Method: http://www.apache.org/dist/cassandra/debian
-Components: main>thirdparty
-UDebComponents:
-Suite: 21x
-Architectures: amd64 source
-# Multiple keys in use: https://downloads.apache.org/cassandra/KEYS
-VerifyRelease: 749D6EEC0353B12C|A278B781FE4B2BDA|E91335D77E3E87CB
-ListShellHook: grep-dctrl -X -S cassandra || [ $? -eq 1 ]
-
-Name: elastic
-Method: https://artifacts.elastic.co/packages/5.x/apt
-Components: main>thirdparty
-UDebComponents:
-Suite: stable
-GetInRelease: no
-Architectures: amd64
-VerifyRelease: D27D666CD88E42B4
-ListShellHook: grep-dctrl \( -S 'elasticsearch' -a -F Version --eq 5.3.2 \) -o \( -S 'kibana' -a -F Version --eq 5.3.3 \) -o \( -S logstash -a -F Version --eq 1:5.3.2-1 \) || [ $? -eq 1 ]
 
 Name: elastic55
 Method: https://artifacts.elastic.co/packages/5.x/apt
@@ -177,15 +136,6 @@ Suite: stable
 Architectures: amd64
 VerifyRelease: 670540C841468433
 ListShellHook: grep-dctrl -e -P '^confluent-kafka-2\.11' || [ $? -eq 1 ]
-
-Name: mono-project-jessie
-Method: https://download.mono-project.com/repo/debian
-Components: main>thirdparty/mono-project-jessie
-UDebComponents:
-Suite: stable-jessie
-Architectures: amd64 source
-VerifyRelease: A6A19B38D3D831EF
-ListShellHook: grep-dctrl -e -S '^(cecil|cli-common|core-setup|fsharp|gtk-sharp2|libgdiplus|mod-mono|mono|mono-basic|mono-llvm|mono-tools|monodevelop|msbuild|nuget|nunit|referenceassemblies-pcl|xamarin-gtk-theme|xsp)$' || [ $? -eq 1 ]
 
 Name: mono-project-stretch
 Method: https://download.mono-project.com/repo/debian
@@ -294,16 +244,6 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
 ListShellHook: grep-dctrl -e -S '^(cxlactivitylogger|hcc|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile)$' || [ $? -eq 1 ]
-
-Name: envoyproxy
-Method: https://dl.bintray.com/tetrate/getenvoy-deb/
-Suite: jessie
-Components: stable>thirdparty/envoyproxy
-UDebComponents:
-Architectures: amd64
-GetInRelease: no
-VerifyRelease: 0253D0B26FF974DB
-ListShellHook: grep-dctrl -X -S getenvoy-envoy || [ $? -eq 1 ]
 
 Name: thirdparty/ceph-nautilus-buster
 Method: https://mirror.croit.io/debian-nautilus
