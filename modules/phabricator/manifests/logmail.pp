@@ -88,7 +88,7 @@ define phabricator::logmail (
     systemd::timer::job { "phabricator_stats_job_${title}":
         ensure      => $ensure,
         user        => 'root',
-        description => 'cleanup mediawiki logs',
+        description => "phabricator statistics mail - ${title}",
         command     => "${basedir}/${title}.sh",
         interval    => {'start' => 'OnCalendar', 'interval' => "${real_weekday}*-*-${real_monthday} ${hour}:${minute}:00"},
     }
