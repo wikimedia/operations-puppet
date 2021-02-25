@@ -3,7 +3,7 @@
 # This file is managed by Puppet
 
 Defaults	env_reset
-Defaults	env_keep += HOME
+Defaults	env_keep += HOME TMUX STY
 Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 root    ALL=(ALL) ALL
