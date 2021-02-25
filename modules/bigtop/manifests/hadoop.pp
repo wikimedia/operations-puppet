@@ -478,8 +478,21 @@ class bigtop::hadoop(
         require => Package['hadoop-client'],
     }
 
+    # The hadoop-client package depends from:
+    # ~$ apt-cache depends hadoop-client
+    # hadoop-client
+    #  Depends: hadoop
+    #  Depends: hadoop-hdfs
+    #  Depends: hadoop-yarn
+    #  Depends: hadoop-mapreduce
+    #This means that the users hdfs/yarn/mapred may be created by the
+    # debian packages after puppet tries to install hadoop-client, without waiting
+    # for the users that we defined in puppet itself (with fixed gid/uids).
     package { ['hadoop-client', 'libhdfs0']:
-        ensure => 'installed'
+        ensure  => 'installed',
+        require => [
+            User['yarn'], User['hdfs'], User['mapred'], Group['hadoop'],
+        ]
     }
 
     # Explicitly adding the 'hdfs'/'yarn'/'mapred' users and groups
