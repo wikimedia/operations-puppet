@@ -1,6 +1,5 @@
 class ldap::config::labs {
-
-    $hieraldapconfig = lookup('labsldapconfig')
+    $hieraldapconfig = hiera_hash('labsldapconfig', {})
 
     $basedn = 'dc=wikimedia,dc=org'
     $servernames = [ $hieraldapconfig['hostname'] ]

@@ -1,7 +1,3 @@
-lookup_options:
-  classes:
-    merge: hash
-classes: []
 ldap:
   base-dn: dc=wikimedia,dc=org
   users_cn: ou=people
