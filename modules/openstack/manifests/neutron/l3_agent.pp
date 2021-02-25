@@ -57,4 +57,29 @@ class openstack::neutron::l3_agent(
     }
 
     class { '::openstack::monitor::neutron::l3_agent_conntrack': }
+
+    # our custom daemon to plug in additional config to neutron l3 agent
+    $daemon = 'wmcs-netns-events'
+    file { "/usr/local/sbin/${daemon}" :
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+        source => "puppet:///modules/openstack/neutron/${daemon}.py",
+        notify => Systemd::Service[$daemon],
+    }
+    $daemon_config = 'wmcs-netns-events-config.yaml'
+    file { "/etc/${daemon_config}":
+        ensure => present,
+        owner  => root,
+        group  => root,
+        mode   => '0644',
+        source => "puppet:///modules/openstack/neutron/${daemon_config}",
+        notify => Systemd::Service[$daemon],
+    }
+    systemd::service { $daemon:
+        restart  => true,
+        content  => systemd_template($daemon),
+        override => false,
+    }
 }

@@ -1,0 +1,8 @@
+[Unit]
+Description=WMCS daemon that watches netns events and allows running commands
+Before=neutron-l3-agent.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/<%= @daemon %> --config /etc/<%= @daemon_config %>
+Restart=on-failure

@@ -1,0 +1,20 @@
+---
+# $NETNS env var is provided by the runner daemon
+- netns_regex: ^qrouter-.*
+  daemon_startup_actions:
+    - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_be_liberal=1
+    - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_loose=1
+  inotify_actions:
+    - IN_CREATE:
+        - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_be_liberal=1
+        - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_loose=1
+# this config is to simply log all netns creation/deletion events, which should
+# help us better understand what the different neutron agents are doing
+- netns_regex: .*
+  daemon_startup_actions:
+    - ": empty command to create a log entry"
+  inotify_actions:
+    - IN_CREATE:
+        - ": empty command to create a log entry"
+    - IN_DELETE:
+        - ": empty command to create a log entry"
