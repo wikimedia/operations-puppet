@@ -5,20 +5,13 @@ class profile::cumin::unprivmaster (
 ) {
     include profile::kerberos::client
 
-    $cumin_log_path = '/var/log/cumin'
+    $cumin_log_path = '~/.cumin'
     $ssh_config_path = '/etc/cumin/ssh_config'
 
     ensure_packages([
         'clustershell',  # Installs nodeset CLI that is useful to mangle host lists.
         'cumin',
     ])
-
-    file { $cumin_log_path:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0750',
-    }
 
     file { '/etc/cumin':
         ensure => directory,
