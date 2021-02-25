@@ -4,18 +4,11 @@
 #
 class mediawiki::packages::fonts {
 
-    if debian::codename::gt('jessie') {
-        ensure_packages([
-            'fonts-noto-hinted',  # T184664
-            'fonts-noto-unhinted' # T184664
-        ])
-    } else {
-        ensure_packages('fonts-noto') # T184664
-    }
-
     ensure_packages([
         'fonts-arabeyes',
         'fonts-arphic-ukai',
+        'fonts-noto-hinted', # T184664
+        'fonts-noto-unhinted', # T184664
         'fonts-arphic-uming',
         'fonts-farsiweb',
         'fonts-kacst',
