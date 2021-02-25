@@ -14,12 +14,6 @@ class profile::quarry::querykiller(
         group  => 'quarry',
     }
 
-    cron { 'query-killer':
-        ensure  => absent,
-        command => "${venv_path}/bin/python ${clone_path}/quarry/web/killer.py",
-        minute  => '*',
-        user    => 'quarry',
-    }
     systemd::timer::job { 'query-killer':
         ensure      => present,
         user        => 'quarry',
