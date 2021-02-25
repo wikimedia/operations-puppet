@@ -11,7 +11,7 @@ CapabilityBoundingSet=CAP_DAC_OVERRIDE
 ReadOnlyPaths=/var/lib/puppet/ssl/certs /var/lib/puppet/ssl/private_keys
 <% end -%>
 ExecStart=/usr/bin/memcached \
-          <%- if @unix_socket -%>
+          <%- if @enable_unix_socket -%>
           -s /var/run/memcached/<%= @unix_socket_name %> \
           -a 0666 \
           <%- else -%>
