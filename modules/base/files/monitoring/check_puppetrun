@@ -30,6 +30,7 @@ failcount = 0
 warn = 0
 crit = 0
 disable_grace = 86_400  # 24 hours
+disable_crit = 604_800  # 1 week
 fail_grace = 86_400  # 24 hours
 enabled_only = false
 # init variable
@@ -71,10 +72,13 @@ opt.on("--alert-master-fail", "Alert on failures related to Puppet master issues
 end
 
 opt.on("--disable-grace", "Number of seconds a host can be disabled before alerting. default: #{disable_grace}") do |f|
-    disable_grace = f
+    disable_grace = f.to_i
 end
 
-opt.parse!
+opt.on("--disable-critical", "Number of seconds a host can be disabled before alerting. default: #{disable_crit}") do |f|
+    disable_crit = f.to_i
+end
+
 opt.on("--fail-grace", "Number of seconds before a puppet failure is CRITICAL instead of WARNING. default: #{fail_grace}") do |f|
     fail_grace = f
 end
@@ -174,10 +178,17 @@ if enabled == false && (enabled_only || disabled_time + disable_grace > Time.now
 end
 
 unless enabled
-    puts "WARNING: Puppet has been disabled for longer than #{disable_grace} seconds, " +
+    if disabled_time + disable_crit > Time.now
+        exit_code = 2
+        status = 'CRITICAL'
+    else
+        exit_code = 1
+        status = 'WARNING'
+    end
+    puts "#{status}: Puppet has been disabled for longer than #{disable_grace} seconds, " +
          "message: #{disabled_message}, " +
          "last run #{human_time_since_last_run} ago with #{failcount} failures"
-    exit 1
+    exit exit_code
 end
 
 if failcount > 0 # rubocop:disable Style/NumericPredicate
