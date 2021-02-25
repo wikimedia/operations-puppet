@@ -97,7 +97,7 @@ class profile::docker::builder(
         ensure => directory,
         owner  => 'root',
         group  => 'root',
-        mode   => '0440',
+        mode   => '0700',
     }
 
     $docker_auth = "prod-build:${password}";
@@ -105,7 +105,7 @@ class profile::docker::builder(
         content => template('profile/docker/docker_config.json.erb'),
         owner   => 'root',
         group   => 'root',
-        mode    => '0440',
+        mode    => '0600',
         require => File['/root/.docker']
     }
 }
