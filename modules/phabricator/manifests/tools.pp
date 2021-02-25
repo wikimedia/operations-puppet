@@ -48,31 +48,45 @@ class phabricator::tools (
         mode   => '0444',
     }
 
-    $dump_script = "${directory}/public_task_dump.py 1>/dev/null"
+    $dump_script = "${directory}/public_task_dump.py"
 
     file { $dump_script:
         mode    => '0555',
         require => Package[$deploy_target],
     }
 
-    $dump_cron_ensure = $dump ? {
+    $dump_job_ensure = $dump ? {
         true    => present,
         default => absent,
     }
     cron { $dump_script:
-        ensure  => $dump_cron_ensure,
+        ensure  => absent,
         command => $dump_script,
         user    => root,
         hour    => '2',
         minute  => '0',
-        require => Package[$deploy_target],
     }
-
+    systemd::timer::job { 'phabricator_task_dump':
+        ensure      => $dump_job_ensure,
+        user        => 'root',
+        description => 'phabricator public task dump',
+        command     => $dump_script,
+        interval    => {'start' => 'OnCalendar', 'interval' => 'Monday *-*-* 02:00:00'},
+        require     => Package[$deploy_target],
+    }
     # clean up old tmp files (T150396)
     cron { 'phab_clean_tmp':
-        ensure  => present,
+        ensure  => absent,
         command => '/usr/bin/find /tmp -user www-data -mtime +14 | xargs rm -rf',
         user    => 'www-data',
         hour    => '7',
+    }
+    $clean_tmp_cmd='/usr/bin/find /tmp -user www-data -mtime +14 -delete'
+    systemd::timer::job { 'phabricator_clean_tmp_files':
+        ensure      => present,
+        user        => 'www-data',
+        description => 'phabricator public task dump',
+        command     => $clean_tmp_cmd,
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 07:00:00'},
     }
 }
