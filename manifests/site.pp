@@ -518,7 +518,7 @@ node 'db1131.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1096, db1098 and db1113 below
-node /^db1(085|088|173)\.eqiad\.wmnet/ {
+node /^db1(085|088|168|173)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -1101,7 +1101,7 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 # 9 expansion hosts T273566
 # 2 hosts (db1154 and db1155) will be used to temporary test sanitarium upgrades to 10.4 T268742
 # Set them to spare individually as it will take take to transfer the data
-node /^db11(56|58|59|61|64|65|67|68|76|77|78|79|80|81|82|83|84)\.eqiad\.wmnet$/ {
+node /^db11(56|58|59|61|64|65|67|76|77|78|79|80|81|82|83|84)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
