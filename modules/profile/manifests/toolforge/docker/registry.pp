@@ -4,8 +4,8 @@ class profile::toolforge::docker::registry(
     Stdlib::Host $builder_host = lookup('docker::builder_host'),
     Stdlib::Host $active_node = lookup('profile::toolforge::docker::registry::active_node'),
     Stdlib::Host $standby_node = lookup('profile::toolforge::docker::registry::standby_node'),
+    String $ssl_certificate_name = lookup('profile::toolforge::docker::registry::ssl_certificate_name', {default_value => 'toolforge'}),
 ) {
-    $ssl_certificate_name = 'toolforge'
     acme_chief::cert { $ssl_certificate_name:
         before     => Class['::docker::registry'],
         puppet_rsc => Exec['nginx-reload'],
