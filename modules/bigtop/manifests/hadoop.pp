@@ -543,7 +543,7 @@ class bigtop::hadoop(
         managehome => false,
         system     => true,
         require    => [
-            Package['hadoop-client'], Group['hadoop'], Group['yarn'],
+            Group['hadoop'], Group['yarn'],
         ],
     }
 
@@ -556,7 +556,7 @@ class bigtop::hadoop(
         managehome => false,
         system     => true,
         require    => [
-            Package['hadoop-client'], Group['hadoop'], Group['hdfs']
+            Group['hadoop'], Group['hdfs']
         ],
     }
 
@@ -569,7 +569,7 @@ class bigtop::hadoop(
         managehome => false,
         system     => true,
         require    => [
-            Package['hadoop-client'], Group['hadoop'], Group['mapred'],
+            Group['hadoop'], Group['mapred'],
         ],
     }
 
