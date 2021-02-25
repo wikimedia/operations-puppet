@@ -20,6 +20,13 @@ class profile::cumin::unprivmaster (
         mode   => '0755',
     }
 
+    # Default tqdm has broken spacing in Cumin's output
+    apt::package_from_component { 'spicerack':
+        component => 'component/spicerack',
+        packages  => ['python3-tqdm'],
+        priority  => 1002,
+    }
+
     file { '/etc/cumin/config.yaml':
         ensure  => present,
         owner   => 'root',
