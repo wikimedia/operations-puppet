@@ -78,7 +78,7 @@ class profile::kafka::broker::monitoring (
     monitoring::check_prometheus { 'kafka_broker_replica_lag_increasing':
         description     => 'Kafka Broker Replica Max Lag is increasing',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
-        query           => "scalar(deriv(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[2m]))",
+        query           => "scalar(deriv(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[5m]))",
         # I really just want an alert if lag slope is positive over a time range, but
         # check_prometheus_metric.py requires that critical is > warning if method is 'gt'.
         warning         => 0.0,
