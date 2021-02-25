@@ -11,9 +11,7 @@
 #
 # [*registry*] Address of the docker registry.
 #
-# [*username*] username for the docker registry.
-#
-# [*password*] password for the docker registry.
+# [*password*] password for the "prod-build" user on the docker registry.
 #
 # [*docker_pkg*] Boolean value for enabling the docker_pkg component
 #
@@ -21,8 +19,7 @@ class profile::docker::builder(
     Optional[Stdlib::Host] $proxy_address = lookup('profile::docker::builder::proxy_address', {default_value => undef}),
     Optional[Stdlib::Port] $proxy_port = lookup('profile::docker::builder::proxy_port', {default_value => undef}),
     Stdlib::Host $registry = lookup('docker::registry'),
-    String $username = lookup('docker::registry::username'),
-    String $password = lookup('docker::registry::password'),
+    String $password = lookup('profile::docker::builder::prod_build_password'),
     Boolean $docker_pkg = lookup('profile::docker::docker_pkg', {default_value => false}),
     Boolean $prune_prod_images = lookup('profile::docker::builder::prune_images'),
 ){
@@ -94,5 +91,21 @@ class profile::docker::builder(
             user            => 'root',
             logfile_basedir => '/var/log'
         }
+    }
+
+    file { '/root/.docker':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0440',
+    }
+
+    $docker_auth = "prod-build:${password}";
+    file { '/root/.docker/config.json':
+        content => template('profile/docker/docker_config.json.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        require => File['/root/.docker']
     }
 }

@@ -3,7 +3,7 @@ http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
 <%- end -%>
 seed_image: docker-registry.wikimedia.org/wikimedia-buster:latest
 registry: <%= @registry %>
-username: <%= @username %>
+username: prod-build
 password: <%= @password %>
 ca_bundle: /etc/ssl/certs/ca-certificates.crt
 base_images:
