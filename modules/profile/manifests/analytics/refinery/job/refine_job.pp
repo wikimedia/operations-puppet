@@ -147,7 +147,7 @@ define profile::analytics::refinery::job::refine_job (
 
 
     # Looks back over the last 48 hours and alert if any failure flags exist.
-    if $ensure and $refine_monitor_failure_enabled {
+    if $ensure == 'present' and $refine_monitor_failure_enabled {
         $ensure_monitor_failure = 'present'
     }
     else {
