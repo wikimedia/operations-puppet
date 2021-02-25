@@ -1,2 +1,3 @@
 DATA_SOURCE_NAME='user=<%= @prometheus_user %> host=/run/postgresql dbname=<%= @prometheus_db %>'
+PG_EXPORTER_EXTEND_QUERY_PATH='/etc/postgres-prometheus-exporter-queries.yaml'
 ARGS=''
