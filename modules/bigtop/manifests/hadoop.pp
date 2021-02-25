@@ -542,6 +542,7 @@ class bigtop::hadoop(
         shell      => '/bin/bash',
         managehome => false,
         system     => true,
+        groups     => 'hadoop',
         require    => [
             Group['hadoop'], Group['yarn'],
         ],
@@ -555,6 +556,7 @@ class bigtop::hadoop(
         shell      => '/bin/bash',
         managehome => false,
         system     => true,
+        groups     => 'hadoop',
         require    => [
             Group['hadoop'], Group['hdfs']
         ],
@@ -568,6 +570,7 @@ class bigtop::hadoop(
         shell      => '/bin/bash',
         managehome => false,
         system     => true,
+        groups     => 'hadoop',
         require    => [
             Group['hadoop'], Group['mapred'],
         ],
