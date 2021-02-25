@@ -245,11 +245,6 @@ define service::node(
             ensure => present,
         }
     }
-    if !defined(Package['nodejs-legacy']) and debian::codename::eq('jessie'){
-        package { 'nodejs-legacy':
-            ensure => present,
-        }
-    }
     if !defined(Package['firejail']) {
         package { 'firejail':
             ensure => present,
