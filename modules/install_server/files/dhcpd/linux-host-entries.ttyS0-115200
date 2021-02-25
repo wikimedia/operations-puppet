@@ -177,7 +177,6 @@ host deneb {
 host d-i-test {
     hardware ethernet aa:00:00:9f:4d:f6;
     fixed-address d-i-test.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host doc1001 {
