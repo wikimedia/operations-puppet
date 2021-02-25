@@ -71,14 +71,6 @@ class role::logging::mediawiki::udp2log(
         },
     }
 
-    cron { 'mw-log-cleanup':
-        ensure  => absent,
-        command => '/usr/local/bin/mw-log-cleanup',
-        user    => 'root',
-        hour    => 2,
-        minute  => 0
-    }
-
     systemd::timer::job { 'mw-log-cleanup':
         ensure      => 'present',
         user        => 'root',
