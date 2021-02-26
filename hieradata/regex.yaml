@@ -294,8 +294,13 @@ mediawiki_test_environment:
   profile::mediawiki::php::enable_request_profiling: true
   profile::mediawiki::php::phpdbg: true
 
+hadoop_gpu_workers_buster:
+  __regex: !ruby/regexp /^an-worker1096\.eqiad\.wmnet$/
+  profile::hadoop::common::min_datanode_mounts: 20
+  profile::amd_gpu::rocm_version: '38'
+
 hadoop_gpu_workers:
-  __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^an-worker(109[7-9]|110[0-1])\.eqiad\.wmnet$/
   profile::hadoop::common::min_datanode_mounts: 20
   profile::amd_gpu::rocm_version: '33'
   # On Debian Stretch the 'render' group is not present, so our
