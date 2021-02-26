@@ -44,16 +44,11 @@ class profile::zuul::server(
         email_server         => $email_server,
     }
 
-    if debian::codename::eq('jessie') {
-      $ic_clone_require = [Package['zuul']]
-    } else {
-      file { '/etc/zuul':
+    file { '/etc/zuul':
         ensure  => 'directory',
         owner   => 'zuul',
         group   => 'zuul',
         require => User['zuul'],
-      }
-      $ic_clone_require = [File['/etc/zuul']]
     }
 
     # Deploy Wikimedia Zuul configuration files.
@@ -68,7 +63,6 @@ class profile::zuul::server(
         umask     => '002',
         origin    => 'https://gerrit.wikimedia.org/r/integration/config.git',
         branch    => $conf_server['config_git_branch'],
-        require   => $ic_clone_require,
     }
 
 }
