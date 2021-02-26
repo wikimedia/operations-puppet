@@ -155,7 +155,7 @@ profile::idp::services:
     # controlled via local mod_auth_cas Apache config for specific subtrees
   netbox:
     id: 22
-    service_id: 'https://netbox(dev-\d{4})?.wikimedia.org(/.*)?'
+    service_id: 'https://netbox-(dev\d{4})?.wikimedia.org(/.*)?'
     required_groups:
       - ops
       - wmf
