@@ -45,6 +45,7 @@ scap::dsh::groups:
       - labweb1002.wikimedia.org
       - mwmaint1002.eqiad.wmnet
       - mwmaint2001.codfw.wmnet
+      - mwmaint2002.codfw.wmnet
       - scandium.eqiad.wmnet
       - snapshot1005.eqiad.wmnet
       - snapshot1006.eqiad.wmnet
