@@ -2532,12 +2532,6 @@ host deploy1002 {
     fixed-address deploy1002.eqiad.wmnet;
 }
 
-host deploy2001 {
-    hardware ethernet 14:18:77:5B:29:2A;
-    fixed-address deploy2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host deploy2002 {
     hardware ethernet 2C:EA:7F:6B:E2:30;
     fixed-address deploy2002.codfw.wmnet;
