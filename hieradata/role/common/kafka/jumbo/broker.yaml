@@ -72,6 +72,7 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '$FRACK_NETWORKS'
   - '$CACHES'
   - '$EQIAD_PRIVATE_PRIVATE1_KUBESTAGEPODS_EQIAD'
+  - '$CODFW_PRIVATE_PRIVATE1_KUBESTAGEPODS_CODFW'
   - '$EQIAD_PRIVATE_PRIVATE1_KUBEPODS_EQIAD'
   - '$CODFW_PRIVATE_PRIVATE1_KUBEPODS_CODFW'
   - '(@resolve((centrallog1001.eqiad.wmnet)) 2620:0:861:107:10:64:48:113)' # FIXME: the raw IPv6 IP is added since there is no AAAA record yet (it is not trivial to be added).
