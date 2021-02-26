@@ -20,8 +20,12 @@ class role::analytics_test_cluster::client {
     include ::profile::analytics::cluster::gitconfig
 
     include ::profile::presto::client
-    include ::profile::swap
 
     # Need refinery to test Refine jobs
     include ::profile::analytics::refinery
+
+    include ::profile::swap
+    # This class will soon deprecate profile::swap.
+    # T224658
+    include ::profile::analytics::jupyterhub
 }
