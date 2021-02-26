@@ -70,6 +70,7 @@ class profile::debmonitor::server (
             chdir        => $directory,
             venv         => $venv_path,
             wsgi         => 'debmonitor.wsgi',
+            buffer-size  => 8192,
             vacuum       => true,
             http-socket  => "127.0.0.1:${port}",
             env          => [
