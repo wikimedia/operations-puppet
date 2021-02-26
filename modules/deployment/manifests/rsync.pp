@@ -12,6 +12,12 @@ class deployment::rsync(
 
     include ::rsync::server
 
+    rsync::server::module { 'deployment_home':
+        path        => '/home',
+        read_only   => 'yes',
+        hosts_allow => $deployment_hosts,
+    }
+
     rsync::server::module { 'deployment_module':
         path        => $deployment_path,
         read_only   => 'yes',
