@@ -1874,8 +1874,8 @@ node /^mw13(5[6-9]|6[0-2])\.eqiad\.wmnet$/ {
 
 # mediawiki maintenance server (periodic jobs)
 # mwmaint1002 replaced mwmaint1001 (T201343) which replaced terbium (T192185)
-# mwmaint2002 replaced mwmaint2001 (T274170,  T275905)
-node 'mwmaint1002.eqiad.wmnet', 'mwmaint2001.codfw.wmnet', 'mwmaint2002.codfw.wmnet' {
+# mwmaint2002 replaced mwmaint2001 (T274170, T275905)
+node 'mwmaint1002.eqiad.wmnet', 'mwmaint2002.codfw.wmnet' {
     role(mediawiki::maintenance)
 }
 
