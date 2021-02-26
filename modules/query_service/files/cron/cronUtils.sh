@@ -41,7 +41,7 @@ function replaceNamespace {
 	local currentAlias=$2
 	local endpoint=$3
 	local oldNamespace=$(cat $ALIAS_FILE | grep $mainName | cut -d' ' -f2 | cut -d ';' -f1)
-	if [ "${oldNamespace}" = ${currentAlias} ]; then
+	if [ "${oldNamespace}" = "${currentAlias}" ]; then
 		# nothing to do
 		return
 	fi
@@ -55,7 +55,10 @@ function replaceNamespace {
 	if [ -n "${oldNamespace}" ]; then
 	  if [ "$(curl -sLI -o /dev/null --fail --write-out "%{http_code}" "${endpoint}${NAMESPACE_URL}${oldNamespace}/sparql")" -eq "200" ]; then
 		  # Drop old namespace
-		  curl -s -X DELETE "${endpoint}${NAMESPACE_URL}${oldNamespace}"
+		  echo "Old namespace ${oldNamespace} still present in Blazegraph, deleting it"
+		  curl -s -X DELETE "${endpoint}${NAMESPACE_URL}${oldNamespace}" && \
+		  echo "Deleted ${oldNamespace}" || \
+		  echo "Failed to delete ${oldNamespace}"
 	  else
 	    echo "Namespace ${oldNamespace} is in the alias file, but does not appear to be present in Blazegraph."
 	  fi
