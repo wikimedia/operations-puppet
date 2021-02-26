@@ -23,11 +23,12 @@ class sudo::sudoldap
     }
 
     file { '/etc/sudoers':
-        ensure  => present,
-        mode    => '0440',
-        owner   => 'root',
-        group   => 'root',
-        source  => 'puppet:///modules/sudo/sudoers',
-        require => Package[sudo-ldap],
+        ensure       => present,
+        mode         => '0440',
+        owner        => 'root',
+        group        => 'root',
+        source       => 'puppet:///modules/sudo/sudoers',
+        require      => Package[sudo-ldap],
+        validate_cmd => '/usr/sbin/visudo -c -f %'
     }
 }
