@@ -5,10 +5,12 @@ Description="imposm service for OSM sync"
 After=network.target
 
 [Service]
-User=osmupdater
+User=osmimporter
 Group=osm
 SyslogIdentifier=imposm
 WorkingDirectory=<%= @imposm_cache_dir %>
 ExecStart=/usr/bin/imposm run -config <%= @imposm_config_file %> -expiretiles-zoom <%= @expire_levels %>
+Environment="HTTP_PROXY=<%= @proxy_host %>:<%= @proxy_port %>"
+Environment="HTTPS_PROXY=<%= @proxy_host %>:<%= @proxy_port %>"
 [Install]
 WantedBy=multi-user.target
