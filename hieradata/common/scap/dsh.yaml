@@ -12,7 +12,7 @@ scap::dsh::scap_proxies:
 
 scap::dsh::scap_masters:
   - "deploy1001.eqiad.wmnet"
-  - "deploy2001.codfw.wmnet"
+  - "deploy2002.codfw.wmnet"
 
 
 scap::dsh::groups:
