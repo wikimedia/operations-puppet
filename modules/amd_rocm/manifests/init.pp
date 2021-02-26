@@ -28,6 +28,7 @@ class amd_rocm (
     # work with 5.x kernels, which in turn have a sufficiently-new amdgpu
     # module
     $add_dkms_versions = ['33']
+    $add_hcc_package = ['25', '26', '271', '33', '37']
 
 
     if ! ($version in $supported_versions) {
@@ -36,8 +37,8 @@ class amd_rocm (
 
     if $kfd_access_group {
         file { '/etc/udev/rules.d/70-kfd.rules':
-            owner   => 'root',
             group   => 'root',
+            owner   => 'root',
             mode    => '0544',
             content => "SUBSYSTEM==\"kfd\", KERNEL==\"kfd\", TAG+=\"uaccess\", GROUP=\"${kfd_access_group}\"",
             require => Group[$kfd_access_group],
@@ -86,13 +87,18 @@ class amd_rocm (
         'rocm-utils',
         'rocrand',
     ]
-    $packages = $version in $add_dkms_versions ? {
-        true  => $basepkgs + ['rock-dkms'],
-        false => $basepkgs,
+    $dkms_packages = $version in $add_dkms_versions ? {
+        true  => ['rock-dkms'],
+        false => [],
+    }
+
+    $hcc_package = $version in $add_hcc_package ? {
+        true  => ['hcc'],
+        false => [],
     }
 
     apt::package_from_component { "amd-rocm${version}":
         component => "thirdparty/amd-rocm${version}",
-        packages  => $packages,
+        packages  => $basepkgs + $dkms_packages + $hcc_package,
     }
 }
