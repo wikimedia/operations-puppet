@@ -1868,6 +1868,11 @@ node 'mwmaint1002.eqiad.wmnet', 'mwmaint2001.codfw.wmnet' {
     role(mediawiki::maintenance)
 }
 
+#New mwmaint node T274170
+node 'mwmaint2002.codfw.wmnet' {
+    role(insetup)
+}
+
 # Jobrunners (now mostly used via changepropagation as a LVS endpoint)
 
 # Row A
