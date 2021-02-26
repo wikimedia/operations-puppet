@@ -208,3 +208,23 @@ SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
 Log:
  log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: bullseye-wikimedia
+Codename: bullseye-wikimedia
+AlsoAcceptFor: bullseye bullseye-backports
+Version: 11
+Architectures: source amd64 i386
+Components: main
+# sorted list, leading whitespace matters!
+ thirdparty/hwraid
+UDebComponents: main
+Update:
+# sorted list, leading whitespace matters!
+ hwraid-stretch
+Description: Wikimedia packages for Debian buster
+SignWith: 9D392D3FFADF18FB
+DebOverride: deb-override
+Log:
+ log
