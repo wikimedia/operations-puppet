@@ -92,14 +92,14 @@ GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
 ON `testreduce_vd`.* TO 'ssastry'@'10.64.48.40';
 
 -- wikiadmin user for wikitech aka 'labswiki' --
--- Will connect from labweb1001, labweb1002, mwmaint1002/mwmaint2001, deployment --
+-- Will connect from labweb1001, labweb1002, mwmaint1002/mwmaint2002, deployment --
 
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'208.80.154.160'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'208.80.155.109'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
-GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.192.48.45'
+GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.192.32.34'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
 GRANT ALL ON `labswiki`.* TO 'wikiadmin'@'10.64.16.77'
 IDENTIFIED BY '<%= @wikiadmin_pass %>';
