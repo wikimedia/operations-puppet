@@ -26,4 +26,8 @@ class mailman3 (
         archiver_key   => $archiver_key
     }
 
+    class { '::mailman3::hyperkitty':
+        archiver_key   => $archiver_key
+    }
+
 }

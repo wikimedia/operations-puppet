@@ -8,6 +8,7 @@ class mailman3::listserve (
     ensure_packages([
         'python3-pymysql',
         'dbconfig-mysql',
+        'python3-mailman-hyperkitty'
     ])
 
     package { 'mailman3':
