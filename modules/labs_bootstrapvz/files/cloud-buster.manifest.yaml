@@ -18,7 +18,7 @@ volume:
     root:
       filesystem: ext4
       size: 19GiB
-      mount_opts: discard,defaults
+      mountopts: discard,defaults
 packages:
   sources:
     wikimedia:
