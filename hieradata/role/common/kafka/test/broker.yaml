@@ -7,8 +7,6 @@ profile::kafka::broker::ssl_enabled: true
 profile::kafka::broker::auth_acls_enabled: true
 
 profile::kafka::broker::monitoring_enabled: true
-profile::kafka::broker::monitoring::replica_maxlag_warning: 1000000
-profile::kafka::broker::monitoring::replica_maxlag_critical: 5000000
 profile::kafka::broker::monitoring::is_critical: false
 
 profile::kafka::broker::max_heap_size: '2g'

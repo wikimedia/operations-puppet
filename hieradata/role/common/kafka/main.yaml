@@ -14,8 +14,6 @@ profile::kafka::broker::auth_acls_enabled: true
 
 # Enable Monitoring (via Prometheus) and icinga alerts
 profile::kafka::broker::monitoring_enabled: true
-profile::kafka::broker::monitoring::replica_maxlag_warning: 100000
-profile::kafka::broker::monitoring::replica_maxlag_critical: 500000
 profile::kafka::broker::monitoring::is_critical: true
 
 # (4 disks in the broker HW RAID array)

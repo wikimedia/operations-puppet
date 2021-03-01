@@ -2,14 +2,6 @@
 #
 # Sets up Prometheus based monitoring and icinga alerts.
 #
-# [*replica_maxlag_warning*]
-#   Max messages a replica can lag before a warning alert is generated.
-#   Hiera: profile::kafka::broker::replica_maxlag_warning
-#
-# [*replica_maxlag_critical*]
-#   Max messages a replica can lag before a critical alert is generated.
-#   Hiera: profile::kafka::broker::replica_maxlag_critical
-#
 # [*is_critical]
 #   Whether or not to generate critical alerts.
 #   Hiera: profile::kafka::broker::monitoring::is_critical
@@ -17,8 +9,6 @@
 class profile::kafka::broker::monitoring (
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     String $kafka_cluster_name            = lookup('profile::kafka::broker::kafka_cluster_name'),
-    Integer $replica_maxlag_warning       = lookup('profile::kafka::broker::monitoring::replica_maxlag_warning', {'default_value' => 10000}),
-    Integer $replica_maxlag_critical      = lookup('profile::kafka::broker::monitoring::replica_maxlag_critical', {'default_value' => 100000}),
     Boolean $is_critical                  = lookup('profile::kafka::broker::monitoring::is_critical', {'default_value' => false}),
 ) {
     # Get fully qualified Kafka cluster name
@@ -74,7 +64,7 @@ class profile::kafka::broker::monitoring (
     }
 
 
-    # Alert replica lag is increasing (positive slope) for multiple after multiple retries.
+    # Alert if replica lag is increasing (positive slope) for multiple after multiple retries.
     monitoring::check_prometheus { 'kafka_broker_replica_lag_increasing':
         description     => 'Kafka Broker Replica Max Lag is increasing',
         dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
@@ -88,18 +78,6 @@ class profile::kafka::broker::monitoring (
         # alert if is increasing (positive slope) for at least 30 minutes.
         retries         => 6,
         retry_interval  => 5,
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
-    }
-
-    # Alert on the average max replica lag over the last 30 minutes.
-    # TODO: This will be removed in favor of the above check, or we'll just increase thresholds for this.
-    monitoring::check_prometheus { 'kafka_broker_replica_max_lag':
-        description     => 'Kafka Broker Replica Max Lag',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
-        query           => "scalar(avg_over_time(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[30m]))",
-        warning         => $replica_maxlag_warning,
-        critical        => $replica_maxlag_critical,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
     }
