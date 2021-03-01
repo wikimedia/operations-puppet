@@ -131,7 +131,7 @@ scap::dsh::groups:
       - ores2001.codfw.wmnet
   phatality:
     conftool:
-      - {'cluster': 'logstash', 'service': 'kibana'}
+      - {'cluster': 'kibana7', 'service': 'kibana7'}
   puppetboard:
     hosts:
       - puppetboard1001.eqiad.wmnet
