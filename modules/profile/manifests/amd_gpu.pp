@@ -12,6 +12,11 @@ class profile::amd_gpu (
             $rocm_smi_path = '/opt/rocm/bin/rocm-smi'
         }
 
+        # Some ROCm packages from 3.8+ ship with libpython3.8 requirements,
+        # so for the moment we explicitly deploy Python 3.8 on Buster.
+        # https://phabricator.wikimedia.org/T275896
+        require profile::python38
+
         class { 'amd_rocm':
             version          => $rocm_version,
             kfd_access_group => $kfd_access_group,
