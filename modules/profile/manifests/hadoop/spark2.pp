@@ -114,6 +114,13 @@ class profile::hadoop::spark2(
         content => template('profile/hadoop/spark2-defaults.conf.erb'),
     }
 
+    file { '/etc/spark2/conf/spark-env.sh':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/profile/hadoop/spark2/spark-env.sh'
+    }
+
     file { '/etc/spark2/conf/log4j.properties':
         owner  => 'root',
         group  => 'root',

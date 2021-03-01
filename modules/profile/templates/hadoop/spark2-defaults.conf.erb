@@ -58,3 +58,12 @@ spark.network.crypto.keyFactoryAlgorithm            PBKDF2WithHmacSHA256
 spark.network.crypto.keyLength                      256
 spark.network.crypto.saslFallback                   false
 <% end -%>
+
+<% if @spark_version <= '2.4.4' -%>
+# ARROW_PRE_0_15_IPC_FORMAT needs to be set in order for pyarrow >= 0.15.0 to work with Spark <= 2.4.4.
+# When we upgrade to Spark > 2.4.4 we should remove these.
+# https://spark.apache.org/docs/3.0.0-preview/sql-pyspark-pandas-with-arrow.html#compatibiliy-setting-for-pyarrow--0150-and-spark-23x-24x
+# https://issues.apache.org/jira/browse/SPARK-29367
+spark.yarn.appMasterEnv.ARROW_PRE_0_15_IPC_FORMAT   1
+spark.executorEnv.ARROW_PRE_0_15_IPC_FORMAT         1
+<% end -%>
