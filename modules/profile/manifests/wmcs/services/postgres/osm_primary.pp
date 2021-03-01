@@ -30,6 +30,7 @@ class profile::wmcs::services::postgres::osm_primary (
     # Create the spatialdb
     postgresql::spatialdb { 'gis': }
     osm::planet_sync { 'gis':
+        engine     => 'osm2pgsql',
         use_proxy  => true,
         proxy_host => "webproxy.${::site}.wmnet",
         proxy_port => 8080,

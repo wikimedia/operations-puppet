@@ -2,6 +2,7 @@ class profile::wmcs::services::postgres::common (
     Stdlib::Unixpath $root_dir = lookup('profile::wmcs::services::postgres::root_dir', {default_value => '/srv/postgres'}),
 ){
     $pgversion = $::lsbdistcodename ? {
+        'buster' => 11,
         'stretch' => 9.6,
         'jessie'  => 9.4,
     }
