@@ -225,6 +225,12 @@
             "labels": [],
             "description": "Number of cache errors."
         },
+        "query/cache/total/hitRate": {
+            "prometheus_metric_name": "druid_historical_query_cache_hit_rate",
+            "type": "gauge",
+            "labels": [],
+            "description": "The cache hit rate."
+        },
         "query/count": {
             "prometheus_metric_name": "druid_historical_query_count",
             "type": "gauge",
