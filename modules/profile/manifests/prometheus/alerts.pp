@@ -319,6 +319,7 @@ class profile::prometheus::alerts (
             critical        => 60*60*24*4,
             method          => 'ge',
             dashboard_links => ['https://grafana.wikimedia.org/d/knkl4dCWz/node-exporter-textfile'],
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Stale_file_for_node-exporter_textfile',
             check_interval  => 20,
             retries         => 3,
         }
