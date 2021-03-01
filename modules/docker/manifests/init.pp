@@ -6,7 +6,8 @@
 #
 # === Parameters
 #
-# [*version*] The package version to install
+# [*version*] The package version to install, on Buster and above this is ignored
+#             and we simply install the version provided by Debian
 #
 # [*package_name*] Docker is going through various transitions changing package
 # names multiple times already. Support that so we can choose which one we want.
@@ -16,7 +17,12 @@ class docker(
     String $package_name='docker-engine',
 ){
     require ::docker::configuration
-    package { $package_name:
-        ensure => $version,
+
+    if debian::codename::lt('buster') {
+        package { $package_name:
+            ensure => $version,
+        }
+    } else {
+        ensure_packages($package_name)
     }
 }
