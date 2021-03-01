@@ -81,13 +81,6 @@ class profile::openstack::eqiad1::keystone::service(
     class {'::openstack::monitor::spreadcheck':
     }
 
-    # monitor projects and users only on one controller.  It doesn't matter which.
-    class {'::openstack::keystone::monitor::projects_and_users':
-        active         => $::ipaddress == ipresolve($openstack_controllers[0],4),
-        contact_groups => 'wmcs-team-email,admins',
-    }
-    contain '::openstack::keystone::monitor::projects_and_users'
-
     # allow foreign designate(and co) to call back to admin auth port
     # to validate issued tokens
     ferm::rule{'main_designate_35357':
