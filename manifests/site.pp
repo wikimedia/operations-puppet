@@ -578,7 +578,7 @@ node 'db2079.codfw.wmnet' {
 
 # codfw replicas
 # See also db2085 and db2086 below
-node /^db20(80|81|82|83|84|91)\.codfw\.wmnet/ {
+node /^db2(080|081|082|083|084|091|152)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -795,7 +795,7 @@ node 'db2141.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
 # Codfw new database nodes T273568
-node /^db21(45|46|48|49|50|51|52)\.codfw\.wmnet$/ {
+node /^db21(45|46|48|49|50|51)\.codfw\.wmnet$/ {
     role(insetup)
 }
 

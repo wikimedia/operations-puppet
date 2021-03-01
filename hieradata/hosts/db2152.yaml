@@ -1,0 +1,4 @@
+# db2152
+mariadb::shard: 's8'
+mariadb::binlog_format: 'ROW'
+profile::base::notifications: disabled
