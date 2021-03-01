@@ -1,6 +1,7 @@
 # == Class profile::python38
 #
 # Sharable class that makes python3.8 available.
+# Available only for Buster (for the moment).
 #
 class profile::python38 {
 
@@ -11,8 +12,5 @@ class profile::python38 {
                 packages  => ['python3.8', 'libpython3.8']
             }
         }
-    } else {
-        ensure_packages(['python3.8', 'libpython3.8'])
     }
-
 }
