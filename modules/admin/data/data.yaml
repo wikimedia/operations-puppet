@@ -17,7 +17,7 @@ groups:
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova,
-              risler, jdittrich, debt, bsitzmann, zfilipin]
+              risler, jdittrich, debt, bsitzmann, zfilipin, agaduran]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -295,7 +295,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
-              agaduran, edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
+              edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen, amuigai, pginer]
@@ -3921,18 +3921,12 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDW3i1gYK4dE2KhqeFFYG99fESZDzajQ3HDb15hD0t+nOACpRqn8XHgXwRecjY5fLl1prwCwbgYEJnWLOZ1xWjmZgfJe2gdGhE4P26y9ekKcRKbm466MKKKlKg87oOI7m8CVR9bndJCPz86X95+upABqaDiWCKgCMYf3f5UcOO64TgUfpGY0ltlPZHTfQ/BhGsUzWR5o9DZPxBHWwYz1oQBjvpFiYD8pPG7ZSav3V1dMwoN5Cyr6fxevMzuRLTq+TOgPwW39DQTh1AExncvjSjJJyTPhiXtg0/gZvNlyhkuKlQYjQCglPmrfkpztXlsHDU4DRK/jYm/a6tGpCft7VlEN36XdTZ15Hsgf7tC9uWm7DAM057Tll2tKWjRYnrP9dmVcP9M9wiuNmdrDK6FQJzvXkpfNDPCCWTWiJu4VP0DY3mM7CSLMj5XqGHIuIjAclIXlGuMA8jtzfceRK1GuPmVylhWFALKvC5aemTQ81d47hQ08jGIQP4zhpjWqi9uUcVavtRD31GJNLRYi1CnoO1r5SaWaoPXcJ6RZycOkA9kR82uhaf5iOWuAlmHNmTPTG4gJFPR5jwt1S2fonNRMEB57UEckCxNxGorvAj/WEgJ0EEg/zXMiMok16i+Chwyoy8G5sJGuCdw5HNPAUV7l2edULBkpUDxA/lAdhwM91uSOQ== nahid@DESKTOPF9O9HU4
   agaduran:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 25360
     realname: Alberto García Durán
     name: agaduran
-    email: alberto.duran@epfl.ch
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC6gNunbAKKoO/FBh0y7gImIeiiIx5V974urZNNmClQg agaduran@Air-de-Alberto.home
-    expiry_date: 2021-02-28
-    expiry_contact: mgerlach@wikimedia.org
-    comment: Research fellow
-    krb: present
+    ssh_keys: []
   nskaggs:
     ensure: present
     gid: 500
