@@ -169,10 +169,6 @@ profile::druid::historical::properties:
   druid.historical.cache.useCache: true
   druid.historical.cache.populateCache: true
   druid.cache.sizeInBytes: 2147483648
-  # For small clusters it is reccomended to only enable caching on brokers
-  # See: http://druid.io/docs/latest/querying/caching.html
-  druid.historical.cache.useCache: false
-  druid.historical.cache.populateCache: false
   # Sane value to abort a query that takes more than 10s to complete
   druid.server.http.defaultQueryTimeout: 10000
   druid.monitoring.monitors: ["org.apache.druid.server.metrics.HistoricalMetricsMonitor", "org.apache.druid.server.metrics.QueryCountStatsMonitor", "org.apache.druid.client.cache.CacheMonitor"]
