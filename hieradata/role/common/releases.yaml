@@ -48,4 +48,5 @@ profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
 
-#profile::releases::mediawiki::ci_restricted_user_password: defined in the private repo
+profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
+#profile::ci::pipeline::publisher::docker_registry_password: defined in the private repo

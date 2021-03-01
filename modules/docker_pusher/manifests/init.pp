@@ -2,7 +2,9 @@
 #
 # Installs small push script used by CI
 class docker_pusher(
-    $docker_pusher_user,
+    String $docker_pusher_user,
+    String $docker_registry_user,
+    String $docker_registry_password,
 ) {
     file { '/etc/docker-pusher':
         ensure => 'directory',
@@ -11,12 +13,13 @@ class docker_pusher(
         mode   => '0400',
     }
 
+    $docker_auth = "${docker_registry_user}:${docker_registry_password}";
     file { '/etc/docker-pusher/config.json':
         ensure    => 'present',
         owner     => 'root',
         group     => 'root',
         mode      => '0400',
-        content   => secret('docker-pusher/config.json'),
+        content   => template('docker_pusher/docker_config.json.erb'),
         show_diff => false,
     }
 

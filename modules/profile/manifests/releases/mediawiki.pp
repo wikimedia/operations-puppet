@@ -12,7 +12,6 @@ class profile::releases::mediawiki (
     $jenkins_service_enable = lookup('profile::releases::mediawiki::jenkins_service_enable'),
     $jenkins_service_monitor = lookup('profile::releases::mediawiki::jenkins_service_monitor'),
     $jenkins_java_home = lookup('profile::releases::mediawiki::jenkins_java_home'),
-    $ci_restricted_user_password = lookup('profile::releases::mediawiki::ci_restricted_user_password'),
 ){
 
     include ::profile::ci::kubernetes_config
@@ -67,21 +66,5 @@ class profile::releases::mediawiki (
             check_command => "check_http_url!${sitename_jenkins}!/login",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org#Jenkins',
         }
-    }
-
-    file { '/root/.docker':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0440',
-    }
-
-    $docker_auth = "ci-restricted:${ci_restricted_user_password}";
-    file { '/root/.docker/config.json':
-        content => template('releases/docker_config.json.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0440',
-        require => File['/root/.docker']
     }
 }
