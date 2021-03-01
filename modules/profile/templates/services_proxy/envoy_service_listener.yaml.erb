@@ -1,7 +1,7 @@
 <%- n = @listener['name'] -%>
 address:
 <%- if @listen_ipv6 -%>
-  socket_address: {protocol: TCP, address: "::", port_value: <%= @listener['port'] %>, ipv4_compat: true}
+  socket_address: {protocol: TCP, address: "::1", port_value: <%= @listener['port'] %>}
 <%- else -%>
   socket_address: {protocol: TCP, address: 0.0.0.0, port_value: <%= @listener['port'] %>}
 <%- end -%>
