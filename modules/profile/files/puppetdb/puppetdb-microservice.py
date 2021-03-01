@@ -13,11 +13,16 @@ authentication via certificate-allowlist.
 Allowed queries:
 
 * The facts endpoint to gather whitelisted facts.
+* The nodes and resources endpoints to enable Cumin's query, but
+  returning only a subset of the actual object returned by PuppetDB
+  In particular only the certname field is returned so that no
+  sensitive information like class parameters are exposed to the
+  caller.
 """
 
 import requests
 
-from flask import Flask, abort, jsonify
+from flask import Flask, abort, jsonify, request
 
 # Allowed Facts
 FACTS_WHITELIST = [
@@ -36,13 +41,15 @@ PUPPETDB_BASE_URL = "http://localhost:8080/pdb/query/v4"
 app = Flask(__name__)
 
 
-def _puppetdb_request(*paths, json=None):
+def _puppetdb_request(*paths, json=None, redacted=False):
     """Make a request to PuppetDB, abort on error, return the results.
 
     All the given pats parameters will be joined with / to form the
     final URL to call.
     If the json parameter is present the request will be a POST, while
     if not present it will be a GET.
+    If the redacted parameter is True only the certname of the matched
+    objects is returned.
     """
     url = '/'.join([PUPPETDB_BASE_URL, *paths])
     if json is not None:
@@ -52,6 +59,9 @@ def _puppetdb_request(*paths, json=None):
 
     if results.status_code != 200:
         abort(results.status_code)
+
+    if redacted:
+        return [{'certname': result['certname']} for result in results.json()]
 
     return results.json()
 
@@ -99,3 +109,23 @@ def host_fact(fact_name, host_name):
         abort(404)
 
     return jsonify(result_value)
+
+
+@app.route("/v1/nodes", methods=["POST"])
+def nodes():
+    """Nodes endpoint for POST requests.
+
+    Accepts any POST query to the nodes endpoint, proxy it to PuppetDB and
+    returns a list of simplified objects {'certname': 'hostname.example.com'}.
+    """
+    return jsonify(_puppetdb_request('nodes', json=request.json, redacted=True))
+
+
+@app.route("/v1/resources", methods=["POST"])
+def resources():
+    """Resources endpoint for POST requests.
+
+    Accepts any POST query to the resources endpoint, proxy it to PuppetDB and
+    returns a list of simplified objects {'certname': 'hostname.example.com'}.
+    """
+    return jsonify(_puppetdb_request('resources', json=request.json, redacted=True))
