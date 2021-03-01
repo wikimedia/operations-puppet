@@ -5506,6 +5506,7 @@ host mw1306 {
 host mw1307 {
     hardware ethernet 18:66:DA:99:49:75;
     fixed-address mw1307.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mw1308 {
