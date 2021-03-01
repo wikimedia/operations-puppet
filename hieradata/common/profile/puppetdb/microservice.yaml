@@ -5,4 +5,5 @@ profile::puppetdb::microservice::allowed_hosts:
   - netbox1001.wikimedia.org
   - netbox2001.wikimedia.org
   - netbox-dev2001.wikimedia.org
+  - cuminunpriv1001.eqiad.wmnet
 
