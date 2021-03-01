@@ -1334,7 +1334,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "mtail_logstash_${::site}":
         dest       => "${targets_path}/mtail_logstash_${::site}.yaml",
         site       => $::site,
-        class_name => 'profile::logstash::collector',
+        class_name => 'profile::logstash::collector7',
         port       => 3903,
     }
 
