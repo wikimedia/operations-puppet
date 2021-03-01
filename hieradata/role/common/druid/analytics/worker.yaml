@@ -94,8 +94,14 @@ profile::druid::broker::properties:
   druid.processing.buffer.sizeBytes: 268435456 # 1024 * 1024 * 256
   # Set numMergeBuffers to use v2 groupBy engine
   druid.processing.numMergeBuffers: 10
-  druid.server.http.numThreads: 20
+  # https://druid.apache.org/docs/latest/operations/basic-cluster-tuning.html#connection-pool-sizing-1
+  # "druid.server.http.numThreads on the Broker should be set to a value slightly
+  # higher than druid.broker.http.numConnections on the same Broker."
+  druid.server.http.numThreads: 25
   druid.broker.http.numConnections: 20
+  # https://github.com/apache/druid/issues/325#issuecomment-32744317
+  # [num of brokers] * broker:druid.processing.numThreads > historical:druid.server.http.numThreads
+  druid.processing.numThreads: 25
   # To avoid excessive queueing on the Historicals,
   # the Broker fails fast if it doesn't receive any data
   # from the Historical after 10s (as opposed to minutes
@@ -103,6 +109,8 @@ profile::druid::broker::properties:
   # 10s to complete.
   druid.broker.http.readTimeout: PT10S
   druid.server.http.defaultQueryTimeout: 10000
+  # https://druid.apache.org/docs/latest/operations/basic-cluster-tuning.html#broker-backpressure
+  druid.broker.http.maxQueuedBytes: 10485760 # 5 * 2MB
   # Increase druid broker query cache size to 2G.
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
