@@ -122,7 +122,7 @@ profile::druid::broker::properties:
   druid.broker.cache.useCache: false
   druid.broker.cache.populateCache: false
   druid.broker.cache.useResultLevelCache: true
-  druid.broker.cache.useResultLevelCache: true
+  druid.broker.cache.populateResultLevelCache: true
   # Increase druid broker query cache size to 2G.
   # TBD: Perhaps we should also try using memcached?
   druid.cache.sizeInBytes: 2147483648
