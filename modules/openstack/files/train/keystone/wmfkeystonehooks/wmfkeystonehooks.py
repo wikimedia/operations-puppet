@@ -16,7 +16,6 @@
 from keystoneauth1.identity import v3
 from keystone.common import rbac_enforcer
 from keystoneauth1 import session as keystone_session
-from keystone import exception
 from keystone.common import provider_api
 from neutronclient.v2_0 import client as neutron_client
 from neutronclient.common import exceptions
@@ -193,34 +192,7 @@ class KeystoneHooks(notifier.Driver):
         return newrule
 
     def _on_project_create(self, project_id):
-
         LOG.warning("Beginning wmf hooks for project creation: %s" % project_id)
-
-        roledict = self._get_role_dict()
-
-        if CONF.wmfhooks.observer_role_name not in list(roledict.keys()):
-            LOG.error("Failed to find id for role %s" % CONF.wmfhooks.observer_role_name)
-            raise exception.NotImplemented()
-        if CONF.wmfhooks.admin_role_name not in list(roledict.keys()):
-            LOG.error("Failed to find id for role %s" % CONF.wmfhooks.admin_role_name)
-            raise exception.NotImplemented()
-        if CONF.wmfhooks.user_role_name not in list(roledict.keys()):
-            LOG.error("Failed to find id for role %s" % CONF.wmfhooks.user_role_name)
-            raise exception.NotImplemented()
-
-        LOG.warning("Adding default users to project %s" % project_id)
-        PROVIDERS.assignment_api.add_role_to_user_and_project(
-            CONF.wmfhooks.admin_user,
-            project_id,
-            roledict[CONF.wmfhooks.admin_role_name])
-        PROVIDERS.assignment_api.add_role_to_user_and_project(
-            CONF.wmfhooks.admin_user,
-            project_id,
-            roledict[CONF.wmfhooks.user_role_name])
-        PROVIDERS.assignment_api.add_role_to_user_and_project(
-            CONF.wmfhooks.observer_user,
-            project_id,
-            roledict[CONF.wmfhooks.observer_role_name])
 
         LOG.warning("Adding security groups to project %s" % project_id)
         # Use the neutron api to set up security groups for the new project
