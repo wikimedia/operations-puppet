@@ -49,7 +49,7 @@ profile::elasticsearch::common_settings:
     # Increase the per-node cache for compiled LTR models from default 10MB
     ltr_cache_size: '100mb'
 
-    auto_create_index: false
+    auto_create_index: true
     plugins_mandatory:
       - analysis-hebrew
       - analysis-icu
