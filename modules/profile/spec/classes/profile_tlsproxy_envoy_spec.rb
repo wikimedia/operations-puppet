@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::tlsproxy::envoy' do
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:pre_condition) {
@@ -22,24 +22,20 @@ describe 'profile::tlsproxy::envoy' do
       context "global TLS, non-SNI" do
         let(:params) { super().merge(tls_port: 443) }
 
-        if facts[:lsbdistcodename] != 'jessie'
-          it { is_expected.to compile.with_all_deps }
-          it {
-            is_expected.to contain_class('envoyproxy')
-                             .with_ensure('present')
-          }
-          it {
-            is_expected.to contain_envoyproxy__tls_terminator('443')
-                             .with_global_cert_path('/etc/ssl/localcerts/example.crt')
-                             .with_retry_policy(nil)
-          }
-          it {
-            is_expected.to contain_sslcert__certificate('example')
-                             .with_ensure('present')
-          }
-        else
-          it { is_expected.to compile.and_raise_error(/Envoy can only work with unprivileged ports under jessie./) }
-        end
+        it { is_expected.to compile.with_all_deps }
+        it {
+          is_expected.to contain_class('envoyproxy')
+                           .with_ensure('present')
+        }
+        it {
+          is_expected.to contain_envoyproxy__tls_terminator('443')
+                           .with_global_cert_path('/etc/ssl/localcerts/example.crt')
+                           .with_retry_policy(nil)
+        }
+        it {
+          is_expected.to contain_sslcert__certificate('example')
+                           .with_ensure('present')
+        }
       end
 
       context 'test upstream_addr' do
@@ -59,10 +55,6 @@ describe 'profile::tlsproxy::envoy' do
           'localhost', '127.0.0.1', '::1',
           facts[:networking]['ip'], facts[:networking]['ip6']
         ].reject{|e| e.to_s.empty? }.each do |valid|
-          # jessie doesn't have ipv6 facts.
-          if facts[:lsbdistcodename] == 'jessie' && valid == '::1'
-            next
-          end
           context "valid: #{valid}" do
             let(:params) { super().merge(upstream_addr: valid) }
 

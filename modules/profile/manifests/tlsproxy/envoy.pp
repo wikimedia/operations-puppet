@@ -76,9 +76,7 @@ class profile::tlsproxy::envoy(
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
-    if debian::codename::eq('jessie') and $tls_port !~ Stdlib::Port::Unprivileged {
-            fail('Envoy can only work with unprivileged ports under jessie.')
-    }
+
     if $global_cert_name and $acme_cert_name {
         fail('\$global_cert_name and \$acme_chief are mutually exclusive please only provide one')
     }
