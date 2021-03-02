@@ -4,5 +4,4 @@ profile::idp::client::httpd::sites:
   "%{alias('profile::librenms::sitename')}":
     document_root: "%{lookup('profile::librenms::install_dir')}/html"
     vhost_content: 'profile/idp/client/httpd-librenms.erb'
-    attribute_delimiter: ':'
 rsync::server::wrap_with_stunnel: true

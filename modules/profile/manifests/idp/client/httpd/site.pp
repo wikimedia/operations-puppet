@@ -31,7 +31,7 @@ define profile::idp::client::httpd::site (
     String[1]                     $protected_uri       = '/',
     String[1]                     $cookie_scope        = $protected_uri,
     Boolean                       $proxied_as_https    = false,
-    String[1,1]                   $attribute_delimiter = ',',
+    String[1,1]                   $attribute_delimiter = ':',
     Enum['staging', 'production'] $environment         = 'production',
     Optional[Hash[String,Any]]    $vhost_settings      = {},
     Optional[Array[String[1]]]    $required_groups     = [],
