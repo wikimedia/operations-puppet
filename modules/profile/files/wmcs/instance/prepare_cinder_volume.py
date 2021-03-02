@@ -10,7 +10,7 @@ import subprocess
 
 def block_dev_dict():
     jsonblocks = subprocess.getoutput(
-        "/usr/bin/lsblk --json -o NAME,FSTYPE,MOUNTPOINT,UUID"
+        "/bin/lsblk --json -o NAME,FSTYPE,MOUNTPOINT,UUID"
     )
     blockdict = json.loads(jsonblocks)
     annotateddict = {}
