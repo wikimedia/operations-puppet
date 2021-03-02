@@ -44,6 +44,8 @@ testcases:
           type: "icinga"
         ecs:
           version: "1.7.0"
+        event:
+          kind: "alert"
       - message: "HOST ALERT: mw2280;DOWN;HARD;2;PING CRITICAL - Packet loss = 100%"
         service:
           type: "icinga"
