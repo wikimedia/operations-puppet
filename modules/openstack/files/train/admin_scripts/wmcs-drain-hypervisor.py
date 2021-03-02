@@ -34,26 +34,34 @@ class NovaInstance(object):
         self.instance = self.novaclient.servers.get(self.instance_id)
         self.instance_name = self.instance._info["name"]
 
-    def wait_for_status(self, desiredstatus):
+    def wait_for_status(self, desiredstatuses):
         oldstatus = ""
 
-        while self.instance.status != desiredstatus:
+        while self.instance.status not in desiredstatuses:
             if self.instance.status != oldstatus:
                 oldstatus = self.instance.status
                 logging.info(
                     "current status is {}; waiting for it to change to {}".format(
-                        self.instance.status, desiredstatus
+                        self.instance.status, desiredstatuses
                     )
                 )
 
             time.sleep(2)
             self.refresh_instance()
 
-    def migrate(self):
-        logging.warning("Migrating %s (%s)" % (self.instance.name, self.instance.id))
-        self.instance.live_migrate()
-        self.wait_for_status("MIGRATING")
-        self.wait_for_status("ACTIVE")
+    def stopped_migrate(self):
+        logging.warning(
+            "Migrating stopped VM %s (%s)" % (self.instance.name, self.instance.id)
+        )
+        self.instance.migrate()
+        # Currently (Openstack Train) a cold migrate is implemented as a resize.
+        #  I'm checking for alternate statuses here in case someone fixes that
+        #  someday to report a more reasonable status
+        self.wait_for_status(["MIGRATING", "RESIZE"])
+        self.wait_for_status(["SHUTOFF", "ACTIVE", "VERIFY_RESIZE"])
+        if self.instance.status == "VERIFY_RESIZE":
+            self.instance.confirm_resize()
+            self.wait_for_status(["SHUTOFF", "ACTIVE"])
         logging.info(
             "instance {} ({}) is now on host {} with status {}".format(
                 self.instance_id,
@@ -62,6 +70,44 @@ class NovaInstance(object):
                 self.instance.status,
             )
         )
+
+    def paused_migrate(self):
+        logging.warning(
+            "Migrating paused VM %s (%s)" % (self.instance.name, self.instance.id)
+        )
+        self.instance.unpause()
+        self.wait_for_status(["ACTIVE"])
+        self.live_migrate()
+        self.instance.pause()
+        self.wait_for_status(["PAUSED"])
+
+    def live_migrate(self):
+        logging.warning("Migrating %s (%s)" % (self.instance.name, self.instance.id))
+        self.instance.live_migrate()
+        self.wait_for_status(["MIGRATING"])
+        self.wait_for_status(["ACTIVE"])
+        logging.info(
+            "instance {} ({}) is now on host {} with status {}".format(
+                self.instance_id,
+                self.instance_name,
+                self.instance._info["OS-EXT-SRV-ATTR:host"],
+                self.instance.status,
+            )
+        )
+
+    def migrate(self):
+        if self.instance.status == "ACTIVE":
+            self.live_migrate()
+        elif self.instance.status == "SHUTOFF":
+            self.stopped_migrate()
+        elif self.instance.status == "PAUSED":
+            self.paused_migrate()
+        else:
+            logging.warning(
+                "instance {} ({}) is in state {} which this script can't handle.  Skipping.".format(
+                    self.instance_id, self.instance_name, self.instance.status
+                )
+            )
 
 
 if __name__ == "__main__":
