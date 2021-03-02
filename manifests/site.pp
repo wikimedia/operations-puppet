@@ -2099,7 +2099,7 @@ node 'mwlog2001.codfw.wmnet' {
 
 # New mwlog node T267272
 node 'mwlog2002.codfw.wmnet' {
-    role(insetup)
+    role(logging::mediawiki::udp2log)
 }
 
 node 'mx1001.wikimedia.org' {
