@@ -155,10 +155,10 @@ class profile::librenms (
             'group_strategy'  => 'map',
             'group_attr'      => 'HTTP_X_CAS_MEMBEROF',
             'group_level_map' => {
-                'cn=ops' => 10,
-                'cn=librenms-readers' => 5,
+                'cn=ops,ou=groups,dc=wikimedia,dc=org' => 10,
+                'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org' => 5,
             },
-            'group_delimiter' => ',',
+            'group_delimiter' => ':',
         }
     }
 
