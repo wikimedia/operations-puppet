@@ -357,24 +357,6 @@ host kubetcd1006 {
     fixed-address kubetcd1006.eqiad.wmnet;
 }
 
-host kubetcd2001 {
-    hardware ethernet aa:00:00:70:df:e9;
-    fixed-address kubetcd2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kubetcd2002 {
-    hardware ethernet aa:00:00:fd:89:d2;
-    fixed-address kubetcd2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host kubetcd2003 {
-    hardware ethernet aa:00:00:cd:aa:4b;
-    fixed-address kubetcd2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host kubetcd2004 {
     hardware ethernet aa:00:00:a7:c8:1f;
     fixed-address kubetcd2004.codfw.wmnet;
