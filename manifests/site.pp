@@ -1879,6 +1879,11 @@ node 'mwmaint1002.eqiad.wmnet', 'mwmaint2002.codfw.wmnet' {
     role(mediawiki::maintenance)
 }
 
+# decom in progress
+node 'mwmaint2001.codfw.wmnet' {
+    role(insetup)
+}
+
 # Jobrunners (now mostly used via changepropagation as a LVS endpoint)
 
 # Row A
