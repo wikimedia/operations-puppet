@@ -11,7 +11,7 @@
         -j.deleteEmpty \
 <%- end -%>
         -j.expdirpath <%= @expire_dir %> \
-        -j.expmask 'expire\.list\.*' \
+        -j.expmask '(expire\.list\.*)|(\.tiles)' \
         -j.statefile <%= @statefile %>
 
 notification_code=$?
