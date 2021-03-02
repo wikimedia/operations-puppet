@@ -22,11 +22,7 @@ class bigtop::sqoop {
     . /usr/lib/bigtop-utils/bigtop-detect-javahome
 
     # BIGTOP-3508 - Prevent IllegalStateException on Debian systems
-    if [[ -f /usr/share/java/slf4j-log4j12.jar && -f /usr/share/java/log4j-over-slf4j.jar ]]; then
-        SQOOP_JARS=`ls /var/lib/sqoop/*.jar /usr/share/java/*.jar 2>/dev/null | grep -v log4j-over-slf4j`
-    else
-        SQOOP_JARS=`ls /var/lib/sqoop/*.jar /usr/share/java/*.jar 2>/dev/null`
-    fi
+    SQOOP_JARS=`ls /var/lib/sqoop/*.jar 2>/dev/null`
 
     if [ -n "\${SQOOP_JARS}" ]; then
         export HADOOP_CLASSPATH=\$(JARS=(\${SQOOP_JARS}); IFS=:; echo "\${HADOOP_CLASSPATH}:\${JARS[*]}")
