@@ -2089,7 +2089,7 @@ node 'mwlog1001.eqiad.wmnet' {
 
 # New mwlog node T267271
 node 'mwlog1002.eqiad.wmnet' {
-    role(insetup)
+    role(logging::mediawiki::udp2log)
 }
 
 # mw logging host codfw
