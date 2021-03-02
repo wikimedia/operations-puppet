@@ -1146,9 +1146,19 @@ node /^(acrab|acrux|argon|chlorine)\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
 }
 
+# New kubernetes masters
+node /^kubemaster[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+    role(insetup)
+}
+
 # kubernetes staging master
 node 'neon.eqiad.wmnet' {
     role(kubernetes::staging::master)
+}
+
+# new kubernetes master for staging
+node 'kubestagemaster1001.eqiad.wmnet' {
+    role(insetup)
 }
 
 # new Kubernetes host T258747
