@@ -24,6 +24,7 @@ class role::deployment_server {
     include profile::conftool::client
 
     # MediaWiki release uploads to releases servers
+    include profile::releases::mediawiki::private
     include profile::releases::mediawiki::security
     include profile::releases::upload
 
