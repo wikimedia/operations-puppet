@@ -4,14 +4,21 @@ profile::kubernetes::master::apiserver_count: 1
 profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
   LimitRanger: ''
-  ServiceAccount: '--service-account-key-file=/etc/kubernetes/ssl/server.key'
+  ServiceAccount: "--service-account-key-file=/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
   DefaultStorageClass: ''
   DefaultTolerationSeconds: ''
   ResourceQuota: ''
   PodSecurityPolicy: ''
 profile::kubernetes::master::expose_puppet_certs: true
-profile::kubernetes::master::ssl_cert_path: "/etc/kubernetes/ssl/cert.pem"
-profile::kubernetes::master::ssl_key_path: "/etc/kubernetes/ssl/server.key"
+profile::kubernetes::master::service_cert: "kubestagemaster.svc.%{::site}.wmnet"
+profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::use_cergen: true
+profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::authz_mode: 'RBAC'
-profile::kubernetes::master::service_account_private_key_file: "/etc/kubernetes/ssl/server.key"
+profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-staging"
 profile::kubernetes::master::service_node_port_range: '1-65535'
+# Define in the private repo
+# profile::kubernetes::master::controllermanager_token:

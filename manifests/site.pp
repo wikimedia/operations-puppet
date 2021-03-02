@@ -1131,7 +1131,7 @@ node /^kubestagetcd200[123]\.codfw\.wmnet$/ {
 }
 
 # kubernetes master for staging
-node 'kubestagemaster2001.codfw.wmnet' {
+node /^kubestagemaster[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::staging::master)
 }
 
@@ -1148,11 +1148,6 @@ node /^kubemaster[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
 # kubernetes staging master
 node 'neon.eqiad.wmnet' {
     role(kubernetes::staging::master)
-}
-
-# new kubernetes master for staging
-node 'kubestagemaster1001.eqiad.wmnet' {
-    role(insetup)
 }
 
 # new Kubernetes host T258747
