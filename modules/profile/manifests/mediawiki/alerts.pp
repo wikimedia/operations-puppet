@@ -82,7 +82,7 @@ class profile::mediawiki::alerts {
   # Monitor MediaWiki fatals and exceptions per MediaWiki cluster.
   # From the logstash perspective, cluster is in the "servergroup" field
   ['appserver', 'api_appserver', 'jobrunner', 'parsoid'].each |String $cluster| {
-    monitoring::check_prometheus { 'mediawiki-error-rate':
+    monitoring::check_prometheus { "mediawiki-error-rate-${cluster}":
       description     => "MediaWiki exceptions and fatals per minute for ${cluster}",
       prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
       retries         => 2,
