@@ -18,6 +18,7 @@ class profile::hadoop::worker(
 ) {
     require ::profile::analytics::cluster::packages::common
     require ::profile::hadoop::common
+    require ::profile::java
 
     if $monitoring_enabled {
         # Prometheus exporters
