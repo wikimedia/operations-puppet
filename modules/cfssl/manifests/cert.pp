@@ -3,7 +3,7 @@ define cfssl::cert (
     Cfssl::Signer_config          $signer_config,
     String                        $common_name   = $title,
     Array[Cfssl::Name]            $names         = [],
-    Cfssl::Key                    $key           = {'algo' => 'ecdsa', 'size' => 521},
+    Cfssl::Key                    $key           = {'algo' => 'ecdsa', 'size' => 256},
     Wmflib::Ensure                $ensure        = 'present',
     String                        $owner         = 'root',
     String                        $group         = 'root',
