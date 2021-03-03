@@ -111,7 +111,11 @@ def host_fact(fact_name, host_name):
     return jsonify(result_value)
 
 
-@app.route("/v1/nodes", methods=["POST"])
+# ------------------------------------------------------------------
+# Redacted proxy to PuppetDB API endpoints, URIs must be unmodified.
+# ------------------------------------------------------------------
+
+@app.route("/pdb/query/v4/nodes", methods=["POST"])
 def nodes():
     """Nodes endpoint for POST requests.
 
@@ -121,7 +125,7 @@ def nodes():
     return jsonify(_puppetdb_request('nodes', json=request.json, redacted=True))
 
 
-@app.route("/v1/resources", methods=["POST"])
+@app.route("/pdb/query/v4/resources", methods=["POST"])
 def resources():
     """Resources endpoint for POST requests.
 
