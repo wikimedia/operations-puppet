@@ -22,7 +22,7 @@ profile::restbase::monitor_domain: en.wikipedia.org
 
 profile::restbase::cassandra_tls:
   ca: /dev/null
-profile::services_proxy::envoy::listen_ipv6: true
+profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::enabled_listeners:
  - parsoid-php
  - mathoid
