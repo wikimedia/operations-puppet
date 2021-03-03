@@ -88,7 +88,7 @@ if __name__ == "__main__":
     args = argparser.parse_args()
 
     logging.basicConfig(
-        format="%(filename)s: %(levelname)s: %(message)s",
+        format="%(filename)s: %(asctime)s: %(levelname)s: %(message)s",
         level=logging.INFO,
         stream=sys.stdout,
     )
