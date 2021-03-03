@@ -632,6 +632,11 @@ host backup2002 {
     fixed-address backup2002.codfw.wmnet;
 }
 
+host backup2003 {
+    hardware ethernet 2C:EA:7F:94:71:5A ;
+    fixed-address backup2003.codfw.wmnet;
+}
+
 host bast1002 {
     hardware ethernet 14:18:77:58:86:BC;
     fixed-address bast1002.wikimedia.org;
