@@ -5,6 +5,11 @@ class profile::cumin::unprivmaster (
 ) {
     include profile::kerberos::client
 
+    # These are referenced by the aliases template, but otherwise unused
+    $mariadb_roles = Profile::Mariadb::Role
+    $mariadb_sections = Profile::Mariadb::Valid_section
+
+
     $cumin_log_path = '~/.cumin'
     $ssh_config_path = '/etc/cumin/ssh_config'
 
@@ -33,6 +38,15 @@ class profile::cumin::unprivmaster (
         group   => 'root',
         mode    => '0644',
         content => template('profile/cumin/config-unpriv.yaml.erb'),
+        require => File['/etc/cumin'],
+    }
+
+    file { '/etc/cumin/aliases.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('profile/cumin/aliases.yaml.erb'),
         require => File['/etc/cumin'],
     }
 
