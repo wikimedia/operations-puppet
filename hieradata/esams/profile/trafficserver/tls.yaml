@@ -13,17 +13,3 @@ profile::trafficserver::tls::http_settings:
     server_session_sharing_match: ip
     server_session_sharing_pool: thread
     allow_half_open: 1
-
-profile::trafficserver::tls::parent_rules:
-  - dest_domain: '.'
-    parent:
-      - "%{::ipaddress}:3120"
-      - "%{::ipaddress}:3121"
-      - "%{::ipaddress}:3122"
-      - "%{::ipaddress}:3123"
-      - "%{::ipaddress}:3124"
-      - "%{::ipaddress}:3125"
-      - "%{::ipaddress}:3126"
-      - "%{::ipaddress}:3127"
-    parent_is_proxy: 'false'
-    round_robin: 'strict'
