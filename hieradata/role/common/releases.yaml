@@ -11,7 +11,7 @@ profile::standard::admin_groups:
 
 profile::ci::kubernetes_config::user: jenkins
 profile::ci::kubernetes_config::namespace: ci
-profile::ci::kubernetes_config::master: neon.eqiad.wmnet
+profile::ci::kubernetes_config::master: kubestagemaster.svc.codfw.wmnet
 profile::ci::kubernetes_config::owner: jenkins-slave
 profile::ci::kubernetes_config::group: contint-roots
 # Specified in the private repo:
