@@ -18,8 +18,6 @@ class labs_bootstrapvz() {
     file {
         default:
             mode    => '0444';
-        "${bootstrap_filepath}/manifests/labs-jessie.manifest.yaml":
-            source  => 'puppet:///modules/labs_bootstrapvz/labs-jessie.manifest.yaml';
         "${bootstrap_filepath}/manifests/labs-stretch.manifest.yaml":
             source  => 'puppet:///modules/labs_bootstrapvz/labs-stretch.manifest.yaml';
         "${bootstrap_filepath}/manifests/cloud-buster.manifest.yaml":
