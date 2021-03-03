@@ -782,7 +782,7 @@ groups:
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
-    members: [eugene-chernov]
+    members: [eugene-chernov, strofimovsky01]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Wolfgang Kandek
   reprepro:
@@ -4199,6 +4199,14 @@ users:
     gid: 500
     ssh_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKxBDrnMQg11arBZgbWrAiePcgUkK0NXAsw95dVyLC0PXJLeWPnusb6f66X01NJop4pKgdAJJ83yB7COAzMpaiiFuMAaiq28mVQPpAw1W+zCySDRy8hE32IvNdNefeCx+/6Ol3xjfbkXwnZcnYYL/4atAm39y5BqckYXxOxyZII9Qb/mMU8hPshah63rnQYacvmeTg1qwVxUzAWp8cWYCzWzHbrmBLcsf36KlOWLu/vEeMTWNQOUf6r+4TVhrB9uONe7TybRu8cO7vODezA3S5cdHXCaEKFgVfu2vm2VrF7eed4xMQZWxp32A9zRhABJjADa+IlNGJ7Yqptmb+MHoQwVv4R/xPwapmKv4lMF2O6D+OLrDIb6AfOnH6m7oNaxo0L65M/P1Fj1j8yJLn1ixBEf27UH0e/i83+z/rFK3gPPAApJ4jZ8hxnyjTx8zmlADoKpp2Fkb9eI2rD/n8F0AbIv1PjCTtbxG6lwBivP5VnYWu8bqK3A1MgemBBmSFBDbz+crGCgXFGlesQa/jrEb3eNkulbGOKjgpdg+TEbUScMmz7lD6mmtxnnpNY3MPhlrbIwK5sz7Zh92UvbiwSQJF+4ZEi+LMGxavcW1MX2PfnL93/t41DuvO4kqj2SztzpyWxoTzEg6JnNusNugy/efWRl9dxSL2Aht8I2VsLWExgQ== ichernov"
+  strofimovsky01:
+    ensure: present
+    realname: Sergey Trofimovsky
+    email: sergey.trofimovsky@speedandfunction.com
+    uid: 30206
+    gid: 500
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YOTFRFIXsSXERnbkkt2NUV+WgZhl7Ep7NWn4dpYsB troff@quiet.paranoia.ru"
 
 ldap_only_users:
   abartov:
