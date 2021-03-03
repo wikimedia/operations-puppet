@@ -10,7 +10,7 @@ describe 'rsync::get', :type => :define do
     }
   end
 
-  describe "when using default class paramaters" do
+  describe "when using default class parameters" do
     let :params do
       common_params
     end

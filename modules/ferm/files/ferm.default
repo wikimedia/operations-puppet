@@ -6,7 +6,7 @@ FAST=yes
 # cache the output of ferm --lines in /var/cache/ferm?
 CACHE=no
 
-# additional paramaters for ferm (like --def '$foo=bar')
+# additional parameters for ferm (like --def '$foo=bar')
 OPTIONS=
 
 # Enable ferm on bootup?

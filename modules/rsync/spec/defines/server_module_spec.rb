@@ -21,7 +21,7 @@ describe 'rsync::server::module', :type => :define do
     mandatory_params
   end
 
-  describe "when using default class paramaters" do
+  describe "when using default class parameters" do
     it { should contain_file(fragment_file).with_content(/^\[ foobar \]$/) }
     it { should contain_file(fragment_file).with_content(/^path\s*=\s*\/some\/path$/) }
     it { should contain_file(fragment_file).with_content(/^read only\s*=\s*yes$/) }
