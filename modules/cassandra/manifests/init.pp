@@ -122,7 +122,7 @@ class cassandra (
     Stdlib::IP::Address              $listen_address          = $::ipaddress,
     Array[String]                    $additional_jvm_opts     = [],
     Array[String]                    $extra_classpath         = [],
-    Enum['2.1', '2.2', '3.x', 'dev'] $target_version          = '2.1',
+    Enum['2.2', '3.x', 'dev']        $target_version          = '2.2',
     String                           $memory_allocator        = 'JEMallocAllocator',
     Optional[String]                 $application_username    = undef,
     Optional[String]                 $application_password    = undef,
@@ -173,11 +173,7 @@ class cassandra (
     # The 2.2.6-wmf5 package has been tested on Debian Stretch
     # and it works nicely
     $package_version = $target_version ? {
-        '2.1' => pick($version, '2.1.13'),
-        '2.2' => debian::codename::ge('stretch') ? {
-            true    => pick($version, '2.2.6-wmf5'),
-            default => pick($version, '2.2.6-wmf3'),
-        },
+        '2.2' => pick($version, '2.2.6-wmf5'),
         '3.x' => pick($version, '3.11.4'),
         'dev' => pick($version, '3.11.4')
     }

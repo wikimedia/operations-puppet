@@ -16,7 +16,7 @@ describe 'cassandra::instance' do
                 memory_allocator: 'foobar',
                 listen_address: '192.0.2.1',
                 native_transport_port: 9043,
-                target_version: '2.1',
+                target_version: '2.2',
                 seeds: ['192.0.2.1'],
                 dc: 'datacenter1',
                 rack: 'rack1',
