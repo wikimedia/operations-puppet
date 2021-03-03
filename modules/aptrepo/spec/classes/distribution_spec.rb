@@ -7,8 +7,8 @@ describe 'aptrepo::distribution', :type => :class do
       let(:params) {{
         :basedir => '/srv/wikimedia',
         :settings => {
-          'jessie' => {
-            'Suite' => 'jessie-mediawiki'
+          'buster' => {
+            'Suite' => 'buster-mediawiki'
           }
         },
       }}
