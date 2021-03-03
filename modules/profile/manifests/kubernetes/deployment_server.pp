@@ -20,7 +20,7 @@ class profile::kubernetes::deployment_server(
         'codfw'         => 'kubemaster.svc.codfw.wmnet',
         'staging-eqiad' => 'kubestagemaster.svc.eqiad.wmnet',
         'staging-codfw' => 'kubestagemaster.svc.codfw.wmnet',
-        'staging'       => 'neon.eqiad.wmnet',
+        'staging'       => 'kubestagemaster.svc.codfw.wmnet',
     }
 
     $real_services = deep_merge($services, $tokens)
