@@ -129,9 +129,7 @@ class ImageBackup:
         )
 
     def remove(self, pool: str, noop: bool = True) -> None:
-        maybe_snapshot = self.backup_entry.get_snapshot(
-            pool=pool
-        )
+        maybe_snapshot = self.backup_entry.get_snapshot(pool=pool)
         self.backup_entry.remove(noop=noop)
         if maybe_snapshot is not None:
             maybe_snapshot.remove(noop=noop)
@@ -1306,12 +1304,29 @@ class InstanceBackupsState:
     def backup_assigned_vms(
         self, from_cache: bool = True, noop: bool = True
     ) -> None:
+        tries = 3
         for server_info in self.get_assigned_vms(from_cache):
-            self.create_vm_backup(
-                vm_name=server_info.get("name", "no_name"),
-                project_name=server_info.get("tenant_id", "no_project"),
-                noop=noop,
-            )
+            cur_try = 0
+            vm_name = server_info.get("name", "no_name")
+            while cur_try < tries:
+                try:
+                    self.create_vm_backup(
+                        vm_name=vm_name,
+                        project_name=server_info.get(
+                            "tenant_id", "no_project"
+                        ),
+                        noop=noop,
+                    )
+                    break
+
+                except Exception as error:
+                    logging.warning(
+                        f"Got an error trying to backup {vm_name}, try "
+                        f"n#{cur_try} of {tries}: {error}"
+                    )
+                    cur_try += 1
+                    if cur_try == tries:
+                        raise
 
     def remove_unhandled_backups(
         self, from_cache: bool = True, noop: bool = True
