@@ -11,10 +11,10 @@ class profile::tcpircbot(
         password => $passwords::logmsgbot::logmsgbot_password,
         cidr     => [
             '::ffff:127.0.0.1/128',             # loopback
+            '::ffff:10.64.32.16/128',           # deployment eqiad v4: deploy1001
+            '2620:0:861:103:10:64:32:16/128',   # deployment eqiad v6: deploy1001
             '::ffff:10.64.32.28/128',           # deployment eqiad v4: deploy1002
             '2620:0:861:103:10:64:32:28/128',   # deployment eqiad v6: deploy1002
-            '::ffff:10.192.32.7/128',           # deployment codfw v4: deploy2002
-            '2620:0:860:103:10:192:32:7/128',   # deployment codfw v6: deploy2002
             '::ffff:10.64.16.77/128',           # maintenance eqiad v4: mwmaint1002
             '2620:0:861:102:10:64:16:77/64',    # maintenance eqiad v6: mwmaint1002
             '::ffff:10.192.32.34/128',          # maintenance codfw v4: mwmaint2002
@@ -38,8 +38,9 @@ class profile::tcpircbot(
     }
 
     $allowed_hosts = [
+        'deploy1001.eqiad.wmnet',       # deployment eqiad
         'deploy1002.eqiad.wmnet',       # deployment eqiad
-        'deploy2002.codfw.wmnet',       # deployment codfw
+        'deploy2001.codfw.wmnet',       # deployment codfw
         'puppetmaster1001.eqiad.wmnet', # puppet eqiad
         'puppetmaster2001.codfw.wmnet', # puppet codfw
         'mwmaint1002.eqiad.wmnet',      # maintenance eqiad
