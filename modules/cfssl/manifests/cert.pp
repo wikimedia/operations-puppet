@@ -88,6 +88,7 @@ define cfssl::cert (
             -ca=${signer_config['config_dir']}/ca/ca.pem \
             -ca-key=${signer_config['config_dir']}/ca/ca_key.pem \
             -config=${signer_config['config_dir']}/cfssl.conf \
+            -db-config=${signer_config['config_dir']}/db.conf \
             | SIGNER_ARGS
     }
     $cert_path = "${_outdir}/${safe_title}.pem"
