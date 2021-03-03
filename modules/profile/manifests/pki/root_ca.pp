@@ -27,8 +27,8 @@ class profile::pki::root_ca(
   Hash[String, Cfssl::Auth_key] $auth_keys     = lookup('profile::pki::root_ca::auth_keys'),
   Array[String[3]]              $intermediates = lookup('profile::pki::root_ca::intermediates'),
 ) {
-  $crl_base_url = "http://${vhost}/crl"
-  $ocsp_base_url = "http://${vhost}/ocsp"
+  $crl_base_url = "http://${vhost}/${common_name}/crl"
+  $ocsp_base_url = "http://${vhost}/${common_name}/ocsp"
   class {'cfssl': }
   cfssl::signer {$common_name:
     profiles         => $profiles,
@@ -41,6 +41,13 @@ class profile::pki::root_ca(
     db_name          => $db_name,
     auth_keys        => $auth_keys,
     manage_services  => false,
+  }
+  cfssl::cert {"${common_name}_ocsp_signing_cert":
+    key           => $key_params,
+    names         => $names,
+    signer_config => {'config_dir' => "${cfssl::signer_dir}/${common_name}"},
+    profile       => 'ocsp',
+    require       => Cfssl::Signer[$common_name],
   }
   $intermediates.each |$intermediate| {
     cfssl::cert {$intermediate:
