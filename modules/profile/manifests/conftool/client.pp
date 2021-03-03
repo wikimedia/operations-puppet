@@ -28,14 +28,7 @@ class profile::conftool::client(
     String                 $pool_pwd_seed  = lookup('etcd::autogen_pwd_seed'),
     String                 $etcd_user      = lookup('profile::conftool::client::etcd_user', {'default_value' => '__auto__'})
 ) {
-    $socks_pkg = debian::codename::ge('stretch') ? {
-        true    => 'python-socks',
-        default => 'python-pysocks',
-    }
-
-    $conftool_pkg = 'python3-conftool'
-
-    ensure_packages([$conftool_pkg, $socks_pkg])
+    ensure_packages(['python3-conftool', 'python-socks'])
 
     require passwords::etcd
 
