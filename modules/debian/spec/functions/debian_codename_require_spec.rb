@@ -13,7 +13,6 @@ describe 'debian::codename::require' do
       it { is_expected.to run.with_params('buster', '<').and_raise_error(/node codename does not meet requirement/) }
       it { is_expected.to run.with_params('bullseye', '<').and_return(nil) }
       it { is_expected.to run.with_params('buster', '!=').and_raise_error(/node codename does not meet requirement/) }
-      it { is_expected.to run.with_params('jessie', '!=').and_return(nil) }
     end
   end
 end
