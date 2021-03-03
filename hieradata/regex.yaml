@@ -295,19 +295,9 @@ mediawiki_test_environment:
   profile::mediawiki::php::phpdbg: true
 
 hadoop_gpu_workers_buster:
-  __regex: !ruby/regexp /^an-worker109[678]\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
   profile::hadoop::common::min_datanode_mounts: 20
   profile::amd_gpu::rocm_version: '38'
-
-hadoop_gpu_workers:
-  __regex: !ruby/regexp /^an-worker(1099|110[0-1])\.eqiad\.wmnet$/
-  profile::hadoop::common::min_datanode_mounts: 20
-  profile::amd_gpu::rocm_version: '33'
-  # On Debian Stretch the 'render' group is not present, so our
-  # automation to add all users of analytics-privatedata-users to it doesn't
-  # work. The 'render' group on Debian Buster is the one able to control the kfd
-  # device, and hence the GPU.
-  profile::amd_gpu::kfd_access_group: 'analytics-privatedata-users'
 
 stat_gpu_hosts:
   __regex: !ruby/regexp /^stat100[58]\.eqiad\.wmnet$/
