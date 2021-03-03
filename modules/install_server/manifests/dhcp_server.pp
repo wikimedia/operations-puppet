@@ -31,6 +31,8 @@ class install_server::dhcp_server (
     file { ['/etc/dhcp/opt82-entries.ttyS0-115200', '/etc/dhcp/opt82-entries.ttyS1-115200']:
         ensure  => file,
         mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
         require => Package['isc-dhcp-server'],
     }
 
