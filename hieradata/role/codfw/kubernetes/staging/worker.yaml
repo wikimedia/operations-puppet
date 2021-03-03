@@ -11,7 +11,7 @@ profile::calico::kubernetes::bgp_peers:
 - cr2-codfw.wikimedia.org
 profile::kubernetes::master_fqdn: kubestagemaster.svc.codfw.wmnet
 profile::kubernetes::master_hosts:
-- kubestagemaster.svc.codfw.wmnet
+- kubestagemaster2001.codfw.wmnet
 profile::kubernetes::node::prometheus_url: http://prometheus.svc.codfw.wmnet/k8s-staging
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.76.3"
 profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.codfw.wmnet:6443
