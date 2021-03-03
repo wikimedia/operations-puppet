@@ -92,7 +92,9 @@ def get_args(devdict, args):
             args.device = dev_choices[0]
             break
 
-        dev = input("What device would you like to format and mount? <%s> " % dev_choices[0])
+        dev = input(
+            "What device would you like to format and mount? <%s> " % dev_choices[0]
+        )
         if not dev:
             dev = dev_choices[0]
         if dev in dev_choices:
@@ -131,15 +133,25 @@ def format_and_mount(args):
     pathlib.Path(args.mountpoint).mkdir(parents=True, exist_ok=True)
 
     print("Mounting on %s..." % args.mountpoint)
-    subprocess.run(["mount", devpath, args.mountpoint])
+    if args.device.startswith("sd"):
+        subprocess.run(["mount", "-o", "discard", devpath, args.mountpoint])
+    else:
+        subprocess.run(["mount", devpath, args.mountpoint])
 
     updated_devdict = block_dev_dict()
     uuid = updated_devdict[args.device]["uuid"]
 
-    fstabline = "UUID=%s %s ext4 nofail,x-systemd.device-timeout=2s 0 2\n" % (
-        uuid,
-        args.mountpoint,
-    )
+    if args.device.startswith("sd"):
+        # We're using scsi drivers and can set discard in mount options
+        fstabline = (
+            "UUID=%s %s ext4 discard,nofail,x-systemd.device-timeout=2s 0 2\n"
+            % (uuid, args.mountpoint)
+        )
+    else:
+        fstabline = "UUID=%s %s ext4 nofail,x-systemd.device-timeout=2s 0 2\n" % (
+            uuid,
+            args.mountpoint,
+        )
     print("Updating fstab with %s..." % fstabline)
     with open("/etc/fstab", "a") as myfile:
         myfile.write(fstabline)
