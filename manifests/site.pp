@@ -2459,7 +2459,7 @@ node /^thumbor200[1234]\.codfw\.wmnet/ {
 }
 
 # deployment servers
-node /^deploy[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+node /^deploy[12]002\.(eqiad|codfw)\.wmnet$/ {
     role(deployment_server)
 }
 
