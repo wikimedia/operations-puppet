@@ -10,7 +10,7 @@ class icinga::monitor::reading_web {
         notes_url     => 'https://phabricator.wikimedia.org/rOPUP8e70f242a7888527d6af8ff8d823f82fe0202cd0',
     }
 
-    monitoring::grafana_alert { 'reading-web-client-errors':
+    monitoring::grafana_alert { 'wikimedia-client-errors-alerts':
         dashboard_uid => '000000566',
         contact_group => 'team-reading-web,admins',
         notes_url     => 'https://logstash.wikimedia.org/app/kibana#/dashboard/AXDBY8Qhh3Uj6x1zCF56'
