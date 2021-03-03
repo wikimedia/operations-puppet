@@ -1,0 +1,23 @@
+cluster: ml_serve
+profile::kubernetes::master::accessible_to: all
+profile::kubernetes::master::apiserver_count: 2
+profile::kubernetes::master::admission_controllers:
+  NamespaceLifecycle: ''
+  LimitRanger: ''
+  ServiceAccount: "--service-account-key-file=/etc/ssl/localcerts/ml-ctrl.svc.%{::site}.wmnet.crt"
+  DefaultStorageClass: ''
+  DefaultTolerationSeconds: ''
+  ResourceQuota: ''
+  PodSecurityPolicy: ''
+profile::kubernetes::master::allow_privileged: true
+profile::kubernetes::master::expose_puppet_certs: true
+profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::master::use_cergen: true
+profile::kubernetes::master::service_cert: "ml-ctrl.svc.%{::site}.wmnet"
+profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/ml-ctrl.svc.%{::site}.wmnet.crt"
+profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/ml-ctrl.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::authz_mode: 'RBAC'
+profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/ml-ctrl.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::service_node_port_range: '1-65535'
+profile::standard::admin_groups:
+  - ml-team-admins

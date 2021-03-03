@@ -1663,7 +1663,11 @@ node /^ml-etcd200[123]\.codfw\.wmnet/ {
     role(etcd::v3::ml_etcd)
 }
 
-node /^ml-serve-ctrl100[12]\.eqiad\.wmnet/ {
+node /^ml-serve-ctrl1001\.eqiad\.wmnet/ {
+    role(ml_k8s::master)
+}
+
+node /^ml-serve-ctrl1002\.eqiad\.wmnet/ {
     role(insetup)
 }
 
