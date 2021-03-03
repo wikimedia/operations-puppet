@@ -177,6 +177,11 @@ readonly MAXTICKS=10
 readonly TICK_LEN=1
 quit=""
 ticks="$MAXTICKS"
+
+# Force a redraw when terminal is resizing. Cleans up UI glitches
+# much faster after a resize:
+trap 'ticks=$MAXTICKS' SIGWINCH
+
 while [ -z "$quit" ]; do
   if ((ticks >= MAXTICKS)); then
     ticks=0
