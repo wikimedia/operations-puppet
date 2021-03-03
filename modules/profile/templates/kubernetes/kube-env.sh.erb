@@ -23,6 +23,24 @@ kube_env_clear() {
     unset TILLER_NAMESPACE K8S_CLUSTER KUBECONFIG
 }
 
+# Bash completion for kube_env
+__kube_env_environments="<%= @envs.keys.join(" ") %>"
+__kube_env_services="<%= @real_services.keys.join(" ") %>"
+__kube_env_complete() {
+    local cur
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    COMPREPLY=()
+    case "${#COMP_WORDS[@]}" in
+        2)
+            COMPREPLY=( $(compgen -W "${__kube_env_services}" -- ${cur}) )
+            ;;
+        3)
+            COMPREPLY=( $(compgen -W "${__kube_env_environments}" -- ${cur}) )
+            ;;
+    esac
+}
+complete -F __kube_env_complete kube_env
 
 # Add this function to your PS1 to add the currently configured
 # k8s cluster to your prompt.
