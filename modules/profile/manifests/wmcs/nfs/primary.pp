@@ -148,20 +148,11 @@ class profile::wmcs::nfs::primary(
         enable => false,
     }
 
-    # state via nfs-manage (TODO: cleanup from jessie deprecation)
-    if debian::codename::ge('stretch') {
-        service { 'nfs-server':
-            enable => false,
-        }
-        $nfs_start_command = 'systemctl start nfs-server'
-        $nfs_stop_command = 'systemctl stop nfs-server'
-    } else {
-        service { 'nfs-kernel-server':
-            enable => false,
-        }
-        $nfs_start_command = '/usr/sbin/service nfs-kernel-server start'
-        $nfs_stop_command = '/usr/sbin/service nfs-kernel-server stop'
+    service { 'nfs-server':
+        enable => false,
     }
+    $nfs_start_command = 'systemctl start nfs-server'
+    $nfs_stop_command = 'systemctl stop nfs-server'
 
     file { '/usr/local/sbin/nfs-manage':
         content => template('profile/wmcs/nfs/nfs-manage.sh.erb'),
