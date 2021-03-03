@@ -1,11 +1,6 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'icinga::monitor::elasticsearch::cirrus_settings_check', :type => :define do
-  let(:facts) { { :lsbdistrelease => 'debian',
-                  :lsbdistid      => 'jessie',
-                  :initsystem     => 'systemd',
-  } }
-
   describe 'when remote search is disabled' do
       let(:title) { 'my_cluster_name' }
       let(:params) { {

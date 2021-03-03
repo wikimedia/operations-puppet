@@ -1,10 +1,6 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'icinga::monitor::wdqs', :type => :class do
-  let(:facts) { { :lsbdistrelease => 'debian',
-                  :lsbdistid      => 'jessie',
-                  :initsystem     => 'systemd',
-  } }
   let(:pre_condition) do
     'class profile::base($notifications_enabled = true) {}
     include profile::base'
