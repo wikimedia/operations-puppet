@@ -1655,6 +1655,10 @@ node 'moscovium.eqiad.wmnet' {
     role(requesttracker)
 }
 
+node /^ms-backup200[12]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 node /^ms-fe1005\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::role::swift::swiftrepl # lint:ignore:wmf_styleguide
