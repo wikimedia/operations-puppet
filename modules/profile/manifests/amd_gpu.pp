@@ -6,11 +6,7 @@ class profile::amd_gpu (
 ) {
 
     if $rocm_version {
-        if $rocm_version == '33' {
-            $rocm_smi_path = '/opt/rocm-3.3.0/bin/rocm-smi'
-        } else {
-            $rocm_smi_path = '/opt/rocm/bin/rocm-smi'
-        }
+        $rocm_smi_path = '/opt/rocm/bin/rocm-smi'
 
         # Some ROCm packages from 3.8+ ship with libpython3.8 requirements,
         # so for the moment we explicitly deploy Python 3.8 on Buster.

@@ -200,51 +200,6 @@ Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
 ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib64|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|rock-dkms|rock-dkms-firmware|hip-rocclr|rocsolver)$' || [ $? -eq 1 ]
 
-Name: amd-rocm37
-Method: http://repo.radeon.com/rocm/apt/3.7/
-Suite: xenial
-Components: main>thirdparty/amd-rocm37
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib64|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|rock-dkms|rock-dkms-firmware)$' || [ $? -eq 1 ]
-
-Name: amd-rocm33
-Method: http://repo.radeon.com/rocm/apt/3.3/
-Suite: xenial
-Components: main>thirdparty/amd-rocm33
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|rocm-smi-lib64|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|rock-dkms)$' || [ $? -eq 1 ]
-
-Name: amd-rocm271
-Method: http://repo.radeon.com/rocm/apt/2.7.1/
-Suite: xenial
-Components: main>thirdparty/amd-rocm271
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(cxlactivitylogger|hcc|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm)$' || [ $? -eq 1 ]
-
-Name: amd-rocm26
-Method: http://repo.radeon.com/rocm/apt/2.6/
-Suite: xenial
-Components: main>thirdparty/amd-rocm26
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(cxlactivitylogger|hcc|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile)$' || [ $? -eq 1 ]
-
-Name: amd-rocm25
-Method: http://repo.radeon.com/rocm/apt/2.5/
-Suite: xenial
-Components: main>thirdparty/amd-rocm25
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(cxlactivitylogger|hcc|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile)$' || [ $? -eq 1 ]
-
 Name: thirdparty/ceph-nautilus-buster
 Method: https://mirror.croit.io/debian-nautilus
 Components: main>thirdparty/ceph-nautilus-buster

@@ -19,17 +19,11 @@
 #
 #
 class amd_rocm (
-    String $version = '33',
+    String $version = '38',
     Optional[String] $kfd_access_group = undef,
 ) {
 
-    $supported_versions = ['25', '26', '271', '33', '37', '38']
-    # Only add the dkms package (kernel module) for 3.3. Later versions only
-    # work with 5.x kernels, which in turn have a sufficiently-new amdgpu
-    # module
-    $add_dkms_versions = ['33']
-    $add_hcc_package = ['25', '26', '271', '33', '37']
-
+    $supported_versions = ['38']
 
     if ! ($version in $supported_versions) {
         fail('The version of ROCm requested is not supported or misspelled.')
@@ -86,18 +80,9 @@ class amd_rocm (
         'rocm-utils',
         'rocrand',
     ]
-    $dkms_packages = $version in $add_dkms_versions ? {
-        true  => ['rock-dkms'],
-        false => [],
-    }
-
-    $hcc_package = $version in $add_hcc_package ? {
-        true  => ['hcc'],
-        false => [],
-    }
 
     apt::package_from_component { "amd-rocm${version}":
         component => "thirdparty/amd-rocm${version}",
-        packages  => $basepkgs + $dkms_packages + $hcc_package,
+        packages  => $basepkgs,
     }
 }
