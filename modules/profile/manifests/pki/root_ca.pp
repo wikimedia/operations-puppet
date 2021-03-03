@@ -20,10 +20,10 @@ class profile::pki::root_ca(
     String                        $db_name          = lookup('profile::pki::root_ca::db_name'),
     Stdlib::Host                  $db_host          = lookup('profile::pki::root_ca::db_host'),
     Hash[String, Cfssl::Profile]  $profiles         = lookup('profile::pki::root_ca::profiles'),
+    Hash[String, Cfssl::Auth_key] $auth_keys        = lookup('profile::pki::root_ca::auth_keys'),
 ) {
     $crl_base_url = "http://${vhost}/crl"
     $ocsp_base_url = "http://${vhost}/ocsp"
-    class {'cfssl': }
     cfssl::signer {$common_name:
         profiles         => $profiles,
         default_crl_url  => $crl_base_url,
@@ -33,6 +33,7 @@ class profile::pki::root_ca(
         db_pass          => $db_pass,
         db_host          => $db_host,
         db_name          => $db_name,
+        auth_keys        => $auth_keys,
         manage_services  => false,
     }
 }
