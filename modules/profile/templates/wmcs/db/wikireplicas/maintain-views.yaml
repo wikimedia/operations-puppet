@@ -254,15 +254,15 @@ customviews:
     source: actor
     view: select actor_id, actor_user, actor_name
     where: >
-      exists( select 1 from user where user_id = actor_user )
-      OR exists( select 1 from archive where ar_actor = actor_id AND ar_deleted&4 = 0 )
+      exists( select 1 from user where user_id = actor_user ) AND (
+      exists( select 1 from archive where ar_actor = actor_id AND ar_deleted&4 = 0 )
       OR exists( select 1 from ipblocks where ipb_by_actor = actor_id AND ipb_deleted=0 )
       OR exists( select 1 from image where img_actor = actor_id )
       OR exists( select 1 from oldimage where oi_actor = actor_id AND oi_deleted&4 = 0 )
       OR exists( select 1 from filearchive where fa_actor = actor_id AND fa_deleted&4 = 0 )
       OR exists( select 1 from recentchanges where rc_actor = actor_id AND rc_deleted&4 = 0 )
       OR exists( select 1 from logging where log_actor = actor_id AND log_deleted&4 = 0 AND $INSERTED_EXPR$ )
-      OR exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id) where revactor_actor = actor_id AND rev_deleted&4 = 0 )
+      OR exists( select 1 from revision JOIN revision_actor_temp ON(revactor_rev = rev_id) where revactor_actor = actor_id AND rev_deleted&4 = 0 ))
     logging_where:
       *allowed_logtypes
   actor_user:
