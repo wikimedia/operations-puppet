@@ -1008,6 +1008,11 @@ host registry2002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host registry2003 {
+    hardware ethernet aa:00:00:45:48:0d;
+    fixed-address registry2003.codfw.wmnet;
+}
+
 host rpki1001 {
     hardware ethernet aa:00:00:64:75:b9;
     fixed-address rpki1001.eqiad.wmnet;
