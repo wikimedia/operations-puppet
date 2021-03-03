@@ -17,9 +17,9 @@ define cfssl::db (
     Stdlib::Host               $host              = 'localhost',
     Stdlib::Port               $port              = 3306,
     String                     $dbcharset         = 'utf8mb4',
-    String                     $notify_service    = 'cfssl-multirootca',
     Boolean                    $python_config     = false,
     Boolean                    $ssl_checkhostname = false,
+    Optional[String]           $notify_service    = undef,
     Optional[Stdlib::Unixpath] $ssl_ca            = undef,
     Optional[Stdlib::Unixpath] $conf_file         = undef,
     Optional[Stdlib::Unixpath] $sqlite_path       = undef,
@@ -56,6 +56,10 @@ define cfssl::db (
         }
     }
     $db_config = {'driver' => $driver, 'data_source' => $db_data_source}
+    $_notify_service = $notify_service ? {
+      undef   => undef,
+      default => Service[$notify_service],
+    }
     file{$conf_file:
         ensure    => file,
         owner     => 'root',
@@ -63,7 +67,7 @@ define cfssl::db (
         mode      => '0440',
         show_diff => false,
         content   => Sensitive($db_config.to_json()),
-        notify    => Service[$notify_service],
+        notify    => $_notify_service,
         require   => Package[$cfssl::packages],
     }
     if $driver == 'sqlite3' {
@@ -72,7 +76,7 @@ define cfssl::db (
             db_path    => $_sqlite_path,
             sql_schema => "${cfssl::sql_dir}/sqlite_initdb.sql",
             require    => File["${cfssl::sql_dir}/sqlite_initdb.sql"],
-            before     => Service[$notify_service],
+            before     => $_notify_service,
         }
     }
 }
