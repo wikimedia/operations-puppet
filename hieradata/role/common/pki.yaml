@@ -47,9 +47,6 @@ profile::pki::client::certs:
       - "%{facts.networking.fqdn}"
       - "%{facts.networking.ip}"
       - "%{facts.networking.ip6}"
-    key:
-      algo: 'rsa'
-      size: 2048
     names:
       - country: 'US'
         locality: 'San Francisco'
