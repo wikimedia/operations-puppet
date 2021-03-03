@@ -1,8 +1,10 @@
 cluster: kubernetes
+profile::kubernetes::node::packages_from_future: true
+profile::calico::kubernetes::calico_version: '3'
 profile::docker::storage::physical_volumes: "/dev/md1"
 profile::docker::storage::vg_to_remove: 'todelete'
-profile::docker::engine::version: "1.12.6-0~debian-jessie"
-profile::docker::engine::packagename: "docker-engine"
+profile::docker::engine::version: "18.06.3~ce~3-0~debian"
+profile::docker::engine::packagename: "docker-ce"
 profile::docker::engine::declare_service: true
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
@@ -28,4 +30,4 @@ profile::rsyslog::kubernetes::enable: true
 # profile::rsyslog::kubernetes::token
 # Use Kernel 4.19 - T262527
 profile::base::linux419::enable: true
-profile::kubernetes::node::kubelet_ipv6: false
+profile::kubernetes::node::kubelet_ipv6: true

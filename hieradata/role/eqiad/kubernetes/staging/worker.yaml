@@ -10,9 +10,7 @@ profile::calico::kubernetes::bgp_peers:
 profile::kubernetes::master_fqdn: kubestagemaster.svc.eqiad.wmnet
 profile::kubernetes::master_hosts:
 - kubestagemaster1001.eqiad.wmnet
-profile::calico::kubernetes::calico_version: 2.2.0
 profile::kubernetes::node::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.76.3"
 profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.eqiad.wmnet:6443
-# Remove once the clusters have been reinitialized
-profile::kubernetes::node::cni_config: /etc/kubernetes/kubelet_config
+profile::base::notifications: disabled
