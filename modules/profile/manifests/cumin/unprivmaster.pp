@@ -1,7 +1,8 @@
 class profile::cumin::unprivmaster (
     Stdlib::Host  $puppetdb_host        = lookup('puppetdb_host'),
     Array[String] $datacenters          = lookup('datacenters'),
-    Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary')
+    Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary'),
+    Stdlib::Port  $puppetdb_micro_port  = lookup('profile::puppetdb::microservice::port')
 ) {
     include profile::kerberos::client
 
