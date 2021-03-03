@@ -86,7 +86,7 @@ define cfssl::cert (
         Cfssl::Signer_config::Client => "-config ${signer_config['config_file']} ${tls_config} ${_label}",
         default                      => @("SIGNER_ARGS"/L)
             -ca=${signer_config['config_dir']}/ca/ca.pem \
-            -ca-key=${signer_config['config_dir']}/ca/ca_key.pem \
+            -ca-key=${signer_config['config_dir']}/ca/ca-key.pem \
             -config=${signer_config['config_dir']}/cfssl.conf \
             -db-config=${signer_config['config_dir']}/db.conf \
             | SIGNER_ARGS

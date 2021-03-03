@@ -43,7 +43,7 @@ class profile::pki::root_ca(
     manage_services  => false,
   }
   $intermediates.each |$intermediate| {
-    cfssl::cert {$title:
+    cfssl::cert {$intermediate:
       key           => $key_params,
       names         => $names,
       signer_config => {'config_dir' => "${cfssl::signer_dir}/${common_name}"},
