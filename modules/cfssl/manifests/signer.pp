@@ -47,9 +47,19 @@ define cfssl::signer (
     $sqlite_path = "${conf_dir}/cfssl.db"
 
     $_db_conf_file  = pick($db_conf_file, "${conf_dir}/db.conf")
-    $_serve_service = pick($serve_service, "cfssl-serve@${safe_title}")
     $_ca_key_file   = pick($ca_key_file, "${ca_dir}/ca_key.pem")
     $_ca_file       = pick($ca_file, "${ca_dir}/ca.pem")
+
+    # We only want to set up a notify if we are managing services
+    # Or we are explicitly passing a service name to notify
+    if $manage_services or $serve_service {
+      $_serve_service = pick($serve_service, "cfssl-serve@${safe_title}")
+      $notify_service = Service[$_serve_service]
+    } else {
+      $_serve_service = undef
+      $notify_service = undef
+    }
+
 
     cfssl::config{$safe_title:
         default_auth_key => $default_auth_key,
@@ -60,7 +70,7 @@ define cfssl::signer (
         auth_keys        => $auth_keys,
         profiles         => $profiles,
         path             => $conf_file,
-        notify           => Service[$_serve_service],
+        notify           => $notify_service,
     }
     if $manage_db {
         cfssl::db {$safe_title:
@@ -91,7 +101,7 @@ define cfssl::signer (
                 owner  => 'root',
                 group  => 'root',
                 mode   => '0400',
-                notify => Service[$_serve_service];
+                notify => $notify_service;
             $_ca_key_file:
                 show_diff => false,
                 content   => $ca_key_content;
