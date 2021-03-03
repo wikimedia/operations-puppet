@@ -28,11 +28,11 @@ class profile::pki::root_ca(
         profiles         => $profiles,
         default_crl_url  => $crl_base_url,
         default_ocsp_url => $ocsp_base_url,
-        dn_driver        => $db_driver,
-        dn_user          => $db_user,
-        dn_pass          => $db_pass,
-        dn_host          => $db_host,
-        dn_name          => $db_name,
+        db_driver        => $db_driver,
+        db_user          => $db_user,
+        db_pass          => $db_pass,
+        db_host          => $db_host,
+        db_name          => $db_name,
         manage_services  => false,
     }
 }
