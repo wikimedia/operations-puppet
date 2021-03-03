@@ -6,6 +6,7 @@
 2019-07-02T02:02:02	113	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/404	123	GET	http://fr.wikipedia.org/wiki/Mirk_a	-
 2019-07-02T02:02:02	38100	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	38886	GET	http://fr.wikipedia.org/wiki/Salleri	-
 2019-07-02T02:02:02	93000	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	38886	GET	http://fr.wikipedia.org/wiki/N%C3%A9pal	-
+2020-10-14T15:55:43	93276	1.2.3.4	proxy:unix:/run/php/fpm-www.sock|fcgi://localhost/200	2345	GET	http://ga.wiktionary.org/w/rest.php/v1/page/crann	-
 
 2019-07-02T02:02:02	1511	1.2.3.4	-/301	123	GET	http://wikipedia.org/wiki/James_McAvoy	-
 2019-07-02T02:02:02	1511	1.2.3.4	-/404	1296	GET	http://wuu.wikipedia.org/apple-touch-icon-152x152.png	-
