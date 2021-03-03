@@ -49,13 +49,11 @@ class profile::puppetmaster::common (
             $config = merge($base_config, $env_config)
     }
 
-    # Don't attempt to use puppet-master service on stretch, we're using passenger.
+    # Don't attempt to use puppet-master service, we're using passenger.
     # TODO: I think we can probably drop this need to check for jessie pms in cloud
-    if debian::codename::ge('stretch') {
-        service { 'puppet-master':
-            ensure  => stopped,
-            enable  => false,
-            require => Package['puppet'],
-        }
+    service { 'puppet-master':
+        ensure  => stopped,
+        enable  => false,
+        require => Package['puppet'],
     }
 }
