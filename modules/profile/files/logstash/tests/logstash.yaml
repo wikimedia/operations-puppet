@@ -1,0 +1,116 @@
+fields:
+  program: "input-file-logstash-json"
+  host: "logstash1023"
+  logsource: "logstash1023"
+  facility: "local0"
+  severity: "NOTICE"
+codec: "json_lines"
+ignore:
+  - "labels"
+  - "[log][original]"  # json encoding is non-deterministic
+testcases:
+  - input:
+      - >
+        {
+          "level": "WARN",
+          "loggerName": "logstash.outputs.elasticsearch",
+          "timeMillis": 1614787467028,
+          "thread": "[main]>worker2",
+          "logEvent": {
+            "message": "Could not index event to Elasticsearch.",
+            "status": 400,
+            "action": [
+                "index",
+              {
+                "_index": "logstash-mediawiki-2021.03.03",
+                "_type": "_doc"
+              },
+              {
+                "metaClass": {
+                  "metaClass": {
+                    "metaClass": {
+                      "action": "[\"index\", {:_id=>nil, :_index=>\"logstash-mediawiki-2021.03.03\", :routing=>nil, :_type=>\"_doc\"}, #<LogStash::Event:0x289455f8>]",
+                      "response": {
+                        "index": {
+                          "_index": "logstash-mediawiki-2021.03.03",
+                          "_type": "_doc",
+                          "_id": "Y2_V-HcBVD2PAZghVibR",
+                          "status": 400,
+                          "error": {
+                            "type": "mapper_parsing_exception",
+                            "reason": "object mapping for [status] tried to parse field [status] as object, but found a concrete value"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+
+      - >
+        {
+          "level": "INFO",
+          "loggerName": "logstash.outputs.elasticsearch",
+          "timeMillis": 1614787121694,
+          "thread": "Ruby-0-Thread-6: /usr/share/logstash/vendor/bundle/jruby/2.5.0/gems/logstash-output-elasticsearch-10.5.1-java/lib/logstash/outputs/elasticsearch/common.rb:40",
+          "logEvent": {
+            "message": "Attempting to install template",
+            "manage_template": {
+              "index_patterns": [
+                "w3creportingapi-*"
+              ]
+            }
+          }
+        }
+
+    expected:
+      - message: "Could not index event to Elasticsearch."
+        '@timestamp': '2021-03-03T16:04:27.028Z'
+        process:
+          thread:
+            name: "[main]>worker2"
+        service:
+          type: "logstash"
+        host:
+          name: "logstash1023"
+        log:
+          level: "WARN"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 132
+            severity:
+              code: 4
+              name: "warning"
+          logger: 'logstash.outputs.elasticsearch'
+        error:
+          type: 'mapper_parsing_exception'
+          message: 'object mapping for [status] tried to parse field [status] as object, but found a concrete value'
+        ecs:
+          version: "1.7.0"
+      - message: "Attempting to install template"
+        '@timestamp': '2021-03-03T15:58:41.694Z'
+        service:
+          type: "logstash"
+        host:
+          name: "logstash1023"
+        log:
+          level: "INFO"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 134
+            severity:
+              code: 6
+              name: "informational"
+          logger: "logstash.outputs.elasticsearch"
+        process:
+          thread:
+            name: "Ruby-0-Thread-6: /usr/share/logstash/vendor/bundle/jruby/2.5.0/gems/logstash-output-elasticsearch-10.5.1-java/lib/logstash/outputs/elasticsearch/common.rb:40"
+        ecs:
+          version: "1.7.0"

@@ -83,4 +83,4 @@ profile::elasticsearch::monitor::threshold: '>=0.34'
 profile::tlsproxy::envoy::global_cert_name: "kibana.discovery.wmnet"
 
 mtail::logs:
-  - /var/log/logstash/logstash-plain.log
+  - /var/log/logstash/logstash-json.log

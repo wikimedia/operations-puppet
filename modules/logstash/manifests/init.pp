@@ -22,17 +22,18 @@
 #   }
 #
 class logstash (
-    String $heap_memory            = '192m',
-    Integer $pipeline_workers      = $::processorcount,
-    Integer $pipeline_batch_size   = 125,
-    Integer $pipeline_batch_delay  = 50,
-    String $java_package           = 'openjdk-8-jdk',
-    String $logstash_package       = 'logstash',
-    Boolean $gc_log                = true,
-    Integer $jmx_exporter_port     = undef,
-    String $jmx_exporter_config    = undef,
-    Integer[5,7] $logstash_version = 5,
-    Boolean $manage_service        = true,
+    String $heap_memory               = '192m',
+    Integer $pipeline_workers         = $::processorcount,
+    Integer $pipeline_batch_size      = 125,
+    Integer $pipeline_batch_delay     = 50,
+    String $java_package              = 'openjdk-8-jdk',
+    String $logstash_package          = 'logstash',
+    Boolean $gc_log                   = true,
+    Integer $jmx_exporter_port        = undef,
+    String $jmx_exporter_config       = undef,
+    Integer[5,7] $logstash_version    = 5,
+    Boolean $manage_service           = true,
+    Enum['plain', 'json'] $log_format = 'plain',
 ) {
     #TODO: fully remove when java installed with ::profile::java
     #require_package($java_package)
@@ -151,6 +152,7 @@ class logstash (
             'pipeline.workers'     => $pipeline_workers,
             'pipeline.batch.size'  => $pipeline_batch_size,
             'pipeline.batch.delay' => $pipeline_batch_delay,
+            'log.format'           => $log_format,
         }),
         owner   => 'root',
         group   => 'root',

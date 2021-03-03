@@ -19,7 +19,7 @@
     {"index" : "prometheus",                   "value" : "kafka local" },
     {"index" : "alertmanager-webhook-logger",  "value" : "kafka local" },
     {"index" : "input-file-etherpad-multiline","value" : "kafka" },
-    {"index" : "input-file-logstash-multiline","value" : "kafka" },
+    {"index" : "input-file-logstash-json",     "value" : "kafka" },
     {"index" : "input-file-gerrit-multiline",  "value" : "kafka" },
     {"index" : "input-file-gerrit-json",  "value" : "kafka" },
     {"index" : "input-file-gerrit-apache2-error",  "value" : "kafka" },

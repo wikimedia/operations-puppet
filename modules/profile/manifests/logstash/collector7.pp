@@ -40,6 +40,7 @@ class profile::logstash::collector7 (
         jmx_exporter_config => $jmx_exporter_config_file,
         pipeline_workers    => $::processorcount * 2,
         manage_service      => false,
+        log_format          => 'json',
     }
 
     sysctl::parameters { 'logstash_receive_skbuf':
@@ -420,11 +421,9 @@ class profile::logstash::collector7 (
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash',
     }
 
-    # Ship logstash server logs to ELK using startmsg_regex pattern to join multi-line events based on datestamp
-    # example: [2018-11-30T16:13:48,043]
-    rsyslog::input::file { 'logstash-multiline':
-        path           => '/var/log/logstash/logstash-plain.log',
-        startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
+    # Ship logstash service logs to ELK
+    rsyslog::input::file { 'logstash-json':
+        path => '/var/log/logstash/logstash-json.log'
     }
 
     mtail::program { 'logstash':

@@ -41,3 +41,6 @@
 #             }
 #         }
 #     }
+
+# QueryIndices should strongly consider using date math to only query the latest index:
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/date-math-index-names.html
