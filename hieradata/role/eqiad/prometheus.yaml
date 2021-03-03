@@ -12,9 +12,7 @@ profile::prometheus::kubernetes::clusters:
     class_name: role::kubernetes::worker
   k8s-staging:
     enabled: true
-    # TODO: Switch to that
-    # master_host: 'kubestagemaster.svc.eqiad.wmnet'
-    master_host: neon.eqiad.wmnet
+    master_host: 'kubestagemaster.svc.eqiad.wmnet'
     port: 9907
     class_name: role::kubernetes::staging::worker
 # In the private repo a stanza like the following is required
