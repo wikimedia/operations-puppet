@@ -990,6 +990,11 @@ host registry1003 {
     fixed-address registry1003.eqiad.wmnet;
 }
 
+host registry1004 {
+    hardware ethernet aa:00:00:58:e4:d9;
+    fixed-address registry1004.eqiad.wmnet;
+}
+
 host registry2001 {
     hardware ethernet aa:00:00:a9:96:a2;
     fixed-address registry2001.codfw.wmnet;
