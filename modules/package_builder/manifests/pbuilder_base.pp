@@ -78,14 +78,6 @@ define package_builder::pbuilder_base(
                     --no-cowdancer-update \
                     --basepath \"${cowdir}\""
 
-    cron { "cowbuilder_update_${distribution}-${architecture}":
-        ensure      => absent,
-        command     => $update_command,
-        environment => ['PATH=/usr/bin:/bin:/usr/sbin'],
-        hour        => 7,
-        minute      => 34,
-    }
-
     systemd::timer::job { "cowbuilder_update_${distribution}-${architecture}":
         ensure      => present,
         user        => 'root',
