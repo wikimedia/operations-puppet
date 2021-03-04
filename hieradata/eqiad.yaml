@@ -44,3 +44,10 @@ ldap:
   ro-server-fallback: ldap-ro.codfw.wikimedia.org
   rw-server: ldap-labs.eqiad.wikimedia.org
   rw-server-fallback: ldap-labs.codfw.wikimedia.org
+
+mediabackup:
+  db_host: 'db1176.eqiad.wmnet'
+  db_port: 3306
+  db_user: 'mediabackup'
+  # please note password is setup on the secret puppet repo
+  db_schema: 'mediabackups'

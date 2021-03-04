@@ -1685,11 +1685,11 @@ node /^moss-fe200[12]\.codfw\.wmnet/ {
 }
 
 node /^ms-backup100[12]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(mediabackup::worker)
 }
 
 node /^ms-backup200[12]\.codfw\.wmnet/ {
-    role(insetup)
+    role(mediabackup::worker)
 }
 
 node /^ms-fe1005\.eqiad\.wmnet$/ {
