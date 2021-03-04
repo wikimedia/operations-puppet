@@ -31,7 +31,7 @@ class profile::query_service::streaming_updater (
         '--brokers', $kafka_brokers,
         '--consumerGroup', $::hostname,
         '--topic', $kafka_topic,
-        '--batchSize', 250
+        '--batchSize', '250'
     ]
 
     class { 'query_service::updater':
