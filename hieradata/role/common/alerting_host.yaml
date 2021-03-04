@@ -130,7 +130,7 @@ profile::dbbackups::check::backups:
 profile::dbbackups::check::freshness:
   dump: 691200
   snapshot: 259200
-profile::dbbackups::check::db_host: db1080.eqiad.wmnet
+profile::dbbackups::check::db_host: db1159.eqiad.wmnet
 profile::dbbackups::check::db_user: backupcheck
 profile::dbbackups::check::db_database: dbbackups
 profile::dbbackups::check::warn_size_percentage: 5
