@@ -47,4 +47,4 @@ profile::mariadb::section_params:
   m5:
     writeable_dc: 'eqiad'
   tendril:
-    writeable_dc: 'both'
+    writeable_dc: 'eqiad'

@@ -25,11 +25,11 @@ class role::mariadb::misc::phabricator(
 
     include ::profile::mariadb::monitor::prometheus
 
-    $is_master = $profile::mariadb::mysql_role::role == 'master'
-    $read_only = $is_master ? {
-        true  => 0,
-        false => 1,
-    }
+    $mysql_role = $profile::mariadb::mysql_role::role
+    $is_master = $mysql_role == 'master'
+    $read_only = profile::mariadb::section_params::is_read_only($shard, $mysql_role)
+    $is_writeable_dc = profile::mariadb::section_params::is_writeable_dc($shard)
+    $is_primary_master = $is_master and $is_writeable_dc
 
     $stopwords_database = 'phabricator_search'
 
@@ -39,7 +39,7 @@ class role::mariadb::misc::phabricator(
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         sql_mode  => 'STRICT_ALL_TABLES',
-        read_only => $read_only,
+        read_only => Integer($read_only),
         ssl       => $ssl,
         p_s       => $p_s,
     }
@@ -81,25 +81,25 @@ class role::mariadb::misc::phabricator(
     }
 
     class { 'mariadb::monitor_disk':
-        is_critical   => $is_master,
-        contact_group => 'admins',
+        is_critical   => $is_primary_master,
     }
 
     class { 'mariadb::monitor_process':
-        is_critical   => $is_master,
-        contact_group => 'admins',
+        is_critical   => $is_primary_master,
     }
 
-    mariadb::monitor_replication { [ $shard ]:
-        is_critical   => false,
-        contact_group => 'admins',
-        multisource   => false,
+    if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
+        $source_dc = profile::mariadb::section_params::get_repl_src_dc($mysql_role)
+        mariadb::monitor_replication { [ $shard ]:
+            is_critical => false,
+            source_dc   => $source_dc,
+        }
+        profile::mariadb::replication_lag { $shard: }
     }
 
-    mariadb::monitor_readonly { [ $shard ]:
-        read_only     => $read_only,
-        is_critical   => false,
-        contact_group => 'admins',
+    mariadb::monitor_readonly { $shard:
+        read_only   => $read_only,
+        is_critical => $is_primary_master,
     }
 
     class { 'mariadb::monitor_memory': }

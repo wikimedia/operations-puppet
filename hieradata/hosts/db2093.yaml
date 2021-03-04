@@ -1,2 +1,3 @@
 # db2093
 # This host actively holds Orchestrator database
+profile::mariadb::mysql_role: 'master'

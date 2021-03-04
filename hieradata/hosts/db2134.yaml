@@ -1,3 +1,4 @@
 # db2134
 mariadb::shard: 'm3'
+profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'ROW'

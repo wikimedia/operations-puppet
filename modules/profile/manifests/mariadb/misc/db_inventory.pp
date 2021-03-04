@@ -8,11 +8,16 @@ class profile::mariadb::misc::db_inventory(
     include profile::mariadb::misc::zarcillo
 
     $id = 'db_inventory'
-    $is_master = $profile::mariadb::mysql_role::role == 'master'
-    $binlog_format = $is_master ? {
+    # As the included profiles use both 'tendril' and 'zarcillo' as section names,
+    # and 'db_inventory' isn't a valid section name, for the purposes of
+    # profile::mariadb::section_params use 'tendril' as the name.
+    $shard = 'tendril'
+    $mysql_role = $profile::mariadb::mysql_role::role
+    $binlog_format = $mysql_role == 'master' ? {
         true    => 'STATEMENT',
         default => 'ROW',
     }
+    $is_writeable_dc = profile::mariadb::section_params::is_writeable_dc($shard)
 
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
@@ -31,21 +36,39 @@ class profile::mariadb::misc::db_inventory(
 
     include profile::mariadb::monitor::prometheus
 
-    mariadb::monitor_replication { $id: }
-    mariadb::monitor_readonly { $id:
-        # XXX(kormat): while the orchestrator database is hosted on db2093,
-        # both nodes need to be read-write. T266003 for context.
-        # read_only     => !($is_master),
-        read_only => false,
+    if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
+        $source_dc = profile::mariadb::section_params::get_repl_src_dc($mysql_role)
+        mariadb::monitor_replication { $id:
+            # Ignore $is_writeable_dc for now, as both hosts are writeable.
+            # See T266003 for context.
+            #is_critical => $is_writeable_dc,
+            is_critical => true,
+            source_dc   => $source_dc
+        }
+        profile::mariadb::replication_lag { $id: }
     }
-    profile::mariadb::replication_lag { $id: }
-    class { 'mariadb::monitor_disk': }
-    class { 'mariadb::monitor_process': }
+
+
+    $is_read_only = profile::mariadb::section_params::is_read_only($shard, $mysql_role)
+    $is_critical = profile::mariadb::section_params::is_alert_critical($shard, $mysql_role)
+    mariadb::monitor_readonly { $id:
+        # Ignore $is_writeable_dc for now, as both hosts are writeable.
+        # See T266003 for context.
+        #read_only   => $is_read_only,
+        read_only   => false,
+        is_critical => $is_critical,
+    }
+    class { 'mariadb::monitor_disk':
+        is_critical => $is_critical,
+    }
+    class { 'mariadb::monitor_process':
+        is_critical => $is_critical,
+    }
 
     class { 'mariadb::heartbeat':
         shard      => $id,
         datacenter => $::site,
-        enabled    => $is_master,
+        enabled    => $mysql_role == 'master',
     }
 
     class { 'mariadb::monitor_memory': }

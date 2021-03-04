@@ -66,12 +66,10 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     class { 'mariadb::monitor_disk':
         is_critical   => false,
-        contact_group => 'admins',
     }
 
     class { 'mariadb::monitor_process':
         process_count => length($instances),
         is_critical   => false,
-        contact_group => 'admins',
     }
 }
