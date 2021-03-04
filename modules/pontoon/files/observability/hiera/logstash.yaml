@@ -1,0 +1,28 @@
+profile::elasticsearch::dc_settings:
+  cluster_name: pontoon-elk7-eqiad1
+  unicast_hosts:
+    - "%{alias('__master_for_role_logstash__elasticsearch7')}"
+    - "%{alias('__master_for_role_logstash7')}"
+  cluster_hosts:
+    - "%{alias('__master_for_role_logstash__elasticsearch7')}"
+    - "%{alias('__master_for_role_logstash7')}"
+
+profile::elasticsearch::common_settings:
+  auto_create_index: true
+  short_cluster_name: elk7
+  awareness_attributes: ''
+  expected_nodes: 1
+  heap_memory: '1G'
+  minimum_master_nodes: 1
+  recover_after_nodes: 1
+  recover_after_time: '1m'
+  # Dont encourage some sort of accidental feedback loop
+  send_logs_to_logstash: false
+  http_port: 9200
+  transport_tcp_port: 9300
+  curator_uses_unicast_hosts: false
+  filter_cache_size: '10%'
+  disktype: 'ssd'
+
+# prometheus-es-exporter should only run on one host per cluster
+profile::elasticsearch::logstash::es_exporter_host: "%{alias('__master_for_role_logstash__elasticsearch7')}"

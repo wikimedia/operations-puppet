@@ -1,6 +1,7 @@
 # XXX should work out of the box with existing hieradata
 profile::kafka::broker::kafka_cluster_name: logging-eqiad
 profile::kafka::broker::max_heap_size: '1g'
+profile::kafka::broker::num_partitions: 1
 
 # XXX can't use %{alias} because of the port number appended
 profile::rsyslog::kafka_shipper::kafka_brokers:
@@ -16,6 +17,18 @@ kafka_brokers_logging:
 
 # XXX the %{alias} parametrization here supports only one host now!
 kafka_clusters:
+  main-eqiad:
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      "%{alias('__master_for_role_kafka__logging')}":
+        id: 1042
+        rack: na
+  main-codfw:
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      "%{alias('__master_for_role_kafka__logging')}":
+        id: 1042
+        rack: na
   logging-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:

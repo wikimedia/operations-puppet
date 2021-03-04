@@ -20,13 +20,13 @@ grafana:
   - pontoon-grafana-01.monitoring.eqiad1.wikimedia.cloud
 
 logstash::elasticsearch7:
-  - pontoon-elastic7-01.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-elastic7-02.monitoring.eqiad1.wikimedia.cloud
 
 kafka::logging:
   - pontoon-kafka-01.monitoring.eqiad1.wikimedia.cloud
 
 logstash7:
-  - pontoon-logstash7-02.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-logstash7-03.monitoring.eqiad1.wikimedia.cloud
 
 configcluster:
   - pontoon-conf-01.monitoring.eqiad1.wikimedia.cloud
