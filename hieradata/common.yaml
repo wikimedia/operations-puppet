@@ -11,6 +11,9 @@ lookup_options:
     merge: hash
   profile::docker::engine::settings:
     merge: hash
+  labsldapconfig:
+    merge: hash
+
 # General variables that once would have been in realm.pp
 cluster: misc
 datacenters:
@@ -1848,6 +1851,7 @@ shared_acme_certificates:
     - '^ncredir500[12]\.eqsin\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
+labsldapconfig: {}
 ldap:
   base-dn: 'dc=wikimedia,dc=org'
   groups_cn: 'ou=groups'
