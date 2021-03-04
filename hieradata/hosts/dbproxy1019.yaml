@@ -2,10 +2,10 @@
 profile::mariadb::proxy::replicas::servers:
   labsdb1009:
     address: '10.64.4.14:3306'
-    weight: 2 
-  labsdb1010:
-    address: '10.64.37.23:3306'
     weight: 1
+  # labsdb1010:
+  #   address: '10.64.37.23:3306'
+  #   weight: 1
 profile::mariadb::proxy::firewall: 'public'
 profile::mariadb::proxy::multiinstance_replicas::replica_type: 'web'
 # LVS DNS of this server is wikireplicas-b.wikimedia.org
