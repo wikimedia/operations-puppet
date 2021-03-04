@@ -1,3 +1,5 @@
+# NOTE: This file is managed by Puppet.
+
 import sys
 import os
 import grp
@@ -26,6 +28,10 @@ puppet_config = {
 config = {
     # Run JupyterHub out of this conda environment.
     'conda_base_env_path': '/usr/lib/anaconda-wmf',
+
+    # Don't include the conda base env as a selectable profile by default.
+    # Users should always use their own writable stacked conda env.
+    'include_conda_base_env_profile': False,
 
     # The port JupyterHub users should connect on.
     'port': '8880',
@@ -238,6 +244,8 @@ c.CondaEnvProfilesSpawner.conda_cmd = [
     'sudo', '--set-home', '-u', '{USERNAME}',
     os.path.join(config['conda_base_env_path'], 'condabin', 'conda')
 ]
+
+c.CondaEnvProfilesSpawner.include_conda_base_env_profile = config['include_conda_base_env_profile']
 
 # c.CondaEnvProfilesSpawner.debug = True
 

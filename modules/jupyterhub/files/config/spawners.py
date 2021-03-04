@@ -44,11 +44,17 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
         help='If debug logging should be enabled for spawned profiles.'
     ).tag(config=True)
 
-    base_conda_env_path = Unicode(
+    conda_base_env_path = Unicode(
         default_value='/usr/lib/anaconda-wmf',
         help="""If set, this conda env is assumed to be a readonly base env.
-        This is currently only used to augment the profile's description.
+        It can be configurably included or excluded form the list of available profiles
+        with the include_conda_base_env_profile setting.
         """
+    ).tag(config=True)
+
+    include_conda_base_env_profile = Bool(
+        default_value=True,
+        help="""Whether to include a profile selection to spawn using the base conda env."""
     ).tag(config=True)
 
     jupyterhub_singleuser_conda_env_script = Unicode(
@@ -78,7 +84,7 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
 
     def make_profile(
         self,
-        conda_env_path,
+        conda_env_prefix,
         name=None,
         description=None,
         settings={}
@@ -88,7 +94,7 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
         """
 
         if name is None:
-            name = os.path.basename(conda_env_path)
+            name = os.path.basename(conda_env_prefix)
 
         if description is None:
             description = name
@@ -97,7 +103,7 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
             'default_url': '/lab',
             'environment': self.environment,
             'debug': self.debug,
-            'cmd':  [self.jupyterhub_singleuser_conda_env_script, conda_env_path]
+            'cmd':  [self.jupyterhub_singleuser_conda_env_script, conda_env_prefix]
         }
 
         profile_settings.update(settings)
@@ -114,7 +120,7 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
         return self.make_profile(
             # __NEW__ is used by jupyterhub_singleuser_conda_env_script to indicate
             # that it should create a new stacked conda user env.
-            conda_env_path='__NEW__',
+            conda_env_prefix='__NEW__',
             name='new_conda_env',
             description='Create and use new stacked conda environment...'
         )
@@ -149,15 +155,18 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
         Returns a list of ProfileSpawner profiles for conda environments.
         """
         conda_profiles = []
-        for conda_env_path in self.list_conda_envs():
-            conda_env_name = os.path.basename(conda_env_path)
+        for conda_env_prefix in self.list_conda_envs():
+            conda_env_name = os.path.basename(conda_env_prefix)
             conda_env_description = 'conda: {} (local)'.format(conda_env_name)
 
-            if conda_env_path == self.base_conda_env_path:
+            if conda_env_prefix == self.conda_base_env_path:
                 conda_env_description += ' (read only)'
+                # Skip the base conda env if configured to do so.
+                if not self.include_conda_base_env_profile:
+                    continue
 
             profile = self.make_profile(
-                conda_env_path=conda_env_path,
+                conda_env_prefix=conda_env_prefix,
                 name=conda_env_name,
                 description=conda_env_description,
                 # TODO: YarnSpawner?
