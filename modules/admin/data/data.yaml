@@ -115,7 +115,8 @@ groups:
     members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
-              kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited]
+              kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited,
+              daimona]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -4221,6 +4222,14 @@ users:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCrWAH/rao/XRJ6VjjsFnr141AwNsatGcSMQ5WvR9LhNUwNFnUnAXrM1CJO/FI4a00nfaaxBSYAeFqK9LZnxhyuhwMPrleBsn2U63OqM2OW9nSsirupuUoimAzwrNlF+v5SyG4We31fte5tZKautHgMo3mrT9tWaje9a4DpjhDFuvNf9Lvtx9ZeOcUS72raipPba+zG8j3Kb/kcctH/KqBaYtWnUjxL6nNBjHd7mHpRW2CnxGaHX7HSlHrwFC/DL8xi/JJulRGNuAGYJ8ywiCXJZnTR/UPl1XubaQXKU7We/gtCqWnGHXRoi+BiWbgACYGbGVqvCgq/NzEMcfRVSWXZCmmD+DokMzW0hWyxTF/OvlxBjZ6/f1bBbssOpo7VlkqbCNuu5bBOOoziQ33Gc9z07dKa211WFDU+Ap1NIWyndSPULiPQG9O4BdXUsKKGDH+2IWgr+PBs1C4D+kW/xxWNkr9T07qnyYlpzFSC+7lLRhSGaWtc4YXuryK/IUob0eO4n+Nm/5hJppsxXo5CVDa8ch4kem4VXQFDeZgth7UZGFFEoRc0mKrqVS6+i5xJYXMaXtYHvTl8Kms+RDqgC3afptohszyqFSBzlgvq/DApdPRKYNVv8nlGdFJbwuMKM48zbDgLwC/VEmrGoUvUZjSVgm2Sl4hoOuq6YN9ipyiQuw=="
     expiry_date: 2021-06-01
     expiry_contact: wkandek@wikimedia.org
+  daimona:
+    ensure: present
+    realname: (known to Legal)
+    email: daimona.wiki@gmail.com
+    uid: 18293
+    gid: 500
+    ssh_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGoHMHjUVr1SjVzIlQvZBxaSQj/ex2P95D54y2wZzAd14tJ4vnVPh800Uspg+gfJ1ibNrx7WRdWFJXk3vK32oCvhbo7RNPMAQFrai4OFeHxGYPGEB1XMNC/4sy1HNgAD56IltqYHfVp0/EfQiSiv1wYWBkAdpRUW/Aqa9qwl51SLR8EE1cFojQCtkvCYJOo0uS2qL5Z0qJEP/SN3ocuDlD89rdxxVA+VGBeXHfMpqJBpeUyA6Xmx9sKUV3KFO2A6kQAN55x9BFEC3BtUuu9SRx4AgaDJLeNU5+D1Uqfg8bzgBXjaSyGc6vSqISqQLViFh4Y61lFlCOz1NvVQ/yv6LM95d2fKy98jxQGvIUf2O9F2sBjRUQlBMdKkbT2/4v4ldHLf+VUbyHN1po2PBQfXff4B7+DTrmI/UAiRYoW7sTmqRu1j1nSSY1QgHrRVkR+gCcwGhkYnlkmTDcKqVgNkEKwTYSQtyU9pZ4OaccQ/0b028xnOvc95VGh1/ffGatNoXexdspqWffxKgT5dIGSaSXofAaJdIV9UJBb4X1MUT6wvghT+WSgrg55IC5QN4fCbAZO1jhVdCcwBfBUqTcZZr+TSDhdM8oQeYJuo6gOVhWP2c+awPr5dIF/XTVYMHZ9G8dDLX+SSYvQpqdKQkR5KZ4nYQEvOHJ0sLchprJdiFUNw== daimona.wiki@gmail.com"
 
 ldap_only_users:
   abartov:
@@ -4295,10 +4304,6 @@ ldap_only_users:
     ensure: present
     realname: Christine Stone
     email: cstone@wikimedia.org
-  daimona:
-    ensure: present
-    realname: (known to Legal)
-    email: daimona.wiki@gmail.com
   daisy:
     ensure: present
     realname: Daisy Chen
