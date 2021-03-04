@@ -1470,7 +1470,7 @@ node /^clouddb10(17|18|19|20)\.eqiad\.wmnet$/ {
 }
 
 node 'clouddb1021.eqiad.wmnet' {
-    role(insetup)
+    role(wmcs::db::wikireplicas::dedicated::analytics_multiinstance)
 }
 
 node /labstore100[45]\.eqiad\.wmnet/ {
