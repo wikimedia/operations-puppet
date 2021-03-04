@@ -633,7 +633,7 @@ host backup2002 {
 }
 
 host backup2003 {
-    hardware ethernet 2C:EA:7F:94:71:5A ;
+    hardware ethernet 2C:EA:7F:94:71:5A;
     fixed-address backup2003.codfw.wmnet;
 }
 
