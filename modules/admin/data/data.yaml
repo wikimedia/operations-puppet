@@ -299,7 +299,8 @@ groups:
               edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
-              kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen, amuigai, pginer]
+              kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen, amuigai, pginer,
+              mwilliams]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4230,6 +4231,13 @@ users:
     gid: 500
     ssh_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGoHMHjUVr1SjVzIlQvZBxaSQj/ex2P95D54y2wZzAd14tJ4vnVPh800Uspg+gfJ1ibNrx7WRdWFJXk3vK32oCvhbo7RNPMAQFrai4OFeHxGYPGEB1XMNC/4sy1HNgAD56IltqYHfVp0/EfQiSiv1wYWBkAdpRUW/Aqa9qwl51SLR8EE1cFojQCtkvCYJOo0uS2qL5Z0qJEP/SN3ocuDlD89rdxxVA+VGBeXHfMpqJBpeUyA6Xmx9sKUV3KFO2A6kQAN55x9BFEC3BtUuu9SRx4AgaDJLeNU5+D1Uqfg8bzgBXjaSyGc6vSqISqQLViFh4Y61lFlCOz1NvVQ/yv6LM95d2fKy98jxQGvIUf2O9F2sBjRUQlBMdKkbT2/4v4ldHLf+VUbyHN1po2PBQfXff4B7+DTrmI/UAiRYoW7sTmqRu1j1nSSY1QgHrRVkR+gCcwGhkYnlkmTDcKqVgNkEKwTYSQtyU9pZ4OaccQ/0b028xnOvc95VGh1/ffGatNoXexdspqWffxKgT5dIGSaSXofAaJdIV9UJBb4X1MUT6wvghT+WSgrg55IC5QN4fCbAZO1jhVdCcwBfBUqTcZZr+TSDhdM8oQeYJuo6gOVhWP2c+awPr5dIF/XTVYMHZ9G8dDLX+SSYvQpqdKQkR5KZ4nYQEvOHJ0sLchprJdiFUNw== daimona.wiki@gmail.com"
+  mwilliams:
+    ensure: present
+    realname: Matthew Williams
+    email: mwilliams@wikimedia.org
+    uid: 23615
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -4783,10 +4791,6 @@ ldap_only_users:
     ensure: present
     realname: Huei Tan
     email: htan@wikimedia.org
-  mwilliams:
-    ensure: present
-    realname: Matthew Williams
-    email: mwilliams@wikimedia.org
   samwalton:
     ensure: present
     realname: Sam Walton
