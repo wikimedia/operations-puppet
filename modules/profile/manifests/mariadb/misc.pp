@@ -5,11 +5,9 @@ class profile::mariadb::misc (
     require profile::mariadb::mysql_role
     require passwords::misc::scripts
 
-    $is_master = $profile::mariadb::mysql_role::role == 'master'
-    $read_only = $is_master ? {
-        true  => 0,
-        false => 1,
-    }
+    $mysql_role = $profile::mariadb::mysql_role::role
+    $is_master = $mysql_role == 'master'
+    $read_only = profile::mariadb::section_params::is_read_only($shard, $mysql_role)
 
     profile::mariadb::section { $shard: }
 
@@ -30,7 +28,7 @@ class profile::mariadb::misc (
         datadir   => '/srv/sqldata',
         tmpdir    => '/srv/tmp',
         ssl       => 'puppet-cert',
-        read_only => $read_only,
+        read_only => Integer($read_only),
         p_s       => 'on',
     }
 
@@ -47,21 +45,22 @@ class profile::mariadb::misc (
     }
     class { 'mariadb::monitor_disk':
         is_critical   => $is_master,
-        contact_group => 'admins',
     }
 
     class { 'mariadb::monitor_process':
         is_critical   => $is_master,
-        contact_group => 'admins',
     }
-    mariadb::monitor_readonly { [ $shard ]:
-        read_only     => $read_only,
-        is_critical   => false,
-        contact_group => 'admins',
+    mariadb::monitor_readonly { $shard:
+        read_only   => $read_only,
+        is_critical => $is_master,
     }
-    mariadb::monitor_replication { [ $shard ]:
-        is_critical   => false,
-        contact_group => 'admins',
+    if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
+        $source_dc = profile::mariadb::section_params::get_repl_src_dc($mysql_role)
+        mariadb::monitor_replication { [ $shard ]:
+            is_critical => false,
+            source_dc   => $source_dc,
+        }
+        profile::mariadb::replication_lag { $shard: }
     }
 
     class { 'mariadb::monitor_memory': }
