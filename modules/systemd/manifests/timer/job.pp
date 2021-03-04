@@ -125,6 +125,11 @@ define systemd::timer::job(
     Optional[Stdlib::Unixpath]              $environment_file          = undef,
     Boolean                                 $send_mail                 = false,
 ) {
+    # Systemd doesn't play well with spaces in unit names, so check for that
+    if $title =~ /\s/ {
+        fail("Invalid title '${title}' for systemd timer - it should not include spaces.")
+    }
+
     # Sanitize the title for use on the filesystem
     $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
 

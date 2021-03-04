@@ -108,7 +108,7 @@ class docker::baseimages(
     }
 
     # Cronjob to refresh the base images every week on sunday.
-    systemd::timer::job { 'Debian weekly rebuild':
+    systemd::timer::job { 'debian-weekly-rebuild':
         description         => 'Weekly job to rebuild the debian base images',
         command             => '/usr/local/bin/build-base-images',
         environment         => {'DISTRIBUTIONS' => 'stretch buster'},
