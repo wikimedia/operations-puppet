@@ -9,6 +9,7 @@ profile::standard::admin_groups_no_ssh:
   # that analytics-search-users are allowed to sudo to.  This is used
   # for deploying files to HDFS.
   - analytics-search-users
+  - gpu-users
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
