@@ -25,6 +25,14 @@ class labs_lvm($disk = '/dev/sda') {
         group   => 'root',
     }
 
+    file { '/usr/local/sbin/pv-free':
+        ensure  => file,
+        source  => 'puppet:///modules/labs_lvm/pv-free.py',
+        require => Package['lvm2', 'parted'],
+        mode    => '0544',
+        owner   => 'root',
+        group   => 'root',
+    }
 
     file { '/usr/local/sbin/make-instance-vol':
         ensure  => file,

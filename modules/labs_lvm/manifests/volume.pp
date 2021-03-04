@@ -39,13 +39,23 @@ define labs_lvm::volume(
 ) {
     include ::labs_lvm
 
+    # Make sure there's space available to partition before we start partitioning.
+    # Only check if we haven't already created the volume.
+    exec { 'available space':
+        command   => '/usr/local/sbin/pv-free',
+        returns   => 0,
+        unless    => "/bin/mountpoint -q '${mountat}'",
+        logoutput => true,
+    }
+
     exec { "create-vd-${volname}":
         creates   => "/dev/vd/${volname}",
         unless    => "/bin/mountpoint -q '${mountat}'",
         logoutput => 'on_failure',
         require   => [
             File['/usr/local/sbin/make-instance-vol'],
-            Exec['create-volume-group']
+            Exec['create-volume-group'],
+            Exec['available space']
         ],
         command   => "/usr/local/sbin/make-instance-vol '${volname}' '${size}' '${fstype}' ${mkfs_opt}",
     }
@@ -59,6 +69,9 @@ define labs_lvm::volume(
         creates   => $mountat,
         logoutput => 'on_failure',
         command   => "/bin/mkdir -p '${mountat}'",
+        require   => [
+            Exec['available space']
+        ],
     }
 
     mount { $mountat:
