@@ -1,2 +1,4 @@
 # db1159
+# profile::mariadb::mysql_role: 'master'
+mariadb::shard: 'm1'
 profile::base::notifications: disabled

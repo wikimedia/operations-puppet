@@ -650,6 +650,11 @@ node 'db1080.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
+# Future m1 eqiad master, will replace db1080
+node 'db1159.eqiad.wmnet' {
+    role(mariadb::misc)
+}
+
 # m1 codfw master
 node 'db2132.codfw.wmnet' {
     role(mariadb::misc)
@@ -1100,7 +1105,7 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 # 9 expansion hosts T273566
 # 2 hosts (db1154 and db1155) will be used to temporary test sanitarium upgrades to 10.4 T268742
 # Set them to spare individually as it will take take to transfer the data
-node /^db11(56|58|59|61|65|67|76|77|78|79|80|81|82|83|84)\.eqiad\.wmnet$/ {
+node /^db11(56|58|61|65|67|76|77|78|79|80|81|82|83|84)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
