@@ -76,8 +76,7 @@ define package_builder::pbuilder_base(
     # Can be removed after the upgrade to bullseye
     $update_command = "/usr/sbin/cowbuilder --update \
                     --no-cowdancer-update \
-                    --basepath \"${cowdir}\" \
-                    >/dev/null 2>&1"
+                    --basepath \"${cowdir}\""
 
     cron { "cowbuilder_update_${distribution}-${architecture}":
         ensure      => absent,
