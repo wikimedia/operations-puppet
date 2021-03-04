@@ -82,7 +82,7 @@ class profile::docker::registry(
     # This will test both nginx and the docker registry application
     monitoring::service { 'check_docker_registry_https':
         description   => 'Docker registry HTTPS interface',
-        check_command => "check_https_url_for_string!${::fqdn}!/v2/wikimedia-jessie/manifests/latest!schemaVersion",
+        check_command => "check_https_url_for_string!${::fqdn}!/v2/wikimedia-buster/manifests/latest!schemaVersion",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker',
     }
 
