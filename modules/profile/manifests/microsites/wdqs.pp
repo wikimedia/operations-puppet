@@ -5,6 +5,10 @@ class profile::microsites::wdqs {
         content => template('profile/wdqs/httpd-query.wikidata.org.erb'),
     }
 
+    httpd::site { 'query-preview.wikidata.org':
+        content => template('profile/wdqs/httpd-query-preview.wikidata.org.erb'),
+    }
+
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikidata', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikidata/query', {'ensure' => 'directory' })
