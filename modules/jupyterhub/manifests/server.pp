@@ -45,10 +45,10 @@ class jupyterhub::server (
     }
 
     $default_config = {
-        'conda_base_env_path' => '/usr/lib/anaconda-wmf',
-        'cookie_secret_file'  => "${data_path}/jupyterhub_cookie_secret",
-        'db_url'              => "sqlite:///${data_path}/jupyterhub.sqlite.db",
-        'proxy_pid_file'      => "${data_path}/jupyterhub-proxy.pid",
+        'conda_base_env_prefix' => '/usr/lib/anaconda-wmf',
+        'cookie_secret_file'    => "${data_path}/jupyterhub_cookie_secret",
+        'db_url'                => "sqlite:///${data_path}/jupyterhub.sqlite.db",
+        'proxy_pid_file'        => "${data_path}/jupyterhub-proxy.pid",
     }
 
     # This will be rendered as key,val pairs in a dict in jupyterhub_config.py.

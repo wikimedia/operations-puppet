@@ -27,7 +27,7 @@ puppet_config = {
 # Config defaults, overridden by puppet_config.
 config = {
     # Run JupyterHub out of this conda environment.
-    'conda_base_env_path': '/usr/lib/anaconda-wmf',
+    'conda_base_env_prefix': '/usr/lib/anaconda-wmf',
 
     # Don't include the conda base env as a selectable profile by default.
     # Users should always use their own writable stacked conda env.
@@ -67,8 +67,8 @@ config = {
 
 config.update(puppet_config)
 
-if not os.path.exists(config['conda_base_env_path']):
-    print(f'Cannot start JupyterHub. {config["conda_base_env_path"]} does not exist.', file=sys.stderr)
+if not os.path.exists(config['conda_base_env_prefix']):
+    print(f'Cannot start JupyterHub. {config["conda_base_env_prefix"]} does not exist.', file=sys.stderr)
     sys.exit(1)
 
 host_ip_address = socket.gethostbyname(socket.gethostname())
@@ -89,7 +89,7 @@ c.JupyterHub.hub_ip = '0.0.0.0'
 c.JupyterHub.hub_connect_ip = host_ip_address
 c.JupyterHub.hub_port = int(config['hub_port'])
 
-c.ConfigurableHTTPProxy.command = ['{0}/bin/node'.format(config['conda_base_env_path']), '{0}/bin/configurable-http-proxy'.format(config['conda_base_env_path'])]
+c.ConfigurableHTTPProxy.command = ['{0}/bin/node'.format(config['conda_base_env_prefix']), '{0}/bin/configurable-http-proxy'.format(config['conda_base_env_prefix'])]
 c.ConfigurableHTTPProxy.api_url = f'http://127.0.0.1:{config["proxy_api_port"]}'
 c.ConfigurableHTTPProxy.pid_file = config['proxy_pid_file']
 
@@ -242,7 +242,7 @@ c.CondaEnvProfilesSpawner.spawner_class = 'systemdspawner.SystemdSpawner'
 # we were that user when getting the list of conda envs to create profiles for.
 c.CondaEnvProfilesSpawner.conda_cmd = [
     'sudo', '--set-home', '-u', '{USERNAME}',
-    os.path.join(config['conda_base_env_path'], 'condabin', 'conda')
+    os.path.join(config['conda_base_env_prefix'], 'condabin', 'conda')
 ]
 
 c.CondaEnvProfilesSpawner.include_conda_base_env_profile = config['include_conda_base_env_profile']

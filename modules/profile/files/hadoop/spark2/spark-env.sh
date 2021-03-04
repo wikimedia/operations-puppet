@@ -68,7 +68,7 @@
 # - SPARK_NO_DAEMONIZE  Run the proposed command in the foreground. It will not output a PID file.
 
 # Custom WMF options:
-# - CONDA_BASE_ENV_PATH If conda is active and we are running in YARN, this will be used as the default PYSPARK_PYTHON (default: /usr/lib/anaconda-wmf)
+# - CONDA_BASE_ENV_PREFIX If conda is active and we are running in YARN, this will be used as the default PYSPARK_PYTHON (default: /usr/lib/anaconda-wmf)
 
 # If /etc/hadoop/conf exists, use it as HADOOP_CONF_DIR
 if [ -z "${HADOOP_CONF_DIR}" -a -e "/etc/hadoop/conf" ]; then
@@ -86,7 +86,7 @@ if [ -z "${LD_LIBRARY_PATH}" -a -e /usr/lib/hadoop/lib/native ]; then
     export LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native
 fi
 
-: ${CONDA_BASE_ENV_PATH:='/usr/lib/anaconda-wmf'}
+: ${CONDA_BASE_ENV_PREFIX:='/usr/lib/anaconda-wmf'}
 
 # Default PYSPARK_DRIVER_PYTHON to ipython if running pyspark CLI directly.
 if [[ -z "${PYSPARK_DRIVER_PYTHON}" && "${0}" == *pyspark* ]]; then
@@ -94,22 +94,22 @@ if [[ -z "${PYSPARK_DRIVER_PYTHON}" && "${0}" == *pyspark* ]]; then
     if [ -n "${CONDA_PREFIX}" -a -e "${CONDA_PREFIX}/bin/ipython3" ]; then
         export PYSPARK_DRIVER_PYTHON="$(realpath ${CONDA_PREFIX}/bin/ipython3)"
     # TODO: default to always using anaconda-wmf for pyspark, even if a conda env is not active.
-    # Else if CONDA_BASE_ENV_PATH exists, then use its ipython3
-    # elif [ -n "${CONDA_BASE_ENV_PATH}" -a -e "${CONDA_BASE_ENV_PATH}/bin/ipython3" ]; then
-    #     export PYSPARK_DRIVER_PYTHON="$(realpath ${CONDA_BASE_ENV_PATH}/bin/ipython3)"
+    # Else if CONDA_BASE_ENV_PREFIX exists, then use its ipython3
+    # elif [ -n "${CONDA_BASE_ENV_PREFIX}" -a -e "${CONDA_BASE_ENV_PREFIX}/bin/ipython3" ]; then
+    #     export PYSPARK_DRIVER_PYTHON="$(realpath ${CONDA_BASE_ENV_PREFIX}/bin/ipython3)"
     # Else is ipython3 is somewhere in PATH, use it.
     elif [ -n "$(command -v ipython3)" ]; then
         export PYSPARK_DRIVER_PYTHON="$(realpath $(command -v ipython3))"
     fi
 fi
 
-# If running in yarn and a conda env is active and CONDA_BASE_ENV_PATH exists,
-# then default to using CONDA_BASE_ENV_PATH for PYSPARK_PYTHON.
-# Since CONDA_BASE_ENV_PATH should be installed on all remote YARN workers,
+# If running in yarn and a conda env is active and CONDA_BASE_ENV_PREFIX exists,
+# then default to using CONDA_BASE_ENV_PREFIX for PYSPARK_PYTHON.
+# Since CONDA_BASE_ENV_PREFIX should be installed on all remote YARN workers,
 # this should allow pyspark to work. If you need custom python depdendencies on
 # remote workers, you'll have to pack up a custom conda env and
 # set PYSPARK_PYTHON accordingly.
-# TODO: always use CONDA_BASE_ENV_PATH even if a conda env is not currently active.
+# TODO: always use CONDA_BASE_ENV_PREFIX even if a conda env is not currently active.
 if [ -z "${PYSPARK_PYTHON}" ]; then
     # Search the CLI opts to find the master option, if it is given.
     # PYSPARK_PYTHON needs to be set to something that will work on remote executors
@@ -126,9 +126,9 @@ if [ -z "${PYSPARK_PYTHON}" ]; then
         fi
     done
 
-    # TODO: remove the -n $CONDA_PREFIX check and always default to CONDA_BASE_ENV_PATH/bin/python3.
-    if [[ "${spark_master}" == yarn* && -n "${CONDA_PREFIX}" && -e "${CONDA_BASE_ENV_PATH}/bin/python3" ]] ; then
-        export PYSPARK_PYTHON="$(realpath ${CONDA_BASE_ENV_PATH}/bin/python3)"
+    # TODO: remove the -n $CONDA_PREFIX check and always default to CONDA_BASE_ENV_PREFIX/bin/python3.
+    if [[ "${spark_master}" == yarn* && -n "${CONDA_PREFIX}" && -e "${CONDA_BASE_ENV_PREFIX}/bin/python3" ]] ; then
+        export PYSPARK_PYTHON="$(realpath ${CONDA_BASE_ENV_PREFIX}/bin/python3)"
     elif [ -z "${CONDA_PREFIX}" -a -n "$(command -v python3)" ]; then
         # If using the system python3, set PYSPARK_PYTHON to default to the versioned python
         # executable on the node where spark is being launched.
@@ -136,7 +136,7 @@ if [ -z "${PYSPARK_PYTHON}" ]; then
         # This will cause the versions of python that is used on driver
         # and on workers to be the same.
         # https://phabricator.wikimedia.org/T229347#5439259
-        # TODO: Remove this once we always default to CONDA_BASE_ENV_PATH/bin/python3
+        # TODO: Remove this once we always default to CONDA_BASE_ENV_PREFIX/bin/python3
         export PYSPARK_PYTHON="$(basename $(realpath $(command -v python3)))"
         # If SPARK_HOME/pythonX.X exists, then insert it into the front of PYTHONPATH
         # So any provided packages override system installed ones.

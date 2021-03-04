@@ -44,7 +44,7 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
         help='If debug logging should be enabled for spawned profiles.'
     ).tag(config=True)
 
-    conda_base_env_path = Unicode(
+    conda_base_env_prefix = Unicode(
         default_value='/usr/lib/anaconda-wmf',
         help="""If set, this conda env is assumed to be a readonly base env.
         It can be configurably included or excluded form the list of available profiles
@@ -159,7 +159,7 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
             conda_env_name = os.path.basename(conda_env_prefix)
             conda_env_description = 'conda: {} (local)'.format(conda_env_name)
 
-            if conda_env_prefix == self.conda_base_env_path:
+            if conda_env_prefix == self.conda_base_env_prefix:
                 conda_env_description += ' (read only)'
                 # Skip the base conda env if configured to do so.
                 if not self.include_conda_base_env_profile:

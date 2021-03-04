@@ -21,7 +21,7 @@ PrivateTmp=yes
 PrivateDevices=yes
 SyslogIdentifier=<%= @service_name %>
 
-ExecStart=<%= @jupyterhub_config['conda_base_env_path'] %>/bin/jupyterhub --config=<%= @jupyterhub_config_file %> --no-ssl
+ExecStart=<%= @jupyterhub_config['conda_base_env_prefix'] %>/bin/jupyterhub --config=<%= @jupyterhub_config_file %> --no-ssl
 
 [Install]
 WantedBy=multi-user.target
