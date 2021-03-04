@@ -169,8 +169,13 @@ class profile::maps::osm_master (
         storage_id => $tilerator_storage_id,
     }
 
+    $state_path = $osm_engine ? {
+        'imposm3' => '/srv/osm/diff/last.state.txt',
+        'osm2pgsql' => '/srv/osmosis/state.txt'
+    }
+
     class { 'osm::prometheus':
-        state_path      => '/srv/osmosis/state.txt',
+        state_path      => $state_path,
         prometheus_path => '/var/lib/prometheus/node.d/osm_sync_lag.prom',
     }
 
