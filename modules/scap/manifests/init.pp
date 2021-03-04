@@ -15,6 +15,7 @@ class scap (
     String $version                                 = 'present',
     Stdlib::Port::Unprivileged $php7_admin_port     = 9181,
     Stdlib::Fqdn $cloud_statsd_host                 = 'cloudmetrics1002.eqiad.wmnet',
+    Stdlib::Fqdn $betacluster_udplog_host           = 'deployment-mwlog01.deployment-prep.eqiad1.wikimedia.cloud',
 ) {
     require git::lfs
 

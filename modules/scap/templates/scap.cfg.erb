@@ -89,7 +89,7 @@ git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
 statsd_host: <%= @cloud_statsd_host %>
 logstash_host: deployment-logstash03.deployment-prep.eqiad1.wikimedia.cloud:9200
-udp2log_host: deployment-fluorine02.deployment-prep.eqiad1.wikimedia.cloud
+udp2log_host: <%= @betacluster_udplog_host %>
 mediawiki_canary_swagger_url: http://en.wikipedia.beta.wmflabs.org
 wmf_realm: labs
 
@@ -114,7 +114,7 @@ tcpircbot_host: icinga.wikimedia.org
 git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
 statsd_host: <%= @cloud_statsd_host %>
-udp2log_host: deployment-fluorine02.deployment-prep.eqiad1.wikimedia.cloud
+udp2log_host: <%= @betacluster_udplog_host %>
 wmf_realm: labs
 # No pybal in labs, but pretend that there is anyway
 pybal_interface: lo
