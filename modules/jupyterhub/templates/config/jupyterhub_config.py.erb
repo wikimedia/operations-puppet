@@ -226,12 +226,13 @@ if 'external_http_proxy_host' in config:
     external_http_proxy_url = 'http://{0}:{1}'.format(config['external_http_proxy_host'], config['external_http_proxy_port'])
     user_environment['http_proxy'] = external_http_proxy_url
     user_environment['https_proxy'] = external_http_proxy_url
-    # Set JAVA_OPTS to properly set up external http proxy for JVM processes too.
-    user_environment['JAVA_OPTS'] = '-Dhttps.proxyHost={0} -Dhttps.proxyPort={1} -Dhttp.proxyHost={0} -Dhttp.proxyPort={1}'.format(config['external_http_proxy_host'], config['external_http_proxy_port'])
     # Do not use proxying to talk to localhost. This will mostly just
     # never work, and will cause strange errors when the spawned
-    # notebooks talk to the hub or if the hub tries to talk to them
-    user_environment['no_proxy'] = 'localhost,127.0.0.1,{}'.format(host_ip_address)
+    # notebooks talk to the hub or if the hub tries to talk to them.
+    # Also don't uset the http proxy for any *.wmnet addresses.
+    user_environment['no_proxy'] = 'localhost,127.0.0.1,{},.wmnet'.format(host_ip_address)
+    # Set JAVA_OPTS to properly set up external http proxy for JVM processes too.
+    user_environment['JAVA_OPTS'] = '-Djava.net.useSystemProxies'
 
 c.JupyterHub.spawner_class = CondaEnvProfilesSpawner
 c.CondaEnvProfilesSpawner.environment = user_environment
