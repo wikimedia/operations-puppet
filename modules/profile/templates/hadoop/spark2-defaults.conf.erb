@@ -40,6 +40,12 @@ spark.driver.blockManager.port                      <%= @driver_blockmanager_por
 <% end -%>
 spark.yarn.archive                                  hdfs:///user/spark/share/lib/spark-<%= @spark_version %>-assembly.zip
 
+# JVMs should use system proxy settings.
+# The system proxy settings are configured via the env vars http_proxy, https_proxy, and no_proxy.
+# NOTE: When we upgrade to Spark 3, we should use 'defaultJavaOptions', rather than 'extraJavaOptions'.
+spark.driver.extraJavaOptions                     -Djava.net.useSystemProxies=True
+spark.executor.extraJavaOptions                   -Djava.net.useSystemProxies=True
+
 <% @extra_settings.sort.each do |key, value| -%>
 <%= key %>   <%= value %>
 <% end -%>
