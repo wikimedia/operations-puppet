@@ -25,7 +25,9 @@ class profile::pki::server(
 ) {
     $crl_base_url = "http://${vhost}/crl"
     $ocsp_base_url = "http://${vhost}/ocsp"
-    class {'cfssl': }
+    unless defined('cfssl') {
+        class {'cfssl': }
+    }
     $db_conf_file = "${cfssl::conf_dir}/db.conf"
     $multirootca_service = 'cfssl-multirootca'
     cfssl::db{'multirooca-db':

@@ -31,7 +31,9 @@ class profile::pki::multirooca (
     Hash[String, Hash]            $intermediates     = lookup('profile::pki::multirooca::intermediates'),
 
 ) {
-    class {'cfssl': }
+    unless defined('cfssl') {
+        class {'cfssl': }
+    }
 
     $crl_base_url = "http://${vhost}/crl"
     $ocsp_base_url = "http://${vhost}/ocsp"

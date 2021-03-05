@@ -30,7 +30,9 @@ class profile::pki::root_ca(
   $safe_title   = $common_name.regsubst('\W', '_', 'G')
   $crl_base_url = "http://${vhost}/crl/${safe_title}"
   $ocsp_base_url = "http://${vhost}/ocsp/${safe_title}"
-  class {'cfssl': }
+  unless defined('cfssl') {
+    class {'cfssl': }
+  }
   cfssl::signer {$common_name:
     profiles         => $profiles,
     default_crl_url  => $crl_base_url,
