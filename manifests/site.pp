@@ -1325,6 +1325,11 @@ node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
     role(pki)
 }
 
+# New kafka-logging hosts T273778
+node /kafka-logging100[123]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 node /kafka-main100[4-5]\.eqiad\.wmnet/ {
     role(insetup)
 }

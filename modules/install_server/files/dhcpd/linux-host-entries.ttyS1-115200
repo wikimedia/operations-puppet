@@ -3693,6 +3693,16 @@ host kafka-jumbo1009 {
     fixed-address kafka-jumbo1009.eqiad.wmnet;
 }
 
+host kafka-logging1002 {
+    hardware ethernet BC:97:E1:C0:14:30;
+    fixed-address kafka-logging1002.eqiad.wmnet;
+}
+
+host kafka-logging1003 {
+    hardware ethernet BC:97:E1:C0:17:30;
+    fixed-address kafka-logging1003.eqiad.wmnet;
+}
+
 host kafka-main1001 {
     hardware ethernet B0:26:28:3D:3F:50;
     fixed-address kafka-main1001.eqiad.wmnet;
