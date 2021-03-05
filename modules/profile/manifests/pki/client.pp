@@ -12,10 +12,12 @@ class profile::pki::client (
     Hash                 $certs        = lookup('profile::pki::client::certs'),
 ) {
     $signer = "https://${signer_host}:${signer_port}"
+    $bundles_source = "http://${signer_host}/bundles"
     class {'cfssl::client':
-        ensure   => $ensure,
-        signer   => $signer,
-        auth_key => $auth_key,
+        ensure         => $ensure,
+        signer         => $signer,
+        bundles_source => $bundles_source,
+        auth_key       => $auth_key,
     }
     $certs.each |$title, $cert| {
         cfssl::cert{$title:

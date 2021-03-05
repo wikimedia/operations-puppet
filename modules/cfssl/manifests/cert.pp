@@ -143,7 +143,7 @@ define cfssl::cert (
             group    => $group,
             mode     => '0440',
             checksum => 'mtime',
-            source   => "${cfssl::client::signer}/bundles/${label}.pem"
+            source   => "${cfssl::client::bundles_source}/${label}.pem"
         }
     }
 }

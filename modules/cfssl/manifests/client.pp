@@ -4,6 +4,7 @@
 # @param auth_key The sha256 hmac key
 class cfssl::client (
     Stdlib::HTTPUrl      $signer,
+    Stdlib::HTTPUrl      $bundles_source,
     Sensitive[String[1]] $auth_key,
     Wmflib::Ensure       $ensure    = 'present',
     Cfssl::Loglevel      $log_level = 'info',

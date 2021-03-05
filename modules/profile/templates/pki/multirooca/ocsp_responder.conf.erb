@@ -7,6 +7,10 @@
   ServerAlias <%= @facts['fqdn'] %>
   DocumentRoot <%= @document_root %>
 
+  <Directory  <%= @document_root %>>
+    Require all granted
+  </Directory>
+
   # <%= @root_ca_cn %>
   ProxyPass /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>/  http://localhost:<%= @root_ocsp_port %>/
   ProxyPassReverse /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>/  http://localhost:<%= @root_ocsp_port %>/
