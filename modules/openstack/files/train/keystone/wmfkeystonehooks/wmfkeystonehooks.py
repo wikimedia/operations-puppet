@@ -351,7 +351,7 @@ class KeystoneHooks(notifier.Driver):
                 #  removed from every project.
                 roledict = self._get_role_dict()
 
-                # Only add users to bastion; skip other roles like 'observer'
+                # Only add users to bastion; skip other roles like 'reader'
                 if role_id == roledict[CONF.wmfhooks.user_role_name]:
                     user_id = message['payload']['user']
                     self._add_to_bastion(roledict, user_id)
