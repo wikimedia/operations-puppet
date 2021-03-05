@@ -61,13 +61,6 @@ def main():
     if apt_pkg.version_compare(current_kernelpackage_version, '4.9.168-1+deb9u1') > 0:
         expected_cpu_flags.add('md_clear')
 
-    if 'ssbd' in expected_cpu_flags:
-        expected_cpu_flags.remove('ssbd')
-
-    for flag in ['flush_l1d', 'md_clear']:
-        if flag in expected_cpu_flags:
-            expected_cpu_flags.remove(flag)
-
     if not expected_cpu_flags:
         ok('Hardware is too old')
 
