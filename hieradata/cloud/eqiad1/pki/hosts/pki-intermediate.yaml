@@ -16,6 +16,8 @@ profile::pki::multirooca::db_driver: 'mysql'
 profile::pki::multirooca::db_user: 'pki'
 profile::pki::multirooca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
 profile::pki::multirooca::db_name: 'pki'
+profile::pki::multirooca::default_nets:
+  - 172.16.0.0/21
 profile::pki::multirooca::default_profiles:
   ocsp:
     usages:
