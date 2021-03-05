@@ -42,7 +42,7 @@ class profile::pki::multirooca (
     $document_root = '/srv/cfssl'
     $bundle_dir = "${document_root}/bundles"
 
-    wmflib::mkdir_p($bundle_dir)
+    wmflib::dir::mkdir_p($bundle_dir)
 
     cfssl::db{'multirooca-db':
         driver         => $db_driver,
