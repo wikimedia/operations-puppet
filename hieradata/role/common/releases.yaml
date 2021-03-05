@@ -36,6 +36,7 @@ profile::tlsproxy::envoy::global_cert_name: "releases.discovery.wmnet"
 profile::releases::mediawiki::jenkins_service_ensure: 'stopped'
 profile::releases::mediawiki::jenkins_service_enable: 'mask'
 profile::releases::mediawiki::jenkins_service_monitor: false
+profile::base::check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -i "/run/docker" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs
 
 # The Jenkins server runs on Java8
 profile::releases::mediawiki::jenkins_java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
