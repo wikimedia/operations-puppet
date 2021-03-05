@@ -5,6 +5,10 @@ profile::pki::multirooca::intermediates:
     ocsp_port: 10001
     key_content: 'pki/intermediates/WMF_test_intermediate_ca.pem'
     cert_content: 'profile/pki/intermediates/WMF_test_intermediate_ca.pem'
+  deployment-prep_eqiad1_wikimedia_cloud:
+    ocsp_port: 10002
+    key_content: 'pki/intermediates/deployment-prep_eqiad1_wikimedia_cloud.pem'
+    cert_content: 'profile/pki/intermediates/deployment-prep_eqiad1_wikimedia_cloud.pem'
 profile::pki::multirooca::root_ca_cn: 'WMF_TEST_CA'
 profile::pki::multirooca::root_ca_cert: 'profile/pki/ROOT/WMF_TEST_CA.pem'
 profile::pki::multirooca::root_ocsp_cert: 'profile/pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
