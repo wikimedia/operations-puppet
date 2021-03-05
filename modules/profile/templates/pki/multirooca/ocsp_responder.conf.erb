@@ -1,0 +1,22 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+<VirtualHost *:80>
+  ServerName <%= @vhost %>
+  ServerAlias <%= @facts['fqdn'] %>
+  DocumentRoot /var/www/html
+
+  # <%= @root_ca_cn %>
+  ProxyPass /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>/  http://localhost:<%= @root_ocsp_port %>/
+  ProxyPassReverse /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>/  http://localhost:<%= @root_ocsp_port %>/
+<%- @intermediates.each_pair do |intermediate, config| -%>
+  # <%= intermediate %>
+  ProxyPass /ocsp/<%= intermediate.gsub(/\W/, '_') %>/  http://localhost:<%= config['ocsp_port'] %>/
+  ProxyPassReverse /ocsp/<%= intermediate.gsub(/\W/, '_') %>/  http://localhost:<%= config['ocsp_port'] %>/
+<%- end -%>
+
+  LogLevel warn
+  ErrorLog /var/log/apache2/<%= @vhost %>_error.log
+  CustomLog /var/log/apache2/<%= @vhost %>_access.log wmf
+</VirtualHost>

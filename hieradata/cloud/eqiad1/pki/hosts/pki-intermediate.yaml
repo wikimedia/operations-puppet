@@ -1,0 +1,34 @@
+# in this file all _cert parameteres are passed to the file function
+# and all _key paramtetes are passed to the secret function
+profile::pki::multirooca::intermediates:
+  WMF_test_intermediate_ca:
+    ocsp_port: 10001
+    key_content: 'pki/intermediates/WMF_test_intermediate_ca.pem'
+    cert_content: 'profile/pki/intermediates/WMF_test_intermediate_ca.pem'
+profile::pki::multirooca::root_ca_cn: 'WMF_TEST_CA'
+profile::pki::multirooca::root_ca_cert: 'profile/pki/ROOT/WMF_TEST_CA.pem'
+profile::pki::multirooca::root_ocsp_cert: 'profile/pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
+profile::pki::multirooca::root_ocsp_key: 'pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
+profile::pki::multirooca::root_ocsp_port: 10000
+# This is the vhost used for the ocsp/crl responder
+profile::pki::multirooca::vhost: 'pki-intermediate.pki.eqiad1.wikimedia.cloud'
+profile::pki::multirooca::db_driver: 'mysql'
+profile::pki::multirooca::db_user: 'pki'
+profile::pki::multirooca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
+profile::pki::multirooca::db_name: 'pki'
+profile::pki::multirooca::default_profiles:
+  ocsp:
+    usages:
+      - 'digital signature'
+      - 'ocsp signing'
+    expiry: '43800h'
+  server:
+    usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
+    expiry: '96h'
+  client:
+    usages:
+      - 'client auth'
+    expiry: '96h'
