@@ -18,6 +18,7 @@ import logging
 import sys
 
 import mwopenstackclients
+import novaclient.exceptions
 
 if sys.version_info[0] >= 3:
     raw_input = input
@@ -34,8 +35,10 @@ class NovaInstance(object):
         self.instance = self.novaclient.servers.get(self.instance_id)
         self.instance_name = self.instance._info["name"]
 
-    def wait_for_status(self, desiredstatuses):
+    def wait_for_status(self, desiredstatuses, timeout=60):
         oldstatus = ""
+        elapsed = 0
+        naplength = 1
 
         while self.instance.status not in desiredstatuses:
             if self.instance.status != oldstatus:
@@ -46,11 +49,20 @@ class NovaInstance(object):
                     )
                 )
 
-            time.sleep(2)
+            time.sleep(naplength)
+            elapsed += naplength
+
+            if elapsed > timeout:
+                # Since we don't actually check the clock, the timeout values
+                #  here are a approximate. If someone determines that sub-second
+                #  timeout accuracy is important we can add an actual clock read
+                #  here.
+                raise TimeoutError()
+
             self.refresh_instance()
 
     def stopped_migrate(self):
-        logging.warning(
+        logging.info(
             "Migrating stopped VM %s (%s)" % (self.instance.name, self.instance.id)
         )
         self.instance.migrate()
@@ -58,7 +70,7 @@ class NovaInstance(object):
         #  I'm checking for alternate statuses here in case someone fixes that
         #  someday to report a more reasonable status
         self.wait_for_status(["MIGRATING", "RESIZE"])
-        self.wait_for_status(["SHUTOFF", "ACTIVE", "VERIFY_RESIZE"])
+        self.wait_for_status(["SHUTOFF", "ACTIVE", "VERIFY_RESIZE"], timeout=300)
         if self.instance.status == "VERIFY_RESIZE":
             self.instance.confirm_resize()
             self.wait_for_status(["SHUTOFF", "ACTIVE"])
@@ -72,7 +84,7 @@ class NovaInstance(object):
         )
 
     def paused_migrate(self):
-        logging.warning(
+        logging.info(
             "Migrating paused VM %s (%s)" % (self.instance.name, self.instance.id)
         )
         self.instance.unpause()
@@ -82,10 +94,10 @@ class NovaInstance(object):
         self.wait_for_status(["PAUSED"])
 
     def live_migrate(self):
-        logging.warning("Migrating %s (%s)" % (self.instance.name, self.instance.id))
+        logging.info("Migrating %s (%s)" % (self.instance.name, self.instance.id))
         self.instance.live_migrate()
         self.wait_for_status(["MIGRATING"])
-        self.wait_for_status(["ACTIVE"])
+        self.wait_for_status(["ACTIVE"], timeout=1200)
         logging.info(
             "instance {} ({}) is now on host {} with status {}".format(
                 self.instance_id,
@@ -96,18 +108,37 @@ class NovaInstance(object):
         )
 
     def migrate(self):
-        if self.instance.status == "ACTIVE":
-            self.live_migrate()
-        elif self.instance.status == "SHUTOFF":
-            self.stopped_migrate()
-        elif self.instance.status == "PAUSED":
-            self.paused_migrate()
-        else:
+        try:
+            if self.instance.status == "ACTIVE":
+                self.live_migrate()
+            elif self.instance.status == "SHUTOFF":
+                self.stopped_migrate()
+            elif self.instance.status == "PAUSED":
+                self.paused_migrate()
+            else:
+                logging.info(
+                    "instance {} ({}) is in state {} which this script can't handle."
+                    " Skipping.".format(
+                        self.instance_id, self.instance_name, self.instance.status
+                    )
+                )
+                return False
+        except TimeoutError:
             logging.warning(
-                "instance {} ({}) is in state {} which this script can't handle.  Skipping.".format(
-                    self.instance_id, self.instance_name, self.instance.status
+                "Timed out during migration of instance {} ({})".format(
+                    self.instance_id, self.instance_name
                 )
             )
+            return False
+        except novaclient.exceptions.BadRequest as exc:
+            logging.warning(
+                "Failed to migrate instance {} ({}): {}".format(
+                    self.instance_id, self.instance_name, exc
+                )
+            )
+            return False
+
+        return True
 
 
 if __name__ == "__main__":
@@ -142,18 +173,48 @@ if __name__ == "__main__":
     osclients = mwopenstackclients.clients()
     nova = osclients.novaclient()
 
+    retries = 1
+    for attempt in range(1, retries + 2):
+        all_instances = nova.servers.list(
+            search_opts={"host": args.hypervisor, "all_tenants": True}
+        )
+        remaining_instances = list(all_instances)
+
+        for instance in all_instances:
+            if instance.name.startswith("canary"):
+                logging.info(
+                    "Igoring canary instance %s (%s)" % (instance.name, instance.id)
+                )
+                # Leave the canary behind; it won't do any good anywhere else
+                remaining_instances.remove(instance)
+                continue
+            instanceobj = NovaInstance(osclients, instance.id)
+            if instanceobj.migrate():
+                remaining_instances.remove(instance)
+
+        if remaining_instances:
+            logging.warning(
+                "On drain attempt #%d we failed to migrate %d instances."
+                % (attempt, len(remaining_instances))
+            )
+        else:
+            break
+
+    remaining_instances = []
     all_instances = nova.servers.list(
         search_opts={"host": args.hypervisor, "all_tenants": True}
     )
-    logging.warning("%s servers on %s." % (len(all_instances), args.hypervisor))
     for instance in all_instances:
-        if instance.name.startswith("canary"):
+        if not instance.name.startswith("canary"):
             logging.warning(
-                "Igoring canary instance %s (%s)" % (instance.name, instance.id)
+                "Failed to migrate %s.%s (%s)"
+                % (instance.name, instance.tenant_id, instance.id)
             )
-            # Leave the canary behind; it won't do any good anywhere else
-            continue
-        instanceobj = NovaInstance(osclients, instance.id)
-        instanceobj.migrate()
+            remaining_instances.append(instance)
 
     logging.shutdown()
+
+    if remaining_instances:
+        exit(1)
+
+    exit(0)
