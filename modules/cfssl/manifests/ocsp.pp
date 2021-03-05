@@ -33,6 +33,12 @@ define cfssl::ocsp (
                       mode   => '0550',
                       source => 'puppet:///modules/cfssl/cfssl_ocsprefresh.py'})
 
+    # create an empty response file the ocsp_responder can start
+    file{ $_responses_file:
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+    }
     if ($key_content and !$cert_content) or ($cert_content and !$key_content) {
         fail('you must provide either both or neither key/cert_content')
     } elsif $key_content and $cert_content {
