@@ -16,3 +16,4 @@ profile::codesearch::ports:
     libraries: 6093
     analytics: 6094
     puppet: 6095
+    shouthow: 6096
