@@ -25,9 +25,9 @@ class profile::pki::multirooca (
     String                        $root_ocsp_cert    = lookup('profile::pki::multirooca::root_ocsp_cert'),
     String                        $root_ocsp_key     = lookup('profile::pki::multirooca::root_ocsp_key'),
     Stdlib::Port                  $root_ocsp_port    = lookup('profile::pki::multirooca::root_ocsp_port'),
-    Hash[String, Cfssl::Profile]  $default_auth_keys = lookup('profile::pki::multirooca::default_auth_keys'),
+    Array[Stdlib::IP::Address]    $default_nets      = lookup('profile::pki::multirooca::default_nets'),
+    Hash[String, Cfssl::Auth_key] $default_auth_keys = lookup('profile::pki::multirooca::default_auth_keys'),
     Hash[String, Cfssl::Profile]  $default_profiles  = lookup('profile::pki::multirooca::default_profiles'),
-    Hash[String, Cfssl::Profile]  $default_nets      = lookup('profile::pki::multirooca::default_nets'),
     Hash[String, Hash]            $intermediates     = lookup('profile::pki::multirooca::intermediates'),
 
 ) {
