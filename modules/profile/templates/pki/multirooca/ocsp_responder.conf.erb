@@ -5,7 +5,7 @@
 <VirtualHost *:80>
   ServerName <%= @vhost %>
   ServerAlias <%= @facts['fqdn'] %>
-  DocumentRoot /var/www/html
+  DocumentRoot <%= @document_root %>
 
   # <%= @root_ca_cn %>
   ProxyPass /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>/  http://localhost:<%= @root_ocsp_port %>/

@@ -39,6 +39,10 @@ class profile::pki::multirooca (
     $db_conf_file = "${cfssl::conf_dir}/db.conf"
     $root_ca_file = "${cfssl::ssl_dir}/${root_ca_cn.regsubst('\W', '_', 'G')}.pem"
     $multirootca_service = 'cfssl-multirootca'
+    $document_root = '/srv/cfssl'
+    $bundle_dir = "${document_root}/bundles"
+
+    wmflib::mkdir_p($bundle_dir)
 
     cfssl::db{'multirooca-db':
         driver         => $db_driver,
@@ -52,12 +56,13 @@ class profile::pki::multirooca (
         ssl_ca         => $facts['puppet_config']['localcacert'],
     }
 
+    $root_ca_content = file($root_ca_cert)
     file {$root_ca_file:
         ensure  => file,
         owner   => root,
         group   => root,
         mode    => '0444',
-        content => file($root_ca_cert),
+        content => $root_ca_content,
     }
     # Root CA OCSP responder
     cfssl::ocsp{$root_ca_cn:
@@ -70,21 +75,22 @@ class profile::pki::multirooca (
 
     # Create Signers
     $signers = $intermediates.reduce({}) |$memo, $value| {
-        $intermediate = $value[0]
-        $config       = $value[1]
-        $safe_title   = $intermediate.regsubst('\W', '_', 'G')
-        $profiles     = pick($config['profiles'], $default_profiles)
-        $auth_keys    = pick($config['auth_keys'], $default_auth_keys)
-        $nets         = pick($config['nets'], $default_nets)
-        $ca_key_file  = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
-        $ca_file      = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
+        $intermediate   = $value[0]
+        $config         = $value[1]
+        $safe_title     = $intermediate.regsubst('\W', '_', 'G')
+        $profiles       = pick($config['profiles'], $default_profiles)
+        $auth_keys      = pick($config['auth_keys'], $default_auth_keys)
+        $nets           = pick($config['nets'], $default_nets)
+        $ca_key_file    = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
+        $ca_file        = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
+        $int_ca_content = file($config['cert_content'])
 
         cfssl::signer {$intermediate:
             profiles         => $profiles,
             ca_key_file      => $ca_key_file,
             ca_file          => $ca_file,
             ca_key_content   => Sensitive(secret($config['key_content'])),
-            ca_cert_content  => file($config['cert_content']),
+            ca_cert_content  => $int_ca_content,
             ca_bundle_file   => "${cfssl::signer_dir}/WMF_root_CA/ca/ca.pem",
             auth_keys        => $auth_keys,
             default_crl_url  => "${crl_base_url}/${safe_title}",
@@ -99,6 +105,14 @@ class profile::pki::multirooca (
             listen_port  => $config['ocsp_port'],
             db_conf_file => "${db_conf_file}.json",
             ca_file      => $ca_file,
+        }
+        # Create a bundle file with the intermediate and root certs
+        file {"${bundle_dir}/${safe_title}.pem":
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => "${root_ca_content}\n${int_ca_content}",
         }
         $memo + {
             $safe_title => {
