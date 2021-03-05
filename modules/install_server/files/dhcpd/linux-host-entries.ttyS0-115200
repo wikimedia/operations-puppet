@@ -1012,6 +1012,11 @@ host registry2003 {
     fixed-address registry2003.codfw.wmnet;
 }
 
+host registry2004 {
+    hardware ethernet aa:00:00:9d:8b:82;
+    fixed-address registry2004.codfw.wmnet;
+}
+
 host rpki1001 {
     hardware ethernet aa:00:00:64:75:b9;
     fixed-address rpki1001.eqiad.wmnet;
