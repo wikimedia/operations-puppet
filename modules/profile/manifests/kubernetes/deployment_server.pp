@@ -20,7 +20,8 @@ class profile::kubernetes::deployment_server(
         'codfw'         => 'kubemaster.svc.codfw.wmnet',
         'staging-eqiad' => 'kubestagemaster.svc.eqiad.wmnet',
         'staging-codfw' => 'kubestagemaster.svc.codfw.wmnet',
-        'staging'       => 'kubestagemaster.svc.codfw.wmnet',
+        # This represents the active staging cluster currently used by deployment tools (helmfile)
+        'staging'       => 'kubestagemaster.svc.eqiad.wmnet',
     }
 
     $real_services = deep_merge($services, $tokens)

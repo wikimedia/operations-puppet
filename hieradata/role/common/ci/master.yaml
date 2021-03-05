@@ -234,7 +234,7 @@ profile::kubernetes::deployment_server::services:
 
 profile::ci::kubernetes_config::user: jenkins
 profile::ci::kubernetes_config::namespace: ci
-profile::ci::kubernetes_config::master: kubestagemaster.svc.codfw.wmnet
+profile::ci::kubernetes_config::master: kubestagemaster.svc.eqiad.wmnet
 profile::ci::kubernetes_config::owner: jenkins-slave
 profile::ci::kubernetes_config::group: contint-admins
 # Specified in the private repo:
