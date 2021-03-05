@@ -4712,12 +4712,6 @@ host ms-be1033 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host ms-be1034 {
-    hardware ethernet E0:07:1B:EF:76:30;
-    fixed-address ms-be1034.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host ms-be1035 {
     hardware ethernet E0:07:1B:EF:E4:28;
     fixed-address ms-be1035.eqiad.wmnet;
