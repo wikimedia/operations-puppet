@@ -21,7 +21,23 @@ use_virtio_for_bridges=true
 live_migration_bandwidth=300
 live_migration_uri=qemu://%s.<%= scope.lookupvar("::site") %>.wmnet/system?pkipath=/var/lib/nova
 
+# in seconds:
 live_migration_completion_timeout=600
+
+# in milliseconds:
+live_migration_downtime = 1000
+
+
+# Number of incremental steps to reach max downtime value.
+# The default is 10, decrease to 8 so we get more aggressive about migration
+# faster.
+live_migration_downtime_steps = 8
+
+# Time to wait, in seconds, between each step increase of the migration downtime.
+# The default value for this is 75; let's fail quicker so we can get on with things.
+live_migration_downtime_delay = 30
+
+
 <% if @enable_nova_rbd %>
 # Ceph RBD ephemeral config
 images_type = rbd
