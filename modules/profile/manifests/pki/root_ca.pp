@@ -44,7 +44,6 @@ class profile::pki::root_ca(
     manage_services  => false,
   }
   cfssl::cert {"${common_name}_ocsp_signing_cert":
-    key           => $key_params,
     names         => $names,
     signer_config => {'config_dir' => "${cfssl::signer_dir}/${safe_title}"},
     profile       => 'ocsp',
