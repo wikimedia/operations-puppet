@@ -137,6 +137,7 @@ Components: main
  component/mtail
  component/pdns-recursor
  component/php72
+ component/pygments
  component/redis2
  component/rsyslog
  component/spicerack
