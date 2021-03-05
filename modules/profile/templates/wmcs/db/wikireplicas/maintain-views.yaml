@@ -269,7 +269,8 @@ customviews:
     source: actor
     view: select actor_id, actor_user, actor_name
     where: >
-      exists( select 1 from user where user_id = actor_user )
+      exists( select 1 from user where user_id = actor_user ) AND
+      (SELECT 1 from ipblocks where ipb_auto=0 AND ipb_deleted=1 AND ipb_user=actor_user) is NULL
   actor_archive:
     source: actor
     view: select actor_id, actor_user, actor_name
