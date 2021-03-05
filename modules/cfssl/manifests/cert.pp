@@ -9,6 +9,7 @@ define cfssl::cert (
     String                        $group         = 'root',
     Boolean                       $auto_renew    = true,
     Integer[1800]                 $renew_seconds = 604800,  # 1 week
+    Boolean                       $provide_chain = false,
     Optional[String]              $label         = undef,
     Optional[String]              $profile       = undef,
     Optional[Stdlib::Unixpath]    $outdir        = undef,
@@ -24,10 +25,6 @@ define cfssl::cert (
     }
     if $key['algo'] == 'ecdsa' and $key['size'] > 2048 {
         fail('ECDSA keys must be either 256, 384 or 521 bits')
-    }
-    $ensure_file = $ensure ? {
-        'present' => 'file',
-        default   => $ensure,
     }
 
     $safe_title = $title.regsubst('[^\w\-]', '_', 'G')
@@ -53,7 +50,7 @@ define cfssl::cert (
         'names' => $_names,
     }
     file{$csr_json_path:
-        ensure  => $ensure_file,
+        ensure  => stdlib::ensure($ensure, 'file'),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -124,9 +121,29 @@ define cfssl::cert (
     }
 
     file{[$cert_path, $key_path, $csr_pem_path]:
-        ensure => $ensure_file,
+        ensure => stdlib::ensure($ensure, 'file'),
         owner  => $owner,
         group  => $group,
         mode   => '0440',
+    }
+    if $provide_chain {
+        # TODO: we need to replace how we fetch bundles as fetching over a
+        # http source seems like a really bad idea.
+        # Ideally the gencert command would support the bundle options but
+        # there has been little progress on this upstream
+        # https://github.com/cloudflare/cfssl/issues/779
+        # We may be better of implementing the certificate creations directly
+        # via the API
+        unless $label {
+            fail('you bust provide a $label is specifying $provide_chain')
+        }
+        file {"${_outdir}/${label}_chain.pem":
+            ensure   => stdlib::ensure($ensure, 'file'),
+            owner    => $owner,
+            group    => $group,
+            mode     => '0440',
+            checksum => 'mtime',
+            source   => "${cfssl::client::signer}/bundles/${label}.pem"
+        }
     }
 }

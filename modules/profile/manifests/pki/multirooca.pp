@@ -112,7 +112,7 @@ class profile::pki::multirooca (
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => "${root_ca_content}\n${int_ca_content}",
+            content => "${root_ca_content}${int_ca_content}",
         }
         $memo + {
             $safe_title => {
