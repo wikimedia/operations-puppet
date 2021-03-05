@@ -31,9 +31,8 @@ class profile::pki::multirooca (
     Hash[String, Hash]            $intermediates     = lookup('profile::pki::multirooca::intermediates'),
 
 ) {
-    unless defined('cfssl') {
-        class {'cfssl': }
-    }
+    # we need to include this as we use some of the variables
+    include cfssl  # lint:ignore:wmf_styleguide
 
     $crl_base_url = "http://${vhost}/crl"
     $ocsp_base_url = "http://${vhost}/ocsp"
