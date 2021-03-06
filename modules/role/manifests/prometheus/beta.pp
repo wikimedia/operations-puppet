@@ -11,7 +11,8 @@ class role::prometheus::beta {
     }
 
     class { '::httpd':
-        modules => ['proxy', 'proxy_http'],
+        # rewrite needed in ::prometheus::web to redirect homepage
+        modules => ['proxy', 'proxy_http', 'rewrite'],
     }
 
     include ::profile::prometheus::beta
