@@ -1,0 +1,310 @@
+# This file is managed by puppet
+
+##########
+# Macros #
+##########
+
+CONFDIR=/etc/exim4
+
+# Mailman
+domainlist mm_domains=<%= @host %>
+MM3_LMTP_PORT=8024
+MM3_HOME=/var/lib/mailman3
+MM3_UID=list
+MM3_GID=list
+MM3_LISTCHK=MM3_HOME/lists/${local_part}.${domain}
+
+###############################
+# Main configuration settings #
+###############################
+
+domainlist system_domains = @
+domainlist local_domains = +system_domains : +mm_domains
+
+# TODO: Change to network::constants once in production
+hostlist wikimedia_nets = <; <%= @trusted_networks.join(" ; ") %>
+hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ;
+helo_try_verify_hosts = *
+
+# Administration
+log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
+message_logs = false
+
+# Policy control
+acl_smtp_connect = acl_check_connect
+acl_smtp_helo = acl_check_helo
+acl_smtp_mail = acl_check_mail
+acl_smtp_rcpt = acl_check_rcpt
+acl_smtp_data = acl_check_data
+
+system_filter = CONFDIR/system_filter
+
+# Resource control
+check_spool_space = 50M
+smtp_reserve_hosts = <; 127.0.0.1 ; ::1 ; +wikimedia_nets
+smtp_accept_queue_per_connection = 500
+
+deliver_queue_load_max = 800.0
+queue_only_load = 100.0
+remote_max_parallel = 500
+
+smtp_connect_backlog = 128
+smtp_receive_timeout = 1m
+smtp_accept_max = 4000
+smtp_accept_max_per_host = ${if match_ip{$sender_host_address}{+wikimedia_nets}{50}{5}}
+smtp_accept_reserve = 100
+
+# Lookups
+host_lookup = *
+rfc1413_hosts =
+
+# Content filtering
+spamd_address = 127.0.0.1 783
+
+# Other
+never_users = root : daemon : bin
+ignore_bounce_errors_after = 0h
+check_rfc2047_length = false
+
+add_environment = <; PATH=/bin:/usr/bin
+keep_environment =
+tls_advertise_hosts =
+
+# force Gmail over IPv4 due to reports of bad spam reputation over IPv6
+dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
+
+###############################
+# Access Control Lists (ACLs) #
+###############################
+
+begin acl
+
+acl_check_rcpt:
+
+	# temporary spam countermeasures, 2015-09-20
+	discard local_parts = ^.+\\+[0-9]{4,}
+	        domains = gmail.com
+
+	# Disable list subscription via email due to excessive suspicious subscriptions --herron 2018-05-14 T194032
+	deny message = Support for list subscription via email has been disabled. Please use the web interface.
+		local_parts = ^.*-(join|subscribe)\$
+
+	# If there have been ~4 times as many previous RCPT rejects than
+	# accepts, drop the connection
+	drop message = Too many ($rcpt_fail_count) rejected recipients, good bye
+		hosts = ! +wikimedia_nets
+		condition = ${if >={$rcpt_fail_count}{${eval:4*($recipients_count+1)}}}
+
+	# Accept if the source is local SMTP (a pipe)
+	accept hosts = :
+
+	# Deny if the local part contains @, %, /, | or !, or starts with a dot
+	deny local_parts = ^.*[@%!/|] : ^\\.
+
+	# Accept relaying from networks we control. Note: no address verification
+	# is done at this point, which is good for mail submission, but may render
+	# recipient callout verification by affected hosts useless.
+	accept domains = ! +local_domains
+		hosts = +relay_from_hosts
+		control = submission/sender_retain
+
+	# Require recipient domain to be local
+	require message = Relay not permitted
+		domains = +local_domains
+		set acl_m_relayed = yes
+
+	# Accept mail for postmaster without further policy checking,
+	# for compliance with the RFCs
+	accept local_parts = postmaster : abuse
+		set acl_m2 = skip_spamd
+
+	# Verify the recipient address for local domains, or require the
+	# recipient domain to exist for remote domains
+	require verify = recipient
+
+	# Check whether the sender address domain exists
+	require verify = sender
+
+	# Drop connections from IP addresses listed in DNSBL
+	drop message = $sender_host_address is listed by $dnslist_domain ($dnslist_value: $dnslist_text)
+		dnslists = zen.spamhaus.org
+		delay = 15s
+
+	accept
+
+acl_check_connect:
+
+	# Delay the banner for 5 seconds and drop connections of (spam) senders who do not wait
+	accept delay = 5s
+
+acl_check_helo:
+
+	# drop if remote tries to send HELO <any ip> because RFC2821 4.1.3
+	# indicates HELO must be followed by domain or ip literal
+	drop log_message = HELO failure ref0 (Remote said: HELO $sender_helo_name - Problem: HELO must contain a domain name or ip literal wrapped with square brackets [])
+		message     = HELO failure ref0
+		condition   = ${if isip{$sender_helo_name}}
+		!hosts      = +wikimedia_nets : +relay_from_hosts
+		delay       = 45s
+
+	# drop if remote tries to send HELO < a local domain >
+	drop log_message = HELO failure ref1 (Remote said: HELO $sender_helo_name - Problem: HELO name matches a domain listed in local_domains)
+		message    = HELO failure ref1
+		condition  = ${if match_domain{$sender_helo_name}{+local_domains}{yes}{no}}
+		!hosts     = +wikimedia_nets : +relay_from_hosts
+		delay      = 45s
+
+	# warn if remote tries to send HELO < my primary hostname >
+	# change from warn to delay & drop to enforce this
+	warn log_message = HELO failure ref2 (Remote said: HELO $sender_helo_name - Problem: HELO name equals my primary_hostname of $primary_hostname)
+		condition   = ${if match{$sender_helo_name}{$primary_hostname}}
+		!hosts      = +wikimedia_nets : +relay_from_hosts
+		#log_message = HELO failure ref2 (Remote said: HELO $sender_helo_name - Problem: HELO name equals my primary_hostname of $primary_hostname)
+		#delay       = 45s
+
+	# warn if remote tries to send HELO < my interface address >
+	# change from warn to delay & drop to enforce this
+	warn log_message = HELO FAILURE ref3 (Remote said: HELO $sender_helo_name - Problem: HELO name matches local interface address $received_ip_address)
+		condition   = ${if eq{[$received_ip_address]}{$sender_helo_name}}
+		!hosts      = +wikimedia_nets : +relay_from_hosts
+		#log_message = HELO failure ref3 (Remote said: HELO $sender_helo_name - Problem: HELO name matches local interface address $received_ip_address)
+		#delay       = 45s
+
+	# warn if remote sends HELO with no address literal and no periods
+	# change from warn to delay & drop to enforce this
+	warn log_message = HELO FAILURE ref4 (Remote said: HELO $sender_helo_name - Problem: HELO name does not contain an address literal or a period)
+		condition   = ${if match{$sender_helo_name}{\N^\[\N}{no}{yes}}
+		condition   = ${if match{$sender_helo_name}{\N\.\N}{no}{yes}}
+		!hosts      = +wikimedia_nets : +relay_from_hosts
+		#log_message = HELO failure ref4 (Remote said: HELO $sender_helo_name - Problem: HELO name does not contain an address literal or a period)
+		#delay       = 45s
+
+	accept
+
+acl_check_mail:
+
+	# drop if an unknown host attempts to issue a mail from from command containing one of our domains
+	drop   log_message = MAIL FROM FAILURE ref1 (Remote said: MAIL FROM: $sender_address - Problem: envelope from addresses containing domains listed in local_domains are only allowed from hosts listed in the wikimedia_nets or relay_from_hosts exim hostslists)
+		message    = MAIL FROM FAILURE ref1
+		condition  = ${if match_domain{$sender_address_domain}{+local_domains}{yes}{no}}
+		!hosts     = +wikimedia_nets : +relay_from_hosts
+		delay      = 45s
+
+	accept
+
+acl_check_data:
+	# Let's trust local senders to not send out spam
+	accept hosts = +wikimedia_nets
+		set acl_m0 = trusted relay
+
+	# Only run through SpamAssassin if requested for this domain and
+	# the message is not too large
+	accept condition = ${if >{$message_size}{400K}}
+
+	# Skip if so requested
+	accept condition = ${if eq{$acl_m2}{skip_spamd}}
+
+	# Add spam headers if score >= 1
+	warn spam = nonexistent:true
+		condition = ${if >{$spam_score_int}{10}{1}{0}}
+		set acl_m0 = $spam_score ($spam_bar)
+		set acl_m1 = $spam_report
+		log_message = Spam-score: $spam_score
+
+	# Reject spam at high scores (> 6)
+	deny message = This message scored $spam_score spam points.
+		spam = nonexistent/defer_ok
+		condition = ${if >{$spam_score_int}{60}{1}{0}}
+
+	accept
+
+###########
+# Routers #
+###########
+
+begin routers
+
+list_outbound:
+	driver = dnslookup
+	domains = ! +local_domains
+	senders = *@<%= @host %>
+	condition = ${if match_ip{$sender_host_address}{@[]}}
+	transport = list_smtp
+	no_verify
+
+# Route non-local domains via DNS MX and A records
+dnslookup:
+	driver = dnslookup
+	domains = ! +local_domains
+	transport = ${if eq {$acl_m_relayed}{yes}{remote_smtp}{remote_smtp_signed}}
+	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
+	cannot_route_message = Cannot route to remote domain $domain
+    no_more
+
+mailman3_router:
+    driver = accept
+    domains = +mm_domains
+    require_files = MM3_LISTCHK
+    local_part_suffix_optional
+    local_part_suffix = \
+       -bounces   : -bounces+* : \
+       -confirm   : -confirm+* : \
+       -join      : -leave     : \
+       -owner     : -request   : \
+       -subscribe : -unsubscribe
+    transport = mailman3_transport
+
+# Use the system aliasfile /etc/aliases for system domains
+system_aliases:
+	driver = redirect
+	domains = +system_domains
+	data = ${lookup{$local_part}lsearch{/etc/aliases}}
+	pipe_transport = address_pipe
+	allow_fail
+	allow_defer
+	forbid_file
+
+
+##############
+# Transports #
+##############
+
+begin transports
+
+# Generic remote SMTP transport
+
+remote_smtp:
+	driver = smtp
+	interface = <; <%= @ipaddress %> ; <%= @ipaddress6 %>
+remote_smtp_signed:
+    driver = smtp
+    # TODO: Add dkim
+	interface = <; <%= @ipaddress %> ; <%= @ipaddress6 %>
+
+list_smtp:
+	driver = smtp
+	interface = <; <%= @list_outbound_ips.join(" ; ") %>
+	helo_data = <%= @host %>
+	# TODO: Add dkim
+
+mailman3_transport:
+	driver = smtp
+	protocol = lmtp
+	allow_localhost
+	hosts = localhost
+	port = MM3_LMTP_PORT
+	rcpt_include_affixes = true
+
+###############
+# Retry rules #
+###############
+
+begin retry
+
+*	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
+
+#################
+# Rewrite rules #
+#################
+
+# TODO: Add them.
