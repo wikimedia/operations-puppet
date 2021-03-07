@@ -3,7 +3,7 @@ class profile::redis::multidc(
     Hash[String, Hash] $all_shards = lookup('redis::shards'),
     String $conftool_prefix = lookup('conftool_prefix'),
     Hash $settings = lookup('profile::redis::multidc::settings'),
-    String $discovery = lookup('profile::redis::multidc::discovery'),
+    Optional[String] $discovery = lookup('profile::redis::multidc::discovery', {'default_value' => undef}),
     Boolean $aof = lookup('profile::redis::multidc::aof', {default_value => false}),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Optional[Integer] $version_override = lookup('profile::redis::multidc::version_override'),
