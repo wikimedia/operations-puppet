@@ -220,6 +220,10 @@ while [ $i -lt $shards ]; do
 	fi
 	cat $tempFiles >> "${tempDir}/${projectName}-${dumpName}.json.gz"
 	let i++
+	if [ $i -lt $shards ]; then
+	    # Shards don't end with commas so add commas to separate them
+	    echo ',' | gzip -f >> "$tempDir/${projectName}-${dumpName}.json.gz"
+	fi
 done
 
 # Close the json list
