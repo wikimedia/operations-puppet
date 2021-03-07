@@ -527,13 +527,13 @@ profile::mediawiki::mcrouter_wancache::shards:
   wancache:
     eqiad:
       shard01:
-        host: deployment-memc04
+        host: deployment-memc08
         port: 11211
       shard02:
-        host: deployment-memc05
+        host: deployment-memc09
         port: 11211
       shard03:
-        host: deployment-memc08
+        host: deployment-memc10
         port: 11211
 
 profile::query_service::federation_user_agent: 'Wikimedia Commons Query Service; test'
