@@ -8,7 +8,7 @@ profile::lvs::realserver::use_conftool: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
 service::configuration::mwapi_host: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
-service::configuration::restbase_uri: http://deployment-restbase02.deployment-prep.eqiad.wmflabs:7231
+service::configuration::restbase_uri: http://deployment-restbase03.deployment-prep.eqiad.wmflabs:7231
 #service::configuration::http_proxy:
 service::configuration::statsd_host: cloudmetrics1002.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
@@ -50,9 +50,11 @@ profile::restbase::cassandra_tls: {}
 profile::restbase::hosts:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
+  - deployment-restbase03.deployment-prep.eqiad.wmflabs
 profile::restbase::seeds_ng:
   - deployment-restbase01.deployment-prep.eqiad.wmflabs
   - deployment-restbase02.deployment-prep.eqiad.wmflabs
+  - deployment-restbase03.deployment-prep.eqiad.wmflabs
 # Cassandra (profile::cassandra)
 graphite_host: cloudmetrics1002.eqiad.wmnet
 profile::cassandra::allow_analytics: false
@@ -63,6 +65,7 @@ profile::cassandra::rack: rack1
 profile::cassandra::instances:
   "deployment-restbase01.deployment-prep.eqiad.wmflabs": {}
   "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
+  "deployment-restbase03.deployment-prep.eqiad.wmflabs": {}
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
   logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
@@ -143,6 +146,7 @@ scap::dsh::groups:
         hosts:
           - deployment-restbase01.deployment-prep.eqiad.wmflabs
           - deployment-restbase02.deployment-prep.eqiad.wmflabs
+          - deployment-restbase03.deployment-prep.eqiad.wmflabs
     librenms:
         hosts:
           - deployment-netbox.deployment-prep.eqiad.wmflabs
