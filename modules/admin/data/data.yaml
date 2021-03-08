@@ -4215,7 +4215,8 @@ users:
     email: oly.kalinichenko@speedandfunction.com
     uid: 30156
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDqhkrLDMb0atfFuaavH8SxgaUftOnFGAsNL847A1GqhSibiTg2tohNHZjd8eJhUAvFfjTAWcvm5hhBDEtDR+9y1tVm6nc2tBrpZ1uTTqLfu5uQNCeXn6H26vcgkItmobjygzq/qFsZPULizA0YdDX2Vp5Wn2ExJ9XNxO9XYiISAhdUSq7PShhn+f9DltzG7l6nkf6ikkDb4mk2MSgUXi+HFE2mmqh1gJ6Y3F0TIB+/AKRRL/wr9U69mXGxB/XDphB1dOuZrkkUY73KGWBBIbg243aQCjTIcKN6l8X5bR9ath+9MFKDOTqsSIAK9j58WFPP3B7gY9vELXecN56gB1mBAKG/X0A+FCOEnLcf2y/a61IhTTd4CdgWJ1YVc2rDvCNTXnnQBOrzt5MHbefi+ufsWzoJkJkLXi/yv56h3t+2ZqHol5yNM41Ys/fy+I1hHuZaflrfCCrEtxcf6Z34EFX+PxJUl0/g+oEGiFYC90MeVqH1vmE4VUyjkfj46B+/ZMkzqrteB+zR4Y68WEh6591Psc3Y5z9z2rDFXAXQe9bl0XrHMOhVpssEiXGIBAgS5enuJScHEV6cJos9DFv5JMm55mB5SwRL0lOnwLd7Kh/uhKjrhmlYFK05X8ZutYBf1GYqXeRq1HNMyj+Ft5qmICEPQmv8GJ720Giv4YZk+Q3l3w=="
     expiry_date: 2021-06-01
     expiry_contact: wkandek@wikimedia.org
   daimona:
