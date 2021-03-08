@@ -5,7 +5,7 @@ Description=<%= @description %>
 User=<%= @user %>
 <%- if @environment -%>
 <%- @environment.keys.sort.each do |key| -%>
-Environment=<%= key -%>=<%= @environment[key] %>
+Environment="<%= key -%>=<%= @environment[key] %>"
 <%- end -%>
 <%- end -%>
 <%- if @environment_file -%>

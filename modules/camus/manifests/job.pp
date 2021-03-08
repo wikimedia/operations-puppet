@@ -255,9 +255,7 @@ define camus::job (
         $http_proxy_environment = {
             # Camus runs as a Hadoop job, and needs these set in HADOOP_OPTS
             # to properly use proxy in the task container.
-            # NOTE: \s because systemd parsing is strange:
-            # https://askubuntu.com/a/1274956
-            'HADOOP_OPTS' => "-Dhttp.proxyHost=${http_proxy_host}\\s-Dhttp.proxyPort=${http_proxy_port}\\s-Dhttps.proxyHost=${http_proxy_host}\\s-Dhttps.proxyPort=${http_proxy_port}"
+            'HADOOP_OPTS' => "-Dhttp.proxyHost=${http_proxy_host} -Dhttp.proxyPort=${http_proxy_port} -Dhttps.proxyHost=${http_proxy_host} -Dhttps.proxyPort=${http_proxy_port}"
         }
     } else {
         $http_proxy_java_opts = ''
