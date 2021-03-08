@@ -11,7 +11,6 @@
 # TODO: Refactor this to be a flexible ACL system, similar to etcd::tlsproxy
 #
 class docker_registry_ha::web (
-    String $legacy_uploader_hash,
     String $ci_restricted_user_password,
     String $kubernetes_user_password,
     String $ci_build_user_password,
@@ -72,8 +71,7 @@ class docker_registry_ha::web (
     $ci_build_user_hash = htpasswd($ci_build_user_password, $password_salt);
     $prod_build_user_hash = htpasswd($prod_build_user_password, $password_salt);
     file { $regular_push_file:
-        # TODO: phase out legacy "uploader" account
-        content => "ci-build:${ci_build_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}\nuploader:${legacy_uploader_hash}",
+        content => "ci-build:${ci_build_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}",
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0440',

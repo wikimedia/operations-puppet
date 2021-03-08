@@ -4,7 +4,6 @@ profile::docker_registry_ha::registry::image_builders:
   - '208.80.153.15' # contint2001
   - '10.64.48.17' # releases1002.eqiad.wmnet
   - '10.192.16.180' # releases2002.codfw.wmnet
-#docker_registry_ha::hash: defined in the private repo
 #profile::docker_registry_ha::ci_restricted_user_password: defined in the private repo
 #profile::docker_registry_ha::kubernetes_user_password: defined in the private repo
 #profile::docker_registry_ha::ci_build_user_password: defined in the private repo

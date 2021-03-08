@@ -1,6 +1,5 @@
 class profile::docker_registry_ha::registry(
     # The following variables might be useful elsewhere too
-    String $legacy_uploader_hash = lookup('docker_registry_ha::hash'),
     String $ci_restricted_user_password = lookup('profile::docker_registry_ha::ci_restricted_user_password'),
     String $kubernetes_user_password = lookup('profile::docker_registry_ha::kubernetes_user_password'),
     String $ci_build_user_password = lookup('profile::docker_registry_ha::ci_build_user_password'),
@@ -74,7 +73,6 @@ class profile::docker_registry_ha::registry(
     }
 
     class { '::docker_registry_ha::web':
-        legacy_uploader_hash        => $legacy_uploader_hash,
         ci_restricted_user_password => $ci_restricted_user_password,
         kubernetes_user_password    => $kubernetes_user_password,
         ci_build_user_password      => $ci_build_user_password,
