@@ -124,11 +124,5 @@ class profile::wmcs::instance(
         content => '',
     }
 
-    file { '/usr/sbin/prepare_cinder_volume':
-        ensure => present,
-        source => 'puppet:///modules/profile/wmcs/instance/prepare_cinder_volume.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0544',
-    }
+    class {'::cinderutils': }
 }
