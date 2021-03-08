@@ -137,13 +137,18 @@ define cfssl::cert (
         unless $label {
             fail('you bust provide a $label is specifying $provide_chain')
         }
-        file {"${_outdir}/${label}_chain.pem":
-            ensure   => stdlib::ensure($ensure, 'file'),
-            owner    => $owner,
-            group    => $group,
-            mode     => '0440',
-            checksum => 'mtime',
-            source   => "${cfssl::client::bundles_source}/${label}.pem"
+        # Just copy the CA file locally once
+        $ca_chain_file = "${cfssl::ssl_dir}${label}_chain.pem"
+        ensure_resource('exec', "fetch ${ca_chain_file}", {
+            command => "/usr/bin/curl -s ${cfssl::client::bundles_source}/${label}.pem -o ${ca_chain_file}",
+            creates => $ca_chain_file,
+        })
+        file {"${_outdir}/ca_chain.pem":
+            ensure => stdlib::ensure($ensure, 'file'),
+            owner  => $owner,
+            group  => $group,
+            mode   => '0440',
+            source => $ca_chain_file
         }
     }
 }
