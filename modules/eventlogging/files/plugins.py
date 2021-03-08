@@ -14,6 +14,8 @@ See: https://phabricator.wikimedia.org/T259163
 """
 eventlogging_schemas_disabled = (
     'ContentTranslationAbuseFilter',
+    'DesktopWebUIActionsTracking',
+    'MobileWebUIActionsTracking',
     'PrefUpdate',
     'QuickSurveyInitiation',
     'QuickSurveysResponses',
