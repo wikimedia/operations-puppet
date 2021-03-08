@@ -64,6 +64,7 @@ cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 cp-ats: P{P:trafficserver::backend}
 cp-ats-ulsfo: A:cp-ats and A:ulsfo
 cumin: P{O:cluster::management}
+cuninunpriv: P{O:cluster::unprivmanagement}
 db-all: A:db-core or A:db-inventory or A:db-labsdb or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-store
 db-multiinstance: P{O:mariadb::core_multiinstance or O:mariadb::misc::analytics::backup or O:mariadb::misc::multiinstance} or A:db-sanitarium or A:db-store
 db-core: P{O:mariadb::core or O:mariadb::core_multiinstance}
@@ -284,6 +285,7 @@ snapshot: P{O:dumps::generation::worker::dumper or O:dumps::generation::worker::
 snapshot-canary: P{O:dumps::generation::worker::testbed}
 spare: P{O:spare::system}
 sretest: P{O:sretest}
+sretestunpriv: P{sretest1001.eqiad.wmnet}
 stat: P{O:statistics::explorer}
 swift: A:swift-fe or A:swift-be
 swift-be: P{O:swift::storage}
