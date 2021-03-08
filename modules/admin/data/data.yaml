@@ -454,11 +454,17 @@ groups:
     approval: Guillaume Lederrey
   mailman-admins:
     gid: 757
-    description: Admins for mailman
+    description: Admins for mailman2
     members: []
     privileges: ['ALL = (list) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service mailman *',
                  'ALL = NOPASSWD: /bin/journalctl *']
+  mailman3-roots:
+    gid: 827
+    description: Root level access for mailman3 VMs (T276712)
+    members: []
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758

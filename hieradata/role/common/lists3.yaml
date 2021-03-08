@@ -1,0 +1,2 @@
+profile::standard::admin_groups:
+  - mailman3-roots
