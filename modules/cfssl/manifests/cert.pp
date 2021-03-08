@@ -147,7 +147,7 @@ define cfssl::cert (
             fail('you bust provide a $label is specifying $provide_chain')
         }
         # Just copy the CA file locally once
-        $ca_chain_file = "${cfssl::ssl_dir}/${label}_chain.pem"
+        $ca_chain_file = "${cfssl::bundles_dir}/${label}_chain.pem"
         ensure_resource('exec', "fetch ${ca_chain_file}", {
             command => "/usr/bin/curl -s ${cfssl::client::bundles_source}/${label}.pem -o ${ca_chain_file}",
             creates => $ca_chain_file,
