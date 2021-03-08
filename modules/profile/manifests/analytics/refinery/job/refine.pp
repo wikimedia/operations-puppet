@@ -126,6 +126,7 @@ class profile::analytics::refinery::job::refine(
     # EventLogging streams that have been migrated to EventGate.
     $eventlogging_legacy_table_includelist = [
         'ContentTranslationAbuseFilter',
+        'PrefUpdate',
         'QuickSurveyInitiation',
         'QuickSurveysResponses',
         'SearchSatisfaction',
