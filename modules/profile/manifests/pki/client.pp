@@ -10,6 +10,8 @@ class profile::pki::client (
     Stdlib::Port         $signer_port            = lookup('profile::pki::client::signer_port'),
     Sensitive[String[1]] $auth_key               = lookup('profile::pki::client::auth_key'),
     Boolean              $enable_proxy           = lookup('profile::pki::client::enable_proxy'),
+    Stdlib::IP::Address  $listen_addr            = lookup('profile::pki::client::listen_addr'),
+    Stdlib::Port         $listen_port            = lookup('profile::pki::client::listen_port'),
     Stdlib::Unixpath     $mutual_tls_client_cert = lookup('profile::pki::client::mutual_tls_client_cert'),
     Stdlib::Unixpath     $mutual_tls_client_key  = lookup('profile::pki::client::mutual_tls_client_key'),
     Hash                 $certs                  = lookup('profile::pki::client::certs'),
@@ -22,16 +24,17 @@ class profile::pki::client (
         bundles_source         => $bundles_source,
         auth_key               => $auth_key,
         enable_proxy           => $enable_proxy,
+        listen_addr            => $listen_addr,
+        listen_port            => $listen_port,
         mutual_tls_client_cert => $mutual_tls_client_cert,
         mutual_tls_client_key  => $mutual_tls_client_key,
 
     }
     $certs.each |$title, $cert| {
         cfssl::cert{$title:
-            signer_config => {'config_file' => $cfssl::client::conf_file},
-            tls_cert      => $facts['puppet_config']['hostcert'],
-            tls_key       => $facts['puppet_config']['hostprivkey'],
-            *             => $cert,
+            tls_cert => $facts['puppet_config']['hostcert'],
+            tls_key  => $facts['puppet_config']['hostprivkey'],
+            *        => $cert,
         }
     }
 }

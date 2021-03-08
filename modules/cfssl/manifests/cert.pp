@@ -1,24 +1,28 @@
 # @summary a resource for creating csr json files
 define cfssl::cert (
-    Cfssl::Signer_config          $signer_config,
-    String                        $common_name   = $title,
-    Array[Cfssl::Name]            $names         = [],
-    Cfssl::Key                    $key           = {'algo' => 'ecdsa', 'size' => 256},
-    Wmflib::Ensure                $ensure        = 'present',
-    String                        $owner         = 'root',
-    String                        $group         = 'root',
-    Boolean                       $auto_renew    = true,
-    Integer[1800]                 $renew_seconds = 86400,  # 24 hours
-    Boolean                       $provide_chain = false,
-    Optional[String]              $label         = undef,
-    Optional[String]              $profile       = undef,
-    Optional[Stdlib::Unixpath]    $outdir        = undef,
-    Optional[Stdlib::Unixpath]    $tls_cert      = undef,
-    Optional[Stdlib::Unixpath]    $tls_key       = undef,
-    Optional[Array[Stdlib::Host]] $hosts         = [],
+    String                         $common_name    = $title,
+    Array[Cfssl::Name]             $names          = [],
+    Cfssl::Key                     $key            = {'algo' => 'ecdsa', 'size' => 256},
+    Wmflib::Ensure                 $ensure         = 'present',
+    String                         $owner          = 'root',
+    String                         $group          = 'root',
+    Boolean                        $auto_renew     = true,
+    Integer[1800]                  $renew_seconds  = 86400,  # 24 hours
+    Boolean                        $provide_chain  = false,
+    Optional[String]               $label          = undef,
+    Optional[String]               $profile        = undef,
+    Optional[String]               $notify_service = undef,
+    Optional[Stdlib::Unixpath]     $outdir         = undef,
+    Optional[Stdlib::Unixpath]     $tls_cert       = undef,
+    Optional[Stdlib::Unixpath]     $tls_key        = undef,
+    Optional[Cfssl::Signer_config] $signer_config  = undef,
+    Optional[Array[Stdlib::Host]]  $hosts          = [],
 
 ) {
     include cfssl
+
+    # use the client config by default
+    $_signer_config = pick($signer_config, {'config_file' => $cfssl::client::conf_file})
 
     if $key['algo'] == 'rsa' and $key['size'] < 2048 {
         fail('RSA keys must be either 2048, 4096 or 8192 bits')
@@ -78,14 +82,14 @@ define cfssl::cert (
         undef   => '',
         default => "-profile ${profile}",
     }
-    $signer_args = $signer_config ? {
-        Stdlib::HTTPUrl              => "-remote ${signer_config} ${tls_config} ${_label}",
-        Cfssl::Signer_config::Client => "-config ${signer_config['config_file']} ${tls_config} ${_label}",
+    $signer_args = $_signer_config ? {
+        Stdlib::HTTPUrl              => "-remote ${_signer_config} ${tls_config} ${_label}",
+        Cfssl::Signer_config::Client => "-config ${_signer_config['config_file']} ${tls_config} ${_label}",
         default                      => @("SIGNER_ARGS"/L)
-            -ca=${signer_config['config_dir']}/ca/ca.pem \
-            -ca-key=${signer_config['config_dir']}/ca/ca-key.pem \
-            -config=${signer_config['config_dir']}/cfssl.conf \
-            -db-config=${signer_config['config_dir']}/db.conf \
+            -ca=${_signer_config['config_dir']}/ca/ca.pem \
+            -ca-key=${_signer_config['config_dir']}/ca/ca-key.pem \
+            -config=${_signer_config['config_dir']}/cfssl.conf \
+            -db-config=${_signer_config['config_dir']}/db.conf \
             | SIGNER_ARGS
     }
     $cert_path = "${_outdir}/${safe_title}.pem"
@@ -112,10 +116,15 @@ define cfssl::cert (
             unless  => $test_command,
         }
         if $auto_renew {
+            $_notify_service = $notify_service ? {
+                undef   => undef,
+                default => Service[$notify_service],
+            }
             exec {"renew certificate - ${title}":
                 command => $sign_command,
                 unless  => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
-                require => Exec["Generate cert ${title}"]
+                require => Exec["Generate cert ${title}"],
+                notify  => $_notify_service,
             }
         }
     }
