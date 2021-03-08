@@ -17,7 +17,7 @@ groups:
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova,
-              risler, jdittrich, debt, bsitzmann, zfilipin, agaduran]
+              risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -291,7 +291,7 @@ groups:
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett, jdl, gsingers,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
-              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach, dedcode,
+              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
@@ -3565,17 +3565,13 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+POWSebb+Fiyxuw2qqMhMHt7DW5i6ZJ7h4H0pea+HRWf9BmuxfrIPESqgZ1j3hYyxP+mqB3zE/4lQky2ZMYoB04ullkww7t3Y46hIuJqVcjFzAWoOkZTvON3Zmtu3xAf8p9zxgT2NXWMLYFErcwgBE6JjO16KMqWASrLU8op+gyavh+DofZE+WhxMM5jnHy+Ofa28pFzC41eguovCgGnSyp2rTbAS0WhbsRukcMbsf3LNRVQKf7ZXJXNAAUZtpJnM1wgdTXZezlMoPmRTIjbp5YmQNOXgepBC5VoGzDEctiju/N+BIwFs9Z/pJkqfxyc2KvUcd6J44odHol8NvhABQt6dRMRfCHaTY2WHmkEfIDjXudaJO11jl5zP0nixYeiIO4FNEIYF2Y/tFGB5WTfsE4lB/6nkKVGB/7bCtfA404qkci6Zye8v7rk+hm/SWlZW724PwNQzBaqqnuz+xzf8U65vqsURcP4V3kupW4OZpOWkNALlaM6wbq50kAhQSLJ6Ed2RwTckoCD5u2xgQXwehQS81oIY17lXV0OcJvXR8L8lm+82o3PxJouPo6byczvqd5RUFbysjku7u2u0gbRI47jYEuH/gARBUAG3zNZ+EWIMXe4+gLrQzu6d9doIiW3w6GbfR62VqfqQf2H4sh6zR2IOrPfV8EpnIwnnKLjKmw==
     krb: present
   dedcode:
-    ensure: present
+    ensure: absent
     realname: Djellel Difallah
     email: difallah@gmail.com
     uid: 22235
     gid: 500
     name: dedcode
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCQQWDHKsN7YnZoDCNheCOYkTI5tD3YP8TeyLRYVKDkXygF1K5ymGWeQUa55jg9Ppdey27vYSZDNUQkQ0FR4MM3NHdiWZ8aERYEk3cAwHw7QPgJ+Js6Aa7zN87vZMnnJzB1/53X7BOMJwN9loQdCFr3iYlwN818o7f0QAuwAn7GSb/izxkMHwqtUr072WseDOtvJDo9/Py0Quhca61u9IeGbcfuA87WMii48I9cXxtWTNPuqPefaj7cJKUP4XgFpeDnGdAkaYd2d1esbcrLPpV3Z08gpZJH0KOsE7Pht4Eb4ypsSsoX37RL2PkgJwSeCcOX9kCVaEYi425i4jMjuCpc0GVSfmDmAFgzOp3/fBy2WKSR5qXzmhvjs5Y7IToNeDO9azr9qVn+vQ8vRG0WPez8oEGlhmb336inim5QLScPeLhGmbPkBUFW4rcpYr1hZYzB4d9gLDGjZia0vRQZV+/Fb182nhjdasubd+vK9z/p0GN/mTKrFOBY73qCNbBuHrTFFyDIiyWerktkrEOqmbk4/zLgzKRw+Yx92X9kr/Ur/cHKFSE5zMHh+BhEn8aKY9adsSi2FoakMzkW43M2PmsxxIiZ9XPk8zSmePMLMSnWfsH4ievLcVcBNmYrLa6oH3OR7eXhuex9Im7vY1PD4OjLXOnuQHP8LK6GCUvPDstFQ== difallah@gmail.com
-    krb: present
-    expiry_date: 2021-03-10
-    expiry_contact: lzia@wikimedia.org
+    ssh_keys: []
   eyener:
     ensure: present
     realname: Erin Yener
