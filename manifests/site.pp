@@ -901,6 +901,12 @@ node /^druid100[123]\.eqiad\.wmnet$/ {
 node /^an-druid100[12]\.eqiad\.wmnet$/ {
     role(druid::analytics::worker)
 }
+
+# new an-druid nodes T274163
+node /^an-druid100[345]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 node /^an-test-druid1001\.eqiad\.wmnet$/ {
     role(druid::test_analytics::worker)
 }
