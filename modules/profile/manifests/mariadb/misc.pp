@@ -8,6 +8,8 @@ class profile::mariadb::misc (
     $mysql_role = $profile::mariadb::mysql_role::role
     $is_master = $mysql_role == 'master'
     $read_only = profile::mariadb::section_params::is_read_only($shard, $mysql_role)
+    $is_writeable_dc = profile::mariadb::section_params::is_writeable_dc($shard)
+    $is_primary_master = $is_master and $is_writeable_dc
 
     profile::mariadb::section { $shard: }
 
@@ -44,15 +46,15 @@ class profile::mariadb::misc (
         enabled    => $is_master,
     }
     class { 'mariadb::monitor_disk':
-        is_critical   => $is_master,
+        is_critical   => $is_primary_master,
     }
 
     class { 'mariadb::monitor_process':
-        is_critical   => $is_master,
+        is_critical   => $is_primary_master,
     }
     mariadb::monitor_readonly { $shard:
         read_only   => $read_only,
-        is_critical => $is_master,
+        is_critical => $is_primary_master,
     }
     if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
         $source_dc = profile::mariadb::section_params::get_repl_src_dc($mysql_role)

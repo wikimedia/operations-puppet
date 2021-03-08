@@ -1,2 +1,3 @@
 # db2132
 mariadb::shard: 'm1'
+profile::mariadb::mysql_role: 'master'
