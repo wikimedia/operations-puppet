@@ -34,7 +34,3 @@ profile::pki::multirooca::default_profiles:
       - 'key encipherment'
       - 'server auth'
     expiry: '96h'
-  client:
-    usages:
-      - 'client auth'
-    expiry: '96h'
