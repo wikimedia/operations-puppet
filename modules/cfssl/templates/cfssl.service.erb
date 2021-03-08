@@ -5,10 +5,9 @@ Documentation=https://github.com/cloudflare/cfssl/tree/master/doc
 
 [Service]
 ExecStart=/usr/bin/cfssl serve \
+<%- if @_db_conf_file -%>
           -db-config <%= @_db_conf_file %> \
-          -config <%= @conf_file %> \
-          -address <%= @host %> \
-          -port <%= @port %> \
+<%- end -%>
 <%- if @ca_bundle_file -%>
           -ca-bundle <%= @ca_bundle_file %> \
 <%- end -%>
@@ -16,8 +15,17 @@ ExecStart=/usr/bin/cfssl serve \
           -responder <%= @ocsp_cert_path %> \
           -responder-key <%= @ocsp_key_path %> \
 <%- end -%>
+<%- if @_ca_file and @_ca_key_file -%>
           -ca <%= @_ca_file %> \
           -ca-key <%= @_ca_key_file %>
+<%- end -%>
+<%- if @mutual_tls_client_cert and @mutual_tls_client_key -%>
+          -mutual-tls-client-cert <%= @mutual_tls_client_cert %> \
+          -mutual-tls-client-key <%= @mutual_tls_client_key %> \
+<%- end -%>
+          -config <%= @conf_file %> \
+          -address <%= @listen_addr %> \
+          -port <%= @listen_port %>
 Restart=always
 RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
 

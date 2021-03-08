@@ -1,8 +1,8 @@
 # @summary configure cfssl api service
 # @param ca_key_content content of the CA private key
 # @param ca_cert_content content of the CA public key
-# @param host hostname of the cfssl server
-# @param port port of the cfssl server
+# @param listen_addr hostname of the cfssl server
+# @param listen_port port of the cfssl server
 # @param log_level the logging level
 # @param default_auth_key the default authentication key
 # @param default_expiry the default signing expiry time
@@ -12,14 +12,14 @@
 # @param profiles A hash of signing profiles
 # @param auth_keys A hash of authentication keys, this must contain an entry for the default_auth_key
 define cfssl::signer (
-    Stdlib::Host                  $host             = $facts['fqdn'],
-    Stdlib::Port                  $port             = 8888,
+    Stdlib::Host                  $listen_addr      = $facts['fqdn'],
+    Stdlib::Port                  $listen_port      = 8888,
     Cfssl::Loglevel               $log_level        = 'info',
     String                        $default_auth_key = 'default_auth',
     Cfssl::Expiry                 $default_expiry   = '96h',
     Array[Cfssl::Usage]           $default_usages   = ['signing', 'key encipherment', 'client auth'],
-    Stdlib::HTTPUrl               $default_crl_url  = "http://${host}/crl",
-    Stdlib::HTTPUrl               $default_ocsp_url = "http://${host}/ocsp",
+    Stdlib::HTTPUrl               $default_crl_url  = "http://${listen_addr}/crl",
+    Stdlib::HTTPUrl               $default_ocsp_url = "http://${listen_addr}/ocsp",
     Wmflib::Ensure                $serve_ensure     = 'absent',
     Boolean                       $manage_db        = true,
     Boolean                       $manage_services  = true,

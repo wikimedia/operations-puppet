@@ -2,12 +2,18 @@
 # @param ensure whether to ensure the resource
 # @param conf_dir location of the configuration directory
 # @param auth_key The sha256 hmac key
+# @param enable_proxy if true configure cfssl api to listen on $listen_addr:$listen_port
 class cfssl::client (
-    Stdlib::HTTPUrl      $signer,
-    Stdlib::HTTPUrl      $bundles_source,
-    Sensitive[String[1]] $auth_key,
-    Wmflib::Ensure       $ensure    = 'present',
-    Cfssl::Loglevel      $log_level = 'info',
+    Stdlib::HTTPUrl            $signer,
+    Stdlib::HTTPUrl            $bundles_source,
+    Sensitive[String[1]]       $auth_key,
+    Wmflib::Ensure             $ensure                 = 'present',
+    Cfssl::Loglevel            $log_level              = 'info',
+    Boolean                    $enable_proxy           = false,
+    Stdlib::IP::Address        $listen_addr            = '127.0.0.1',
+    Stdlib::Port               $listen_port            = 8888,
+    Optional[Stdlib::Unixpath] $mutual_tls_client_cert = undef,
+    Optional[Stdlib::Unixpath] $mutual_tls_client_key  = undef,
 ) {
     include cfssl
     $conf_file = "${cfssl::conf_dir}/client-cfssl.conf"
@@ -28,5 +34,10 @@ class cfssl::client (
         group   => 'root',
         mode    => '0550',
         content => "#!/bin/sh\n/usr/bin/cfssl \"$@\" -config ${conf_file}";
+    }
+    systemd::service {'cfssl-serve@proxy-client':
+        ensure  => $enable_proxy.bool2str('present', 'absent'),
+        content => template('cfssl/cfssl.service.erb'),
+        restart => true,
     }
 }
