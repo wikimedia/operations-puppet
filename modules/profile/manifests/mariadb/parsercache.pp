@@ -3,11 +3,16 @@
 
 class profile::mariadb::parsercache (
     $shard = lookup('mariadb::parsercache::shard')
-    ){
+) {
     $mw_primary = mediawiki::state('primary_dc')
 
     include ::profile::mariadb::mysql_role
     profile::mariadb::section { $shard: }
+
+    $mysql_role = $profile::mariadb::mysql_role::role
+    $is_master = $mysql_role == 'master'
+    $is_writeable_dc = profile::mariadb::section_params::is_writeable_dc($shard)
+    $is_primary_master = $is_master and $is_writeable_dc
 
     include ::passwords::misc::scripts
     include ::profile::mariadb::monitor::prometheus
@@ -37,30 +42,26 @@ class profile::mariadb::parsercache (
         datacenter => $::site,
         enabled    => true,
     }
-    $is_on_primary_dc = ($mw_primary == $::site)
-    $contact_group = 'admins'
 
     class { 'mariadb::monitor_disk':
-        is_critical   => $is_on_primary_dc,
-        contact_group => $contact_group,
+        is_critical   => $is_primary_master,
     }
 
     class { 'mariadb::monitor_process':
-        is_critical   => $is_on_primary_dc,
-        contact_group => $contact_group,
+        is_critical   => $is_primary_master,
     }
 
     mariadb::monitor_readonly { [ $shard ]:
-        read_only     => false,
-        is_critical   => $is_on_primary_dc,
-        contact_group => $contact_group,
+        read_only   => !$is_master,
+        is_critical => $is_primary_master,
     }
 
-    mariadb::monitor_replication { [ $shard ]:
-      multisource   => false,
-      is_critical   => $is_on_primary_dc,
-      contact_group => $contact_group,
-      socket        => '/run/mysqld/mysqld.sock',
+    if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
+        $source_dc = profile::mariadb::section_params::get_repl_src_dc($mysql_role)
+        mariadb::monitor_replication { $shard:
+            source_dc   => $source_dc,
+        }
+        profile::mariadb::replication_lag { $shard: }
     }
 
     class { 'mariadb::monitor_memory': }

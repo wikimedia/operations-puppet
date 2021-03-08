@@ -1,2 +1,3 @@
 # pc1009
 mariadb::parsercache::shard: 'pc3'
+profile::mariadb::mysql_role: 'master'

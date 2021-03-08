@@ -58,15 +58,10 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
     }
 
-    class { 'mariadb::monitor_disk':
-        is_critical   => false,
-        contact_group => 'admins',
-    }
+    class { 'mariadb::monitor_disk': }
 
     class { 'mariadb::monitor_process':
         process_count => length($instances),
-        is_critical   => false,
-        contact_group => 'admins',
     }
 
     class { 'mariadb::monitor_memory': }

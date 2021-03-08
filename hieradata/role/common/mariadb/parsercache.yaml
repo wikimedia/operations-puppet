@@ -1,2 +1,1 @@
 monitor_screens: false
-profile::mariadb::mysql_role: 'master'
