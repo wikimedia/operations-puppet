@@ -139,6 +139,10 @@ class profile::analytics::refinery::job::refine(
         'Test',
         'UniversalLanguageSelector',
 
+        # Editing team schemas
+        'EditAttemptStep',
+        'VisualEditorFeatureUse',
+
         # Growth team schemas
         'HelpPanel',
         'HomepageModule',

@@ -27,6 +27,10 @@ eventlogging_schemas_disabled = (
     'Test',
     'UniversalLanguageSelector',
 
+    # Editor schemas
+    'EditAttemptStep',
+    'VisualEditorFeatureUse',
+
     # Growth team schemas
     'HelpPanel',
     'HomepageModule',
