@@ -15,7 +15,7 @@ class profile::pki::client (
     Optional[Stdlib::Unixpath]   $mutual_tls_client_cert = lookup('profile::pki::client::mutual_tls_client_cert'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_key  = lookup('profile::pki::client::mutual_tls_client_key'),
     Optional[Stdlib::Unixpath]   $tls_remote_ca          = lookup('profile::pki::client::tls_remote_ca'),
-    Optional[Stdlib::Filesource] $tls_remote_ca_source   = lookup('profile::pki::client::tls_remote_source'),
+    Optional[Stdlib::Filesource] $tls_remote_ca_source   = lookup('profile::pki::client::tls_remote_ca_source'),
     Hash                         $certs                  = lookup('profile::pki::client::certs'),
 ) {
     $signer = "https://${signer_host}:${signer_port}"
