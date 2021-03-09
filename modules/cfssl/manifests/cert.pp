@@ -15,12 +15,25 @@ define cfssl::cert (
     Optional[Stdlib::Unixpath]     $outdir         = undef,
     Optional[Stdlib::Unixpath]     $tls_cert       = undef,
     Optional[Stdlib::Unixpath]     $tls_key        = undef,
+    Optional[Stdlib::Unixpath]     $tls_remote_ca  = undef,
     Optional[Cfssl::Signer_config] $signer_config  = undef,
     Optional[Array[Stdlib::Host]]  $hosts          = [],
 
 ) {
     include cfssl
 
+    $_tls_cert = $tls_cert ? {
+        undef   => $cfssl::mutual_tls_client_cert,
+        default => $tls_cert,
+    }
+    $_tls_key = $tls_key ? {
+        undef   => $cfssl::mutual_tls_client_key,
+        default => $tls_key,
+    }
+    $_tls_remote_ca = $tls_remote_ca ? {
+        undef   => $cfssl::tls_remote_ca,
+        default => $tls_remote_ca,
+    }
     # use the client config by default
     $_signer_config = pick($signer_config, {'config_file' => $cfssl::client::conf_file})
 
@@ -70,9 +83,13 @@ define cfssl::cert (
             purge   => true,
         }
     }
-    $tls_config = ($tls_cert and $tls_key) ? {
-        true    => "-mutual-tls-client-cert ${tls_cert} -mutual-tls-client-key ${tls_key}",
+    $tls_config = ($_tls_cert and $_tls_key) ? {
+        true    => "-mutual-tls-client-cert ${_tls_cert} -mutual-tls-client-key ${_tls_key}",
         default => '',
+    }
+    $tls_remote_ca_config = $_tls_remote_ca ? {
+        undef   => '',
+        default => "-tls-remote-ca ${_tls_remote_ca}",
     }
     $_label = $label ? {
         undef   => '',
@@ -83,8 +100,8 @@ define cfssl::cert (
         default => "-profile ${profile}",
     }
     $signer_args = $_signer_config ? {
-        Stdlib::HTTPUrl              => "-remote ${_signer_config} ${tls_config} ${_label}",
-        Cfssl::Signer_config::Client => "-config ${_signer_config['config_file']} ${tls_config} ${_label}",
+        Stdlib::HTTPUrl              => "-remote ${_signer_config} ${tls_remote_ca_config} ${tls_config} ${_label}",
+        Cfssl::Signer_config::Client => "-config ${_signer_config['config_file']} ${tls_remote_ca_config} ${tls_config} ${_label}",
         default                      => @("SIGNER_ARGS"/L)
             -ca=${_signer_config['config_dir']}/ca/ca.pem \
             -ca-key=${_signer_config['config_dir']}/ca/ca-key.pem \

@@ -14,6 +14,7 @@ class cfssl::client (
     Stdlib::Port               $listen_port            = 8888,
     Optional[Stdlib::Unixpath] $mutual_tls_client_cert = undef,
     Optional[Stdlib::Unixpath] $mutual_tls_client_key  = undef,
+    Optional[Stdlib::Unixpath] $tls_remote_ca          = undef,
 ) {
     include cfssl
     $conf_file = "${cfssl::conf_dir}/client-cfssl.conf"
