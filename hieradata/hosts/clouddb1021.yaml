@@ -2,10 +2,10 @@
 profile::base::notifications: disabled
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s1: 70G
-  # s2: 40G  # Temporarily disabling sections that do not have data loaded yet
+  s2: 40G
   s3: 40G
   # s4: 70G
   # s5: 40G
   # s6: 30G
-  # s7: 50G
+  s7: 50G
   # s8: 70G
