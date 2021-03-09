@@ -41,7 +41,7 @@ define labs_lvm::volume(
 
     # Make sure there's space available to partition before we start partitioning.
     # Only check if we haven't already created the volume.
-    exec { 'available space':
+    exec { "available-space-${volname}":
         command   => '/usr/local/sbin/pv-free',
         returns   => 0,
         unless    => "/bin/mountpoint -q '${mountat}'",
