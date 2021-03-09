@@ -10,7 +10,8 @@ profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::proxy::x_forwarded_proto: 'http'
 profile::superset::enable_cas: false
-profile::superset::cache_uri: 'localhost'
+# Disabling due to permission issue https://phabricator.wikimedia.org/T273850
+# profile::superset::cache_uri: 'localhost'
 
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters:
