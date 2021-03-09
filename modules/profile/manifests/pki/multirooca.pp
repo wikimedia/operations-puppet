@@ -136,7 +136,7 @@ class profile::pki::multirooca (
     class { 'sslcert::dhparam': }
     # CRL and OCSP responder
     class {'httpd':
-        modules => ['proxy_http', 'ssl']
+        modules => ['proxy_http', 'ssl', 'headers']
     }
     # TODO: probably replace this with acmechief
     $tls_termination_cert = $facts['puppet_config']['hostcert']

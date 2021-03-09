@@ -34,7 +34,7 @@
   SSLCertificateFile <%= @tls_termination_cert %>
   SSLCertificateKeyFile <%= @tls_termination_key %>
   SSLCertificateChainFile <%= @tls_termination_chain %>
-  <%= @ssl_settings.join("\n    ") %>
+  <%= @ssl_settings.join("\n  ") %>
 <%- if @enable_client_auth -%>
   SSLVerifyClient require
   SSLVerifyDepth 1
