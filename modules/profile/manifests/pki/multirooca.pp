@@ -150,6 +150,7 @@ class profile::pki::multirooca (
         group  => 'root',
         mode   => '0440',
         source => $client_ca_source,
+        notify => Service['apache2'],
     }
 
     httpd::site{$vhost:
