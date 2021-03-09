@@ -38,7 +38,7 @@
 <%- if @enable_client_auth -%>
   SSLVerifyClient require
   SSLVerifyDepth 1
-  SSLCACertificateFile <%= @client_auth_cert_file %>
+  SSLCACertificateFile <%= @client_auth_ca_file %>
 <%- end -%>
 
   ProxyPass /  http://127.0.0.1:8888/
