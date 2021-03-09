@@ -1668,7 +1668,7 @@ node /^ml-serve-ctrl100[12]\.eqiad\.wmnet/ {
 }
 
 node /^ml-serve-ctrl200[12]\.codfw\.wmnet/ {
-    role(insetup)
+    role(ml_k8s::master)
 }
 
 # RT, replaced ununpentium
