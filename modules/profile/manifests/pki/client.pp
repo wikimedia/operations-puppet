@@ -42,6 +42,7 @@ class profile::pki::client (
         listen_port            => $listen_port,
         mutual_tls_client_cert => $mutual_tls_client_cert,
         mutual_tls_client_key  => $mutual_tls_client_key,
+        tls_remote_ca          => $tls_remote_ca,
 
     }
     $certs.each |$title, $cert| {
