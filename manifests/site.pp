@@ -168,7 +168,7 @@ node /^apt[12]001\.wikimedia\.org/ {
 }
 
 # Analytics Query Service
-node /aqs100[456789]\.eqiad\.wmnet/ {
+node /aqs10(0[456789]|10)\.eqiad\.wmnet/ {
     role(aqs)
 }
 

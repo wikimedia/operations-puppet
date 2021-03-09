@@ -1,0 +1,15 @@
+# Analytics Query Service - rack1 instances
+
+profile::cassandra::rack: 'rack1'
+profile::cassandra::instances:
+  "aqs1010.eqiad.wmnet":
+    "a": { listen_address: 10.64.0.88, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.0.120, jmx_exporter_enabled: true }
+
+profile::aqs::monitoring_enabled: false
+# no need to specify this flag on buster.
+profile::aqs::use_nodejs10: false
+
+profile::aqs::seeds:
+  - aqs1010-a.eqiad.wmnet
+  - aqs1010-b.eqiad.wmnet
