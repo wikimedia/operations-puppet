@@ -21,17 +21,18 @@ define cfssl::cert (
 
 ) {
     include cfssl
+    include cfssl::client
 
     $_tls_cert = $tls_cert ? {
-        undef   => $cfssl::mutual_tls_client_cert,
+        undef   => $cfssl::client::mutual_tls_client_cert,
         default => $tls_cert,
     }
     $_tls_key = $tls_key ? {
-        undef   => $cfssl::mutual_tls_client_key,
+        undef   => $cfssl::client::mutual_tls_client_key,
         default => $tls_key,
     }
     $_tls_remote_ca = $tls_remote_ca ? {
-        undef   => $cfssl::tls_remote_ca,
+        undef   => $cfssl::client::tls_remote_ca,
         default => $tls_remote_ca,
     }
     # use the client config by default
