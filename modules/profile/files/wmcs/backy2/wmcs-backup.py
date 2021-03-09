@@ -1295,9 +1295,10 @@ class InstanceBackupsState:
         for server_info in server_id_to_server_dict.values():
             project = server_info.get("tenant_id", "no_project")
             name = server_info.get("name", "no_name")
+            status = server_info.get("status", "no_status")
             if this_hostname == self.config.get_host_for_vm(
                 project=project, vm_name=name
-            ):
+            ) and status.lower() != 'build':
                 assigned_vms.append(server_info)
 
         return assigned_vms
