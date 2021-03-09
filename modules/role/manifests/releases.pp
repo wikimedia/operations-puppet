@@ -35,6 +35,7 @@ class role::releases {
     include ::profile::backup::host
     include ::profile::releases::common
     include ::profile::releases::mediawiki
+    include ::profile::docker::ferm
     include ::profile::releases::mediawiki::security
     include ::profile::releases::mwcli
     include ::profile::releases::reprepro
