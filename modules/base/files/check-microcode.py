@@ -1,12 +1,8 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import os
-import re
 import subprocess
 import sys
-
-import apt_pkg
 
 
 def unknown(msg):
@@ -25,18 +21,7 @@ def ok(msg):
 
 
 def main():
-    kernel_version_uname = os.uname().version
-
-    for i in kernel_version_uname.split():
-        if re.search(r'^[0-9]+\.[0-9]+\.[0-9]+-', i):
-            current_kernelpackage_version = i
-            break
-    else:
-        unknown('Failed to detect running kernel version from {}'.format(kernel_version_uname))
-
-    apt_pkg.init()
-
-    expected_cpu_flags = set()
+    expected_cpu_flags = {'ssbd', 'md_clear'}
     available_cpu_flags = set()
 
     try:
@@ -49,20 +34,8 @@ def main():
     if systemd_detect_virt in ['qemu', 'kvm']:
         virtual_host = True
 
-    if apt_pkg.version_compare(current_kernelpackage_version, '4.9.107-1') > 0:
-        expected_cpu_flags.add('ssbd')
-    else:
-        ok('No CPU flags are expected with the {} kernel'.format(current_kernelpackage_version))
-
     if not virtual_host:
-        if apt_pkg.version_compare(current_kernelpackage_version, '4.9.110-3+deb9u3') > 0:
-            expected_cpu_flags.add('flush_l1d')
-
-    if apt_pkg.version_compare(current_kernelpackage_version, '4.9.168-1+deb9u1') > 0:
-        expected_cpu_flags.add('md_clear')
-
-    if not expected_cpu_flags:
-        ok('Hardware is too old')
+        expected_cpu_flags.add('flush_l1d')
 
     # Reading the flags from lscpu is not supported in jessie
     try:
