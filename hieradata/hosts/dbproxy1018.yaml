@@ -5,7 +5,7 @@ profile::mariadb::proxy::replicas::servers:
     weight: 1
   labsdb1011:
     address: '10.64.37.24:3306'
-    weight: 1
+    weight: 2
 profile::mariadb::proxy::firewall: 'public'
 profile::mariadb::proxy::multiinstance_replicas::replica_type: 'analytics'
 # LVS DNS of this server is wikireplicas-a.wikimedia.org
