@@ -115,6 +115,9 @@ sub cluster_fe_recv {
 				|wikilovesmonuments\.org
 				|wikimedia\.pl
 				|wikimedia\.cz
+				# Consultants working in https://phabricator.wikimedia.org/T276317
+				|gospatial\.org
+				|go-spatial\.org
 			)(/|$)		# Anchor to the end of the hostname portion: either end of string or a /.
 		"}) {
 			return (synth(403, "Forbidden: Map tiles are restricted to Wikimedia & affiliated sites only.  Please post on https://phabricator.wikimedia.org/T261694 if you believe your usage supports the Movement."));
