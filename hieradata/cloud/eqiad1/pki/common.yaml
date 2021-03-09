@@ -1,6 +1,6 @@
 profile::pki::client::ensure: present
 profile::pki::client::signer_host: pki-intermediate.pki.eqiad1.wikimedia.cloud
-profile::pki::client::signer_port: 8888
+profile::pki::client::signer_port: 443
 profile::pki::client::enable_proxy: false
 profile::pki::client::listen_addr: 127.0.0.1
 profile::pki::client::listen_port: 8888

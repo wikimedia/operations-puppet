@@ -20,8 +20,10 @@ profile::pki::multirooca::db_driver: 'mysql'
 profile::pki::multirooca::db_user: 'pki'
 profile::pki::multirooca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
 profile::pki::multirooca::db_name: 'pki'
+profile::pki::multirooca::enable_client_auth: true
+profile::pki::multirooca::client_ca_source: "%{facts.puppet_config.localcacert}"
 profile::pki::multirooca::default_nets:
-  - 172.16.0.0/21
+  - 127.0.0.1/32
 profile::pki::multirooca::default_profiles:
   ocsp:
     usages:

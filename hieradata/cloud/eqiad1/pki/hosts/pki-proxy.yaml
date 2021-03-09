@@ -1,1 +1,2 @@
 profile::pki::client::enable_proxy: true
+profile::pki::client::listen_addr: "%{facts.networking.ip}"

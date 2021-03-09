@@ -24,3 +24,27 @@
   ErrorLog /var/log/apache2/<%= @vhost %>_error.log
   CustomLog /var/log/apache2/<%= @vhost %>_access.log wmf
 </VirtualHost>
+
+<VirtualHost *:443>
+  ServerName <%= @vhost %>
+  ServerAlias <%= @facts['fqdn'] %>
+  DocumentRoot <%= @document_root %>
+
+  SSLEngine on
+  SSLCertificateFile <%= @tls_termination_cert %>
+  SSLCertificateKeyFile <%= @tls_termination_key %>
+  SSLCertificateChainFile <%= @tls_termination_chain %>
+  <%= @ssl_settings.join("\n    ") %>
+<%- if @enable_client_auth -%>
+  SSLVerifyClient require
+  SSLVerifyDepth 1
+  SSLCACertificateFile <%= @client_auth_cert_file %>
+<%- end -%>
+
+  ProxyPass /  http://127.0.0.1:8888/
+  ProxyPassReverse / http://127.0.0.1:8888/
+
+  LogLevel warn
+  ErrorLog /var/log/apache2/<%= @vhost %>_ssl_error.log
+  CustomLog /var/log/apache2/<%= @vhost %>_ssl_access.log wmf
+</VirtualHost>
