@@ -133,6 +133,7 @@ class profile::pki::multirooca (
     class {'cfssl::multirootca':
         signers  => $signers,
     }
+    class { 'sslcert::dhparam': }
     # CRL and OCSP responder
     class {'httpd':
         modules => ['proxy_http', 'ssl']
