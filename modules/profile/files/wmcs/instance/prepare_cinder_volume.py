@@ -16,17 +16,24 @@ def block_dev_dict():
     annotateddict = {}
     for dev in blockdict["blockdevices"]:
         dev["canformat"] = True
-        dev["caption"] = ""
+        dev["canmount"] = True
+        dev["caption"] = "new volume, will be formatted before mounting"
 
-        if dev["name"] == "vda" or dev["name"] == "sda":
+        if dev.get("mountpoint", ""):
+            dev["canmount"] = False
             dev["canformat"] = False
-            dev["caption"] = "the primary volume containing /"
+            dev["caption"] = " (already mounted)"
+        elif dev["name"] == "vda" or dev["name"] == "sda":
+            dev["canmount"] = False
+            dev["canformat"] = False
+            dev["caption"] = " (the primary volume containing /)"
         elif "children" in dev:
+            dev["canmount"] = False
             dev["canformat"] = False
             dev["caption"] = "already partitioned"
         elif "fstype" in dev and dev["fstype"] is not None:
             dev["canformat"] = False
-            dev["caption"] = "already contains %s filesystem" % dev["fstype"]
+            dev["caption"] = "formatted as %s, can be mounted" % dev["fstype"]
 
         annotateddict[dev["name"]] = dev
 
@@ -79,7 +86,7 @@ def validate_mountpoint(devdict, mountpoint):
 def get_args(devdict, args):
     print("This tool will partition, format, and mount a block storage device.\n\n")
 
-    dev_choices = [dev["name"] for dev in devdict.values() if dev["canformat"]]
+    dev_choices = [dev["name"] for dev in devdict.values() if dev["canmount"]]
 
     print("Attached storage devices:\n\n%s" % devs_string(devdict))
 
@@ -92,9 +99,7 @@ def get_args(devdict, args):
             args.device = dev_choices[0]
             break
 
-        dev = input(
-            "What device would you like to format and mount? <%s> " % dev_choices[0]
-        )
+        dev = input("What device would you like to mount? <%s> " % dev_choices[0])
         if not dev:
             dev = dev_choices[0]
         if dev in dev_choices:
@@ -122,12 +127,17 @@ def get_args(devdict, args):
     return args
 
 
-def format_and_mount(args):
+def format_volume(args):
     devpath = "/dev/%s" % args.device
 
     # Filesystem
     print("Formatting as ext4...")
     subprocess.run(["mkfs.ext4", devpath])
+    print("Done.")
+
+
+def mount_volume(args):
+    devpath = "/dev/%s" % args.device
 
     # Ensure mountpoint exists
     pathlib.Path(args.mountpoint).mkdir(parents=True, exist_ok=True)
@@ -170,7 +180,7 @@ if __name__ == "__main__":
 
     parser = ArgumentParser(description="Partition, format, and mount a block device")
 
-    dev_choices = [dev["name"] for dev in devdict.values() if dev["canformat"]]
+    dev_choices = [dev["name"] for dev in devdict.values() if dev["canmount"]]
     if not dev_choices:
         exit(
             "%s\nNo block devices are available to format or mount.\n"
@@ -195,4 +205,7 @@ if __name__ == "__main__":
     else:
         args = get_args(devdict, args)
 
-    format_and_mount(args)
+    if devdict[args.device]["canformat"]:
+        format_volume(args)
+
+    mount_volume(args)
