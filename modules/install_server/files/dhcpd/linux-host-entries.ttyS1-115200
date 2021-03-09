@@ -4638,12 +4638,12 @@ host sodium {
 }
 
 host ms-backup1001 {
-    hardware ethernet 2C:EA:7F:7F:BD:01;
+    hardware ethernet BC:97:E1:E4:25:D0;
     fixed-address ms-backup1001.eqiad.wmnet;
 }
 
 host ms-backup1002 {
-    hardware ethernet 2C:EA:7F:7F:CD:A3;
+    hardware ethernet BC:97:E1:E4:26:D0;
     fixed-address ms-backup1002.eqiad.wmnet;
 }
 
