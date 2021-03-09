@@ -55,7 +55,7 @@ define labs_lvm::volume(
         require   => [
             File['/usr/local/sbin/make-instance-vol'],
             Exec['create-volume-group'],
-            Exec['available space']
+            Exec["available-space-${volname}"]
         ],
         command   => "/usr/local/sbin/make-instance-vol '${volname}' '${size}' '${fstype}' ${mkfs_opt}",
     }
@@ -70,7 +70,7 @@ define labs_lvm::volume(
         logoutput => 'on_failure',
         command   => "/bin/mkdir -p '${mountat}'",
         require   => [
-            Exec['available space']
+            Exec["available-space-${volname}"]
         ],
     }
 
