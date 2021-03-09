@@ -62,7 +62,7 @@ class profile::dbbackups::mydumper {
         group     => 'dump',
         mode      => '0400',
         show_diff => false,
-        content   => template("profile/mariadb/backup_config/${::hostname}.cnf.erb"),
+        content   => template("profile/dbbackups/${::hostname}.cnf.erb"),
     }
     # separate file for common statistics db config
     file { '/etc/wmfbackups/statistics.cnf':
@@ -71,7 +71,7 @@ class profile::dbbackups::mydumper {
         group     => 'dump',
         mode      => '0400',
         show_diff => false,
-        content   => template('profile/mariadb/backup_config/statistics.cnf.erb'),
+        content   => template('profile/dbbackups/statistics.cnf.erb'),
     }
     # Logging support
     file { '/var/log/mariadb-backups':

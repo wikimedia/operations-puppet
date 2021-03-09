@@ -12,7 +12,7 @@ class profile::dbbackups::transfer {
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/profile/mariadb/transferpy.conf',
+        source => 'puppet:///modules/profile/dbbackups/transferpy.conf',
     }
 
     include passwords::mysql::dump
@@ -27,7 +27,7 @@ class profile::dbbackups::transfer {
         group     => 'root',
         mode      => '0400',
         show_diff => false,
-        content   => template("profile/mariadb/backup_config/${::hostname}.cnf.erb"),
+        content   => template("profile/dbbackups/${::hostname}.cnf.erb"),
         require   => Package['wmfbackups-remote'],
     }
 
