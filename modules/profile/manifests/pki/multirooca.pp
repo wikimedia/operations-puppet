@@ -140,7 +140,7 @@ class profile::pki::multirooca (
     }
     # TODO: probably replace this with acmechief
     $tls_termination_cert = $facts['puppet_config']['hostcert']
-    $tls_termination_key = $facts['puppet_config']['hostcert']
+    $tls_termination_key = $facts['puppet_config']['hostprivkey']
     $tls_termination_chain = $facts['puppet_config']['localcacert']
     $ssl_settings   = ssl_ciphersuite('apache', 'strong', true)
     $client_auth_ca_file = '/etc/ssl/localcerts/multiroot_ca.pem'
