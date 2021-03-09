@@ -15,7 +15,7 @@ profile::base::purge_apt_sources: false
 profile::base::purge_apt_preferences: false
 profile::base::manage_apt_source: false
 profile::base::apt_install_audit_installed: false
-profile::base::mirror_server: 'mirrors.wikimedia.org'
+profile::base::mirror_server: 'deb.debian.org'
 
 profile::base::puppet::interval: 30
 profile::base::puppet::environment: production
