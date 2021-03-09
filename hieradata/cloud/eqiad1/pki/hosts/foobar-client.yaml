@@ -1,1 +1,2 @@
+profile::pki::client::tls_remote_ca:  '/etc/ssl/localcerts/pki_api_CA.pem'
 profile::pki::client::tls_remote_ca_source: 'puppet:///modules/profile/pki/cloud/pki_api_ca.pem'
