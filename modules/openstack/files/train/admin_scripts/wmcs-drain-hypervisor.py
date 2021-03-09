@@ -190,7 +190,16 @@ if __name__ == "__main__":
                 continue
             instanceobj = NovaInstance(osclients, instance.id)
             if instanceobj.migrate():
-                remaining_instances.remove(instance)
+                if (
+                    instanceobj.instance._info["OS-EXT-SRV-ATTR:host"]
+                    == args.hypervisor
+                ):
+                    logging.warning(
+                        f"{instanceobj.instance_name} ({instanceobj.instance_id}) didn't actually "
+                        "migrate, got scheduled on the same hypervisor. Will try again!"
+                    )
+                else:
+                    remaining_instances.remove(instance)
 
         if remaining_instances:
             logging.warning(
