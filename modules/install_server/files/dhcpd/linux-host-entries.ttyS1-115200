@@ -3706,37 +3706,31 @@ host kafka-jumbo1009 {
 host kafka-logging1001 {
     hardware ethernet BC:97:E1:BF:B4:90;
     fixed-address kafka-logging1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kafka-logging1002 {
     hardware ethernet BC:97:E1:C0:14:30;
     fixed-address kafka-logging1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kafka-logging1003 {
     hardware ethernet BC:97:E1:C0:17:30;
     fixed-address kafka-logging1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kafka-logging2001 {
     hardware ethernet BC:97:E1:EB:4E:30;
     fixed-address kafka-logging2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kafka-logging2002 {
     hardware ethernet BC:97:E1:EB:4E:00;
     fixed-address kafka-logging2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kafka-logging2003 {
     hardware ethernet BC:97:E1:EB:74:B0;
     fixed-address kafka-logging2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kafka-main1001 {
