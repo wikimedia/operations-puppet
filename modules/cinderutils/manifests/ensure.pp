@@ -33,21 +33,43 @@ define cinderutils::ensure(
         if $facts['mountpoints'][$mount_point]['size_bytes'] < $min_gb * 1024 * 1024 * 1024 {
             fail("Volume at ${mount_point} is smaller than required size of ${min_gb}GB")
         }
+
+        # find the volume info for this so we can use the uuid for mounting
+        $cinder_vol = $facts['cinder_volumes'].reduce() |$memo, $volume| {
+            $volume['mountpoint'] == $mount_point ? {
+                true    => $volume,
+                default => $memo
+            }
+        }
+        $require_list = []
     } else {
         # find the first available volume of adequate size
-        $facts['unmounted_volumes'].each |String $dev, Integer $size| {
-            if $size >= $min_gb * 1024 * 1024 * 1024 and $size <= $max_gb * 1024 * 1024 * 1024 {
+        $cinder_vol = $facts['cinder_volumes'].reduce(undef) |$memo, $volume| {
+            if (!$memo and
+                $volume['mountpoint'] == '' and
+                $volume['size'] >= $min_gb * 1024 * 1024 * 1024 and
+                $volume['size'] <= $max_gb * 1024 * 1024 * 1024) {
                 exec { "prepare_cinder_volume_${mount_point}":
-                    command => "/usr/sbin/prepare_cinder_volume --force --device ${dev} --mountpoint ${mount_point}",
+                    command => "/usr/sbin/prepare_cinder_volume --force --device ${volume['dev']} --mountpoint ${mount_point}",
                     require => File['/usr/sbin/prepare_cinder_volume'],
                     user    => 'root',
                 }
-                break()
+                $require_list = Exec["prepare_cinder_volume_${mount_point}"]
+                $volume
+            } else {
+                $memo
             }
         }
-
-        if !defined(Exec["prepare_cinder_volume_${mount_point}"]) {
+        if $cinder_vol == undef {
             fail("No mount at ${mount_point} and no volumes are available to mount.\n\nTo proceed, create and attach a Cinder volume of at least size ${min_gb}GB.")
         }
+    }
+
+    mount { $mount_point:
+        ensure  => mounted,
+        atboot  => true,
+        device  => "UUID=${cinder_vol['uuid']}",
+        options => 'discard,nofail,x-systemd.device-timeout=2s',
+        require => $require_list,
     }
 }
