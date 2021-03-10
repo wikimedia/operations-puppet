@@ -394,3 +394,7 @@ eqiad:
     thanos-fe1001.eqiad.wmnet: [thanos-query, thanos-swift]
     thanos-fe1002.eqiad.wmnet: [thanos-query, thanos-swift]
     thanos-fe1003.eqiad.wmnet: [thanos-query, thanos-swift]
+  ml_serve:
+    ml-serve-ctrl1001.eqiad.wmnet: [kubemaster]
+    ml-serve-ctrl1002.eqiad.wmnet: [kubemaster]
+
