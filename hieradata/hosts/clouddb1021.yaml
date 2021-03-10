@@ -5,7 +5,7 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s2: 40G
   s3: 40G
   s4: 70G
-  # s5: 40G
+  s5: 40G
   s6: 30G
   s7: 50G
-  # s8: 70G
+  s8: 70G
