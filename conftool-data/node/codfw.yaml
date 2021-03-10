@@ -359,3 +359,6 @@ codfw:
     thanos-fe2001.codfw.wmnet: [thanos-query, thanos-swift]
     thanos-fe2002.codfw.wmnet: [thanos-query, thanos-swift]
     thanos-fe2003.codfw.wmnet: [thanos-query, thanos-swift]
+  ml_serve:
+    ml-serve-ctrl2001.codfw.wmnet: [kubemaster]
+    ml-serve-ctrl2002.codfw.wmnet: [kubemaster]
