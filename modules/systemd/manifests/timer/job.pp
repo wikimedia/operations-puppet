@@ -118,12 +118,15 @@ define systemd::timer::job(
     Enum['user', 'group', 'all']            $logfile_perms             = 'all',
     Boolean                                 $syslog_force_stop         = true,
     Boolean                                 $syslog_match_startswith   = true,
+    Boolean                                 $send_mail                 = false,
     Optional[String]                        $logfile_owner             = undef,
     Optional[String]                        $syslog_identifier         = undef,
     Optional[Integer]                       $max_runtime_seconds       = undef,
     Optional[Pattern[/\w+\.slice/]]         $slice                     = undef,
     Optional[Stdlib::Unixpath]              $environment_file          = undef,
-    Boolean                                 $send_mail                 = false,
+    Optional[Systemd::Input]                $stdin                     = undef,
+    Optional[Systemd::Output]               $stdout                    = undef,
+    Optional[Systemd::Output]               $stderr                    = undef,
 ) {
     # Systemd doesn't play well with spaces in unit names, so check for that
     if $title =~ /\s/ {

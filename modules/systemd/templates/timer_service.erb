@@ -25,3 +25,12 @@ ExecStart=<%= @command %>
 <%- if @max_runtime_seconds -%>
 RuntimeMaxSec=<%= @max_runtime_seconds %>
 <%- end -%>
+<%- if @stdin -%>
+StandardInput=<%= @stdin %>
+<%- end -%>
+<%- if @stdout -%>
+StandardOutput=<%= @stdout %>
+<%- end -%>
+<%- if @stderr -%>
+StandardError=<%= @stderr %>
+<%- end -%>
