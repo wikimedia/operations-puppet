@@ -1,4 +1,5 @@
 profile::grafana::domain: grafana.wikimedia.org
+profile::grafana::domainrw: grafana-rw.wikimedia.org
 profile::grafana::server_aliases:
   - grafana-next.wikimedia.org
 profile::grafana::wpt_graphite_proxy_port: 33333

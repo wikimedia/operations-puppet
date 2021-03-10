@@ -7,6 +7,7 @@
 #        a reverse proxy for performance-team's Graphite instance.
 class profile::grafana (
     Stdlib::Fqdn $domain         = lookup('profile::grafana::domain'),
+    Stdlib::Fqdn $domainrw       = lookup('profile::grafana::domainrw'),
     String       $secret_key     = lookup('profile::grafana::secret_key'),
     String       $admin_password = lookup('profile::grafana::admin_password'),
     Hash         $config         = lookup('profile::grafana::config'),

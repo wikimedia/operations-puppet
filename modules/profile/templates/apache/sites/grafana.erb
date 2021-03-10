@@ -18,16 +18,16 @@
   # User has clicked 'login' on a dashboard.
   # Redirect to the same dashboard on the 'rw' vhost.
   RewriteCond "%{REQUEST_URI}" "^/login"
-  RewriteCond "%{HTTP_REFERER}" "^https://grafana.wikimedia.org/d/(.*)"
-  RewriteRule "^" "https://grafana-rw.wikimedia.org/d/%1" [R=302,L]
+  RewriteCond "%{HTTP_REFERER}" "^https://<%= @domain %>/d/(.*)"
+  RewriteRule "^" "https://<%= @domainrw %>/d/%1" [R=302,L]
 
   # Direct /login visit, redirect to 'rw' homepage
   RewriteCond "%{REQUEST_URI}" "^/login"
-  RewriteRule "^" "https://grafana-rw.wikimedia.org" [R=302,L]
+  RewriteRule "^" "https://<%= @domainrw %>" [R=302,L]
 
   # /explore requires login, also backwards compatibility
   RewriteCond "%{REQUEST_URI}" "^/explore"
-  RewriteRule "^" "https://grafana-rw.wikimedia.org/explore" [R=302,L]
+  RewriteRule "^" "https://<%= @domainrw %>/explore" [R=302,L]
 <% end %>
 
   ProxyPreserveHost On
