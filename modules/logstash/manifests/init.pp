@@ -13,6 +13,8 @@
 # - $gc_log: turn off/on garbage collector plain text logs
 # - $jmx_exporter_port: if defined, what port to listen on
 # - $jmx_exporter_config: if defined, what's the path to jmx_exporter's config
+# - $enable_dlq: enables the dead letter queue
+# - $dlq_max_bytes: maximum size of each dead letter queue
 #
 # == Sample usage:
 #
@@ -34,6 +36,8 @@ class logstash (
     Integer[5,7] $logstash_version    = 5,
     Boolean $manage_service           = true,
     Enum['plain', 'json'] $log_format = 'plain',
+    Boolean $enable_dlq               = false,
+    String $dlq_max_bytes             = '1024mb',
 ) {
     #TODO: fully remove when java installed with ::profile::java
     #require_package($java_package)
@@ -146,13 +150,15 @@ class logstash (
 
     file { '/etc/logstash/logstash.yml':
         content => ordered_yaml({
-            'path.data'            => '/var/lib/logstash',
-            'path.config'          => '/etc/logstash/conf.d',
-            'path.logs'            => '/var/log/logstash',
-            'pipeline.workers'     => $pipeline_workers,
-            'pipeline.batch.size'  => $pipeline_batch_size,
-            'pipeline.batch.delay' => $pipeline_batch_delay,
-            'log.format'           => $log_format,
+            'path.data'                   => '/var/lib/logstash',
+            'path.config'                 => '/etc/logstash/conf.d',
+            'path.logs'                   => '/var/log/logstash',
+            'pipeline.workers'            => $pipeline_workers,
+            'pipeline.batch.size'         => $pipeline_batch_size,
+            'pipeline.batch.delay'        => $pipeline_batch_delay,
+            'log.format'                  => $log_format,
+            'dead_letter_queue.enable'    => $enable_dlq,
+            'dead_letter_queue.max_bytes' => $dlq_max_bytes,
         }),
         owner   => 'root',
         group   => 'root',

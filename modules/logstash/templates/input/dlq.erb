@@ -1,0 +1,12 @@
+input {
+  dead_letter_queue {
+    type           => "dlq"
+    path           => "<%= @path %>"
+    pipeline_id    => "<%= @pipeline_id %>"
+    commit_offsets => <%= @commit_offsets %>
+    id             => "<%= @plugin_id %>/<% @pipeline_id %>"
+<%- if @tags -%>
+    tags           => ["<%= @tags.join('", "') %>"]
+<%- end -%>
+  }
+}

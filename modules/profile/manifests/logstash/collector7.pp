@@ -41,6 +41,7 @@ class profile::logstash::collector7 (
         pipeline_workers    => $::processorcount * 2,
         manage_service      => false,
         log_format          => 'json',
+        enable_dlq          => true,
     }
 
     sysctl::parameters { 'logstash_receive_skbuf':
@@ -73,6 +74,8 @@ class profile::logstash::collector7 (
         port   => '9200',
         srange => "(\$DEPLOYMENT_HOSTS ${maintenance_hosts_str})",
     }
+
+    logstash::input::dlq { 'main': }
 
     # Logstash collectors in both sites pull messages
     # from logging kafka clusters in both DCs.
