@@ -57,6 +57,11 @@ host an-druid1003 {
     fixed-address an-druid1003.eqiad.wmnet;
 }
 
+host an-druid1004 {
+    hardware ethernet 2C:EA:7F:7F:C9:8B;
+    fixed-address an-druid1004.eqiad.wmnet;
+}
+
 host an-druid1005 {
     hardware ethernet 2C:EA:7F:7F:C4:A3;
     fixed-address an-druid1005.eqiad.wmnet;
