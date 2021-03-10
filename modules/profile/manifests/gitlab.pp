@@ -5,6 +5,18 @@ class profile::gitlab(
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
 ){
 
+    $acme_chief_cert = 'gitlab'
+
+    exec {'Reload nginx':
+      command     => '/usr/bin/gitlab-ctl hup nginx',
+      refreshonly => true,
+    }
+
+    # Certificates will be available under:
+    # /etc/acmecerts/<%= @acme_chief_cert %>/live/
+    acme_chief::cert { $acme_chief_cert:
+        puppet_rsc => Exec['Reload nginx'],
+    }
     apt::package_from_component{'gitlab-ce':
         component => 'thirdparty/gitlab',
     }
