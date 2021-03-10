@@ -25,5 +25,7 @@ profile::query_service::use_revisions: true
 # exclude wdqs hosts from screen monitoring
 # they are often used to monitor logs, for example by smalyshev
 monitor_screens: false
+profile::tlsproxy::envoy::global_cert_name: "query-preview.wikidata.org"
+
 profile::query_service::oauth: false
 profile::query_service::federation_user_agent: 'Wikidata Query Service (test); https://query.wikidata.org/'
