@@ -375,7 +375,6 @@ eqiad:
     ores1008.eqiad.wmnet: [ores]
     ores1009.eqiad.wmnet: [ores]
   docker-registry:
-    registry1001.eqiad.wmnet: [docker-registry]
     registry1002.eqiad.wmnet: [docker-registry]
     registry1003.eqiad.wmnet: [docker-registry]
     registry1004.eqiad.wmnet: [docker-registry]

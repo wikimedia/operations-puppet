@@ -973,12 +973,6 @@ host releases2002 {
     fixed-address releases2002.codfw.wmnet;
 }
 
-host registry1001 {
-    hardware ethernet aa:00:00:85:e5:d2;
-    fixed-address registry1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host registry1002 {
     hardware ethernet aa:00:00:9d:f3:e7;
     fixed-address registry1002.eqiad.wmnet;
