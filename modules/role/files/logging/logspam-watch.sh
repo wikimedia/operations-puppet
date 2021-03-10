@@ -38,6 +38,10 @@ MINIMUM_HITS=1
 # Minutes
 LOGSPAM_WINDOW=60
 
+if [ -r ~/.logspamwatchrc ]; then
+  . ~/.logspamwatchrc
+fi
+
 # Our "view":
 function display {
   logspam_output=$(run_logspam)
