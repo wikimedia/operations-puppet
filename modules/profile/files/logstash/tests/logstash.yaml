@@ -6,7 +6,6 @@ fields:
   severity: "NOTICE"
 codec: "json_lines"
 ignore:
-  - "labels"
   - "[log][original]"  # json encoding is non-deterministic
 testcases:
   - input:
@@ -69,6 +68,8 @@ testcases:
     expected:
       - message: "Could not index event to Elasticsearch."
         '@timestamp': '2021-03-03T16:04:27.028Z'
+        labels:
+          index: 'logstash-mediawiki-2021.03.03'
         process:
           thread:
             name: "[main]>worker2"
