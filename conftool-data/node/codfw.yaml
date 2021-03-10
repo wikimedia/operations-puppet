@@ -348,8 +348,6 @@ codfw:
     logstash2030.codfw.wmnet: [kibana7]
     logstash2031.codfw.wmnet: [kibana7]
   docker-registry:
-    registry2001.codfw.wmnet: [docker-registry]
-    registry2002.codfw.wmnet: [docker-registry]
     registry2003.codfw.wmnet: [docker-registry]
     registry2004.codfw.wmnet: [docker-registry]
   ncredir:
