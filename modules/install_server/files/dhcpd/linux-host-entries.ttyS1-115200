@@ -4424,11 +4424,6 @@ host mc1023 {
     fixed-address mc1023.eqiad.wmnet;
 }
 
-host mc1024 {
-    hardware ethernet 1c:98:ec:29:8c:1c;
-    fixed-address mc1024.eqiad.wmnet;
-}
-
 host mc1025 {
     hardware ethernet 1c:98:ec:29:1a:30;
     fixed-address mc1025.eqiad.wmnet;
