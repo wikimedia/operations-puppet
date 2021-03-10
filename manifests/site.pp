@@ -145,8 +145,7 @@ node 'an-airflow1001.eqiad.wmnet' {
     role(search::airflow)
 }
 
-# New Analytics Zookepeer cluster - T227025
-# Not yet taking traffic for the Hadoop cluster.
+# Analytics Zookepeer cluster
 node /an-conf100[1-3]\.eqiad\.wmnet/ {
     role(analytics_cluster::zookeeper)
 }
