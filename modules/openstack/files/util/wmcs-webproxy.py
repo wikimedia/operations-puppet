@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (c) 2018 Wikimedia Foundation and contributors
 #
@@ -13,14 +13,13 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-from __future__ import print_function
 
 import argparse
 import json
 import logging
 import operator
 import socket
-import urlparse
+from urllib.parse import urlparse
 
 import mwopenstackclients
 import requests
@@ -46,7 +45,7 @@ def add_proxy(args):
     base_url = url_template(client).replace('$(tenant_id)s', args.project)
 
     dns = mwopenstackclients.DnsManager(client, tenant=TENANT)
-    proxyip = socket.gethostbyname(urlparse.urlparse(base_url).hostname)
+    proxyip = socket.gethostbyname(urlparse(base_url).hostname)
     z = dns.zones(name=ZONE)[0]  # blow up if zone doesn't exist
     zone_id = z['id']
     fqdn = '{}.{}'.format(args.host, ZONE)
