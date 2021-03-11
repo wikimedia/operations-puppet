@@ -9,6 +9,7 @@ profile::superset::database_uri: mysql://superset_staging@an-coord1001.eqiad.wmn
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::proxy::x_forwarded_proto: 'http'
+profile::superset::proxy::ferm_srange: '($CACHES $ANALYTICS_NETWORKS)'
 profile::superset::enable_cas: false
 # Disabling due to permission issue https://phabricator.wikimedia.org/T273850
 # profile::superset::cache_uri: 'localhost'

@@ -6,6 +6,7 @@ class profile::superset::proxy (
     Hash $ldap_config          = lookup('ldap', Hash, hash, {}),
     String $x_forwarded_proto  = lookup('profile::superset::proxy::x_forwarded_proto', {'default_value' => 'https'}),
     Boolean $enable_cas        = lookup('profile::superset::enable_cas'),
+    String $ferm_srange        = lookup('profile::superset::proxy::ferm_srange', {'default_value' => '$CACHES'})
 ) {
 
     require ::profile::analytics::httpd::utils
@@ -46,6 +47,6 @@ class profile::superset::proxy (
     ferm::service { 'superset-http':
         proto  => 'tcp',
         port   => '80',
-        srange => '$CACHES',
+        srange => $ferm_srange,
     }
 }
