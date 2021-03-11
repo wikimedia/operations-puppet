@@ -1,47 +1,70 @@
-#!/usr/bin/env python
-#   The contents of this file are subject to the Mozilla Public License
-#   Version 1.1 (the "License"); you may not use this file except in
-#   compliance with the License. You may obtain a copy of the License at
-#   http://www.mozilla.org/MPL/
-#
-#   Software distributed under the License is distributed on an "AS IS"
-#   basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-#   License for the specific language governing rights and limitations
-#   under the License.
-#
-#   The Original Code is RabbitMQ Management Plugin.
-#
-#   The Initial Developer of the Original Code is GoPivotal, Inc.
-#   Copyright (c) 2010-2015 Pivotal Software, Inc.  All rights reserved.
+#!/usr/bin/env python3
 
-import sys
-if sys.version_info[0] < 2 or (sys.version_info[0] == 2 and sys.version_info[1] < 6):
-    print("Sorry, rabbitmqadmin requires at least Python 2.6.")
-    sys.exit(1)
+#
+# WMF note: this is imported from rabbitmq usptream, here:
+#
+#  https://www.rabbitmq.com/management-cli.html
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2007-2021 VMware, Inc. or its affiliates.  All rights reserved.
+
+from __future__ import print_function
 
 from optparse import OptionParser, TitledHelpFormatter
+
 import base64
+import copy
 import json
 import os
 import socket
+import ssl
+import traceback
+
+try:
+    from signal import signal, SIGPIPE, SIG_DFL
+    signal(SIGPIPE, SIG_DFL)
+except ImportError:
+    pass
+
+import sys
+
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+
+if sys.version_info[0] < 2 or (sys.version_info[0] == 2 and sys.version_info[1] < 6):
+    eprint("Sorry, rabbitmqadmin requires at least Python 2.6 (2.7.9 when HTTPS is enabled).")
+    sys.exit(1)
 
 if sys.version_info[0] == 2:
     from ConfigParser import ConfigParser, NoSectionError
     import httplib
     import urlparse
     from urllib import quote_plus
+    from urllib import quote
 
     def b64(s):
         return base64.b64encode(s)
-
 else:
     from configparser import ConfigParser, NoSectionError
     import http.client as httplib
     import urllib.parse as urlparse
     from urllib.parse import quote_plus
+    from urllib.parse import quote
 
     def b64(s):
         return base64.b64encode(s.encode('utf-8')).decode('utf-8')
+
+if sys.version_info[0] == 2:
+    class ConnectionError(OSError):
+        pass
+
+    class ConnectionRefusedError(ConnectionError):
+        pass
 
 VERSION = '%%VSN%%'
 
@@ -57,7 +80,9 @@ LISTABLE = {'connections': {'vhost': False, 'cols': ['name', 'user', 'channels']
             'permissions': {'vhost': False},
             'nodes':       {'vhost': False, 'cols': ['name', 'type', 'mem_used']},
             'parameters':  {'vhost': False, 'json': ['value']},
-            'policies':    {'vhost': False, 'json': ['definition']}}
+            'policies':    {'vhost': False, 'json': ['definition']},
+            'operator_policies': {'vhost': False, 'json': ['definition']},
+            'vhost_limits': {'vhost': False, 'json': ['value']}}
 
 SHOWABLE = {'overview': {'vhost': False, 'cols': ['rabbitmq_version',
                                                   'cluster_name',
@@ -76,8 +101,28 @@ URIS = {
     'user':        '/users/{name}',
     'permission':  '/permissions/{vhost}/{user}',
     'parameter':   '/parameters/{component}/{vhost}/{name}',
-    'policy':      '/policies/{vhost}/{name}'
+    'policy':      '/policies/{vhost}/{name}',
+    'operator_policy': '/operator-policies/{vhost}/{name}',
+    'vhost_limit': '/vhost-limits/{vhost}/{name}'
     }
+
+
+def queue_upload_fixup(upload):
+    # rabbitmq/rabbitmq-management#761
+    #
+    # In general, the fixup_upload argument can be used to fixup/change the
+    # upload dict after all argument parsing is complete.
+    #
+    # This simplifies setting the queue type for a new queue by allowing the
+    # user to use a queue_type=quorum argument rather than the somewhat confusing
+    # arguments='{"x-queue-type":"quorum"}' parameter
+    #
+    if 'queue_type' in upload:
+        queue_type = upload.get('queue_type')
+        arguments = upload.get('arguments', {})
+        arguments['x-queue-type'] = queue_type
+        upload['arguments'] = arguments
+
 
 DECLARABLE = {
     'exchange':   {'mandatory': ['name', 'type'],
@@ -87,36 +132,45 @@ DECLARABLE = {
     'queue':      {'mandatory': ['name'],
                    'json':      ['arguments'],
                    'optional':  {'auto_delete': 'false', 'durable': 'true',
-                                 'arguments': {}, 'node': None}},
+                                 'arguments': {}, 'node': None, 'queue_type': None},
+                   'fixup_upload': queue_upload_fixup},
     'binding':    {'mandatory': ['source', 'destination'],
                    'json':      ['arguments'],
                    'optional':  {'destination_type': 'queue',
                                  'routing_key': '', 'arguments': {}}},
     'vhost':      {'mandatory': ['name'],
                    'optional':  {'tracing': None}},
-    'user':       {'mandatory': ['name', 'password', 'tags'],
-                   'optional':  {}},
+    'user':       {'mandatory': ['name', ['password', 'password_hash'], 'tags'],
+                   'optional':  {'hashing_algorithm': None}},
     'permission': {'mandatory': ['vhost', 'user', 'configure', 'write', 'read'],
                    'optional':  {}},
     'parameter':  {'mandatory': ['component', 'name', 'value'],
                    'json':      ['value'],
                    'optional':  {}},
-    # Priority is 'json' to convert to int
+    # priority has to be converted to an integer
     'policy':     {'mandatory': ['name', 'pattern', 'definition'],
                    'json':      ['definition', 'priority'],
-                   'optional':  {'priority': 0, 'apply-to': None}}
+                   'optional':  {'priority': 0, 'apply-to': None}},
+    'operator_policy': {'mandatory': ['name', 'pattern', 'definition'],
+                        'json':      ['definition', 'priority'],
+                        'optional':  {'priority': 0, 'apply-to': None}},
+    'vhost_limit': {'mandatory': ['vhost', 'name', 'value'],
+                    'json': ['value'],
+                    'optional': {}},
     }
 
 DELETABLE = {
     'exchange':   {'mandatory': ['name']},
     'queue':      {'mandatory': ['name']},
-    'binding':    {'mandatory': ['source', 'destination_type', 'destination',
-                                 'properties_key']},
+    'binding':    {'mandatory': ['source', 'destination_type', 'destination'],
+                   'optional': {'properties_key': '~'}},
     'vhost':      {'mandatory': ['name']},
     'user':       {'mandatory': ['name']},
     'permission': {'mandatory': ['vhost', 'user']},
     'parameter':  {'mandatory': ['component', 'name']},
-    'policy':     {'mandatory': ['name']}
+    'policy':     {'mandatory': ['name']},
+    'operator_policy': {'mandatory': ['name']},
+    'vhost_limit': {'mandatory': ['vhost', 'name']}
     }
 
 CLOSABLE = {
@@ -140,7 +194,7 @@ EXTRA_VERBS = {
                 'json':      ['properties'],
                 'uri':       '/exchanges/{vhost}/{exchange}/publish'},
     'get':     {'mandatory': ['queue'],
-                'optional':  {'count': '1', 'requeue': 'true',
+                'optional':  {'count': '1', 'ackmode': 'ack_requeue_true',
                               'payload_file': None, 'encoding': 'auto'},
                 'uri':       '/queues/{vhost}/{queue}/get'}
 }
@@ -150,7 +204,7 @@ for k in DECLARABLE:
 
 for k in DELETABLE:
     DELETABLE[k]['uri'] = URIS[k]
-    DELETABLE[k]['optional'] = {}
+    DELETABLE[k]['optional'] = DELETABLE[k].get('optional', {})
 DELETABLE['binding']['uri'] = URIS['binding_del']
 
 
@@ -242,10 +296,24 @@ For more help use the help subcommand:
 """
 
 
+def fmt_required_flag(val):
+    # when one of the options is required, e.g.
+    # password vs. password_hash
+    if type(val) is list:
+        # flag1=... OR flag2=... OR flag3=...
+        return "=... OR ".join(val)
+    else:
+        return val
+
+
+def fmt_optional_flag(val):
+    return val
+
+
 def fmt_usage_stanza(root, verb):
     def fmt_args(args):
-        res = " ".join(["{0}=...".format(a) for a in args['mandatory']])
-        opts = " ".join("{0}=...".format(o) for o in args['optional'].keys())
+        res = " ".join(["{0}=...".format(fmt_required_flag(a)) for a in args['mandatory']])
+        opts = " ".join("{0}=...".format(fmt_optional_flag(o)) for o in args['optional'].keys())
         if opts != "":
             res += " [{0}]".format(opts)
         return res
@@ -260,10 +328,14 @@ def fmt_usage_stanza(root, verb):
 
 default_options = {"hostname": "localhost",
                    "port": "15672",
+                   # default config file section name
+                   "node": "default",
+                   "path_prefix": "",
                    "declare_vhost": "/",
                    "username": "guest",
                    "password": "guest",
                    "ssl": False,
+                   "request_timeout": 120,
                    "verbose": True,
                    "format": "table",
                    "depth": 1,
@@ -292,8 +364,7 @@ def make_parser():
         help="configuration file [default: ~/.rabbitmqadmin.conf]",
         metavar="CONFIG")
     add("-N", "--node", dest="node",
-        help="node described in the configuration file [default: 'default'"
-             " only if configuration file is specified]",
+        help="node described in the configuration file [default: 'default' only if configuration file is specified]",
         metavar="NODE")
     add("-H", "--host", dest="hostname",
         help="connect to host HOST",
@@ -301,6 +372,8 @@ def make_parser():
     add("-P", "--port", dest="port",
         help="connect to port PORT",
         metavar="PORT")
+    add("--path-prefix", dest="path_prefix",
+        help="use specific URI path prefix for the RabbitMQ HTTP API. /api and operation path will be appended to it. (default: blank string)")
     add("-V", "--vhost", dest="vhost",
         help="connect to vhost VHOST [default: all vhosts for list, '/' for declare]",
         metavar="VHOST")
@@ -310,6 +383,9 @@ def make_parser():
     add("-p", "--password", dest="password",
         help="connect using password PASSWORD",
         metavar="PASSWORD")
+    add("-U", "--base-uri", dest="base_uri",
+        help="connect using a base HTTP API URI. /api and operation path will be appended to it. Path will be ignored. --vhost has to be provided separately.",
+        metavar="URI")
     add("-q", "--quiet", action="store_false", dest="verbose",
         help="suppress status messages")
     add("-s", "--ssl", action="store_true", dest="ssl",
@@ -318,6 +394,14 @@ def make_parser():
         help="PEM format key file for SSL")
     add("--ssl-cert-file", dest="ssl_cert_file",
         help="PEM format certificate file for SSL")
+    add("--ssl-ca-cert-file", dest="ssl_ca_cert_file",
+        help="PEM format CA certificate file for SSL")
+    add("--ssl-disable-hostname-verification", dest="ssl_disable_hostname_verification",
+        help="Disables peer hostname verification", default=False, action="store_true")
+    add("-k", "--ssl-insecure", dest="ssl_insecure",
+        help="Disables all SSL validations like curl's '-k' argument", default=False, action="store_true")
+    add("-t", "--request-timeout", dest="request_timeout",
+        help="HTTP request timeout in seconds", type="int")
     add("-f", "--format", dest="format",
         help="format for listing commands - one of [" + ", ".join(FORMATS.keys()) + "]")
     add("-S", "--sort", dest="sort", help="sort key for listing queries")
@@ -344,55 +428,82 @@ def default_config():
 
 def make_configuration():
     make_parser()
-    (options, args) = parser.parse_args()
-    setattr(options, "declare_vhost", None)
-    if options.version:
+    (cli_options, args) = parser.parse_args()
+
+    if cli_options.version:
         print_version()
-    if options.config is None:
+
+    setattr(cli_options, "declare_vhost", None)
+    final_options = copy.copy(cli_options)
+
+    # Resolve config file path
+    if cli_options.config is None:
         config_file = default_config()
         if config_file is not None:
-            setattr(options, "config", config_file)
+            setattr(final_options, "config", config_file)
     else:
-        if not os.path.isfile(options.config):
-            assert_usage(
-                False, "Could not read config file '%s'" % options.config)
+        if not os.path.isfile(cli_options.config):
+            assert_usage(False, "Could not read config file '%s'" % cli_options.config)
 
-    if options.node is None and options.config:
-        options.node = "default"
-    else:
-        options.node = options.node
-    for (key, val) in default_options.items():
-        if getattr(options, key) is None:
-            setattr(options, key, val)
+    final_options = merge_default_options(cli_options, final_options)
+    final_options = merge_config_file_options(cli_options, final_options)
+    final_options = expand_base_uri_options(cli_options, final_options)
 
-    if options.config is not None:
-        config = ConfigParser()
+    return (final_options, args)
+
+def merge_default_options(cli_options, final_options):
+    for (key, default_val) in default_options.items():
+        if getattr(cli_options, key) is None:
+            setattr(final_options, key, default_val)
+    return final_options
+
+def merge_config_file_options(cli_options, final_options):
+    # Parse config file and load it, making sure that CLI flags
+    # take precedence
+    if final_options.config is not None:
+        config_parser = ConfigParser()
         try:
-            config.read(options.config)
-            new_conf = dict(config.items(options.node))
+            config_parser.read(final_options.config)
+            section_settings = dict(config_parser.items(final_options.node))
         except NoSectionError as error:
-            if options.node == "default":
+            # Report if an explicitly provided section (node) does not exist in the file
+            if final_options.node == "default":
                 pass
             else:
-                assert_usage(False, ("Could not read section '%s' in config file"
-                             + " '%s':\n   %s") %
-                             (options.node, options.config, error))
+                msg = "Could not read section '%s' in config file '%s':\n   %s" % (final_options.node, final_options.config, error)
+                assert_usage(False, msg)
         else:
-            for key, val in new_conf.items():
-                setattr(options, key, val)
+            for key, section_val in section_settings.items():
+                # special case --ssl
+                if key == 'ssl':
+                    setattr(final_options, key, section_val == "True")
+                else:
+                    # if CLI options do not contain this key, set it from the config file
+                    if getattr(cli_options, key) is None:
+                        setattr(final_options, key, section_val)
+    return final_options
 
-    return (options, args)
+def expand_base_uri_options(cli_options, final_options):
+    # if --base-uri is passed, set connection parameters from it
+    if final_options.base_uri is not None:
+        u = urlparse.urlparse(final_options.base_uri)
+        for key in ["hostname", "port", "username", "password"]:
+            if getattr(u, key) is not None:
+                setattr(final_options, key, getattr(u, key))
 
+        if u.path is not None and (u.path != "") and (u.path != "/"):
+            eprint("WARNING: path in --base-uri is ignored. Please specify --vhost and/or --path-prefix separately.\n")
+    return final_options
 
 def assert_usage(expr, error):
     if not expr:
-        output("\nERROR: {0}\n".format(error))
-        output("{0} --help for help\n".format(os.path.basename(sys.argv[0])))
+        eprint("\nERROR: {0}\n".format(error))
+        eprint("{0} --help for help\n".format(os.path.basename(sys.argv[0])))
         sys.exit(1)
 
 
 def print_version():
-    output("rabbitmqadmin {0}".format(VERSION))
+    print("rabbitmqadmin {0}".format(VERSION))
     sys.exit(0)
 
 
@@ -407,7 +518,7 @@ def main():
     (options, args) = make_configuration()
     if options.bash_completion:
         print_bash_completion()
-        exit(0)
+        sys.exit(0)
     assert_usage(len(args) > 0, 'Action not specified')
     mgmt = Management(options, args[1:])
     mode = "invoke_" + args[0]
@@ -417,17 +528,19 @@ def main():
     method()
 
 
-def output(s):
-    print(maybe_utf8(s, sys.stdout))
-
-
 def die(s):
-    sys.stderr.write(maybe_utf8("*** {0}\n".format(s), sys.stderr))
-    exit(1)
+    eprint("*** {0}\n".format(s))
+    sys.exit(1)
 
 
-def maybe_utf8(s, stream):
-    if sys.version_info[0] == 3 or stream.isatty():
+def maybe_utf8(s):
+    if isinstance(s, int):
+        # s can be also an int for ex messages count
+        return str(s)
+    if isinstance(s, float):
+        # s can be also a float for message rate
+        return str(s)
+    if sys.version_info[0] == 3:
         # It will have an encoding, which Python will respect
         return s
     else:
@@ -441,26 +554,57 @@ class Management:
         self.args = args
 
     def get(self, path):
-        return self.http("GET", "/api%s" % path, "")
+        return self.http("GET", "%s/api%s" % (self.options.path_prefix, path), "")
 
     def put(self, path, body):
-        return self.http("PUT", "/api%s" % path, body)
+        return self.http("PUT", "%s/api%s" % (self.options.path_prefix, path), body)
 
     def post(self, path, body):
-        return self.http("POST", "/api%s" % path, body)
+        return self.http("POST", "%s/api%s" % (self.options.path_prefix, path), body)
 
     def delete(self, path):
-        return self.http("DELETE", "/api%s" % path, "")
+        return self.http("DELETE", "%s/api%s" % (self.options.path_prefix, path), "")
+
+    def __initialize_connection(self, hostname, port):
+        if self.options.ssl:
+            return self.__initialize_https_connection(hostname, port)
+        else:
+            return httplib.HTTPConnection(hostname, port, timeout=self.options.request_timeout)
+
+    def __initialize_https_connection(self, hostname, port):
+        # Python 2.7.9+
+        if hasattr(ssl, 'create_default_context'):
+            return httplib.HTTPSConnection(hostname, port, context=self.__initialize_tls_context())
+        # Python < 2.7.8, note: those versions still have SSLv3 enabled
+        #                       and other limitations. See rabbitmq/rabbitmq-management#225
+        else:
+            eprint("WARNING: rabbitmqadmin requires Python 2.7.9+ when HTTPS is used.")
+            return httplib.HTTPSConnection(hostname, port,
+                                           cert_file=self.options.ssl_cert_file,
+                                           key_file=self.options.ssl_key_file)
+
+    def __initialize_tls_context(self):
+        # Python 2.7.9+ only
+        ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        ssl_ctx.options &= ~ssl.OP_NO_SSLv3
+
+        ssl_insecure = self.options.ssl_insecure
+        ssl_disable_hostname_verification = ssl_insecure or self.options.ssl_disable_hostname_verification
+        # Note: you must set check_hostname prior to verify_mode
+        if ssl_disable_hostname_verification:
+            ssl_ctx.check_hostname = False
+        if ssl_insecure:
+            ssl_ctx.verify_mode = ssl.CERT_NONE
+
+        if self.options.ssl_key_file:
+            ssl_ctx.load_cert_chain(self.options.ssl_cert_file,
+                                    self.options.ssl_key_file)
+        if self.options.ssl_ca_cert_file:
+            ssl_ctx.load_verify_locations(self.options.ssl_ca_cert_file)
+        return ssl_ctx
 
     def http(self, method, path, body):
-        if self.options.ssl:
-            conn = httplib.HTTPSConnection(self.options.hostname,
-                                           self.options.port,
-                                           self.options.ssl_key_file,
-                                           self.options.ssl_cert_file)
-        else:
-            conn = httplib.HTTPConnection(self.options.hostname,
-                                          self.options.port)
+        conn = self.__initialize_connection(self.options.hostname, self.options.port)
         auth = (self.options.username + ":" + self.options.password)
 
         headers = {"Authorization": "Basic " + b64(auth)}
@@ -468,9 +612,21 @@ class Management:
             headers["Content-Type"] = "application/json"
         try:
             conn.request(method, path, body, headers)
-        except socket.error as e:
+        except ConnectionRefusedError as e:
             die("Could not connect: {0}".format(e))
-        resp = conn.getresponse()
+        except socket.error as e:
+            traceback.print_exc()
+            die("Could not connect: {0}".format(e))
+        try:
+            resp = conn.getresponse()
+        except socket.timeout:
+            die("Timed out getting HTTP response (request timeout: {0} seconds)".format(
+                self.options.request_timeout))
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except (Exception):
+            e_fmt = traceback.format_exc()
+            die("Error getting HTTP response:\n\n{0}".format(e_fmt))
         if resp.status == 400:
             die(json.loads(resp.read())['reason'])
         if resp.status == 401:
@@ -483,14 +639,14 @@ class Management:
             self.options.hostname = host
             self.options.port = int(port)
             return self.http(method, url.path + '?' + url.query, body)
-        if resp.status < 200 or resp.status > 400:
-            raise Exception("Received %d %s for path %s\n%s"
+        if resp.status > 400:
+            raise Exception("Received response %d %s for path %s\n%s"
                             % (resp.status, resp.reason, path, resp.read()))
         return resp.read().decode('utf-8')
 
     def verbose(self, string):
         if self.options.verbose:
-            output(string)
+            print(string)
 
     def get_arg(self):
         assert_usage(len(self.args) == 1, 'Exactly one argument required')
@@ -499,7 +655,7 @@ class Management:
     def use_cols(self):
         # Deliberately do not cast to int here; we only care about the
         # default, not explicit setting.
-        return self.options.depth == 1 and 'json' not in self.options.format
+        return self.options.depth == 1 and ('json' not in self.options.format)
 
     def invoke_help(self):
         if len(self.args) == 0:
@@ -515,7 +671,7 @@ class Management:
   subcommands
   config""")
             print(usage)
-        exit(0)
+        sys.exit(0)
 
     def invoke_publish(self):
         (uri, upload) = self.parse_args(self.args, EXTRA_VERBS['publish'])
@@ -545,20 +701,24 @@ class Management:
 
     def invoke_export(self):
         path = self.get_arg()
-        definitions = self.get("/definitions")
-        f = open(path, 'w')
-        f.write(definitions)
-        f.close()
+        uri = "/definitions"
+        if self.options.vhost:
+            uri += "/%s" % quote_plus(self.options.vhost)
+        definitions = self.get(uri)
+        with open(path, 'wb') as f:
+            f.write(definitions.encode())
         self.verbose("Exported definitions for %s to \"%s\""
                      % (self.options.hostname, path))
 
     def invoke_import(self):
         path = self.get_arg()
-        f = open(path, 'r')
-        definitions = f.read()
-        f.close()
-        self.post("/definitions", definitions)
-        self.verbose("Imported definitions for %s from \"%s\""
+        with open(path, 'rb') as f:
+            definitions = f.read()
+        uri = "/definitions"
+        if self.options.vhost:
+            uri += "/%s" % quote_plus(self.options.vhost)
+        self.post(uri, definitions)
+        self.verbose("Uploaded definitions from \"%s\" to %s. The import process may take some time. Consult server logs to track progress."
                      % (self.options.hostname, path))
 
     def invoke_list(self):
@@ -569,12 +729,18 @@ class Management:
         (uri, obj_info, cols) = self.list_show_uri(SHOWABLE, 'show')
         format_list('[{0}]'.format(self.get(uri)), cols, obj_info, self.options)
 
+    def _list_path_for_obj_type(self, obj_type):
+        # This returns a URL path for given object type, e.g.
+        # replaces underscores in command names with
+        # dashes that HTTP API endpoints use
+        return obj_type.replace("_", "-")
+
     def list_show_uri(self, obj_types, verb):
         obj_type = self.args[0]
         assert_usage(obj_type in obj_types,
                      "Don't know how to {0} {1}".format(verb, obj_type))
         obj_info = obj_types[obj_type]
-        uri = "/%s" % obj_type
+        uri = "/%s" % self._list_path_for_obj_type(obj_type)
         query = []
         if obj_info['vhost'] and self.options.vhost:
             uri += "/%s" % quote_plus(self.options.vhost)
@@ -625,6 +791,17 @@ class Management:
         (uri, upload) = self.parse_args(self.args[1:], obj)
         return (obj_type, uri, upload)
 
+    def assert_mandatory_keys(self, mandatory, upload):
+        for m in mandatory:
+            if type(m) is list:
+                a_set = set(m)
+                b_set = set(upload.keys())
+                assert_usage((a_set & b_set),
+                             'one of mandatory arguments "{0}" is required'.format(m))
+            else:
+                assert_usage(m in upload.keys(),
+                             'mandatory argument "{0}" is required'.format(m))
+
     def parse_args(self, args, obj):
         mandatory = obj['mandatory']
         optional = obj['optional']
@@ -635,34 +812,45 @@ class Management:
                 upload[k] = optional[k]
         for arg in args:
             assert_usage("=" in arg,
-                         'Argument "{0}" not in format name=value'.format(arg))
+                         'Argument "{0}" not in the name=value format'.format(arg))
             (name, value) = arg.split("=", 1)
-            assert_usage(name in mandatory or name in optional.keys(),
-                         'Argument "{0}" not recognised'.format(name))
+            # flatten the list of mandatory keys
+            mandatory_keys = []
+            for key in mandatory:
+                if type(key) is list:
+                    for subkey in key:
+                        mandatory_keys.append(subkey)
+                else:
+                    mandatory_keys.append(key)
+
+            assert_usage(name in mandatory_keys or name in optional.keys(),
+                         'Argument "{0}" is not recognised'.format(name))
+
             if 'json' in obj and name in obj['json']:
                 upload[name] = self.parse_json(value)
             else:
                 upload[name] = value
-        for m in mandatory:
-            assert_usage(m in upload.keys(),
-                         'mandatory argument "{0}" required'.format(m))
+        self.assert_mandatory_keys(mandatory, upload)
         if 'vhost' not in mandatory:
             upload['vhost'] = self.options.vhost or self.options.declare_vhost
         uri_args = {}
         for k in upload:
             v = upload[k]
             if v and isinstance(v, (str, bytes)):
-                uri_args[k] = quote_plus(v)
+                uri_args[k] = quote(v, '')
                 if k == 'destination_type':
                     uri_args['destination_char'] = v[0]
         uri = uri_template.format(**uri_args)
+        if 'fixup_upload' in obj:
+            fixup = obj['fixup_upload']
+            fixup(upload)
         return (uri, upload)
 
     def parse_json(self, text):
         try:
             return json.loads(text)
         except ValueError:
-            print("Could not parse JSON:\n  {0}".format(text))
+            eprint("ERROR: Could not parse JSON:\n  {0}".format(text))
             sys.exit(1)
 
 
@@ -670,11 +858,13 @@ def format_list(json_list, columns, args, options):
     format = options.format
     formatter = None
     if format == "raw_json":
-        output(json_list)
+        print(json_list)
         return
     elif format == "pretty_json":
-        enc = json.JSONEncoder(False, False, True, True, True, 2)
-        output(enc.encode(json.loads(json_list)))
+        json_list_parsed = json.loads(json_list)
+        print(json.dumps(json_list_parsed,
+            skipkeys=False, ensure_ascii=False, check_circular=True,
+            allow_nan=True, sort_keys=True, indent=2))
         return
     else:
         formatter = FORMATS[format]
@@ -687,7 +877,7 @@ def format_list(json_list, columns, args, options):
 class Lister:
     def verbose(self, string):
         if self.options.verbose:
-            output(string)
+            print(string)
 
     def display(self, json_list):
         depth = sys.maxsize
@@ -716,7 +906,7 @@ class Lister:
                         if depth < max_depth:
                             add(column, depth + 1, subitem, fun)
                 elif type(subitem) == list:
-                    # The first branch has replica nodes in queues in
+                    # The first branch has mirrors in queues in
                     # mind (which come out looking decent); the second
                     # one has applications in nodes (which look less
                     # so, but what would look good?).
@@ -733,7 +923,10 @@ class Lister:
 
         def add_to_row(col, val):
             if col in column_ix:
-                row[column_ix[col]] = str(val)
+                if val is not None:
+                    row[column_ix[col]] = maybe_utf8(val)
+                else:
+                    row[column_ix[col]] = None
 
         if len(self.columns) == 0:
             for item in items:
@@ -765,7 +958,7 @@ class TSVList(Lister):
 
         for row in table:
             line = "\t".join(row)
-            output(line)
+            print(line)
 
 
 class LongList(Lister):
@@ -780,11 +973,11 @@ class LongList(Lister):
         for col in columns:
             max_width = max(max_width, len(col))
         fmt = "{0:>" + str(max_width) + "}: {1}"
-        output(sep)
+        print(sep)
         for i in range(0, len(table)):
             for j in range(0, len(columns)):
-                output(fmt.format(columns[j], table[i][j]))
-            output(sep)
+                print(fmt.format(columns[j], table[i][j]))
+            print(sep)
 
 
 class TableList(Lister):
@@ -815,13 +1008,13 @@ class TableList(Lister):
         for i in range(0, len(col_widths)):
             fmt = " {0:" + align + str(col_widths[i]) + "} "
             txt += fmt.format(row[i]) + "|"
-        output(txt)
+        print(txt)
 
     def ascii_bar(self, col_widths):
         txt = "+"
         for w in col_widths:
             txt += ("-" * (w + 2)) + "+"
-        output(txt)
+        print(txt)
 
 
 class KeyValueList(Lister):
@@ -835,7 +1028,7 @@ class KeyValueList(Lister):
             row = []
             for j in range(0, len(columns)):
                 row.append("{0}=\"{1}\"".format(columns[j], table[i][j]))
-            output(" ".join(row))
+            print(" ".join(row))
 
 
 # TODO handle spaces etc in completable names
@@ -854,12 +1047,14 @@ class BashList(Lister):
             res = []
             for row in table:
                 res.append(row[ix])
-            output(" ".join(res))
+            print(" ".join(res))
 
 
 FORMATS = {
-    'raw_json': None,  # Special cased
-    'pretty_json': None,  # Ditto
+    # Special cased
+    'raw_json': None,
+    # Ditto
+    'pretty_json': None,
     'tsv': TSVList,
     'long': LongList,
     'table': TableList,
@@ -872,13 +1067,12 @@ def write_payload_file(payload_file, json_list):
     result = json.loads(json_list)[0]
     payload = result['payload']
     payload_encoding = result['payload_encoding']
-    f = open(payload_file, 'w')
-    if payload_encoding == 'base64':
-        data = base64.b64decode(payload)
-    else:
-        data = payload
-    f.write(data)
-    f.close()
+    with open(payload_file, 'wb') as f:
+        if payload_encoding == 'base64':
+            data = base64.b64decode(payload)
+        else:
+            data = payload
+        f.write(data.encode("utf-8"))
 
 
 def print_bash_completion():
@@ -896,78 +1090,77 @@ _rabbitmqadmin()
     fargs="--help --host --port --vhost --username --password --format --depth --sort --sort-reverse"
 
     case "${prev}" in
-    list)
-        COMPREPLY=( $(compgen -W '"""  # noqa: E501
-    script += " ".join(LISTABLE) + """' -- ${cur}) )
+        list)
+            COMPREPLY=( $(compgen -W '""" + " ".join(LISTABLE) + """' -- ${cur}) )
             return 0
             ;;
-    show)
-        COMPREPLY=( $(compgen -W '""" + " ".join(SHOWABLE) + """' -- ${cur}) )
+        show)
+            COMPREPLY=( $(compgen -W '""" + " ".join(SHOWABLE) + """' -- ${cur}) )
             return 0
             ;;
-    declare)
-        COMPREPLY=( $(compgen -W '""" + " ".join(DECLARABLE.keys()) + """' -- ${cur}) )
+        declare)
+            COMPREPLY=( $(compgen -W '""" + " ".join(DECLARABLE.keys()) + """' -- ${cur}) )
             return 0
             ;;
-    delete)
-        COMPREPLY=( $(compgen -W '""" + " ".join(DELETABLE.keys()) + """' -- ${cur}) )
+        delete)
+            COMPREPLY=( $(compgen -W '""" + " ".join(DELETABLE.keys()) + """' -- ${cur}) )
             return 0
             ;;
-    close)
-        COMPREPLY=( $(compgen -W '""" + " ".join(CLOSABLE.keys()) + """' -- ${cur}) )
+        close)
+            COMPREPLY=( $(compgen -W '""" + " ".join(CLOSABLE.keys()) + """' -- ${cur}) )
             return 0
             ;;
-    purge)
-        COMPREPLY=( $(compgen -W '""" + " ".join(PURGABLE.keys()) + """' -- ${cur}) )
+        purge)
+            COMPREPLY=( $(compgen -W '""" + " ".join(PURGABLE.keys()) + """' -- ${cur}) )
             return 0
             ;;
-    export)
-        COMPREPLY=( $(compgen -f ${cur}) )
+        export)
+            COMPREPLY=( $(compgen -f ${cur}) )
             return 0
             ;;
-    import)
-        COMPREPLY=( $(compgen -f ${cur}) )
+        import)
+            COMPREPLY=( $(compgen -f ${cur}) )
             return 0
             ;;
-    help)
+        help)
             opts="subcommands config"
-        COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
+            COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
             return 0
             ;;
-    -H)
-        COMPREPLY=( $(compgen -A hostname ${cur}) )
+        -H)
+            COMPREPLY=( $(compgen -A hostname ${cur}) )
             return 0
             ;;
-    --host)
-        COMPREPLY=( $(compgen -A hostname ${cur}) )
+        --host)
+            COMPREPLY=( $(compgen -A hostname ${cur}) )
             return 0
             ;;
-    -V)
+        -V)
             opts="$(rabbitmqadmin -q -f bash list vhosts)"
-        COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
+            COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
             return 0
             ;;
-    --vhost)
+        --vhost)
             opts="$(rabbitmqadmin -q -f bash list vhosts)"
-        COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
+            COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
             return 0
             ;;
-    -u)
+        -u)
             opts="$(rabbitmqadmin -q -f bash list users)"
-        COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
+            COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
             return 0
             ;;
-    --username)
+        --username)
             opts="$(rabbitmqadmin -q -f bash list users)"
-        COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
+            COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
             return 0
             ;;
-    -f)
-        COMPREPLY=( $(compgen -W \"""" + " ".join(FORMATS.keys()) + """\"  -- ${cur}) )
+        -f)
+            COMPREPLY=( $(compgen -W \"""" + " ".join(FORMATS.keys()) + """\"  -- ${cur}) )
             return 0
             ;;
-    --format)
-        COMPREPLY=( $(compgen -W \"""" + " ".join(FORMATS.keys()) + """\"  -- ${cur}) )
+        --format)
+            COMPREPLY=( $(compgen -W \"""" + " ".join(FORMATS.keys()) + """\"  -- ${cur}) )
             return 0
             ;;
 
@@ -976,7 +1169,7 @@ _rabbitmqadmin()
         key = l[0:len(l) - 1]
         script += "        " + key + """)
             opts="$(rabbitmqadmin -q -f bash list """ + l + """)"
-        COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
+            COMPREPLY=( $(compgen -W "${opts}"  -- ${cur}) )
             return 0
             ;;
 """
@@ -989,7 +1182,7 @@ _rabbitmqadmin()
 }
 complete -F _rabbitmqadmin rabbitmqadmin
 """
-    output(script)
+    print(script)
 
 
 if __name__ == "__main__":
