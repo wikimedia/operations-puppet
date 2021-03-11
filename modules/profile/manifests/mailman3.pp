@@ -24,8 +24,14 @@ class profile::mailman3 (
     class { '::httpd':
         modules => ['rewrite', 'ssl', 'proxy', 'proxy_http', 'proxy_uwsgi'],
     }
+    if $::realm == 'labs' {
+        $apache_config = 'mailman3/apache.conf.labs.erb'
+    }
+    if $::realm == 'production' {
+        $apache_config = 'mailman3/apache.conf.erb'
+    }
     httpd::site { $host:
-        content => template('mailman3/apache.conf.erb'),
+        content => template($apache_config),
     }
 
     # This will be a noop if $lists_ipv[46] are undef
