@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 2016 Andrew Bogott
@@ -107,7 +107,7 @@ def main():
 
     state, text = check_roles(user, required_roles)
 
-    print text
+    print(text)
     sys.exit(state)
 
 
