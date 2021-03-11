@@ -42,11 +42,6 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::ferm { $section: port => $port }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
         profile::mariadb::replication_lag { $section: prom_port => $prom_port }
-
-        mariadb::monitor_readonly { $section:
-            read_only   => true,
-            is_critical => false,
-        }
     }
 
     class { 'mariadb::monitor_disk': }
