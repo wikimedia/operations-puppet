@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #######################################################################
 # WARNING: this file is managed by Puppet
 # puppet:///modules/beta/wmf-beta-update-databases.py
