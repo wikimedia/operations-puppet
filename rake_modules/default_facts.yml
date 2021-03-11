@@ -56,3 +56,12 @@ numa:
     lo: []
   device_to_node:
     lo: ['a']
+cinder_volumes:
+  - dev: sdb
+    size: 5368709120
+    mountpoint: ""
+    uuid: NotARealUuid
+  - dev: sdc
+    size: 26843545600
+    mountpoint: ""
+    uuid: AlsoNotARealUuid
