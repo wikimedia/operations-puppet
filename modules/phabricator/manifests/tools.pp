@@ -59,13 +59,7 @@ class phabricator::tools (
         true    => present,
         default => absent,
     }
-    cron { $dump_script:
-        ensure  => absent,
-        command => $dump_script,
-        user    => root,
-        hour    => '2',
-        minute  => '0',
-    }
+
     systemd::timer::job { 'phabricator_task_dump':
         ensure      => $dump_job_ensure,
         user        => 'root',
@@ -75,12 +69,6 @@ class phabricator::tools (
         require     => Package[$deploy_target],
     }
     # clean up old tmp files (T150396)
-    cron { 'phab_clean_tmp':
-        ensure  => absent,
-        command => '/usr/bin/find /tmp -user www-data -mtime +14 | xargs rm -rf',
-        user    => 'www-data',
-        hour    => '7',
-    }
     $clean_tmp_cmd='/usr/bin/find /tmp -user www-data -mtime +14 -delete'
     systemd::timer::job { 'phabricator_clean_tmp_files':
         ensure      => present,
