@@ -1952,7 +1952,7 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 # Row A
 
 # rack A3 and rack A4
-node /^mw22(2[4-9]|3[0-9]|4[0-2])\.codfw\.wmnet$/ {
+node /^mw22(3[0-9]|4[0-2])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
