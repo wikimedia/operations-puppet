@@ -85,7 +85,7 @@ class phabricator::tools (
     systemd::timer::job { 'phabricator_clean_tmp_files':
         ensure      => present,
         user        => 'www-data',
-        description => 'phabricator public task dump',
+        description => 'phabricator cleanup temp files',
         command     => $clean_tmp_cmd,
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 07:00:00'},
     }
