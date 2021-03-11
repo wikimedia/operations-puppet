@@ -136,7 +136,7 @@ MaxClients 50
     # alert, emerg.
     LogLevel warn
 
-    CustomLog /var/log/apache2/<%= @host %>.https.access.log wmf
+    CustomLog /var/log/apache2/<%= @host %>.https.access.log cee_ecs_accesslog_170
     ServerSignature Off
 
 </VirtualHost>
