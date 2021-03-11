@@ -24,6 +24,10 @@ profile::base::manage_apt_source: false
 profile::base::apt_install_audit_installed: false
 profile::base::mirror_server: 'mirrors.wikimedia.org'
 
+profile::base::netbase::manage_etc_services: true
+profile::base::netbase::extra_services: {}
+
+
 profile::base::puppet::interval: 30
 profile::base::puppet::environment: production
 profile::base::puppet::serialization_format: pson
