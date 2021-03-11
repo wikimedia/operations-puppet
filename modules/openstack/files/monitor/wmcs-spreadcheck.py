@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (c) 2019 Wikimedia Foundation and contributors
 #
@@ -21,7 +21,6 @@ a virt host outage doesn't take out all instances in a given class.
 Our current definition of 'spread out enough' is no more than 1/3 of the
 instances of a given class on the same virt.
 """
-from __future__ import print_function
 
 import argparse
 import collections
@@ -78,7 +77,7 @@ def get_failed_classes(classification):
     """
     failed_classes = []
 
-    for cls, items in classification.iteritems():
+    for cls, items in classification.items():
         num_instances = len(items)
         buckets = collections.defaultdict(list)
         for name, host in items:
@@ -87,7 +86,7 @@ def get_failed_classes(classification):
         logger.debug('%s: %d on %d virts', cls, num_instances, hosts_used)
 
         max_instances = int(math.ceil(num_instances / 3.0))
-        for virt, instances in buckets.iteritems():
+        for virt, instances in buckets.items():
             instance_cnt = len(instances)
             if instance_cnt > max_instances:
                 logger.info(
