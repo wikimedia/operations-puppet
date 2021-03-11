@@ -51,7 +51,6 @@ define cinderutils::ensure(
                 $volume['size'] <= $max_gb * 1024 * 1024 * 1024) {
                 exec { "prepare_cinder_volume_${mount_point}":
                     command => "/usr/sbin/prepare_cinder_volume --force --device ${volume['dev']} --mountpoint ${mount_point}",
-                    require => File['/usr/sbin/prepare_cinder_volume'],
                     user    => 'root',
                 }
                 $require_list = Exec["prepare_cinder_volume_${mount_point}"]
@@ -65,11 +64,24 @@ define cinderutils::ensure(
         }
     }
 
-    mount { $mount_point:
-        ensure  => mounted,
-        atboot  => true,
-        device  => "UUID=${cinder_vol['uuid']}",
-        options => 'discard,nofail,x-systemd.device-timeout=2s',
-        require => $require_list,
+    # If we made it this far and cinder_vol is unset, it means we have a mount
+    #  at $mount_point which is of adequate size but not actually a cinder mount.
+    # That happens for legacy VMs with lvm partitions mounted; everything is fine
+    #  so we just define the mount as it already exists.
+    if $cinder_vol == undef {
+        mount { $mount_point:
+            ensure  => mounted,
+            atboot  => true,
+            device  => $facts['mountpoints'][$mount_point]['device'],
+            options => $facts['mountpoints'][$mount_point]['options'].join(',')
+        }
+    } else {
+        mount { $mount_point:
+            ensure  => mounted,
+            atboot  => true,
+            device  => "UUID=${cinder_vol['uuid']}",
+            options => 'discard,nofail,x-systemd.device-timeout=2s',
+            require => $require_list,
+        }
     }
 }
