@@ -8,6 +8,7 @@ class profile::wmcs::paws::k8s::haproxy (
     Array[Stdlib::Fqdn] $keepalived_vips        = lookup('profile::wmcs::paws::keepalived::vips',      {default_value => ['localhost']}),
     Array[Stdlib::Fqdn] $keepalived_peers       = lookup('profile::wmcs::paws::keepalived::peers',     {default_value => ['localhost']}),
     String              $keepalived_password    = lookup('profile::wmcs::paws::keepalived::password',  {default_value => 'notarealpassword'}),
+    Array[String]       $ip_blocks              = lookup('profile::wmcs::paws::ip_blocks',             {default_value => []}),
 ) {
     class { 'haproxy::cloud::base': }
 
@@ -32,6 +33,15 @@ class profile::wmcs::paws::k8s::haproxy (
         content => template('profile/wmcs/paws/k8s/haproxy/k8s-ingress.cfg.erb'),
         notify  => Service['haproxy'],
     }
+
+    file { '/etc/haproxy/blocklisted.ips':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('profile/wmcs/paws/k8s/haproxy/blocklist.erb'),
+        notify  => Service['haproxy'],
+    }
+
     class { 'prometheus::haproxy_exporter': }
 
     class { 'keepalived':

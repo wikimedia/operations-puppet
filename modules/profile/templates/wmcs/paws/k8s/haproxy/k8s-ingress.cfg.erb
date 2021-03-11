@@ -9,6 +9,9 @@ frontend k8s-ingress-https
     mode tcp
     option tcplog
     timeout client 1h
+    acl is_public hdr(host) -i public.paws.wmcloud.org
+    acl is_blocked_ip src -f /etc/haproxy/blocklisted.ips
+    http-request deny if is_blocked_ip !is_public
     default_backend k8s-ingress
 
 backend k8s-ingress
