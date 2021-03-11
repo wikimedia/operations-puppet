@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import argparse
 import os.path
@@ -18,7 +18,7 @@ def main():
 
     try:
         if driver is None:
-            print 'OK: no RAID installed'
+            print('OK: no RAID installed')
             status = 0
         elif driver == 'megacli':
             status = checkMegaSas(options.policy)
@@ -30,13 +30,13 @@ def main():
             print('WARNING: %s is not yet supported '
                   'by this check script' % (driver))
             status = 1
-    except:
+    except Exception:
         error = sys.exc_info()[1]
-        print 'WARNING: encountered exception: ' + str(error)
+        print('WARNING: encountered exception: ' + str(error))
         status = 1
 
     if status == 0:
-        print 'OK'
+        print('OK')
     sys.exit(status)
 
 
@@ -81,11 +81,11 @@ def getSoftwareRaidDevices():
 
     try:
         proc = subprocess.Popen(['/sbin/mdadm', '--detail', '--scan'],
-                                stdout=subprocess.PIPE)
-    except:
+                                stdout=subprocess.PIPE, text=True)
+    except Exception:
         return []
 
-    regex = re.compile('^ARRAY\s+([^ ]*) ')
+    regex = re.compile(r'^ARRAY\s+([^ ]*) ')
     devices = []
     for line in proc.stdout:
         m = regex.match(line)
@@ -99,7 +99,7 @@ def getSoftwareRaidDevices():
 def checkmptsas():
     status = 0
     if not os.path.exists('/usr/sbin/mpt-status'):
-        print 'mpt-status not installed'
+        print('mpt-status not installed')
         return 255
 
     try:
@@ -107,23 +107,23 @@ def checkmptsas():
                                 '/usr/sbin/mpt-status',
                                 '--autoload',
                                 '--status_only'],
-                                stdout=subprocess.PIPE)
+                                stdout=subprocess.PIPE, text=True)
     except Exception as e:
-        print 'Unable to execute mpt-status: %s' % e
+        print('Unable to execute mpt-status: %s' % e)
         return 254
 
-    log_drive_re = re.compile('^log_id \d (\w+)$')
-    phy_drive_re = re.compile('^phys_id (\d) (\w+)$')
+    log_drive_re = re.compile(r'^log_id \d (\w+)$')
+    phy_drive_re = re.compile(r'^phys_id (\d) (\w+)$')
 
     for line in proc.stdout:
         m = log_drive_re.match(line)
         if m is not None:
-            print 'RAID STATUS: %s' % m.group(1)
+            print('RAID STATUS: %s' % m.group(1))
             if m.group(1) != 'OPTIMAL':
                 status = 1
         m = phy_drive_re.match(line)
         if m is not None:
-            print 'DISK %s STATUS: %s' % (m.group(1), m.group(2))
+            print('DISK %s STATUS: %s' % (m.group(1), m.group(2)))
 
     proc.wait()
 
@@ -134,16 +134,16 @@ def checkMegaSas(policy=None):
     try:
         proc = subprocess.Popen(['/usr/sbin/megacli',
                                 '-LDInfo', '-LALL', '-aALL', '-NoLog'],
-                                stdout=subprocess.PIPE)
-    except:
+                                stdout=subprocess.PIPE, text=True)
+    except Exception:
         error = sys.exc_info()[1]
-        print 'WARNING: error executing megacli: %s' % str(error)
+        print('WARNING: error executing megacli: %s' % str(error))
         return 1
 
-    stateRegex = re.compile('^State\s*:\s*([^\n]*)')
-    drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
-    configuredRegex = re.compile('^Adapter \d+: No Virtual Drive Configured')
-    writePolicyRegex = re.compile('^Current Cache Policy\s*:\s*([^,]*)')
+    stateRegex = re.compile(r'^State\s*:\s*([^\n]*)')
+    drivesRegex = re.compile(r'^Number Of Drives( per span)?\s*:\s*([^\n]*)')
+    configuredRegex = re.compile(r'^Adapter \d+: No Virtual Drive Configured')
+    writePolicyRegex = re.compile(r'^Current Cache Policy\s*:\s*([^,]*)')
 
     numPD = numLD = failedLD = wrongPolicyLD = 0
     states = []
@@ -188,23 +188,23 @@ def checkMegaSas(policy=None):
 
     ret = proc.wait()
     if ret != 0:
-        print 'WARNING: megacli returned exit status %d' % (ret)
+        print('WARNING: megacli returned exit status %d' % (ret))
         return 1
 
     if lines == 0:
-        print 'WARNING: no known controller found'
+        print('WARNING: no known controller found')
         return 1
 
     if not match:
-        print 'WARNING: parse error processing megacli output'
+        print('WARNING: parse error processing megacli output')
         return 1
 
     if numLD == 0:
-        print 'OK: no disks configured for RAID'
+        print('OK: no disks configured for RAID')
         return 0
 
     if failedLD > 0:
-        print 'CRITICAL: %d failed LD(s) (%s)' % (failedLD, ", ".join(states))
+        print('CRITICAL: %d failed LD(s) (%s)' % (failedLD, ", ".join(states)))
         return 2
 
     if wrongPolicyLD > 0:
@@ -214,33 +214,33 @@ def checkMegaSas(policy=None):
         return 2
 
     if policy is None:
-        print 'OK: optimal, %d logical, %d physical' % (numLD, numPD)
+        print('OK: optimal, %d logical, %d physical' % (numLD, numPD))
     else:
-        print 'OK: optimal, %d logical, %d physical, %s policy' % (
-            numLD, numPD, policy)
+        print('OK: optimal, %d logical, %d physical, %s policy' % (
+            numLD, numPD, policy))
     return 0
 
 
 def checkSoftwareRaid():
     devices = getSoftwareRaidDevices()
     if len(devices) == 0:
-        print 'WARNING: unexpectedly checked no devices'
+        print('WARNING: unexpectedly checked no devices')
         return 1
 
     args = ['/sbin/mdadm', '--detail']
     args.extend(devices)
     try:
-        proc = subprocess.Popen(args, stdout=subprocess.PIPE)
-    except:
+        proc = subprocess.Popen(args, stdout=subprocess.PIPE, text=True)
+    except Exception:
         error = sys.exc_info()[1]
-        print 'WARNING: error executing mdadm: %s' % str(error)
+        print('WARNING: error executing mdadm: %s' % str(error))
         return 1
 
-    dre = '^(/[^ ]*):$'
+    dre = r'^(/[^ ]*):$'
     deviceRegex = re.compile(dre)
-    sre = '^ *(Active|Working|Failed|Spare) Devices *: *(\d+)'
+    sre = r'^ *(Active|Working|Failed|Spare) Devices *: *(\d+)'
     statRegex = re.compile(sre)
-    statere = '^ *State *: *(.+) *'
+    statere = r'^ *State *: *(.+) *'
     stateRegex = re.compile(statere)
     currentDevice = None
     degraded = False
@@ -273,7 +273,7 @@ def checkSoftwareRaid():
 
     ret = proc.wait()
     if ret != 0:
-        print 'WARNING: mdadm returned exit status %d' % (ret)
+        print('WARNING: mdadm returned exit status %d' % (ret))
         return 1
 
     msg = ''
@@ -285,10 +285,10 @@ def checkSoftwareRaid():
         msg += name + ': ' + str(stats[name])
 
     if degraded or stats['Failed'] > 0:
-        print 'CRITICAL: ' + msg
+        print('CRITICAL: ' + msg)
         return 2
     else:
-        print 'OK: ' + msg
+        print('OK: ' + msg)
         return 0
 
 
