@@ -48,7 +48,27 @@ testcases:
             ]
           }
         }
-
+      - >
+        {
+          "level": "WARN",
+          "loggerName": "logstash.filters.json",
+          "timeMillis": 1615424893460,
+          "thread": "[main]>worker0",
+          "logEvent": {
+            "message": "Error parsing json",
+            "source": "log",
+            "raw": "{\"@timestamp\":\"2021-03-11T01:08:12,024\",\"log.level\":\"INFO\",...\n",
+            "exception": {
+              "metaClass": {
+                "metaClass": {
+                  "metaClass": {
+                    "exception": "Unexpected character (D (code 68)): was expecting comma to separate Object entries\n at ..."
+                  }
+                }
+              }
+            }
+          }
+        }
       - >
         {
           "level": "INFO",
@@ -91,6 +111,30 @@ testcases:
         error:
           type: 'mapper_parsing_exception'
           message: 'object mapping for [status] tried to parse field [status] as object, but found a concrete value'
+        ecs:
+          version: "1.7.0"
+      - message: "Error parsing json"
+        '@timestamp': "2021-03-11T01:08:13.460Z"
+        log:
+          level: "WARN"
+          logger: "logstash.filters.json"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 132
+            severity:
+              code: 4
+              name: "warning"
+        process:
+          thread:
+            name: "[main]>worker0"
+        service:
+          type: "logstash"
+        host:
+          name: "logstash1023"
+        error:
+          message: "Unexpected character (D (code 68)): was expecting comma to separate Object entries\n at ..."
         ecs:
           version: "1.7.0"
       - message: "Attempting to install template"
