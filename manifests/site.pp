@@ -2014,11 +2014,6 @@ node /^mw2(27[3-7]|36[79]|37[135])\.codfw\.wmnet$/ {
 
 # rack A3
 
-node /^mw22(1[56])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::canary_api)
-}
-
-# rack A3
 node /^mw22(1[7-9]|2[0123])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
