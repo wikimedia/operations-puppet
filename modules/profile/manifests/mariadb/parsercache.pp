@@ -52,7 +52,7 @@ class profile::mariadb::parsercache (
     }
 
     mariadb::monitor_readonly { [ $shard ]:
-        read_only   => !$is_master,
+        read_only   => false,
         is_critical => $is_primary_master,
     }
 
