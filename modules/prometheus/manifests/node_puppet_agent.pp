@@ -11,7 +11,8 @@ class prometheus::node_puppet_agent (
         fail("\$outfile should end with '.prom' but is [${outfile}]")
     }
 
-    require_package(['python3-prometheus-client', 'python3-yaml'])
+    ensure_packages(['python3-prometheus-client', 'python3-yaml'])
+    require prometheus::node_exporter
 
     file { '/usr/local/bin/prometheus-puppet-agent-stats':
         ensure => file,
@@ -26,6 +27,5 @@ class prometheus::node_puppet_agent (
         ensure  => $ensure,
         user    => 'prometheus',
         command => "/usr/local/bin/prometheus-puppet-agent-stats --outfile ${outfile}",
-        require => Class['prometheus::node_exporter'],
     }
 }
