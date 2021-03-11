@@ -22,7 +22,7 @@ trusted_hosts[] = "<%= trusted_host %>"
 <%- end -%>
 ; Disable the Matomo UI showing a maintenance message
 ; This does not disable database updates, please also check 'record_statistics'
-maintenance_mode = 1
+maintenance_mode = 0
 ; disable browser trigger archiving for all requests (even those with a segment)
 ; https://piwik.org/docs/setup-auto-archiving/#more-information-about-piwik-archiving
 browser_archiving_disabled_enforce = 1
@@ -37,7 +37,7 @@ enable_tracking_failures_notification = 0
 bulk_requests_use_transaction = 0
 ; If set to zero, it forces Matomo to quickly return the 1*1 gif beacon
 ; without connecting to the Database or doing any processing.
-record_statistics = 0
+record_statistics = 1
 
 [mail]
 username = "<%= @admin_username %>"
