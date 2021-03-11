@@ -43,8 +43,6 @@ profile::releases::mediawiki::jenkins_java_home: '/usr/lib/jvm/java-11-openjdk-a
 profile::java::java_packages:
   - version: '11'
     variant: 'jdk'
-  - version: '8'
-    variant: 'jdk'
 
 profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
 #profile::ci::pipeline::publisher::docker_registry_password: defined in the private repo

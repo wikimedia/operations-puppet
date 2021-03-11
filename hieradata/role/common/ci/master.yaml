@@ -19,8 +19,6 @@ profile::ci::jenkins::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
 profile::java::java_packages:
   - version: '11'
     variant: 'jdk'
-  - version: '8'
-    variant: 'jdk'
 
 profile::zuul::server::service_ensure: running
 profile::zuul::server::service_enable: true
