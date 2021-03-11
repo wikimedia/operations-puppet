@@ -111,6 +111,18 @@ class lvs::monitor_services(
                 target      => "https://proton.svc.${dc}.wmnet:4030",
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/Proton',
                 ;
+            "check_eventstreams_cluster_${dc}":
+                host        => "eventstreams.svc.${dc}.wmnet",
+                description => "eventstreams LVS ${dc}",
+                target      => "https://eventstreams.svc.${dc}.wmnet:4892",
+                notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventStreams',
+                ;
+            "check_eventstreams_internal_cluster_${dc}":
+                host        => "eventstreams-internal.svc.${dc}.wmnet",
+                description => "eventstreams-internal LVS ${dc}",
+                target      => "https://eventstreams-internal.svc.${dc}.wmnet:4992",
+                notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/Instrumentation_How_To#In_production',
+                ;
         }
         monitoring::service { "check_docker_registry_cluster_${dc}":
             host          => "docker-registry.svc.${dc}.wmnet",
