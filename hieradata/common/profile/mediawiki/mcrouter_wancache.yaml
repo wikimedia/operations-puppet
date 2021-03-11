@@ -48,7 +48,7 @@ profile::mediawiki::mcrouter_wancache::shards:
         ssl: true
     codfw:
       A:
-        host: 10.192.0.61 # mw2235, A3
+        host: 10.192.0.169 # mw2299, A3
         port: 11214
         ssl: true
       B:
