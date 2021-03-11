@@ -1378,7 +1378,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
   mobileapps:
     description:
       A service for use by mobile apps. Provides DOM manipulation, aggregation,
