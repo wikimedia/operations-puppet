@@ -84,7 +84,7 @@ class phabricator::tools (
     $clean_tmp_cmd='/usr/bin/find /tmp -user www-data -mtime +14 -delete'
     systemd::timer::job { 'phabricator_clean_tmp_files':
         ensure      => present,
-        user        => 'www-data',
+        user        => 'root',
         description => 'phabricator cleanup temp files',
         command     => $clean_tmp_cmd,
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 07:00:00'},
