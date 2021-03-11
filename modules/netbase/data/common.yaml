@@ -1,0 +1,1247 @@
+---
+netbase::default_services:
+  tcpmux:
+    protocols:
+    - tcp
+    port: 1
+    description: TCP port service multiplexer
+  echo:
+    protocols:
+    - tcp
+    - udp
+    port: 7
+  discard:
+    protocols:
+    - tcp
+    - udp
+    port: 9
+    aliases:
+    - sink
+    - 'null'
+  systat:
+    protocols:
+    - tcp
+    port: 11
+    aliases:
+    - users
+  daytime:
+    protocols:
+    - tcp
+    - udp
+    port: 13
+  netstat:
+    protocols:
+    - tcp
+    port: 15
+  qotd:
+    protocols:
+    - tcp
+    port: 17
+    aliases:
+    - quote
+  chargen:
+    protocols:
+    - tcp
+    - udp
+    port: 19
+    aliases:
+    - ttytst
+    - source
+  ftp-data:
+    protocols:
+    - tcp
+    port: 20
+  ftp:
+    protocols:
+    - tcp
+    port: 21
+  fsp:
+    protocols:
+    - udp
+    port: 21
+    aliases:
+    - fspd
+  ssh:
+    protocols:
+    - tcp
+    port: 22
+    description: SSH Remote Login Protocol
+  telnet:
+    protocols:
+    - tcp
+    port: 23
+  smtp:
+    protocols:
+    - tcp
+    port: 25
+    aliases:
+    - mail
+  time:
+    protocols:
+    - tcp
+    - udp
+    port: 37
+    aliases:
+    - timserver
+  whois:
+    protocols:
+    - tcp
+    port: 43
+    aliases:
+    - nicname
+  tacacs:
+    protocols:
+    - tcp
+    - udp
+    port: 49
+    description: Login Host Protocol (TACACS)
+  domain:
+    protocols:
+    - tcp
+    - udp
+    port: 53
+    description: Domain Name Server
+  bootps:
+    protocols:
+    - udp
+    port: 67
+  bootpc:
+    protocols:
+    - udp
+    port: 68
+  tftp:
+    protocols:
+    - udp
+    port: 69
+  gopher:
+    protocols:
+    - tcp
+    port: 70
+    description: Internet Gopher
+  finger:
+    protocols:
+    - tcp
+    port: 79
+  http:
+    protocols:
+    - tcp
+    port: 80
+    aliases:
+    - www
+    description: WorldWideWeb HTTP
+  kerberos:
+    protocols:
+    - tcp
+    - udp
+    port: 88
+    aliases:
+    - kerberos5
+    - krb5
+    - kerberos-sec
+    description: Kerberos v5
+  iso-tsap:
+    protocols:
+    - tcp
+    port: 102
+    aliases:
+    - tsap
+    description: part of ISODE
+  acr-nema:
+    protocols:
+    - tcp
+    port: 104
+    aliases:
+    - dicom
+    description: Digital Imag. & Comm. 300
+  sunrpc:
+    protocols:
+    - tcp
+    - udp
+    port: 111
+    aliases:
+    - portmapper
+    description: RPC 4.0 portmapper
+  auth:
+    protocols:
+    - tcp
+    port: 113
+    aliases:
+    - authentication
+    - tap
+    - ident
+  nntp:
+    protocols:
+    - tcp
+    port: 119
+    aliases:
+    - readnews
+    - untp
+    description: USENET News Transfer Protocol
+  ntp:
+    protocols:
+    - udp
+    port: 123
+    description: Network Time Protocol
+  epmap:
+    protocols:
+    - tcp
+    port: 135
+    aliases:
+    - loc-srv
+    description: DCE endpoint resolution
+  netbios-ns:
+    protocols:
+    - udp
+    port: 137
+    description: NETBIOS Name Service
+  netbios-dgm:
+    protocols:
+    - udp
+    port: 138
+    description: NETBIOS Datagram Service
+  netbios-ssn:
+    protocols:
+    - tcp
+    port: 139
+    description: NETBIOS session service
+  snmp:
+    protocols:
+    - tcp
+    - udp
+    port: 161
+    description: Simple Net Mgmt Protocol
+  snmp-trap:
+    protocols:
+    - tcp
+    - udp
+    port: 162
+    aliases:
+    - snmptrap
+    description: Traps for SNMP
+  cmip-man:
+    protocols:
+    - tcp
+    - udp
+    port: 163
+    description: ISO mgmt over IP (CMOT)
+  cmip-agent:
+    protocols:
+    - tcp
+    - udp
+    port: 164
+  mailq:
+    protocols:
+    - tcp
+    port: 174
+    description: Mailer transport queue for Zmailer
+  xdmcp:
+    protocols:
+    - udp
+    port: 177
+    description: X Display Manager Control Protocol
+  bgp:
+    protocols:
+    - tcp
+    port: 179
+    description: Border Gateway Protocol
+  smux:
+    protocols:
+    - tcp
+    port: 199
+    description: SNMP Unix Multiplexer
+  qmtp:
+    protocols:
+    - tcp
+    port: 209
+    description: Quick Mail Transfer Protocol
+  ipx:
+    protocols:
+    - udp
+    port: 213
+    description: IPX [RFC1234]
+  ptp-event:
+    protocols:
+    - udp
+    port: 319
+  ptp-general:
+    protocols:
+    - udp
+    port: 320
+  pawserv:
+    protocols:
+    - tcp
+    port: 345
+    description: Perf Analysis Workbench
+  zserv:
+    protocols:
+    - tcp
+    port: 346
+    description: Zebra server
+  clearcase:
+    protocols:
+    - udp
+    port: 371
+    aliases:
+    - Clearcase
+  ldap:
+    protocols:
+    - tcp
+    - udp
+    port: 389
+    description: Lightweight Directory Access Protocol
+  svrloc:
+    protocols:
+    - tcp
+    - udp
+    port: 427
+    description: Server Location
+  https:
+    protocols:
+    - tcp
+    - udp
+    port: 443
+    description: HTTP/3
+  snpp:
+    protocols:
+    - tcp
+    port: 444
+    description: Simple Network Paging Protocol
+  microsoft-ds:
+    protocols:
+    - tcp
+    port: 445
+    description: Microsoft Naked CIFS
+  kpasswd:
+    protocols:
+    - tcp
+    - udp
+    port: 464
+  submissions:
+    protocols:
+    - tcp
+    port: 465
+    aliases:
+    - ssmtp
+    - smtps
+    - urd
+    description: Submission over TLS [RFC8314]
+  saft:
+    protocols:
+    - tcp
+    port: 487
+    description: Simple Asynchronous File Transfer
+  isakmp:
+    protocols:
+    - udp
+    port: 500
+    description: IPSEC key management
+  rtsp:
+    protocols:
+    - tcp
+    - udp
+    port: 554
+    description: Real Time Stream Control Protocol
+  nqs:
+    protocols:
+    - tcp
+    port: 607
+    description: Network Queuing system
+  asf-rmcp:
+    protocols:
+    - udp
+    port: 623
+    description: ASF Remote Management and Control Protocol
+  qmqp:
+    protocols:
+    - tcp
+    port: 628
+  ipp:
+    protocols:
+    - tcp
+    port: 631
+    description: Internet Printing Protocol
+  ldp:
+    protocols:
+    - tcp
+    - udp
+    port: 646
+    description: Label Distribution Protocol
+  exec:
+    protocols:
+    - tcp
+    port: 512
+  biff:
+    protocols:
+    - udp
+    port: 512
+    aliases:
+    - comsat
+  login:
+    protocols:
+    - tcp
+    port: 513
+  who:
+    protocols:
+    - udp
+    port: 513
+    aliases:
+    - whod
+  shell:
+    protocols:
+    - tcp
+    port: 514
+    aliases:
+    - cmd
+    - syslog
+    description: no passwords used
+  syslog:
+    protocols:
+    - udp
+    port: 514
+  printer:
+    protocols:
+    - tcp
+    port: 515
+    aliases:
+    - spooler
+    description: line printer spooler
+  talk:
+    protocols:
+    - udp
+    port: 517
+  ntalk:
+    protocols:
+    - udp
+    port: 518
+  route:
+    protocols:
+    - udp
+    port: 520
+    aliases:
+    - router
+    - routed
+    description: RIP
+  gdomap:
+    protocols:
+    - tcp
+    - udp
+    port: 538
+    description: GNUstep distributed objects
+  uucp:
+    protocols:
+    - tcp
+    port: 540
+    aliases:
+    - uucpd
+    description: uucp daemon
+  klogin:
+    protocols:
+    - tcp
+    port: 543
+    description: Kerberized `rlogin' (v5)
+  kshell:
+    protocols:
+    - tcp
+    port: 544
+    aliases:
+    - krcmd
+    description: Kerberized `rsh' (v5)
+  afpovertcp:
+    protocols:
+    - tcp
+    port: 548
+    description: AFP over TCP
+  nntps:
+    protocols:
+    - tcp
+    port: 563
+    aliases:
+    - snntp
+    description: NNTP over SSL
+  submission:
+    protocols:
+    - tcp
+    port: 587
+    description: Submission [RFC4409]
+  ldaps:
+    protocols:
+    - tcp
+    - udp
+    port: 636
+    description: LDAP over SSL
+  tinc:
+    protocols:
+    - tcp
+    - udp
+    port: 655
+    description: tinc control port
+  silc:
+    protocols:
+    - tcp
+    port: 706
+  kerberos-adm:
+    protocols:
+    - tcp
+    port: 749
+    description: Kerberos `kadmin' (v5)
+  domain-s:
+    protocols:
+    - tcp
+    - udp
+    port: 853
+    description: DNS over DTLS [RFC8094]
+  rsync:
+    protocols:
+    - tcp
+    port: 873
+  ftps-data:
+    protocols:
+    - tcp
+    port: 989
+    description: FTP over SSL (data)
+  ftps:
+    protocols:
+    - tcp
+    port: 990
+  telnets:
+    protocols:
+    - tcp
+    port: 992
+    description: Telnet over SSL
+  imaps:
+    protocols:
+    - tcp
+    port: 993
+    description: IMAP over SSL
+  socks:
+    protocols:
+    - tcp
+    port: 1080
+    description: socks proxy server
+  proofd:
+    protocols:
+    - tcp
+    port: 1093
+  rootd:
+    protocols:
+    - tcp
+    port: 1094
+  openvpn:
+    protocols:
+    - tcp
+    - udp
+    port: 1194
+  rmiregistry:
+    protocols:
+    - tcp
+    port: 1099
+    description: Java RMI Registry
+  lotusnote:
+    protocols:
+    - tcp
+    port: 1352
+    aliases:
+    - lotusnotes
+    description: Lotus Note
+  ms-sql-s:
+    protocols:
+    - tcp
+    port: 1433
+    description: Microsoft SQL Server
+  ms-sql-m:
+    protocols:
+    - udp
+    port: 1434
+    description: Microsoft SQL Monitor
+  ingreslock:
+    protocols:
+    - tcp
+    port: 1524
+  datametrics:
+    protocols:
+    - tcp
+    - udp
+    port: 1645
+    aliases:
+    - old-radius
+  sa-msg-port:
+    protocols:
+    - tcp
+    - udp
+    port: 1646
+    aliases:
+    - old-radacct
+  kermit:
+    protocols:
+    - tcp
+    port: 1649
+  groupwise:
+    protocols:
+    - tcp
+    port: 1677
+  radius:
+    protocols:
+    - tcp
+    - udp
+    port: 1812
+  radius-acct:
+    protocols:
+    - tcp
+    - udp
+    port: 1813
+    aliases:
+    - radacct
+    description: Radius Accounting
+  cisco-sccp:
+    protocols:
+    - tcp
+    port: 2000
+    description: Cisco SCCP
+  nfs:
+    protocols:
+    - tcp
+    - udp
+    port: 2049
+    description: Network File System
+  gnunet:
+    protocols:
+    - tcp
+    - udp
+    port: 2086
+  gsigatekeeper:
+    protocols:
+    - tcp
+    port: 2119
+  gris:
+    protocols:
+    - tcp
+    port: 2135
+    description: Grid Resource Information Server
+  cvspserver:
+    protocols:
+    - tcp
+    port: 2401
+    description: CVS client/server operations
+  venus:
+    protocols:
+    - tcp
+    - udp
+    port: 2430
+    description: Venus callback/wbc interface
+  venus-se:
+    protocols:
+    - tcp
+    - udp
+    port: 2431
+    description: udp sftp side effect
+  codasrv:
+    protocols:
+    - tcp
+    - udp
+    port: 2432
+    description: server port
+  codasrv-se:
+    protocols:
+    - tcp
+    - udp
+    port: 2433
+    description: udp sftp side effect
+  mon:
+    protocols:
+    - tcp
+    - udp
+    port: 2583
+    description: MON traps
+  dict:
+    protocols:
+    - tcp
+    port: 2628
+    description: Dictionary server
+  gsiftp:
+    protocols:
+    - tcp
+    port: 2811
+  gpsd:
+    protocols:
+    - tcp
+    port: 2947
+  gds-db:
+    protocols:
+    - tcp
+    port: 3050
+    aliases:
+    - gds_db
+    description: InterBase server
+  isns:
+    protocols:
+    - tcp
+    - udp
+    port: 3205
+    description: iSNS Server Port
+  iscsi-target:
+    protocols:
+    - tcp
+    port: 3260
+  mysql:
+    protocols:
+    - tcp
+    port: 3306
+  ms-wbt-server:
+    protocols:
+    - tcp
+    port: 3389
+  nut:
+    protocols:
+    - tcp
+    - udp
+    port: 3493
+    description: Network UPS Tools
+  distcc:
+    protocols:
+    - tcp
+    port: 3632
+    description: distributed compiler
+  daap:
+    protocols:
+    - tcp
+    port: 3689
+    description: Digital Audio Access Protocol
+  svn:
+    protocols:
+    - tcp
+    port: 3690
+    aliases:
+    - subversion
+    description: Subversion protocol
+  suucp:
+    protocols:
+    - tcp
+    port: 4031
+    description: UUCP over SSL
+  sysrqd:
+    protocols:
+    - tcp
+    port: 4094
+    description: sysrq daemon
+  sieve:
+    protocols:
+    - tcp
+    port: 4190
+    description: ManageSieve Protocol
+  epmd:
+    protocols:
+    - tcp
+    port: 4369
+    description: Erlang Port Mapper Daemon
+  remctl:
+    protocols:
+    - tcp
+    port: 4373
+    description: Remote Authenticated Command Service
+  ipsec-nat-t:
+    protocols:
+    - udp
+    port: 4500
+    description: IPsec NAT-Traversal [RFC3947]
+  iax:
+    protocols:
+    - udp
+    port: 4569
+    description: Inter-Asterisk eXchange
+  mtn:
+    protocols:
+    - tcp
+    port: 4691
+    description: monotone Netsync Protocol
+  radmin-port:
+    protocols:
+    - tcp
+    port: 4899
+    description: RAdmin Port
+  sip:
+    protocols:
+    - tcp
+    - udp
+    port: 5060
+    description: Session Initiation Protocol
+  sip-tls:
+    protocols:
+    - tcp
+    - udp
+    port: 5061
+  xmpp-client:
+    protocols:
+    - tcp
+    port: 5222
+    aliases:
+    - jabber-client
+    description: Jabber Client Connection
+  xmpp-server:
+    protocols:
+    - tcp
+    port: 5269
+    aliases:
+    - jabber-server
+    description: Jabber Server Connection
+  cfengine:
+    protocols:
+    - tcp
+    port: 5308
+  mdns:
+    protocols:
+    - udp
+    port: 5353
+    description: Multicast DNS
+  postgresql:
+    protocols:
+    - tcp
+    port: 5432
+    aliases:
+    - postgres
+    description: PostgreSQL Database
+  freeciv:
+    protocols:
+    - tcp
+    port: 5556
+    aliases:
+    - rptp
+    description: Freeciv gameplay
+  amqps:
+    protocols:
+    - tcp
+    port: 5671
+    description: AMQP protocol over TLS/SSL
+  amqp:
+    protocols:
+    - tcp
+    port: 5672
+  gnutella-svc:
+    protocols:
+    - tcp
+    - udp
+    port: 6346
+    description: gnutella
+  gnutella-rtr:
+    protocols:
+    - tcp
+    - udp
+    port: 6347
+    description: gnutella
+  redis:
+    protocols:
+    - tcp
+    port: 6379
+  sge-qmaster:
+    protocols:
+    - tcp
+    port: 6444
+    aliases:
+    - sge_qmaster
+    description: Grid Engine Qmaster Service
+  sge-execd:
+    protocols:
+    - tcp
+    port: 6445
+    aliases:
+    - sge_execd
+    description: Grid Engine Execution Service
+  mysql-proxy:
+    protocols:
+    - tcp
+    port: 6446
+    description: MySQL Proxy
+  babel:
+    protocols:
+    - udp
+    port: 6696
+    description: Babel Routing Protocol
+  ircs-u:
+    protocols:
+    - tcp
+    port: 6697
+    description: Internet Relay Chat via TLS/SSL
+  bbs:
+    protocols:
+    - tcp
+    port: 7000
+  font-service:
+    protocols:
+    - tcp
+    port: 7100
+    aliases:
+    - xfs
+    description: X Font Service
+  http-alt:
+    protocols:
+    - tcp
+    port: 8080
+    aliases:
+    - webcache
+    description: WWW caching service
+  puppet:
+    protocols:
+    - tcp
+    port: 8140
+    description: The Puppet master service
+  bacula-dir:
+    protocols:
+    - tcp
+    port: 9101
+    description: Bacula Director
+  bacula-fd:
+    protocols:
+    - tcp
+    port: 9102
+    description: Bacula File Daemon
+  bacula-sd:
+    protocols:
+    - tcp
+    port: 9103
+    description: Bacula Storage Daemon
+  nbd:
+    protocols:
+    - tcp
+    port: 10809
+    description: Linux Network Block Device
+  zabbix-agent:
+    protocols:
+    - tcp
+    port: 10050
+    description: Zabbix Agent
+  zabbix-trapper:
+    protocols:
+    - tcp
+    port: 10051
+    description: Zabbix Trapper
+  amanda:
+    protocols:
+    - tcp
+    port: 10080
+    description: amanda backup services
+  dicom:
+    protocols:
+    - tcp
+    port: 11112
+  hkp:
+    protocols:
+    - tcp
+    port: 11371
+    description: OpenPGP HTTP Keyserver
+  db-lsp:
+    protocols:
+    - tcp
+    port: 17500
+    description: Dropbox LanSync Protocol
+  dcap:
+    protocols:
+    - tcp
+    port: 22125
+    description: dCache Access Protocol
+  gsidcap:
+    protocols:
+    - tcp
+    port: 22128
+    description: GSI dCache Access Protocol
+  kerberos-master:
+    protocols:
+    - udp
+    - tcp
+    port: 751
+    aliases:
+    - kerberos_master
+    description: Kerberos authentication
+  passwd-server:
+    protocols:
+    - udp
+    port: 752
+    aliases:
+    - passwd_server
+    description: Kerberos passwd server
+  krb-prop:
+    protocols:
+    - tcp
+    port: 754
+    aliases:
+    - krb_prop
+    - krb5_prop
+    - hprop
+    description: Kerberos slave propagation
+  zephyr-srv:
+    protocols:
+    - udp
+    port: 2102
+    description: Zephyr server
+  zephyr-clt:
+    protocols:
+    - udp
+    port: 2103
+    description: Zephyr serv-hm connection
+  zephyr-hm:
+    protocols:
+    - udp
+    port: 2104
+    description: Zephyr hostmanager
+  iprop:
+    protocols:
+    - tcp
+    port: 2121
+    description: incremental propagation
+  supfilesrv:
+    protocols:
+    - tcp
+    port: 871
+    description: Software Upgrade Protocol server
+  supfiledbg:
+    protocols:
+    - tcp
+    port: 1127
+    description: Software Upgrade Protocol debugging
+  poppassd:
+    protocols:
+    - tcp
+    port: 106
+    description: Eudora
+  moira-db:
+    protocols:
+    - tcp
+    port: 775
+    aliases:
+    - moira_db
+    description: Moira database
+  moira-update:
+    protocols:
+    - tcp
+    port: 777
+    aliases:
+    - moira_update
+    description: Moira update protocol
+  moira-ureg:
+    protocols:
+    - udp
+    port: 779
+    aliases:
+    - moira_ureg
+    description: Moira user registration
+  spamd:
+    protocols:
+    - tcp
+    port: 783
+    description: spamassassin daemon
+  skkserv:
+    protocols:
+    - tcp
+    port: 1178
+    description: skk jisho server port
+  predict:
+    protocols:
+    - udp
+    port: 1210
+    description: predict -- satellite tracking
+  rmtcfg:
+    protocols:
+    - tcp
+    port: 1236
+    description: Gracilis Packeten remote config server
+  xtel:
+    protocols:
+    - tcp
+    port: 1313
+    description: french minitel
+  xtelw:
+    protocols:
+    - tcp
+    port: 1314
+    description: french minitel
+  zebrasrv:
+    protocols:
+    - tcp
+    port: 2600
+    description: zebra service
+  zebra:
+    protocols:
+    - tcp
+    port: 2601
+    description: zebra vty
+  ripd:
+    protocols:
+    - tcp
+    port: 2602
+    description: ripd vty (zebra)
+  ripngd:
+    protocols:
+    - tcp
+    port: 2603
+    description: ripngd vty (zebra)
+  ospfd:
+    protocols:
+    - tcp
+    port: 2604
+    description: ospfd vty (zebra)
+  bgpd:
+    protocols:
+    - tcp
+    port: 2605
+    description: bgpd vty (zebra)
+  ospfapi:
+    protocols:
+    - tcp
+    port: 2607
+    description: OSPF-API
+  isisd:
+    protocols:
+    - tcp
+    port: 2608
+    description: ISISd vty (zebra)
+  fax:
+    protocols:
+    - tcp
+    port: 4557
+    description: FAX transmission service (old)
+  hylafax:
+    protocols:
+    - tcp
+    port: 4559
+    description: HylaFAX client-server protocol (new)
+  munin:
+    protocols:
+    - tcp
+    port: 4949
+    aliases:
+    - lrrd
+    description: Munin
+  rplay:
+    protocols:
+    - udp
+    port: 5555
+    description: RPlay audio service
+  nrpe:
+    protocols:
+    - tcp
+    port: 5666
+    description: Nagios Remote Plugin Executor
+  nsca:
+    protocols:
+    - tcp
+    port: 5667
+    description: Nagios Agent - NSCA
+  canna:
+    protocols:
+    - tcp
+    port: 5680
+    description: cannaserver
+  syslog-tls:
+    protocols:
+    - tcp
+    port: 6514
+    description: Syslog over TLS [RFC5425]
+  sane-port:
+    protocols:
+    - tcp
+    port: 6566
+    aliases:
+    - sane
+    - saned
+    description: SANE network scanner daemon
+  ircd:
+    protocols:
+    - tcp
+    port: 6667
+    description: Internet Relay Chat
+  zope-ftp:
+    protocols:
+    - tcp
+    port: 8021
+    description: zope management by ftp
+  tproxy:
+    protocols:
+    - tcp
+    port: 8081
+    description: Transparent Proxy
+  omniorb:
+    protocols:
+    - tcp
+    port: 8088
+    description: OmniORB
+  clc-build-daemon:
+    protocols:
+    - tcp
+    port: 8990
+    description: Common lisp build daemon
+  xinetd:
+    protocols:
+    - tcp
+    port: 9098
+  git:
+    protocols:
+    - tcp
+    port: 9418
+    description: Git Version Control System
+  zope:
+    protocols:
+    - tcp
+    port: 9673
+    description: zope server
+  webmin:
+    protocols:
+    - tcp
+    port: 10000
+  kamanda:
+    protocols:
+    - tcp
+    port: 10081
+    description: amanda backup services (Kerberos)
+  amandaidx:
+    protocols:
+    - tcp
+    port: 10082
+    description: amanda backup services
+  amidxtape:
+    protocols:
+    - tcp
+    port: 10083
+    description: amanda backup services
+  sgi-cmsd:
+    protocols:
+    - udp
+    port: 17001
+    description: Cluster membership services daemon
+  sgi-crsd:
+    protocols:
+    - udp
+    port: 17002
+  sgi-gcd:
+    protocols:
+    - udp
+    port: 17003
+    description: SGI Group membership daemon
+  sgi-cad:
+    protocols:
+    - tcp
+    port: 17004
+    description: Cluster Admin daemon
+  binkp:
+    protocols:
+    - tcp
+    port: 24554
+    description: binkp fidonet protocol
+  asp:
+    protocols:
+    - tcp
+    - udp
+    port: 27374
+    description: Address Search Protocol
+  dircproxy:
+    protocols:
+    - tcp
+    port: 57000
+    description: Detachable IRC Proxy
+  tfido:
+    protocols:
+    - tcp
+    port: 60177
+    description: fidonet EMSI over telnet
+  fido:
+    protocols:
+    - tcp
+    port: 60179
+    description: fidonet EMSI over TCP
