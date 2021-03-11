@@ -203,6 +203,11 @@ node 'backup1002.eqiad.wmnet' {
     role(dbbackups::content)
 }
 
+# eqiad new backup node T274184
+node 'backup1003.eqiad.wmnet' {
+    role(insetup)
+}
+
 # codfw storage daemon
 node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
