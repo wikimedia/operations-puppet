@@ -66,10 +66,12 @@ import yaml
 import ldap3
 import pymysql
 import netifaces
-from systemd import journal, daemon
+import requests
+from systemd import journal, daemon  # pylint: disable=F0401
 
 
 PROJECT = "tools"
+PAWS_RUNTIME_UID = "52771"
 PASSWORD_LENGTH = 16
 PASSWORD_CHARS = string.ascii_letters + string.digits
 DEFAULT_MAX_CONNECTIONS = 10
@@ -229,6 +231,57 @@ def find_tools_users(config):
         return users
 
 
+def get_global_wiki_user(uid):
+    api_url = (
+        "https://meta.wikimedia.org/w/api.php?action=query&format=json&"
+        "meta=globaluserinfo&guiid="
+    )
+    headers = requests.utils.default_headers()
+    # https://meta.wikimedia.org/wiki/User-Agent_policy
+    ua = (
+        "WMCS Maintain-DBUsers/1.0 "
+        "(https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/"
+        "Shared_storage#maintain-dbusers;"
+        " cloudservices@wikimedia.org) "
+        "python-requests/2.12"
+    )
+    headers.update(
+        {
+            "User-Agent": ua,
+        }
+    )
+    resp = requests.get(api_url + uid, headers=headers)
+    return resp.json()
+
+
+def find_paws_users(config):
+    """
+    Return list of PAWS users, from their userhomes
+
+    Return a list of tuples of username, uid?
+    """
+    user_ids = os.listdir("/srv/misc/shared/paws/project/paws/userhomes/")
+
+    paws_users = []
+    for uid in user_ids:
+        try:
+            user_info = get_global_wiki_user(uid)
+            paws_users.append(
+                (
+                    uid,
+                    user_info["query"]["globaluserinfo"]["name"],
+                )
+            )
+        except Exception:
+            # If it doesn't respond with a nice happy reply, assume this is
+            # either a blocked user, or the API is not behaving. Should be safe
+            # enough to skip.
+            # TODO: add a finer point to this
+            continue
+
+    return paws_users
+
+
 def get_ldap_conn(config):
     """
     Return a ldap connection
@@ -278,6 +331,12 @@ def get_replica_path(account_type, name):
             name[len(PROJECT) + 1 :],  # noqa: E203 Remove `PROJECT.` prefix
             "replica.my.cnf",
         )
+    elif account_type == "paws":
+        return os.path.join(
+            "/srv/misc/shared/paws/project/paws/userhomes/",
+            name,
+            ".my.cnf",
+        )
     else:
         return os.path.join(
             "/srv/tools/shared/tools/home/", name, "replica.my.cnf"
@@ -288,14 +347,19 @@ def harvest_cnf_files(config, account_type="tool"):
     accounts_to_create = (
         find_tools(config)
         if account_type == "tool"
+        else find_paws_users(config)
+        if account_type == "paws"
         else find_tools_users(config)
     )
     try:
         acct_db = get_accounts_db_conn(config)
         cur = acct_db.cursor()
         try:
-            for account_name, _ in accounts_to_create:
-                replica_path = get_replica_path(account_type, account_name)
+            for account_name, acc_id in accounts_to_create:
+                if account_type == "paws":
+                    replica_path = get_replica_path(account_type, acc_id)
+                else:
+                    replica_path = get_replica_path(account_type, account_name)
                 if os.path.exists(replica_path):
                     mysql_user, pwd_hash = read_replica_cnf(replica_path)
                     cur.execute(
@@ -404,6 +468,8 @@ def populate_new_accounts(config, account_type="tool"):
     all_accounts = (
         find_tools(config)
         if account_type == "tool"
+        else find_paws_users(config)
+        if account_type == "paws"
         else find_tools_users(config)
     )
     try:
@@ -431,7 +497,13 @@ def populate_new_accounts(config, account_type="tool"):
                 # maintain-kubeusers, and we do not want to race. Tool accounts
                 # that get passed over like this will be picked up on the next
                 # round
-                replica_path = get_replica_path(account_type, new_account)
+                if account_type == "paws":
+                    replica_path = get_replica_path(
+                        account_type, new_account_id
+                    )
+                else:
+                    replica_path = get_replica_path(account_type, new_account)
+
                 if not os.path.exists(os.path.dirname(replica_path)):
                     logging.debug(
                         "Skipping %s account %s, since no home directory exists yet",
@@ -443,6 +515,8 @@ def populate_new_accounts(config, account_type="tool"):
                 mysql_username = (
                     "s%d" % new_account_id
                     if account_type == "tool"
+                    else "p%d" % new_account_id
+                    if account_type == "paws"
                     else "u%d" % new_account_id
                 )
                 cur.execute(
@@ -467,9 +541,15 @@ def populate_new_accounts(config, account_type="tool"):
                         (acct_id, hostname, "absent"),
                     )
                 # Do this *before* the commit to the db has succeeded
-                write_replica_cnf(
-                    replica_path, new_account_id, mysql_username, pwd
-                )
+                if account_type == "paws":
+                    # PAWS users share an LDAP account on disk
+                    write_replica_cnf(
+                        replica_path, PAWS_RUNTIME_UID, mysql_username, pwd
+                    )
+                else:
+                    write_replica_cnf(
+                        replica_path, new_account_id, mysql_username, pwd
+                    )
                 acct_db.commit()
                 logging.info(
                     "Wrote replica.my.cnf for %s %s", account_type, new_account
@@ -484,7 +564,8 @@ def create_accounts(config):
     """
     try:
         acct_db = get_accounts_db_conn(config)
-        username_re = re.compile("^[spu][0-9]")
+        username_re = re.compile("^[su][0-9]")
+        paws_account_re = re.compile("^p[0-9]")
         for host in config["labsdbs"]["hosts"]:
             if ":" in host:
                 hostnm = host.split(":")[0]
@@ -520,6 +601,13 @@ def create_accounts(config):
                             max_connections = config["variances"][username].get(
                                 "max_connections", DEFAULT_MAX_CONNECTIONS
                             )
+
+                        if (
+                            paws_account_re.match(username)
+                            and grant_type == "legacy"
+                        ):
+                            # Skip toolsdb account creation for PAWS
+                            continue
 
                         with labsdb.cursor() as labsdb_cur:
                             create_acct_string = ACCOUNT_CREATION_SQL[
@@ -594,9 +682,20 @@ def delete_account(config, account, account_type="tool"):
     - Removes them from accounts db
     - Drops users from labsdbs
     """
+    if account_type == "paws":
+        # We have some special issues here. The file path is the UID, not username
+        # and we really should enter the UID in general.
+        try:
+            int(account)
+        except ValueError:
+            sys.exit("Enter the PAWS user's UID, not the on-wiki name")
+
+        # Intentionally shadow the account arg with what the rest of the script
+        # thinks is right.
+        uid, account = get_global_wiki_user(account)
+
     try:
         acct_db = get_accounts_db_conn(config)
-
         for host in config["labsdbs"]["hosts"]:
             if ":" in host:
                 hostnm = host.split(":")[0]
@@ -646,7 +745,11 @@ def delete_account(config, account, account_type="tool"):
                         labsdb.close()
 
         # Now we get rid of the file
-        replica_file_path = get_replica_path(account_type, account)
+        replica_file_path = (
+            get_replica_path(account_type, account)
+            if account_type != "paws"
+            else get_replica_path(account_type, uid)
+        )
         subprocess.check_output(["/usr/bin/chattr", "-i", replica_file_path])
         os.remove(replica_file_path)
         logging.info("Deleted %s", replica_file_path)
@@ -702,7 +805,7 @@ def main():
 
     argparser.add_argument(
         "--account-type",
-        choices=["tool", "user"],
+        choices=["tool", "user", "paws"],
         help="""
         Type of accounts to harvest|delete, not useful for maintain
         default - tool
@@ -780,6 +883,7 @@ def main():
             if is_active_nfs(config):
                 populate_new_accounts(config, "tool")
                 populate_new_accounts(config, "user")
+                populate_new_accounts(config, "paws")
                 create_accounts(config)
             time.sleep(60)
     elif args.action == "delete":
