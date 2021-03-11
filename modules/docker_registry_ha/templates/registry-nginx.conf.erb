@@ -103,7 +103,7 @@ server {
       # Send GET/HEAD requests to @restricted_read location block below
       # See <https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/>
       # which explains and recommends this
-      error_page 418 @restricted_read;
+      error_page 418 = @restricted_read;
       recursive_error_pages on;
       if ($request_method ~ ^(GET|HEAD)$) {
         return 418;
