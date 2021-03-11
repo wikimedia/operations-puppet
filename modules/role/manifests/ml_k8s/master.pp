@@ -5,6 +5,9 @@ class role::ml_k8s::master {
     # Sets up kubernetes on the machine
     include ::profile::kubernetes::master
 
+    # LVS configuration (VIP)
+    include ::profile::lvs::realserver
+
     system::role { 'kubernetes::master':
         description => 'ML Kubernetes master server',
     }
