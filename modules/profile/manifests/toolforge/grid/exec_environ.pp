@@ -68,7 +68,6 @@ class profile::toolforge::grid::exec_environ {
         'texlive-fonts-recommended',
         'texlive-full',              # T197176
         'fonts-alee',
-        'ttf-ubuntu-font-family',    # T32288, T103325 from stretch-wikimedia
         'fonts-wqy-zenhei',
         'xfonts-100dpi',
         'xfonts-75dpi',
@@ -94,6 +93,7 @@ class profile::toolforge::grid::exec_environ {
         'zstd',                      # T225380
     ])
 
+    # packages only in stretch, buster and bullseye
     if debian::codename::ge('stretch') {
         ensure_packages([
             'fonts-noto-hinted',  # T184664
@@ -115,6 +115,22 @@ class profile::toolforge::grid::exec_environ {
         ])
     }
 
+    # packages only in stretch, not available in buster
+    if debian::codename::eq('stretch') {
+        package { [
+            'gcj-jdk',                   # T58995
+            'gcj-jre',                   # T58995
+            'libav-tools',               # T55870.
+            'libdmtx0a',                 # T55867.
+            'libmpfr4',
+            'mono-vbnc',                 # T186846
+            'ttf-ubuntu-font-family',    # T32288, T103325 from stretch-wikimedia
+        ]:
+            ensure => latest,
+            before => Class['profile::locales::all'],
+        }
+    }
+
     package { [
         # Please keep all packages in each group sorted in alphabetical order
         # Locales (T60500)
@@ -130,7 +146,6 @@ class profile::toolforge::grid::exec_environ {
         'bundler',                    # T120287
         'cmake',
         'cython',
-        'gcj-jdk',                   # T58995
         'libdjvulibre-dev',          # T58972
         'libdmtx-dev',               # T55867.
         'libfcgi-dev',               # T54902.
@@ -154,12 +169,10 @@ class profile::toolforge::grid::exec_environ {
         'qt4-qmake',   # Isn't this very deprecated?
         'rake',                      # T120287
         'ruby-dev',                  # T120287
-        'gcj-jre',                     # T58995
         'golang',
         'luarocks',
         'mono-complete',
         'mono-fastcgi-server',         # T85142
-        'mono-vbnc',                   # T186846
         'r-base',
         'ruby',
         'tcl',
@@ -286,8 +299,6 @@ class profile::toolforge::grid::exec_environ {
         'ksh',
         'lame',                        # T168128
         'libaio1',                     # T70615
-        'libav-tools',                 # T55870.
-        'libdmtx0a',                   # T55867.
         'libexiv2-dev',                # T213965
         'libfcgi0ldbl',                # T58995
         'libffi-dev',                  # T67974.
@@ -296,7 +307,6 @@ class profile::toolforge::grid::exec_environ {
         'libgeoip1',                   # T64649
         'libhunspell-dev',             # T125193
         'libjpeg-turbo-progs',         # T61654.
-        'libmpfr4',
         'libncurses5-dev',             # T67974.
         'libneon27-gnutls',
         'libnfnetlink0',
