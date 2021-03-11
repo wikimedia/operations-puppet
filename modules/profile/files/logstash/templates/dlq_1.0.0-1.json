@@ -1,0 +1,65 @@
+{
+  "index_patterns": [
+    "dlq-*"
+  ],
+  "order": 1,
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "default": {
+          "type": "standard",
+          "stopwords": "_none_"
+        }
+      }
+    },
+    "index": {
+      "mapping": {
+        "total_fields": {
+          "limit": 2048
+        }
+      },
+      "query": {
+        "default_field": "message"
+      },
+      "refresh_interval": "5s",
+      "routing": {
+        "allocation": {
+          "require": {
+            "disktype": "ssd"
+          }
+        }
+      }
+    },
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "_meta": {
+      "version": "1.0.0"
+    },
+    "date_detection": false,
+    "properties": {
+      "@timestamp": {
+        "type": "date"
+      },
+      "plugin_type": {
+        "ignore_above": 1024,
+        "type": "keyword"
+      },
+      "message": {
+        "norms": false,
+        "type": "text"
+      },
+      "plugin_id": {
+        "type": "keyword",
+        "ignore_above": 1024
+      },
+      "original": {
+        "doc_values": false,
+        "ignore_above": 1024,
+        "index": false,
+        "type": "keyword"
+      }
+    }
+  }
+}

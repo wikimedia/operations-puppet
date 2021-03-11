@@ -1,0 +1,51 @@
+codec: "json_lines"
+ignore:
+  - '@timestamp'
+  - 'original'  # json encoding is non-deterministic
+testcases:
+  - input:
+      - >
+        {
+          "@metadata": {
+            "dead_letter_queue": {
+              "plugin_id": "elasticsearch",
+              "reason": "Could not index event to Elasticsearch. status: 400, action...",
+              "plugin_type": "output/elasticsearch/logstash",
+              "entry_time": "2021-01-23T00:18:43.020Z"
+            }
+          },
+          "server": "en.wikipedia.org",
+          "wiki": "enwiki",
+          "phpversion": "7.2...",
+          "monolog_level": 200,
+          "channel": "authevents",
+          "program": "mediawiki",
+          "type": "mediawiki",
+          "http_method": "POST",
+          "host": "mw1281",
+          "@version": 1,
+          "shard": "s1",
+          "event": "login",
+          "timestamp": "2021-01-23T00:18:42+00:00",
+          "severity": "info",
+          "servergroup": "api_appserver",
+          "level": "INFO",
+          "ip": "10.64.0.76",
+          "module": "clientlogin",
+          "mwversion": "1.36.0-wmf.27",
+          "message": "clientlogin API attempt",
+          "logsource": "mw1281",
+          "url": "/w/api.php?format=json&formatversion=2&errorformat=plaintext&action=clientlogin&rememberMe=",
+          "normalized_message": "clientlogin API attempt",
+          "tags": [ "input-kafka-rsyslog-udp-localhost", "rsyslog-udp-localhost", "kafka", "es" ],
+          "reqId": "redacted",
+          "referrer": null,
+          "@timestamp": "2021-01-23T00:18:42.021Z",
+          "facility": "user",
+          "status": { "Status": "<OK, no errors detected, no value set>" }
+        }
+    expected:
+      - plugin_id: 'elasticsearch'
+        message: 'Could not index event to Elasticsearch. status: 400, action...'
+        plugin_type: 'output/elasticsearch/logstash'
+        type: 'dlq'
