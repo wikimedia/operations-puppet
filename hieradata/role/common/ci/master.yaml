@@ -14,14 +14,11 @@ profile::ci::jenkins::workspaces_dir: '/srv/jenkins/workspace/${ITEM_FULL_NAME}'
 profile::ci::jenkins::service_ensure: 'stopped'
 profile::ci::jenkins::service_enable: 'mask'
 
-# The Jenkins server runs on Java 8 due to the Gearman plugin
-profile::ci::jenkins::java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
+profile::ci::jenkins::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
 
 profile::java::java_packages:
-  # The Jenkins agent runs on Java 11
   - version: '11'
-    variant: 'jre-headless'
-  # The Jenkins master runs on Java 8
+    variant: 'jdk'
   - version: '8'
     variant: 'jdk'
 
