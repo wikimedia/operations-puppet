@@ -6,13 +6,9 @@ class apt(
     Boolean $install_audit_installed = false,
     String  $mirror                  = 'mirrors.wikimedia.org',
 ) {
-    if debian::codename::eq('jessie') {
-        $components = 'main backports thirdparty'
-    } else {
-        $components =  $facts['is_virtual'] ? {
-            true    => 'main',
-            default => 'main thirdparty/hwraid',
-        }
+    $components =  $facts['is_virtual'] ? {
+        true    => 'main',
+        default => 'main thirdparty/hwraid',
     }
 
     exec { 'apt-get update':
@@ -119,13 +115,11 @@ class apt(
         }
     }
 
-    if debian::codename::ge('stretch') {
-        apt::repository { 'debian-debug':
-            uri        => 'http://deb.debian.org/debian-debug',
-            dist       => "${::lsbdistcodename}-debug",
-            components => 'main contrib non-free',
-            source     => false,
-        }
+    apt::repository { 'debian-debug':
+        uri        => 'http://deb.debian.org/debian-debug',
+        dist       => "${::lsbdistcodename}-debug",
+        components => 'main contrib non-free',
+        source     => false,
     }
 
     apt::conf { 'InstallRecommends':
