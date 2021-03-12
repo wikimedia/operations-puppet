@@ -1,3 +1,11 @@
+# START: This should go to common/kubernetes/worker.yaml with eqiad migration
+profile::kubernetes::node::packages_from_future: true
+profile::calico::kubernetes::calico_version: '3'
+profile::docker::engine::version: "18.06.3~ce~3-0~debian"
+profile::docker::engine::packagename: "docker-ce"
+profile::kubernetes::node::kubelet_ipv6: true
+# END: This should go to common/kubernetes/worker.yaml with eqiad migration
+
 profile::calico::kubernetes::etcd_endpoints:
 - https://kubetcd2004.codfw.wmnet:2379
 - https://kubetcd2005.codfw.wmnet:2379
@@ -19,11 +27,14 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes2014.codfw.wmnet
 - kubernetes2015.codfw.wmnet
 - kubernetes2016.codfw.wmnet
+- kubernetes2017.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
 # enable this when coredns has been deployed not before.
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.72.3"
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 profile::rsyslog::kubernetes::kubernetes_url: https://kubemaster.svc.codfw.wmnet:6443
+# Use Kernel 4.19 - T262527
+profile::base::linux419::enable: true
 # Define in the private repo
 # profile::rsyslog::kubernetes::token

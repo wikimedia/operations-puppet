@@ -1172,7 +1172,7 @@ node 'kubernetes1017.eqiad.wmnet' {
 
 # Kubernetes for flink in k8s T258745
 node 'kubernetes2017.codfw.wmnet' {
-    role(insetup)
+    role(kubernetes::worker)
 }
 
 # Etherpad on buster (virtual machine)

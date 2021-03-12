@@ -8,8 +8,8 @@ profile::kubernetes::master_fqdn: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master_hosts:
 - argon.eqiad.wmnet
 - chlorine.eqiad.wmnet
-- acrab.codfw.wmnet
-- acrux.codfw.wmnet
+- kubemaster2001.codfw.wmnet
+- kubemaster2002.codfw.wmnet
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 profile::docker::engine::settings:
@@ -60,6 +60,6 @@ profile::lvs::realserver::pools:
   linkrecommendation: {}
 prometheus::node_exporter::collectors_extra:
   - processes
-# Remove once the clusters have been reinitialized
+# TODO: Remove once the clusters have been reinitialized
 profile::kubernetes::node::cni_config: /etc/kubernetes/kubelet_config
 profile::kubernetes::node::kubelet_ipv6: false
