@@ -38,6 +38,14 @@ testcases:
           channel: "sync_common.timer"
         log:
           level: "INFO"
+          syslog:
+            severity:
+              name: "informational"
+              code: 6
+            facility:
+              name: "user"
+              code: 1
+            priority: 14
           origin:
             file:
               name: "log.py"

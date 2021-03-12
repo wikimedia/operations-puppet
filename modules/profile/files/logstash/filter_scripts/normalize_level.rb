@@ -1,5 +1,6 @@
 # normalize_level.rb
 # Logstash Ruby script to build an ECS `log` field from level and syslog fields
+# @version 1.0.1
 
 def register(*)
   # RFC5424 severity to supported level field mapping
@@ -38,13 +39,41 @@ def register(*)
       :code => 7
     },
   }
+
+  @facilities = {
+    "kernel"   => 0,
+    "user"     => 1,
+    "mail"     => 2,
+    "daemon"   => 3,
+    "auth"     => 4,
+    "syslog"   => 5,
+    "lpr"      => 6,
+    "news"     => 7,
+    "uucp"     => 8,
+    "cron"     => 9,
+    "authpriv" => 10,
+    "ftp"      => 11,
+    "aso"      => 12,
+    "caa"      => 13,
+    # no string representation for 14/15
+    # https://github.com/rsyslog/rsyslog/blob/master/runtime/rsyslog.h
+    # https://github.com/rsyslog/rsyslog/blob/master/runtime/srutils.c
+    "local0"   => 16,
+    "local1"   => 17,
+    "local2"   => 18,
+    "local3"   => 19,
+    "local4"   => 20,
+    "local5"   => 21,
+    "local6"   => 22,
+    "local7"   => 23
+  }
 end
 
 def get_facility(field)
   # Returns normalized facility field
   unless field.nil?
-    if field[-1].match?(/[0-7]/)
-      return field.downcase, field[-1].to_i + 16
+    unless @facilities[field].nil?
+      return [field, @facilities[field]]
     end
   end
   ["local7", 23]
