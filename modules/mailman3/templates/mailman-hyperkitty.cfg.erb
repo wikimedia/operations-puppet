@@ -15,7 +15,9 @@
 # better if it is not.
 # However, if your Mailman installation is accessed via HTTPS, the URL needs
 # to match your SSL certificate (e.g. https://lists.example.com/hyperkitty).
-base_url: http://localhost/hyperkitty/
+# We don't use `localhost` explicitly to avoid issues with mod_status, see
+# T256536#6907442.
+base_url: http://<%= @fqdn %>/hyperkitty/
 
 # Shared API key, must be the identical to the value in HyperKitty's
 # settings.

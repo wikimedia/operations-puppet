@@ -14,7 +14,8 @@ ADMINS = (
 # is meant to run behind a webserver reverse proxy anyway.
 ALLOWED_HOSTS = [
     "localhost",  # Archiving API from Mailman, keep it.
-    '<%= @host %>',
+    '<%= @host %>',  # External domain name
+    '<%= @fqdn %>',  # Internal host name
     '0.0.0.0',
 ]
 
