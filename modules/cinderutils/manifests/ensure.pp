@@ -21,13 +21,22 @@
 #                  The mount point will be created if it does not
 #                  already exist.
 #
+#   mount_options => options to mount the new volume with and set in fstab
+#                    A string containing a comma-delimited list of options,
+#                    no spaces
+#
+#   mount_mode => file permissions for the mount point, a string containing
+#                 the octal representation e.g. '1777'
+#
 #   min_gb      => only mount a volume if is at least as large as min_gb 
 #   max_gb      => only mount a volume if is no larger than max_gb 
 #
 define cinderutils::ensure(
-    Stdlib::Unixpath $mount_point = '/srv',
-    Integer          $min_gb      = 10,
-    Integer          $max_gb      = 1000,
+    Stdlib::Unixpath $mount_point   = '/srv',
+    String           $mount_options = 'discard,nofail,x-systemd.device-timeout=2s',
+    String           $mount_mode    = '755',
+    Integer          $min_gb        = 10,
+    Integer          $max_gb        = 1000,
 ){
     if has_key($facts['mountpoints'], $mount_point) {
         if $facts['mountpoints'][$mount_point]['size_bytes'] < $min_gb * 1024 * 1024 * 1024 {
@@ -51,7 +60,7 @@ define cinderutils::ensure(
                 $volume['size'] >= $min_gb * 1024 * 1024 * 1024 and
                 $volume['size'] <= $max_gb * 1024 * 1024 * 1024) {
                 exec { "prepare_cinder_volume_${mount_point}":
-                    command => "/usr/sbin/prepare_cinder_volume --force --device ${volume['dev']} --mountpoint ${mount_point}",
+                    command => "/usr/sbin/prepare_cinder_volume --force --device ${volume['dev']} --mountpoint ${mount_point} --options ${mount_options} --mountmode ${mount_mode}",
                     user    => 'root',
                 }
                 $require_list = Exec["prepare_cinder_volume_${mount_point}"]
