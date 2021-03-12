@@ -6,6 +6,7 @@ class base::standard_packages {
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'quickstack', 'screen', 'strace', 'sysstat', 'tcpdump',
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
+        'icdiff', 'linux-perf', 'bsd-mailx', 'ack',
     ])
     package { 'tzdata': ensure => latest }
 
@@ -13,23 +14,9 @@ class base::standard_packages {
     debconf::seen { 'wireshark-common/install-setuid': }
     package { 'tshark': ensure => present }
 
-    # packages only available in buster
+    # packages only available in buster and later
     if debian::codename::ge('buster') {
         ensure_packages(['python3-wmflib'])
-    }
-    # ack-grep was renamed to ack
-    if debian::codename::ge('stretch') {
-        ensure_packages('ack')
-    } else {
-        ensure_packages('ack-grep')
-    }
-
-    # These packages exists only from stretch onwards, once we are free of
-    # jessie, remove the if and move them to the array above
-    if debian::codename::gt('jessie') {
-        ensure_packages('icdiff')
-        ensure_packages('linux-perf')
-        ensure_packages('bsd-mailx')
     }
 
     # git-fat hasn't been ported to Python 3 yet, T279509
