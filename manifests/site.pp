@@ -2055,7 +2055,12 @@ node /^mw23(5[02468]|6[024])\.codfw\.wmnet$/ {
 # Row D
 
 # rack D3
-node /^mw23(6[68]|7[0246])\.codfw\.wmnet$/ {
+
+node /^mw237[46]\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::canary_api)
+}
+
+node /^mw23(6[68]|7[02])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
