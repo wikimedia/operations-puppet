@@ -16,8 +16,8 @@ ARCHIVE_BACKPORTS=${ARCHIVE_BACKPORTS:-"no"}
 SHELL_ON_FAILURE=${SHELL_ON_FAILURE:-"yes"}
 export SHELL_ON_FAILURE
 
-# Enable security backports by default on jessie
-if [ "${DIST%-*}" = "jessie" ]; then
+# Enable security backports by default on stretch (which is LTS)
+if [ "${DIST%-*}" = "stretch" ]; then
   SECURITY_UPDATES=${SECURITY_UPDATES:-"yes"}
 else
   SECURITY_UPDATES=${SECURITY_UPDATES:-"no"}

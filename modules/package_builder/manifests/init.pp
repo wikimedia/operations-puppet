@@ -137,8 +137,8 @@ class package_builder(
         require => Package['lintian'],
     }
 
-    # Ship an apt configuration to integrate deb-src entries for jessie and
-    # stretch, simplifies fetching the source for older distros by using
+    # Ship an apt configuration to integrate deb-src entries for older distros
+    # simplifies fetching the source for older distros by using
     # "apt-get source foo=VERSION" on the package build host
     ['stretch'].each |String $dist| {
         apt::repository{"${dist}-wikimedia_source_only":
