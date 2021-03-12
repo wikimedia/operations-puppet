@@ -691,6 +691,7 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/sbin/service coal *',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (_graphite) NOPASSWD: ALL']
+    approval: Leo Mata
   snapshot-users:
     gid: 801
     description: People who have shell access to snapshot hosts and bastions only.
