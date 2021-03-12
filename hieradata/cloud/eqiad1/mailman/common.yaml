@@ -1,0 +1,3 @@
+profile::mailman3::db_host: mailman-db.mailman.eqiad1.wikimedia.cloud
+profile::mailman3::host: lists.wmcloud.org
+profile::standard::has_default_mail_relay: false
