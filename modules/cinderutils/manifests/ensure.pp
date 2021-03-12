@@ -35,7 +35,7 @@ define cinderutils::ensure(
         }
 
         # find the volume info for this so we can use the uuid for mounting
-        $cinder_vol = $facts['cinder_volumes'].reduce() |$memo, $volume| {
+        $cinder_vol = $facts['block_devices'].reduce() |$memo, $volume| {
             $volume['mountpoint'] == $mount_point ? {
                 true    => $volume,
                 default => $memo
@@ -44,9 +44,10 @@ define cinderutils::ensure(
         $require_list = []
     } else {
         # find the first available volume of adequate size
-        $cinder_vol = $facts['cinder_volumes'].reduce(undef) |$memo, $volume| {
+        $cinder_vol = $facts['block_devices'].reduce(undef) |$memo, $volume| {
             if (!$memo and
                 $volume['mountpoint'] == '' and
+                $volume['type'] == 'disk' and
                 $volume['size'] >= $min_gb * 1024 * 1024 * 1024 and
                 $volume['size'] <= $max_gb * 1024 * 1024 * 1024) {
                 exec { "prepare_cinder_volume_${mount_point}":
