@@ -20,3 +20,5 @@ profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
+
+profile::kerberos::client::dns_canonicalize_hostname: false

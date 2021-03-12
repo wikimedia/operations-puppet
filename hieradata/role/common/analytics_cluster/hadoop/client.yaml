@@ -2,3 +2,4 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::oozie::client::oozie_service: 'analytics-oozie'
 profile::hive::client::hive_service_name: 'analytics-hive'
 
+profile::kerberos::client::dns_canonicalize_hostname: false

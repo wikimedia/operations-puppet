@@ -63,6 +63,7 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'presto'
     group: 'presto'
     filename: 'presto.keytab'
+profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::java::java_packages:
   - version: '8'

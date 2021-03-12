@@ -37,6 +37,7 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'hdfs'
     filename: 'hdfs.keytab'
     parent_dir_grp: 'hadoop'
+profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::java::java_packages:
   - version: '8'

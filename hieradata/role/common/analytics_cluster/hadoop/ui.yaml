@@ -42,6 +42,7 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'hue'
     group: 'hue'
     filename: 'hue.keytab'
+profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::java::java_packages:
   - version: '8'
