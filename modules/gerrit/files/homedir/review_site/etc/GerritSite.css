@@ -542,12 +542,6 @@ table.changeTable a.gwt-Anchor {
   border: none;
 }
 
-/** Vote scores, trying to improve accessibility - T256615*/
-.voteChip {
-  font-size: 1.1em;
-  font-weight: bold;
-}
-
 /** Zuul test result. From OpenStack Foundation */
 .ci_comment_test_name {
     display: inline-block;
