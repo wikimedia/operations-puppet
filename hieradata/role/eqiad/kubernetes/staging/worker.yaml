@@ -13,4 +13,3 @@ profile::kubernetes::master_hosts:
 profile::kubernetes::node::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.76.3"
 profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.eqiad.wmnet:6443
-profile::base::notifications: disabled
