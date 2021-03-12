@@ -90,6 +90,7 @@ testcases:
         '@timestamp': '2021-03-03T16:04:27.028Z'
         labels:
           index: 'logstash-mediawiki-2021.03.03'
+          field: 'status'
         process:
           thread:
             name: "[main]>worker2"
