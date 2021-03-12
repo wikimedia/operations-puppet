@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Easily send admin requests to a Gearman server."""
 # Copyright 2014 Antoine "hashar" Musso
 # Copyright 2014 Wikimedia Foundation Inc.
@@ -79,9 +79,9 @@ server = client.getConnection()
 exit_code = 1
 try:
     server.sendAdminRequest(req, timeout=opts.timeout)
-    print req.response
+    print(req.response)
     exit_code = 0
 except gear.TimeoutError:
-    print "Server timeout exceeded (%s)" % opts.server
+    print("Server timeout exceeded (%s)" % opts.server)
 finally:
     exit(exit_code)

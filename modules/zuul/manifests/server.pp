@@ -85,7 +85,7 @@ class zuul::server (
 
     }
 
-    package { 'python-gear':
+    package { 'python3-gear':
         # Solely for zuul-gearman.py , the server has gear embedded.
         ensure => present,
     }
@@ -95,7 +95,7 @@ class zuul::server (
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/zuul/zuul-gearman.py',
-        require => Package['python-gear'],
+        require => Package['python3-gear'],
     }
 
     file { '/usr/local/bin/zuul-test-repo':
