@@ -6015,46 +6015,6 @@ host mw1413 {
         fixed-address mw1413.eqiad.wmnet;
 }
 
-host mw2243 {
-    hardware ethernet 14:18:77:66:A3:E8;
-    fixed-address mw2243.codfw.wmnet;
-}
-
-host mw2244 {
-    hardware ethernet 14:18:77:66:7D:CD;
-    fixed-address mw2244.codfw.wmnet;
-}
-
-host mw2245 {
-    hardware ethernet 14:18:77:66:B2:0C;
-    fixed-address mw2245.codfw.wmnet;
-}
-
-host mw2246 {
-    hardware ethernet 14:18:77:66:78:1E;
-    fixed-address mw2246.codfw.wmnet;
-}
-
-host mw2247 {
-    hardware ethernet 14:18:77:66:79:E6;
-    fixed-address mw2247.codfw.wmnet;
-}
-
-host mw2248 {
-    hardware ethernet 14:18:77:66:55:40;
-    fixed-address mw2248.codfw.wmnet;
-}
-
-host mw2249 {
-    hardware ethernet 14:18:77:66:69:51;
-    fixed-address mw2249.codfw.wmnet;
-}
-
-host mw2250 {
-    hardware ethernet 14:18:77:6A:55:BB;
-    fixed-address mw2250.codfw.wmnet;
-}
-
 host mw2251 {
     hardware ethernet 18:66:DA:84:12:5B;
     fixed-address mw2251.codfw.wmnet;
