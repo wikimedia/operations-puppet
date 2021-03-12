@@ -70,6 +70,7 @@ profile::idp::is_staging_host: true
 profile::idp::memcached_enable: true
 profile::idp::memcached::mcrouter_cluster: 'idp-test'
 profile::idp::memcached::enable_tls: true
+profile::idp::memcached_transcoder: 'SERIAL'
 profile::idp::u2f_jpa_enable: true
 profile::idp::u2f_jpa_server: m1-master.eqiad.wmnet
 profile::idp::u2f_jpa_db: cas_staging
