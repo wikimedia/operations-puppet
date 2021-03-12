@@ -521,7 +521,7 @@ node 'db1131.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1096, db1098 and db1113 below
-node /^db1(085|088|168|173)\.eqiad\.wmnet/ {
+node /^db1(085|168|173)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
