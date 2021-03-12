@@ -142,6 +142,11 @@ def mount_volume(args):
     # Ensure mountpoint exists
     pathlib.Path(args.mountpoint).mkdir(parents=True, exist_ok=True)
 
+    # Set mode. We can't use the 'mode' arg in mkdir because that's combined with
+    #  the current umask.
+    octalmode = int(args.mountmode, 8)
+    os.chmod(args.mountpoint, octalmode)
+
     if args.device.startswith("sd") and "discard" not in args.options:
         # We're using scsi drivers and can set discard in mount options
         mount_options = "discard,%s" % args.options
@@ -193,6 +198,11 @@ if __name__ == "__main__":
         help="Mount options.  Should be a single comma-delimited string. "
         "If scsi drivers are enabled, 'discard' will always be included "
         "to reduce Ceph usage.",
+    )
+    parser.add_argument(
+        "--mountmode",
+        default="755",
+        help="Mount mode: a string containing the octal mode",
     )
     parser.add_argument("--mountpoint", help="Where to  mount the volume, e.g. /srv")
     parser.add_argument(
