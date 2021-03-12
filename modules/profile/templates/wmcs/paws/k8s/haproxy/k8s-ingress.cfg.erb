@@ -6,8 +6,8 @@ frontend k8s-ingress-http
 
 frontend k8s-ingress-https
     bind 0.0.0.0:<%= @ingress_bind_tls_port %> ssl crt <%= @cert_file %>
-    mode tcp
-    option tcplog
+    mode http
+    option httplog
     timeout client 1h
     acl is_public hdr(host) -i public.paws.wmcloud.org
     acl is_blocked_ip src -f /etc/haproxy/blocklisted.ips
@@ -15,8 +15,8 @@ frontend k8s-ingress-https
     default_backend k8s-ingress
 
 backend k8s-ingress
-    mode tcp
-    option tcplog
+    mode http
+    option httplog
     option tcp-check
     balance roundrobin
     timeout server 1h
