@@ -217,7 +217,6 @@ class profile::hadoop::common (
     $hadoop_secrets_config = $hadoop_clusters_secrets[$cluster_name]
 
     $zookeeper_cluster_name                   = $hadoop_config['zookeeper_cluster_name']
-    $yarn_resourcemanager_zk_timeout_ms       = $hadoop_config['yarn_resourcemanager_zk_timeout_ms']
     $yarn_resourcemanager_zk_state_store_parent_path = $hadoop_config['yarn_resourcemanager_zk_state_store_parent_path']
     $yarn_resourcemanager_fs_state_store_uri  = $hadoop_config['yarn_resourcemanager_fs_state_store_uri']
     $resourcemanager_hosts                    = $hadoop_config['resourcemanager_hosts']
@@ -228,15 +227,6 @@ class profile::hadoop::common (
     $dfs_namenode_handler_count               = $hadoop_config['dfs_namenode_handler_count']
     $dfs_namenode_service_handler_count       = $hadoop_config['dfs_namenode_service_handler_count']
     $dfs_namenode_service_port                = $hadoop_config['dfs_namenode_service_port']
-    $hdfs_trash_checkpoint_interval           = $hadoop_config['hdfs_trash_checkpoint_interval']
-    $hdfs_trash_interval                      = $hadoop_config['hdfs_trash_interval']
-    $mapreduce_reduce_shuffle_parallelcopies  = $hadoop_config['mapreduce_reduce_shuffle_parallelcopies']
-    $mapreduce_task_io_sort_mb                = $hadoop_config['mapreduce_task_io_sort_mb']
-    $mapreduce_task_io_sort_factor            = $hadoop_config['mapreduce_task_io_sort_factor']
-    $mapreduce_map_memory_mb                  = $hadoop_config['mapreduce_map_memory_mb']
-    $mapreduce_map_java_opts                  = $hadoop_config['mapreduce_map_java_opts']
-    $mapreduce_reduce_memory_mb               = $hadoop_config['mapreduce_reduce_memory_mb']
-    $mapreduce_reduce_java_opts               = $hadoop_config['mapreduce_reduce_java_opts']
     $yarn_heapsize                            = $hadoop_config['yarn_heapsize']
     $yarn_nodemanager_opts                    = $hadoop_config['yarn_nodemanager_opts']
     $yarn_resourcemanager_opts                = $hadoop_config['yarn_resourcemanager_opts']
@@ -244,18 +234,28 @@ class profile::hadoop::common (
     $hadoop_datanode_opts                     = $hadoop_config['hadoop_datanode_opts']
     $hadoop_journalnode_opts                  = $hadoop_config['hadoop_journalnode_opts']
     $hadoop_namenode_opts                     = $hadoop_config['hadoop_namenode_opts']
-    $yarn_app_mapreduce_am_resource_mb        = $hadoop_config['yarn_app_mapreduce_am_resource_mb']
-    $yarn_app_mapreduce_am_command_opts       = $hadoop_config['yarn_app_mapreduce_am_command_opts']
     $mapreduce_history_java_opts              = $hadoop_config['mapreduce_history_java_opts']
-    $yarn_scheduler_minimum_allocation_vcores = $hadoop_config['yarn_scheduler_minimum_allocation_vcores']
-    $yarn_scheduler_maximum_allocation_vcores = $hadoop_config['yarn_scheduler_maximum_allocation_vcores']
     $yarn_nodemanager_resource_memory_mb      = $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'] ? {
             undef   => undef,
             default => floor($facts['memorysize_mb']) - $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'],
     }
-    $yarn_scheduler_minimum_allocation_mb     = $hadoop_config['yarn_scheduler_minimum_allocation_mb']
     $yarn_scheduler_maximum_allocation_mb     = $hadoop_config['yarn_scheduler_maximum_allocation_mb']
     $java_home                                = $hadoop_config['java_home']
+
+
+    $mapreduce_reduce_shuffle_parallelcopies  = $hadoop_config['mapreduce_reduce_shuffle_parallelcopies'] ? {
+        undef   => 10,
+        default => $hadoop_config['mapreduce_reduce_shuffle_parallelcopies'],
+    }
+
+    $mapreduce_task_io_sort_mb                = $hadoop_config['mapreduce_task_io_sort_mb'] ? {
+        undef   => 200,
+        default => $hadoop_config['mapreduce_task_io_sort_mb'],
+    }
+    $mapreduce_task_io_sort_factor            = $hadoop_config['mapreduce_task_io_sort_factor'] ? {
+        undef   => 10,
+        default => $hadoop_config['mapreduce_task_io_sort_factor'],
+    }
 
     # Adding sane defaults to these options in case not explicitly set via hiera.
     # More info: T218758
@@ -285,11 +285,86 @@ class profile::hadoop::common (
         undef   => {},
         default => $hadoop_config['mapred_site_extra_properties'],
     }
-    $yarn_nm_container_executor_config        = $hadoop_config['yarn_nodemanager_container_executor_config']
+    $yarn_nm_container_executor_config        = $hadoop_config['yarn_nodemanager_container_executor_config'] ? {
+        undef   => {},
+        default => $hadoop_config['yarn_nm_container_executor_config'],
+    }
 
     $yarn_use_spark_shuffle                   = $hadoop_config['yarn_use_spark_shuffle'] ? {
-        undef   => false,
+        undef   => true,
         default => $hadoop_config['yarn_use_spark_shuffle'],
+    }
+
+    # The HDFS Trash is configured in this way:
+    # 1) Once every day a checkpoint is made (that contains all the trash for a day).
+    # 2) After a month a checkpoint is deleted.
+    $hdfs_trash_checkpoint_interval           = $hadoop_config['hdfs_trash_checkpoint_interval'] ? {
+        undef   => 1440,
+        default => $hadoop_config['hdfs_trash_checkpoint_interval'],
+    }
+    $hdfs_trash_interval                     = $hadoop_config['hdfs_trash_interval'] ? {
+        undef   => 43200,
+        default => $hadoop_config['hdfs_trash_interval'],
+    }
+
+    # These Map/Reduce and YARN ApplicationMaster master settings are
+    # settable per job.
+    # Choosing 2G for default application container size.
+    # Map container size and JVM max heap size (-XmX)
+    $mapreduce_map_memory_mb                  = $hadoop_config['mapreduce_map_memory_mb'] ? {
+        undef   => 2048,
+        default => $hadoop_config['mapreduce_map_memory_mb'],
+    }
+
+    $mapreduce_map_java_opts                  = $hadoop_config['mapreduce_map_java_opts'] ? {
+        undef   => '-Xmx1638m', # 0.8 * 2G
+        default => $hadoop_config['mapreduce_map_java_opts'],
+    }
+
+    # Reduce container size and JVM max heap size (-Xmx)
+    $mapreduce_reduce_memory_mb               = $hadoop_config['mapreduce_reduce_memory_mb'] ? {
+        undef   => '4096', # 2 * 2G
+        default => $hadoop_config['mapreduce_reduce_memory_mb'],
+    }
+
+    $mapreduce_reduce_java_opts               = $hadoop_config['mapreduce_reduce_java_opts'] ? {
+        undef   => '-Xmx3276m', # 0.8 * 2 * 2G
+        default => $hadoop_config['mapreduce_reduce_java_opts'],
+    }
+
+    # Yarn ApplicationMaster container size and  max heap size (-Xmx)
+    $yarn_app_mapreduce_am_resource_mb        = $hadoop_config['yarn_app_mapreduce_am_resource_mb'] ? {
+        undef   => 4096, # 2 * 2G
+        default => $hadoop_config['yarn_app_mapreduce_am_resource_mb'],
+    }
+
+    $yarn_app_mapreduce_am_command_opts       = $hadoop_config['yarn_app_mapreduce_am_command_opts'] ? {
+        undef   => '-Xmx3276m', # 0.8 * 2 * 2G
+        default => $hadoop_config['yarn_app_mapreduce_am_command_opts'],
+    }
+
+    # https://issues.apache.org/jira/browse/YARN-5774
+    # Flink 1.1+ also needs this value to be >= 0
+    $yarn_scheduler_minimum_allocation_mb     = $hadoop_config['yarn_scheduler_minimum_allocation_mb'] ? {
+        undef   => 1,
+        default => $hadoop_config['yarn_scheduler_minimum_allocation_mb'],
+    }
+
+    # https://issues.apache.org/jira/browse/YARN-5774
+    $yarn_scheduler_minimum_allocation_vcores  = $hadoop_config['yarn_scheduler_minimum_allocation_vcores'] ? {
+        undef   => 1,
+        default => $hadoop_config['yarn_scheduler_minimum_allocation_vcores'],
+    }
+
+    $yarn_scheduler_maximum_allocation_vcores  = $hadoop_config['yarn_scheduler_maximum_allocation_vcores'] ? {
+        undef   => 32,
+        default => $hadoop_config['yarn_scheduler_maximum_allocation_vcores'],
+    }
+
+    # Raised for T206943
+    $yarn_resourcemanager_zk_timeout_ms       = $hadoop_config['yarn_resourcemanager_zk_timeout_ms'] ? {
+        undef   => 20000,
+        default => $hadoop_config['yarn_resourcemanager_zk_timeout_ms'],
     }
 
     # The datanode mountpoints are retrieved from facter, among the list of mounted
@@ -326,29 +401,90 @@ class profile::hadoop::common (
         default => template('profile/hadoop/net-topology.py.erb'),
     }
 
-    # No extra core-site defaults
-    $core_site_extra_properties_default = {}
+    $core_site_extra_properties_default = {
+        'hadoop.ssl.enabled.protocols' => 'TLSv1.2',
+        'hadoop.rpc.protection' => 'privacy',
+        'hadoop.security.authentication' => 'kerberos',
+        # https://www.cloudera.com/documentation/enterprise/5-16-x/topics/cdh_sg_hiveserver2_security.html#concept_vxf_pgx_nm
+        'hadoop.proxyuser.hive.hosts' => '*',
+        'hadoop.proxyuser.hive.groups' => '*',
+        'hadoop.proxyuser.oozie.hosts' => '*',
+        'hadoop.proxyuser.oozie.groups' => '*',
+        'hadoop.proxyuser.presto.hosts' => '*',
+        'hadoop.proxyuser.presto.groups' => '*',
+        'hadoop.proxyuser.superset.hosts' => '*',
+        'hadoop.proxyuser.superset.groups' =>'*',
+        'fs.permissions.umask-mode' => '027',
+    }
 
     $yarn_site_extra_properties_default = {
         # Enable FairScheduler preemption. This will allow the essential queue
         # to preempt non-essential jobs.
-        'yarn.scheduler.fair.preemption'                                                => true,
+        'yarn.scheduler.fair.preemption' => true,
         # Let YARN wait for at least 1/3 of nodes to present scheduling
         # opportunties before scheduling a job for certain data
         # on a node on which that data is not present.
-        'yarn.scheduler.fair.locality.threshold.node'                                   => '0.33',
+        'yarn.scheduler.fair.locality.threshold.node' => '0.33',
         # After upgrading to CDH 5.4.0, we are encountering this bug:
         # https://issues.apache.org/jira/browse/MAPREDUCE-5799
         # This should work around the problem.
-        'yarn.app.mapreduce.am.env'                                                     => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
+        'yarn.app.mapreduce.am.env' => 'LD_LIBRARY_PATH=/usr/lib/hadoop/lib/native',
         # The default of 90.0 for this was marking older dells as unhealthy when they still
         # had 2TB of space left.  99% will mark them at unhealthy with they still have
         # > 200G free.
         'yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage' => '99.0',
+        'yarn.resourcemanager.principal' => 'yarn/_HOST@WIKIMEDIA',
+        'yarn.nodemanager.principal' => 'yarn/_HOST@WIKIMEDIA',
+        'yarn.resourcemanager.keytab' => '/etc/security/keytabs/hadoop/yarn.keytab',
+        'yarn.nodemanager.keytab' => '/etc/security/keytabs/hadoop/yarn.keytab',
+        'yarn.nodemanager.linux-container-executor.group' => 'yarn',
+        'yarn.nodemanager.container-executor.class' => 'org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor',
+        'spark.authenticate' => true,
+        'spark.network.crypto.enabled' => true,
+        # When testing spark2 on yarn, the AM was often killed
+        # due to virtual memory usage.
+        # More info: https://phabricator.wikimedia.org/T244499#6378887
+        'yarn.nodemanager.vmem-pmem-ratio' => '5.1',
     }
 
-    $hdfs_site_extra_properties_default = {}
-    $mapred_site_extra_properties_default = {}
+    $yarn_nodemanager_container_executor_config_default = {
+        'yarn.nodemanager.linux-container-executor.group' => 'yarn',
+        'min.user.id' => '100',
+        # hdfs is allowed to make distCP working (mapred user that can be started by hdfs
+        # to be able to avoid permission issues while copying).
+        'allowed.system.users' => 'hive,hdfs',
+        'banned.users' => 'root,yarn,mapred,bin,nobody',
+    }
+
+    $hdfs_site_extra_properties_default = {
+        'dfs.cluster.administrators' => 'hdfs analytics-admins,ops',
+        'dfs.block.access.token.enable' => 'true',
+        'dfs.namenode.keytab.file' => '/etc/security/keytabs/hadoop/hdfs.keytab',
+        'dfs.secondary.namenode.keytab.file' => '/etc/security/keytabs/hadoop/hdfs.keytab',
+        'dfs.namenode.kerberos.principal' => 'hdfs/_HOST@WIKIMEDIA',
+        'dfs.secondary.namenode.kerberos.principal' => 'hdfs/_HOST@WIKIMEDIA',
+        'dfs.journalnode.keytab.file' => '/etc/security/keytabs/hadoop/hdfs.keytab',
+        'dfs.journalnode.kerberos.principal' => 'hdfs/_HOST@WIKIMEDIA',
+        'dfs.journalnode.kerberos.internal.spnego.principal' => 'HTTP/_HOST@WIKIMEDIA',
+        'dfs.web.authentication.kerberos.keytab' => '/etc/security/keytabs/hadoop/HTTP.keytab',
+        'dfs.web.authentication.kerberos.principal' => 'HTTP/_HOST@WIKIMEDIA',
+        'dfs.datanode.keytab.file' => '/etc/security/keytabs/hadoop/hdfs.keytab',
+        'dfs.datanode.kerberos.principal' => 'hdfs/_HOST@WIKIMEDIA',
+        'dfs.encrypt.data.transfer' => 'true',
+        'dfs.data.transfer.protection' => 'privacy',
+        # This is required to allow the datanode to start:
+        # https://hadoop.apache.org/docs/r2.6.0/hadoop-project-dist/hadoop-common/SecureMode.html#Secure_DataNode
+        'dfs.http.policy' => 'HTTPS_ONLY',
+        'dfs.encrypt.data.transfer.cipher.suites' => 'AES/CTR/NoPadding',
+        'dfs.encrypt.data.transfer.cipher.key.bitlength' => '128',
+    }
+
+    $mapred_site_extra_properties_default = {
+        'mapreduce.ssl.enabled' => true,
+        'mapreduce.shuffle.ssl.enabled' => true,
+        'mapreduce.jobhistory.principal' => 'mapred/_HOST@WIKIMEDIA',
+        'mapreduce.jobhistory.keytab' => '/etc/security/keytabs/hadoop/mapred.keytab',
+    }
 
     class { 'bigtop::hadoop':
         # Default to using running resourcemanager on the same hosts
@@ -429,7 +565,7 @@ class profile::hadoop::common (
         hdfs_site_extra_properties                       => $hdfs_site_extra_properties_default + $hdfs_site_extra_properties,
         mapred_site_extra_properties                     => $mapred_site_extra_properties_default + $mapred_site_extra_properties,
 
-        yarn_nodemanager_container_executor_config       => $yarn_nm_container_executor_config,
+        yarn_nodemanager_container_executor_config       => $yarn_nodemanager_container_executor_config_default + $yarn_nm_container_executor_config,
 
         java_home                                        => $java_home,
     }

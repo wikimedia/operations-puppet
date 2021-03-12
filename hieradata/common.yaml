@@ -785,36 +785,12 @@ hadoop_clusters:
     dfs_namenode_service_port: 8040
     dfs_namenode_service_handler_count: 10
 
-    mapreduce_reduce_shuffle_parallelcopies: 10
-    mapreduce_task_io_sort_mb: 200
-    mapreduce_task_io_sort_factor: 10
-
-    mapreduce_map_memory_mb: 2048
-    mapreduce_map_java_opts: '-Xmx1638m'  # 0.8 * 2G
-
-    mapreduce_reduce_memory_mb: 4096         # 2 * 2G
-    mapreduce_reduce_java_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
-
-    yarn_app_mapreduce_am_resource_mb: 4096          # 2 * 2G
-    yarn_app_mapreduce_am_command_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
-
-    # https://issues.apache.org/jira/browse/YARN-5774
-    yarn_scheduler_minimum_allocation_mb: 1
     yarn_scheduler_maximum_allocation_mb: 53248
-
-    # https://issues.apache.org/jira/browse/YARN-5774
-    yarn_scheduler_minimum_allocation_vcores:   1
-    yarn_scheduler_maximum_allocation_vcores:   32
-    yarn_resourcemanager_zk_timeout_ms: 20000
-
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-test-hadoop'
     yarn_resourcemanager_max_completed_applications: 1000
-
     # yarn_nodemanager_resource_memory_mb is set using the formula:
     # total-memory - yarn_nodemanager_os_reserved_memory_mb
     yarn_nodemanager_os_reserved_memory_mb: 12000
-
-    yarn_use_spark_shuffle: true
 
     hadoop_datanode_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
     hadoop_journalnode_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
@@ -823,33 +799,7 @@ hadoop_clusters:
     yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
     mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
 
-    # The HDFS Trash is configured in this way:
-    # 1) Once every day a checkpoint is made (that contains all the trash for a day).
-    # 2) After a month a checkpoint is deleted.
-    hdfs_trash_checkpoint_interval: 1440
-    hdfs_trash_interval: 43200
-
     hdfs_site_extra_properties:
-      dfs.cluster.administrators: 'hdfs analytics-admins,ops'
-      dfs.block.access.token.enable: 'true'
-      dfs.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
-      dfs.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
-      dfs.secondary.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
-      dfs.secondary.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
-      dfs.journalnode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
-      dfs.journalnode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
-      dfs.journalnode.kerberos.internal.spnego.principal: 'HTTP/_HOST@WIKIMEDIA'
-      dfs.web.authentication.kerberos.keytab: '/etc/security/keytabs/hadoop/HTTP.keytab'
-      dfs.web.authentication.kerberos.principal: 'HTTP/_HOST@WIKIMEDIA'
-      dfs.datanode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
-      dfs.datanode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
-      dfs.encrypt.data.transfer: 'true'
-      dfs.data.transfer.protection: 'privacy'
-      # This is required to allow the datanode to start:
-      # https://hadoop.apache.org/docs/r2.6.0/hadoop-project-dist/hadoop-common/SecureMode.html#Secure_DataNode
-      dfs.http.policy: 'HTTPS_ONLY'
-      dfs.encrypt.data.transfer.cipher.suites: 'AES/CTR/NoPadding'
-      dfs.encrypt.data.transfer.cipher.key.bitlength: '128'
       # Avoid long waits if the Namenodes are not reachable
       # from clients.
       dfs.client.failover.max.attempts: 3
@@ -857,50 +807,6 @@ hadoop_clusters:
       # Since we have less space available on the test cluster (due to fewer workers),
       # better to use a smaller replication factor (3 is the Hadoop's default).
       dfs.replication: 2
-
-    mapred_site_extra_properties:
-      mapreduce.ssl.enabled: true
-      mapreduce.shuffle.ssl.enabled: true
-      mapreduce.jobhistory.principal: 'mapred/_HOST@WIKIMEDIA'
-      mapreduce.jobhistory.keytab: '/etc/security/keytabs/hadoop/mapred.keytab'
-
-    yarn_site_extra_properties:
-      yarn.resourcemanager.principal: 'yarn/_HOST@WIKIMEDIA'
-      yarn.resourcemanager.keytab: '/etc/security/keytabs/hadoop/yarn.keytab'
-      yarn.nodemanager.principal: 'yarn/_HOST@WIKIMEDIA'
-      yarn.nodemanager.keytab: '/etc/security/keytabs/hadoop/yarn.keytab'
-      yarn.nodemanager.container-executor.class: 'org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor'
-      yarn.nodemanager.linux-container-executor.group: 'yarn'
-      spark.authenticate: true
-      spark.network.crypto.enabled: true
-      # When testing spark2 on yarn, the AM was often killed
-      # due to virtual memory usage.
-      # More info: https://phabricator.wikimedia.org/T244499#6378887
-      yarn.nodemanager.vmem-pmem-ratio: 5.1
-
-    yarn_nodemanager_container_executor_config:
-      yarn.nodemanager.linux-container-executor.group: 'yarn'
-      min.user.id: '100'
-      # hdfs is allowed to make distCP working (mapred user that can be started by hdfs
-      # to be able to avoid permission issues while copying).
-      allowed.system.users: 'hive,hdfs'
-      banned.users: 'root,yarn,mapred,bin,nobody'
-
-    core_site_extra_properties:
-      hadoop.ssl.enabled: true
-      hadoop.ssl.enabled.protocols: 'TLSv1.2'
-      hadoop.rpc.protection: 'privacy'
-      hadoop.security.authentication: 'kerberos'
-      # https://www.cloudera.com/documentation/enterprise/5-16-x/topics/cdh_sg_hiveserver2_security.html#concept_vxf_pgx_nm
-      hadoop.proxyuser.hive.hosts: '*'
-      hadoop.proxyuser.hive.groups: '*'
-      hadoop.proxyuser.oozie.hosts: '*'
-      hadoop.proxyuser.oozie.groups: '*'
-      hadoop.proxyuser.presto.hosts: '*'
-      hadoop.proxyuser.presto.groups: '*'
-      hadoop.proxyuser.superset.hosts: '*'
-      hadoop.proxyuser.superset.groups: '*'
-      fs.permissions.umask-mode: '027'
 
   analytics-hadoop:
     zookeeper_cluster_name: analytics-eqiad
@@ -1014,48 +920,9 @@ hadoop_clusters:
     dfs_namenode_service_port: 8040
     dfs_namenode_service_handler_count: 60
 
-    mapreduce_reduce_shuffle_parallelcopies: 10
-    mapreduce_task_io_sort_mb: 200
-    mapreduce_task_io_sort_factor: 10
-
-    # Configure memory based on these recommendations and then adjusted:
-    # http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.6.0/bk_installing_manually_book/content/rpm-chap1-11.html
-
-    # These Map/Reduce and YARN ApplicationMaster master settings are
-    # settable per job.
-    # All worker nodes are currently Dell R720s with 64G of RAM and 24 cores
-    # or R730dxs with 128G of RAM and 48 cores.
-
-    # Choosing 2G for default application container size.
-    # Map container size and JVM max heap size (-XmX)
-    mapreduce_map_memory_mb: 2048
-    mapreduce_map_java_opts: '-Xmx1638m'  # 0.8 * 2G
-
-    # Reduce container size and JVM max heap size (-Xmx)
-    mapreduce_reduce_memory_mb: 4096         # 2 * 2G
-    mapreduce_reduce_java_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
-
-    # Yarn ApplicationMaster container size and  max heap size (-Xmx)
-    yarn_app_mapreduce_am_resource_mb: 4096          # 2 * 2G
-    yarn_app_mapreduce_am_command_opts: '-Xmx3276m'  # 0.8 * 2 * 2G
-
-    # Save 12G for OS and other processes.
-    # R720s will have 52G for YARN with room for 26 2G containers.
-    # R730dxs will have 116G for YARN with room for 52 2G containers.
-
-    # https://issues.apache.org/jira/browse/YARN-5774
-    # Flink 1.1+ also needs this value to be >= 0
-    yarn_scheduler_minimum_allocation_mb: 1
     # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
     # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
     yarn_scheduler_maximum_allocation_mb: 49152
-    # https://issues.apache.org/jira/browse/YARN-5774
-    # Flink 1.1+ also needs this value to be >= 0
-    yarn_scheduler_minimum_allocation_vcores:   1
-    yarn_scheduler_maximum_allocation_vcores:   32
-    # Raised for T206943
-    yarn_resourcemanager_zk_timeout_ms: 20000
-
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-hadoop'
 
     # yarn_nodemanager_resource_memory_mb is set using the formula:
@@ -1064,88 +931,12 @@ hadoop_clusters:
     #                   8G     +     8G      +        4G
     yarn_nodemanager_os_reserved_memory_mb: 20000
 
-    yarn_use_spark_shuffle: true
-
     hadoop_datanode_opts: "-Xms8192m -Xmx8192m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:51010:/etc/prometheus/hdfs_datanode_jmx_exporter.yaml"
     hadoop_journalnode_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10485:/etc/prometheus/hdfs_journalnode_jmx_exporter.yaml"
     yarn_nodemanager_opts: "-Xms8192m -Xmx8192m -Djava.net.preferIPv4Stack=false -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:8141:/etc/prometheus/yarn_nodemanager_jmx_exporter.yaml"
     # Following https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.3/bk_command-line-installation/content/configuring-namenode-heap-size.html
     hadoop_namenode_opts: "-Xms36889m -Xmx36889m -Djava.net.preferIPv4Stack=false -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=4000 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
     yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
-
-    # The HDFS Trash is configured in this way:
-    # 1) Once every day a checkpoint is made (that contains all the trash for a day).
-    # 2) After a month a checkpoint is deleted.
-    hdfs_trash_checkpoint_interval: 1440
-    hdfs_trash_interval: 43200
-
-    hdfs_site_extra_properties:
-      dfs.cluster.administrators: 'hdfs analytics-admins,ops'
-      dfs.block.access.token.enable: 'true'
-      dfs.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
-      dfs.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
-      dfs.secondary.namenode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
-      dfs.secondary.namenode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
-      dfs.journalnode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
-      dfs.journalnode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
-      dfs.journalnode.kerberos.internal.spnego.principal: 'HTTP/_HOST@WIKIMEDIA'
-      dfs.web.authentication.kerberos.keytab: '/etc/security/keytabs/hadoop/HTTP.keytab'
-      dfs.web.authentication.kerberos.principal: 'HTTP/_HOST@WIKIMEDIA'
-      dfs.datanode.keytab.file: '/etc/security/keytabs/hadoop/hdfs.keytab'
-      dfs.datanode.kerberos.principal: 'hdfs/_HOST@WIKIMEDIA'
-      dfs.encrypt.data.transfer: 'true'
-      dfs.data.transfer.protection: 'privacy'
-      # This is required to allow the datanode to start:
-      # https://hadoop.apache.org/docs/r2.6.0/hadoop-project-dist/hadoop-common/SecureMode.html#Secure_DataNode
-      dfs.http.policy: 'HTTPS_ONLY'
-      dfs.encrypt.data.transfer.cipher.suites: 'AES/CTR/NoPadding'
-      dfs.encrypt.data.transfer.cipher.key.bitlength: '128'
-
-    mapred_site_extra_properties:
-      mapreduce.ssl.enabled: true
-      mapreduce.shuffle.ssl.enabled: true
-      mapreduce.jobhistory.principal: 'mapred/_HOST@WIKIMEDIA'
-      mapreduce.jobhistory.keytab: '/etc/security/keytabs/hadoop/mapred.keytab'
-
-    yarn_site_extra_properties:
-      yarn.resourcemanager.principal: 'yarn/_HOST@WIKIMEDIA'
-      yarn.resourcemanager.keytab: '/etc/security/keytabs/hadoop/yarn.keytab'
-      yarn.nodemanager.principal: 'yarn/_HOST@WIKIMEDIA'
-      yarn.nodemanager.keytab: '/etc/security/keytabs/hadoop/yarn.keytab'
-      yarn.nodemanager.container-executor.class: 'org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor'
-      yarn.nodemanager.linux-container-executor.group: 'yarn'
-      spark.authenticate: true
-      spark.network.crypto.enabled: true
-      # When testing spark2 on yarn, the AM was often killed
-      # due to virtual memory usage.
-      # More info: https://phabricator.wikimedia.org/T244499#6378887
-      yarn.nodemanager.vmem-pmem-ratio: 5.1
-
-    yarn_nodemanager_container_executor_config:
-      yarn.nodemanager.linux-container-executor.group: 'yarn'
-      min.user.id: '100'
-      # hdfs is allowed to make distCP working (mapred user that can be started by hdfs
-      # to be able to avoid permission issues while copying).
-      allowed.system.users: 'hive, hdfs'
-      banned.users: 'root,yarn,mapred,bin,nobody'
-
-    core_site_extra_properties:
-      hadoop.ssl.enabled.protocols: 'TLSv1.2'
-      hadoop.rpc.protection: 'privacy'
-      hadoop.security.authentication: 'kerberos'
-      # Allow services to impersonate users.
-      # This is what allows to access files as users running queries.
-      # Example for hive:
-      # https://www.cloudera.com/documentation/enterprise/5-16-x/topics/cdh_sg_hiveserver2_security.html#concept_vxf_pgx_nm
-      hadoop.proxyuser.hive.hosts: '*'
-      hadoop.proxyuser.hive.groups: '*'
-      hadoop.proxyuser.oozie.hosts: '*'
-      hadoop.proxyuser.oozie.groups: '*'
-      hadoop.proxyuser.presto.hosts: '*'
-      hadoop.proxyuser.presto.groups: '*'
-      hadoop.proxyuser.superset.hosts: '*'
-      hadoop.proxyuser.superset.groups: '*'
-      fs.permissions.umask-mode: '027'
 
 deployment_server: deploy1002.eqiad.wmnet
 
