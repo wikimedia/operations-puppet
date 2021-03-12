@@ -157,7 +157,7 @@ def main():
     hosts_needdata = []
     hosts_current = []
 
-    deprecated_os = ['jessie', 'stretch']
+    deprecated_os = ['stretch']
     current_os = ['buster']
 
     targets = defaultdict(list)
