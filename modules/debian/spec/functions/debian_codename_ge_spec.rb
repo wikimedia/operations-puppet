@@ -5,7 +5,7 @@ describe 'debian::codename::ge' do
       let(:facts) { os_facts }
       it { is_expected.to run.with_params('buster').and_return(false) }
       it { is_expected.to run.with_params('stretch').and_return(true) }
-      it { is_expected.to run.with_params('jessie').and_return(true) }
+      it { is_expected.to run.with_params('bullseye').and_return(false) }
     end
   end
 end

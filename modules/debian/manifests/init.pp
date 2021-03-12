@@ -6,7 +6,6 @@ class debian {
     }
     $supported = {
         'Debian'   => {
-            'jessie'   => 8,
             'stretch'  => 9,
             'buster'   => 10,
             'bullseye' => 11,

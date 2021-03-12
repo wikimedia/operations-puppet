@@ -405,5 +405,5 @@ apt::repository {'foo':
 }
 ```
 
-Alias of `Enum['jessie', 'stretch', 'buster', 'bullseye']`
+Alias of `Enum['stretch', 'buster', 'bullseye']`
 

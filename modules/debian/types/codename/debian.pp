@@ -4,4 +4,4 @@
 #   apt::repository {'foo':
 #     dist => lookup('foo::bar', Debian::Codename::Debian)
 #   }
-type Debian::Codename::Debian = Enum['jessie', 'stretch', 'buster', 'bullseye', 'sid']
+type Debian::Codename::Debian = Enum['stretch', 'buster', 'bullseye', 'sid']
