@@ -1,39 +1,5 @@
 Origin: Wikimedia
 Label: Wikimedia
-Suite: jessie-wikimedia
-Codename: jessie-wikimedia
-AlsoAcceptFor: jessie jessie-backports
-Version: 8
-Architectures: source amd64 i386
-Components: main backports thirdparty experimental
-# sorted list, leading whitespace matters!
- component/cassandra22
- component/ci
- component/elastic55
- component/facter3
- component/git
- component/icu57
- component/kube2proxy
- component/mtail
- component/prometheus-node-exporter
- component/puppet5
- component/zookeeper349
- thirdparty/ci
- thirdparty/elastic55
- thirdparty/envoyproxy
- thirdparty/mono-project-jessie
-UDebComponents: main backports thirdparty experimental
-Update:
-# sorted list, leading whitespace matters!
- elastic55
-Description: Wikimedia packages for Debian Jessie
-SignWith: 09DBD9F93F6CD44A
-DebOverride: deb-override
-Log:
- log
-
-Origin: Wikimedia
-Label: Wikimedia
 Suite: stretch-wikimedia
 Codename: stretch-wikimedia
 AlsoAcceptFor: stretch stretch-backports

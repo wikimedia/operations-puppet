@@ -40,7 +40,7 @@ class aptrepo (
     $incomingconf    = 'incoming',
     $incominguser    = 'reprepro',
     $incominggroup   = 'reprepro',
-    $default_distro  = 'jessie',
+    $default_distro  = 'buster',
     $gpg_secring     = undef,
     $gpg_pubring     = undef,
     $gpg_user        = undef,
