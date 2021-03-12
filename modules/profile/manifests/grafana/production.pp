@@ -7,6 +7,7 @@ class profile::grafana::production (
     Stdlib::Fqdn $active_host = lookup('profile::grafana::active_host'),
 ) {
     include ::profile::grafana
+    include ::profile::grafana::grizzly
 
     $on_active_host = $active_host == $::fqdn ? {
         true  => present,
