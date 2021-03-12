@@ -2012,12 +2012,6 @@ node /^mw2(27[3-7]|36[79]|37[135])\.codfw\.wmnet$/ {
 
 # Row A
 
-# rack A3
-
-node /^mw222[0123]\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
 # rack A6
 node /^mw230[2468]\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
