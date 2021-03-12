@@ -29,6 +29,7 @@ profile::idp::is_staging_host: false
 profile::idp::memcached_enable: false
 # We use mcrouter in production
 profile::idp::memcached_port: 11213
+profile::idp::memcached_transcoder: 'KRYO'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
