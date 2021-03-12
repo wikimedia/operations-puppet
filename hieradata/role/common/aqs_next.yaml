@@ -1,0 +1,95 @@
+# Analytics Query Service - next generation
+#
+# General
+#
+cluster: aqs
+
+profile::standard::admin_groups:
+    - aqs-admins
+    - deploy-aqs
+
+#
+# Cassandra for AQS
+#
+profile::cassandra::allow_analytics: true
+
+profile::cassandra::disable_graphite_metrics: true
+
+# Instances
+profile::cassandra::instances:
+  "aqs1010.eqiad.wmnet":
+    "a": { listen_address: 10.64.0.88, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.0.120, jmx_exporter_enabled: true }
+  "aqs1011.eqiad.wmnet":
+    "a": { listen_address: 10.64.16.204, jmx_exporter_enabled: true }
+    "b": { listen_address: 10.64.16.206, jmx_exporter_enabled: true }
+
+profile::cassandra::settings:
+  dc: "%{::site}"
+  cluster_name: "Analytics Query Service Storage"
+  start_rpc: false
+  target_version: '3.x'
+  default_instance_params:
+    max_heap_size: 16g
+    # 1/4 heap size, no more than 100m/thread
+    heap_newsize: 2048m
+
+    # Special compaction settings, following suggesions in:
+    # https://docs.datastax.com/en/cassandra/2.1/cassandra/configuration/configCassandra_yaml_r.html
+    # All values are divided by two since we have two instances running on each node
+    # Assumption: 32 cores with ht on each host, so 16 * 1.5 = 24 cores considered
+    # in the calculations.
+    compaction_throughput_mb_per_sec: 256
+    concurrent_compactors: 12
+    concurrent_writes: 64
+    concurrent_reads: 64
+
+    # The CassandraAuthorizer Auth mandates non trivial checks for
+    # each read/write operation to make sure that permissions are honored.
+    # This could be a problem in already heavy loaded clusters like AQS,
+    # so we need to increase caching to allow better performances
+    # (default value 2s).
+    permissions_validity_in_ms: 600000
+
+  # AQS Cassandra user
+
+  # This configuration creates the adduser.cql script that must be used
+  # to create the new user on the Cassandra cluster. This configuration alone
+  # does not create any user on the Cassandra cluster.
+  application_username: aqs
+  application_password: "%{alias('profile::aqs::cassandra_password')}"
+
+#
+# AQS service
+#
+# This configuration forces Restbase to use a specific user. Please make sure
+# to create the user first.
+profile::aqs::cassandra_user: aqs
+
+profile::aqs::monitoring_enabled: true
+
+profile::aqs::druid_properties:
+  scheme: http
+  port: 8082
+  host: druid-public-broker.svc.eqiad.wmnet
+  query_path: '/druid/v2/'
+
+profile::aqs::druid_datasources:
+  mediawiki_history: mediawiki_history_reduced_2021_02
+
+profile::aqs::druid_uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
+
+
+profile::aqs::seeds:
+  - aqs1010-a.eqiad.wmnet
+  - aqs1010-b.eqiad.wmnet
+  - aqs1011-a.eqiad.wmnet
+  - aqs1011-b.eqiad.wmnet
+profile::aqs::cassandra_default_consistency: localQuorum
+profile::aqs::cassandra_local_dc: "%{::site}"
+profile::aqs::statsd_host: statsd.eqiad.wmnet
+
+profile::lvs::realserver::pools:
+  aqs:
+    services:
+      - aqs

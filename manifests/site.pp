@@ -167,12 +167,17 @@ node /^apt[12]001\.wikimedia\.org/ {
 }
 
 # Analytics Query Service
-node /aqs10(0[456789]|10)\.eqiad\.wmnet/ {
+node /aqs100[456789]\.eqiad\.wmnet/ {
     role(aqs)
 }
 
+# Analytics Query Service - buster+cassandra311
+node /aqs101[01]\.eqiad\.wmnet/ {
+    role(aqs_next)
+}
+
 # New AQS Nodes T267414
-node /aqs101[0-5]\.eqiad\.wmnet/ {
+node /aqs101[2-5]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
