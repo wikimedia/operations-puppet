@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from argparse import ArgumentParser
+import argparse
 
 import json
 import os
@@ -142,26 +142,19 @@ def mount_volume(args):
     # Ensure mountpoint exists
     pathlib.Path(args.mountpoint).mkdir(parents=True, exist_ok=True)
 
-    print("Mounting on %s..." % args.mountpoint)
-    if args.device.startswith("sd"):
-        subprocess.run(["mount", "-o", "discard", devpath, args.mountpoint])
+    if args.device.startswith("sd") and "discard" not in args.options:
+        # We're using scsi drivers and can set discard in mount options
+        mount_options = "discard,%s" % args.options
     else:
-        subprocess.run(["mount", devpath, args.mountpoint])
+        mount_options = args.options
+
+    print("Mounting on %s..." % args.mountpoint)
+    subprocess.run(["mount", "-o", mount_options, devpath, args.mountpoint])
 
     updated_devdict = block_dev_dict()
     uuid = updated_devdict[args.device]["uuid"]
 
-    if args.device.startswith("sd"):
-        # We're using scsi drivers and can set discard in mount options
-        fstabline = (
-            "UUID=%s %s ext4 discard,nofail,x-systemd.device-timeout=2s 0 2\n"
-            % (uuid, args.mountpoint)
-        )
-    else:
-        fstabline = "UUID=%s %s ext4 nofail,x-systemd.device-timeout=2s 0 2\n" % (
-            uuid,
-            args.mountpoint,
-        )
+    fstabline = "UUID=%s %s ext4 %s 0 2\n" % (uuid, args.mountpoint, mount_options)
     print("Updating fstab with %s..." % fstabline)
     with open("/etc/fstab", "a") as myfile:
         myfile.write(fstabline)
@@ -178,7 +171,10 @@ if __name__ == "__main__":
 
     devdict = block_dev_dict()
 
-    parser = ArgumentParser(description="Partition, format, and mount a block device")
+    parser = argparse.ArgumentParser(
+        description="Partition, format, and mount a block device",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
     dev_choices = [dev["name"] for dev in devdict.values() if dev["canmount"]]
     if not dev_choices:
@@ -190,6 +186,13 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--device", choices=dev_choices, help="which device to format and mount"
+    )
+    parser.add_argument(
+        "--options",
+        default="nofail,x-systemd.device-timeout=2s",
+        help="Mount options.  Should be a single comma-delimited string. "
+        "If scsi drivers are enabled, 'discard' will always be included "
+        "to reduce Ceph usage.",
     )
     parser.add_argument("--mountpoint", help="Where to  mount the volume, e.g. /srv")
     parser.add_argument(
