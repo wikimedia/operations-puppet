@@ -1160,8 +1160,12 @@ node /^(acrab|acrux|argon|chlorine)\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
 }
 
+node /^kubemaster200[12]\.codfw\.wmnet$/ {
+    role(kubernetes::master)
+}
+
 # New kubernetes masters
-node /^kubemaster[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
+node /^kubemaster100[12]\.eqiad.wmnet$/ {
     role(insetup)
 }
 

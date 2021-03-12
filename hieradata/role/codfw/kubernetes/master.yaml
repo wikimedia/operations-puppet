@@ -1,3 +1,19 @@
+# START: This should go to common/kubernetes/master.yaml with eqiad migration
+profile::kubernetes::master::admission_controllers:
+  NamespaceLifecycle: ''
+  LimitRanger: ''
+  ServiceAccount: "--service-account-key-file=/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
+  DefaultStorageClass: ''
+  DefaultTolerationSeconds: ''
+  ResourceQuota: ''
+  PodSecurityPolicy: ''
+profile::kubernetes::master::use_cergen: true
+profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::master::allow_privileged: true
+# Define in the private repo
+# profile::kubernetes::master::controllermanager_token:
+# END: This should go to common/kubernetes/master.yaml with eqiad migration
+
 profile::kubernetes::master::service_cluster_ip_range: 10.192.72.0/24
 profile::kubernetes::master::etcd_urls:
  - https://kubetcd2004.codfw.wmnet:2379
