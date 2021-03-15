@@ -65,11 +65,13 @@ cp-ats: P{P:trafficserver::backend}
 cp-ats-ulsfo: A:cp-ats and A:ulsfo
 cumin: P{O:cluster::management}
 cuminunpriv: P{O:cluster::unprivmanagement}
-db-all: A:db-core or A:db-inventory or A:db-labsdb or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-store
+db-all: A:db-core or A:db-inventory or A:db-wikireplica or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-store
 db-multiinstance: P{O:mariadb::core_multiinstance or O:mariadb::misc::analytics::backup or O:mariadb::misc::multiinstance} or A:db-sanitarium or A:db-store
 db-core: P{O:mariadb::core or O:mariadb::core_multiinstance}
 db-inventory: P{O:mariadb::misc::db_inventory}
-db-labsdb: P{O:wmcs::db::wikireplicas::analytics or O:wmcs::db::wikireplicas::dedicated::analytics or O:wmcs::db::wikireplicas::web}
+db-wikireplica: A:db-labsdb or A:db-clouddb
+db-labsdb: P{O:wmcs::db::wikireplicas::analytics or O:wmcs::db::wikireplicas::web}
+db-clouddb: P{O:wmcs::db::wikireplicas::web_multiinstance or O:wmcs::db::wikireplicas::analytics_multiinstance or O:wmcs::db::wikireplicas::dedicated::analytics_multiinstance}
 db-misc: P{O:mariadb::misc or O:mariadb::misc::multiinstance or O:mariadb::misc::phabricator or O:mariadb::misc::analytics::backup}
 db-parsercache: P{O:mariadb::parsercache}
 db-sanitarium: P{O:mariadb::sanitarium_multiinstance}
