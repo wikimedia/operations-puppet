@@ -34,7 +34,6 @@ class profile::openstack::codfw1dev::cloudgw (
         wan_netm      => $wan_netm,
         wan_gw        => $wan_gw,
         all_phy_nics  => $all_phy_nics,
-        nic_sshplane  => $nic_sshplane,
         nic_dataplane => $nic_dataplane,
         vrrp_vips     => $vrrp_vips,
         vrrp_peer     => $vrrp_peer,

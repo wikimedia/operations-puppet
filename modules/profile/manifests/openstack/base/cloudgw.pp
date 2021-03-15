@@ -12,7 +12,6 @@ class profile::openstack::base::cloudgw (
     Stdlib::IP::Address $wan_addr     = lookup('profile::openstack::base::cloudgw::wan_addr',     {default_value => '127.0.0.4'}),
     Integer             $wan_netm     = lookup('profile::openstack::base::cloudgw::wan_netm',     {default_value => 8}),
     Stdlib::IP::Address $wan_gw       = lookup('profile::openstack::base::cloudgw::wan_gw',       {default_value => '127.0.0.4'}),
-    String              $nic_sshplane = lookup('profile::openstack::base::cloudgw::nic_controlplane', {default_value => 'eno1'}),
     String              $nic_dataplane= lookup('profile::openstack::base::cloudgw::nic_dataplane',    {default_value => 'eno2'}),
     String              $vrrp_passwd  = lookup('profile::openstack::base::cloudgw::vrrp_passwd',  {default_value => 'dummy'}),
     Array[String]       $vrrp_vips    = lookup('profile::openstack::base::cloudgw::vrrp_vips',    {default_value => ['127.0.0.1 dev eno2']}),
@@ -46,9 +45,8 @@ class profile::openstack::base::cloudgw (
         ensure_service => 'present',
     }
 
-    # network config, routing, bonding + trunking, etc
-    $nic_controlplane = $nic_sshplane
-    file { '/etc/network/interfaces':
+    # network config, VRF, vlan trunk, routing, etc
+    file { '/etc/network/interfaces.d/cloudgw':
         ensure  => present,
         content => template('profile/openstack/base/cloudgw/interfaces.erb'),
     }

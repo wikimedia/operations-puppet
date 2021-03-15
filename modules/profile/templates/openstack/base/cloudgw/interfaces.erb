@@ -1,20 +1,7 @@
 # managed by puppet (cloudgw)
 
-auto lo
-iface lo inet loopback
+# the data plane uses a VRF (l3mdev) + vlan trunk
 
-# in the PoC we are using this iface for control plane (ssh etc)
-auto <%= @nic_controlplane %>
-iface <%= @nic_controlplane %> inet static
-    address <%= @host_addr %>
-    netmask <%= @host_netm %>
-    gateway <%= @host_gw %>
-    dns-nameservers<% @nameservers.each do |nameserver| -%> <%= nameserver -%><% end %>
-    dns-search <%= @site %>.wmnet
-    up ip token set ::<%= @host_addr %> dev <%= @nic_controlplane %> || true
-    up ip addr add <%= @host_prefixv6 %>:<%= scope.call_function('regsubst', [@host_addr, '\.', ':', 'G']) %>/64 dev <%= @nic_controlplane %>
-
-# in the PoC we are using this iface for data plane (vlan-trunked)
 auto <%= @nic_dataplane %>
 iface <%= @nic_dataplane %> inet manual
 
@@ -25,12 +12,14 @@ iface vrf-cloudgw inet manual
 auto <%= @nic_dataplane %>.<%= @virt_vlan %>
 iface <%= @nic_dataplane %>.<%= @virt_vlan %> inet manual
     # no address given the VIP is handle by keepalived / VRRP
+    # hook this interface to the VRF
     post-up ip link set <%= @nic_dataplane %>.<%= @virt_vlan %> master vrf-cloudgw
 
 auto <%= @nic_dataplane %>.<%= @wan_vlan %>
 iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet static
     address <%= @wan_addr %>
     netmask <%= @wan_netm %>
+    # hook this interface to the VRF
     post-up ip link set <%= @nic_dataplane %>.<%= @wan_vlan %> master vrf-cloudgw
     # route default to the core router
     post-up ip route add table cloudgw default via <%= @wan_gw %> dev <%= @nic_dataplane %>.<%= @wan_vlan %> onlink
