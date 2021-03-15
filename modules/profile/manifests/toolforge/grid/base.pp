@@ -11,9 +11,6 @@ class profile::toolforge::grid::base (
     Optional[Stdlib::Host] $external_hostname  = lookup('profile::toolforge::external_hostname', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $external_ip = lookup('profile::toolforge::external_ip', {'default_value' => undef}),
 ){
-
-    class { '::labs_lvm': }
-
     # Weird use of NFS for config centralization.
     # Nodes drop their config into a directory.
     #  - SSH host keys for HBA

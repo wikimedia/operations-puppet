@@ -6,17 +6,19 @@ class profile::toolforge::grid::node::all(
 ){
 
     if $tmp_partition {
-        labs_lvm::volume { 'separate-tmp':
-            size      => '16GB',
-            mountat   => '/tmp',
-            mountmode => '1777',
-            options   => 'nosuid,noexec,nodev,rw',
+        cinderutils::ensure { 'separate-tmp':
+            min_gb        => 15,
+            max_gb        => 20,
+            mount_point   => '/tmp',
+            mount_mode    => '1777',
+            mount_options => 'discard,x-systemd.device-timeout=2s,nosuid,noexec,nodev,rw',
         }
     }
 
     if $swap_partition {
-        labs_lvm::swap { 'big':
-            size => inline_template('<%= @memorysize_mb.to_i * 3 %>MB'),
+        cinderutils::swap { 'big':
+            min_gb => inline_template('<%= @memorysize_mb.to_i * 3 / 1024 %>'),
+            max_gb => inline_template('<%= @memorysize_mb.to_i * 4 / 1024 %>'),
         }
     }
 }
