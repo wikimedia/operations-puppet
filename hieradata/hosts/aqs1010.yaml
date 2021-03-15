@@ -39,7 +39,7 @@ profile::cassandra::settings:
   # to create the new user on the Cassandra cluster. This configuration alone
   # does not create any user on the Cassandra cluster.
   application_username: aqs
-  application_password: "%{passwords::aqs::aqs_user}"
+  application_password: "%{alias('profile::aqs::cassandra_password')}"
 
 profile::aqs::monitoring_enabled: false
 # no need to specify this flag on buster.

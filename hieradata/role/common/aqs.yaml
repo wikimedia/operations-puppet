@@ -69,7 +69,7 @@ profile::cassandra::settings:
   # to create the new user on the Cassandra cluster. This configuration alone
   # does not create any user on the Cassandra cluster.
   application_username: aqs
-  application_password: "%{passwords::aqs::aqs_user}"
+  application_password: "%{alias('profile::aqs::cassandra_password')}"
 
 #
 # AQS service
@@ -77,7 +77,6 @@ profile::cassandra::settings:
 # This configuration forces Restbase to use a specific user. Please make sure
 # to create the user first.
 profile::aqs::cassandra_user: aqs
-profile::aqs::cassandra_password: "%{passwords::aqs::aqs_user}"
 
 profile::aqs::use_nodejs10: true
 
