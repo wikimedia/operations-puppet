@@ -81,10 +81,18 @@ class otrs::mail(
     }
 
     cron { 'otrs_train_spamassassin':
-        ensure  => 'present',
+        ensure  => 'absent',
         user    => 'root',
         minute  => '5',
         command => '/usr/local/bin/train_spamassassin',
+    }
+
+    systemd::timer::job { 'otrs_train_spamassassin':
+        ensure      => present,
+        user        => 'root',
+        description => 'OTRS - train spamassassin filters',
+        command     => '/usr/local/bin/train_spamassassin',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:05:00'},
     }
 
     file { '/var/spool/spam':
