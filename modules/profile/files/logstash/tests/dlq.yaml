@@ -44,6 +44,22 @@ testcases:
           "facility": "user",
           "status": { "Status": "<OK, no errors detected, no value set>" }
         }
+      - >
+        {
+          "@metadata": {
+            "dead_letter_queue": {
+              "plugin_id": "elasticsearch",
+              "reason": "Could not index event to Elasticsearch. status: 400, action...",
+              "plugin_type": "output/elasticsearch/logstash",
+              "entry_time": "2021-01-23T00:18:43.020Z"
+            }
+          },
+          "type": "dlq",
+          "message": "Could not index event to Elasticsearch. status: 400, action...",
+          "plugin_id": "elasticsearch",
+          "plugin_type": "output/elasticsearch/logstash",
+          "original": "{\"referrer\":\"....\"}"
+        }
     expected:
       - plugin_id: 'elasticsearch'
         message: 'Could not index event to Elasticsearch. status: 400, action...'
