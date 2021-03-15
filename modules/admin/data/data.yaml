@@ -4874,7 +4874,7 @@ ldap_only_users:
   dannys712:
     ensure: present
     realname: (known to Legal)
-    email: dannyS712.enwiki@gmail.com
+    email: dannyS712.wiki@gmail.com
   gmodena:
     ensure: present
     realname: Gabriele Modena
