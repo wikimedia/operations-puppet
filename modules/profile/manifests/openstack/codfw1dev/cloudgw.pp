@@ -3,10 +3,6 @@ class profile::openstack::codfw1dev::cloudgw (
     Stdlib::IP::Address           $routing_source = lookup('profile::openstack::codfw1dev::cloudgw::routing_source_ip',{default_value => '185.15.57.1'}),
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr', {default_value => '172.16.128.0/24'}),
     Array[String]                 $all_phy_nics   = lookup('profile::openstack::codfw1dev::cloudgw::all_phy_nics',     {default_value => ['eno1']}),
-    Stdlib::IP::Address           $host_addr      = lookup('profile::openstack::codfw1dev::cloudgw::host_addr',        {default_value => '127.0.0.2'}),
-    Integer                       $host_netm      = lookup('profile::openstack::codfw1dev::cloudgw::host_netm',        {default_value => 8}),
-    Stdlib::IP::Address           $host_gw        = lookup('profile::openstack::codfw1dev::cloudgw::host_gw',          {default_value => '127.0.0.1'}),
-    String                        $host_prefixv6  = lookup('profile::openstack::codfw1dev::cloudgw::host_prefixv6',    {default_value => 'fe00:'}),
     Integer                       $virt_vlan      = lookup('profile::openstack::codfw1dev::cloudgw::virt_vlan',        {default_value => 2107}),
     Stdlib::IP::Address           $virt_peer      = lookup('profile::openstack::codfw1dev::cloudgw::virt_peer',        {default_value => '127.0.0.5'}),
     Stdlib::IP::Address::V4::CIDR $virt_floating  = lookup('profile::openstack::codfw1dev::cloudgw::virt_floating',    {default_value => '127.0.0.5/24'}),
@@ -21,10 +17,6 @@ class profile::openstack::codfw1dev::cloudgw (
     Hash                          $conntrackd     = lookup('profile::openstack::codfw1dev::cloudgw::conntrackd',       {default_value => {}}),
 ) {
     class { '::profile::openstack::base::cloudgw':
-        host_addr     => $host_addr,
-        host_netm     => $host_netm,
-        host_gw       => $host_gw,
-        host_prefixv6 => $host_prefixv6,
         virt_vlan     => $virt_vlan,
         virt_peer     => $virt_peer,
         virt_floating => $virt_floating,
