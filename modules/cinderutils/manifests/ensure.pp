@@ -55,6 +55,8 @@ define cinderutils::ensure(
         # find the first available volume of adequate size
         $cinder_vol = $facts['block_devices'].reduce(undef) |$memo, $volume| {
             if (!$memo and
+                $volume['dev'] != 'vda' and
+                $volume['dev'] != 'sda' and
                 $volume['mountpoint'] == '' and
                 $volume['type'] == 'disk' and
                 $volume['size'] >= $min_gb * 1024 * 1024 * 1024 and
