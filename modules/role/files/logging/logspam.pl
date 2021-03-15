@@ -108,7 +108,8 @@ my %consolidate_patterns = (
   qr/Cannot access the database:/                          => '[db]',
 );
 
-my $timestamp_pat = qr{^([\d-]{10} [\d:]{8})};
+# YYYY-MM-DD HH:MM:SS [requestid] host wiki version ......
+my $header_pat = qr{^([\d-]{10} [\d:]{8}) \[\S+\] (\S+)};
 
 # A pattern for extracting exception names and the invariant error messages /
 # stack traces from errors looking like so:
@@ -139,15 +140,17 @@ if ($window) {
   $start_time = $now - $window;
 }
 my $timestamp;
+my $host;
 
 while (my $line = <$logstream>) {
   # Encode log lines as UTF-8 - not totally clear why this is needed despite
   # the `use open` pragma:
   $line = encode('UTF-8', $line);
 
-  if ($line =~ /$timestamp_pat/) {
+  if ($line =~ /$header_pat/) {
     # Set timestamp then skip ahead to look for Exception:
     $timestamp = Time::Piece->strptime($1, "%Y-%m-%d %T");
+    $host = $2;
 
     # If we haven't got a start time, use with the first thing in the log:
     $start_time //= $timestamp;
@@ -158,6 +161,9 @@ while (my $line = <$logstream>) {
   next unless $line =~ $filter_pattern;
 
   next unless $line =~ $exception_pat;
+
+  # We don't care about messages from mwmaint* hosts.
+  next if $host =~ /mwmaint/;
 
   if ($window > 0) {
     my $age = $now - $timestamp;
