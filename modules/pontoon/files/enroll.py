@@ -66,7 +66,7 @@ class Enroller(object):
             return False
 
         log.info("Running puppet agent")
-        subprocess.run(self.ssh_cmd + [host, "--", "sudo run-puppet-agent"])
+        subprocess.run(self.ssh_cmd + [host, "--", "sudo puppet agent --test --verbose"])
 
     def _ssh_bash(self, host, cmd, *args, **kwargs):
         return subprocess.run(
