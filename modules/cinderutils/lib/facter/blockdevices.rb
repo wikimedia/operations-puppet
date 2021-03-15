@@ -10,12 +10,12 @@ Facter.add(:block_devices) do
     lsblk_raw = Facter::Core::Execution.exec("/bin/lsblk -Jbl -o NAME,TYPE,MOUNTPOINT,UUID,SIZE,FSTYPE")
     lsblk = JSON.parse(lsblk_raw)
     lsblk['blockdevices'].each do |device|
-      unused.append({'dev' => device['name'],
-                     'type' => device['type'],
-                     'size' => device['size'].to_i,
-                     'uuid' => device['uuid'],
-                     'mountpoint' => device['mountpoint'],
-                     'fstype' => device['fstype']})
+      unused.push({'dev' => device['name'],
+                   'type' => device['type'],
+                   'size' => device['size'].to_i,
+                   'uuid' => device['uuid'],
+                   'mountpoint' => device['mountpoint'],
+                   'fstype' => device['fstype']})
     end
     unused
   end
