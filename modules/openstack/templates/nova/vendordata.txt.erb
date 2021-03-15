@@ -15,7 +15,6 @@ Content-Type: text/jinja2; charset="us-ascii"
 hostname: {{ds.meta_data.name}}
 fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 
-
 # /etc/block-ldap-key-lookup:
 #   Prevent non-root logins while the VM is being setup
 #   The ssh-key-ldap-lookup script rejects non-root user logins if this file
@@ -50,12 +49,14 @@ packages:
     - gpg
     - curl
     - nscd
-    - lvm2
-    - parted
     - puppet
 
-growpart:
-    mode: false
+# Clear default partitioning/mounting behavior so puppet can manage it
+disk_setup:
+
+fs_setup:
+
+mounts:
 
 # You'll see that we're setting apt_preserve_sources_list twice here.  That's
 #  because there's a bug in cloud-init where it tries to reconcile the
@@ -91,61 +92,6 @@ Content-Type: text/text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 
 set -x
-
-# If we don't have a LVM volume group, we'll create it,
-# and allocate the remainder of the disk to it,
-if ! /sbin/vgdisplay -c vd
-then
-  # Locate root device, can be vda or sda depending on OS image
-  root_dev=$(lsblk --nodeps -o NAME -n | head -n 1)
-
-  echo 'Creating the volume group'
-  # There seems to be a bug in bootstrapvz that (can?)
-  # create the gpt of the image with the "wrong" size,
-  # where the extent of the disk is the sum of the
-  # existing partitions rather than the actual size of
-  # the image.  Sadly, the only way to fix this is
-  # by invoking parted "interactively" and accept an
-  # error if that is not the case (because then the
-  # 'fix' parameter becomes an answer to a question
-  # that is never asked.)
-  script -c "/sbin/parted /dev/$root_dev print fix" /dev/null
-
-  # the tail|sed|cut is just to get the start and
-  # end of the last unpartitioned span on the disk
-  /sbin/parted -s /dev/$root_dev print
-  /sbin/parted -ms /dev/$root_dev print
-  /sbin/parted -s /dev/$root_dev print free
-  /sbin/parted -ms /dev/$root_dev print free
-  if /sbin/parted -s /dev/$root_dev mkpart primary $(
-      /sbin/parted -ms /dev/$root_dev print free |
-      /usr/bin/tail -n 1 |
-      /usr/bin/cut -d : -f 2,3 --output-delimiter=' '
-    )
-  then
-    # this tail|cut is to to grab the partition
-    # number of the space we just allocated (which
-    # is, by necessity, the last partition
-    part=$( /sbin/parted -ms /dev/$root_dev print |
-            /usr/bin/tail -n 1 |
-            /usr/bin/cut -d : -f 1 )
-
-    if [ "$part" != "" ]; then
-      if [ "$part" -gt 1 ]; then
-        /sbin/parted -s /dev/$root_dev set $part lvm on
-        /sbin/pvcreate /dev/$root_dev$part
-        /sbin/vgcreate vd /dev/$root_dev$part
-        /sbin/partprobe
-      fi
-    fi
-  fi
-
-  # Debian has an lvm bug that foils many a boot.  This hack should
-  # work around that.
-  sed -i '/GRUB_CMDLINE_LINUX_DEFAULT.*/c\GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0 rootdelay=20"' /etc/default/grub
-  /usr/sbin/update-grub
-fi
-# At this point, all (the rest of) our disk are belong to LVM.
 
 systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
