@@ -1,4 +1,5 @@
 profile::idp::memcached_port: 11000
+profile::idp::memcached_transcoder: WHALINV1
 apereo_cas:
   production:
     login_url: 'https://idp.wmcloud.org/login'
