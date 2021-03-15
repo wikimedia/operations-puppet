@@ -59,12 +59,12 @@ server {
     # code of one endpoint....
     #
     # I have hacked around this in the following manner:
-    #  - Tell nginx that you can be whitelisted by IP or by specifying a password
-    #  - Whitelist the whole world!
-    #  - Blacklist the one IP that needs to specify password (to push)
+    #  - Tell nginx that you can be allowed by IP or by specifying a password
+    #  - Allow the whole world!
+    #  - Deny the IPs that need to specify password (for push and restricted pull)
     #
-    # This causes nginx to return a 401 only to the IP that I want to push, and
-    # since this IP will have the password it'll be able to authenticate. The
+    # This causes nginx to return a 401 only to the IPs that have credentials, and
+    # since these IPs will have the password they'll be able to authenticate. The
     # rest of the world will just be allowed via IP, and hence not be asked for
     # passwords.
     #
@@ -78,8 +78,13 @@ server {
     location = /v2/ {
       satisfy any;
 
+      # IPs that push new images
       <%- @allow_push_from.each do |ip| -%>
       deny <%= ip %>;
+      <%- end -%>
+      # IPs that pull restricted/ images
+      <%- @k8s_authenticated_nodes.each do |node| -%>
+      deny <%= node[1]['ipaddress'] %>; # <%= node[1]['fqdn'] %>
       <%- end -%>
       allow all;
 

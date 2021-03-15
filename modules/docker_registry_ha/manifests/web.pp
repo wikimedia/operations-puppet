@@ -79,6 +79,9 @@ class docker_registry_ha::web (
         require => Package['nginx-common'],
     }
 
+    # Find k8s nodes that have auth credentials (for restricted/)
+    $k8s_authenticated_nodes = query_facts("Class[k8s::kubelet] and File['/var/lib/kubelet/config.json']", ['fqdn', 'ipaddress'])
+
     nginx::site { 'registry':
         content => template('docker_registry_ha/registry-nginx.conf.erb'),
     }
