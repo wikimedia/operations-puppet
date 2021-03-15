@@ -406,7 +406,7 @@ class profile::logstash::collector7 (
 
     logstash::output::elasticsearch { 'dlq-1.0.0-1':
       host            => '127.0.0.1',
-      guard_condition => '[type] == \"dlq\"',
+      guard_condition => '[type] == "dlq"',
       index           => 'dlq-1.0.0-1-%{+YYYY.MM.dd}',
       manage_indices  => true,
       priority        => 90,
