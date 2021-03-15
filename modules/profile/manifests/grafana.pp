@@ -6,13 +6,13 @@
 # @param wpt_graphite_proxy_port If set  Configure a local Apache which will serve as
 #        a reverse proxy for performance-team's Graphite instance.
 class profile::grafana (
-    Stdlib::Fqdn $domain         = lookup('profile::grafana::domain'),
-    Stdlib::Fqdn $domainrw       = lookup('profile::grafana::domainrw'),
-    String       $secret_key     = lookup('profile::grafana::secret_key'),
-    String       $admin_password = lookup('profile::grafana::admin_password'),
-    Hash         $config         = lookup('profile::grafana::config'),
-    Hash         $ldap           = lookup('profile::grafana::ldap', {'default_value' => undef}),
-    Boolean      $enable_cas     = lookup('profile::grafana::enable_cas'),
+    Stdlib::Fqdn $domain             = lookup('profile::grafana::domain'),
+    Optional[Stdlib::Fqdn] $domainrw = lookup('profile::grafana::domainrw', {'default_value' => undef}),
+    String       $secret_key         = lookup('profile::grafana::secret_key'),
+    String       $admin_password     = lookup('profile::grafana::admin_password'),
+    Hash         $config             = lookup('profile::grafana::config'),
+    Hash         $ldap               = lookup('profile::grafana::ldap', {'default_value' => undef}),
+    Boolean      $enable_cas         = lookup('profile::grafana::enable_cas'),
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port',
                                                             {'default_value' => undef}),
     Array[Stdlib::Fqdn] $server_aliases = lookup('profile::grafana::server_aliases'),
