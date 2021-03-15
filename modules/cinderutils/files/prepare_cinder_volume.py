@@ -48,7 +48,7 @@ def devs_string(devdict):
     return rstring
 
 
-def validate_mountpoint(devdict, mountpoint):
+def validate_mountpoint(devdict, mountpoint, force=False):
     for dev in devdict.values():
         if "mountpoint" in dev and dev["mountpoint"] == mountpoint:
             print("Mount point %s already assigned to %s" % (mountpoint, dev["name"]))
@@ -72,7 +72,7 @@ def validate_mountpoint(devdict, mountpoint):
                 )
                 return False
 
-    if os.path.isdir(mountpoint) and os.listdir(mountpoint):
+    if os.path.isdir(mountpoint) and os.listdir(mountpoint) and not force:
         print(
             "Mount point %s already contains files. Continuing "
             "would hide those files.\nSelect a different mountpoint or "
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     if args.force:
         if not args.device or not args.mountpoint:
             exit("In noninteractive mode you must specify --device and --mountpoint")
-        if not validate_mountpoint(devdict, args.mountpoint):
+        if not validate_mountpoint(devdict, args.mountpoint, args.force):
             exit("Invalid mountpoint")
     else:
         args = get_args(devdict, args)
