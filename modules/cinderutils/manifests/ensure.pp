@@ -50,7 +50,6 @@ define cinderutils::ensure(
                 default => $memo
             }
         }
-        $require_list = []
     } else {
         # find the first available volume of adequate size
         $cinder_vol = $facts['block_devices'].reduce(undef) |$memo, $volume| {
@@ -76,24 +75,24 @@ define cinderutils::ensure(
         }
     }
 
-    # If we made it this far and cinder_vol is unset, it means we have a mount
-    #  at $mount_point which is of adequate size but not actually a cinder mount.
-    # That happens for legacy VMs with lvm partitions mounted; everything is fine
-    #  so we just define the mount as it already exists.
-    if $cinder_vol == undef {
+    if has_key($facts['mountpoints'], $mount_point) {
+        # The volume already exists so we just need to define the mount.
+        # This also happens for legacy VMs with lvm partitions.
         mount { $mount_point:
             ensure  => mounted,
             atboot  => true,
-            device  => $facts['mountpoints'][$mount_point]['device'],
-            options => $facts['mountpoints'][$mount_point]['options'].join(',')
+            device  => "UUID=${cinder_vol['uuid']}",
+            options => $facts['mountpoints'][$mount_point]['options'].join(','),
+            fstype  => $cinder_vol['fstype'],
         }
     } else {
         mount { $mount_point:
             ensure  => mounted,
             atboot  => true,
             device  => "UUID=${cinder_vol['uuid']}",
-            options => 'discard,nofail,x-systemd.device-timeout=2s',
-            require => $require_list,
+            options => $mount_options,
+            require => Exec["prepare_cinder_volume_${mount_point}"],
+            fstype  => $cinder_vol['fstype']
         }
     }
 }
