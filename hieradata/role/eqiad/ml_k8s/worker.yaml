@@ -1,0 +1,18 @@
+profile::calico::kubernetes::etcd_endpoints:
+- https://ml-etcd1001.eqiad.wmnet:2379
+- https://ml-etcd1002.eqiad.wmnet:2379
+- https://ml-etcd1003.eqiad.wmnet:2379
+profile::calico::kubernetes::bgp_peers:
+- ml-serve1001.eqiad.wmnet
+- ml-serve1002.eqiad.wmnet
+- ml-serve1003.eqiad.wmnet
+- ml-serve1004.eqiad.wmnet
+- cr1-eqiad.wikimedia.org
+- cr2-eqiad.wikimedia.org
+# enable this when coredns has been deployed not before.
+# Check this IP before deploying. The net 10.64.77.0/24 should be the right
+# place.
+#profile::kubernetes::node::kubelet_cluster_dns: "10.64.77.3"
+profile::kubernetes::master_hosts:
+- ml-serve-ctrl1001.eqiad.wmnet
+- ml-serve-ctrl1002.eqiad.wmnet

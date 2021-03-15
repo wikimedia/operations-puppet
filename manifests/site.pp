@@ -1666,13 +1666,6 @@ node /^mc-gp200[1-3]\.codfw\.wmnet/ {
     role(mediawiki::memcached::gutter)
 }
 
-node /^ml-serve200[1234]\.codfw\.wmnet/ {
-    role(ml_serve)
-}
-node /^ml-serve100[1234]\.eqiad\.wmnet/ {
-    role(ml_serve)
-}
-
 node /^ml-etcd100[123]\.eqiad\.wmnet/ {
     role(etcd::v3::ml_etcd)
 }
@@ -1687,6 +1680,13 @@ node /^ml-serve-ctrl100[12]\.eqiad\.wmnet/ {
 
 node /^ml-serve-ctrl200[12]\.codfw\.wmnet/ {
     role(ml_k8s::master)
+}
+
+node /^ml-serve200[1234]\.codfw\.wmnet/ {
+    role(ml_k8s::worker)
+}
+node /^ml-serve100[1234]\.eqiad\.wmnet/ {
+    role(ml_k8s::worker)
 }
 
 # RT, replaced ununpentium
