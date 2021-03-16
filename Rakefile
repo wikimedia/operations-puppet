@@ -84,8 +84,12 @@ namespace :global do
       # don't test the puppetlabs modules
       next if thirdparty_modules.include?(module_name)
       task module_name do
-        spec_result = system("cd 'modules/#{module_name}' && rake parallel_spec")
-        spec_failed << module_name unless spec_result
+        if File.exist?("modules/#{module_name}/Rakefile")
+          spec_result = system("cd 'modules/#{module_name}' && rake parallel_spec")
+          spec_failed << module_name unless spec_result
+        else
+          spec_failed << "#{module_name}: Missing Rakefile"
+        end
       end
       spec_tasks << "spec:#{module_name}"
     end
@@ -95,7 +99,7 @@ namespace :global do
     raise "Modules that failed to pass the spec tests: #{spec_failed.join ', '}" unless spec_failed.empty?
   end
 
-  desc 'run Global rspec using parralel_spec'
+  desc 'run Global rspec using parralel_spec (this is experimental prefer spec)'
   task :parallel_spec do
     spec_modules = Set.new
     FileList['modules/**/spec'].each do |path|

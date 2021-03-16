@@ -447,9 +447,11 @@ class TaskGen < ::Rake::TaskLib
         desc "Run spec for module #{module_name}"
         task module_name do
           puts "---> spec:#{module_name}"
-          spec_result = system("cd 'modules/#{module_name}' && rake parallel_spec")
-          unless spec_result
-            @failed_specs << module_name
+          if File.exist?("modules/#{module_name}/Rakefile")
+            spec_result = system("cd 'modules/#{module_name}' && rake parallel_spec")
+            @failed_specs << module_name unless spec_result
+          else
+            @failed_specs << "#{module_name}: Missing Rakefile"
           end
           puts "---> spec:#{module_name}"
         end
