@@ -31,9 +31,7 @@ define java::package(
             packages  => [$package_name],
         }
     } else {
-        package { $package_name:
-            ensure  => 'present',
-        }
+        ensure_packages($package_name)
     }
 
     # Use a custom java.security on this host, so that we can restrict the allowed
