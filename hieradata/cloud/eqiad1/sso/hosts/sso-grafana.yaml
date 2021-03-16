@@ -1,3 +1,9 @@
+httpd::modules:
+- authnz_ldap
+- headers
+- proxy
+- proxy_http
+- rewrite
 puppetmaster: puppetprimary.sso.eqiad1.wikimedia.cloud
 profile::grafana::domain: sso-grafana.wmcloud.org
 profile::grafana::domainrw: sso-grafana-rw.wmcloud.org
@@ -24,13 +30,18 @@ profile::grafana::config:
   panels:
     disable_sanitize_html: true
 profile::grafana::enable_cas: true
-#profile::idp::client::httpd::sites:
-#  "%{alias('profile::grafana::domain')}":
-#    vhost_content: 'profile/idp/client/httpd-grafana.erb'
-#    document_root: '/usr/share/grafana/public'
-#    required_groups:
-#    - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-#    - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
-#    proxied_as_https: true
-#    vhost_settings:
-#      ro_vhost: "%{alias('profile::grafanarw::domain)}"
+profile::base::firewall::extra::services:
+  'open http for cloud network':
+    port: 80
+    proto: tcp
+    srange: 172.16.0.0/12
+profile::idp::client::httpd::sites:
+  "%{alias('profile::grafana::domainrw')}":
+    document_root: /usr/share/grafana/public
+    proxied_as_https: true
+    required_groups:
+    - cn=wmf,ou=groups,dc=wikimedia,dc=org
+    - cn=nda,ou=groups,dc=wikimedia,dc=org
+    vhost_content: profile/idp/client/httpd-grafana.erb
+    vhost_settings:
+      ro_vhost: "%{alias('profile::grafana::domainrw')}"
