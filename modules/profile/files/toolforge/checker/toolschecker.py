@@ -225,6 +225,7 @@ def job_running(name):
             subprocess.check_call(
                 [
                     "sudo",
+                    "-i",
                     "-u", "{}.toolschecker".format(app.config["PROJECT"]),
                     "/usr/bin/qstat", "-j", name
                 ],
@@ -248,6 +249,7 @@ def grid_check_start(release):
             subprocess.check_call(
                 [
                     "sudo",
+                    "-i",
                     "-u", "{}.toolschecker".format(app.config["PROJECT"]),
                     "/usr/bin/jstart",
                     "-N", name,
@@ -272,6 +274,7 @@ def grid_check_start(release):
             subprocess.check_call(
                 [
                     "sudo",
+                    "-i",
                     "-u", "{}.toolschecker".format(app.config["PROJECT"]),
                     "/usr/bin/qdel", name
                 ],
