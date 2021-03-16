@@ -33,12 +33,14 @@ class profile::toolforge::apt_pinning {
             $libpam_pkg_version       = 'version 1.1.8-3.6'
             $libpam_ldapd_pkg_version = 'version 0.9.7-2'
             $ldap_utils_pkg_version   = 'version 2.4.44+dfsg-5+deb9u1'
-            $libnss3_pkg_version      = 'version xxx'
+            $libnss3_pkg_version      = 'version 2:3.26.2-1.1+deb9u2'
+            $libnss_db_pkg_version    = 'version 2.2.3pre1-6+b6'
             $libnfsidmap2_pkg_version = 'version 0.25-5.1'
             $ldapvi_pkg_version       = 'version 1.7-10*'
             $sudo_ldap_pkg_version    = 'version 1.8.19p1-2.1+deb9u3'
             $nscd_pkg_version         = 'version 2.24-11+deb9u1'
             $nfs_common_pkg_version   = 'version 1:1.3.4-2.1'
+            $python_ldap_pkg_version  = 'version 2.4.28-0.1'
         }
         default: {
             fail("${debian::codename()}: not supported")
