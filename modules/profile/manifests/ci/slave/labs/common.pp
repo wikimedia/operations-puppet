@@ -3,10 +3,13 @@
 # filtertags: labs-project-deployment-prep labs-project-git
 class profile::ci::slave::labs::common {
 
+    # The slaves on labs use the `jenkins-deploy` user which is already
+    # configured in labs LDAP.  Thus, we only need to install the dependencies
+    # needed by the slave agent, eg the java jre.
+    include ::profile::java
+
     # Need the labs instance extended disk space
     require ::profile::labs::lvm::srv
-
-    # New file layout based on /srv
 
     # base directory
     file { '/srv/jenkins':
@@ -67,9 +70,4 @@ class profile::ci::slave::labs::common {
         },
         require  => File['/srv/home/jenkins-deploy'],
     }
-
-    # The slaves on labs use the `jenkins-deploy` user which is already
-    # configured in labs LDAP.  Thus, we only need to install the dependencies
-    # needed by the slave agent, eg the java jre.
-    ensure_packages('default-jre-headless')
 }
