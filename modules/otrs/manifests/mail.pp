@@ -80,13 +80,6 @@ class otrs::mail(
         source => 'puppet:///modules/otrs/train_spamassassin',
     }
 
-    cron { 'otrs_train_spamassassin':
-        ensure  => 'absent',
-        user    => 'root',
-        minute  => '5',
-        command => '/usr/local/bin/train_spamassassin',
-    }
-
     systemd::timer::job { 'otrs_train_spamassassin':
         ensure      => present,
         user        => 'root',
