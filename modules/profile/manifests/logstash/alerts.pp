@@ -36,9 +36,9 @@ class profile::logstash::alerts {
     monitoring::check_prometheus { 'logstash_ingestion_errors':
         description     => 'Logstash Elasticsearch indexing errors #o11y',
         dashboard_links => ['https://logstash.wikimedia.org/goto/3283cc1372b7df18f26128163125cf45', 'https://grafana.wikimedia.org/dashboard/db/logstash'],
-        query           => 'sum(rate(logstash_elasticsearch_index_failure_total[5m]))',
-        warning         => 1,
-        critical        => 8,
+        query           => 'sum(log_dead_letters_hits)',
+        warning         => 60,  # 1 event/sec
+        critical        => 480, # 60 seconds * 8 events/sec
         method          => 'ge',
         retries         => 2,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
