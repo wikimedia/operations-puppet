@@ -111,7 +111,7 @@ class icinga::monitor::toollabs {
         check_interval => 5,
         retry_interval => 5,
         contact_group  => 'wmcs-bots,wmcs-team-email',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/portal:toolforge/admin/toolschecker',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
     # The mechanism for this test is too flaky to page.  We need to revise
@@ -123,7 +123,7 @@ class icinga::monitor::toollabs {
         check_interval => 5,
         retry_interval => 5,
         contact_group  => 'wmcs-bots,wmcs-team-email',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/portal:toolforge/admin/toolschecker',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
     monitoring::service { 'tools-checker-k8s-node-ready':
