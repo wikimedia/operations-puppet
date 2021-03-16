@@ -1,0 +1,35 @@
+profile::grafana::domain: sso-grafana.wmcloud.org
+profile::grafana::domainrw: sso-grafana.wmcloud.org
+profile::grafana::server_aliases: []
+#profile::grafana::secret_key:
+#profile::grafana::admin_password:
+profile::grafana::ldap: {}
+profile::grafana::config:
+  auth.basic:
+    enabled: true
+  auth.ldap:
+    enabled: false
+  auth.proxy:
+    enabled: true
+    header_name: X-CAS-uid
+  auth:
+    disable_signout_menu: true
+    disable_login_form: true
+  security:
+    allow_embedding: true
+  auth.anonymous:
+    enabled: true
+    org_name: WMCS
+  panels:
+    disable_sanitize_html: true
+profile::grafana::enable_cas: true
+profile::idp::client::httpd::sites:
+  'sso-grafana.wmcloud.org':
+    vhost_content: 'profile/idp/client/httpd-grafana.erb'
+    document_root: '/usr/share/grafana/public'
+    required_groups:
+    - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+    - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+    proxied_as_https: true
+    vhost_settings:
+      ro_vhost: 'sso-grafana.wmcloud.org'
