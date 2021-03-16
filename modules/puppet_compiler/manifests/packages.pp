@@ -3,13 +3,9 @@
 # Installs all the needed packages
 class puppet_compiler::packages {
 
-    $java_version = $facts['os']['release']['major'] ? {
-        /10/    => '11',
-        default => '8',
-    }
     ensure_packages([
         'python-yaml', 'python-requests', 'python-jinja2', 'nginx',
-        'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', "openjdk-${java_version}-jdk"
+        'ruby-httpclient', 'ruby-ldap', 'ruby-rgen',
         ])
     if debian::codename::eq('buster') {
         # Required to resolve PUP-8715
