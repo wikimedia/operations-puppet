@@ -1,3 +1,4 @@
+puppetmaster: puppetprimary.sso.eqiad1.wikimedia.cloud
 profile::grafana::domain: sso-grafana.wmcloud.org
 profile::grafana::domainrw: sso-grafana-rw.wmcloud.org
 profile::grafana::server_aliases: []
@@ -24,7 +25,7 @@ profile::grafana::config:
     disable_sanitize_html: true
 profile::grafana::enable_cas: true
 profile::idp::client::httpd::sites:
-  'sso-grafana.wmcloud.org':
+  "%{alias(profile::grafana::domain)}":
     vhost_content: 'profile/idp/client/httpd-grafana.erb'
     document_root: '/usr/share/grafana/public'
     required_groups:
@@ -32,4 +33,4 @@ profile::idp::client::httpd::sites:
     - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
     vhost_settings:
-      ro_vhost: 'sso-grafana.wmcloud.org'
+      ro_vhost: "%{alias(profile::grafanarw::domain)}"
