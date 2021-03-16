@@ -1,5 +1,5 @@
 profile::grafana::domain: sso-grafana.wmcloud.org
-profile::grafana::domainrw: sso-grafana.wmcloud.org
+profile::grafana::domainrw: sso-grafana-rw.wmcloud.org
 profile::grafana::server_aliases: []
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
