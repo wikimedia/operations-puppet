@@ -178,14 +178,15 @@ if enabled == false && (enabled_only || disabled_time + disable_grace > Time.now
 end
 
 unless enabled
-    if disabled_time + disable_crit > Time.now
+  disabled_for = (Time.now - disabled_time).to_i
+    if disabled_for > disable_crit
         exit_code = 2
         status = 'CRITICAL'
     else
         exit_code = 1
         status = 'WARNING'
     end
-    puts "#{status}: Puppet has been disabled for longer than #{disable_grace} seconds, " +
+    puts "#{status}: Puppet has been disabled for #{disabled_for} seconds, " +
          "message: #{disabled_message}, " +
          "last run #{human_time_since_last_run} ago with #{failcount} failures"
     exit exit_code
