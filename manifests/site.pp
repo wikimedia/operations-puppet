@@ -1960,14 +1960,14 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 
 # Row A
 
-# rack A3 and rack A4
-node /^mw22(3[0-9]|4[0-2])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
 # rack A3
 node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
+}
+
+# rack A4
+node /^mw22(39|4[0-2])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
 }
 
 # rack A6
