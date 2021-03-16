@@ -24,13 +24,13 @@ profile::grafana::config:
   panels:
     disable_sanitize_html: true
 profile::grafana::enable_cas: true
-profile::idp::client::httpd::sites:
-  "%{alias(profile::grafana::domain)}":
-    vhost_content: 'profile/idp/client/httpd-grafana.erb'
-    document_root: '/usr/share/grafana/public'
-    required_groups:
-    - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-    - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
-    proxied_as_https: true
-    vhost_settings:
-      ro_vhost: "%{alias(profile::grafanarw::domain)}"
+#profile::idp::client::httpd::sites:
+#  "%{alias('profile::grafana::domain')}":
+#    vhost_content: 'profile/idp/client/httpd-grafana.erb'
+#    document_root: '/usr/share/grafana/public'
+#    required_groups:
+#    - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+#    - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+#    proxied_as_https: true
+#    vhost_settings:
+#      ro_vhost: "%{alias('profile::grafanarw::domain)}"
