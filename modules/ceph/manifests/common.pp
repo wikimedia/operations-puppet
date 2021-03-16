@@ -31,6 +31,9 @@ class ceph::common (
         require => User['ceph'],
     }
 
+    # fio is used for performance tests and debugging
+    ensure_packages(['fio'])
+
     file { '/var/lib/ceph':
         ensure => directory,
         mode   => '0750',
