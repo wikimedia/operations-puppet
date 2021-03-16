@@ -55,8 +55,14 @@ define confd::file (
         notify  => Service['confd'],
     }
 
+    if $ensure == 'absent' {
+        file { $name:
+            ensure => 'absent',
+        }
+    }
+
     # In particular situations, we might not want monitoring
-    if $::confd::monitor_files {
+    if $::confd::monitor_files and $ensure == 'present' {
         nrpe::monitor_service{ "confd${safe_name}":
             description  => "Confd template for ${name}",
             nrpe_command => "/usr/local/lib/nagios/plugins/check_confd_template '${name}'",

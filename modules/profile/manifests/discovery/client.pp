@@ -30,10 +30,6 @@ class profile::discovery::client(
     }
 
     confd::file { "${path}/services.yaml":
-        ensure     => present,
-        content    => template('profile/discovery/services.yaml.tpl.erb'),
-        watch_keys => ['/'],
-        prefix     => '/services',
-        mode       => '0444',
+        ensure     => absent,
     }
 }
