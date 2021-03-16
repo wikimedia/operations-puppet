@@ -15,6 +15,8 @@ class role::analytics_test_cluster::hadoop::master {
     # This needs to be included only on single Hadoop node.
     include ::profile::analytics::cluster::secrets
 
+    include ::profile::analytics::cluster::hadoop::yarn_capacity_scheduler
+
     # Set up druid cluster deep storage directories.
     include ::profile::analytics::cluster::druid_deep_storage
 

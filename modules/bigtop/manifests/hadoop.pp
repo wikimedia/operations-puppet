@@ -247,7 +247,7 @@
 #     The fair-scheduler.xml queue configuration template.
 #     If you set this to false or undef, FairScheduler will
 #     be disabled.
-#     Default: bigtop/hadoop/fair-scheduler.xml.erb
+#     Default: undef
 #
 #   [*core_site_extra_properties*]
 #     Hash of extra property names to values that will be
@@ -386,7 +386,7 @@ class bigtop::hadoop(
     $yarn_heapsize                               = undef,
     $dfs_datanode_hdfs_blocks_metadata_enabled   = undef,
     $net_topology_script_content                 = undef,
-    $fair_scheduler_template                     = 'bigtop/hadoop/fair-scheduler.xml.erb',
+    $fair_scheduler_template                     = undef,
     $core_site_extra_properties                  = undef,
     $yarn_site_extra_properties                  = undef,
     $hdfs_site_extra_properties                  = undef,
@@ -613,12 +613,19 @@ class bigtop::hadoop(
         true  => 'present',
         false => 'absent',
     }
-    # FairScheduler can be enabled
-    # and this file will be used to configure
-    # FairScheduler queues.
-    file { "${config_directory}/fair-scheduler.xml":
-        ensure  => $fair_scheduler_allocation_file_ensure,
-        content => template($fair_scheduler_template),
+
+    if $fair_scheduler_enabled {
+        # FairScheduler can be enabled
+        # and this file will be used to configure
+        # FairScheduler queues.
+        file { "${config_directory}/fair-scheduler.xml":
+            ensure  => $fair_scheduler_allocation_file_ensure,
+            content => template($fair_scheduler_template),
+        }
+    } else {
+        file { "${config_directory}/fair-scheduler.xml":
+            ensure  => $fair_scheduler_allocation_file_ensure,
+        }
     }
 
     file { "${config_directory}/log4j.properties":

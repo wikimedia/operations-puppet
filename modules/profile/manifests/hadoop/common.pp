@@ -235,6 +235,7 @@ class profile::hadoop::common (
     $hadoop_journalnode_opts                  = $hadoop_config['hadoop_journalnode_opts']
     $hadoop_namenode_opts                     = $hadoop_config['hadoop_namenode_opts']
     $mapreduce_history_java_opts              = $hadoop_config['mapreduce_history_java_opts']
+    $yarn_fair_scheduler_template             = $hadoop_config['yarn_fair_scheduler_template']
     $yarn_nodemanager_resource_memory_mb      = $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'] ? {
             undef   => undef,
             default => floor($facts['memorysize_mb']) - $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'],
@@ -418,13 +419,6 @@ class profile::hadoop::common (
     }
 
     $yarn_site_extra_properties_default = {
-        # Enable FairScheduler preemption. This will allow the essential queue
-        # to preempt non-essential jobs.
-        'yarn.scheduler.fair.preemption' => true,
-        # Let YARN wait for at least 1/3 of nodes to present scheduling
-        # opportunties before scheduling a job for certain data
-        # on a node on which that data is not present.
-        'yarn.scheduler.fair.locality.threshold.node' => '0.33',
         # After upgrading to CDH 5.4.0, we are encountering this bug:
         # https://issues.apache.org/jira/browse/MAPREDUCE-5799
         # This should work around the problem.
@@ -554,8 +548,8 @@ class profile::hadoop::common (
         # This needs to be set in order to use Impala
         dfs_datanode_hdfs_blocks_metadata_enabled        => true,
 
-        # Use fair-scheduler.xml.erb to define FairScheduler queues.
-        fair_scheduler_template                          => 'profile/hadoop/fair-scheduler.xml.erb',
+        # Whether or not to use fair-scheduler.xml.erb to define FairScheduler queues.
+        fair_scheduler_template                          => $yarn_fair_scheduler_template,
 
         # Yarn App Master possible port ranges
         yarn_app_mapreduce_am_job_client_port_range      => '55000-55199',

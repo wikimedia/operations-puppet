@@ -799,6 +799,11 @@ hadoop_clusters:
     yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
     mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
 
+    yarn_site_extra_properties:
+      yarn.resourcemanager.scheduler.class: 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler'
+      yarn.resourcemanager.scheduler.monitor.enable: true
+      yarn.acl.enable: true
+
     hdfs_site_extra_properties:
       # Avoid long waits if the Namenodes are not reachable
       # from clients.
@@ -907,6 +912,16 @@ hadoop_clusters:
       an-worker1115.eqiad.wmnet:  /eqiad/D/7
       an-worker1116.eqiad.wmnet:  /eqiad/D/7
       analytics1069.eqiad.wmnet:  /eqiad/D/8
+
+    yarn_fair_scheduler_template: 'profile/hadoop/fair-scheduler.xml.erb'
+    yarn_site_extra_properties:
+      # Enable FairScheduler preemption. This will allow the essential queue
+      # to preempt non-essential jobs.
+      yarn.scheduler.fair.preemption: true
+      # Let YARN wait for at least 1/3 of nodes to present scheduling
+      # opportunties before scheduling a job for certain data
+      # on a node on which that data is not present.
+      yarn.scheduler.fair.locality.threshold.node: '0.33'
 
     # The datanode daemon by default begins the shutdown procedure as soon as
     # on volume/disk failure is registered. In our use case we want to keep the
