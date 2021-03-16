@@ -26,8 +26,8 @@
 #  }
 #
 class grafana(
-    $config,
-    $ldap = undef,
+    Hash $config,
+    Hash $ldap = {},
 ) {
 
     $defaults = {
@@ -84,7 +84,7 @@ class grafana(
         ],
     }
 
-    if $ldap {
+    unless $ldap.empty {
         file { '/etc/grafana/ldap.toml':
             owner   => 'root',
             group   => 'grafana',
@@ -95,5 +95,4 @@ class grafana(
             before  => Service['grafana-server'],
         }
     }
-
 }
