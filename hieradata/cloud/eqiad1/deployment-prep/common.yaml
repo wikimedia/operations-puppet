@@ -48,12 +48,8 @@ profile::restbase::cassandra_password: cassandra
 profile::restbase::monitor_domain: en.wikipedia.org
 profile::restbase::cassandra_tls: {}
 profile::restbase::hosts:
-  - deployment-restbase01.deployment-prep.eqiad.wmflabs
-  - deployment-restbase02.deployment-prep.eqiad.wmflabs
   - deployment-restbase03.deployment-prep.eqiad.wmflabs
 profile::restbase::seeds_ng:
-  - deployment-restbase01.deployment-prep.eqiad.wmflabs
-  - deployment-restbase02.deployment-prep.eqiad.wmflabs
   - deployment-restbase03.deployment-prep.eqiad.wmflabs
 # Cassandra (profile::cassandra)
 graphite_host: cloudmetrics1002.eqiad.wmnet
@@ -63,8 +59,6 @@ profile::cassandra::metrics_blacklist:
     - .*\.metrics\.Table\..*$
 profile::cassandra::rack: rack1
 profile::cassandra::instances:
-  "deployment-restbase01.deployment-prep.eqiad.wmflabs": {}
-  "deployment-restbase02.deployment-prep.eqiad.wmflabs": {}
   "deployment-restbase03.deployment-prep.eqiad.wmflabs": {}
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
@@ -144,8 +138,6 @@ scap::dsh::groups:
         hosts: []
     restbase-betacluster:
         hosts:
-          - deployment-restbase01.deployment-prep.eqiad.wmflabs
-          - deployment-restbase02.deployment-prep.eqiad.wmflabs
           - deployment-restbase03.deployment-prep.eqiad.wmflabs
     librenms:
         hosts:
