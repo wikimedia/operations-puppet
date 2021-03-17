@@ -3,3 +3,4 @@ profile::standard::admin_groups:
   - deployment
   - snapshot-admins
   - snapshot-users
+  - dumps-roots

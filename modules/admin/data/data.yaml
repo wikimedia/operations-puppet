@@ -341,6 +341,12 @@ groups:
     members: [*platform_engineering_members]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval: Mandy Mooney, Will Doran, Mat Nadrofsky
+  dumps-roots:
+    gid: 828
+    description: People who have full root on snapshot, dumpsdata, and some labstore hosts
+    members: [holger]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Mandy Mooney, Will Doran, Mat Nadrofsky
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
