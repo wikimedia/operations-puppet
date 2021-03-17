@@ -59,6 +59,7 @@ class haproxy::cloud::base (
         subscribe => [
             File['/etc/haproxy/haproxy.cfg'],
             File['/etc/default/haproxy'],
-        ]
+        ],
+        restart   => '/usr/bin/systemctl reload haproxy.service'
     }
 }
