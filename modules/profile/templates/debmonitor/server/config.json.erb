@@ -14,8 +14,8 @@
             "sql_mode": "TRADITIONAL"
         }
     },
-    "LOG_DB_QUERIES": false,
-    "REQUIRE_LOGIN": true,
+    "LOG_DB_QUERIES": <%= @django_log_db_queries %>,
+    "REQUIRE_LOGIN": <%= @django_require_login %>,
     "HOST_EXTERNAL_LINKS": {
         "Icinga": "https://icinga.wikimedia.org/cgi-bin/icinga/status.cgi?search_string={hostname}",
         "Puppetboard": "https://puppetboard.wikimedia.org/node/{fqdn}",

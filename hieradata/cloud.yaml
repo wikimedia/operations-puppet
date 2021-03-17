@@ -32,6 +32,13 @@ manage_puppet_ca_file: false
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
 
+profile::debmonitor::server::settings_module: debmonitor.settings.test
+profile::debmonitor::server::ssl_certs: puppet
+profile::debmonitor::server::django_log_db_queries: true
+profile::debmonitor::server::django_require_login: false
+# Only scap3 is a valid deployment method anything else is noop
+profile::debmonitor::server::app_deployment: 'NONE'
+
 profile::ntp::use_chrony: false
 
 profile::puppetdb::gc_interval: 20

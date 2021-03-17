@@ -16,8 +16,13 @@ server {
     error_log /var/log/nginx/<%= @public_server_name -%>-tls.error.log;
     access_log /var/log/nginx/<%= @public_server_name -%>-tls.access.log;
 
+<%- if @ssl_certs == 'sslcert' -%>
     ssl_certificate /etc/ssl/localcerts/<%= @internal_server_name %>.chained.crt;
     ssl_certificate_key /etc/ssl/private/<%= @internal_server_name %>.key;
+<%- else -%>
+    ssl_certificate /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+<%- end -%>
 
     <%= @ssl_config.join("\n    ") %>
 

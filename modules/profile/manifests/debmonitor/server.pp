@@ -10,12 +10,17 @@
 #       include ::profile::debmonitor::server
 #
 class profile::debmonitor::server (
-    String $public_server_name       = lookup('profile::debmonitor::server::public_server_name'),
-    String $internal_server_name     = lookup('debmonitor'),
-    String $django_secret_key        = lookup('profile::debmonitor::server::django_secret_key'),
-    String $django_mysql_db_host     = lookup('profile::debmonitor::server::django_mysql_db_host'),
-    String $django_mysql_db_password = lookup('profile::debmonitor::server::django_mysql_db_password'),
-    Hash $ldap_config                = lookup('ldap', Hash, hash, {}),
+    String                    $internal_server_name     = lookup('debmonitor'),
+    Hash                      $ldap_config              = lookup('ldap', Hash, hash, {}),
+    String                    $public_server_name       = lookup('profile::debmonitor::server::public_server_name'),
+    String                    $django_secret_key        = lookup('profile::debmonitor::server::django_secret_key'),
+    String                    $django_mysql_db_host     = lookup('profile::debmonitor::server::django_mysql_db_host'),
+    String                    $django_mysql_db_password = lookup('profile::debmonitor::server::django_mysql_db_password'),
+    Boolean                   $django_log_db_queries    = lookup('profile::debmonitor::server::django_log_db_queries'),
+    Boolean                   $django_require_login     = lookup('profile::debmonitor::server::django_require_login'),
+    String                    $settings_module          = lookup('profile::debmonitor::server::settings_module'),
+    String                    $app_deployment           = lookup('profile::debmonitor::server::app_deployment'),
+    Enum['sslcert', 'puppet'] $ssl_certs                = lookup('profile::debmonitor::server::ssl_certs'),
 ) {
     include ::passwords::ldap::production
 
@@ -41,7 +46,6 @@ class profile::debmonitor::server (
     $config_path = "${base_path}/config.json"
     $directory = "${deploy_path}/src"
     $ssl_config = ssl_ciphersuite('nginx', 'strong')
-    $settings_module = 'debmonitor.settings.prod'
     # Ensure to add FQDN of the current host also the first time the role is applied
     $hosts = unique(concat(query_nodes('Class[Role::Debmonitor::Server]'), [$::fqdn]))
     $proxy_hosts = query_nodes('Class[Role::Cluster::Management]')
@@ -62,6 +66,7 @@ class profile::debmonitor::server (
 
     # uWSGI service to serve the Django-based WebUI and API
     service::uwsgi { 'debmonitor':
+        deployment      => $app_deployment,
         port            => $port,
         no_workers      => 4,
         deployment_user => $deploy_user,
@@ -113,10 +118,18 @@ class profile::debmonitor::server (
     }
 
     # Certificate for the internal endpoint
-    sslcert::certificate { $internal_server_name:
-        ensure       => present,
-        skip_private => false,
-        before       => Service['nginx'],
+    if $ssl_certs == 'sslcert' {
+        sslcert::certificate { $internal_server_name:
+            ensure       => present,
+            skip_private => false,
+            before       => Service['nginx'],
+        }
+    } else {
+        base::expose_puppet_certs { '/etc/nginx':
+            ensure          => present,
+            provide_private => true,
+            require         => Class['nginx'],
+        }
     }
 
     # Static file Nginx configuration, including CSP header
