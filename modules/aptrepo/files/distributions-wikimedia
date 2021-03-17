@@ -161,6 +161,7 @@ Components: main
  thirdparty/kubeadm-k8s-1-16
  thirdparty/kubeadm-k8s-1-17
  thirdparty/matomo
+ thirdparty/php56
  thirdparty/postgres96
  thirdparty/pyall
 UDebComponents: main
