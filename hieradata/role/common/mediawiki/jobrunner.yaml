@@ -59,5 +59,6 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::global_cert_name: "jobrunner.discovery.wmnet"
 profile::tlsproxy::envoy::max_requests: 1000
 profile::tlsproxy::envoy::ferm_srange: "$DOMAIN_NETWORKS"
+profile::services_proxy::envoy::listen_ipv6: true
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
