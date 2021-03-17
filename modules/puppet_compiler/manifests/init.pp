@@ -11,13 +11,14 @@ class puppet_compiler(
     require puppet_compiler::packages
 
     $vardir = "${libdir}/puppet"
+    $yamldir = "${vardir}/yaml"
 
-    file { [$libdir, $vardir, $workdir]:
+    file { [$libdir, $vardir, $workdir, $yamldir]:
         ensure => stdlib::ensure($ensure, 'directory'),
         owner  => $user,
         mode   => '0644',
     }
-    File[$libdir] {
+    File[$libdir, $yamldir] {
         recurse => true,
     }
 
