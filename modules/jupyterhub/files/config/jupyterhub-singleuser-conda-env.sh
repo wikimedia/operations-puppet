@@ -40,9 +40,9 @@ if [ "${CONDA_ENV_PREFIX}" == '__NEW__' ]; then
     # Create a new stacked conda environment. We source the script rather than running it
     # so we can more easily determine the path of the newly created conda env.
     # conda-create-stacked sets a bunch of variables, including the one we need:
-    # CONDA_STACKED_ENV_PATH.
+    # CONDA_STACKED_ENV_PREFIX.
     source "${CONDA_BASE_ENV_PREFIX}"/bin/conda-create-stacked
-    CONDA_ENV_PREFIX="${CONDA_STACKED_ENV_PATH}"
+    CONDA_ENV_PREFIX="${CONDA_STACKED_ENV_PREFIX}"
 fi
 
 # Make sure juptyerhub-singleuser is installed in the conda env.
