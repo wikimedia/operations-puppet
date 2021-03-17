@@ -4537,6 +4537,16 @@ host mc1036 {
     fixed-address mc1036.eqiad.wmnet;
 }
 
+host mc1037 {
+    hardware ethernet BC:97:E1:E4:4B:30;
+    fixed-address mc1037.eqiad.wmnet;
+}
+
+host mc1038 {
+    hardware ethernet BC:97:E1:E4:27:30;
+    fixed-address mc1038.eqiad.wmnet;
+}
+
 host mc-gp1001 {
     hardware ethernet B0:26:28:CC:F9:40;
     fixed-address mc-gp1001.eqiad.wmnet;
