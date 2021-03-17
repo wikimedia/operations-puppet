@@ -65,6 +65,10 @@ spark.network.crypto.keyLength                      256
 spark.network.crypto.saslFallback                   false
 <% end -%>
 
+# Ensure that Python requests lib always use system CA certificates.
+spark.yarn.appMasterEnv.REQUESTS_CA_BUNDLE          /etc/ssl/certs/ca-certificates.crt
+spark.executorEnv.REQUESTS_CA_BUNDLE                /etc/ssl/certs/ca-certificates.crt
+
 <% if @spark_version <= '2.4.4' -%>
 # ARROW_PRE_0_15_IPC_FORMAT needs to be set in order for pyarrow >= 0.15.0 to work with Spark <= 2.4.4.
 # When we upgrade to Spark > 2.4.4 we should remove these.
