@@ -33,17 +33,36 @@ class tendril (
 
     # Temporary hack while jessie is supported
     if debian::codename::le('jessie') {
-        $php_mysql_pkg = 'php5-mysql'
-        $php_memcache_pkg = 'php5-memcache'
+        ensure_packages([
+            'php5-mysql',
+            'php5-memcache', # do not install -memcached, it won't work
+            'memcached', # memcached expected by default on localhost
+        ])
     } else {
-        $php_mysql_pkg = 'php-mysql'
-        $php_memcache_pkg = 'php-memcache'
+        $php56_packages = [
+            'libapache2-mod-php5.6',
+            'php5.6-cli',
+            'php5.6-common',
+            'php5.6-curl',
+            'php5.6-dev',
+            'php5.6-gd',
+            'php5.6-gmp',
+            'php5.6-intl',
+            'php5.6-ldap',
+            'php5.6-mcrypt',
+            'php5.6-mysql',
+            'php5.6-pgsql',
+            'php5.6-readline',
+            'php5.6-sqlite3',
+            'php5.6-tidy',
+            'php5.6-xsl',
+        ]
+
+        apt::package_from_component { 'tendril_php56':
+            component => 'component/php56',
+            packages  => $php56_packages,
+        }
     }
-    ensure_packages([
-        $php_mysql_pkg,
-        $php_memcache_pkg, # do not install -memcached, it won't work
-        'memcached', # memcached expected by default on localhost
-    ])
 
     group { 'mwdeploy':
         ensure => present,
