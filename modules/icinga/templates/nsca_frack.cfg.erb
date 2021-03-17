@@ -714,6 +714,15 @@ define service {
     contact_groups           fr-tech,fr-tech-ops
 }
 
+# frdata2001
+
+define service {
+    use                      passive-service
+    service_description      check_ssl
+    host_name                frdata2001
+    contact_groups           fr-tech,fr-tech-ops
+}
+
 # frdb1002 (these can be run on any db in the replication cluster)
 
 define service {
