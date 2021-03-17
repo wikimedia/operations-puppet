@@ -1,3 +1,7 @@
+classes:
+  - profile::base::firewall::extra
+  - httpd
+  - profile::grafana
 httpd::modules:
 - authnz_ldap
 - headers
