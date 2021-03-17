@@ -40,6 +40,7 @@ define rsync::quickdatacopy(
   Optional[Integer] $bwlimit = undef,
   Optional[Boolean] $delete = false,
   Boolean $server_uses_stunnel = false,  # Must match rsync::server::wrap_with_stunnel as looked up via hiera by the *server*!
+  Boolean $auto_ferm_ipv6 = true,
   ) {
       if ($title =~ /\s/) {
           fail('the title of rsync::quickdatacopy must not include whitespace')
@@ -55,7 +56,7 @@ define rsync::quickdatacopy(
               path           => $module_path,
               hosts_allow    => [$dest_host],
               auto_ferm      => true,
-              auto_ferm_ipv6 => true,
+              auto_ferm_ipv6 => $auto_ferm_ipv6,
           }
       }
       $_bwlimit = $bwlimit ? {
