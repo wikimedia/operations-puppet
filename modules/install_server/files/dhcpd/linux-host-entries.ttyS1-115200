@@ -1991,6 +1991,51 @@ host db1175 {
 	fixed-address db1175.eqiad.wmnet;
 }
 
+host db1176 {
+	hardware ethernet 2C:EA:7F:7E:AB:8E;
+	fixed-address db1176.eqiad.wmnet;
+}
+
+host db1177 {
+	hardware ethernet 2C:EA:7F:85:90:D0;
+	fixed-address db1177.eqiad.wmnet;
+}
+
+host db1178 {
+	hardware ethernet 2C:EA:7F:85:67:5E;
+	fixed-address db1178.eqiad.wmnet;
+}
+
+host db1179 {
+	hardware ethernet 2C:EA:7F:85:47:4F;
+	fixed-address db1179.eqiad.wmnet;
+}
+
+host db1180 {
+	hardware ethernet 2C:EA:7F:85:2C:97;
+	fixed-address db1180.eqiad.wmnet;
+}
+
+host db1181 {
+	hardware ethernet 2C:EA:7F:85:3A:6F;
+	fixed-address db1181.eqiad.wmnet;
+}
+
+host db1182 {
+	hardware ethernet 2C:EA:7F:85:49:98;
+	fixed-address db1182.eqiad.wmnet;
+}
+
+host db1183 {
+	hardware ethernet 2C:EA:7F:85:5C:BE;
+	fixed-address db1183.eqiad.wmnet;
+}
+
+host db1184 {
+	hardware ethernet 2C:EA:7F:85:0F:8D;
+	fixed-address db1184.eqiad.wmnet;
+}
+
 host db2071 {
     hardware ethernet 18:66:DA:F8:F2:20;
     fixed-address db2071.codfw.wmnet;

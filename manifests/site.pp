@@ -448,6 +448,11 @@ node /^db1(112|157|166|175)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# new db hosts T273566
+node /^db11(7[6-9]|8[0-4])\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # s3 (default) core production dbs on codfw
 # codfw master
 node 'db2105.codfw.wmnet' {
