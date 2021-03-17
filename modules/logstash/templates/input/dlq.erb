@@ -1,6 +1,5 @@
 input {
   dead_letter_queue {
-    type           => "dlq"
     path           => "<%= @path %>"
     pipeline_id    => "<%= @pipeline_id %>"
     commit_offsets => <%= @commit_offsets %>
