@@ -1,5 +1,7 @@
 class profile::mediawiki::mwlog (
   Stdlib::Unixpath $log_directory = lookup('profile::mediawiki::mwlog::log_directory', {'default_value' => '/srv/mw-log-kafka'}),
+  Optional[Stdlib::Fqdn] $primary_host = lookup('profile::mediawiki::mwlog::primary_host', {'default_value' => undef}),
+  Optional[Stdlib::Fqdn] $standby_host = lookup('profile::mediawiki::mwlog::standby_host', {'default_value' => undef}),
 ) {
     $kafka_config = kafka_config('logging-eqiad')
     $topic_prefix = 'mwlog-'
@@ -57,5 +59,15 @@ class profile::mediawiki::mwlog (
         compress     => true,
         missing_ok   => true,
         post_rotate  => 'service kafkatee-mwlog reload',
+    }
+
+    if $primary_host and $standby_host {
+        rsync::quickdatacopy { 'srv-mw-log':
+            source_host         => $primary_host,
+            dest_host           => $standby_host,
+            auto_sync           => false,
+            module_path         => '/srv/mw-log',
+            server_uses_stunnel => true,
+        }
     }
 }

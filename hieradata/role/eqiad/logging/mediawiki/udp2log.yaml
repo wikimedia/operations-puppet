@@ -1,0 +1,2 @@
+profile::mediawiki::mwlog::primary_host: mwlog1001.eqiad.wmnet
+profile::mediawiki::mwlog::standby_host: mwlog1002.eqiad.wmnet
