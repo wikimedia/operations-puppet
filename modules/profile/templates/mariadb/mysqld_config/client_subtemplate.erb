@@ -4,8 +4,6 @@ socket = <%= @socket %>
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
 ssl-ca=<%= @ssl_ca %>
-ssl-cert=<%= @ssl_cert %>
-ssl-key=<%= @ssl_key %>
   <% if @ssl_verify_server_cert %>
 ssl-verify-server-cert
   <% end %>
