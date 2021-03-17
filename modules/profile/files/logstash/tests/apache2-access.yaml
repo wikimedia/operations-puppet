@@ -1,0 +1,91 @@
+fields:
+  type: "syslog"
+codec: "json_lines"
+testcases:
+  - input:
+      - >
+        {
+          "client.ip": "127.0.0.1",
+          "ecs.version": "1.7.0",
+          "event.category": [ "network", "web" ],
+          "event.dataset": "apache.access",
+          "event.duration": "18883",
+          "event.kind": "event",
+          "event.outcome": "unknown",
+          "event.type": [ "access", "connection" ],
+          "http.request.headers.accept_language": "en-US, *;q=0.9",
+          "http.request.headers.x_analytics": "-",
+          "http.request.headers.x_client_ip": "-",
+          "http.request.headers.x_forwarded_for": "-",
+          "http.request.headers.x_request_id": "-",
+          "http.request.method": "GET",
+          "http.request.referrer": "-",
+          "http.response.bytes": "43631",
+          "http.response.headers.content_type": "application/x-git-upload-pack-advertisement",
+          "http.response.headers.user": "-",
+          "http.response.status_code": "200",
+          "labels.handler": "proxy-server",
+          "labels.httpd_server_name": "gerrit.wikimedia.org",
+          "server.ip": "208.80.154.137",
+          "service.type": "apache2",
+          "source.ip": "127.0.0.1",
+          "timestamp": "2021-03-17T21:26:57",
+          "url.domain": "gerrit.wikimedia.org",
+          "url.full": "http://gerrit.wikimedia.org/r/mediawiki/extensions/CiteThisPage/info/refs?service=git-upload-pack",
+          "url.path": "/r/mediawiki/extensions/CiteThisPage/info/refs",
+          "url.query": "?service=git-upload-pack",
+          "user.name": "-",
+          "user_agent.original": "git/2.29.2",
+          "host": "gerrit1001"
+        }
+    expected:
+      - '@timestamp': "2021-03-17T21:26:57.000Z"
+        client:
+          ip: "127.0.0.1"
+        ecs:
+          version: "1.7.0"
+        event:
+          category:
+            - "network"
+            - "web"
+          dataset: "apache.access"
+          duration: "18883"
+          kind: "event"
+          outcome: "unknown"
+          type:
+           - "access"
+           - "connection"
+        http:
+          request:
+            headers:
+              accept_language: "en-US, *;q=0.9"
+              x_analytics: "-"
+              x_client_ip: "-"
+              x_forwarded_for: "-"
+              x_request_id: "-"
+            method: "GET"
+            referrer: "-"
+          response:
+            bytes: "43631"
+            headers:
+              content_type: "application/x-git-upload-pack-advertisement"
+              user: "-"
+            status_code: "200"
+        labels:
+          handler: "proxy-server"
+          httpd_server_name: "gerrit.wikimedia.org"
+        server:
+          ip: "208.80.154.137"
+        service:
+          type: "apache2"
+        source:
+          ip: "127.0.0.1"
+        url:
+          domain: "gerrit.wikimedia.org"
+          full: "http://gerrit.wikimedia.org/r/mediawiki/extensions/CiteThisPage/info/refs?service=git-upload-pack"
+          path: "/r/mediawiki/extensions/CiteThisPage/info/refs"
+          query: "?service=git-upload-pack"
+        user:
+          name: "-"
+        user_agent:
+          original: "git/2.29.2"
