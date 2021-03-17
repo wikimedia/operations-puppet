@@ -1,6 +1,6 @@
 # dlq_transformer.rb
 # Logstash Ruby script transform a dead letter queue event into the expected format
-# @version: 1.0.1
+# @version: 1.0.2
 
 def register(params) end
 
@@ -16,7 +16,8 @@ def filter(event)
   # If the type field of the original event is "dlq", drop it in an attempt to short-circuit a possible
   # dead letter recursion situation.
   if original_event['type'] == 'dlq'
-    return event.cancel
+    event.cancel
+    return [event]
   end
 
   # Remove all original keys, except special ones
