@@ -1,3 +1,4 @@
+---
 groups:
   absent:
     description: meta group for absented users with previous cluster shell access, it removes the account from /etc/passwd on all production hosts running puppet
@@ -31,8 +32,8 @@ groups:
   all-users:
     description: Global group that includes all users
     gid: 600
-    members: [] # members get populated automagically
-    privileges: [] # NO privileges to this group!
+    members: []  # members get populated automagically
+    privileges: []  # NO privileges to this group!
   ops:
     gid: 700
     description: include everywhere ops folks
@@ -407,7 +408,7 @@ groups:
                  'ALL = NOPASSWD: /usr/sbin/service postgresql *',
                  'ALL = (postgres) NOPASSWD: ALL',
                  'ALL = (osmupdater) NOPASSWD: ALL',
-                 'ALL = (cassandra) NOPASSWD: ALL',]
+                 'ALL = (cassandra) NOPASSWD: ALL']
   maps-roots:
     gid: 752
     description: Root level access for Maps/OSM servers
@@ -710,13 +711,13 @@ groups:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
-    posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
+    posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
     members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
     system_members: [jenkins-slave]
   builder-docker:
     # There is no gid on purpose, same as above
-    posix_name: docker # Use posix_name to avoid potential conflicts with other uses of the docker group
+    posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow ops team to be in the docker group for builder. No gid on purpose
     members: *ops_members
   gpu-testers:
@@ -1417,7 +1418,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBywi8bf5M9uSxINI56l+r0jSZR40NRDk/Lw7TU4xHws phuedx@wikimedia.org
     uid: 3926
     email: samsmith@wikimedia.org
-#T109386
+  # T109386
   reedy:
     ensure: present
     gid: 500
@@ -1630,7 +1631,7 @@ users:
     realname: Charles Salvia
     ssh_keys: []
     uid: 4415
-  leila: # Dropped in favour of leizi: https://phabricator.wikimedia.org/T264472#6521165
+  leila:  # Dropped in favour of leizi: https://phabricator.wikimedia.org/T264472#6521165
     ensure: absent
     gid: 500
     name: leila
@@ -2440,7 +2441,7 @@ users:
   jdcc:
     ensure: present
     gid: 500
-    name:  jdcc-berkman
+    name: jdcc-berkman
     realname: Justin Clark
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvfaLmde8biy5hfFR1fOnkfu8eitpGkyWuTXziVHEAFmeiuF87LdnkUDaM/Egom3/fNJKjrzLZPcaJxqa/BeJfWzoz6Ua0dsA/uG1D/l4eIXCEj2QhcvdQT8mbLmXqws3deISARUAIp9DnXG9BQ5LVq6ihwyDgQ9sQiAZsbryKRA5opgSJUE5ynNGBh0M8gIY0+1xBVG9CtrnnyWi7ufklOonzcOo9rssGtE8bHPKnHexKb8FIiVWHy1IrkKLwPBhmLesXTeGnQvAg3VOmeJT7mPG4hH7m5FLB3PvfcCSD27/o/VmVIXUj3ypu0+SBzmJd4uwANMUOuBuNKCXSYB+P jdcc-berkman@work]
     uid: 13978
@@ -3019,7 +3020,7 @@ users:
     ensure: absent
     gid: 500
     name: cy534
-    realname:  Christian Covington
+    realname: Christian Covington
     ssh_keys: []
     uid: 18627
   mneisler:
@@ -4128,21 +4129,21 @@ users:
     email: ppelberg@wikimedia.org
     uid: 20959
     gid: 500
-    ssh_keys: [] # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   amuigai:
     ensure: present
     realname: Angela Muigai
     email: angie@wikimedia.org
     uid: 21007
     gid: 500
-    ssh_keys: [] # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   seve-kim:
     ensure: present
     realname: Seve Kim
     email: skim@wikimedia.org
     uid: 20960
     gid: 500
-    ssh_keys: [] # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   aikochou:
     ensure: present
     realname: Ai-Jou Chou
@@ -4245,7 +4246,7 @@ users:
     email: swalton@wikimedia.org
     uid: 18282
     gid: 500
-    ssh_keys: [] # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -4932,4 +4933,3 @@ ldap_only_users:
     ensure: present
     realname: Uzoma Ozurumba
     email: uozurumba-ctr@wikimedia.org
-
