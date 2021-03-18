@@ -1969,11 +1969,6 @@ node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# rack A4
-node /^mw22(39|4[0-2])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
 # rack A6
 node /^mw230[13579]\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
