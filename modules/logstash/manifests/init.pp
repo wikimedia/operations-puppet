@@ -38,6 +38,7 @@ class logstash (
     Enum['plain', 'json'] $log_format = 'plain',
     Boolean $enable_dlq               = false,
     String $dlq_max_bytes             = '1024mb',
+    Array[Stdlib::Fqdn] $dlq_hosts    = [],
 ) {
     #TODO: fully remove when java installed with ::profile::java
     #require_package($java_package)
@@ -200,5 +201,25 @@ class logstash (
     file { '/etc/init/logstash-web.conf':
         ensure  => absent,
         require => Package['logstash'],
+    }
+
+    file { '/usr/local/bin/cleanup-dlq':
+        ensure  => stdlib::ensure($enable_dlq, 'file'),
+        source  => 'puppet:///modules/logstash/cleanup_dlq.py',
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+        require => Package['python3-wmflib']
+    }
+
+    $times = cron_splay($dlq_hosts, 'hourly', 'logstash-dlq-splay-seed')
+    systemd::timer::job { 'clean_up_dlq':
+      ensure            => stdlib::ensure($enable_dlq, 'file'),
+      description       => 'Clean up dead letter queue and restart logstash',
+      command           => '/usr/local/bin/cleanup-dlq',
+      interval          => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']},
+      user              => 'root',
+      syslog_identifier => 'cleanup_dlq',
+      require           => File['/usr/local/bin/cleanup-dlq'],
     }
 }

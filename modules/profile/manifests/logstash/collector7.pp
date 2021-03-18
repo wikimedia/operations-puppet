@@ -42,6 +42,7 @@ class profile::logstash::collector7 (
         manage_service      => false,
         log_format          => 'json',
         enable_dlq          => true,
+        dlq_hosts           => $dc_settings['cluster_hosts'],
     }
 
     sysctl::parameters { 'logstash_receive_skbuf':
