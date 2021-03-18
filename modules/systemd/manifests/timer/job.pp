@@ -194,19 +194,11 @@ define systemd::timer::job(
         }
     }
 
-
     if $monitoring_enabled {
-        # T225268 - always provision NRPE plugin script
-        require systemd::timer::nrpe_plugin
-
-        nrpe::monitor_service { "check_${title}_status":
-            ensure         => $ensure,
-            description    => "Check the last execution of ${title}",
-            nrpe_command   => "/usr/local/lib/nagios/plugins/check_systemd_unit_status ${title}",
-            check_interval => 10,
-            retries        => 2,
-            contact_group  => $monitoring_contact_groups,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Managing_systemd_timers',
+        systemd::monitor{$title:
+            ensure        => $ensure,
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Managing_systemd_timers',
+            contact_group => $monitoring_contact_groups,
         }
     }
 }
