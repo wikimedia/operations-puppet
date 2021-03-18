@@ -49,9 +49,6 @@ class profile::tcpircbot(
             '2620:0:860:103:10:192:32:140/128', # cloudcumin2001.codfw.wmnet
         ],
     }
-    nrpe::monitor_service { 'tcpircbot':
-        ensure => 'absent'
-    }
 
     $allowed_hosts_prod = [
         'deploy1002.eqiad.wmnet',       # deployment eqiad
