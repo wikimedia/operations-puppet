@@ -17,16 +17,28 @@
 # [*override*]
 #   If the are creating an override to system-provided units or not.
 #   Defaults to false
+# [*monitoring_enabled*]
+#   Periodically check the last execution of the unit and alarm if it ended
+#   up in a failed state.
+#   Default: false
+# [*monitoring_contact_groups*]
+#   The monitoring's contact group to send the alarm to.
+#   Default: admins
+# [*monitoring_notes_url*]
+#   The notes url used to resolve issues, if monitoring_enabled is true this is required
 # [*service_params*]
 #   Additional service parameters we want to specify
 #
 define systemd::service(
     String $content,
-    Systemd::Unit_type $unit_type = 'service',
-    Wmflib::Ensure $ensure  = 'present',
-    Boolean $restart = false,
-    Boolean $override = false,
-    $service_params = {},
+    Wmflib::Ensure            $ensure                   = 'present',
+    Systemd::Unit_type        $unit_type                = 'service',
+    Boolean                   $restart                  = false,
+    Boolean                   $override                 = false,
+    Boolean                   $monitoring_enabled       = false,
+    String                    $monitoring_contact_group = 'admins',
+    Optional[Stdlib::HTTPUrl] $monitoring_notes_url     = undef,
+    Hash                      $service_params           = {},
 ){
     if $unit_type == 'service' {
         $label = $title
@@ -57,5 +69,15 @@ define systemd::service(
         content  => $content,
         override => $override,
         restart  => $restart
+    }
+    if $monitoring_enabled {
+        unless $monitoring_notes_url {
+            fail('Must provide $monitoring_notes_url if $monitoring_enabled')
+        }
+        systemd::monitor{$title:
+            ensure        => $ensure,
+            notes_url     => $monitoring_notes_url,
+            contact_group => $monitoring_contact_group,
+        }
     }
 }
