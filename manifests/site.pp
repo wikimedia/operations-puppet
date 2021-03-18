@@ -800,11 +800,11 @@ node 'db2099.codfw.wmnet' {
 node 'db2100.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-## x1, buster
+## x1 & s5 buster
 node 'db2101.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-## s4 & s5, buster
+## s4 buster
 node 'db2139.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
