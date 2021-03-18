@@ -49,8 +49,8 @@ def main():
     NoDatesSafeLoader.remove_implicit_resolver('tag:yaml.org,2002:timestamp')
     yamllint_config = YamlLintConfig(YAML_LINT_CONFIG)
 
-    schema_path = Path(__file__).parents[0] / 'schema.yaml'
-    data_path = Path(__file__).parents[0] / 'data.yaml'
+    schema_path = Path(__file__).parent / 'schema.yaml'
+    data_path = Path(__file__).parent / 'data.yaml'
 
     try:
         for problem in run(data_path.read_text(), yamllint_config):
