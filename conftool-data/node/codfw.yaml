@@ -55,8 +55,8 @@ codfw:
   api_appserver:
     mw2244.codfw.wmnet: [apache2,nginx,canary]
     mw2245.codfw.wmnet: [apache2,nginx,canary]
-    mw2251.codfw.wmnet: [apache2,nginx]
-    mw2252.codfw.wmnet: [apache2,nginx]
+    mw2251.codfw.wmnet: [apache2,nginx,canary]
+    mw2252.codfw.wmnet: [apache2,nginx,canary]
     mw2253.codfw.wmnet: [apache2,nginx]
     mw2261.codfw.wmnet: [apache2,nginx]
     mw2262.codfw.wmnet: [apache2,nginx]
