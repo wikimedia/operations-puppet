@@ -53,52 +53,52 @@ client c1 {
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache-Status == "hit-front"
-    expect resp.http.Server-Timing == "cache;desc=\"hit-front\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"hit-front\", host;desc=\"cp[0-9]{4}\""
 
     txreq -url "/2" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache-Status == "hit-local"
-    expect resp.http.Server-Timing == "cache;desc=\"hit-local\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"hit-local\", host;desc=\"cp[0-9]{4}\""
 
     txreq -url "/3" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache-Status == "int-front"
-    expect resp.http.Server-Timing == "cache;desc=\"int-front\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"int-front\", host;desc=\"cp[0-9]{4}\""
 
     txreq -url "/4" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
-    expect resp.http.Server-Timing == "cache;desc=\"int-local\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"int-local\", host;desc=\"cp[0-9]{4}\""
 
     txreq -url "/5" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache-Status == "pass"
-    expect resp.http.Server-Timing == "cache;desc=\"pass\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"pass\", host;desc=\"cp[0-9]{4}\""
 
     txreq -url "/6" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache-Status == "pass"
-    expect resp.http.Server-Timing == "cache;desc=\"pass\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"pass\", host;desc=\"cp[0-9]{4}\""
 
     txreq -url "/7" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache-Status == "miss"
-    expect resp.http.Server-Timing == "cache;desc=\"miss\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"miss\", host;desc=\"cp[0-9]{4}\""
 
     txreq -url "/8" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache-Status == "miss"
-    expect resp.http.Server-Timing == "cache;desc=\"miss\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"miss\", host;desc=\"cp[0-9]{4}\""
 
     txreq -url "/9" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 200
     expect resp.http.X-Cache-Status == "unknown"
-    expect resp.http.Server-Timing == "cache;desc=\"unknown\""
+    expect resp.http.Server-Timing ~ "cache;desc=\"unknown\", host;desc=\"cp[0-9]{4}\""
 } -run

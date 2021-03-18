@@ -1036,7 +1036,7 @@ sub deliver_synth_ {
 			set resp.http.X-Cache-Status = "unknown";
 		}
 
-		set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"""};
+		set resp.http.Server-Timing = {"cache;desc=""} + resp.http.X-Cache-Status + {"", host;desc="<%= @hostname %>""};
 	}
 
 	// 5xx should not carry set-cookies, this seems risky in general
