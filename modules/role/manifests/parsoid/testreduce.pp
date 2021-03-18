@@ -20,6 +20,6 @@ class role::parsoid::testreduce {
     include ::profile::tlsproxy::envoy # TLS termination
 
     class { '::profile::mariadb::generic_server':
-        datadir => '/var/lib/mysql',
+        datadir => '/srv/data/mysql',
     }
 }
