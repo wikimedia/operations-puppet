@@ -299,7 +299,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams]
+              mwilliams, samwalton]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4239,6 +4239,13 @@ users:
     uid: 23615
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  samwalton:
+    ensure: present
+    realname: Sam Walton
+    email: swalton@wikimedia.org
+    uid: 18282
+    gid: 500
+    ssh_keys: [] # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -4792,10 +4799,6 @@ ldap_only_users:
     ensure: present
     realname: Huei Tan
     email: htan@wikimedia.org
-  samwalton:
-    ensure: present
-    realname: Sam Walton
-    email: swalton@wikimedia.org
   naike2020:
     ensure: present
     realname: Naïké Nembetwa
@@ -4929,7 +4932,4 @@ ldap_only_users:
     ensure: present
     realname: Uzoma Ozurumba
     email: uozurumba-ctr@wikimedia.org
-  samwalton:
-    ensure: present
-    realname: Sam Walton
-    email: swalton@wikimedia.org
+
