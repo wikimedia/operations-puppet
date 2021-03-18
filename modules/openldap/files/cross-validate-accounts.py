@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 #
 # Copyright (c) 2018 Wikimedia Foundation, Inc.
-
-import yaml
-import ldap
+import argparse
 import datetime
-import tempfile
-import subprocess
 import os
 import shutil
+import subprocess
 import sys
+import tempfile
+
+import ldap
+import yaml
+
 
 LDAP_SERVER_URI = "ldaps://ldap-ro.eqiad.wikimedia.org:636"
 
@@ -326,9 +328,56 @@ def run_test(output):
         print(output.rstrip('\n'))
 
 
-def main():
+def parse_args():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description=('Cross validate accounts between different sources of truth. If the optional '
+                     'arguments are passed it will set/override the entry for the given user with '
+                     'the provided data. Useful to check an SSH key before merging the patch. '
+                     'If one argument is passed they must all be set.'))
+    parser.add_argument('--username', default=argparse.SUPPRESS, help='SSH username.')
+    parser.add_argument('--uid', type=int, default=argparse.SUPPRESS, help='LDAP UID')
+    parser.add_argument('--email', default=argparse.SUPPRESS, help='User email address')
+    parser.add_argument('--real-name', default=argparse.SUPPRESS, help='User real name')
+    parser.add_argument('--ssh-key', default=argparse.SUPPRESS,
+                        help='The SSH key to check is not present in WMCS')
 
+    kerberos = parser.add_mutually_exclusive_group()
+    kerberos.add_argument('--kerberos', dest='kerberos', action='store_true',
+                          default=argparse.SUPPRESS, help='Enable Kerberos')
+    kerberos.add_argument('--no-kerberos', dest='kerberos', action='store_false',
+                          default=argparse.SUPPRESS, help='Enable Kerberos')
+
+    args = parser.parse_args()
+
+    keys = ('username', 'uid', 'email', 'real_name', 'ssh_key', 'kerberos')
+    args.user = None
+    if any(hasattr(args, key) for key in keys):
+        if not all(hasattr(args, key) for key in keys):
+            parser.error('The optional arguments must either all be set or none.')
+
+        args.user = {
+            'ensure': 'present',
+            'uid': args.uid,
+            'gid': 500,
+            'ssh_keys': [args.ssh_key] if args.ssh_key else [],
+            'realname': args.real_name,
+            'email': args.email,
+            'name': args.username
+        }
+        if args.kerberos:
+            args.user['krb'] = 'present'
+
+    return args
+
+
+def main():
+    args = parse_args()
     yamldata = fetch_yaml_data()
+
+    if args.user is not None:
+        yamldata['users'][args.user['name']] = args.user
+
     users = parse_users(yamldata)
     known_users = list(users)
 
