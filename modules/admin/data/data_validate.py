@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """validate data.yaml against schema.yaml"""
 
-from os import path
+from pathlib import Path
 
 import yaml
+
+from yamllint.config import YamlLintConfig
+from yamllint.linter import run
+
 from jsonschema import FormatChecker, validate, ValidationError
 
 
@@ -26,16 +30,36 @@ class NoDatesSafeLoader(yaml.SafeLoader):
                 (tag, regexp) for tag, regexp in mappings if tag != tag_to_remove]
 
 
+YAML_LINT_CONFIG = """---
+extends: default
+rules:
+    line-length: disable
+    indentation: disable
+    comments-indentation: disable
+"""
+
+
 def main():
     """Main Entry point"""
     ansi_fail = '\033[91m'
     ansi_ok = '\033[92m'
     ansi_end = '\033[0m'
+    yamllint_error = False
+
     NoDatesSafeLoader.remove_implicit_resolver('tag:yaml.org,2002:timestamp')
-    cwd = path.dirname(path.realpath(__file__))
-    schema_path = path.join(cwd, 'schema.yaml')
-    data_path = path.join(cwd, 'data.yaml')
+    yamllint_config = YamlLintConfig(YAML_LINT_CONFIG)
+
+    schema_path = Path(__file__).parents[0] / 'schema.yaml'
+    data_path = Path(__file__).parents[0] / 'data.yaml'
+
     try:
+        for problem in run(data_path.read_text(), yamllint_config):
+            yamllint_error = True
+            print('{}FAIL:{} {}{}'.format(
+                ansi_fail, problem.line, problem.desc, ansi_end))
+        if yamllint_error:
+            return 1
+
         schema = yaml.safe_load(open(schema_path))
         # don't convert dates
         data = yaml.load(open(data_path), Loader=NoDatesSafeLoader)
