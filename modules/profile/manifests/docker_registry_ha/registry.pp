@@ -1,3 +1,10 @@
+# == Class profile::docker_registry_ha::registry
+#
+# This provisions a highly available docker registry,
+# served at <https://docker-registry.wikimedia.org/>.
+#
+# See also <https://wikitech.wikimedia.org/wiki/Docker-registry>.
+
 class profile::docker_registry_ha::registry(
     # The following variables might be useful elsewhere too
     String $ci_restricted_user_password = lookup('profile::docker_registry_ha::ci_restricted_user_password'),
