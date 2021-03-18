@@ -18,8 +18,8 @@ fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 # APT fails to acquire GPG keys if packages dirmngr or gpg are missing
 bootcmd:
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
-  - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-f", dirmngr ]
-  - [ cloud-init-per, once, gnupginstall, apt-get, install, "-f", gnupg ]
+  - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
+  - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
 
 # /etc/block-ldap-key-lookup:
 #   Prevent non-root logins while the VM is being setup
