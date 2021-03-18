@@ -27,12 +27,8 @@ class profile::tcpircbot(
             '2620:0:860:101:10:192:48:16/64',   # cumin2001.codfw.wmnet
         ],
     }
-    if $ensure == 'present' {
-        nrpe::monitor_service { 'tcpircbot':
-            description  => 'tcpircbot_service_running',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -C python -a tcpircbot.py',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Logmsgbot',
-        }
+    nrpe::monitor_service { 'tcpircbot':
+        ensure => 'absent'
     }
 
     $allowed_hosts = [
