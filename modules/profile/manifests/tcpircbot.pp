@@ -1,11 +1,11 @@
 class profile::tcpircbot(
-    Wmflib::Ensure $ensure = present,
+    Wmflib::Ensure $ensure = lookup('profile::tcpircbot::ensure'),
     Stdlib::Host $irc_host = lookup('profile::tcpircbot::irc::host'),
     Stdlib::Port $irc_port = lookup('profile::tcpircbot::irc::port'),
 ){
 
     include passwords::logmsgbot
-    include ::tcpircbot
+    class {'tcpircbot': }
 
     tcpircbot::instance { 'logmsgbot':
         ensure      => $ensure,
