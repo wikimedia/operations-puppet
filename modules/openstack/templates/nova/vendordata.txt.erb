@@ -19,7 +19,7 @@ fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 bootcmd:
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, dirmngr ]
-  - [ cloud-init-per, once, gpginstall, apt-get, install, gpg ]
+  - [ cloud-init-per, once, gnupginstall, apt-get, install, gnupg ]
 
 # /etc/block-ldap-key-lookup:
 #   Prevent non-root logins while the VM is being setup
