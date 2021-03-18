@@ -65,6 +65,19 @@ def ok(msg):
     sys.exit(0)
 
 
+def get_failed_units():
+    try:
+        failed = subprocess.check_output(
+            ['/bin/systemctl', 'list-units', '--failed', '--plain', '--no-legend']
+        )
+        units = [f.split()[0] for f in failed.decode().strip().split('\n')]
+        units.sort()
+        STATES['degraded'] = 'The following units failed: {}'.format(','.join(failed))
+    except Exception:
+        # if an exception is thrown, we just ignore the output
+        STATES['degraded'] += ' An error occured trying to list the failed units'
+
+
 def main():
     try:
         output = subprocess.check_output(
@@ -79,6 +92,8 @@ def main():
             func = unknown
         else:
             func = critical
+            if output == 'degraded':
+                get_failed_units()
     except UnicodeError as e:
         output = e.message
         func = unknown
