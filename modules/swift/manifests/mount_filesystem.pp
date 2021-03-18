@@ -32,8 +32,8 @@ define swift::mount_filesystem (
     # nobarrier for xfs has been removed in linux 4.19
     # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1c02d502c20809a2a5f71ec16a930a61ed779b81
     $mount_options = (versioncmp($facts['kernelversion'], '4.19') >= 0) ? {
-      true    => 'nofail,noatime,nodiratime,nobarrier,logbufs=8',
-      default => 'nofail,noatime,nodiratime,logbufs=8',
+      true    => 'nofail,noatime,nodiratime,logbufs=8',
+      default => 'nofail,noatime,nodiratime,nobarrier,logbufs=8',
     }
 
     mount { $mount_point:
