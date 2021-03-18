@@ -93,6 +93,10 @@ Content-Type: text/text/x-shellscript; charset="us-ascii"
 
 set -x
 
+# The puppet config from cloud-init may have started the puppet agent.  If so,
+#  stop it so we can run it manually in a moment.
+systemctl stop puppet.service
+
 systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 systemctl restart ssh.service
