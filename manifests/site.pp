@@ -2040,16 +2040,10 @@ node /^mw230[2468]\.codfw\.wmnet$/ {
 }
 
 # rack A4
-node /^mw22(4[45])\.codfw\.wmnet$/ {
-    role(mediawiki::appserver::canary_api)
-}
-
-# rack A4
 node /^mw22(5[1-2])\.codfw\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
 }
 
-# rack A4
 node /^mw2253\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
