@@ -15,6 +15,12 @@ Content-Type: text/jinja2; charset="us-ascii"
 hostname: {{ds.meta_data.name}}
 fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 
+# APT fails to acquire GPG keys if packages dirmngr or gpg are missing
+bootcmd:
+  - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
+  - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, dirmngr ]
+  - [ cloud-init-per, once, gpginstall, apt-get, install, gpg ]
+
 # /etc/block-ldap-key-lookup:
 #   Prevent non-root logins while the VM is being setup
 #   The ssh-key-ldap-lookup script rejects non-root user logins if this file
