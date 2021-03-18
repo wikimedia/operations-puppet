@@ -72,7 +72,7 @@ def get_failed_units():
         )
         units = [f.split()[0] for f in failed.decode().strip().split('\n')]
         units.sort()
-        STATES['degraded'] = 'The following units failed: {}'.format(','.join(failed))
+        STATES['degraded'] = 'The following units failed: {}'.format(','.join(units))
     except Exception:
         # if an exception is thrown, we just ignore the output
         STATES['degraded'] += ' An error occured trying to list the failed units'
