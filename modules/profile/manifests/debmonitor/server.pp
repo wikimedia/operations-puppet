@@ -20,6 +20,8 @@ class profile::debmonitor::server (
     Boolean                   $django_require_login     = lookup('profile::debmonitor::server::django_require_login'),
     String                    $settings_module          = lookup('profile::debmonitor::server::settings_module'),
     String                    $app_deployment           = lookup('profile::debmonitor::server::app_deployment'),
+    Boolean                   $enable_logback           = lookup('profile::debmonitor::server::enable_logback'),
+    Boolean                   $enable_monitoring        = lookup('profile::debmonitor::server::enable_monitoring'),
     Enum['sslcert', 'puppet'] $ssl_certs                = lookup('profile::debmonitor::server::ssl_certs'),
 ) {
     include ::passwords::ldap::production
@@ -32,8 +34,10 @@ class profile::debmonitor::server (
 
     class { '::sslcert::dhparam': }
 
-    # rsyslog forwards json messages sent to localhost along to logstash via kafka
-    class { '::profile::rsyslog::udp_json_logback_compat': }
+    if $enable_logback {
+        # rsyslog forwards json messages sent to localhost along to logstash via kafka
+        class { '::profile::rsyslog::udp_json_logback_compat': }
+    }
 
 
     $ldap_password = $passwords::ldap::production::proxypass
@@ -146,16 +150,18 @@ class profile::debmonitor::server (
         content => template('profile/debmonitor/server/nginx.conf.erb'),
     }
 
-    monitoring::service { 'debmonitor-cdn-https':
-        description   => 'debmonitor.wikimedia.org:7443 CDN',
-        check_command => 'check_https_redirect!7443!debmonitor.wikimedia.org!/!302!https://idp.wikimedia.org/',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
-    }
+    if $enable_monitoring {
+        monitoring::service { 'debmonitor-cdn-https':
+            description   => 'debmonitor.wikimedia.org:7443 CDN',
+            check_command => 'check_https_redirect!7443!debmonitor.wikimedia.org!/!302!https://idp.wikimedia.org/',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
+        }
 
-    monitoring::service { 'debmonitor-https':
-        description   => 'debmonitor.discovery.wmnet:443 internal',
-        check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
+        monitoring::service { 'debmonitor-https':
+            description   => 'debmonitor.discovery.wmnet:443 internal',
+            check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
+        }
     }
 
     class { '::httpd':

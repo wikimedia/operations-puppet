@@ -38,6 +38,8 @@ profile::debmonitor::server::django_log_db_queries: true
 profile::debmonitor::server::django_require_login: false
 # Only scap3 is a valid deployment method anything else is noop
 profile::debmonitor::server::app_deployment: 'NONE'
+profile::debmonitor::server::enable_logback: false
+profile::debmonitor::server::enable_monitoring: false
 
 profile::ntp::use_chrony: false
 

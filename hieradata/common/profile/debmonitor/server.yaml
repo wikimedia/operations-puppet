@@ -3,3 +3,5 @@ profile::debmonitor::server::ssl_certs: sslcert
 profile::debmonitor::server::django_log_db_queries: false
 profile::debmonitor::server::django_require_login: true
 profile::debmonitor::server::app_deployment: 'scap3'
+profile::debmonitor::server::enable_logback: true
+profile::debmonitor::server::enable_monitoring: true
