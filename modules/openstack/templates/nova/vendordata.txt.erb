@@ -48,6 +48,7 @@ runcmd:
     - [systemctl, enable, serial-getty@ttyS0.service]
     - [systemctl, restart, serial-getty@ttyS0.service]
 
+ssh_pwauth: False
 
 manage_etc_hosts: true
 
