@@ -35,6 +35,10 @@
         </LimitExcept>
     </Location>
 
+    # Swift proxy backend uses SSL, with a certificate issued by Puppet.
+    SSLProxyEngine On
+    SSLProxyCACertificateFile /var/lib/puppet/ssl/certs/ca.pem
+
 <% if @swift_auth_url -%>
     # These are evaluated in the order in which they appear; the first directive
     # to match a given URI is used.
