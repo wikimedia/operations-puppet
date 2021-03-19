@@ -40,6 +40,8 @@ profile::debmonitor::server::django_require_login: false
 profile::debmonitor::server::app_deployment: 'NONE'
 profile::debmonitor::server::enable_logback: false
 profile::debmonitor::server::enable_monitoring: false
+# Empty groups resolves to valid-user
+profile::debmonitor::server::required_groups: []
 
 profile::ntp::use_chrony: false
 

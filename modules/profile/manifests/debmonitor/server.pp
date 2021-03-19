@@ -23,6 +23,7 @@ class profile::debmonitor::server (
     Boolean                   $enable_logback           = lookup('profile::debmonitor::server::enable_logback'),
     Boolean                   $enable_monitoring        = lookup('profile::debmonitor::server::enable_monitoring'),
     Enum['sslcert', 'puppet'] $ssl_certs                = lookup('profile::debmonitor::server::ssl_certs'),
+    Array[String]             $required_groups          = lookup('profile::debmonitor::server::required_groups'),
 ) {
     include ::passwords::ldap::production
 
@@ -173,11 +174,7 @@ class profile::debmonitor::server (
         vhost_content    => 'profile/idp/client/httpd-debmonitor.erb',
         proxied_as_https => true,
         vhost_settings   => { 'uwsgi_port' => $port },
-        required_groups  => [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-            'cn=nda,ou=groups,dc=wikimedia,dc=org',
-        ],
+        required_groups  => $required_groups,
         enable_monitor   => false,
     }
 
