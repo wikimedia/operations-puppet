@@ -52,11 +52,13 @@ ssh_pwauth: False
 
 manage_etc_hosts: true
 
+
+# gpg: needed for apt to function properly
+# pciutils: used by puppet to determine is_virtual
 packages:
     - gpg
-    - curl
     - nscd
-    - puppet
+    - pciutils
 
 # Clear default partitioning/mounting behavior so puppet can manage it
 disk_setup:
