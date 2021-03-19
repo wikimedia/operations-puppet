@@ -1,2 +1,3 @@
 classes:
   - profile::idp::standalone
+puppetmaster: puppetprimary.sso.eqiad1.wikimedia.cloud
