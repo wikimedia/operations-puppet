@@ -203,7 +203,11 @@ mirrors: P{O:mirrors}
 miscweb: P{O:miscweb}
 ml-serve-master: P{O:ml_k8s::master}
 ml-serve-worker: P{O:ml_k8s::worker}
-ml-serve: A:ml-serve-master and A:ml-serve-worker
+ml-serve-worker-eqiad: A:ml-serve-worker and A:eqiad
+ml-serve-worker-codfw: A:ml-serve-worker and A:codfw
+ml-serve-master-eqiad: A:ml-serve-master and A:eqiad
+ml-serve-master-codfw: A:ml-serve-master and A:codfw
+ml-serve: A:ml-serve-master or A:ml-serve-worker
 ml-serve-canary: P{ml-serve2001.codfw.wmnet}
 ml-serve-eqiad: A:ml-serve and A:eqiad
 ml-serve-codfw: A:ml-serve and A:codfw
