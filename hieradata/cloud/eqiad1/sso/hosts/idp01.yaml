@@ -1,3 +1,28 @@
 classes:
   - profile::idp::standalone
 puppetmaster: puppetprimary.sso.eqiad1.wikimedia.cloud
+profile::idp::memcached_port: 11000
+profile::idp::memcached_transcoder: WHALINV1
+profile::idp::u2f_jpa_enable: true
+profile::idp::ldap_start_tls: false
+profile::idp::ldap_attributes:
+  - cn
+  - memberOf
+  - mail
+  - uid
+  - sshPublicKey
+profile::idp::services:
+  cloud:
+    id: 1
+    service_id: 'https://(.*)\.eqiad1\.wikimedia\.cloud(/.*)?'
+  wmcloud_org:
+    id: 2
+    service_id: 'https://(.*)\.wmcloud\.org(/.*)?'
+profile::idp::client::httpd::sites:
+  'idp-test-login.wmcloud.org':
+    vhost_content: 'profile/idp/client/httpd-uwsgi.erb'
+    document_root: /srv/
+    proxied_as_https: true
+    enable_monitor: false
+    vhost_settings:
+      uwsgi_port: 8081
