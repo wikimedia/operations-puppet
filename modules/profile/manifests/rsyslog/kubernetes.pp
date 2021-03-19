@@ -7,7 +7,15 @@ class profile::rsyslog::kubernetes (
     Optional[Stdlib::HTTPSUrl] $kubernetes_url = lookup(
         'profile::rsyslog::kubernetes::kubernetes_url', {'default_value' => undef}),
 ) {
-    require_package('rsyslog-kubernetes')
+
+    if debian::codename::eq('buster') {
+        apt::package_from_component { 'rsyslog_kubernetes':
+            component => 'component/rsyslog-k8s',
+            packages  => ['rsyslog-kubernetes'],
+        }
+    } else {
+        require_package('rsyslog-kubernetes')
+    }
 
     $ensure = $enable ? {
       true    => present,
