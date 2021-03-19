@@ -141,6 +141,7 @@ Components: main
  component/pygments
  component/redis2
  component/rsyslog
+ component/rsyslog-k8s
  component/spicerack
  component/varnish6
  component/wmf-sre-laptop
