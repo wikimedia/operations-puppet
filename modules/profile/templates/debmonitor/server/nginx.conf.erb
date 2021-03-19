@@ -57,8 +57,13 @@ server {
     error_log /var/log/nginx/<%= @internal_server_name -%>.error.log;
     access_log /var/log/nginx/<%= @internal_server_name -%>.access.log;
 
+<%- if @ssl_certs == 'sslcert' -%>
     ssl_certificate /etc/ssl/localcerts/<%= @internal_server_name %>.chained.crt;
     ssl_certificate_key /etc/ssl/private/<%= @internal_server_name %>.key;
+<%- else -%>
+    ssl_certificate /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key /etc/nginx/ssl/server.key;
+<%- end -%>
     ssl_client_certificate /etc/ssl/certs/Puppet_Internal_CA.pem;
     ssl_verify_client on;
 
