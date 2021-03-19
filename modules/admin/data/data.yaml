@@ -4567,6 +4567,10 @@ ldap_only_users:
   tschumann:
     ensure: absent
     realname: Tobias Schumann
+  tsepothoabala:
+    ensure: present
+    realname: Tsepo Thoabala
+    email: tthoabala@wikimedia.org
   valhallasw:
     ensure: present
     realname: Merlijn van Deen
