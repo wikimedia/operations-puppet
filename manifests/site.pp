@@ -1209,6 +1209,11 @@ node 'lists1001.wikimedia.org' {
     role(lists)
 }
 
+# VM for mailman3 testing (T276686)
+node 'lists1002.wikimedia.org' {
+    role(insetup)
+}
+
 # Ganeti virtualization hosts - eqiad
 node /^ganeti10(0[5-9]|1[0-9]|2[0-2])\.eqiad\.wmnet$/ {
     role(ganeti)
