@@ -268,8 +268,8 @@ def find_paws_users(config):
             user_info = get_global_wiki_user(uid)
             paws_users.append(
                 (
-                    uid,
                     user_info["query"]["globaluserinfo"]["name"],
+                    uid,
                 )
             )
         except Exception:
