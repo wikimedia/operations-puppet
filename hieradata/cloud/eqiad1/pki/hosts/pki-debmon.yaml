@@ -1,6 +1,0 @@
-classes:
-  - role::debmonitor::server
-  - profile::debmonitor::client
-profile::debmonitor::server::django_mysql_db_host: pki-db.pki.eqiad1.wikimedia.cloud
-profile::debmonitor::server::internal_server_name: "%{facts.networking.fqdn}"
-profile::debmonitor::server::public_server_name: pki-debmonitor.wmflabs.org
