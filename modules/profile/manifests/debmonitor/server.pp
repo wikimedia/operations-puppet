@@ -169,7 +169,7 @@ class profile::debmonitor::server (
         modules => ['proxy_http', 'proxy', 'auth_basic']
     }
 
-    profile::idp::client::httpd::site {'debmonitor.wikimedia.org':
+    profile::idp::client::httpd::site {$public_server_name:
         vhost_content    => 'profile/idp/client/httpd-debmonitor.erb',
         proxied_as_https => true,
         vhost_settings   => { 'uwsgi_port' => $port },
