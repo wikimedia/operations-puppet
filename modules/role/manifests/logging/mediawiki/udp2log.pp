@@ -57,7 +57,11 @@ class role::logging::mediawiki::udp2log(
 
     $logstash_port = 8324
 
+    # udp_tee will by default bind 0.0.0.0:8420 and relay to localhost:8421
+    class { '::profile::rsyslog::udp_tee': }
+
     udp2log::instance { 'mw':
+        port                =>   '8421',
         log_directory       =>   $log_directory,
         monitor_log_age     =>   false,
         monitor_processes   =>   false,
@@ -70,6 +74,7 @@ class role::logging::mediawiki::udp2log(
             logstash_port => $logstash_port,
         },
     }
+
 
     systemd::timer::job { 'mw-log-cleanup':
         ensure      => 'present',

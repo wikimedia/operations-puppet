@@ -1,0 +1,13 @@
+# "tee" rawmsg received on local UDP port to multiple destinations
+module(load="imudp")
+
+template(name="RawmsgTemplate" type="string" string="%rawmsg%\n")
+
+ruleset(name="udp_tee" queue.type="LinkedList") {
+<%- @destinations.sort.each do |destination| %>
+  <% dest_host, dest_port = destination.split(':') %>
+  action(type="omfwd" name="udp_tee_<%= destination %>" Target="<%= dest_host %>" Port="<%= dest_port %>" Protocol="udp" template="RawmsgTemplate")
+<% end -%>
+}
+
+input(type="imudp" address="<%= @listen_host %>" port="<%= @listen_port %>" ruleset="udp_tee")
