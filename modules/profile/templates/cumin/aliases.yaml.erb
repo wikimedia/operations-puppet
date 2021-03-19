@@ -201,7 +201,9 @@ memcached-eqiad: A:memcached and A:eqiad
 memcached-gutter: P{O:mediawiki::memcached::gutter}
 mirrors: P{O:mirrors}
 miscweb: P{O:miscweb}
-ml-serve: P{O:ml_serve}
+ml-serve-master: P{O:ml_k8s::master}
+ml-serve-worker: P{O:ml_k8s::worker}
+ml-serve: A:ml-serve-master and A:ml-serve-worker
 ml-serve-canary: P{ml-serve2001.codfw.wmnet}
 ml-serve-eqiad: A:ml-serve and A:eqiad
 ml-serve-codfw: A:ml-serve and A:codfw
