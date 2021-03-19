@@ -61,6 +61,7 @@ import subprocess
 import sys
 import os
 import time
+from typing import Any, Dict, List, Tuple
 import yaml
 
 import ldap3
@@ -90,9 +91,11 @@ ACCOUNT_CREATION_SQL = {
         GRANT ALL PRIVILEGES ON `{username}\_\_%`.* TO '{username}'@'%';
     """,
 }
+Account = Tuple[str, int]
+Config = Dict[str, Any]
 
 
-def generate_new_pw():
+def generate_new_pw() -> str:
     """
     Generate a new random password
     """
@@ -102,14 +105,14 @@ def generate_new_pw():
     )
 
 
-def mysql_hash(password):
+def mysql_hash(password: str) -> str:
     """
     Hash a password to mimic MySQL's PASSWORD() function
     """
     return "*" + sha1(sha1(password.encode("utf-8")).digest()).hexdigest()
 
 
-def write_replica_cnf(file_path, uid, mysql_username, pwd):
+def write_replica_cnf(file_path: str, uid: int, mysql_username: str, pwd: str):
     """
     Write a replica.my.cnf file.
 
@@ -140,7 +143,7 @@ def write_replica_cnf(file_path, uid, mysql_username, pwd):
         os.close(c_file)
 
 
-def read_replica_cnf(file_path):
+def read_replica_cnf(file_path: str) -> Tuple[str, str]:
     """
     Parse a given replica.my.cnf file
 
@@ -155,7 +158,7 @@ def read_replica_cnf(file_path):
     )
 
 
-def find_tools(config):
+def find_tools(config: Config) -> List[Account]:
     """
     Return list of tools, from canonical LDAP source
 
@@ -199,7 +202,7 @@ def find_tools(config):
     return users
 
 
-def find_tools_users(config):
+def find_tools_users(config: Config) -> List[Account]:
     """
     Return list of tools project users, from LDAP
 
@@ -231,7 +234,7 @@ def find_tools_users(config):
         return users
 
 
-def get_global_wiki_user(uid):
+def get_global_wiki_user(uid: str) -> Dict:
     api_url = (
         "https://meta.wikimedia.org/w/api.php?action=query&format=json&"
         "meta=globaluserinfo&guiid="
@@ -254,7 +257,7 @@ def get_global_wiki_user(uid):
     return resp.json()
 
 
-def find_paws_users(config):
+def find_paws_users(_) -> List[Account]:
     """
     Return list of PAWS users, from their userhomes
 
@@ -321,7 +324,14 @@ def get_accounts_db_conn(config):
     )
 
 
-def get_replica_path(account_type, name):
+account_finder = {
+    "user": find_tools_users,
+    "tool": find_tools,
+    "paws": find_paws_users,
+}
+
+
+def get_replica_path(account_type: str, name: str) -> str:
     """
     Return path to use for replica.my.cnf for a tool or user
     """
@@ -344,20 +354,14 @@ def get_replica_path(account_type, name):
 
 
 def harvest_cnf_files(config, account_type="tool"):
-    accounts_to_create = (
-        find_tools(config)
-        if account_type == "tool"
-        else find_paws_users(config)
-        if account_type == "paws"
-        else find_tools_users(config)
-    )
+    accounts_to_create = account_finder[account_type](config)
     try:
         acct_db = get_accounts_db_conn(config)
         cur = acct_db.cursor()
         try:
             for account_name, acc_id in accounts_to_create:
                 if account_type == "paws":
-                    replica_path = get_replica_path(account_type, acc_id)
+                    replica_path = get_replica_path(account_type, str(acc_id))
                 else:
                     replica_path = get_replica_path(account_type, account_name)
                 if os.path.exists(replica_path):
@@ -465,13 +469,7 @@ def populate_new_accounts(config, account_type="tool"):
     """
     Populate new tools/users into meta db
     """
-    all_accounts = (
-        find_tools(config)
-        if account_type == "tool"
-        else find_paws_users(config)
-        if account_type == "paws"
-        else find_tools_users(config)
-    )
+    all_accounts = account_finder[account_type](config)
     try:
         acct_db = get_accounts_db_conn(config)
         with acct_db.cursor() as cur:
@@ -512,12 +510,14 @@ def populate_new_accounts(config, account_type="tool"):
                     )
                     continue
                 pwd = generate_new_pw()
-                mysql_username = (
-                    "s%d" % new_account_id
-                    if account_type == "tool"
-                    else "p%d" % new_account_id
-                    if account_type == "paws"
-                    else "u%d" % new_account_id
+                prefix = {
+                    "tool": "s",
+                    "paws": "p",
+                    "user": "u"
+                }
+                mysql_username = "{0}{1:d}".format(
+                    prefix[account_type],
+                    new_account_id
                 )
                 cur.execute(
                     """
@@ -692,7 +692,9 @@ def delete_account(config, account, account_type="tool"):
 
         # Intentionally shadow the account arg with what the rest of the script
         # thinks is right.
-        uid, account = get_global_wiki_user(account)
+        acc_info = get_global_wiki_user(account)
+        uid = account
+        account = acc_info["query"]["globaluserinfo"]["name"]
 
     try:
         acct_db = get_accounts_db_conn(config)
