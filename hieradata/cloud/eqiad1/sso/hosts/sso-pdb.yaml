@@ -1,0 +1,4 @@
+classes:
+  - role::puppetmaster::puppetdb
+profile::puppetdb::database::shared_buffers: 768MB
+profile::puppetdb::master: '%{facts.networking.fqdn}'

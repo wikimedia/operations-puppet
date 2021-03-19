@@ -36,4 +36,4 @@ profile::idp::client::httpd::sites:
       uwsgi_port: 8081
 puppetmaster::servers:
     puppetprimary.sso.eqiad1.wikimedia.cloud:
-        - worker: puppetprimary.sso.eqiad1.wikimedia.cloud
+        - { worker: puppetprimary.sso.eqiad1.wikimedia.cloud, loadfactor: 10 }
