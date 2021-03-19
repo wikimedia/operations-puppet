@@ -15,24 +15,30 @@ class profile::kubernetes::deployment_server(
         mode   => '0444',
     }
 
-    $envs = {
-        'eqiad'         => 'kubemaster.svc.eqiad.wmnet',
-        'codfw'         => 'kubemaster.svc.codfw.wmnet',
-        'staging-eqiad' => 'kubestagemaster.svc.eqiad.wmnet',
-        'staging-codfw' => 'kubestagemaster.svc.codfw.wmnet',
-        # This represents the active staging cluster currently used by deployment tools (helmfile)
-        'staging'       => 'kubestagemaster.svc.eqiad.wmnet',
+    $real_services = deep_merge($services, $tokens)
+    $ml_services = filter($real_services) |String $service, Hash $data| {
+        $service == 'admin'
     }
 
-    $real_services = deep_merge($services, $tokens)
+    $envs = {
+        'eqiad'          => { 'master' => 'kubemaster.svc.eqiad.wmnet', 'services' => $real_services },
+        'codfw'          => { 'master' => 'kubemaster.svc.codfw.wmnet', 'services' => $real_services },
+        'staging-eqiad'  => { 'master' => 'kubestagemaster.svc.eqiad.wmnet', 'services' => $real_services },
+        'staging-codfw'  => { 'master' => 'kubestagemaster.svc.codfw.wmnet', 'services' => $real_services },
+        # This represents the active staging cluster currently used by deployment tools (helmfile)
+        'staging'        => { 'master' => 'kubestagemaster.svc.eqiad.wmnet', 'services' => $real_services },
+        # ML clusters
+        'ml-serve-eqiad' => { 'master' => 'ml-ctrl.svc.eqiad.wmnet', 'services' => $ml_services },
+        'ml-serve-codfw' => { 'master' => 'ml-ctrl.svc.codfw.wmnet', 'services' => $ml_services },
+    }
 
     # Now populate the /etc/kubernetes/ kubeconfig resources
-    $envs.each |String $env, String $master_host| {
-        $real_services.each |String $service, Hash $data| {
+    $envs.each |String $env, Hash $env_data| {
+        $env_data['services'].each |String $service, Hash $data| {
             # lint:ignore:variable_scope
             if has_key($data, 'username') and has_key($data, 'token') {
                 k8s::kubeconfig { "/etc/kubernetes/${service}-${env}.config":
-                    master_host => $master_host,
+                    master_host => $env_data['master'],
                     username    => $data['username'],
                     token       => $data['token'],
                     group       => $data['group'],
