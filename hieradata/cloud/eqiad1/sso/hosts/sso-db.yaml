@@ -1,0 +1,8 @@
+classes:
+  - profile::mariadb::packages_wmf
+  - mariadb::service
+  - mariadb::config
+mariadb::config::basedir: /opt/wmf-mariadb104
+mariadb::config::config: role/mariadb/mysqld_config/misc.my.cnf.erb
+mariadb::config::datadir: /srv/sqldata
+mariadb::config::ssl: puppet-cert
