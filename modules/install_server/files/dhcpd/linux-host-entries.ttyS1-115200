@@ -7304,7 +7304,6 @@ host restbase-dev1006 {
 host scandium {
     hardware ethernet D0:94:66:5E:C8:32;
     fixed-address scandium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host scb1001 {
