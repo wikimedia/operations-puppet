@@ -132,7 +132,8 @@ class profile::debmonitor::server (
         base::expose_puppet_certs { '/etc/nginx':
             ensure          => present,
             provide_private => true,
-            require         => Class['nginx'],
+            require         => Package['nginx-common'],
+            before          => Service['nginx'],
         }
     }
 
