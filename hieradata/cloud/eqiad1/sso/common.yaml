@@ -34,3 +34,6 @@ profile::idp::client::httpd::sites:
     enable_monitor: false
     vhost_settings:
       uwsgi_port: 8081
+puppetmaster::servers:
+    puppetprimary.sso.eqiad1.wikimedia.cloud:
+        - worker: puppetprimary.sso.eqiad1.wikimedia.cloud
