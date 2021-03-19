@@ -36,8 +36,8 @@ class profile::druid::turnilo(
 
     if $monitoring_enabled {
         monitoring::service { 'turnilo':
-            description   => 'turnilo',
-            check_command => "check_tcp!${port}",
+            description   => 'Check Turnilo node appserver',
+            check_command => 'check_http_on_port!${port}',
             contact_group => $contact_group,
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot',
         }
