@@ -71,7 +71,7 @@ from systemd import journal, daemon  # pylint: disable=F0401
 
 
 PROJECT = "tools"
-PAWS_RUNTIME_UID = "52771"
+PAWS_RUNTIME_UID = 52771
 PASSWORD_LENGTH = 16
 PASSWORD_CHARS = string.ascii_letters + string.digits
 DEFAULT_MAX_CONNECTIONS = 10
@@ -499,7 +499,7 @@ def populate_new_accounts(config, account_type="tool"):
                 # round
                 if account_type == "paws":
                     replica_path = get_replica_path(
-                        account_type, new_account_id
+                        account_type, str(new_account_id)
                     )
                 else:
                     replica_path = get_replica_path(account_type, new_account)
