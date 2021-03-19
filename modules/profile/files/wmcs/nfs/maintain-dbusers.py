@@ -258,7 +258,7 @@ def find_paws_users(config):
     """
     Return list of PAWS users, from their userhomes
 
-    Return a list of tuples of username, uid?
+    Return a list of tuples of username, uid
     """
     user_ids = os.listdir("/srv/misc/shared/paws/project/paws/userhomes/")
 
@@ -269,7 +269,7 @@ def find_paws_users(config):
             paws_users.append(
                 (
                     user_info["query"]["globaluserinfo"]["name"],
-                    uid,
+                    int(uid),
                 )
             )
         except Exception:
