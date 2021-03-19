@@ -4,6 +4,8 @@ class sonofgridengine::shadow_master(
     $gridmaster,
     $sgeroot = '/var/lib/gridengine',
 ) {
+    # workaround debian bug https://bugs.debian.org/985498
+    ensure_packages('cpp')
 
     include ::sonofgridengine
     package { 'gridengine-master':
