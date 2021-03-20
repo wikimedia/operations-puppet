@@ -1,4 +1,4 @@
-# deploys the especified certificate on /etc/acmecerts using the following structure:
+# deploys the especified certificate on /etc/acmecerts using the following structure:
 #   /etc/acmecerts/$title:
 #       live -> random_dir_name
 #       new  -> random_dir_name
@@ -13,8 +13,8 @@ define acme_chief::cert (
     Optional[String] $puppet_svc = undef,
     Optional[Type] $puppet_rsc = undef,
     String $key_group = 'root',
-    Optional[Boolean] $ocsp = undef, # deprecated, it will be removed soon
-    Optional[String] $ocsp_proxy = undef, # deprecated, it will be removed soon
+    Optional[Boolean] $ocsp = undef, # deprecated, it will be removed soon
+    Optional[String] $ocsp_proxy = undef, # deprecated, it will be removed soon
 ) {
     require ::acme_chief
 
