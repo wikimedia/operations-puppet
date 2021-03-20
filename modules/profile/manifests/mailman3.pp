@@ -1,8 +1,12 @@
 class profile::mailman3 (
     String $host = lookup('profile::mailman3::host'),
     String $db_host = lookup('profile::mailman3::db_host'),
+    String $db_name = lookup('profile::mailman3::db_name'),
+    String $db_user = lookup('profile::mailman3::db_user'),
     String $db_password = lookup('profile::mailman3::db_password'),
-    String $db_password_web = lookup('profile::mailman3::web::db_password'),
+    String $webdb_name = lookup('profile::mailman3::web::db_name'),
+    String $webdb_user = lookup('profile::mailman3::web::db_user'),
+    String $webdb_password = lookup('profile::mailman3::web::db_password'),
     String $api_password = lookup('profile::mailman3::api_password'),
     String $web_secret = lookup('profile::mailman3::web::secret'),
     String $archiver_key = lookup('profile::mailman3::archiver_key'),
@@ -12,13 +16,17 @@ class profile::mailman3 (
     include network::constants
 
     class { '::mailman3':
-        host            => $host,
-        db_host         => $db_host,
-        db_password     => $db_password,
-        db_password_web => $db_password_web,
-        api_password    => $api_password,
-        archiver_key    => $archiver_key,
-        web_secret      => $web_secret,
+        host           => $host,
+        db_host        => $db_host,
+        db_name        => $db_name,
+        db_user        => $db_user,
+        db_password    => $db_password,
+        webdb_name     => $webdb_name,
+        webdb_user     => $webdb_user,
+        webdb_password => $webdb_password,
+        api_password   => $api_password,
+        archiver_key   => $archiver_key,
+        web_secret     => $web_secret,
     }
 
     class { '::httpd':

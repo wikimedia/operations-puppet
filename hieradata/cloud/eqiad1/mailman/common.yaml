@@ -1,3 +1,13 @@
 profile::mailman3::db_host: mailman-db.mailman.eqiad1.wikimedia.cloud
 profile::mailman3::host: lists.wmcloud.org
 profile::standard::has_default_mail_relay: false
+
+profile::mailman3::db_name: mailman3
+profile::mailman3::db_user: mailman3
+#profile::mailman3::db_password -- set on puppetmaster
+profile::mailman3::web::db_name: mailman3web
+profile::mailman3::web::db_user: mailman3web
+#profile::mailman3::web::db_password -- set on puppetmaster
+#profile::mailman3::api_password -- set on puppetmaster
+#profile::mailman3::web::secret -- set on puppetmaster
+#profile::mailman3::archiver_key -- set on puppetmaster

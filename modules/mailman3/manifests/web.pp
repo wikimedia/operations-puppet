@@ -4,6 +4,8 @@
 class mailman3::web (
     String $host,
     String $db_host,
+    String $db_name,
+    String $db_user,
     String $db_password,
     String $api_password,
     String $secret,

@@ -63,9 +63,9 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'ENGINE': 'django.db.backends.mysql',
         # DB name or path to database file if using sqlite3.
-        'NAME': 'mailman3web',
+        'NAME': '<%= @db_name %>',
         # The following settings are not used with sqlite3:
-        'USER': 'mailman3web',
+        'USER': '<%= @db_user %>',
         'PASSWORD': '<%= @db_password %>',
         # HOST: empty for localhost through domain sockets or '127.0.0.1' for
         # localhost through TCP.

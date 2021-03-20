@@ -169,7 +169,7 @@ class: mailman.database.mysql.MySQLDatabase
 # other databases in their own way.  This string supports standard
 # 'configuration' substitutions.
 #url: sqlite:///$DATA_DIR/mailman.db
-url: mysql+pymysql://mailman3:<%= @db_password %>@<%= @db_host %>/mailman3?charset=utf8mb4&use_unicode=1
+url: mysql+pymysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>/<%= @db_name %>?charset=utf8mb4&use_unicode=1
 #url: postgres://mailman3:mmpass@localhost/mailman3
 
 debug: no

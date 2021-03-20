@@ -1,5 +1,7 @@
 class mailman3::listserve (
     String $db_host,
+    String $db_name,
+    String $db_user,
     String $db_password,
     String $api_password,
     String $service_ensure = 'running',
