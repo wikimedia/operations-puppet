@@ -160,10 +160,7 @@ while [ $i -lt $shards ]; do
 			setPerBatchVars
 
 			echo "(`date --iso-8601=minutes`) Starting batch $batch" >> $errorLog
-			# This separates the run-parts by ,\n. For this we assume the last run to not be empty,
-			# which should always be the case (given the number of runs needed is rounded down and
-			# new pages are added all the time).
-			( $php $multiversionscript extensions/Wikibase/repo/maintenance/dumpJson.php \
+			$php $multiversionscript extensions/Wikibase/repo/maintenance/dumpJson.php \
 				--wiki ${projectName}wiki \
 				--shard $i \
 				--sharding-factor $shards \
@@ -172,10 +169,7 @@ while [ $i -lt $shards ]; do
 				"${entityTypes[@]}" \
 				$extraArgs \
 				$firstPageIdParam \
-				$lastPageIdParam; \
-				dumpExitCode=$?; \
-				[ $lastRun -eq 0 ] && echo ','; \
-				returnWithCode $dumpExitCode ) \
+				$lastPageIdParam \
 				2>> $errorLog | gzip -9 > "${tempDir}/${projectName}-${dumpName}.${i}-batch${batch}.json.gz"
 
 			exitCode=$?
@@ -203,6 +197,7 @@ fi
 # Open the json list
 echo '[' | gzip -f > "$tempDir/${projectName}-${dumpName}.json.gz"
 
+sawOutput=0
 i=0
 while [ $i -lt $shards ]; do
 
@@ -216,12 +211,19 @@ while [ $i -lt $shards ]; do
 		echo "File size for shard $i is only $fileSize. Aborting." >> $mainLogFile
 		exit 1
 	fi
-	cat $tempFiles >> "${tempDir}/${projectName}-${dumpName}.json.gz"
+	for tempFile in $tempFiles; do
+		# If this file is non-empty, append it to the output
+		if [ "$(zcat "$tempFile" | head -c 5 | wc -c)" -lt 4 ]; then
+			continue
+		fi
+		if [ $sawOutput -gt 0 ]; then
+			# If we had output before, make sure to separate the data with ",\n"
+			echo ',' | gzip >> "${tempDir}/${projectName}-${dumpName}.json.gz"
+		fi
+		sawOutput=1
+		cat "$tempFile" >> "${tempDir}/${projectName}-${dumpName}.json.gz"
+	done
 	let i++
-	if [ $i -lt $shards ]; then
-	    # Shards don't end with commas so add commas to separate them
-	    echo ',' | gzip -f >> "$tempDir/${projectName}-${dumpName}.json.gz"
-	fi
 done
 
 # Close the json list
