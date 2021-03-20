@@ -1,2 +1,19 @@
 profile::standard::admin_groups:
   - mailman3-roots
+
+profile::standard::has_default_mail_relay: false
+
+profile::mailman3::host: lists-next.wikimedia.org
+profile::mailman3::acme_chief_cert: lists-next
+
+profile::mailman3::db_host: m5-master.eqiad.wmnet
+profile::mailman3::db_name: testmailman3
+profile::mailman3::db_user: testmailman3
+#profile::mailman3::db_password -- set in private repo
+profile::mailman3::web::db_name: testmailman3web
+profile::mailman3::web::db_user: testmailman3web
+#profile::mailman3::web::db_password -- set in private repo
+
+#profile::mailman3::api_password -- set in private repo
+#profile::mailman3::web::secret -- set in private repo
+#profile::mailman3::archiver_key -- set in private repo

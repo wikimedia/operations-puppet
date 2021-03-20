@@ -10,8 +10,8 @@ class profile::mailman3 (
     String $api_password = lookup('profile::mailman3::api_password'),
     String $web_secret = lookup('profile::mailman3::web::secret'),
     String $archiver_key = lookup('profile::mailman3::archiver_key'),
-    Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::mailman3::ipv4', {'default_value' => undef}),
-    Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::mailman3::ipv6', {'default_value' => undef}),
+    Optional[Stdlib::IP::Address::V4] $lists_ipv4 = lookup('profile::mailman3::ipv4', {'default_value' => undef}),
+    Optional[Stdlib::IP::Address::V6] $lists_ipv6 = lookup('profile::mailman3::ipv6', {'default_value' => undef}),
     Optional[String] $acme_chief_cert = lookup('profile::mailman3::acme_chief_cert', {'default_value' => undef}),
 ) {
     include network::constants

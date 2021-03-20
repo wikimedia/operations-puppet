@@ -1187,7 +1187,7 @@ node 'lists1001.wikimedia.org' {
 
 # VM for mailman3 testing (T276686)
 node 'lists1002.wikimedia.org' {
-    role(insetup)
+    role(lists3)
 }
 
 # Ganeti virtualization hosts - eqiad
