@@ -1,14 +1,38 @@
+# Redirect all HTTP requests to HTTPS
 <VirtualHost *:80>
-	Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
-	Alias /mailman3/static      /var/lib/mailman3/web/static
+    ServerName <%= @host %>
+    RewriteEngine on
+    RewriteCond %{SERVER_NAME} =<%= @host %>
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>
 
-	<Directory "/var/lib/mailman3/web/static">
-		Require all granted
-	</Directory>
 
-	<IfModule mod_proxy_uwsgi.c>
-		ProxyPass /mailman3/favicon.ico !
-		ProxyPass /mailman3/static !
-		ProxyPass / unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
-	</IfModule>
+<VirtualHost *:443>
+    ServerName <%= @host %>
+
+    SSLEngine On
+    <% if @acme_chief_cert %>
+    # acme-chief certs
+    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
+    <% else %>
+    # certbot certs
+    SSLCertificateFile /etc/letsencrypt/live/<%= @host %>/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/<%= @host %>/privkey.pem
+    <% end %>
+    <%= @ssl_settings.join("\n    ") %>
+
+    Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
+    Alias /mailman3/static      /var/lib/mailman3/web/static
+
+    <Directory "/var/lib/mailman3/web/static">
+        Require all granted
+    </Directory>
+
+    <IfModule mod_proxy_uwsgi.c>
+        ProxyPass /mailman3/favicon.ico !
+        ProxyPass /mailman3/static !
+        ProxyPass / unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
+    </IfModule>
 </VirtualHost>

@@ -12,6 +12,7 @@ class profile::mailman3 (
     String $archiver_key = lookup('profile::mailman3::archiver_key'),
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::mailman3::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::mailman3::ipv6', {'default_value' => undef}),
+    Optional[String] $acme_chief_cert = lookup('profile::mailman3::acme_chief_cert', {'default_value' => undef}),
 ) {
     include network::constants
 
@@ -32,14 +33,18 @@ class profile::mailman3 (
     class { '::httpd':
         modules => ['rewrite', 'ssl', 'proxy', 'proxy_http', 'proxy_uwsgi'],
     }
-    if $::realm == 'labs' {
-        $apache_config = 'mailman3/apache.conf.labs.erb'
-    }
-    if $::realm == 'production' {
-        $apache_config = 'mailman3/apache.conf.erb'
-    }
+
+    $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
     httpd::site { $host:
-        content => template($apache_config),
+        content => template('mailman3/apache.conf.erb'),
+    }
+
+    if $acme_chief_cert {
+        class { 'sslcert::dhparam': }
+        acme_chief::cert{ $acme_chief_cert:
+            puppet_svc => 'apache2',
+            key_group  => 'Debian-exim',
+        }
     }
 
     # This will be a noop if $lists_ipv[46] are undef
