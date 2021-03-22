@@ -71,7 +71,9 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         'yarn.scheduler.capacity.root.production.ingest.maximum-capacity' => -1,
 
         # Default mappings
-        'yarn.scheduler.capacity.queue-mappings' => 'u:druid:production.analytics,u:analytics:production.analytics,u:analytics-search:production.search,u:analytics-product::production.product,g:analytics-privatedata-users:users.default',
+        # PLEASE NOTE: use only the leaf queue names, not full path.
+        # Example: root.production.analytics BAD, analytics GOOD
+        'yarn.scheduler.capacity.queue-mappings' => 'u:druid:analytics,u:analytics:analytics,u:analytics-search:search,u:analytics-product::product,g:analytics-privatedata-users:default',
 
         # Limits
         # https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.4/bk_yarn-resource-management/content/setting_user_limits.html
