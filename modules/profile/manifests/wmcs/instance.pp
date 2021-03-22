@@ -139,12 +139,18 @@ class profile::wmcs::instance(
         refreshonly => true,
     }
 
+    file { ['/etc/cloud', '/etc/cloud/templates']:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
     file { '/etc/cloud/templates/hosts.debian.tmpl':
         ensure  => present,
         content => template('profile/wmcs/instance/hosts.debian.tmpl.erb'),
         owner   => 'root',
-        onlyif  => '/usr/bin/test -d /etc/cloud/templates',
         group   => 'root',
+        require => File['/etc/cloud', '/etc/cloud/templates'],
         notify  => Exec['cloud-init refresh /etc/hosts'],
         mode    => '0644',
     }
