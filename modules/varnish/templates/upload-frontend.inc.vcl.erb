@@ -111,6 +111,7 @@ sub cluster_fe_recv {
 				\.org		# all WMF-owned .org domains
 				|w\.wiki	# WMF-owned URL shortener
 				|localhost(:\d*)?	# to ease the lives of devs
+				|wmftest.net(:\d*)?	# to ease the lives of MediaWiki-Vagrant devs
 				# Now the affiliates https://phabricator.wikimedia.org/T261694
 				|wikilovesmonuments\.org
 				|wikimedia\.pl
