@@ -1,14 +1,18 @@
 cluster: kubernetes
+profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 2
 profile::kubernetes::master::admission_controllers:
   NamespaceLifecycle: ''
   LimitRanger: ''
-  ServiceAccount: "--service-account-key-file=/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
+  ServiceAccount: "--service-account-key-file=/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
   DefaultStorageClass: ''
   DefaultTolerationSeconds: ''
   ResourceQuota: ''
+  PodSecurityPolicy: ''
 profile::kubernetes::master::expose_puppet_certs: true
+profile::kubernetes::master::use_cergen: true
 profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
@@ -19,3 +23,5 @@ profile::lvs::realserver::pools:
   kubemaster:
     services:
       - "kube-apiserver"
+# Define in the private repo
+# profile::kubernetes::master::controllermanager_token:

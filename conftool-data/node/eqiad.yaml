@@ -337,8 +337,8 @@ eqiad:
     ldap-replica1001.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica1002.wikimedia.org: [ldap-ro, ldap-ro-ssl]
   kubernetes:
-    argon.eqiad.wmnet: [kubemaster]
-    chlorine.eqiad.wmnet: [kubemaster]
+    kubemaster1001.eqiad.wmnet: [kubemaster]
+    kubemaster1002.eqiad.wmnet: [kubemaster]
     kubernetes1001.eqiad.wmnet: [kubesvc]
     kubernetes1002.eqiad.wmnet: [kubesvc]
     kubernetes1003.eqiad.wmnet: [kubesvc]

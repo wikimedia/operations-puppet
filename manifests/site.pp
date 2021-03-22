@@ -1174,17 +1174,8 @@ node /^kubestagemaster[12]001\.(eqiad|codfw)\.wmnet$/ {
 }
 
 # kubernetes masters
-node /^(acrab|acrux|argon|chlorine)\.(eqiad|codfw)\.wmnet$/ {
+node /^kubemaster[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
-}
-
-node /^kubemaster200[12]\.codfw\.wmnet$/ {
-    role(kubernetes::master)
-}
-
-# New kubernetes masters
-node /^kubemaster100[12]\.eqiad.wmnet$/ {
-    role(insetup)
 }
 
 # Etherpad on buster (virtual machine)
