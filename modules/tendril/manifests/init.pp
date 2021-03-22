@@ -59,7 +59,7 @@ class tendril (
         ]
 
         apt::package_from_component { 'tendril_php56':
-            component => 'component/php56',
+            component => 'thirdparty/php56',
             packages  => $php56_packages,
         }
     }
