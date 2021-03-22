@@ -48,7 +48,7 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # Queue definitions
         # Sum of capacity (not max) needs to be 100 at any level/branch of the tree
         # First layer
-        'yarn.scheduler.capacity.root.queues' => 'users, production',
+        'yarn.scheduler.capacity.root.queues' => 'users,production',
         'yarn.scheduler.capacity.root.production.capacity' => 60,
         'yarn.scheduler.capacity.root.production.maximum-capacity' => -1,
         'yarn.scheduler.capacity.root.users.capacity' => 40,
@@ -100,15 +100,22 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         'yarn.scheduler.capacity.root.production.analytics.acl_submit_applications' => 'analytics,druid',
         'yarn.scheduler.capacity.root.production.analytics.acl_administer_queue' => 'analytics-admins',
         'yarn.scheduler.capacity.root.production.search.acl_submit_applications' => 'analytics-search',
-        'yarn.scheduler.capacity.root.production.search.acl_administer_queue' => 'analytics-search-users,analytics-admins',
+        # Note: the ' ' at the beginning is important, since the format is 'user1,user2,.. group1,group2,..'
+        'yarn.scheduler.capacity.root.production.search.acl_administer_queue' => ' analytics-search-users,analytics-admins',
         'yarn.scheduler.capacity.root.production.product.acl_submit_applications' => 'analytics-product',
-        'yarn.scheduler.capacity.root.production.product.acl_administer_queue' => 'analytics-product-users,analytics-admins',
+        # Note: the ' ' at the beginning is important, since the format is 'user1,user2,.. group1,group2,..'
+        'yarn.scheduler.capacity.root.production.product.acl_administer_queue' => ' analytics-product-users,analytics-admins',
         'yarn.scheduler.capacity.root.production.ingest.acl_submit_applications' => 'analytics',
-        'yarn.scheduler.capacity.root.production.ingest.acl_administer_queue' => 'analytics-admins',
-        'yarn.scheduler.capacity.root.users.default.acl_submit_applications' => 'analytics-privatedata-users',
-        'yarn.scheduler.capacity.root.users.default.acl_administer_queue' => 'analytics-privatedata-users,analytics-admins',
-        'yarn.scheduler.capacity.root.users.fifo.acl_submit_applications' => 'analytics-privatedata-users',
-        'yarn.scheduler.capacity.root.users.fifo.acl_administer_queue' => 'analytics-privatedata-users,analytics-admins',
+        # Note: the ' ' at the beginning is important, since the format is 'user1,user2,.. group1,group2,..'
+        'yarn.scheduler.capacity.root.production.ingest.acl_administer_queue' => ' analytics-admins',
+        # Note: the ' ' at the beginning is important, since the format is 'user1,user2,.. group1,group2,..'
+        'yarn.scheduler.capacity.root.users.default.acl_submit_applications' => ' analytics-privatedata-users',
+        # Note: the ' ' at the beginning is important, since the format is 'user1,user2,.. group1,group2,..'
+        'yarn.scheduler.capacity.root.users.default.acl_administer_queue' => ' analytics-privatedata-users,analytics-admins',
+        # Note: the ' ' at the beginning is important, since the format is 'user1,user2,.. group1,group2,..'
+        'yarn.scheduler.capacity.root.users.fifo.acl_submit_applications' => ' analytics-privatedata-users',
+        # Note: the ' ' at the beginning is important, since the format is 'user1,user2,.. group1,group2,..'
+        'yarn.scheduler.capacity.root.users.fifo.acl_administer_queue' => ' analytics-privatedata-users,analytics-admins',
 
         # Preemption
         'yarn.scheduler.capacity.root.production.ingest.disable_preemption' => true,
