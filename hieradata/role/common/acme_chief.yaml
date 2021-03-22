@@ -199,6 +199,7 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'dbmonitor1001.wikimedia.org'
+        - 'dbmonitor1002.wikimedia.org'
     unified:
         CN: '*.wikipedia.org'
         SNI:
