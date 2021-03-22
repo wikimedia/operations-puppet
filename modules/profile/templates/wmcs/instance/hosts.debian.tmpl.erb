@@ -1,0 +1,47 @@
+## template:jinja
+{#
+This is an override of the default file included in upstream debian
+images. It's used by cloud-init to generate /etc/hosts when
+manage_etc_hosts = True in the cloud config.
+
+We're overriding the standard template by replacing the first
+line, which looked like this:
+
+127.0.1.1 {{fqdn}} {{hostname}}
+
+The 127.0.1.1 entry is standard on debian as documented here:
+
+https://www.debian.org/doc/manuals/debian-reference/ch05.en.html#_the_hostname_resolution
+
+> The IP address 127.0.1.1 in the second line of this example may not
+> be found on some other Unix-like systems. The Debian Installer creates
+> this entry for a system without a permanent IP address as a workaround
+> for some software (e.g., GNOME) as documented in the bug #719621.
+
+I think we don't care about that use case. Instead we'll use
+the actual IP.  Hard coding local IP in a cloud-init template
+sort of defeats the purpose of cloud-init but since we're only
+doing it on an up and running VM it seems harmless, and better
+than trying to fight cloud-init's constant attempts to update.
+
+More context at https://phabricator.wikimedia.org/T277866
+
+-#}
+# Your system has configured 'manage_etc_hosts' as True.
+# As a result, if you wish for changes to this file to persist
+# then you will need to either
+# a.) make changes to the master file in /etc/cloud/templates/hosts.debian.tmpl
+# b.) change or remove the value of 'manage_etc_hosts' in
+#     /etc/cloud/cloud.cfg or cloud-config from user-data
+#
+{# The value '{{hostname}}' will be replaced with the local-hostname -#}
+<%= @facts['ipaddress'] %> {{fqdn}} {{hostname}}
+127.0.0.1 localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts

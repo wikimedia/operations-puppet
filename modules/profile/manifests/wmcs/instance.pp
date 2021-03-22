@@ -124,5 +124,29 @@ class profile::wmcs::instance(
         content => '',
     }
 
+    # Update /etc/hosts using the new cloud-init template.
+    #  Note that cloud-init will only update the file if
+    #  manage_etc_hosts = True in the initial cloud setup
+    #  of the VM. That means that legacy VMs (from before
+    #  widespread adoption of cloud-init) will not
+    #  be affected by this.
+    #
+    # We might also be on a system that doesn't have cloud-init
+    #  at all, which is just fine.
+    exec { 'cloud-init refresh /etc/hosts':
+        command     => '/usr/bin/cloud-init single -n cc_update_etc_hosts',
+        onlyif      => '/usr/bin/test -f /usr/bin/cloud-init',
+        refreshonly => true,
+    }
+
+    file { '/etc/cloud/templates/hosts.debian.tmpl':
+        ensure  => present,
+        content => template('profile/wmcs/instance/hosts.debian.tmpl.erb'),
+        owner   => 'root',
+        group   => 'root',
+        notify  => Exec['cloud-init refresh /etc/hosts'],
+        mode    => '0644',
+    }
+
     class {'::cinderutils': }
 }
