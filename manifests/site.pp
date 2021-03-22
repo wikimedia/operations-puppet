@@ -1187,16 +1187,6 @@ node /^kubemaster100[12]\.eqiad.wmnet$/ {
     role(insetup)
 }
 
-# new Kubernetes host T258747
-node 'kubernetes1017.eqiad.wmnet' {
-    role(insetup)
-}
-
-# Kubernetes for flink in k8s T258745
-node 'kubernetes2017.codfw.wmnet' {
-    role(kubernetes::worker)
-}
-
 # Etherpad on buster (virtual machine)
 node 'etherpad1002.eqiad.wmnet' {
     role(etherpad)
@@ -1437,7 +1427,7 @@ node 'krb2001.codfw.wmnet' {
     role(kerberos::kdc)
 }
 
-node /kubernetes[12]0(0[1-9]|1[0-6])\.(codfw|eqiad)\.wmnet/ {
+node /kubernetes[12]0(0[1-9]|1[0-7])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 

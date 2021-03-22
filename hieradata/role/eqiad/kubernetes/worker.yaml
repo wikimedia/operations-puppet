@@ -1,7 +1,3 @@
-profile::calico::kubernetes::etcd_endpoints:
-- https://kubetcd1004.eqiad.wmnet:2379
-- https://kubetcd1005.eqiad.wmnet:2379
-- https://kubetcd1006.eqiad.wmnet:2379
 profile::calico::kubernetes::bgp_peers:
 - kubernetes1001.eqiad.wmnet
 - kubernetes1002.eqiad.wmnet
@@ -19,6 +15,7 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes1014.eqiad.wmnet
 - kubernetes1015.eqiad.wmnet
 - kubernetes1016.eqiad.wmnet
+- kubernetes1017.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.72.3"
@@ -26,5 +23,3 @@ profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 profile::rsyslog::kubernetes::kubernetes_url: https://kubemaster.svc.eqiad.wmnet:6443
 # Define in the private repo
 # profile::rsyslog::kubernetes::token
-# TODO: Remove once the clusters have been reinitialized
-profile::kubernetes::node::cni_config: /etc/kubernetes/kubelet_config
