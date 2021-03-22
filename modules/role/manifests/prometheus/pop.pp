@@ -8,6 +8,8 @@ class role::prometheus::pop {
 
     require ::profile::prometheus::ops
 
+    include ::profile::alerts::deploy
+
     class { '::httpd':
         # 'rewrite' is used by ::profile::prometheus::ops
         modules => ['proxy', 'proxy_http', 'rewrite'],
