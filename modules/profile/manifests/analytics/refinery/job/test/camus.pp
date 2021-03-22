@@ -66,7 +66,7 @@ class profile::analytics::refinery::job::test::camus(
     camus::job { 'webrequest':
         camus_properties => {
             'kafka.whitelist.topics'          => 'webrequest_test_text',
-            'mapreduce.job.queuename'         => 'essential',
+            'mapreduce.job.queuename'         => 'ingest',
             'camus.message.timestamp.field'   => 'dt',
             # Set this to at least the number of topic/partitions you will be importing.
             'mapred.map.tasks'                => '1',
@@ -81,6 +81,7 @@ class profile::analytics::refinery::job::test::camus(
     camus::job { 'eventlogging':
         camus_properties => {
             'kafka.whitelist.topics'        => 'eventlogging_NavigationTiming',
+            'mapreduce.job.queuename'       => 'ingest',
             # During migration to EventGate, events will have both meta.dt and dt.
             # meta.dt is set by EventGate and is more trustable than dt, which after
             # migration to EventGate is set by the client.
@@ -105,6 +106,7 @@ class profile::analytics::refinery::job::test::camus(
             'camus_properties' =>  {
                 'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
                 'camus.message.timestamp.field' => 'meta.dt',
+                'mapreduce.job.queuename'       => 'ingest',
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '1',
                 'eventstreamconfig.uri'         => 'https://meta.wikimedia.org/w/api.php',
