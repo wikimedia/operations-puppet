@@ -43,7 +43,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     $yarn_queue                 = 'production'
 
     ############################################################################
-    # Wrapper running entire-tables sqoop from labsdb, followed by entire-tables
+    # Wrapper running entire-tables sqoop from clouddb, followed by entire-tables
     # sqoop from analytics-store
     # Template uses num_mappers_all_times
 
