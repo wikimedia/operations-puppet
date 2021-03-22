@@ -2092,11 +2092,6 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
 
 # Row A
 
-# rack A4 - jobrunner canaries
-node /^mw22(49|50)\.codfw\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
 # rack A4 - jobrunners
 node /^mw22(4[3678])\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
