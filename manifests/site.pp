@@ -884,7 +884,7 @@ node 'dbmonitor1001.wikimedia.org' {
 }
 
 node 'dbmonitor1002.wikimedia.org' {
-    role(insetup)
+    role(tendril)
 }
 
 node /^debmonitor[12]002\.(codfw|eqiad)\.wmnet$/ {
