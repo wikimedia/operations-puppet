@@ -11,7 +11,8 @@ class profile::analytics::refinery::job::test::druid_load {
 
     # Use this value as default refinery_job_jar.
     Profile::Analytics::Refinery::Job::Eventlogging_to_druid_job {
-        refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
+        refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar",
+        queue            => 'analytics',
     }
 
     # Load event.NavigationTiming
