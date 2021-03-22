@@ -132,3 +132,7 @@ IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.32.180'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
+
+-- Testing mailman3 databases T256538 from lists1002.wikimedia.org.
+GRANT ALL ON testmailman3.* TO 'testmailman3'@'208.80.154.13' IDENTIFIED BY '<%= @testmailman3_pass %>';
+GRANT ALL ON testmailman3web.* TO 'testmailman3web'@'208.80.154.13' IDENTIFIED BY '<%= @testmailman3web_pass %>';
