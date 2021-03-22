@@ -6,7 +6,7 @@ class profile::tendril::webserver (
 ) {
     case debian::codename() {
         'buster': {
-            $php_module = 'php7.3'
+            $php_module = 'php5.6'
             $packages = ['libapache2-mod-php5.6','php5.6-mysql']
         }
         'stretch': {
