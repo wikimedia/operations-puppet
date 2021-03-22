@@ -17,7 +17,10 @@ EOF
 }
 
 commandfile="/var/lib/icinga/rw/icinga.cmd"
+# This is the file that gets generated using naggen
 hostsfile="/etc/icinga/objects/puppet_hosts.cfg"
+# This is the file where icinga node specific hosts get stored
+secondary_hostsfile="/etc/nagios/nagios_host.cfg"
 
 user="marvin-bot" # because it's a _down_time bot, get it?:p
 
@@ -51,8 +54,8 @@ if [ -z "$hostname" ] || [ -z "$reason" ]; then
 fi
 
 # If $hostname is not in puppet_hosts.cfg, then icinga won't know about it.  Fail now.
-if ! grep -qE "host_name\\s+$hostname$" $hostsfile; then
-    echo "Unknown <hostname> '$hostname'. <hostname> must exist in ${hostsfile}. (Did you accidentally use FQDN instead of short hostname?)"
+if ! grep -qE "host_name\\s+$hostname$" $hostsfile $secondary_hostsfile  ; then
+    echo "Unknown <hostname> '$hostname'. <hostname> must exist in ${hostsfile} or ${secondary_hostsfile}. (Did you accidentally use FQDN instead of short hostname?)"
     exit 1
 fi
 
