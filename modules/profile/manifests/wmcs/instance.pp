@@ -143,6 +143,7 @@ class profile::wmcs::instance(
         ensure  => present,
         content => template('profile/wmcs/instance/hosts.debian.tmpl.erb'),
         owner   => 'root',
+        onlyif  => '/usr/bin/test -d /etc/cloud/templates',
         group   => 'root',
         notify  => Exec['cloud-init refresh /etc/hosts'],
         mode    => '0644',
