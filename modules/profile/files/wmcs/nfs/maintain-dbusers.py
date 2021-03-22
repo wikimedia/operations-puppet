@@ -473,15 +473,30 @@ def populate_new_accounts(config, account_type="tool"):
     try:
         acct_db = get_accounts_db_conn(config)
         with acct_db.cursor() as cur:
-            cur.execute(
-                """
-            SELECT username FROM account WHERE type=%s
-            """,
-                account_type,
-            )
-            cur_accounts = set([r["username"] for r in cur])
-
-            new_accounts = [t for t in all_accounts if t[0] not in cur_accounts]
+            if account_type != "paws":
+                cur.execute(
+                    """
+                SELECT username FROM account WHERE type=%s
+                """,
+                    account_type,
+                )
+                cur_accounts = set([r["username"] for r in cur])
+                new_accounts = [
+                    t for t in all_accounts if t[0] not in cur_accounts
+                ]
+            else:
+                cur.execute(
+                    """
+                SELECT mysql_username FROM account WHERE type=%s
+                """,
+                    account_type,
+                )
+                cur_accounts = set([r["mysql_username"] for r in cur])
+                new_accounts = [
+                    t
+                    for t in all_accounts
+                    if "p{}".format(t[1]) not in cur_accounts
+                ]
 
             logging.debug(
                 "Found %s new %s accounts: %s",
@@ -510,14 +525,9 @@ def populate_new_accounts(config, account_type="tool"):
                     )
                     continue
                 pwd = generate_new_pw()
-                prefix = {
-                    "tool": "s",
-                    "paws": "p",
-                    "user": "u"
-                }
+                prefix = {"tool": "s", "paws": "p", "user": "u"}
                 mysql_username = "{0}{1:d}".format(
-                    prefix[account_type],
-                    new_account_id
+                    prefix[account_type], new_account_id
                 )
                 cur.execute(
                     """
