@@ -4,17 +4,22 @@ class profile::prometheus::ircd_exporter (
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
-    require_package('prometheus-ircd-exporter')
+    package { 'prometheus-ircd-exporter':
+        ensure => absent,
+    }
 
     service { 'prometheus-ircd-exporter':
-        ensure  => running,
+        ensure => stopped,
     }
 
     ferm::service { 'prometheus-ircd-exporter':
+        ensure => absent,
         proto  => 'tcp',
         port   => '9197',
         srange => $ferm_srange,
     }
 
-    base::service_auto_restart { 'prometheus-ircd-exporter': }
+    base::service_auto_restart { 'prometheus-ircd-exporter':
+        ensure => absent,
+    }
 }

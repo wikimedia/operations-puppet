@@ -1007,23 +1007,6 @@ class profile::prometheus::ops (
         port       => 9324,
     }
 
-    $ircd_jobs = [
-      {
-        'job_name'        => 'ircd',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/ircd_*.yaml" ]}
-        ],
-      },
-    ]
-
-    prometheus::class_config{ "ircd_${::site}":
-        dest       => "${targets_path}/ircd_${::site}.yaml",
-        site       => $::site,
-        class_name => 'role::mw_rc_irc',
-        port       => 9197,
-    }
-
     # Job definition for pybal
     $pybal_jobs = [
       {
@@ -1961,7 +1944,7 @@ class profile::prometheus::ops (
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
-            $redis_jobs, $mtail_jobs, $ldap_jobs, $ircd_jobs, $pdns_rec_jobs,
+            $redis_jobs, $mtail_jobs, $ldap_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs, $ipsec_jobs,
             $kafka_burrow_jobs, $logstash_jobs, $haproxy_jobs, $statsd_exporter_jobs,
