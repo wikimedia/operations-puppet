@@ -4114,6 +4114,16 @@ host cloudcontrol2003-dev {
     fixed-address cloudcontrol2003-dev.wikimedia.org;
 }
 
+host cloudgw1001 {
+    hardware ethernet BC:97:E1:E2:52:50;
+    fixed-address cloudgw1001.eqiad.wmnet;
+}
+
+host cloudgw1002 {
+    hardware ethernet BC:97:E1:E2:86:30;
+    fixed-address cloudgw1002.eqiad.wmnet;
+}
+
 host cloudgw2001-dev {
     hardware ethernet 30:e1:71:60:e9:7c;
     fixed-address cloudgw2001-dev.codfw.wmnet;
