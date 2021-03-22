@@ -462,7 +462,7 @@ groups:
   mailman3-roots:
     gid: 827
     description: Root level access for mailman3 VMs (T276712)
-    members: []
+    members: [ladsgroup]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
 
   tilerator-admin:
