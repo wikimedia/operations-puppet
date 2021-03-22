@@ -9,10 +9,7 @@ profile::calico::kubernetes::bgp_peers:
 - ml-serve2004.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
-# enable this when coredns has been deployed not before.
-# Check this IP before deploying. The net 10.192.77.0/24 should be the right
-# place.
-#profile::kubernetes::node::kubelet_cluster_dns: "10.192.77.3"
+profile::kubernetes::node::kubelet_cluster_dns: "10.192.77.3"
 profile::kubernetes::master_hosts:
 - ml-serve-ctrl2001.codfw.wmnet
 - ml-serve-ctrl2002.codfw.wmnet
