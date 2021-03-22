@@ -109,14 +109,11 @@ class puppetdb::app(
         }
     }[$db_driver]
 
-    $db_settings = ($facts['fqdn'] == $db_rw_host) ? {
-        false            => $db_driver_settings,
-        default          => $db_driver_settings + {
-            'report-ttl'     => $report_ttl,
-            'gc-interval'    => $gc_interval,
-            'node-ttl'       => $node_ttl,
-            'node-purge-ttl' => $node_purge_ttl,
-        }
+    $db_settings = $db_driver_settings + {
+        'report-ttl'     => $report_ttl,
+        'gc-interval'    => $gc_interval,
+        'node-ttl'       => $node_ttl,
+        'node-purge-ttl' => $node_purge_ttl,
     }
 
     puppetdb::config { 'database':
