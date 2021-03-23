@@ -11,6 +11,7 @@
     {"index" : "prometheus@ops",               "value" : "kafka local" },
     {"index" : "prometheus@k8s",               "value" : "kafka local" },
     {"index" : "prometheus@k8s-staging",       "value" : "kafka local" },
+    {"index" : "prometheus@k8s-mlserve",       "value" : "kafka local" },
     {"index" : "prometheus@labs",              "value" : "kafka local" },
     {"index" : "prometheus@global",            "value" : "kafka local" },
     {"index" : "prometheus@services",          "value" : "kafka local" },
