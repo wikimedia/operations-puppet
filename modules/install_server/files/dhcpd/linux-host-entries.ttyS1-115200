@@ -6652,6 +6652,16 @@ host mw2376 {
     fixed-address mw2376.codfw.wmnet;
 }
 
+host mw2377 {
+    hardware ethernet 2C:EA:7F:82:1B:EB;
+    fixed-address mw2377.codfw.wmnet;
+}
+
+host mw2378 {
+    hardware ethernet 2C:EA:7F:81:F3:81;
+    fixed-address mw2378.codfw.wmnet;
+}
+
 host mwmaint1002 {
     hardware ethernet D0:94:66:5F:50:AE;
     fixed-address mwmaint1002.eqiad.wmnet;
