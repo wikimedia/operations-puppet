@@ -203,23 +203,25 @@ class logstash (
         require => Package['logstash'],
     }
 
-    file { '/usr/local/bin/cleanup-dlq':
-        ensure  => stdlib::ensure($enable_dlq, 'file'),
-        source  => 'puppet:///modules/logstash/cleanup_dlq.py',
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
-        require => Package['python3-wmflib']
-    }
+    if ($enable_dlq) {
+        file { '/usr/local/bin/cleanup-dlq':
+            ensure  => stdlib::ensure($enable_dlq, 'file'),
+            source  => 'puppet:///modules/logstash/cleanup_dlq.py',
+            mode    => '0755',
+            owner   => 'root',
+            group   => 'root',
+            require => Package['python3-wmflib']
+        }
 
-    $times = cron_splay($dlq_hosts, 'hourly', 'logstash-dlq-splay-seed')
-    systemd::timer::job { 'clean_up_dlq':
-      ensure            => stdlib::ensure($enable_dlq, 'file'),
-      description       => 'Clean up dead letter queue and restart logstash',
-      command           => '/usr/local/bin/cleanup-dlq',
-      interval          => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']},
-      user              => 'root',
-      syslog_identifier => 'cleanup_dlq',
-      require           => File['/usr/local/bin/cleanup-dlq'],
+        $times = cron_splay($dlq_hosts, 'hourly', 'logstash-dlq-splay-seed')
+        systemd::timer::job { 'clean_up_dlq':
+            ensure            => stdlib::ensure($enable_dlq, 'file'),
+            description       => 'Clean up dead letter queue and restart logstash',
+            command           => '/usr/local/bin/cleanup-dlq',
+            interval          => { 'start' => 'OnCalendar', 'interval' => $times['OnCalendar'] },
+            user              => 'root',
+            syslog_identifier => 'cleanup_dlq',
+            require           => File['/usr/local/bin/cleanup-dlq'],
+        }
     }
 }
