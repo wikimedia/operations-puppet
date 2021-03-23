@@ -106,6 +106,7 @@ define prometheus::server (
     $rule_files_default = [
       "${rules_path}/rules_*.yml",
       "${rules_path}/alerts_*.yml",
+      '/srv/alerts/*.yaml',
     ]
     $validate_rules_cmd = '/usr/bin/promtool check rules %'
     $validate_config_cmd = '/usr/bin/promtool check config %'
