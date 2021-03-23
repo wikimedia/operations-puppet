@@ -70,4 +70,23 @@ class profile::mailman3 (
             Interface::Alias[$host],
         ],
     }
+
+    ferm::service { 'mailman3-smtp':
+        proto => 'tcp',
+        port  => '25',
+    }
+
+    ferm::service { 'mailman3-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'mailman3-https':
+        proto => 'tcp',
+        port  => '443',
+    }
+
+    ferm::rule { 'mailman3-spamd-local':
+        rule => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }'
+    }
 }
