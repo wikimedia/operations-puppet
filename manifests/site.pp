@@ -172,13 +172,8 @@ node /aqs100[456789]\.eqiad\.wmnet/ {
 }
 
 # Analytics Query Service - buster+cassandra311
-node /aqs101[01]\.eqiad\.wmnet/ {
+node /aqs101[0-5]\.eqiad\.wmnet/ {
     role(aqs_next)
-}
-
-# New AQS Nodes T267414
-node /aqs101[2-5]\.eqiad\.wmnet/ {
-    role(insetup)
 }
 
 # New Archiva host on Buster

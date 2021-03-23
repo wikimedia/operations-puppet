@@ -1,0 +1,4 @@
+# Analytics Query Service - rack3 instances
+
+profile::cassandra::rack: 'rack3'
+cassandra::target_version: '3.x'
