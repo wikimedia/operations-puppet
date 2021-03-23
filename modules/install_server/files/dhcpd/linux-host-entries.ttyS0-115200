@@ -23,18 +23,6 @@ host acmechief-test2001 {
     fixed-address acmechief-test2001.codfw.wmnet;
 }
 
-host acrab {
-    hardware ethernet aa:00:00:81:ee:df;
-    fixed-address acrab.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host acrux {
-    hardware ethernet aa:00:00:9f:ec:d4;
-    fixed-address acrux.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host aphlict1001 {
     hardware ethernet aa:00:00:1b:6e:94;
     fixed-address aphlict1001.eqiad.wmnet;
@@ -106,12 +94,6 @@ host apt2001 {
     fixed-address apt2001.wikimedia.org;
 }
 
-host argon {
-    hardware ethernet aa:00:00:fe:6b:df;
-    fixed-address argon.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host bast3005 {
     hardware ethernet AA:00:00:62:97:9B;
     fixed-address bast3005.wikimedia.org;
@@ -125,12 +107,6 @@ host bast4003 {
 host bast5002 {
     hardware ethernet AA:00:00:13:81:A2;
     fixed-address bast5002.wikimedia.org;
-}
-
-host chlorine {
-    hardware ethernet aa:00:00:37:a8:4d;
-    fixed-address chlorine.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host chartmuseum1001 {
