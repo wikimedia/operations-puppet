@@ -18,7 +18,7 @@ profile::prometheus::kubernetes::clusters:
   k8s-mlserve:
     enabled: true
     master_host: 'ml-ctrl.svc.codfw.wmnet'
-    port: 9908
+    port: 9909
     class_name: role::ml_k8s::worker
 # In the private repo a stanza like the following is required
 # profile::prometheus::kubernetes::cluster_tokens:
