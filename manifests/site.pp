@@ -182,10 +182,6 @@ node 'archiva1002.wikimedia.org' {
     role(archiva)
 }
 
-node 'auth1002.eqiad.wmnet' {
-    role(test)
-}
-
 node 'auth2001.codfw.wmnet' {
     role(test)
 }
@@ -1331,6 +1327,11 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
 # PKI server
 node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
     role(pki)
+}
+
+# pki-root server T276625
+node 'pki-root1001.eqiad.wmnet' {
+    role(insetup)
 }
 
 # New kafka-logging hosts T273778

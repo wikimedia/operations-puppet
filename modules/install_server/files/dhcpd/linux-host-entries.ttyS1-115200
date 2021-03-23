@@ -605,12 +605,6 @@ host aqs1015 {
     fixed-address aqs1015.eqiad.wmnet;
 }
 
-host auth1002 {
-    hardware ethernet D0:94:66:5F:55:90;
-    fixed-address auth1002.eqiad.wmnet;
-
-}
-
 host auth2001 {
     hardware ethernet 14:18:77:33:1D:1C;
     fixed-address auth2001.codfw.wmnet;
@@ -6960,6 +6954,12 @@ host phab2001 {
 host pki1001 {
     hardware ethernet D0:94:66:5F:4A:3C;
     fixed-address pki1001.eqiad.wmnet;
+}
+
+host pki-root1001 {
+    hardware ethernet D0:94:66:5F:55:90;
+    fixed-address pki-root1001.eqiad.wmnet;
+
 }
 
 host pki2001 {
