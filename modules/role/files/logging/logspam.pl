@@ -103,7 +103,7 @@ open (my $logstream, "$cat_files_cmd |")
 
 my %consolidate_patterns = (
   qr/Allowed memory size of/                               => '[mem]',
-  qr/the execution time limit of \d+ seconds was exceeded/ => '[time]',
+  qr/the(?: maximum)? execution time(?: limit)? of \d+ seconds was exceeded/i => '[time]',
   qr/Memcached::setMulti\(\): failed to set key/           => '[memcache]',
   qr/Cannot access the database:/                          => '[db]',
 );
