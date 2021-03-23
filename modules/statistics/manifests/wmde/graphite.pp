@@ -25,8 +25,6 @@ class statistics::wmde::graphite(
 ) {
 
     $scripts_dir  = "${dir}/src/scripts"
-    # Path in which all crons will log to.
-    $log_dir = "${dir}/log"
 
     require_package(
         'php',
@@ -49,7 +47,6 @@ class statistics::wmde::graphite(
         $dir,
         "${dir}/src",
         "${dir}/data",
-        $log_dir,
     ]
 
     file { $directories:
@@ -80,12 +77,6 @@ class statistics::wmde::graphite(
         require   => File["${dir}/src"],
     }
 
-    logrotate::conf { 'statistics-wmde-graphite':
-        ensure  => present,
-        content => template('statistics/wmde/logrotate.erb'),
-        require => File[$log_dir],
-    }
-
     file { "${dir}/src/config":
         ensure  => 'file',
         owner   => 'root',
@@ -100,16 +91,26 @@ class statistics::wmde::graphite(
     }
 
     cron { 'minutely':
-        command => "${scripts_dir}/cron/minutely.sh ${scripts_dir} >> ${log_dir}/minutely.log 2>&1",
+        ensure  => absent,
+        command => "${scripts_dir}/cron/minutely.sh ${scripts_dir}",
         hour    => '*',
         minute  => '*',
         require => Git::Clone['wmde/scripts'],
+    }
+    systemd::timer::job { 'wmde-analytics-minutely':
+        ensure      => present,
+        description => 'Minutely jobs for wmde analytics infrastructure',
+        user        => $user,
+        command     => "${scripts_dir}/cron/minutely.sh ${scripts_dir}",
+        require     => Git::Clone['wmde/scripts'],
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:*:0'},
     }
 
     # Note: some of the scripts run by this cron need access to secrets!
     # Docs can be seen at https://github.com/wikimedia/analytics-wmde-scripts/blob/master/README.md
     cron { 'daily.03':
-        command => "time ${scripts_dir}/cron/daily.03.sh ${scripts_dir} >> ${log_dir}/daily.03.log 2>&1",
+        ensure  => absent,
+        command => "time ${scripts_dir}/cron/daily.03.sh ${scripts_dir}",
         hour    => '3',
         minute  => '0',
         require => [
@@ -118,9 +119,22 @@ class statistics::wmde::graphite(
             Mariadb::Config::Client['research-wmde'],
         ],
     }
+    systemd::timer::job { 'wmde-analytics-daily-early':
+        ensure      => present,
+        description => 'Daily jobs for wmde analytics infrastructure',
+        user        => $user,
+        command     => "/usr/bin/time ${scripts_dir}/cron/daily.03.sh ${scripts_dir}",
+        require     => [
+            Git::Clone['wmde/scripts'],
+            File["${dir}/src/config"],
+            Mariadb::Config::Client['research-wmde'],
+        ],
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:0:0'},
+    }
 
     cron { 'daily.12':
-        command => "time ${scripts_dir}/cron/daily.12.sh ${scripts_dir} >> ${log_dir}/daily.12.log 2>&1",
+        ensure  => absent,
+        command => "time ${scripts_dir}/cron/daily.12.sh ${scripts_dir}",
         hour    => '12',
         minute  => '0',
         require => [
@@ -128,9 +142,22 @@ class statistics::wmde::graphite(
             File["${dir}/src/config"],
         ],
     }
+    systemd::timer::job { 'wmde-analytics-daily-noon':
+        ensure      => present,
+        description => 'Daily jobs for wmde analytics infrastructure',
+        user        => $user,
+        command     => "/usr/bin/time ${scripts_dir}/cron/daily.12.sh ${scripts_dir}",
+        require     => [
+            Git::Clone['wmde/scripts'],
+            File["${dir}/src/config"],
+            Mariadb::Config::Client['research-wmde'],
+        ],
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 12:0:0'},
+    }
 
     cron { 'weekly':
-        command => "time ${scripts_dir}/cron/weekly.sh ${scripts_dir} >> ${log_dir}/weekly.log 2>&1",
+        ensure  => absent,
+        command => "time ${scripts_dir}/cron/weekly.sh ${scripts_dir}",
         weekday => '7',
         hour    => '01',
         minute  => '0',
@@ -139,11 +166,30 @@ class statistics::wmde::graphite(
             File["${dir}/src/config"],
         ],
     }
+    systemd::timer::job { 'wmde-analytics-weekly':
+        ensure      => present,
+        description => 'Weekly jobs for wmde analytics infrastructure',
+        user        => $user,
+        command     => "/usr/bin/time ${scripts_dir}/cron/weekly.sh ${scripts_dir}",
+        require     => [
+            Git::Clone['wmde/scripts'],
+            File["${dir}/src/config"],
+        ],
+        interval    => {'start' => 'OnCalendar', 'interval' => 'Sunday 0:0:0'},
+    }
 
     cron { 'wmde/toolkit-analyzer-build':
-        command => "time java -Dhttp.proxyHost=\"http://webproxy.${::site}.wmnet\" -Dhttp.proxyPort=8080 -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest >> ${log_dir}/toolkit-analyzer.log 2>&1",
+        ensure  => absent,
+        command => "time java -Dhttp.proxyHost=\"http://webproxy.${::site}.wmnet\" -Dhttp.proxyPort=8080 -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest",
         hour    => '12',
         minute  => '0',
+    }
+    systemd::timer::job { 'wmde-toolkit-analyzer-build':
+        ensure      => present,
+        description => 'Daily jobs for rebuilding wmde analyzor toolkit',
+        user        => $user,
+        command     => "/usr/bin/java -Dhttp.proxyHost=\"http://webproxy.${::site}.wmnet\" -Dhttp.proxyPort=8080 -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 12:0:0'},
     }
 
 }
