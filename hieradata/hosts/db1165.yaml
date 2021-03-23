@@ -2,4 +2,3 @@
 # Will replace db1085 as sanitarium master once we are ready to move wiki replicas under 10.4 sanitarium
 mariadb::shard: 's6'
 mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
