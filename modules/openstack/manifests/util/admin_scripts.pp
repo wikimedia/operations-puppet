@@ -30,6 +30,15 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-cold-nova-migrate.py",
     }
 
+    # Script to generate a new base image from an upstream image
+    file { '/usr/local/sbin/wmcs-image-create':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-image-create.py",
+    }
+
     # Script to migrate from nova-network region to neutron region
     #  (hopefully this will only be needed transitionally)
     file { '/usr/local/sbin/wmcs-region-migrate':
