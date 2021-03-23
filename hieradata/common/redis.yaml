@@ -17,8 +17,8 @@ redis::shards:
         host: 10.64.0.84
         port: 6379
       shard06:
-        host: 10.64.48.158
-        port: 6380
+        host: 10.64.0.125
+        port: 6379
       shard07:
         host: 10.64.16.108
         port: 6379

@@ -1644,11 +1644,7 @@ node /^mc10(19|2[0-3]|2[5-9]|3[0-7])\.eqiad\.wmnet/ {
     role(mediawiki::memcached)
 }
 
-node 'mc1038.eqiad.wmnet' {
-    role(insetup)
-}
-
-node /^mc20(19|2[0-7]|29|3[0-7])\.codfw\.wmnet/ {
+node /^mc20(19|2[0-7]|29|3[0-8])\.codfw\.wmnet/ {
     role(mediawiki::memcached)
 }
 
