@@ -21,6 +21,9 @@ class sonofgridengine(
         require => File['/var/local/preseed'],
     }
 
+    # workaround debian bug https://bugs.debian.org/985498
+    ensure_packages('cpp')
+
     package { 'gridengine-common':
         ensure       => latest,
         responsefile => '/var/local/preseed/gridengine.preseed',
