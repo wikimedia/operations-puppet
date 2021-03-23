@@ -9,6 +9,7 @@ class httpd(
     Array[String]           $extra_pkgs           = [],
     Boolean                 $purge_manual_config  = true,
     Boolean                 $remove_default_ports = false,
+    Boolean                 $http_only            = false,
 ) {
     # Package and service. Links is needed for the status page below
     $base_pkgs = ['apache2', 'links']
@@ -19,6 +20,16 @@ class httpd(
         file{'/etc/apache2/ports.conf':
             ensure  => file,
             content => "# Puppet: default ports are not used\n",
+            notify  => Service['apache2'],
+            require => Package['apache2'],
+        }
+    }
+
+    # If set to true, listen on http/80 only regardless of mod_ssl being loaded, default: false (T277989)
+    if $http_only {
+        file{'/etc/apache2/ports.conf':
+            ensure  => file,
+            content => inline_template('#This file is puppetized.\nListen 80\n'),
             notify  => Service['apache2'],
             require => Package['apache2'],
         }
