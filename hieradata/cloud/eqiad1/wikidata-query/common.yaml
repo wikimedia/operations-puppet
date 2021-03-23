@@ -1,4 +1,4 @@
-profile::query_service::logstash_host: 'deployment-logstash2.deployment-prep.eqiad.wmflabs'
+profile::query_service::logstash_host: 'deployment-logstash03.deployment-prep.eqiad.wmflabs'
 profile::query_service::deploy_mode: 'manual'
 profile::query_service::package_dir: '/srv/wdqs-package'
 profile::query_service::data_dir: '/srv/wdqs-data'
