@@ -16,10 +16,15 @@ hostname: {{ds.meta_data.name}}
 fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 
 # APT fails to acquire GPG keys if packages dirmngr or gpg are missing
+# If we're booting from a snapshot then puppet is configured to run on first boot.
+# We'd rather run it synchronously from here so stop anything that's running already.
 bootcmd:
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
+  - [ cloud-init-per, once, disablepuppet, puppet, agent, --disable, "disabling puppet during first boot setup" ]
+  - [ cloud-init-per, once, stoppuppet, killall, puppet ]
+
 
 # /etc/block-ldap-key-lookup:
 #   Prevent non-root logins while the VM is being setup
@@ -57,7 +62,6 @@ manage_etc_hosts: true
 # pciutils: used by puppet to determine is_virtual
 packages:
     - gpg
-    - nscd
     - pciutils
 
 # Clear default partitioning/mounting behavior so puppet can manage it
@@ -105,11 +109,6 @@ set -x
 # The puppet config from cloud-init may have started the puppet agent.  If so,
 #  stop it so we can run it manually in a moment.
 systemctl stop puppet.service
-
-# If we're booting from a snapshot then puppet is configured to run on first boot.
-# We'd rather run it synchronously from here so stop anything that's running already.
-puppet agent --disable
-killall puppet
 
 systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
