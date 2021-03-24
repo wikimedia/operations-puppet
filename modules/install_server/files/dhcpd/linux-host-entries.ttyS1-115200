@@ -1499,6 +1499,11 @@ host cumin2001 {
      fixed-address cumin2001.codfw.wmnet;
 }
 
+host cumin2002 {
+     hardware ethernet 2C:EA:7F:87:F1:2A;
+     fixed-address cumin2002.codfw.wmnet;
+}
+
 host db1074 {
     hardware ethernet 14:02:EC:3D:4D:A4;
     fixed-address db1074.eqiad.wmnet;
