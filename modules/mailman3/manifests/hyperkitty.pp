@@ -10,7 +10,8 @@ class mailman3::hyperkitty (
         'dbconfig-mysql',
         # https://hyperkitty.readthedocs.io/en/latest/install.html#install-the-code
         'sassc',
-        'python3-django-hyperkitty'
+        'python3-django-hyperkitty',
+        'python3-whoosh',
     ])
 
     file { '/etc/mailman3/mailman-hyperkitty.cfg':
