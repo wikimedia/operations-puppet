@@ -379,6 +379,11 @@ node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(cluster::management)
 }
 
+# New cumin node T276587
+node 'cumin2002.codfw.wmnet' {
+    role(insetup)
+}
+
 node 'cuminunpriv1001.eqiad.wmnet' {
     role(cluster::unprivmanagement)
 }
