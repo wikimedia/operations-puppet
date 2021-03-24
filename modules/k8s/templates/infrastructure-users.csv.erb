@@ -4,20 +4,14 @@
   The token file is a csv file with a minimum of 3 columns:
   token, user name, user uid, followed by optional group names.
 
-  TODO: Remove the packages_from_future gate after migrating all clusters to kubernetes 1.16
   TODO: Remove the groups gate after migrating all user stanzas from type to groups
 -%>
 <%-
   @users.each do |k, v|
-  if @packages_from_future
-    uid = k
-  else
-    uid = v['id']
-  end
   if v.has_key? 'groups'
-    entry = "#{v['token']},#{k},#{uid},\"#{v['groups']}\""
+    entry = "#{v['token']},#{k},#{k},\"#{v['groups'].join(',')}\""
   else
-    entry = "#{v['token']},#{k},#{uid},#{v['type']}"
+    entry = "#{v['token']},#{k},#{k},#{v['type']}"
   end
 -%>
 <%= entry %>
