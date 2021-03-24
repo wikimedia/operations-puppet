@@ -84,6 +84,12 @@ class profile::mailman3 (
         ],
     }
 
+    exim4::dkim { $host:
+        domain   => $host,
+        selector => 'wikimedia',
+        content  => secret("dkim/${host}-wikimedia.key"),
+    }
+
     ferm::service { 'mailman3-smtp':
         proto => 'tcp',
         port  => '25',

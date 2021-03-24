@@ -270,6 +270,10 @@ lmtp_port: 8024
 configuration: python:mailman.config.exim4
 #configuration: python:mailman.config.postfix
 
+# we put footers etc. and hence invalidate DKIM signatures
+# although they shouldn't theoretically hurt, remove them to avoid confusion
+remove_dkim_headers: yes
+
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
 enable: yes

@@ -277,15 +277,21 @@ remote_smtp:
 	driver = smtp
 	interface = <; <%= @ipaddress %> ; <%= @ipaddress6 %>
 remote_smtp_signed:
-    driver = smtp
-    # TODO: Add dkim
+	driver = smtp
 	interface = <; <%= @ipaddress %> ; <%= @ipaddress6 %>
+	dkim_domain = wikimedia.org
+	dkim_selector = wikimedia
+	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
+	dkim_canon = relaxed
 
 list_smtp:
 	driver = smtp
 	interface = <; <%= @list_outbound_ips.join(" ; ") %>
 	helo_data = <%= @host %>
-	# TODO: Add dkim
+	dkim_domain = <%= @host %>
+	dkim_selector = wikimedia
+	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
+	dkim_canon = relaxed
 
 mailman3_transport:
 	driver = smtp
