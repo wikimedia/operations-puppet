@@ -31,7 +31,7 @@ class profile::mailman3 (
     }
 
     class { '::httpd':
-        modules => ['rewrite', 'ssl', 'proxy', 'proxy_http', 'proxy_uwsgi'],
+        modules => ['rewrite', 'ssl', 'proxy', 'proxy_http', 'proxy_uwsgi', 'headers'],
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
