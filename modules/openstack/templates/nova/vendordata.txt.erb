@@ -106,6 +106,11 @@ set -x
 #  stop it so we can run it manually in a moment.
 systemctl stop puppet.service
 
+# If we're booting from a snapshot then puppet is configured to run on first boot.
+# We'd rather run it synchronously from here so stop anything that's running already.
+puppet agent --disable
+killall puppet
+
 systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 systemctl restart ssh.service
