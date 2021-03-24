@@ -628,7 +628,7 @@ host ml-etcd2001 {
 }
 
 host ml-etcd2002 {
-    hardware ethernet aa:00:00:a7:b7:49;
+    hardware ethernet aa:00:00:9e:97:f5;
     fixed-address ml-etcd2002.codfw.wmnet;
 }
 
