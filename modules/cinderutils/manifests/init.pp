@@ -9,7 +9,7 @@ class cinderutils {
         source => 'puppet:///modules/cinderutils/wmcs-prepare-cinder-volume.py',
         owner  => 'root',
         group  => 'root',
-        mode   => '0554',
+        mode   => '0755',
     }
 
     # compat
