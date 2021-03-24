@@ -3,6 +3,7 @@ fields:
 codec: "json_lines"
 ignore:
   - "@timestamp"
+  - "[normalized][dropped]"
 testcases:
   - input:
       - >

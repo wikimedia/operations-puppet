@@ -7,7 +7,7 @@ fields:
 codec: "json_lines"
 ignore:
   - "[log][original]"  # json encoding is non-deterministic
-  - "normalized"
+  - "[normalized][dropped]"
 testcases:
   - input:
       - >
@@ -88,6 +88,8 @@ testcases:
 
     expected:
       - message: "Could not index event to Elasticsearch."
+        normalized:
+          message: "could not index event to elasticsearch."
         '@timestamp': '2021-03-03T16:04:27.028Z'
         labels:
           index: 'logstash-mediawiki-2021.03.03'
@@ -116,6 +118,8 @@ testcases:
         ecs:
           version: "1.7.0"
       - message: "Error parsing json"
+        normalized:
+          message: "error parsing json"
         '@timestamp': "2021-03-11T01:08:13.460Z"
         log:
           level: "WARN"
@@ -140,6 +144,8 @@ testcases:
         ecs:
           version: "1.7.0"
       - message: "Attempting to install template"
+        normalized:
+          message: "attempting to install template"
         '@timestamp': '2021-03-03T15:58:41.694Z'
         service:
           type: "logstash"

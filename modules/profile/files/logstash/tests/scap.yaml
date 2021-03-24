@@ -2,7 +2,7 @@ codec: "json_lines"
 ignore:
   - "@timestamp"
   - "tags"
-  - "normalized"
+  - "[normalized][dropped]"
 testcases:
   - input:
     - >
@@ -35,6 +35,8 @@ testcases:
       }
     expected:
       - message: "Started rsync common"
+        normalized:
+          message: "started rsync common"
         labels:
           channel: "sync_common.timer"
         log:

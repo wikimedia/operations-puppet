@@ -8,7 +8,7 @@ codec: "json_lines"
 ignore:
   - "labels"
   - "@timestamp"
-  - "normalized"
+  - "[normalized][dropped]"
 testcases:
   - input:
       - >
@@ -56,6 +56,8 @@ testcases:
 
     expected:
       - message: "git-upload-pack./mediawiki/extensions/IPInfo.git"
+        normalized:
+          message: "git-upload-pack./mediawiki/extensions/ipinfo.git"
         # "@timestamp": "2021-02-12T17:06:58.670Z"
         process:
           thread:
@@ -80,6 +82,8 @@ testcases:
         ecs:
           version: "1.7.0"
       - message: "Internal error during upload-pack from /srv/gerrit/git/mediawiki/core.git"
+        normalized:
+          message: "internal error during upload-pack from /srv/gerrit/git/mediawiki/core.git"
         # "@timestamp": "2021-02-12T17:35:04.423Z"
         server:
           ip: "208.80.154.136"

@@ -57,3 +57,6 @@ testcases:
           version: "1.7.0"
         tags:
           - "firewall"
+        normalized:
+          dropped:
+            no_such_field: [ 'path' ]

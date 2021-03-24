@@ -1,6 +1,8 @@
 fields:
   type: "syslog"
 codec: "json_lines"
+ignore:
+  - "[normalized][dropped]"
 testcases:
   - input:
       - >
