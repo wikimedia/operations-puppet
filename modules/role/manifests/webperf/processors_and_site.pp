@@ -13,6 +13,7 @@ class role::webperf::processors_and_site {
     }
 
     class { '::httpd':
-        modules => ['uwsgi', 'proxy', 'proxy_http', 'headers', 'ssl']
+        modules   => ['uwsgi', 'proxy', 'proxy_http', 'headers', 'ssl'],
+        http_only => true,
     }
 }

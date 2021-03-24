@@ -29,7 +29,7 @@ class httpd(
     if $http_only {
         file{'/etc/apache2/ports.conf':
             ensure  => file,
-            content => inline_template('#This file is puppetized.\nListen 80\n'),
+            content => inline_template("#This file is puppetized.\nListen 80\n"),
             notify  => Service['apache2'],
             require => Package['apache2'],
         }

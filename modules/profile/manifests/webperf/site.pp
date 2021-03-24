@@ -71,13 +71,6 @@ class profile::webperf::site (
         require => Git::Clone['performance/docroot'],
     }
 
-    file {'/etc/apache2/ports.conf':
-        ensure  => file,
-        content => file('profile/webperf/ports.conf'),
-        notify  => Service['apache2'],
-        require => Package['apache2'],
-    }
-
     cron { 'warm_up_coal_cache':
         command => "/bin/bash -c 'for period in day week month year ; do /usr/bin/curl -s -H ${server_name} -o /dev/null \"${::fqdn}/coal/v1/metrics?period=\$period\" ; done'",
         minute  => [0, 30],
