@@ -30,6 +30,11 @@
         Require all granted
     </Directory>
 
+    # Disallow access to django admin interface
+    <Location "/admin">
+        Require all denied
+    </Location>
+
     <IfModule mod_proxy_uwsgi.c>
         ProxyPass /mailman3/favicon.ico !
         ProxyPass /mailman3/static !
