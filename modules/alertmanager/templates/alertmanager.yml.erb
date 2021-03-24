@@ -39,6 +39,7 @@ route:
     - match:
         team: 'perf'
       receiver: 'perf-ircmail'
+      repeat_interval: '48h'
 
 
     # Compat Icinga alerts are routed to a 'sink' channel
