@@ -70,7 +70,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'alluxio'
     group: 'alluxio'
     filename: 'alluxio.keytab'
-profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::java::java_packages:
   - version: '8'
