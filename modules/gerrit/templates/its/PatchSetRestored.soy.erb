@@ -28,7 +28,7 @@
   {@param escapedSubject: string}
 
   Change {$changeNumber} **restored** by {$restorerName}:{\n}
-  [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}
+  [{$project}@{$branch}] %%%{$escapedSubject|escapeUri}%%%{\n}
   {\n}
   https://<%= @host %>/r/{$changeNumber}
 {/template}

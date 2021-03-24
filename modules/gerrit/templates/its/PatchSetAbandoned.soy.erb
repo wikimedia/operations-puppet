@@ -29,10 +29,10 @@
   {@param reason: string}
 
   Change {$changeNumber} **abandoned** by {$abandonerName}:{\n}
-  [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}
+  [{$project}@{$branch}] %%%{$escapedSubject|escapeUri}%%%{\n}
   {\n}
   Reason:{\n}
-    {$reason}{\n}
+    %%%{$reason}%%%{\n}
   {\n}
   https://<%= @host %>/r/{$changeNumber}
 {/template}
