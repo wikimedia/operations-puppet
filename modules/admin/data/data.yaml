@@ -4280,7 +4280,7 @@ ldap_only_users:
     ensure: present
     realname: Amrutha Varshini Chandra
     email: amrutha.chandra@wikimedia.de
-    expiry_date: 2021-03-31
+    expiry_date: 2021-05-31
     expiry_contact: lea.voget@wikimedia.de
   apalmer:
     ensure: present
