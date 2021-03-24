@@ -25,6 +25,7 @@ class profile::toolforge::docker::registry(
         },
     }
 
+    class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
     class { '::docker::registry::web':
         docker_username      => $user,
         docker_password_hash => $hash,
