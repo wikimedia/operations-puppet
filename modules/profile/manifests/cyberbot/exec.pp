@@ -1,12 +1,8 @@
 # sets up a an exec node for cyberbot
 class profile::cyberbot::exec{
 
-    # TODO: im not sure if this is correct for buster
-    # Also wonder if we should create a php_version fact
-    $php_version = debian::codename::ge('stretch') ? {
-        true    => '7.2',
-        default => '5',
-    }
+    # switch to a fact once T271196 is resolved
+    $php_version = '7.2'
 
     ensure_packages([
         "php${php_version}-mysql", "php${php_version}-mysqlnd", "php${php_version}-cli",

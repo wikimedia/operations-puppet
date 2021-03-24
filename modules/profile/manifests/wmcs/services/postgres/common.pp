@@ -4,7 +4,6 @@ class profile::wmcs::services::postgres::common (
     $pgversion = $::lsbdistcodename ? {
         'buster' => 11,
         'stretch' => 9.6,
-        'jessie'  => 9.4,
     }
 
     file { "/etc/postgresql/${pgversion}/main/tuning.conf":

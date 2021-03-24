@@ -34,7 +34,6 @@ class openstack::puppet::master::encapi(
                     'python-statsd'])
 
     $python_version = $::lsbdistcodename ? {
-        'jessie'  => 'python3.4',
         'stretch' => 'python3.5',
         'buster'  => 'python3.7',
     }

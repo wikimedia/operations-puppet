@@ -125,13 +125,11 @@ class role::puppetmaster::standalone(
         hiera_config        => $hiera_config,
     }
 
-    # Don't attempt to use puppet-master service on stretch, we're using passenger.
-    if debian::codename::ge('stretch') {
-        service { 'puppet-master':
-            ensure  => stopped,
-            enable  => false,
-            require => Package['puppet'],
-        }
+    # Don't attempt to use puppet-master service, we're using passenger.
+    service { 'puppet-master':
+        ensure  => stopped,
+        enable  => false,
+        require => Package['puppet'],
     }
 
     # Update git checkout

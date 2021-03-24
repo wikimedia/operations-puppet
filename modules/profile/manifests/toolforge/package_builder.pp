@@ -13,5 +13,4 @@ class profile::toolforge::package_builder(
 
     sbuild::chroot { 'buster': }
     sbuild::chroot { 'stretch': }
-    sbuild::chroot { 'jessie': }
 }

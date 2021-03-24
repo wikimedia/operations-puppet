@@ -8,9 +8,6 @@ class profile::toolforge::services::aptly(
     aptly::repo { 'stretch-tools':
         publish      => true,
     }
-    aptly::repo { 'jessie-tools':
-        publish      => true,
-    }
 
     # its interesting to serve some packages to toolsbeta for testing purposes
     aptly::repo { 'stretch-toolsbeta':

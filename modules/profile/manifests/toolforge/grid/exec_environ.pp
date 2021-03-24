@@ -91,29 +91,23 @@ class profile::toolforge::grid::exec_environ {
         'qpdf',                      # T204422
         'unpaper',                   # T204422
         'zstd',                      # T225380
+        'fonts-noto-hinted',  # T184664
+        'fonts-noto-unhinted', # T184664
+        'fonts-beng',
+        'fonts-deva',
+        'fonts-gujr',
+        'fonts-knda',
+        'fonts-mlym',
+        'fonts-orya',
+        'fonts-guru',
+        'fonts-taml',
+        'fonts-telu',
+        'fonts-gujr-extra',
+        'fonts-noto-cjk',
+        'fonts-sil-lateef',
+        'fonts-ipafont-gothic',
+        'fonts-ipafont-mincho',
     ])
-
-    # packages only in stretch, buster and bullseye
-    if debian::codename::ge('stretch') {
-        ensure_packages([
-            'fonts-noto-hinted',  # T184664
-            'fonts-noto-unhinted', # T184664
-            'fonts-beng',
-            'fonts-deva',
-            'fonts-gujr',
-            'fonts-knda',
-            'fonts-mlym',
-            'fonts-orya',
-            'fonts-guru',
-            'fonts-taml',
-            'fonts-telu',
-            'fonts-gujr-extra',
-            'fonts-noto-cjk',
-            'fonts-sil-lateef',
-            'fonts-ipafont-gothic',
-            'fonts-ipafont-mincho',
-        ])
-    }
 
     # packages only in stretch, not available in buster
     if debian::codename::eq('stretch') {
