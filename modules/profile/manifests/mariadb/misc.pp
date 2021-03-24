@@ -17,6 +17,13 @@ class profile::mariadb::misc (
     # hack until m5 servers are bought and proxy is in use
     if $shard == 'm5' {
         include ::profile::mariadb::ferm_wmcs
+        # Open for mailman3 too (T256538#6943696)
+        ferm::service { 'mailman3':
+            proto   => 'tcp',
+            port    => '3306',
+            notrack => true,
+            srange  => '@resolve(lists1002.wikimedia.org)',
+        }
     }
     include ::profile::mariadb::monitor::prometheus
 
