@@ -8,4 +8,7 @@ class role::mediawiki::common {
 
     # proxy for connection to other servers
     include profile::services_proxy::envoy
+
+    # Gather cpu/mem/network statistics per systemd.service
+    include profile::prometheus::cadvisor_exporter
 }
