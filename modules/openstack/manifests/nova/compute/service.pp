@@ -70,19 +70,16 @@ class openstack::nova::compute::service(
     }
 
     # Guest management on host startup/reboot
-    if debian::codename::ge('stretch') {
+    file { '/etc/default/libvirt-guests':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/openstack/nova/libvirt/libvirt-guests',
+    }
 
-        file { '/etc/default/libvirt-guests':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/openstack/nova/libvirt/libvirt-guests',
-        }
-
-        service { 'libvirt-guests':
-            ensure => 'running',
-            enable => true,
-        }
+    service { 'libvirt-guests':
+        ensure => 'running',
+        enable => true,
     }
 
     file { '/etc/libvirt/libvirtd.conf':
