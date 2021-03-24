@@ -3,4 +3,3 @@
 profile::mariadb::dbstore_multiinstance::instances:
   s4: 192G
   s5: 192G
-profile::base::notifications: disabled
