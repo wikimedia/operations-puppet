@@ -1947,11 +1947,12 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 # Row A
 
 # New mw servers T274171
+
+# rack A3 
 node /^mw237[78]\.codfw\.wmnet/ {
-    role(insetup)
+    role(mediawiki::jobrunner)
 }
 
-# rack A3
 node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
