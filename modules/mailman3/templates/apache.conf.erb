@@ -1,9 +1,15 @@
-# Redirect all HTTP requests to HTTPS
+# Django will handle the redirect from http:// to https://
 <VirtualHost *:80>
     ServerName <%= @host %>
-    RewriteEngine on
-    RewriteCond %{SERVER_NAME} =<%= @host %>
-    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+    # Disallow access to django admin interface
+    <Location "/admin">
+        Require all denied
+    </Location>
+    <IfModule mod_proxy_uwsgi.c>
+        ProxyPass /mailman3/favicon.ico !
+        ProxyPass /mailman3/static !
+        ProxyPass / unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
+    </IfModule>
 </VirtualHost>
 
 

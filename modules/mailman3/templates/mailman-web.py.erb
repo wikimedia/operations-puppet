@@ -24,7 +24,7 @@ MAILMAN_REST_API_URL = 'http://localhost:8001'
 MAILMAN_REST_API_USER = 'restadmin'
 MAILMAN_REST_API_PASS = '<%= @api_password %>'
 MAILMAN_ARCHIVER_KEY = '<%= @archiver_key %>'
-MAILMAN_ARCHIVER_FROM = ('127.0.0.1', '::1')
+MAILMAN_ARCHIVER_FROM = ('127.0.0.1', '::1', '<%= scope.function_ipresolve([@host]) %>')
 
 # Application definition
 INSTALLED_APPS = (
@@ -98,7 +98,7 @@ STATICFILES_DIRS = (
 # Other security settings
 SECURE_SSL_REDIRECT = True
 SECURE_REDIRECT_EXEMPT = [
-    "archives/api/mailman/.*",  # Request from Mailman.
+    "hyperkitty/api/mailman/.*",  # Request from Mailman.
 ]
 SESSION_COOKIE_SECURE = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -150,5 +150,3 @@ SOCIALACCOUNT_PROVIDERS = {}
 # management command after each code upgrade.
 # http://django-compressor.readthedocs.io/en/latest/usage/#offline-compression
 COMPRESS_OFFLINE = True
-
-POSTORIUS_TEMPLATE_BASE_URL = 'http://localhost/mailman3/'
