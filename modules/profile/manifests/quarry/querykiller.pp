@@ -14,8 +14,9 @@ class profile::quarry::querykiller(
         group  => 'quarry',
     }
 
+    # Clean up after it is removed by puppet
     systemd::timer::job { 'query-killer':
-        ensure      => present,
+        ensure      => absent,
         user        => 'quarry',
         description => 'Kill slow queries',
         command     => "${venv_path}/bin/python ${clone_path}/quarry/web/killer.py",
