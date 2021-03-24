@@ -1,7 +1,3 @@
-profile::calico::kubernetes::etcd_endpoints:
-- https://kubestagetcd1004.eqiad.wmnet:2379
-- https://kubestagetcd1005.eqiad.wmnet:2379
-- https://kubestagetcd1006.eqiad.wmnet:2379
 profile::calico::kubernetes::bgp_peers:
 - kubestage1001.eqiad.wmnet
 - kubestage1002.eqiad.wmnet
