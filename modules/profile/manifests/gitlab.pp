@@ -17,13 +17,13 @@ class profile::gitlab(
     ferm::service { 'gitlab-http-public':
         proto  => 'tcp',
         port   => 80,
-        drange => "${service_ip_v4} ${service_ip_v6}",
+        drange => "(${service_ip_v4} ${service_ip_v6})",
     }
 
     # world -> service IP, HTTPS
     ferm::service { 'gitlab-https-public':
         proto  => 'tcp',
         port   => 443,
-        drange => "${service_ip_v4} ${service_ip_v6}",
+        drange => "(${service_ip_v4} ${service_ip_v6})",
     }
 }
