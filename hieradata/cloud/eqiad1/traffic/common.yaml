@@ -81,6 +81,15 @@ abuse_networks:
       - varnish
     networks:
       - '93.184.216.34/32'
+  bot_posts_blocked_nets:
+    comment: |-
+      "POST traffic from bot-like User-Agents (e.g. 'PostmanRuntime/')
+      will be dropped, with a 403 asking them to email noc@wm.o and to read
+      the User-Agent policy on metawiki.  Browser-like UAs will be allowed."
+    context:
+      - varnish
+    networks:
+      - '93.184.216.34/32'
   public_cloud_nets:
     comment: |-
       "A couple of ec2 networks"
