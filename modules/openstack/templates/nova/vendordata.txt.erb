@@ -16,12 +16,12 @@ hostname: {{ds.meta_data.name}}
 fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 
 # APT fails to acquire GPG keys if packages dirmngr or gpg are missing
-# If we're booting from a snapshot then puppet is configured to run on first boot.
-# We'd rather run it synchronously from here so stop anything that's running already.
+# Mask the puppet service; we'll be updating puppet with a cron instead.
 bootcmd:
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
+  - [ cloud-init-per, once, systemctl, mask, puppet.service ]
 
 
 # /etc/block-ldap-key-lookup:
@@ -106,6 +106,7 @@ set -x
 
 # The puppet config from cloud-init may have started the puppet agent.  If so,
 #  stop it so we can run it manually in a moment.
+systemctl mask puppet.service
 systemctl stop puppet.service
 killall puppet
 
