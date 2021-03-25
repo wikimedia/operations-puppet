@@ -92,9 +92,6 @@ USE_X_FORWARDED_HOST = True
 # https://docs.djangoproject.com/en/1.8/ref/settings/#secure-proxy-ssl-header
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_SCHEME', 'https')
-STATICFILES_DIRS = (
-    '/var/www/html/static/',
-)
 # Other security settings
 SECURE_SSL_REDIRECT = True
 SECURE_REDIRECT_EXEMPT = [
