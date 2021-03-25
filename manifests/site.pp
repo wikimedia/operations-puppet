@@ -2084,11 +2084,6 @@ node /^mw22(8[3-9]|90)\.codfw\.wmnet$/ {
 
 # Row A
 
-# rack A4 - jobrunners
-node /^mw22(4[3678])\.codfw\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
 # Row B
 
 # rack B3
