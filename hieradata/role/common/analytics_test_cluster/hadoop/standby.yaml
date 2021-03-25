@@ -36,6 +36,11 @@ profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'
 # Clients must be in this srange to use Hadoop.
 profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS))'
 
+profile::analytics::cluster::hadoop::yarn_capacity_scheduler::extra_settings:
+  # Due to how little the test cluster is compared to prod, we need a higher value
+  # for application managers.
+  yarn.scheduler.capacity.maximum-am-resource-percent: '0.5'
+
 profile::hadoop::backup::namenode::monitoring_enabled: true
 
 profile::kerberos::keytabs::keytabs_metadata:

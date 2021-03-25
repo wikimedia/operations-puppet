@@ -77,8 +77,20 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
 
         # Limits
         # https://docs.cloudera.com/HDPDocuments/HDP2/HDP-2.6.4/bk_yarn-resource-management/content/setting_user_limits.html
-        'yarn.scheduler.capacity.root.production.user-limit-factor' => 2,
+        # https://hadoop.apache.org/docs/r2.10.1/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html
+        # The user limit factor is a multiplier used to allow users of a specific queue to take up to X
+        # times the resource allocated (as min value) for the queue. It is needed to allow/control elasticity,
+        # so users can overcome Yarn default limits in case there are free resources.
         'yarn.scheduler.capacity.root.users.default.user-limit-factor' => 2,
+        'yarn.scheduler.capacity.root.production.analytics.user-limit-factor' => 5,
+        'yarn.scheduler.capacity.root.production.search.user-limit-factor' => 5,
+        'yarn.scheduler.capacity.root.production.product.user-limit-factor' => 10,
+        'yarn.scheduler.capacity.root.production.ingest.user-limit-factor' => 10,
+        # The user limit percent is different from the factor, since it is about how many users can run jobs on a queue
+        # at any given time. For example, if we set:
+        # 'yarn.scheduler.capacity.root.production.analytics.minimum-user-limit-percent' => 50,
+        # we want to allow up to two users concurrently in the queue (druid and analytics), leaving the others waiting.
+        # If we use '25', we'll allow a max of 4 different users, etc..
         'yarn.scheduler.capacity.root.production.analytics.minimum-user-limit-percent' => 50,
         'yarn.scheduler.capacity.root.production.search.minimum-user-limit-percent' => 100,
         'yarn.scheduler.capacity.root.production.product.minimum-user-limit-percent' => 100,
