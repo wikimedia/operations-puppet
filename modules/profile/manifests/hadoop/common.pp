@@ -438,7 +438,8 @@ class profile::hadoop::common (
         # When testing spark2 on yarn, the AM was often killed
         # due to virtual memory usage.
         # More info: https://phabricator.wikimedia.org/T244499#6378887
-        'yarn.nodemanager.vmem-pmem-ratio' => '5.1',
+        # Bumped up from 5.1 to 10.1 for T278441
+        'yarn.nodemanager.vmem-pmem-ratio' => '10.1',
     }
 
     $yarn_nodemanager_container_executor_config_default = {
