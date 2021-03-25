@@ -21,7 +21,7 @@ bootcmd:
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
-  - [ cloud-init-per, once, systemctl, mask, puppet.service ]
+  - [ cloud-init-per, once, mask-puppet-agent, systemctl, mask, puppet.service ]
 
 
 # /etc/block-ldap-key-lookup:
