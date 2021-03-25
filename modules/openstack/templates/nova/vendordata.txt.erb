@@ -22,8 +22,6 @@ bootcmd:
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
-  - [ cloud-init-per, once, disablepuppet, puppet, agent, --disable, "disabling puppet during first boot setup" ]
-  - [ cloud-init-per, once, stoppuppet, killall, puppet ]
 
 
 # /etc/block-ldap-key-lookup:
@@ -90,8 +88,8 @@ apt:
 package_update: true
 package_upgrade: true
 
-# This configures puppet but doesn't actually puppetize anything (for unclear reasons).
-#  The actual run is prompted in the boot script.
+# This configures puppet and starts the puppet agent (which we don't want).
+#  When the boot script starts we'll kill the agent and run puppet synchronously.
 puppet:
     conf:
         agent:
@@ -109,6 +107,7 @@ set -x
 # The puppet config from cloud-init may have started the puppet agent.  If so,
 #  stop it so we can run it manually in a moment.
 systemctl stop puppet.service
+killall puppet
 
 systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
