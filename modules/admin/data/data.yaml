@@ -793,7 +793,7 @@ groups:
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
-    members: [eugene-chernov, strofimovsky01, olykalinichenko]
+    members: [eugene-chernov, strofimovsky01, olykalinichenko, il]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Wolfgang Kandek
   reprepro:
@@ -4253,6 +4253,16 @@ users:
     krb: present
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPofgCuu5AVNvAyH2qs3IFOhpByNCfO5HMVnTBG6IdX corybant@delphi"
+  il:
+    ensure: present
+    realname: Igor L
+    email: igor.l@speedandfunction.com
+    uid: 30732
+    gid: 500
+    krb: present
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGBEh/vX39DqVkpUkNc1ODW/MO/9laxPOD5ci64v0T97 igor.l@speedandfunction.com'
+
 
 ldap_only_users:
   abartov:
