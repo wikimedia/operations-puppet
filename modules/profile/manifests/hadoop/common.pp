@@ -435,11 +435,11 @@ class profile::hadoop::common (
         'yarn.nodemanager.container-executor.class' => 'org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor',
         'spark.authenticate' => true,
         'spark.network.crypto.enabled' => true,
-        # When testing spark2 on yarn, the AM was often killed
-        # due to virtual memory usage.
-        # More info: https://phabricator.wikimedia.org/T244499#6378887
-        # Bumped up from 5.1 to 10.1 for T278441
-        'yarn.nodemanager.vmem-pmem-ratio' => '10.1',
+        # We tried to bump the yarn.nodemanager.vmem-pmem-ratio to 10.1 in T278441,
+        # but in several use cases Spark containers were killed due to excessive vmem usage
+        # (but not the same for pmem). Bumping the ratio even more is not productive,
+        # it is more efficient to just disable the vmem check.
+        'yarn.nodemanager.vmem-check-enabled' => false,
     }
 
     $yarn_nodemanager_container_executor_config_default = {
