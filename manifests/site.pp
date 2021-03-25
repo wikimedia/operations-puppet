@@ -1342,7 +1342,7 @@ node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
 
 # pki-root server T276625
 node 'pki-root1001.eqiad.wmnet' {
-    role(insetup)
+    role(role::pki::root)
 }
 
 # New kafka-logging hosts T273778
