@@ -1336,7 +1336,8 @@ node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
 
 # PKI server
 node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
-    role(pki)
+    # Temporarily spare in prep for rebuild
+    role(spare::system)
 }
 
 # pki-root server T276625
