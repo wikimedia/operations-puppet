@@ -106,3 +106,9 @@ abuse_networks:
     networks:
       - 3.5.208.0/22
       - 3.136.0.0/13
+  text_abuse_nets:
+    comment: 'Abuse block list specific to text-frontend'
+    context:
+      - varnish
+    networks:
+      - '93.184.216.34/32'
