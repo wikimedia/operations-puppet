@@ -1,0 +1,33 @@
+# in this file all _cert parameteres are passed to the file function
+# and all _key paramtetes are passed to the secret function
+profile::pki::multirooca::intermediates:
+  debmonitor_discovery_wmnet:
+    ocsp_port: 10001
+    key_content: 'pki/intermediates/debmonitor_discovery_wmnet.pem'
+    cert_content: 'profile/pki/intermediates/debmonitor_discovery_wmnet.pem'
+profile::pki::multirooca::root_ca_cn: 'Wikimedia_Internal_Root_CA'
+profile::pki::multirooca::root_ca_cert: 'profile/pki/ROOT/Wikimedia_Internal_Root_CA.pem'
+profile::pki::multirooca::root_ocsp_cert: 'profile/pki/ROOT/Wikimedia_Internal_Root_CA_ocsp_signing_cert.pem'
+profile::pki::multirooca::root_ocsp_key: 'pki/ROOT/Wikimedia_Internal_Root_CA_ocsp_signing_cert.pem'
+profile::pki::multirooca::root_ocsp_port: 10000
+# This is the vhost used for the ocsp/crl responder
+profile::pki::multirooca::vhost: 'pki.discovery.wmnet'
+profile::pki::multirooca::db_driver: 'mysql'
+profile::pki::multirooca::db_user: 'pki'
+profile::pki::multirooca::db_host: 'm1-master.eqiad.wmnet'
+profile::pki::multirooca::db_name: 'pki'
+profile::pki::multirooca::enable_client_auth: true
+profile::pki::multirooca::default_nets:
+  - 127.0.0.1/32
+profile::pki::multirooca::default_profiles:
+  ocsp:
+    usages:
+      - 'digital signature'
+      - 'ocsp signing'
+    expiry: '43800h'
+  server:
+    usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
+    expiry: '96h'
