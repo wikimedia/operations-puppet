@@ -90,6 +90,14 @@ abuse_networks:
       - varnish
     networks:
       - '93.184.216.34/32'
+  phabricator_abusers:
+    comment: |-
+      'This is a list of users who have been known to abuse phabricator'
+    context:
+      - phabricator
+      - varnish
+    networks:
+      - '93.184.216.34/32'
   public_cloud_nets:
     comment: |-
       "A couple of ec2 networks"
