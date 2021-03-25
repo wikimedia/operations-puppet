@@ -1,7 +1,7 @@
 ## NOTE namespaced keys (i.e. with ::) will NOT be looked up here
 ## See also https://phabricator.wikimedia.org/T209265
 lookup_options:
-  profile::pki::server::db_pass:
+  "^profile::pki::(.*)::db_pass$":
     convert_to: 'Sensitive'
   profile::pki::client::auth_key:
     convert_to: 'Sensitive'
