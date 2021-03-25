@@ -110,3 +110,4 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-perf-bots'
   email_configs:
     - to: 'performance-team@<%= scope.lookupvar('::domain') %>'
+      send_resolved: true
