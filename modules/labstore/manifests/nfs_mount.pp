@@ -42,6 +42,8 @@ define labstore::nfs_mount(
     Optional[Stdlib::Unixpath] $share_path    = undef,
 ){
 
+    ensure_packages(['nfs-common'])
+
     include labstore::traffic_shaping
 
     $set_opts = ["vers=${nfs_version}",
@@ -134,7 +136,7 @@ define labstore::nfs_mount(
             fstype   => 'nfs',
             options  => join($final_options,','),
             device   => "${server}:${share_path}",
-            require  => File['/usr/local/sbin/nfs-mount-manager'],
+            require  => [File['/usr/local/sbin/nfs-mount-manager'], Package['nfs-common']],
             remounts => false,
         }
 
