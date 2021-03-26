@@ -104,6 +104,12 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         'yarn.scheduler.capacity.root.users.default.ordering-policy' => 'fair',
         'yarn.scheduler.capacity.root.users.fifo.ordering-policy' => 'fifo',
 
+        # Labels
+        # https://hadoop.apache.org/docs/r2.10.0/hadoop-yarn/hadoop-yarn-site/NodeLabel.html
+        'yarn.scheduler.capacity.root.users.fifo.accessible-node-labels' => 'GPU',
+        'yarn.scheduler.capacity.root.users.fifo.accessible-node-labels.GPU.capacity' => '100',
+        'yarn.scheduler.capacity.root.users.fifo.default-node-label-expression' => 'GPU',
+
         # ACLs
         # Permissions cannot be reduced on the lower layer of the tree once set for a specific
         # queue, they can only be incremented.

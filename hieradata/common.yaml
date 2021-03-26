@@ -803,6 +803,9 @@ hadoop_clusters:
       yarn.resourcemanager.scheduler.class: 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler'
       yarn.resourcemanager.scheduler.monitor.enable: true
       yarn.acl.enable: true
+      # Requires the capacity scheduler to work
+      yarn.node-labels.enabled: true
+      yarn.node-labels.fs-store.root-dir: 'hdfs://analytics-test/user/yarn/node-labels'
 
     hdfs_site_extra_properties:
       # Avoid long waits if the Namenodes are not reachable

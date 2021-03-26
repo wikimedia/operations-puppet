@@ -26,6 +26,21 @@ class bigtop::hadoop::resourcemanager {
             require => [Service['hadoop-hdfs-namenode'], Bigtop::Hadoop::Directory['/var/log']],
             before  => Package['hadoop-yarn-resourcemanager'],
         }
+
+        bigtop::hadoop::directory { '/user/yarn':
+            owner   => 'yarn',
+            group   => 'yarn',
+            mode    => '0755',
+            require => Bigtop::Hadoop::Directory['/user'],
+        }
+
+        bigtop::hadoop::directory { '/user/yarn/node-labels':
+            owner   => 'yarn',
+            group   => 'yarn',
+            mode    => '0700',
+            require => Bigtop::Hadoop::Directory['/user/yarn'],
+            before  => Package['hadoop-yarn-resourcemanager'],
+        }
     }
 
     package { 'hadoop-yarn-resourcemanager':
