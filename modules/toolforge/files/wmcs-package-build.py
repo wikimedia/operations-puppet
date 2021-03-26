@@ -77,7 +77,7 @@ def parse_args():
            """
     parser.add_argument(
         "--build-host",
-        default="tools-package-builder-02.tools.eqiad1.wikimedia.cloud",
+        default="tools-package-builder-03.tools.eqiad1.wikimedia.cloud",
         help=help,
     )
     help = """target distribution in aptly. The resulting deb package will be

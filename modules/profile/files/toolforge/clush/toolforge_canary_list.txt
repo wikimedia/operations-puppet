@@ -11,7 +11,7 @@ tools-k8s-ingress-1.tools.eqiad1.wikimedia.cloud
 tools-k8s-worker-30.tools.eqiad1.wikimedia.cloud
 tools-legacy-redirector.tools.eqiad1.wikimedia.cloud
 tools-mail-02.tools.eqiad1.wikimedia.cloud
-tools-package-builder-02.tools.eqiad1.wikimedia.cloud
+tools-package-builder-03.tools.eqiad1.wikimedia.cloud
 tools-prometheus-03.tools.eqiad1.wikimedia.cloud
 tools-proxy-05.tools.eqiad1.wikimedia.cloud
 tools-puppetdb-01.tools.eqiad1.wikimedia.cloud
