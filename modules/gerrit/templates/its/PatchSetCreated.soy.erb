@@ -31,7 +31,7 @@
   {@param escapedSubject: string}
 
   Change {$changeNumber} had a related patch set uploaded (by {$uploaderName ? $uploaderName : $uploaderUsername}; author: {$authorName ? $authorName : $authorUsername}):{\n}
-  [{$project}@{$branch}] %%%{$escapedSubject|escapeUri}%%%{\n}{\n}
+  [{$project}@{$branch}] {$escapedSubject|escapeUri}{\n}{\n}
 
   https://<%= @host %>/r/{$changeNumber}
 {/template}
