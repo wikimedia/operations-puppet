@@ -13,21 +13,20 @@
 # @param max_sessions allow users to override the maximum number ops sessions
 # @param max_startups allow users to override the maximum number ops startups
 class ssh::server (
-    # TODO convert to Stdlib::Port
-    String                     $listen_port              = '22',
-    Optional[Stdlib::Host]     $listen_address           = undef,
-    Boolean                    $permit_root              = true,
+    Stdlib::Port           $listen_port              = 22,
+    Optional[Stdlib::Host] $listen_address           = undef,
+    Boolean                $permit_root              = true,
     # TODO convert to Array[Stdlib::Unuxpath]
-    Optional[String]           $authorized_keys_file     = undef,
-    Stdlib::Unixpath           $authorized_keys_command  = '/usr/sbin/ssh-key-ldap-lookup',
-    Boolean                    $disable_nist_kex         = true,
-    Boolean                    $explicit_macs            = true,
-    Boolean                    $enable_hba               = false,
-    Boolean                    $enable_kerberos          = false,
-    Boolean                    $disable_agent_forwarding = true,
-    Boolean                    $challenge_response_auth  = true,
-    Optional[Integer]          $max_sessions             = undef,
-    Optional[Integer]          $max_startups             = undef,
+    String                 $authorized_keys_file     = '/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin',
+    Stdlib::Unixpath       $authorized_keys_command  = '/usr/sbin/ssh-key-ldap-lookup',
+    Boolean                $disable_nist_kex         = true,
+    Boolean                $explicit_macs            = true,
+    Boolean                $enable_hba               = false,
+    Boolean                $enable_kerberos          = false,
+    Boolean                $disable_agent_forwarding = true,
+    Boolean                $challenge_response_auth  = true,
+    Optional[Integer]      $max_sessions             = undef,
+    Optional[Integer]      $max_startups             = undef,
 ) {
     package { 'openssh-server':
         ensure => present,
@@ -39,8 +38,6 @@ class ssh::server (
     }
 
     base::service_auto_restart { 'ssh': }
-    # TODO just make this the param default
-    $_authorized_keys_file = pick($authorized_keys_file, '/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin')
 
     file { '/etc/ssh/userkeys':
         ensure  => directory,
