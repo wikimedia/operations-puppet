@@ -236,6 +236,7 @@ class profile::hadoop::common (
     $hadoop_namenode_opts                     = $hadoop_config['hadoop_namenode_opts']
     $mapreduce_history_java_opts              = $hadoop_config['mapreduce_history_java_opts']
     $yarn_fair_scheduler_template             = $hadoop_config['yarn_fair_scheduler_template']
+    $yarn_node_labels_enabled                 = $hadoop_config['yarn_node_labels_enabled']
     $yarn_nodemanager_resource_memory_mb      = $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'] ? {
             undef   => undef,
             default => floor($facts['memorysize_mb']) - $hadoop_config['yarn_nodemanager_os_reserved_memory_mb'],
@@ -524,6 +525,7 @@ class profile::hadoop::common (
         yarn_scheduler_minimum_allocation_vcores         => $yarn_scheduler_minimum_allocation_vcores,
         yarn_scheduler_maximum_allocation_vcores         => $yarn_scheduler_maximum_allocation_vcores,
         yarn_use_spark_shuffle                           => $yarn_use_spark_shuffle,
+        yarn_node_labels_enabled                         => $yarn_node_labels_enabled,
 
         dfs_block_size                                   => 268435456, # 256 MB
         io_file_buffer_size                              => 131072,

@@ -347,6 +347,17 @@ end
         How long to wait between aggregated log retention checks.
       </description>
   </property>
+<% if @yarn_node_labels_enabled -%>
+  <property>
+    <name>yarn.node-labels.enabled</name>
+    <value><%= @yarn_node_labels_enabled %></value>
+  </property>
+
+  <property>
+    <name>yarn.node-labels.fs-store.root-dir</name>
+    <value>hdfs://<%= @ha_enabled ? @nameservice_id : @primary_namenode_host %>/user/yarn/node-labels</value>
+  </property>
+<% end -%>
 <% if @yarn_site_extra_properties -%>
 <% @yarn_site_extra_properties.sort.map do |key, value| -%>
   <property>

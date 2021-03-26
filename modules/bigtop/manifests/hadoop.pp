@@ -333,6 +333,7 @@ class bigtop::hadoop(
     $yarn_resourcemanager_fs_state_store_uri     = undef,
     $yarn_resourcemanager_fs_state_store_retry_policy = '2000,10',
     $yarn_resourcemanager_max_completed_applications = 10000,
+    $yarn_node_labels_enabled                    = undef,
 
     $java_home                                   = undef,
 
