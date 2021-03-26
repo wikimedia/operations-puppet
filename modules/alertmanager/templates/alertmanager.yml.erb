@@ -27,6 +27,10 @@ route:
     - match:
         team: 'dcops'
       receiver: 'dcops-mail'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'dcops-task'
     - match:
         team: 'noc'
       receiver: 'noc-ircmail'
@@ -72,7 +76,8 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/<%= @irc_channel %>'
 
-# team-based receivers
+# Team receivers. Naming convention is '<team>-<method>' where method can be irc/mail/etc, or a
+# combination thereof if desired.
 - name: 'sre-irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
@@ -95,24 +100,64 @@ receivers:
   email_configs:
     - to: 'peering@<%= scope.lookupvar('::domain') %>'
 
-- name: 'sre-o11y-task'
-  webhook_configs:
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-dwtj3e5mikntyhdbnohb'
-      send_resolved: false
-
-- name: 'sre-task'
-  webhook_configs:
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-5hj6ygnanfu23mmnlvmd'
-      send_resolved: false
-
-- name: 'netops-task'
-  webhook_configs:
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-h2zjwfqqi5cxjonrkfa7'
-      send_resolved: false
-
 - name: 'perf-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-perf-bots'
   email_configs:
     - to: 'performance-team@<%= scope.lookupvar('::domain') %>'
       send_resolved: true
+
+# Receivers to open Phabricator tasks. Naming convention is '<team-and-subteam>-task'
+- name: 'sre-o11y-task'
+  webhook_configs:
+    # #observability
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-dwtj3e5mikntyhdbnohb'
+      send_resolved: false
+
+- name: 'sre-task'
+  webhook_configs:
+    # #SRE
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-5hj6ygnanfu23mmnlvmd'
+      send_resolved: false
+
+- name: 'netops-task'
+  webhook_configs:
+    # #netops
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-h2zjwfqqi5cxjonrkfa7'
+      send_resolved: false
+
+- name: 'dcops-task'
+  webhook_configs:
+    # #dcops
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-guqp46cxa2rgti2tqgv5'
+      send_resolved: false
+
+- name: 'dcops-eqiad-task'
+  webhook_configs:
+    # #ops-eqiad
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-wr7jlgkb5qk5ykssqwn7'
+      send_resolved: false
+
+- name: 'dcops-codfw-task'
+  webhook_configs:
+    # #ops-codfw
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-heihjeaiasruuvneirzh'
+      send_resolved: false
+
+- name: 'dcops-esams-task'
+  webhook_configs:
+    # #ops-esams
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-yyw3x6n3sdjeyzq3xbmo'
+      send_resolved: false
+
+- name: 'dcops-ulsfo-task'
+  webhook_configs:
+    # #ops-ulsfo
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-zisfzcctzc5kqyal5mcq'
+      send_resolved: false
+
+- name: 'dcops-eqsin-task'
+  webhook_configs:
+    # #ops-eqsin
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7ooh7jsiccviqsicgfzy'
+      send_resolved: false
