@@ -49,8 +49,8 @@ Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.
 
 PubkeyAuthentication yes
 #AuthorizedKeysFile	%h/.ssh/authorized_keys
-<% if @ssh_authorized_keys_file then %>
-AuthorizedKeysFile	<%= @ssh_authorized_keys_file %>
+<% if @_authorized_keys_file then %>
+AuthorizedKeysFile	<%= @_authorized_keys_file %>
 <% end %>
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
