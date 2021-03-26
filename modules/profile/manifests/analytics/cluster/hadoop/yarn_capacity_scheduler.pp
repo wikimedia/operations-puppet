@@ -106,6 +106,8 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
 
         # Labels
         # https://hadoop.apache.org/docs/r2.10.0/hadoop-yarn/hadoop-yarn-site/NodeLabel.html
+        'yarn.scheduler.capacity.root.accessible-node-labels' => 'GPU',
+        'yarn.scheduler.capacity.root.accessible-node-labels.GPU.capacity' => '100',
         'yarn.scheduler.capacity.root.users.accessible-node-labels' => 'GPU',
         'yarn.scheduler.capacity.root.users.accessible-node-labels.GPU.capacity' => '100',
         'yarn.scheduler.capacity.root.production.accessible-node-labels' => ' ',
