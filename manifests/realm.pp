@@ -198,6 +198,7 @@ $private_tables = [
     'globalnames',
     'growthexperiments_link_recommendations',
     'growthexperiments_link_submissions',
+    'growthexperiments_mentor_mentee',
     'hidden',
     'image_old',
     'job',
