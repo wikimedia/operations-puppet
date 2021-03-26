@@ -10,7 +10,10 @@ profile::base::ssh_server_settings:
   explicit_macs: false
   # This is there because we have a ssh::userkey stanza
   # and it will not be used without this hack.  Same pattern ganeti uses.
-  authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/labstore
+  authorized_keys_file:
+    - '/etc/ssh/userkeys/%u'
+    - '/etc/ssh/userkeys/%u.d/cumin'
+    - '/etc/ssh/userkeys/%u.d/labstore'
 
 # Anything we specifically want to monitor already pages, so this is annoying
 profile::base::monitor_systemd: false

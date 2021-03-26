@@ -4,19 +4,19 @@
 
 # What ports, IPs and protocols we listen for
 Port <%= @listen_port %>
-<% if @listen_address %>
+<%- if @listen_address -%>
 ListenAddress <%= @listen_address %>
-<% else %>
+<%- else -%>
 # Use these options to restrict which interfaces/protocols sshd will bind to
 #ListenAddress ::
 #ListenAddress 0.0.0.0
-<% end %>
+<%- end -%>
 Protocol 2
 # HostKeys for protocol version 2
 HostKey /etc/ssh/ssh_host_rsa_key
-<% if @realm == "labs" then %>
+<%- if @realm == "labs" then -%>
 HostKey /etc/ssh/ssh_host_dsa_key
-<% end %>
+<%- end -%>
 HostKey /etc/ssh/ssh_host_ecdsa_key
 HostKey /etc/ssh/ssh_host_ed25519_key
 #Privilege Separation is turned on for security
@@ -32,11 +32,7 @@ LogLevel VERBOSE
 
 # Authentication:
 LoginGraceTime 120
-<% if @permit_root %>
-PermitRootLogin yes
-<% else %>
-PermitRootLogin no
-<% end %>
+PermitRootLogin <%= @permit_root ? 'yes' : 'no' %>
 
 <%- if @explicit_macs -%>
 # Message Authentication codes
@@ -49,22 +45,20 @@ Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.
 
 PubkeyAuthentication yes
 #AuthorizedKeysFile	%h/.ssh/authorized_keys
-<% if @authorized_keys_file then %>
-AuthorizedKeysFile	<%= @authorized_keys_file %>
-<% end %>
+AuthorizedKeysFile	<%= @authorized_keys_file.join(' ') %>
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
 
-<% if @enable_hba %>
+<%- if @enable_hba -%>
 HostbasedAuthentication yes
 HostbasedUsesNameFromPacketOnly no
 
 # matching entries shosts.equiv requires a reverse DNS lookup
 UseDNS yes
-<% else %>
+<%- else -%>
 HostbasedAuthentication no
-<% end %>
+<%- end -%>
 IgnoreUserKnownHosts yes
 
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
@@ -77,15 +71,15 @@ ChallengeResponseAuthentication <%= @challenge_response_auth ? 'yes': 'no' %>
 # Globally deny logon via password, only allow SSH-key login.
 PasswordAuthentication no
 
-<% if @disable_agent_forwarding -%>
+<%- if @disable_agent_forwarding -%>
 # Don't allow people to forward their agents either.
 AllowAgentForwarding no
-<% end -%>
+<%- end -%>
 
 # GSSAPIAuthentication off by default, GSSAPICleanupCredentials enabled by default
-<% if @enable_kerberos -%>
+<%- if @enable_kerberos -%>
 GSSAPIAuthentication yes
-<% end %>
+<%- end -%>
 
 X11DisplayOffset 10
 PrintMotd no
@@ -93,16 +87,16 @@ PrintLastLog yes
 TCPKeepAlive yes
 #UseLogin no
 
-<% if @ssh_tcp_forwarding then %>
+<%- if @ssh_tcp_forwarding then -%>
 AllowTcpForwarding <%= @ssh_tcp_forwarding %>
-<% end %>
+<%- end -%>
 
-<% if @max_sessions -%>
+<%- if @max_sessions -%>
 MaxSessions <%= @max_sessions %>
-<% end -%>
-<% if @max_startups -%>
+<%- end -%>
+<%- if @max_startups -%>
 MaxStartups <%= @max_startups %>
-<% end -%>
+<%- end -%>
 #Banner /etc/issue.net
 
 # Allow client to pass locale environment variables
@@ -112,10 +106,10 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 
 UsePAM yes
 
-<% if @realm == "labs" then %>
+<%- if @realm == "labs" then -%>
 AuthorizedKeysCommand <%= @authorized_keys_command %>
 AuthorizedKeysCommandUser ssh-key-ldap-lookup
-<% end %>
+<%- end -%>
 ##
 ## Anything below this point must start with a match declaration
 ## or will only apply to the previous Matches above.

@@ -13,20 +13,19 @@
 # @param max_sessions allow users to override the maximum number ops sessions
 # @param max_startups allow users to override the maximum number ops startups
 class ssh::server (
-    Stdlib::Port           $listen_port              = 22,
-    Optional[Stdlib::Host] $listen_address           = undef,
-    Boolean                $permit_root              = true,
-    # TODO convert to Array[Stdlib::Unuxpath]
-    String                 $authorized_keys_file     = '/etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin',
-    Stdlib::Unixpath       $authorized_keys_command  = '/usr/sbin/ssh-key-ldap-lookup',
-    Boolean                $disable_nist_kex         = true,
-    Boolean                $explicit_macs            = true,
-    Boolean                $enable_hba               = false,
-    Boolean                $enable_kerberos          = false,
-    Boolean                $disable_agent_forwarding = true,
-    Boolean                $challenge_response_auth  = true,
-    Optional[Integer]      $max_sessions             = undef,
-    Optional[Integer]      $max_startups             = undef,
+    Stdlib::Port            $listen_port              = 22,
+    Optional[Stdlib::Host]  $listen_address           = undef,
+    Boolean                 $permit_root              = true,
+    Array[Stdlib::Unixpath] $authorized_keys_file     = ['/etc/ssh/userkeys/%u', '/etc/ssh/userkeys/%u.d/cumin'],
+    Stdlib::Unixpath        $authorized_keys_command  = '/usr/sbin/ssh-key-ldap-lookup',
+    Boolean                 $disable_nist_kex         = true,
+    Boolean                 $explicit_macs            = true,
+    Boolean                 $enable_hba               = false,
+    Boolean                 $enable_kerberos          = false,
+    Boolean                 $disable_agent_forwarding = true,
+    Boolean                 $challenge_response_auth  = true,
+    Optional[Integer]       $max_sessions             = undef,
+    Optional[Integer]       $max_startups             = undef,
 ) {
     package { 'openssh-server':
         ensure => present,

@@ -135,7 +135,10 @@ profile::gerrit::java_version: 8
 profile::gerrit::scap_user: 'gerrit2'
 profile::gerrit::scap_key_name: 'gerrit'
 profile::base::ssh_server_settings:
-  authorized_keys_file: /etc/ssh/userkeys/%u /etc/ssh/userkeys/%u.d/cumin /etc/ssh/userkeys/%u.d/gerrit-scap
+  authorized_keys_file:
+    - '/etc/ssh/userkeys/%u'
+    - '/etc/ssh/userkeys/%u.d/cumin'
+    - '/etc/ssh/userkeys/%u.d/gerrit-scap'
 
 ## TLS
 profile::gerrit::use_acmechief: false
