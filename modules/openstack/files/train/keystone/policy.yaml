@@ -16,8 +16,6 @@
 #  Many of these rule definitions will be judged redundant by
 #  oslopolicy-list-redundant but they're included to provide
 #  context for the policies that follow
-"owner": "user_id:%(user_id)s"
-"admin_or_owner": "rule:admin_required or rule:owner"
 "admin_required": "role:admin or is_admin:1"
 "service_or_admin": "rule:admin_required or rule:service_role"
 "service_role": "role:service"
