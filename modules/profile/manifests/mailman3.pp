@@ -108,4 +108,16 @@ class profile::mailman3 (
     ferm::rule { 'mailman3-spamd-local':
         rule => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }'
     }
+
+    monitoring::service { 'smtp':
+        description   => 'Exim SMTP',
+        check_command => 'check_smtp_tls_le',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Exim',
+    }
+
+    monitoring::service { 'https':
+        description   => 'HTTPS',
+        check_command => "check_ssl_http_letsencrypt!${host}",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+    }
 }
