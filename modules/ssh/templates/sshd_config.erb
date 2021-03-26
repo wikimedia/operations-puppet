@@ -4,8 +4,10 @@
 
 # What ports, IPs and protocols we listen for
 Port <%= @listen_port %>
-<%- if @listen_address -%>
-ListenAddress <%= @listen_address %>
+<%- unless @listen_addresses.empty? -%>
+    <%- @listen_addresses.each do |listen| -%>
+ListenAddress <%= listen %>
+    <%- end -%>
 <%- else -%>
 # Use these options to restrict which interfaces/protocols sshd will bind to
 #ListenAddress ::
