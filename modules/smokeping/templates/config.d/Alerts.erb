@@ -4,8 +4,8 @@
 #####################################################################
 
 *** Alerts ***
-to = root@wikimedia.org
-from = root@wikimedia.org
+to = root@<%= scope.lookupvar('::domain') %>
+from = root@<%= scope.lookupvar('::domain') %>
 
 +bigloss
 type = loss
