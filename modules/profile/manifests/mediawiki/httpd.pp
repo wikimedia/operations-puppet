@@ -30,6 +30,10 @@ class profile::mediawiki::httpd(
             'proxy_fcgi',
         ]
     }
+    systemd::unit{ 'apache2':
+        content  => "[Service]\nCPUAccounting=yes\n",
+        override => true,
+    }
 
     # Modules we don't enable.
     # Note that deflate and filter are activated deep down in the

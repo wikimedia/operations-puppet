@@ -80,7 +80,7 @@ class profile::mediawiki::webserver(
     if $has_tls == true {
         # Override niceness to run at -19 like php-fpm
         file { '/etc/systemd/system/envoyproxy.service.d/niceness-override.conf':
-            content => "[Service]\nNice=-19\n",
+            content => "[Service]\nNice=-19\nCPUAccounting=yes\n",
             owner   => 'root',
             group   => 'root',
             mode    => '0444',

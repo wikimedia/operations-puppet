@@ -28,6 +28,35 @@ class profile::mediawiki::mcrouter_wancache(
             growth_factor      => 1.25,
             min_slab_size      => 48,
         }
+        # NOTE: This should have been a systemd override puppet define but our puppetization
+        # of systemd and memcached doesn't really allow for that due to the
+        # following problems:
+        # * >1 systemd override per service easily isn't supported
+        # * memcached class is already using the above said override based on a
+        # boolean parameter. It is already differently used on e.g. mc* vs mw* hosts.
+        #
+        # So, fallback to doing the crappy thing and create the directory
+        # on this specific installation and populate the override via a file
+        # resources
+
+        # TODO: This should be fixed first at the systemd puppet module level by
+        # allowing >1 arbitrary overrides, then memcached class level by
+        # untangling the 2 usages above, then this one should become a 2nd
+        # systemd override for memcached
+        file { '/etc/systemd/system/memcached.service.d/':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+        }
+        file { '/etc/systemd/system/memcached.service.d/cpuaccounting-override.conf':
+            ensure  => present,
+            content => "[Service]\nCPUAccounting=yes\n",
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            notify  => Exec['systemd daemon-reload for memcached.service']
+        }
         include ::profile::prometheus::memcached_exporter
     }
 
@@ -195,6 +224,13 @@ class profile::mediawiki::mcrouter_wancache(
         probe_delay_initial_ms => 60000,
         port                   => $port,
         ssl_options            => $ssl_options,
+    }
+    file { '/etc/systemd/system/mcrouter.service.d/cpuaccounting-override.conf':
+        content => "[Service]\nCPUAccounting=yes\n",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        notify  => Exec['systemd daemon-reload for mcrouter.service']
     }
 
     class { 'mcrouter::monitoring': }

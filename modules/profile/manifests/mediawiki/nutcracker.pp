@@ -93,6 +93,11 @@ class profile::mediawiki::nutcracker(
         pools     => $nutcracker_pools,
     }
 
+    systemd::unit{ 'nutcracker':
+        content  => "[Service]\nCPUAccounting=yes\n",
+        override => true,
+    }
+
     # monitor memcached if present, redis otherwise.
     if $memcached_servers != [] {
         class { '::nutcracker::monitoring':
