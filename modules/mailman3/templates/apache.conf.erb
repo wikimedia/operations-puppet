@@ -29,6 +29,8 @@
     <% end %>
     <%= @ssl_settings.join("\n    ") %>
 
+    Header set Content-Security-Policy "default-src 'self'; connect-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+
     Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
     Alias /mailman3/static      /var/lib/mailman3/web/static
 
