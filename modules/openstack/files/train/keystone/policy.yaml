@@ -38,7 +38,7 @@ default: rule:admin_or_projectadmin
 #
 
 # keystone can't change passwords, it regards ldap as read-only.
-identity:change_password: !
+identity:change_password: null
 
 
 identity:get_auth_catalog: ''
@@ -46,7 +46,7 @@ identity:get_auth_domains: ''
 identity:get_auth_projects: ''
 identity:get_domain: rule:admin_required
 identity:get_endpoint: ''
-identity:get_identity_providers: rule:admin_required
+identity:get_identity_provider: rule:admin_required
 identity:get_project: rule:admin_required
 identity:get_region: ''
 identity:get_role: ''
