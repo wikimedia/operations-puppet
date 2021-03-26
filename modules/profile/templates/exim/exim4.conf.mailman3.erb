@@ -27,7 +27,7 @@ hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ;
 helo_try_verify_hosts = *
 
 # Administration
-log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
+log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
 message_logs = false
 
 # Policy control
@@ -68,7 +68,16 @@ check_rfc2047_length = false
 
 add_environment = <; PATH=/bin:/usr/bin
 keep_environment =
-tls_advertise_hosts =
+
+# TLS
+<% if @acme_chief_cert %>
+tls_certificate = /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chained.crt
+tls_privatekey = /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
+<% else %>
+tls_certificate = /etc/letsencrypt/live/<%= @host %>/fullchain.pem
+tls_privatekey = /etc/letsencrypt/live/<%= @host %>/privkey.pem
+<% end %>
+tls_advertise_hosts = *
 
 # force Gmail over IPv4 due to reports of bad spam reputation over IPv6
 dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
