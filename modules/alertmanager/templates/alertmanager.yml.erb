@@ -105,6 +105,11 @@ receivers:
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-5hj6ygnanfu23mmnlvmd'
       send_resolved: false
 
+- name: 'netops-task'
+  webhook_configs:
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-h2zjwfqqi5cxjonrkfa7'
+      send_resolved: false
+
 - name: 'perf-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-perf-bots'
