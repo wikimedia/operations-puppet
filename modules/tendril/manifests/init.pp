@@ -31,37 +31,28 @@ class tendril (
         puppet_svc => 'apache2',
     }
 
-    # Temporary hack while jessie is supported
-    if debian::codename::le('jessie') {
-        ensure_packages([
-            'php5-mysql',
-            'php5-memcache', # do not install -memcached, it won't work
-            'memcached', # memcached expected by default on localhost
-        ])
-    } else {
-        $php56_packages = [
-            'libapache2-mod-php5.6',
-            'php5.6-cli',
-            'php5.6-common',
-            'php5.6-curl',
-            'php5.6-dev',
-            'php5.6-gd',
-            'php5.6-gmp',
-            'php5.6-intl',
-            'php5.6-ldap',
-            'php5.6-mcrypt',
-            'php5.6-mysql',
-            'php5.6-pgsql',
-            'php5.6-readline',
-            'php5.6-sqlite3',
-            'php5.6-tidy',
-            'php5.6-xsl',
-        ]
+    $php56_packages = [
+        'libapache2-mod-php5.6',
+        'php5.6-cli',
+        'php5.6-common',
+        'php5.6-curl',
+        'php5.6-dev',
+        'php5.6-gd',
+        'php5.6-gmp',
+        'php5.6-intl',
+        'php5.6-ldap',
+        'php5.6-mcrypt',
+        'php5.6-mysql',
+        'php5.6-pgsql',
+        'php5.6-readline',
+        'php5.6-sqlite3',
+        'php5.6-tidy',
+        'php5.6-xsl',
+    ]
 
-        apt::package_from_component { 'tendril_php56':
-            component => 'thirdparty/php56',
-            packages  => $php56_packages,
-        }
+    apt::package_from_component { 'tendril_php56':
+        component => 'thirdparty/php56',
+        packages  => $php56_packages,
     }
 
     group { 'mwdeploy':
