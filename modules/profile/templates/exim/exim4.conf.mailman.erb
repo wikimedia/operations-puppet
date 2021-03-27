@@ -21,7 +21,7 @@ domainlist system_domains = @
 domainlist local_domains = +system_domains : +mailman_domains
 
 # Standard lists
-domainlist mailman_domains = lists.wikimedia.org
+domainlist mailman_domains = <%= @lists_servername %>
 
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::aggregate_networks').join(" ; ") %>
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ;
@@ -92,7 +92,7 @@ acl_check_rcpt:
 	        domains = gmail.com
 
 	# Disable list subscription via email due to excessive suspicious subscriptions --herron 2018-05-14 T194032
-	deny message = Support for list subscription via email has been disabled. Please use the web interface at https://lists.wikimedia.org
+	deny message = Support for list subscription via email has been disabled. Please use the web interface at https://<%= @lists_servername %>
 		local_parts = ^.*-(join|subscribe)\$
 
 	# If there have been ~4 times as many previous RCPT rejects than
@@ -233,7 +233,7 @@ begin routers
 list_outbound:
 	driver = dnslookup
 	domains = ! +local_domains
-	senders = *@lists.wikimedia.org
+	senders = *@<%= @lists_servername %>
 	condition = ${if match_ip{$sender_host_address}{@[]}}
 	transport = list_smtp
 	no_verify
@@ -318,8 +318,8 @@ remote_smtp_signed:
 list_smtp:
 	driver = smtp
 	interface = <; <%= @list_outbound_ips.join(" ; ") %>
-	helo_data = lists.wikimedia.org
-	dkim_domain = lists.wikimedia.org
+	helo_data = <%= @lists_servername %>
+	dkim_domain = <%= @lists_servername %>
 	dkim_selector = wikimedia
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
 	dkim_canon = relaxed
@@ -343,7 +343,7 @@ list:
 	home_directory = MAILMAN_LISTS_HOME
 	user = MAILMAN_UID
 	group = MAILMAN_GID
-	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
+	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@<%= @lists_servername %>}fail}" ct
 
 ###############
 # Retry rules #
@@ -359,4 +359,4 @@ begin retry
 
 begin rewrite
 
-\N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
+\N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@<%= @lists_servername %>}fail}" ct
