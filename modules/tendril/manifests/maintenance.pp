@@ -16,11 +16,6 @@ class tendril::maintenance (
 
     require_package('libdbi-perl', 'libdbd-mysql-perl')
 
-    # We want to control if cron is running, not if the scripts are installed.
-    Cron {
-        ensure => $ensure
-    }
-
     File {
         ensure => present
     }
@@ -94,6 +89,7 @@ class tendril::maintenance (
     }
 
     cron { 'tendril-cron-5m':
+        ensure  => absent,
         user    => 'tendril',
         command => '/usr/local/bin/tendril-cron-5m.pl /etc/mysql/tendril.cnf > /var/log/tendril-cron-5m.log 2> /var/log/tendril-cron-5m.err',
         minute  => '*/5',
@@ -103,8 +99,20 @@ class tendril::maintenance (
             File['/var/log/tendril-cron-5m.err'],
         ]
     }
+    systemd::timer::job { 'tendril-5m':
+        ensure      => $ensure,
+        description => 'Regular jobs to refresh some statistics about tendril',
+        user        => 'tendril',
+        command     => '/usr/local/bin/tendril-cron-5m.pl /etc/mysql/tendril.cnf',
+        require     => [
+            File['/usr/local/bin/tendril-cron-5m.pl'],
+            File['/etc/mysql/tendril.cnf'],
+        ],
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+    }
 
     cron { 'tendril-queries':
+        ensure  => absent,
         user    => 'tendril',
         command => '/usr/local/bin/tendril-queries.pl /etc/mysql/tendril.cnf > /var/log/tendril-queries.log 2> /var/log/tendril-queries.err',
         minute  => '*/5',
@@ -114,5 +122,16 @@ class tendril::maintenance (
             File['/var/log/tendril-queries.err'],
             File['/etc/mysql/tendril.cnf'],
         ]
+    }
+    systemd::timer::job { 'tendril-queries':
+        ensure      => $ensure,
+        description => 'Regular jobs to refresh some statistics about tendril',
+        user        => 'tendril',
+        command     => '/usr/local/bin/tendril-queries.pl /etc/mysql/tendril.cnf',
+        require     => [
+            File['/usr/local/bin/tendril-queries.pl'],
+            File['/etc/mysql/tendril.cnf'],
+        ],
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
     }
 }
