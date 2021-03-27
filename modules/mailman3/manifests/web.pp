@@ -29,6 +29,13 @@ class mailman3::web (
         content => template('mailman3/mailman-web.py.erb'),
     }
 
+    file { '/usr/local/bin/mailman-web':
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/mailman3/mailman-web',
+    }
+
     service { 'mailman3-web':
         ensure    => $service_ensure,
         hasstatus => false,
