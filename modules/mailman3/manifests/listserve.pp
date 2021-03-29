@@ -46,4 +46,19 @@ class mailman3::listserve (
         source => 'puppet:///modules/mailman3/scripts/remove_from_lists.py',
     }
 
+    file { '/usr/local/sbin/discard_held_messages':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman3/scripts/discard_held_messages.py',
+    }
+
+    systemd::timer::job { 'discard_held_messages':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'discard un-moderated held messages after 90 days (T109838)',
+        command     => '/usr/local/sbin/discard_held_messages 90',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
+    }
 }
