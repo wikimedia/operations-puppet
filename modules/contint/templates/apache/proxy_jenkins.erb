@@ -41,6 +41,13 @@ AllowEncodedSlashes NoDecode
     SetEnvIf Request_URI .*/api/json.* NO_CACHE
     Header set Cache-Control "no-cache,must-revalidate" env=NO_CACHE
 
+    # Fresnel produces huge json traces we want to keep compressed but we need
+    # to be able to drag'n drop them in Chrome console which requires
+    # application/json type - T249268
+    SetEnvIf Request_URI "^<%=prefix -%>/.*fresnel.*\.json\.gz$" JSON_GZ
+    Header set Content-Type application/json env=JSON_GZ
+    Header set Content-Encoding gzip env=JSON_GZ
+
     # Prevent access to certain URLs - T63964
     SetEnvIf Request_URI ^<%= @prefix -%>/computer/.*/builds DENY_BUILDS_ACCESS
     SetEnvIf Request_URI ^<%= @prefix -%>/user/.*/builds DENY_BUILDS_ACCESS
