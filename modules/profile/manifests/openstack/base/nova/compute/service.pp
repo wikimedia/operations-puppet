@@ -41,9 +41,10 @@ class profile::openstack::base::nova::compute::service(
     #  at which point we won't need this hack.
     if $instance_dev != 'thinvirt' {
         file { '/var/lib/nova/instances':
-            ensure => 'directory',
-            owner  => 'nova',
-            group  => 'nova',
+            ensure  => 'directory',
+            owner   => 'nova',
+            group   => 'nova',
+            recurse =>  true,
         }
 
         mount { '/var/lib/nova/instances':
