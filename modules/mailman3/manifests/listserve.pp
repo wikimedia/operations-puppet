@@ -16,11 +16,11 @@ class mailman3::listserve (
 
     ensure_packages([
         'python3-pymysql',
-        'dbconfig-mysql',
     ])
 
     package { 'mailman3':
-        ensure => present,
+        ensure  => present,
+        require => Package['dbconfig-no-thanks'],
     }
 
     file { '/etc/mailman3/mailman.cfg':

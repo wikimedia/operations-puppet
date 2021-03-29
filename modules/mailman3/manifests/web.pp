@@ -21,14 +21,14 @@ class mailman3::web (
 
     ensure_packages([
         'python3-mysqldb',
-        'dbconfig-mysql',
         # https://hyperkitty.readthedocs.io/en/latest/install.html#install-the-code
         'sassc',
         'python3-whoosh',
     ])
 
     package { 'mailman3-web':
-        ensure => present,
+        ensure  => present,
+        require => Package['dbconfig-no-thanks'],
     }
 
     file { '/etc/mailman3/mailman-web.py':
