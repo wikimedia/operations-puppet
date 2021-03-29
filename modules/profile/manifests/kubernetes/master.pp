@@ -19,6 +19,8 @@ class profile::kubernetes::master(
     Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', {default_value => false}),
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', {default_value => false}),
     Optional[String] $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token', {default_value => undef}),
+    Hash[String, Any] $infrastructure_users = lookup('profile::kubernetes::master::infrastructure_users'),
+
 ){
     if $expose_puppet_certs {
         base::expose_puppet_certs { '/etc/kubernetes':
@@ -50,6 +52,7 @@ class profile::kubernetes::master(
         runtime_config           => $runtime_config,
         packages_from_future     => $packages_from_future,
         allow_privileged         => $allow_privileged,
+        users                    => $infrastructure_users,
     }
 
     class { '::k8s::scheduler':

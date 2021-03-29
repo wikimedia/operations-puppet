@@ -3,6 +3,7 @@ class k8s::apiserver(
     String $etcd_servers,
     Stdlib::Unixpath $ssl_cert_path,
     Stdlib::Unixpath $ssl_key_path,
+    Hash[String, Any] $users,
     Hash[String, String] $admission_controllers = {
         'NamespaceLifecycle' => '',
         'LimitRanger' => '',
@@ -53,7 +54,6 @@ class k8s::apiserver(
     $admission_control = join(keys($admission_controllers), ',')
     $admission_control_params = lstrip(join(values($admission_controllers), ' '))
 
-    $users = lookup('k8s_infrastructure_users')
     file { '/etc/kubernetes/infrastructure-users':
         content => template('k8s/infrastructure-users.csv.erb'),
         owner   => 'kube',

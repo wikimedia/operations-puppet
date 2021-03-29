@@ -25,3 +25,12 @@ profile::lvs::realserver::pools:
       - "kube-apiserver"
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:
+# profile::kubernetes::master::infrastructure_users:
+#  client-infrastructure:
+#    type: infrastructure-readwrite
+#    token: dummydummy
+#    id: 1
+#  kubelet:
+#    type: system:node
+#    token: dummydummydummy
+#    id: 2

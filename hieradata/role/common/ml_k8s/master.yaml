@@ -26,3 +26,14 @@ profile::lvs::realserver::pools:
       - "kube-apiserver"
 profile::standard::admin_groups:
   - ml-team-admins
+# Define in the private repo
+# profile::kubernetes::master::controllermanager_token:
+# profile::kubernetes::master::infrastructure_users:
+#  client-infrastructure:
+#    type: infrastructure-readwrite
+#    token: dummydummy
+#    id: 1
+#  kubelet:
+#    type: system:node
+#    token: dummydummydummy
+#    id: 2
