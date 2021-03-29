@@ -106,6 +106,10 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
 
         # Labels
         # https://hadoop.apache.org/docs/r2.10.0/hadoop-yarn/hadoop-yarn-site/NodeLabel.html
+        # Only one label can be assigned to every node, by default ending up in the DEFAULT_PARTITION.
+        # When a label is assigned, it creates a partition between the nodes, and the Capacity scheduler
+        # settings gets "duplicated" (so all the queues, etc..). In this case we want just one queue to
+        # use the GPU label, so we concentrate all the capacity to it.
         'yarn.scheduler.capacity.root.accessible-node-labels' => 'GPU',
         'yarn.scheduler.capacity.root.accessible-node-labels.GPU.capacity' => '100',
         'yarn.scheduler.capacity.root.users.accessible-node-labels' => 'GPU',
