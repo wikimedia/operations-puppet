@@ -4,10 +4,14 @@
   daemon_startup_actions:
     - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_be_liberal=1
     - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_loose=1
+    # this timeout defaults to 5 days (!) Make it 1 day, which should be more than enough
+    - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_timeout_established=86400
   inotify_actions:
     - IN_CREATE:
         - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_be_liberal=1
         - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_loose=1
+        # this timeout defaults to 5 days (!) Make it 1 day, which should be more than enough
+        - ip netns exec $NETNS sysctl net.netfilter.nf_conntrack_tcp_timeout_established=86400
 # this config is to simply log all netns creation/deletion events, which should
 # help us better understand what the different neutron agents are doing
 - netns_regex: .*
