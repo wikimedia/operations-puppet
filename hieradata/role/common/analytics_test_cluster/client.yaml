@@ -26,7 +26,7 @@ profile::kerberos::keytabs::keytabs_metadata:
   - role: 'analytics-search'
     owner: 'analytics-search'
     group: 'analytics-search'
-    filename: 'analytics-seach.keytab'
+    filename: 'analytics-search.keytab'
 profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::swap::push_published: false
