@@ -47,6 +47,11 @@ class profile::mailman3 (
         }
     }
 
+    if $::realm == 'production' {
+        # Make sure prod root@ (cronspam, etc.) goes to proper root alias
+        mailalias { 'root': recipient => 'root@wikimedia.org' }
+    }
+
     # This will be a noop if $lists_ipv[46] are undef
     interface::alias { $host:
         ipv4 => $lists_ipv4,
