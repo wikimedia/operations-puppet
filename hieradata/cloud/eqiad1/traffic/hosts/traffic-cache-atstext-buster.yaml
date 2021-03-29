@@ -72,7 +72,7 @@ profile::trafficserver::backend::default_lua_scripts:
 - set-x-cache
 profile::trafficserver::backend::mapping_rules:
 - target: http://en.wikipedia.beta.wmflabs.org
-  replacement: http://deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+  replacement: http://deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
   type: map
 - target: http://ores.beta.wmflabs.org
   replacement: http://deployment-ores01.deployment-prep.eqiad.wmflabs:8081
