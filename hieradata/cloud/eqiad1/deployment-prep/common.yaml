@@ -125,6 +125,8 @@ scap::dsh::groups:
             - deployment-jobrunner03.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-09.deployment-prep.eqiad.wmflabs
             - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+            - deployment-mediawiki10.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot02.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-deploy01.deployment-prep.eqiad.wmflabs
@@ -134,6 +136,7 @@ scap::dsh::groups:
     mediawiki-appserver-canaries:
         hosts:
             - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+            - deployment-mediawiki10.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-api-canaries:
         hosts: []
     restbase-betacluster:
