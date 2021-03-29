@@ -16,56 +16,73 @@ varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inl
 } -start
 
 client c1 {
+    # no Referer is fine
     txreq -url "/osm-intl/1/1.11/-2.22" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)"
     rxresp
 
     expect resp.status == 200
 
+    # Invalid Referer
     txreq -url "/osm-intl/1/1.11/-3.33" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://imustcollectallthemonsters.com/"
     rxresp
 
     expect resp.status == 403
 
+    # Invalid Referer
     txreq -url "/osm-intl/1/1.11/-3.33" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://imustcollectallthemonsters.com/en.wikipedia.org"
     rxresp
 
     expect resp.status == 403
 
+    # Wikivoyage
     txreq -url "/osm-intl/1/1.11/-4.44" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://en.wikivoyage.org/"
     rxresp
 
     expect resp.status == 200
 
+    # Wikiquote
     txreq -url "/osm-intl/1/1.11/-4.44" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://it.m.wikiquote.org/"
     rxresp
 
     expect resp.status == 200
 
+    # Wiktionary
     txreq -url "/osm-intl/1/1.11/-4.44" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://zh-min-nan.m.wiktionary.org/"
     rxresp
 
     expect resp.status == 200
 
+    # localhost with port number
     txreq -url "/osm-intl/1/1.11/-5.55" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: http://localhost:12345/mediawiki/"
     rxresp
 
     expect resp.status == 200
 
+    # Local development with Mediawiki-Vagrant
+    txreq -url "/osm-intl/1/1.11/-5.55" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://wmftest.net:1234"
+    rxresp
+
+    expect resp.status == 200
+
+    # toolforge.org
     txreq -url "/osm-intl/1/1.11/-5.55" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://cooltool.toolforge.org/tool/index.html"
     rxresp
 
     expect resp.status == 200
 
+    # wmcloud.org
     txreq -url "/osm-intl/1/1.11/-5.55" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://some-vps.subdomain.wmcloud.org/"
     rxresp
 
     expect resp.status == 200
 
+    # wikilovesmonuments.org
     txreq -url "/osm-intl/1/1.11/-5.55" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://maps.wikilovesmonuments.org/"
     rxresp
 
     expect resp.status == 200
 
+    # wikimedia.pl
     txreq -url "/osm-intl/1/1.11/-5.55" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://wikimedia.pl/"
     rxresp
 
