@@ -1,6 +1,6 @@
 class profile::mailman3 (
-    String $host = lookup('profile::mailman3::host'),
-    String $db_host = lookup('profile::mailman3::db_host'),
+    Stdlib::Fqdn $host = lookup('profile::mailman3::host'),
+    Stdlib::Fqdn $db_host = lookup('profile::mailman3::db_host'),
     String $db_name = lookup('profile::mailman3::db_name'),
     String $db_user = lookup('profile::mailman3::db_user'),
     String $db_password = lookup('profile::mailman3::db_password'),

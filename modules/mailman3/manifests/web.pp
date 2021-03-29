@@ -2,8 +2,8 @@
 #
 # Installs the django web app serving mailman3 to users
 class mailman3::web (
-    String $host,
-    String $db_host,
+    Stdlib::Fqdn $host,
+    Stdlib::Fqdn $db_host,
     String $db_name,
     String $db_user,
     String $db_password,

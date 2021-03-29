@@ -1,6 +1,6 @@
 class mailman3 (
-    String $host,
-    String $db_host,
+    Stdlib::Fqdn $host,
+    Stdlib::Fqdn $db_host,
     String $db_name,
     String $db_user,
     String $db_password,
