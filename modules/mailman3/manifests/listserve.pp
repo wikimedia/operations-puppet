@@ -6,7 +6,7 @@
 # https://docs.mailman3.org/projects/mailman/en/latest/README.html
 #
 class mailman3::listserve (
-    String $db_host,
+    Stdlib::Fqdn $db_host,
     String $db_name,
     String $db_user,
     String $db_password,
@@ -36,4 +36,14 @@ class mailman3::listserve (
         pattern   => 'mailmanctl',
         subscribe => File['/etc/mailman3/mailman.cfg'],
     }
+
+    # Helper scripts
+    file { '/usr/local/sbin/remove_from_lists':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman3/scripts/remove_from_lists.py',
+    }
+
 }
