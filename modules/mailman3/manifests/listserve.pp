@@ -1,3 +1,10 @@
+# == Class mailman3::listserve
+#
+# This class provisions all the resources necessary to
+# run the core Mailman service.
+#
+# https://docs.mailman3.org/projects/mailman/en/latest/README.html
+#
 class mailman3::listserve (
     String $db_host,
     String $db_name,
@@ -10,7 +17,6 @@ class mailman3::listserve (
     ensure_packages([
         'python3-pymysql',
         'dbconfig-mysql',
-        'python3-mailman-hyperkitty'
     ])
 
     package { 'mailman3':

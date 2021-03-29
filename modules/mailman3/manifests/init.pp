@@ -1,3 +1,7 @@
+# == Class mailman3
+#
+# Provisions all the mailman3 software needed to
+# run mailing lists on a single host.
 class mailman3 (
     Stdlib::Fqdn $host,
     Stdlib::Fqdn $db_host,
@@ -33,9 +37,4 @@ class mailman3 (
         secret         => $web_secret,
         archiver_key   => $archiver_key
     }
-
-    class { '::mailman3::hyperkitty':
-        archiver_key   => $archiver_key
-    }
-
 }
