@@ -13,4 +13,10 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshLinkRecommendations.php --verbose',
         interval => '*-*-* *:27:00',
     }
+
+    # Track link recommendation pool size
+    profile::mediawiki::periodic_job { 'growthexperiments-listTaskCounts':
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --tasktype link-recommendation --topictype ores --statsd --output none',
+        interval => '*-*-* *:11:00',
+    }
 }
