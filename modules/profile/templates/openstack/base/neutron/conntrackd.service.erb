@@ -12,7 +12,6 @@ ExecStart=/usr/bin/ip netns exec <%= @conntrackd_netns %> /usr/sbin/conntrackd -
 Restart=on-failure
 ProtectSystem=full
 ProtectHome=true
-WatchdogSec=120
 
 [Install]
 WantedBy=multi-user.target
