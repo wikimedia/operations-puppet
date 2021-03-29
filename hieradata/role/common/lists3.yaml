@@ -17,3 +17,4 @@ profile::mailman3::web::db_user: testmailman3web
 #profile::mailman3::api_password -- set in private repo
 #profile::mailman3::web::secret -- set in private repo
 #profile::mailman3::archiver_key -- set in private repo
+profile::mailman3::mailman2_host: lists1001.wikimedia.org

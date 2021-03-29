@@ -5,6 +5,7 @@ class profile::lists (
     Optional[String] $standby_host            = lookup('profile::lists::standby_host', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
+    Optional[Stdlib::Fqdn] $mailman3_host     = lookup('profile::lists::mailman3_host', {'default_value' => undef}),
 ){
     include network::constants
     include privateexim::listserve
@@ -124,6 +125,15 @@ class profile::lists (
             privileges => ['ALL = (list) NOPASSWD: /usr/local/lib/nagios/plugins/check_mailman_queue'],
         }
 
+        # rsync from primary to mailman3 host
+        if $mailman3_host {
+            rsync::quickdatacopy { 'var-lib-mailman':
+                source_host => $::fqdn,
+                dest_host   => $mailman3_host,
+                auto_sync   => false,
+                module_path => '/var/lib/mailman',
+            }
+        }
     }
 
     monitoring::service { 'mailman_listinfo':

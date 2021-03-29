@@ -8,3 +8,4 @@ mtail::logs:
 mtail::group: 'adm'
 profile::lists::primary_host: 'lists1001.wikimedia.org'
 #profile::lists::standby_host: ''
+profile::lists::mailman3_host: 'lists1002.wikimedia.org'
