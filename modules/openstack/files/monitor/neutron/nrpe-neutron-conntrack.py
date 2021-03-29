@@ -11,7 +11,7 @@ import subprocess
 from enum import Enum
 
 # alert when the table is over MAGIC_VALUE percentage full
-MAGIC_VALUE = 80
+MAGIC_VALUE = 90
 
 
 class Keys(Enum):
