@@ -122,16 +122,14 @@ scap::dsh::scap_masters:
 scap::dsh::groups:
     mediawiki-installation:
         hosts:
-            - deployment-jobrunner03.deployment-prep.eqiad.wmflabs
-            - deployment-mediawiki-09.deployment-prep.eqiad.wmflabs
-            - deployment-mediawiki-07.deployment-prep.eqiad.wmflabs
+            - deployment-jobrunner04.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot02.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-deploy01.deployment-prep.eqiad.wmflabs
             - deployment-deploy02.deployment-prep.eqiad.wmflabs
             - deployment-mwmaint01.deployment-prep.eqiad.wmflabs
-            - deployment-parsoid11.deployment-prep.eqiad.wmflabs # For Parsoid/PHP
+            - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
         hosts:
             - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
