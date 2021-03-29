@@ -30,7 +30,6 @@ class mediawiki::packages::fonts {
         'fonts-unfonts-extra',
         'texlive-fonts-recommended',
         'fonts-alee',
-        'ttf-ubuntu-font-family',    # Not in Debian. T32288, T103325
         'fonts-wqy-zenhei',
         'xfonts-100dpi',
         'xfonts-75dpi',
@@ -65,6 +64,11 @@ class mediawiki::packages::fonts {
         'fonts-ipafont-gothic',
         'fonts-ipafont-mincho',
     ])
+
+    # Not released under a free license :(
+    package { [ 'fonts-ubuntu', 'ttf-ubuntu-font-family' ]:
+        ensure => absent,
+    }
 
     # On Ubuntu, fontconfig-config provided a config file which forced antialiasing. This is no
     # longer present in the versions in Debian, so provide it manually since otherwise some fonts
