@@ -119,6 +119,7 @@ deployment_server: deployment-deploy01.deployment-prep.eqiad.wmflabs
 scap::dsh::scap_masters:
     - deployment-deploy01.deployment-prep.eqiad.wmflabs
     - deployment-deploy02.deployment-prep.eqiad.wmflabs
+    - deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 scap::dsh::groups:
     mediawiki-installation:
         hosts:
@@ -128,6 +129,7 @@ scap::dsh::groups:
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-deploy01.deployment-prep.eqiad.wmflabs
             - deployment-deploy02.deployment-prep.eqiad.wmflabs
+            - deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mwmaint01.deployment-prep.eqiad.wmflabs
             - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
@@ -349,6 +351,7 @@ wikimail_smarthost:
 deployment_hosts:
 - '172.16.4.18' # deployment-deploy01.deployment-prep.eqiad1.wikimedia.cloud
 - '172.16.4.19' # deployment-deploy02.deployment-prep.eqiad1.wikimedia.cloud
+- '172.16.4.233' # deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - 'deployment-logstash03.deployment-prep.eqiad.wmflabs:9093'
