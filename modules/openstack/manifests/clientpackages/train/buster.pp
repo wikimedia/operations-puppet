@@ -19,6 +19,7 @@ class openstack::clientpackages::train::buster(
         'python3-keystoneauth1',
         'python3-keystoneclient',
         'python3-openstackclient',
+        'python3-troveclient',
         'python3-designateclient',
         'python3-neutronclient',
         'python3-osc-placement',
