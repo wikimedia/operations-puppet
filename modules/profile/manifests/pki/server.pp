@@ -29,7 +29,7 @@ class profile::pki::server(
     include cfssl  # lint:ignore:wmf_styleguide
     $db_conf_file = "${cfssl::conf_dir}/db.conf"
     $multirootca_service = 'cfssl-multirootca'
-    cfssl::db{'multirooca-db':
+    cfssl::db{'multirootca-db':
         driver         => $db_driver,
         username       => $db_user,
         password       => $db_pass,

@@ -12,29 +12,29 @@
 # @param root_ca_cn The CN of the root ca used for creating the ocsp responder
 # @param $enable_client_auth if true make sure connections authenticate with TLS client auth
 # @param $client_ca_source the CA bundle to use for TLS client auth connections
-# @param default_nets a array of networks used by the multirooca as an ACL.  Access is configured
+# @param default_nets a array of networks used by the multirootca as an ACL.  Access is configured
 #   via apache so this config is not useful and should be left at the default
 # @param default_auth_keys a Hash of default_auth_keys
 # @param default_profiles a Hash of signing default_profiles
 # @param intermediates a list of intermediate CN's to create
-class profile::pki::multirooca (
-    String                        $vhost              = lookup('profile::pki::multirooca::vhost'),
-    Cfssl::DB_driver              $db_driver          = lookup('profile::pki::multirooca::db_driver'),
-    String                        $db_user            = lookup('profile::pki::multirooca::db_user'),
-    Sensitive[String[1]]          $db_pass            = lookup('profile::pki::multirooca::db_pass'),
-    String                        $db_name            = lookup('profile::pki::multirooca::db_name'),
-    Stdlib::Host                  $db_host            = lookup('profile::pki::multirooca::db_host'),
-    String                        $root_ca_cn         = lookup('profile::pki::multirooca::root_ca_cn'),
-    String                        $root_ca_cert       = lookup('profile::pki::multirooca::root_ca_cert'),
-    String                        $root_ocsp_cert     = lookup('profile::pki::multirooca::root_ocsp_cert'),
-    String                        $root_ocsp_key      = lookup('profile::pki::multirooca::root_ocsp_key'),
-    Stdlib::Port                  $root_ocsp_port     = lookup('profile::pki::multirooca::root_ocsp_port'),
-    Boolean                       $enable_client_auth = lookup('profile::pki::multirooca::enable_client_auth'),
-    Stdlib::Filesource            $client_ca_source   = lookup('profile::pki::multirooca::client_ca_source'),
-    Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirooca::default_nets'),
-    Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirooca::default_auth_keys'),
-    Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirooca::default_profiles'),
-    Hash[String, Hash]            $intermediates      = lookup('profile::pki::multirooca::intermediates'),
+class profile::pki::multirootca (
+    String                        $vhost              = lookup('profile::pki::multirootca::vhost'),
+    Cfssl::DB_driver              $db_driver          = lookup('profile::pki::multirootca::db_driver'),
+    String                        $db_user            = lookup('profile::pki::multirootca::db_user'),
+    Sensitive[String[1]]          $db_pass            = lookup('profile::pki::multirootca::db_pass'),
+    String                        $db_name            = lookup('profile::pki::multirootca::db_name'),
+    Stdlib::Host                  $db_host            = lookup('profile::pki::multirootca::db_host'),
+    String                        $root_ca_cn         = lookup('profile::pki::multirootca::root_ca_cn'),
+    String                        $root_ca_cert       = lookup('profile::pki::multirootca::root_ca_cert'),
+    String                        $root_ocsp_cert     = lookup('profile::pki::multirootca::root_ocsp_cert'),
+    String                        $root_ocsp_key      = lookup('profile::pki::multirootca::root_ocsp_key'),
+    Stdlib::Port                  $root_ocsp_port     = lookup('profile::pki::multirootca::root_ocsp_port'),
+    Boolean                       $enable_client_auth = lookup('profile::pki::multirootca::enable_client_auth'),
+    Stdlib::Filesource            $client_ca_source   = lookup('profile::pki::multirootca::client_ca_source'),
+    Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
+    Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
+    Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirootca::default_profiles'),
+    Hash[String, Hash]            $intermediates      = lookup('profile::pki::multirootca::intermediates'),
 
 ) {
     # we need to include this as we use some of the variables
@@ -50,7 +50,7 @@ class profile::pki::multirooca (
 
     wmflib::dir::mkdir_p($bundle_dir)
 
-    cfssl::db{'multirooca-db':
+    cfssl::db{'multirootca-db':
         driver         => $db_driver,
         username       => $db_user,
         password       => $db_pass,
@@ -155,7 +155,7 @@ class profile::pki::multirooca (
 
     httpd::site{$vhost:
         ensure  => present,
-        content => template('profile/pki/multirooca/vhost.conf.erb')
+        content => template('profile/pki/multirootca/vhost.conf.erb')
     }
     ferm::service{'csr_and_ocsp_responder':
         proto  => 'tcp',

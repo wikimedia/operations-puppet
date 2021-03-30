@@ -1,6 +1,6 @@
 # in this file all _cert parameteres are passed to the file function
 # and all _key paramtetes are passed to the secret function
-profile::pki::multirooca::intermediates:
+profile::pki::multirootca::intermediates:
   WMF_test_intermediate_ca:
     ocsp_port: 10001
     key_content: 'pki/intermediates/WMF_test_intermediate_ca.pem'
@@ -9,22 +9,22 @@ profile::pki::multirooca::intermediates:
     ocsp_port: 10002
     key_content: 'pki/intermediates/deployment-prep_eqiad1_wikimedia_cloud.pem'
     cert_content: 'profile/pki/intermediates/deployment-prep_eqiad1_wikimedia_cloud.pem'
-profile::pki::multirooca::root_ca_cn: 'WMF_TEST_CA'
-profile::pki::multirooca::root_ca_cert: 'profile/pki/ROOT/WMF_TEST_CA.pem'
-profile::pki::multirooca::root_ocsp_cert: 'profile/pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
-profile::pki::multirooca::root_ocsp_key: 'pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
-profile::pki::multirooca::root_ocsp_port: 10000
+profile::pki::multirootca::root_ca_cn: 'WMF_TEST_CA'
+profile::pki::multirootca::root_ca_cert: 'profile/pki/ROOT/WMF_TEST_CA.pem'
+profile::pki::multirootca::root_ocsp_cert: 'profile/pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
+profile::pki::multirootca::root_ocsp_key: 'pki/ROOT/WMF_TEST_CA_ocsp_signing_cert.pem'
+profile::pki::multirootca::root_ocsp_port: 10000
 # This is the vhost used for the ocsp/crl responder
-profile::pki::multirooca::vhost: 'pki-intermediate.pki.eqiad1.wikimedia.cloud'
-profile::pki::multirooca::db_driver: 'mysql'
-profile::pki::multirooca::db_user: 'pki'
-profile::pki::multirooca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
-profile::pki::multirooca::db_name: 'pki'
-profile::pki::multirooca::enable_client_auth: true
-profile::pki::multirooca::client_ca_source: 'puppet:///modules/profile/pki/cloud/client_auth_CA.pem'
-profile::pki::multirooca::default_nets:
+profile::pki::multirootca::vhost: 'pki-intermediate.pki.eqiad1.wikimedia.cloud'
+profile::pki::multirootca::db_driver: 'mysql'
+profile::pki::multirootca::db_user: 'pki'
+profile::pki::multirootca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
+profile::pki::multirootca::db_name: 'pki'
+profile::pki::multirootca::enable_client_auth: true
+profile::pki::multirootca::client_ca_source: 'puppet:///modules/profile/pki/cloud/client_auth_CA.pem'
+profile::pki::multirootca::default_nets:
   - 127.0.0.1/32
-profile::pki::multirooca::default_profiles:
+profile::pki::multirootca::default_profiles:
   ocsp:
     usages:
       - 'digital signature'
