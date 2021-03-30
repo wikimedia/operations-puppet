@@ -166,10 +166,16 @@ define osm::planet_sync (
         minute   => $minute,
     }
 
+    $expiry_user = $engine ? {
+        'imposm3'   => 'osmimporter',
+        'osm2pgsql' => 'osmupdater',
+        default     => fail("Unsupported sync engine ${engine}")
+    }
+
     cron { "expire_old_planet_syncs-${name}":
         ensure  => $ensure,
         command => "/usr/bin/find ${expire_dir} -mtime +30 -type f -exec rm {} \\;",
-        user    => 'osmupdater',
+        user    => $expiry_user,
         hour    => $hours,
         minute  => $minute,
     }
