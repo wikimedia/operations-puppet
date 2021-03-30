@@ -17,7 +17,7 @@ class kibana::phatality () {
         privileges => [
             "ALL = (kibana) NOPASSWD: ${plugincmd} install file\\://${deploydir}/*",
             "ALL = (kibana) NOPASSWD: ${plugincmd} remove *",
-            'ALL = (kibana) NOPASSWD: /usr/bin/systemctl restart kibana',
+            'ALL = (root) NOPASSWD: /usr/bin/systemctl restart kibana',
         ]
     }
 
