@@ -1330,17 +1330,12 @@ node /^alert[12]001\.wikimedia\.org$/ {
 
 
 # Phabricator
-node /^(phab1001\.eqiad|phab2001\.codfw)\.wmnet$/ {
+node /^phab[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(phabricator)
 }
 
 # PKI server
-node /^pki[2]001\.(eqiad|codfw)\.wmnet/ {
-    # Temporarily spare in prep for rebuild
-    role(spare::system)
-}
-
-node 'pki1001.eqiad.wmnet' {
+node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
     role(pki::multirootca)
 }
 
