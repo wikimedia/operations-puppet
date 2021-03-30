@@ -18,7 +18,7 @@ groups:
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova,
-              risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi]
+              risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -799,7 +799,7 @@ groups:
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
-    members: [eugene-chernov, strofimovsky01, olykalinichenko, il]
+    members: [eugene-chernov, strofimovsky01, il]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Wolfgang Kandek
   reprepro:
@@ -4220,14 +4220,11 @@ users:
     expiry_date: 2021-06-01
     expiry_contact: wkandek@wikimedia.org
   olykalinichenko:
-    ensure: present
+    ensure: absent
     realname: Oly Kalinichenko
-    email: oly.kalinichenko@speedandfunction.com
     uid: 30156
     gid: 500
     ssh_keys: []
-    expiry_date: 2021-06-01
-    expiry_contact: wkandek@wikimedia.org
   daimona:
     ensure: present
     realname: (known to Legal)
