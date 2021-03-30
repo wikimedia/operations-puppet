@@ -31,7 +31,7 @@ class rancid (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/rancid/rancid.conf',
+        content => template('rancid/rancid.conf.erb'),
     }
 
     file { '/var/lib/rancid/bin/oglogin':
