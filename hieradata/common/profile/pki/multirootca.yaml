@@ -1,0 +1,21 @@
+profile::pki::multirootca::root_ocsp_port: 10000
+# This is the vhost used for the ocsp/crl responder
+profile::pki::multirootca::db_driver: 'mysql'
+profile::pki::multirootca::db_user: 'pki'
+profile::pki::multirootca::db_name: 'pki'
+profile::pki::multirootca::enable_client_auth: true
+profile::pki::multirootca::client_ca_source: "%{facts.puppet_config.localcacert}"
+profile::pki::multirootca::default_nets:
+  - 127.0.0.1/32
+profile::pki::multirootca::default_profiles:
+  ocsp:
+    usages:
+      - 'digital signature'
+      - 'ocsp signing'
+    expiry: '43800h'
+  server:
+    usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
+    expiry: '96h'
