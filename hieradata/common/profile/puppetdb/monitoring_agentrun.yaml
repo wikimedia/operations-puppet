@@ -1,2 +1,0 @@
-profile::puppetdb::monitoring_agentrun::warn: 1
-profile::puppetdb::monitoring_agentrun::crit: 5

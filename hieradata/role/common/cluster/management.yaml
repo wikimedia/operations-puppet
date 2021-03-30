@@ -5,3 +5,4 @@ profile::standard::admin_groups:
 monitor_screens: false
 profile::conftool::client::etcd_user: 'root'
 profile::mariadb::wmfmariadbpy::role: 'admin'
+profile::cumin::monitor_agentrun: true

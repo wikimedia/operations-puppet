@@ -1,7 +1,8 @@
 class profile::cumin::master (
     Stdlib::Host  $puppetdb_host        = lookup('puppetdb_host'),
     Array[String] $datacenters          = lookup('datacenters'),
-    Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary')
+    Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary'),
+    Boolean       $monitor_agentrun     = lookup('profile::cumin::monitor_agentrun'),
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'
@@ -157,5 +158,8 @@ class profile::cumin::master (
         token    => $passwords::phabricator::ops_monitoring_bot_token,
         owner    => 'root',
         group    => 'root',
+    }
+    if $monitor_agentrun {
+        include profile::cumin::monitoring_agentrun
     }
 }

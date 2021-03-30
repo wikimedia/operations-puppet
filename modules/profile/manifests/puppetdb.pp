@@ -18,7 +18,6 @@ class profile::puppetdb(
     Boolean                              $elk_logging           = lookup('profile::puppetdb::elk_logging'),
     Stdlib::Unixpath                     $ca_path               = lookup('profile::puppetdb::ca_path'),
     String                               $puppetboard_hosts     = lookup('profile::puppetdb::puppetboard_hosts'),
-    Boolean                              $monitor_agentrun      = lookup('profile::puppetdb::monitor_agentrun'),
     Boolean                              $tmpfs_stockpile_queue = lookup('profile::puppetdb::tmpfs_stockpile_queue'),
     String                               $puppetdb_pass         = lookup('puppetdb::password::rw'),
     Puppetdb::Loglevel                   $log_level             = lookup('profile::puppetdb::log_level'),
@@ -95,7 +94,4 @@ class profile::puppetdb(
         }
     }
     include profile::puppetdb::microservice
-    if $monitor_agentrun and $master == $facts['fqdn'] {
-        include profile::puppetdb::monitoring_agentrun
-    }
 }

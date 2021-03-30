@@ -37,6 +37,8 @@ profile::base::legacy_cloud_search_domain: ''
 puppet_ca_server: ''
 manage_puppet_ca_file: false
 
+profile::cumin::monitor_agentrun: false
+
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
 
@@ -88,7 +90,6 @@ profile::puppetdb::database::log_min_duration_statement: ~
 profile::puppetdb::database::ssldir: ~
 profile::puppetdb::jvm_opts: '-Xmx256m'
 profile::puppetdb::slaves: []
-profile::puppetdb::monitor_agentrun: false
 profile::puppetdb::log_level: info
 profile::puppetdb::tmpfs_stockpile_queue: false
 profile::puppetdb::facts_blacklist: []

@@ -4,7 +4,6 @@ profile::puppetdb::ca_path: '/etc/ssl/certs/Puppet_Internal_CA.pem'
 profile::puppetdb::puppetboard_hosts: ''
 profile::puppetdb::ssldir: ~
 profile::puppetdb::slaves: []
-profile::puppetdb::monitor_agentrun: false
 profile::puppetdb::log_level: info
 profile::puppetdb::tmpfs_stockpile_queue: false
 profile::puppetdb::facts_blacklist: []

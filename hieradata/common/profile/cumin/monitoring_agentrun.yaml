@@ -1,0 +1,2 @@
+profile::cumin::monitoring_agentrun::warn: 1
+profile::cumin::monitoring_agentrun::crit: 5
