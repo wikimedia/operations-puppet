@@ -1,0 +1,2 @@
+profile::openstack::codfw1dev::trove::db_host: 'openstack.codfw1dev.wikimediacloud.org'
+profile::openstack::codfw1dev::trove::db_name: 'trove_codfw1dev'
