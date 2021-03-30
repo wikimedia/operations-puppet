@@ -36,9 +36,4 @@ class role::deployment_server {
 
     # proxy for connection to other servers
     include profile::services_proxy::envoy
-
-    # in cloud mount a second disk as /srv
-    if $::realm == 'labs' {
-        require profile::labs::lvm::srv
-    }
 }
