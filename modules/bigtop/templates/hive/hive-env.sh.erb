@@ -5,9 +5,6 @@
 export JAVA_HOME=<%= @java_home %>
 <% end -%>
 
-# Adding java-logging configuration file as hadoop-client option
-export HADOOP_CLIENT_OPTS=-Djava.util.logging.config.file=<%= @java_logging_config_file %>
-
 # https://issues.apache.org/jira/browse/HIVE-12179
 # Avoid logging spam when Hive is used via CLI.
 export HIVE_SKIP_SPARK_ASSEMBLY=true

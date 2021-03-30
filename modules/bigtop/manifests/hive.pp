@@ -106,7 +106,7 @@ class bigtop::hive(
 
     $hive_site_template          = 'bigtop/hive/hive-site.xml.erb',
     $hive_log4j_template         = 'bigtop/hive/hive-log4j.properties.erb',
-    $java_logging_template       = 'bigtop/hive/java-logging.properties.erb',
+    $parquet_logging_template    = 'bigtop/hive/parquet-logging.properties.erb',
     $hive_exec_log4j_template    = 'bigtop/hive/hive-exec-log4j.properties.erb',
     $hive_env_template           = 'bigtop/hive/hive-env.sh.erb',
 
@@ -202,8 +202,6 @@ class bigtop::hive(
         $hive_site_mode = '0444'
     }
 
-    # variable needed to generate hive-env.sh.erb template
-    $java_logging_config_file = "${config_directory}/java-logging.properties"
     file { "${config_directory}/hive-env.sh":
         content => template($hive_env_template),
         mode    => '0444',
@@ -222,8 +220,10 @@ class bigtop::hive(
         content => template($hive_log4j_template),
         require => Package['hive'],
     }
-    file { $java_logging_config_file:
-        content => template($java_logging_template),
+
+    # https://phabricator.wikimedia.org/T275757#6958662
+    file { "${config_directory}/parquet-logging.properties":
+        content => template($parquet_logging_template),
         require => Package['hive'],
     }
     file { "${config_directory}/hive-exec-log4j.properties":
