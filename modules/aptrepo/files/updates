@@ -209,6 +209,14 @@ Architectures: amd64
 VerifyRelease: 718C1F180B5A84A3
 ListShellHook: grep-dctrl -e -S '^(ceph|nfs-ganesha)$' || [ $? -eq 1 ]
 
+Name: thirdparty/ceph-octopus
+Method: https://download.ceph.com/debian-octopus
+Components: main>thirdparty/ceph-octopus
+UDebComponents:
+Suite: buster
+Architectures: amd64
+VerifyRelease: E84AC2C0460F3994
+
 Name: bigtop14
 Method: http://repos.bigtop.apache.org/releases/1.4.0/debian/9/amd64
 Components: contrib>thirdparty/bigtop14

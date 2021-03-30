@@ -149,6 +149,7 @@ Components: main
  thirdparty/bigtop14
  thirdparty/bigtop15
  thirdparty/ceph-nautilus-buster
+ thirdparty/ceph-octopus
  thirdparty/ci
  thirdparty/cloudera
  thirdparty/confluent
@@ -184,6 +185,7 @@ Update:
  matomo
  pyall
  thirdparty/ceph-nautilus-buster
+ thirdparty/ceph-octopus
  thirdparty/helm3
  thirdparty/kubeadm-k8s-kubernetes.io-1-17
  thirdparty/kubeadm-k8s-kubernetes.io
