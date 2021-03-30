@@ -122,6 +122,7 @@ class profile::superset(
         description   => 'superset',
         check_command => "check_tcp!${::superset::port}",
         require       => Class['::superset'],
+        contact_group => 'victorops-analytics',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
     }
 
