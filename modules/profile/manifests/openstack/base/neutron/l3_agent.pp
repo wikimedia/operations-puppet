@@ -7,7 +7,6 @@ class profile::openstack::base::neutron::l3_agent(
     $network_flat_interface_vlan_external = lookup('profile::openstack::base::neutron::network_flat_interface_vlan_external'),
     $network_flat_interface_vlan = lookup('profile::openstack::base::neutron::network_flat_interface_vlan'),
     Boolean $enable_hacks        = lookup('profile::openstack::base::neutron::enable_hacks', {default_value => true}),
-    Hash    $l3_conntrackd_conf  = lookup('profile::openstack::base::neutron::l3_conntrackd',{default_value => {}}),
     ) {
 
     interface::tagged { "${base_interface}.${$network_flat_interface_vlan_external}":
@@ -37,35 +36,5 @@ class profile::openstack::base::neutron::l3_agent(
 
     class { '::prometheus::node_neutron_namespace':
         ensure => 'present',
-    }
-
-    # this expects a data structure like this:
-    # profile::openstack::base::neutron::l3_conntrackd_conf:
-    #   node1:
-    #     netns: qrouter-xxx-xxx
-    #     nic: ha-xxx-xxx
-    #     local_addr: x.x.x.x
-    #     remote_addr: x.x.x.x
-    #     filter_ipv4:
-    #      - x.x.x.x
-    #      - y.y.y.y
-    #   node2:
-    #     netns: qrouter-xxx-xxx
-    #     nic: ha-yyy-yyy
-    #     local_addr: y.y.y.y
-    #     remote_addr: y.y.y.y
-    #     filter_ipv4:
-    #      - x.x.x.x
-    #      - y.y.y.y
-
-    $conntrackd_netns          = $l3_conntrackd_conf[$::hostname]['netns']
-    $conntrackd_nic            = $l3_conntrackd_conf[$::hostname]['nic']
-    $conntrackd_local_address  = $l3_conntrackd_conf[$::hostname]['local_addr']
-    $conntrackd_remote_address = $l3_conntrackd_conf[$::hostname]['remote_addr']
-    $conntrackd_filter_ipv4    = $l3_conntrackd_conf[$::hostname]['filter_ipv4']
-
-    class { 'conntrackd':
-        conntrackd_cfg => template('profile/openstack/base/neutron/conntrackd.conf.erb'),
-        systemd_cfg    => template('profile/openstack/base/neutron/conntrackd.service.erb'),
     }
 }

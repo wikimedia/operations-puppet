@@ -9,7 +9,6 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
     $report_interval = lookup('profile::openstack::codfw1dev::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::codfw1dev::neutron::base_interface'),
     Boolean $enable_hacks       = lookup('profile::openstack::codfw1dev::neutron::enable_hacks', {default_value => true}),
-    Hash    $l3_conntrackd_conf = lookup('profile::openstack::codfw1dev::neutron::l3_conntrackd',{default_value => {}}),
     ) {
 
     require ::profile::openstack::codfw1dev::clientpackages
@@ -24,7 +23,6 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
         network_flat_interface_vlan          => $network_flat_interface_vlan,
         network_flat_interface_vlan_external => $network_flat_interface_vlan_external,
         enable_hacks                         => $enable_hacks,
-        l3_conntrackd_conf                   => $l3_conntrackd_conf,
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 
