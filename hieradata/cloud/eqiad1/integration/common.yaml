@@ -16,3 +16,8 @@ profile::ci::docker::settings:
 # When changing this, run `tc-setup` on all the CI instances.
 #
 labstore::traffic_shaping::egress: 100mbps
+profile::ci::package_builder::extra_packages:
+    buster:
+        - eatmydata
+    stretch:
+        - eatmydata
