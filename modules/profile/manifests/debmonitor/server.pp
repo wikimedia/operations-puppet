@@ -138,11 +138,6 @@ class profile::debmonitor::server (
         }
     }
 
-    # Static file Nginx configuration, including CSP header
-    nginx::snippet { 'debmonitor_static':
-        ensure  => absent,
-    }
-
     # Common Proxy settings
     nginx::snippet { 'debmonitor_proxy':
         content => template('profile/debmonitor/server/debmonitor_proxy.nginx.erb'),
