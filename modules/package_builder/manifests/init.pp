@@ -1,20 +1,24 @@
 # Class package_builder
-# Packaging environment building class
-#
-# Actions:
+# @summary Packaging environment building class
 #   Installs Debian package creation/building tools and creates environments to
 #   help with easy package building.
-#
-# Usage:
+# @param basepath the base path to use
+# @params extra_packages A hash of extrabackes to add to the base image i.e. distro => [packages]}
+# @example
 #   include package_builder
+#   class {'package_builder':
+#     extra_packages => {'buster' =>['eatmydata'] },
+#   }
 class package_builder(
-    Stdlib::Unixpath $basepath='/var/cache/pbuilder',
+    Stdlib::Unixpath                      $basepath       = '/var/cache/pbuilder',
+    Hash[Debian::Codename, Array[String]] $extra_packages = {}
 ) {
     class { '::package_builder::hooks':
         basepath => $basepath,
     }
     class { '::package_builder::environments':
-        basepath => $basepath,
+        basepath       => $basepath,
+        extra_packages => $extra_packages,
     }
     systemd::timer::job { 'package_builder_Clean_up_build_directory':
         ensure      => present,

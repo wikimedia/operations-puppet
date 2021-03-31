@@ -33,14 +33,19 @@
 # workaround to recognize both 'sid' and 'unstable' while generating only a
 # single cow image.
 # Default: undef
+#
+# [*extra_packages*]
+# An array of additional packages to add to the cowbuilder images
+# Default: []
 define package_builder::pbuilder_base(
-    Stdlib::Httpurl $mirror='http://mirrors.wikimedia.org/debian',
-    String $distribution='stretch',
-    Optional[String] $distribution_alias=undef,
-    String $components='main',
-    String $architecture='amd64',
-    Stdlib::Unixpath $basepath='/var/cache/pbuilder',
-    Optional[Stdlib::Unixpath] $keyring=undef,
+    Stdlib::Httpurl            $mirror             = 'http://mirrors.wikimedia.org/debian',
+    String                     $distribution       = 'stretch',
+    Optional[String]           $distribution_alias = undef,
+    String                     $components         = 'main',
+    String                     $architecture       = 'amd64',
+    Stdlib::Unixpath           $basepath           = '/var/cache/pbuilder',
+    Array                      $extra_packages     = [],
+    Optional[Stdlib::Unixpath] $keyring            = undef,
 ) {
     if $keyring {
         $arg = "--debootstrapopts --keyring=${keyring}"
@@ -49,15 +54,22 @@ define package_builder::pbuilder_base(
     }
 
     $cowdir = "${basepath}/base-${distribution}-${architecture}.cow"
+    $_extra_packages = $extra_packages.empty ? {
+        true    => '',
+        default => "--extrapackages \"${extra_packages.join(' ')}\"",
+    }
 
-    $command = "/usr/sbin/cowbuilder --create \
-                        --mirror ${mirror} \
-                        --distribution ${distribution} \
-                        --components \"${components}\" \
-                        --architecture ${architecture} \
-                        --basepath \"${cowdir}\" \
-                        --debootstrapopts --variant=buildd \
-                        ${arg}"
+    $command = @("COMMAND"/L)
+    /usr/sbin/cowbuilder --create \
+    --mirror ${mirror} \
+    --distribution ${distribution} \
+    --components "${components}" \
+    --architecture ${architecture} \
+    --basepath "${cowdir}" \
+    ${_extra_packages} \
+    --debootstrapopts --variant=buildd \
+    ${arg}
+    | COMMAND
 
     file{ "/var/cache/pbuilder/aptcache/${distribution}-${architecture}":
         ensure => directory,
