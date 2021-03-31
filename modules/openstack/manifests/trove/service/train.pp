@@ -36,5 +36,12 @@ class openstack::trove::service::train(
             show_diff => false,
             notify    => Service['trove-api', 'trove-taskmanager', 'trove-conductor'],
             require   => Package['trove-api'];
+        # Overlay this file with a patched version.  Should be fixed post-train.
+        '/usr/lib/python3/dist-packages/trove/instance/models.py':
+            ensure => 'present',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+            source => 'puppet:///modules/openstack/train/trove/hacks/models.py';
     }
 }
