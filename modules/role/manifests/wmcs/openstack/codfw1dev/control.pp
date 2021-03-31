@@ -12,7 +12,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::glance
     include ::profile::openstack::codfw1dev::placement
     include ::profile::openstack::codfw1dev::cinder
-    include ::profile::openstack::codfw1dev::trove
+    # include ::profile::openstack::codfw1dev::trove
     include ::profile::ceph::client::rbd_glance
 
     # For testing purposes:
