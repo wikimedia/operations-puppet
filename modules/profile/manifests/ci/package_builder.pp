@@ -2,7 +2,9 @@
 #
 # Setup cow images and jenkins-debian-glue
 #
-class profile::ci::package_builder {
+class profile::ci::package_builder (
+    Hash[Debian::Codename, Array[String]] $extra_packages = lookup('profile::ci::package_builder::extra_packages'),
+) {
 
     # Shell script wrappers to ease package building
     # Package generated via the mirror operations/debs/jenkins-debian-glue.git
@@ -23,13 +25,14 @@ class profile::ci::package_builder {
     class { '::package_builder':
         # We need /var/cache/pbuilder to be a symlink to /srv
         # before cowbuilder/pbuilder is installed
-        require  => [
+        require        => [
             File['/var/cache/pbuilder'],
             File['/srv/pbuilder'],
         ],
         # Cowdancer is confused by /var/cache/pbuilder being a symlink
         # causing it to fail to properly --update cow images. T125999
-        basepath => '/srv/pbuilder',
+        basepath       => '/srv/pbuilder',
+        extra_packages => $extra_packages,
     }
 
     ensure_resource(
