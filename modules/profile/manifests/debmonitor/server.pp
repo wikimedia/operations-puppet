@@ -140,7 +140,7 @@ class profile::debmonitor::server (
 
     # Static file Nginx configuration, including CSP header
     nginx::snippet { 'debmonitor_static':
-        content => template('profile/debmonitor/server/debmonitor_static.nginx.erb'),
+        ensure  => absent,
     }
 
     # Common Proxy settings
@@ -173,7 +173,7 @@ class profile::debmonitor::server (
     profile::idp::client::httpd::site {$public_server_name:
         vhost_content    => 'profile/idp/client/httpd-debmonitor.erb',
         proxied_as_https => true,
-        vhost_settings   => { 'uwsgi_port' => $port },
+        vhost_settings   => { 'uwsgi_port' => $port, 'static_path' => $static_path},
         required_groups  => $required_groups,
         enable_monitor   => false,
     }
