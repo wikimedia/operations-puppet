@@ -119,7 +119,7 @@ def get_raid_status(host, raid_type):
             status = 'Failed to decompress Raid status: {err}'.format(err=e)
             logger.error(status)
     else:
-        status = stdout
+        status = stdout.decode()
 
     logger.debug(status)
     return status
