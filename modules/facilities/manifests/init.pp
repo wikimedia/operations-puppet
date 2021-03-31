@@ -423,4 +423,9 @@ class facilities {
         row  => 'd',
         site => 'codfw',
     }
+    facilities::monitor_pdu_3phase { 'ps-test-d8-codfw':
+        ip   => '10.193.0.148',
+        row  => 'd',
+        site => 'codfw',
+    }
 }
