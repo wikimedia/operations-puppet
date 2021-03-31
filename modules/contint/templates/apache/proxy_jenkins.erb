@@ -44,7 +44,7 @@ AllowEncodedSlashes NoDecode
     # Fresnel produces huge json traces we want to keep compressed but we need
     # to be able to drag'n drop them in Chrome console which requires
     # application/json type - T249268
-    SetEnvIf Request_URI "^<%=prefix -%>/.*fresnel.*\.json\.gz$" JSON_GZ
+    SetEnvIf Request_URI "^<%= @prefix -%>/.*fresnel.*\.json\.gz$" JSON_GZ
     Header set Content-Type application/json env=JSON_GZ
     Header set Content-Encoding gzip env=JSON_GZ
 
