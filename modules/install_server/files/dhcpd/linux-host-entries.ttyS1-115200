@@ -7540,6 +7540,21 @@ host theemin {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
+host wcqs2001 {
+    hardware ethernet 2C:EA:7F:8A:53:15;
+    fixed-address wcqs2001.codfw.wmnet;
+}
+
+host wcqs2002 {
+    hardware ethernet 2C:EA:7F:8A:49:3F;
+    fixed-address wcqs2002.codfw.wmnet;
+}
+
+host wcqs2003 {
+    hardware ethernet 2C:EA:7F:8A:53:45;
+    fixed-address wcqs2003.codfw.wmnet;
+}
+
 host wdqs1003 {
     hardware ethernet 94:18:82:71:f7:c0;
     fixed-address wdqs1003.eqiad.wmnet;
