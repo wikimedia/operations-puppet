@@ -2517,6 +2517,10 @@ node /^cloudvirt101[2-8]\.eqiad\.wmnet$/ {
 node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
 }
+# New wcqs node T276647
+node /^wcqs200[123]\.codfw\.wmnet/ {
+    role(insetup)
+}
 
 # Wikidata query service
 node /^wdqs100[4-7]\.eqiad\.wmnet$/ {
