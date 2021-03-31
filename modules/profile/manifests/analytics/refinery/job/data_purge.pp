@@ -278,6 +278,16 @@ class profile::analytics::refinery::job::data_purge (
         require     => File['/usr/local/bin/refinery-eventlogging-saltrotate']
     }
 
+    # Update this when you want to change the version of the refinery job jar
+    # being used for the refine job.
+    # TODO: refactor this.
+    $refinery_version = '0.1.2'
+    # Use this value by default
+    Profile::Analytics::Refinery::Job::Refine_job {
+        # Use this value as default refinery_job_jar.
+        refinery_job_jar => "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
+    }
+
     # EventLogging sanitization. Runs in two steps.
     # Common parameters for both jobs:
     $eventlogging_sanitization_job_config = {
