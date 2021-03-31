@@ -88,6 +88,7 @@ define package_builder::pbuilder_base(
     # Can be removed after the upgrade to bullseye
     $update_command = "/usr/sbin/cowbuilder --update \
                     --no-cowdancer-update \
+                    ${_extra_packages} \
                     --basepath \"${cowdir}\""
 
     systemd::timer::job { "cowbuilder_update_${distribution}-${architecture}":

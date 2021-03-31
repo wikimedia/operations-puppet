@@ -14,6 +14,10 @@ describe 'package_builder::pbuilder_base' do
           is_expected.to contain_exec('cowbuilder_init_stretch-amd64')
             .with_command(/(?!--extrapackages)/)
         end
+        it do
+          is_expected.to contain_systemd__timer__job('cowbuilder_update_stretch-amd64')
+            .with_command(/(?!--extrapackages)/)
+        end
       end
       describe 'Change Defaults' do
         context 'extra_packages' do
@@ -23,6 +27,10 @@ describe 'package_builder::pbuilder_base' do
           it do
             is_expected.to contain_exec('cowbuilder_init_stretch-amd64')
               .with_command(/--extrapackages "foo bar"/)
+          end
+          it do
+            is_expected.to contain_systemd__timer__job('cowbuilder_update_stretch-amd64')
+              .with_command(/--extrapackages/)
           end
         end
       end
