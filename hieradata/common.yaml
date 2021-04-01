@@ -784,6 +784,7 @@ hadoop_clusters:
     dfs_namenode_handler_count: 20
     dfs_namenode_service_port: 8040
     dfs_namenode_service_handler_count: 10
+    hadoop_var_directory: '/srv/hadoop'
 
     yarn_scheduler_maximum_allocation_mb: 53248
     yarn_resourcemanager_zk_state_store_parent_path: '/yarn-rmstore/analytics-test-hadoop'
