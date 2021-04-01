@@ -41,8 +41,8 @@ import nova.conf
 from nova import context as nova_context
 from nova import exception
 from nova.i18n import _
-from nova.image import api as image_api
-from nova import network as network_api
+from nova.image import glance
+from nova.network import neutron
 from nova import objects
 from nova.policies import servers as server_policies
 from nova import utils
@@ -112,7 +112,7 @@ class ServersController(wsgi.Controller):
     def __init__(self):
         super(ServersController, self).__init__()
         self.compute_api = compute.API()
-        self.network_api = network_api.API()
+        self.network_api = neutron.API()
 
     @wsgi.expected_errors((400, 403))
     @validation.query_schema(schema_servers.query_params_v275, '2.75')
@@ -384,10 +384,7 @@ class ServersController(wsgi.Controller):
     def _validate_network_id(net_id, network_uuids):
         """Validates that a requested network id.
 
-        This method performs two checks:
-
-        1. That the network id is in the proper uuid format.
-        2. That the network is not a duplicate when using nova-network.
+        This method checks that the network id is in the proper UUID format.
 
         :param net_id: The network id to validate.
         :param network_uuids: A running list of requested network IDs that have
@@ -395,19 +392,9 @@ class ServersController(wsgi.Controller):
         :raises: webob.exc.HTTPBadRequest if validation fails
         """
         if not uuidutils.is_uuid_like(net_id):
-            # NOTE(mriedem): Neutron would allow a network id with a br- prefix
-            # back in Folsom so continue to honor that.
-            # TODO(mriedem): Need to figure out if this is still a valid case.
-            br_uuid = net_id.split('-', 1)[-1]
-            if not uuidutils.is_uuid_like(br_uuid):
-                msg = _("Bad networks format: network uuid is "
-                        "not in proper format (%s)") % net_id
-                raise exc.HTTPBadRequest(explanation=msg)
-
-        # duplicate networks are allowed only for neutron v2.0
-        if net_id in network_uuids and not utils.is_neutron():
-            expl = _("Duplicate networks (%s) are not allowed") % net_id
-            raise exc.HTTPBadRequest(explanation=expl)
+            msg = _("Bad networks format: network uuid is "
+                    "not in proper format (%s)") % net_id
+            raise exc.HTTPBadRequest(explanation=msg)
 
     def _get_requested_networks(self, requested_networks):
         """Create a list of requested networks from the networks attribute."""
@@ -435,10 +422,6 @@ class ServersController(wsgi.Controller):
 
                 if request.port_id:
                     request.network_id = None
-                    if not utils.is_neutron():
-                        # port parameter is only for neutron v2.0
-                        msg = _("Unknown argument: port")
-                        raise exc.HTTPBadRequest(explanation=msg)
                     if request.address is not None:
                         msg = _("Specified Fixed IP '%(addr)s' cannot be used "
                                 "with port '%(port)s': the two cannot be "
@@ -466,7 +449,6 @@ class ServersController(wsgi.Controller):
     def show(self, req, id):
         """Returns server details by server id."""
         context = req.environ['nova.context']
-        context.can(server_policies.SERVERS % 'show')
         cell_down_support = api_version_request.is_supported(
             req, min_version=PARTIAL_CONSTRUCT_FOR_CELL_DOWN_MIN_VERSION)
         show_server_groups = api_version_request.is_supported(
@@ -475,6 +457,9 @@ class ServersController(wsgi.Controller):
         instance = self._get_server(
             context, req, id, is_detail=True,
             cell_down_support=cell_down_support)
+        context.can(server_policies.SERVERS % 'show',
+                    target={'project_id': instance.project_id})
+
         return self._view_builder.show(
             req, instance, cell_down_support=cell_down_support,
             show_server_groups=show_server_groups)
@@ -750,6 +735,7 @@ class ServersController(wsgi.Controller):
                 exception.FlavorMemoryTooSmall,
                 exception.InvalidMetadata,
                 exception.InvalidVolume,
+                exception.MismatchVolumeAZException,
                 exception.MultiplePortsNotApplicable,
                 exception.InvalidFixedIpAndMaxCountRequest,
                 exception.InstanceUserDataMalformed,
@@ -778,6 +764,7 @@ class ServersController(wsgi.Controller):
                 exception.MultiattachNotSupportedOldMicroversion,
                 exception.CertificateValidationFailed,
                 exception.CreateWithPortResourceRequestOldVersion,
+                exception.DeviceProfileError,
                 exception.ComputeHostNotFound) as error:
             raise exc.HTTPBadRequest(explanation=error.format_message())
         except INVALID_FLAVOR_IMAGE_EXCEPTIONS as error:
@@ -785,8 +772,7 @@ class ServersController(wsgi.Controller):
         except (exception.PortInUse,
                 exception.InstanceExists,
                 exception.NetworkAmbiguous,
-                exception.NoUniqueMatch,
-                exception.VolumeTypeSupportNotYetAvailable) as error:
+                exception.NoUniqueMatch) as error:
             raise exc.HTTPConflict(explanation=error.format_message())
 
         # If the caller wanted a reservation_id, return it
@@ -893,14 +879,18 @@ class ServersController(wsgi.Controller):
     @wsgi.action('confirmResize')
     def _action_confirm_resize(self, req, id, body):
         context = req.environ['nova.context']
-        context.can(server_policies.SERVERS % 'confirm_resize')
         instance = self._get_server(context, req, id)
+        context.can(server_policies.SERVERS % 'confirm_resize',
+                    target={'project_id': instance.project_id})
         try:
             self.compute_api.confirm_resize(context, instance)
         except exception.MigrationNotFound:
             msg = _("Instance has not been resized.")
             raise exc.HTTPBadRequest(explanation=msg)
-        except exception.InstanceIsLocked as e:
+        except (
+            exception.InstanceIsLocked,
+            exception.ServiceUnavailable,
+        ) as e:
             raise exc.HTTPConflict(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
@@ -911,8 +901,9 @@ class ServersController(wsgi.Controller):
     @wsgi.action('revertResize')
     def _action_revert_resize(self, req, id, body):
         context = req.environ['nova.context']
-        context.can(server_policies.SERVERS % 'revert_resize')
         instance = self._get_server(context, req, id)
+        context.can(server_policies.SERVERS % 'revert_resize',
+                    target={'project_id': instance.project_id})
         try:
             self.compute_api.revert_resize(context, instance)
         except exception.MigrationNotFound:
@@ -935,8 +926,9 @@ class ServersController(wsgi.Controller):
 
         reboot_type = body['reboot']['type'].upper()
         context = req.environ['nova.context']
-        context.can(server_policies.SERVERS % 'reboot')
         instance = self._get_server(context, req, id)
+        context.can(server_policies.SERVERS % 'reboot',
+                    target={'project_id': instance.project_id})
 
         try:
             self.compute_api.reboot(context, instance, reboot_type)
@@ -946,7 +938,7 @@ class ServersController(wsgi.Controller):
             common.raise_http_conflict_for_instance_invalid_state(state_error,
                     'reboot', id)
 
-    def _resize(self, req, instance_id, flavor_id, **kwargs):
+    def _resize(self, req, instance_id, flavor_id, auto_disk_config=None):
         """Begin the resize process with given instance/flavor."""
         context = req.environ["nova.context"]
         instance = self._get_server(context, req, instance_id,
@@ -968,12 +960,13 @@ class ServersController(wsgi.Controller):
                 raise exc.HTTPConflict(explanation=msg)
 
         try:
-            self.compute_api.resize(context, instance, flavor_id, **kwargs)
-        except exception.QuotaError as error:
+            self.compute_api.resize(context, instance, flavor_id,
+                                    auto_disk_config=auto_disk_config)
+        except (exception.QuotaError,
+                exception.ForbiddenWithAccelerators) as error:
             raise exc.HTTPForbidden(
                 explanation=error.format_message())
         except (exception.InstanceIsLocked,
-                exception.AllocationMoveFailed,
                 exception.InstanceNotReady,
                 exception.ServiceUnavailable) as e:
             raise exc.HTTPConflict(explanation=e.format_message())
@@ -991,8 +984,7 @@ class ServersController(wsgi.Controller):
         except (exception.AutoDiskConfigDisabledByImage,
                 exception.CannotResizeDisk,
                 exception.CannotResizeToSameFlavor,
-                exception.FlavorNotFound,
-                exception.NoValidHost) as e:
+                exception.FlavorNotFound) as e:
             raise exc.HTTPBadRequest(explanation=e.format_message())
         except INVALID_FLAVOR_IMAGE_EXCEPTIONS as e:
             raise exc.HTTPBadRequest(explanation=e.format_message())
@@ -1138,7 +1130,8 @@ class ServersController(wsgi.Controller):
         except exception.KeypairNotFound:
             msg = _("Invalid key_name provided.")
             raise exc.HTTPBadRequest(explanation=msg)
-        except exception.QuotaError as error:
+        except (exception.QuotaError,
+                exception.ForbiddenWithAccelerators) as error:
             raise exc.HTTPForbidden(explanation=error.format_message())
         except (exception.AutoDiskConfigDisabledByImage,
                 exception.CertificateValidationFailed,
@@ -1147,6 +1140,7 @@ class ServersController(wsgi.Controller):
                 exception.ImageNotActive,
                 exception.ImageUnacceptable,
                 exception.InvalidMetadata,
+                exception.InvalidArchitectureName,
                 exception.InvalidVolume,
                 ) as error:
             raise exc.HTTPBadRequest(explanation=error.format_message())
@@ -1216,7 +1210,10 @@ class ServersController(wsgi.Controller):
     def _action_create_image(self, req, id, body):
         """Snapshot a server instance."""
         context = req.environ['nova.context']
-        context.can(server_policies.SERVERS % 'create_image')
+        instance = self._get_server(context, req, id)
+        target = {'project_id': instance.project_id}
+        context.can(server_policies.SERVERS % 'create_image',
+                    target=target)
 
         entity = body["createImage"]
         image_name = common.normalize_name(entity["name"])
@@ -1228,8 +1225,6 @@ class ServersController(wsgi.Controller):
                 api_version_request.MAX_IMAGE_META_PROXY_API_VERSION):
             common.check_img_metadata_properties_quota(context, metadata)
 
-        instance = self._get_server(context, req, id)
-
         bdms = objects.BlockDeviceMappingList.get_by_instance_uuid(
                     context, instance.uuid)
 
@@ -1237,7 +1232,7 @@ class ServersController(wsgi.Controller):
             if compute_utils.is_volume_backed_instance(context, instance,
                                                           bdms):
                 context.can(server_policies.SERVERS %
-                    'create_image:allow_volume_backed')
+                    'create_image:allow_volume_backed', target=target)
                 image = self.compute_api.snapshot_volume_backed(
                                                        context,
                                                        instance,
@@ -1264,7 +1259,7 @@ class ServersController(wsgi.Controller):
 
         # build location of newly-created image entity
         image_id = str(image['id'])
-        image_ref = image_api.API().generate_image_url(image_id, context)
+        image_ref = glance.API().generate_image_url(image_id, context)
 
         resp = webob.Response(status_int=202)
         resp.headers['Location'] = image_ref
@@ -1295,6 +1290,11 @@ class ServersController(wsgi.Controller):
             opt_list += ('changes-before',)
         if api_version_request.is_supported(req, min_version='2.73'):
             opt_list += ('locked',)
+        if api_version_request.is_supported(req, min_version='2.83'):
+            opt_list += ('availability_zone', 'config_drive', 'key_name',
+                         'created_at', 'launched_at', 'terminated_at',
+                         'power_state', 'task_state', 'vm_state', 'progress',
+                         'user_id',)
         return opt_list
 
     def _get_instance(self, context, instance_uuid):
@@ -1316,7 +1316,9 @@ class ServersController(wsgi.Controller):
         """Start an instance."""
         context = req.environ['nova.context']
         instance = self._get_instance(context, id)
-        context.can(server_policies.SERVERS % 'start', instance)
+        context.can(server_policies.SERVERS % 'start',
+                    target={'user_id': instance.user_id,
+                            'project_id': instance.project_id})
         try:
             self.compute_api.start(context, instance)
         except (exception.InstanceNotReady, exception.InstanceIsLocked) as e:
