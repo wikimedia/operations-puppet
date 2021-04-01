@@ -1,0 +1,13 @@
+# Because we are using logrotate for greater flexibility, disable the
+# internal certbot logrotation.
+max-log-backups = 0
+
+authenticator = webroot
+webroot-path = /var/www/html/
+non-interactive
+agree-tos
+register-unsafely-without-email
+# Force-set a deploy-hook to run on first certificate acquire too (and renew after)
+deploy-hook = /etc/letsencrypt/renewal-hooks/deploy/pontoon-public-certs.sh
+cert-name = pontoon-public-certs
+domains = <%= @public_names.sort.join(',') %>
