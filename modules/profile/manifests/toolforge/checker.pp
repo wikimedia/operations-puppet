@@ -135,15 +135,17 @@ class profile::toolforge::checker {
         notify => Uwsgi::App[$check_names],
     }
 
-    # TODO: move to hiera?
+    # TODO(T279078): move to hiera?
     $config = {
         'CRON_PATH'     => '/data/project/toolschecker/crontest.txt',
         'DEBUG'         => true,
         'DUMPS_PATH'    => '/public/dumps/public/enwiki',
         'ETCD_K8S' => [
-            "tools-k8s-etcd-4.${::labsproject}.eqiad.wmflabs",
-            "tools-k8s-etcd-5.${::labsproject}.eqiad.wmflabs",
-            "tools-k8s-etcd-6.${::labsproject}.eqiad.wmflabs",
+            "tools-k8s-etcd-8.${::labsproject}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-9.${::labsproject}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-10.${::labsproject}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-11.${::labsproject}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-12.${::labsproject}.eqiad1.wikimedia.cloud",
         ],
         'ETCD_AUTH' => {
             'KEY'  => $etcd_cert_priv,
