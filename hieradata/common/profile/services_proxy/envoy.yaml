@@ -2,6 +2,7 @@
 # Local ports go between 6000 and 7000
 profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners:
+  # First, the discovery enabled services
   - name: parsoid
     port: 6001
     timeout: "8s"
@@ -71,6 +72,10 @@ profile::services_proxy::envoy::listeners:
     service: push-notifications
     keepalive: "4.5s"
     timeout: "2.5s"
+  - name: mobileapps
+    port: 6012 #TODO: Duplicate
+    service: mobileapps
+    timeout: "120s"
   - name: eventgate-analytics-external
     port: 6013
     timeout: "5s"
@@ -79,6 +84,41 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: "5xx"
       num_retries: 1
+  - name: proton
+    port: 6013 #TODO: Duplicate
+    service: proton
+    timeout: "120s"
+  - name: citoid
+    port: 6014
+    service: citoid
+    timeout: "120s"
+    keepalive: "4.5s"
+  - name: cxserver
+    port: 6015
+    service: cxserver
+    timeout: "120s"
+  - name: recommendation
+    port: 6016
+    service: recommendation-api
+    timeout: "120s"
+  - name: wikifeeds
+    port: 6017
+    service: wikifeeds
+    timeout: "120s"
+  - name: zotero
+    port: 6018
+    service: zotero
+    timeout: "120s"
+    keepalive: "4.5s"
+  - name: apertium
+    port: 6504 #TODO: Switch to 6019
+    service: apertium
+    timeout: "120s"
+    keepalive: "4.5s" # this is needed to avoid reusing upstream-closed connections - see T263043
+  - name: aqs
+    port: 6020
+    service: aqs
+    timeout: "120s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -138,40 +178,6 @@ profile::services_proxy::envoy::listeners:
     timeout: "50s"
     upstream: search.svc.codfw.wmnet
   # Other services, mostly used by restbase
-  - name: mobileapps
-    port: 6012
-    service: mobileapps
-    timeout: "120s"
-  - name: aqs
-    port: 6020
-    service: aqs
-    timeout: "120s"
-  - name: proton
-    port: 6013
-    service: proton
-    timeout: "120s"
-  - name: citoid
-    port: 6014
-    service: citoid
-    timeout: "120s"
-    keepalive: "4.5s"
-  - name: cxserver
-    port: 6015
-    service: cxserver
-    timeout: "120s"
-  - name: recommendation
-    port: 6016
-    service: recommendation-api
-    timeout: "120s"
-  - name: wikifeeds
-    port: 6017
-    service: wikifeeds
-    timeout: "120s"
-  - name: zotero
-    port: 6018
-    service: zotero
-    timeout: "120s"
-    keepalive: "4.5s"
   - name: parsoid-async # Parsoid-php for long-lasting async requests.
     port: 6502
     service: parsoid-php
@@ -195,11 +201,6 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s" # this is needed to avoid reusing upstream-closed connections - see T263043
     upstream: restbase.discovery.wmnet
     xfp: https # this is needed for private wikis - see T249535
-  - name: apertium
-    port: 6504
-    service: apertium
-    timeout: "120s"
-    keepalive: "4.5s" # this is needed to avoid reusing upstream-closed connections - see T263043
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
