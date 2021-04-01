@@ -1963,7 +1963,7 @@ node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
 }
 
 node /^mw23(8[3-9]|9[0-4])\.codfw\.wmnet/ {
-    role(insetup)
+    role(mediawiki::appserver)
 }
 
 node /^mw2(39[5-9]|40[0-2])\.codfw\.wmnet/ {
