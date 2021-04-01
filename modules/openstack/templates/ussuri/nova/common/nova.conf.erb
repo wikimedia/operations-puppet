@@ -42,8 +42,6 @@ rpc_response_timeout=180
 instance_usage_audit = False
 compute_monitors=virt_driver
 
-# glance
-remove_unused_base_images=True
 
 # APIs
 enabled_apis = osapi_compute,metadata
@@ -72,7 +70,6 @@ pool_timeout = 60
 connection_recycle_time = 1800
 
 [scheduler]
-driver=filter_scheduler
 workers = 3
 
 [filter_scheduler]
@@ -178,3 +175,6 @@ api_paste_config=/etc/nova/api-paste.ini
 
 [oslo_policy]
 policy_file = policy.yaml
+
+[image_cache] 
+remove_unused_base_images=True
