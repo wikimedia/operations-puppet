@@ -145,7 +145,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'hdfs'
     filename: 'hdfs.keytab'
     parent_dir_grp: 'hadoop'
-profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::oozie::server::oozie_service_kerberos_enabled: true
 profile::oozie::server::local_realm: 'ANALYTICS.EQIAD.WMFLABS'
