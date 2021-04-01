@@ -2499,6 +2499,10 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
     role(url_downloader)
 }
 
+node /^cloudvirt101[2-8]\.eqiad\.wmnet$/ {
+    role(wmcs::openstack::eqiad1::virt_ceph)
+}
+
 # Cloudvirt1019 and 1020 are special hypervisors;
 #  they host giant database servers using local storage.
 node 'cloudvirt1019.eqiad.wmnet' {
@@ -2522,8 +2526,8 @@ node /^cloudvirt103[0-9]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
-node /^cloudvirt101[2-8]\.eqiad\.wmnet$/ {
-    role(wmcs::openstack::eqiad1::virt_ceph)
+node /^cloudvirt104[0-6]\.eqiad\.wmnet$/ {
+    role(insetup)
 }
 
 # Private virt hosts for wdqs T221631

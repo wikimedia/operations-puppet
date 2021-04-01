@@ -1048,6 +1048,36 @@ host cloudvirt1039 {
     fixed-address cloudvirt1039.eqiad.wmnet;
 }
 
+host cloudvirt1041 {
+    hardware ethernet BC:97:E1:B9:78:36;
+    fixed-address cloudvirt1041.eqiad.wmnet;
+}
+
+host cloudvirt1042 {
+    hardware ethernet BC:97:E1:BB:A3:C0;
+    fixed-address cloudvirt1042.eqiad.wmnet;
+}
+
+host cloudvirt1043 {
+    hardware ethernet BC:97:E1:B9:39:D8;
+    fixed-address cloudvirt1043.eqiad.wmnet;
+}
+
+host cloudvirt1044 {
+    hardware ethernet BC:97:E1:B9:76:08;
+    fixed-address cloudvirt1044.eqiad.wmnet;
+}
+
+host cloudvirt1045 {
+    hardware ethernet BC:97:E1:BB:73:60;
+    fixed-address cloudvirt1045.eqiad.wmnet;
+}
+
+host cloudvirt1046 {
+    hardware ethernet BC:97:E1:B9:75:AE;
+    fixed-address cloudvirt1046.eqiad.wmnet;
+}
+
 host cloudvirt-wdqs1001 {
     hardware ethernet 4C:D9:8F:93:C7:3E;
     fixed-address cloudvirt-wdqs1001.eqiad.wmnet;
