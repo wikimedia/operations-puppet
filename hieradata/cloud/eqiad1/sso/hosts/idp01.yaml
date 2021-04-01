@@ -18,6 +18,10 @@ profile::idp::services:
   wmcloud_org:
     id: 2
     service_id: 'https://(.*)\.wmcloud\.org(/.*)?'
+  # Observability stack self-managed zone in wmflabs.org
+  o11y_wmflabs_org:
+    id: 3
+    service_id: 'https://(.*)\.monitoring\.wmflabs\.org(/.*)?'
 profile::idp::client::httpd::sites:
   'idp-test-login.wmcloud.org':
     vhost_content: 'profile/idp/client/httpd-uwsgi.erb'
