@@ -170,18 +170,6 @@ class profile::logstash::collector (
     }
     # lint:endignore
 
-    ## Outputs (90)
-    logstash::output::elasticsearch { 'logstash':
-        host            => '127.0.0.1',
-        guard_condition => '"es" in [tags]',
-        index           => '%{[@metadata][index_name]}-%{+YYYY.MM.dd}',
-        manage_indices  => true,
-        priority        => 90,
-        template        => '/etc/logstash/templates/logstash_5.0-1.json',
-        require         => File['/etc/logstash/templates'],
-    }
-
-
     # Output logs tagged "deprecated-input" to eqiad Kafka for ingest by elk7.
     # These are logs that have arrived via a "legacy" (non-kafka) logstash input.
     # The elk7 cluster ingests via Kafka only.
