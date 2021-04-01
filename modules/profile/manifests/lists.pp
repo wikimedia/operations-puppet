@@ -127,11 +127,9 @@ class profile::lists (
 
         # rsync from primary to mailman3 host
         if $mailman3_host {
-            rsync::quickdatacopy { 'var-lib-mailman':
-                source_host => $::fqdn,
-                dest_host   => $mailman3_host,
-                auto_sync   => false,
-                module_path => '/var/lib/mailman',
+            class { '::mailman3::import_test':
+                mailman2_host => $::fqdn,
+                mailman3_host => $mailman3_host,
             }
         }
     }

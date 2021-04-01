@@ -129,11 +129,9 @@ class profile::mailman3 (
 
     # rsync from mailman2 to allow importing archives
     if $mailman2_host {
-        rsync::quickdatacopy { 'var-lib-mailman':
-            source_host => $mailman2_host,
-            dest_host   => $::fqdn,
-            auto_sync   => false,
-            module_path => '/var/lib/mailman',
+        class { '::mailman3::import_test':
+            mailman2_host => $mailman2_host,
+            mailman3_host => $::fqdn,
         }
     }
 }
