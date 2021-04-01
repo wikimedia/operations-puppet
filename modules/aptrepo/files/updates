@@ -152,7 +152,7 @@ Suite: kubernetes-xenial
 Components: main>thirdparty/kubeadm-k8s-1-17
 UDebComponents:
 Architectures: amd64
-VerifyRelease: 6A030B21BA07F4FB
+VerifyRelease: !6A030B21BA07F4FB
 ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -a -FVersion --lt 1.18 -a -FVersion --ge 1.17 \) || [ $? -eq 1 ]
 
 Name: thirdparty/kubeadm-k8s-kubernetes.io
@@ -161,7 +161,7 @@ Suite: kubernetes-xenial
 Components: main>thirdparty/kubeadm-k8s-1-17
 UDebComponents:
 Architectures: amd64
-VerifyRelease: 6A030B21BA07F4FB
+VerifyRelease: !6A030B21BA07F4FB
 ListShellHook: grep-dctrl \( -P 'kubernetes-cni' -o -P 'cri-tools' \) || [ $? -eq 1 ]
 
 Name: thirdparty/kubeadm-k8s-docker.com
