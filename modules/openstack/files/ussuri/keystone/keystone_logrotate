@@ -1,0 +1,9 @@
+/var/log/keystone/*.log {
+    su keystone keystone
+    daily
+    missingok
+    rotate 5
+    compress
+    minsize 100k
+    copytruncate
+}
