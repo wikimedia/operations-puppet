@@ -100,6 +100,7 @@ class package_builder(
         'dh-sysuser',
         'php-dev',
         'dh-php',
+        'postgresql-server-dev-all',
     ])
 
     file { '/etc/pbuilderrc':
