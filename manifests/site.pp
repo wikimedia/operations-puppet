@@ -1954,12 +1954,8 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 # New mw servers T274171
 
 # rack A3
-node /^mw237[78]\.codfw\.wmnet/ {
+node /^mw23(7[7-9]|8[0-2])\.codfw\.wmnet/ {
     role(mediawiki::jobrunner)
-}
-
-node /^mw23(79|8[0-2])\.codfw\.wmnet/ {
-    role(insetup)
 }
 
 node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
