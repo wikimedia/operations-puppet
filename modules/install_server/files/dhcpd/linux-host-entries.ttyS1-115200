@@ -6718,17 +6718,17 @@ host mw2389 {
 }
 
 host mw2390 {
-    hardware ethernet 2C:EA:7F:81:FF:A2;
+    hardware ethernet 2C:EA:7F:81:F5:62;
     fixed-address mw2390.codfw.wmnet;
 }
 
 host mw2391 {
-    hardware ethernet ;
+    hardware ethernet 2C:EA:7F:82:19:E3;
     fixed-address mw2391.codfw.wmnet;
 }
 
 host mw2392 {
-    hardware ethernet 2C:EA:7F:82:19:E3;
+    hardware ethernet 2C:EA:7F:82:28:ED;
     fixed-address mw2392.codfw.wmnet;
 }
 
