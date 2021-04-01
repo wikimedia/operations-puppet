@@ -111,7 +111,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "120s"
     keepalive: "4.5s"
   - name: apertium
-    port: 6504 #TODO: Switch to 6019
+    port: 6019
     service: apertium
     timeout: "120s"
     keepalive: "4.5s" # this is needed to avoid reusing upstream-closed connections - see T263043
