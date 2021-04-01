@@ -1,0 +1,15 @@
+frontend public
+    bind *:443 ssl crt /etc/letsencrypt/live/pontoon-public-certs/combined.pem
+    mode http
+    option forwardfor
+<%- @services.sort.each do |name, svc| -%>
+    use_backend <%= name %> if { ssl_fc_sni -i <%= svc['public_name'] %> }
+<% end %>
+
+<%- @services.sort.each do |name, svc| -%>
+backend <%= name %>
+    balance roundrobin
+  <%- svc['hosts'].sort.each do |host| -%>
+    server <%= host.split('.')[0] %> <%= "#{host}:#{svc['port']}" %> check <%= svc['backend_use_tls'] and "ssl sni str(#{svc['backend_sni']}) check-sni #{svc['backend_sni']} verify none" or "" %>
+  <% end %>
+<% end %>
