@@ -119,6 +119,18 @@ profile::services_proxy::envoy::listeners:
     port: 6020
     service: aqs
     timeout: "120s"
+  - name: thanos-query
+    port: 6021
+    service: thanos-query
+    timeout: "120s"
+  - name: thanos-swift
+    port: 6022
+    service: thanos-swift
+    timeout: "120s"
+  - name: schema
+    port: 6023
+    service: schema
+    timeout: "120s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
