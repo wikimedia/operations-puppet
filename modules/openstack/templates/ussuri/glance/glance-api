@@ -63,9 +63,9 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 	done
 
 	if [ -n "${KEY_FILE}" ] && [ -n "${CERT_FILE}" ] ; then
-		DAEMON_ARGS="--https-socket [::]:${UWSGI_PORT},${CERT_FILE},${KEY_FILE}"
+		DAEMON_ARGS="--https-socket 0.0.0.0:${UWSGI_PORT},${CERT_FILE},${KEY_FILE}"
 	else
-		DAEMON_ARGS="--http-socket [::]:${UWSGI_PORT}"
+		DAEMON_ARGS="--http-socket 0.0.0.0:${UWSGI_PORT}"
 	fi
 
 	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH}"
