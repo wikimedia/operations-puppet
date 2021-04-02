@@ -1,3 +1,6 @@
+profile::standard::admin_groups:
+  - mailman-admins
+
 profile::standard::has_default_mail_relay: false
 mailman::lists_servername: 'lists.wikimedia.org'
 mtail::logs:
