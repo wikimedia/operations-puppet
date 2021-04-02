@@ -23,7 +23,7 @@ class mailman3::web (
         'python3-mysqldb',
         # https://hyperkitty.readthedocs.io/en/latest/install.html#install-the-code
         'sassc',
-        'python3-whoosh',
+        'python3-xapian-haystack',
     ])
 
     package { 'mailman3-web':

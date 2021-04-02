@@ -82,6 +82,14 @@ DATABASES = {
     }
 }
 
+# Fulltext search configuration
+HAYSTACK_CONNECTIONS = {
+      'default': {
+          'ENGINE': 'xapian_backend.XapianEngine',
+          'PATH': '/var/lib/mailman3/web/fulltext_xapian_index',
+      },
+}
+
 GRAVATAR_SECURE_URL = ''
 
 # If you're behind a proxy, use the X-Forwarded-Host header
