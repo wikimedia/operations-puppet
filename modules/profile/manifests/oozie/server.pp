@@ -35,7 +35,7 @@ class profile::oozie::server(
     require_package('default-mysql-client')
 
     if debian::codename::ge('buster') {
-        $jdbc_driver = 'com.mariadb.jdbc.Driver'
+        $jdbc_driver = 'org.mariadb.jdbc.Driver'
     } else {
         $jdbc_driver = 'com.mysql.jdbc.Driver'
     }
