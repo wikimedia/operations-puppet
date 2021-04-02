@@ -70,19 +70,16 @@ host an-druid1005 {
 host an-test-coord1001 {
     hardware ethernet 2C:EA:7F:40:10:6C;
     fixed-address an-test-coord1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-test-master1001 {
     hardware ethernet 2C:EA:7F:40:39:DC;
     fixed-address an-test-master1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-test-master1002 {
     hardware ethernet 2C:EA:7F:44:E6:CF;
     fixed-address an-test-master1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-test-worker1001 {
