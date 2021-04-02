@@ -4752,6 +4752,16 @@ host sodium {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host moss-fe1001 {
+    hardware ethernet BC:97:E1:E4:2F:70;
+    fixed-address moss-fe1001.eqiad.wmnet;
+}
+
+host moss-fe1002 {
+    hardware ethernet BC:97:E1:E4:2D:F0;
+    fixed-address moss-fe1002.eqiad.wmnet;
+}
+
 host ms-backup1001 {
     hardware ethernet BC:97:E1:E4:25:D0;
     fixed-address ms-backup1001.eqiad.wmnet;

@@ -1694,6 +1694,10 @@ node 'moscovium.eqiad.wmnet' {
     role(requesttracker)
 }
 
+node /^moss-fe100[12]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 node /^ms-backup100[12]\.eqiad\.wmnet/ {
     role(insetup)
 }
