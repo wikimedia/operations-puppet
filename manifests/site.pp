@@ -1970,8 +1970,12 @@ node /^mw23(8[3-9]|9[0-4])\.codfw\.wmnet/ {
     role(mediawiki::appserver)
 }
 
-node /^mw2(39[5-9]|40[0-2])\.codfw\.wmnet/ {
+node /^mw239[5-6]\.codfw\.wmnet/ {
     role(mediawiki::appserver::api)
+}
+
+node /^mw2(39[7-9]|40[0-2])\.codfw\.wmnet/ {
+    role(insetup)
 }
 
 # rack A6
