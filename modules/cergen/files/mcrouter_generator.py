@@ -41,9 +41,14 @@ def hosts_from_puppetdb(configfile):
 
 
 def cergen_manifests(hosts):
-
-    def definition_for(ip):
-        return {
+    manifest = {}
+    for name in hosts:
+        try:
+            ip = socket.gethostbyname(name)
+        except socket.gaierror as e:
+            print('{}: {}'.format(e.strerror, name))
+            raise
+        manifest[name] = {
             'authority': 'mcrouter_ca',
             'subject': {
                 'country_name': 'US',
@@ -55,15 +60,7 @@ def cergen_manifests(hosts):
             'alt_names': [ip],
             'key_usage': ['digital_signature', 'content_commitment', 'key_encipherment']
         }
-
-    result = {}
-    for name in hosts:
-        try:
-            result[name] = definition_for(socket.gethostbyname(name))
-        except socket.gaierror as e:
-            print('{}: {}'.format(e.strerror, name))
-            raise
-    return result
+    return manifest
 
 
 def audit(path, hosts):
