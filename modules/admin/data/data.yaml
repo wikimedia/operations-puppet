@@ -461,7 +461,7 @@ groups:
   mailman-admins:
     gid: 757
     description: Admins for mailman2
-    members: []
+    members: [ladsgroup]
     privileges: ['ALL = (list) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service mailman *',
                  'ALL = NOPASSWD: /bin/journalctl *']
