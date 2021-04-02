@@ -4,9 +4,14 @@ class profile::kubernetes::deployment_server(
     Hash[String, Any] $tokens   = lookup('profile::kubernetes::deployment_server::tokens', {default_value => {}}),
     String $git_owner           = lookup('profile::kubernetes::deployment_server::git_owner'),
     String $git_group           = lookup('profile::kubernetes::deployment_server::git_group'),
+    Boolean $packages_from_future = lookup('profile::kubernetes::deployment_server::packages_from_future', {default_value => false}),
+
 ){
     include profile::kubernetes::deployment_server::helmfile
     class { '::helm': }
+    class { '::k8s::client':
+        packages_from_future => $packages_from_future,
+    }
 
     file { '/etc/kubernetes':
         ensure => directory,

@@ -1,5 +1,6 @@
 cluster: kubernetes
 profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::client::packages_from_future: true
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 2

@@ -44,11 +44,10 @@ class k8s::apiserver(
     if $packages_from_future {
         apt::package_from_component { 'apiserver-kubernetes-future':
             component => 'component/kubernetes-future',
-            packages  => ['kubernetes-master', 'kubernetes-client'],
+            packages  => ['kubernetes-master'],
         }
     } else {
         require_package('kubernetes-master')
-        require_package('kubernetes-client')
     }
 
     $admission_control = join(keys($admission_controllers), ',')

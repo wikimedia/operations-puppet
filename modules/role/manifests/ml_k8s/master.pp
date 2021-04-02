@@ -4,6 +4,9 @@ class role::ml_k8s::master {
 
     # Sets up kubernetes on the machine
     include ::profile::kubernetes::master
+    # Strictly speaking kubectl isn't needed, but have it here for historical
+    # reasons
+    include ::profile::kubernetes::client
 
     # LVS configuration (VIP)
     include ::profile::lvs::realserver

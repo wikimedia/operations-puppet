@@ -4,11 +4,7 @@ class helm(
     Stdlib::Unixpath $helm_cache='/var/cache/helm',
     Hash[String[1], Stdlib::Httpurl] $repositories={'stable' => 'https://helm-charts.wikimedia.org/stable/', 'wmf-stable' => 'https://helm-charts.wikimedia.org/stable'},
 ) {
-    package { [
-        'helm',
-        'helm3',
-        'kubernetes-client',
-        ]:
+    package { [ 'helm', 'helm3', ]:
         ensure => installed,
     }
 

@@ -357,6 +357,7 @@ profile::kubernetes::deployment_server::services:
     mode: '0640'
     owner: mwdeploy
 
+profile::kubernetes::deployment_server::packages_from_future: true
 # Default and environment specific generic values go here.
 # default:
 #   ..
