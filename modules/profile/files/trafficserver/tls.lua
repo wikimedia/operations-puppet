@@ -78,6 +78,7 @@ function do_global_send_response()
         --ts.client_response.header['X-Cache-Status'] = nil
         ts.client_response.header['X-Envoy-Upstream-Service-Time'] = nil
         ts.client_response.header['X-Powered-By'] = nil
+        ts.client_response.header['X-Request-Id'] = nil
         ts.client_response.header['X-Timestamp '] = nil
         ts.client_response.header['X-Trans-Id'] = nil
         ts.client_response.header['X-Varnish'] = nil
