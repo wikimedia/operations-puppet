@@ -56,7 +56,14 @@ def cergen_manifests(hosts):
             'key_usage': ['digital_signature', 'content_commitment', 'key_encipherment']
         }
 
-    return {name: definition_for(socket.gethostbyname(name)) for name in hosts}
+    result = {}
+    for name in hosts:
+        try:
+            result[name] = definition_for(socket.gethostbyname(name))
+        except socket.gaierror as e:
+            print('{}: {}'.format(e.strerror, name))
+            raise
+    return result
 
 
 def audit(path, hosts):
