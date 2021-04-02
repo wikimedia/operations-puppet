@@ -20,3 +20,10 @@ https://20.wikipedia.org:
   assert_status: 301
   assert_headers:
       Location: https://wikimediafoundation.org/wikipedia20
+
+# Redirect www.mediawiki.org/FAQ to the manual page
+https://www.mediawiki.org:
+- path: /FAQ
+  assert_status: 301
+  assert_headers:
+      Location: https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ

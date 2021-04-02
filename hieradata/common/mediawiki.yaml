@@ -44,7 +44,7 @@ mediawiki::sites:
           additional_rewrites:
             early:
               - "# Our FAQ"
-              - "    RewriteRule ^/FAQ$ %%{}{ENV:RW_PROTO}://www.mediawiki.org/wiki/Help:FAQ [R=301,L]"
+              - "    RewriteRule ^/FAQ$ %%{}{ENV:RW_PROTO}://www.mediawiki.org/wiki/Special:MyLanguage/Manual:FAQ [R=301,L]"
             late: []
       - name: test.wikidata.org
         params:
