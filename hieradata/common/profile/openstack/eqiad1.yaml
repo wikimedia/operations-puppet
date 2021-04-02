@@ -10,7 +10,6 @@ profile::openstack::eqiad1::horizon_version: 'train'
 #   nova-placement
 #   nova-api
 #   glance-api
-#   glance-registry
 #
 # All of the above api endpoints are behind HA-proxy, which also runs
 #  on each cloud_vps_controller.

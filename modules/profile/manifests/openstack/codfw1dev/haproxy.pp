@@ -2,7 +2,6 @@ class profile::openstack::codfw1dev::haproxy(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
-    Stdlib::Port $glance_registry_bind_port = lookup('profile::openstack::codfw1dev::glance::registry_bind_port'),
     Stdlib::Port $placement_api_bind_port = lookup('profile::openstack::codfw1dev::placement::api_bind_port'),
     Stdlib::Port $cinder_api_bind_port = lookup('profile::openstack::codfw1dev::cinder::api_bind_port'),
     Stdlib::Port $trove_api_bind_port = lookup('profile::openstack::base::trove::api_bind_port'),
@@ -61,14 +60,6 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_frontend      => 8779,
         port_backend       => $trove_api_bind_port,
-    }
-
-    profile::openstack::base::haproxy::site { 'glance_registry':
-        servers            => $openstack_controllers,
-        healthcheck_method => 'GET',
-        healthcheck_path   => '/healthcheck',
-        port_frontend      => 9191,
-        port_backend       => $glance_registry_bind_port,
     }
 
     profile::openstack::base::haproxy::site { 'barbican':

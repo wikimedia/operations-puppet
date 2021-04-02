@@ -10,7 +10,6 @@ class openstack::glance::service(
     $keystone_admin_uri,
     $keystone_public_uri,
     Stdlib::Port $api_bind_port,
-    Stdlib::Port $registry_bind_port,
     String $ceph_pool,
     $glance_backends,
 ) {
@@ -25,7 +24,6 @@ class openstack::glance::service(
         keystone_admin_uri  => $keystone_admin_uri,
         keystone_public_uri => $keystone_public_uri,
         api_bind_port       => $api_bind_port,
-        registry_bind_port  => $registry_bind_port,
         glance_backends     => $glance_backends,
         ceph_pool           => $ceph_pool,
     }

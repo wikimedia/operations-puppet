@@ -64,7 +64,6 @@
     {"index" : "keystone-wsgi-admin.py", "value" : "kafka local" },
     {"index" : "keystone-wsgi-admin", "value" : "kafka local" },
     {"index" : "keystone-wsgi-public", "value" : "kafka local" },
-    {"index" : "glance-registry", "value" : "kafka local" },
     {"index" : "glance-api", "value" : "kafka local" },
     {"index" : "glance-wsgi-api", "value" : "kafka local" },
     {"index" : "neutron-api", "value" : "kafka local" },

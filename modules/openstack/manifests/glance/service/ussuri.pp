@@ -8,7 +8,6 @@ class openstack::glance::service::ussuri(
     $keystone_admin_uri,
     $keystone_public_uri,
     Stdlib::Port $api_bind_port,
-    Stdlib::Port $registry_bind_port,
     Array[String] $glance_backends,
     String $ceph_pool,
 ) {
