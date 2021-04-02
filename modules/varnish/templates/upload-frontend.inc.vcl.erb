@@ -203,7 +203,7 @@ sub cluster_fe_ratelimit {
 			return (synth(429, "Too many requests"));
 		}
 
-		if (req.http.User-Agent ~ "^(python-requests|Go-http-client)") {
+		if (req.http.User-Agent ~ "^(python-requests|Go-http-client|Python-urllib|Java/)") {
 			// UA-policy violations: 10/10s (1/s long term, with 10 burst)
 			if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
 				return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
