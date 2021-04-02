@@ -34,6 +34,12 @@ class profile::oozie::server(
     # it needs a mysql client.
     require_package('default-mysql-client')
 
+    if debian::codename::ge('buster') {
+        $jdbc_driver = 'com.mariadb.jdbc.Driver'
+    } else {
+        $jdbc_driver = 'com.mysql.jdbc.Driver'
+    }
+
     class { '::bigtop::oozie::server':
         smtp_host                                   => 'localhost',
         smtp_from_email                             => "oozie@${::fqdn}",
@@ -55,6 +61,7 @@ class profile::oozie::server(
         jdbc_database                               => $jdbc_database,
         jdbc_username                               => $jdbc_username,
         jdbc_password                               => $jdbc_password,
+        jdbc_driver                                 => $jdbc_driver,
         spark_defaults_config_dir                   => $spark_defaults_config_dir,
         oozie_sharelib_archive                      => $oozie_sharelib_archive,
     }
