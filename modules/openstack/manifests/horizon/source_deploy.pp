@@ -90,22 +90,6 @@ class openstack::horizon::source_deploy(
         notify => Service['apache2'],
     }
 
-    file { '/etc/openstack-dashboard/keystone_policy.json':
-        ensure => absent,
-    }
-
-    file { '/etc/openstack-dashboard/glance_policy.json':
-        ensure => absent,
-    }
-
-    file { '/etc/openstack-dashboard/designate_policy.json':
-        ensure => absent,
-    }
-
-    file { '/etc/openstack-dashboard/neutron_policy.json':
-        ensure => absent,
-    }
-
     # A user and group to run this as
     group { 'horizon':
         ensure => present,
@@ -127,10 +111,6 @@ class openstack::horizon::source_deploy(
         owner  => 'root',
         mode   => '0444',
         notify => Service['apache2'],
-    }
-
-    file { '/etc/openstack-dashboard/disabled_policy.json':
-        ensure => absent,
     }
 
     scap::target { 'horizon/deploy':
