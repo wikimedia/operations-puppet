@@ -143,6 +143,13 @@ class openstack::horizon::source_deploy(
         owner  => 'root',
     }
 
+    # Prepare this directory for scap to drop some files into
+    file { '/etc/openstack-dashboard/default_policies':
+        ensure  => 'directory',
+        owner   => 'deploy-service',
+        require => File['/etc/openstack-dashboard'],
+    }
+
     file { '/var/lib/openstack-dashboard':
         ensure => 'directory',
         owner  => 'horizon',
