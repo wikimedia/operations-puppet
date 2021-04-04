@@ -16,10 +16,7 @@
 #  Many of these rule definitions will be judged redundant by
 #  oslopolicy-list-redundant but they're included to provide
 #  context for the policies that follow
-"admin_api": "is_admin:True"
-"admin_or_owner": "is_admin:True or project_id:%(project_id)s"
 "admin_or_projectadmin": "is_admin:True or role:projectadmin"
-"context_is_admin": "role:admin"
 "default": "rule:admin_or_projectadmin"
 
 #  There are a few reasons why we override default policies:
@@ -34,7 +31,6 @@
 #   - restrictive admin-only policies that disable features we don't
 #     use in wmcs
 #
-"os_compute_api:limits": ""
 "os_compute_api:os-admin-password": "rule:admin_or_projectadmin"
 "os_compute_api:os-attach-interfaces": "rule:admin_or_projectadmin"
 "os_compute_api:os-create-backup": "rule:admin_or_projectadmin"

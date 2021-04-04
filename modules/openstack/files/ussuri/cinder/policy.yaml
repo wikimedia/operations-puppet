@@ -1,6 +1,4 @@
 "admin_or_owner": "is_admin:True or project_id:%(project_id)s"
-"context_is_admin": "role:admin"
-"admin_api": "is_admin:True or (role:admin and is_admin_project:True)"
 "admin_or_projectadmin": "is_admin:True or role:projectadmin"
 "default": "rule:admin_or_projectadmin"
 
@@ -26,8 +24,6 @@
 "volume_extension:qos_specs_manage:get_all": ""
 "volume_extension:qos_specs_manage:get": ""
 "volume_extension:quotas:show": ""
-"volume_extension:type_get": ""
-"volume_extension:type_get_all": ""
 "volume:get_transfer": ""
 "volume:get_volume_metadata": ""
 "volume:get": ""
