@@ -75,6 +75,14 @@ class jupyterhub::server (
         require     => File[$data_path],
     }
 
+    # jupyter_notebook_config.py configures global settings for all user Notebook Servers.
+    # Currently this only configures the Notebook Terminal app to work nicely with
+    # a sourced stacked conda environment.
+    $jupyter_notebook_config_file = '/etc/jupyter/jupyter_notebook_config.py'
+    file { $jupyter_notebook_config_file:
+        source => 'puppet:///modules/jupyterhub/config/jupyter_notebook_config.py',
+        mode   => '0444',
+    }
 
     systemd::syslog { $service_name:
         readable_by => 'group',
