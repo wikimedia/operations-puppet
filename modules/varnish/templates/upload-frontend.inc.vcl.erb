@@ -198,11 +198,6 @@ sub cluster_fe_ratelimit {
 		}
 
 		// Requests in violation of the User-Agent policy
-
-		if (req.http.User-Agent ~ "^python-requests" && std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets) {
-			return (synth(429, "Too many requests"));
-		}
-
 		if (req.http.User-Agent ~ "^(python-requests|Go-http-client|Python-urllib|Java/)") {
 			// UA-policy violations: 10/10s (1/s long term, with 10 burst)
 			if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
