@@ -56,10 +56,16 @@ class ssh::server (
         require => Package['openssh-server'],
     }
 
+    # we use the legacy facts here specificaly because we override them in
+    # modules/base/lib/facter/interface_primary.rb
+    # Although the networking.ip fact now points to a sensible fact
+    # networking.ip6 still points to IMO the wrong address.
+    # related: https://tickets.puppetlabs.com/browse/FACT-2907
+    # related: https://tickets.puppetlabs.com/browse/FACT-2843
     $aliases = [
         $facts['networking']['hostname'],
-        $facts['networking']['ip'],
-        $facts['networking']['ip6'],
+        $facts['ipaddress'],
+        $facts['ipaddress6'],
     ].filter |$x| { $x =~ NotUndef }
 
     @@sshkey { $facts['networking']['fqdn']:
