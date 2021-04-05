@@ -30,7 +30,7 @@ profile::grafana::config:
     allow_embedding: true
   auth.anonymous:
     enabled: true
-    org_name: WMCS
+    org_name: 'Main Org.'
   panels:
     disable_sanitize_html: true
 profile::grafana::enable_cas: true
@@ -48,13 +48,4 @@ profile::idp::client::httpd::sites:
     - cn=nda,ou=groups,dc=sso,dc=eqiad1,dc=wikimedia,dc=cloud
     vhost_content: profile/idp/client/httpd-grafana.erb
     vhost_settings:
-      ro_vhost: "%{alias('profile::grafana::domainrw')}"
-  "%{alias('profile::grafana::domain')}":
-    document_root: /usr/share/grafana/public
-    proxied_as_https: true
-    required_groups:
-    - cn=wmf,ou=groups,dc=sso,dc=eqiad1,dc=wikimedia,dc=cloud
-    - cn=nda,ou=groups,dc=sso,dc=eqiad1,dc=wikimedia,dc=cloud
-    vhost_content: profile/idp/client/httpd-grafana.erb
-    protected_uri: '/login'
-    cookie_scope: '/'
+      ro_vhost: "%{alias('profile::grafana::domain')}"
