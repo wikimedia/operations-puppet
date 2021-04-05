@@ -4952,3 +4952,11 @@ ldap_only_users:
     ensure: present
     realname: Uzoma Ozurumba
     email: uozurumba-ctr@wikimedia.org
+  bwang:
+    ensure: present
+    realname: Bernard Wang
+    email: bwang@wikimedia.org
+  cjming:
+    ensure: present
+    realname: Clare Ming
+    email: cming@wikimedia.org
