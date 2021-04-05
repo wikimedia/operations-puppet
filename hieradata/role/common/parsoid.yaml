@@ -4,9 +4,6 @@ profile::standard::admin_groups:
 cluster: parsoid
 
 profile::lvs::realserver::pools:
-  parsoid:
-    services:
-      - parsoid
   "parsoid-php":
     services:
       - php7.2-fpm
