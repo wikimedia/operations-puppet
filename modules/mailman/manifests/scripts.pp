@@ -49,4 +49,11 @@ class mailman::scripts {
         source => 'puppet:///modules/mailman/scripts/queue_data.sh'
     }
 
+    file { '/usr/local/sbin/purge_attachments':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman/scripts/purge_attachments.py'
+    }
 }

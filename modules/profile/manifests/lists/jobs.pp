@@ -10,4 +10,12 @@ class profile::lists::jobs(
         interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
     }
 
+    systemd::timer::job { 'purge_attachments':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'Purge attachments from lists with archiving disabled',
+        command     => '/usr/local/sbin/purge_attachments',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
+    }
+
 }
