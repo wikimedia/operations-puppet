@@ -34,7 +34,7 @@ LogLevel VERBOSE
 
 # Authentication:
 LoginGraceTime 120
-PermitRootLogin <%= @permit_root ? 'yes' : 'no' %>
+PermitRootLogin <%= @_permit_root %>
 
 <%- if @explicit_macs -%>
 # Message Authentication codes
