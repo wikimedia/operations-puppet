@@ -1,5 +1,5 @@
 profile::openstack::eqiad1::region: 'eqiad1-r'
-profile::openstack::eqiad1::version: 'train'
+profile::openstack::eqiad1::version: 'ussuri'
 profile::openstack::eqiad1::horizon_version: 'train'
 
 # The openstack_controllers host the following services:
