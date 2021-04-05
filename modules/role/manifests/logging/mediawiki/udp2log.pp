@@ -27,7 +27,7 @@ class role::logging::mediawiki::udp2log(
 
     class { '::bsection': }
 
-    if $::hostname == 'mwlog1001' {
+    if $::hostname == 'mwlog1002' {
         class {'profile::logster_alarm':}
     }
 
