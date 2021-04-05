@@ -232,12 +232,6 @@ monitoring::groups:
   restbase_dev_eqiad:
     description: Services development testing eqiad
 
-# Service Clusters
-  scb_eqiad:
-    description: Service Cluster B servers eqiad
-  scb_codfw:
-    description: Service Cluster B servers codfw
-
 # Session Storage
   sessionstore_eqiad:
     description: Session Storage servers eqiad

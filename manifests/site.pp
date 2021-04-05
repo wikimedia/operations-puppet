@@ -2402,7 +2402,7 @@ node /sessionstore[1-2]00[1-3].(eqiad|codfw).wmnet/ {
 
 # Services 'B'
 node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
-    role(scb)
+    role(spare::system)
 
 }
 

@@ -7440,66 +7440,6 @@ host scandium {
     fixed-address scandium.eqiad.wmnet;
 }
 
-host scb1001 {
-    hardware ethernet 90:b1:1c:2d:7f:6b;
-    fixed-address scb1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb1002 {
-    hardware ethernet 90:b1:1c:2d:87:0c;
-    fixed-address scb1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb1003 {
-    hardware ethernet F0:1F:AF:E8:B0:EF;
-    fixed-address scb1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb1004 {
-    hardware ethernet F0:1F:AF:E8:BF:6F;
-    fixed-address scb1004.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb2001 {
-    hardware ethernet 14:18:77:33:43:6A;
-    fixed-address scb2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb2002 {
-    hardware ethernet 14:18:77:33:4D:37;
-    fixed-address scb2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb2003 {
-    hardware ethernet 14:18:77:33:4F:F5;
-    fixed-address scb2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb2004 {
-    hardware ethernet 14:18:77:33:3D:B3;
-    fixed-address scb2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb2005 {
-    hardware ethernet 18:66:DA:7D:AC:B2;
-    fixed-address scb2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host scb2006 {
-    hardware ethernet 18:66:DA:7D:BD:8C;
-    fixed-address scb2006.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host sessionstore1001 {
     hardware ethernet D0:94:66:90:9F:55;
     fixed-address sessionstore1001.eqiad.wmnet;

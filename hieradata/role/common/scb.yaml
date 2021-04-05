@@ -1,6 +1,0 @@
-cluster: scb
-profile::standard::admin_groups:
-  - sc-admins
-
-profile::nutcracker::memcached_pools: {}
-profile::nutcracker::monitor_port: 0 # we have nothing exposed via tcp

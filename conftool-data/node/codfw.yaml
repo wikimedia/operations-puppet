@@ -255,13 +255,6 @@ codfw:
     restbase2021.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase2022.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase2023.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
-  scb:
-    scb2001.codfw.wmnet: []
-    scb2002.codfw.wmnet: []
-    scb2003.codfw.wmnet: []
-    scb2004.codfw.wmnet: []
-    scb2005.codfw.wmnet: []
-    scb2006.codfw.wmnet: []
   eventschemas:
     schema2003.codfw.wmnet: [eventschemas]
     schema2004.codfw.wmnet: [eventschemas]

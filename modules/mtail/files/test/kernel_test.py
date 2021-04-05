@@ -15,7 +15,7 @@ class KernelTest(unittest.TestCase):
         s = self.store.get_samples('oom_kill')
         self.assertIn(('binary=thumbor,hostname=thumbor1003', 1), s)
         self.assertIn(('binary=thumbor,hostname=thumbor1001', 1), s)
-        self.assertIn(('binary=Chrome_IOThread,hostname=scb1003', 1), s)
+        self.assertIn(('binary=Chrome_IOThread,hostname=kubernetes1017', 1), s)
 
     def testSegfault(self):
         s = self.store.get_samples('segfault')

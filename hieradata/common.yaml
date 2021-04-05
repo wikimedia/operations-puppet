@@ -270,12 +270,6 @@ wikimedia_clusters:
       ulsfo: []
       esams: []
       eqsin: []
-  scb:
-    description: "Service Cluster B"
-    id: 53
-    sites:
-      eqiad: []
-      codfw: []
   aqs:
     description: "Analytics Query Service"
     id: 54

@@ -175,11 +175,6 @@ eqiad:
     cp1086.eqiad.wmnet: [varnish-fe, ats-be, ats-tls]
     cp1088.eqiad.wmnet: [varnish-fe, ats-be, ats-tls]
     cp1090.eqiad.wmnet: [varnish-fe, ats-be, ats-tls]
-  scb:
-    scb1001.eqiad.wmnet: []
-    scb1002.eqiad.wmnet: []
-    scb1003.eqiad.wmnet: []
-    scb1004.eqiad.wmnet: []
   dns:
     dns1001.wikimedia.org: [pdns_recursor]
     dns1002.wikimedia.org: [pdns_recursor]
