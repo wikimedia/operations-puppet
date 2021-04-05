@@ -2445,12 +2445,6 @@ node /sessionstore[1-2]00[1-3].(eqiad|codfw).wmnet/ {
     role(sessionstore)
 }
 
-# Services 'B'
-node /^scb[12]00[123456]\.(eqiad|codfw)\.wmnet$/ {
-    role(spare::system)
-
-}
-
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
