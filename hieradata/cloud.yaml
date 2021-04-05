@@ -323,3 +323,6 @@ mediawiki::common_sites:
   - name: wwwportals
     priority: 1
     template: mediawiki/apache/sites/wwwportals.conf.erb
+
+profile::rsyslog::kafka_shipper::kafka_brokers:
+  - localhost:9093

@@ -1353,8 +1353,11 @@ node 'pki-root1001.eqiad.wmnet' {
     role(pki::root)
 }
 
-# New kafka-logging hosts T273778
-node /kafka-logging100[123]\.eqiad\.wmnet/ {
+node /kafka-logging1001\.eqiad\.wmnet/ {
+    role(kafka::logging)
+}
+
+node /kafka-logging100[23]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
@@ -1545,7 +1548,11 @@ node /^ldap-replica200[3-4]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 
-node /^logstash101[0-2]\.eqiad\.wmnet$/ {
+node /^logstash1010\.eqiad\.wmnet$/ {
+    role(logstash::elasticsearch)
+}
+
+node /^logstash101[12]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
 }

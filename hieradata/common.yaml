@@ -662,9 +662,9 @@ kafka_clusters:
   logging-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:
-      logstash1010.eqiad.wmnet:
+      kafka-logging1001.eqiad.wmnet:
         id: 1004
-        rack: A
+        rack: B
       logstash1011.eqiad.wmnet:
         id: 1005
         rack: B
@@ -1292,6 +1292,8 @@ kafka_brokers_jumbo:
 - 10.64.48.140                # kafka-jumbo1009.eqiad.wmnet
 - 2620:0:861:107:10:64:48:140 # kafka-jumbo1009.eqiad.wmnet
 kafka_brokers_logging:
+- 10.64.16.205                 # kafka-logging1001.eqiad.wmnet
+- 2620:0:861:102:10:64:16:205  # kafka-logging1001.eqiad.wmnet
 - 10.64.0.181                  # logstash1010.eqiad.wmnet
 - 2620:0:861:101:10:64:0:181   # logstash1010.eqiad.wmnet
 - 10.64.16.30                  # logstash1011.eqiad.wmnet
