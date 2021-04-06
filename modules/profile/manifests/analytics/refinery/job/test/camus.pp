@@ -66,7 +66,7 @@ class profile::analytics::refinery::job::test::camus(
     camus::job { 'webrequest':
         camus_properties => {
             'kafka.whitelist.topics'          => 'webrequest_test_text',
-            'mapreduce.job.queuename'         => 'ingest',
+            'mapreduce.job.queuename'         => 'essential',
             'camus.message.timestamp.field'   => 'dt',
             # Set this to at least the number of topic/partitions you will be importing.
             'mapred.map.tasks'                => '1',

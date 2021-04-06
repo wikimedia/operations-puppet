@@ -21,7 +21,6 @@ class profile::analytics::refinery::job::test::refine (
     Profile::Analytics::Refinery::Job::Refine_job {
         # Use this value as default refinery_job_jar.
         refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar",
-        queue            => 'analytics',
     }
 
     # These configs will be used for all refine jobs unless otherwise overridden.
