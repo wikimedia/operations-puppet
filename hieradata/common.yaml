@@ -803,7 +803,10 @@ hadoop_clusters:
       # Note: the extra space at the beginning is needed.
       # If you enable ACLs the admin list is "everybody" by default, so the rules are not
       # really respected if we don't set a more specific group.
-      yarn.admin.acl: ' analytics-admins'
+      # The 'dr.who' user is the one running (by default) the yarn.wikimedia.org's UI.
+      # Since we don't need authentication in there, a special permission is needed (when ACLs are set)
+      # to be able to inspect jobs in the UI.
+      yarn.admin.acl: 'dr.who analytics-admins'
       yarn.acl.enable: true
 
     hdfs_site_extra_properties:
