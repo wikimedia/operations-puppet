@@ -1,11 +1,6 @@
 class profile::parsoid(
-    Boolean $has_lvs = lookup('has_lvs', {'default_value' => true }),
     Integer[1025, 65535] $port = lookup('profile::parsoid::port', {'default_value' => 8000}),
 ) {
-    if $has_lvs {
-        require ::profile::lvs::realserver
-    }
-
     require ::profile::mediawiki::php
     require ::profile::mediawiki::php::monitoring
     include ::profile::mediawiki::php::restarts

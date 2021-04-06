@@ -1,5 +1,4 @@
 # Main microservices
-parsoid: [eqiad, codfw]
 restbase-async: [eqiad, codfw]
 restbase-backend: [eqiad, codfw]
 restbase: [eqiad, codfw]
