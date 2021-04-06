@@ -135,8 +135,9 @@ class statistics::wmde::graphite(
         interval    => {'start' => 'OnCalendar', 'interval' => 'Sunday 0:0:0'},
     }
 
+    # Disabled until T278665 is solved
     systemd::timer::job { 'wmde-toolkit-analyzer-build':
-        ensure      => present,
+        ensure      => absent,
         description => 'Daily jobs for rebuilding wmde analyzor toolkit',
         user        => $user,
         command     => "/usr/bin/java -Dhttp.proxyHost=\"http://webproxy.${::site}.wmnet\" -Dhttp.proxyPort=8080 -Xmx2g -jar ${dir}/src/toolkit-analyzer-build/toolkit-analyzer.jar --processors Metric --store ${dir}/data --latest",
