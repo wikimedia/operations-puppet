@@ -1,16 +1,16 @@
 # Title should match the cfssl::signer title
 define cfssl::ocsp (
-    Stdlib::Fqdn                $common_name       = $facts['fqdn'],
-    Stdlib::IP::Address         $listen_addr       = '127.0.0.1',
-    Stdlib::Port                $listen_port       = 8889,
-    Cfssl::Loglevel             $log_level         = 'info',
-    Pattern[/\d+h/]             $refresh_interval  = '96h',
-    Array[Stdlib::Host]         $additional_names  = [],
-    Optional[Stdlib::Unixpath]  $responses_file    = undef,
-    Optional[Stdlib::Unixpath]  $json_db_conf_file = undef,
-    Optional[Sensitive[String]] $key_content       = undef,
-    Optional[String]            $cert_content      = undef,
-    Optional[Stdlib::Unixpath]  $ca_file           = undef,
+    Stdlib::Fqdn                $common_name      = $facts['fqdn'],
+    Stdlib::IP::Address         $listen_addr      = '127.0.0.1',
+    Stdlib::Port                $listen_port      = 8889,
+    Cfssl::Loglevel             $log_level        = 'info',
+    Pattern[/\d+h/]             $refresh_interval = '96h',
+    Array[Stdlib::Host]         $additional_names = [],
+    Optional[Stdlib::Unixpath]  $responses_file   = undef,
+    Optional[Stdlib::Unixpath]  $db_conf_file     = undef,
+    Optional[Sensitive[String]] $key_content      = undef,
+    Optional[String]            $cert_content     = undef,
+    Optional[Stdlib::Unixpath]  $ca_file          = undef,
 ) {
     include cfssl
     include cfssl::client
@@ -23,7 +23,7 @@ define cfssl::ocsp (
     $key_path           = "${outdir}/${safe_cert_name}-key.pem"
     $cert_path          = "${outdir}/${safe_cert_name}.pem"
 
-    $_json_db_conf_file = pick($json_db_conf_file, "${cfssl::conf_dir}/db.conf.json")
+    $_db_conf_file = pick($db_conf_file, "${cfssl::conf_dir}/db.conf")
     $_ca_file           = pick($ca_file, "${cfssl::conf_dir}/ca/ca.pem")
     $_responses_file    = pick($responses_file, "${cfssl::ocsp_dir}/${safe_title}.ocsp")
 
@@ -78,7 +78,7 @@ define cfssl::ocsp (
         /usr/local/sbin/cfssl-ocsprefresh --cname ${common_name} \
         --responder-cert ${cert_path} --responder-key ${key_path} \
         --ca-file ${_ca_file} --responses-file ${_responses_file} \
-        --dbconfig ${_json_db_conf_file} \
+        --dbconfig ${_db_conf_file} \
         --restart-service '${serve_service}' ${safe_title} \
         | CMD
 

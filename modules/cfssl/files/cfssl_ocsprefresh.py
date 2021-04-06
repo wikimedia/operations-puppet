@@ -26,7 +26,7 @@ def get_args():
     """
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-v', '--verbose', action='count')
-    parser.add_argument('-d', '--dbconfig', default='/etc/cfssl/db.conf.json', type=Path)
+    parser.add_argument('-d', '--dbconfig', default='/etc/cfssl/db.conf', type=Path)
     parser.add_argument('--cname', required=True)
     parser.add_argument('--ca-file', required=True)
     parser.add_argument('--responder-cert', required=True)
@@ -161,7 +161,7 @@ def main():
     primary = is_primary(args.cname)
 
     try:
-        if not update_required(responses_file, args.dbconfig, primary):
+        if not update_required(responses_file, Path(f'{args.dbconfig}.json'), primary):
             logging.debug('%s: no update required', args.signer)
             return 0
     except pymysql.Error as error:
