@@ -13,9 +13,9 @@ WorkingDirectory=<%= @base_path %>
 # Make sure it can be loaded.
 Environment=PYTHONPATH=<%= @config_path %>
 
-# Only allow this process to write into user home directories
+# Only allow this process to write into user home directories and /run
 ReadOnlyDirectories=/
-ReadWriteDirectories=<%= @data_path %> /home
+ReadWriteDirectories=<%= @data_path %> /home /run
 
 PrivateTmp=yes
 PrivateDevices=yes

@@ -177,10 +177,5 @@ class CondaEnvProfilesSpawner(wrapspawner.ProfilesSpawner):
         return conda_profiles + [self.make_conda_env_creating_profile()]
 
     @property
-    def options_form(self):
-        """
-        Populates the JupyterHub options form with a drop down selector
-        of possible user conda environments to use.
-        """
-        self.profiles = self.make_conda_env_profiles()
-        return super().options_form
+    def profiles(self):
+        return self.make_conda_env_profiles()
