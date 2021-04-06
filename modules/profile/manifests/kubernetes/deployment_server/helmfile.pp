@@ -5,7 +5,6 @@ class profile::kubernetes::deployment_server::helmfile(
     Hash[String, String] $clusters = lookup('kubernetes_clusters'),
     Hash[String, Any] $services=lookup('profile::kubernetes::deployment_server::services', {'default_value' => {}}),
     Hash[String, Any] $services_secrets=lookup('profile::kubernetes::deployment_server_secrets::services', {'default_value' => {}}),
-    Hash[String, Any] $admin_services_secrets=lookup('profile::kubernetes::deployment_server_secrets::admin_services', {'default_value' => {}}),
     Hash[String, Any] $default_secrets=lookup('profile::kubernetes::deployment_server_secrets::defaults', {'default_value' => {}}),
 
 ){
@@ -55,68 +54,24 @@ class profile::kubernetes::deployment_server::helmfile(
     }
 
     $clusters.each |String $environment, String $dc| {
-        # populate .hfenv is a temporary workaround for hemlfile checkout T212130 for context
         $merged_services.map |String $svcname, Hash $data| {
-          if $svcname == 'admin' {
-              $hfenv="/srv/deployment-charts/helmfile.d/admin/${environment}/.hfenv"
-              $hfdir="/srv/deployment-charts/helmfile.d/admin/${environment}"
-              file { $hfdir:
-                  ensure => directory,
-                  owner  => $data['owner'],
-                  group  => $data['group'],
-              }
-              file { $hfenv:
-                  ensure  => present,
-                  owner   => $data['owner'],
-                  group   => $data['group'],
-                  mode    => $data['mode'],
-                  content => "kube_env \"${svcname}\" \"${environment}\"",
-                  require => File[$hfdir]
-              }
-          }
-          else {
-              $raw_data = deep_merge($default_secrets[$environment], $data[$environment])
-              # write private section only if there is any secret defined.
-              unless $raw_data.empty {
-                  # Substitute the value of any key in the form <somekey>: secret__<somevalue>
-                  # with <somekey>: secret(<somevalue>)
-                  # This allows to avoid having to copy/paste certs inside of yaml files directly,
-                  # for example.
-                  $secret_data = wmflib::inject_secret($raw_data)
+            $raw_data = deep_merge($default_secrets[$environment], $data[$environment])
+            # write private section only if there is any secret defined.
+            unless $raw_data.empty {
+                # Substitute the value of any key in the form <somekey>: secret__<somevalue>
+                # with <somekey>: secret(<somevalue>)
+                # This allows to avoid having to copy/paste certs inside of yaml files directly,
+                # for example.
+                $secret_data = wmflib::inject_secret($raw_data)
 
-                  file { "${general_private_dir}/${svcname}/${environment}.yaml":
-                      owner   => $data['owner'],
-                      group   => $data['group'],
-                      mode    => $data['mode'],
-                      content => ordered_yaml($secret_data),
-                      require => "File[${general_private_dir}/${svcname}]"
-                  }
-              }
-          }
-        }
-        $admin_services_secrets.map |String $svcname, Hash $data| {
-          if $data[$environment] {
-            $secrets_dir="/srv/deployment-charts/helmfile.d/admin/${environment}/${svcname}"
-            file { $secrets_dir:
-                ensure  => directory,
-                owner   => $data['owner'],
-                group   => $data['group'],
-                require => Git::Clone['operations/deployment-charts'],
+                file { "${general_private_dir}/${svcname}/${environment}.yaml":
+                    owner   => $data['owner'],
+                    group   => $data['group'],
+                    mode    => $data['mode'],
+                    content => ordered_yaml($secret_data),
+                    require => "File[${general_private_dir}/${svcname}]"
+                }
             }
-            file { "${secrets_dir}/private":
-                ensure  => directory,
-                owner   => $data['owner'],
-                group   => $data['group'],
-                require => Git::Clone['operations/deployment-charts'],
-            }
-            file { "${secrets_dir}/private/secrets.yaml":
-                owner   => $data['owner'],
-                group   => $data['group'],
-                mode    => $data['mode'],
-                content => ordered_yaml($data[$environment]),
-                require => [ Git::Clone['operations/deployment-charts'], File[$secrets_dir], File["${secrets_dir}/private"] ]
-            }
-          }
         }
     } # end clusters
 }
