@@ -1,0 +1,44 @@
+# https://github.com/openstack/neutron/blob/master/setup.cfg
+# https://docs.openstack.org/mitaka/networking-guide/config-ml2.html
+[DEFAULT]
+# debug = true
+[ml2]
+
+# After you configure the ML2 plug-in
+# removing or changing values in the type_drivers
+# option can lead to database inconsistency.
+type_drivers = flat, vxlan
+tenant_network_types =
+
+# l2population is a sort of meta driver to
+# make overlay (VXLAN) intelligently handle broadcast
+# it is disabled for now as we have discovered
+# bugs as recent as Mitaka that cause HA gateway
+# failover to not update the l2pop driver causing
+# instances to contact the incorrect MAC
+mechanism_drivers = linuxbridge
+extension_drivers = port_security
+
+[ml2_type_flat]
+flat_networks = *
+
+[ml2_type_geneve]
+[ml2_type_gre]
+[ml2_type_vlan]
+
+[ml2_type_vxlan]
+vni_ranges = 1:10
+
+[securitygroup]
+enable_security_group = True
+# Networking uses iptables to achieve security group functions.
+# L2 agent with enable_ipset option enabled, it makes use of
+# IPset to improve security group’s performance, as it represents
+# a hash set which is insensitive to the number of elements.
+# When a port is created, L2 agent will add an additional IPset chain
+# to its iptables chain, if the security group that this port belongs
+# to has rules between other security group, the member of that
+# security group will be added to the ipset chain.
+enable_ipset = True
+# neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+firewall_driver = iptables
