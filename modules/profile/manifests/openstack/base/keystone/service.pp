@@ -80,6 +80,8 @@ class profile::openstack::base::keystone::service(
         instance_ip_range           => $instance_ip_range,
         wmcloud_domain_owner        => $wmcloud_domain_owner,
         bastion_project_id          => $bastion_project_id,
+        prod_networks               => $::network::constants::production_networks,
+        labs_networks               => $::network::constants::labs_networks,
     }
     contain '::openstack::keystone::service'
 

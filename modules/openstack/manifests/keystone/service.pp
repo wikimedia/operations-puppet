@@ -36,6 +36,8 @@ class openstack::keystone::service(
     Stdlib::IP::Address::V4::CIDR $instance_ip_range,
     String $wmcloud_domain_owner,
     String $bastion_project_id,
+    Array[String] $prod_networks,
+    Array[String] $labs_networks,
 ) {
     class { "openstack::keystone::service::${version}":
         controller_hosts            => $controller_hosts,
@@ -69,6 +71,8 @@ class openstack::keystone::service(
         instance_ip_range           => $instance_ip_range,
         wmcloud_domain_owner        => $wmcloud_domain_owner,
         bastion_project_id          => $bastion_project_id,
+        prod_networks               => $prod_networks,
+        labs_networks               => $labs_networks,
     }
 
     group { 'keystone':

@@ -30,12 +30,10 @@ class openstack::keystone::service::ussuri(
     Stdlib::IP::Address::V4::CIDR $instance_ip_range,
     String $wmcloud_domain_owner,
     String $bastion_project_id,
+    Array[String] $prod_networks,
+    Array[String] $labs_networks,
 ) {
     class { "openstack::keystone::service::ussuri::${::lsbdistcodename}": }
-
-    include ::network::constants
-    $prod_networks = $network::constants::production_networks
-    $labs_networks = $network::constants::labs_networks
 
     # Fernet key count.  We rotate once per day on each host.  That means that
     #  for our keys to live a week, we need at least 7*(number of hosts) keys
