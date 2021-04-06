@@ -19,15 +19,4 @@ class openstack::designate::service::victoria
     package { $packages:
         ensure => 'present',
     }
-
-    # Hack to fix domain deletion
-    # Upstream bug: https://bugs.launchpad.net/designate/+bug/1880230
-    # This may be fixed upstream in V
-    file { '/usr/lib/python3/dist-packages/designate/backend/impl_pdns4.py':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => 'puppet:///modules/openstack/victoria/designate/hacks/impl_pdns4.py';
-    }
 }
