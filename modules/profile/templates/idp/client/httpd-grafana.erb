@@ -15,6 +15,8 @@
   RewriteCond %{HTTP_COOKIE} !\bMOD_AUTH_CAS=
   # Don't redirect (re)-auth requests
   RewriteCond %{QUERY_STRING} !ticket=
+  # Don't redirect forced logins
+  RewriteCond %{QUERY_STRING} !forceLogin=
   RewriteCond %{REQUEST_URI} ^/d/
   RewriteRule ^(.*)$ https://<%= @vhost_settings['ro_vhost'] %>$1 [L,R=302]
 
