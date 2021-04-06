@@ -225,7 +225,7 @@ node 'bast1002.wikimedia.org' {
 
 # New bastion in Virginia T276396
 node 'bast1003.wikimedia.org' {
-    role(insetup)
+    role(bastionhost)
 }
 
 # Bastion in Texas - (T196665, replaced bast2001)
