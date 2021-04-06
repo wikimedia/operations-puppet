@@ -1,0 +1,28 @@
+# vim: filetype=apache
+<VirtualHost *:443>
+    ServerName <%= @internal_server_name -%>
+
+    SSLEngine on
+<%- if @ssl_certs == 'sslcert' -%>
+    SSLCertificateChainFile /etc/ssl/localcerts/<%= @internal_server_name %>.chained.crt
+    SSLCertificateKeyFile /etc/ssl/private/<%= @internal_server_name %>.key
+<%- else -%>
+    SSLCertificateFile <%= @facts['puppet_config']['hostcert'] %>
+    SSLCertificateKeyFile <%= @facts['puppet_config']['hostprivkey'] %>
+<%- end -%>
+    <%= @ssl_config.join("\n    ") %>
+    SSLVerifyClient require
+    SSLCACertificateFile /etc/ssl/certs/Puppet_Internal_CA.pem
+
+    RequestHeader set X-Forwarded-Proto https
+    RequestHeader set X-Client-IP "%{REMOTE_ADDR}s"
+    RequestHeader set X-Client-Cert-Subject-Dn "%{SSL_CLIENT_S_DN}s"
+    RequestHeader set X-Client-Cert-Verify "%{SSL_CLIENT_VERIFY}s"
+
+    ProxyPass / http://localhost:<%= @port %>/
+    ProxyPassReverse / http://localhost:<%= @port %>/
+
+    LogLevel warn
+    ErrorLog /var/log/apache2/<%= @internal_server_name %>_error.log
+    CustomLog /var/log/apache2/<%= @internal_server_name %>_access.log wmf
+</VirtualHost>
