@@ -1974,7 +1974,7 @@ node /^mw239[5-6]\.codfw\.wmnet/ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw2(39[7-9]|40[0-2])\.codfw\.wmnet/ {
+node /^mw2(39[7-9]|40[0-9]|41[0-1])\.codfw\.wmnet/ {
     role(insetup)
 }
 
