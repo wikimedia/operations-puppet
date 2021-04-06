@@ -13,6 +13,7 @@ class profile::ceph::mon(
     String               $admin_keydata    = lookup('profile::ceph::admin_keydata'),
     String               $fsid             = lookup('profile::ceph::fsid'),
     String               $mon_keydata      = lookup('profile::ceph::mon::keydata'),
+    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
 ) {
     include network::constants
     # Limit the client connections to the hypervisors in eqiad and codfw
@@ -52,10 +53,10 @@ class profile::ceph::mon(
     }
 
     if debian::codename::eq('buster') {
-        apt::repository { 'thirdparty-ceph-nautilus-buster':
+        apt::repository { 'ceph_repository':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'buster-wikimedia',
-            components => 'thirdparty/ceph-nautilus-buster',
+            components => $ceph_repository_component,
             source     => false,
             before     => Class['ceph::common'],
         }

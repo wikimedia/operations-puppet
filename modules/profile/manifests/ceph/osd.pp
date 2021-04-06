@@ -16,6 +16,7 @@ class profile::ceph::osd(
     Array[String]        $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
     Array[String]        $os_disks = lookup('profile::ceph::osd::os_disks'),
     String               $disks_io_scheduler = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
+    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
 ) {
     # Ceph OSDs should use the performance governor, not the default 'powersave'
     # governor
@@ -92,10 +93,10 @@ class profile::ceph::osd(
     }
 
     if debian::codename::eq('buster') {
-        apt::repository { 'thirdparty-ceph-nautilus-buster':
+        apt::repository { 'ceph_repository':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => 'buster-wikimedia',
-            components => 'thirdparty/ceph-nautilus-buster',
+            components => $ceph_repository_component,
             source     => false,
             before     => Class['ceph::common'],
         }
