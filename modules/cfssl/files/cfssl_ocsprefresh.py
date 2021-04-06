@@ -10,7 +10,6 @@ import logging
 import shlex
 
 from argparse import ArgumentParser
-from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
 from socket import getfqdn, gethostbyname_ex
@@ -27,7 +26,7 @@ def get_args():
     """
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-v', '--verbose', action='count')
-    parser.add_argument('-c', '--config', default='/etc/cfssl/multiroot.conf')
+    parser.add_argument('-d', '--dbconfig', default='/etc/cfssl/db.conf.json', type=Path)
     parser.add_argument('--cname', required=True)
     parser.add_argument('--ca-file', required=True)
     parser.add_argument('--responder-cert', required=True)
@@ -105,7 +104,7 @@ def get_db_update_time(db_conn, db_name, table_name):
         return result[0]
 
 
-def update_required(responses_file: Path, dbconfig: str, primary: bool) -> bool:
+def update_required(responses_file: Path, dbconfig: Path, primary: bool) -> bool:
     """Check if we need to regenerate the responses file.
 
     On the primary server we should check the certificates table to see if there
@@ -128,7 +127,7 @@ def update_required(responses_file: Path, dbconfig: str, primary: bool) -> bool:
     last_update = datetime.fromtimestamp(responses_meta.st_mtime)
     logging.debug('%s last updated: %s', responses_file, last_update)
 
-    config = json.loads(Path(dbconfig).read_bytes())
+    config = json.loads(dbconfig.read_bytes())
     db_conn = pymysql.connect(**config)
     try:
         return last_update < get_db_update_time(db_conn, config['db'], table_name)
@@ -158,23 +157,13 @@ def main():
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
 
-    config = ConfigParser()
-    config.read(args.config)
-
     responses_file = Path(args.responses_file)
     primary = is_primary(args.cname)
 
-    if args.signer not in config.sections():
-        logging.error('%s is not a configured signer', args.signer)
-        return 1
     try:
-        dbconfig = config[args.signer]['dbconfig']
-        if not update_required(responses_file, f'{dbconfig}.json', primary):
+        if not update_required(responses_file, args.dbconfig, primary):
             logging.debug('%s: no update required', args.signer)
             return 0
-    except KeyError:
-        logging.error('%s unable to find dbconfig', args.signer)
-        return 1
     except pymysql.Error as error:
         logging.error('%s issue with SQL query: %s', args.signer, error)
         return 1
@@ -182,12 +171,12 @@ def main():
     if primary:
         # only regenerate the responses if we are on the primary
         try:
-            ocsprefresh(dbconfig, args.responder_cert, args.responder_key, args.ca_file)
+            ocsprefresh(args.dbconfig, args.responder_cert, args.responder_key, args.ca_file)
         except CalledProcessError as error:
             logging.error('ocsprefresh failed: %s', error)
             return 1
     try:
-        ocspdump(dbconfig, responses_file)
+        ocspdump(args.dbconfig, responses_file)
         check_call(shlex.split(f"/usr/bin/systemctl restart {args.restart_service}"))
     except CalledProcessError as error:
         logging.error('ocspdump failed: %s', error)

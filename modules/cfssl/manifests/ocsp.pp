@@ -1,31 +1,31 @@
 # Title should match the cfssl::signer title
 define cfssl::ocsp (
-    Stdlib::Fqdn                $common_name     = $facts['fqdn'],
-    Stdlib::IP::Address         $listen_addr      = '127.0.0.1',
-    Stdlib::Port                $listen_port      = 8889,
-    Cfssl::Loglevel             $log_level        = 'info',
-    Pattern[/\d+h/]             $refresh_interval = '96h',
-    Array[Stdlib::Host]         $additional_names = [],
-    Optional[Stdlib::Unixpath]  $responses_file   = undef,
-    Optional[Stdlib::Unixpath]  $db_conf_file     = undef,
-    Optional[Sensitive[String]] $key_content      = undef,
-    Optional[String]            $cert_content     = undef,
-    Optional[Stdlib::Unixpath]  $ca_file          = undef,
+    Stdlib::Fqdn                $common_name       = $facts['fqdn'],
+    Stdlib::IP::Address         $listen_addr       = '127.0.0.1',
+    Stdlib::Port                $listen_port       = 8889,
+    Cfssl::Loglevel             $log_level         = 'info',
+    Pattern[/\d+h/]             $refresh_interval  = '96h',
+    Array[Stdlib::Host]         $additional_names  = [],
+    Optional[Stdlib::Unixpath]  $responses_file    = undef,
+    Optional[Stdlib::Unixpath]  $json_db_conf_file = undef,
+    Optional[Sensitive[String]] $key_content       = undef,
+    Optional[String]            $cert_content      = undef,
+    Optional[Stdlib::Unixpath]  $ca_file           = undef,
 ) {
     include cfssl
     include cfssl::client
 
-    $safe_title     = $title.regsubst('\W', '_', 'G')
-    $outdir         = "${cfssl::ssl_dir}/ocsp"
-    $refresh_timer  = "cfssl-ocsprefresh-${safe_title}"
-    $serve_service  = "cfssl-ocspserve@${safe_title}"
-    $safe_cert_name = "OCSP ${title} ${common_name}".regsubst('[^\w\-]', '_', 'G')
-    $key_path       = "${outdir}/${safe_cert_name}-key.pem"
-    $cert_path      = "${outdir}/${safe_cert_name}.pem"
+    $safe_title         = $title.regsubst('\W', '_', 'G')
+    $outdir             = "${cfssl::ssl_dir}/ocsp"
+    $refresh_timer      = "cfssl-ocsprefresh-${safe_title}"
+    $serve_service      = "cfssl-ocspserve@${safe_title}"
+    $safe_cert_name     = "OCSP ${title} ${common_name}".regsubst('[^\w\-]', '_', 'G')
+    $key_path           = "${outdir}/${safe_cert_name}-key.pem"
+    $cert_path          = "${outdir}/${safe_cert_name}.pem"
 
-    $_db_conf_file   = pick($db_conf_file, "${cfssl::conf_dir}/db.conf")
-    $_ca_file        = pick($ca_file, "${cfssl::conf_dir}/ca/ca.pem")
-    $_responses_file = pick($responses_file, "${cfssl::ocsp_dir}/${safe_title}.ocsp")
+    $_json_db_conf_file = pick($json_db_conf_file, "${cfssl::conf_dir}/db.conf.json")
+    $_ca_file           = pick($ca_file, "${cfssl::conf_dir}/ca/ca.pem")
+    $_responses_file    = pick($responses_file, "${cfssl::ocsp_dir}/${safe_title}.ocsp")
 
     ensure_packages(['python3-pymysql', 'python3-cryptography'])
     ensure_resource('file', '/usr/local/sbin/cfssl-ocsprefresh', {
@@ -78,6 +78,7 @@ define cfssl::ocsp (
         /usr/local/sbin/cfssl-ocsprefresh --cname ${common_name} \
         --responder-cert ${cert_path} --responder-key ${key_path} \
         --ca-file ${_ca_file} --responses-file ${_responses_file} \
+        --dbconfig ${_json_db_conf_file} \
         --restart-service '${serve_service}' ${safe_title} \
         | CMD
 

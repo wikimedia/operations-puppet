@@ -72,11 +72,11 @@ class profile::pki::multirootca (
     }
     # Root CA OCSP responder
     cfssl::ocsp{$root_ca_cn:
-        listen_port  => $root_ocsp_port,
-        db_conf_file => "${db_conf_file}.json",
-        ca_file      => $root_ca_file,
-        key_content  => Sensitive(secret($root_ocsp_key)),
-        cert_content => file($root_ocsp_cert),
+        listen_port       => $root_ocsp_port,
+        json_db_conf_file => "${db_conf_file}.json",
+        ca_file           => $root_ca_file,
+        key_content       => Sensitive(secret($root_ocsp_key)),
+        cert_content      => file($root_ocsp_cert),
     }
 
     # Create Signers
@@ -108,9 +108,9 @@ class profile::pki::multirootca (
         }
 
         cfssl::ocsp{$intermediate:
-            listen_port  => $config['ocsp_port'],
-            db_conf_file => "${db_conf_file}.json",
-            ca_file      => $ca_file,
+            listen_port       => $config['ocsp_port'],
+            json_db_conf_file => "${db_conf_file}.json",
+            ca_file           => $ca_file,
         }
         # Create a bundle file with the intermediate and root certs
         file {"${bundle_dir}/${safe_title}.pem":
