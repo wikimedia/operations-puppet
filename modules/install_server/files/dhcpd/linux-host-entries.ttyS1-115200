@@ -16,25 +16,21 @@ host alert2001 {
 host an-master1001 {
     hardware ethernet D0:94:66:71:AA:C1;
     fixed-address an-master1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-master1002 {
     hardware ethernet D0:94:66:71:DC:50;
     fixed-address an-master1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-coord1001 {
     hardware ethernet D0:94:66:5F:75:BC;
     fixed-address an-coord1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-coord1002.eqiad.wmnet {
     hardware ethernet D0:94:66:1B:33:67;
     fixed-address an-coord1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host an-launcher1002.eqiad.wmnet {
