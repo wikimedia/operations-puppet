@@ -4171,7 +4171,7 @@ users:
     ensure: present
     realname: Christine De Kock
     email: christinedekock11@gmail.com
-    expiry_date: 2021-04-11
+    expiry_date: 2021-05-14
     expiry_contact: diego@wikimedia.org
     uid: 29809
     gid: 500
