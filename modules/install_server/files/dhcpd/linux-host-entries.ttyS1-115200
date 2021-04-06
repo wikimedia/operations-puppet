@@ -6790,6 +6790,80 @@ host mw2396 {
     fixed-address mw2396.codfw.wmnet;
 }
 
+host mw2397 {
+    hardware ethernet 2C:EA:7F:82:00:6A;
+    fixed-address mw2397.codfw.wmnet;
+}
+
+host mw2398 {
+    hardware ethernet 2C:EA:7F:82:3D:FD;
+    fixed-address mw2398.codfw.wmnet;
+}
+
+host mw2399 {
+    hardware ethernet 2C:EA:7F:81:F4:FA;
+    fixed-address mw2399.codfw.wmnet;
+}
+
+host mw2400 {
+    hardware ethernet 2C:EA:7F:81:F5:1A;
+    fixed-address mw2400.codfw.wmnet;
+}
+
+host mw2401 {
+    hardware ethernet 2C:EA:7F:82:24:A5;
+    fixed-address mw2401.codfw.wmnet;
+}
+
+host mw2402 {
+    hardware ethernet 2C:EA:7F:81:F6:B2;
+    fixed-address mw2402.codfw.wmnet;
+}
+
+host mw2403 {
+    hardware ethernet 2C:EA:7F:81:F9:BA;
+    fixed-address mw2403.codfw.wmnet;
+}
+
+host mw2404 {
+    hardware ethernet 2C:EA:7F:81:F4:B2;
+    fixed-address mw2404.codfw.wmnet;
+}
+
+host mw2405 {
+    hardware ethernet 2C:EA:7F:82:23:75;
+    fixed-address mw2405.codfw.wmnet;
+}
+
+host mw2406 {
+    hardware ethernet 2C:EA:7F:82:14:9B;
+    fixed-address mw2406.codfw.wmnet;
+}
+host mw2407 {
+    hardware ethernet 2C:EA:7F:82:27:65;
+    fixed-address mw2407.codfw.wmnet;
+}
+
+host mw2408 {
+    hardware ethernet 2C:EA:7F:81:FF:D2;
+    fixed-address mw2408.codfw.wmnet;
+}
+
+host mw2409 {
+    hardware ethernet 2C:EA:7F:82:1A:B3;
+    fixed-address mw2409.codfw.wmnet;
+}
+
+host mw2410 {
+    hardware ethernet 2C:EA:7F:81:FE:52;
+    fixed-address mw2410.codfw.wmnet;
+}
+
+host mw2411 {
+    hardware ethernet 2C:EA:7F:82:1A:53;
+    fixed-address mw2411.codfw.wmnet;
+}
+
 host mwmaint1002 {
     hardware ethernet D0:94:66:5F:50:AE;
     fixed-address mwmaint1002.eqiad.wmnet;
