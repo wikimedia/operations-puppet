@@ -1,8 +1,8 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::ceph::osd' do
-  # TODO: support debian 10
-  on_supported_os(WMFConfig.test_on(9, 9)).each do |os, facts|
+  let(:pre_condition) { 'class { "::apt": }' }
+  on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do
       base_params = {
         'bootstrap_keydata' => 'NOTAREALKEY==',
@@ -140,6 +140,19 @@ describe 'profile::ceph::osd' do
           it { is_expected.not_to contain_exec('Disable write cache on device /dev/sda') }
           it { is_expected.not_to contain_exec('Set IO scheduler on device /dev/sda to dummy_io_scheduler') }
         end
+      end
+
+      context "when no ceph repo passed uses correct default" do
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_apt__repository('ceph_repository').with_components('thirdparty/ceph-nautilus-buster') }
+      end
+
+      context "when ceph repo passed uses the given one" do
+        let(:params) { base_params.merge({
+          'ceph_repository_component' => 'dummy/component-repo'
+        }) }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_apt__repository('ceph_repository').with_components('dummy/component-repo') }
       end
     end
   end
