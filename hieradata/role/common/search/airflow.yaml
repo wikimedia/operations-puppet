@@ -33,6 +33,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics-search'
     group: 'analytics-search'
     filename: 'analytics-search.keytab'
+
+# Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::java::java_packages:

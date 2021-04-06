@@ -40,6 +40,8 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'hue'
     group: 'hue'
     filename: 'hue.keytab'
+
+# Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::base::notifications: disabled

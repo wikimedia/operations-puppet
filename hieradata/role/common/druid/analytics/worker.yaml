@@ -33,7 +33,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'druid'
     group: 'druid'
     filename: 'druid.keytab'
-profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::prometheus::druid_exporter::druid_version: '0.19.0'
 

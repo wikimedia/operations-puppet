@@ -51,7 +51,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'analytics'
     filename: 'analytics.keytab'
     parent_dir_grp: 'analytics'
-profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::java::java_packages:
   - version: '8'
