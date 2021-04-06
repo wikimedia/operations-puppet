@@ -77,17 +77,6 @@ enabled_filters = <%= @scheduler_filters.join(",") %>
 weight_classes=nova.scheduler.weights.metrics.MetricsWeigher, nova.scheduler.weights.affinity.ServerGroupSoftAntiAffinityWeigher, nova.scheduler.weights.affinity.ServerGroupSoftAffinityWeigher
 host_subset_size = 2
 
-[glance]
-
-# This default was set to 3 in 20.4.1-8, but Buster packages 20.4.1-1.
-#  This default was changed to address a minor issue documented here:
-#
-# https://docs.openstack.org/releasenotes/nova/train.html
-#
-# This setting can be removed once we move to U as it will
-#  be redundant with the default.
-num_retries = 3
-
 [keystone_authtoken]
 auth_host = <%= @keystone_api_fqdn %>
 auth_protocol = http
