@@ -3,3 +3,4 @@
 # Broken BBU T264755
 mariadb::shard: 's2'
 mariadb::binlog_format: 'STATEMENT'
+profile::base::notifications: disabled
