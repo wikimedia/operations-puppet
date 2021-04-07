@@ -641,8 +641,12 @@ class bigtop::hadoop(
         content => template('bigtop/hadoop/hdfs-site.xml.erb'),
     }
 
+    # https://phabricator.wikimedia.org/T276906
+    package { 'liblog4j-extras1.2-java': }
+
     file { "${config_directory}/hadoop-env.sh":
         content => template('bigtop/hadoop/hadoop-env.sh.erb'),
+        require => Package['liblog4j-extras1.2-java'],
     }
 
     file { "${config_directory}/mapred-site.xml":

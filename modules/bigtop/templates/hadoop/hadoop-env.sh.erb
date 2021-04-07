@@ -7,6 +7,10 @@ export JAVA_HOME=<%= @java_home %>
 # Use YARN for all hadoop commands
 export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
 
+# This extra config jar is useful to use the RollingFileAppender log4j class.
+# Context: https://phabricator.wikimedia.org/T276906
+export HADOOP_CLASSPATH=/usr/share/java/apache-log4j-extras.jar:${HADOOP_CLASSPATH}
+
 <% if @mapreduce_history_jmxremote_port -%>
 # Enable MapReduce JMX connections on port <%= @mapreduce_history_jmxremote_port %>
 HADOOP_JOB_HISTORYSERVER_OPTS="-Dcom.sun.management.jmxremote.port=<%= @mapreduce_history_jmxremote_port %> -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
