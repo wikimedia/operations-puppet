@@ -106,7 +106,7 @@ class profile::analytics::refinery::job::test::camus(
             'camus_properties' =>  {
                 'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
                 'camus.message.timestamp.field' => 'meta.dt',
-                'mapreduce.job.queuename'       => 'ingest',
+                'mapreduce.job.queuename'       => 'essential',
                 # Set this to at least the number of topic-partitions you will be importing.
                 'mapred.map.tasks'              => '1',
                 'eventstreamconfig.uri'         => 'https://meta.wikimedia.org/w/api.php',
