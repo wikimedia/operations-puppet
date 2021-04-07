@@ -9,8 +9,11 @@ describe 'ceph::common' do
           home_dir: '/home/cephuser',
         }
       end
+
       describe 'compiles without errors' do
         it { is_expected.to compile.with_all_deps }
+        it { should contain_package('ceph-common') }
+        it { should contain_package('fio') }
       end
     end
   end

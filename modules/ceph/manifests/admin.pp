@@ -16,9 +16,7 @@ class ceph::admin(
 ) {
     Class['ceph::config'] -> Class['ceph::admin']
 
-    package { 'ceph':
-        ensure => present,
-    }
+    ensure_packages('ceph')
 
     ceph::keyring { 'client.admin':
         cap_mds => 'allow *',

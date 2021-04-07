@@ -38,13 +38,11 @@ class ceph::config (
     }
 
     if $enable_libvirt_rbd {
-        package { 'python-rbd':
-            ensure => present,
-        }
-        # Enable rbd support in qemu
-        package { 'qemu-block-extra':
-            ensure  => present,
-        }
+        ensure_packages([
+          'python-rbd',
+          # Enable rbd support in qemu
+          'qemu-block-extra',
+        ])
 
         # This directory contains qemu guest logs
         file { '/var/log/ceph/qemu':

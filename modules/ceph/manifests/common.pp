@@ -26,13 +26,13 @@ class ceph::common (
     }
 
     # Ceph common package used for all services and clients
-    package { 'ceph-common':
-        ensure  => present,
-        require => User['ceph'],
-    }
+    ensure_packages([
+      'ceph-common',
+      # fio is used for performance tests and debugging
+      'fio',
+    ])
+    User['ceph'] -> Package['ceph-common']
 
-    # fio is used for performance tests and debugging
-    ensure_packages(['fio'])
 
     file { '/var/lib/ceph':
         ensure => directory,
