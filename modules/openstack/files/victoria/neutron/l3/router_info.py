@@ -20,7 +20,8 @@ from neutron_lib import constants as lib_constants
 from neutron_lib.exceptions import l3 as l3_exc
 from neutron_lib.utils import helpers
 from oslo_log import log as logging
-import six
+from oslo_utils import netutils
+from pyroute2.netlink import exceptions as pyroute2_exc
 
 from neutron._i18n import _
 from neutron.agent.l3 import namespaces
@@ -43,8 +44,7 @@ ADDRESS_SCOPE_MARK_ID_MAX = 2048
 DEFAULT_ADDRESS_SCOPE = "noscope"
 
 
-@six.add_metaclass(abc.ABCMeta)
-class BaseRouterInfo(object):
+class BaseRouterInfo(object, metaclass=abc.ABCMeta):
 
     def __init__(self,
                  agent,
@@ -172,14 +172,16 @@ class RouterInfo(BaseRouterInfo):
         return namespaces.RouterNamespace(
             router_id, agent_conf, iface_driver, use_ipv6)
 
-    def is_router_master(self):
+    def is_router_primary(self):
         return True
 
     def _update_routing_table(self, operation, route, namespace):
-        cmd = ['ip', 'route', operation, 'to', route['destination'],
-               'via', route['nexthop']]
-        ip_wrapper = ip_lib.IPWrapper(namespace=namespace)
-        ip_wrapper.netns.execute(cmd, check_exit_code=False)
+        method = (ip_lib.add_ip_route if operation == 'replace' else
+                  ip_lib.delete_ip_route)
+        try:
+            method(namespace, route['destination'], via=route['nexthop'])
+        except (RuntimeError, OSError, pyroute2_exc.NetlinkError):
+            pass
 
     def update_routing_table(self, operation, route):
         self._update_routing_table(operation, route, self.ns_name)
@@ -1107,15 +1109,29 @@ class RouterInfo(BaseRouterInfo):
         # requests that arrive before the filter metadata redirect
         # rule is installed will be dropped.
         mark_metadata_for_internal_interfaces = (
-            '-d 169.254.169.254/32 '
+            '-d %(metadata_cidr)s '
             '-i %(interface_name)s '
             '-p tcp -m tcp --dport 80 '
             '-j MARK --set-xmark %(value)s/%(mask)s' %
-            {'interface_name': INTERNAL_DEV_PREFIX + '+',
+            {'metadata_cidr': lib_constants.METADATA_V4_CIDR,
+             'interface_name': INTERNAL_DEV_PREFIX + '+',
              'value': self.agent_conf.metadata_access_mark,
              'mask': lib_constants.ROUTER_MARK_MASK})
         self.iptables_manager.ipv4['mangle'].add_rule(
             'PREROUTING', mark_metadata_for_internal_interfaces)
+
+        if netutils.is_ipv6_enabled():
+            mark_metadata_v6_for_internal_interfaces = (
+                '-d %(metadata_v6_ip)s/128 '
+                '-i %(interface_name)s '
+                '-p tcp -m tcp --dport 80 '
+                '-j MARK --set-xmark %(value)s/%(mask)s' %
+                {'metadata_v6_ip': lib_constants.METADATA_V6_IP,
+                 'interface_name': INTERNAL_DEV_PREFIX + '+',
+                 'value': self.agent_conf.metadata_access_mark,
+                 'mask': lib_constants.ROUTER_MARK_MASK})
+            self.iptables_manager.ipv6['mangle'].add_rule(
+                'PREROUTING', mark_metadata_v6_for_internal_interfaces)
 
     def _get_port_devicename_scopemark(self, ports, name_generator):
         devicename_scopemark = {lib_constants.IP_VERSION_4: dict(),
