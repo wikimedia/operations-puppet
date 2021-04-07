@@ -10,12 +10,10 @@ C{
    #include <math.h>
    #include <errno.h>
 
-   // rate=0.9064392 and base=-18.16135 were calculated by mathematical
-   // simulation using a dataset taken from live cache_upload traffic:
-   // https://phabricator.wikimedia.org/T144187#2775914
-   // TODO: We need to come up with a good way of (re)computing the values and
-   // put them in hiera.
-   const double adm_param = <%= ((@vcl_config.fetch("fe_mem_gb").to_i/1024.0)**0.9064392)/(2.0**-18.16135) %>;
+   #define RATE <%= @vcl_config.fetch("exp_policy_rate", 0.9064392) %>
+   #define BASE <%= @vcl_config.fetch("exp_policy_base", -18.16135) %>
+   #define MEMORY <%= @vcl_config.fetch("fe_mem_gb").to_i/1024.0 %>
+   #define ADM_PARAM pow(MEMORY, RATE) / pow(2.0, BASE)
 }C
 <% end -%>
 
@@ -928,7 +926,7 @@ C{
 
    if (clen) {
        const double clen_neg = -1.0 * (double)clen;
-       const double admissionprob = exp(clen_neg/adm_param);
+       const double admissionprob = exp(clen_neg/ADM_PARAM);
        const double urand = drand48();
 
 <%- if @varnish_testing -%>
