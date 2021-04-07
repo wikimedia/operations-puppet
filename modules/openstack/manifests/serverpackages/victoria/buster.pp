@@ -29,6 +29,7 @@ class openstack::serverpackages::victoria::buster(
       'uwsgi-plugin-python3',
       'uwsgi-core',
       'uwsgi-plugin-python',
+      'librdkafka1',
     ]
 
     apt::pin { 'openstack-victoria-buster-bpo-nochange':
