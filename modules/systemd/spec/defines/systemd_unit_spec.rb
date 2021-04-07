@@ -4,17 +4,12 @@ describe 'systemd::unit' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:title) { 'dummyservice' }
-      let(:facts) { facts.merge({initsystem: 'systemd'}) }
+      let(:facts) { facts }
       let(:params) do
         {
           ensure: 'present',
           content: 'dummy'
         }
-      end
-
-      context 'when initsystem is unknown' do
-        let(:facts) { super().merge({ :initsystem => 'unknown' }) }
-        it { is_expected.to compile.and_raise_error(/You can only use systemd resources on systems with systemd/) }
       end
 
       context 'when the corresponding service is defined (implicit name)' do

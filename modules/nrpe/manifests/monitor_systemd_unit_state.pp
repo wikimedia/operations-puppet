@@ -15,9 +15,6 @@ define nrpe::monitor_systemd_unit_state(
     $check_interval = 1,
     ){
 
-    if $::initsystem != 'systemd' {
-        fail('nrpe::monitor_systemd_unit can only work on systemd-enabled systems')
-    }
     require nrpe::systemd_scripts
 
     # Temporary hack until we fix the downstream modules

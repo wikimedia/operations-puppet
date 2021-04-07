@@ -11,7 +11,6 @@ modules = [
   'git',
   'wmflib',
   'stdlib',
-  'base',  # need base to have access to initsystem fact
   'systemd'
 ]
 def install_modules(host, modules)

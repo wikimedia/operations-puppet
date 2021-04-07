@@ -1,15 +1,10 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'systemd::syslog' do
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     context "On #{os}" do
       let(:title) { 'dummyservice' }
-      let(:facts) { facts.merge(initsystem: 'systemd') }
-
-      context 'when initsystem is unknown' do
-        let(:facts) { super().merge(initsystem: 'unknown')  }
-        it { is_expected.to compile.and_raise_error(/systemd::syslog is useful only with systemd/) }
-      end
+      let(:facts) { os_facts }
 
       context 'when a service is defined' do
         let(:pre_condition) { 'service { "dummyservice": ensure => running, provider => "systemd"}' }

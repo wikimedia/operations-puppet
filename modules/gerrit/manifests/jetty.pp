@@ -305,7 +305,6 @@ class gerrit::jetty(
         content        => systemd_template('gerrit'),
         service_params => {
             ensure   => 'running',
-            provider => $::initsystem,
         },
     }
 

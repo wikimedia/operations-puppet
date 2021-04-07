@@ -49,9 +49,6 @@ define systemd::syslog(
     Boolean                       $force_stop             = false,
     Enum['startswith', 'isequal'] $programname_comparison = 'startswith',
 ) {
-    if $::initsystem != 'systemd' {
-        fail('systemd::syslog is useful only with systemd')
-    }
 
     # File permissions
     $dirmode = '0755'

@@ -4,7 +4,7 @@ require_relative '../../../../rake_modules/spec_helper'
 describe 'envoyproxy' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
-      let(:facts) { facts.merge({:initsystem => 'systemd'}) }
+      let(:facts) { facts }
       context "On ensure present" do
         let(:params) { {ensure: 'present', admin_port: 8081, pkg_name: 'envoyproxy', service_cluster: 'test' }}
         it { is_expected.to compile.with_all_deps }

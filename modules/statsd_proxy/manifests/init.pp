@@ -52,7 +52,6 @@ class statsd_proxy(
     service { 'statsd-proxy':
         ensure    => stdlib::ensure($ensure, 'service'),
         enable    => $ensure == 'present',
-        provider  => $::initsystem,
         subscribe => [
             Package['statsd-proxy'],
         ],

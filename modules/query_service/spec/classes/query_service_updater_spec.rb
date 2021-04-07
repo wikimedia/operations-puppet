@@ -23,7 +23,6 @@ describe 'query_service::updater', :type => :class do
 
    context 'with systemd' do
     let(:facts) { {
-        :initsystem => 'systemd',
         :lsbdistrelease => '8.7',
         :lsbdistid => 'Debian',
     } }

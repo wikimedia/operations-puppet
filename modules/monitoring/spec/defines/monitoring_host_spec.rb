@@ -1,5 +1,6 @@
 require_relative '../../../../rake_modules/spec_helper'
 
+# TODO: update to use facterdb
 describe 'monitoring::host' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do

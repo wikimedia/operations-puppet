@@ -32,7 +32,6 @@ describe 'query_service::blazegraph', :type => :define do
 
    context 'with systemd' do
     let(:facts) { {
-        :initsystem => 'systemd',
         :lsbdistrelease => '8.7',
         :lsbdistid => 'Debian',
     } }
@@ -77,7 +76,6 @@ describe 'query_service::blazegraph', :type => :define do
 
    context 'with systemd' do
     let(:facts) { {
-        :initsystem => 'systemd',
         :lsbdistrelease => '8.7',
         :lsbdistid => 'Debian',
     } }
@@ -119,7 +117,6 @@ describe 'query_service::blazegraph', :type => :define do
 
    context 'with systemd' do
     let(:facts) { {
-        :initsystem => 'systemd',
         :lsbdistrelease => '8.7',
         :lsbdistid => 'Debian',
     } }

@@ -10,9 +10,7 @@ describe 'systemd::timer::job' do
   MOCK
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
-      let(:facts) do
-        facts.merge({initsystem: 'systemd'})
-      end
+      let(:facts) { facts }
       let(:pre_condition) { mock }
       let(:title) { 'dummy-test' }
       context "with logging" do

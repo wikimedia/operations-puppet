@@ -15,7 +15,6 @@ ipaddress6: 2001:db8::42
 net_driver:
   eth0:
     driver: bnx2x
-initsystem: systemd
 ntp_peers:
   eqiad:
     - ntp-03.cloudinfra.eqiad1.wikimedia.cloud

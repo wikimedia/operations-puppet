@@ -4,7 +4,7 @@ require_relative '../../../../rake_modules/spec_helper'
 describe 'envoyproxy::tls_terminator' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
-      let(:facts) { facts.merge({:initsystem => 'systemd'})}
+      let(:facts) { facts }
       let(:title) { '443' }
       context 'when envoyproxy is defined' do
         let(:pre_condition) {'class { "envoyproxy": ensure => present, admin_port => 9191, pkg_name => "envoyproxy", service_cluster => "example" }'}

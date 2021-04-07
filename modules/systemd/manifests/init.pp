@@ -5,11 +5,6 @@
 # shared across all instantations of systemd::sysuser.
 #
 class systemd {
-    if $::initsystem != 'systemd' {
-        fail(
-            "You can only use systemd resources on systems with systemd, got ${::initsystem}"
-        )
-    }
 
     # Directories for base units and overrides
     $base_dir = '/lib/systemd/system'
