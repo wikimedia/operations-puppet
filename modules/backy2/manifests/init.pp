@@ -45,12 +45,10 @@ class backy2(
         'python3-crypto',
         'python3-pycryptodome',
     ]
-    package { $packages:
-        ensure => 'present',
-        before => Package['backy2'],
-    }
-    package { 'backy2':
-        ensure => 'present',
+    ensure_packages($packages)
+    ensure_packages('backy2')
+    $packages.each |String $package| {
+      Package[$package] -> Package['backy2']
     }
 
     file {

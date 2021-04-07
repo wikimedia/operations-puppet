@@ -15,13 +15,11 @@ class profile::wmcs::nfs::secondary(
         nfsd_threads => 192,
     }
 
-    package { [
-            'python3-paramiko',
-            'python3-pymysql',
-            'python3-dateutil',
-        ]:
-        ensure => present,
-    }
+    ensure_packages([
+        'python3-paramiko',
+        'python3-pymysql',
+        'python3-dateutil',
+    ])
 
     class {'::labstore::fileserver::exports':
         server_vols   => ['maps'],

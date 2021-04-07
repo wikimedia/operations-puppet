@@ -64,14 +64,12 @@ class profile::wmcs::nfs::primary(
         nfsd_threads => 300,
     }
 
-    package { [
-            'python3-paramiko',
-            'python3-pymysql',
-            'python3-dateutil',
-            'bdsync',
-        ]:
-        ensure => present,
-    }
+    ensure_packages([
+        'python3-paramiko',
+        'python3-pymysql',
+        'python3-dateutil',
+        'bdsync',
+    ])
 
     class {'labstore::backup_keys': }
 
