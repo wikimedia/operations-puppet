@@ -106,14 +106,6 @@ class profile::debmonitor::server (
 
     base::service_auto_restart { 'uwsgi-debmonitor': }
     base::service_auto_restart { 'apache2': }
-    base::service_auto_restart { 'nginx': }
-
-    # Public endpoint: incoming traffic from cache_text for the Web UI
-    ferm::service { 'nginx-cdn-https':
-        proto  => 'tcp',
-        port   => '7443',
-        srange => '$CACHES',
-    }
 
     # Internal endpoint: incoming updates from all production hosts via debmonitor CLI
     ferm::service { 'apache-https':
@@ -121,32 +113,6 @@ class profile::debmonitor::server (
         port   => '443',
         srange => '$DOMAIN_NETWORKS',
     }
-
-    # Certificate for the internal endpoint
-    if $ssl_certs == 'sslcert' {
-        sslcert::certificate { $internal_server_name:
-            ensure       => present,
-            skip_private => false,
-            before       => Service['nginx', 'apache2'],
-        }
-    } else {
-        base::expose_puppet_certs { '/etc/nginx':
-            ensure          => present,
-            provide_private => true,
-            require         => Package['nginx-common'],
-            before          => Service['nginx'],
-        }
-    }
-
-    # Common Proxy settings
-    nginx::snippet { 'debmonitor_proxy':
-        content => template('profile/debmonitor/server/debmonitor_proxy.nginx.erb'),
-    }
-
-    nginx::site { 'debmonitor':
-        content => template('profile/debmonitor/server/nginx.conf.erb'),
-    }
-
 
     class { 'httpd':
         modules => ['proxy_http', 'proxy', 'auth_basic']
@@ -196,4 +162,15 @@ class profile::debmonitor::server (
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
         }
     }
+    # Remove old nginx config
+    nginx::snippet { 'debmonitor_proxy':
+        ensure  => absent,
+        content => template('profile/debmonitor/server/debmonitor_proxy.nginx.erb'),
+    }
+
+    nginx::site { 'debmonitor':
+        ensure  => absent,
+        content => template('profile/debmonitor/server/nginx.conf.erb'),
+    }
+    class {'nginx': ensure => absent}
 }
