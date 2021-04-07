@@ -289,12 +289,8 @@ node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
 }
 
 #T267378
-node /^cloudcephmon200[1-3]-dev\.codfw\.wmnet$/ {
+node /^cloudcephmon200[2-4]-dev\.codfw\.wmnet$/ {
     role(wmcs::ceph::mon)
-}
-# New cloudcephmon node T276509
-node 'cloudcephmon2004-dev.codfw.wmnet' {
-    role(insetup)
 }
 
 node /^cloudstore100[89]\.wikimedia\.org/ {

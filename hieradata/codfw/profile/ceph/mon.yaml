@@ -1,10 +1,10 @@
 profile::ceph::mon::hosts:
-  'cloudcephmon2001-dev.codfw.wmnet':
-    public:
-      addr: '10.192.20.6'
   'cloudcephmon2002-dev.codfw.wmnet':
     public:
       addr: '10.192.20.7'
   'cloudcephmon2003-dev.codfw.wmnet':
     public:
       addr: '10.192.20.9'
+  'cloudcephmon2004-dev.codfw.wmnet':
+    public:
+      addr: '10.192.20.19'
