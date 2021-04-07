@@ -199,6 +199,7 @@ $private_tables = [
     'growthexperiments_link_recommendations',
     'growthexperiments_link_submissions',
     'growthexperiments_mentor_mentee',
+    'growthexperiments_mentee_data',
     'hidden',
     'image_old',
     'job',
