@@ -12,7 +12,7 @@ define service::deploy::gitclone(
     String[1] $repository = $title,
 ){
 
-    $dir = "/srv/deployment/${title}"
+    $dir = "/srv/deployment/${repository}"
     require ::service::deploy::common
 
     file { $dir:
