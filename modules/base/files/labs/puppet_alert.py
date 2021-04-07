@@ -66,9 +66,10 @@ def main():
         fqdn = socket.getfqdn()
         ip = socket.gethostbyname(socket.gethostname())
 
-        subject = (
-            f"[Cloud VPS alert][{project_name}] Puppet failure on {fqdn} "
-            f"({ip})"
+        # No f-strings until after Stretch goes away! Instead we have this ugly
+        # stuff.
+        subject = "[Cloud VPS alert][{}] Puppet failure on {} ({})".format(
+            project_name, fqdn, ip
         )
 
         logger.info(
@@ -79,7 +80,7 @@ def main():
             NAG_INTERVAL,
         )
 
-        body = f"""
+        body = """
 Puppet is failing to run on the "{fqdn} ({ip})" instance in project
 {project_name} in Wikimedia Cloud VPS.
 
@@ -93,7 +94,7 @@ this instance or contact a Cloud VPS admin for assistance.
 
 For further support, visit #wikimedia-cloud on freenode or
 <https://wikitech.wikimedia.org>
-"""
+""".format(fqdn=fqdn, ip=ip, project_name=project_name)
         email_admins(subject, body)
 
 
