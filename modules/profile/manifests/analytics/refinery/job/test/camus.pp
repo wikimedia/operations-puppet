@@ -81,7 +81,7 @@ class profile::analytics::refinery::job::test::camus(
     camus::job { 'eventlogging':
         camus_properties => {
             'kafka.whitelist.topics'        => 'eventlogging_NavigationTiming',
-            'mapreduce.job.queuename'       => 'ingest',
+            'mapreduce.job.queuename'       => 'essential',
             # During migration to EventGate, events will have both meta.dt and dt.
             # meta.dt is set by EventGate and is more trustable than dt, which after
             # migration to EventGate is set by the client.
