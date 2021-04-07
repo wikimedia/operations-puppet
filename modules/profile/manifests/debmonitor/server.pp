@@ -168,19 +168,4 @@ class profile::debmonitor::server (
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
         }
     }
-    # Remove old nginx config
-    nginx::snippet { 'debmonitor_proxy':
-        ensure  => absent,
-        content => template('profile/debmonitor/server/debmonitor_proxy.nginx.erb'),
-    }
-
-    nginx::site { 'debmonitor':
-        ensure  => absent,
-        content => template('profile/debmonitor/server/nginx.conf.erb'),
-    }
-    class {'nginx': ensure => absent}
-
-    cron { 'debmonitor-maintenance-gc':
-        ensure  => absent,
-    }
 }
