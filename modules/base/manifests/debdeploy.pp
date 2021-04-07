@@ -68,5 +68,5 @@ class base::debdeploy (
       ensure  => file,
       content => $config.to_json_pretty(),
     }
-    require_package('debdeploy-client', 'python-dateutil')
+    require_package('debdeploy-client', 'python3-dateutil')
 }
