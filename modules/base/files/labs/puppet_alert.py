@@ -35,14 +35,17 @@ logger = logging.getLogger(__name__)
 
 
 def lastrun():
-    # last_run_summary.yaml reports the last run but it updates the stamp even on
-    #  failed runs. Instead, check to see the last time puppet actually did something.
+    # last_run_summary.yaml reports the last run but it updates the stamp even
+    # on failed runs. Instead, check to see the last time puppet actually did
+    # something.
     try:
         return os.path.getmtime("/var/lib/puppet/state/classes.txt")
     except os.error:
-        logger.warning("Unable to determine last puppet run; classes.txt missing.")
-        # Returning 0 should imply that puppet has been broken since day one, which
-        #  is likely the case here!
+        logger.warning(
+            "Unable to determine last puppet run; classes.txt missing."
+        )
+        # Returning 0 should imply that puppet has been broken since day one,
+        # which is likely the case here!
         return 0
 
 
@@ -50,17 +53,35 @@ def main():
     elapsed = calendar.timegm(time.gmtime()) - lastrun()
     if elapsed > NAG_INTERVAL:
 
-        fqdn = socket.getfqdn()
+        try:
+            with open("/etc/wmflabs-project") as f:
+                project_name = f.read().strip()
 
-        subject = "[Cloud VPS alert] Puppet failure on %s" % (fqdn,)
+        except Exception as error:
+            logger.warning(
+                "Unable to determine the current vm project: %s", error
+            )
+            project_name = "no_project"
+
+        fqdn = socket.getfqdn()
+        ip = socket.gethostbyname(socket.gethostname())
+
+        subject = (
+            f"[Cloud VPS alert][{project_name}] Puppet failure on {fqdn} "
+            f"({ip})"
+        )
 
         logger.info(
-            "It has been %s seconds since last Puppet run. Sending nag emails.",
+            (
+                "It has been %s seconds since last Puppet run. Sending nag "
+                "emails."
+            ),
             NAG_INTERVAL,
         )
 
-        body = """
-Puppet is failing to run on the "{fqdn}" instance in Wikimedia Cloud VPS.
+        body = f"""
+Puppet is failing to run on the "{fqdn} ({ip})" instance in project
+{project_name} in Wikimedia Cloud VPS.
 
 Working Puppet runs are needed to maintain instance security and logins.
 As long as Puppet continues to fail, this system is in danger of becoming
@@ -72,10 +93,7 @@ this instance or contact a Cloud VPS admin for assistance.
 
 For further support, visit #wikimedia-cloud on freenode or
 <https://wikitech.wikimedia.org>
-""".format(
-            fqdn=fqdn
-        )
-
+"""
         email_admins(subject, body)
 
 
