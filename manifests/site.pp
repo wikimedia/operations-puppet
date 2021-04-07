@@ -1964,9 +1964,9 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 
 # Row A
 
-# New mw servers T274171
+# New mw server hardware 2021 (T274171)
 
-# rack A3
+# rack A3 (T278396)
 node /^mw23(7[7-9]|8[0-2])\.codfw\.wmnet/ {
     role(mediawiki::jobrunner)
 }
@@ -1983,8 +1983,17 @@ node /^mw2(39[5-9]|40[0-2])\.codfw\.wmnet/ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw2(39[7-9]|40[0-9]|41[0-1])\.codfw\.wmnet/ {
-    role(insetup)
+# rack A5 (T279599)
+node /^mw240[3-5]\.codfw\.wmnet/ {
+    role(mediawiki::appserver::api)
+}
+
+node /^mw240[6-9]\.codfw\.wmnet/ {
+    role(mediawiki::appserver)
+}
+
+node /^mw241[0-1]\.codfw\.wmnet/ {
+    role(mediawiki::jobrunner)
 }
 
 # rack A6

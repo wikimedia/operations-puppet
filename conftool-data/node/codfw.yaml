@@ -64,6 +64,10 @@ codfw:
     mw2392.codfw.wmnet: [apache2,nginx]
     mw2393.codfw.wmnet: [apache2,nginx]
     mw2394.codfw.wmnet: [apache2,nginx]
+    mw2406.codfw.wmnet: [apache2,nginx]
+    mw2407.codfw.wmnet: [apache2,nginx]
+    mw2408.codfw.wmnet: [apache2,nginx]
+    mw2409.codfw.wmnet: [apache2,nginx]
   api_appserver:
     mw2251.codfw.wmnet: [apache2,nginx,canary]
     mw2252.codfw.wmnet: [apache2,nginx,canary]
@@ -127,6 +131,9 @@ codfw:
     mw2400.codfw.wmnet: [apache2,nginx]
     mw2401.codfw.wmnet: [apache2,nginx]
     mw2402.codfw.wmnet: [apache2,nginx]
+    mw2403.codfw.wmnet: [apache2,nginx]
+    mw2404.codfw.wmnet: [apache2,nginx]
+    mw2405.codfw.wmnet: [apache2,nginx]
   jobrunner: &jobrunner
     mw2259.codfw.wmnet: [apache2,nginx]
     mw2260.codfw.wmnet: [apache2,nginx]
@@ -146,6 +153,8 @@ codfw:
     mw2380.codfw.wmnet: [apache2,nginx]
     mw2381.codfw.wmnet: [apache2,nginx]
     mw2382.codfw.wmnet: [apache2,nginx]
+    mw2410.codfw.wmnet: [apache2,nginx]
+    mw2411.codfw.wmnet: [apache2,nginx]
   videoscaler: *jobrunner
   parsoid:
     # Do not forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
