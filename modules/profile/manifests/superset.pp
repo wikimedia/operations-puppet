@@ -122,8 +122,7 @@ class profile::superset(
         description   => 'superset',
         check_command => "check_tcp!${::superset::port}",
         require       => Class['::superset'],
-        # Caused an alert CRITICAL: Icinga configuration contains errors, need to add this group elsewhere first
-        # contact_group => 'victorops-analytics',
+        contact_group => 'victorops-analytics',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
     }
 
