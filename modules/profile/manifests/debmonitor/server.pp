@@ -144,13 +144,20 @@ class profile::debmonitor::server (
     }
 
     # Maintenance cron
+    $command = @("COMMAND"/L)
+    /usr/bin/systemd-cat -t 'debmonitor-maintenance' ${base_path}/run-django-command debmonitorgc || \
+    echo 'Debmonitor GC failed, check syslog for debmonitor-maintenance' \
+    | COMMAND
     $times = cron_splay($hosts, 'weekly', 'debmonitor-maintenance-gc')
-    cron { 'debmonitor-maintenance-gc':
-        command => "/usr/bin/systemd-cat -t 'debmonitor-maintenance' ${base_path}/run-django-command debmonitorgc || echo 'Debmonitor GC failed, check syslog for debmonitor-maintenance'",
-        user    => $deploy_user,
-        weekday => $times['weekday'],
-        hour    => $times['hour'],
-        minute  => $times['minute'],
+    systemd::timer::job {'debmonitor-maintenance-gc':
+        ensure      => present,
+        command     => $command,
+        user        => $deploy_user,
+        description => 'Debmonitor GC',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => $times['OnCalendar'],
+        }
     }
 
     if $enable_monitoring {
@@ -177,4 +184,8 @@ class profile::debmonitor::server (
         content => template('profile/debmonitor/server/nginx.conf.erb'),
     }
     class {'nginx': ensure => absent}
+
+    cron { 'debmonitor-maintenance-gc':
+        ensure  => absent,
+    }
 }
