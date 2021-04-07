@@ -1152,6 +1152,21 @@ host conf2003 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
 }
 
+host conf2004 {
+    hardware ethernet 2C:EA:7F:89:CE:62;
+    fixed-address conf2004.codfw.wmnet;
+}
+
+host conf2005 {
+    hardware ethernet 2C:EA:7F:89:CF:52;
+    fixed-address conf2005.codfw.wmnet;
+}
+
+host conf2006 {
+    hardware ethernet 2C:EA:7F:8A:00:02;
+    fixed-address conf2006.codfw.wmnet;
+}
+
 host cp1075 {
     hardware ethernet 00:0A:F7:EF:F8:30;
     fixed-address cp1075.eqiad.wmnet;
