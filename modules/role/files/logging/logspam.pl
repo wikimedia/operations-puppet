@@ -59,6 +59,13 @@ use Time::Seconds;
 use Getopt::Long;
 use Pod::Usage;
 
+# Silence rare but irritating UTF-8 warnings.  You may wish to disable this for
+# development purposes:
+local $SIG{__WARN__} = sub {
+  my $message = shift;
+  warn($message) unless $message =~ m/^utf.*/;
+};
+
 my $window = 0; # minutes.  0 means no window defined
 my $minimum_hits = 0;
 
