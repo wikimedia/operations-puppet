@@ -11,4 +11,4 @@ profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor1.opensta
 profile::openldap::master: cloudservices2002-dev.wikimedia.org
 profile::openldap::server_id: 2
 
-profile::openstack::codfw1dev::version: 'ussuri'
+profile::openstack::codfw1dev::version: 'victoria'
