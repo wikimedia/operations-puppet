@@ -332,7 +332,6 @@ class profile::logstash::collector7 (
         host            => '127.0.0.1',
         guard_condition => '"es" in [tags] and ![ecs]',
         index           => '%{[@metadata][index_name]}-%{+YYYY.MM.dd}',
-        manage_indices  => true,
         priority        => 90,
         template        => '/etc/logstash/templates/logstash_7.0-1.json',
         require         => File['/etc/logstash/templates'],
@@ -358,13 +357,9 @@ class profile::logstash::collector7 (
           host            => '127.0.0.1',
           guard_condition => "\"es\" in [tags] and [ecs][version] == \"${ecs_version}\"",
           index           => "ecs-${ecs_version}-${ecs_revision}-%{[@metadata][partition]}-%{+YYYY.ww}",
-          manage_indices  => true,
           priority        => 90,
           template        => "/etc/logstash/templates/ecs_${ecs_version}-${ecs_revision}.json",
           require         => File['/etc/logstash/templates'],
-          timestring      => '%Y.%W',
-          unit            => 'weeks',
-          unit_count      => 12,
         }
     }
 
@@ -398,13 +393,9 @@ class profile::logstash::collector7 (
           host            => '127.0.0.1',
           guard_condition => "[\$schema] == \"/w3c/reportingapi/network_error/${w3creportingapi_version}\"",
           index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+YYYY.ww}",
-          manage_indices  => true,
           priority        => 90,
           template        => "/etc/logstash/templates/w3creportingapi_${w3creportingapi_version}-${w3creportingapi_revision}.json",
           require         => File['/etc/logstash/templates'],
-          timestring      => '%Y.%W',
-          unit            => 'weeks',
-          unit_count      => 12,
         }
     }
 
@@ -412,11 +403,9 @@ class profile::logstash::collector7 (
       host            => '127.0.0.1',
       guard_condition => '[type] == "dlq"',
       index           => 'dlq-1.0.0-1-%{+YYYY.MM.dd}',
-      manage_indices  => true,
       priority        => 90,
       template        => '/etc/logstash/templates/dlq_1.0.0-1.json',
       require         => File['/etc/logstash/templates'],
-      unit_count      => 2,
     }
 
     # TODO: cleanup -- T256418

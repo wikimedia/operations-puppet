@@ -4,14 +4,24 @@
 # Provisions Elasticsearch backend node for a Logstash cluster.
 #
 class profile::elasticsearch::logstash(
-    Array[String]          $prometheus_nodes = lookup('prometheus_nodes'),
-    Optional[Stdlib::Fqdn] $es_exporter_host = lookup('profile::elasticsearch::logstash::es_exporter_host', { default_value => undef })
+    Array[String]                 $prometheus_nodes = lookup('prometheus_nodes'),
+    Optional[Stdlib::Fqdn]        $jobs_host        = lookup('profile::elasticsearch::logstash::jobs_host',    { default_value => undef }),
+    Optional[Hash]                $curator_actions  = lookup('profile::elasticsearch::logstash::curator_actions', { default_value => undef }),
+    Elasticsearch::InstanceParams $dc_settings      = lookup('profile::elasticsearch::dc_settings'),
 ) {
     include ::profile::elasticsearch
 
-    # prometheus-es-exporter should only run on one host per cluster
-    if $es_exporter_host == $::fqdn {
+    # tasks that should only run on one host
+    if $jobs_host == $::fqdn {
         include ::profile::prometheus::es_exporter
+
+        if ($curator_actions) {
+            # all curator actions from hiera: profile::elasticsearch::logstash::curator_actions
+            elasticsearch::curator::job { 'cluster_wide':
+                cluster_name => $dc_settings['cluster_name'],
+                actions      => $curator_actions,
+            }
+        }
     }
 
     file { '/usr/share/elasticsearch/plugins':

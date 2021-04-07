@@ -70,3 +70,54 @@ mtail::logs:
 
 profile::kibana::region_map_enabled: false
 profile::kibana::tile_map_enabled: false
+
+profile::logstash::apifeatureusage::curator_actions:
+  1:
+    description: 'apifeatureusage: delete older than 91 days'
+    action: delete_indices
+    options:
+      ignore_empty_list: True
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'apifeatureusage-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 91
+  2:
+    description: 'apifeatureusage: set replicas to 1 after 31 days'
+    action: replicas
+    options:
+      count: 1
+      ignore_empty_list: True
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'apifeatureusage-'
+        exclude:
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 31
+  5:
+    description: 'forcemerge indexes older than 2 days'
+    action: forcemerge
+    options:
+      max_num_segments: 1
+      delay: 120
+      timeout_override:
+      continue_if_exception: False
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'apifeatureusage-'
+        exclude:
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 2

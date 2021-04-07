@@ -24,5 +24,21 @@ profile::elasticsearch::common_settings:
   filter_cache_size: '10%'
   disktype: 'ssd'
 
-# prometheus-es-exporter should only run on one host per cluster
-profile::elasticsearch::logstash::es_exporter_host: "%{alias('__master_for_role_logstash__elasticsearch7')}"
+# nominate one host per cluster to run certain jobs
+profile::elasticsearch::logstash::jobs_host: "%{alias('__master_for_role_logstash__elasticsearch7')}"
+profile::elasticsearch::logstash::curator_actions:
+  1:
+    description: 'delete older than 1 day'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        exclude: true  # exclude special indexes
+        value: '^\..*'
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 1

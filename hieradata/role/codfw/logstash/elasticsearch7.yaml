@@ -22,5 +22,5 @@ profile::elasticsearch::dc_settings:
       - logstash2030.codfw.wmnet
       - logstash2031.codfw.wmnet
 
-# prometheus-es-exporter should only run on one host per cluster
-profile::elasticsearch::logstash::es_exporter_host: 'logstash2026.codfw.wmnet'
+# nominate one host per cluster to run certain jobs
+profile::elasticsearch::logstash::jobs_host: 'logstash2026.codfw.wmnet'

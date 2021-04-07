@@ -5,7 +5,8 @@
 #
 # filtertags: labs-project-deployment-prep
 class profile::logstash::apifeatureusage(
-    Array[Stdlib::Host] $elastic_hosts = lookup('profile::logstash::apifeatureusage::elastic_hosts')
+    Array[Stdlib::Host] $elastic_hosts   = lookup('profile::logstash::apifeatureusage::elastic_hosts'),
+    Hash                $curator_actions = lookup('profile::logstash::apifeatureusage::curator_actions'),
 ) {
     include profile::logstash::collector
 
@@ -29,15 +30,27 @@ class profile::logstash::apifeatureusage(
 
     $elastic_hosts.each |Stdlib::Host $host| {
         logstash::output::elasticsearch { "apifeatureusage-${host}":
-            host             => $host,
-            index            => 'apifeatureusage-%{+YYYY.MM.dd}',
-            prefix           => 'apifeatureusage-',
-            guard_condition  => '[type] == "api-feature-usage-sanitized"',
-            manage_indices   => true,
-            priority         => 95,
-            template         => '/etc/logstash/apifeatureusage-template.json',
-            cleanup_template => 'logstash/curator/cleanup-non-logs.yaml.erb',
-            require          => File['/etc/logstash/apifeatureusage-template.json'],
+            host            => $host,
+            index           => 'apifeatureusage-%{+YYYY.MM.dd}',
+            guard_condition => '[type] == "api-feature-usage-sanitized"',
+            priority        => 95,
+            template        => '/etc/logstash/apifeatureusage-template.json',
+            require         => File['/etc/logstash/apifeatureusage-template.json'],
         }
+    }
+
+    # TODO: this curator config and job ought to run on the search cluster
+    # It is here to maintain functionality until it can be moved
+    $cluster_name = 'production-search-eqiad'
+    $curator_hosts = $elastic_hosts
+    $http_port = 9200
+
+    elasticsearch::curator::config { $cluster_name:
+        content => template('elasticsearch/curator_cluster.yaml.erb'),
+    }
+
+    elasticsearch::curator::job { 'apifeatureusage':
+        cluster_name => $cluster_name,
+        actions      => $curator_actions,
     }
 }

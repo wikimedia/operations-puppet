@@ -48,3 +48,196 @@ profile::elasticsearch::monitor::shard_size_critical: 350
 # will be unassigned, with no way to reallocate them on another node, which
 # is fine and should not raise an alert. So threshold needs to be > 1/3.
 profile::elasticsearch::monitor::threshold: '>=0.34'
+
+profile::elasticsearch::logstash::curator_actions:
+  1:
+    description: 'logstash: delete older than 91 days'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'logstash-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 91
+
+  2:
+    description: 'dlq: delete older than 91 days'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'dlq-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 2
+
+  3:
+    description: 'ecs-1.7.0 default: delete older than 12 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^ecs-1.7.0-\d\d?-default-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 12
+
+  4:
+    description: 'ecs-1.7.0 test: delete older than 2 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^ecs-1.7.0-\d\d?-test-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 2
+
+  5:
+    description: 'ecs-1.7.0 alerts: delete older than 53 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^ecs-1.7.0-\d\d?-alerts-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 53
+
+  6:
+    description: 'w3creportingapi-1.0.0: delete older than 12 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^w3creportingapi-1.0.0-[2-9]-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: months
+        unit_count: 3
+
+  7:
+    description: 'w3creportingapi-1.0.0-1: delete older than 3 months - T274005 can be cleaned up in May 2021'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^w3creportingapi-1.0.0-1-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m'
+        unit: months
+        unit_count: 3
+
+  20:
+    description: 'all: after 31 days set number of replicas to 1'
+    action: replicas
+    options:
+      count: 1
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        exclude: true  # exclude special indexes
+        value: '^\..*'
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 31
+
+  21:
+    description: 'logstash: after 50 days set number of replicas to 0 - temporary measure per T250133'
+    action: replicas
+    options:
+      count: 0
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'logstash-'
+        exclude:
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 50
+
+  # For any indices prefixed by "logstash-", and have "index.routing.allocation.require.disktype":"ssd" set,
+  # and are older than 7 days, set "index.routing.allocation.require.disktype":"hdd".
+  40:
+    description: 'logstash: allocate older shards on hdd nodes'
+    action: allocation
+    options:
+      key: disktype
+      value: hdd
+      allocation_type: require
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'logstash-'
+      - filtertype: allocated
+        key: disktype
+        value: ssd
+        allocation_type: require
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 7
+
+  # forceMerge "logstash-" prefixed indices older than 2 days (based on index creation_date) to 1 segments per shard.
+  # Delay 120 seconds between each forceMerge operation to allow the cluster to quiesce.
+  # This action will ignore indices already forceMerged to the same or fewer number of segments per shard,
+  # so the 'forcemerged' filter is unneeded.
+  90:
+    description: 'all: forcemerge indexes older than 2 days'
+    action: forcemerge
+    options:
+      max_num_segments: 1
+      delay: 120
+      continue_if_exception: false
+    filters:
+      - filtertype: pattern
+        kind: regex
+        exclude: true  # exclude special indexes
+        value: '^\..*'
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 2
