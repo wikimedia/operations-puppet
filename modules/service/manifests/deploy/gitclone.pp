@@ -5,14 +5,10 @@
 #
 # === Parameters
 #
-# [*prefix*] is the prefix used to logically group
-#   repositories on gerrit. e.g. 'mediawiki/services'.
-#
 # [*repository*] is the (short) repository name on gerrit that
 #   should be cloned. e.g. 'parsoid'.
 #
 define service::deploy::gitclone(
-    String[1] $prefix = 'mediawiki/services',
     String[1] $repository = $title,
 ){
 
@@ -26,7 +22,7 @@ define service::deploy::gitclone(
         mode   => '0775',
     }
 
-    git::clone { "${prefix}/${repository}":
+    git::clone { $repository:
         directory          => "${dir}/deploy",
         recurse_submodules => true,
         owner              => 'root',
