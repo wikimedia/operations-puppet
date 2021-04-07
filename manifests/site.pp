@@ -1252,7 +1252,7 @@ node 'kraz.wikimedia.org' {
 
 # irc.w.o failover host in eqiad
 node 'irc1001.wikimedia.org' {
-    role(insetup)
+    role(mw_rc_irc)
 }
 
 # Replacement of irc.wikimedia.org
