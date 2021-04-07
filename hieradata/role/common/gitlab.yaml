@@ -5,7 +5,7 @@ profile::standard::admin_groups:
 # service IP for public https and ssh (T276148)
 profile::base::ssh_server_settings:
     listen_addresses:
-    - "%{facts.networking.ip}"
-    - "%{facts.networking.ip6}"
+    - "%{facts.ipaddress}"
+    - "%{facts.ipaddress6}"
 profile::gitlab::service_ip_v4: '208.80.154.14'
 profile::gitlab::service_ip_v6: '2620:0:861:1:208:80:154:14'
