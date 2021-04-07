@@ -117,7 +117,10 @@ class KeystoneHooks(notifier.Driver):
     def _on_member_update(self, project_id, assignments=None):
         if not assignments:
             assignments = self._get_current_assignments(project_id)
-        ldapgroups.sync_ldap_project_group(project_id, assignments)
+        if assignments:
+            ldapgroups.sync_ldap_project_group(project_id, assignments)
+        else:
+            ldapgroups.delete_ldap_project_group(project_id)
 
     def _add_to_bastion(self, roledict, user_id):
         # First make sure the user isn't already assigned to bastion
@@ -254,7 +257,8 @@ class KeystoneHooks(notifier.Driver):
 
         LOG.warning("Syncing membership with ldap for project %s" % project_id)
         assignments = self._get_current_assignments(project_id)
-        ldapgroups.sync_ldap_project_group(project_id, assignments)
+        if assignments:
+            ldapgroups.sync_ldap_project_group(project_id, assignments)
 
         LOG.warning("Setting up default sudoers in ldap for project %s" % project_id)
         # Set up default sudoers in ldap
@@ -349,21 +353,5 @@ class KeystoneHooks(notifier.Driver):
 
         if event_type == 'identity.role_assignment.deleted':
             project_id = message['payload']['project']
-            # This is a weird special case... Keystone is dumb and
-            #  emits the notification /before/ updating the DB, so we have
-            #  to explicitly update our role list.  This is fixed
-            #  in release 'ocata' with https://review.openstack.org/#/c/401332/
             assignments = self._get_current_assignments(project_id)
-            role = message['payload']['role']
-            user = message['payload']['user']
-            roledict = self._get_role_dict()
-            for name in list(roledict.keys()):
-                if role == roledict[name]:
-                    if user in assignments[name]:
-                        assignments[name].remove(user)
-                        LOG.warning("Keystone bug workaround:  Explicitly "
-                                    "removing %s from role %s, project %s"
-                                    % (user, role, project_id))
-                    break
-
             self._on_member_update(project_id, assignments)
