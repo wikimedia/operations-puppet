@@ -70,7 +70,7 @@ class base::monitoring::host(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/base/monitoring/check_puppetrun';
+        source => 'puppet:///modules/base/monitoring/check_puppetrun.rb';
     }
     file { '/usr/local/lib/nagios/plugins/check_eth':
         ensure  => present,

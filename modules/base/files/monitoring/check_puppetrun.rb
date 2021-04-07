@@ -179,17 +179,17 @@ end
 
 unless enabled
   disabled_for = (Time.now - disabled_time).to_i
-    if disabled_for > disable_crit
-        exit_code = 2
-        status = 'CRITICAL'
-    else
-        exit_code = 1
-        status = 'WARNING'
-    end
-    puts "#{status}: Puppet has been disabled for #{disabled_for} seconds, " +
-         "message: #{disabled_message}, " +
-         "last run #{human_time_since_last_run} ago with #{failcount} failures"
-    exit exit_code
+  if disabled_for > disable_crit
+      exit_code = 2
+      status = 'CRITICAL'
+  else
+      exit_code = 1
+      status = 'WARNING'
+  end
+  puts "#{status}: Puppet has been disabled for #{disabled_for} seconds, " +
+       "message: #{disabled_message}, " +
+       "last run #{human_time_since_last_run} ago with #{failcount} failures"
+  exit exit_code
 end
 
 if failcount > 0 # rubocop:disable Style/NumericPredicate
