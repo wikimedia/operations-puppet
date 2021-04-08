@@ -39,17 +39,17 @@ class profile::kubernetes::deployment_server::helmfile(
     }
 
 
-    $merged_services = deep_merge($services, $services_secrets)
+    $merged_services = deep_merge($services, $services_secrets).filter|String $svcname, Hash $data| {
+        $svcname != 'admin'
+    }
 
     # New-style private directories are one per service, not per cluster too.
     $merged_services.each |String $svcname, Hash $data| {
-        if $svcname != 'admin' {
-            file { "${general_private_dir}/${svcname}":
-                ensure => directory,
-                owner  => $data['owner'],
-                group  => $data['group'],
-                mode   => '0750',
-            }
+        file { "${general_private_dir}/${svcname}":
+            ensure => directory,
+            owner  => $data['owner'],
+            group  => $data['group'],
+            mode   => '0750',
         }
     }
 
@@ -62,16 +62,14 @@ class profile::kubernetes::deployment_server::helmfile(
                 # with <somekey>: secret(<somevalue>)
                 # This allows to avoid having to copy/paste certs inside of yaml files directly,
                 # for example.
-                if $svcname != 'admin' {
-                    $secret_data = wmflib::inject_secret($raw_data)
+                $secret_data = wmflib::inject_secret($raw_data)
 
-                    file { "${general_private_dir}/${svcname}/${environment}.yaml":
-                        owner   => $data['owner'],
-                        group   => $data['group'],
-                        mode    => $data['mode'],
-                        content => ordered_yaml($secret_data),
-                        require => "File[${general_private_dir}/${svcname}]"
-                    }
+                file { "${general_private_dir}/${svcname}/${environment}.yaml":
+                    owner   => $data['owner'],
+                    group   => $data['group'],
+                    mode    => $data['mode'],
+                    content => ordered_yaml($secret_data),
+                    require => "File[${general_private_dir}/${svcname}]"
                 }
             }
         }
