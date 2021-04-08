@@ -432,10 +432,8 @@ def get_args():
     group = argparser.add_mutually_exclusive_group(required=True)
     group.add_argument(
         "--domains",
-        help=(
-            "Specify particular configuration types (such as queue or complex). Multiple"
-            " values can be given space-separated."
-        ),
+        help="Specify particular configuration types (such as queue or complex). Multiple"
+        " values can be given space-separated.",
         nargs="+",
         metavar="<configuration area>",
     )
@@ -466,20 +464,16 @@ def get_args():
 
     argparser.add_argument(
         "--beta",
-        help=(
-            "Required for running on toolsbeta for hosts, "
-            "otherwise, this assumes Toolforge proper",
-        ),
+        help="Required for running on toolsbeta for hosts, "
+        "otherwise, this assumes Toolforge proper",
         default=False,
         action="store_true",
     )
 
     argparser.add_argument(
         "--dry-run",
-        help=(
-            "Give this parameter if you don't want the script to actually"
-            " make changes."
-        ),
+        help="Give this parameter if you don't want the script to actually"
+        " make changes.",
         action="store_true",
     )
     argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
