@@ -4,7 +4,8 @@ describe 'ceph::admin' do
   on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do
       let(:pre_condition) {
-        "class { '::ceph::config':
+        "class { '::apt': }
+        class { '::ceph::config':
           enable_libvirt_rbd => true,
           enable_v2_messenger => true,
           mon_hosts => {},
@@ -13,7 +14,8 @@ describe 'ceph::admin' do
           fsid => 'dummyfsid-17bc-44dc-9aeb-1d044c9bba9e',
         }
         class { '::ceph::common':
-          home_dir => '/home/dir'
+          home_dir => '/home/dir',
+          ceph_repository_component => 'dummy/component-repo',
         }"
       }
       let(:facts) { facts }

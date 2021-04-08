@@ -92,18 +92,9 @@ class profile::ceph::osd(
         before => Class['ceph::common'],
     }
 
-    if debian::codename::eq('buster') {
-        apt::repository { 'ceph_repository':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'buster-wikimedia',
-            components => $ceph_repository_component,
-            source     => false,
-            before     => Class['ceph::common'],
-        }
-    }
-
     class { 'ceph::common':
-        home_dir => $data_dir,
+        home_dir                  => $data_dir,
+        ceph_repository_component => $ceph_repository_component,
     }
 
     class { 'ceph::config':

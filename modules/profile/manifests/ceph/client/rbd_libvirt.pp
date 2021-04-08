@@ -18,10 +18,12 @@ class profile::ceph::client::rbd_libvirt(
     String              $keyfile_owner           = lookup('profile::ceph::client::rbd::keyfile_owner'),
     String              $libvirt_rbd_uuid        = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
     String              $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
+    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
 ) {
 
     class { 'ceph::common':
-        home_dir => $data_dir,
+        home_dir                  => $data_dir,
+        ceph_repository_component => $ceph_repository_component,
     }
 
     class { 'ceph::config':

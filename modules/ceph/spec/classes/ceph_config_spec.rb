@@ -4,7 +4,11 @@ describe 'ceph::config' do
   on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do
       let(:pre_condition) {
-        'class { "::ceph::common": home_dir => "/home/dir" }'
+        "class { '::apt': }
+        class { '::ceph::common':
+          home_dir => '/home/dir',
+          ceph_repository_component => 'dummy/component-repo',
+        }"
       }
       let(:facts) { facts }
       base_params = {

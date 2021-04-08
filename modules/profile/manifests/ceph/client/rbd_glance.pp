@@ -13,10 +13,12 @@ class profile::ceph::client::rbd_glance(
     String              $keydata             = lookup('profile::ceph::client::rbd::glance_client_keydata'),
     String              $keyfile_group       = lookup('profile::ceph::client::rbd::keyfile_group'),
     String              $keyfile_owner       = lookup('profile::ceph::client::rbd::keyfile_owner'),
+    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
 ) {
 
     class { 'ceph::common':
-        home_dir => $data_dir,
+        home_dir                  => $data_dir,
+        ceph_repository_component => $ceph_repository_component,
     }
 
     class { 'ceph::config':
