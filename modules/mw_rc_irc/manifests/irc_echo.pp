@@ -6,6 +6,7 @@ class mw_rc_irc::irc_echo(
 ) {
 
     ensure_packages(['python-irc'])
+    ensure_packages(['python-prometheus-client'])
 
     file { '/etc/udpmxircecho-config.json':
         content => ordered_json({
