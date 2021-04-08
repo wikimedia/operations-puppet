@@ -444,16 +444,14 @@ def get_args():
     )
     argparser.add_argument(
         "--config-dir",
-        help="Path to find the configuration file",
+        help="Filesystem absolute path to find the configuration file. Defaults to '%(default)s'",
         default="/data/project/.system_sge/gridengine/etc",
-        metavar="/nfs/path/to/grid/configuration/files",
     )
 
     argparser.add_argument(
         "--keystone-url",
-        help="URL to use for Keystone when calling OpenStack -- only for hosts",
+        help="Endpoint for openstack keystone. Only for hosts. Defaults to '%(default)s'",
         default="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
-        metavar='eg. "http://openstack.eqiad1.wikimediacloud.org:5000/v3"',
     )
 
     argparser.add_argument(
