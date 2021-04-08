@@ -134,11 +134,12 @@ class profile::superset(
         source => 'puppet:///modules/superset/check_superset_http.sh',
     }
 
-    nrpe::monitor_service { 'check_superset_http':
-        nrpe_command  => '/usr/local/bin/check_superset_http',
-        description   => 'Check that superset http server is responding ok',
-        require       => File['/usr/local/bin/check_superset_http'],
-        contact_group => 'victorops-analytics',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
-    }
+    # This is not working on an-tool1010 - see https://phabricator.wikimedia.org/T277729#6986230
+    # nrpe::monitor_service { 'check_superset_http':
+    #     nrpe_command  => '/usr/local/bin/check_superset_http',
+    #     description   => 'Check that superset http server is responding ok',
+    #     require       => File['/usr/local/bin/check_superset_http'],
+    #     contact_group => 'victorops-analytics',
+    #     notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
+    # }
 }

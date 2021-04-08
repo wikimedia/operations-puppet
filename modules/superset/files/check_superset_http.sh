@@ -9,8 +9,8 @@ exitval=$?
 
 if [ $exitval -ne 0 ]; then
     echo "CRITICAL: Superset did not respond to http request successfully"
-    # exit 2
+    exit 2
 else
     echo "OK: Superset responded to http request"
-    # exit 0
+    exit 0
 fi
