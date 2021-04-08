@@ -141,6 +141,7 @@ class jupyterhub (
         base_dir    => '/var/log',
         owner       => 'root',
         group       => 'root',
+        force_stop  => true,
         require     => Git::Clone[$deploy_repository],
     }
 

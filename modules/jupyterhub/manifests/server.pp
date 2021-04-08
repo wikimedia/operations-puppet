@@ -81,6 +81,7 @@ class jupyterhub::server (
         base_dir    => '/var/log',
         owner       => 'root',
         group       => 'root',
+        force_stop  => true,
     }
 
     systemd::service { $service_name:
