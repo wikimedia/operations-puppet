@@ -126,4 +126,19 @@ class profile::superset(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
     }
 
+    file { '/usr/local/bin/check_superset_http':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/superset/check_superset_http.sh',
+    }
+
+    nrpe::monitor_service { 'check_superset_http':
+        nrpe_command  => '/usr/local/bin/check_superset_http',
+        description   => 'Check that superset http server is responding ok',
+        require       => File['/usr/local/bin/check_superset_http'],
+        contact_group => 'victorops-analytics',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
+    }
 }
