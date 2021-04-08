@@ -1,7 +1,9 @@
 class profile::wmcs::db::wikireplicas::mariadb_multiinstance (
     Hash[String, Stdlib::Datasize] $instances = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances', ),
     Array[String] $mysql_root_clients = lookup('mysql_root_clients', {default_value =>[]}),
-    Hash[String,Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports', )
+    Hash[String,Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports', ),
+    Integer[0, 100] $mariadb_memory_warning_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold', {'default_value' => 90}),
+    Integer[0, 100] $mariadb_memory_critical_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold', {'default_value' => 95}),
 ) {
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
@@ -82,5 +84,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     class { 'mariadb::monitor_memory':
         contact_group => 'admins,wmcs-bots',
+        warning       => $mariadb_memory_warning_threshold,
+        critical      => $mariadb_memory_critical_threshold,
     }
 }
