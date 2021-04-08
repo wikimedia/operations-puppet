@@ -1702,6 +1702,11 @@ node /^moss-fe100[12]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
+# New moss-be nodes T276642 
+node /^moss-be200[12]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # New moss-fe nodes T275513
 node /^moss-fe200[12]\.codfw\.wmnet/ {
     role(insetup)
