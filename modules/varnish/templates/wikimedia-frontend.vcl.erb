@@ -13,7 +13,7 @@ C{
    #define RATE <%= @vcl_config.fetch("exp_policy_rate", 0.9064392) %>
    #define BASE <%= @vcl_config.fetch("exp_policy_base", -18.16135) %>
    #define MEMORY <%= @vcl_config.fetch("fe_mem_gb").to_i/1024.0 %>
-   #define ADM_PARAM pow(MEMORY, RATE) / pow(2.0, BASE)
+   #define ADM_PARAM (pow(MEMORY, RATE) / pow(2.0, BASE))
 }C
 <% end -%>
 
