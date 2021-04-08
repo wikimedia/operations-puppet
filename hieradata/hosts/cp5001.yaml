@@ -1,0 +1,10 @@
+# With rate=0.1 and base=-20.3, the probabilities of caching objects of a
+# certain size are as follows:
+#    16 KB 98.6%
+#   128 KB 89.4%
+#  1024 KB 40.8%
+#  4096 KB 2.78%
+profile::cache::varnish::frontend::fe_vcl_config:
+  admission_policy: 'exp'
+  exp_policy_rate: 0.1
+  exp_policy_base: -20.3
