@@ -41,7 +41,7 @@ GRID_HOST_PREFIX = {
     "sgebastion": "submit",
     "sgecron": "submit",
     "sgegrid": "submit",
-    "checker": "submit"
+    "checker": "submit",
 }
 
 
