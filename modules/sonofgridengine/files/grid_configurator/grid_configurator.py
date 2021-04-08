@@ -431,11 +431,11 @@ def get_args():
 
     group = argparser.add_mutually_exclusive_group(required=True)
     group.add_argument(
-        "--domains",
-        help="Specify particular configuration types (such as queue or complex). Multiple"
-        " values can be given space-separated.",
-        nargs="+",
-        metavar="<configuration area>",
+        "--domain",
+        help="Particular configuration types. Can be specified multiple times. "
+        "Valid values are: {}".format(", ".join(VALID_DOMAINS)),
+        action="append",
+        choices=VALID_DOMAINS,
     )
     group.add_argument(
         "--all-domains",
@@ -477,7 +477,7 @@ def get_args():
     argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
 
     args = argparser.parse_args()
-    if args.all_domains or "hosts" in args.domains:
+    if args.all_domains or "hosts" in args.domain:
         if not args.observer_pass:
             if os.path.isfile("/etc/novaobserver.yaml"):
                 with open("/etc/novaobserver.yaml") as conf_fh:
@@ -527,12 +527,10 @@ def main():
         format="%(asctime)s %(levelname)s %(message)s",
         level=logging.DEBUG if args.debug else logging.INFO,
     )
-    domains = []
-    if args.domains:
-        domains = [dom for dom in args.domains if dom in VALID_DOMAINS]
-
     if args.all_domains:
         domains = VALID_DOMAINS
+    else:
+        domains = args.domain
 
     if not domains:
         sys.exit("you have specified no valid grid configuration domains")
