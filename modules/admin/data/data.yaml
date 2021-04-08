@@ -4960,3 +4960,7 @@ ldap_only_users:
     ensure: present
     realname: Clare Ming
     email: cming@wikimedia.org
+  mikeraish:
+    ensure: present
+    realname: Michael Raish
+    email: mraish@wikimedia.org
