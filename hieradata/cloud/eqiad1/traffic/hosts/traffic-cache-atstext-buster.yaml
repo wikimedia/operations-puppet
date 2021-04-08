@@ -63,6 +63,9 @@ profile::cache::varnish::frontend::fe_vcl_config:
     keep: '1d'
     public_clouds_shutdown: false
     large_objects_cutoff: 262144
+    admission_policy: exp
+    exp_policy_rate: 0.1
+    exp_policy_base: -20.3
 profile::cache::varnish::frontend::fe_extra_vcl:
 - normalize_path
 - geoip
