@@ -14,6 +14,7 @@
 "clusters:get_all": ""
 "clusters:get": ""
 "volume:get_snapshot_metadata": ""
+"volume:get_all_snapshots": ""
 
 "backup:get_all": "!"
 "backup:get": "!"
