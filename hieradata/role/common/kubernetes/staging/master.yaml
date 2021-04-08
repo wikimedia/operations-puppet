@@ -1,14 +1,6 @@
 cluster: kubernetes
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 1
-profile::kubernetes::master::admission_controllers:
-  NamespaceLifecycle: ''
-  LimitRanger: ''
-  ServiceAccount: "--service-account-key-file=/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
-  DefaultStorageClass: ''
-  DefaultTolerationSeconds: ''
-  ResourceQuota: ''
-  PodSecurityPolicy: ''
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::service_cert: "kubestagemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
@@ -21,6 +13,15 @@ profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::authz_mode: 'RBAC'
 profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-staging"
 profile::kubernetes::master::service_node_port_range: '1-65535'
+# See "kube-apiserver --help" for a list of available admission plugins
+# and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
+profile::kubernetes::master::admission_plugins:
+  enable:
+    - PodSecurityPolicy
+  disable:
+    - Priority
+    - StorageObjectInUseProtection
+    - PersistentVolumeClaimResize
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:

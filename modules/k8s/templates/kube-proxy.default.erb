@@ -20,4 +20,4 @@ if @metrics_bind_address
 	daemon_args.push("--metrics-bind-address='#{@metrics_bind_address}'")
 end
 -%>
-DAEMON_ARGS="<%= daemon_args.sort.join(' ') %>"
+DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

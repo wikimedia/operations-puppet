@@ -4,14 +4,6 @@ profile::kubernetes::client::packages_from_future: true
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 2
-profile::kubernetes::master::admission_controllers:
-  NamespaceLifecycle: ''
-  LimitRanger: ''
-  ServiceAccount: "--service-account-key-file=/etc/ssl/localcerts/kubemaster.svc.%{::site}.wmnet.crt"
-  DefaultStorageClass: ''
-  DefaultTolerationSeconds: ''
-  ResourceQuota: ''
-  PodSecurityPolicy: ''
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::use_cergen: true
 profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
@@ -20,6 +12,15 @@ profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubemaster.svc.%{::
 profile::kubernetes::master::authz_mode: 'RBAC'
 profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/kubemaster.svc.%{::site}.wmnet.key"
 profile::kubernetes::master::service_node_port_range: '1-65535'
+# See "kube-apiserver --help" for a list of available admission plugins
+# and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
+profile::kubernetes::master::admission_plugins:
+  enable:
+    - PodSecurityPolicy
+  disable:
+    - Priority
+    - StorageObjectInUseProtection
+    - PersistentVolumeClaimResize
 profile::lvs::realserver::pools:
   kubemaster:
     services:

@@ -6,7 +6,6 @@ class profile::kubernetes::master(
     String $service_cluster_ip_range=lookup('profile::kubernetes::master::service_cluster_ip_range'),
     Optional[String] $service_node_port_range=lookup('profile::kubernetes::master::service_node_port_range', {'default_value' => undef}),
     Integer $apiserver_count=lookup('profile::kubernetes::master::apiserver_count'),
-    Hash $admission_controllers=lookup('profile::kubernetes::master::admission_controllers'),
     Boolean $expose_puppet_certs=lookup('profile::kubernetes::master::expose_puppet_certs'),
     Optional[Stdlib::Fqdn] $service_cert=lookup('profile::kubernetes::master::service_cert', {'default_value' => undef}),
     Boolean $use_cergen=lookup('profile::kubernetes::master::use_cergen', { default_value => false }),
@@ -20,6 +19,7 @@ class profile::kubernetes::master(
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', {default_value => false}),
     Optional[String] $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token', {default_value => undef}),
     Hash[String, Any] $infrastructure_users = lookup('profile::kubernetes::master::infrastructure_users'),
+    Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', {default_value => undef}),
 
 ){
     if $expose_puppet_certs {
@@ -44,15 +44,15 @@ class profile::kubernetes::master(
         etcd_servers             => $etcd_servers,
         ssl_cert_path            => $ssl_cert_path,
         ssl_key_path             => $ssl_key_path,
+        users                    => $infrastructure_users,
         authz_mode               => $authz_mode,
+        allow_privileged         => $allow_privileged,
+        packages_from_future     => $packages_from_future,
         service_cluster_ip_range => $service_cluster_ip_range,
         service_node_port_range  => $service_node_port_range,
         apiserver_count          => $apiserver_count,
-        admission_controllers    => $admission_controllers,
         runtime_config           => $runtime_config,
-        packages_from_future     => $packages_from_future,
-        allow_privileged         => $allow_privileged,
-        users                    => $infrastructure_users,
+        admission_plugins        => $admission_plugins,
     }
 
     class { '::k8s::scheduler':

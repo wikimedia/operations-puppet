@@ -1,16 +1,21 @@
-# Class that sets up and configures kube-apiserver
+# == Class: k8s::apiserver
+#
+# This class sets up and configures kube-apiserver
+#
+# === Parameters
+# [*additional_admission_plugins*] Admission plugins that should be enabled in
+#   addition to default enabled ones (the defaults depend on the kubernetes
+#   version, see `kube-apiserver -h | grep admission-plugins`).
+#
+# [*disable_admission_plugins*] Admission plugins that should be disabled
+#   although they are in the default enabled plugins list (which depends on
+#   the kubernetes version, see `kube-apiserver -h | grep admission-plugins`).
+#
 class k8s::apiserver(
     String $etcd_servers,
     Stdlib::Unixpath $ssl_cert_path,
     Stdlib::Unixpath $ssl_key_path,
     Hash[String, Any] $users,
-    Hash[String, String] $admission_controllers = {
-        'NamespaceLifecycle' => '',
-        'LimitRanger' => '',
-        'ServiceAccount' => '',
-        'DefaultStorageClass' => '',
-        'ResourceQuota' => '',
-    },
     String $authz_mode = 'RBAC',
     Boolean $allow_privileged = false,
     Boolean $logtostderr = true,
@@ -20,6 +25,7 @@ class k8s::apiserver(
     Optional[String] $service_node_port_range = undef,
     Optional[Integer] $apiserver_count = undef,
     Optional[String] $runtime_config = undef,
+    Optional[K8s::AdmissionPlugins] $admission_plugins = undef,
 ) {
 
     group { 'kube':
@@ -49,9 +55,6 @@ class k8s::apiserver(
     } else {
         require_package('kubernetes-master')
     }
-
-    $admission_control = join(keys($admission_controllers), ',')
-    $admission_control_params = lstrip(join(values($admission_controllers), ' '))
 
     file { '/etc/kubernetes/infrastructure-users':
         content => template('k8s/infrastructure-users.csv.erb'),

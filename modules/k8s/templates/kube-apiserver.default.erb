@@ -13,6 +13,7 @@ daemon_args = [
   "--token-auth-file=/etc/kubernetes/infrastructure-users",
   "--tls-cert-file=#{@ssl_cert_path}",
   "--tls-private-key-file=#{@ssl_key_path}",
+  "--service-account-key-file=#{@ssl_cert_path}",
 ]
 
 if @service_cluster_ip_range
@@ -21,7 +22,6 @@ end
 if @service_node_port_range
   daemon_args.push("--service-node-port-range=#{@service_node_port_range}")
 end
-
 
 if @authz_mode == 'abac'
   daemon_args.push("--authorization-mode=ABAC")
@@ -34,11 +34,12 @@ if @apiserver_count
   daemon_args.push("--apiserver-count=#{@apiserver_count}")
 end
 
-if @admission_control
-  daemon_args.push("--admission-control=#{@admission_control}")
-end
-if not @admission_control_params.empty?
-  daemon_args.push(@admission_control_params)
+if @admission_plugins
+  @admission_plugins.each do |k, v|
+    if !v.empty?
+      daemon_args.push("--#{k}-admission-plugins=#{v.sort.join(',')}")
+    end
+  end
 end
 
 if @runtime_config
@@ -46,4 +47,4 @@ if @runtime_config
 end
 
 -%>
-DAEMON_ARGS="<%= daemon_args.sort.join(' ') %>"
+DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

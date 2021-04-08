@@ -21,4 +21,4 @@ else
   daemon_args.push("--master=http://127.0.0.1:8080")
 end
 -%>
-DAEMON_ARGS="<%= daemon_args.sort.join(' ') %>"
+DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"
