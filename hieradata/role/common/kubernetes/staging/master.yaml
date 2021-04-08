@@ -24,11 +24,3 @@ profile::kubernetes::master::service_node_port_range: '1-65535'
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
-#  client-infrastructure:
-#    type: infrastructure-readwrite
-#    token: dummydummy
-#    id: 1
-#  kubelet:
-#    type: system:node
-#    token: dummydummydummy
-#    id: 2
