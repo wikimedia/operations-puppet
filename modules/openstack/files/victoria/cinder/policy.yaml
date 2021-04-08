@@ -35,3 +35,12 @@
 "volume:get_volume_metadata": ""
 "volume:get": ""
 "volume:get_all": ""
+
+# These are inexplicably set to "" in the default policies:
+#
+"volume:create": "rule:admin_or_projectadmin"
+"volume:create_from_image": "rule:admin_or_projectadmin"
+"volume:attachment_create": "rule:admin_or_projectadmin"
+"volume:accept_transfer": "rule:admin_or_projectadmin"
+"group:create": "rule:admin_or_projectadmin"
+"group:create_group_snapshot": "rule:admin_or_projectadmin"
