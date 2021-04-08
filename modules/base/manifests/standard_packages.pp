@@ -2,7 +2,7 @@ class base::standard_packages {
 
     ensure_packages ([
         'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils', 'dstat',
-        'ethtool', 'gdb', 'gdisk', 'git-fat', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',
+        'ethtool', 'gdb', 'gdisk', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'quickstack', 'screen', 'strace', 'sysstat', 'tcpdump',
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
@@ -30,6 +30,11 @@ class base::standard_packages {
         ensure_packages('icdiff')
         ensure_packages('linux-perf')
         ensure_packages('bsd-mailx')
+    }
+
+    # git-fat hasn't been ported to Python 3 yet, T279509
+    if debian::codename::lt('bullseye') {
+        ensure_packages('git-fat')
     }
 
     # pxz was removed in buster. In xz >= 5.2 (so stretch and later), xz has
