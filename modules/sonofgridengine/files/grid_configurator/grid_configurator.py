@@ -535,6 +535,28 @@ def main():
     if not domains:
         sys.exit("you have specified no valid grid configuration domains")
 
+    try:
+        f = open("/etc/wmcs-project")
+        for line in f.readlines():
+            if line[:-1] == "tools" and args.beta:
+                f.close()
+                logging.error("Running in 'tools' project with --beta makes no sense")
+                sys.exit(1)
+            if line[:-1] != "tools" and not args.beta:
+                f.close()
+                logging.error(
+                    "If running in a project other than 'tools' you need --beta"
+                )
+                sys.exit(1)
+            # that file should only have 1 line
+            break
+        f.close()
+
+    except Exception as e:
+        logging.warning(
+            f"Failed to read /etc/wmcs-project file {e}. Project won't be validated."
+        )
+
     if "hosts" in domains:
         logging.debug("Running configuration updates for hosts")
         host_processor = HostProcessor(
