@@ -735,11 +735,6 @@ host cloudcephmon1003 {
     fixed-address cloudcephmon1003.eqiad.wmnet;
 }
 
-host cloudcephmon2001-dev {
-    hardware ethernet 14:18:77:33:52:18;
-    fixed-address cloudcephmon2001-dev.codfw.wmnet;
-}
-
 host cloudcephmon2002-dev {
     hardware ethernet 18:66:DA:A8:7D:92;
     fixed-address cloudcephmon2002-dev.codfw.wmnet;
