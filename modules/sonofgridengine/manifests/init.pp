@@ -47,7 +47,7 @@ class sonofgridengine(
         mode   => '0755',
     }
 
-    file { "${etcdir}/hosts/${::fqdn}":
+    file { "${etcdir}/hosts/${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
         ensure => directory,
         owner  => 'root',
         group  => 'root',

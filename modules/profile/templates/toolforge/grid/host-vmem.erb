@@ -1,4 +1,4 @@
-hostname              <%= @fqdn %>
+hostname              <%= @hostname %>.<%= @labsproject %>.eqiad1.wikimedia.cloud
 complex_values        h_vmem=24G,slots=<%= 16 * @processorcount %>,release=<%= @lsbdistcodename %>
 load_scaling          NONE
 user_lists            NONE

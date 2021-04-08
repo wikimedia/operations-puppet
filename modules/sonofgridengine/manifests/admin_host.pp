@@ -3,8 +3,8 @@
 class sonofgridengine::admin_host(
     $config = undef,
 ) {
-    sonofgridengine::resource { "admin-${::fqdn}":
-        rname  => $::fqdn,
+    sonofgridengine::resource { "admin-${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
+        rname  => "${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud",
         dir    => 'adminhosts',
         config => $config,
     }
