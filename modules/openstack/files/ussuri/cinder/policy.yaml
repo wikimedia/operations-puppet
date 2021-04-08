@@ -1,5 +1,12 @@
-"admin_or_owner": "is_admin:True or project_id:%(project_id)s"
+# We basically never want to give rights to mere project members, only
+#  project admins.  So, replace this (upstream) rule with the admin_or_owner
+#  rule below
+# "admin_or_owner": "is_admin:True or project_id:%(project_id)s"
+"admin_or_owner": "is_admin:True or role:projectadmin"
 "admin_or_projectadmin": "is_admin:True or role:projectadmin"
+
+# This seems to be generally unobserved; leaving it here in case some
+#  leftover policies still check default.
 "default": "rule:admin_or_projectadmin"
 
 "message:get_all": ""

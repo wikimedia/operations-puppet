@@ -18,6 +18,14 @@
 #  context for the policies that follow
 projectadmin_role: role:projectadmin
 admin_or_projectadmin: rule:admin_required or rule:projectadmin_role
+
+# We basically never want to give rights to mere project members, only
+#  project admins.  So, replace this (upstream) rule with the admin_or_owner
+#  rule below
+# admin_or_owner: is_admin:True or project_id:%(project_id)s
+admin_or_owner: is_admin:True or rule:projectadmin_role
+
+# This is largely unused as of Ussuri:
 default: rule:admin_or_projectadmin
 
 

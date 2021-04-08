@@ -1,5 +1,11 @@
 "admin_or_glanceadmin": "is_admin:True or role:glanceadmin"
-"admin_or_owner": "is_admin:True or project_id:%(project_id)s"
+
+# We basically never want to give rights to mere project members, only
+#  project admins.  So, replace this (upstream) rule with the admin_or_owner
+#  rule below
+# "admin_or_owner": "is_admin:True or project_id:%(project_id)s"
+"admin_or_owner": "is_admin:True or role:glanceadmin"
+
 "context_is_admin": "role:admin"
 "default": "rule:admin_or_glanceadmin"
 
@@ -29,7 +35,7 @@
 "get_metadef_property": ""
 "get_task": ""
 "get_tasks": ""
-"list_metadef_resource_types": "rule:admin_or_owner"
+"list_metadef_resource_types": ""
 "manage_image_cache": "rule:admin_or_glanceadmin"
 "modify_image": "rule:admin_or_glanceadmin"
 "modify_member": "role:admin"

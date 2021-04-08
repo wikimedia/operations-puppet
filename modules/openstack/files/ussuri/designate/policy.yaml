@@ -5,6 +5,7 @@
 "member_or_target": "rule:target or rule:member"
 "admin_or_member_or_target": "rule:member_or_target or rule:admin"
 "admin_or_projectadmin": "rule:admin or role:projectadmin or role:designateadmin"
+"admin_or_owner": "rule:admin or role:projectadmin or role:designateadmin"
 "admin_or_target": "rule:admin or rule:target"
 "default": "rule:admin_or_projectadmin"
 
