@@ -1,3 +1,3 @@
 #!/bin/sh
 DIR=$(dirname -- $0)
-exec ${DIR}/pcc.py $*
+exec "${DIR}"/pcc.py "$@"
