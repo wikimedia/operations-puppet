@@ -2,17 +2,11 @@
   This generates a "static-token-file" as described in:
   https://kubernetes.io/docs/reference/access-authn-authz/authentication/#static-token-file
   The token file is a csv file with a minimum of 3 columns:
-  token, user name, user uid, followed by optional group names.
-
-  TODO: Remove the groups gate after migrating all user stanzas from type to groups
+  token, user name, user uid, followed by group names as a quoted, comma seperated list.
 -%>
 <%-
   @users.each do |k, v|
-  if v.has_key? 'groups'
     entry = "#{v['token']},#{k},#{k},\"#{v['groups'].join(',')}\""
-  else
-    entry = "#{v['token']},#{k},#{k},#{v['type']}"
-  end
 -%>
 <%= entry %>
 <%- end -%>
