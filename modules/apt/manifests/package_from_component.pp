@@ -23,11 +23,11 @@
 #  Where the packages are installed from, defaults to http://apt.wikimedia.org/wikimedia
 #
 # [*priority*]
-#  An APT priority value. In our configuration packages in the "main" component receives
-#  a default priority of 1001. If you're adding a package from a componentn which isn't
-#  in Debian or which is in a higher version than what's in Debian you can simply use
+#  An APT priority value. In our configuration, packages in the "main" component receive
+#  a default priority of 1001. If you're adding a package from a component which isn't
+#  in Debian or which is in a higher version than what's in Debian, you can simply use
 #  the default value of 1001. If you're installing a package in a higher version than
-#  what' in the "main" component of apt.wikimedia.org you should specify 1002.
+#  what's in the "main" component of apt.wikimedia.org you should specify 1002.
 
 define apt::package_from_component(
     String $component,
