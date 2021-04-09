@@ -3,7 +3,7 @@
 # Installs the Django web app serving mailman3 to users
 # https://mailman-web.readthedocs.io/en/latest/index.html
 #
-# The mailman-web package wraps various web components:
+# The mailman3-web package wraps various web components:
 # * django-mailman: User profile management
 # * postorius: List administration
 # * hyperkitty: List archives
@@ -21,10 +21,21 @@ class mailman3::web (
 
     ensure_packages([
         'python3-mysqldb',
-        # https://hyperkitty.readthedocs.io/en/latest/install.html#install-the-code
-        'sassc',
         'python3-xapian-haystack',
     ])
+
+    apt::package_from_component { 'mailman3-web':
+        component => 'component/mailman3',
+        packages  => [
+            'mailman3-web',
+            'python3-django-mailman3',
+            'python3-django-hyperkitty',
+            'python3-django-postorius',
+            'python3-flufl.lock',
+            'python3-mailmanclient',
+        ],
+        require   => Package['dbconfig-no-thanks'],
+    }
 
     package { 'mailman3-web':
         ensure  => present,
@@ -43,13 +54,6 @@ class mailman3::web (
         group   => 'root',
         mode    => '0444',
         content => template('mailman3/mailman-hyperkitty.cfg.erb'),
-    }
-
-    file { '/usr/local/bin/mailman-web':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/mailman3/mailman-web',
     }
 
     service { 'mailman3-web':

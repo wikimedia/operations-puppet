@@ -18,9 +18,17 @@ class mailman3::listserve (
         'python3-pymysql',
     ])
 
-    package { 'mailman3':
-        ensure  => present,
-        require => Package['dbconfig-no-thanks'],
+    apt::package_from_component { 'mailman3':
+        component => 'component/mailman3',
+        packages  => [
+            'mailman3',
+            'python3-authheaders',
+            'python3-falcon',
+            'python3-flufl.lock',
+            'python3-importlib-resources',
+            'python3-zope.interface',
+        ],
+        require   => Package['dbconfig-no-thanks'],
     }
 
     file { '/etc/mailman3/mailman.cfg':
