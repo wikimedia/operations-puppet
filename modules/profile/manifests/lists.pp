@@ -6,6 +6,7 @@ class profile::lists (
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
     Optional[Stdlib::Fqdn] $mailman3_host     = lookup('profile::lists::mailman3_host', {'default_value' => undef}),
+    Optional[String] $acme_chief_cert         = lookup('profile::lists::acme_chief_cert', {'default_value' => undef}),
 ){
     include network::constants
     include privateexim::listserve
@@ -19,6 +20,7 @@ class profile::lists (
     class { 'mailman':
         lists_servername       => $lists_servername,
         mailman_service_ensure => $mailman_service_ensure,
+        acme_chief_cert        => $acme_chief_cert,
     }
 
     mailalias { 'root': recipient => 'root@wikimedia.org' }
@@ -29,14 +31,21 @@ class profile::lists (
         ipv6 => $lists_ipv6,
     }
 
-    class { 'sslcert::dhparam': }
-    acme_chief::cert{ 'lists':
-        puppet_svc => 'apache2',
-        key_group  => 'Debian-exim',
+    if $acme_chief_cert {
+        class { 'sslcert::dhparam': }
+        acme_chief::cert{ $acme_chief_cert:
+            puppet_svc => 'apache2',
+            key_group  => 'Debian-exim',
+        }
     }
 
-    $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
-        $x !~ /127.0.0.0|::1/
+    if $::realm == 'labs' {
+        $trusted_networks = ['172.16.0.0/12']
+    }
+    if $::realm == 'production' {
+        $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
+            $x !~ /127.0.0.0|::1/
+        }
     }
 
     class { 'spamassassin':

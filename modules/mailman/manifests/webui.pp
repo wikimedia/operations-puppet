@@ -1,12 +1,13 @@
 # Sets up a web server to be used by mailman.
 class mailman::webui (
     Stdlib::Fqdn $lists_servername,
+    Optional[String] $acme_chief_cert = undef
 ){
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
 
     httpd::site { $lists_servername:
-        content => template("mailman/${lists_servername}.erb"),
+        content => template('mailman/apache.conf.erb'),
     }
 
     # htdigest file for private list archives

@@ -13,9 +13,15 @@
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
-    SSLCertificateFile /etc/acmecerts/lists/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/lists/live/rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/lists/live/rsa-2048.key
+    <% if @acme_chief_cert %>
+    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
+    <% else %>
+    # certbot certs
+    SSLCertificateFile /etc/letsencrypt/live/<%= @lists_servername %>/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/<%= @lists_servername %>/privkey.pem
+    <% end %>
     <%= @ssl_settings.join("\n    ") %>
 
     <IfModule security2_module>
