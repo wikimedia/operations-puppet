@@ -95,6 +95,15 @@ class codesearch(
         ]
     }
 
+    systemd::service { 'codesearch-frontend':
+        ensure  => present,
+        content => template('codesearch/initscripts/codesearch-frontend.service.erb'),
+        require => [
+            Git::Clone['labs/codesearch'],
+            Package['docker-ce'],
+        ]
+    }
+
     file { '/etc/codesearch_ports.json':
         ensure  => present,
         content => ordered_json($ports),

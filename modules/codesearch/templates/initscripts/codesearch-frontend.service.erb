@@ -1,0 +1,17 @@
+[Unit]
+Description=codesearch-frontend
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=codesearch
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill codesearch-frontend
+ExecStartPre=-/usr/bin/docker rm -f codesearch-frontend
+ExecStart=/usr/bin/docker run -p 3003:80 --name codesearch-frontend \
+    codesearch-frontend
+ExecStop=/usr/bin/docker stop codesearch-frontend
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
