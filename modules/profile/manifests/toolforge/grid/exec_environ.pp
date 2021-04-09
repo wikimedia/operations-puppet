@@ -322,6 +322,7 @@ class profile::toolforge::grid::exec_environ {
         'mktorrent',                   # T155470
         'openbabel',                   # T68995
         'p7zip-full',                  # requested by Betacommand and danilo to decompress 7z files
+        'pandoc',                      # T279787
         'pdf2svg',                     # T70092.
         'pdf2djvu',                    # T130138
         'pdftk',                       # T67048.
