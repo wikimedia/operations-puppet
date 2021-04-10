@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import os
 import smtplib
 import subprocess
 import sys
@@ -32,7 +33,10 @@ def main():
     if output:
         msg = EmailMessage()
         msg['From'] = 'SYSTEMDTIMER <noreply@{}>'.format(getfqdn())
-        msg['To'] = 'root@{}'.format(getfqdn())
+        if os.getenv('MAILTO'):
+            msg['To'] = os.getenv('MAILTO')
+        else:
+            msg['To'] = 'root@{}'.format(getfqdn())
         cmd_str = ' '.join([str(i) for i in cmd])
         msg['Subject'] = "Output of systemd timer for '{}'".format(cmd_str)
         msg.set_content(output)
