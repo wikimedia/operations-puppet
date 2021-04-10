@@ -72,5 +72,3 @@ profile::mediawiki::apc_shm_size: 128M
 labsldapconfig:
   hostname: cloudservices2002-dev.wikimedia.org
   secondary_hostname: cloudservices2002-dev.wikimedia.org
-
-profile::openstack::codfw1dev::horizon_version: 'train'
