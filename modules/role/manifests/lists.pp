@@ -23,6 +23,8 @@ class role::lists {
             'alias',
             'setenvif',
             'auth_digest',
+            'proxy_http',
+            'proxy_uwsgi'
             ],
     }
 

@@ -7,6 +7,17 @@ class profile::lists (
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
     Optional[Stdlib::Fqdn] $mailman3_host     = lookup('profile::lists::mailman3_host', {'default_value' => undef}),
     Optional[String] $acme_chief_cert         = lookup('profile::lists::acme_chief_cert', {'default_value' => undef}),
+    Boolean $enable_mm3                       = lookup('profile::lists::enable_mm3', {'default_value' => false}),
+    Optional[Stdlib::Fqdn] $db_host           = lookup('profile::mailman3::db_host', {'default_value' => undef}),
+    Optional[String] $db_name                 = lookup('profile::mailman3::db_name', {'default_value' => undef}),
+    Optional[String] $db_user                 = lookup('profile::mailman3::db_user', {'default_value' => undef}),
+    Optional[String] $db_password             = lookup('profile::mailman3::db_password', {'default_value' => undef}),
+    Optional[String] $webdb_name              = lookup('profile::mailman3::web::db_name', {'default_value' => undef}),
+    Optional[String] $webdb_user              = lookup('profile::mailman3::web::db_user', {'default_value' => undef}),
+    Optional[String] $webdb_password          = lookup('profile::mailman3::web::db_password', {'default_value' => undef}),
+    Optional[String] $api_password            = lookup('profile::mailman3::api_password', {'default_value' => undef}),
+    Optional[String] $web_secret              = lookup('profile::mailman3::web::secret', {'default_value' => undef}),
+    Optional[String] $archiver_key            = lookup('profile::mailman3::archiver_key', {'default_value' => undef}),
 ){
     include network::constants
     include privateexim::listserve
@@ -17,10 +28,27 @@ class profile::lists (
         default       => 'running',
     }
 
+    if $enable_mm3 {
+        class { '::mailman3':
+            host           => $lists_servername,
+            db_host        => $db_host,
+            db_name        => $db_name,
+            db_user        => $db_user,
+            db_password    => $db_password,
+            webdb_name     => $webdb_name,
+            webdb_user     => $webdb_user,
+            webdb_password => $webdb_password,
+            api_password   => $api_password,
+            archiver_key   => $archiver_key,
+            web_secret     => $web_secret,
+    }
+    }
+
     class { 'mailman':
         lists_servername       => $lists_servername,
         mailman_service_ensure => $mailman_service_ensure,
         acme_chief_cert        => $acme_chief_cert,
+        enable_mm3             => $enable_mm3,
     }
 
     mailalias { 'root': recipient => 'root@wikimedia.org' }

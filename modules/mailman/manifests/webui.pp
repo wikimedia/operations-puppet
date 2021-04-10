@@ -1,7 +1,8 @@
 # Sets up a web server to be used by mailman.
 class mailman::webui (
     Stdlib::Fqdn $lists_servername,
-    Optional[String] $acme_chief_cert = undef
+    Optional[String] $acme_chief_cert = undef,
+    Boolean $enable_mm3 = false
 ){
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)

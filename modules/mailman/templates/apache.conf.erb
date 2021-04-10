@@ -4,7 +4,12 @@
     ServerAdmin noc@wikimedia.org
     ServerName <%= @lists_servername %>
     RewriteEngine on
-    RewriteRule ^/(.*)$ https://<%= @lists_servername %>/$1 [R=301]
+    RewriteRule ^/(?!hyperkitty/)(.*)$ https://<%= @lists_servername %>/$1 [R=301]
+    <% if @enable_mm3 %>
+    <IfModule mod_proxy_uwsgi.c>
+        ProxyPass /hyperkitty unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/hyperkitty
+    </IfModule>
+    <% end %>
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -24,6 +29,21 @@
     <% end %>
     <%= @ssl_settings.join("\n    ") %>
 
+    <% if @enable_mm3 %>
+    Header set Content-Security-Policy "default-src 'self'; connect-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+    Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
+    Alias /mailman3/static      /var/lib/mailman3/web/static
+    <Directory "/var/lib/mailman3/web/static">
+        Require all granted
+    </Directory>
+    <IfModule mod_proxy_uwsgi.c>
+        ProxyPass /mailman3/favicon.ico !
+        ProxyPass /mailman3/static !
+        ProxyPass /mailman3 unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/mailman3
+        ProxyPass /hyperkitty unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/hyperkitty
+        ProxyPass /postorius unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/postorius
+    </IfModule>
+    <% end %>
     <IfModule security2_module>
         SecRuleEngine On
         SecRequestBodyAccess On
