@@ -34,3 +34,6 @@ StandardOutput=<%= @stdout %>
 <%- if @stderr -%>
 StandardError=<%= @stderr %>
 <%- end -%>
+<%- if @working_directory -%>
+WorkingDirectory=<%= @working_directory %>
+<%- end -%>

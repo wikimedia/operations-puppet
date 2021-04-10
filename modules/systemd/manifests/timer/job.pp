@@ -128,6 +128,7 @@ define systemd::timer::job(
     Optional[Systemd::Input]                $stdin                     = undef,
     Optional[Systemd::Output]               $stdout                    = undef,
     Optional[Systemd::Output]               $stderr                    = undef,
+    Optional[Stdlib::Unixpath]              $working_directory         = undef,
 ) {
     # Systemd doesn't play well with spaces in unit names, so check for that
     if $title =~ /\s/ {
