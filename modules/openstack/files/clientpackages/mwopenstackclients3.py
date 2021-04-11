@@ -11,6 +11,8 @@ from keystoneauth1 import session as keystone_session
 from keystoneclient.v3 import client as keystone_client
 from novaclient import client as nova_client
 from designateclient.v2 import client as designateclient
+from cinderclient.v3 import client as cinderclient
+from neutronclient.v2_0 import client as neutronclient
 
 
 class Clients(object):
@@ -38,6 +40,8 @@ class Clients(object):
         self.novaclients = {}
         self.glanceclients = {}
         self.designateclients = {}
+        self.cinderclients = {}
+        self.neutronclients = {}
 
         if envfile:
             if username or password or url or project:
@@ -157,6 +161,28 @@ class Clients(object):
                 session=session, timeout=300, sudo_project_id=project,
                 region_name=self.region)
         return self.designateclients[project]
+
+    def cinderclient(self, project=None):
+        if not project:
+            project = self.project
+
+        if project not in self.cinderclients:
+            session = self.session(project)
+            self.cinderclients[project] = cinderclient.Client(
+                session=session, timeout=300,
+                region_name=self.region)
+        return self.cinderclients[project]
+
+    def neutronclient(self, project=None):
+        if not project:
+            project = self.project
+
+        if project not in self.neutronclients:
+            session = self.session(project)
+            self.neutronclients[project] = neutronclient.Client(
+                session=session, timeout=300,
+                region_name=self.region)
+        return self.neutronclients[project]
 
     def allprojects(self):
         client = self.keystoneclient()
