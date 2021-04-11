@@ -7,7 +7,7 @@ class profile::openstack::codfw1dev::observerenv(
     class {'::profile::openstack::base::observerenv':
         region            => $region,
         keystone_api_fqdn => $keystone_api_fqdn,
-        observer_password => $observer_password,
+        os_password       => $observer_password,
     }
     contain '::profile::openstack::base::observerenv'
 }

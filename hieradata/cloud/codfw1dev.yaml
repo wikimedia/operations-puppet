@@ -37,7 +37,9 @@ ntp_peers:
 # The eqiad1 counterparts are in hieradata/labs.yaml. I think this is a more
 # suitable place for this.. perhaps.
 profile::openstack::codfw1dev::observer_user: 'novaobserver'
+profile::openstack::codfw1dev::observer_project: 'observer'
 profile::openstack::base::observer_user: 'novaobserver'
+profile::openstack::base::observer_project: 'observer'
 profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::keystone_host: 'openstack.codfw1dev.wikimediacloud.org'
 profile::openstack::codfw1dev::observer_password: 'lt-RiBeyokCO81bVvcX'
