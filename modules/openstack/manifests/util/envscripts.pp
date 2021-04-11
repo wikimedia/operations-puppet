@@ -34,13 +34,4 @@ class openstack::util::envscripts(
         mode    => '0755',
         content => template('openstack/util/wmflabsorg-domainadminenv.sh.erb'),
     }
-
-    # Config for region-migrate.conf
-    file { '/root/region-migrate.conf':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
-        content => template('openstack/util/region-migrate.conf.erb'),
-    }
 }
