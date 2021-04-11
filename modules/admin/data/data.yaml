@@ -1825,7 +1825,7 @@ users:
     name: ori
     realname: Ori Livneh
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHkD0ImOND0E9x7bUV7AntCGmaHBUGGJVal/IEGFEPcM ori@mbp
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLyB3QrQbsm1yOaS3FmizxHr9ShF3mgUNMDnY6QAbpW ori@yubikey
     uid: 2220
     email: ori.livneh@gmail.com
   jkrauska:
