@@ -6,6 +6,7 @@ class profile::openstack::eqiad1::envscripts(
     $wmflabsdotorg_admin = lookup('profile::openstack::eqiad1::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = lookup('profile::openstack::eqiad1::designate::wmflabsdotorg_pass'),
     $wmflabsdotorg_project = lookup('profile::openstack::eqiad1::designate::wmflabsdotorg_project'),
+    $osstackcanary_pass = lookup('profile::openstack::eqiad1::nova::fullstack_pass'),
     ) {
     class {'::profile::openstack::base::envscripts':
         ldap_user_pass        => $ldap_user_pass,
@@ -15,5 +16,6 @@ class profile::openstack::eqiad1::envscripts(
         wmflabsdotorg_admin   => $wmflabsdotorg_admin,
         wmflabsdotorg_pass    => $wmflabsdotorg_pass,
         wmflabsdotorg_project => $wmflabsdotorg_project,
+        osstackcanary_pass    => $osstackcanary_pass,
     }
 }

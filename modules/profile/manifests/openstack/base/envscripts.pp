@@ -6,6 +6,7 @@ class profile::openstack::base::envscripts(
     $wmflabsdotorg_admin = lookup('profile::openstack::base::designate::wmflabsdotorg_admin'),
     $wmflabsdotorg_pass = lookup('profile::openstack::base::designate::wmflabsdotorg_pass'),
     $wmflabsdotorg_project = lookup('profile::openstack::base::designate::wmflabsdotorg_project'),
+    $osstackcanary_pass = lookup('profile::openstack::base::nova::fullstack_pass'),
     ) {
 
     openstack::util::envscript { 'novaadmin':
@@ -30,6 +31,20 @@ class profile::openstack::base::envscripts(
         os_password            => $wmflabsdotorg_project,
         os_project             => $wmflabsdotorg_project,
         scriptpath             => '/root/wmflabsorg-domainadminenv.sh',
+        yaml_mode              => '0440',
+    }
+
+    # Creds for a mortal user with membership only in select projects.
+    # Will be used for policy tests.
+    openstack::util::envscript { 'oss-canary':
+        region                 => $region,
+        keystone_api_fqdn      => $keystone_api_fqdn,
+        keystone_api_port      => 5000,
+        os_password            => $osstackcanary_pass,
+        keystone_api_interface => 'public',
+        os_user                => 'osstackcanary',
+        os_project             => 'admin-monitoring',
+        scriptpath             => '/usr/local/bin/osscanaryenv.sh',
         yaml_mode              => '0440',
     }
 }
