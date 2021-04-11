@@ -7,18 +7,15 @@ class profile::openstack::base::observerenv(
     String       $os_project        = lookup('profile::openstack::base::observer_project'),
   ) {
 
-    # Keystone credentials for novaobserver
-    file { '/etc/novaobserver.yaml':
-        content => template('profile/openstack/base/novaobserver/novaobserver.yaml.erb'),
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-    }
-
-    file { '/usr/local/bin/observerenv.sh':
-        source => 'puppet:///modules/profile/openstack/base/novaobserver/observerenv.sh',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
+    openstack::util::envscript { 'novaobserver':
+        region                 => $region,
+        keystone_api_fqdn      => $keystone_api_fqdn,
+        keystone_api_port      => 5000,
+        keystone_api_interface => 'public',
+        os_user                => $os_user,
+        os_password            => $os_password,
+        os_project             => $os_project,
+        scriptpath             => '/usr/local/bin/observerenv.sh',
+        yaml_mode              => '0444',
     }
 }

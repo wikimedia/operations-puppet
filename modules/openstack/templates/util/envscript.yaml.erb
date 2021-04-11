@@ -1,0 +1,18 @@
+OS_USERNAME: <%= @os_user %>
+OS_PROJECT_DOMAIN_ID: default
+OS_USER_DOMAIN_ID: default
+OS_PASSWORD: "<%= @os_password %>"
+OS_AUTH_URL: "http://<%= @keystone_api_fqdn %>:<%= @keystone_api_port %>/v3"
+OS_REGION_NAME: "<%= @region %>"
+OS_PROJECT_ID: <%= @os_project %>
+OS_NO_CACHE: 1
+OS_IDENTITY_API_VERSION: 3
+OS_INTERFACE: <%= @keystone_api_interface %>
+PYTHONIOENCODING: utf-8
+OS_PROJECT_NAME: "<%= @os_project %>"
+OS_PROJECT_ID: "<%= @os_project %>"
+OS_PROJECT_DOMAIN_NAME: "default"
+OS_USER_DOMAIN_NAME: "default"
+<% if defined?(@os_db_password) && ! @os_db_password.empty? %>
+NOVA_MYSQL_PASS: "<%= @os_db_password %>"
+<% end %>
