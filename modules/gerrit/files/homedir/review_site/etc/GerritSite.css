@@ -3,7 +3,7 @@
 <script src="/r/static/gerritLogin.cache.js?3"></script>
 
 <style>
-/* Local overrides for Wikimedia. Tested on Gerrit 2.13.9 */
+/* Local overrides for Wikimedia. Tested on Gerrit 3.2.7 */
 
 #error_message {
     flex: 1;
@@ -242,34 +242,6 @@ html.loginParent body #gerrit_body h1 {
 }
 html.loginParent .wikimedia-footer { position: inherit; }
 
-.com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
-    /*
-     * Fixes IE copying text
-     *
-     * https://bugs.chromium.org/p/gerrit/issues/detail?id=4647
-     */
-    -ms-user-select: text !important;
-    /* For browsers that doint prefix there css */
-    user-select: text;
-}
-
-/**
- * Add word wrapping for commit messages, so horizontal scrolling isn't needed,
- *               and for inline review messages, so we can write code there.
- */
-.com-google-gerrit-client-change-CommitBox_BinderImpl_GenCss_style-text {
-    white-space: pre-wrap !important;
-}
-
-/**
- * General
- */
-body, .gwt-DialogBox .dialogMiddleCenter {
-    color: #353535 !important;
-    background: #fff url(/r/static/page-bkg.cache.jpg) no-repeat 0 0 !important;
-    position: static;
-}
-
 a,
 a:visited {
     color: #0654ac !important;
@@ -279,18 +251,6 @@ a:visited {
 a:hover {
     color: #0654ac !important;
     text-decoration: underline;
-}
-
-/* Make the repo links turn blue */
-table.changeTable a.gwt-Anchor {
-    color: #0654ac !important;
-}
-
-/* Search queries / Dashboards
- * have links in every cell, make those easier on the eyes
- */
-.GJEA35ODNB a.gwt-InlineHyperlink {
-    color: #222 !important;
 }
 
 /**
@@ -344,100 +304,8 @@ table.changeTable a.gwt-Anchor {
     min-height: 74px;
 }
 
-#gerrit_topmenu tbody tr td table {
-    border: 0;
-}
-
-/* Line between tabs and the corresponding sub menu */
-#gerrit_topmenu tbody tr td table.gwt-TabBar {
-    border-bottom: 1px solid #DDD;
-}
-
-.gwt-TabBarItem {
-    color: #353535;
-    border-bottom: 3px solid transparent;
-    border-right: 0 !important;
-}
-
-.gwt-TabBarItem-selected {
-    color: #990000 !important;
-    border-bottom-color: #990000;
-}
-
-.gwt-TabBar .gwt-TabBarItem,
-.gwt-TabBar .gwt-TabBarRest,
-.gwt-TabPanelBottom {
-    background: 0 !important;
-}
-
-/**
- * Top menu (user + search)
- */
-
-/* Give the search button more breathing room
- * around the label so that it is more readable
- * and also matches the height if the input field
- */
-#gerrit_topmenu .gwt-Button {
-    padding: 3px 6px;
-}
-
-/**
- * https://phabricator.wikimedia.org/T46895
- * Gerrit commit message font is too small
- */
-.com-google-gerrit-client-change-CommitBox_BinderImpl_GenCss_style-text {
-    font-size: 9pt !important;
-}
-
-/**
- * https://phabricator.wikimedia.org/T42941
- * Gerrit diff font isn't big enough, either
- */
-.com-google-gerrit-client-diff-DiffTable_BinderImpl_GenCss_style-table .CodeMirror {
-    font-size: 9pt !important;
-}
-.com-google-gerrit-client-diff-CommentBox-Style-commentWidgets {
-    font-size: small !important;
-}
-
-/* Changes for gerrit 2.12 */
-.com-google-gerrit-client-change-ChangeScreen_BinderImpl_GenCss_style-infoColumn {
-    width: 100% !important;
-    min-width: 400px;
-}
-
-
-#change_infoTable {
-  border-collapse: collapse;
-}
-
-#change_infoTable th {
-  padding: 2px 4px 2px 6px;
-  background-color: #eee;
-  font-style: italic;
-  text-align: left;
-}
-
-#change_infoTable td {
-  padding: 2px 4px 2px 6px;
-  border-bottom: 1px solid #eee;
-  border-right: 1px solid #eee;
-}
-
-#change_infoTable tr:last-child td {
-  border: none;
-}
-
 .wikimedia-footer {
   color: #a0adcc;
   position: absolute;
   padding: 0 0.5em;
-}
-
-/**
- * Overrides strange css in gerrit where editor header is only 16px
- */
-.screen .com-google-gerrit-client-editor-EditScreen_BinderImpl_GenCss_style-header {
-  height: auto;
 }
