@@ -303,33 +303,31 @@ class profile::analytics::refinery::job::data_purge (
     # Execute 1st sanitization pass, right after data collection. Runs once per hour.
     # Job starts a couple minutes after the hour, to leave time for the salt files to be updated.
     profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_immediate':
-        ensure                         => $ensure_timers,
-        job_class                      => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
-        monitor_class                  => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
-        job_config                     => $eventlogging_sanitization_job_config,
-        spark_driver_memory            => '16G',
-        spark_max_executors            => '128',
-        spark_extra_opts               => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
-        interval                       => '*-*-* *:02:00',
-        refine_monitor_failure_enabled => false,
-        use_keytab                     => $use_kerberos_keytab,
+        ensure              => $ensure_timers,
+        job_class           => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
+        monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
+        job_config          => $eventlogging_sanitization_job_config,
+        spark_driver_memory => '16G',
+        spark_max_executors => '128',
+        spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+        interval            => '*-*-* *:02:00',
+        use_keytab          => $use_kerberos_keytab,
     }
     # Execute 2nd sanitization pass, after 45 days of collection.
     # Runs once per day at a less busy time.
     profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_delayed':
-        ensure                         => $ensure_timers,
-        job_class                      => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
-        monitor_class                  => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
-        job_config                     => $eventlogging_sanitization_job_config.merge({
+        ensure              => $ensure_timers,
+        job_class           => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
+        monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
+        job_config          => $eventlogging_sanitization_job_config.merge({
             'since' => 1104,
             'until' => 1080,
         }),
-        spark_driver_memory            => '16G',
-        spark_max_executors            => '128',
-        spark_extra_opts               => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
-        interval                       => '*-*-* 06:00:00',
-        refine_monitor_failure_enabled => false,
-        use_keytab                     => $use_kerberos_keytab,
+        spark_driver_memory => '16G',
+        spark_max_executors => '128',
+        spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+        interval            => '*-*-* 06:00:00',
+        use_keytab          => $use_kerberos_keytab,
     }
 
     # Drop unsanitized EventLogging data from the event database after retention period.

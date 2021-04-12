@@ -4,10 +4,9 @@
 # used to import arbitrary (schemaed) JSON data into Hive.
 #
 # If $refine_monitor_enabled is true, a daily RefineMonitor job will be
-# scheduled to look back over a 24 hour period to ensure that all
-# datasets expected to be refined were successfully done so.  Also
-# a daily RefineFailuresChecker will look over the last 48 hours for any
-# _FAILED flags
+# scheduled to look back over a 48 hour period to ensure that all
+# datasets expected to be refined were successfully done so, or if
+# any _FAILURE flags exist.
 #
 # For description of the Refine $job_config parameters, see:
 # https://github.com/wikimedia/analytics-refinery-source/blob/master/refinery-job/src/main/scala/org/wikimedia/analytics/refinery/job/refine/Refine.scala
@@ -25,13 +24,23 @@
 #   Systemd time interval.
 #   Default: '*-*-* *:00:00' (hourly)
 #
+# [*monitoring_enabled*]
+#   If true, service failures will alert, e.g. a bad exit code from Refine or RefineMonitor
+#   will result in a service failure alert.
+#
+# [*refine_monitor_enabled*]
+#   If true, a RefineMonitor job will be scheduled using the same job_config
+#   for Refine plus any refine_monitor_job_config overrides. RefineMonitor
+#   alerts on missing dataset hours or failure flags.
+#
+# [*monitor_interval*]
+#   Systemd time interval for runnint the RefineMonitor job.
 define profile::analytics::refinery::job::refine_job (
     $job_config,
     $job_name                         = "refine_${title}",
     $refinery_job_jar                 = undef,
     $job_class                        = 'org.wikimedia.analytics.refinery.job.refine.Refine',
     $monitor_class                    = 'org.wikimedia.analytics.refinery.job.refine.RefineMonitor',
-    $monitor_failure_class            = 'org.wikimedia.analytics.refinery.job.refine.RefineFailuresChecker',
     $queue                            = 'production',
     $spark_executor_memory            = '4G',
     $spark_driver_memory              = '8G',
@@ -43,9 +52,7 @@ define profile::analytics::refinery::job::refine_job (
     $interval                         = '*-*-* *:00:00',
     $monitoring_enabled               = true,
     $refine_monitor_enabled           = $monitoring_enabled,
-    $refine_monitor_failure_enabled   = $monitoring_enabled,
     $monitor_interval                 = '*-*-* 04:15:00',
-    $monitor_failure_interval         = '*-*-* 06:15:00',
     $ensure                           = 'present',
     $use_keytab                       = false,
 ) {
@@ -124,11 +131,11 @@ define profile::analytics::refinery::job::refine_job (
     }
 
 
-    # NOTE: RefineMonitor and RefineFailuresChecker should not be run in YARN,
+    # NOTE: RefineMonitor should not be run in YARN,
     # as they only look in HDFS paths and don't crunch any data.
 
-    # Look back over a 24 period before 4 hours ago and ensure that all expected
-    # refined datasets for this job are present.
+    # Look back over a 48 period before 4 hours ago and ensure that all expected
+    # refined datasets for this job are present and no _FAILURE flags exist.
     if $ensure == 'present' and $refine_monitor_enabled {
         $ensure_monitor = 'present'
     }
@@ -138,28 +145,10 @@ define profile::analytics::refinery::job::refine_job (
     profile::analytics::refinery::job::spark_job { "monitor_${job_name}":
         ensure             => $ensure_monitor,
         class              => $monitor_class,
-        # Use the same config file as the Refine job, but override the since and until
-        # to avoid looking back so far when checking for missing data.
-        job_opts           => "--config_file ${job_config_file} --since 28 --until 4",
+        # Use the same config file as the Refine job, but override the since and until.
+        job_opts           => "--config_file ${job_config_file} --since 48 --until 4",
         interval           => $monitor_interval,
         monitoring_enabled => $monitoring_enabled,
-    }
-
-
-    # Looks back over the last 48 hours and alert if any failure flags exist.
-    if $ensure == 'present' and $refine_monitor_failure_enabled {
-        $ensure_monitor_failure = 'present'
-    }
-    else {
-        $ensure_monitor_failure = 'absent'
-    }
-    profile::analytics::refinery::job::spark_job { "monitor_${job_name}_failure_flags":
-        ensure     => $ensure_monitor_failure,
-        class      => $monitor_failure_class,
-        spark_opts => '--driver-memory 4G',
-        # Use the same config file as the Refine job, but override the since parameter to 48 hours
-        job_opts   => "--config_file ${job_config_file} --since 48",
-        interval   => $monitor_failure_interval,
     }
 
 }

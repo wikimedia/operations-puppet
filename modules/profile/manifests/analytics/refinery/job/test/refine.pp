@@ -15,7 +15,7 @@ class profile::analytics::refinery::job::test::refine (
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.1.1'
+    $refinery_version = '0.1.4'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -25,48 +25,26 @@ class profile::analytics::refinery::job::test::refine (
 
     # These configs will be used for all refine jobs unless otherwise overridden.
     $default_config = {
-        'to_emails'           => 'ltoscano@wikimedia.org',
+        'to_emails'           => 'otto@wikimedia.org',
         'should_email_report' => true,
-        'database'            => 'event',
+        'output_database'     => 'event',
         'output_path'         => '/wmf/data/event',
-        'hive_server_url'     => "${::profile::hive::client::hiveserver_host}:${::profile::hive::client::hiveserver_port}",
         # Look for data to refine from 26 hours ago to 2 hours ago, giving some time for
         # raw data to be imported in the last hour or 2 before attempting refine.
         'since'               => '26',
         'until'               => '2',
     }
 
-    # TODO remove this after ensured absent.
-    # Refine EventLogging Analytics (capsule based) data.
-    profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
-        ensure           => 'absent',
-        job_config       => merge($default_config, {
-            input_path                      => '/wmf/data/raw/eventlogging',
-            input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-            input_path_regex_capture_groups => 'table,year,month,day,hour',
-            table_whitelist_regex           => '^NavigationTiming$',
-            # Deduplicate basd on uuid field and geocode ip in EventLogging analytics data.
-            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate_eventlogging,org.wikimedia.analytics.refinery.job.refine.geocode_ip,org.wikimedia.analytics.refinery.job.refine.eventlogging_filter_is_allowed_hostname',
-            # Get EventLogging JSONSchemas from meta.wikimedia.org.
-            schema_base_uri                 => 'eventlogging',
-        }),
-        # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
-        spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
-        interval         => '*-*-* *:30:00',
-        use_keytab       => $use_kerberos_keytab,
-    }
-
-
     # === EventLogging Legacy data ===
     # /wmf/data/raw/eventlogging -> /wmf/data/event
     # EventLogging legacy events migrated to Event Platform.
     profile::analytics::refinery::job::refine_job { 'eventlogging_legacy':
-        ensure                   => $ensure_timers,
-        job_config               => merge($default_config, {
+        ensure           => $ensure_timers,
+        job_config       => merge($default_config, {
             input_path                      => '/wmf/data/raw/eventlogging',
             input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
             input_path_regex_capture_groups => 'table,year,month,day,hour',
-            table_whitelist_regex           => '^NavigationTiming$',
+            table_include_regex             => '^NavigationTiming$',
             # Since EventLogging legacy data comes from external clients,
             # non wikimedia domains and other unwanted domains have always been filtered out.
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms',
@@ -74,10 +52,9 @@ class profile::analytics::refinery::job::test::refine (
             # Schema URIs are extracted from the $schema field in each event.
             schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
         }),
-        interval                 => '*-*-* *:15:00',
-        monitor_interval         => '*-*-* 00:30:00',
-        monitor_failure_interval => '*-*-* 00:45:00',
-        use_keytab               => $use_kerberos_keytab,
+        interval         => '*-*-* *:15:00',
+        monitor_interval => '*-*-* 00:30:00',
+        use_keytab       => $use_kerberos_keytab,
     }
 
     # === Event data ===
@@ -87,8 +64,8 @@ class profile::analytics::refinery::job::test::refine (
     $event_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
 
     profile::analytics::refinery::job::refine_job { 'event':
-        ensure                   => $ensure_timers,
-        job_config               => merge($default_config, {
+        ensure           => $ensure_timers,
+        job_config       => merge($default_config, {
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
@@ -97,10 +74,9 @@ class profile::analytics::refinery::job::test::refine (
             # Schema URIs are extracted from the $schema field in each event.
             schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
         }),
-        interval                 => '*-*-* *:20:00',
-        monitor_interval         => '*-*-* 01:15:00',
-        monitor_failure_interval => '*-*-* 01:45:00',
-        use_keytab               => $use_kerberos_keytab,
+        interval         => '*-*-* *:20:00',
+        monitor_interval => '*-*-* 01:15:00',
+        use_keytab       => $use_kerberos_keytab,
     }
 
 }
