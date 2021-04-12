@@ -282,8 +282,9 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-vm-extra-specs.py",
     }
 
-    # Verify policies are working as we hope
-    file { '/usr/local/sbin/wmcs-policy-tests':
+    # Verify policies are working as we hope. This file must have the .py extension
+    #  or else pytests won't believe in it.
+    file { '/usr/local/sbin/wmcs-policy-tests.py':
         ensure => 'present',
         owner  => 'root',
         group  => 'root',

@@ -32,8 +32,8 @@ class TestKeystone:
         projects = keystoneclient.projects.list()
         assert len(projects) > 0
 
-        # keystoneclient.projects.create('policy-test-creation', domain='default')
-        # keystoneclient.projects.delete('policy-test-creation')
+        keystoneclient.projects.create('policy-test-creation', domain='default')
+        keystoneclient.projects.delete('policy-test-creation')
 
         rolelist = keystoneclient.roles.list()
         for role in rolelist:
