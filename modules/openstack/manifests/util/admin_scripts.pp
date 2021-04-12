@@ -282,6 +282,15 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-vm-extra-specs.py",
     }
 
+    # Verify policies are working as we hope
+    file { '/usr/local/sbin/wmcs-policy-tests':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-policy-tests.py",
+    }
+
     # Script to wipe out old VMs in a project
     file { '/usr/local/sbin/wmcs-instancepurge':
         ensure => 'present',
@@ -298,14 +307,5 @@ class openstack::util::admin_scripts(
         group  => 'root',
         mode   => '0755',
         source => 'puppet:///modules/openstack/util/wmcs-enc-cli.py',
-    }
-
-    # Verify policies are working as we hope
-    file { '/usr/local/sbin/wmcs-policy-tests':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/openstack/util/wmcs-policy-tests.py',
     }
 }
