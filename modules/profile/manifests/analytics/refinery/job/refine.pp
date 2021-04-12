@@ -40,7 +40,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.0.145'
+    $refinery_version = '0.1.4'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -52,7 +52,7 @@ class profile::analytics::refinery::job::refine(
     $default_config = {
         'to_emails'                          => 'analytics-alerts@wikimedia.org',
         'should_email_report'                => true,
-        'database'                           => 'event',
+        'outout_database'                    => 'event',
         'output_path'                        => '/wmf/data/event',
         'hive_server_url'                    => "${::profile::hive::client::hiveserver_host}:${::profile::hive::client::hiveserver_port}",
         # Look for data to refine from 26 hours ago to 2 hours ago, giving some time for
@@ -69,13 +69,13 @@ class profile::analytics::refinery::job::refine(
     $event_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
     $event_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
     # Unrefineable tables due to poorly defined schemas.
-    $event_table_excludelist = [
+    $event_table_exclude_list = [
         'mediawiki_page_properties_change',
         'mediawiki_recentchange',
         # Cannot be refined until https://gerrit.wikimedia.org/r/c/operations/deployment-charts/+/620008 is deployed
         'resource_purge',
     ]
-    $event_table_excludelist_regex = "^(${join($event_table_excludelist, '|')})$"
+    $event_table_exclude_regex = "^(${join($event_table_exclude_list, '|')})$"
 
     profile::analytics::refinery::job::refine_job { 'event':
         ensure                => $ensure_timers,
@@ -83,7 +83,7 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
-            table_blacklist_regex           => $event_table_excludelist_regex,
+            table_exclude_regex             => $event_table_exclude_regex,
             # event_transforms:
             # - deduplicate
             # - geocode_ip
@@ -123,7 +123,7 @@ class profile::analytics::refinery::job::refine(
 
     # While we migrate we will use an explicit include list of
     # EventLogging streams that have been migrated to EventGate.
-    $eventlogging_legacy_table_includelist = [
+    $eventlogging_legacy_table_include_list = [
         'ContentTranslationAbuseFilter',
         'DesktopWebUIActionsTracking',
         'MobileWebUIActionsTracking',
@@ -173,9 +173,9 @@ class profile::analytics::refinery::job::refine(
         'TwoColConflictExit',
         'VisualEditorTemplateDialogUse'
     ]
-    $eventlogging_legacy_table_includelist_regex = "^(${join($eventlogging_legacy_table_includelist, '|')})$"
+    $eventlogging_legacy_table_include_regex = "^(${join($eventlogging_legacy_table_include_list, '|')})$"
 
-    $eventlogging_legacy_table_excludelist = [
+    $eventlogging_legacy_table_exclude_list = [
         # Legacy EventLogging tables to exclude from Refinement.
         'Edit',
         'InputDeviceDynamics',
@@ -186,7 +186,7 @@ class profile::analytics::refinery::job::refine(
         'CitationUsagePageLoad', # Schema is deleted.
         'CitationUsage',         # Schema is deleted.
     ]
-    $eventlogging_legacy_table_excludelist_regex = "^(${join($eventlogging_legacy_table_excludelist, '|')})$"
+    $eventlogging_legacy_table_exclude_regex = "^(${join($eventlogging_legacy_table_exclude_list, '|')})$"
 
     # Since EventLogging legacy data comes from external clients,
     # non wikimedia domains and other unwanted domains have always been filtered out.
@@ -198,8 +198,8 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $eventlogging_legacy_input_path,
             input_path_regex                => $eventlogging_legacy_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_legacy_input_path_regex_capture_groups,
-            table_whitelist_regex           => $eventlogging_legacy_table_includelist_regex,
-            table_blacklist_regex           => $eventlogging_legacy_table_excludelist_regex,
+            table_include_regex             => $eventlogging_legacy_table_include_regex,
+            table_exclude_regex             => $eventlogging_legacy_table_exclude_regex,
             transform_functions             => $eventlogging_legacy_transform_functions,
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
@@ -215,16 +215,16 @@ class profile::analytics::refinery::job::refine(
     # === EventLogging Analytics (capsule based) data ===
     # /wmf/data/raw/eventlogging -> /wmf/data/event
     # This job is being phased out in favor of the eventlogging_legacy one defined above.
-    # As we migrate tables into $eventlogging_legacy_table_includelist, they will be added to
-    # the excludelist here, as only one of these two jobs should be responsible for refining an
+    # As we migrate tables into $eventlogging_legacy_table_include_list, they will be added to
+    # the exclude_list here, as only one of these two jobs should be responsible for refining an
     # EventLogging stream into Hive.
     $eventlogging_analytics_input_path = '/wmf/data/raw/eventlogging'
     $eventlogging_analytics_input_path_regex = 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
     $eventlogging_analytics_input_path_regex_capture_groups = 'table,year,month,day,hour'
 
-    $eventlogging_analytics_table_excludelist =
-        $eventlogging_legacy_table_excludelist + $eventlogging_legacy_table_includelist
-    $eventlogging_analytics_table_excludelist_regex = "^(${join($eventlogging_analytics_table_excludelist, '|')})$"
+    $eventlogging_analytics_table_exclude_list =
+        $eventlogging_legacy_table_exclude_list + $eventlogging_legacy_table_include_list
+    $eventlogging_analytics_table_exclude_regex = "^(${join($eventlogging_analytics_table_exclude_list, '|')})$"
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
         ensure           => $ensure_timers,
@@ -232,7 +232,7 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $eventlogging_analytics_input_path,
             input_path_regex                => $eventlogging_analytics_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_analytics_input_path_regex_capture_groups,
-            table_blacklist_regex           => $eventlogging_analytics_table_excludelist_regex,
+            table_exclude_regex             => $eventlogging_analytics_table_exclude_regex,
             transform_functions             => $eventlogging_legacy_transform_functions,
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
             schema_base_uris                => 'eventlogging',
@@ -250,7 +250,7 @@ class profile::analytics::refinery::job::refine(
 
     # Problematic jobs that will not be refined.
     # These have inconsistent schemas that cause refinement to fail.
-    $mediawiki_job_table_excludelist = [
+    $mediawiki_job_table_exclude_list = [
         'EchoNotificationJob',
         'EchoNotificationDeleteJob',
         'TranslationsUpdateJob',
@@ -276,7 +276,7 @@ class profile::analytics::refinery::job::refine(
         'fetchGoogleCloudVisionAnnotations',
         'CleanTermsIfUnused',
     ]
-    $mediawiki_job_table_excludelist_regex = sprintf('.*(%s)$', join($mediawiki_job_table_excludelist, '|'))
+    $mediawiki_job_table_exclude_regex = sprintf('.*(%s)$', join($mediawiki_job_table_exclude_list, '|'))
 
     $mediawiki_job_events_input_path = '/wmf/data/raw/mediawiki_job'
     $mediawiki_job_events_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
@@ -288,7 +288,7 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $mediawiki_job_events_input_path,
             input_path_regex                => $mediawiki_job_events_input_path_regex,
             input_path_regex_capture_groups => $mediawiki_job_events_input_path_regex_capture_groups,
-            table_blacklist_regex           => $mediawiki_job_table_excludelist_regex,
+            table_exclude_regex             => $mediawiki_job_table_exclude_regex,
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate',
         }),
         interval         => '*-*-* *:25:00',
