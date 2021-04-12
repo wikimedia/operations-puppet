@@ -142,6 +142,11 @@ class gerrit::jetty(
         require => File['/var/lib/gerrit2'],
     }
 
+    # Since Gerrit 3.3 we are using gerrit-theme.js
+    file { '/var/lib/gerrit2/review_site/static/gerrit-theme.html':
+        ensure => absent,
+    }
+
     file { '/var/lib/gerrit2/review_site/tmp':
         ensure  => directory,
         owner   => $scap_user,
