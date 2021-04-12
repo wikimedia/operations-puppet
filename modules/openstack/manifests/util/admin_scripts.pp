@@ -21,6 +21,10 @@ class openstack::util::admin_scripts(
         ensure => 'present',
     }
 
+    package{ 'python3-pytest':
+        ensure => 'present',
+    }
+
     # Script to cold-migrate instances between compute nodes
     file { '/usr/local/sbin/wmcs-cold-nova-migrate':
         ensure => 'present',
@@ -294,5 +298,14 @@ class openstack::util::admin_scripts(
         group  => 'root',
         mode   => '0755',
         source => 'puppet:///modules/openstack/util/wmcs-enc-cli.py',
+    }
+
+    # Verify policies are working as we hope
+    file { '/usr/local/sbin/wmcs-policy-tests':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/openstack/util/wmcs-policy-tests.py',
     }
 }
