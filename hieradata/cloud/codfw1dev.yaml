@@ -43,7 +43,7 @@ profile::openstack::base::observer_project: 'observer'
 profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::keystone_host: 'openstack.codfw1dev.wikimediacloud.org'
 profile::openstack::codfw1dev::observer_password: 'lt-RiBeyokCO81bVvcX'
-profile::openstack::codfw1dev::version: 'ussuri'
+profile::openstack::codfw1dev::version: 'victoria'
 
 profile::openstack::codfw1dev::cumin::project_masters: []
 profile::openstack::codfw1dev::cumin::project_pub_key: undef

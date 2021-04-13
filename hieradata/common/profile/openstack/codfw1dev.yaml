@@ -1,5 +1,5 @@
 profile::openstack::codfw1dev::region: 'codfw1dev-r'
-profile::openstack::codfw1dev::version: 'ussuri'
+profile::openstack::codfw1dev::version: 'victoria'
 profile::openstack::codfw1dev::horizon_version: 'wallaby'
 
 # The openstack_controllers host the following services:
