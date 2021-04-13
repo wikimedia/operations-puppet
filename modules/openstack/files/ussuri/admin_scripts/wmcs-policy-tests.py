@@ -4,6 +4,17 @@
 #
 #  This should be invoked with sudo
 #
+#  All of these tests are premised on the existence of the following
+#   role assigments in the 'policy-test-project' project:
+#
+#   novaadmin: projectadmin
+#   osscanary: user
+#   novaobserver: reader
+#
+#  In general we permit any role to read anything in any project; these
+#   tests are mostly here to make sure that reader or user roles
+#   cannot create or destroy things.
+#
 from functools import reduce
 import pytest
 import time
@@ -11,6 +22,7 @@ import time
 from cinderclient import exceptions as cinderexceptions
 import keystoneauth1
 from novaclient import exceptions as novaexceptions
+from neutronclient.common import exceptions as neutronexceptions
 
 import mwopenstackclients
 
@@ -32,8 +44,8 @@ class TestKeystone:
         projects = keystoneclient.projects.list()
         assert len(projects) > 0
 
-        keystoneclient.projects.create('policy-test-creation', domain='default')
-        keystoneclient.projects.delete('policy-test-creation')
+        keystoneclient.projects.create("policy-test-creation", domain="default")
+        keystoneclient.projects.delete("policy-test-creation")
 
         rolelist = keystoneclient.roles.list()
         for role in rolelist:
@@ -119,8 +131,6 @@ class TestNova:
 
         # find an instance network
         def instancenetwork(net1, net2):
-            print("net1 is %s" % net1)
-            print("net2 is %s" % net2)
             if "instance" in net2["name"]:
                 return net2
             else:
@@ -135,9 +145,34 @@ class TestNova:
             "policy-test-server", flavor=cls.flavor.id, image=cls.image.id, nics=nics
         )
 
+        # Find a non-default security group for future use
+        def nondefault(group1, group2):
+            if "default" in group2["name"]:
+                return group1
+            else:
+                return group2
+
+        cls.security_group = reduce(
+            nondefault, neutronclient.list_security_groups()["security_groups"], None
+        )
+
+        # Wait for the test VM to be up before we proceed
+        counter = 0
+        while cls.testserver.status != "ACTIVE":
+            counter += 1
+            time.sleep(1)
+            cls.testserver = novaclient.servers.get(cls.testserver.id)
+            # If this is taking more than a few minutes let's call it a failure
+            assert counter < 360
+
     @classmethod
     def teardown_class(cls):
         novaclient = adminclients.novaclient(project=POLICY_TEST_PROJECT)
+
+        # Unfortunately the number of times that setup_class was run is not
+        #  especially deterministic.  Rather than delete the particular
+        #  VM in cls.testserver, just go looking for anything we might
+        #  want to clean up.
         servers = novaclient.servers.list()
         for server in servers:
             novaclient.servers.delete(server.id)
@@ -160,6 +195,16 @@ class TestNova:
         with pytest.raises(novaexceptions.Forbidden):
             novaclient.servers.delete(self.testserver.id)
 
+        secgroups = novaclient.servers.list_security_group(self.testserver.id)
+        with pytest.raises(novaexceptions.Forbidden):
+            novaclient.servers.remove_security_group(
+                self.testserver.id, secgroups[0].id
+            )
+        with pytest.raises(novaexceptions.Forbidden):
+            novaclient.servers.add_security_group(
+                self.testserver.id, self.security_group
+            )
+
     def test_nova_canaryclients(self):
         novaclient = canaryclients.novaclient(project=POLICY_TEST_PROJECT)
         servers = novaclient.servers.list()
@@ -169,6 +214,16 @@ class TestNova:
             novaclient.servers.delete("thisservertotallydoesnotexist")
         with pytest.raises(novaexceptions.Forbidden):
             novaclient.servers.delete(self.testserver.id)
+
+        secgroups = novaclient.servers.list_security_group(self.testserver.id)
+        with pytest.raises(novaexceptions.Forbidden):
+            novaclient.servers.remove_security_group(
+                self.testserver.id, secgroups[0].id
+            )
+        with pytest.raises(novaexceptions.Forbidden):
+            novaclient.servers.add_security_group(
+                self.testserver.id, self.security_group
+            )
 
 
 class TestCinder:
@@ -194,12 +249,56 @@ class TestCinder:
         with pytest.raises(cinderexceptions.Forbidden):
             cinderclient.volumes.delete(self.testvolume_id)
 
+        with pytest.raises(cinderexceptions.Forbidden):
+            cinderclient.volumes.create(size=2, name="policy test forbidden volume")
+
+    def test_cinder_canaryclients(self):
+        cinderclient = canaryclients.cinderclient(project=POLICY_TEST_PROJECT)
+        volumes = cinderclient.volumes.list()
+        assert len(volumes) > 0
+
+        with pytest.raises(cinderexceptions.Forbidden):
+            cinderclient.volumes.delete(self.testvolume_id)
+
+        with pytest.raises(cinderexceptions.Forbidden):
+            cinderclient.volumes.create(size=2, name="policy test forbidden volume")
+
 
 class TestNeutron:
-    def test_neutron(self):
+    networkname = "policytestnetwork"
+
+    @classmethod
+    def setup_class(cls):
+        neutronclient = adminclients.neutronclient(project="admin")
+        network = {
+            "name": cls.networkname,
+            "admin_state_up": False,
+            "router:external": False,
+            "provider:network_type": "vxlan",
+            "shared": True,
+        }
+        cls.testnetwork = neutronclient.create_network({"network": network})
+
+    @classmethod
+    def teardown_class(cls):
+        neutronclient = adminclients.neutronclient(project="admin")
+        networks = neutronclient.list_networks()
+        for network in networks["networks"]:
+            if network["name"] == cls.networkname:
+                neutronclient.delete_network(network["id"])
+
+    def test_neutron_observerclients(self):
         neutronclient = observerclients.neutronclient(project=POLICY_TEST_PROJECT)
         networks = neutronclient.list_networks()
         assert len(networks) > 0
 
+        with pytest.raises(neutronexceptions.Forbidden):
+            neutronclient.delete_network(self.testnetwork["network"]["id"])
 
-TestNova.setup_class()
+    def test_neutron_canaryclients(self):
+        neutronclient = observerclients.neutronclient(project=POLICY_TEST_PROJECT)
+        networks = neutronclient.list_networks()
+        assert len(networks) > 0
+
+        with pytest.raises(neutronexceptions.Forbidden):
+            neutronclient.delete_network(self.testnetwork["network"]["id"])
