@@ -60,7 +60,7 @@ class statistics::discovery {
     # Assumes a virtual environment has been created as $dir/venv and that all
     # of reportupdater's dependencies have been installed in that environment.
     $systemd_env = {
-        'PYTHONPATH' => "${dir}/venv/bin/python",
+        'PYTHONPATH' => "${dir}/venv/lib/python3.7/site-packages",
     }
 
     # Running the script at 5AM UTC means that:
