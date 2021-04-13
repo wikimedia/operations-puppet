@@ -9,14 +9,6 @@ class snapshot::dumps::templates {
         group  => 'root',
         source => 'puppet:///modules/snapshot/dumps/templates/download-index.html',
     }
-    file { "${templsdir}/dvd.html":
-        ensure => 'present',
-        path   => "${templsdir}/dvd.html",
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/snapshot/dumps/templates/dvd.html',
-    }
     file { "${templsdir}/errormail.txt":
         ensure => 'present',
         path   => "${templsdir}/errormail.txt",
@@ -32,14 +24,6 @@ class snapshot::dumps::templates {
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/snapshot/dumps/templates/feed.xml',
-    }
-    file { "${templsdir}/legal.html":
-        ensure => 'present',
-        path   => "${templsdir}/legal.html",
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/snapshot/dumps/templates/legal.html',
     }
     file { "${templsdir}/report.html":
         ensure => 'present',

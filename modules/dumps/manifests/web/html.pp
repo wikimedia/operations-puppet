@@ -165,4 +165,13 @@ class dumps::web::html(
         group  => 'root',
         source => 'puppet:///modules/dumps/web/html/legal.html',
     }
+
+    file { "${xmldumpsdir}/dvd.html":
+        ensure => 'present',
+        path   => "${xmldumpsdir}/dvd.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/dvd.html',
+    }
 }
