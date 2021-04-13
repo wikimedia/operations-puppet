@@ -1,0 +1,30 @@
+#  MANAGED BY PUPPET
+<%-
+# TODO: de-duplicate this I think I have it in a number of different places
+def parse_variant(value)
+  if value.is_a?(TrueClass)
+    return 'yes'
+  elsif value.is_a?(FalseClass)
+    return 'no'
+  else
+    return value
+  end
+end
+-%>
+[Resolve]
+<%- unless @dns.empty? -%>
+DNS=<%= @dns.join(' ') %>
+<%- end -%>
+<%- unless @fallback_dns.empty? -%>
+FallbackDNS=<%= @fallback_dns.join(' ') %>
+<%- end -%>
+<%- unless @domains.empty? -%>
+Domains=<%= @domains.join(' ') %>
+<%- end -%>
+LLMNR=<%= parse_variant(@enable_llmnr) %>
+MulticastDNS=<%= parse_variant(@enable_mdns) %>
+DNSSEC=<%= parse_variant(@dnssec) %>
+DNSOverTLS=<%= parse_variant(@enable_dtls) %>
+Cache=<%= parse_variant(@enable_cache) %>
+DNSStubListener=<%= parse_variant(@dns_stub_listener) %>
+ReadEtcHosts=<%= parse_variant(@read_etc_hosts) %>
