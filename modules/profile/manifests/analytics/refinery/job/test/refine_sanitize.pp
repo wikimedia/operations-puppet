@@ -33,12 +33,23 @@ class profile::analytics::refinery::job::test::refine_sanitize(
         owner  => 'analytics',
     }
 
+    # Ensure the hdfs directory where salts will live exists.
+    $salts_hdfs_dir = '/user/hdfs/salts'
+    bigtop::hadoop::directory { $salts_hdfs_dir:
+        owner => 'analytics',
+        group => 'analytics',
+    }
+
     file { '/usr/local/bin/refinery-eventlogging-saltrotate':
         ensure  => $ensure_timers,
         content => template('profile/analytics/refinery/job/refinery-eventlogging-saltrotate.erb'),
         mode    => '0550',
         owner   => 'analytics',
         group   => 'analytics',
+        require => [
+            File["${refinery_config_dir}/salts/eventlogging_sanitization"],
+            Bigtop::Hadoop::Directory[$salts_hdfs_dir],
+        ]
     }
 
     # Need refinery/python on PYTHONPATH to run refinery-eventlogging-saltrotate
