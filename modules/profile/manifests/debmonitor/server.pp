@@ -33,11 +33,11 @@ class profile::debmonitor::server (
     # Debmonitor depends on 'mysqlclient' Python package that in turn requires a MySQL connector
     ensure_packages('libmariadb3')
 
-    class { '::sslcert::dhparam': }
+    class { 'sslcert::dhparam': }
 
     if $enable_logback {
         # rsyslog forwards json messages sent to localhost along to logstash via kafka
-        class { '::profile::rsyslog::udp_json_logback_compat': }
+        class { 'profile::rsyslog::udp_json_logback_compat': }
     }
 
 
@@ -50,7 +50,9 @@ class profile::debmonitor::server (
     $static_path = "${base_path}/static/"
     $config_path = "${base_path}/config.json"
     $directory = "${deploy_path}/src"
-    $ssl_config = ssl_ciphersuite('nginx', 'strong')
+    $ssl_config = ssl_ciphersuite('apache', 'strong')
+    # temporary variable for migration
+    $ssl_config_nginx = ssl_ciphersuite('nginx', 'strong')
     # Ensure to add FQDN of the current host also the first time the role is applied
     $hosts = unique(concat(query_nodes('Class[Role::Debmonitor::Server]'), [$::fqdn]))
     $proxy_hosts = query_nodes('Class[Role::Cluster::Management]')
@@ -116,7 +118,7 @@ class profile::debmonitor::server (
     }
 
     # Internal endpoint: incoming updates from all production hosts via debmonitor CLI
-    ferm::service { 'nginx-https':
+    ferm::service { 'apache-https':
         proto  => 'tcp',
         port   => '443',
         srange => '$DOMAIN_NETWORKS',
@@ -127,7 +129,7 @@ class profile::debmonitor::server (
         sslcert::certificate { $internal_server_name:
             ensure       => present,
             skip_private => false,
-            before       => Service['nginx'],
+            before       => Service['nginx', 'apache2'],
         }
     } else {
         base::expose_puppet_certs { '/etc/nginx':
@@ -147,22 +149,9 @@ class profile::debmonitor::server (
         content => template('profile/debmonitor/server/nginx.conf.erb'),
     }
 
-    if $enable_monitoring {
-        monitoring::service { 'debmonitor-cdn-https':
-            description   => 'debmonitor.wikimedia.org:7443 CDN',
-            check_command => 'check_https_redirect!7443!debmonitor.wikimedia.org!/!302!https://idp.wikimedia.org/',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
-        }
 
-        monitoring::service { 'debmonitor-https':
-            description   => 'debmonitor.discovery.wmnet:443 internal',
-            check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
-        }
-    }
-
-    class { '::httpd':
-        modules => ['proxy_http', 'proxy', 'auth_basic']
+    class { 'httpd':
+        modules => ['proxy_http', 'proxy', 'auth_basic', 'ssl', 'headers']
     }
 
     profile::idp::client::httpd::site {$public_server_name:
@@ -171,6 +160,10 @@ class profile::debmonitor::server (
         vhost_settings   => { 'uwsgi_port' => $port, 'static_path' => $static_path},
         required_groups  => $required_groups,
         enable_monitor   => false,
+    }
+
+    httpd::site{$internal_server_name:
+        content => template('profile/debmonitor/internal_client_auth_endpoint.conf.erb')
     }
 
     # Maintenance script
@@ -190,5 +183,19 @@ class profile::debmonitor::server (
         weekday => $times['weekday'],
         hour    => $times['hour'],
         minute  => $times['minute'],
+    }
+
+    if $enable_monitoring {
+        monitoring::service { 'debmonitor-cdn-https':
+            description   => 'debmonitor.wikimedia.org:7443 CDN',
+            check_command => 'check_https_redirect!7443!debmonitor.wikimedia.org!/!302!https://idp.wikimedia.org/',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
+        }
+
+        monitoring::service { 'debmonitor-https':
+            description   => 'debmonitor.discovery.wmnet:443 internal',
+            check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
+        }
     }
 }
