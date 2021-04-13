@@ -82,6 +82,9 @@
 "os_compute_api:servers:stop": "rule:admin_or_projectadmin"
 "os_compute_api:servers:update": "rule:admin_or_projectadmin"
 "os_compute_api:os-rescue": "rule:admin_or_projectadmin"
+"os_compute_api:os-security-groups:list": ""
+"os_compute_api:os-security-groups:add": "rule:admin_or_projectadmin"
+"os_compute_api:os-security-groups:remove": "rule:admin_or_projectadmin"
 
 
 # WMF-specific rules to control the Horizon sudo panel
