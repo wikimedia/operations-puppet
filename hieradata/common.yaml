@@ -1102,8 +1102,6 @@ maintenance_hosts:
 - 2620:0:860:103:10:192:32:34 # mwmaint2002.codfw.wmnet
 
 bastion_hosts:
-- 208.80.154.86                 # bast1002.wikimedia.org
-- 2620:0:861:3:208:80:154:86    # bast1002.wikimedia.org
 - 208.80.155.110                # bast1003.wikimedia.org
 - 2620:0:861:4:208:80:155:110   # bast1003.wikimedia.org
 - 208.80.153.54                 # bast2002.wikimedia.org
