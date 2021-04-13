@@ -2,10 +2,3 @@ profile::debmonitor::server::public_server_name: debmonitor.wikimedia.org
 profile::debmonitor::server::django_mysql_db_host: m2-master.eqiad.wmnet
 # Ship logs to logging pipeline local shim
 service::configuration::logstash_host: localhost
-profile::envoy::ensure: present
-profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
-profile::tlsproxy::envoy::tls_port: 7443
-profile::tlsproxy::envoy::services:
-  - server_names: ['*']
-    port: 80
-profile::tlsproxy::envoy::global_cert_name: "%{lookup('debmonitor')}"
