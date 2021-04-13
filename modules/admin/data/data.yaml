@@ -98,7 +98,7 @@ groups:
               mstyles, zpapierski, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
-              jdl, annet, jgiannelos, kharlan, stran, jhernandez]
+              jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -4265,6 +4265,14 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGBEh/vX39DqVkpUkNc1ODW/MO/9laxPOD5ci64v0T97 igor.l@speedandfunction.com'
+  sihe:
+    ensure: present
+    realname: Silvan Heintze
+    email: silvan.heintze@wikimedia.de
+    uid: 22901
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmfqnby5X1Oq2NqR6qvLZ30jumto0G5P+lMZQ3LD5gh sihe@C212'
 
 
 ldap_only_users:
@@ -4543,10 +4551,6 @@ ldap_only_users:
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
-  sihe:
-    ensure: present
-    realname: Silvan Heintze
-    email: silvan.heintze@wikimedia.de
   soworu-01:
     ensure: present
     realname: Segun Oworu
