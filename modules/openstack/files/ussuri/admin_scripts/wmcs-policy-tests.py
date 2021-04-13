@@ -202,7 +202,7 @@ class TestNova:
             )
         with pytest.raises(novaexceptions.Forbidden):
             novaclient.servers.add_security_group(
-                self.testserver.id, self.security_group
+                self.testserver.id, self.security_group["id"]
             )
 
     def test_nova_canaryclients(self):
@@ -222,7 +222,7 @@ class TestNova:
             )
         with pytest.raises(novaexceptions.Forbidden):
             novaclient.servers.add_security_group(
-                self.testserver.id, self.security_group
+                self.testserver.id, self.security_group["id"]
             )
 
 
