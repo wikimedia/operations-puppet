@@ -93,12 +93,10 @@ class ferm {
     if debian::codename::ge('bullseye') {
         alternatives::select { 'iptables':
             path    => '/usr/sbin/iptables-legacy',
-            require => Package['iptables'],
         }
 
         alternatives::select { 'ip6tables':
             path    => '/usr/sbin/ip6tables-legacy',
-            require => Package['iptables'],
         }
     }
 
