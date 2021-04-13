@@ -121,7 +121,12 @@ def delete_ldap_project_group(project_id):
     basedn = cfg.CONF.wmfhooks.ldap_project_base_dn
     projectbase = "cn=%s,%s" % (project_id, basedn)
 
-    search = ds.search_s(projectbase, ldap.SCOPE_SUBTREE)
+    try:
+        search = ds.search_s(projectbase, ldap.SCOPE_SUBTREE)
+    except ldap.NO_SUCH_OBJECT:
+        LOG.info("Unable to clean up %s; dn not found." % projectbase)
+        return
+
     delete_list = [record for record, _ in search]
     delete_list.reverse()
     for record in delete_list:
