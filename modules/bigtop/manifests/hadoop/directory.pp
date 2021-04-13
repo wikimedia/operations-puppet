@@ -50,7 +50,6 @@ define bigtop::hadoop::directory (
             command => "/usr/bin/hdfs dfs -rm -R -skipTrash ${path}",
             onlyif  => "/usr/bin/hdfs dfs -test -e ${path}",
             user    => 'hdfs',
-            require => Service['hadoop-hdfs-namenode'],
             timeout => 30,
         }
     }
