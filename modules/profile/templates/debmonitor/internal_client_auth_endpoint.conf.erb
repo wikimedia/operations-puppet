@@ -19,6 +19,7 @@
     RequestHeader set X-Client-Cert-Subject-Dn "%{SSL_CLIENT_S_DN}s"
     RequestHeader set X-Client-Cert-Verify "%{SSL_CLIENT_VERIFY}s"
 
+    ProxyPreserveHost On
     ProxyPass / http://localhost:<%= @port %>/
     ProxyPassReverse / http://localhost:<%= @port %>/
 
