@@ -22,7 +22,7 @@ class profile::analytics::refinery::job::test::refine_sanitize(
     require ::profile::analytics::refinery
     require ::profile::hive::client
 
-    $refinery_path = $::profile::analytics::refinery::refinery_path
+    $refinery_path = $::profile::analytics::refinery::path
     $refinery_config_dir = $::profile::analytics::refinery::config_dir
     $refinery_job_jar = "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
 
@@ -55,7 +55,7 @@ class profile::analytics::refinery::job::test::refine_sanitize(
     Profile::Analytics::Refinery::Job::Refine_job {
         ensure                         => $ensure_timers,
         use_keytab                     => $use_kerberos_keytab,
-        refinery_job_jar               => "${::profile::analytics::refinery::refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar",
+        refinery_job_jar               => $refinery_job_jar,
         job_class                      => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitize',
         monitor_class                  => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitizeMonitor',
         spark_extra_opts               => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
