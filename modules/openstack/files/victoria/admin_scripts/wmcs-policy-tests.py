@@ -18,11 +18,13 @@
 from functools import reduce
 import pytest
 import time
+import uuid
 
 from cinderclient import exceptions as cinderexceptions
 import keystoneauth1
 from novaclient import exceptions as novaexceptions
 from neutronclient.common import exceptions as neutronexceptions
+from designateclient import exceptions as designateexceptions
 
 import mwopenstackclients
 
@@ -296,9 +298,63 @@ class TestNeutron:
             neutronclient.delete_network(self.testnetwork["network"]["id"])
 
     def test_neutron_canaryclients(self):
-        neutronclient = observerclients.neutronclient(project=POLICY_TEST_PROJECT)
+        neutronclient = canaryclients.neutronclient(project=POLICY_TEST_PROJECT)
         networks = neutronclient.list_networks()
         assert len(networks) > 0
 
         with pytest.raises(neutronexceptions.Forbidden):
             neutronclient.delete_network(self.testnetwork["network"]["id"])
+
+
+class TestDesignate:
+    @classmethod
+    def setup_class(cls):
+        # Generate an arbitrary zone to test with
+        designateclient = adminclients.designateclient(project=POLICY_TEST_PROJECT)
+        existingzones = designateclient.zones.list()
+        cls.zonename = "policytest%s.%s" % (str(uuid.uuid4()), existingzones[0]["name"])
+        cls.zone = designateclient.zones.create(cls.zonename, email="root@wmcloud.org")
+        cls.recordset = designateclient.recordsets.create(
+            cls.zone["id"], str(uuid.uuid4()), "A", ["192.168.0.1"]
+        )
+        time.sleep(2)
+
+    @classmethod
+    def teardown_class(cls):
+        designateclient = adminclients.designateclient(project=POLICY_TEST_PROJECT)
+        existingzones = designateclient.zones.list()
+        for zone in existingzones:
+            if zone["name"].startswith("policytest"):
+                designateclient.zones.delete(zone["id"])
+
+    def test_designate_observerclients(self):
+        designateclient = observerclients.designateclient(project=POLICY_TEST_PROJECT)
+
+        with pytest.raises(designateexceptions.Forbidden):
+            designateclient.zones.create(
+                "observer.%s" % self.zonename, email="root@wmcloud.org"
+            )
+
+        with pytest.raises(designateexceptions.Forbidden):
+            designateclient.zones.delete(self.zone["id"])
+
+        with pytest.raises(designateexceptions.Forbidden):
+            designateclient.recordsets.create(
+                self.zone["id"], str(uuid.uuid4()), "A", ["192.168.0.1"]
+            )
+
+    def test_designate_canaryclients(self):
+        designateclient = canaryclients.designateclient(project=POLICY_TEST_PROJECT)
+
+        with pytest.raises(designateexceptions.Forbidden):
+            designateclient.zones.create(
+                "observer.%s" % self.zonename, email="root@wmcloud.org"
+            )
+
+        with pytest.raises(designateexceptions.Forbidden):
+            designateclient.zones.delete(self.zone["id"])
+
+        with pytest.raises(designateexceptions.Forbidden):
+            designateclient.recordsets.create(
+                self.zone["id"], str(uuid.uuid4()), "A", ["192.168.0.1"]
+            )
