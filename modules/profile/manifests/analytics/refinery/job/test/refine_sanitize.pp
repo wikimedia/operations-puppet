@@ -82,7 +82,7 @@ class profile::analytics::refinery::job::test::refine_sanitize(
     $eventlogging_sanitization_job_config = {
         'input_database'      => 'event',
         # in test, we only refine and sanitize NavigationTiming for legacy EventLogging data.
-        'table_include_regex' => '^NavigationTiming$',
+        'table_include_regex' => '^navigationtiming$',
         'output_database'     => 'event_sanitized',
         'output_path'         => '/wmf/data/event_sanitized',
         'allowlist_path'      => '/wmf/refinery/current/static_data/eventlogging/whitelist.yaml',
