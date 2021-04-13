@@ -1,3 +1,2 @@
 # db1080
-profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'm1'
