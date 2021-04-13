@@ -20,8 +20,6 @@ server {
     ssl_certificate_key /etc/nginx/ssl/server.key;
 <%- end -%>
 
-    <%= @ssl_config_nginx.join("\n    ") %>
-
     keepalive_timeout 10;
 
     location / {

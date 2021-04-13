@@ -51,8 +51,6 @@ class profile::debmonitor::server (
     $config_path = "${base_path}/config.json"
     $directory = "${deploy_path}/src"
     $ssl_config = ssl_ciphersuite('apache', 'strong')
-    # temporary variable for migration
-    $ssl_config_nginx = ssl_ciphersuite('nginx', 'strong')
     # Ensure to add FQDN of the current host also the first time the role is applied
     $hosts = unique(concat(query_nodes('Class[Role::Debmonitor::Server]'), [$::fqdn]))
     $proxy_hosts = query_nodes('Class[Role::Cluster::Management]')
@@ -108,14 +106,6 @@ class profile::debmonitor::server (
 
     base::service_auto_restart { 'uwsgi-debmonitor': }
     base::service_auto_restart { 'apache2': }
-    base::service_auto_restart { 'nginx': }
-
-    # Public endpoint: incoming traffic from cache_text for the Web UI
-    ferm::service { 'nginx-cdn-https':
-        proto  => 'tcp',
-        port   => '7443',
-        srange => '$CACHES',
-    }
 
     # Internal endpoint: incoming updates from all production hosts via debmonitor CLI
     ferm::service { 'apache-https':
@@ -124,32 +114,6 @@ class profile::debmonitor::server (
         srange => '$DOMAIN_NETWORKS',
     }
 
-    # Certificate for the internal endpoint
-    if $ssl_certs == 'sslcert' {
-        sslcert::certificate { $internal_server_name:
-            ensure       => present,
-            skip_private => false,
-            before       => Service['nginx', 'apache2'],
-        }
-    } else {
-        base::expose_puppet_certs { '/etc/nginx':
-            ensure          => present,
-            provide_private => true,
-            require         => Package['nginx-common'],
-            before          => Service['nginx'],
-        }
-    }
-
-    # Common Proxy settings
-    nginx::snippet { 'debmonitor_proxy':
-        content => template('profile/debmonitor/server/debmonitor_proxy.nginx.erb'),
-    }
-
-    nginx::site { 'debmonitor':
-        content => template('profile/debmonitor/server/nginx.conf.erb'),
-    }
-
-
     class { 'httpd':
         modules => ['proxy_http', 'proxy', 'auth_basic', 'ssl', 'headers']
     }
@@ -157,7 +121,11 @@ class profile::debmonitor::server (
     profile::idp::client::httpd::site {$public_server_name:
         vhost_content    => 'profile/idp/client/httpd-debmonitor.erb',
         proxied_as_https => true,
-        vhost_settings   => { 'uwsgi_port' => $port, 'static_path' => $static_path},
+        vhost_settings   => {
+            'uwsgi_port'           => $port,
+            'static_path'          => $static_path,
+            'internal_server_name' => $internal_server_name,
+        },
         required_groups  => $required_groups,
         enable_monitor   => false,
     }
@@ -198,4 +166,15 @@ class profile::debmonitor::server (
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
         }
     }
+    # Remove old nginx config
+    nginx::snippet { 'debmonitor_proxy':
+        ensure  => absent,
+        content => template('profile/debmonitor/server/debmonitor_proxy.nginx.erb'),
+    }
+
+    nginx::site { 'debmonitor':
+        ensure  => absent,
+        content => template('profile/debmonitor/server/nginx.conf.erb'),
+    }
+    class {'nginx': ensure => absent}
 }

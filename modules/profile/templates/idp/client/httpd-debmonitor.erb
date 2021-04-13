@@ -1,5 +1,6 @@
 <VirtualHost *:80>
     ServerName <%= @virtual_host %>
+    ServerAlias <%= @vhost_settings['internal_server_name'] %> <%= @facts['fqdn'] %>
     ServerSignature Off
 
     DocumentRoot <%= @document_root %>
