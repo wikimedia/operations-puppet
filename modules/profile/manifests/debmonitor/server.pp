@@ -164,7 +164,7 @@ class profile::debmonitor::server (
 
         monitoring::service { 'debmonitor-https':
             description   => 'debmonitor.discovery.wmnet:443 internal',
-            check_command => 'check_https_unauthorized!debmonitor.discovery.wmnet!/!400',
+            check_command => 'check_https_client_auth_puppet!debmonitor.discovery.wmnet!/client!200!HEAD',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
         }
     }
