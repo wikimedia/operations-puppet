@@ -134,10 +134,16 @@ class profile::superset(
         source => 'puppet:///modules/superset/check_superset_http.sh',
     }
 
-    # This is not working on an-tool1010 - see https://phabricator.wikimedia.org/T277729#6986230
+
+    if $enable_cas {
+        $user_header = 'X-Cas-Uid'
+    } else {
+        $user_header = 'X-Remote-User'
+    }
+
     nrpe::monitor_service { 'check_superset_http':
         ensure        => 'absent',
-        nrpe_command  => '/usr/local/bin/check_superset_http',
+        nrpe_command  => "/usr/local/bin/check_superset_http ${user_header}",
         description   => 'Check that superset http server is responding ok',
         require       => File['/usr/local/bin/check_superset_http'],
         contact_group => 'victorops-analytics',
