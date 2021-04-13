@@ -1,5 +1,16 @@
 # T274888
 profile::cache::varnish::frontend::runtime_params:
   - nuke_limit=1000
+# With rate=0.1 and base=-20.3, the probabilities of caching objects of a
+# certain size are as follows:
+#    16 KB 98.6%
+#   128 KB 89.4%
+#  1024 KB 40.8%
+#  4096 KB 2.78%
+#  5120 KB 1.13%
+#  8192 KB 0.07%
 profile::cache::varnish::frontend::fe_vcl_config:
-  large_objects_cutoff: 4194304  # 4 MiB
+  large_objects_cutoff: 8388608  # 8 MiB
+  admission_policy: 'exp'
+  exp_policy_rate: 0.1
+  exp_policy_base: -20.3
