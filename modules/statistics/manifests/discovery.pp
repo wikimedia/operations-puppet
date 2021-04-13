@@ -57,12 +57,19 @@ class statistics::discovery {
         require => File[$log_dir],
     }
 
+    # Assumes a virtual environment has been created as $dir/venv and that all
+    # of reportupdater's dependencies have been installed in that environment.
+    $systemd_env = {
+        'PYTHONPATH' => "${dir}/venv/bin/python",
+    }
+
     # Running the script at 5AM UTC means that:
     # - Remaining data from previous day is likely to have finished processing.
     # - It's ~9/10p Pacific time, so we're not likely to hinder people's work
     #   on analytics cluster, although we use `nice` & `ionice` as a courtesy.
     kerberos::systemd_timer { 'wikimedia-discovery-golden':
         description       => 'Discovery golden daily run',
+        environment       => $systemd_env,
         command           => "${dir}/golden/main.sh",
         interval          => '*-*-* 05:00:00',
         user              => $user,
