@@ -52,7 +52,7 @@ class profile::analytics::refinery::job::refine(
     $default_config = {
         'to_emails'                          => 'analytics-alerts@wikimedia.org',
         'should_email_report'                => true,
-        'outout_database'                    => 'event',
+        'output_database'                    => 'event',
         'output_path'                        => '/wmf/data/event',
         'hive_server_url'                    => "${::profile::hive::client::hiveserver_host}:${::profile::hive::client::hiveserver_port}",
         # Look for data to refine from 26 hours ago to 2 hours ago, giving some time for
