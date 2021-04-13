@@ -55,8 +55,12 @@ define apt::package_from_component(
             pin      => "release c=${component}",
             priority => $priority,
             package  => join($packages, ' '),
-            before   => Package[$packages],
             notify   => Exec["exec_apt_${title}"],
+        }
+        if $ensure_packages {
+            Apt::Pin["apt_pin_${title}"] {
+                before   => Package[$packages],
+            }
         }
     }
 
