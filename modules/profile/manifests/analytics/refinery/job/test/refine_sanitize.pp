@@ -41,6 +41,10 @@ class profile::analytics::refinery::job::test::refine_sanitize(
         group   => 'analytics',
     }
 
+    # Need refinery/python on PYTHONPATH to run refinery-eventlogging-saltrotate
+    $systemd_env = {
+        'PYTHONPATH' => "\${PYTHONPATH}:${refinery_path}/python",
+    }
     # Timer runs at midnight (salt rotation time):
     kerberos::systemd_timer { 'refinery-eventlogging-saltrotate':
         ensure      => $ensure_timers,
@@ -48,6 +52,7 @@ class profile::analytics::refinery::job::test::refine_sanitize(
         command     => '/usr/local/bin/refinery-eventlogging-saltrotate',
         interval    => '*-*-* 00:00:00',
         user        => 'analytics',
+        environment => $systemd_env,
         require     => File['/usr/local/bin/refinery-eventlogging-saltrotate']
     }
 
