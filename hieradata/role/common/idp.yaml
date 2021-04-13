@@ -106,7 +106,7 @@ profile::idp::services:
       - wmf
   hue:
     id: 14
-    service_id: 'https://hue-next.wikimedia.org(/.*)?'
+    service_id: 'https://hue.wikimedia.org(/.*)?'
     required_groups:
       - ops
       - nda
