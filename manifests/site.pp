@@ -1979,7 +1979,7 @@ node /^mwdebug200[12]\.codfw\.wmnet$/ {
 # New mw server hardware 2021 (T274171)
 
 # rack A3 (T278396)
-node /^mw23(7[7-9]|8[0-2])\.codfw\.wmnet/ {
+node /^mw23(7[7-9]|8[0-2]|9[4-5])\.codfw\.wmnet/ {
     role(mediawiki::jobrunner)
 }
 
@@ -1987,11 +1987,11 @@ node /^mw2(29[1-9]|300)\.codfw\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw23(8[3-9]|9[0-4])\.codfw\.wmnet/ {
+node /^mw23(8[3-9]|9[0-3])\.codfw\.wmnet/ {
     role(mediawiki::appserver)
 }
 
-node /^mw2(39[5-9]|40[0-2])\.codfw\.wmnet/ {
+node /^mw2(39[6-9]|40[0-2])\.codfw\.wmnet/ {
     role(mediawiki::appserver::api)
 }
 
