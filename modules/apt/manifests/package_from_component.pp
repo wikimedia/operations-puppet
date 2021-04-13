@@ -28,13 +28,17 @@
 #  in Debian or which is in a higher version than what's in Debian, you can simply use
 #  the default value of 1001. If you're installing a package in a higher version than
 #  what's in the "main" component of apt.wikimedia.org you should specify 1002.
+#
+#  [*ensure_packages*]
+#   If true, the default, also install the packages array with ensure_packages($packages)
 
 define apt::package_from_component(
-    String $component,
-    Array[String] $packages = [$name],
-    String $distro = "${::lsbdistcodename}-wikimedia",
-    Stdlib::HTTPUrl $uri = 'http://apt.wikimedia.org/wikimedia',
-    Integer $priority = 1001,
+    String          $component,
+    Array[String]   $packages        = [$name],
+    String          $distro          = "${::lsbdistcodename}-wikimedia",
+    Stdlib::HTTPUrl $uri             = 'http://apt.wikimedia.org/wikimedia',
+    Integer         $priority        = 1001,
+    Boolean         $ensure_packages = true,
 ) {
     include apt
 
@@ -56,12 +60,16 @@ define apt::package_from_component(
         }
     }
 
-    ensure_packages($packages)
-
-    Apt::Repository["repository_${title}"] -> Exec["exec_apt_${title}"] -> Package[$packages]
-
     exec {"exec_apt_${title}":
         command     => '/usr/bin/apt-get update',
         refreshonly => true,
     }
+
+    Apt::Repository["repository_${title}"] -> Exec["exec_apt_${title}"]
+
+    if $ensure_packages {
+        ensure_packages($packages)
+        Exec["exec_apt_${title}"] -> Package[$packages]
+    }
+
 }
