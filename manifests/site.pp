@@ -659,12 +659,12 @@ node /^db21(43|44)\.codfw\.wmnet$/ {
 # See also multiinstance misc hosts db1117 and db2078 below
 
 # m1 eqiad master
-node 'db1080.eqiad.wmnet' {
+node 'db1159.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
-# Future m1 eqiad master, will replace db1080
-node 'db1159.eqiad.wmnet' {
+# old  m1 eqiad master - will be decommissioned T280121
+node 'db1080.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
