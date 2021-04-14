@@ -1235,11 +1235,6 @@ node 'htmldumper1001.eqiad.wmnet' {
     role(dumps::web::htmldumps)
 }
 
-# irc.wikimedia.org
-node 'kraz.wikimedia.org' {
-    role(mw_rc_irc)
-}
-
 # irc.w.o failover host in eqiad
 node 'irc1001.wikimedia.org' {
     role(mw_rc_irc)
