@@ -91,17 +91,6 @@ class profile::toolforge::grid::base (
         require => Exec['ensure-grid-is-on-NFS'],
     }
 
-    file { "${geconf}/default/common/host_aliases":
-        ensure => present,
-        owner  => 'sgeadmin',
-        group  => 'sgeadmin',
-        mode   => '0555',
-    } -> file_line { 'host_aliases':
-        ensure => present,
-        line   => "${facts['hostname']}.${::labsproject}.eqiad.wmflabs ${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud",
-        path   => "${geconf}/default/common/host_aliases",
-    }
-
     # Link to currently active proxy
     file { '/etc/active-proxy':
         ensure  => file,

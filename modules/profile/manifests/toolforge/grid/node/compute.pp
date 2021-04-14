@@ -16,7 +16,8 @@ class profile::toolforge::grid::node::compute (
         source => "puppet:///modules/profile/toolforge/40-${::labsproject}-exechost-banner.sh",
     }
 
-    file { "${profile::toolforge::grid::base::store}/execnode-${::fqdn}":
+    # TODO: once exec nodes from the eqiad.wmflabs generation are gone, return to using $facts['fqdn']
+    file { "${profile::toolforge::grid::base::store}/execnode-${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
