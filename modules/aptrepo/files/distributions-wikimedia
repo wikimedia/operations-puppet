@@ -159,6 +159,7 @@ Components: main
  thirdparty/elastic74
  thirdparty/elastic78
  thirdparty/elastic79
+ thirdparty/gitlab
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-15
@@ -188,6 +189,7 @@ Update:
  pyall
  thirdparty/ceph-nautilus-buster
  thirdparty/ceph-octopus
+ thirdparty/gitlab
  thirdparty/helm3
  thirdparty/kubeadm-k8s-kubernetes.io-1-17
  thirdparty/kubeadm-k8s-kubernetes.io
