@@ -153,8 +153,8 @@ codfw:
     mw2382.codfw.wmnet: [apache2,nginx]
     mw2394.codfw.wmnet: [apache2,nginx] # Only pooled as jobrunner
     mw2395.codfw.wmnet: [apache2,nginx] # Only pooled as jobrunner
-    mw2410.codfw.wmnet: [apache2,nginx]
-    mw2411.codfw.wmnet: [apache2,nginx]
+    mw2410.codfw.wmnet: [apache2,nginx] # Only pooled as videoscaler
+    mw2411.codfw.wmnet: [apache2,nginx] # Only pooled as videoscaler
   videoscaler: *jobrunner
   parsoid:
     # Do not forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
