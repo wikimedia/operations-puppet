@@ -1,4 +1,4 @@
-profile::logstash::apifeatureusage::elastic_hosts:
+profile::logstash::apifeatureusage::targets:
   - search.svc.codfw.wmnet
   - search.svc.eqiad.wmnet
 cluster: logstash

@@ -5,7 +5,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class profile::logstash::apifeatureusage(
-    Array[Stdlib::Host] $elastic_hosts   = lookup('profile::logstash::apifeatureusage::elastic_hosts'),
+    Array[Stdlib::Host] $targets         = lookup('profile::logstash::apifeatureusage::targets'),
     Hash                $curator_actions = lookup('profile::logstash::apifeatureusage::curator_actions'),
 ) {
     include profile::logstash::collector
@@ -28,29 +28,29 @@ class profile::logstash::apifeatureusage(
         priority => 55,
     }
 
-    $elastic_hosts.each |Stdlib::Host $host| {
-        logstash::output::elasticsearch { "apifeatureusage-${host}":
-            host            => $host,
+    $targets.each |Stdlib::Host $cluster| {
+        logstash::output::elasticsearch { "apifeatureusage-${cluster}":
+            host            => $cluster,
             index           => 'apifeatureusage-%{+YYYY.MM.dd}',
             guard_condition => '[type] == "api-feature-usage-sanitized"',
             priority        => 95,
             template        => '/etc/logstash/apifeatureusage-template.json',
             require         => File['/etc/logstash/apifeatureusage-template.json'],
         }
-    }
 
-    # TODO: this curator config and job ought to run on the search cluster
-    # It is here to maintain functionality until it can be moved
-    $cluster_name = 'production-search-eqiad'
-    $curator_hosts = $elastic_hosts
-    $http_port = 9200
+        # TODO: this curator config and job ought to run on the search cluster
+        # It is here to maintain functionality until it can be moved
+        $dc = $cluster.split('[.]')[-2]
+        $cluster_name = "production-search-${dc}"
+        $curator_hosts = [$cluster]
+        $http_port = 9200
+        elasticsearch::curator::config { $cluster_name:
+            content => template('elasticsearch/curator_cluster.yaml.erb'),
+        }
 
-    elasticsearch::curator::config { $cluster_name:
-        content => template('elasticsearch/curator_cluster.yaml.erb'),
-    }
-
-    elasticsearch::curator::job { 'apifeatureusage':
-        ensure       => 'absent',
-        cluster_name => $cluster_name,
+        elasticsearch::curator::job { "apifeatureusage_${dc}":
+            cluster_name => $cluster_name,
+            actions      => $curator_actions,
+        }
     }
 }
