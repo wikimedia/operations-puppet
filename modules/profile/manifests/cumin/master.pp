@@ -141,12 +141,13 @@ class profile::cumin::master (
     $times = cron_splay($cumin_masters, 'weekly', 'cumin-check-aliases')
 
     systemd::timer::job { 'cumin-check-aliases':
-        ensure      => 'present',
-        user        => 'root',
-        description => 'Checks the cumin aliases file for problems.',
-        command     => '/usr/local/sbin/check-cumin-aliases',
-        send_mail   => true,
-        interval    => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']}
+        ensure        => 'present',
+        user          => 'root',
+        description   => 'Checks the cumin aliases file for problems.',
+        command       => '/usr/local/sbin/check-cumin-aliases',
+        send_mail     => true,
+        ignore_errors => true,
+        interval      => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']}
     }
 
     class { 'phabricator::bot':
