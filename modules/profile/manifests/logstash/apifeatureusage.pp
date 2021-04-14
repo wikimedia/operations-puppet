@@ -50,7 +50,7 @@ class profile::logstash::apifeatureusage(
     }
 
     elasticsearch::curator::job { 'apifeatureusage':
+        ensure       => 'absent',
         cluster_name => $cluster_name,
-        actions      => $curator_actions,
     }
 }
