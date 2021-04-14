@@ -35,9 +35,6 @@ class profile::aptrepo::wikimedia (
     # The repository data
     backup::set { 'srv-wikimedia': }
 
-    # Home of the root user, contains keys and settings
-    backup::set { 'roothome': }
-
     class { 'aptrepo::rsync':
         primary_server    => $primary_server,
         secondary_servers => $secondary_servers,

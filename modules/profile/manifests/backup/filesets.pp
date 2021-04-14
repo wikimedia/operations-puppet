@@ -15,9 +15,6 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'home':
         includes => [ '/home' ]
     }
-    bacula::director::fileset { 'roothome':
-        includes => [ '/root' ]
-    }
     bacula::director::fileset { 'srv-autoinstall':
         includes => [ '/srv/autoinstall' ]
     }
