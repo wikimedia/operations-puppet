@@ -120,6 +120,9 @@ define systemd::timer::job(
     Boolean                                 $syslog_force_stop         = true,
     Boolean                                 $syslog_match_startswith   = true,
     Boolean                                 $send_mail                 = false,
+    String                                  $send_mail_to              = "root@${facts['fqdn']}",
+    Boolean                                 $ignore_errors             = false,
+    Boolean                                 $send_mail_only_on_error   = true,
     Optional[String]                        $logfile_owner             = undef,
     Optional[String]                        $syslog_identifier         = undef,
     Optional[Integer]                       $max_runtime_seconds       = undef,
@@ -138,6 +141,11 @@ define systemd::timer::job(
     # Sanitize the title for use on the filesystem
     $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
 
+    # prepend command with '-' if ignoring errors
+    $_command = $ignore_errors ? {
+        true    => "-${command}",
+        default => $command,
+    }
 
     $input_intervals = $interval ? {
         Systemd::Timer::Schedule => [$interval],
