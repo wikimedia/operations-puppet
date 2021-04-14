@@ -96,11 +96,13 @@ class profile::debmonitor::client (
     $minute = Integer(seeded_rand(60, $::fqdn))
 
     systemd::timer::job { 'debmonitor-client':
-        ensure      => 'present',
-        user        => 'debmonitor',
-        description => 'reconciliation job in case any debmonitor update fails',
-        command     => '/usr/bin/debmonitor-client',
-        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hour}:${minute}:30"},
-        require     => Package['debmonitor-client'],
+        ensure        => 'present',
+        user          => 'debmonitor',
+        description   => 'reconciliation job in case any debmonitor update fails',
+        command       => '/usr/bin/debmonitor-client',
+        send_mail     => true,
+        ignore_errors => true,
+        interval      => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hour}:${minute}:30"},
+        require       => Package['debmonitor-client'],
     }
 }
