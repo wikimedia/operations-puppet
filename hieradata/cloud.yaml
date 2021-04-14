@@ -86,6 +86,7 @@ profile::tlsproxy::envoy::global_cert_name: ~
 profile::base::firewall::enable_logging: true
 profile::base::firewall::log::log_rate: 1/second
 profile::base::firewall::log::log_burst: 5
+profile::base::firewall::log::separate_file: false
 
 prometheus_nodes:
   - prometheus01.metricsinfra.eqiad.wmflabs
