@@ -17,6 +17,13 @@ class cfssl::multirootca (
         content => template('cfssl/multiroot.conf.erb'),
         notify  => Service[$service_name],
     }
+    file {'/usr/local/sbin/cfssl-certs':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0500',
+        source => 'puppet:///modules/cfssl/cfssl_certs.py',
+    }
     systemd::service {'cfssl-multirootca':
         content => template('cfssl/cfssl-multirootca.service.erb'),
         restart => true,
