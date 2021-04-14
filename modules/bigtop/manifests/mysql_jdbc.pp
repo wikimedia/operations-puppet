@@ -13,12 +13,21 @@ define bigtop::mysql_jdbc (
             true    => '/usr/share/java/mysql.jar',
             default => '/usr/share/java/mysql-connector-java.jar',
         }
+    } elsif debian::codename::eq('buster') {
+        if !defined(Apt::Package_from_component['libmysql-java-component']) {
+            apt::package_from_component { 'libmysql-java-component':
+                component => 'component/libmysql-java',
+                packages  => ['libmysql-java']
+            }
+        }
     } else {
-        $package_name = 'libmariadb-java'
-        $jar_path = '/usr/share/java/mariadb-java-client-2.3.0.jar'
+        # $package_name = 'libmariadb-java'
+        # $jar_path = '/usr/share/java/mariadb-java-client-2.3.0.jar'
+        # See https://phabricator.wikimedia.org/T278424
+        fail('OS not supported, please follow up with the Analytics team. Context: T278424')
     }
 
-    if (!defined(Package[$package_name])) {
+    if ($package_name and !defined(Package[$package_name])) {
         package { $package_name:
             ensure => 'installed',
         }

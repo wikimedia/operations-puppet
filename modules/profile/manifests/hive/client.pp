@@ -67,12 +67,6 @@ class profile::hive::client(
         default => keys($zookeeper_clusters[$zookeeper_cluster_name]['hosts']),
     }
 
-    if debian::codename::ge('buster') {
-        $jdbc_driver = 'org.mariadb.jdbc.Driver'
-    } else {
-        $jdbc_driver = 'com.mysql.jdbc.Driver'
-    }
-
     # You must set at least:
     #   metastore_host
     class { '::bigtop::hive':
@@ -108,7 +102,7 @@ class profile::hive::client(
         jdbc_username                                         => $hive_metastore_jdbc_user,
         jdbc_password                                         => $hive_metastore_jdbc_password,
         jdbc_database                                         => $hive_metastore_database,
-        jdbc_driver                                           => $jdbc_driver,
+        jdbc_driver                                           => 'com.mysql.jdbc.Driver',
         deploy_jdbc_settings                                  => $deploy_jdbc_settings,
         config_files_group_ownership                          => $config_files_group_ownership,
         hive_cluster_delegation_token_store_class             => $hive_cluster_delegation_token_store_class,
