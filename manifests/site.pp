@@ -218,11 +218,6 @@ node 'backup2003.codfw.wmnet' {
     role(insetup)
 }
 
-# Old bastion in Virginia, will be decommissioned
-node 'bast1002.wikimedia.org' {
-    role(insetup)
-}
-
 # New bastion in Virginia T276396
 node 'bast1003.wikimedia.org' {
     role(bastionhost)
