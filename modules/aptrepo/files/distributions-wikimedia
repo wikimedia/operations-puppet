@@ -134,6 +134,7 @@ Components: main
  component/idp-test
  component/jdk8
  component/kubernetes-future
+ component/libmysql-java
  component/mailman3
  component/memcached16
  component/mtail
