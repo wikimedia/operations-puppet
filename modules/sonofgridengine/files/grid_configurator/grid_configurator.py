@@ -261,10 +261,10 @@ class HostProcessor:
     ):
         self.keystone_url = keystone_url
         self.observer_pass = observer_pass
-        self.regions = []
         self.project = "toolsbeta" if beta else "tools"
-        self._get_regions()
+        self.regions = self._get_regions()
         self.host_set = self._hosts(host_prefixes, host_types)
+        self.legacy_domain = f"{self.project}.eqiad.wmflabs"
         self.config_dir = config_dir
 
     def _get_regions(self):
@@ -281,7 +281,7 @@ class HostProcessor:
             ),
             interface="public",
         )
-        self.regions = [region.id for region in client.regions.list()]
+        return [region.id for region in client.regions.list()]
 
     def _hosts(self, host_prefixes, host_types):
         host_set = {name: [] for name in host_types}
@@ -300,6 +300,10 @@ class HostProcessor:
                 ),
                 region_name=region,
             )
+
+            # region is like 'whatever-r', remove trailing '-r', the domain doesn't have it
+            domain = f"{self.project}.{region[:-2]}.wikimedia.cloud"
+
             for instance in client.servers.list():
                 name = instance.name
                 for prefix in host_prefixes:
@@ -308,13 +312,9 @@ class HostProcessor:
                         role = host_prefixes[prefix]
                         if isinstance(role, list):
                             for r in role:
-                                host_set[r].append(
-                                    "{}.{}.eqiad.wmflabs".format(name, self.project)
-                                )
+                                host_set[r].append(f"{name}.{domain}")
                         else:
-                            host_set[role].append(
-                                "{}.{}.eqiad.wmflabs".format(name, self.project)
-                            )
+                            host_set[role].append(f"{name}.{domain}")
         return host_set
 
     def run_updates(self, dry_run, host_types):
@@ -348,6 +348,25 @@ class HostProcessor:
             current_hosts = current_hosts = (
                 result.stdout.decode("utf-8").splitlines() if result else []
             )
+
+            # additional step: cleanup duplicate hosts that may exist. We know this is
+            # happening if there are 2 hosts with the exact same hostname but different
+            # domain (legacy vs new). Leave the legacy one, for manual cleanup
+            for current_host in current_hosts[:]:
+                if not current_host.endswith(self.legacy_domain):
+                    # already configured host but it uses the new domain. This is fine, continue
+                    # with normal script operations
+                    continue
+
+                # there is a host using the legacy domain. Do we have a host with the same hostname
+                # in the list of new domain hosts? If so, remove the duplicate.
+                current_host_hostname = current_host.split(".")[0]
+                for nova_host in self.host_set[host_class][:]:
+                    nova_host_hostname = nova_host.split(".")[0]
+                    if current_host_hostname == nova_host_hostname:
+                        logging.info(f"Leaving {current_host} as is instead of using {nova_host}")
+                        self.host_set[host_class].remove(nova_host)
+                        current_hosts.remove(current_host)
 
             for host in self.host_set[host_class]:
                 if host_class == "exec":
