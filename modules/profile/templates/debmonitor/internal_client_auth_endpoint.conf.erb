@@ -20,8 +20,8 @@
     RequestHeader set X-Client-Cert-Verify "%{SSL_CLIENT_VERIFY}s"
 
     ProxyPreserveHost On
-    ProxyPass / http://localhost:<%= @port %>/
-    ProxyPassReverse / http://localhost:<%= @port %>/
+    ProxyPass / uwsgi://localhost:<%= @port %>/
+    ProxyPassReverse / uwsgi://localhost:<%= @port %>/
 
     LogLevel warn
     ErrorLog /var/log/apache2/<%= @internal_server_name %>_error.log
