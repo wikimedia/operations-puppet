@@ -40,7 +40,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.1.4'
+    $refinery_version = '0.1.5'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -173,7 +173,7 @@ class profile::analytics::refinery::job::refine(
         'TwoColConflictExit',
         'VisualEditorTemplateDialogUse'
     ]
-    $eventlogging_legacy_table_include_regex = "^(${join($eventlogging_legacy_table_include_list, '|')})$"
+    $eventlogging_legacy_table_include_regex = downcase("^(${join($eventlogging_legacy_table_include_list, '|')})$")
 
     $eventlogging_legacy_table_exclude_list = [
         # Legacy EventLogging tables to exclude from Refinement.
@@ -186,7 +186,7 @@ class profile::analytics::refinery::job::refine(
         'CitationUsagePageLoad', # Schema is deleted.
         'CitationUsage',         # Schema is deleted.
     ]
-    $eventlogging_legacy_table_exclude_regex = "^(${join($eventlogging_legacy_table_exclude_list, '|')})$"
+    $eventlogging_legacy_table_exclude_regex = downcase("^(${join($eventlogging_legacy_table_exclude_list, '|')})$")
 
     # Since EventLogging legacy data comes from external clients,
     # non wikimedia domains and other unwanted domains have always been filtered out.
@@ -224,7 +224,7 @@ class profile::analytics::refinery::job::refine(
 
     $eventlogging_analytics_table_exclude_list =
         $eventlogging_legacy_table_exclude_list + $eventlogging_legacy_table_include_list
-    $eventlogging_analytics_table_exclude_regex = "^(${join($eventlogging_analytics_table_exclude_list, '|')})$"
+    $eventlogging_analytics_table_exclude_regex = downcase("^(${join($eventlogging_analytics_table_exclude_list, '|')})$")
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
         ensure           => $ensure_timers,
@@ -276,7 +276,7 @@ class profile::analytics::refinery::job::refine(
         'fetchGoogleCloudVisionAnnotations',
         'CleanTermsIfUnused',
     ]
-    $mediawiki_job_table_exclude_regex = sprintf('.*(%s)$', join($mediawiki_job_table_exclude_list, '|'))
+    $mediawiki_job_table_exclude_regex = downcase(sprintf('.*(%s)$', join($mediawiki_job_table_exclude_list, '|')))
 
     $mediawiki_job_events_input_path = '/wmf/data/raw/mediawiki_job'
     $mediawiki_job_events_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
