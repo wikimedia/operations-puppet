@@ -152,10 +152,10 @@ eqiad:
     mw1311.eqiad.wmnet: [apache2,nginx]
     mw1318.eqiad.wmnet: [apache2,nginx]
     mw1334.eqiad.wmnet: [apache2,nginx]
-    mw1335.eqiad.wmnet: [apache2,nginx]
-    mw1336.eqiad.wmnet: [apache2,nginx]
-    mw1337.eqiad.wmnet: [apache2,nginx]
-    mw1338.eqiad.wmnet: [apache2,nginx]
+    mw1335.eqiad.wmnet: [apache2,nginx] # Only pooled as videoscaler
+    mw1336.eqiad.wmnet: [apache2,nginx] # Only pooled as videoscaler
+    mw1337.eqiad.wmnet: [apache2,nginx] # Only pooled as jobrunner
+    mw1338.eqiad.wmnet: [apache2,nginx] # Only pooled as jobrunner
   videoscaler: *jobrunner
   cache_text:
     cp1075.eqiad.wmnet: [varnish-fe, ats-be, ats-tls]

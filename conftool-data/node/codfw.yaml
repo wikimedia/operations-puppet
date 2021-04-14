@@ -151,8 +151,8 @@ codfw:
     mw2380.codfw.wmnet: [apache2,nginx]
     mw2381.codfw.wmnet: [apache2,nginx]
     mw2382.codfw.wmnet: [apache2,nginx]
-    mw2394.codfw.wmnet: [apache2,nginx]
-    mw2395.codfw.wmnet: [apache2,nginx]
+    mw2394.codfw.wmnet: [apache2,nginx] # Only pooled as jobrunner
+    mw2395.codfw.wmnet: [apache2,nginx] # Only pooled as jobrunner
     mw2410.codfw.wmnet: [apache2,nginx]
     mw2411.codfw.wmnet: [apache2,nginx]
   videoscaler: *jobrunner
