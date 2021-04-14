@@ -1339,11 +1339,11 @@ node 'pki-root1001.eqiad.wmnet' {
     role(pki::root)
 }
 
-node /kafka-logging1001\.eqiad\.wmnet/ {
+node /kafka-logging100[12]\.eqiad\.wmnet/ {
     role(kafka::logging)
 }
 
-node /kafka-logging100[23]\.eqiad\.wmnet/ {
+node /kafka-logging1003\.eqiad\.wmnet/ {
     role(insetup)
 }
 
@@ -1534,11 +1534,11 @@ node /^ldap-replica200[3-4]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 
-node /^logstash1010\.eqiad\.wmnet$/ {
+node /^logstash101[01]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
 }
 
-node /^logstash101[12]\.eqiad\.wmnet$/ {
+node /^logstash1012\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
 }
