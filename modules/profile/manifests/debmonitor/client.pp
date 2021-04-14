@@ -45,7 +45,7 @@ class profile::debmonitor::client (
         comment    => 'DebMonitor system user',
     }
 
-    ::base::expose_puppet_certs { $base_path:
+    base::expose_puppet_certs { $base_path:
         user            => 'debmonitor',
         group           => 'debmonitor',
         provide_private => true,
@@ -69,16 +69,6 @@ class profile::debmonitor::client (
         ],
     }
 
-    $debmon_client_job = '/usr/bin/systemd-cat -t "debmonitor-client" /usr/bin/debmonitor-client'
-    # Setup the daily reconciliation job in case any debmonitor update fails.
-    cron { 'debmonitor-client':
-        ensure  => 'absent',
-        command => $debmon_client_job,
-        user    => 'debmonitor',
-        hour    => fqdn_rand(23, $title),
-        minute  => fqdn_rand(59, $title),
-    }
-
     $hour = Integer(seeded_rand(24, $::fqdn))
     $minute = Integer(seeded_rand(60, $::fqdn))
 
@@ -86,8 +76,8 @@ class profile::debmonitor::client (
         ensure      => 'present',
         user        => 'debmonitor',
         description => 'reconciliation job in case any debmonitor update fails',
-        command     => $debmon_client_job,
-        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hour}:${minute}:00"},
+        command     => '/usr/bin/debmonitor-client',
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hour}:${minute}:30"},
         require     => Package['debmonitor-client'],
     }
 }
