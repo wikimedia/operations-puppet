@@ -143,15 +143,10 @@ class profile::debmonitor::server (
         content => template('profile/debmonitor/server/run_django_command.sh.erb'),
     }
 
-    # Maintenance cron
-    $command = @("COMMAND"/L)
-    /usr/bin/systemd-cat -t 'debmonitor-maintenance' ${base_path}/run-django-command debmonitorgc || \
-    echo 'Debmonitor GC failed, check syslog for debmonitor-maintenance' \
-    | COMMAND
     $times = cron_splay($hosts, 'weekly', 'debmonitor-maintenance-gc')
     systemd::timer::job {'debmonitor-maintenance-gc':
         ensure      => present,
-        command     => $command,
+        command     => "${base_path}/run-django-command debmonitorgc",
         user        => $deploy_user,
         description => 'Debmonitor GC',
         interval    => {
