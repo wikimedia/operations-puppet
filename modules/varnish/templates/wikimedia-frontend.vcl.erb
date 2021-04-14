@@ -29,17 +29,18 @@ import netmapper;
 // rate limiting
 import vsthrottle;
 
+// provides the acl "blocked_nets", "text_abuse_nets", "bot_blocked_nets",
+// and "public_cloud_nets".
+// The file is made from the abuse_networks block in the private repo
+// hieradata/common.yaml
+// Must be included before analytics.inc.vcl.
+include "blocked-nets.inc.vcl";
+
 include "analytics.inc.vcl";
 include "alternate-domains.inc.vcl";
 include "browsersec.inc.vcl";
 include "errorpage.inc.vcl";
 include "translation-engine.inc.vcl";
-
-// provides the acl "blocked_nets", "text_abuse_nets", "bot_blocked_nets",
-// and "public_cloud_nets".
-// The file is made from the abuse_networks block in the private repo
-// hieradata/common.yaml
-include "blocked-nets.inc.vcl";
 
 # ACLs
 

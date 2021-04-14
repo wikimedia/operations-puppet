@@ -9,6 +9,8 @@
  * value, and thus X-NowDay and X-WMF-LastStamp as well, is "01-Jan-2000"
  * (because the other info is redundant or too-specific, and cookie values
  * shouldn't have whitespace or commas).
+ *
+ * This file depends upon blocked-nets.inc.vcl.  Include that first.
  ****************************************************************************/
 
 /*****************************************************************************
@@ -247,6 +249,10 @@ sub analytics_deliver {
 
     if (req.http.X-WMF-NOCOOKIES) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";nocookies=1";
+    }
+
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";public_cloud=1";
     }
 
     // Clean up header from setting to empty at the start...
