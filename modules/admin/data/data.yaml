@@ -4968,3 +4968,7 @@ ldap_only_users:
     ensure: present
     realname: Michael Raish
     email: mraish@wikimedia.org
+  lmeintrup:
+    ensure: present
+    realname: Lena Meintrup
+    email: lena.meintrup@wikimedia.de
