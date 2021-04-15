@@ -3344,13 +3344,11 @@ host eventlog1002 {
 host flerovium {
     hardware ethernet F4:E9:D4:CD:90:30;
     fixed-address flerovium.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host furud {
     hardware ethernet F4:E9:D4:CD:BA:A0;
     fixed-address furud.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host ganeti1005 {
