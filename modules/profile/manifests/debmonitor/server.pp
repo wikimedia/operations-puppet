@@ -24,6 +24,7 @@ class profile::debmonitor::server (
     Boolean                   $enable_monitoring        = lookup('profile::debmonitor::server::enable_monitoring'),
     Enum['sslcert', 'puppet'] $ssl_certs                = lookup('profile::debmonitor::server::ssl_certs'),
     Array[String]             $required_groups          = lookup('profile::debmonitor::server::required_groups'),
+    Stdlib::Filesource        $trusted_ca_source        = lookup('profile::debmonitor::server::trusted_ca_source'),
 ) {
     include ::passwords::ldap::production
 
@@ -131,6 +132,14 @@ class profile::debmonitor::server (
         },
         required_groups  => $required_groups,
         enable_monitor   => false,
+    }
+
+    $trusted_ca_file = "/etc/ssl/localcerts/${internal_server_name}.trusted_ca.pem"
+    file {$trusted_ca_file:
+        ensure => file,
+        mode   => '0444',
+        source => $trusted_ca_source,
+        notify => Service['apache2'],
     }
 
     httpd::site{$internal_server_name:

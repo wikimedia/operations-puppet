@@ -44,6 +44,7 @@ profile::debmonitor::server::enable_logback: false
 profile::debmonitor::server::enable_monitoring: false
 # Empty groups resolves to valid-user
 profile::debmonitor::server::required_groups: []
+profile::debmonitor::server::trusted_ca_source: '/etc/ssl/certs/Puppet_Internal_CA.pem'
 
 profile::ntp::use_chrony: false
 

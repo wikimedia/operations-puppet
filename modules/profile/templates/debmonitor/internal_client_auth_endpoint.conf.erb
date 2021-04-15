@@ -12,7 +12,7 @@
 <%- end -%>
     <%= @ssl_config.join("\n    ") %>
     SSLVerifyClient require
-    SSLCACertificateFile /etc/ssl/certs/Puppet_Internal_CA.pem
+    SSLCACertificateFile <%= @trusted_ca_file %>
 
     RequestHeader set X-Forwarded-Proto https
     RequestHeader set X-Client-IP "%{REMOTE_ADDR}s"

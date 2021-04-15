@@ -9,3 +9,4 @@ profile::debmonitor::server::required_groups:
     - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
     - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
     - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+profile::debmonitor::server::trusted_ca_source: 'puppet:///modules/profile/debmonitor/trusted_ca_source.prod.pem'
