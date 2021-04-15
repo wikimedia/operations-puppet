@@ -1339,12 +1339,8 @@ node 'pki-root1001.eqiad.wmnet' {
     role(pki::root)
 }
 
-node /kafka-logging100[12]\.eqiad\.wmnet/ {
+node /kafka-logging100[123]\.eqiad\.wmnet/ {
     role(kafka::logging)
-}
-
-node /kafka-logging1003\.eqiad\.wmnet/ {
-    role(insetup)
 }
 
 # New Codfw kafka-logging hosts T274905
@@ -1538,13 +1534,8 @@ node /^ldap-replica200[3-4]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 
-node /^logstash101[01]\.eqiad\.wmnet$/ {
+node /^logstash101[012]\.eqiad\.wmnet$/ {
     role(logstash::elasticsearch)
-}
-
-node /^logstash1012\.eqiad\.wmnet$/ {
-    role(logstash::elasticsearch)
-    include ::role::kafka::logging # lint:ignore:wmf_styleguide
 }
 
 # ELK 7 ES only SSD backends (no kafka-logging brokers)

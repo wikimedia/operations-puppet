@@ -668,7 +668,7 @@ kafka_clusters:
       kafka-logging1002.eqiad.wmnet:
         id: 1005
         rack: C
-      logstash1012.eqiad.wmnet:
+      kafka-logging1003.eqiad.wmnet:
         id: 1006
         rack: D
 
@@ -1296,6 +1296,8 @@ kafka_brokers_logging:
 - 2620:0:861:102:10:64:16:205  # kafka-logging1001.eqiad.wmnet
 - 10.64.32.142                 # kafka-logging1002.eqiad.wmnet
 - 2620:0:861:103:10:64:32:142  # kafka-logging1002.eqiad.wmnet
+- 10.64.48.66                  # kafka-logging1003.eqiad.wmnet
+- 2620:0:861:107:10:64:48:66   # kafka-logging1003.eqiad.wmnet
 - 10.64.0.181                  # logstash1010.eqiad.wmnet
 - 2620:0:861:101:10:64:0:181   # logstash1010.eqiad.wmnet
 - 10.64.16.30                  # logstash1011.eqiad.wmnet
