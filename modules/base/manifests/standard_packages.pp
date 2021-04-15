@@ -60,6 +60,19 @@ class base::standard_packages {
         ensure => purged,
     }
 
+    # Python 2 is unsupported in Bullseye, but still included to build a few packages
+    # (like Chromium and Pypy). Absent it to ensure that they get pruned on dist-upgrades
+    # and to ensure that roles get fixed to strip Python 2 dependencies when moving to
+    # Bullseye
+    if debian::codename::eq('bullseye') {
+        package { [
+            'libpython2.7', 'libpython2.7-dev', 'libpython2.7-minimal', 'python2.7',
+            'libpython2.7-stdlib', 'python2.7-dev', 'python2.7-minimal', 'python2.7-dbg',
+            'python2.7-doc', 'python2.7-examples', 'libpython2.7-testsuite']:
+                ensure => absent,
+        }
+    }
+
     # real-hardware specific
     unless $facts['is_virtual'] {
         # As of September 2015, mcelog still does not support newer AMD processors.
