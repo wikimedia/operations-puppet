@@ -174,14 +174,14 @@ class profile::pki::multirootca (
         true    => present,
         default => absent,
     }
-    $check_command = "/usr/local/sbin/cfssl_certs.py check -w ${warn_expire} -c ${crit_expire}"
+    $check_command = "/usr/local/sbin/cfssl-certs check -w ${warn_expire} -c ${crit_expire}"
     sudo::user {'nagios_cfssl_check':
         ensure     => $ensure_monitoring,
         user       => 'nagios',
         privileges => ["ALL = NOPASSWD: ${check_command}"],
     }
 
-    nrpe::monitor_service {'cfssl-expired-certs':
+    nrpe::monitor_service {'cfssl_expired_certs':
         ensure       => $ensure_monitoring,
         description  => 'Check for expired certificates',
         nrpe_command => "/usr/bin/sudo ${check_command}",
