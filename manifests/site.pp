@@ -316,9 +316,9 @@ node /^conf200[123]\.codfw\.wmnet$/ {
     role(configcluster)
 }
 
-# New conf nodes T275637
+# New Zookeeper and Etcd discovery service nodes in codfw T271573
 node /^conf200[456]\.codfw\.wmnet/ {
-    role(insetup)
+    role(configcluster_stretch)
 }
 
 # CI master / CI standby (switch in Hiera)
