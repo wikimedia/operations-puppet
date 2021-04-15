@@ -184,6 +184,12 @@ sub https_deliver_networkerrorlogging {
 	}
 }
 
+// *** HTTPS deliver code - disable Google ad targeting (FLoC)
+// See T279804, https://github.com/wicg/floc#opting-out-of-computation
+sub https_deliver_permissionspolicy {
+	set resp.http.Permissions-Policy = "interest-cohort=()";
+}
+
 // *** X-Connection-Properties parsing recv code
 sub log_xcps_info {
 	// Sanity-check the overall format defined by the config of ATS-TLS
@@ -1061,6 +1067,8 @@ sub deliver_synth_ {
 	call https_deliver_hsts;
 
 	call https_deliver_networkerrorlogging;
+
+	call https_deliver_permissionspolicy;
 
 	call analytics_deliver;
 
