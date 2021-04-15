@@ -12,6 +12,8 @@
 <%- end -%>
     <%= @ssl_config.join("\n    ") %>
     SSLVerifyClient require
+    # The debmonitor CA is signed by the Wikimedia Internal Root CA
+    SSLVerifyDepth 2
     SSLCACertificateFile <%= @trusted_ca_file %>
 
     RequestHeader set X-Forwarded-Proto https
