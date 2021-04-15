@@ -56,7 +56,7 @@ class profile::analytics::refinery::job::refine_sanitize_salt_rotate(
 
     # Declare a systemd timer to create and rotate salts for each of the declared $salts.
     $salt_names.each |String $salt_name| {
-        $local_salts_dir = "${local_salts_dir}/${salt_name}"
+        $local_salts_dir = "${local_salts_prefix}/${salt_name}"
         $hdfs_salts_dir = "${hdfs_salts_prefix}/${salt_name}"
 
         # Local directory for salts:
