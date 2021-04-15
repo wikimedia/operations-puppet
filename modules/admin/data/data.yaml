@@ -98,7 +98,7 @@ groups:
               mstyles, zpapierski, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
-              jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe]
+              jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe, hmonroy]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -4269,7 +4269,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmfqnby5X1Oq2NqR6qvLZ30jumto0G5P+lMZQ3LD5gh sihe@C212'
-
+  hmonroy:
+    ensure: present
+    realname: Harumi Monroy
+    email: hmonroy@wikimedia.org
+    uid: 21261
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpAY7SjRAKEu5fnQt+66helFANk91AfDXbDUX6KEB2W hmonroy@wikimedia.org'
 
 ldap_only_users:
   abartov:
@@ -4403,10 +4410,6 @@ ldap_only_users:
     ensure: present
     realname: Heather Walls
     email: hwalls@wikimedia.org
-  hmonroy:
-    ensure: present
-    realname: Harumi Monroy
-    email: hmonroy@wikimedia.org
   ifried:
     ensure: present
     realname: Ilana Fried
