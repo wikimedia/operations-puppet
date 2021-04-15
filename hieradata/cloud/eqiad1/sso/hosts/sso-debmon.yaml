@@ -1,7 +1,8 @@
 classes:
-  - role::debmonitor::server
+  - profile::base::firewall
   - profile::base::firewall::extra
-  - profile::debmonitor::client
+  - profile::standard
+  - profile::debmonitor::server
 profile::debmonitor::server::django_mysql_db_host: sso-db.sso.eqiad1.wikimedia.cloud
 profile::debmonitor::server::internal_server_name: "%{facts.networking.fqdn}"
 profile::debmonitor::server::public_server_name: sso-debmon.wmcloud.org
