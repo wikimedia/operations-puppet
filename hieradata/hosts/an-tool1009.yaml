@@ -1,8 +1,0 @@
-profile::hue::database_name: 'hue_next'
-profile::hue::servername: 'hue.wikimedia.org'
-profile::hue::use_hue4_settings: true
-profile::hue::enable_cas: true
-profile::hue::auth_backend: 'remote_user'
-
-profile::bigtop::apt::component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true

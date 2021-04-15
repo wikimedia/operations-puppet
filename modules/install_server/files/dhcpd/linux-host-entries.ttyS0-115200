@@ -43,12 +43,6 @@ host an-test-ui1001 {
     fixed-address an-test-ui1001.eqiad.wmnet;
 }
 
-host analytics-tool1001 {
-    hardware ethernet aa:00:00:ed:b1:fd;
-    fixed-address analytics-tool1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host an-tool1005 {
     hardware ethernet aa:00:00:ae:a1:8c;
     fixed-address an-tool1005.eqiad.wmnet;

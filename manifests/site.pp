@@ -110,11 +110,6 @@ node /^an-worker11(29|33|34|39|40|41)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-# hue.wikimedia.org
-node 'analytics-tool1001.eqiad.wmnet' {
-    role(analytics_cluster::hadoop::ui)
-}
-
 # Staging environment of Superset and Turnilo
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo
@@ -128,10 +123,12 @@ node 'an-tool1007.eqiad.wmnet' {
     role(analytics_cluster::turnilo)
 }
 
+# yarn.wikimedia.org
 node 'an-tool1008.eqiad.wmnet' {
     role(analytics_cluster::hadoop::yarn)
 }
 
+# hue.wikimedia.org
 node 'an-tool1009.eqiad.wmnet' {
     role(analytics_cluster::hadoop::ui)
 }
@@ -1690,7 +1687,7 @@ node /^moss-fe100[12]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
-# New moss-be nodes T276642 
+# New moss-be nodes T276642
 node /^moss-be200[12]\.codfw\.wmnet/ {
     role(insetup)
 }

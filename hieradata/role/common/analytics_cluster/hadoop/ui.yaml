@@ -5,12 +5,8 @@ profile::standard::admin_groups:
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
-# The old version of Hue may not run with Bigtop packages, so we keep
-# the Cloudera ones for the time being.
-# We force Bigtop for Hue 4 / next on an-tool1009
-# with a specific hiera host setting.
-profile::bigtop::apt::component: 'cloudera'
-profile::analytics::cluster::packages::common::use_bigtop_settings: false
+profile::bigtop::apt::component: 'bigtop15'
+profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::hive::client::hive_service_name: 'analytics-hive'
 
@@ -25,7 +21,13 @@ profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
 profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: false
 profile::hue::servername: 'hue.wikimedia.org'
+
+profile::hue::database_name: 'hue_next'
+profile::hue::use_hue4_settings: true
+profile::hue::enable_cas: true
+profile::hue::auth_backend: 'remote_user'
 profile::hue::hive_thrift_version: 5
+
 
 profile::oozie::client::oozie_service: 'analytics-oozie'
 
