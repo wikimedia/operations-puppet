@@ -30,7 +30,7 @@
     ProxyPreserveHost On
     ProxyPass /static !
     Alias /static <%= @vhost_settings['static_path'] %>
-    ProxyPass / uwsgi://localhost:<%= @vhost_settings['uwsgi_port'] %>/
-    ProxyPassReverse / uwsgi://localhost:<%= @vhost_settings['uwsgi_port'] %>/
+    ProxyPass / http://localhost:<%= @vhost_settings['uwsgi_port'] %>/
+    ProxyPassReverse / http://localhost:<%= @vhost_settings['uwsgi_port'] %>/
 </VirtualHost>
 

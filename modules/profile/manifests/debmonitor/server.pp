@@ -115,7 +115,7 @@ class profile::debmonitor::server (
     }
 
     class { 'httpd':
-        modules => ['proxy_http', 'proxy', 'proxy_uwsgi', 'auth_basic', 'ssl', 'headers']
+        modules => ['proxy_http', 'proxy', 'auth_basic', 'ssl', 'headers']
     }
 
     profile::idp::client::httpd::site {$public_server_name:
