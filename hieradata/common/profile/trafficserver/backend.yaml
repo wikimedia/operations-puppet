@@ -304,8 +304,7 @@ profile::trafficserver::backend::mapping_rules:
     # server_session_sharing.match=2 to ensure requests for wikidata are mapped
     # to different connections than the rest. The reason is that wikidata
     # requests result in very frequent errors at the TLS termination layer,
-    # 97.8% of all errors right now on mw1266, each of which causes the
-    # ats-be<->nginx connection to be closed.
+    # each of which causes the ats-be<->nginx connection to be closed.
     - type: map
       target: http://www.wikidata.org
       replacement: https://appservers-rw.discovery.wmnet
