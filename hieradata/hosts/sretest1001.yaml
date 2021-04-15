@@ -5,4 +5,3 @@ profile::kerberos::keytabs::keytabs_metadata:
     filename: 'host.keytab'
 profile::base::ssh_server_settings:
   enable_kerberos: true
-profile::base::firewall::log::separate_file: true
