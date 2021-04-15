@@ -60,8 +60,6 @@ profile::openstack::eqiad1::neutron::dmz_cidr:
  - 172.16.0.0/21:208.80.153.116
  # VMs --> contint2001.wikimedia.org
  - 172.16.0.0/21:208.80.153.15
- # VMs --> kraz.wikimedia.org
- - 172.16.0.0/21:208.80.153.44
  # VMs --> ldap-ro.eqiad.wikimedia.org
  - 172.16.0.0/21:208.80.154.252
  # VMs --> ldap-ro.codfw.wikimedia.org
