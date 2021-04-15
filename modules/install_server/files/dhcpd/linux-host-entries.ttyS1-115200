@@ -5199,11 +5199,6 @@ host mwlog2002 {
     fixed-address mwlog2002.codfw.wmnet;
 }
 
-host mw1288 {
-    hardware ethernet 14:18:77:61:37:62;
-    fixed-address mw1288.eqiad.wmnet;
-}
-
 host thorium {
     hardware ethernet 14:18:77:33:5E:97;
     fixed-address thorium.eqiad.wmnet;
@@ -5268,26 +5263,6 @@ host thumbor2004 {
     hardware ethernet 18:66:DA:84:0E:A4;
     fixed-address thumbor2004.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host mw1295 {
-    hardware ethernet 14:18:77:61:34:09;
-    fixed-address mw1295.eqiad.wmnet;
-}
-
-host mw1296 {
-    hardware ethernet 14:18:77:61:34:8F;
-    fixed-address mw1296.eqiad.wmnet;
-}
-
-host mw1298 {
-    hardware ethernet 14:18:77:61:38:FA;
-    fixed-address mw1298.eqiad.wmnet;
-}
-
-host mw1299 {
-    hardware ethernet 14:18:77:61:43:09;
-    fixed-address mw1299.eqiad.wmnet;
 }
 
 host mw1302 {
