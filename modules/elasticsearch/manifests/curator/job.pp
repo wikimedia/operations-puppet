@@ -121,7 +121,7 @@ define elasticsearch::curator::job(
   systemd::timer::job { "curator_actions_${title}":
     ensure      => $ensure,
     description => "ES Curator action ${title}",
-    command     => "/usr/bin/curator --config /etc/curator/${cluster_name}.yaml /etc/curator/${title}_actions.yaml > /dev/null",
+    command     => "/usr/bin/curator --config /etc/curator/${cluster_name}.yaml /etc/curator/${title}_actions.yaml",
     user        => $user,
     interval    => $interval,
     require     => Elasticsearch::Curator::Config["${title}_actions"],
