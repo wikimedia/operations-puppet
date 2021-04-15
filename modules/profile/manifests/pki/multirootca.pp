@@ -31,6 +31,9 @@ class profile::pki::multirootca (
     Stdlib::Port                  $root_ocsp_port     = lookup('profile::pki::multirootca::root_ocsp_port'),
     Boolean                       $enable_client_auth = lookup('profile::pki::multirootca::enable_client_auth'),
     Stdlib::Filesource            $client_ca_source   = lookup('profile::pki::multirootca::client_ca_source'),
+    Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
+    Integer[1]                    $warn_expire        = lookup('profile::pki::multirootca::warn_expire'),
+    Integer[1]                    $crit_expire        = lookup('profile::pki::multirootca::crit_expire'),
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
     Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
     Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirootca::default_profiles'),
@@ -166,5 +169,22 @@ class profile::pki::multirootca (
         proto  => 'tcp',
         port   => '443',
         srange => '$DOMAIN_NETWORKS',
+    }
+    $ensure_monitoring = $enable_monitoring ? {
+        true    => present,
+        default => absent,
+    }
+    $check_command = "/usr/bin/sudo /usr/sbin/cfssl_certs.py check -w ${warn_expire} -c ${crit_expire}"
+    sudo::user {'nrpe_cfssl_check':
+        ensure     => $ensure_monitoring,
+        user       => 'nagios',
+        privileges => ["All = (root) NOPASSWD: ${check_command}"],
+    }
+
+    nrpe::monitor_service {'cfssl-expired-certs':
+        ensure       => $ensure_monitoring,
+        description  => 'Check for expired certificates',
+        nrpe_command => $check_command,
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/PKI/Debugging',
     }
 }

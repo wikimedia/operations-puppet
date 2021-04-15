@@ -5,6 +5,9 @@ profile::pki::multirootca::db_user: 'pki'
 profile::pki::multirootca::db_name: 'pki'
 profile::pki::multirootca::enable_client_auth: true
 profile::pki::multirootca::client_ca_source: "%{facts.puppet_config.localcacert}"
+profile::pki::multirootca::warn_expire: 2
+profile::pki::multirootca::crit_expire: 1
+profile::pki::multirootca::enable_monitoring: true
 profile::pki::multirootca::default_nets:
   - 127.0.0.1/32
 profile::pki::multirootca::default_profiles:

@@ -1,5 +1,8 @@
 # in this file all _cert parameteres are passed to the file function
 # and all _key paramtetes are passed to the secret function
+profile::pki::multirootca::warn_expire: 2
+profile::pki::multirootca::crit_expire: 1
+profile::pki::multirootca::enable_monitoring: false
 profile::pki::multirootca::intermediates:
   WMF_test_intermediate_ca:
     ocsp_port: 10001
