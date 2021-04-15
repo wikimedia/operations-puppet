@@ -1,0 +1,39 @@
+#!/bin/bash
+# NOTE: This file is managed by puppet
+#
+# This file is a wrapper running the saltrotate script and its related
+# HDFS cleanup commands.
+#
+
+local_salts_dir="${1}"
+hdfs_salts_dir="${2}"
+
+if [ -z "${local_salts_dir}" -o -z "${hdfs_salts_dir}" ]; then
+    echo "Error: must provide local and hdfs salts directories."
+    echo "Usage: $(basename $0) <local_salts_dir> <hdfs_salts_dir>"
+    exit 1
+fi
+
+if [ ! -e "${local_salts_dir}" ]; then
+    echo "Cannot rotate salts, local salts dir ${local_salts_dir} does not exist."
+    exit 1;
+fi
+
+if ! hdfs dfs -test -e "${hdfs_salts_dir}"; then
+    echo "Cannot rotate salts, hdfs salts dir ${hdfs_salts_dir} does not exist."
+    exit 1
+fi
+
+# If no salts exist locally, first attempt to download them from hdfs.
+# This will aide in the case where this script is moved between nodes.
+if [ -z "$(ls -A ${local_salts_dir})" -a -n "$(hdfs dfs -ls ${hdfs_salts_dir})" ]; then
+    echo "Downloading salts from ${hdfs_salts_dir} into ${local_salts_dir} before attempting to rotate."
+    hdfs dfs -get -f ${hdfs_salts_dir}/* ${local_salts_dir}/
+fi
+
+refinery_path=<%= @refinery_path %>
+
+export PYTHONPATH="${refinery_path}/python"
+${refinery_path}/bin/saltrotate -p '3 months' -b '50 days' ${local_salts_dir} && \
+hdfs dfs -rm -r -f ${hdfs_salts_dir} && \
+hdfs dfs -put ${local_salts_dir} ${hdfs_salts_dir}

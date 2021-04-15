@@ -26,56 +26,32 @@ class profile::analytics::refinery::job::test::refine_sanitize(
     $refinery_config_dir = $::profile::analytics::refinery::config_dir
     $refinery_job_jar = "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
 
-    # Create, rotate and delete EventLogging salts (for hashing).
-    # Local directory for salt files:
-    file { ["${refinery_config_dir}/salts", "${refinery_config_dir}/salts/eventlogging_sanitization"]:
-        ensure => 'directory',
-        owner  => 'analytics',
+    # Declare salts needed for refine_sanitize jobs.  If you make new sanitize jobs that need
+    # different salts, be sure to declare them here.
+    # Salts will end up in /etc/refinery/salts and /user/hdfs/salts
+    $refine_sanitize_salts = [
+        'eventlogging_sanitization'
+    ]
+    class { '::profile::analytics::refinery::job::refine_sanitize_salt_rotate':
+        salt_names          => $refine_sanitize_salts,
+        ensure_timers       => $ensure_timers,
+        use_kerberos_keytab => $use_kerberos_keytab
     }
+    $hdfs_salts_prefix = $::profile::analytics::refinery::job::refine_sanitize_salt_rotate::hdfs_salts_prefix
 
-    # Ensure the hdfs directory where salts will live exists.
-    $salts_hdfs_dir = '/user/hdfs/salts'
-    bigtop::hadoop::directory { $salts_hdfs_dir:
-        owner => 'analytics',
-        group => 'analytics',
-    }
-
-    file { '/usr/local/bin/refinery-eventlogging-saltrotate':
-        ensure  => $ensure_timers,
-        content => template('profile/analytics/refinery/job/refinery-eventlogging-saltrotate.erb'),
-        mode    => '0550',
-        owner   => 'analytics',
-        group   => 'analytics',
-        require => [
-            File["${refinery_config_dir}/salts/eventlogging_sanitization"],
-            Bigtop::Hadoop::Directory[$salts_hdfs_dir],
-        ]
-    }
-
-    # Need refinery/python on PYTHONPATH to run refinery-eventlogging-saltrotate
-    $systemd_env = {
-        'PYTHONPATH' => "\${PYTHONPATH}:${refinery_path}/python",
-    }
-    # Timer runs at midnight (salt rotation time):
-    kerberos::systemd_timer { 'refinery-eventlogging-saltrotate':
-        ensure      => $ensure_timers,
-        description => 'Create, rotate and delete cryptographic salts for EventLogging sanitization.',
-        command     => '/usr/local/bin/refinery-eventlogging-saltrotate',
-        interval    => '*-*-* 00:00:00',
-        user        => 'analytics',
-        environment => $systemd_env,
-        require     => File['/usr/local/bin/refinery-eventlogging-saltrotate']
-    }
 
     # Defaults for all refine_jobs declared here.
     Profile::Analytics::Refinery::Job::Refine_job {
-        ensure                         => $ensure_timers,
-        use_keytab                     => $use_kerberos_keytab,
-        refinery_job_jar               => $refinery_job_jar,
-        job_class                      => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitize',
-        monitor_class                  => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitizeMonitor',
-        spark_extra_opts               => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+        ensure              => $ensure_timers,
+        use_keytab          => $use_kerberos_keytab,
+        refinery_job_jar    => $refinery_job_jar,
+        job_class           => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitize',
+        monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitizeMonitor',
+        spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
     }
+
+
+    # RefineSanitize job declarations go below.
 
     # EventLogging sanitization. Runs in two steps.
     # Common parameters for both jobs:
