@@ -17,7 +17,7 @@ groups:
               bawolff, dkg, juliaglen, cwdent, hpham, atgomez, dfoy, alaasarhan, onimisionipe,
               tieu, flemmerich, jsamra, anomie, jmorgan, thargrove, joewalsh, rodolfovalentim,
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
-              dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova,
+              dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
@@ -296,7 +296,7 @@ groups:
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
-              edtadros, dvrandecic, razzi, cparle, klausman, lexnasser, sbisson, fab,
+              edtadros, dvrandecic, razzi, cparle, klausman, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen, amuigai, pginer,
@@ -3602,17 +3602,13 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCSqp6g/Wv8aO7DTF4RlZgkeHGLd7VPKnrgbA+gqoUWU8lQ22JoovjYMM4MuKYCoGMgAEVT9EKLalHmy8GIyGMTnbduvlq6yzu/Gc/MR8IxR8Vxij2kP/j8m3F/BhBrUjXHv5NX2PsVfII1Xb4Num+m5OQ1N0TZf0lLDpXW0Lum7ZYNcEiVS6I/bVDxTEV9GXc9Py2LVMACGWnjgV6QGv9NLU2T1mW/aTcMWGwaOupG5iVuXAwXrGkTEkNIGP6HBypWULIFxVvxA4UjB+q0XqThhNYT+TrX2oDMG6L5qeasyN9xytHJ0GioFlB/7cyg3/sHAIPfqVIENvvyZ0+Tw1cVelqw0+C111dVxwJ1h9UI1hxWgpY2sLEPM/UovJdEAjnguWz6QJ4ZFEYZvoESDz+i+y1yEu+lE3Gkd3Fth2IWrGTkfzQGtZ6md/JI5pTKN2zlbC2xC26G22D2UBiZFVTm3C9Ym8tXKqhhqu1RhZvzliITjak1lcH1VHxsw01WI8aU2K10CfJB/tRJy52n2ivE5W2A/q6oyssNICRK8bS23zRwuPA/7lxyYXMh5cldiZfTo/G/Brega79M+kiHr5ke0MuPzQm1XLHD857NwaqEYx1j3grRS+Muvd7Hx/3IUDVfEzt5dAoF2sGMIIgeWUu0/A6g7kl6UPhD54q4ztjuw== rzl@yubikey
   lexnasser:
-    ensure: present
+    ensure: absent
     realname: Lex Nasser
-    email: lexnasser@icloud.com
     uid: 22186
     gid: 500
     name: lexnasser
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBTDDmL8isvso6xqOJB5qkk3n8xuM0XxFc1Q34ZnZRj
-    expiry_date: 2021-04-01
-    expiry_contact: otto@wikimedia.org
-    krb: present
+    ssh_keys: []
+    krb: absent
   cohi:
     ensure: present
     realname: Corinna Hillebrand
