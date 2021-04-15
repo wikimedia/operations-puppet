@@ -5,3 +5,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     filename: 'host.keytab'
 profile::base::ssh_server_settings:
   enable_kerberos: true
+profile::pki::client::ensure: present
+profile::debmonitor::client::ssl_ca: 'cfssl'
+profile::debmonitor::client::ssl_ca_label: 'debmonitor_discovery_wmnet'
