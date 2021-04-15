@@ -1,9 +1,4 @@
-<%-# In labs we don't have local tsl temination -%> 
-<%- if @realm == 'labs' -%>
-<VirtualHost *:80>
-<%- else -%>
 <VirtualHost 127.0.0.1:80>
-<%- end -%>
     ServerName <%= @virtual_host %>
     ServerAlias <%= @vhost_settings['internal_server_name'] %> <%= @facts['fqdn'] %>
     ServerSignature Off
@@ -35,6 +30,7 @@
     ProxyPreserveHost On
     ProxyPass /static !
     Alias /static <%= @vhost_settings['static_path'] %>
-    ProxyPass / unix://<%= @vhost_settings['uwsgi_socket'] %>|http://127.0.0.1:<%= @vhost_settings['uwsgi_port'] %>/
+    ProxyPass / http://localhost:<%= @vhost_settings['uwsgi_port'] %>/
+    ProxyPassReverse / http://localhost:<%= @vhost_settings['uwsgi_port'] %>/
 </VirtualHost>
 

@@ -70,7 +70,6 @@ class profile::debmonitor::server (
     }
 
     # uWSGI service to serve the Django-based WebUI and API
-    $socket = '/run/uwsgi/debmonitor.sock'
     service::uwsgi { 'debmonitor':
         deployment      => $app_deployment,
         port            => $port,
@@ -84,7 +83,6 @@ class profile::debmonitor::server (
             buffer-size  => 8192,
             vacuum       => true,
             http-socket  => "127.0.0.1:${port}",
-            socket       => $socket,
             env          => [
                 # T164034: make sure Python has a sane default encoding
                 'LANG=C.UTF-8',
@@ -117,7 +115,7 @@ class profile::debmonitor::server (
     }
 
     class { 'httpd':
-        modules => ['proxy_http', 'proxy', 'proxy_uwsgi', 'auth_basic', 'ssl', 'headers']
+        modules => ['proxy_http', 'proxy', 'auth_basic', 'ssl', 'headers']
     }
 
     profile::idp::client::httpd::site {$public_server_name:
@@ -125,7 +123,6 @@ class profile::debmonitor::server (
         proxied_as_https => true,
         vhost_settings   => {
             'uwsgi_port'           => $port,
-            'uwsgi_socket'         => $socket,
             'static_path'          => $static_path,
             'internal_server_name' => $internal_server_name,
         },
