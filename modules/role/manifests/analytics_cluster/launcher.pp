@@ -33,6 +33,7 @@ class role::analytics_cluster::launcher {
     include ::profile::analytics::refinery::job::import_commons_mediainfo_dumps
     include ::profile::analytics::refinery::job::data_check
     include ::profile::analytics::refinery::job::refine
+    include ::profile::analytics::refinery::job::refine_sanitize
     include ::profile::analytics::refinery::job::camus
     include ::profile::analytics::refinery::job::canary_events
     include ::profile::analytics::refinery::job::hdfs_cleaner

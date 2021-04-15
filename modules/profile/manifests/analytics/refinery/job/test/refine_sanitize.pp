@@ -1,7 +1,6 @@
 # Class: profile::analytics::refinery::job::test::refine_sanitize
 #
 # Sets up RefineSanitize jobs for the analytics test cluster.
-# These jobs only sanitize a limited number of tables for testing purposes.
 #
 # Description of Refine jobs declared here:
 # - event_sanitized_main_test
@@ -53,12 +52,14 @@ class profile::analytics::refinery::job::test::refine_sanitize(
 
     # Defaults for all refine_jobs declared here.
     Profile::Analytics::Refinery::Job::Refine_job {
-        ensure           => $ensure_timers,
-        use_keytab       => $use_kerberos_keytab,
-        refinery_job_jar => $refinery_job_jar,
-        job_class        => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitize',
-        monitor_class    => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitizeMonitor',
-        spark_extra_opts => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+        ensure              => $ensure_timers,
+        use_keytab          => $use_kerberos_keytab,
+        refinery_job_jar    => $refinery_job_jar,
+        job_class           => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitize',
+        monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitizeMonitor',
+        spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+        spark_driver_memory => '16G',
+        spark_max_executors => '128',
     }
 
     # There are several jobs that run RefineSanitize from event into event_sanitized.

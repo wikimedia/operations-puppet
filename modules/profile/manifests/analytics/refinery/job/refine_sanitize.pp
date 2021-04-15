@@ -1,0 +1,175 @@
+# Class: profile::analytics::refinery::job::refine_sanitize
+#
+# Sets up RefineSanitize jobs for the analytics test cluster.
+#
+# Description of Refine jobs declared here:
+# - event_sanitized_main TODO
+#   Sanitizes tables declared in event_sanitized_main_allowlist.yaml from
+#   event -> event_sanitized db, with the keep_all hash config enabled.
+#
+# - event_sanitized_analytics TODO
+#   Sanitizes tables declared in eventlogging/whitelist.yaml (TODO rename this) from
+#   event -> event_sanitized db, with the keep_all hash config disabled.
+#
+# - sanitize_eventlogging_analytics TO REPLACE with event_sanitized_analytics
+#
+# Parameters:
+#
+# [*refinery_version*]
+#   Version of org.wikmidia.analytics.refinery.job refinery-job.jar to use.
+#
+# [*ensure_timers*]
+#   Default: true
+#
+# [*use_kerberos_keytab*]
+#   Default: true
+#
+class profile::analytics::refinery::job::refine_sanitize(
+    String $refinery_version      = lookup('profile::analytics::refinery::job::refine_sanitize::refinery_version', { 'default_value' => '0.1.6' }),
+    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::refine_sanitize::ensure_timers', { 'default_value' => 'present' }),
+    Boolean $use_kerberos_keytab  = lookup('profile::analytics::refinery::job::refine_sanitize::use_kerberos_keytab', { 'default_value' => true }),
+) {
+    require ::profile::analytics::refinery
+    require ::profile::hive::client
+
+    $refinery_path = $::profile::analytics::refinery::path
+    $refinery_config_dir = $::profile::analytics::refinery::config_dir
+    $refinery_job_jar = "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar"
+
+    # Declare salts needed for refine_sanitize jobs.  If you make new sanitize jobs that need
+    # different salts, be sure to declare them here.
+    # Salts will end up in /etc/refinery/salts and /user/hdfs/salts
+    # Most likely, you will only need one salt, so that fields hashed during the same
+    # time period can be associated properly.
+    $refine_sanitize_salts = [
+        'event_sanitized',
+    ]
+    class { '::profile::analytics::refinery::job::refine_sanitize_salt_rotate':
+        salt_names          => $refine_sanitize_salts,
+        ensure_timers       => $ensure_timers,
+        use_kerberos_keytab => $use_kerberos_keytab
+    }
+    $hdfs_salts_prefix = $::profile::analytics::refinery::job::refine_sanitize_salt_rotate::hdfs_salts_prefix
+
+
+
+    # Defaults for all refine_jobs declared here.
+    Profile::Analytics::Refinery::Job::Refine_job {
+        ensure              => $ensure_timers,
+        use_keytab          => $use_kerberos_keytab,
+        refinery_job_jar    => $refinery_job_jar,
+        job_class           => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitize',
+        monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitizeMonitor',
+        spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
+        spark_driver_memory => '16G',
+        spark_max_executors => '128',
+    }
+
+    # There are several jobs that run RefineSanitize from event into event_sanitized.
+    # They use different allowlists and different keep_all_enabled settings.
+    # This is the common config shared by all of them.
+    $event_sanitized_common_job_config = {
+        'input_database'      => 'event',
+        'output_database'     => 'event_sanitized',
+        'output_path'         => '/wmf/data/event_sanitized',
+        'salts_path'          => "${hdfs_salts_prefix}/event_sanitized",
+        'should_email_report' => true,
+        'to_emails'           => 'analytics-alerts@wikimedia.org',
+    }
+
+    # RefineSanitize job declarations go below.
+    # Each job has an 'immediate' and a 'delayed' version.
+    # immediate is executed right after data collection. Runs once per hour.
+    # delayed is excuted on data that is 45 days old, to allow for automated backfilling
+    # data in the input database if it has changed since the immediate sanitize job ran.
+    # Jobs starts a few minutes after the hour, to leave time for the salt files to be updated.
+
+
+    # TODO: add this job.
+    # See: https://phabricator.wikimedia.org/T273789
+    # == event_sanitized_main
+    # Sanitizes non analytics (and non legacy eventlogging) event data, with keep_all enabled.
+    # $event_sanitized_main_job_config = $event_sanitized_common_job_config.merge({
+    #     'allowlist_path'   => '/wmf/refinery/current/static_data/sanitization/event_sanitized_main_allowlist.yaml',
+    #     'keep_all_enabled' => true,
+    # })
+    # profile::analytics::refinery::job::refine_job { 'event_sanitized_main_immediate':
+    #     interval   => '*-*-* *:05:00',
+    #     job_config => $event_sanitized_main_job_config
+    # }
+    # profile::analytics::refinery::job::refine_job { 'event_sanitized_main_delayed':
+    #     # TODO; The delayed job needs to be absent until after 2021-06.
+    #     # After that, it should work as normal and can be made present.
+    #     ensure     => 'absent',
+    #     interval   => '*-*-* 05:00:00',
+    #     job_config => $event_sanitized_main_job_config.merge({
+    #         'since' => 1104,
+    #         'until' => 1080,
+    #     }),
+    # }
+
+
+    # TODO: Refactor eventlogging_sanitization into event_sanitized_analytics.
+    # # == event_sanitized_analytics
+    # # Sanitizes analytics event tables, including legacy eventlogging tables, with keep_all disabled.
+    # $event_sanitized_analytics_job_config = $event_sanitized_common_job_config.merge({
+    #     # TODO: rename this allowlist
+    #     'allowlist_path'   => '/wmf/refinery/current/static_data/eventlogging/whitelist.yaml',
+    #     'keep_all_enabled' => false,
+    # })
+    # profile::analytics::refinery::job::refine_job { 'event_sanitized_analytics_immediate':
+    #     interval   => '*-*-* *:02:00',
+    #     job_config => $event_sanitized_analytics_job_config,
+    # }
+    # profile::analytics::refinery::job::refine_job { 'event_sanitized_analytics_delayed':
+    #     # TODO; The delayed job needs to be absent until after 2021-06.
+    #     # After that, it should work as normal and can be made present.
+    #     ensure     => 'absent',
+    #     interval   => '*-*-* 06:00:00',
+    #     job_config => $event_sanitized_analytics_job_config.merge({
+    #         'since' => 1104,
+    #         'until' => 1080,
+    #     }),
+    # }
+
+    # == sanitize_eventlogging_analytics
+    # TODO: sanitize_eventlogging_analytics WILL BE DEPRECATED IN FAVOR OF event_sanitized_analytics
+    # See: https://phabricator.wikimedia.org/T273789
+    #
+    # EventLoggingSanitization. Runs in two steps: immediate and delayed.
+    # Common parameters for both jobs:
+    $eventlogging_sanitization_job_config = {
+        'input_path'          => '/wmf/data/event',
+        'database'            => 'event_sanitized',
+        'output_path'         => '/wmf/data/event_sanitized',
+        'whitelist_path'      => '/wmf/refinery/current/static_data/eventlogging/whitelist.yaml',
+        'salts_path'          => "${hdfs_salts_prefix}/event_sanitized",
+        'parallelism'         => '16',
+        'should_email_report' => true,
+        'to_emails'           => 'analytics-alerts@wikimedia.org',
+    }
+
+    # Execute 1st sanitization pass, right after data collection. Runs once per hour.
+    # Job starts a couple minutes after the hour, to leave time for the salt files to be updated.
+    profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_immediate':
+        interval         => '*-*-* *:02:00',
+        # TODO: We need to use the old jar version with EventLoggingSanitization until we rename the output database parittion directories to lowercase.
+        # After that is done, we can switch to the event_sanitized_analytics job above and remove this one.
+        refinery_job_jar => "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.1.2.jar",
+        job_class        => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
+        monitor_class    => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
+        job_config       => $eventlogging_sanitization_job_config,
+    }
+    # Execute 2nd sanitization pass, after 45 days of collection.
+    # Runs once per day at a less busy time.
+    profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_delayed':
+        interval         => '*-*-* 06:00:00',
+        refinery_job_jar => "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.1.2.jar",
+        job_class        => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
+        monitor_class    => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitizationMonitor',
+        job_config       => $eventlogging_sanitization_job_config.merge({
+            'since' => 1104,
+            'until' => 1080,
+        }),
+    }
+}
