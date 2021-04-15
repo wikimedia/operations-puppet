@@ -48,11 +48,10 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'var-lib-jenkins-backups':
         includes => [ '/var/lib/jenkins/backups' ]
     }
+    require ::profile::lists::exclude_backups
     bacula::director::fileset { 'var-lib-mailman':
         includes => [ '/var/lib/mailman' ],
-        excludes => [
-                      '/var/lib/mailman/archives/private/ac-temp/attachments',
-        ],
+        excludes => $::profile::lists::exclude_backups::exclude_backups_list,
     }
     bacula::director::fileset { 'var-lib-puppet-ssl':
         includes => [ '/var/lib/puppet/ssl', '/var/lib/puppet/server/ssl' ]
