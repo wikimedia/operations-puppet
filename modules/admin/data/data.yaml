@@ -693,7 +693,7 @@ groups:
   graphite-admins:
     description: Group to enable access to Graphite servers, restart services, and run all commands as the _graphite user
     gid: 800
-    members: [addshore]
+    members: [addshore, awight]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service coal *',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (_graphite) NOPASSWD: ALL']
