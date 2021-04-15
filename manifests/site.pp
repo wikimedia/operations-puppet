@@ -1456,6 +1456,10 @@ node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
 node /^cloudcephosd10(0[1-9]|1[0-5])\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
 }
+# new hosts via T274945
+node /^cloudcephosd10(1[6-9]|20)\.eqiad\.wmnet$/ {
+    role(insetup)
+}
 
 # New systems placed into service by cloud team via T194186 and T249062
 node /^cloudelastic100[1-6]\.wikimedia\.org$/ {
