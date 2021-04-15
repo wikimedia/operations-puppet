@@ -1,0 +1,2 @@
+profile::debmonitor::client::ssl_ca: 'puppet'
+profile::debmonitor::client::ssl_ca_label: ~

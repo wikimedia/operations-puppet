@@ -1,5 +1,5 @@
 # Class: profile::debmonitor::client
-#
+# @summary
 # This profile installs the Debmonitor client and its configuration.
 #
 # Actions:
@@ -9,14 +9,17 @@
 #
 # Sample Usage:
 #       include ::profile::debmonitor::client
-#
+# @param debmonitor_server the main debmonitor server
+# @param ssl_ca use the puppet issued certs or request a cert from cfssl
+# @param ssl_ca_label if using cfssl this is the ca label to use for certificate requests
 class profile::debmonitor::client (
-    Stdlib::Host $debmonitor_server = lookup('debmonitor'),
+    Stdlib::Host            $debmonitor_server = lookup('debmonitor'),
+    Enum['puppet', 'cfssl'] $ssl_ca            = lookup('profile::debmonitor::client::ssl_ca'),
+    Optional[String]        $ssl_ca_label      = lookup('profile::debmonitor::client::ssl_ca_label'),
 ){
-    $base_path = '/etc/debmonitor'
-    $cert = "${base_path}/ssl/cert.pem"
-    $private_key = "${base_path}/ssl/server.key"
+
     $ca = '/etc/ssl/certs/Puppet_Internal_CA.pem'
+    $base_path = '/etc/debmonitor'
 
     # On Debmonitor server hosts this is already defined by service::uwsgi.
     if !defined(File[$base_path]) {
@@ -45,10 +48,28 @@ class profile::debmonitor::client (
         comment    => 'DebMonitor system user',
     }
 
-    base::expose_puppet_certs { $base_path:
-        user            => 'debmonitor',
-        group           => 'debmonitor',
-        provide_private => true,
+    if $ssl_ca == 'puppet' {
+        base::expose_puppet_certs { $base_path:
+            user            => 'debmonitor',
+            group           => 'debmonitor',
+            provide_private => true,
+            require         => File[$base_path],
+            before          => Package['debmonitor-client'],
+        }
+
+        $cert = "${base_path}/ssl/cert.pem"
+        $private_key = "${base_path}/ssl/server.key"
+    } else {
+        unless $ssl_ca_label {
+            fail('must specify \$ssl_label when using \$ssl_ca == \'cfssl\'')
+        }
+        $ssl_paths = profile::pki::get_cert(
+            $ssl_ca_label,
+            $facts['networking']['fqdn'],
+            {outdir => "${base_path}/ssl", before => Package['debmonitor-client']},
+        )
+        $cert        = $ssl_paths['cert']
+        $private_key = $ssl_paths['key']
     }
 
     # Create the Debmonitor client configuration file.
@@ -58,16 +79,17 @@ class profile::debmonitor::client (
         group   => 'debmonitor',
         mode    => '0440',
         content => template('profile/debmonitor/client/debmonitor.conf.erb'),
+        before  => Package['debmonitor-client'],
     }
 
-    # Install the package after the configuration file and the exposed Puppet certs are in place.
-    package { 'debmonitor-client':
-        ensure  => installed,
-        require => [
-            File['/etc/debmonitor.conf'],
-            Base::Expose_puppet_certs[$base_path],
-        ],
-    }
+    # We have to install debmonitor-client after /etc/debmonitor.conf and the
+    # ssl certs are configured. This is due to the fact that:
+    #  * during installation we install the debmonitor apt->hook
+    #  * post installation we run the apt->hook installed above
+    # If the certs and config file are not in place this will fail. The ssl and
+    # file resources have an explicit Before statements and we also place the
+    # installation here so the manifest order represent the catalogue order
+    ensure_packages(['debmonitor-client'])
 
     $hour = Integer(seeded_rand(24, $::fqdn))
     $minute = Integer(seeded_rand(60, $::fqdn))

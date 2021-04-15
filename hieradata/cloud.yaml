@@ -34,6 +34,9 @@ profile::base::labs::unattended_distro: 'present'
 
 profile::ci::package_builder::extra_packages: []
 
+profile::debmonitor::client::ssl_ca: 'puppet'
+profile::debmonitor::client::ssl_ca_label: ~
+
 profile::debmonitor::server::settings_module: debmonitor.settings.test
 profile::debmonitor::server::ssl_certs: puppet
 profile::debmonitor::server::django_log_db_queries: true
