@@ -61,7 +61,7 @@ define cinderutils::ensure(
                 $volume['size'] >= $min_gb * 1024 * 1024 * 1024 and
                 $volume['size'] <= $max_gb * 1024 * 1024 * 1024) {
                 exec { "prepare_cinder_volume_${mount_point}":
-                    command => "/usr/sbin/prepare_cinder_volume --force --device ${volume['dev']} --mountpoint ${mount_point} --options ${mount_options} --mountmode ${mount_mode}",
+                    command => "/usr/local/sbin/wmcs-prepare-cinder-volume --force --device ${volume['dev']} --mountpoint ${mount_point} --options ${mount_options} --mountmode ${mount_mode}",
                     user    => 'root',
                 }
                 $require_list = Exec["prepare_cinder_volume_${mount_point}"]
