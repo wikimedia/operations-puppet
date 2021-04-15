@@ -15,7 +15,7 @@ class profile::analytics::refinery::job::test::refine (
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.1.4'
+    $refinery_version = '0.1.5'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -44,7 +44,7 @@ class profile::analytics::refinery::job::test::refine (
             input_path                      => '/wmf/data/raw/eventlogging',
             input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
             input_path_regex_capture_groups => 'table,year,month,day,hour',
-            table_include_regex             => '^NavigationTiming$',
+            table_include_regex             => '^navigationtiming$',
             # Since EventLogging legacy data comes from external clients,
             # non wikimedia domains and other unwanted domains have always been filtered out.
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms',
