@@ -3,12 +3,6 @@ eqiad:
     mwdebug1001.eqiad.wmnet: [apache2]
     mwdebug1002.eqiad.wmnet: [apache2]
   appserver:
-    mw1261.eqiad.wmnet: [apache2,nginx,canary]
-    mw1262.eqiad.wmnet: [apache2,nginx,canary]
-    mw1263.eqiad.wmnet: [apache2,nginx,canary]
-    mw1264.eqiad.wmnet: [apache2,nginx,canary]
-    mw1265.eqiad.wmnet: [apache2,nginx,canary]
-    mw1266.eqiad.wmnet: [apache2,nginx]
     mw1267.eqiad.wmnet: [apache2,nginx]
     mw1268.eqiad.wmnet: [apache2,nginx]
     mw1269.eqiad.wmnet: [apache2,nginx]

@@ -1753,16 +1753,6 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # Row A
 
-# rack A5
-node /^mw126[1-5]\.eqiad\.wmnet$/ {
-    role(mediawiki::canary_appserver)
-}
-
-# rack A5
-node /^mw1266\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
 # rack A7
 node /^mw12(69|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
