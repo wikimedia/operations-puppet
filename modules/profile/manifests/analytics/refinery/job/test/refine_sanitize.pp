@@ -15,7 +15,7 @@
 #   Default: true
 #
 class profile::analytics::refinery::job::test::refine_sanitize(
-    String $refinery_version      = lookup('profile::analytics::refinery::job::test::refine_sanitize::refinery_version', { 'default_value' => '0.1.4' }),
+    String $refinery_version      = lookup('profile::analytics::refinery::job::test::refine_sanitize::refinery_version', { 'default_value' => '0.1.5' }),
     Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::test::refine_sanitize::ensure_timers', { 'default_value' => 'present' }),
     Boolean $use_kerberos_keytab  = lookup('profile::analytics::refinery::job::test::refine_sanitize::use_kerberos_keytab', { 'default_value' => true }),
 ) {
