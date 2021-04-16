@@ -159,8 +159,6 @@ Components: main
  thirdparty/gitlab
  thirdparty/grafana
  thirdparty/hwraid
- thirdparty/kubeadm-k8s-1-15
- thirdparty/kubeadm-k8s-1-16
  thirdparty/kubeadm-k8s-1-17
  thirdparty/matomo
  thirdparty/php56
