@@ -71,6 +71,7 @@ mtail::logs:
 profile::kibana::region_map_enabled: false
 profile::kibana::tile_map_enabled: false
 
+profile::logstash::apifeatureusage::jobs_host: 'logstash1007.eqiad.wmnet'
 profile::logstash::apifeatureusage::curator_actions:
   1:
     description: 'apifeatureusage: delete older than 91 days'

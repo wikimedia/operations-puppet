@@ -5,8 +5,9 @@
 #
 # filtertags: labs-project-deployment-prep
 class profile::logstash::apifeatureusage(
-    Array[Stdlib::Host] $targets         = lookup('profile::logstash::apifeatureusage::targets'),
-    Hash                $curator_actions = lookup('profile::logstash::apifeatureusage::curator_actions'),
+    Array[Stdlib::Host]    $targets         = lookup('profile::logstash::apifeatureusage::targets'),
+    Hash                   $curator_actions = lookup('profile::logstash::apifeatureusage::curator_actions'),
+    Optional[Stdlib::Fqdn] $jobs_host       = lookup('profile::logstash::apifeatureusage::jobs_host', { default_value => undef }),
 ) {
     include profile::logstash::collector
 
@@ -44,13 +45,20 @@ class profile::logstash::apifeatureusage(
         $cluster_name = "production-search-${dc}"
         $curator_hosts = [$cluster]
         $http_port = 9200
-        elasticsearch::curator::config { $cluster_name:
-            content => template('elasticsearch/curator_cluster.yaml.erb'),
-        }
+        if $jobs_host == $::fqdn {
+            elasticsearch::curator::config { $cluster_name:
+                content => template('elasticsearch/curator_cluster.yaml.erb'),
+            }
 
-        elasticsearch::curator::job { "apifeatureusage_${dc}":
-            cluster_name => $cluster_name,
-            actions      => $curator_actions,
+            elasticsearch::curator::job { "apifeatureusage_${dc}":
+                cluster_name => $cluster_name,
+                actions      => $curator_actions,
+            }
+        } else {
+            elasticsearch::curator::job { "apifeatureusage_${dc}":
+                ensure       => 'absent',
+                cluster_name => $cluster_name,
+            }
         }
     }
 }
