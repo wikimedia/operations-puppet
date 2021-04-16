@@ -56,4 +56,12 @@ class mailman::scripts {
         mode   => '0550',
         source => 'puppet:///modules/mailman/scripts/purge_attachments.py'
     }
+
+    file { '/usr/local/sbin/check_exclude_backups':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman/scripts/check_exclude_backups.py'
+    }
 }

@@ -1,6 +1,7 @@
 # periodic jobs running on a list server
 class profile::lists::jobs(
     Integer $held_messages_age = lookup('profile::lists::jobs', {'default_value' => 90}),
+    Array[String] $exclude_backups_list = lookup('mailman2_exclude_backups'),
 ){
     systemd::timer::job { 'delete_held_messages':
         ensure      => 'present',
@@ -18,4 +19,22 @@ class profile::lists::jobs(
         interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
     }
 
+    file { '/etc/exclude_backups_list.json':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => ordered_json($exclude_backups_list),
+    }
+
+    systemd::timer::job { 'check_exclude_backups':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'Check exclude_backups list is up to date',
+        command     => '/usr/local/sbin/check_exclude_backups',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
+        # Notify root@ when it fails
+        send_mail   => true,
+        require     => File['/etc/exclude_backups_list.json'],
+    }
 }
