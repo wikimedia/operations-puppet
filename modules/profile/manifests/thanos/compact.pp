@@ -3,7 +3,7 @@ class profile::thanos::compact (
     Stdlib::Fqdn $thanos_compact_host = lookup('profile::thanos::compact_host'),
     Hash[String, String] $objstore_account = lookup('profile::thanos::objstore_account'),
     String $objstore_password = lookup('profile::thanos::objstore_password'),
-    String $retention = lookup('profile::thanos::retention', { 'default_value' => '60w' }),
+    String $retention = lookup('profile::thanos::retention', { 'default_value' => '270w' }),
 ) {
     $http_port = 12902
 
