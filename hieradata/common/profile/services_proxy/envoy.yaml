@@ -26,12 +26,13 @@ profile::services_proxy::envoy::listeners:
       num_retries: 1
   - name: eventgate-main
     port: 6005
-    timeout: "25s"
+    timeout: "61s"
     service: eventgate-main
     keepalive: "4.5s"
     retry:
       retry_on: "5xx"
       num_retries: 2
+      per_try_timeout: "20s"
   - name: sessionstore
     port: 6006
     service: sessionstore
