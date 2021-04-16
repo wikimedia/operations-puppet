@@ -92,6 +92,9 @@ You are receiving this email because you are listed as member for the
 project that contains this instance.  Please take steps to repair
 this instance or contact a Cloud VPS admin for assistance.
 
+You might find some help here:
+    https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Runbooks/Cloud_VPS_alert_Puppet_failure_on
+
 For further support, visit #wikimedia-cloud on freenode or
 <https://wikitech.wikimedia.org>
 """.format(fqdn=fqdn, ip=ip, project_name=project_name)
