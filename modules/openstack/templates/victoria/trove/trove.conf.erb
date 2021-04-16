@@ -33,18 +33,6 @@ control_exchange = trove
 db_api_implementation = "trove.db.sqlalchemy.api"
 
 # Configuration options for talking to nova via the novaclient.
-trove_auth_url = <%= @keystone_admin_uri %>
-#nova_compute_url = http://localhost:8774/v2
-#cinder_url = http://localhost:8776/v1
-#swift_url = http://localhost:8080/v1/AUTH_
-#neutron_url = http://localhost:9696/
-
-# nova_compute_url, cinder_url, swift_url, and can all be fetched
-# from Keystone. To fetch from Keystone, comment out nova_compute_url,
-# cinder_url, swift_url, and and optionally uncomment the lines below.
-
-# Region name of this node. Used when searching catalog. Default value is None.
-os_region_name = <%= @region %>
 
 # Service type to use when searching catalog.
 #nova_compute_service_type = compute
@@ -126,10 +114,6 @@ api_paste_config = api-paste.ini
 auth_strategy = keystone
 add_addresses = True
 
-
-nova_proxy_admin_user = novaadmin
-nova_proxy_admin_pass = <%= @ldap_user_pass %>
-nova_proxy_admin_tenant_name = admin
 taskmanager_manager = trove.taskmanager.manager.Manager
 
 # Inject configuration into guest via ConfigDrive
@@ -344,4 +328,14 @@ region_name = <%= @region %>
 user_domain_id = default
 username = novaadmin
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
+
+
+[service_credentials]
+auth_url = <%= @keystone_admin_uri %>
+region_name = <%= @region %>
+project_name = admin
+password = <%= @ldap_user_pass %>
+project_domain_name = Default
+user_domain_name = Default
+username = novaadmin
 
