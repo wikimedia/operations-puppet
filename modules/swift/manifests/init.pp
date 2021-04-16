@@ -91,11 +91,12 @@ class swift (
         before => Package['swift'],
     }
 
+    # Move log directory to bigger /srv
     file { '/var/log/swift':
         ensure  => link,
         target  => '/srv/log/swift',
         require => File['/srv/log/swift'],
-        before  => Package['swift'],
+        before  => Package['python-swift'],
     }
 
     logrotate::conf { 'swift':
