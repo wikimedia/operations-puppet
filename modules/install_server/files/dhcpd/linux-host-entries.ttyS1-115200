@@ -2217,13 +2217,11 @@ host db2093 {
 host db2094 {
     hardware ethernet D0:94:66:5A:04:3B;
     fixed-address db2094.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2095 {
     hardware ethernet D0:94:66:59:FA:D8;
     fixed-address db2095.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2096 {
