@@ -44,7 +44,7 @@ class profile::reportupdater::jobs(
     }
 
     reportupdater::job { 'codemirror':
-        ensure     => 'absent',
+        ensure     => $ensure_jobs,
         output_dir => 'metrics/codemirror',
     }
 
@@ -64,7 +64,7 @@ class profile::reportupdater::jobs(
     }
 
     reportupdater::job { 'templatedata':
-        ensure     => 'absent',
+        ensure     => $ensure_jobs,
         output_dir => 'metrics/templatedata',
     }
 
@@ -79,12 +79,12 @@ class profile::reportupdater::jobs(
     }
 
     reportupdater::job { 'visualeditor':
-        ensure     => 'absent',
+        ensure     => $ensure_jobs,
         output_dir => 'metrics/visualeditor',
     }
 
     reportupdater::job { 'templatewizard':
-        ensure     => 'absent',
+        ensure     => $ensure_jobs,
         output_dir => 'metrics/templatewizard',
     }
 
