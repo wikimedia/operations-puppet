@@ -1,51 +1,9 @@
 # dummy class that only contains a variable defining a list of paths to skip
 # on backup, for use when defining the mailman 2 backup dataset
-class profile::lists::exclude_backups {
-
-    # list of paths that should not be backed up
-    $exclude_backups_list = [
-        '/var/lib/mailman/archives/private/ac-temp/attachments',
-        '/var/lib/mailman/archives/private/audit-l/attachments',
-        '/var/lib/mailman/archives/private/bec-newmembers/attachments',
-        '/var/lib/mailman/archives/private/board-elections-l/attachments',
-        '/var/lib/mailman/archives/private/board-l/attachments',
-        '/var/lib/mailman/archives/private/cateam/attachments',
-        '/var/lib/mailman/archives/private/checkuser-l/attachments',
-        '/var/lib/mailman/archives/private/contact-nl/attachments',
-        '/var/lib/mailman/archives/private/education-collab-private/attachments',
-        '/var/lib/mailman/archives/private/festivalsommer-teilnehmer/attachments',
-        '/var/lib/mailman/archives/private/functionaries/attachments',
-        '/var/lib/mailman/archives/private/helpdesk-l/attachments',
-        '/var/lib/mailman/archives/private/legalteam/attachments',
-        '/var/lib/mailman/archives/private/lgbt/attachments',
-        '/var/lib/mailman/archives/private/mediawiki-commits/attachments',
-        '/var/lib/mailman/archives/private/meta-oversight/attachments',
-        '/var/lib/mailman/archives/private/moderators-nl/attachments',
-        '/var/lib/mailman/archives/private/multimedia-alerts/attachments',
-        '/var/lib/mailman/archives/private/museum-l/attachments',
-        '/var/lib/mailman/archives/private/nl-irc-ops-l/attachments',
-        '/var/lib/mailman/archives/private/nlcheckuser-l/attachments',
-        '/var/lib/mailman/archives/private/ops-private/attachments',
-        '/var/lib/mailman/archives/private/oversight-fa-wp/attachments',
-        '/var/lib/mailman/archives/private/oversight-l/attachments',
-        '/var/lib/mailman/archives/private/pressemeldungen/attachments',
-        '/var/lib/mailman/archives/private/privacy-fr-wp/attachments',
-        '/var/lib/mailman/archives/private/research-newsletter/attachments',
-        '/var/lib/mailman/archives/private/sectrainings/attachments',
-        '/var/lib/mailman/archives/private/sf_wmf_community_dept/attachments',
-        '/var/lib/mailman/archives/private/staff/attachments',
-        '/var/lib/mailman/archives/private/testeng/attachments',
-        '/var/lib/mailman/archives/private/unblock-en-l/attachments',
-        '/var/lib/mailman/archives/private/wikibooks-es-admins/attachments',
-        '/var/lib/mailman/archives/private/wikibooksnl-moderator/attachments',
-        '/var/lib/mailman/archives/private/wikibugs-l/attachments',
-        '/var/lib/mailman/archives/private/wikidata-bugs/attachments',
-        '/var/lib/mailman/archives/private/wikidata-oversight/attachments',
-        '/var/lib/mailman/archives/private/wikino-admin-l/attachments',
-        '/var/lib/mailman/archives/private/wikipedia-fr-comite-nomination/attachments',
-        '/var/lib/mailman/archives/private/wikipedia-ja-del/attachments',
-        '/var/lib/mailman/archives/private/wmf_community_dept/attachments',
-        '/var/lib/mailman/archives/private/workgroup1/attachments',
-        '/var/lib/mailman/archives/private/wpcivility/attachments',
-]
+class profile::lists::exclude_backups(
+    Array[String] $exclude_lists = lookup('mailman2_exclude_backups'),
+) {
+    $exclude_backups_list = $exclude_lists.map |String $list| {
+            "/var/lib/mailman/archives/private/${list}/attachments"
+    }
 }
