@@ -28,20 +28,22 @@ class swift::proxy (
     $memcached_addresses = $memcached_servers.map |$s| { "${s}:${memcached_port}" }
 
     file { '/etc/swift/proxy-server.conf':
-        owner   => 'swift',
-        group   => 'swift',
-        mode    => '0440',
-        content => template('swift/proxy-server.conf.erb'),
-        require => Package['swift-proxy'],
+        owner     => 'swift',
+        group     => 'swift',
+        mode      => '0440',
+        content   => template('swift/proxy-server.conf.erb'),
+        require   => Package['swift-proxy'],
+        show_diff => false,
     }
 
     if $dispersion_account != undef {
         file { '/etc/swift/dispersion.conf':
-            owner   => 'swift',
-            group   => 'swift',
-            mode    => '0440',
-            content => template('swift/dispersion.conf.erb'),
-            require => Package['swift'],
+            owner     => 'swift',
+            group     => 'swift',
+            mode      => '0440',
+            content   => template('swift/dispersion.conf.erb'),
+            require   => Package['swift'],
+            show_diff => false,
         }
     }
 
