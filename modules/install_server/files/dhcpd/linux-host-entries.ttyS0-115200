@@ -660,12 +660,6 @@ host mwdebug1002 {
     fixed-address mwdebug1002.eqiad.wmnet;
 }
 
-host mwdebug1003 {
-    hardware ethernet aa:00:00:5a:7a:24;
-    fixed-address mwdebug1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host mwdebug2001 {
     hardware ethernet aa:00:00:a4:ba:ce;
     fixed-address mwdebug2001.codfw.wmnet;

@@ -2,7 +2,6 @@ eqiad:
   testserver:
     mwdebug1001.eqiad.wmnet: [apache2]
     mwdebug1002.eqiad.wmnet: [apache2]
-    mwdebug1003.eqiad.wmnet: [apache2]
   appserver:
     mw1261.eqiad.wmnet: [apache2,nginx,canary]
     mw1262.eqiad.wmnet: [apache2,nginx,canary]
