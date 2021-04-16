@@ -382,9 +382,8 @@ class profile::hadoop::common (
         fail("Number of datanode mountpoints (${datanode_mounts.length}) below threshold: ${min_datanode_mounts}, please check.")
     }
 
-    # Include Wikimedia's thirdparty/cloudera apt component
-    # as an apt source on all Hadoop hosts.  This is needed
-    # to install CDH packages from our apt repo mirror.
+    # Include Wikimedia's thirdparty/bigtop apt component
+    # as an apt source on all Hadoop hosts.
     require ::profile::bigtop::apt
 
     # Need Java before Hadoop is installed.

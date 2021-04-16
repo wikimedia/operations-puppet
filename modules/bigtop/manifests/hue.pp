@@ -231,13 +231,6 @@ class bigtop::hue(
     # Needed to support Kerberos with GSS-API and SASLß
     package { 'libsasl2-modules-gssapi-mit': }
 
-    if debian::codename::eq('buster') {
-        apt::package_from_component { 'cloudera-deps':
-            component => 'component/cloudera',
-            packages  => ['libmysqlclient18']
-        }
-    }
-
     # Create the $cluster_name based $config_directory.
     file { $config_directory:
         ensure  => 'directory',
