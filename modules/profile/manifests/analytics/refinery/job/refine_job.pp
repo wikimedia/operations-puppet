@@ -85,6 +85,7 @@ define profile::analytics::refinery::job::refine_job (
         require            => Profile::Analytics::Refinery::Job::Config[$job_config_file],
         user               => $user,
         monitoring_enabled => $monitoring_enabled,
+        use_keytab         => $use_keytab,
     }
 
 
@@ -127,7 +128,6 @@ define profile::analytics::refinery::job::refine_job (
         spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars}${_spark_extra_files} --master yarn --deploy-mode ${deploy_mode} --queue ${queue} --driver-memory ${spark_driver_memory} --executor-memory ${spark_executor_memory} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
         job_opts   => "--config_file ${config_file_path}",
         interval   => $interval,
-        use_keytab => $use_keytab,
     }
 
 
