@@ -20,7 +20,7 @@ class snapshot::cron::cirrussearch(
 
     if !$filesonly {
         cron { 'cirrussearch-dump':
-            ensure      => 'present',
+            ensure      => absent,
             command     => "${scriptpath} --config ${confsdir}/wikidump.conf.other",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
@@ -28,6 +28,17 @@ class snapshot::cron::cirrussearch(
             hour        => '16',
             weekday     => '1',
             require     => [ File[$scriptpath], Class['snapshot::dumps::dirs'] ],
+        }
+        systemd::timer::job { 'cirrussearch-dump':
+            ensure             => present,
+            description        => 'Regular jobs to build snapshot of cirrus search',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => "${scriptpath} --config ${confsdir}/wikidump.conf.other",
+            interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 16:15:0'},
+            require            => [ File[$scriptpath], Class['snapshot::dumps::dirs'] ],
         }
     }
 }
