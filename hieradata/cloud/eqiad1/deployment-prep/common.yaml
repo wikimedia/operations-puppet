@@ -575,9 +575,6 @@ mediawiki::sites:
             early: []
             late:
               [
-                "    # Redirect commons.wikipedia to commons.wikimedia",
-                "    RewriteCond %%{}{HTTP_HOST} =commons.wikipedia.beta.wmflabs.org",
-                "    RewriteRule ^(.*)$ http://commons.wikimedia.beta.wmflabs.org$1 [R=301,L,NE]",
                 "    RewriteRule ^/data/(.*)/(.*)$ /wiki/Special:PageData/$1/$2 [R=303,QSA]",
               ]
       - name: wikidata
