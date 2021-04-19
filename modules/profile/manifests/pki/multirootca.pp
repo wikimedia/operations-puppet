@@ -129,7 +129,7 @@ class profile::pki::multirootca (
             content => "${root_ca_content}${int_ca_content}",
         }
         $check_command = "${check_command_base} -w ${warn_expire} -c ${crit_expire} ${safe_title}"
-        sudo::user {'nagios_cfssl_check':
+        sudo::user {"nagios_cfssl_check_${safe_title}":
             ensure     => $ensure_monitoring,
             user       => 'nagios',
             privileges => ["ALL = NOPASSWD: ${check_command}"],
