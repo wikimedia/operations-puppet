@@ -8,6 +8,7 @@ ldap:
 etcd::autogen_pwd_seed: 'seed'
 profile::standard::has_default_mail_relay: true
 profile::standard::enable_ip6_mapped: false
+profile::standard::purge_sudoers_d: false
 profile::standard::admin_groups: []
 profile::standard::admin_groups_no_ssh: []
 
