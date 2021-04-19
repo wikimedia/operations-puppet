@@ -56,9 +56,7 @@ filter_chains:
 <%- unless @response_headers_to_add.empty? -%>
         response_headers_to_add:
   <%- @response_headers_to_add.each_pair do |header, value| -%>
-          - header:
-              key: <%= header %>
-              value: <%= value %>
+        - header: {key: <%= header %>, value: <%= value %>}
   <%- end -%>
 <%- end -%>
         virtual_hosts:
