@@ -269,7 +269,7 @@ node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
 }
 
 node /^cloudgw100[12]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(wmcs::openstack::eqiad1::cloudgw)
 }
 
 node /^cloudgw200[12]-dev\.codfw\.wmnet$/ {

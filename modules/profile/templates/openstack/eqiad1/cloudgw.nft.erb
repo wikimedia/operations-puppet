@@ -1,0 +1,40 @@
+# variables, convert puppet vars into nft vars
+define routing_source_ip   = <%= @routing_source %>
+define virtual_subnet_cidr = <%= @virt_subnet %>
+define nic_host = "<%= @nic_host %>"
+define nic_virt = "<%= @nic_virt %>"
+define nic_wan = "<%= @nic_wan %>"
+
+# single table for everything
+table inet cloudgw {
+    set dmz_cidr_set {
+        type ipv4_addr . ipv4_addr
+        flags interval
+        counter
+        <%- if !@dmz_cidr.empty? -%>
+        elements = {
+        <% @dmz_cidr.each do |element| -%>
+            <%= element %> ,
+        <% end -%>
+        }
+        <%- end -%>
+    }
+
+    chain prerouting {
+        type nat hook prerouting priority dstnat; policy accept;
+    }
+
+    chain postrouting {
+        type nat hook postrouting priority srcnat; policy accept;
+
+        ip saddr . ip daddr @dmz_cidr_set counter accept comment "dmz_cidr"
+        ip saddr $virtual_subnet_cidr counter snat ip to $routing_source_ip comment "routing_source_ip"
+    }
+
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+        # only forward packets in the VRF
+        iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
+        counter comment "counter dropped packets"
+    }
+}
