@@ -1570,6 +1570,7 @@ host cumin2001 {
 host cumin2002 {
      hardware ethernet 2C:EA:7F:87:F1:2A;
      fixed-address cumin2002.codfw.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host db1074 {
