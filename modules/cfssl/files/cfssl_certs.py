@@ -7,6 +7,7 @@ import logging
 import re
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -48,6 +49,7 @@ def get_args():
         '-c', '--critical', default=14, type=int, help='critical value in days'
     )
     check_parser.add_argument('-l', '--long_output', action='store_true')
+    check_parser.add_argument('ca_label')
     return parser.parse_args()
 
 
@@ -101,7 +103,7 @@ def insert_certificate(db_conn, certificate):
     db_conn.commit()
 
 
-def get_certificates_expire_state(db_conn, warning, critical):
+def get_certificates_expire_state(db_conn, warning, critical, ca_label):
     """check the certificate database for expiring certificates
 
     Parameters
@@ -116,18 +118,30 @@ def get_certificates_expire_state(db_conn, warning, critical):
     now = datetime.now()
     warning_date = now + timedelta(days=warning)
     critical_date = now + timedelta(days=critical)
-    sql = 'SELECT * FROM `certificates` WHERE `expiry` < %s'
+    sql = 'SELECT pem, expiry FROM `certificates` WHERE `ca_label` = %s'
     logging.debug('Fetching certs')
+    certs = defaultdict(dict)
+    epoch = datetime.fromtimestamp(0)
     with db_conn.cursor() as cursor:
-        cursor.execute(sql, warning_date)
+        cursor.execute(sql, ca_label)
         for cert in cursor.fetchall():
             logging.debug(cert)
-            if cert['expiry'] < now:
-                results['expired'].append(cert)
-            elif cert['expiry'] < critical_date:
-                results['critical'].append(cert)
-            else:
-                results['warning'].append(cert)
+            pem = x509.load_pem_x509_certificate(cert['pem'], default_backend())
+            # CFSSL dosn;t clean up old certs so we need to make sure to check
+            # the most recent cert
+            if certs.get(pem.subject, {}).get('expiry', epoch) > cert['expiry']:
+                continue
+            certs[pem.subject]['expiry'] = cert['expiry']
+            certs[pem.subject]['pem'] = pem
+    for cert in certs.values():
+        if cert['expiry'] < now:
+            results['expired'].append(cert['pem'])
+        elif cert['expiry'] < critical_date:
+            results['critical'].append(cert['pem'])
+        elif cert['expiry'] < warning_date:
+            results['warning'].append(cert['pem'])
+        else:
+            logging.debug('%s: OK', cert['pem'].subject.rfc4514_string())
     return results
 
 
@@ -164,17 +178,16 @@ def icinga_report(certs_state, warning_days, critical_days, long_message=True):
                 len(certs_state['critical']), critical_days
             )
         )
+    if not summary_msg:
+        summary_msg = ['No certificates due to expire']
 
-    print(f"{state} | {', '.join(summary_msg)}")
+    print(f"{state} - {', '.join(summary_msg)}")
     if long_message:
         for certs in certs_state.values():
             for cert in certs:
-                cert_parsed = x509.load_pem_x509_certificate(
-                    cert['pem'], default_backend()
-                )
                 print(
-                    f'\t{cert_parsed.subject.rfc4514_string()}: '
-                    f"expires {cert['expiry']}, issuer {cert_parsed.issuer.rfc4514_string()}"
+                    f'\t{cert.subject.rfc4514_string()}: '
+                    f"expires {cert.not_valid_after} , issuer {cert.issuer.rfc4514_string()}"
                 )
     return return_code
 
@@ -202,7 +215,7 @@ def main():
                 return 1
         elif args.command == 'check':
             certs_state = get_certificates_expire_state(
-                db_conn, args.warning, args.critical
+                db_conn, args.warning, args.critical, args.ca_label
             )
             return icinga_report(
                 certs_state, args.warning, args.critical, args.long_output

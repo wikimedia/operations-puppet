@@ -50,6 +50,11 @@ class profile::pki::multirootca (
     $multirootca_service = 'cfssl-multirootca'
     $document_root = '/srv/cfssl'
     $bundle_dir = "${document_root}/bundles"
+    $check_command_base = '/usr/local/sbin/cfssl-certs check -l'
+    $ensure_monitoring = $enable_monitoring ? {
+        true    => present,
+        default => absent,
+    }
 
     wmflib::dir::mkdir_p($bundle_dir)
 
@@ -123,6 +128,20 @@ class profile::pki::multirootca (
             mode    => '0444',
             content => "${root_ca_content}${int_ca_content}",
         }
+        $check_command = "${check_command_base} -w ${warn_expire} -c ${crit_expire} ${safe_title}"
+        sudo::user {'nagios_cfssl_check':
+            ensure     => $ensure_monitoring,
+            user       => 'nagios',
+            privileges => ["ALL = NOPASSWD: ${check_command}"],
+        }
+
+        nrpe::monitor_service {"cfssl_expired_certs_${safe_title}":
+            ensure       => $ensure_monitoring,
+            description  => "Check for expired certificates ${intermediate}",
+            nrpe_command => "/usr/bin/sudo ${check_command}",
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/PKI/Debugging',
+        }
+
         $memo + {
             $safe_title => {
                 'private'     => $ca_key_file,
@@ -169,22 +188,5 @@ class profile::pki::multirootca (
         proto  => 'tcp',
         port   => '443',
         srange => '$DOMAIN_NETWORKS',
-    }
-    $ensure_monitoring = $enable_monitoring ? {
-        true    => present,
-        default => absent,
-    }
-    $check_command = "/usr/local/sbin/cfssl-certs check -w ${warn_expire} -c ${crit_expire}"
-    sudo::user {'nagios_cfssl_check':
-        ensure     => $ensure_monitoring,
-        user       => 'nagios',
-        privileges => ["ALL = NOPASSWD: ${check_command}"],
-    }
-
-    nrpe::monitor_service {'cfssl_expired_certs':
-        ensure       => $ensure_monitoring,
-        description  => 'Check for expired certificates',
-        nrpe_command => "/usr/bin/sudo ${check_command}",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/PKI/Debugging',
     }
 }
