@@ -31,6 +31,11 @@
 # [*storage_retention*]
 #   How long to save data for, old data will be expunged from disk eventually.
 #
+# [*storage_retention_size*]
+#   Maximum number of bytes that can be stored for blocks. Units supported: KB, MB, GB, TB, PB. This flag is
+#   experimental and can be changed in future releases, so use only if you really need it.
+#   Will override `storage_retention`.
+#
 # [*global_config_extra*]
 #   An hash with the global key => value prometheus configuration.
 #
@@ -57,20 +62,21 @@
 #   Thanos only)
 
 define prometheus::server (
-    String           $listen_address,
-    String           $scrape_interval       = '60s',
-    Stdlib::Unixpath $base_path             = "/srv/prometheus/${title}",
-    String           $storage_retention     = '730h',
-    String           $storage_encoding      = '2',
-    Integer          $max_chunks_to_persist = 524288,
-    Integer          $memory_chunks         = 1048576,
-    Hash             $global_config_extra   = {},
-    Array            $scrape_configs_extra  = [],
-    Array            $rule_files_extra      = [],
-    Stdlib::HTTPUrl  $external_url          = "http://prometheus/${title}",
-    String           $min_block_duration    = '2h',
-    String           $max_block_duration    = '24h',
-    Array            $alertmanagers         = [],
+    String                     $listen_address,
+    String                     $scrape_interval        = '60s',
+    Stdlib::Unixpath           $base_path              = "/srv/prometheus/${title}",
+    String                     $storage_retention      = '730h',
+    Optional[Stdlib::Datasize] $storage_retention_size = undef,
+    String                     $storage_encoding       = '2',
+    Integer                    $max_chunks_to_persist  = 524288,
+    Integer                    $memory_chunks          = 1048576,
+    Hash                       $global_config_extra    = {},
+    Array                      $scrape_configs_extra   = [],
+    Array                      $rule_files_extra       = [],
+    Stdlib::HTTPUrl            $external_url           = "http://prometheus/${title}",
+    String                     $min_block_duration     = '2h',
+    String                     $max_block_duration     = '24h',
+    Array                      $alertmanagers          = [],
 ) {
     include prometheus
 
@@ -176,6 +182,11 @@ define prometheus::server (
             ensure         => stopped,
         }
         systemd::mask { 'prometheus.service': }
+    }
+
+    $storage_retention_param = $storage_retention_size ? {
+      undef   => "--storage.tsdb.retention ${storage_retention}",
+      default => "--storage.tsdb.retention.size ${storage_retention_size.upcase()}",
     }
 
     systemd::service { $service_name:
