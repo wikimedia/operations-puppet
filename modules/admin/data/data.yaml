@@ -4456,6 +4456,10 @@ ldap_only_users:
     ensure: present
     realname: Lydia Pintscher
     email: lydia.pintscher@wikimedia.de
+  manuel-wmde:
+    ensure: present
+    realname: Manuel Merz
+    email: manuel.merz@wikimedia.de
   mattflaschen:
     ensure: present
     realname: Matthew Flaschen
