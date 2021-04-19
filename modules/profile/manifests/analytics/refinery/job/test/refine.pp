@@ -38,7 +38,7 @@ class profile::analytics::refinery::job::test::refine (
     # === EventLogging Legacy data ===
     # /wmf/data/raw/eventlogging -> /wmf/data/event
     # EventLogging legacy events migrated to Event Platform.
-    profile::analytics::refinery::job::refine_job { 'eventlogging_legacy':
+    profile::analytics::refinery::job::refine_job { 'eventlogging_legacy_test':
         ensure           => $ensure_timers,
         job_config       => merge($default_config, {
             input_path                      => '/wmf/data/raw/eventlogging',
@@ -65,7 +65,7 @@ class profile::analytics::refinery::job::test::refine (
     $event_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
     $event_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
 
-    profile::analytics::refinery::job::refine_job { 'event':
+    profile::analytics::refinery::job::refine_job { 'event_test':
         ensure           => $ensure_timers,
         job_config       => merge($default_config, {
             input_path                      => $event_input_path,
