@@ -77,6 +77,9 @@ class profile::analytics::refinery::job::test::refine_sanitize(
     # Execute 2nd sanitization pass, after 45 days of collection.
     # Runs once per day at a less busy time.
     profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_delayed_test':
+        # TODO; The delayed job needs to be absent until 2021-06.
+        # After that, it should work as normal and can be made present.
+        ensure     => 'absent',
         interval   => '*-*-* 06:00:00',
         job_config => $eventlogging_sanitization_job_config.merge({
             'since' => 1104,
