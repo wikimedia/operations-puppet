@@ -1326,6 +1326,11 @@ node /^phab[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(phabricator)
 }
 
+# Phabricator - new hardware (T279176, T279177)
+node /^phab[12]002\.(eqiad|codfw)\.wmnet$/ {
+    role(insetup)
+}
+
 # PKI server
 node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
     role(pki::multirootca)
