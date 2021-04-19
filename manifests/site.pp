@@ -201,6 +201,11 @@ node 'backup1003.eqiad.wmnet' {
     role(backup::es)
 }
 
+# eqiad media backup storage
+node /^backup100[4567]\.eqiad\.wmnet$/ {
+    role(mediabackup::storage)
+}
+
 # codfw storage daemon
 node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
@@ -215,9 +220,9 @@ node 'backup2003.codfw.wmnet' {
     role(backup::es)
 }
 
-# codfw new backup nodes T277323
+# codfw media backup storage
 node /^backup200[4567]\.codfw\.wmnet$/ {
-    role(insetup)
+    role(mediabackup::storage)
 }
 
 # New bastion in Virginia T276396

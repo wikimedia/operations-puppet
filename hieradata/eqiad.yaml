@@ -51,3 +51,11 @@ mediabackup:
   db_user: 'mediabackup'
   # please note password is setup on the secret puppet repo
   db_schema: 'mediabackups'
+  worker_hosts:
+    - ms-backup1001.eqiad.wmnet
+    - ms-backup1002.eqiad.wmnet
+  storage_hosts:
+    - backup1004.eqiad.wmnet
+    - backup1005.eqiad.wmnet
+    - backup1006.eqiad.wmnet
+    - backup1007.eqiad.wmnet
