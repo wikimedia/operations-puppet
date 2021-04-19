@@ -40,12 +40,23 @@ class apt(
     }
 
     if $manage_apt_source {
+
+        # Starting with bullseye, the security suite moved from
+        # foo/updates to foo-security (since the former was confusingly
+        # similar to foo-updates (what was called volatile.debian.org
+        # in the past)
+        if debian::codename::ge('bullseye') {
+            $apt_template    = 'apt/base-apt-conf-new.erb'
+        } else {
+            $apt_template    = 'apt/base-apt-conf.erb'
+        }
+
         file { '/etc/apt/sources.list':
             ensure  => file,
             mode    => '0555',
             owner   => 'root',
             group   => 'root',
-            content => template('apt/base-apt-conf.erb'),
+            content => template($apt_template),
             require => Apt::Repository['wikimedia'],
         }
     }

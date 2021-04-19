@@ -1,0 +1,10 @@
+deb http://<%= @mirror %>/debian/ <%= @facts['os']['distro']['codename'] %> main contrib non-free
+deb-src http://<%= @mirror %>/debian/ <%= @facts['os']['distro']['codename'] %> main contrib non-free
+
+deb http://security.debian.org/debian-security <%= @facts['os']['distro']['codename'] %>-security main contrib non-free
+deb-src http://security.debian.org/debian-security <%= @facts['os']['distro']['codename'] %>-security main contrib non-free
+
+# -updates, previously known as 'volatile'
+deb http://<%= @mirror %>/debian/ <%= @facts['os']['distro']['codename'] %>-updates main contrib non-free
+deb-src http://<%= @mirror %>/debian/ <%= @facts['os']['distro']['codename'] %>-updates main contrib non-free
+
