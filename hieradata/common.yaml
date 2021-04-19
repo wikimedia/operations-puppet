@@ -1323,6 +1323,12 @@ zookeeper_hosts_main:
 - 2620:0:860:103:10:192:32:141 # conf2002.codfw.wmnet
 - 10.192.48.52                 # conf2003.codfw.wmnet
 - 2620:0:860:104:10:192:48:52  # conf2003.codfw.wmnet
+- 10.192.16.45                 # conf2004.codfw.wmnet
+- 2620:0:860:102:10:192:16:45  # conf2004.codfw.wmnet
+- 10.192.32.52                 # conf2005.codfw.wmnet
+- 2620:0:860:103:10:192:32:52  # conf2005.codfw.wmnet
+- 10.192.48.59                 # conf2006.codfw.wmnet
+- 2620:0:860:104:10:192:48:59  # conf2006.codfw.wmnet
 druid_public_hosts:
 - 10.64.0.35                  # druid1004.eqiad.wmnet
 - 2620:0:861:101:10:64:0:35   # druid1004.eqiad.wmnet
