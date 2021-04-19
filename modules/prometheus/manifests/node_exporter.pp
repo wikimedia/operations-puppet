@@ -62,20 +62,31 @@ class prometheus::node_exporter (
         notify  => Service['prometheus-node-exporter'],
     }
 
-    # Disabled because broken (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=922803)
-    service { 'prometheus-node-exporter-ipmitool-sensor.timer':
-        ensure   => 'stopped',
-        provider => 'systemd',
-        enable   => 'mask',
-        require  => Package['prometheus-node-exporter'],
-    }
+    # Up to 0.17 prometheus-node-exporter shipped a number of collectors in
+    # text_collector_examples, which were also shipped in the Debian package
+    # These were eventually moved to a separate repository (
+    # https://github.com/prometheus-community/node-exporter-textfile-collector-scripts)
+    # and got packaged as src:prometheus-node-exporter-collectors. Starting with
+    # 0.18.1+ds-2 (and thus Bullseye) prometheus-node-exporter declares a Recommends:
+    # on that package. But we don't install recommended packages by default and we don't
+    # need any of the shipped collectors, so restrict the disabling of the broken timers
+    # to distros up to Buster
+    if debian::codename::lt('bullseye') {
+        # Disabled because broken (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=922803)
+        service { 'prometheus-node-exporter-ipmitool-sensor.timer':
+            ensure   => 'stopped',
+            provider => 'systemd',
+            enable   => 'mask',
+            require  => Package['prometheus-node-exporter'],
+        }
 
-    # Disabled in favor of internal smart module (smart-data-dump.py)
-    service { 'prometheus-node-exporter-smartmon.timer':
-        ensure   => 'stopped',
-        provider => 'systemd',
-        enable   => 'mask',
-        require  => Package['prometheus-node-exporter'],
+        # Disabled in favor of internal smart module (smart-data-dump.py)
+        service { 'prometheus-node-exporter-smartmon.timer':
+            ensure   => 'stopped',
+            provider => 'systemd',
+            enable   => 'mask',
+            require  => Package['prometheus-node-exporter'],
+        }
     }
 
     # members of this group are able to publish metrics
