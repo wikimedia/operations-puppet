@@ -89,6 +89,7 @@ define envoyproxy::tls_terminator(
     Float                        $upstream_response_timeout = 65.0,
     Boolean                      $capitalize_headers        = false,
     Boolean                      $listen_ipv6               = false,
+    Hash[String, String]         $response_headers_to_add   = {},
     Optional[Hash]               $retry_policy              = undef,
     Optional[Stdlib::Port]       $redir_port                = undef,
     Optional[String]             $global_cert_path          = undef,

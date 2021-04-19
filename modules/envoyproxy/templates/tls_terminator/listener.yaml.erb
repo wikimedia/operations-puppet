@@ -53,6 +53,14 @@ filter_chains:
           path: "/var/log/envoy/<%= upstream['cert_name'] %>.log"
 <%- end -%>
       route_config:
+<%- unless @response_headers_to_add.empty? -%>
+        response_headers_to_add:
+  <%- @response_headers_to_add.each_pair do |header, value| -%>
+          - header:
+            key: <%= header %>
+            value: <%= value %>
+  <%- end -%>
+<%- end -%>
         virtual_hosts:
         - name: default
           domains: ["*"]
@@ -109,6 +117,14 @@ filter_chains:
           path: "/var/log/envoy/global_tls.log"
 <%- end -%>
       route_config:
+<%- unless @response_headers_to_add.empty? -%>
+        response_headers_to_add:
+  <%- @response_headers_to_add.each_pair do |header, value| -%>
+          - header:
+            key: <%= header %>
+            value: <%= value %>
+  <%- end -%>
+<%- end -%>
         virtual_hosts:
         <%- @upstreams.each do |upstream| -%>
         - name: non_sni_port_<%= upstream['upstream_port'] %>
