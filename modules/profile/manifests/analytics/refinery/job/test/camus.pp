@@ -120,6 +120,25 @@ class profile::analytics::refinery::job::test::camus(
             'check_java_opts' => '-Deventstreamconfig.settings_filters=destination_event_service:eventgate-analytics,canary_events_enabled:true',
             'interval' => '*-*-* *:15:00',
         },
+        'eventgate-main' => {
+            'camus_properties' =>  {
+                'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
+                'camus.message.timestamp.field' => 'meta.dt',
+                'mapreduce.job.queuename'       => 'essential',
+                # Set this to at least the number of topic-partitions you will be importing.
+                'mapred.map.tasks'              => '1',
+                'eventstreamconfig.uri'         => 'https://meta.wikimedia.org/w/api.php',
+                # Here we explicitly restrict this test camus job to import only the small
+                # mediawiki.page-delete stream for eventgate-main.
+                'eventstreamconfig.stream_names' => 'mediawiki.page-delete',
+                'eventstreamconfig.settings_filters' => 'destination_event_service:eventgate-main',
+            },
+            # Add settings_filters to only check topics that have canary_events_enabled.
+            # Here, this won't make a differences since we also specify stream_names for the test job.
+            # This is mostly testing that the check_java_opts override works properly.
+            'check_java_opts' => '-Deventstreamconfig.settings_filters=destination_event_service:eventgate-main,canary_events_enabled:true',
+            'interval' => '*-*-* *:16:00',
+        },
     }
 
     # Declare each of the $event_service_jobs.

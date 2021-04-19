@@ -59,6 +59,8 @@ class profile::analytics::refinery::job::test::refine (
 
     # === Event data ===
     # /wmf/data/raw/event -> /wmf/data/event
+    # NOTE: refinery::job::test::camus only imports limited data in test cluster,
+    # so we don't need to specify any table include or exclude regexes.
     $event_input_path = '/wmf/data/raw/event'
     $event_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
     $event_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
