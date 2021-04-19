@@ -175,7 +175,7 @@ ListShellHook: grep-dctrl \( -P 'kubernetes-cni' -o -P 'cri-tools' \) || [ $? -e
 
 Name: thirdparty/kubeadm-k8s-docker.com
 Method: https://download.docker.com/linux/debian/
-Suite: stretch
+Suite: buster
 Components: stable>thirdparty/kubeadm-k8s-1-17 stable>thirdparty/kubeadm-k8s-1-18
 UDebComponents:
 Architectures: amd64
