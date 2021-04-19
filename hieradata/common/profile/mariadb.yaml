@@ -22,6 +22,7 @@ profile::mariadb::section_ports:
   staging: 3350
   matomo: 3351
   analytics_meta: 3352
+  mediabackupstemp: 3353
 profile::mariadb::section_params:
   _defaults_:
     writeable_dc: 'mwprimary'
@@ -48,3 +49,6 @@ profile::mariadb::section_params:
     writeable_dc: 'eqiad'
   tendril:
     writeable_dc: 'eqiad'
+  mediabackupstemp:
+    writeable_dc: 'both'
+    replication_type: 'none'

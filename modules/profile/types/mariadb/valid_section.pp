@@ -14,7 +14,7 @@ type Profile::Mariadb::Valid_section = Enum[
     # Mediawiki ParserCache
     'pc1', 'pc2', 'pc3',
     # Misc
-    'm1', 'm2', 'm3', 'm5',
+    'm1', 'm2', 'm3', 'm5', 'mediabackupstemp',
     # Test
     'test-s1', 'test-s4', 'test-pc1',
     # Analytics

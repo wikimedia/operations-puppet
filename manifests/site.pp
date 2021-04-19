@@ -742,7 +742,13 @@ node 'dborch1001.wikimedia.org' {
     role(orchestrator)
 }
 
-
+# temporary misc hosts for media backups
+node 'db1176.eqiad.wmnet' {
+    role(mariadb::misc)
+}
+node 'db2151.codfw.wmnet' {
+    role(mariadb::misc)
+}
 
 # eqiad backup sources
 ## s2, s3 & x1, buster
@@ -802,10 +808,6 @@ node 'db2139.codfw.wmnet' {
 ## s1 & s6, buster
 node 'db2141.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
-}
-# Codfw new database nodes T273568
-node /^db21(51)\.codfw\.wmnet$/ {
-    role(insetup)
 }
 
 # backup testing hosts
