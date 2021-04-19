@@ -94,6 +94,7 @@ class swift (
     # Move log directory to bigger /srv
     file { '/var/log/swift':
         ensure  => link,
+        force   => true,
         target  => '/srv/log/swift',
         require => File['/srv/log/swift'],
         before  => Package['python-swift'],
