@@ -1061,6 +1061,11 @@ host cloudvirt1039 {
     fixed-address cloudvirt1039.eqiad.wmnet;
 }
 
+host cloudvirt1040 {
+    hardware ethernet E4:3D:1A:18:10:7C;
+    fixed-address cloudvirt1040.eqiad.wmnet;
+}
+
 host cloudvirt1041 {
     hardware ethernet BC:97:E1:B9:78:36;
     fixed-address cloudvirt1041.eqiad.wmnet;
