@@ -1,4 +1,5 @@
 profile::base::firewall::block_abuse_nets: true
+profile::tlsproxy::envoy::floc_opt_out: true
 profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
