@@ -2095,13 +2095,11 @@ host db2071 {
 host db2072 {
     hardware ethernet 18:66:DA:F8:ED:4C;
     fixed-address db2072.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2073 {
     hardware ethernet 18:66:DA:F8:D9:98;
     fixed-address db2073.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2074 {
@@ -2118,13 +2116,11 @@ host db2075 {
 host db2076 {
     hardware ethernet 18:66:DA:F8:D4:F0;
     fixed-address db2076.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2077 {
     hardware ethernet 18:66:DA:F8:ED:7C;
     fixed-address db2077.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2078 {
@@ -2152,7 +2148,6 @@ host db2081 {
 host db2082 {
     hardware ethernet 18:66:DA:F8:F3:DC;
     fixed-address db2082.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2083 {
@@ -2275,7 +2270,6 @@ host db2104 {
 host db2105 {
     hardware ethernet 4C:D9:8F:68:BC:C4;
     fixed-address db2105.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2106 {
@@ -2387,7 +2381,6 @@ host db2125 {
 host db2126 {
     hardware ethernet 4C:D9:8F:7D:5A:E2;
     fixed-address db2126.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2127 {
@@ -2399,7 +2392,6 @@ host db2127 {
 host db2128 {
     hardware ethernet 4C:D9:8F:7C:C1:2D;
     fixed-address db2128.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2129 {
