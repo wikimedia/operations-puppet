@@ -83,9 +83,8 @@ profile::openstack::eqiad1::cloudgw::vrrp_vips:
 profile::openstack::eqiad1::cloudgw::conntrackd:
   cloudgw1001:
     nic: 'ens2f0np0'
-    # TODO: resolve this instead
-    local_addr: '10.192.20.4'
-    remote_addr: '10.192.20.5'
+    local_addr: cloudgw1001.eqiad.wmnet
+    remote_addr: cloudgw1002.eqiad.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
       - 10.64.20.4
@@ -94,9 +93,8 @@ profile::openstack::eqiad1::cloudgw::conntrackd:
       - 185.15.56.244
   cloudgw1002:
     nic: 'ens2f0np0'
-    # TODO: resolve this instead
-    local_addr: '10.192.20.5'
-    remote_addr: '10.192.20.4'
+    local_addr: cloudgw1002.eqiad.wmnet
+    remote_addr: cloudgw1001.eqiad.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
       - 10.64.20.4

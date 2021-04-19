@@ -112,22 +112,22 @@ class profile::openstack::base::cloudgw (
     # profile::openstack::base::cloudgw::conntrackd_conf:
     #   node1:
     #     nic: eno0
-    #     local_addr: x.x.x.x
-    #     remote_addr: x.x.x.x
+    #     local_addr: node1.dc.wmnet
+    #     remote_addr: node2.dc.wmnet
     #     filter_ipv4:
     #      - x.x.x.x
     #      - y.y.y.y
     #   node2:
     #     nic: eno0
-    #     local_addr: y.y.y.y
-    #     remote_addr: y.y.y.y
+    #     local_addr: node2.dc.wmnet
+    #     remote_addr: node1.dc.wmnet
     #     filter_ipv4:
     #      - x.x.x.x
     #      - y.y.y.y
 
     $conntrackd_nic            = $conntrackd[$::hostname]['nic']
-    $conntrackd_local_address  = $conntrackd[$::hostname]['local_addr']
-    $conntrackd_remote_address = $conntrackd[$::hostname]['remote_addr']
+    $conntrackd_local_address  = ipresolve($conntrackd[$::hostname]['local_addr'], 4)
+    $conntrackd_remote_address = ipresolve($conntrackd[$::hostname]['remote_addr'], 4)
     $conntrackd_filter_ipv4    = $conntrackd[$::hostname]['filter_ipv4']
 
     class { 'conntrackd':

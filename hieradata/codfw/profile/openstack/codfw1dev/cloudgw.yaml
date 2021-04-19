@@ -82,9 +82,8 @@ profile::openstack::codfw1dev::cloudgw::vrrp_vips:
 profile::openstack::codfw1dev::cloudgw::conntrackd:
   cloudgw2001-dev:
     nic: 'eno1'
-    # TODO: resolve this instead
-    local_addr: '10.192.20.8'
-    remote_addr: '10.192.20.18'
+    local_addr: cloudgw2001-dev.codfw.wmnet
+    remote_addr: cloudgw2002-dev.codfw.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
       - 10.192.20.18
@@ -93,9 +92,8 @@ profile::openstack::codfw1dev::cloudgw::conntrackd:
       - 208.80.153.190
   cloudgw2002-dev:
     nic: 'eno1'
-    # TODO: resolve this instead
-    local_addr: '10.192.20.18'
-    remote_addr: '10.192.20.8'
+    local_addr: cloudgw2002-dev.codfw.wmnet
+    remote_addr: cloudgw2001-dev.codfw.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
       - 10.192.20.18
