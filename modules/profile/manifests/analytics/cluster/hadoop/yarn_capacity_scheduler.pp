@@ -25,14 +25,16 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
 
     $base_settings = {
         # Global config
-        # Maximum number of applications that can be pending and running.
+        # Maximum number of applications that can be pending and running (same as hadoop default).
         'yarn.scheduler.capacity.maximum-applications' => 10000,
         # Maximum percent of resources in the cluster which can be used to run
-        # application masters i.e. controls number of concurrent running applications.
+        # application masters i.e. controls number of concurrent running applications
+        # (same as hadoop default).
         'yarn.scheduler.capacity.maximum-am-resource-percent' => 0.1,
         # The ResourceCalculator implementation to be used to compare  Resources in the scheduler.
         # The default DefaultResourceCalculator only uses Memory while DominantResourceCalculator
         #  uses dominant-resource to compare multi-dimensional resources such as Memory, CPU etc.
+        # (same as hadoop default)
         'yarn.scheduler.capacity.resource-calculator' => 'org.apache.hadoop.yarn.util.resource.DefaultResourceCalculator',
         # Number of missed scheduling opportunities after which the CapacityScheduler
         # attempts to schedule rack-local containers.
@@ -46,7 +48,9 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # 'yarn.scheduler.capacity.root.users.default.state' => 'STOPPED'
 
         # Queue definitions
-        # Sum of capacity (not max) needs to be 100 at any level/branch of the tree
+        # Sum of capacity (not max) needs to be 100 at any level/branch of the tree.
+        # The -1 value for maximum-capacity means no maximum. We set this to maximize
+        # usage elasticity.
         # First layer
         'yarn.scheduler.capacity.root.queues' => 'fifo,default,production,essential',
         'yarn.scheduler.capacity.root.fifo.capacity' => 5,
@@ -60,7 +64,7 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
 
         # Default mappings
         # PLEASE NOTE: use only the leaf queue names, not full path.
-        # Example: root.production.analytics BAD, analytics GOOD
+        # Example: root.production BAD, production GOOD
         'yarn.scheduler.capacity.queue-mappings' => 'u:druid:production,u:analytics:production,u:analytics-search:production,u:analytics-product:production,g:analytics-privatedata-users:default',
 
         # Limits
@@ -69,6 +73,7 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # The user limit factor is a multiplier used to allow users of a specific queue to take up to X
         # times the resource allocated (as min value) for the queue. It is needed to allow/control elasticity,
         # so users can overcome Yarn default limits in case there are free resources.
+        # Since fifo queue size is small, use a large limit-factor
         'yarn.scheduler.capacity.root.fifo.user-limit-factor' => 5,
         'yarn.scheduler.capacity.root.default.user-limit-factor' => 2,
         'yarn.scheduler.capacity.root.production.user-limit-factor' => 2,
@@ -80,7 +85,7 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # If we use '25', we'll allow a max of 4 different users, etc..
         'yarn.scheduler.capacity.root.fifo.minimum-user-limit-percent' => 100,
         'yarn.scheduler.capacity.root.default.minimum-user-limit-percent' => 10,
-        'yarn.scheduler.capacity.root.production.minimum-user-limit-percent' => 5,
+        'yarn.scheduler.capacity.root.production.minimum-user-limit-percent' => 20,
         'yarn.scheduler.capacity.root.essential.minimum-user-limit-percent' => 50,
 
         # Max lifetime for a Yarn application
@@ -107,6 +112,8 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # ACLs
         # Permissions cannot be reduced on the lower layer of the tree once set for a specific
         # queue, they can only be incremented.
+        # Note: permissions values are in the form 'users groups'. If no user is specified but a
+        #       group is, the value should start with a space
         'yarn.scheduler.capacity.root.acl_submit_applications' => ' ',
         'yarn.scheduler.capacity.root.acl_administer_queue' => ' ',
         'yarn.scheduler.capacity.root.fifo.acl_submit_applications' => ' analytics-privatedata-users',
