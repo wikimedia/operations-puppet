@@ -64,27 +64,27 @@
 
         # Increment per IP subscribe counter and set expiration to 60 minutes
         SecRule REQUEST_METHOD "POST" "id:1100,chain,pass,nolog"
-        SecRule REQUEST_URI "\/mailman\/subscribe.*" "setvar:IP.subscribecount=+1,expirevar:IP.subscribecount=3600"
+        SecRule REQUEST_URI "\/(postorius\/lists\/.*\/anonymous_subscribe|mailman\/subscribe.*)" "setvar:IP.subscribecount=+1,expirevar:IP.subscribecount=3600"
 
         # Throw a 429 if more than 5 POST requests to subscription URL from the same IP within 60 minutes
         SecRule IP:subscribecount "@gt 5" "id:1101,chain,deny,status:429,log,msg:'IP address %{REMOTE_ADDR} has been rate limited'"
         SecRule REQUEST_METHOD "POST" chain
-        SecRule REQUEST_URI "\/mailman\/subscribe.*"
+        SecRule REQUEST_URI "\/(postorius\/lists\/.*\/anonymous_subscribe|mailman\/subscribe.*)"
 
         # Set up a collection for email addresses ignoring "+" subaddress extensions and case
         # TX.1 and TX.2 are the $1 and $2 regex captures
         SecRule ARGS:email "(.*?)(?:\+.*)?(@.*)" "id:1200,pass,phase:2,t:lowercase,capture,nolog,chain,initcol:USER=%{TX.1}%{TX.2}"
         SecRule REQUEST_METHOD "POST" chain
-        SecRule REQUEST_URI "\/mailman\/subscribe.*"
+        SecRule REQUEST_URI "\/(postorius\/lists\/.*\/anonymous_subscribe|mailman\/subscribe.*)"
 
         # Increment per email address subscribe counter and set expiration to 60 minutes
         SecRule REQUEST_METHOD "POST" "id:1201,phase:2,chain,pass,nolog"
-        SecRule REQUEST_URI "\/mailman\/subscribe.*" "setvar:USER.subscribecount=+1,expirevar:USER.subscribecount=3600"
+        SecRule REQUEST_URI "\/(postorius\/lists\/.*\/anonymous_subscribe|mailman\/subscribe.*)" "setvar:USER.subscribecount=+1,expirevar:USER.subscribecount=3600"
 
         # Throw a 429 if more than 5 POST requests to subscription URL with the same email within 60 minutes
         SecRule USER:subscribecount "@gt 5" "id:1202,chain,deny,status:429,log,msg:'Email address %{ARGS.email} (collapsed to %{TX.1}%{TX.2}) has been rate limited'"
         SecRule REQUEST_METHOD "POST" chain
-        SecRule REQUEST_URI "\/mailman\/subscribe.*"
+        SecRule REQUEST_URI "\/(postorius\/lists\/.*\/anonymous_subscribe|mailman\/subscribe.*)"
 
         # Give a friendly-ish error message when rate limiting
         ErrorDocument 429 "You are doing that too often. Please try again later."
