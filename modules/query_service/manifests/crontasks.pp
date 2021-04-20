@@ -126,7 +126,7 @@ class query_service::crontasks(
       user    => 'root',        #we need to restart blazegraph, so we need sudo priviliges
       minute  => fqdn_rand(60),
       hour    => 7,
-      weekday => 1,
+      weekday => 2,
     }
 
     logrotate::rule { 'query-service-reload-categories':
