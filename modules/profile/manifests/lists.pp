@@ -228,7 +228,7 @@ class profile::lists (
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => 'puppet:///modules/icinga/check_mailman_queue.sh',
+        source => 'puppet:///modules/icinga/check_mailman_queue.py',
     }
 
     # Mtail program to gather smtp send duration and count
