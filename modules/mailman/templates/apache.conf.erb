@@ -51,12 +51,11 @@
         # Set up a collection for IP addresses
         SecAction "id:1000,phase:1,initcol:IP=%{REMOTE_ADDR},pass,nolog"
 
-        # Whitelist IPv4 addresses of monitoring hosts (icinga1001, icinga2001)
-        SecRule REMOTE_ADDR "208.80.153.74"  "id:1001,allow"
-        SecRule REMOTE_ADDR "208.80.154.84"  "id:1002,allow"
-        # Whitelist IPv4 addresses of monitoring hosts (alert1001, alert2001)
-        SecRule REMOTE_ADDR "208.80.154.88"  "id:1005,allow"
-        SecRule REMOTE_ADDR "208.80.153.84"  "id:1006,allow"
+        # Exempt IPv4 addresses of monitoring hosts
+        SecRule REMOTE_ADDR "208.80.153.74"  "id:1001,allow" # icinga2001.wikimedia.org
+        SecRule REMOTE_ADDR "208.80.154.84"  "id:1002,allow" # icinga1001.wikimedia.org
+        SecRule REMOTE_ADDR "208.80.154.88"  "id:1005,allow" # alert1001.wikimedia.org
+        SecRule REMOTE_ADDR "208.80.153.84"  "id:1006,allow" # alert2001.wikimedia.org
 
         # Increment per IP subscribe counter and set expiration to 60 minutes
         SecRule REQUEST_METHOD "POST" "id:1100,chain,pass,nolog"
