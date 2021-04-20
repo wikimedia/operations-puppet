@@ -1455,7 +1455,7 @@ node /^cloudcephosd10(0[1-9]|1[0-5])\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
 }
 # new hosts via T274945
-node /^cloudcephosd10(1[6-9]|20)\.wikimedia\.org$/ {
+node /^cloudcephosd10(1[6-9]|20)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 

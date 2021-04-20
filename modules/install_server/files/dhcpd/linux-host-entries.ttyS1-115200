@@ -817,27 +817,27 @@ host cloudcephosd1015 {
 
 host cloudcephosd1016 {
     hardware ethernet BC:97:E1:E2:01:40;
-    fixed-address cloudcephosd1016.wikimedia.org;
+    fixed-address cloudcephosd1016.eqiad.wmnet;
 }
 
 host cloudcephosd1017 {
     hardware ethernet BC:97:E1:E2:01:70;
-    fixed-address cloudcephosd1017.wikimedia.org;
+    fixed-address cloudcephosd1017.eqiad.wmnet;
 }
 
 host cloudcephosd1018 {
     hardware ethernet BC:97:E1:E2:01:50;
-    fixed-address cloudcephosd1018.wikimedia.org;
+    fixed-address cloudcephosd1018.eqiad.wmnet;
 }
 
 host cloudcephosd1019 {
     hardware ethernet BC:97:E1:E2:24:60;
-    fixed-address cloudcephosd1019.wikimedia.org;
+    fixed-address cloudcephosd1019.eqiad.wmnet;
 }
 
 host cloudcephosd1020 {
     hardware ethernet BC:97:E1:E2:01:A0;
-    fixed-address cloudcephosd1020.wikimedia.org;
+    fixed-address cloudcephosd1020.eqiad.wmnet;
 }
 
 host cloudcontrol1003 {
