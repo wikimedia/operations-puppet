@@ -54,9 +54,6 @@
         # Whitelist IPv4 addresses of monitoring hosts (icinga1001, icinga2001)
         SecRule REMOTE_ADDR "208.80.153.74"  "id:1001,allow"
         SecRule REMOTE_ADDR "208.80.154.84"  "id:1002,allow"
-        # Whitelist hackathon IP addresses (added 2018-07-18)
-        SecRule REMOTE_ADDR "197.101.76.150" "id:1003,allow"
-        SecRule REMOTE_ADDR "197.101.76.159" "id:1004,allow"
         # Whitelist IPv4 addresses of monitoring hosts (alert1001, alert2001)
         SecRule REMOTE_ADDR "208.80.154.88"  "id:1005,allow"
         SecRule REMOTE_ADDR "208.80.153.84"  "id:1006,allow"
