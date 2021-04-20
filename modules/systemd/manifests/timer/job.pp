@@ -141,12 +141,6 @@ define systemd::timer::job(
     # Sanitize the title for use on the filesystem
     $safe_title = regsubst($title, '[^\w\-]', '_', 'G')
 
-    # prepend command with '-' if ignoring errors
-    $_command = $ignore_errors ? {
-        true    => "-${command}",
-        default => $command,
-    }
-
     $input_intervals = $interval ? {
         Systemd::Timer::Schedule => [$interval],
         default                  => $interval,
