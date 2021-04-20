@@ -169,6 +169,11 @@ host etherpad1002 {
     fixed-address etherpad1002.eqiad.wmnet;
 }
 
+host eventlog1003 {
+    hardware ethernet aa:00:00:d7:bf:73;
+    fixed-address eventlog1003.eqiad.wmnet;
+}
+
 host failoid1001 {
     hardware ethernet aa:00:00:42:2c:99;
     fixed-address failoid1001.eqiad.wmnet;
