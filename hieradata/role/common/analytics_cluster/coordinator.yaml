@@ -85,7 +85,7 @@ profile::presto::server::catalogs:
       hive.parquet.fail-on-corrupted-statistics: false
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
-
+profile::analytics::database::meta::datadir: '/srv/sqldata'
 profile::analytics::database::meta::monitoring_enabled: true
 profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS (@resolve((db1108.eqiad.wmnet)) @resolve((db1108.eqiad.wmnet), AAAA))))'
 profile::analytics::database::meta::innodb_pool_size: '8G'
