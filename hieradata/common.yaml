@@ -797,16 +797,17 @@ hadoop_clusters:
     yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
     mapreduce_history_java_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10086:/etc/prometheus/mapreduce_history_jmx_exporter.yaml"
 
+    core_site_extra_properties:
+      # User used in the Yarn UI to check job logs/statuses/etc..
+      hadoop.http.staticuser.user: 'yarn'
+
     yarn_site_extra_properties:
       yarn.resourcemanager.scheduler.class: 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler'
       yarn.resourcemanager.scheduler.monitor.enable: true
       # Note: the extra space at the beginning is needed.
       # If you enable ACLs the admin list is "everybody" by default, so the rules are not
       # really respected if we don't set a more specific group.
-      # The 'dr.who' user is the one running (by default) the yarn.wikimedia.org's UI.
-      # Since we don't need authentication in there, a special permission is needed (when ACLs are set)
-      # to be able to inspect jobs in the UI.
-      yarn.admin.acl: 'dr.who analytics-admins'
+      yarn.admin.acl: ' analytics-admins'
       yarn.acl.enable: true
 
     hdfs_site_extra_properties:
