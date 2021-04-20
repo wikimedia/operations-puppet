@@ -55,6 +55,7 @@ def main() -> int:
             + ", ".join(critical_queues)
         )
         return 2
+    print("OK: mailman2 queues are below the limits")
     return 0
 
 
