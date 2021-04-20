@@ -3,12 +3,13 @@
 # native k8s support.
 
 class profile::toolforge::prometheus (
-    Stdlib::Fqdn  $new_k8s_apiserver_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
-    Stdlib::Fqdn  $paws_apiserver_fqdn    = lookup('profile::wmcs::paws::k8s::apiserver_fqdn', {default_value => 'k8s.svc.paws.eqiad1.wikimedia.cloud'}),
-    Stdlib::Port  $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
-    Stdlib::Port  $paws_apiserver_port    = lookup('profile::wmcs::paws::apiserver_port',     {default_value => 6443}),
-    Array[Stdlib::Fqdn] $proxies          = lookup('profile::toolforge::proxies',             {default_value => ['tools-proxy-05.tools.eqiad.wmflabs']}),
-    Stdlib::Fqdn  $email_server           = lookup('profile::toolforge::active_mail_relay',   {default_value => 'tools-mail-02.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Fqdn               $new_k8s_apiserver_fqdn = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Fqdn               $paws_apiserver_fqdn    = lookup('profile::wmcs::paws::k8s::apiserver_fqdn', {default_value => 'k8s.svc.paws.eqiad1.wikimedia.cloud'}),
+    Stdlib::Port               $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
+    Stdlib::Port               $paws_apiserver_port    = lookup('profile::wmcs::paws::apiserver_port',     {default_value => 6443}),
+    Array[Stdlib::Fqdn]        $proxies                = lookup('profile::toolforge::proxies',             {default_value => ['tools-proxy-05.tools.eqiad.wmflabs']}),
+    Stdlib::Fqdn               $email_server           = lookup('profile::toolforge::active_mail_relay',   {default_value => 'tools-mail-02.tools.eqiad1.wikimedia.cloud'}),
+    Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::toolforge::prometheus::storage_retention_size',   {default_value => undef}),
 ) {
     require ::profile::labs::lvm::srv
     include ::profile::prometheus::blackbox_exporter
@@ -45,9 +46,10 @@ class profile::toolforge::prometheus (
     }
 
     prometheus::server { 'tools':
-        listen_address       => '127.0.0.1:9902',
-        external_url         => 'https://tools-prometheus.wmflabs.org/tools',
-        scrape_configs_extra => [
+        listen_address         => '127.0.0.1:9902',
+        external_url           => 'https://tools-prometheus.wmflabs.org/tools',
+        storage_retention_size => $storage_retention_size,
+        scrape_configs_extra   => [
             {
                 'job_name'        => 'ssh_banner',
                 'metrics_path'    => '/probe',
