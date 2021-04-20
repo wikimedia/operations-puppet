@@ -114,9 +114,14 @@
     Alias /pipermail/ "/var/lib/mailman/archives/public/"
     Alias /images/    "/usr/share/images/"
 
-    RedirectMatch permanent ^/(index\.html?)?$ https://<%= @lists_servername %>/mailman/listinfo
-    RedirectMatch permanent ^/mailman/$        https://<%= @lists_servername %>/mailman/listinfo
-
+    <% if @enable_mm3 %>
+    RedirectMatch permanent ^/(index\.html?)?$ https://<%= @lists_servername %>/postorius/lists/
+    # Temporary during mailman2 transition, will eventually point to postorius
+    RedirectMatch temp ^/mailman/$        https://<%= @lists_servername %>/mailman/listinfo
+    <% else %>
+    RedirectMatch temp ^/(index\.html?)?$ https://<%= @lists_servername %>/mailman/listinfo
+    RedirectMatch temp ^/mailman/$        https://<%= @lists_servername %>/mailman/listinfo
+    <% end %>
     # arbcom-l paranoia. Contact Tim Starling for details/rationale
     <LocationMatch "^/mailman/(private|admin)/arbcom-l(/.*|$)">
         AuthType Digest
