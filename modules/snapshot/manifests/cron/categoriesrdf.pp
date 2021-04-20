@@ -34,7 +34,7 @@ class snapshot::cron::categoriesrdf(
         }
 
         cron { 'categoriesrdf-dump':
-            ensure      => 'present',
+            ensure      => absent,
             command     => "${scriptpath} --config ${confsdir}/wikidump.conf.other --list ${apachedir}/dblists/categories-rdf.dblist",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
@@ -42,6 +42,17 @@ class snapshot::cron::categoriesrdf(
             hour        => '20',
             weekday     => '6',
             require     => File[$scriptpath],
+        }
+        systemd::timer::job { 'categoriesrdf-dump':
+            ensure             => present,
+            description        => 'Regular jobs to build rdf snapshot of categories',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => "${scriptpath} --config ${confsdir}/wikidump.conf.other --list ${apachedir}/dblists/categories-rdf.dblist",
+            interval           => {'start' => 'OnCalendar', 'interval' => 'Sat *-*-* 20:0:0'},
+            require            => File[$scriptpath],
         }
     }
 
@@ -56,13 +67,24 @@ class snapshot::cron::categoriesrdf(
 
     if !$filesonly {
         cron { 'categoriesrdf-dump-daily':
-            ensure      => 'present',
+            ensure      => absent,
             command     => "${scriptpath_daily} --config ${confsdir}/wikidump.conf.other --list ${apachedir}/dblists/categories-rdf.dblist",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             minute      => '0',
             hour        => '5',
             require     => File[$scriptpath_daily],
+        }
+        systemd::timer::job { 'categoriesrdf-dump-daily':
+            ensure             => present,
+            description        => 'Regular jobs to build daily rdf snapshot of categories',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => "${scriptpath_daily} --config ${confsdir}/wikidump.conf.other --list ${apachedir}/dblists/categories-rdf.dblist",
+            interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 5:0:0'},
+            require            => File[$scriptpath_daily],
         }
     }
 }
