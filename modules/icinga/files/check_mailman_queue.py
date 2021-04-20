@@ -34,13 +34,17 @@ def parse_args():
         parser.add_argument(
             f"{queue}_limit", type=int, help=f"Limit of the {queue} queue"
         )
+    parser.add_argument("--mailman3", action="store_true", help="Monitor mailman3 instead")
     parser.add_argument("--debug", action="store_true", help="Enable debug output")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    mailman_base = Path("/var/lib/mailman/qfiles")
+    if args.mailman3:
+        mailman_base = Path("/var/lib/mailman3/queue")
+    else:
+        mailman_base = Path("/var/lib/mailman/qfiles")
     critical_queues = []
     for queue in QUEUES:
         size = len(list((mailman_base / queue).iterdir()))
@@ -49,13 +53,14 @@ def main() -> int:
             print(f"{queue}: {size} (limit: {limit})")
         if size > limit:
             critical_queues.append(f"{queue} is {size} (limit: {limit})")
+    version = "mailman3" if args.mailman3 else "mailman2"
     if critical_queues:
         print(
-            f"CRITICAL: {len(critical_queues)} mailman2 queues above limits: "
+            f"CRITICAL: {len(critical_queues)} {version} queues above limits: "
             + ", ".join(critical_queues)
         )
         return 2
-    print("OK: mailman2 queues are below the limits")
+    print(f"OK: {version} queues are below the limits")
     return 0
 
 

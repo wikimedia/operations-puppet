@@ -141,6 +141,25 @@ class profile::mailman3 (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
     }
 
+    file { '/usr/local/lib/nagios/plugins/check_mailman_queue':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/icinga/check_mailman_queue.py',
+    }
+
+    sudo::user { 'nagios_mailman3_queue':
+        user       => 'nagios',
+        privileges => ['ALL = (list) NOPASSWD: /usr/local/lib/nagios/plugins/check_mailman_queue'],
+    }
+
+    nrpe::monitor_service { 'mailman3_queue':
+        description  => 'mailman3_queue_size',
+        nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+    }
+
     # rsync from mailman2 to allow importing archives
     if $mailman2_host {
         class { '::mailman3::import_test':

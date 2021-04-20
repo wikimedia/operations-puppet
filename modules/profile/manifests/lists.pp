@@ -176,6 +176,12 @@ class profile::lists (
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 2:2 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
                 notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
             }
+
+            nrpe::monitor_service { 'mailman3_queue':
+                description  => 'mailman3_queue_size',
+                nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+            }
         }
 
         # rsync from primary to mailman3 host
