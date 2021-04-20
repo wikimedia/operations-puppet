@@ -127,6 +127,20 @@ class profile::mailman3 (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
     }
 
+    # mailman3 service
+    nrpe::monitor_service { 'procs_mailman3':
+        description  => 'mailman3',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman3/bin/master\'',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+    }
+
+    # uwsgi powering mailman3
+    nrpe::monitor_service { 'procs_mailman3_web':
+        description  => 'mailman3-web',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 2:2 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+    }
+
     # rsync from mailman2 to allow importing archives
     if $mailman2_host {
         class { '::mailman3::import_test':
