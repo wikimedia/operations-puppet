@@ -10,14 +10,10 @@ class role::lists {
     include profile::lists
     include profile::lists::jobs
     include profile::locales::extended
-    $cgi = debian::codename::lt('stretch') ? {
-        true    => 'cgi',
-        default => 'cgid',
-    }
     class { 'httpd':
         modules => [
             'ssl',
-            $cgi,
+            'cgid',
             'headers',
             'rewrite',
             'alias',
