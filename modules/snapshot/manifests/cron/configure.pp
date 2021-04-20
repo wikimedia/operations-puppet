@@ -23,7 +23,7 @@ class snapshot::cron::configure(
             shards   => 8,
             # when updating these size sanity checks, look at current production sizes of
             # ttl json filesizes, since those are smallest
-            fileSizes => 'mediainfo:15000000000',
+            fileSizes => 'mediainfo:1500000000',
             pagesPerBatch => 200000,
         },
     }
