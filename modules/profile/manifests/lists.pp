@@ -182,6 +182,16 @@ class profile::lists (
                 nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
                 notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
             }
+
+            prometheus::node_file_count {'track mailman3 queue depths':
+                paths   => [
+                    '/var/lib/mailman3/queue/in',
+                    '/var/lib/mailman3/queue/bounces',
+                    '/var/lib/mailman3/queue/virgin',
+                    '/var/lib/mailman3/queue/out',
+                ],
+                outfile => '/var/lib/prometheus/node.d/mailman3_queues.prom'
+            }
         }
 
         # rsync from primary to mailman3 host

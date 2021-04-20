@@ -160,6 +160,17 @@ class profile::mailman3 (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
     }
 
+    prometheus::node_file_count {'track mailman3 queue depths':
+        paths   => [
+            '/var/lib/mailman3/queue/in',
+            '/var/lib/mailman3/queue/bounces',
+            '/var/lib/mailman3/queue/virgin',
+            '/var/lib/mailman3/queue/out',
+        ],
+        outfile => '/var/lib/prometheus/node.d/mailman3_queues.prom'
+    }
+
+
     # rsync from mailman2 to allow importing archives
     if $mailman2_host {
         class { '::mailman3::import_test':
