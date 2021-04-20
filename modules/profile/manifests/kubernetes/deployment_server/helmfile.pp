@@ -8,35 +8,19 @@ class profile::kubernetes::deployment_server::helmfile(
     Hash[String, Any] $default_secrets=lookup('profile::kubernetes::deployment_server_secrets::defaults', {'default_value' => {}}),
 
 ){
+    # Add the global configuration for all deployments.
     require ::profile::kubernetes::deployment_server::global_config
-    ensure_packages(['helmfile', 'helm-diff'])
 
+    # Install helmfile and the repository containing helmfile deployments.
+    class { 'helmfile': }
+    class { 'helmfile::repository':
+        repository => 'operations/deployment-charts',
+        srcdir     => '/srv/deployment-charts'
+    }
+
+
+    # Install the private values for each deployment.
     $general_private_dir = "${::profile::kubernetes::deployment_server::global_config::general_dir}/private"
-    # logging script needed for sal on helmfile
-    file { '/usr/local/bin/helmfile_log_sal':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/kubernetes/helmfile_log_sal.sh',
-    }
-
-    git::clone { 'operations/deployment-charts':
-        ensure    => 'present',
-        directory => '/srv/deployment-charts',
-    }
-
-    systemd::timer::job { 'git_pull_charts':
-        ensure          => present,
-        description     => 'Pull changes on deployment-charts repo',
-        command         => '/bin/bash -c "cd /srv/deployment-charts && /usr/bin/git pull >/dev/null 2>&1"',
-        interval        => {
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:*:00', # every minute
-        },
-        logging_enabled => false,
-        user            => 'root',
-    }
 
 
     $merged_services = deep_merge($services, $services_secrets).filter|String $svcname, Hash $data| {

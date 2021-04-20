@@ -59,11 +59,7 @@ class profile::kubernetes::deployment_server::global_config(
             }.filter |$key, $val| { $val =~ NotUndef }
         }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
-    # TODO: remove this
-    file { '/etc/helmfile-defaults/service-proxy.yaml':
-        ensure  => absent,
-        content => to_yaml({'services_proxy' => $proxies}),
-    }
+
     # Per-cluster general defaults.
     $clusters.each |String $environment, $dc| {
         $puppet_ca_data = file($facts['puppet_config']['localcacert'])
@@ -98,7 +94,7 @@ class profile::kubernetes::deployment_server::global_config(
         group  => 'root',
         mode   => '0755'
     }
-    # Generate the apache-config defining yaml, and save it to 
+    # Generate the apache-config defining yaml, and save it to
     # $general_dir/mediawiki/httpd.yaml
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
     $all_sites = $mediawiki_sites + $common_sites
