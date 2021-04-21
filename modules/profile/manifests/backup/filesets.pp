@@ -53,6 +53,15 @@ class profile::backup::filesets() {
         includes => [ '/var/lib/mailman' ],
         excludes => $::profile::lists::exclude_backups::exclude_backups_list,
     }
+    bacula::director::fileset { 'var-lib-mailman3':
+        includes => [ '/var/lib/mailman3' ],
+        excludes => [
+            # In progress digests, see T279237#7025093
+            '/var/lib/mailman3/lists/*/digest.mmdf',
+            # Packaged stuff
+            '/var/lib/mailman3/web/static/',
+        ],
+    }
     bacula::director::fileset { 'var-lib-puppet-ssl':
         includes => [ '/var/lib/puppet/ssl', '/var/lib/puppet/server/ssl' ]
     }

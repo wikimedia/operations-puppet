@@ -116,6 +116,10 @@ class profile::lists (
 
     backup::set { 'var-lib-mailman': }
 
+    if $enable_mm3 {
+        backup::set { 'var-lib-mailman3': }
+    }
+
     if $primary_host and $standby_host {
         rsync::quickdatacopy { 'var-lib-mailman':
             source_host         => $primary_host,
