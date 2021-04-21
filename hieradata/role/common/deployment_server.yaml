@@ -360,8 +360,13 @@ profile::kubernetes::deployment_server::services:
     username: shellbox
     group: wikidev
     namespace: shellbox
+  miscweb:
+    username: miscweb
+    group: wikidev
+    namespace: miscweb
     mode: '0640'
     owner: mwdeploy
+
 profile::kubernetes::deployment_server::packages_from_future: true
 # Default and environment specific generic values go here.
 # default:
@@ -426,6 +431,9 @@ profile::kubernetes::deployment_server::general:
 #  shellbox:
 #    token: dummy
 #
+#  miscweb:
+#    token: dummy
+
 # Specified in the private repo in this form
 #
 # Environment specific default secrets for services
