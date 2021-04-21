@@ -177,6 +177,7 @@ host failoid1001 {
 host failoid1002 {
     hardware ethernet aa:00:00:b9:69:5c;
     fixed-address failoid1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host failoid2001 {
@@ -187,6 +188,7 @@ host failoid2001 {
 host failoid2002 {
     hardware ethernet aa:00:00:f7:fe:7c;
     fixed-address failoid2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host flowspec1001 {
