@@ -133,8 +133,10 @@ class profile::analytics::refinery::job::refine_sanitize(
     # }
 
     # == sanitize_eventlogging_analytics
-    # TODO: sanitize_eventlogging_analytics WILL BE DEPRECATED IN FAVOR OF event_sanitized_analytics
-    # See: https://phabricator.wikimedia.org/T273789
+    # TODO: This job is ensured absent until we finish renaming event_sanitized tables as part of
+    # https://phabricator.wikimedia.org/T280813.  After that we will replace these jobs with the
+    # event_sanitized_* jobs above.
+    # See also: https://phabricator.wikimedia.org/T273789
     #
     # EventLoggingSanitization. Runs in two steps: immediate and delayed.
     # Common parameters for both jobs:
@@ -152,6 +154,7 @@ class profile::analytics::refinery::job::refine_sanitize(
     # Execute 1st sanitization pass, right after data collection. Runs once per hour.
     # Job starts a couple minutes after the hour, to leave time for the salt files to be updated.
     profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_immediate':
+        ensure           => 'absent',
         interval         => '*-*-* *:02:00',
         # TODO: We need to use the old jar version with EventLoggingSanitization until we rename the output database parittion directories to lowercase.
         # After that is done, we can switch to the event_sanitized_analytics job above and remove this one.
@@ -163,6 +166,7 @@ class profile::analytics::refinery::job::refine_sanitize(
     # Execute 2nd sanitization pass, after 45 days of collection.
     # Runs once per day at a less busy time.
     profile::analytics::refinery::job::refine_job { 'sanitize_eventlogging_analytics_delayed':
+        ensure           => 'absent',
         interval         => '*-*-* 06:00:00',
         refinery_job_jar => "${refinery_path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-0.1.2.jar",
         job_class        => 'org.wikimedia.analytics.refinery.job.refine.EventLoggingSanitization',
