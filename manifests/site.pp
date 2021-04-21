@@ -215,6 +215,11 @@ node 'backup2003.codfw.wmnet' {
     role(insetup)
 }
 
+# codfw new backup nodes T277323
+node /^backup200[4567]\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # New bastion in Virginia T276396
 node 'bast1003.wikimedia.org' {
     role(bastionhost)

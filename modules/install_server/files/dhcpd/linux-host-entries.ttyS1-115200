@@ -644,6 +644,16 @@ host backup2003 {
     fixed-address backup2003.codfw.wmnet;
 }
 
+host backup2004 {
+    hardware ethernet 2C:EA:7F:94:92:1C;
+    fixed-address backup2004.codfw.wmnet;
+}
+
+host backup2007 {
+    hardware ethernet 2C:EA:7F:94:8E:3C;
+    fixed-address backup2007.codfw.wmnet;
+}
+
 host bast1003 {
     hardware ethernet 2C:EA:7F:88:08:5C;
     fixed-address bast1003.wikimedia.org;
