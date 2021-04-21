@@ -1,2 +1,2 @@
-profile::debmonitor::client::ssl_ca: 'cfssl'
+profile::debmonitor::client::ssl_ca: 'puppet'
 profile::debmonitor::client::ssl_ca_label: 'debmonitor_discovery_wmnet'
