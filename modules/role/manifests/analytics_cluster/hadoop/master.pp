@@ -11,16 +11,13 @@ class role::analytics_cluster::hadoop::master {
     include ::profile::hadoop::master
     include ::profile::analytics::cluster::users
     include ::profile::hadoop::firewall::master
-
     # This needs to be included only on single Hadoop node.
     include ::profile::analytics::cluster::secrets
-
+    include ::profile::analytics::cluster::hadoop::yarn_capacity_scheduler
     # Set up druid cluster deep storage directories.
     include ::profile::analytics::cluster::druid_deep_storage
-
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
-
     include ::profile::base::firewall
     include ::profile::base::linux419
     include ::profile::standard

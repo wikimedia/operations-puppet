@@ -10,6 +10,7 @@ class role::analytics_cluster::hadoop::standby {
     include ::profile::java
     include ::profile::hadoop::common
     include ::profile::hadoop::master::standby
+    include ::profile::analytics::cluster::hadoop::yarn_capacity_scheduler
     include ::profile::hadoop::firewall::master
     include ::profile::analytics::cluster::users
     include ::profile::hadoop::backup::namenode

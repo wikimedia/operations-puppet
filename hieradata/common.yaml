@@ -921,15 +921,20 @@ hadoop_clusters:
       an-worker1116.eqiad.wmnet:  /eqiad/D/7
       analytics1069.eqiad.wmnet:  /eqiad/D/8
 
-    yarn_fair_scheduler_template: 'profile/hadoop/fair-scheduler.xml.erb'
+    core_site_extra_properties:
+      # User used in the Yarn UI to check job logs/statuses/etc..
+      hadoop.http.staticuser.user: 'yarn'
+
     yarn_site_extra_properties:
-      # Enable FairScheduler preemption. This will allow the essential queue
-      # to preempt non-essential jobs.
-      yarn.scheduler.fair.preemption: true
-      # Let YARN wait for at least 1/3 of nodes to present scheduling
-      # opportunties before scheduling a job for certain data
-      # on a node on which that data is not present.
-      yarn.scheduler.fair.locality.threshold.node: '0.33'
+      yarn.resourcemanager.scheduler.class: 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler'
+      yarn.resourcemanager.scheduler.monitor.enable: true
+      # Note: the extra space at the beginning is needed.
+      # If you enable ACLs the admin list is "everybody" by default, so the rules are not
+      # really respected if we don't set a more specific group.
+      # The 'hadoop.http.staticuser.user' needs to be among the admins to allow various UIs
+      # to see Yarn logs.
+      yarn.admin.acl: 'yarn analytics-admins'
+      yarn.acl.enable: true
 
     # The datanode daemon by default begins the shutdown procedure as soon as
     # on volume/disk failure is registered. In our use case we want to keep the
