@@ -131,3 +131,11 @@ profile::ceph::osd::hosts:
       addr: '192.168.4.15'
       prefix: '24'
       iface: 'ens3f1np1'
+  'cloudcephosd1016.eqiad.wmnet':
+    public:
+      addr: '10.64.20.13'
+      iface: 'ens3f0np0'
+    cluster:
+      addr: '192.168.4.16'
+      prefix: '24'
+      iface: 'ens3f1np1'
