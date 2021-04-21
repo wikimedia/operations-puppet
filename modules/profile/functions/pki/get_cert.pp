@@ -17,9 +17,11 @@ function profile::pki::get_cert(
     fail('profile::pki::client::ensure must be present to use this function')
   }
   $safe_title = "${label}__${common_name}".regsubst('[^\w\-]', '_', 'G')
+  $safe_label = $label.regsubst('\W', '_', 'G')
+
   ensure_resource('cfssl::cert', $safe_title, $additional_params + {
     'common_name' => $common_name,
-    'label'       => $label,
+    'label'       => $safe_label,
   })
   $outdir = $additional_params['outdir'] ? {
     undef   => "${cfssl::ssl_dir}/${safe_title}",
@@ -30,7 +32,7 @@ function profile::pki::get_cert(
     'key' => "${outdir}/${safe_title}-key.pem",
   }
   pick($additional_params['provide_chain'], false) ? {
-    true    => {'ca' => "${outdir}/${label}_chain.pem"} + $paths,
+    true    => {'ca' => "${outdir}/${safe_label}_chain.pem"} + $paths,
     default => $paths,
   }
 }

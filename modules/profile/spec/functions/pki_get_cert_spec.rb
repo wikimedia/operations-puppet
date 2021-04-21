@@ -4,6 +4,10 @@ paths = {
       "cert" => "/etc/cfssl/ssl/foo__foo_example_com/foo__foo_example_com.pem",
       "key"  => "/etc/cfssl/ssl/foo__foo_example_com/foo__foo_example_com-key.pem"
   },
+  'fqdn.unsafe.label' => {
+      "cert" => "/etc/cfssl/ssl/fqdn_unsafe_label__foo_example_com/fqdn_unsafe_label__foo_example_com.pem",
+      "key"  => "/etc/cfssl/ssl/fqdn_unsafe_label__foo_example_com/fqdn_unsafe_label__foo_example_com-key.pem"
+  },
   'fqdn' => {
       "cert" => "/etc/cfssl/ssl/foo__foobar/foo__foobar.pem",
       "key"  => "/etc/cfssl/ssl/foo__foobar/foo__foobar-key.pem"
@@ -31,6 +35,7 @@ describe 'profile::pki::get_cert' do
       let(:pre_condition) { 'class{"profile::pki::client": ensure => "present"}' }
 
       it { is_expected.to run.with_params('foo').and_return(paths['default']) }
+      it { is_expected.to run.with_params('fqdn.unsafe.label').and_return(paths['fqdn.unsafe.label']) }
       it { is_expected.to run.with_params('foo', 'foobar').and_return(paths['fqdn']) }
       it do
         is_expected.to run.with_params('foo', 'foobar', {'outdir' => '/foobar'})
