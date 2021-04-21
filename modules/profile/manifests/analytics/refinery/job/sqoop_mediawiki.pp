@@ -20,8 +20,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
 
     $output_directory_labs      = '/wmf/data/raw/mediawiki/tables'
     $output_directory_private   = '/wmf/data/raw/mediawiki_private/tables'
-    $wiki_file_labs             = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/labs_grouped_wikis.csv'
-    $wiki_file_private          = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/prod_grouped_wikis.csv'
+    $wiki_file                  = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/grouped_wikis.csv'
     # We sqoop most tables out of labsdb so that data is pre-sanitized.
     $labs_db_user               = $::passwords::mysql::analytics_labsdb::user
     $labs_log_file              = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki.log"
