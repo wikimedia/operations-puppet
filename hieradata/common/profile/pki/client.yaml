@@ -1,4 +1,4 @@
-profile::pki::client::ensure: absent
+profile::pki::client::ensure: present
 profile::pki::client::signer_host: pki.discovery.wmnet
 profile::pki::client::signer_port: 443
 profile::pki::client::enable_proxy: false
