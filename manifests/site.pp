@@ -1253,6 +1253,11 @@ node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::net)
 }
 
+# New cloudnet server T275676
+node 'cloudnet2004-dev.codfw.wmnet' {
+    role(insetup)
+}
+
 node 'clouddb2001-dev.codfw.wmnet' {
     role(wmcs::openstack::codfw1dev::db)
 }

@@ -4239,6 +4239,11 @@ host cloudnet2002-dev {
     fixed-address cloudnet2002-dev.codfw.wmnet;
 }
 
+host cloudnet2004-dev {
+    hardware ethernet 2C:EA:7F:88:30:6E;
+    fixed-address cloudnet2004-dev.codfw.wmnet;
+}
+
 host cloudcephmon2003-dev {
     hardware ethernet 30:e1:71:63:5e:5c;
     fixed-address cloudcephmon2003-dev.codfw.wmnet;
