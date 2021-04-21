@@ -1123,7 +1123,7 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
 }
 
 node /^failoid[12]002\.(eqiad|codfw)\.wmnet$/ {
-    role(insetup)
+    role(failoid)
 }
 
 # New hosts to refresh db1074-db1095 T264584 T267043
