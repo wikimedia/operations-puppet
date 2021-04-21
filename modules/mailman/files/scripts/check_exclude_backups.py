@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import json
 from pathlib import Path
 import subprocess
+import sys
 from typing import List
 
 
@@ -39,7 +40,7 @@ def is_archiving_disabled(listname) -> bool:
     return b"archive = 0" in config
 
 
-def main():
+def main() -> int:
     exclude_backups = set(json.loads(Path('/etc/exclude_backups_list.json').read_text()))
     archiving_disabled = set()
     for listname in get_all_lists():
@@ -57,7 +58,9 @@ def main():
             print("The following have archiving disabled but aren't in exclude_backups\n")
             print("\n".join(exclude_missing))
             print("\n")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
