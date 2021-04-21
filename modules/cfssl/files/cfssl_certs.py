@@ -50,6 +50,10 @@ def get_args():
     )
     check_parser.add_argument('-l', '--long_output', action='store_true')
     check_parser.add_argument('ca_label')
+
+    list_parser = sub.add_parser('list', help='list details about certificates')
+    list_parser.add_argument('-R', '--only-recent', action='store_true')
+    list_parser.add_argument('ca_label', nargs='*')
     return parser.parse_args()
 
 
@@ -103,6 +107,56 @@ def insert_certificate(db_conn, certificate):
     db_conn.commit()
 
 
+def filter_recent(certs):
+    """Filter a n array of certs and return only
+    the most recent for a CN/subject"""
+    epoch = datetime.fromtimestamp(0)
+    results = defaultdict(dict)
+
+    for cert in certs:
+        hash_key = (
+            cert['x509'].subject.rfc4514_string() + cert['x509'].issuer.rfc4514_string()
+        )
+        if results[hash_key].get('expiry', epoch) > cert['expiry']:
+            continue
+        results[hash_key] = cert
+    return results.values()
+
+
+def get_certificates(db_conn, only_recent=True, ca_label=None):
+    """Get a list of certificates"""
+    sql = 'SELECT pem, expiry FROM `certificates`'
+    certs = []
+    logging.debug('Fetching certs')
+    with db_conn.cursor() as cursor:
+        if ca_label is not None:
+            sql = sql + '  WHERE `ca_label` = %s'
+            cursor.execute(sql, ca_label)
+        else:
+            cursor.execute(sql)
+        for cert in cursor.fetchall():
+            parsed_x509 = x509.load_pem_x509_certificate(cert['pem'], default_backend())
+            certs.append(
+                {
+                    'x509': parsed_x509,
+                    'expiry': cert['expiry'],
+                }
+            )
+    if only_recent:
+        return filter_recent(certs)
+    return certs
+
+
+def list_certificates(db_conn, only_recent=False, ca_label=None):
+    """print details about the current certs"""
+    for cert in get_certificates(db_conn, only_recent, ca_label):
+        print(
+            f'{cert["x509"].subject.rfc4514_string()}: '
+            f'expires {cert["x509"].not_valid_after} , '
+            f'issuer {cert["x509"].issuer.rfc4514_string()}'
+        )
+
+
 def get_certificates_expire_state(db_conn, warning, critical, ca_label):
     """check the certificate database for expiring certificates
 
@@ -118,30 +172,16 @@ def get_certificates_expire_state(db_conn, warning, critical, ca_label):
     now = datetime.now()
     warning_date = now + timedelta(days=warning)
     critical_date = now + timedelta(days=critical)
-    sql = 'SELECT pem, expiry FROM `certificates` WHERE `ca_label` = %s'
-    logging.debug('Fetching certs')
-    certs = defaultdict(dict)
-    epoch = datetime.fromtimestamp(0)
-    with db_conn.cursor() as cursor:
-        cursor.execute(sql, ca_label)
-        for cert in cursor.fetchall():
-            logging.debug(cert)
-            pem = x509.load_pem_x509_certificate(cert['pem'], default_backend())
-            # CFSSL dosn;t clean up old certs so we need to make sure to check
-            # the most recent cert
-            if certs.get(pem.subject, {}).get('expiry', epoch) > cert['expiry']:
-                continue
-            certs[pem.subject]['expiry'] = cert['expiry']
-            certs[pem.subject]['pem'] = pem
-    for cert in certs.values():
+
+    for cert in get_certificates(db_conn, True, ca_label):
         if cert['expiry'] < now:
-            results['expired'].append(cert['pem'])
+            results['expired'].append(cert['x509'])
         elif cert['expiry'] < critical_date:
-            results['critical'].append(cert['pem'])
+            results['critical'].append(cert['x509'])
         elif cert['expiry'] < warning_date:
-            results['warning'].append(cert['pem'])
+            results['warning'].append(cert['x509'])
         else:
-            logging.debug('%s: OK', cert['pem'].subject.rfc4514_string())
+            logging.debug('%s: OK', cert['x509'].subject.rfc4514_string())
     return results
 
 
@@ -220,6 +260,8 @@ def main():
             return icinga_report(
                 certs_state, args.warning, args.critical, args.long_output
             )
+        elif args.command == 'list':
+            list_certificates(db_conn, args.only_recent, args.ca_label)
     except pymysql.Error as error:
         logging.error('issue with SQL query: %s', error)
         if args.command == 'check':
