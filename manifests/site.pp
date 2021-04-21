@@ -1189,6 +1189,10 @@ node 'etherpad1002.eqiad.wmnet' {
 node 'eventlog1002.eqiad.wmnet' {
     role(eventlogging::analytics)
 }
+# evenlog1002 replacement - currently in setup T280679
+node 'eventlog1003.eqiad.wmnet' {
+    role(insetup)
+}
 
 # virtual machine for mailman list server
 node 'lists1001.wikimedia.org' {
