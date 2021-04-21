@@ -7,7 +7,10 @@
     RewriteRule ^/(?!hyperkitty/)(.*)$ https://<%= @lists_servername %>/$1 [R=301]
     <% if @enable_mm3 %>
     <IfModule mod_proxy_uwsgi.c>
-        ProxyPass /hyperkitty unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/hyperkitty
+        # Note: even though this looks like it's going to pass all traffic over
+        # to mailman3-web, the above rewrite will send all non-hyperkitty paths
+        # to HTTPS. So only hyperkitty will be served through this.
+        ProxyPass / unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
     </IfModule>
     <% end %>
 </VirtualHost>
@@ -39,9 +42,7 @@
     <IfModule mod_proxy_uwsgi.c>
         ProxyPass /mailman3/favicon.ico !
         ProxyPass /mailman3/static !
-        ProxyPass /mailman3 unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/mailman3
-        ProxyPass /hyperkitty unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/hyperkitty
-        ProxyPass /postorius unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/postorius
+        ProxyPassMatch "^/(accounts|mailman3|hyperkitty|postorius)/" unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
     </IfModule>
     <% end %>
     <IfModule security2_module>
