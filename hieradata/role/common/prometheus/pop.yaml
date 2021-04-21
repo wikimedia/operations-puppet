@@ -7,3 +7,4 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
+prometheus::server::storage_retention: '2900h' # 4 months
