@@ -1117,6 +1117,10 @@ node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
 }
 
+node /^failoid[12]002\.(eqiad|codfw)\.wmnet$/ {
+    role(insetup)
+}
+
 # New hosts to refresh db1074-db1095 T264584 T267043
 # 9 expansion hosts T273566
 # 2 hosts (db1154 and db1155) will be used to temporary test sanitarium upgrades to 10.4 T268742
