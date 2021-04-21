@@ -11,4 +11,22 @@ mtail::logs:
 mtail::group: 'adm'
 profile::lists::primary_host: 'lists1001.wikimedia.org'
 #profile::lists::standby_host: ''
+
+# Mailman3 is not enabled yet
+profile::lists::enable_mm3: false
+profile::mailman3::acme_chief_cert: lists
+
+profile::mailman3::db_host: m5-master.eqiad.wmnet
+profile::mailman3::db_name: mailman3
+profile::mailman3::db_user: mailman3
+#profile::mailman3::db_password -- set in private repo
+profile::mailman3::web::db_name: mailman3web
+profile::mailman3::web::db_user: mailman3web
+#profile::mailman3::web::db_password -- set in private repo
+
+#profile::mailman3::api_password -- set in private repo
+#profile::mailman3::web::secret -- set in private repo
+#profile::mailman3::archiver_key -- set in private repo
+
+# This is just to open up a rsync to lists1002 (mailman3::import_test)
 profile::lists::mailman3_host: 'lists1002.wikimedia.org'
