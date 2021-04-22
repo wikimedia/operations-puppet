@@ -12,7 +12,7 @@ class snapshot::cron::contentxlation(
 
     if !$filesonly {
         cron { 'xlation-dumps':
-            ensure      => 'present',
+            ensure      => absent,
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             command     => '/usr/local/bin/dumpcontentxlation.sh',
@@ -20,6 +20,17 @@ class snapshot::cron::contentxlation(
             hour        => '9',
             weekday     => '5',
             require     => File[$scriptpath],
+        }
+        systemd::timer::job { 'xlation-dumps':
+            ensure             => present,
+            description        => 'Regular jobs to build snapshot of content translation data',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => '/usr/local/bin/dumpcontentxlation.sh',
+            interval           => {'start' => 'OnCalendar', 'interval' => 'Fri *-*-* 9:10:0'},
+            require            => File[$scriptpath],
         }
     }
 }
