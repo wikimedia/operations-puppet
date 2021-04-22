@@ -13,13 +13,23 @@ class snapshot::cron::mediaperprojectlists(
 
     if !$filesonly {
         cron { 'list-media-per-project':
-            ensure      => 'present',
+            ensure      => absent,
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
             command     => '/usr/local/bin/create-media-per-project-lists.sh',
             minute      => '10',
             hour        => '7',
             weekday     => '7',
+        }
+        systemd::timer::job { 'list-media-per-project':
+            ensure             => present,
+            description        => 'Regular jobs to build snapshot of media tables (image, globalimagelink, ...)',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => '/usr/local/bin/create-media-per-project-lists.sh',
+            interval           => {'start' => 'OnCalendar', 'interval' => 'Sun *-*-* 7:10:0'},
         }
     }
 }
