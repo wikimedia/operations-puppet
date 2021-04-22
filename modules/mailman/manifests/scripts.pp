@@ -64,4 +64,12 @@ class mailman::scripts {
         mode   => '0550',
         source => 'puppet:///modules/mailman/scripts/check_exclude_backups.py'
     }
+
+    file { '/usr/local/sbin/list_listadmins':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman/scripts/list_listadmins.py'
+    }
 }
