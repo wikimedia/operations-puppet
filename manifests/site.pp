@@ -2290,7 +2290,7 @@ node /^planet[12]002\.(eqiad|codfw)\.wmnet$/ {
 }
 
 node /^planet1003\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(planet)
 }
 
 node /poolcounter[12]00[345]\.(codfw|eqiad)\.wmnet/ {
