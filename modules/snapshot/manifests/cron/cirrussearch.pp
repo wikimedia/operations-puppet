@@ -19,16 +19,6 @@ class snapshot::cron::cirrussearch(
     }
 
     if !$filesonly {
-        cron { 'cirrussearch-dump':
-            ensure      => absent,
-            command     => "${scriptpath} --config ${confsdir}/wikidump.conf.other",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '15',
-            hour        => '16',
-            weekday     => '1',
-            require     => [ File[$scriptpath], Class['snapshot::dumps::dirs'] ],
-        }
         systemd::timer::job { 'cirrussearch-dump':
             ensure             => present,
             description        => 'Regular jobs to build snapshot of cirrus search',

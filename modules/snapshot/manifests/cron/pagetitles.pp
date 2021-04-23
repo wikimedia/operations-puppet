@@ -7,14 +7,6 @@ class snapshot::cron::pagetitles(
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     if !$filesonly {
-        cron { 'pagetitles-ns0':
-            ensure      => absent,
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            command     => "cd ${repodir}; python3 onallwikis.py --configfile ${confsdir}/wikidump.conf.dumps:monitor  --filenameformat '{w}-{d}-all-titles-in-ns-0.gz' --outdir '${cronsdir}/pagetitles/{d}' --query \"'select page_title from page where page_namespace=0;'\"",
-            minute      => '10',
-            hour        => '8',
-        }
         systemd::timer::job { 'pagetitles-ns0':
             ensure             => present,
             description        => 'Regular jobs to build snapshot of page titles of main namespace',
@@ -27,14 +19,6 @@ class snapshot::cron::pagetitles(
             interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 8:10:0'},
         }
 
-        cron { 'pagetitles-ns6':
-            ensure      => absent,
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            command     => "cd ${repodir}; python3 onallwikis.py --configfile ${confsdir}/wikidump.conf.dumps:monitor  --filenameformat '{w}-{d}-all-media-titles.gz' --outdir '${cronsdir}/mediatitles/{d}' --query \"'select page_title from page where page_namespace=6;'\"",
-            minute      => '50',
-            hour        => '8',
-        }
         systemd::timer::job { 'pagetitles-ns6':
             ensure             => present,
             description        => 'Regular jobs to build snapshot of page titles of file namespace',

@@ -7,15 +7,6 @@ class snapshot::cron::shorturls(
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     if !$filesonly {
-        cron { 'shorturls':
-            ensure      => absent,
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            command     => "cd ${repodir}; python3 onallwikis.py --wiki metawiki --configfile ${confsdir}/wikidump.conf.dumps:monitor  --filenameformat 'shorturls-{d}.gz' --outdir '${cronsdir}/shorturls' --script extensions/UrlShortener/maintenance/dumpURLs.php 'compress.zlib://{DIR}'",
-            minute      => '5',
-            hour        => '8',
-            weekday     => '1',
-        }
         systemd::timer::job { 'shorturls':
             ensure             => present,
             description        => 'Regular jobs to build snapshot of short urls and their targets',

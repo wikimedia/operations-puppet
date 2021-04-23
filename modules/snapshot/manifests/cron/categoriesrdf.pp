@@ -33,16 +33,6 @@ class snapshot::cron::categoriesrdf(
             source => 'puppet:///modules/snapshot/cron/logrotate.categoriesrdf',
         }
 
-        cron { 'categoriesrdf-dump':
-            ensure      => absent,
-            command     => "${scriptpath} --config ${confsdir}/wikidump.conf.other --list ${apachedir}/dblists/categories-rdf.dblist",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '0',
-            hour        => '20',
-            weekday     => '6',
-            require     => File[$scriptpath],
-        }
         systemd::timer::job { 'categoriesrdf-dump':
             ensure             => present,
             description        => 'Regular jobs to build rdf snapshot of categories',
@@ -66,15 +56,6 @@ class snapshot::cron::categoriesrdf(
     }
 
     if !$filesonly {
-        cron { 'categoriesrdf-dump-daily':
-            ensure      => absent,
-            command     => "${scriptpath_daily} --config ${confsdir}/wikidump.conf.other --list ${apachedir}/dblists/categories-rdf.dblist",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '0',
-            hour        => '5',
-            require     => File[$scriptpath_daily],
-        }
         systemd::timer::job { 'categoriesrdf-dump-daily':
             ensure             => present,
             description        => 'Regular jobs to build daily rdf snapshot of categories',

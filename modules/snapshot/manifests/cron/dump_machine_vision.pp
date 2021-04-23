@@ -12,15 +12,6 @@ class snapshot::cron::dump_machine_vision(
     }
 
     if !$filesonly {
-        cron { 'machine_vision_dump':
-            ensure      => absent,
-            command     => "/usr/local/bin/dump-machine-vision.sh --config ${confsdir}/wikidump.conf.other",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '15',
-            hour        => '9',
-            weekday     => '6',
-        }
         systemd::timer::job { 'machine_vision_dump':
             ensure             => present,
             description        => 'Regular jobs to build snapshot of machine vision data',
