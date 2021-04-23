@@ -7,7 +7,6 @@
 ENABLE=0
 
 function disable_list {
-    echo "advertised=0" | config_list -i /dev/stdin $list
     echo "emergency=1"  | config_list -i /dev/stdin $list
     echo "member_moderation_action=2" | config_list -i /dev/stdin $list
     echo "generic_nonmember_action=2" | config_list -i /dev/stdin $list
@@ -59,5 +58,5 @@ if [ $ENABLE -eq 1 ]; then
     echo "$list enabled. Please verify archives are intact and the list administrative page works."
 else
     disable_list
-    echo "$list disabled. Archives should be available at current location, all mail should be moderated and the list should not be on the listinfo page."
+    echo "$list disabled. Archives should be available at current location, all mail should be moderated. Please add \"[ARCHIVED]\" to the list description."
 fi
