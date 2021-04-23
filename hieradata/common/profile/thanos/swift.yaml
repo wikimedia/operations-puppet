@@ -23,6 +23,11 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_wdqs'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'wdqs:flink'
+  mlserve_prod:
+    access:       '.admin'
+    account_name: 'AUTH_mlserve'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'mlserve:prod'
 # To be kept private
 #profile::thanos::swift::accounts_keys:
 #  thanos_prod: 'foo'
