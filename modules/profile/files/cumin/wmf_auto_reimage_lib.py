@@ -24,13 +24,12 @@ from conftool import configuration, kvobject, loader
 from conftool.drivers import BackendError
 from cumin import query, transport, transports
 from phabricator import Phabricator
-
+from wmflib.config import load_ini_config
+from wmflib.exceptions import WmflibError
 
 ICINGA_DOMAIN = 'icinga.wikimedia.org'
 DEPLOYMENT_DOMAIN = 'deployment.eqiad.wmnet'
-DEBMONITOR_URL = 'https://debmonitor.discovery.wmnet/hosts/{host}'
-DEBMONITOR_CERT = '/etc/debmonitor/ssl/cert.pem'
-DEBMONITOR_KEY = '/etc/debmonitor/ssl/server.key'
+DEBMONITOR_CONFIG = '/etc/debmonitor.conf'
 NETBOX_CONFIG = '/etc/spicerack/netbox/config.yaml'
 INTERNAL_TLD = 'wmnet'
 MANAGEMENT_DOMAIN = 'mgmt'
@@ -767,13 +766,26 @@ def debmonitor_remove_host(host):
     Arguments:
     host -- the FQDN of the host to remove from Debmonitor
     """
-    response = requests.delete(
-        DEBMONITOR_URL.format(host=host), cert=(DEBMONITOR_CERT, DEBMONITOR_KEY))
-    if response.status_code == requests.codes['no_content']:
-        print_line('Removed from Debmonitor', host=host)
-    else:
-        print_line('WARNING: Unable to remove from Debmonitor, got: {code}'.format(
-            code=response.status_code), host=host, level=logging.WARNING)
+
+    try:
+        config = load_ini_config(DEBMONITOR_CONFIG, True).defaults()
+        url = 'https://{server}/hosts/{host}'
+        response = requests.delete(
+            url.format(server=config['server'], host=host),
+            cert=(config['server'], config['key']),
+            verify=config['ca'],
+        )
+        if response.status_code == requests.codes['no_content']:
+            print_line('Removed from Debmonitor', host=host)
+        else:
+            print_line('WARNING: Unable to remove from Debmonitor, got: {code}'.format(
+                code=response.status_code), host=host, level=logging.WARNING)
+    except (WmflibError, KeyError) as error:
+        print_line('WARNING: Unable to read {config_file}, got: {error}'.format(
+            config_file=DEBMONITOR_CONFIG, error=error), host=host, level=logging.WARNING)
+    except requests.exceptions.RequestException as error:
+        print_line('WARNING: Unable to remove from Debmonitor, got: {error}'.format(
+            error=error), host=host, level=logging.WARNING)
 
 
 def ipmitool_command(mgmt, ipmi_command):
