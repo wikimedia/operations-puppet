@@ -24,6 +24,20 @@
 #   Systemd time interval.
 #   Default: '*-*-* *:00:00' (hourly)
 #
+# [*monitor_since*]
+#   If refine_monitor_enabled, RefineMonitor should use the same settings as the
+#   main Refine job, but likely with a wider range of data to check.
+#   Instead of re-rendering an entirely different job config file, use the same
+#   one as the main Refine job, but with CLI flags to override --since to $monitor_since.
+#   Default: 48 hours ago.
+#
+# [*monitor_until*]
+#   If refine_monitor_enabled, RefineMonitor should use the same settings as the
+#   main Refine job, but likely with a wider range of data to check.
+#   Instead of re-rendering an entirely different job config file, use the same
+#   one as the main Refine job, but with CLI flags to override --until to $monitor_until.
+#   Default: 4 hours ago.
+#
 # [*monitoring_enabled*]
 #   If true, service failures will alert, e.g. a bad exit code from Refine or RefineMonitor
 #   will result in a service failure alert.
@@ -41,6 +55,8 @@ define profile::analytics::refinery::job::refine_job (
     $refinery_job_jar                 = undef,
     $job_class                        = 'org.wikimedia.analytics.refinery.job.refine.Refine',
     $monitor_class                    = 'org.wikimedia.analytics.refinery.job.refine.RefineMonitor',
+    $monitor_since                    = 48,
+    $monitor_until                    = 4,
     $queue                            = 'production',
     $spark_executor_memory            = '4G',
     $spark_driver_memory              = '8G',
@@ -146,7 +162,7 @@ define profile::analytics::refinery::job::refine_job (
         ensure             => $ensure_monitor,
         class              => $monitor_class,
         # Use the same config file as the Refine job, but override the since and until.
-        job_opts           => "--config_file ${job_config_file} --since 48 --until 4",
+        job_opts           => "--config_file ${job_config_file} --since ${monitor_since} --until ${monitor_until}",
         interval           => $monitor_interval,
         monitoring_enabled => $monitoring_enabled,
     }
