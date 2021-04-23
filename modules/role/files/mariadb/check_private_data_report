@@ -14,10 +14,9 @@ fi
 
 # run the script
 
-# db1124 and db2094 replicate s1 s3 s5 and s8 in a multi-instance setup
-# db1154 is a temporary sanitarium running MariaDB 10.4 that will become permanent once db1124 goes away.
+# db2094 and db1154 replicate s1 s3 s5 and s8 in a multi-instance setup
 
-if [ "$HOSTNAME" == "db1124" ] || [ "$HOSTNAME" == "db2094" ] || [ "$HOSTNAME" == "db1154" ]
+if [ "$HOSTNAME" == "db2094" ] || [ "$HOSTNAME" == "db1154" ]
 then
 	for SECTION in s1 s3 s5 s8
 	do
