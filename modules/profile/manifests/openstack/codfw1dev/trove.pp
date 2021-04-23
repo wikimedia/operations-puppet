@@ -9,6 +9,7 @@ class profile::openstack::codfw1dev::trove(
     String              $region                  = lookup('profile::openstack::codfw1dev::region'),
     String              $rabbit_pass             = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     String              $trove_guest_rabbit_pass = lookup('profile::openstack::codfw1dev::trove::trove_guest_rabbit_pass'),
+    String              $trove_service_user_pass = lookup('profile::openstack::codfw1dev::trove::trove_user_pass'),
     ) {
 
     class {'::profile::openstack::base::trove':
@@ -22,5 +23,6 @@ class profile::openstack::codfw1dev::trove(
         region                  => $region,
         rabbit_pass             => $rabbit_pass,
         trove_guest_rabbit_pass => $rabbit_pass,
+        trove_service_user_pass => $trove_service_user_pass,
     }
 }

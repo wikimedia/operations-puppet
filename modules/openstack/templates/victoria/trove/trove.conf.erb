@@ -331,13 +331,13 @@ memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(
 
 
 [service_credentials]
-auth_url = <%= @keystone_admin_uri %>
+auth_url = <%= @keystone_internal_uri %>
 region_name = <%= @region %>
-project_name = admin
-password = <%= @ldap_user_pass %>
+project_name = <%= @trove_service_project %>
+password = <%= @trove_service_user_pass %>
 project_domain_name = Default
 user_domain_name = Default
-username = novaadmin
+username = <%= @trove_service_user %>
 
 
 [network]

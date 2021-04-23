@@ -6,12 +6,16 @@ class openstack::trove::service::victoria(
     Stdlib::Fqdn        $db_host,
     String              $ldap_user_pass,
     String              $keystone_admin_uri,
+    String              $keystone_internal_uri,
     String              $region,
     Stdlib::Port        $api_bind_port,
     String              $rabbit_user,
     String              $rabbit_pass,
     String              $trove_guest_rabbit_user,
     String              $trove_guest_rabbit_pass,
+    String              $trove_service_user_pass,
+    String              $trove_service_project,
+    String              $trove_service_user,
 ) {
     require "openstack::serverpackages::victoria::${::lsbdistcodename}"
 

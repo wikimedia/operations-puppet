@@ -8,15 +8,18 @@ class profile::openstack::base::trove(
     String              $ldap_user_pass          = lookup('profile::openstack::base::ldap_user_pass'),
     Stdlib::Fqdn        $keystone_fqdn           = lookup('profile::openstack::base::keystone_api_fqdn'),
     Stdlib::Port        $auth_port               = lookup('profile::openstack::base::keystone::auth_port'),
+    Stdlib::Port        $internal_auth_port      = lookup('profile::openstack::base::keystone::internal_port'),
     String              $region                  = lookup('profile::openstack::base::region'),
     Stdlib::Port        $api_bind_port           = lookup('profile::openstack::base::trove::api_bind_port'),
     String              $rabbit_user             = lookup('profile::openstack::base::nova::rabbit_user'),
     String              $rabbit_pass             = lookup('profile::openstack::base::nova::rabbit_pass'),
     String              $trove_guest_rabbit_user = lookup('profile::openstack::base::trove::trove_guest_rabbit_user'),
     String              $trove_guest_rabbit_pass = lookup('profile::openstack::base::trove::trove_guest_rabbit_pass'),
+    String              $trove_service_user_pass = lookup('profile::openstack::base::trove::trove_user_pass'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
+    $keystone_internal_uri = "http://${keystone_fqdn}:${internal_auth_port}"
 
     class { '::openstack::trove::service':
         version                 => $version,
@@ -27,12 +30,14 @@ class profile::openstack::base::trove(
         db_host                 => $db_host,
         ldap_user_pass          => $ldap_user_pass,
         keystone_admin_uri      => $keystone_admin_uri,
+        keystone_internal_uri   => $keystone_internal_uri,
         region                  => $region,
         api_bind_port           => $api_bind_port,
         rabbit_user             => $rabbit_user,
         rabbit_pass             => $rabbit_pass,
         trove_guest_rabbit_user => $trove_guest_rabbit_user,
         trove_guest_rabbit_pass => $trove_guest_rabbit_pass,
+        trove_service_user_pass => $trove_service_user_pass,
     }
 
     include ::network::constants

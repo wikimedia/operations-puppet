@@ -6,6 +6,7 @@ profile::openstack::base::keystone::public_workers: '8'
 profile::openstack::base::keystone::auth_protocol: 'http'
 profile::openstack::base::keystone::auth_port: 35357
 profile::openstack::base::keystone::public_port: 5000
+profile::openstack::base::keystone::internal_port: 5000
 profile::openstack::base::keystone::wiki_status_page_prefix: 'Nova_Resource:'
 profile::openstack::base::keystone::daemon_active: true
 profile::openstack::base::keystone::wsgi_server: 'keystone'
