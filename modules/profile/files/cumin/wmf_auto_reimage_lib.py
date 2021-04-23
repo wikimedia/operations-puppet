@@ -772,7 +772,7 @@ def debmonitor_remove_host(host):
         url = 'https://{server}/hosts/{host}'
         response = requests.delete(
             url.format(server=config['server'], host=host),
-            cert=(config['server'], config['key']),
+            cert=(config['cert'], config['key']),
             verify=config['ca'],
         )
         if response.status_code == requests.codes['no_content']:
