@@ -145,28 +145,11 @@
     RewriteRule ^(.*)$ - [F]
 
     # list renames
-    Redirect permanent /mailman/listinfo/foundation-l         https://<%= @lists_servername %>/mailman/listinfo/wikimedia-l
-    Redirect permanent /mailman/listinfo/museum-l             https://<%= @lists_servername %>/mailman/listinfo/glam
-    Redirect permanent /mailman/listinfo/mediawiki-cvs        https://<%= @lists_servername %>/mailman/listinfo/mediawiki-commits
-    Redirect permanent /mailman/listinfo/wsor                 https://<%= @lists_servername %>/mailman/listinfo/wmfresearch
-    Redirect permanent /mailman/listinfo/chaptercommittee-l   https://<%= @lists_servername %>/mailman/listinfo/affcom
-    Redirect permanent /mailman/listinfo/allhands             https://<%= @lists_servername %>/mailman/listinfo/wmfreqs
-    Redirect permanent /mailman/listinfo/research-team        https://<%= @lists_servername %>/mailman/listinfo/research-internal
-    Redirect permanent /mailman/listinfo/wikidata-l           https://<%= @lists_servername %>/mailman/listinfo/wikidata
+    <% @renamed_lists.each do |oldname, newname| -%>
+    Redirect permanent /mailman/listinfo/<%= oldname %> https://<%= @lists_servername %>/mailman/listinfo/<%= newname %>
+    <% end %>
+
     Redirect permanent /pipermail/wikidata-l                  https://<%= @lists_servername %>/pipermail/wikidata/
-    Redirect permanent /mailman/listinfo/pywikipedia-l        https://<%= @lists_servername %>/mailman/listinfo/pywikibot
-    Redirect permanent /mailman/listinfo/pywikipedia-announce https://<%= @lists_servername %>/mailman/listinfo/pywikibot-announce
-    Redirect permanent /mailman/listinfo/pywikipedia-bugs     https://<%= @lists_servername %>/mailman/listinfo/pywikibot-bugs
-    Redirect permanent /mailman/listinfo/education-coop       https://<%= @lists_servername %>/mailman/listinfo/education-collab
-    Redirect permanent /mailman/listinfo/advocacy_advisors    https://<%= @lists_servername %>/mailman/listinfo/publicpolicy
-    Redirect permanent /mailman/listinfo/wikimedia-search     https://<%= @lists_servername %>/mailman/listinfo/discovery
-    Redirect permanent /mailman/listinfo/wikimedia-search-private     https://<%= @lists_servername %>/mailman/listinfo/discovery-private
-    Redirect permanent /mailman/listinfo/tool-labs-standards-committee https://<%= @lists_servername %>/mailman/listinfo/toolforge-standards-committee
-    Redirect permanent /mailman/listinfo/wmfcc-l              https://<%= @lists_servername %>/mailman/listinfo/movecom
-    Redirect permanent /mailman/listinfo/ri-team              https://<%= @lists_servername %>/mailman/listinfo/product-infrastructure
-    Redirect permanent /mailman/listinfo/wikimediamy              https://<%= @lists_servername %>/mailman/listinfo/wikimedia-my
-    Redirect permanent /mailman/listinfo/multimedia-team      https://<%= @lists_servername %>/mailman/listinfo/structured-data-team
-    Redirect permanent /mailman/listinfo/wikilambda https://<%= @lists_servername %>/mailman/listinfo/Abstract-Wikipedia
 
     ErrorLog /var/log/apache2/<%= @lists_servername %>-error.log
     CustomLog /var/log/apache2/<%= @lists_servername %>-access.log wmf

@@ -1,0 +1,6 @@
+# @lists.wikimedia.org aliases
+mailman-bounces:      :blackhole:
+
+<% @renamed_lists.each do |oldname, newname| -%>
+<%= oldname %>: <%= newname %>
+<% end %>

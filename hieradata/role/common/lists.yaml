@@ -30,3 +30,30 @@ profile::mailman3::web::db_user: mailman3web
 
 # This is just to open up a rsync to lists1002 (mailman3::import_test)
 profile::lists::mailman3_host: 'lists1002.wikimedia.org'
+
+profile::lists::renamed_lists:
+  boardexec:            board-l
+  foundation-l:         wikimedia-l
+  museum-l:             glam
+  mediawiki-cvs:        mediawiki-commits
+  wsor:                 wmfresearch
+  chaptercommittee-l:   affcom
+  allhands:             wmfreqs
+  research-team:        research-internal
+  wikidata-l:           wikidata
+  pywikipedia-l:        pywikibot
+  pywikipedia-announce: pywikibot-announce
+  pywikipedia-bugs:     pywikibot-bugs
+  education-coop:       education-collab
+  advocacy_advisors:    publicpolicy
+  wikimedia-search:     discovery
+  wikimedia-search-private: discovery-private
+  labs-admin:           cloud-admin
+  labs-announce:        cloud-announce
+  labs-l:               cloud
+  tool-labs-standards-committee: toolforge-standards-committee
+  wmfcc-l:              movecom
+  ri-team:              product-infrastructure
+  wikimediamy:          wikimedia-my
+  multimedia-team:      structured-data-team
+  wikilambda:           Abstract-Wikipedia

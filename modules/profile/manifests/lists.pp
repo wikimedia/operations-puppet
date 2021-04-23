@@ -18,6 +18,7 @@ class profile::lists (
     Optional[String] $api_password            = lookup('profile::mailman3::api_password', {'default_value' => undef}),
     Optional[String] $web_secret              = lookup('profile::mailman3::web::secret', {'default_value' => undef}),
     Optional[String] $archiver_key            = lookup('profile::mailman3::archiver_key', {'default_value' => undef}),
+    Hash[String, String] $renamed_lists       = lookup('profile::lists::renamed_lists'),
 ){
     include network::constants
     include privateexim::listserve
@@ -49,6 +50,7 @@ class profile::lists (
         mailman_service_ensure => $mailman_service_ensure,
         acme_chief_cert        => $acme_chief_cert,
         enable_mm3             => $enable_mm3,
+        renamed_lists          => $renamed_lists,
     }
 
     mailalias { 'root': recipient => 'root@wikimedia.org' }
@@ -102,7 +104,7 @@ class profile::lists (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/profile/exim/listserver_aliases',
+        content => template('profile/exim/listserver_aliases.erb'),
         require => Class['exim4'],
     }
 
