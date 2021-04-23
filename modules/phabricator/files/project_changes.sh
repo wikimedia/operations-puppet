@@ -190,6 +190,26 @@ SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS userName
 END
 )
 
+#echo "result_workboard_column_triggers"
+# see https://phabricator.wikimedia.org/T260427
+result_workboard_column_triggers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+
+SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS author,
+    CONCAT("https://phabricator.wikimedia.org/project/board/", p.id) AS url,
+    pc.name AS columnname
+    FROM phabricator_project.project p
+    INNER JOIN phabricator_project.project_column pc
+    INNER JOIN phabricator_project.project_triggertransaction ptt
+    INNER JOIN phabricator_user.user u
+    WHERE pc.projectPHID = p.phid
+    AND pc.triggerPHID = ptt.objectPHID
+    AND ptt.transactionType = "ruleset"
+    AND ptt.authorPHID = u.phid
+    AND ptt.dateModified > (UNIX_TIMESTAMP() - 605300)
+    ORDER BY ptt.dateModified;
+END
+)
+
 #echo "result_past_due_dates"
 # see https://phabricator.wikimedia.org/T249807
 result_past_due_dates=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
@@ -369,6 +389,10 @@ ${result_new_user_assignees}
 
 USER PROFILES WITH A URL IN THEIR DESC WHICH CHANGED WITHIN THE LAST 1 WEEK (to spam check):
 ${result_user_profile_urls}
+
+
+WORKBOARD COLUMN TRIGGER CHANGES WITHIN THE LAST 1 WEEK (to spam check):
+${result_workboard_column_triggers}
 
 
 OPEN TASKS WITH A DUE DATE MORE THAN 1 MONTH AGO:
