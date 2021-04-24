@@ -15,7 +15,7 @@ class snapshot::cron::commonsdumps::json(
         # project: commons, dump type: all, entities to be dumped: mediainfo
         # extra args: ignore-missing
         cron { 'commonsjson-dump':
-            ensure      => 'present',
+            ensure      => absent,
             command     => "${scriptpath} -p commons -d mediainfo -e mediainfo -E --ignore-missing",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
@@ -23,6 +23,17 @@ class snapshot::cron::commonsdumps::json(
             hour        => '3',
             weekday     => '1',
             require     => File[$scriptpath],
+        }
+        systemd::timer::job { 'commonsjson-dump':
+            ensure             => present,
+            description        => 'Regular jobs to build json snapshot of commons structured data',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => "${scriptpath} -p commons -d mediainfo -e mediainfo -E --ignore-missing",
+            interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 3:15:0'},
+            require            => File[$scriptpath],
         }
     }
 }
