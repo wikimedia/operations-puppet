@@ -3,6 +3,7 @@
 class profile::syslog::centralserver (
     Array[Stdlib::Host] $prometheus_nodes = lookup ('prometheus_nodes', {'default_value' => []}),
     Integer $log_retention_days = lookup('profile::syslog::centralserver::log_retention_days'),
+    Boolean $use_kafka_relay = lookup('profile::syslog::centralserver::use_kafka_relay', {'default_value' => true}),
 ){
 
     ferm::service { 'rsyslog-receiver_udp':
@@ -10,13 +11,6 @@ class profile::syslog::centralserver (
         port    => 514,
         notrack => true,
         srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
-    }
-
-    ferm::service { 'rsyslog-netdev_kafka_relay_udp':
-        proto   => 'udp',
-        port    => 10514,
-        notrack => true,
-        srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS $NETWORK_INFRA)',
     }
 
     ferm::service { 'rsyslog-receiver_tcp':
@@ -30,7 +24,17 @@ class profile::syslog::centralserver (
         log_retention_days => $log_retention_days,
     }
 
-    class { 'profile::rsyslog::netdev_kafka_relay': }
+    if $use_kafka_relay {
+        ferm::service { 'rsyslog-netdev_kafka_relay_udp':
+            proto   => 'udp',
+            port    => 10514,
+            notrack => true,
+            srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS $NETWORK_INFRA)',
+        }
+
+        class { 'profile::rsyslog::netdev_kafka_relay': }
+    }
+
 
     monitoring::service { "syslog::centralserver ${::hostname} syslog-tls":
         description   => 'rsyslog TLS listener on port 6514',
