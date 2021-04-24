@@ -13,7 +13,7 @@ class snapshot::cron::wikidatadumps::rdf(
     $scriptpath = '/usr/local/bin/dumpwikibaserdf.sh'
     if !$filesonly {
         cron { 'wikidatardf-all-dumps':
-            ensure      => 'present',
+            ensure      => absent,
             command     => "${scriptpath} -p wikidata -d all -f ttl -e nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
@@ -22,8 +22,19 @@ class snapshot::cron::wikidatadumps::rdf(
             weekday     => '1',
             require     => File[$scriptpath],
         }
+        systemd::timer::job { 'wikidatardf-all-dumps':
+            ensure             => present,
+            description        => 'Regular jobs to build rdf snapshot of wikidata',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => "${scriptpath} -p wikidata -d all -f ttl -e nt",
+            interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 23:0:0'},
+            require            => File[$scriptpath],
+        }
         cron { 'wikidatardf-truthy-dumps':
-            ensure      => 'present',
+            ensure      => absent,
             command     => "${scriptpath} -p wikidata -d truthy -f nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
@@ -32,8 +43,19 @@ class snapshot::cron::wikidatadumps::rdf(
             weekday     => '3',
             require     => File[$scriptpath],
         }
+        systemd::timer::job { 'wikidatardf-truthy-dumps':
+            ensure             => present,
+            description        => 'Regular jobs to build rdf snapshot of wikidata truthy statements',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => "${scriptpath} -p wikidata -d truthy -f nt",
+            interval           => {'start' => 'OnCalendar', 'interval' => 'Wed *-*-* 23:0:0'},
+            require            => File[$scriptpath],
+        }
         cron { 'wikidatardf-lexemes-dumps':
-            ensure      => 'present',
+            ensure      => absent,
             command     => "${scriptpath} -p wikidata -d lexemes -f ttl -e nt",
             environment => 'MAILTO=ops-dumps@wikimedia.org',
             user        => $user,
@@ -41,6 +63,17 @@ class snapshot::cron::wikidatadumps::rdf(
             hour        => '23',
             weekday     => '5',
             require     => File[$scriptpath],
+        }
+        systemd::timer::job { 'wikidatardf-lexemes-dumps':
+            ensure             => present,
+            description        => 'Regular jobs to build rdf snapshot of wikidata lexemes',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => "${scriptpath} -p wikidata -d lexemes -f ttl -e nt",
+            interval           => {'start' => 'OnCalendar', 'interval' => 'Fri *-*-* 23:0:0'},
+            require            => File[$scriptpath],
         }
     }
 }
