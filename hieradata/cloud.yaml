@@ -333,3 +333,7 @@ mediawiki::common_sites:
 
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - localhost:9093
+
+profile::openstack::base::radosgw::service_user: 'swift'
+profile::openstack::base::radosgw::service_user_project: 'swift'
+profile::openstack::base::radosgw::api_bind_port: '18080'

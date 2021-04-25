@@ -1,0 +1,3 @@
+profile::openstack::base::radosgw::service_user: 'swift'
+profile::openstack::base::radosgw::service_user_project: 'service'
+profile::openstack::base::radosgw::api_bind_port: 18080

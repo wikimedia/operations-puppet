@@ -5,6 +5,7 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Port $placement_api_bind_port = lookup('profile::openstack::codfw1dev::placement::api_bind_port'),
     Stdlib::Port $cinder_api_bind_port = lookup('profile::openstack::codfw1dev::cinder::api_bind_port'),
     Stdlib::Port $trove_api_bind_port = lookup('profile::openstack::base::trove::api_bind_port'),
+    Stdlib::Port $radosgw_api_bind_port = lookup('profile::openstack::base::radosgw::api_bind_port'),
     Stdlib::Port $barbican_bind_port = lookup('profile::openstack::codfw1dev::barbican::bind_port'),
     Stdlib::Port $keystone_admin_bind_port = lookup('profile::openstack::codfw1dev::keystone::admin_bind_port'),
     Stdlib::Port $keystone_public_bind_port = lookup('profile::openstack::codfw1dev::keystone::public_bind_port'),
@@ -60,6 +61,14 @@ class profile::openstack::codfw1dev::haproxy(
         healthcheck_path   => '/',
         port_frontend      => 8779,
         port_backend       => $trove_api_bind_port,
+    }
+
+    profile::openstack::base::haproxy::site { 'radosgw_api':
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_frontend      => 8080,
+        port_backend       => $radosgw_api_bind_port,
     }
 
     profile::openstack::base::haproxy::site { 'barbican':

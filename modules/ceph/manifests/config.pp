@@ -14,6 +14,16 @@
 #        Currently requires openstack::nova::compute::service::ocata::stretch
 #    - $osd_hosts [Optional]
 #        Hash that defines the ceph object storage hosts, and public and private IPv4 information
+#    - $radosgw_port [Optional]
+#        Listen port for the rados gateway. Gateway will only be configured if this is set.
+#    - $keystone_internal_uri [Optional]
+#        URI for internal keystone service. Only used if radosgw_port is set.
+#    - $radosgw_service_user [Optional]
+#        Name of radosgw service user (probably 'swift'). Only used if radosgw_port is set.
+#    - $radosgw_service_user_project [Optional]
+#        Project for radosgw service user (probably 'service'). Only used if radosgw_port is set.
+#    - $radosgw_service_user_password [Optional]
+#        Password for radosgw service user. Only used if radosgw_port is set.
 #
 class ceph::config (
     Boolean                     $enable_libvirt_rbd,
@@ -23,6 +33,11 @@ class ceph::config (
     Stdlib::IP::Address         $public_network,
     String                      $fsid,
     Optional[Hash[String,Hash]] $osd_hosts = {},
+    Optional[Stdlib::Port]      $radosgw_port = 0,
+    Optional[String]            $keystone_internal_uri = '',
+    Optional[String]            $radosgw_service_user = '',
+    Optional[String]            $radosgw_service_user_project = '',
+    Optional[String]            $radosgw_service_user_pass = '',
 ) {
 
     Class['ceph::common'] -> Class['ceph::config']
