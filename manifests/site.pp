@@ -763,7 +763,7 @@ node 'dborch1001.wikimedia.org' {
 
 
 # eqiad backup sources
-## x1, buster
+## s2 & x1, buster
 node 'db1102.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }

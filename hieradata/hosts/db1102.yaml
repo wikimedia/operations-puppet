@@ -1,4 +1,6 @@
 # db1102
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::instances:
+  s2: 192G
   x1: 192G
+profile::base::notifications: disabled
