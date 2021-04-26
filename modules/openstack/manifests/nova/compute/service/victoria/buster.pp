@@ -39,4 +39,11 @@ class openstack::nova::compute::service::victoria::buster() {
         enable  => true,
         require => Package[libvirt-daemon-system],
     }
+
+    service { 'libvirtd-tls.socket':
+        ensure  => 'running',
+        enable  => true,
+        require => Package[libvirt-daemon-system],
+    }
+
 }
