@@ -185,4 +185,32 @@ class thumbor (
         command  => "/usr/local/bin/generate-thumbor-age-metrics.sh | /bin/nc -w 1 -u ${statsd_host} ${statsd_port}",
         user     => 'thumbor',
     }
+
+    # create a list of installed fonts - T280718
+
+    $fc_list_dir = '/srv/fc-list'
+    $fc_list_file = "${fc_list_dir}/fc-list"
+    $fc_list_cmd = '/usr/bin/fc-list :fontformat=TrueType'
+
+    file { $fc_list_dir:
+        ensure => directory,
+    }
+
+    file { '/usr/local/bin/fc-list-dump.sh':
+        ensure  => present,
+        mode    => '0555',
+        content => "#!/bin/bash\n/${fc_list_cmd} | /usr/bin/sort 1> ${fc_list_file} 2> ${fc_list_file}.err",
+        require => File[$fc_list_dir],
+    }
+
+    systemd::timer::job { 'fc-list-dump':
+        description     => 'Write the output of the fc-list command to a file',
+        command         => '/usr/local/bin/fc-list-dump.sh',
+        interval        => {
+            'start'    => 'OnUnitInactiveSec',
+            'interval' => '1d',
+        },
+        user            => 'root',
+        logging_enabled => false,
+    }
 }
