@@ -33,7 +33,7 @@
 <% end -%>
 
 <% if @radosgw_port != 0-%>
-[client.rgw.<%= @hostname %>]
+[client.radosgw]
     host = <%= @ipaddress %>
     keyring = /etc/ceph/ceph.client.radosgw.keyring
     rgw frontends = "civetweb port=<%= @radosgw_port %>"
