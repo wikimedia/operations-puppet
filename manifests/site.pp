@@ -1181,12 +1181,9 @@ node 'etherpad1002.eqiad.wmnet' {
 
 # Receives log data from Kafka processes it, and broadcasts
 # to Kafka Schema based topics.
-node 'eventlog1002.eqiad.wmnet' {
+# eventlog1003 is a VM replacing eventlog1002 - T280679
+node /^eventlog100[23].eqiad.wmnet$/ {
     role(eventlogging::analytics)
-}
-# evenlog1002 replacement - currently in setup T280679
-node 'eventlog1003.eqiad.wmnet' {
-    role(insetup)
 }
 
 # virtual machine for mailman list server
