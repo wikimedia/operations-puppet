@@ -9,3 +9,7 @@ profile::etcd::replication::destination_path: /conftool
 profile::etcd::replication::dst_url: https://conf2005.codfw.wmnet:2379
 # For nodes with active replication, see hieradata/hosts/conf*.yaml
 profile::etcd::replication::active: false
+# This cert is generated using cergen, and includes
+# all the hostnames for the etcd machines in the SANs
+# Will need to be regenerated if we add servers to the cluster.
+profile::etcd::tlsproxy::cert_name: "etcd-v3.%{::domain}"
