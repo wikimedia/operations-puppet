@@ -861,6 +861,7 @@ host people1002 {
 host people1003 {
     hardware ethernet aa:00:00:cf:80:fb;
     fixed-address people1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host people2001 {
