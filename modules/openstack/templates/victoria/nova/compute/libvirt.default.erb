@@ -1,2 +1,4 @@
-start_libvirtd="yes"
-libvirtd_opts="-l"
+# This file is managed by puppet, if you want to make changes to it change the file in the puppet repo:
+#   modules/openstack/templates/victoria/nova/compute/libvirt.default.erb
+LIBVIRTD_ARGS="--listen"
+start_libvirtd=yes
