@@ -30,10 +30,9 @@ then
 	done
 fi
 
-# db1125 and db2095 replicate s2 s4 s6 and s7 in a multi-instance setup
-# db1155 is a temporary sanitarium running MariaDB 10.4 that will become permanent once db1125 goes away.
+# db1155 and db2095 replicate s2 s4 s6 and s7 in a multi-instance setup
 
-if [ "$HOSTNAME" == "db1125" ] || [ "$HOSTNAME" == "db2095" ]  || [ "$HOSTNAME" == "db1155" ]
+if [ "$HOSTNAME" == "db2095" ]  || [ "$HOSTNAME" == "db1155" ]
 then
 	for SECTION in s2 s4 s6 s7
 	do
