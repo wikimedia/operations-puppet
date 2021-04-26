@@ -35,7 +35,7 @@
 <% if @radosgw_port != 0-%>
 [client.rgw.<%= @hostname %>]
     host = <%= @ipaddress %>
-    keyring = /etc/ceph/ceph.client.radosgw-<%= @hostname %>.keyring
+    keyring = /etc/ceph/ceph.client.radosgw.keyring
     rgw frontends = "civetweb port=<%= @radosgw_port %>"
     rgw dns name = <%= @hostname %>.<%= @domain %>
     rgw_keystone_verify_ssl = false

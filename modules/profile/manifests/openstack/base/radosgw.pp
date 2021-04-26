@@ -2,6 +2,7 @@
 #  and defined in profile::openstack::base::rbd_cloudcontrol
 class profile::openstack::base::radosgw(
     String $version = lookup('profile::openstack::base::version'),
+    String $ceph_client_keydata = lookup('profile::openstack::base::radosgw::client_keydata'),
     ) {
 
     class { '::openstack::radosgw::service':
@@ -18,11 +19,14 @@ class profile::openstack::base::radosgw(
                              ) proto tcp dport (8080) ACCEPT;",
     }
 
-    ceph::keyring { "client.rgw.${::hostname}":
+    # The keydata used in this step is pre-created on one of the ceph mon hosts
+    # typically with the 'ceph auth get-or-create' command
+    ceph::keyring { 'client.radosgw':
         ensure  => 'present',
         cap_mon => 'allow rw',
         cap_osd => 'allow rwx',
         mode    => '0440',
-        keyring => "/etc/ceph/ceph.client.radosgw-${::hostname}.keyring",
+        keydata => $ceph_client_keydata,
+        keyring => '/etc/ceph/ceph.client.radosgw.keyring',
     }
 }
