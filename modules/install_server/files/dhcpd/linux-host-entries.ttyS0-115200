@@ -858,6 +858,11 @@ host people1002 {
     fixed-address people1002.eqiad.wmnet;
 }
 
+host people1003 {
+    hardware ethernet aa:00:00:cf:80:fb;
+    fixed-address people1003.eqiad.wmnet;
+}
+
 host people2001 {
     hardware ethernet aa:00:00:dc:5d:4c;
     fixed-address people2001.codfw.wmnet;

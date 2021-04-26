@@ -2427,6 +2427,10 @@ node 'people1002.eqiad.wmnet', 'people2001.codfw.wmnet' {
     role(microsites::peopleweb)
 }
 
+node 'people1003.eqiad.wmnet' {
+    role(insetup)
+}
+
 # scandium is a parsoid test server. it replaced ruthenium.
 # This is now just like an MW appserver plus parsoid repo.
 # roundtrip and visualdiff testing moved to testreduce1001 (T257906)
