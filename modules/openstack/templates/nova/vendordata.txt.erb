@@ -141,6 +141,14 @@ done
 # have run)
 puppet agent -t
 
+# sssd might be caching sudo rules and other ldap things from before puppet finished
+#  setting up ldap integration. Restart sssd and clear its cache. On some old images
+#  we won't hav sssd installed; in that case this will throw some harmless errors.
+systemctl stop sssd
+rm -rf /var/lib/sss/db/*
+systemctl restart sssd
+
+
 # Remove the non-root login restriction
 rm /etc/block-ldap-key-lookup
 --XXXXboundary text
