@@ -8,6 +8,7 @@ class openstack::radosgw::service(
     }
 
     service { "ceph-radosgw@rgw.${::hostname}":
-        require => Package['radosgw'],
+        require   => Package['radosgw'],
+        subscribe => File['/etc/ceph/ceph.conf'],
     }
 }
