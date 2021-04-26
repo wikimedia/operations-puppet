@@ -7620,6 +7620,31 @@ host snapshot1010 {
     fixed-address snapshot1010.eqiad.wmnet;
 }
 
+host snapshot1011 {
+    hardware ethernet 2C:EA:7F:88:2E:4E;
+    fixed-address snapshot1011.eqiad.wmnet;
+}
+
+host snapshot1012 {
+    hardware ethernet 2C:EA:7F:88:26:AD;
+    fixed-address snapshot1012.eqiad.wmnet;
+}
+
+host snapshot1013 {
+    hardware ethernet 2C:EA:7F:88:1C:3D;
+    fixed-address snapshot1013.eqiad.wmnet;
+}
+
+host snapshot1014 {
+    hardware ethernet 2C:EA:7F:87:F9:43;
+    fixed-address snapshot1014.eqiad.wmnet;
+}
+
+host snapshot1015 {
+    hardware ethernet 2C:EA:7F:88:06:BC;
+    fixed-address snapshot1015.eqiad.wmnet;
+}
+
 host sretest1001 {
     hardware ethernet D0:94:66:5F:67:20;
     fixed-address sretest1001.eqiad.wmnet;
