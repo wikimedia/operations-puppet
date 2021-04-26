@@ -5,7 +5,7 @@ all: P{*}
 <% end -%>
 
 # Distros
-<% ['jessie', 'stretch', 'buster'].each do |distro| -%>
+<% ['jessie', 'stretch', 'buster', 'bullseye'].each do |distro| -%>
 <%= distro %>: P{F:lsbdistcodename = <%= distro %>}
 <% end -%>
 
