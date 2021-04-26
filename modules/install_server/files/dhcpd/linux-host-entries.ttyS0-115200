@@ -882,12 +882,6 @@ host planet1002 {
     fixed-address planet1002.eqiad.wmnet;
 }
 
-host planet1003 {
-    hardware ethernet aa:00:00:8a:35:d4;
-    fixed-address planet1003.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
-}
-
 host planet2002 {
     hardware ethernet aa:00:00:30:d4:33;
     fixed-address planet2002.codfw.wmnet;
