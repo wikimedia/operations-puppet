@@ -44,6 +44,14 @@ define etcdmirror::instance(
         service_params => $service_params,
     }
 
+    file { "/usr/local/sbin/reload-${prefix}":
+        ensure  => present,
+        content => inline_template("#!/bin/bash\n/usr/bin/etcd-mirror --strip --reload --src-prefix ${src_path} --dst-prefix ${dst_path} ${src} ${dst}"),
+        mode    => '0544',
+        owner   => 'root',
+        group   => 'root',
+    }
+
     systemd::syslog { $prefix:
         owner        => 'root',
         group        => 'root',
