@@ -18,6 +18,7 @@ SyslogIdentifier=<%= @syslog_identifier %>
 Slice=<%= @slice %>
 <%- end -%>
 <%- if @send_mail -%>
+SyslogIdentifier=<%= @command.split(' ')[0].split('/')[-1] %>
 ExecStart=<% if @ignore_errors %>-<% end %>/usr/local/bin/systemd-timer-mail-wrapper <%= @command %> -T <%= @send_mail_to %><% if @send_mail_only_on_error -%> --only-on-error<% end %>
 <%- else -%>
 ExecStart=<% if @ignore_errors %>-<% end %><%= @command %>
