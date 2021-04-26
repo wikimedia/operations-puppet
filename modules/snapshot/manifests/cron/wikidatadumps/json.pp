@@ -13,16 +13,6 @@ class snapshot::cron::wikidatadumps::json(
     $scriptpath = '/usr/local/bin/dumpwikibasejson.sh'
     if !$filesonly {
         # project: wikidata, dump type: all, entities to be dumped (default): item|property
-        cron { 'wikidatajson-dump':
-            ensure      => absent,
-            command     => "${scriptpath} -p wikidata -d all",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '15',
-            hour        => '3',
-            weekday     => '1',
-            require     => File[$scriptpath],
-        }
         systemd::timer::job { 'wikidatajson-dump':
             ensure             => present,
             description        => 'Regular jobs to build json snapshot of wikidata',
@@ -35,16 +25,6 @@ class snapshot::cron::wikidatadumps::json(
             require            => File[$scriptpath],
         }
         # project: wikidata, dump type: lexemes, entity to be dumped: lexeme
-        cron { 'wikidatajson-lexemes-dump':
-            ensure      => absent,
-            command     => "${scriptpath} -p wikidata -d lexemes -e lexeme",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '15',
-            hour        => '3',
-            weekday     => '3',
-            require     => File[$scriptpath],
-        }
         systemd::timer::job { 'wikidatajson-lexemes-dump':
             ensure             => present,
             description        => 'Regular jobs to build json snapshot of wikidata lexemes',

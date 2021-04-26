@@ -12,16 +12,6 @@ class snapshot::cron::wikidatadumps::rdf(
 
     $scriptpath = '/usr/local/bin/dumpwikibaserdf.sh'
     if !$filesonly {
-        cron { 'wikidatardf-all-dumps':
-            ensure      => absent,
-            command     => "${scriptpath} -p wikidata -d all -f ttl -e nt",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '0',
-            hour        => '23',
-            weekday     => '1',
-            require     => File[$scriptpath],
-        }
         systemd::timer::job { 'wikidatardf-all-dumps':
             ensure             => present,
             description        => 'Regular jobs to build rdf snapshot of wikidata',
@@ -33,16 +23,6 @@ class snapshot::cron::wikidatadumps::rdf(
             interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 23:0:0'},
             require            => File[$scriptpath],
         }
-        cron { 'wikidatardf-truthy-dumps':
-            ensure      => absent,
-            command     => "${scriptpath} -p wikidata -d truthy -f nt",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '0',
-            hour        => '23',
-            weekday     => '3',
-            require     => File[$scriptpath],
-        }
         systemd::timer::job { 'wikidatardf-truthy-dumps':
             ensure             => present,
             description        => 'Regular jobs to build rdf snapshot of wikidata truthy statements',
@@ -53,16 +33,6 @@ class snapshot::cron::wikidatadumps::rdf(
             command            => "${scriptpath} -p wikidata -d truthy -f nt",
             interval           => {'start' => 'OnCalendar', 'interval' => 'Wed *-*-* 23:0:0'},
             require            => File[$scriptpath],
-        }
-        cron { 'wikidatardf-lexemes-dumps':
-            ensure      => absent,
-            command     => "${scriptpath} -p wikidata -d lexemes -f ttl -e nt",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '0',
-            hour        => '23',
-            weekday     => '5',
-            require     => File[$scriptpath],
         }
         systemd::timer::job { 'wikidatardf-lexemes-dumps':
             ensure             => present,

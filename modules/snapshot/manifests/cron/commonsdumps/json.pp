@@ -13,17 +13,6 @@ class snapshot::cron::commonsdumps::json(
     $scriptpath = '/usr/local/bin/dumpwikibasejson.sh'
     if !$filesonly {
         # project: commons, dump type: all, entities to be dumped: mediainfo
-        # extra args: ignore-missing
-        cron { 'commonsjson-dump':
-            ensure      => absent,
-            command     => "${scriptpath} -p commons -d mediainfo -e mediainfo -E --ignore-missing",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '15',
-            hour        => '3',
-            weekday     => '1',
-            require     => File[$scriptpath],
-        }
         systemd::timer::job { 'commonsjson-dump':
             ensure             => present,
             description        => 'Regular jobs to build json snapshot of commons structured data',

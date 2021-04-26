@@ -12,16 +12,6 @@ class snapshot::cron::commonsdumps::rdf(
 
     $scriptpath = '/usr/local/bin/dumpwikibaserdf.sh'
     if !$filesonly {
-        cron { 'commonsrdf-dumps':
-            ensure      => absent,
-            command     => "${scriptpath} -p commons -d mediainfo -f ttl -e nt",
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            minute      => '0',
-            hour        => '19',
-            weekday     => '0',
-            require     => File[$scriptpath],
-        }
         systemd::timer::job { 'commonsrdf-dump':
             ensure             => present,
             description        => 'Regular jobs to build rdf snapshot of commons structured data',
