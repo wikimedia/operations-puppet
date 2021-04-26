@@ -40,7 +40,10 @@ if __name__ == "__main__":
         "--image-url",
         default="https://cdimage.debian.org/cdimage/openstack/"
         "current/debian-10-openstack-amd64.raw",
-        help="url for base image, (see: https://cdimage.debian.org/cdimage/openstack/current/)",
+        help="url for base image"
+        "  see: https://cdimage.debian.org/cdimage/openstack/ for Buster,"
+        "  https://cdimage.debian.org/cdimage/cloud/ for bullseye or later"
+        "  (but ignore the openstack subdir)",
     )
     argparser.add_argument(
         "--new-image-name",
@@ -61,6 +64,13 @@ if __name__ == "__main__":
         print("Downloading upstream image...")
         wgetargs = ["wget", args.image_url, "-O", upstream_image_file]
         _output = subprocess.check_output(wgetargs)
+
+        if args.image_url.endswith("tar.xz"):
+            # This is probably an archive containing 'disk.raw'
+            print("Untarring and looking for disk.raw")
+            tarargs = ["tar", "xvf", upstream_image_file]
+            _output = subprocess.check_output(tarargs, cwd=workdir)
+            upstream_image_file = "%s/disk.raw" % workdir
 
         print("Loading the upstream image into glance")
         upstream_image = glance.images.create(
