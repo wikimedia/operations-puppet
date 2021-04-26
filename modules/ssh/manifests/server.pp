@@ -25,7 +25,7 @@ class ssh::server (
     Boolean                      $disable_agent_forwarding = true,
     Boolean                      $challenge_response_auth  = true,
     Optional[Integer]            $max_sessions             = undef,
-    Optional[Integer]            $max_startups             = undef,
+    Optional[String[1]]          $max_startups             = undef,
 ) {
     $_permit_root = $permit_root ? {
         String  => $permit_root,
