@@ -70,6 +70,7 @@
     {"index" : "neutron-linuxbridge-agent", "value" : "kafka local" },
     {"index" : "neutron-rpc-server", "value" : "kafka local" },
     {"index" : "neutron-dhcp-agent", "value" : "kafka local" },
-    {"index" : "neutron-l3-agent", "value" : "kafka local" }
+    {"index" : "neutron-l3-agent", "value" : "kafka local" },
+    {"index" : "pybal", "value" : "kafka local" }
   ]
 }
