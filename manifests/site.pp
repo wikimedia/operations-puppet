@@ -483,6 +483,10 @@ node 'db1077.eqiad.wmnet' {
     role(mariadb::core_test)
 }
 
+node 'db1183.eqiad.wmnet' {
+    role(mariadb::core_test)
+}
+
 # s4 (commons) core production dbs on codfw
 # codfw master
 node 'db2090.codfw.wmnet' {
@@ -1130,7 +1134,7 @@ node /^failoid[12]002\.(eqiad|codfw)\.wmnet$/ {
 # 9 expansion hosts T273566
 # 2 hosts (db1154 and db1155) will be used to temporary test sanitarium upgrades to 10.4 T268742
 # Set them to spare individually as it will take take to transfer the data
-node /^db11(67|76|78|83)\.eqiad\.wmnet$/ {
+node /^db11(67|76|78)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
