@@ -21,7 +21,7 @@
   RewriteCond "%{HTTP_REFERER}" "^https://<%= @domain %>/d/(.*)"
   # Add ForceLogin to prevent a redirect loop T269272
   # grafana always adds an orgid QSA so we don't need to worry about '?' vs '&' below
-  RewriteRule "^" "https://<%= @domainrw %>/d/%1&forceLogin=true" [R=302,L]
+  RewriteRule "^" "https://<%= @domainrw %>/d/%1&forceLogin=true" [R=302,L,NE]
 
   # Direct /login visit, redirect to 'rw' homepage
   RewriteCond "%{REQUEST_URI}" "^/login"
