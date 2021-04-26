@@ -553,7 +553,7 @@ zookeeper_clusters:
   main-codfw:
     hosts:
       conf2004.codfw.wmnet: '2001'
-      conf2002.codfw.wmnet: '2002'
+      conf2005.codfw.wmnet: '2002'
       conf2003.codfw.wmnet: '2003'
 
   # ZK cluster for Druid analytics-eqiad cluster (non public),
