@@ -12,7 +12,7 @@ profile::pki::root_ca::key_params:
    size: 521
 profile::pki::root_ca::names:
   - organisation: Wikimedia Foundation, Inc
-    organisational_unit: Cloud Services
+    organisational_unit: SRE Foundations
     locality: San Francisco
     state: California
     country: US

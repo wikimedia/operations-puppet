@@ -16,7 +16,7 @@ define cfssl::signer (
     Stdlib::Port                  $listen_port      = 8888,
     Cfssl::Loglevel               $log_level        = 'info',
     String                        $default_auth_key = 'default_auth',
-    Cfssl::Expiry                 $default_expiry   = '96h',
+    Cfssl::Expiry                 $default_expiry   = '627h',
     Array[Cfssl::Usage]           $default_usages   = ['signing', 'key encipherment', 'client auth'],
     Stdlib::HTTPUrl               $default_crl_url  = "http://${listen_addr}/crl",
     Stdlib::HTTPUrl               $default_ocsp_url = "http://${listen_addr}/ocsp",
