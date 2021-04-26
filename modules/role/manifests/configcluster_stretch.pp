@@ -5,11 +5,8 @@ class role::configcluster_stretch {
     include ::profile::standard
     include ::profile::base::firewall
 
-    # Temporary to ease the migration process; T271573
-    if $::hostname !~ /conf2006/ {
-        include ::profile::zookeeper::server
-        include ::profile::zookeeper::firewall
-    }
+    include ::profile::zookeeper::server
+    include ::profile::zookeeper::firewall
 
     include ::profile::etcd::v3
     include ::profile::etcd::tlsproxy
