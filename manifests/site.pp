@@ -487,6 +487,10 @@ node 'db1183.eqiad.wmnet' {
     role(mariadb::core_test)
 }
 
+node 'db1125.eqiad.wmnet' {
+    role(mariadb::core_test)
+}
+
 # s4 (commons) core production dbs on codfw
 # codfw master
 node 'db2090.codfw.wmnet' {
@@ -732,7 +736,7 @@ node 'db2078.codfw.wmnet' {
 }
 
 # sanitarium hosts
-node /^db1(125|154|155)\.eqiad\.wmnet/ {
+node /^db1(154|155)\.eqiad\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
