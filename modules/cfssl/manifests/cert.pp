@@ -7,7 +7,7 @@ define cfssl::cert (
     String                         $owner          = 'root',
     String                         $group          = 'root',
     Boolean                        $auto_renew     = true,
-    Integer[1800]                  $renew_seconds  = 86400,  # 24 hours
+    Integer[1800]                  $renew_seconds  = 864000,  # 10 days
     Boolean                        $provide_chain  = false,
     Optional[String]               $label          = undef,
     Optional[String]               $profile        = undef,
