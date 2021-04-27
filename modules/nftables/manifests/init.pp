@@ -19,9 +19,12 @@ class nftables (
 
     $nft_main_file = '/etc/nftables/main.nft' # used in the systemd template
     systemd::service { 'nftables':
-        ensure   => $ensure_service,
-        content  => systemd_template('nftables'),
-        override => true,
+        ensure         => $ensure_service,
+        content        => systemd_template('nftables'),
+        override       => true,
+        service_params => {
+            hasrestart => true,
+        }
     }
 
     # create a directory to hold the nftables config
