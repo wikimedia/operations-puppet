@@ -2370,7 +2370,7 @@ node /^rdb200[4678]\.codfw\.wmnet$/ {
 }
 
 node /^(rdb2009|rdb2010)\.codfw\.wmnet$/ {
-    role(insetup)
+    role(redis::misc::slave)
 }
 
 node /^registry[12]00[34]\.(eqiad|codfw)\.wmnet$/ {
