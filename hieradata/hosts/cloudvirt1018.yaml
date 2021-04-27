@@ -5,3 +5,4 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'enp4s0f1.1105'
 
 profile::base::notifications: disabled
+profile::openstack::eqiad1::version: 'ussuri'
