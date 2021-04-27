@@ -33,21 +33,15 @@ class redis {
         values => { 'vm.overcommit_memory' => 1 },
     }
 
-    # Manage the redis.conf file again as we need it
-    # to be the simplest lowest-common denominator
     file { '/etc/redis/redis-common.conf':
-        ensure => present,
-        source => 'puppet:///modules/redis/redis-common.conf',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        before => File['/etc/redis/redis.conf'],
+        ensure => absent,
     }
 
-    # Distro-specific common directives go here
+    # Manage the redis.conf file again as we need it
+    # to be the simplest lowest-common denominator
     file { '/etc/redis/redis.conf':
         ensure => present,
-        source => "puppet:///modules/redis/redis-${::lsbdistcodename}.conf",
+        source => 'puppet:///modules/redis/redis.conf',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
