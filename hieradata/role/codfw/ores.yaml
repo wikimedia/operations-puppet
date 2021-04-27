@@ -1,4 +1,4 @@
 profile::ores::web::poolcounter_nodes:
   - orespoolcounter2003:7531
   - orespoolcounter2004:7531
-profile::ores::web::redis_host: rdb2003.codfw.wmnet
+profile::ores::web::redis_host: rdb2007.codfw.wmnet
