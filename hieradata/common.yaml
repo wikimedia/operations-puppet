@@ -689,7 +689,7 @@ kafka_clusters:
   logging-codfw:
     zookeeper_cluster_name: main-codfw
     brokers:
-      logstash2001.codfw.wmnet:
+      kafka-logging2001.codfw.wmnet:
         id: 2001
         rack: A
       logstash2002.codfw.wmnet:

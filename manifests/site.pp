@@ -1349,8 +1349,11 @@ node /kafka-logging100[123]\.eqiad\.wmnet/ {
     role(kafka::logging)
 }
 
-# New Codfw kafka-logging hosts T274905
-node /^kafka-logging200[123]\.codfw\.wmnet/ {
+node /^kafka-logging2001\.codfw\.wmnet/ {
+    role(kafka::logging)
+}
+
+node /^kafka-logging200[23]\.codfw\.wmnet/ {
     role(insetup)
 }
 
@@ -1559,10 +1562,14 @@ node /^logstash103[345]\.eqiad\.wmnet/ {
 }
 
 # codfw logstash kafka/elasticsearch
-node /^logstash200[1-3]\.codfw\.wmnet$/ {
+node /^logstash200[23]\.codfw\.wmnet$/ {
     role(logstash::elasticsearch)
     # Remove kafka::logging role after dedicated logging kafka hardware is online
     include ::role::kafka::logging # lint:ignore:wmf_styleguide
+}
+
+node /^logstash2001\.codfw\.wmnet$/ {
+    role(logstash::elasticsearch)
 }
 
 # codfw logstash collectors (Ganeti)
