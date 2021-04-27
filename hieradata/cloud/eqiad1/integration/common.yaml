@@ -17,6 +17,10 @@ profile::ci::docker::settings:
 #
 labstore::traffic_shaping::egress: 100mbps
 profile::ci::package_builder::extra_packages:
+    sid:
+        - eatmydata
+    bullseye:
+        - eatmydata
     buster:
         - eatmydata
     stretch:
