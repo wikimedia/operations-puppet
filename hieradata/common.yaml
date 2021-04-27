@@ -692,7 +692,7 @@ kafka_clusters:
       kafka-logging2001.codfw.wmnet:
         id: 2001
         rack: A
-      logstash2002.codfw.wmnet:
+      kafka-logging2002.codfw.wmnet:
         id: 2002
         rack: C
       logstash2003.codfw.wmnet:
