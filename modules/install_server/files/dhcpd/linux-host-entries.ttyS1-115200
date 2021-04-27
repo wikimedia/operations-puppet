@@ -3644,12 +3644,6 @@ host htmldumper1001 {
     fixed-address htmldumper1001.eqiad.wmnet;
 }
 
-host icinga2001 {
-    hardware ethernet 14:18:77:33:42:F8;
-    fixed-address icinga2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host logstash1020 {
     hardware ethernet 14:18:77:33:52:42;
     fixed-address logstash1020.eqiad.wmnet;

@@ -15,7 +15,6 @@ profile::icinga::ircbot::ircecho_server: 'chat.freenode.net +6697'
 profile::icinga::virtual_host: ldap-icinga.wikimedia.org
 profile::icinga::active_host: alert1001.wikimedia.org
 profile::icinga::partners:
-  - 'icinga2001.wikimedia.org'
   - 'alert2001.wikimedia.org'
 
 profile::alertmanager::active_host: alert1001.wikimedia.org

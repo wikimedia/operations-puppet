@@ -1383,8 +1383,6 @@ mysql_root_clients:
 - 208.80.155.103 # dborch1001.wikimedia.org
 
 monitoring_hosts:
-- 208.80.153.74              # icinga2001.wikimedia.org
-- 2620:0:860:3:208:80:153:74 # icinga2001.wikimedia.org
 - 208.80.154.88              # alert1001.wikimedia.org
 - 2620:0:861:3:208:80:154:88 # alert1001.wikimedia.org
 - 208.80.153.84              # alert2001.wikimedia.org

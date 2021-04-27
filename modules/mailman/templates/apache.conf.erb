@@ -53,8 +53,6 @@
         SecAction "id:1000,phase:1,initcol:IP=%{REMOTE_ADDR},pass,nolog"
 
         # Exempt IPv4 addresses of monitoring hosts
-        # icinga2001.wikimedia.org
-        SecRule REMOTE_ADDR "208.80.153.74"  "id:1001,allow"
         # alert1001.wikimedia.org
         SecRule REMOTE_ADDR "208.80.154.88"  "id:1005,allow"
         # alert2001.wikimedia.org
