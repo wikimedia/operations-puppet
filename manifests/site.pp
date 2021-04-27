@@ -363,16 +363,12 @@ node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
 # eqsin caches
 #
 
-node /^cp500[1-6]\.eqsin\.wmnet$/ {
+node /^cp50(0[1-6]|1[34])\.eqsin\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {
+node /^cp50(0[789]|1[01256])\.eqsin\.wmnet$/ {
     role(cache::text)
-}
-
-node /^cp501[3456]\.eqsin\.wmnet$/ {
-    role(insetup_noferm)
 }
 
 node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {

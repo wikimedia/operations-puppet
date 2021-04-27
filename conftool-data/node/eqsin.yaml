@@ -6,6 +6,8 @@ eqsin:
     cp5010.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5011.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5012.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp5015.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp5016.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
   cache_upload:
     cp5001.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5002.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
@@ -13,6 +15,8 @@ eqsin:
     cp5004.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5005.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
     cp5006.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp5013.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp5014.eqsin.wmnet: [varnish-fe, ats-be, ats-tls]
   dns:
     dns5001.wikimedia.org: [pdns_recursor]
     dns5002.wikimedia.org: [pdns_recursor]

@@ -1274,6 +1274,14 @@ cache_hosts:
 - 2001:df2:e500:101:10:132:0:112 # cp5012.eqsin.wmnet
 - 10.132.0.106                   # cp5006.eqsin.wmnet
 - 2001:df2:e500:101:10:132:0:106 # cp5006.eqsin.wmnet
+- 10.132.0.6                     # cp5013.eqsin.wmnet
+- 2001:df2:e500:101:10:132:0:6   # cp5013.eqsin.wmnet
+- 10.132.0.7                     # cp5014.eqsin.wmnet
+- 2001:df2:e500:101:10:132:0:7   # cp5014.eqsin.wmnet
+- 10.132.0.8                     # cp5015.eqsin.wmnet
+- 2001:df2:e500:101:10:132:0:8   # cp5015.eqsin.wmnet
+- 10.132.0.9                     # cp5016.eqsin.wmnet
+- 2001:df2:e500:101:10:132:0:9   # cp5016.eqsin.wmnet
 
 kafka_brokers_main:
 - 10.64.0.200                  # kafka-main1001.eqiad.wmnet
