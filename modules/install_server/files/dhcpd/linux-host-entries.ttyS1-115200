@@ -7271,13 +7271,13 @@ host rdb1010 {
 host rdb1011 {
     hardware ethernet 2C:EA:7F:65:73:E5;
     fixed-address rdb1011.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host rdb1012 {
     hardware ethernet 2C:EA:7F:65:B7:38;
     fixed-address rdb1012.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host rdb2004 {
@@ -7313,13 +7313,13 @@ host rdb2008 {
 host rdb2009 {
     hardware ethernet 2C:EA:7F:65:7D:A3;
     fixed-address rdb2009.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host rdb2010 {
     hardware ethernet 2C:EA:7F:65:4D:FB;
     fixed-address rdb2010.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host rdb2003 {
