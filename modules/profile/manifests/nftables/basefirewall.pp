@@ -21,7 +21,7 @@ class profile::nftables::basefirewall (
 
     nftables::file { 'basefirewall_input_last':
         ensure  => 'present',
-        content => 'add rule inet basefirewall input counter comment "counter dropped packets"',
+        content => 'add rule inet basefirewall input counter comment "counter dropped packets"\n',
         order   => 999,
     }
 }

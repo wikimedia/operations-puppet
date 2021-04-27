@@ -137,6 +137,6 @@ class profile::openstack::base::cloudgw (
 
     nftables::file { 'conntrackd_tcp_3780':
         order   => 1,
-        content => "add rule inet basefirewall input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept",
+        content => "add rule inet basefirewall input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept\n",
     }
 }
