@@ -43,6 +43,7 @@ class profile::kubernetes::deployment_server::global_config(
         $svc = $services_proxy[$listener['service']]
         $upstream_port = $svc['port']
         $encryption = $svc['encryption']
+        $ip_addresses = $svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort()
         $retval = {
             $listener['name'] => {
                 'keepalive' => $listener['keepalive'],
@@ -52,6 +53,7 @@ class profile::kubernetes::deployment_server::global_config(
                 'retry_policy' => $listener['retry'],
                 'xfp' => $listener['xfp'],
                 'upstream' => {
+                    'ips' => $ip_addresses,
                     'address' => $address,
                     'port' => $upstream_port,
                     'encryption' => $encryption,
@@ -59,6 +61,8 @@ class profile::kubernetes::deployment_server::global_config(
             }.filter |$key, $val| { $val =~ NotUndef }
         }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
+    # To properly enable the networkpolicies, we also need to collect the service IPs
+
 
     # Per-cluster general defaults.
     $clusters.each |String $environment, $dc| {
