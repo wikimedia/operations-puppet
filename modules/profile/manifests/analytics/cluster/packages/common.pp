@@ -41,6 +41,7 @@ class profile::analytics::cluster::packages::common(
         'python3-tz',
         'python3-nltk',
         'python3-nose',
+        'python3-mock', # needed to run refinery-drop-older-than
         'python3-setuptools',
         'python3-sklearn-lib',
         # for uploading files from Hadoop, etc. to Swift object store.

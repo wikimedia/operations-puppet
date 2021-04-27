@@ -53,4 +53,16 @@ class profile::analytics::refinery::job::test::data_purge {
         environment => $systemd_env,
         user        => 'analytics',
     }
+
+    # Drop old data from all tables in the Hive event database with tables in /wmf/data/event.
+    # Data that should be kept indefinitely is sanitized by refine_sanitize jobs into the
+    # event_sanitized Hive database, so all data older than 90 days should be safe to drop.
+    $drop_event_log_file = "${profile::analytics::refinery::log_dir}/drop_event.log"
+    kerberos::systemd_timer { 'drop_event':
+        description => 'Drop data in Hive event database older than 90 days.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='.*' --base-path='/wmf/data/event' --path-format='[^/]+/(datacenter=.+/)?year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --skip-trash --execute='47fcf448636e5b05ddf861a36af242bc' --log-file='${drop_event_log_file}'",
+        interval    => '*-*-* 00:00:00',
+        environment => $systemd_env,
+        user        => 'analytics',
+    }
 }
