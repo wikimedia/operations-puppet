@@ -72,7 +72,7 @@ table inet basefirewall {
         <%- if !@prometheus_ports.empty? -%>
         elements = {
         <% @prometheus_ports.each do |port| -%>
-            <%= addr %> ,
+            <%= port %> ,
         <% end -%>
         }
         <%- end -%>
