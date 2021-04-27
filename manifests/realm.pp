@@ -185,6 +185,7 @@ $private_tables = [
     'cu_changes',
     'cu_log',
     'cur',
+    'discussiontools_subscription',
     'echo_email_batch',
     'echo_event',
     'echo_target_page',
