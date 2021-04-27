@@ -18,4 +18,10 @@ class profile::nftables::basefirewall (
         content => template('profile/nftables/basefirewall.nft.erb'),
         order   => 0,
     }
+
+    nftables::file { 'basefirewall_input_last':
+        ensure  => 'present',
+        content => 'add rule inet basefirewall input counter comment \"counter dropped packets\"',
+        order   => 999,
+    }
 }

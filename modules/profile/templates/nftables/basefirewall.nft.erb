@@ -61,7 +61,6 @@ table inet basefirewall {
 
         ip saddr @ssh_allowed_ipv4 tcp dport 22 ct state new counter accept;
         ip6 saddr @ssh_allowed_ipv6 tcp dport 22 ct state new counter accept;
-        counter comment "counter dopped packets"
     }
 
     chain output {
