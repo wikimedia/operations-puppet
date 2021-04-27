@@ -20,7 +20,7 @@
 # [*wiki_file*]
 #   The file containing the wikis to import.
 #   Format: csv with wiki database name as first column.
-#   Default: /mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/labs_grouped_wikis.csv
+#   Default: /mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/grouped_wikis.csv
 #
 # [*input_directory_base*]
 #   The path of the xmldatadumps/public mount from which to import files.
@@ -41,7 +41,7 @@ define profile::analytics::refinery::job::import_mediawiki_dumps_config(
     $log_file_name,
     $timer_description,
     $timer_interval,
-    $wiki_file = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/labs_grouped_wikis.csv',
+    $wiki_file = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/grouped_wikis.csv',
     $input_directory_base = '/mnt/data/xmldatadumps/public',
     $output_directory_base = '/wmf/data/raw/mediawiki/dumps',
     $script_path = "/usr/local/bin/${title}",
