@@ -79,7 +79,7 @@ server = client.getConnection()
 exit_code = 1
 try:
     server.sendAdminRequest(req, timeout=opts.timeout)
-    print(req.response)
+    print(req.response.decode('utf-8'))
     exit_code = 0
 except gear.TimeoutError:
     print("Server timeout exceeded (%s)" % opts.server)
