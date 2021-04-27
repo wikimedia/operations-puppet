@@ -8,12 +8,3 @@ profile::icinga::icinga_group: 'nagios'
 profile::icinga::icinga_user: 'nagios'
 profile::icinga::ensure_service: 'running'
 profile::icinga::logs_keep_days: 780
-# The following are defined in hieradata/role/common/alerting_host.yaml
-# profile::icinga::partners: []
-# profile::icinga::virtual_host: 'icinga.wikimedia.org'
-# profile::icinga::active_host: 'icinga1001.wikimedia.org'
-# profile::icinga::virtual_host: 'icinga.wikimedia.org'
-# profile::icinga::active_host: 'icinga1001.wikimedia.org'
-# The following are set in the private repo
-# profile::icinga::apache2_auth_users: {}
-# profile::icinga::apache2_htpasswd_salt: ''

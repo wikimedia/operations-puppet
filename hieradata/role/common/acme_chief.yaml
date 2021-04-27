@@ -65,9 +65,8 @@ profile::acme_chief::certificates:
         CN: 'icinga.wikimedia.org'
         SNI:
         - 'icinga.wikimedia.org'
-        - 'icinga1001.wikimedia.org'
-        - 'icinga2001.wikimedia.org'
         - 'alerts.wikimedia.org'
+        - 'icinga2001.wikimedia.org'
         - 'alert1001.wikimedia.org'
         - 'alert2001.wikimedia.org'
         - 'icinga-extmon.wikimedia.org'
