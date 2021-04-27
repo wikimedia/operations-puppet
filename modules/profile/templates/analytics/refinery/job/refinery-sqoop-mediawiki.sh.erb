@@ -8,7 +8,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --job-name sqoop-mediawiki-monthly-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
     --clouddb \
     --output-dir <%= @output_directory_labs %> \
-    --wiki-file <%= @wiki_file %> \
+    --wiki-file <%= @wiki_file_labs %> \
     --tables archive,category,categorylinks,change_tag,change_tag_def,content,content_models,externallinks,image,imagelinks,ipblocks,ipblocks_restrictions,iwlinks,langlinks,logging,page,pagelinks,page_props,page_restrictions,redirect,revision,slots,slot_roles,templatelinks,user,user_groups,user_properties,wbc_entity_usage \
     --user <%= @labs_db_user %> \
     --password-file <%= @db_password_labs %> \

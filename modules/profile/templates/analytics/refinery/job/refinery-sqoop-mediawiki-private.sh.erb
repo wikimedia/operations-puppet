@@ -7,7 +7,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
 /usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
     --job-name sqoop-mediawiki-monthly-private-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
     --output-dir <%= @output_directory_private %> \
-    --wiki-file <%= @wiki_file %> \
+    --wiki-file <%= @wiki_file_private %> \
     --tables cu_changes \
     --user <%= @private_db_user %> \
     --password-file <%= @db_password_private %> \
