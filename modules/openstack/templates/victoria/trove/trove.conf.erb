@@ -61,11 +61,13 @@ trove_volume_support = True
 block_device_mapping = sdb
 device_path = /dev/sdb
 # Maximum volume size for an instance
-max_accepted_volume_size = 10
-max_instances_per_tenant = 5
+
+
+max_accepted_volume_size = 80
+max_instances_per_tenant = 2
 # Maximum volume capacity (in GB) spanning across all trove volumes per tenant
-max_volumes_per_tenant = 100
-max_backups_per_tenant = 5
+max_volumes_per_tenant = 10
+max_backups_per_tenant = 2
 volume_time_out=30
 
 # Config options for rate limits
