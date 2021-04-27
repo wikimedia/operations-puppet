@@ -1,6 +1,6 @@
 cluster: redis
 profile::redis::slave::settings:
-  bind: '0.0.0.0'
+  bind: '0.0.0.0 ::'
   appendonly: true
   auto_aof_rewrite_min_size: '512mb'
   client_output_buffer_limit: 'slave 2048mb 512mb 60'
