@@ -297,6 +297,8 @@ mediawiki::sites:
           short_urls: true
       - name: otrs-wiki.wikimedia.org
         params: *private_wiki
+      - name: vrt-wiki.wikimedia.org
+        params: *private_wiki
       - name: exec.wikimedia.org
         params: *private_wiki
       - name: collab.wikimedia.org
