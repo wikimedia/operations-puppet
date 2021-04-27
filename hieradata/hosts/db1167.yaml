@@ -1,2 +1,4 @@
 # db1167
+mariadb::shard: 's7'
+mariadb::binlog_format: 'ROW'
 profile::base::notifications: disabled
