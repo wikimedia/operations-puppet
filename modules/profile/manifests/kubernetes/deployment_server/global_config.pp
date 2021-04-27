@@ -11,7 +11,8 @@ class profile::kubernetes::deployment_server::global_config(
     Array[Mediawiki::SiteCollection] $mediawiki_sites = lookup('mediawiki::sites'),
     Optional[Stdlib::Port::User] $fcgi_port = lookup('profile::php_fpm::fcgi_port', {'default_value' => undef}),
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
-    String $domain_suffix = lookup('mediawiki::web::sites::domain_suffix', {'default_value' => 'org'})
+    String $domain_suffix = lookup('mediawiki::web::sites::domain_suffix', {'default_value' => 'org'}),
+    Hash[String, Hash] $kafka_clusters = lookup('kafka_clusters'),
 ) {
     # General directory holding all configurations managed by puppet
     # that are used in helmfiles
@@ -43,7 +44,15 @@ class profile::kubernetes::deployment_server::global_config(
         $svc = $services_proxy[$listener['service']]
         $upstream_port = $svc['port']
         $encryption = $svc['encryption']
-        $ip_addresses = $svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort()
+        # To properly enable the networkpolicies, we also need to collect the service IPs
+        $ip_addresses = $svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort().map |$x| {
+            $retval = $x ? {
+                Stdlib::IP::Address::V4::Nosubnet => "${x}/32",
+                Stdlib::IP::Address::V6::Nosubnet => "${x}/128",
+                default                           => $x
+            }
+            $retval
+        }
         $retval = {
             $listener['name'] => {
                 'keepalive' => $listener['keepalive'],
@@ -61,8 +70,12 @@ class profile::kubernetes::deployment_server::global_config(
             }.filter |$key, $val| { $val =~ NotUndef }
         }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
-    # To properly enable the networkpolicies, we also need to collect the service IPs
 
+    $kafka_brokers = $kafka_clusters.map |$cl, $data| {
+        $ips = $data['brokers'].keys().map |$n| {ipresolve($n)}
+        $retval = {$cl => $ips}
+        $retval
+    }.reduce({}) | $mem, $val| { $mem.merge($val)}
 
     # Per-cluster general defaults.
     $clusters.each |String $environment, $dc| {
@@ -85,7 +98,7 @@ class profile::kubernetes::deployment_server::global_config(
             }
         }
         # Merge default and environment specific general values with deployment config and service proxies
-        $opts = deep_merge($general_values['default'], $general_values[$environment], $deployment_config_opts, {'services_proxy' => $proxies})
+        $opts = deep_merge($general_values['default'], $general_values[$environment], $deployment_config_opts, {'services_proxy' => $proxies, 'kafka_brokers' => $kafka_brokers})
         file { "${general_dir}/general-${environment}.yaml":
             content => to_yaml($opts),
             mode    => '0444'
