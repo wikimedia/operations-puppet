@@ -1349,20 +1349,12 @@ node /^kafka-logging200[123]\.codfw\.wmnet/ {
     role(insetup)
 }
 
-node /kafka-main100[4-5]\.eqiad\.wmnet/ {
-    role(insetup)
-}
-
-node /kafka-main100[123]\.eqiad\.wmnet/ {
+node /kafka-main100[1-5]\.eqiad\.wmnet/ {
     role(kafka::main)
 }
 
-node /kafka-main200[123]\.codfw\.wmnet/ {
+node /kafka-main200[1-5]\.codfw\.wmnet/ {
     role(kafka::main)
-}
-
-node /kafka-main200[4-5]\.codfw\.wmnet/ {
-    role(insetup)
 }
 
 # kafka-jumbo is a large general purpose Kafka cluster.

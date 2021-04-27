@@ -611,6 +611,12 @@ kafka_clusters:
       kafka-main1003.eqiad.wmnet:
         id: 1003
         rack: C
+      kafka-main1004.eqiad.wmnet:
+        id: 1004
+        rack: D
+      kafka-main1005.eqiad.wmnet:
+        id: 1005
+        rack: D
 
   main-codfw:
     zookeeper_cluster_name: main-codfw
@@ -624,6 +630,12 @@ kafka_clusters:
       kafka-main2003.codfw.wmnet:
         id: 2003
         rack: C
+      kafka-main2004.codfw.wmnet:
+        id: 2004
+        rack: D
+      kafka-main2005.codfw.wmnet:
+        id: 2005
+        rack: D
 
   # NOTE:  The 'rack' here is used by the confluent kafka module
   # to assign broker.rack for Kafka rack awareness.  We are actually setting
