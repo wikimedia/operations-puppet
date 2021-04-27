@@ -20,7 +20,7 @@ class debian {
     # instead of the expected point release value e.g. 11.0.  This causes this
     # module to fail as it expects theses values to be numbers
     unless $facts['os']['release']['major'] =~ /\d+/ {
-        fail("unsupported: facts['os']['release'['major'] (${facts['os']['release']['major']}) is not a number")
+        fail("unsupported: facts['os']['release']['major'] (${facts['os']['release']['major']}) is not a number")
     }
 
 }
