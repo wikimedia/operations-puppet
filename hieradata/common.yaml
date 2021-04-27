@@ -925,6 +925,9 @@ hadoop_clusters:
       # User used in the Yarn UI to check job logs/statuses/etc..
       hadoop.http.staticuser.user: 'yarn'
 
+    # Requires the Capacity scheduler to work
+    yarn_node_labels_enabled: true
+
     yarn_site_extra_properties:
       yarn.resourcemanager.scheduler.class: 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler'
       yarn.resourcemanager.scheduler.monitor.enable: true
