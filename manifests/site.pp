@@ -479,10 +479,6 @@ node /^db1(121|141|142|143|147|148|149|160)\.eqiad\.wmnet/ {
 
 # s4-test hosts on eqiad
 # temporarilly misc
-node 'db1077.eqiad.wmnet' {
-    role(mariadb::core_test)
-}
-
 node 'db1183.eqiad.wmnet' {
     role(mariadb::core_test)
 }

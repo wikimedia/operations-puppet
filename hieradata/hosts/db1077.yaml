@@ -1,4 +1,0 @@
-# db1077
-# Broken BBU T225391
-mariadb::shard: 'test-pc1'
-profile::base::notifications: disabled
