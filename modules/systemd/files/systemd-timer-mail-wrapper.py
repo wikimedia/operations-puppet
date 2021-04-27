@@ -5,7 +5,7 @@ import os
 import smtplib
 import subprocess
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, REMAINDER
 from email.message import EmailMessage
 from socket import getfqdn
 
@@ -21,7 +21,7 @@ def get_args():
     parser.add_argument(
         '--only-on-error', action='store_true', help='Only send emails if the job errors',
     )
-    parser.add_argument('cmd', nargs='+')
+    parser.add_argument('cmd', nargs=REMAINDER)
     return parser.parse_args()
 
 
