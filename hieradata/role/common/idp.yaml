@@ -6,7 +6,8 @@ profile::tlsproxy::envoy::listen_ipv6: true
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 8080
-profile::tlsproxy::envoy::acme_cert_name: idp
+profile::tlsproxy::envoy::ssl_provider: 'acme'
+profile::tlsproxy::envoy::global_cert_name: idp
 profile::idp::enable_cors: true
 profile::idp::cors_allow_credentials: true
 profile::idp::cors_allowed_origins:

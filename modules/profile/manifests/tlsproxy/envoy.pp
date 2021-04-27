@@ -41,13 +41,13 @@
 # @param retries If true enable retries. Default: true
 # @param use_remote_address If true append the client address to the x-forwarded-for header
 # @param floc_opt_out add the Permissions-Policy: interest-cohort=() header to opt out of FLoC
+# @param ssl_provider the ssl provider e.g. sslcert, acme_chief
 # TODO: allows services to override this value in the Profile::Tlsproxy::Envoy::Service Struct
 # @param upstream_addr the address of the backend service.  must be a localy configuered ipaddrres,
 #                      localhost or $facts['fqdn'].  Default: $facts['fqdn']
 # @param services An array of Profile::Tlsproxy::Envoy::Service's to configure
 #                 Default [{server_name: ['*'], port: 80}]
 # @param global_cert_name The name of the certificate to install via sslcert::certificate
-# @param acme_cert_name The name of the certificate to install via sslcert::certificate acme_chief::cert
 # @param access_log Whether to use an access log or not.
 # @param capitalize_headers Whether to capitalize headers when responding to HTTP/1.1 requests
 # @param idle_timeout If indicated, that's how long an idle connection to the service is left open before closing it.
@@ -63,11 +63,10 @@ class profile::tlsproxy::envoy(
     Boolean                       $capitalize_headers        = lookup('profile::tlsproxy::envoy::capitalize_headers'),
     Boolean                       $listen_ipv6               = lookup('profile::tlsproxy::envoy::listen_ipv6'),
     Boolean                       $floc_opt_out              = lookup('profile::tlsproxy::envoy::floc_opt_out'),
+    Enum['sslcert', 'acme']       $ssl_provider              = lookup('profile::tlsproxy::envoy::ssl_provider'),
     Array[Profile::Tlsproxy::Envoy::Service] $services = lookup('profile::tlsproxy::envoy::services'),
     Optional[Stdlib::Host]        $upstream_addr    = lookup('profile::tlsproxy::envoy::upstream_addr'),
     Optional[String]              $global_cert_name = lookup('profile::tlsproxy::envoy::global_cert_name',
-                                                      {'default_value' => undef}),
-    Optional[String]              $acme_cert_name   = lookup('profile::tlsproxy::envoy::acme_cert_name',
                                                       {'default_value' => undef}),
     Optional[Float]               $idle_timeout = lookup('profile::tlsproxy::envoy::idle_timeout',
                                                       {'default_value' => undef}),
@@ -79,9 +78,6 @@ class profile::tlsproxy::envoy(
     require profile::envoy
     $ensure = $profile::envoy::ensure
 
-    if $global_cert_name and $acme_cert_name {
-        fail('\$global_cert_name and \$acme_chief are mutually exclusive please only provide one')
-    }
     $valid_upstream_addr = $facts['networking']['interfaces'].values().reduce([]) |$memo, $int| {
         $memo + [$int['ip'], $int['ip6']]
     }.delete_undef_values() + ['localhost', $facts['fqdn']]
@@ -89,23 +85,26 @@ class profile::tlsproxy::envoy(
         fail("upstream_addr must be one of: ${valid_upstream_addr.join(', ')}")
     }
 
-    # ensure all the needed certs are present. Given these are internal services,
-    # we want certs declared with the traditional sslcert for now.
-    $services.each |$service| {
-        $certname = $service['cert_name']
-        if $service['cert_name'] {
-            sslcert::certificate { $service['cert_name']:
-                ensure => $ensure,
-                group  => 'envoy',
-                notify => Service['envoyproxy.service'],
-            }
-        }
-    }
     $upstreams = $services.map |$service| {
-        $certname = $service['cert_name']
-        if $certname and $sni_support != 'no' {
-            $cert = "/etc/ssl/localcerts/${service['cert_name']}.crt"
-            $key = "/etc/ssl/private/${service['cert_name']}.key"
+        if $service['cert_name'] and $sni_support != 'no' {
+            # ensure all the needed certs are present. Given these are internal services,
+            # we want certs declared with the traditional sslcert for now.
+            if $ssl_provider == 'sslcert' {
+                sslcert::certificate { $service['cert_name']:
+                    ensure => $ensure,
+                    group  => 'envoy',
+                    notify => Service['envoyproxy.service'],
+                }
+                $cert = "/etc/ssl/localcerts/${service['cert_name']}.crt"
+                $key = "/etc/ssl/private/${service['cert_name']}.key"
+            } elsif $ssl_provider == 'acme' {
+                acme_chief::cert { $service['cert_name']:
+                    puppet_svc => 'envoyproxy.service',
+                    key_group  => 'envoy',
+                }
+                $cert = "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.chained.crt"
+                $key = "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.key"
+            }
         } else {
             $cert = undef
             $key = undef
@@ -125,7 +124,11 @@ class profile::tlsproxy::envoy(
         $global_key_path = undef
     }
     else {
-        if $global_cert_name {
+        unless $global_cert_name {
+            fail(['If you want non-sni TLS to be supported, you need to define ',
+                  'profile::tlsproxy::envoy::global_cert_name or '].join(' '))
+        }
+        if $ssl_provider == 'sslcert' {
             sslcert::certificate { $global_cert_name:
                 ensure => $ensure,
                 group  => 'envoy',
@@ -133,28 +136,22 @@ class profile::tlsproxy::envoy(
             }
             $global_cert_path = "/etc/ssl/localcerts/${global_cert_name}.crt"
             $global_key_path = "/etc/ssl/private/${global_cert_name}.key"
-        } elsif $acme_cert_name {
-            acme_chief::cert {$acme_cert_name:
+        } elsif $ssl_provider == 'acme' {
+            acme_chief::cert {$global_cert_name:
                 puppet_svc => 'envoyproxy.service',
                 key_group  => 'envoy',
             }
-            $global_cert_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.chained.crt"
-            $global_key_path = "/etc/acmecerts/${acme_cert_name}/live/ec-prime256v1.key"
-        } else {
-            fail(['If you want non-sni TLS to be supported, you need to define ',
-                  'profile::tlsproxy::envoy::global_cert_name or ',
-                  'profile::tlsproxy::envoy::acme_cert_name'].join(' '))
+            $global_cert_path = "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.chained.crt"
+            $global_key_path = "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.key"
         }
     }
 
     if $ensure == 'present' {
-        if $retries {
-            # Use the default envoy retry policy
-            $retry_policy = undef
-        } else {
-            $retry_policy = {'num_retries' => 0}
-        }
 
+        $retry_policy = $retries ? {
+            true    => undef,
+            default => {'num_retries' => 0},
+        }
         $response_headers_to_add = $floc_opt_out ? {
             true    => {'Permissions-Policy' => 'interest-cohort=()'},
             default => {},
