@@ -2361,7 +2361,7 @@ node /^(rdb1011|rdb1012)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-node /^rdb200[357]\.codfw\.wmnet$/ {
+node /^rdb200[3579]\.codfw\.wmnet$/ {
     role(redis::misc::master)
 }
 # New rdb node T251626
@@ -2369,7 +2369,7 @@ node /^rdb200[468]\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
-node /^(rdb2009|rdb2010)\.codfw\.wmnet$/ {
+node /^rdb2010\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
