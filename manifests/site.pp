@@ -2361,11 +2361,16 @@ node /^(rdb1011|rdb1012)\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-node /^rdb200[3579]\.codfw\.wmnet$/ {
+# being decommissioned (T273140)
+node /^rdb200[3456]\.codfw\.wmnet$/ {
+    role(spare::system)
+}
+
+node /^rdb200[79]\.codfw\.wmnet$/ {
     role(redis::misc::master)
 }
 # New rdb node T251626
-node /^rdb200[468]\.codfw\.wmnet$/ {
+node /^rdb2008\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
