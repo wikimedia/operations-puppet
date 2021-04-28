@@ -313,12 +313,7 @@ node /^kafka-test10(10|0[6-9])\.eqiad\.wmnet/ {
     role(kafka::test::broker)
 }
 
-# Zookeeper and Etcd discovery service nodes in codfw
-node /^conf200[123]\.codfw\.wmnet$/ {
-    role(configcluster)
-}
-
-# New Zookeeper and Etcd discovery service nodes in codfw T271573
+# Zookeeper and Etcd discovery service nodes
 node /^conf200[456]\.codfw\.wmnet/ {
     role(configcluster_stretch)
 }

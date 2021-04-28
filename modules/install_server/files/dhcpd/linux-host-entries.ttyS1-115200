@@ -1164,24 +1164,6 @@ host conf1006 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host conf2001 {
-    hardware ethernet 14:18:77:5E:A7:2C;
-    fixed-address conf2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host conf2002 {
-    hardware ethernet 14:18:77:5E:A1:75;
-    fixed-address conf2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
-host conf2003 {
-    hardware ethernet 14:18:77:5E:A4:C2;
-    fixed-address conf2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/jessie-installer/";
-}
-
 host conf2004 {
     hardware ethernet 2C:EA:7F:89:CE:62;
     fixed-address conf2004.codfw.wmnet;

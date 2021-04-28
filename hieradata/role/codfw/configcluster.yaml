@@ -7,7 +7,7 @@ profile::etcd::replication::origin:
     - conf1006.eqiad.wmnet
 profile::etcd::replication::destination_path: /conftool
 profile::etcd::replication::src_port: 4001
-# only conf2002 is active
+# only conf2005 is active
 profile::etcd::replication::active: false
 profile::zookeeper::cluster_name: main-codfw
 
