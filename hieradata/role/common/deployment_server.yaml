@@ -356,7 +356,12 @@ profile::kubernetes::deployment_server::services:
     namespace: similar-users
     mode: '0640'
     owner: mwdeploy
-
+  shellbox:
+    username: shellbox
+    group: wikidev
+    namespace: shellbox
+    mode: '0640'
+    owner: mwdeploy
 profile::kubernetes::deployment_server::packages_from_future: true
 # Default and environment specific generic values go here.
 # default:
@@ -418,8 +423,9 @@ profile::kubernetes::deployment_server::general:
 #    token: dummy
 #  push-notifications:
 #    token: dummy
+#  shellbox:
+#    token: dummy
 #
-
 # Specified in the private repo in this form
 #
 # Environment specific default secrets for services
