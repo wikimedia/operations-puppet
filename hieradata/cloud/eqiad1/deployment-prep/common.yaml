@@ -606,7 +606,6 @@ mediawiki::sites:
       - name: loginwiki
         params:
           server_name: "login.wikimedia.beta.wmflabs.org"
-          public_rewrites: false
           variant_aliases: []
       - name: wikimedia
         params:
