@@ -12,3 +12,4 @@ ldap:
 puppetmaster::servers:
     puppetprimary.sso.eqiad1.wikimedia.cloud:
         - { worker: puppetprimary.sso.eqiad1.wikimedia.cloud, loadfactor: 10 }
+profile::pki::client::ensure: present
