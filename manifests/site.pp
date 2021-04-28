@@ -1539,8 +1539,11 @@ node /^ldap-replica200[3-4]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 
-# Read-only ldap replicas in codfw
-node /^ldap-replica200[5-6]\.wikimedia\.org$/ {
+node 'ldap-replica2005.wikimedia.org' {
+    role(openldap::replica)
+}
+
+node 'ldap-replica2006.wikimedia.org' {
     role(insetup)
 }
 
