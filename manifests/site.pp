@@ -2476,24 +2476,26 @@ node /^stat100[4-8]\.eqiad\.wmnet/ {
 # and to hieradata/hosts/ if running dumps for enwiki or wikidata.
 # They should also be added to the dumps/scap repo in dumps_targets,
 # https://gerrit.wikimedia.org/r/plugins/gitiles/operations/dumps/scap
-node /^snapshot100[679]\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::dumper)
-}
-node /^snapshot1005\.eqiad\.wmnet/ {
+
+# these will become spare soon
+node /^snapshot100[5-7]\.eqiad\.wmnet/ {
     role(dumps::generation::worker::testbed)
 }
+
 node /^snapshot1008\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
 }
 node /^snapshot1010\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_monitor)
 }
-node /^snapshot101[1-3]\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::testbed)
+node /^snapshot1009\.eqiad\.wmnet/ {
+    role(dumps::generation::worker::dumper)
 }
-
-node /^snapshot101[1-5]\.eqiad\.wmnet/ {
-    role(insetup)
+node /^snapshot101[1-2]\.eqiad\.wmnet/ {
+    role(dumps::generation::worker::dumper)
+}
+node /^snapshot1013\.eqiad\.wmnet/ {
+    role(dumps::generation::worker::testbed)
 }
 
 # Servers for SRE tests which are not suitable for Cloud VPS
