@@ -81,7 +81,7 @@ def getSoftwareRaidDevices():
 
     try:
         proc = subprocess.Popen(['/sbin/mdadm', '--detail', '--scan'],
-                                stdout=subprocess.PIPE, text=True)
+                                stdout=subprocess.PIPE, universal_newlines=True)
     except Exception:
         return []
 
@@ -107,7 +107,7 @@ def checkmptsas():
                                 '/usr/sbin/mpt-status',
                                 '--autoload',
                                 '--status_only'],
-                                stdout=subprocess.PIPE, text=True)
+                                stdout=subprocess.PIPE, universal_newlines=True)
     except Exception as e:
         print('Unable to execute mpt-status: %s' % e)
         return 254
