@@ -5,4 +5,3 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'eno2np1.1105'
 
 profile::wmcs::backy2::backup_time: '*-*-* 5:00:00'
-profile::openstack::eqiad1::version: 'ussuri'
