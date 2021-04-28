@@ -16,7 +16,7 @@ describe 'profile::ceph::common' do
 
       context "when no ceph repo passed uses correct default" do
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_apt__repository('repository_ceph').with_components('thirdparty/ceph-nautilus-buster') }
+        it { is_expected.to contain_apt__repository('repository_ceph').with_components('thirdparty/ceph-octopus') }
       end
 
       context "when ceph repo passed uses the given one" do
