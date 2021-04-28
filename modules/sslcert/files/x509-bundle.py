@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # x509-bundle - creates bundles of X.509 certificates
@@ -72,7 +72,7 @@ def issuer_hash(filename):
             "openssl", "x509", "-noout",
             "-in", filename,
             "-issuer_hash",
-         ]).rstrip()
+         ], universal_newlines=True).rstrip()
 
 
 def traverse_tree(cert, cadir):
@@ -125,10 +125,10 @@ def main():
         print("empty chain (due to skipped root/first?)")
 
     # now that we have an issuer path, actually write the bundle
-    with open(args.output, "wb") as outfile:
+    with open(args.output, "w") as outfile:
         for cert in certpath:
             # open with U, to handle Windows newlines
-            with open(cert, "rU") as infile:
+            with open(cert, "r") as infile:
                 incontents = infile.read()
                 # add an eol if not already there, frequent source of trouble
                 if incontents[-1] != "\n":
