@@ -16,7 +16,10 @@ function profile::pki::get_cert(
   unless $profile::pki::client::ensure == 'present' {
     fail('profile::pki::client::ensure must be present to use this function')
   }
-  $safe_title = "${label}__${common_name}".regsubst('[^\w\-]', '_', 'G')
+  $safe_title = 'profile' in $additional_params ? {
+      true    => "${label}__${common_name}_${additional_params['profile']}".regsubst('[^\w\-]', '_', 'G'),
+      default => "${label}__${common_name}".regsubst('[^\w\-]', '_', 'G'),
+  }
   $safe_label = $label.regsubst('\W', '_', 'G')
 
   ensure_resource('cfssl::cert', $safe_title, $additional_params + {
