@@ -134,7 +134,7 @@ def checkMegaSas(policy=None):
     try:
         proc = subprocess.Popen(['/usr/sbin/megacli',
                                 '-LDInfo', '-LALL', '-aALL', '-NoLog'],
-                                stdout=subprocess.PIPE, text=True)
+                                stdout=subprocess.PIPE, universal_newlines=True)
     except Exception:
         error = sys.exc_info()[1]
         print('WARNING: error executing megacli: %s' % str(error))
@@ -230,7 +230,7 @@ def checkSoftwareRaid():
     args = ['/sbin/mdadm', '--detail']
     args.extend(devices)
     try:
-        proc = subprocess.Popen(args, stdout=subprocess.PIPE, text=True)
+        proc = subprocess.Popen(args, stdout=subprocess.PIPE, universal_newlines=True)
     except Exception:
         error = sys.exc_info()[1]
         print('WARNING: error executing mdadm: %s' % str(error))
