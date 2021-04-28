@@ -16,6 +16,7 @@ class mailman3::listserve (
 
     ensure_packages([
         'python3-pymysql',
+        'python3-mailman-hyperkitty',
     ])
 
     apt::package_from_component { 'mailman3':
