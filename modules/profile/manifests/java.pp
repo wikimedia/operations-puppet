@@ -42,10 +42,10 @@ class profile::java (
 ) {
 
     $default_java_packages = $facts['os']['distro']['codename'] ? {
-        'jessie'  => [{'version' => '7', 'variant' => 'jdk'}],
-        'stretch' => [{'version' => '8', 'variant' => 'jdk'}],
-        'buster'  => [{'version' => '11', 'variant' => 'jdk'}],
-        default   => fail("${module_name} doesn't support ${facts['os']['distro']['codename']}")
+        'stretch'   => [{'version' => '8', 'variant' => 'jdk'}],
+        'buster'    => [{'version' => '11', 'variant' => 'jdk'}],
+        'bullseye'  => [{'version' => '11', 'variant' => 'jdk'}],
+        default     => fail("${module_name} doesn't support ${facts['os']['distro']['codename']}")
     }
 
     $_java_packages = $java_packages.empty() ? {
