@@ -39,12 +39,14 @@ profile::wmcs::nfs::secondary::drbd_resource_config:
   scratch:
     port: 7792
     device: /dev/drbd2
-    disk: /dev/srv/misc
+    disk: /dev/srv/scratch
     mount_path: /srv/scratch
 
 profile::wmcs::nfs::secondary::drbd_cluster:
   cloudstore1008: 192.168.0.1
   cloudstore1009: 192.168.0.2
+
+profile::wmcs::nfs::secondary::standby: cloudstore1009.wikimedia.org
 
 ## Enable after migration to DRBD T224747
 # prometheus::node_exporter::collectors_extra:
