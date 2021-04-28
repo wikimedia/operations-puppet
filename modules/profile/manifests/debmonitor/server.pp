@@ -155,7 +155,7 @@ class profile::debmonitor::server (
             $key = $facts['puppet_config']['hostprivkey']
         }
         'cfssl': {
-            $ssl_paths = profile::pki::get_cert($internal_server_name, $cfssl_label, {
+            $ssl_paths = profile::pki::get_cert($cfssl_label, $internal_server_name, {
                 profile => 'server',
                 hosts   => [$facts['networking']['fqdn']],
             })
