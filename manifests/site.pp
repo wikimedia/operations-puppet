@@ -2478,6 +2478,8 @@ node /^stat100[4-8]\.eqiad\.wmnet/ {
 # hieradata/common.yaml:dumps_nfs_clients for dump nfs mount,
 # hieradata/common/scap/dsh.yaml for mediawiki installation,
 # and to hieradata/hosts/ if running dumps for enwiki or wikidata.
+# They should also be added to the dumps/scap repo in dumps_targets,
+# https://gerrit.wikimedia.org/r/plugins/gitiles/operations/dumps/scap
 node /^snapshot100[679]\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper)
 }
@@ -2489,6 +2491,9 @@ node /^snapshot1008\.eqiad\.wmnet/ {
 }
 node /^snapshot1010\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_monitor)
+}
+node /^snapshot101[1-3]\.eqiad\.wmnet/ {
+    role(dumps::generation::worker::testbed)
 }
 
 node /^snapshot101[1-5]\.eqiad\.wmnet/ {
