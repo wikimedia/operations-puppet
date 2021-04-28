@@ -64,10 +64,11 @@ class profile::debmonitor::client (
             fail('must specify \$ssl_label when using \$ssl_ca == \'cfssl\'')
         }
         $ssl_paths = profile::pki::get_cert($ssl_ca_label, $facts['networking']['fqdn'], {
-            owner  => 'debmonitor',
-            group  => 'debmonitor',
-            outdir => "${base_path}/ssl",
-            before => Package['debmonitor-client']
+            owner         => 'debmonitor',
+            group         => 'debmonitor',
+            outdir        => "${base_path}/ssl",
+            provide_chain => true,
+            before        => Package['debmonitor-client']
         })
         $cert        = $ssl_paths['cert']
         $private_key = $ssl_paths['key']
