@@ -28,11 +28,12 @@ class profile::swift::alerts {
             description     => "mediawiki originals uploads (hourly) for ${site}",
             dashboard_links => ["https://grafana.wikimedia.org/d/OPgmB1Eiz/swift?panelId=26&fullscreen&orgId=1&var-DC=${site}"],
             query           => 'swift_container_stats_objects_total{class="originals"} - swift_container_stats_objects_total{class="originals"} offset 1h',
-            warning         => 2000,
-            critical        => 3000,
+            warning         => 5000,
+            critical        => 6000,
             method          => 'ge',
             prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Swift/How_To#mediawiki_originals_uploads',
+            retries         => 30,
         }
     }
 
