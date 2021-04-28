@@ -42,7 +42,7 @@
     <IfModule mod_proxy_uwsgi.c>
         ProxyPass /mailman3/favicon.ico !
         ProxyPass /mailman3/static !
-        ProxyPassMatch "^/(accounts|mailman3|hyperkitty|postorius)/" unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
+        ProxyPassMatch "^/(accounts|mailman3|hyperkitty|postorius|user-profile)/" unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
     </IfModule>
     <% end %>
     <IfModule security2_module>
