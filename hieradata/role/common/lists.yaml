@@ -1,5 +1,5 @@
 profile::standard::admin_groups:
-  - mailman-admins
+  - mailman3-roots
 
 profile::standard::has_default_mail_relay: false
 mailman::lists_servername: 'lists.wikimedia.org'
