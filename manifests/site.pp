@@ -376,6 +376,10 @@ node /^cp50(0[789]|1[012])\.eqsin\.wmnet$/ {
     role(cache::text)
 }
 
+node /^cp501[3456]\.eqsin\.wmnet$/ {
+    role(insetup::nofirm)
+}
+
 node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(cluster::management)
 }

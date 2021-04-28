@@ -1539,6 +1539,26 @@ host cp5012 {
     fixed-address cp5012.eqsin.wmnet;
 }
 
+host cp5013 {
+    hardware ethernet BC:97:E1:EC:E5:70;
+    fixed-address cp5013.eqsin.wmnet;
+}
+
+host cp5014 {
+    hardware ethernet BC:97:E1:EC:FE:F0;
+    fixed-address cp5014.eqsin.wmnet;
+}
+
+host cp5015 {
+    hardware ethernet BC:97:E1:EC:F6:70;
+    fixed-address cp5015.eqsin.wmnet;
+}
+
+host cp5016 {
+    hardware ethernet BC:97:E1:EC:F8:90;
+    fixed-address cp5016.eqsin.wmnet;
+}
+
 host contint1001 {
      hardware ethernet 14:18:77:5b:29:c7;
      fixed-address contint1001.wikimedia.org;
