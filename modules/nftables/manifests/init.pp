@@ -24,6 +24,7 @@ class nftables (
         override       => true,
         service_params => {
             hasrestart => true,
+            restart    => '/usr/bin/systemctl reload nftables'
         }
     }
 
