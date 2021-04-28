@@ -111,8 +111,7 @@ class profile::analytics::refinery::job::test::refine_sanitize(
     # == event_sanitized_analytics_test
     # Sanitizes analytics event tables, including legacy eventlogging tables, with keep_all disabled.
     $event_sanitized_analytics_job_config = $event_sanitized_common_job_config.merge({
-        # TODO: rename this allowlist
-        'allowlist_path'   => '/wmf/refinery/current/static_data/eventlogging/whitelist.yaml',
+        'allowlist_path'   => '/wmf/refinery/current/static_data/sanitization/event_sanitized_analytics_allowlist.yaml',
         'keep_all_enabled' => false,
     })
     profile::analytics::refinery::job::refine_job { 'event_sanitized_analytics_test_immediate':
