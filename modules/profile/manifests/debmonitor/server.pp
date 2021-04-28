@@ -157,7 +157,7 @@ class profile::debmonitor::server (
         'cfssl': {
             $ssl_paths = profile::pki::get_cert($internal_server_name, $cfssl_label, {
                 profile => 'server',
-                names   => [$facts['networking']['fqdn']],
+                hosts   => [$facts['networking']['fqdn']],
             })
             $cert = $ssl_paths['cert']
             $key = $ssl_paths['key']
