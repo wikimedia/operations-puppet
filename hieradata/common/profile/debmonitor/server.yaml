@@ -1,5 +1,6 @@
 profile::debmonitor::server::settings_module: debmonitor.settings.prod
 profile::debmonitor::server::ssl_certs: sslcert
+profile::debmonitor::server::cfssl_label: debmonitor
 profile::debmonitor::server::django_log_db_queries: false
 profile::debmonitor::server::django_require_login: true
 profile::debmonitor::server::app_deployment: 'scap3'

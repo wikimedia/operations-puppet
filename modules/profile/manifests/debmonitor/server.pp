@@ -10,23 +10,27 @@
 #       include ::profile::debmonitor::server
 #
 class profile::debmonitor::server (
-    String                    $internal_server_name     = lookup('debmonitor'),
-    Hash                      $ldap_config              = lookup('ldap', Hash, hash, {}),
-    String                    $public_server_name       = lookup('profile::debmonitor::server::public_server_name'),
-    String                    $django_secret_key        = lookup('profile::debmonitor::server::django_secret_key'),
-    String                    $django_mysql_db_host     = lookup('profile::debmonitor::server::django_mysql_db_host'),
-    String                    $django_mysql_db_password = lookup('profile::debmonitor::server::django_mysql_db_password'),
-    Boolean                   $django_log_db_queries    = lookup('profile::debmonitor::server::django_log_db_queries'),
-    Boolean                   $django_require_login     = lookup('profile::debmonitor::server::django_require_login'),
-    String                    $settings_module          = lookup('profile::debmonitor::server::settings_module'),
-    String                    $app_deployment           = lookup('profile::debmonitor::server::app_deployment'),
-    Boolean                   $enable_logback           = lookup('profile::debmonitor::server::enable_logback'),
-    Boolean                   $enable_monitoring        = lookup('profile::debmonitor::server::enable_monitoring'),
-    Enum['sslcert', 'puppet'] $ssl_certs                = lookup('profile::debmonitor::server::ssl_certs'),
-    Array[String]             $required_groups          = lookup('profile::debmonitor::server::required_groups'),
-    Stdlib::Filesource        $trusted_ca_source        = lookup('profile::debmonitor::server::trusted_ca_source'),
+    String                             $internal_server_name     = lookup('debmonitor'),
+    Hash                               $ldap_config              = lookup('ldap', Hash, hash, {}),
+    String                             $public_server_name       = lookup('profile::debmonitor::server::public_server_name'),
+    String                             $django_secret_key        = lookup('profile::debmonitor::server::django_secret_key'),
+    String                             $django_mysql_db_host     = lookup('profile::debmonitor::server::django_mysql_db_host'),
+    String                             $django_mysql_db_password = lookup('profile::debmonitor::server::django_mysql_db_password'),
+    Boolean                            $django_log_db_queries    = lookup('profile::debmonitor::server::django_log_db_queries'),
+    Boolean                            $django_require_login     = lookup('profile::debmonitor::server::django_require_login'),
+    String                             $settings_module          = lookup('profile::debmonitor::server::settings_module'),
+    String                             $app_deployment           = lookup('profile::debmonitor::server::app_deployment'),
+    Boolean                            $enable_logback           = lookup('profile::debmonitor::server::enable_logback'),
+    Boolean                            $enable_monitoring        = lookup('profile::debmonitor::server::enable_monitoring'),
+    Enum['sslcert', 'puppet', 'cfssl'] $ssl_certs                = lookup('profile::debmonitor::server::ssl_certs'),
+    Optional[String]                   $cfssl_label              = lookup('profile::debmonitor::server::cfssl_label'),
+    Array[String]                      $required_groups          = lookup('profile::debmonitor::server::required_groups'),
+    Stdlib::Filesource                 $trusted_ca_source        = lookup('profile::debmonitor::server::trusted_ca_source'),
 ) {
-    include ::passwords::ldap::production
+    if $ssl_certs == 'cfssl' and !$cfssl_label {
+        fail('\$cfssl_label required when using cfssl')
+    }
+    include passwords::ldap::production
 
     # Make is required by the deploy system
     ensure_packages(['libldap-2.4-2', 'make', 'python3-pip', 'virtualenv'])
@@ -141,7 +145,28 @@ class profile::debmonitor::server (
         source => $trusted_ca_source,
         notify => Service['apache2'],
     }
-
+    case $ssl_certs {
+        'sslcert': {
+            $cert = "/etc/ssl/localcerts/${internal_server_name}.crt"
+            $key = "/etc/ssl/private/${internal_server_name}.key"
+        }
+        'puppet': {
+            $cert = $facts['puppet_config']['hostcert']
+            $key = $facts['puppet_config']['hostprivkey']
+        }
+        'cfssl': {
+            $ssl_paths = profile::pki::get_cert($internal_server_name, $cfssl_label, {
+                profile => 'server',
+                names   => [$facts['networking']['fqdn']],
+            })
+            $cert = $ssl_paths['cert']
+            $key = $ssl_paths['key']
+        }
+        default: {
+            # should't ever reach this
+            fail("unsupported ssl provider: ${ssl_certs}")
+        }
+    }
     httpd::site{$internal_server_name:
         content => template('profile/debmonitor/internal_client_auth_endpoint.conf.erb')
     }

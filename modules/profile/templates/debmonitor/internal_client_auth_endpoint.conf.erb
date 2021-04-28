@@ -3,13 +3,8 @@
     ServerName <%= @internal_server_name -%>
 
     SSLEngine on
-<%- if @ssl_certs == 'sslcert' -%>
-    SSLCertificateFile /etc/ssl/localcerts/<%= @internal_server_name %>.crt
-    SSLCertificateKeyFile /etc/ssl/private/<%= @internal_server_name %>.key
-<%- else -%>
-    SSLCertificateFile <%= @facts['puppet_config']['hostcert'] %>
-    SSLCertificateKeyFile <%= @facts['puppet_config']['hostprivkey'] %>
-<%- end -%>
+    SSLCertificateFile <%= @cert %>
+    SSLCertificateKeyFile <%= @key %>
     <%= @ssl_config.join("\n    ") %>
     SSLVerifyClient require
     # The debmonitor CA is signed by the Wikimedia Internal Root CA
