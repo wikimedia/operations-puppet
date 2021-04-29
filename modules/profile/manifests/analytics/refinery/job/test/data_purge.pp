@@ -43,19 +43,6 @@ class profile::analytics::refinery::job::test::data_purge {
         user        => 'analytics',
     }
 
-    # keep this many days of druid webrequest sampled
-    # Currently being tested as systemd timer, see below
-    # TODO: remove this, it does not exist in test druid cluster.
-    $druid_webrequest_sampled_retention_days = 60
-    kerberos::systemd_timer { 'refinery-drop-webrequest-sampled-druid':
-        ensure      => 'absent',
-        description => 'Drop Druid Webrequest sampled data from deep storage following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data --druid-host an-test-druid1001.eqiad.wmnet -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
-        interval    => '*-*-* 05:15:00',
-        environment => $systemd_env,
-        user        => 'analytics',
-    }
-
     # Drop old data from all tables in the Hive event database with tables in /wmf/data/event.
     # Data that should be kept indefinitely is sanitized by refine_sanitize jobs into the
     # event_sanitized Hive database, so all data older than 90 days should be safe to drop.
