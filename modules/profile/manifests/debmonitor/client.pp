@@ -18,7 +18,6 @@ class profile::debmonitor::client (
     Optional[String]        $ssl_ca_label      = lookup('profile::debmonitor::client::ssl_ca_label'),
 ){
 
-    $ca = '/etc/ssl/certs/Puppet_Internal_CA.pem'
     $base_path = '/etc/debmonitor'
 
     # On Debmonitor server hosts this is already defined by service::uwsgi.

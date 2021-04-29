@@ -2,4 +2,6 @@
 server=<%= @debmonitor_server %>
 cert=<%= @cert %>
 key=<%= @private_key %>
+<%- if @ca -%>
 ca=<%= @ca %>
+<%- end -%>
