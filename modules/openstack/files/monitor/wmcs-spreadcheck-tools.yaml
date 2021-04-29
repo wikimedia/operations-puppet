@@ -4,7 +4,6 @@ classifier:
   bastion-: bastion
   checker-: checker
   elastic-: elastic
-  k8s-etcd-: k8s-etcd
   mail: mail
   paws-worker-: paws
   prometheus-: prometheus
