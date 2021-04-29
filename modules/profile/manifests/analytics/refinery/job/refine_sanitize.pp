@@ -3,12 +3,12 @@
 # Sets up RefineSanitize jobs for the analytics test cluster.
 #
 # Description of Refine jobs declared here:
-# - event_sanitized_main TODO
+# - event_sanitized_main
 #   Sanitizes tables declared in event_sanitized_main_allowlist.yaml from
 #   event -> event_sanitized db, with the keep_all hash config enabled.
 #
 # - event_sanitized_analytics
-#   Sanitizes tables declared in eventlogging/whitelist.yaml (TODO rename this) from
+#   Sanitizes tables declared in event_sanitized_analytics_allowlist from
 #   event -> event_sanitized db, with the keep_all hash config disabled.
 #
 # Parameters:
@@ -83,32 +83,31 @@ class profile::analytics::refinery::job::refine_sanitize(
     $delayed_since = 1104 # 46 days ago
     $delayed_until = 1080 # 45 days ago
 
-    # TODO: add this job.
-    # See: https://phabricator.wikimedia.org/T273789
+
     # == event_sanitized_main
     # Sanitizes non analytics (and non legacy eventlogging) event data, with keep_all enabled.
-    # $event_sanitized_main_job_config = $event_sanitized_common_job_config.merge({
-    #     'allowlist_path'   => '/wmf/refinery/current/static_data/sanitization/event_sanitized_main_allowlist.yaml',
-    #     'keep_all_enabled' => true,
-    # })
-    # profile::analytics::refinery::job::refine_job { 'event_sanitized_main_immediate':
-    #     interval   => '*-*-* *:05:00',
-    #     job_config => $event_sanitized_main_job_config
-    # }
-    # profile::analytics::refinery::job::refine_job { 'event_sanitized_main_delayed':
-    #     interval      => '*-*-* 05:00:00',
-    #     # delayed job should monitor around the day it is scheduled for.
-    #     monitor_since => $delayed_since + 24,
-    #     monitor_until => $delayed_until - 24,
-    #     job_config    => $event_sanitized_main_job_config.merge({
-    #         'since' => $delayed_since,
-    #         'until' => $delayed_until,
-    #     }),
-    # }
+    $event_sanitized_main_job_config = $event_sanitized_common_job_config.merge({
+        'allowlist_path'   => '/wmf/refinery/current/static_data/sanitization/event_sanitized_main_allowlist.yaml',
+        'keep_all_enabled' => true,
+    })
+    profile::analytics::refinery::job::refine_job { 'event_sanitized_main_immediate':
+        interval   => '*-*-* *:05:00',
+        job_config => $event_sanitized_main_job_config
+    }
+    profile::analytics::refinery::job::refine_job { 'event_sanitized_main_delayed':
+        interval      => '*-*-* 05:00:00',
+        # delayed job should monitor around the day it is scheduled for.
+        monitor_since => $delayed_since + 24,
+        monitor_until => $delayed_until - 24,
+        job_config    => $event_sanitized_main_job_config.merge({
+            'since' => $delayed_since,
+            'until' => $delayed_until,
+        }),
+    }
 
 
-    # # == event_sanitized_analytics
-    # # Sanitizes analytics event tables, including legacy eventlogging tables, with keep_all disabled.
+    # == event_sanitized_analytics
+    # Sanitizes analytics event tables, including legacy eventlogging tables, with keep_all disabled.
     $event_sanitized_analytics_job_config = $event_sanitized_common_job_config.merge({
         'allowlist_path'   => '/wmf/refinery/current/static_data/sanitization/event_sanitized_analytics_allowlist.yaml',
         'keep_all_enabled' => false,
