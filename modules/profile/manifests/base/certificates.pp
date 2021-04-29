@@ -4,8 +4,9 @@
 # with the new one. This will make it able to talk to the new puppetmaster on its next run.
 # A puppetmaster's CA cert can be found at /var/lib/puppet/server/ssl/certs/ca.pem
 class profile::base::certificates (
-    Hash $puppet_ca_content = lookup('profile::base::certificates::puppet_ca_content', {'default_value' => {}}),
-    Optional[String] $puppetmaster_key = lookup('puppetmaster', {'default_value' => undef}),
+    Hash             $puppet_ca_content = lookup('profile::base::certificates::puppet_ca_content'),
+    Array[String[1]] $wmf_intermidiates = lookup('profile::base::certificates::wmf_intermidiates'),
+    Optional[String] $puppetmaster_key  = lookup('puppetmaster'),
 ) {
     include ::sslcert
 
@@ -35,6 +36,16 @@ class profile::base::certificates (
     sslcert::ca { 'GlobalSign_ECC_Root_CA_R5_R3_Cross.crt':
         source  => 'puppet:///modules/base/ca/GlobalSign_ECC_Root_CA_R5_R3_Cross.crt',
     }
+    sslcert::ca { 'Wikimedia_Internal_Root_CA':
+        source => 'puppet:///modules/profile/pki/ROOT/Wikimedia_Internal_Root_CA.pem',
+    }
+    $wmf_intermidiates.each |$ca| {
+        sslcert::ca { $ca:
+            source => "puppet:///modules/profile/pki/intermediates/${ca}.pem",
+        }
+    }
+
+
 
     if has_key($puppet_ca_content, $puppetmaster_key) {
         exec { 'clear-old-puppet-ssl':

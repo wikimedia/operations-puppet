@@ -30,9 +30,9 @@
 #
 
 define sslcert::ca(
-  $ensure=present,
-  $source=undef,
-  $content=undef,
+  Wmflib::Ensure               $ensure  = present,
+  Optional[Stdlib::Filesource] $source  = undef,
+  Optional[String[1]]          $content = undef,
 ) {
     include sslcert
 
