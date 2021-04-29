@@ -45,8 +45,10 @@ class profile::analytics::refinery::job::test::data_purge {
 
     # keep this many days of druid webrequest sampled
     # Currently being tested as systemd timer, see below
+    # TODO: remove this, it does not exist in test druid cluster.
     $druid_webrequest_sampled_retention_days = 60
     kerberos::systemd_timer { 'refinery-drop-webrequest-sampled-druid':
+        ensure      => 'absent',
         description => 'Drop Druid Webrequest sampled data from deep storage following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data --druid-host an-test-druid1001.eqiad.wmnet -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
         interval    => '*-*-* 05:15:00',
