@@ -1,0 +1,1 @@
+$member has been successfully subscribed to $display_name.

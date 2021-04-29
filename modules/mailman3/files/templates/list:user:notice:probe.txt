@@ -1,0 +1,14 @@
+This is a probe message.  You can ignore this message.
+
+The $listname mailing list has received a number of bounces from you,
+indicating that there may be a problem delivering messages to $sender_email.  A
+sample is attached below.  Please examine this message to make sure there are
+no problems with your email address.  You may want to check with your mail
+administrator for more help.
+
+You don't need to do anything to remain an enabled member of the mailing list.
+
+If you have any questions or problems, you can contact the mailing list owner
+at
+
+    $owner_email

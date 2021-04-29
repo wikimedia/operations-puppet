@@ -1,0 +1,6 @@
+Your message to the $listname mailing-list was rejected for the following
+reasons:
+
+$reasons
+
+The original message as received by Mailman is attached.

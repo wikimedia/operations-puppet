@@ -1,0 +1,3 @@
+_______________________________________________
+$display_name mailing list -- $listname
+List information: https://${domain}/postorius/lists/${short_listname}.${domain}/

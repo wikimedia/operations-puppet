@@ -1,0 +1,11 @@
+Send $display_name mailing list submissions to
+	$listname
+
+To subscribe or unsubscribe, please visit
+	https://${domain}/postorius/lists/${short_listname}.${domain}/
+
+You can reach the person managing the list at
+	$owner_email
+
+When replying, please edit your Subject line so it is more specific than
+"Re: Contents of $display_name digest..."

@@ -1,0 +1,26 @@
+Email Address Unsubscription Confirmation
+
+Hello, this is the GNU Mailman server at $domain.
+
+We have received an unsubscription request for the email address
+
+    $user_email
+
+Before GNU Mailman can unsubscribe you, you must first confirm your request.
+You can do this by simply replying to this message or visiting:
+
+    https://${domain}/postorius/lists/${short_listname}.${domain}/confirm/?token=${token}
+
+Or you should include the following line -- and only the following
+line -- in a message to $request_email:
+
+    confirm $token
+
+Note that simply sending a `reply' to this message should work from
+most mail readers.
+
+If you do not wish to unsubscribe this email address, simply disregard this
+message.  If you think you are being maliciously unsubscribed from the list,
+or have any other questions, you may contact
+
+    $owner_email

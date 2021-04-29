@@ -1,0 +1,15 @@
+Your address "$user_email" has been invited to join the $short_listname
+mailing list at $domain by the $short_listname mailing list owner.
+You may accept the invitation by simply replying to this message.
+
+Or you should include the following line -- and only the following
+line -- in a message to $request_email:
+
+    confirm $token
+
+Note that simply sending a `reply' to this message should work from
+most mail readers.
+
+If you want to decline this invitation, please simply disregard this
+message.  If you have any questions, please send them to
+$owner_email.

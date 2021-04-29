@@ -1,0 +1,14 @@
+The mailing list '$listname' has just been created for you.  The
+following is some basic information about your mailing list.
+
+You can administer your list at:
+
+https://${domain}/postorius/lists/${short_listname}.${domain}/
+
+Archives (if enabled) will be available at:
+
+https://${domain}/hyperkitty/list/${listname}/
+
+If you have questions, please see:
+
+https://meta.wikimedia.org/wiki/Special:MyLanguage/Mailing_lists/Administration

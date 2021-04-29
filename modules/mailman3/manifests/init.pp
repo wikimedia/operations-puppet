@@ -29,6 +29,7 @@ class mailman3 (
     }
 
     class { '::mailman3::listserve':
+        host           => $host,
         service_ensure => $service_ensure,
         db_host        => $db_host,
         db_name        => $db_name,

@@ -1,0 +1,20 @@
+Help for $listname mailing list
+
+This is email command 'help' for version $version of the GNU Mailman list
+manager at $domain.  The following describes commands you can send to get
+information about and control your subscription to Mailman lists at this site.
+A command can be in the Subject line or in the body of the message.
+
+Commands should be sent to the ${listname}-request@${domain} address.
+
+About the descriptions - words in "<>"s signify REQUIRED items and
+words in "[]" denote OPTIONAL items.  Do not include the "<>"s or
+"[]"s when you use the commands.
+
+The following commands are valid:
+
+    $commands
+
+Questions and concerns for the attention of a person should be sent to:
+
+    $administrator

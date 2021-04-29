@@ -1,0 +1,9 @@
+We have received a message from your address <$sender_email> requesting an
+automated response from the $listname mailing list.
+
+The number we have seen today: $count.  In order to avoid problems such as
+mail loops between email robots, we will not be sending you any further
+responses today.  Please try again tomorrow.
+
+If you believe this message is in error, or if you have any questions, please
+contact the list owner at $owner_email.

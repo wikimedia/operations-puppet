@@ -1,0 +1,7 @@
+Your authorization is required for a mailing list subscription request
+approval:
+
+    For:  $member
+    List: $listname
+
+https://${domain}/postorius/lists/${short_listname}.${domain}/

@@ -1,0 +1,1 @@
+$member has been unsubscribed from $listname due to excessive bounces.

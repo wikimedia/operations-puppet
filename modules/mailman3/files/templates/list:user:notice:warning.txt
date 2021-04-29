@@ -1,0 +1,8 @@
+Your subscription has been disabled on the $listname mailing list because it has
+received a number of bounces indicating that there may be a problem delivering
+messages to $sender_email. You may want to check with your mail administrator
+for more help.
+
+If you have any questions or problems, you can contact the mailing list owner at
+
+    $owner_email

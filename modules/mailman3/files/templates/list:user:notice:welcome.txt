@@ -1,0 +1,8 @@
+Welcome to the "$display_name" mailing list!
+
+To post to this list, send your message to:
+
+    $listname
+
+You can unsubscribe or make adjustments to your options by visiting:
+    https://${domain}/postorius/lists/${short_listname}.${domain}

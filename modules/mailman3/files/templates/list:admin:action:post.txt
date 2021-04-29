@@ -1,0 +1,15 @@
+As list administrator, your authorization is requested for the
+following mailing list posting:
+
+    List:    $listname
+    From:    $sender_email
+    Subject: $subject
+
+The message is being held because:
+
+$reasons
+
+At your convenience, visit your dashboard to approve or deny the
+request.
+
+https://${domain}/postorius/lists/${short_listname}.${domain}/

@@ -6,6 +6,7 @@
 # https://docs.mailman3.org/projects/mailman/en/latest/README.html
 #
 class mailman3::listserve (
+    Stdlib::Fqdn $host,
     Stdlib::Fqdn $db_host,
     String $db_name,
     String $db_user,
@@ -77,5 +78,30 @@ class mailman3::listserve (
         group  => 'list',
         mode   => '0550',
         source => 'puppet:///modules/mailman3/scripts/migrate_to_mailman3.py',
+    }
+
+    file { '/var/lib/mailman3/templates/domains/':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0555',
+    }
+
+    file { "/var/lib/mailman3/templates/domains/${host}/":
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'list',
+        mode    => '0555',
+        require => File['/var/lib/mailman3/templates/domains/'],
+    }
+
+    file { "/var/lib/mailman3/templates/domains/${host}/en/":
+        ensure  => directory,
+        source  => 'puppet:///modules/mailman3/templates/',
+        owner   => 'root',
+        group   => 'list',
+        mode    => '0555',
+        recurse => 'remote',
+        require => File["/var/lib/mailman3/templates/domains/${host}/"],
     }
 }
