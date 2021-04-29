@@ -5,7 +5,7 @@ tools-docker-imagebuilder-01.tools.eqiad1.wikimedia.cloud
 tools-docker-registry-03.tools.eqiad1.wikimedia.cloud
 tools-elastic-1.tools.eqiad1.wikimedia.cloud
 tools-k8s-control-1.tools.eqiad1.wikimedia.cloud
-tools-k8s-etcd-4.tools.eqiad1.wikimedia.cloud
+tools-k8s-etcd-10.tools.eqiad1.wikimedia.cloud
 tools-k8s-haproxy-1.tools.eqiad1.wikimedia.cloud
 tools-k8s-ingress-1.tools.eqiad1.wikimedia.cloud
 tools-k8s-worker-30.tools.eqiad1.wikimedia.cloud
