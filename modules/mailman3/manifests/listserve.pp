@@ -70,4 +70,12 @@ class mailman3::listserve (
         command     => '/usr/local/sbin/discard_held_messages 90',
         interval    => {'start' => 'OnCalendar', 'interval' => 'daily'},
     }
+
+    file { '/usr/local/sbin/migrate_to_mailman3':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman3/scripts/migrate_to_mailman3.sh',
+    }
 }
