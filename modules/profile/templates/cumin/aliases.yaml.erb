@@ -47,7 +47,7 @@ cloudvirt-codfw1dev: P{O:wmcs::openstack::codfw1dev::virt_ceph}
 clouddb-codfw1dev: P{O:wmcs::openstack::codfw1dev::db}
 cloudgw-codfw1dev: P{O:wmcs::openstack::codfw1dev::cloudgw}
 cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev or A:cloudgw-codfw1dev
-conf: P{O:configcluster or O:configcluster_stretch}
+conf: P{O:configcluster}
 conf-canary: P{conf2004.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
 conf-eqiad: A:conf and A:eqiad
@@ -324,7 +324,7 @@ wikireplicas-dedicated: P{O:wmcs::db::wikireplicas::dedicated::analytics or O:wm
 wikireplicas-multiinstance: P{P:wmcs::db::wikireplicas::mariadb_multiinstance}
 wikireplicas-web: P{O:wmcs::db::wikireplicas::web}
 xhgui: P{O:webperf::xhgui}
-zookeeper-main-eqiad: P{O:configcluster_stretch} and A:eqiad
+zookeeper-main-eqiad: P{O:configcluster} and A:eqiad
 zookeeper-main-codfw: P{O:configcluster} and A:codfw
 zookeeper-druid-public: P{O:druid::public::worker} and P{C:profile::zookeeper::server}
 zookeeper-druid-analytics: P{O:druid::analytics::worker} and P{C:profile::zookeeper::server}

@@ -1,12 +1,16 @@
 class role::configcluster {
+    system::role { 'Configcluster':
+        description => 'Configuration cluster server'
+    }
     include ::profile::standard
     include ::profile::base::firewall
 
-    include ::profile::etcd
+    include ::profile::zookeeper::server
+    include ::profile::zookeeper::firewall
+
+    include ::profile::etcd::v3
     include ::profile::etcd::tlsproxy
     include ::profile::etcd::replication
-
-    system::role { 'configcluster':
-        description => 'Configuration cluster server'
-    }
+    # etcd backup
+    include ::profile::backup::host
 }

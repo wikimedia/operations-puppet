@@ -718,18 +718,16 @@ class profile::prometheus::ops (
       },
     ]
 
-    # Gather etcd metrics from machines exposing them via http
-    prometheus::class_config{ "etcd_servers_${::site}_stretch":
-        dest       => "${targets_path}/etcd_${::site}_stretch.yaml",
-        site       => $::site,
-        class_name => 'role::configcluster_stretch',
-        port       => 4001,
+    # Ensure config for _stretch suffixed configcluster role is removed
+    file { "${targets_path}/etcd_${::site}_stretch.yaml":
+        ensure => absent,
     }
+    # Gather etcd metrics from machines exposing them via http
     prometheus::class_config{ "etcd_servers_${::site}":
         dest       => "${targets_path}/etcd_${::site}.yaml",
         site       => $::site,
         class_name => 'role::configcluster',
-        port       => 2379,
+        port       => 4001,
     }
 
     # Gather replication stats where etcd-mirror is running.
@@ -1135,18 +1133,14 @@ class profile::prometheus::ops (
         site              => $::site,
     }
 
-    prometheus::jmx_exporter_config{ "zookeeper_${::site}_old":
-        dest       => "${targets_path}/jmx_zookeeper_${::site}_old.yaml",
-        class_name => 'role::configcluster',
-        site       => $::site,
-        labels     => {
-            'cluster' => "main-${::site}",
-        },
+    # Ensure config for _stretch suffixed configcluster role is removed
+    file { "${targets_path}/jmx_zookeeper_${::site}_old.yaml":
+        ensure => absent,
     }
 
     prometheus::jmx_exporter_config{ "zookeeper_${::site}":
         dest       => "${targets_path}/jmx_zookeeper_${::site}.yaml",
-        class_name => 'role::configcluster_stretch',
+        class_name => 'role::configcluster',
         site       => $::site,
         labels     => {
             'cluster' => "main-${::site}",

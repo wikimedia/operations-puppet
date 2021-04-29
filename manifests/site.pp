@@ -298,9 +298,9 @@ node 'gerrit1001.wikimedia.org', 'gerrit2001.wikimedia.org' {
     role(gerrit)
 }
 
-# Zookeeper and Etcd discovery service nodes in eqiad
-node /^conf100[456]\.eqiad\.wmnet$/ {
-    role(configcluster_stretch)
+# Zookeeper and Etcd discovery service nodes
+node /^conf[12]00[456]\.(eqiad|codfw)\.wmnet$/ {
+    role(configcluster)
 }
 
 # Test zookeeper in eqiad
@@ -311,11 +311,6 @@ node 'zookeeper-test1002.eqiad.wmnet' {
 # Test kafka cluster
 node /^kafka-test10(10|0[6-9])\.eqiad\.wmnet/ {
     role(kafka::test::broker)
-}
-
-# Zookeeper and Etcd discovery service nodes
-node /^conf200[456]\.codfw\.wmnet/ {
-    role(configcluster_stretch)
 }
 
 # CI master / CI standby (switch in Hiera)
