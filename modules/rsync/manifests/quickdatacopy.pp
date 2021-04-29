@@ -46,6 +46,8 @@ define rsync::quickdatacopy(
           fail('the title of rsync::quickdatacopy must not include whitespace')
       }
 
+      ensure_packages(['rsync'])
+
       if $source_host == $::fqdn {
 
           include rsync::server
@@ -77,7 +79,7 @@ define rsync::quickdatacopy(
       if $dest_host == $::fqdn {
 
           if $server_uses_stunnel {
-              require_package('stunnel4')
+              ensure_packages(['stunnel4'])
 
               file { $ssl_wrapper_path:
                   ensure  => $ensure,
