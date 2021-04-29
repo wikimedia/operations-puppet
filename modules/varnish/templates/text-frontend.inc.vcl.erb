@@ -397,8 +397,6 @@ sub cluster_fe_recv_tail { }
 
 sub cluster_fe_hash { }
 
-sub cluster_fe_hit { }
-
 sub cluster_fe_ratelimit {
 	if (req.url ~ "^/api/rest_v1/page/pdf/") {
 		if (vsthrottle.is_denied("proton_limiter:" + req.http.X-Client-IP, 10, 10s)) {

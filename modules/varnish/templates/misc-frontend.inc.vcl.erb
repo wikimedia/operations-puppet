@@ -56,7 +56,6 @@ sub cluster_fe_recv_tail {
 }
 
 sub cluster_fe_hash { }
-sub cluster_fe_hit { }
 sub cluster_fe_ratelimit {
     // Requests in violation of the User-Agent policy
     if (req.http.User-Agent ~ "^python-requests" && req.http.Host == "query.wikidata.org") {
