@@ -18,6 +18,7 @@ class profile::debmonitor::client (
     Optional[String]        $ssl_ca_label      = lookup('profile::debmonitor::client::ssl_ca_label'),
 ){
 
+    $ca = '/etc/ssl/certs/Puppet_Internal_CA.pem'
     $base_path = '/etc/debmonitor'
 
     # On Debmonitor server hosts this is already defined by service::uwsgi.
@@ -58,7 +59,6 @@ class profile::debmonitor::client (
 
         $cert = "${base_path}/ssl/cert.pem"
         $private_key = "${base_path}/ssl/server.key"
-        $ca = '/etc/ssl/certs/Puppet_Internal_CA.pem'
     } else {
         unless $ssl_ca_label {
             fail('must specify \$ssl_label when using \$ssl_ca == \'cfssl\'')
@@ -72,7 +72,6 @@ class profile::debmonitor::client (
         })
         $cert        = $ssl_paths['cert']
         $private_key = $ssl_paths['key']
-        $ca          = $ssl_paths['ca']
     }
 
     # Create the Debmonitor client configuration file.
