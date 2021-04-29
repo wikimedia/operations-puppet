@@ -57,6 +57,7 @@ class profile::microsites::peopleweb (
     }
 
     # allow copying /home from one server to another for migrations
+    ensure_packages(['rsync'])
     rsync::quickdatacopy { 'people-home':
         ensure      => present,
         auto_sync   => false,
