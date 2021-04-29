@@ -740,8 +740,7 @@ sub vcl_purge {
 
 sub vcl_hit {
 	set req.http.X-CDIS = "hit";
-	// no default VCL.
-	return (deliver);
+	// default vcl_hit invokes here!
 }
 
 sub vcl_miss {
