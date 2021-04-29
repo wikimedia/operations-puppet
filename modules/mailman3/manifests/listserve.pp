@@ -76,6 +76,6 @@ class mailman3::listserve (
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
-        source => 'puppet:///modules/mailman3/scripts/migrate_to_mailman3.sh',
+        source => 'puppet:///modules/mailman3/scripts/migrate_to_mailman3.py',
     }
 }
