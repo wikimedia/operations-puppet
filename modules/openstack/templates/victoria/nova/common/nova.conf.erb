@@ -59,6 +59,8 @@ auth_strategy = keystone
 # we use this vendordata JSON file to provide the domain to VM instances
 vendordata_jsonfile_path = /etc/nova/vendor_data.json
 
+<% if @is_control_node -%>
+# These should only be present for apis and nova-conductor.
 [api_database]
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
 
@@ -68,6 +70,7 @@ max_overflow = 25
 max_pool_size = 3
 pool_timeout = 60
 connection_recycle_time = 1800
+<% end -%>
 
 [scheduler]
 workers = 3

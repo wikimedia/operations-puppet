@@ -17,6 +17,7 @@ class openstack::nova::common(
     $metadata_workers,
     Stdlib::Port $metadata_listen_port,
     Stdlib::Port $osapi_compute_listen_port,
+    Boolean $is_control_node,
     ) {
 
     class { "openstack::nova::common::${version}::${::lsbdistcodename}": }

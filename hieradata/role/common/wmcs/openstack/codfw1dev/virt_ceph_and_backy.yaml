@@ -4,3 +4,4 @@ profile::standard::admin_groups:
 profile::base::debdeploy::filter_services:
   qemu-system-x86:
     - '*'
+profile::openstack::eqiad1::nova::common::is_control_node: false

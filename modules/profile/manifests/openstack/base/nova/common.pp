@@ -17,6 +17,7 @@ class profile::openstack::base::nova::common(
     $metadata_proxy_shared_secret = lookup('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
     Stdlib::Port $metadata_listen_port = lookup('profile::openstack::base::nova::metadata_listen_port'),
     Stdlib::Port $osapi_compute_listen_port = lookup('profile::openstack::base::nova::osapi_compute_listen_port'),
+    Boolean $is_control_node = lookup('profile::openstack::eqiad1::nova::common::is_control_node'),
     ) {
 
     class {'::openstack::nova::common':
@@ -38,6 +39,7 @@ class profile::openstack::base::nova::common(
         metadata_listen_port         => $metadata_listen_port,
         metadata_workers             => $metadata_workers,
         osapi_compute_listen_port    => $osapi_compute_listen_port,
+        is_control_node              => $is_control_node,
     }
     contain '::openstack::nova::common'
 

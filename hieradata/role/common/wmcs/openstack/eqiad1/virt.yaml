@@ -5,3 +5,5 @@ profile::base::debdeploy::filter_services:
     - '*'
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
+
+profile::openstack::eqiad1::nova::common::is_control_node: false
