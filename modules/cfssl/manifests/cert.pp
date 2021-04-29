@@ -61,9 +61,13 @@ define cfssl::cert (
             'S'  => $name['state'],
         }
     }
+    $_hosts = $common_name in $hosts ? {
+        true    => $hosts,
+        default => $hosts + [$common_name],
+    }
     $csr = {
         'CN'    => $common_name,
-        'hosts' => $hosts,
+        'hosts' => $_hosts,
         'key'   => $key,
         'names' => $_names,
     }
