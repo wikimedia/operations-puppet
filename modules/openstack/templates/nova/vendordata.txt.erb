@@ -104,6 +104,42 @@ Content-Type: text/text/x-shellscript; charset="us-ascii"
 
 set -x
 
+# Function to test if puppet is running or not
+puppet_is_running() {
+    # If no lockfile is defined, we can't really tell what's happening.
+    # Assume puppet is not running in this case
+    test -n "$PUPPETLOCK" || return 1
+
+    # If the lockfile is not present, puppet is not running
+    test -e "$PUPPETLOCK" || return 1
+
+    # Now let's see if the PID at $PUPPETLOCK is indeed present and running
+    local puppetpid=$(cat "$PUPPETLOCK")
+    local cmdline_file="/proc/${puppetpid}/cmdline"
+    if [ -f "$cmdline_file" ]; then
+        # Puppet is indeed running
+        grep -q puppet "$cmdline_file" && return 0
+    fi
+
+    # The lock file is stale, ignore it
+    echo "Ignoring stale puppet agent lock for pid ${puppetpid}"
+    return 1
+}
+
+# loop function to wait for puppet to finish its execution
+wait_for_puppet() {
+    local attempts=${1:-30}
+    for _ in $(seq "$attempts"); do
+        if ! puppet_is_running; then
+            return 0
+        fi
+        sleep 10
+    done
+    # If puppet is still running at this point, report an error
+    return 1
+}
+
+
 # The puppet config from cloud-init may have started the puppet agent.  If so,
 #  stop it so we can run it manually in a moment.
 systemctl mask puppet.service
@@ -119,6 +155,10 @@ puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
 #  that may have been unavailable in apt before the first puppet run
 #  updated sources.list
+
+# Just in case puppet is already running for some reason, wait
+#  for it to finish.
+wait_for_puppet 10
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff
 
 # Refresh ldap now that puppet has updated our ldap.conf
