@@ -70,6 +70,7 @@ class profile::analytics::refinery::job::refine(
     $event_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
     # Unrefineable tables due to poorly defined schemas.
     $event_table_exclude_list = [
+        # TODO: include page_properties_change after https://phabricator.wikimedia.org/T281483 is fixed.
         'mediawiki_page_properties_change',
         'mediawiki_recentchange',
         # Cannot be refined until https://gerrit.wikimedia.org/r/c/operations/deployment-charts/+/620008 is deployed
