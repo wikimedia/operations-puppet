@@ -121,13 +121,10 @@ class profile::wmcs::nfs::secondary(
         }
         class {'labstore::monitoring::volumes':
             server_vols => [
-                '/srv/tools',
-                '/srv/misc'
+                '/srv/maps',
+                '/srv/scratch'
             ],
             drbd_role   => $drbd_actual_role,
-        }
-        class {'labstore::monitoring::exports':
-            drbd_role => $drbd_actual_role,
         }
     } else {
         # The service should remain running always on this because there's no DRBD
@@ -156,18 +153,18 @@ class profile::wmcs::nfs::secondary(
             }
         }
         class {'labstore::monitoring::exports': }
+        class {'labstore::monitoring::volumes':
+            server_vols => [
+                '/srv/scratch',
+                '/srv/maps'
+            ],
+        }
     }
     class {'labstore::fileserver::exports':
         server_vols   => ['maps'],
     }
 
     class {'labstore::monitoring::ldap': }
-    class {'labstore::monitoring::volumes':
-        server_vols => [
-            '/srv/scratch',
-            '/srv/maps'
-        ],
-    }
     class { 'labstore::monitoring::interfaces':
         monitor_iface       => 'eno1',
         int_throughput_warn => 937500000,  # 7500Mbps
