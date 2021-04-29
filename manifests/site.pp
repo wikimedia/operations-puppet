@@ -2605,7 +2605,7 @@ node /^wdqs101[2-3]\.eqiad\.wmnet$/ {
     role(wdqs::public)
 }
 
-node /^wdqs200[1237]\.codfw\.wmnet$/ {
+node /^wdqs200[12347]\.codfw\.wmnet$/ {
     role(wdqs::public)
 }
 
@@ -2618,7 +2618,7 @@ node /^wdqs1011\.eqiad\.wmnet$/ {
     role(wdqs::internal)
 }
 
-node /^wdqs200[4568]\.codfw\.wmnet$/ {
+node /^wdqs200[568]\.codfw\.wmnet$/ {
     role(wdqs::internal)
 }
 
