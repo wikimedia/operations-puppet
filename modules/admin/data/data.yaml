@@ -4286,6 +4286,14 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/OT7CnPRCUhdSv/LqhZQX2P36JPpjeztn4+sMDPI6a akhatun-ctr@wikimedia.org'
+  mmandere:
+    ensure: present
+    realname: Marc Mandere
+    email: mmandere@wikimedia.org
+    uid: 31459
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHt501SwczR+VL0ZP3HNFJtpF0XYBIQLjp9sV8195XXr mmandere@wikimedia.org'
 
 
 ldap_only_users:
