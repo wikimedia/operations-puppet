@@ -26,6 +26,8 @@ MAILMAN_REST_API_PASS = '<%= @api_password %>'
 MAILMAN_ARCHIVER_KEY = '<%= @archiver_key %>'
 MAILMAN_ARCHIVER_FROM = ('127.0.0.1', '::1', '<%= scope.function_ipresolve([@fqdn]) %>')
 
+POSTORIUS_TEMPLATE_BASE_URL = 'https://<%= @host %>'
+
 # Application definition
 INSTALLED_APPS = (
     'hyperkitty',
