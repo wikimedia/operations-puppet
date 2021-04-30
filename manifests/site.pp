@@ -1107,10 +1107,6 @@ node /^es202[45]\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-node /^failoid[12]001\.(eqiad|codfw)\.wmnet$/ {
-    role(failoid)
-}
-
 node /^failoid[12]002\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
 }

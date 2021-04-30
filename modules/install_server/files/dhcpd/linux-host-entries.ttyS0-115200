@@ -174,20 +174,10 @@ host eventlog1003 {
     fixed-address eventlog1003.eqiad.wmnet;
 }
 
-host failoid1001 {
-    hardware ethernet aa:00:00:42:2c:99;
-    fixed-address failoid1001.eqiad.wmnet;
-}
-
 host failoid1002 {
     hardware ethernet aa:00:00:b9:69:5c;
     fixed-address failoid1002.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
-}
-
-host failoid2001 {
-    hardware ethernet aa:00:00:ab:64:ee;
-    fixed-address failoid2001.codfw.wmnet;
 }
 
 host failoid2002 {
