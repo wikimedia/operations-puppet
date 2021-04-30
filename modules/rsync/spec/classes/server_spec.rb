@@ -19,16 +19,6 @@ describe 'rsync::server', :type => :class do
         }
       end
 
-      describe 'when setting an motd' do
-        let :params do
-          { :motd_file => true }
-        end
-
-        it {
-          should contain_file('/etc/rsync-motd')
-        }
-      end
-
       describe 'when overriding use_chroot' do
         let :params do
           { :use_chroot => 'no' }

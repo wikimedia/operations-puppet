@@ -4,12 +4,11 @@
 uid = nobody
 gid = nogroup
 use chroot = <%= @use_chroot %>
-<% if @log_file != 'UNSET' %>log file = <%= @log_file %><% end %>
+<% if @log_file %>log file = <%= @log_file %><% end %>
 log format = %t %a %m %f %b
 syslog facility = local3
 timeout = <%= @timeout %>
 address = <%= @address %>
-<% if @motd_file != 'UNSET' %>motd file = <%= @motd_file %><% end %>
 <%- if @rsyncd_conf != {} -%>
 <%=
     @rsyncd_conf.map { |k, v|
