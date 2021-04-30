@@ -88,7 +88,12 @@ class profile::tlsproxy::envoy(
     }
 
     # By default use the server profile
-    $base_cfssl_options = {'profile' => 'server'}
+    $base_cfssl_options = {
+        'profile'      => 'server',
+        'owner'        => 'envoy',
+        'group'        => 'envoy',
+        'provide_chain' => true,
+    }
     $upstreams = $services.map |$service| {
         if $service['cert_name'] and $sni_support != 'no' {
             # ensure all the needed certs are present. Given these are internal services,
