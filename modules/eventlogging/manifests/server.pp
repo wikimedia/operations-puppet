@@ -109,7 +109,7 @@ class eventlogging::server(
     }
 
     # Logs are collected in <$log_dir> and rotated daily.
-    file { $log_dir:
+    file { ['/srv/log/eventlogging', $log_dir]:
         ensure  => stdlib::ensure($ensure, 'directory'),
         owner   => 'eventlogging',
         group   => 'eventlogging',
