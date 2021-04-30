@@ -40,8 +40,25 @@ class docker::baseimages(
         mode   => '0755',
     }
 
-    ## Stretch
-    $stretch_keyring = '/srv/images/base/wikimedia-stretch.pub.gpg'
+    $keyring = '/srv/images/base/wikimedia.pub.gpg'
+    file { $keyring:
+        ensure => present,
+        source => 'puppet:///modules/docker/wikimedia.pub.gpg',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+
+    file { '/srv/images/base/wikimedia-stretch.pub.gpg':
+        ensure => absent,
+    }
+
+    file { '/srv/images/base/wikimedia-buster.pub.gpg':
+        ensure => absent,
+    }
+
+
+    # Stretch
     file { '/srv/images/base/stretch.yaml':
         content => template('docker/images/stretch.yaml.erb'),
         owner   => 'root',
@@ -49,32 +66,13 @@ class docker::baseimages(
         mode    => '0544',
     }
 
-    file { $stretch_keyring:
-        ensure => present,
-        source => 'puppet:///modules/docker/wikimedia-stretch.pub.gpg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-    }
-    ## end stretch
-
     # Buster
-    $buster_keyring = '/srv/images/base/wikimedia-buster.pub.gpg'
     file { '/srv/images/base/buster.yaml':
         content => template('docker/images/buster.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0544',
     }
-
-    file { $buster_keyring:
-        ensure => present,
-        source => 'puppet:///modules/docker/wikimedia-buster.pub.gpg',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-    }
-    ## end buster
 
     if 'alpine' in $distributions {
         if $proxy_address {

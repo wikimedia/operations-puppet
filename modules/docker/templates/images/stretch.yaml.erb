@@ -33,7 +33,7 @@ packages:
     backports:
       - deb http://mirrors.wikimedia.org/debian/ stretch-backports main contrib
   trusted-keys:
-    - <%= @stretch_keyring %>
+    - <%= @keyring %>
   preferences:
     wikimedia:
       - package: "*"

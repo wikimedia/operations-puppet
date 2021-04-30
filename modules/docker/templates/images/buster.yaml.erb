@@ -33,7 +33,7 @@ packages:
     backports:
       - deb http://mirrors.wikimedia.org/debian/ buster-backports main contrib
   trusted-keys:
-    - <%= @buster_keyring %>
+    - <%= @keyring %>
   preferences:
     wikimedia:
       - package: "*"
