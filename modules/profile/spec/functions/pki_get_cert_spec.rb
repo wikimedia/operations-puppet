@@ -19,12 +19,14 @@ paths = {
   'provide_chain' => {
       "cert" => "/etc/cfssl/ssl/foo__foobar/foo__foobar.pem",
       "key"  => "/etc/cfssl/ssl/foo__foobar/foo__foobar-key.pem",
-      "ca" => "/etc/cfssl/ssl/foo__foobar/foo_chain.pem"
+      "ca" => "/etc/cfssl/ssl/foo__foobar/foo_chain.pem",
+      "chained" => "/etc/cfssl/ssl/foo__foobar/foo__foobar_chained.pem"
   },
   'outdir+provide_chain' => {
       "cert" => "/foobar/foo__foobar.pem",
       "key"  => "/foobar/foo__foobar-key.pem",
-      "ca" => "/foobar/foo_chain.pem"
+      "ca" => "/foobar/foo_chain.pem",
+      "chained" => "/foobar/foo__foobar_chained.pem"
   }
 }
 
