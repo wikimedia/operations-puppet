@@ -89,10 +89,11 @@ class profile::tlsproxy::envoy(
 
     # By default use the server profile
     $base_cfssl_options = {
-        'profile'      => 'server',
-        'owner'        => 'envoy',
-        'group'        => 'envoy',
+        'profile'       => 'server',
+        'owner'         => 'envoy',
+        'group'         => 'envoy',
         'provide_chain' => true,
+        'outdir'        => '/etc/envoy/ssl',
     }
     $upstreams = $services.map |$service| {
         if $service['cert_name'] and $sni_support != 'no' {
