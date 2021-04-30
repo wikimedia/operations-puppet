@@ -97,14 +97,17 @@ class profile::pki::multirootca (
         $nets           = pick($config['nets'], $default_nets)
         $ca_key_file    = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
         $ca_file        = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
-        $int_ca_content = file($config['cert_content'])
+        $key_content    = "pki/intermediates/${intermediate}.pem"
+        $cert_content   ="profile/pki/intermediates/${intermediate}.pem"
+        $int_ca_content = file($cert_content)
 
         cfssl::signer {$intermediate:
             profiles         => $profiles,
             ca_key_file      => $ca_key_file,
             ca_file          => $ca_file,
-            ca_key_content   => Sensitive(secret($config['key_content'])),
+            ca_key_content   => Sensitive(secret($key_content)),
             ca_cert_content  => $int_ca_content,
+            # TODO: this looks wrong
             ca_bundle_file   => "${cfssl::signer_dir}/WMF_root_CA/ca/ca.pem",
             auth_keys        => $auth_keys,
             default_crl_url  => "${crl_base_url}/${safe_title}",
