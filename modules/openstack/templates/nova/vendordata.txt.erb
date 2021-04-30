@@ -139,22 +139,15 @@ wait_for_puppet() {
     return 1
 }
 
-
-# The puppet config from cloud-init may have started the puppet agent.  If so,
-#  stop it so we can run it manually in a moment.
-systemctl mask puppet.service
-systemctl stop puppet.service
-killall puppet
-
 systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 systemctl restart ssh.service
 nscd -i hosts
 
-puppet agent --enable
 # Run puppet, twice.  The second time is just to pick up packages
 #  that may have been unavailable in apt before the first puppet run
 #  updated sources.list
+puppet agent --enable
 
 # Just in case puppet is already running for some reason, wait
 #  for it to finish.
