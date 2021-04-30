@@ -38,4 +38,4 @@ profile::pki::multirootca::default_profiles:
       - 'digital signature'
       - 'key encipherment'
       - 'server auth'
-    expiry: '96h'
+    expiry: '672h'
