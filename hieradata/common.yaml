@@ -1772,6 +1772,7 @@ mailman2_exclude_backups:
   - oversight-l
   - pressemeldungen
   - privacy-fr-wp
+  - pywikibot-bugs
   - research-newsletter
   - sectrainings
   - sf_wmf_community_dept
