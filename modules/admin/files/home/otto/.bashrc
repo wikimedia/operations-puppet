@@ -114,10 +114,11 @@ source $HOME/.liquidprompt/liquidprompt
 # add refinery/bin to my path
 test -d /srv/deployment/analytics/refinery/bin && export PATH=$PATH:/srv/deployment/analytics/refinery/bin
 # add ~/bin
-test -d ~/bin && export PATH=~/bin:$PATH
+test -d ${HOME}/bin && export PATH=${HOME}/bin:$PATH
 
 # Use iTerm2 shell integration
 test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash
 
 # Prompt for logging into a kerberos enabled host and no kerberos ticket is active.
 which klist >/dev/null && (klist -s || (echo -n "Kerberos " && kinit))
+

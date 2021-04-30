@@ -1,0 +1,20 @@
+#!/bin/bash
+
+usage="""
+keberos-run-command wrapper shortcut
+
+$(basename $0) <user> <cmd>
+"""
+
+user="${1}"
+
+if [ -z "${user}" ]; then
+    echo -e "Error: must provide <user>"
+    echo $usage
+    exit 1
+fi
+
+shift
+
+set -x
+sudo -u $user kerberos-run-command $user $@
