@@ -173,3 +173,10 @@ restore_namespace = trove.guestagent.strategies.restore.experimental.cassandra_i
 # backup_strategy = CouchDBBackup
 # backup_namespace = trove.guestagent.strategies.backup.experimental.couchdb_impl
 # restore_namespace = trove.guestagent.strategies.restore.experimental.couchdb_impl
+
+[guest_agent]
+container_registry = quay.io/wikimedia-cloud-services
+
+# We have passwordless pull for the moment.
+# container_registry_username =
+# container_registry_password =
