@@ -172,7 +172,12 @@ class profile::analytics::refinery::job::refine(
         'TemplateDataEditor',
         'TwoColConflictConflict',
         'TwoColConflictExit',
-        'VisualEditorTemplateDialogUse'
+        'VisualEditorTemplateDialogUse',
+
+        # TranslationRecommendation schemas
+        'TranslationRecommendationUserAction',
+        'TranslationRecommendationUIRequests',
+        'TranslationRecommendationAPIRequests',
     ]
     $eventlogging_legacy_table_include_regex = downcase("^(${join($eventlogging_legacy_table_include_list, '|')})$")
 
