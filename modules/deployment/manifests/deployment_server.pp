@@ -26,7 +26,7 @@ class deployment::deployment_server(
 
     file { '/srv/patches':
         ensure => 'directory',
-        owner  => 'root',
+        owner  => 'mwdeploy',
         group  => $deployment_group,
         mode   => '0775',
     }
