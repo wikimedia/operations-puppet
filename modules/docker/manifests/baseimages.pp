@@ -74,14 +74,6 @@ class docker::baseimages(
         mode    => '0544',
     }
 
-    # Bullseye
-    file { '/srv/images/base/bullseye.yaml':
-        content => template('docker/images/bullseye.yaml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-    }
-
     if 'alpine' in $distributions {
         if $proxy_address {
             $env = ["https_proxy=http://${proxy_address}:${proxy_port}"]
