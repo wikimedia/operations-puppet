@@ -328,7 +328,7 @@ def main():  # pylint: disable=too-many-locals
             post_comment(change, 'PCC Check manually: {}'.format(build.baseurl))
 
     node_status = {}
-    node_status_matcher = re.compile(r'(?P<count>\d+)\s+(?P<mode>(?:DIFF|NOOP|FAIL))')
+    node_status_matcher = re.compile(r'(?P<count>\d+)\s+(?P<mode>(?:DIFF|NOOP|FAIL|ERROR))')
     for match in node_status_matcher.finditer(output):
         # as the information we are intrested is at the end we only care about the last matches
         node_status[match['mode']] = match['count']
