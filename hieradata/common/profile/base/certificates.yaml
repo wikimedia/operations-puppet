@@ -1,3 +1,1 @@
 profile::base::certificates::puppet_ca_content: {}
-profile::base::certificates::wmf_intermidiates:
-  - debmonitor

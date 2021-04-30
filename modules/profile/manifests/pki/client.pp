@@ -12,6 +12,8 @@ class profile::pki::client (
     Boolean                      $enable_proxy           = lookup('profile::pki::client::enable_proxy'),
     Stdlib::IP::Address          $listen_addr            = lookup('profile::pki::client::listen_addr'),
     Stdlib::Port                 $listen_port            = lookup('profile::pki::client::listen_port'),
+    String                       $root_ca                = lookup('profile::pki::client::root_ca_cn'),
+    Array[String[1]]             $intermediate_cas       = lookup('profile::pki::client::intermediate_cas'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_cert = lookup('profile::pki::client::mutual_tls_client_cert'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_key  = lookup('profile::pki::client::mutual_tls_client_key'),
     Optional[Stdlib::Unixpath]   $tls_remote_ca          = lookup('profile::pki::client::tls_remote_ca'),
@@ -48,6 +50,14 @@ class profile::pki::client (
     $certs.each |$title, $cert| {
         cfssl::cert{$title:
             *        => $cert,
+        }
+    }
+    sslcert::ca { $root_ca:
+        source => "puppet:///modules/profile/pki/ROOT/${root_ca}.pem",
+    }
+    $intermediate_cas.each |$ca| {
+        sslcert::ca { $ca:
+            source => "puppet:///modules/profile/pki/intermediates/${ca}.pem",
         }
     }
 }

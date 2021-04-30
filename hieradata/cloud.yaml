@@ -14,7 +14,6 @@ profile::standard::admin_groups_no_ssh: []
 
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::certificates::puppet_ca_content: {}
-profile::base::certificates::wmf_intermidiates: []
 
 profile::base::use_apt_proxy: false
 
@@ -316,7 +315,10 @@ profile::pki::server::default_profiles: {}
 profile::pki::server::vhost: "%{facts.networking.fqdn}"
 profile::pki::root_ca::enable_backups: false
 
-
+profile::pki::client::root_ca_cn: WMF_TEST_CA
+profile::pki::client::intermediate_cas:
+  - deployment-prep_eqiad1_wikimedia_cloud
+  - WMF_test_intermediate_ca
 profile::pki::client::ensure: absent
 profile::pki::client::signer_host: pki-intermediate.pki.eqiad1.wikimedia.cloud
 profile::pki::client::signer_port: 443
