@@ -18,6 +18,8 @@ class profile::eventschemas::repositories(
         'secondary' => 'schemas/event/secondary',
     }})
 ) {
+    class { '::eventschemas': }
+
     keys($repositories).each |String $name| {
         eventschemas::repository { $name:
             origin => $repositories[$name]
