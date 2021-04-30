@@ -144,6 +144,11 @@ def main():
             dns.ensure_recordset(zone_id, fqdn, "A", ips)
 
             if args.aliases and svc in shards:
+                # everything gets sent to the wikimedia.cloud domain
+                segment = zone.split(".")[0]
+                section_fqdn = "{}.{}.db.svc.wikimedia.cloud".format(
+                    svc, segment
+                )
                 # Ensure that there are wikidb aliases for shards
                 dblist = requests.get(
                     "https://noc.wikimedia.org/conf/dblists/{}.dblist".format(svc)
@@ -166,7 +171,7 @@ def main():
                 for cname in config["cnames"][fqdn]:
                     cname_zone = find_zone_for_fqdn(dns, cname)
                     if cname_zone:
-                        dns.ensure_recordset(cname_zone["id"], cname, "CNAME", [fqdn])
+                        dns.ensure_recordset(cname_zone["id"], cname, "CNAME", [section_fqdn])
                     else:
                         logger.warning("Failed to find zone for %s", cname)
 
