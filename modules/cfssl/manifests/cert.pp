@@ -80,12 +80,10 @@ define cfssl::cert (
     }
     unless defined(File[$_outdir]) {
         file {$_outdir:
-            ensure  => stdlib::ensure($ensure, 'directory'),
-            owner   => $owner,
-            group   => $group,
-            mode    => '0440',
-            recurse => true,
-            purge   => true,
+            ensure => stdlib::ensure($ensure, 'directory'),
+            owner  => $owner,
+            group  => $group,
+            mode   => '0440',
         }
     }
     $tls_config = ($_tls_cert and $_tls_key) ? {
@@ -182,7 +180,7 @@ define cfssl::cert (
             mode   => '0440',
             source => $ca_chain_path
         }
-        # TODO: I think it may be better to use concat
+        # TODO: use sslcert::chained
         exec {"cretate chained cert ${cert_chain_path}":
             command     => "/bin/cat ${_outdir}/ca_chain.pem ${cert_path} > ${cert_chain_path}",
             refreshonly => true,
