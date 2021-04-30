@@ -22,7 +22,7 @@ profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: false
 profile::hue::servername: 'hue.wikimedia.org'
 
-profile::hue::database_name: 'hue_next'
+profile::hue::database_name: 'hue'
 profile::hue::use_hue4_settings: true
 profile::hue::enable_cas: true
 profile::hue::auth_backend: 'remote_user'
