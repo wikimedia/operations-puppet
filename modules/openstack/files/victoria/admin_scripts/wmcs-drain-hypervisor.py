@@ -20,8 +20,16 @@ import sys
 import mwopenstackclients
 import novaclient.exceptions
 
+
+CANARY_PROJECT = "cloudvirt-canary"
+
+
 if sys.version_info[0] >= 3:
     raw_input = input
+
+
+def _is_canary(instance):
+    return instance.tenant_id == CANARY_PROJECT
 
 
 class NovaInstance(object):
@@ -181,7 +189,7 @@ if __name__ == "__main__":
         remaining_instances = list(all_instances)
 
         for instance in all_instances:
-            if instance.name.startswith("canary"):
+            if _is_canary(instance):
                 logging.info(
                     "Igoring canary instance %s (%s)" % (instance.name, instance.id)
                 )
@@ -214,7 +222,7 @@ if __name__ == "__main__":
         search_opts={"host": args.hypervisor, "all_tenants": True}
     )
     for instance in all_instances:
-        if not instance.name.startswith("canary"):
+        if not _is_canary(instance):
             logging.warning(
                 "Failed to migrate %s.%s (%s)"
                 % (instance.name, instance.tenant_id, instance.id)
