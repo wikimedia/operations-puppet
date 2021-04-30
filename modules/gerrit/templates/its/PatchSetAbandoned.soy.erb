@@ -31,7 +31,7 @@
   Change {$changeNumber} **abandoned** by {$abandonerName}:{\n}
   %%%[{$project}@{$branch}] {$escapedSubject|escapeUri}%%%{\n}
   Reason:{\n}
-    %%%{$reason|escapeUri}%%%{\n}
+    %%%{$reason}%%%{\n}
 
   https://<%= @host %>/r/{$changeNumber}
 {/template}
