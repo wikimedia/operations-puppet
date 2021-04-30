@@ -13,13 +13,9 @@ class profile::analytics::refinery::job::test::refine (
     require ::profile::analytics::refinery
     require ::profile::hive::client
 
-    # Look up event schemas from local repository clones rather than remote URIs.
-    # https://phabricator.wikimedia.org/T280017
-    require ::profile::eventschemas::repositories
-
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.1.9'
+    $refinery_version = '0.1.5'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -27,26 +23,39 @@ class profile::analytics::refinery::job::test::refine (
         refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar",
     }
 
-    # Defined in eventschemas/init.pp and included via profile::eventschemas::repositories
-    # Used for refining event platform based events.
-    $schema_base_path = "file://${::eventschemas::repositories_path}"
-    $schema_base_uris = "${schema_base_path}/primary/jsonschema,${schema_base_path}/secondary/jsonschema"
-
     # These configs will be used for all refine jobs unless otherwise overridden.
     $default_config = {
         'to_emails'           => 'otto@wikimedia.org',
         'should_email_report' => true,
         'output_database'     => 'event',
         'output_path'         => '/wmf/data/event',
-        # Relative schem        # Get JSONSchemas from local file URIs.
-        # a URIs are extracted from the $schema field in each event.
-        schema_base_uris      => $schema_base_uris,
         # Look for data to refine from 26 hours ago to 2 hours ago, giving some time for
         # raw data to be imported in the last hour or 2 before attempting refine.
         'since'               => '26',
         'until'               => '2',
     }
 
+    # === EventLogging Legacy data ===
+    # /wmf/data/raw/eventlogging -> /wmf/data/event
+    # EventLogging legacy events migrated to Event Platform.
+    profile::analytics::refinery::job::refine_job { 'eventlogging_legacy_test':
+        ensure           => $ensure_timers,
+        job_config       => merge($default_config, {
+            input_path                      => '/wmf/data/raw/eventlogging',
+            input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
+            input_path_regex_capture_groups => 'table,year,month,day,hour',
+            table_include_regex             => '^navigationtiming$',
+            # Since EventLogging legacy data comes from external clients,
+            # non wikimedia domains and other unwanted domains have always been filtered out.
+            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms',
+            # Get JSONSchemas from the HTTP schema service.
+            # Schema URIs are extracted from the $schema field in each event.
+            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
+        }),
+        interval         => '*-*-* *:15:00',
+        monitor_interval => '*-*-* 00:30:00',
+        use_keytab       => $use_kerberos_keytab,
+    }
 
     # === Event data ===
     # /wmf/data/raw/event -> /wmf/data/event
@@ -63,29 +72,12 @@ class profile::analytics::refinery::job::test::refine (
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.event_transforms',
+            # Get JSONSchemas from the HTTP schema service.
+            # Schema URIs are extracted from the $schema field in each event.
+            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
         }),
         interval         => '*-*-* *:20:00',
         monitor_interval => '*-*-* 01:15:00',
-        use_keytab       => $use_kerberos_keytab,
-    }
-
-
-    # === EventLogging Legacy data ===
-    # /wmf/data/raw/eventlogging -> /wmf/data/event
-    # EventLogging legacy events migrated to Event Platform.
-    profile::analytics::refinery::job::refine_job { 'eventlogging_legacy_test':
-        ensure           => $ensure_timers,
-        job_config       => merge($default_config, {
-            input_path                      => '/wmf/data/raw/eventlogging',
-            input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
-            input_path_regex_capture_groups => 'table,year,month,day,hour',
-            table_include_regex             => '^navigationtiming$',
-            # Since EventLogging legacy data comes from external clients,
-            # non wikimedia domains and other unwanted domains have always been filtered out.
-            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms',
-        }),
-        interval         => '*-*-* *:15:00',
-        monitor_interval => '*-*-* 00:30:00',
         use_keytab       => $use_kerberos_keytab,
     }
 
