@@ -33,8 +33,6 @@ class role::statistics::explorer {
     # Deploy wikimedia/discovery/analytics repository
     include ::profile::analytics::cluster::elasticsearch
 
-    include ::profile::swap
-    # This class will soon deprecate profile::swap.
-    # T224658
+    # Run anaconda-wmf based jupyterhub server.
     include ::profile::analytics::jupyterhub
 }
