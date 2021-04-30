@@ -668,11 +668,6 @@ node 'db1159.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
-# old  m1 eqiad master - will be decommissioned T280121
-node 'db1080.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-
 # m1 codfw master
 node 'db2132.codfw.wmnet' {
     role(mariadb::misc)

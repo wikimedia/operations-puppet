@@ -1,3 +1,0 @@
-# db1080
-mariadb::shard: 'm1'
-profile::base::notifications: disabled
