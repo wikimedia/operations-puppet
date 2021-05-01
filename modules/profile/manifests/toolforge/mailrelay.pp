@@ -1,8 +1,9 @@
 class profile::toolforge::mailrelay (
-    String  $external_hostname = lookup('profile::toolforge::mailrelay::external_hostname', {'default_value' => 'mail.tools.wmflabs.org'}),
-    String  $srs_secret        = lookup('profile::toolforge::mailrelay::srs_secret',        {'default_value' => 'dummy'}),
-    String  $mail_domain       = lookup('profile::toolforge::mail_domain',                  {'default_value' => 'tools.wmflabs.org'}),
-    String  $cert_name         = lookup('profile::toolforge::cert_name',                    {'default_value' => 'tools_mail'}),
+    String         $external_hostname = lookup('profile::toolforge::mailrelay::external_hostname', {'default_value' => 'mail.tools.wmflabs.org'}),
+    String         $srs_secret        = lookup('profile::toolforge::mailrelay::srs_secret',        {'default_value' => 'dummy'}),
+    String         $primary_domain    = lookup('profile::toolforge::mailrelay::primary_domain',    {'default_value' => 'tools.wmflabs.org'}),
+    Array[String]  $mail_domains      = lookup('profile::toolforge::mail_domains',                 {'default_value' => ['tools.wmflabs.org', 'toolforge.org']}),
+    String         $cert_name         = lookup('profile::toolforge::cert_name',                    {'default_value' => 'tools_mail'}),
 ) {
     acme_chief::cert { $cert_name:
         key_group  => 'Debian-exim',

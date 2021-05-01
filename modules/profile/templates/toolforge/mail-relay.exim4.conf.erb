@@ -9,8 +9,8 @@
 ##########
 
 INSTANCEPROJECT = <%= @labsproject %>
-MAILDOMAIN      = <%= @mail_domain %>
-SRS_DOMAIN      = <%= @mail_domain %>
+MAILDOMAIN      = <%= @mail_domains.join(' : ') %>
+PRIMARY_DOMAIN  = <%= @primary_domain %>
 SRS_SECRET      = <%= @srs_secret %>
 SRS_OFFSET      = 14159
 SRS_DSN_TIMEOUT = 10
@@ -20,11 +20,12 @@ SRS_DSN_TIMEOUT = 10
 ###############################
 
 primary_hostname = <%= @external_hostname %>
-qualify_domain = MAILDOMAIN
+qualify_domain = PRIMARY_DOMAIN
 smtp_banner = $smtp_active_hostname ESMTP
 
 domainlist local_domains = MAILDOMAIN : \
-                           *.INSTANCEPROJECT.eqiad.wmflabs
+                           *.INSTANCEPROJECT.eqiad.wmflabs : \
+                           *.INSTANCEPROJECT.eqiad1.wikimedia.cloud
 hostlist relay_from_hosts = 10.0.0.0/8 : 172.16.0.0/21
 
 acl_smtp_rcpt = acl_check_rcpt
@@ -153,7 +154,7 @@ begin routers
 
 srs0_return:
 	caseful_local_part
-	domains = SRS_DOMAIN
+	domains = PRIMARY_DOMAIN
 	local_part_prefix = srs0=
 	driver = redirect
 	allow_fail
@@ -166,7 +167,7 @@ srs0_return:
 
 srs1_return:
 	caseful_local_part
-	domains = SRS_DOMAIN
+	domains = PRIMARY_DOMAIN
 	local_part_prefix = srs1=
 	driver = redirect
 	allow_fail
@@ -181,10 +182,10 @@ srs_outgoing:
   domains = ! +local_domains
   senders = ! : ! *@+local_domains
   errors_to = ${if match {$sender_address_local_part}{\N^[sS][rR][sS]0=(.+)\N} \
-	    {${quote_local_part:SRS1=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:$sender_address_domain&$1}}}}=$sender_address_domain==$1}@SRS_DOMAIN} \
+	    {${quote_local_part:SRS1=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:$sender_address_domain&$1}}}}=$sender_address_domain==$1}@PRIMARY_DOMAIN} \
 	    {${if match {$sender_address_local_part}{\N^[sS][rR][sS]1=[^=]+=([^=]+)==(.+)\N} \
-	    {${quote_local_part:SRS1=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:$1&$2}}}}=$1==$2}@SRS_DOMAIN} \
-	    {${quote_local_part:SRS0=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:${eval:$tod_epoch/86400-SRS_OFFSET}&$sender_address_domain&$sender_address_local_part}}}}=${eval:$tod_epoch/86400-SRS_OFFSET}=$sender_address_domain=$sender_address_local_part}@SRS_DOMAIN} \
+	    {${quote_local_part:SRS1=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:$1&$2}}}}=$1==$2}@PRIMARY_DOMAIN} \
+	    {${quote_local_part:SRS0=${length_5:${hmac{sha1}{SRS_SECRET}{${lc:${eval:$tod_epoch/86400-SRS_OFFSET}&$sender_address_domain&$sender_address_local_part}}}}=${eval:$tod_epoch/86400-SRS_OFFSET}=$sender_address_domain=$sender_address_local_part}@PRIMARY_DOMAIN} \
 	    }}}
   driver = redirect
   data = ${quote_local_part:$local_part}@$domain
@@ -319,4 +320,5 @@ begin retry
 
 begin rewrite
 
-*@*.tools.eqiad.wmflabs  root@tools.wmflabs.org  F
+*@*.INSTANCEPROJECT.eqiad.wmflabs  root@PRIMARY_DOMAIN  F
+*@*.INSTANCEPROJECT.eqiad1.wikimedia.cloud  root@PRIMARY_DOMAIN  F
