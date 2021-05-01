@@ -14,14 +14,15 @@ skip-external-locking
 skip-name-resolve
 temp-pool
 
-user      = mysql
-socket    = /tmp/mysql.sock
-port      = 3306
-basedir   = <%= @basedir %>
-datadir   = <%= @datadir %>
-tmpdir    = <%= @tmpdir %>
-server_id = <%= @server_id %>
-read_only = 0
+user        = mysql
+socket      = /tmp/mysql.sock
+port        = 3306
+basedir     = <%= @basedir %>
+datadir     = <%= @datadir %>
+tmpdir      = <%= @tmpdir %>
+server_id   = <%= @server_id %>
+report_host = <%= @fqdn %>
+read_only   = 1
 
 # enable socket authentication
 plugin-load = unix_socket=auth_socket.so
