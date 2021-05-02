@@ -66,6 +66,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://grafana-rw.wikimedia.org
       replacement: https://grafana1002.eqiad.wmnet
     - type: map
+      target: http://grafana-cloud.wikimedia.org
+      replacement: https://grafana-labs.discovery.wmnet
+    - type: map
       target: http://grafana-labs.wikimedia.org
       replacement: https://grafana-labs.discovery.wmnet
     - type: map
