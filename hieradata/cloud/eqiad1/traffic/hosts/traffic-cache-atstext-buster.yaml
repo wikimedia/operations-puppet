@@ -52,11 +52,11 @@ profile::cache::ssl::wikibase::le_subjects:
 - whatever.org
 profile::cache::varnish::frontend::fe_vcl_config:
     allowed_methods: '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$'
-    purge_host_regex: '^(?!(upload|maps)\.beta\.wmflabs\.org)'
+    purge_host_regex: '^(?!(upload|upload\.wikimedia|maps)\.beta\.wmflabs\.org)'
     static_host: 'en.wikipedia.beta.wmflabs.org'
     top_domain: 'beta.wmflabs.org'
     shortener_domain: 'w-beta.wmflabs.org'
-    upload_domain: 'upload.beta.wmflabs.org'
+    upload_domain: 'upload.wikimedia.beta.wmflabs.org'
     upload_webp_hits_threshold: 1000
     maps_domain: 'maps.beta.wmflabs.org'
     varnish_probe_ms: 100
