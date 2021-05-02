@@ -613,7 +613,6 @@ mediawiki::sites:
           server_aliases:
             [
               "commons.wikimedia.beta.wmflabs.org",
-              "deployment.wikimedia.beta.wmflabs.org",
               "meta.wikimedia.beta.wmflabs.org",
               "api.wikimedia.beta.wmflabs.org",
               "vote.wikimedia.beta.wmflabs.org"
