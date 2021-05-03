@@ -25,6 +25,7 @@ import keystoneauth1
 from novaclient import exceptions as novaexceptions
 from neutronclient.common import exceptions as neutronexceptions
 from designateclient import exceptions as designateexceptions
+from troveclient import exceptions as troveexceptions
 
 import mwopenstackclients
 
@@ -38,6 +39,67 @@ observerclients = mwopenstackclients.clients("/etc/novaobserver.yaml")
 
 # osstackcanary: has rights in select projects
 canaryclients = mwopenstackclients.clients("/etc/oss-canary.yaml")
+
+
+# Helper function to find a small, public flavor
+def smallflavor():
+    if smallflavor.flavor:
+        return smallflavor.flavor
+
+    novaclient = observerclients.novaclient(project=POLICY_TEST_PROJECT)
+
+    # Find a flavor with a small RAM footprint
+    def smallestflavor(flavor1, flavor2):
+        if flavor1 and flavor2.ram > flavor1.ram:
+            return flavor1
+        return flavor2
+
+    smallflavor.flavor = reduce(smallestflavor, novaclient.flavors.list(), None)
+    return smallflavor.flavor
+
+
+smallflavor.flavor = None
+
+
+# Helper function to find the instance network
+def instancenetwork():
+    if instancenetwork.network:
+        return instancenetwork.network
+
+    neutronclient = observerclients.neutronclient(project=POLICY_TEST_PROJECT)
+
+    def instance_network(net1, net2):
+        if "instance" in net2["name"]:
+            return net2
+        else:
+            return net1
+
+    instancenetwork.network = reduce(
+        instance_network, neutronclient.list_networks()["networks"], None
+    )
+    return instancenetwork.network
+
+
+instancenetwork.network = None
+
+
+# Helper function to find the instance network
+def instanceimage():
+    if instanceimage.image:
+        return instanceimage.image
+
+    glanceclient = observerclients.glanceclient(project=POLICY_TEST_PROJECT)
+
+    def activeimage(image1, image2):
+        if image2.status == "active":
+            return image2
+        return image1
+
+    instanceimage.image = reduce(activeimage, glanceclient.images.list(), None)
+    return instanceimage.image
+
+
+instanceimage.image = None
 
 
 class TestKeystone:
@@ -112,40 +174,17 @@ class TestNova:
         # We need a VM to experiment with. This has the side-effect of exercising
         #  a lot of our admin credentials.
         novaclient = adminclients.novaclient(project=POLICY_TEST_PROJECT)
-        neutronclient = adminclients.neutronclient(project=POLICY_TEST_PROJECT)
-        glanceclient = adminclients.glanceclient(project=POLICY_TEST_PROJECT)
 
-        # Find a flavor with a small RAM footprint
-        def smallestflavor(flavor1, flavor2):
-            if flavor1 and flavor2.ram > flavor1.ram:
-                return flavor1
-            return flavor2
-
-        cls.flavor = reduce(smallestflavor, novaclient.flavors.list(), None)
-
-        # Find an enabled image, we don't care which. This will fail if none are found.
-        def activeimage(image1, image2):
-            if image2.status == "active":
-                return image2
-            return image1
-
-        cls.image = reduce(activeimage, glanceclient.images.list(), None)
-
-        # find an instance network
-        def instancenetwork(net1, net2):
-            if "instance" in net2["name"]:
-                return net2
-            else:
-                return net1
-
-        cls.network = reduce(
-            instancenetwork, neutronclient.list_networks()["networks"], None
-        )
+        cls.flavor = smallflavor()
+        cls.image = instanceimage()
+        cls.network = instancenetwork()
 
         nics = [{"net-id": cls.network["id"]}]
         cls.testserver = novaclient.servers.create(
             "policy-test-server", flavor=cls.flavor.id, image=cls.image.id, nics=nics
         )
+
+        neutronclient = observerclients.neutronclient(project=POLICY_TEST_PROJECT)
 
         # Find a non-default security group for future use
         def nondefault(group1, group2):
@@ -358,3 +397,57 @@ class TestDesignate:
             designateclient.recordsets.create(
                 self.zone["id"], str(uuid.uuid4()), "A", ["192.168.0.1"]
             )
+
+
+class TestTrove:
+    @classmethod
+    def setup_class(cls):
+        cls.flavor = smallflavor()
+
+        cls.flavor = smallflavor()
+        cls.network = instancenetwork()
+        nics = [{"net-id": cls.network["id"]}]
+
+        databases = [{"name": "my_db"}]
+        users = [
+            {"name": "jsmith", "password": "12345", "databases": [{"name": "my_db"}]}
+        ]
+
+        troveclient = adminclients.troveclient(project=POLICY_TEST_PROJECT)
+        instance = troveclient.instances.create(
+            name="trove-test-instance",
+            flavor_id=cls.flavor.id,
+            databases=databases,
+            volume={"size": 1},
+            nics=nics,
+            users=users,
+            datastore="09abaceb-d16d-40a9-9d4b-d423241ee733",
+            datastore_version="950733f2-cb42-4f85-b5e3-547117227b13",
+        )
+
+        cls.testinstance = instance
+
+        counter = 0
+        while cls.testinstance.status == "BUILD":
+            counter += 1
+            time.sleep(1)
+            cls.testinstance = troveclient.instances.get(cls.testinstance.id)
+            # If this is taking more than a few minutes let's call it a failure
+            assert counter < 360
+
+    @classmethod
+    def teardown_class(cls):
+        troveclient = adminclients.troveclient(project=POLICY_TEST_PROJECT)
+        troveclient.instances.delete(cls.testinstance.id)
+
+    def test_trove_observerclients(self):
+        troveclient = observerclients.troveclient(project=POLICY_TEST_PROJECT)
+
+        with pytest.raises(troveexceptions.Forbidden):
+            troveclient.instances.delete(self.testinstance.id)
+
+    def test_trove_canaryclients(self):
+        troveclient = canaryclients.troveclient(project=POLICY_TEST_PROJECT)
+
+        with pytest.raises(troveexceptions.Forbidden):
+            troveclient.instances.delete(self.testinstance.id)
