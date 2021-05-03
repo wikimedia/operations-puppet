@@ -29,7 +29,23 @@ class profile::lvs::realserver(
 
     if $use_conftool {
         require ::profile::conftool::client
-        # Install the python poolcounter client if any backend is defined,
+        # Add a yaml file that will be consumed by safe-service-restart
+        # It contains, for each lvs pool (used as key):
+        # - the conftool cluster and service
+        # - the service port
+        # - the lvs servers that are serving that pool
+        $local_services = $services.map |$pool_name, $svc| {
+            $lvs_servers = $::lvs::configuration::lvs_class_hosts[$svc['lvs']['class']]
+            $addition = {'servers' => $lvs_servers, 'port' => $svc['port']}
+            $retval = {$pool_name => $svc['lvs']['conftool'].merge($addition)}
+        }.reduce({}) |$m, $val| {$m.merge($val)}
+        file { '/etc/conftool/local_services.yaml':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            content => to_yaml($local_services)
+        }
+        # Install the python poolcounter client if any backend is defined
         if $poolcounter_backends {
             $pc_ensure = 'present'
             $bc = $poolcounter_backends

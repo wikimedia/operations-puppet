@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::lvs::realserver' do
-  on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       context "without conftool" do
@@ -48,7 +48,7 @@ describe 'profile::lvs::realserver' do
                               .with_lvs_pools(['appservers-https'])
         }
         it { is_expected.to contain_file('/usr/local/sbin/restart-apache2')
-                              .with_content(%r{http:\/\/lvs1016:9090\/pools\/apaches_80})
+                              .with_content(/--pools apaches appservers-https --services apache2/)
                               .with_content(/--max-concurrency [1-9]/)
         }
         it { is_expected.to contain_class('poolcounter::client::python')

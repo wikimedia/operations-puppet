@@ -1,21 +1,22 @@
 #!/usr/bin/python3
 import argparse
 import logging
+import re
 import shlex
 import socket
 import subprocess
-import re
 import sys
 import time
-
 from urllib import parse
 
 import requests
+import yaml
 
 # Optional poolcounter support
 try:
     import poolcounter
     from poolcounter.client import RequestType
+
     pc_support = True
 except ImportError:
     pc_support = False
@@ -26,20 +27,85 @@ from conftool.drivers import BackendError
 logger = logging.getLogger("service_restarter")
 
 
+class PoolEntity:
+    def __init__(self, name, *, cluster="", service="", port=0, servers=None):
+        # Name is the name of the LVS pool.
+        # It's one of the keys of profile::lvs::realserver::pools
+        self.name = name
+        self.cluster = cluster
+        self.service = service
+        self.port = port
+        self.servers = servers
+
+    @property
+    def urls(self):
+        """Returns the urls to check on pybal"""
+        return ["http://{}:9090/pools/{}_{}".format(h, self.name, self.port) for h in self.servers]
+
+    def matches(self, obj):
+        """Checks if a conftool object represents this entity"""
+        return (self.cluster == obj.tags['cluster'] and self.service == obj.tags['service'])
+
+
+class PoolCollection:
+    def __init__(self, pool_names, filename):
+        # Read the collection of pools from a yaml file.
+        # The file will be a yaml dictionary of pool name -> pool entity fields:
+        # some-pool:
+        #  cluster: a-conftool-cluster-tag
+        #  service: a-conftool-service-tag
+        #  port: 1234
+        #  servers: [ lvs1, lvs2, lvs3]
+        # some-other-pool: ...
+        #
+        self._collection = set()
+        with open(filename, 'r') as fh:
+            data = yaml.safe_load(fh)
+        for name, pool_data in data.items():
+            if name in pool_names:
+                self._collection.add(PoolEntity(name, **pool_data))
+
+    def filter(self, objects):
+        """Get the pool entities corresponding to a list of conftool objects"""
+        results = set()
+
+        for el in self._collection:
+            for obj in objects:
+                if el.matches(obj):
+                    results.add(el)
+        return list(results)
+
+    @property
+    def services(self):
+        """Return all conftool services in the selected pools"""
+        return [el.service for el in self._collection]
+
+    @property
+    def names(self):
+        return [el.name for el in self._collection]
+
+    def all_urls(self):
+        """Return all pybal urls to check for the selected pools"""
+        all_urls = set()
+        for el in self._collection:
+            for url in el.urls:
+                all_urls.add(url)
+        return list(all_urls)
+
+
 class ServiceRestarter(ToolCliBase):
 
     # Default error return-code from the script itself
     DEFAULT_RC = 127
     # poolcounter namespace
-    POOLCOUNTER_NS = 'ServiceRestarter'
+    POOLCOUNTER_NS = "ServiceRestarter"
 
     def __init__(self, args):
         super().__init__(args)
         self.fqdn = socket.getfqdn()
         self.retries = args.retries
         self.wait = args.wait
-        self.pools = args.pools
-        self.lvs_uris = args.lvs_urls
+        self.pools = PoolCollection(args.pools, args.catalog)
         self.services = args.services
         self.timeout = args.timeout
         self.grace_period = args.grace_period
@@ -53,11 +119,11 @@ class ServiceRestarter(ToolCliBase):
 
     def _get_datacenter(self):
         try:
-            with open('/etc/wikimedia-cluster') as fh:
+            with open("/etc/wikimedia-cluster") as fh:
                 key = fh.read().strip()
             return key
         except FileNotFoundError:
-            return 'default'
+            return "default"
 
     def get_poolcounter_key(self):
         """
@@ -66,19 +132,10 @@ class ServiceRestarter(ToolCliBase):
         # The key will be composed as follows:
         # {POOLCOUNTER_NS}::datacenter::pool1-pool2...
         # pools will be ordered alphabetically
-        pattern = re.compile('/pools/(.*)_')
-        lvs_pools = set()
-        for uri in self.lvs_uris:
-            match = pattern.search(uri)
-            if match:
-                lvs_pools.add(match.group(1))
-        if not lvs_pools:
-            # All lvs urls were malformed.
-            raise ValueError('Unable to extract the pools for the lvs uri')
         return "{ns}::{dc}::{key}".format(
             ns=self.POOLCOUNTER_NS,
             dc=self._get_datacenter(),
-            key='-'.join(sorted(lvs_pools))
+            key="-".join(sorted(self.pools.names)),
         )
 
     def run_and_raise(self):
@@ -171,8 +228,9 @@ class ServiceRestarter(ToolCliBase):
     def _get_objects(self, pooled_state="yes"):
         """Gets the objects corresponding to the services we're operating on"""
         selector = {
-            "service": re.compile("|".join(self.pools)),
+            "service": re.compile("|".join(self.pools.services)),
             "name": re.compile(self.fqdn),
+            "dc": re.compile(self._get_datacenter())
         }
         objects = list(self.entity.query(selector))
         pooled = [o for o in objects if o.pooled == pooled_state]
@@ -185,7 +243,7 @@ class ServiceRestarter(ToolCliBase):
             for obj in pooled:
                 obj.update({"pooled": "no"})
             # now let's wait for the services to be depooled in pybal
-            self._verify_status(False)
+            self._verify_status(False, pooled)
             return True
         except (BackendError, PoolStatusError) as e:
             logger.error("Error depooling the servers: %s", e)
@@ -196,29 +254,31 @@ class ServiceRestarter(ToolCliBase):
         try:
             for obj in pooled:
                 obj.update({"pooled": "yes"})
-            self._verify_status(True)
+            self._verify_status(True, pooled)
             return True
         except (BackendError, PoolStatusError) as e:
             logger.error("Error depooling the servers: %s", e)
             return False
 
-    def _verify_status(self, want_pooled):
+    def _verify_status(self, want_pooled, pooled):
+        # We only want to verify the status of objects that we're acting upon.
         if want_pooled:
             desired_status = "enabled/up/pooled"
         else:
             desired_status = "disabled/*/not pooled"
-        for baseurl in self.lvs_uris:
-            parsed = parse.urlparse(baseurl)
-            url = "{baseurl}/{fqdn}".format(baseurl=baseurl, fqdn=self.fqdn)
-            # This will raise a PoolStatusError
-            logger.debug("Now verifying %s", url)
-            self._fetch_retry(url, want_pooled, parsed, desired_status)
+        for pool in self.pools.filter(pooled):
+            for baseurl in pool.urls:
+                url = "{baseurl}/{fqdn}".format(baseurl=baseurl, fqdn=self.fqdn)
+                # This will raise a PoolStatusError
+                logger.debug("Now verifying %s", url)
+                self._fetch_retry(url, want_pooled, desired_status)
 
-    def _fetch_retry(self, url, want_pooled, parsed, desired_status):
+    def _fetch_retry(self, url, want_pooled, desired_status):
         headers = {
             "user-agent": "service-restarter/0.0.1",
             "accept": "application/json",
         }
+        parsed = parse.urlparse(url)
         for _ in range(0, self.retries):
             try:
                 logger.debug("Fetching url %s", url)
@@ -313,7 +373,9 @@ def parse_args():
         "--debug", action="store_true", default=False, help="print debug info"
     )
     parser.add_argument(
-        "--force", action="store_true", default=False,
+        "--force",
+        action="store_true",
+        default=False,
         help="Perform an unsafe restart (skips depool/repool)",
     )
     parser.add_argument(
@@ -346,25 +408,29 @@ def parse_args():
         help="Number of seconds, if any, to wait after depooling a server before restarting it.",
     )
     parser.add_argument(
-        "--lvs-urls",
-        dest="lvs_urls",
-        nargs="+",
-        metavar="URL",
-        help="Full urls to check for results in pybal.",
+        "--catalog",
+        dest="catalog",
+        metavar="CATALOG",
+        default="/etc/conftool/local_services.yaml",
+        help="Location of the service catalog yaml",
     )
     parser.add_argument(
-        "--pools", nargs="+", metavar="POOL", help="LVS services to depool"
+        "--pools",
+        nargs="+",
+        metavar="POOL",
+        help="LVS services to depool",
     )
     if pc_support:
         parser.add_argument(
             "--max-concurrency",
-            default=0, type=int,
-            help="Limits the maximum number of restarts happening concurrently across the cluster."
+            default=0,
+            type=int,
+            help="Limits the maximum number of restarts happening concurrently across the cluster.",
         )
         parser.add_argument(
-            '--poolcounter-config',
+            "--poolcounter-config",
             default="/etc/poolcounter-backends.yaml",
-            help="Path to the poolcounter configuration yaml file. See python-poolcounter's docs."
+            help="Path to the poolcounter configuration yaml file. See python-poolcounter's docs.",
         )
     simple_actions = parser.add_mutually_exclusive_group(required=True)
     simple_actions.add_argument(
@@ -394,16 +460,18 @@ def poolcounter_run(args, sr):
     try:
         pc = poolcounter.from_yaml(args.poolcounter_config, "service_restarter")
     except Exception:
-        logger.error("Could not initialize poolcounter from file '%s'", args.poolcounter_config)
+        logger.error(
+            "Could not initialize poolcounter from file '%s'", args.poolcounter_config
+        )
     # Run at most args.max_concurrency restarts at the same time across the cluster.
     # Only error out after 10 minutes.
     if pc.run(
-            RequestType.LOCK_EXC,
-            key,
-            sr.run_and_raise,
-            concurrency=args.max_concurrency,
-            max_queue=10000,
-            timeout=600,
+        RequestType.LOCK_EXC,
+        key,
+        sr.run_and_raise,
+        concurrency=args.max_concurrency,
+        max_queue=10000,
+        timeout=600,
     ):
         return 0
     else:

@@ -28,21 +28,13 @@ define conftool::scripts::safe_service_restart(
     Hash $lvs_class_hosts,
     Integer $max_concurrency = 0,
 ) {
-    # Only require the other conftool scrips if lvs pools are declared.
+
+
+    # Only require the other conftool scripts if lvs pools are declared.
     if $lvs_pools != [] {
         require ::conftool::scripts
-        # Find the base cli arguments shared by all scripts.
-        $uris = $lvs_pools.map |$pool| {
-            $service = $services[$pool]
-            $port = $service['port']
-            $lvs_class_hosts[$service['lvs']['class']].map |$host| { "http://${host}:9090/pools/${pool}_${port}" }
-#            $uris, [$service['conftool']['service']]]
-        }
-        .flatten().unique().join(' ')
-        $pools = $lvs_pools.map |$pool| {
-            $services[$pool]['lvs']['conftool']['service']
-        }.unique().join(' ')
-        $base_cli_args = "--lvs-urls ${uris} --pools ${pools}"
+
+        $base_cli_args = "--pools ${lvs_pools.join(' ')}"
         # TODO: move to sbin as well. Now here for historical reasons.
         file { "/usr/local/bin/depool-${title}":
             ensure  => present,
