@@ -1,0 +1,14 @@
+"admin_or_owner": "is_admin:True or role:projectadmin"
+"admin_or_projectadmin": "is_admin:True or role:projectadmin"
+"default": "rule:admin_or_projectadmin"
+
+# Disable backup features until we have Swift
+"instance:backups": "!"
+"backup:create": "!"
+"backup:delete": "!"
+"backup:index": "!"
+"backup:index:all_projects": "!"
+"backup:show": "!"
+"backup_strategy:create": "!"
+"backup_strategy:index": "!"
+"backup_strategy:delete": "!"
