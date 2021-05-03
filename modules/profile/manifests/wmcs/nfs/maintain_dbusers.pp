@@ -28,7 +28,12 @@ class profile::wmcs::nfs::maintain_dbusers (
     $multiinstance_collected = $section_ports.keys.reduce({}) |$memo, $section|{
         $memo + {
             $section =>  query_nodes(
-                "(Class['role::wmcs::db::wikireplicas::web_multiinstance'] or Class['role::wmcs::db::wikireplicas::analytics_multiinstance']) and Profile::Mariadb::Section[${section}]"
+                @("QUERY")
+                (Class['role::wmcs::db::wikireplicas::web_multiinstance'] or
+                Class['role::wmcs::db::wikireplicas::analytics_multiinstance'] or
+                Class['role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance'])
+                and Profile::Mariadb::Section[${section}]
+                | QUERY
             )
         }
     }
