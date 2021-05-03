@@ -1,3 +1,5 @@
+classes:
+  - testing_none_existing_class
 profile::pki::client::certs:
   '%{facts.networking.fqdn}':
     label: WMF_test_intermediate_ca
