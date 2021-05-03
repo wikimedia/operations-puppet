@@ -107,8 +107,6 @@ class profile::pki::multirootca (
             ca_file          => $ca_file,
             ca_key_content   => Sensitive(secret($key_content)),
             ca_cert_content  => $int_ca_content,
-            # TODO: this looks wrong
-            ca_bundle_file   => "${cfssl::signer_dir}/WMF_root_CA/ca/ca.pem",
             auth_keys        => $auth_keys,
             default_crl_url  => "${crl_base_url}/${safe_title}",
             default_ocsp_url => "${ocsp_base_url}/${safe_title}",
