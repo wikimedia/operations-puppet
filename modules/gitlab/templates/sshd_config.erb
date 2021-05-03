@@ -1,0 +1,61 @@
+# Managed by puppet
+
+# Package generated configuration file
+# See the sshd_config(5) manpage for details
+
+# What ports, IPs and protocols we listen for
+Port <%= @listen_port %>
+# Use these options to restrict which interfaces/protocols sshd will bind to
+<%- @listen_addresses.each do |listen_addr| %>
+ListenAddress <%= listen_addr %>
+<%- end -%>
+Protocol 2
+# HostKeys for protocol version 2
+<%- @host_key_algos.each do |algo| -%>
+HostKey <%= "#{@base_dir}/ssh_host_#{algo}_key" %>
+<%- end -%>
+
+# Security options
+Ciphers <%= @ciphers.join(',') %>
+KexAlgorithms <%= @kex_algorithms.join(',') %>
+MACs <%= @macs.join(',') %>
+
+# Logging
+SyslogFacility <%= @syslog_facility %>
+LogLevel <%= @syslog_level %>
+
+PubkeyAuthentication yes
+IgnoreRhosts yes
+HostbasedAuthentication no
+IgnoreUserKnownHosts yes
+
+ChallengeResponseAuthentication no
+PasswordAuthentication no
+KerberosAuthentication no
+GSSAPIAuthentication no
+
+StrictModes yes
+PermitRootLogin no
+PermitTunnel no
+PermitUserEnvironment no
+PermitTTY no
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+GatewayPorts no
+PrintMotd no
+PrintLastLog no
+TCPKeepAlive yes
+Banner none
+UseDNS yes
+UsePAM no
+
+LoginGraceTime <%= @login_grace_time %>
+MaxStartups <%= @max_startups %>
+MaxSessions <%= @max_sessions %>
+MaxAuthTries <%= @max_auth_tries %>
+
+# Allow client to pass locale environment variables
+AcceptEnv <%= @accept_env.join(' ') %>
+
+AllowUsers git
