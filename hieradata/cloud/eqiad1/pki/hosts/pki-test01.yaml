@@ -1,0 +1,3 @@
+profile::pki::client::certs:
+  '%{facts.networking.fqdn}':
+    label: WMF_test_intermediate_ca
