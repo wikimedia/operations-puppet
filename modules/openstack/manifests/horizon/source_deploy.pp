@@ -90,6 +90,13 @@ class openstack::horizon::source_deploy(
         notify => Service['apache2'],
     }
 
+    file { '/etc/openstack-dashboard/trove_policy.yaml':
+        source => "puppet:///modules/openstack/${openstack_version}/trove/policy.yaml",
+        owner  => 'root',
+        mode   => '0444',
+        notify => Service['apache2'],
+    }
+
     # A user and group to run this as
     group { 'horizon':
         ensure => present,
