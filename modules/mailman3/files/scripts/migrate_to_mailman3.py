@@ -170,6 +170,10 @@ def main() -> int:
         print("Disabled")
         return 0
     print(f"Migrating {listname} to Mailman3")
+    shutil.copyfile(
+        f"/var/lib/mailman/lists/{listname}/config.pck",
+        f"/var/lib/mailman/lists/{listname}/config.pck.backup"
+    )
     send_email(
         to=f"{listname}-owner@{DOMAIN}",
         subject=f"{listname} mailing list is being migrated to Mailman3",
