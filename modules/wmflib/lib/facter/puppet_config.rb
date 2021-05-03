@@ -9,6 +9,9 @@ desired_settings = {
     :hostpubkey,
     :hostprivkey,
     :hostcert,
+  ],
+  :agent => [
+    :server
   ]
 }
 Facter.add(:puppet_config) do
