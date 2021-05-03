@@ -40,7 +40,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.1.5'
+    $refinery_version = '0.1.9'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -243,8 +243,6 @@ class profile::analytics::refinery::job::refine(
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
             schema_base_uris                => 'eventlogging',
         }),
-        # Use webproxy so that this job can access meta.wikimedia.org to retrive JSONSchemas.
-        spark_extra_opts => '--driver-java-options=\'-Dhttp.proxyHost=webproxy.eqiad.wmnet -Dhttp.proxyPort=8080 -Dhttps.proxyHost=webproxy.eqiad.wmnet -Dhttps.proxyPort=8080\'',
         interval         => '*-*-* *:30:00',
         monitor_interval => '*-*-* 00:15:00',
         use_keytab       => $use_kerberos_keytab,
