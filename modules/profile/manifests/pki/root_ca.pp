@@ -60,5 +60,5 @@ class profile::pki::root_ca(
         }
     }
     include profile::backup::host
-    backup::set {'root-pki-cfssl': }
+    backup::set {'pki-root-cfssl': }
 }
