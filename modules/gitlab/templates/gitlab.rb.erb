@@ -1,0 +1,66 @@
+# The URL through which GitLab will be accessed.
+external_url "{{ gitlab_external_url }}"
+
+# gitlab.yml configuration
+gitlab_rails['time_zone'] = 'UTC'
+gitlab_rails['backup_keep_time'] = <%= @backup_keep_time %>
+gitlab_rails['gitlab_email_enabled'] = <%= @email_enable.to_s %>
+<%- if @email_enable -%>
+gitlab_rails['gitlab_email_from'] = "<%= @email_from %>"
+gitlab_rails['gitlab_email_display_name'] = "<%= @email_name %>"
+gitlab_rails['gitlab_email_reply_to'] = "<%= @email_reply_to %>"
+<%- end -%>
+
+# Default Theme
+gitlab_rails['gitlab_default_theme'] = "<%= @default_theme %>"
+
+# Whether to redirect http to https.
+nginx['redirect_http_to_https'] = true
+nginx['ssl_certificate'] = "<%= @cert_path %>"
+nginx['ssl_certificate_key'] = "<%= @key_path %>"
+
+# The directory where Git repositories will be stored.
+git_data_dirs({"default" => {"path" => "<%= @data_dir %>"} })
+
+# The directory where Gitlab backups will be stored
+gitlab_rails['backup_path'] = "<%= @backup_dir %>"t 
+
+gitlab_rails['ldap_enabled'] = false
+
+# Use smtp instead of sendmail/postfix
+# More details and example configuration at
+# https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md#smtp-on-localhost
+gitlab_rails['smtp_enable'] = true
+
+# GitLab registry.
+registry['enable'] = false
+
+gitlab_rails['omniauth_allow_single_sign_on'] = ['cas3']
+gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'cas3'
+gitlab_rails['omniauth_block_auto_created_users'] = <%= @cas_auto_create_users.to_s %>
+gitlab_rails['omniauth_external_providers'] = ['cas3']
+<%- if @cas_sync_email -%>
+gitlab_rails['omniauth_sync_email_from_provider'] = ['cas3']
+<%- end -%>
+<%- if @cas_sync_profile -%>
+gitlab_rails['omniauth_sync_profile_from_provider'] = ['cas3']
+<%- end -%>
+<%- if @cas_sync_attrs -%>
+gitlab_rails['omniauth_sync_profile_attributes'] = true
+<%- end -%>
+
+gitlab_rails['omniauth_providers'] = [
+  {
+    "name" => "cas3",
+    "label" => "<%= @cas_label %>",
+    "args" => {
+      "url" => '<%= @cas_url %>',
+      "login_url" => '<%= @cas_login_uri %>',
+      "service_validate_url" => '<%= @cas_validate_uri %>',
+      "logout_url" => '<%= @cas_logout_uri %>'
+    }
+  }
+]
+
+# To change other settings, see:
+# https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
