@@ -5,6 +5,10 @@ class profile::gitlab(
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
 ){
 
+    apt::package_from_component{'gitlab-ce':
+        component => 'thirdparty/gitlab',
+    }
+
     # add a service IP to the NIC - T276148
     interface::alias { 'gitlab service IP':
         ipv4 => $service_ip_v4,
