@@ -748,7 +748,7 @@ node 'dborch1001.wikimedia.org' {
 
 
 # eqiad backup sources
-## s2 & x1, buster
+## s2, s3 & x1, buster
 node 'db1102.eqiad.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
@@ -794,7 +794,7 @@ node 'db2099.codfw.wmnet' {
 node 'db2100.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-## x1 & s5, buster
+## s2, s5, & x1, buster
 node 'db2101.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
