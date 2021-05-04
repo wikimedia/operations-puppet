@@ -164,7 +164,7 @@ define cfssl::cert (
         # We may be better of implementing the certificate creations directly
         # via the API
         unless $label {
-            fail('you bust provide a $label is specifying $provide_chain')
+            fail('you must provide a $label if specifying $provide_chain')
         }
         # Just copy the CA file locally once
         $ca_chain_path = "${cfssl::bundles_dir}/${label}_chain.pem"
