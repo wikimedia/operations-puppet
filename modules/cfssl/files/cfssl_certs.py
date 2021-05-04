@@ -5,11 +5,13 @@ via nrpe to check certificate expiry
 import json
 import logging
 import re
+import shlex
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from collections import defaultdict
 from datetime import datetime, timedelta
 from pathlib import Path
+from subprocess import check_output, CalledProcessError
 
 import pymysql
 
@@ -23,12 +25,30 @@ def get_args():
     Returns:
         `argparse.Namespace`: The parsed argparser Namespace
     """
+
+    revoke_reasons = [
+        'unspecified',
+        'keyCompromise',
+        'cACompromise',
+        'affiliationChanged',
+        'superseded',
+        'cessationOfOperation',
+        'certificateHold',
+        'removeFromCRL',
+        'privilegeWithdrawn',
+        'aACompromise',
+    ]
+
     parser = ArgumentParser(
         description=__doc__, formatter_class=ArgumentDefaultsHelpFormatter
     )
     parser.add_argument('-v', '--verbose', action='count')
     parser.add_argument(
-        '-c', '--dbconfig', default='/etc/cfssl/db.conf.json', type=Path
+        '-c',
+        '--dbconfig',
+        default='/etc/cfssl/db.conf.json',
+        type=Path,
+        help='The cfssl json config file',
     )
 
     sub = parser.add_subparsers(dest='command')
@@ -53,7 +73,26 @@ def get_args():
 
     list_parser = sub.add_parser('list', help='list details about certificates')
     list_parser.add_argument('-R', '--only-recent', action='store_true')
-    list_parser.add_argument('ca_label', nargs='*')
+    list_parser.add_argument('ca_label', '?')
+
+    revoke_parser = sub.add_parser('revoke', help='list details about certificates')
+    revoke_parser.add_argument(
+        '-R',
+        '--reason',
+        choices=revoke_reasons,
+        default='unspecified',
+        help='The revocation reason',
+    )
+    parser.add_argument(
+        '-c',
+        '--dbconfig',
+        default='/etc/cfssl/db.conf',
+        type=Path,
+        help='The cfssl db.conf file',
+    )
+    revoke_parser.add_argument(
+        'certificate', type=Path, help='The path to the certificate to revoke'
+    )
     return parser.parse_args()
 
 
@@ -129,11 +168,11 @@ def get_certificates(db_conn, only_recent=True, ca_label=None):
     certs = []
     logging.debug('Fetching certs')
     with db_conn.cursor() as cursor:
-        if ca_label is not None:
+        if ca_label is None:
+            cursor.execute(sql)
+        else:
             sql = sql + '  WHERE `ca_label` = %s'
             cursor.execute(sql, ca_label)
-        else:
-            cursor.execute(sql)
         for cert in cursor.fetchall():
             parsed_x509 = x509.load_pem_x509_certificate(cert['pem'], default_backend())
             certs.append(
@@ -232,6 +271,28 @@ def icinga_report(certs_state, warning_days, critical_days, long_message=True):
     return return_code
 
 
+def revoke_certificate(certificate: Path, reason: str, dbconfig: Path) -> None:
+    """Parse a x509 certificate file and return its serial as and akid
+
+    Parameters:
+        certificate (Path): Path to the x509 certificate
+        reason (str): The revocation reason
+
+    """
+    parsed_x509 = x509.load_pem_x509_certificate(
+        certificate.read_text(), default_backend()
+    )
+    akid = parsed_x509.extensions.get_extension_for_oid(
+        x509.oid.ExtensionOID.AUTHORITY_KEY_IDENTIFIER
+    )
+    cmd = (
+        f'/usr/bin/cfssl -db-config {dbconfig} ',
+        f'-serial {parsed_x509.serial_number} -aki {akid} -reason {reason}',
+    )
+    result = check_output(shlex.split(cmd))
+    logging.debug(result)
+
+
 def main():
     """main entry point
 
@@ -262,6 +323,13 @@ def main():
             )
         elif args.command == 'list':
             list_certificates(db_conn, args.only_recent, args.ca_label)
+        elif args.command == 'revoke':
+            try:
+                revoke_certificate(args.certificate, args.reason)
+            except CalledProcessError as error:
+                logging.error('Failed to revoke certificate: ', error.output)
+                return error.returncode
+
     except pymysql.Error as error:
         logging.error('issue with SQL query: %s', error)
         if args.command == 'check':
