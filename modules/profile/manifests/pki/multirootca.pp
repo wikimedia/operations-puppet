@@ -85,6 +85,7 @@ class profile::pki::multirootca (
         ca_file      => $root_ca_file,
         key_content  => Sensitive(secret($root_ocsp_key)),
         cert_content => file($root_ocsp_cert),
+        require      => Service[$multirootca_service],
     }
 
     # Create Signers
