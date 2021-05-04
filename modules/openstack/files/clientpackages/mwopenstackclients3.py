@@ -12,6 +12,7 @@ from keystoneclient.v3 import client as keystone_client
 from novaclient import client as nova_client
 from designateclient.v2 import client as designateclient
 from cinderclient.v3 import client as cinderclient
+from troveclient.v1 import client as troveclient
 from neutronclient.v2_0 import client as neutronclient
 
 
@@ -41,6 +42,7 @@ class Clients(object):
         self.glanceclients = {}
         self.designateclients = {}
         self.cinderclients = {}
+        self.troveclients = {}
         self.neutronclients = {}
 
         if envfile:
@@ -172,6 +174,17 @@ class Clients(object):
                 session=session, timeout=300,
                 region_name=self.region)
         return self.cinderclients[project]
+
+    def troveclient(self, project=None):
+        if not project:
+            project = self.project
+
+        if project not in self.troveclients:
+            session = self.session(project)
+            self.troveclients[project] = troveclient.Client(
+                session=session, timeout=300,
+                region_name=self.region)
+        return self.troveclients[project]
 
     def neutronclient(self, project=None):
         if not project:
