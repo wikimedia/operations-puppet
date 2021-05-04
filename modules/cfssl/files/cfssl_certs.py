@@ -301,10 +301,12 @@ def clean_expired_certs(db_conn):
     Parameters
         db_conn (`pymysql.connections.Connection`): A pymysql connection
     """
-    sql = 'DELETE FROM `certificates` WHERE `expiry` < NOW()'
+    sql_certificates = 'DELETE FROM `certificates` WHERE `expiry` < NOW()'
+    sql_ocsp_responses = 'DELETE FROM `ocsp_responses` WHERE `expiry` < NOW()'
     logging.debug('Deleting certs')
     with db_conn.cursor() as cursor:
-        cursor.execute(sql)
+        cursor.execute(sql_certificates)
+        cursor.execute(sql_ocsp_responses)
     db_conn.commit()
 
 
