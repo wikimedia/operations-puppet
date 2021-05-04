@@ -146,7 +146,7 @@ def main():
             if args.aliases and svc in shards:
                 # everything gets sent to the wikimedia.cloud domain
                 segment = zone.split(".")[0]
-                section_fqdn = "{}.{}.db.svc.wikimedia.cloud".format(
+                section_fqdn = "{}.{}.db.svc.wikimedia.cloud.".format(
                     svc, segment
                 )
                 # Ensure that there are wikidb aliases for shards
