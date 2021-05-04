@@ -5,7 +5,7 @@ class profile::ceph::alerts(
     monitoring::check_prometheus { 'cloudvps_ceph_health':
         description     => 'Ceph Cluster Health',
         query           => 'ceph_health_status{job="ceph_eqiad"}',
-        prometheus_url  => 'http://cloudmetrics1002.eqiad.wmnet/labs',
+        prometheus_url  => 'http://prometheus-labmon.eqiad.wmnet/labs',
         retries         => 2,
         warning         => 1,
         critical        => 2,
@@ -18,7 +18,7 @@ class profile::ceph::alerts(
     monitoring::check_prometheus { 'cloudvps_ceph_mon_quorum':
         description     => 'Ceph Mon Quorum',
         query           => 'sum(ceph_mon_quorum_status{job="ceph_eqiad"})',
-        prometheus_url  => 'http://cloudmetrics1002.eqiad.wmnet/labs',
+        prometheus_url  => 'http://prometheus-labmon.eqiad.wmnet/labs',
         retries         => 2,
         warning         => 1,
         critical        => 0,
@@ -32,7 +32,7 @@ class profile::ceph::alerts(
     monitoring::check_prometheus { 'cloudvps_ceph_osd_down':
         description     => 'Ceph OSDs Down',
         query           => 'count(ceph_osd_up{job="ceph_eqiad"} == 0)',
-        prometheus_url  => 'http://cloudmetrics1002.eqiad.wmnet/labs',
+        prometheus_url  => 'http://prometheus-labmon.eqiad.wmnet/labs',
         retries         => 2,
         warning         => 1,
         critical        => 8,
