@@ -718,10 +718,6 @@ class profile::prometheus::ops (
       },
     ]
 
-    # Ensure config for _stretch suffixed configcluster role is removed
-    file { "${targets_path}/etcd_${::site}_stretch.yaml":
-        ensure => absent,
-    }
     # Gather etcd metrics from machines exposing them via http
     prometheus::class_config{ "etcd_servers_${::site}":
         dest       => "${targets_path}/etcd_${::site}.yaml",
@@ -1131,11 +1127,6 @@ class profile::prometheus::ops (
         class_name        => 'profile::query_service::streaming_updater',
         instance_selector => 'wdqs-updater',
         site              => $::site,
-    }
-
-    # Ensure config for _stretch suffixed configcluster role is removed
-    file { "${targets_path}/jmx_zookeeper_${::site}_old.yaml":
-        ensure => absent,
     }
 
     prometheus::jmx_exporter_config{ "zookeeper_${::site}":
