@@ -37,7 +37,7 @@ https://annual.wikimedia.org:
 - path: /
   assert_status: 302
   assert_headers:
-    Location: https://wikimediafoundation.org/about/annualreport/2019-annual-report/
+    Location: https://wikimediafoundation.org/about/annualreport/2020-annual-report/
 - path: /2016/
   assert_status: 200
   assert_body_contains: Wikimedia Foundation 2016 Annual Report
