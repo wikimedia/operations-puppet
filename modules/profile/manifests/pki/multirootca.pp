@@ -11,6 +11,7 @@
 # @param root_ocsp_port the ocsp listening port
 # @param root_ca_cn The CN of the root ca used for creating the ocsp responder
 # @param $enable_client_auth if true make sure connections authenticate with TLS client auth
+# @param maintenance_jobs this parameter controls where maintenance jobs run e.g. ocsp generation cleaning expired certs
 # @param $client_ca_source the CA bundle to use for TLS client auth connections
 # @param default_nets a array of networks used by the multirootca as an ACL.  Access is configured
 #   via apache so this config is not useful and should be left at the default
@@ -34,6 +35,7 @@ class profile::pki::multirootca (
     Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
     Integer[1]                    $warn_expire        = lookup('profile::pki::multirootca::warn_expire'),
     Integer[1]                    $crit_expire        = lookup('profile::pki::multirootca::crit_expire'),
+    Boolean                       $maintenance_jobs   = lookup('profile::pki::multirootca::maintenance_jobs'),
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
     Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
     Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirootca::default_profiles'),
@@ -80,12 +82,13 @@ class profile::pki::multirootca (
     }
     # Root CA OCSP responder
     cfssl::ocsp{$root_ca_cn:
-        listen_port  => $root_ocsp_port,
-        db_conf_file => $db_conf_file,
-        ca_file      => $root_ca_file,
-        key_content  => Sensitive(secret($root_ocsp_key)),
-        cert_content => file($root_ocsp_cert),
-        require      => Service[$multirootca_service],
+        listen_port        => $root_ocsp_port,
+        db_conf_file       => $db_conf_file,
+        ca_file            => $root_ca_file,
+        key_content        => Sensitive(secret($root_ocsp_key)),
+        cert_content       => file($root_ocsp_cert),
+        ocsprefresh_update => $maintenance_jobs,
+        require            => Service[$multirootca_service],
     }
 
     # Create Signers
@@ -118,9 +121,10 @@ class profile::pki::multirootca (
         }
 
         cfssl::ocsp{$intermediate:
-            listen_port  => $config['ocsp_port'],
-            db_conf_file => $db_conf_file,
-            ca_file      => $ca_file,
+            listen_port        => $config['ocsp_port'],
+            db_conf_file       => $db_conf_file,
+            ca_file            => $ca_file,
+            ocsprefresh_update => $maintenance_jobs,
         }
         # Create a bundle file with the intermediate and root certs
         file {"${bundle_dir}/${safe_title}.pem":

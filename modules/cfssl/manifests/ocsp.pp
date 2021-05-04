@@ -1,16 +1,18 @@
 # Title should match the cfssl::signer title
+# @param ocsprefresh_update if true update the ocsp response table otherwise just check for updates
 define cfssl::ocsp (
-    Stdlib::Fqdn                $common_name      = $facts['fqdn'],
-    Stdlib::IP::Address         $listen_addr      = '127.0.0.1',
-    Stdlib::Port                $listen_port      = 8889,
-    Cfssl::Loglevel             $log_level        = 'info',
-    Pattern[/\d+h/]             $refresh_interval = '96h',
-    Array[Stdlib::Host]         $additional_names = [],
-    Optional[Stdlib::Unixpath]  $responses_file   = undef,
-    Optional[Stdlib::Unixpath]  $db_conf_file     = undef,
-    Optional[Sensitive[String]] $key_content      = undef,
-    Optional[String]            $cert_content     = undef,
-    Optional[Stdlib::Unixpath]  $ca_file          = undef,
+    Stdlib::Fqdn                $common_name        = $facts['fqdn'],
+    Stdlib::IP::Address         $listen_addr        = '127.0.0.1',
+    Stdlib::Port                $listen_port        = 8889,
+    Cfssl::Loglevel             $log_level          = 'info',
+    Pattern[/\d+h/]             $refresh_interval   = '96h',
+    Boolean                     $ocsprefresh_update = false,
+    Array[Stdlib::Host]         $additional_names   = [],
+    Optional[Stdlib::Unixpath]  $responses_file     = undef,
+    Optional[Stdlib::Unixpath]  $db_conf_file       = undef,
+    Optional[Sensitive[String]] $key_content        = undef,
+    Optional[String]            $cert_content       = undef,
+    Optional[Stdlib::Unixpath]  $ca_file            = undef,
 ) {
     include cfssl
     include cfssl::client
@@ -74,8 +76,12 @@ define cfssl::ocsp (
             before        => Systemd::Timer::Job[$refresh_timer],
         }
     }
+    $update = $ocsprefresh_update ? {
+        true    => '--update',
+        default => '',
+    }
     $refresh_command = @("CMD"/L)
-        /usr/local/sbin/cfssl-ocsprefresh --cname ${common_name} \
+        /usr/local/sbin/cfssl-ocsprefresh ${update} \
         --responder-cert ${cert_path} --responder-key ${key_path} \
         --ca-file ${_ca_file} --responses-file ${_responses_file} \
         --dbconfig ${_db_conf_file} \

@@ -35,3 +35,4 @@ profile::pki::multirootca::default_profiles:
       - 'key encipherment'
       - 'server auth'
     expiry: '672h'
+profile::pki::multirootca::maintenance_jobs: false

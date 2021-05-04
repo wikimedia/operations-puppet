@@ -12,7 +12,6 @@ import shlex
 from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
-from socket import getfqdn, gethostbyname_ex
 from subprocess import CalledProcessError, check_call, check_output
 
 import pymysql
@@ -27,7 +26,7 @@ def get_args():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-v', '--verbose', action='count')
     parser.add_argument('-d', '--dbconfig', default='/etc/cfssl/db.conf', type=Path)
-    parser.add_argument('--cname', required=True)
+    parser.add_argument('--update', action='store_true')
     parser.add_argument('--ca-file', required=True)
     parser.add_argument('--responder-cert', required=True)
     parser.add_argument('--responder-key', required=True)
@@ -104,17 +103,17 @@ def get_db_update_time(db_conn, db_name, table_name):
         return result[0]
 
 
-def update_required(responses_file: Path, dbconfig: Path, primary: bool) -> bool:
+def update_required(responses_file: Path, dbconfig: Path, update: bool) -> bool:
     """Check if we need to regenerate the responses file.
 
-    On the primary server we should check the certificates table to see if there
+    If update is true we should check the certificates table to see if there
     are any new certificates.  otherwise we should check the ocsp responses
     table to see if there has been an update
 
     Arguments:
         response_file (`pathlib.Path`): path to the responses file
         dbconfig (`pathlib.Path`): path to the db config file
-        primary (bool): indicate if this is the primary server
+        update (bool): indicate if we should make updates
 
     Returns:
         bool: indicate if an update is required
@@ -122,7 +121,7 @@ def update_required(responses_file: Path, dbconfig: Path, primary: bool) -> bool
     # If the responses file dosen't exist then update
     if not responses_file.exists():
         return True
-    table_name = 'certificates' if primary else 'ocsp_responses'
+    table_name = 'certificates' if update else 'ocsp_responses'
     responses_meta = responses_file.stat()
     last_update = datetime.fromtimestamp(responses_meta.st_mtime)
     logging.debug('%s last updated: %s', responses_file, last_update)
@@ -133,18 +132,6 @@ def update_required(responses_file: Path, dbconfig: Path, primary: bool) -> bool
         return last_update < get_db_update_time(db_conn, config['db'], table_name)
     finally:
         db_conn.close()
-
-
-def is_primary(cname: str) -> bool:
-    """query the cname record to see if it currently points to the cutrrent host
-    if so this is the primary server
-
-    Arguments:
-        cname (str): The CNAME record to check
-
-    Returns
-        bool: indicate if this is the current primary server"""
-    return getfqdn() == gethostbyname_ex(cname)[0]
 
 
 # pylint: disable=R0911
@@ -158,17 +145,16 @@ def main():
     logging.basicConfig(level=get_log_level(args.verbose))
 
     responses_file = Path(args.responses_file)
-    primary = is_primary(args.cname)
 
     try:
-        if not update_required(responses_file, Path(f'{args.dbconfig}.json'), primary):
+        if not update_required(responses_file, Path(f'{args.dbconfig}.json'), args.update):
             logging.debug('%s: no update required', args.signer)
             return 0
     except pymysql.Error as error:
         logging.error('%s issue with SQL query: %s', args.signer, error)
         return 1
 
-    if primary:
+    if args.update:
         # only regenerate the responses if we are on the primary
         try:
             ocsprefresh(args.dbconfig, args.responder_cert, args.responder_key, args.ca_file)
