@@ -33,7 +33,7 @@ def find_zone_for_fqdn(client, fqdn):
     Searches for the longest existing zone that the record could be placed in.
     """
     parts = fqdn.split(".")
-    host = parts.pop(0)  # noqa: F841 local variable never used
+    _ = parts.pop(0)
     for i in range(len(parts)):
         domain = ".".join(parts[i:])
         if domain:
@@ -144,7 +144,7 @@ def main():
             dns.ensure_recordset(zone_id, fqdn, "A", ips)
 
             if args.aliases and svc in shards:
-                # everything gets sent to the wikimedia.cloud domain
+                # everything gets sent to the wikimedia.cloud domain for replicas
                 segment = zone.split(".")[0]
                 section_fqdn = "{}.{}.db.svc.wikimedia.cloud.".format(
                     svc, segment
@@ -171,7 +171,17 @@ def main():
                 for cname in config["cnames"][fqdn]:
                     cname_zone = find_zone_for_fqdn(dns, cname)
                     if cname_zone:
-                        dns.ensure_recordset(cname_zone["id"], cname, "CNAME", [fqdn])
+                        # This is a special case of an old dns name redirected
+                        # at the new wikireplicas cluster.
+                        if (fqdn.endswith("analytics.db.svc.eqiad.wmflabs.")
+                                or fqdn.endswith("web.db.svc.eqiad.wmflabs.")):
+                            sxn_fqdn = "{}.{}.db.svc.wikimedia.cloud.".format(
+                                fqdn.split(".")[0], fqdn.split(".")[1]
+                            )
+                            dns.ensure_recordset(cname_zone["id"], cname, "CNAME", [sxn_fqdn])
+                        else:
+                            # This may not actually be a wikireplica
+                            dns.ensure_recordset(cname_zone["id"], cname, "CNAME", [fqdn])
                     else:
                         logger.warning("Failed to find zone for %s", cname)
 
