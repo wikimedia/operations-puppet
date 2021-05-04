@@ -77,8 +77,7 @@ profile::openstack::eqiad1::cloudgw::virt_subnet_cidr: 172.16.0.0/21
 
 profile::openstack::eqiad1::cloudgw::vrrp_vips:
  - 185.15.56.237/30 dev ens2f1np1.1107
-# the next one is currently assigned to neutron. Enable this for the migration!
-# - 185.15.56.244/29 dev ens2f1np1.1120
+ - 185.15.56.244/29 dev ens2f1np1.1120
 
 profile::openstack::eqiad1::cloudgw::conntrackd:
   cloudgw1001:
