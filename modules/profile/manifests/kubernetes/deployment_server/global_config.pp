@@ -51,7 +51,6 @@ class profile::kubernetes::deployment_server::global_config(
                 Stdlib::IP::Address::V6::Nosubnet => "${x}/128",
                 default                           => $x
             }
-            $retval
         }
         $retval = {
             $listener['name'] => {
@@ -72,9 +71,20 @@ class profile::kubernetes::deployment_server::global_config(
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
     $kafka_brokers = $kafka_clusters.map |$cl, $data| {
-        $ips = $data['brokers'].keys().map |$n| {ipresolve($n)}
+        # We need both v4 and v6 addresses
+        $ips = $data['brokers'].keys().map |$n| {
+            $v4 = ipresolve($n)
+            # The logging infra doesn't support ipv6 for now.
+            # see https://phabricator.wikimedia.org/T279342#7002887
+            if ($cl !~ /logging/) {
+                $v6 = ipresolve($n, 6)
+                $ret = ["${v4}/32", "${v6}/128"]
+            } else {
+                $ret = ["${v4}/32"]
+            }
+            $ret
+        }.flatten()
         $retval = {$cl => $ips}
-        $retval
     }.reduce({}) | $mem, $val| { $mem.merge($val)}
 
     # Per-cluster general defaults.
