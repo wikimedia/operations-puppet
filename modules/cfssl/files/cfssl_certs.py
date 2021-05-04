@@ -91,6 +91,8 @@ def get_args():
     revoke_parser.add_argument(
         'certificate', type=Path, help='The path to the certificate to revoke'
     )
+
+    sub.add_parser('clean', help='clean out expired certificates')
     return parser.parse_args()
 
 
@@ -293,6 +295,18 @@ def revoke_certificate(certificate: Path, reason: str, dbconfig: Path) -> None:
     logging.debug(result)
 
 
+def clean_expired_certs(db_conn):
+    """Delete expired certificates
+
+    Parameters
+        db_conn (`pymysql.connections.Connection`): A pymysql connection
+    """
+    sql = 'DELETE FROM `certificates` WHERE `expiry` < NOW()'
+    logging.debug('Deleting certs')
+    with db_conn.cursor() as cursor:
+        cursor.execute(sql)
+
+
 def main():
     """main entry point
 
@@ -332,6 +346,8 @@ def main():
             )
         elif args.command == 'list':
             list_certificates(db_conn, args.only_recent, args.ca_label)
+        elif args.command == 'clean':
+            clean_expired_certs(db_conn)
 
     except pymysql.Error as error:
         logging.error('issue with SQL query: %s', error)
