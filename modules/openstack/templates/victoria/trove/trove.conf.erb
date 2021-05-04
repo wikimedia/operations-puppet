@@ -319,6 +319,10 @@ api_strategy = trove.common.strategies.cluster.experimental.vertica.api.VerticaA
 #enable_proxy_headers_parsing = false
 
 
+[oslo_policy]
+policy_file = policy.yaml
+
+
 [keystone_authtoken]
 auth_type = password
 www_authenticate_url = <%= @keystone_admin_uri %>
