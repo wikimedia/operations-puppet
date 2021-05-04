@@ -231,12 +231,12 @@ profile::diffscan::groupname: Labs-to-public-v4
 jenkins_agent_username: 'jenkins-deploy'
 
 mail_smarthost:
-- 'mx-out01.wmflabs.org'
-- 'mx-out02.wmflabs.org'
+- 'mx-out03.wmcloud.org'
+- 'mx-out04.wmcloud.org'
 
 wikimail_smarthost:
-- 'mx-out01.wmflabs.org'
-- 'mx-out02.wmflabs.org'
+- 'mx-out03.wmcloud.org'
+- 'mx-out04.wmcloud.org'
 
 ntp_peers:
     eqiad:

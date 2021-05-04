@@ -22,11 +22,11 @@ ntp_peers:
   eqsin: []
   esams: []
 wikimail_smarthost:
-  - mx-out01.wmflabs.org
-  - mx-out02.wmflabs.org
+  - mx-out03.wmcloud.org
+  - mx-out04.wmcloud.org
 mail_smarthost:
-  - mx-out01.wmflabs.org
-  - mx-out02.wmflabs.org
+  - mx-out03.wmcloud.org
+  - mx-out04.wmcloud.org
 # auges is not installed in the test environment
 # so we mock its version fact
 augeasversion: 1.2.0
