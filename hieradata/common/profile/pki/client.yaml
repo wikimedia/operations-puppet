@@ -12,5 +12,6 @@ profile::pki::client::certs: {}
 profile::pki::client::root_ca: 'Wikimedia_Internal_Root_CA'
 profile::pki::client::intermediate_cas:
   - debmonitor
+  - discovery
 # private repo
 # profile::pki::client::auth_key: changeme
