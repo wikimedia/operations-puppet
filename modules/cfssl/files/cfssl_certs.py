@@ -278,7 +278,7 @@ def revoke_certificate(certificate: Path, reason: str, dbconfig: Path) -> None:
 
     """
     parsed_x509 = x509.load_pem_x509_certificate(
-        certificate.read_text(), default_backend()
+        certificate.read_bytes(), default_backend()
     )
     akid = parsed_x509.extensions.get_extension_for_oid(
         x509.oid.ExtensionOID.AUTHORITY_KEY_IDENTIFIER
