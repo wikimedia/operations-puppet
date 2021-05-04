@@ -360,6 +360,8 @@ profile::kubernetes::deployment_server::services:
     username: shellbox
     group: wikidev
     namespace: shellbox
+    mode: '0640'
+    owner: mwdeploy
   miscweb:
     username: miscweb
     group: wikidev
