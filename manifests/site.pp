@@ -1530,7 +1530,7 @@ node /^ldap-replica200[3-6]\.wikimedia\.org$/ {
 }
 
 node /^logstash101[012]\.eqiad\.wmnet$/ {
-    role(logstash::elasticsearch)
+    role(spare::system)
 }
 
 # ELK 7 ES only SSD backends (no kafka-logging brokers)
