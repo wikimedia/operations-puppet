@@ -188,14 +188,6 @@ sub cluster_fe_ratelimit {
 	// dont apply any rate limiting to internal networks
 	// Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-		// Applebot - emergency measure against extreme scraping
-		if (req.http.User-Agent ~ "(?i)applebot") {
-			// ~10/s per frontend:
-			if (vsthrottle.is_denied("applebot-extreme-reqs", 100, 10s)) {
-				return (synth(429, "Too many requests"));
-			}
-		}
-
 		// Requests in violation of the User-Agent policy
 		if (req.http.User-Agent ~ "^(python-requests|Go-http-client|Python-urllib|Java/)") {
 			// UA-policy violations: 10/10s (1/s long term, with 10 burst)
