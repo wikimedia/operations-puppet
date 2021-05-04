@@ -162,7 +162,7 @@ def main():
                         if wikidb.startswith("#"):
                             continue
                         db_fqdn = "{}.{}".format(wikidb, zone)
-                        dns.ensure_recordset(zone_id, db_fqdn, "CNAME", [fqdn])
+                        dns.ensure_recordset(zone_id, db_fqdn, "CNAME", [section_fqdn])
                         # Take a small break to be nicer to Designate
                         time.sleep(0.25)
 
@@ -171,7 +171,7 @@ def main():
                 for cname in config["cnames"][fqdn]:
                     cname_zone = find_zone_for_fqdn(dns, cname)
                     if cname_zone:
-                        dns.ensure_recordset(cname_zone["id"], cname, "CNAME", [section_fqdn])
+                        dns.ensure_recordset(cname_zone["id"], cname, "CNAME", [fqdn])
                     else:
                         logger.warning("Failed to find zone for %s", cname)
 
