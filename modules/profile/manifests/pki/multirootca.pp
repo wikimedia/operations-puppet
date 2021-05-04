@@ -195,4 +195,11 @@ class profile::pki::multirootca (
         port   => '443',
         srange => '$DOMAIN_NETWORKS',
     }
+    systemd::timer::job {'cfssl-gc-expired-certs':
+        ensure      => $maintenance_jobs.bool2str('present', 'absent'),
+        description => 'Delete expired Certificates from the cfssl DB',
+        user        => 'root',
+        command     => '/usr/local/sbin/cfssl-certs clean',
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+    }
 }
