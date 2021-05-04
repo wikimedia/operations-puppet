@@ -282,11 +282,13 @@ def revoke_certificate(certificate: Path, reason: str, dbconfig: Path) -> None:
     )
     akid = parsed_x509.extensions.get_extension_for_oid(
         x509.oid.ExtensionOID.AUTHORITY_KEY_IDENTIFIER
-    )
+    ).value.key_identifier.hex()
     cmd = (
-        f'/usr/bin/cfssl -db-config {dbconfig} ',
-        f'-serial {parsed_x509.serial_number} -aki {akid} -reason {reason}',
+        f'/usr/bin/cfssl revoke -db-config {dbconfig} '
+        f'-serial {parsed_x509.serial_number} -aki {akid} -reason {reason}'
     )
+
+    logging.debug('running: %s', cmd)
     result = check_output(shlex.split(cmd))
     logging.debug(result)
 
