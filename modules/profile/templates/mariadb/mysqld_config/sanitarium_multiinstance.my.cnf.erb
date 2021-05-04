@@ -74,6 +74,7 @@ default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
 innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.15).round %>G
 innodb_log_file_size           = 2G
+innodb_change_buffering        = none
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
 <% if @basedir == '/opt/wmf-mariadb10' or @basedir == '/opt/wmf-mariadb101' -%>
