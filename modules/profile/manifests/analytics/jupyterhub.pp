@@ -3,8 +3,6 @@
 # Sets up JupyterHub for use in the Analytics Cluster.
 # This uses anaconda-wmf to create and use user conda environments.
 #
-# NOTE: This class will eventually deprecate profile::swap.
-#
 # == Parameters
 #
 #   [*port*]

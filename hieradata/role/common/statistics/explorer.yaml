@@ -26,11 +26,6 @@ profile::statistics::explorer::misc_jobs::hosts_with_jobs:
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
 
-# Already declared/set by the statistics profiles
-profile::swap::push_published: false
-profile::swap::use_dumps_mounts: false
-profile::swap::deploy_research_cred: false
-
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'analytics-privatedata'
     owner: 'analytics-privatedata'

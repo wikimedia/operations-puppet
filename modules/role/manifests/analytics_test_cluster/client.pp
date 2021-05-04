@@ -24,8 +24,5 @@ class role::analytics_test_cluster::client {
     # Need refinery to test Refine jobs
     include ::profile::analytics::refinery
 
-    include ::profile::swap
-    # This class will soon deprecate profile::swap.
-    # T224658
     include ::profile::analytics::jupyterhub
 }
