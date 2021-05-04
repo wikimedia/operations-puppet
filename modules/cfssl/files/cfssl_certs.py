@@ -44,7 +44,6 @@ def get_args():
     )
     parser.add_argument('-v', '--verbose', action='count')
     parser.add_argument(
-        '-c',
         '--dbconfig',
         default='/etc/cfssl/db.conf.json',
         type=Path,
@@ -83,8 +82,7 @@ def get_args():
         default='unspecified',
         help='The revocation reason',
     )
-    parser.add_argument(
-        '-c',
+    revoke_parser.add_argument(
         '--dbconfig',
         default='/etc/cfssl/db.conf',
         type=Path,
