@@ -7133,6 +7133,11 @@ host phab2001 {
     fixed-address phab2001.codfw.wmnet;
 }
 
+host phab2002 {
+    hardware ethernet 2C:EA:7F:94:E6:2E;
+    fixed-address phab2002.codfw.wmnet;
+}
+
 host pki1001 {
     hardware ethernet D0:94:66:5F:4A:3C;
     fixed-address pki1001.eqiad.wmnet;
