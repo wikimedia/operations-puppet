@@ -73,7 +73,7 @@ def get_args():
 
     list_parser = sub.add_parser('list', help='list details about certificates')
     list_parser.add_argument('-R', '--only-recent', action='store_true')
-    list_parser.add_argument('ca_label', '?')
+    list_parser.add_argument('ca_label', nargs='?')
 
     revoke_parser = sub.add_parser('revoke', help='list details about certificates')
     revoke_parser.add_argument(
