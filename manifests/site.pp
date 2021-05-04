@@ -1313,11 +1313,6 @@ node /^install[345]001\.wikimedia\.org$/ {
     role(installserver::light)
 }
 
-# new icinga systems, replaced einsteinium and tegmen (T201344, T208824)
-node /^icinga[12]001\.wikimedia\.org$/ {
-    role(alerting_host)
-}
-
 # new alert (icinga + alertmanager) systems, replacing icinga[12]001 (T255072, T255070)
 node /^alert[12]001\.wikimedia\.org$/ {
     role(alerting_host)
