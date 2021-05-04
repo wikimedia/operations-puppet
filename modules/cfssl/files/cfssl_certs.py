@@ -305,6 +305,7 @@ def clean_expired_certs(db_conn):
     logging.debug('Deleting certs')
     with db_conn.cursor() as cursor:
         cursor.execute(sql)
+    db_conn.commit()
 
 
 def main():
