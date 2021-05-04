@@ -170,6 +170,30 @@ class profile::logstash::collector (
     }
     # lint:endignore
 
+    # Restore ApiFeatureUsage functionality
+    logstash::input::kafka { 'rsyslog-udp-localhost-eqiad':
+        kafka_cluster_name      => 'logging-eqiad',
+        topics_pattern          => 'udp_localhost-.*',
+        group_id                => $input_kafka_consumer_group_id,
+        type                    => 'syslog',
+        tags                    => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
+        codec                   => 'json',
+        security_protocol       => 'SSL',
+        ssl_truststore_password => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    }
+
+    logstash::input::kafka { 'rsyslog-udp-localhost-codfw':
+        kafka_cluster_name      => 'logging-codfw',
+        topics_pattern          => 'udp_localhost-.*',
+        group_id                => $input_kafka_consumer_group_id,
+        type                    => 'syslog',
+        tags                    => ['rsyslog-udp-localhost', 'kafka'],
+        codec                   => 'json',
+        security_protocol       => 'SSL',
+        ssl_truststore_password => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+        consumer_threads        => 3,
+    }
+
     # Output logs tagged "deprecated-input" to eqiad Kafka for ingest by elk7.
     # These are logs that have arrived via a "legacy" (non-kafka) logstash input.
     # The elk7 cluster ingests via Kafka only.
