@@ -299,6 +299,15 @@ def main():
     """
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
+    error_code = 0
+    if args.command == 'revoke':
+        try:
+            revoke_certificate(args.certificate, args.reason, args.dbconfig)
+        except CalledProcessError as error:
+            logging.error('Failed to revoke certificate: %s', error.output)
+            error_code = error.returncode
+        return error_code
+
     config = json.loads(args.dbconfig.read_bytes())
     config['cursorclass'] = pymysql.cursors.DictCursor
     db_conn = pymysql.connect(**config)
@@ -308,10 +317,10 @@ def main():
                 insert_certificate(db_conn, args.certificate.read_bytes())
             except x509.ExtensionNotFound:
                 logging.error('%s: unable to get AKID not inserting', args.certificate)
-                return 1
+                error_code = 1
             except pymysql.err.IntegrityError:
                 logging.error('%s: Already in database', args.certificate)
-                return 1
+                error_code = 1
         elif args.command == 'check':
             certs_state = get_certificates_expire_state(
                 db_conn, args.warning, args.critical, args.ca_label
@@ -321,22 +330,16 @@ def main():
             )
         elif args.command == 'list':
             list_certificates(db_conn, args.only_recent, args.ca_label)
-        elif args.command == 'revoke':
-            try:
-                revoke_certificate(args.certificate, args.reason)
-            except CalledProcessError as error:
-                logging.error('Failed to revoke certificate: ', error.output)
-                return error.returncode
 
     except pymysql.Error as error:
         logging.error('issue with SQL query: %s', error)
         if args.command == 'check':
             print('UNKNOWN: issue with SQL query ({})'.format(error))
-            return 3
-        return 1
+            error_code = 3
+        error_code = 1
     finally:
         db_conn.close()
-    return 0
+    return error_code
 
 
 if __name__ == '__main__':
