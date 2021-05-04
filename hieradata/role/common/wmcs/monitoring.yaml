@@ -12,15 +12,15 @@ profile::base::domain_search:
 profile::grafana::domain: grafana-labs.wikimedia.org
 profile::grafana::server_aliases: []
 
-profile::wmcs::monitoring::statsd_master: cloudmetrics1002.eqiad.wmnet
-profile::wmcs::monitoring::statsd_standby: cloudmetrics1001.eqiad.wmnet
+profile::wmcs::monitoring::statsd_master: cloudmetrics1001.eqiad.wmnet
+profile::wmcs::monitoring::statsd_standby: cloudmetrics1002.eqiad.wmnet
 # In private repo
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 # cloudmetrics
-graphite_host: cloudmetrics1002.eqiad.wmnet
+graphite_host: cloudmetrics1001.eqiad.wmnet
 
 profile::grafana::ldap:
   servers:

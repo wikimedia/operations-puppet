@@ -57,4 +57,4 @@ profile::openstack::codfw1dev::ldap_proxyuser_pass: 'Eche0ieng8UaNoo'
 profile::openstack::codfw1dev::labweb_hosts:
   - cloudweb2001-dev.wikimedia.org
 profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']
-profile::openstack::codfw1dev::statsd_host: 'cloudmetrics1002.eqiad.wmnet'
+profile::openstack::codfw1dev::statsd_host: 'cloudmetrics1001.eqiad.wmnet'

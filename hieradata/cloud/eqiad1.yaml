@@ -38,7 +38,7 @@ profile::prometheus::varnishkafka_exporter::stats_default:
 profile::base::remote_syslog: []
 
 # Labs statsd instance
-statsd: cloudmetrics1002.eqiad.wmnet:8125
+statsd: cloudmetrics1001.eqiad.wmnet:8125
 
 # Other overrides
 elasticsearch::version: 2
@@ -49,7 +49,7 @@ elasticsearch::expected_nodes: 1
 elasticsearch::recover_after_nodes: 1
 archiva::proxy::ssl_enabled: false
 archiva::proxy::certificate_name: ssl-cert-snakeoil
-graphite_host: 'cloudmetrics1002.eqiad.wmnet'
+graphite_host: 'cloudmetrics1001.eqiad.wmnet'
 profile::puppetdb::jvm_opts: '-Xmx4G'
 profile::puppetdb::elk_logging: false
 profile::puppetdb::filter_job_id: false

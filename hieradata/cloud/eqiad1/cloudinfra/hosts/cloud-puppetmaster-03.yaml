@@ -26,5 +26,5 @@ profile::puppetmaster::frontend::allow_from: [.wmflabs]
 puppetmaster: cloudinfra-internal-puppetmaster-02.cloudinfra.eqiad.wmflabs
 puppetmaster::hiera_config: labs
 puppetmaster::enable_geoip: false
-profile::openstack::eqiad1::statsd_host: cloudmetrics1002.eqiad.wmnet
+profile::openstack::eqiad1::statsd_host: cloudmetrics1001.eqiad.wmnet
 
