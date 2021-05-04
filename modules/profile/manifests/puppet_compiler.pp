@@ -40,22 +40,6 @@ class profile::puppet_compiler(
   class {'puppet_compiler': }
   include profile::puppet_compiler::postgres_database
 
-  # The conftool parser function needs
-  # An etcd instance running populated with (fake? synced?) data
-
-  class {'etcd':
-    peers_list => "${facts['hostname']}=http://127.0.0.1:2380",
-    use_ssl    => true,
-  }
-  # Conftool + etcd are needed for the conftool function to work
-  # do not bother with hiera here, for now.
-  class { 'profile::conftool::client':
-    srv_domain => 'puppet-diffs.eqiad.wmflabs',
-    host       => '127.0.0.1',
-    port       => 2379,
-    namespace  => '/conftool',
-  }
-
   class {'openstack::puppet::master::enc':
     puppetmaster => $cloud_puppetmaster,
   }
