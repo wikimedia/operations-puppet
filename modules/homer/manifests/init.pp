@@ -18,11 +18,10 @@ class homer(
   $output_dir = '/srv/homer/output'
 
   file { '/srv/homer':
-      ensure  => directory,
-      owner   => 'root',
-      group   => 'ops',
-      mode    => '0550',
-      require => Scap::Target['homer/deploy'],
+      ensure => directory,
+      owner  => 'root',
+      group  => 'ops',
+      mode   => '0550',
   }
 
   file { $output_dir:
@@ -58,11 +57,10 @@ class homer(
   }
 
   file { '/etc/homer':
-      ensure  => directory,
-      owner   => 'root',
-      group   => 'ops',
-      mode    => '0550',
-      require => Scap::Target['homer/deploy'],
+      ensure => directory,
+      owner  => 'root',
+      group  => 'ops',
+      mode   => '0550',
   }
 
   file { '/etc/homer/config.yaml':
@@ -75,12 +73,11 @@ class homer(
   }
 
   file { '/usr/local/bin/homer':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'ops',
-      mode    => '0550',
-      source  => 'puppet:///modules/homer/homer.sh',
-      require => Scap::Target['homer/deploy'],
+      ensure => present,
+      owner  => 'root',
+      group  => 'ops',
+      mode   => '0550',
+      source => 'puppet:///modules/homer/homer.sh',
   }
 
   # Set git config and hooks for the private repo
