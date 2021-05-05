@@ -1,6 +1,3 @@
-# disable notifications until the migration
-profile::base::notifications: disabled
-
 # network settings
 profile::openstack::eqiad1::cloudgw::nic_controlplane: ens2f0np0
 profile::openstack::eqiad1::cloudgw::nic_dataplane: ens2f1np1
