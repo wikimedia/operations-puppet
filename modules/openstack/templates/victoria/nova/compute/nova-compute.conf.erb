@@ -25,7 +25,14 @@ live_migration_uri=qemu://%s.<%= scope.lookupvar("::site") %>.wmnet/system?pkipa
 live_migration_completion_timeout=600
 
 # in milliseconds:
-live_migration_downtime = 1000
+live_migration_downtime = 2000
+
+# Throttle CPU if we are otherwise failing to migrate.
+live_migration_permit_auto_converge = True
+
+# Last chance: if we still can't migrate with the above settings,
+#  just pause the VM and get it moved.
+live_migration_timeout_action = 'force_complete'
 
 
 # Number of incremental steps to reach max downtime value.
