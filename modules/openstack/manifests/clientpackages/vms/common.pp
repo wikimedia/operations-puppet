@@ -24,6 +24,7 @@ class openstack::clientpackages::vms::common(
         'python3-openstackclient',
         'python3-designateclient',
         'python3-neutronclient',
+        'python3-troveclient',
     ]
 
     package{ $py3packages:
