@@ -102,6 +102,7 @@ class package_builder(
         'dh-php',
         'postgresql-server-dev-all',
         'python3-pytest-runner',
+        'python3-yaml',
     ])
 
     file { '/etc/pbuilderrc':
