@@ -320,7 +320,7 @@ def main():
 
     config = yaml.safe_load(args.config_file)
     retries = config.get("retries", 2)
-    retry_interval = config.get("retries", 120)
+    retry_interval = config.get("retry_interval", 120)
 
     retry = 0
     while retry <= retries:
