@@ -12,3 +12,9 @@
 "backup_strategy:create": "!"
 "backup_strategy:index": "!"
 "backup_strategy:delete": "!"
+
+
+# This defaults to rule:admin but it's nice for
+#  users to be able to get their instances unstuck.
+"instance:reset_status": "rule:admin_or_projectadmin"
+"cluster:reset_status": "rule:admin_or_projectadmin"
