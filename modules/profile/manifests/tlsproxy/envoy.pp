@@ -128,7 +128,7 @@ class profile::tlsproxy::envoy(
                         default => $service['cert_options'],
                     }
                     $ssl_paths = profile::pki::get_cert($_cfssl_label, $service['cert_name'], $_cfssl_options)
-                    $cert = $ssl_paths['cert']
+                    $cert = $ssl_paths['chained']
                     $key = $ssl_paths['key']
                 }
                 default: {
@@ -181,7 +181,7 @@ class profile::tlsproxy::envoy(
                 $ssl_paths = profile::pki::get_cert(
                     $cfssl_label, $global_cert_name, $base_cfssl_options + $cfssl_options
                 )
-                $global_cert_path = $ssl_paths['cert']
+                $global_cert_path = $ssl_paths['chained']
                 $global_key_path = $ssl_paths['key']
             }
             default: {
