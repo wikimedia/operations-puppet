@@ -5,7 +5,7 @@
 # @param enable_proxy if true configure cfssl api to listen on $listen_addr:$listen_port
 class cfssl::client (
     Stdlib::HTTPUrl            $signer,
-    Stdlib::HTTPUrl            $bundles_source,
+    Stdlib::Filesource         $bundles_source,
     Sensitive[String[1]]       $auth_key,
     Wmflib::Ensure             $ensure                 = 'present',
     Cfssl::Loglevel            $log_level              = 'info',
