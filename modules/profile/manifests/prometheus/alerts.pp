@@ -237,6 +237,20 @@ class profile::prometheus::alerts (
     monitoring::alerts::traffic_drop{'traffic_drop_ulsfo': site => 'ulsfo'}
     monitoring::alerts::traffic_drop{'traffic_drop_eqsin': site => 'eqsin'}
 
+    monitoring::check_prometheus { 'too_many_network_error_logging':
+        description     => 'Too high an incoming rate of browser-reported Network Error Logging events',
+        # We restrict to two types we believe to best correlate with actionable issues that aren't caught
+        # by other monitoring.
+        # This computes a per-second rate.
+        query           => 'sum by (type) (log_w3c_networkerror_type_doc_count{type=~"tcp.(address_unreachable|timed_out)"}) / 60',
+        prometheus_url  => 'https://thanos-query.discovery.wmnet',
+        warning         => 1.5,
+        critical        => 2,
+        method          => 'ge',
+        dashboard_links => ['https://logstash.wikimedia.org/goto/5c8f4ca1413eda33128e5c5a35da7e28'],
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#NEL_alerts',
+    }
+
     monitoring::alerts::rsyslog{'rsyslog_eqiad': site => 'eqiad'}
     monitoring::alerts::rsyslog{'rsyslog_codfw': site => 'codfw'}
     monitoring::alerts::rsyslog{'rsyslog_esams': site => 'esams'}
