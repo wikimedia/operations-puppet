@@ -67,9 +67,14 @@ class profile::dbbackups::transfer (
             show_diff => false,
         }
         systemd::timer::job { 'database-backups-snapshots':
-            ensure  => absent,
-            user    => 'root',
-            command => '/usr/bin/remote-backup-mariadb',
+            ensure      => absent,
+            description => 'Generate mysql snapshot backup batch',
+            user        => 'root',
+            command     => '/usr/bin/remote-backup-mariadb',
+            interval    => {
+                'start'    => 'OnCalendar',
+                'interval' => 'Sun,Tue,Wed,Fri *-*-* 19:00:00',
+            },
         }
     }
 }
