@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import argparse
 import datetime
 import importlib.machinery
+import pickle
 import shutil
 import socket
 import subprocess
@@ -26,6 +27,7 @@ import sys
 import tempfile
 import textwrap
 import time
+import traceback
 import types
 
 from pathlib import Path
@@ -79,6 +81,29 @@ def get_webdb() -> pymysql.Connection:
         database=cfg["NAME"],
         charset=cfg["OPTIONS"]["charset"],
     )
+
+
+def fix_info(listname: str):
+    """
+    Try to import the longer info into Mailman3
+    """
+    config_pck = Path(f"/var/lib/mailman/lists/{listname}/config.pck")
+    # https://gitlab.com/mailman/mailman/-/blob/732e97a3da9b6b3b27d152ea3458794f2c68f724/src/mailman/commands/cli_import.py#L76
+    try:
+        cfg = pickle.loads(config_pck.read_bytes(), encoding="utf-8", errors="ignore")
+    except:  # noqa
+        traceback.print_exc()
+        # Not worth failing the whole import over
+        print("Unable to open config.pck, can't manually set description")
+        return
+    if not cfg["info"]:
+        print("Couldn't get info from Mailman2 config, not manually copying.")
+        return
+    client = get_client()
+    mlist = client.get_list(f"{listname}@{DOMAIN}")
+    mlist.settings["info"] = cfg["info"]
+    mlist.settings.save()
+    print("Manually copied over list description")
 
 
 def fix_templates(listname: str):
@@ -207,6 +232,7 @@ def main() -> int:
         ]
     )
     check_call(["mailman-web", "update_index_one_list", listaddr])
+    fix_info(listname)
     fix_templates(listname)
     check_call(["/usr/local/sbin/disable_list", listname])
     send_email(
