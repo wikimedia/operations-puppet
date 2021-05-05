@@ -232,7 +232,9 @@ CONFIG proxy.config.ssl.client.groups_list STRING <%= @outbound_tls_settings['co
 <% if @outbound_tls_settings['verify_origin'] -%>
 # Origin server certificate validation settings
 CONFIG proxy.config.ssl.client.verify.server INT 2
+<% if @outbound_tls_settings['cacert_dirpath'] -%>
 CONFIG proxy.config.ssl.client.CA.cert.path STRING <%= @outbound_tls_settings['cacert_dirpath'] %>
+<% end -%>
 <% if @outbound_tls_settings['cacert_filename'] -%>
 CONFIG proxy.config.ssl.client.CA.cert.filename STRING <%= @outbound_tls_settings['cacert_filename'] %>
 <% end -%>
