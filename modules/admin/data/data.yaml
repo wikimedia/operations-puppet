@@ -4267,6 +4267,7 @@ users:
     email: silvan.heintze@wikimedia.de
     uid: 22901
     gid: 500
+    krb: present
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmfqnby5X1Oq2NqR6qvLZ30jumto0G5P+lMZQ3LD5gh sihe@C212'
   hmonroy:
