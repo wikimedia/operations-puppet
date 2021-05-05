@@ -45,7 +45,7 @@ class profile::httpbb {
         source => 'puppet:///modules/profile/httpbb/miscweb/test_miscweb.yaml'
     }
     httpbb::test_suite {'miscweb/test_people.yaml':
-        source => 'puppet:///modules/profile/httpbb/miscweb/test_people.yaml'
+        source => 'puppet:///modules/profile/httpbb/people/test_people.yaml'
     }
     httpbb::test_suite {'releases/test_releases.yaml':
         source => 'puppet:///modules/profile/httpbb/releases/test_releases.yaml'
