@@ -85,6 +85,8 @@ class profile::cumin::master (
             packages  => ['python3-tqdm'],
             priority  => 1002,
         }
+    } elsif debian::codename::eq('bullseye') {
+        $python_version = '3.9'
     } else {
         fail("codename (${debian::codename()}): not supported")
     }
