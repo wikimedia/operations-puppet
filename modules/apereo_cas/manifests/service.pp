@@ -4,6 +4,7 @@ define apereo_cas::service (
   Apereo_cas::Service::Class           $service_class   = 'RegexRegisteredService',
   Apereo_cas::Service::Release_policy  $release_policy  = 'ReturnAllAttributeReleasePolicy',
   Apereo_cas::Service::Access_strategy $access_strategy = 'DefaultRegisteredServiceAccessStrategy',
+  Boolean                              $require_u2f     = false,
   Array[String]                        $required_groups = [],
   Hash                                 $properties      = {},
 ) {
@@ -24,6 +25,19 @@ define apereo_cas::service (
       }
     }
   }
+  # We could make this a bit more flexible with failureMode
+  # but for now we will just block set CLOSED
+  # https://apereo.github.io/cas/6.1.x/mfa/Configuring-Multifactor-Authentication.html#failure-modes
+  $multifactor_policy = $require_u2f ? {
+      false   => {},
+      default => {
+          'multifactorPolicy' => {
+              '@class'       => 'org.apereo.cas.services.DefaultRegisteredServiceMultifactorPolicy',
+              'failureMode'  => 'CLOSED',
+              'multifactorAuthenticationProviders' => [ 'java.util.LinkedHashSet', [ 'mfa-u2f' ]],
+          }
+      }
+  }
 
   $base_data = {
     '@class'                 => "org.apereo.cas.services.${service_class}",
@@ -32,7 +46,8 @@ define apereo_cas::service (
     'attributeReleasePolicy' => {'@class' => "org.apereo.cas.services.${release_policy}"},
     'id'                     => $id,
     'accessStrategy'         => $_access_strategy,
-  }
+  } + $multifactor_policy
+
   $data = $properties.empty ? {
     true    => $base_data,
     default => $base_data + {'properties' => $properties},
