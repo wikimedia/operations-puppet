@@ -9,7 +9,7 @@ profile::idp::webflow_signing_key: changeit
 profile::idp::u2f_encryption_key: changeit
 profile::idp::u2f_signing_key: changeit
 profile::idp::idp_nodes:
-  - "%{facts.fqdn}"
+  - "%{facts.networking.fqdn}"
 profile::idp::u2f_jpa_enable: false
 profile::idp::u2f_jpa_username: cas
 profile::idp::u2f_jpa_password: changeme
@@ -24,7 +24,7 @@ profile::idp::cors_allowed_methods:
 profile::idp::u2f_token_expiry_days: ~
 profile::idp::max_session_length: 604800
 profile::idp::actuators: []
-profile::idp::server_name: "https://${lookup(fqdn)}"
+profile::idp::server_name: "https://${facts.networking.fqdn}"
 profile::idp::is_staging_host: false
 profile::idp::memcached_enable: false
 # We use mcrouter in production

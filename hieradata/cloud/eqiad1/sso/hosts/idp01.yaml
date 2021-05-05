@@ -1,6 +1,7 @@
 classes:
   - profile::idp::standalone
 puppetmaster: puppetprimary.sso.eqiad1.wikimedia.cloud
+profile::idp::server_name: https://idp.wmcloud.org
 profile::idp::memcached_port: 11000
 profile::idp::memcached_transcoder: WHALINV1
 profile::idp::u2f_jpa_enable: true
