@@ -31,13 +31,24 @@ class bigtop::hadoop::nodemanager {
     }
 
     # NodeManager (YARN TaskTracker)
-    service { 'hadoop-yarn-nodemanager':
-        ensure     => 'running',
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
-        alias      => 'nodemanager',
-        require    => [
+    # The override was added for https://phabricator.wikimedia.org/T281792
+    # The TaskMax value has been calculated as 80% of the lowest kernel.pid_max
+    # among the Hadoop workers. The value 'infinity' may also be used for more
+    # flexibility, but due to other important daemons requiring threads on the host
+    # (HDFS Datanode and Journalnode) we want to be careful.
+    systemd::service { 'hadoop-yarn-nodemanager':
+        ensure         => 'present',
+        restart        => true,
+        override       => true,
+        content        => '[Service]\nTaskMax=26214\n',
+        service_params => {
+            ensure     => 'running',
+            alias      => 'nodemanager',
+            hasstatus  => true,
+            enable     => true,
+            hasrestart => true,
+        },
+        require        => [
             Package['hadoop-yarn-nodemanager', 'hadoop-mapreduce'],
             File['/etc/default/hadoop-yarn-nodemanager'],
         ],
