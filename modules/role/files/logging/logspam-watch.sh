@@ -46,7 +46,7 @@ fi
 function display {
   logspam_output=$(run_logspam)
   distinct_errors="$(echo -n "$logspam_output" | wc -l)"
-  total_errors="$(echo -n "$logspam_output" | awk '{ s+=$1 } END { print s }')"
+  total_errors="$(echo -n "$logspam_output" | awk 'BEGIN { s=0 } { s+=$1 } END { print s }')"
 
   tput clear
 
@@ -124,19 +124,19 @@ function titlebar {
 function get_cat {
   count="$1"
 
-  if (($count <= 4)); then
+  if ((count <= 4)); then
     printf '😎'
-  elif (($count <= 6)); then
+  elif ((count <= 6)); then
     printf '☺️'
-  elif (($count <= 10)); then
+  elif ((count <= 10)); then
     printf '😐'
-  elif (($count <= 20)); then
+  elif ((count <= 20)); then
     printf '😑'
-  elif (($count <= 700)); then
+  elif ((count <= 700)); then
     printf '😾'
-  elif (($count <= 1000)); then
+  elif ((count <= 1000)); then
     printf '😿'
-  elif (($count <= 5000)); then
+  elif ((count <= 5000)); then
     printf '😱'
   else
     printf '☠️'
