@@ -40,7 +40,7 @@ class openstack::designate::dns_floating_ip_updater(
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
-        mode    => '0750',
+        mode    => '0755',
         source  => 'puppet:///modules/openstack/designate/wmcs-dns-floating-ip-updater.py',
         require => Package['python-ipaddress']
     }

@@ -13,6 +13,7 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+import os
 import argparse
 import ipaddress
 import logging
@@ -312,6 +313,10 @@ def main():
     logging.getLogger('requests').setLevel(logging.WARNING)
     logging.getLogger('urllib3').setLevel(logging.WARNING)
     logging.getLogger('iso8601.iso8601').setLevel(logging.WARNING)
+
+    if os.getuid() != 0:
+        logging.critical("root required")
+        exit(1)
 
     config = yaml.safe_load(args.config_file)
     retries = config.get("retries", 2)
