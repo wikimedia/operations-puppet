@@ -65,6 +65,7 @@ class profile::icinga(
     }
 
     class { 'icinga::monitor::toollabs': }
+    class { 'icinga::monitor::cloudgw': }
     class { 'icinga::monitor::legal': }
     class { 'icinga::monitor::certs': }
     class { 'icinga::monitor::commons': }
