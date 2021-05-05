@@ -1,0 +1,19 @@
+https://people.wikimedia.org:
+- path: /~rzl/
+  assert_status: 200
+  assert_body_contains: "&#x1f44b;"
+- path: /~urbanecm/growth-team-internal/
+  assert_status: 302
+  assert_headers:
+    Location: https://idp.wikimedia.org/login?service=https%3a%2f%2fpeople.wikimedia.org%2f%7eurbanecm%2fgrowth-team-internal%2f
+- path: /~urbanecm/nda/
+  assert_status: 302
+  assert_headers:
+    Location: https://idp.wikimedia.org/login?service=https%3a%2f%2fpeople.wikimedia.org%2f%7eurbanecm%2fnda%2f
+- path: /~urbanecm/nda/XWikimediaDebug.log-20210411-first-move-redacted.gz
+  assert_status: 302
+  assert_headers:
+    Location: https://idp.wikimedia.org/login?service=https%3a%2f%2fpeople.wikimedia.org%2f%7eurbanecm%2fnda%2fXWikimediaDebug.log-20210411-first-move-redacted.gz
+- path: /~dzahn/
+  assert_status: 200
+  assert_body_contains: "fenari"
