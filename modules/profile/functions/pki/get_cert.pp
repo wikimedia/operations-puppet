@@ -35,8 +35,8 @@ function profile::pki::get_cert(
     'key' => "${outdir}/${safe_title}-key.pem",
   }
   $chained_paths = {
-    'chain'      => "${outdir}/${safe_title}.chain.pem",
-    'chained' => "${outdir}/${safe_title}.chained.pem",
+    'ca'      => "${outdir}/${safe_label}_chain.pem",
+    'chained' => "${outdir}/${safe_title}_chained.pem",
   }
 
   'provide_chain' in $additional_params ? {

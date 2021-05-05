@@ -21,7 +21,7 @@ class profile::pki::client (
     Hash                         $certs                  = lookup('profile::pki::client::certs'),
 ) {
     $signer = "https://${signer_host}:${signer_port}"
-    $bundles_source = 'puppet:///modules/profile/pki/intermediates'
+    $bundles_source = "http://${signer_host}/bundles"
     if $tls_remote_ca_source {
         if $tls_remote_ca == $facts['puppet_config']['localcacert'] {
             fail('When setting \$tls_remote_ca_source you must change \$tls_remote_ca')
