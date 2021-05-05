@@ -24,8 +24,15 @@ class prometheus::node_puppet_agent (
 
     # Collect every minute
     cron { 'prometheus_puppet_agent_stats':
-        ensure  => $ensure,
+        ensure  => absent,
         user    => 'prometheus',
         command => "/usr/local/bin/prometheus-puppet-agent-stats --outfile ${outfile}",
+    }
+    systemd::timer::job { 'prometheus_puppet_agent_stats':
+        ensure      => $ensure,
+        description => 'Regular job to collect puppet agent stats',
+        user        => 'prometheus',
+        command     => "/usr/local/bin/prometheus-puppet-agent-stats --outfile ${outfile}",
+        interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
     }
 }
