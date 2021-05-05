@@ -356,3 +356,5 @@ profile::openstack::base::radosgw::api_bind_port: '18080'
 
 # To be overridden in Pontoon stacks
 public_domain: "%{::labsproject}.wmcloud.org"
+
+profile::trafficserver::backend::trusted_ca_source: "%{facts.puppet_config.localcacert}"

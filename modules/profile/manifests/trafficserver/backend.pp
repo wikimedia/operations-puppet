@@ -27,6 +27,8 @@ class profile::trafficserver::backend (
     Stdlib::Port::User $atsmtail_backend_port=lookup('profile::trafficserver::backend::atsmtail_backend_port', {default_value => 3904}),
     String $mtail_args=lookup('profile::trafficserver::backend::mtail_args', {'default_value' => ''}),
     Boolean $systemd_hardening=lookup('profile::trafficserver::backend::systemd_hardening', {default_value => true}),
+    Stdlib::Filesource $trusted_ca_source = lookup('profile::trafficserver::backend::trusted_ca_source'),
+    Stdlib::Unixpath $trusted_ca_path = lookup('profile::trafficserver::backend::trusted_ca_path'),
 ){
     $global_lua_script = $default_lua_script? {
         ''      => '',
@@ -51,6 +53,13 @@ class profile::trafficserver::backend (
         mode    => '0555',
         content => "#!/usr/bin/lua\ndofile('/etc/trafficserver/lua/${default_lua_script}.lua.conf')\nassert(lua_hostname)\nprint('OK')\n",
         require => File["/etc/trafficserver/lua/${default_lua_script}.lua.conf"],
+    }
+    file { $trusted_ca_path:
+        ensure => file,
+        owner  => root,
+        group  => root,
+        mode   => '0444',
+        source => $trusted_ca_source,
     }
 
     nrpe::monitor_service { 'default_ats_lua_conf':
