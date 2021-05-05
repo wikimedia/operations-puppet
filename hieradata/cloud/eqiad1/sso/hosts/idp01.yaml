@@ -11,6 +11,7 @@ profile::idp::ldap_attributes:
   - mail
   - uid
   - sshPublicKey
+  - mfa-method
 profile::idp::services:
   cloud:
     id: 1
