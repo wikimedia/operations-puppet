@@ -98,7 +98,8 @@ groups:
               mstyles, zpapierski, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
-              jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe, hmonroy]
+              jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe,
+              hmonroy, derick]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -4295,7 +4296,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHt501SwczR+VL0ZP3HNFJtpF0XYBIQLjp9sV8195XXr mmandere@wikimedia.org'
-
+  derick:
+    ensure: present
+    realname: Alangi Derick
+    email: xsavitar.wiki@aol.com
+    uid: 14653
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIGyqd/uXroFstaH/hqqFszC+FzZRENC6aGkkiaWJqrS xsavitar@Dericks-MacBook-Pro.local'
 
 ldap_only_users:
   abartov:
@@ -4386,10 +4394,6 @@ ldap_only_users:
     ensure: present
     realname: Delphine Menard
     email: dmenard@wikimedia.org
-  derick:
-    ensure: present
-    realname: Alangi Derick
-    email: xsavitar.wiki@aol.com
   dstrine:
     ensure: present
     realname: David Strine
