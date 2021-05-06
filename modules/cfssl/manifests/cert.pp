@@ -171,7 +171,7 @@ define cfssl::cert (
         $cert_chain_path = "${_outdir}/${safe_title}.chain.pem"
         $cert_chained_path = "${_outdir}/${safe_title}.chained.pem"
         file { $cert_chain_path:
-            ensure => file,
+            ensure => stdlib::ensure($ensure, 'file'),
             owner  => $owner,
             group  => $group,
             mode   => '0440',

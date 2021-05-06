@@ -27,7 +27,7 @@ class profile::pki::client (
             fail('When setting \$tls_remote_ca_source you must change \$tls_remote_ca')
         }
         file{$tls_remote_ca:
-            ensure => file,
+            ensure => stdlib::ensure($ensure, file),
             owner  => 'root',
             group  => 'root',
             mode   => '0440',
@@ -49,14 +49,17 @@ class profile::pki::client (
     }
     $certs.each |$title, $cert| {
         cfssl::cert{$title:
-            *        => $cert,
+            ensure => $ensure,
+            *      => $cert,
         }
     }
     sslcert::ca { $root_ca:
+        ensure => $ensure,
         source => "puppet:///modules/profile/pki/ROOT/${root_ca}.pem",
     }
     $intermediate_cas.each |$ca| {
         sslcert::ca { $ca:
+            ensure => $ensure,
             source => "puppet:///modules/profile/pki/intermediates/${ca}.pem",
         }
     }
