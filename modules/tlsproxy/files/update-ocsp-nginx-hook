@@ -1,3 +1,0 @@
-#!/bin/bash
-
-/usr/sbin/service nginx reload >/dev/null 2>&1 || exit 99
