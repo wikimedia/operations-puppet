@@ -1170,8 +1170,7 @@ node 'etherpad1002.eqiad.wmnet' {
 
 # Receives log data from Kafka processes it, and broadcasts
 # to Kafka Schema based topics.
-# eventlog1003 is a VM replacing eventlog1002 - T280679
-node /^eventlog100[23].eqiad.wmnet$/ {
+node 'eventlog1003.eqiad.wmnet' {
     role(eventlogging::analytics)
 }
 

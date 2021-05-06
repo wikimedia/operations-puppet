@@ -13,7 +13,7 @@
 #
 # [*input*]
 #   This parameter specifies the URI of the event stream the consumer
-#   should consume. Example: 'tcp://eventlog1002.eqiad.wmnet:8600'.
+#   should consume. Example: 'tcp://eventlog1003.eqiad.wmnet:8600'.
 #
 # [*output*]
 #   Bind the multiplexing publisher to this URI.
@@ -53,8 +53,8 @@
 # === Examples
 #
 #  eventlogging::service::consumer { 'all events':
-#    input  => 'tcp://eventlog1002.eqiad.wmnet:8600',
-#    output => 'mysql://user:password@eventlog1002.eqiad.wmnet:3306/?charset=utf8',
+#    input  => 'tcp://eventlog1003.eqiad.wmnet:8600',
+#    output => 'mysql://user:password@eventlog1003.eqiad.wmnet:3306/?charset=utf8',
 #  }
 #
 define eventlogging::service::consumer(

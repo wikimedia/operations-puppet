@@ -54,7 +54,7 @@ profile::kafka::broker::max_heap_size: '2g'
 # - Kafka Jumbo brokers (as part of cluster maintenance)
 # - Fundraising (kafkatee via TLS)
 # - Analytics networks (various clients)
-# - eventlog100[23] (not in the Analytics vlan)
+# - eventlog1003 (not in the Analytics vlan)
 # - netflow* hosts (pmacct via TLS)
 # - weblog/centrallog hosts (kafkatee via TLS)
 # - cp cache hosts (varnishkafka via TLS, soon atskafka via TLS
@@ -77,7 +77,6 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((centrallog2001.codfw.wmnet)) 2620:0:860:104:10:192:48:64)' # FIXME: the raw IPv6 IP is added since there is no AAAA record yet (it is not trivial to be added).
   - '(@resolve((search-loader1001.eqiad.wmnet)) @resolve((search-loader1001.eqiad.wmnet), AAAA))'
   - '(@resolve((search-loader2001.codfw.wmnet)) @resolve((search-loader2001.codfw.wmnet), AAAA))'
-  - '(@resolve((eventlog1002.eqiad.wmnet)) @resolve((eventlog1002.eqiad.wmnet), AAAA))'
   - '(@resolve((eventlog1003.eqiad.wmnet)) @resolve((eventlog1003.eqiad.wmnet), AAAA))'
   - '(@resolve((netflow1001.eqiad.wmnet)) @resolve((netflow1001.eqiad.wmnet), AAAA))'
   - '(@resolve((netflow2001.codfw.wmnet)) @resolve((netflow2001.codfw.wmnet), AAAA))'
