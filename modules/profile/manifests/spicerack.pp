@@ -44,15 +44,7 @@ class profile::spicerack(
     include passwords::redis
 
     # Packages required by spicerack cookbooks
-    ensure_packages(['python3-dateutil', 'python3-requests'])
-
-    if debian::codename::eq('buster') {
-        ensure_packages(['spicerack'])
-    } else {
-        apt::package_from_component { 'spicerack':
-            component => 'component/spicerack',
-        }
-    }
+    ensure_packages(['python3-dateutil', 'python3-requests', 'spicerack'])
 
     $cookbooks_dir = '/srv/deployment/spicerack'
 
