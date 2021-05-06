@@ -120,9 +120,7 @@ def get_instance_ips(project, observer_pass, regions, auth_url):
                     #  addresses (probably there's only one)
                     for value in instance.addresses.values():
                         for ip in value:
-                            if ip[
-                                "OS-EXT-IPS:type"
-                            ] == "fixed" and is_valid_ipv4(ip["addr"]):
+                            if is_valid_ipv4(ip["addr"]):
                                 ips.append(str(ip["addr"]))
 
         except Unauthorized:
