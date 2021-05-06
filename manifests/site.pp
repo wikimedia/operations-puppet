@@ -1756,8 +1756,8 @@ node /^ms-be2\d\d\d\.codfw\.wmnet$/ {
 
 ## DATACENTER: EQIAD
 
-# Debug servers - 1,2 are on stretch, 3 is on buster
-node /^mwdebug100[123]\.eqiad\.wmnet$/ {
+# Debug servers, on buster like production
+node /^mwdebug100[12]\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
