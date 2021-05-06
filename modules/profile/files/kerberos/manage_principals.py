@@ -20,7 +20,7 @@ def parse_args(argv):
     p.add_argument('--realm', action='store', default="WIKIMEDIA",
                    help='The Kerberos realm for which the user principals will be generated')
     p.add_argument('action', action='store',
-                   choices=['get', 'list', 'create', 'delete'],
+                   choices=['get', 'list', 'create', 'delete', 'reset-password'],
                    help="Action to perform with the principal.")
     p.add_argument('principal', action='store',
                    help="Name of the Kerberos Principal to use (without @REALM suffix)."
@@ -89,12 +89,12 @@ def get_principal_info(principal, realm):
         return -1
 
 
-def send_email(email_address, principal, password, realm):
+def send_email(email_address, principal, password, subject):
     try:
         msg = EmailMessage()
         msg['From'] = 'root@' + socket.getfqdn()
         msg['To'] = email_address
-        msg['Subject'] = "New Kerberos user {} created".format(principal)
+        msg['Subject'] = subject
         text_to_send = """
         Hi!
 
@@ -107,7 +107,7 @@ def send_email(email_address, principal, password, realm):
         If not, please reach out to the Analytics team for a follow up.
 
         Please ssh to any of the Hadoop client hosts
-        (like stat1005.eqiad.wmnet, stat1008.eqiad.wmnet, etc..) and set you
+        (like stat1005.eqiad.wmnet, stat1008.eqiad.wmnet, etc..) and set your
         own password with the following command:
 
         kinit
@@ -133,6 +133,32 @@ def send_email(email_address, principal, password, realm):
             "delete and re-create the principal.")
 
 
+def generate_temporary_password():
+    return ''.join(
+        [random.choice(string.ascii_letters + string.digits) for n in range(32)])
+
+
+def reset_password(principal, password, realm):
+    try:
+        kadmin_local = pexpect.spawn(
+            '/usr/sbin/kadmin.local change_password ' + principal+'@'+realm)
+        kadmin_local.expect('Enter password for principal .*:')
+        kadmin_local.sendline(password)
+        kadmin_local.expect('Re-enter password for principal .*:')
+        kadmin_local.sendline(password)
+        kadmin_local.wait()
+    except pexpect.ExceptionPexpect as e:
+        print("Error while running kadmin.local: " + str(e))
+        return -1
+
+    try:
+        return subprocess.call(
+            ['/usr/sbin/kadmin.local', 'modify_principal', '+needchange', principal+'@'+realm])
+    except subprocess.CalledProcessError as e:
+        print("Error while running kadmin.local: " + str(e))
+        return -1
+
+
 def main():
     args = parse_args(sys.argv[1:])
     realm = args.realm.upper()
@@ -148,15 +174,15 @@ def main():
         if does_principal_exist(principal, realm):
             print("Principal already created (or an error occurred with kadmin), skipping.")
             sys.exit(1)
-        password = ''.join(
-            [random.choice(string.ascii_letters + string.digits) for n in range(32)])
+        password = generate_temporary_password()
         ret = create_user_principal(principal, password, realm)
         if ret == 0:
             print("Principal successfully created. Make sure to update data.yaml in Puppet.")
         else:
             sys.exit(1)
         if email_address:
-            send_email(email_address, principal, password, realm)
+            subject = "New Kerberos user {} created".format(principal)
+            send_email(email_address, principal, password, subject=subject)
     elif action == "delete":
         ret = delete_principal(principal, realm)
         if ret == 0:
@@ -167,6 +193,21 @@ def main():
             print(delete_msg)
         else:
             sys.exit(1)
+    elif action == "reset-password":
+        password = generate_temporary_password()
+
+        ret = reset_password(principal, password, realm)
+
+        if ret == 0:
+            print("Password reset successfully.")
+        else:
+            print("Password reset errored.")
+            sys.exit(1)
+
+        subject = "Kerberos password reset for user {}".format(principal)
+        send_email(email_address, principal, password, subject=subject)
+
+        print("Emailed password to user.")
 
 
 if __name__ == '__main__':
