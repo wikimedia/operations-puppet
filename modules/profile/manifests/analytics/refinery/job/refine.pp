@@ -133,6 +133,7 @@ class profile::analytics::refinery::job::refine(
         'TemplateWizard',
         'Test',
         'UniversalLanguageSelector',
+        'WikidataCompletionSearchClicks',
 
         # Editing team schemas
         'EditAttemptStep',

@@ -26,6 +26,7 @@ eventlogging_schemas_disabled = (
     'TemplateWizard',
     'Test',
     'UniversalLanguageSelector',
+    'WikidataCompletionSearchClicks',
 
     # Editor schemas
     'EditAttemptStep',
