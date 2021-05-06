@@ -2457,9 +2457,9 @@ node /^stat100[4-8]\.eqiad\.wmnet/ {
 # They should also be added to the dumps/scap repo in dumps_targets,
 # https://gerrit.wikimedia.org/r/plugins/gitiles/operations/dumps/scap
 
-# these will become spare soon
+# To be decommissioned
 node /^snapshot100[5-7]\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::testbed)
+    role(spare::system)
 }
 
 node /^snapshot1008\.eqiad\.wmnet/ {
