@@ -2459,12 +2459,6 @@ node /^stat100[4-8]\.eqiad\.wmnet/ {
 # and to hieradata/hosts/ if running dumps for enwiki or wikidata.
 # They should also be added to the dumps/scap repo in dumps_targets,
 # https://gerrit.wikimedia.org/r/plugins/gitiles/operations/dumps/scap
-
-# To be decommissioned
-node /^snapshot100[5-7]\.eqiad\.wmnet/ {
-    role(spare::system)
-}
-
 node /^snapshot1008\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_misc_crons_only)
 }
