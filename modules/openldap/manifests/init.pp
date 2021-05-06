@@ -79,7 +79,7 @@ class openldap(
     Boolean                             $read_only=false,
 ) {
 
-    ensure_packages(['slapd', 'ldap-utils', 'python-ldap'])
+    ensure_packages(['slapd', 'ldap-utils'])
 
     service { 'slapd':
         ensure     => running,
