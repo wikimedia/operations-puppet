@@ -515,9 +515,6 @@ secondary_nfs_servers:
   - cloudstore1009.wikimedia.org
 dumps_nfs_clients:
   snapshots:
-    - snapshot1005.eqiad.wmnet
-    - snapshot1006.eqiad.wmnet
-    - snapshot1007.eqiad.wmnet
     - snapshot1008.eqiad.wmnet
     - snapshot1009.eqiad.wmnet
     - snapshot1010.eqiad.wmnet
