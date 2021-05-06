@@ -40,7 +40,7 @@ class bigtop::hadoop::nodemanager {
         ensure         => 'present',
         restart        => true,
         override       => true,
-        content        => '[Service]\nTaskMax=26214\n',
+        content        => "[Service]\nTaskMax=26214\n",
         service_params => {
             ensure     => 'running',
             alias      => 'nodemanager',
