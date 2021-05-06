@@ -778,7 +778,7 @@ node 'db1171.eqiad.wmnet' {
 node 'db2097.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-## s2 & s3, stretch
+## s2, stretch
 node 'db2098.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
