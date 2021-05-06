@@ -35,6 +35,8 @@ class osm::imposm3 (
         $imposm_mapping_file:
             mode   => '0444',
             source => 'puppet:///modules/osm/imposm_mapping.yml';
+        '/usr/local/bin/create_layers_functions':
+            source => 'puppet:///modules/osm/create_layers_functions';
         '/usr/local/bin/imposm-initial-import':
             source => 'puppet:///modules/osm/imposm-initial-import';
         '/usr/local/bin/imposm-rollback-import':

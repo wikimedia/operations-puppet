@@ -111,6 +111,12 @@ function custom_functions_and_indexes() {
   echo "creation of custom functions and indexes completed"
 }
 
+function layers_functions() {
+  echo "starting creation of layers functions"
+  sudo -u postgres /usr/local/bin/create_layers_functions
+  echo "creation of layers functions completed"
+}
+
 function cleanup() {
   echo "starting cleanup"
   rm "${download_dir}/${filename}.md5"
@@ -123,4 +129,5 @@ initial_osm_import
 osm_production_deploy
 import_water_lines
 custom_functions_and_indexes
+layers_functions
 cleanup

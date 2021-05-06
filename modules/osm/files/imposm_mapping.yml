@@ -1,9 +1,46 @@
 areas:
   area_tags: [buildings, landuse, leisure, natural, aeroway, amenity]
-  linear_tags: [highway, barrier, boundary]
+  linear_tags: [highway, barrier]
+
 tags:
   load_all: true
   exclude: [note, "note:*", source, source_ref, "source:*", attribution, comment, fixme, created_by, odbl, "odbl:note", "SK53_bulk:load",  "tiger:*",  "NHD:*", "nhd:*",  "gnis:*",  "geobase:*", "accuracy:meters", "sub_sea:type", "waterway:type",  "KSJ2:*", "yh:*",  "osak:*",  "kms:*",  "ngbe:*",  "naptan:*",  "CLC:*",  "3dshapes:ggmodelk", AND_nosr_r, import, "it:fvg:*"]
+
+generalized_tables:
+  # landuse
+  planet_osm_polygon_landuse_gen_z6:
+    source: planet_osm_polygon_landuse_gen_z7
+    tolerance: 2445.98490513
+    sql_filter: area>power(2445.98490513,2)
+  planet_osm_polygon_landuse_gen_z7:
+    source: planet_osm_polygon_landuse_gen_z8
+    tolerance: 1222.99245256
+    sql_filter: area>power(2445.98490513,2)
+  planet_osm_polygon_landuse_gen_z8:
+    source: planet_osm_polygon_landuse_gen_z9
+    sql_filter: area>power(2445.98490513,2)
+    tolerance: 611.496226281
+  planet_osm_polygon_landuse_gen_z9:
+    source: planet_osm_polygon_landuse_gen_z10
+    sql_filter: area>power(1222.99245256,2)
+    tolerance: 305.748113141
+  planet_osm_polygon_landuse_gen_z10:
+    source: planet_osm_polygon_landuse_gen_z11
+    sql_filter: area>power(611.496226281,2)
+    tolerance: 152.87405657
+  planet_osm_polygon_landuse_gen_z11:
+    source: planet_osm_polygon_landuse_gen_z12
+    sql_filter: area>power(305.748113141,2)
+    tolerance: 76.4370282852
+  planet_osm_polygon_landuse_gen_z12:
+    source: planet_osm_polygon_landuse_gen_z13
+    sql_filter: area>power(152.87405657,2)
+    tolerance: 38.2185141426
+  planet_osm_polygon_landuse_gen_z13:
+    source: planet_osm_polygon_landuse
+    sql_filter: area>power(76.4370282852,2) AND ST_IsValid(way)
+    tolerance: 19.1092570713
+
 tables:
   planet_osm_point:
     type: point
@@ -38,6 +75,7 @@ tables:
         type: hstore_tags
       - name: way
         type: geometry
+
   planet_osm_polygon:
     type: polygon
     mapping:
@@ -143,7 +181,114 @@ tables:
         name: tags
         type: hstore_tags
       - name: way
-        type: geometry
+        type: validated_geometry
+
+  planet_osm_polygon_landuse:
+    type: polygon
+    columns:
+      - name: osm_id
+        type: id
+      - key: aeroway
+        name: aeroway
+        type: string
+      - key: amenity
+        name: amenity
+        type: string
+      - key: area
+        name: area
+        type: area
+      - key: boundary
+        name: boundary
+        type: string
+      - key: landuse
+        name: landuse
+        type: string
+      - key: leisure
+        name: leisure
+        type: string
+      - key: name
+        name: name
+        type: string
+      - key: natural
+        name: natural
+        type: string
+      - name: z_order
+        type: enumerate
+        args:
+          values:
+            - land
+            - island
+            - lan
+            - heath
+            - railway
+            - industrial
+            - commercial
+            - retail
+            - residential
+            - quarry
+            - zoo
+            - vineyard
+            - orchard
+            - scrub
+            - hospital
+            - place_of_worship
+            - theatre
+            - cinema
+            - nature_reserve
+            - parking
+            - fuel
+            - baracks
+            - library
+            - college
+            - school
+            - university
+            - golf_course
+            - allotments
+            - common
+            - pitch
+            - sports_centre
+            - garden
+            - recreation_ground
+            - village_green
+            - wetland
+            - grass
+            - meadow
+            - wood
+            - farmland
+            - farm
+            - farmyard
+            - cemetery
+            - forest
+            - park
+            - playground
+            - footway
+            - pedestrian
+            - water
+      - name: way
+        type: validated_geometry
+    mapping:
+      natural:
+        - wood
+      leisure:
+        - national_reserve
+        - nature_reserve
+        - golf_course
+        - park
+        - playground
+      aeroway: [__any__]
+      landuse:
+        - wood
+        - forest
+        - cemetery
+        - industrial
+        - village_green
+      amenity:
+        - school
+        - university
+        - hospital
+      boundary:
+        - national_park
+
   planet_osm_line:
     type: linestring
     mapping:
@@ -186,6 +331,7 @@ tables:
       - key: z_order
         name: z_order
         type: wayzorder
+
   admin:
     type: relation_member
     mapping:
@@ -223,4 +369,3 @@ tables:
     filters:
       require:
         admin_level: ['2', '4']
-
