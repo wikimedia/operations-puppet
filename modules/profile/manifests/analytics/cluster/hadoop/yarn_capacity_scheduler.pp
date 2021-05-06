@@ -34,8 +34,7 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # The ResourceCalculator implementation to be used to compare  Resources in the scheduler.
         # The default DefaultResourceCalculator only uses Memory while DominantResourceCalculator
         #  uses dominant-resource to compare multi-dimensional resources such as Memory, CPU etc.
-        # (same as hadoop default)
-        'yarn.scheduler.capacity.resource-calculator' => 'org.apache.hadoop.yarn.util.resource.DefaultResourceCalculator',
+        'yarn.scheduler.capacity.resource-calculator' => 'org.apache.hadoop.yarn.util.resource.DominantResourceCalculator',
         # Number of missed scheduling opportunities after which the CapacityScheduler
         # attempts to schedule rack-local containers.
         # Typically this should be set to number of nodes in the cluster.
