@@ -34,6 +34,10 @@ route:
     - match:
         team: 'noc'
       receiver: 'noc-ircmail'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'sre-page'
     - match:
         team: 'netops'
       receiver: 'netops-mail'
@@ -81,6 +85,10 @@ receivers:
 - name: 'sre-irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+
+- name: 'sre-page'
+  victorops_configs:
+    - routing_key: 'sre-batphone'
 
 - name: 'noc-ircmail'
   webhook_configs:
