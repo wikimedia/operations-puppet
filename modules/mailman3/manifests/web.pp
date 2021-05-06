@@ -62,4 +62,18 @@ class mailman3::web (
         pattern   => 'mailmanctl',
         subscribe => File['/etc/mailman3/mailman-web.py'],
     }
+
+    file { '/var/lib/mailman3/redirects/':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0555',
+    }
+
+    # Create an empty dbm file so Apache doesn't complain
+    exec { '/usr/sbin/httxt2dbm -i /dev/null -o /var/lib/mailman3/redirects/redirects.dbm':
+        user    => 'root',
+        creates => '/var/lib/mailman3/redirects/redirects.dbm',
+        require => File['/var/lib/mailman3/redirects/'],
+    }
 }
