@@ -236,6 +236,9 @@ def get_args():
                         help='pretty print json output.  Implies `--json`')
     parser.add_argument('-j', '--json', action='store_true',
                         help='print json output')
+    parser.add_argument('--verbatim-hosts', action='store_true',
+                        help=('Treat the hosts parameter as verbatim Icinga hostnames, without '
+                              'extracting the hostname from the FQDN.'))
     return parser.parse_args()
 
 
@@ -263,8 +266,13 @@ def main():
         sleep(0.5)
         status = IcingaStatus(args.status_file)
 
-    hosts = status.get_hosts(
-        [host.split('.')[0] for host in NodeSet(args.hosts, resolver=RESOLVER_NOGROUP)])
+    hosts_nodeset = NodeSet(args.hosts, resolver=RESOLVER_NOGROUP)
+    if args.verbatim_hosts:
+        hosts_list = list(hosts_nodeset)
+    else:
+        hosts_list = [host.split('.')[0] for host in hosts_nodeset]
+
+    hosts = status.get_hosts(hosts_list)
 
     for host, status in hosts.items():
         if status is False:
