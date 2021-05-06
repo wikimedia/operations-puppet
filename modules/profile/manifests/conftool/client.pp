@@ -28,7 +28,7 @@ class profile::conftool::client(
     String                 $pool_pwd_seed  = lookup('etcd::autogen_pwd_seed'),
     String                 $etcd_user      = lookup('profile::conftool::client::etcd_user', {'default_value' => '__auto__'})
 ) {
-    ensure_packages(['python3-conftool', 'python-socks'])
+    ensure_packages(['python3-conftool'])
 
     require passwords::etcd
 
