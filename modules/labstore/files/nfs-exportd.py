@@ -107,21 +107,10 @@ def get_instance_ips(project, observer_pass, regions, auth_url):
                 "2.0", session=session, region_name=region
             )
             for instance in client.servers.list():
-                # Only provide internal IPs!
-                if "public" in instance.addresses:
-                    # This is a nova-network instance
-                    for ip in instance.addresses["public"]:
-                        if ip["OS-EXT-IPS:type"] == "fixed" and is_valid_ipv4(
-                            ip["addr"]
-                        ):
+                for value in instance.addresses.values():
+                    for ip in value:
+                        if is_valid_ipv4(ip["addr"]):
                             ips.append(str(ip["addr"]))
-                else:
-                    # This is probably a neutron instance.  Export all fixed
-                    #  addresses (probably there's only one)
-                    for value in instance.addresses.values():
-                        for ip in value:
-                            if is_valid_ipv4(ip["addr"]):
-                                ips.append(str(ip["addr"]))
 
         except Unauthorized:
             logging.error(
