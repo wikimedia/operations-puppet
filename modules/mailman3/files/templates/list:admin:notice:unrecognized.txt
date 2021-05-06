@@ -3,4 +3,4 @@ was not recognized, or no member addresses could be extracted from it.  This
 mailing list has been configured to send all unrecognized bounce messages to
 the list administrator(s).
 
-https://${domain}/postorius/lists/${short_listname}.${domain}/
+  https://${domain}/postorius/lists/${short_listname}.${domain}/

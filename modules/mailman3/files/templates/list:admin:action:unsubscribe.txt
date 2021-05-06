@@ -4,4 +4,4 @@ request approval:
     For:  $member
     List: $listname
 
-https://${domain}/postorius/lists/${short_listname}.${domain}/
+  https://${domain}/postorius/lists/${short_listname}.${domain}/
