@@ -11,6 +11,7 @@ profile::ganeti::rapi_nodes:
     - netmon2001.wikimedia.org
     - cumin1001.eqiad.wmnet
     - cumin2001.codfw.wmnet
+    - cumin2002.codfw.wmnet
 profile::base::debdeploy::filter_services:
   qemu-system-x86:
     - '*'

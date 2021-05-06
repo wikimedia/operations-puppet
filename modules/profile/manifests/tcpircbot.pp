@@ -25,6 +25,8 @@ class profile::tcpircbot(
             '2620:0:861:103:10:64:32:25/64',    # cumin1001.eqiad.wmnet
             '::ffff:10.192.48.16/128',          # cumin2001.codfw.wmnet
             '2620:0:860:101:10:192:48:16/64',   # cumin2001.codfw.wmnet
+            '::ffff:10.192.32.49/128',          # cumin2002.codfw.wmnet
+            '2620:0:860:103:10:192:32:49/64',   # cumin2002.codfw.wmnet
         ],
     }
     nrpe::monitor_service { 'tcpircbot':
@@ -40,6 +42,7 @@ class profile::tcpircbot(
         'mwmaint2002.codfw.wmnet',      # maintenance codfw
         'cumin1001.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2001.codfw.wmnet',        # cluster mgmt codfw
+        'cumin2002.codfw.wmnet',        # cluster mgmt codfw
     ]
 
     $allowed_hosts_ferm = join($allowed_hosts, ' ')
