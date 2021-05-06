@@ -221,7 +221,6 @@ def main() -> int:
             f"/var/lib/mailman/lists/{listname}/config.pck",
         ]
     )
-    check_call(["mailman-web", "mailman_sync"])
     check_call(
         [
             "mailman-web",
