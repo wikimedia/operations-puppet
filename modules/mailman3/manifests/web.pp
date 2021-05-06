@@ -22,6 +22,7 @@ class mailman3::web (
     ensure_packages([
         'python3-mysqldb',
         'python3-xapian-haystack',
+        'apache2-utils',  # Need httxt2dbm
     ])
 
     apt::package_from_component { 'mailman3-web':
@@ -68,6 +69,14 @@ class mailman3::web (
         owner  => 'root',
         group  => 'list',
         mode   => '0555',
+    }
+
+    file { '/usr/local/sbin/pipermail_redirects':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'list',
+        mode   => '0550',
+        source => 'puppet:///modules/mailman3/scripts/pipermail_redirects.py',
     }
 
     # Create an empty dbm file so Apache doesn't complain

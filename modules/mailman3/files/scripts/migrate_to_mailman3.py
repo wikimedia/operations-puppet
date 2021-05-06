@@ -233,6 +233,7 @@ def main() -> int:
     check_call(["mailman-web", "update_index_one_list", listaddr])
     fix_info(listname)
     fix_templates(listname)
+    check_call(["/usr/local/sbin/pipermail_redirects", listname])
     check_call(["/usr/local/sbin/disable_list", listname])
     send_email(
         to=f"{listname}-owner@{DOMAIN}",
