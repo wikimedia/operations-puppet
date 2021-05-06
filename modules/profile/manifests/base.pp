@@ -45,6 +45,7 @@ class profile::base(
 
     contain profile::base::puppet
     require profile::base::certificates
+    include profile::pki::client
     include profile::base::netbase
     # Ensure we update the CA certificates before managing any services
     Exec['update-ca-certificates'] -> Service<| |>

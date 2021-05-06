@@ -16,7 +16,9 @@ define cfssl::config (
     unless $auth_keys.has_key($default_auth_key) {
         fail("auth_keys must have an entry for '${default_auth_key}'")
     }
-    include cfssl
+    if $ensure == 'present' {
+        include cfssl
+    }
     $safe_title = $title.regsubst('\W', '_', 'G')
     $_path = $path ? {
         undef   => "${cfssl::conf_dir}/${safe_title}.conf",
