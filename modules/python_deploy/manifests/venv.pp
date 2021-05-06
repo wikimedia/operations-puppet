@@ -34,6 +34,6 @@ class python_deploy::venv (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/python_deploy_venv/python_deploy_venv.sh',
+        source => 'puppet:///modules/python_deploy/python_deploy_venv.sh',
     }
 }
