@@ -1,9 +1,12 @@
 class profile::toolforge::k8s::haproxy (
-    Array[Stdlib::Fqdn] $ingress_nodes = lookup('profile::toolforge::k8s::ingress_nodes',  {default_value => ['localhost']}),
-    Stdlib::Port        $ingress_port  = lookup('profile::toolforge::k8s::ingress_port',   {default_value => 30000}),
-    Array[Stdlib::Fqdn] $control_nodes = lookup('profile::toolforge::k8s::control_nodes',  {default_value => ['localhost']}),
-    Stdlib::Port        $api_port      = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
-    Stdlib::Port        $jobs_port     = lookup('profile::toolforge::jobs_api_port',       {default_value => 30001}),
+    Array[Stdlib::Fqdn] $ingress_nodes       = lookup('profile::toolforge::k8s::ingress_nodes',                {default_value => ['localhost']}),
+    Stdlib::Port        $ingress_port        = lookup('profile::toolforge::k8s::ingress_port',                 {default_value => 30000}),
+    Array[Stdlib::Fqdn] $control_nodes       = lookup('profile::toolforge::k8s::control_nodes',                {default_value => ['localhost']}),
+    Stdlib::Port        $api_port            = lookup('profile::toolforge::k8s::apiserver_port',               {default_value => 6443}),
+    Stdlib::Port        $jobs_port           = lookup('profile::toolforge::jobs_api_port',                     {default_value => 30001}),
+    Array[Stdlib::Fqdn] $keepalived_vips     = lookup('profile::toolforge::k8s::haproxy::keepalived_vips',     {default_value => []}),
+    Array[Stdlib::Fqdn] $keepalived_peers    = lookup('profile::toolforge::k8s::haproxy::keepalived_peers',    {default_value => ['localhost']}),
+    String              $keepalived_password = lookup('profile::toolforge::k8s::haproxy::keepalived_password', {default_value => 'notarealpassword'}),
 ) {
     class { 'haproxy::cloud::base': }
 
@@ -33,4 +36,12 @@ class profile::toolforge::k8s::haproxy (
     }
 
     class { 'prometheus::haproxy_exporter': }
+
+    unless $keepalived_vips.empty {
+        class { 'keepalived':
+            auth_pass => $keepalived_password,
+            peers     => delete($keepalived_peers, $::fqdn),
+            vips      => $keepalived_vips.map |$host| { ipresolve($host, 4) },
+        }
+    }
 }
