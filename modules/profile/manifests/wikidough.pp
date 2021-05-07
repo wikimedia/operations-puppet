@@ -61,7 +61,7 @@ class profile::wikidough (
 
     monitoring::service { 'check_wikidough_doh':
         description   => 'Wikidough DoH Check',
-        check_command => 'check_https_on_port!malmok.wikimedia.org!443',
+        check_command => 'check_https_url_custom_ip!malmok.wikimedia.org!208.80.153.43!/',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
 
