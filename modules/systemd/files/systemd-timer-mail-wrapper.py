@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import getpass
 import os
 import smtplib
 import subprocess
@@ -51,6 +52,9 @@ def main():
     if output:
         msg = EmailMessage()
         msg['From'] = 'SYSTEMDTIMER <noreply@{}>'.format(getfqdn())
+        # Set an explicit sender for hosts with stricter exim config
+        # which requires From/Sender to be valid (T280744)
+        msg['Sender'] = '{}@{}'.format(getpass.getuser(), getfqdn())
         if os.getenv('MAILTO'):
             msg['To'] = os.getenv('MAILTO')
         else:
