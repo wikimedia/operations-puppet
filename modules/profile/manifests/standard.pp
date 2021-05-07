@@ -23,11 +23,16 @@ class profile::standard(
         include profile::debmonitor::client
 
     }
+
+    if $has_default_mail_relay {
+        include profile::mail::default_mail_relay
+    }
+
     class { 'standard':
-        has_default_mail_relay => $has_default_mail_relay,
         monitoring_hosts       => $monitoring_hosts,
     }
     if $enable_ip6_mapped {
         interface::add_ip6_mapped { 'main': }
     }
+
 }

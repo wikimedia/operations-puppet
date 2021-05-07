@@ -2,7 +2,6 @@
 # Class for *most* servers, standard includes
 
 class standard(
-    $has_default_mail_relay                = true,
     Array[String] $monitoring_hosts        = [],
 ) {
     include standard::ntp
@@ -12,12 +11,6 @@ class standard(
     }
 
     include standard::prometheus
-
-    # Some instances have their own exim definition that
-    # will conflict with this
-    if $has_default_mail_relay {
-        include standard::mail::sender
-    }
 
     # For historical reasons, users in modules/admin/data/data.yaml
     # (for production) and in LDAP (for Labs) start at uid/gid 500, so
