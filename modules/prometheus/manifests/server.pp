@@ -30,6 +30,7 @@
 #
 # [*storage_retention*]
 #   How long to save data for, old data will be expunged from disk eventually.
+#   Overriden by `storage_retention_size`.
 #
 # [*storage_retention_size*]
 #   Maximum number of bytes that can be stored for blocks. Units supported: KB, MB, GB, TB, PB. This flag is

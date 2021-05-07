@@ -4,6 +4,7 @@ class profile::wmcs::prometheus(
     Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
     Array[Stdlib::Host] $toolforge_redis_hosts = lookup('profile::wmcs::prometheus::toolforge_redis_hosts', {'default_value' => []}),
+    Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::wmcs::prometheus::storage_retention_size',   {default_value => undef}),
 ){
 
     include ::prometheus::blackbox_exporter
@@ -176,11 +177,12 @@ class profile::wmcs::prometheus(
     ]
 
     prometheus::server { 'labs':
-        listen_address        => '127.0.0.1:9900',
-        storage_retention     => $storage_retention,
-        max_chunks_to_persist => $max_chunks_to_persist,
-        memory_chunks         => $memory_chunks,
-        scrape_configs_extra  => [
+        listen_address         => '127.0.0.1:9900',
+        storage_retention      => $storage_retention,
+        storage_retention_size => $storage_retention_size,
+        max_chunks_to_persist  => $max_chunks_to_persist,
+        memory_chunks          => $memory_chunks,
+        scrape_configs_extra   => [
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $redis_jobs,
             $ceph_jobs, $galera_jobs,
