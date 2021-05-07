@@ -1,4 +1,6 @@
 class profile::wikidough (
+    Stdlib::Fqdn              $wikidough_domain = lookup('profile::wikidough::service_domain'),
+    Stdlib::IP::Address::V4   $wikidough_ipv4   = lookup('profile::wikidough::service_ipv4'),
     Dnsdist::Resolver         $resolver         = lookup('profile::wikidough::dnsdist::resolver'),
     Dnsdist::TLS_common       $tls_common       = lookup('profile::wikidough::dnsdist::tls::common'),
     Dnsdist::TLS_config       $tls_config_doh   = lookup('profile::wikidough::dnsdist::tls::doh'),
@@ -61,13 +63,13 @@ class profile::wikidough (
 
     monitoring::service { 'check_wikidough_doh':
         description   => 'Wikidough DoH Check',
-        check_command => 'check_https_url_custom_ip!malmok.wikimedia.org!208.80.153.43!/',
+        check_command => "check_https_url_custom_ip!${wikidough_domain}!${wikidough_ipv4}!/",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
 
     monitoring::service { 'check_wikidough_dot':
         description   => 'Wikidough DoT Check',
-        check_command => 'check_tcp_ssl!208.80.153.43!853',
+        check_command => "check_tcp_ssl!${wikidough_ipv4}!853",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
 

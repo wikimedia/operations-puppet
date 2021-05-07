@@ -1,3 +1,6 @@
+profile::wikidough::service_domain: 'malmok.wikimedia.org'
+profile::wikidough::service_ipv4: '208.80.153.43'
+
 profile::wikidough::dnsdist::resolver:
   name: 'resolver-1'
   host: 127.0.0.1
