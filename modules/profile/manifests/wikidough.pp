@@ -59,4 +59,16 @@ class profile::wikidough (
         require          => Class['dnsrecursor'],
     }
 
+    monitoring::service { 'check_wikidough_doh':
+        description   => 'Wikidough DoH Check',
+        check_command => 'check_https_on_port!malmok.wikimedia.org!443',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+    }
+
+    monitoring::service { 'check_wikidough_dot':
+        description   => 'Wikidough DoT Check',
+        check_command => 'check_tcp_ssl!208.80.153.43!853',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+    }
+
 }
