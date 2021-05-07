@@ -209,7 +209,7 @@ define command {
 # just like check_tcp but with SSL and custom -w and -c
 define command {
     command_name    check_tcp_ssl
-    command_line    $USER1$/check_tcp -S -H $ARG1$ -p $ARG2$ -w $ARG3$ -c $ARG4$
+    command_line    $USER1$/check_tcp -S -H $ARG1$ -p $ARG2$
     }
 
 # 'check_telnet' command definition
