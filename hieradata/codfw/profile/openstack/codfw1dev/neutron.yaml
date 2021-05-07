@@ -1,4 +1,3 @@
-profile::openstack::codfw1dev::neutron::enable_hacks: false
 profile::openstack::codfw1dev::neutron::db_host: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::neutron::base_interface: 'eno2'
 profile::openstack::codfw1dev::neutron::network_flat_interface_vlan: '2105'

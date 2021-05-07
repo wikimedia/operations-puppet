@@ -1,5 +1,3 @@
-profile::openstack::eqiad1::neutron::enable_hacks: false
-
 profile::openstack::eqiad1::neutron::base_interface: 'eno50'
 profile::openstack::eqiad1::neutron::bind_port: 19696
 profile::openstack::eqiad1::neutron::db_host: openstack.eqiad1.wikimediacloud.org

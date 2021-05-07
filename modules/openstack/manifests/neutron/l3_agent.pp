@@ -4,17 +4,12 @@ class openstack::neutron::l3_agent(
     $network_public_ip,
     $report_interval,
     $enabled=true,
-    Boolean $enable_hacks = true,
     ) {
 
     class { "openstack::neutron::l3_agent::${version}":
         dmz_cidr_array    => $dmz_cidr_array,
         network_public_ip => $network_public_ip,
         report_interval   => $report_interval,
-    }
-
-    if $enable_hacks {
-        class { "openstack::neutron::l3_agent::${version}::l3_agent_hacks": }
     }
 
     service {'neutron-l3-agent':

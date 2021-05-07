@@ -8,7 +8,6 @@ class profile::openstack::eqiad1::neutron::l3_agent(
     $network_public_ip = lookup('profile::openstack::eqiad1::neutron::network_public_ip'),
     $report_interval = lookup('profile::openstack::eqiad1::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::eqiad1::neutron::base_interface'),
-    Boolean $enable_hacks       = lookup('profile::openstack::eqiad1::neutron::enable_hacks', {default_value => true}),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -22,7 +21,6 @@ class profile::openstack::eqiad1::neutron::l3_agent(
         base_interface                       => $base_interface,
         network_flat_interface_vlan          => $network_flat_interface_vlan,
         network_flat_interface_vlan_external => $network_flat_interface_vlan_external,
-        enable_hacks                         => $enable_hacks,
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 
