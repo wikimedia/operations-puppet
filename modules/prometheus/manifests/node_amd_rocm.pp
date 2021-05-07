@@ -31,8 +31,15 @@ class prometheus::node_amd_rocm (
 
     # Collect every minute
     cron { 'prometheus_amd_rocm_stats':
-        ensure  => $ensure,
+        ensure  => absent,
         user    => 'root',
         command => "/usr/local/bin/prometheus-amd-rocm-stats --outfile ${outfile} --rocm-smi-path ${rocm_smi_path}",
+    }
+    systemd::timer::job { 'prometheus_amd_rocm_stats':
+        ensure      => $ensure,
+        description => 'Regular job to collect AMD ROCm GPU stats',
+        user        => 'root',
+        command     => "/usr/local/bin/prometheus-amd-rocm-stats --outfile ${outfile} --rocm-smi-path ${rocm_smi_path}",
+        interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
     }
 }
