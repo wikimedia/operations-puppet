@@ -33,26 +33,6 @@ testcases:
       "process": 157222
       }
     expected:
-      - timestamp: "2021-01-27T19:05:52.065752+00:00"
-        lineno: 741
-        filename: "log.py"
-        message: "Started rsync common"
-        type: "scap"
-        funcName: "__enter__"
-        script: "/usr/bin/scap"
-        module: "log"
-        program: "scap"
-        user: "mwdeploy"
-        facility: "user"
-        level: "INFO"
-        levelname: "INFO"
-        normalized_message: "Started rsync common"
-        pathname: "/usr/lib/python2.7/dist-packages/scap/log.py"
-        channel: "sync_common.timer"
-        logsource: "mw1354"
-        host: "mw1354"
-        process: 157222
-
       - message: "Started rsync common"
         labels:
           channel: "sync_common.timer"
