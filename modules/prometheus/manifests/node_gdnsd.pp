@@ -30,11 +30,6 @@ class prometheus::node_gdnsd (
     }
 
     # Collect every minute
-    cron { 'prometheus_gdnsd_stats':
-        ensure  => absent,
-        user    => 'root',
-        command => "/usr/local/bin/prometheus-gdnsd-stats --outfile ${outfile}",
-    }
     systemd::timer::job { 'prometheus_gdnsd_stats':
         ensure      => $ensure,
         description => 'Regular job to collect gdnsd stats',
