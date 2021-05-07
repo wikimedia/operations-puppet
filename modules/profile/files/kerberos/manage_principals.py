@@ -23,12 +23,18 @@ def parse_args(argv):
                    choices=['get', 'list', 'create', 'delete', 'reset-password'],
                    help="Action to perform with the principal.")
     p.add_argument('principal', action='store',
-                   help="Name of the Kerberos Principal to use (without @REALM suffix)."
+                   help="Name of the Kerberos Principal to use (without @REALM suffix). "
                    "The list command also works with wildcards like the char '*'.")
     p.add_argument('--email_address', action='store',
-                   help="Email address of the user to send the temporary password to.")
+                   help="Email address of the user to send the temporary password to. "
+                   "Required for some actions.")
 
     args = p.parse_args(argv)
+
+    if args.action in {'reset-password', 'create'} and not args.email_address:
+        p.error(f'{args.action} requires an argument for --email_address')
+        sys.exit(1)
+
     return args
 
 
@@ -180,9 +186,9 @@ def main():
             print("Principal successfully created. Make sure to update data.yaml in Puppet.")
         else:
             sys.exit(1)
-        if email_address:
-            subject = "New Kerberos user {} created".format(principal)
-            send_email(email_address, principal, password, subject=subject)
+
+        subject = "New Kerberos user {} created".format(principal)
+        send_email(email_address, principal, password, subject=subject)
     elif action == "delete":
         ret = delete_principal(principal, realm)
         if ret == 0:
@@ -206,8 +212,6 @@ def main():
 
         subject = "Kerberos password reset for user {}".format(principal)
         send_email(email_address, principal, password, subject=subject)
-
-        print("Emailed password to user.")
 
 
 if __name__ == '__main__':
