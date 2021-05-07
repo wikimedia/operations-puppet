@@ -43,9 +43,12 @@ def is_archiving_disabled(listname) -> bool:
 def main() -> int:
     exclude_backups = set(json.loads(Path('/etc/exclude_backups_list.json').read_text()))
     archiving_disabled = set()
-    for listname in get_all_lists():
+    all_lists = get_all_lists()
+    for listname in all_lists:
         if is_archiving_disabled(listname):
             archiving_disabled.add(listname)
+    # Some lists are no longer in MM2, so ignore them
+    exclude_backups.intersection_update(set(all_lists))
     if exclude_backups != archiving_disabled:
         print("exclude_backups does not match lists with archiving disabled")
         exclude_extra = exclude_backups.difference(archiving_disabled)
