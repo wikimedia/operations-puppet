@@ -99,12 +99,12 @@ define command {
 
 define command {
     command_name    check_https_on_port
-    command_line    $USER1$/check_http --ssl --sni -H $HOSTADDRESS$ -p $ARG1$
+    command_line    $USER1$/check_http --ssl --sni -C10,7 -H $HOSTADDRESS$ -p $ARG1$
     }
 
 define command {
     command_name    check_https_port_status
-    command_line    $USER1$/check_http --ssl --sni -H $HOSTADDRESS$ -p $ARG1$ -e $ARG2$ -u $ARG3$
+    command_line    $USER1$/check_http --ssl --sni -C10,7 -H $HOSTADDRESS$ -p $ARG1$ -e $ARG2$ -u $ARG3$
     }
 
 define command {
@@ -114,12 +114,12 @@ define command {
 
 define command {
     command_name    check_https_unauthorized
-    command_line    $USER1$/check_http --ssl --sni -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 $ARG3$ "
+    command_line    $USER1$/check_http --ssl --sni -C10,7 -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 $ARG3$ "
     }
 
 define command {
     command_name    check_https_client_auth_puppet
-        command_line    $USER1$/check_http --ssl --sni -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 $ARG3$ " -J <%= @config_dir %>/ssl/cert.pem -K <%= @config_dir %>/ssl/server.key -j $ARG4$
+        command_line    $USER1$/check_http --ssl --sni -C10,7 -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 $ARG3$ " -J <%= @config_dir %>/ssl/cert.pem -K <%= @config_dir %>/ssl/server.key -j $ARG4$
     }
 
 ## It seems some sites respond with location: and others with Location
@@ -131,13 +131,13 @@ define command {
 ## It seems some sites respond with location: and others with Location
 define command {
     command_name    check_https_redirect
-    command_line    $USER1$/check_http --ssl --sni -I $HOSTADDRESS$ -p $ARG1$ -H $ARG2$ -u $ARG3$ -e "HTTP/1.1 $ARG4$ " -d "ocation: $ARG5$"
+    command_line    $USER1$/check_http --ssl --sni -C10,7 -I $HOSTADDRESS$ -p $ARG1$ -H $ARG2$ -u $ARG3$ -e "HTTP/1.1 $ARG4$ " -d "ocation: $ARG5$"
     }
 
 ## It seems some sites respond with location: and others with Location
 define command {
     command_name    check_https_sso_redirect
-    command_line    $USER1$/check_http --ssl --sni -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 302" -d "ocation: https://idp.wikimedia.org/"
+    command_line    $USER1$/check_http --ssl --sni -C10,7 -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 302" -d "ocation: https://idp.wikimedia.org/"
     }
 
 define command {
@@ -309,12 +309,12 @@ define command {
 
 define command {
     command_name    check_https_url_at_address_for_string
-    command_line    $USER1$/check_http -H $ARG1$ -I $ARG1$ --ssl --sni -u $ARG2$ -s $ARG3$
+    command_line    $USER1$/check_http -H $ARG1$ -I $ARG1$ -C10,7 --ssl --sni -u $ARG2$ -s $ARG3$
     }
 
 define command {
     command_name    check_https_url_at_address_for_minsize
-    command_line    $USER1$/check_http -H $ARG1$ -I $ARG1$ --ssl --sni -u $ARG2$ -m $ARG3$
+    command_line    $USER1$/check_http -H $ARG1$ -I $ARG1$ -C10,7 --ssl --sni -u $ARG2$ -m $ARG3$
     }
 
 define command {
@@ -324,7 +324,7 @@ define command {
 
 define command {
     command_name    check_https_url_for_string
-    command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ --ssl --sni -u $ARG2$ -s $ARG3$
+    command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -C10,7 --ssl --sni -u $ARG2$ -s $ARG3$
     }
 
 define command {
@@ -349,12 +349,12 @@ define command {
 
 define command {
     command_name    check_https_hostheader_port_url
-    command_line    $USER1$/check_http --ssl --sni -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -u "$ARG3$"
+    command_line    $USER1$/check_http -C10,7 --ssl --sni -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -u "$ARG3$"
     }
 
 define command {
     command_name    check_https_url
-    command_line    $USER1$/check_http -H $ARG1$ --ssl --sni -I $HOSTADDRESS$ -u $ARG2$
+    command_line    $USER1$/check_http -H $ARG1$ -C10,7 --ssl --sni -I $HOSTADDRESS$ -u $ARG2$
     }
 
 define command {
