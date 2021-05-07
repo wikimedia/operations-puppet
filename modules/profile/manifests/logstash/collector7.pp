@@ -170,7 +170,7 @@ class profile::logstash::collector7 (
 
     logstash::input::kafka { 'clienterror-eqiad':
         kafka_cluster_name                    => 'logging-eqiad',
-        topic                                 => 'eqiad.mediawiki.client.error',
+        topics_pattern                        => 'eqiad\.mediawiki\.client\.error|eqiad\.kaios_app\.error',
         group_id                              => $input_kafka_consumer_group_id,
         type                                  => 'clienterror',
         tags                                  => ['input-kafka-clienterror-eqiad', 'kafka', 'es'],
@@ -183,7 +183,7 @@ class profile::logstash::collector7 (
 
     logstash::input::kafka { 'clienterror-codfw':
         kafka_cluster_name                    => 'logging-codfw',
-        topic                                 => 'codfw.mediawiki.client.error',
+        topics_pattern                        => 'codfw\.mediawiki\.client\.error|codfw\.kaios_app\.error',
         group_id                              => $input_kafka_consumer_group_id,
         type                                  => 'clienterror',
         tags                                  => ['input-kafka-clienterror-codfw', 'kafka', 'es'],
