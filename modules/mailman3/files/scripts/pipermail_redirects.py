@@ -121,9 +121,9 @@ def main() -> int:
         txt.unlink()
     with txt.open("a") as f:
         for month in sorted(public.iterdir()):
-            print(f"Going through {month.name}...")
             if not month.name.startswith("20") or not month.is_dir():
                 continue
+            print(f"Going through {month.name}...")
             for email in sorted(month.iterdir()):
                 if email.name.startswith("0") and email.name.endswith(".html"):
                     line = handle_email(listname, email)
