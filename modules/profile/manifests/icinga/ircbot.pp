@@ -8,7 +8,7 @@ class profile::icinga::ircbot(
 ) {
     $ircecho_logs   = {
         '/var/log/icinga/irc.log'             => '#wikimedia-operations',
-        '/var/log/icinga/irc-wikidata.log'    => '#wikidata',
+        '/var/log/icinga/irc-wikidata.log'    => '#wikidata-feed',
         '/var/log/icinga/irc-releng.log'      => '#wikimedia-releng',
         '/var/log/icinga/irc-cloud-feed.log'  => '#wikimedia-cloud-feed',
         '/var/log/icinga/irc-analytics.log'   => '#wikimedia-analytics',
