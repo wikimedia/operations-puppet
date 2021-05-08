@@ -14,6 +14,7 @@ class profile::wmcs::kubeadm::control (
     Optional[Integer]   $etcd_heartbeat_interval = lookup('profile::wmcs::kubeadm::etcd_heartbeat_interval', {default_value => undef}),
     Optional[Integer]   $etcd_election_timeout = lookup('profile::wmcs::kubeadm::etcd_election_timeout', {default_value => undef}),
     Optional[Integer]   $etcd_snapshot_ct = lookup('profile::wmcs::kubeadm::etcd_snapshot_ct', {default_value => undef}),
+    Array[Stdlib::Fqdn] $apiserver_cert_alternative_names = lookup('profile::wmcs::kubeadm::control::apiserver_cert_alternative_names', {default_value => []}),
 ) {
     require profile::wmcs::kubeadm::preflight_checks
 
@@ -77,19 +78,20 @@ class profile::wmcs::kubeadm::control (
     # TODO: eventually we may need overriding this CIDR
     $pod_subnet = '192.168.0.0/16'
     class { '::kubeadm::init_yaml':
-        stacked                 => $stacked_control_plane,
-        etcd_hosts              => $etcd_hosts,
-        apiserver               => $apiserver,
-        pod_subnet              => $pod_subnet,
-        node_token              => $node_token,
-        k8s_etcd_cert_pub       => $k8s_etcd_cert_pub,
-        k8s_etcd_cert_priv      => $k8s_etcd_cert_priv,
-        k8s_etcd_cert_ca        => $k8s_etcd_cert_ca,
-        encryption_key          => $encryption_key,
-        kubernetes_version      => $kubernetes_version,
-        etcd_heartbeat_interval => $etcd_heartbeat_interval,
-        etcd_election_timeout   => $etcd_election_timeout,
-        etcd_snapshot_ct        => $etcd_snapshot_ct,
+        stacked                          => $stacked_control_plane,
+        etcd_hosts                       => $etcd_hosts,
+        apiserver                        => $apiserver,
+        pod_subnet                       => $pod_subnet,
+        node_token                       => $node_token,
+        k8s_etcd_cert_pub                => $k8s_etcd_cert_pub,
+        k8s_etcd_cert_priv               => $k8s_etcd_cert_priv,
+        k8s_etcd_cert_ca                 => $k8s_etcd_cert_ca,
+        encryption_key                   => $encryption_key,
+        kubernetes_version               => $kubernetes_version,
+        etcd_heartbeat_interval          => $etcd_heartbeat_interval,
+        etcd_election_timeout            => $etcd_election_timeout,
+        etcd_snapshot_ct                 => $etcd_snapshot_ct,
+        apiserver_cert_alternative_names => $apiserver_cert_alternative_names,
     }
 
     class { '::kubeadm::calico_yaml':

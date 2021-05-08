@@ -12,6 +12,7 @@ class kubeadm::init_yaml (
     Optional[Integer]             $etcd_heartbeat_interval = undef,
     Optional[Integer]             $etcd_election_timeout = undef,
     Optional[Integer]             $etcd_snapshot_ct = undef,
+    Array[Stdlib::Fqdn]           $apiserver_cert_alternative_names = [],
 ) {
     # because /etc/kubernetes
     require ::kubeadm::core

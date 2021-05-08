@@ -38,6 +38,12 @@ apiServer:
       mountPath: "/etc/kubernetes/admission"
       readOnly: true
       pathType: Directory
+  <%- unless @apiserver_cert_alternative_names.empty? -%>
+  certSANs:
+    <%- @apiserver_cert_alternative_names.each do |name| -%>
+    - "<%= name -%>"
+    <%- end -%>
+  <%- end -%>
 controller-manager:
   extraArgs:
     profiling: "false"
