@@ -42,7 +42,9 @@ session = requests.session()
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Generate pipermail redirects")
-    parser.add_argument("listname")
+    parser.add_argument("listname", help="List name")
+    parser.add_argument("--rebuild-only", action="store_true", help="Only rebuild redirects.dbm")
+    parser.add_argument("--no-rebuild", action="store_true", help="Don't rebuild redirects.dbm")
     return parser.parse_args()
 
 
@@ -102,6 +104,9 @@ def rebuild_dbm():
 
 def main() -> int:
     args = parse_args()
+    if args.rebuild_only:
+        rebuild_dbm()
+        return 0
     listname = args.listname
     public = Path(f"/var/lib/mailman/archives/public/{listname}")
     if not public.exists():
@@ -116,6 +121,7 @@ def main() -> int:
         txt.unlink()
     with txt.open("a") as f:
         for month in sorted(public.iterdir()):
+            print(f"Going through {month.name}...")
             if not month.name.startswith("20") or not month.is_dir():
                 continue
             for email in sorted(month.iterdir()):
@@ -125,7 +131,9 @@ def main() -> int:
                         f.write(f"{line}\n")
 
     # Now rebuild the entire dbm
-    rebuild_dbm()
+    if not args.no_rebuild:
+        rebuild_dbm()
+
     return 0
 
 
