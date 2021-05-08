@@ -48,8 +48,21 @@ def parse_args():
     return parser.parse_args()
 
 
+def read_email(path: Path) -> str:
+    """read from disk, otherwise get it over HTTP"""
+    try:
+        return path.read_text()
+    except UnicodeDecodeError:
+        pass
+    # Strip /var/lib/mailman/archives/public/ prefix
+    part = str(path)[33:]
+    req = session.get(f"https://lists.wikimedia.org/pipermail/{part}")
+    req.raise_for_status()
+    return req.text
+
+
 def extract_in_reply_to(path: Path) -> Optional[str]:
-    text = path.read_text()
+    text = read_email(path)
     search = RE_LINK.search(text)
     if not search:
         print(f"Could not extract In-Reply-To from {path}, skipping")
