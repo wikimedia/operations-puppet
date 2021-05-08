@@ -318,6 +318,13 @@ list_suffix:
 				-subscribe : -unsubscribe
 	transport = list
 
+# Redirect "disabled-lists" to blackhole
+blackhole_disabled_lists:
+    driver = redirect
+    local_parts = disabled-lists
+    domains = +local_domains
+    data = :blackhole:
+
 # Redirect postmaster@$domain if it hasn't been accepted before
 postmaster:
 	driver = redirect
