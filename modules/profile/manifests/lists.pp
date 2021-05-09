@@ -139,7 +139,7 @@ class profile::lists (
     monitoring::service { 'https':
         description   => 'HTTPS',
         check_command => "check_ssl_http_letsencrypt!${lists_servername}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
     }
 
     # Don't monitor mailman processes on standby hosts. The mailman service is stopped there.
@@ -148,19 +148,19 @@ class profile::lists (
         nrpe::monitor_service { 'procs_mailmanctl':
             description  => 'mailman_ctl',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\'',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         }
 
         nrpe::monitor_service { 'procs_mailman_qrunner':
             description  => 'mailman_qrunner',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\'',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         }
 
         nrpe::monitor_service { 'mailman_queue':
             description  => 'mailman_queue_size',
             nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         }
 
         sudo::user { 'nagios_mailman_queue':
@@ -173,27 +173,28 @@ class profile::lists (
             nrpe::monitor_service { 'procs_mailman3':
                 description  => 'mailman3',
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman3/bin/master\'',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
             }
 
             # uwsgi powering mailman3
             nrpe::monitor_service { 'procs_mailman3_web':
                 description  => 'mailman3-web',
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 2:2 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
             }
 
             nrpe::monitor_service { 'mailman3_queue':
-                description  => 'mailman3_queue_size',
-                nrpe_command => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+                description     => 'mailman3_queue_size',
+                dashboard_links => ['https://grafana.wikimedia.org/d/GvuAmuuGk/mailman3'],
+                nrpe_command    => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
+                notes_url       => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
             }
 
             nrpe::monitor_service { 'mailman3_runners':
                 description  => 'mailman3_runners',
                 # As of Mailman Core 3.3.3, there are 14 runners
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 14:14 -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
             }
 
             prometheus::node_file_count {'track mailman3 queue depths':
@@ -218,14 +219,14 @@ class profile::lists (
 
     monitoring::service { 'mailman_listinfo':
         description   => 'mailman list info',
-        check_command => "check_https_url_for_string!${lists_servername}!/mailman/listinfo/wikimedia-l!\'Wikimedia Mailing List\'",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+        check_command => "check_https_url_for_string!${lists_servername}!/postorius/lists/wikimedia-l.lists.wikimedia.org/!\'Wikimedia Mailing List\'",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
     }
 
     monitoring::service { 'mailman_archives':
         description   => 'mailman archives',
-        check_command => "check_https_url_for_string!${lists_servername}!/pipermail/wikimedia-l/!\'The Wikimedia-l Archives\'",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+        check_command => "check_https_url_for_string!${lists_servername}!/hyperkitty/list/wikimedia-l@lists.wikimedia.org/!\'Wikimedia Mailing List\'",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
     }
 
     monitoring::check_prometheus { 'mailman_hours_until_empty_outbound_queue':
@@ -238,7 +239,7 @@ class profile::lists (
         check_interval  => 60,
         retry_interval  => 2,
         nan_ok          => true,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Mailman#Monitoring',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
     }
 
