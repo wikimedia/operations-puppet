@@ -215,6 +215,12 @@ propagate: no
 level: debug
 path: mailman.log
 
+[logging.bounce]
+level: debug
+
+[logging.debug]
+level: debug
+
 [webservice]
 # The hostname at which admin web service resources are exposed.
 hostname: localhost
@@ -278,4 +284,3 @@ remove_dkim_headers: yes
 class: mailman_hyperkitty.Archiver
 enable: yes
 configuration: /etc/mailman3/mailman-hyperkitty.cfg
-
