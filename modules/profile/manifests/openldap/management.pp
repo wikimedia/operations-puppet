@@ -59,6 +59,7 @@ class profile::openldap::management(
         require => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']] ,
         command => '/usr/local/bin/cross-validate-accounts',
         user    => 'accountcheck',
+        weekday => '1-5',  # Monday through Friday
         hour    => '4',
         minute  => '0',
     }
