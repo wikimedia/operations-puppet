@@ -17,29 +17,22 @@ class profile::openstack::codfw1dev::cloudgw (
     Hash                          $conntrackd     = lookup('profile::openstack::codfw1dev::cloudgw::conntrackd',       {default_value => {}}),
 ) {
     class { '::profile::openstack::base::cloudgw':
-        virt_vlan     => $virt_vlan,
-        virt_peer     => $virt_peer,
-        virt_floating => $virt_floating,
-        virt_cidr     => $virt_subnet,
-        wan_vlan      => $wan_vlan,
-        wan_addr      => $wan_addr,
-        wan_netm      => $wan_netm,
-        wan_gw        => $wan_gw,
-        all_phy_nics  => $all_phy_nics,
-        nic_dataplane => $nic_dataplane,
-        vrrp_vips     => $vrrp_vips,
-        vrrp_peer     => $vrrp_peer,
-        conntrackd    => $conntrackd,
+        dmz_cidr       => $dmz_cidr,
+        routing_source => $routing_source,
+        virt_subnet    => $virt_subnet,
+        virt_vlan      => $virt_vlan,
+        virt_peer      => $virt_peer,
+        virt_floating  => $virt_floating,
+        virt_cidr      => $virt_subnet,
+        wan_vlan       => $wan_vlan,
+        wan_addr       => $wan_addr,
+        wan_netm       => $wan_netm,
+        wan_gw         => $wan_gw,
+        all_phy_nics   => $all_phy_nics,
+        nic_dataplane  => $nic_dataplane,
+        vrrp_vips      => $vrrp_vips,
+        vrrp_peer      => $vrrp_peer,
+        conntrackd     => $conntrackd,
     }
     contain '::profile::openstack::base::cloudgw'
-
-    $nic_host = $nic_sshplane
-    $nic_virt = "${nic_dataplane}.${virt_vlan}"
-    $nic_wan  = "${nic_dataplane}.${wan_vlan}"
-
-    nftables::file { 'cloudgw':
-        ensure  => present,
-        order   => 1,
-        content => template('profile/openstack/codfw1dev/cloudgw.nft.erb'),
-    }
 }
