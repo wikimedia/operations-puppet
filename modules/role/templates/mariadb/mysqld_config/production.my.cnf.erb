@@ -138,7 +138,9 @@ innodb_file_format             = barracuda
 <% end -%>
 innodb_strict_mode             = 1
 innodb_purge_threads           = 1
+# Changed because of https://jira.mariadb.org/browse/MDEV-22373
 innodb_change_buffering        = none
+
 aria_pagecache_buffer_size     = 1G
 join_cache_level               = 8
 

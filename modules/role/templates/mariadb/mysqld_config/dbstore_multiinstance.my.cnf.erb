@@ -62,7 +62,9 @@ innodb_locks_unsafe_for_binlog = 1
 innodb_file_format             = barracuda
 <% end -%>
 innodb_purge_threads           = 1
+# Changed because of https://jira.mariadb.org/browse/MDEV-22373
 innodb_change_buffering        = none
+
 innodb_strict_mode             = 1
 
 # don't dump and load innodb buffer at start and stop

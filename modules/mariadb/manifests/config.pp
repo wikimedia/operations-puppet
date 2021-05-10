@@ -33,7 +33,7 @@ class mariadb::config(
     $replication_role        = 'standalone',
     $max_allowed_packet      = '16M',
     $innodb_pool_size        = undef,
-    $innodb_change_buffering = 'all',
+    $innodb_change_buffering = 'none',
     ) {
 
     $server_id = inline_template(
