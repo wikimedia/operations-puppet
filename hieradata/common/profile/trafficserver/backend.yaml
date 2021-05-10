@@ -347,8 +347,7 @@ profile::trafficserver::backend::outbound_tls_settings:
     enable_tlsv1_2: 1
     enable_tlsv1_3: 1
   verify_origin: true
-  cacert_dirpath: '/etc/ssl/certs'
-  cacert_filename: 'Puppet_Internal_CA.pem'
+  cacert_filename: '/etc/ssl/certs/Puppet_Internal_CA.pem'
 profile::trafficserver::backend::storage_elements:
     - devname: sda3
       id: disk.0
