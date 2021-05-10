@@ -246,7 +246,7 @@ profile::trafficserver::tls::extra_certs:
     sni: [
       'wikiworkshop.org', 'www.wikiworkshop.org'
     ]
-    warning_threshold: 30
+    warning_threshold: 21 
     critical_threshold: 15
 profile::lvs::realserver::pools:
   text-https:

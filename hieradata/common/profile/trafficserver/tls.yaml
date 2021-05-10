@@ -105,7 +105,7 @@ profile::trafficserver::tls::available_unified_certs:
       'wmfusercontent.org', '*.wmfusercontent.org',
       'w.wiki',
     ]
-    warning_threshold: 30
+    warning_threshold: 21 
     critical_threshold: 15
 profile::trafficserver::tls::http_settings:
   accept_no_activity_timeout: 180
