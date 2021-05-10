@@ -8,14 +8,14 @@ describe 'profile::openldap::management' do
       let(:params) { {cron_active: true} }
       it { is_expected.to compile.with_all_deps }
       it {
-        is_expected.to contain_cron('daily_account_consistency_check')
+        is_expected.to contain_systemd__timer__job('daily_account_consistency_check')
                         .with_ensure('present')
       }
     end
     context 'cron is inactive' do
       it { is_expected.to compile.with_all_deps }
       it {
-        is_expected.to contain_cron('daily_account_consistency_check')
+        is_expected.to contain_systemd__timer__job('daily_account_consistency_check')
                         .with_ensure('absent')
       }
     end

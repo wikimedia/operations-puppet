@@ -54,14 +54,14 @@ class profile::openldap::management(
         true => present,
         default => absent
     }
-    cron { 'daily_account_consistency_check':
-        ensure  => $ensure,
-        require => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']] ,
-        command => '/usr/local/bin/cross-validate-accounts',
-        user    => 'accountcheck',
-        weekday => '1-5',  # Monday through Friday
-        hour    => '4',
-        minute  => '0',
+    systemd::timer::job { 'daily_account_consistency_check':
+        ensure      =>  $ensure,
+        description => 'Daily account consistency check',
+        command     => '/usr/local/bin/cross-validate-accounts',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'Mon..Fri 04:00'},
+        user        => 'accountcheck',
+        send_mail   => true,
+        require     => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']],
     }
 
     class { '::phabricator::bot':
