@@ -359,7 +359,7 @@ define command {
 
 define command {
     command_name    check_https_url_custom_ip
-    command_line    $USER1$/check_http -H $ARG1$ --ssl --sni -I $ARG2$ -u $ARG3$
+    command_line    $USER1$/check_http -H $ARG1$ -C10,7 --ssl --sni -I $ARG2$ -u $ARG3$
     }
 
 define command {
