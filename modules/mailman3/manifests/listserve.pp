@@ -26,6 +26,7 @@ class mailman3::listserve (
             'mailman3',
             'python3-authheaders',
             'python3-falcon',
+            'python3-flufl.bounce',
             'python3-flufl.lock',
             'python3-importlib-resources',
             'python3-zope.interface',
