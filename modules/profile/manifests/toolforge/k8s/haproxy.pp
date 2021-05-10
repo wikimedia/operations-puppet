@@ -1,5 +1,14 @@
 class profile::toolforge::k8s::haproxy (
-    Array[Stdlib::Fqdn] $ingress_nodes       = lookup('profile::toolforge::k8s::ingress_nodes',                {default_value => ['localhost']}),
+    Array[
+        Variant[
+            Stdlib::Fqdn,
+            Struct[{
+                host      => Stdlib::Fqdn,
+                port      => Optional[Stdlib::Port],
+                jobs_port => Optional[Stdlib::Port],
+            }]
+        ]
+    ]                   $ingress_nodes       = lookup('profile::toolforge::k8s::ingress_nodes',                {default_value => ['localhost']}),
     Stdlib::Port        $ingress_port        = lookup('profile::toolforge::k8s::ingress_port',                 {default_value => 30000}),
     Array[Stdlib::Fqdn] $control_nodes       = lookup('profile::toolforge::k8s::control_nodes',                {default_value => ['localhost']}),
     Stdlib::Port        $api_port            = lookup('profile::toolforge::k8s::apiserver_port',               {default_value => 6443}),
