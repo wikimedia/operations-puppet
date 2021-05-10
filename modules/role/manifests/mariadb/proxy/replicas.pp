@@ -6,7 +6,6 @@ class role::mariadb::proxy::replicas {
         description => 'DB Proxy with load balancing',
     }
     include ::profile::mariadb::proxy
-    include ::profile::mariadb::proxy::replicas
     include ::profile::mariadb::proxy::multiinstance_replicas
     include profile::lvs::realserver
 }
