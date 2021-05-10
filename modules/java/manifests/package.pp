@@ -34,11 +34,13 @@ define java::package(
         ensure_packages($package_name)
     }
 
+    $security_file_template = "java/java-${package_info['version']}.security.erb"
+
     # Use a custom java.security on this host, so that we can restrict the allowed
     # certificate's sigalgs.
     if $hardened_tls {
         file { "/etc/java-${package_info['version']}-openjdk/security/java.security":
-            content => template('java/java.security.erb'),
+            content => template($security_file_template),
             require => Package[$package_name],
         }
     }

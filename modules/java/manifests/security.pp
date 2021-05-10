@@ -11,7 +11,7 @@ class java::security {
     # certificate's sigalgs.
     $_egd_source = '/dev/random'
     file { '/etc/java-8-openjdk/security/java.security':
-        content => template('java/java.security.erb'),
+        content => template('java/java-8.security.erb'),
         require => Package['openjdk-8-jdk'],
     }
 }
