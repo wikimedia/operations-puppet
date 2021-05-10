@@ -325,6 +325,7 @@ codfw:
     ldap-replica2003.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica2004.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica2005.wikimedia.org: [ldap-ro, ldap-ro-ssl]
+    ldap-replica2006.wikimedia.org: [ldap-ro, ldap-ro-ssl]
   logstash:
     logstash2004.codfw.wmnet: [kibana, kibana-ssl]
     logstash2005.codfw.wmnet: [kibana, kibana-ssl]

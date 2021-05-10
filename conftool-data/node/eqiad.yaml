@@ -330,6 +330,8 @@ eqiad:
   ldap-ro:
     ldap-replica1001.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica1002.wikimedia.org: [ldap-ro, ldap-ro-ssl]
+    ldap-replica1003.wikimedia.org: [ldap-ro, ldap-ro-ssl]
+    ldap-replica1004.wikimedia.org: [ldap-ro, ldap-ro-ssl]
   kubernetes:
     kubemaster1001.eqiad.wmnet: [kubemaster]
     kubemaster1002.eqiad.wmnet: [kubemaster]
