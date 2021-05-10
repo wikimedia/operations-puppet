@@ -1,5 +1,4 @@
 class profile::openstack::base::cloudgw (
-    Array[String]       $all_phy_nics = lookup('profile::openstack::base::cloudgw::all_phy_nics', {default_value => ['eno1']}),
     Integer             $virt_vlan    = lookup('profile::openstack::base::cloudgw::virt_vlan',    {default_value => 2107}),
     Stdlib::IP::Address $virt_peer    = lookup('profile::openstack::base::cloudgw::virt_peer',    {default_value => '127.0.0.5'}),
     Stdlib::IP::Address $virt_floating= lookup('profile::openstack::base::cloudgw::virt_floating',{default_value => '127.0.0.5/24'}),
