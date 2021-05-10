@@ -3,7 +3,7 @@ profile::standard::admin_groups:
   - perf-team
 
 # primary node with logging::mediawiki::udp2log role.
-profile::webperf::arclamp::redis_host: 'mwlog1001.eqiad.wmnet'
+profile::webperf::arclamp::redis_host: 'mwlog1002.eqiad.wmnet'
 profile::webperf::arclamp::redis_port: 6379
 
 profile::webperf::arclamp::errors_mailto: 'performance-team@wikimedia.org'
