@@ -22,7 +22,7 @@ class wikimania_scholarships(
     Stdlib::Fqdn $hostname       = 'scholarships.wikimedia.org',
     Stdlib::Unixpath $deploy_dir = '/srv/deployment/scholarships/scholarships',
     Stdlib::Unixpath $cache_dir  = '/var/cache/scholarships',
-    Stdlib::Fqdn $udp2log_host   = 'mwlog1001.eqiad.wmnet',
+    Stdlib::Fqdn $udp2log_host   = 'mwlog1002.eqiad.wmnet',
     Stdlib::Port $udp2log_port   = 8420,
     String $serveradmin          = 'noc@wikimedia.org',
     Stdlib::Host $mysql_host     = 'localhost',
