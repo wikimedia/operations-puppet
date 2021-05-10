@@ -32,7 +32,7 @@ if [[ ! -d "${PROJECT_DIR}/cache" ]]; then
 fi
 
 # Update cache
-git -C "${PROJECT_DIR}/cache" pull --recurse-submodules
+git -C "${PROJECT_DIR}/cache" pull --ff-only --recurse-submodules
 
 # Clone from cache
 echo "Deleting directories ${PROJECT_DIR}/new/ ${PROJECT_DIR}/venv-new/"
