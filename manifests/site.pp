@@ -191,28 +191,28 @@ node /^authdns[12]001\.wikimedia\.org$/ {
 node 'backup1001.eqiad.wmnet' {
     role(backup)
 }
-# eqiad storage daemon and backup generation for ES databases
+# eqiad backup generation for External Storage databases
 node 'backup1002.eqiad.wmnet' {
     role(dbbackups::content)
 }
 
-# eqiad new backup node T274184
+# eqiad bacula storage for External Storage databases
 node 'backup1003.eqiad.wmnet' {
-    role(insetup)
+    role(backup::es)
 }
 
 # codfw storage daemon
 node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
 }
-# codfw storage daemon and backup generation for ES databases
+# codfw backup generation for External Storage databases
 node 'backup2002.codfw.wmnet' {
     role(dbbackups::content)
 }
 
-# codfw new backup node T274185
+# codfw bacula for External Storage DBs
 node 'backup2003.codfw.wmnet' {
-    role(insetup)
+    role(backup::es)
 }
 
 # codfw new backup nodes T277323
