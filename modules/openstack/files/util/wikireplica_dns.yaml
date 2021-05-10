@@ -27,7 +27,7 @@ zones:
       - 172.16.6.105
     wikilabels:
       - 172.16.3.117
-  analytics.db.svc.eqiad.wmflabs.:
+  analytics.db.svc.wikimedia.cloud.: &analytics
     s1:
       - 172.16.1.6
     s2:
@@ -44,7 +44,8 @@ zones:
       - 172.16.1.152
     s8:
       - 172.16.2.31
-  web.db.svc.eqiad.wmflabs.:
+  analytics.db.svc.eqiad.wmflabs.: *analytics
+  web.db.svc.wikimedia.cloud.: &web
     s1:
       - 172.16.2.36
     s2:
@@ -61,40 +62,7 @@ zones:
       - 172.16.2.51
     s8:
       - 172.16.1.148
-  analytics.db.svc.wikimedia.cloud.:
-    s1:
-      - 172.16.1.6
-    s2:
-      - 172.16.0.111
-    s3:
-      - 172.16.1.129
-    s4:
-      - 172.16.1.221
-    s5:
-      - 172.16.0.220
-    s6:
-      - 172.16.2.12
-    s7:
-      - 172.16.1.152
-    s8:
-      - 172.16.2.31
-  web.db.svc.wikimedia.cloud.:
-    s1:
-      - 172.16.2.36
-    s2:
-      - 172.16.1.206
-    s3:
-      - 172.16.2.50
-    s4:
-      - 172.16.2.53
-    s5:
-      - 172.16.0.157
-    s6:
-      - 172.16.1.246
-    s7:
-      - 172.16.2.51
-    s8:
-      - 172.16.1.148
+  web.db.svc.eqiad.wmflabs.: *web
 cnames:
   s7.analytics.db.svc.eqiad.wmflabs.:
     - centralauth.analytics.db.svc.eqiad.wmflabs.
