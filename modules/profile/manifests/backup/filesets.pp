@@ -58,6 +58,8 @@ class profile::backup::filesets() {
         excludes => [
             # In progress digests, see T279237#7025093
             '/var/lib/mailman3/lists/*/digest.mmdf',
+            # Queue state
+            '/var/lib/mailman3/queue/',
             # Packaged stuff
             '/var/lib/mailman3/web/static/',
         ],
