@@ -1,5 +1,11 @@
 # NOTE: This file is managed by Puppet.
 #
+# The following WMF-specific changes are made compared to the
+# upstream file:
+# sun.security.krb5.disableReferrals=true
+# securerandom.source=file:<%= @_egd_source %>
+# jdk.security.legacyAlgorithms: Add DSA, SHA1, SHA224, DSA, RSA keySize < 2048, DSA keySize < 2048
+
 # This is the "master security properties file".
 #
 # An alternate java.security properties file may be specified
@@ -34,9 +40,9 @@
 #
 # Each provider must implement a subclass of the Provider class.
 # To register a provider in this master security properties file,
-# specify the Provider subclass name and priority in the format
+# specify the provider and priority in the format
 #
-#    security.provider.<n>=<className>
+#    security.provider.<n>=<provName | className>
 #
 # This declares a provider, and specifies its preference
 # order n. The preference order is the order in which providers are
@@ -44,20 +50,15 @@
 # requested). The order is 1-based; 1 is the most preferred, followed
 # by 2, and so on.
 #
+# <provName> must specify the name of the Provider as passed to its super
+# class java.security.Provider constructor. This is for providers loaded
+# through the ServiceLoader mechanism.
+#
 # <className> must specify the subclass of the Provider class whose
 # constructor sets the values of various properties that are required
 # for the Java Security API to look up the algorithms or other
-# facilities implemented by the provider.
-#
-# There must be at least one provider specification in java.security.
-# There is a default provider that comes standard with the JDK. It
-# is called the "SUN" provider, and its Provider subclass
-# named Sun appears in the sun.security.provider package. Thus, the
-# "SUN" provider is registered via the following:
-#
-#    security.provider.1=sun.security.provider.Sun
-#
-# (The number 1 is used for the default provider.)
+# facilities implemented by the provider. This is for providers loaded
+# through classpath.
 #
 # Note: Providers can be dynamically registered instead by calls to
 # either the addProvider or insertProviderAt method in the Security
@@ -66,42 +67,80 @@
 #
 # List of providers and their preference orders (see above):
 #
-security.provider.1=sun.security.provider.Sun
-security.provider.2=sun.security.rsa.SunRsaSign
-security.provider.3=sun.security.ec.SunEC
-security.provider.4=com.sun.net.ssl.internal.ssl.Provider
-security.provider.5=com.sun.crypto.provider.SunJCE
-security.provider.6=sun.security.jgss.SunProvider
-security.provider.7=com.sun.security.sasl.Provider
-security.provider.8=org.jcp.xml.dsig.internal.dom.XMLDSigRI
-security.provider.9=sun.security.smartcardio.SunPCSC
+security.provider.1=SUN
+security.provider.2=SunRsaSign
+security.provider.3=SunEC
+security.provider.4=SunJSSE
+security.provider.5=SunJCE
+security.provider.6=SunJGSS
+security.provider.7=SunSASL
+security.provider.8=XMLDSig
+security.provider.9=SunPCSC
+security.provider.10=JdkLDAP
+security.provider.11=JdkSASL
+security.provider.12=SunPKCS11
+
+#
+# A list of preferred providers for specific algorithms. These providers will
+# be searched for matching algorithms before the list of registered providers.
+# Entries containing errors (parsing, etc) will be ignored. Use the
+# -Djava.security.debug=jca property to debug these errors.
+#
+# The property is a comma-separated list of serviceType.algorithm:provider
+# entries. The serviceType (example: "MessageDigest") is optional, and if
+# not specified, the algorithm applies to all service types that support it.
+# The algorithm is the standard algorithm name or transformation.
+# Transformations can be specified in their full standard name
+# (ex: AES/CBC/PKCS5Padding), or as partial matches (ex: AES, AES/CBC).
+# The provider is the name of the provider. Any provider that does not
+# also appear in the registered list will be ignored.
+#
+# There is a special serviceType for this property only to group a set of
+# algorithms together. The type is "Group" and is followed by an algorithm
+# keyword. Groups are to simplify and lessen the entries on the property
+# line. Current groups are:
+#   Group.SHA2 = SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, SHA-512/256
+#   Group.HmacSHA2 = HmacSHA224, HmacSHA256, HmacSHA384, HmacSHA512
+#   Group.SHA2RSA = SHA224withRSA, SHA256withRSA, SHA384withRSA, SHA512withRSA
+#   Group.SHA2DSA = SHA224withDSA, SHA256withDSA, SHA384withDSA, SHA512withDSA
+#   Group.SHA2ECDSA = SHA224withECDSA, SHA256withECDSA, SHA384withECDSA, \
+#                     SHA512withECDSA
+#   Group.SHA3 = SHA3-224, SHA3-256, SHA3-384, SHA3-512
+#   Group.HmacSHA3 = HmacSHA3-224, HmacSHA3-256, HmacSHA3-384, HmacSHA3-512
+#
+# Example:
+#   jdk.security.provider.preferred=AES/GCM/NoPadding:SunJCE, \
+#         MessageDigest.SHA-256:SUN, Group.HmacSHA2:SunJCE
+#
+#jdk.security.provider.preferred=
+
 
 #
 # Sun Provider SecureRandom seed source.
 #
-# Select the primary source of seed data for the "SHA1PRNG" and
-# "NativePRNG" SecureRandom implementations in the "Sun" provider.
+# Select the primary source of seed data for the "NativePRNG", "SHA1PRNG"
+# and "DRBG" SecureRandom implementations in the "Sun" provider.
 # (Other SecureRandom implementations might also use this property.)
 #
 # On Unix-like systems (for example, Solaris/Linux/MacOS), the
-# "NativePRNG" and "SHA1PRNG" implementations obtains seed data from
+# "NativePRNG", "SHA1PRNG" and "DRBG" implementations obtains seed data from
 # special device files such as file:/dev/random.
 #
 # On Windows systems, specifying the URLs "file:/dev/random" or
 # "file:/dev/urandom" will enable the native Microsoft CryptoAPI seeding
-# mechanism for SHA1PRNG.
+# mechanism for SHA1PRNG and DRBG.
 #
 # By default, an attempt is made to use the entropy gathering device
 # specified by the "securerandom.source" Security property.  If an
 # exception occurs while accessing the specified URL:
 #
-#     SHA1PRNG:
-#         the traditional system/thread activity algorithm will be used.
-#
 #     NativePRNG:
 #         a default value of /dev/random will be used.  If neither
 #         are available, the implementation will be disabled.
 #         "file" is the only currently supported protocol type.
+#
+#     SHA1PRNG and DRBG:
+#         the traditional system/thread activity algorithm will be used.
 #
 # The entropy gathering device can also be specified with the System
 # property "java.security.egd". For example:
@@ -113,7 +152,7 @@ security.provider.9=sun.security.smartcardio.SunPCSC
 #
 # In addition, if "file:/dev/random" or "file:/dev/urandom" is
 # specified, the "NativePRNG" implementation will be more preferred than
-# SHA1PRNG in the Sun provider.
+# DRBG and SHA1PRNG in the Sun provider.
 #
 securerandom.source=file:<%= @_egd_source %>
 
@@ -127,7 +166,73 @@ securerandom.source=file:<%= @_egd_source %>
 # This is a comma-separated list of algorithm and/or algorithm:provider
 # entries.
 #
-securerandom.strongAlgorithms=NativePRNGBlocking:SUN
+securerandom.strongAlgorithms=NativePRNGBlocking:SUN,DRBG:SUN
+
+#
+# Sun provider DRBG configuration and default instantiation request.
+#
+# NIST SP 800-90Ar1 lists several DRBG mechanisms. Each can be configured
+# with a DRBG algorithm name, and can be instantiated with a security strength,
+# prediction resistance support, etc. This property defines the configuration
+# and the default instantiation request of "DRBG" SecureRandom implementations
+# in the SUN provider. (Other DRBG implementations can also use this property.)
+# Applications can request different instantiation parameters like security
+# strength, capability, personalization string using one of the
+# getInstance(...,SecureRandomParameters,...) methods with a
+# DrbgParameters.Instantiation argument, but other settings such as the
+# mechanism and DRBG algorithm names are not currently configurable by any API.
+#
+# Please note that the SUN implementation of DRBG always supports reseeding.
+#
+# The value of this property is a comma-separated list of all configurable
+# aspects. The aspects can appear in any order but the same aspect can only
+# appear at most once. Its BNF-style definition is:
+#
+#   Value:
+#     aspect { "," aspect }
+#
+#   aspect:
+#     mech_name | algorithm_name | strength | capability | df
+#
+#   // The DRBG mechanism to use. Default "Hash_DRBG"
+#   mech_name:
+#     "Hash_DRBG" | "HMAC_DRBG" | "CTR_DRBG"
+#
+#   // The DRBG algorithm name. The "SHA-***" names are for Hash_DRBG and
+#   // HMAC_DRBG, default "SHA-256". The "AES-***" names are for CTR_DRBG,
+#   // default "AES-128" when using the limited cryptographic or "AES-256"
+#   // when using the unlimited.
+#   algorithm_name:
+#     "SHA-224" | "SHA-512/224" | "SHA-256" |
+#     "SHA-512/256" | "SHA-384" | "SHA-512" |
+#     "AES-128" | "AES-192" | "AES-256"
+#
+#   // Security strength requested. Default "128"
+#   strength:
+#     "112" | "128" | "192" | "256"
+#
+#   // Prediction resistance and reseeding request. Default "none"
+#   //  "pr_and_reseed" - Both prediction resistance and reseeding
+#   //                    support requested
+#   //  "reseed_only"   - Only reseeding support requested
+#   //  "none"          - Neither prediction resistance not reseeding
+#   //                    support requested
+#   pr:
+#     "pr_and_reseed" | "reseed_only" | "none"
+#
+#   // Whether a derivation function should be used. only applicable
+#   // to CTR_DRBG. Default "use_df"
+#   df:
+#     "use_df" | "no_df"
+#
+# Examples,
+#   securerandom.drbg.config=Hash_DRBG,SHA-224,112,none
+#   securerandom.drbg.config=CTR_DRBG,AES-256,192,pr_and_reseed,use_df
+#
+# The default value is an empty string, which is equivalent to
+#   securerandom.drbg.config=Hash_DRBG,SHA-256,128,none
+#
+securerandom.drbg.config=
 
 #
 # Class to instantiate as the javax.security.auth.login.Configuration
@@ -142,140 +247,72 @@ login.configuration.provider=sun.security.provider.ConfigFile
 
 #
 # Class to instantiate as the system Policy. This is the name of the class
-# that will be used as the Policy object.
+# that will be used as the Policy object. The system class loader is used to
+# locate this class.
 #
 policy.provider=sun.security.provider.PolicyFile
 
 # The default is to have a single system-wide policy file,
 # and a policy file in the user's home directory.
-policy.url.1=file:${java.home}/lib/security/java.policy
+#
+policy.url.1=file:${java.home}/conf/security/java.policy
 policy.url.2=file:${user.home}/.java.policy
 
 # whether or not we expand properties in the policy file
 # if this is set to false, properties (${...}) will not be expanded in policy
 # files.
+#
 policy.expandProperties=true
 
 # whether or not we allow an extra policy to be passed on the command line
 # with -Djava.security.policy=somefile. Comment out this line to disable
 # this feature.
+#
 policy.allowSystemProperty=true
 
 # whether or not we look into the IdentityScope for trusted Identities
 # when encountering a 1.1 signed JAR file. If the identity is found
-# and is trusted, we grant it AllPermission.
+# and is trusted, we grant it AllPermission. Note: the default policy
+# provider (sun.security.provider.PolicyFile) does not support this property.
+#
 policy.ignoreIdentityScope=false
 
 #
 # Default keystore type.
 #
-keystore.type=jks
+keystore.type=pkcs12
 
 #
-# Controls compatibility mode for the JKS keystore type.
+# Controls compatibility mode for JKS and PKCS12 keystore types.
 #
-# When set to 'true', the JKS keystore type supports loading
-# keystore files in either JKS or PKCS12 format. When set to 'false'
-# it supports loading only JKS keystore files.
+# When set to 'true', both JKS and PKCS12 keystore types support loading
+# keystore files in either JKS or PKCS12 format. When set to 'false' the
+# JKS keystore type supports loading only JKS keystore files and the PKCS12
+# keystore type supports loading only PKCS12 keystore files.
 #
 keystore.type.compat=true
 
 #
 # List of comma-separated packages that start with or equal this string
-# will cause a security exception to be thrown when
-# passed to checkPackageAccess unless the
-# corresponding RuntimePermission ("accessClassInPackage."+package) has
-# been granted.
-package.access=sun.,\
-               org.GNOME.Accessibility.,\
-               com.sun.xml.internal.,\
-               com.sun.imageio.,\
-               com.sun.istack.internal.,\
-               com.sun.jmx.,\
-               com.sun.media.sound.,\
-               com.sun.naming.internal.,\
-               com.sun.proxy.,\
-               com.sun.corba.se.,\
-               com.sun.org.apache.bcel.internal.,\
-               com.sun.org.apache.regexp.internal.,\
-               com.sun.org.apache.xerces.internal.,\
-               com.sun.org.apache.xpath.internal.,\
-               com.sun.org.apache.xalan.internal.extensions.,\
-               com.sun.org.apache.xalan.internal.lib.,\
-               com.sun.org.apache.xalan.internal.res.,\
-               com.sun.org.apache.xalan.internal.templates.,\
-               com.sun.org.apache.xalan.internal.utils.,\
-               com.sun.org.apache.xalan.internal.xslt.,\
-               com.sun.org.apache.xalan.internal.xsltc.cmdline.,\
-               com.sun.org.apache.xalan.internal.xsltc.compiler.,\
-               com.sun.org.apache.xalan.internal.xsltc.trax.,\
-               com.sun.org.apache.xalan.internal.xsltc.util.,\
-               com.sun.org.apache.xml.internal.res.,\
-               com.sun.org.apache.xml.internal.resolver.helpers.,\
-               com.sun.org.apache.xml.internal.resolver.readers.,\
-               com.sun.org.apache.xml.internal.security.,\
-               com.sun.org.apache.xml.internal.serializer.utils.,\
-               com.sun.org.apache.xml.internal.utils.,\
-               com.sun.org.glassfish.,\
-               com.oracle.xmlns.internal.,\
-               com.oracle.webservices.internal.,\
-               oracle.jrockit.jfr.,\
-               org.jcp.xml.dsig.internal.,\
-               jdk.internal.,\
-               jdk.nashorn.internal.,\
-               jdk.nashorn.tools.,\
-               jdk.xml.internal.,\
-               com.sun.activation.registries.
+# will cause a security exception to be thrown when passed to the
+# SecurityManager::checkPackageAccess method unless the corresponding
+# RuntimePermission("accessClassInPackage."+package) has been granted.
+#
+package.access=sun.misc.,\
+               sun.reflect.,\
+               org.GNOME.Accessibility.
 
 #
 # List of comma-separated packages that start with or equal this string
-# will cause a security exception to be thrown when
-# passed to checkPackageDefinition unless the
-# corresponding RuntimePermission ("defineClassInPackage."+package) has
-# been granted.
+# will cause a security exception to be thrown when passed to the
+# SecurityManager::checkPackageDefinition method unless the corresponding
+# RuntimePermission("defineClassInPackage."+package) has been granted.
 #
-# by default, none of the class loaders supplied with the JDK call
+# By default, none of the class loaders supplied with the JDK call
 # checkPackageDefinition.
 #
-package.definition=sun.,\
-                   com.sun.xml.internal.,\
-                   com.sun.imageio.,\
-                   com.sun.istack.internal.,\
-                   com.sun.jmx.,\
-                   com.sun.media.sound.,\
-                   com.sun.naming.internal.,\
-                   com.sun.proxy.,\
-                   com.sun.corba.se.,\
-                   com.sun.org.apache.bcel.internal.,\
-                   com.sun.org.apache.regexp.internal.,\
-                   com.sun.org.apache.xerces.internal.,\
-                   com.sun.org.apache.xpath.internal.,\
-                   com.sun.org.apache.xalan.internal.extensions.,\
-                   com.sun.org.apache.xalan.internal.lib.,\
-                   com.sun.org.apache.xalan.internal.res.,\
-                   com.sun.org.apache.xalan.internal.templates.,\
-                   com.sun.org.apache.xalan.internal.utils.,\
-                   com.sun.org.apache.xalan.internal.xslt.,\
-                   com.sun.org.apache.xalan.internal.xsltc.cmdline.,\
-                   com.sun.org.apache.xalan.internal.xsltc.compiler.,\
-                   com.sun.org.apache.xalan.internal.xsltc.trax.,\
-                   com.sun.org.apache.xalan.internal.xsltc.util.,\
-                   com.sun.org.apache.xml.internal.res.,\
-                   com.sun.org.apache.xml.internal.resolver.helpers.,\
-                   com.sun.org.apache.xml.internal.resolver.readers.,\
-                   com.sun.org.apache.xml.internal.security.,\
-                   com.sun.org.apache.xml.internal.serializer.utils.,\
-                   com.sun.org.apache.xml.internal.utils.,\
-                   com.sun.org.glassfish.,\
-                   com.oracle.xmlns.internal.,\
-                   com.oracle.webservices.internal.,\
-                   oracle.jrockit.jfr.,\
-                   org.jcp.xml.dsig.internal.,\
-                   jdk.internal.,\
-                   jdk.nashorn.internal.,\
-                   jdk.nashorn.tools.,\
-                   jdk.xml.internal.,\
-                   com.sun.activation.registries.
+package.definition=sun.misc.,\
+                   sun.reflect.
 
 #
 # Determines whether this properties file can be appended to
@@ -320,7 +357,6 @@ ssl.TrustManagerFactory.algorithm=PKIX
 # For this reason the default caching policy is to maintain these
 # results for 10 seconds.
 #
-#
 networkaddress.cache.negative.ttl=10
 
 #
@@ -363,7 +399,7 @@ networkaddress.cache.negative.ttl=10
 # property is set then those two properties are ignored.
 #
 # Example,
-#   ocsp.responderCertSubjectName="CN=OCSP Responder, O=XYZ Corp"
+#   ocsp.responderCertSubjectName=CN=OCSP Responder, O=XYZ Corp
 
 #
 # Issuer name of the OCSP responder's certificate
@@ -378,7 +414,7 @@ networkaddress.cache.negative.ttl=10
 # property is ignored.
 #
 # Example,
-#   ocsp.responderCertIssuerName="CN=Enterprise CA, O=XYZ Corp"
+#   ocsp.responderCertIssuerName=CN=Enterprise CA, O=XYZ Corp
 
 #
 # Serial number of the OCSP responder's certificate
@@ -420,6 +456,7 @@ networkaddress.cache.negative.ttl=10
 # Example,
 #   krb5.kdc.bad.policy = tryLast
 #   krb5.kdc.bad.policy = tryLess:2,2000
+#
 krb5.kdc.bad.policy = tryLast
 
 #
@@ -448,6 +485,22 @@ sun.security.krb5.disableReferrals=true
 sun.security.krb5.maxReferrals=5
 
 #
+# This property contains a list of disabled EC Named Curves that can be included
+# in the jdk.[tls|certpath|jar].disabledAlgorithms properties.  To include this
+# list in any of the disabledAlgorithms properties, add the property name as
+# an entry.
+jdk.disabled.namedCurves = secp112r1, secp112r2, secp128r1, secp128r2, \
+    secp160k1, secp160r1, secp160r2, secp192k1, secp192r1, secp224k1, \
+    secp224r1, secp256k1, sect113r1, sect113r2, sect131r1, sect131r2, \
+    sect163k1, sect163r1, sect163r2, sect193r1, sect193r2, sect233k1, \
+    sect233r1, sect239k1, sect283k1, sect283r1, sect409k1, sect409r1, \
+    sect571k1, sect571r1, X9.62 c2tnb191v1, X9.62 c2tnb191v2, \
+    X9.62 c2tnb191v3, X9.62 c2tnb239v1, X9.62 c2tnb239v2, X9.62 c2tnb239v3, \
+    X9.62 c2tnb359v1, X9.62 c2tnb431r1, X9.62 prime192v2, X9.62 prime192v3, \
+    X9.62 prime239v1, X9.62 prime239v2, X9.62 prime239v3, brainpoolP256r1, \
+    brainpoolP320r1, brainpoolP384r1, brainpoolP512r1
+
+#
 # Algorithm restrictions for certification path (CertPath) processing
 #
 # In some environments, certain algorithms or key lengths may be undesirable
@@ -461,7 +514,7 @@ sun.security.krb5.maxReferrals=5
 #       " DisabledAlgorithm { , DisabledAlgorithm } "
 #
 #   DisabledAlgorithm:
-#       AlgorithmName [Constraint] { '&' Constraint }
+#       AlgorithmName [Constraint] { '&' Constraint } | IncludeProperty
 #
 #   AlgorithmName:
 #       (see below)
@@ -488,6 +541,9 @@ sun.security.krb5.maxReferrals=5
 #   UsageConstraint:
 #       usage [TLSServer] [TLSClient] [SignedJAR]
 #
+#   IncludeProperty:
+#       include <security property>
+#
 # The "AlgorithmName" is the standard algorithm name of the disabled
 # algorithm. See "Java Cryptography Architecture Standard Algorithm Name
 # Documentation" for information about Standard Algorithm Names.  Matching
@@ -499,6 +555,14 @@ sun.security.krb5.maxReferrals=5
 # the assertion algorithm name "DSA" will disable all certificate algorithms
 # that rely on DSA, such as NONEwithDSA, SHA1withDSA.  However, the assertion
 # will not disable algorithms related to "ECDSA".
+#
+# The "IncludeProperty" allows a implementation-defined security property that
+# can be included in the disabledAlgorithms properties.  These properties are
+# to help manage common actions easier across multiple disabledAlgorithm
+# properties.
+# There is one defined security property:  jdk.disabled.NamedCurves
+# See the property for more specific details.
+#
 #
 # A "Constraint" defines restrictions on the keys and/or certificates for
 # a specified AlgorithmName:
@@ -571,14 +635,29 @@ sun.security.krb5.maxReferrals=5
 #   jdk.certpath.disabledAlgorithms=MD2, DSA, RSA keySize < 2048
 #
 #
+jdk.certpath.disabledAlgorithms=MD2, MD5, SHA1, SHA224, DSA, SHA1 jdkCA & usage TLSServer, \
+    RSA keySize < 2048, DSA keySize < 2048, EC keySize < 224, \
+    include jdk.disabled.namedCurves
 
-# NOTE: The disabledAlgorithms has been modified for use with WMF Kafka brokers.
-#       See: https://phabricator.wikimedia.org/T182993
-# Original setting from upstream:
-#jdk.certpath.disabledAlgorithms=MD2, MD5, SHA1 jdkCA & usage TLSServer, \
-#     RSA keySize < 1024, DSA keySize < 1024, EC keySize < 224
+#
+# Legacy algorithms for certification path (CertPath) processing and
+# signed JAR files.
+#
+# In some environments, a certain algorithm or key length may be undesirable
+# but is not yet disabled.
+#
+# Tools such as keytool and jarsigner may emit warnings when these legacy
+# algorithms are used. See the man pages for those tools for more information.
+#
+# The syntax is the same as the "jdk.certpath.disabledAlgorithms" and
+# "jdk.jar.disabledAlgorithms" security properties.
+#
+# Note: This property is currently used by the JDK Reference
+# implementation. It is not guaranteed to be examined and used by other
+# implementations.
 
-jdk.certpath.disabledAlgorithms=MD2, MD5, SHA1, SHA224, DSA, RSA keySize < 2048, EC keySize < 224
+jdk.security.legacyAlgorithms=SHA1, \
+    RSA keySize < 2048, DSA keySize < 2048
 
 #
 # Algorithm restrictions for signed JAR files
@@ -621,15 +700,16 @@ jdk.certpath.disabledAlgorithms=MD2, MD5, SHA1, SHA224, DSA, RSA keySize < 2048,
 #
 # See "jdk.certpath.disabledAlgorithms" for syntax descriptions.
 #
-jdk.jar.disabledAlgorithms=MD2, MD5, RSA keySize < 1024, DSA keySize < 1024
+jdk.jar.disabledAlgorithms=MD2, MD5, RSA keySize < 1024, \
+      DSA keySize < 1024, include jdk.disabled.namedCurves
 
 #
 # Algorithm restrictions for Secure Socket Layer/Transport Layer Security
-# (SSL/TLS) processing
+# (SSL/TLS/DTLS) processing
 #
 # In some environments, certain algorithms or key lengths may be undesirable
-# when using SSL/TLS.  This section describes the mechanism for disabling
-# algorithms during SSL/TLS security parameters negotiation, including
+# when using SSL/TLS/DTLS.  This section describes the mechanism for disabling
+# algorithms during SSL/TLS/DTLS security parameters negotiation, including
 # protocol version negotiation, cipher suites selection, peer authentication
 # and key exchange mechanisms.
 #
@@ -654,8 +734,10 @@ jdk.jar.disabledAlgorithms=MD2, MD5, RSA keySize < 1024, DSA keySize < 1024
 # Example:
 #   jdk.tls.disabledAlgorithms=MD5, SSLv3, DSA, RSA keySize < 2048
 jdk.tls.disabledAlgorithms=SSLv3, RC4, DES, MD5withRSA, DH keySize < 1024, \
-    EC keySize < 224, 3DES_EDE_CBC, anon, NULL
+    EC keySize < 224, 3DES_EDE_CBC, anon, NULL, \
+    include jdk.disabled.namedCurves
 
+#
 # Legacy algorithms for Secure Socket Layer/Transport Layer Security (SSL/TLS)
 # processing in JSSE implementation.
 #
@@ -698,6 +780,12 @@ jdk.tls.disabledAlgorithms=SSLv3, RC4, DES, MD5withRSA, DH keySize < 1024, \
 # See SSL/TLS specifications and "Java Cryptography Architecture Standard
 # Algorithm Name Documentation" for information about the algorithm names.
 #
+# Note: If a legacy algorithm is also restricted through the
+# jdk.tls.disabledAlgorithms property or the
+# java.security.AlgorithmConstraints API (See
+# javax.net.ssl.SSLParameters.setAlgorithmConstraints()),
+# then the algorithm is completely disabled and will not be negotiated.
+#
 # Note: This property is currently used by the JDK Reference implementation.
 # It is not guaranteed to be examined and used by other implementations.
 # There is no guarantee the property will continue to exist or be of the
@@ -712,6 +800,7 @@ jdk.tls.legacyAlgorithms= \
         RC4_128, RC4_40, DES_CBC, DES40_CBC, \
         3DES_EDE_CBC
 
+#
 # The pre-defined default finite field Diffie-Hellman ephemeral (DHE)
 # parameters for Transport Layer Security (SSL/TLS/DTLS) processing.
 #
@@ -769,65 +858,69 @@ jdk.tls.legacyAlgorithms= \
 #       EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE65381 \
 #       FFFFFFFF FFFFFFFF, 2}
 
+#
+# TLS key limits on symmetric cryptographic algorithms
+#
+# This security property sets limits on algorithms key usage in TLS 1.3.
+# When the amount of data encrypted exceeds the algorithm value listed below,
+# a KeyUpdate message will trigger a key change.  This is for symmetric ciphers
+# with TLS 1.3 only.
+#
+# The syntax for the property is described below:
+#   KeyLimits:
+#       " KeyLimit { , KeyLimit } "
+#
+#   WeakKeyLimit:
+#       AlgorithmName Action Length
+#
+#   AlgorithmName:
+#       A full algorithm transformation.
+#
+#   Action:
+#       KeyUpdate
+#
+#   Length:
+#       The amount of encrypted data in a session before the Action occurs
+#       This value may be an integer value in bytes, or as a power of two, 2^29.
+#
+#   KeyUpdate:
+#       The TLS 1.3 KeyUpdate handshake process begins when the Length amount
+#       is fulfilled.
+#
+# Note: This property is currently used by OpenJDK's JSSE implementation. It
+# is not guaranteed to be examined and used by other implementations.
+#
+jdk.tls.keyLimits=AES/GCM/NoPadding KeyUpdate 2^37
+
+#
 # Cryptographic Jurisdiction Policy defaults
 #
 # Import and export control rules on cryptographic software vary from
-# country to country.  By default, the JDK provides two different sets of
-# cryptographic policy files:
+# country to country.  By default, Java provides two different sets of
+# cryptographic policy files[1]:
 #
 #     unlimited:  These policy files contain no restrictions on cryptographic
-#                 strengths or algorithms.
+#                 strengths or algorithms
 #
 #     limited:    These policy files contain more restricted cryptographic
-#                 strengths, and are still available if your country or
-#                 usage requires the traditional restrictive policy.
+#                 strengths
 #
-# The JDK JCE framework uses the unlimited policy files by default.
-# However the user may explicitly choose a set either by defining the
-# "crypto.policy" Security property or by installing valid JCE policy
-# jar files into the traditional JDK installation location.  To better
-# support older JDK Update releases, the "crypto.policy" property is not
-# defined by default.  See below for more information.
+# The default setting is determined by the value of the "crypto.policy"
+# Security property below. If your country or usage requires the
+# traditional restrictive policy, the "limited" Java cryptographic
+# policy is still available and may be appropriate for your environment.
 #
-# The following logic determines which policy files are used:
-#
-#         <java-home> refers to the directory where the JRE was
-#         installed and may be determined using the "java.home"
-#         System property.
-#
-# 1.  If the Security property "crypto.policy" has been defined,
-#     then the following mechanism is used:
-#
-#     The policy files are stored as jar files in subdirectories of
-# <java-home>/lib/security/policy.  Each directory contains a complete
-# set of policy files.
-#
-#     The "crypto.policy" Security property controls the directory
-#     selection, and thus the effective cryptographic policy.
-#
-# The default set of directories is:
-#
-#     limited | unlimited
-#
-# 2.  If the "crypto.policy" property is not set and the traditional
-#     US_export_policy.jar and local_policy.jar files
-#     (e.g. limited/unlimited) are found in the legacy
-#     <java-home>/lib/security directory, then the rules embedded within
-#     those jar files will be used. This helps preserve compatibility
-# for users upgrading from an older installation.
-#
-# 3.  If the jar files are not present in the legacy location
-#     and the "crypto.policy" Security property is not defined,
-#     then the JDK will use the unlimited settings (equivalent to
-#     crypto.policy=unlimited)
-#
-# Please see the JCA documentation for additional information on these
-# files and formats.
+# If you have restrictions that do not fit either use case mentioned
+# above, Java provides the capability to customize these policy files.
+# The "crypto.policy" security property points to a subdirectory
+# within <java-home>/conf/security/policy/ which can be customized.
+# Please see the <java-home>/conf/security/policy/README.txt file or consult
+# the Java Security Guide/JCA documentation for more information.
 #
 # YOU ARE ADVISED TO CONSULT YOUR EXPORT/IMPORT CONTROL COUNSEL OR ATTORNEY
 # TO DETERMINE THE EXACT REQUIREMENTS.
 #
-# Please note that the JCE for Java SE, including the JCE framework,
+# [1] Please note that the JCE for Java SE, including the JCE framework,
 # cryptographic policy files, and standard JCE providers provided with
 # the Java SE, have been reviewed and approved for export as mass market
 # encryption item by the US Bureau of Industry and Security.
@@ -900,7 +993,8 @@ jdk.xml.dsig.secureValidationPolicy=\
 #
 # If a pattern includes a "=", it sets a limit.
 # If a limit appears more than once the last value is used.
-# Limits are checked before classes regardless of the order in the sequence of patterns.
+# Limits are checked before classes regardless of the order in the
+# sequence of patterns.
 # If any of the limits are exceeded, the filter status is REJECTED.
 #
 #   maxdepth=value - the maximum depth of a graph
@@ -910,20 +1004,26 @@ jdk.xml.dsig.secureValidationPolicy=\
 #
 # Other patterns, from left to right, match the class or package name as
 # returned from Class.getName.
-# If the class is an array type, the class or package to be matched is the element type.
+# If the class is an array type, the class or package to be matched is the
+# element type.
 # Arrays of any number of dimensions are treated the same as the element type.
 # For example, a pattern of "!example.Foo", rejects creation of any instance or
 # array of example.Foo.
 #
-# If the pattern starts with "!", the status is REJECTED if the remaining pattern
-#   is matched; otherwise the status is ALLOWED if the pattern matches.
-# If the pattern ends with ".**" it matches any class in the package and all subpackages.
+# If the pattern starts with "!", the status is REJECTED if the remaining
+# pattern is matched; otherwise the status is ALLOWED if the pattern matches.
+# If the pattern contains "/", the non-empty prefix up to the "/" is the
+# module name;
+#   if the module name matches the module name of the class then
+#   the remaining pattern is matched with the class name.
+#   If there is no "/", the module name is not compared.
+# If the pattern ends with ".**" it matches any class in the package and all
+# subpackages.
 # If the pattern ends with ".*" it matches any class in the package.
-# If the pattern ends with "*", it matches any class with the pattern as a prefix.
+# If the pattern ends with "*", it matches any class with the pattern as a
+# prefix.
 # If the pattern is equal to the class name, it matches.
 # Otherwise, the status is UNDECIDED.
-#
-# Primitive types are not configurable with this filter.
 #
 #jdk.serialFilter=pattern;pattern
 
@@ -936,16 +1036,16 @@ jdk.xml.dsig.secureValidationPolicy=\
 # to increase limits.
 # If the limits (maxdepth, maxrefs, or maxbytes) are exceeded, the object is rejected.
 #
-# The maxdepth of any array passed to the RMI Registry is set to
-# 10000.  The maximum depth of the graph is set to 20.
-# These limits can be reduced via the maxarray, maxdepth limits.
-#
-#sun.rmi.registry.registryFilter=pattern;pattern
-
+# Each non-array type is allowed or rejected if it matches one of the patterns,
+# evaluated from left to right, and is otherwise allowed. Arrays of any
+# component type, including subarrays and arrays of primitives, are allowed.
 #
 # Array construction of any component type, including subarrays and arrays of
 # primitives, are allowed unless the length is greater than the maxarray limit.
 # The filter is applied to each array element.
+#
+# Note: This property is currently used by the JDK Reference implementation.
+# It is not guaranteed to be examined and used by other implementations.
 #
 # The built-in filter allows subclasses of allowed classes and
 # can approximately be represented as the pattern:
@@ -968,6 +1068,9 @@ jdk.xml.dsig.secureValidationPolicy=\
 # The filter pattern uses the same format as jdk.serialFilter.
 # This filter can override the builtin filter if additional types need to be
 # allowed or rejected from the RMI DGC.
+#
+# Note: This property is currently used by the JDK Reference implementation.
+# It is not guaranteed to be examined and used by other implementations.
 #
 # The builtin DGC filter can approximately be represented as the filter pattern:
 #
@@ -999,6 +1102,16 @@ jdk.xml.dsig.secureValidationPolicy=\
 #
 #com.sun.CORBA.ORBIorTypeCheckRegistryFilter=binary_class_name;binary_class_name
 
+# The iteration count used for password-based encryption (PBE) in JCEKS
+# keystores. Values in the range 10000 to 5000000 are considered valid.
+# If the value is out of this range, or is not a number, or is unspecified;
+# a default of 200000 is used.
+#
+# If the system property jdk.jceks.iterationCount is also specified, it
+# supersedes the security property value defined here.
+#
+#jdk.jceks.iterationCount = 200000
+
 #
 # JCEKS Encrypted Key Serial Filter
 #
@@ -1013,18 +1126,34 @@ jdk.xml.dsig.secureValidationPolicy=\
 # The filter pattern uses the same format as jdk.serialFilter. The default
 # pattern allows java.lang.Enum, java.security.KeyRep, java.security.KeyRep$Type,
 # and javax.crypto.spec.SecretKeySpec and rejects all the others.
-jceks.key.serialFilter = java.lang.Enum;java.security.KeyRep;\
-  java.security.KeyRep$Type;javax.crypto.spec.SecretKeySpec;!*
+jceks.key.serialFilter = java.base/java.lang.Enum;java.base/java.security.KeyRep;\
+  java.base/java.security.KeyRep$Type;java.base/javax.crypto.spec.SecretKeySpec;!*
 
-# The iteration count used for password-based encryption (PBE) in JCEKS
-# keystores. Values in the range 10000 to 5000000 are considered valid.
-# If the value is out of this range, or is not a number, or is unspecified;
-# a default of 200000 is used.
 #
-# If the system property jdk.jceks.iterationCount is also specified, it
-# supersedes the security property value defined here.
+# Enhanced exception message information
 #
-#jdk.jceks.iterationCount = 200000
+# By default, exception messages should not include potentially sensitive
+# information such as file names, host names, or port numbers. This property
+# accepts one or more comma separated values, each of which represents a
+# category of enhanced exception message information to enable. Values are
+# case-insensitive. Leading and trailing whitespaces, surrounding each value,
+# are ignored. Unknown values are ignored.
+#
+# NOTE: Use caution before setting this property. Setting this property
+# exposes sensitive information in Exceptions, which could, for example,
+# propagate to untrusted code or be emitted in stack traces that are
+# inadvertently disclosed and made accessible over a public network.
+#
+# The categories are:
+#
+#  hostInfo - IOExceptions thrown by java.net.Socket and the socket types in the
+#             java.nio.channels package will contain enhanced exception
+#             message information
+#
+# The property setting in this file can be overridden by a system property of
+# the same name, with the same syntax and possible values.
+#
+#jdk.includeInExceptions=hostInfo
 
 #
 # Disabled mechanisms for the Simple Authentication and Security Layer (SASL)
@@ -1051,7 +1180,6 @@ jdk.sasl.disabledMechanisms=
 # of which represents a policy for determining if a CA should be distrusted.
 # The supported values are:
 #
-#
 #   SYMANTEC_TLS : Distrust TLS Server certificates anchored by a Symantec
 #   root CA and issued after April 16, 2019 unless issued by one of the
 #   following subordinate CAs which have a later distrust date:
@@ -1061,6 +1189,7 @@ jdk.sasl.disabledMechanisms=
 #     2. Apple IST CA 8 - G1, SHA-256 fingerprint:
 #        A4FE7C7F15155F3F0AEF7AAA83CF6E06DEB97CA3F909DF920AC1490882D488ED
 #        Distrust after December 31, 2019.
+#
 # Leading and trailing whitespace surrounding each value are ignored.
 # Unknown values are ignored. If the property is commented out or set to the
 # empty String, no policies are enforced.
@@ -1073,7 +1202,26 @@ jdk.sasl.disabledMechanisms=
 # if this property is not enabled.
 #
 jdk.security.caDistrustPolicies=SYMANTEC_TLS
+
 #
+# FilePermission path canonicalization
+#
+# This security property dictates how the path argument is processed and stored
+# while constructing a FilePermission object. If the value is set to true, the
+# path argument is canonicalized and FilePermission methods (such as implies,
+# equals, and hashCode) are implemented based on this canonicalized result.
+# Otherwise, the path argument is not canonicalized and FilePermission methods are
+# implemented based on the original input. See the implementation note of the
+# FilePermission class for more details.
+#
+# If a system property of the same name is also specified, it supersedes the
+# security property value defined here.
+#
+# The default value for this property is false.
+#
+jdk.io.permissionsUseCanonicalPath=false
+
+
 #
 # Policies for the proxy_impersonator Kerberos ccache configuration entry
 #
@@ -1102,3 +1250,16 @@ jdk.security.caDistrustPolicies=SYMANTEC_TLS
 # security property value defined here.
 #
 #jdk.security.krb5.default.initiate.credential=always-impersonate
+
+#
+# Trust Anchor Certificates - CA Basic Constraint check
+#
+# X.509 v3 certificates used as Trust Anchors (to validate signed code or TLS
+# connections) must have the cA Basic Constraint field set to 'true'. Also, if
+# they include a Key Usage extension, the keyCertSign bit must be set. These
+# checks, enabled by default, can be disabled for backward-compatibility
+# purposes with the jdk.security.allowNonCaAnchor System and Security
+# properties. In the case that both properties are simultaneously set, the
+# System value prevails. The default value of the property is "false".
+#
+#jdk.security.allowNonCaAnchor=true
