@@ -177,9 +177,9 @@ class profile::icinga(
         protected_uri   => '/icinga',
         cookie_scope    => '/',
         required_groups => [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-            'cn=nda,ou=groups,dc=wikimedia,dc=org',
+            "cn=ops,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
+            "cn=wmf,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
+            "cn=nda,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
         ]
     }
 

@@ -7,6 +7,7 @@ class profile::alertmanager::web (
     Boolean $enable_sso  = lookup('profile::alertmanager::web::enable_sso', {'default_value' => true}),
     Boolean $readonly  = lookup('profile::alertmanager::web::readonly', {'default_value' => false}),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    Hash[String, String] $ldap_config = lookup('ldap', {'merge' => 'hash'}),
 ) {
     $auth_header = $enable_sso ? {
         true  => 'X-CAS-uid',
@@ -27,9 +28,9 @@ class profile::alertmanager::web (
             vhost_content   => 'profile/idp/client/httpd-karma.erb',
             vhost_settings  => { 'readonly' => $readonly },
             required_groups => [
-                'cn=ops,ou=groups,dc=wikimedia,dc=org',
-                'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-                'cn=nda,ou=groups,dc=wikimedia,dc=org',
+                "cn=ops,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
+                "cn=wmf,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
+                "cn=nda,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
             ],
         }
     } else {
