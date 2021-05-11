@@ -8,7 +8,7 @@
 # self-signed CA as found in the /etc/ssl/certs system directory. If multiple
 # paths to a CA exist -as is the case with cross-signed authorities- the
 # shortest path is picked. The top-most certificate (root CA) is NOT included,
-# to minimize the size's chain for performance reasons, with no loss of
+# to minimize the chain's size for performance reasons, with no loss of
 # usability.
 
 #
