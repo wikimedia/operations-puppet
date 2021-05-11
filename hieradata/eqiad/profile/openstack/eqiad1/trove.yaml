@@ -1,0 +1,2 @@
+profile::openstack::eqiad1::trove::db_host: 'openstack.eqiad1.wikimediacloud.org'
+profile::openstack::eqiad1::trove::db_name: 'trove_eqiad1'
