@@ -45,9 +45,15 @@ class profile::microsites::peopleweb (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/People.wikimedia.org',
     }
 
+    if $rsync_src_host == $::fqdn or $rsync_dst_host == $::fqdn {
+        $motd_content = "#!/bin/sh\necho '\nThis is NOT the active backend for people.wikimedia.org. DO NOT USE THIS. Please go to ${rsync_src_host} instead.\n'"
+    } else {
+        $motd_content = "#!/bin/sh\necho '\nThis is people.wikimedia.org.\nFiles you put in 'public_html' in your home dir will be accessible on the web.\nMore info on https://wikitech.wikimedia.org/wiki/People.wikimedia.org.\n'"
+    }
+
     motd::script { 'people-motd':
         ensure  => present,
-        content => "#!/bin/sh\necho '\nThis is people.wikimedia.org.\nFiles you put in 'public_html' in your home dir will be accessible on the web.\nMore info on https://wikitech.wikimedia.org/wiki/People.wikimedia.org.\n'",
+        content => $motd_content,
     }
 
     backup::set {'home': }
