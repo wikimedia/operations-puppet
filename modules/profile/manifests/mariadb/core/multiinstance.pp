@@ -45,6 +45,12 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::ferm { $section: port => $port }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
         profile::mariadb::replication_lag { $section: prom_port => $prom_port }
+
+        # hack; remove after wikitech moves to a standard app server
+        #  T282209
+        if $section == 's6' {
+            profile::mariadb::ferm_wikitech { $section: port => $port }
+        }
     }
 
     $is_critical = $instances.any |$section, $buffer_pool| {
