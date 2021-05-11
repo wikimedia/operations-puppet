@@ -33,19 +33,4 @@ class profile::openstack::codfw1dev::rabbitmq(
         password => $neutron_rabbit_password,
     }
     contain '::openstack::neutron::rabbit'
-
-    # Allow labs instances to talk to rabbitmq.
-    # We need this because Trove instances are orchestrated
-    #  via rabbitmq.
-    #
-    # For the moment I'm only enabling this in codfw1dev but ultimately
-    #  it should move into Base
-    include network::constants
-    $labs_networks = join($network::constants::labs_networks, ' ')
-
-    ferm::service { 'rabbitmq-access-for-cloud-vps-instances':
-        proto  => 'tcp',
-        port   => '5672',
-        srange => "(${labs_networks})",
-    }
 }

@@ -90,4 +90,16 @@ class profile::openstack::base::rabbitmq(
                           @resolve((${join($openstack_controllers,' ')}), AAAA))
                    proto tcp dport 25672 ACCEPT;",
     }
+
+    # Allow labs instances to talk to rabbitmq.
+    # We need this because Trove instances are orchestrated
+    #  via rabbitmq.
+    include network::constants
+    $labs_networks = join($network::constants::labs_networks, ' ')
+
+    ferm::service { 'rabbitmq-access-for-cloud-vps-instances':
+        proto  => 'tcp',
+        port   => '5672',
+        srange => "(${labs_networks})",
+    }
 }
