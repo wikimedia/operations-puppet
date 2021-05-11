@@ -31,17 +31,11 @@ function profile::pki::get_cert(
     undef   => "${cfssl::ssl_dir}/${safe_title}",
     default => $additional_params['outdir'],
   }
-  $paths = {
-    'cert' => "${outdir}/${safe_title}.pem",
-    'key' => "${outdir}/${safe_title}-key.pem",
-  }
-  $chained_paths = {
-    'chain'      => "${outdir}/${safe_title}.chain.pem",
+  $path = {
+    'cert'    => "${outdir}/${safe_title}.pem",
+    'key'     => "${outdir}/${safe_title}-key.pem",
+    'chain'   => "${outdir}/${safe_title}.chain.pem",
     'chained' => "${outdir}/${safe_title}.chained.pem",
   }
-
-  'provide_chain' in $additional_params ? {
-    true    => $chained_paths + $paths,
-    default => $paths,
-  }
+  $path
 }

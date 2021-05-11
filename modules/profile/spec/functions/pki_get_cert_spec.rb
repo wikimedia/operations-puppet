@@ -2,25 +2,27 @@ require_relative '../../../../rake_modules/spec_helper'
 paths = {
   'default' => {
       "cert" => "/etc/cfssl/ssl/foo__foo_example_com/foo__foo_example_com.pem",
-      "key"  => "/etc/cfssl/ssl/foo__foo_example_com/foo__foo_example_com-key.pem"
+      "key"  => "/etc/cfssl/ssl/foo__foo_example_com/foo__foo_example_com-key.pem",
+      "chain" => "/etc/cfssl/ssl/foo__foo_example_com/foo__foo_example_com.chain.pem",
+      "chained" => "/etc/cfssl/ssl/foo__foo_example_com/foo__foo_example_com.chained.pem"
   },
   'fqdn.unsafe.label' => {
       "cert" => "/etc/cfssl/ssl/fqdn_unsafe_label__foo_example_com/fqdn_unsafe_label__foo_example_com.pem",
-      "key"  => "/etc/cfssl/ssl/fqdn_unsafe_label__foo_example_com/fqdn_unsafe_label__foo_example_com-key.pem"
+      "key"  => "/etc/cfssl/ssl/fqdn_unsafe_label__foo_example_com/fqdn_unsafe_label__foo_example_com-key.pem",
+      "chain" => "/etc/cfssl/ssl/fqdn_unsafe_label__foo_example_com/fqdn_unsafe_label__foo_example_com.chain.pem",
+      "chained" => "/etc/cfssl/ssl/fqdn_unsafe_label__foo_example_com/fqdn_unsafe_label__foo_example_com.chained.pem"
   },
   'fqdn' => {
-      "cert" => "/etc/cfssl/ssl/foo__foobar/foo__foobar.pem",
-      "key"  => "/etc/cfssl/ssl/foo__foobar/foo__foobar-key.pem"
+      "cert"    => "/etc/cfssl/ssl/foo__foobar/foo__foobar.pem",
+      "key"     => "/etc/cfssl/ssl/foo__foobar/foo__foobar-key.pem",
+      "chain"   => "/etc/cfssl/ssl/foo__foobar/foo__foobar.chain.pem",
+      "chained" => "/etc/cfssl/ssl/foo__foobar/foo__foobar.chained.pem"
   },
   'outdir' => {
       "cert" => "/foobar/foo__foobar.pem",
-      "key"  => "/foobar/foo__foobar-key.pem"
-  },
-  'provide_chain' => {
-      "cert" => "/etc/cfssl/ssl/foo__foobar/foo__foobar.pem",
-      "key"  => "/etc/cfssl/ssl/foo__foobar/foo__foobar-key.pem",
-      "chain" => "/etc/cfssl/ssl/foo__foobar/foo__foobar.chain.pem",
-      "chained" => "/etc/cfssl/ssl/foo__foobar/foo__foobar.chained.pem"
+      "key"  => "/foobar/foo__foobar-key.pem",
+      "chain" => "/foobar/foo__foobar.chain.pem",
+      "chained" => "/foobar/foo__foobar.chained.pem"
   },
   'outdir+provide_chain' => {
       "cert" => "/foobar/foo__foobar.pem",
@@ -42,10 +44,6 @@ describe 'profile::pki::get_cert' do
       it do
         is_expected.to run.with_params('foo', 'foobar', {'outdir' => '/foobar'})
           .and_return(paths['outdir'])
-      end
-      it do
-        is_expected.to run.with_params('foo', 'foobar', {'provide_chain' => true})
-          .and_return(paths['provide_chain'])
       end
       it do
         is_expected.to run.with_params('foo', 'foobar', {'outdir' => '/foobar', 'provide_chain' => true})
