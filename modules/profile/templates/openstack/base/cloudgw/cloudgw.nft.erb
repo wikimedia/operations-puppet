@@ -7,8 +7,7 @@ define nic_wan = "<%= @nic_wan %>"
 # single table for everything
 table inet cloudgw {
     set dmz_cidr_set {
-        type ipv4_addr . ipv4_addr
-        flags interval
+        type ipv4_addr
         counter
         <%- if !@dmz_cidr.empty? -%>
         elements = {
@@ -26,8 +25,15 @@ table inet cloudgw {
     chain postrouting {
         type nat hook postrouting priority srcnat; policy accept;
 
-        ip saddr . ip daddr @dmz_cidr_set counter accept comment "dmz_cidr"
-        ip saddr $virtual_subnet_cidr counter snat ip to $routing_source_ip comment "routing_source_ip"
+        # 'accept' in this chain/hook means: don't do NAT
+        # we are only interested in NAT for traffic leaving from the virtual network
+        # check the packet is flowing virt --> wan
+        oifname != $nic_wan counter accept
+        # check the packet uses virt addressing
+        ip saddr != $virtual_subnet_cidr counter accept
+
+        ip daddr @dmz_cidr_set counter accept comment "dmz_cidr"
+        counter snat ip to $routing_source_ip comment "routing_source_ip"
     }
 
     chain forward {

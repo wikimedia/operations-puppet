@@ -1,5 +1,5 @@
 class profile::openstack::codfw1dev::cloudgw (
-    Array[String]                 $dmz_cidr       = lookup('profile::openstack::codfw1dev::cloudgw::dmz_cidr',         {default_value => ['0.0.0.0/0 . 0.0.0.0/0']}),
+    Array[Stdlib::IP::Address::V4::Nosubnet] $dmz_cidr = lookup('profile::openstack::codfw1dev::cloudgw::dmz_cidr',    {default_value => ['0.0.0.0']}),
     Stdlib::IP::Address           $routing_source = lookup('profile::openstack::codfw1dev::cloudgw::routing_source_ip',{default_value => '185.15.57.1'}),
     Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::codfw1dev::cloudgw::virt_subnet_cidr', {default_value => '172.16.128.0/24'}),
     Integer                       $virt_vlan      = lookup('profile::openstack::codfw1dev::cloudgw::virt_vlan',        {default_value => 2107}),
