@@ -2137,11 +2137,6 @@ node 'mwlog1002.eqiad.wmnet' {
 }
 
 # mw logging host codfw
-node 'mwlog2001.codfw.wmnet' {
-    role(logging::mediawiki::udp2log)
-}
-
-# New mwlog node T267272
 node 'mwlog2002.codfw.wmnet' {
     role(logging::mediawiki::udp2log)
 }
