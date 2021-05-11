@@ -177,6 +177,17 @@ class profile::hadoop::master(
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_missing_blocks',
         }
 
+        monitoring::check_prometheus { 'hadoop-hdfs-total-files-heap':
+            description     => 'HDFS total files are more than what the heap size can support.',
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=28&fullscreen"],
+            query           => "scalar(Hadoop_NameNode_FilesTotal{instance=\"${::hostname}:10080\"})",
+            warning         => 68000000,
+            critical        => 70000000,
+            contact_group   => 'analytics',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
+            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_total_files_and_heap_size',
+        }
+
         monitoring::check_prometheus { 'hadoop-hdfs-rpc-queue-length':
             description     => 'HDFS Namenode RPC 8020 call queue length',
             dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=54&fullscreen"],
