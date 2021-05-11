@@ -13,7 +13,6 @@ class profile::mailman3 (
     Optional[Stdlib::IP::Address::V4] $lists_ipv4 = lookup('profile::mailman3::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address::V6] $lists_ipv6 = lookup('profile::mailman3::ipv6', {'default_value' => undef}),
     Optional[String] $acme_chief_cert = lookup('profile::mailman3::acme_chief_cert', {'default_value' => undef}),
-    Optional[Stdlib::Fqdn] $mailman2_host = lookup('profile::mailman3::mailman2_host', {'default_value' => undef}),
     Optional[String] $memcached = lookup('profile::mailman3::memcached', {'default_value' => undef}),
 ) {
     include network::constants
@@ -177,14 +176,5 @@ class profile::mailman3 (
             '/var/lib/mailman3/queue/out',
         ],
         outfile => '/var/lib/prometheus/node.d/mailman3_queues.prom'
-    }
-
-
-    # rsync from mailman2 to allow importing archives
-    if $mailman2_host {
-        class { '::mailman3::import_test':
-            mailman2_host => $mailman2_host,
-            mailman3_host => $::fqdn,
-        }
     }
 }

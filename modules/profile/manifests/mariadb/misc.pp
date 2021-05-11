@@ -22,7 +22,7 @@ class profile::mariadb::misc (
             proto   => 'tcp',
             port    => '3306',
             notrack => true,
-            srange  => '@resolve((lists1001.wikimedia.org lists1002.wikimedia.org))',
+            srange  => '@resolve(lists1001.wikimedia.org)',
         }
     }
     include ::profile::mariadb::monitor::prometheus
@@ -74,4 +74,3 @@ class profile::mariadb::misc (
 
     class { 'mariadb::monitor_memory': }
 }
-

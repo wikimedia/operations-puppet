@@ -26,9 +26,6 @@ profile::mailman3::web::db_user: mailman3web
 #profile::mailman3::web::secret -- set in private repo
 #profile::mailman3::archiver_key -- set in private repo
 
-# This is just to open up a rsync to lists1002 (mailman3::import_test)
-profile::lists::mailman3_host: 'lists1002.wikimedia.org'
-
 profile::lists::renamed_lists:
   boardexec:            board-l
   foundation-l:         wikimedia-l

@@ -5,7 +5,6 @@ class profile::lists (
     Optional[String] $standby_host            = lookup('profile::lists::standby_host', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
-    Optional[Stdlib::Fqdn] $mailman3_host     = lookup('profile::lists::mailman3_host', {'default_value' => undef}),
     Optional[String] $acme_chief_cert         = lookup('profile::lists::acme_chief_cert', {'default_value' => undef}),
     Optional[Stdlib::Fqdn] $db_host           = lookup('profile::mailman3::db_host', {'default_value' => undef}),
     Optional[String] $db_name                 = lookup('profile::mailman3::db_name', {'default_value' => undef}),
@@ -191,7 +190,6 @@ class profile::lists (
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 14:14 -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         }
-
         prometheus::node_file_count {'track mailman3 queue depths':
             paths   => [
                 '/var/lib/mailman3/queue/in',
@@ -200,13 +198,6 @@ class profile::lists (
                 '/var/lib/mailman3/queue/out',
             ],
             outfile => '/var/lib/prometheus/node.d/mailman3_queues.prom'
-        }
-        # rsync from primary to mailman3 host
-        if $mailman3_host {
-            class { '::mailman3::import_test':
-                mailman2_host => $::fqdn,
-                mailman3_host => $mailman3_host,
-            }
         }
     }
 

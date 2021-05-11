@@ -141,13 +141,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'lists1001.wikimedia.org'
-    lists-next:
-        CN: 'lists-next.wikimedia.org'
-        SNI:
-        - 'lists-next.wikimedia.org'
-        challenge: dns-01
-        authorized_hosts:
-        - 'lists1002.wikimedia.org'
     mirrors:
         CN: 'mirrors.wikimedia.org'
         SNI:

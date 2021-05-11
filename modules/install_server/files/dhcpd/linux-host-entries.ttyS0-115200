@@ -561,11 +561,6 @@ host lists1001 {
     fixed-address lists1001.wikimedia.org;
 }
 
-host lists1002 {
-    hardware ethernet aa:00:00:63:62:dd;
-    fixed-address lists1002.wikimedia.org;
-}
-
 host logstash1007 {
     hardware ethernet aa:00:00:83:d6:d4;
     fixed-address logstash1007.eqiad.wmnet;
