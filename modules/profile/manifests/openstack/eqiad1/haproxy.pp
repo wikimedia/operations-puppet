@@ -4,6 +4,7 @@ class profile::openstack::eqiad1::haproxy(
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::eqiad1::glance::api_bind_port'),
     Stdlib::Port $placement_api_bind_port = lookup('profile::openstack::eqiad1::placement::api_bind_port'),
     Stdlib::Port $cinder_api_bind_port = lookup('profile::openstack::eqiad1::cinder::api_bind_port'),
+    Stdlib::Port $trove_api_bind_port = lookup('profile::openstack::base::trove::api_bind_port'),
     Stdlib::Port $keystone_admin_bind_port = lookup('profile::openstack::eqiad1::keystone::admin_bind_port'),
     Stdlib::Port $keystone_public_bind_port = lookup('profile::openstack::eqiad1::keystone::public_bind_port'),
     Stdlib::Port $neutron_bind_port = lookup('profile::openstack::eqiad1::neutron::bind_port'),
@@ -51,6 +52,14 @@ class profile::openstack::eqiad1::haproxy(
         healthcheck_path   => '/',
         port_frontend      => 8776,
         port_backend       => $cinder_api_bind_port,
+    }
+
+    profile::openstack::base::haproxy::site { 'trove_api':
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_frontend      => 8779,
+        port_backend       => $trove_api_bind_port,
     }
 
     profile::openstack::base::haproxy::site { 'neutron':
