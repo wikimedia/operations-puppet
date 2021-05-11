@@ -48,7 +48,7 @@ class openstack::trove::service::victoria(
             notify  => Service['trove-api', 'trove-taskmanager', 'trove-conductor'],
             require => Package['trove-api'];
         '/etc/trove/api-paste.ini':
-            source  => 'puppet:///modules/openstack/victoria/trove/api-paste.ini ',
+            source  => 'puppet:///modules/openstack/victoria/trove/api-paste.ini',
             owner   => 'trove',
             group   => 'trove',
             mode    => '0644',
