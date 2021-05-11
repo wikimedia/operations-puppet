@@ -174,11 +174,11 @@ class profile::backup::director(
         day  => $db_backup_day,
         pool => 'DatabasesCodfw',
     }
-    backup::monthlyjobdefaults { "Weekly-${db_backup_day}-EsRwEqiad":
+    backup::weeklyjobdefaults { "Weekly-${db_backup_day}-EsRwEqiad":
         day  => $db_backup_day,
         pool => 'EsRwEqiad',
     }
-    backup::monthlyjobdefaults { "Weekly-${db_backup_day}-EsRwCodfw":
+    backup::weeklyjobdefaults { "Weekly-${db_backup_day}-EsRwCodfw":
         day  => $db_backup_day,
         pool => 'EsRwCodfw',
     }
