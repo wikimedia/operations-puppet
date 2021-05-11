@@ -149,7 +149,7 @@
     # and if so, emit a 301 redirect.
     RewriteMap pipermail "dbm:/var/lib/mailman3/redirects/redirects.dbm"
     RewriteCond "${pipermail:$1}" !=""
-    RewriteRule "^/pipermail/(.*)" "/hyperkitty/list/${pipermail:$1}" [R=301]
+    RewriteRule "^/pipermail/(.*)" "/hyperkitty/list/${pipermail:$1}" [R=302]
     <% end %>
 
     # list renames
