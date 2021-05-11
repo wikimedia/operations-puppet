@@ -3,7 +3,6 @@ profile::dumps::peer_hosts: 'dumpsdata1001.eqiad.wmnet dumpsdata1002.eqiad.wmnet
 profile::dumps::phab_hosts: 'phab1001.eqiad.wmnet'
 profile::dumps::rsync_internal_clients:
   ipv4:
-    - mwlog1001.eqiad.wmnet
     - mwlog1002.eqiad.wmnet
     - mwlog2002.codfw.wmnet
     - phab1001.eqiad.wmnet

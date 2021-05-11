@@ -2127,11 +2127,6 @@ node /^mw228[0-2]\.codfw\.wmnet$/ {
 ## END MEDIAWIKI APPLICATION SERVERS
 
 # mw logging host eqiad
-node 'mwlog1001.eqiad.wmnet' {
-    role(logging::mediawiki::udp2log)
-}
-
-# New mwlog node T267271
 node 'mwlog1002.eqiad.wmnet' {
     role(logging::mediawiki::udp2log)
 }
