@@ -9,12 +9,9 @@
     # https://httpoxy.org/
     RequestHeader unset Proxy early
     SSLEngine On
-    SSLCertificateFile /etc/acmecerts/tendril/live/ec-prime256v1.crt
-    SSLCertificateChainFile /etc/acmecerts/tendril/live/ec-prime256v1.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/tendril/live/ec-prime256v1.key
-    SSLCertificateFile /etc/acmecerts/tendril/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/tendril/live/rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/tendril/live/rsa-2048.key
+    SSLCertificateFile <%= @ssl_certs['cert'] %>
+    SSLCertificateChainFile <%= @ssl_certs['chain'] %>
+    SSLCertificateKeyFile <%= @ssl_certs['key'] %>
     <%= @ssl_settings.join("\n    ") %>
     DocumentRoot /srv/dbtree
     php_admin_flag short_open_tag on
