@@ -23,8 +23,9 @@ function profile::pki::get_cert(
   $safe_label = $label.regsubst('\W', '_', 'G')
 
   ensure_resource('cfssl::cert', $safe_title, $additional_params + {
-    'common_name' => $common_name,
-    'label'       => $safe_label,
+    'common_name'   => $common_name,
+    'label'         => $safe_label,
+    'provide_chain' => true,
   })
   $outdir = $additional_params['outdir'] ? {
     undef   => "${cfssl::ssl_dir}/${safe_title}",
