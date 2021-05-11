@@ -209,6 +209,7 @@ class CheckService(object):
         headers['content-type'] = "application/json"
         logstash_search_url = os.path.join(self.logstash_host,
                                            'logstash-*', '_search')
+        query_object = self._logstash_query()
         try:
             response = fetch_url(
                 http,
@@ -216,12 +217,23 @@ class CheckService(object):
                 timeout=10,
                 headers=headers,
                 method='POST',
-                body=self._logstash_query()
+                body=query_object
             )
             resp = response.data.decode('utf-8')
             r = json.loads(resp)
         except ValueError:
+            # FIXME: discards the error object
             raise ValueError("Logstash request returned error")
+
+        if type(r) is not dict:
+            raise ValueError(
+                "Unexpected response from %s. Expected a dict but got: %s\n\nQuery was: %s"
+                % (logstash_search_url, json.dumps(r), json.dumps(query_object)))
+
+        if r.get('error', None):
+            raise ValueError(
+                "Logstash request to %s returned error:\n%s\n\nQuery was: %s"
+                % (logstash_search_url, r, json.dumps(query_object())))
 
         self.logger.debug('logstash response %s', r)
 
