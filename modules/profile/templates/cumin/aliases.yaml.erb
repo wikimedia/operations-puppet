@@ -61,8 +61,6 @@ cp-<%= dc %>: A:cp and A:<%= dc %>
 cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 <% end -%>
 <% end -%>
-cp-ats: P{P:trafficserver::backend}
-cp-ats-ulsfo: A:cp-ats and A:ulsfo
 cumin: P{O:cluster::management}
 cuminunpriv: P{O:cluster::unprivmanagement}
 db-all: A:db-core or A:db-inventory or A:db-wikireplica or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-store
