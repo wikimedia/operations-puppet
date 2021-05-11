@@ -54,12 +54,12 @@ cores = 8
 instances = 8
 ram = 16384
 
+<% if @is_control_node -%>
 [api]
 auth_strategy = keystone
 # we use this vendordata JSON file to provide the domain to VM instances
 vendordata_jsonfile_path = /etc/nova/vendor_data.json
 
-<% if @is_control_node -%>
 # These should only be present for apis and nova-conductor.
 [api_database]
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name_api %>
