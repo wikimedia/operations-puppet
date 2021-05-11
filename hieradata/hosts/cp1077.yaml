@@ -1,4 +1,3 @@
-profile::trafficserver::backend::trusted_ca_source: 'puppet:///modules/profile/trafficserver/ats_trusted_ca.pem'
 profile::trafficserver::tls::http_settings:
     accept_no_activity_timeout: 180
     connect_attempts_timeout: 3
