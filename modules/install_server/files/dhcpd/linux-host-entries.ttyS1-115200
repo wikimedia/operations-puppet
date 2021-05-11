@@ -4099,24 +4099,6 @@ host cloudstore1009 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
-host labsdb1009 {
-    hardware ethernet 1c:98:ec:1a:6b:68;
-    fixed-address labsdb1009.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host labsdb1010 {
-    hardware ethernet 1c:98:ec:1a:6b:80;
-    fixed-address labsdb1010.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host labsdb1011 {
-    hardware ethernet 1c:98:ec:1a:6b:04;
-    fixed-address labsdb1011.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host cloudcontrol2003-dev {
     hardware ethernet 30:e1:71:63:0e:dc;
     fixed-address cloudcontrol2003-dev.wikimedia.org;
