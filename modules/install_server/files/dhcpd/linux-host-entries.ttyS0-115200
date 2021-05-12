@@ -858,6 +858,13 @@ host people2001 {
     hardware ethernet aa:00:00:dc:5d:4c;
     fixed-address people2001.codfw.wmnet;
 }
+
+host people2002 {
+    hardware ethernet aa:00:00:5d:88:52;
+    fixed-address people2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host ping1001 {
     hardware ethernet aa:00:00:33:10:e2;
     fixed-address ping1001.eqiad.wmnet;
