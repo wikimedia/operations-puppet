@@ -18,9 +18,16 @@ class prometheus::node_varnishd_mmap_count (
 
     # Collect every minute
     cron { 'prometheus_varnishd_mmap_count':
-        ensure  => $ensure,
+        ensure  => absent,
         user    => 'root',
         command => "/usr/local/bin/prometheus-varnishd_mmap_count ${service} ${outfile}",
+    }
+    systemd::timer::job { 'prometheus_varnishd_mmap_count':
+        ensure      => $ensure,
+        description => 'Regular job to collect number of varnishd memory map areas',
+        user        => 'root',
+        command     => "/usr/local/bin/prometheus-varnishd_mmap_count ${service} ${outfile}",
+        interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
     }
 }
 
