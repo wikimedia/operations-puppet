@@ -43,7 +43,7 @@ groups:
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               crusnov, cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman, lsobanski,
-              razzi, dcaro, legoktm, mmandere, cmooney]
+              razzi, dcaro, legoktm, mmandere, cmooney, joanna]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -4313,6 +4313,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdVgbQxt3Bfx8g6/irDLpr27gPI/YI57+swSnl0DRgt cathal@wikilap
     uid: 31721
     email: cmooney@wikimedia.org
+  joanna:
+    ensure: present
+    gid: 500
+    name: joanna
+    realname: Joanna Borun
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCuR/wR4Qx/eQE1PWUWBsxcivp6D7IDO/WTBZR9apA3BLfm25VIrxLvHsUSecMZGBGyJDGuayxnRb/5Ng5voghFEVLrw4NRgvSqCphRTl/Ub6NqndoPm5f4LA9yraFM8jB8/hB62Xc4wQosROs6Ke4C9R89CaHpucW/591X6RPGhmGjZ/YcINmd8B0g/gl4oZA4aGbZpS3hCRS5Lo4UP9FP8SiCWGcCMGpdTiCWBsT3eevR0nrp3GJtk1FBAjx7XuEiBIjg/vukL2kFEO3llIotXDNWxx/omAOKFftZmIEtbMIQmxBNsPcPvNpGLiNMvKUNtKBErkuerhZr/HzFJd8KohvgCI4QXKKHU2yRVGvWfdB1FMryJBvVEII+foNDk7G2Vxh8D+VQWeJeV+1ZLOQsV6AuWnpyeyb0farfuR+WSExWSxY7XUYREA2dCli6DcqMKlyaVrkpc9eCwV9nhij5zu6ohGnplJtlYmAjeFi/wxFzNmTd3wx3kiPn9mvl1lk= joanna@Joannas-MacBook-Pro.local
+    uid: 31735
+    email: jborun@wikimedia.org
 
 ldap_only_users:
   abartov:
