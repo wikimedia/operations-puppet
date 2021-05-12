@@ -4173,11 +4173,6 @@ host cloudweb2001-dev {
     fixed-address cloudweb2001-dev.wikimedia.org;
 }
 
-host cloudnet2003-dev {
-    hardware ethernet 18:66:DA:7E:B3:EE;
-    fixed-address cloudnet2003-dev.codfw.wmnet;
-}
-
 host cloudnet2002-dev {
     hardware ethernet 30:e1:71:55:a2:40;
     fixed-address cloudnet2002-dev.codfw.wmnet;
