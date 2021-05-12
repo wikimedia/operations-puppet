@@ -63,7 +63,7 @@ def fetch_yaml_data():
     except subprocess.CalledProcessError as e:
         print("git checkout failed", e.returncode)
         shutil.rmtree(tmp_dir)
-        sys.exit(1)
+        sys.exit(2)
 
     with open('puppet/modules/admin/data/data.yaml', 'r') as data:
         yamldata = yaml.safe_load(data)
@@ -321,13 +321,6 @@ def validate_duplicated_ops_permissions(users):
     return log
 
 
-def run_test(output):
-    if output == "":
-        return
-    else:
-        print(output.rstrip('\n'))
-
-
 def parse_args():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
@@ -381,17 +374,25 @@ def main():
     users = parse_users(yamldata)
     known_users = list(users)
 
-    run_test(validate_absented_users(yamldata))
-    run_test(validate_email_addresses(users))
-    run_test(validate_expiry_contacts(users))
-    run_test(validate_mutually_exclusive_privileged_ldap_groups())
-    run_test(validate_common_ops_group(yamldata))
-    run_test(validate_all_yaml_group_members_are_defined(known_users, yamldata))
-    run_test(validate_all_ldap_group_members_are_defined(known_users))
-    run_test(validate_duplicated_ops_permissions(users))
-    run_test(print_pending_account_expirys(users))
-    run_test(validate_privileged_ldap_groups_memberships(users))
-    run_test(check_ssh_keys(yamldata))
+    tests_output = [
+        validate_absented_users(yamldata),
+        validate_email_addresses(users),
+        validate_expiry_contacts(users),
+        validate_mutually_exclusive_privileged_ldap_groups(),
+        validate_common_ops_group(yamldata),
+        validate_all_yaml_group_members_are_defined(known_users, yamldata),
+        validate_all_ldap_group_members_are_defined(known_users),
+        validate_duplicated_ops_permissions(users),
+        print_pending_account_expirys(users),
+        validate_privileged_ldap_groups_memberships(users),
+        check_ssh_keys(yamldata),
+    ]
+    status = 0
+    for output in tests_output:
+        if output:
+            print(output.rstrip('\n'))
+            status = 1
+    sys.exit(status)
 
 
 if __name__ == '__main__':
