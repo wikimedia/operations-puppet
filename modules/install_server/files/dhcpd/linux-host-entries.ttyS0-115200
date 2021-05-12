@@ -843,20 +843,10 @@ host peek2001 {
     fixed-address peek2001.codfw.wmnet;
 }
 
-host people1002 {
-    hardware ethernet aa:00:00:64:70:00;
-    fixed-address people1002.eqiad.wmnet;
-}
-
 host people1003 {
     hardware ethernet aa:00:00:15:61:3b;
     fixed-address people1003.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
-}
-
-host people2001 {
-    hardware ethernet aa:00:00:dc:5d:4c;
-    fixed-address people2001.codfw.wmnet;
 }
 
 host people2002 {
