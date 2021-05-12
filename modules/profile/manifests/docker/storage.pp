@@ -3,10 +3,6 @@
 # Sets up the storage for the devicemanager docker storage driver
 # with thick pools
 #
-# This should be used on jessie, see:
-#
-# https://github.com/docker/docker/issues/15629
-#
 class profile::docker::storage(
     # list of physical volumes to use.
     $physical_volumes = lookup('profile::docker::storage::physical_volumes'),

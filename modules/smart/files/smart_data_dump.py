@@ -239,7 +239,7 @@ def lsscsi_parse(response):
 def noraid_list_pd():
     """List all physical disks. Generator to yield PD objects."""
     try:
-        # starting with stretch, lsblk has --json but not on jessie
+        # Could be ported to lsblk --json at some point
         raw_output = _check_output('/bin/lsblk --noheadings --output NAME,TYPE --raw')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for directly attached physical disks')

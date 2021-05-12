@@ -42,6 +42,7 @@ class releases::reprepro (
         require => Class['::aptrepo'],
     }
 
+    # Keep until EOL of MW 1.31 LTS (end of June)
     class { '::aptrepo::distribution':
         basedir  => $basedir,
         settings => {

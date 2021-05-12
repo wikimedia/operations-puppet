@@ -63,6 +63,7 @@ def check_restart(service_name, dry_run, exclude_mounts=None, exclude_filesystem
         logger.info("Service %s not present or not running", service_name)
         return 1
 
+    # Could switch to systemctl --value at some point
     try:
         pid_query = subprocess.check_output(["/bin/systemctl", "show", "-p", "MainPID",
                                              service_name], universal_newlines=True)
@@ -72,7 +73,6 @@ def check_restart(service_name, dry_run, exclude_mounts=None, exclude_filesystem
 
     logger.debug("PID query for MainPID returned %s", pid_query)
 
-    # Once support for jessie is dropped, the systemctl call above could simply use --value
     detect_service_pid = str(pid_query.strip()).split("=")[1]
 
     if detect_service_pid == "0":  # Service using legacy init script and systemd-sysv-generator

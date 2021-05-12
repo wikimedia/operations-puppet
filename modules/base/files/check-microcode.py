@@ -37,7 +37,7 @@ def main():
     if not virtual_host:
         expected_cpu_flags.add('flush_l1d')
 
-    # Reading the flags from lscpu is not supported in jessie
+    # Could be ported to lscp at some point
     try:
         with open('/proc/cpuinfo', 'r') as proc_file:
             for line in proc_file.readlines():
