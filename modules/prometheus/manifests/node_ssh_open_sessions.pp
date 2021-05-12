@@ -16,12 +16,6 @@ class prometheus::node_ssh_open_sessions (
     }
 
     # Collect every 5 minutes
-    cron { 'prometheus_ssh_open_sessions':
-        ensure  => absent,
-        user    => 'root',
-        minute  => '*/5',
-        command => "/usr/local/bin/prometheus-ssh_open_sessions ${outfile}",
-    }
     systemd::timer::job { 'prometheus_ssh_open_sessions':
         ensure      => $ensure,
         description => 'Regular job to collect active shell session information',
