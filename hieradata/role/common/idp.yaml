@@ -37,12 +37,12 @@ profile::idp::services:
       - nda
   puppetboard:
     id: 3
-    service_id: 'https://(cas-)?puppetboard.wikimedia.org(/.*)?'
+    service_id: 'https://puppetboard.wikimedia.org(/.*)?'
     required_groups:
       - ops
   graphite:
     id: 4
-    service_id: 'https://(cas-)?graphite.wikimedia.org(/.*)?'
+    service_id: 'https://graphite.wikimedia.org(/.*)?'
     required_groups:
       - ops
       - nda
