@@ -74,14 +74,14 @@ bindkey "\e\e" sudo-command-line
 
 site=$(hostname -d | cut -d\. -f1)
 # Used to ensure you hit the local site lvs server
-# curl-lvs dbtree.wikimedia.org
+# curl-lvs https://dbtree.wikimedia.org
 alias curl-lvs='curl --connect-to "::text-lb.${site}.wikimedia.org"'
-if [[ "$(hostname)" == "cp*wmnet" ]]
+if [[ "$(hostname -f)" == "cp*wmnet" ]]
 then
   # Used from caching servers to hit the to ensure you hit the front end ats instance e.g
-  # curl-fe dbtree.wikimedia.org
+  # curl-fe https://dbtree.wikimedia.org
   alias curl-fe='curl --connect-to "::$HOSTNAME"'
   # or back end
-  # curl-be dbtree.wikimedia.org
+  # curl-be https://dbtree.wikimedia.org
   alias curl-be='curl --connect-to "::$HOSTNAME:3128"   -H "X-Forwarded-Proto: https"'
 fi
