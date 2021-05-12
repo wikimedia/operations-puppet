@@ -1708,7 +1708,6 @@ host db1111 {
 host db1112 {
     hardware ethernet 80:18:44:DF:D2:14;
     fixed-address db1112.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db1113 {
