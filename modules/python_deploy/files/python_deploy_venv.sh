@@ -25,42 +25,48 @@ fi
 
 PROJECT="${1}"
 PROJECT_DIR="${BASE_DIR}/${PROJECT}"
+VENV_DIR="${PROJECT_DIR}/venv-$(date "+%s")"
+VENV_LINK="${PROJECT_DIR}/venv"
+CACHE_DIR="${PROJECT_DIR}/cache/"
+NEW_DIR="${PROJECT_DIR}/new"
+OLD_DIR="${PROJECT_DIR}/old"
+CUR_DIR="${PROJECT_DIR}/current"
+DEPLOY_LINK="${PROJECT_DIR}/deploy"
 
 # Create cache if missing
-if [[ ! -d "${PROJECT_DIR}/cache" ]]; then
+if [[ ! -d "${CACHE_DIR}" ]]; then
     git -C "${PROJECT_DIR}" clone --recursive "http://${DEPLOYMENT_SERVER}/${PROJECT}/deploy/.git" cache
 fi
 
 # Update cache
-git -C "${PROJECT_DIR}/cache" pull --ff-only --recurse-submodules
+git -C "${CACHE_DIR}" pull --ff-only --recurse-submodules
 
 # Clone from cache
-echo "Deleting directories ${PROJECT_DIR}/new/ ${PROJECT_DIR}/venv-new/"
-rm -rf "${PROJECT_DIR}/new/" "${PROJECT_DIR}/venv-new/"
-git -C "${PROJECT_DIR}" clone --recursive --reference "${PROJECT_DIR}/cache/" "${PROJECT_DIR}/cache/" "${PROJECT_DIR}/new"
+echo "Deleting directory ${NEW_DIR}"
+rm -rf "${NEW_DIR}"
+git -C "${PROJECT_DIR}" clone --recursive --reference "${CACHE_DIR}" "${CACHE_DIR}" "${NEW_DIR}"
 
 # Run make
 echo "Running ${PROJECT}'s Makefile.deploy"
-DEPLOY_PATH="${PROJECT_DIR}/new" VENV="${PROJECT_DIR}/venv-new" make -C "${PROJECT_DIR}/new" -f Makefile.deploy deploy
+DEPLOY_PATH="${NEW_DIR}" VENV="${VENV_DIR}" make -C "${NEW_DIR}" -f Makefile.deploy deploy
 
-# Convert the venv to be relocatable to a new path
-virtualenv --relocatable --python=python3 "${PROJECT_DIR}/venv-new"
-# Fix path in activate scripts that are not handled by --relocatable
-sed -i 's/venv-new/venv/' "${PROJECT_DIR}/venv-new/bin/activate"*
-
-# Switch new with current
-echo "Deleting directories ${PROJECT_DIR}/old/ ${PROJECT_DIR}/venv-old/"
-rm -rf "${PROJECT_DIR}/old/" "${PROJECT_DIR}/venv-old/"
-if [[ -d "${PROJECT_DIR}/current" ]]; then  # Breaks the symlink from deploy, usually not used
-    mv -v "${PROJECT_DIR}/current/" "${PROJECT_DIR}/old/"
+# Switch new with current and link the new virtualenv
+echo "Deleting directory ${OLD_DIR}"
+rm -rf "${OLD_DIR}"
+if [[ -d "${CUR_DIR}" ]]; then  # Breaks the symlink from deploy, usually not used
+    mv -v "${CUR_DIR}" "${OLD_DIR}"
 fi
-if [[ -d "${PROJECT_DIR}/venv" ]]; then
-    mv -v "${PROJECT_DIR}/venv/" "${PROJECT_DIR}/venv-old/"
+if [[ -L "${VENV_LINK}" ]]; then
+    OLD_VENV=$(readlink "${VENV_LINK}")
+    rm -v "${VENV_LINK}"  # Deletes the symlink to the current virtualenv
 fi
-mv -v "${PROJECT_DIR}/new/" "${PROJECT_DIR}/current/"
-mv -v "${PROJECT_DIR}/venv-new/" "${PROJECT_DIR}/venv/"
-if [[ -L "${PROJECT_DIR}/deploy" ]]; then
-    rm "${PROJECT_DIR}/deploy"
+ln -s "${VENV_DIR}" "${VENV_LINK}"  # Set the symlink to the new virtualenv
+mv -v "${NEW_DIR}" "${CUR_DIR}"
+if [[ -L "${DEPLOY_LINK}" ]]; then
+    rm -v "${DEPLOY_LINK}"
 fi
-ln -sv "${PROJECT_DIR}/current" "${PROJECT_DIR}/deploy"  # Fixes the symlink from deploy
-
+ln -sv "${CUR_DIR}" "${DEPLOY_LINK}"  # Fixes the symlink from deploy
+if [[ -n "${OLD_VENV}" ]]; then
+    echo "Deleting directory ${OLD_VENV}"
+    rm -rf "${OLD_VENV}"
+fi
