@@ -20,11 +20,6 @@
 #   This job is being phased out and is used for EventLogging legacy streams
 #   that have not been migrated to EventGate.
 #
-# - mediawiki_job_events
-#   Infers schemas from data and refines from
-#   /wmf/data/raw/mediawiki_job -> /wmf/data/event into the Hive event database.
-#   TODO: Perhaps we should move these into their own database?
-#
 # - netflow
 #   Infers schema from data and refines from
 #   /wmf/data/raw/netflow -> /wmf/data/event/netflow in the Hive event database.
@@ -245,58 +240,6 @@ class profile::analytics::refinery::job::refine(
         }),
         interval         => '*-*-* *:30:00',
         monitor_interval => '*-*-* 00:15:00',
-        use_keytab       => $use_kerberos_keytab,
-    }
-
-
-    # === Mediawiki Job events ===
-    # /wmf/data/raw/mediawiki_job -> /wmf/data/event
-
-    # Problematic jobs that will not be refined.
-    # These have inconsistent schemas that cause refinement to fail.
-    $mediawiki_job_table_exclude_list = [
-        'EchoNotificationJob',
-        'EchoNotificationDeleteJob',
-        'TranslationsUpdateJob',
-        'MessageGroupStatesUpdaterJob',
-        'InjectRCRecords',
-        'cirrusSearchDeleteArchive',
-        'enqueue',
-        'htmlCacheUpdate',
-        'LocalRenameUserJob',
-        'RecordLintJob',
-        'wikibase_addUsagesForPage',
-        'refreshLinks',
-        'cirrusSearchCheckerJob',
-        'MassMessageSubmitJob',
-        'refreshLinksPrioritized',
-        'TranslatablePageMoveJob',
-        'ORESFetchScoreJob',
-        'PublishStashedFile',
-        'CentralAuthCreateLocalAccountJob',
-        'gwtoolsetUploadMediafileJob',
-        'gwtoolsetUploadMetadataJob',
-        'MessageGroupStatsRebuildJob',
-        'fetchGoogleCloudVisionAnnotations',
-        'CleanTermsIfUnused',
-    ]
-    $mediawiki_job_table_exclude_regex = downcase(sprintf('.*(%s)$', join($mediawiki_job_table_exclude_list, '|')))
-
-    $mediawiki_job_events_input_path = '/wmf/data/raw/mediawiki_job'
-    $mediawiki_job_events_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
-    $mediawiki_job_events_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
-
-    profile::analytics::refinery::job::refine_job { 'mediawiki_job_events':
-        ensure           => 'absent',
-        job_config       => merge($default_config, {
-            input_path                      => $mediawiki_job_events_input_path,
-            input_path_regex                => $mediawiki_job_events_input_path_regex,
-            input_path_regex_capture_groups => $mediawiki_job_events_input_path_regex_capture_groups,
-            table_exclude_regex             => $mediawiki_job_table_exclude_regex,
-            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.deduplicate',
-        }),
-        interval         => '*-*-* *:25:00',
-        monitor_interval => '*-*-* 02:15:00',
         use_keytab       => $use_kerberos_keytab,
     }
 
