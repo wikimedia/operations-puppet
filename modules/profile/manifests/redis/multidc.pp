@@ -12,7 +12,7 @@ class profile::redis::multidc(
     # or buster hosts where profile::redis::multidc::version_override
     # is defined.
 
-    if debian::codename::eq('jessie') or (debian::codename::eq('buster') and $version_override) {
+    if (debian::codename::eq('buster') and $version_override) {
         if $version_override {
             apt::package_from_component  { "repository_redis${version_override}":
             component => "component/redis${version_override}",
