@@ -190,7 +190,5 @@ device_path = /dev/sdb
 [guest_agent]
 device_path = /dev/sdb
 container_registry = quay.io/wikimedia-cloud-services
-
-# We have passwordless pull for the moment.
-# container_registry_username =
-# container_registry_password =
+container_registry_username = <%= @trove_quay_user %>
+container_registry_password = <%= @trove_quay_pass %>

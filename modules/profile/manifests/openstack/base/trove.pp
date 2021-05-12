@@ -16,6 +16,8 @@ class profile::openstack::base::trove(
     String              $trove_guest_rabbit_user = lookup('profile::openstack::base::trove::trove_guest_rabbit_user'),
     String              $trove_guest_rabbit_pass = lookup('profile::openstack::base::trove::trove_guest_rabbit_pass'),
     String              $trove_service_user_pass = lookup('profile::openstack::base::trove::trove_user_pass'),
+    String              $trove_quay_user         = lookup('profile::openstack::base::trove::quay_user'),
+    String              $trove_quay_pass         = lookup('profile::openstack::base::trove::quay_pass'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
@@ -38,6 +40,8 @@ class profile::openstack::base::trove(
         trove_guest_rabbit_user => $trove_guest_rabbit_user,
         trove_guest_rabbit_pass => $trove_guest_rabbit_pass,
         trove_service_user_pass => $trove_service_user_pass,
+        trove_quay_user         => $trove_quay_user,
+        trove_quay_pass         => $trove_quay_pass,
     }
 
     include ::network::constants

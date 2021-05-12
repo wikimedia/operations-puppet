@@ -16,6 +16,9 @@ class openstack::trove::service::victoria(
     String              $trove_service_user_pass,
     String              $trove_service_project,
     String              $trove_service_user,
+    String              $trove_quay_user,
+    String              $trove_quay_pass,
+
 ) {
     require "openstack::serverpackages::victoria::${::lsbdistcodename}"
 

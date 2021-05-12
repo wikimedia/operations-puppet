@@ -15,8 +15,10 @@ class openstack::trove::service(
     String              $trove_guest_rabbit_user,
     String              $trove_guest_rabbit_pass,
     String              $trove_service_user_pass,
+    String              $trove_quay_pass,
     String              $trove_service_project = 'trove',
     String              $trove_service_user = 'trove',
+    String              $trove_quay_user = 'wikimedia-cloud-services+troveguest',
 ) {
     class { "openstack::trove::service::${version}":
         openstack_controllers   => $openstack_controllers,
@@ -36,6 +38,8 @@ class openstack::trove::service(
         trove_service_user_pass => $trove_service_user_pass,
         trove_service_project   => $trove_service_project,
         trove_service_user      => $trove_service_user,
+        trove_quay_user         => $trove_quay_user,
+        trove_quay_pass         => $trove_quay_pass,
     }
 
     service { 'trove-api':

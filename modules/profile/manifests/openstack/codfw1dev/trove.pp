@@ -10,6 +10,8 @@ class profile::openstack::codfw1dev::trove(
     String              $rabbit_pass             = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     String              $trove_guest_rabbit_pass = lookup('profile::openstack::codfw1dev::trove::trove_guest_rabbit_pass'),
     String              $trove_service_user_pass = lookup('profile::openstack::codfw1dev::trove::trove_user_pass'),
+    String              $trove_quay_user         = lookup('profile::openstack::codfw1dev::trove::quay_user'),
+    String              $trove_quay_pass         = lookup('profile::openstack::codfw1dev::trove::quay_pass'),
     ) {
 
     class {'::profile::openstack::base::trove':
@@ -24,5 +26,7 @@ class profile::openstack::codfw1dev::trove(
         rabbit_pass             => $rabbit_pass,
         trove_guest_rabbit_pass => $rabbit_pass,
         trove_service_user_pass => $trove_service_user_pass,
+        trove_quay_user         => $trove_quay_user,
+        trove_quay_pass         => $trove_quay_pass,
     }
 }
