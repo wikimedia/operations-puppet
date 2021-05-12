@@ -6,7 +6,7 @@ setlocal spell spelllang=en_gb
 hi clear SpellBad
 hi SpellBad cterm=underline
 set spellcapcheck=''
-"set nospell
+set nospell
 au BufRead,BufNewFile *.nse set ft=lua
 au BufRead,BufNewFile *.cf set ft=cf3
 au BufRead,BufNewFile *.j2 set ft=jinja
