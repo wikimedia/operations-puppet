@@ -1,3 +1,4 @@
 # db1079
 mariadb::shard: 's7'
 mariadb::binlog_format: 'ROW'
+profile::base::notifications: disabled
