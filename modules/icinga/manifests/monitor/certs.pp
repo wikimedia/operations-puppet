@@ -33,14 +33,16 @@ class icinga::monitor::certs {
         notes_url     => 'https://phabricator.wikimedia.org/tag/toolforge/',
     }
 
-    # TODO: remove this, now using LE automatic cert renew
-    # *.wmflabs.org (labs wildcard cert, testing tools.wmflabs.org)
-    monitoring::service { 'https_wmflabs':
-        ensure        => 'absent',
-        description   => 'HTTPS-wmflabs',
-        check_command => 'check_ssl_http!tools.wmflabs.org',
-        host          => 'tools.wmflabs.org',
-        notes_url     => 'https://phabricator.wikimedia.org/tag/toolforge/',
+    @monitoring::host { 'admin.toolforge.org':
+        host_fqdn     => 'admin.toolforge.org',
+        contact_group => 'wmcs-bots',
+    }
+    monitoring::service { 'https_toolforge':
+        description   => 'HTTPS-toolforge',
+        check_command => 'check_ssl_http_letsencrypt!admin.toolforge.org',
+        host          => 'admin.toolforge.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
+        contact_group => 'wmcs-team',
     }
 
     # *.wmfusercontent.org (wildcard cert, testing phab.wmfusercontent.org)
