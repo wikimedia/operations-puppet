@@ -19,16 +19,17 @@ class profile::dbbackups::bacula_es (
         } else {
             fail('Only eqiad or codfw pools are configured for content database backups.')
         }
-        backup::set { 'mysql-srv-backups-dumps-latest':
-            jobdefaults => $jobdefaults_rw,
-        }
+        # Temporarily disabled while read only backups run
+        #backup::set { 'mysql-srv-backups-dumps-latest':
+        #    jobdefaults => $jobdefaults_rw,
+        #}
         # read only databases have normally backups disabled, and only are
         # enabled when one-time backups are taken, or every 5 years
         # JobIds for read only backups:
-        # taken on eqiad, stored on codfw: { es1:307201 es2:307569 es3:307955}
-        # taken on codfw, stored on eqiad: { es1:307202 es2:307570 es3:307956}
-        #backup::set { 'mysql-srv-backups-dumps-latest':
-        #    jobdefaults => $jobdefaults_ro,
-        #}
+        # taken on eqiad, stored on codfw: { es1:TBD es2:TBD es3:TBD}
+        # taken on codfw, stored on eqiad: { es1:TBD es2:TBD es3:TBD}
+        backup::set { 'mysql-srv-backups-dumps-latest':
+            jobdefaults => $jobdefaults_ro,
+        }
     }
 }
