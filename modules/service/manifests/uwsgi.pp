@@ -163,8 +163,7 @@ define service::uwsgi(
               'format:local [${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}] ${msgnl}',
 
               # Encode messages to the logstash logger as json datagrams.
-              # msgpack would be nicer, but the jessie uwsgi package doesn't
-              # include the msgpack formatter.
+              # msgpack would be nicer
               join([
                   'json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"',
                   $title,

@@ -29,8 +29,7 @@ class profile::lvs::realserver(
 
     if $use_conftool {
         require ::profile::conftool::client
-        # Install the python poolcounter client, if any backend is defined, but not on jessie:
-        # python3-poolcounter uses typing which is not available in python3.4
+        # Install the python poolcounter client if any backend is defined,
         if $poolcounter_backends {
             $pc_ensure = 'present'
             $bc = $poolcounter_backends

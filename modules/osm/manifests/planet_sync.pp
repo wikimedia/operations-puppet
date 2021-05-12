@@ -46,7 +46,6 @@
 #   $input_reader_format
 #       [osm2pgsql] Format passed to osm2pgsql as --input-reader parameter. osm2pgsql < 0.90
 #       needs 'libxml2' (which is default) and osm2pgsql >= 0.90 needs 'xml'.
-#       osm2pgsql == 0.90 is used on jessie only at this point.
 #   $disable_replication_cron
 #       [imposm] disable OSM replication only because for imposm tile generation
 #       and OSM replication are decoupled

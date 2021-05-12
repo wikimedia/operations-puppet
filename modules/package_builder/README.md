@@ -105,7 +105,7 @@ internally built components. If this isn't possible for some reason, the
 ARCHIVE\_BACKPORTS hook can be used to pull in the backports repository from
 archive.debian.org.
 
-    DIST=jessie ARCHIVE\_BACKPORTS=yes pdebuild
+    DIST=buster ARCHIVE\_BACKPORTS=yes pdebuild
 
 Combining Wikimedia and Backports repos
 =======================================
@@ -144,10 +144,6 @@ You can make it a default by editing your ~/.gbp.conf:
     dist = buster
 
 Without "dist = buster" gbp will build for sid by default.
-
-Note that before stretch git-buildpackage was provided as an equivalent command
-to gbp buildpackage.
-Both work on jessie but git-buildpackage does not work on stretch
 
 Results
 =======

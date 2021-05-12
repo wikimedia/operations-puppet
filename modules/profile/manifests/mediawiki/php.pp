@@ -38,7 +38,7 @@ class profile::mediawiki::php(
     # Use component/php72. The core php7.2 package is imported from Ondrej Sury's repository,
     # but it's rebuilt (along with a range of extensions) against Stretch only (while
     # the repository also imports/forks a number of low level libraries to accomodate
-    # the PHP packages for jessie
+    # the PHP packages for older distros
     if $php_version == '7.2' {
         apt::repository { 'wikimedia-php72':
             uri        => 'http://apt.wikimedia.org/wikimedia',

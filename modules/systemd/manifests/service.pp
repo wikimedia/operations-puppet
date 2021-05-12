@@ -47,7 +47,7 @@ define systemd::service(
         # Use a fully specified label for the unit.
         $label = "${title}.${unit_type}"
         # Force the provider of the service to be systemd if the unit type is
-        # not service. Otherwise, they'd fail on at least debian jessie
+        # not service.
         $provider = 'systemd'
     }
 

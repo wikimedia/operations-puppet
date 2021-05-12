@@ -8,9 +8,8 @@ class profile::redis::multidc(
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Optional[Integer] $version_override = lookup('profile::redis::multidc::version_override'),
 ) {
-    # Hosts where we will install redis multidc are either jessie
-    # or buster hosts where profile::redis::multidc::version_override
-    # is defined.
+    # Hosts where we will install redis multidc are hosts where
+    # profile::redis::multidc::version_override is defined
 
     if (debian::codename::eq('buster') and $version_override) {
         if $version_override {

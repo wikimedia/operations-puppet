@@ -97,7 +97,7 @@ class base::standard_packages {
 
     case debian::codename() {
         'stretch': {
-            # An upgrade from jessie to stretch leaves some old binary packages around, remove those
+            # A dist upgrade to stretch leaves some old binary packages around, remove those
             $absent_packages = [
                 'libapt-inst1.5', 'libapt-pkg4.12', 'libdns-export100', 'libirs-export91',
                 'libisc-export95', 'libisccfg-export90', 'liblwres90', 'libgnutls-deb0-28',
@@ -108,7 +108,7 @@ class base::standard_packages {
             $purged_packages = []
         }
         'buster': {
-            # An upgrade from stretch to buster leaves some old binary packages around, remove those
+            # An dist upgrade to buster leaves some old binary packages around, remove those
             $absent_packages = [
                 'libbind9-140', 'libdns162', 'libevent-2.0-5', 'libisc160', 'libisccc140', 'libisccfg140',
                 'liblwres141', 'libonig4', 'libdns-export162', 'libhunspell-1.4-0', 'libisc-export160',

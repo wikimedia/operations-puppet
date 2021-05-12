@@ -11,7 +11,7 @@
 #
 # Misc:
 # Q: Where did the deb package come from?
-# A: https://debian.piwik.org, imported to jessie-wikimedia.
+# A: https://debian.piwik.org, imported to apt.wikimedia.org
 #
 class matomo (
     $database_host      = 'localhost',
