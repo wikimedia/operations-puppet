@@ -1241,13 +1241,12 @@ node 'cloudweb2001-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::cloudweb)
 }
 
-node /^cloudnet200[23]-dev\.codfw\.wmnet$/ {
+node /^cloudnet200[24]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::net)
 }
 
-# New cloudnet server T275676
-node 'cloudnet2004-dev.codfw.wmnet' {
-    role(insetup)
+node 'cloudnet2003-dev.codfw.wmnet' {
+    role(spare::system)
 }
 
 node 'clouddb2001-dev.codfw.wmnet' {
