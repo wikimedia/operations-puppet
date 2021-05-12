@@ -3,6 +3,7 @@ profile::idp::client::httpd::sites:
     vhost_content: 'profile/idp/client/httpd-tendril.erb'
     document_root: '/srv/tendril/web'
     validate_saml: true
+    enable_ssout: true
     required_groups:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
       - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
