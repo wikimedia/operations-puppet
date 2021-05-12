@@ -1523,8 +1523,9 @@ node /^ldap-replica200[3-6]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 
+# ELK7 ES only HDD backends
 node /^logstash101[012]\.eqiad\.wmnet$/ {
-    role(spare::system)
+    role(logstash::elasticsearch7)
 }
 
 # ELK 7 ES only SSD backends (no kafka-logging brokers)

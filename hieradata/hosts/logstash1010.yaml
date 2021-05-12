@@ -1,0 +1,9 @@
+profile::base::notifications: disabled
+
+profile::elasticsearch::common_settings:
+    heap_memory: '64G'
+
+lookup_options:
+  profile::elasticsearch::common_settings:
+    merge:
+      strategy: deep
