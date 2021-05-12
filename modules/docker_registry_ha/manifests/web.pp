@@ -106,7 +106,7 @@ class docker_registry_ha::web (
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/docker_registry_ha/style.css',
+        source => 'puppet:///modules/docker_registry_ha/registry-homepage-builder.css',
     }
 
     file { $homepage:
