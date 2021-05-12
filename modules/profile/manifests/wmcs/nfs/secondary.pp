@@ -1,6 +1,6 @@
 class profile::wmcs::nfs::secondary(
     String $observer_pass = lookup('profile::openstack::eqiad1::observer_password'),
-    String $data_iface    = lookup('profile::wmcs::nfs::secondary::data_iface', {'default_value' => 'eno2'}),
+    String $data_iface    = lookup('profile::wmcs::nfs::secondary::data_iface', {'default_value' => 'eno3'}),
     Hash[String, Hash[String, Variant[Integer,String]]] $drbd_resource_config = lookup('profile::wmcs::nfs::secondary::drbd_resource_config'),
     Hash[String, Stdlib::IP::Address::V4] $drbd_cluster = lookup('profile::wmcs::nfs::secondary::drbd_cluster'),
     Stdlib::Host $scratch_active_server = lookup('scratch_active_server'),
