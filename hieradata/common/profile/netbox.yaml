@@ -46,6 +46,11 @@ profile::netbox::netbox_report_checks:
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:18/30:00' # every 30 minutes
+    -   name: network
+        class: 'network.Network'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:20/30:00' # every 30 minutes
 
 profile::netbox::ganeti_sync_profiles:
     - profile: eqiad
