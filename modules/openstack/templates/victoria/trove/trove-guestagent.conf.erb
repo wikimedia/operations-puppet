@@ -9,6 +9,9 @@
 
 [DEFAULT]
 
+block_device_mapping = sdb
+device_path = /dev/sdb
+
 
 #=========== RPC Configuration ======================
 
@@ -123,6 +126,7 @@ log_file = logfile.txt
 
 [mysql]
 docker_image = quay.io/wikimedia-cloud-services/mysql
+device_path = /dev/sdb
 
 # For mysql, the following are the defaults for backup, and restore:
 # backup_strategy = InnoBackupEx
@@ -141,42 +145,50 @@ docker_image = quay.io/wikimedia-cloud-services/mysql
 # ignore_dbs = mysql, information_schema, performance_schema
 
 [vertica]
+device_path = /dev/sdb
 # For vertica, following are the defaults needed:
 # mount_point = /var/lib/vertica
 # readahead_size = 2048
 # guestagent_strategy = trove.common.strategies.cluster.experimental.vertica.guestagent.VerticaGuestAgentStrategy
 
 [redis]
+device_path = /dev/sdb
 # For redis, the following are the defaults for backup, and restore:
 # backup_strategy = RedisBackup
 # backup_namespace = trove.guestagent.strategies.backup.experimental.redis_impl
 # restore_namespace = trove.guestagent.strategies.restore.experimental.redis_impl
 
 [percona]
+device_path = /dev/sdb
 backup_namespace = trove.guestagent.strategies.backup.mysql_impl
 restore_namespace = trove.guestagent.strategies.restore.mysql_impl
 
 [couchbase]
+device_path = /dev/sdb
 backup_namespace = trove.guestagent.strategies.backup.experimental.couchbase_impl
 restore_namespace = trove.guestagent.strategies.restore.experimental.couchbase_impl
 
 [cassandra]
+device_path = /dev/sdb
 backup_namespace = trove.guestagent.strategies.backup.experimental.cassandra_impl
 restore_namespace = trove.guestagent.strategies.restore.experimental.cassandra_impl
 
 [db2]
+device_path = /dev/sdb
 # For db2, the following are the defaults for backup, and restore:
 # backup_strategy = DB2OfflineBackup
 # backup_namespace = trove.guestagent.strategies.backup.experimental.db2_impl
 # restore_namespace = trove.guestagent.strategies.restore.experimental.db2_impl
 
 [couchdb]
+device_path = /dev/sdb
 #For CouchDB, the following are the defaults for backup and restore:
 # backup_strategy = CouchDBBackup
 # backup_namespace = trove.guestagent.strategies.backup.experimental.couchdb_impl
 # restore_namespace = trove.guestagent.strategies.restore.experimental.couchdb_impl
 
 [guest_agent]
+device_path = /dev/sdb
 container_registry = quay.io/wikimedia-cloud-services
 
 # We have passwordless pull for the moment.
