@@ -2366,12 +2366,8 @@ node 'people1002.eqiad.wmnet', 'people2001.codfw.wmnet' {
 }
 
 # new people VMs on bullseye (T280989)
-node 'people1003.eqiad.wmnet' {
+node 'people1003.eqiad.wmnet', 'people2002.codfw.wmnet' {
     role(microsites::peopleweb)
-}
-
-node 'people2002.codfw.wmnet' {
-    role(insetup)
 }
 
 # scandium is a parsoid test server. it replaced ruthenium.
