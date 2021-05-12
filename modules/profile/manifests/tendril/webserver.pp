@@ -4,24 +4,7 @@ class profile::tendril::webserver (
     Boolean $monitor_https = lookup('do_acme', {'default_value' => true}),
     Boolean $monitor_auth  = lookup('monitor_auth', {'default_value' => true}),
 ) {
-    case debian::codename() {
-        'buster': {
-            $php_module = 'php5.6'
-            $packages = ['libapache2-mod-php5.6','php5.6-mysql']
-        }
-        'stretch': {
-            $php_module = 'php7.0'
-            $packages = ['libapache2-mod-php','php-mysql']
-        }
-        'jessie': {
-            $php_module = 'php5'
-            $packages = ['libapache2-mod-php5','php5-mysql']
-        }
-        default: {
-            fail("Please update ${module_name} to support newer php installed module")
-        }
-    }
-    ensure_packages($packages)
+    ensure_packages(['libapache2-mod-php5.6','php5.6-mysql'])
 
     class { 'httpd':
         modules => ['rewrite',
@@ -36,7 +19,7 @@ class profile::tendril::webserver (
         mpm => 'prefork',
     }
 
-    httpd::mod_conf { $php_module:
+    httpd::mod_conf { 'php5.6':
         ensure => present,
     }
 
