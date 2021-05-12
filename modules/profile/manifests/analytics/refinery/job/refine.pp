@@ -287,7 +287,7 @@ class profile::analytics::refinery::job::refine(
     $mediawiki_job_events_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
 
     profile::analytics::refinery::job::refine_job { 'mediawiki_job_events':
-        ensure           => $ensure_timers,
+        ensure           => 'absent',
         job_config       => merge($default_config, {
             input_path                      => $mediawiki_job_events_input_path,
             input_path_regex                => $mediawiki_job_events_input_path_regex,
