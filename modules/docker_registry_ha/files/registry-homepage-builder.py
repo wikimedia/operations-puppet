@@ -49,6 +49,14 @@ def header(title) -> str:
     )
 
 
+def footer() -> str:
+    program_url = "https://gerrit.wikimedia.org/g/operations/puppet/+/refs/heads/production/modules/docker_registry_ha/files/registry-homepage-builder.py"  # noqa: E501
+    return """
+           <footer>Page created by <a href="{program_url}">registry-homepage-builder.py</a></footer>
+           </body></html>
+           """.format(program_url=program_url)
+
+
 def build_index(images, timestamp) -> str:
     text = header("Wikimedia Docker - Images") + textwrap.dedent(
         """\
@@ -59,7 +67,8 @@ def build_index(images, timestamp) -> str:
     )
     for image in images:
         text += '        <li><a href="{image}/tags/">{image}</a></li>\n'.format(image=image)
-    text += '    </ul>\n</body></html>\n'
+    text += '    </ul>\n'
+    text += footer()
     return text
 
 
@@ -90,7 +99,8 @@ def build_tags(image, tags, timestamp) -> str:
     )
     for tag in tags:
         text += "        <li>{tag}</li>\n".format(tag=tag)
-    text += "    </ul>\n</div></body></html>\n"
+    text += "    </ul>\n</div>\n"
+    text += footer()
     return text
 
 
