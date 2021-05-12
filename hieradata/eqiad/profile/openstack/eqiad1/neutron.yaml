@@ -5,8 +5,6 @@ profile::openstack::eqiad1::neutron::network_flat_interface_vlan: '1105'
 profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external: '1107'
 profile::openstack::eqiad1::neutron::rabbit_user: 'neutron'
 profile::openstack::eqiad1::neutron::network_flat_name: 'cloudinstances2b'
-# T193496
-profile::openstack::eqiad1::neutron::network_public_ip: '185.15.56.1'
 profile::openstack::eqiad1::neutron::l3_agent_bridges:
   br-external:
     addif: 'eno50.1107'

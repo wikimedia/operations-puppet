@@ -1,7 +1,5 @@
 class profile::openstack::base::neutron::l3_agent(
     $version = lookup('profile::openstack::base::version'),
-    $dmz_cidr = lookup('profile::openstack::base::neutron::dmz_cidr'),
-    $network_public_ip = lookup('profile::openstack::base::neutron::network_public_ip'),
     $report_interval = lookup('profile::openstack::base::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::base::neutron::base_interface'),
     $network_flat_interface_vlan_external = lookup('profile::openstack::base::neutron::network_flat_interface_vlan_external'),
@@ -25,10 +23,8 @@ class profile::openstack::base::neutron::l3_agent(
     }
 
     class {'::openstack::neutron::l3_agent':
-        version           => $version,
-        dmz_cidr_array    => $dmz_cidr,
-        network_public_ip => $network_public_ip,
-        report_interval   => $report_interval,
+        version         => $version,
+        report_interval => $report_interval,
     }
     contain '::openstack::neutron::l3_agent'
 

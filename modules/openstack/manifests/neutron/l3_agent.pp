@@ -1,14 +1,10 @@
 class openstack::neutron::l3_agent(
     $version,
-    $dmz_cidr_array,
-    $network_public_ip,
     $report_interval,
     $enabled=true,
     ) {
 
     class { "openstack::neutron::l3_agent::${version}":
-        dmz_cidr_array    => $dmz_cidr_array,
-        network_public_ip => $network_public_ip,
         report_interval   => $report_interval,
     }
 
