@@ -136,13 +136,26 @@ class profile::analytics::refinery::job::data_purge (
     # \w to get the proper checksum.
     $event_refined_to_drop.each |String $dataset, String $checksum| {
         kerberos::systemd_timer { "refinery-drop-refined-event.${dataset}":
-            ensure      => $ensure_timers,
+            # Being replaced by drop_event job
+            ensure      => 'absent',
             description => "Drop refined event.${dataset} data imported on Hive/HDFS following data retention policies.",
             command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^${dataset}$$' --base-path='/wmf/data/event/${dataset}' --path-format='datacenter=\\\\w+(/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?)?' --older-than='90' --skip-trash --execute='${checksum}'",
             interval    => '*-*-* 00:00:00',
             environment => $systemd_env,
             user        => 'analytics',
         }
+    }
+
+    # Drop old data from all tables in the Hive event database with tables in /wmf/data/event.
+    # Data that should be kept indefinitely is sanitized by refine_sanitize jobs into the
+    # event_sanitized Hive database, so all data older than 90 days should be safe to drop.
+    $drop_event_log_file = "${profile::analytics::refinery::log_dir}/drop_event.log"
+    kerberos::systemd_timer { 'drop_event':
+        description => 'Drop data in Hive event database older than 90 days.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='.*' --base-path='/wmf/data/event' --path-format='[^/]+(/datacenter=[^/]+)?/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --execute='ea43326f56fd374d895bb931dc0ce3d4' --log-file='${drop_event_log_file}'",
+        interval    => '*-*-* 00:00:00',
+        environment => $systemd_env,
+        user        => 'analytics',
     }
 
     # Keep this many days of raw eventlogging data.
@@ -261,7 +274,8 @@ class profile::analytics::refinery::job::data_purge (
     # So, if you want to make changes to this job, make sure to execute all tests (DRY-RUN) with just 1
     # single $ sign, to get the correct checksum. And then add the double $$ sign here.
     kerberos::systemd_timer { 'drop-el-unsanitized-events':
-        ensure      => $ensure_timers,
+        # replaced by drop_event job.
+        ensure      => 'absent',
         description => 'Drop unsanitized EventLogging data from the event database after retention period.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='.*' --base-path='/wmf/data/event' --path-format='[^/]+(/datacenter=[^/]+)?/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --execute='ea43326f56fd374d895bb931dc0ce3d4' --log-file='${el_unsanitized_log_file}'",
         interval    => '*-*-* 00:00:00',
