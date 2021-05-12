@@ -6,7 +6,7 @@ class profile::homer (
     Stdlib::Host $private_git_peer = lookup('profile::homer::private_git_peer'),
     String $nb_ro_token = lookup('profile::netbox::tokens::read_only'),
     Stdlib::HTTPSUrl $nb_api = lookup('profile::netbox::netbox_api'),
-    String $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
+    Optional[String[1]] $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
 ){
 
     ensure_packages(['virtualenv', 'make'])
@@ -42,12 +42,22 @@ class profile::homer (
         require => Class['homer'],
     }
 
+    $check_homer_diff_ensure = $diff_timer_interval  ? {
+        undef   => absent,
+        default => present,
+    }
+
+    # If unset set a fixed value in the past just to pass validation by systemd-analyze calendar
+    # as the timer will be absented in this case and interval is a required parameter.
+    $effective_diff_timer_interval = pick($diff_timer_interval, '2021-01-01')
+
     systemd::timer::job { 'check-homer-diff':
+        ensure      => $check_homer_diff_ensure,
         description => 'Check if any network device has a live config that differs from the code-defined one',
         command     => '/usr/local/sbin/check-homer-diff',
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => $diff_timer_interval,
+            'interval' => $effective_diff_timer_interval,
         },
         user        => 'root',  # Needed to access the keyholder SSH key
         require     => File['/usr/local/sbin/check-homer-diff'],
