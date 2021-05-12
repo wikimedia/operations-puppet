@@ -12,6 +12,9 @@ bind_port = <%= @api_bind_port %>
 # be the number of CPUs available. (integer value)
 #trove_api_workers=None
 
+# Inject a public key into each DB instance for debug purposes
+nova_keypair='trove-debug'
+
 #===================== RPC Configuration =================================
 
 # URL representing the messaging driver to use and its full configuration.
