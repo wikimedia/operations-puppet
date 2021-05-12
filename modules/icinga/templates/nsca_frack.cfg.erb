@@ -709,18 +709,54 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_apache2
+    host_name                frdata1002
+}
+
+define service {
+    use                      passive-service
     service_description      check_ssl
     host_name                frdata1002
     contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_mysql
+    host_name                frdata1002
+}
+
+define service {
+    use                      passive-service
+    service_description      check_nginx
+    host_name                frdata1002
 }
 
 # frdata2001
 
 define service {
     use                      passive-service
+    service_description      check_apache2
+    host_name                frdata2001
+}
+
+define service {
+    use                      passive-service
     service_description      check_ssl
     host_name                frdata2001
     contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_mysql
+    host_name                frdata2001
+}
+
+define service {
+    use                      passive-service
+    service_description      check_nginx
+    host_name                frdata2001
 }
 
 # frdb1002 (these can be run on any db in the replication cluster)
@@ -1701,6 +1737,13 @@ define service {
 define service {
     use                      passive-service
     service_description      check_redis
+    hostgroup_name           fundraising-queue
+    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_redis_donor_prefs
     hostgroup_name           fundraising-queue
     contact_groups           fr-tech,fr-tech-ops
 }
