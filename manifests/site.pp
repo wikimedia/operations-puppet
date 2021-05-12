@@ -417,7 +417,7 @@ node 'db1122.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1105, db1146, db1170 below
-node /^db1(074|129|156|162|182)\.eqiad\.wmnet/ {
+node /^db1(129|156|162|182)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -1111,7 +1111,6 @@ node /^failoid[12]002\.(eqiad|codfw)\.wmnet$/ {
     role(failoid)
 }
 
-# New hosts to refresh db1074-db1095 T264584 T267043
 # 9 expansion hosts T273566
 # Set them to spare individually as it will take take to transfer the data
 node /^db11(76)\.eqiad\.wmnet$/ {

@@ -1595,12 +1595,6 @@ host cumin2002 {
      option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
-host db1074 {
-    hardware ethernet 14:02:EC:3D:4D:A4;
-    fixed-address db1074.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host db1079 {
     hardware ethernet 14:02:EC:06:04:84;
     fixed-address db1079.eqiad.wmnet;
