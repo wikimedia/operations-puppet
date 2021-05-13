@@ -2,8 +2,10 @@
 #### THIS FILE IS MANAGED BY PUPPET
 ####  as template('base/resolv.conf.erb')
 #####################################################################
-search <%= @domain_search.join(' ') %>
-options timeout:1 attempts:3
-<% @nameservers.select{|ns| ns != @facts['ipaddress']  }.each do |nameserver| -%>
+<%# ensure the domain parameter is always first and not repeated -%>
+<%- clean_domain_search =  @domain_search.reject{|domain| domain == @facts['networking']['domain']} -%>
+search <%= @facts['networking']['domain'] %> <%= clean_domain_search.to_set.to_a.join(' ') %>
+options timeout:<%= @timeout %> attempts:<%= @attempts %> ndots:<%= @ndots %>
+<% @nameservers.reject{|ns| [@facts['ip'], @facts['ip6']].include?(ns) }.each do |nameserver| -%>
 nameserver <%= nameserver %>
 <% end -%>
