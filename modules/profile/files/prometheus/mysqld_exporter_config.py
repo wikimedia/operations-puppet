@@ -15,10 +15,6 @@ import yaml
 
 TLS_TRUSTED_CA = '/etc/ssl/certs/Puppet_Internal_CA.pem'
 DB_CONFIG_FILE = '/etc/prometheus/zarcillo.cnf'
-# TODO: Detect multisource hosts automatically. The main issues preventing that is the
-#       possibility of multisource hosts with only 1 connection. For now, just hardcoded them,
-#       as they are scheduled to be decommed soon(TM), not needed an exception.
-SPECIAL_MULTISOURCE_HOSTS = ['labsdb1009', 'labsdb1010', 'labsdb1011']
 DATACENTERS = ['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin']
 
 
@@ -53,7 +49,7 @@ def get_db_config():
     except yaml.YAMLError:
         logger.exception('Error opening or parsing the YAML config file')
         sys.exit(1)
-    except FileNotFoundError:  # noqa: F821
+    except FileNotFoundError:
         logger.exception('Config file not found')
         sys.exit(2)
     if not isinstance(config, dict) or 'host' not in config:
@@ -114,18 +110,9 @@ def transform_data_to_prometheus(data):
     #     slave:
     #       - db1169:11311
     #       - db1134:9104
-    # labsdb:
-    #   multi:
-    #     slave:
-    #       labsdb1009
     logger = logging.getLogger('prometheus')
     instances = dict()
-    multisource_hosts = set()
     for instance in data:
-        # skip weird multisource labsdb hosts, will deal with them later
-        if instance['name'] in SPECIAL_MULTISOURCE_HOSTS:
-            multisource_hosts.add(instance['name'])
-            continue
         name = get_socket(instance['name'])
         group = instance['group']
         section = instance['section']
@@ -140,17 +127,6 @@ def transform_data_to_prometheus(data):
         if role not in instances[group][section]:
             instances[group][section][role] = list()
         instances[group][section][role].append(name)
-
-    # handle weird multisource labsdb hosts
-    for instance in sorted(multisource_hosts):
-        if 'labsdb' not in instances:
-            instances['labsdb'] = dict()
-        if 'multi' not in instances['labsdb']:
-            instances['labsdb']['multi'] = dict()
-        if 'slave' not in instances['labsdb']['multi']:
-            instances['labsdb']['multi']['slave'] = list()
-        name = get_socket(instance)
-        instances['labsdb']['multi']['slave'].append(name)
 
     # transform to prometheus weird format. E.g.:
     # core:
