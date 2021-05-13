@@ -22,8 +22,12 @@ class labstore::rsync::syncserver(
         default => 'absent',
     }
     systemd::service { 'syncserver':
-        ensure    => $ensure,
-        content   => systemd_template('syncserver'),
-        subscribe => File['/usr/local/sbin/syncserver'],
+        ensure         => $ensure,
+        service_params => {
+            enable => false,
+            ensure => stopped, # These params are in preparation for later removal see T224747
+        },
+        content        => systemd_template('syncserver'),
+        subscribe      => File['/usr/local/sbin/syncserver'],
     }
 }
