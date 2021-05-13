@@ -57,5 +57,12 @@ class openstack::trove::service::victoria(
             mode    => '0644',
             notify  => Service['trove-api'],
             require => Package['trove-api'];
+        '/usr/lib/python3/dist-packages/trove/taskmanager/models.py':
+            source  => 'puppet:///modules/openstack/victoria/trove/hacks/models.py',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            notify  => Service['trove-api'],
+            require => Package['trove-api'];
     }
 }
