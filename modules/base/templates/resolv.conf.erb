@@ -2,10 +2,8 @@
 #### THIS FILE IS MANAGED BY PUPPET
 ####  as template('base/resolv.conf.erb')
 #####################################################################
-# Resolver configuration for site <%= @site %>
-<%- ip = scope.lookupvar('::ipaddress') -%>
-search <%= @facts['domain'] %> <%= Array(@domain_search).reject{ |d| d == @facts['domain'] }.join(' ') %>
+search <%= @domain_search.join(' ') %>
 options timeout:1 attempts:3
-<% @nameservers.select{|ns| ns != ip }.each do |nameserver| -%>
+<% @nameservers.select{|ns| ns != @facts['ipaddress']  }.each do |nameserver| -%>
 nameserver <%= nameserver %>
 <% end -%>

@@ -1,13 +1,9 @@
 class base::resolving (
-    $domain_search = $::domain,
-    $labs_additional_domains = [],
-    $nameservers = $::nameservers,
-    String $legacy_cloud_search_domain = '',
+    Array[Stdlib::IP::Address] $nameservers,
+    Array[Stdlib::Fqdn]        $domain_search              = [$facts['domain']],
+    Array[Stdlib::Fqdn]        $labs_additional_domains    = [],
+    String                     $legacy_cloud_search_domain = '',
 ){
-    if ! $nameservers {
-        fail('Variable $nameservers is not defined!')
-    }
-
     if $::realm == 'labs' {
         $labs_tld = lookup('labs_tld')
         $labs_site = lookup('labs_site', {'default_value' => $::site})
