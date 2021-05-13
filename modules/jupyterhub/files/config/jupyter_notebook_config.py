@@ -7,6 +7,6 @@
 # See https://github.com/jupyter/notebook/blob/master/notebook/terminal/__init__.py#L28-L34
 
 
-c.NotebookApp.terminado_settings = { # noqa: F821
+c.NotebookApp.terminado_settings = {  # noqa: F821
     'shell_command': ['/bin/bash']
 }
