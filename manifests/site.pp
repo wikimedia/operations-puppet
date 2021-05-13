@@ -2359,13 +2359,8 @@ node 'peek2001.codfw.wmnet' {
     role(peek)
 }
 
-# people.wikimedia.org, for all shell users
-# buster VMs. replaced people1001 (T247649)
-node 'people1002.eqiad.wmnet', 'people2001.codfw.wmnet' {
-    role(microsites::peopleweb)
-}
-
-# new people VMs on bullseye (T280989)
+# https://people.wikimedia.org - self-service file hosting
+# VMs on bullseye, access for all shell users (T280989)
 node 'people1003.eqiad.wmnet', 'people2002.codfw.wmnet' {
     role(microsites::peopleweb)
 }
