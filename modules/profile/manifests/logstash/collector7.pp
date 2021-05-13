@@ -363,25 +363,16 @@ class profile::logstash::collector7 (
         }
     }
 
-    # curator cluster config template require a list of hosts
-    $http_port = 9200
-    $cluster_name = 'config-ecs-test'
-    $curator_hosts = [ '127.0.0.1' ]
-
-    elasticsearch::curator::config {
-        'config-ecs-test':
-            content => template('elasticsearch/curator_cluster.yaml.erb');
-        'cleanup_ecs-test':
-            source => 'puppet:///modules/profile/logstash/curator_ecs_test_actions.yaml'
+    # TODO: cleanup -- T274394
+    file {
+        '/etc/curator/config-ecs-test.yaml':
+          ensure => absent;
+        '/etc/curator/cleanup_ecs-test.yaml':
+          ensure => absent
     }
 
     cron { 'logstash_cleanup_indices_ecs_test':
-        ensure  => present,
-        command => '/usr/bin/curator --config /etc/curator/config-ecs-test.yaml /etc/curator/cleanup_ecs-test.yaml > /dev/null',
-        user    => 'root',
-        hour    => 0,
-        minute  => 42,
-        require => Elasticsearch::Curator::Config['cleanup_ecs-test'],
+        ensure => absent,
     }
 
     $w3creportingapi_versions = {
