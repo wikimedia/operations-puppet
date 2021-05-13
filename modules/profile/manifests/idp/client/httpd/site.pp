@@ -15,7 +15,7 @@
 # @param acme_chief_cert the name of the acme chief certificate to use
 # @param vhost_settings Allows to pass settings to the vhost config which are unrelated to the IDP setup
 # @param proxied_as_https if true set the proxied_as address to https://${vhost}/
-# @param enable_ssout enable the SSOut endpoint, this is called by CAS when someone logs out of the sso session
+# @param enable_slo enable the Single Logout (SLO) endpoint, this is called by CAS when someone logs out of the sso session
 # @attribute_delimiter mod_auth_cas will set the value of the attribute header (as described in CASAttributePrefix)
 #   to <attrvalue><CASAttributeDelimiter><attrvalue> in the case of multiple attribute values.
 define profile::idp::client::httpd::site (
@@ -34,7 +34,7 @@ define profile::idp::client::httpd::site (
     Boolean                       $proxied_as_https    = false,
     String[1,1]                   $attribute_delimiter = ':',
     Enum['staging', 'production'] $environment         = 'production',
-    Boolean                       $enable_ssout        = false,
+    Boolean                       $enable_slo        = false,
     Optional[Hash[String,Any]]    $vhost_settings      = {},
     Optional[Array[String[1]]]    $required_groups     = [],
     Optional[String[1]]           $acme_chief_cert     = undef,
@@ -61,7 +61,7 @@ define profile::idp::client::httpd::site (
         'CASAttributePrefix'    => $attribute_prefix,
         'CASAttributeDelimiter' => $attribute_delimiter,
         'CASValidateSAML'       => $validate_saml.bool2str('On', 'Off'),
-        'CASSSOEnabled'         => $enable_ssout.bool2str('On', 'Off'),
+        'CASSSOEnabled'         => $enable_slo.bool2str('On', 'Off'),
     }
 
     $cas_auth_require = $required_groups.empty? {
