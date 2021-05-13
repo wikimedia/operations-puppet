@@ -2,6 +2,7 @@ codec: "json_lines"
 ignore:
   - "@timestamp"
   - "tags"
+  - "normalized"
 testcases:
   - input:
     - >

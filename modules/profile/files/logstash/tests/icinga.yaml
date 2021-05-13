@@ -5,6 +5,7 @@ ignore:
   - "@timestamp"
   - "host"
   - "tags"
+  - "normalized"
 testcases:
   - input:
       - >

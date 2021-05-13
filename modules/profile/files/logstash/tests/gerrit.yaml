@@ -8,6 +8,7 @@ codec: "json_lines"
 ignore:
   - "labels"
   - "@timestamp"
+  - "normalized"
 testcases:
   - input:
       - >
