@@ -1,0 +1,25 @@
+bind 0.0.0.0
+protected-mode no
+
+port 26379
+
+daemonize yes
+
+pidfile "/run/sentinel-toolforge/redis-sentinel.pid"
+logfile "/var/log/redis/redis-sentinel.log"
+dir "/srv/redis"
+
+sentinel announce-ip "<%= @redis_sentinel_own_address %>"
+
+sentinel deny-scripts-reconfig yes
+
+sentinel monitor toolforge <%= @redis_primary_address %> 6379 2
+sentinel down-after-milliseconds toolforge 5000
+sentinel parallel-syncs toolforge 3
+sentinel failover-timeout toolforge 60000
+sentinel config-epoch toolforge 0
+sentinel leader-epoch toolforge 0
+
+<% @mapped_secret_commands.each do |command, prefixed_command| -%>
+sentinel rename-command toolforge <%= command %> <%= prefixed_command %>
+<% end -%>

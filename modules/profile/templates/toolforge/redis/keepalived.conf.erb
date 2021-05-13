@@ -1,0 +1,40 @@
+# Note: This file is managed by puppet.
+
+global_defs {
+  script_security
+}
+
+vrrp_script redis_failover_track {
+  script "/usr/local/bin/wmcs-check-redis-master"
+  user redis
+  interval 10
+  weight 150
+  fall 1
+  rise 1
+}
+
+vrrp_instance VRRP1 {
+  state BACKUP
+  interface eth0
+  virtual_router_id 30
+  priority <%= scope.call_function('fqdn_rand', [100]) %>
+  advert_int 1
+  authentication {
+    auth_type PASS
+    auth_pass <%= @keepalived_password %>
+  }
+  virtual_ipaddress {
+<% @keepalived_vips.each do |vip| -%>
+    <%= scope.function_ipresolve([vip]) %>
+<% end -%>
+  }
+  unicast_peer {
+<% @keepalived_peers.each do |peer| -%>
+    <%= scope.function_ipresolve([peer]) %>
+<% end -%>
+  }
+  track_script {
+    redis_failover_track
+  }
+}
+
