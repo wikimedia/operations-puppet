@@ -49,15 +49,6 @@ class docker::baseimages(
         mode   => '0444',
     }
 
-    file { '/srv/images/base/wikimedia-stretch.pub.gpg':
-        ensure => absent,
-    }
-
-    file { '/srv/images/base/wikimedia-buster.pub.gpg':
-        ensure => absent,
-    }
-
-
     # Stretch
     file { '/srv/images/base/stretch.yaml':
         content => template('docker/images/stretch.yaml.erb'),
@@ -72,30 +63,6 @@ class docker::baseimages(
         owner   => 'root',
         group   => 'root',
         mode    => '0544',
-    }
-
-    if 'alpine' in $distributions {
-        if $proxy_address {
-            $env = ["https_proxy=http://${proxy_address}:${proxy_port}"]
-        }
-        else {
-            $env = undef
-        }
-
-        exec { 'git clone alpine linux':
-            command     => '/usr/bin/git clone https://github.com/gliderlabs/docker-alpine.git alpine',
-            creates     => '/srv/images/alpine',
-            cwd         => '/srv/images',
-            environment => $env,
-            require     => File['/srv/images'],
-        }
-
-        file { '/usr/local/bin/build-alpine':
-            content => template('docker/images/build-alpine.erb'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0544',
-        }
     }
 
     file { '/usr/local/bin/build-base-images':
