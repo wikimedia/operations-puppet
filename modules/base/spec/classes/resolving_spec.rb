@@ -37,8 +37,6 @@ describe 'base::resolving' do
       it { is_expected.to contain_file('/etc/dhcp/dhclient-enter-hooks.d/nodnsupdate').with_source('puppet:///modules/base/resolv/nodnsupdate')}
       it "contains a correct resolv.conf" do
         is_expected.to contain_file('/etc/resolv.conf').with_content(
-          /search fun.testdc.wikimedia.cloud\s+fun./
-        ).with_content(
           /nameserver 1.2.3.4/
         ).with_content(
           /options timeout:1 ndots:1/
