@@ -12,6 +12,8 @@ class profile::openstack::eqiad1::trove(
     String              $trove_service_user_pass = lookup('profile::openstack::eqiad1::trove::trove_user_pass'),
     String              $trove_quay_user         = lookup('profile::openstack::eqiad1::trove::quay_user'),
     String              $trove_quay_pass         = lookup('profile::openstack::eqiad1::trove::quay_pass'),
+    String              $trove_dns_zone          = lookup('profile::openstack::eqiad1::trove::dns_zone'),
+    String              $trove_dns_zone_id       = lookup('profile::openstack::eqiad1::trove::dns_zone_id'),
     ) {
 
     class {'::profile::openstack::base::trove':
@@ -28,5 +30,7 @@ class profile::openstack::eqiad1::trove(
         trove_service_user_pass => $trove_service_user_pass,
         trove_quay_user         => $trove_quay_user,
         trove_quay_pass         => $trove_quay_pass,
+        trove_dns_zone          => $trove_dns_zone,
+        trove_dns_zone_id       => $trove_dns_zone_id,
     }
 }

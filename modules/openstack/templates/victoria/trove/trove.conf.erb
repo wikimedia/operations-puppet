@@ -81,17 +81,17 @@ http_delete_rate = 200
 http_mgmt_post_rate = 200
 
 # Trove DNS
-trove_dns_support = False
-dns_account_id = 123456
-dns_auth_url = http://127.0.0.1/identity/v2.0
-dns_username = user
-dns_passkey = password
-dns_ttl = 3600
-dns_domain_name = 'trove.com.'
-dns_domain_id = 11111111-1111-1111-1111-111111111111
-dns_driver = trove.dns.designate.driver.DesignateDriver
+trove_dns_support = True
+dns_account_id = <%= @trove_service_project %>
+dns_auth_url = <%= @keystone_internal_uri %>
+dns_username = <%= @trove_service_user %>
+dns_passkey = <%= @trove_service_user_pass %>
+dns_ttl = 300
+dns_domain_name = <%= @trove_dns_zone %>
+dns_domain_id = <%= @trove_dns_zone_id %>
+dns_driver = trove.dns.designate.driver.DesignateDriverV2
 dns_instance_entry_factory = trove.dns.designate.driver.DesignateInstanceEntryFactory
-dns_endpoint_url = http://127.0.0.1/v1/
+dns_endpoint_url = <%= @designate_internal_uri %>
 dns_service_type = dns
 
 # Neutron

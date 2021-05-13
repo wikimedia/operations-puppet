@@ -18,10 +18,13 @@ class profile::openstack::base::trove(
     String              $trove_service_user_pass = lookup('profile::openstack::base::trove::trove_user_pass'),
     String              $trove_quay_user         = lookup('profile::openstack::base::trove::quay_user'),
     String              $trove_quay_pass         = lookup('profile::openstack::base::trove::quay_pass'),
+    String              $trove_dns_zone          = lookup('profile::openstack::base::trove::dns_zone'),
+    String              $trove_dns_zone_id       = lookup('profile::openstack::base::trove::dns_zone_id'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
     $keystone_internal_uri = "http://${keystone_fqdn}:${internal_auth_port}"
+    $designate_internal_uri = "http://${keystone_fqdn}:9001"
 
     class { '::openstack::trove::service':
         version                 => $version,
@@ -33,6 +36,7 @@ class profile::openstack::base::trove(
         ldap_user_pass          => $ldap_user_pass,
         keystone_admin_uri      => $keystone_admin_uri,
         keystone_internal_uri   => $keystone_internal_uri,
+        designate_internal_uri  => $designate_internal_uri,
         region                  => $region,
         api_bind_port           => $api_bind_port,
         rabbit_user             => $rabbit_user,
@@ -42,6 +46,8 @@ class profile::openstack::base::trove(
         trove_service_user_pass => $trove_service_user_pass,
         trove_quay_user         => $trove_quay_user,
         trove_quay_pass         => $trove_quay_pass,
+        trove_dns_zone          => $trove_dns_zone,
+        trove_dns_zone_id       => $trove_dns_zone_id,
     }
 
     include ::network::constants

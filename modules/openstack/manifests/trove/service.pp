@@ -16,6 +16,9 @@ class openstack::trove::service(
     String              $trove_guest_rabbit_pass,
     String              $trove_service_user_pass,
     String              $trove_quay_pass,
+    String              $designate_internal_uri,
+    String              $trove_dns_zone,
+    String              $trove_dns_zone_id,
     String              $trove_service_project = 'trove',
     String              $trove_service_user = 'trove',
     String              $trove_quay_user = 'wikimedia-cloud-services+troveguest',
@@ -40,6 +43,9 @@ class openstack::trove::service(
         trove_service_user      => $trove_service_user,
         trove_quay_user         => $trove_quay_user,
         trove_quay_pass         => $trove_quay_pass,
+        designate_internal_uri  => $designate_internal_uri,
+        trove_dns_zone          => $trove_dns_zone,
+        trove_dns_zone_id       => $trove_dns_zone_id,
     }
 
     service { 'trove-api':

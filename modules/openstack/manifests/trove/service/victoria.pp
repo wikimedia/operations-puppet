@@ -18,7 +18,9 @@ class openstack::trove::service::victoria(
     String              $trove_service_user,
     String              $trove_quay_user,
     String              $trove_quay_pass,
-
+    String              $designate_internal_uri,
+    String              $trove_dns_zone,
+    String              $trove_dns_zone_id,
 ) {
     require "openstack::serverpackages::victoria::${::lsbdistcodename}"
 
