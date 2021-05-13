@@ -17,6 +17,7 @@ class profile::wmcs::nfs::rsync(
         partner_host => $secondary_host,
         is_active    => $service_running,
         cluster_ip   => $cluster_ip,
+        datapath     => $datapath,
     }
 
     # This may not be needed
