@@ -67,7 +67,7 @@ profile::elasticsearch::logstash::curator_actions:
         unit_count: 91
 
   2:
-    description: 'dlq: delete older than 91 days'
+    description: 'dlq: delete older than 2 days'
     action: delete_indices
     options:
       ignore_empty_list: true
@@ -131,7 +131,7 @@ profile::elasticsearch::logstash::curator_actions:
         unit_count: 53
 
   6:
-    description: 'w3creportingapi-1.0.0: delete older than 12 weeks'
+    description: 'w3creportingapi-1.0.0: delete older than 3 months'
     action: delete_indices
     options:
       ignore_empty_list: true
