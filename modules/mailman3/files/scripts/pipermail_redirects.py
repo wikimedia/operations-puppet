@@ -85,7 +85,7 @@ def calculate_hash(message_id: str) -> str:
     return base64.b32encode(hashlib.sha1(message_id.encode()).digest()).decode()
 
 
-def handle_email(listname: str, path: Path) -> Optional[str]:
+def handle_email(listname: str, path: Path) -> (str, str, str):
     message_id = extract_in_reply_to(path)
     if message_id is None:
         return
@@ -96,7 +96,7 @@ def handle_email(listname: str, path: Path) -> Optional[str]:
         print(f"{path} does not appear to be archived in hyperkitty!")
         return
     first = str(path).replace("/var/lib/mailman/archives/public/", "")
-    return f"{first} {hk_part}"
+    return message_id, first, hk_part
 
 
 def rebuild_dbm():
@@ -132,16 +132,29 @@ def main() -> int:
     if txt.exists():
         print(f"{txt} already exists, overwriting.")
         txt.unlink()
-    with txt.open("a") as f:
-        for month in sorted(public.iterdir()):
-            if not month.name.startswith("20") or not month.is_dir():
-                continue
-            print(f"Going through {month.name}...")
-            for email in sorted(month.iterdir()):
-                if email.name.startswith("0") and email.name.endswith(".html"):
-                    line = handle_email(listname, email)
-                    if line is not None:
-                        f.write(f"{line}\n")
+    # Message-IDs we've seen, for tracking dupes
+    seen = set()
+    # Lines to write out, keyed by Message-ID
+    to_write = {}
+    for month in sorted(public.iterdir()):
+        if not month.name.startswith("20") or not month.is_dir():
+            continue
+        print(f"Going through {month.name}...")
+        for email in sorted(month.iterdir()):
+            if email.name.startswith("0") and email.name.endswith(".html"):
+                resp = handle_email(listname, email)
+                if resp is not None:
+                    message_id, pipermail_part, hk_part = resp
+                    if message_id in seen:
+                        print(f"Duplicate Message-ID: {message_id}")
+                        if message_id in to_write:
+                            del to_write[message_id]
+                    else:
+                        seen.add(message_id)
+                        to_write[message_id] = f"{pipermail_part} {hk_part}"
+    with txt.open("w") as f:
+        for line in to_write.values():
+            f.write(f"{line}\n")
 
     # Now rebuild the entire dbm
     if not args.no_rebuild:
