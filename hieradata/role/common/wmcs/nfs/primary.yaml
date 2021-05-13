@@ -41,8 +41,8 @@ profile::wmcs::nfs::primary::drbd_resource_config:
     mount_path: /srv/misc
 
 profile::wmcs::nfs::primary::drbd_cluster:
-  labstore1004: 192.168.0.3
-  labstore1005: 192.168.0.4
+  labstore1004: 192.168.0.1
+  labstore1005: 192.168.0.2
 
 profile::wmcs::nfs::primary::cluster_ip: 10.64.37.18
 profile::wmcs::nfs::primary::subnet_gateway_ip: 10.64.37.1
