@@ -91,7 +91,7 @@ class profile::mediawiki::alerts {
       warning         => 50,
       critical        => 100,
       notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-      dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=2&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops"],
+      dashboard_links => ["https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=18&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops"],
     }
   }
 }
