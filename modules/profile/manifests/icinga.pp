@@ -176,6 +176,7 @@ class profile::icinga(
         document_root   => '/usr/share/icinga/htdocs',
         protected_uri   => '/icinga',
         cookie_scope    => '/',
+        enable_slo      => true,
         required_groups => [
             "cn=ops,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
             "cn=wmf,${ldap_config['groups_cn']},${ldap_config['base-dn']}",

@@ -4,6 +4,7 @@ profile::idp::client::httpd::sites:
   'rt.wikimedia.org':
     vhost_content: 'profile/idp/client/httpd-rt.erb'
     document_root: '/usr/share/request-tracker4/html'
+    enable_slo: true
     required_groups:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true

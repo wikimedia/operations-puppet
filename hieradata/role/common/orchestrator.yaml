@@ -11,5 +11,6 @@ profile::idp::client::httpd::sites:
   'orchestrator.wikimedia.org':
     vhost_content: 'profile/idp/client/httpd-orchestrator.erb'
     acme_chief_cert: 'orchestrator'
+    enable_slo: true
     required_groups:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
