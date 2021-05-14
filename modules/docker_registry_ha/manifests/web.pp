@@ -85,10 +85,6 @@ class docker_registry_ha::web (
         content => template('docker_registry_ha/registry-nginx.conf.erb'),
     }
 
-    nginx::site { 'registry-http':
-        ensure  => absent,
-    }
-
     ensure_packages(['python3-docker-report'])
 
     file { '/usr/local/bin/registry-homepage-builder':
