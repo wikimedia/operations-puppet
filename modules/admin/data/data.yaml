@@ -5040,3 +5040,7 @@ ldap_only_users:
     ensure: present
     realname: Keegan Peterzell
     email: kpeterzell@wikimedia.org
+  sannita:
+    ensure: present
+    realname: Luca Martinelli
+    email: sannita-ctr@wikimedia.org
