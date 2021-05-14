@@ -20,7 +20,6 @@ class docker_registry_ha::web (
     Array[String] $ssl_settings,
     Boolean $use_puppet_certs=false,
     Optional[String] $ssl_certificate_name=undef,
-    Boolean $http_endpoint=false,
     Array[Stdlib::Host] $http_allowed_hosts=[],
     Boolean $read_only_mode=false,
     String $homepage='/srv/homepage',
@@ -86,10 +85,8 @@ class docker_registry_ha::web (
         content => template('docker_registry_ha/registry-nginx.conf.erb'),
     }
 
-    if $http_endpoint {
-        nginx::site { 'registry-http':
-            content => template('docker_registry_ha/registry-http-nginx.conf.erb'),
-        }
+    nginx::site { 'registry-http':
+        ensure  => absent,
     }
 
     ensure_packages(['python3-docker-report'])

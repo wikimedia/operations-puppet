@@ -89,7 +89,6 @@ class profile::docker_registry_ha::registry(
         ssl_settings                => ssl_ciphersuite('nginx', 'mid'),
         use_puppet_certs            => $use_puppet,
         ssl_certificate_name        => $certname,
-        http_endpoint               => true,
         http_allowed_hosts          => $cache_nodes['text']['eqiad'] + $cache_nodes['text']['codfw'],
         read_only_mode              => $registry_read_only_mode,
     }
