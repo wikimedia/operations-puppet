@@ -41,6 +41,8 @@ cache::nodes:
       - 'cp5010.eqsin.wmnet'
       - 'cp5011.eqsin.wmnet'
       - 'cp5012.eqsin.wmnet'
+      - 'cp5015.eqsin.wmnet'
+      - 'cp5016.eqsin.wmnet'
   upload:
     codfw:
       - 'cp2028.codfw.wmnet'
@@ -83,3 +85,5 @@ cache::nodes:
       - 'cp5004.eqsin.wmnet'
       - 'cp5005.eqsin.wmnet'
       - 'cp5006.eqsin.wmnet'
+      - 'cp5013.eqsin.wmnet'
+      - 'cp5014.eqsin.wmnet'
