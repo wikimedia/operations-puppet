@@ -99,6 +99,7 @@ receivers:
 - name: 'netops-mail'
   email_configs:
     - to: 'ayounsi@<%= scope.lookupvar('::domain') %>'
+    - to: 'cmooney@<%= scope.lookupvar('::domain') %>'
 
 - name: 'dcops-mail'
   email_configs:
