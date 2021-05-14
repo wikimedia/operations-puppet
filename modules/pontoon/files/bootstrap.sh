@@ -1,0 +1,101 @@
+#!/bin/bash
+
+# Bootstrap a Pontoon Puppet server from a provisioned host, using public git repos.
+# At the end of this phase the host must be ready to accept Puppet agents.
+
+set -e
+set -u
+
+preflight() {
+  apt install -y --no-install-recommends git ca-certificates
+
+  # Workaround dummy 'apache2.conf' in WMCS
+  if [ -e /etc/apache2/apache2.conf ] && ! dpkg -s apache2 >/dev/null 2>&1; then
+    rm /etc/apache2/apache2.conf
+  fi
+}
+
+clone_repos() {
+  local dir=$1
+
+  pushd .
+  cd "$dir"
+  [ ! -d puppet ] && git clone --depth=1 https://gerrit.wikimedia.org/r/operations/puppet
+  [ ! -d private ] && git clone --depth=1 https://gerrit.wikimedia.org/r/labs/private
+  popd
+}
+
+# Bootstrap a role::puppetmaster::pontoon by writing minimal manifests to
+# $init, using modules from $git (i.e. public repos) and kick off a "puppet apply"
+bootstrap_server() {
+  local git=$1
+  local init=$2
+
+  install -v $git/puppet/manifests/realm.pp $init/00realm.pp
+  echo 'include "role::puppetmaster::pontoon"' > $init/bootstrap.pp
+
+  sed -e "s@/etc/puppet/hieradata@$git/puppet/hieradata@" \
+    -e "s@/etc/puppet/private@$git/private@" \
+    $git/puppet/modules/puppetmaster/files/pontoon.hiera.yaml > $init/hiera.yaml
+
+
+  install -d $git/puppet/hieradata/pontoon
+  cat <<EOF > $git/puppet/hieradata/pontoon/bootstrap.yaml
+bastion_hosts:
+  - 0.0.0.0/0
+
+profile::base::nameservers:
+  - 8.8.8.8
+
+profile::base::manage_resolv_conf: false
+
+puppetmaster: $(hostname --fqdn)
+puppet_ca_server: $(hostname --fqdn)
+EOF
+  systemctl mask puppet-master
+
+  puppet apply --hiera_config $init/hiera.yaml \
+    --modulepath $git/puppet/modules:$git/private/modules \
+    --verbose --detailed-exitcodes \
+    $init || true # XXX catch failures?
+
+  # Solve race on hieradata/auto.yaml
+  install -o puppet -g puppet /dev/null /etc/puppet/hieradata/auto.yaml
+}
+
+init_ssl() {
+  # Init the CA
+  timeout 10 puppet master --no-daemonize --verbose || true
+
+  # No need for separate 'server' ssldir and client
+  if [ ! -L /var/lib/puppet/ssl ]; then
+    rm -rf /var/lib/puppet/ssl
+    ln -s /var/lib/puppet/server/ssl /var/lib/puppet/ssl
+  fi
+
+  install -d -o puppet /var/lib/puppet/reports
+  chown -R puppet /var/lib/puppet/reports
+}
+
+bootstrap_private() {
+  local git=$1
+
+  install -d /var/lib/git/labs
+  rsync -a ${git}/private /var/lib/git/labs
+}
+
+stack=${1:-}
+if [ -z "$stack" ]; then
+  echo "usage: $(basename $0) stack"
+  exit 1
+fi
+
+preflight
+install -d /tmp/bootstrap/git /tmp/bootstrap/init
+clone_repos /tmp/bootstrap/git
+echo $stack > /etc/pontoon-stack
+bootstrap_server /tmp/bootstrap/git /tmp/bootstrap/init
+bootstrap_private /tmp/bootstrap/git
+init_ssl
+
+systemctl restart apache2
