@@ -4428,6 +4428,10 @@ ldap_only_users:
     ensure: present
     realname: Eduardo Medina
     email: eamedina@wikimedia.org
+  elitre:
+    ensure: present
+    realname: Erica Litrenta
+    email: elitrenta@wikimedia.org
   etonkovidova:
     ensure: present
     realname: Elena Tonkovidova
@@ -4680,6 +4684,10 @@ ldap_only_users:
     ensure: present
     realname: Johannes Kroll
     email: johannes.kroll@wikimedia.de
+  johan:
+    ensure: present
+    realname: Johan Jönsson
+    email: jjonsson@wikimedia.org
   johlig:
     ensure: present
     realname: Jens Ohlig
@@ -5020,3 +5028,15 @@ ldap_only_users:
     ensure: present
     realname: Haley Nordeen
     email: hnordeen@wikimedia.org
+  sgrabarczuk:
+    ensure: present
+    realname: Szymon Grabarczuk
+    email: sgrabarczuk@wikimedia.org
+  trizek:
+    ensure: present
+    realname: Benoît Evellin
+    email: bevellin@wikimedia.org
+  keeghan:
+    ensure: present
+    realname: Keegan Peterzell
+    email: kpeterzell@wikimedia.org
