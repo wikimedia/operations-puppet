@@ -23,7 +23,7 @@ nginx['ssl_certificate_key'] = "<%= @key_path %>"
 git_data_dirs({"default" => {"path" => "<%= @data_dir %>"} })
 
 # The directory where Gitlab backups will be stored
-gitlab_rails['backup_path'] = "<%= @backup_dir %>"t 
+gitlab_rails['backup_path'] = "<%= @backup_dir %>"
 
 gitlab_rails['ldap_enabled'] = false
 
