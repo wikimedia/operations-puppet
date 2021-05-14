@@ -200,7 +200,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, twentyafterfour]
+    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, twentyafterfour, jhuneidi]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Tyler Cipriani
   contint-admins:
