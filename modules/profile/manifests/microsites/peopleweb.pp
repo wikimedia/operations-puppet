@@ -72,9 +72,13 @@ class profile::microsites::peopleweb (
         content => $motd_content,
     }
 
+    # ensure each user home automatically gets a public_html dir (when useradd runs)
+    file { '/etc/skel/public_html':
+        ensure => directory,
+    }
+
     # people's entire home dirs (not just public_html) are backed up in Bacula
     backup::set {'home': }
-
 
     # allow copying /home from one server to another for migrations
     ensure_packages(['rsync'])
