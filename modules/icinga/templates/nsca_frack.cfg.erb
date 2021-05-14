@@ -1248,6 +1248,12 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_ssl_civiproxy
+    hostgroup_name           fundraising-civicrm
+}
+
+define service {
+    use                      passive-service
     service_description      check_memory
     hostgroup_name           fundraising-civicrm
 }
