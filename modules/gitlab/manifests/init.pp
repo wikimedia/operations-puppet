@@ -2,6 +2,7 @@
 class gitlab (
     Wmflib::Ensure   $ensure           = 'present',
     Stdlib::Host     $gitlab_domain    = $facts['networking']['fqdn'],
+    Stdlib::Httpurl  $external_url     = "https://${gitlab_domain}/",
     Stdlib::Unixpath $config_dir       = '/etc/gitlab',
     Stdlib::Unixpath $data_dir         = '/var/opt/gitlab/git-data',
     Stdlib::Unixpath $backup_dir       = '/var/opt/gitlab/backups',
