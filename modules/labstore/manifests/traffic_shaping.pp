@@ -1,6 +1,6 @@
 class labstore::traffic_shaping(
-    String $nfs_write = '8500kbps',
-    String $nfs_read = '10mbps',
+    String $nfs_write = '85mbps',
+    String $nfs_read = '85mbps',
     String $nfs_dumps_read = '5000kbps',
     String $egress = '40000kbps',
     String $interface = $facts['networking']['primary'],
