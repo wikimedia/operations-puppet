@@ -166,6 +166,17 @@ server {
     }
 
     location /v2 {
+      # Don't pollute edge caches with docker images.
+      # Note an approach for CC: max-age=60 or 600 would gives us a small amount
+      # of caching and protects us in big stormy scenarios. However we have CI
+      # requiring really small reaction times for now, so avoid all caching.
+      # Bug: T211719
+      add_header 'Cache-Control' 'no-cache,must-revalidate' always;
+
+      # But cache the _catalog endpoint for a few mins as it's pretty expensive
+      location = /v2/_catalog {
+        add_header 'Cache-Control' 'public,s-maxage=600,max-age=600' always;
+      }
       # Require auth for POST, PUT, DELETE, ... requests
       limit_except GET HEAD OPTIONS {
       <%- if @read_only_mode %>
