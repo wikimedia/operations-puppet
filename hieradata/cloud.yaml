@@ -43,7 +43,7 @@ profile::puppet::client_bucket::max_size: 100M
 
 profile::base::domain_search:
   - "%{facts.networking.domain}"
-profile::base::legacy_cloud_search_domain: ''
+profile::base::legacy_cloud_search_domain: ~
 profile::base::enable_contacts: false
 puppet_ca_server: ''
 manage_puppet_ca_file: false

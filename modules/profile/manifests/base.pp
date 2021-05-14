@@ -23,7 +23,7 @@ class profile::base(
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
     Wmflib::Ensure $hardware_monitoring = lookup('profile::base::hardware_monitoring', {'default_value' => 'present'}),
-    String $legacy_cloud_search_domain = lookup('profile::base::legacy_cloud_search_domain', {'default_value' => ''}),
+    String $legacy_cloud_search_domain = lookup('profile::base::legacy_cloud_search_domain'),
     Boolean $enable_contacts = lookup('profile::base::enable_contacts')
 ) {
     # Sanity checks for cluster - T234232
