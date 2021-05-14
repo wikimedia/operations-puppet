@@ -1,22 +1,21 @@
-# Creates groups, users, and sudo permissions all from yaml for valid passed group name
+# @ summary Creates groups, users, and sudo permissions from yaml for valid passed group name
 #
-# === Parameters
 #
-# [*$groups*]
-#  Array of valid groups (defined in yaml) to create with associated members
-#
-# [*$groups_no_ssh*]
-#  Array of valid groups (defined in yaml) to create with associated members,
-#  with the constraint that no ssh key for their users is deployed.
-#
-# [*$always_groups*]
-#  Array of valid groups to always run
-#
+# @param groups Array of valid groups (defined in yaml) to create with associated members
+# @param groups_no_ssh
+#    Array of valid groups (defined in yaml) to create with associated members,
+#    with the constraint that no ssh key for their users is deployed.
+# @param always_groups Array of valid groups to always run
+# @param manage_home if true puppet will use `useradd -m` when creating users.
+#   This is useful if you want to make use of the /etc/skel directory to create additional
+#   files and directories.  For example on people1001 its nice to ensure all user have
+#   ~/public_html
 
 class admin(
-    $groups=[],
-    $groups_no_ssh=[],
-    $always_groups=['absent', 'ops', 'wikidev', 'ops-adm-group'],
+    Array[String[1]] $groups        = [],
+    Array[String[1]] $groups_no_ssh = [],
+    Array[String[1]] $always_groups = ['absent', 'ops', 'wikidev', 'ops-adm-group'],
+    Boolean          $managehome    = false,
 )
 {
 

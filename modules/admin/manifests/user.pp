@@ -1,24 +1,13 @@
-# A defined type for user account management.
+# @summary A defined type for user account management.
 #
 # WARNING: this is designed to NOT play well with local modifications.
 #
-# === Parameters
-#
-# [*name*]
-#  The user of the user to be created.
-#
-# [*ensure*]
-#  Add or remove the user account [ "present" | "absent"]
-#
-# [*uid*]
-#  The UID to set for the new account. Must be globally unique.
-#
-# [*gid*]
-#  Sets the primary group of this user.
-#
+# @param name The user of the user to be created.
+# @param ensure Add or remove the user account [ "present" | "absent"]
+# @param uid The UID to set for the new account. Must be globally unique.
+# @param gid Sets the primary group of this user.
 #  NOTE: User created files default to this group
-#
-# [*groups*]
+# @param groups
 #  An array of additional groups to add the user to.
 #
 #  NOTE: user membership should almost exclusively be handled in the
@@ -27,19 +16,12 @@
 #  WARNING: setting a group here means anywhere this user exists the
 #           group _has_ to exist also.  More than likely they should be added
 #           to the appropriate group in Admin::Groups
-#
-# [*comment*]
-#  Typicaly the realname for the user.
-#
-# [*shell*]
-#  The login shell.
-#
-# [*privileges*]
+# @param comment Typically the realname for the user.
+# @param shell The login shell.
+# @param privileges
 #  An array of sudo privileges to setup
 #  Rarely should a user differ from an established group.
-#
-# [*ssh_keys*]
-#  An array of strings containing the SSH public keys.
+# @param ssh_keys An array of strings containing the SSH public keys.
 #
 define admin::user (
     Wmflib::Ensure          $ensure     = present,
@@ -53,6 +35,8 @@ define admin::user (
     Stdlib::Unixpath        $home_dir   = "/home/${name}",
 ) {
 
+    include admin
+
     user { $name:
         ensure     => $ensure,
         name       => $name,
@@ -61,8 +45,12 @@ define admin::user (
         gid        => $gid,
         groups     => [],
         shell      => $shell,
-        managehome => false, # we do it manually below
         allowdupe  => false,
+        # managehome is controlled at the class level se we can ensure all users for
+        # a specific role, profile, host are all configured the same
+        # regardless of this parameter we still sync files below from
+        # modules/admin/files/home/${user}
+        managehome => $admin::managehome,
     }
 
     # This is all absented by the above /home/${user} cleanup

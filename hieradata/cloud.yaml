@@ -11,6 +11,7 @@ profile::standard::enable_ip6_mapped: false
 profile::standard::purge_sudoers_d: false
 profile::standard::admin_groups: []
 profile::standard::admin_groups_no_ssh: []
+profile::standard::admin_managehome: false
 
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::certificates::puppet_ca_content: {}

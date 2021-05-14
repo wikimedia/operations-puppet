@@ -3,3 +3,4 @@ profile::standard::enable_ip6_mapped: true
 profile::standard::purge_sudoers_d: false
 profile::standard::admin_groups: []
 profile::standard::admin_groups_no_ssh: []
+profile::standard::admin_managehome: false
