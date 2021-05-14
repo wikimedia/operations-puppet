@@ -104,7 +104,7 @@ class profile::wmcs::nfs::primary(
     interface::ip { 'drbd-replication':
         interface => $data_iface,
         address   => $drbd_ip_address,
-        prefixlen => '30',
+        prefixlen => '29',
         require   => Interface::Manual['data'],
     }
 
