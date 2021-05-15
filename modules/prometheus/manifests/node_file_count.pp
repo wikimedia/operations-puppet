@@ -46,9 +46,18 @@ define prometheus::node_file_count (
 
     # Collect every minute
     cron { $title:
-        ensure  => $ensure,
+        ensure  => absent,
         user    => 'root',
         command => inline_template("/usr/local/bin/prometheus-file-count --outfile <%= @outfile %> --metric <%= @metric %> <%= @paths.map{ | i | '\"' + i + '\"' }.join(' ') %>"),
         require => Class['prometheus::node_exporter'],
+    }
+    $safe_title = regsubst($title, ' ', '_', 'G')
+    systemd::timer::job { $safe_title:
+        ensure      => $ensure,
+        description => 'Regular job to collect file count metrics',
+        user        => 'root',
+        command     => inline_template("/usr/local/bin/prometheus-file-count --outfile <%= @outfile %> --metric <%= @metric %> <%= @paths.map{ | i | '\"' + i + '\"' }.join(' ') %>"),
+        interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
+        require     => Class['prometheus::node_exporter'],
     }
 }
