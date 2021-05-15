@@ -3,17 +3,19 @@ class openstack::clientpackages::vms::common(
 ) {
     requires_realm('labs')
 
-    $py2packages = [
-        'python-novaclient',
-        'python-glanceclient',
-        'python-keystoneclient',
-        'python-openstackclient',
-        'python-designateclient',
-        'python-neutronclient',
-    ]
+    if debian::codename::le('buster') {
+        $py2packages = [
+            'python-novaclient',
+            'python-glanceclient',
+            'python-keystoneclient',
+            'python-openstackclient',
+            'python-designateclient',
+            'python-neutronclient',
+        ]
 
-    package{ $py2packages:
-        ensure => 'present',
+        package{ $py2packages:
+            ensure => 'present',
+        }
     }
 
     $py3packages = [
