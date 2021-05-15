@@ -18,6 +18,7 @@ class profile::lists (
     Optional[String] $api_password            = lookup('profile::mailman3::api_password', {'default_value' => undef}),
     Optional[String] $web_secret              = lookup('profile::mailman3::web::secret', {'default_value' => undef}),
     Optional[String] $archiver_key            = lookup('profile::mailman3::archiver_key', {'default_value' => undef}),
+    Optional[String] $memcached               = lookup('profile::mailman3::memcached', {'default_value' => undef}),
     Hash[String, String] $renamed_lists       = lookup('profile::lists::renamed_lists'),
 ){
     include network::constants
@@ -42,6 +43,7 @@ class profile::lists (
             api_password   => $api_password,
             archiver_key   => $archiver_key,
             web_secret     => $web_secret,
+            memcached      => $memcached,
     }
     }
 

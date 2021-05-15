@@ -15,6 +15,7 @@ class mailman3 (
     String $web_secret,
     String $archiver_key,
     String $service_ensure = 'running',
+    Optional[String] $memcached = undef,
 ) {
 
     # We do not want to use the dbconfig system
@@ -47,6 +48,7 @@ class mailman3 (
         db_password    => $webdb_password,
         api_password   => $api_password,
         secret         => $web_secret,
-        archiver_key   => $archiver_key
+        archiver_key   => $archiver_key,
+        memcached      => $memcached,
     }
 }

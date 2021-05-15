@@ -17,10 +17,12 @@ class mailman3::web (
     String $secret,
     String $archiver_key,
     String $service_ensure = 'running',
+    Optional[String] $memcached,
 ) {
 
     ensure_packages([
         'python3-mysqldb',
+        'python3-pymemcache',
         'python3-xapian-haystack',
         'apache2-utils',  # Need httxt2dbm
     ])

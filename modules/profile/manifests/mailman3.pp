@@ -13,7 +13,8 @@ class profile::mailman3 (
     Optional[Stdlib::IP::Address::V4] $lists_ipv4 = lookup('profile::mailman3::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address::V6] $lists_ipv6 = lookup('profile::mailman3::ipv6', {'default_value' => undef}),
     Optional[String] $acme_chief_cert = lookup('profile::mailman3::acme_chief_cert', {'default_value' => undef}),
-    Optional[Stdlib::Fqdn] $mailman2_host = lookup('profile::mailman3::mailman2_host', {'default_value' => undef})
+    Optional[Stdlib::Fqdn] $mailman2_host = lookup('profile::mailman3::mailman2_host', {'default_value' => undef}),
+    Optional[String] $memcached = lookup('profile::mailman3::memcached', {'default_value' => undef}),
 ) {
     include network::constants
 
@@ -29,6 +30,7 @@ class profile::mailman3 (
         api_password   => $api_password,
         archiver_key   => $archiver_key,
         web_secret     => $web_secret,
+        memcached      => $memcached,
     }
 
     class { '::httpd':

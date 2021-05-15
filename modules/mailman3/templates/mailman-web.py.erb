@@ -85,6 +85,15 @@ DATABASES = {
     }
 }
 
+<% if @memcached %>
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': '<%= @memcached %>',
+    }
+}
+<% end %>
+
 # Fulltext search configuration
 HAYSTACK_CONNECTIONS = {
       'default': {
