@@ -9,7 +9,7 @@ class profile::ldap::client::labs(
     class { '::ldap::config::labs': }
 
     if ( $::realm == 'labs' ) {
-        if $::lsbdistcodename == 'buster' {
+        if debian::codename::ge('buster') {
             $_sudo_flavor  = 'sudo'
             $_client_stack = 'sssd'
         } else {
