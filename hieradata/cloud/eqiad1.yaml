@@ -15,7 +15,7 @@ ldap:
 profile::base::overlayfs: true
 profile::base::check_raid: false
 profile::base::legacy_cloud_search_domain: 'eqiad.wmflabs'
-profile::openstack::eqiad1::version: 'train'
+profile::openstack::eqiad1::version: 'victoria'
 profile::openstack::base::region: "eqiad1-r"
 profile::openstack::eqiad1::nova_controller: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::keystone_host: 'openstack.eqiad1.wikimediacloud.org'
