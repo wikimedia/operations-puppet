@@ -11,6 +11,7 @@ class openstack::clientpackages::vms::common(
             'python-openstackclient',
             'python-designateclient',
             'python-neutronclient',
+            'python-netaddr',
         ]
 
         package{ $py2packages:
@@ -27,6 +28,7 @@ class openstack::clientpackages::vms::common(
         'python3-designateclient',
         'python3-neutronclient',
         'python3-troveclient',
+        'python3-netaddr',
     ]
 
     package{ $py3packages:
@@ -35,7 +37,6 @@ class openstack::clientpackages::vms::common(
 
     $otherpackages = [
         'ebtables',
-        'python-netaddr',
     ]
 
     package { $otherpackages:
