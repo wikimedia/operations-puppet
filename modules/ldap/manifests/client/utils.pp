@@ -5,7 +5,11 @@
 
 class ldap::client::utils($ldapconfig) {
 
-    require_package('python-pycurl', 'python3-pycurl', 'python-ldap', 'python3-pyldap')
+    # No python2 on Bullseye or later
+    if debian::codename::le('buster') {
+        require_package('python3-pycurl', 'python3-pyldap')
+    }
+    require_package('python3-pycurl', 'python3-pyldap')
 
     file { '/usr/local/sbin/add-ldap-group':
         owner  => 'root',
