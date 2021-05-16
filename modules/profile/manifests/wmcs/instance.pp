@@ -85,7 +85,9 @@ class profile::wmcs::instance(
 
     # In production, puppet freshness checks are done by icinga. Labs has no
     # icinga, so collect puppet freshness metrics via diamond/graphite
-    if ! $diamond_remove {
+    #
+    # Diamond isn't packaged for Bullseye so we'll have to live without it.
+    if ! $diamond_remove and debian::codename::le('buster') {
         # Prefix labs metrics with project name
         $path_prefix  = $::labsproject
         $server_ip    = ipresolve($metrics_server, 4)
