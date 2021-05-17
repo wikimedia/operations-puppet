@@ -199,7 +199,7 @@ class KeystoneHooks(notifier.Driver):
             project_name=project_id)
         session = keystone_session.Session(auth=auth)
         client = neutron_client.Client(session=session, connect_retries=5)
-        allgroups = client.list_security_groups()['security_groups']
+        allgroups = client.list_security_groups(project_id=project_id)['security_groups']
         defaultgroup = [group for group in allgroups if group['name'] == 'default']
         if defaultgroup:
             groupid = defaultgroup[0]["id"]
