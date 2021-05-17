@@ -5044,3 +5044,7 @@ ldap_only_users:
     ensure: present
     realname: Luca Martinelli
     email: sannita-ctr@wikimedia.org
+  stei:
+    ensure: present
+    realname: Sandister Tei
+    email: stei@wikimedia.org
