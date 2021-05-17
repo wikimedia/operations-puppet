@@ -7,5 +7,6 @@ class role::wikidough {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::wikidough
+    include ::profile::bird::anycast
 
 }
