@@ -14,6 +14,46 @@
 "backup_strategy:delete": "!"
 
 
+# Make a bunch of things world-readable for e.g. openstackbrowser
+"instance:index": ""
+"instance:extension:root:index": ""
+"cluster:extension:root:index": ""
+"instance:extension:user:index": ""
+"instance:extension:user_access:index": ""
+"instance:extension:database:index": ""
+"cluster:index": ""
+"configuration:index": ""
+"configuration-parameter:index": ""
+"configuration-parameter:index": ""_by_version
+"datastore:index": ""
+"datastore:version_index": ""
+"flavor:index": ""
+"limits:index": ""
+"module:index": ""
+
+"instance:module_list": ""
+"datastore:list_associated_flavors": ""
+"datastore:list_associated_volume_types": ""
+
+"instance:show": ""
+"instance:extension:user:show": ""
+"instance:extension:database:show": ""
+"cluster:show": ""
+"cluster:show_instance": ""
+"configuration:show": ""
+"configuration-parameter:show": ""
+"configuration-parameter:show_by_version": ""
+"datastore:show": ""
+"datastore:version_show": ""
+"datastore:version_show_by_uuid": ""
+"flavor:show": ""
+"module:show": ""
+
+
+# Marked out pending backup support:
+# "backup:show": ""
+
+
 # This defaults to rule:admin but it's nice for
 #  users to be able to get their instances unstuck.
 "instance:reset_status": "rule:admin_or_projectadmin"
