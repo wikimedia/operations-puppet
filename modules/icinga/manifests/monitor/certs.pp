@@ -45,6 +45,7 @@ class icinga::monitor::certs {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
         contact_group => 'wmcs-team',
     }
+
     @monitoring::host { 'codesearch.wmcloud.org':
         host_fqdn     => 'codesearch.wmcloud.org',
         contact_group => 'wmcs-bots',
@@ -55,6 +56,15 @@ class icinga::monitor::certs {
         host          => 'codesearch.wmcloud.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
         contact_group => 'wmcs-team',
+    }
+
+    # PAWS cert is separate and the host is defined in icinga::monitor::toollabs
+    monitoring::service { 'https_paws':
+        description   => 'HTTPS-paws',
+        check_command => 'check_ssl_http_letsencrypt!paws.wmcloud.org',
+        host          => 'paws.wmcloud.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
+        contact_group => 'team-paws',
     }
 
     # *.wmfusercontent.org (wildcard cert, testing phab.wmfusercontent.org)
