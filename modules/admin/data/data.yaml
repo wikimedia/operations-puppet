@@ -19,7 +19,7 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov]
+              crusnov, christinedk]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -301,7 +301,7 @@ groups:
               edtadros, dvrandecic, razzi, cparle, klausman, sbisson, fab,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
-              kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen, amuigai, pginer,
+              kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
@@ -4164,16 +4164,11 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxm5+ggosgP8vUBpRjwOvwl2d3/lclYkuryLz1hmPrO paragon@lenovo
     krb: present
   christinedk:
-    ensure: present
+    ensure: absent
     realname: Christine De Kock
-    email: christinedekock11@gmail.com
-    expiry_date: 2021-05-14
-    expiry_contact: diego@wikimedia.org
     uid: 29809
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILiOBrHGHChC2y9I7grsl4jCB3ziaLaVni/oUvQN+IS4 cd700@cam.ac.uk
-    krb: present
+    ssh_keys: []
   mattcleinman:
     ensure: present
     realname: Matt Cleinman
