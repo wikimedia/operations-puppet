@@ -1,4 +1,3 @@
 # db1112
 mariadb::shard: 's3'
 mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
