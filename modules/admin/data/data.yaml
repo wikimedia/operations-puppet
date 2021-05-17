@@ -5035,7 +5035,7 @@ ldap_only_users:
     ensure: present
     realname: Benoît Evellin
     email: bevellin@wikimedia.org
-  keeghan:
+  keegan:
     ensure: present
     realname: Keegan Peterzell
     email: kpeterzell@wikimedia.org
