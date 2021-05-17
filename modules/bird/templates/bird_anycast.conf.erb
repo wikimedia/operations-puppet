@@ -20,7 +20,7 @@ function match_route()
 }
 
 filter vips_filter{
-    if ( net.len = 32 && ( net ~ 10.3.0.0/24 || net ~ 198.35.27.0/24 ) && match_route() ) then {
+    if ( net.len = 32 && ( net ~ 10.3.0.0/24 || net ~ 198.35.27.0/24 || net ~ 185.71.138.0/24 ) && match_route() ) then {
         accept;
     }
     else {
