@@ -7,7 +7,7 @@ define cfssl::ocsp (
     Cfssl::Loglevel             $log_level          = 'info',
     Pattern[/\d+h/]             $refresh_interval   = '96h',
     Boolean                     $ocsprefresh_update = false,
-    Array[Stdlib::Host]         $additional_names   = [],
+    Array[Cfssl::Common_name]   $additional_names   = [],
     Optional[Stdlib::Unixpath]  $responses_file     = undef,
     Optional[Stdlib::Unixpath]  $db_conf_file       = undef,
     Optional[Sensitive[String]] $key_content        = undef,

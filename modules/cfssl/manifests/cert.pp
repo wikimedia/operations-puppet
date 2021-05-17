@@ -17,7 +17,7 @@ define cfssl::cert (
     Optional[Stdlib::Unixpath]     $tls_key        = undef,
     Optional[Stdlib::Unixpath]     $tls_remote_ca  = undef,
     Optional[Cfssl::Signer_config] $signer_config  = undef,
-    Optional[Array[Stdlib::Host]]  $hosts          = [],
+    Array[Cfssl::Common_name]      $hosts          = [],
 
 ) {
     include cfssl
