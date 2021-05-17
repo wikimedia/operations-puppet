@@ -1797,7 +1797,7 @@ host db1130 {
 }
 
 host db1131 {
-    hardware ethernet D0:94:66:7B:3D:DB;
+    hardware ethernet D0:94:66:7A:6C:CC;
     fixed-address db1131.eqiad.wmnet;
 }
 
