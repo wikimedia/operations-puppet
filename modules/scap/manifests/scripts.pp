@@ -80,9 +80,6 @@ class scap::scripts (
         mode   => '0555',
         source => 'puppet:///modules/scap/sql',
     }
-    file { '/usr/local/bin/sqldump':
-        ensure => 'absent',
-    }
     file { '/usr/local/sbin/set-group-write2':
         owner  => 'root',
         group  => 'root',
