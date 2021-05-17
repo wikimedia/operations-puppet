@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright (c) 2017-2019 Wikimedia Foundation, Inc.
 
@@ -10,9 +10,7 @@
 # also the possibility to remove a user from all groups
 # Initially only an LDIF is written, but not automatically modified in LDAP
 
-from __future__ import print_function
-
-import ConfigParser
+import configparser
 import os
 import shutil
 import subprocess
@@ -41,7 +39,7 @@ groups_dn = "ou=groups," + base_dn
 servicegroups_dn = "ou=servicegroups," + base_dn
 
 
-def flatten(l, flattened=None):
+def flatten(inlist, flattened=None):
     '''
     Flatten a list recursively. Make sure to only flatten list elements, which
     is a problem with itertools.chain which also flattens strings. a defaults
@@ -52,7 +50,7 @@ def flatten(l, flattened=None):
     if flattened is None:
         flattened = []
 
-    for i in l:
+    for i in inlist:
         if isinstance(i, list):
             flatten(i, flattened)
         else:
@@ -200,7 +198,7 @@ delete: userPassword
 
             rtype, rdata, rmsgid, serverctrls = ldap_conn.result3(ldapdata)
             for dn, attrs in rdata:
-                if user_dn in attrs['member']:
+                if user_dn.encode() in attrs['member']:
                     memberships.append(dn)
 
             page_control = [c for c in serverctrls
@@ -218,8 +216,8 @@ delete: userPassword
     )
 
     for i in ldapdata:
-        if 'roleOccupant' in i[1].keys():
-            if user_dn in i[1]['roleOccupant']:
+        if 'roleOccupant' in i[1]:
+            if user_dn.encode() in i[1]['roleOccupant']:
                 project_admins.append(i[0])
 
     print("User DN:", user_dn)
@@ -277,11 +275,11 @@ delete: userPassword
                 ldif += "delete: " + attr + "\n"
                 removed_attrs += 1
         if removed_attrs:
-                ldif += "-\n"
+            ldif += "-\n"
 
         print("  Removing user attributes")
 
-    if not dry_run:
+    if not dry_run and ldif:
         try:
             with open(uid + ".ldif", "w") as ldif_file:
                 ldif_file.write(ldif)
@@ -308,7 +306,7 @@ def get_phabricator_client():
     """Return a Phabricator client instance"""
 
     phab_bot_conf = '/etc/phabricator_offboarding.conf'
-    parser = ConfigParser.SafeConfigParser()
+    parser = configparser.ConfigParser()
     parser.read(phab_bot_conf)
 
     try:
@@ -316,7 +314,7 @@ def get_phabricator_client():
             username=parser.get('phabricator_bot', 'username'),
             token=parser.get('phabricator_bot', 'token'),
             host=parser.get('phabricator_bot', 'host'))
-    except ConfigParser.NoSectionError:
+    except configparser.NoSectionError:
         print("Failed to open config file for Phabricator bot user:", phab_bot_conf)
         sys.exit(1)
 
@@ -344,7 +342,7 @@ def get_phabricator_subproject(phab_client, group_name):
     if not subprojects.get('data'):
         print("unable to find any subprojects for: " + group_name)
         sys.exit(1)
-    return set([subproject['fields']['name'] for subproject in subprojects['data']])
+    return {subproject['fields']['name'] for subproject in subprojects['data']}
 
 
 def offboard_analytics(username):
@@ -391,7 +389,7 @@ def remove_user_from_project(user_phid, project_phid, phab_client):
 def confirm_removal(group):
     choice = ""
     while choice not in ["y", "n"]:
-        choice = raw_input("Remove group " + group + "? ").strip().lower()
+        choice = input("Remove group " + group + "? ").strip().lower()
     return choice == "y"
 
 
