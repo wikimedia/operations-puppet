@@ -5043,6 +5043,8 @@ ldap_only_users:
     ensure: present
     realname: Luca Martinelli
     email: sannita-ctr@wikimedia.org
+    expiry_date: 31-12-2021
+    expiry_contact: elitrenta@wikimedia.org
   stei:
     ensure: present
     realname: Sandister Tei
