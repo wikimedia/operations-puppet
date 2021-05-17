@@ -27,4 +27,5 @@ profile::idp::client::httpd::sites:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
       - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
       - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+    enable_slo: true
     proxied_as_https: true
