@@ -1,7 +1,7 @@
-profile::grafana::domain: grafana.wikimedia.org
-profile::grafana::domainrw: grafana-rw.wikimedia.org
+profile::grafana::domain: "grafana.%{lookup('public_domain')}"
+profile::grafana::domainrw: "grafana-rw.%{lookup('public_domain')}"
 profile::grafana::server_aliases:
-  - grafana-next.wikimedia.org
+  - "grafana-next.%{lookup('public_domain')}"
 profile::grafana::wpt_graphite_proxy_port: 33333
 profile::grafana::enable_cas: true
 profile::grafana::config:
@@ -61,7 +61,7 @@ profile::tlsproxy::envoy::global_cert_name: "grafana.discovery.wmnet"
 rsync::server::wrap_with_stunnel: true
 
 profile::idp::client::httpd::sites:
-  'grafana-rw.wikimedia.org':
+  "grafana-rw.%{lookup('public_domain')}":
     vhost_content: 'profile/idp/client/httpd-grafana.erb'
     document_root: '/usr/share/grafana/public'
     required_groups:
@@ -69,6 +69,6 @@ profile::idp::client::httpd::sites:
     - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
     vhost_settings:
-      ro_vhost: 'grafana.wikimedia.org'
+      ro_vhost: "grafana.%{lookup('public_domain')}"
 
 profile::grafana::active_host: 'grafana1002.eqiad.wmnet'
