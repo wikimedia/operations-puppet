@@ -20,11 +20,6 @@ class prometheus::node_sge (
     }
 
     # Collect every minute
-    cron { 'prometheus_sge_stats':
-        ensure  => absent,
-        user    => 'root',
-        command => "/usr/local/bin/prometheus-sge-stats --outfile ${outfile}",
-    }
     systemd::timer::job { 'prometheus_sge_stats':
         ensure      => present,
         description => 'Regular job to collect SGE stats',
