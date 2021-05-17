@@ -25,8 +25,8 @@ class profile::openldap::management(
     }
 
     ensure_packages([
-        'python-yaml', 'python-ldap',
-        'python3-yaml', 'python3-ldap', 'python3-phabricator',
+        'python-yaml', 'python-ldap', 'python-phabricator',
+        'python3-yaml', 'python3-ldap'
     ])
 
     file { '/usr/local/bin/cross-validate-accounts':

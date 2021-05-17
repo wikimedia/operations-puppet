@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
 # Copyright (c) 2017-2019 Wikimedia Foundation, Inc.
 
@@ -10,7 +10,9 @@
 # also the possibility to remove a user from all groups
 # Initially only an LDIF is written, but not automatically modified in LDAP
 
-import configparser
+from __future__ import print_function
+
+import ConfigParser
 import os
 import shutil
 import subprocess
@@ -39,7 +41,7 @@ groups_dn = "ou=groups," + base_dn
 servicegroups_dn = "ou=servicegroups," + base_dn
 
 
-def flatten(inlist, flattened=None):
+def flatten(l, flattened=None):
     '''
     Flatten a list recursively. Make sure to only flatten list elements, which
     is a problem with itertools.chain which also flattens strings. a defaults
@@ -50,7 +52,7 @@ def flatten(inlist, flattened=None):
     if flattened is None:
         flattened = []
 
-    for i in inlist:
+    for i in l:
         if isinstance(i, list):
             flatten(i, flattened)
         else:
@@ -216,7 +218,7 @@ delete: userPassword
     )
 
     for i in ldapdata:
-        if 'roleOccupant' in i[1]:
+        if 'roleOccupant' in i[1].keys():
             if user_dn in i[1]['roleOccupant']:
                 project_admins.append(i[0])
 
@@ -275,7 +277,7 @@ delete: userPassword
                 ldif += "delete: " + attr + "\n"
                 removed_attrs += 1
         if removed_attrs:
-            ldif += "-\n"
+                ldif += "-\n"
 
         print("  Removing user attributes")
 
@@ -306,7 +308,7 @@ def get_phabricator_client():
     """Return a Phabricator client instance"""
 
     phab_bot_conf = '/etc/phabricator_offboarding.conf'
-    parser = configparser.ConfigParser()
+    parser = ConfigParser.SafeConfigParser()
     parser.read(phab_bot_conf)
 
     try:
@@ -314,7 +316,7 @@ def get_phabricator_client():
             username=parser.get('phabricator_bot', 'username'),
             token=parser.get('phabricator_bot', 'token'),
             host=parser.get('phabricator_bot', 'host'))
-    except configparser.NoSectionError:
+    except ConfigParser.NoSectionError:
         print("Failed to open config file for Phabricator bot user:", phab_bot_conf)
         sys.exit(1)
 
@@ -389,7 +391,7 @@ def remove_user_from_project(user_phid, project_phid, phab_client):
 def confirm_removal(group):
     choice = ""
     while choice not in ["y", "n"]:
-        choice = input("Remove group " + group + "? ").strip().lower()
+        choice = raw_input("Remove group " + group + "? ").strip().lower()
     return choice == "y"
 
 
