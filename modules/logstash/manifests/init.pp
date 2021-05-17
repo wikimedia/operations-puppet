@@ -101,19 +101,6 @@ class logstash (
 
     }
 
-    if $logstash_version == 7 {
-
-        # install plugins from offline plugin pack built using bin/logstash-plugin prepare-offline-pack
-
-        # lint:ignore:puppet_url_without_modules
-        logstash::plugin{'logstash-output-statsd':
-            source      => 'puppet:///volatile/logstash/plugins/logstash-output-statsd-3.2.0.zip',
-            environment => ['LS_JAVA_OPTS=-Xms128m -Xmx128m'],
-        }
-        # lint:endignore
-
-    }
-
     file { '/usr/local/bin/logstash-config-test':
         source  => 'puppet:///modules/logstash/logstash-config-test',
         owner   => 'root',
