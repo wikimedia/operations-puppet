@@ -33,6 +33,7 @@ class icinga::monitor::certs {
         notes_url     => 'https://phabricator.wikimedia.org/tag/toolforge/',
     }
 
+    # toolforge.org and wmcloud.org wildcard certs
     @monitoring::host { 'admin.toolforge.org':
         host_fqdn     => 'admin.toolforge.org',
         contact_group => 'wmcs-bots',
@@ -41,6 +42,17 @@ class icinga::monitor::certs {
         description   => 'HTTPS-toolforge',
         check_command => 'check_ssl_http_letsencrypt!admin.toolforge.org',
         host          => 'admin.toolforge.org',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
+        contact_group => 'wmcs-team',
+    }
+    @monitoring::host { 'codesearch.wmcloud.org':
+        host_fqdn     => 'codesearch.wmcloud.org',
+        contact_group => 'wmcs-bots',
+    }
+    monitoring::service { 'https_vpsproxy':
+        description   => 'HTTPS-cloud-vps-proxy',
+        check_command => 'check_ssl_http_letsencrypt!codesearch.wmcloud.org',
+        host          => 'codesearch.wmcloud.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
         contact_group => 'wmcs-team',
     }
