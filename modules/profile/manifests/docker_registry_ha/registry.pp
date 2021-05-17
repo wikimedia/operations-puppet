@@ -104,12 +104,6 @@ class profile::docker_registry_ha::registry(
         srange => '$DOMAIN_NETWORKS',
     }
 
-    ferm::service { 'docker_registry_http_81':
-        proto  => 'tcp',
-        port   => '81',
-        srange => '$DOMAIN_NETWORKS',
-    }
-
     $metrics_ferm_nodes = join($metrics_allowed_hosts, ' ')
     $ferm_srange = "(@resolve((${metrics_ferm_nodes})) @resolve((${metrics_ferm_nodes}), AAAA))"
 
@@ -122,12 +116,6 @@ class profile::docker_registry_ha::registry(
 
 
     # Monitoring
-    # HTTP should return 403 forbidden
-    monitoring::service { 'check_docker_registry_http':
-        description   => 'Docker registry HTTP interface',
-        check_command => 'check_http_port_status!81!403',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker',
-    }
     # This will test both nginx and the docker registry application
     monitoring::service { 'check_docker_registry_https':
         description   => 'Docker registry HTTPS interface',
