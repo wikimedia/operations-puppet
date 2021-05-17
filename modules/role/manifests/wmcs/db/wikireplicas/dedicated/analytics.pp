@@ -1,7 +1,7 @@
 # Class role::wmcs::db::wikireplicas::dedicated::analytics
 #
 # This role is a special use case of role::wmcs::db::wikireplicas::analytics,
-# adapted for the labsdb host used exclusively by the Analytics team.
+# adapted for the clouddb host used exclusively by the Analytics team.
 # Some differences:
 # - A different hiera config to allow to tune pt-kill configs
 #   without affecting the 'regular' wikireplica hosts.
