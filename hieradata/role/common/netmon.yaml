@@ -3,5 +3,6 @@ profile::librenms::install_dir: '/srv/deployment/librenms/librenms'
 profile::idp::client::httpd::sites: 
   "%{alias('profile::librenms::sitename')}":
     document_root: "%{lookup('profile::librenms::install_dir')}/html"
+    enable_slo: true
     vhost_content: 'profile/idp/client/httpd-librenms.erb'
 rsync::server::wrap_with_stunnel: true
