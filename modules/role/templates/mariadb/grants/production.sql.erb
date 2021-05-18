@@ -23,6 +23,13 @@ GRANT ALL PRIVILEGES
     IDENTIFIED BY '<%= @root_pass %>'
     WITH GRANT OPTION;
 
+-- Grants for 'root'@'10.192.32.49' (cumin2002)
+
+GRANT ALL PRIVILEGES
+    ON *.* TO 'root'@'10.192.32.49'
+    IDENTIFIED BY '<%= @root_pass %>'
+    WITH GRANT OPTION;
+
 -- Grants for 'nagios'@'localhost' (icinga)
 
 GRANT PROCESS, REPLICATION CLIENT
