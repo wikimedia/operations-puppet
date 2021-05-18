@@ -38,6 +38,8 @@ class openstack::keystone::service(
     String $bastion_project_id,
     Array[String] $prod_networks,
     Array[String] $labs_networks,
+    Boolean $enforce_policy_scope,
+    Boolean $enforce_new_policy_defaults,
 ) {
     class { "openstack::keystone::service::${version}":
         controller_hosts            => $controller_hosts,
@@ -73,6 +75,8 @@ class openstack::keystone::service(
         bastion_project_id          => $bastion_project_id,
         prod_networks               => $prod_networks,
         labs_networks               => $labs_networks,
+        enforce_policy_scope        => $enforce_policy_scope,
+        enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
 
     group { 'keystone':

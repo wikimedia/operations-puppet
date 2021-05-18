@@ -32,6 +32,8 @@ class openstack::keystone::service::victoria(
     String $bastion_project_id,
     Array[String] $prod_networks,
     Array[String] $labs_networks,
+    Boolean $enforce_policy_scope,
+    Boolean $enforce_new_policy_defaults,
 ) {
     class { "openstack::keystone::service::victoria::${::lsbdistcodename}": }
 

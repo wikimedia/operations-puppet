@@ -7,3 +7,5 @@ profile::openstack::codfw1dev::keystone::public_bind_port: 15000
 profile::openstack::codfw1dev::keystone::instance_ip_range: 172.16.128.0/24
 profile::openstack::codfw1dev::keystone::wmcloud_domain_owner: 'cloudinfra-codfw1dev'
 profile::openstack::codfw1dev::keystone::bastion_project_id: 'bastioninfra-codfw1dev'
+profile::openstack::codfw1dev::keystone::enforce_policy_scope: true
+profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults: true

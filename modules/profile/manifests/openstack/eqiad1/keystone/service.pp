@@ -31,6 +31,8 @@ class profile::openstack::eqiad1::keystone::service(
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::eqiad1::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
     String $wmcloud_domain_owner = lookup('profile::openstack::eqiad1::keystone::wmcloud_domain_owner'),
     String $bastion_project_id = lookup('profile::openstack::eqiad1::keystone::bastion_project_id'),
+    Boolean $enforce_policy_scope = lookup('profile::openstack::eqiad1::keystone::enforce_policy_scope'),
+    Boolean $enforce_new_policy_defaults = lookup('profile::openstack::eqiad1::keystone::enforce_new_policy_defaults'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -62,6 +64,8 @@ class profile::openstack::eqiad1::keystone::service(
         instance_ip_range           => $instance_ip_range,
         wmcloud_domain_owner        => $wmcloud_domain_owner,
         bastion_project_id          => $bastion_project_id,
+        enforce_policy_scope        => $enforce_policy_scope,
+        enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
     contain '::profile::openstack::base::keystone::service'
 

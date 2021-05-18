@@ -29,6 +29,8 @@ class profile::openstack::codfw1dev::keystone::service(
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::codfw1dev::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
     String $wmcloud_domain_owner = lookup('profile::openstack::codfw1dev::keystone::wmcloud_domain_owner'),
     String $bastion_project_id = lookup('profile::openstack::codfw1dev::keystone::bastion_project_id'),
+    Boolean $enforce_policy_scope = lookup('profile::openstack::codfw1dev::keystone::enforce_policy_scope'),
+    Boolean $enforce_new_policy_defaults = lookup('profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults'),
     ) {
 
     class {'::profile::openstack::base::keystone::service':
@@ -59,6 +61,8 @@ class profile::openstack::codfw1dev::keystone::service(
         instance_ip_range           => $instance_ip_range,
         wmcloud_domain_owner        => $wmcloud_domain_owner,
         bastion_project_id          => $bastion_project_id,
+        enforce_policy_scope        => $enforce_policy_scope,
+        enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
     contain '::profile::openstack::base::keystone::service'
 
