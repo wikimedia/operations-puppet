@@ -62,5 +62,10 @@ gitlab_rails['omniauth_providers'] = [
   }
 ]
 
+prometheus['enable'] = <%= @enable_prometheus %>
+node_exporter['enable'] = <%= @enable_node_exporter %>
+grafana['enable'] = <%= @enable_grafana %>
+alertmanager['enable'] = <%= @enable_alertmanager %>
+
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
