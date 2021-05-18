@@ -77,7 +77,6 @@ class profile::configmaster(
         protected_uri    => $protected_uri,
         vhost_content    => 'profile/configmaster/config-master.conf.erb',
         proxied_as_https => true,
-        enable_slo       => true,
         required_groups  => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',

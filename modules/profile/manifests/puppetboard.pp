@@ -91,6 +91,5 @@ class profile::puppetboard (
         required_groups  => ['cn=ops,ou=groups,dc=wikimedia,dc=org'],
         proxied_as_https => true,
         document_root    => $directory,
-        enable_slo       => true,
     }
 }

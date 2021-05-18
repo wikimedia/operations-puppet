@@ -68,7 +68,6 @@ profile::idp::client::httpd::sites:
     - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
     - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
-    enable_slo: true
     vhost_settings:
       ro_vhost: "grafana.%{lookup('public_domain')}"
 

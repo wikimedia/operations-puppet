@@ -34,7 +34,7 @@ define profile::idp::client::httpd::site (
     Boolean                       $proxied_as_https    = false,
     String[1,1]                   $attribute_delimiter = ':',
     Enum['staging', 'production'] $environment         = 'production',
-    Boolean                       $enable_slo        = false,
+    Boolean                       $enable_slo          = true,
     Optional[Hash[String,Any]]    $vhost_settings      = {},
     Optional[Array[String[1]]]    $required_groups     = [],
     Optional[String[1]]           $acme_chief_cert     = undef,

@@ -8,7 +8,6 @@ profile::idp::client::httpd::sites:
   'graphite.wikimedia.org':
     vhost_content: 'profile/idp/client/httpd-graphite.erb'
     document_root: '/usr/share/graphite-web'
-    enable_slo: true
     required_groups:
     - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
     - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
@@ -23,6 +22,5 @@ profile::idp::client::httpd::sites:
     - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
     - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
-    enable_slo: true
     environment: staging
     enable_monitor: false

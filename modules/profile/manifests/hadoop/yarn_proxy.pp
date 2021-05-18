@@ -19,7 +19,6 @@ class profile::hadoop::yarn_proxy (
         vhost_content    => 'profile/idp/client/httpd-yarn.erb',
         proxied_as_https => true,
         vhost_settings   => { 'res_manager' => $resourcemanager_primary_host },
-        enable_slo       => true,
         required_groups  => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',

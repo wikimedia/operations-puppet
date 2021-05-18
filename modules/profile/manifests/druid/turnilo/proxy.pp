@@ -33,7 +33,6 @@ class profile::druid::turnilo::proxy(
         vhost_content    => 'profile/idp/client/httpd-turnilo.erb',
         proxied_as_https => true,
         vhost_settings   => { 'turnilo_port' => $turnilo_port },
-        enable_slo       => true,
         required_groups  => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
