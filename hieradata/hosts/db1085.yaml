@@ -1,5 +1,0 @@
-# db1085
-# Broken BBU T258360
-mariadb::shard: 's6'
-mariadb::binlog_format: 'ROW'
-profile::base::notifications: disabled
