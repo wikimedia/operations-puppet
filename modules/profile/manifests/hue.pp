@@ -141,6 +141,7 @@ class profile::hue (
             document_root    => '/var/www',
             proxied_as_https => true,
             vhost_settings   => { 'hue_port' => $hue_port },
+            enable_slo       => true,
             required_groups  => [
                 'cn=ops,ou=groups,dc=wikimedia,dc=org',
                 'cn=wmf,ou=groups,dc=wikimedia,dc=org',
