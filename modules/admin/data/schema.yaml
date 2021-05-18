@@ -50,8 +50,6 @@ definitions:
           type: string
         shell:
           type: string
-        email:
-          type: string
         expiry_date:
           type: string
           format: date
@@ -79,9 +77,40 @@ definitions:
         - ensure
         - uid
       additionalProperties: false
+  # ldap_only_user is a subset of user -- why the repetition, instead of deduplicating via $ref?
+  # Because that's incompatible with "additionalProperties: false". As of today, there's no way to
+  # combine properties from two schema definitions, and also exclude any other properties, without
+  # a bunch of repetition. And we want "additionalProperties: false" in order to avoid creating new
+  # fields via typo.
+  ldap_only_user:
+    type: object
+    additionalProperties:
+      type: object
+      properties:
+        ensure:
+          type: string
+          enum:
+            - present
+            - absent
+        realname:
+          type: string
+        email:
+          type: string
+        expiry_date:
+          type: string
+          format: date
+        expiry_contact:
+          type: string
+        comment:
+          type: string
+      required:
+        - ensure
+      additionalProperties: false
 type: object
 properties:
   groups:
     "$ref": "#/definitions/group"
   users:
     "$ref": "#/definitions/user"
+  ldap_only_users:
+    "$ref": "#/definitions/ldap_only_user"
