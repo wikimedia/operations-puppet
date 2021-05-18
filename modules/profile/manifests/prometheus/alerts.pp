@@ -285,7 +285,8 @@ class profile::prometheus::alerts (
     monitoring::check_prometheus { 'prometheus-job-unavailable':
         description     => 'Prometheus jobs reduced availability',
         dashboard_links => ['https://grafana.wikimedia.org/d/NEJu05xZz/prometheus-targets'],
-        query           => 'site_job:up:avail',
+        # See https://phabricator.wikimedia.org/T276749 for netbox_device_statistics
+        query           => 'site_job:up:avail{job!="netbox_device_statistics"}',
         warning         => 0.6,
         critical        => 0.5,
         method          => 'le',
