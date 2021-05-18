@@ -14,7 +14,7 @@ class profile::analytics::refinery (
         # by the CDH packages.
         require ::profile::hadoop::common
 
-        require ::profile::analytics::cluster::packages::hadoop
+        require ::profile::analytics::cluster::packages::common
     }
 
     require ::profile::analytics::refinery::repository

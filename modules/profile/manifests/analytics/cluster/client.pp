@@ -4,7 +4,7 @@
 # with hadoop and other Analytics Cluster services.
 #
 class profile::analytics::cluster::client {
-    require ::profile::analytics::cluster::packages::hadoop
+    require ::profile::analytics::cluster::packages::common
 
     # Include Hadoop ecosystem client classes.
     require ::profile::hadoop::common
@@ -24,7 +24,7 @@ class profile::analytics::cluster::client {
 
     # Install other useful packages for client nodes.
     # Packages that should exist on both clients and workers
-    # belong in the profile::analytics::cluster::packages::hadoop class.
+    # belong in the profile::analytics::cluster::packages::common class.
     require_package(
         'kafkacat',
         'jupyter-notebook',

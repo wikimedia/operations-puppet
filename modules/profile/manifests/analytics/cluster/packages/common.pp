@@ -3,7 +3,6 @@
 # Common other-packages that should be installed on analytics computation
 # nodes (workers and clients).
 # Before including this class, check its "extensions":
-# - profile::analytics::cluster::packages::hadoop
 # - profile::analytics::cluster::packages::statistics
 #
 class profile::analytics::cluster::packages::common(

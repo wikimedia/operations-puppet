@@ -3,9 +3,6 @@
 # Specific packages that should be installed on analytics statistics
 # nodes (no Hadoop client related packages).
 #
-# If the stat node need to be capable of using Hadoop, please also include
-# profile::analytics::cluster::packages::hadoop
-#
 class profile::analytics::cluster::packages::statistics {
 
     include ::profile::analytics::cluster::packages::common

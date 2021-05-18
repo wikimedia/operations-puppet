@@ -19,7 +19,7 @@ class role::statistics::explorer {
     # for interacting with HDFS.
     include ::profile::analytics::cluster::users
     include ::profile::analytics::refinery
-    include ::profile::analytics::cluster::packages::hadoop
+    include ::profile::analytics::cluster::packages::common
 
     include ::profile::analytics::client::limits
     include ::profile::kerberos::client

@@ -8,7 +8,7 @@ class profile::reportupdater::jobs(
     $ensure_jobs = lookup('profile::reportupdater::jobs::ensure_jobs', { 'default_value' => 'present' }),
 ) {
 
-    require ::profile::analytics::cluster::packages::hadoop
+    require ::profile::analytics::cluster::packages::common
     require ::profile::analytics::cluster::client
 
     $base_path = '/srv/reportupdater'
