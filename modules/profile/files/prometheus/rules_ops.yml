@@ -51,6 +51,8 @@ groups:
     expr: sum by(cluster) (rate(node_netstat_Icmp_OutDestUnreachs{job="node"}[5m]))
   - record: cluster:netstat_Icmp_OutErrors:rate5m
     expr: sum by(cluster) (rate(node_netstat_Icmp_OutErrors{job="node"}[5m]))
+  - record: cluster:netstat_Icmp6_InPktTooBigs:rate5m
+    expr: sum by(cluster) (rate(node_netstat_Icmp6_InPktTooBigs{job="node"}[5m]))
   - record: cluster:netstat_Tcp_ActiveOpens:rate5m
     expr: sum by(cluster) (rate(node_netstat_Tcp_ActiveOpens{job="node"}[5m]))
   - record: cluster:netstat_Tcp_AttemptFails:rate5m
