@@ -9,6 +9,11 @@ profile::standard::admin_groups_no_ssh:
   # for deploying files to HDFS.
   - analytics-search-users
 
+
+# enable a hardened Java security profile.
+# This is needed here because we deploy TLS keys by setting ensure_ssl_config: true.
+profile::java::hardened_tls: true
+
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hadoop::master::standby::monitoring_enabled: true

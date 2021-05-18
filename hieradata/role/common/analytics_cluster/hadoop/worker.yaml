@@ -11,6 +11,11 @@ profile::standard::admin_groups_no_ssh:
   - analytics-search-users
   - gpu-users
 
+
+# enable a hardened Java security profile.
+# This is needed here because we deploy TLS keys by setting ensure_ssl_config: true.
+profile::java::hardened_tls: true
+
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-hive'

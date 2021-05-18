@@ -624,10 +624,6 @@ class profile::hadoop::common (
             ssl_server_config => $ssl_server_config,
         }
 
-        # Use a custom java.security on this host, so that we can restrict the allowed
-        # certificate's sigalgs. The 'contain' keywork at the end of the class should
-        # ensure that the java.security file is deployed before the Hadoop daemons.
-        class { 'java::security': }
     }
 
 

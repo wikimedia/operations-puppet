@@ -1,6 +1,10 @@
 nagios_group: analytics_eqiad
 cluster: analytics
 
+# enable a hardened Java security profile.
+# This is needed here because we deploy TLS keys by setting ensure_ssl_config: true.
+profile::java::hardened_tls: true
+
 profile::standard::admin_groups:
   - analytics-admins
 profile::standard::admin_groups_no_ssh:
