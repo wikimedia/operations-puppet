@@ -20,7 +20,8 @@ analytics-launcher: P{O:analytics_cluster::launcher}
 analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::superset or O:analytics_cluster::superset::staging}
 analytics-web: P{O:analytics_cluster::webserver}
 apt: P{O:apt_repo}
-aqs: P{O:aqs}
+aqs: P{O:aqs or O:aqs_next}
+aqs-next: P{O:aqs_next}
 aqs-canary: P{aqs1004.eqiad.wmnet}
 archiva: P{O:archiva}
 backup: P{O:backup::offsite or O:backup}
