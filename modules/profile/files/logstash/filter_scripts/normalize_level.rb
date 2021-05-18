@@ -1,6 +1,6 @@
 # normalize_level.rb
 # Logstash Ruby script to build an ECS `log` field from level and syslog fields
-# @version 1.0.1
+# @version 1.0.2
 
 def register(*)
   # RFC5424 severity to supported level field mapping
@@ -39,6 +39,16 @@ def register(*)
       :code => 7
     },
   }
+
+  # https://github.com/trentm/node-bunyan#levels
+  @bunyan_levels = [
+    "trace", # 10
+    "debug", # 20
+    "info",  # 30
+    "warn",  # 40
+    "error", # 50
+    "fatal"  # 60
+  ]
 
   @facilities = {
     "kernel"   => 0,
@@ -98,6 +108,13 @@ end
 def get_level(event)
   # Returns normalized level field.
   # dependent on the availability of either `event.level` or `event.severity`
+
+  # bunyan sends levels as integers
+  if event.get('level').is_a? Numeric
+    idx = event.get('level') / 10 - 1  # transform to array index
+    return @bunyan_levels[idx].upcase
+  end
+
   if event.get('level').nil?
     if event.get('severity').nil?
       return "NOTSET"

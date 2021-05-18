@@ -16,6 +16,7 @@ testcases:
         "levelPath": "error/request",
         "v": "bunyan_v",
         "type": "syslog",
+        "level": 50,
         "root_req": {
           "method": "put",
           "uri": "/en.wikipedia.org/v1/data/lists/0000000?csrf_token=asdf",
@@ -184,6 +185,7 @@ testcases:
         "type": "syslog",
         "name": "restbase",
         "component": "debug/api_error",
+        "level": 20,
         "err": {
           "message": "400: bad_request",
           "name": "restbase",
@@ -297,6 +299,7 @@ testcases:
         "v": "bunyan_v",
         "type": "syslog",
         "levelPath": "warn/service-runner/heap",
+        "level": 40,
         "name": "restbase",
         "message": "Heap memory limit temporarily exceeded",
         "memoryUsage": {
@@ -317,7 +320,7 @@ testcases:
         labels:
           level_path: "warn/service-runner/heap"
         log:
-          level: "WARNING"
+          level: "WARN"
           syslog:
             facility:
               code: 16
@@ -355,6 +358,7 @@ testcases:
         "program": "node",
         "v": "bunyan_v",
         "type": "syslog",
+        "level": 50,
         "root_req": {
           "method": "get",
           "uri": "/it.wikipedia.org/v1/page/summary/a_summary_page",
@@ -445,6 +449,7 @@ testcases:
         "type": "syslog",
         "request_id": "0b652d81-b435-11eb-a1a3-adc9deeef955",
         "name": "kartotherian",
+        "level": 40,
         "levelPath": "warn",
         "msg": "groupIds not available: _f0f1729e33129fae22015c99dd3e1f60a34a8177; domain: ar.wikipedia.org; title: %D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9; req url: /img/osm-intl,8,35.32034,6.74657,300x300.png?lang=ar&domain=ar.wikipedia.org&title=%25D8%25A8%25D9%2588%25D8%25AD%25D9%2585%25D8%25A7%25D9%2585%25D8%25A9&groups=_f0f1729e33129fae22015c99dd3e1f60a34a8177",
         "pid": 27393,
@@ -482,7 +487,7 @@ testcases:
           query_groups: ["_f0f1729e33129fae22015c99dd3e1f60a34a8177"]
           query_title: "%D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9"
         log:
-          level: "WARNING"
+          level: "WARN"
           syslog:
             facility:
               code: 16
