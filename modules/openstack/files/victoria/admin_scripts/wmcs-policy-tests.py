@@ -450,8 +450,22 @@ class TestTrove:
         with pytest.raises(troveexceptions.Forbidden):
             troveclient.instances.delete(self.testinstance.id)
 
+        # These APIs should be public for everyone
+        datastores = troveclient.datastores.list()
+        assert len(datastores) > 0
+
+        instances = troveclient.instances.list()
+        assert len(instances) > 0
+
     def test_trove_canaryclients(self):
         troveclient = canaryclients.troveclient(project=POLICY_TEST_PROJECT)
 
         with pytest.raises(troveexceptions.Forbidden):
             troveclient.instances.delete(self.testinstance.id)
+
+        # These APIs should be public for everyone
+        datastores = troveclient.datastores.list()
+        assert len(datastores) > 0
+
+        instances = troveclient.instances.list()
+        assert len(instances) > 0
