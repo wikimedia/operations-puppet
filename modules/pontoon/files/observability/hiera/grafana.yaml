@@ -1,1 +1,2 @@
 profile::grafana::active_host: "%{alias('__master_for_role_grafana')}"
+profile::grafana::standby_host: "%{alias('__master_for_role_grafana')}"

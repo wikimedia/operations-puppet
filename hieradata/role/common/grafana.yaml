@@ -72,3 +72,4 @@ profile::idp::client::httpd::sites:
       ro_vhost: "grafana.%{lookup('public_domain')}"
 
 profile::grafana::active_host: 'grafana1002.eqiad.wmnet'
+profile::grafana::standby_host: 'grafana2001.codfw.wmnet'

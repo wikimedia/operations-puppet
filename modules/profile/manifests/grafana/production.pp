@@ -5,6 +5,7 @@
 #
 class profile::grafana::production (
     Stdlib::Fqdn $active_host = lookup('profile::grafana::active_host'),
+    Stdlib::Fqdn $standby_host = lookup('profile::grafana::standby_host'),
 ) {
     include ::profile::grafana
     include ::profile::grafana::grizzly
@@ -14,15 +15,10 @@ class profile::grafana::production (
         false => absent,
     }
 
-    $not_on_active_host = $active_host == $::fqdn ? {
-        true  => absent,
-        false => present,
-    }
-
     rsync::quickdatacopy { 'var-lib-grafana':
-      ensure              => $not_on_active_host,
+      ensure              => present,
       source_host         => $active_host,
-      dest_host           => $::fqdn,
+      dest_host           => $standby_host,
       module_path         => '/var/lib/grafana',
       server_uses_stunnel => true,
     }
