@@ -15,6 +15,11 @@ bind_port = <%= @api_bind_port %>
 # Inject a public key into each DB instance for debug purposes
 nova_keypair='trove-debug'
 
+use_syslog = True
+use_json = True
+syslog_log_facility = LOG_LOCAL0
+
+
 #===================== RPC Configuration =================================
 
 # URL representing the messaging driver to use and its full configuration.

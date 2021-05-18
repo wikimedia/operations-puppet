@@ -71,6 +71,9 @@
     {"index" : "neutron-rpc-server", "value" : "kafka local" },
     {"index" : "neutron-dhcp-agent", "value" : "kafka local" },
     {"index" : "neutron-l3-agent", "value" : "kafka local" },
+    {"index" : "trove-api", "value" : "kafka local" },
+    {"index" : "trove-conductor", "value" : "kafka local" },
+    {"index" : "trove-taskmanager", "value" : "kafka local" },
     {"index" : "pybal", "value" : "kafka local" }
   ]
 }
