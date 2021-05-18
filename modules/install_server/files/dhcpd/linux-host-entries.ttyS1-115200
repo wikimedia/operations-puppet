@@ -5192,6 +5192,12 @@ host ms-fe2008 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host mwlog1001 {
+    hardware ethernet 14:18:77:33:4A:C0;
+    fixed-address mwlog1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-rescue/";
+}
+
 host mwlog1002 {
     hardware ethernet 2C:EA:7F:69:20:9F;
     fixed-address mwlog1002.eqiad.wmnet;
