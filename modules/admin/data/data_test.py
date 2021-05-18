@@ -8,6 +8,7 @@ import re
 import unittest
 from collections import Counter, defaultdict
 from collections.abc import Iterable
+from datetime import datetime
 
 import yaml
 
@@ -165,6 +166,45 @@ class DataTest(unittest.TestCase):
             missing_users, set(),
             "The following users are members of a group but don't exist: {}".format(
                 ','.join(missing_users)))
+
+    def test_expiry_date_format(self):
+        """Ensure that the expiry_date field, when present, has the correct %Y-%m-%d format."""
+        bad_expiries = []
+        for username, attrs in self.admins['users'].items():
+            expiry = attrs.get('expiry_date')
+            if expiry is None:
+                continue
+
+            try:
+                datetime.strptime(str(attrs['expiry_date']), '%Y-%m-%d')
+            except Exception as e:
+                bad_expiries.append((username, attrs['expiry_date'], e))
+
+        if bad_expiries:
+            bad_expiries_str = '\n'.join(
+                '{}: {} ({})'.format(*bad_expiry) for bad_expiry in bad_expiries)
+            raise ValueError('The following users have an invalid expiry_date field:\n{}'.format(
+                bad_expiries_str))
+
+    def test_expiry_date_has_contact(self):
+        """Ensure that if there is an expiry_date field also an expiry_contact field is set."""
+        wrong_expiries = {username for username, attrs in self.admins['users'].items()
+                          if 'expiry_date' in attrs and 'expiry_contact' not in attrs}
+
+        if wrong_expiries:
+            raise ValueError(
+                'The following users have an expiry_date set without an expiry_contact: {}'.format(
+                    ', '.join(wrong_expiries)))
+
+    def test_expiry_contact_has_date(self):
+        """Ensure that if there is an expiry_contact field also an expiry_date field is set."""
+        wrong_expiries = {username for username, attrs in self.admins['users'].items()
+                          if 'expiry_contact' in attrs and 'expiry_date' not in attrs}
+
+        if wrong_expiries:
+            raise ValueError(
+                'The following users have an expiry_contact set without an expiry_date: {}'.format(
+                    ', '.join(wrong_expiries)))
 
 
 if __name__ == '__main__':
