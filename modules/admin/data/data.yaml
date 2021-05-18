@@ -801,7 +801,7 @@ groups:
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
-    members: [eugene-chernov, strofimovsky01, il]
+    members: [eugene-chernov, strofimovsky01, il, brennen]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Wolfgang Kandek
   reprepro:
