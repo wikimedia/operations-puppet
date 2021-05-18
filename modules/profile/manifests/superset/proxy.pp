@@ -26,6 +26,7 @@ class profile::superset::proxy (
             vhost_content    => 'profile/idp/client/httpd-superset.erb',
             proxied_as_https => true,
             vhost_settings   => { 'x-forwarded-proto' => $x_forwarded_proto },
+            enable_slo       => true,
             required_groups  => [
                 'cn=ops,ou=groups,dc=wikimedia,dc=org',
                 'cn=wmf,ou=groups,dc=wikimedia,dc=org',
