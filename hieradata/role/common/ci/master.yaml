@@ -165,6 +165,10 @@ profile::kubernetes::deployment_server::services:
     username: miscweb
     group: wikidev
     mode: '0640'
+  mwdebug:
+    username: mwdebug
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server_secrets::services:
