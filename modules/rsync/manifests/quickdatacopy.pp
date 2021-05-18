@@ -16,7 +16,7 @@
 #
 # [*file_path*] What file within that document root do we need? (currently not used)
 #
-# [*auto_sync*] Whether to also have a cronjob that automatically syncs data or not (default: true)
+# [*auto_sync*] Whether to also have a periodic job to automatically sync data or not (default: true)
 #
 # [*ensure*] The usual meaning, set to absent to clean up when done
 #
@@ -103,19 +103,27 @@ define rsync::quickdatacopy(
           }
       }
 
-      # Manage the cron entry on both source and dest host.
+      # Manage the timer entry on both source and dest host.
       # Default to 'absent' to handle proper cleanup when 'flipping' replication
       # (i.e. swap source and dest hosts)
 
       if $auto_sync and ($dest_host == $::fqdn) {
-          $cron_ensure = $ensure
+          $timer_ensure = $ensure
       } else {
-          $cron_ensure = 'absent'
+          $timer_ensure = 'absent'
       }
 
       cron { "rsync-${title}":
-          ensure  => $cron_ensure,
+          ensure  => absent,
           minute  => '*/10',
           command => "/usr/local/sbin/sync-${title} >/dev/null 2>&1",
+      }
+
+      systemd::timer::job { "rsync-${title}":
+          ensure      => $timer_ensure,
+          description => 'Transfer data periodically between hosts',
+          user        => 'root',
+          command     => "/usr/local/sbin/sync-${title}",
+          interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/10:00'}, # every 10 min
       }
 }
