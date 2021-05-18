@@ -24,7 +24,7 @@
 "cluster:index": ""
 "configuration:index": ""
 "configuration-parameter:index": ""
-"configuration-parameter:index": ""_by_version
+"configuration-parameter:index_by_version": ""
 "datastore:index": ""
 "datastore:version_index": ""
 "flavor:index": ""
