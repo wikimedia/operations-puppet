@@ -168,6 +168,9 @@ rewrite	bugzilla.mediawiki.org	https://bugzilla.wikimedia.org
 
 rewrite	wiki.mediawiki.org	https://www.mediawiki.org
 
+# VRT wiki was previously at otrs-wiki.wikimedia.org (T280400)
+rewrite	otrs-wiki.wikimedia.org	https://vrt-wiki.wikimedia.org
+
 # Continuous Integration T83381, T83399
 rewrite	doc.mediawiki.org	https://doc.wikimedia.org
 rewrite	integration.mediawiki.org	https://integration.wikimedia.org
