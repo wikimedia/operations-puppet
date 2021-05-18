@@ -302,7 +302,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, christinedk, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun]
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -312,7 +312,7 @@ groups:
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
-    members: &analytics_admins_members [joal, nuria, mforns, milimetric, fdans]
+    members: &analytics_admins_members [joal, nuria, mforns, milimetric, fdans, oljad]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
@@ -4321,6 +4321,16 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCuR/wR4Qx/eQE1PWUWBsxcivp6D7IDO/WTBZR9apA3BLfm25VIrxLvHsUSecMZGBGyJDGuayxnRb/5Ng5voghFEVLrw4NRgvSqCphRTl/Ub6NqndoPm5f4LA9yraFM8jB8/hB62Xc4wQosROs6Ke4C9R89CaHpucW/591X6RPGhmGjZ/YcINmd8B0g/gl4oZA4aGbZpS3hCRS5Lo4UP9FP8SiCWGcCMGpdTiCWBsT3eevR0nrp3GJtk1FBAjx7XuEiBIjg/vukL2kFEO3llIotXDNWxx/omAOKFftZmIEtbMIQmxBNsPcPvNpGLiNMvKUNtKBErkuerhZr/HzFJd8KohvgCI4QXKKHU2yRVGvWfdB1FMryJBvVEII+foNDk7G2Vxh8D+VQWeJeV+1ZLOQsV6AuWnpyeyb0farfuR+WSExWSxY7XUYREA2dCli6DcqMKlyaVrkpc9eCwV9nhij5zu6ohGnplJtlYmAjeFi/wxFzNmTd3wx3kiPn9mvl1lk= joanna@Joannas-MacBook-Pro.local
     uid: 31735
     email: jborun@wikimedia.org
+  oljad:
+    ensure: present
+    gid: 500
+    name: oljad
+    realname: Olja Dimitrjevic
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOSW1UYgPQG6SdTPQbc/s1T5kvlnrZI8A6WbPz3NXjUw odimitrijevic@wikimedia.org
+    uid: 31599
+    krb: present
+    email: odimitrijevic@wikimedia.org
 
 ldap_only_users:
   abartov:
