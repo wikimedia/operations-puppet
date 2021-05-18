@@ -36,37 +36,49 @@ class gitlab (
         owner => 'root',
         group => 'root',
         mode  => '0500',
-        })
-        file {'/etc/gitlab/gitlab.rb':
-            ensure  => $ensure,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
-            content => template('gitlab/gitlab.rb.erb'),
-            notify  => Exec['Reconfigure GitLab'],
-        }
+    })
+    file {'/etc/gitlab/gitlab.rb':
+        ensure  => $ensure,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+        content => template('gitlab/gitlab.rb.erb'),
+        notify  => Exec['Reconfigure GitLab'],
+    }
 
-        # From: https://github.com/voxpupuli/puppet-gitlab/blob/master/manifests/service.pp
-        exec { 'Reconfigure GitLab':
-            command     => '/bin/sh -c "unset LD_LIBRARY_PATH; /usr/bin/gitlab-ctl reconfigure"',
-            refreshonly => true,
-            timeout     => 1800,
-            logoutput   => true,
-            tries       => 5,
-            require     => Package['gitlab-ce'],
-            notify      => Service['gitlab-ce'],
-        }
+    # From: https://github.com/voxpupuli/puppet-gitlab/blob/master/manifests/service.pp
+    exec { 'Reconfigure GitLab':
+        command     => '/bin/sh -c "unset LD_LIBRARY_PATH; /usr/bin/gitlab-ctl reconfigure"',
+        refreshonly => true,
+        timeout     => 1800,
+        logoutput   => true,
+        tries       => 5,
+        require     => Package['gitlab-ce'],
+        notify      => Service['gitlab-ce'],
+    }
 
-        service{ 'gitlab-ce':
-            ensure  => stdlib::ensure($ensure, 'service'),
-            start   => '/usr/bin/gitlab-ctl start',
-            restart => '/usr/bin/gitlab-ctl restart',
-            stop    => '/usr/bin/gitlab-ctl stop',
-            status  => '/usr/bin/gitlab-ctl status',
-            require => Package['gitlab-ce'],
-        }
+    service{ 'gitlab-ce':
+        ensure  => stdlib::ensure($ensure, 'service'),
+        start   => '/usr/bin/gitlab-ctl start',
+        restart => '/usr/bin/gitlab-ctl restart',
+        stop    => '/usr/bin/gitlab-ctl stop',
+        status  => '/usr/bin/gitlab-ctl status',
+        require => Package['gitlab-ce'],
+    }
 
-        if $enable_backup {
-            include gitlab::backup
-        }
+    if $enable_backup {
+        include gitlab::backup
+    }
+    # Theses parameters are installed by gitlab when the package is updated
+    # However we purge this directory in puppet as such we need to add them here
+    # TODO: Ensure theses values actually make sense
+    sysctl::parameters {'omnibus-gitlab':
+        priority => 90,
+        values   => {
+            'kernel.sem'         => '250 32000 32 262',
+            'kernel.shmall'      => 4194304,
+            'kernel.shmmax'      => 17179869184,
+            'net.core.somaxconn' => 1024,
+        },
+    }
 }
