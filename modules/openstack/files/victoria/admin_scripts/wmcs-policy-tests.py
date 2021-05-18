@@ -414,6 +414,10 @@ class TestTrove:
         ]
 
         troveclient = adminclients.troveclient(project=POLICY_TEST_PROJECT)
+
+        datastores = troveclient.datastores.list()
+        datastoreversions = troveclient.datastore_versions.list(datastores[0].id)
+
         instance = troveclient.instances.create(
             name="trove-test-instance",
             flavor_id=cls.flavor.id,
@@ -421,8 +425,8 @@ class TestTrove:
             volume={"size": 1},
             nics=nics,
             users=users,
-            datastore="09abaceb-d16d-40a9-9d4b-d423241ee733",
-            datastore_version="950733f2-cb42-4f85-b5e3-547117227b13",
+            datastore=datastores[0].id,
+            datastore_version=datastoreversions[0].id,
         )
 
         cls.testinstance = instance
