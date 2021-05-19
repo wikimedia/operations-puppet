@@ -51,9 +51,6 @@ class profile::wmcs::nfs::maintain_dbusers (
         '172.16.7.153' => {
             'grant-type' => 'legacy',
         },
-        'labsdb1010.eqiad.wmnet' => {
-            'grant-type' => 'role',
-        },
         'labsdb1011.eqiad.wmnet' => {
             'grant-type' => 'role',
         },
