@@ -10,16 +10,31 @@ class profile::reportupdater::jobs(
 
     require ::profile::analytics::cluster::packages::common
     require ::profile::analytics::cluster::client
+    require ::profile::analytics::refinery
 
+    $refinery_path = $profile::analytics::refinery::path
     $base_path = '/srv/reportupdater'
+    $log_path = "${base_path}/log"
+    $user = 'analytics'
 
     # Set up reportupdater.
     # Reportupdater here launches Hadoop jobs, and
     # the 'analytics' user is the Analytics 'system' user that has
     # access to required files in Hadoop.
     class { 'reportupdater':
-        user      => 'analytics',
+        user      => $user,
         base_path => $base_path,
+        log_path  => $log_path,
+    }
+
+    # Setup timer for rsyncing logs to HDFS.
+    $hdfs_log_path = '/tmp/reportupdater/logs'
+    kerberos::systemd_timer { 'analytics-reportupdater-logs-rsync':
+        description => 'Rsync reportupdater logs to HDFS.',
+        command     => "${refinery_path}/bin/hdfs-rsync -d -x to-hdfs ${log_path} ${hdfs_log_path}",
+        interval    => '*-*-* *:30:00',
+        user        => $user,
+        require     => Bigtop::Hadoop::Directory[$hdfs_log_path],
     }
 
     # And set up a link for periodic jobs to be included in published reports.
