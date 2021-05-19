@@ -40,8 +40,7 @@
 # See https://wikitech.wikimedia.org/wiki/Cergen for more details.
 #
 # Note that this class configures java.security to set jdk.certpath.disabledAlgorithms
-# to restrict the types of sigalgs used for authentication certificates via
-# the profile::java hardened_tls parameter.
+# to restrict the types of sigalgs used for authentication certificates.
 #
 # == Parameters
 #
@@ -185,12 +184,7 @@ class profile::kafka::broker(
     # NOTE: Kafka brokers support openjdk-11 only from 2.1:
     # https://issues.apache.org/jira/browse/KAFKA-7264
     # For now we use java 8.
-    class { 'profile::java':
-        # If $ssl_enabled, use a custom java.security on this host
-        # so that we can restrict the allowed certificate's sigalgs.
-        # See: https://phabricator.wikimedia.org/T182993
-        hardened_tls => $ssl_enabled,
-    }
+    require ::profile::java
     $java_home = $::profile::java::default_java_home
 
     # Use Java 8 GC features
@@ -275,6 +269,12 @@ class profile::kafka::broker(
                 mode    => '0444',
                 before  => Class['::confluent::kafka::broker'],
             }
+        }
+
+        # Use a custom java.security on this host, so that we can restrict the allowed
+        # certificate's sigalgs.  See: https://phabricator.wikimedia.org/T182993
+        class { 'java::security':
+            before => Class['::confluent::kafka::broker'],
         }
     }
     else {
@@ -375,8 +375,6 @@ class profile::kafka::broker(
         authorizer_class_name            => $authorizer_class_name,
         super_users                      => $super_users,
         num_partitions                   => $num_partitions,
-        # Make sure that java is installed and configured before the kafka broker service.
-        require                          => Class['::profile::java'],
     }
 
     if $custom_ferm_srange_components {
