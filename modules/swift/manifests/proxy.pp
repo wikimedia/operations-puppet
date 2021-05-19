@@ -20,7 +20,6 @@ class swift::proxy (
 ) {
     package {[
         'swift-proxy',
-        'python-eventlet',
     ]:
         ensure => present,
     }

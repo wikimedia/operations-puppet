@@ -8,8 +8,8 @@ class swift::stats::accounts(
     $statsd_prefix = "swift.${swift_cluster}.stats",
 ) {
     $required_packages = [
-        Package['python-swiftclient'],
-        Package['python-statsd'],
+        Package['python3-swiftclient'],
+        Package['python3-statsd'],
         Package['swift'],
         ]
 

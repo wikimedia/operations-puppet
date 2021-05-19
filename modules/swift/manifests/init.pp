@@ -40,16 +40,23 @@ class swift (
         }
     }
 
+    if debian::codename::ge('bullseye') {
+        $python_swift_pkg = 'python3-swift'
+    } else {
+        $python_swift_pkg = 'python-swift'
+    }
+
+    # Use 'package' as opposed to require_packages to avoid dependency cycles
     package { [
         'swift',
-        'python-swift',
-        'python-swiftclient',
+        $python_swift_pkg,
+        'python3-swiftclient',
         'parted',
     ]:
         ensure => present,
     }
 
-    require_package('python-statsd')
+    require_package(['python3-statsd'])
 
     file {
         default:
@@ -97,7 +104,7 @@ class swift (
         force   => true,
         target  => '/srv/log/swift',
         require => File['/srv/log/swift'],
-        before  => Package['python-swift'],
+        before  => Package[$python_swift_pkg],
     }
 
     logrotate::conf { 'swift':

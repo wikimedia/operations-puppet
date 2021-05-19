@@ -127,7 +127,7 @@ class swift::storage (
     # it checks the disks every 60 minutes
     # and unmounts failed disks. It logs its actions to /var/log/syslog.
 
-    # this file comes from the python-swift package
+    # this file comes from the python3-swift package
     # but there are local improvements
     # that are not yet merged upstream.
     file { '/usr/bin/swift-drive-audit':
