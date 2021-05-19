@@ -473,8 +473,9 @@ node 'db1183.eqiad.wmnet' {
     role(mariadb::core_test)
 }
 
+# TODO decommissioned
 node 'db1125.eqiad.wmnet' {
-    role(mariadb::core_test)
+    role(insetup)
 }
 
 # s4 (commons) core production dbs on codfw
