@@ -896,6 +896,11 @@ node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
     role(doc)
 }
 
+# Wikidough, anycast: T252132. insetup for now.
+node /^doh200[12]\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
