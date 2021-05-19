@@ -1456,9 +1456,6 @@ node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
 }
 
 ## wikireplicas dbs
-node 'labsdb1010.eqiad.wmnet' {
-    role(wmcs::db::wikireplicas::web)
-}
 node 'labsdb1011.eqiad.wmnet' {
     role(wmcs::db::wikireplicas::analytics)
 }
