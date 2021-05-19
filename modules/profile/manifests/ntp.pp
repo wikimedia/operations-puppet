@@ -3,7 +3,6 @@
 # Ntp server profile
 class profile::ntp (
     Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts'),
-    Boolean             $use_chrony       = lookup('profile::ntp::use_chrony')
 ){
     contain standard::ntp
     # A list of all global peers, used in the core sites' case below
@@ -69,24 +68,13 @@ class profile::ntp (
         default => 'tos minsane 2 orphan 13',
     }
 
-    if $use_chrony {
-        require ::network::constants
-        $chrony_networks_acl = ['10.0.0.0/8'] + $::network::constants::external_networks
-
-        class { 'ntp::chrony':
-            pool               => $wmf_server_upstream_pools,
-            permitted_networks => $chrony_networks_acl,
-        }
-    }
-    else {
-        ntp::daemon { 'server':
-            servers      => $wmf_server_upstreams,
-            pools        => $wmf_server_upstream_pools,
-            peers        => $wmf_server_peers,
-            time_acl     => $our_networks_acl,
-            extra_config => $extra_config,
-            query_acl    => $monitoring_hosts,
-        }
+    ntp::daemon { 'server':
+        servers      => $wmf_server_upstreams,
+        pools        => $wmf_server_upstream_pools,
+        peers        => $wmf_server_peers,
+        time_acl     => $our_networks_acl,
+        extra_config => $extra_config,
+        query_acl    => $monitoring_hosts,
     }
 
     ferm::service { 'ntp':
