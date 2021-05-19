@@ -173,10 +173,6 @@ server {
       # Bug: T211719
       add_header 'Cache-Control' 'no-cache,must-revalidate' always;
 
-      # But cache the _catalog endpoint for a few mins as it's pretty expensive
-      location = /v2/_catalog {
-        add_header 'Cache-Control' 'public,s-maxage=600,max-age=600' always;
-      }
       # Require auth for POST, PUT, DELETE, ... requests
       limit_except GET HEAD OPTIONS {
       <%- if @read_only_mode %>
@@ -205,5 +201,11 @@ server {
       proxy_send_timeout          120;
       proxy_read_timeout          120;
       send_timeout                120;
+
+      # But cache the _catalog endpoint for a few mins as it's pretty expensive
+      location = /v2/_catalog {
+        add_header 'Cache-Control' 'public,s-maxage=600,max-age=600' always;
+        proxy_pass http://registry;
+      }
     }
 }
