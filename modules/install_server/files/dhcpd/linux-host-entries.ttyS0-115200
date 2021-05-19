@@ -164,6 +164,16 @@ host doc2001 {
     hardware ethernet aa:00:00:21:bd:9b;
     fixed-address doc2001.codfw.wmnet;
 }
+
+host doh2001 {
+    hardware ethernet aa:00:00:b8:bd:f9;
+    fixed-address doh2001.wikimedia.org;
+}
+
+host doh2002 {
+    hardware ethernet aa:00:00:99:be:5a;
+    fixed-address doh2002.wikimedia.org;
+}
 host etherpad1002 {
     hardware ethernet aa:00:00:70:0e:8b;
     fixed-address etherpad1002.eqiad.wmnet;
