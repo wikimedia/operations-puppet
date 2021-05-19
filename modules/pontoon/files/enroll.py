@@ -80,11 +80,18 @@ class Enroller(object):
         set_ca_server_cmd = (
             "sudo puppet config --section agent set ca_server %s" % self.agent_server
         )
+        # Make puppet_ssldir happy with a compat symlink
+        ssldir_compat_cmd = """
+        [ -h /var/lib/puppet/client ] || { \
+            sudo ln -s /var/lib/puppet /var/lib/puppet/client; \
+        }
+        """
+
         wipe_puppet_certs_cmd = "sudo find /var/lib/puppet/ssl -type f -delete"
 
         # flip master and wipe certs
         enroll_cmd = "&&".join(
-            (set_master_cmd, set_ca_server_cmd, wipe_puppet_certs_cmd)
+            (set_master_cmd, set_ca_server_cmd, wipe_puppet_certs_cmd, ssldir_compat_cmd)
         )
 
         log.info("Enrolling %s to %s", host, self.agent_server)
