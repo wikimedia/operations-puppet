@@ -11,9 +11,9 @@ class profile::wmcs::instance(
             class { 'sudo': }
         }
     } else {
-        if ! defined(Class['Sudo::Sudoldap']) {
-            class { 'sudo::sudoldap': }
-        }
+      #if ! defined(Class['Sudo::Sudoldap']) {
+      #class { 'sudo::sudoldap': }
+      #}
     }
 
     sudo::group { 'ops':
