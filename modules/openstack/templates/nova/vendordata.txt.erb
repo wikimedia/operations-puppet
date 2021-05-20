@@ -150,6 +150,7 @@ wait_for_puppet() {
 # uninstall chrony).
 if /usr/bin/dpkg -l chrony | grep -q ^ii; then
     /usr/sbin/userdel systemd-timesync
+    /usr/sbin/userdel systemd-coredump
     apt install -y systemd-timesyncd
 fi
 
