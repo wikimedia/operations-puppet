@@ -66,9 +66,12 @@ class profile::mariadb::misc::db_inventory(
     }
 
     class { 'mariadb::heartbeat':
-        shard      => $id,
-        datacenter => $::site,
-        enabled    => $mysql_role == 'master',
+        shard                  => $id,
+        datacenter             => $::site,
+        enabled                => $mysql_role == 'master',
+        # As tendril requires READ-COMMITTED, heartbeat needs to use ROW.
+        # https://phabricator.wikimedia.org/T283228#7100571
+        override_binlog_format => 'ROW',
     }
 
     class { 'mariadb::monitor_memory': }

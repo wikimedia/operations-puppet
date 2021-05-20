@@ -5,6 +5,7 @@ class mariadb::heartbeat (
     $shard      = 'unknown',
     $datacenter = 'none',
     $socket     = '/run/mysqld/mysqld.sock',
+    $override_binlog_format = undef,
 ) {
 
 
@@ -17,7 +18,10 @@ class mariadb::heartbeat (
         source => 'puppet:///modules/mariadb/pt-heartbeat-wikimedia',
     }
 
-    $binlog_format = $mariadb::config::binlog_format
+    $binlog_format = $override_binlog_format ? {
+        undef => $mariadb::config::binlog_format,
+        default => $override_binlog_format
+    }
     systemd::unit { 'pt-heartbeat-wikimedia':
         content        => template('mariadb/pt-heartbeat-wikimedia.service.erb'),
     }
