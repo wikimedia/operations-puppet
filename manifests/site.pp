@@ -818,12 +818,8 @@ node 'db2102.codfw.wmnet' {
 }
 
 # Analytics production replicas
-node /^dbstore100(3|4|5)\.eqiad\.wmnet$/ {
+node /^dbstore100[3-6]\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
-}
-
-node 'dbstore1006.eqiad.wmnet' {
-    role(insetup)
 }
 
 # database-provisioning and short-term/postprocessing backups servers
