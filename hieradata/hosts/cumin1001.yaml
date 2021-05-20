@@ -1,2 +1,2 @@
-profile::homer::private_git_peer: cumin2001.codfw.wmnet
+profile::homer::private_git_peer: cumin2002.codfw.wmnet
 profile::homer::diff_timer_interval: '*-*-* 08:42:00'  # Avoid the first 10 minutes of the hour, to not overlap with rancid

@@ -12,12 +12,21 @@ class role::cluster::management {
     include profile::standard
     include profile::base::firewall
 
-    include profile::cumin::master
+    # Temporary hack; for now cumin2001 is kept as a DBA management host,
+    # but Spicerack/Cumin/Homer should be run from cumin2002 to prevent
+    # issues with the Homer repo sync
+    # lint:ignore:wmf_styleguide
+    unless $::fqdn == 'cumin2001.codfw.wmnet' {
+        include profile::cumin::master
+        include profile::spicerack
+        include profile::homer
+    }
+    # lint:endignore
+
     include profile::ipmi::mgmt
     include profile::access_new_install
     include profile::conftool::client
     include profile::conftool::dbctl_client
-    include profile::spicerack
     include profile::debdeploy
     include profile::httpbb
     include profile::pwstore
@@ -26,7 +35,6 @@ class role::cluster::management {
     include profile::dbbackups::transfer
 
     include profile::netops::ripeatlas::cli
-    include profile::homer
 
     include profile::sre::os_updates
     include profile::sre::check_user
