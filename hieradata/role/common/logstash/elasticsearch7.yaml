@@ -214,6 +214,7 @@ profile::elasticsearch::logstash::curator_actions:
         key: disktype
         value: ssd
         allocation_type: require
+        exclude: false
       - filtertype: age
         source: creation_date
         direction: older
