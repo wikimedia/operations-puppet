@@ -47,7 +47,7 @@ then
 fi
 
 # This needs further refactoring, but for now it will work with the new hosts
-# Clouddb hosts are new and will replace the labsdb* ones, they run multi-instance rather than multi-source
+# Clouddb hosts run multi-instance
 if [ "$HOSTNAME" == "clouddb1013" ] || [ "$HOSTNAME" == "clouddb1017" ]
 then
 	for SECTION in s1 s3
