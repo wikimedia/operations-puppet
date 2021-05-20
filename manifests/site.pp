@@ -433,7 +433,7 @@ node /^db2(104|125|126|148)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# s3 (default) core production dbs on eqiad
+# s3 core production dbs on eqiad
 # eqiad master
 node 'db1123.eqiad.wmnet' {
     role(mariadb::core)
@@ -444,7 +444,7 @@ node /^db1(112|157|166|175|179)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# s3 (default) core production dbs on codfw
+# s3 core production dbs on codfw
 # codfw master
 node 'db2105.codfw.wmnet' {
     role(mariadb::core)
@@ -495,7 +495,7 @@ node /^db2(073|106|110|119|136|147)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# s5 (dewiki and others) core production dbs on eqiad
+# s5 (default, dewiki and others) core production dbs on eqiad
 # eqiad master
 node 'db1100.eqiad.wmnet' {
     role(mariadb::core)
@@ -507,7 +507,7 @@ node /^db1(110|130|161)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# s5 (dewiki and others) core production dbs on codfw
+# s5 (default, dewiki and others) core production dbs on codfw
 # codfw master
 node 'db2123.codfw.wmnet' {
     role(mariadb::core)
