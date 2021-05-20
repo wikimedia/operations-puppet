@@ -139,6 +139,20 @@ wait_for_puppet() {
     return 1
 }
 
+# Upstream debian cloud base images come with chrony installed,
+# as well as a service user with an invalid (>499) ID.  We can't
+# just uninstall chrony because systemd depends on it; installing
+# systemd-timesyncd uninstalls chrony but then runs afoul of the
+# user ID that was created by chrony. To work around all that,
+# we detect if chrony is installed and if it is, remove the
+# user it installed (without uninstalling chrony).  That unblocks
+# us for a subsequent install of systemd-timesyncd (which /does/
+# uninstall chrony).
+if /usr/bin/dpkg -l chrony | grep -q ^ii; then
+    /usr/sbin/userdel systemd-timesync
+    apt install -y systemd-timesyncd
+fi
+
 systemctl restart nscd.service
 dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 systemctl restart ssh.service
