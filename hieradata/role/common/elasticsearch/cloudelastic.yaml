@@ -96,6 +96,8 @@ profile::elasticsearch::common_settings:
 
 profile::elasticsearch::cirrus::enable_remote_search: false
 
+profile::elasticsearch::monitor::threshold: .20
+
 profile::lvs::realserver::pools:
   cloudelastic-chi-https:
     services:
