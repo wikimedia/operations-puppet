@@ -25,6 +25,10 @@ profile::mjolnir::kafka_bulk_daemon::topics:
   - codfw.swift.search_glent.upload-complete
   - eqiad.swift.search_popularity_score.upload-complete
   - codfw.swift.search_popularity_score.upload-complete
+  - eqiad.swift.search_updates.upload-complete
+  - codfw.swift.search_updates.upload-complete
+  - eqiad.swift.search_updates_prioritized.upload-complete
+  - codfw.swift.search_updates_prioritized.upload-complete
   - eqiad.swift.search_mjolnir_model.upload-complete
   - codfw.swift.search_mjolnir_model.upload-complete
 
