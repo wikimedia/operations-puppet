@@ -5054,3 +5054,7 @@ ldap_only_users:
     ensure: present
     realname: Sandister Tei
     email: stei@wikimedia.org
+  jstep:
+    ensure: present
+    realname: Jessica Stephenson
+    email: jstephenson@wikimedia.org
