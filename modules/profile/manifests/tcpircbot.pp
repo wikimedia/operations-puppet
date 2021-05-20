@@ -1,15 +1,19 @@
 class profile::tcpircbot(
-    $ensure='present',
+    Wmflib::Ensure $ensure = present,
+    Stdlib::Host $irc_host = lookup('profile::tcpircbot::irc::host'),
+    Stdlib::Port $irc_port = lookup('profile::tcpircbot::irc::port'),
 ){
 
     include passwords::logmsgbot
     include ::tcpircbot
 
     tcpircbot::instance { 'logmsgbot':
-        ensure   => $ensure,
-        channels => '#wikimedia-operations',
-        password => $passwords::logmsgbot::logmsgbot_password,
-        cidr     => [
+        ensure      => $ensure,
+        channels    => '#wikimedia-operations',
+        password    => $passwords::logmsgbot::logmsgbot_password,
+        server_host => $irc_host,
+        server_port => $irc_port,
+        cidr        => [
             '::ffff:127.0.0.1/128',             # loopback
             '::ffff:10.64.32.28/128',           # deployment eqiad v4: deploy1002
             '2620:0:861:103:10:64:32:28/128',   # deployment eqiad v6: deploy1002

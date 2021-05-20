@@ -356,3 +356,6 @@ profile::openstack::base::radosgw::api_bind_port: '18080'
 public_domain: "%{::labsproject}.wmcloud.org"
 
 profile::trafficserver::backend::trusted_ca_source: "%{facts.puppet_config.localcacert}"
+
+profile::tcpircbot::irc::host: 'irc.libera.chat'
+profile::tcpircbot::irc::port: 6697
