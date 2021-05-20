@@ -2596,6 +2596,11 @@ host dbstore1005 {
     fixed-address dbstore1005.eqiad.wmnet;
 }
 
+host dbstore1006 {
+    hardware ethernet D0:94:66:59:BD:2E;
+    fixed-address dbstore1006.eqiad.wmnet;
+}
+
 host deploy1002 {
     hardware ethernet 4C:D9:8F:65:E5:ED ;
     fixed-address deploy1002.eqiad.wmnet;
