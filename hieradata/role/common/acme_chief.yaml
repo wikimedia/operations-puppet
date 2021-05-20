@@ -255,12 +255,14 @@ profile::acme_chief::certificates:
         - '^cp4[0-9][0-9][0-9]\.ulsfo\.wmnet$'
         - '^cp5[0-9][0-9][0-9]\.eqsin\.wmnet$'
     wikidough:
-        CN: 'malmok.wikimedia.org'
+        CN: 'wikimedia-dns.org'
         SNI:
+        - 'wikimedia-dns.org'
         - 'malmok.wikimedia.org'
         challenge: dns-01
-        authorized_hosts:
-        - 'malmok.wikimedia.org'
+        authorized_regexes:
+        - '^doh200[12]\.wikimedia\.org$'
+        - '^malmok\.wikimedia\.org$'
     wikiworkshop:
         CN: 'wikiworkshop.org'
         SNI:
