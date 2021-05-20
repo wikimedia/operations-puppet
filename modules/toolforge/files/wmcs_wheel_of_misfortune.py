@@ -141,7 +141,7 @@ initative. You are invited to provide constructive feedback about the
 importance of particular types long running processes to your work in support
 of the Wikimedia movement.
 
-For further support, visit #wikimedia-cloud on freenode or
+For further support, visit #wikimedia-cloud on libera.chat or
 <https://wikitech.wikimedia.org>
 """.format(
             procname=procname
