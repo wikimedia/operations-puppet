@@ -24,7 +24,7 @@ class docker::baseimages(
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
 
-    ensure_packages(['bootstrap-vz'])
+    ensure_packages(['bootstrap-vz', 'debuerreotype'])
 
     file { '/srv/images':
         ensure => directory,
@@ -80,5 +80,43 @@ class docker::baseimages(
         interval            => {'start' => 'OnCalendar', 'interval' => 'Sun *-*-* 04:00:00'},
         user                => 'root',
         max_runtime_seconds => 86400,
+    }
+
+    # Add a script to build the bare minimum images using
+    # debuerreotype.
+    file { '/usr/local/bin/build-bare-slim':
+        ensure => present,
+        source => 'puppet:///modules/docker/build-bare-slim.sh',
+    }
+
+    # Basic dockerfile to build base images.
+    file { '/srv/images/base/Dockerfile':
+        ensure => present,
+        source => 'puppet:///modules/docker/Dockerfile.slim'
+    }
+
+    # Generate the apt sources lists for all supported distros
+    file {'/srv/images/base/sources':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    $distributions.each |$distro| {
+        file { "/srv/images/base/sources/${distro}":
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+
+        file { "/srv/images/base/sources/${distro}.sources.list":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            content => template('docker/images/sourceslist.base.erb')
+        }
     }
 }
