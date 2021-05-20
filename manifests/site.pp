@@ -1461,11 +1461,6 @@ node /^cloudnet100[3-4]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::net)
 }
 
-## wikireplicas dbs
-node 'labsdb1011.eqiad.wmnet' {
-    role(wmcs::db::wikireplicas::analytics)
-}
-
 ## Multi-instance wikireplica dbs
 node /^clouddb10(13|14|15|16)\.eqiad\.wmnet$/ {
     role(wmcs::db::wikireplicas::web_multiinstance)
