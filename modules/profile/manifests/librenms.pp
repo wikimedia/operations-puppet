@@ -19,7 +19,6 @@ class profile::librenms (
     Stdlib::Fqdn       $db_host         = lookup('profile::librenms::dbhost'),
     String             $db_name         = lookup('profile::librenms::dbname'),
 
-    String             $irc_password    = lookup('profile::librenms::irc_password'),
     Hash               $ldap_config     = lookup('ldap', Hash, hash, {}),
     Enum['ldap','sso'] $auth_mechanism  = lookup('profile::librenms::auth_mechanism')
 ){
@@ -52,15 +51,6 @@ class profile::librenms (
         'snmp'             => {
             'community' => [ $passwords::network::snmp_ro_community ],
         },
-        'irc_host'         => 'irc.freenode.org',
-        'irc_chan'         => ['#wikimedia-operations'],
-        'irc_alert'        => true,
-        'irc_debug'        => false,
-        'irc_alert_chan'   => '#wikimedia-operations',
-        'irc_alert_utf8'   => true,
-        'irc_alert_short'  => true,
-        'irc_nick'         => 'librenms-wmf',
-        'irc_pass'         => "librenms-wmf:${irc_password}",
 
         'autodiscovery'    => {
             'xdp'      => true,
