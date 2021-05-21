@@ -191,7 +191,7 @@ def main() -> int:
         print("Already done")
         return 0
     # FIXME don't do this
-    if listname in Path("/home/ladsgroup/disabled_wikis").read_text():
+    if listname in Path("/home/ladsgroup/disabled_wikis").read_text().splitlines():
         print("Disabled")
         return 0
     print(f"Migrating {listname} to Mailman3")
