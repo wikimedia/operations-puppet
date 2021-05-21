@@ -13,6 +13,7 @@ from itertools import accumulate as _accumulate, repeat as _repeat
 import logging
 import os
 import random
+import socket
 import signal
 import subprocess
 import sys
@@ -79,12 +80,16 @@ def get_group_members(group: str, conn: ldap3.Connection) -> List[str]:
 
 
 def email_user(
-    user: str, conn: ldap3.Connection, procname: str, project: str = "tools"
+    user: str,
+    conn: ldap3.Connection,
+    procname: str,
+    hostname: str,
+    project: str = "tools",
 ) -> bool:
     if user.startswith("{}.".format(project)):
         users_in_project = get_group_members(user, conn)
         for usr in users_in_project:
-            email_user(usr, conn, procname, project)
+            email_user(usr, conn, procname, hostname, project)
 
     conn.search(
         "ou=people,dc=wikimedia,dc=org",
@@ -126,7 +131,8 @@ def email_user(
             procname, project
         )
         body_str = """
-Your process `{procname}` has been killed by the Wheel of Misfortune script.
+Your process `{procname}` has been killed on {hostname} by the Wheel of
+Misfortune script.
 
 You are receiving this email because you are listed as the shell user running
 the killed process or as a maintainer of the tool that was.
@@ -144,7 +150,7 @@ of the Wikimedia movement.
 For further support, visit #wikimedia-cloud on libera.chat or
 <https://wikitech.wikimedia.org>
 """.format(
-            procname=procname
+            procname=procname, hostname=hostname
         )
         body = body_str.encode("utf-8")
         args = [
@@ -225,6 +231,7 @@ def slay(
     conn: ldap3.Connection,
     project: str = "tools",
 ) -> None:
+    hostname = socket.gethostname()
     for vic in victims:
         logging.info(
             "Killing %s", vic.as_dict(attrs=["pid", "username", "uids", "name"])
@@ -237,7 +244,7 @@ def slay(
         time.sleep(2)
         if psutil.pid_exists(vic.pid):
             os.kill(vic.pid, signal.SIGKILL)
-        email_user(username, conn, proc_name, project)
+        email_user(username, conn, proc_name, hostname, project)
 
 
 def main():
