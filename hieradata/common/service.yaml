@@ -3253,3 +3253,30 @@ service::catalog:
     sites:
       - eqiad
     state: production
+  # puppetdb-api is not an LVS service. However it does warrant using discovery DC records for it.
+  # Note the lack of an 'lvs' stanza in the configuration below.
+  puppetdb-api:
+    description: Puppetdb api microservice
+    encryption: true
+    ip:
+      codfw:
+        default: 10.192.0.147
+      eqiad:
+        default: 10.64.32.80
+    monitoring:
+      check_command: 'check_https_on_port:8090'
+      notes_url: "https://wikitech.wikimedia.org/wiki/Puppet#Micro_Service"
+      critical: false
+      sites:
+        codfw:
+          hostname: puppetdb1002
+        eqiad:
+          hostname: puppetdb2002
+    sites:
+      - eqiad
+      - codfw
+    port: 8090
+    state: production
+    discovery:
+      - dnsdisc: puppetdb-api
+        active_active: true
