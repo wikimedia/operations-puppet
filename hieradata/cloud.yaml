@@ -276,6 +276,8 @@ profile::swift::storage::container_replicator_concurrency: 1
 profile::swift::storage::object_server_default_workers: 12
 profile::swift::storage::object_replicator_concurrency: 1
 profile::swift::storage::replication_limit_memory_percent: 0
+profile::swift::storage::loopback_device_size: 2G
+profile::swift::storage::loopback_device_count: 0
 profile::swift::stats_reporter::ensure: present
 profile::swift::stats_reporter::statsd_host: ~
 profile::swift::stats_reporter::statsd_port: 8125

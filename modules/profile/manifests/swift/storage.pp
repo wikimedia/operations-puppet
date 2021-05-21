@@ -17,6 +17,8 @@ class profile::swift::storage (
     Optional[Stdlib::Host] $statsd_host                 = lookup('profile::swift::storage::statsd_host'),
     Optional[Integer] $container_replicator_interval    = lookup('profile::swift::storage::container_replicator_interval'),
     Optional[Integer] $replication_limit_memory_percent = lookup('profile::swift::storage::replication_limit_memory_percent'),
+    Optional[String] $loopback_device_size              = lookup('profile::swift::storage::loopback_device_size'),
+    Optional[Integer] $loopback_device_count            = lookup('profile::swift::storage::loopback_device_count'),
 ){
 
     $site_backends = $swift_backends.filter |$host| { $host =~ Regexp("${::domain}$") }
@@ -42,6 +44,8 @@ class profile::swift::storage (
         container_replicator_interval    => $container_replicator_interval,
         backends                         => $site_backends,
         replication_limit_memory_percent => $replication_limit_memory_percent,
+        loopback_device_size             => $loopback_device_size,
+        loopback_device_count            => $loopback_device_count,
     }
 
     class { 'swift::container_sync':

@@ -14,6 +14,8 @@ class profile::thanos::swift::backend (
     Optional[Integer] $container_replicator_interval = lookup('profile::swift::storage::container_replicator_interval'),
     Array $drives                                    = lookup('swift_storage_drives'),
     Array $aux_partitions                            = lookup('swift_aux_partitions'),
+    Optional[String] $loopback_device_size           = lookup('profile::swift::storage::loopback_device_size'),
+    Optional[Integer] $loopback_device_count         = lookup('profile::swift::storage::loopback_device_count'),
 ) {
     # TODO: we should be able to replace a lot of this with include profile::swift::storage
     class { '::swift':
@@ -36,6 +38,8 @@ class profile::thanos::swift::backend (
         servers_per_port                 => $servers_per_port,
         container_replicator_interval    => $container_replicator_interval,
         backends                         => $thanos_backends,
+        loopback_device_size             => $loopback_device_size,
+        loopback_device_count            => $loopback_device_count,
     }
 
     class { '::toil::systemd_scope_cleanup': }

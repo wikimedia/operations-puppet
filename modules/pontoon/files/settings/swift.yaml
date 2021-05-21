@@ -2,3 +2,7 @@ profile::swift::stats_reporter_host: "%{alias('__master_for_role_swift__proxy')}
 profile::swift::proxy::memcached_servers: "%{alias('__hosts_for_role_swift__proxy')}"
 profile::swift::storagehosts: "%{alias('__hosts_for_role_swift__storage')}"
 profile::swift::proxyhosts: "%{alias('__hosts_for_role_swift__proxy')}"
+profile::swift::storage::loopback_device_count: 1
+swift_aux_partitions: []
+swift_storage_drives:
+  - '/dev/lda'

@@ -1,0 +1,9 @@
+# Shorten loopback device name to workaround xfs label limitation
+KERNEL=="loop0", SYMLINK+="lda"
+KERNEL=="loop0p*", SYMLINK+="lda%n"
+KERNEL=="loop1", SYMLINK+="ldb"
+KERNEL=="loop1p*", SYMLINK+="ldb%n"
+KERNEL=="loop2", SYMLINK+="ldc"
+KERNEL=="loop2p*", SYMLINK+="ldc%n"
+KERNEL=="loop3", SYMLINK+="ldd"
+KERNEL=="loop3p*", SYMLINK+="ldd%n"

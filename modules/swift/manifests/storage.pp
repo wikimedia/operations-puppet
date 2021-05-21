@@ -13,6 +13,8 @@ class swift::storage (
     $servers_per_port                 = 3,
     $backends                         = [],
     $replication_limit_memory_percent = 0,
+    $loopback_device_size             = undef,
+    $loopback_device_count            = 0,
 ) {
     package {
         [ 'swift-account',
@@ -27,6 +29,8 @@ class swift::storage (
     $memcached_addresses = $memcached_servers.map |$server| {
         $addr = ipresolve($server, 4); "${addr}:${memcached_port}"
     }
+
+    $loopback_dir = '/var/lib/swift/'
 
     # Install overrides for object replication daemons (rsync, swift-object-replicator) to be able
     # to limit their memory usage
@@ -162,5 +166,32 @@ class swift::storage (
 
     udev::rule{ 'swift_disks':
         source => 'puppet:///modules/swift/swift_disks.rules',
+    }
+
+    # Loopback storage has been requested, initialize it and make sure devices exist at boot
+    if $loopback_device_count > 0 {
+        systemd::unit { 'loopback-device@':
+            ensure  => 'present',
+            content => systemd_template('loopback-device@'),
+        }
+
+        # Hack: rename /dev/loop0 to /dev/ld[a-d] to match a physical device and workaround XFS' label
+        # length limitation (12 chars)
+        udev::rule{ 'swift_loop':
+            source => 'puppet:///modules/swift/swift_loop.rules',
+        }
+
+        range(0, $loopback_device_count - 1).each |$i| {
+            exec { 'Initialize loop storage device':
+                command => "/usr/bin/truncate -s ${loopback_device_size} ${loopback_dir}/loop${i}.img",
+                creates => "${loopback_dir}/loop${i}.img",
+            }
+
+            service { "loopback-device@${i}.service":
+                ensure  => running,
+                enable  => true,
+                require => Systemd::Unit['loopback-device@'],
+            }
+        }
     }
 }

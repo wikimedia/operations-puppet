@@ -1,0 +1,17 @@
+[Unit]
+Description=Setup loopback device for Swift storage (loop%i)
+DefaultDependencies=no
+Conflicts=umount.target
+Before=local-fs.target umount.target
+ConditionPathExists=!/dev/loop%i
+ConditionPathExists=<%= @loopback_dir %>/loop%i.img
+
+[Service]
+ExecStartPre=/sbin/modprobe loop
+ExecStart=/sbin/losetup -P /dev/loop%i <%= @loopback_dir %>/loop%i.img
+ExecStop=/sbin/losetup -d /dev/loop%i
+RemainAfterExit=yes
+Type=oneshot
+
+[Install]
+WantedBy=local-fs-pre.target
