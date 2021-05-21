@@ -144,15 +144,20 @@ def transform_data_to_prometheus(data):
     prometheus = dict()
     for group, sections in sorted(instances.items()):
         prometheus[group] = list()
-        for section, roles in sorted(sections.items()):
-            for role, targets in sorted(roles.items()):
-                labels = dict()
-                labels['shard'] = section
-                labels['role'] = role
-                item = dict()
-                item['labels'] = labels
-                item['targets'] = targets
-                prometheus[group].append(item)
+        try:
+            for section, roles in sorted(sections.items()):
+                for role, targets in sorted(roles.items()):
+                    labels = dict()
+                    labels['shard'] = section
+                    labels['role'] = role
+                    item = dict()
+                    item['labels'] = labels
+                    item['targets'] = targets
+                    prometheus[group].append(item)
+        except TypeError:
+            logger.error('The query returned instances with NULL sections, aborting.')
+            logger.error('Check the instances, section_instances or sections tables.')
+            sys.exit(8)
     return prometheus
 
 
@@ -167,7 +172,7 @@ def check_and_write_to_disk(prometheus, dc, config_path):
         path = os.path.join(config_path, filename)
         try:
             previous_config = open(path, 'r').read()
-        except FileNotFoundError:  # noqa: F821
+        except FileNotFoundError:
             logger.debug('Prometheus file not found')
             previous_config = None
         except IOError:
