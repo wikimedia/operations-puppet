@@ -1,4 +1,3 @@
 # db1176
 profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'mediabackupstemp'
-profile::base::notifications: disabled
