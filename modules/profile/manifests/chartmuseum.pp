@@ -14,8 +14,12 @@
 #
 # [*basic_auth*] Optional username and password to enable HTTP basic auth.
 #
+# [*package_charts*] A boolean to allow to disable the systemd timer
+# to package charts on a host selectively. This is to facilitate debugging
+# T283147. TODO: Fix T283147 in a good way and remove this parameter
 class profile::chartmuseum(
     Stdlib::Fqdn                        $hostname                = lookup('profile::chartmuseum::hostname'),
+    String                              $package_charts          = lookup('profile::chartmuseum::package_charts'),
     Optional[ChartMuseum::SwiftBackend] $swift_backend           = lookup('profile::chartmuseum::swift_backend'),
     Optional[ChartMuseum::BasicAuth]    $basic_auth              = lookup('profile::chartmuseum::basic_auth'),
 ){
@@ -91,7 +95,7 @@ class profile::chartmuseum(
     $cmd_pull = '/usr/bin/git pull'
     $cmd_package = "/usr/bin/helm-chartctl --cm-url http://${listen_host}:${listen_port} walk ${charts_git}/charts stable"
     systemd::timer::job { 'helm-chartctl-package-all':
-        ensure           => present,
+        ensure           => $package_charts,
         description      => 'Package and push new charts to local Chartmuseum instance',
         command          => "/bin/sh -c 'cd ${charts_git} && ${cmd_pull} && ${cmd_package}'",
         environment_file => $defaults_file,
