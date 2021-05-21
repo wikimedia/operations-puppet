@@ -41,7 +41,7 @@ class varnish::logging(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/varnish/varnishmtail',
+        source => 'puppet:///modules/varnish/varnishmtail.sh',
         notify => Systemd::Service['varnishmtail'],
     }
 

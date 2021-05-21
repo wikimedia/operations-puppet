@@ -5,7 +5,7 @@ class varnish::common::director_scripts {
         owner  => 'root',
         group  => 'root',
         mode   => '0544',
-        source => 'puppet:///modules/varnish/confd-reload-vcl',
+        source => 'puppet:///modules/varnish/confd-reload-vcl.sh',
     }
 
     file { '/usr/local/lib/nagios/plugins/check_vcl_reload':
@@ -13,7 +13,7 @@ class varnish::common::director_scripts {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/varnish/check_vcl_reload';
+        source => 'puppet:///modules/varnish/check_vcl_reload.sh';
     }
 
 

@@ -35,7 +35,7 @@ class varnish::common(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/varnish/varnish-frontend-restart',
+        source => 'puppet:///modules/varnish/varnish-frontend-restart.sh',
     }
 
     file { '/usr/local/share/dstat':
