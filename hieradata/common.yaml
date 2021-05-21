@@ -1385,6 +1385,7 @@ mysql_root_clients:
 - 10.192.48.91   # db2093.codfw.wmnet
 - 10.64.32.25    # cumin1001.eqiad.wmnet
 - 10.192.48.16   # cumin2001.codfw.wmnet
+- 10.192.32.49   # cumin2002.codfw.wmnet
 - 208.80.155.103 # dborch1001.wikimedia.org
 
 monitoring_hosts:
