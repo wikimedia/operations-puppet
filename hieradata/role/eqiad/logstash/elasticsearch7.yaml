@@ -4,9 +4,6 @@ profile::elasticsearch::dc_settings:
       - logstash1010.eqiad.wmnet
       - logstash1011.eqiad.wmnet
       - logstash1012.eqiad.wmnet
-      - logstash1020.eqiad.wmnet
-      - logstash1021.eqiad.wmnet
-      - logstash1022.eqiad.wmnet
       - logstash1026.eqiad.wmnet
       - logstash1027.eqiad.wmnet
       - logstash1028.eqiad.wmnet
@@ -15,9 +12,6 @@ profile::elasticsearch::dc_settings:
       - logstash1010.eqiad.wmnet
       - logstash1011.eqiad.wmnet
       - logstash1012.eqiad.wmnet
-      - logstash1020.eqiad.wmnet
-      - logstash1021.eqiad.wmnet
-      - logstash1022.eqiad.wmnet
       - logstash1023.eqiad.wmnet
       - logstash1024.eqiad.wmnet
       - logstash1025.eqiad.wmnet

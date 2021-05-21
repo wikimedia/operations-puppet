@@ -3597,21 +3597,6 @@ host htmldumper1001 {
     fixed-address htmldumper1001.eqiad.wmnet;
 }
 
-host logstash1020 {
-    hardware ethernet 14:18:77:33:52:42;
-    fixed-address logstash1020.eqiad.wmnet;
-}
-
-host logstash1021 {
-    hardware ethernet 14:18:77:33:4A:4E;
-    fixed-address logstash1021.eqiad.wmnet;
-}
-
-host logstash1022 {
-    hardware ethernet 14:18:77:33:4A:D2;
-    fixed-address logstash1022.eqiad.wmnet;
-}
-
 host logstash1026 {
     hardware ethernet B0:26:28:CD:0B:C0;
     fixed-address logstash1026.eqiad.wmnet;
