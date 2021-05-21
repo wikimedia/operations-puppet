@@ -5,8 +5,8 @@ server {
     listen [::]:<%= @port %> ssl default_server ipv6only=on;
 
     # SSL settings
-    ssl_certificate     <%= @certs['chained'] %>
-    ssl_certificate_key <%= @certs['key'] %>
+    ssl_certificate     <%= @certs['chained'] %>;
+    ssl_certificate_key <%= @certs['key'] %>;
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 5m;
 
