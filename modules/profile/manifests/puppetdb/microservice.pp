@@ -18,8 +18,9 @@ class profile::puppetdb::microservice (
     ensure_packages(['python3-flask'], {'ensure' => $ensure})
 
     $certs = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
-        hosts  => ['puppetdb-api.discovery.wmnet'],
-        notify => Exec['nginx-reload'],
+        hosts   => ['puppetdb-api.discovery.wmnet'],
+        profile => 'server',
+        notify  => Exec['nginx-reload'],
     })
     nginx::site { 'puppetdb-microservice':
         ensure  => $ensure,
