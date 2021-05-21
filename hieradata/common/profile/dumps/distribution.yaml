@@ -149,3 +149,13 @@ profile::dumps::distribution::mirrors:
     addedby: 'atg'
     addeddate: 'Aug 9, 2019'
     active: 'yes'
+  - url: 'https://wikimedia.bringyour.com'
+    hostname: 'wikimedia.bringyour.com'
+    ipv4: ['wikimedia.bringyour.com']
+    ipv6: ['wikimedia.bringyour.com']
+    contactname: 'Brien'
+    contactaddy: 'brien@bringyour.com'
+    institution: 'BringYour'
+    addedby: 'atg'
+    addeddate: 'May 21, 2021'
+    active: 'yes'
