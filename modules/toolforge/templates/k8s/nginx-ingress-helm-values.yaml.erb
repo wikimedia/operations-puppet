@@ -262,12 +262,12 @@ controller:
   # Ideally, there should be no limits.
   # https://engineering.indeedblog.com/blog/2019/12/cpu-throttling-regression-fix/
   resources:
-  #  limits:
-  #    cpu: 100m
-  #    memory: 90Mi
+    limits:
+      cpu: 2
+      memory: 2G
     requests:
-      cpu: 100m
-      memory: 90Mi
+      cpu: 1
+      memory: 3G
 
   # Mutually exclusive with keda autoscaling
   autoscaling:
