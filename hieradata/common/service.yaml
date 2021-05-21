@@ -3264,7 +3264,7 @@ service::catalog:
       eqiad:
         default: 10.64.32.80
     monitoring:
-      check_command: 'check_https_on_port:8090'
+      check_command: 'check_https_on_port!8090'
       notes_url: "https://wikitech.wikimedia.org/wiki/Puppet#Micro_Service"
       critical: false
       sites:
