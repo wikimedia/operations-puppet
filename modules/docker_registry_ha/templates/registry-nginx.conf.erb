@@ -172,6 +172,11 @@ server {
       # requiring really small reaction times for now, so avoid all caching.
       # Bug: T211719
       add_header 'Cache-Control' 'no-cache,must-revalidate' always;
+      # Re-add Vary header as add_header directives are inherited from the
+      # previous configuration level if and only if there are no add_header
+      # directives defined on the current level.
+      # http://nginx.org/en/docs/http/ngx_http_headers_module.html
+      add_header 'Vary' 'Accept' always;
 
       # Require auth for POST, PUT, DELETE, ... requests
       limit_except GET HEAD OPTIONS {
@@ -205,6 +210,7 @@ server {
       # But cache the _catalog endpoint for a few mins as it's pretty expensive
       location = /v2/_catalog {
         add_header 'Cache-Control' 'public,s-maxage=600,max-age=600' always;
+        add_header 'Vary' 'Accept' always;
         proxy_pass http://registry;
       }
     }
