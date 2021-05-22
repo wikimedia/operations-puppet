@@ -105,11 +105,11 @@ server {
 
     # Special handling for /fontcdn, reverse proxy to google's fonts service
     location = /fontcdn {
-        return 302 "https://<%= @web_domain %>/fontcdn/";
+        return 302 "https://fontcdn.<%= @web_domain %>/";
     }
 
     location = /fontcdn/ {
-        return 302 "https://<%= @web_domain %>/fontcdn/";
+        return 302 "https://fontcdn.<%= @web_domain %>/";
     }
 
     location ^~ /fontcdn/ {
@@ -118,7 +118,7 @@ server {
         proxy_set_header        Cookie "";
 
         # And hide the referrer for privacy reasons
-        proxy_set_header        Referer "https://<%= @web_domain %>/fontcdn/";
+        proxy_set_header        Referer "https://fontcdn.<%= @web_domain %>/";
 
         # Proxy /fontcdn/css to fonts.googleapis.com
         location ^~ /fontcdn/css {
@@ -129,7 +129,7 @@ server {
             # subs_filter works only on uncompressed data
             # also, proxy_set_header doesn't inherit if set at a sublevel at all
             proxy_set_header Accept-Encoding "";
-            proxy_set_header Referer "https://<%= @web_domain %>/fontcdn/";
+            proxy_set_header Referer "https://fontcdn.<%= @web_domain %>/";
             proxy_set_header Cookie "";
 
             proxy_hide_header Link;

@@ -1,5 +1,5 @@
 class profile::toolforge::static (
-    Stdlib::Fqdn $web_domain = lookup('profile::toolforge::web_domain', {default_value => 'tools.wmflabs.org'}),
+    Stdlib::Fqdn $web_domain = lookup('profile::toolforge::web_domain', {default_value => 'toolforge.org'}),
 ) {
     $resolver             = join($::nameservers, ' ')
     nginx::site { 'static-server':
