@@ -1,6 +1,6 @@
 class profile::wmcs::dologmsg(
     Stdlib::Host $dologmsg_host = lookup('dologmsg_host', {'default_value' => 'wm-bot.wm-bot.wmcloud.org'}),
-    Stdlib::Port $dologmsg_port = lookup('dologmsg_port', {'default_value' => 64834}),
+    Stdlib::Port $dologmsg_port = lookup('dologmsg_port', {'default_value' => 64835}),
 ){
     # dologmsg to send log messages, configured using $dologmsg_* parameters
     file { '/usr/local/bin/dologmsg':
