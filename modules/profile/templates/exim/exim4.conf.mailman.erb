@@ -7,13 +7,6 @@
 CONFDIR=/etc/exim4
 
 # Mailman
-MAILMAN_HOME = /usr/lib/mailman
-MAILMAN_LISTS_HOME = /var/lib/mailman
-MAILMAN_WRAP = MAILMAN_HOME/mail/mailman
-MAILMAN_UID = list
-MAILMAN_GID = list
-
-# Mailman3
 MM3_LMTP_PORT=8024
 MM3_HOME=/var/lib/mailman3
 MM3_UID=list
@@ -296,24 +289,6 @@ list_aliases:
 	forbid_pipe
 	include_directory = CONFDIR
 
-# Test the mailing list address without suffix
-# first, as a mailing list like wikifi-admin is a valid list name.
-list:
-	driver = accept
-	domains = +mailman_domains
-	require_files = MAILMAN_LISTS_HOME/lists/$local_part/config.pck
-	transport = list
-
-list_suffix:
-	driver = accept
-	domains = +mailman_domains
-	require_files = MAILMAN_LISTS_HOME/lists/$local_part/config.pck
-	local_part_suffix = -bounces : -bounces+* : \
-				-confirm+* : -join : -leave : \
-				-owner : -request : -admin : \
-				-subscribe : -unsubscribe
-	transport = list
-
 # Redirect "disabled-lists" to blackhole
 blackhole_disabled_lists:
     driver = redirect
@@ -363,21 +338,6 @@ address_pipe:
 	driver = pipe
 	return_output
 
-# Mailman pipe transport
-# Rewrite body headers of old mailing list addresses to new ones
-list:
-	driver = pipe
-	command = MAILMAN_WRAP \
-		'${if def:local_part_suffix \
-			{${sg{$local_part_suffix}{-(\\w+)(\\+.*)?}{\$1}}} \
-			{post}}' \
-		$local_part
-	current_directory = MAILMAN_LISTS_HOME
-	home_directory = MAILMAN_LISTS_HOME
-	user = MAILMAN_UID
-	group = MAILMAN_GID
-	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@<%= @lists_servername %>}fail}" ct
-
 mailman3_transport:
 	driver = smtp
 	protocol = lmtp
@@ -400,4 +360,3 @@ begin retry
 begin rewrite
 
 \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MM3_LISTCHK}{$local_part@<%= @lists_servername %>}fail}" ct
-\N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@<%= @lists_servername %>}fail}" ct
