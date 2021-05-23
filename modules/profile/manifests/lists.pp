@@ -46,7 +46,7 @@ class profile::lists (
 
     class { 'mailman':
         lists_servername       => $lists_servername,
-        mailman_service_ensure => $mailman_service_ensure,
+        mailman_service_ensure => 'stopped',
         acme_chief_cert        => $acme_chief_cert,
         renamed_lists          => $renamed_lists,
     }
@@ -142,12 +142,14 @@ class profile::lists (
     if $facts['fqdn'] != $standby_host {
 
         nrpe::monitor_service { 'procs_mailmanctl':
+            ensure       => absent,
             description  => 'mailman_ctl',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman/bin/mailmanctl\'',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         }
 
         nrpe::monitor_service { 'procs_mailman_qrunner':
+            ensure       => absent,
             description  => 'mailman_qrunner',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 8:8 -u list --ereg-argument-array=\'/mailman/bin/qrunner\'',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
@@ -235,6 +237,7 @@ class profile::lists (
     }
 
     prometheus::node_file_count {'track mailman queue depths':
+        ensure  => absent,
         paths   => [
             '/var/lib/mailman/qfiles/in',
             '/var/lib/mailman/qfiles/bounces',
