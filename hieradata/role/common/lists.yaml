@@ -12,7 +12,6 @@ mtail::group: 'adm'
 profile::lists::primary_host: 'lists1001.wikimedia.org'
 #profile::lists::standby_host: ''
 
-profile::lists::enable_mm3: true
 profile::mailman3::acme_chief_cert: lists
 
 profile::mailman3::db_host: m5-master.eqiad.wmnet

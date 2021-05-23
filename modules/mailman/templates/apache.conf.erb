@@ -5,14 +5,12 @@
     ServerName <%= @lists_servername %>
     RewriteEngine on
     RewriteRule ^/(?!hyperkitty/)(.*)$ https://<%= @lists_servername %>/$1 [R=301]
-    <% if @enable_mm3 %>
     <IfModule mod_proxy_uwsgi.c>
         # Note: even though this looks like it's going to pass all traffic over
         # to mailman3-web, the above rewrite will send all non-hyperkitty paths
         # to HTTPS. So only hyperkitty will be served through this.
         ProxyPass / unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
     </IfModule>
-    <% end %>
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -32,7 +30,6 @@
     <% end %>
     <%= @ssl_settings.join("\n    ") %>
 
-    <% if @enable_mm3 %>
     Header set Content-Security-Policy "default-src 'self'; connect-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
     Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
     Alias /mailman3/static      /var/lib/mailman3/web/static
@@ -44,7 +41,6 @@
         ProxyPass /mailman3/static !
         ProxyPassMatch "^/(accounts|mailman3|hyperkitty|postorius|user-profile)(/|$)" unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
     </IfModule>
-    <% end %>
     <IfModule security2_module>
         SecRuleEngine On
         SecRequestBodyAccess On
@@ -114,14 +110,9 @@
     Alias /pipermail/ "/var/lib/mailman/archives/public/"
     Alias /images/    "/usr/share/images/"
 
-    <% if @enable_mm3 %>
     RedirectMatch permanent ^/(index\.html?)?$ https://<%= @lists_servername %>/postorius/lists/
     # Temporary during mailman2 transition, will eventually point to postorius
     RedirectMatch temp ^/mailman/$        https://<%= @lists_servername %>/mailman/listinfo
-    <% else %>
-    RedirectMatch temp ^/(index\.html?)?$ https://<%= @lists_servername %>/mailman/listinfo
-    RedirectMatch temp ^/mailman/$        https://<%= @lists_servername %>/mailman/listinfo
-    <% end %>
     # arbcom-l paranoia. Contact Tim Starling for details/rationale
     <LocationMatch "^/mailman/(private|admin)/arbcom-l(/.*|$)">
         AuthType Digest
@@ -145,7 +136,6 @@
     RewriteCond %{HTTP_REFERER} "mailbait.info" [NC]
     RewriteRule ^(.*)$ - [F]
 
-    <% if @enable_mm3 %>
     # Disable export endpoint (T282957)
     <LocationMatch "^/hyperkitty/list/.*/export/.*">
         Require all denied
@@ -160,7 +150,6 @@
     RewriteMap pipermail "dbm:/var/lib/mailman3/redirects/redirects.dbm"
     RewriteCond "${pipermail:$1}" !=""
     RewriteRule "^/pipermail/(.*)" "/hyperkitty/list/${pipermail:$1}" [R=302]
-    <% end %>
 
     # list renames
     <% @renamed_lists.each do |oldname, newname| -%>

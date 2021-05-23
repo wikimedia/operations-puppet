@@ -3,7 +3,6 @@ class mailman::webui (
     Stdlib::Fqdn $lists_servername,
     Hash[String, String] $renamed_lists,
     Optional[String] $acme_chief_cert = undef,
-    Boolean $enable_mm3 = false,
 ){
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)

@@ -7,7 +7,6 @@ class profile::lists (
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
     Optional[Stdlib::Fqdn] $mailman3_host     = lookup('profile::lists::mailman3_host', {'default_value' => undef}),
     Optional[String] $acme_chief_cert         = lookup('profile::lists::acme_chief_cert', {'default_value' => undef}),
-    Boolean $enable_mm3                       = lookup('profile::lists::enable_mm3', {'default_value' => false}),
     Optional[Stdlib::Fqdn] $db_host           = lookup('profile::mailman3::db_host', {'default_value' => undef}),
     Optional[String] $db_name                 = lookup('profile::mailman3::db_name', {'default_value' => undef}),
     Optional[String] $db_user                 = lookup('profile::mailman3::db_user', {'default_value' => undef}),
@@ -30,28 +29,25 @@ class profile::lists (
         default       => 'running',
     }
 
-    if $enable_mm3 {
-        class { '::mailman3':
-            host           => $lists_servername,
-            db_host        => $db_host,
-            db_name        => $db_name,
-            db_user        => $db_user,
-            db_password    => $db_password,
-            webdb_name     => $webdb_name,
-            webdb_user     => $webdb_user,
-            webdb_password => $webdb_password,
-            api_password   => $api_password,
-            archiver_key   => $archiver_key,
-            web_secret     => $web_secret,
-            memcached      => $memcached,
-    }
+    class { '::mailman3':
+        host           => $lists_servername,
+        db_host        => $db_host,
+        db_name        => $db_name,
+        db_user        => $db_user,
+        db_password    => $db_password,
+        webdb_name     => $webdb_name,
+        webdb_user     => $webdb_user,
+        webdb_password => $webdb_password,
+        api_password   => $api_password,
+        archiver_key   => $archiver_key,
+        web_secret     => $web_secret,
+        memcached      => $memcached,
     }
 
     class { 'mailman':
         lists_servername       => $lists_servername,
         mailman_service_ensure => $mailman_service_ensure,
         acme_chief_cert        => $acme_chief_cert,
-        enable_mm3             => $enable_mm3,
         renamed_lists          => $renamed_lists,
     }
 
@@ -118,9 +114,7 @@ class profile::lists (
 
     backup::set { 'var-lib-mailman': }
 
-    if $enable_mm3 {
-        backup::set { 'var-lib-mailman3': }
-    }
+    backup::set { 'var-lib-mailman3': }
 
     if $primary_host and $standby_host {
         rsync::quickdatacopy { 'var-lib-mailman':
@@ -170,46 +164,41 @@ class profile::lists (
             privileges => ['ALL = (list) NOPASSWD: /usr/local/lib/nagios/plugins/check_mailman_queue'],
         }
 
-        if $enable_mm3 {
-            # mailman3 service
-            nrpe::monitor_service { 'procs_mailman3':
-                description  => 'mailman3',
-                nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman3/bin/master\'',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
-            }
-
-            # uwsgi powering mailman3
-            nrpe::monitor_service { 'procs_mailman3_web':
-                description  => 'mailman3-web',
-                nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 2:2 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
-            }
-
-            nrpe::monitor_service { 'mailman3_queue':
-                description     => 'mailman3_queue_size',
-                dashboard_links => ['https://grafana.wikimedia.org/d/GvuAmuuGk/mailman3'],
-                nrpe_command    => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
-                notes_url       => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
-            }
-
-            nrpe::monitor_service { 'mailman3_runners':
-                description  => 'mailman3_runners',
-                # As of Mailman Core 3.3.3, there are 14 runners
-                nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 14:14 -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
-            }
-
-            prometheus::node_file_count {'track mailman3 queue depths':
-                paths   => [
-                    '/var/lib/mailman3/queue/in',
-                    '/var/lib/mailman3/queue/bounces',
-                    '/var/lib/mailman3/queue/virgin',
-                    '/var/lib/mailman3/queue/out',
-                ],
-                outfile => '/var/lib/prometheus/node.d/mailman3_queues.prom'
-            }
+        # mailman3 service
+        nrpe::monitor_service { 'procs_mailman3':
+            description  => 'mailman3',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman3/bin/master\'',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        }
+        # uwsgi powering mailman3
+        nrpe::monitor_service { 'procs_mailman3_web':
+            description  => 'mailman3-web',
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 2:2 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        }
+        nrpe::monitor_service { 'mailman3_queue':
+            description     => 'mailman3_queue_size',
+            dashboard_links => ['https://grafana.wikimedia.org/d/GvuAmuuGk/mailman3'],
+            nrpe_command    => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
+            notes_url       => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         }
 
+        nrpe::monitor_service { 'mailman3_runners':
+            description  => 'mailman3_runners',
+            # As of Mailman Core 3.3.3, there are 14 runners
+            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 14:14 -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        }
+
+        prometheus::node_file_count {'track mailman3 queue depths':
+            paths   => [
+                '/var/lib/mailman3/queue/in',
+                '/var/lib/mailman3/queue/bounces',
+                '/var/lib/mailman3/queue/virgin',
+                '/var/lib/mailman3/queue/out',
+            ],
+            outfile => '/var/lib/prometheus/node.d/mailman3_queues.prom'
+        }
         # rsync from primary to mailman3 host
         if $mailman3_host {
             class { '::mailman3::import_test':
