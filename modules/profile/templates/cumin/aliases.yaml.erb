@@ -316,11 +316,9 @@ wdqs-public: P{O:wdqs::public}
 wdqs-test: P{O:wdqs::test}
 webperf: P{O:webperf::processors_and_site or O:webperf::profiling_tools}
 wikidough: P{O:wikidough}
-wikireplicas-all: A:wikireplicas-analytics or A:wikireplicas-dedicated or A:wikireplicas-web or A:wikireplicas-multiinstance
-wikireplicas-analytics: P{O:wmcs::db::wikireplicas::analytics}
+wikireplicas-all: A:wikireplicas-dedicated or A:wikireplicas-multiinstance
 wikireplicas-dedicated: P{O:wmcs::db::wikireplicas::dedicated::analytics or O:wmcs::db::wikireplicas::dedicated::analytics_multiinstance}
 wikireplicas-multiinstance: P{P:wmcs::db::wikireplicas::mariadb_multiinstance}
-wikireplicas-web: P{O:wmcs::db::wikireplicas::web}
 xhgui: P{O:webperf::xhgui}
 zookeeper-main-eqiad: P{O:configcluster} and A:eqiad
 zookeeper-main-codfw: P{O:configcluster} and A:codfw
