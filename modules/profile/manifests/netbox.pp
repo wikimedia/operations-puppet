@@ -64,10 +64,9 @@ class profile::netbox (
 
     Boolean $do_backups = lookup('profile::netbox::backup', {'default_value' => true})
 ) {
-    $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
-    $nb_puppetdb_ca_cert = $nb_ganeti_ca_cert
-    $nb_swift_ca_cert =  $nb_ganeti_ca_cert
-    $puppetdb_api = "https://${puppetdb_host}:${puppetdb_microservice_port}/"
+    $nb_puppetdb_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
+    $nb_ganeti_ca_cert = $nb_puppetdb_ca_cert
+    $puppetdb_api = "https://puppetdb-api.discovery.wmnet:${puppetdb_microservice_port}/"
 
     $extras_path = '/srv/deployment/netbox-extras/'
 
@@ -91,7 +90,6 @@ class profile::netbox (
         swift_auth_url     => $swift_auth_url,
         swift_user         => $swift_user,
         swift_key          => $swift_key,
-        swift_ca           => $nb_swift_ca_cert,
         swift_container    => $swift_container,
         swift_url_key      => $swift_url_key,
         ldap_server        => $ldap_config['ro-server'],

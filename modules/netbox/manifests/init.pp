@@ -71,10 +71,6 @@
 # [*swift_container*]
 #   The name of the SWIFT container to store images to
 #
-# [*swift_ca*]
-#   The path to the CA that signs the SWIFT api endpoint.
-#
-#
 class netbox(
     Stdlib::Fqdn $service_hostname,
     String $secret_key,
@@ -100,7 +96,6 @@ class netbox(
     Optional[String] $swift_key = undef,
     Optional[String] $swift_container = undef,
     Optional[String] $swift_url_key = undef,
-    Optional[Stdlib::Unixpath] $swift_ca = undef,
 ) {
     ensure_packages(['virtualenv', 'python3-pip', 'python3-pynetbox'])
     $home_path = '/var/lib/netbox'
@@ -174,16 +169,11 @@ class netbox(
         creates => '/etc/systemd/system/uwsgi.service',
     }
 
-  $base_uwsgi_environ=[
+  $uwsgi_environ=[
       'LANG=C.UTF-8',
       'PYTHONENCODING=utf-8',
+      'REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt',
   ]
-  if $swift_ca {
-      $uwsgi_environ = concat($base_uwsgi_environ, "REQUESTS_CA_BUNDLE=${swift_ca}")
-  }
-  else {
-      $uwsgi_environ = $base_uwsgi_environ
-  }
   service::uwsgi { 'netbox':
       port            => $port,
       deployment_user => 'netbox',
