@@ -1,5 +1,3 @@
-profile::base::notifications: disabled
-
 profile::elasticsearch::common_settings:
     heap_memory: '64G'
 
