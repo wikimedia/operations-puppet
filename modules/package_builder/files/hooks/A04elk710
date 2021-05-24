@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Avoid running hooks if ELK710 is not specified
+if [ "$ELK710" = "yes" ]; then
+    # Gain ownership of the logstash directory so building user can write the downloaded dependencies
+    chown -R pbuilder:pbuilder /usr/share/logstash
+fi

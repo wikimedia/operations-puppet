@@ -108,6 +108,22 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D04cergen'
     }
 
+    # on buster, add a hook for building logstash-plugins with logstash-oss dependency in a dedicated component
+    file { "${basepath}/hooks/${distribution}/D04elk710":
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0555',
+      source => 'puppet:///modules/package_builder/hooks/D04elk710'
+    }
+    file { "${basepath}/hooks/${distribution}/A04elk710":
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0555',
+      source => 'puppet:///modules/package_builder/hooks/A04elk710'
+    }
+
     # Dependency info
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/C10shell.wikimedia.org"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]
@@ -118,4 +134,6 @@ define package_builder::pbuilder_hook(
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04vp9"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04java8"]
     File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04cergen"]
+    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04elk710"]
+    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/A04elk710"]
 }
