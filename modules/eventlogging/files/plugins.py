@@ -61,6 +61,7 @@ eventlogging_schemas_disabled = (
     'TemplateDataEditor',
     'TwoColConflictConflict',
     'TwoColConflictExit',
+    'VirtualPageView',
     'VisualEditorTemplateDialogUse',
 
     # TranslationRecommendation schemas

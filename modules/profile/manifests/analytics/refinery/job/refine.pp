@@ -168,6 +168,7 @@ class profile::analytics::refinery::job::refine(
         'TemplateDataEditor',
         'TwoColConflictConflict',
         'TwoColConflictExit',
+        'VirtualPageView',
         'VisualEditorTemplateDialogUse',
 
         # TranslationRecommendation schemas
