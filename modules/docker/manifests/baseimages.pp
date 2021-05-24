@@ -87,6 +87,7 @@ class docker::baseimages(
     file { '/usr/local/bin/build-bare-slim':
         ensure => present,
         source => 'puppet:///modules/docker/build-bare-slim.sh',
+        mode   => '0500',
     }
 
     # Basic dockerfile to build base images.
@@ -103,7 +104,8 @@ class docker::baseimages(
         mode   => '0755',
     }
 
-    $distributions.each |$distro| {
+    # TODO: switch to use $distributions at the end of the transition
+    ['stretch', 'buster', 'bullseye'].each |$distro| {
         file { "/srv/images/base/sources/${distro}":
             ensure => directory,
             owner  => 'root',
@@ -118,5 +120,12 @@ class docker::baseimages(
             mode    => '0755',
             content => template('docker/images/sourceslist.base.erb')
         }
+    }
+    file { '/srv/images/base/wikimedia.preferences':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/docker/wikimedia-apt-preferences'
     }
 }
