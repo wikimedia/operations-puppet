@@ -3,11 +3,16 @@
 set -exo pipefail
 
 DISTRO=${1:-buster}
+EXTRA_CMD=""
 ENVOY_SRC=${ENVOY_SRC:-/usr/src/envoyproxy}
 PBUILDER_DIR=${PBUILDER_DIR:-/var/cache/pbuilder}
 CHROOT_BASE="$(mktemp -d -p "$PBUILDER_DIR")"
 CHROOT_DIR="${CHROOT_BASE}/chroot"
 CHROOTEXEC="chroot $CHROOT_DIR"
+
+if [ "$2" = "future" ]; then
+    EXTRA_CMD="--git-upstream-tree=branch --git-debian-branch=envoy-future --git-upstream-branch=envoy-future-upstream"
+fi
 
 bind_mounts=(/dev /dev/pts /proc /sys /run $(realpath "${ENVOY_SRC}/../"))
 
@@ -54,10 +59,10 @@ trap cleanup_image EXIT
 create_image
 add_repos
 if [ "$DISTRO" == "stretch" ]; then
-   $CHROOTEXEC apt-get -y install docker-ce
+    $CHROOTEXEC apt-get -y install docker-ce
 else
     $CHROOTEXEC apt-get -y install docker.io
 fi
 $CHROOTEXEC apt-get -y install git-buildpackage fakeroot debhelper bash-completion
-$CHROOTEXEC /bin/bash -c "export LC_ALL=C; cd $ENVOY_SRC && gbp buildpackage --git-builder='debuild -b -uc -us'"
+$CHROOTEXEC /bin/bash -c "export LC_ALL=C; cd $ENVOY_SRC && gbp buildpackage $EXTRA_CMD --git-builder='debuild -b -uc -us'"
 echo "Your build is successful, please cleanup /tmp/envoy-docker-build if not needed anymore."
