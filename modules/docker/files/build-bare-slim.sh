@@ -29,8 +29,11 @@ create_rootfs_tar() {
     local distro=$1
     local ts=$2
     local output=$3
+    echo "### Initializing the root filesystem ###"
+    echo "### ⚠️: errors in apt updates now can be ignored safely ###"
     debuerreotype-init rootfs $distro $ts
     debuerreotype-minimizing-config rootfs
+    echo "### Fixing apt configuration ###"
     # Fix the apt sources here.
     # Please note we're not using debuerreotype here because
     # we want to use the wikimedia sources from the start
@@ -39,9 +42,10 @@ create_rootfs_tar() {
     cp  "${SRCDIR}/wikimedia.pub.gpg" "rootfs/etc/apt/trusted.gpg.d/wikimedia-${distro}.pub.gpg"
     cp "${SRCDIR}/wikimedia.preferences" rootfs/etc/apt/preferences.d/wikimedia
     echo 'APT::Install-Recommends "false";' > rootfs/etc/apt/apt.conf.d/00InstallRecommends
-
+    echo "### Updating packages ###"
     debuerreotype-apt-get rootfs update -qq
     debuerreotype-apt-get rootfs dist-upgrade -yqq
+    echo "### slimify and prepare the tarball ###"
     debuerreotype-slimify rootfs
     debuerreotype-tar rootfs $output
 }
@@ -49,12 +53,19 @@ create_rootfs_tar() {
 pushd $TMPDIR
 _distro=$1
 _date=$(date -u --iso-8601=minutes | sed 's/+.*//')Z
-_date_day=$(date -u --iso-8601)
-
+_date_day=$(date -u +%Y%m%d)
+echo "🏗 Creating the tarball for $_distro"
 create_rootfs_tar $_distro $_date rootfs.tar.xz
+_img="${REGISTRY}/${_distro}"
+_imgfull="${_img}:${_date_day}"
+
+echo "🗑️ Now building the docker container"
 cp "$SRCDIR/Dockerfile" .
-docker build . -f Dockerfile -t "${REGISTRY}/${_distro}:${_date_day}"
-docker push "${REGISTRY}/${_distro}:$_date_day"
+docker build . -f Dockerfile -t "$_imgfull"
+docker tag "$_imgfull" "${_img}:latest"
+echo "🔥 Publishing images"
+docker push "${_imgfull}"
+docker push "${_img}:latest"
 popd
 
 
