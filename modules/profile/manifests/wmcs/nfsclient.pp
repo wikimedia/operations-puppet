@@ -59,6 +59,7 @@ class profile::wmcs::nfsclient(
     # secondary.  These are not connected to the above TODO
     $secondary_servers.each |String $server| {
         labstore::nfs_mount { $server:
+            ensure      => 'absent',
             mount_name  => 'scratch',
             project     => $::labsproject,
             options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
@@ -68,11 +69,21 @@ class profile::wmcs::nfsclient(
             nfs_version => $nfs_version,
         }
     }
+    labstore::nfs_mount { 'scratch-on-secondary':
+        mount_name  => 'scratch',
+        project     => $::labsproject,
+        options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
+        mount_path  => '/mnt/nfs/secondary-scratch',
+        server      => 'nfs-maps.wikimedia.org',
+        share_path  => '/srv/scratch',
+        nfs_version => $nfs_version,
+    }
+
     if mount_nfs_volume($::labsproject, 'scratch') {
         file { '/data/scratch':
             ensure  => 'link',
-            target  => "/mnt/nfs/secondary-${scratch_active_server}-scratch",
-            require => Labstore::Nfs_mount[$scratch_active_server]
+            target  => '/mnt/nfs/secondary-scratch',
+            require => Labstore::Nfs_mount['scratch-on-secondary'],
         }
     }
 
