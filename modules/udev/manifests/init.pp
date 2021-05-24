@@ -1,6 +1,12 @@
 class udev {
+    if debian::codename::le('buster') {
+        $udevadm = '/sbin/udevadm'
+    } else {
+        $udevadm = '/usr/bin/udevadm'
+    }
+
     exec { 'udev_reload':
-        command     => '/sbin/udevadm control --reload && /sbin/udevadm trigger',
+        command     => "${udevadm} control --reload && ${udevadm} trigger",
         refreshonly => true,
     }
 }
