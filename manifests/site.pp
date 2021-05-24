@@ -907,9 +907,9 @@ node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
     role(doc)
 }
 
-# Wikidough, anycast: T252132. insetup for now.
-node /^doh200[12]\.wikimedia\.org$/ {
-    role(insetup)
+# Wikidough (T252132)
+node /^(doh200[1-2]|malmok)\.wikimedia\.org$/ {
+    role(wikidough)
 }
 
 # Druid analytics-eqiad (non public) servers.
@@ -2199,11 +2199,6 @@ node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
 
 node 'otrs1001.eqiad.wmnet' {
     role(otrs)
-}
-
-# Wikidough, experimental (T252132)
-node 'malmok.wikimedia.org' {
-    role(wikidough)
 }
 
 # new parsoid nodes - codfw (T243112, T247441)
