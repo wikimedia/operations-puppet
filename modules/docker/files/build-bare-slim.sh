@@ -3,6 +3,7 @@ set -e
 # Things you can override with env variables, but you shouldn't really if not testing.
 SRCDIR=${SRCDIR:-/srv/images/base}
 REGISTRY=${REGISTRY:-docker-registry.discovery.wmnet}
+PUBLIC_REGISTRY=${PUBLIC_REGISTRY:-docker-registry.wikimedia.org}
 usage() {
     echo "Usage: $0 <distribution>"
     exit 1
@@ -62,10 +63,22 @@ _imgfull="${_img}:${_date_day}"
 echo "🗑️ Now building the docker container"
 cp "$SRCDIR/Dockerfile" .
 docker build . -f Dockerfile -t "$_imgfull"
+popd
 docker tag "$_imgfull" "${_img}:latest"
 echo "🔥 Publishing images"
-docker push "${_imgfull}"
+docker push "$_imgfull"
 docker push "${_img}:latest"
-popd
+# now remove the latest tag from the public image if present
+# We need to ensure people won't try to build images referencing it
+# See T268612
+echo "🚮 Removing stale local images."
+docker rmi "${PUBLIC_REGISTRY}/${_distro}:latest" || /bin/true
+
+# Old image naming compatibility: Also tag the images with wikimedia-$distro
+# For stretch and buster.
+if [[ "$_distro" == "stretch" || "$_distro" == "buster" ]]; then
+    docker tag "$_imgfull" "${REGISTRY}/wikimedia-${_distro}:latest"
+    docker rmi "${PUBLIC_REGISTRY}/wikimedia-${_distro}:latest" || /bin/true
+fi
 
 

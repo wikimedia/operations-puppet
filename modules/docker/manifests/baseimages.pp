@@ -24,7 +24,7 @@ class docker::baseimages(
     # We need docker running
     Service[docker] -> Class[docker::baseimages]
 
-    ensure_packages(['bootstrap-vz', 'debuerreotype'])
+    ensure_packages(['debuerreotype'])
 
     file { '/srv/images':
         ensure => directory,
@@ -47,22 +47,6 @@ class docker::baseimages(
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-    }
-
-    # Stretch
-    file { '/srv/images/base/stretch.yaml':
-        content => template('docker/images/stretch.yaml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
-    }
-
-    # Buster
-    file { '/srv/images/base/buster.yaml':
-        content => template('docker/images/buster.yaml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0544',
     }
 
     file { '/usr/local/bin/build-base-images':

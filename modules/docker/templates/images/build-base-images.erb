@@ -8,15 +8,5 @@ REGISTRY='<%= @docker_registry %>'
 PUBLIC_REGISTRY=${PUBLIC_REGISTRY:-docker-registry.wikimedia.org}
 for distro in $DISTRIBUTIONS;
 do
-    # Build debian $distro image!
-    IMG="${REGISTRY}/wikimedia-${distro}"
-    /usr/bin/bootstrap-vz "/srv/images/base/${distro}.yaml"
-    # tag the image with today's date too
-    docker tag "${IMG}:latest" "${IMG}:${DAY}"
-    docker push "${IMG}:latest"
-    docker push "${IMG}:${DAY}"
-    # now remove the latest tag from the public image if present
-    # We need to ensure people won't try to build images referencing it
-    # See T268612
-    docker rmi "${PUBLIC_REGISTRY}/wikimedia-${distro}:latest" || /bin/true
+    build-bare-slim $distro
 done
