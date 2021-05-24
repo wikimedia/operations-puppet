@@ -12,7 +12,7 @@ CONFIGFILE should be a JSON file with the following structure:
   {
       "irc": {
           "channels": ["#wikimedia-operations", "#wikimedia-dev"],
-          "network": ["irc.freenode.net", 7000, "serverpassword"],
+          "network": ["irc.libera.chat", 7000, "serverpassword"],
           "nickname": "tcpircbot",
           "ssl": true
       },

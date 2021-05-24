@@ -18,7 +18,7 @@
 #
 # [*server_host*]
 #   Hostname of IRC server to which the bot should connect (default:
-#   'chat.freenode.net').
+#   'irc.libera.chat').
 #
 # [*server_port*]
 #   IRC server's port (default: 7000).
@@ -45,7 +45,7 @@
 # === Examples
 #
 # The following snippet will configure a bot nicknamed 'announcebot' that will
-# sit on #wikimedia-operations on Freenode and forward messages that come in from
+# sit on #wikimedia-operations on Libera.chat and forward messages that come in from
 # private and loopback IPs on port 9200:
 #
 #   include tcpircbot
@@ -59,7 +59,7 @@ define tcpircbot::instance(
     $channels,
     $password,
     $nickname    = $title,
-    $server_host = 'chat.freenode.net',
+    $server_host = 'irc.libera.chat',
     $server_port = 7000,
     $cidr        = undef,
     $infiles     = undef,

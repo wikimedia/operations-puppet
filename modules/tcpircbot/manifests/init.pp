@@ -15,8 +15,8 @@
 # === Examples
 #
 # The following snippet will configure a bot nicknamed 'announcebot' that will
-# sit on #wikimedia-operations on Freenode and forward messages that come in
-#from private and loopback IPs on port 9200:
+# sit on #wikimedia-operations on Libera.chat and forward messages that come in
+# from private and loopback IPs on port 9200:
 #
 #   include tcpircbot
 #
