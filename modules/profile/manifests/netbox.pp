@@ -64,8 +64,8 @@ class profile::netbox (
 
     Boolean $do_backups = lookup('profile::netbox::backup', {'default_value' => true})
 ) {
-    $nb_puppetdb_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
-    $nb_ganeti_ca_cert = $nb_puppetdb_ca_cert
+    $ca_certs = '/etc/ssl/certs/ca-certificates.crt'
+    $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
     $puppetdb_api = "https://puppetdb-api.discovery.wmnet:${puppetdb_microservice_port}/"
 
     $extras_path = '/srv/deployment/netbox-extras/'
@@ -96,6 +96,7 @@ class profile::netbox (
         include_ldap       => $include_ldap,
         local_redis_port   => $local_redis_port,
         local_redis_maxmem => $local_redis_maxmem,
+        ca_certs           => $ca_certs,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { '::sslcert::dhparam': }
