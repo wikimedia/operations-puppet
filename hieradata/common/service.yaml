@@ -2070,7 +2070,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: monitoring_setup
+    state: production
     discovery:
       - dnsdisc: shellbox
         active_active: true
