@@ -60,6 +60,7 @@ profile::lvs::realserver::pools:
   push-notifications: {}
   recommendation-api: {}
   apertium: {}
+  shellbox: {}
   similar-users: {}
   linkrecommendation: {}
 prometheus::node_exporter::collectors_extra:
