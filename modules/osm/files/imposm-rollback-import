@@ -2,6 +2,6 @@
 
 set -e
 
-sudo -u osmimporter imposm import \
+sudo -u osmupdater imposm import \
     -config /etc/imposm/imposm_config.json \
     -revertdeploy

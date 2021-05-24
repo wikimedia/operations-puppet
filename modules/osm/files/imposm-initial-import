@@ -55,7 +55,9 @@ function download_pbf() {
     curl -L https://planet.openstreetmap.org/pbf/"${filename}" -o "${download_dir}/${filename}"
   fi
   echo "starting md5sum check"
+  pushd "${download_dir}"
   md5sum -c "${filename}.md5"
+  popd
   if [ $? -ne 0 ] ; then
     echo "Download of PBF file failed, md5sum is invalid"
     exit 2
@@ -67,7 +69,7 @@ function initial_osm_import() {
   echo "starting initial OSM import"
 
   sudo -u postgres psql -d gis -c 'CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS hstore;' && \
-  sudo -u -E osmupdater imposm import \
+  sudo -E -u osmupdater imposm import \
       -config /etc/imposm/imposm_config.json \
       -overwritecache \
       -read "${download_dir}/${filename}" \
@@ -83,7 +85,7 @@ function initial_osm_import() {
 
 function osm_production_deploy() {
     echo "Starting OSM production deploy"
-    sudo -u osmimporter imposm import -config /etc/imposm/imposm_config.json -deployproduction
+    sudo -u osmupdater imposm import -config /etc/imposm/imposm_config.json -deployproduction
     echo "Completed OSM production deploy"
 }
 
@@ -117,6 +119,12 @@ function layers_functions() {
   echo "creation of layers functions completed"
 }
 
+funtion set_permissions() {
+    echo "Setting permissions for service users"
+    sudo -u postgres psql -d gis < /usr/local/bin/maps-grants-gis.sql
+    echo "Setting permissions for service users complete"
+}
+
 function cleanup() {
   echo "starting cleanup"
   rm "${download_dir}/${filename}.md5"
@@ -130,4 +138,5 @@ osm_production_deploy
 import_water_lines
 custom_functions_and_indexes
 layers_functions
+set_permissions
 cleanup

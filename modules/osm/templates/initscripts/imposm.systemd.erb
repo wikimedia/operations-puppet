@@ -5,7 +5,7 @@ Description="imposm service for OSM sync"
 After=network.target
 
 [Service]
-User=osmimporter
+User=osmupdater
 Group=osm
 SyslogIdentifier=imposm
 WorkingDirectory=<%= @imposm_cache_dir %>

@@ -23,11 +23,11 @@ class osm::imposm3 (
             mode   => '0755';
         $imposm_diff_dir:
             ensure => directory,
-            owner  => 'osmimporter',
+            owner  => 'osmupdater',
             group  => 'osm';
         $imposm_cache_dir:
             ensure => directory,
-            owner  => 'osmimporter',
+            owner  => 'osmupdater',
             group  => 'osm';
         $imposm_config_file:
             mode    => '0444',
