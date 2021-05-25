@@ -122,6 +122,11 @@ class profile::lists (
         backup::set { 'var-lib-mailman3': }
     }
 
+    # this is a temporary one-time archive backup
+    backup::set { 'var-lib-mailman':
+        jobdefaults => 'Weekly-Mon-Archive',
+    }
+
     if $primary_host and $standby_host {
         rsync::quickdatacopy { 'var-lib-mailman':
             source_host         => $primary_host,
