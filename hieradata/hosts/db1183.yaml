@@ -1,5 +1,4 @@
 # db1183
 # Testing section
 mariadb::shard: 'test-s4'
-profile::mariadb::mysql_role: 'master'
 profile::base::notifications: disabled
