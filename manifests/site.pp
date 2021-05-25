@@ -478,6 +478,10 @@ node 'db1183.eqiad.wmnet' {
     role(mariadb::core_test)
 }
 
+node 'db1124.eqiad.wmnet' {
+    role(mariadb::core_test)
+}
+
 # TODO decommissioned
 node 'db1125.eqiad.wmnet' {
     role(insetup)
@@ -556,7 +560,7 @@ node 'db1136.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1098, db1101, db1170 below
-node /^db1(069|124|127|136|158|167|174|178|181)\.eqiad\.wmnet/ {
+node /^db1(069|127|136|158|167|174|178|181)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
