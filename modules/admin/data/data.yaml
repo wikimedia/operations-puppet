@@ -100,7 +100,7 @@ groups:
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
               jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe,
-              hmonroy, derick]
+              hmonroy, derick, egardner]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -4329,6 +4329,14 @@ users:
     uid: 31599
     krb: present
     email: odimitrijevic@wikimedia.org
+  egardner:
+    ensure: present
+    realname: Eric Gardner
+    email: egardner@wikimedia.org
+    uid: 20909
+    gid: 500
+    ssh_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoWmCHXYuC9R6RitTH0foWVly74G9LneFjt8phVZkmS egardner@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -4427,10 +4435,6 @@ ldap_only_users:
     ensure: present
     realname: Dominic Walden
     email: dwalden@wikimedia.org
-  egardner:
-    ensure: present
-    realname: Eric Gardner
-    email: egardner@wikimedia.org
   eamedina:
     ensure: present
     realname: Eduardo Medina
