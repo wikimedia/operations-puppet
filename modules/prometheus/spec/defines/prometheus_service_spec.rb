@@ -26,6 +26,7 @@ describe 'prometheus::server', :type => :define do
         it 'uses --storage.tsdb.retention. by default' do
           is_expected.to contain_file('/lib/systemd/system/prometheus@my_prometheus_server.service')
             .with_content(/.*--storage\.tsdb\.retention.size 50GB.*/)
+            .with_content(/.*--storage\.tsdb\.retention.time 1000d.*/)
           is_expected.not_to contain_file('/lib/systemd/system/prometheus@my_prometheus_server.service')
             .with_content(/.*--storage\.tsdb\.retention .*/)
         end
@@ -39,6 +40,7 @@ describe 'prometheus::server', :type => :define do
         it 'uses --storage.tsdb.retention. by default' do
           is_expected.to contain_file('/lib/systemd/system/prometheus@my_prometheus_server.service')
             .with_content(/.*--storage\.tsdb\.retention.size 50GB.*/)
+            .with_content(/.*--storage\.tsdb\.retention.time 1000d.*/)
           is_expected.not_to contain_file('/lib/systemd/system/prometheus@my_prometheus_server.service')
             .with_content(/.*--storage\.tsdb\.retention .*/)
         end

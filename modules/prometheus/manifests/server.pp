@@ -187,7 +187,8 @@ define prometheus::server (
 
     $storage_retention_param = $storage_retention_size ? {
       undef   => "--storage.tsdb.retention ${storage_retention}",
-      default => "--storage.tsdb.retention.size ${storage_retention_size.upcase()}",
+      # Use a very high retention time so the size always gets triggered first
+      default => "--storage.tsdb.retention.time 1000d --storage.tsdb.retention.size ${storage_retention_size.upcase()}",
     }
 
     systemd::service { $service_name:
