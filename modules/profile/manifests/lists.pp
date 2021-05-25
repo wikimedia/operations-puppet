@@ -116,7 +116,7 @@ class profile::lists (
         content  => secret("dkim/${lists_servername}-wikimedia.key"),
     }
 
-    backup::set { 'var-lib-mailman': }
+    # backup::set { 'var-lib-mailman': }
 
     if $enable_mm3 {
         backup::set { 'var-lib-mailman3': }
