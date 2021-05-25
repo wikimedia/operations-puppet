@@ -9,6 +9,8 @@ MEMORY = 384.0 / 1024.0
 RATE = 0.1
 BASE = -20.3
 
+print("\nexp_policy_rate={} exp_policy_base={}\n".format(RATE, BASE))
+
 ADM_PARAM = (MEMORY ** RATE) / (2.0 ** BASE)
 
 objsize = (
