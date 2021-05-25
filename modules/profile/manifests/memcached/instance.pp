@@ -39,16 +39,43 @@
 #   up to a maximum of 8.
 #   Default: undef (memcached's default is 4)
 #
+# [*enable_tls_localhost*]
+#   By default the socket on localhost will not be wrapped in TLS
+#   This is to make debugging easier and support the prometheus exporter.
+#   Set this to true to also wrap localhost
+#   Default: false
+#
+# [*ssl_cert*]
+#   The public key used for SSL connections
+#   Default: undef
+#
+# [*ssl_key*]
+#   The public key used for SSL connections
+#   Default: undef
+#
+# [*notls_port]
+#   By default, when we `enable_tls`, the host will listen
+#   `port` for TLS connections. By defining a `notls_port`,
+#   we have the ability to listen for unencrypted connections
+#   to a different port.
+#   Default: undef
+#
+
+
 class profile::memcached::instance (
-    String            $version          = lookup('profile::memcached::version'),
-    Stdlib::Port      $port             = lookup('profile::memcached::port'),
-    Integer           $size             = lookup('profile::memcached::size'),
-    Array[String]     $extended_options = lookup('profile::memcached::extended_options'),
-    Integer           $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs'),
-    Integer           $min_slab_size    = lookup('profile::memcached::min_slab_size'),
-    Float             $growth_factor    = lookup('profile::memcached::growth_factor'),
-    Optional[Boolean] $enable_16        = lookup('profile::memcached::enable_16'),
-    Optional[Integer] $threads          = lookup('profile::memcached::threads'),
+    String                      $version          = lookup('profile::memcached::version'),
+    Stdlib::Port                $port             = lookup('profile::memcached::port'),
+    Integer                     $size             = lookup('profile::memcached::size'),
+    Array[String]               $extended_options = lookup('profile::memcached::extended_options'),
+    Integer                     $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs'),
+    Integer                     $min_slab_size    = lookup('profile::memcached::min_slab_size'),
+    Float                       $growth_factor    = lookup('profile::memcached::growth_factor'),
+    Optional[Boolean]           $enable_tls       = lookup('profile::memcached::enable_tls'),
+    Optional[Stdlib::Port]      $notls_port       = lookup('profile::memcached::notls_port'),
+    Optional[Stdlib::Unixpath]  $ssl_cert         = lookup('profile::memcached::ssl_cert'),
+    Optional[Stdlib::Unixpath]  $ssl_key          = lookup('profile::memcached::ssl_key'),
+    Optional[Boolean]           $enable_16        = lookup('profile::memcached::enable_16'),
+    Optional[Integer]           $threads          = lookup('profile::memcached::threads'),
 ) {
     include ::profile::prometheus::memcached_exporter
 
@@ -79,11 +106,21 @@ class profile::memcached::instance (
         growth_factor => $growth_factor,
         min_slab_size => $min_slab_size,
         extra_options => $extra_options,
+        enable_tls    => $enable_tls,
+        notls_port    => $notls_port,
+        ssl_cert      => $ssl_cert,
+        ssl_key       => $ssl_key,
     }
-
     ferm::service { 'memcached':
         proto  => 'tcp',
         port   => $port,
         srange => '$DOMAIN_NETWORKS',
+    }
+    if $notls_port and $enable_tls {
+      ferm::service { 'memcached_notls':
+          proto  => 'tcp',
+          port   => $notls_port,
+          srange => '$DOMAIN_NETWORKS',
+      }
     }
 }

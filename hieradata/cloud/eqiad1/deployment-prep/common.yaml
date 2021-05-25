@@ -87,6 +87,10 @@ profile::memcached::size: 3000
 profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::port: 11211
+profile::memcached::enable_tls: false
+profile::memcached::notls_port: ~
+profile::memcached::ssl_cert: ~
+profile::memcached::ssl_key: ~
 "keyholder::trusted_groups":
    - wikidev
 "profile::base::core_dump_pattern": '/data/project/cores/%{::hostname}-core.%h.%e.%p.%t'
