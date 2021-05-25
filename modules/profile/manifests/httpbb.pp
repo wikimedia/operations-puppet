@@ -10,6 +10,7 @@ class profile::httpbb {
             '/srv/deployment/httpbb-tests/releases',
             '/srv/deployment/httpbb-tests/doc',
             '/srv/deployment/httpbb-tests/parse',
+            '/srv/deployment/httpbb-tests/docker-registry',
         ]:
             ensure => directory
     }
@@ -55,6 +56,9 @@ class profile::httpbb {
     }
     httpbb::test_suite {'parse/test_parse.yaml':
         source => 'puppet:///modules/profile/httpbb/parse/test_parse.yaml'
+    }
+    httpbb::test_suite {'docker-registry/test_docker-registry.yaml':
+        source => 'puppet:///modules/profile/httpbb/docker-registry/test_docker-registry.yaml'
     }
 
     systemd::timer::job { 'git_pull_httpbb':
