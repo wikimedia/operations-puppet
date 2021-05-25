@@ -1004,6 +1004,28 @@ def wait_reboot(host, start=None, installer_key=False, debian_installer=False):
         msg = ' (Debian installer)'
     print_line('Host up{msg}'.format(msg=msg), host=host)
 
+    if installer_key:
+        if debian_installer:
+            # Ensure we got into a Debian installer
+            prefix = ''
+            into = 'Debian installer'
+            appears = 'previous Operating System'
+        else:
+            # Ensure we're on the new system and not again in a Debian installer
+            prefix = '! '
+            into = 'newly installed Operating System'
+            appears = 'Debian installer again'
+
+        try:
+            run_cumin('check_debian_installer', host,
+                      ['{prefix}grep -q busybox /proc/1/cmdline'.format(prefix=prefix)],
+                      installer=installer_key)
+            print_line('The host rebooted into the {into}'.format(into=into), host=host)
+        except RuntimeError as e:
+            raise RuntimeError(('The host {host} should have rebooted into the {into} but appears '
+                                'to have rebooted instead into the {appears}. Manual intervention '
+                                'required.').format(host=host, into=into, appears=appears)) from e
+
 
 def check_uptime(host, minimum=0, maximum=None, installer=False):
     """Check that the uptime is between limits: minimum <= uptime <= maximum.
