@@ -72,4 +72,7 @@ profile::base::firewall::block_abuse_nets: true
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
+  - version: '11'
+    variant: 'jdk'
 profile::java::enable_dbg: true
+profile::gerrit::java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'

@@ -19,6 +19,7 @@ class profile::gerrit(
     Hash[String, Hash]                $replication       = lookup('profile::gerrit::replication'),
     String                            $ssh_host_key      = lookup('profile::gerrit::ssh_host_key'),
     Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::git_dir'),
+    Stdlib::Unixpath                  $java_home         = lookup('profile::gerrit::java_home'),
 ) {
     require ::profile::java
 
@@ -97,7 +98,7 @@ class profile::gerrit(
         replication       => $replication,
         ssh_host_key      => $ssh_host_key,
         git_dir           => $git_dir,
-        java_home         => "${$::profile::java::default_java_home}/jre",
+        java_home         => $java_home,
     }
 
     class { 'gerrit::replication_key':
