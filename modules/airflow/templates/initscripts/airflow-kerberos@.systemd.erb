@@ -1,0 +1,18 @@
+[Unit]
+Description=Airflow %i Kerberos ticket renewer
+PartOf=airflow.service airflow@%i.service
+After=network.target airflow-kerberos@%i.service
+
+[Service]
+User=<%= @service_user %>
+Group=<%= @service_group %>
+Environment=PATH=<%= @airflow_prefix %>/bin:/usr/bin:/bin
+Environment=AIRFLOW_HOME=<%= @airflow_home %>
+ExecStart=<%= @airflow_prefix %>/bin/airflow kerberos --pid <%= @airflow_home %>/kerberos.pid
+Type=simple
+SyslogIdentifier=airflow-kerberos@%i
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=airflow.service airflow@%i.service multi-user.target

@@ -1,0 +1,9 @@
+# Control service for all Airflow services.
+[Unit]
+Description=All Airflow Services
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/true
+ExecReload=/bin/true

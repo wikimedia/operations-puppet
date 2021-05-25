@@ -1,0 +1,18 @@
+[Unit]
+Description=Airflow %i Scheduler
+PartOf=airflow.service airflow@%i.service
+After=network.target airflow-kerberos@%i.service
+
+[Service]
+User=<%= @service_user %>
+Group=<%= @service_group %>
+Environment=PATH=<%= @airflow_prefix %>/bin:/usr/bin:/bin
+Environment=AIRFLOW_HOME=<%= @airflow_home %>
+ExecStart=<%= @airflow_prefix %>/bin/airflow scheduler --pid <%= @airflow_home %>/scheduler.pid
+Type=simple
+SyslogIdentifier=airflow-scheduler@%i
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=airflow.service airflow@%i.service multi-user.target

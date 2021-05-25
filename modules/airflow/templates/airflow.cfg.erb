@@ -1,0 +1,53 @@
+# NOTE: This file is managed by Puppet.
+
+# Apache Airflow config file for airflow@<%= @title %> services.
+# To ask airflow what config it reads from this file, run:
+#   AIRFLOW_HOME=<%= @airflow_home %> <%= @airflow_prefix %>/bin/airflow config list
+
+<%
+# Renders an aiflow.cfg file entirely from the @_airflow_config
+# hash.  @_airflow_config should be a hash keyed by
+# section name with values that are another hash of config key => value pairs.
+# E.g.
+#   {
+#       'core' => { 'executor' => 'LocalExecutor' },
+#       'logging' => { 'base_log_folder' => '/srv/airflow-a/logs' }
+#    }
+#
+# Will result in
+#   [core]
+#   executor = LocalExecutor
+#   [logging]
+#   base_log_folder = /srv/airflow-a/logs
+
+# section_sort_order is used to affect the section key sort order.
+# Sections that are not defined here will have a consistent but
+# undefined sort order.
+section_sort_order = ['core']
+
+# Sort the section keys by section_sort_order
+section_keys = @_airflow_config.keys.sort_by { |s|
+    section_sort_order.find_index(s) or section_sort_order.size
+}
+
+# Usually value.to_s should work, but
+# booleans are expected to look like Python booleans.
+def serialize_value(value)
+    if [true, false].include? value
+        return value ? 'True' : 'False'
+    end
+    value.to_s
+end
+
+# Iterate over each section key sorted by section_sort_order
+section_keys.each do |section_key| -%>
+[<%= section_key %>]
+<%
+section_config = @_airflow_config[section_key]
+section_config.keys.sort.each do |key|
+    value = serialize_value(section_config[key])
+-%>
+<%= key %> = <%= value %>
+<% end # section_config.keys.sort.each -%>
+
+<% end # section_keys.each -%>

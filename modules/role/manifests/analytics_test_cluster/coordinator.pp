@@ -46,6 +46,9 @@ class role::analytics_test_cluster::coordinator {
     # The Hadoop job scheduler
     include ::profile::oozie::server
 
+    # Airflow job scheduler
+    include ::profile::airflow
+
     # Include a weekly cron job to run hdfs balancer.
     include ::profile::hadoop::balancer
 

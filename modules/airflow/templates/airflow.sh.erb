@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# NOTE: This file is managed by Puppet.
+
+#
+# Wrapper script to invoke airflow from the correct context
+#
+
+AIRFLOW_PREFIX=<%= @airflow_prefix %>
+export AIRFLOW_HOME=<%= @airflow_home %>
+
+if [ "$(whoami)" != "<%= @service_user %>" ]; then
+    echo ERROR: $0 must be run as user: <%= @service_user %>
+    exit 1
+fi
+
+${AIRFLOW_PREFIX}/bin/airflow $@

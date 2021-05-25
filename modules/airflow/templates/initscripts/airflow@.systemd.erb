@@ -1,0 +1,12 @@
+# Control service for all airflow services belong to this airflow instance
+# (webserver, scheduler, etc.)
+[Unit]
+Description=Airflow %i Services
+
+[Service]
+User=<%= @service_user %>
+Group=<%= @service_group %>
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/true
+ExecReload=/bin/true
