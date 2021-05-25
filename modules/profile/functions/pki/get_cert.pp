@@ -14,7 +14,7 @@ function profile::pki::get_cert(
   # $cfssl::ssl_dir
   include profile::pki::client
   unless $profile::pki::client::ensure == 'present' {
-    fail('profile::pki::client::ensure must be present to use this function')
+    fail("profile::pki::client::ensure must be present to use this function.  called by ${caller_module_name}")
   }
   $safe_title = 'profile' in $additional_params ? {
       true    => "${label}__${common_name}_${additional_params['profile']}".regsubst('[^\w\-]', '_', 'G'),
