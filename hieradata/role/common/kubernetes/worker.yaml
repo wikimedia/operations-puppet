@@ -72,6 +72,7 @@ profile::lvs::realserver::pools:
   toolhub: {}
   linkrecommendation: {}
   tegola-vector-tiles: {}
+  miscweb: {}
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::contacts::role_contacts: ['ServiceOps SREs']
