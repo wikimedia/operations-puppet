@@ -5,5 +5,15 @@ class profile::mediabackup::storage (
 ){
     class { 'mediabackup::storage': }
 
-    # we will likely want to open the firewall based on worker_hosts
+    # Do not open the firewall to everyone if there are no available storage hosts
+    if length($mediabackup_config['worker_hosts']) > 0 {
+        $workers = $mediabackup_config['worker_hosts'].map |Stdlib::Fqdn $host| { "@resolve((${host}))" }
+        $srange = join($workers, ' ')
+        ferm::service { 'mediabackup-workers':
+            proto   => 'tcp',
+            port    => $mediabackup_config['storage_port'],
+            notrack => true,
+            srange  => $srange,
+        }
+    }
 }

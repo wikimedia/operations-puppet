@@ -2,5 +2,11 @@
 # them.
 class mediabackup::storage (
 ) {
-    ensure_packages(['python3', ])  # placeholder until we have a package
+    ensure_packages(['minio', ])
+
+    service { 'minio':
+        ensure  => running,
+        enable  => true,
+        require => Package['minio'],
+    }
 }
