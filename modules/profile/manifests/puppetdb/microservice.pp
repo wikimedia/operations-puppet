@@ -23,10 +23,14 @@ class profile::puppetdb::microservice (
             profile => 'server',
             notify  => Exec['nginx-reload'],
         })
+        $site_content = template('profile/puppetdb/nginx-puppetdb-microservice.conf.erb')
+    } else {
+        $site_content = undef
     }
+
     nginx::site { 'puppetdb-microservice':
         ensure  => $ensure,
-        content => template('profile/puppetdb/nginx-puppetdb-microservice.conf.erb'),
+        content => $site_content,
     }
 
     file { '/srv/puppetdb-microservice.py':
