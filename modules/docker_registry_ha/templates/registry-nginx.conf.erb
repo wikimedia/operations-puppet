@@ -7,6 +7,18 @@ map $http_upgrade $connection_upgrade {
     '' close;
 }
 
+<%- if @nginx_cache %>
+# Define a cache for immutable blobs and manifests
+# inactive time here probably needs to match what is
+# set in proxy_cache_valid below.
+proxy_cache_path <%= @nginx_cache_dir %>
+                  levels=1:2
+                  max_size=10g
+                  inactive=7d
+                  keys_zone=cache:10m
+                  use_temp_path=off;
+<%- end -%>
+
 server {
     listen 443 default_server ssl;
     listen [::]:443 ssl default_server ipv6only=on;
@@ -103,25 +115,19 @@ server {
     }
 
     location /v2/restricted/ {
-      # Send GET/HEAD requests to @restricted_read location block below
+      # Send all but GET/HEAD requests to @restricted_write location block below
       # See <https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/>
       # which explains and recommends this
-      error_page 418 = @restricted_read;
+      error_page 418 = @restricted_write;
       recursive_error_pages on;
-      if ($request_method ~ ^(GET|HEAD)$) {
+      if ($request_method !~ ^(GET|HEAD)$) {
         return 418;
       }
-      # Rest of this block applies to POST/PUT/DELETE/etc. methods
 
-      <%- if @read_only_mode %>
-      # this docker registry is in read only mode
-      # and it will not accept pushing new images.
-      deny all;
-      <%- else -%>
-      # Only restricted-push users can push images
-      auth_basic "docker-registry restricted (restricted-push)";
-      auth_basic_user_file <%= @restricted_push_file %>;
-      <%- end -%>
+      # This covers GET/HEAD requests to /v2/restricted/
+      # Only restricted-read users can read images
+      auth_basic "docker-registry restricted (restricted-read)";
+      auth_basic_user_file <%= @restricted_read_file %>;
 
       proxy_pass http://registry;
       proxy_redirect off;
@@ -139,13 +145,27 @@ server {
       proxy_send_timeout          120;
       proxy_read_timeout          120;
       send_timeout                120;
+
+      <%- if @nginx_cache %>
+      # Blobs and manifests by digest are immutable, so we can cache them
+      location ~ ^/v2/restricted/(.*)/(blobs|manifests)/sha256:(.*) {
+        proxy_pass http://registry;
+        include /etc/nginx/registry-nginx-cache.conf;
+      }
+      <%- end -%>
     }
 
-    # Covers GET/HEAD requests to /v2/restricted/
-    location @restricted_read {
-      # Only restricted-read users can read images
-      auth_basic "docker-registry restricted (restricted-read)";
-      auth_basic_user_file <%= @restricted_read_file %>;
+    # This block applies to POST/PUT/DELETE/etc. methods to /v2/restricted/
+    location @restricted_write {
+      <%- if @read_only_mode %>
+      # this docker registry is in read only mode
+      # and it will not accept pushing new images.
+      deny all;
+      <%- else -%>
+      # Only restricted-push users can push images
+      auth_basic "docker-registry restricted (restricted-push)";
+      auth_basic_user_file <%= @restricted_push_file %>;
+      <%- end -%>
 
       proxy_pass http://registry;
       proxy_redirect off;
@@ -212,6 +232,15 @@ server {
         add_header 'Cache-Control' 'public,s-maxage=600,max-age=600' always;
         add_header 'Vary' 'Accept' always;
         proxy_pass http://registry;
+
       }
+
+      <%- if @nginx_cache %>
+      # Blobs and manifests by digest are immutable, so we can cache them
+      location ~ ^/v2/(.*)/(blobs|manifests)/sha256:(.*) {
+        proxy_pass http://registry;
+        include /etc/nginx/registry-nginx-cache.conf;
+      }
+      <%- end -%>
     }
 }

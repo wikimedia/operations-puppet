@@ -33,6 +33,7 @@ class profile::docker_registry_ha::registry(
     Boolean $registry_read_only_mode = lookup('profile::docker_registry_ha::registry::read_only_mode', { 'default_value' => false }),
     Array[Stdlib::Host] $metrics_allowed_hosts = lookup('prometheus_nodes'),
     Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', { 'default_value' => [] }),
+    Boolean $nginx_cache = lookup('profile::docker_registry_ha::registry::nginx_cache', { 'default_value' => false }),
 ) {
     # if this looks pretty similar to profile::docker::registry
     # is intended.
@@ -91,6 +92,7 @@ class profile::docker_registry_ha::registry(
         ssl_certificate_name        => $certname,
         http_allowed_hosts          => $cache_nodes['text']['eqiad'] + $cache_nodes['text']['codfw'],
         read_only_mode              => $registry_read_only_mode,
+        nginx_cache                 => $nginx_cache,
     }
 
     # T209709

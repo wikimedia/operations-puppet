@@ -23,6 +23,7 @@ class docker_registry_ha::web (
     Array[Stdlib::Host] $http_allowed_hosts=[],
     Boolean $read_only_mode=false,
     String $homepage='/srv/homepage',
+    Boolean $nginx_cache=false,
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')
@@ -80,6 +81,31 @@ class docker_registry_ha::web (
 
     # Find k8s nodes that have auth credentials (for restricted/)
     $k8s_authenticated_nodes = query_facts("Class[k8s::kubelet] and File['/var/lib/kubelet/config.json']", ['fqdn', 'ipaddress'])
+
+    # Create a directory for nginx cache if enabled
+    if $nginx_cache {
+        $cache_dir_ensure = directory
+        $cache_config_ensure = file
+    } else {
+        $cache_dir_ensure = absent
+        $cache_config_ensure = absent
+    }
+    $nginx_cache_dir = '/var/cache/nginx-docker-registry'
+    file { $nginx_cache_dir:
+        ensure => $cache_dir_ensure,
+        owner  => 'www-data',
+        group  => 'www-data',
+        mode   => '0775',
+    }
+
+    file {'/etc/nginx/registry-nginx-cache.conf':
+        ensure  => $cache_config_ensure,
+        mode    => '0744',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/docker_registry_ha/registry-nginx-cache.conf',
+        require => Package['nginx-common'],
+    }
 
     nginx::site { 'registry':
         content => template('docker_registry_ha/registry-nginx.conf.erb'),
