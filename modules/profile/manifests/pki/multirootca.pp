@@ -33,8 +33,6 @@ class profile::pki::multirootca (
     Boolean                       $enable_client_auth = lookup('profile::pki::multirootca::enable_client_auth'),
     Stdlib::Filesource            $client_ca_source   = lookup('profile::pki::multirootca::client_ca_source'),
     Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
-    Integer[1]                    $warn_expire        = lookup('profile::pki::multirootca::warn_expire'),
-    Integer[1]                    $crit_expire        = lookup('profile::pki::multirootca::crit_expire'),
     Boolean                       $maintenance_jobs   = lookup('profile::pki::multirootca::maintenance_jobs'),
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
     Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
@@ -134,20 +132,6 @@ class profile::pki::multirootca (
             mode    => '0444',
             content => "${root_ca_content}${int_ca_content}",
         }
-        $check_command = "${check_command_base} -w ${warn_expire} -c ${crit_expire} ${safe_title}"
-        sudo::user {"nagios_cfssl_check_${safe_title}":
-            ensure     => $ensure_monitoring,
-            user       => 'nagios',
-            privileges => ["ALL = NOPASSWD: ${check_command}"],
-        }
-
-        nrpe::monitor_service {"cfssl_expired_certs_${safe_title}":
-            ensure       => $ensure_monitoring,
-            description  => "Check for expired certificates ${intermediate}",
-            nrpe_command => "/usr/bin/sudo ${check_command}",
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/PKI/Debugging',
-        }
-
         $memo + {
             $safe_title => {
                 'private'     => $ca_key_file,
