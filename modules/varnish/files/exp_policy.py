@@ -4,14 +4,22 @@
 # and "base" knobs.
 
 import math
+import argparse
 
-MEMORY = 384.0 / 1024.0
-RATE = 0.1
-BASE = -20.3
+parser = argparse.ArgumentParser(
+    description='Show "exp" policy probabilities.'
+    + 'Example: exp_policy.py --base="-20.5" --rate=0.2'
+)
+parser.add_argument("--memory", type=float, default=384.0)
+parser.add_argument("--rate", type=float, default=0.1)
+parser.add_argument("--base", type=float, default=-20.3)
+args = parser.parse_args()
 
-print("\nexp_policy_rate={} exp_policy_base={}\n".format(RATE, BASE))
+memory = args.memory / 1024.0
 
-ADM_PARAM = (MEMORY ** RATE) / (2.0 ** BASE)
+print("\nexp_policy_rate={} exp_policy_base={}\n".format(args.rate, args.base))
+
+ADM_PARAM = (memory ** args.rate) / (2.0 ** args.base)
 
 objsize = (
     4096,
