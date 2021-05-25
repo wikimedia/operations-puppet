@@ -116,15 +116,10 @@ class profile::lists (
         content  => secret("dkim/${lists_servername}-wikimedia.key"),
     }
 
-    # backup::set { 'var-lib-mailman': }
+    backup::set { 'var-lib-mailman': }
 
     if $enable_mm3 {
         backup::set { 'var-lib-mailman3': }
-    }
-
-    # this is a temporary one-time archive backup
-    backup::set { 'var-lib-mailman':
-        jobdefaults => 'Weekly-Mon-Archive',
     }
 
     if $primary_host and $standby_host {
