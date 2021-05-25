@@ -32,6 +32,12 @@ if ( $.log_outputs contains "kafka" ) then {
         action(type="mmjsonparse" name="mmjsonparse_kafka_raw" cookie="" useRawMsg="on")
     }
 
+    # if parsing of @cee cookie AND raw message fails, try parsing "msg" field as json
+    # https://www.rsyslog.com/doc/v8-stable/configuration/modules/mmjsonparse.html
+    if $parsesuccess != "OK" then {
+        action(type="mmjsonparse" name="mmjsonparse_kafka_msg" cookie="")
+    }
+
     # the message is json, use a different template (syslog_cee vs syslog_json)
     # unfortunately rsyslog doesn't allow variables to be used as template
     # names, so the kafka action is duplicated here.
