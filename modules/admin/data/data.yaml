@@ -3666,6 +3666,7 @@ users:
     uid: 20435
     gid: 500
     name: kzeta
+    krb: present
     ssh_keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHlwvyeFJgd0P0+GDMCEwvr6MxEXN5ayUN0z+r2UpELf kzimmerman@wikimedia.org
   snowick:
