@@ -81,7 +81,7 @@ define cfssl::cert (
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => $csr.to_json_pretty()
+        content => $csr.to_json_pretty(),
     }
     unless defined(File[$_outdir]) {
         file {$_outdir:
@@ -200,16 +200,21 @@ define cfssl::cert (
             "$(/bin/cat ${cert_chained_path} | sha512sum)"
             | TEST_CHAINED
         # TODO: use sslcert::chained
+        $subscribe = $auto_renew ? {
+            true    => [Exec["renew certificate - ${title}"], File[$cert_chain_path, $cert_path]],
+            default => File[$cert_chain_path, $cert_path],
+        }
         exec {"create chained cert ${cert_chain_path}":
-            command => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
-            unless  => $test_chained,
-            notify  => $_notify_service,
+            command   => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
+            unless    => $test_chained,
+            notify    => $_notify_service,
+            subscribe => $subscribe,
         }
         file { $cert_chained_path:
             ensure  => stdlib::ensure($ensure, 'file'),
             owner   => $owner,
             group   => $group,
-            require => Exec["create chained cert ${cert_chain_path}"]
+            require => Exec["create chained cert ${cert_chain_path}"],
         }
     }
 }
