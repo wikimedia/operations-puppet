@@ -22,6 +22,9 @@
 
   RewriteEngine on
 
+  # Allow longer URLs for phatality / form prefill
+  LimitRequestLine 16384
+
 <% if !@serveraliases.empty? -%>
 <%- @serveraliases.each do |name| -%>
   # Read robots.txt from disk for the alternative domain
