@@ -75,4 +75,4 @@ profile::java::java_packages:
   - version: '11'
     variant: 'jdk'
 profile::java::enable_dbg: true
-profile::gerrit::java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
+profile::gerrit::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'

@@ -53,18 +53,9 @@ class gerrit::jetty(
         '-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance',
         '-Dflogger.logging_context=com.google.gerrit.server.logging.LoggingContext#getInstance',
         # These settings apart from the bottom control logging for gc
-        '-Xloggc:/srv/gerrit/jvmlogs/jvm_gc.%p.log',
         '-XX:+UnlockExperimentalVMOptions',
         '-XX:G1NewSizePercent=15',
         '-XX:+UseStringDeduplication',
-        '-XX:+PrintGCApplicationStoppedTime',
-        '-XX:+PrintGCDetails',
-        '-XX:+PrintGCDateStamps',
-        '-XX:+PrintTenuringDistribution',
-        '-XX:+PrintGCCause',
-        '-XX:+UseGCLogFileRotation',
-        '-XX:NumberOfGCLogFiles=10',
-        '-XX:GCLogFileSize=2M',
         # Whenever we run out of heap space, we want a full snapshot in order
         # to investigate.
         '-XX:+HeapDumpOnOutOfMemoryError',
