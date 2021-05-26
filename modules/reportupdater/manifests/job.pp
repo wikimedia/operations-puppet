@@ -86,7 +86,7 @@ define reportupdater::job(
         kerberos::systemd_timer { "reportupdater-${title}":
             ensure                    => $ensure,
             description               => "Report Updater job for ${title}",
-            command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
+            command                   => "/usr/bin/python3 ${::reportupdater::source_path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
             interval                  => $interval,
             user                      => $::reportupdater::user,
             monitoring_enabled        => $monitoring_enabled,
@@ -103,7 +103,7 @@ define reportupdater::job(
         systemd::timer::job { "reportupdater-${title}":
             ensure                    => $ensure,
             description               => "Report Updater job for ${title}",
-            command                   => "/usr/bin/python3 ${::reportupdater::path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
+            command                   => "/usr/bin/python3 ${::reportupdater::source_path}/update_reports.py ${config_path} -l info ${query_path} ${output_path}",
             interval                  => {
                 'start'    => 'OnCalendar',
                 'interval' => $interval
