@@ -5,7 +5,7 @@ profile::bird::advertise_vips:
   *domain:
     ensure: present
     address: *ipv4
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::wikidough::service_domain')} -ssl --sni -I %{lookup('profile::wikidough::service_ipv4')} -u / -t 1"
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::wikidough::service_domain')} --ssl --sni -I %{lookup('profile::wikidough::service_ipv4')} -u / -t 1"
     service_type: wikidough
 
 profile::wikidough::dnsdist::resolver:
