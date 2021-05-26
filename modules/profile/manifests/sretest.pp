@@ -13,4 +13,7 @@ class profile::sretest {
     profile::logoutd::script {'sretest':
         source => 'puppet:///modules/profile/sretest/sretest-logout.py',
     }
+    profile::contact { $title:
+        contacts => ['jbond', 'MoritzMuehlenhoff']
+    }
 }
