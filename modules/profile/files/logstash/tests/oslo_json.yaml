@@ -1,0 +1,240 @@
+codec: "json_lines"
+ignore:
+  - "tags"
+  - "normalized"
+testcases:
+  - input:
+      - >
+        {
+          "facility": "local0",
+          "type": "syslog",
+          "program": "trove-api",
+          "severity": "INFO",
+          "host": "cloudcontrol2001-dev",
+          "logsource": "cloudcontrol2001-dev",
+          "message": "127.0.0.1 - - [25/May/2021 23:15:11] \"GET / HTTP/1.0\" 200 286 0.002796",
+          "asctime": "2021-05-25 23:15:11",
+          "name": "eventlet.wsgi",
+          "msg": "127.0.0.1 - - [25/May/2021 23:15:11] \"GET / HTTP/1.0\" 200 286 0.002796",
+          "args": [],
+          "levelname": "INFO",
+          "levelno": 20,
+          "pathname": "/usr/lib/python3/dist-packages/eventlet/wsgi.py",
+          "filename": "wsgi.py",
+          "module": "wsgi",
+          "lineno": 656,
+          "funcname": "handle_one_response",
+          "created": 1621984511.6730125,
+          "msecs": 673.0124950408936,
+          "relative_created": 197627844.39969063,
+          "thread": 140227821997584,
+          "thread_name": "GreenThread-6842",
+          "process_name": "MainProcess",
+          "process": 17278,
+          "traceback": null,
+          "hostname": "cloudcontrol2001-dev",
+          "error_summary": "test traceback",
+          "context": {},
+          "extra": {
+            "project": "unknown", "version": "unknown"
+          }
+        }
+    expected:
+      - message: "127.0.0.1 - - [25/May/2021 23:15:11] \"GET / HTTP/1.0\" 200 286 0.002796"
+        '@timestamp': "2021-05-25T23:15:11.673Z"
+        labels:
+          project: "unknown"
+          version: "unknown"
+        log:
+          logger: "eventlet.wsgi"
+          level: "INFO"
+          file:
+            path: "/usr/lib/python3/dist-packages/eventlet/wsgi.py"
+          origin:
+            function: "handle_one_response"
+            file:
+              name: "wsgi.py"
+              line: 656
+          syslog:
+            priority: 134
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 6
+              name: "informational"
+        host:
+          name: "cloudcontrol2001-dev"
+        process:
+          name: "MainProcess"
+          thread:
+            name: "GreenThread-6842"
+            id: 140227821997584
+          pid: 17278
+        error:
+          stack_trace: "test traceback"
+        service:
+          type: "trove-api"
+        ecs:
+          version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "facility": "local0",
+          "type": "syslog",
+          "program": "trove-conductor",
+          "severity": "DEBUG",
+          "host": "cloudcontrol2001-dev",
+          "logsource": "cloudcontrol2001-dev",
+          "message": "[Instance a2569f4c-29a6-4592-b4b2-c84fef586ba5] Rec'd message is younger than last seen. Updating.",
+          "asctime": "2021-05-23 16:21:42",
+          "name": "trove.conductor.manager",
+          "msg": "[Instance %s] Rec'd message is younger than last seen. Updating.",
+          "args": ["a2569f4c-29a6-4592-b4b2-c84fef586ba5"],
+          "levelname": "DEBUG",
+          "levelno": 10,
+          "pathname": "/usr/lib/python3/dist-packages/trove/conductor/manager.py",
+          "filename": "manager.py",
+          "module": "manager",
+          "lineno": 74,
+          "funcname": "_message_too_old",
+          "created": 1621786902.5847352,
+          "msecs": 584.7351551055908,
+          "relative_created": 9035.33959388733,
+          "thread": 140344408789736,
+          "thread_name": "Dummy-1",
+          "process_name": "MainProcess",
+          "process": 17978,
+          "traceback": null,
+          "hostname": "cloudcontrol2001-dev",
+          "error_summary": "",
+          "context": {},
+          "extra": {
+            "project": "unknown",
+            "version": "unknown"
+          }
+        }
+    expected:
+      - message: "[Instance a2569f4c-29a6-4592-b4b2-c84fef586ba5] Rec'd message is younger than last seen. Updating."
+        '@timestamp': "2021-05-23T16:21:42.584Z"
+        labels:
+          project: "unknown"
+          version: "unknown"
+        log:
+          logger: "trove.conductor.manager"
+          level: "DEBUG"
+          file:
+            path: "/usr/lib/python3/dist-packages/trove/conductor/manager.py"
+          origin:
+            function: "_message_too_old"
+            file:
+              name: "manager.py"
+              line: 74
+          syslog:
+            priority: 135
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 7
+              name: "debug"
+        host:
+          name: "cloudcontrol2001-dev"
+        process:
+          name: "MainProcess"
+          thread:
+            name: "Dummy-1"
+            id: 140344408789736
+          pid: 17978
+        error:
+          stack_trace: ""
+        service:
+          type: "trove-conductor"
+        ecs:
+          version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "facility": "local0",
+          "type": "syslog",
+          "program": "trove-taskmanager",
+          "severity": "DEBUG",
+          "host": "cloudcontrol2001-dev",
+          "logsource": "cloudcontrol2001-dev",
+          "message": "Sending event: dbaas.instance_delete.end, {'tenant_id': 'andrewtestproject', 'client_ip': '127.0.0.1', 'server_ip': 'openstack.codfw1dev.wikimediacloud.org:8779', 'server_type': 'taskmanager', 'request_id': 'req-778f8416-a806-447b-95e6-5fbc577a06f8'}",
+          "asctime": "2021-05-23 16:22:39",
+          "name": "trove.common.notification",
+          "msg": "Sending event: %(event_type)s, %(payload)s",
+          "args": {
+            "event_type": "dbaas.instance_delete.end",
+            "payload": {
+              "tenant_id": "andrewtestproject",
+              "client_ip": "127.0.0.1",
+              "server_ip": "openstack.codfw1dev.wikimediacloud.org:8779",
+              "server_type": "taskmanager",
+              "request_id": "req-778f8416-a806-447b-95e6-5fbc577a06f8"
+            }
+          },
+          "levelname": "DEBUG",
+          "levelno": 10,
+          "pathname": "/usr/lib/python3/dist-packages/trove/common/notification.py",
+          "filename": "notification.py",
+          "module": "notification",
+          "lineno": 392,
+          "funcname": "_notify",
+          "created": 1621786959.460375,
+          "msecs": 460.3750705718994,
+          "relative_created": 66075.20461082458,
+          "thread": 139635554536136,
+          "thread_name": "MainThread",
+          "process_name": "MainProcess",
+          "process": 17501,
+          "traceback": null,
+          "hostname": "cloudcontrol2001-dev",
+          "error_summary": "",
+          "context": {},
+          "extra": {
+            "project": "unknown",
+            "version": "unknown"
+          }
+        }
+    expected:
+      - message: "Sending event: dbaas.instance_delete.end, {'tenant_id': 'andrewtestproject', 'client_ip': '127.0.0.1', 'server_ip': 'openstack.codfw1dev.wikimediacloud.org:8779', 'server_type': 'taskmanager', 'request_id': 'req-778f8416-a806-447b-95e6-5fbc577a06f8'}"
+        '@timestamp': "2021-05-23T16:22:39.460Z"
+        labels:
+          project: "unknown"
+          version: "unknown"
+        log:
+          logger: "trove.common.notification"
+          level: "DEBUG"
+          file:
+            path: "/usr/lib/python3/dist-packages/trove/common/notification.py"
+          origin:
+            function: "_notify"
+            file:
+              name: "notification.py"
+              line: 392
+          syslog:
+            priority: 135
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 7
+              name: "debug"
+        host:
+          name: "cloudcontrol2001-dev"
+        process:
+          name: "MainProcess"
+          thread:
+            name: "MainThread"
+            id: 139635554536136
+          pid: 17501
+        error:
+          stack_trace: ""
+        service:
+          type: "trove-taskmanager"
+        ecs:
+          version: "1.7.0"
