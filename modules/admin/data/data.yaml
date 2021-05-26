@@ -302,7 +302,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad]
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4338,6 +4338,18 @@ users:
     gid: 500
     ssh_keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoWmCHXYuC9R6RitTH0foWVly74G9LneFjt8phVZkmS egardner@wikimedia.org
+  kaywong:
+    ensure: present
+    gid: 500
+    name: kaywong
+    realname: Kay Wong
+    expiry_date: 2021-06-30
+    expiry_contact: dsaeztrumper@wikimedia.org
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjjZRIicBmHMrTgceMvgj+G1oPICql1pD0X1UqWorjuP1sOE2NZjskKcjOVjhVAKmBbXBV/4Y3UTUJuccW7rS7Md/xHNzedjFMYMcswM072H/WaZOH/CCCZsoQ94HkBiKTWj/VlnAT9y0Pb3TYzI26237oOagfzaA5LJV8qX/ELTLWKFVszxjfdt7IBsvr2LvMl74UlQAExhJ6h8yxdwbaFskQ9/FaXd/586mxQKVKVwOGbqtzzhEUxLQjFREaVSgGirFrIvbEcmtNY89F2nKx7oimBtCZ4+Fp9/TEXZI2XkXoNk7XcEsXKcmqVHDgGrNqVMd+xle6oSPL4Km8s9oI/gR8ESEz4jRwIZEQ3+HfRvp/nhv4vJkXvJVVrKA5pVTdRW/6L8yVAAP3uCInib6t4vE8e19G90Aqh7LSzS2m3NEajrXWRuPNhNj21Fu4j2f6FXcI7cYu1He6QcHKnZpVyz1dxjlyV1PSyHU9b7mIXNiH35gBIn6SPSGbIQj+g9P/PoRgJ+tSJAmuTEWnhhTusdh082brWJCFRc3xJ2MqCTVOZyQGZhgH+X38/A2I+dJyU8y1OWQGjHNjbF4FAmpN9Gs+0BUO7/Ieo7BcoTfMF18Qey3ex3mSgC2RWl21ZEKsjWFhqgU90FAVl/eLcpwDH1ErHgDAmbhs1rbULXVxxQ== kayyenwong@gmail.com
+    uid: 28580
+    krb: present
+    email: kayyenwong@gmail.com
 
 ldap_only_users:
   abartov:
