@@ -1,6 +1,36 @@
-# Installs and updates httpbb test harness, and installs test suites.
-class profile::httpbb {
+# == Installs and updates httpbb test harness, and installs test suites.
+#
+# == Properties
+#
+# [*basicauth_credentials*]
+#   Hash containing possible credentials to be passed to tests, in form of:
+#   test_name:
+#     user: password
+#   The hash will be translated (for being used in Authorization headers) into:
+#   test_name:
+#     user: Basic base64($user:$password)
+#
+
+class profile::httpbb (
+    Optional[Hash[String, Hash[String, String]]] $plain_basicauth_credentials = lookup('profile::httpbb::basicauth_credentials', {default_value => undef}),
+){
     class {'::httpbb':}
+
+    # Walk over the credentials hash and turn "user: password" into "user: base64(...)"
+    # leaving the structure intact.
+    if $plain_basicauth_credentials {
+        $basicauth_credentials = $plain_basicauth_credentials.map |$k, $v| {
+            {
+                $k=> $v.map |$user, $password| {
+                    {$user => "Basic ${base64('encode', "${user}:${password}", 'strict') }"}
+                }.reduce({}) |$m, $v| {
+                    $m.merge($v)
+                }
+            }
+        }.reduce({}) |$mem, $val| {
+            $mem.merge($val)
+        }
+    }
 
     file {
         [
@@ -57,8 +87,12 @@ class profile::httpbb {
     httpbb::test_suite {'parse/test_parse.yaml':
         source => 'puppet:///modules/profile/httpbb/parse/test_parse.yaml'
     }
-    httpbb::test_suite {'docker-registry/test_docker-registry.yaml':
-        source => 'puppet:///modules/profile/httpbb/docker-registry/test_docker-registry.yaml'
+
+    if $basicauth_credentials and $basicauth_credentials['docker-registry'] {
+        httpbb::test_suite {'docker-registry/test_docker-registry.yaml':
+            content => template('profile/httpbb/docker-registry/test_docker-registry.yaml.erb'),
+            mode    => '0400',
+        }
     }
 
     systemd::timer::job { 'git_pull_httpbb':

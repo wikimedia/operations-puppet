@@ -4,14 +4,28 @@
 # directory passed as $tests_dir to the httpbb class. That class must be
 # declared before any httpbb::test_suite resources.
 define httpbb::test_suite(
-    Stdlib::Filesource $source,
+    Optional[String] $mode = undef,
+    Optional[Stdlib::Filesource] $source = undef,
+    Optional[String] $content = undef,
 ){
     if !defined(Class['httpbb']) {
         fail('Declare the httpbb class before using httpbb::test_suite.')
     }
 
-    file {"${::httpbb::tests_dir}/${title}":
-        ensure => file,
-        source => $source,
+    if $source {
+        file {"${::httpbb::tests_dir}/${title}":
+            ensure => file,
+            mode   => $mode,
+            source => $source,
+        }
+    } elsif $content {
+        file {"${::httpbb::tests_dir}/${title}":
+            ensure  => file,
+            mode    => $mode,
+            content => $content,
+        }
+    } else {
+        fail('Define either source or content.')
     }
+
 }

@@ -4,8 +4,7 @@ https://docker-registry.wikimedia.org:
   assert_headers:
     Location: /v2/
     Docker-Distribution-Api-Version: registry/2.0
-# /v2/ should return 401 when requested from specific IPs,
-# unable to test.
+# /v2/ should return 401 when requested from specific IPs, unable to test.
 - path: /v2/
   assert_status: 200
   assert_headers:
@@ -29,6 +28,13 @@ https://docker-registry.wikimedia.org:
 - path: /v2/nonexistent/blobs/upload
   method: POST
   assert_status: 401
+  assert_headers:
+    WWW-Authenticate: Basic realm="docker-registry (regular-push)"
+- path: /v2/nonexistent/blobs/upload
+  method: POST
+  request_headers:
+    Authorization: "<%= @basicauth_credentials['docker-registry']['regular-push'] -%>"
+  assert_status: 404
   assert_headers:
     WWW-Authenticate: Basic realm="docker-registry (regular-push)"
 - path: /v2/wikimedia/mediawiki-multiversion/manifests/protoprod
@@ -59,11 +65,9 @@ https://docker-registry.wikimedia.org:
     Content-Type: application/vnd.docker.distribution.manifest.v2+json
     Docker-Content-Digest: sha256:bcb74d22d6fe40def32cbc39166889ac6114fcc2810e8a622a4c4983edeb89a7
     Etag: "\"sha256:bcb74d22d6fe40def32cbc39166889ac6114fcc2810e8a622a4c4983edeb89a7\""
-# With nginx caching we should also have:
-#  assert_headers_regex:
-#    X-Cache-Status: "MISS|BYPASS|EXPIRED|STALE|UPDATING|REVALIDATED|HIT"
+  assert_headers_regex:
+    X-Cache-Status: "^(MISS|BYPASS|EXPIRED|STALE|UPDATING|REVALIDATED|HIT)$"
   assert_body_contains: schemaVersion
-
 - path: /v2/wikimedia/mediawiki-multiversion/blobs/sha256:b7213227cfef387a937968df3b41e0938b593ca4353044adcfd2828ec0167206
   assert_status: 200
   assert_headers:
@@ -72,9 +76,8 @@ https://docker-registry.wikimedia.org:
     Content-Type: application/octet-stream
     Docker-Content-Digest: sha256:b7213227cfef387a937968df3b41e0938b593ca4353044adcfd2828ec0167206
     Etag: "\"sha256:b7213227cfef387a937968df3b41e0938b593ca4353044adcfd2828ec0167206\""
-# With nginx caching we should also have:
-#  assert_headers_regex:
-#    X-Cache-Status: "MISS|BYPASS|EXPIRED|STALE|UPDATING|REVALIDATED|HIT"
+  assert_headers_regex:
+    X-Cache-Status: "^(MISS|BYPASS|EXPIRED|STALE|UPDATING|REVALIDATED|HIT)$"
 
 # Tests for the restricted namespace
 - path: /v2/restricted/nonexistent/manifests/latest
@@ -84,5 +87,18 @@ https://docker-registry.wikimedia.org:
 - path: /v2/restricted/nonexistent/blobs/upload
   method: POST
   assert_status: 401
+  assert_headers:
+    WWW-Authenticate: Basic realm="docker-registry restricted (restricted-push)"
+- path: /v2/restricted/nonexistent/manifests/latest
+  request_headers:
+    Authorization: "<%= @basicauth_credentials['docker-registry']['restricted-read'] -%>"
+  assert_status: 404
+  assert_headers:
+    WWW-Authenticate: Basic realm="docker-registry restricted (restricted-read)"
+- path: /v2/restricted/nonexistent/blobs/upload
+  request_headers:
+    Authorization: "<%= @basicauth_credentials['docker-registry']['restricted-push'] -%>"
+  method: POST
+  assert_status: 404
   assert_headers:
     WWW-Authenticate: Basic realm="docker-registry restricted (restricted-push)"
