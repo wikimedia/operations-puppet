@@ -139,7 +139,6 @@ scap::dsh::groups:
   homer:
     hosts:
       - cumin1001.eqiad.wmnet
-      - cumin2001.codfw.wmnet
   ci-docroot:
     hosts:
       - contint1001.wikimedia.org
