@@ -29,6 +29,13 @@ class profile::reportupdater::jobs(
 
     # Setup timer for rsyncing logs to HDFS.
     $hdfs_log_path = '/tmp/reportupdater/logs'
+
+    bigtop::hadoop::directory { $hdfs_log_path:
+        owner => $user,
+        group => $user,
+        mode  => '0755',
+    }
+
     kerberos::systemd_timer { 'analytics-reportupdater-logs-rsync':
         description => 'Rsync reportupdater logs to HDFS.',
         command     => "${refinery_path}/bin/hdfs-rsync -d -x to-hdfs ${log_path} ${hdfs_log_path}",
