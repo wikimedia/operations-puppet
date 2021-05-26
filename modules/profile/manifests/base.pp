@@ -47,6 +47,7 @@ class profile::base(
     require profile::base::certificates
     include profile::pki::client
     include profile::base::netbase
+    include profile::logoutd
     # Ensure we update the CA certificates before managing any services
     Exec['update-ca-certificates'] -> Service<| |>
     class { 'apt':

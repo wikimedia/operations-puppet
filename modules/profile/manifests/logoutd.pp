@@ -10,7 +10,6 @@ class profile::logoutd (
 ) {
     $base_dir = '/etc/wikimedia/logout.d'
     wmflib::dir::mkdir_p($base_dir, {
-        ensure => directory,
         owner  => $owner,
         group  => $group,
         mode   => '0550',
