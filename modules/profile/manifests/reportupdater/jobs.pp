@@ -36,11 +36,16 @@ class profile::reportupdater::jobs(
         mode  => '0755',
     }
 
+    $systemd_env = {
+        'PYTHONPATH' => "\${PYTHONPATH}:${refinery_path}/python",
+    }
+
     kerberos::systemd_timer { 'analytics-reportupdater-logs-rsync':
         description => 'Rsync reportupdater logs to HDFS.',
         command     => "${refinery_path}/bin/hdfs-rsync -d -x to-hdfs ${log_path} ${hdfs_log_path}",
         interval    => '*-*-* *:30:00',
         user        => $user,
+        environment => $systemd_env,
         require     => Bigtop::Hadoop::Directory[$hdfs_log_path],
     }
 
