@@ -28,7 +28,7 @@ class profile::reportupdater::jobs(
     }
 
     # Setup timer for rsyncing logs to HDFS.
-    $hdfs_log_path = '/tmp/reportupdater/logs'
+    $hdfs_log_path = '/tmp/reportupdater-logs'
 
     bigtop::hadoop::directory { $hdfs_log_path:
         owner => $user,
