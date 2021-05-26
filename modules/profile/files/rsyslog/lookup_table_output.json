@@ -74,6 +74,10 @@
     {"index" : "trove-api", "value" : "kafka local" },
     {"index" : "trove-conductor", "value" : "kafka local" },
     {"index" : "trove-taskmanager", "value" : "kafka local" },
+    {"index" : "ceph-osd", "value" : "kafka local ecs_170" },
+    {"index" : "ceph-mon", "value" : "kafka local ecs_170" },
+    {"index" : "ceph-mgr", "value" : "kafka local ecs_170" },
+    {"index" : "ceph-rgw", "value" : "kafka local ecs_170" },
     {"index" : "pybal", "value" : "kafka local" }
   ]
 }
