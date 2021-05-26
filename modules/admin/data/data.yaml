@@ -5066,3 +5066,7 @@ ldap_only_users:
     ensure: present
     realname: Jessica Stephenson
     email: jstephenson@wikimedia.org
+  satdeep:
+      ensure: present
+      realname: Satdeep Gill
+      email: sgill@wikimedia.org
