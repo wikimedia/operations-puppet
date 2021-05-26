@@ -295,6 +295,10 @@ profile::druid::turnilo::port: 9091
 profile::druid::turnilo::monitoring_enabled: false
 profile::druid::turnilo::contact_group: 'analytics'
 
+profile::logoutd::owner: root
+profile::logoutd::group: root
+profile::logoutd::scripts: {}
+
 profile::pki::server::names:
   - organisation: Wikimedia Foundation, Inc
     organisational_unit: Cloud Services
