@@ -17,12 +17,12 @@ class role::cluster::management {
     # issues with the Homer repo sync
     # lint:ignore:wmf_styleguide
     unless $::fqdn == 'cumin2001.codfw.wmnet' {
-        include profile::cumin::master
         include profile::spicerack
         include profile::homer
     }
     # lint:endignore
 
+    include profile::cumin::master
     include profile::ipmi::mgmt
     include profile::access_new_install
     include profile::conftool::client
