@@ -9,4 +9,8 @@ class profile::sretest {
         include profile::backup::host
         backup::set {'home':}
     }
+
+    profile::logoutd::script {'sretest':
+        source => 'puppet:///modules/profile/sretest/sretest-logout.py',
+    }
 }
