@@ -5,7 +5,7 @@ set -e
 download_dir="/srv/downloads"
 kartotherian_dir="/srv/deployment/kartotherian/deploy"
 postgis_vt_util_sql_lib="${kartotherian_dir}/node_modules/@kartotherian/postgis-vt-util/lib.sql"
-modules_with_sql="@kartotherian/osm-bright-source @kartotherian/geoshapes"
+modules_with_sql="@kartotherian/osm-bright-source/sql/helpers @kartotherian/geoshapes/sql"
 proxy=
 log_file=/var/log/osm-initial-import.log
 dump_date="latest"
@@ -102,8 +102,8 @@ function custom_functions_and_indexes() {
   sudo -u postgres psql -Xd gis -f ${postgis_vt_util_sql_lib}
 
   for module in ${modules_with_sql}; do
-    echo "executing SQL in: ${kartotherian_dir}/node_modules/${module}/sql"
-    for sql_file in "${kartotherian_dir}"/node_modules/"${module}"/sql/*.sql; do
+    echo "executing SQL in: ${kartotherian_dir}/node_modules/${module}"
+    for sql_file in "${kartotherian_dir}"/node_modules/"${module}"/*.sql; do
       echo "  executing: ${sql_file}"
       sudo -u postgres psql -Xd gis -f "${sql_file}"
     done
