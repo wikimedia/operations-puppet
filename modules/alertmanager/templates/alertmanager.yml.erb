@@ -48,6 +48,9 @@ route:
         team: 'perf'
       receiver: 'perf-ircmail'
       repeat_interval: '48h'
+    - match:
+        team: 'traffic'
+      receiver: 'traffic-ircmail'
 
 
     # Compat Icinga alerts are routed to a 'sink' channel
@@ -115,6 +118,12 @@ receivers:
   email_configs:
     - to: 'performance-team@<%= scope.lookupvar('::domain') %>'
       send_resolved: true
+
+- name: 'traffic-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-traffic'
+  email_configs:
+    - to: 'sre-traffic@<%= scope.lookupvar('::domain') %>'
 
 # Receivers to open Phabricator tasks. Naming convention is '<team-and-subteam>-task'
 - name: 'sre-o11y-task'
