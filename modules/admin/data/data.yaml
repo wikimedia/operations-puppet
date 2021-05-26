@@ -4202,7 +4202,7 @@ users:
     gid: 500
     ssh_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDXSV4ht0Q6zuWnnNuBH08/li10vGy/23z4Zw42JbgeGIE8MNdNaZePFk8LIvWr89j2FLBsOCTNkpNfBAgQhnIDouZW+JlypZrTa9plWwxRKJ2UhBkSigN5D4cDg5s5UnAuDj39C4wdeexJUEK1ElXlyJGEUipWCNE6SNdZJaN54aepGKENybjWSK6L4eNIPz3G+mTeTgAAvFXxPwkVGOY2uH3PtjRJqThdH5zKtfPdttsCAMwvYOv2UghtHjW5klmerKOehfqfLzZJ9OlsE8NyEWTxS8Usnpy3ch1N30CK+2K2eRbbX4QUWDbZYYZQ7n2amch9Bti1T7yBrUxAmO1CKI52RuRnWyYwLSPCDqk6rW5z5OHmOfJhuTHzXwIL8N01Duf638aHc5vGiyGl87BPY+G9QTr8oIR2vD9dUEn/rIhVskBmQ9dWYx6lD6qxuJOIWN2OPPAQ+NGi3QmR+3Ihy6GJbVBqyZqSeL6cmqbdGy3mpbRTRyY4wlkflOhtjfE= ievgen_chernov"
-    expiry_date: 2021-06-01
+    expiry_date: 2021-07-15
     expiry_contact: wkandek@wikimedia.org
   strofimovsky01:
     ensure: present
@@ -4212,7 +4212,7 @@ users:
     gid: 500
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YOTFRFIXsSXERnbkkt2NUV+WgZhl7Ep7NWn4dpYsB troff@quiet.paranoia.ru"
-    expiry_date: 2021-06-01
+    expiry_date: 2021-07-15
     expiry_contact: wkandek@wikimedia.org
   olykalinichenko:
     ensure: absent
