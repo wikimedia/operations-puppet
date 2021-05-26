@@ -44,8 +44,11 @@ create_rootfs_tar() {
     cp "${SRCDIR}/wikimedia.preferences" rootfs/etc/apt/preferences.d/wikimedia
     echo 'APT::Install-Recommends "false";' > rootfs/etc/apt/apt.conf.d/00InstallRecommends
     echo "### Updating packages ###"
+    # If $http_proxy is set, we need to tell apt to use it now.
+    test -n "$http_proxy" && echo "Acquire::http::Proxy \"$http_proxy\";" > rootfs/etc/apt/apt.conf.d/80_proxy
     debuerreotype-apt-get rootfs update -qq
     debuerreotype-apt-get rootfs dist-upgrade -yqq
+    test -n "$http_proxy" && rm -f rootfs/etc/apt/apt.conf.d/80_proxy
     echo "### slimify and prepare the tarball ###"
     debuerreotype-slimify rootfs
     debuerreotype-tar rootfs $output
@@ -80,5 +83,3 @@ if [[ "$_distro" == "stretch" || "$_distro" == "buster" ]]; then
     docker tag "$_imgfull" "${REGISTRY}/wikimedia-${_distro}:latest"
     docker rmi "${PUBLIC_REGISTRY}/wikimedia-${_distro}:latest" || /bin/true
 fi
-
-

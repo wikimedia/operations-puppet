@@ -56,11 +56,17 @@ class docker::baseimages(
         mode    => '0544',
     }
 
+    if ($proxy_address and $proxy_port) {
+        $http_proxy = "http://${proxy_address}:${proxy_port}"
+        $env = { 'http_proxy' => $http_proxy, 'https_proxy' => $http_proxy}
+    } else {
+        $env = {}
+    }
     # Cronjob to refresh the base images every week on sunday.
     systemd::timer::job { 'debian-weekly-rebuild':
         description         => 'Weekly job to rebuild the debian base images',
         command             => '/usr/local/bin/build-base-images',
-        environment         => {'DISTRIBUTIONS' => 'stretch buster'},
+        environment         => $env,
         interval            => {'start' => 'OnCalendar', 'interval' => 'Sun *-*-* 04:00:00'},
         user                => 'root',
         max_runtime_seconds => 86400,
