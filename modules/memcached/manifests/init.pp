@@ -35,6 +35,11 @@
 #   Configure mcrouter using TLS on external interfaces. This
 #   parameter is only supported on memcached 1.6
 #   Default: false
+# [*notls_port]
+#   By default, when we `enable_tls`, the host will listen
+#   `port` for TLS connections. By defining a `notls_port`,
+#    we have the ability to listen for unencrypted connections
+#    in a different port.
 #
 # [*enlable_tls_localhost*]
 #   By default the socket on localhost will not be wrapped in TLS
@@ -81,6 +86,7 @@ class memcached(
     Boolean                    $enable_tls_localhost  = false,
     Boolean                    $enable_unix_socket    = false,
     String                     $unix_socket_name      = 'memcached.sock',
+    Optional[Stdlib::Port]     $notls_port            = undef,
     Optional[Stdlib::Unixpath] $ssl_cert              = undef,
     Optional[Stdlib::Unixpath] $ssl_key               = undef,
 ) {
@@ -93,6 +99,10 @@ class memcached(
     if $enable_tls and $enable_unix_socket {
         fail('enabling TLS and using a unix socket are mutually exclusive')
     }
+    $notls_listen = $notls_port ? {
+        undef   => [],
+        default => ["notls:${facts['networking']['ip']}:${notls_port}", "notls:localhost:${notls_port}"]
+    }
     if $enable_unix_socket {
         systemd::tmpfile { 'memcached':
             content => 'd /run/memcached 0755 nobody nogroup - -'
@@ -101,9 +111,9 @@ class memcached(
         # if the ip is 0.0.0.0, indicating all ipv4 interfaces,
         # then we need to split theses addresses out to ensure we
         # have notls on localhost
-        $listen = [$facts['networking']['ip'], 'notls:localhost']
+        $listen = [$facts['networking']['ip'], 'notls:localhost'] + $notls_listen
     } else {
-        $listen = [$ip]
+        $listen = [$ip] + $notls_listen
     }
     if $enable_16 {
         apt::package_from_component { 'memcached_16':
