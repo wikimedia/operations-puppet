@@ -9,11 +9,15 @@
   log file = none
   public network = <%= @public_network %>
   cluster network = <%= @cluster_network %>
+  log to syslog = true
+  err to syslog = true
 
   mon initial members = <%= @mon_hosts.map{|k, v| "#{k.split('.')[0]}"}.join(',') %>
 <% if @enable_v2_messenger -%>
   mon host = <%= @mon_hosts.map{|k, v| "[v2:#{v['public']['addr']}:3300/0,v1:#{v['public']['addr']}:6789/0]"}.join(',') %>
 <% end -%>
+[mon]
+    mon cluster log to syslog = true
 <% @mon_hosts.each do |k, v| %>
 [mon.<%= k.split('.')[0] %>]
     host = <%= k.split('.')[0] %>
