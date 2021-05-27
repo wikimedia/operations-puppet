@@ -1,2 +1,17 @@
-cassandra::rack: d5
+# maps2.0 uses abcd rather than a4/a5 etc.
+cassandra::rack: a
+cassandra::target_version: '3.x'
+
 do_paging: false
+
+profile::maps::apps::redis_server: 'redis://maps2009.codfw.wmnet'
+
+# The stock nginx doesn't have support for the header setting that
+# tlsproxy::localssl uses on stretch. Disable for testing purposes
+profile::maps::tlsproxy::ssl_ecdhe_curve: false
+
+profile::maps::osm_master::engine: "imposm3"
+
+# maps2009 is the master for a separate maps cluster
+profile::cassandra::single_instance::seeds:
+  - '10.192.16.107' # maps2009.codfw.wmnet
