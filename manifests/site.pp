@@ -1329,8 +1329,13 @@ node /^phab[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(phabricator)
 }
 
-# Phabricator - new hardware (T279176, T279177)
-node /^phab[12]002\.(eqiad|codfw)\.wmnet$/ {
+# Phabricator - new hardware (T280544)
+node 'phab2002.codfw.wmnet' {
+    role(insetup)
+}
+
+# Phabricator - new hardware (T280540)
+node 'phab1004.eqiad.wmnet' {
     role(insetup)
 }
 

@@ -7014,6 +7014,11 @@ host phab1001 {
     fixed-address phab1001.eqiad.wmnet;
 }
 
+host phab1004 {
+    hardware ethernet 2C:EA:7F:94:E2:A0;
+    fixed-address phab1004.eqiad.wmnet;
+}
+
 host phab2001 {
     hardware ethernet 14:18:77:5B:0C:FA;
     fixed-address phab2001.codfw.wmnet;
