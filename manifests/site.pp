@@ -790,11 +790,11 @@ node 'db1171.eqiad.wmnet' {
 }
 
 # codfw backup sources
-## s1, stretch
+## s1 & s2, stretch
 node 'db2097.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
-## s2, stretch
+## s7 & s8, buster
 node 'db2098.codfw.wmnet' {
     role(mariadb::dbstore_multiinstance)
 }
