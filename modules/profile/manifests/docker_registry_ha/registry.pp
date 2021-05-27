@@ -33,7 +33,7 @@ class profile::docker_registry_ha::registry(
     Boolean $registry_read_only_mode = lookup('profile::docker_registry_ha::registry::read_only_mode', { 'default_value' => false }),
     Array[Stdlib::Host] $metrics_allowed_hosts = lookup('prometheus_nodes'),
     Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', { 'default_value' => [] }),
-    Boolean $nginx_cache = lookup('profile::docker_registry_ha::registry::nginx_cache', { 'default_value' => false }),
+    Boolean $nginx_cache = lookup('profile::docker_registry_ha::registry::nginx_cache', { 'default_value' => true }),
 ) {
     # if this looks pretty similar to profile::docker::registry
     # is intended.
