@@ -2209,11 +2209,11 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
 # parser cache databases
 # eqiad
 # pc1
-node /^pc10(07|10)\.eqiad\.wmnet$/ {
+node /^pc10(07)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node /^pc10(08)\.eqiad\.wmnet$/ {
+node /^pc10(08|10)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc3
