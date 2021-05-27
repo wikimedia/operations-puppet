@@ -19,7 +19,7 @@ server {
        # New-style urls that are local should be served locally
        # The ^~ operator ensures the regex below is not evaluated.
        location ^~ /<%= @hostname %> {
-                rewrite ^/<%= @hostname %>/(.*)$ /$1 last;
+                rewrite ^/<%= @hostname %>(/.*)?$ $1 last;
        }
 
        # Proxy-pass requests for stretch compilers
