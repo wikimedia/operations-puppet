@@ -302,7 +302,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong]
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -784,7 +784,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl]
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl, bumeh-ctr]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
   peek-admins:
@@ -4349,6 +4349,18 @@ users:
     uid: 28580
     krb: present
     email: kayyenwong@gmail.com
+  bumeh-ctr:
+    ensure: present
+    gid: 500
+    name: bumeh-ctr
+    realname: Bumeh
+    expiry_date: 2021-08-31
+    expiry_contact: janstee@wikimedia.org
+    ssh_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBam9QwFHv3+Mt0Sai36wBlKhf0VG1pyuHpd+jcCtUJI benjamin@Benjamins-MacBook-Pro.local
+    uid: 31961
+    krb: present
+    email: bumeh-ctr@wikimedia.org
 
 ldap_only_users:
   abartov:
