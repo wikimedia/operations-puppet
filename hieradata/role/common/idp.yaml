@@ -161,6 +161,12 @@ profile::idp::services:
     required_groups:
       - ops
       - wmf
+  gitlab:
+    id: 23
+    service_id: 'https://gitlab.wikimedia.org(/.*)?'
+    required_groups:
+      - ops
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
