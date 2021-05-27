@@ -62,7 +62,7 @@ task :debug do
   puts "Tasks that would be run: "
   puts t.tasks
 end
-thirdparty_modules = ['stdlib', 'lvm', 'puppetdbquery']
+thirdparty_modules = ['stdlib', 'lvm', 'puppetdbquery', 'concat']
 # Global tasks. Only the ones deemed useful are added here.
 namespace :global do
   desc "Build documentation"
