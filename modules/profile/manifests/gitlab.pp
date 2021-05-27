@@ -42,6 +42,13 @@ class profile::gitlab(
         port   => 443,
         drange => "(${service_ip_v4} ${service_ip_v6})",
     }
+
+    # world -> service IP, SSH
+    ferm::service { 'gitlab-ssh-public':
+        proto  => 'tcp',
+        port   => 22,
+        drange => "(${service_ip_v4} ${service_ip_v6})",
+    }
     # Theses parameters are installed by gitlab when the package is updated
     # However we purge this directory in puppet as such we need to add them here
     # TODO: Ensure theses values actually make sense
