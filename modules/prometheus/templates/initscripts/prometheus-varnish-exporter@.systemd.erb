@@ -1,6 +1,8 @@
 [Unit]
 Description=Prometheus exporter for Varnish (instance %i)
 Documentation=https://prometheus.io/docs/introduction/overview/
+BindsTo=varnish-<%= @instance %>.service
+After=varnish-<%= @instance %>.service
 
 [Service]
 Restart=always
@@ -9,4 +11,4 @@ Group=varnish
 ExecStart=/usr/bin/prometheus-varnish-exporter -raw -n <%= @instance %> -web.listen-address <%= @listen_address %>
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target varnish-<%= @instance %>.service
