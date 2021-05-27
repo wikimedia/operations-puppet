@@ -302,7 +302,8 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo, htriedman, cooltey]
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo,
+              htriedman, cooltey, schoenbaechler]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4407,6 +4408,13 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdWEos7FwxZ4JpK7zo05iCggujoIkojNUH93pwQC4/l jelto-wmf@x1'
+  schoenbaechler:
+    ensure: present
+    realname: Robin Schoenbaechler
+    email: rschoenbaechler@wikimedia.org
+    uid: 17817
+    gid: 500
+    ssh_keys: []  # no SSH keys, for Superset dashboards with private data
 
 ldap_only_users:
   abartov:
@@ -4669,10 +4677,6 @@ ldap_only_users:
     ensure: present
     realname: Stella Chang
     email: schang@wikimedia.org
-  schoenbaechler:
-    ensure: present
-    realname: Robin Schoenbaechler
-    email: rschoenbaechler@wikimedia.org
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
