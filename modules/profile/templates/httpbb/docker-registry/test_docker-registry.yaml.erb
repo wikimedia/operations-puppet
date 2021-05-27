@@ -10,14 +10,14 @@ https://docker-registry.wikimedia.org:
   assert_headers:
     Docker-Distribution-Api-Version: registry/2.0
     Vary: Accept
-# _catalog takes more than 10s to load and httpbb has a static timeout
-#- path: /v2/_catalog
-#  assert_status: 200
-#  assert_headers:
-#    Docker-Distribution-Api-Version: registry/2.0
-#    Vary: Accept
-#    Cache-Control: public,s-maxage=600,max-age=600
-#  assert_body_contains: mediawiki-httpd
+- path: /v2/_catalog
+  timeout_seconds: 60
+  assert_status: 200
+  assert_headers:
+    Docker-Distribution-Api-Version: registry/2.0
+    Vary: Accept
+    Cache-Control: public,s-maxage=600,max-age=600
+  assert_body_contains: mediawiki-httpd
 
 # Tests for the public namespace
 - path: /v2/nonexistent/manifests/latest
