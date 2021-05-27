@@ -16,12 +16,7 @@ ExecStart=/usr/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
 <%- end -%>
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -USR1 $MAINPID
-<% # systemd in Jessie does not support 'infinity'
- if @facts['os']['release']['major'].to_i > 8 -%>
 TimeoutStopSec=infinity
-<%- else -%>
-TimeoutStopSec=0
-<%- end -%>
 
 [Install]
 WantedBy=multi-user.target
