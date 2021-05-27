@@ -3471,8 +3471,8 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqMsQAdABxLhrBi2MoGHqkrNEOMJXePZXwTAnuGu//O iflorez@LoanerWMF1954
     uid: 21341
     email: iflorez-ctr@wikimedia.org
-    expiry_date: 2021-05-31
-    expiry_contact: yweissburg@wikimedia.org
+    expiry_date: 2021-06-30
+    expiry_contact: kechavarriqueen@wikimedia.org
     krb: present
   jeh:
     ensure: present
