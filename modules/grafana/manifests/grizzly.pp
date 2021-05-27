@@ -25,4 +25,12 @@ class grafana::grizzly (
         mode      => '0440',
     }
 
+    # /usr/local/bin/grr wrapper calls /usr/bin/grr with environment variables set
+    file { '/usr/local/bin/grr':
+        owner  => grafana,
+        group  => ops,
+        mode   => '0555',
+        source => 'puppet:///modules/grafana/grr.sh',
+    }
+
 }
