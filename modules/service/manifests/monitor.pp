@@ -64,7 +64,9 @@ class service::monitor() {
                 $protocol = 'tcp'  # NOTE: We are making an assumption here
                 $descr_prefix = ''
             }
-            $description = $data['description']
+            # Ensure the description matches the actual site we're setting the alert up for, 
+            # not the one evaluated by $::site. See T283762
+            $description = regsubst($data['description'], "svc\\.${::site}\\.wmnet", "svc.${sitename}.wmnet")
             $check_description = "${descr_prefix}${n} ${sitename} port ${port}/${protocol} - ${description}"
             # Let's set a default notes_url if one does not exist
             $notes_url = pick($monitoring['notes_url'], 'https://wikitech.wikimedia.org/wiki/LVS#Diagnosing_problems')
