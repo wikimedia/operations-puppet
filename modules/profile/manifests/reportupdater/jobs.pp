@@ -10,9 +10,7 @@ class profile::reportupdater::jobs(
 
     require ::profile::analytics::cluster::packages::common
     require ::profile::analytics::cluster::client
-    require ::profile::analytics::refinery
 
-    $refinery_path = $profile::analytics::refinery::path
     $base_path = '/srv/reportupdater'
     $log_path = "${base_path}/log"
     $user = 'analytics'
@@ -36,16 +34,11 @@ class profile::reportupdater::jobs(
         mode  => '0755',
     }
 
-    $systemd_env = {
-        'PYTHONPATH' => "\${PYTHONPATH}:${refinery_path}/python",
-    }
-
     kerberos::systemd_timer { 'analytics-reportupdater-logs-rsync':
         description => 'Rsync reportupdater logs to HDFS.',
-        command     => "${refinery_path}/bin/hdfs-rsync -d -x to-hdfs ${log_path} ${hdfs_log_path}",
+        command     => "/usr/local/bin/hdfs-rsync -r -t --delete --perms file://${log_path} hdfs://${hdfs_log_path}",
         interval    => '*-*-* *:30:00',
         user        => $user,
-        environment => $systemd_env,
         require     => Bigtop::Hadoop::Directory[$hdfs_log_path],
     }
 
