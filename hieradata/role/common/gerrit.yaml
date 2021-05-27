@@ -70,8 +70,6 @@ profile::base::ssh_server_settings:
 profile::base::firewall::block_abuse_nets: true
 
 profile::java::java_packages:
-  - version: '8'
-    variant: 'jdk'
   - version: '11'
     variant: 'jdk'
 profile::java::enable_dbg: true
