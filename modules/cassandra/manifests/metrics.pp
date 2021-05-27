@@ -41,12 +41,10 @@ class cassandra::metrics(
 
     # Backward incompatible changes to cassandra-metrics-collector were needed
     # to support Cassandra 2.2 and 3.x; Use the apropos version of the collector.
-    if $target_cassandra_version == '2.1' {
-        $collector_version = '2.1.1-20160520.211019-1'
-    } elsif $target_cassandra_version == '2.2' {
+    if $target_cassandra_version == '2.2' {
         $collector_version = '3.1.4-20170427.001104-1'
     } else {
-        $collector_version = '4.1.0'
+        $collector_version = '4.0.1'
     }
 
     scap::target { 'cassandra/metrics-collector':
