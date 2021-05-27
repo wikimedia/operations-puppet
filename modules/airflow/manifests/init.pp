@@ -9,7 +9,7 @@
 # has $monitoring_enabled => true.
 #
 class airflow {
-    require_package('airflow')
+    ensure_packages(['airflow'])
 
     # Path to where airflow conda env is installed
     $airflow_prefix = '/usr/lib/airflow'

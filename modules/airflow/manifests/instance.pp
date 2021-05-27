@@ -46,9 +46,6 @@
 #   Only used for rendering a provided sql_alchemy_conn erb template string.
 #   Default: batman
 #
-# [*webserver_port*]
-#   Default: 8600
-#
 # [*monitoring_enabled*]
 #   Default: false
 #
@@ -68,7 +65,6 @@ define airflow::instance(
     Stdlib::Unixpath $airflow_home      = "/srv/airflow-${title}",
     String $db_user                     = "airflow_${title}",
     String $db_password                 = 'batman',
-    Stdlib::Port $webserver_port        = 8600,
     Boolean $monitoring_enabled         = false,
     Integer $clean_logs_older_than_days = 90,
     Wmflib::Ensure $ensure              = 'present',
@@ -92,7 +88,11 @@ define airflow::instance(
         },
         'logging' => {
             'base_log_folder' => "${airflow_home}/logs",
-        }
+        },
+        'webserver' => {
+            'web_server_port' => '8600',
+            'instance_name' => $title,
+        },
     }
 
     # If $airflow_config specifies sql_alchemy_conn, we want to possibly render

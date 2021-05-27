@@ -29,5 +29,5 @@ class profile::airflow(
     Hash $airflow_instances_secrets = lookup('profile::airflow::instances_secrets', {'default_value' => {}}),
 ) {
     $_airflow_instances = deep_merge($airflow_instances, $airflow_instances_secrets)
-    ensure_resources('airflow::instance', $_airflow_instances)
+    create_resources('airflow::instance', $_airflow_instances)
 }
