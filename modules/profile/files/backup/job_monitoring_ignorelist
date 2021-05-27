@@ -2,6 +2,3 @@
 sretest1002.eqiad.wmnet-Monthly-1st-Tue-production-home
 # hw failure T281881
 cloudmetrics1002.eqiad.wmnet-Monthly-1st-Thu-production-var-lib-grafana
-# Do not report staleness of one-time read-only backups T282249
-backup1002.eqiad.wmnet-Weekly-Mon-EsRoCodfw-mysql-srv-backups-dumps-latest
-backup2002.codfw.wmnet-Weekly-Mon-EsRoEqiad-mysql-srv-backups-dumps-latest
