@@ -5,6 +5,8 @@
 
   fsid = <%= @fsid %>
 
+  # we log to syslog instead
+  log file = none
   public network = <%= @public_network %>
   cluster network = <%= @cluster_network %>
 
