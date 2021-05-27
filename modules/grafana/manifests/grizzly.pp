@@ -10,10 +10,19 @@ class grafana::grizzly (
 
     file { '/etc/grafana/grizzly.env':
         owner     => grafana,
-        group     => grafana,
-        mode      => '0600',
+        group     => ops,
+        mode      => '0660',
         show_diff => false,
         content   => template('grafana/grizzly/grizzly.env.erb'),
+    }
+
+    # Clone the grafana-grizzly repository into a /srv/grafana-grizzly
+    git::clone { 'operations/grafana-grizzly':
+        ensure    => 'latest',
+        directory => '/srv/grafana-grizzly',
+        owner     => 'root',
+        group     => 'ops',
+        mode      => '0440',
     }
 
 }
