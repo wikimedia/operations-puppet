@@ -215,20 +215,19 @@ define airflow::instance(
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => File[$airflow_config_file],
+        require              => [File[$airflow_config_file], File[$webserver_config_file]],
     }
 
     # Airflow webserver for this instance.
-    # TODO: add webserver_config.py with extra configs, e.g. LDAP?
     systemd::service { "airflow-webserver@${title}":
         ensure               => $ensure,
         content              => systemd_template('airflow-webserver@'),
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => File[$airflow_config_file],
+        require              => [File[$airflow_config_file], File[$webserver_config_file]],
         service_params       => {
-            'subscribe' => File[$airflow_config_file],
+            'subscribe' => [File[$airflow_config_file], File[$webserver_config_file]],
         }
     }
     base::service_auto_restart { "airflow-webserver@${title}":
