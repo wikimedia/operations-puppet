@@ -100,32 +100,11 @@
         Require all granted
     </Directory>
 
-    ScriptAlias /mailman/ "/usr/lib/cgi-bin/mailman/"
-    <Directory "/usr/lib/cgi-bin/mailman/">
-        AllowOverride None
-        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-        Require all granted
-    </Directory>
-
     Alias /pipermail/ "/var/lib/mailman/archives/public/"
     Alias /images/    "/usr/share/images/"
 
     RedirectMatch permanent ^/(index\.html?)?$ https://<%= @lists_servername %>/postorius/lists/
-    # Temporary during mailman2 transition, will eventually point to postorius
-    RedirectMatch temp ^/mailman/$        https://<%= @lists_servername %>/mailman/listinfo
-    # arbcom-l paranoia. Contact Tim Starling for details/rationale
-    <LocationMatch "^/mailman/(private|admin)/arbcom-l(/.*|$)">
-        AuthType Digest
-        AuthName "arbcom-l archive"
-        AuthDigestProvider file
-        AuthDigestDomain /mailman/private/arbcom-l /mailman/admin/arbcom-l
-        AuthUserFile /etc/apache2/arbcom-l.htdigest
-        Require valid-user
-    </LocationMatch>
-    <LocationMatch "^/mailman/private/arbcom-l/.*\.txt.gz">
-        Order deny,allow
-        Deny from all
-    </LocationMatch>
+    RedirectMatch temp ^/mailman/$        https://<%= @lists_servername %>/postorius/lists/
 
     # anti-subscription bot mitigation
     RewriteEngine on
