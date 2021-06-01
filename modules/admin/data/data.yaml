@@ -302,7 +302,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr]
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4361,6 +4361,18 @@ users:
     uid: 31961
     krb: present
     email: bumeh-ctr@wikimedia.org
+  jmixter:
+    ensure: present
+    gid: 500
+    name: jmixter
+    realname: Jeff Mixter
+    expiry_date: 2021-11-15
+    expiry_contact: cbogen@wikimedia.org
+    ssh_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDaVO6HOaJ52AL+0pQ2Up1yarHk5g1GD+oBfnh1xcbk0 mixters@Mixters-MacBook-Air.local
+    uid: 31942
+    krb: present
+    email: jmixter-ctr@wikimedia.org
 
 ldap_only_users:
   abartov:
