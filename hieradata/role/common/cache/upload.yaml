@@ -40,10 +40,21 @@ profile::cache::varnish::frontend::fe_vcl_config:
     upload_webp_hits_threshold: 100
     maps_domain: 'maps.wikimedia.org'
     pass_random: false
-    admission_policy: 'none'
+    # Admit objects into cache with probability exponentially decreasing
+    # with size. Using rate=0.2 and base=-20.3, the probability of caching
+    # objects of a certain size are:
+    #     4.0 KB 99.6%
+    #    32.0 KB 97.0%
+    #   256.0 KB 78.1%
+    #  1024.0 KB 37.2%
+    #  4096.0 KB 1.92%
+    # See ./modules/varnish/files/exp_policy.py and T144187
+    admission_policy: 'exp'
+    exp_policy_rate: 0.2
+    exp_policy_base: -20.3
+    large_objects_cutoff: 8388608
     varnish_probe_ms: 100
     keep: '1d'
-    large_objects_cutoff: 262144
     # By setting 'attack_mode' to true, all requests are ratelimited per-IP to
     # levels that will allow a couple human users but block anything in excess.
     attack_mode: false

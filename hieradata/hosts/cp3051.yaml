@@ -1,5 +1,0 @@
-profile::cache::varnish::frontend::fe_vcl_config:
-  admission_policy: 'exp'
-  large_objects_cutoff: 8388608
-  exp_policy_rate: 0.2
-  exp_policy_base: -20.3
