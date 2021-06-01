@@ -2,7 +2,7 @@
 class mailman::scripts {
 
     file { '/usr/local/sbin/remove_from_private_list':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
@@ -10,7 +10,7 @@ class mailman::scripts {
     }
 
     file { '/usr/local/sbin/disable_list':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
@@ -18,7 +18,7 @@ class mailman::scripts {
     }
 
     file { '/usr/local/sbin/rsync_lists':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
@@ -26,7 +26,7 @@ class mailman::scripts {
     }
 
     file { '/usr/local/sbin/rsync_exim':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
@@ -34,7 +34,7 @@ class mailman::scripts {
     }
 
     file { '/usr/local/sbin/rename_list':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
@@ -42,7 +42,7 @@ class mailman::scripts {
     }
 
     file { '/usr/local/sbin/queue_data':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
@@ -50,7 +50,7 @@ class mailman::scripts {
     }
 
     file { '/usr/local/sbin/purge_attachments':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
@@ -58,7 +58,7 @@ class mailman::scripts {
     }
 
     file { '/usr/local/sbin/check_exclude_backups':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',
@@ -66,7 +66,7 @@ class mailman::scripts {
     }
 
     file { '/usr/local/sbin/list_listadmins':
-        ensure => 'present',
+        ensure => absent,
         owner  => 'root',
         group  => 'list',
         mode   => '0550',

@@ -4,7 +4,7 @@ class profile::lists::jobs(
     Array[String] $exclude_backups_list = lookup('mailman2_exclude_backups'),
 ){
     systemd::timer::job { 'delete_held_messages':
-        ensure      => 'present',
+        ensure      => absent,
         user        => 'root',
         description => "delete un-moderated held messages after ${held_messages_age} days (T109838)",
         command     => "/usr/bin/find /var/lib/mailman/data/ -name 'heldmsg-*' -type f -mtime +${held_messages_age} -exec rm {} \\;",
@@ -12,7 +12,7 @@ class profile::lists::jobs(
     }
 
     systemd::timer::job { 'purge_attachments':
-        ensure      => 'present',
+        ensure      => absent,
         user        => 'root',
         description => 'Purge attachments from lists with archiving disabled',
         command     => '/usr/local/sbin/purge_attachments',
@@ -20,7 +20,7 @@ class profile::lists::jobs(
     }
 
     file { '/etc/exclude_backups_list.json':
-        ensure  => present,
+        ensure  => absent,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -28,7 +28,7 @@ class profile::lists::jobs(
     }
 
     systemd::timer::job { 'check_exclude_backups':
-        ensure      => 'present',
+        ensure      => absent,
         user        => 'root',
         description => 'Check exclude_backups list is up to date',
         command     => '/usr/local/sbin/check_exclude_backups',
