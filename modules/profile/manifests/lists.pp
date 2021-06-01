@@ -110,8 +110,6 @@ class profile::lists (
         content  => secret("dkim/${lists_servername}-wikimedia.key"),
     }
 
-    backup::set { 'var-lib-mailman': }
-
     backup::set { 'var-lib-mailman3': }
 
     if $primary_host and $standby_host {

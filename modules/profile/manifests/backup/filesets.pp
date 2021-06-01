@@ -51,13 +51,13 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'gitlab':
         includes => [ '/srv/gitlab-backup/latest', '/etc/gitlab/config_backup/latest' ]
     }
-    require ::profile::lists::exclude_backups
-    bacula::director::fileset { 'var-lib-mailman':
-        includes => [ '/var/lib/mailman' ],
-        excludes => $::profile::lists::exclude_backups::exclude_backups_list,
-    }
     bacula::director::fileset { 'var-lib-mailman3':
-        includes => [ '/var/lib/mailman3' ],
+        includes => [
+            # Contains pipermail archives
+            '/var/lib/mailman',
+            # Contains various data files and state that isn't in MariaDB
+            '/var/lib/mailman3',
+        ],
         excludes => [
             # In progress digests, see T279237#7025093
             '/var/lib/mailman3/lists/*/digest.mmdf',
