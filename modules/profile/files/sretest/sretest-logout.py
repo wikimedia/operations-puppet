@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import argparse
@@ -7,13 +7,10 @@ import os
 import subprocess
 import sys
 
-if os.geteuid() != 0:
-    print("Logout script needs to be run as root")
-    sys.exit(1)
-
 SERVICE = 'sretest'
 
 
+# Return codes follow the logout.d semantics, see T283242
 def logout(uid, verbose):
 
     try:
@@ -28,11 +25,11 @@ def logout(uid, verbose):
     return 0
 
 
+# Return codes follow the logout.d semantics, see T283242
 def query(uid):
     output = ""
 
-    res = {}
-    res['id'] = uid
+    res = {'id': uid}
 
     try:
         output = subprocess.check_output(["/usr/bin/loginctl", "--no-pager", "user-status", uid],
@@ -54,6 +51,10 @@ def query(uid):
 
 
 def main():
+    if os.geteuid() != 0:
+        print("Logout script needs to be run as root")
+        sys.exit(1)
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--verbose", action="store_true", dest="verbose",
@@ -80,10 +81,10 @@ def main():
 
     args = parser.parse_args()
     if args.command == "logout":
-        logout(args.uid, args.cn, args.verbose)
+        sys.exit(logout(args.uid, args.cn, args.verbose))
 
     elif args.command == "query":
-        query(args.uid, args.cn, args.verbose)
+        sys.exit(query(args.uid, args.cn, args.verbose))
 
 
 if __name__ == '__main__':
