@@ -32,14 +32,21 @@ chartmuseum: P{O:chartmuseum}
 cloudelastic: P{O:elasticsearch::cloudelastic}
 cloudbackup: P{O:wmcs::nfs::primary_backup::tools or O:wmcs::nfs::primary_backup::misc}
 cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
+cloudcontrol-eqiad1: P{O:wmcs::openstack::eqiad1::control}
 cloudcephmon: P{O:wmcs::ceph::mon}
+cloudcephmon-eqiad1: P{O:wmcs::ceph::mon} and A:eqiad
 cloudcephosd: P{O:wmcs::ceph::osd}
+cloudcephosd-eqiad1: P{O:wmcs::ceph::osd} and A:eqiad
 cloudceph: A:cloudcephmon or A:cloudcephosd
+cloudceph-eqiad1: A:cloudcephmon-eqiad1 or A:cloudcephosd-eqiad1
 cloudmetrics: P{O:wmcs::monitoring}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
+cloudnet-eqiad1: P{O:wmcs::openstack::eqiad1::net}
 cloudservices: P{O:wmcs::openstack::eqiad1::services}
+cloudservices-eqiad1: P{O:wmcs::openstack::eqiad1::services}
 cloudvirt: P{O:wmcs::openstack::eqiad1::virt or O:wmcs::openstack::eqiad1::virt_ceph or O:wmcs::openstack::eqiad1::virt_ceph_and_backy}
-cloud-eqiad1: A:cloudcontrol or A:cloudnet or A:cloudservices or A:cloudvirt or A:cloudceph
+cloudvirt-eqiad1: P{O:wmcs::openstack::eqiad1::virt or O:wmcs::openstack::eqiad1::virt_ceph or O:wmcs::openstack::eqiad1::virt_ceph_and_backy}
+cloud-eqiad1: A:cloudcontrol-eqiad1 or A:cloudnet-eqiad1 or A:cloudservices-eqiad1 or A:cloudvirt-eqiad1 or A:cloudceph-eqiad1
 cloudcontrol-codfw1dev: P{O:wmcs::openstack::codfw1dev::control}
 cloudnet-codfw1dev: P{O:wmcs::openstack::codfw1dev::net}
 cloudservices-codfw1dev: P{O:wmcs::openstack::codfw1dev::services}
