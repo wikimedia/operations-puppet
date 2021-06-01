@@ -86,8 +86,8 @@ class swift (
     file { '/srv/log/swift':
         ensure => directory,
         owner  => 'root',
-        group  => 'swift',
-        mode   => '0775',
+        group  => 'root',
+        mode   => '0755',
         before => Package['swift'],
     }
 
