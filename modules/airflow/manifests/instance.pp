@@ -152,6 +152,11 @@ define airflow::instance(
         absent  => $ensure,
         default => 'directory',
     }
+    $ensure_link = $ensure ? {
+        absent => $ensure,
+        default => 'link',
+    }
+
     file { $airflow_home:
         ensure => $ensure_directory,
         mode   => '0755',
@@ -161,6 +166,20 @@ define airflow::instance(
         mode    => '0440',
         content => template('airflow/airflow.cfg.erb'),
         require => File[$airflow_home],
+    }
+
+    if $dags_folder == "${airflow_home}/dags" {
+        # Create $dags_folder if in $airflow_home
+        file { $dags_folder:
+            ensure => $ensure_directory,
+            mode   => '0755',
+        }
+    } else {
+        # Else create $airflow_home/dags as a symlink
+        file { "${airflow_home}/dags":
+            ensure => $ensure_link,
+            target => $dags_folder,
+        }
     }
 
     # airflow command wrapper for this instance.
