@@ -81,10 +81,10 @@ def main():
 
     args = parser.parse_args()
     if args.command == "logout":
-        sys.exit(logout(args.uid, args.cn, args.verbose))
+        sys.exit(logout(args.uid, args.verbose))
 
     elif args.command == "query":
-        sys.exit(query(args.uid, args.cn, args.verbose))
+        sys.exit(query(args.uid))
 
 
 if __name__ == '__main__':
