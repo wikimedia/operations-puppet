@@ -44,10 +44,9 @@ class profile::lists (
     }
 
     class { 'mailman':
-        lists_servername       => $lists_servername,
-        mailman_service_ensure => 'stopped',
-        acme_chief_cert        => $acme_chief_cert,
-        renamed_lists          => $renamed_lists,
+        lists_servername => $lists_servername,
+        acme_chief_cert  => $acme_chief_cert,
+        renamed_lists    => $renamed_lists,
     }
 
     mailalias { 'root': recipient => 'root@wikimedia.org' }
@@ -256,7 +255,7 @@ class profile::lists (
     user { 'mtail':
         ensure  => 'present',
         groups  => ['list'],
-        require => Package['mailman']
+        require => Package['mailman3']
     }
 
     # Mtail program to gather exim logs
