@@ -13,6 +13,7 @@ profile::idp::cors_allow_credentials: true
 profile::idp::cors_allowed_origins:
   - 'https://alerts.wikimedia.org'
   - 'https://thanos.wikimedia.org'
+  - 'https://grafana-rw.wikimedia.org'
 profile::idp::services:
   icinga:
     id: 1
