@@ -57,6 +57,11 @@ profile::debmonitor::server::enable_monitoring: false
 profile::debmonitor::server::required_groups: []
 profile::debmonitor::server::trusted_ca_source: '/etc/ssl/certs/Puppet_Internal_CA.pem'
 
+profile::nginx::ensure: 'present'
+profile::nginx::managed: true
+profile::nginx::variant: 'full'
+profile::nginx::tmpfs_size: '1g'
+
 profile::puppetdb::gc_interval: 20
 profile::puppetdb::node_ttl: '7d'
 profile::puppetdb::node_purge_ttl: '14d'

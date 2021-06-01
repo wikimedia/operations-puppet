@@ -1,0 +1,4 @@
+profile::nginx::ensure: 'present'
+profile::nginx::managed: true
+profile::nginx::variant: 'full'
+profile::nginx::tmpfs_size: '1g'
