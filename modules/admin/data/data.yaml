@@ -302,7 +302,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter]
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4373,6 +4373,13 @@ users:
     uid: 31942
     krb: present
     email: jmixter-ctr@wikimedia.org
+  cmadeo:
+    ensure: present
+    gid: 500
+    uid: 16080
+    realname: Carolyn Li-Madeo
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    email: cmadeo@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -4431,10 +4438,6 @@ ldap_only_users:
     ensure: absent
     realname: Matthias Geisler
     email: matthias.geisler@wikimedia.de
-  cmadeo:
-    ensure: present
-    realname: Carolyn Li-Madeo
-    email: cmadeo@wikimedia.org
   coka:
     ensure: present
     realname: Conny Kawohl
