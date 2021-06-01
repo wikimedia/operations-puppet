@@ -302,7 +302,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo]
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo, htriedman]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4380,6 +4380,16 @@ users:
     realname: Carolyn Li-Madeo
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
     email: cmadeo@wikimedia.org
+  htriedman:
+    ensure: present
+    realname: Hal Triedman
+    email: htriedman-ctr@wikimedia.org
+    uid: 30945
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHZXGVblGTOgm+IWr1kL109Zchw3pgG97PioMWLP0JS haltriedman@MacBook-Pro.local
+    expiry_date: 2021-07-31
+    expiry_contact: jbennett@wikimedia.org
 
 ldap_only_users:
   abartov:
