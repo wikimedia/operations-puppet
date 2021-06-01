@@ -24,6 +24,14 @@
 #   [kerberos] section configs will be set accordingly. You can still override these if you
 #   need by setting any [kerberos] section configs in $airflow_config.
 #
+# NOTE: that airflow::instance will not create any databases or airflow users for you.
+# To do this, see: https://airflow.apache.org/docs/apache-airflow/stable/howto/set-up-database.html#setting-up-a-mysql-database
+#
+# NOTE: This define does not yet support webserver_config.py customization. The webserver_config.py that
+# is installed will grant Admin access to anyone that can access the webserver.  The default
+# web_server_host is 127.0.0.1, so access is restricted to anyone who can ssh to the node
+# running this airflow instance.  This may be improved in the future.
+#
 # === Parameters
 # [*service_user*]
 #   Airflow service user. airflow services and commands must be run as this user.
@@ -90,6 +98,7 @@ define airflow::instance(
             'base_log_folder' => "${airflow_home}/logs",
         },
         'webserver' => {
+            'web_server_host' => '127.0.0.1',
             'web_server_port' => '8600',
             'instance_name' => $title,
         },
@@ -139,8 +148,8 @@ define airflow::instance(
     # Copied into local variables here for easy reference.
     $dags_folder = $_airflow_config['core']['dags_folder']
     $logs_folder = $_airflow_config['logging']['base_log_folder']
-    $config_file = "${airflow_home}/airflow.cfg"
-
+    $airflow_config_file = "${airflow_home}/airflow.cfg"
+    $webserver_config_file = "${airflow_home}/webserver_config.py"
 
     # Default file resource params for this airflow instance.
     File {
@@ -161,11 +170,19 @@ define airflow::instance(
         ensure => $ensure_directory,
         mode   => '0755',
     }
-    file { $config_file:
+    file { $airflow_config_file:
         ensure  => $ensure,
         mode    => '0440',
         content => template('airflow/airflow.cfg.erb'),
         require => File[$airflow_home],
+    }
+
+    # No per instance webserver configuration yet.
+    # For now, any access to webserver UI port grants Admin access.
+    file { $webserver_config_file:
+        ensure => $ensure,
+        mode   => '0444',
+        source => 'puppet:///modules/airflow/webserver_config.py'
     }
 
     if $dags_folder == "${airflow_home}/dags" {
@@ -198,7 +215,7 @@ define airflow::instance(
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => File[$config_file],
+        require              => File[$airflow_config_file],
     }
 
     # Airflow webserver for this instance.
@@ -209,9 +226,9 @@ define airflow::instance(
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => File[$config_file],
+        require              => File[$airflow_config_file],
         service_params       => {
-            'subscribe' => File[$config_file],
+            'subscribe' => File[$airflow_config_file],
         }
     }
     base::service_auto_restart { "airflow-webserver@${title}":
@@ -226,9 +243,9 @@ define airflow::instance(
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => File[$config_file],
+        require              => File[$airflow_config_file],
         service_params       => {
-            'subscribe' => File[$config_file],
+            'subscribe' => File[$airflow_config_file],
         },
     }
     base::service_auto_restart { "airflow-scheduler@${title}":
@@ -250,9 +267,9 @@ define airflow::instance(
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => File[$config_file],
+        require              => File[$airflow_config_file],
         service_params       => {
-            'subscribe' => File[$config_file],
+            'subscribe' => File[$airflow_config_file],
         },
     }
     base::service_auto_restart { "airflow-kerberos@${title}":
@@ -282,7 +299,7 @@ define airflow::instance(
         description  => "Checks that the airflow database for airflow ${title} is working properly",
         # contact_group => 'victorops-analytics', TODO
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require      => File[$config_file],
+        require      => File[$airflow_config_file],
     }
 
 
