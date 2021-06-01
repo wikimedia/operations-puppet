@@ -9,7 +9,7 @@
 # [*hostname*] The hostname to use in Host header for monitoring.
 #
 # [*swift_backend*] Optional configuration of a Swift storage backend (URL,
-#                   continer name, username and password). If this parameter is
+#                   container name, username and password). If this parameter is
 #                   not set, local storage in "/var/lib/chartmuseum" is used.
 #
 # [*basic_auth*] Optional username and password to enable HTTP basic auth.

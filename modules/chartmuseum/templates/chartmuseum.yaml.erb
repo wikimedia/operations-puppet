@@ -6,6 +6,7 @@ depth: <%= @repository_depth %>
 disabledelete: <%= @disable_delete %>
 disableforceoverwrite: <%= @disable_force_overwrite %>
 authanonymousget: <%= @allow_anonymous_get %>
+cacheinterval: <%= @cache_interval %>
 <% if @basic_auth -%>
 basicauth:
   user: "<%= @basic_auth['username'] %>"

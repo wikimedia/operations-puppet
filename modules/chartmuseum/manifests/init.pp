@@ -26,8 +26,13 @@
 # [*allow_anonymous_get*] Allow anonymous HTTP GET operations even when basic
 #                         auth is enabled.
 #
+# [*cache_interval*] Intervall in which to check the storage backend for
+#                    changes/re-read index-cache.yaml from the backend. For
+#                    valid values for this setting, please see:
+#                    https://godoc.org/time#ParseDuration
+#
 # [*swift_backend*] Optional configuration of a Swift storage backend (URL,
-#                   continer name, username and password). If this parameter is
+#                   container name, username and password). If this parameter is
 #                   not set, local storage in "/var/lib/chartmuseum" is used.
 #
 # [*basic_auth*] Optional username and password to enable HTTP basic auth.
@@ -41,6 +46,7 @@ class chartmuseum (
     Boolean                             $disable_delete          = true,
     Boolean                             $disable_force_overwrite = true,
     Boolean                             $allow_anonymous_get     = true,
+    String                              $cache_interval          = '60s',
     Optional[ChartMuseum::SwiftBackend] $swift_backend           = undef,
     Optional[ChartMuseum::BasicAuth]    $basic_auth              = undef,
     Optional[Boolean]                   $debug                   = false,
