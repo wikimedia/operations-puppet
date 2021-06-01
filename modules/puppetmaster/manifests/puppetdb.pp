@@ -19,7 +19,6 @@ class puppetmaster::puppetdb(
     String                     $jvm_opts              ='-Xmx4G',
     Optional[Stdlib::Unixpath] $ssldir                = undef,
     Stdlib::Unixpath           $ca_path               = '/etc/ssl/certs/Puppet_Internal_CA.pem',
-    Boolean                    $filter_job_id         = false,
     String                     $puppetdb_pass         = '',
     Puppetdb::Loglevel         $log_level             = 'info',
     Boolean                    $tmpfs_stockpile_queue = false,
@@ -32,17 +31,6 @@ class puppetmaster::puppetdb(
 
 ){
 
-    if $filter_job_id {
-        ensure_packages(['libnginx-mod-http-lua'])
-        # Open to suggestions for a more FHS location
-        file {'/etc/nginx/lua':
-            ensure =>  directory
-        }
-        file{'/etc/nginx/lua/filter_job_id.lua':
-            ensure => file,
-            source => 'puppet:///modules/puppetmaster/filter_job_id.lua'
-        }
-    }
     ## TLS Termination
     # Set up nginx as a reverse-proxy
     base::expose_puppet_certs { '/etc/nginx':
