@@ -1,10 +1,13 @@
 <%- if @proxy_address and @proxy_address != '' -%>
 http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
 <%- end -%>
-seed_image: docker-registry.wikimedia.org/wikimedia-buster:latest
+seed_image: <%= @registry %>/wikimedia-buster:latest
 registry: <%= @registry %>
 username: prod-build
 password: <%= @password %>
 ca_bundle: /etc/ssl/certs/ca-certificates.crt
 base_images:
   - <%= @registry %>/wikimedia-stretch:latest
+  - <%= @registry %>/stretch:latest
+  - <%= @registry %>/buster:latest
+  - <%= @registry %>/bullseye:latest
