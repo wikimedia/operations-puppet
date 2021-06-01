@@ -2,12 +2,12 @@
 
 # NOTE: This file is managed by Puppet.
 
-# Deletes old files and directories in log_folder older than specified days.
-usage="$0 <log_folder> <older_than_days>"
+# Deletes old files and directories in logs_folder older than specified days.
+usage="$0 <logs_folder> <older_than_days>"
 
 logs_folder="${1}"
 if [ ! -e "${logs_folder}" ]; then
-    echo "Error: log_folder '${logs_folder}' does not exist."
+    echo "Error: logs_folder '${logs_folder}' does not exist."
     echo "${usage}"
     exit 1
 fi
