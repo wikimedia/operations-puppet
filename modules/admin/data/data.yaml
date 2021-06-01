@@ -5118,3 +5118,9 @@ ldap_only_users:
       ensure: present
       realname: Satdeep Gill
       email: sgill@wikimedia.org
+  kgordon:
+    ensure: present
+    realname: Kinneret Gordon
+    email: kgordon-ctr@wikimedia.org
+    expiry_date: 2021-07-15
+    expiry_contact: mpinchuk@wikimedia.org
