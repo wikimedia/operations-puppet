@@ -210,7 +210,7 @@ groups:
     approval: Tyler Cipriani
     members: [*ops_members, *contint_roots_members,
               bd808, cscott, krinkle, reedy, marktraceur,
-              gjg, addshore, liw, jhuneidi, dancy]
+              gjg, addshore, liw, jhuneidi, dancy, ladsgroup]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (doc-uploader) NOPASSWD: ALL',
