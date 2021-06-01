@@ -10,6 +10,11 @@
 #   config template (or the mysql default, if not configured there). When
 #   configured, it must be passed as a string, such as '11G' or '10000000'.
 # * is_critical: config flag to decide whether we page or not for this alert
+# * mysqld_extra_config
+#   Hash of extra config key => value pairs to render in mysqld.conf.d/${title}.cnf
+#   for this instance. Used by the default template config file mariadb/instance.cnf.erb.
+#   If you specify a different template, you can choose to use this if you like.
+#   Default: {}
 define mariadb::instance(
     $port,
     $datadir = 'undefined',
@@ -20,6 +25,7 @@ define mariadb::instance(
     $is_critical = false,
     $read_only = 1,
     $source_dc = mediawiki::state('primary_dc'),
+    $mysqld_extra_configs = {},
 ) {
     if $datadir == 'undefined' {
         $datadir_instance = "/srv/sqldata.${title}"

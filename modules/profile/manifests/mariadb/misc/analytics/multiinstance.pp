@@ -5,7 +5,7 @@
 # a mariadb multi-instance environment that can be used as replica.
 #
 class profile::mariadb::misc::analytics::multiinstance (
-    Hash[String, Stdlib::Datasize] $instances = lookup('profile::mariadb::misc::analytics::multiinstance::instances'),
+    Hash[String, Hash] $instances = lookup('profile::mariadb::misc::analytics::multiinstance::instances'),
     Hash[String, Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports'),
 ) {
     require profile::mariadb::packages_wmf
@@ -33,16 +33,21 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         mode   => '0755',
     }
 
-    $instances.each |$section, $buffer_pool| {
+    $instances.each |$section, $instance_params| {
         $port = $section_ports[$section]
         if (!$port) {
             fail("'${section}' is not a valid section.")
         }
         $prom_port = Integer("1${port}")
-        mariadb::instance { $section:
-            port                    => $port,
-            innodb_buffer_pool_size => $buffer_pool,
-        }
+
+        # $section port will always override anything in $instance_params.
+        $mariadb_instance_params = deep_merge(
+            $instance_params,
+            { 'port' => $port },
+        )
+
+        # Declare a mariadb::instance named $section with $mariadb_instance_params.
+        create_resources('mariadb::instance', { $section => $mariadb_instance_params })
         profile::mariadb::section { $section: }
         profile::mariadb::ferm { $section: port => $port }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }

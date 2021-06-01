@@ -1,4 +1,9 @@
 # db1108
 profile::mariadb::misc::analytics::multiinstance::instances:
-  matomo: 100G
-  analytics_meta: 100G
+  # Instance name to mariadb::instance parameters.
+  matomo:
+    innodb_buffer_pool_size: 100G
+  analytics_meta:
+    innodb_buffer_pool_size: 100G
+    mysqld_extra_configs:
+      explicit_defaults_for_timestamp: 'on'
