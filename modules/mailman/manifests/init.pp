@@ -14,6 +14,4 @@ class mailman (
         acme_chief_cert  => $acme_chief_cert,
         renamed_lists    => $renamed_lists,
     }
-
-    include mailman::scripts
 }

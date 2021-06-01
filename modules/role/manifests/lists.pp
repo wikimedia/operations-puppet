@@ -8,7 +8,6 @@ class role::lists {
     include profile::base::firewall
 
     include profile::lists
-    include profile::lists::jobs
     include profile::locales::extended
     class { 'httpd':
         modules => [
