@@ -24,6 +24,17 @@ class airflow {
         source => 'puppet:///modules/airflow/check_cmd.sh'
     }
 
+    # Wrapper script around find to remove old log files and directories.
+    # Each airflow::instance can set up a systemd timer to call this script
+    # and clean its log files.
+    file { '/usr/local/bin/clean_logs':
+        ensure => 'present',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/airflow/clean_logs.sh'
+    }
+
     systemd::service { 'airflow':
         content => systemd_template('airflow'),
         restart => true,

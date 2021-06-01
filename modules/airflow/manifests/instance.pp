@@ -312,7 +312,7 @@ define airflow::instance(
         ensure      => $clean_logs_ensure,
         user        => 'root',
         description => "Delete airflow@${title} logs older than 90 days",
-        command     => "/usr/bin/find ${logs_folder} -type f -mtime +${clean_logs_older_than_days} -delete && /usr/bin/find ${logs_folder} -type d -mtime +${clean_logs_older_than_days} -empty -delete",
+        command     => "/usr/local/bin/clean_logs ${logs_folder} ${clean_logs_older_than_days}",
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 03:00:00',  # Every day at 3:00
