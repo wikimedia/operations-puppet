@@ -11,9 +11,6 @@ class profile::ncredir(
 ) {
 
     class { '::sslcert::dhparam': }
-    class { 'nginx':
-        variant => 'light',
-    }
 
     mtail::program { 'ncredir':
         source      => 'puppet:///modules/mtail/programs/ncredir.mtail',
