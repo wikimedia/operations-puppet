@@ -176,8 +176,13 @@ host doh2002 {
 }
 
 host doh3001 {
-    hardware ethernet aa:00:00:f6:6a:a1;
+    hardware ethernet aa:00:00:d7:fa:04;
     fixed-address doh3001.wikimedia.org;
+}
+
+host doh3002 {
+    hardware ethernet aa:00:00:16:90:03;
+    fixed-address doh3002.wikimedia.org;
 }
 
 host etherpad1002 {
