@@ -1,3 +1,4 @@
 profile::mail::mx::cert_name: "%{facts.fqdn}"
 profile::mail::mx::cert_subjects: "%{facts.hostname}"
 profile::mail::mx::dkim_domain: wikimedia.org
+profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
