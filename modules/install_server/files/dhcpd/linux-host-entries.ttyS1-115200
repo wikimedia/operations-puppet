@@ -1744,6 +1744,11 @@ host db1124 {
     fixed-address db1124.eqiad.wmnet;
 }
 
+host db1125 {
+    hardware ethernet D0:94:66:59:BD:2E;
+    fixed-address db1125.eqiad.wmnet;
+}
+
 host db1126 {
     hardware ethernet D0:94:66:90:9F:35;
     fixed-address db1126.eqiad.wmnet;
@@ -2588,11 +2593,6 @@ host dbstore1004 {
 host dbstore1005 {
     hardware ethernet D0:94:66:89:CA:E9;
     fixed-address dbstore1005.eqiad.wmnet;
-}
-
-host dbstore1006 {
-    hardware ethernet D0:94:66:59:BD:2E;
-    fixed-address dbstore1006.eqiad.wmnet;
 }
 
 host dbstore1007 {

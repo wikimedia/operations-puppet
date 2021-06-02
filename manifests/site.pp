@@ -482,9 +482,8 @@ node 'db1124.eqiad.wmnet' {
     role(mariadb::core_test)
 }
 
-# TODO decommissioned
 node 'db1125.eqiad.wmnet' {
-    role(insetup)
+    role(mariadb::core_test)
 }
 
 # s4 (commons) core production dbs on codfw
@@ -829,7 +828,7 @@ node 'db2102.codfw.wmnet' {
 }
 
 # Analytics production replicas
-node /^dbstore100[3-6]\.eqiad\.wmnet$/ {
+node /^dbstore100[3-5]\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
 }
 
