@@ -8,5 +8,6 @@ class role::gitlab {
 
     include ::profile::standard
     include ::profile::base::firewall
+    include ::profile::backup::host
     include ::profile::gitlab
 }
