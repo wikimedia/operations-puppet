@@ -2042,11 +2042,6 @@ host db1182 {
 	fixed-address db1182.eqiad.wmnet;
 }
 
-host db1183 {
-	hardware ethernet 2C:EA:7F:85:5C:BE;
-	fixed-address db1183.eqiad.wmnet;
-}
-
 host db1184 {
 	hardware ethernet 2C:EA:7F:85:0F:8D;
 	fixed-address db1184.eqiad.wmnet;
@@ -2598,6 +2593,11 @@ host dbstore1005 {
 host dbstore1006 {
     hardware ethernet D0:94:66:59:BD:2E;
     fixed-address dbstore1006.eqiad.wmnet;
+}
+
+host dbstore1007 {
+    hardware ethernet 2C:EA:7F:85:5C:BE;
+    fixed-address dbstore1007.eqiad.wmnet;
 }
 
 host deploy1002 {

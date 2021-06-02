@@ -833,6 +833,10 @@ node /^dbstore100[3-6]\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
 }
 
+node 'dbstore1007.eqiad.wmnet' {
+    role(insetup)
+}
+
 # database-provisioning and short-term/postprocessing backups servers
 
 node 'dbprov1001.eqiad.wmnet' {
