@@ -165,7 +165,10 @@ profile::airflow::instances:
     monitoring_enabled: false
     airflow_config:
       core:
-        dags_folder: /srv/deployment/analytics/refinery/airflow/dags
+        # NOE: This is a temporary airflow dags directory that will be
+        # used as an initial development playground for the
+        # airflow-analytics-test instance.
+        dags_folder: /srv/airflow-analytics-test-dags
         security: kerberos
         executor: LocalExecutor
         # This can be an ERB template that will be rendered in airflow::instance.
