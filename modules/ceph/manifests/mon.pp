@@ -51,9 +51,8 @@ class ceph::mon(
     }
 
     service { "ceph-mon@${::hostname}":
-        ensure    => running,
-        enable    => true,
-        require   => Exec['ceph-mon-mkfs'],
-        subscribe => File['/etc/ceph/ceph.conf'],
+        ensure  => running,
+        enable  => true,
+        require => [Exec['ceph-mon-mkfs'], File['/etc/ceph/ceph.conf']],
     }
 }
