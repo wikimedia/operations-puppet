@@ -141,9 +141,9 @@ class profile::toolforge::checker {
         'DEBUG'         => true,
         'DUMPS_PATH'    => '/public/dumps/public/enwiki',
         'ETCD_K8S' => [
-            "tools-k8s-etcd-10.${::labsproject}.eqiad1.wikimedia.cloud",
-            "tools-k8s-etcd-11.${::labsproject}.eqiad1.wikimedia.cloud",
-            "tools-k8s-etcd-12.${::labsproject}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-13.${::labsproject}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-14.${::labsproject}.eqiad1.wikimedia.cloud",
+            "tools-k8s-etcd-15.${::labsproject}.eqiad1.wikimedia.cloud",
         ],
         'ETCD_AUTH' => {
             'KEY'  => $etcd_cert_priv,
