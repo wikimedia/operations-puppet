@@ -173,7 +173,7 @@ class profile::mail::mx (
         owner   => 'root',
         group   => 'Debian-exim',
         mode    => '0444',
-        content => template('profile/mail.mx/otrs.conf.erb')
+        content => template('profile/mail/mx/otrs.conf.erb')
     }
     file {'/usr/local/bin/otrs_aliases':
         ensure => file,
