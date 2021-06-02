@@ -900,6 +900,11 @@ node /^(doh200[1-2]|malmok)\.wikimedia\.org$/ {
     role(wikidough)
 }
 
+# Wikidough Europe (T283852)
+node /^(doh300[1-2])\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
