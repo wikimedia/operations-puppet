@@ -817,7 +817,7 @@ node 'db2102.codfw.wmnet' {
 }
 
 # Analytics production replicas
-node /^dbstore100[3-7]\.eqiad\.wmnet$/ {
+node /^dbstore100([3-5]|7)\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
 }
 
