@@ -3,3 +3,4 @@ profile::aptrepo::wikimedia::homedir: '/root'
 profile::aptrepo::wikimedia::gpg_user: 'root'
 # The public keyring is built/managed by Puppet
 profile::aptrepo::wikimedia::gpg_secring: 'apt/secring.gpg'
+profile::nginx::variant: 'light'

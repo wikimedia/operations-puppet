@@ -15,10 +15,6 @@
 
 class install_server::web_server {
 
-    class { '::nginx':
-        variant => 'light',
-    }
-
     $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
 
     file { '/etc/nginx/nginx.conf':

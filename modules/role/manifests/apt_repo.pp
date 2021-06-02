@@ -2,11 +2,12 @@
 class role::apt_repo {
     system::role { 'webserver-and-APT-repository': }
 
-    include ::profile::standard
-    include ::profile::base::firewall
-    include ::profile::backup::host
+    include profile::standard
+    include profile::base::firewall
+    include profile::backup::host
 
-    include ::profile::installserver::http
-    include ::profile::installserver::preseed
-    include ::profile::aptrepo::wikimedia
+    include profile::nginx
+    include profile::installserver::http
+    include profile::installserver::preseed
+    include profile::aptrepo::wikimedia
 }
