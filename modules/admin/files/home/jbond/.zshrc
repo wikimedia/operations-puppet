@@ -64,6 +64,23 @@ sudo-command-line() {
         LBUFFER="sudo $LBUFFER"
     fi
 }
+function set_proxy {
+  export HTTP_PROXY=http://webproxy:8080
+  export HTTPS_PROXY=http://webproxy:8080
+  export http_proxy=http://webproxyt:8080
+  export https_proxy=http://webproxy:8080
+  export NO_PROXY=127.0.0.1,::1,localhost,.wmnet,.wikimedia.org
+  export no_proxy=127.0.0.1,::1,localhost,.wmnet,.wikimedia.org
+}
+
+function clear_proxy {
+  unset HTTP_PROXY
+  unset HTTPS_PROXY
+  unset http_proxy
+  unset https_proxy
+  unset NO_PROXY
+  unset no_proxy
+}
 if [ $commands[kubectl] ]
 then
   source <(kubectl completion zsh)
