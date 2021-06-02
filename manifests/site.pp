@@ -467,12 +467,6 @@ node /^db1(121|141|142|143|147|148|149|160)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-# s4-test hosts on eqiad
-# temporarilly misc
-node 'db1183.eqiad.wmnet' {
-    role(mariadb::core_test)
-}
-
 node 'db1124.eqiad.wmnet' {
     role(mariadb::core_test)
 }
@@ -825,10 +819,6 @@ node 'db2102.codfw.wmnet' {
 # Analytics production replicas
 node /^dbstore100[3-5]\.eqiad\.wmnet$/ {
     role(mariadb::dbstore_multiinstance)
-}
-
-node 'dbstore1007.eqiad.wmnet' {
-    role(insetup)
 }
 
 # database-provisioning and short-term/postprocessing backups servers

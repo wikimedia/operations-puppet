@@ -1,4 +1,0 @@
-# db1183
-# Testing section
-mariadb::shard: 'test-s4'
-profile::base::notifications: disabled
