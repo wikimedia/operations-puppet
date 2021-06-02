@@ -48,5 +48,11 @@ class alerts::deploy(
         command     => "/usr/local/bin/alerts-deploy --cleanup --alerts-dir ${git_dir} ${deploy_dir}",
         user        => 'alerts-deploy',
         refreshonly => true,
+        notify      => Exec['reload all prometheus instances'],
+    }
+
+    exec { 'reload all prometheus instances':
+        command     => '/bin/systemctl reload prometheus@*',
+        refreshonly => true,
     }
 }
