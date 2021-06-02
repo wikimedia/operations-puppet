@@ -18,6 +18,13 @@
 # @param enable_slo enable the Single Logout (SLO) endpoint, this is called by CAS when someone logs out of the sso session
 # @attribute_delimiter mod_auth_cas will set the value of the attribute header (as described in CASAttributePrefix)
 #   to <attrvalue><CASAttributeDelimiter><attrvalue> in the case of multiple attribute values.
+# @param cookie_same_site Specify the value for the 'SameSite=' parameter in the Set-Cookie header.
+#    Allowed values are 'None', 'Lax', and 'Strict'.
+# @param cookie_secure Set the optional 'Secure' attribute for cookies issued by mod_auth_cas.
+#    Set the Secure attribute as described in in RFC 6265. This flag prevents the mod_auth_cas
+#    cookies from being sent over an unencrypted HTTP connection. By default, mod_auth_cas sets the
+#    'Secure' attribute depending on information about the connection (the 'Auto' option).
+#    The options 'On' and 'Off' can be used to override the automatic behaviour.
 define profile::idp::client::httpd::site (
     String[1]                     $vhost_content,
     Stdlib::Host                  $virtual_host         = $title,
@@ -35,6 +42,8 @@ define profile::idp::client::httpd::site (
     String[1,1]                   $attribute_delimiter = ':',
     Enum['staging', 'production'] $environment         = 'production',
     Boolean                       $enable_slo          = true,
+    Enum['None', 'Lax', 'Strict'] $cookie_same_site    = 'Lax',
+    Enum['Auto', 'On', 'Off']     $cookie_secure       = 'Auto',
     Optional[Hash[String,Any]]    $vhost_settings      = {},
     Optional[Array[String[1]]]    $required_groups     = [],
     Optional[String[1]]           $acme_chief_cert     = undef,
@@ -62,6 +71,8 @@ define profile::idp::client::httpd::site (
         'CASAttributeDelimiter' => $attribute_delimiter,
         'CASValidateSAML'       => $validate_saml.bool2str('On', 'Off'),
         'CASSSOEnabled'         => $enable_slo.bool2str('On', 'Off'),
+        'CASCookieSameSite'     => $cookie_same_site,
+        'CASCookieSecure'       => $cookie_secure,
     }
 
     $cas_auth_require = $required_groups.empty? {
