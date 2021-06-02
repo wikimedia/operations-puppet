@@ -64,20 +64,9 @@ class profile::analytics::cluster::packages::statistics {
         'virtualenv',
         'libapache2-mod-python',
         'python3-mock',
-        'python3-mysqldb',
-        'python3-boto',              # Amazon S3 access (to get zero sms logs)
-        'python3-ua-parser',
-        'python3-netaddr',
-        'python3-pymysql',
         'python3-virtualenv',        # T84378
         'python3-venv',
         'python3-dev',               # T83316
-        'python3-protobuf',
-        'python3-unidecode',
-        'python3-oauth2client',      # T197896
-        'python3-oauthlib',          # T197896
-        'python3-requests-oauthlib', # T197896
-        'python3-ua-parser',
     ])
 
     # FORTRAN packages (T89414)
