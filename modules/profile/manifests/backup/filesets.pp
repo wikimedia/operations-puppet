@@ -48,6 +48,9 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'var-lib-jenkins-backups':
         includes => [ '/var/lib/jenkins/backups' ]
     }
+    bacula::director::fileset { 'gitlab':
+        includes => [ '/srv/gitlab-backup/latest', '/etc/gitlab/config_backup/latest' ]
+    }
     require ::profile::lists::exclude_backups
     bacula::director::fileset { 'var-lib-mailman':
         includes => [ '/var/lib/mailman' ],

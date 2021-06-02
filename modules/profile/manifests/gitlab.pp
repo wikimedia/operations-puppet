@@ -9,6 +9,11 @@ class profile::gitlab(
 
     $acme_chief_cert = 'gitlab'
 
+    # Bacula backups, also see profile::backup::filesets (T274463)
+    backup::set { 'gitlab':
+        jobdefaults => 'Daily-production',  # full backups every day
+    }
+
     exec {'Reload nginx':
       command     => '/usr/bin/gitlab-ctl hup nginx',
       refreshonly => true,
