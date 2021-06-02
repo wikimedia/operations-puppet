@@ -269,11 +269,6 @@ node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
     role(syslog::centralserver)
 }
 
-# system for censorship monitoring scripts (T239250)
-node 'cescout1001.eqiad.wmnet' {
-    role(cescout)
-}
-
 node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(chartmuseum)
 }
