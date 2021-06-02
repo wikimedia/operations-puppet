@@ -1,4 +1,0 @@
-
-
-Debian 10 (buster) amd64 (Wikimedia edition)
-

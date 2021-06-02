@@ -7675,7 +7675,6 @@ host wdqs2002 {
 host wdqs2003 {
     hardware ethernet 94:18:82:71:f7:30;
     fixed-address wdqs2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/buster-raid0-installer/";
 }
 
 host wdqs2004 {
