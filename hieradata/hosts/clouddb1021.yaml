@@ -11,3 +11,4 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
 
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold: 98
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold: 95
+profile::base::notifications: disabled

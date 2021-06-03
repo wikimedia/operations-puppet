@@ -1,3 +1,4 @@
 # db1121
 mariadb::shard: 's4'
 mariadb::binlog_format: 'ROW'
+profile::base::notifications: disabled
