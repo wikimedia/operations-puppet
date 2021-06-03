@@ -196,6 +196,13 @@ sub cluster_fe_ratelimit {
 			}
 		}
 
+		// Bingbot excessive media fetch limiting: 100/10s (10/s long term, with 100 burst)
+		if (req.http.User-Agent ~ "bingbot") {
+			if (vsthrottle.is_denied("bingbot:" + req.http.X-Client-IP, 100, 10s)) {
+				return (synth(429, "Too Many Requests"));
+			}
+		}
+
 		// geoshape limit rate: 10/10s (1/s long term, with 10 burst)
 		if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>" && req.url ~ "/geoshape") {
 			if (vsthrottle.is_denied("maps-geoshape:" + req.http.X-Client-IP, 10, 10s)) {
