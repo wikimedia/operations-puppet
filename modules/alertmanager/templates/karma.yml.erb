@@ -25,6 +25,11 @@ labels:
     - 'info'
   color:
     custom:
+      # Highlight 'instance' (host) label for better visibility
+      instance:
+        - value_re: '.*'
+          color: '#696969'
+
       # Match Icinga background colors for 'severity'
       severity:
         - value: 'page'
