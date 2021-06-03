@@ -153,10 +153,15 @@ device_path = /dev/sdb
 
 [redis]
 device_path = /dev/sdb
+docker_image = quay.io/wikimedia-cloud-services/redis
 # For redis, the following are the defaults for backup, and restore:
 # backup_strategy = RedisBackup
 # backup_namespace = trove.guestagent.strategies.backup.experimental.redis_impl
 # restore_namespace = trove.guestagent.strategies.restore.experimental.redis_impl
+
+[postgres]
+device_path = /dev/sdb
+docker_image = quay.io/wikimedia-cloud-services/postgres
 
 [percona]
 device_path = /dev/sdb

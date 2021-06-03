@@ -226,6 +226,10 @@ device_path = /dev/sdb
 ignore_users = os_admin, root
 ignore_dbs = mysql, information_schema, performance_schema
 
+[postgres]
+tcp_ports = 5432
+volume_support = True
+device_path = /dev/sdb
 
 [redis]
 tcp_ports = 6379, 16379
