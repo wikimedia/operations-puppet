@@ -7,6 +7,7 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `hue`.* TO `<%= @dump_us
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `oozie`.* TO `<%= @dump_user %>`@`10.64.0.95`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `search_airflow`.* TO `<%= @dump_user %>`@`10.64.0.95`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `superset_production`.* TO `<%= @dump_user %>`@`10.64.0.95`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO `<%= @dump_user %>`@`10.64.0.95`;
 -- Grants for '<%= @dump_user %>'@'10.64.16.31'
 GRANT EVENT, FILE, LOCK TABLES, RELOAD, REPLICATION CLIENT, SELECT, SHOW VIEW, SUPER, TRIGGER ON *.* TO `<%= @dump_user %>`@`10.64.16.31` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`10.64.16.31`;
@@ -16,6 +17,7 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `hue`.* TO `<%= @dump_us
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `oozie`.* TO `<%= @dump_user %>`@`10.64.16.31`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `search_airflow`.* TO `<%= @dump_user %>`@`10.64.16.31`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `superset_production`.* TO `<%= @dump_user %>`@`10.64.16.31`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO `<%= @dump_user %>`@`10.64.16.31`;
 -- Grants for '<%= @dump_user %>'@'10.64.32.26'
 GRANT EVENT, FILE, LOCK TABLES, RELOAD, REPLICATION CLIENT, SELECT, SHOW VIEW, SUPER, TRIGGER ON *.* TO `<%= @dump_user %>`@`10.64.32.26` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`10.64.32.26`;
@@ -25,6 +27,7 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `hue`.* TO `<%= @dump_us
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `oozie`.* TO `<%= @dump_user %>`@`10.64.32.26`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `search_airflow`.* TO `<%= @dump_user %>`@`10.64.32.26`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `superset_production`.* TO `<%= @dump_user %>`@`10.64.32.26`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO `<%= @dump_user %>`@`10.64.32.26`;
 -- Grants for '<%= @dump_user %>'@'2620:0:861:101:10:64:0:95'
 GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:95` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:95`;
@@ -34,6 +37,7 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `hue`.* TO `<%= @dump_us
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `oozie`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:95`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `search_airflow`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:95`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `superset_production`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:95`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:95`;
 -- Grants for '<%= @dump_user %>'@'2620:0:861:102:10:64:16:31'
 GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:31` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:31`;
@@ -43,6 +47,7 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `hue`.* TO `<%= @dump_us
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `oozie`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:31`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `search_airflow`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:31`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `superset_production`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:31`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:31`;
 -- Grants for '<%= @dump_user %>'@'2620:0:861:103:10:64:32:26'
 GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
@@ -52,4 +57,4 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `hue`.* TO `<%= @dump_us
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `oozie`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `search_airflow`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `superset_production`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
-
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
