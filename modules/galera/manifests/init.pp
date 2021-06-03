@@ -28,9 +28,7 @@ class galera(
 
     # This will install the latest mariadb + required
     #  galera components.
-    package { 'mariadb-server':
-        ensure => 'present',
-    }
+    ensure_packages(['mariadb-server', 'mariadb-backup'])
 
     $service_ensure = $enabled ? {
         true => present,
