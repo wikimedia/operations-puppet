@@ -144,6 +144,10 @@ device_path = /dev/sdb
 # Databases to ignore for db create/list/delete operations
 # ignore_dbs = mysql, information_schema, performance_schema
 
+[mariadb]
+docker_image = quay.io/wikimedia-cloud-services/mariadb
+device_path = /dev/sdb
+
 [vertica]
 device_path = /dev/sdb
 # For vertica, following are the defaults needed:
