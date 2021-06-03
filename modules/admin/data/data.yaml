@@ -4040,7 +4040,7 @@ users:
     uid: 3720
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHANABlTMFTI2RSUFDnz8yV+Ew74/zho1rXS7HHF+9/3 janstee@Jaimes-MBP
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKIp5RxtQOU35h+P/B+MgpSarZJnr73c8aIMBGEaZnT9 janstee@wmf2682
     krb: present
   rmurthy:
     ensure: present
