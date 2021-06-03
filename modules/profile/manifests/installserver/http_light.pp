@@ -1,8 +1,6 @@
 # Installs a web server for "light" install_servers without APT
 class profile::installserver::http_light {
 
-    class { '::nginx': }
-
     file { '/etc/nginx/nginx.conf':
         content => template('install_server/nginx.conf.erb'),
         tag     => 'nginx',

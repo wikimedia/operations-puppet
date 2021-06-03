@@ -2,13 +2,14 @@
 class role::installserver::light {
     system::role { 'installserver-without-apt-repo': }
 
-    include ::profile::standard
-    include ::profile::base::firewall
-    include ::profile::backup::host
+    include profile::standard
+    include profile::base::firewall
+    include profile::backup::host
 
-    include ::profile::installserver::tftp
-    include ::profile::installserver::dhcp
-    include ::profile::installserver::proxy
-    include ::profile::installserver::http_light
-    include ::profile::prometheus::squid_exporter
+    include profile::nginx
+    include profile::installserver::tftp
+    include profile::installserver::dhcp
+    include profile::installserver::proxy
+    include profile::installserver::http_light
+    include profile::prometheus::squid_exporter
 }
