@@ -185,6 +185,11 @@ host doh3002 {
     fixed-address doh3002.wikimedia.org;
 }
 
+host doh5001 {
+    hardware ethernet aa:00:00:9b:11:b0;
+    fixed-address doh5001.wikimedia.org;
+}
+
 host etherpad1002 {
     hardware ethernet aa:00:00:70:0e:8b;
     fixed-address etherpad1002.eqiad.wmnet;
