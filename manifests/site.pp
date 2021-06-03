@@ -900,6 +900,11 @@ node /^(doh200[1-2]|doh300[1-2]|malmok)\.wikimedia\.org$/ {
     role(wikidough)
 }
 
+# Wikidough Singapore (T284246)
+node /^(doh500[1-2])\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
