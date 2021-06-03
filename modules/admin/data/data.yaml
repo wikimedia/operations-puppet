@@ -1427,6 +1427,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBywi8bf5M9uSxINI56l+r0jSZR40NRDk/Lw7TU4xHws phuedx@wikimedia.org
     uid: 3926
     email: samsmith@wikimedia.org
+    krb: present
   # T109386
   reedy:
     ensure: present
