@@ -92,6 +92,8 @@ receivers:
 - name: 'sre-page'
   victorops_configs:
     - routing_key: 'sre-batphone'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
 
 - name: 'noc-ircmail'
   webhook_configs:
