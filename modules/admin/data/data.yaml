@@ -3313,6 +3313,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZcJ3VhuvTvkRNYmNB6RW4GInY8RQOdjjXSEz9UDS27
     uid: 20295
     email: jlinehan@wikimedia.org
+    krb: present
   fsero:
     ensure: present
     realname: Fabian Selles Rosa
