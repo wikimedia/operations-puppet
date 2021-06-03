@@ -2591,7 +2591,7 @@ service::catalog:
       conftool:
         cluster: wdqs-internal
         service: wdqs
-      depool_threshold: ".5"
+      depool_threshold: ".3"
       enabled: true
       monitors:
         IdleConnection:
