@@ -3,19 +3,20 @@
 #
 # filtertags: labs-project-monitoring
 class profile::prometheus::ops (
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-    String $storage_retention             = lookup('prometheus::server::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
-    Integer $max_chunks_to_persist        = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
-    Integer $memory_chunks                = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
-    Stdlib::Unixpath $targets_path        = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
-    Array[Stdlib::Host] $bastion_hosts    = lookup('bastion_hosts', { 'default_value' => [] }),
-    Stdlib::Host $netmon_server           = lookup('netmon_server'),
-    Wmflib::Ensure $ensure_rsync          = lookup('profile::prometheus::ops::ensure_rsync'),
-    String $replica_label                 = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
-    Boolean $enable_thanos_upload         = lookup('profile::prometheus::ops::enable_thanos_upload', { 'default_value' => false }),
-    Optional[String] $thanos_min_time     = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
-    Array $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
-    Boolean $disable_compaction           = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
+    Array[Stdlib::Host] $prometheus_nodes              = lookup('prometheus_nodes'),
+    String $storage_retention                          = lookup('prometheus::server::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
+    Optional[Stdlib::Datasize] $storage_retention_size = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
+    Integer $max_chunks_to_persist                     = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
+    Integer $memory_chunks                             = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
+    Stdlib::Unixpath $targets_path                     = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
+    Array[Stdlib::Host] $bastion_hosts                 = lookup('bastion_hosts', { 'default_value' => [] }),
+    Stdlib::Host $netmon_server                        = lookup('netmon_server'),
+    Wmflib::Ensure $ensure_rsync                       = lookup('profile::prometheus::ops::ensure_rsync'),
+    String $replica_label                              = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
+    Boolean $enable_thanos_upload                      = lookup('profile::prometheus::ops::enable_thanos_upload', { 'default_value' => false }),
+    Optional[String] $thanos_min_time                  = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
+    Array $alertmanagers                               = lookup('alertmanagers', {'default_value' => []}),
+    Boolean $disable_compaction                        = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -1911,14 +1912,15 @@ class profile::prometheus::ops (
     }
 
     prometheus::server { 'ops':
-        listen_address        => "127.0.0.1:${port}",
-        storage_retention     => $storage_retention,
-        max_chunks_to_persist => $max_chunks_to_persist,
-        memory_chunks         => $memory_chunks,
-        min_block_duration    => '2h',
-        max_block_duration    => $max_block_duration,
-        alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
-        scrape_configs_extra  => [
+        listen_address         => "127.0.0.1:${port}",
+        storage_retention      => $storage_retention,
+        storage_retention_size => $storage_retention_size,
+        max_chunks_to_persist  => $max_chunks_to_persist,
+        memory_chunks          => $memory_chunks,
+        min_block_duration     => '2h',
+        max_block_duration     => $max_block_duration,
+        alertmanagers          => $alertmanagers.map |$a| { "${a}:9093" },
+        scrape_configs_extra   => [
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
@@ -1934,7 +1936,7 @@ class profile::prometheus::ops (
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs
         ].flatten,
-        global_config_extra   => $config_extra,
+        global_config_extra    => $config_extra,
     }
 
     monitoring::check_prometheus { 'prometheus_config_reload_fail':
