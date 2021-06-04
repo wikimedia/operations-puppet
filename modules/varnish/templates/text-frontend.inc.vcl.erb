@@ -157,6 +157,10 @@ sub cluster_fe_recv_pre_purge {
 		return (synth(403, "Noise"));
 	}
 
+	if (req.url ~ "&limit=2000&action=history") {
+		return (synth(403, "Excessive load"));
+	}
+
 	// FIXME: we're seeing an issue with Range requests and gzip/gunzip.
 	// Disable Range requests for now.
 	unset req.http.Range;
