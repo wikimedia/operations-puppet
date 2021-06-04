@@ -263,6 +263,7 @@ profile::acme_chief::certificates:
         authorized_regexes:
         - '^doh200[12]\.wikimedia\.org$'
         - '^doh300[12]\.wikimedia\.org$'
+        - '^doh5001\.wikimedia\.org$'
         - '^malmok\.wikimedia\.org$'
     wikiworkshop:
         CN: 'wikiworkshop.org'
