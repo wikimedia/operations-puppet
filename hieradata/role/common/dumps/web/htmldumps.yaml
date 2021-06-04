@@ -1,3 +1,5 @@
 cluster: dumps
 profile::standard::admin_groups:
   - htmldumps-admin
+# includes module for bandwidth limits
+profile::nginx::variant: 'extras'

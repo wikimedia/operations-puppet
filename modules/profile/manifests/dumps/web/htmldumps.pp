@@ -1,5 +1,4 @@
 class profile::dumps::web::htmldumps {
-    require profile::dumps::web::nginx
 
     class {'::dumps::web::htmldumps': htmldumps_server => 'htmldumper1001.eqiad.wmnet'}
 
