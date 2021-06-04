@@ -962,8 +962,16 @@ hadoop_clusters:
     # https://community.hortonworks.com/articles/43839/scaling-the-hdfs-namenode-part-2.html
     # 20 * log2(Cluster Size)
     dfs_namenode_handler_count: 127
+
+    # We have experienced some issues with hdfs saveNamespace with a number of handler
+    # threads lower than the number of total datanodes running in the cluster.
+    # More specifically, during saveNamespace it seemed as if all service handler
+    # threads got blocked on a read lock, apparently held by the thread saving the fsimage
+    # file. The idea is to keep the number of threads a little more than the number
+    # of datanodes, to allow room for other threads responding to the ZKFC health probes.
+    # More info: T283733
     dfs_namenode_service_port: 8040
-    dfs_namenode_service_handler_count: 60
+    dfs_namenode_service_handler_count: 90
 
     # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
     # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
