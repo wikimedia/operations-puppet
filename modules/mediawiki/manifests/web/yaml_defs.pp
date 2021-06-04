@@ -31,7 +31,7 @@ class mediawiki::web::yaml_defs(
 
     file { $path:
         ensure  => present,
-        content => to_yaml({'mediawiki' => {'sites' => $all_defs}}),
+        content => to_yaml({'mw' => {'sites' => $all_defs}}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
