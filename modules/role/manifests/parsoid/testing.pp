@@ -6,20 +6,19 @@ class role::parsoid::testing {
     }
 
     ## Basics
-    include ::profile::standard
-    include ::profile::base::firewall
+    include profile::standard
+    include profile::base::firewall
 
     ## Parsoid
-    include ::profile::parsoid::testing
+    include profile::nginx
+    include profile::parsoid::testing
 
     ## MediaWiki
     # We don't include things like automatic php restarts
     # or prometheus exporters, as this is just a testing
     # installation.
-    include ::role::mediawiki::common
-    include ::profile::mediawiki::php
-    include ::profile::mediawiki::php::monitoring
-    include ::profile::mediawiki::webserver
-
-
+    include role::mediawiki::common
+    include profile::mediawiki::php
+    include profile::mediawiki::php::monitoring
+    include profile::mediawiki::webserver
 }
