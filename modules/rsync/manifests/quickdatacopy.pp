@@ -113,12 +113,6 @@ define rsync::quickdatacopy(
           $timer_ensure = 'absent'
       }
 
-      cron { "rsync-${title}":
-          ensure  => absent,
-          minute  => '*/10',
-          command => "/usr/local/sbin/sync-${title} >/dev/null 2>&1",
-      }
-
       systemd::timer::job { "rsync-${title}":
           ensure      => $timer_ensure,
           description => 'Transfer data periodically between hosts',
