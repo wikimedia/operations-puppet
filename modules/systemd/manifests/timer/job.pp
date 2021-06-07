@@ -185,8 +185,12 @@ define systemd::timer::job(
             false => 'isequal',
             true  => 'startswith',
         }
+        $syslog_title = $syslog_identifier ? {
+            default => $syslog_identifier,
+            undef   => $safe_title,
+        }
 
-        systemd::syslog { $safe_title:
+        systemd::syslog { $syslog_title:
             ensure                 => $ensure,
             base_dir               => $logfile_basedir,
             log_filename           => $logfile_name,
