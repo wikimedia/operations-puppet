@@ -1986,6 +1986,7 @@ users:
     expiry_date: 2021-11-14
     expiry_contact: lzia@wikimedia.org
     email: robert.west@epfl.ch
+    krb: present
   jhernandez:
     ensure: present
     gid: 500
