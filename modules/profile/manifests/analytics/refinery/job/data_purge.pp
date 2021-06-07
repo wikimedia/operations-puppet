@@ -104,48 +104,6 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
-
-    # Keep this many days of refined event data (all data that comes via EventGate instances).
-    $event_refined_retention_days = 90
-    # Most (non EventLogging legacy) event data does not contain PII, so we keep it indefinetly.
-    # Only tables with PII must be purged after $event_refined_retention_days.
-    #
-    # Maps dataset (table + base path in /wmf/data/event/$table) to the refinery-drop-older-than
-    # --execute checksum to use.  A refinery-drop-refined-event job will be declared for
-    # each entry in this hash.
-    #
-    $event_refined_to_drop = {
-        'mediawiki_api_request'          => 'e06eaf4f3c6894fe7b943d9b40f83ace',
-        'mediawiki_cirrussearch_request' => 'e93b86033b2025f8a793c8b170e6474f',
-        'wdqs_external_sparql_query'     => 'f32f99c8fa41b56782bf22e1866cd79b',
-        'wdqs_internal_sparql_query'     => '15f545ef0fe0ba8573c568ded41fb6e3',
-    }
-
-    # Since we are only dropping very specific event data, we don't want to use
-    # refinery-drop-older-than with a --base-path of /wmf/data/event.
-    # Doing so would cause it to hdfs dfs -ls glob EVERY event dataset path and then
-    # prune the results for directories to drop.  By separating each dataset drop
-    # into an individual job and using a --base-path specific to that dataset's LOCATION path,
-    # we avoid having to ls glob and parse all other event dataset paths.
-    #
-    # NOTE: The tables parameter uses a double $$ sign. Systemd will transform this into a single $ sign.
-    # So, if you want to make changes to this job, make sure to execute all tests (DRY-RUN) with just 1
-    # single $ sign, to get the correct checksum. And then add the double $$ sign here.
-    # Also, we need the systemd to escape our \w, AND we need puppet to do the same.  So we use
-    # \\\\w to result in \\w in systemd which then ends up executing with a \w.  DRY-RUN with just
-    # \w to get the proper checksum.
-    $event_refined_to_drop.each |String $dataset, String $checksum| {
-        kerberos::systemd_timer { "refinery-drop-refined-event.${dataset}":
-            # Being replaced by drop_event job
-            ensure      => 'absent',
-            description => "Drop refined event.${dataset} data imported on Hive/HDFS following data retention policies.",
-            command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='^${dataset}$$' --base-path='/wmf/data/event/${dataset}' --path-format='datacenter=\\\\w+(/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?)?' --older-than='90' --skip-trash --execute='${checksum}'",
-            interval    => '*-*-* 00:00:00',
-            environment => $systemd_env,
-            user        => 'analytics',
-        }
-    }
-
     # Drop old data from all tables in the Hive event database with tables in /wmf/data/event.
     # Data that should be kept indefinitely is sanitized by refine_sanitize jobs into the
     # event_sanitized Hive database, so all data older than 90 days should be safe to drop.
@@ -154,7 +112,13 @@ class profile::analytics::refinery::job::data_purge (
         description => 'Drop data in Hive event database older than 90 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='.*' --base-path='/wmf/data/event' --path-format='[^/]+(/datacenter=[^/]+)?/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='90' --execute='ea43326f56fd374d895bb931dc0ce3d4' --log-file='${drop_event_log_file}'",
         interval    => '*-*-* 00:00:00',
-        environment => $systemd_env,
+        # An issue with hive-log4j and timers was causing errors when the Hive CLI was being
+        # used by the same users at the same time.  We should eventually stop shelling out
+        # to the Hive CLI in refinery-drop-older-than, but for now this works around
+        # the problem by using a dedicated Hive CLI log file (in /tmp/analytics) for this job.
+        # See /etc/hive/conf/hive-log4j.conf for more info.
+        # https://phabricator.wikimedia.org/T283126
+        environment => $systemd_env.merge({'HADOOP_CLIENT_OPTS' => '-Dhive.log.file=hive-drop_event.log'}),
         user        => 'analytics',
     }
 
