@@ -182,11 +182,11 @@ class profile::toolforge::prometheus (
                     },
                     {
                         'source_labels' => ['__meta_kubernetes_pod_name'],
-                        'regex'         => '(nginx-ingress-[a-zA-Z0-9]+-[a-zA-Z0-9]+)',
+                        'regex'         => '(nginx-ingress-gen2-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+)',
                         'target_label'  => '__metrics_path__',
                         # lint:ignore:single_quote_string_with_variables
                         # PORT is not arbitrary! the pod is listening on that one
-                        'replacement'   => '/api/v1/namespaces/ingress-nginx/pods/${1}:10254/proxy/metrics',
+                        'replacement'   => '/api/v1/namespaces/ingress-nginx-gen2/pods/${1}:10254/proxy/metrics',
                         # lint:endignore
                     },
                 ]
