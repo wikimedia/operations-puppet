@@ -5,9 +5,6 @@ profile::standard::admin_groups:
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
-profile::bigtop::apt::component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
-
 profile::hive::client::hive_service_name: 'analytics-hive'
 
 profile::hue::database_host: 'an-coord1001.eqiad.wmnet'

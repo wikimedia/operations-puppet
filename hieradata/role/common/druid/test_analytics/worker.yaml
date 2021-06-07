@@ -7,13 +7,9 @@ prometheus::node_exporter::collectors_extra:
   - meminfo_numa
 
 # Avoid an explicit pin to the bigtop apt component that can
-# force packages shared between the cdh and debian upstream distribution
+# force packages shared between the bigtop and debian upstream distribution
 # to prefer the bigtop version (we do it only for Hadoop nodes).
 profile::bigtop::apt::pin_release: false
-
-# Testing Apache BigTop in T244499
-profile::bigtop::apt::component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 

@@ -3,10 +3,6 @@ cluster: analytics
 profile::standard::admin_groups:
   - analytics-admins
 
-# Testing Apache BigTop in T244499
-profile::bigtop::apt::component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
-
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-test-hive'

@@ -13,10 +13,6 @@ profile::standard::admin_groups_no_ssh:
 # This is needed here because we deploy TLS keys by setting ensure_ssl_config: true.
 profile::java::hardened_tls: true
 
-# Testing Apache BigTop in T244499
-profile::bigtop::apt::component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
-
 profile::hadoop::master::monitoring_enabled: true
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'

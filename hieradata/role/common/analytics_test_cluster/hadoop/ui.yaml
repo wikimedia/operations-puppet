@@ -7,9 +7,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-test-hive'
 
-profile::bigtop::apt::component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
-
 profile::hue::database_host: 'an-test-coord1001.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics-test-hive.eqiad.wmnet'
 profile::hue::monitoring_enabled: false
@@ -28,10 +25,6 @@ profile::hue::hive_thrift_version: 7
 profile::hue::database_name: 'hue_test'
 profile::hue::use_hue4_settings: true
 profile::hue::enable_cas: false
-
-# Testing Apache BigTop in T244499
-profile::bigtop::apt::component: 'bigtop15'
-profile::analytics::cluster::packages::common::use_bigtop_settings: true
 
 profile::oozie::client::oozie_service: 'analytics-test-oozie'
 
