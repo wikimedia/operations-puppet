@@ -4398,6 +4398,14 @@ users:
     krb: present
     expiry_date: 2021-07-31
     expiry_contact: jbennett@wikimedia.org
+  jelto:
+    ensure: present
+    realname: Jelto Wodstrcil
+    email: jwodstrcil@wikimedia.org
+    uid: 32265
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdWEos7FwxZ4JpK7zo05iCggujoIkojNUH93pwQC4/l jelto-wmf@x1'
 
 ldap_only_users:
   abartov:
