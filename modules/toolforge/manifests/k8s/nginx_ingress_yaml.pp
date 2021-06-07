@@ -10,9 +10,7 @@ class toolforge::k8s::nginx_ingress_yaml (
     # because /etc/kubernetes
 
     file { '/etc/kubernetes/psp/nginx-ingress-psp.yaml':
-        ensure  => present,
-        source  => 'puppet:///modules/toolforge/k8s/nginx-ingress-psp.yaml',
-        require => File['/etc/kubernetes'],
+        ensure  => absent,
     }
 
     file { '/etc/kubernetes/nginx-ingress-helm-values.yaml':
@@ -22,9 +20,7 @@ class toolforge::k8s::nginx_ingress_yaml (
     }
 
     file { '/etc/kubernetes/nginx-ingress.yaml':
-        ensure  => present,
-        content => template('toolforge/k8s/nginx-ingress.yaml.erb'),
-        require => File['/etc/kubernetes'],
+        ensure  => absent,
     }
 
     if $::labsproject == 'toolsbeta' {
