@@ -5,11 +5,6 @@ class profile::dumps::distribution::web (
     $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
     String $blocked_user_agent_regex = lookup('profile::dumps::distribution::blocked_user_agent_regex'),
 ){
-    # includes module for bandwidth limits
-    class { '::nginx':
-        variant => 'extras',
-    }
-
     class { '::sslcert::dhparam': }
     class {'::dumps::web::xmldumps':
         is_primary_server        => $is_primary_server,
