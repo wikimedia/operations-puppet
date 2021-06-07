@@ -25,6 +25,15 @@ route:
 
     # Team routes
     - match:
+        team: 'sre'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'sre-page'
+        - match:
+            severity: 'critical'
+          receiver: 'sre-irc'
+    - match:
         team: 'dcops'
       receiver: 'dcops-mail'
       routes:
