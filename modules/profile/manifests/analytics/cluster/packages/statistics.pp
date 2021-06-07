@@ -9,7 +9,7 @@ class profile::analytics::cluster::packages::statistics {
 
     class { '::imagemagick::install': }
 
-    require_package([
+    ensure_packages([
         'time',
         'emacs',
         'mc',
@@ -34,12 +34,9 @@ class profile::analytics::cluster::packages::statistics {
         'libboost-iostreams-dev',
         'libmaxminddb-dev',
         'build-essential',        # Requested by halfak to install SciPy
-        'libssl-dev',             # Requested by bearloga; necessary for an essential R package {openssl}
         'libcurl4-openssl-dev',   # Requested by bearloga for an essential R package {devtools}
         'libicu-dev',             # ^
         'libssh2-1-dev',          # ^
-        'pandoc',                 # Requested by bearloga for using RMarkdown and performing format conversions
-        'pandoc-citeproc',        # ^
         'lynx',                   # Requested by dcausse to be able to inspect yarn's logs from analytics10XX hosts
         'gsl-bin',
         'libgsl-dev',
@@ -53,27 +50,14 @@ class profile::analytics::cluster::packages::statistics {
         'libcairo2-dev',          # ^
     ])
 
-    require_package([
+    ensure_packages([
         # For embedded configurable-http-proxy
         'nodejs',
         'npm',
         'libgslcblas0',
         'mariadb-client-10.3',
         'libyaml-cpp0.6',
-        # Python packages
-        'virtualenv',
         'libapache2-mod-python',
-        'python3-mock',
-        'python3-virtualenv',        # T84378
-        'python3-venv',
-        'python3-dev',               # T83316
-    ])
-
-    # FORTRAN packages (T89414)
-    require_package([
-        'gfortran',        # GNU Fortran 95 compiler
-        'liblapack-dev',   # FORTRAN library of linear algebra routines
-        'libopenblas-dev', # Optimized BLAS (linear algebra) library
     ])
 
     # scap also deploys git-lfs to clients, so guarding
