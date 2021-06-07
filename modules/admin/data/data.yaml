@@ -1010,6 +1010,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCToz4UdLA8A2/faeEyeeiW3rU1VT54aj3r856dfI+Rd0u8DsaZ6B8cVBQwNo36mbdMsc+c+uql68wjRxl7lnpmvbS3bL1fCrBRBvK7mYC4dzso3y4UjaS+irz9NIwB9Byk23eVhVQ7wll/zuBHQHnWITWjZSLFbrV4JKLBekxR1i7s9EJFZj0V2oP17E91JUVUFu4FcFbMH1KCV9xhSGXbOp9y3H4zaH/DL42dboDtQ2wA3zsf1KG2TTXlSN34Cz9OMDsP4NB4Wd6C3LlYpwShI24wfZnsojZP+a845ZRD5DHbOtp/owtUn6urw1iOJn1fxdwTB6Uk21TUymGDH2W5 rob@yubikey
     uid: 2007
     email: rhalsell@wikimedia.org
+    krb: present
   marc:
     ensure: absent
     gid: 500
@@ -1104,6 +1105,7 @@ users:
          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRcpxRnwLHjFjOuadfyyQB2CEFArfVzXA9gGZ0yI+zgF7tTfqj0vpAJpo4y8II7RayRuYbMQNMKdSdcHkg0qWrcljaLmkgMxg4eUNSHWWdBuGDKIFKH9Rj7vU7WKK/jmXGf1Slt2h7oFakRUp4p6u1kb4+P2yJwrYyQFXaCmiIQ9elEkkij7fEY2o1BZQ7S9MmmyQwbfg/cw1DShoQJkHlAm6ZG4m4fzYU2z8z+Pgm6d86QsEa8rEBf6GgwMcSon/b7fsXBc/XL0VV9CZOQ6Z5qkSe7ccOlhjS1wSRq6O4IdkxfSgVHAi00HsUZPlMoueB7hX1d9UQOxSMja48Pwklc7XarkuENZdVWu7b7CoJrQ2bSYDky19mKwU5iTZlm/843yE4MtnM8pqq2mx8+onQTAK0Fnmb+cqt8wEz3PAImC0cMnPscmUWYWC2z+2eeOsKUdNe3WyA4wbnR+hRqeUAYHUHEpQobpKHWhOFIh3kIns/WprJj+ezL2jcJRev12qhIoDW3b/VDhkU/Hx22qFHraT6i91j2/qtxNnwInlhQbQ6POCXYaGSTe4BViUAu7T7/OCL6Tx7WW5TCrEeBRKtOqNI3/Un8eob90GdQQ4PzAyEznHRqv5XmgR988WrDtsvR11DgN3benu9GJYFZZJwkt6BvEJDT+W+hlAbc0Rq6Q== cmjohnson@wikimedia.org
     uid: 2399
     email: cjohnson@wikimedia.org
+    krb: present
   andrew:
     ensure: present
     gid: 500
@@ -2351,6 +2353,7 @@ users:
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmlt2EID9N7s/YwZ91Ma4t+/M4aQEGx6Qzzwz+pFOC/CNiz43fw89fHsMmrrU+e6T9hI9nTz899EVaxM8CG9kmGtpYOtcpoFkcMhFlnP9JZpuUzmE/DVVDXBFnrjnXQzNisKjpPOe+NEu4v4NDwPv+cOQpJ8uXqikg+pd0ZYWxbdFIp+7dokhk1+1ltxTCDDrMkiZEBbfYEcXmw2Kt0KU2hdq9IRg1o/YFJSYVmIXkkN3Ayr238vYLi03946ReyKm/czGq+0UFh+Lp+TuDwrVa/kOqBko6aAJgVvYLofKF6CgfTHmMPfA01EbCDUtPxmg6nUF0fHweQsGKMHKFxFSF productionwiki]
     uid: 10275
     email: ptshibamba@wikimedia.org
+    krb: present
   etonkovidova:
     ensure: absent
     gid: 500
@@ -3444,6 +3447,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDWLuC4OYjtqt3meBmMk9aipLH4h3xiFxaGgY1iy2ZYKRD/+bHnvGkrsfTePV+1qENBv8Hn6BahmISN2OMr9VzIv4CdCmhg7nGu2TeNTjv8js2tn6Zbcp3E6XwffqI6a9mRI0ENT7w0N3sQ1KbeNw5vlq99W2II6XVtdyvP7HcuDPN+ftSjscp2x4n5B0/14iBi9JDMzMV7Q/h6k+O4q8v9nb+0+xECwFHz+H8pHL7x8wYy5nYHoOqLdxLtmgh3gglLDnaUiMg6G2tx5cJDN+Mp2wuTlOCZj4aHIJH9/pbY5pLXm/QqgvrULrzMChKrBD/JNflsttKgnh57tMhUkKOz2cZ8b51d+P3kCh3qyPlhY2KblyTwcDYaW3s4L3Wo0uFAEqJmF3pGk/zBqq2lj6rFeImr7FseoDdNjVaAnBGSidoSZqU9/DhDYsZ+oWPj/Asa6aqpthuV3GlhjTF74Q1kyCRHXpa+60ABzfKxsjS1KPmjFoan4uQn8o8wLhKfdjtX3jDcUTqq+GFgZ4RypIvqh+I1soQz433aGS2rL9HROPoAKjckOh9/agohtsMRbNqJzj1Qh143hgSB8FCy1uG9StStg2FTJNcB4vBJ0i3tk+FIY+puXY8zf/qOTeJERPb4Rp8AVbSqDREjFltfcW+QQaE/9jpDUyEwzDcHIQjYFw== wpao@Willys-MBP.westell.com
     uid: 21258
     email: wpao@wikimedia.org
+    krb: present
   jfishback:
     ensure: present
     gid: 500
@@ -3538,6 +3542,7 @@ users:
     uid: 21780
     gid: 500
     name: jclark
+    krb: present
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+1duGbT11VE4IV3KKFzdmHhSl2fAA0CkL93edalw2yqroMxzHjah7GwKB5csjrrbqhn+po0478jsU8OG8hgJBRKSq2cG04ryQk8MVSIy6gnqQ75/5gC4U6wJ50y8MKeMyZCHzMsjs+4xdh9WvJH4cfliPRWYp1JBJpE6E22KE+HK07HYX0TkvyfMf2cLaA0pz1Ovbll8gWb9L9vyKDRmv8+NkaJcLTuKoqSFpxz/UCjVGyBJckDyJbX9FEUyjjMclg+c6C8s2aNgfe3gMKmkKxSEfEqbXuNWfJEVAqJ667MhtsGV92pp6rSWdtAgm6IqGE19hUNFqAy3XiX8vEQY3 jclark@LoanerWMF1953
   abi:
