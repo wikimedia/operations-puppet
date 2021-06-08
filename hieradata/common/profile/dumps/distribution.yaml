@@ -128,16 +128,6 @@ profile::dumps::distribution::mirrors:
     addedby: 'atg'
     addeddate: 'Oct 31 2012'
     active: 'no'
-  # - url: 'https://dumps.wikimedia.freemirror.org/'
-  #   hostname: 'mirror.freemirror.org'
-  #   ipv4: ['mirror.freemirror.org']
-  #   ipv6: ['mirror.freemirror.org']
-  #   contactname: 'Adam Quenneville'
-  #   contactaddy: 'admin@freemirror.org'
-  #   institution: 'The Free Mirror Project (FreeMirror.org)'
-  #   addedby: 'atg'
-  #   addeddate: 'Jan 14, 2019'
-  #   active: 'yes'
   - url: 'https://wikimedia.mirror.us.dev/'
     hostname: 'wikimedia.mirror.us.dev'
     ipv4: ['wikimedia.mirror.us.dev']
