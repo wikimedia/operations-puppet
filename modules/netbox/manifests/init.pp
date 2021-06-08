@@ -93,8 +93,17 @@ class netbox(
     # default: 1.5 Gibibytes
     Integer $local_redis_maxmem = 1610612736,
     Optional[Stdlib::Fqdn] $ldap_server = undef,
-    Boolean $include_ldap = false,
+    Boolean $enable_ldap = false,
+    Optional[Enum['ldap', 'cas']] $authentication_provider = undef,
     Variant[Stdlib::HTTPUrl, Boolean, Undef] $swift_auth_url = undef,
+    # Cas specific config
+    Hash[String, String]       $cas_rename_attributes       = {},
+    Hash[String, Array]        $cas_group_attribute_mapping = {},
+    Hash[String, Array]        $cas_group_mapping           = {},
+    Array                      $cas_group_required          = [],
+    Optional[String]           $cas_username_attribute      = undef,
+    Optional[Stdlib::HTTPSUrl] $cas_server_url              = undef,
+    # Swift specific config
     Optional[String] $swift_user = undef,
     Optional[String] $swift_key = undef,
     Optional[String] $swift_container = undef,
@@ -153,13 +162,28 @@ class netbox(
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
 
-    if $include_ldap {
+    if $authentication_provider == 'ldap' {
         file { '/etc/netbox/ldap.py':
             ensure  => $ensure,
             owner   => 'netbox',
             group   => 'www-data',
             mode    => '0440',
             content => template('netbox/ldap_config.py.erb'),
+            require => Scap::Target['netbox/deploy'],
+            before  => Uwsgi::App['netbox'],
+            notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
+        }
+    }
+    if $authentication_provider == 'cas' {
+        unless $cas_server_url {
+            fail('must provide $cas_server_url when use authentication_provider: cas')
+        }
+        file { '/etc/netbox/cas_configuration.py':
+            ensure  => $ensure,
+            owner   => 'netbox',
+            group   => 'www-data',
+            mode    => '0440',
+            content => template('netbox/cas_configuration.py.erb'),
             require => Scap::Target['netbox/deploy'],
             before  => Uwsgi::App['netbox'],
             notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],

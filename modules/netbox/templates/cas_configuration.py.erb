@@ -1,0 +1,29 @@
+CAS_LOGIN_URL_NAME = "login"
+CAS_LOGOUT_URL_NAME = "logout"
+<%- if @cas_username_attribute -%>
+CAS_USERNAME_ATTRIBUTE = "<%= @cas_username_attribute %>"
+<%- end -%>
+CAS_SERVER_URL = "<%= @cas_server_url %>"
+CAS_VERSION = 3
+CAS_CREATE_USER = True
+CAS_APPLY_ATTRIBUTES_TO_USER = True
+CAS_RENAME_ATTRIBUTES = {
+    <%- @cas_rename_attributes.each_pair do |key, mapped| -%>
+    '<%= key %>': '<%= mapped %>',
+    <%- end -%>
+}
+CAS_GROUP_ATTRIBUTE_MAPPING = {
+    <%- @cas_group_attribute_mapping.each_pair do |key, mapped| -%>
+    '<%= key %>': ("<%= mapped.join(", ") %>",),
+    <%- end -%>
+}
+CAS_GROUP_MAPPING = {
+    <%- @cas_group_mapping.each_pair do |key, mapped| -%>
+    '<%= key %>': ("<%= mapped.join(", ") %>",),
+    <%- end -%>
+}
+CAS_GROUP_REQUIRED = (
+<%- unless @cas_group_required.empty? -%>
+    "<%= @cas_group_required.join('", "') %>"
+<%- end -%>
+)

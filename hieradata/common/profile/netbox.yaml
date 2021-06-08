@@ -1,3 +1,18 @@
+profile::netbox::authentication_provider: 'ldap'
+profile::netbox::cas_rename_attributes:
+  cn: 'first_name'
+  mail: 'email'
+profile::netbox::cas_group_attribute_mapping:
+  is_active: ['wmf']
+  is_staff: ['ops']
+  is_superuser: ['ops']
+profile::netbox::cas_group_mapping:
+  'cn=wmf,ou=groups,dc=wikimedia,dc=org': ['wmf']
+  'cn=ops,ou=groups,dc=wikimedia,dc=org': ['ops']
+profile::netbox::cas_group_required:
+  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+profile::netbox::cas_server_url: "%{lookup('apereo_cas.production.base_url')}"
+profile::netbox::cas_username_attribute: 'uid'
 profile::netbox::active_server: netbox1001.wikimedia.org
 profile::netbox::service_hostname: netbox.wikimedia.org
 profile::netbox::netbox_api: "https://%{lookup('profile::netbox::service_hostname')}/"

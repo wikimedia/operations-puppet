@@ -1702,9 +1702,11 @@ ldap:
   proxyagent: 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
 apereo_cas:
   production:
+    base_url: 'https://idp.wikimedia.org/'
     login_url: 'https://idp.wikimedia.org/login'
     validate_url: 'https://idp.wikimedia.org/serviceValidate'
   staging:
+    base_url: 'https://idp-test.wikimedia.org/'
     login_url: 'https://idp-test.wikimedia.org/login'
     validate_url: 'https://idp-test.wikimedia.org/serviceValidate'
 

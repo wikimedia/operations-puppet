@@ -59,6 +59,16 @@ profile::debmonitor::server::trusted_ca_source: '/etc/ssl/certs/Puppet_Internal_
 
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 
+profile::netbox::authentication_provider: 'ldap'
+profile::netbox::cas_rename_attributes:
+  cn: 'first_name'
+  mail: 'email'
+profile::netbox::cas_group_attribute_mapping: {}
+profile::netbox::cas_group_mapping: {}
+profile::netbox::cas_group_required: []
+profile::netbox::cas_server_url: ~
+profile::netbox::cas_username_attribute: ~
+
 profile::nginx::ensure: 'present'
 profile::nginx::managed: true
 profile::nginx::variant: 'full'

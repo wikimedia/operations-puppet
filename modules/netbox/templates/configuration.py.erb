@@ -234,6 +234,8 @@ REDIS = {
     },
 }
 
-<% if @include_ldap %>
+<% if @authentication_provider == 'ldap' %>
 REMOTE_AUTH_BACKEND = 'netbox.authentication.LDAPBackend'
+<% elsif @authentication_provider == 'cas' %>
+CAS_ENABLED = True
 <% end %>

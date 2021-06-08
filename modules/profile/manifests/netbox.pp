@@ -29,7 +29,7 @@ class profile::netbox (
     String $secret_key = lookup('profile::netbox::secret_key'),
     #
 
-    Boolean $include_ldap = lookup('profile::netbox::ldap', {'default_value' => true}),
+    Enum['ldap', 'cas'] $authentication_provider = lookup('profile::netbox::authentication_provider'),
     Boolean $deploy_acme = lookup('profile::netbox::acme', {'default_value' => true}),
     String $acme_certificate = lookup('profile::netbox::acme_cetificate', {'default_value' => 'netbox'}),
 
@@ -62,7 +62,15 @@ class profile::netbox (
 
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 
-    Boolean $do_backups = lookup('profile::netbox::backup', {'default_value' => true})
+    Boolean $do_backups = lookup('profile::netbox::backup', {'default_value' => true}),
+
+    # CAS Config
+    Hash[String, String]       $cas_rename_attributes       = lookup('profile::netbox::cas_rename_attributes'),
+    Hash[String, Array]        $cas_group_attribute_mapping = lookup('profile::netbox::cas_group_attribute_mapping'),
+    Hash[String, Array]        $cas_group_mapping           = lookup('profile::netbox::cas_group_mapping'),
+    Array                      $cas_group_required          = lookup('profile::netbox::cas_group_required'),
+    Optional[String]           $cas_username_attribute      = lookup('profile::netbox::cas_username_attribute'),
+    Optional[Stdlib::HTTPSUrl] $cas_server_url              = lookup('profile::netbox::cas_server_url'),
 ) {
     $ca_certs = '/etc/ssl/certs/ca-certificates.crt'
     $nb_ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
@@ -80,23 +88,29 @@ class profile::netbox (
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { '::profile::rsyslog::udp_json_logback_compat': }
     class { '::netbox':
-        service_hostname   => $nb_service_hostname,
-        directory          => '/srv/deployment/netbox/deploy/src',
-        db_host            => $db_primary,
-        db_password        => $db_password,
-        secret_key         => $secret_key,
-        ldap_password      => $proxypass,
-        extras_path        => $extras_path,
-        swift_auth_url     => $swift_auth_url,
-        swift_user         => $swift_user,
-        swift_key          => $swift_key,
-        swift_container    => $swift_container,
-        swift_url_key      => $swift_url_key,
-        ldap_server        => $ldap_config['ro-server'],
-        include_ldap       => $include_ldap,
-        local_redis_port   => $local_redis_port,
-        local_redis_maxmem => $local_redis_maxmem,
-        ca_certs           => $ca_certs,
+        service_hostname            => $nb_service_hostname,
+        directory                   => '/srv/deployment/netbox/deploy/src',
+        db_host                     => $db_primary,
+        db_password                 => $db_password,
+        secret_key                  => $secret_key,
+        ldap_password               => $proxypass,
+        extras_path                 => $extras_path,
+        swift_auth_url              => $swift_auth_url,
+        swift_user                  => $swift_user,
+        swift_key                   => $swift_key,
+        swift_container             => $swift_container,
+        swift_url_key               => $swift_url_key,
+        ldap_server                 => $ldap_config['ro-server'],
+        authentication_provider     => $authentication_provider,
+        local_redis_port            => $local_redis_port,
+        local_redis_maxmem          => $local_redis_maxmem,
+        ca_certs                    => $ca_certs,
+        cas_server_url              => $cas_server_url,
+        cas_rename_attributes       => $cas_rename_attributes,
+        cas_username_attribute      => $cas_username_attribute,
+        cas_group_attribute_mapping => $cas_group_attribute_mapping,
+        cas_group_mapping           => $cas_group_mapping,
+        cas_group_required          => $cas_group_required,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { '::sslcert::dhparam': }
