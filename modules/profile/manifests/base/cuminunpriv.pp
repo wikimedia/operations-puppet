@@ -8,7 +8,26 @@ class profile::base::cuminunpriv(
     Array[Stdlib::IP::Address] $unpriv_cumin_masters = lookup('unpriv_cumin_masters', {default_value => []}),
 ) {
     include profile::kerberos::client
-    include profile::kerberos::keytabs
+
+    if !defined(File['/etc/security/keytabs/host']) {
+        file { '/etc/security/keytabs/host':
+            ensure  => 'directory',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0550',
+            require => File['/etc/security/keytabs']
+        }
+    }
+
+    file { '/etc/security/keytabs/host/host.keytab':
+        ensure    => 'present',
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0440',
+        content   => secret("kerberos/keytabs/${::fqdn}/host/host.keytab"),
+        show_diff => false,
+        require   => File['/etc/security/keytabs/host']
+    }
 
     $cumin_hosts_ferm = join($unpriv_cumin_masters, ' ')
     ferm::service { 'ssh-from-unprivcumin-masters':
