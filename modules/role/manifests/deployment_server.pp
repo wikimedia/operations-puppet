@@ -16,7 +16,7 @@ class role::deployment_server {
     include profile::scap::dsh
     include profile::keyholder::server
 
-    # memcached-related 
+    # memcached-related
     include profile::mediawiki::mcrouter_wancache
     include profile::mediawiki::nutcracker
 

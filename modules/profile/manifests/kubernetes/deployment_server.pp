@@ -8,6 +8,7 @@ class profile::kubernetes::deployment_server(
 
 ){
     include profile::kubernetes::deployment_server::helmfile
+    include profile::kubernetes::deployment_server::mediawiki
     class { '::helm': }
     class { '::k8s::client':
         packages_from_future => $packages_from_future,
