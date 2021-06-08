@@ -10,6 +10,11 @@
 #           ...
 #       myinstanceB:
 #           service_user: ...
+#           connections:
+#             analytics-mariadb:
+#               conn_type: mysql
+#               host: ...
+#               ...
 #           ...
 #
 # [*airflow_instances_secrets*]
@@ -22,6 +27,11 @@
 #           db_password: SECRET
 #       myinstanceB:
 #           db_password: SECRET
+#           connections:
+#             analytics-mariadb:
+#               login: myuser
+#               password: SECRET
+#
 #   Default: {}
 #
 class profile::airflow(

@@ -27,8 +27,17 @@
 # - smtp settings
 #   These are set to defaults that will work in WMF production networks.
 #
+# - secrets backend
+#   If $connections is provided, it will be rendered as $airflow_home/connections.yaml
+#   and a secrets LocalFilesystemBackend will be configured to read connections out of this file.
+#   See the $connections parameter for more info.
+#   See also:
+#   - https://airflow.apache.org/docs/apache-airflow/stable/security/secrets/secrets-backend/index.html
+#   - https://airflow.apache.org/docs/apache-airflow/stable/security/secrets/secrets-backend/local-filesystem-secrets-backend.html
+#
 # NOTE: that airflow::instance will not create any databases or airflow users for you.
-# To do this, see: https://airflow.apache.org/docs/apache-airflow/stable/howto/set-up-database.html#setting-up-a-mysql-database
+# To do this, see:
+# https://airflow.apache.org/docs/apache-airflow/stable/howto/set-up-database.html#setting-up-a-mysql-database
 #
 # NOTE: This define does not yet support webserver_config.py customization. The webserver_config.py that
 # is installed will grant Admin access to anyone that can access the webserver.  The default
@@ -57,6 +66,18 @@
 #   Only used for rendering a provided sql_alchemy_conn erb template string.
 #   Default: batman
 #
+# [*connections*]
+#   Optional hash of Airflow Connections as defined in
+#   https://airflow.apache.org/docs/apache-airflow/stable/howto/connection.html.
+#   If given, $airflow_home/connections.yaml will be rendered with these connections,
+#   and a smart default Airflow [secrets] config for a Local Filesystem Secrets Backend
+#   will be set to read connections out of this file. This allows for using Puppet
+#   config management to manage Airflow connections, rather than having to define them
+#   in the Airflow UI.
+#   NOTE: These connections will not show up in the Airflow UI, but can be retrieved using
+#   the airflow CLI like: airflow connections get <connection_name>.
+#   They can of course be used in DAGs.
+#
 # [*monitoring_enabled*]
 #   Default: false
 #
@@ -76,6 +97,7 @@ define airflow::instance(
     Stdlib::Unixpath $airflow_home      = "/srv/airflow-${title}",
     String $db_user                     = "airflow_${title}",
     String $db_password                 = 'batman',
+    Optional[Hash] $connections         = undef,
     Boolean $monitoring_enabled         = false,
     Integer $clean_logs_older_than_days = 90,
     Wmflib::Ensure $ensure              = 'present',
@@ -157,11 +179,28 @@ define airflow::instance(
     }
 
 
+    # If we are given $connections, we should render them into a connections.yaml file
+    # that will be used by the Airflow LocalFilesystemBackend.  This allows us to manage
+    # Airflow connections using Puppet, rather than in the Web UI and stored in the Airflow
+    # database.
+    $connections_file = "${airflow_home}/connections.yaml"
+    if $connections {
+        $airflow_config_secrets = {
+            'secrets' => {
+                'backend' => 'airflow.secrets.local_filesystem.LocalFilesystemBackend',
+                'backend_kwargs' => "{\"connections_file_path\": \"${connections_file}\"}",
+            }
+        }
+    } else {
+        $airflow_config_secrets = {}
+    }
+
     # Merge all the airflow configs we've got.  This is:
-    # defaults <- kerberos <- provided config <- sql_alchemy_conn config with password
+    # defaults <- kerberos <- secrets config <- provided config <- sql_alchemy_conn config with password
     $_airflow_config = deep_merge(
         $airflow_config_defaults,
         $airflow_config_kerberos,
+        $airflow_config_secrets,
         $airflow_config,
         $airflow_config_sql_alchemy_conn,
     )
@@ -194,7 +233,7 @@ define airflow::instance(
     }
     file { $airflow_config_file:
         ensure  => $ensure,
-        mode    => '0440',
+        mode    => '0440', # Likely has $db_password in it.
         content => template('airflow/airflow.cfg.erb'),
         require => File[$airflow_home],
     }
@@ -222,6 +261,18 @@ define airflow::instance(
         }
     }
 
+    # If $connections have been defined, render the connections.yaml file.
+    if $connections and $ensure == 'present' {
+        $connections_file_ensure = 'present'
+    } else {
+        $connections_file_ensure = 'absent'
+    }
+    file { $connections_file:
+        ensure  => $connections_file_ensure,
+        mode    => '0440', # Could have secrets in it.
+        content => template('airflow/connections.yaml.erb')
+    }
+
     # airflow command wrapper for this instance.
     # Aides running airflow commands without having to think about how
     # to properly set things like AIRFLOW_HOME.
@@ -231,6 +282,13 @@ define airflow::instance(
         content => template('airflow/airflow.sh.erb'),
     }
 
+    # DRY variable for dependencies for airflow webserver and scheduler services.
+    $service_dependencies = [
+        File[$airflow_config_file],
+        File[$webserver_config_file],
+        File[$connections_file],
+    ]
+
     # Control service for all services for this airflow instance.
     systemd::service { "airflow@${title}":
         ensure               => $ensure,
@@ -238,7 +296,7 @@ define airflow::instance(
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => [File[$airflow_config_file], File[$webserver_config_file]],
+        require              => $service_dependencies,
     }
 
     # Airflow webserver for this instance.
@@ -248,9 +306,9 @@ define airflow::instance(
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => [File[$airflow_config_file], File[$webserver_config_file]],
+        require              => $service_dependencies,
         service_params       => {
-            'subscribe' => [File[$airflow_config_file], File[$webserver_config_file]],
+            'subscribe' => $service_dependencies,
         }
     }
     base::service_auto_restart { "airflow-webserver@${title}":
@@ -265,9 +323,9 @@ define airflow::instance(
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
-        require              => File[$airflow_config_file],
+        require              => $service_dependencies,
         service_params       => {
-            'subscribe' => File[$airflow_config_file],
+            'subscribe' => $service_dependencies,
         },
     }
     base::service_auto_restart { "airflow-scheduler@${title}":
