@@ -22,3 +22,5 @@ profile::lvs::realserver::pools:
       - nginx
 # Envoy will be added later, see T215810
 #      - envoyproxy
+
+profile::nginx::variant: 'light'
