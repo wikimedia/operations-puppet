@@ -3,13 +3,6 @@
 include "geoip.inc.vcl";
 include "normalize_path.inc.vcl";
 
-# Temporary hack to patch T284479
-# Not a complete list.
-# Should eventually be comprehensive & included in public_cloud_nets; see also T270391
-acl google_cloud_nets {
-	"2600:1900::0"/28;
-}
-
 /******************************************************************************
  * For MediaWiki's purposes, building on the RFC explanation in
  * normalize_path_encoding(), all of the 16 characters in the Customizable Set
@@ -421,12 +414,6 @@ sub cluster_fe_ratelimit {
 		return (synth(429, "Too Many Requests"));
 	}
 <% end -%>
-
-	// T284479
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ google_cloud_nets && req.http.User-Agent ~ "HeadlessChrome/" && req.url ~ "/w/index.php" && req.url ~ "[?&]search=") {
-		return (synth(429, "Too Many Requests; please contact noc@wikimedia.org"));
-	}
-
 
 	// Ratelimit miss/pass requests per IP:
 	//   * Excluded for now:
