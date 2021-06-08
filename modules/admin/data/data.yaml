@@ -5145,3 +5145,11 @@ ldap_only_users:
     ensure: present
     realname: Ben Vershbow
     email: bvershbow@wikimedia.org
+  lzaman:
+    ensure: present
+    realname: Leza Zaman
+    email: lzaman@wikimedia.org
+  ihurbain:
+    ensure: present
+    realname: Isabelle Hurbain-Palatin
+    email: ihurbainpalatin@wikimedia.org
