@@ -204,6 +204,7 @@ $private_tables = [
     'hidden',
     'image_old',
     'job',
+    'ldap_domains',
     'linkscc',
     'localnames',
     'log_search',
