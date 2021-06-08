@@ -1,5 +1,6 @@
 # Kubernetes mediawiki configuration
 # * virtual hosts
+# * mcrouter pools
 
 class profile::kubernetes::deployment_server::mediawiki(
     Array[Mediawiki::SiteCollection] $common_sites    = lookup('mediawiki::common_sites'),
@@ -8,6 +9,7 @@ class profile::kubernetes::deployment_server::mediawiki(
     String $fcgi_pool                                 = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
     String $domain_suffix                             = lookup('mediawiki::web::sites::domain_suffix', {'default_value' => 'org'}),
     Stdlib::Unixpath $general_dir                     = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+    Hash  $servers_by_datacenter_category             = lookup('profile::mediawiki::mcrouter_wancache::shards'),
 
 ){
     file { "${general_dir}/mediawiki":
@@ -25,5 +27,9 @@ class profile::kubernetes::deployment_server::mediawiki(
         siteconfigs   => $all_sites,
         fcgi_proxy    => $fcgi_proxy,
         domain_suffix => $domain_suffix,
+    }
+    class { 'mediawiki::mcrouter::yaml_defs':
+        path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
+        servers_by_datacenter_category => $servers_by_datacenter_category,
     }
 }
