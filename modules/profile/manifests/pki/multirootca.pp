@@ -58,6 +58,15 @@ class profile::pki::multirootca (
 
     wmflib::dir::mkdir_p($bundle_dir)
 
+    # Make the puppet CA available for download
+    file {"${bundle_dir}/Puppet_Internal_CA.pem.pem":
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => $facts['puppet_config']['localcacert'],
+    }
+
     cfssl::db{'multirootca-db':
         driver         => $db_driver,
         username       => $db_user,
