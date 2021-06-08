@@ -4037,7 +4037,7 @@ users:
     uid: 27436
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKvCFMCy3pSykDaNq++CC1o+WzmegoyGROM7N4uoGvnO dumisani@MacBook-Pro.local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAjJGjEU/bTRc57QXmiXIvA6ru0xYEgmgFoExwLCpXzP dumisani@MacBook-Pro.local
     krb: present
   janstee:
     ensure: present
