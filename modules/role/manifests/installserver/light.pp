@@ -4,6 +4,7 @@ class role::installserver::light {
 
     include profile::standard
     include profile::base::firewall
+    include profile::base::cuminunpriv
     include profile::backup::host
 
     include profile::nginx

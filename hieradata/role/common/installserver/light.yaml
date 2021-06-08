@@ -4,3 +4,5 @@ profile::installserver::dhcp::ensure_service: 'running'
 profile::installserver::tftp::ensure_service: 'running'
 profile::installserver::proxy::ensure: 'present'
 profile::nginx::variant: 'light'
+profile::base::ssh_server_settings:
+  enable_kerberos: true
