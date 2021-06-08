@@ -60,11 +60,11 @@ class profile::pki::multirootca (
 
     # Make the puppet CA available for download
     file {"${bundle_dir}/Puppet_Internal_CA.pem.pem":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => $facts['puppet_config']['localcacert'],
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => $facts['puppet_config']['localcacert'],
     }
 
     cfssl::db{'multirootca-db':
