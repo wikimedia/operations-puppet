@@ -81,6 +81,9 @@ function clear_proxy {
   unset NO_PROXY
   unset no_proxy
 }
+function s_client {
+  openssl s_client -connect ${1:-localhost:443}  < /dev/null |& openssl x509 -noout -text
+}
 if [ $commands[kubectl] ]
 then
   source <(kubectl completion zsh)
