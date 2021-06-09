@@ -896,13 +896,8 @@ node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
 }
 
 # Wikidough (T252132)
-node /^(doh200[1-2]|doh300[1-2]|doh5001|malmok)\.wikimedia\.org$/ {
+node /^(doh200[1-2]|doh300[1-2]|doh4001|doh5001|malmok)\.wikimedia\.org$/ {
     role(wikidough)
-}
-
-# Wikidough (T284349)
-node 'doh4001.wikimedia.org' {
-    role(insetup)
 }
 
 # Druid analytics-eqiad (non public) servers.
