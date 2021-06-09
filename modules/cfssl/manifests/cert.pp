@@ -185,11 +185,10 @@ define cfssl::cert (
             | TEST_CHAINED
         # TODO: use sslcert::chained
         exec {"cretate chained cert ${cert_chain_path}":
-            command     => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
-            refreshonly => true,
-            user        => $owner,
-            unless      => $test_chained,
-            notify      => $_notify_service,
+            command => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
+            user    => $owner,
+            unless  => $test_chained,
+            notify  => $_notify_service,
         }
     }
 }
