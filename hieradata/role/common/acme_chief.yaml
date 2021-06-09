@@ -261,9 +261,8 @@ profile::acme_chief::certificates:
         - 'malmok.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^doh100[12]\.wikimedia\.org$'
-        - '^doh200[12]\.wikimedia\.org$'
-        - '^doh300[12]\.wikimedia\.org$'
+        - '^doh[123]00[12]\.wikimedia\.org$'
+        - '^doh4001\.wikimedia\.org$'
         - '^doh5001\.wikimedia\.org$'
         - '^malmok\.wikimedia\.org$'
     wikiworkshop:
