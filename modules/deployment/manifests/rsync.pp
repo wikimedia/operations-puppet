@@ -24,13 +24,6 @@ class deployment::rsync(
         hosts_allow => $deployment_hosts,
     }
 
-    rsync::server::module { 'deployment_miscweb':
-        path        => '/srv/miscweb',
-        read_only   => 'no',
-        hosts_allow => ['miscweb1002.eqiad.wmnet'],
-        auto_ferm   => true,
-    }
-
     $sync_command = "/usr/bin/rsync -avz --delete ${deployment_server}::deployment_module ${deployment_path}"
 
     systemd::timer::job { 'sync_deployment_dir':
