@@ -5,6 +5,7 @@ class role::apt_repo {
     include profile::standard
     include profile::base::firewall
     include profile::backup::host
+    include profile::base::cuminunpriv
 
     include profile::nginx
     include profile::installserver::http
