@@ -178,12 +178,18 @@ define cfssl::cert (
             source => "${cfssl::client::bundles_source}/${label}.pem",
         }
 
+        $test_chained = @("TEST_CHAINED"/L)
+            /usr/bin/test \
+            "$(/bin/cat ${cert_path} ${cert_chain_path} | sha512sum)" == \
+            "$(/bin/cat ${cert_chained_path} | sha512sum)"
+            | TEST_CHAINED
         # TODO: use sslcert::chained
         exec {"cretate chained cert ${cert_chain_path}":
             command     => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
             refreshonly => true,
             user        => $owner,
-            subscribe   => File[$cert_chain_path, $cert_path]
+            unless      => $test_chained,
+            notify      => $_notify_service,
         }
     }
 }
