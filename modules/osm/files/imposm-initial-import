@@ -2,6 +2,8 @@
 
 set -e
 
+MIRROR_PATH="planet.openstreetmap.org"
+
 download_dir="/srv/downloads"
 kartotherian_dir="/srv/deployment/kartotherian/deploy"
 postgis_vt_util_sql_lib="${kartotherian_dir}/node_modules/@kartotherian/postgis-vt-util/lib.sql"
@@ -11,7 +13,7 @@ log_file=/var/log/osm-initial-import.log
 dump_date="latest"
 
 function show_help() {
-  echo "imposm-initial-import -d <date_of_import> [-x <proxy>]"
+  echo "imposm-initial-import -d <date_of_import> [-x <proxy>] [-m mirror_path]"
   echo "  date_of_import: find the latest dump at https://planet.osm.org/pbf/"
   echo "  proxy: proxy used to download PBF files"
   echo ""
@@ -24,7 +26,7 @@ function show_help() {
   echo "        -x webproxy.eqiad.wmnet:8080"
 }
 
-while getopts "d:h:x:" opt; do
+while getopts "d:h:x:m:" opt; do
   case "${opt}" in
   d)  dump_date="${OPTARG}"
       ;;
@@ -39,6 +41,8 @@ while getopts "d:h:x:" opt; do
       export http_proxy="${OPTARG}"
       export https_proxy="${OPTARG}"
       ;;
+  m)  MIRROR_PATH="${OPTARG}"
+      ;;
   *)  show_help
       exit 1
   esac
@@ -46,13 +50,22 @@ done
 
 filename="planet-${dump_date}.osm.pbf"
 
+function check_imposm() {
+    imposm_pid=$(pgrep -f /usr/bin/imposm || true)
+    if [ -n "$imposm_pid" ]; then
+        echo "Not starting import while imposm is running!"
+        echo "Run `sudo service imposm stop` before starting - imposm will compete for postgres connections"
+        exit 1
+    fi
+}
+
 function download_pbf() {
-  echo "starting download of PBF from planet.openstreetmap.org"
+  echo "starting download of PBF from $MIRROR_PATH"
   if [ ! -f "$download_dir/$filename.md5" ]; then
-    curl https://planet.openstreetmap.org/pbf/"${filename}".md5 -o "${download_dir}/${filename}.md5"
+    curl https://"${MIRROR_PATH}/pbf/${filename}".md5 -o "${download_dir}/${filename}.md5"
   fi
   if [ ! -f "$download_dir/$filename" ]; then
-    curl -L https://planet.openstreetmap.org/pbf/"${filename}" -o "${download_dir}/${filename}"
+    curl -L https://"${MIRROR_PATH}/pbf/${filename}" -o "${download_dir}/${filename}"
   fi
   echo "starting md5sum check"
   pushd "${download_dir}"
@@ -119,7 +132,7 @@ function layers_functions() {
   echo "creation of layers functions completed"
 }
 
-funtion set_permissions() {
+function set_permissions() {
     echo "Setting permissions for service users"
     sudo -u postgres psql -d gis < /usr/local/bin/maps-grants-gis.sql
     echo "Setting permissions for service users complete"
@@ -132,6 +145,7 @@ function cleanup() {
   echo "cleanup completed"
 }
 
+check_imposm
 download_pbf
 initial_osm_import
 osm_production_deploy

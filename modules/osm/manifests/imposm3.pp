@@ -2,6 +2,7 @@ class osm::imposm3 (
     String $proxy_host,
     Stdlib::Port $proxy_port,
     Wmflib::Ensure $ensure            = present,
+    String $upstream_url_path         = 'planet.openstreetmap.org',
     String $osm_log_dir               = '/srv/osmosis',
     String $expire_dir                = '/srv/osm_expire',
     Integer $expire_levels            = 15,
@@ -21,6 +22,14 @@ class osm::imposm3 (
             owner  => 'root',
             group  => 'root',
             mode   => '0755';
+        '/srv/osm':
+            ensure => directory,
+            owner  => 'osmupdater',
+            group  => 'osm';
+        '/etc/imposm':
+            ensure => directory,
+            owner  => 'osmupdater',
+            group  => 'osm';
         $imposm_diff_dir:
             ensure => directory,
             owner  => 'osmupdater',
