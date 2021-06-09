@@ -3,15 +3,16 @@
 # This class sets up Wikidata Query Service for the public facing endpoint.
 class role::wdqs::public {
     # Standard for all roles
-    include ::profile::standard
-    include ::profile::base::firewall
+    include profile::standard
+    include profile::base::firewall
     # Standard wdqs installation
-    require ::profile::query_service::wikidata
-    require ::profile::query_service::categories
+    require profile::nginx
+    require profile::query_service::wikidata
+    require profile::query_service::categories
     # Production specific profiles
-    include ::profile::lvs::realserver
+    include profile::lvs::realserver
     # Public endpoint specific profiles
-    include ::profile::tlsproxy::envoy # TLS termination
+    include profile::tlsproxy::envoy # TLS termination
 
     system::role { 'wdqs::public':
         ensure      => 'present',

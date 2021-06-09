@@ -4,16 +4,17 @@
 # cases.
 class role::wdqs::internal {
     # Standard for all roles
-    include ::profile::standard
-    include ::profile::base::firewall
+    include profile::standard
+    include profile::base::firewall
     # Standard wdqs installation
-    require ::profile::query_service::categories
-    require ::profile::query_service::wikidata
+    require profile::nginx
+    require profile::query_service::categories
+    require profile::query_service::wikidata
     # Production specific profiles
-    include ::profile::lvs::realserver
+    include profile::lvs::realserver
 
     # wdqs-internal specific profiles
-    include ::profile::tlsproxy::envoy # TLS termination
+    include profile::tlsproxy::envoy # TLS termination
 
     system::role { 'wdqs::internal':
         ensure      => 'present',

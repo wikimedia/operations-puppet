@@ -6,11 +6,12 @@
 # filtertags: labs-project-wikidata-query
 class role::wdqs::labs () {
     # Standard for all roles
-    include ::profile::standard
-    include ::profile::base::firewall
+    include profile::standard
+    include profile::base::firewall
     # Standard wdqs installation
-    require ::profile::query_service::categories
-    require ::profile::query_service::wikidata
+    require profile::nginx
+    require profile::query_service::categories
+    require profile::query_service::wikidata
     # Specific to instances in cloud services
     require role::labs::lvm::srv
 
