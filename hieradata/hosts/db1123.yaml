@@ -1,4 +1,4 @@
 # db1123
+# candidate master for s3
 mariadb::shard: 's3'
-profile::mariadb::mysql_role: 'master'
 mariadb::binlog_format: 'STATEMENT'
