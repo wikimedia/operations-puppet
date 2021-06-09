@@ -404,7 +404,8 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [eevans, sbisson, catrope, mholloway-shell, mbsantos, jgiannelos]
+    members: [eevans, sbisson, catrope, mholloway-shell]
+    approval: Subramanya Sastry
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -420,13 +421,15 @@ groups:
                  'ALL = (cassandra) NOPASSWD: ALL']
   maps-roots:
     gid: 752
-    description: Root level access for Maps/OSM servers
-    members: []
+    description: Root level access for Maps servers
+    members: [jgiannelos, mbsantos]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Subramanya Sastry
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [sbisson, catrope, mholloway-shell, mbsantos, jgiannelos]
+    members: [sbisson, catrope, mholloway-shell]
+    approval: Subramanya Sastry
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
