@@ -24,6 +24,6 @@ CAS_GROUP_MAPPING = {
 }
 CAS_GROUP_REQUIRED = (
 <%- unless @cas_group_required.empty? -%>
-    "<%= @cas_group_required.join('", "') %>"
+    "<%= @cas_group_required.join('", "') %>",
 <%- end -%>
 )
