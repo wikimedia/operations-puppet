@@ -63,6 +63,12 @@ eventlogging_schemas_disabled = (
     'TwoColConflictExit',
     'VirtualPageView',
     'VisualEditorTemplateDialogUse',
+    'WMDEBannerEvents',
+    'WMDEBannerInteractions',
+    'WMDEBannerSizeIssue',
+
+    # FR Tech schemas
+    'LandingPageImpression',
 
     # TranslationRecommendation schemas
     'TranslationRecommendationUserAction',

@@ -170,6 +170,12 @@ class profile::analytics::refinery::job::refine(
         'TwoColConflictExit',
         'VirtualPageView',
         'VisualEditorTemplateDialogUse',
+        'WMDEBannerEvents',
+        'WMDEBannerInteractions',
+        'WMDEBannerSizeIssue',
+
+        # FR Tech schemas
+        'LandingPageImpression',
 
         # TranslationRecommendation schemas
         'TranslationRecommendationUserAction',
