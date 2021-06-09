@@ -35,7 +35,7 @@ class mediawiki::mcrouter::yaml_defs(
 )
     file { $path:
         ensure  => present,
-        content => to_yaml({'mw' => {'mcrouter' => $pools}}),
+        content => to_yaml({'mw' => {'mcrouter' => {'pools' => $pools}}}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
