@@ -35,4 +35,4 @@ profile::java::java_packages:
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 
 # includes module for bandwidth limits
-profile::nginx::variant: 'extras'
+profile::nginx::variant: 'full'
