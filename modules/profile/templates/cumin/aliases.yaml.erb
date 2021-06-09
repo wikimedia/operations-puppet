@@ -150,7 +150,8 @@ hadoop-dumps-client: P{O:dumps::distribution::server}
 icinga: P{O:alerting_host}
 idp: P{O:idp} or A:idp-test
 idp-test: P{O:idp_test}
-installserver: P{O:installserver::light}
+installserver: P{O:installserver::light or O:apt_repo}
+installserver-light: P{O:installserver::light}
 kafka-all: A:kafka-main or A:kafka-jumbo
 kafka-main: P{O:kafka::main}
 kafka-main-canary: P{kafka-main2001.codfw.wmnet}
