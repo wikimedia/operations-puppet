@@ -3,13 +3,15 @@
 # * mcrouter pools
 
 class profile::kubernetes::deployment_server::mediawiki(
-    Array[Mediawiki::SiteCollection] $common_sites    = lookup('mediawiki::common_sites'),
-    Array[Mediawiki::SiteCollection] $mediawiki_sites = lookup('mediawiki::sites'),
-    Optional[Stdlib::Port::User] $fcgi_port           = lookup('profile::php_fpm::fcgi_port', {'default_value' => undef}),
-    String $fcgi_pool                                 = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
-    String $domain_suffix                             = lookup('mediawiki::web::sites::domain_suffix', {'default_value' => 'org'}),
-    Stdlib::Unixpath $general_dir                     = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
-    Hash  $servers_by_datacenter_category             = lookup('profile::mediawiki::mcrouter_wancache::shards'),
+    Array[Mediawiki::SiteCollection] $common_sites      = lookup('mediawiki::common_sites'),
+    Array[Mediawiki::SiteCollection] $mediawiki_sites   = lookup('mediawiki::sites'),
+    Optional[Stdlib::Port::User] $fcgi_port             = lookup('profile::php_fpm::fcgi_port', {'default_value' => undef}),
+    String $fcgi_pool                                   = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
+    String $domain_suffix                               = lookup('mediawiki::web::sites::domain_suffix', {'default_value' => 'org'}),
+    Stdlib::Unixpath $general_dir                       = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+    Hash  $servers_by_datacenter_category               = lookup('profile::mediawiki::mcrouter_wancache::shards'),
+    Hash  $redis_shards                                 = lookup('redis::shards'),
+
 
 ){
     file { "${general_dir}/mediawiki":
@@ -31,5 +33,9 @@ class profile::kubernetes::deployment_server::mediawiki(
     class { 'mediawiki::mcrouter::yaml_defs':
         path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
         servers_by_datacenter_category => $servers_by_datacenter_category,
+    }
+    class { 'mediawiki::nutcracker::yaml_defs':
+        path         => "${general_dir}/mediawiki/nutcracker_pools.yaml",
+        redis_shards => $redis_shards,
     }
 }
