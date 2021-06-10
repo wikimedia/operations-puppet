@@ -138,4 +138,52 @@ class profile::gitlab(
             srange => $ferm_srange,
         }
     }
+
+    # JSON Logs
+    rsyslog::input::file { 'gitlab-gitaly-json':
+      path => '/var/log/gitlab/gitaly/current',
+    }
+
+    rsyslog::input::file { 'gitlab-rails-production-json':
+      path => '/var/log/gitlab/gitlab-rails/production_json.log',
+    }
+
+    rsyslog::input::file { 'gitlab-rails-api-json':
+      path => '/var/log/gitlab/gitlab-rails/api_json.log',
+    }
+
+    rsyslog::input::file { 'gitlab-rails-application-json':
+      path => '/var/log/gitlab/gitlab-rails/application_json.log',
+    }
+
+    rsyslog::input::file { 'gitlab-rails-exceptions-json':
+      path => '/var/log/gitlab/gitlab-rails/exceptions_json.log',
+    }
+
+    rsyslog::input::file { 'gitlab-workhorse-json':
+      path => '/var/log/gitlab/gitlab-workhorse/current',
+    }
+
+    rsyslog::input::file { 'gitlab-sidekiq-json':
+      path => '/var/log/gitlab/sidekiq/current',
+    }
+
+    # @cee Json Logs
+    rsyslog::input::file { 'gitlab-nginx-access-cee':
+      path => '/var/log/gitlab/nginx/gitlab_access.log',
+    }
+
+    # Plain logs
+    rsyslog::input::file { 'gitlab-nginx-error-plain':
+      path => '/var/log/gitlab/nginx/gitlab_error.log',
+    }
+
+    rsyslog::input::file { 'gitlab-redis-plain':
+      path => '/var/log/gitlab/redis/current',
+    }
+
+    # TODO T274462
+    # rsyslog::input::file { 'gitlab-postgres':
+    #   path => '/var/log/gitlab/postgresql/current',
+    # }
 }

@@ -1,0 +1,670 @@
+fields:
+  logsource: "gitlab1001"
+  facility: "local0"
+  type: "syslog"
+codec: "json_lines"
+ignore:
+  - "normalized"
+  - "[url][path]"  # when not defined, path is populated by logstash-filter-verifier
+testcases:
+  - input:
+      - >
+        {
+          "program": "input-file-gitlab-gitaly-json",
+          "severity": "NOTICE",
+          "host": "gitlab1001",
+          "correlation_id": "01F7SM3KE561BK077XC9CKVE1Y",
+          "error": "rpc error: code = NotFound desc = GetRepoPath: not a git repository: \"/var/opt/gitlab/git-data/repositories/wmf-gitlab-tools.git\"",
+          "grpc.code": "NotFound",
+          "grpc.meta.auth_version": "v2",
+          "grpc.meta.client_name": "gitlab-web",
+          "grpc.meta.deadline_type": "regular",
+          "grpc.method": "FindDefaultBranchName",
+          "grpc.request.deadline": "2021-06-10T00:10:56.002Z",
+          "grpc.request.fullMethod": "/gitaly.RefService/FindDefaultBranchName",
+          "grpc.request.glProjectPath": "wmf-gitlab-tools",
+          "grpc.request.glRepository": "project-",
+          "grpc.request.repoPath": "wmf-gitlab-tools.git",
+          "grpc.request.repoStorage": "default",
+          "grpc.request.topLevelGroup": "",
+          "grpc.service": "gitaly.RefService",
+          "grpc.start_time": "2021-06-10T00:10:46.792Z",
+          "grpc.time_ms": 0.849,
+          "level": "info",
+          "msg": "finished unary call with code NotFound",
+          "peer.address": "@",
+          "pid": 17132,
+          "remote_ip": "127.0.0.1",
+          "span.kind": "server",
+          "system": "grpc",
+          "time": "2021-06-10T00:10:46.793Z",
+          "username": "UserName"
+        }
+
+    expected:
+      - message: "finished unary call with code NotFound"
+        error:
+          message: "rpc error: code = NotFound desc = GetRepoPath: not a git repository: \"/var/opt/gitlab/git-data/repositories/wmf-gitlab-tools.git\""
+        host:
+          name: "gitlab1001"
+        service:
+          type: "gitlab"
+          name: "gitlab-gitaly"
+        user:
+          name: "UserName"
+        client:
+          ip: "127.0.0.1"
+        "@timestamp": "2021-06-10T00:10:46.793Z"
+        labels:
+          client_name: "gitlab-web"
+          code: "NotFound"
+          project_path: "wmf-gitlab-tools"
+          repository: "project-"
+          repo_path: "wmf-gitlab-tools.git"
+          repo_storage: "default"
+        trace:
+          id: "01F7SM3KE561BK077XC9CKVE1Y"
+        log:
+          level: "INFO"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 6
+              name: informational
+            priority: 134
+          logger: "gitaly.RefService"
+          origin:
+            function: "/gitaly.RefService/FindDefaultBranchName"
+        process:
+          pid: 17132
+        event:
+          duration: 0.849
+        ecs:
+          version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "program": "input-file-gitlab-gitaly-json",
+          "severity": "NOTICE",
+          "host": "gitlab1001",
+          "command.count": 1,
+          "command.inblock": 0,
+          "command.majflt": 0,
+          "command.maxrss": 87772,
+          "command.minflt": 150,
+          "command.oublock": 0,
+          "command.real_time_ms": 3,
+          "command.system_time_ms": 0,
+          "command.user_time_ms": 2,
+          "correlation_id": "01F7VMNCMDAHDZERSQDNMWN8D4",
+          "grpc.code": "OK",
+          "grpc.meta.auth_version": "v2",
+          "grpc.meta.client_name": "gitlab-web",
+          "grpc.meta.deadline_type": "regular",
+          "grpc.method": "HasLocalBranches",
+          "grpc.request.deadline": "2021-06-10T18:59:08.001Z",
+          "grpc.request.fullMethod": "/gitaly.RepositoryService/HasLocalBranches",
+          "grpc.request.glProjectPath": "gpt/many_groups_and_projects/gpt-subgroup-2/gpt-project-93",
+          "grpc.request.glRepository": "project-2599",
+          "grpc.request.repoPath": "@hashed/53/30/533099ac357e5586238f6be92e706eacb5dea6559fa61b979069c39c5efe8cee.git",
+          "grpc.request.repoStorage": "default",
+          "grpc.request.topLevelGroup": "@hashed",
+          "grpc.service": "gitaly.RepositoryService",
+          "grpc.start_time": "2021-06-10T18:58:58.411Z",
+          "grpc.time_ms": 3.319,
+          "level": "info",
+          "msg": "finished unary call with code OK",
+          "peer.address": "@",
+          "pid": 17132,
+          "remote_ip": "127.0.0.1",
+          "span.kind": "server",
+          "system": "grpc",
+          "time": "2021-06-10T18:58:58.414Z"
+        }
+    expected:
+      - message: "finished unary call with code OK"
+        "@timestamp": "2021-06-10T18:58:58.414Z"
+        host:
+          name: "gitlab1001"
+        service:
+          type: "gitlab"
+          name: "gitlab-gitaly"
+        labels:
+          client_name: "gitlab-web"
+          code: "OK"
+          project_path: "gpt/many_groups_and_projects/gpt-subgroup-2/gpt-project-93"
+          repository: "project-2599"
+          repo_path: "@hashed/53/30/533099ac357e5586238f6be92e706eacb5dea6559fa61b979069c39c5efe8cee.git"
+          repo_storage: "default"
+        trace:
+          id: "01F7VMNCMDAHDZERSQDNMWN8D4"
+        log:
+          level: "INFO"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 6
+              name: informational
+            priority: 134
+          logger: "gitaly.RepositoryService"
+          origin:
+            function: "/gitaly.RepositoryService/HasLocalBranches"
+        process:
+          pid: 17132
+        event:
+          duration: 3.319
+        client:
+          ip: "127.0.0.1"
+        ecs:
+          version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "program": "input-file-gitlab-rails-production-json",
+          "severity": "NOTICE",
+          "host": "gitlab1001",
+          "method": "GET",
+          "path": "/UserName/wmf-gitlab-tools",
+          "format": "html",
+          "controller": "ProjectsController",
+          "action": "show",
+          "status": 200,
+          "time": "2021-06-10T05:20:17.905Z",
+          "params": [
+            {
+              "key": "namespace_id",
+              "value": "UserName"
+            },
+            {
+              "key": "id",
+              "value": "wmf-gitlab-tools"
+            }
+          ],
+          "remote_ip": "127.0.0.1",
+          "user_id": 2,
+          "username": "UserName",
+          "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
+          "correlation_id": "01F7T5TAC9G99EF9ZR1YEC83A5",
+          "meta.user": "UserName",
+          "meta.project": "UserName/wmf-gitlab-tools",
+          "meta.root_namespace": "UserName",
+          "meta.caller_id": "ProjectsController#show",
+          "meta.remote_ip": "127.0.0.1",
+          "meta.feature_category": "projects",
+          "meta.client_id": "user/2",
+          "redis_calls": 48,
+          "redis_duration_s": 0.018119000000000003,
+          "redis_read_bytes": 6586,
+          "redis_write_bytes": 6123,
+          "redis_cache_calls": 47,
+          "redis_cache_duration_s": 0.017649,
+          "redis_cache_read_bytes": 6326,
+          "redis_cache_write_bytes": 4897,
+          "redis_shared_state_calls": 1,
+          "redis_shared_state_duration_s": 0.00047,
+          "redis_shared_state_read_bytes": 260,
+          "redis_shared_state_write_bytes": 1226,
+          "db_count": 60,
+          "db_write_count": 0,
+          "db_cached_count": 10,
+          "cpu_s": 0.978617,
+          "mem_objects": 362115,
+          "mem_bytes": 38758776,
+          "mem_mallocs": 147234,
+          "queue_duration_s": 0.007524,
+          "db_duration_s": 0.12935,
+          "view_duration_s": 0.86385,
+          "duration_s": 1.07051
+        }
+    expected:
+      - "@timestamp": "2021-06-10T05:20:17.905Z"
+        host:
+          name: "gitlab1001"
+        service:
+          type: "gitlab"
+          name: "gitlab-rails-production"
+        trace:
+          id: "01F7T5TAC9G99EF9ZR1YEC83A5"
+        user:
+          name: "UserName"
+          id: 2
+        log:
+          level: "NOTICE"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 5
+              name: "notice"
+            priority: 133
+          logger: "ProjectsController"
+          origin:
+            function: "show"
+        event:
+          duration: 1.07051
+        client:
+          ip: "127.0.0.1"
+        http:
+          request:
+            method: "GET"
+          response:
+            status_code: 200
+#        url:
+#          path: "/UserName/wmf-gitlab-tools"
+        user_agent:
+          original: "Mozilla/5.0 (X11; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0"
+        ecs:
+          version: "1.7.0"
+
+  # severity and host intentionally defined twice per behavior in rsyslog/template_syslog_json.conf
+  - input:
+      - >
+        {
+          "program": "input-file-gitlab-rails-api-json",
+          "severity": "NOTICE",
+          "host": "gitlab1001",
+          "time": "2021-06-10T00:11:00.056Z",
+          "severity": "INFO",
+          "duration_s": 0.14005,
+          "db_duration_s": 0.0764,
+          "view_duration_s": 0.06365,
+          "status": 200,
+          "method": "GET",
+          "path": "/api/v4/users/2",
+          "params": [],
+          "host": "gitlab.wikimedia.org",
+          "remote_ip": "127.0.0.1, 127.0.0.1",
+          "ua": "Mozilla/5.0 (X11; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
+          "route": "/api/:version/users/:id",
+          "user_id": 2,
+          "username": "UserName",
+          "queue_duration_s": 0.050568,
+          "redis_calls": 4,
+          "redis_duration_s": 0.0020499999999999997,
+          "redis_read_bytes": 585,
+          "redis_write_bytes": 1471,
+          "redis_cache_calls": 3,
+          "redis_cache_duration_s": 0.00137,
+          "redis_cache_read_bytes": 326,
+          "redis_cache_write_bytes": 160,
+          "redis_shared_state_calls": 1,
+          "redis_shared_state_duration_s": 0.00068,
+          "redis_shared_state_read_bytes": 259,
+          "redis_shared_state_write_bytes": 1311,
+          "db_count": 9,
+          "db_write_count": 0,
+          "db_cached_count": 0,
+          "cpu_s": 0.095684,
+          "mem_objects": 28945,
+          "mem_bytes": 4749219,
+          "mem_mallocs": 21150,
+          "correlation_id": "01F7SM40CRPBEEWWYS9M2ZKMAT",
+          "meta.user": "UserName",
+          "meta.caller_id": "GET /api/:version/users/:id",
+          "meta.remote_ip": "127.0.0.1",
+          "meta.feature_category": "users",
+          "meta.client_id": "user/2"
+        }
+
+    expected:
+      - "@timestamp": "2021-06-10T00:11:00.056Z"
+        host:
+          name: "gitlab1001"
+        service:
+          type: "gitlab"
+          name: "gitlab-rails-api"
+        trace:
+          id: "01F7SM40CRPBEEWWYS9M2ZKMAT"
+        user:
+          name: "UserName"
+          id: 2
+        log:
+          level: "INFO"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 6
+              name: "informational"
+            priority: 134
+        event:
+          duration: 0.14005
+        client:
+          ip: "127.0.0.1"
+        http:
+          request:
+            method: "GET"
+          response:
+            status_code: 200
+        url:
+          domain: "gitlab.wikimedia.org"
+#          path: "/api/v4/users/2"
+        user_agent:
+          original: "Mozilla/5.0 (X11; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0"
+        ecs:
+          version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "program": "input-file-gitlab-rails-application-json",
+          "severity": "NOTICE",
+          "host": "gitlab1001",
+          "severity": "ERROR",
+          "time": "2021-06-10T21:45:50.561Z",
+          "correlation_id": "01F7VY6XY37EG0F7AP328RKJ1K",
+          "message": "Cannot obtain an exclusive lease. There must be another instance already in execution."
+        }
+
+    expected:
+      - message: "Cannot obtain an exclusive lease. There must be another instance already in execution."
+        "@timestamp": "2021-06-10T21:45:50.561Z"
+        host:
+          name: "gitlab1001"
+        service:
+          type: "gitlab"
+          name: "gitlab-rails-application"
+        trace:
+          id: "01F7VY6XY37EG0F7AP328RKJ1K"
+        log:
+          level: "ERROR"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 3
+              name: "error"
+            priority: 131
+        ecs:
+          version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "program": "input-file-gitlab-workhorse-json",
+          "severity": "NOTICE",
+          "host": "gitlab1001",
+          "content_type": "application/json; charset=utf-8",
+          "correlation_id": "01F7VZ2F7BBHFXBC96RTDEE55W",
+          "duration_ms": 52,
+          "host": "gitlab.wikimedia.org",
+          "level": "info",
+          "method": "GET",
+          "msg": "access",
+          "proto": "HTTP/1.1",
+          "referrer": "",
+          "remote_addr": "127.0.0.1:0",
+          "remote_ip": "127.0.0.1",
+          "route": "",
+          "status": 200,
+          "system": "http",
+          "time": "2021-06-10T22:00:52Z",
+          "ttfb_ms": 51,
+          "uri": "/users/root/calendar.json",
+          "user_agent": "GPT/2.7.0",
+          "written_bytes": 17
+        }
+
+    expected:
+      - message: "access"
+        "@timestamp": "2021-06-10T22:00:52.000Z"
+        host:
+          name: "gitlab1001"
+        service:
+          type: "gitlab"
+          name: "gitlab-workhorse"
+        trace:
+          id: "01F7VZ2F7BBHFXBC96RTDEE55W"
+        url:
+          domain: "gitlab.wikimedia.org"
+#          path: "/users/root/calendar.json"
+        client:
+          ip: "127.0.0.1"
+        http:
+          request:
+            method: "GET"
+          response:
+            status_code: 200
+        user_agent:
+          original: "GPT/2.7.0"
+        log:
+          level: "INFO"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 6
+              name: "informational"
+            priority: 134
+        ecs:
+          version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "program": "input-file-gitlab-sidekiq-json",
+          "severity": "NOTICE",
+          "host": "gitlab1001",
+          "severity": "INFO",
+          "time": "2021-06-10T21:58:24.815Z",
+          "class": "MergeRequestMergeabilityCheckWorker",
+          "args": [
+            "2270"
+          ],
+          "retry": 3,
+          "queue": "merge_request_mergeability_check",
+          "version": 0,
+          "jid": "0060a3526bf690ad6298ff1c",
+          "created_at": "2021-06-10T21:58:24.725Z",
+          "meta.project": "gpt/large_projects/gitlabhq1",
+          "meta.root_namespace": "gpt",
+          "meta.caller_id": "Projects::MergeRequestsController#show",
+          "meta.remote_ip": "127.0.0.1",
+          "meta.feature_category": "code_review",
+          "meta.client_id": "ip/127.0.0.1",
+          "correlation_id": "01F7VYXYK8YSNBK8SNGKKPZCXA",
+          "enqueued_at": "2021-06-10T21:58:24.727Z",
+          "pid": 19901,
+          "message": "MergeRequestMergeabilityCheckWorker JID-0060a3526bf690ad6298ff1c: done: 0.085083 sec",
+          "job_status": "done",
+          "scheduling_latency_s": 0.002865,
+          "job_size_bytes": 508,
+          "cpu_s": 0.059214,
+          "mem_objects": 10513,
+          "mem_bytes": 1251970,
+          "mem_mallocs": 2586,
+          "redis_calls": 5,
+          "redis_duration_s": 0.0018189999999999999,
+          "redis_read_bytes": 22,
+          "redis_write_bytes": 766,
+          "redis_cache_read_bytes": 16,
+          "redis_cache_write_bytes": 168,
+          "redis_queues_calls": 2,
+          "redis_queues_duration_s": 0.000681,
+          "redis_queues_read_bytes": 2,
+          "redis_queues_write_bytes": 201,
+          "redis_shared_state_calls": 3,
+          "redis_shared_state_duration_s": 0.001138,
+          "redis_shared_state_read_bytes": 4,
+          "redis_shared_state_write_bytes": 397,
+          "db_count": 17,
+          "db_write_count": 5,
+          "db_cached_count": 1,
+          "duration_s": 0.085083,
+          "completed_at": "2021-06-10T21:58:24.815Z",
+          "db_duration_s": 0.02378
+        }
+
+    expected:
+      - message: "MergeRequestMergeabilityCheckWorker JID-0060a3526bf690ad6298ff1c: done: 0.085083 sec"
+        "@timestamp": "2021-06-10T21:58:24.815Z"
+        host:
+          name: "gitlab1001"
+        service:
+          type: "gitlab"
+          name: "gitlab-sidekiq"
+        trace:
+          id: "01F7VYXYK8YSNBK8SNGKKPZCXA"
+        client:
+          ip: "127.0.0.1"
+        process:
+          pid: 19901
+        event:
+          duration: 0.085083
+        log:
+          level: "INFO"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            severity:
+              code: 6
+              name: "informational"
+            priority: 134
+        ecs:
+          version: "1.7.0"
+
+  # nginx/gitlab_access.log
+  - input:
+      - >
+        {
+          "timestamp":"2021-07-21T20:24:49+00:00",
+          "host":"gitlab1001",
+          "program":"input-file-gitlab-nginx-access-cee",
+          "severity":"NOTICE",
+          "timestamp":"2021-07-21T20:24:48+00:00",
+          "client.ip":"127.0.0.1",
+          "user.name":"",
+          "url.path":"/api/v4/jobs/request",
+          "url.domain":"gitlab.wikimedia.org",
+          "host.name":"gitlab1001",
+          "http.request.method":"POST",
+          "http.request.headers.referer":"",
+          "http.response.status_code":"204",
+          "http.response.body.bytes":"0",
+          "user_agent.original":"gitlab-runner 14.0.1 (refs/pipelines/326100216; go1.13.8; linux/amd64)",
+          "event.category":["network","web"],
+          "event.dataset":"nginx.access",
+          "event.kind":"event",
+          "event.type":["access","connection"],
+          "service.type":"nginx",
+          "ecs.version":"1.7.0"
+        }
+    expected:
+      - '@timestamp': "2021-07-21T20:24:48.000Z"
+        log:
+          level: "NOTSET"
+        client:
+          ip: "127.0.0.1"
+        user:
+          name: ""
+        url:
+          domain: "gitlab.wikimedia.org"
+#          path: "/"
+        host:
+          name: "gitlab1001"
+        http:
+          request:
+            method: "POST"
+            headers:
+              referer: ""
+          response:
+            status_code: "204"
+            body:
+              bytes: "0"
+        user_agent:
+          original: "gitlab-runner 14.0.1 (refs/pipelines/326100216; go1.13.8; linux/amd64)"
+        event:
+          category:
+            - "network"
+            - "web"
+          dataset: "nginx.access"
+          kind: "event"
+          type:
+            - "access"
+            - "connection"
+        service:
+          type: "nginx"
+        ecs:
+          version: "1.7.0"
+
+  # nginx/gitlab_error.log ($time_local [$level] $process_id#$thread_id: *$connection_id * $message)
+  - input:
+      - >
+        {
+          "message": "2021/07/15 05:24:22 [crit] 3607#0: *2433935 SSL_do_handshake() failed (SSL: error:141CF06C:SSL routines:tls_parse_ctos_key_share:bad key share) while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:443",
+          "severity": "NOTICE",
+          "program": "input-file-gitlab-nginx-error-plain"
+        }
+
+    expected:
+      - '@timestamp': "2021-07-15T05:24:22.000Z"
+        message: 'SSL_do_handshake() failed (SSL: error:141CF06C:SSL routines:tls_parse_ctos_key_share:bad key share) while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:443'
+        log:
+          level: "CRIT"
+          syslog:
+            facility:
+              code: 16
+              name: local0
+            priority: 130
+            severity:
+              code: 2
+              name: critical
+        service:
+          name: "gitlab-nginx-error"
+          type: "nginx"
+        labels:
+          connection_id: "2433935"
+        process:
+          pid: "3607"
+          thread:
+            id: "0"
+        event:
+          category:
+            - "network"
+            - "web"
+          dataset: "nginx.error"
+          kind: "event"
+          type:
+            - "error"
+            - "connection"
+        ecs:
+          version: "1.7.0"
+
+  # redis/current ($time_local <snip> * $message)
+  - input:
+      - >
+        {
+          "message": "2021-07-15_15:16:51.11042 20430:M 15 Jul 2021 15:16:51.110 * Background saving terminated with success",
+          "severity": "NOTICE",
+          "program": "input-file-gitlab-redis-plain"
+        }
+
+    expected:
+      - '@timestamp': "2021-07-15T15:16:51.110Z"
+        message: 'Background saving terminated with success'
+        service:
+          type: "gitlab"
+          name: "gitlab-redis"
+        log:
+          level: "NOTICE"
+          syslog:
+            facility:
+              code: 16
+              name: local0
+            priority: 133
+            severity:
+              code: 5
+              name: notice
+        ecs:
+          version: "1.7.0"
