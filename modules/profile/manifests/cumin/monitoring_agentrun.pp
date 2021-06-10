@@ -13,7 +13,7 @@ class profile::cumin::monitoring_agentrun (
         require => Package['python3-pypuppetdb'],
     }
     $nrpe_command = @("COMMAND"/L)
-    sudo /usr/lib/nagios/plugins/check_puppet_run_changes \
+    /usr/lib/nagios/plugins/check_puppet_run_changes \
     -w ${warn} -c ${crit} \
     --ssl-key ${facts['puppet_config']['hostprivkey']} \
     --ssl-cert ${facts['puppet_config']['hostcert']} \
@@ -25,7 +25,7 @@ class profile::cumin::monitoring_agentrun (
     }
     nrpe::monitor_service{'puppet_run_changes':
         description    => 'Ensure hosts are not performing a change on every puppet run',
-        nrpe_command   => $nrpe_command,
+        nrpe_command   => "sudo ${nrpe_command}",
         check_interval => 360,
         retry_interval => 5,
         retries        => 2,
