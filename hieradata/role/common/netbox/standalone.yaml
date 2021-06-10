@@ -1,1 +1,1 @@
-profile::netbox::authentication_provider: ldap
+profile::netbox::authentication_provider: cas
