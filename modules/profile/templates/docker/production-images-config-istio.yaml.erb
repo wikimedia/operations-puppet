@@ -6,6 +6,7 @@ seed_image: <%= @registry %>/wikimedia-buster:latest
 namespace: istio
 username: prod-build
 password: <%= @password %>
+ca_bundle: /etc/ssl/certs/ca-certificates.crt
 
 known_uid_mappings:
   istio: 1337
