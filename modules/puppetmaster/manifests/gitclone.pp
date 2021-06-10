@@ -112,20 +112,16 @@ class puppetmaster::gitclone(
             # add config and pre-commit hook to perform yamllint on the hieradata dir
             ensure_packages(['yamllint'])
             $yamllint_conf_file = '/etc/puppet/yamllint.yaml'
-            $pre_commit_script = @("SCRIPT")
-            #!/bin/sh
-            /usr/bin/yamllint -c "${yamllint_conf_file}" "${private_repo_dir}/hieradata"
-            | SCRIPT
-            file {$yamllint_conf_file:
+            file {'/etc/puppet/yamllint.yaml':
                 ensure => file,
                 source => 'puppet:///modules/puppetmaster/git/yamllint.yaml',
             }
             file { "${private_repo_dir}/.git/hooks/pre-commit":
                 ensure  => present,
-                content => $pre_commit_script,
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
+                source  => 'puppet:///modules/puppetmaster/private-repo-pre-commit.sh',
                 require => Exec['/srv/private init'],
             }
 
