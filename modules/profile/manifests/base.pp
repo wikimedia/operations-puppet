@@ -46,7 +46,6 @@ class profile::base(
     contain profile::base::puppet
     require profile::base::certificates
     include profile::pki::client
-    include profile::contacts
     include profile::base::netbase
     include profile::logoutd
     # Ensure we update the CA certificates before managing any services
