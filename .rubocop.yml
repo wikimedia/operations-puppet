@@ -12,6 +12,7 @@ AllCops:
     - 'modules/smokeping/files/smokeping.fcgi'
     # third party modules
     - 'modules/mysql/**/*'
+    - 'modules/concat/**/*'
     - 'modules/rsync/**/*'
     - 'modules/stdlib/**/*'
     - 'modules/puppetdbquery/**/*'
