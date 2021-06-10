@@ -101,7 +101,7 @@ class profile::httpbb (
         command         => '/bin/bash -c "cd /srv/deployment/httpbb && /usr/bin/git pull >/dev/null 2>&1"',
         interval        => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:*:00', # every minute
+            'interval' => '*-*-* *:00:00', # every hour
         },
         logging_enabled => false,
         user            => 'root',
