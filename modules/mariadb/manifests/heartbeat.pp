@@ -22,7 +22,14 @@ class mariadb::heartbeat (
         undef => $mariadb::config::binlog_format,
         default => $override_binlog_format
     }
-    systemd::unit { 'pt-heartbeat-wikimedia':
-        content        => template('mariadb/pt-heartbeat-wikimedia.service.erb'),
+    systemd::service { 'pt-heartbeat-wikimedia':
+        content                  => template('mariadb/pt-heartbeat-wikimedia.service.erb'),
+        restart                  => true,
+        monitoring_enabled       => true,
+        monitoring_contact_group => 'databases-testing',
+        monitoring_notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/pt-heartbeat',
+        service_params           => {
+            ensure => $enabled,
+        }
     }
 }
