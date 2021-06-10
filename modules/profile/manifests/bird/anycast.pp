@@ -82,4 +82,7 @@ class profile::bird::anycast(
       check_fail => $vip_params['check_fail'],
     }
   }
+  profile::contact { $title:
+      contacts => ['ayounsi']
+  }
 }

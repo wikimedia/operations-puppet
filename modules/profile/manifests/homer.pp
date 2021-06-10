@@ -62,4 +62,7 @@ class profile::homer (
         user        => 'root',  # Needed to access the keyholder SSH key
         require     => File['/usr/local/sbin/check-homer-diff'],
     }
+    profile::contact { $title:
+        contacts => ['ayounsi', 'volans']
+    }
 }

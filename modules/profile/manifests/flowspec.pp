@@ -25,4 +25,7 @@ class profile::flowspec (
         desc   => 'BGP',
         srange => '($NETWORK_INFRA)',
     }
+    profile::contact { $title:
+        contacts => ['ayounsi']
+    }
 }

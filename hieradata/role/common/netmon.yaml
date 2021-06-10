@@ -1,7 +1,10 @@
 profile::librenms::sitename: 'librenms.wikimedia.org'
 profile::librenms::install_dir: '/srv/deployment/librenms/librenms'
-profile::idp::client::httpd::sites: 
+profile::idp::client::httpd::sites:
   "%{alias('profile::librenms::sitename')}":
     document_root: "%{lookup('profile::librenms::install_dir')}/html"
     vhost_content: 'profile/idp/client/httpd-librenms.erb'
 rsync::server::wrap_with_stunnel: true
+profile::contacts::role_contacts:
+  - 'Infrastructure Foundations'
+  - 'Observability'

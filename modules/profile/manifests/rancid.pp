@@ -18,4 +18,7 @@ class profile::rancid (
       module_path         => '/var/lib/rancid',
       server_uses_stunnel => true,
     }
+    profile::contact { $title:
+        contacts => ['ayounsi']
+    }
 }

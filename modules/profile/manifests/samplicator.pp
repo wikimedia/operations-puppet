@@ -26,4 +26,7 @@ class profile::samplicator (
         desc  => 'samplicator',
       srange  => '($NETWORK_INFRA $MGMT_NETWORKS)',
     }
+    profile::contact { $title:
+        contacts => ['ayounsi']
+    }
 }

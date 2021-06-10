@@ -26,4 +26,7 @@ class profile::diffscan(
         emailto   => $emailto,
         groupname => $groupname,
     }
+    profile::contact { $title:
+        contacts => ['ayounsi']
+    }
 }

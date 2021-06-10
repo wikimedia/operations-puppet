@@ -60,6 +60,7 @@ class profile::rpkivalidator(
         check_command => "check_tcp!${rtr_port}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/RPKI#RPKI_to_router_port',
     }
-
-
+    profile::contact { $title:
+        contacts => ['ayounsi']
+    }
 }
