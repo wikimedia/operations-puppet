@@ -4,3 +4,4 @@ profile::base::use_apt_proxy: true
 profile::base::manage_apt_source: true
 profile::base::apt_install_audit_installed: true
 profile::base::mirror_server: 'mirrors.wikimedia.org'
+profile::base::enable_contacts: true

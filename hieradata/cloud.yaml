@@ -35,6 +35,7 @@ profile::base::puppet::serialization_format: pson
 profile::base::puppet::certificate_revocation: ~
 profile::base::puppet::dns_alt_names: []
 profile::base::legacy_cloud_search_domain: ''
+profile::base::enable_contacts: false
 puppet_ca_server: ''
 manage_puppet_ca_file: false
 

@@ -33,6 +33,7 @@ class profile::base(
     String $cluster = lookup('cluster'),
     Wmflib::Ensure $hardware_monitoring = lookup('profile::base::hardware_monitoring', {'default_value' => 'present'}),
     String $legacy_cloud_search_domain = lookup('profile::base::legacy_cloud_search_domain', {'default_value' => ''}),
+    Boolean $enable_contacts = lookup('profile::base::enable_contacts')
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -46,7 +47,9 @@ class profile::base(
     contain profile::base::puppet
     require profile::base::certificates
     include profile::pki::client
-    include profile::contacts
+    if $enable_contacts {
+        include profile::contacts
+    }
     include profile::base::netbase
     include profile::logoutd
     # Ensure we update the CA certificates before managing any services
