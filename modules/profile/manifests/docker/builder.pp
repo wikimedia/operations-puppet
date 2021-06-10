@@ -57,6 +57,15 @@ class profile::docker::builder(
         mode    => '0444'
     }
 
+    file { '/etc/production-images/config-istio.yaml':
+        ensure  => present,
+        content => template('profile/docker/production-images-config-istio.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444'
+    }
+
+
     file { '/usr/local/bin/build-production-images':
         ensure => present,
         source => 'puppet:///modules/profile/docker/build-production-images.sh',

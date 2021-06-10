@@ -1,0 +1,11 @@
+<%- if @proxy_address and @proxy_address != '' -%>
+http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
+<%- end -%>
+registry: <%= @registry %>
+seed_image: <%= @registry %>/wikimedia-buster:latest
+namespace: istio
+username: prod-build
+password: <%= @password %>
+
+known_uid_mappings:
+  istio: 1337
