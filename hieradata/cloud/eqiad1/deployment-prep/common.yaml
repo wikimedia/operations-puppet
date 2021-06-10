@@ -1,4 +1,7 @@
 ---
+classes:
+  - profile::beta::motd
+
 profile::base::remote_syslog:
   - "deployment-logstash03.deployment-prep.eqiad.wmflabs:10514"
 profile::base::purge_apt_sources: true

@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# Output some warnings about using deployment-prep and link to WMCS Term of Uses
+# T100837
+cat <<'MOTD'
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+*  /!\ Please take extra care and AVOID MAKING UNPUPPETIZED CHANGES.  *
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+Access is subject to Wikimedia Cloud Services Terms of Use:
+- https://wikitech.wikimedia.org/wiki/Terms_of_use
+
+Intro: https://www.mediawiki.org/wiki/Beta_Cluster
+
+MOTD
