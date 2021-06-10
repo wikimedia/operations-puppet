@@ -1,0 +1,123 @@
+fields:
+  logsource: "centrallog1001"
+  facility: "user"
+  level: "NOTICE"
+  program: "webrequest"
+  type: "webrequest"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+  - "normalized_message"
+  - "tags"
+  - "normalized"
+testcases:
+  - input:
+      - >
+        {
+          "hostname": "cp3058.esams.wmnet",
+          "sequence": 55255890050,
+          "dt": "2021-06-10T14:47:33Z",
+          "time_firstbyte": 59.975095,
+          "ip": "127.0.0.1",
+          "backend": "Varnish",
+          "http_status": "503",
+          "response_size": 1793,
+          "http_method": "POST",
+          "uri_host": "demo.wikimedia.org",
+          "uri_path": "/v1/new",
+          "uri_query": "?key=value",
+          "user_agent": "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36",
+          "accept": "*/*",
+          "accept_language": "it-it,it;q=0.9,en-us;q=0.8,en;q=0.7",
+          "referer": "https://it.wikipedia.org/",
+          "content_type": "text/html; charset=utf-8",
+          "x_analytics": "https=1;client_port=51341;nocookies=1",
+          "x_cache": "cp3058 int",
+          "cache_status": "int-front",
+          "range": "-",
+          "tls": "vers=TLSv1.3;keyx=X00000;auth=ECDSA;ciph=AES-256-GCM-SHA256;prot=h2;sess=new"
+        }
+
+    expected:
+      - host:
+          name: "cp3058.esams.wmnet"
+        labels:
+          channel: "webrequest"
+          range: "-"
+          tls: "vers=TLSv1.3;keyx=X00000;auth=ECDSA;ciph=AES-256-GCM-SHA256;prot=h2;sess=new"
+          cache_status: "int-front"
+        metrics:
+          ttfb:
+            seconds: 59.975095
+        event:
+          sequence: 55255890050
+        log:
+          level: "NOTICE"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            severity:
+              code: 5
+              name: "notice"
+            priority: 13
+        url:
+          scheme: "https"
+          domain: "demo.wikimedia.org"
+          path: "/v1/new"
+          query: "?key=value"
+          original: "https://demo.wikimedia.org/v1/new?key=value"
+        http:
+          request:
+            method: "POST"
+            headers:
+              accept: "*/*"
+              accept-language: "it-it,it;q=0.9,en-us;q=0.8,en;q=0.7"
+              referer: "https://it.wikipedia.org/"
+          response:
+            status_code: "503"
+            bytes: 1793
+            headers:
+              content-type: "text/html; charset=utf-8"
+              x-analytics: "https=1;client_port=51341;nocookies=1"
+              x-cache: "cp3058 int"
+        client:
+          ip: "127.0.0.1"
+        service:
+          type: "varnish"
+          name: "varnish-webrequest"
+        user_agent:
+          original: "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
+        ecs:
+          version: "1.7.0"
+
+      - host: "cp3058.esams.wmnet"
+        sequence: 55255890050
+        dt: "2021-06-10T14:47:33Z"
+        time_firstbyte: 59.975095
+        ip: "127.0.0.1"
+        cache_status: "int-front"
+        http_status: "503"
+        response_size: 1793
+        http_method: "POST"
+        uri_host: "demo.wikimedia.org"
+        uri_path: "/v1/new"
+        uri_query: "?key=value"
+        content_type: "text/html; charset=utf-8"
+        referer: "https://it.wikipedia.org/"
+        user_agent: "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
+        accept_language: "it-it,it;q=0.9,en-us;q=0.8,en;q=0.7"
+        x_analytics: "https=1;client_port=51341;nocookies=1"
+        range: "-"
+        x_cache: "cp3058 int"
+        accept: "*/*"
+        backend: "Varnish"
+        tls: "vers=TLSv1.3;keyx=X00000;auth=ECDSA;ciph=AES-256-GCM-SHA256;prot=h2;sess=new"
+        facility: "user"
+        http_request: "POST https://demo.wikimedia.org/v1/new?key=value"
+        level: "NOTICE"
+        logsource: "centrallog1001"
+        program: "webrequest"
+        type: "webrequest"
+        uri_path_decoded: "/v1/new"
+        uri_query_decoded: "?key=value"
