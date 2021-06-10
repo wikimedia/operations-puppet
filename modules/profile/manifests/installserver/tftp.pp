@@ -31,6 +31,12 @@ class profile::installserver::tftp (
         srange => '$PRODUCTION_NETWORKS',
     }
 
+    ferm::service { 'tftp-mgmt':
+        proto  => 'udp',
+        port   => 'tftp',
+        srange => '$MGMT_NETWORKS',
+    }
+
     backup::set { 'srv-tftpboot': }
 
     $ensure_monitor = $ensure_service ? {
