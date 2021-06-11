@@ -7014,6 +7014,26 @@ host pc2010 {
     fixed-address pc2010.codfw.wmnet;
 }
 
+host pc2011 {
+    hardware ethernet 2C:EA:7F:A4:18:32;
+    fixed-address pc2011.codfw.wmnet;
+}
+
+host pc2012 {
+    hardware ethernet 2C:EA:7F:A2:FB:64;
+    fixed-address pc2012.codfw.wmnet;
+}
+
+host pc2013 {
+    hardware ethernet 2C:EA:7F:A4:09:02;
+    fixed-address pc2013.codfw.wmnet;
+}
+
+host pc2014 {
+    hardware ethernet 2C:EA:7F:A2:F9:83;
+    fixed-address pc2014.codfw.wmnet;
+}
+
 host phab1001 {
     hardware ethernet 14:18:77:5B:23:4C;
     fixed-address phab1001.eqiad.wmnet;
