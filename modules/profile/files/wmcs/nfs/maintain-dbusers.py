@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This script keeps canonical source of mysql labsdb accounts in a
+This script keeps canonical source of mysql clouddb accounts in a
 database, and ensures that it is kept up to date with reality.
 
 The code pattern here is that you have a central data store (the db),
@@ -18,7 +18,7 @@ Some of the functions are one-time only. These are:
 
 ## harvest_dbaccounts ##
  - Look through all accounts in account db
- - Look through all users in all provisioned labsdbs
+ - Look through all users in all provisioned clouddbs
  - Make entries in `account_host` table with status of all accounts.
 
 Most of these functions should be run in a continuous loop, maintaining
@@ -37,7 +37,7 @@ mysql accounts for new tool/user accounts as they appear.
  - Look through `account_host` table for accounts that are marked as 'absent'
  - Create those accounts, and mark them as present.
 
-If we need to add a new labsdb, we can do so the following way:
+If we need to add a new clouddb, we can do so the following way:
  - Add it to the config file
  - Insert entries into `account_host` for each tool/user with the new host.
  - Run `create_accounts`
