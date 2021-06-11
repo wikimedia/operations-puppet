@@ -2239,6 +2239,17 @@ node /^pc20(09)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
+# New parsercache hosts (db normal specs)
+# eqiad hosts T282484 T284825
+node /^pc10(11|12|13|14)\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
+# codfw hosts T282482 T284825
+node /^pc20(11|12|13|14)\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[123]001\.(eqiad|codfw|esams)\.wmnet$/ {
     role(ping_offload)
