@@ -28,18 +28,19 @@ echo "Stopping postgres"
 service postgresql stop
 
 rm -R "$POSTGRES_PATH"
-mkdir -P "$POSTGRES_PATH"
+mkdir -p "$POSTGRES_PATH"
 
 # pg_basebackup will use PGPASSFILE for credentials
 # shellcheck disable=SC2034
 PGPASSFILE="/etc/postgresql/${POSTGRES_VERSION}/main/.pgpass"
+PG_HOST=$(cat $PGPASSFILE | cut -f1 -d:)
 
 # -R will cause pg_basebackup to write out a new recovery.conf -
 # without this file, postgres will start up as a non-replica and the
 # host will need to be re-synced. Puppet will overwrite this file on a
 # later run but it will more or less contain the same information
 echo "Starting backup from primary - this will take a while"
-/usr/bin/pg_basebackup -R -X stream -D "$POSTGRES_PATH" -U replication -w
+/usr/bin/pg_basebackup -R -X stream -D "$POSTGRES_PATH" -U replication -w -h "$PG_HOST"
 echo "Backup complete"
 
 chown -R postgres:postgres "$POSTGRES_PATH"
