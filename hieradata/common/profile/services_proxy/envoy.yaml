@@ -5,7 +5,7 @@ profile::services_proxy::envoy::listeners:
   # First, the discovery enabled services
   - name: parsoid-php
     port: 6002
-    timeout: "8s"
+    timeout: "30s"
     service: parsoid-php
     keepalive: "4s"
     retry:
