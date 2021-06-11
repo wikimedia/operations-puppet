@@ -3,7 +3,7 @@ counter varnish_frontend_origin_ttfb_sum by origin, cache_status
 counter varnish_frontend_origin_ttfb_count by origin, cache_status
 
 # Only match "backend" side requests (varnishncsa -b)
-/^side b\t.*\tttfb (?P<ttfb>[0-9\.]+)\tcache_int (cp10[0-9][0-9].*, )?(?P<origin>cp[0-9]+) (?P<cache_status>(hit|miss|pass))/ {
+/^side b\t.*\tttfb (?P<ttfb>[0-9\.]+)\tcache_int (?P<origin>cp[0-9]+) (?P<cache_status>(hit|miss|pass))/ {
     varnish_frontend_origin_ttfb_count[$origin][$cache_status]++
 
     # varnishncsa reports ttfb in seconds
