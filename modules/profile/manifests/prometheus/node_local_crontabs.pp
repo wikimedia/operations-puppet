@@ -2,6 +2,7 @@
 #
 # Periodically export local crontab information via node-exporter
 # textfile collector.
+# This is exclusively tailored for toolforge grid nodes.
 class profile::prometheus::node_local_crontabs {
     class { 'prometheus::node_local_crontabs': }
 

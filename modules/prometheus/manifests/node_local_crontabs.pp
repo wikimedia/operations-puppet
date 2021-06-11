@@ -1,6 +1,7 @@
 # = Class: prometheus::node_local_crontabs
 #
 # Export local crontab information via node-exporter textfile collector.
+# This is exclusively tailored for toolforge grid nodes.
 class prometheus::node_local_crontabs (
     Wmflib::Ensure $ensure = 'present',
 ) {

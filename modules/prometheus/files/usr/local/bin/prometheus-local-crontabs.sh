@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 # Usage: prometheus-local_crontabs [outfile]
+# This is exclusively tailored for toolforge grid nodes.
 
 set -o errexit
 set -o nounset
@@ -22,6 +23,12 @@ OUTFILE="${1:-/var/lib/prometheus/node.d/local_crontab.prom}"
 
 # Users allowed to have local crontabs
 ALLOWED=('root' 'puppet' 'prometheus')
+
+# T284130: Due to a bug on ldap sssd for sudo, if the system has to trigger the oom while trying to run sudo, it will
+# end up in a segmentation fault, so we force some memory allocatio before sudo to avoid that from happening.
+# TODO: remove once we don't have grid engine in cloud anymore and/or when we upgrade to bullseye
+# 4MB, this needs a second shell otherwise the memory does not get freed
+/usr/bin/env bash -c 'dummyvar="$(yes | head -c $((4 * 1024 * 1024)))"'
 
 # Get an array of all crontab files
 mapfile -t CRONTABS < <(/usr/bin/sudo -u root /bin/ls -1 /var/spool/cron/crontabs/)
