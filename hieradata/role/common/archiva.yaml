@@ -7,3 +7,5 @@ profile::archiva::proxy::monitoring_enabled: true
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
+
+profile::nginx::variant: 'light'
