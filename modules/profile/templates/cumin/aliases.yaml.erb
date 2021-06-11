@@ -152,22 +152,25 @@ idp: P{O:idp} or A:idp-test
 idp-test: P{O:idp_test}
 installserver: P{O:installserver::light or O:apt_repo}
 installserver-light: P{O:installserver::light}
-kafka-all: A:kafka-main or A:kafka-jumbo
+kafka-all: A:kafka-main or A:kafka-jumbo or A:kafka-logging or A:kafka-test
 kafka-main: P{O:kafka::main}
 kafka-main-canary: P{kafka-main2001.codfw.wmnet}
 kafka-main-codfw: A:kafka-main and A:codfw
 kafka-main-eqiad: A:kafka-main and A:eqiad
 kafka-jumbo-canary: P{kafka-jumbo1001.eqiad.wmnet}
 kafka-jumbo: P{O:kafka::jumbo::broker}
+kafka-jumbo-eqiad: A:kafka-jumbo and A:eqiad
 kafka-logging: P{O:kafka::logging}
 kafka-logging-eqiad: A:kafka-logging and A:eqiad
 kafka-logging-codfw: A:kafka-logging and A:codfw
 kafka-test: P{O:kafka::test::broker}
+kafka-test-eqiad: P{O:kafka::test::broker} and A:eqiad
 kafkamon: P{O:kafka::monitoring}
 kafka-mirror-maker: P{C:profile::kafka::mirror}
-kafka-mirror-maker-jumbo: A:kafka-jumbo and A:kafka-mirror-maker
+kafka-mirror-maker-jumbo-eqiad: A:kafka-jumbo-eqiad and A:kafka-mirror-maker
 kafka-mirror-maker-main-codfw: A:kafka-main-codfw and A:kafka-mirror-maker
 kafka-mirror-maker-main-eqiad: A:kafka-main-eqiad and A:kafka-mirror-maker
+kafka-mirror-maker-test-eqiad: A:kafka-test-eqiad and A:kafka-mirror-maker
 kerberos: P{O:kerberos::kdc}
 kerberos-kadmin: P{<%= @kerberos_kadmin_host %>}
 kubernetes-etcd: P{O:etcd::v3::kubernetes}
