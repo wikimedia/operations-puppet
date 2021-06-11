@@ -4,7 +4,7 @@ class profile::wmcs::db::wikireplicas::dedicated::analytics (
 ) {
     # clouddb1021 is a special db host dedicated only to the Analytics team.
     # Special ferm rules are needed to allow Analytics client to pull data from
-    # the host (without affecting the other labsdbs of course).
+    # the host.
     $instances.each |$section, $buffer_pool| {
         $port = $section_ports[$section]
 

@@ -21,7 +21,7 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     $output_directory_labs      = '/wmf/data/raw/mediawiki/tables'
     $output_directory_private   = '/wmf/data/raw/mediawiki_private/tables'
     $wiki_file                  = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/grouped_wikis.csv'
-    # We sqoop most tables out of labsdb so that data is pre-sanitized.
+    # We sqoop most tables out of clouddb so that data is pre-sanitized.
     $labs_db_user               = $::passwords::mysql::analytics_labsdb::user
     $labs_log_file              = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki.log"
     # Sqoop anything private out of analytics-store

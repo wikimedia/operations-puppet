@@ -41,7 +41,7 @@ class profile::analytics::cluster::secrets(
         user    => $secrets_user,
     }
 
-    # mysql labsdb analytics user creds
+    # mysql clouddb1021 analytics user creds
     include ::passwords::mysql::analytics_labsdb
     $labsdb_user = $::passwords::mysql::analytics_labsdb::user
     $labsdb_pass = $::passwords::mysql::analytics_labsdb::pass
