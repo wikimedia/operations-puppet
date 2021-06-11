@@ -19,9 +19,6 @@ class archiva::proxy(
 ) {
     Class['::archiva'] -> Class['::archiva::proxy']
 
-    # Set up simple Nginx reverse proxy to $archiva_port.
-    class { '::nginx': }
-
     # $archiva_server_properties and
     # $ssl_server_properties will be concatenated together to form
     # a single $server_properties array for proxy.nginx.erb
