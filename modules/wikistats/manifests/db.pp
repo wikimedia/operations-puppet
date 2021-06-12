@@ -28,28 +28,26 @@ class wikistats::db (
     }
 
     systemd::timer::job { 'wikistats-dbdump':
-        ensure            => 'present',
-        user              => 'root',
-        description       => 'create a database backup',
-        command           => '/usr/local/bin/wikistats/dbdump.sh',
-        logging_enabled   => true,
-        logfile_basedir   => '/var/log/wikistats/',
-        logfile_name      => 'dbdump.log',
-        syslog_identifier => 'wikistats',
-        interval          => {'start' => 'OnCalendar', 'interval' => '*-*-* 0:15:00'},
+        ensure          => 'present',
+        user            => 'root',
+        description     => 'create a database backup',
+        command         => '/usr/local/bin/wikistats/dbdump.sh',
+        logging_enabled => true,
+        logfile_basedir => '/var/log/wikistats/',
+        logfile_name    => 'dbdump.log',
+        interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 0:15:00'},
     }
 
     # don't run out of disk
     systemd::timer::job { 'wikistats-cleanup-mysqldump':
-        ensure            => 'present',
-        user              => 'root',
-        description       => 'delete old dump files to avoid running out of disk space',
-        command           => "/usr/bin/find ${backupdir} -name \"*.sql.gz\" -mtime +7 -exec rm {} \\;",
-        logging_enabled   => true,
-        logfile_basedir   => '/var/log/wikistats/',
-        logfile_name      => 'cleanup-mysqldump.log',
-        syslog_identifier => 'wikistats',
-        interval          => {'start' => 'OnCalendar', 'interval' => '*-*-* 23:23:00'},
+        ensure          => 'present',
+        user            => 'root',
+        description     => 'delete old dump files to avoid running out of disk space',
+        command         => "/usr/bin/find ${backupdir} -name \"*.sql.gz\" -mtime +7 -exec rm {} \\;",
+        logging_enabled => true,
+        logfile_basedir => '/var/log/wikistats/',
+        logfile_name    => 'cleanup-mysqldump.log',
+        interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 23:23:00'},
     }
 
     # (random) db pass is stored here to that deployment-script can
