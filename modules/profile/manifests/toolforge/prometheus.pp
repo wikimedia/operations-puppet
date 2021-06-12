@@ -182,7 +182,7 @@ class profile::toolforge::prometheus (
                     },
                     {
                         'source_labels' => ['__meta_kubernetes_pod_name'],
-                        'regex'         => '(nginx-ingress-gen2-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+)',
+                        'regex'         => '(ingress-nginx-gen2-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+)',
                         'target_label'  => '__metrics_path__',
                         # lint:ignore:single_quote_string_with_variables
                         # PORT is not arbitrary! the pod is listening on that one
