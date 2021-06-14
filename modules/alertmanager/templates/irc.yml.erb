@@ -33,3 +33,7 @@ msg_template: >-
   {{ if (index .CommonAnnotations "dashboard") }}- {{ .CommonAnnotations.dashboard }}{{ end }}
   -
   <%= @dashboard_url %>
+
+# For libera.chat's services, can be removed after 0.4.2 upgrade
+nickserv_identify_patterns:
+  - "Please choose a different nickname, or identify via"
