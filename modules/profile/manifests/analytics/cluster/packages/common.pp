@@ -23,16 +23,11 @@ class profile::analytics::cluster::packages::common {
         'python3-virtualenv',
         'python3-geoip',
         'python3-geoip2',
-        'python3-pandas',
-        'python3-pycountry',
-        'python3-scipy',
         'python3-requests',
         'python3-dateutil',
         'python3-docopt',
-        'python3-numpy',
         'python3-yaml',
         'python3-tabulate',
-        'python3-tz',
         'python3-nose',
         'python3-mock', # needed to run refinery-drop-older-than
         'python3-setuptools',
@@ -46,16 +41,17 @@ class profile::analytics::cluster::packages::common {
         # like requests-kerberos (used by presto-python-client).
         'libkrb5-dev',
 
+        # Apache BigTop 1.4+ ships with Hadoop 2.8+,
+        # compatible with openssl 1.1.0
+        'libssl1.1',
+        'libssl-dev',
+
         # We hope to eventually replace all python packages installed for use by users
         # with this one.  It is easier to maintain this single anaconda
         # based package than many different python debian packages.
         # See: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Anaconda
         'anaconda-wmf',
     ])
-
-    # Apache BigTop 1.4+ ships with Hadoop 2.8+,
-    # compatible with openssl 1.1.0
-    ensure_packages(['libssl1.1', 'libssl-dev'])
 
     # ores::base for ORES packages
     class { '::ores::base': }
