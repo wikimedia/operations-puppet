@@ -35,8 +35,6 @@ https://docker-registry.wikimedia.org:
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ci-build'] -%>"
   assert_status: 404
-  assert_headers:
-    WWW-Authenticate: Basic realm="docker-registry (regular-push)"
 - path: /v2/wikimedia/mediawiki-multiversion/manifests/protoprod
   assert_status: 200
   assert_headers:
@@ -93,12 +91,8 @@ https://docker-registry.wikimedia.org:
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['kubernetes'] -%>"
   assert_status: 404
-  assert_headers:
-    WWW-Authenticate: Basic realm="docker-registry restricted (restricted-read)"
 - path: /v2/restricted/nonexistent/blobs/upload
   request_headers:
     Authorization: "<%= @basicauth_credentials['docker-registry']['ci-restricted'] -%>"
   method: POST
   assert_status: 404
-  assert_headers:
-    WWW-Authenticate: Basic realm="docker-registry restricted (restricted-push)"
