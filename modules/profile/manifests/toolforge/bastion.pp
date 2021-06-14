@@ -33,6 +33,14 @@ class profile::toolforge::bastion(
         source => 'puppet:///modules/profile/toolforge/qstat-full',
     }
 
+    file { '/bin/disabledtoolshell':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/toolforge/disabledtoolshell',
+    }
+
     # TODO: once bastions from the eqiad.wmflabs generation are gone, return to using $facts['fqdn']
     file { "${profile::toolforge::grid::base::store}/submithost-${facts['hostname']}.${::labsproject}.eqiad1.wikimedia.cloud":
         ensure  => file,

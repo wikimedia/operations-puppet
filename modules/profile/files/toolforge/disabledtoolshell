@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "This tool is disabled."
+exit 1
