@@ -142,6 +142,11 @@ node 'an-airflow1001.eqiad.wmnet' {
     role(search::airflow)
 }
 
+# Analytics Platform Engineering (1002) and Research (1003) instance of Apache Airflow
+node /an-airflow100[23]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # Analytics Zookepeer cluster
 node /an-conf100[1-3]\.eqiad\.wmnet/ {
     role(analytics_cluster::zookeeper)

@@ -68,6 +68,16 @@ host an-airflow1001 {
     fixed-address an-airflow1001.eqiad.wmnet;
 }
 
+host an-airflow1002 {
+    hardware ethernet aa:00:00:35:51:76;
+    fixed-address an-airflow1002.eqiad.wmnet;
+}
+
+host an-airflow1003 {
+    hardware ethernet aa:00:00:d2:a9:d8;
+    fixed-address an-airflow1003.eqiad.wmnet;
+}
+
 host an-test-druid1001 {
     hardware ethernet aa:00:00:3c:aa:38;
     fixed-address an-test-druid1001.eqiad.wmnet;
