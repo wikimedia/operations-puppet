@@ -11,7 +11,12 @@ ExecStart=/srv/deployment/search/mjolnir/deploy/venv/bin/mjolnir-utilities.py ka
         --brokers <%= @kafka_config['brokers']['string'] %> \
         --es-clusters <%= @es_cluster_endpoint %> \
         --group-id <%= @group_id %> \
+        <%- if @topics.any? -%>
         --topic <%= @topics.join(' ') %> \
+        <%- end -%>
+        <%- if @priority_topics.any? -%>
+        --priority-topic <%= @priority_topics.join(' ') %> \
+        <%- end -%>
         --prometheus-port <%= @prometheus_port %>
 
 StandardInput=null
