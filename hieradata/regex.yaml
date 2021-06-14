@@ -314,7 +314,7 @@ enable_memcached_tls_hosts_gutter:
   profile::memcached::port: 11214
 
 enable_memcached_tls_hosts:
-  __regex: !ruby/regexp /^mc2019\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^mc2[0-9]+\.codfw\.wmnet$/
   profile::memcached::enable_tls: true
   profile::memcached::ssl_cert: "%{facts.puppet_config.hostcert}"
   profile::memcached::ssl_key: "%{facts.puppet_config.hostprivkey}"
