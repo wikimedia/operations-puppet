@@ -5161,3 +5161,15 @@ ldap_only_users:
     ensure: present
     realname: Isabelle Hurbain-Palatin
     email: ihurbainpalatin@wikimedia.org
+  wquarshie:
+    ensure: present
+    realname: Wendy Quarshie
+    email: wquarshie@wikimedia.org
+  dang:
+    ensure: present
+    realname: Tien Dat Nguyen
+    email: dat.nguyen@wikimedia.de
+  kpayne:
+    ensure: present
+    realname: Kara Lynne Payne
+    email: kara.payne@wikimedia.de
