@@ -33,7 +33,7 @@ https://docker-registry.wikimedia.org:
 - path: /v2/nonexistent/blobs/upload
   method: POST
   request_headers:
-    Authorization: "<%= @basicauth_credentials['docker-registry']['regular-push'] -%>"
+    Authorization: "<%= @basicauth_credentials['docker-registry']['ci-build'] -%>"
   assert_status: 404
   assert_headers:
     WWW-Authenticate: Basic realm="docker-registry (regular-push)"
@@ -91,13 +91,13 @@ https://docker-registry.wikimedia.org:
     WWW-Authenticate: Basic realm="docker-registry restricted (restricted-push)"
 - path: /v2/restricted/nonexistent/manifests/latest
   request_headers:
-    Authorization: "<%= @basicauth_credentials['docker-registry']['restricted-read'] -%>"
+    Authorization: "<%= @basicauth_credentials['docker-registry']['kubernetes'] -%>"
   assert_status: 404
   assert_headers:
     WWW-Authenticate: Basic realm="docker-registry restricted (restricted-read)"
 - path: /v2/restricted/nonexistent/blobs/upload
   request_headers:
-    Authorization: "<%= @basicauth_credentials['docker-registry']['restricted-push'] -%>"
+    Authorization: "<%= @basicauth_credentials['docker-registry']['ci-restricted'] -%>"
   method: POST
   assert_status: 404
   assert_headers:
