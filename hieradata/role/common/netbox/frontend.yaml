@@ -1,2 +1,3 @@
 # Ship logs to logging pipeline local shim
 service::configuration::logstash_host: localhost
+profile::netbox::authentication_provider: cas
