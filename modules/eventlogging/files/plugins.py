@@ -69,6 +69,8 @@ eventlogging_schemas_disabled = (
 
     # FR Tech schemas
     'LandingPageImpression',
+    'CentralNoticeBannerHistory',
+    'CentralNoticeImpression,'
 
     # TranslationRecommendation schemas
     'TranslationRecommendationUserAction',

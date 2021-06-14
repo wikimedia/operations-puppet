@@ -176,6 +176,8 @@ class profile::analytics::refinery::job::refine(
 
         # FR Tech schemas
         'LandingPageImpression',
+        'CentralNoticeBannerHistory',
+        'CentralNoticeImpression',
 
         # TranslationRecommendation schemas
         'TranslationRecommendationUserAction',
