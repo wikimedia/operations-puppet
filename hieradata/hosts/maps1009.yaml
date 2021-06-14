@@ -1,3 +1,6 @@
+# This file is a set of overrides for master.yaml for maps 2.0. In
+# future most of this will be moved to master.yaml.
+
 # maps2.0 uses abcd rather than a4/a5 etc.
 cassandra::rack: a
 cassandra::target_version: '3.x'
@@ -12,6 +15,21 @@ profile::maps::tlsproxy::ssl_ecdhe_curve: false
 
 profile::maps::osm_master::engine: "imposm3"
 
+profile::maps::hosts:
+  - 'maps1007.eqiad.wmnet'
+  - 'maps1009.eqiad.wmnet'
+
+profile::redis::master::clients:
+  - 'maps1007.eqiad.wmnet'
+  - 'maps1009.eqiad.wmnet'
+
 # maps1009 is the master for a separate maps cluster
 profile::cassandra::single_instance::seeds:
+  - '10.64.16.6' # maps1007.eqiad.wmnet
   - '10.64.32.8' # maps1009.eqiad.wmnet
+
+profile::maps::osm_master::replicas:
+  maps1007:
+    ip_address: '10.64.16.6'
+  maps1009:
+    ip_address: '10.64.32.8'
