@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/local/bin/manage-production-images build
+/usr/local/bin/manage-production-images build "$@"

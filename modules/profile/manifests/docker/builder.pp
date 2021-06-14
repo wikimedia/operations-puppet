@@ -108,4 +108,14 @@ class profile::docker::builder(
         mode    => '0600',
         require => File['/root/.docker']
     }
+
+    # Cronjob to refresh the production-images every week on sunday.
+    systemd::timer::job { 'production-images-weekly-rebuild':
+        description         => 'Weekly job to rebuild the production-images',
+        command             => '/usr/local/bin/build-production-images --nightly',
+        interval            => {'start' => 'OnCalendar', 'interval' => 'Sun *-*-* 06:00:00'},
+        user                => 'root',
+        after               => 'debian-weekly-rebuild.service',
+        max_runtime_seconds => 86400,
+    }
 }
