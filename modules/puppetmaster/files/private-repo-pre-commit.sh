@@ -2,7 +2,7 @@
 set -euf -o pipefail
 PATH=/usr/bin
 EXIT=0
-for staged in $(git diff-index --cached --name-only HEAD)
+for staged in $(git diff-index --cached --name-only --diff-filter=AM HEAD)
 do
   # Only check yaml files in the hieradata directory
   if [ "${staged%%/*}" != "hieradata" ]
