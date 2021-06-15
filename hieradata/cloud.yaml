@@ -233,6 +233,8 @@ profile::mediawiki::mcrouter_wancache::shards:
     eqiad: {}
   wancache:
     eqiad: {}
+  proxies:
+    eqiad: {}
 profile::java::java_packages: []
 profile::java::extra_args: ~
 profile::java::hardened_tls: false

@@ -518,6 +518,8 @@ profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
 profile::mediawiki::mcrouter_wancache::shards:
   gutter:
     eqiad: {}
+  proxies:
+    eqiad: {}
   wancache:
     eqiad:
       shard01:
