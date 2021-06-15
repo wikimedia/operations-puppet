@@ -107,6 +107,11 @@ define airflow::instance(
             'expose_hostname' => 'True',
             'expose_stacktrace' => 'True',
         },
+        'api' => {
+            # Since the webservier is only exposed on 127.0.0.1 by default,
+            # allow access to the API.
+            'auth_backend' => 'airflow.api.auth.backend.default'
+        }
     }
 
     # If $airflow_config specifies sql_alchemy_conn, we want to possibly render
