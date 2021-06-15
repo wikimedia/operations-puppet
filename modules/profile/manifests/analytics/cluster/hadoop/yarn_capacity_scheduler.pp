@@ -42,9 +42,12 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # If a queue mapping is present, will it override the value specified by the user?
         'yarn.scheduler.capacity.queue-mappings-override.enable' => false,
         # Useful to enable/disable any new job in the cluster (for example to let it drain before maintenance)
-        'yarn.scheduler.capacity.root.state' => 'RUNNING',
-        # Or a specific leaf queue:
-        # 'yarn.scheduler.capacity.root.users.default.state' => 'STOPPED',
+        # Individual queues are not re-enabled by setting the yarn.scheduler.capacity.root.state to RUNNING,
+        # so all 4 queues have a setting here. Specific leaf queues can also be managed this way.
+        'yarn.scheduler.capacity.root.fifo.state' => 'STOPPED',
+        'yarn.scheduler.capacity.root.default.state' => 'STOPPED',
+        'yarn.scheduler.capacity.root.production.state' => 'STOPPED',
+        'yarn.scheduler.capacity.root.essential.state' => 'STOPPED',
 
         # Queue definitions
         # Sum of capacity (not max) needs to be 100 at any level/branch of the tree.
