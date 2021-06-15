@@ -505,7 +505,7 @@ class profile::toolforge::grid::exec_environ {
             'allow_persistent' => 0,
         },
     }
-    file { "${php_config}/cli/php.ini":
+    file { "${php_config_dir}/cli/php.ini":
         ensure  => present,
         content => php_ini($php_config, {}),
         owner   => 'root',
