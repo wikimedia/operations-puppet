@@ -1,4 +1,3 @@
-profile::mediawiki::httpd::enable_forensic_log: true
 profile::mediawiki::mcrouter_wancache::shards:
   gutter:
     eqiad:
