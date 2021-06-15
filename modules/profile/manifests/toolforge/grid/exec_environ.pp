@@ -491,4 +491,26 @@ class profile::toolforge::grid::exec_environ {
         source  => 'puppet:///modules/imagemagick/policy.xml',
         require => Package['imagemagick', 'webp'],
     }
+
+    # Setup some reasonable defaults for PHP
+    $php_config_dir = '/etc/php/7.2'
+    $php_config = {
+        'date'                   => {
+            'timezone' => 'UTC',
+        },
+        'default_socket_timeout' => 1,
+        'memory_limit'           => '4G',
+        'mysql'                  => {
+            'connect_timeout'  => 1,
+            'allow_persistent' => 0,
+        },
+    }
+    file { "${php_config}/cli/php.ini":
+        ensure  => present,
+        content => php_ini($php_config, {}),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        require => Package['php7.2-cli'],
+    }
 }
