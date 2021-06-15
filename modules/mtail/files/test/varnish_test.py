@@ -79,3 +79,27 @@ class VarnishTTFBTest(unittest.TestCase):
         self.assertIn(('le=1.2,origin=cp3050,cache_status=pass', 2), s)
         self.assertIn(('le=0.5,origin=cp3062,cache_status=miss', 1), s)
         self.assertIn(('le=+Inf,origin=cp3062,cache_status=miss', 1), s)
+
+
+class VarnishProcessingSecondsTest(unittest.TestCase):
+    def setUp(self):
+        self.store = mtail_store.MtailMetricStore(
+                os.path.join(test_dir, '../programs/varnishprocessing.mtail'),
+                os.path.join(test_dir, 'logs/varnish.test'))
+
+    def testProcessingCount(self):
+        s = dict(self.store.get_samples('varnish_processing_seconds'))
+        expected_process = {
+           '+Inf': 0,
+           '0.0001': 0,
+           '0.0005': 1,
+           '0.001': 0,
+           '0.005': 0,
+           '0.01': 0,
+           '0.025': 0,
+           '0.05': 0,
+           '0.1': 0,
+           '0.5': 0,
+           '1': 0
+        }
+        self.assertEqual(expected_process, s['event=process']['buckets'])
