@@ -1,0 +1,1 @@
+require_relative '../../rake_modules/module_rake_tasks.rb'

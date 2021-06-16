@@ -79,13 +79,15 @@ class postgresql::slave(
         content => template('postgresql/slave.conf.erb'),
         require => Package["postgresql-${_pgversion}"],
     }
-    file { "${data_dir}/recovery.conf":
-        ensure  => $ensure,
-        owner   => 'postgres',
-        group   => 'root',
-        mode    => '0644',
-        content => template('postgresql/recovery.conf.erb'),
-        before  => Service[$::postgresql::server::service_name],
+    if $facts['postgres_replica_initialised'] {
+        file { "${data_dir}/recovery.conf":
+            ensure  => $ensure,
+            owner   => 'postgres',
+            group   => 'root',
+            mode    => '0644',
+            content => template('postgresql/recovery.conf.erb'),
+            before  => Service[$::postgresql::server::service_name],
+        }
     }
 
     # Having this file here helps perform slave initialization.
@@ -97,20 +99,6 @@ class postgresql::slave(
         mode    => '0600',
         content => template('postgresql/.pgpass.erb'),
         require => Package["postgresql-${_pgversion}"],
-    }
-
-    # Let's sync once all our content from the master
-    if $ensure == 'present' {
-        exec { "pg_basebackup-${master_server}":
-            environment => "PGPASSWORD=${replication_pass}",
-            command     => "/usr/bin/pg_basebackup -X stream -D ${data_dir} -h ${master_server} -U replication -w",
-            user        => 'postgres',
-            unless      => "/usr/bin/test -f ${data_dir}/PG_VERSION",
-            before      => Service[$::postgresql::server::service_name],
-        }
-        File["${data_dir}/recovery.conf"] {
-            require => Exec["pg_basebackup-${master_server}"],
-        }
     }
 
     file { '/usr/bin/prometheus_postgresql_replication_lag':

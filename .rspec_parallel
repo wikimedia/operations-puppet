@@ -3,4 +3,5 @@
 -I .
 # Add libraries with tests for either custom types, providers or facts
 -I modules/wmflib/lib
+-I modules/postgresql/lib
 -I modules/scap/lib
