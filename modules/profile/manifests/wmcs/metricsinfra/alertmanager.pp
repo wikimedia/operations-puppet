@@ -9,15 +9,6 @@ class profile::wmcs::metricsinfra::alertmanager (
         ensure => present,
     }
 
-    service { 'prometheus-alertmanager':
-        ensure => running,
-    }
-
-    exec { 'alertmanager-reload':
-        command     => '/bin/systemctl reload prometheus-alertmanager',
-        refreshonly => true,
-    }
-
     exec { 'alertmanager-restart':
         command     => '/bin/systemctl restart prometheus-alertmanager',
         refreshonly => true,
@@ -40,15 +31,29 @@ class profile::wmcs::metricsinfra::alertmanager (
 
     file { $base_path:
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'prometheus',
+        group  => 'prometheus',
     }
 
-    file { "${base_path}/alertmanager.yml":
+    file { '/etc/prometheus-configurator/config.d/alertmanager-base.yaml':
         content => template('profile/wmcs/metricsinfra/alertmanager.yml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Exec['alertmanager-reload'],
+        notify  => Exec['prometheus-configurator'],
+    }
+
+    profile::wmcs::metricsinfra::prometheus_configurator::output { 'alertmanager':
+        kind    => 'alertmanager',
+        options => {
+            base_directory  => $base_path,
+            units_to_reload => [
+                'prometheus-alertmanager.service',
+            ]
+        },
+    }
+
+    service { 'prometheus-alertmanager':
+        ensure => running,
     }
 }
