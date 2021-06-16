@@ -20,5 +20,6 @@ profile::wmcs::prometheus::metricsinfra::projects:
   - name: gratitude
   - name: integration
   - name: metricsinfra
-  - name: tools
   - name: paws
+  - name: tools
+  - name: toolsbeta
