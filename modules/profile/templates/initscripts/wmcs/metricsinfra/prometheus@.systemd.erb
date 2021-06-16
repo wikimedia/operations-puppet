@@ -1,0 +1,24 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Prometheus server (instance %i)
+
+[Service]
+User=prometheus
+ExecStart=/usr/bin/prometheus \
+              --storage.tsdb.path <%= @metrics_path %> \
+              --web.listen-address <%= @listen_address %> \
+              --web.external-url <%= @external_url %> \
+              --storage.tsdb.retention <%= @storage_retention %> \
+              --config.file <%= @base_path %>/prometheus.yml \
+              --storage.tsdb.max-block-duration=<%= @max_block_duration %> \
+              --storage.tsdb.min-block-duration=<%= @min_block_duration %> \
+              --query.max-samples=10000000
+Restart=on-failure
+RestartSec=2s
+TimeoutStopSec=10m
+LimitNOFILE=32768
+SyslogIdentifier=prometheus@%i
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

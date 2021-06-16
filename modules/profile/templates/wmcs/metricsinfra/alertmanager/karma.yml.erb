@@ -13,23 +13,13 @@ authentication:
   header:
     name: X-CAS-uid
     value_re: ^(.+)$
+    group_name: X-CAS-memberOf
+    group_value_re: ^(.*)$
+    group_value_separator: ":"
 
 authorization:
   acl:
     silences: /etc/karma-acl-silences.yaml
-  groups:
-    # TODO: auto generate groups for each project or send an upstream patch
-    # to get those from a cas header https://github.com/prymitive/karma/issues/3361
-    - name: metricsinfra
-      members:
-        - arturo
-        - andrew
-        - bd808
-        - bstorm
-        - dcaro
-        - rook
-        - nskaggs
-        - taavi
 
 labels:
   color:

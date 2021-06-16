@@ -1,6 +1,7 @@
 # Set up metricsinfra-specific configuration for the karma Dashboard
 class profile::wmcs::metricsinfra::alertmanager::karma (
     String              $vhost                         = lookup('profile::wmcs::metricsinfra::alertmanager::karma::vhost', {'default_value' => 'prometheus-alerts.wmcloud.org'}),
+    Array[String]       $sudo_projects                 = lookup('profile::wmcs::metricsinfra::alertmanager::karma::sudo_projects', {default_value => ['admin', 'metricsinfra', 'cloudinfra']}),
     Array[Stdlib::Fqdn] $prometheus_alertmanager_hosts = lookup('profile::wmcs::metricsinfra::prometheus_alertmanager_hosts'),
 ) {
     class { 'httpd':
@@ -27,9 +28,34 @@ class profile::wmcs::metricsinfra::alertmanager::karma (
         proxied_as_https => true,
     }
 
+    # create this so Karma can start before the configurator runs
     file { '/etc/karma-acl-silences.yaml':
-        content => template('profile/wmcs/metricsinfra/alertmanager/karma-acls.yml.erb'),
-        require => Package['karma'],
-        notify  => Service['karma'],
+        ensure  => file,
+        content => 'rules: []',
+        owner   => 'prometheus-configurator',
+        group   => 'prometheus-configurator',
+        replace => false,
+    }
+
+    $main_config = {
+        sudo_projects        => $sudo_projects,
+        project_group_format => 'cn=project-{project},ou=groups,dc=wikimedia,dc=org',
+    }
+
+    file { '/etc/prometheus-configurator/config.d/karma_acls_config.yaml':
+        content => to_yaml($main_config),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
+    profile::wmcs::metricsinfra::prometheus_configurator::output_config { 'karma_acls':
+        kind    => 'karma_acl',
+        options => {
+            acl_file_path    => '/etc/karma-acl-silences.yaml',
+            units_to_restart => [
+                'karma.service',
+            ]
+        },
     }
 }

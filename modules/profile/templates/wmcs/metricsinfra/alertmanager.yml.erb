@@ -1,58 +1,43 @@
-# See https://prometheus.io/docs/alerting/configuration/ for documentation.
+# This file is merged with the receivers and routes that the configurator has
+# generated. See https://prometheus.io/docs/alerting/configuration/ for
+# documentation.
+alertmanager_config:
+  global:
+    smtp_from: 'root@wmflabs.org'
+    smtp_require_tls: false
+    smtp_smarthost: 'localhost:25'
 
-global:
-  smtp_from: 'root@wmflabs.org'
-  smtp_require_tls: false
-  smtp_smarthost: 'localhost:25'
+  templates:
+  - '/etc/prometheus/alertmanager_templates/*.tmpl'
 
-templates:
-- '/etc/prometheus/alertmanager_templates/*.tmpl'
+  # The root route on which each incoming alert enters.
+  route:
+    # The labels by which incoming alerts are grouped together. For example,
+    # multiple alerts coming in for cluster=A and alertname=LatencyHigh would
+    # be batched into a single group.
+    group_by: ['alertname', 'project']
 
-# The root route on which each incoming alert enters.
-route:
-  # The labels by which incoming alerts are grouped together. For example,
-  # multiple alerts coming in for cluster=A and alertname=LatencyHigh would
-  # be batched into a single group.
-  group_by: ['alertname', 'project']
+    # When a new group of alerts is created by an incoming alert, wait at
+    # least 'group_wait' to send the initial notification.
+    # This way ensures that you get multiple alerts for the same group that start
+    # firing shortly after another are batched together on the first
+    # notification.
+    group_wait: 30s
 
-  # When a new group of alerts is created by an incoming alert, wait at
-  # least 'group_wait' to send the initial notification.
-  # This way ensures that you get multiple alerts for the same group that start
-  # firing shortly after another are batched together on the first
-  # notification.
-  group_wait: 30s
+    # When the first notification was sent, wait 'group_interval' to send a batch
+    # of new alerts that started firing for that group.
+    group_interval: 5m
 
-  # When the first notification was sent, wait 'group_interval' to send a batch
-  # of new alerts that started firing for that group.
-  group_interval: 5m
+    # If an alert has successfully been sent, wait 'repeat_interval' to
+    # resend them.
+    repeat_interval: 3h
 
-  # If an alert has successfully been sent, wait 'repeat_interval' to
-  # resend them.
-  repeat_interval: 3h
+    # Default receiver to use when there is not matching route
+    receiver: 'cloud-admin-feed'
 
-  # Default receiver to use when there is not matching route
-  receiver: 'cloud-admin-feed'
-
-  routes:
-  # Project based routes
-<% @projects.each do |project| -%>
-  - receiver: '<%= project['name'] %>_email'
-    match:
-      project: <%= project['name'] %>
-<% end -%>
-
-receivers:
-- name: 'cloud-admin-feed'
-  email_configs:
-  - to: 'cloud-admin-feed@lists.wikimedia.org'
-
-<% @projects.each do |project| -%>
-- name: '<%= project['name'] %>_email'
-  email_configs:
-  - to: 'cloud-admin-feed@lists.wikimedia.org'
-<% if project['notify_email'] -%>
-<% project['notify_email'].each do |email| -%>
-  - to: '<%= email %>'
-<% end -%>
-<% end -%>
-<% end -%>
+  receivers:
+  - name: 'cloud-admin-feed'
+    email_configs:
+    - to: 'cloud-admin-feed@lists.wikimedia.org'
+    webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'

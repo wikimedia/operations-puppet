@@ -1,21 +1,12 @@
 class profile::wmcs::metricsinfra::alertmanager (
-    Array[Hash]  $projects = lookup('profile::wmcs::metricsinfra::monitored_projects'),
     Array[Stdlib::Fqdn] $alertmanager_hosts = lookup('profile::wmcs::metricsinfra::prometheus_alertmanager_hosts'),
+    Stdlib::Fqdn        $active_host        = lookup('profile::wmcs::metricsinfra::alertmanager_active_host'),
 ) {
     $base_path = '/etc/prometheus/alertmanager'
 
     # Prometheus alert manager service setup and config
     package { 'prometheus-alertmanager':
         ensure => present,
-    }
-
-    service { 'prometheus-alertmanager':
-        ensure => running,
-    }
-
-    exec { 'alertmanager-reload':
-        command     => '/bin/systemctl reload prometheus-alertmanager',
-        refreshonly => true,
     }
 
     exec { 'alertmanager-restart':
@@ -38,17 +29,34 @@ class profile::wmcs::metricsinfra::alertmanager (
         notify  => Exec['alertmanager-restart'],
     }
 
+    # prometheus_configurator will manage the directory contents, but
+    # it still needs to exist and be writable
     file { $base_path:
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        owner  => 'prometheus',
+        group  => 'prometheus',
     }
 
-    file { "${base_path}/alertmanager.yml":
+    # TODO: instead of providing the config base, split into small
+    # parts and fit into the base prometheus_configurator.pp config
+    file { '/etc/prometheus-configurator/config.d/alertmanager-base.yaml':
         content => template('profile/wmcs/metricsinfra/alertmanager.yml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Exec['alertmanager-reload'],
+    }
+
+    profile::wmcs::metricsinfra::prometheus_configurator::output_config { 'alertmanager':
+        kind    => 'alertmanager',
+        options => {
+            base_directory  => $base_path,
+            units_to_reload => [
+                'prometheus-alertmanager.service',
+            ]
+        },
+    }
+
+    service { 'prometheus-alertmanager':
+        ensure => running,
     }
 }
