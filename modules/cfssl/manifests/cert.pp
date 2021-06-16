@@ -7,7 +7,10 @@ define cfssl::cert (
     String                         $owner          = 'root',
     String                         $group          = 'root',
     Boolean                        $auto_renew     = true,
-    Integer[1800]                  $renew_seconds  = 864000,  # 10 days
+    # the default https checks go warning after 10 full days i.e. anywhere
+    # from 864000 to 950399 seconds before the certificate expires.  As such set this to
+    # 11 days + 30 minutes to capture the puppet run schedule.
+    Integer[1800]                  $renew_seconds  = 951300,
     Boolean                        $provide_chain  = false,
     Optional[String]               $label          = undef,
     Optional[String]               $profile        = undef,
