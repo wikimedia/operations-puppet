@@ -17,7 +17,7 @@ class mediawiki::web::yaml_defs(
             $sc = {
                 'name' => $siteconfig['name'],
                 'priority' => $siteconfig['priority'],
-                'content' => inline_template("<%= Puppet::FileServing::Content.indirection.find(@source_url).content.force_encoding('utf-8') %>")
+                'content' => inline_template('<%= Puppet::FileServing::Content.indirection.find(@source_url).content.force_encoding("utf-8").gsub(/\*:80/, "*:${APACHE_RUN_PORT}") %>')
             }
             $sc
         } elsif $siteconfig['template'] {
