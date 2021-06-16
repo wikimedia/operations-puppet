@@ -14,10 +14,17 @@ gitlab_rails['gitlab_email_reply_to'] = "<%= @email_reply_to %>"
 # Default Theme
 gitlab_rails['gitlab_default_theme'] = "<%= @default_theme %>"
 
+nginx['listen_port'] = <%= @listen_port %>
+<%- if @listent_https -%>
 # Whether to redirect http to https.
+nginx['listen_https'] = false
 nginx['redirect_http_to_https'] = true
 nginx['ssl_certificate'] = "<%= @cert_path %>"
 nginx['ssl_certificate_key'] = "<%= @key_path %>"
+<%- else -%>
+nginx['listen_https'] = false
+<%- end -%>
+
 
 # The directory where Git repositories will be stored.
 git_data_dirs({"default" => {"path" => "<%= @data_dir %>"} })
