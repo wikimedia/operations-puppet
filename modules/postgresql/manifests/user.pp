@@ -39,8 +39,10 @@ define postgresql::user(
 
     $_pgversion = $pgversion ? {
         undef   => $facts['os']['distro']['codename'] ? {
-            'stretch' => 9.6,
-            default   => 11,
+            'bullseye' => 13,
+            'buster'   => 11,
+            'stretch'  => 9.6,
+            default    => fail("unsupported pgversion: ${pgversion}"),
         },
         default => $pgversion,
     }

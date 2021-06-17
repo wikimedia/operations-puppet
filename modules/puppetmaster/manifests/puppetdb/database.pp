@@ -26,7 +26,7 @@ class puppetmaster::puppetdb::database(
     Hash              $puppetdb_users             = {},
     Optional[Integer] $log_min_duration_statement = undef,
 ) {
-    unless $pgversion in  [9.6, 11] {
+    unless $pgversion in  [9.6, 11, 13] {
         fail("Unsupported pgversion: ${pgversion}")
     }
     # Tuning

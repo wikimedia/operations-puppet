@@ -15,9 +15,10 @@ class profile::puppetdb::database(
     Optional[Stdlib::Unixpath] $ssldir               = lookup('profile::puppetdb::database::ssldir'),
     Optional[Integer[250]] $log_min_duration_statement = lookup('profile::puppetdb::database::log_min_duration_statement'),
 ) {
-    $pgversion = $facts['os']['distro']['codename'] ? {
-        'buster'  => 11,
-        'stretch' => 9.6,
+    $pgversion = debian::codename() ? {
+        'bullseye' => 13,
+        'buster'   => 11,
+        'stretch'  => 9.6,
     }
     $slave_range = join($slaves, ' ')
 
