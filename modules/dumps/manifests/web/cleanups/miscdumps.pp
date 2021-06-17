@@ -40,12 +40,34 @@ class dumps::web::cleanups::miscdumps(
     $cleanup_addschanges = "find ${miscdumpsdir}/incr -mindepth 2 -maxdepth 2 -type d -mtime +${addschanges_keeps} -exec rm -rf {} \\;"
 
     cron { 'cleanup-misc-dumps':
-        ensure      => 'present',
+        ensure      => absent,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         command     => "${cleanup_miscdumps} ; ${cleanup_addschanges}",
         user        => root,
         minute      => '15',
         hour        => '7',
         require     => File['/usr/local/bin/cleanup_old_miscdumps.sh'],
+    }
+    systemd::timer::job { 'cleanup-misc-dumps':
+        ensure             => present,
+        description        => 'Regular jobs to clean up misc dumps',
+        user               => root,
+        monitoring_enabled => false,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+        command            => $cleanup_miscdumps,
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 7:15:0'},
+        require            => File['/usr/local/bin/cleanup_old_miscdumps.sh'],
+    }
+
+    systemd::timer::job { 'cleanup-addschanges':
+        ensure             => present,
+        description        => 'Regular jobs to clean up adds-changes dumps',
+        user               => root,
+        monitoring_enabled => false,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+        command            => $cleanup_addschanges,
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 8:15:0'},
     }
 }
