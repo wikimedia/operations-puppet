@@ -191,7 +191,7 @@ class profile::wmcs::prometheus(
 
     httpd::site{ 'prometheus':
         priority => 10,
-        content  => template('profile/wmcs/prometheus/prometheus-apache.erb'),
+        content  => template('profile/wmcs/metricsinfra/prometheus-apache.erb'),
     }
 
     prometheus::web { 'labs':

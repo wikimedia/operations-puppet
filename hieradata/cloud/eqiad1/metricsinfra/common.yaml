@@ -1,6 +1,6 @@
 ---
 
-profile::wmcs::prometheus::metricsinfra::ext_fqdn: prometheus.wmflabs.org
+profile::wmcs::metricsinfra::prometheus::ext_fqdn: prometheus.wmflabs.org
 
 # List of projects that are monitored by the metricsinfra prometheus server. Each project can be
 # configured with an optional notify_email list of addresses that will receive alert notifications
@@ -9,7 +9,7 @@ profile::wmcs::prometheus::metricsinfra::ext_fqdn: prometheus.wmflabs.org
 #   notify_email:
 #     - user@example.org
 #     - another@example.org
-profile::wmcs::prometheus::metricsinfra::projects:
+profile::wmcs::metricsinfra::monitored_projects:
   - name: analytics
   - name: clouddb-services
   - name: cloudinfra

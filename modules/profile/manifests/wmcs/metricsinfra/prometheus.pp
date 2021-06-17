@@ -1,6 +1,6 @@
-class profile::wmcs::prometheus::metricsinfra(
-    Array[Hash]  $projects          = lookup('profile::wmcs::prometheus::metricsinfra::projects'),
-    Stdlib::Fqdn $ext_fqdn          = lookup('profile::wmcs::prometheus::metricsinfra::ext_fqdn'),
+class profile::wmcs::metricsinfra::prometheus(
+    Array[Hash]  $projects          = lookup('profile::wmcs::metricsinfra::monitored_projects'),
+    Stdlib::Fqdn $ext_fqdn          = lookup('profile::wmcs::metricsinfra::prometheus::ext_fqdn'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String       $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
     String       $observer_user     = lookup('profile::openstack::base::observer_user'),
@@ -77,44 +77,9 @@ class profile::wmcs::prometheus::metricsinfra(
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/profile/wmcs/prometheus/metricsinfra/alerts_projects.yml',
+        source  => 'puppet:///modules/profile/wmcs/metricsinfra/alerts_projects.yml',
         notify  => Exec['prometheus@cloud-reload'],
         require => Class['prometheus'],
-    }
-
-    # Prometheus alert manager service setup and config
-    package { 'prometheus-alertmanager':
-        ensure => present,
-    }
-
-    service { 'prometheus-alertmanager':
-        ensure => running,
-    }
-
-    exec { 'alertmanager-reload':
-        command     => '/bin/systemctl reload prometheus-alertmanager',
-        refreshonly => true,
-    }
-
-    exec { 'alertmanager-restart':
-        command     => '/bin/systemctl restart prometheus-alertmanager',
-        refreshonly => true,
-    }
-
-    file { '/etc/default/prometheus-alertmanager':
-        content => template('profile/wmcs/prometheus/metricsinfra/prometheus-alertmanager-defaults.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Exec['alertmanager-restart'],
-    }
-
-    file { "${base_path}/alertmanager.yml":
-        content => template('profile/wmcs/prometheus/metricsinfra/alertmanager.yml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Exec['alertmanager-reload'],
     }
 
     # Apache config
@@ -130,21 +95,12 @@ class profile::wmcs::prometheus::metricsinfra(
 
     httpd::site{ 'prometheus':
         priority => 10,
-        content  => template('profile/wmcs/prometheus/prometheus-apache.erb'),
+        content  => template('profile/wmcs/metricsinfra/prometheus-apache.erb'),
     }
 
     prometheus::web { 'cloud':
         proxy_pass => 'http://localhost:9900/cloud',
         require    => Httpd::Site['prometheus'],
-    }
-
-    # Expose alertmanager as /.alertmanager via apache reverse proxy
-    file { '/etc/apache2/prometheus.d/alertmanager.conf':
-        ensure  => present,
-        content => template('profile/wmcs/prometheus/alertmanager-apache.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
     }
 
     ferm::service { 'prometheus-web':
