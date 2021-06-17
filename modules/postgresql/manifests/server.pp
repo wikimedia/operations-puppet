@@ -44,14 +44,21 @@ class postgresql::server(
             $_pgtop = 'ptop'
             $_pgversion_default = 9.6
         }
-        default: {
+        'buster': {
             $_pgtop = 'pgtop'
             $_pgversion_default = 11
         }
+        'bullseye': {
+            $_pgtop = 'pgtop'
+            $_pgversion_default = 13
+        }
+        default: {
+            fail("${title} not supported by: ${debian::codename()})")
+        }
     }
     $_pgversion = $pgversion ? {
-        undef   => 11,
-        default => $_pgversion_default,
+        undef   => $_pgversion_default,
+        default => $pgversion,
     }
 
 
