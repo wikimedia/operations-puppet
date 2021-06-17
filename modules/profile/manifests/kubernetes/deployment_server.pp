@@ -14,6 +14,8 @@ class profile::kubernetes::deployment_server(
         packages_from_future => $packages_from_future,
     }
 
+    ensure_packages('istioctl')
+
     file { '/etc/kubernetes':
         ensure => directory,
         owner  => 'root',
