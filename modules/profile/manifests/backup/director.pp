@@ -183,6 +183,11 @@ class profile::backup::director(
         pool => 'EsRwCodfw',
     }
 
+    # Jobdefaults for Gitlab (full backups every day)
+    backup::dailyjobdefaults { "Daily-${pool}":
+        pool => $pool,
+    }
+
     bacula::director::catalog { 'production':
         dbname     => $dbschema,
         dbuser     => $dbuser,
