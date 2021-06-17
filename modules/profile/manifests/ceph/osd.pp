@@ -119,6 +119,11 @@ class profile::ceph::osd(
         keydata => $bootstrap_keydata,
     }
 
+    # This adds latency stats between from this osd to the rest of the ceph fleet
+    class { 'prometheus::node_pinger':
+        nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
+    }
+
     $facts['disks'].each |String $device, Hash $device_info| {
         if ! ( $device in $os_disks) {
             if ('model' in $device_info and $device_info['model'] in $disk_models_without_write_cache) {

@@ -1,7 +1,10 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::ceph::client::rbd_libvirt' do
-  let(:pre_condition) { 'class { "::apt": }' }
+  let(:pre_condition) {
+    'class { "::apt": }
+     class { "::prometheus::node_exporter": }'
+  }
   on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do
       base_params = {
@@ -17,6 +20,13 @@ describe 'profile::ceph::client::rbd_libvirt' do
               'addr' => '127.0.10.2'
             }
           }
+        },
+        'osd_hosts' => {
+          'osdhost01.local' => {
+            'public' => {
+              'addr' => '127.0.11.1'
+            }
+          },
         },
         'cluster_network' => '192.168.4.0/22',
         'public_network' => '10.192.20.0/24',

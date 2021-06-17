@@ -1,7 +1,10 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::ceph::osd' do
-  let(:pre_condition) { 'class { "::apt": }' }
+  let(:pre_condition) {
+    'class { "::apt": }
+     class { "::prometheus::node_exporter": }'
+  }
   on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do
       base_params = {

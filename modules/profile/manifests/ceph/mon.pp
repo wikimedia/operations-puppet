@@ -85,6 +85,11 @@ class profile::ceph::mon(
         data_dir => $data_dir,
     }
 
+    # This adds latency stats between from this mon to the rest of the ceph fleet
+    class { 'prometheus::node_pinger':
+        nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
+    }
+
     $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
     ferm::service { 'ceph_mgr_prometheus_lvs':
         proto  => 'tcp',

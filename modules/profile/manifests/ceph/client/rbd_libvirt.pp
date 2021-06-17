@@ -6,6 +6,7 @@
 class profile::ceph::client::rbd_libvirt(
     Boolean             $enable_v2_messenger     = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
     Hash[String,Hash]   $mon_hosts               = lookup('profile::ceph::mon::hosts'),
+    Hash[String,Hash]   $osd_hosts               = lookup('profile::ceph::osd'),
     Stdlib::IP::Address $cluster_network         = lookup('profile::ceph::cluster_network'),
     Stdlib::IP::Address $public_network          = lookup('profile::ceph::public_network'),
     Stdlib::Unixpath    $data_dir                = lookup('profile::ceph::data_dir'),
@@ -92,5 +93,9 @@ class profile::ceph::client::rbd_libvirt(
         unless    => "/usr/bin/virsh secret-get-value --secret ${libvirt_rbd_cinder_uuid} | grep -q ${cinder_keydata}",
         logoutput => false,
         require   => Exec['check-virsh-secret-cinder'],
+    }
+
+    class { 'prometheus::node_pinger':
+        nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
     }
 }
