@@ -112,19 +112,41 @@ class dumps::web::cleanups::xmldumps(
         # the temp dir only exists on the generating hosts (nfs servers),
         # so only clean up temp files there
         $tempclean = "/usr/bin/find ${dumpstempdir} -type f -mtime +20 -exec rm {} \\;"
+        systemd::timer::job { 'cleanup_tmpdumps':
+            ensure             => present,
+            description        => 'Regular jobs to clean up tmp dumps',
+            user               => $user,
+            monitoring_enabled => false,
+            send_mail          => true,
+            environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+            command            => $tempclean,
+            interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 2:25:0'},
+            require            => File['/usr/local/bin/cleanup_old_xmldumps.py'],
+        }
         # patternsfile has patterns that match dump output files we want to keep,
         # for dump runs we don't want to remove completely, on the dumps generator nfs hosts
-        $cron_commands = "${xmlclean} ${args} -p ${patternsfile} ; ${tempclean}"
+        $cron_commands = "${xmlclean} ${args} -p ${patternsfile}"
     } else {
         $cron_commands = "${xmlclean} ${args}"
     }
     cron { 'cleanup_xmldumps':
-        ensure      => 'present',
+        ensure      => absent,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         command     => $cron_commands,
         user        => $user,
         minute      => '25',
         hour        => '1',
         require     => File['/usr/local/bin/cleanup_old_xmldumps.py'],
+    }
+    systemd::timer::job { 'cleanup_xmldumps':
+        ensure             => present,
+        description        => 'Regular jobs to clean up xml dumps',
+        user               => $user,
+        monitoring_enabled => false,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+        command            => $cron_commands,
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 1:25:0'},
+        require            => File['/usr/local/bin/cleanup_old_xmldumps.py'],
     }
 }
