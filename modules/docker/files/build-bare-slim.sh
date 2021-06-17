@@ -78,8 +78,12 @@ echo "🚮 Removing stale local images."
 docker rmi "${PUBLIC_REGISTRY}/${_distro}:latest" || /bin/true
 
 # Old image naming compatibility: Also tag the images with wikimedia-$distro
-# For stretch and buster.
+# for stretch and buster.
 if [[ "$_distro" == "stretch" || "$_distro" == "buster" ]]; then
-    docker tag "$_imgfull" "${REGISTRY}/wikimedia-${_distro}:latest"
+    _imglegacy="${REGISTRY}/wikimedia-${_distro}:latest"
+    docker tag "$_imgfull" "${_imglegacy}"
+    docker push "${_imglegacy}"
+    # Ensure we don't keep around images tagged with public registry on
+    # build hosts. See T268612
     docker rmi "${PUBLIC_REGISTRY}/wikimedia-${_distro}:latest" || /bin/true
 fi
