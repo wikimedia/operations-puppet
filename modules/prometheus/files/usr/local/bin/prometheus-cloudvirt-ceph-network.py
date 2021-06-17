@@ -9,32 +9,31 @@ import ipaddress
 
 METRIC_PREFIX = "cloudvirt_ceph_network_"
 OUTPUT_FILE = "/var/lib/prometheus/node.d/cloudvirt_ceph_network.prom"
-CEPH_CONFIG_FILE = "/etc/ceph/ceph.conf"
+NODELIST_FILE = "/etc/prometheus-cloudvirt-ceph-network-nodelist.txt"
 
 
 def get_ceph_servers_dict():
     ceph_servers_dict = {}
     try:
-        f = open(CEPH_CONFIG_FILE, "r")
+        f = open(NODELIST_FILE, "r")
     except FileNotFoundError as e:
-        logging.critical("Could not parse ceph servers: {}".format(e))
+        logging.critical(f"could not open ceph nodelist file: {e}")
         sys.exit(1)
 
     for line in f.readlines():
-        if line.strip().startswith("mon addr"):
-            addr = line.split()[3]
-            try:
-                ipaddress.IPv4Interface(addr)
-            except ValueError as e:
-                logging.critical(
-                    "Could not parse ceph servers, malformed address: {}".format(e)
-                )
-                f.close()
-                sys.exit(1)
+        addr = line.strip()
+        try:
+            ipaddress.IPv4Interface(addr)
+        except ValueError as e:
+            logging.critical(
+                f"could not parse ceph nodelist file, malformed address: {e}"
+            )
+            f.close()
+            sys.exit(1)
 
-            ceph_servers_dict[addr] = {}
-            ceph_servers_dict[addr]["bytes_sent"] = 0
-            ceph_servers_dict[addr]["bytes_received"] = 0
+        ceph_servers_dict[addr] = {}
+        ceph_servers_dict[addr]["bytes_sent"] = 0
+        ceph_servers_dict[addr]["bytes_received"] = 0
 
     f.close()
     return ceph_servers_dict
