@@ -134,6 +134,14 @@ class apereo_cas (
         source => 'puppet:///modules/apereo_cas/memcached-dump.py',
     }
 
+    file { '/usr/local/sbin/return-tgt-for-user':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/apereo_cas/return-tgt-for-user.py',
+    }
+
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
             * => $config
