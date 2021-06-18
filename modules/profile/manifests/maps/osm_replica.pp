@@ -11,7 +11,7 @@ class profile::maps::osm_replica(
     class { '::postgresql::slave':
         master_server => $master,
         root_dir      => '/srv/postgresql',
-        includes      => 'tuning.conf',
+        includes      => ['tuning.conf'],
     }
 
     class { 'postgresql::slave::monitoring':

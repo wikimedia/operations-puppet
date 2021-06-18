@@ -18,7 +18,7 @@ class role::osm::replica (
     class {'postgresql::slave':
         master_server    => $osm_master,
         replication_pass => $passwords::osm::replication_pass,
-        includes         => 'tuning.conf',
+        includes         => ['tuning.conf'],
         root_dir         => $role::osm::common::root_dir,
     }
 }

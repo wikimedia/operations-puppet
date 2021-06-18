@@ -9,7 +9,7 @@ class profile::wmcs::services::postgres::secondary (
     class {'postgresql::slave':
         master_server    => $postgres_primary,
         replication_pass => $replication_pass,
-        includes         => 'tuning.conf',
+        includes         => ['tuning.conf'],
         root_dir         => $root_dir,
     }
 }

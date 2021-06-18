@@ -40,10 +40,7 @@ class postgresql::slave(
     Optional[String]           $rep_app         = undef,
     Optional[Numeric]          $pgversion       = undef,
     Optional[Stdlib::Unixpath] $ssldir          = undef,
-    # this should probably be an array and properly fixed to match the semantics
-    # of postgresql::server / postgresql::master (also it is used inconsistently).
-    # T232358
-    $includes = undef,
+    Array[String]              $includes = undef,
 ) {
 
     $_pgversion = $pgversion ? {
