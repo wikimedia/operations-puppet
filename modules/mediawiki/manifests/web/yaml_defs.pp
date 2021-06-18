@@ -9,10 +9,12 @@ class mediawiki::web::yaml_defs(
         # the resulting data structure fits well as a configmap.
         if 'vhosts' in $siteconfig {
             # If we have a vhost, we have everything in the yaml.
-            # just copy it over.
-            {'vhosts' => $siteconfig['vhosts'].map |$vhost| {
+            # We need to untangle the vhosts structures first
+            $vhosts =  $siteconfig['vhosts'].map |$vhost| {
                 $vhost['params'].merge({'name' => $vhost['name']})
-            }}
+            }
+            # Now copy over the siteconfig, not before patching the vhosts.
+            $siteconfig.merge({'vhosts' => $vhosts})
         } elsif $siteconfig['source'] {
             # Get the contents of the source file
             $source_url = "puppet:///modules/${siteconfig['source']}"
