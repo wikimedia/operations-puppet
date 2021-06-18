@@ -10,7 +10,9 @@ class mediawiki::web::yaml_defs(
         if 'vhosts' in $siteconfig {
             # If we have a vhost, we have everything in the yaml.
             # just copy it over.
-            $siteconfig
+            {'vhosts' => $siteconfig['vhosts'].map |$vhost| {
+                $vhost['params'].merge({'name' => $vhost['name']})
+            }}
         } elsif $siteconfig['source'] {
             # Get the contents of the source file
             $source_url = "puppet:///modules/${siteconfig['source']}"
