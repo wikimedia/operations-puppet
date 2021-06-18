@@ -3927,7 +3927,7 @@ users:
     name: jgiannelos
     realname: John (Yiannis) Giannelos
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6MjmxioZ+KwKPyFVIfeuG82b0db+VwpBf+EyCIbr4F nemo@nemoworld-wikimedia
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIfuJZj4eqixGEpDYKwR6sJtEVrWXAAtpogfhPISfcPt nemo@nemoworld-wmf-macbook.local
     uid: 24346
     email: jgiannelos@wikimedia.org
   nahidunlimited:
