@@ -125,6 +125,8 @@ class profile::backup::director(
             day => $day,
         }
     }
+    # daily (does not require a day)
+    backup::dailyschedule {'Daily': }
 
     # Predefined jobdefaults for the default pool.
     $days.each |String $day| {

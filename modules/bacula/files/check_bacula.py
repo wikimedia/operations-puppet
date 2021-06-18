@@ -55,6 +55,9 @@ class Bacula(object):
         elif schedule.startswith('Weekly'):
             # Only fulls, weekly
             return 8 * 24 * 3600, 8 * 24 * 3600
+        elif schedule.startswith('Daily'):
+            # Only fulls, daily
+            return 2 * 24 * 3600, 2 * 24 * 3600
         else:  # We assume Monthly
             # Fulls monthly, diffs every other fortnite, incr. daily
             return 2 * 24 * 3600, 36 * 24 * 3600
