@@ -49,9 +49,9 @@ mediawiki::sites:
       - name: test.wikidata.org
         params:
           docroot: "/srv/mediawiki/docroot/wikidata.org"
+          wikibase_rewrites: true
           additional_rewrites:
-            early:
-              - '    Include "sites-enabled/wikidata-uris.incl"'
+            early: []
             late: []
       - name: wikidata.org
         params:
@@ -59,9 +59,9 @@ mediawiki::sites:
           server_aliases: ["*.wikidata.org"]
           docroot: "/srv/mediawiki/docroot/wikidata.org"
           canonical_name: "On"
+          wikibase_rewrites: true
           additional_rewrites:
-            early:
-              - '    Include "sites-enabled/wikidata-uris.incl"'
+            early: []
             late: []
           legacy_rewrites: false
       - name: wiktionary.org
@@ -246,9 +246,9 @@ mediawiki::sites:
         params:
           upload_rewrite:
             rewrite_prefix: "wikipedia/commons"
+          wikibase_rewrites: true
           additional_rewrites:
-            early:
-              - '    Include "sites-enabled/wikidata-uris.incl"'
+            early: []
             late:
               - "    # /data/ path T163922"
               - "    RewriteRule ^/data/(.*)/(.*)$ %%{}{ENV:RW_PROTO}://commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]"
@@ -326,9 +326,9 @@ mediawiki::sites:
         params:
           upload_rewrite:
             rewrite_prefix: "wikipedia/testcommons"
+          wikibase_rewrites: true
           additional_rewrites:
-            early:
-              - '    Include "sites-enabled/wikidata-uris.incl"'
+            early: []
             late:
               - "    # /data/ path T163922"
               - "    RewriteRule ^/data/(.*)/(.*)$ %%{}{ENV:RW_PROTO}://test-commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]"
