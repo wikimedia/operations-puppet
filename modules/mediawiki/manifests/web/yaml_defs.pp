@@ -24,7 +24,7 @@ class mediawiki::web::yaml_defs(
             {
                 'name' => $siteconfig['name'],
                 'priority' => $siteconfig['priority'],
-                'content' => template($siteconfig['template'])
+                'content' => regsubst(template($siteconfig['template']), '\*:80', "*:\${APACHE_RUN_PORT}", 'G')
             }
         }
     }
