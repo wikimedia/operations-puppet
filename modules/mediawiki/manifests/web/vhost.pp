@@ -12,6 +12,8 @@
 #
 # [*server_aliases*] Array of server aliases, or undef. Defaults to undef
 #
+# [*wikibase_rewrites*] Wether the wikibase rewrites should be added or not.
+#
 # [*legacy_rewrites*] Wether or not legacy rewrites should be added
 #
 # [*public_rewrites*] Rewrites for favicon, robots.txt necessary for public wikis
@@ -53,6 +55,7 @@ define mediawiki::web::vhost(
     Wmflib::Ensure $ensure = present,
     String $server_name = $title,
     Optional[Array[String]] $server_aliases = undef,
+    Boolean $wikibase_rewrites = false,
     Boolean $public_rewrites = true,
     Boolean $legacy_rewrites = true,
     Boolean $short_urls = false,

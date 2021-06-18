@@ -31,6 +31,9 @@
     RewriteRule ^/upload/(.*)$ %{ENV:RW_PROTO}://upload.wikimedia.org/<%= @upload_rewrite['rewrite_prefix'] %>/$1 [R=302]
 <%- end -%>
 <%- end -%>
+<%- if @wikibase_rewrites -%>
+    Include "sites-enabled/wikidata-uris.incl"
+<%- end -%>
     <%= @additional_rewrites['early'].join("\n") %>
 
     ### Common rewrite rules for all wikis
