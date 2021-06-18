@@ -1,9 +1,9 @@
 class profile::openstack::base::nova::compute::service(
-    $version = lookup('profile::openstack::base::version'),
-    $instance_dev = lookup('profile::openstack::base::nova::instance_dev'),
-    $network_flat_interface = lookup('profile::openstack::base::nova::network_flat_interface'),
-    $network_flat_tagged_base_interface = lookup('profile::openstack::base::nova::network_flat_tagged_base_interface'),
-    $network_flat_interface_vlan = lookup('profile::openstack::base::nova::network_flat_interface_vlan'),
+    String $version = lookup('profile::openstack::base::version'),
+    String $instance_dev = lookup('profile::openstack::base::nova::instance_dev'),
+    String $network_flat_interface = lookup('profile::openstack::base::nova::network_flat_interface'),
+    String $network_flat_tagged_base_interface = lookup('profile::openstack::base::nova::network_flat_tagged_base_interface'),
+    String $network_flat_interface_vlan = lookup('profile::openstack::base::nova::network_flat_interface_vlan'),
     Boolean $legacy_vlan_naming = lookup('legacy_vlan_naming', {default_value => true}),
     Array[Stdlib::Fqdn] $all_cloudvirts = lookup('profile::openstack::base::nova::all_cloudvirts'),
     String $libvirt_cpu_model = lookup('profile::openstack::base::nova::libvirt_cpu_model'),
@@ -133,4 +133,6 @@ class profile::openstack::base::nova::compute::service(
     class { 'prometheus::node_cloudvirt_ceph_network':
         ensure => present,
     }
+
+    class { 'prometheus::node_cloudvirt_libvirt_stats': }
 }
