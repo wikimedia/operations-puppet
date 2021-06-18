@@ -12,11 +12,19 @@ class profile::microsites::wdqs {
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikidata', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikidata/query', {'ensure' => 'directory' })
+    ensure_resource('file', '/srv/org/wikidata/query-builder', {'ensure' => 'directory' })
 
     git::clone { 'wikidata/query/gui-deploy':
         ensure    => 'latest',
         source    => 'gerrit',
         directory => '/srv/org/wikidata/query',
+        branch    => 'production',
+    }
+
+    git::clone { 'wikidata/query-builder/deploy':
+        ensure    => 'latest',
+        source    => 'gerrit',
+        directory => '/srv/org/wikidata/query-builder',
         branch    => 'production',
     }
 }
