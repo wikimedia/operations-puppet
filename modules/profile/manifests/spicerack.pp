@@ -30,8 +30,8 @@ class profile::spicerack(
     String $ganeti_password = lookup('profile::ganeti::rapi::ro_password'),
     Integer $ganeti_timeout = lookup('profile::spicerack::ganeti_rapi_timeout', {'default_value' => 30}),
     Stdlib::HTTPUrl $netbox_api = lookup('netbox::api_url'),
-    String $netbox_token_ro = lookup('netbox::ro_token'),
-    String $netbox_token_rw = lookup('netbox::rw_token'),
+    String $netbox_token_ro = lookup('profile::netbox::tokens::read_only'),
+    String $netbox_token_rw = lookup('profile::netbox::tokens::read_write'),
     String $http_proxy = lookup('http_proxy'),
 ) {
     # Ensure pre-requisite profiles are included
