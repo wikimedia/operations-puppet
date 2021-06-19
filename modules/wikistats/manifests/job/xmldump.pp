@@ -18,15 +18,14 @@ define wikistats::job::xmldump(
     $command = "/usr/bin/mysql --defaults-extra-file=${my_cnf} -X -u ${db_user} -e '${query}' ${db_name} > ${file_path}/${table}.xml 2>&1"
 
     systemd::timer::job { "wikistats-xmldump-${name}":
-        ensure            => $ensure,
-        user              => 'wikistatsuser',
-        description       => "dump data from table ${name} in XML format",
-        command           => $command,
-        logging_enabled   => true,
-        logfile_basedir   => '/var/log/wikistats/',
-        logfile_name      => "xmldump-${name}.log",
-        syslog_identifier => 'wikistats',
-        interval          => {'start' => 'OnCalendar', 'interval' => "*-*-* *:${minute}:00"},
+        ensure          => $ensure,
+        user            => 'wikistatsuser',
+        description     => "dump data from table ${name} in XML format",
+        command         => $command,
+        logging_enabled => true,
+        logfile_basedir => '/var/log/wikistats/',
+        logfile_name    => "xmldump-${name}.log",
+        interval        => {'start' => 'OnCalendar', 'interval' => "*-*-* *:${minute}:00"},
     }
 
 }
