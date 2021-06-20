@@ -45,6 +45,14 @@ class openstack::puppet::master::encapi(
         source => 'puppet:///modules/openstack/puppet/master/encapi/labspuppetbackend.py',
     }
 
+    file {'/etc/logrotate.d/puppet-enc':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/openstack/puppet/master/puppet_enc_logrotate',
+    }
+
     # Make sure we can write to our logfile
     file { '/var/log/labspuppetbackend.log':
         owner => 'www-data',

@@ -1,0 +1,9 @@
+/var/log/labspuppetbackend/*.log {
+    su www-data www-data
+    daily
+    missingok
+    rotate 5
+    compress
+    minsize 100k
+    copytruncate
+}
