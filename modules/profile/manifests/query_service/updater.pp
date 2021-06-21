@@ -24,7 +24,7 @@ class profile::query_service::updater (
     $prometheus_agent_path = '/usr/share/java/prometheus/jmx_prometheus_javaagent.jar'
     $prometheus_agent_port = 9101
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
-    profile::prometheus::jmx_exporter { $instance_name:
+    profile::prometheus::jmx_exporter { "${instance_name}_${::hostname}":
         hostname         => $::hostname,
         port             => $prometheus_agent_port,
         prometheus_nodes => $prometheus_nodes,

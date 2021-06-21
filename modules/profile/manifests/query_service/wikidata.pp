@@ -43,7 +43,7 @@ class profile::query_service::wikidata(
     $prometheus_port = 9193
     $prometheus_agent_port = 9102
 
-    profile::query_service::blazegraph { "${deploy_name}-blazegraph":
+    profile::query_service::blazegraph { $instance_name:
         journal                => 'wikidata',
         blazegraph_main_ns     => $blazegraph_main_ns,
         username               => $username,

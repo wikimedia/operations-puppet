@@ -1111,7 +1111,7 @@ class profile::prometheus::ops (
 
     prometheus::jmx_exporter_config{ "wdqs_blazegraph_${::site}":
         dest              => "${targets_path}/jmx_wdqs_blazegraph_${::site}.yaml",
-        class_name        => 'profile::query_service::blazegraph',
+        class_name        => 'profile::query_service::wikidata',
         instance_selector => 'wdqs-blazegraph',
         site              => $::site,
     }

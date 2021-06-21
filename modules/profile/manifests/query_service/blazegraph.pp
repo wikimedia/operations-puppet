@@ -53,11 +53,11 @@ define profile::query_service::blazegraph (
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
     profile::prometheus::jmx_exporter { $instance_name:
         hostname         => $::hostname,
-        prometheus_nodes => $prometheus_nodes,
-        source           => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',
         port             => $prometheus_agent_port,
-        before           => Service[$instance_name],
+        prometheus_nodes => $prometheus_nodes,
         config_file      => $prometheus_agent_config,
+        source           => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',
+        before           => Service[$instance_name],
     }
 
     prometheus::blazegraph_exporter { $instance_name:
