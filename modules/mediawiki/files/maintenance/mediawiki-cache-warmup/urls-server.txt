@@ -5,3 +5,5 @@
 
 # Purpose: Shared MW code in opcache, EtcdConfig in apcu, ResourceLoader in apcu
 https://%server/w/load.php?lang=en&modules=startup&only=scripts&raw=1&skin=vector
+# Purpose: API-specific MW code in opcache
+https://%server/w/api.php?action=query&meta=siteinfo&siprop=namespaces|specialpagealiases|magicwords|languages|extensiontags&format=json&formatversion=2
