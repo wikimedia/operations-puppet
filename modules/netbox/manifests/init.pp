@@ -101,8 +101,8 @@ class netbox(
     Hash[String, Array]        $cas_group_attribute_mapping = {},
     Hash[String, Array]        $cas_group_mapping           = {},
     Array                      $cas_group_required          = [],
+    Stdlib::HTTPSUrl           $cas_server_url              = 'https://cas.example.org',
     Optional[String]           $cas_username_attribute      = undef,
-    Optional[Stdlib::HTTPSUrl] $cas_server_url              = undef,
     # Swift specific config
     Optional[String] $swift_user = undef,
     Optional[String] $swift_key = undef,
@@ -162,32 +162,25 @@ class netbox(
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
 
-    if $authentication_provider == 'ldap' {
-        file { '/etc/netbox/ldap.py':
-            ensure  => $ensure,
-            owner   => 'netbox',
-            group   => 'www-data',
-            mode    => '0440',
-            content => template('netbox/ldap_config.py.erb'),
-            require => Scap::Target['netbox/deploy'],
-            before  => Uwsgi::App['netbox'],
-            notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
-        }
+    file { '/etc/netbox/ldap.py':
+        ensure  => $ensure,
+        owner   => 'netbox',
+        group   => 'www-data',
+        mode    => '0440',
+        content => template('netbox/ldap_config.py.erb'),
+        require => Scap::Target['netbox/deploy'],
+        before  => Uwsgi::App['netbox'],
+        notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
-    if $authentication_provider == 'cas' {
-        unless $cas_server_url {
-            fail('must provide $cas_server_url when use authentication_provider: cas')
-        }
-        file { '/etc/netbox/cas_configuration.py':
-            ensure  => $ensure,
-            owner   => 'netbox',
-            group   => 'www-data',
-            mode    => '0440',
-            content => template('netbox/cas_configuration.py.erb'),
-            require => Scap::Target['netbox/deploy'],
-            before  => Uwsgi::App['netbox'],
-            notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
-        }
+    file { '/etc/netbox/cas_configuration.py':
+        ensure  => $ensure,
+        owner   => 'netbox',
+        group   => 'www-data',
+        mode    => '0440',
+        content => template('netbox/cas_configuration.py.erb'),
+        require => Scap::Target['netbox/deploy'],
+        before  => Uwsgi::App['netbox'],
+        notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
 
     # Netbox is controlled via a custom systemd unit (uwsgi-netbox),
