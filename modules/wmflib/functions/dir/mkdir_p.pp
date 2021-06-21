@@ -5,10 +5,10 @@
 # @param dirs  the path(s) to create
 # @param params the resource parameters to apply to dirs
 # @example creating directories
-#  extlib::mkdir_p('/opt/puppetlabs/bin') will create:
+#  wmflib::dir::mkdir_p('/opt/puppetlabs/bin') will create:
 #  file{['/opt', '/opt/puppetlabs', '/opt/puppetlabs/bin']: ensure => directory}
 # @example creating directories with additional properties
-#  extlib::mkdir_p('/opt/puppetlabs/bin', {owner => 'foobar'}) will create:
+#  wmflib::dir::mkdir_p('/opt/puppetlabs/bin', {owner => 'foobar'}) will create:
 #  file{['/opt', '/opt/puppetlabs']: ensure => directory}
 #  file{['/opt', '/opt/puppetlabs']:
 #    ensure => directory,
