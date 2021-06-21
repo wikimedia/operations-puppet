@@ -14,14 +14,16 @@ class prometheus::node_cloudvirt_libvirt_stats(
     }
 
     systemd::timer::job { 'prometheus-node-cloudvirt-libvirt-stats':
-        ensure      => $ensure,
-        user        => 'root',
-        description => 'Generate cloudvirt specific libvirt statistics.',
-        command     => "${script} > ${outfile}",
-        interval    => {
+        ensure         => $ensure,
+        user           => 'root',
+        description    => 'Generate cloudvirt specific libvirt statistics.',
+        command        => $script,
+        stdout         => "file:${outfile}",
+        exec_start_pre => "/usr/bin/rm -f ${outfile}",
+        interval       => {
             'start'    => 'OnCalendar',
             'interval' => 'minutely',
         },
-        require     => [File[$script], Class['prometheus::node_exporter'],]
+        require        => [File[$script], Class['prometheus::node_exporter'],]
     }
 }

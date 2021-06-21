@@ -101,6 +101,9 @@
 #  [*environment_file*]
 #   String containing a file path to be used as 'EnvironmentFile=' in the Systemd unit.
 #
+#  [*exec_start_pre*]
+#   String with the command to be used as 'ExecStartPre' that will run at the beginning of each run.
+#
 define systemd::timer::job(
     Variant[
         Systemd::Timer::Schedule,
@@ -132,6 +135,7 @@ define systemd::timer::job(
     Optional[Systemd::Output]               $stdout                    = undef,
     Optional[Systemd::Output]               $stderr                    = undef,
     Optional[Stdlib::Unixpath]              $working_directory         = undef,
+    Optional[Systemd::Command]              $exec_start_pre            = undef,
 ) {
     # Systemd doesn't play well with spaces in unit names, so check for that
     if $title =~ /\s/ {
