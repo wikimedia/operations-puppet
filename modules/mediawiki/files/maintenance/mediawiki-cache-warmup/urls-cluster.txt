@@ -1,6 +1,14 @@
-# Purpose: Main Page, Skin cache, Sidebar cache, Localisation cache
+## These url templates are expanded for every wiki in large.dblist.
+## The resulting set is then run once over an appserver cluster,
+## with the requests distributed randomly via the loadbalancer.
+##
+## This is for warming up shared resources behind appservers, such as memcached and rdbms.
+
+# Purpose: Skin memcached, Sidebar memcached, Localisation memcached, Main Page parsercache
 https://%server/wiki/Main_Page
-# Purpose: MobileFrontend, Main Page
+
+# Purpose: Mobile-specific Main Page parsercache, MobileFrontend/Minerva/SkinMustache misc caches
 https://%mobileServer/wiki/Main_Page
-# Purpose: API, Recent changes
+
+# Purpose: Misc things in memcached, Database tables for page/recentchanges/user/actor
 https://%server/w/api.php?format=json&action=query&list=recentchanges
