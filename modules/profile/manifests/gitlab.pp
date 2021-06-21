@@ -3,6 +3,8 @@
 class profile::gitlab(
     Stdlib::IP::Address::V4 $service_ip_v4 = lookup('profile::gitlab::service_ip_v4'),
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
+    Stdlib::Unixpath $backup_dir_data = lookup('profile::gitlab::backup_dir_data'),
+    Stdlib::Unixpath $backup_dir_config = lookup('profile::gitlab::backup_dir_config'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -61,4 +63,16 @@ class profile::gitlab(
             'net.core.somaxconn' => 1024,
         },
     }
+
+    wmflib::dir::mkdir_p("${backup_dir_data}/latest", {
+        owner => 'root',
+        group => 'root',
+        mode  => '0600',
+    })
+
+    wmflib::dir::mkdir_p("${backup_dir_config}/latest", {
+        owner => 'root',
+        group => 'root',
+        mode  => '0600',
+    })
 }
