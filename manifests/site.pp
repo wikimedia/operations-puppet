@@ -1192,6 +1192,10 @@ node /^ganeti20(0[7-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(ganeti)
 }
 
+node /^(ganeti2025|ganeti2026)\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 node /^ganeti300[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
