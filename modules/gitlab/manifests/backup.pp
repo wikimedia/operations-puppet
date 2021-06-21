@@ -8,6 +8,8 @@ class gitlab::backup (
     Boolean        $rsyncable_gzip          = true,
     Integer[1]     $max_concurrency         = 4,
     Integer[1]     $max_storage_concurrency = 1,
+    Stdlib::Unixpath $backup_dir_data       = '/srv/gitlab-backup/latest',
+    Stdlib::Unixpath $backup_dir_config     = '/etc/gitlab/config_backup/latest',
 ) {
     $full_cmd = @("CONFIG"/L)
     /usr/bin/gitlab-backup create CRON=1 STRATEGY=copy \
@@ -34,4 +36,5 @@ class gitlab::backup (
         default => $ensure,
     }
 
+    wmflib::dir::mkdir_p([$backup_dir_data, $backup_dir_config], {owner => 'root'})
 }
