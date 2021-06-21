@@ -75,40 +75,39 @@
 # The path to the CA certificates that signs internal certs.
 #
 class netbox(
-    Stdlib::Fqdn $service_hostname,
-    String $secret_key,
-    String $ldap_password,
-    Stdlib::Fqdn $db_host,
-    String $db_password,
-    Stdlib::Port $db_port = 5432,
-    String $db_user = 'netbox',
-    Boolean $debug=false,
-    Stdlib::Port $port=8001,
-    Stdlib::Unixpath $config_path = '/srv/deployment/netbox/deploy',
-    Stdlib::Unixpath $venv_path = '/srv/deployment/netbox/venv',
-    Stdlib::Unixpath $directory = '/srv/deployment/netbox/deploy/src',
-    Stdlib::Unixpath $extras_path = '/srv/deployment/netbox-extras',
-    Wmflib::Ensure $ensure = 'present',
-    String $local_redis_port = '6380',
-    # default: 1.5 Gibibytes
-    Integer $local_redis_maxmem = 1610612736,
-    Optional[Stdlib::Fqdn] $ldap_server = undef,
-    Boolean $enable_ldap = false,
-    Optional[Enum['ldap', 'cas']] $authentication_provider = undef,
-    Variant[Stdlib::HTTPUrl, Boolean, Undef] $swift_auth_url = undef,
+    Stdlib::Fqdn                  $service_hostname,
+    String                        $secret_key,
+    String                        $ldap_password,
+    Stdlib::Fqdn                  $db_host,
+    String                        $db_password,
+    Wmflib::Ensure                $ensure                      = 'present',
+    Stdlib::Port                  $db_port                     = 5432,
+    String                        $db_user                     = 'netbox',
+    Boolean                       $debug                       = false,
+    Stdlib::Port                  $port                        = 8001,
+    Stdlib::Unixpath              $config_path                 = '/srv/deployment/netbox/deploy',
+    Stdlib::Unixpath              $venv_path                   = '/srv/deployment/netbox/venv',
+    Stdlib::Unixpath              $directory                   = '/srv/deployment/netbox/deploy/src',
+    Stdlib::Unixpath              $extras_path                 = '/srv/deployment/netbox-extras',
+    Stdlib::Port                  $local_redis_port            = 6380,
+    Integer                       $local_redis_maxmem          = 1610612736,  # 1.5Gb
+    Optional[Stdlib::Fqdn]        $ldap_server                 = undef,
+    Boolean                       $enable_ldap                 = false,
+    Optional[Enum['ldap', 'cas']] $authentication_provider     = undef,
+    Optional[Stdlib::HTTPUrl]     $swift_auth_url              = undef,
     # Cas specific config
-    Hash[String, String]       $cas_rename_attributes       = {},
-    Hash[String, Array]        $cas_group_attribute_mapping = {},
-    Hash[String, Array]        $cas_group_mapping           = {},
-    Array                      $cas_group_required          = [],
-    Stdlib::HTTPSUrl           $cas_server_url              = 'https://cas.example.org',
-    Optional[String]           $cas_username_attribute      = undef,
+    Hash[String, String]          $cas_rename_attributes       = {},
+    Hash[String, Array]           $cas_group_attribute_mapping = {},
+    Hash[String, Array]           $cas_group_mapping           = {},
+    Array                         $cas_group_required          = [],
+    Stdlib::HTTPSUrl              $cas_server_url              = 'https://cas.example.org',
+    Optional[String]              $cas_username_attribute      = undef,
     # Swift specific config
-    Optional[String] $swift_user = undef,
-    Optional[String] $swift_key = undef,
-    Optional[String] $swift_container = undef,
-    Optional[String] $swift_url_key = undef,
-    Optional[Stdlib::Unixpath] $ca_certs = undef,
+    Optional[String]              $swift_user                  = undef,
+    Optional[String]              $swift_key                   = undef,
+    Optional[String]              $swift_container             = undef,
+    Optional[String]              $swift_url_key               = undef,
+    Optional[Stdlib::Unixpath]    $ca_certs                    = undef,
 ) {
     ensure_packages(['virtualenv', 'python3-pip', 'python3-pynetbox'])
     $home_path = '/var/lib/netbox'
@@ -122,7 +121,7 @@ class netbox(
 
     # Configure REDIS to be memory-only (no persistance) and to only accept local
     # connections
-    redis::instance { $local_redis_port:
+    redis::instance { String($local_redis_port):  # cast as int's are not valid titles
       settings => {
         # below setting prevents persistance
         save                     => '""',
@@ -140,7 +139,7 @@ class netbox(
         appendfilename           => '""',
       }
     }
-    ::prometheus::redis_exporter { $local_redis_port: }
+    ::prometheus::redis_exporter { String($local_redis_port): }
 
     user { 'netbox':
         ensure  => $ensure,

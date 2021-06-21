@@ -57,7 +57,7 @@ class profile::netbox (
     Optional[String] $swift_container = lookup('netbox::swift_container', {'default_value' => undef}),
     Optional[String] $swift_url_key = lookup('netbox::swift_url_key', {'default_value' => undef}),
 
-    String $local_redis_port = lookup('netbox::redis::port', {'default_value' => '6380'}),
+    Stdlib::Port $local_redis_port = lookup('netbox::redis::port', {'default_value' => 6380}),
     Integer $local_redis_maxmem = lookup('netbox::redis::maxmem', {'default_value' => 1610612736}),
 
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),

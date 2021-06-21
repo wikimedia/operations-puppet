@@ -8,7 +8,7 @@ profile::netbox::backup: false
 profile::netbox::netbox_api: "https://%{lookup('profile::netbox::service_hostname')}/"
 profile::netbox::netbox_report_checks: []
 profile::netbox::ganeti_sync_profiles: []
-netbox::swift_auth_url: false
+netbox::swift_auth_url: ~
 
 # use the correct acme profile
 profile::netbox::acme_certificate: netbox-dev
