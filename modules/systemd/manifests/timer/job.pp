@@ -24,7 +24,7 @@
 #  [*monitoring_enabled*]
 #   Periodically check the last execution of the unit and alarm if it ended
 #   up in a failed state.
-#   Default: true
+#   Default: false
 #
 #  [*monitoring_contact_groups*]
 #   The monitoring's contact group to send the alarm to.
