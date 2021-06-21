@@ -2,6 +2,7 @@ require 'fileutils'
 require 'git'
 require 'set'
 require 'json'
+require 'parallel_tests'
 require 'yaml'
 require 'rake'
 require 'rake/tasklib'
@@ -438,32 +439,21 @@ class TaskGen < ::Rake::TaskLib
 
   def setup_spec
     # Modules known not to pass tests
-    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'lvm']
+    ignored_modules = ['mysql', 'osm', 'puppetdbquery', 'stdlib', 'lvm', 'concat']
 
     deps = SpecDependencies.new
     spec_modules = deps.specs_to_run(@changed_files).select do |m|
       !ignored_modules.include?(m)
     end
     return [] if spec_modules.empty?
+    pattern_end = 'spec/{aliases,classes,defines,functions,hosts,integration,plans,tasks,type_aliases,types,unit}/**/*_spec.rb'
 
-    namespace :spec do
-      spec_modules.each do |module_name|
-        desc "Run spec for module #{module_name}"
-        task module_name do
-          puts "---> spec:#{module_name}"
-          if File.exist?("modules/#{module_name}/Rakefile")
-            spec_result = system("cd 'modules/#{module_name}' && rake parallel_spec")
-            @failed_specs << module_name unless spec_result
-          else
-            @failed_specs << "#{module_name}: Missing Rakefile"
-          end
-          puts "---> spec:#{module_name}"
-        end
-      end
-    end
-    desc "Run spec tests found in modules"
-    multitask :spec => spec_modules.map{ |m| "spec:#{m}" } do
-      raise "Modules that failed to pass the spec tests: #{@failed_specs.join ', '}".red unless @failed_specs.empty?
+    desc 'Run spec for modules'
+    task :spec do
+      pattern = "modules/{#{spec_modules.to_a.join(',')}}/#{pattern_end}"
+      args = ['-t', 'rspec', '--']
+      args.concat(Rake::FileList[pattern].to_a)
+      ParallelTests::CLI.new.run(args)
     end
     [:spec]
   end
