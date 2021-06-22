@@ -37,7 +37,7 @@ class dumps::web::cleanups::miscdumps(
     }
 
     # adds-changes dumps cleanup; these are in incr/wikiname/YYYYMMDD for each day, so they can't go into the above config/cron setup
-    $cleanup_addschanges = "find ${miscdumpsdir}/incr -mindepth 2 -maxdepth 2 -type d -mtime +${addschanges_keeps} -exec rm -rf {} \\;"
+    $cleanup_addschanges = "/usr/bin/find ${miscdumpsdir}/incr -mindepth 2 -maxdepth 2 -type d -mtime +${addschanges_keeps} -exec rm -rf {} \\;"
 
     cron { 'cleanup-misc-dumps':
         ensure      => absent,
