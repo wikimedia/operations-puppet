@@ -4,7 +4,7 @@ class profile::mediawiki::maintenance::parsercachepurging {
 
     profile::mediawiki::periodic_job { 'parser_cache_purging':
         # Every day, Purge entries older than 21d * 86400s/d = 1814400s
-        command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --age=1814400 --msleep 500',
+        command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --age=1814400 --msleep 200',
         interval => '01:00',
     }
 }
