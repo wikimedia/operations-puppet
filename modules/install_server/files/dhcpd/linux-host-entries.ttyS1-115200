@@ -1157,7 +1157,7 @@ host an-presto1005 {
 }
 
 host an-web1001 {
-    hardware ethernet F4:E9:D4:DB:9A:F0;
+    hardware ethernet 2C:EA:7F:9E:85:3F;
     fixed-address an-web1001.eqiad.wmnet;
 }
 
