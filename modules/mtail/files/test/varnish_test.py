@@ -92,7 +92,7 @@ class VarnishProcessingSecondsTest(unittest.TestCase):
         expected_process = {
            '+Inf': 0,
            '0.0001': 0,
-           '0.0005': 1,
+           '0.0005': 2,
            '0.001': 0,
            '0.005': 0,
            '0.01': 0,
