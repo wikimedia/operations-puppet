@@ -36,18 +36,8 @@ class dumps::web::cleanups::miscdumps(
         $addschanges_keeps = '7'
     }
 
-    # adds-changes dumps cleanup; these are in incr/wikiname/YYYYMMDD for each day, so they can't go into the above config/cron setup
+    # adds-changes dumps cleanup; these are in incr/wikiname/YYYYMMDD for each day, so they can't go into the above config setup
     $cleanup_addschanges = "/usr/bin/find ${miscdumpsdir}/incr -mindepth 2 -maxdepth 2 -type d -mtime +${addschanges_keeps} -exec rm -rf {} \\;"
-
-    cron { 'cleanup-misc-dumps':
-        ensure      => absent,
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "${cleanup_miscdumps} ; ${cleanup_addschanges}",
-        user        => root,
-        minute      => '15',
-        hour        => '7',
-        require     => File['/usr/local/bin/cleanup_old_miscdumps.sh'],
-    }
     systemd::timer::job { 'cleanup-misc-dumps':
         ensure             => present,
         description        => 'Regular jobs to clean up misc dumps',

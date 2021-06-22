@@ -125,18 +125,9 @@ class dumps::web::cleanups::xmldumps(
         }
         # patternsfile has patterns that match dump output files we want to keep,
         # for dump runs we don't want to remove completely, on the dumps generator nfs hosts
-        $cron_commands = "${xmlclean} ${args} -p ${patternsfile}"
+        $job_command = "${xmlclean} ${args} -p ${patternsfile}"
     } else {
-        $cron_commands = "${xmlclean} ${args}"
-    }
-    cron { 'cleanup_xmldumps':
-        ensure      => absent,
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => $cron_commands,
-        user        => $user,
-        minute      => '25',
-        hour        => '1',
-        require     => File['/usr/local/bin/cleanup_old_xmldumps.py'],
+        $job_command = "${xmlclean} ${args}"
     }
     systemd::timer::job { 'cleanup_xmldumps':
         ensure             => present,
@@ -145,7 +136,7 @@ class dumps::web::cleanups::xmldumps(
         monitoring_enabled => false,
         send_mail          => true,
         environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
-        command            => $cron_commands,
+        command            => $job_command,
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 1:25:0'},
         require            => File['/usr/local/bin/cleanup_old_xmldumps.py'],
     }
