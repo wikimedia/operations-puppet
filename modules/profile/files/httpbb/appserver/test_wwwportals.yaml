@@ -1,6 +1,8 @@
 # wwwportals.conf.erb
-http://www.wikipedia.org:
+https://www.wikipedia.org:
 - path: /wiki/it:Saturno_(astronomia)
+  request_headers:
+    x-forwarded-proto: http
   assert_status: 302
   assert_headers:
       Location: http://it.wikipedia.org/wiki/Saturno_(astronomia)

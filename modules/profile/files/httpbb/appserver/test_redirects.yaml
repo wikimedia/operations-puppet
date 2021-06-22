@@ -1,6 +1,8 @@
 # redirects.dat
-http://wikimedia.org:
+https://wikimedia.org:
 - path: /research
+  request_headers:
+    x-forwarded-proto: http
   assert_status: 301
   assert_headers:
       Location: https://research.wikimedia.org/

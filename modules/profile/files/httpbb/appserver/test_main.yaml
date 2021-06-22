@@ -169,10 +169,10 @@ https://donate.wikimedia.org:
 - path: /w/index.php?title=Special:LandingPage&country=IT&uselang=en
   assert_status: 200
   assert_body_contains: €
-
 # Assert the query string is kept in an HTTP->HTTPS redirect.
-http://donate.wikimedia.org:
 - path: /?foo
+  request_headers:
+    x-forwarded-proto: http
   assert_status: 301
   assert_headers:
       Location: https://donate.wikimedia.org/?foo
