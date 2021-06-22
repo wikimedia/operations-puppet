@@ -1156,6 +1156,11 @@ host an-presto1005 {
     fixed-address an-presto1005.eqiad.wmnet;
 }
 
+host an-web1001 {
+    hardware ethernet F4:E9:D4:DB:9A:F0;
+    fixed-address an-web1001.eqiad.wmnet;
+}
+
 host conf1004 {
     hardware ethernet 30:e1:71:52:05:18;
     fixed-address conf1004.eqiad.wmnet;
@@ -5372,6 +5377,18 @@ host thumbor1003 {
 host thumbor1004 {
     hardware ethernet B0:83:FE:CF:0C:72;
     fixed-address thumbor1004.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host thumbor1005 {
+    hardware ethernet 2C:EA:7F:82:1B:3B;
+    fixed-address thumbor1005.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host thumbor1006 {
+    hardware ethernet 2C:EA:7F:81:FF:AA;
+    fixed-address thumbor1006.eqiad.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 

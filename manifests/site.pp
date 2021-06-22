@@ -152,10 +152,14 @@ node /an-conf100[1-3]\.eqiad\.wmnet/ {
     role(analytics_cluster::zookeeper)
 }
 
-
 # Analytics Presto nodes.
 node /^an-presto100[1-5]\.eqiad\.wmnet$/ {
     role(analytics_cluster::presto::server)
+}
+
+# Analytics Web Node.
+node 'an-web1001.eqiad.wmnet' {
+    role(insetup)
 }
 
 # notification server for Phabricator (T257617)
@@ -2487,6 +2491,11 @@ node /^thanos-fe200[123]\.codfw\.wmnet/ {
 # Thumbor servers for MediaWiki image scaling
 node /^thumbor100[1234]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
+}
+
+# New eqiad thumbor servers
+node /^thumbor100[56]\.eqiad\.wmnet/ {
+    role(insetup)
 }
 
 node /^thumbor200[1234]\.codfw\.wmnet/ {
