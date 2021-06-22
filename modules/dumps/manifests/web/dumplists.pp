@@ -22,11 +22,21 @@ class dumps::web::dumplists(
     # fixme there is an implicit dependency on
     # $dumpsdir/confs/wikidump.conf.monitor, make explicit
     cron { 'list-good-dumps':
-        ensure      => 'present',
+        ensure      => absent,
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         command     => "/usr/local/bin/list-last-good-dumps.sh --xmldumpsdir ${xmldumpsdir}",
         minute      => '55',
         hour        => '3',
+    }
+    systemd::timer::job { 'list-good-dumps':
+        ensure             => present,
+        description        => 'Regular jobs to list good dumps',
+        user               => $user,
+        monitoring_enabled => false,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+        command            => "/usr/local/bin/list-last-good-dumps.sh --xmldumpsdir ${xmldumpsdir}",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:55:0'},
     }
 }
