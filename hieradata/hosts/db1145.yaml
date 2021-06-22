@@ -1,4 +1,3 @@
 # db1145
 profile::mariadb::dbstore_multiinstance::instances:
   s4: 185G
-  s5: 185G
