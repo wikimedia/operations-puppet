@@ -63,6 +63,12 @@ ui:
   # into the browser's Local Storage.
   minimalGroupWidth: 2048
 
+history:
+  rewrite:
+    # Fetching history doesn't work on librenms/grafana alerts.
+    - source: 'https://(librenms|grafana)\..*'
+      uri: ''
+
 # Start with 'description' label collapsed
 annotations:
   hidden:
