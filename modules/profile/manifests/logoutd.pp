@@ -15,6 +15,13 @@ class profile::logoutd (
         mode   => '0550',
         source => 'puppet:///modules/profile/logout.d',
     })
+    file {'/usr/local/sbin/wmf-run-logout-scripts':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+        source => 'puppet:///modules/profile/logoutd/wmf_run_logout_scripts.py',
+    }
     $scripts.each |$res_title, $params| {
         profile::logoutd::script { $res_title:
             * => $params,
