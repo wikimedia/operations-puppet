@@ -76,6 +76,11 @@ class varnish::logging(
         notify => Service['varnishmtail'],
     }
 
+    mtail::program { 'varnisherrors':
+        source => 'puppet:///modules/mtail/programs/varnisherrors.mtail',
+        notify => Service['varnishmtail'],
+    }
+
     ::varnish::logging::xcache { 'xcache':
     }
 

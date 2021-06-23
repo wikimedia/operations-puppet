@@ -92,7 +92,7 @@ class VarnishProcessingSecondsTest(unittest.TestCase):
         expected_process = {
            '+Inf': 0,
            '0.0001': 0,
-           '0.0005': 2,
+           '0.0005': 3,
            '0.001': 0,
            '0.005': 0,
            '0.01': 0,
@@ -103,3 +103,18 @@ class VarnishProcessingSecondsTest(unittest.TestCase):
            '1': 0
         }
         self.assertEqual(expected_process, s['event=process']['buckets'])
+
+
+class VarnishErrorsTest(unittest.TestCase):
+    def setUp(self):
+        self.store = mtail_store.MtailMetricStore(
+                os.path.join(test_dir, '../programs/varnisherrors.mtail'),
+                os.path.join(test_dir, 'logs/varnish.test'))
+
+    def testErrors(self):
+        s = dict(self.store.get_samples('varnish_errors'))
+        expected = {
+            'type=Error': 1,
+            'type=FetchError': 1,
+        }
+        self.assertEqual(expected, s)

@@ -1,0 +1,11 @@
+counter varnish_errors by type
+
+const MSG /[ \.:a-zA-Z\(\)0-9]+\t/
+
+/\tfetcherror / + MSG {
+    varnish_errors["FetchError"]++
+}
+
+/\terror / + MSG {
+    varnish_errors["Error"]++
+}
