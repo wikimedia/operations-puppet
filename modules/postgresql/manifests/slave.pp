@@ -40,7 +40,7 @@ class postgresql::slave(
     Optional[String]           $rep_app         = undef,
     Optional[Numeric]          $pgversion       = undef,
     Optional[Stdlib::Unixpath] $ssldir          = undef,
-    Array[String]              $includes = undef,
+    Optional[Array[String]]    $includes        = undef,
 ) {
 
     $_pgversion = $pgversion ? {
