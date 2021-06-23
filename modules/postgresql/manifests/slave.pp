@@ -37,10 +37,10 @@ class postgresql::slave(
     Integer                    $max_wal_senders = 5,
     Stdlib::Unixpath           $root_dir        = '/var/lib/postgresql',
     Boolean                    $use_ssl         = false,
+    Array[String]              $includes        = [],
     Optional[String]           $rep_app         = undef,
     Optional[Numeric]          $pgversion       = undef,
     Optional[Stdlib::Unixpath] $ssldir          = undef,
-    Optional[Array[String]]    $includes        = undef,
 ) {
 
     $_pgversion = $pgversion ? {
@@ -54,17 +54,10 @@ class postgresql::slave(
     }
     $data_dir = "${root_dir}/${_pgversion}/main"
 
-    if $includes {
-        $fullincludes = [ $includes, 'slave.conf']
-    }
-    else {
-        $fullincludes = ['slave.conf']
-    }
-
     class { '::postgresql::server':
         ensure    => $ensure,
         pgversion => $_pgversion,
-        includes  => $fullincludes,
+        includes  => $includes + ['slave.conf'],
         root_dir  => $root_dir,
         use_ssl   => $use_ssl,
         ssldir    => $ssldir,

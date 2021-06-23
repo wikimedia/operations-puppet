@@ -37,7 +37,7 @@
 class postgresql::master(
     Wmflib::Ensure             $ensure                     = 'present',
     Stdlib::Host               $master_server              = $facts['fqdn'],
-    Array                      $includes                   = [],
+    Array[String]              $includes                   = [],
     Integer                    $max_wal_senders            = 5,
     Integer                    $checkpoint_segments        = 64,
     Integer                    $wal_keep_segments          = 128,
@@ -67,7 +67,7 @@ class postgresql::master(
     class { 'postgresql::server':
         ensure                     => $ensure,
         pgversion                  => $_pgversion,
-        includes                   => [ $includes, 'master.conf'],
+        includes                   => $includes + ['master.conf'],
         root_dir                   => $root_dir,
         use_ssl                    => $use_ssl,
         ssldir                     => $ssldir,
