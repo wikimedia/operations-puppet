@@ -1,5 +1,4 @@
 /var/log/labspuppetbackend.log {
-    su www-data www-data
     daily
     missingok
     rotate 5
