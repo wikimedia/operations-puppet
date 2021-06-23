@@ -1,1 +1,6 @@
 --format progress
+# Need to add the CWD first to stop puppet autoload getting confused
+-I .
+# Add libraries with tests for either custom types, providers or facts
+-I modules/wmflib/lib
+-I modules/scap/lib
