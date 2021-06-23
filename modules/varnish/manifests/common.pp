@@ -103,4 +103,12 @@ class varnish::common(
         group  => 'root',
         mode   => '0444',
     }
+
+    file { '/usr/local/lib/nagios/plugins/check_varnish_uds':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/varnish/check_varnish_uds.py';
+    }
 }

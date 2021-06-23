@@ -41,6 +41,9 @@ ExecStartPost=/usr/local/sbin/reload-vcl <%= @reload_vcl_opts %> --start-child
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
 <%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
+<% if @listen_uds -%>
+-a <%= @listen_uds -%>,PROXY \
+<% end -%>
 -T 127.0.0.1:<%= @admin_port -%> \
 -f '' \
 -p thread_pool_min=250 -p thread_pool_max=<%= @processorcount * 250 -%> -p thread_pool_timeout=120 \

@@ -13,6 +13,7 @@ define varnish::instance(
     $separate_vcl = [],
     $wikimedia_nets = [],
     $wikimedia_trust = [],
+    $listen_uds = undef,
 ) {
 
     include ::varnish::common
@@ -216,4 +217,17 @@ define varnish::instance(
     varnish::monitoring::instance { $ports:
         instance => $title,
     }
+
+    $ensure_uds_check = $listen_uds? {
+        undef   => 'absent',
+        default => 'present',
+    }
+    nrpe::monitor_service { "check-varnish-uds${instancesuffix}":
+        ensure       => $ensure_uds_check,
+        description  => 'Check Varnish UDS',
+        nrpe_command => "/usr/local/lib/nagios/plugins/check_varnish_uds --socket ${listen_uds}",
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
+        require      => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
+    }
+
 }

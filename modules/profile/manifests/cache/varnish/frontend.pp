@@ -13,6 +13,7 @@ class profile::cache::varnish::frontend (
     Array[String] $separate_vcl = lookup('profile::cache::varnish::separate_vcl', {'default_value' =>  []}),
     Integer $fe_transient_gb = lookup('profile::cache::varnish::frontend::transient_gb', {'default_value' => 0}),
     Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
+    Optional[Stdlib::Unixpath] $listen_uds = lookup('profile::cache::varnish::frontend::listen_uds', {'default_value' => undef}),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -151,6 +152,7 @@ class profile::cache::varnish::frontend (
         vcl_config         => $vcl_config,
         wikimedia_nets     => $wikimedia_nets,
         wikimedia_trust    => $wikimedia_trust,
+        listen_uds         => $listen_uds,
     }
     # lint:endignore
 }
