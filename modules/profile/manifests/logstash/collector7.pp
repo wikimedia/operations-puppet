@@ -350,7 +350,7 @@ class profile::logstash::collector7 (
     # The most recently built template can be found here: https://doc.wikimedia.org/ecs/#downloads
     $ecs_versions = {
         # version => revision
-        '1.7.0' => '3'
+        '1.7.0' => '4'
     }
     $ecs_versions.each |String $ecs_version, String $ecs_revision| {
         logstash::output::elasticsearch { "ecs_${ecs_version}-${ecs_revision}":
