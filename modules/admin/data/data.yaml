@@ -4168,7 +4168,7 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICft3iBlNm+b0OoW7LoITaG1+5X5S02pQVdRwQfEzaTE arielchou@AIJOUde-MacBook-Pro.local
-    expiry_date: 2021-06-30
+    expiry_date: 2021-09-30
     expiry_contact: mredi@wikimedia.org
   paragon:
     ensure: present
