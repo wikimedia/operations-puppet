@@ -34,9 +34,14 @@ subprocess.run(
 state = yaml.safe_load(CONFD_FILE.read_text())
 primary_dc = state["primary_dc"]
 my_dc = Path("/etc/wikimedia-cluster").read_text().strip()
-if primary_dc == my_dc:
-    subprocess.run(sys.argv[1:], check=True, shell=True)
-else:
-    # We don't exit with an error status code, it doesn't really
-    # make sense as this is an expected behaviour.
+read_only = state["read_only"][my_dc]
+
+# We don't exit with an error status code, it doesn't really
+# make sense as this is an expected behaviour.
+if primary_dc != my_dc:
     print("Skipping execution, not the primary datacenter!")
+elif read_only:
+    print("Skipping execution, in read-only mode!")
+else:
+    # In the primary DC and not in read-only mode
+    subprocess.run(sys.argv[1:], check=True, shell=True)
