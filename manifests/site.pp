@@ -1943,6 +1943,11 @@ node /^mw133[4-8]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
+# new mw hosts via T273915
+node /^mw14(1[4-9]|[2-4][0-9]|5[0-6])\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 ## DATACENTER: CODFW
 
 # Debug servers

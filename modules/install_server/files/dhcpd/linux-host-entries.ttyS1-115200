@@ -6021,6 +6021,176 @@ host mw1413 {
         fixed-address mw1413.eqiad.wmnet;
 }
 
+host mw1414 {
+        hardware ethernet 2C:EA:7F:7F:C0:B2;
+        fixed-address mw1414.eqiad.wmnet;
+}
+
+host mw1415 {
+        hardware ethernet 2C:EA:7F:83:BA:DD;
+        fixed-address mw1415.eqiad.wmnet;
+}
+
+host mw1416 {
+        hardware ethernet 2C:EA:7F:7F:CF:53;
+        fixed-address mw1416.eqiad.wmnet;
+}
+
+host mw1417 {
+        hardware ethernet 2C:EA:7F:7F:CE:9B;
+        fixed-address mw1417.eqiad.wmnet;
+}
+
+host mw1418 {
+        hardware ethernet 2C:EA:7F:7F:C7:53;
+        fixed-address mw1418.eqiad.wmnet;
+}
+
+host mw1419 {
+        hardware ethernet 2C:EA:7F:7F:C7:EB;
+        fixed-address mw1419.eqiad.wmnet;
+}
+
+host mw1420 {
+        hardware ethernet 2C:EA:7F:7F:C2:D2;
+        fixed-address mw1420.eqiad.wmnet;
+}
+
+host mw1421 {
+        hardware ethernet 2C:EA:7F:7F:C9:83;
+        fixed-address mw1421.eqiad.wmnet;
+}
+
+host mw1422 {
+        hardware ethernet 2C:EA:7F:7F:C7:DB;
+        fixed-address mw1422.eqiad.wmnet;
+}
+
+host mw1423 {
+        hardware ethernet 2C:EA:7F:82:18:AB;
+        fixed-address mw1423.eqiad.wmnet;
+}
+
+host mw1424 {
+        hardware ethernet 2C:EA:7F:7F:CD:B3;
+        fixed-address mw1424.eqiad.wmnet;
+}
+
+host mw1425 {
+        hardware ethernet 2C:EA:7F:82:19:33;
+        fixed-address mw1425.eqiad.wmnet;
+}
+
+host mw1426 {
+        hardware ethernet 2C:EA:7F:82:18:9B;
+        fixed-address mw1426.eqiad.wmnet;
+}
+
+host mw1427 {
+        hardware ethernet 2C:EA:7F:82:19:AB;
+        fixed-address mw1427.eqiad.wmnet;
+}
+
+host mw1428 {
+        hardware ethernet 2C:EA:7F:82:43:6E;
+        fixed-address mw1428.eqiad.wmnet;
+}
+
+host mw1429 {
+        hardware ethernet 2C:EA:7F:82:18:CB;
+        fixed-address mw1429.eqiad.wmnet;
+}
+
+host mw1430 {
+        hardware ethernet 2C:EA:7F:82:2A:9D;
+        fixed-address mw1430.eqiad.wmnet;
+}
+
+host mw1431 {
+        hardware ethernet 2C:EA:7F:82:14:F3;
+        fixed-address mw1431.eqiad.wmnet;
+}
+
+host mw1432 {
+        hardware ethernet 2C:EA:7F:7F:CB:FB;
+        fixed-address mw1432.eqiad.wmnet;
+}
+
+host mw1433 {
+        hardware ethernet 2C:EA:7F:7F:C0:16;
+        fixed-address mw1433.eqiad.wmnet;
+}
+
+host mw1434 {
+        hardware ethernet 2C:EA:7F:7F:C2:82;
+        fixed-address mw1434.eqiad.wmnet;
+}
+
+host mw1435 {
+        hardware ethernet 2C:EA:7F:7F:C4:9B;
+        fixed-address mw1435.eqiad.wmnet;
+}
+
+host mw1436 {
+        hardware ethernet 2C:EA:7F:7F:CC:D3;
+        fixed-address mw1436.eqiad.wmnet;
+}
+
+host mw1437 {
+        hardware ethernet 2C:EA:7F:7F:C5:B3;
+        fixed-address mw1437.eqiad.wmnet;
+}
+
+host mw1438 {
+        hardware ethernet 2C:EA:7F:7F:C0:9A;
+        fixed-address mw1438.eqiad.wmnet;
+}
+
+host mw1439 {
+        hardware ethernet 2C:EA:7F:7F:C8:CB;
+        fixed-address mw1439.eqiad.wmnet;
+}
+
+host mw1440 {
+        hardware ethernet 2C:EA:7F:7F:CD:9B;
+        fixed-address mw1440.eqiad.wmnet;
+}
+
+host mw1441 {
+        hardware ethernet 2C:EA:7F:7F:CD:CB;
+        fixed-address mw1441.eqiad.wmnet;
+}
+
+host mw1442 {
+        hardware ethernet 2C:EA:7F:7F:CA:3B;
+        fixed-address mw1442.eqiad.wmnet;
+}
+
+host mw1443 {
+        hardware ethernet 2C:EA:7F:82:3B:F5;
+        fixed-address mw1443.eqiad.wmnet;
+}
+
+host mw1444 {
+        hardware ethernet 2C:EA:7F:82:3A:BD;
+        fixed-address mw1444.eqiad.wmnet;
+}
+
+host mw1445 {
+        hardware ethernet 2C:EA:7F:82:45:96;
+        fixed-address mw1445.eqiad.wmnet;
+}
+
+host mw1446 {
+        hardware ethernet 2C:EA:7F:82:1C:7B;
+        fixed-address mw1446.eqiad.wmnet;
+}
+
+host mw1447 {
+        hardware ethernet 2C:EA:7F:82:29:7D;
+        fixed-address mw1447.eqiad.wmnet;
+}
+
 host mw2251 {
     hardware ethernet 18:66:DA:84:12:5B;
     fixed-address mw2251.codfw.wmnet;
