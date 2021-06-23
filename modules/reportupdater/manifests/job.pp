@@ -53,7 +53,7 @@ define reportupdater::job(
     $repository_name = "analytics/${repository}"
 
     # Path at which this reportupdater job repository will be cloned.
-    $path            = "${::reportupdater::job_repositories_path}/${repository}"
+    $path            = "${::reportupdater::jobs_path}/${repository}"
 
     # Path of the query configuration directory inside of $repository_name.
     $query_path = $query_dir ? {
