@@ -61,24 +61,11 @@ class varnish::logging(
         require => File['/usr/local/bin/varnishmtail'],
     }
 
-    mtail::program { 'varnishreqstats':
-        source => 'puppet:///modules/mtail/programs/varnishreqstats.mtail',
-        notify => Service['varnishmtail'],
-    }
-
-    mtail::program { 'varnishttfb':
-        source => 'puppet:///modules/mtail/programs/varnishttfb.mtail',
-        notify => Service['varnishmtail'],
-    }
-
-    mtail::program { 'varnishprocessing':
-        source => 'puppet:///modules/mtail/programs/varnishprocessing.mtail',
-        notify => Service['varnishmtail'],
-    }
-
-    mtail::program { 'varnisherrors':
-        source => 'puppet:///modules/mtail/programs/varnisherrors.mtail',
-        notify => Service['varnishmtail'],
+    ['varnishreqstats', 'varnishttfb', 'varnishprocessing', 'varnisherrors'].each |String $name| {
+        mtail::program { $name:
+            source => "puppet:///modules/mtail/programs/${name}.mtail",
+            notify => Service['varnishmtail'],
+        }
     }
 
     ::varnish::logging::xcache { 'xcache':
