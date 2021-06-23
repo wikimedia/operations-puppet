@@ -16,3 +16,7 @@ knownhosts:
 clustershell:
     ssh_options:
         - '-K -F <%= @ssh_config_path %>'
+
+kerberos:
+    ensure_ticket: true
+    ensure_ticket_root: false
