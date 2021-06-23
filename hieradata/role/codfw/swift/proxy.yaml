@@ -5,6 +5,5 @@ lvs::realserver::realserver_ips:
 profile::standard::admin_groups:
   - swift-roots
 profile::swift::proxy::use_tls: true
-profile::swift::swiftrepl::ensure: 'absent'
 profile::swift::cluster: codfw-prod
 profile::swift::stats_reporter_host: 'ms-fe2005.codfw.wmnet'

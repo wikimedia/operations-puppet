@@ -11,6 +11,13 @@ logdir=${LOGDIR:-/var/log/swiftrepl}
 srcdir=${SRCDIR:-/srv/software/swiftrepl}
 num_threads=64
 start_date=$(date -I)
+# This script should only run in the active datacenter
+active_dc=$(confctl --object-type mwconfig select 'name=WMFMasterDatacenter' get | jq -r '.WMFMasterDatacenter.val')
+current_dc=$(cat /etc/wikimedia-cluster)
+if [ "$active_dc" != "$current_dc" ]; then
+    echo "Skipping execution, not the primary datacenter!"
+    exit 0
+fi
 
 function run_swiftrepl() {
     local action=$1
