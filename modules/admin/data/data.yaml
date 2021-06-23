@@ -19,7 +19,7 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov]
+              crusnov, liw]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -93,7 +93,7 @@ groups:
               mforns, dcausse, mholloway-shell, dduvall,
               ladsgroup, addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
-              aaron, liw, sbassett, tarrow, lucaswerkmeister-wmde,
+              aaron, sbassett, tarrow, lucaswerkmeister-wmde,
               jhuneidi, wmde-fisch, mvolz, brennen, cparle,
               urbanecm, awight, jakob, accraze, andrew-wmde,
               mstyles, zpapierski, dpifke,
@@ -162,7 +162,7 @@ groups:
   releasers-blubber:
     gid: 808
     description: people who upload blubber releases
-    members: [dduvall, jhuneidi, liw, thcipriani]
+    members: [dduvall, jhuneidi, thcipriani]
   releasers-mwcli:
     gid: 822
     description: people who upload mw-cli releases (T250241)
@@ -210,7 +210,7 @@ groups:
     approval: Tyler Cipriani
     members: [*ops_members, *contint_roots_members,
               bd808, cscott, krinkle, reedy, marktraceur,
-              gjg, addshore, liw, jhuneidi, dancy, ladsgroup]
+              gjg, addshore, jhuneidi, dancy, ladsgroup]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (doc-uploader) NOPASSWD: ALL',
@@ -624,7 +624,7 @@ groups:
   labnet-users:
     description: unprivileged access on labnet servers
     gid: 781
-    members: [thcipriani, hashar, dduvall, twentyafterfour, liw]
+    members: [thcipriani, hashar, dduvall, twentyafterfour]
   ores-admin:
     description: ORES admins
     gid: 782
@@ -725,7 +725,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, addshore, reedy, liw, jhuneidi, krinkle, brennen, jforrester, dancy]
+    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy]
     system_members: [jenkins-slave]
   builder-docker:
     # There is no gid on purpose, same as above
@@ -3295,14 +3295,12 @@ users:
     uid: 20171
     email: ijohnson@wikimedia.org
   liw:
-    ensure: present
+    ensure: absent
     realname: Lars Wirzenius
     name: liw
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID2zn+4xWIOSECwT5R0nzYSalHPylPHsaxkBUkToyWU8 liw@exolobe4
+    ssh_keys: []
     uid: 20220
-    email: lwirzenius@wikimedia.org
   sbassett:
     ensure: present
     realname: Scott Bassett
