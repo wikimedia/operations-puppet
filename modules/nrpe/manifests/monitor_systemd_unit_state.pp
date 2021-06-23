@@ -31,6 +31,7 @@ define nrpe::monitor_systemd_unit_state(
         ensure         => $ensure,
         description    => $description,
         nrpe_command   => "/usr/local/bin/nrpe_check_systemd_unit_state '${unit}' ${expected_state} ${lastrun}",
+        contact_group  => $contact_group,
         retries        => $retries,
         timeout        => $timeout,
         critical       => $nagios_critical,
