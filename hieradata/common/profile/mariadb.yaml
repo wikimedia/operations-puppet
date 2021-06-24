@@ -26,7 +26,7 @@ profile::mariadb::section_ports:
 profile::mariadb::section_params:
   _defaults_:
     writeable_dc: 'mwprimary'
-    replication_type: 'unidir'
+    replication_type: 'bidir'
   x2:
     writeable_dc: 'both'
     replication_type: 'bidir'
@@ -41,14 +41,19 @@ profile::mariadb::section_params:
     replication_type: 'none'
   m1:
     writeable_dc: 'eqiad'
+    replication_type: 'unidir'
   m2:
     writeable_dc: 'eqiad'
+    replication_type: 'unidir'
   m3:
     writeable_dc: 'eqiad'
+    replication_type: 'unidir'
   m5:
     writeable_dc: 'eqiad'
+    replication_type: 'unidir'
   tendril:
     writeable_dc: 'eqiad'
+    replication_type: 'unidir'
   mediabackupstemp:
     writeable_dc: 'both'
     replication_type: 'none'
