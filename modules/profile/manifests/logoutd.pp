@@ -27,4 +27,29 @@ class profile::logoutd (
             * => $params,
         }
     }
+
+    if debian::codename::eq('stretch') {
+        file { '/usr/local/lib/python3.5/dist-packages/wmflib/':
+            ensure => directory,
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
+
+        file { '/usr/local/lib/python3.5/dist-packages/wmflib/exceptions.py':
+            ensure => present,
+            source => 'puppet:///modules/profile/logoutd/wmflib_exceptions.py',
+            mode   => '0644',
+            owner  => 'root',
+            group  => 'root',
+        }
+
+        file { '/usr/local/lib/python3.5/dist-packages/wmflib/idm.py':
+            ensure => present,
+            source => 'puppet:///modules/profile/logoutd/wmflib_idm.py',
+            mode   => '0644',
+            owner  => 'root',
+            group  => 'root',
+        }
+    }
 }
