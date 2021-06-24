@@ -142,6 +142,10 @@ class apereo_cas (
         source => 'puppet:///modules/apereo_cas/return-tgt-for-user.py',
     }
 
+    profile::logoutd::script {'idp':
+        source => 'puppet:///modules/apereo_cas/idp-logout.py',
+    }
+
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
             * => $config
