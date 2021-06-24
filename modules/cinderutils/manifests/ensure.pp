@@ -39,8 +39,8 @@ define cinderutils::ensure(
     Integer          $max_gb        = 1000,
 ){
     if has_key($facts['mountpoints'], $mount_point) {
-        # account for 10MB needed for the partitioning and formatting
-        $min_size_bytes = ($min_gb * 1024 - 10) * 1024 * 1024
+        # account for 11MB needed for the partitioning and formatting
+        $min_size_bytes = ($min_gb * 1024 - 11) * 1024 * 1024
         if $facts['mountpoints'][$mount_point]['size_bytes'] < $min_size_bytes {
             fail("Volume at ${mount_point} is smaller than required size of ${min_gb}GB")
         }
