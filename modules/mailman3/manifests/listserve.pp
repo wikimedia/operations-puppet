@@ -48,6 +48,15 @@ class mailman3::listserve (
         subscribe => File['/etc/mailman3/mailman.cfg'],
     }
 
+    file { '/etc/logrotate.d/mailman3':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/mailman3/logrotate.conf',
+        require => Package['mailman3'],
+    }
+
     # Helper scripts
     file { '/usr/local/sbin/remove_from_lists':
         ensure => 'present',

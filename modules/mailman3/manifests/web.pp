@@ -66,6 +66,15 @@ class mailman3::web (
         subscribe => File['/etc/mailman3/mailman-web.py'],
     }
 
+    file { '/etc/logrotate.d/mailman3-web':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/mailman3/web-logrotate.conf',
+        require => Package['mailman3-web'],
+    }
+
     file { '/var/lib/mailman3/redirects/':
         ensure => directory,
         owner  => 'root',
