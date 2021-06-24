@@ -49,7 +49,7 @@ def parse_tgts(filenames):
                         what = line.split()[1]
 
                     if line.startswith("WHEN:"):
-                        when = dateutil.parser.parse(line.split(":")[1])
+                        when = dateutil.parser.parse(line.split(":", 1)[1])
 
                     if line.startswith("ACTION:"):
                         action = line.split()[1]
