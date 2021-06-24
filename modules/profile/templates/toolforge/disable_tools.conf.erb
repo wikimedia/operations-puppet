@@ -1,0 +1,18 @@
+[default]
+archive_after_days=40
+
+[archivedbs]
+hostname_substring=sgecron
+
+[gridengine]
+hostname_substring=sgegrid-master
+
+[crontab]
+hostname_substring=sgecron
+
+[archive]
+hostname_substring=labstore
+
+# Creds with the power to delete entries:
+ldap_bind_dn=<%= @novaadmin_bind_dn %>
+ldap_bind_pass=<%= @novaadmin_bind_pass %>

@@ -59,4 +59,16 @@ class profile::toolforge::grid::cronrunner(
         recurse   => true,
         show_diff => false,
     }
+
+    # The disable_tools script only needs ldap creds on
+    #  the NFS host.
+    $novaadmin_bind_dn='<unavailable here>'
+    $novaadmin_bind_pass='<unavailable here>'
+    file { '/etc/disable_tools.conf':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0500',
+        content => template('profile/toolforge/disable_tools.conf.erb'),
+    }
 }
