@@ -8,8 +8,8 @@ class profile::wmcs::nfs::primary(
   Hash[String, Stdlib::IP::Address::V4] $drbd_cluster = lookup('profile::wmcs::nfs::primary::drbd_cluster'),
   Stdlib::IP::Address::V4 $cluster_ip = lookup('profile::wmcs::nfs::primary::cluster_ip'),
   Stdlib::IP::Address::V4 $subnet_gateway_ip = lookup('profile::wmcs::nfs::primary::subnet_gateway_ip'),
-  String $novaadmin_bind_dn = lookup('profile::openstack::eqiad1::ldap_user_dn'),
-  String $novaadmin_bind_pass = lookup('profile::openstack::base::ldap_user_pass')
+  String $novaadmin_bind_dn = lookup('profile::openstack::base::ldap_user_dn'),
+  String $novaadmin_bind_pass = lookup('profile::openstack::eqiad1::ldap_user_pass')
 ) {
     require profile::openstack::eqiad1::clientpackages
     require profile::openstack::eqiad1::observerenv
