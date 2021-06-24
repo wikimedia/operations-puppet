@@ -61,7 +61,7 @@ class varnish::logging(
         require => File['/usr/local/bin/varnishmtail'],
     }
 
-    ['varnishreqstats', 'varnishttfb', 'varnishprocessing', 'varnisherrors'].each |String $name| {
+    ['varnishreqstats', 'varnishttfb', 'varnishprocessing', 'varnisherrors', 'varnishsli'].each |String $name| {
         mtail::program { $name:
             source => "puppet:///modules/mtail/programs/${name}.mtail",
             notify => Service['varnishmtail'],

@@ -118,3 +118,20 @@ class VarnishErrorsTest(unittest.TestCase):
             'type=FetchError': 1,
         }
         self.assertEqual(expected, s)
+
+
+class VarnishSLITest(unittest.TestCase):
+    def setUp(self):
+        self.store = mtail_store.MtailMetricStore(
+                os.path.join(test_dir, '../programs/varnishsli.mtail'),
+                os.path.join(test_dir, 'logs/varnishsli.test'))
+
+    def testSLI(self):
+        sli_all = self.store.get_samples('varnish_sli_all')
+        self.assertIn(('', 10), sli_all)
+
+        # Two lines are not good: one has a fetcherror (Resource temporarily
+        # unavailable), another has "trestart 0.099903", which makes the
+        # timestamps sum go above threshold (0.100001 > 0.1).
+        sli_good = self.store.get_samples('varnish_sli_good')
+        self.assertIn(('', 8), sli_good)

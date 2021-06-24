@@ -1,0 +1,49 @@
+counter varnish_sli_all
+counter varnish_sli_good
+
+hidden gauge internal_time
+
+/^/ {
+    varnish_sli_all++
+
+    # Initialize hidden variable
+    internal_time = 0.0
+}
+
+/\ttstart ([0-9\.]+)\t/ {
+    internal_time += $1
+}
+
+/\ttprocess ([0-9\.]+)\t/ {
+    internal_time += $1
+}
+
+/\ttresp ([0-9\.]+)\t/ {
+    internal_time += $1
+}
+
+/\ttrestart ([0-9\.]+)\t/ {
+    internal_time += $1
+}
+
+/\ttpipe ([0-9\.]+)\t/ {
+    internal_time += $1
+}
+
+/\ttbereq ([0-9\.]+)\t/ {
+    internal_time += $1
+}
+
+/\ttretry ([0-9\.]+)\t/ {
+    internal_time += $1
+}
+
+/\tterror ([0-9\.]+)\t/ {
+    internal_time += $1
+}
+
+# Neither error nor fetcherror should be set, and the total time has to be
+# within the chosen threshold (0.1s).
+/\terror -\tfetcherror -\t/ && internal_time < 0.1 {
+    varnish_sli_good++
+}
