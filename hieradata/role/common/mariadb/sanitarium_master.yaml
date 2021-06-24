@@ -1,0 +1,2 @@
+monitor_screens: false
+mariadb::binlog_format: 'ROW'

@@ -412,8 +412,13 @@ node 'db1163.eqiad.wmnet' {
 }
 # eqiad replicas
 # See also db1099 and db1105 below
-node /^db1(106|118|119|134|135|164|169|184)\.eqiad\.wmnet/ {
+node /^db1(118|119|134|135|164|169|184)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node 'db1106.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s1 (enwiki) core production dbs on codfw
@@ -424,8 +429,13 @@ node 'db2112.codfw.wmnet' {
 
 # codfw replicas
 # See also db2085 and db2088 below
-node /^db2(071|072|092|103|116|130|145|146)\.codfw\.wmnet/ {
+node /^db2(071|092|103|116|130|145|146)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# codfw sanitarium master
+node 'db2072.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s2 (large wikis) core production dbs on eqiad
@@ -436,8 +446,13 @@ node 'db1122.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1105, db1146, db1170 below
-node /^db1(129|156|162|182)\.eqiad\.wmnet/ {
+node /^db1(129|162|182)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node 'db1156.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s2 (large wikis) core production dbs on codfw
@@ -448,8 +463,13 @@ node 'db2107.codfw.wmnet' {
 
 # codfw replicas
 # See also db2088 and db2138 below
-node /^db2(104|125|126|148)\.codfw\.wmnet/ {
+node /^db2(104|125|148)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# codfw sanitarium master
+node 'db2126.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s3 core production dbs on eqiad
@@ -459,8 +479,13 @@ node 'db1157.eqiad.wmnet' {
 }
 
 # eqiad replicas
-node /^db1(112|123|166|175|179)\.eqiad\.wmnet/ {
+node /^db1(123|166|175|179)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node 'db1112.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s3 core production dbs on codfw
@@ -470,8 +495,13 @@ node 'db2105.codfw.wmnet' {
 }
 
 # codfw replicas
-node /^db2(074|109|127|149)\.codfw\.wmnet/ {
+node /^db2(109|127|149)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# codfw sanitarium master
+node 'db2074.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s4 (commons) core production dbs on eqiad
@@ -482,8 +512,13 @@ node 'db1138.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1144 and db1146 below
-node /^db1(121|141|142|143|147|148|149|160)\.eqiad\.wmnet/ {
+node /^db1(141|142|143|147|148|149|160)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node 'db1121.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 node 'db1124.eqiad.wmnet' {
@@ -507,8 +542,13 @@ node 'db2140.codfw.wmnet' {
 
 # codfw replicas
 # See also db2137 and db2138 below
-node /^db2(073|106|110|119|136|147)\.codfw\.wmnet/ {
+node /^db2(106|110|119|136|147)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# codfw sanitarium master
+node 'db2073.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s5 (default, dewiki and others) core production dbs on eqiad
@@ -519,8 +559,13 @@ node 'db1130.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1096, db1113 and db1144 below
-node /^db1(100|110|130|161)\.eqiad\.wmnet/ {
+node /^db1(100|110|130)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node 'db1161.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s5 (default, dewiki and others) core production dbs on codfw
@@ -531,8 +576,13 @@ node 'db2123.codfw.wmnet' {
 
 # codfw replicas
 # See also db2089 and db2137 below
-node /^db2(075|111|113|128)\.codfw\.wmnet/ {
+node /^db2(075|111|113)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# codfw sanitarium master
+node 'db2128.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
@@ -543,8 +593,13 @@ node 'db1173.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1096, db1098 and db1113 below
-node /^db1(131|165|168|180)\.eqiad\.wmnet/ {
+node /^db1(131|168|180)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node 'db1165.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s6 core production dbs on codfw
@@ -555,8 +610,13 @@ node 'db2129.codfw.wmnet' {
 
 # codfw replicas
 # See also db2087 and db2089 below
-node /^db2(076|114|117|124)\.codfw\.wmnet/ {
+node /^db2(114|117|124)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# codfw sanitarium master
+node 'db2076.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
@@ -567,8 +627,13 @@ node 'db1136.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1098, db1101, db1170 below
-node /^db1(069|127|136|158|174|178|181)\.eqiad\.wmnet/ {
+node /^db1(069|127|136|174|178|181)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node 'db1158.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
@@ -579,8 +644,13 @@ node 'db2118.codfw.wmnet' {
 
 # codfw replicas
 # See also db2086 and db2087 below
-node /^db2(077|108|120|121|122|150)\.codfw\.wmnet/ {
+node /^db2(108|120|121|122|150)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# codfw sanitarium master
+node 'db2077.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s8 (wikidata) core production dbs on eqiad
@@ -591,8 +661,13 @@ node 'db1104.eqiad.wmnet' {
 
 # eqiad replicas
 # See also db1099 and db1101 below
-node /^db1(109|111|114|126|167|172|177)\.eqiad\.wmnet/ {
+node /^db1(109|111|114|126|172|177)\.eqiad\.wmnet/ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node 'db1167.eqiad.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # s8 (wikidata) core production dbs on codfw
@@ -603,8 +678,13 @@ node 'db2079.codfw.wmnet' {
 
 # codfw replicas
 # See also db2085 and db2086 below
-node /^db2(080|081|082|083|084|091|152)\.codfw\.wmnet/ {
+node /^db2(080|081|083|084|091|152)\.codfw\.wmnet/ {
     role(mariadb::core)
+}
+
+# codfw sanitarium master
+node 'db2082.codfw.wmnet' {
+    role(mariadb::sanitarium_master)
 }
 
 # multi-instance hosts with multiple shards
