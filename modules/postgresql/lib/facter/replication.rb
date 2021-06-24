@@ -17,12 +17,17 @@ end
 
 Facter.add('postgres_replica_initialised') do
   setcode do
-    initialised = false
-    pg_version_match = Facter.fact(:postgres_version).value.match /^([\d\.]+)\.(\d)+$/
-    pg_base_version = pg_version_match[1]
-    unless pg_base_version.nil?
-      if File.exists?("/srv/postgresql/#{pg_base_version}/main/backup_label.old")
-        initialised = true
+    initialised = nil
+    pg_version_fact = Facter.fact(:postgres_version)
+    unless pg_version_fact.value.nil?
+      pg_version_match = pg_version_fact.value.match /^([\d\.]+)\.(\d)+$/
+      pg_base_version = pg_version_match[1]
+      unless pg_base_version.nil?
+        if File.exists?("/srv/postgresql/#{pg_base_version}/main/backup_label.old")
+          initialised = true
+        else
+          initialised = false
+        end
       end
     end
     initialised
