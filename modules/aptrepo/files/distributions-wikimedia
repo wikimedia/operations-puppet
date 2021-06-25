@@ -50,7 +50,6 @@ Components: main
  thirdparty/mono-project-stretch
  thirdparty/oath
  thirdparty/php72
- thirdparty/tor
 UDebComponents: main component/node10
 Update:
 # sorted list, leading whitespace matters!
