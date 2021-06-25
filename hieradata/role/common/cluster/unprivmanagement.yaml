@@ -1,2 +1,3 @@
 profile::standard::admin_groups:
   - datacenter-ops
+profile::kerberos::client::show_krb_ticket_info: true

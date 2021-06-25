@@ -5,6 +5,7 @@ class profile::kerberos::client (
     Boolean $dns_canonicalize_hostname = lookup('profile::kerberos::client::dns_canonicalize_hostname', { 'default_value' => true}),
     Optional[Boolean] $use_new_ccache = lookup('profile::kerberos::client::use_new_ccache', { 'default_value' => false}),
     Boolean $skip_wrapper = lookup('profile::kerberos::client::skip_wrapper', { 'default_value' => false }),
+    Boolean $show_krb_ticket_info = lookup('profile::kerberos::client::show_krb_ticket_info', { 'default_value' => false }),
 ) {
 
     class { 'kerberos::wrapper':
@@ -50,12 +51,19 @@ class profile::kerberos::client (
         source   => 'puppet:///modules/profile/kerberos/client/motd.sh',
     }
 
-    file {'/etc/profile.d/kerberos_ticket_info.sh':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/profile/kerberos/client/kerberos_ticket_info.sh',
+    $ensure_krb_info = $show_krb_ticket_info ? {
+        true    => 'present',
+        default => 'absent',
+    }
+
+    if $show_krb_ticket_info {
+        file {'/etc/profile.d/kerberos_ticket_info.sh':
+            ensure => $ensure_krb_info,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/profile/kerberos/client/kerberos_ticket_info.sh',
+        }
     }
 
     require_package ('krb5-user')
