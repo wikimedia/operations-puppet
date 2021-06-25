@@ -1,5 +1,8 @@
 [Unit]
 Description=<%= @description %>
+<%- if @after -%>
+After=<%= @after %>
+<%- end -%>
 
 [Service]
 User=<%= @user %>

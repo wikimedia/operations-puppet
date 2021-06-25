@@ -104,6 +104,10 @@
 #  [*exec_start_pre*]
 #   String with the command to be used as 'ExecStartPre' that will run at the beginning of each run.
 #
+#  [*after*]
+#   String containing another service name used in 'After=' in the Systemd unit.
+#   Setting the value allows to run a timer job after another service.
+#
 define systemd::timer::job(
     Variant[
         Systemd::Timer::Schedule,
@@ -136,6 +140,7 @@ define systemd::timer::job(
     Optional[Systemd::Output]               $stderr                    = undef,
     Optional[Stdlib::Unixpath]              $working_directory         = undef,
     Optional[Systemd::Command]              $exec_start_pre            = undef,
+    Optional[String]                        $after                     = undef,
 ) {
     # Systemd doesn't play well with spaces in unit names, so check for that
     if $title =~ /\s/ {
