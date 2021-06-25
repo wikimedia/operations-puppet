@@ -159,7 +159,12 @@ def mount_volume(args):
     updated_devdict = block_dev_dict()
     uuid = updated_devdict[args.device]["uuid"]
 
-    fstabline = "UUID=%s %s ext4 %s 0 2\n" % (uuid, args.mountpoint, mount_options)
+    fstabline = "UUID=%s %s %s %s 0 2\n" % (
+        uuid,
+        args.mountpoint,
+        updated_devdict[args.device]["fstype"],
+        mount_options,
+    )
     print("Updating fstab with %s..." % fstabline)
     with open("/etc/fstab", "a") as myfile:
         myfile.write(fstabline)
