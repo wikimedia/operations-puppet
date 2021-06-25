@@ -525,7 +525,7 @@ node /^db2(075|111|113|128)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
-# s6 core production dbs on eqiad
+# s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
 # eqiad master
 node 'db1173.eqiad.wmnet' {
     role(mariadb::core)
