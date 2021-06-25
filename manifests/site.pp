@@ -1217,6 +1217,10 @@ node 'gitlab1001.wikimedia.org' {
     role(gitlab)
 }
 
+node 'gitlab2001.wikimedia.org' {
+    role(insetup)
+}
+
 # Virtual machines for Grafana 6.x (T220838, T244357)
 node 'grafana1002.eqiad.wmnet' {
     role(grafana)
