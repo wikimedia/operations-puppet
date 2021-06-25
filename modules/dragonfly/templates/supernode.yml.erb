@@ -1,0 +1,18 @@
+base:
+  # ListenPort is the port supernode server listens on.
+  # default: 8002
+  listenPort: 8002
+
+  # DownloadPort is the port for download files from supernode.
+  # And you should start a file server firstly which listens on the download port.
+  # default: 8001
+  downloadPort: 8002
+  # FIXME: Regardless of the cdnPattern, dfget conntects to this port and hangs if that
+  # is not possible. This is most likely a bug and I think we can work around this by just
+  # giving a "random" open port - so listenPort in this case.
+
+  # "local" let's the supernode pull from the source (docker registry) and create a cache on disk
+  # "source" makes the client (dfget) request slices directly from the source (docker registy)
+  # e.g. not proxying though the supernode (and no disk cache is created)
+  # with "source", the downloadPort is probably not needed (no nginx fileserver)
+  cdnPattern: source
