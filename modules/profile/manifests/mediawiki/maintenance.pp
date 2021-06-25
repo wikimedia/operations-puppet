@@ -36,7 +36,7 @@ class profile::mediawiki::maintenance {
     }
 
     file { '/usr/local/bin/mw-cli-wrapper':
-        source => 'puppet:///modules/profile/mediawiki/maintenance/mw-cli-wrapper.sh',
+        source => 'puppet:///modules/profile/mediawiki/maintenance/mw-cli-wrapper.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555'
