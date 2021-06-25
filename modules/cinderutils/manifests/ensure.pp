@@ -52,6 +52,15 @@ define cinderutils::ensure(
                 default => $memo
             }
         }
+        # The volume already exists so we just need to define the mount.
+        # This also happens for legacy VMs with lvm partitions.
+        mount { $mount_point:
+            ensure  => mounted,
+            atboot  => true,
+            device  => "UUID=${cinder_vol['uuid']}",
+            options => $facts['mountpoints'][$mount_point]['options'].join(','),
+            fstype  => $cinder_vol['fstype'],
+        }
     } else {
         # find the first available volume of adequate size
         $cinder_vol = $facts['block_devices'].reduce(undef) |$memo, $volume| {
@@ -66,6 +75,8 @@ define cinderutils::ensure(
                     command => "/usr/local/sbin/wmcs-prepare-cinder-volume --force --device ${volume['dev']} --mountpoint ${mount_point} --options ${mount_options} --mountmode ${mount_mode}",
                     user    => 'root',
                 }
+                # After running the script, the volume will become mounted and on the next run will go to the other if
+                # banch
                 $require_list = Exec["prepare_cinder_volume_${mount_point}"]
                 $volume
             } else {
@@ -74,27 +85,6 @@ define cinderutils::ensure(
         }
         if $cinder_vol == undef {
             fail("No mount at ${mount_point} and no volumes are available to mount.\n\nTo proceed, create and attach a Cinder volume of at least size ${min_gb}GB.")
-        }
-    }
-
-    if has_key($facts['mountpoints'], $mount_point) {
-        # The volume already exists so we just need to define the mount.
-        # This also happens for legacy VMs with lvm partitions.
-        mount { $mount_point:
-            ensure  => mounted,
-            atboot  => true,
-            device  => "UUID=${cinder_vol['uuid']}",
-            options => $facts['mountpoints'][$mount_point]['options'].join(','),
-            fstype  => $cinder_vol['fstype'],
-        }
-    } else {
-        mount { $mount_point:
-            ensure  => mounted,
-            atboot  => true,
-            device  => "UUID=${cinder_vol['uuid']}",
-            options => $mount_options,
-            require => Exec["prepare_cinder_volume_${mount_point}"],
-            fstype  => $cinder_vol['fstype']
         }
     }
 }
