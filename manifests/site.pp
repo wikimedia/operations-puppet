@@ -1580,7 +1580,7 @@ node /^logstash103[345]\.eqiad\.wmnet/ {
 
 # codfw logstash elasticsearch
 node /^logstash200[123]\.codfw\.wmnet$/ {
-    role(logstash::elasticsearch)
+    role(logstash::elasticsearch7)
 }
 
 # codfw logstash collectors (Ganeti)

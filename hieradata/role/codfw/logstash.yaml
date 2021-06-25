@@ -6,14 +6,7 @@ lvs::realserver::realserver_ips:
 # node config in hieradata/role/common/logstash/elasticsearch.yaml
 profile::elasticsearch::dc_settings:
     cluster_name: production-logstash-codfw
-    unicast_hosts:
-      - logstash2001.codfw.wmnet
-      - logstash2002.codfw.wmnet
-      - logstash2003.codfw.wmnet
     cluster_hosts:
-      - logstash2001.codfw.wmnet
-      - logstash2002.codfw.wmnet
-      - logstash2003.codfw.wmnet
       - logstash2004.codfw.wmnet
       - logstash2005.codfw.wmnet
       - logstash2006.codfw.wmnet
