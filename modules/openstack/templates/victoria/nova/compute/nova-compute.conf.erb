@@ -3,6 +3,9 @@
 #compute_driver=nova.virt.libvirt.LibvirtDriver
 compute_driver=libvirt.LibvirtDriver
 
+# The default here is vfat for some reason
+default_ephemeral_format = ext4
+
 # Ensure VMs have the same state after a host reboot
 resume_guests_state_on_host_boot = True
 
