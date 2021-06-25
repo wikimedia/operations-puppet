@@ -59,7 +59,7 @@
 #   if tile is empty, make sure we don't store it, if it was there before
 #   used in Tilerator notification
 #
-# [*osmosis_dir*]
+# [*osm_dir*]
 #   directory in which osmosis keeps its state
 #
 class tilerator::ui(
@@ -68,6 +68,7 @@ class tilerator::ui(
     String $pgsql_pass,
     String $redis_server,
     String $redis_pass,
+    Stdlib::Unixpath  $osm_dir,
     Stdlib::Port $port               = 6535,
     String  $contact_groups          = 'admins',
     Stdlib::Unixpath  $statefile_dir = '/var/run/tileratorui',
@@ -76,7 +77,6 @@ class tilerator::ui(
     String  $generator_id            = 'gen',
     String  $storage_id              = 'v3',
     Boolean $delete_empty            = true,
-    Stdlib::Unixpath  $osmosis_dir   = '/srv/osmosis',
     Stdlib::Unixpath  $expire_dir    = '/srv/osm_expire/',
     Boolean $use_nodejs10            = false,
 ) {

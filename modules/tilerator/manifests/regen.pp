@@ -2,8 +2,8 @@
 #
 # Provides for periodically regenerating low-zoom map tiles
 #
-# [*osmosis_dir*]
-#   directory in which osmosis keeps its state
+# [*osm_dir*]
+#   directory in which osm sync scripts keep their state
 #
 # [*generator_id*]
 #   source to copy tiles from ("gen" will only produce non-empty tiles)
@@ -24,7 +24,7 @@
 #   zoom level to end tile generation (exclusive)
 #
 class tilerator::regen (
-    Stdlib::Absolutepath $osmosis_dir   = '/srv/osmosis',
+    Stdlib::Absolutepath $osm_dir       = '/srv/osmosis',
     String $generator_id                = 'gen',
     String $storage_id                  = 'v3',
     Boolean $delete_empty               = true,
@@ -64,7 +64,7 @@ class tilerator::regen (
     }
 
     # Notify tilerator to regenerate zoom levels 0-9 monthly
-    $regen_options = "${osmosis_dir} ${zoom} ${from_zoom} ${before_zoom} ${generator_id} ${storage_id} ${delete_empty}"
+    $regen_options = "${osm_dir} ${zoom} ${from_zoom} ${before_zoom} ${generator_id} ${storage_id} ${delete_empty}"
     cron { "regen-zoom-level-${title}":
         ensure   => present,
         command  => "/usr/local/bin/notify-tilerator-regen ${regen_options} >> ${tilerator_log_dir}/regen-zoom-level.log 2>&1",

@@ -3,7 +3,7 @@ class osm::imposm3 (
     Stdlib::Port $proxy_port,
     Wmflib::Ensure $ensure            = present,
     String $upstream_url_path         = 'planet.openstreetmap.org',
-    String $osm_log_dir               = '/srv/osmosis',
+    String $osm_log_dir               = '/srv/osm/log',
     String $expire_dir                = '/srv/osm_expire',
     Integer $expire_levels            = 15,
     Boolean $disable_replication_cron = false,

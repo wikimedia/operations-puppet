@@ -9,7 +9,7 @@ class profile::maps::osm_master (
     String $tileratorui_pass                    = lookup('profile::maps::osm_master::tileratorui_pass'),
     String $replication_pass                    = lookup('profile::maps::osm_master::replication_pass'),
     Hash[String, Struct[{ip_address => Stdlib::IP::Address}]] $postgres_replicas = lookup('profile::maps::osm_master::replicas', { 'default_value' => {}}),
-    String $osm_engine                         = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
+    String $osm_engine                          = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
     Boolean $disable_replication_cron           = lookup('profile::maps::osm_master::disable_replication_cron', { 'default_value' => false }),
     Boolean $disable_tile_generation_cron       = lookup('profile::maps::osm_master::disable_tile_generation_cron', { 'default_value' => false }),
     Boolean $disable_admin_cron                 = lookup('profile::maps::osm_master::disable_admin_cron', { 'default_value' => false }),

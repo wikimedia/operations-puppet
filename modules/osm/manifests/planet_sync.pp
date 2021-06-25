@@ -16,8 +16,6 @@
 #       present or absent, just like for standard resources
 #   $ensure
 #       present or absent, just like for standard resources
-#   $osmosis_dir
-#       [osm2pgsql] Directory that stores osmosis data, including replication state
 #   $expire_dir
 #       Directory for expiry files
 #   $download_dir
@@ -68,7 +66,6 @@ define osm::planet_sync (
     String $proxy_host,
     Stdlib::Port $proxy_port,
     Wmflib::Ensure $ensure                  = present,
-    String $osmosis_dir                     = '/srv/osmosis',
     String $expire_dir                      = '/srv/osm_expire',
     String $download_dir                    = '/srv/downloads',
     String $period                          = 'minute',
@@ -128,7 +125,6 @@ define osm::planet_sync (
                 proxy_host            => $proxy_host,
                 proxy_port            => $proxy_port,
                 osm_log_dir           => $osm_log_dir,
-                osmosis_dir           => $osmosis_dir,
                 flat_nodes            => $flat_nodes,
                 period                => $period,
                 expire_dir            => $expire_dir,

@@ -1,4 +1,5 @@
 class profile::maps::apps(
+    String $osm_engine = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
     Array[String] $cassandra_hosts = lookup('profile::cassandra::single_instance::seeds'),
     String $cassandra_kartotherian_pass = lookup('profile::maps::cassandra::kartotherian_pass'),
     String $cassandra_tilerator_pass = lookup('profile::maps::cassandra::tilerator_pass'),
@@ -20,6 +21,11 @@ class profile::maps::apps(
         'stretch' => true,
     }
 
+    $osm_dir = $osm_engine ? {
+        'osm2pgsql' => '/srv/osmosis',
+        'imposm3' => '/srv/osm'
+    }
+
     $contact_groups = 'admins,team-interactive'
 
     $num_workers = floor($::processorcount * $tilerator_ncpu_ratio)
@@ -34,7 +40,7 @@ class profile::maps::apps(
         storage_id        => $tilerator_storage_id,
         num_workers       => $num_workers,
         use_nodejs10      => $use_nodejs10,
-        enable            => $tilerator_enable,
+        enable            => $tilerator_enable
     }
 
     class { '::tilerator::ui':
@@ -46,6 +52,7 @@ class profile::maps::apps(
         contact_groups    => $contact_groups,
         storage_id        => $tilerator_storage_id,
         use_nodejs10      => $use_nodejs10,
+        osm_dir           => $osm_dir
     }
 
     class { 'kartotherian':

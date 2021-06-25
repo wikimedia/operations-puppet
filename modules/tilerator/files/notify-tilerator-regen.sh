@@ -1,6 +1,6 @@
 #!/bin/bash
 
-osmosis_dir=$1
+osm_dir=$1
 zoom=$2
 from_zoom=$3
 before_zoom=$4
@@ -12,7 +12,7 @@ if [ "$delete_empty" = false ]; then
     delete_empty=""
 fi
 
-/usr/bin/flock -xn "${osmosis_dir}/replicate-osm.lck" \
+/usr/bin/flock -xn "${osm_dir}/replicate-osm.lck" \
     /usr/bin/nodejs /srv/deployment/tilerator/deploy/node_modules/@wikimedia/tilerator/scripts/tileshell.js \
         --config /etc/tileratorui/config.yaml \
         -j.zoom $zoom \

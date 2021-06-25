@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/usr/bin/flock -xn <%= @osmosis_dir %>/replicate-osm.lck \
+/usr/bin/flock -xn <%= @osm_dir %>/replicate-osm.lck \
     /usr/bin/nodejs /srv/deployment/tilerator/deploy/node_modules/@wikimedia/tilerator/scripts/tileshell.js \
         --config /etc/tileratorui/config.yaml \
         -j.fromZoom <%= @from_zoom %> \
