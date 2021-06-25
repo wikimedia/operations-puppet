@@ -44,7 +44,146 @@ def managed_description_error(action, type, label):
     )
 
 
-def update(config, envfile):
+def update_tenant(
+    client,
+    tenant,
+    project_main_zone_ids,
+    public_addrs,
+    existing_As,
+):
+    logger.debug("Updating project %s", tenant.name)
+    if tenant.name == "admin":
+        return
+
+    server_addresses = {}
+    nova_client = client.novaclient(tenant.name)
+    # Go through every instance
+    for server in nova_client.servers.list():
+        for network_name, addresses in server.addresses.items():
+            public = [
+                str(ip["addr"])
+                for ip in addresses
+                if ip["OS-EXT-IPS:type"] == "floating"
+            ]
+            # If the instance has a public IP...
+            if public:
+                # Record their public IPs and generate their public name
+                # according to FQDN_TEMPLATE. Technically there can be more
+                # than one floating (and/or fixed) IP Although this is never
+                # practically the case...
+                server_addresses[server.name] = public
+                A_FQDN = FQDN_TEMPLATE.format(
+                    server=server.name, project=tenant.name
+                )
+                public_addrs[A_FQDN, tenant.name] = True, public
+                logger.debug("Found public IP %s -> %s", public, A_FQDN)
+
+    dns = mwopenstackclients.DnsManager(client, tenant=tenant.name)
+    existing_match_regex = re.compile(FQDN_REGEX.format(project=tenant.name))
+    # Now go through every zone the project controls
+    for zone in dns.zones():
+        logger.debug("Checking zone %s", zone["name"])
+        # If this is their main zone, record the ID for later use
+        if zone["name"] == PROJECT_ZONE_TEMPLATE.format(project=tenant.name):
+            project_main_zone_ids[tenant.name] = zone["id"]
+
+        # Go through every recordset in the zone
+        for recordset in dns.recordsets(zone["id"]):
+            logger.debug(
+                "Found recordset %s %s", recordset["name"], recordset["type"]
+            )
+            existing_As.append(recordset["name"])
+            # No IPv6 support in labs so no AAAAs
+            if recordset["type"] != "A":
+                continue
+
+            match = existing_match_regex.match(recordset["name"])
+            if match:
+                # Matches instances for this project, managed by this script
+                if match.group(1) in server_addresses and set(
+                    recordset["records"]
+                ) != set(server_addresses[match.group(1)]):
+                    # ... But instance has a different set of IPs. Update!
+                    if recordset["description"] == MANAGED_DESCRIPTION:
+                        new_records = server_addresses[match.group(1)]
+                        logger.info(
+                            "Updating type A record for %s"
+                            " - instance has different IPs - correct: %s"
+                            " vs. current: %s",
+                            recordset["name"],
+                            str(new_records),
+                            str(recordset["records"]),
+                        )
+                        try:
+                            dns.update_recordset(
+                                zone["id"],
+                                recordset["id"],
+                                new_records,
+                            )
+                        except Exception:
+                            logger.exception(
+                                "Failed to update %s", recordset["name"]
+                            )
+                    else:
+                        managed_description_error("update", "A", recordset["name"])
+                elif match.group(1) not in server_addresses:
+                    # ... But instance does not actually exist. Delete!
+                    if recordset["description"] == MANAGED_DESCRIPTION:
+                        logger.info(
+                            "Deleting type A record for %s "
+                            " - instance does not exist",
+                            recordset["name"],
+                        )
+                        try:
+                            dns.delete_recordset(zone["id"], recordset["id"])
+                        except Exception:
+                            logger.exception(
+                                "Failed to delete %s", recordset["name"]
+                            )
+                    else:
+                        managed_description_error("delete", "A", recordset["name"])
+            elif "*" not in recordset["name"]:
+                # Recordset is not one of our FQDN_TEMPLATE ones, so just
+                # store it so we can reflect its existence in PTR records
+                # where appropriate.
+                public_addrs[recordset["name"], tenant.name] = (
+                    False,
+                    recordset["records"],
+                )
+
+
+def try_update_tenant(
+    client,
+    tenant,
+    project_main_zone_ids,
+    public_addrs,
+    existing_As,
+    retries,
+    retry_interval,
+):
+    retry = 0
+    while retry <= retries:
+        try:
+            update_tenant(
+                client=client,
+                tenant=tenant,
+                project_main_zone_ids=project_main_zone_ids,
+                public_addrs=public_addrs,
+                existing_As=existing_As
+            )
+            return
+        except Exception:
+            retry += 1
+            logger.exception(
+                "Failed to update tenant %s, retrying %s out of %s"
+                % (tenant.name, retry, retries)
+            )
+            if retry == retries:
+                raise
+            time.sleep(retry_interval)
+
+
+def update(config, envfile, retries, retry_interval):
     floating_ip_ptr_fqdn_matching_regex = re.compile(
         config["floating_ip_ptr_fqdn_matching_regex"]
     )
@@ -56,105 +195,16 @@ def update(config, envfile):
     existing_As = []
     # Go through every tenant
     for tenant in client.keystoneclient().projects.list():
-        logger.debug("Checking project %s", tenant.name)
-        if tenant.name == "admin":
-            continue
-
-        server_addresses = {}
-        nova_client = client.novaclient(tenant.name)
-        # Go through every instance
-        for server in nova_client.servers.list():
-            for network_name, addresses in server.addresses.items():
-                public = [
-                    str(ip["addr"])
-                    for ip in addresses
-                    if ip["OS-EXT-IPS:type"] == "floating"
-                ]
-                # If the instance has a public IP...
-                if public:
-                    # Record their public IPs and generate their public name
-                    # according to FQDN_TEMPLATE. Technically there can be more
-                    # than one floating (and/or fixed) IP Although this is never
-                    # practically the case...
-                    server_addresses[server.name] = public
-                    A_FQDN = FQDN_TEMPLATE.format(
-                        server=server.name, project=tenant.name
-                    )
-                    public_addrs[A_FQDN, tenant.name] = True, public
-                    logger.debug("Found public IP %s -> %s", public, A_FQDN)
-
-        dns = mwopenstackclients.DnsManager(client, tenant=tenant.name)
-        existing_match_regex = re.compile(FQDN_REGEX.format(project=tenant.name))
-        # Now go through every zone the project controls
-        for zone in dns.zones():
-            logger.debug("Checking zone %s", zone["name"])
-            # If this is their main zone, record the ID for later use
-            if zone["name"] == PROJECT_ZONE_TEMPLATE.format(project=tenant.name):
-                project_main_zone_ids[tenant.name] = zone["id"]
-
-            # Go through every recordset in the zone
-            for recordset in dns.recordsets(zone["id"]):
-                logger.debug(
-                    "Found recordset %s %s", recordset["name"], recordset["type"]
-                )
-                existing_As.append(recordset["name"])
-                # No IPv6 support in labs so no AAAAs
-                if recordset["type"] != "A":
-                    continue
-
-                match = existing_match_regex.match(recordset["name"])
-                if match:
-                    # Matches instances for this project, managed by this script
-                    if match.group(1) in server_addresses and set(
-                        recordset["records"]
-                    ) != set(server_addresses[match.group(1)]):
-                        # ... But instance has a different set of IPs. Update!
-                        if recordset["description"] == MANAGED_DESCRIPTION:
-                            new_records = server_addresses[match.group(1)]
-                            logger.info(
-                                "Updating type A record for %s"
-                                " - instance has different IPs - correct: %s"
-                                " vs. current: %s",
-                                recordset["name"],
-                                str(new_records),
-                                str(recordset["records"]),
-                            )
-                            try:
-                                dns.update_recordset(
-                                    zone["id"],
-                                    recordset["id"],
-                                    new_records,
-                                )
-                            except Exception:
-                                logger.exception(
-                                    "Failed to update %s", recordset["name"]
-                                )
-                        else:
-                            managed_description_error("update", "A", recordset["name"])
-                    elif match.group(1) not in server_addresses:
-                        # ... But instance does not actually exist. Delete!
-                        if recordset["description"] == MANAGED_DESCRIPTION:
-                            logger.info(
-                                "Deleting type A record for %s "
-                                " - instance does not exist",
-                                recordset["name"],
-                            )
-                            try:
-                                dns.delete_recordset(zone["id"], recordset["id"])
-                            except Exception:
-                                logger.exception(
-                                    "Failed to delete %s", recordset["name"]
-                                )
-                        else:
-                            managed_description_error("delete", "A", recordset["name"])
-                elif "*" not in recordset["name"]:
-                    # Recordset is not one of our FQDN_TEMPLATE ones, so just
-                    # store it so we can reflect its existence in PTR records
-                    # where appropriate.
-                    public_addrs[recordset["name"], tenant.name] = (
-                        False,
-                        recordset["records"],
-                    )
+        logger.info("Trying tenant %s", tenant.name)
+        try_update_tenant(
+            client=client,
+            tenant=tenant,
+            project_main_zone_ids=project_main_zone_ids,
+            public_addrs=public_addrs,
+            existing_As=existing_As,
+            retries=retries,
+            retry_interval=retry_interval,
+        )
 
     # Now we go through all the A record data we have stored
     public_PTRs = {}
@@ -295,7 +345,9 @@ def main():
         action="count",
         default=0,
         dest="loglevel",
-        help="Increase logging verbosity",
+        help=(
+            "Increase logging verbosity, specify many times for more verbosity"
+        ),
     )
     argparser.add_argument(
         "--config-file",
@@ -332,7 +384,12 @@ def main():
     retry = 0
     while retry <= retries:
         try:
-            update(config, args.envfile)
+            update(
+                config,
+                args.envfile,
+                retries=retries,
+                retry_interval=retry_interval,
+            )
             exit(0)
         except Exception:
             retry += 1
