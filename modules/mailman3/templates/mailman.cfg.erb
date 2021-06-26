@@ -277,6 +277,9 @@ configuration: python:mailman.config.exim4
 # although they shouldn't theoretically hurt, remove them to avoid confusion
 remove_dkim_headers: yes
 
+# T285361
+verp_probes: yes
+
 [archiver.hyperkitty]
 class: mailman_hyperkitty.Archiver
 enable: yes
