@@ -8,14 +8,13 @@ define wikistats::job::import(
 ){
 
     systemd::timer::job { "wikistats-import-${name}":
-        ensure            => $ensure,
-        user              => 'root',
-        description       => "import a fresh list of wikis into table ${name}",
-        command           => "/usr/local/bin/wikistats/import_${project}.sh",
-        logging_enabled   => true,
-        logfile_basedir   => '/var/log/wikistats/',
-        logfile_name      => "import-${project}.log",
-        syslog_identifier => 'wikistats',
-        interval          => {'start' => 'OnCalendar', 'interval' => "${weekday} *-*-* ${hour}:${minute}:00"},
+        ensure          => $ensure,
+        user            => 'root',
+        description     => "import a fresh list of wikis into table ${name}",
+        command         => "/usr/local/bin/wikistats/import_${project}.sh",
+        logging_enabled => true,
+        logfile_basedir => '/var/log/wikistats/',
+        logfile_name    => "import-${project}.log",
+        interval        => {'start' => 'OnCalendar', 'interval' => "${weekday} *-*-* ${hour}:${minute}:00"},
     }
 }
