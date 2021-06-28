@@ -34,8 +34,6 @@ TOOLS_PREFIX_CLASSIFIER = {
     "logs": "logs",
     "mail": "mail",
     "package-builder": "package-builder",
-    "paws-master": "paws-master",
-    "paws-worker": "paws-worker",
     "prometheus": "prometheus",
     "proxy": "webproxy",
     "redis": "redis",
@@ -49,7 +47,10 @@ TOOLS_PREFIX_CLASSIFIER = {
     "sgewebgrid-generic": "webgrid-generic",
     "sgewebgrid": "webgrid",
     "sgewebgrid-lighttpd": "webgrid-lighttpd",
+    "k8s-ingress": "k8s-ingress",
     "k8s-worker": "k8s-worker",
+    "k8s-haproxy": "k8s-haproxy",
+    "k8s": "k8s",
     "": "all",
 }
 
