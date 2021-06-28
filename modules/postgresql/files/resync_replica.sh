@@ -10,7 +10,7 @@ function show_help() {
 }
 
 function parse_args() {
-    if [ -z "$1" ]; then
+    if [ -n "$1" ]; then
         POSTGRES_VERSION="$1"
         echo "Setting postgres version to $POSTGRES_VERSION"
     fi
@@ -32,8 +32,8 @@ mkdir -p "$POSTGRES_PATH"
 
 # pg_basebackup will use PGPASSFILE for credentials
 # shellcheck disable=SC2034
-PGPASSFILE="/etc/postgresql/${POSTGRES_VERSION}/main/.pgpass"
-PG_HOST=$(cat $PGPASSFILE | cut -f1 -d:)
+export PGPASSFILE="/etc/postgresql/${POSTGRES_VERSION}/main/.pgpass"
+export PG_HOST=$(cat $PGPASSFILE | cut -f1 -d:)
 
 # -R will cause pg_basebackup to write out a new recovery.conf -
 # without this file, postgres will start up as a non-replica and the
@@ -44,5 +44,8 @@ echo "Starting backup from primary - this will take a while"
 echo "Backup complete"
 
 chown -R postgres:postgres "$POSTGRES_PATH"
+chmod 700 "$POSTGRES_PATH"
 
-echo "Resync complete - postgres can now be started"
+echo "Resync complete - restarting postgres service"
+
+service postgresql restart
