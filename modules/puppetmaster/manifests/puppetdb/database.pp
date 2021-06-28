@@ -82,17 +82,6 @@ class puppetmaster::puppetdb::database(
             * => $actual_config
         }
     }
-    # Create the puppetdb user for localhost
-    # This works on every server and is used for read-only db lookups
-    postgresql::user { 'puppetdb@localhost':
-        ensure    => present,
-        user      => 'puppetdb',
-        database  => 'puppetdb',
-        password  => $puppetdb_pass,
-        cidr      => "${::ipaddress}/32",
-        pgversion => $pgversion,
-        master    => $on_master,
-    }
 
     postgresql::user { 'prometheus@localhost':
         user     => 'prometheus',
