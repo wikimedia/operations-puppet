@@ -11,7 +11,7 @@ class profile::query_service::updater (
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     Boolean $use_kafka_for_updates = lookup('profile::query_service::use_kafka_for_updates', {'default_value' => true}),
     String $kafka_options = lookup('profile::query_service::kafka_updater_options', {'default_value' => '-b 700'}),
-    String $kafka_reporting_topic = lookup('profile::query_service::kafka_reporting_topic', {'default_value' => 'eqiad.mediawiki.revision-create'}),
+    String $kafka_reporting_topic = lookup('profile::query_service::kafka_reporting_topic', {'default_value' => 'codfw.mediawiki.revision-create'}),
     Array[String] $cluster_names = lookup('profile::query_service::cluster_names', {'default_value' => [ 'eqiad', 'codfw' ]}),
     String $rc_options = lookup('profile::query_service::rc_updater_options', {'default_value' => '-b 500 -T 1200'}),
     Boolean $fetch_constraints = lookup('profile::query_service::fetch_constraints', {'default_value' => true}),
