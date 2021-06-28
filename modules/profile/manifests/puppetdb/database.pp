@@ -21,7 +21,14 @@ class profile::puppetdb::database(
         'stretch'  => 9.6,
     }
     $slave_range = join($slaves, ' ')
-    $on_master = ($master == $facts['networking']['fqdn'])
+    if $master == $facts['networking']['fqdn'] {
+        # db_role is only used for the motd in role::puppetmaster::puppetdb
+        $db_role = 'primary'
+        $on_master = true
+    } else {
+        $db_role = 'replica'
+        $on_master = false
+    }
 
     sysctl::parameters { 'postgres_shmem':
         values => {
