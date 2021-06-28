@@ -73,7 +73,7 @@ class profile::dbbackups::transfer (
             command     => '/usr/bin/remote-backup-mariadb',
             interval    => {
                 'start'    => 'OnCalendar',
-                'interval' => 'Sun,Mon,Wed,Fri *-*-* 19:00:00',
+                'interval' => 'Sun,Tue,Wed,Fri *-*-* 19:00:00',
             },
         }
     }

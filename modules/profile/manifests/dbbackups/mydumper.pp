@@ -83,8 +83,8 @@ class profile::dbbackups::mydumper {
 
     cron { 'dumps-sections':
         minute  => 0,
-        hour    => 12,
-        weekday => 1,
+        hour    => 0,
+        weekday => 2,
         user    => 'dump',
         command => 'backup-mariadb --config-file=/etc/wmfbackups/backups.cnf >/dev/null 2>&1',
         require => [Package['wmfbackups'],
