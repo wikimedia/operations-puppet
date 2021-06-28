@@ -1,3 +1,3 @@
 classes:
-  - role::puppetmaster::puppetdb
+  - role::puppetdb
 profile::puppetdb::master: '%{facts.networking.fqdn}'

@@ -22,7 +22,7 @@ class profile::puppetdb::database(
     }
     $slave_range = join($slaves, ' ')
     if $master == $facts['networking']['fqdn'] {
-        # db_role is only used for the motd in role::puppetmaster::puppetdb
+        # db_role is only used for the motd in role::puppetdb
         $db_role = 'primary'
         $on_master = true
     } else {

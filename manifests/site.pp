@@ -2450,7 +2450,7 @@ node /^puppetboard[12]002\.(codfw|eqiad)\.wmnet$/ {
 }
 
 node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
-    role(puppetmaster::puppetdb)
+    role(puppetdb)
 }
 
 # pybal-test200X VMs are used for pybal testing/development

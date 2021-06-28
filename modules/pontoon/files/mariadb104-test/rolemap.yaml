@@ -2,7 +2,7 @@
 puppetmaster::pontoon:
   - puppetmaster.mariadb104-test.eqiad1.wikimedia.cloud
 
-puppetmaster::puppetdb:
+puppetdb:
   - puppetdb.mariadb104-test.eqiad1.wikimedia.cloud
 
 cluster::management:

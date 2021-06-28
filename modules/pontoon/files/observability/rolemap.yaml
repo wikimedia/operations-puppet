@@ -7,7 +7,7 @@ syslog::centralserver:
 puppetmaster::pontoon:
   - pontoon-puppet-01.monitoring.eqiad1.wikimedia.cloud
 
-puppetmaster::puppetdb:
+puppetdb:
   - pontoon-puppetdb-01.monitoring.eqiad1.wikimedia.cloud
 
 builder:

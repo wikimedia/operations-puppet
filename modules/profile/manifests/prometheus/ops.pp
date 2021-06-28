@@ -1082,7 +1082,7 @@ class profile::prometheus::ops (
 
     prometheus::jmx_exporter_config{ "puppetdb_${::site}":
         dest       => "${targets_path}/jmx_puppetdb_${::site}.yaml",
-        class_name => 'role::puppetmaster::puppetdb',
+        class_name => 'role::puppetdb',
     }
 
     prometheus::jmx_exporter_config{ "wdqs_blazegraph_${::site}":
