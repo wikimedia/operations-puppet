@@ -7,11 +7,12 @@ class role::mirrors {
         description => 'Mirrors server',
     }
 
-    include ::profile::standard
+    include profile::standard
+    include profile::nginx
     include mirrors::serve
     include mirrors::tails
     class { 'mirrors::openstack': }
-    include ::profile::base::firewall
+    include profile::base::firewall
 
     include mirrors::ubuntu
     nrpe::monitor_service {'check_ubuntu_mirror':
