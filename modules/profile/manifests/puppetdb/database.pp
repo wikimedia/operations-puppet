@@ -6,7 +6,6 @@ class profile::puppetdb::database(
     Stdlib::Host               $master               = lookup('profile::puppetdb::master'),
     String                     $shared_buffers       = lookup('profile::puppetdb::database::shared_buffers'),
     String                     $replication_password = lookup('puppetdb::password::replication'),
-    String                     $puppetdb_password    = lookup('puppetdb::password::rw'),
     Hash                       $users                = lookup('profile::puppetdb::database::users'),
     Integer                    $replication_lag_crit = lookup('profile::puppetdb::database::replication_lag_crit'),
     Integer                    $replication_lag_warn = lookup('profile::puppetdb::database::replication_lag_warn'),

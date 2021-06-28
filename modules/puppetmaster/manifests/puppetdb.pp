@@ -12,6 +12,7 @@
 #        the specified amount of time
 # @param report_ttl Automatically delete reports that are older than the specified amount of time.
 #
+# TODO: fold this class into profile::puppetdb
 class puppetmaster::puppetdb(
     Stdlib::Host               $master,
     Stdlib::Port               $port                  = 443,
@@ -20,6 +21,7 @@ class puppetmaster::puppetdb(
     Optional[Stdlib::Unixpath] $ssldir                = undef,
     Stdlib::Unixpath           $ca_path               = '/etc/ssl/certs/Puppet_Internal_CA.pem',
     String                     $puppetdb_pass         = '',
+    String                     $puppetdb_ro_pass      = '',
     Puppetdb::Loglevel         $log_level             = 'info',
     Boolean                    $tmpfs_stockpile_queue = false,
     Array[String]              $facts_blacklist       = [],
@@ -57,6 +59,7 @@ class puppetmaster::puppetdb(
         db_rw_host            => $master,
         db_ro_host            => $::fqdn,
         db_password           => $puppetdb_pass,
+        db_ro_password        => $puppetdb_ro_pass,
         jvm_opts              => $jvm_opts,
         ssldir                => $ssldir,
         ca_path               => $ca_path,

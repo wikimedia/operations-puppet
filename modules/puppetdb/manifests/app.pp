@@ -37,6 +37,7 @@ class puppetdb::app(
     Optional[Stdlib::IP::Address] $bind_ip                    = undef,
     Optional[String]              $db_ro_host                 = undef,
     Optional[String]              $db_password                = undef,
+    Optional[String]              $db_ro_password             = undef,
 ) {
     # PuppetDB installation
 
@@ -98,9 +99,6 @@ class puppetdb::app(
         'postgres' => {
             'classname'   => 'org.postgresql.Driver',
             'subprotocol' => 'postgresql',
-            'username'    => 'puppetdb',
-            'password'    => $db_password,
-            'subname'     => $postgres_rw_db_subname,
         },
         'hsqldb'   => {
             'classname'   => 'org.hsqldb.jdbcDriver',
@@ -114,16 +112,22 @@ class puppetdb::app(
         'gc-interval'    => $gc_interval,
         'node-ttl'       => $node_ttl,
         'node-purge-ttl' => $node_purge_ttl,
+        'subname'        => $postgres_rw_db_subname,
+        'username'       => 'puppetdb',
+        'password'       => $db_password,
+    }
+    $read_db_settings = $db_driver_settings + {
+        'subname'  => $postgres_ro_db_subname,
+        'username' => 'puppetdb_ro',
+        'password' => $db_ro_password,
     }
 
     puppetdb::config { 'database':
         settings => $db_settings,
     }
-
-    #read db settings
     if $db_ro_host and $db_driver == 'postgres' {
         puppetdb::config { 'read-database':
-            settings => $db_driver_settings + {'subname' => $postgres_ro_db_subname}
+            settings => $read_db_settings,
         }
     }
 
