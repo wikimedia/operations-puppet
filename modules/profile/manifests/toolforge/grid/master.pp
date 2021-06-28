@@ -9,6 +9,7 @@ class profile::toolforge::grid::master (
     include profile::openstack::eqiad1::clientpackages::vms
     include profile::openstack::eqiad1::observerenv
     include profile::toolforge::infrastructure
+    include ::profile::toolforge::disable_tool
 
     $hostlist = '@general'
 
@@ -142,17 +143,5 @@ class profile::toolforge::grid::master (
     class { 'sonofgridengine::logrotate':
         ensure   => 'present',
         sge_root => $sge_root,
-    }
-
-    # The disable_tools script only needs ldap creds on
-    #  the NFS host.
-    $novaadmin_bind_dn='<unavailable here>'
-    $novaadmin_bind_pass='<unavailable here>'
-    file { '/etc/disable_tools.conf':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
-        content => template('profile/toolforge/disable_tools.conf.erb'),
     }
 }

@@ -15,3 +15,11 @@
 # but decided to take this shortcut while we figure out the nscd mess.
 sudo_flavor: sudo
 profile::ldap::client::labs::client_stack: sssd
+
+
+
+
+
+# This is a placeholder value that lets us use profile::toolforge::disable_tool
+#  on both toolforge nodes and nfs metal.
+profile::openstack::base::ldap_user_dn: '<unavailable here>'

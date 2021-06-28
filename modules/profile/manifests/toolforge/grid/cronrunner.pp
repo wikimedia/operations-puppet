@@ -4,6 +4,7 @@ class profile::toolforge::grid::cronrunner(
     $sysdir = lookup('profile::toolforge::grid::base::sysdir'),
 ) {
     include ::profile::toolforge::grid::hba
+    include ::profile::toolforge::disable_tool
 
     motd::script { 'submithost-banner':
         ensure => present,
@@ -58,17 +59,5 @@ class profile::toolforge::grid::cronrunner(
         mode      => '0440',
         recurse   => true,
         show_diff => false,
-    }
-
-    # The disable_tools script only needs ldap creds on
-    #  the NFS host.
-    $novaadmin_bind_dn='<unavailable here>'
-    $novaadmin_bind_pass='<unavailable here>'
-    file { '/etc/disable_tools.conf':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
-        content => template('profile/toolforge/disable_tools.conf.erb'),
     }
 }
