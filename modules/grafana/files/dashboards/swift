@@ -26,7 +26,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1584693674925,
+  "iteration": 1624873997647,
   "links": [],
   "panels": [
     {
@@ -53,6 +53,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {
@@ -66,6 +73,7 @@
         "y": 1
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 10,
       "interactive": true,
       "legend": {
@@ -83,9 +91,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -157,6 +166,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {
@@ -170,6 +186,7 @@
         "y": 1
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 7,
       "interactive": true,
       "legend": {
@@ -187,9 +204,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -261,6 +279,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {
@@ -274,6 +299,7 @@
         "y": 9
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 21,
       "interactive": true,
       "legend": {
@@ -292,9 +318,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -366,6 +393,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {
@@ -379,6 +413,7 @@
         "y": 9
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 22,
       "interactive": true,
       "legend": {
@@ -396,9 +431,10 @@
       "links": [],
       "nullPointMode": "null as zero",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -506,6 +542,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {
@@ -519,6 +562,7 @@
         "y": 18
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 8,
       "interactive": true,
       "legend": {
@@ -536,9 +580,10 @@
       "links": [],
       "nullPointMode": "connected",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": true,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -551,15 +596,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "min(swift_dispersion_container_pct_found)",
+          "expr": "min(swift_dispersion_container_pct_found{cluster=\"swift\"})",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "container",
           "refId": "A"
         },
         {
-          "expr": "min(swift_dispersion_object_pct_found)",
+          "expr": "min(swift_dispersion_object_pct_found{cluster=\"swift\"})",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "object",
           "refId": "B"
@@ -587,6 +634,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:81",
           "format": "percent",
           "label": "avail %",
           "logBase": 1,
@@ -595,6 +643,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:82",
           "format": "short",
           "logBase": 1,
           "max": null,
@@ -617,6 +666,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {
@@ -630,6 +686,7 @@
         "y": 18
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 9,
       "interactive": true,
       "legend": {
@@ -647,9 +704,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -748,6 +806,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {
@@ -761,6 +826,7 @@
         "y": 25
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 26,
       "interactive": true,
       "legend": {
@@ -778,9 +844,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -852,6 +919,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {
@@ -865,6 +939,7 @@
         "y": 25
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 31,
       "interactive": true,
       "legend": {
@@ -882,9 +957,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -956,6 +1032,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {
@@ -969,6 +1052,7 @@
         "y": 32
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 30,
       "interactive": true,
       "legend": {
@@ -986,9 +1070,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1075,6 +1160,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {
@@ -1088,6 +1180,7 @@
         "y": 40
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 17,
       "interactive": true,
       "legend": {
@@ -1105,9 +1198,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": true,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1199,6 +1293,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {
@@ -1212,6 +1313,7 @@
         "y": 40
       },
       "height": "",
+      "hiddenSeries": false,
       "id": 23,
       "interactive": true,
       "legend": {
@@ -1229,9 +1331,10 @@
       "links": [],
       "nullPointMode": "null",
       "options": {
-        "dataLinks": []
+        "alertThreshold": true
       },
       "percentage": true,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1324,6 +1427,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {
@@ -1353,10 +1463,8 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": true,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1448,6 +1556,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 0,
       "fillGradient": 0,
       "grid": {
@@ -1477,10 +1592,8 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": false,
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1545,7 +1658,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 20,
+  "schemaVersion": 27,
   "style": "light",
   "tags": [
     "operations",
@@ -1560,12 +1673,13 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "tags": [],
           "text": "eqiad",
           "value": "eqiad"
         },
         "datasource": null,
         "definition": "",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -1611,6 +1725,8 @@
           "text": "eqiad prometheus/ops",
           "value": "eqiad prometheus/ops"
         },
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
@@ -1656,5 +1772,5 @@
   "timezone": "utc",
   "title": "Swift",
   "uid": "OPgmB1Eiz",
-  "version": 5
+  "version": 6
 }
