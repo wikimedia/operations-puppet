@@ -26,12 +26,12 @@ profile::puppetdb::database::users:
     database: puppetdb
     cidr: "%{facts.networking.ip}/32"
   puppetdb_ro@puppetdb2002-ipv4:
-    user: puppetdb
+    user: puppetdb_ro
     password: "%{alias('puppetdb::password::ro')}"
     database: puppetdb
     cidr: 10.192.0.147/32
   puppetdb_ro@localhost:
-    user: puppetdb
+    user: puppetdb_ro
     password: "%{alias('puppetdb::password::ro')}"
     database: puppetdb
     cidr: "%{facts.networking.ip}/32"
