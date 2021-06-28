@@ -11,17 +11,25 @@ profile::puppetdb::database::log_min_duration_statement: 10000 # 10secs
 profile::puppetdb::database::users:
   replication@puppetdb2002-ipv4:
     user: replication
+    password: "%{alias('puppetdb::password::replication')}"
     database: replication
     cidr: 10.192.0.147/32
     attrs: REPLICATION
   puppetdb@puppetdb2002-ipv4:
     user: puppetdb
+    password: "%{alias('puppetdb::password::rw')}"
     database: puppetdb
     cidr: 10.192.0.147/32
   puppetdb@localhost:
     user: puppetdb
+    password: "%{alias('puppetdb::password::rw')}"
     database: puppetdb
     cidr: "%{facts.networking.ip}/32"
+  prometheus@localhost:
+    user: 'prometheus'
+    database: 'postgres'
+    type: 'local'
+    method: 'peer'
 profile::puppetdb::master: puppetdb1002.eqiad.wmnet
 profile::puppetdb::slaves: [puppetdb2002.codfw.wmnet]
 profile::puppetdb::puppetboard_hosts: 'puppetboard1001.eqiad.wmnet puppetboard2001.codfw.wmnet'

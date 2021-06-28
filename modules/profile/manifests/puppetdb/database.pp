@@ -21,25 +21,32 @@ class profile::puppetdb::database(
         'stretch'  => 9.6,
     }
     $slave_range = join($slaves, ' ')
+    $on_master = ($master == $facts['networking']['fqdn'])
 
-    $role = $master ? {
-        $::fqdn => 'master',
-        default => 'slave',
+    sysctl::parameters { 'postgres_shmem':
+        values => {
+            # That is derived after tuning postgresql, deriving automatically is
+            # not the safest idea yet.
+            'kernel.shmmax' => 8388608000,
+        },
     }
-
-    class { 'puppetmaster::puppetdb::database':
-        master                     => $master,
-        pgversion                  => $pgversion,
-        shared_buffers             => $shared_buffers,
-        replication_pass           => $replication_password,
-        puppetdb_pass              => $puppetdb_password,
-        puppetdb_users             => $users,
-        ssldir                     => $ssldir,
-        log_line_prefix            => $log_line_prefix,
-        log_min_duration_statement => $log_min_duration_statement,
-    }
-
-    if $role == 'slave' {
+    if $on_master {
+        class { 'postgresql::master':
+            includes                   => ['tuning.conf'],
+            root_dir                   => '/srv/postgres',
+            use_ssl                    => true,
+            ssldir                     => $ssldir,
+            log_line_prefix            => $log_line_prefix,
+            log_min_duration_statement => $log_min_duration_statement,
+        }
+    } else {
+        class { 'postgresql::slave':
+            includes         => ['tuning.conf'],
+            master_server    => $master,
+            root_dir         => '/srv/postgres',
+            replication_pass => $replication_password,
+            use_ssl          => true,
+        }
         class { 'postgresql::slave::monitoring':
             pg_master   => $master,
             pg_user     => 'replication',
@@ -49,7 +56,29 @@ class profile::puppetdb::database(
             warning     => $replication_lag_warn,
         }
     }
+    file { "/etc/postgresql/${pgversion}/main/tuning.conf":
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('puppetmaster/puppetdb/tuning.conf.erb'),
+        require => Package["postgresql-${pgversion}"]
+    }
+    $users.each |$pg_name, $config| {
+        postgresql::user { $pg_name:
+            * => $config + {'master' => $on_master, 'pgversion' => $pgversion}
+        }
+    }
+    postgresql::db { 'puppetdb':
+        owner   => 'puppetdb',
+    }
 
+    exec { 'create_tgrm_extension':
+        command => '/usr/bin/psql puppetdb -c "create extension pg_trgm"',
+        unless  => '/usr/bin/psql puppetdb -c \'\dx\' | /bin/grep -q pg_trgm',
+        user    => 'postgres',
+        require => Postgresql::Db['puppetdb'],
+    }
     # Firewall rules
     # Allow connections from all the slaves
     ferm::service { 'postgresql_puppetdb':
