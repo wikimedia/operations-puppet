@@ -28,3 +28,5 @@ profile::zookeeper::firewall::srange: '(($KAFKA_BROKERS_ANALYTICS $KAFKA_BROKERS
 profile::zookeeper::monitoring_enabled: true
 # Page if a zookeeper server in this cluster goes down.
 profile::zookeeper::is_critical: true
+
+profile::tlsproxy::instance::nginx_variant: 'light'

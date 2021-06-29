@@ -48,19 +48,17 @@ class profile::etcd::tlsproxy(
     }
 
     file { '/etc/nginx/auth/':
-        ensure  => directory,
-        mode    => '0550',
-        owner   => 'www-data',
-        require => Package['nginx-full'],
-        before  => Service['nginx']
+        ensure => directory,
+        mode   => '0550',
+        owner  => 'www-data',
+        before => Service['nginx']
     }
 
     file { '/etc/nginx/etcd-errors':
-        ensure  => directory,
-        mode    => '0550',
-        owner   => 'www-data',
-        require => Package['nginx-full'],
-        before  => Service['nginx']
+        ensure => directory,
+        mode   => '0550',
+        owner  => 'www-data',
+        before => Service['nginx']
     }
 
     # Simulate the etcd auth error
