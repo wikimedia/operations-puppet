@@ -39,24 +39,24 @@ define postgresql::db_grant(
         default  => $grant_base.sprintf('GRANT', $function_priv, 'FUNCTIONS', 'TO'),
     }
     $unless_table_sql = @("UNLESS_SQL")
-    SELECT 1 FROM pg_tables WHERE schemaname = "public" AND
-    has_table_privilege("${pg_role}", schemaname || "." || tablename, "${unless_table_priv}" ) = true;
+    SELECT 1 FROM pg_tables WHERE schemaname = 'public' AND
+    has_table_privilege('${pg_role}', schemaname || '.' || tablename, '${unless_table_priv}' ) = true;
     | UNLESS_SQL
 
     $unless_sequence_sql = @("SEQUENCE_SQL")
-    SELECT 1 FROM information_schema.sequences WHERE sequence_schema = "public" AND
-    has_sequence_privilege("${pg_role}", sequence_schema || "." || sequence_name, "${unless_sequence_priv}" ) = true;
+    SELECT 1 FROM information_schema.sequences WHERE sequence_schema = 'public' AND
+    has_sequence_privilege('${pg_role}', sequence_schema || '.' || sequence_name, '${unless_sequence_priv}' ) = true;
     | SEQUENCE_SQL
 
     $unless_function_sql = @("FUNCTION_SQL")
     SELECT 1 FROM pg_catalog.pg_proc p
     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
-    WHERE n.nspname="public" AND
-    has_function_privilege("${pg_role}", p.oid, "${unless_sequence_priv}" ) = true;
+    WHERE n.nspname='public' AND
+    has_function_privilege('${pg_role}', p.oid, '${unless_sequence_priv}' ) = true;
     | FUNCTION_SQL
 
     $command_base = "/usr/bin/psql --tuples-only --no-align  -c '%s' ${db}"
-    $unless_base  = "/usr/bin/psql --tuples-only --no-align  -c '%s' ${db} | grep 1"
+    $unless_base  = "/usr/bin/psql --tuples-only --no-align  -c \"%s\" ${db} | grep 1"
 
 
     exec {"db_grant: exec table grants ${title}":
