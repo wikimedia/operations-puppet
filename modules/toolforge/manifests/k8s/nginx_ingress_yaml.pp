@@ -1,7 +1,5 @@
 class toolforge::k8s::nginx_ingress_yaml (
-    Integer      $ingress_replicas = 2,
-    Stdlib::Port $jobs_port        = 30001,
-    Stdlib::Fqdn $jobs_fqdn        = 'jobs.toolforge.org',
+    Integer $ingress_replicas = 2,
 ) {
     # Helm 3 from component/kubeadm-*
     require_package('helm')
@@ -21,13 +19,5 @@ class toolforge::k8s::nginx_ingress_yaml (
 
     file { '/etc/kubernetes/nginx-ingress.yaml':
         ensure  => absent,
-    }
-
-    if $::labsproject == 'toolsbeta' {
-        file { '/etc/kubernetes/nginx-ingress-jobs.yaml':
-            ensure  => present,
-            content => template('toolforge/k8s/nginx-ingress-jobs.yaml.erb'),
-            require => File['/etc/kubernetes'],
-        }
     }
 }
