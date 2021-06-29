@@ -5183,3 +5183,7 @@ ldap_only_users:
     ensure: present
     realname: Kara Lynne Payne
     email: kara.payne@wikimedia.de
+  tchin:
+    ensure: present
+    realname: Thomas Chin
+    email: tchin@wikimedia.org
