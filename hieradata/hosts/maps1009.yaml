@@ -21,19 +21,24 @@ profile::maps::apps::tilerator_ncpu_ratio: 0.2
 
 profile::maps::hosts:
   - 'maps1007.eqiad.wmnet'
+  - 'maps1008.eqiad.wmnet'
   - 'maps1009.eqiad.wmnet'
 
 profile::redis::master::clients:
   - 'maps1007.eqiad.wmnet'
+  - 'maps1008.eqiad.wmnet'
   - 'maps1009.eqiad.wmnet'
 
 # maps1009 is the master for a separate maps cluster
 profile::cassandra::single_instance::seeds:
   - '10.64.16.6' # maps1007.eqiad.wmnet
+  - '10.64.16.27'  # maps1008.eqiad.wmnet
   - '10.64.32.8' # maps1009.eqiad.wmnet
 
 profile::maps::osm_master::replicas:
   maps1007:
     ip_address: '10.64.16.6'
+  maps1008:
+    ip_address: '10.64.16.27'
   maps1009:
     ip_address: '10.64.32.8'
