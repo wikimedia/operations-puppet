@@ -10,8 +10,6 @@ class profile::toolforge::k8s::control (
     Optional[String]    $encryption_key = lookup('profile::toolforge::k8s::encryption_key', {default_value => undef}),
     String              $kubernetes_version = lookup('profile::toolforge::k8s::kubernetes_version', {default_value => '1.15.5'}),
     Integer             $ingress_replicas   = lookup('profile::toolforge::k8s::ingress_replicas',   {default_value => 2}),
-    Stdlib::Fqdn        $jobs_fqdn          = lookup('profile::toolforge::jobs_api_fqdn',           {default_value => 'jobs.toolforge.org'}),
-    Stdlib::Port        $jobs_port          = lookup('profile::toolforge::jobs_api_port',           {default_value => 30001}),
 ) {
     class { '::profile::wmcs::kubeadm::control':
         etcd_hosts         => $etcd_hosts,
@@ -28,7 +26,5 @@ class profile::toolforge::k8s::control (
     class { '::toolforge::k8s::config': }
     class { '::toolforge::k8s::nginx_ingress_yaml':
         ingress_replicas => $ingress_replicas,
-        jobs_fqdn        => $jobs_fqdn,
-        jobs_port        => $jobs_port,
     }
 }
