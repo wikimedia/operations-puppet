@@ -158,8 +158,8 @@ class profile::analytics::refinery::job::camus(
     # In the future, if we can enable canary events for eventgate-main streams, we
     # shouldn't need this anymore.
     $active_datacenters = [
-        'eqiad',
-        # 'codfw',
+        # 'eqiad',
+        'codfw',
     ]
     $check_topic_whitelist_prefixes = "(${active_datacenters.join('|')})"
 
