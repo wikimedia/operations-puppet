@@ -30,11 +30,15 @@ profile::puppetdb::database::users:
     password: "%{alias('puppetdb::password::ro')}"
     database: puppetdb
     cidr: 10.192.0.147/32
+    privileges:
+      table: 'SELECT'
   puppetdb_ro@localhost:
     user: puppetdb_ro
     password: "%{alias('puppetdb::password::ro')}"
     database: puppetdb
     cidr: "%{facts.networking.ip}/32"
+    privileges:
+      table: 'SELECT'
   prometheus@localhost:
     user: 'prometheus'
     database: 'postgres'
