@@ -34,14 +34,12 @@ class profile::toolforge::k8s::haproxy (
         notify  => Service['haproxy'],
     }
 
-    if $::labsproject == 'toolsbeta' {
-        file { '/etc/haproxy/conf.d/k8s-ingress-jobs.cfg':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('profile/toolforge/k8s/haproxy/k8s-ingress-jobs.cfg.erb'),
-            notify  => Service['haproxy'],
-        }
+    file { '/etc/haproxy/conf.d/k8s-ingress-jobs.cfg':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('profile/toolforge/k8s/haproxy/k8s-ingress-jobs.cfg.erb'),
+        notify  => Service['haproxy'],
     }
 
     class { 'prometheus::haproxy_exporter': }
