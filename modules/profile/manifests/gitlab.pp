@@ -1,6 +1,7 @@
 # a placeholder profile for a manual gitlab setup by
 # https://phabricator.wikimedia.org/T274458
 class profile::gitlab(
+    Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Stdlib::IP::Address::V4 $service_ip_v4 = lookup('profile::gitlab::service_ip_v4'),
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
     Stdlib::Unixpath $backup_dir_data = lookup('profile::gitlab::backup_dir_data'),
@@ -9,9 +10,11 @@ class profile::gitlab(
 
     $acme_chief_cert = 'gitlab'
 
-    # Bacula backups, also see profile::backup::filesets (T274463)
-    backup::set { 'gitlab':
-        jobdefaults => 'Daily-production',  # full backups every day
+    if $active_host == $facts['fqdn'] {
+        # Bacula backups, also see profile::backup::filesets (T274463)
+        backup::set { 'gitlab':
+            jobdefaults => 'Daily-production',  # full backups every day
+        }
     }
 
     exec {'Reload nginx':

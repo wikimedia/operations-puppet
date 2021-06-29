@@ -2,9 +2,12 @@ cluster: misc
 profile::standard::admin_groups:
   - gitlab-roots
 
+profile::gitlab::active_host: 'gitlab1001.wikimedia.org'
+
 profile::base::ssh_server_settings:
     listen_addresses:
     - "%{facts.ipaddress}"
     - "%{facts.ipaddress6}"
+
 profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
 profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
