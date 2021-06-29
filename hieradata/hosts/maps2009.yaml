@@ -17,18 +17,23 @@ profile::maps::osm_master::engine: "imposm3"
 
 profile::cassandra::single_instance::seeds:
   - '10.192.32.46' # maps2007.codfw.wmnet
+  - '10.192.48.165' # maps2008.codfw.wmnet
   - '10.192.16.107' # maps2009.codfw.wmnet
 
 profile::maps::hosts:
   - 'maps2007.codfw.wmnet'
+  - 'maps2008.codfw.wmnet'
   - 'maps2009.codfw.wmnet'
 
 profile::redis::master::clients:
   - 'maps2007.codfw.wmnet'
+  - 'maps2008.codfw.wmnet'
   - 'maps2009.codfw.wmnet'
 
 profile::maps::osm_master::replicas:
   maps2007:
     ip_address: '10.192.32.46'
+  maps2008:
+    ip_address: '10.192.48.165'
   maps2009:
     ip_address: '10.192.16.107'
