@@ -29,7 +29,8 @@ class MtailMetricStore(object):
         for line in stdout.splitlines():
             if in_json:
                 metrics_store.append(line)
-            if line.startswith('Metrics store:{'):
+            # Support mtail 3.0.0 rc19 (buster) or rc43 (bullseye)
+            if line.startswith('Metrics store:{') or line == '{':
                 in_json = True
                 metrics_store.append('{')
 
