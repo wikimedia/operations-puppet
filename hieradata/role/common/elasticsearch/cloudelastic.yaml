@@ -109,3 +109,5 @@ profile::lvs::realserver::pools:
     services:
       - "elasticsearch_6@cloudelastic-omega-eqiad.service"
 profile::lvs::realserver::use_conftool: true
+
+profile::tlsproxy::instance::nginx_variant: 'light'
