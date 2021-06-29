@@ -303,7 +303,7 @@ groups:
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo,
-              htriedman, cooltey, schoenbaechler, christinedk]
+              htriedman, cooltey, schoenbaechler, christinedk, btullis]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4420,6 +4420,14 @@ users:
     uid: 17817
     gid: 500
     ssh_keys: []  # no SSH keys, for Superset dashboards with private data
+  btullis:
+    ensure: present
+    realname: Ben Tullis
+    email: btullis@wikimedia.org
+    uid: 32741
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDLwVzH9rT959TVnPq/SBJIQU4T1eZXIBAdyEM5TchYg btullis@wikimedia.org
 
 ldap_only_users:
   abartov:
