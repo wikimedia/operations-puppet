@@ -24,7 +24,7 @@ define postgresql::db_grant(
         'ALL'   => 'UPDATE',
         default => $sequence_priv,
     }
-    $unless_execute_priv = 'EXECUTE'
+    $unless_function_priv = 'EXECUTE'
 
     $grant_table_sql = $ensure ? {
         'absent' => $grant_base.sprintf('REVOKE', $table_priv, 'TABLES', 'FROM'),
@@ -52,7 +52,7 @@ define postgresql::db_grant(
     SELECT 1 FROM pg_catalog.pg_proc p
     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace
     WHERE n.nspname='public' AND
-    has_function_privilege('${pg_role}', p.oid, '${unless_sequence_priv}' ) = true;
+    has_function_privilege('${pg_role}', p.oid, '${unless_function_priv}' ) = true;
     | FUNCTION_SQL
 
     $command_base = "/usr/bin/psql --tuples-only --no-align  -c '%s' ${db}"
