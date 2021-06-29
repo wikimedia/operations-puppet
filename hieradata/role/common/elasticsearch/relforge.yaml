@@ -75,3 +75,5 @@ profile::elasticsearch::cirrus::enable_remote_search: false
 
 ## Kibana configuration
 profile::kibana::enable_phatality: false
+
+profile::tlsproxy::instance::nginx_variant: 'light'
