@@ -15,7 +15,7 @@ class profile::toolforge::grid::exec_environ::buster {
         'node-gyp',
         'node-move-concurrently',
         'nodejs',
-        'nodejs-dev',
+        'libnode-dev',
         'npm',
         'python-requests',
         'python3-requests',
