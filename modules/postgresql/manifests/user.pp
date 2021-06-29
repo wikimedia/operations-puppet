@@ -25,16 +25,17 @@
 # Based upon https://github.com/uggedal/puppet-module-postgresql
 #
 define postgresql::user(
-    String              $user,
-    String              $ensure    = 'present',
-    String              $database  = 'template1',
-    String              $type      = 'host',
-    String              $method    = 'md5',
-    Stdlib::IP::Address $cidr      = '127.0.0.1/32',
-    String              $attrs     = '',
-    Boolean             $master    = true,
-    Optional[String]    $password  = undef,
-    Optional[Numeric]   $pgversion = undef,
+    String                 $user,
+    String                 $ensure     = 'present',
+    String                 $database   = 'template1',
+    String                 $type       = 'host',
+    String                 $method     = 'md5',
+    Stdlib::IP::Address    $cidr       = '127.0.0.1/32',
+    String                 $attrs      = '',
+    Boolean                $master     = true,
+    Postgresql::Privileges $privileges = {},
+    Optional[String]       $password   = undef,
+    Optional[Numeric]      $pgversion  = undef,
 ) {
 
     $_pgversion = $pgversion ? {
@@ -117,6 +118,27 @@ define postgresql::user(
             # only if the user exists
             onlyif  => "match ${xpath} size > 0",
             notify  => Exec['pgreload'],
+        }
+    }
+    unless $privileges.empty or ! $master {
+        $table_priv = 'table' in $privileges ? {
+            true    => $privileges['table'],
+            default => undef,
+        }
+        $sequence_priv = 'sequence' in $privileges ? {
+            true    => $privileges['sequence'],
+            default => undef,
+        }
+        $function_priv = 'function' in $privileges ? {
+            true    => $privileges['function'],
+            default => undef,
+        }
+        postgresql::db_grant {"grant access to ${title} on ${database}":
+            db            => $database,
+            pg_role       => $user,
+            table_priv    => $table_priv,
+            sequence_priv => $sequence_priv,
+            function_priv => $function_priv,
         }
     }
 }
