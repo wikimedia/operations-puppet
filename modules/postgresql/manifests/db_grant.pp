@@ -27,16 +27,16 @@ define postgresql::db_grant(
     $unless_execute_priv = 'EXECUTE'
 
     $grant_table_sql = $ensure ? {
-        'absent' => $grant_base.sprintf('TABLES', 'REVOKE', 'FROM'),
-        default  => $grant_base.sprintf('TABLES', 'GRANT', 'TO'),
+        'absent' => $grant_base.sprintf('REVOKE', 'TABLES', 'FROM'),
+        default  => $grant_base.sprintf('GRANT', 'TABLES', 'TO'),
     }
     $grant_sequence_sql = $ensure ? {
-        'absent' => $grant_base.sprintf('SEQUENCES', 'REVOKE', 'FROM'),
-        default  => $grant_base.sprintf('SEQUENCES', 'GRANT', 'TO'),
+        'absent' => $grant_base.sprintf('REVOKE', 'SEQUENCES', 'FROM'),
+        default  => $grant_base.sprintf('GRANT', 'SEQUENCES', 'TO'),
     }
     $grant_function_sql = $ensure ? {
-        'absent' => $grant_base.sprintf('FUNCTIONS', 'REVOKE', 'FROM'),
-        default  => $grant_base.sprintf('FUNCTIONS', 'GRANT', 'TO'),
+        'absent' => $grant_base.sprintf('REVOKE', 'FUNCTIONS', 'FROM'),
+        default  => $grant_base.sprintf('GRANT', 'FUNCTIONS', 'TO'),
     }
     $unless_table_sql = @("UNLESS_SQL"/L)
     SELECT 1 FROM pg_tables WHERE schemaname='public' AND \
