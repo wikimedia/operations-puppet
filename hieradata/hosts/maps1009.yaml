@@ -33,3 +33,4 @@ profile::maps::osm_master::replicas:
     ip_address: '10.64.16.6'
   maps1009:
     ip_address: '10.64.32.8'
+profile::tlsproxy::instance::nginx_variant: 'light'
