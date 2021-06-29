@@ -1708,12 +1708,8 @@ node 'maps1009.eqiad.wmnet' {
     role(maps::master)
 }
 
-node /^maps20(0[1-3]|0[5-8]|10)\.codfw\.wmnet/ {
+node /^maps20(0[5-8]|10)\.codfw\.wmnet/ {
     role(maps::replica)
-}
-
-node 'maps2004.codfw.wmnet' {
-    role(maps::master)
 }
 
 # testing buster master - maps2.0 migration

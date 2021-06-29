@@ -1,28 +1,2 @@
-# This file is a set of overrides for replica.yaml for maps 2.0. In
-# future most of this will be moved to replica.yaml.
-
-# maps2.0 uses abcd rather than a4/a5 etc.
 cassandra::rack: d
-cassandra::target_version: '3.x'
-
 do_paging: false
-
-profile::maps::apps::redis_server: 'redis://maps2009.codfw.wmnet'
-
-# The stock nginx doesn't have support for the header setting that
-# tlsproxy::localssl uses on stretch. Disable for testing purposes
-profile::maps::tlsproxy::ssl_ecdhe_curve: false
-
-# Temporarily decreasing Tilerator CPU ratio until imposm is fully migrated
-profile::maps::apps::tilerator_ncpu_ratio: 0.2
-
-profile::maps::osm_master::engine: "imposm3"
-profile::maps::osm_replica::master: 'maps2009.codfw.wmnet'
-
-profile::cassandra::single_instance::seeds:
-  - '10.192.0.155' # maps2005.codfw.wmnet
-  - '10.192.16.31' # maps2006.codfw.wmnet
-  - '10.192.32.46' # maps2007.codfw.wmnet
-  - '10.192.48.165' # maps2008.codfw.wmnet
-  - '10.192.16.107' # maps2009.codfw.wmnet
-  - '10.192.48.166' # maps2010.codfw.wmnet
