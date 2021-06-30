@@ -1,9 +1,27 @@
 class profile::mediawiki::maintenance::parsercachepurging {
 
-    system::role { 'mediawiki::maintenance::parsercachepurging': description => 'MediaWiki Maintenance Server: parser cache purging' }
+    system::role { 'mediawiki::maintenance::parsercachepurging': description => 'MediaWiki Maintenance Server: purge parser cache' }
 
+    # Every day, Purge entries older than 21d * 86400s/d = 1814400s
+    #
+    # WARNING: Increasing msleep may cause exponential growth. Deletes must outpace other writes! (T282761)
+    #
+    profile::mediawiki::periodic_job { 'purge_parsercache_pc1':
+        command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag pc1 --age=1814400 --msleep 200',
+        interval => '01:00',
+    }
+    profile::mediawiki::periodic_job { 'purge_parsercache_pc2':
+        command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag pc2 --age=1814400 --msleep 200',
+        interval => '01:00',
+    }
+    profile::mediawiki::periodic_job { 'purge_parsercache_pc3':
+        command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag pc3 --age=1814400 --msleep 200',
+        interval => '01:00',
+    }
+
+    # TODO: Remove once the above is deployed.
     profile::mediawiki::periodic_job { 'parser_cache_purging':
-        # Every day, Purge entries older than 21d * 86400s/d = 1814400s
+        ensure   => absent,
         command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --age=1814400 --msleep 200',
         interval => '01:00',
     }
