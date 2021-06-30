@@ -1,5 +1,13 @@
 class profile::wmcs::paws::k8s::haproxy (
-    Array[Stdlib::Fqdn] $ingress_nodes          = lookup('profile::wmcs::paws::ingress_nodes',         {default_value => ['localhost']}),
+    Array[
+        Variant[
+            Stdlib::Fqdn,
+            Struct[{
+                host => Stdlib::Fqdn,
+                port => Optional[Stdlib::Port],
+            }]
+        ]
+    ]                   $ingress_nodes          = lookup('profile::wmcs::paws::ingress_nodes',         {default_value => ['localhost']}),
     Stdlib::Port        $ingress_backend_port   = lookup('profile::wmcs::paws::ingress_backend_port',  {default_value => 30000}),
     Stdlib::Port        $ingress_bind_tls_port  = lookup('profile::wmcs::paws::ingress_bind_tls_port', {default_value => 443}),
     Stdlib::Port        $ingress_bind_http_port = lookup('profile::wmcs::paws::ingress_bind_http_port',{default_value => 80}),
