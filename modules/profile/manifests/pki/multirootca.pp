@@ -123,6 +123,7 @@ class profile::pki::multirootca (
             auth_keys        => $auth_keys,
             default_crl_url  => "${crl_base_url}/${safe_title}",
             default_ocsp_url => "${ocsp_base_url}/${safe_title}",
+            default_usages   => $_default_usages,
             serve_service    => $multirootca_service,
             db_conf_file     => $db_conf_file,
             manage_db        => false,
