@@ -1,8 +1,10 @@
 profile::ceph::osd::bootstrap_keyring: '/var/lib/ceph/bootstrap-osd/ceph.keyring'
 profile::ceph::osd::disk_models_without_write_cache:
-  - SSDSC2KG019T8R  # cloudcephosd1001
-  - MTFDDAK1T9TDN  # cloudcephosd1015
-  - MTFDDAK960TDN  # cloudcephosd2001
+  # gotten by running: sudo cumin 'cloudcephosd*' 'hdparm -I /dev/sdd | grep Model'
+  - SSDSC2KG019T8R  # cloudcephosd[1001-1003].eqiad.wmnet
+  - MTFDDAK1T9TDN  # cloudcephosd[1004-1015].eqiad.wmnet
+  - MTFDDAK960TDN  # cloudcephosd[2001-2003]-dev.codfw.wmnet
+  - MTFDDAK1T9TDT  # cloudcephosd[1016-1020].eqiad.wmnet
 profile::ceph::osd::disks_io_scheduler: 'none'
 profile::ceph::osd::os_disks:
   - sda
