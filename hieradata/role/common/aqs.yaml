@@ -6,6 +6,7 @@ cluster: aqs
 
 profile::standard::admin_groups:
     - aqs-admins
+    - aqs-roots
     - deploy-aqs
 
 #

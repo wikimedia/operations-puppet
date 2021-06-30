@@ -520,7 +520,8 @@ groups:
   aqs-admins:
     description: Group of admins for the Analytics Query Service
     gid: 764
-    members: [joal, milimetric, eevans, mobrovac]
+    members: [joal, milimetric, mobrovac]
+    approval: Olja Dimitrjevic
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /usr/sbin/service cassandra-[a-z] *',
                  'ALL = (cassandra) NOPASSWD: ALL',
@@ -808,6 +809,12 @@ groups:
     members: [eugene-chernov, strofimovsky01, il, brennen, dancy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Wolfgang Kandek
+  aqs-roots:
+    gid: 829
+    description: people who have full root on aqs nodes
+    members: [eevans]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval: Olja Dimitrjevic
   reprepro:
     gid: 901
     system: true
