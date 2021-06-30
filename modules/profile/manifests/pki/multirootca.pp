@@ -34,6 +34,7 @@ class profile::pki::multirootca (
     Stdlib::Filesource            $client_ca_source   = lookup('profile::pki::multirootca::client_ca_source'),
     Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
     Boolean                       $maintenance_jobs   = lookup('profile::pki::multirootca::maintenance_jobs'),
+    Array[Cfssl::Usage]           $default_usages     = lookup('profile::pki::multirootca::default_usages'),
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
     Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
     Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirootca::default_profiles'),
@@ -100,17 +101,18 @@ class profile::pki::multirootca (
 
     # Create Signers
     $signers = $intermediates.reduce({}) |$memo, $value| {
-        $intermediate   = $value[0]
-        $config         = $value[1]
-        $safe_title     = $intermediate.regsubst('\W', '_', 'G')
-        $profiles       = pick($config['profiles'], $default_profiles)
-        $auth_keys      = pick($config['auth_keys'], $default_auth_keys)
-        $nets           = pick($config['nets'], $default_nets)
-        $ca_key_file    = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
-        $ca_file        = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
-        $key_content    = "pki/intermediates/${intermediate}.pem"
-        $cert_content   ="profile/pki/intermediates/${intermediate}.pem"
-        $int_ca_content = file($cert_content)
+        $intermediate    = $value[0]
+        $config          = $value[1]
+        $safe_title      = $intermediate.regsubst('\W', '_', 'G')
+        $profiles        = pick($config['profiles'], $default_profiles)
+        $auth_keys       = pick($config['auth_keys'], $default_auth_keys)
+        $nets            = pick($config['nets'], $default_nets)
+        $_default_usages = pick($config['default_usages'], $default_usages)
+        $ca_key_file     = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
+        $ca_file         = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
+        $key_content     = "pki/intermediates/${intermediate}.pem"
+        $cert_content    ="profile/pki/intermediates/${intermediate}.pem"
+        $int_ca_content  = file($cert_content)
 
         cfssl::signer {$intermediate:
             profiles         => $profiles,
