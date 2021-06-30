@@ -63,6 +63,7 @@ class role::analytics_test_cluster::coordinator {
     # Camus crons import data into
     # from Kafka into HDFS.
     include ::profile::analytics::refinery::job::test::camus
+    include ::profile::analytics::refinery::job::test::gobblin # camus replacement
     include ::profile::analytics::refinery::job::test::druid_load
     include ::profile::analytics::refinery::job::test::refine
     include ::profile::analytics::refinery::job::test::refine_sanitize
