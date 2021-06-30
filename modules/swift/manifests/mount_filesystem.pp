@@ -7,12 +7,13 @@ define swift::mount_filesystem (
 
     # When the filesystem is _not_ mounted, its mountpoint permissions must not
     # allow 'swift' to write to it. Conversely, when the filesystem is mounted
-    # then the owner must be 'swift' for things to work.
+    # then the owner must be 'swift' for things to work. The owning group stays
+    # 'swift' with read+execute permissions to let swift-recon access the directory.
     # Note these checks are racy, as mountpoint status can change just after
     # checking, however it is a very small chance and will be likely rectified
     # at the next puppet run.
     exec { "mountpoint-root-${mount_point}":
-        command  => "install -d -o root -g root -m 750 ${mount_point}",
+        command  => "install -d -o root -g swift -m 750 ${mount_point}",
         provider => 'shell',
         onlyif   => [
           "! mountpoint -q ${mount_point}",
