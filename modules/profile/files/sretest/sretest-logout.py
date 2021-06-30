@@ -9,7 +9,7 @@ from wmflib.idm import LogoutdBase
 class SystemdLogind(LogoutdBase):
     """sretest"""
 
-    user_identifier: str = 'uid'
+    user_identifier = 'uid'
 
     # Return codes follow the logout.d semantics, see T283242
     def logout_user(self, user):
