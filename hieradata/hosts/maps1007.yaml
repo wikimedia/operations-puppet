@@ -20,4 +20,3 @@ profile::maps::osm_replica::master: 'maps1009.eqiad.wmnet'
 profile::cassandra::single_instance::seeds:
   - '10.64.16.6' # maps1007.eqiad.wmnet
   - '10.64.32.8' # maps1009.eqiad.wmnet
-profile::tlsproxy::instance::nginx_variant: 'light'
