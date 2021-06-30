@@ -17,7 +17,7 @@ class Tgt:
         self.tgt = tgt
 
 
-class SystemdLogind(LogoutdBase):
+class IdpLogoutd(LogoutdBase):
     """idp"""
 
     user_identifier = 'cn'
@@ -107,5 +107,5 @@ if os.geteuid() != 0:
     print("Logout script needs to be run as root")
     raise SystemExit(1)
 
-idplogoutd = SystemdLogind()
+idplogoutd = IdpLogoutd()
 raise SystemExit(idplogoutd.run())  # This includes the parsing of command line arguments.
