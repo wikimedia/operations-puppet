@@ -5187,3 +5187,7 @@ ldap_only_users:
     ensure: present
     realname: Thomas Chin
     email: tchin@wikimedia.org
+  frankie:
+    ensure: present
+    realname: Frances Goodwin
+    email: fgoodwin@wikimedia.org
