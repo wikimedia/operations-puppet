@@ -18,11 +18,4 @@ class profile::mediawiki::maintenance::parsercachepurging {
         command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag pc3 --age=1814400 --msleep 200',
         interval => '01:00',
     }
-
-    # TODO: Remove once the above is deployed.
-    profile::mediawiki::periodic_job { 'parser_cache_purging':
-        ensure   => absent,
-        command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --age=1814400 --msleep 200',
-        interval => '01:00',
-    }
 }
