@@ -78,6 +78,7 @@ define prometheus::server (
     String                     $min_block_duration     = '2h',
     String                     $max_block_duration     = '24h',
     Array                      $alertmanagers          = [],
+    String                     $alerts_deploy_files    = '/srv/alerts/*.yaml',
 ) {
     include prometheus
 
@@ -113,7 +114,7 @@ define prometheus::server (
     $rule_files_default = [
       "${rules_path}/rules_*.yml",
       "${rules_path}/alerts_*.yml",
-      '/srv/alerts/*.yaml',
+      $alerts_deploy_files,
     ]
     $validate_rules_cmd = '/usr/bin/promtool check rules %'
     $validate_config_cmd = '/usr/bin/promtool check config %'
