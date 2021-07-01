@@ -1,8 +1,11 @@
-varnishtest "Custom error when empty error body"
+varnishtest "Custom error pages on origin errors with empty body"
 
 server s1 {
     rxreq
     txresp -status 404 -body ""
+
+    rxreq
+    txresp -status 428 -body ""
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -28,5 +31,14 @@ client c1 {
     txreq -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.status == 404
+    expect resp.reason == "Not Found"
     expect resp.bodylen > 0
+    expect resp.body ~ "<title>Wikimedia Error</title>"
+
+    txreq -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 428
+    expect resp.reason == "Precondition Required"
+    expect resp.bodylen > 0
+    expect resp.body ~ "<title>Wikimedia Error</title>"
 } -run
