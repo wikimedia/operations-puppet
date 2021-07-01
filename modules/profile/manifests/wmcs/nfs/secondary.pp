@@ -3,14 +3,9 @@ class profile::wmcs::nfs::secondary(
     String $data_iface    = lookup('profile::wmcs::nfs::secondary::data_iface', {'default_value' => 'eno3'}),
     Hash[String, Hash[String, Variant[Integer,String]]] $drbd_resource_config = lookup('profile::wmcs::nfs::secondary::drbd_resource_config'),
     Hash[String, Stdlib::IP::Address::V4] $drbd_cluster = lookup('profile::wmcs::nfs::secondary::drbd_cluster'),
-    Stdlib::Host $scratch_active_server = lookup('scratch_active_server'),
-    # The following is intentionally using the same value as for scratch.  This may not always
-    # be desireable, so a separate parameter is offered.
-    Stdlib::Host $maps_active_server = lookup('scratch_active_server'),
     Stdlib::IP::Address $cluster_ip = lookup('profile::wmcs::nfs::secondary::cluster_ip'),
     Stdlib::IP::Address $subnet_gateway_ip = lookup('profile::wmcs::nfs::secondary::subnet_gateway_ip'),
     Stdlib::Fqdn $standby_server     = lookup('profile::wmcs::nfs::secondary::standby'),
-    Boolean $drbd_enabled           = lookup('profile::wmcs::nfs::secondary::drbd_enabled', {'default_value' => false}),
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers'),
 ) {
     require ::profile::openstack::eqiad1::clientpackages

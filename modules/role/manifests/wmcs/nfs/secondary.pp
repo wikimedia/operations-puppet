@@ -6,8 +6,6 @@ class role::wmcs::nfs::secondary {
     include ::profile::standard
     include ::profile::base::firewall
     include ::profile::wmcs::nfs::ferm
-    include ::profile::wmcs::nfs::rsync::ferm
-    include ::profile::wmcs::nfs::rsync
     include ::profile::ldap::client::labs
     include ::profile::wmcs::nfs::secondary
 }

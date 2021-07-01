@@ -8,10 +8,6 @@ class profile::wmcs::nfsclient(
     Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_vps'),
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers', {'default_value' => []}),
-    Stdlib::Host $scratch_active_server = lookup('scratch_active_server'),
-    # The following is intentionally using the same value as for scratch.  This may not always
-    # be desireable, so a separate parameter is offered.
-    Stdlib::Host $maps_active_server = lookup('scratch_active_server'),
 ) {
 
     # TODO: Change these "secondary" mentions to "primary"

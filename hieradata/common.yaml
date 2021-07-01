@@ -515,7 +515,6 @@ statistics_servers:
   - labstore1007.wikimedia.org
   - an-launcher1002.eqiad.wmnet
 
-scratch_active_server: cloudstore1009.wikimedia.org
 secondary_nfs_servers:
   - cloudstore1008.wikimedia.org
   - cloudstore1009.wikimedia.org
