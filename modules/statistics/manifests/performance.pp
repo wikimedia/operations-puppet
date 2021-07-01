@@ -2,6 +2,11 @@
 class statistics::performance {
     Class['::statistics'] -> Class['::statistics::performance']
 
+    ensure_packages([
+        # asoranking requires pandas, which is not installed by default.
+        'python3-pandas'
+    ])
+
     $working_path = $::statistics::working_path
 
     $user = 'analytics-privatedata'
