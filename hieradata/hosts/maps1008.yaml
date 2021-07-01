@@ -21,3 +21,4 @@ profile::cassandra::single_instance::seeds:
   - '10.64.16.6' # maps1007.eqiad.wmnet
   - '10.64.16.27'  # maps1008.eqiad.wmnet
   - '10.64.32.8' # maps1009.eqiad.wmnet
+  - '10.64.48.6'   # maps1010.eqiad.wmnet

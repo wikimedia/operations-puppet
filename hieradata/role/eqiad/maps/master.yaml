@@ -5,7 +5,6 @@ profile::maps::hosts:
   - 'maps1001.eqiad.wmnet'
   - 'maps1005.eqiad.wmnet'
   - 'maps1006.eqiad.wmnet'
-  - 'maps1010.eqiad.wmnet'
 
 profile::redis::master::clients:
   - 'maps1004.eqiad.wmnet'
@@ -14,7 +13,6 @@ profile::redis::master::clients:
   - 'maps1001.eqiad.wmnet'
   - 'maps1005.eqiad.wmnet'
   - 'maps1006.eqiad.wmnet'
-  - 'maps1010.eqiad.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
 profile::maps::apps::tilerator_enable: true
@@ -27,7 +25,6 @@ profile::cassandra::single_instance::seeds:
   - '10.64.0.79'   # maps1001.eqiad.wmnet
   - '10.64.0.12'   # maps1005.eqiad.wmnet
   - '10.64.0.18'   # maps1006.eqiad.wmnet
-  - '10.64.48.6'   # maps1010.eqiad.wmnet
 
 profile::maps::osm_master::planet_sync_hours: '*/12'
 profile::maps::osm_master::disable_replication_cron: false
