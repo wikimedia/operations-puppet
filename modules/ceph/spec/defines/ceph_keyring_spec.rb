@@ -10,7 +10,14 @@ describe 'ceph::keyring', :type => :define do
 
       describe 'compiles without errors' do
         it { is_expected.to compile.with_all_deps }
+      end
+
+      describe 'adds the keyring file' do
         it { should contain_file('/path/to/dummy.keyring') }
+      end
+
+      describe 'adds the keyring parent directory' do
+        it { should contain_file('/path/to') }
       end
     end
   end
