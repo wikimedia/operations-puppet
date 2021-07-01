@@ -208,7 +208,6 @@ codfw:
     dns2002.wikimedia.org: [pdns_recursor]
   maps:
     maps2001.codfw.wmnet: [kartotherian, kartotherian-ssl]
-    maps2002.codfw.wmnet: [kartotherian, kartotherian-ssl]
     maps2003.codfw.wmnet: [kartotherian, kartotherian-ssl]
     maps2004.codfw.wmnet: [kartotherian, kartotherian-ssl]
     maps2005.codfw.wmnet: [kartotherian, kartotherian-ssl]
