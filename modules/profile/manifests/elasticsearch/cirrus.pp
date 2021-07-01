@@ -120,6 +120,30 @@ class profile::elasticsearch::cirrus(
         content => "SUBSYSTEM==\"block\", KERNEL==\"${storage_device}\", ACTION==\"add|change\", ATTR{bdi/read_ahead_kb}=\"${read_ahead_kb}\"",
     }
 
+    ## BEGIN Temporary mitigation put in place for T264053
+    # Source code lives here: https://phabricator.wikimedia.org/P5883
+    package {'elasticsearch-madvise':
+        ensure => present,
+    }
+
+    # Wrapper script to run elasticsearch-madvise-random once per elasticsearch process, passing PID
+    file { '/usr/local/bin/elasticsearch-disable-readahead.sh':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'files/cirrus/elasticsearch-disable-readahead.sh',
+    }
+
+    # Run the wrapper every 30 mins
+    systemd::timer::job { 'elasticsearch-disable-readahead':
+        description => 'Disables readahead on all open files every 30 minutes to alleviate Cirrussearch / elasticsearch IO load spikes',
+        command     => '/usr/local/bin/elasticsearch-disable-readahead.sh',
+        user        => 'root',
+        interval    => [{'start' => 'OnActiveSec', 'interval' => '30min'}, {'start' => 'OnBootSec', 'interval' => '1min'}],
+    }
+    ## END   Temporary mitigation put in place for T264053
+
     # Install prometheus data collection
     $::profile::elasticsearch::filtered_instances.reduce(9108) |$prometheus_port, $kv_pair| {
         $instance_params = $kv_pair[1]
