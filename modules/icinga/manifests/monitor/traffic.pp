@@ -10,8 +10,4 @@ class icinga::monitor::traffic {
       dashboard_uid => '000000513',
       notes_url     => 'https://wikitech.wikimedia.org/wiki/Ping_offload#InAddrErrors_alert',
     }
-    monitoring::grafana_alert { 'rpki':
-      dashboard_uid => 'UwUa77GZk',
-      notes_url     => 'https://wikitech.wikimedia.org/wiki/RPKI#Grafana_alerts',
-    }
 }
