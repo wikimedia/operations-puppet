@@ -32,3 +32,41 @@ profile::standard::admin_groups:
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
+
+# Configuration to add the Kubelet to Master nodes for limited use cases
+# (like running bird for Calico, see T285927)
+# The nodes are also tainted to force kubernetes to consider these nodes not
+# usable to schedule pods onto.
+profile::kubernetes::node::kubelet_node_taints:
+  - node-role.kubernetes.io/master:NoSchedule
+profile::kubernetes::node::packages_from_future: true
+profile::docker::storage::physical_volumes: "/dev/vdb"
+profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u3"
+profile::docker::engine::packagename: "docker.io"
+profile::docker::engine::declare_service: true
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
+profile::kubernetes::use_cni: true
+profile::docker::engine::settings:
+  bridge: none
+  iptables: false
+  ip-masq: false
+  live-restore: true
+profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
+profile::calico::kubernetes::calico_version: '3'
+# Tokens for the calico kubernetes users in private repo at:
+#profile::calico::kubernetes::calico_cni::token
+#profile::calico::kubernetes::calicoctl::token
+profile::kubernetes::node::masquerade_all: false
+# Defined in the private repo
+#profile::kubernetes::node::kubelet_token:
+# Defined in the private repo
+#profile::kubernetes::node::kubeproxy_token:
+profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
+profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
+profile::rsyslog::kubernetes::kubernetes_url: https://ml-ctrl.svc.%{::site}.wmnet:6443
+profile::rsyslog::kubernetes::enable: true
+profile::kubernetes::master_fqdn: ml-ctrl.svc.%{::site}.wmnet
+# Define in the private repo
+# profile::rsyslog::kubernetes::token
+prometheus::node_exporter::collectors_extra:
+  - processes

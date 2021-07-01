@@ -8,6 +8,10 @@ class role::ml_k8s::master {
     # reasons
     include ::profile::kubernetes::client
 
+    # Needed to schedule containers like bird, used by calico.
+    # More info: T285927
+    include ::profile::kubernetes::node
+
     # LVS configuration (VIP)
     include ::profile::lvs::realserver
 

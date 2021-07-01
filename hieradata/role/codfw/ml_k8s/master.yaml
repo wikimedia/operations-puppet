@@ -3,3 +3,10 @@ profile::kubernetes::master::etcd_urls:
  - https://ml-etcd2001.codfw.wmnet:2379
  - https://ml-etcd2002.codfw.wmnet:2379
  - https://ml-etcd2003.codfw.wmnet:2379
+
+# Needed to run a kubelet on the master node
+# See T285927
+profile::kubernetes::node::kubelet_cluster_dns: "10.192.77.3"
+profile::kubernetes::master_hosts:
+- ml-serve-ctrl2001.codfw.wmnet
+- ml-serve-ctrl2002.codfw.wmnet

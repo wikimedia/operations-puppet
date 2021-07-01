@@ -3,3 +3,10 @@ profile::kubernetes::master::etcd_urls:
  - https://ml-etcd1001.eqiad.wmnet:2379
  - https://ml-etcd1002.eqiad.wmnet:2379
  - https://ml-etcd1003.eqiad.wmnet:2379
+
+# Needed to run a kubelet on the master node
+# See T285927
+profile::kubernetes::node::kubelet_cluster_dns: "10.64.77.3"
+profile::kubernetes::master_hosts:
+- ml-serve-ctrl1001.eqiad.wmnet
+- ml-serve-ctrl1002.eqiad.wmnet
