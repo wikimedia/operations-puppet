@@ -48,6 +48,5 @@ profile::wmcs::nfs::secondary::drbd_cluster:
 
 profile::wmcs::nfs::secondary::standby: cloudstore1009.wikimedia.org
 
-## Enable after migration to DRBD T224747
-# prometheus::node_exporter::collectors_extra:
-#   - drbd
+prometheus::node_exporter::collectors_extra:
+  - drbd
