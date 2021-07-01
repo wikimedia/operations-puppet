@@ -8,6 +8,7 @@ class profile::wmcs::nfs::secondary(
     # be desireable, so a separate parameter is offered.
     Stdlib::Host $maps_active_server = lookup('scratch_active_server'),
     Stdlib::IP::Address $cluster_ip = lookup('profile::wmcs::nfs::secondary::cluster_ip'),
+    Stdlib::IP::Address $subnet_gateway_ip = lookup('profile::wmcs::nfs::secondary::subnet_gateway_ip'),
     Stdlib::Fqdn $standby_server     = lookup('profile::wmcs::nfs::secondary::standby'),
     Boolean $drbd_enabled           = lookup('profile::wmcs::nfs::secondary::drbd_enabled', {'default_value' => false}),
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers'),
@@ -24,6 +25,7 @@ class profile::wmcs::nfs::secondary(
         'python3-paramiko',
         'python3-pymysql',
         'python3-dateutil',
+        'arping',
     ])
 
     # Enable RPS to balance IRQs over CPUs
@@ -31,135 +33,101 @@ class profile::wmcs::nfs::secondary(
     # interface::rps { 'monitor':
     #     interface => $monitor_iface,
     # }
-    if $drbd_enabled {
-        $drbd_expected_role = $facts['fqdn'] ? {
-            $standby_server => 'secondary',
-            default         => 'primary',
-        }
+    $drbd_expected_role = $facts['fqdn'] ? {
+        $standby_server => 'secondary',
+        default         => 'primary',
+    }
 
-        # Determine the actual role from a custom fact.
-        if has_key($facts, 'drbd_role') {
-            if $facts['drbd_role'].values().unique().length() > 1 {
-                $drbd_actual_role = 'inconsistent'
-            } else {
-                $drbd_actual_role = $facts['drbd_role'].values().unique()[0]
-            }
+    # Determine the actual role from a custom fact.
+    if has_key($facts, 'drbd_role') {
+        if $facts['drbd_role'].values().unique().length() > 1 {
+            $drbd_actual_role = 'inconsistent'
         } else {
-            $drbd_actual_role = undef
-        }
-
-        $drbd_ip_address = $drbd_cluster[$facts['hostname']]
-
-        # Make sure the mountpoints are there
-        file{'/srv/test':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0777',
-        }
-
-        file{'/srv/misc':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-
-        file{'/srv/scratch':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-        }
-
-        $drbd_defaults = {
-            'drbd_cluster' => $drbd_cluster
-        }
-
-        interface::manual{ 'data':
-            interface => $data_iface,
-        }
-
-        interface::ip { 'drbd-replication':
-            interface => $data_iface,
-            address   => $drbd_ip_address,
-            prefixlen => '30',
-            require   => Interface::Manual['data'],
-        }
-
-        create_resources(labstore::drbd::resource, $drbd_resource_config, $drbd_defaults)
-
-        Interface::Ip['drbd-replication'] -> Labstore::Drbd::Resource[keys($drbd_resource_config)]
-        $cluster_ips_ferm = join($drbd_cluster.values(), ' ')
-        $drbd_resource_config.each |String $volume, Hash $volume_config| {
-            ferm::service { "drbd-${volume}":
-                proto  => 'tcp',
-                port   => $volume_config['port'],
-                srange => "(${cluster_ips_ferm})",
-            }
-        }
-
-        # state managed manually
-        service { 'drbd':
-            enable => false,
-        }
-        service { 'nfs-server':
-            enable => false,
-        }
-        $nfs_start_command = 'systemctl start nfs-server'
-        $nfs_stop_command = 'systemctl stop nfs-server'
-
-        file { '/usr/local/sbin/nfs-manage':
-            content => template('profile/wmcs/nfs/nfs-manage.sh.erb'),
-            mode    => '0744',
-            owner   => 'root',
-            group   => 'root',
-        }
-
-        class {'labstore::monitoring::exports':
-            drbd_role => $drbd_actual_role,
-        }
-        class {'labstore::monitoring::volumes':
-            server_vols => [
-                '/srv/maps',
-                '/srv/scratch'
-            ],
-            drbd_role   => $drbd_actual_role,
+            $drbd_actual_role = $facts['drbd_role'].values().unique()[0]
         }
     } else {
-        # The service should remain running always on this because there's no DRBD
-        service { 'nfs-server':
-            ensure  => 'running',
-            require => Package['nfs-kernel-server'],
-        }
-        # Manage the cluster IP for maps from hiera
-        $ipadd_command = "ip addr add ${cluster_ip}/27 dev ${monitor_iface}"
-        $ipdel_command = "ip addr del ${cluster_ip}/27 dev ${monitor_iface}"
+        $drbd_actual_role = undef
+    }
 
-        # Because in this simple failover, we don't have STONITH, don't claim
-        # the IP unless is doesn't work
-        if $facts['fqdn'] == $maps_active_server {
-            exec { $ipadd_command:
-                path    => '/bin:/usr/bin',
-                returns => [0, 2],
-                unless  => "ping -n -c1 ${cluster_ip} > /dev/null",
-            }
+    $drbd_ip_address = $drbd_cluster[$facts['hostname']]
 
-        } else {
-            exec { $ipdel_command:
-                path    => '/bin:/usr/bin',
-                returns => [0, 2],
-                onlyif  => "ip address show ${monitor_iface} | grep -q ${cluster_ip}/27",
-            }
-        }
-        class {'labstore::monitoring::exports': }
-        class {'labstore::monitoring::volumes':
-            server_vols => [
-                '/srv/scratch',
-                '/srv/maps'
-            ],
+    # Make sure the mountpoints are there
+    file{'/srv/test':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0777',
+    }
+
+    file{'/srv/misc':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file{'/srv/scratch':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    $drbd_defaults = {
+        'drbd_cluster' => $drbd_cluster
+    }
+
+    interface::manual{ 'data':
+        interface => $data_iface,
+    }
+
+    interface::ip { 'drbd-replication':
+        interface => $data_iface,
+        address   => $drbd_ip_address,
+        prefixlen => '30',
+        require   => Interface::Manual['data'],
+    }
+
+    create_resources(labstore::drbd::resource, $drbd_resource_config, $drbd_defaults)
+
+    Interface::Ip['drbd-replication'] -> Labstore::Drbd::Resource[keys($drbd_resource_config)]
+    $cluster_ips_ferm = join($drbd_cluster.values(), ' ')
+    $drbd_resource_config.each |String $volume, Hash $volume_config| {
+        ferm::service { "drbd-${volume}":
+            proto  => 'tcp',
+            port   => $volume_config['port'],
+            srange => "(${cluster_ips_ferm})",
         }
     }
+
+    # state managed manually
+    service { 'drbd':
+        enable => false,
+    }
+    service { 'nfs-server':
+        enable => false,
+    }
+    $nfs_start_command = 'systemctl start nfs-server'
+    $nfs_stop_command = 'systemctl stop nfs-server'
+
+    file { '/usr/local/sbin/nfs-manage':
+        content => template('profile/wmcs/nfs/nfs-manage.sh.erb'),
+        mode    => '0744',
+        owner   => 'root',
+        group   => 'root',
+    }
+
+    class {'labstore::monitoring::exports':
+        drbd_role => $drbd_actual_role,
+    }
+    class {'labstore::monitoring::volumes':
+        server_vols => [
+            '/srv/maps',
+            '/srv/scratch'
+        ],
+        drbd_role   => $drbd_actual_role,
+    }
+
     class {'labstore::fileserver::exports':
         server_vols   => ['maps'],
     }
