@@ -8,7 +8,7 @@ class profile::toolforge::bastion(
     include profile::toolforge::grid::exec_environ
     include profile::toolforge::k8s::client
 
-    if debia::codename::eq('buster') {
+    if debian::codename::eq('buster') {
         include profile::toolforge::jobs_framework_cli
     }
 
