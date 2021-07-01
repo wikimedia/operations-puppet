@@ -153,6 +153,7 @@ def main() -> int:
                         seen.add(message_id)
                         to_write[message_id] = f"{pipermail_part} {hk_part}"
     with txt.open("w") as f:
+        f.write(f"{listname}/ {listname}@{DOMAIN}/\n")
         for line in to_write.values():
             f.write(f"{line}\n")
 
