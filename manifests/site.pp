@@ -1449,12 +1449,12 @@ node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
 
-# ceph storage nodes
-node /^cloudcephosd10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
+# ceph storage nodes, 1018 is waiting on T285799
+node /^cloudcephosd10(0[1-9]|1[0-7]|19|20)\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
 }
-# new hosts via T274945
-node /^cloudcephosd10(1[7-9]|20)\.eqiad\.wmnet$/ {
+# new hosts via T274945, T284471
+node /^cloudcephosd10(18|2[1-5])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
