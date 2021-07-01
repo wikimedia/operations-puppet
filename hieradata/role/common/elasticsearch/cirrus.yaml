@@ -76,3 +76,4 @@ profile::elasticsearch::common_settings:
     filter_cache_size: '20%'
 
 profile::elasticsearch::cirrus::enable_remote_search: true
+profile::tlsproxy::instance::nginx_variant: 'light'
