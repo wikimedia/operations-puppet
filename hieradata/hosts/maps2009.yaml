@@ -23,16 +23,19 @@ profile::cassandra::single_instance::seeds:
   - '10.192.32.46' # maps2007.codfw.wmnet
   - '10.192.48.165' # maps2008.codfw.wmnet
   - '10.192.16.107' # maps2009.codfw.wmnet
+  - '10.192.48.166' # maps2010.codfw.wmnet
 
 profile::maps::hosts:
   - 'maps2007.codfw.wmnet'
   - 'maps2008.codfw.wmnet'
   - 'maps2009.codfw.wmnet'
+  - 'maps2010.codfw.wmnet'
 
 profile::redis::master::clients:
   - 'maps2007.codfw.wmnet'
   - 'maps2008.codfw.wmnet'
   - 'maps2009.codfw.wmnet'
+  - 'maps2010.codfw.wmnet'
 
 profile::maps::osm_master::replicas:
   maps2007:
@@ -41,6 +44,8 @@ profile::maps::osm_master::replicas:
     ip_address: '10.192.48.165'
   maps2009:
     ip_address: '10.192.16.107'
+  maps2010:
+    ip_address: '10.192.48.166'
 
 # disable tilerator for switchover testing
 profile::maps::apps::tilerator_enable: false
