@@ -11,6 +11,12 @@ describe 'profile::wmcs::backy2' do
         'ceph_vm_pool' => 'dummy_ceph_vm_pool',
         'backup_interval' => '*-*-* 1:00:00',
       }
+      let(:pre_condition) {
+        "class { '::ceph::common':
+          home_dir => '/home/dir',
+          ceph_repository_component => 'dummy/component-repo',
+        }"
+      }
       let(:facts) { facts.merge({
         'fqdn' => 'dummyhost1',
       }) }
