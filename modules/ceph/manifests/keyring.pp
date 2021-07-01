@@ -88,11 +88,13 @@ define ceph::keyring(
                 command => "/usr/bin/ceph-authtool --create-keyring ${keyring} \
                             -n ${name} --add-key=${keydata} ${opts}",
                 creates => $keyring,
+                require =>  Package['ceph-common'],
             }
         } else {
             exec { "ceph-keyring-${name}":
                 command => "/usr/bin/ceph auth get-or-create ${name} ${opts} -o ${keyring}",
                 creates => $keyring,
+                require =>  Package['ceph-common'],
             }
         }
     }
