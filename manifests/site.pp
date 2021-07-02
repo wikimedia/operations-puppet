@@ -915,6 +915,11 @@ node /^(doh[123]00[12]|doh4001|doh5001|malmok)\.wikimedia\.org$/ {
     role(wikidough)
 }
 
+# Dragonfly Supernode (T286054)
+node 'dragonfly-supernode1001.eqiad.wmnet' {
+    role(dragonfly::supernode)
+}
+
 # Druid analytics-eqiad (non public) servers.
 # These power internal backends and queries.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
