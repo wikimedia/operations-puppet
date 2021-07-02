@@ -105,11 +105,4 @@ define ceph::keyring(
         group  => $group,
         mode   => $mode,
     }
-    if $keyring =~ Regexp('(.*)/.+') {
-      file { $1:
-          ensure => directory,
-          owner  => $owner,
-          group  => $group,
-      } -> File[$keyring]
-    }
 }
