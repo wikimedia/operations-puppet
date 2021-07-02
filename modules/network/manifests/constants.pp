@@ -70,6 +70,30 @@ class network::constants {
     # Analytics subnets
     $analytics_networks = slice_network_constants('production', { 'description' => 'analytics'})
 
+    # Kubernetes pods subnets. We could revisit in the future if we makes sense to have
+    # this at a global level or not (effie).
+    $kubepods_networks = flatten([
+        slice_network_constants('production', {
+            'site'        => 'eqiad',
+            'sphere'      => 'private',
+            'description' => 'kubepods',
+            }),
+        slice_network_constants('production', {
+            'site'        => 'codfw',
+            'sphere'      => 'private',
+            'description' => 'kubepods',
+            }),
+        slice_network_constants('production', {
+            'site'        => 'eqiad',
+            'sphere'      => 'private',
+            'description' => 'kubestagepods',
+            }),
+        slice_network_constants('production', {
+            'site'        => 'codfw',
+            'sphere'      => 'private',
+            'description' => 'kubestagepods',
+            }),
+        ])
     # Networks that Scap will be able to deploy to.
     # (Puppet does array concatenation
     # by declaring array of other arrays! (?!)

@@ -9,6 +9,7 @@ analytics_networks = scope.lookupvar('network::constants::analytics_networks')
 mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networks')
 network_infra = scope.lookupvar('network::constants::network_infra')
 mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
+kubepods_networks = scope.lookupvar('network::constants::kubepods_networks')
 
 -%>
 
@@ -30,6 +31,7 @@ mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
 # Point of contact: Faidon/Otto/Luca
 @def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%> 10.64.48.112/32 10.192.16.65/32 );
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
+@def $KUBEPODS_NETWORKS  = (<%- kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 
 @def $NETWORK_INFRA = (<%= network_infra.values.reduce('') {|memo, nets| memo += ' ' + nets.join(' ')}.strip %>);
 @def $MGMT_NETWORKS = (<%- mgmt_networks.each do |net| -%><%= net %> <% end -%>);
