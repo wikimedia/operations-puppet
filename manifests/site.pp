@@ -2331,7 +2331,7 @@ node /^rdb2010\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
-node /^registry[12]00[3-8]\.(eqiad|codfw)\.wmnet$/ {
+node /^registry[12]00[34]\.(eqiad|codfw)\.wmnet$/ {
     role(docker_registry_ha::registry)
 }
 

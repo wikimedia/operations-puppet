@@ -1046,26 +1046,6 @@ host registry2004 {
     fixed-address registry2004.codfw.wmnet;
 }
 
-host registry2005 {
-    hardware ethernet aa:00:00:35:f5:99;
-    fixed-address registry2005.codfw.wmnet;
-}
-
-host registry2006 {
-    hardware ethernet aa:00:00:a8:86:c6;
-    fixed-address registry2006.codfw.wmnet;
-}
-
-host registry2007 {
-    hardware ethernet aa:00:00:6d:8d:1d;
-    fixed-address registry2007.codfw.wmnet;
-}
-
-host registry2008 {
-    hardware ethernet aa:00:00:ff:8f:d5;
-    fixed-address registry2008.codfw.wmnet;
-}
-
 host rpki1001 {
     hardware ethernet aa:00:00:64:75:b9;
     fixed-address rpki1001.eqiad.wmnet;
