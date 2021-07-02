@@ -2583,9 +2583,9 @@ host dbstore1003 {
     fixed-address dbstore1003.eqiad.wmnet;
 }
 
-host dbstore1004 {
+host db1183 {
     hardware ethernet D0:94:66:8F:B7:C6;
-    fixed-address dbstore1004.eqiad.wmnet;
+    fixed-address db1183.eqiad.wmnet;
 }
 
 host dbstore1005 {

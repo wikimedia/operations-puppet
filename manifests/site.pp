@@ -710,6 +710,11 @@ node 'db1128.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
+# m5 eqiad replica - in progress
+node 'db1183.eqiad.wmnet' {
+    role(insetup)
+}
+
 # m5 codfw master
 node 'db2135.codfw.wmnet' {
     role(mariadb::misc)
