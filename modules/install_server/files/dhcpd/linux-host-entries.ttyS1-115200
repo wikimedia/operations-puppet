@@ -5197,16 +5197,6 @@ host mwlog2002 {
     fixed-address mwlog2002.codfw.wmnet;
 }
 
-host mw1267 {
-    hardware ethernet 14:18:77:61:48:1F;
-    fixed-address mw1267.eqiad.wmnet;
-}
-
-host mw1268 {
-    hardware ethernet 14:18:77:61:33:99;
-    fixed-address mw1268.eqiad.wmnet;
-}
-
 host mw1269 {
     hardware ethernet 14:18:77:61:3B:AD;
     fixed-address mw1269.eqiad.wmnet;

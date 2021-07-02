@@ -1758,11 +1758,6 @@ node /^mw12(69|7[0-5])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# rack A8
-node /^mw126[7-8]\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
-}
-
 # rack A5
 node /^mw13(8[579]|91)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
