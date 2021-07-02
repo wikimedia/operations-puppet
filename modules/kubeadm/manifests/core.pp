@@ -17,9 +17,7 @@ class kubeadm::core (
         tag    => 'kubeadm-k8s',
     }
 
-    file { '/etc/kubernetes/':
-        ensure => 'directory',
-    }
+    class { 'k8s::base_dirs': }
 
     sysctl::parameters { 'kubelet':
         values   => {
