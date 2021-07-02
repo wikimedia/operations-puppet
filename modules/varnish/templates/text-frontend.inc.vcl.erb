@@ -416,15 +416,15 @@ sub cluster_fe_ratelimit {
 	}
 
 <% if @vcl_config.fetch("public_clouds_shutdown") -%>
-	// Unconditionally return 429 to all traffic from public clouds like ec2
+	// Unconditionally return 403 to all traffic from public clouds like ec2
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets) {
-		return (synth(429, "Too Many Requests"));
+		return (synth(403));
 	}
 <% end -%>
 
 	// T284479
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ google_cloud_nets && req.http.User-Agent ~ "HeadlessChrome/" && req.url ~ "/w/index.php" && req.url ~ "[?&]search=") {
-		return (synth(429, "Too Many Requests; please contact noc@wikimedia.org"));
+		return (synth(403, "Forbidden; please contact noc@wikimedia.org"));
 	}
 
 

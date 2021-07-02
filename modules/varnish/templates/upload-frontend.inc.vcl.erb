@@ -196,19 +196,19 @@ sub cluster_fe_ratelimit {
 			}
 		}
 
-		// 429 all python-requests UA
+		// 403 all python-requests UA
 		if (req.http.User-Agent ~ "^python-requests") {
-		    return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+		    return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
 		}
 
 		// Missing or empty User-Agent header
 		if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
-			return (synth(429, "Too many requests. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+			return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
 		}
 
 		// Bingbot excessive media fetch limiting
 		if (req.http.User-Agent ~ "bingbot") {
-			return (synth(429, "Too Many Requests"));
+			return (synth(403, "Forbidden"));
 		}
 
 		// geoshape limit rate: 10/10s (1/s long term, with 10 burst)
