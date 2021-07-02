@@ -132,7 +132,7 @@ class profile::elasticsearch::cirrus(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/elasticsearch/files/cirrus/elasticsearch-disable-readahead.sh',
+        source => 'puppet:///modules/elasticsearch/cirrus/elasticsearch-disable-readahead.sh',
     }
 
     # Run the wrapper every 30 mins
