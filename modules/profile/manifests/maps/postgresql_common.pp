@@ -48,4 +48,9 @@ class profile::maps::postgresql_common(
           group => 'maps-admins',
         }
     }
+    ferm::service { 'kubepods-maps-postgres':
+        proto  => 'tcp',
+        port   => '5432',
+        srange => '$KUBEPODS_NETWORKS',
+    }
 }
