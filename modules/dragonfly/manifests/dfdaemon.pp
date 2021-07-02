@@ -19,13 +19,6 @@ class dragonfly::dfdaemon (
 ) {
   ensure_packages('dragonfly-dfdaemon')
 
-  # This is needed to hijack HTTPS requests to docker-registry
-  sslcert::certificate { $docker_registry_fqdn:
-      ensure       => present,
-      skip_private => false,
-      before       => Service['dragonfly-dfdaemon'],
-  }
-
   # TODO: Custom type for supernode list
   #       host:port(default:8002)=weight(default:1)
   file { '/etc/dragonfly/dfget.yml':
