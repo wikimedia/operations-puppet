@@ -45,6 +45,13 @@ class ceph::common (
         group  => 'ceph',
     }
 
+    file { '/var/lib/ceph/bootstrap-osd':
+        ensure => directory,
+        mode   => '0750',
+        owner  => 'ceph',
+        group  => 'ceph',
+    }
+
     file { '/var/log/ceph':
         ensure => directory,
         mode   => '0755',

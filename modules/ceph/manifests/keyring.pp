@@ -10,6 +10,7 @@
 #
 # [*keyring*]
 #   The absolute path of the keyring file.
+#   NOTE: You have to make sure that the directory for the keyring already exists or is declared somewhere else.
 #
 # [*cluster*]
 #   The name of the Ceph cluster
