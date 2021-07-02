@@ -27,6 +27,7 @@ class k8s::apiserver(
     Optional[String] $runtime_config = undef,
     Optional[K8s::AdmissionPlugins] $admission_plugins = undef,
 ) {
+    require k8s::base_dirs
 
     group { 'kube':
         ensure => present,
@@ -38,13 +39,6 @@ class k8s::apiserver(
         system => true,
         home   => '/nonexistent',
         shell  => '/usr/sbin/nologin',
-    }
-
-    file { '/etc/kubernetes':
-        ensure => directory,
-        owner  => 'kube',
-        group  => 'kube',
-        mode   => '0700',
     }
 
     if $packages_from_future {

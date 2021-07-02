@@ -7,12 +7,12 @@ define k8s::kubeconfig(
     String $owner='root',
     String $group='root',
 ) {
+    require k8s::base_dirs
     file { $title:
         ensure  => present,
         content => template('k8s/kubeconfig-client.yaml.erb'),
         owner   => $owner,
         group   => $group,
         mode    => $mode,
-        require => File['/etc/kubernetes'],
     }
 }

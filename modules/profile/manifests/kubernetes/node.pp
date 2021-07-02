@@ -33,24 +33,19 @@ class profile::kubernetes::node(
         priority           => 8,
     }
 
+    # Note: this will also install /etc/kubernetes
+    k8s::kubeconfig { $kubelet_config:
+        master_host => $master_fqdn,
+        username    => $kubelet_username,
+        token       => $kubelet_token,
+    }
+
     base::expose_puppet_certs { '/etc/kubernetes':
         provide_private => true,
         user            => 'root',
         group           => 'root',
     }
 
-    file { '/etc/kubernetes':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    k8s::kubeconfig { $kubelet_config:
-        master_host => $master_fqdn,
-        username    => $kubelet_username,
-        token       => $kubelet_token,
-    }
     class { '::k8s::kubelet':
         listen_address                  => '0.0.0.0',
         cni                             => $use_cni,

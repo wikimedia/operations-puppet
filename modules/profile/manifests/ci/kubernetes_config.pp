@@ -7,8 +7,6 @@ class profile::ci::kubernetes_config(
     String $group = lookup('profile::ci::kubernetes_config::group')
 ) {
 
-    ensure_resource('file', '/etc/kubernetes', {'ensure' => 'directory' })
-
     # the file is visible to jenkins-slave and to contint-admins
     k8s::kubeconfig { '/etc/kubernetes/ci-staging.config':
         master_host => $master,

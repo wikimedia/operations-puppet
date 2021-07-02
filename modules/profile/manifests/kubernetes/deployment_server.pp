@@ -16,13 +16,6 @@ class profile::kubernetes::deployment_server(
 
     ensure_packages('istioctl')
 
-    file { '/etc/kubernetes':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-    }
-
     $real_services = deep_merge($services, $tokens)
     $ml_services = filter($real_services) |String $service, Hash $data| {
         $service == 'admin'
