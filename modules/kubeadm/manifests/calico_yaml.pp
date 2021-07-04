@@ -1,6 +1,6 @@
 class kubeadm::calico_yaml (
     String              $pod_subnet,
-    String              $calico_version = 'v3.14.0',
+    String              $calico_version = 'v3.18.4',
     Boolean             $typha_enabled = false,
     Integer             $typha_replicas = 3,
 ) {

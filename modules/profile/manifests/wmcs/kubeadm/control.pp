@@ -7,7 +7,7 @@ class profile::wmcs::kubeadm::control (
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
     String              $component  = lookup('profile::wmcs::kubeadm::component',      {default_value => 'thirdparty/kubeadm-k8s-1-17'}),
     String              $kubernetes_version = lookup('profile::wmcs::kubeadm::kubernetes_version', {default_value => '1.17.13'}),
-    String              $calico_version = lookup('profile::wmcs::kubeadm::calico_version', {default_value => 'v3.14.0'}),
+    String              $calico_version = lookup('profile::wmcs::kubeadm::calico_version', {default_value => 'v3.18.4'}),
     Boolean             $typha_enabled = lookup('profile::wmcs::kubeadm::typha_enabled', {default_value => false}),
     Integer             $typha_replicas = lookup('profile::wmcs::kubeadm::typha_replicas', {default_value => 3}),
     Optional[String]    $encryption_key = lookup('profile::wmcs::kubeadm::encryption_key', {default_value => undef}),
