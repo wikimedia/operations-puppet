@@ -1,4 +1,4 @@
 # db1149
-# future candidate master for s4
+# Future candidate master for s4
 mariadb::shard: 's4'
 mariadb::binlog_format: 'STATEMENT'
