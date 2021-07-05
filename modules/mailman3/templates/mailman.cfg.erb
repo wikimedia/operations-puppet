@@ -241,6 +241,12 @@ admin_user: restadmin
 # The administrative password.
 admin_pass: <%= @api_password %>
 
+[antispam]
+# Discard all mail with a spam score >= 6
+# See T286218 and <https://wikitech.wikimedia.org/wiki/Mailman/Spam_fighting>
+header_checks: X-Spam-Score:[^+]*[+]{6,}
+jump_chain: discard
+
 [mta]
 # The class defining the interface to the incoming mail transport agent.
 incoming: mailman.mta.exim4.LMTP
