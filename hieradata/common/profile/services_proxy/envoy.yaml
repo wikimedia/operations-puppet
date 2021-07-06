@@ -128,6 +128,10 @@ profile::services_proxy::envoy::listeners:
     port: 6023
     service: schema
     timeout: "120s"
+  - name: shellbox
+    port: 6024
+    timeout: "60s"
+    service: shellbox
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -227,6 +231,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - ores
   - restbase
   - cxserver
+  - shellbox
   - swift-eqiad
   - swift-codfw
   - search-chi-eqiad
