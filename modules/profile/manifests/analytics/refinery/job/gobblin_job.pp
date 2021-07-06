@@ -27,7 +27,7 @@ define profile::analytics::refinery::job::gobblin_job (
     $refinery_path = $::profile::analytics::refinery::path
 
     $_jobconfig_properties_file = $jobconfig_properties_file ? {
-        undef   => "${refinery_path}/jobs/${title}.pull",
+        undef   => "${refinery_path}/gobblin/jobs/${title}.pull",
         default => $jobconfig_properties_file,
     }
 
