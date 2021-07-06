@@ -12,7 +12,7 @@ warn_nodes=()
 for node in "${signed_certs_dir}/"*.pem
 do
   name="$(basename "${node%.*}")"
-  if openssl x509 -in "${node}" -checkend "${crit}" &>/dev/null
+  if ! openssl x509 -in "${node}" -checkend "${crit}" &>/dev/null
   then
     crit_nodes+=( "$name" )
     continue
