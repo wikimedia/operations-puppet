@@ -145,4 +145,9 @@ class profile::idp(
       mode   => '0500',
       source => 'puppet:///modules/profile/idp/cas_manage_u2f.py',
     }
+
+    profile::logoutd::script {'idp':
+        source => 'puppet:///modules/apereo_cas/idp-logout.py',
+    }
+
 }

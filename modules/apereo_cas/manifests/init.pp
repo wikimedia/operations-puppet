@@ -60,6 +60,8 @@ class apereo_cas (
     Boolean                           $cors_allow_credentials        = false,
     Array[Stdlib::HTTPSUrl]           $cors_allowed_origins          = [],
     Array[String]                     $cors_allowed_headers          = [],
+    # TODO: switch to Stdlib::Http::Method
+    # https://github.com/puppetlabs/puppetlabs-stdlib/pull/1192
     Array[Wmflib::HTTP::Method]       $cors_allowed_methods          = ['GET'],
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
@@ -140,10 +142,6 @@ class apereo_cas (
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/apereo_cas/return-tgt-for-user.py',
-    }
-
-    profile::logoutd::script {'idp':
-        source => 'puppet:///modules/apereo_cas/idp-logout.py',
     }
 
     $services.each |String $service, Hash $config| {
