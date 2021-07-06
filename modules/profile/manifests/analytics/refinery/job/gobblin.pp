@@ -8,7 +8,7 @@ class profile::analytics::refinery::job::gobblin {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path
 
-    # analytics-test-hadoop gobblin jobs should all use analytics-test-hadoop.sysconfig.properties.
+    # analytics-hadoop gobblin jobs should all use analytics-hadoop.sysconfig.properties.
     Profile::Analytics::Refinery::Job::Gobblin_job {
         sysconfig_properties_file => "${refinery_path}/gobblin/common/analytics-hadoop.sysconfig.properties"
     }
