@@ -18,7 +18,7 @@ define profile::analytics::refinery::job::gobblin_job (
     $gobblin_script             = undef,
     $log_directory              = '/var/log/refinery/gobblin',
     $interval                   = undef,
-    $environment                = undef,
+    $environment                = {},
     $monitoring_enabled         = true,
     $monitoring_contact_groups  = 'analytics',
     $ensure                     = 'present',
@@ -41,6 +41,10 @@ define profile::analytics::refinery::job::gobblin_job (
         default => $gobblin_script,
     }
 
+    $default_environment = {
+        'PYTHONPATH' => "${refinery_path}/python"
+    }
+    $_environment = merge($default_environment, $environment)
 
     if !defined(File[$log_directory]) {
         file { $log_directory:
@@ -56,7 +60,7 @@ define profile::analytics::refinery::job::gobblin_job (
         command                   => $command,
         interval                  => $interval,
         user                      => $user,
-        environment               => $environment,
+        environment               => $_environment,
         monitoring_enabled        => $monitoring_enabled,
         monitoring_contact_groups => $monitoring_contact_groups,
         logfile_basedir           => $log_directory,
