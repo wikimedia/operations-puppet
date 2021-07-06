@@ -308,6 +308,10 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID, u.userName
     AND ta.objectPHID = t.phid
     AND t.ownerPHID = u.phid
     AND (t.status = "open" OR t.status = "stalled")
+    AND t.phid NOT IN
+        (SELECT ta.objectPHID FROM phabricator_maniphest.maniphest_transaction ta
+        WHERE (ta.transactionType = "reassign"
+        AND ta.dateModified > (UNIX_TIMESTAMP() - 126144000)))
     ORDER BY ta.dateModified;
 
 END
@@ -432,7 +436,6 @@ ${result_herald_rules}
 OPEN TASKS THAT HAVE BEEN ASSIGNED TO THE SAME USER FOR MORE THAN FOUR YEARS:
 ${result_cookie_licked_tasks}
 ${result_cookie_licked_tasks_bz}
-Note: Tasks might have been un- and re-assigned to same user in the meantime.
 
 
 STALLED TASKS THAT HAVE BEEN STALLED FOR MORE THAN THREE YEARS:
