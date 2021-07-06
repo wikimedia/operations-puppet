@@ -476,10 +476,6 @@ node /^db1(121|141|142|143|147|148|149|160)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
-node 'db1124.eqiad.wmnet' {
-    role(mariadb::core_test)
-}
-
 # s4 (commons) core production dbs on codfw
 # codfw master
 node 'db2090.codfw.wmnet' {
@@ -678,6 +674,10 @@ node 'db2132.codfw.wmnet' {
 # m2 eqiad master
 node 'db1107.eqiad.wmnet' {
     role(mariadb::misc)
+}
+
+node 'db1124.eqiad.wmnet' {
+    role(mariadb::core_test)
 }
 
 # m2 codfw master

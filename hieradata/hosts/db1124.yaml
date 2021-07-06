@@ -1,5 +1,3 @@
 # db1124
-# Testing section
-mariadb::shard: 'test-s4'
-profile::mariadb::mysql_role: 'master'
+mariadb::shard: 'm2'
 profile::base::notifications: disabled
