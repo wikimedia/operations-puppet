@@ -121,6 +121,12 @@ class profile::idp(
         cors_allowed_methods   => $cors_allowed_methods,
     }
 
+    systemd::unit{'tomcat9':
+        override => true,
+        restart  => true,
+        content  => "[Service]\nReadWritePaths=${apereo_cas::log_dir}\n",
+    }
+
     ferm::service {'cas-https':
         proto => 'tcp',
         port  => $ferm_port,

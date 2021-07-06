@@ -75,12 +75,6 @@ class apereo_cas (
 
     ensure_packages(['cas', 'python3-memcache'])
 
-    systemd::unit{'tomcat9':
-        override => true,
-        restart  => true,
-        content  => "[Service]\nReadWritePaths=${log_dir}\n",
-    }
-
     $groovy_file = '/etc/cas/global_principal_attribute_predicate.groovy'
     if $groovy_source {
         file{$groovy_file:
