@@ -61,23 +61,6 @@ class profile::analytics::refinery::job::test::camus(
         http_proxy_port     => $http_proxy_port,
     }
 
-    # Import webrequest_* topics into /wmf/data/raw/webrequest
-    # every 10 minutes, check runs and flag fully imported hours.
-    camus::job { 'webrequest':
-        # Being replaced by gobblin.  T271232
-        ensure           => 'absent',
-        camus_properties => {
-            'kafka.whitelist.topics'          => 'webrequest_test_text',
-            'mapreduce.job.queuename'         => 'essential',
-            'camus.message.timestamp.field'   => 'dt',
-            # Set this to at least the number of topic/partitions you will be importing.
-            'mapred.map.tasks'                => '1',
-            # This camus runs every 10 minutes, so limiting it to 9 should keep runs fresh.
-            'kafka.max.pull.minutes.per.task' => '9',
-        },
-        interval         => '*-*-* *:00/10:00',
-    }
-
     # Import eventlogging_NavigationTiming topic into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':

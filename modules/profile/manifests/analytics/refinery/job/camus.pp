@@ -99,6 +99,8 @@ class profile::analytics::refinery::job::camus(
     # Import webrequest_* topics into /wmf/data/raw/webrequest
     # every 10 minutes, check runs and flag fully imported hours.
     camus::job { 'webrequest':
+        # Being replaced by gobblin.  T271232
+        ensure           => 'absent',
         camus_properties => {
             'kafka.whitelist.topics'          => 'webrequest_text,webrequest_upload',
             'mapreduce.job.queuename'         => 'essential',
