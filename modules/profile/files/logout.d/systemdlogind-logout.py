@@ -7,7 +7,7 @@ from wmflib.idm import LogoutdBase
 
 
 class SystemdLogind(LogoutdBase):
-    """sretest"""
+    """systemdlogind"""
 
     user_identifier = 'uid'
 
