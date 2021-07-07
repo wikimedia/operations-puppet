@@ -44,6 +44,12 @@
   ProxyPass /  http://127.0.0.1:8888/
   ProxyPassReverse / http://127.0.0.1:8888/
 
+  <Location /metrics>
+    SSLVerifyClient none
+    Require host <%= @prometheus_nodes.join(' ') %>
+  </Location>
+
+
   LogLevel warn
   ErrorLog /var/log/apache2/<%= @vhost %>_ssl_error.log
   CustomLog /var/log/apache2/<%= @vhost %>_ssl_access.log wmf

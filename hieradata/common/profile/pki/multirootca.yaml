@@ -1,3 +1,4 @@
+profile::pki::multirootca::prometheus_nodes: "%{alias('prometheus_nodes')}"
 profile::pki::multirootca::maintenance_jobs: false
 profile::pki::multirootca::root_ocsp_port: 10000
 # This is the vhost used for the ocsp/crl responder
