@@ -10,6 +10,12 @@
   <Directory  <%= @document_root %>>
     Require all granted
   </Directory>
+  
+  <Location /metrics>
+    Require host <%= @prometheus_nodes.join(' ') %>
+    ProxyPass http://127.0.0.1:8888/metrics
+    ProxyPassReverse http://127.0.0.1:8888/metrics
+  </Location>
 
   # <%= @root_ca_cn %>
   ProxyPass /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>/  http://localhost:<%= @root_ocsp_port %>/
@@ -36,18 +42,9 @@
   SSLCertificateChainFile <%= @tls_termination_chain %>
   <%= @ssl_settings.join("\n  ") %>
 <%- if @enable_client_auth -%>
+  SSLVerifyClient require
   SSLVerifyDepth 1
   SSLCACertificateFile <%= @client_auth_ca_file %>
-
-  <Location />
-    <If "%{REQUEST_URI} =~ m#^/metrics$#">
-      SSLVerifyClient none
-      Require host <%= @prometheus_nodes.join(' ') %>
-    </If>
-    <Else>
-      SSLVerifyClient require
-    </Else>
-  </Location>
 <%- end -%>
 
   ProxyPass /  http://127.0.0.1:8888/
