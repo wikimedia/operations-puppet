@@ -4,6 +4,15 @@
 #
 # These jobs will eventually be moved to Airflow.
 #
+# Description of Gobblin jobs declared here:
+#
+# - webrequest
+#   Ingests webrequest_text and webrequest_upload topics into
+#   /wmf/data/raw/webrequest/.
+#
+# - netflow
+#   Ingests the netflow topic into /wmf/data/raw/netflow.
+#
 class profile::analytics::refinery::job::gobblin {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path

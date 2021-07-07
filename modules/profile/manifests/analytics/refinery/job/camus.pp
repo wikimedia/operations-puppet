@@ -21,10 +21,6 @@
 #
 # Description of Camus jobs declared here:
 #
-# - webrequest
-#   Ingests webrequest_text and webrequest_upload topics into
-#   /wmf/data/raw/webrequest/.
-#
 # - eventlogging
 #   Ingests legacy eventlogging_.+ topics into /wmf/data/raw/eventlogging/.
 #
@@ -45,9 +41,6 @@
 # - eventlogging-client-side
 #   Ingests the eventlogging-client-side topic into /wmf/data/raw/eventlogging_client_side
 #   for backup purposes.
-#
-# - netflow
-#   Ingests the netflow topic into /wmf/data/raw/netflow.
 #
 class profile::analytics::refinery::job::camus(
     String $kafka_cluster_name         = lookup('profile::analytics::refinery::job::camus::kafka_cluster_name', { 'default_value' => 'jumbo-eqiad' }),
@@ -93,25 +86,6 @@ class profile::analytics::refinery::job::camus(
         http_proxy_host     => $http_proxy_host,
         http_proxy_port     => $http_proxy_port,
         monitoring_enabled  => $monitoring_enabled,
-    }
-
-
-    # Import webrequest_* topics into /wmf/data/raw/webrequest
-    # every 10 minutes, check runs and flag fully imported hours.
-    camus::job { 'webrequest':
-        # Being replaced by gobblin.  T271232
-        ensure           => 'absent',
-        camus_properties => {
-            'kafka.whitelist.topics'          => 'webrequest_text,webrequest_upload',
-            'mapreduce.job.queuename'         => 'essential',
-            'camus.message.timestamp.field'   => 'dt',
-            # Set this to at least the number of topic/partitions you will be importing.
-            # 2 webrequest topics with 24 partitions each. 2 * 24 = 48.
-            'mapred.map.tasks'                => '48',
-            # This camus runs every 10 minutes, so limiting it to 9 should keep runs fresh.
-            'kafka.max.pull.minutes.per.task' => '9',
-        },
-        interval         => '*-*-* *:00/10:00',
     }
 
     # Import legacy eventlogging_* topics into /wmf/data/raw/eventlogging
@@ -278,6 +252,8 @@ class profile::analytics::refinery::job::camus(
     # Import netflow queue topics into /wmf/data/raw/netflow
     # once every hour.
     camus::job { 'netflow':
+        # Being replaced by gobblin.  T271232
+        ensure           => 'absent',
         camus_properties => {
             'kafka.whitelist.topics'         => 'netflow',
             # netflow stamp_inserted timestamps look like 2018-01-30 22:30:00

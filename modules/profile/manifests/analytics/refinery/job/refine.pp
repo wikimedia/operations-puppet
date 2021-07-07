@@ -35,7 +35,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.1.9'
+    $refinery_version = '0.1.14'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -257,8 +257,9 @@ class profile::analytics::refinery::job::refine(
     # === Netflow data ===
     # /wmf/data/raw/netflow -> /wmf/data/event
     $netflow_input_path = '/wmf/data/raw/netflow'
-    $netflow_input_path_regex = '(netflow)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
+    $netflow_input_path_regex = '(netflow)/year=(\\d+)/month=(\\d+)/day=(\\d+)/hour=(\\d+)'
     $netflow_input_path_regex_capture_groups = 'table,year,month,day,hour'
+    $netflow_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
 
     profile::analytics::refinery::job::refine_job { 'netflow':
         ensure                 => $ensure_timers,
@@ -267,14 +268,11 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $netflow_input_path,
             input_path_regex                => $netflow_input_path_regex,
             input_path_regex_capture_groups => $netflow_input_path_regex_capture_groups,
-            output_path                     => '/wmf/data/event',
-            database                        => 'event',
+            input_path_datetime_format      => $netflow_input_path_datetime_format,
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.augment_netflow',
         }),
         # augment_netflow needs this to add network region / DC information.
         spark_extra_files      => $::profile::analytics::refinery::network_region_config::network_region_config_file,
-        # TODO: why is service monitoring enabled false here???
-        monitoring_enabled     => false,
         refine_monitor_enabled => true,
         interval               => '*-*-* *:45:00',
         monitor_interval       => '*-*-* 03:45:00',
