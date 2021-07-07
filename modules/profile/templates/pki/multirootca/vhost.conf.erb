@@ -36,19 +36,22 @@
   SSLCertificateChainFile <%= @tls_termination_chain %>
   <%= @ssl_settings.join("\n  ") %>
 <%- if @enable_client_auth -%>
-  SSLVerifyClient require
   SSLVerifyDepth 1
   SSLCACertificateFile <%= @client_auth_ca_file %>
+
+  <Location />
+    <If "%{REQUEST_URI} =~ m#^/metrics$#">
+      SSLVerifyClient none
+      Require host <%= @prometheus_nodes.join(' ') %>
+    </If>
+    <Else>
+      SSLVerifyClient require
+    </Else>
+  </Location>
 <%- end -%>
 
   ProxyPass /  http://127.0.0.1:8888/
   ProxyPassReverse / http://127.0.0.1:8888/
-
-  <Location /metrics>
-    SSLVerifyClient none
-    Require host <%= @prometheus_nodes.join(' ') %>
-  </Location>
-
 
   LogLevel warn
   ErrorLog /var/log/apache2/<%= @vhost %>_ssl_error.log
