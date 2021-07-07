@@ -36,7 +36,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'refinery-drop-webrequest-raw-partitions':
         ensure      => $ensure_timers,
         description => 'Drop Webrequest raw data imported on HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='webrequest' --base-path='/wmf/data/raw/webrequest' --path-format='.+/hourly/(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?' --older-than='${raw_retention_days}' --skip-trash --execute='96726ec893174544fc9bd7c7fa0083ea'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf_raw' --tables='webrequest' --base-path='/wmf/data/raw/webrequest' --path-format='.+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?' --older-than='${raw_retention_days}' --skip-trash --execute='09416193e5d56ef0fd43abc1d669f0c0'",
         interval    => '*-*-* 00/4:15:00',
         environment => $systemd_env,
         user        => 'analytics',
