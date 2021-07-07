@@ -12,6 +12,8 @@ define cfssl::cert (
     # 11 days + 30 minutes to capture the puppet run schedule.
     Integer[1800]                  $renew_seconds  = 952200,
     Boolean                        $provide_chain  = false,
+    # We need this because the puppet CA cert used for TLS mutual auth has no SAN
+    Array[String]                  $environment    = ['GODEBUG=x509ignoreCN=0'],
     Optional[String]               $label          = undef,
     Optional[String]               $profile        = undef,
     Optional[String]               $notify_service = undef,
@@ -25,7 +27,6 @@ define cfssl::cert (
 ) {
     include cfssl
     include cfssl::client
-
     $_tls_cert = $tls_cert ? {
         undef   => $cfssl::client::mutual_tls_client_cert,
         default => $tls_cert,
@@ -136,8 +137,9 @@ define cfssl::cert (
         | TEST_COMMAND
     if $ensure == 'present' {
         exec{"Generate cert ${title}":
-            command => $gen_command,
-            unless  => $test_command,
+            command     => $gen_command,
+            environment => $environment,
+            unless      => $test_command,
         }
         if $auto_renew {
             $_notify_service = $notify_service ? {
@@ -145,10 +147,11 @@ define cfssl::cert (
                 default => Service[$notify_service],
             }
             exec {"renew certificate - ${title}":
-                command => $sign_command,
-                unless  => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
-                require => Exec["Generate cert ${title}"],
-                notify  => $_notify_service,
+                command     => $sign_command,
+                environment => $environment,
+                unless      => "/usr/bin/openssl x509 -in ${cert_path} -checkend ${renew_seconds}",
+                require     => Exec["Generate cert ${title}"],
+                notify      => $_notify_service,
             }
         }
     }
