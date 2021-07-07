@@ -19,6 +19,10 @@ profile::pki::multirootca::db_host: 'pki-db.pki.eqiad1.wikimedia.cloud'
 profile::pki::multirootca::db_name: 'pki'
 profile::pki::multirootca::enable_client_auth: true
 profile::pki::multirootca::client_ca_source: 'puppet:///modules/profile/pki/cloud/client_auth_CA.pem'
+profile::pki::multirootca::default_usages:
+  - 'signing'
+  - 'key encipherment'
+  - 'client auth'
 profile::pki::multirootca::default_nets:
   - 127.0.0.1/32
 profile::pki::multirootca::default_profiles:
