@@ -111,29 +111,6 @@ class profile::toolforge::apt_pinning {
         }
     }
 
-    # paws
-    if debian::codename::eq('stretch') {
-        apt::pin { 'toolforge-kubeadm-pinning':
-            package  => 'kubeadm',
-            pin      => 'version 1.9.4-00',
-            priority => '1001',
-        }
-        apt::pin { 'toolforge-kubelet-pinning':
-            package  => 'kubelet',
-            pin      => 'version 1.9.4-00',
-            priority => '1001',
-        }
-        apt::pin { 'toolforge-kubectl-pinning':
-            package  => 'kubectl',
-            pin      => 'version 1.9.4-00',
-            priority => '1001',
-        }
-        apt::pin { 'toolforge-kubernetes-cni-pinning':
-            package  => 'kubernetes-cni',
-            pin      => 'version 0.6.0-00',
-            priority => '1001',
-        }
-    }
     apt::pin { 'toolforge-nfs-common-pinning':
         package  => 'nfs-common',
         pin      => $nfs_common_pkg_version,
