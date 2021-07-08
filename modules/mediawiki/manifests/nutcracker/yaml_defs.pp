@@ -11,17 +11,15 @@ class mediawiki::nutcracker::yaml_defs(
 ){
     $pools = $redis_shards['sessions'].map |$datacenter, $servers| {
         {
-            $datacenter => {
             'name' => $datacenter,
-                'port' => $nutcracker_ports[$datacenter],
-                'servers' =>  $servers.map |$shard_slot, $hostinfo| {
-                    {
-                        'shard' => $shard_slot,
-                        'host'  => $hostinfo['host'],
-                        'port'  => $hostinfo['port']
-                    }
+            'port' => $nutcracker_ports[$datacenter],
+            'servers' =>  $servers.map |$shard_slot, $hostinfo| {
+                {
+                    'shard' => $shard_slot,
+                    'host'  => $hostinfo['host'],
+                    'port'  => $hostinfo['port']
+                }
                 },
-            },
         }
     }
     file { $path:
