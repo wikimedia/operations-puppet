@@ -13,9 +13,11 @@ class profile::analytics::refinery::job::test::gobblin {
         sysconfig_properties_file => "${refinery_path}/gobblin/common/analytics-test-hadoop.sysconfig.properties"
     }
 
-    # Will declare a job using ${refinery_path}/gobblin/jobs/webrequest_test.pull
     profile::analytics::refinery::job::gobblin_job { 'webrequest_test':
         interval         => '*-*-* *:00/10:00',
     }
 
+    profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy_test':
+        interval         => '*-*-* *:05:00',
+    }
 }
