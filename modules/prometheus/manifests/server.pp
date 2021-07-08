@@ -171,6 +171,9 @@ define prometheus::server (
         owner  => 'prometheus',
         group  => 'root',
     }
+    File[$targets_path, $rules_path] {
+        purge => true,
+    }
 
     exec { "${service_name}-reload":
         command     => "/bin/systemctl reload ${service_name}",
