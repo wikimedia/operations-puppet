@@ -51,7 +51,7 @@ import irc
 
 import irc.bot as ircbot
 
-BUFSIZE = 460  # Read from socket in IRC-message-sized chunks.
+BUFSIZE = 425  # Read from socket in IRC-message-sized chunks.
 
 logging.basicConfig(level=logging.INFO, stream=sys.stderr,
                     format='%(asctime)-15s %(message)s')
