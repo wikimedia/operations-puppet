@@ -2028,6 +2028,15 @@ class profile::prometheus::ops (
           'layer' => 'frontend',
         },
     }
+    prometheus::cluster_config{ "pki_${::site}":
+        dest    => "${targets_path}/pki_${::site}.yaml",
+        site    => $::site,
+        cluster => 'pki',
+        port    => 80,
+        labels  => {
+          'cluster' => 'pki',
+        },
+    }
 
     prometheus::varnish_2layer{ 'canary':
         targets_path => $targets_path,
