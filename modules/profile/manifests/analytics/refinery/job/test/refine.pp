@@ -33,11 +33,13 @@ class profile::analytics::refinery::job::test::refine (
         # raw data to be imported in the last hour or 2 before attempting refine.
         'since'               => '26',
         'until'               => '2',
+        # Until T259924 is fixed, we MUST merge with Hive schema before reading JSON data.
+        'merge_with_hive_schema_before_read' => true,
     }
 
     # Conventional Hive format path with partition keys (used by Gobblin), i.e. year=yyyy/month=mm/day=dd/hour=hh.
-    $hive_date_path_format = 'year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?'
-    # Used by Java Timeformats to find potential hourly paths to refine.
+    $hive_path_hourly_format = 'year=(\\d+)/month=(\\d+)/day=(\\d+)/hour=(\\d+)'
+    # Used by Java time formats to find potential hourly paths to refine.
     $hive_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
 
     # === EventLogging Legacy data ===
@@ -47,7 +49,9 @@ class profile::analytics::refinery::job::test::refine (
         ensure           => $ensure_timers,
         job_config       => merge($default_config, {
             input_path                      => '/wmf/data/raw/eventlogging_legacy',
-            input_path_regex                => "eventlogging_(.+)/${hive_date_path_format}",
+            # NOTE: We need to prefix our partition discovery regex with the input_path here,
+            # since eventlogging_legacy would match eventlogging_(.+) without it.
+            input_path_regex                => "/wmf/data/raw/eventlogging_legacy/eventlogging_(.+)/${hive_path_hourly_format}",
             input_path_regex_capture_groups => 'table,year,month,day,hour',
             input_path_datetime_format      => $hive_input_path_datetime_format,
             # Since EventLogging legacy data comes from external clients,
