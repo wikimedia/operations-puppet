@@ -1,8 +1,8 @@
 class profile::wmcs::metricsinfra::alertmanager (
     Array[Hash]  $projects = lookup('profile::wmcs::metricsinfra::monitored_projects'),
+    Array[Stdlib::Fqdn] $alertmanager_hosts = lookup('profile::wmcs::metricsinfra::prometheus_alertmanager_hosts'),
 ) {
-    # Base Prometheus data and configuration path
-    $base_path = '/srv/prometheus/cloud'
+    $base_path = '/etc/prometheus/alertmanager'
 
     # Prometheus alert manager service setup and config
     package { 'prometheus-alertmanager':
@@ -23,12 +23,25 @@ class profile::wmcs::metricsinfra::alertmanager (
         refreshonly => true,
     }
 
+    $listen_address = $::ipaddress
+    $peers = $alertmanager_hosts.filter |Stdlib::Fqdn $host| {
+        $host != $::fqdn
+    }.map |Stdlib::Fqdn $host| {
+        "${host}:9094"
+    }
+
     file { '/etc/default/prometheus-alertmanager':
         content => template('profile/wmcs/metricsinfra/prometheus-alertmanager-defaults.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         notify  => Exec['alertmanager-restart'],
+    }
+
+    file { $base_path:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
     }
 
     file { "${base_path}/alertmanager.yml":

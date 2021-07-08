@@ -1,13 +1,18 @@
 class profile::wmcs::metricsinfra::prometheus(
-    Array[Hash]  $projects          = lookup('profile::wmcs::metricsinfra::monitored_projects'),
-    Stdlib::Fqdn $ext_fqdn          = lookup('profile::wmcs::metricsinfra::prometheus::ext_fqdn'),
-    Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
-    String       $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
-    String       $observer_user     = lookup('profile::openstack::base::observer_user'),
-    String       $region            = lookup('profile::openstack::eqiad1::region'),
+    Array[Stdlib::Fqdn] $alertmanager_hosts = lookup('profile::wmcs::metricsinfra::prometheus_alertmanager_hosts'),
+    Array[Hash]         $projects           = lookup('profile::wmcs::metricsinfra::monitored_projects'),
+    Stdlib::Fqdn        $ext_fqdn           = lookup('profile::wmcs::metricsinfra::prometheus::ext_fqdn'),
+    Stdlib::Fqdn        $keystone_api_fqdn  = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
+    String              $observer_password  = lookup('profile::openstack::eqiad1::observer_password'),
+    String              $observer_user      = lookup('profile::openstack::base::observer_user'),
+    String              $region             = lookup('profile::openstack::eqiad1::region'),
 ) {
     # Base Prometheus data and configuration path
     $base_path = '/srv/prometheus/cloud'
+
+    $alertmanager_hosts_with_port = $alertmanager_hosts.map |Stdlib::Fqdn $host| {
+        "${host}:9093"
+    }
 
     # Project node-exporter scrape configuration
     $project_configs = $projects.map |Hash $project| {
@@ -56,7 +61,7 @@ class profile::wmcs::metricsinfra::prometheus(
             'job_name'       => 'alertmanager',
             'metrics_path'   => '/metrics',
             'static_configs' => [
-                { 'targets'  => [ 'localhost:9093' ] },
+                { 'targets'  => $alertmanager_hosts_with_port },
             ],
         },
     ]
@@ -64,8 +69,7 @@ class profile::wmcs::metricsinfra::prometheus(
     $scrape_configs = concat($project_configs, $alertmanager_configs)
 
     prometheus::server { 'cloud':
-        # Localhost is being used here to pass prometheus module input validation
-        alertmanagers        => [ 'localhost:9093', ],
+        alertmanagers        => $alertmanager_hosts_with_port,
         external_url         => "https://${$ext_fqdn}/cloud",
         listen_address       => '127.0.0.1:9900',
         scrape_configs_extra => $scrape_configs,
