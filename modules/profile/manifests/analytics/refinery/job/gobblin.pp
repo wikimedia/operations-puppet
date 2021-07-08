@@ -20,16 +20,30 @@ class profile::analytics::refinery::job::gobblin {
     # analytics-hadoop gobblin jobs should all use analytics-hadoop.sysconfig.properties.
     Profile::Analytics::Refinery::Job::Gobblin_job {
         sysconfig_properties_file => "${refinery_path}/gobblin/common/analytics-hadoop.sysconfig.properties"
+        # By default, gobblin_job will use a jobconfig_properties_file of
+        # ${refinery_path}/gobblin/jobs/${title}.pull
     }
 
-    # Will declare a job using ${refinery_path}/gobblin/jobs/webrequest.pull
+
     profile::analytics::refinery::job::gobblin_job { 'webrequest':
+        # webrequest is large.  Run it every 10 minutes to keep pressure on Kafka low
+        # (pulling more often means it is more likely for data to be in Kafka's cache).
         interval         => '*-*-* *:00/10:00',
     }
 
 
     profile::analytics::refinery::job::gobblin_job { 'netflow':
-        interval         => '*-*-* *:00/30:00',
+        # netflow data is unique.  The producer does some minutely aggregation, so all
+        # timestamps are alligned with minutes and 0 seconds, e.g. 2021-07-07 18:00:00.
+        # This makes gobblin behave when run exactly at an hourly boundry.
+        # Gobblin writes _IMPORTED flags only if it notices that it finishes importing
+        # for a given hour during a run.  If run at e.g. 10:00:00, it is very
+        # unlikely that that specific gobblin run will import any data for hour 10:00;
+        # the latest timestamp it will import is 09:59.
+        # We want at lesat one gobblin run to see timestamps on either side of the hour.
+        # Run at 5 and 35 minutes after the hour.
+        # Bug: https://phabricator.wikimedia.org/T286343
+        interval         => '*-*-* *:05,35:00',
     }
 
 }
