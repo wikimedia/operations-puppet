@@ -50,25 +50,21 @@ class profile::prometheus::services (
     prometheus::jmx_exporter_config{ "cassandra_restbase_dev_${::site}":
         dest       => "${targets_path}/cassandra_restbase_dev_${::site}.yaml",
         class_name => 'role::restbase::dev_cluster',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "cassandra_restbase_production_${::site}":
         dest       => "${targets_path}/cassandra_restbase_production_${::site}.yaml",
         class_name => 'role::restbase::production',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "cassandra_sessionstore_production_${::site}":
         dest       => "${targets_path}/cassandra_sessionstore_production_${::site}.yaml",
         class_name => 'role::sessionstore',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "cassandra_maps_production_${::site}":
         dest       => "${targets_path}/cassandra_maps_production_${::site}.yaml",
         class_name => 'profile::maps::cassandra',
-        site       => $::site,
     }
 
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {

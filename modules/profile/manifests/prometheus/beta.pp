@@ -93,7 +93,6 @@ class profile::prometheus::beta (
     ]
     prometheus::class_config{ "memcached_${::site}":
         dest       => "${targets_path}/memcached_${::site}.yaml",
-        site       => $::site,
         class_name => 'profile::prometheus::memcached_exporter',
         port       => 9150,
         labels     => {}
@@ -101,7 +100,6 @@ class profile::prometheus::beta (
 
     prometheus::class_config{ "mcrouter_${::site}":
         dest       => "${targets_path}/mcrouter_${::site}.yaml",
-        site       => $::site,
         class_name => 'profile::prometheus::mcrouter_exporter',
         port       => 9151,
         labels     => {}
@@ -113,7 +111,6 @@ class profile::prometheus::beta (
         dest              => "${targets_path}/jmx_kafka_broker_beta_${::site}.yaml",
         class_name        => 'profile::kafka::broker::monitoring',
         instance_selector => 'kafka_broker_.*',
-        site              => $::site,
     }
     # Collect all declared kafka_mirror_.* jmx_exporter_instances
     # from any uses of profile::kafka::mirror.
@@ -121,7 +118,6 @@ class profile::prometheus::beta (
         dest              => "${targets_path}/jmx_kafka_mirrormaker_beta_${::site}.yaml",
         class_name        => 'profile::kafka::mirror',
         instance_selector => 'kafka_mirror_.*',
-        site              => $::site,
     }
 
     prometheus::server { 'beta':

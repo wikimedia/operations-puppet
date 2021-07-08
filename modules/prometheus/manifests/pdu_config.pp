@@ -4,13 +4,11 @@
 
 # == Parameters
 # $dest:    The output file where to write the result.
-# $site:    The site to filter on.
 # $labels:  Labels to attach to every target. 'row' will be added from
 # discovered resources.
 
 define prometheus::pdu_config(
     String $dest,
-    String $site,
     String $model    = 'sentry3',
     String $resource = 'Facilities::Monitor_pdu_3phase',
     Hash   $labels   = {},

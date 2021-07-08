@@ -306,7 +306,6 @@ class profile::prometheus::k8s (
 
         prometheus::class_config { "calico-felix-${k8s_cluster}":
             dest           => "${targets_path}/calico-felix_${::site}.yaml",
-            site           => $::site,
             class_name     => $class_name,
             hostnames_only => false,
             port           => 9091,

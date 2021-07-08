@@ -110,14 +110,12 @@ class profile::prometheus::analytics (
 
     prometheus::class_config{ "matomo_mysql_${::site}":
         dest       => "${targets_path}/mysql_analytics_matomo_${::site}.yaml",
-        site       => $::site,
         class_name => 'role::piwik',
         port       => 13306,
     }
 
     prometheus::class_config{ "analyics_meta_mysql_${::site}":
         dest       => "${targets_path}/mysql_analytics_meta_${::site}.yaml",
-        site       => $::site,
         class_name => 'profile::analytics::database::meta',
         port       => 13306,
     }
@@ -125,91 +123,76 @@ class profile::prometheus::analytics (
     prometheus::jmx_exporter_config{ "hadoop_worker_${::site}":
         dest       => "${targets_path}/jmx_hadoop_worker_${::site}.yaml",
         class_name => 'role::analytics_cluster::hadoop::worker',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_master_${::site}":
         dest       => "${targets_path}/jmx_hadoop_master_${::site}.yaml",
         class_name => 'role::analytics_cluster::hadoop::master',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_standby_${::site}":
         dest       => "${targets_path}/jmx_hadoop_standby_${::site}.yaml",
         class_name => 'role::analytics_cluster::hadoop::standby',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_worker_test_${::site}":
         dest       => "${targets_path}/jmx_hadoop_worker_test_${::site}.yaml",
         class_name => 'role::analytics_test_cluster::hadoop::worker',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_master_test_${::site}":
         dest       => "${targets_path}/jmx_hadoop_master_test_${::site}.yaml",
         class_name => 'role::analytics_test_cluster::hadoop::master',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_standby_test_${::site}":
         dest       => "${targets_path}/jmx_hadoop_standby_test_${::site}.yaml",
         class_name => 'role::analytics_test_cluster::hadoop::standby',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_worker_backup_${::site}":
         dest       => "${targets_path}/jmx_hadoop_worker_backup_${::site}.yaml",
         class_name => 'role::analytics_backup_cluster::hadoop::worker',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_master_backup_${::site}":
         dest       => "${targets_path}/jmx_hadoop_master_backup_${::site}.yaml",
         class_name => 'role::analytics_backup_cluster::hadoop::master',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_standby_backup_${::site}":
         dest       => "${targets_path}/jmx_hadoop_standby_backup_${::site}.yaml",
         class_name => 'role::analytics_backup_cluster::hadoop::standby',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "druid_public_${::site}":
         dest       => "${targets_path}/jmx_druid_public_${::site}.yaml",
         class_name => 'role::druid::public::worker',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "druid_analytics_${::site}":
         dest       => "${targets_path}/jmx_druid_analytics_${::site}.yaml",
         class_name => 'role::druid::analytics::worker',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "hive_analytics_${::site}":
         dest       => "${targets_path}/jmx_hive_analytics_${::site}.yaml",
         class_name => 'profile::hive::server',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "cassandra_aqs_${::site}":
         dest       => "${targets_path}/jmx_aqs_cassandra_${::site}.yaml",
         class_name => 'role::aqs',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "zookeeper_analytics_${::site}":
         dest       => "${targets_path}/jmx_zookeeper_analytics_${::site}.yaml",
         class_name => 'role::analytics_cluster::zookeeper',
-        site       => $::site,
     }
 
     prometheus::jmx_exporter_config{ "presto_analytics_${::site}":
         dest       => "${targets_path}/jmx_presto_analytics_${::site}.yaml",
         class_name => 'role::analytics_cluster::presto::server',
-        site       => $::site,
     }
 
     # Job definition for druid_exporter
@@ -224,7 +207,6 @@ class profile::prometheus::analytics (
 
     prometheus::cluster_config{ "druid_public_${::site}":
         dest    => "${targets_path}/druid_public_${::site}.yaml",
-        site    => $::site,
         cluster => 'druid_public',
         port    => 8000,
         labels  => {
@@ -234,7 +216,6 @@ class profile::prometheus::analytics (
 
     prometheus::cluster_config{ "druid_analytics_${::site}":
         dest    => "${targets_path}/druid_analytics_${::site}.yaml",
-        site    => $::site,
         cluster => 'druid_analytics',
         port    => 8000,
         labels  => {

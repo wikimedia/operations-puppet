@@ -12,9 +12,6 @@
 #   Class name to search.  All nodes with this class declared will be searched
 #   for jmx_exporter_instance titles that match $instance_selector.
 #
-# [*site*]
-#   The site to use.
-#
 # [*instance_selector*]
 #   Regex to select jmx_exporter_instances by title.  Default: .*
 #
@@ -24,7 +21,6 @@
 define prometheus::jmx_exporter_config(
     String $dest,
     String $class_name,
-    String $site,
     String $instance_selector = '.*',
     Hash   $labels            = {},
 ) {
@@ -33,7 +29,7 @@ define prometheus::jmx_exporter_config(
                   "Class[\"${class_name}\"]",
                   "Prometheus::Jmx_exporter_instance[~\"${instance_selector}\"]",
                   true)
-    $site_clusters = get_clusters({'site' => $site})
+    $site_clusters = get_clusters({'site' => $::site})
 
     file { $dest:
         ensure  => present,

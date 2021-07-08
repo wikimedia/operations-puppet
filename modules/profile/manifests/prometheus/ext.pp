@@ -38,7 +38,6 @@ class profile::prometheus::ext (
     ]
     prometheus::class_config{ "statsv_${::site}":
         dest       => "${targets_path}/statsv_${::site}.yaml",
-        site       => $::site,
         class_name => 'profile::webperf::processors',
         port       => 9112,
     }
