@@ -102,10 +102,4 @@ class profile::wmcs::metricsinfra::prometheus(
         proxy_pass => 'http://localhost:9900/cloud',
         require    => Httpd::Site['prometheus'],
     }
-
-    ferm::service { 'prometheus-web':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$DOMAIN_NETWORKS',
-    }
 }
