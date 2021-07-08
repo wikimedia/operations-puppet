@@ -64,6 +64,7 @@ class profile::analytics::refinery::job::test::camus(
     # Import eventlogging_NavigationTiming topic into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':
+        ensure           => 'absent',
         camus_properties => {
             'kafka.whitelist.topics'        => 'eventlogging_NavigationTiming',
             'mapreduce.job.queuename'       => 'essential',
@@ -128,7 +129,9 @@ class profile::analytics::refinery::job::test::camus(
 
     # Declare each of the $event_service_jobs.
     $event_service_jobs.each |String $event_service_name, Hash $parameters| {
+        #
         camus::job { "${event_service_name}_events":
+            ensure           => 'absent',
             camus_properties => $parameters['camus_properties'],
             # Don't need to write _IMPORTED flags for event data
             check_dry_run    => true,

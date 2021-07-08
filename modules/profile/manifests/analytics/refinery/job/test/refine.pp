@@ -38,21 +38,25 @@ class profile::analytics::refinery::job::test::refine (
     }
 
     # Conventional Hive format path with partition keys (used by Gobblin), i.e. year=yyyy/month=mm/day=dd/hour=hh.
-    $hive_path_hourly_format = 'year=(\\d+)/month=(\\d+)/day=(\\d+)/hour=(\\d+)'
+    $hive_hourly_path_regex = 'year=(\\d+)/month=(\\d+)/day=(\\d+)/hour=(\\d+)'
+    $hive_hourly_path_regex_capture_groups = 'year,month,day,hour'
     # Used by Java time formats to find potential hourly paths to refine.
     $hive_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
 
     # === EventLogging Legacy data ===
     # /wmf/data/raw/eventlogging_legacy -> /wmf/data/event
     # EventLogging legacy events migrated to Event Platform.
+    $eventlogging_legacy_input_path = '/wmf/data/raw/eventlogging_legacy'
+    # NOTE: We need to prefix our partition discovery regex with the input_path here,
+    # since eventlogging_legacy would match eventlogging_(.+) without it.
+    $eventlogging_legacy_input_path_regex = "${eventlogging_legacy_input_path}/eventlogging_(.+)/${hive_hourly_path_regex}"
+    $eventlogging_legacy_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
     profile::analytics::refinery::job::refine_job { 'eventlogging_legacy_test':
         ensure           => $ensure_timers,
         job_config       => merge($default_config, {
-            input_path                      => '/wmf/data/raw/eventlogging_legacy',
-            # NOTE: We need to prefix our partition discovery regex with the input_path here,
-            # since eventlogging_legacy would match eventlogging_(.+) without it.
-            input_path_regex                => "/wmf/data/raw/eventlogging_legacy/eventlogging_(.+)/${hive_path_hourly_format}",
-            input_path_regex_capture_groups => 'table,year,month,day,hour',
+            input_path                      => $eventlogging_legacy_input_path,
+            input_path_regex                => $eventlogging_legacy_input_path_regex,
+            input_path_regex_capture_groups => $eventlogging_legacy_input_path_regex_capture_groups,
             input_path_datetime_format      => $hive_input_path_datetime_format,
             # Since EventLogging legacy data comes from external clients,
             # non wikimedia domains and other unwanted domains have always been filtered out.
@@ -68,18 +72,18 @@ class profile::analytics::refinery::job::test::refine (
 
     # === Event data ===
     # /wmf/data/raw/event -> /wmf/data/event
-    # NOTE: refinery::job::test::camus only imports limited data in test cluster,
+    # NOTE: refinery::job::test::gobblin only imports limited data in test cluster,
     # so we don't need to specify any table include or exclude regexes.
     $event_input_path = '/wmf/data/raw/event'
-    $event_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
-    $event_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
-
+    $event_input_path_regex = "${event_input_path}/(eqiad|codfw)\\.(.+)/${hive_hourly_path_regex}"
+    $event_input_path_regex_capture_groups = "datacenter,table,${hive_hourly_path_regex_capture_groups}"
     profile::analytics::refinery::job::refine_job { 'event_test':
         ensure           => $ensure_timers,
         job_config       => merge($default_config, {
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
+            input_path_datetime_format      => $hive_input_path_datetime_format,
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.event_transforms',
             # Get JSONSchemas from the HTTP schema service.
             # Schema URIs are extracted from the $schema field in each event.
