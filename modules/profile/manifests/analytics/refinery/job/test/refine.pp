@@ -15,7 +15,7 @@ class profile::analytics::refinery::job::test::refine (
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.1.5'
+    $refinery_version = '0.1.14'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -35,16 +35,21 @@ class profile::analytics::refinery::job::test::refine (
         'until'               => '2',
     }
 
+    # Conventional Hive format path with partition keys (used by Gobblin), i.e. year=yyyy/month=mm/day=dd/hour=hh.
+    $hive_date_path_format = 'year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?'
+    # Used by Java Timeformats to find potential hourly paths to refine.
+    $hive_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
+
     # === EventLogging Legacy data ===
-    # /wmf/data/raw/eventlogging -> /wmf/data/event
+    # /wmf/data/raw/eventlogging_legacy -> /wmf/data/event
     # EventLogging legacy events migrated to Event Platform.
     profile::analytics::refinery::job::refine_job { 'eventlogging_legacy_test':
         ensure           => $ensure_timers,
         job_config       => merge($default_config, {
-            input_path                      => '/wmf/data/raw/eventlogging',
-            input_path_regex                => 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)',
+            input_path                      => '/wmf/data/raw/eventlogging_legacy',
+            input_path_regex                => "eventlogging_(.+)/${hive_date_path_format}",
             input_path_regex_capture_groups => 'table,year,month,day,hour',
-            table_include_regex             => '^navigationtiming$',
+            input_path_datetime_format      => $hive_input_path_datetime_format,
             # Since EventLogging legacy data comes from external clients,
             # non wikimedia domains and other unwanted domains have always been filtered out.
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms',
