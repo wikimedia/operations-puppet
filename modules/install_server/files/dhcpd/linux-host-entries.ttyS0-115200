@@ -758,10 +758,22 @@ host mx1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host mx1002 {
+    hardware ethernet aa:00:00:34:ce:49;
+    fixed-address mx1002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host mx2001 {
     hardware ethernet aa:00:00:d2:18:cf;
     fixed-address mx2001.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host mx2002 {
+    hardware ethernet aa:00:00:8f:a6:c1;
+    fixed-address mx2002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host ncredir1001 {

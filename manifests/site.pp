@@ -2151,6 +2151,10 @@ node 'mx1001.wikimedia.org' {
     }
 }
 
+node 'mx1002.wikimedia.org' {
+    role(insetup)
+}
+
 node 'mx2001.wikimedia.org' {
     role(mail::mx)
 
@@ -2158,6 +2162,10 @@ node 'mx2001.wikimedia.org' {
         ipv4 => '208.80.153.46',
         ipv6 => '2620:0:860:2:208:80:153:46',
     }
+}
+
+node 'mx2002.wikimedia.org' {
+    role(insetup)
 }
 
 # ncredir instances
