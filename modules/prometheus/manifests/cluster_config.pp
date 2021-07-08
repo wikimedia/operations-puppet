@@ -30,13 +30,25 @@ define prometheus::cluster_config(
   String $cluster,
   Stdlib::Port $port,
   Hash $labels,
-  Wmflib::Ensure $ensure = present,
 ) {
+    $data = get_clusters({'site' => [$site], 'cluster' => [$cluster]}).map |$cluster_items| {
+        # $cluster_items is a tuple of ($cluster, $sites)
+        $cluster_items[1].map |$site_items| {
+            # $site_items is a tuple of ($site, $targets)
+            $targets = $site_items[1].map |$target| { "${target.split('\.')[0]}:${port}" }
+            $item = {
+                'targets' => $targets,
+                'labels' => $labels,
+            }
+            $item
+        }
+    }.flatten
+
     file { $dest:
-        ensure  => $ensure,
+        ensure  => stdlib::ensure(!$data.empty, 'file'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => template('prometheus/cluster_config.erb'),
+        content => "# This file is managed by puppet\n${data.ordered_yaml}\n"
     }
 }
