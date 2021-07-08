@@ -1,3 +1,4 @@
+cluster: pki
 profile::pki::root_ca::intermediates:
   - debmonitor
   - discovery

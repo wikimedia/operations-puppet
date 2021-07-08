@@ -1,3 +1,4 @@
+cluster: pki
 profile::base::puppet::dns_alt_names:
   - pki.discovery.wmnet
 profile::pki::client::ensure: present

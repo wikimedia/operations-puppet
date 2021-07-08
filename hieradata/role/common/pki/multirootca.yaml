@@ -1,3 +1,4 @@
+cluster: pki
 profile::base::puppet::dns_alt_names:
   - pki.discovery.wmnet
 # in this file all _cert parameteres are passed to the file function

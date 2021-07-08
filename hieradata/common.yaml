@@ -491,6 +491,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  pki:
+    description: "PKI (cfssl) infrastructure"
+    id: 95
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
