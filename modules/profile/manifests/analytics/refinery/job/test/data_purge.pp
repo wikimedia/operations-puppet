@@ -35,7 +35,7 @@ class profile::analytics::refinery::job::test::data_purge(
     kerberos::systemd_timer { 'refinery-drop-eventlogging-legacy-raw-partitions':
         ensure      => $ensure_timers,
         description => 'Drop Eventlogging legacy raw data imported on HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_legacy' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='a08f06839e1479604b04bb661b00f616'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_legacy' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='4ed6284d2bd995be7a0f65386468875e'",
         interval    => '*-*-* 00/4:15:00',
         environment => $systemd_env,
         user        => 'analytics',
