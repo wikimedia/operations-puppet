@@ -53,7 +53,7 @@ class profile::analytics::refinery::job::test::data_purge(
     kerberos::systemd_timer { 'refinery-drop-raw-event':
         ensure      => $ensure_timers,
         description => 'Drop raw event (/wmf/data/raw/event) data imported on HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/event' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='d26dc1a20ee727789f6d05111206f2a8'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/event' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='f4327d862ccf4e35d9e89b2647ca0078'",
         interval    => '*-*-* 00/4:20:00',
         environment => $systemd_env,
         user        => 'analytics',
