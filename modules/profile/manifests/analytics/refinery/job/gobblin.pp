@@ -13,6 +13,10 @@
 # - netflow
 #   Ingests the netflow topic into /wmf/data/raw/netflow.
 #
+# - event_default
+#   Ingests all streams with consumers.analytics_hadoop_ingestion.job_name == 'event_default'
+#   set in stream config to /wmf/data/raw/event
+#
 class profile::analytics::refinery::job::gobblin {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path
@@ -44,6 +48,10 @@ class profile::analytics::refinery::job::gobblin {
         # Run at 5 and 35 minutes after the hour.
         # Bug: https://phabricator.wikimedia.org/T286343
         interval         => '*-*-* *:05,35:00',
+    }
+
+    profile::analytics::refinery::job::gobblin_job { 'event_default':
+        interval         => '*-*-* *:15:00',
     }
 
 }
