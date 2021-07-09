@@ -58,11 +58,17 @@ class profile::analytics::refinery::job::refine(
         'merge_with_hive_schema_before_read' => true,
     }
 
+    # Conventional Hive format path with partition keys (used by Gobblin), i.e. year=yyyy/month=mm/day=dd/hour=hh.
+    $hive_hourly_path_regex = 'year=(\\d+)/month=(\\d+)/day=(\\d+)/hour=(\\d+)'
+    $hive_hourly_path_regex_capture_groups = 'year,month,day,hour'
+    # Used by Java time formats to find potential hourly paths to refine.
+    $hive_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
+
     # === Event data ===
     # /wmf/data/raw/event -> /wmf/data/event
     $event_input_path = '/wmf/data/raw/event'
-    $event_input_path_regex = '.*(eqiad|codfw)_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
-    $event_input_path_regex_capture_groups = 'datacenter,table,year,month,day,hour'
+    $event_input_path_regex = "${event_input_path}/(eqiad|codfw)\\.(.+)/${hive_hourly_path_regex}"
+    $event_input_path_regex_capture_groups = "datacenter,${hive_hourly_path_regex_capture_groups}"
     # Unrefineable tables due to poorly defined schemas.
     $event_table_exclude_list = [
         # TODO: include page_properties_change after https://phabricator.wikimedia.org/T281483 is fixed.
@@ -79,6 +85,7 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
+            input_path_datetime_format      => $hive_input_path_datetime_format,
             table_exclude_regex             => $event_table_exclude_regex,
             # event_transforms:
             # - deduplicate

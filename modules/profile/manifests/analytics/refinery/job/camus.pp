@@ -209,6 +209,8 @@ class profile::analytics::refinery::job::camus(
         }
 
         camus::job { "${event_service_name}_events":
+            # Being replaced by gobblin.  T271232
+            ensure           => 'absent',
             camus_properties => merge(
                 $camus_properties_events,
                 $parameters['camus_properties'],
