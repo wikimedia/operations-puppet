@@ -1,10 +1,13 @@
 [user]
 	name = Kunal Mehta
 	email = legoktm@wikimedia.org
+[submodule]
+	fetchJobs = 3
 [help]
 	autocorrect = 20
 [advice]
 	detachedHead = false
+[alias]
+	authors = "!git shortlog -s | sort -nr"
 [pull]
 	ff = only
-
