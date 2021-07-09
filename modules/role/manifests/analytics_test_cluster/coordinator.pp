@@ -60,10 +60,8 @@ class role::analytics_test_cluster::coordinator {
     # Various crons that launch Hadoop jobs.
     include ::profile::analytics::refinery
 
-    # Camus crons import data into
-    # from Kafka into HDFS.
-    include ::profile::analytics::refinery::job::test::camus
-    include ::profile::analytics::refinery::job::test::gobblin # camus replacement
+    # Gobblin imports data from Kafka into HDFS.
+    include ::profile::analytics::refinery::job::test::gobblin
     include ::profile::analytics::refinery::job::test::druid_load
     include ::profile::analytics::refinery::job::test::refine
     include ::profile::analytics::refinery::job::test::refine_sanitize

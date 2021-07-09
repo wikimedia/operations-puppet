@@ -248,24 +248,4 @@ class profile::analytics::refinery::job::camus(
         check            => false,
         interval         => '*-*-* *:20:00',
     }
-
-    # Import netflow queue topics into /wmf/data/raw/netflow
-    # once every hour.
-    camus::job { 'netflow':
-        # Being replaced by gobblin.  T271232
-        ensure           => 'absent',
-        camus_properties => {
-            'kafka.whitelist.topics'         => 'netflow',
-            # netflow stamp_inserted timestamps look like 2018-01-30 22:30:00
-            'camus.message.timestamp.format' => 'yyyy-MM-dd\' \'HH:mm:ss',
-            'camus.message.timestamp.field'  => 'stamp_inserted',
-            # Set this to at least the number of topic/partitions you will be importing.
-            'mapred.map.tasks'               => '3',
-        },
-        # No '-00' suffix is used in the netflow camus history dir path.
-        # Set camus_name to just 'netflow' to avoid the default -00 prefixing.
-        camus_name       => 'netflow',
-        check            => false,
-        interval         => '*-*-* *:30:00',
-    }
 }
