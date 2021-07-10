@@ -185,61 +185,141 @@ class librenms(
     }
 
     cron { 'librenms-discovery-all':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h all >/dev/null 2>&1",
         hour    => '*/6',
         minute  => '33',
         require => User['librenms'],
     }
+    systemd::timer::job { 'librenms-discovery-all':
+        ensure             => $cron_ensure,
+        description        => 'Regular jobs for running librenms discovery',
+        user               => 'librenms',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => "${install_dir}/discovery.php -h all",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 0/6:33:0'},
+        require            => User['librenms'],
+    }
     cron { 'librenms-discovery-new':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/discovery.php -h new >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
+    systemd::timer::job { 'librenms-discovery-new':
+        ensure             => $cron_ensure,
+        description        => 'Regular jobs for running librenms discovery-new',
+        user               => 'librenms',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => "${install_dir}/discovery.php -h new",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        require            => User['librenms'],
+    }
     cron { 'librenms-poller-all':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/poller-wrapper.py 16 >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
+    systemd::timer::job { 'librenms-poller-all':
+        ensure             => $cron_ensure,
+        description        => 'Regular jobs for running librenms poller',
+        user               => 'librenms',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => "${install_dir}/poller-wrapper.py 16",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        require            => User['librenms'],
+    }
     cron { 'librenms-check-services':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/check-services.php >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
+    systemd::timer::job { 'librenms-check-services':
+        ensure             => $cron_ensure,
+        description        => 'Regular jobs for running librenms check services',
+        user               => 'librenms',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => "${install_dir}/check-services.php",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        require            => User['librenms'],
+    }
     cron { 'librenms-alerts':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/alerts.php >/dev/null 2>&1",
         minute  => '*',
         require => User['librenms'],
     }
+    systemd::timer::job { 'librenms-alerts':
+        ensure             => $cron_ensure,
+        description        => 'Regular jobs for running librenms alerts',
+        user               => 'librenms',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => "${install_dir}/alerts.php",
+        interval           => {'start' => 'OnCalendar', 'interval' => 'minutely'},
+        require            => User['librenms'],
+    }
     cron { 'librenms-poll-billing':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/poll-billing.php >/dev/null 2>&1",
         minute  => '*/5',
         require => User['librenms'],
     }
+    systemd::timer::job { 'librenms-poll-billing':
+        ensure             => $cron_ensure,
+        description        => 'Regular jobs for running librenms poll billing',
+        user               => 'librenms',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => "${install_dir}/poll-billing.php",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        require            => User['librenms'],
+    }
     cron { 'librenms-billing-calculate':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/billing-calculate.php >/dev/null 2>&1",
         minute  => '01',
         require => User['librenms'],
     }
+    systemd::timer::job { 'librenms-billing-calculate':
+        ensure             => $cron_ensure,
+        description        => 'Regular jobs for running librenms calculate billing',
+        user               => 'librenms',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => "${install_dir}/billing-calculate.php",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:01:0'},
+        require            => User['librenms'],
+    }
     cron { 'librenms-daily':
-        ensure  => $cron_ensure,
+        ensure  => absent,
         user    => 'librenms',
         command => "${install_dir}/daily.sh >/dev/null 2>&1",
         hour    => '0',
         require => User['librenms'],
+    }
+    systemd::timer::job { 'librenms-daily':
+        ensure             => $cron_ensure,
+        description        => 'Regular jobs for running librenms daily work',
+        user               => 'librenms',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => "${install_dir}/daily.sh",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 01:01:0'},
+        require            => User['librenms'],
     }
 
     # syslog script, in an install_dir-agnostic location
