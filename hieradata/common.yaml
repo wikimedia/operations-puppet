@@ -1476,8 +1476,6 @@ shared_acme_certificates:
     - 'wikimania.com'
     - '*.wikimania.org'
     - 'wikimania.org'
-    - '*.wikimedia.com'
-    - 'wikimedia.com'
     - '*.wikimediacommons.co.uk'
     - 'wikimediacommons.co.uk'
     - '*.wikimediacommons.info'
