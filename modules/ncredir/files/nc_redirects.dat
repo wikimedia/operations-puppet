@@ -247,9 +247,6 @@ rewrite	*wikimania.org	https://wikimania.wikimedia.org
 rewrite	*wikimania.com	https://wikimania.wikimedia.org
 rewrite	wikimania2019.wikimedia.org	https://wikimania.wikimedia.org
 
-# wikimedia.com redirect
-funnel	*wikimedia.com	https://www.wikimedia.org
-
 # wikimedia.community redirect
 funnel	*wikimedia.community	https://www.wikimedia.org
 
