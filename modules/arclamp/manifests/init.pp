@@ -80,15 +80,15 @@ class arclamp(
         target => '/srv/deployment/performance/arc-lamp/arclamp-grep.py',
     }
 
-    $cron_environment = ["MAILTO=${errors_mailto}"]
+    $timer_environment = {'MAILTO' => $errors_mailto}
     if $swift_account_name == undef {
-        $swift_cron_environment = []
+        $swift_timer_environment = {}
     } else {
-        $swift_cron_environment = [
-            "ST_AUTH=${swift_auth_url}/auth/v1.0",
-            "ST_USER=${swift_user}",
-            "ST_KEY=${swift_key}",
-        ]
+        $swift_timer_environment = {
+            'ST_AUTH' => "${swift_auth_url}/auth/v1.0",
+            'ST_USER' => $swift_user,
+            'ST_KEY'  => $swift_key,
+        }
 
         # Also write credentials where they can be sourced by root
         # users who need to manually run the swift CLI tool for setup
@@ -110,33 +110,45 @@ class arclamp(
     }
 
     # Generate flamegraphs from raw log data:
-    cron { 'arclamp_generate_svgs':
-        ensure      => $ensure,
-        command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs >/dev/null',
-        user        => 'xenon',
-        minute      => '*/15',
-        environment => $cron_environment + $swift_cron_environment,
-        require     => Package['performance/arc-lamp']
+    systemd::timer::job { 'arclamp_generate_svgs':
+        ensure             => $ensure,
+        description        => 'Regular jobs to generate svg files',
+        user               => 'xenon',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        send_mail          => true,
+        environment        => $timer_environment + $swift_timer_environment,
+        command            => '/srv/deployment/performance/arc-lamp/arclamp-generate-svgs',
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/15:0'},
+        require            => Package['performance/arc-lamp']
     }
 
     # Compress logs older than 7 days:
-    cron { 'arclamp_compress_logs':
-        ensure      => $ensure,
-        command     => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7 >/dev/null',
-        user        => 'xenon',
-        minute      => '17', # intentionally offset from other jobs
-        environment => $cron_environment + $swift_cron_environment,
-        require     => Package['performance/arc-lamp']
+    systemd::timer::job { 'arclamp_compress_logs':
+        ensure             => $ensure,
+        description        => 'Regular jobs to compress arclamp logs',
+        user               => 'xenon',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        send_mail          => true,
+        environment        => $timer_environment + $swift_timer_environment,
+        command            => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7',
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:17:0'},
+        require            => Package['performance/arc-lamp']
     }
 
     # Write Prometheus metrics to file under HTTP document root:
-    cron { 'arclamp_generate_metrics':
-        ensure      => $ensure,
-        command     => '/srv/deployment/performance/arc-lamp/arclamp-generate-metrics >/dev/null',
-        user        => 'xenon',
-        minute      => '*/2',
-        environment => $cron_environment,
-        require     => Package['performance/arc-lamp']
+    systemd::timer::job { 'arclamp_generate_metrics':
+        ensure             => $ensure,
+        description        => 'Regular jobs to generate arclamp metrics',
+        user               => 'xenon',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        send_mail          => true,
+        environment        => $timer_environment,
+        command            => '/srv/deployment/performance/arc-lamp/arclamp-generate-metrics',
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/2:0'},
+        require            => Package['performance/arc-lamp']
     }
 
     # This supports running multiple pipelines; we profile CPU and
