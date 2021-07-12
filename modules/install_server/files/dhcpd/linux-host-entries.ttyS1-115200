@@ -629,6 +629,26 @@ host backup1003 {
     fixed-address backup1003.eqiad.wmnet;
 }
 
+host backup1004 {
+    hardware ethernet 2C:EA:7F:94:8E:0C;
+    fixed-address backup1004.eqiad.wmnet;
+}
+
+host backup1005 {
+    hardware ethernet 2C:EA:7F:94:92:AC;
+    fixed-address backup1005.eqiad.wmnet;
+}
+
+host backup1006 {
+    hardware ethernet 2C:EA:7F:94:BA:3F;
+    fixed-address backup1006.eqiad.wmnet;
+}
+
+host backup1007 {
+    hardware ethernet 2C:EA:7F:A5:99:66;
+    fixed-address backup1007.eqiad.wmnet;
+}
+
 host backup2001 {
     hardware ethernet B0:26:28:29:56:90;
     fixed-address backup2001.codfw.wmnet;
