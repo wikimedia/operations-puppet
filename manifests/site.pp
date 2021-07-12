@@ -1526,12 +1526,12 @@ node /^ldap-corp[1-2]001\.wikimedia\.org$/ {
 }
 
 # Read-only ldap replicas in eqiad
-node /^ldap-replica100[1-4]\.wikimedia\.org$/ {
+node /^ldap-replica100[3-4]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 
 # Read-only ldap replicas in codfw
-node /^ldap-replica200[3-6]\.wikimedia\.org$/ {
+node /^ldap-replica200[5-6]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 

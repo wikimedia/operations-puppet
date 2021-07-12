@@ -522,16 +522,6 @@ host ldap-corp2001.wikimedia.org {
     fixed-address ldap-corp2001.wikimedia.org;
 }
 
-host ldap-replica1001.wikimedia.org {
-    hardware ethernet aa:00:00:16:63:55;
-    fixed-address ldap-replica1001.wikimedia.org;
-}
-
-host ldap-replica1002.wikimedia.org {
-    hardware ethernet aa:00:00:85:ce:03;
-    fixed-address ldap-replica1002.wikimedia.org;
-}
-
 host ldap-replica1003.wikimedia.org {
     hardware ethernet aa:00:00:93:f3:f4;
     fixed-address ldap-replica1003.wikimedia.org;
@@ -542,16 +532,6 @@ host ldap-replica1004.wikimedia.org {
     hardware ethernet aa:00:00:ee:7e:9b;
     fixed-address ldap-replica1004.wikimedia.org;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
-}
-
-host ldap-replica2003.wikimedia.org {
-    hardware ethernet aa:00:00:c8:b6:c9;
-    fixed-address ldap-replica2003.wikimedia.org;
-}
-
-host ldap-replica2004.wikimedia.org {
-    hardware ethernet aa:00:00:82:d6:34;
-    fixed-address ldap-replica2004.wikimedia.org;
 }
 
 host ldap-replica2005.wikimedia.org {
