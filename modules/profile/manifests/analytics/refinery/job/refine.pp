@@ -68,7 +68,7 @@ class profile::analytics::refinery::job::refine(
     # /wmf/data/raw/event -> /wmf/data/event
     $event_input_path = '/wmf/data/raw/event'
     $event_input_path_regex = "${event_input_path}/(eqiad|codfw)\\.(.+)/${hive_hourly_path_regex}"
-    $event_input_path_regex_capture_groups = "datacenter,${hive_hourly_path_regex_capture_groups}"
+    $event_input_path_regex_capture_groups = "datacenter,table,${hive_hourly_path_regex_capture_groups}"
     # Unrefineable tables due to poorly defined schemas.
     $event_table_exclude_list = [
         # TODO: include page_properties_change after https://phabricator.wikimedia.org/T281483 is fixed.
