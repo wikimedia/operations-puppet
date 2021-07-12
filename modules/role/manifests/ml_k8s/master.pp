@@ -14,6 +14,7 @@ class role::ml_k8s::master {
     include ::profile::docker::storage
     include ::profile::docker::engine
     include ::profile::kubernetes::node
+    include ::profile::calico::kubernetes
 
     # LVS configuration (VIP)
     include ::profile::lvs::realserver
