@@ -17,6 +17,10 @@
 #   Ingests all streams with consumers.analytics_hadoop_ingestion.job_name == 'event_default'
 #   set in stream config to /wmf/data/raw/event
 #
+# - eventlogging_legacy
+#   Ingests legacy EventLogging streams. (No datacenter topic prefixes, topics start with
+#   'eventlogging_'.)
+#
 class profile::analytics::refinery::job::gobblin {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path
@@ -54,4 +58,7 @@ class profile::analytics::refinery::job::gobblin {
         interval         => '*-*-* *:15:00',
     }
 
+    profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy':
+        interval         => '*-*-* *:05:00',
+    }
 }

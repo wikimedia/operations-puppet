@@ -24,17 +24,6 @@
 # - eventlogging
 #   Ingests legacy eventlogging_.+ topics into /wmf/data/raw/eventlogging/.
 #
-# - eventgate-*
-#   Each eventgate-* camus job is responsible for importing the topics for streams
-#   configured in Mediawiki EventStreamConfig that have destination_event_service name
-#   matching the eventgate service name.
-#   Note: we don't yet import eventgate-logging-external streams, as these are not
-#   (yet) mirrored to Kafka jumbo.
-#
-# - mediawiki_events
-#   Ingests whitelisted mediawiki.*  (non job) events into /wmf/data/raw/event/.
-#   TO BE DEPRECATED in favor of eventgate-main job.
-#
 # - mediawiki_job
 #   Ingests mediawiki.job.* topics into /wmf/data/raw/mediawiki_job.
 #
@@ -125,101 +114,6 @@ class profile::analytics::refinery::job::camus(
         # Don't want to check this job, it is temporary and for testing.
         check            => false,
         interval         => '*-*-* *:00/30:00',
-    }
-
-    # Used to determine the topic prefixes of topics used for the CamusPartitionChecker
-    # kafka.whitelist.topics on the eventgate-main event serivce job.
-    # If a Datacenter is deactivated due to e.g. a datacenter switchover, you should comment
-    # out the deactive datacenter to avoid false alerts.
-    # In the future, if we can enable canary events for eventgate-main streams, we
-    # shouldn't need this anymore.
-    $active_datacenters = [
-        # 'eqiad',
-        'codfw',
-    ]
-    $check_topic_whitelist_prefixes = "(${active_datacenters.join('|')})"
-
-    # Shortcut for declaring a camus job that imports streams from specific event services.
-    # We want separate camus jobs for each event service as their throughput volume can
-    # vary significantly, and we don't want high volume topics to starve out small ones.
-    # See also:
-    # https://wikitech.wikimedia.org/wiki/Event_Platform/EventGate#EventGate_clusters
-    $event_service_jobs = {
-        'eventgate-analytics-external' => {
-            'camus_properties' =>  {
-                # eventgate-analytics-external handles both legacy eventlogging_.* streams.
-                # as well as new event platform based streams. The eventlogging_.* topics
-                # are different enough, so we use a separate camus job (declared above)
-                # to import those.  Perhaps one day we can merge these jobs, but not today! :)
-                'kafka.blacklist.topics'        => '^eventlogging_.*',
-                # Set this to at least the number of topic-partitions you will be importing.
-                'mapred.map.tasks'              => '10',
-            },
-            'interval' => '*-*-* *:25:00',
-        },
-
-        'eventgate-analytics' => {
-            'camus_properties' =>  {
-                # Set this to at least the number of topic-partitions you will be importing.
-                'mapred.map.tasks'              => '60',
-            },
-            'interval' => '*-*-* *:15:00',
-        },
-
-        'eventgate-main' => {
-            'camus_properties' =>  {
-                # eventgate-main handles event platform streams, as well as 'schemaless' mediawiki job
-                # streams.  We use a separate camus job (for now) to import mediawiki job
-                # events into a separate /wmf/data/raw/mediawiki_job etl.destination.path.
-                # We need to exclude the mediawiki job topics from this job.
-                'kafka.blacklist.topics'        => '^(eqiad|codfw)\\.mediawiki\\.job\\..*',
-                # Set this to at least the number of topic-partitions you will be importing.
-                'mapred.map.tasks'              => '40',
-            },
-            # Check the test topics and resource_change topics.
-            # resource_change and revision-create should always have data every hour.
-            # In the future, if we can enable canary events for more streams in eventgate-main,
-            # we can rely on those instead of this whitlelist for discovering the topics to check.
-            # NOTE: since this ends up in the systemd unit ExecStart command, we need
-            # extra backslash escapes.
-            'check_java_opts' => "-Dkafka.whitelist.topics=\"^(eqiad|codfw)\\\\.eventgate-main\\\\.test\\\\.event|${check_topic_whitelist_prefixes}\\\\.mediawiki\\\\.(resource_change|revision-create)\"",
-            'interval' => '*-*-* *:05:00',
-        },
-    }
-
-    # Declare each of the $event_service_jobs.
-    $event_service_jobs.each |String $event_service_name, Hash $parameters| {
-
-        # Default camus properties shared by all event importing jobs.
-        # Specific parameters are provided in $event_service_jobs.
-        $camus_properties_events = {
-            'etl.destination.path'          => "hdfs://${hadoop_cluster_name}/wmf/data/raw/event",
-            'camus.message.timestamp.field' => 'meta.dt',
-            # Build kafka.whitelist.topics using EventStreamConfig API.
-            'eventstreamconfig.uri'              => 'https://meta.wikimedia.org/w/api.php',
-            # Only get topics for streams that have this destination_event_service set to event_service_name
-            'eventstreamconfig.settings_filters' => "destination_event_service:${event_service_name}",
-        }
-
-        # Override settings_filters to only check topics that have canary_events_enabled,
-        # unless check_java_opts is explicitly set in $the event_service_job hash declared above.
-        $check_java_opts = $parameters['check_java_opts'] ? {
-            undef   => "-Deventstreamconfig.settings_filters=${camus_properties_events['eventstreamconfig.settings_filters']},canary_events_enabled:true",
-            default => $parameters['check_java_opts'],
-        }
-
-        camus::job { "${event_service_name}_events":
-            # Being replaced by gobblin.  T271232
-            ensure           => 'absent',
-            camus_properties => merge(
-                $camus_properties_events,
-                $parameters['camus_properties'],
-            ),
-            # Don't need to write _IMPORTED flags for event data
-            check_dry_run    => true,
-            check_java_opts  => $check_java_opts,
-            interval         => $parameters['interval'],
-        }
     }
 
     # Import mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
