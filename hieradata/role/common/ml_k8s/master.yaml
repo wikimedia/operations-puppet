@@ -44,6 +44,7 @@ profile::docker::storage::physical_volumes: "/dev/vdb"
 profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u3"
 profile::docker::engine::packagename: "docker.io"
 profile::docker::engine::declare_service: true
+profile::docker::storage::vg_to_remove: ''
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 profile::docker::engine::settings:

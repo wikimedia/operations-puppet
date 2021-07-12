@@ -10,6 +10,9 @@ class role::ml_k8s::master {
 
     # Needed to schedule containers like bird, used by calico.
     # More info: T285927
+    # Sets up docker on the machine
+    include ::profile::docker::storage
+    include ::profile::docker::engine
     include ::profile::kubernetes::node
 
     # LVS configuration (VIP)
