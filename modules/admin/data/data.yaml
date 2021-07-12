@@ -4301,7 +4301,7 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO/OT7CnPRCUhdSv/LqhZQX2P36JPpjeztn4+sMDPI6a akhatun-ctr@wikimedia.org'
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOYJYVpVGG6+wsJf7InHEwnnNxKsY1XgsI0rG2sLkjEy akhatun-ctr@wikimedia.org'
   mmandere:
     ensure: present
     realname: Marc Mandere
