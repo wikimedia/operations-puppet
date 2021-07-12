@@ -3,6 +3,8 @@ profile::calico::kubernetes::bgp_peers:
 - ml-serve2002.codfw.wmnet
 - ml-serve2003.codfw.wmnet
 - ml-serve2004.codfw.wmnet
+- ml-serve-ctrl2001.codfw.wmnet
+- ml-serve-ctrl2002.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.77.3"
