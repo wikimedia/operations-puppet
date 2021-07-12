@@ -244,6 +244,12 @@ monitoring::groups:
   ores_codfw:
     description: ORES servers codfw
 
+# pki
+  pki_eqiad:
+    description: PKI servers eqiad
+  pki_codfw:
+    description: PKI servers codfw
+
 # Swift
   swift:
     description: swift servers
