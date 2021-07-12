@@ -321,8 +321,6 @@ codfw:
     ores2008.codfw.wmnet: [ores]
     ores2009.codfw.wmnet: [ores]
   ldap-ro:
-    ldap-replica2003.wikimedia.org: [ldap-ro, ldap-ro-ssl]
-    ldap-replica2004.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica2005.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica2006.wikimedia.org: [ldap-ro, ldap-ro-ssl]
   logstash:

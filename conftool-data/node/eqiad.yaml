@@ -328,8 +328,6 @@ eqiad:
     logstash1030.eqiad.wmnet: [kibana7]
     logstash1031.eqiad.wmnet: [kibana7]
   ldap-ro:
-    ldap-replica1001.wikimedia.org: [ldap-ro, ldap-ro-ssl]
-    ldap-replica1002.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica1003.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica1004.wikimedia.org: [ldap-ro, ldap-ro-ssl]
   kubernetes:
