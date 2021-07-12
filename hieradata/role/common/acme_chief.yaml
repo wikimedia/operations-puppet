@@ -251,13 +251,11 @@ profile::acme_chief::certificates:
         CN: 'wikimedia-dns.org'
         SNI:
         - 'wikimedia-dns.org'
-        - 'malmok.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^doh[123]00[12]\.wikimedia\.org$'
         - '^doh4001\.wikimedia\.org$'
         - '^doh5001\.wikimedia\.org$'
-        - '^malmok\.wikimedia\.org$'
     wikiworkshop:
         CN: 'wikiworkshop.org'
         SNI:
