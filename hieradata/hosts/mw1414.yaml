@@ -1,0 +1,1 @@
+profile::mediawiki::httpd::enable_forensic_log: true
