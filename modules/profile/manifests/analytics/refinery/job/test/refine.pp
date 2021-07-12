@@ -43,33 +43,6 @@ class profile::analytics::refinery::job::test::refine (
     # Used by Java time formats to find potential hourly paths to refine.
     $hive_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
 
-    # === EventLogging Legacy data ===
-    # /wmf/data/raw/eventlogging_legacy -> /wmf/data/event
-    # EventLogging legacy events migrated to Event Platform.
-    $eventlogging_legacy_input_path = '/wmf/data/raw/eventlogging_legacy'
-    # NOTE: We need to prefix our partition discovery regex with the input_path here,
-    # since eventlogging_legacy would match eventlogging_(.+) without it.
-    $eventlogging_legacy_input_path_regex = "${eventlogging_legacy_input_path}/eventlogging_(.+)/${hive_hourly_path_regex}"
-    $eventlogging_legacy_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
-    profile::analytics::refinery::job::refine_job { 'eventlogging_legacy_test':
-        ensure           => $ensure_timers,
-        job_config       => merge($default_config, {
-            input_path                      => $eventlogging_legacy_input_path,
-            input_path_regex                => $eventlogging_legacy_input_path_regex,
-            input_path_regex_capture_groups => $eventlogging_legacy_input_path_regex_capture_groups,
-            input_path_datetime_format      => $hive_input_path_datetime_format,
-            # Since EventLogging legacy data comes from external clients,
-            # non wikimedia domains and other unwanted domains have always been filtered out.
-            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms',
-            # Get JSONSchemas from the HTTP schema service.
-            # Schema URIs are extracted from the $schema field in each event.
-            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
-        }),
-        interval         => '*-*-* *:15:00',
-        monitor_interval => '*-*-* 00:30:00',
-        use_keytab       => $use_kerberos_keytab,
-    }
-
     # === Event data ===
     # /wmf/data/raw/event -> /wmf/data/event
     # NOTE: refinery::job::test::gobblin only imports limited data in test cluster,
@@ -93,5 +66,33 @@ class profile::analytics::refinery::job::test::refine (
         monitor_interval => '*-*-* 01:15:00',
         use_keytab       => $use_kerberos_keytab,
     }
+
+    # === EventLogging Legacy data ===
+    # /wmf/data/raw/eventlogging_legacy -> /wmf/data/event
+    # EventLogging legacy events migrated to Event Platform.
+    $eventlogging_legacy_input_path = '/wmf/data/raw/eventlogging_legacy'
+    # NOTE: We need to prefix our partition discovery regex with the input_path here,
+    # since eventlogging_legacy would match eventlogging_(.+) without it.
+    $eventlogging_legacy_input_path_regex = "${eventlogging_legacy_input_path}/eventlogging_(.+)/${hive_hourly_path_regex}"
+    $eventlogging_legacy_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
+    profile::analytics::refinery::job::refine_job { 'eventlogging_legacy_test':
+        ensure           => $ensure_timers,
+        job_config       => merge($default_config, {
+            input_path                      => $eventlogging_legacy_input_path,
+            input_path_regex                => $eventlogging_legacy_input_path_regex,
+            input_path_regex_capture_groups => $eventlogging_legacy_input_path_regex_capture_groups,
+            input_path_datetime_format      => $hive_input_path_datetime_format,
+            # Since EventLogging legacy data comes from external clients,
+            # non wikimedia domains and other unwanted domains have always been filtered out.
+            transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.filter_allowed_domains,org.wikimedia.analytics.refinery.job.refine.event_transforms',
+            # Get JSONSchemas from the HTTP schema service.
+            # Schema URIs are extracted from the $schema field in each event.
+            schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
+        }),
+        interval         => '*-*-* *:25:00',
+        monitor_interval => '*-*-* 00:30:00',
+        use_keytab       => $use_kerberos_keytab,
+    }
+
 
 }

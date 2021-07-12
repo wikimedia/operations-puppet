@@ -120,9 +120,9 @@ class profile::analytics::refinery::job::refine(
     # event refine_job defined above.  The main difference is that they aren't (yet) using
     # datacenter topic prefixes.  If we ever make them start using topic prefixes, we can
     # merge this refine job into the regular 'event' one.
-    $eventlogging_legacy_input_path = '/wmf/data/raw/eventlogging'
-    $eventlogging_legacy_input_path_regex = 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
-    $eventlogging_legacy_input_path_regex_capture_groups = 'table,year,month,day,hour'
+    $eventlogging_legacy_input_path = '/wmf/data/raw/eventlogging_legacy'
+    $eventlogging_legacy_input_path_regex = "${eventlogging_legacy_input_path}/eventlogging_(.+)/${hive_hourly_path_regex}"
+    $eventlogging_legacy_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
 
     # While we migrate we will use an explicit include list of
     # EventLogging streams that have been migrated to EventGate.
@@ -216,6 +216,7 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $eventlogging_legacy_input_path,
             input_path_regex                => $eventlogging_legacy_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_legacy_input_path_regex_capture_groups,
+            input_path_datetime_format      => $hive_input_path_datetime_format,
             table_include_regex             => $eventlogging_legacy_table_include_regex,
             table_exclude_regex             => $eventlogging_legacy_table_exclude_regex,
             transform_functions             => $eventlogging_legacy_transform_functions,
@@ -224,7 +225,7 @@ class profile::analytics::refinery::job::refine(
             schema_base_uris                => 'https://schema.discovery.wmnet/repositories/primary/jsonschema,https://schema.discovery.wmnet/repositories/secondary/jsonschema',
 
         }),
-        interval         => '*-*-* *:15:00',
+        interval         => '*-*-* *:25:00',
         monitor_interval => '*-*-* 00:30:00',
         use_keytab       => $use_kerberos_keytab,
     }
@@ -236,9 +237,9 @@ class profile::analytics::refinery::job::refine(
     # As we migrate tables into $eventlogging_legacy_table_include_list, they will be added to
     # the exclude_list here, as only one of these two jobs should be responsible for refining an
     # EventLogging stream into Hive.
-    $eventlogging_analytics_input_path = '/wmf/data/raw/eventlogging'
-    $eventlogging_analytics_input_path_regex = 'eventlogging_(.+)/hourly/(\\d+)/(\\d+)/(\\d+)/(\\d+)'
-    $eventlogging_analytics_input_path_regex_capture_groups = 'table,year,month,day,hour'
+    $eventlogging_analytics_input_path = '/wmf/data/raw/eventlogging_legacy'
+    $eventlogging_analytics_input_path_regex = "${eventlogging_analytics_input_path}/eventlogging_(.+)/${hive_hourly_path_regex}"
+    $eventlogging_analytics_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
 
     $eventlogging_analytics_table_exclude_list =
         $eventlogging_legacy_table_exclude_list + $eventlogging_legacy_table_include_list
@@ -250,6 +251,7 @@ class profile::analytics::refinery::job::refine(
             input_path                      => $eventlogging_analytics_input_path,
             input_path_regex                => $eventlogging_analytics_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_analytics_input_path_regex_capture_groups,
+            input_path_datetime_format      => $hive_input_path_datetime_format,
             table_exclude_regex             => $eventlogging_analytics_table_exclude_regex,
             transform_functions             => $eventlogging_legacy_transform_functions,
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
@@ -264,18 +266,16 @@ class profile::analytics::refinery::job::refine(
     # === Netflow data ===
     # /wmf/data/raw/netflow -> /wmf/data/event
     $netflow_input_path = '/wmf/data/raw/netflow'
-    $netflow_input_path_regex = '(netflow)/year=(\\d+)/month=(\\d+)/day=(\\d+)/hour=(\\d+)'
-    $netflow_input_path_regex_capture_groups = 'table,year,month,day,hour'
-    $netflow_input_path_datetime_format = '\'year=\'yyyy/\'month=\'MM/\'day=\'dd/\'hour=\'HH'
+    $netflow_input_path_regex = "${netflow_input_path}/(netflow)/${hive_hourly_path_regex}"
+    $netflow_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
 
     profile::analytics::refinery::job::refine_job { 'netflow':
         ensure                 => $ensure_timers,
         job_config             => merge($default_config, {
-            # This is imported by camus_job { 'netflow': }
             input_path                      => $netflow_input_path,
             input_path_regex                => $netflow_input_path_regex,
             input_path_regex_capture_groups => $netflow_input_path_regex_capture_groups,
-            input_path_datetime_format      => $netflow_input_path_datetime_format,
+            input_path_datetime_format      => $hive_input_path_datetime_format,
             transform_functions             => 'org.wikimedia.analytics.refinery.job.refine.augment_netflow',
         }),
         # augment_netflow needs this to add network region / DC information.

@@ -39,7 +39,6 @@ class profile::analytics::refinery::job::gobblin {
         interval         => '*-*-* *:00/10:00',
     }
 
-
     profile::analytics::refinery::job::gobblin_job { 'netflow':
         # netflow data is unique.  The producer does some minutely aggregation, so all
         # timestamps are alligned with minutes and 0 seconds, e.g. 2021-07-07 18:00:00.
@@ -55,10 +54,10 @@ class profile::analytics::refinery::job::gobblin {
     }
 
     profile::analytics::refinery::job::gobblin_job { 'event_default':
-        interval         => '*-*-* *:15:00',
+        interval         => '*-*-* *:05:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy':
-        interval         => '*-*-* *:05:00',
+        interval         => '*-*-* *:10:00',
     }
 }

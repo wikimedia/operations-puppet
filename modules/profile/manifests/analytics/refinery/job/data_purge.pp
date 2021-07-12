@@ -126,9 +126,18 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     kerberos::systemd_timer { 'refinery-drop-eventlogging-partitions':
-        ensure      => $ensure_timers,
+        # replaced by better named refinery-drop-eventlogging-legacy-raw-partitions.
+        ensure      => 'absent',
         description => 'Drop Eventlogging data imported on HDFS following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging' --path-format='.+/hourly/${camus_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='bb7022b36bcf0d75bdd03b6f836f09e6'",
+        interval    => '*-*-* 00/4:15:00',
+        environment => $systemd_env,
+        user        => 'analytics',
+    }
+    kerberos::systemd_timer { 'refinery-drop-eventlogging-legacy-raw-partitions':
+        ensure      => $ensure_timers,
+        description => 'Drop Eventlogging legacy raw (/wmf/data/raw/eventlogging_legacy) data imported on HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_legacy' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='4ed6284d2bd995be7a0f65386468875e'",
         interval    => '*-*-* 00/4:15:00',
         environment => $systemd_env,
         user        => 'analytics',

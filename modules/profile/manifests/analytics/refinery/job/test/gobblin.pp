@@ -17,11 +17,11 @@ class profile::analytics::refinery::job::test::gobblin {
         interval         => '*-*-* *:00/10:00',
     }
 
-    profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy_test':
+    profile::analytics::refinery::job::gobblin_job { 'event_default_test':
         interval         => '*-*-* *:05:00',
     }
 
-    profile::analytics::refinery::job::gobblin_job { 'event_default_test':
-        interval         => '*-*-* *:15:00',
+    profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy_test':
+        interval         => '*-*-* *:10:00',
     }
 }
