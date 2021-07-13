@@ -10,8 +10,8 @@ class role::thanos::frontend {
 
     include ::profile::tlsproxy::envoy
 
-    include ::profile::thanos::query
-    include ::profile::thanos::query_frontend
+    #    include ::profile::thanos::query
+    #    include ::profile::thanos::query_frontend
     include ::profile::thanos::httpd
 
     include ::profile::thanos::store
