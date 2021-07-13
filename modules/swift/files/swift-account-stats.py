@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 # report swift account statistics, by default on stdout and optionally to
 # a statsd server via UDP
@@ -53,23 +53,23 @@ def main():
         'bytes': headers['x-account-bytes-used'],
     }
 
-    for key, value in account_stats.iteritems():
+    for key, value in account_stats.items():
         prefix = '.'.join([args.prefix, key])
         output_stats.append((prefix, value))
 
     for name, value in output_stats:
-        print "%s: %s" % (name, value)
+        print("%s: %s" % (name, value))
 
     if args.statsd_host:
         if not statsd_found:
-            print >>sys.stderr, "statsd module not found, unable to send"
+            print("statsd module not found, unable to send", file=sys.stderr)
             return 1
         client = statsd.StatsClient(args.statsd_host, args.statsd_port)
         for name, value in output_stats:
             try:
                 client.gauge(name, float(value))
             except ValueError:
-                print >>sys.stderr, "failed to send %r %r" % (name, value)
+                print("failed to send %r %r" % (name, value), file=sys.stderr)
 
 
 if __name__ == '__main__':

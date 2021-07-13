@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 # report swift container statistics, by default on stdout and optionally to
 # a statsd server via UDP.
@@ -34,7 +34,7 @@ CONTAINER_SETS = {
 
 
 def container_bucket(name, bucket_map):
-    for container_re, bucket in bucket_map.iteritems():
+    for container_re, bucket in bucket_map.items():
         if container_re.search(name):
             return bucket
 
@@ -54,7 +54,7 @@ def main():
                         default='',
                         help='Prefix to use when reporting metrics')
     parser.add_argument('--container-set', dest='container_set',
-                        default='', choices=CONTAINER_SETS.keys(),
+                        default='', choices=list(CONTAINER_SETS.keys()),
                         help='Report aggregated container statistics from this set')
     parser.add_argument('--ignore-unknown', dest='ignore_unknown',
                         default=False, action='store_true',
@@ -85,7 +85,7 @@ def main():
         bucket = container_bucket(container['name'], container_buckets)
         if bucket is None:
             if not args.ignore_unknown:
-                print >>sys.stderr, "Cannot find bucket for container %r" % container['name']
+                print("Cannot find bucket for container %r" % container['name'], file=sys.stderr)
             continue
 
         bucket_stats = container_stats.setdefault(
@@ -93,24 +93,24 @@ def main():
         bucket_stats['bytes'] += container['bytes']
         bucket_stats['objects'] += container['count']
 
-    for bucket, stats in container_stats.iteritems():
+    for bucket, stats in container_stats.items():
         for stat in ('bytes', 'objects'):
             prefix = '.'.join([args.prefix, bucket, stat])
             output_stats.append((prefix, stats[stat]))
 
     for name, value in output_stats:
-        print "%s: %s" % (name, value)
+        print("%s: %s" % (name, value))
 
     if args.statsd_host:
         if not statsd_found:
-            print >>sys.stderr, "statsd module not found, unable to send"
+            print("statsd module not found, unable to send", file=sys.stderr)
             return 1
         client = statsd.StatsClient(args.statsd_host, args.statsd_port)
         for name, value in output_stats:
             try:
                 client.gauge(name, float(value))
             except ValueError:
-                print >>sys.stderr, "failed to send %r %r" % (name, value)
+                print("failed to send %r %r" % (name, value), file=sys.stderr)
 
 
 if __name__ == '__main__':
