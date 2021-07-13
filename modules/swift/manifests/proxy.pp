@@ -61,11 +61,17 @@ class swift::proxy (
         content => systemd_template('swift-proxy'),
     }
 
-    file { '/usr/local/lib/python2.7/dist-packages/wmf/':
+    if debian::codename::lt('bullseye') {
+        $python_version = '2.7'
+    } else {
+        $python_version = '3.9'
+    }
+
+    file { "/usr/local/lib/python${python_version}/dist-packages/wmf/":
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/swift/SwiftMedia/wmf/',
+        source  => "puppet:///modules/swift/python${python_version}/SwiftMedia/wmf/",
         recurse => 'remote',
     }
 }
