@@ -788,7 +788,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl, bumeh-ctr]
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl, bumeh-ctr, iflorez]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
   peek-admins:
@@ -3481,7 +3481,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqMsQAdABxLhrBi2MoGHqkrNEOMJXePZXwTAnuGu//O iflorez@LoanerWMF1954
     uid: 21341
-    email: iflorez-ctr@wikimedia.org
+    email: iflorez@wikimedia.org
     krb: present
   jeh:
     ensure: present
