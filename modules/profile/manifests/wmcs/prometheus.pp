@@ -114,28 +114,24 @@ class profile::wmcs::prometheus(
 
     prometheus::class_config{ "rabbitmq_${::site}":
         dest       => "${targets_path}/rabbitmq_${::site}.yaml",
-        site       => $::site,
         class_name => 'role::wmcs::openstack::eqiad1::control',
         port       => 9195,
     }
 
     prometheus::class_config{ "pdns_${::site}":
         dest       => "${targets_path}/pdns_${::site}.yaml",
-        site       => $::site,
         class_name => 'role::wmcs::openstack::eqiad1::services',
         port       => 9192,
     }
 
     prometheus::class_config{ "pdns-rec_${::site}":
         dest       => "${targets_path}/pdns-rec_${::site}.yaml",
-        site       => $::site,
         class_name => 'role::wmcs::openstack::eqiad1::services',
         port       => 9199,
     }
 
     prometheus::class_config{ "openstack_${::site}":
         dest       => "${targets_path}/openstack_${::site}.yaml",
-        site       => $::site,
         class_name => 'role::wmcs::openstack::eqiad1::control',
         # same as profile::openstack::eqiad1::metrics::prometheus_listen_port and friends
         port       => 12345,
@@ -149,7 +145,6 @@ class profile::wmcs::prometheus(
 
     prometheus::class_config{ "ceph_${::site}":
         dest       => "${targets_path}/ceph_${::site}.yaml",
-        site       => $::site,
         class_name => 'role::wmcs::ceph::mon',
         port       => 9283,
     }
@@ -158,7 +153,6 @@ class profile::wmcs::prometheus(
     if $::site == eqiad {
         prometheus::class_config{ 'mysql_galera_eqiad1':
             dest       => "${targets_path}/mysql_galera_eqiad1.yaml",
-            site       => $::site,
             class_name => 'role::wmcs::openstack::eqiad1::control',
             port       => 9104,
             labels     => {

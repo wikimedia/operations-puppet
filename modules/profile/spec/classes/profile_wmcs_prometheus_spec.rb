@@ -7,7 +7,7 @@ describe 'profile::wmcs::prometheus' do
       let(:params) { { } }
       let(:node_params) {{ '_role' => 'wmcs/prometheus' }}
       let(:pre_condition) do
-        " define prometheus::class_config ($dest, $site, $class_name, $port, $labels = undef) {}
+        " define prometheus::class_config ($dest, $class_name, $port, $labels = undef) {}
         service{'apache2':} "
       end
 
