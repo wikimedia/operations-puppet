@@ -25,6 +25,7 @@ class profile::thanos::query (
     $sites.each |String $s| {
         prometheus::resource_config{ "thanos_store_sidecar_${s}":
             dest           => "${sd_files_path}/sidecar_${s}.yml",
+            site           => $s,
             define_name    => 'thanos::sidecar',
             port_parameter => 'grpc_port',
         }
