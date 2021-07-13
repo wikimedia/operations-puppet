@@ -1,3 +1,2 @@
 # db1183
 mariadb::shard: 'm5'
-profile::base::notifications: disabled
