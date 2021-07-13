@@ -1,3 +1,4 @@
+profile::dragonfly::dfdaemon::ensure: absent
 profile::dragonfly::dfdaemon::docker_registry_fqdn: docker-registry.discovery.wmnet
 profile::dragonfly::dfdaemon::proxy_urls_regex:
   - 'blobs/sha256.*'

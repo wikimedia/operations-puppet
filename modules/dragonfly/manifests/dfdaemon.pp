@@ -11,18 +11,19 @@
 # @proxy_urls_regex
 #
 class dragonfly::dfdaemon (
+    Wmflib::Ensure       $ensure,
     Array[String]        $supernodes,
     Stdlib::Absolutepath $dfdaemon_ssl_cert,
     Stdlib::Absolutepath $dfdaemon_ssl_key,
     Stdlib::Fqdn         $docker_registry_fqdn,
     Array[String]        $proxy_urls_regex = ['blobs/sha256.*'],
 ) {
-  ensure_packages('dragonfly-dfdaemon')
+  ensure_packages(['dragonfly-dfdaemon', 'dragonfly-dfget'], {'ensure' => $ensure})
 
   # TODO: Custom type for supernode list
   #       host:port(default:8002)=weight(default:1)
   file { '/etc/dragonfly/dfget.yml':
-      ensure  => file,
+      ensure  => stdlib::ensure($ensure, 'file'),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
@@ -30,7 +31,7 @@ class dragonfly::dfdaemon (
       notify  => Service['dragonfly-dfdaemon'],
   }
   file { '/etc/dragonfly/dfdaemon.yml':
-      ensure  => file,
+      ensure  => stdlib::ensure($ensure, 'file'),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
@@ -41,12 +42,13 @@ class dragonfly::dfdaemon (
   # Configure the docker daemon to use the local dfdaemon as https_proxy
   $proxy_host = '127.0.0.1:65001'
   systemd::unit{'docker':
+      ensure   => $ensure,
       override => true,
       restart  => true,
       content  => "[Service]\nEnvironment=\"HTTPS_PROXY=http://${proxy_host}\"",
   }
 
   service { 'dragonfly-dfdaemon':
-      ensure  => running,
+      ensure  => stdlib::ensure($ensure, 'service'),
   }
 }
