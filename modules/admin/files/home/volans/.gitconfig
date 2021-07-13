@@ -6,17 +6,25 @@
     s = status
     b = branch
     d = diff
+    p = pull origin master
+    f = fetch
+    r = rebase
+    ri = rebase -i
+    rc = rebase --continue
+    pu = pull --recurse-submodules
     fe = fetch --recurse-submodules
     pu = pull --recurse-submodules
     su = submodule foreach 'git pull'
-    st = status
     co = checkout
     ci = commit
-    ds = diff --staged
+    ds = diff --cached
     di = diff --submodule
+    bs = branch --sort=-committerdate
     wdi = diff --word-diff=plain
-    ll = log --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
     lg  = log --graph --decorate --pretty=oneline --abbrev-commit
+    ll = log --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+    log-me = !UN=$(git config user.name)&& git log --author="\"$UN\"" --pretty=format:'%h %cd %s' --date=short
+    clone = clone --recursive
     tags = log --oneline --decorate --tags --no-walk
     amend = commit --amend --no-edit
     undo = reset --soft HEAD^

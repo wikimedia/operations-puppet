@@ -1,7 +1,17 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
-# Prompt
-export PS1="\[\033[48;5;1m\]\[\033[01;37m\] \h \[\033[00m\] \[\033[01;37m\]\$?\[\033[00m\] \[\033[01;36m\]\w\[\033[00m\]\$ "
+function __prompt_command() {
+    local ret="${?}";
+    local ret_color="2";
+    PS1="\[\033[48;5;1m\]\[\033[01;37m\] \h \[\033[00m\] ";
+    if [[ "${ret}" -ne "0" ]]; then
+        ret_color="1";
+    fi;
+    PS1+="\[\033[1;38;5;${ret_color}m\]${ret}\[\033[00m\] ";
+    PS1+="\t \[\033[01;36m\]\w\[\033[00m\] \$ ";
+}
+
+PROMPT_COMMAND=__prompt_command
 
 # Safe aliases
 alias rm='rm -i'
