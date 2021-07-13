@@ -6915,7 +6915,6 @@ host mw2411 {
 host mwmaint1002 {
     hardware ethernet D0:94:66:5F:50:AE;
     fixed-address mwmaint1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host mwmaint2002 {
