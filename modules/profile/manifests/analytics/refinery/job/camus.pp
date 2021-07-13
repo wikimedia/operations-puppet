@@ -80,6 +80,7 @@ class profile::analytics::refinery::job::camus(
     # Import legacy eventlogging_* topics into /wmf/data/raw/eventlogging
     # once every hour.
     camus::job { 'eventlogging':
+        ensure           => 'absent',
         camus_properties => {
             'kafka.whitelist.topics'        => '^eventlogging_.+',
             # During migration to EventGate, events will have both meta.dt and dt.
