@@ -18,10 +18,10 @@ keypem: "<%= @dfdaemon_ssl_key %>"
 # "use_https: true" can be used to upgrade incoming HTTP requests to HTTPS (this means connections
 # from dfdaemon to the source registry will always use HTTPS).
 proxies:
-<% @proxy_urls_regex.each do |regex| %>
+<% @proxy_urls_regex.each do |regex| -%>
   - regx: "<%= regex %>"
     use_https: true
-<% end %>
+<% end -%>
 
 # If an https request's host matches any of the hijacking rules, dfdaemon will
 # decrypt the request with given key pair and proxy it with the proxy rules.

@@ -2,6 +2,6 @@
 # host:port(default:8002)=weight(default:1)
 # FIXME: Figure out how weight is exactly handled, could we use multiple supernodes without split brain?
 nodes:
-<% @supernodes.each do |node| %>
+<% @supernodes.each do |node| -%>
   - <%= node %>
-<% end %>
+<% end -%>
