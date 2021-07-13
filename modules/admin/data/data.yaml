@@ -5158,9 +5158,7 @@ ldap_only_users:
   kgordon:
     ensure: present
     realname: Kinneret Gordon
-    email: kgordon-ctr@wikimedia.org
-    expiry_date: 2021-07-15
-    expiry_contact: mpinchuk@wikimedia.org
+    email: kgordon@wikimedia.org
   bvershbow:
     ensure: present
     realname: Ben Vershbow
