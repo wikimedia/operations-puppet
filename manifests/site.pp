@@ -1980,11 +1980,6 @@ node /^mw144([1-2])\.eqiad\.wmnet$/ {
 
 # Row A
 
-# rack A7
-node /^mw127[6-9]\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::canary_api)
-}
-
 # rack A6
 node 'mw1312.eqiad.wmnet' {
     role(mediawiki::appserver::api)
