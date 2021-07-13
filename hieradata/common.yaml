@@ -1819,6 +1819,3 @@ mailman2_exclude_backups:
   - wmf_community_dept
   - workgroup1
   - wpcivility
-
-mediabackup:
-  storage_port: 9000
