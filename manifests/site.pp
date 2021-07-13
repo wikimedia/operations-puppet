@@ -1849,11 +1849,6 @@ node /^mw127[6-9]\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::canary_api)
 }
 
-# rack A8
-node /^mw128[1-3]\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
-}
-
 # rack A6
 node 'mw1312.eqiad.wmnet' {
     role(mediawiki::appserver::api)
