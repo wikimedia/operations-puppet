@@ -1,0 +1,22 @@
+profile::thanos::compact_host: "%{alias('__master_for_role_thanos__frontend')}"
+profile::thanos::frontends: "%{alias('__hosts_for_role_thanos__frontend')}"
+profile::thanos::backends: "%{alias('__hosts_for_role_thanos__backend')}"
+profile::thanos::swift::memcached_servers: "%{alias('__hosts_for_role_thanos__frontend')}"
+
+profile::thanos::objstore_password: 'foo'
+
+
+profile::swift::stats_reporter_host: "%{alias('__master_for_role_thanos__frontend')}"
+
+profile::thanos::query_frontend::memcached_hosts: "%{alias('__hosts_for_role_thanos__frontend')}"
+
+
+profile::thanos::swift::accounts_keys:
+  thanos_prod: 'foo'
+  dispersion: 'bar'
+
+swift_aux_partitions: []
+swift_storage_drives:
+  - '/dev/lda'
+
+profile::swift::storage::loopback_device_count: 1
