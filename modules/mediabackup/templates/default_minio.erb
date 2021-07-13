@@ -1,0 +1,3 @@
+# Note: This file is managed by Puppet.
+MINIO_VOLUMES="<%= @storage_path %>"
+MINIO_OPTS="-C <%= @config_dir %> --address <%= @facts['networking']['ip'] %>:<%= @port %>"

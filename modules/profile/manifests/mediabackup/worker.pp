@@ -11,5 +11,6 @@ class profile::mediabackup::worker (
         db_password   => $mediabackup_config['db_password'],
         db_schema     => $mediabackup_config['db_schema'],
         storage_hosts => $mediabackup_config['storage_hosts'],
+        storage_port  => $mediabackup_config['storage_port'],
     }
 }
