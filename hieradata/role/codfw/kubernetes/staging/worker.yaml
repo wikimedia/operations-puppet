@@ -11,3 +11,4 @@ profile::kubernetes::node::kubelet_cluster_dns: "10.192.76.3"
 profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.codfw.wmnet:6443
 profile::base::notifications: disabled
 profile::kubernetes::node::masquerade_all: true
+profile::dragonfly::dfdaemon::ensure: present
