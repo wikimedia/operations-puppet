@@ -1,5 +1,7 @@
 # mediawiki maintenance server
-class profile::mediawiki::maintenance {
+class profile::mediawiki::maintenance (
+    Stdlib::Host $deployment_server = lookup('deployment_server'),
+){
     # In order to be able to use the conftool-aware wrapper, we need to access
     # such data easily (on disk).
     require ::profile::conftool::state
@@ -7,6 +9,13 @@ class profile::mediawiki::maintenance {
     # httpd for noc.wikimedia.org
     class { '::httpd':
         modules => ['rewrite', 'headers'],
+    }
+
+    # firewall: allow http from deployment servers for testing with httpbb
+    ferm::service { 'deploy-http-mwmaint':
+        proto  => 'tcp',
+        port   => '80',
+        srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
     }
 
     # Set the Server response header to the FQDN. (T255629)
