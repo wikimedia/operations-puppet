@@ -38,6 +38,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/miscweb',
             '/srv/deployment/httpbb-tests/people',
             '/srv/deployment/httpbb-tests/releases',
+            '/srv/deployment/httpbb-tests/noc',
             '/srv/deployment/httpbb-tests/doc',
             '/srv/deployment/httpbb-tests/parse',
             '/srv/deployment/httpbb-tests/docker-registry',
@@ -80,6 +81,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'releases/test_releases.yaml':
         source => 'puppet:///modules/profile/httpbb/releases/test_releases.yaml'
+    }
+    httpbb::test_suite {'noc/test_noc.yaml':
+        source => 'puppet:///modules/profile/httpbb/noc/test_noc.yaml'
     }
     httpbb::test_suite {'doc/test_doc.yaml':
         source => 'puppet:///modules/profile/httpbb/doc/test_doc.yaml'

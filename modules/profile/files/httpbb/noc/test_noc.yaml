@@ -1,0 +1,10 @@
+http://noc.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikimedia NOC
+- path: /conf/
+  assert_status: 200
+  assert_body_contains: active MediaWiki versions
+- path: /db.php
+  assert_status: 200
+  assert_body_contains: Section DEFAULT
