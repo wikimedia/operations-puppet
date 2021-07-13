@@ -1765,7 +1765,7 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 # Row A
 
 # rack A3
-node /^mw14(1[4-9]|2[0-1])\.eqiad\.wmnet$/ {
+node /^mw14(1[4-9]|2[0-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
@@ -1946,7 +1946,7 @@ node /^mw133[4-8]\.eqiad\.wmnet$/ {
 }
 
 # new mw hosts via T273915
-node /^mw14(2[2-9]|[3-4][0-9]|5[0-6])\.eqiad\.wmnet$/ {
+node /^mw14(2[3-9]|[3-4][0-9]|5[0-6])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
