@@ -61,15 +61,15 @@ class profile::lvs::realserver(
             ensure   => $pc_ensure,
             backends => $bc
         }
-        $pools.map |$lvs_name, $pool| {
-            $pool['services']
-        }.flatten().unique().each |$service| {
-            # Extract all the pools in which the service is included.
-            $service_pools = $pools.filter |$lvs_name, $pool| { $service in $pool['services'] }
-            conftool::scripts::safe_service_restart { $service:
-                lvs_pools       => keys($service_pools),
-                max_concurrency => $max_concurrency,
-            }
-        }
+        #$pools.map |$lvs_name, $pool| {
+        #    $pool['services']
+        #}.flatten().unique().each |$service| {
+        #    # Extract all the pools in which the service is included.
+        #    $service_pools = $pools.filter |$lvs_name, $pool| { $service in $pool['services'] }
+        #    conftool::scripts::safe_service_restart { $service:
+        #        lvs_pools       => keys($service_pools),
+        #        max_concurrency => $max_concurrency,
+        #    }
+        #}
     }
 }
