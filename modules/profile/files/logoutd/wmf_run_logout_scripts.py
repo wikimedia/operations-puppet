@@ -10,6 +10,8 @@ from pathlib import Path
 from subprocess import run
 from typing import Dict
 
+from wmflib.idm import logoutd_args
+
 
 # TODO: convert to dataclass when we drop support for python3.5
 class ScriptOutput:
@@ -42,8 +44,10 @@ def get_args() -> None:
         '-S',
         '--script',
         action='append',
-        help=('Script to call, can be used multiple times. '
-              'If not passed all scripts in script-dir will be called'),
+        help=(
+            'Script to call, can be used multiple times. '
+            'If not passed all scripts in script-dir will be called'
+        ),
     )
     return parser.parse_known_args()
 
@@ -72,8 +76,13 @@ def main() -> int:
         int: an int representing the exit code
     """
     args, scriptargs = get_args()
-    # TODO: use idm.logoutd_args(scriptargs) to validate script arguments
     logging.basicConfig(level=get_log_level(args.verbose))
+    try:
+        logoutd_args(scriptargs)
+    except SystemExit as error:
+        print('The message above relates to the arguments sent to the wrapped scripts')
+        raise error
+
     results = []
     for script in args.script_dir.iterdir():
         if not os.access(script, os.X_OK):
@@ -84,7 +93,9 @@ def main() -> int:
             continue
         arguments = [script] + scriptargs
         result = run(arguments, capture_output=True, check=False)
-        script_output = ScriptOutput(script.name, result.stdout, result.returncode)
+        script_output = ScriptOutput(
+            script.name, result.stdout.decode(), result.returncode
+        )
         # Use asdict so we don't have to worry about json serialisation
         results.append(script_output.asdict())
     print(dumps(results))
