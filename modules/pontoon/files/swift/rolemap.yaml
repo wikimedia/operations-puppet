@@ -3,8 +3,14 @@ puppetmaster::pontoon:
 
 swift::proxy:
   - ms-fe-01.swift.eqiad1.wikimedia.cloud # bullseye
-  - ms-fe-02.swift.eqiad1.wikimedia.cloud # stretch
+  - ms-fe-10.swift.eqiad1.wikimedia.cloud # stretch
 
 swift::storage:
   - ms-be-01.swift.eqiad1.wikimedia.cloud # bullseye
-  - ms-be-02.swift.eqiad1.wikimedia.cloud # stretch
+  - ms-be-10.swift.eqiad1.wikimedia.cloud # stretch
+
+thanos::frontend:
+  - thanos-fe-01.swift.eqiad1.wikimedia.cloud # bullseye
+
+thanos::backend:
+  - thanos-be-01.swift.eqiad1.wikimedia.cloud # bullseye
