@@ -30,7 +30,7 @@ testcases:
           "severity": "info",
           "servergroup": "api_appserver",
           "level": "INFO",
-          "ip": "10.64.0.76",
+          "ip": "10.64.0.195",
           "module": "clientlogin",
           "mwversion": "1.36.0-wmf.27",
           "message": "clientlogin API attempt",
