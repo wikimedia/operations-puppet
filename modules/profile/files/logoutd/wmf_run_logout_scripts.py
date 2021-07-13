@@ -79,7 +79,7 @@ def main() -> int:
         if not os.access(script, os.X_OK):
             logging.warning('%s: is not executable')
             continue
-        if args.scripts and script not in args.script:
+        if args.script and script not in args.script:
             logging.debug("%s: won't be called", script)
             continue
         arguments = [script] + scriptargs
