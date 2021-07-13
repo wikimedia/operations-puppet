@@ -10,10 +10,15 @@ define profile::maps::tilerator_user (
     Stdlib::IP::Address $ip_address,
     String $password,
 ) {
+    if $ip_address =~ Stdlib::IP::Address::Nosubnet {
+        $_ip_address = "${ip_address}/32"
+    } else {
+        $_ip_address = $ip_address
+    }
     postgresql::user { "tilerator@${title}":
         user     => 'tilerator',
         password => $password,
         database => 'all',
-        cidr     => "${ip_address}/32",
+        cidr     => $_ip_address,
     }
 }

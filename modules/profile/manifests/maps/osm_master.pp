@@ -18,6 +18,9 @@ class profile::maps::osm_master (
 ) {
 
     require profile::maps::postgresql_common
+    include network::constants
+
+    $kubepods_networks = $network::constants::kubepods_networks
 
     $maps_hosts_ferm = join($maps_hosts, ' ')
 
@@ -81,8 +84,19 @@ class profile::maps::osm_master (
     }
 
     profile::maps::tilerator_user { 'localhost':
-        ip_address => '127.0.0.1',
+        ip_address => '127.0.0.1/32',
         password   => $tilerator_pass,
+    }
+    # tegola-vector-tiles will connect as user tilerator from
+    # kubernetes pods.
+    $kubepods_networks.each |String $subnet| {
+        if $subnet =~ Stdlib::IP::Address::V4 {
+            $_subnet = split($subnet, '/')[0]
+            profile::maps::tilerator_user { "${_subnet}_kubepod":
+            ip_address => $subnet,
+            password   => $tilerator_pass,
+            }
+        }
     }
 
     if $postgres_replicas {
