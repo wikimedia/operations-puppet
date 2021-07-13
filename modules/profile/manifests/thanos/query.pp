@@ -24,10 +24,10 @@ class profile::thanos::query (
     # Reach out to all sites' sidecars for recent data
     $sites.each |String $s| {
         prometheus::resource_config{ "thanos_store_sidecar_${s}":
-            dest           => "${sd_files_path}/sidecar_${s}.yml",
-            site           => $s,
-            define_name    => 'thanos::sidecar',
-            port_parameter => 'grpc_port',
+            dest            => "${sd_files_path}/sidecar_${s}.yml",
+            prometheus_site => $s,
+            define_name     => 'thanos::sidecar',
+            port_parameter  => 'grpc_port',
         }
     }
 

@@ -5,7 +5,7 @@ all = []
 
 # Find all servers in the current site, and filter them by the servers list we just found
 @site_clusters.each do |cluster, val|
-  targets = val[@site].flat_map {|server|
+  targets = val[@prometheus_site].flat_map {|server|
     @resources.fetch(server, []).map {|exporter|
         hostname = server.split('.')[0]
         port = exporter['parameters'][@port_parameter]
@@ -15,7 +15,7 @@ all = []
   if targets.length > 0
     all.push(
       {
-        'labels' => @labels.merge({'cluster' => cluster, 'site' => @site}),
+        'labels' => @labels.merge({'cluster' => cluster, 'site' => @prometheus_site}),
         'targets' => targets,
       }
     )
