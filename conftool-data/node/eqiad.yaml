@@ -138,8 +138,6 @@ eqiad:
     mw1296.eqiad.wmnet: [apache2,nginx]
     mw1298.eqiad.wmnet: [apache2,nginx]
     mw1299.eqiad.wmnet: [apache2,nginx]
-    mw1300.eqiad.wmnet: [apache2,nginx]
-    mw1301.eqiad.wmnet: [apache2,nginx]
     mw1302.eqiad.wmnet: [apache2,nginx]
     mw1303.eqiad.wmnet: [apache2,nginx]
     mw1304.eqiad.wmnet: [apache2,nginx]
