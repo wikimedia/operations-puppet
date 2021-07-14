@@ -4430,6 +4430,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDLwVzH9rT959TVnPq/SBJIQU4T1eZXIBAdyEM5TchYg btullis@wikimedia.org
+    krb: present
 
 ldap_only_users:
   abartov:
