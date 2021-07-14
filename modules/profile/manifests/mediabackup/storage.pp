@@ -11,7 +11,7 @@ class profile::mediabackup::storage (
     }
     nrpe::monitor_service { 'minio_server':
         description   => 'MinIO server processes',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C "/usr/local/bin/minio server"',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C minio -a server',
         critical      => false,
         contact_group => 'admins',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Media_storage/Backups',
