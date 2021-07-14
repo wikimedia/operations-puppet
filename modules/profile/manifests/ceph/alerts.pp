@@ -10,7 +10,7 @@ class profile::ceph::alerts(
         warning         => 1,
         critical        => 2,
         contact_group   => 'wmcs-team',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/cloudvps-ceph-cluster'],
+        dashboard_links => ['https://grafana.wikimedia.org/?orgId=1&tag=health&tag=ceph&search=open'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Runbooks/Ceph_Cluster_Health',
     }
 
@@ -24,7 +24,7 @@ class profile::ceph::alerts(
         critical        => 0,
         method          => 'le',
         contact_group   => 'wmcs-team',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/cloudvps-ceph-cluster'],
+        dashboard_links => ['https://grafana.wikimedia.org/?orgId=1&tag=health&tag=ceph&search=open'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Alerts#Ceph_Mon_Quorum',
     }
 
@@ -37,7 +37,7 @@ class profile::ceph::alerts(
         warning         => 1,
         critical        => 8,
         contact_group   => 'wmcs-team',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/cloudvps-ceph-cluster'],
+        dashboard_links => ['https://grafana.wikimedia.org/?orgId=1&tag=health&tag=ceph&search=open'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Alerts#Ceph_Osds_Down',
     }
 }
