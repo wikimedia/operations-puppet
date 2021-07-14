@@ -40,7 +40,6 @@ class profile::thanos::swift::backend (
 
     class { '::toil::systemd_scope_cleanup': }
 
-    include ::profile::statsite
     class { '::profile::prometheus::statsd_exporter':
         relay_address => '',
     }

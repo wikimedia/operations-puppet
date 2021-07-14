@@ -57,7 +57,6 @@ class profile::thanos::swift::frontend (
 
     include ::profile::prometheus::memcached_exporter
 
-    include ::profile::statsite
     class { '::profile::prometheus::statsd_exporter':
         relay_address => '',
     }

@@ -9,7 +9,6 @@ class role::swift::proxy {
     include ::profile::base::firewall
     include ::profile::conftool::client
     include ::profile::prometheus::memcached_exporter
-    include ::profile::statsite
     include ::profile::swift::proxy
 
 }

@@ -1,6 +1,5 @@
 cluster: thanos
 
-profile::statsite::ensure: 'absent'
 profile::prometheus::statsd_exporter::mappings:
   # Account-related services
   - match: swift.*.*.account-auditor.passes

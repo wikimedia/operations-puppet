@@ -5,7 +5,6 @@ profile::base::systemd::memory_accounting: 'yes'
 
 profile::swift::storage::object_replicator_concurrency: 3
 
-profile::statsite::ensure: 'absent'
 profile::prometheus::statsd_exporter::mappings:
   # Account-related services
   - match: swift.*.*.account-auditor.passes

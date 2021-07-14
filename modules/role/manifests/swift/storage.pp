@@ -9,7 +9,6 @@ class role::swift::storage {
     include ::profile::base::firewall
     include ::profile::swift::storage
     include ::toil::systemd_scope_cleanup
-    include ::profile::statsite
 
     class { '::profile::prometheus::statsd_exporter':
         relay_address => '',
