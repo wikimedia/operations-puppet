@@ -1,7 +1,8 @@
 # mediabackup storage hosts expose the api and store
 # the files generated from the media backup workers.
 class profile::mediabackup::storage (
-    Hash $mediabackup_config = lookup('mediabackup', Hash, 'hash'),
+    Hash $mediabackup_config              = lookup('mediabackup', Hash, 'hash'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     class { 'mediabackup::storage':
         storage_path  => $mediabackup_config['storage_path'],
@@ -20,12 +21,21 @@ class profile::mediabackup::storage (
     # Do not open the firewall to everyone if there are no available storage hosts
     if length($mediabackup_config['worker_hosts']) > 0 {
         $workers = join($mediabackup_config['worker_hosts'], ' ')
-        $srange = join(['@resolve((', $workers, '))'], ' ')
-        ferm::service { 'mediabackup-workers':
+        $srange_workers = join(['@resolve((', $workers, '))'], ' ')
+        ferm::service { 'minio-mediabackup-workers':
             proto   => 'tcp',
             port    => $mediabackup_config['storage_port'],
             notrack => true,
-            srange  => $srange,
+            srange  => $srange_workers,
         }
+    }
+    # firewall for prometheus metrics - metrics will require no authentication
+    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    $srange_prometheus = join(['@resolve((', $prometheus_nodes_ferm, '))'], ' ')
+    ferm::service { 'minio-prometheus-monitoring':
+        proto   => 'tcp',
+        port    => $mediabackup_config['storage_port'],
+        notrack => true,
+        srange  => $srange_prometheus,
     }
 }

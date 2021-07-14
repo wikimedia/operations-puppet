@@ -1800,6 +1800,23 @@ class profile::prometheus::ops (
         labels     => {}
     }
 
+    # Job definition for minio (mediabackup::storage)
+    $minio_jobs = [
+        {
+        'job_name'        => 'minio',
+        'scheme'          => 'https',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/minio_*.yaml"] },
+        ],
+        'metrics_path'    => '/minio/v2/metrics/cluster',  # there are also per node stats
+      },
+    ]
+    prometheus::class_config{ "minio_${::site}":
+        dest       => "${targets_path}/minio_${::site}.yaml",
+        class_name => 'profile::mediabackup::storage',
+        port       => 9000,
+    }
+
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
@@ -1828,7 +1845,7 @@ class profile::prometheus::ops (
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
-            $udpmxircecho_jobs
+            $udpmxircecho_jobs, $minio_jobs,
         ].flatten,
         global_config_extra    => $config_extra,
     }
