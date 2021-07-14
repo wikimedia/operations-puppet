@@ -6,6 +6,7 @@ class profile::gitlab(
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
     Stdlib::Unixpath $backup_dir_data = lookup('profile::gitlab::backup_dir_data'),
     Stdlib::Unixpath $backup_dir_config = lookup('profile::gitlab::backup_dir_config'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -83,4 +84,58 @@ class profile::gitlab(
         group => 'root',
         mode  => '0600',
     })
+
+    if !empty($prometheus_nodes) {
+        # gitlab exports metrics on multiple ports and prometheus nodes need access
+        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+
+        ferm::service { 'gitlab_nginx':
+            proto  => 'tcp',
+            port   => '8060',
+            srange => $ferm_srange,
+        }
+
+        ferm::service { 'gitlab_redis':
+            proto  => 'tcp',
+            port   => '9121',
+            srange => $ferm_srange,
+        }
+
+        ferm::service { 'gitlab_postgres':
+            proto  => 'tcp',
+            port   => '9187',
+            srange => $ferm_srange,
+        }
+
+        ferm::service { 'gitlab_workhorse':
+            proto  => 'tcp',
+            port   => '9229',
+            srange => $ferm_srange,
+        }
+
+        ferm::service { 'gitlab_rails':
+            proto  => 'tcp',
+            port   => '8080',
+            srange => $ferm_srange,
+        }
+
+        ferm::service { 'gitlab_sidekiq':
+            proto  => 'tcp',
+            port   => '8082',
+            srange => $ferm_srange,
+        }
+
+        ferm::service { 'gitlab_server':
+            proto  => 'tcp',
+            port   => '9168',
+            srange => $ferm_srange,
+        }
+
+        ferm::service { 'gitlab_gitaly':
+            proto  => 'tcp',
+            port   => '9236',
+            srange => $ferm_srange,
+        }
+    }
 }
