@@ -57,9 +57,18 @@ class profile::analytics::refinery::job::refine_sanitize(
         refinery_job_jar    => $refinery_job_jar,
         job_class           => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitize',
         monitor_class       => 'org.wikimedia.analytics.refinery.job.refine.RefineSanitizeMonitor',
-        spark_extra_opts    => '--conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
         spark_driver_memory => '16G',
-        spark_max_executors => '128',
+        # Production refine jobs can use a lot of memory, especially for larger datasets.
+        # We choose to use 4 cores with lots of executor memory and extra memoryOverhead to
+        # reduce JVM container overhead.  Each executor can run more tasks in parallel
+        # and use more memory.  Having 4 cores sharing more memory accounts for the fact
+        # that some tasks are very small and some are large.  This allows large tasks to
+        # use more of the memory pool for the executor and smaller ones to use less, hopefully
+        # making better use of all allocated memory across the cluster.
+        spark_max_executors   => 64,
+        spark_executor_memory => '16G',
+        spark_executor_cores  => 4,
+        spark_extra_opts      => '--conf spark.executor.memoryOverhead=4096 --conf spark.ui.retainedStage=20 --conf spark.ui.retainedTasks=1000 --conf spark.ui.retainedJobs=100',
     }
 
     # There are several jobs that run RefineSanitize from event into event_sanitized.

@@ -42,7 +42,16 @@ class profile::analytics::refinery::job::refine(
         # Use this value as default refinery_job_jar.
         refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar",
         # Production refine jobs can use a lot of memory, especially for larger datasets.
-        spark_executor_memory => '8G',
+        # We choose to use 4 cores with lots of executor memory and extra memoryOverhead to
+        # reduce JVM container overhead.  Each executor can run more tasks in parallel
+        # and use more memory.  Having 4 cores sharing more memory accounts for the fact
+        # that some tasks are very small and some are large.  This allows large tasks to
+        # use more of the memory pool for the executor and smaller ones to use less, hopefully
+        # making better use of all allocated memory across the cluster.
+        spark_max_executors   => 64,
+        spark_executor_memory => '16G',
+        spark_executor_cores  => 4,
+        spark_extra_opts      => '--conf spark.executor.memoryOverhead=4096',
     }
 
     # These configs will be used for all refine jobs unless otherwise overridden.
@@ -82,8 +91,8 @@ class profile::analytics::refinery::job::refine(
     $event_table_exclude_regex = "^(${join($event_table_exclude_list, '|')})$"
 
     profile::analytics::refinery::job::refine_job { 'event':
-        ensure                => $ensure_timers,
-        job_config            => merge($default_config, {
+        ensure           => $ensure_timers,
+        job_config       => merge($default_config, {
             input_path                      => $event_input_path,
             input_path_regex                => $event_input_path_regex,
             input_path_regex_capture_groups => $event_input_path_regex_capture_groups,
@@ -103,12 +112,9 @@ class profile::analytics::refinery::job::refine(
             # each of those will be launched in serial in the same thread.
             parallelism                     => 64,
         }),
-        interval              => '*-*-* *:20:00',
-        monitor_interval      => '*-*-* 01:15:00',
-        spark_executor_memory => '6G',
-        spark_max_executors   => 128,
-        spark_extra_opts      => '--conf spark.executor.memoryOverhead=1024',
-        use_keytab            => $use_kerberos_keytab,
+        interval         => '*-*-* *:20:00',
+        monitor_interval => '*-*-* 01:15:00',
+        use_keytab       => $use_kerberos_keytab,
     }
 
 

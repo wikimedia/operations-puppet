@@ -59,6 +59,7 @@ define profile::analytics::refinery::job::refine_job (
     $monitor_until                    = 4,
     $queue                            = 'production',
     $spark_executor_memory            = '4G',
+    $spark_executor_cores             = 1,
     $spark_driver_memory              = '8G',
     $spark_max_executors              = 64,
     $spark_extra_files                = undef,
@@ -141,7 +142,7 @@ define profile::analytics::refinery::job::refine_job (
         class      => $job_class,
         # We use spark's --files option to load the $job_config_file to the Spark job's working HDFS dir.
         # It is then referenced via its relative file name with --config_file $job_name.properties.
-        spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars}${_spark_extra_files} --master yarn --deploy-mode ${deploy_mode} --queue ${queue} --driver-memory ${spark_driver_memory} --executor-memory ${spark_executor_memory} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
+        spark_opts => "--files /etc/hive/conf/hive-site.xml,${job_config_file},${driver_extra_hive_jars}${_spark_extra_files} --master yarn --deploy-mode ${deploy_mode} --queue ${queue} --driver-memory ${spark_driver_memory} --executor-memory ${spark_executor_memory} --executor-cores ${spark_executor_cores} --conf spark.driver.extraClassPath=${driver_extra_classpath} --conf spark.dynamicAllocation.maxExecutors=${spark_max_executors} ${spark_extra_opts}",
         job_opts   => "--config_file ${config_file_path}",
         interval   => $interval,
     }
