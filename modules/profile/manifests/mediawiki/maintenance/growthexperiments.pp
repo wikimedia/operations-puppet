@@ -19,4 +19,10 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --tasktype link-recommendation --topictype ores --statsd --output none',
         interval => '*-*-* *:11:00',
     }
+
+    # update data for the mentor dashboard (T285811)
+    profile::mediawiki::periodic_job { 'growthexperiments-updateMenteeData':
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateMenteeData.php',
+        interval => '*-*-* 04:15:00',
+    }
 }
