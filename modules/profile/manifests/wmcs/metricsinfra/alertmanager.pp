@@ -38,13 +38,4 @@ class profile::wmcs::metricsinfra::alertmanager (
         mode    => '0444',
         notify  => Exec['alertmanager-reload'],
     }
-
-    # Expose alertmanager as /.alertmanager via apache reverse proxy
-    file { '/etc/apache2/prometheus.d/alertmanager.conf':
-        ensure  => present,
-        content => template('profile/wmcs/metricsinfra/alertmanager-apache.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-    }
 }
