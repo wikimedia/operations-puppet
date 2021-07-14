@@ -53,4 +53,8 @@ class profile::logoutd (
             group  => 'root',
         }
     }
+
+    profile::logoutd::script {'systemdlogoutd':
+        source => 'puppet:///modules/profile/logout.d/systemdlogind-logout.py',
+    }
 }
