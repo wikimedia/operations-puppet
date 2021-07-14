@@ -1,0 +1,7 @@
+## Pontoon SD records
+
+<% @services.keys.sort.each do |svc| -%>
+# Service '<%= svc %>'
+<%= @lb_address %>  <%= @services[svc].sort.join(' ') %>
+
+<% end %>

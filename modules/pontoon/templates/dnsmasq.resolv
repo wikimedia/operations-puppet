@@ -1,0 +1,5 @@
+# Pontoon SD upstream servers
+
+<% @nameservers.sort.each do |addr| -%>
+nameserver <%= addr %>
+<% end %>
