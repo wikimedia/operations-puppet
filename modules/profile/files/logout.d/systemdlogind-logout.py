@@ -13,8 +13,13 @@ class SystemdLogind(LogoutdBase):
 
     # Return codes follow the logout.d semantics, see T283242
     def logout_user(self, user):
+        if subprocess.run(["/bin/loginctl", "--no-pager", "user-status", user],
+                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                          check=False).returncode != 0:
+            return 0
+
         try:
-            output = subprocess.check_output(["/usr/bin/loginctl", "terminate-user", user],
+            output = subprocess.check_output(["/bin/loginctl", "terminate-user", user],
                                              universal_newlines=True).strip()
         except subprocess.CalledProcessError as error:
             print('Failed to logout user {}: {}'.format(user, error.returncode))
@@ -34,7 +39,7 @@ class SystemdLogind(LogoutdBase):
         res = {'id': user}
 
         try:
-            output = subprocess.check_output(["/usr/bin/loginctl", "--no-pager", "user-status",
+            output = subprocess.check_output(["/bin/loginctl", "--no-pager", "user-status",
                                               user], universal_newlines=True).strip()
         except subprocess.CalledProcessError as error:
             res['active'] = 'unknown'
