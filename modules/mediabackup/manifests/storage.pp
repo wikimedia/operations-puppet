@@ -20,7 +20,7 @@ class mediabackup::storage (
 
     user { 'minio-user':
         ensure     => present,
-        gid        => 'minio',
+        gid        => 'minio-user',
         shell      => '/bin/false',
         home       => $storage_path,
         system     => true,
