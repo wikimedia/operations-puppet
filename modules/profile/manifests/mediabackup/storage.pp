@@ -9,7 +9,7 @@ class profile::mediabackup::storage (
         root_user     => $mediabackup_config['storage_root_user'],
         root_password => $mediabackup_config['storage_root_password'],
     }
-    nrpe::monitor_service { 'minio server':
+    nrpe::monitor_service { 'minio_server':
         description   => 'MinIO server processes',
         nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C "/usr/local/bin/minio server"',
         critical      => false,
