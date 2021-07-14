@@ -88,14 +88,14 @@ class mediabackup::storage (
     # file names are hardcoded, so using symlinks to expose them
     file { "${storage_path}/.minio/certs/private.key":
         ensure  => 'link',
-        target  => '${config_dir}/ssl/server.key',
+        target  => "${config_dir}/ssl/server.key",
         owner   => 'minio-user',
         group   => 'minio-user',
         require => Base::Expose_puppet_certs[$config_dir],
     }
     file { "${storage_path}/.minio/certs/public.crt":
         ensure  => 'link',
-        target  => '${config_dir}/ssl/cert.pem',
+        target  => "${config_dir}/ssl/cert.pem",
         owner   => 'minio-user',
         group   => 'minio-user',
         require => Base::Expose_puppet_certs[$config_dir],
