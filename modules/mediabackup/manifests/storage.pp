@@ -72,19 +72,6 @@ class mediabackup::storage (
         group   => 'minio-user',
         require => File["${storage_path}/.minio"],
     }
-
-    # TODO: Remove the next 3 resources, as they will be linked elsewere
-    file { "${config_dir}/certs/private.key":
-        ensure  => absent,
-    }
-    file { "${config_dir}/certs/public.crt":
-        ensure  => absent,
-    }
-    File { "${config_dir}/certs":
-        ensure  => absent,
-        require => [ File["${config_dir}/certs/private.key"], File["${config_dir}/certs/public.crt"], ],
-    }
-
     # file names are hardcoded, so using symlinks to expose them
     file { "${storage_path}/.minio/certs/private.key":
         ensure  => 'link',
