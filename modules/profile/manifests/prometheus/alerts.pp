@@ -186,6 +186,7 @@ class profile::prometheus::alerts (
 
     # NOTE: To be removed in favor of the eventgate_validation_errors_total based alerts above.
     monitoring::alerts::kafka_topic_throughput { 'eventgate-analytics_validation_errors':
+        ensure             => 'absent',
         kafka_cluster_name => 'jumbo-eqiad',
         topic              => '.*\.eventgate-analytics\.error\.validation',
         method             => 'gt',
@@ -196,6 +197,7 @@ class profile::prometheus::alerts (
         dashboard_links    => ['https://grafana.wikimedia.org/d/ePFPOkqiz/eventgate?refresh=1m&orgId=1&var-dc=eqiad+prometheus/k8s&var-service=eventgate-analytics&var-kafka_topic=All&var-kafka_broker=All&var-kafka_producer_type=All'],
     }
     monitoring::alerts::kafka_topic_throughput { 'eventgate-main_validation_errors':
+        ensure             => 'absent',
         kafka_cluster_name => 'jumbo-eqiad',
         topic              => '.*\.eventgate-main\.error\.validation',
         method             => 'gt',
