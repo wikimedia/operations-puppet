@@ -40,9 +40,9 @@ def main():
         return e.returncode
 
     try:
-        json_data = output
-        if 'Using storage policy:' in output:
-            _, json_data = output.splitlines()
+        json_data = output.decode('utf8')
+        if 'Using storage policy:' in json_data:
+            _, json_data = json_data.splitlines()
         json_stats = json.loads(json_data)
     except ValueError:
         print('failed to load json from %r' % output, file=sys.stderr)
