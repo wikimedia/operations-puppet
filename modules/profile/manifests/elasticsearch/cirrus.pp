@@ -140,7 +140,7 @@ class profile::elasticsearch::cirrus(
         description => 'Disables readahead on all open files every 30 minutes to alleviate Cirrussearch / elasticsearch IO load spikes',
         command     => '/usr/local/bin/elasticsearch-disable-readahead.sh',
         user        => 'root',
-        interval    => [{'start' => 'OnActiveSec', 'interval' => '30min'}, {'start' => 'OnBootSec', 'interval' => '1min'}],
+        interval    => [{'start' => 'OnUnitActiveSec', 'interval' => '30min'}, {'start' => 'OnBootSec', 'interval' => '1min'}],
     }
     ## END   Temporary mitigation put in place for T264053
 
