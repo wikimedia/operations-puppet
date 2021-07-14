@@ -10,6 +10,10 @@ groups:
   - record: instance_operation:etcd_request_latencies_summary:avg5m
     expr: sum by(instance, operation) (rate(etcd_request_latencies_summary_sum{job="k8s-api"}[5m]))
       / sum by(instance, operation) (rate(etcd_request_latencies_summary_count{job="k8s-api"}[5m]))
+
+  # service_runner_request_duration_seconds is being deprecated by new metric express_router_request_duration_seconds
+  # These rules can be removed once all services use an updated service-template-node and expose
+  # metrics directly through prometheus (instead of via prometheus-statsd-exporter bridge).
   - record: service_uri:service_runner_request_duration_seconds:50pct5m
     expr: histogram_quantile(0.5, sum by(uri, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
   - record: service_uri:service_runner_request_duration_seconds:90pct5m
@@ -28,6 +32,26 @@ groups:
     expr: histogram_quantile(0.9, sum by(status, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
   - record: service_status:service_runner_request_duration_seconds:99pct5m
     expr: histogram_quantile(0.99, sum by(status, le, service) (rate(service_runner_request_duration_seconds_bucket[5m])))
+
+  # express_router_request_duration_seconds is emitted by services that use service-template-node.
+  - record: service_uri:express_router_request_duration_seconds:50pct5m
+    expr: histogram_quantile(0.5, sum by(path, le, service) (rate(express_router_request_duration_seconds[5m])))
+  - record: service_uri:express_router_request_duration_seconds:90pct5m
+    expr: histogram_quantile(0.9, sum by(path, le, service) (rate(express_router_request_duration_seconds[5m])))
+  - record: service_uri:express_router_request_duration_seconds:99pct5m
+    expr: histogram_quantile(0.99, sum by(path, le, service) (rate(express_router_request_duration_seconds[5m])))
+  - record: service_method:express_router_request_duration_seconds:50pct5m
+    expr: histogram_quantile(0.5, sum by(method, le, service) (rate(express_router_request_duration_seconds[5m])))
+  - record: service_method:express_router_request_duration_seconds:90pct5m
+    expr: histogram_quantile(0.9, sum by(method, le, service) (rate(express_router_request_duration_seconds[5m])))
+  - record: service_method:express_router_request_duration_seconds:99pct5m
+    expr: histogram_quantile(0.99, sum by(method, le, service) (rate(express_router_request_duration_seconds[5m])))
+  - record: service_status:express_router_request_duration_seconds:50pct5m
+    expr: histogram_quantile(0.5, sum by(status, le, service) (rate(express_router_request_duration_seconds[5m])))
+  - record: service_status:express_router_request_duration_seconds:90pct5m
+    expr: histogram_quantile(0.9, sum by(status, le, service) (rate(express_router_request_duration_seconds[5m])))
+  - record: service_status:express_router_request_duration_seconds:99pct5m
+    expr: histogram_quantile(0.99, sum by(status, le, service) (rate(express_router_request_duration_seconds[5m])))
 
 - name: self
   rules:
