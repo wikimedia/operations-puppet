@@ -7675,6 +7675,7 @@ host thanos-fe1003 {
 host thanos-fe2001 {
     hardware ethernet BC:97:E1:28:4F:00;
     fixed-address thanos-fe2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host thanos-fe2002 {
