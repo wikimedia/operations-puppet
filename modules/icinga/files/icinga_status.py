@@ -14,12 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import logging
 
-from argparse import ArgumentParser
 from json import dumps as json_dumps
 from pathlib import Path
 from time import sleep
+from typing import Any, Dict, List, Literal, Optional, Set, Tuple, Union, cast
 
 from ClusterShell.NodeSet import NodeSet, RESOLVER_NOGROUP
 
@@ -39,17 +40,17 @@ class Service:
         'notifications_enabled': bool,
     }
 
-    def __init__(self, data):
+    def __init__(self, data: Dict[str, str]):
         self.name = data['service_description']
         self.host = data['host_name']
         for key, func in Service.CASTS.items():
             data[key] = func(data[key])
-        self.status = data
+        self.status = cast(Dict[str, Any], data)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return '{s.host}->{s.name}: {s.state}'.format(s=self)
 
-    def __json__(self):
+    def __json__(self) -> Dict[str, Any]:
         """Return a json representation of the service"""
         # may want to filter some of this out
         return self.__dict__
@@ -57,21 +58,21 @@ class Service:
     to_json = __json__
 
     @property
-    def state(self):
+    def state(self) -> str:
         """Return the text representation of the service current_state"""
         return Service.STATES[self.status['current_state']]
 
     @property
-    def optimal(self):
+    def optimal(self) -> bool:
         """Return True if the service is in the optimal state."""
         return self.status['current_state'] == 0
 
     @property
-    def downtimed(self):
+    def downtimed(self) -> bool:
         return bool(self.status['scheduled_downtime_depth'])
 
     @property
-    def notifications_enabled(self):
+    def notifications_enabled(self) -> bool:
         return self.status['notifications_enabled']
 
 
@@ -86,19 +87,19 @@ class Host:
         'notifications_enabled': bool,
     }
 
-    def __init__(self, data):
+    def __init__(self, data: Dict[str, str]):
         self.name = data['host_name']
-        self.services = {}
+        self.services: Dict[str, Service] = {}
         for key, func in Host.CASTS.items():
             data[key] = func(data[key])
 
-        self.status = data
+        self.status = cast(Dict[str, Any], data)
 
-    def __str__(self):
-        return '{s.name}: state={s.state}, optimal={s.optimal}, downtime={s.downtime}'.format(
+    def __str__(self) -> str:
+        return '{s.name}: state={s.state}, optimal={s.optimal}, downtime={s.downtimed}'.format(
             s=self)
 
-    def __json__(self):
+    def __json__(self) -> Dict[str, Union[str, bool, List[Service]]]:
         """Return a json representation of the service"""
         return {
             'name': self.name,
@@ -112,38 +113,38 @@ class Host:
     to_json = __json__
 
     @property
-    def state(self):
+    def state(self) -> str:
         """Return the text representation of the host current_state"""
         return Host.STATES[self.status['current_state']]
 
     @property
-    def optimal(self):
+    def optimal(self) -> bool:
         """Return True if the host and all its services are in the optimal state."""
         return (sum(service.status['current_state'] for service in self.services.values())
                 + self.status['current_state']) == 0
 
     @property
-    def failed_services(self):
+    def failed_services(self) -> List[Service]:
         """Return an list of all failed services"""
         return [service for service in self.services.values() if not service.optimal]
 
     @property
-    def downtimed(self):
+    def downtimed(self) -> bool:
         return bool(self.status['scheduled_downtime_depth'])
 
     @property
-    def notifications_enabled(self):
+    def notifications_enabled(self) -> bool:
         return self.status['notifications_enabled']
 
-    def has_service(self, name):
+    def has_service(self, name: str) -> bool:
         """Return True if the host has a service matching `name`"""
         return name in self.services
 
-    def get_service(self, name):
+    def get_service(self, name: str) -> Service:
         """Return the service matching `name`"""
         return self.services[name]
 
-    def add_service(self, service):
+    def add_service(self, service: Service) -> None:
         """Add `service` to this hosts list of services"""
         if service.host != self.name:
             raise RuntimeError(
@@ -156,38 +157,38 @@ class Host:
 class IcingaStatus:
     """Object to represent an icinga status.dat file"""
 
-    def __init__(self, status_path, target_hostnames):
+    def __init__(self, status_path: Path, target_hostnames: Set[str]):
         try:
             status_text = status_path.read_text()
         except OSError as error:
             raise IcingaStatusParseError('corrupt status.dat: Failed to open file: {}'.format(
                 error))
 
-        self.hosts = {}
+        self.hosts: Dict[str, Host] = {}
         self._target_hostnames = target_hostnames
         self._parse_status(status_text)
 
-    def get_host(self, name):
+    def get_host(self, name: str) -> Host:
         """Return a Host object matching `name`"""
         return self.hosts[name]
 
-    def get_hosts(self):
+    def get_hosts(self) -> Dict[str, Union[Host, Literal[False]]]:
         """Return a dict of Hosts matching `target_hostnames` given in __init__"""
         return {name: self.hosts.get(name, False) for name in self._target_hostnames}
 
-    def get_downtimed_hosts(self):
+    def get_downtimed_hosts(self) -> Dict[str, Host]:
         """Return a dict of the current hosts that have scheduled downtime"""
         return {k: v for k, v in self.hosts.items() if v.downtimed}
 
-    def get_service(self, name):
+    def get_service(self, name: str) -> List[Service]:
         """Return all Service objects matching `name`"""
         return [host.services[name] for host in self.hosts.values() if host.has_service(name)]
 
-    def get_hosts_with_service(self, name):
+    def get_hosts_with_service(self, name: str) -> List[Host]:
         """Return all Host objects with a Service matching `name`"""
         return [host for host in self.hosts.values() if host.has_service(name)]
 
-    def _parse_status(self, status_text):
+    def _parse_status(self, status_text: str) -> None:
         # The status file is several million lines long, consisting of blocks that start with
         # "BLOCK_NAME {", contain "\tKEY=VALUE" lines, and end with "\t}". For performance reasons,
         # rather than iterating on the status file line-by-line, we instead start by splitting it
@@ -214,7 +215,7 @@ class IcingaStatus:
         # If we get to this point we have found no downtime and likely read a corrupt file
         raise IcingaStatusParseError('corrupt status.dat: Failed to find downtime object')
 
-    def _parse_block(self, block):
+    def _parse_block(self, block: str) -> Tuple[str, Optional[Dict[str, str]]]:
         name = None
         data = {}
         for line in block.splitlines():
@@ -229,17 +230,18 @@ class IcingaStatus:
             sline = line[1:]  # Strip off the leading tab.
             key, value = sline.split('=', 1)
             if key == 'host_name' and value not in self._target_hostnames:
-                # Not a host we're interested in, skip it.
-                return name, None
+                # Not a host we're interested in, skip it. Cast away the Optional from the block
+                # name, since we've always set it before we reach the host_name.
+                return cast(str, name), None
             data[key] = value
         # The split() function in _parse_status removed the trailing "}", so as soon as we run out
         # of lines, we've finished the block.
-        return name, data
+        return cast(str, name), data
 
 
-def get_args():
+def get_args() -> argparse.Namespace:
     """Argument handler"""
-    parser = ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('hosts', help="Hosts selection query")
     parser.add_argument('-s', '--status-file', type=Path,
                         default=Path('/var/icinga-tmpfs/status.dat'))
@@ -254,7 +256,7 @@ def get_args():
     return parser.parse_args()
 
 
-def get_log_level(args_level):
+def get_log_level(args_level: Optional[int]) -> int:
     """Set logging level based on args.verbose"""
     return {
         None: logging.CRITICAL,
@@ -264,7 +266,7 @@ def get_log_level(args_level):
     }.get(args_level, logging.DEBUG)
 
 
-def main():
+def main() -> int:
     """The main cli entry point"""
     exit_code = 0
     args = get_args()
@@ -278,13 +280,13 @@ def main():
         hosts_set = {host.split('.')[0] for host in hosts_nodeset}
 
     try:
-        status = IcingaStatus(args.status_file, hosts_set)
+        icinga_status = IcingaStatus(args.status_file, hosts_set)
     except IcingaStatusParseError as error:
         logging.error('Failed to read status.dat (retrying): %s', error)
         sleep(0.5)
-        status = IcingaStatus(args.status_file, hosts_set)
+        icinga_status = IcingaStatus(args.status_file, hosts_set)
 
-    hosts = status.get_hosts()
+    hosts = icinga_status.get_hosts()
 
     for host, status in hosts.items():
         if status is False:
