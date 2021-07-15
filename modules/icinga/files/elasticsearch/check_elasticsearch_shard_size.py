@@ -83,7 +83,10 @@ def log_output(status, msg):
 def group_by_index(shards):
     indices = defaultdict(list)
     for shard in shards:
-        indices[shard['index']].append(int(shard['store']))
+        # If a shard is in a state like INITIALIZING
+        # the 'store' value will be None
+        if shard['store']:
+            indices[shard['index']].append(int(shard['store']))
     return indices
 
 
