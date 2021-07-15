@@ -7,4 +7,7 @@ class profile::sretest {
     profile::contact { $title:
         contacts => ['jbond', 'MoritzMuehlenhoff']
     }
+
+    # Temporarily for some tests
+    debian::autostart('nginx', false)
 }
