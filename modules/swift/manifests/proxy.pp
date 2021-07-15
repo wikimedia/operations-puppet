@@ -3,7 +3,7 @@ class swift::proxy (
     $shard_container_list,
     Hash[String, Hash] $accounts,
     Hash[String, String] $credentials,
-    $memcached_servers         = ['127.0.0.1'],
+    $memcached_servers         = ['localhost'],
     $memcached_port            = 11211,
     $statsd_host               = undef,
     $statsd_port               = 8125,
@@ -24,7 +24,11 @@ class swift::proxy (
         ensure => present,
     }
 
-    $memcached_addresses = $memcached_servers.map |$s| { "${s}:${memcached_port}" }
+    # eventlet + getaddrinfo is busted in Bullseye, thus use addresses
+    # https://phabricator.wikimedia.org/T283714
+    $memcached_addresses = $memcached_servers.map |$server| {
+        $addr = ipresolve($server, 4); "${addr}:${memcached_port}"
+    }
 
     file { '/etc/swift/proxy-server.conf':
         owner     => 'swift',

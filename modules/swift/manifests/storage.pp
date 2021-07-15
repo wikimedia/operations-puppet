@@ -3,7 +3,7 @@ class swift::storage (
     $statsd_port                      = 8125,
     $statsd_metric_prefix             = undef,
     $statsd_sample_rate_factor        = '1',
-    $memcached_servers                = ['127.0.0.1'],
+    $memcached_servers                = ['localhost'],
     $memcached_port                   = 11211,
     $container_replicator_concurrency = '1',
     $container_replicator_interval    = undef,
@@ -22,7 +22,11 @@ class swift::storage (
         ensure => present,
     }
 
-    $memcached_addresses = $memcached_servers.map |$s| { "${s}:${memcached_port}" }
+    # eventlet + getaddrinfo is busted in Bullseye, thus use addresses
+    # https://phabricator.wikimedia.org/T283714
+    $memcached_addresses = $memcached_servers.map |$server| {
+        $addr = ipresolve($server, 4); "${addr}:${memcached_port}"
+    }
 
     # Install overrides for object replication daemons (rsync, swift-object-replicator) to be able
     # to limit their memory usage

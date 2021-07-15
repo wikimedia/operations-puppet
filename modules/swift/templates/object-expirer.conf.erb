@@ -19,7 +19,7 @@ use = egg:swift#catch_errors
 
 [filter:cache]
 use = egg:swift#memcache
-memcache_servers = <%= @memcached_addresses.join(",") %>
+memcache_servers = <%= @memcached_addresses.sort.join(",") %>
 memcache_serialization_support = 2
 memcache_max_connections = 12 # per worker!
 
