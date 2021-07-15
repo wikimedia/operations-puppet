@@ -45,7 +45,7 @@ class dragonfly::dfdaemon (
       ensure   => $ensure,
       override => true,
       restart  => true,
-      content  => "[Service]\nEnvironment=\"HTTPS_PROXY=http://${proxy_host}\"",
+      content  => "[Service]\nEnvironment=\"HTTPS_PROXY=https://${proxy_host}\"",
   }
 
   service { 'dragonfly-dfdaemon':
