@@ -1769,7 +1769,7 @@ node /^mw141([4-8])\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
-node /^mw14(19|2[0-1])\.eqiad\.wmnet$/ {
+node /^mw14(19|2[0-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
