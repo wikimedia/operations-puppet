@@ -12,6 +12,7 @@ class profile::dragonfly::dfdaemon(
   $ssl_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
     'ensure' => $ensure,
     'owner'  => 'dragonfly',
+    'outdir' => '/etc/dragonfly',
     'hosts'  => [$facts['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost']
   })
 
