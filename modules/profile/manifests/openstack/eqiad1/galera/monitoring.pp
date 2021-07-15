@@ -19,4 +19,11 @@ class profile::openstack::eqiad1::galera::monitoring(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
         contact_group => 'wmcs-team',
     }
+    # We should know if galera fails over
+    nrpe::monitor_service { 'galera_haproxy_failover':
+        description   => 'Galera haproxy failover',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_haproxy --check=failover',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/HAProxy',
+        contact_group => 'wmcs-team-email,wmcs-bots',
+    }
 }
