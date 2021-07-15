@@ -1,4 +1,4 @@
-http://noc.wikimedia.org:
+https://noc.wikimedia.org:
 - path: /
   assert_status: 200
   assert_body_contains: Wikimedia NOC
