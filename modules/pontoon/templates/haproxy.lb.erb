@@ -1,0 +1,34 @@
+frontend lb
+<%- @ports.sort.each do |p| -%>
+    bind *:<%= p %>
+<% end %>
+    mode tcp
+    log /dev/log local0
+    option tcplog
+
+    tcp-request inspect-delay 5s
+    tcp-request content accept if HTTP
+    tcp-request content accept if { req.ssl_hello_type 1 }
+
+<%- @services.sort.each do |name, svc| -%>
+    <% if svc['backend_use_tls'] %>
+    use_backend <%= name %> if { req.ssl_sni -i <%= svc['names'].sort.join(' ') %> }
+    <% else %>
+    use_backend <%= name %> if { hdr(host) -i <%= svc['names'].sort.join(' ') %> }
+    <% end %>
+<% end %>
+
+<%- @services.sort.each do |name, svc| -%>
+backend <%= name %>
+    mode tcp
+    balance roundrobin
+    # <%= svc['backend_use_tls'] ? 'tls' : 'tcp' %> only to not spam request logs
+    <%- if svc['backend_use_tls'] -%>
+    option ssl-hello-chk
+    <% else %>
+    option tcp-check
+    <% end %>
+  <%- svc['hosts'].sort.each do |host| -%>
+    server <%= host.split('.')[0] %> <%= "#{host}:#{svc['port']}" %> check
+  <% end %>
+<% end %>
