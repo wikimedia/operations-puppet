@@ -7075,6 +7075,26 @@ host pc1010 {
     fixed-address pc1010.eqiad.wmnet;
 }
 
+host pc1011 {
+    hardware ethernet 2C:EA:7F:A6:3D:7F;
+    fixed-address pc1011.eqiad.wmnet;
+}
+
+host pc1012 {
+    hardware ethernet 2C:EA:7F:A5:1A:B8;
+    fixed-address pc1012.eqiad.wmnet;
+}
+
+host pc1013 {
+    hardware ethernet 2C:EA:7F:A7:0C:F3;
+    fixed-address pc1013.eqiad.wmnet;
+}
+
+host pc1014 {
+    hardware ethernet 2C:EA:7F:A7:0B:4B;
+    fixed-address pc1014.eqiad.wmnet;
+}
+
 host pc2007 {
     hardware ethernet D0:94:66:86:2E:4D;
     fixed-address pc2007.codfw.wmnet;
