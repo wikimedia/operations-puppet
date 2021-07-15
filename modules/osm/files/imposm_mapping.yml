@@ -369,3 +369,4 @@ tables:
     filters:
       require:
         admin_level: ['2', '4']
+        boundary: ['administrative']
