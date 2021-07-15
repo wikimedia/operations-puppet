@@ -1,6 +1,8 @@
 cluster: kubernetes
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 1
+# TODO: re-evaluate this parameter since it is probably not needed
+# when using ssl_*_path settings
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::service_cert: "kubestagemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"

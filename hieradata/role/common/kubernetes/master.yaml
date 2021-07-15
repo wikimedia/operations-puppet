@@ -4,6 +4,8 @@ profile::kubernetes::client::packages_from_future: true
 profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 2
+# TODO: re-evaluate this parameter since it is probably not needed
+# when using ssl_*_path settings
 profile::kubernetes::master::expose_puppet_certs: true
 profile::kubernetes::master::use_cergen: true
 profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
