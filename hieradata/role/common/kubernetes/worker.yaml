@@ -56,6 +56,7 @@ profile::lvs::realserver::pools:
   eventstreams-internal: {}
   proton: {}
   mobileapps: {}
+  mwdebug: {}
   api-gateway: {}
   push-notifications: {}
   recommendation-api: {}
