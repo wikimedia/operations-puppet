@@ -1216,7 +1216,7 @@ host conf2006 {
 
 host copernicium {
     hardware ethernet E4:3D:1A:04:AC:60;
-    fixed-address copernicium.eqiad.wmnet;
+    fixed-address copernicium.wikimedia.org;
 }
 
 host cp1075 {

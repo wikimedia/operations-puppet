@@ -329,7 +329,7 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 }
 
 # New node copernicium
-node 'copernicium.eqiad.wmnet' {
+node 'copernicium.wikimedia.org' {
     role(insetup)
 }
 
