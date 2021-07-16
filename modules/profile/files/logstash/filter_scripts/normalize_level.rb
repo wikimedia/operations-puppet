@@ -1,6 +1,6 @@
 # normalize_level.rb
-# Logstash Ruby script to build an ECS `log` field from level and syslog fields
-# @version 1.0.2
+# Logstash Ruby script to populate `log.level` and `log.syslog` based on indicators in other fields
+# @version 1.0.3
 
 def register(*)
   # RFC5424 severity to supported level field mapping
@@ -109,51 +109,53 @@ def get_level(event)
   # Returns normalized level field.
   # dependent on the availability of either `event.level` or `event.severity`
 
+  level = [
+    event.get('[log][level]'),
+    event.get('level'),
+    event.get('severity'),
+  ].find(-> { return 'NOTSET' }) { |v| !v.nil? }
+
   # bunyan sends levels as integers
-  if event.get('level').is_a? Numeric
-    idx = event.get('level') / 10 - 1  # transform to array index
-    return @bunyan_levels[idx].upcase
+  if level.is_a? Numeric
+    idx = level / 10 - 1  # transform to array index
+    level = @bunyan_levels[idx]
   end
 
-  if event.get('level').nil?
-    if event.get('severity').nil?
-      return "NOTSET"
-    else
-      return event.get('severity').upcase
-    end
-  end
-  event.get('level').upcase
+  level.upcase
 end
 
 def filter(event)
-  # Builds the ECS `log` field based on event `level` and `severity`
-  # https://doc.wikimedia.org/ecs/#ecs-log
+  original_log = event.get('log')
 
-  # Assume ECS compliant if 'log' is a hash.
-  unless event.get('log').instance_of?(Hash)
-    level = get_level(event)
-    severity_name, severity_code = get_severity(level)
-    facility_name, facility_code = get_facility(event.get('facility'))
-
-    event.set('log', {
-      :level => level,
-      :syslog => {
-        :severity => {
-          :code => severity_code,
-          :name => severity_name
-        },
-        :facility => {
-          :code => facility_code,
-          :name => facility_name
-        },
-        :priority => (facility_code * 8 + severity_code) # RFC5424 (6.2.1)
-      }
-    })
-
-    # Clean up migrated fields
-    event.remove('severity')
-    event.remove('level')
-    event.remove('facility')
+  # move original log field out of the way, but still reachable in case we need it
+  unless original_log.instance_of? Hash || original_log.nil?
+    event.set('_log', original_log)
+    event.remove('log')
   end
+
+  level = get_level(event)
+  severity_name, severity_code = get_severity(level)
+  facility_name, facility_code = get_facility(event.get('facility'))
+
+  event.set('[log][level]', level)
+
+  unless level == 'NOTSET'
+    event.set('[log][syslog]', {
+      :severity => {
+        :code => severity_code,
+        :name => severity_name
+      },
+      :facility => {
+        :code => facility_code,
+        :name => facility_name
+      },
+      :priority => (facility_code * 8 + severity_code) # RFC5424 (6.2.1)
+    })
+  end
+
+  # Clean up migrated fields
+  event.remove('severity')
+  event.remove('level')
+  event.remove('facility')
   [event]
 end

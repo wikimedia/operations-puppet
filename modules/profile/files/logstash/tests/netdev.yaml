@@ -40,6 +40,7 @@ testcases:
           ip: "127.0.1.1"
           port: "65535"
         log:
+          level: "NOTSET"
           original: "PFE_FW_SYSLOG_ETH_IP: FW: xe-3/0/4.1103 A 044f:0800 de:ad:be:ee:ee:ff -> de:ad:be:ee:ff:ff  tcp 127.0.0.1 127.0.1.1  9999 65535 (1 packets)"
           syslog:
             facility:
