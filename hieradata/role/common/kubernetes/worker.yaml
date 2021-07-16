@@ -68,5 +68,6 @@ profile::lvs::realserver::pools:
   shellbox-timeline: {}
   similar-users: {}
   linkrecommendation: {}
+  tegola-vector-tiles: {}
 prometheus::node_exporter::collectors_extra:
   - processes
