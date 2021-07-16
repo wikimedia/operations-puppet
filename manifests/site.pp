@@ -1779,7 +1779,7 @@ node /^mw14(19|2[0-2])\.eqiad\.wmnet$/ {
 }
 
 # rack A7
-node /^mw12(69|7[0-5])\.eqiad\.wmnet$/ {
+node /^mw12(69|71)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
