@@ -16,6 +16,11 @@ puts a.map{|k, v| a[k].map {|v| v['worker']}}.flatten()[0]
 RUBY_SCRIPT
 )
 
+# Check we'll be able to upload facts before the export itself
+for COMPILER in $COMPILERS
+do
+  ssh "$COMPILER" true
+done
 
 # Gather all the facts from one of the masters.
 master=${PUPPET_MASTER:-$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)}
