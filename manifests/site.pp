@@ -2467,13 +2467,13 @@ node /^snapshot1010\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper_monitor)
 }
 node /^snapshot1009\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::dumper)
+    role(dumps::generation::worker::testbed)
 }
 node /^snapshot101[1-2]\.eqiad\.wmnet/ {
     role(dumps::generation::worker::dumper)
 }
 node /^snapshot1013\.eqiad\.wmnet/ {
-    role(dumps::generation::worker::testbed)
+    role(dumps::generation::worker::dumper)
 }
 
 node /^snapshot101[45]\.eqiad\.wmnet/ {
