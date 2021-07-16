@@ -12,11 +12,7 @@ log_statsd_sample_rate_factor = <%= @statsd_sample_rate_factor %>
 <% end -%>
 
 [pipeline:main]
-<% if @enable_wmf_filters -%>
-pipeline = ensure_max_age rewrite healthcheck cache container_sync tempurl ratelimit tempauth cors proxy-logging proxy-server
-<% else %>
-pipeline = healthcheck cache container_sync bulk tempurl ratelimit s3api tempauth slo proxy-logging proxy-server
-<% end -%>
+pipeline = <%= @middlewares.join(' ') %>
 
 # s3api requirement
 [filter:bulk]
@@ -78,7 +74,9 @@ memcache_max_connections = 12
 use = egg:swift#proxy_logging
 set access_log_facility = LOG_LOCAL1
 
-<% if @enable_wmf_filters -%>
+[filter:listing_formats]
+use = egg:swift#listing_formats
+
 [filter:cors]
 paste.filter_factory = wmf.cors:filter_factory
 
@@ -89,6 +87,8 @@ status_list = 200
 max_age = 86400
 host_list = upload.wikimedia.org
 
+<%# Conditional configuration to write credentials only if we have to %>
+<% if @middlewares.include?('rewrite') -%>
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.
 # the account remains valid forever, but the token times out.

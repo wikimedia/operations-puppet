@@ -30,6 +30,18 @@ class swift::proxy (
         $addr = ipresolve($server, 4); "${addr}:${memcached_port}"
     }
 
+    $base_middlewares = $enable_wmf_filters ? {
+        true  => ['ensure_max_age', 'rewrite', 'healthcheck', 'cache', 'container_sync', 'tempurl',
+                  'ratelimit', 'tempauth', 'cors', 'proxy-logging', 'proxy-server'],
+        false => ['healthcheck', 'cache', 'container_sync', 'bulk', 'tempurl', 'ratelimit', 's3api',
+                  'tempauth', 'slo', 'proxy-logging', 'proxy-server'],
+    }
+
+    $middlewares = debian::codename::ge('bullseye') ? {
+        true  => ['listing_formats'] + $base_middlewares,
+        false => $base_middlewares,
+    }
+
     file { '/etc/swift/proxy-server.conf':
         owner     => 'swift',
         group     => 'swift',
