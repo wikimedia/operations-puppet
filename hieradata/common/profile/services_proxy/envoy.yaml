@@ -124,6 +124,7 @@ profile::services_proxy::envoy::listeners:
     port: 6022
     service: thanos-swift
     timeout: "120s"
+    http_host: thanos-swift.discovery.wmnet
   - name: schema
     port: 6023
     service: schema
