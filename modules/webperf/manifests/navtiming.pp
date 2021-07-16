@@ -30,7 +30,7 @@ class webperf::navtiming(
     apt::pin { 'python3-ua-parser':
         pin      => 'version 0.10.0*',
         package  => 'python3-ua-parser',
-        priority => '1001',
+        priority => 1001,
         before   => Package['python3-ua-parser'],
     }
     package { 'python3-ua-parser':

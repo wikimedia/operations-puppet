@@ -39,7 +39,7 @@ class profile::bigtop::apt (
         apt::pin { "thirdparty-${component}":
             ensure   => $ensure_pin,
             pin      => "release c=thirdparty/${component}",
-            priority => '1002',
+            priority => 1002,
             notify   => Exec['apt_update_hadoop_component'],
         }
     }

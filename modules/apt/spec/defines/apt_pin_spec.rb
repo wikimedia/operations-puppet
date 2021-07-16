@@ -7,7 +7,7 @@ describe 'apt::pin' do
   }
   let(:params) { {
     :pin => 'release o=Wikimedia',
-    :priority => '1042',
+    :priority => 1042,
   } }
   on_supported_os(WMFConfig.test_on).each do |os, _facts|
     context "#{os}" do

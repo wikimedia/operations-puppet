@@ -1,8 +1,8 @@
 define apt::pin (
-    $pin,
-    $priority,
-    $package=$name,
-    $ensure=present,
+    String         $pin,
+    Integer        $priority,
+    String         $package       = $name,
+    Wmflib::Ensure $ensure        = present,
 ) {
     # Braces required on puppet < 5.4 PUP-8067
     $filename = ($name =~ /\.pref$/) ? {

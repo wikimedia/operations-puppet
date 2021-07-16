@@ -17,7 +17,7 @@ class profile::base::linux510(
         apt::pin { 'linux-image-apt-pin':
             pin      => 'release a=buster-backports',
             package  => 'linux-image-amd64',
-            priority => '1001',
+            priority => 1001,
         }
     }
 }

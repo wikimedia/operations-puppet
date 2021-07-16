@@ -15,7 +15,7 @@ class docker_registry_ha (
     apt::pin { 'strech_wikimedia_docker_registry_27':
         package  => 'docker-registry',
         pin      => 'version 2.7.0~rc0~wmf1-1',
-        priority => '1002',
+        priority => 1002,
     }
 
     package {'docker-registry':

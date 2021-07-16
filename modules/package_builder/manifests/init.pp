@@ -46,7 +46,7 @@ class package_builder(
     apt::pin { 'lintian':
         pin      => "release a=${::lsbdistcodename}-backports",
         package  => 'lintian',
-        priority => '1001',
+        priority => 1001,
         before   => Package['lintian'],
     }
 

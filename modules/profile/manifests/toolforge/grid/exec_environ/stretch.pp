@@ -31,7 +31,7 @@ class profile::toolforge::grid::exec_environ::stretch {
 
     apt::pin { $nodejs_packages:
         pin      => 'release a=stretch-backports',
-        priority => '2000',
+        priority => 2000,
         before   => Package['nodejs'],
     }
 
@@ -66,7 +66,7 @@ class profile::toolforge::grid::exec_environ::stretch {
     ]
     apt::pin { $requests_packages:
         pin      => 'release a=stretch-backports',
-        priority => '2000',
+        priority => 2000,
         before   => Package[$requests_packages],
     }
     package { $requests_packages:

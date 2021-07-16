@@ -28,7 +28,7 @@ class profile::webperf::xhgui (
         apt::pin { 'php-twig':
             pin      => 'version 1.*',
             package  => 'php-twig',
-            priority => '1001',
+            priority => 1001,
             before   => Package['xhgui'],
         }
     }

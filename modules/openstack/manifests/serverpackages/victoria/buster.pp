@@ -19,7 +19,7 @@ class openstack::serverpackages::victoria::buster(
     apt::pin { 'openstack-victoria-buster-bpo':
         package  => join($buster_bpo_packages, ' '),
         pin      => 'release n=buster-backports',
-        priority => '1002',
+        priority => 1002,
     }
 
     # Force these packages to come from the nochange bpo
@@ -35,14 +35,14 @@ class openstack::serverpackages::victoria::buster(
     apt::pin { 'openstack-victoria-buster-bpo-nochange':
         package  => join($buster_bpo_nochange_packages, ' '),
         pin      => 'release n=buster-victoria-backports-nochange',
-        priority => '1002',
+        priority => 1002,
     }
 
     # Don't install systemd from buster-backports or bpo -- T247013
     apt::pin { 'systemd':
         pin      => 'release n=buster',
         package  => 'systemd libpam-systemd',
-        priority => '1001',
+        priority => 1001,
     }
 
     apt::repository { 'openstack-victoria-buster':

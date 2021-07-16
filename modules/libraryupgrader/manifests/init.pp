@@ -22,7 +22,7 @@ class libraryupgrader(
         apt::pin { 'iptables':
             pin      => 'release a=buster-backports',
             package  => 'iptables',
-            priority => '1001',
+            priority => 1001,
             before   => Package['docker-ce'],
         }
     }
