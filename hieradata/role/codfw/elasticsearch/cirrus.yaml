@@ -78,9 +78,9 @@ profile::elasticsearch::instances:
         heap_memory: '8G'
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic2038.codfw.wmnet
           - elastic2042.codfw.wmnet
           - elastic2047.codfw.wmnet
+          - elastic2051.codfw.wmnet
 
         cluster_hosts:
           # row A
