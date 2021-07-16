@@ -1,1 +1,3 @@
 cluster: dumps
+profile::standard::admin_groups:
+  - dumps-roots
