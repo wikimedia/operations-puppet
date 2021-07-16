@@ -1217,6 +1217,7 @@ host conf2006 {
 host copernicium {
     hardware ethernet E4:3D:1A:04:AC:60;
     fixed-address copernicium.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host cp1075 {
