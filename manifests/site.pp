@@ -328,6 +328,11 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 
 }
 
+# New node copernicium
+node 'copernicium.eqiad.wmnet' {
+    role(insetup)
+}
+
 node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
     role(cache::text)
 }

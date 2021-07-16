@@ -1214,6 +1214,11 @@ host conf2006 {
     fixed-address conf2006.codfw.wmnet;
 }
 
+host copernicium {
+    hardware ethernet E4:3D:1A:04:AC:60;
+    fixed-address copernicium.eqiad.wmnet;
+}
+
 host cp1075 {
     hardware ethernet 00:0A:F7:EF:F8:30;
     fixed-address cp1075.eqiad.wmnet;
