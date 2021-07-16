@@ -9,12 +9,21 @@ class profile::dragonfly::dfdaemon(
 
   # Generate a certificate to hijack/MITM requests to docker-registry as well as
   # accept connections via localhost.
-  $ssl_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
-    'ensure' => $ensure,
-    'owner'  => 'dragonfly',
-    'outdir' => '/etc/dragonfly',
-    'hosts'  => [$facts['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost']
-  })
+  #
+  # FIXME: With ensure == 'absent' get_cert fails because the user (owner) does not exist:
+  # Error: Could not execute posix command: Invalid user: dragonfly
+  # The user (and /etc/dragonfly) is created by the debian package which will not be installed
+  # in case of ensure == 'absent'
+  if $ensure == 'present' {
+    $ssl_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
+      'ensure' => $ensure,
+      'owner'  => 'dragonfly',
+      'outdir' => '/etc/dragonfly',
+      'hosts'  => [$facts['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost']
+    })
+  } else {
+    $ssl_paths = {'cert' => '/nonexistent', 'key' => '/nonexistent'}
+  }
 
   class {'dragonfly::dfdaemon':
     ensure               => $ensure,
