@@ -1790,7 +1790,7 @@ node /^mw14(2[3-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw14(29|3[1-3])\.eqiad\.wmnet$/ {
+node /^mw14(29|3[0-3])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
