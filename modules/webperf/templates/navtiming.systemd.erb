@@ -11,6 +11,7 @@ ExecStart=/usr/bin/python3 /srv/deployment/performance/navtiming/run_navtiming.p
     --statsd-port <%= @statsd_port %>
 User=nobody
 Restart=always
+SyslogIdentifier=navtiming
 
 [Install]
 WantedBy=multi-user.target
