@@ -1786,7 +1786,7 @@ node /^mw13(8[579]|91)\.eqiad\.wmnet$/ {
 # Row B
 
 # rack B3
-node /^mw14(2[3-5])\.eqiad\.wmnet$/ {
+node /^mw14(2[3-8])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
