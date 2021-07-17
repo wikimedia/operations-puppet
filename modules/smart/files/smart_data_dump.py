@@ -21,7 +21,7 @@ HPSA_CONTROLLER = collections.namedtuple('HPSA_CONTROLLER', ['name', 'target', '
     Represents an hpsa controller.
 
     HPSA controllers group all of their physical disks behind scsi generic devices.  When there are
-    multiple controllers, the the device ids (passed to `smartctl -d`) conflict and overwrite one
+    multiple controllers, the device ids (passed to `smartctl -d`) conflict and overwrite one
     another.  To get around this, we will replace the smartctl type option with the device
     target according to the controller at render time.
 

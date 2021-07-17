@@ -23,7 +23,7 @@ usage(){
     echo "Usage: $0 startdate enddate enwiki|wikidatawiki|regular full|partial"
     echo "where enwiki, wikidatawiki, or regular is the type of wikis to be dumped"
     echo "(enwiki/wikidatawiki or small/big wikis),"
-    echo "full or partial is the the type of wiki dump to be run"
+    echo "full or partial is the type of wiki dump to be run"
     echo "(all steps including full page content history, or"
     echo "a partial dump excluding that step)"
     echo "example:"

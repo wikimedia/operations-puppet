@@ -319,7 +319,7 @@ sub cluster_fe_deliver {
 		//
 		// - Content-Range: indicates total file and actual range returned for RANGE
 		//   requests (939b436512). Used by ogv.js to eliminate an extra HEAD request
-		//   to get the the total file size.
+		//   to get the total file size.
 		set resp.http.Access-Control-Expose-Headers = "Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache";
 
 		// "Timing-Allow-Origin" is part of the Resource Timing specification

@@ -8,7 +8,7 @@
 #
 # === Optional parameters
 #
-# $+origin+:: If this is not specified, the the $title repository will be
+# $+origin+:: If this is not specified, the $title repository will be
 #             checked out from gerrit using a default gerrit url.
 #             If you set this, please specify the full repository url.
 # $+branch+:: Branch you would like to check out.
