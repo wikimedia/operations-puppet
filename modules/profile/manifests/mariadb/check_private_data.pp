@@ -40,6 +40,7 @@ class profile::mariadb::check_private_data {
     }
 
     cron { 'check-private-data':
+        ensure  => absent,
         minute  => 0,
         hour    => 5,
         weekday => 1,
@@ -47,6 +48,19 @@ class profile::mariadb::check_private_data {
         command => '/usr/local/sbin/check_private_data_report > /dev/null 2>&1',
         require => [File['/usr/local/sbin/check_private_data_report'],
                     File['/usr/local/sbin/check_private_data.py'],
+        ],
+    }
+    systemd::timer::job { 'check-private-data':
+        ensure             => present,
+        description        => 'Regular jobs for checking and reporting private data',
+        user               => 'root',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        command            => '/usr/local/sbin/check_private_data_report',
+        interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 05:00:00'},
+        require            => [
+            File['/usr/local/sbin/check_private_data_report'],
+            File['/usr/local/sbin/check_private_data.py'],
         ],
     }
 
