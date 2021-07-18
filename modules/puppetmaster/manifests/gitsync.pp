@@ -4,13 +4,20 @@
 class puppetmaster::gitsync(
     Integer $run_every_minutes = 10,
     Boolean $private_only = false,
+    Optional[Stdlib::Unixpath] $prometheus_file = '/var/lib/prometheus/node.d/puppet-gitsync.prom',
 ){
 
     ensure_packages([
         'python3-git',
+        'python3-prometheus-client',
         'python3-requests',
-        ])
+    ])
 
+    if $prometheus_file {
+        $prometheus_arg = " --prometheus-file ${prometheus_file}"
+    } else {
+        $prometheus_arg = ''
+    }
 
     file { '/usr/local/bin/git-sync-upstream':
         ensure => present,
@@ -25,7 +32,7 @@ class puppetmaster::gitsync(
             ensure  => present,
             user    => 'root',
             minute  => "*/${run_every_minutes}",
-            command => '/usr/local/bin/git-sync-upstream --private-only >>/var/log/git-sync-upstream.log 2>&1',
+            command => "/usr/local/bin/git-sync-upstream --private-only ${prometheus_arg} >>/var/log/git-sync-upstream.log 2>&1",
             require => File['/usr/local/bin/git-sync-upstream'],
         }
     } else {
@@ -33,7 +40,7 @@ class puppetmaster::gitsync(
             ensure  => present,
             user    => 'root',
             minute  => "*/${run_every_minutes}",
-            command => '/usr/local/bin/git-sync-upstream >>/var/log/git-sync-upstream.log 2>&1',
+            command => "/usr/local/bin/git-sync-upstream ${prometheus_arg} >>/var/log/git-sync-upstream.log 2>&1",
             require => File['/usr/local/bin/git-sync-upstream'],
         }
     }

@@ -9,6 +9,7 @@ import logging
 import os
 import shutil
 
+from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 import requests
 
 # Send all git output to stdout
@@ -25,7 +26,7 @@ logging.captureWarnings(True)
 logger = logging.getLogger('sync-upstream')
 
 
-def rebase_repo(repo_path, latest_upstream_commit):
+def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     """Rebase the current HEAD of the given clone on top of the given tracking
     branch of it's origin repo.
 
@@ -43,6 +44,7 @@ def rebase_repo(repo_path, latest_upstream_commit):
     # diff index against working copy
     if repo.index.diff(None):
         logger.error("Local diffs detected.  Commit your changes!")
+        prometheus_gauge.labels(repo_path).set(0)
         return False
 
     repo.remotes.origin.fetch()
@@ -53,6 +55,7 @@ def rebase_repo(repo_path, latest_upstream_commit):
 
     if latest_upstream_commit == latest_merged_commit:
         logger.info("Up-to-date: %s" % repo_path)
+        prometheus_gauge.labels(repo_path).set(1)
         return True
     try:
         # Perform rebase in a temporary workdir to avoid altering the state of
@@ -105,6 +108,7 @@ def rebase_repo(repo_path, latest_upstream_commit):
     except git.exc.GitCommandError:
         logger.error("Rebase failed!")
         shutil.rmtree(tempdir)
+        prometheus_gauge.labels(repo_path).set(0)
         return False
 
     # Ensure that submodules are up to date in the local clone
@@ -122,6 +126,7 @@ def rebase_repo(repo_path, latest_upstream_commit):
         "--abbrev-commit",
         "origin/HEAD..HEAD")
 
+    prometheus_gauge.labels(repo_path).set(1)
     return True
 
 
@@ -129,17 +134,41 @@ parser = argparse.ArgumentParser(
     description='Sync local puppet repo with upstream')
 parser.add_argument('--private-only', dest='private', action='store_true',
                     help="Only sync the /labs/private repo")
+parser.add_argument('--prometheus-file', dest='prometheus_file', required=False,
+                    help='Collect statistics to this prometheus-node-exporter file')
 
 args = parser.parse_args()
+
+prometheus_registry = CollectorRegistry()
+
+gauge_last_update = Gauge('puppet_sync_upstream_last_update',
+                          'Last Puppet upstream sync in Unix time',
+                          registry=prometheus_registry)
+gauge_last_update.set_to_current_time()
+gauge_is_up_to_date = Gauge('puppet_sync_upstream_rebase_success',
+                            'Result of last attempt to rebase a given repository, '
+                            '1 indicates success or being up-to-date and 0 indicates failure',
+                            labelnames=['repository'],
+                            registry=prometheus_registry)
 
 if args.private:
     resp = requests.get('https://config-master.wikimedia.org/labsprivate-sha1.txt')
     assert resp.status_code == 200
-    rebase_repo("/var/lib/git/labs/private", resp.content.decode('ascii').strip())
+    rebase_repo("/var/lib/git/labs/private",
+                resp.content.decode('ascii').strip(),
+                gauge_is_up_to_date)
 else:
     resp = requests.get('https://config-master.wikimedia.org/puppet-sha1.txt')
     assert resp.status_code == 200
-    if rebase_repo("/var/lib/git/operations/puppet", resp.content.decode('ascii').strip()):
+    if rebase_repo("/var/lib/git/operations/puppet",
+                   resp.content.decode('ascii').strip(),
+                   gauge_is_up_to_date):
         resp = requests.get('https://config-master.wikimedia.org/labsprivate-sha1.txt')
         assert resp.status_code == 200
-        rebase_repo("/var/lib/git/labs/private", resp.content.decode('ascii').strip())
+        rebase_repo("/var/lib/git/labs/private",
+                    resp.content.decode('ascii').strip(),
+                    gauge_is_up_to_date)
+
+if args.prometheus_file is not None:
+    write_to_textfile(args.prometheus_file, prometheus_registry)
+    logger.info("Wrote Prometheus data to %s", args.prometheus_file)
