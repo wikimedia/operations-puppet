@@ -8,6 +8,7 @@ class profile::wmcs::metricsinfra::prometheus_configurator (
 
     $gitdir = '/var/lib/git'
     $clone_dir = "${gitdir}/cloud/metricsinfra/prometheus-configurator"
+    wmflib::dir::mkdir_p("${gitdir}/cloud/metricsinfra")
 
     group { 'prometheus-configurator':
         ensure => present,
@@ -23,11 +24,7 @@ class profile::wmcs::metricsinfra::prometheus_configurator (
         groups => ['prometheus'],
     }
 
-    file { [ $gitdir, "${gitdir}/cloud", "${gitdir}/cloud/metricsinfra" ]:
-        ensure => directory,
-        mode   => '0555',
-    }
-
+    # TODO: better deployment model (scap, debian, so on)
     git::clone { 'cloud/metricsinfra/prometheus-configurator':
         ensure    => latest,
         directory => $clone_dir,
