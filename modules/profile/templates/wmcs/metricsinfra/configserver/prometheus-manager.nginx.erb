@@ -1,0 +1,12 @@
+upstream prometheus_manager {
+    server unix:/run/uwsgi/prometheus_manager.sock;
+}
+
+server {
+    listen 80;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass prometheus_manager;
+    }
+}
