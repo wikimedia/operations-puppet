@@ -70,7 +70,7 @@ class profile::wmcs::instance(
         command => '/bin/mkdir -m0755 /etc/apache2/sites-local && \
                     /usr/bin/touch /etc/apache2/sites-local/dummy.conf && \
                     /bin/echo "Include sites-local/*" >> /etc/apache2/apache2.conf',
-        onlyif  => '/usr/bin/test -d /etc/apache2 -a ! -d /etc/apache2/sites-local',
+        onlyif  => '/usr/bin/test -e /etc/apache2/apache2.conf -a ! -d /etc/apache2/sites-local',
     }
 
     # Still needed for Toolforge
