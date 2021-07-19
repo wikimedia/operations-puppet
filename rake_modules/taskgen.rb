@@ -35,7 +35,6 @@ class TaskGen < ::Rake::TaskLib
       :tox,
       :dhcp,
       :per_module_tox,
-      :conftool_schema
     ]
     @git = GitOps.new(path)
     @changed_files = @git.changes_in_head
@@ -193,6 +192,7 @@ class TaskGen < ::Rake::TaskLib
     # These files must be valid JSON
     json_globs = [
       '**/*.json',
+      'modules/profile/files/conftool/json-schema/**/*.schema',
     ]
     changed = filter_files_by(*json_globs)
     return [] if changed.empty?
@@ -441,27 +441,6 @@ class TaskGen < ::Rake::TaskLib
       puts "hieradata/common.yaml: OK".green
     end
     [:common_yaml]
-  end
-
-  def setup_conftool_schema
-    schema_files = filter_files_by("modules/profile/files/conftool/json-schema/**/*.schema")
-    return [] if schema_files.empty?
-    desc 'Check json schema files for conftool'
-    failures = false
-    task :conftool_schema do
-      schema_files.each do |fn|
-        begin
-          JSON.parse(File.open(fn).read)
-        rescue JSON::ParserError => e
-          puts "Error parsing #{fn}".red
-          puts e.message
-          failures = true
-        end
-      end
-      abort("JSON schema validation: FAILED".red) if failures
-      puts "JSON schema validation: OK".green
-    end
-    [:conftool_schema]
   end
 
   def setup_spec
