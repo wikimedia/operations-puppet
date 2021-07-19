@@ -2,9 +2,9 @@
 
 listen <%= @title %>
     bind *:<%= @port_frontend %>
+    balance leastconn
     mode tcp
     option tcpka
-    on-marked-up shutdown-backup-sessions
 <% @healthcheck_options.each do |option| -%>
     <%= option %>
 <% end -%>
