@@ -916,7 +916,7 @@ node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
 }
 
 # Wikidough (T252132)
-node /^(doh[123]00[12]|doh4001|doh5001|malmok)\.wikimedia\.org$/ {
+node /^(doh[123]00[12]|doh4001|doh5001)\.wikimedia\.org$/ {
     role(wikidough)
 }
 
