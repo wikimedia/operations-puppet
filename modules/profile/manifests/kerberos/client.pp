@@ -6,6 +6,7 @@ class profile::kerberos::client (
     Optional[Boolean] $use_new_ccache = lookup('profile::kerberos::client::use_new_ccache', { 'default_value' => false}),
     Boolean $skip_wrapper = lookup('profile::kerberos::client::skip_wrapper', { 'default_value' => false }),
     Boolean $show_krb_ticket_info = lookup('profile::kerberos::client::show_krb_ticket_info', { 'default_value' => false }),
+    Boolean $enable_autorenew = lookup('profile::kerberos::client::enable_autorenew', { 'default_value' => false }),
 ) {
 
     class { 'kerberos::wrapper':
@@ -51,7 +52,8 @@ class profile::kerberos::client (
         source   => 'puppet:///modules/profile/kerberos/client/motd.sh',
     }
 
-    $ensure_krb_info = $show_krb_ticket_info ? {
+    # Use original ticket info script only if not automatically renewing
+    $ensure_krb_info = ($show_krb_ticket_info and !$enable_autorenew) ? {
         true    => 'present',
         default => 'absent',
     }
@@ -66,5 +68,20 @@ class profile::kerberos::client (
         }
     }
 
-    require_package ('krb5-user')
+    file {'/etc/profile.d/kerberos_autorenew.sh':
+        ensure => stdlib::ensure($enable_autorenew, 'file'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/kerberos/client/kerberos_autorenew.sh',
+    }
+
+    ensure_packages (['krb5-user'])
+
+    $ensure_kstart = $enable_autorenew ? {
+        true    => 'present',
+        default => 'absent',
+    }
+
+    ensure_packages (['kstart'], {'ensure' => $ensure_kstart})
 }

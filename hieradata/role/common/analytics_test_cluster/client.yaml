@@ -26,6 +26,8 @@ profile::kerberos::client::show_krb_ticket_info: true
 # Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
 
+profile::kerberos::client::enable_autorenew: true
+
 profile::base::debdeploy::exclude_mounts:
   - /mnt/hdfs
 
