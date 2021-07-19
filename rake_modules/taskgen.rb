@@ -25,6 +25,7 @@ class TaskGen < ::Rake::TaskLib
       :puppet_lint,
       :typos,
       :syntax,
+      :json_syntax,
       :rubocop,
       :common_yaml,
       :hiera_defaults,
@@ -186,6 +187,32 @@ class TaskGen < ::Rake::TaskLib
       puts "=============================="
     end
     [:dhcp]
+  end
+
+  def setup_json_syntax
+    # These files must be valid JSON
+    json_globs = [
+      '**/*.json',
+    ]
+    changed = filter_files_by(*json_globs)
+    return [] if changed.empty?
+    desc 'Check files for valid JSON syntax'
+    failures = false
+    task :json_syntax do
+      changed.each do |fn|
+        begin
+          JSON.parse(File.open(fn).read)
+        rescue JSON::ParserError => e
+          puts "Error parsing #{fn}".red
+          puts e.message
+          failures = true
+        end
+      end
+
+      abort("JSON syntax: FAILED".red) if failures
+      puts "JSON syntax: OK".green
+    end
+    [:json_syntax]
   end
 
   def setup_wmf_styleguide_delta
