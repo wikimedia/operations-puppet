@@ -109,7 +109,7 @@ class profile::kubernetes::master(
         prometheus_url  => $prometheus_url,
         warning         => 50,
         critical        => 100,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api'],
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api?viewPanel=1'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
     }
     # Alert us if API requests latencies exceed a certain threshold. TODO: reevaluate
@@ -121,7 +121,7 @@ class profile::kubernetes::master(
         nan_ok          => true,
         warning         => 50000,
         critical        => 100000,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api'],
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api?viewPanel=27'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kubernetes',
     }
     # Alert us if etcd requests latencies exceed a certain threshold. TODO: reevaluate
@@ -133,7 +133,7 @@ class profile::kubernetes::master(
         nan_ok          => true,
         warning         => 30000,
         critical        => 50000,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api'],
+        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/kubernetes-api?viewPanel=28'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Etcd/Main_cluster',
     }
 }
