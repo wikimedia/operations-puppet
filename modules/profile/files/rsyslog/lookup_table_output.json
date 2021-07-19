@@ -78,9 +78,9 @@
     {"index" : "ceph-mon", "value" : "kafka local ecs_170" },
     {"index" : "ceph-mgr", "value" : "kafka local ecs_170" },
     {"index" : "ceph-rgw", "value" : "kafka local ecs_170" },
-    {"index" : "pybal", "value" : "kafka local" }
-    {"index" : "navtiming", "value" : "kafka local" }
-    {"index" : "coal", "value" : "kafka local" }
+    {"index" : "pybal", "value" : "kafka local" },
+    {"index" : "navtiming", "value" : "kafka local" },
+    {"index" : "coal", "value" : "kafka local" },
     {"index" : "uwsgi-coal", "value" : "kafka local" }
   ]
 }
