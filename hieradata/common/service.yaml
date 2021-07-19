@@ -2304,7 +2304,7 @@ service::catalog:
       conftool:
         cluster: cache_text
         service: varnish-fe
-      depool_threshold: ".5"
+      depool_threshold: ".66"
       enabled: true
       monitors:
         IdleConnection:
@@ -2347,7 +2347,7 @@ service::catalog:
       conftool:
         cluster: cache_text
         service: ats-tls
-      depool_threshold: ".5"
+      depool_threshold: ".66"
       enabled: true
       monitors:
         IdleConnection:
@@ -2440,7 +2440,7 @@ service::catalog:
       conftool:
         cluster: cache_upload
         service: varnish-fe
-      depool_threshold: ".5"
+      depool_threshold: ".66"
       enabled: true
       monitors:
         IdleConnection:
@@ -2483,7 +2483,7 @@ service::catalog:
       conftool:
         cluster: cache_upload
         service: ats-tls
-      depool_threshold: ".5"
+      depool_threshold: ".66"
       enabled: true
       monitors:
         IdleConnection:
