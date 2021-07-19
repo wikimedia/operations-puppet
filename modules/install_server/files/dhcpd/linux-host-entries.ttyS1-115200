@@ -5227,16 +5227,6 @@ host mw1285 {
     fixed-address mw1285.eqiad.wmnet;
 }
 
-host mw1286 {
-    hardware ethernet 14:18:77:61:41:B3;
-    fixed-address mw1286.eqiad.wmnet;
-}
-
-host mw1287 {
-    hardware ethernet 14:18:77:61:33:F1;
-    fixed-address mw1287.eqiad.wmnet;
-}
-
 host mw1288 {
     hardware ethernet 14:18:77:61:37:62;
     fixed-address mw1288.eqiad.wmnet;
