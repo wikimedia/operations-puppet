@@ -28,7 +28,7 @@ proxies:
 hijack_https:
   # Cert and key of docker-registry.discovery.wmnet
   cert: "<%= @dfdaemon_ssl_cert %>"
-  keyp: "<%= @dfdaemon_ssl_key %>"
+  key: "<%= @dfdaemon_ssl_key %>"
   hosts:
     - regx: "<%= @docker_registry_fqdn %>"
       # Puppet-ca here, for validation of the cert from source
