@@ -2,7 +2,6 @@
 
 listen <%= @title %>
     bind *:<%= @port_frontend %>
-    balance leastconn
     mode tcp
     option tcpka
 <% @healthcheck_options.each do |option| -%>
@@ -12,7 +11,7 @@ listen <%= @title %>
 <% if @primary_host and @primary_host != server -%>
     server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check port 9990 inter 1s rise 2 fall 4 backup
 <% else -%>
-    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check port 9990 inter 1s rise 2 fall 4
+    server <%= server %> <%= scope.function_ipresolve([server]) %>:<%= @port_backend %> check port 9990 on-marked-up shutdown-backup-sessions inter 1s rise 2 fall 4
 <% end -%>
 <% end -%>
     timeout  client 90m
