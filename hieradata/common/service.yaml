@@ -1085,6 +1085,8 @@ service::catalog:
       - eqiad
       - codfw
     state: lvs_setup
+    role: 'logstash7'
+    public_endpoint: 'logstash'
   kubemaster:
     description: Kubernetes master service. kubemaster.svc.%{::site}.wmnet
     encryption: true
@@ -2192,6 +2194,8 @@ service::catalog:
     discovery:
       - dnsdisc: thanos-query
         active_active: true
+    role: 'thanos::frontend'
+    public_endpoint: 'thanos'
   thanos-swift:
     description: Prometheus long-term storage, object storage (swift) access
     encryption: true
@@ -2231,6 +2235,7 @@ service::catalog:
     discovery:
       - dnsdisc: thanos-swift
         active_active: true
+    role: 'thanos::frontend'
   termbox:
     description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
     encryption: true
