@@ -28,7 +28,7 @@
   {@param escapedSubject: string}
 
   Change {$changeNumber} **merged** by {$submitterName}:{\n}
-  %%%[{$project}@{$branch}] {$escapedSubject|escapeUri}%%%{\n}
+  %%%[{$project}@{$branch}] {$escapedSubject}%%%{\n}
 
   https://<%= @host %>/r/{$changeNumber}
 {/template}
