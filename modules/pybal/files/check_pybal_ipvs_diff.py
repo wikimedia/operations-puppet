@@ -76,7 +76,7 @@ class PyBalIPVSDiff(object):
         url = "%s/%s" % (self.args.pybal_url, pool)
         req = self.get_url(url)
         for line in req.iter_lines():
-            if 'enabled/up/pooled' in line:
+            if line.endswith('/pooled'):
                 yield line.split(':')[0]
 
     def get_remote_hosts_pybal(self):
