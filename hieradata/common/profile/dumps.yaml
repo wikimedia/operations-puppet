@@ -25,7 +25,7 @@ profile::dumps::public:
     - labstore1006.wikimedia.org
     - labstore1007.wikimedia.org
 profile::dumps::internal:
-    - dumpsdata1001.eqiad.wmnet
+    - dumpsdata1003.eqiad.wmnet
 # root of xml/sql dumps tree we want to rsync (public contents only)
 profile::dumps::xmldumpsdir: '/data/xmldatadumps/public'
 # root of misc dumps we want to rsync
