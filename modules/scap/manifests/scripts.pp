@@ -81,11 +81,7 @@ class scap::scripts (
         source => 'puppet:///modules/scap/sql',
     }
     file { '/usr/local/bin/sqldump':
-        ensure => $sql_scripts,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/scap/sqldump',
+        ensure => 'absent',
     }
     file { '/usr/local/sbin/set-group-write2':
         owner  => 'root',
