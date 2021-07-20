@@ -172,9 +172,9 @@ class IcingaStatus:
         """Return a Host object matching `name`"""
         return self.hosts[name]
 
-    def get_hosts(self) -> Dict[str, Union[Host, bool]]:
+    def get_hosts(self) -> Dict[str, Optional[Host]]:
         """Return a dict of Hosts matching `target_hostnames` given in __init__"""
-        return {name: self.hosts.get(name, False) for name in self._target_hostnames}
+        return {name: self.hosts.get(name) for name in self._target_hostnames}
 
     def get_downtimed_hosts(self) -> Dict[str, Host]:
         """Return a dict of the current hosts that have scheduled downtime"""
@@ -289,7 +289,7 @@ def main() -> int:
     hosts = icinga_status.get_hosts()
 
     for host, status in hosts.items():
-        if status is False:
+        if status is None:
             exit_code = 1
             logging.error('%s: Not Found', host)
             continue
