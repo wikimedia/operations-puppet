@@ -100,7 +100,7 @@ groups:
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
               jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe,
-              hmonroy, derick, egardner]
+              hmonroy, derick, egardner, cjming]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -4438,6 +4438,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDLwVzH9rT959TVnPq/SBJIQU4T1eZXIBAdyEM5TchYg btullis@wikimedia.org
     krb: present
+  cjming:
+    ensure: present
+    realname: Clare Ming
+    email: cming@wikimedia.org
+    uid: 30696
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGUVver0av05S1PEXYWDwKhuVBrdhk7b8ZPOAfANU8+L cjming@wmf2858
 
 ldap_only_users:
   abartov:
@@ -5116,10 +5124,6 @@ ldap_only_users:
     ensure: present
     realname: Bernard Wang
     email: bwang@wikimedia.org
-  cjming:
-    ensure: present
-    realname: Clare Ming
-    email: cming@wikimedia.org
   mikeraish:
     ensure: present
     realname: Michael Raish
