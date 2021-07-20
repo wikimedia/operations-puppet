@@ -220,7 +220,7 @@ define prometheus::server (
       critical        => 600,
       description     => $alert_description,
       prometheus_url  => "http://${::fqdn}/${title}",
-      dashboard_links => ["https://grafana.wikimedia.org/d/000000271/prometheus-stats?var-datasource=${::site} prometheus/${title}"],
+      dashboard_links => ["https://grafana.wikimedia.org/d/GWvEXWDZk/prometheus-server?var-datasource=${::site} prometheus/${title}"],
       notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Prometheus_was_restarted',
     }
 }
