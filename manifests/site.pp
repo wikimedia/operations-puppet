@@ -1890,7 +1890,7 @@ node 'mw1317.eqiad.wmnet' {
 }
 
 # rack B6
-node /^mw12(8[589]|9[07])\.eqiad\.wmnet$/ {
+node /^mw12(8[58])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 

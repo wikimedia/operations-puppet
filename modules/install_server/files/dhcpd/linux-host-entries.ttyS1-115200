@@ -5232,16 +5232,6 @@ host mw1288 {
     fixed-address mw1288.eqiad.wmnet;
 }
 
-host mw1289 {
-    hardware ethernet 14:18:77:61:4A:33;
-    fixed-address mw1289.eqiad.wmnet;
-}
-
-host mw1290 {
-    hardware ethernet 14:18:77:61:65:3C;
-    fixed-address mw1290.eqiad.wmnet;
-}
-
 host thorium {
     hardware ethernet 14:18:77:33:5E:97;
     fixed-address thorium.eqiad.wmnet;
@@ -5326,11 +5316,6 @@ host mw1295 {
 host mw1296 {
     hardware ethernet 14:18:77:61:34:8F;
     fixed-address mw1296.eqiad.wmnet;
-}
-
-host mw1297 {
-    hardware ethernet 14:18:77:61:37:50;
-    fixed-address mw1297.eqiad.wmnet;
 }
 
 host mw1298 {
