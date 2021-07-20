@@ -30,6 +30,7 @@ class apereo_cas (
     Stdlib::Unixpath                  $server_prefix                 = '/cas',
     Boolean                           $server_enable_ssl             = true,
     Boolean                           $tomcat_proxy                  = false,
+    Boolean                           $enable_ldap                   = true,
     Array[String[1]]                  $ldap_attribute_list           = ['cn', 'memberOf', 'mail'],
     Array[Apereo_cas::LDAPUri]        $ldap_uris                     = [],
     Apereo_cas::Ldapauth              $ldap_auth                     = 'AUTHENTICATED',
@@ -41,6 +42,7 @@ class apereo_cas (
     String                            $ldap_bind_dn                  = 'cn=user,dc=example,dc=org',
     String                            $ldap_bind_pass                = 'changeme',
     Apereo_cas::LogLevel              $log_level                     = 'WARN',
+    Boolean                           $enable_mfa                    = true,
     String                            $mfa_attribute_trigger         = 'memberOf',
     Array[String[1]]                  $mfa_attribut_value            = ['mfa'],
     String                            $daemon_user                   = 'cas',
@@ -63,6 +65,7 @@ class apereo_cas (
     # TODO: switch to Stdlib::Http::Method
     # https://github.com/puppetlabs/puppetlabs-stdlib/pull/1192
     Array[Wmflib::HTTP::Method]       $cors_allowed_methods          = ['GET'],
+    Array[Apereo_cas::Delegate]       $delegated_authenticators      = [],
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         fail('you must provide either $keystore_source or $keystore_content')

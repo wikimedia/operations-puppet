@@ -26,7 +26,8 @@ server.ssl.key-password=<%= @key_password %>
 server.port=<%= @server_port %>
 server.servlet.context-path=<%= @server_prefix %>
 cas.server.name=<%= @server_name %>
-cas.server.prefix=<%= @server_name %><%= @server_prefix %>
+<%#- We strip trailing slashes here as it can causes issues with auto generated urls -%>
+cas.server.prefix=<%= @server_name %><%= @server_prefix.sub(/\/$/, '') %>
 server.tomcat.basedir=<%= @tomcat_basedir %>
 <%- if @tomcat_proxy -%>
 # we proxy from nginx over localhost
@@ -80,6 +81,7 @@ cas.ticket.tgt.remember-me.time-to-kill-in-seconds=<%= @max_rememberme_session_l
 cas.ticket.tgt.time-to-kill-in-seconds=<%= @session_inactivity_timeout %>
 cas.ticket.tgt.max-time-to-live-in-seconds=<%= @max_session_length %>
 
+<%- if @enable_ldap -%>
 cas.authn.ldap[0].principal-attribute-list=<%= @ldap_attribute_list.join(',') %>
 cas.authn.ldap[0].type=<%= @ldap_auth %>
 cas.authn.ldap[0].connection-strategy=<%= @ldap_connection %>
@@ -89,12 +91,15 @@ cas.authn.ldap[0].basedn=<%= @ldap_base_dn %>
 cas.authn.ldap[0].search-filter=<%= @ldap_search_filter %>
 cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
 cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
+<%- end -%>
 
-<%- if @groovy_source -%>
+<%- if @enable_mfa -%>
+  <%- if @groovy_source -%>
 cas.authn.mfa.globalprincipalattributepredicate=file:<%= @groovy_file -%>
-<%- else -%>
+  <%- else -%>
 cas.authn.mfa.global-principal-attribute-name-triggers=<%= @mfa_attribute_trigger %>
 cas.authn.mfa.global-principal-attribute-value-regex=<%= @mfa_attribut_value.join('|') %>
+  <%- end -%>
 <%- end -%>
 
 <%- if @enable_u2f -%>
@@ -145,4 +150,13 @@ cas.http-web-request.cors.allow-headers[<%= idx %>]=<%= header %>
   <%- @cors_allowed_methods.each_with_index do |method, idx| -%>
 cas.http-web-request.cors.allow-methods[<%= idx %>]=<%= method %>
   <%- end -%>
+<%- end -%>
+
+<%- provider_count = Hash.new(0) -%>
+<%- @delegated_authenticators.each do |delegate| -%>
+  <%- delegate.each_pair do |key, value| -%>
+    <%- next if key == 'provider' -%>
+cas.authn.pac4j.<%= delegate['provider'] %>[<%= provider_count[delegate['provider']] %>].<%= key %>=<%= value %>
+  <%- end -%>
+ <%- provider_count[delegate['provider']] += 1 -%>
 <%- end -%>
