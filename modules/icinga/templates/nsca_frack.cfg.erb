@@ -717,7 +717,12 @@ define service {
     use                      passive-service
     service_description      check_ssl
     host_name                frdata1002
-    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl_fr
+    host_name                frdata1002
 }
 
 define service {
@@ -744,7 +749,12 @@ define service {
     use                      passive-service
     service_description      check_ssl
     host_name                frdata2001
-    contact_groups           fr-tech,fr-tech-ops
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ssl_fr
+    host_name                frdata2001
 }
 
 define service {
@@ -1358,12 +1368,6 @@ define service {
 define service {
     use                      passive-service
     service_description      check_ssl
-    hostgroup_name           fundraising-listener
-}
-
-define service {
-    use                      passive-service
-    service_description      check_ssl_fr
     hostgroup_name           fundraising-listener
 }
 
