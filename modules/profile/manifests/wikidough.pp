@@ -73,4 +73,10 @@ class profile::wikidough (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
 
+    class { 'auditd':
+        log_to_disk    => false,
+        rule_root_cmds => true,
+        send_to_syslog => true,
+    }
+
 }

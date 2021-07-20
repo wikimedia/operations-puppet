@@ -1,0 +1,22 @@
+# This file is managed by Puppet [see auditd/audit.conf.erb].
+
+local_events = yes
+log_format = ENRICHED
+<% if @log_to_disk -%>
+write_logs = yes
+log_file = <%= @log_file %>
+log_group = adm
+flush = INCREMENTAL_ASYNC
+freq = 50
+max_log_file = 8
+num_logs = 5
+priority_boost = 4
+max_log_file_action = ROTATE
+<% else -%>
+write_logs = no
+<% end -%>
+disp_qos = lossless
+dispatcher = /sbin/audispd
+name_format = hostname
+space_left = 75
+admin_space_left = 50

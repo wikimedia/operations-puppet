@@ -1,0 +1,8 @@
+# This file is managed by Puppet [see auditd/audisp-syslog.conf.erb].
+
+active = <%= @send_to_syslog ? 'yes' : 'no' %>
+direction = out
+path = builtin_syslog
+type = builtin
+args = LOG_INFO
+format = string

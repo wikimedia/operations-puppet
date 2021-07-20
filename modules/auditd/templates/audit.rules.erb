@@ -1,0 +1,15 @@
+## This file is managed by Puppet [see auditd/audit.rules.erb].
+
+## delete all existing rules
+-D
+
+## maximum amount of outstanding audit buffers
+-b 8192
+
+## set failure mode to syslog
+-f 1
+
+<% if @rule_root_cmds -%>
+## log all root commands
+-a exit,always -F arch=b64 -F euid=0 -S execve -k root_cmds
+<% end -%>
