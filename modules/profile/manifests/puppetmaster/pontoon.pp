@@ -15,6 +15,11 @@ class profile::puppetmaster::pontoon (
         mode   => '0644',
     }
 
+    # Make puppet_ssldir happy for self-hosted puppet
+    file { '/var/lib/puppet/client':
+        ensure => directory,
+    }
+
     file { '/var/lib/puppet/client/ssl':
         ensure => link,
         target => '/var/lib/puppet/ssl',
