@@ -15,6 +15,10 @@ profile::maps::tlsproxy::ssl_ecdhe_curve: false
 
 profile::maps::osm_master::engine: "imposm3"
 
+# Temporarily decreasing Tilerator CPU load until imposm is fully migrated
+profile::maps::osm_master::planet_sync_hours: '*/24'
+profile::maps::apps::tilerator_ncpu_ratio: 0.2
+
 profile::maps::hosts:
   - 'maps1007.eqiad.wmnet'
   - 'maps1009.eqiad.wmnet'
