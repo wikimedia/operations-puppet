@@ -111,6 +111,15 @@ class profile::puppetdb::database(
         user    => 'postgres',
         require => Postgresql::Db['puppetdb'],
     }
+
+    # pg listening on localhost is the telltale that it's been just installed and needs a restart
+    # to start listening on all addresses. puppetdb will connect to the host's address not localhost
+    exec { 'pg_needs_restart_after_bootstrap':
+        command  => 'systemctl restart postgresql',
+        onlyif   => 'test -n "$(ss --no-header --tcp state listening src localhost:5432)"',
+        provider => 'shell',
+    }
+
     # Firewall rules
     # Allow connections from all the slaves
     ferm::service { 'postgresql_puppetdb':
