@@ -4,7 +4,10 @@ puppetmaster: puppetprimary.sso.eqiad1.wikimedia.cloud
 profile::idp::server_name: https://idp.wmcloud.org
 profile::idp::memcached_port: 11000
 profile::idp::memcached_transcoder: WHALINV1
-profile::idp::u2f_jpa_enable: true
+profile::idp::enable_u2f: false
+profile::idp::enable_mfa: false
+profile::idp::enable_ldap: false
+profile::idp::u2f_jpa_enable: false
 profile::idp::ldap_start_tls: false
 profile::idp::ldap_attributes:
   - cn
@@ -24,6 +27,13 @@ profile::idp::services:
   o11y_wmflabs_org:
     id: 3
     service_id: 'https://(.*)\.monitoring\.wmflabs\.org(/.*)?'
+profile::idp::delegated_authenticators:
+  - provider: cas
+    login_url: https://idp.wikimedia.org/
+    protocol: CAS30
+    client_name: WMF_Production
+    display_name: 'WMF Production'
+    auto_redirect: true
 profile::idp::client::httpd::sites:
   'idp-test-login.wmcloud.org':
     vhost_content: 'profile/idp/client/httpd-uwsgi.erb'
@@ -32,3 +42,4 @@ profile::idp::client::httpd::sites:
     enable_monitor: false
     vhost_settings:
       uwsgi_port: 8081
+
