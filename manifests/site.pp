@@ -1858,6 +1858,11 @@ node /^mw1383\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
+# rack D8 - canary jobrunners
+node /^mw143[7-8]\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
 # rack D8
 node /^mw1384\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
