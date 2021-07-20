@@ -49,12 +49,12 @@ class puppetdb::app(
         group  => 'puppetdb',
         mode   => '0755',
     }
-    $stockpile_queue_dir_ensure = $tmpfs_stockpile_queue ? {
+    $stockpile_mount_ensure = $tmpfs_stockpile_queue ? {
         true    => 'mounted',
         default => 'absent',
     }
     mount {$stockpile_queue_dir:
-        ensure => $stockpile_queue_dir_ensure,
+        ensure => $stockpile_mount_ensure,
         atboot => true,
         device => 'tmpfs',
         fstype => 'tmpfs',
