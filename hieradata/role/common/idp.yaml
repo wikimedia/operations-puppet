@@ -169,6 +169,9 @@ profile::idp::services:
       - ops
       - wmf
       - nda
+  wmcs_idp:
+    id: 24
+    service_id: 'https://idp.wmcloud.org(/.*)?'
 profile::idp::ldap_attributes:
   - cn
   - memberOf
