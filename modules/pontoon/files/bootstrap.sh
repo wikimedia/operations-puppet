@@ -123,25 +123,60 @@ init_user_repos() {
     echo \"  Bare private repository initialized at $PWD/private.git\"
     "
   )
-
-  echo
-  echo "  The host $fqdn is ready to receive puppet changes."
-  echo
-  echo "  Set up the host as a git remote in your local puppet checkout:"
-  echo
-  echo "       git remote add ${remote_name} ssh://$fqdn/~/puppet.git"
-  echo
-  echo "  And force-push any reference as 'production' to test changes:"
-  echo
-  echo "       git push -f ${remote_name} HEAD:production"
-  echo; echo; echo
 }
+
+instructions() {
+  local fqdn=$(hostname --fqdn)
+
+  cat <<EOF
+
+
+  The host ${fqdn} is ready to receive puppet changes.
+
+  In order to create the new stack '${stack}' you will need to assign the
+  'puppetmaster::pontoon' role to this host, commit the result and push the
+  commit to remote ${git_remote_name}.
+
+  Run the following commands from a local checkout of puppet.git on your
+  computer to get started:
+
+# remote setup
+git remote add ${git_remote_name} ssh://${fqdn}/~/puppet.git
+
+# add the stack's rolemap and commit changes
+git checkout -b pontoon-$stack production
+
+mkdir modules/pontoon/files/${stack}
+printf "puppetmaster::pontoon:\n  - ${fqdn}\n" > modules/pontoon/files/${stack}/rolemap.yaml
+
+git add modules/pontoon/files/${stack}
+git commit -m "pontoon: initialize new stack ${stack}"
+
+# push the changes as 'production' branch to the remote
+git push -f ${git_remote_name} HEAD:production
+
+# switch the server to ${stack}
+ssh ${fqdn} "echo ${stack} | sudo tee /etc/pontoon-stack"
+
+
+  You can refer to these instructions later at ${fqdn}:${readme}
+
+  For more information make sure to check out Pontoon in Wikitech:
+  https://wikitech.wikimedia.org/wiki/Puppet/Pontoon
+
+
+EOF
+}
+
 
 stack=${1:-}
 if [ -z "$stack" ]; then
   echo "usage: $(basename $0) stack"
   exit 1
 fi
+
+git_remote_name="pontoon-$stack"
+readme=/etc/README.pontoon
 
 preflight
 install -d /tmp/bootstrap/git /tmp/bootstrap/init
@@ -154,3 +189,5 @@ init_ssl
 systemctl restart apache2
 
 init_user_repos $SUDO_USER
+
+instructions | tee $readme
