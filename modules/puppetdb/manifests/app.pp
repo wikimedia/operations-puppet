@@ -53,12 +53,16 @@ class puppetdb::app(
         true    => 'mounted',
         default => 'absent',
     }
-    mount {$stockpile_queue_dir:
-        ensure => $stockpile_mount_ensure,
-        atboot => true,
-        device => 'tmpfs',
-        fstype => 'tmpfs',
-        notify => Service['puppetdb'],
+
+    if $facts.has_key('puppetdb') and $facts['puppetdb']['stockpile_initialized'] {
+        mount { $stockpile_queue_dir:
+            ensure  => $stockpile_mount_ensure,
+            atboot  => true,
+            device  => 'tmpfs',
+            fstype  => 'tmpfs',
+            options => 'uid=puppetdb,gid=puppetdb',
+            notify  => Service['puppetdb'],
+        }
     }
 
     file { '/etc/default/puppetdb':
