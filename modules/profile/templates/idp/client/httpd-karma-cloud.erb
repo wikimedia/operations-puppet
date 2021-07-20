@@ -1,0 +1,42 @@
+<VirtualHost *:80>
+    ServerName <%= @virtual_host %>
+    ServerAdmin <%= 'root@' + @facts['domain'] %>
+    # https://httpoxy.org/
+    RequestHeader unset Proxy early
+
+<%- @cas_settings.each_pair do |key, setting| -%>
+  <%- unless setting.nil? or setting == :undef -%>
+    <%= key %> <%= setting %>
+  <%-end -%>
+<%-end -%>
+
+    DocumentRoot <%= @document_root %>
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+        Require all denied
+    </Directory>
+
+    <Location />
+        ProxyPass "http://localhost:19194/"
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+        <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+        <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+    </Location>
+
+    ProxyRequests Off
+
+    <Proxy http://localhost:19194>
+        ProxySet connectiontimeout=5 timeout=90 retry=0
+    </Proxy>
+
+    ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
+    LogLevel warn
+</VirtualHost>

@@ -87,14 +87,18 @@ class profile::wmcs::metricsinfra::prometheus(
     }
 
     # Apache config
-    class { '::httpd':
-        modules => [
-            'proxy',
-            'proxy_http',
-            'rewrite',
-            'headers',
-            'allowmethods',
-        ],
+    # TODO: once prometheus01.metricsinfra. no longer has
+    # alertmanager running on it too, remove this defined check
+    if !defined(Class['Httpd']) {
+        class { '::httpd':
+            modules => [
+                'proxy',
+                'proxy_http',
+                'rewrite',
+                'headers',
+                'allowmethods',
+            ],
+        }
     }
 
     httpd::site{ 'prometheus':

@@ -1,0 +1,82 @@
+---
+alertmanager:
+  interval: 30s
+  servers:
+<% @prometheus_alertmanager_hosts.each do |host| %>
+    - name: "<%= host %>"
+      cluster: metricsinfra
+      uri: "http://<%= host %>:9093"
+      proxy: true
+<% end %>
+
+authentication:
+  header:
+    name: X-CAS-uid
+    value_re: ^(.+)$
+
+authorization:
+  acl:
+    silences: /etc/karma-acl-silences.yaml
+  groups:
+    # TODO: auto generate these, but for each project
+    # or send an upstream patch to get those from a cas header
+    - name: metricsinfra
+      members:
+        - arturo
+        - andrew
+        - bd808
+        - bstorm
+        - dcaro
+        - nskaggs
+        - taavi
+
+labels:
+  color:
+    unique:
+      - 'job'
+      - 'project'
+      - 'alertname'
+    custom:
+      # Match Icinga background colors for 'severity'
+      severity:
+        - value: 'crit'
+          color: '#ffd4c9'
+        - value: 'warn'
+          color: '#ffda9f'
+        - value: 'unknown'
+          color: '#eeaeee'
+
+# Sort by decreasing severity (Icinga compat)
+grid:
+  sorting:
+    order: label
+    reverse: false
+    label: severity
+    customValues:
+      labels:
+        severity:
+          crit: 1
+          warn: 2
+          unknown: 3
+
+silences:
+  comments:
+    linkDetect:
+      rules:
+        - regex: "(T[0-9]+)"
+          uriTemplate: https://phabricator.wikimedia.org/$1
+
+annotations:
+  hidden:
+    - description
+
+filters:
+  default:
+    - "@state=active"
+
+karma:
+  name: "Alerts for Cloud VPS projects"
+
+# Enable ack'ing alerts via silences. See also alertmanager::ack
+alertAcknowledgement:
+  enabled: true

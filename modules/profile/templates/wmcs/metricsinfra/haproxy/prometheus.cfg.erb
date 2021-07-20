@@ -13,6 +13,8 @@ frontend http-public
 
     acl is_prometheus_alertmanager path -i -m beg /.alertmanager/
 
+    acl is_karma hdr(host) -i prometheus-alerts.wmcloud.org
+
     # Block alertmanager's dangerous endpoints
     acl is_evil_alertmanager_path path -i -m beg /.alertmanager/debug
     acl is_evil_alertmanager_path path -i -m beg /.alertmanager/-/quit
@@ -24,6 +26,7 @@ frontend http-public
 
     use_backend prometheus if is_public_name is_prometheus
     use_backend prometheus_alertmanager if is_public_name is_prometheus_alertmanager
+    use_backend karma if is_karma
 
 backend prometheus
     mode http
@@ -48,3 +51,13 @@ backend prometheus_alertmanager
 <%- @prometheus_alertmanager_hosts.each do |server| -%>
     server <%= server %> <%= server %>:9093 check
 <%- end -%>
+
+backend karma
+    mode http
+    option httplog
+    option tcp-check
+    balance roundrobin
+    timeout server 1h
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
+    # TODO: sort out session issues between hosts, so this can use all of the hosts
+    server <%= @alertmanager_active_host %> <%= @alertmanager_active_host %>:80 check
