@@ -156,7 +156,7 @@ cas.http-web-request.cors.allow-methods[<%= idx %>]=<%= method %>
 <%- @delegated_authenticators.each do |delegate| -%>
   <%- delegate.each_pair do |key, value| -%>
     <%- next if key == 'provider' -%>
-cas.authn.pac4j.<%= delegate['provider'] %>[<%= provider_count[delegate['provider']] %>].<%= key %>=<%= value %>
+cas.authn.pac4j.<%= delegate['provider'] %>[<%= provider_count[delegate['provider']] %>].<%= key.tr('_', '-') %>=<%= value %>
   <%- end -%>
  <%- provider_count[delegate['provider']] += 1 -%>
 <%- end -%>
