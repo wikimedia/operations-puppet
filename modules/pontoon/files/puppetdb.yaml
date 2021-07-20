@@ -5,7 +5,9 @@ puppetdb_host: "%{alias('__master_for_role_puppetmaster__puppetdb')}"
 profile::puppetdb::master: "%{alias('__master_for_role_puppetmaster__puppetdb')}"
 profile::puppetdb::jvm_opts: '-Xmx256m'
 profile::puppetdb::database::shared_buffers: '768MB'
-# Disable the micro site in cloud, cloud user can access the puppetdb api directly
+# Disable microservice in pontoon, because:
+# * cloud user can access the puppetdb api directly
+# * microservice depends on pki, making bootstrap harder
 profile::puppetdb::microservice::enabled: false
 
 # To open puppetdb firewall
