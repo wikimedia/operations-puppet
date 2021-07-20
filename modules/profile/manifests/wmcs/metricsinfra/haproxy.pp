@@ -1,6 +1,7 @@
 class profile::wmcs::metricsinfra::haproxy (
     Array[Stdlib::Fqdn] $prometheus_hosts = lookup('profile::wmcs::metricsinfra::prometheus_hosts'),
     Array[Stdlib::Fqdn] $prometheus_alertmanager_hosts = lookup('profile::wmcs::metricsinfra::prometheus_alertmanager_hosts'),
+    Stdlib::Fqdn        $alertmanager_active_host = lookup('profile::wmcs::metricsinfra::alertmanager_active_host'),
 ) {
     class { 'haproxy::cloud::base': }
 

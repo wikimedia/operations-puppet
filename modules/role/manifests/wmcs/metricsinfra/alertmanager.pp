@@ -4,4 +4,6 @@ class role::wmcs::metricsinfra::alertmanager {
     }
 
     include ::profile::wmcs::metricsinfra::alertmanager
+    include ::profile::wmcs::metricsinfra::alertmanager::ack
+    include ::profile::wmcs::metricsinfra::alertmanager::karma
 }
