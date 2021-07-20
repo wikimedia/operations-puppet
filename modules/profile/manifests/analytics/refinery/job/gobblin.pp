@@ -34,9 +34,11 @@ class profile::analytics::refinery::job::gobblin {
 
 
     profile::analytics::refinery::job::gobblin_job { 'webrequest':
-        # webrequest is large.  Run it every 10 minutes to keep pressure on Kafka low
-        # (pulling more often means it is more likely for data to be in Kafka's cache).
-        interval         => '*-*-* *:00/10:00',
+        # webrequest is large. Run it every 10 minutes to keep pressure on Kafka
+        # low (pulling more often means it is more likely for data to be in Kafka's cache).
+        # The 5 minutes offset from calendar hour is to mitigate out-of-order events
+        # messing up with _IMPORTED flags generation.
+        interval         => '*-*-* *:05/10:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'netflow':
