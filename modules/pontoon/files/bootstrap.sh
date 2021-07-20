@@ -1,12 +1,19 @@
 #!/bin/bash
 
 # Bootstrap a Pontoon Puppet server from a provisioned host, using public git repos.
-# At the end of this phase the host must be ready to accept Puppet agents.
+# At the end of this phase the host must be ready to:
+# * accept new Puppet agents
+# * receive git changes from user(s)
 
 set -e
 set -u
 
 preflight() {
+  if [ -z "${SUDO_USER:-}" ]; then
+    echo "Please bootstrap using sudo (or set SUDO_USER)"
+    exit 2
+  fi
+
   apt install -y --no-install-recommends git ca-certificates
 
   # Workaround dummy 'apache2.conf' in WMCS
@@ -87,6 +94,49 @@ bootstrap_private() {
   rsync -a ${git}/private /var/lib/git/labs
 }
 
+init_user_repos() {
+  local user=$1
+
+  local puppet_repo=/var/lib/git/operations/puppet
+  local private_repo=/var/lib/git/labs/private
+
+  (
+    su "$user" -c "
+    set -e
+
+    cd
+    if [ ! -d puppet.git ]; then
+      git clone --bare --no-hardlinks --branch production $puppet_repo puppet.git
+    fi
+    install -v -m755 ${puppet_repo}/modules/puppetmaster/files/self-master-post-receive \
+      puppet.git/hooks/post-receive
+
+    if [ ! -d private.git ]; then
+      git clone --bare --no-hardlinks --branch master $private_repo private.git
+    fi
+    install -v -m755 ${puppet_repo}/modules/puppetmaster/files/self-master-post-receive \
+      private.git/hooks/post-receive
+
+    echo; echo; echo
+    echo \"  Bare puppet repository initialized at $PWD/puppet.git\"
+    echo
+    echo \"  Bare private repository initialized at $PWD/private.git\"
+    "
+  )
+
+  echo
+  echo "  The host $fqdn is ready to receive puppet changes."
+  echo
+  echo "  Set up the host as a git remote in your local puppet checkout:"
+  echo
+  echo "       git remote add ${remote_name} ssh://$fqdn/~/puppet.git"
+  echo
+  echo "  And force-push any reference as 'production' to test changes:"
+  echo
+  echo "       git push -f ${remote_name} HEAD:production"
+  echo; echo; echo
+}
+
 stack=${1:-}
 if [ -z "$stack" ]; then
   echo "usage: $(basename $0) stack"
@@ -102,3 +152,5 @@ bootstrap_private /tmp/bootstrap/git
 init_ssl
 
 systemctl restart apache2
+
+init_user_repos $SUDO_USER
