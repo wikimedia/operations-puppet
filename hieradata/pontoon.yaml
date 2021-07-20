@@ -28,7 +28,6 @@ profile::base::remote_syslog: []
 profile::base::remote_syslog_tls: []
 
 ## Customizations
-#pontoon::stack: 'your_stack'
 
 profile::base::use_apt_proxy: false
 

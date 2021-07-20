@@ -1,17 +1,13 @@
-class pontoon::enc (
-  String $stack,
-) {
+class pontoon::enc {
     require_package(['python3-yaml'])
 
-    # Write the file once if absent, and don't change the file otherwise.
-    # The idea is to protect against accidental changes of "$stack" after a Pontoon server has been
-    # initialized.
-    file { '/etc/pontoon-stack':
-        ensure  => 'present',
-        replace => 'no',
-        content => $stack,
-        mode    => '0444',
-    }
+    # /etc/pontoon-stack is the entry point for Pontoon to know which stack we're in.
+    # The bootstrap process will set the value of this file to 'bootstrap'.
+
+    # The value is not set in hiera to:
+    # * avoid circular dependencies for the ENC
+    # * not have to have it in git, and thus need to carry a patch on top of 'production'
+    #   to set the value
 
     $configured_stack = file('/etc/pontoon-stack').strip('\n')
 

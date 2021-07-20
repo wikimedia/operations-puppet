@@ -146,7 +146,7 @@ fi
 preflight
 install -d /tmp/bootstrap/git /tmp/bootstrap/init
 clone_repos /tmp/bootstrap/git
-echo $stack > /etc/pontoon-stack
+echo bootstrap > /etc/pontoon-stack
 bootstrap_server /tmp/bootstrap/git /tmp/bootstrap/init
 bootstrap_private /tmp/bootstrap/git
 init_ssl

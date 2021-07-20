@@ -1,0 +1,3 @@
+# Map a role to a list of FQDNs that are running the role.
+puppetmaster::pontoon:
+  - localhost
