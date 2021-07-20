@@ -20,7 +20,7 @@ import logging
 from json import dumps as json_dumps
 from pathlib import Path
 from time import sleep
-from typing import Any, Dict, List, Literal, Optional, Set, Tuple, Union, cast
+from typing import Any, Dict, List, Optional, Set, Tuple, Union, cast
 
 from ClusterShell.NodeSet import NodeSet, RESOLVER_NOGROUP
 
@@ -172,7 +172,7 @@ class IcingaStatus:
         """Return a Host object matching `name`"""
         return self.hosts[name]
 
-    def get_hosts(self) -> Dict[str, Union[Host, Literal[False]]]:
+    def get_hosts(self) -> Dict[str, Union[Host, bool]]:
         """Return a dict of Hosts matching `target_hostnames` given in __init__"""
         return {name: self.hosts.get(name, False) for name in self._target_hostnames}
 
