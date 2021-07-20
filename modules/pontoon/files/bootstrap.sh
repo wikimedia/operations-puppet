@@ -32,7 +32,10 @@ bootstrap_server() {
   local init=$2
 
   install -v $git/puppet/manifests/realm.pp $init/00realm.pp
-  echo 'include "role::puppetmaster::pontoon"' > $init/bootstrap.pp
+  cat <<EOF > $init/bootstrap.pp
+\$_role = 'puppetmaster/pontoon'
+include "role::puppetmaster::pontoon"
+EOF
 
   sed -e "s@/etc/puppet/hieradata@$git/puppet/hieradata@" \
     -e "s@/etc/puppet/private@$git/private@" \
