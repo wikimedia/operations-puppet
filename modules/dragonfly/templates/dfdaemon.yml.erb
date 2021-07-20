@@ -34,6 +34,11 @@ hijack_https:
       # Puppet-ca here, for validation of the cert from source
       certs: ["/etc/ssl/certs/Puppet_Internal_CA.pem"]
 
-# Configure dfget to use a specific home directory (will be created if it does not exist)
-# Also set a specific port to listen for peer connections on
-dfget_flags: ["--home", "/var/lib/dragonfly-dfdaemon/dfget", "--ip", "0.0.0.0", "--port", "15001"]
+# Configure dfget to use a specific home directory (will be created if it does not exist).
+#
+# The IP used here is not only a listen IP but the IP annonced to the supernode. Using 0.0.0.0
+# leads to the network still functioning but every client will ask it's own dfget server for parts
+# which will make them fetch the parts from the docker-registry istead of peers.
+#
+# Port needs to be specified here as dfget will choose a random one (per invocation) if not.
+dfget_flags: ["--home", "/var/lib/dragonfly-dfdaemon/dfget", "--ip", "<%= @facts['ipaddress'] %>", "--port", "15001"]
