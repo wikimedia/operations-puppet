@@ -129,51 +129,7 @@ testcases:
               access-control-allow-methods: "GET,HEAD"
               cache-control: "private, max-age=0, s-maxage=0, must-revalidate"
             status_code: 500
-      - message: "500: server_error"
-        level: "ERROR"
-        host: "restbase1027"
-        type: "restbase"
-        pid: 213
-        request_id: "310776cd-4733-4b0f-931a-91c5d5a63764"
-        latency: 76
-        levelPath: "error/request"
-        root_req:
-          method: "put"
-          uri: "/en.wikipedia.org/v1/data/lists/0000000?csrf_token=asdf"
-          headers:
-            user-agent: "WikipediaApp/6.8.0.1808 (iOS 14.5; Phone)"
-            x-request-id: "310776cd-4733-4b0f-931a-91c5d5a63764"
-            content-type: "application/json; charset=utf-8"
-            content-length: "41"
-            x-forwarded-for: "::1, 127.0.0.1, ::1"
-            x-client-ip: "::1"
-            x-request-class: "external"
-        res:
-          message: "500: server_error"
-          name: "HTTPError"
-          body:
-            type: "server_error"
-            title: "readinglists-db-error-duplicate-list"
-            description: "A list by this name already exists."
-          requestName: "forward_to_mw"
-          msg: "MW API call error readinglists-db-error-duplicate-list"
-          headers:
-            x-webkit-csp: "default-src 'none'; frame-ancestors 'none'"
-            access-control-allow-origin: "*"
-            x-content-security-policy: "default-src 'none'; frame-ancestors 'none'"
-            x-request-id: "310776cd-4733-4b0f-931a-91c5d5a63764"
-            access-control-allow-headers: "accept, content-type, content-length, cache-control, accept-language, api-user-agent, if-match, if-modified-since, if-none-match, dnt, accept-encoding"
-            content-security-policy: "default-src 'none'; frame-ancestors 'none'"
-            x-content-type-options: "nosniff"
-            server: "restbase1027"
-            x-xss-protection: "1; mode=block"
-            access-control-expose-headers: "etag"
-            x-frame-options: "SAMEORIGIN"
-            referrer-policy: "origin-when-cross-origin"
-            access-control-allow-methods: "GET,HEAD"
-            cache-control: "private, max-age=0, s-maxage=0, must-revalidate"
-          status: 500
-        stack: "HTTPError: 500: server_error\n    at apiError (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/restbase/sys/action.js:127:12)\n    at checkQueryResponse (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/restbase/sys/action.js:136:15)\n    at tryCatcher (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/util.js:16:23)\n    at Promise._settlePromiseFromHandler (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:547:31)\n    at Promise._settlePromise (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:604:18)\n    at Promise._settlePromise0 (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:649:10)\n    at Promise._settlePromises (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:729:18)\n    at _drainQueueStep (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/async.js:93:12)\n    at _drainQueue (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/async.js:86:9)\n    at Async._drainQueues (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/async.js:102:5)\n    at Immediate.Async.drainQueues (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/async.js:15:14)\n    at runCallback (timers.js:672:20)\n    at tryOnImmediate (timers.js:645:5)\n    at processImmediate [as _immediateCallback] (timers.js:617:5)"
+
   - input:
     - >
       {
@@ -260,35 +216,7 @@ testcases:
               x-forwarded-for: "127.0.0.1, 127.0.0.1, ::1"
               x-client-ip: "127.0.0.1"
               x-request-class: "external"
-      - message: "MW API call error readinglists-too-old"
-        component: "debug/api_error"
-        level: "DEBUG"
-        pid: 67
-        host: "restbase1019"
-        type: "restbase"
-        err:
-          message: "400: bad_request"
-          name: "restbase"
-          body:
-            type: "bad_request"
-            title: "readinglists-too-old"
-            description: "Timestamps passed to \"rlechangedsince\" cannot be older than \"2021-04-13T16:45:26Z\"."
-          msg: "MW API call error readinglists-too-old"
-          request_id: "fade3a33-9394-4976-8591-0405c38a213b"
-          stack: "HTTPError: 400: bad_request\n    at apiError (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/restbase/sys/action.js:127:12)\n    at checkQueryResponse (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/restbase/sys/action.js:136:15)\n    at tryCatcher (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/util.js:16:23)\n    at Promise._settlePromiseFromHandler (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:547:31)\n    at Promise._settlePromise (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:604:18)\n    at Promise._settlePromise0 (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:649:10)\n    at Promise._settlePromises (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:729:18)\n    at _drainQueueStep (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/async.js:93:12)\n    at _drainQueue (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/async.js:86:9)\n    at Async._drainQueues (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/async.js:102:5)\n    at Immediate.Async.drainQueues (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/async.js:15:14)\n    at runCallback (timers.js:672:20)\n    at tryOnImmediate (timers.js:645:5)\n    at processImmediate [as _immediateCallback] (timers.js:617:5)"
-          status: 400
-          api_path: "/bcl.wikipedia.org/v1/data/lists/changes/since/{date}"
-          levelPath: "debug/api_error"
-          root_req:
-            method: "get"
-            uri: "/en.wikipedia.org/v1/data/lists/changes/since/2019-04-30T09:17:28Z"
-            headers:
-              user-agent: "WikipediaApp/6.8.0.1808 (iOS 14.4.2; Tablet)"
-              x-request-id: "fade3a33-9394-4976-8591-0405c38a213b"
-              content-length: "0"
-              x-forwarded-for: "127.0.0.1, 127.0.0.1, ::1"
-              x-client-ip: "127.0.0.1"
-              x-request-class: "external"
+
   - input:
     - >
       {
@@ -337,18 +265,6 @@ testcases:
           type: "restbase"
         ecs:
           version: "1.7.0"
-      - message: "Heap memory limit temporarily exceeded"
-        level: "WARNING"
-        memoryUsage:
-          heapUsed: 891313968
-          rss: 1069576192
-          external: 36365217
-          heapTotal: 948920320
-        host: "restbase2015"
-        levelPath: "warn/service-runner/heap"
-        type: "restbase"
-        pid: 67
-        limit: 786432000
   - input:
     - >
       {
@@ -420,24 +336,7 @@ testcases:
             method: "get"
         ecs:
           version: "1.7.0"
-      - message: "No content returned"
-        level: "ERROR"
-        type: "restbase"
-        host: "restbase1021"
-        pid: 113
-        levelPath: "error/request"
-        request_id: "c63cf164-fc41-435e-81b8-4d5c925e4141"
-        response: "URIError: URI malformed\n    at decodeURIComponent (native)\n    at Object.mwUtil.extractRedirect (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/restbase/lib/mwUtil.js:391:16)\n    at hyper.get.then (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/restbase/lib/access_check_filter.js:58:46)\n    at tryCatcher (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/util.js:16:23)\n    at Promise._settlePromiseFromHandler (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:547:31)\n    at Promise._settlePromise (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:604:18)\n    at Promise._settlePromise0 (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:649:10)\n    at Promise._settlePromises (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:729:18)\n    at Promise._fulfill (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:673:18)\n    at Promise._resolveCallback (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:466:57)\n    at Promise._settlePromiseFromHandler (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:559:17)\n    at Promise._settlePromise (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:604:18)\n    at Promise._settlePromise0 (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:649:10)\n    at Promise._settlePromises (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:729:18)\n    at Promise._fulfill (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:673:18)\n    at Promise._resolveCallback (/srv/deployment/restbase/deploy-cache/revs/4755f5048b573e21af8b9a388a2c0691b472913a/node_modules/bluebird/js/release/promise.js:466:57)"
-        root_req:
-          method: "get"
-          uri: "/it.wikipedia.org/v1/page/summary/a_summary_page"
-          headers:
-            user-agent: "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"
-            x-request-id: "c63cf164-fc41-435e-81b8-4d5c925e4141"
-            x-request-class: "external"
-            x-client-ip: "::1"
-            x-forwarded-for: "::1, 127.0.0.1, ::1"
-            content-length: "0"
+
   - input:
     - >
       {
