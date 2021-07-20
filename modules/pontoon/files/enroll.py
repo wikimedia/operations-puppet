@@ -67,6 +67,8 @@ class Enroller(object):
 
         log.info("Running puppet agent")
         subprocess.run(self.ssh_cmd + [host, "--", "sudo puppet agent --test --verbose"])
+        # APT sources have likely changed, thus update and run-puppet-agent (now available)
+        subprocess.run(self.ssh_cmd + [host, "--", "sudo apt -q update && sudo run-puppet-agent"])
 
     def _ssh_bash(self, host, cmd, *args, **kwargs):
         return subprocess.run(
