@@ -13,10 +13,8 @@ class pontoon::enc {
 
     $stack_hiera = "/var/lib/git/operations/puppet/modules/pontoon/files/${configured_stack}/hiera/"
     file { '/etc/puppet/hieradata/pontoon':
-        ensure => find_file($stack_hiera) ? {
-                        undef   => 'absent',
-                        default => 'link',
-                  },
+        # The directory might not exist but that's ok, it might eventually
+        ensure => 'link',
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
