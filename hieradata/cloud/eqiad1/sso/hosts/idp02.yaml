@@ -1,0 +1,28 @@
+classes:
+  - profile::standard
+  - profile::base::firewall
+  - profile::java
+  - profile::idp
+puppetmaster: puppetprimary.sso.eqiad1.wikimedia.cloud
+profile::idp::server_name: https://sso-idp.wmcloud.org
+profile::idp::memcached_port: 11000
+profile::idp::memcached_transcoder: WHALINV1
+profile::idp::enable_u2f: false
+profile::idp::enable_mfa: false
+profile::idp::enable_ldap: false
+profile::idp::u2f_jpa_enable: false
+profile::idp::ldap_start_tls: false
+profile::idp::ldap_attributes: []
+profile::idp::services:
+  cloud:
+    id: 1
+    service_id: 'https://(.*)\.eqiad1\.wikimedia\.cloud(/.*)?'
+  wmcloud_org:
+    id: 2
+    service_id: 'https://(.*)\.wmcloud\.org(/.*)?'
+profile::idp::delegated_authenticators:
+  - provider: cas
+    login_url: https://idp.wikimedia.org/
+    protocol: CAS30
+    client_name: WMF_Production
+    display_name: 'WMF Production'
