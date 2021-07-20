@@ -8,7 +8,7 @@
 # - $priority: Configuration loading priority. Default: '10'.
 # - $topic: Kafka topic. Default: $title.
 # - $codec: Codec to encode output. Default 'plain'.
-# - $bootstrap_servers: Kafka servers to boostrap from. This list should be
+# - $bootstrap_servers: Kafka servers to bootstrap from. This list should be
 #      a string in the form of `host1:port1,host2:port2.
 # - $plugin_id: Name associated with Logstash metrics
 # - $security_protocol: Security protocol to use, which can be either of PLAINTEXT,SSL,SASL_PLAINTEXT,SASL_SSL
@@ -21,7 +21,7 @@
 # == Sample usage:
 #
 #   logstash::output::kafka { 'some_topic':
-#       boostrap_servers => 'kafka1001:9092,kafka1002:9092',
+#       bootstrap_servers => 'kafka1001:9092,kafka1002:9092',
 #   }
 #
 # TODO: Make this work with $kafka_cluster_name and kafka_config like
