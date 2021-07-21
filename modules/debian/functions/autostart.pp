@@ -11,7 +11,7 @@ function debian::autostart (
     if debian::codename::ge('bullseye') {
 
         file { "/etc/systemd/system-preset/${service}.preset":
-            ensure  => stdlib::ensure($enabled, 'file'),
+            ensure  => stdlib::ensure(!$enabled, 'file'),
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
