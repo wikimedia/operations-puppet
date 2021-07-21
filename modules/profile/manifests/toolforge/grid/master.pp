@@ -144,4 +144,17 @@ class profile::toolforge::grid::master (
         ensure   => 'present',
         sge_root => $sge_root,
     }
+
+    systemd::timer::job { 'disable-tool':
+        ensure          => 'present',
+        logging_enabled => false,
+        user            => 'root',
+        description     => 'Disable grid-engine jobs for disabled tools',
+        command         => '/srv/disable-tool/disable_tool.py gridengine',
+        interval        => {
+        'start'    => 'OnCalendar',
+        'interval' => '*:0/10', # every 10 minutes
+        },
+        require         => Class['::profile::toolforge::disable_tool'],
+    }
 }
