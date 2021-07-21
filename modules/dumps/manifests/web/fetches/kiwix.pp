@@ -21,15 +21,6 @@ class dumps::web::fetches::kiwix(
         source => 'puppet:///modules/dumps/fetches/kiwix-rsync-cron.sh',
     }
 
-    cron { 'kiwix-mirror-update':
-        ensure      => absent,
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        command     => "/bin/bash /usr/local/bin/kiwix-rsync-cron.sh ${miscdatasetsdir}",
-        user        => $user,
-        minute      => '15',
-        hour        => '*/2',
-        require     => File['/usr/local/bin/kiwix-rsync-cron.sh'],
-    }
     systemd::timer::job { 'kiwix-mirror-update':
         ensure             => present,
         description        => 'Regular jobs to update kiwix mirror',
