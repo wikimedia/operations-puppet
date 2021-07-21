@@ -25,7 +25,7 @@ function debian::autostart (
             $creates = "/etc/rc3.d/S01${service}"
             $unless  = undef
         } else {
-            $action  = 'disabled'
+            $action  = 'disable'
             $creates = undef
             $unless  = "/usr/bin/test -L /etc/rc3.d/S01${service}"
         }
