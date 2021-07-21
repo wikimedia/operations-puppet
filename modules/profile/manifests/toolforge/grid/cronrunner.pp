@@ -60,4 +60,17 @@ class profile::toolforge::grid::cronrunner(
         recurse   => true,
         show_diff => false,
     }
+
+    systemd::timer::job { 'disable-tool':
+        ensure          => 'present',
+        logging_enabled => false,
+        user            => 'root',
+        description     => 'Archive crontab for disabled tools',
+        command         => '/srv/disable-tool/disable_tool.py crontab',
+        interval        => {
+        'start'    => 'OnCalendar',
+        'interval' => '*:0/10', # every 10 minutes
+        },
+        require         => Class['::profile::toolforge::disable_tool'],
+    }
 }
