@@ -1835,102 +1835,6 @@ class profile::prometheus::ops (
         port       => 8002,
     }
 
-    # Job definition for gitlab T275170
-    $gitlab_jobs = [
-      {
-        'job_name'        => 'nginx',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/nginx_*.yaml"] },
-        ]
-      },
-      # dedicated redis_gitlab job following current pattern (see redis_sessions, redis_misc)
-      {
-        'job_name'        => 'redis_gitlab',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/redis_gitlab_*.yaml"] },
-        ]
-      },
-      {
-        'job_name'        => 'workhorse',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/workhorse_*.yaml"] },
-        ]
-      },
-      {
-        'job_name'        => 'rails',
-        'metrics_path'    => '/-/metrics',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/rails_*.yaml"] },
-        ]
-      },
-      {
-        'job_name'        => 'sidekiq',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/sidekiq_*.yaml"] },
-        ]
-      },
-      {
-        'job_name'        => 'gitlab',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/gitlab_*.yaml"] },
-        ]
-      },
-      {
-        'job_name'        => 'gitaly',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/gitaly_*.yaml"] },
-        ]
-      },
-    ]
-    prometheus::class_config{ "nginx_${::site}":
-        dest       => "${targets_path}/nginx_${::site}.yaml",
-        class_name => 'profile::gitlab',
-        port       => 8060
-    }
-    prometheus::class_config{ "redis_gitlab_${::site}":
-        dest       => "${targets_path}/redis_gitlab_${::site}.yaml",
-        class_name => 'profile::gitlab',
-        port       => 9121
-    }
-    # existing postgresql job is reused (see $postgresql_jobs)
-    prometheus::class_config{ "postgresql_gitlab_${::site}":
-        dest       => "${targets_path}/postgresql_gitlab_${::site}.yaml",
-        class_name => 'profile::gitlab',
-        port       => 9187
-    }
-    prometheus::class_config{ "workhorse_${::site}":
-        dest       => "${targets_path}/workhorse_${::site}.yaml",
-        class_name => 'profile::gitlab',
-        port       => 9229
-    }
-    prometheus::class_config{ "rails_${::site}":
-        dest       => "${targets_path}/rails_${::site}.yaml",
-        class_name => 'profile::gitlab',
-        port       => 8080
-    }
-    prometheus::class_config{ "sidekiq_${::site}":
-        dest       => "${targets_path}/sidekiq_${::site}.yaml",
-        class_name => 'profile::gitlab',
-        port       => 8082
-    }
-    prometheus::class_config{ "gitlab_${::site}":
-        dest       => "${targets_path}/gitlab_${::site}.yaml",
-        class_name => 'profile::gitlab',
-        port       => 9168
-    }
-    prometheus::class_config{ "gitaly_${::site}":
-        dest       => "${targets_path}/gitaly_${::site}.yaml",
-        class_name => 'profile::gitlab',
-        port       => 9236
-    }
-
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
@@ -1959,7 +1863,7 @@ class profile::prometheus::ops (
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
-            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs
+            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs
         ].flatten,
         global_config_extra    => $config_extra,
     }
