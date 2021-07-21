@@ -22,8 +22,6 @@ class puppetdb::app(
     Enum['hsqldb', 'postgres']    $db_driver                  = 'postgres',
     Stdlib::Unixpath              $ssldir                     = puppet_ssldir(),
     Stdlib::Unixpath              $ca_path                    = '/etc/ssl/certs/Puppet_Internal_CA.pem',
-    Stdlib::Unixpath              $vardir                     = '/var/lib/puppetdb',
-    Stdlib::Unixpath              $stockpile_queue_dir        = "${vardir}/stockpile/cmd/q",
     Boolean                       $tmpfs_stockpile_queue      = false,
     Integer                       $command_processing_threads = 16,
     Puppetdb::Loglevel            $log_level                  = 'info',
@@ -42,6 +40,8 @@ class puppetdb::app(
     # PuppetDB installation
 
     ensure_packages('puppetdb')
+    $vardir              = '/var/lib/puppetdb'
+    $stockpile_queue_dir = "${vardir}/stockpile/cmd/q"
 
     file { $vardir:
         ensure => directory,
