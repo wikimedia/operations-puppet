@@ -51,7 +51,7 @@ Components: main
  thirdparty/mono-project-stretch
  thirdparty/oath
  thirdparty/php72
-UDebComponents: main component/node10
+UDebComponents: main component/node10 component/systemd241
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm38
