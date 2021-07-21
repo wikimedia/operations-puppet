@@ -1,10 +1,11 @@
 # Class profile::mcrouter_wancache
 #
 # Configures a mcrouter instance for multi-datacenter caching
+# $memcached_tls_port: tls port to connect to other memcached servers
+#                      for cross dc key replication. Check profile::memcached::port
 class profile::mediawiki::mcrouter_wancache(
     Stdlib::Port $port                           = lookup('profile::mediawiki::mcrouter_wancache::port'),
-    Boolean      $has_ssl                        = lookup('profile::mediawiki::mcrouter_wancache::has_ssl'),
-    Stdlib::Port $ssl_port                       = lookup('profile::mediawiki::mcrouter_wancache::ssl_port'),
+    Stdlib::Port $memcached_tls_port             = lookup('profile::mediawiki::mcrouter_wancache::memcached_tls_port'),
     Integer      $num_proxies                    = lookup('profile::mediawiki::mcrouter_wancache::num_proxies'),
     Integer      $timeouts_until_tko             = lookup('profile::mediawiki::mcrouter_wancache::timeouts_until_tko'),
     Integer      $gutter_ttl                     = lookup('profile::mediawiki::mcrouter_wancache::gutter_ttl'),
@@ -162,57 +163,6 @@ class profile::mediawiki::mcrouter_wancache(
             }
         }
     )
-    if $has_ssl {
-        file { '/etc/mcrouter/ssl':
-            ensure  => directory,
-            owner   => 'mcrouter',
-            group   => 'root',
-            mode    => '0750',
-            require => Package['mcrouter'],
-        }
-        file { '/etc/mcrouter/ssl/ca.pem':
-            ensure  => present,
-            content => secret('mcrouter/mcrouter_ca/ca.crt.pem'),
-            owner   => 'mcrouter',
-            group   => 'root',
-            mode    => '0444',
-        }
-
-        file { '/etc/mcrouter/ssl/cert.pem':
-            ensure  => present,
-            content => secret("mcrouter/${::fqdn}/${::fqdn}.crt.pem"),
-            owner   => 'mcrouter',
-            group   => 'root',
-            mode    => '0444',
-        }
-
-        file { '/etc/mcrouter/ssl/key.pem':
-            ensure  => present,
-            content => secret("mcrouter/${::fqdn}/${::fqdn}.key.private.pem"),
-            owner   => 'mcrouter',
-            group   => 'root',
-            mode    => '0400',
-        }
-
-        $ssl_options = {
-            'port'    => $ssl_port,
-            'ca_cert' => '/etc/mcrouter/ssl/ca.pem',
-            'cert'    => '/etc/mcrouter/ssl/cert.pem',
-            'key'     => '/etc/mcrouter/ssl/key.pem',
-        }
-
-        # We can allow any other mcrouter to connect via SSL here
-        ferm::service { 'mcrouter_ssl':
-            desc    => 'Allow connections to mcrouter via SSL',
-            proto   => 'tcp',
-            notrack => true,
-            port    => $ssl_port,
-            srange  => '$DOMAIN_NETWORKS',
-        }
-    }
-    else {
-        $ssl_options = undef
-    }
 
     class { 'mcrouter':
         pools                  => $pools,
@@ -223,7 +173,6 @@ class profile::mediawiki::mcrouter_wancache(
         timeouts_until_tko     => $timeouts_until_tko,
         probe_delay_initial_ms => 60000,
         port                   => $port,
-        ssl_options            => $ssl_options,
     }
     file { '/etc/systemd/system/mcrouter.service.d/cpuaccounting-override.conf':
         content => "[Service]\nCPUAccounting=yes\n",
@@ -239,14 +188,14 @@ class profile::mediawiki::mcrouter_wancache(
         desc  => 'Skip outgoing connection tracking for mcrouter',
         table => 'raw',
         chain => 'OUTPUT',
-        rule  => "proto tcp sport (${port} ${ssl_port}) NOTRACK;",
+        rule  => "proto tcp sport (${port} ${memcached_tls_port}) NOTRACK;",
     }
 
     ferm::rule { 'skip_mcrouter_wancache_conntrack_in':
         desc  => 'Skip incoming connection tracking for mcrouter',
         table => 'raw',
         chain => 'PREROUTING',
-        rule  => "proto tcp dport (${port} ${ssl_port}) NOTRACK;",
+        rule  => "proto tcp dport ${port} NOTRACK;",
     }
     if $prometheus_exporter {
         class {'profile::prometheus::mcrouter_exporter':
