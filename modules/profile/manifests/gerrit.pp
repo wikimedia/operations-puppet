@@ -39,8 +39,9 @@ class profile::gerrit(
 
     # ssh from users to gerrit
     ferm::service { 'gerrit_ssh_users':
-        proto => 'tcp',
-        port  => '29418',
+        proto  => 'tcp',
+        port   => '29418',
+        drange => "(${ipv4} ${ipv6})",
     }
 
     # ssh between gerrit servers for cluster support

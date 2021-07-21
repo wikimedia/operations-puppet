@@ -244,10 +244,6 @@
     smtpServer = localhost
     threadPoolSize = 2
 [sshd]
-    listenAddress = <%= @ipv4 %>:29418
-    <%- if @ipv6 %>
-    listenAddress = [<%= @ipv6 %>]:29418
-    <%- end -%>
     loginGraceTime = 60 s
     idleTimeout = 3600 s
     maxConnectionsPerUser = 4
