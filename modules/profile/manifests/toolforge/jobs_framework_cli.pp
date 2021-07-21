@@ -1,8 +1,14 @@
 class profile::toolforge::jobs_framework_cli(
 ) {
-    # This package may have a configuration file soon. Such declaration may go here in this profile
-
     package { 'toolforge-jobs-framework-cli':
         ensure => 'latest',
+    }
+
+    $api_url = "api_url: https://jobs.svc.${::labsproject}.eqiad1.wikimedia.cloud:30001/api/v1"
+    $kubeconfig = 'kubeconfig: ~/.kube/config'
+
+    file { '/etc/toolforge-jobs-framework-cli.cfg':
+        ensure  => present,
+        content => inline_template("# file by puppet\n<%= @api_url %>\n<%= @kubeconfig %>\n")
     }
 }
