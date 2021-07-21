@@ -204,6 +204,19 @@ class profile::wmcs::nfs::primary(
                 'tools_project' => { 'path' => '/srv/tools/shared/tools/project/*' },
             },
         }
+
+        systemd::timer::job { 'disable-tool':
+            ensure          => 'present',
+            logging_enabled => false,
+            user            => 'root',
+            description     => 'Archive home dir of deleted or disabled+expired tools',
+            command         => '/srv/disable-tool/disable_tool.py archive',
+            interval        => {
+            'start'    => 'OnCalendar',
+            'interval' => '*:0/10', # every 10 minutes
+            },
+            require         => Class['::profile::toolforge::disable_tool'],
+        }
     } else {
         # Don't do this if the volumes are not in a "primary" and ready state
         class { 'profile::prometheus::node_directory_size':
