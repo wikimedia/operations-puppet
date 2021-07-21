@@ -1771,12 +1771,17 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 # Row A
 
 # rack A3
+
 node /^mw141([4-8])\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
 
-node /^mw14(19|2[0-2])\.eqiad\.wmnet$/ {
+node /^mw14(19|20)\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
+}
+
+node /^mw14(2[1-2])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::api)
 }
 
 # rack A7
