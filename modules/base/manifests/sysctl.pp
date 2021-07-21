@@ -91,6 +91,18 @@ class base::sysctl {
         }
     }
 
+    # Up to Buster Debian disabled unprivileged user namespaces in the default kernel config
+    # This changed in Bullseye mostly to allow Chromium and Firefox to setup sandboxing via namespaces
+    # But for a server deployment like ours, we have no use for it and it widens the attack surface,
+    # so we disable it. Apply this to kernels starting with 5.10 (where it was enabled in Debian)
+    if (versioncmp($::kernelversion, '5.10') >= 0) {
+        sysctl::parameters { 'disable_unprivileged_ns':
+            values => {
+            'kernel.unprivileged_userns_clone' => '0',
+            },
+        }
+    }
+
     # BBR congestion control (T147569)
     # https://lwn.net/Articles/701165/
     #
