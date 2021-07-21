@@ -39,17 +39,6 @@ class profile::mariadb::check_private_data {
         mode   => '0744',
     }
 
-    cron { 'check-private-data':
-        ensure  => absent,
-        minute  => 0,
-        hour    => 5,
-        weekday => 1,
-        user    => 'root',
-        command => '/usr/local/sbin/check_private_data_report > /dev/null 2>&1',
-        require => [File['/usr/local/sbin/check_private_data_report'],
-                    File['/usr/local/sbin/check_private_data.py'],
-        ],
-    }
     systemd::timer::job { 'check-private-data':
         ensure             => present,
         description        => 'Regular jobs for checking and reporting private data',
