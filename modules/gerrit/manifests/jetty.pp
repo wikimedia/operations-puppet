@@ -15,7 +15,6 @@ class gerrit::jetty(
     Boolean                           $replica           = false,
     String                            $config            = 'gerrit.config.erb',
     Integer                           $git_open_files    = 20000,
-    String                            $smtp_encryption   = 'none',
     Optional[Hash]                    $ldap_config       = undef,
     Optional[String]                  $scap_user         = undef,
     Optional[String]                  $scap_key_name     = undef,
