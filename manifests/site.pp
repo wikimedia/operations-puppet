@@ -1957,7 +1957,7 @@ node 'mw1318.eqiad.wmnet' {
 }
 
 # rack B6
-node /^mw1(29[345689]|30[0-6])\.eqiad\.wmnet$/ {
+node /^mw1(29[5689]|30[0-6])\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
