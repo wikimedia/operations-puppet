@@ -10,4 +10,5 @@ class profile::sretest {
 
     # Temporarily for some tests
     debian::autostart('nginx', false)
+    debian::autostart('apache2', false)
 }
