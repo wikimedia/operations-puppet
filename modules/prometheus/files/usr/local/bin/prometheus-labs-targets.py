@@ -74,6 +74,11 @@ def main():
         default="",  # Match everything by default
         help="Only output targets for instances that match this prefix",
     )
+    parser.add_argument(
+        "--ips",
+        action="store_true",
+        help="specify targets by IP instead of hostname",
+    )
     args = parser.parse_args()
 
     if args.project is None:
@@ -82,7 +87,9 @@ def main():
                 args.project = f.read().strip()
         except IOError as e:
             parser.error(
-                "Unable to detect project from /etc/wmflabs-project: {!r}".format(e)
+                "Unable to detect project from /etc/wmflabs-project: {!r}".format(
+                    e
+                )
             )
             return 1
 
@@ -95,7 +102,9 @@ def main():
     if args.region is not None:
         if args.region not in regions:
             parser.error(
-                "Region {!r} invalid. Valid choices: {!r}".format(args.region, regions)
+                "Region {!r} invalid. Valid choices: {!r}".format(
+                    args.region, regions
+                )
             )
             return 1
         regions = [args.region]
@@ -108,7 +117,17 @@ def main():
         for instance in instances:
             if not instance.name.startswith(args.prefix):
                 continue
-            config["targets"].append("{}:{}".format(instance.name, args.port))
+            if args.ips:
+                config["targets"].append(
+                    "{}:{}".format(
+                        list(instance.addresses.values())[0][0]["addr"],
+                        args.port,
+                    )
+                )
+            else:
+                config["targets"].append(
+                    "{}:{}".format(instance.name, args.port)
+                )
             if args.print_format:
                 print_args = {
                     "hostname": instance.name,

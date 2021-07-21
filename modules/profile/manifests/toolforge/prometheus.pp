@@ -587,7 +587,7 @@ class profile::toolforge::prometheus (
 
     cron { 'prometheus_paws_project_targets':
         ensure  => present,
-        command => "/usr/local/bin/prometheus-labs-targets --project paws > ${targets_path}/node_paws.$$ && mv ${targets_path}/node_paws.$$ ${targets_path}/node_paws.yml",
+        command => "/usr/local/bin/prometheus-labs-targets --project paws --ips > ${targets_path}/node_paws.$$ && mv ${targets_path}/node_paws.$$ ${targets_path}/node_paws.yml",
         minute  => '*/10',
         hour    => '*',
         user    => 'prometheus',
