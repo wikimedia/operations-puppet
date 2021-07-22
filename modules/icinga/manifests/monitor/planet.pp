@@ -14,7 +14,7 @@ class icinga::monitor::planet(
 
     monitoring::service { 'https_planet':
         description   => 'HTTPS-planet',
-        check_command => 'check_ssl_http!en.planet.wikimedia.org',
+        check_command => 'check_ssl_http_letsencrypt!en.planet.wikimedia.org',
         host          => 'en.planet.wikimedia.org',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org',
     }
