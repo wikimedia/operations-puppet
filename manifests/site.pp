@@ -2030,6 +2030,11 @@ node /^mw14(08|1[02])\.eqiad\.wmnet$/ {
 node /^mw13(5[6-9]|6[0-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
+# rack D8
+node /^mw14(4[7-9]|50)\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver::canary_api)
+}
+
 
 # mediawiki maintenance server (periodic jobs)
 # mwmaint1002 replaced mwmaint1001 (T201343) which replaced terbium (T192185)
@@ -2067,7 +2072,7 @@ node /^mw133[4-8]\.eqiad\.wmnet$/ {
 }
 
 # new mw hosts via T273915
-node /^mw14(4[7-9]|5[0-6])\.eqiad\.wmnet$/ {
+node /^mw14(5[1-6])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
