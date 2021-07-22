@@ -19,19 +19,12 @@ function debian::autostart (
         }
 
     } else {
-
-        if $enabled {
-            $action  = 'enable'
-            $creates = "/etc/rc3.d/S01${service}"
-            $unless  = undef
-        } else {
-            $action  = 'disable'
-            $creates = undef
-            $unless  = "/usr/bin/test -L /etc/rc3.d/S01${service}"
-        }
-        exec {"/usr/sbin/update-rc.d ${service} ${action}":
-            creates => $creates,
-            unless  => $unless,
+        include debian::policy_rc_d
+        file { "${debian::policy_rc_d::policy_rd_d_dir}/${service}":
+            ensure => stdlib::ensure(!$enabled, 'file'),
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
         }
     }
 }
