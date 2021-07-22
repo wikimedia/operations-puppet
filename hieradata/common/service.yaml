@@ -3373,15 +3373,8 @@ service::catalog:
     public_endpoint: 'alerts'
     port: 443
     description: Alertmanager service
-    monitoring:
-      check_command: "check_https_on_port!443"
-      notes_url: "https://wikitech.wikimedia.org/wiki/Alertmanager"
-      critical: false
-      sites:
-        codfw:
-          hostname: alert2001
-        eqiad:
-          hostname: alert1001
+    # No 'monitoring' section, covered by metamonitoring.
+    # Also icinga doesn't know about the "other site" alerting host.
     sites:
       - codfw
       - eqiad
