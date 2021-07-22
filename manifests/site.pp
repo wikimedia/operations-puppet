@@ -1212,8 +1212,9 @@ node /^ganeti20(0[7-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
     role(ganeti)
 }
 
+# Temporary test cluster until T284954 arrives
 node /^(ganeti2025|ganeti2026)\.codfw\.wmnet$/ {
-    role(insetup)
+    role(ganeti_test)
 }
 
 node /^ganeti300[123]\.esams\.wmnet$/ {
