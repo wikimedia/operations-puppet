@@ -2273,26 +2273,21 @@ node /^pc10(09)\.eqiad\.wmnet$/ {
 
 # codfw
 # pc1
-node /^pc20(07|10)\.codfw\.wmnet$/ {
+node /^pc20(07|10|11|14)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node /^pc20(08)\.codfw\.wmnet$/ {
+node /^pc20(08|12)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc3
-node /^pc20(09)\.codfw\.wmnet$/ {
+node /^pc20(09|13)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
 # New parsercache hosts (db normal specs)
 # eqiad hosts T282484 T284825
 node /^pc10(11|12|13|14)\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
-# codfw hosts T282482 T284825
-node /^pc20(11|12|13|14)\.codfw\.wmnet$/ {
     role(insetup)
 }
 
