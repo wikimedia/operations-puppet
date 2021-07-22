@@ -1439,13 +1439,10 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/healthz
       scheduler: wrr
       protocol: tcp
     monitoring:
-      check_command: check_https_lvs_on_port!mwdebug.discovery.wmnet!4444!/healthz
+      check_command: check_https_lvs_on_port!en.wikipedia.org!4444!/wiki/Special:BlankPage
       critical: false # don't enable paging while testing
       sites:
         codfw:
@@ -1456,7 +1453,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: monitoring_setup
     discovery:
       - dnsdisc: mwdebug
         active_active: true
