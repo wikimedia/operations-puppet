@@ -12,6 +12,13 @@ class profile::wikidough (
     include network::constants
     include passwords::wikidough::dnsdist
 
+
+    motd::script { 'root-commands-warning':
+        ensure   => 'present',
+        priority => 1,
+        content  => template('profile/wikidough/motd.erb'),
+    }
+
     ferm::service { 'wikidough-doh':
         proto   => 'tcp',
         notrack => true,
