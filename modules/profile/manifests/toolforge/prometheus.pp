@@ -7,6 +7,9 @@ class profile::toolforge::prometheus (
     Stdlib::Fqdn               $paws_apiserver_fqdn    = lookup('profile::wmcs::paws::k8s::apiserver_fqdn', {default_value => 'k8s.svc.paws.eqiad1.wikimedia.cloud'}),
     Stdlib::Port               $new_k8s_apiserver_port = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
     Stdlib::Port               $paws_apiserver_port    = lookup('profile::wmcs::paws::apiserver_port',     {default_value => 6443}),
+    Stdlib::Fqdn               $keystone_api_fqdn      = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
+    String                     $observer_password      = lookup('profile::openstack::eqiad1::observer_password'),
+    String                     $observer_user          = lookup('profile::openstack::base::observer_user'),
     Array[Stdlib::Fqdn]        $proxies                = lookup('profile::toolforge::proxies',             {default_value => ['tools-proxy-05.tools.eqiad.wmflabs']}),
     Stdlib::Fqdn               $email_server           = lookup('profile::toolforge::active_mail_relay',   {default_value => 'tools-mail-02.tools.eqiad1.wikimedia.cloud'}),
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::toolforge::prometheus::storage_retention_size',   {default_value => undef}),
@@ -328,7 +331,45 @@ class profile::toolforge::prometheus (
                 ]
             },
             {
-                'job_name'              => 'paws-nodes',
+                'job_name'             => 'paws-node',
+                'openstack_sd_configs' => [
+                    {
+                        'role'              => 'instance',
+                        'region'            => 'eqiad1-r',
+                        'identity_endpoint' => "http://${keystone_api_fqdn}:5000/v3",
+                        'username'          => $observer_user,
+                        'password'          => $observer_password,
+                        'domain_name'       => 'default',
+                        'project_name'      => 'paws',
+                        'all_tenants'       => false,
+                        'refresh_interval'  => '5m',
+                        'port'              => 9100,
+                    }
+                ],
+                'relabel_configs'      => [
+                    {
+                        'source_labels' => ['__meta_openstack_project_id'],
+                        'replacement'   => 'paws',
+                        'target_label'  => 'project',
+                    },
+                    {
+                        'source_labels' => ['job'],
+                        'replacement'   => 'node',
+                        'target_label'  => 'job',
+                    },
+                    {
+                        'source_labels' => ['__meta_openstack_instance_name'],
+                        'target_label'  => 'instance',
+                    },
+                    {
+                        'source_labels' => ['__meta_openstack_instance_status'],
+                        'action'        => 'keep',
+                        'regex'         => 'ACTIVE',
+                    },
+                ]
+            },
+            {
+                'job_name'              => 'paws-k8s-nodes',
                 'scheme'                => 'https',
                 'tls_config'            => {
                     'insecure_skip_verify' => true,
@@ -580,14 +621,6 @@ class profile::toolforge::prometheus (
     cron { 'prometheus_tools_project_targets':
         ensure  => present,
         command => "/usr/local/bin/prometheus-labs-targets > ${targets_path}/node_project.$$ && mv ${targets_path}/node_project.$$ ${targets_path}/node_project.yml",
-        minute  => '*/10',
-        hour    => '*',
-        user    => 'prometheus',
-    }
-
-    cron { 'prometheus_paws_project_targets':
-        ensure  => present,
-        command => "/usr/local/bin/prometheus-labs-targets --project paws --ips > ${targets_path}/node_paws.$$ && mv ${targets_path}/node_paws.$$ ${targets_path}/node_paws.yml",
         minute  => '*/10',
         hour    => '*',
         user    => 'prometheus',
