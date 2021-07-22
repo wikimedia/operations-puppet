@@ -3385,77 +3385,77 @@ service::catalog:
         default: 208.80.154.88
     state: production
 
-#   graphite:
-#     encryption: true
-#     role: 'graphite::production'
-#     public_endpoint: 'graphite'
-#     port: 443
-#     description: Graphite metrics platform
-#     monitoring:
-#       check_command: "check_https_on_port!443"
-#       notes_url: "https://wikitech.wikimedia.org/wiki/Graphite"
-#       critical: false
-#       sites:
-#         codfw:
-#           hostname: graphite2003
-#         eqiad:
-#           hostname: graphite1004
-#     sites:
-#       - codfw
-#       - eqiad
-#     ip:
-#       codfw:
-#         default: 10.192.0.102
-#       eqiad:
-#         default: 10.64.16.149
-#     state: production
-#
-#   grafana:
-#     encryption: true
-#     role: 'grafana'
-#     public_endpoint: 'grafana'
-#     port: 443
-#     description: Graphing and dashboarding
-#     monitoring:
-#       check_command: "check_https_on_port!443"
-#       notes_url: "https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org"
-#       critical: false
-#       sites:
-#         codfw:
-#           hostname: grafana2001
-#         eqiad:
-#           hostname: grafana1002
-#     sites:
-#       - codfw
-#       - eqiad
-#     ip:
-#       codfw:
-#         default: 10.192.0.160
-#       eqiad:
-#         default: 10.64.0.119
-#     state: production
-#
-#   librenms:
-#     encryption: true
-#     role: 'netmon'
-#     public_endpoint: 'librenms'
-#     port: 443
-#     description: Network device observability
-#     monitoring:
-#       check_command: "check_https_on_port!443"
-#       notes_url: "https://wikitech.wikimedia.org/wiki/LibreNMS"
-#       critical: false
-#       sites:
-#         codfw:
-#           hostname: netmon2001
-#         eqiad:
-#           hostname: netmon1002
-#     sites:
-#       - codfw
-#       - eqiad
-#     ip:
-#       codfw:
-#         default: 208.80.153.110
-#       eqiad:
-#         default: 208.80.154.5
-#     state: production
+  graphite:
+    encryption: true
+    role: 'graphite::production'
+    public_endpoint: 'graphite'
+    port: 443
+    description: Graphite metrics platform
+    monitoring:
+      check_command: "check_https_on_port!443"
+      notes_url: "https://wikitech.wikimedia.org/wiki/Graphite"
+      critical: false
+      sites:
+        codfw:
+          hostname: graphite2003
+        eqiad:
+          hostname: graphite1004
+    sites:
+      - codfw
+      - eqiad
+    ip:
+      codfw:
+        default: 10.192.0.102
+      eqiad:
+        default: 10.64.16.149
+    state: production
+
+  grafana:
+    encryption: true
+    role: 'grafana'
+    public_endpoint: 'grafana'
+    port: 443
+    description: Graphing and dashboarding
+    monitoring:
+      check_command: "check_https_on_port!443"
+      notes_url: "https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org"
+      critical: false
+      sites:
+        codfw:
+          hostname: grafana2001
+        eqiad:
+          hostname: grafana1002
+    sites:
+      - codfw
+      - eqiad
+    ip:
+      codfw:
+        default: 10.192.0.160
+      eqiad:
+        default: 10.64.0.119
+    state: production
+
+  librenms:
+    encryption: true
+    role: 'netmon'
+    public_endpoint: 'librenms'
+    port: 443
+    description: Network device observability
+    monitoring:
+      check_command: "check_https_on_port!443"
+      notes_url: "https://wikitech.wikimedia.org/wiki/LibreNMS"
+      critical: false
+      sites:
+        codfw:
+          hostname: netmon2001
+        eqiad:
+          hostname: netmon1002
+    sites:
+      - codfw
+      - eqiad
+    ip:
+      codfw:
+        default: 208.80.153.110
+      eqiad:
+        default: 208.80.154.5
+    state: production
