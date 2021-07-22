@@ -3379,9 +3379,9 @@ service::catalog:
       critical: false
       sites:
         codfw:
-          hostname: alert2001.wikimedia.org
+          hostname: alert2001
         eqiad:
-          hostname: alert1001.wikimedia.org
+          hostname: alert1001
     sites:
       - codfw
       - eqiad
@@ -3454,9 +3454,9 @@ service::catalog:
 #       critical: false
 #       sites:
 #         codfw:
-#           hostname: netmon2001.wikimedia.org
+#           hostname: netmon2001
 #         eqiad:
-#           hostname: netmon1002.wikimedia.org
+#           hostname: netmon1002
 #     sites:
 #       - codfw
 #       - eqiad
