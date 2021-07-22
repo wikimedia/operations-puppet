@@ -246,6 +246,7 @@ profile::thanos::httpd::maxconn: 10
 profile::icinga::logs_keep_days: 780
 profile::thanos::httpd::enable_sso: false
 profile::thanos::query_frontend::memcached_hosts: []
+profile::thanos::rule_hosts: {}
 
 profile::gerrit::ipv6: ~
 profile::gerrit::enable_monitoring: true

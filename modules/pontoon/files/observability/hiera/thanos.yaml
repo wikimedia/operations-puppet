@@ -5,6 +5,9 @@ profile::thanos::swift::memcached_servers: "%{alias('__hosts_for_role_thanos__fr
 
 profile::thanos::objstore_password: 'foo'
 
+profile::thanos::rule_hosts:
+  "%{alias('__master_for_role_thanos__frontend')}":
+    replica: a
 
 profile::swift::stats_reporter_host: "%{alias('__master_for_role_thanos__frontend')}"
 
