@@ -1727,6 +1727,13 @@ class profile::prometheus::ops (
           { 'files' => [ "${targets_path}/thanos_compact_*.yaml" ]}
         ],
       },
+      {
+        'job_name'        => 'thanos-rule',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/thanos_rule_*.yaml" ]}
+        ],
+      },
     ]
 
     prometheus::class_config{ "thanos_query_${::site}":
@@ -1757,6 +1764,12 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/thanos_compact_${::site}.yaml",
         class_name => 'thanos::compact::prometheus',
         port       => 12902,
+    }
+
+    prometheus::class_config{ "thanos_rule_${::site}":
+        dest       => "${targets_path}/thanos_rule_${::site}.yaml",
+        class_name => 'thanos::rule::prometheus',
+        port       => 17902,
     }
 
     # Jobs for Netbox script-based exported metrics
