@@ -61,6 +61,7 @@ profile::acme_chief::certificates:
         authorized_hosts:
         - 'gitlab1001.wikimedia.org'
         - 'gitlab1002.wikimedia.org'
+        - 'gitlab2001.wikimedia.org'
     icinga:
         CN: 'icinga.wikimedia.org'
         SNI:
