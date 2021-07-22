@@ -729,6 +729,25 @@ class profile::prometheus::ops (
       },
     ]
 
+    prometheus::class_config{ "ml_etcd_${::site}":
+        dest           => "${targets_path}/ml_etcd_${::site}.yaml",
+        class_name     => 'role::etcd::v3::ml_etcd',
+        port           => 2379,
+        hostnames_only => false,
+    }
+
+    $ml_etcd_jobs = [
+      {
+        'job_name'        => 'ml_etcd',
+        'scheme'          => 'https',
+        'file_sd_configs' => [
+          { 'files' => [
+              "${targets_path}/ml_etcd_*.yaml",
+              ],}
+        ],
+      },
+    ]
+
     # mcrouter
     # Job definition for mcrouter_exporter
     $mcrouter_jobs = [
@@ -1851,7 +1870,7 @@ class profile::prometheus::ops (
         alertmanagers          => $alertmanagers.map |$a| { "${a}:9093" },
         scrape_configs_extra   => [
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
-            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $mcrouter_jobs, $pdu_jobs,
+            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $ml_etcd_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
