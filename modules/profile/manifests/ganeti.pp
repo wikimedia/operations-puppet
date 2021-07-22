@@ -18,6 +18,9 @@
 # [*rapi_nodes*]
 #   A list of nodes to open the RAPI port to.
 #
+# [*rapi_certificate*]
+#   A string containing the name of the certificate to use
+#
 # [*rapi_ro_user*]
 #   A string containing the name of the read-only user to configure in RAPI.
 #
@@ -28,13 +31,16 @@
 class profile::ganeti (
     Array[Stdlib::Fqdn] $nodes         = lookup('profile::ganeti::nodes'),
     Array[Stdlib::Fqdn] $rapi_nodes    = lookup('profile::ganeti::rapi_nodes'),
+    String $rapi_certificate           = lookup('profile::ganeti::rapi::certificate'),
     Optional[String] $rapi_ro_user     = lookup('profile::ganeti::rapi::ro_user',
                                                 { default_value => undef }),
     Optional[String] $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
                                                 { default_value => undef }),
 ) {
 
-    class { '::ganeti': }
+    class { 'ganeti':
+        certname => $rapi_certificate,
+    }
 
     # Ganeti needs intracluster SSH root access
     # DSS+RSA keys in here, but note that DSS is deprecated

@@ -13,7 +13,8 @@
 # Sample Usage
 #   include ganeti
 class ganeti(
-    $with_drbd=true
+    String $certname,
+    Boolean $with_drbd=true,
     ) {
     include ::ganeti::kvm
 
@@ -67,7 +68,6 @@ class ganeti(
     # Potential fixme: We don't restart the daemon here since it's not independent
     # and this file configures other aspects of Ganeti. Manually restart ganeti
     # on the target hosts after changes are merged.
-    $certname = "ganeti01.svc.${::site}.wmnet"
     file { '/etc/default/ganeti':
         ensure  => present,
         owner   => 'root',
