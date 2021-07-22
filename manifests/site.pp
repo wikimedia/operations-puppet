@@ -2264,15 +2264,15 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
 # parser cache databases
 # eqiad
 # pc1
-node /^pc10(07|10)\.eqiad\.wmnet$/ {
+node /^pc10(07|10|11|14)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node /^pc10(08)\.eqiad\.wmnet$/ {
+node /^pc10(08|12)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc3
-node /^pc10(09)\.eqiad\.wmnet$/ {
+node /^pc10(09|13)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
@@ -2290,11 +2290,6 @@ node /^pc20(09|13)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
-# New parsercache hosts (db normal specs)
-# eqiad hosts T282484 T284825
-node /^pc10(11|12|13|14)\.eqiad\.wmnet$/ {
-    role(insetup)
-}
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[123]001\.(eqiad|codfw|esams)\.wmnet$/ {
