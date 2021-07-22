@@ -19,5 +19,7 @@ class role::thanos::frontend {
 
     include ::profile::thanos::bucket_web
 
+    include ::profile::thanos::rule
+
     include ::profile::thanos::swift::frontend
 }
