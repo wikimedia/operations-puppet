@@ -8,9 +8,11 @@
 #
 # = Parameters
 # [*sites*] The list of sites to reach out to.
+# [*rule_hosts*] The thanos rule configuration. See thanos::query for details.
 
 class profile::thanos::query (
-    $sites = lookup('datacenters'),
+    Array[String] $sites = lookup('datacenters'),
+    Hash[String, Hash] $rule_hosts = lookup('profile::thanos::rule_hosts'),
 ) {
     $sd_files = '/etc/thanos-query/stores/*.yml'
     $sd_files_path = dirname($sd_files)
@@ -31,8 +33,18 @@ class profile::thanos::query (
         }
     }
 
+    # Reach out to rule component for recording rules
+    $rule_targets = [ { 'targets' => $rule_hosts.keys.map |$h| { "${h}:17902" } } ]
+    file { "${sd_files_path}/rule.yml":
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => ordered_yaml($rule_targets),
+    }
+
     # Talk to local store for historical data
-    $local_store = [ { 'targets' =>  ['localhost:11901'] } ]
+    $local_store = [ { 'targets' => ['localhost:11901'] } ]
     file { "${sd_files_path}/local.yml":
         ensure  => present,
         mode    => '0444',
