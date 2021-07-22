@@ -38,7 +38,6 @@ class role::analytics_cluster::launcher {
     include ::profile::analytics::refinery::job::data_check
     include ::profile::analytics::refinery::job::refine
     include ::profile::analytics::refinery::job::refine_sanitize
-    include ::profile::analytics::refinery::job::camus
     # Camus is being replaced by Gobblin: T271232
     include ::profile::analytics::refinery::job::gobblin
     include ::profile::analytics::refinery::job::canary_events
