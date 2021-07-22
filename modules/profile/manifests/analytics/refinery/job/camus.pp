@@ -103,6 +103,7 @@ class profile::analytics::refinery::job::camus(
     # TODO(klausman): Remove this once we are confident that ATSKafka and
     # VarnishKafka report the same event streams (cf. T254317)
     camus::job { 'atskafka_test_webrequest_text':
+        ensure           => 'absent',
         camus_properties => {
             'kafka.whitelist.topics'          => 'atskafka_test_webrequest_text',
             'mapreduce.job.queuename'         => 'essential',
@@ -120,6 +121,7 @@ class profile::analytics::refinery::job::camus(
     # Import mediawiki.job queue topics into /wmf/data/raw/mediawiki_job
     # once every hour.
     camus::job { 'mediawiki_job':
+        ensure           => 'absent',
         camus_properties => {
             'kafka.whitelist.topics'        => '(eqiad|codfw)\.mediawiki\.job.*',
             'camus.message.timestamp.field' => 'meta.dt',
@@ -132,6 +134,7 @@ class profile::analytics::refinery::job::camus(
 
     # Import eventlogging-client-side events for backup purposes
     camus::job { 'eventlogging-client-side':
+        ensure           => 'absent',
         camus_properties => {
             'etl.destination.path'        => "hdfs://${hadoop_cluster_name}/wmf/data/raw/eventlogging_client_side",
             'kafka.whitelist.topics'      => 'eventlogging-client-side',
