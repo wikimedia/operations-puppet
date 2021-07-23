@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 """Simple policy-rc.d script to allow disabling daemons auto starting on install
 
-The script implmentes the API documented in:
+The script implements the API documented in:
  https://people.debian.org/~hmh/invokerc.d-policyrc.d-specification.txt
 
-It should be notied that we only implment a minimum set of the api.  All arguments will
+It should be noted that we only implement a minimum set of the api.  All arguments will
 be accepted whoever the following arguments have no affect
 
 * --list
 * --quite
 * runlevel
 
-Further the stop adnforce-stop actions also result in no action
+Further the stop and force-stop actions also result in no action
 """
 from argparse import ArgumentParser
 from pathlib import Path
