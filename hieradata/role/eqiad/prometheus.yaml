@@ -20,6 +20,7 @@ profile::prometheus::kubernetes::clusters:
     master_host: 'ml-ctrl.svc.eqiad.wmnet'
     port: 9909
     class_name: role::ml_k8s::worker
+    controller_class_name: role::ml_k8s::master
 # In the private repo a stanza like the following is required
 # profile::prometheus::kubernetes::cluster_tokens:
 # k8s:

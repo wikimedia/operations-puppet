@@ -32,6 +32,7 @@ class profile::prometheus::k8s (
         $master_host = $value['master_host']
         $port = $value['port']
         $class_name = $value['class_name']
+        $controller_class_name = $value['controller_class_name']
         $client_token = $value['client_token']
 
         $config_extra = {
@@ -266,7 +267,10 @@ class profile::prometheus::k8s (
             {
                 'job_name'        => 'calico-felix',
                 'file_sd_configs' =>  [
-                    { 'files' =>  [ "${targets_path}/calico-felix_*.yaml" ] },
+                    {
+                      'files' =>  [ "${targets_path}/calico-felix_*.yaml",
+                                    "${targets_path}/calico-felix-controller_*.yaml"]
+                    },
                 ],
             },
         ]
@@ -309,6 +313,15 @@ class profile::prometheus::k8s (
             class_name     => $class_name,
             hostnames_only => false,
             port           => 9091,
+        }
+
+        if $controller_class_name {
+            prometheus::class_config { "calico-felix-controller-${k8s_cluster}":
+                dest           => "${targets_path}/calico-felix-controller_${::site}.yaml",
+                class_name     => $controller_class_name,
+                hostnames_only => false,
+                port           => 9091,
+            }
         }
 
         file { $bearer_token_file:
