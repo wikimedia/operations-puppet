@@ -56,7 +56,7 @@ def main():
         last_success_elapsed = (
             calendar.timegm(time.gmtime()) - get_last_success_time()
         )
-        too_old = last_success_elapsed < NAG_INTERVAL
+        too_old = last_success_elapsed > NAG_INTERVAL
     except os.error as error:
         logging.warning("Unable to check puppet last success time: %s", error)
         exception_msg += (
