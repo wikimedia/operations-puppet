@@ -77,9 +77,9 @@ cnames:
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
     - meta.web.db.svc.eqiad.wmflabs.
   s7.web.db.svc.wikimedia.cloud.:
-    - centralauth.analytics.db.svc.wikimedia.cloud.
+    - centralauth.web.db.svc.wikimedia.cloud.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
-    - meta.analytics.db.svc.wikimedia.cloud.
+    - meta.web.db.svc.wikimedia.cloud.
   tools-redis.svc.eqiad.wmflabs.:
     - tools-redis.tools.eqiad.wmflabs.
     - tools-redis.eqiad.wmflabs.
