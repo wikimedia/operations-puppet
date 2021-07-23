@@ -6,12 +6,26 @@ archive: False
 retention: 18
 stats_file: '/etc/wmfbackups/statistics.cnf'
 sections:
-  s1:
-    host: 'db1139.eqiad.wmnet'
-    port: 3311
   s2:
-    host: 'db1139.eqiad.wmnet'
+    host: 'db1102.eqiad.wmnet'
     port: 3312
-  s7:
-    host: 'db1116.eqiad.wmnet'
-    port: 3317
+  s3:
+    host: 'db1102.eqiad.wmnet'
+    port: 3313
+    archive: True
+  x1:
+    host: 'db1102.eqiad.wmnet'
+    port: 3320
+    archive: True
+  zarcillo:
+    host: 'db1115.eqiad.wmnet'
+  matomo:
+    host: 'db1108.eqiad.wmnet'
+    port: 3351
+  analytics_meta:
+    host: 'db1108.eqiad.wmnet'
+    port: 3352
+
+
+
+
