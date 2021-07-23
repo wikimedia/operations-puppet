@@ -7,46 +7,18 @@
 # stable) as to when they are planned to be migrated, how many systems are affected
 # and if any systems are behind plan. A report text file is generated.
 
-import argparse
+# noqa: E128
+
 import datetime
+import dominate
 import os
 import sys
 import yaml
+import configparser
 from collections import defaultdict
 from pypuppetdb import connect
 from pypuppetdb import QueryBuilder
-
-REPORT = """
-The following hosts are running the latest OS(es)
-
-{hosts_current}
-
-{targets_planned}
-
-The following hosts are lagging behind the target date:
-
-{hosts_delayed}
-
-The following hosts are missing in the migration data:
-{hosts_needdata}
-
-The following hosts are missing a migration date:
-{hosts_needplan}
-
-The following errors were reported (malformed data:
-{status_log}
-
-A total number of {hosts_current_count} hosts are running the latest OS.
-
-The remaining work is targeted for the following quarters:
-{targets_plan}
-
-A total number of {hosts_inplan_count} hosts are being migrated and according to plan.
-A total number of {hosts_delayed_count} hosts are being migrated and lagging behind plan.
-A total number of {hosts_needdata_count} hosts need further migration data.
-A total number of {hosts_needplan_count} hosts need further planning/discussion.
-
-"""
+from dominate import tags as tags
 
 
 def connect_puppetdb(puppetdb_host):
@@ -73,10 +45,10 @@ def get_servers_running_os(distro_release, puppetdb_host):
 #  target-q: 2020-4 (target quarter by which this service will be
 #                    fully migrated to the current OS(es)
 #  phab-task: 123456 (reference to Phabricator) (optional)
-def parse_services(yaml_file):
+def parse_yaml(yaml_file):
     try:
         with open(yaml_file, "r") as stream:
-            servicesfile = yaml.safe_load(stream)
+            yamlfile = yaml.safe_load(stream)
 
     except IOError:
         print("Error: Could not open {}".format(yaml_file))
@@ -87,7 +59,7 @@ def parse_services(yaml_file):
         print(e)
         sys.exit(1)
 
-    return servicesfile
+    return yamlfile
 
 
 def get_current_quarter():
@@ -139,90 +111,178 @@ def unroll_result_list(entries):
     return '\n'.join(sorted(entries))
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--puppetdb', required=True,
-                        help='The hostname of the PuppetDB server')
-    parser.add_argument('-s', '--serviceslist', required=True,
-                        help='A YAML file with all services, owners and planned migration dates')
+def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
+    status_log = []
+    owners_to_contact_plan = defaultdict(set)
+    owners_to_contact_delayed = defaultdict(set)
+    hosts_needdata = []
+    hosts_current_count = 0
+    hosts_needplan_count = 0
+    hosts_needdata_count = 0
+    hosts_needowner_count = 0
+    hosts_delayed_count = 0
+    deprecated_count = 0
+    need_owners = []
+    role_count = defaultdict(int)
 
-    args = parser.parse_args()
-    owners = parse_services(args.serviceslist)
+    distro_data = parse_yaml(datafile)
     current_quarter = get_current_quarter()
 
-    status_log = []
-    hosts_delayed = []
-    hosts_inplan = []
-    hosts_needplan = []
-    hosts_needdata = []
-    hosts_current = []
-
-    deprecated_os = ['stretch']
-    current_os = ['buster']
-
     targets = defaultdict(list)
-    roles = get_roles(args.puppetdb)
+    roles = get_roles(puppetdb_host)
 
-    for distro in current_os:
-        hosts_current += get_servers_running_os(distro, args.puppetdb)
+    for current_distro in uptodate_os:
+        hosts_current_count += len(get_servers_running_os(current_distro, puppetdb_host))
 
-    for distro in deprecated_os:
-        hosts = get_servers_running_os(distro, args.puppetdb)
+    deprecated_count = len(get_servers_running_os(distro, puppetdb_host))
 
-        for host in hosts:
+    hosts = get_servers_running_os(distro, puppetdb_host)
 
-            if host not in roles:
-                status_log.append("Malformed entry for {}, no role found".format(host))
-                continue
+    for host in hosts:
 
-            role = roles[host]
+        if host not in roles:
+            status_log.append("Malformed entry for {}, no role found".format(host))
+            continue
 
-            if not owners.get(role, None):
-                hosts_needdata.append("{} running role {}".format(host, role))
-                continue
+        role = roles[host]
+        role_count[role] += 1
 
-            owner_def = owners.get(role)
+        if not distro_data.get(role, None):
+            hosts_needdata.append(host)
+            hosts_needdata_count += 1
+            continue
 
-            target_quarter = owner_def.get('target-q', 'TBD')
-            if target_quarter == 'TBD':
-                hosts_needplan.append("{} running role {}".format(host, role))
-                continue
+        if not owners.get(role, None):
+            need_owners.append("{} running role {} has no defined owner".format(host, role))
+            hosts_needowner_count += 1
+            continue
 
-            targets[target_quarter].append(host)
+        owner = owners.get(role).get('owner')
 
-            if quarter_in_plan(current_quarter, target_quarter):
-                hosts_inplan.append(host)
-            else:
-                hosts_delayed.append(host)
+        target_quarter = distro_data.get(role, None).get('target-q', 'TBD')
+        if target_quarter == 'TBD':
+            owners_to_contact_plan[owner].add(role)
+            hosts_needplan_count += 1
+            continue
+
+        targets[target_quarter].append((host, role))
+
+        if not quarter_in_plan(current_quarter, target_quarter):
+            owners_to_contact_delayed[owner].add(role)
+            hosts_delayed_count += 1
 
     datetime_stamp = datetime.datetime.now().strftime("%Y-%m-%d")
-    file_name = 'os-report-{}.txt'.format(datetime_stamp)
-    if os.path.exists(file_name):
-        print('{file_name}: already exists, skipping generation of OS report'.format(
-            file_name=file_name))
-    else:
-        targets_planned = ''
-        targets_plan = ''
-        for i in sorted(targets):
-            targets_planned += '\n\nThe following hosts are/were planned for {} ' \
-                ':\n{}'.format(i, unroll_result_list(targets[i]))
-            targets_plan += "- {} systems are planned for {}\n".format(len(targets[i]), i)
+    file_name = 'os-report-{}-{}.html'.format(datetime_stamp, distro)
 
-        with open(file_name, 'w') as report:
-            report.write(REPORT.format(
-                hosts_current=unroll_result_list(hosts_current),
-                targets_planned=targets_planned,
-                hosts_delayed=unroll_result_list(hosts_delayed),
-                hosts_needdata=unroll_result_list(hosts_needdata),
-                hosts_needplan=unroll_result_list(hosts_needplan),
-                status_log=unroll_result_list(status_log),
-                targets_plan=targets_plan,
-                hosts_current_count=len(hosts_current),
-                hosts_inplan_count=len(hosts_inplan),
-                hosts_delayed_count=len(hosts_delayed),
-                hosts_needdata_count=len(hosts_needdata),
-                hosts_needplan_count=len(hosts_needplan),
-            ))
+    with dominate.document(title='OS deprecation report') as html_report:
+
+        tags.h1("Summary")
+        with tags.div().add(tags.ul()):
+            tags.li("A total of {} hosts are running {}".format(deprecated_count, distro))
+            tags.li("A total of {} hosts are running a more recent OS".format(hosts_current_count))
+            tags.li("A total of {} hosts are being migrated and lagging behind plan".
+                    format(hosts_delayed_count))
+            tags.li("A total of {} hosts need further migration data".format(hosts_needdata_count))
+            tags.li("A total of {} hosts don't have a designated migration date".
+                    format(hosts_needplan_count))
+            tags.li("A total of {} hosts don't have a designated owner".
+                    format(hosts_needowner_count))
+
+        if owners_to_contact_delayed:
+            tags.h1("The following hosts are lagging behind the current migration plan")
+            for owner in owners_to_contact_delayed:
+                tags.h2(owner)
+                with tags.div().add(tags.ul()):
+                    for service in owners_to_contact_delayed[owner]:
+                        tags.li("  {} ({} host(s))\n".format(service, role_count[service]))
+        else:
+            tags.h1("No migration is delayed")
+
+        if owners_to_contact_plan:
+            tags.h1("The following roles are missing a migration date")
+            for owner in owners_to_contact_plan:
+                tags.h2(owner)
+                with tags.div().add(tags.ul()):
+                    for service in owners_to_contact_plan[owner]:
+                        tags.li("  {} ({} host(s))\n".format(service, role_count[service]))
+
+        else:
+            tags.h1("All roles are covered with a migration date")
+
+        tags.h1("These hosts don't have owner information attached")
+        with tags.div(id='header').add(tags.ul()):
+            for i in need_owners:
+                tags.li(i)
+
+        if hosts_needdata:
+            tags.h1("The following hosts are missing in the migration data")
+            with tags.div().add(tags.ul()):
+                for i in hosts_needdata:
+                    tags.li(i)
+        else:
+            tags.h1("All hosts are covered by existing migration data")
+
+        if status_log:
+            tags.h1("The following errors were reported (malformed data)")
+            with tags.div().add(tags.ul()):
+                for i in status_log:
+                    tags.li(i)
+        else:
+            tags.h1("No errors were reported in the data files")
+
+    with open(file_name, 'w') as report_html:
+        report_html.write(html_report.render())
+
+
+def main():
+
+    cfg = configparser.ConfigParser()
+    cfg.read("distro-tracking.cfg")
+    sections = cfg.sections()
+
+    if 'general' not in sections:
+        print("Malformed config file, no [general] section found")
+        sys.exit(1)
+
+    if 'puppetdb_host' not in cfg.options('general'):
+        print("Malformed config file, no puppetdb host configured")
+        sys.exit(1)
+
+    if 'owners' not in cfg.options('general'):
+        print("Malformed config file, no owners file configured")
+        sys.exit(1)
+
+    owners = parse_yaml(cfg.get('general', 'owners'))
+
+    for distro in sections:
+        if distro == 'general':
+            continue
+
+        if 'end-of-life' not in cfg.options(distro):
+            print("Malformed config file, no end of life quarter configured")
+            sys.exit(1)
+
+        if 'datafile' not in cfg.options(distro):
+            print("Malformed config file, no YAML file with target dates configured")
+            sys.exit(1)
+
+        if not os.path.exists(cfg.get(distro, 'datafile')):
+            print("Malformed config file, no YAML file with target dates configured")
+            sys.exit(1)
+
+        if 'current' not in cfg.options(distro):
+            print("Malformed config file, no current distros specified")
+            sys.exit(1)
+
+        uptodate_os = [i.strip() for i in cfg.get(distro, 'current').split(",")]
+
+        prepare_report(cfg.get(distro, 'datafile'),
+                       cfg.get('general', 'puppetdb_host'),
+                       owners,
+                       distro,
+                       uptodate_os=uptodate_os,
+                       )
+    sys.exit(1)
 
 
 if __name__ == '__main__':

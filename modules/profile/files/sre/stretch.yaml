@@ -1,0 +1,490 @@
+end-of-life: 2021-2
+role::mediawiki::canary_appserver:
+  owner: ServiceOps SREs
+  target-q: TBD
+role::mediawiki::appserver::canary_api:
+  owner: ServiceOps SREs
+  target-q: TBD
+role::mediawiki::appserver:
+  owner: ServiceOps SREs
+  target-q: TBD
+role::scb:
+  target-q: 2020-2
+  owner: ServiceOps SREs
+role::mediawiki::memcached:
+  target-q: 2020-2
+  owner: ServiceOps SREs
+role::memcached:
+  target-q: 2020-2
+  owner: ServiceOps SREs
+role::etcd::kubernetes:
+  target-q: 2020-2
+  owner: ServiceOps SREs
+role::lists:
+  target-q: 2020-2
+role::configcluster:
+  target-q: TBD
+role::wmcs::nfs::primary:
+  target-q: TBD
+  owner: WMCS SREs
+role::installserver:
+  target-q: 2020-1
+  owner: Infrastructure Foundations SREs
+role::installserver::apt:
+  target-q: 2020-1
+  owner: Infrastructure Foundations SREs
+role::dumps::distribution::server:
+  target-q: 2020-1
+role::xhgui::app:
+  target-q: 2020-2
+role::tendril:
+  target-q: 2020-2
+role::backup::offsite:
+  target-q: 2020-1
+role::pybaltest:
+  target-q: TBD
+role::ci::master:
+  target-q: 2020-2
+role::mw_rc_irc:
+  target-q: 2020-2
+role::otrs:
+  target-q: 2020-2
+role::ores::redis:
+  target-q: 2020-2
+role::logging::mediawiki::udp2log:
+  target-q: 2020-2
+role::parsoid:
+  target-q: TBD
+role::wdqs::internal:
+  owner: Search Platform SREs
+  target-q: 2020-3
+  phab-task: 244753
+role::wdqs::autodeploy:
+  owner: Search Platform SREs
+  target-q: 2020-3
+  phab-task: 244753
+role::wdqs::public:
+  owner: Search Platform SREs
+  target-q: 2020-3
+  phab-task: 244753
+role::wdqs:
+  owner: Search Platform SREs
+  target-q: 2020-3
+  phab-task: 244753
+role::wdqs::test:
+  owner: Search Platform SREs
+  target-q: 2020-3
+  phab-task: 244753
+role::thumbor::mediawiki:
+  target-q: TBD
+  owner: TBD
+role::sessionstore:
+  target-q: TBD
+  owner: CPT SREs
+role::dumps::generation::worker::dumper:
+  owner: ServiceOps SREs
+  target-q: TBD
+role::dumps::generation::worker::testbed:
+  owner: ServiceOps SREs
+  target-q: TBD
+role::openldap::labs:
+  target-q: 2020-3
+  owner: Infrastructure Foundations SREs
+role::rpkivalidator:
+  target-q: 2020-1
+  phab-task: 244585
+role::parsoid::testing:
+  target-q: TBD
+role::eventschemas::service:
+  target-q: 2020-3
+  owner: Analytics SREs
+role::restbase::production:
+  target-q: TBD
+  owner: CPT SREs
+role::restbase::base:
+  target-q: TBD
+  owner: CPT SREs
+role::ores:
+  target-q: TBD
+role::mariadb::parsercache:
+  target-q: 2021-3
+  owner: Data Persistence SREs
+role::ncredir:
+  target-q: 2020-1
+  owner: Traffic SREs
+  phab-task: 243391
+role::mail::mx:
+  target-q: 2021-3
+  owner: Infrastructure Foundations SREs
+role::mediawiki::jobrunner:
+  target-q: TBD
+role::mediawiki::appserver::api:
+  target-q: TBD
+role::swift::storage:
+  target-q: TBD
+role::swift::swiftrepl:
+  target-q: TBD
+role::swift::proxy:
+  target-q: TBD
+role::lvs::balancer:
+  owner: Traffic SREs
+  target-q: 2020-1
+role::spare::system:
+  target-q: 2020-2
+role::maps::replica:
+  owner: Search Platform SREs
+  target-q: TBD
+role::maps::master:
+  owner: Search Platform SREs
+  target-q: TBD
+role::ping_offload:
+  target-q: 2020-1
+  phab-task: 244584
+role::planet:
+  target-q: 2020-2
+role::ganeti:
+  target-q: 2021-4
+role::alerting_host:
+  target-q: 2021-1
+  owner: Observability SREs
+role::analytics_cluster::hadoop::worker:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::aqs:
+  target-q: TBD
+  phab-task: 234629
+  owner: Analytics SREs
+role::bastionhost::pop:
+  target-q: 2020-2
+  owner: Infrastructure Foundations SREs
+role::bastionhost::general:
+  target-q: 2020-2
+  owner: Infrastructure Foundations SREs
+role::elasticsearch::cloudelastic:
+  owner: Search Platform SREs
+  target-q: TBD
+  phab-task: 244736
+role::cache::upload:
+  target-q: 2020-1
+  owner: Traffic SREs
+role::cache::text:
+  target-q: 2020-1
+  owner: Traffic SREs
+role::test:
+  target-q: 2020-2
+role::mariadb::core:
+  target-q: TBD
+  owner: Data Persistence SREs
+role::mariadb::misc:
+  target-q: 2020-4
+  owner: Data Persistence SREs
+role::mariadb::core_test:
+  target-q: 2020-4
+  owner: Data Persistence SREs
+role::mariadb::misc::tendril:
+  target-q: TBD
+role::mariadb::misc::tendril_and_zarcillo:
+  target-q: TBD
+role::mariadb::misc::phabricator:
+  target-q: 2020-4
+  owner: Data Persistence SREs
+role::mariadb::core_multiinstance:
+  target-q: 2021-3
+  owner: Data Persistence SREs
+role::mariadb::dbstore_multiinstance:
+  target-q: TBD
+  owner: Data Persistence SREs and Analytics SREs (dbstore1003-1005)
+role::mariadb::sanitarium_multiinstance:
+  target-q: 2021-3
+  owner: Data Persistence SREs
+role::mariadb::misc::multiinstance:
+  target-q: 2020-4
+  owner: Data Persistence SREs
+role::mariadb::misc::eventlogging::replica:
+  target-q: 2021-1
+  owner: Analytics SREs
+role::mariadb::backups:
+  target-q: 2021-2
+  owner: Data Persistence SREs
+role::mariadb::proxy::master:
+  target-q: 2021-3
+  owner: Data Persistence SREs
+role::mariadb::proxy::replicas:
+  target-q: 2021-3
+  owner: Data Persistence SREs
+role::debmonitor::server:
+  target-q: 2020-3
+  owner: Infrastructure Foundations SREs
+role::doc:
+  target-q: TBD
+  owner: TBD
+role::druid::analytics::worker:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::druid::public::worker:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::elasticsearch::cirrus:
+  owner: Search Platform SREs
+  target-q: TBD
+  phab-task: 244736
+role::mariadb::temporary_storage:
+  target-q: 2020-4
+  owner: Data Persistence SREs
+role::wmcs::openstack::eqiad1::virt:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::wmcs::openstack::codfw1dev::virt:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::wmcs::openstack::codfw1dev::cloudweb:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::configcluster_stretch:
+  target-q: TBD
+role::deployment_server:
+  target-q: TBD
+role::wmcs::nfs::secondary:
+  target-q: TBD
+  owner: WMCS SREs
+role::wmcs::openstack::codfw1dev::net:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::wmcs::openstack::eqiad1::net:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::webserver_misc_static:
+  target-q: 2020-3
+role::builder:
+  target-q: 2020-2
+  owner: Infrastructure Foundations SREs
+role::kubernetes::master:
+  target-q: TBD
+  owner: ServiceOps SREs
+  phab-task: 245272
+role::archiva:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::wmcs::openstack::eqiad1::control:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::wmcs::openstack::codfw1dev::control:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::graphite::production:
+  target-q: TBD
+  owner: Observability SREs
+role::kafka::jumbo::broker:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::kafka::main:
+  target-q: TBD
+role::kafka::main::logging:
+  target-q: 2020-2
+role::kafka::logging:
+  target-q: 2020-2
+role::kubernetes::worker:
+  target-q: TBD
+  owner: ServiceOps SREs
+  phab-task: 245272
+role::kubernetes::staging::worker:
+  target-q: TBD
+  owner: ServiceOps SREs
+  phab-task: 245272
+role::logstash:
+  target-q: TBD
+  owner: Observability SREs
+role::logstash::elasticsearch:
+  target-q: TBD
+  owner: Observability SREs
+role::analytics_cluster::hadoop::client:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::cluster::management:
+  target-q: 2020-2
+  owner: Infrastructure Foundations SREs
+  phab-task: 245114
+role::labs::db::wikireplica_web:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::labs::db::wikireplica_analytics:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::labs::db::wikireplica_analytics::dedicated:
+  target-q: 2020-4
+  owner: Analytics SREs
+role::openldap::replica:
+  target-q: 2020-3
+  owner: Infrastructure Foundations SREs
+role::wmcs::openstack::eqiad1::labweb:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::piwik:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::webserver_misc_apps:
+  target-q: 2020-4
+role::mediawiki::maintenance:
+  target-q: 2021-3
+  owner: Analytics SREs
+role::kubernetes::staging::master:
+  target-q: TBD
+  owner: ServiceOps SREs
+  phab-task: 245272
+role::netmon:
+  target-q: 2020-4
+  owner: Observability SREs
+role::swap:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_cluster::coordinator:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_cluster::hadoop::master:
+  target-q: 2021-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_cluster::hadoop::standby:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_test_cluster::client:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_cluster::hadoop::ui:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_test_cluster::hadoop::master:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_test_cluster::hadoop::standby:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_test_cluster::coordinator:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_test_cluster::hadoop::ui:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::druid::test_analytics::worker:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::wmcs::openstack::codfw1dev::db:
+  target-q: TBD
+  owner: WMCS SREs
+role::wmcs::openstack::eqiad1::services:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::wmcs::openstack::codfw1dev::services:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::wmcs::openstack::codfw1dev::cloudweb:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::eventlogging::analytics:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::dumps::web::htmldumps:
+  target-q: 2020-2
+  phab-task: 245567
+  owner: ServiceOps SREs
+role::kafka::monitoring:
+  target-q: TBD
+  phab-task: 234629
+  owner: Analytics SREs
+role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::microsites::peopleweb:
+  target-q: 2020-2
+role::prometheus:
+  target-q: TBD
+  owner: Observability SREs
+role::proton:
+  target-q: 2020-2
+role::puppetboard:
+  target-q: TBD
+  owner: Infrastructure Foundations SREs
+role::redis::misc::master:
+  target-q: TBD
+role::redis::misc::slave:
+  owner: ServiceOps SREs
+  target-q: TBD
+role::docker_registry_ha::registry:
+  target-q: TBD
+  owner: ServiceOps SREs
+  phab-task: 245272
+role::releases:
+  target-q: TBD
+  owner: ServiceOps SREs
+role::elasticsearch::relforge:
+  owner: Search Platform SREs
+  target-q: TBD
+  phab-task: 244736
+role::restbase::dev_cluster:
+  target-q: TBD
+  owner: CPT SREs
+role::dumps::generation::worker::dumper_monitor:
+  owner: ServiceOps SREs
+  target-q: TBD
+role::dumps::generation::worker::dumper_misc_crons_only:
+  owner: ServiceOps SREs
+  target-q: TBD
+role::mirrors:
+  target-q: 2021-3
+  owner: Infrastructure Foundations SREs
+role::statistics::explorer:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::statistics::cruncher:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::statistics::private:
+  target-q: 2020-2
+  phab-task: 234629
+  owner: Analytics SREs
+role::analytics_cluster::webserver:
+  owner: Analytics SREs
+  target-q: TBD
+  phab-task: 234629
+role::logging::webrequest::ops:
+  target-q: 2020-4
+  owner: Observability SREs
+role::webperf::processors_and_site:
+  target-q: TBD
+role::webperf::profiling_tools:
+  target-q: TBD
+role::analytics_test_cluster::hadoop::worker:
+  target-q: 2020-3
+  phab-task: 234629
+  owner: Analytics SREs
+role::wmcs::openstack::eqiad1::virt_ceph:
+  target-q: 2020-4
+  owner: WMCS SREs
+role::insetup:
+  target-q: 2021-3
+role::mariadb::misc::db_inventory:
+  target-q: TBD
+  owner: Data Persistence SREs
+role::dbbackups::metadata:
+  target-q: TBD
+  owner: Data Persistence SREs
