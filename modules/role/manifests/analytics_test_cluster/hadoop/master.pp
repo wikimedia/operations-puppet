@@ -9,6 +9,9 @@ class role::analytics_test_cluster::hadoop::master {
 
     include ::profile::java
     include ::profile::hadoop::master
+    # This is a Hadoop client, and should
+    # have any service system users it needs to
+    # interacting with HDFS.
     include ::profile::analytics::cluster::users
     include ::profile::hadoop::firewall::master
 

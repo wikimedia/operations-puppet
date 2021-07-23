@@ -819,66 +819,59 @@ groups:
     gid: 901
     system: true
     members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T123918 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # swift:
   #   gid: 902
   #   system: true
   #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # hdfs:
   #   gid: 903
   #   system: true
   #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # yarn:
   #   gid: 904
   #   system: true
   #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # mapred:
   #   gid: 905
   #   system: true
   #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
-  # analytics:
-  #   gid: 906
-  #   system: true
-  #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  analytics:
+    gid: 906
+    system: true
+    members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # druid:
   #   gid: 907
   #   system: true
   #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # # All Hadoop daemon related system users should be in group hadoop.
   # hadoop:
   #   gid: 908
   #   system: true
-  #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
-  # analytics-privatedata:
-  #   gid: 909
-  #   system: true
-  #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
-  # analytics-product:
-  #   gid: 910
-  #   system: true
-  #   members: []
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
-  # analytics-search:
-  #   gid: 911
-  #   system: true
-  #   members: []
+  #   members: [hdfs, yarn, mapred]
+  analytics-privatedata:
+    gid: 909
+    system: true
+    members: []
+  analytics-product:
+    gid: 910
+    system: true
+    members: []
+  analytics-search:
+    gid: 911
+    system: true
+    members: []
 
 
 users:
@@ -889,8 +882,8 @@ users:
     gid: 901
     home_dir: '/var/lib/reprepro'
     shell: '/bin/sh'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T123918 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # swift:
   #   ensure: present
   #   system: true
@@ -898,8 +891,8 @@ users:
   #   gid: 902
   #   home_dir: '/var/lib/swift'
   #   shell: '/bin/false'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # hdfs:
   #   ensure: present
   #   system: true
@@ -907,8 +900,8 @@ users:
   #   gid: 903
   #   home_dir: '/var/lib/hadoop-hdfs'
   #   shell: '/bin/bash'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # yarn:
   #   ensure: present
   #   system: true
@@ -916,8 +909,8 @@ users:
   #   gid: 904
   #   home_dir: '/var/lib/hadoop-yarn'
   #   shell: '/bin/bash'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # mapred:
   #   ensure: present
   #   system: true
@@ -925,17 +918,15 @@ users:
   #   gid: 905
   #   home_dir: '/var/lib/hadoop-mapreduce'
   #   shell: '/bin/bash'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
-  # analytics:
-  #   ensure: present
-  #   system: true
-  #   uid: 906
-  #   gid: 906
-  #   home_dir: '/var/lib/analytics'
-  #   shell: '/bin/bash'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
+  analytics:
+    ensure: present
+    system: true
+    uid: 906
+    gid: 906
+    home_dir: none
+    shell: '/bin/bash'
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
   # druid:
   #   ensure: present
   #   system: true
@@ -943,30 +934,27 @@ users:
   #   gid: 907
   #   home_dir: '/var/lib/druid'
   #   shell: '/bin/bash'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
-  # analytics-privatedata:
-  #   ensure: present
-  #   system: true
-  #   uid: 909
-  #   gid: 909
-  #   shell: '/bin/false'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
-  # analytics-product:
-  #   ensure: present
-  #   system: true
-  #   uid: 910
-  #   gid: 910
-  #   shell: '/bin/false'
-  # Placeholder to reserve the uid/gid, to be uncommented
-  # once T231067 is complete
-  # analytics-search:
-  #   ensure: present
-  #   system: true
-  #   uid: 911
-  #   gid: 911
-  #   shell: '/bin/false'
+  analytics-privatedata:
+    ensure: present
+    system: true
+    uid: 909
+    gid: 909
+    home_dir: none
+    shell: '/bin/bash'
+  analytics-product:
+    ensure: present
+    system: true
+    uid: 910
+    gid: 910
+    home_dir: none
+    shell: '/bin/bash'
+  analytics-search:
+    ensure: present
+    system: true
+    uid: 911
+    gid: 911
+    home_dir: none
+    shell: '/bin/bash'
 
   rush:
     ensure: absent

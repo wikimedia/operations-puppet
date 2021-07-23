@@ -36,7 +36,7 @@ define admin::hashuser (
     } else {
         # ideally we would check that uid's are above 1000 but due to legacy that's not true
         if $gid =~ Integer[900,950] {
-            fail("${name}: system user defined with incorrect git (${gid})")
+            fail("${name}: system user defined with incorrect gid (${gid})")
         }
         $privileges = $uinfo['privileges']
         $shell = $uinfo['shell']

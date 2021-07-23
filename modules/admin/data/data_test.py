@@ -45,12 +45,19 @@ class DataTest(unittest.TestCase):
             cls.system_users = set(i.strip() for i in f.readlines() if i[0] != '#')
 
     def test_shell_user_is_not_system_user(self):
-        """Ensure shell accounts don't use one of the system user account usernames"""
+        """
+        Ensure shell accounts don't use one of the system user account usernames
+        (unless explicitly declared as a system user in data.yaml).
+        """
+
+        # List of all human (non system) users in data.yaml
         present_users = set(
             username
             for username, val in self.admins['users'].items()
-            if val['ensure'] == 'present'
+            if val['ensure'] == 'present' and not val.get('system', False)
         )
+
+        # List of system users declared in Puppet but not in data.yaml.
         system_users = self.system_users.intersection(present_users)
         self.assertEqual(
             set(), system_users,

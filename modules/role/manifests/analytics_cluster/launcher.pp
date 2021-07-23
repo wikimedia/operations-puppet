@@ -9,11 +9,6 @@ class role::analytics_cluster::launcher {
     include ::profile::java
     include ::profile::analytics::cluster::client
 
-    # This is a Hadoop client, and should
-    # have any special analytics system users on it
-    # for interacting with HDFS.
-    include ::profile::analytics::cluster::users
-
     include ::profile::hive::site_hdfs
 
     # Include analytics/refinery deployment target.

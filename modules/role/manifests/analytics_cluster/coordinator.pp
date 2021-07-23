@@ -20,11 +20,6 @@ class role::analytics_cluster::coordinator {
     include ::profile::analytics::cluster::client
     include ::profile::analytics::database::meta
 
-    # This is a Hadoop client, and should
-    # have any special analytics system users on it
-    # for interacting with HDFS.
-    include ::profile::analytics::cluster::users
-
     # SQL-like queries to data stored in HDFS
     include ::profile::hive::metastore
     include ::profile::hive::server

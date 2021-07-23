@@ -479,48 +479,28 @@ class bigtop::hadoop(
         require => Package['hadoop-client'],
     }
 
-    # The hadoop-client package depends from:
-    # ~$ apt-cache depends hadoop-client
-    # hadoop-client
-    #  Depends: hadoop
-    #  Depends: hadoop-hdfs
-    #  Depends: hadoop-yarn
-    #  Depends: hadoop-mapreduce
-    #This means that the users hdfs/yarn/mapred may be created by the
-    # debian packages after puppet tries to install hadoop-client, without waiting
-    # for the users that we defined in puppet itself (with fixed gid/uids).
-    package { ['hadoop-client', 'libhdfs0']:
-        ensure  => 'installed',
-        require => [
-            User['yarn'], User['hdfs'], User['mapred'], Group['hadoop'],
-        ]
-    }
-
-    # Explicitly adding the 'hdfs'/'yarn'/'mapred' users and groups
-    # to the catalog, even if created by the hadoop-common package,
-    # to allow other resources to require them if needed.
-
     # From Buster onward, we want to have fixed uid/gids for Hadoop daemons.
-    # T231067
+    # We manage service system users in puppet classes, but declare
+    # commented placeholders for them in the admin module's data.yaml file
+    # to ensure that people don't accidentally add uid/gid conflicts.
     if debian::codename::ge('buster') {
         $hdfs_uid = 903
         $yarn_uid = 904
         $mapred_uid = 905
 
-        $hdfs_gid = 903
-        $yarn_gid = 904
-        $mapred_gid = 905
         $hadoop_gid = 908
     } else {
         $hdfs_uid = undef
         $yarn_uid = undef
         $mapred_uid = undef
 
-        $hdfs_gid = undef
-        $yarn_gid = undef
-        $mapred_gid = undef
         $hadoop_gid = undef
     }
+
+    # Main group gids should match uids.
+    $hdfs_gid = $hdfs_uid
+    $yarn_gid = $yarn_uid
+    $mapred_gid = $mapred_uid
 
     group { 'hadoop':
         gid => $hadoop_gid,
@@ -575,6 +555,25 @@ class bigtop::hadoop(
         require    => [
             Group['hadoop'], Group['mapred'],
         ],
+    }
+
+
+    # The hadoop-client package depends from:
+    # ~$ apt-cache depends hadoop-client
+    # hadoop-client
+    #  Depends: hadoop
+    #  Depends: hadoop-hdfs
+    #  Depends: hadoop-yarn
+    #  Depends: hadoop-mapreduce
+    #This means that the users hdfs/yarn/mapred may be created by the
+    # debian packages after puppet tries to install hadoop-client, without waiting
+    # for the users that we defined in puppet itself (with fixed gid/uids).
+    package { ['hadoop-client', 'libhdfs0']:
+        ensure  => 'installed',
+        require => [
+            Group['hadoop'],
+            User['yarn', 'hdfs', 'mapred'],
+        ]
     }
 
     # Create the $cluster_name based $config_directory.

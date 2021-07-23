@@ -12,11 +12,6 @@ class role::analytics_cluster::coordinator::replica {
 
     include ::profile::analytics::cluster::client
 
-    # This is a Hadoop client, and should
-    # have any special analytics system users on it
-    # for interacting with HDFS.
-    include ::profile::analytics::cluster::users
-
     include ::profile::analytics::database::meta
 
     # SQL-like queries to data stored in HDFS

@@ -10,8 +10,11 @@ class role::analytics_test_cluster::hadoop::standby {
     include ::profile::java
     include ::profile::hadoop::common
     include ::profile::hadoop::master::standby
-    include ::profile::hadoop::firewall::master
+    # This is a Hadoop client, and should
+    # have any service system users it needs to
+    # interacting with HDFS.
     include ::profile::analytics::cluster::users
+    include ::profile::hadoop::firewall::master
     include ::profile::hadoop::backup::namenode
     include ::profile::analytics::cluster::hadoop::yarn_capacity_scheduler
     include ::profile::hive::client

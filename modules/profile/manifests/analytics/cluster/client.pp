@@ -11,6 +11,11 @@ class profile::analytics::cluster::client {
     require ::profile::hive::client
     require ::profile::oozie::client
 
+    # This is a Hadoop client, and should
+    # have any service system users it needs to
+    # interacting with HDFS.
+    include ::profile::analytics::cluster::users
+
     # Spark 2 is manually packaged by us, it is not part of CDH.
     require ::profile::hadoop::spark2
 

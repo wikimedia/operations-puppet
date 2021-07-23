@@ -12,6 +12,9 @@ class role::analytics_cluster::hadoop::standby {
     include ::profile::hadoop::master::standby
     include ::profile::analytics::cluster::hadoop::yarn_capacity_scheduler
     include ::profile::hadoop::firewall::master
+    # This is a Hadoop client, and should
+    # have any service system users it needs to
+    # interacting with HDFS.
     include ::profile::analytics::cluster::users
     include ::profile::hadoop::backup::namenode
     include ::profile::kerberos::client

@@ -10,6 +10,9 @@ class role::analytics_cluster::hadoop::worker {
     include ::profile::hadoop::worker
     include ::profile::hadoop::worker::clients
     include ::profile::amd_gpu
+    # This is a Hadoop client, and should
+    # have any service system users it needs to
+    # interacting with HDFS.
     include ::profile::analytics::cluster::users
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
