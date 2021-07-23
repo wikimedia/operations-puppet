@@ -3816,7 +3816,7 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2TjL7xYqQjY286d/CV+PjmE2vTd9FfoLZZRDkf38XH janis@norna'
   kormat:
     ensure: present
-    realname: Stevie Shirley
+    realname: Stevie Beth Mhaol
     email: sshirley@wikimedia.org
     uid: 24118
     gid: 500
