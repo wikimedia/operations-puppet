@@ -1,9 +1,0 @@
-{
-    "name": "wikimedia-debian",
-    "version": "1.0.0",
-    "author": "Wikimedia Foundation Inc.",
-    "license": "TBD",
-    "summary": "A basic library of common debian functions used in the wikimedia puppet tree",
-    "source": "https://gerrit.wikimedia.org/r/plugins/gitiles/operations/puppet/+/production/modules/debian/",
-    "dependencies": [{ "name": "puppetlabs/stdlib", "version_requirement": ">= 4.15.0" }]
-}
