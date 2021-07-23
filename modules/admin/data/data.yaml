@@ -19,7 +19,7 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov, liw]
+              crusnov, liw, jkatz]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -282,7 +282,7 @@ groups:
               nuria, otto, jgreen, sguebo, zxane,
               dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, akosiaris, jkatz, tonina, pearley, ktsouroupidou,
+              joal, akosiaris, tonina, pearley, ktsouroupidou,
               andyrussg, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
@@ -1972,13 +1972,12 @@ users:
     ssh_keys: []
     uid: 10257
   jkatz:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jkatz
     realname: Jon Katz
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+A9f2ZCC4XyAsXS8t6xlZGOxL480Qi8i3vs4bjvGFX42GTgUpil6AcfuD9n+VzSKb+bjR21jrXPFuss9xapZdsRieIR5C3NC+g1Sh0zVuzNRvC9kUv1DAxG9ADDTW228SmyJ2zfZFdqu1p0++AlAU+agGcvp1Ih97VU8ZpkEKcYRSXbAKnKkV+sdx3BtEOC0m7O/+wPGDfwOYQfgqDkj2t4alEi7gV60b98f/9kOM6JQH5NC5UhKIx5yc4tVrTvTEyJj96qhitzjB9vDXDc14pg2nMNT4d5J+YMAEgmgA5J0W5EteI8lP2RqmLjwgVsoVQI4rNVmnKyO6pPCaSkPj jkatz@jon-katzs-air.corp.wikimedia.org]
+    ssh_keys: []
     uid: 10747
-    email: jkatz@wikimedia.org
   bmansurov:
     ensure: present
     gid: 500
