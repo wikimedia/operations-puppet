@@ -1859,7 +1859,7 @@ node /^mw13(7[4-9]|8[0-2])\.eqiad\.wmnet$/ {
 }
 
 # rack D8
-node /^mw1383\.eqiad\.wmnet$/ {
+node /^mw(1383|144[3-6])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
