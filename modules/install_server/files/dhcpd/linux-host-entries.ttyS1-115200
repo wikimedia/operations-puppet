@@ -2509,7 +2509,6 @@ host dbprov1001 {
 host dbprov1002 {
     hardware ethernet B0:26:28:23:5A:C2;
     fixed-address dbprov1002.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbprov1003 {
