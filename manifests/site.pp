@@ -1873,6 +1873,11 @@ node /^mw1384\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+# rack D8
+node /^mw14(39|4[0-2])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
 # API (serving api traffic)
 
 # Row A
