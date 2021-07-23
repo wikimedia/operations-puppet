@@ -24,6 +24,9 @@
 #   [kerberos] section configs will be set accordingly. You can still override these if you
 #   need by setting any [kerberos] section configs in $airflow_config.
 #
+# - smtp settings
+#   These are set to defaults that will work in WMF production networks.
+#
 # NOTE: that airflow::instance will not create any databases or airflow users for you.
 # To do this, see: https://airflow.apache.org/docs/apache-airflow/stable/howto/set-up-database.html#setting-up-a-mysql-database
 #
@@ -110,8 +113,16 @@ define airflow::instance(
         'api' => {
             # Since the webservier is only exposed on 127.0.0.1 by default,
             # allow access to the API.
-            'auth_backend' => 'airflow.api.auth.backend.default'
-        }
+            'auth_backend' => 'airflow.api.auth.backend.default',
+        },
+        'smtp' => {
+            # mail_smarthost is set globally in manifests/realm.pp
+            'smtp_host' => $::mail_smarthost[0],
+            'smtp_starttls' => 'False',
+            'smtp_ssl' => 'False',
+            'smtp_port' => '25',
+            'smtp_mail_from' => "airflow-${title}@${::fqdn}",
+        },
     }
 
     # If $airflow_config specifies sql_alchemy_conn, we want to possibly render
