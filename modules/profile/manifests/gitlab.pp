@@ -116,7 +116,7 @@ class profile::gitlab(
 
         ferm::service { 'gitlab_rails':
             proto  => 'tcp',
-            port   => '8080',
+            port   => '8083',
             srange => $ferm_srange,
         }
 
