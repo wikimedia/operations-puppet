@@ -3,7 +3,7 @@ require_relative '../../../../rake_modules/spec_helper'
 describe 'wmflib::dir::mkdir_p' do
   it "with '/'" do
     is_expected.to run.with_params('/')
-    expect(catalogue).not_to contain_file('/').with_ensure('directory')
+    expect(catalogue).to contain_file('/').with_ensure('directory')
   end
   it "with '/etc'" do
     is_expected.to run.with_params('/etc')

@@ -18,14 +18,10 @@ function wmflib::dir::mkdir_p(
     Variant[Stdlib::Unixpath, Array[Stdlib::Unixpath]] $dirs,
     Hash                                               $params = {},
 ) {
-    $all_dirs = wmflib::dir::split($dirs)
+    $parents = wmflib::dir::split($dirs) - $dirs
     # ensure all parent directories exist
-    ensure_resource('file', $all_dirs, {'ensure' => 'directory'})
+    ensure_resource('file', $parents, {'ensure' => 'directory'})
     # Apply params only to the actual directories
-    [$dirs].flatten.unique.each |$dir| {
-        File[$dir] {
-            * => $params,
-        }
-    }
+    ensure_resource('file', $dirs, {'ensure' => 'directory'} + $params)
 }
 
