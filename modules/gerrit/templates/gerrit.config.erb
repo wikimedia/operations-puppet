@@ -113,7 +113,7 @@
     heapLimit = <%= @heap_limit %>
     replica = <%= @replica %>
 <%- if @replica -%>
-    daemonOpt = --replica --enable-httpd --enable-sshd
+    daemonOpt = --enable-httpd --enable-sshd
 <%- end -%>
 [core]
     packedGitOpenFiles = <%= @git_open_files %>
