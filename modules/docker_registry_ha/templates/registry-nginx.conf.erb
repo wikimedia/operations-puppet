@@ -93,7 +93,7 @@ server {
       deny <%= ip %>;
       <%- end -%>
       # IPs that pull restricted/ images
-      <%- @k8s_authenticated_nodes.each do |node| -%>
+      <%- @k8s_authenticated_nodes.sort.each do |node| -%>
       deny <%= node[1]['ipaddress'] %>; # <%= node[1]['fqdn'] %>
       <%- end -%>
       allow all;
