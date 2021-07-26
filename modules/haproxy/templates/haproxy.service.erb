@@ -8,7 +8,6 @@ Wants=syslog.service
 [Service]
 Environment="CONFIG=/etc/haproxy/haproxy.cfg" "PIDFILE=<%=@pid%>"
 EnvironmentFile=-/etc/default/haproxy
-ExecStartPre=/usr/local/bin/generate_haproxy_default.sh
 ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS
 ExecStart=<%= @exec_start %> -f ${CONFIG} -p $PIDFILE $EXTRAOPTS
 ExecReload=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS

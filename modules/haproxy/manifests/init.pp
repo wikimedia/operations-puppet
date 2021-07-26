@@ -65,17 +65,22 @@ class haproxy(
     # defaults file cannot be dynamic anymore on systemd
     # pregenerate them on systemd start/reload
     file { '/usr/local/bin/generate_haproxy_default.sh':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/haproxy/generate_haproxy_default.sh',
+        ensure => absent,
     }
 
     # The ExecStart script is different on buster compared to earlier debians
     $exec_start = debian::codename::lt('buster') ? {
         true    => '/usr/sbin/haproxy-systemd-wrapper',
         default => '/usr/sbin/haproxy -Ws',
+    }
+
+    file { '/etc/default/haproxy':
+        ensure  => present,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => template('haproxy/haproxy.default.erb'),
+        notify  => Exec['restart-haproxy'],
     }
 
     # TODO: this should use the general systemd puppet abstraction instead
@@ -85,7 +90,6 @@ class haproxy(
         owner   => 'root',
         group   => 'root',
         content => template('haproxy/haproxy.service.erb'),
-        require => File['/usr/local/bin/generate_haproxy_default.sh'],
         notify  => Exec['/bin/systemctl daemon-reload'],
     }
 
