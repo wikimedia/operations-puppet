@@ -43,6 +43,15 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-image-create.py",
     }
 
+    # Script to suspend the whole cloud
+    file { '/usr/local/sbin/wmcs-pause-cloud':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-pause-cloud.py",
+    }
+
     # Script to migrate from nova-network region to neutron region
     #  (hopefully this will only be needed transitionally)
     file { '/usr/local/sbin/wmcs-region-migrate':
