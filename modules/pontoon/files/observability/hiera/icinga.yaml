@@ -5,6 +5,9 @@ profile::icinga::partners: []
 profile::icinga::virtual_host: "icinga.%{lookup('public_domain')}"
 profile::icinga::max_concurrent_checks: 5
 
+# Don't start ircecho (with invalid credentials) - T287265
+profile::icinga::ircbot::ensure: absent
+
 # Required by the alerting_host role
 profile::dbbackups::check::db_password: 'foo'
 
