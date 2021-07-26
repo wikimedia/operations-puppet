@@ -2,7 +2,8 @@
 #
 # Sets up an ircecho instance that sends icinga alerts to IRC
 class profile::icinga::ircbot(
-    Wmflib::Ensure $ensure = lookup('profile::icinga::ircbot::ensure'),
+    # Overridden by profile::icinga considering active/passive and 'profile::icinga::ircbot::ensure'
+    Wmflib::Ensure $ensure = 'present', # lint:ignore:wmf_styleguide
     String $ircecho_nick   = lookup('profile::icinga::ircbot::ircecho_nick'),
     String $ircecho_server = lookup('profile::icinga::ircbot::ircecho_server'),
 ) {
@@ -23,7 +24,7 @@ class profile::icinga::ircbot(
 
     $password_file = '/etc/icinga/.irc_secret'
     file { $password_file:
-        ensure    => present,
+        ensure    => $ensure,
         owner     => 'nobody',
         group     => 'nogroup',
         mode      => '0400',

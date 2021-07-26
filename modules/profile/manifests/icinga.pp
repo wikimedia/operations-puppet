@@ -22,6 +22,7 @@ class profile::icinga(
     Stdlib::Unixpath              $status_file           = lookup('profile::icinga::status_file'),
     String                        $apache2_htpasswd_salt = lookup('profile::icinga::apache2_htpasswd_salt'),
     Hash[String, String]          $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
+    Wmflib::Ensure                $ircbot_ensure         = lookup('profile::icinga::ircbot::ensure'),
     Array[String]                 $datacenters           = lookup('datacenters'),
     Hash[String, Hash]            $atlas_measurements    = lookup('ripeatlas_measurements'),
     Integer[1]                    $logs_keep_days        = lookup('profile::icinga::logs_keep_days'),
@@ -135,7 +136,7 @@ class profile::icinga(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Icinga',
     }
 
-    $ircbot_present = $is_passive ? {
+    $ircbot_present = ($is_passive or $ircbot_ensure == 'absent') ? {
         false => 'present', #aka active
         true  => 'absent',
     }
