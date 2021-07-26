@@ -45,8 +45,31 @@ class profile::puppetmaster::pontoon (
     }
 
     if $storeconfigs == 'puppetdb' {
+        # Wait for puppetdb to be ready before enabling server support.
+        #
+        # The probing is necessary to resolve a bootstrap race between server and db:
+        # * puppetdb settings (puppetdb.yaml) are enabled in Pontoon
+        # * the puppetdb host has not yet completed its bootstrap/initialization
+        # * puppet runs on the server host and enables puppetdb
+        # At this point the server has enabled a broken puppetdb and all future puppet runs will
+        # fail (including all puppet runs needed by puppetdb to finish bootstrapping, thus requiring
+        # a manual intervention to break the race)
+        # Therefore enable puppetdb only when we're reasonably sure the server won't self-sabotage.
+        exec { 'probe puppetdb':
+            # The jq "inputs |" form is to exit non-zero on empty input
+            command => @("PROBER"/L)
+            curl --fail --silent \
+              --cacert /etc/ssl/certs/Puppet_Internal_CA.pem \
+              'https://${puppetdb_hosts[0]}/status/v1/services/puppetdb-status' \
+              | jq -ne 'inputs | .state == "running"'
+            | - PROBER
+            ,
+            creates => '/etc/puppet/routes.yaml', # Probe only if puppetdb::client hasn't completed
+        }
+
         class { 'puppetmaster::puppetdb::client':
-            hosts             => $puppetdb_hosts,
+            hosts   => $puppetdb_hosts,
+            require => Exec['probe puppetdb'],
         }
         $config = merge($base_config, $puppetdb_config, $env_config)
     } else {
