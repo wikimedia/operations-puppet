@@ -92,7 +92,7 @@ service::catalog:
       conftool:
         cluster: api_appserver
         service: apache2
-      depool_threshold: ".7"
+      depool_threshold: ".6"
       enabled: true
       monitors:
         IdleConnection:
