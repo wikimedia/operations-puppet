@@ -28,4 +28,17 @@ class profile::quarry::web(
         require => Uwsgi::App['quarry-web'],
         content => template('quarry/quarry-web.nginx.erb'),
     }
+
+    # Install tmpreaper to clean up tempfiles leaked by xlsxwriter
+    #  T238375
+    package { 'tmpreaper':
+        ensure => 'installed',
+    }
+    file { '/etc/tmpreaper.conf':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/profile/quarry/tmpreaper.conf',
+        require => Package['tmpreaper'],
+    }
 }
