@@ -5214,3 +5214,7 @@ ldap_only_users:
     ensure: present
     realname: Frances Goodwin
     email: fgoodwin@wikimedia.org
+  cmacholan:
+    ensure: present
+    realname: Christina Macholan
+    email: cmacholan@wikimedia.org
