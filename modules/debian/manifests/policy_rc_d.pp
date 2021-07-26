@@ -14,6 +14,7 @@ class debian::policy_rc_d {
         ensure => file,
         owner  => 'root',
         group  => 'root',
+        mode   => '0550',
         source => 'puppet:///modules/debian/policy_rc_d.py',
     }
 }
