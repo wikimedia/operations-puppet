@@ -3,6 +3,7 @@ class profile::dragonfly::dfdaemon(
     Array[String] $supernodes = lookup('profile::dragonfly::dfdaemon::supernodes'),
     Stdlib::Fqdn  $docker_registry_fqdn = lookup('profile::dragonfly::dfdaemon::docker_registry_fqdn'),
     Array[String] $proxy_urls_regex = lookup('profile::dragonfly::dfdaemon::proxy_urls_regex'),
+    String $ratelimit = lookup('profile::dragonfly::dfdaemon::ratelimit'),
 ){
   # TODO: add a global hiera variable called docker_registry_fqdn and use it in the other
   #       places where we refer to it explicitly in hiera.
@@ -32,6 +33,7 @@ class profile::dragonfly::dfdaemon(
     dfdaemon_ssl_key     => $ssl_paths['key'],
     docker_registry_fqdn => $docker_registry_fqdn,
     proxy_urls_regex     => $proxy_urls_regex,
+    ratelimit            => $ratelimit,
   }
 
   # This is the port dfget (called by dfdaemon) will listen and serve chunks on.

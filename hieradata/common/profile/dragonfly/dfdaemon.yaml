@@ -1,5 +1,6 @@
 profile::dragonfly::dfdaemon::ensure: absent
 profile::dragonfly::dfdaemon::docker_registry_fqdn: docker-registry.discovery.wmnet
+profile::dragonfly::dfdaemon::ratelimit: 100M
 # Pull only the mediawiki images via P2P network for now.
 # Everything else will be requested from docker-registry directly.
 profile::dragonfly::dfdaemon::proxy_urls_regex:

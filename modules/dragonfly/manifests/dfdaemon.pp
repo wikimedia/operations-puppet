@@ -10,6 +10,8 @@
 #
 # @proxy_urls_regex
 #
+# @ratelimit
+#
 class dragonfly::dfdaemon (
     Wmflib::Ensure       $ensure,
     Array[String]        $supernodes,
@@ -17,6 +19,7 @@ class dragonfly::dfdaemon (
     Stdlib::Absolutepath $dfdaemon_ssl_key,
     Stdlib::Fqdn         $docker_registry_fqdn,
     Array[String]        $proxy_urls_regex = ['blobs/sha256.*'],
+    String               $ratelimit = '100M',
 ) {
   ensure_packages(['dragonfly-dfdaemon', 'dragonfly-dfget'], {'ensure' => $ensure})
 
