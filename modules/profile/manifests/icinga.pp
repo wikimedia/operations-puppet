@@ -85,7 +85,6 @@ class profile::icinga(
 
     class { 'icinga::monitor::wdqs': }
     class { 'icinga::monitor::reading_web': }
-    class { 'icinga::monitor::traffic': }
     class { 'icinga::monitor::gerrit': }
     class { 'icinga::monitor::librenms': }
     class { 'icinga::monitor::debmonitor': }
