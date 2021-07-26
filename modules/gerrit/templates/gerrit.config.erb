@@ -100,16 +100,17 @@
     maxSubjectLength = 100
     maxLineLength = 120
 [container]
+    # Parameters in the container section are solely used by the `gerrit.sh`
+    # wrapper which we do NOT use on the WMF instance.
+    #
+    # One must instead inject the parameters in the ExecStart systemd unit.
+    #
+    # `gerrit init` makes a few update, list them there to avoid unwanted
+    # modifications:
     user = gerrit2
     javaHome = <%= @java_home %>
-    # The following `javaOptions` are not used by WMF's systemd
-    # script, and are hence not effective. But Gerrit assumes they are
-    # needed and updates them nonetheless during upgrades as
-    # needed. So they serve as canary for required config updates of
-    # our systemd script. And we leave them in place.
-<%- @java_options.each do |jvm_opt| -%>
-    javaOptions = <%= jvm_opt %>
-<%- end -%>
+    javaOptions = "-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance"
+    javaOptions = "-Dflogger.logging_context=com.google.gerrit.server.logging.LoggingContext#getInstance"
 [core]
     packedGitOpenFiles = <%= @git_open_files %>
     packedGitLimit = 4g
