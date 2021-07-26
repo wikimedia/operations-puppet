@@ -815,6 +815,50 @@ groups:
     members: [eevans]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval: Olja Dimitrjevic
+  analytics-research-admins:
+    gid: 830
+    description: Group of users for managing research related analytics/data jobs.
+    members: [fab]
+    privileges: [
+      'ALL = (analytics-research) NOPASSWD: ALL',
+      # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
+      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@research *',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@research *',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@research *',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@research',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@research',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@research',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@research',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@research',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@research',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@research',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@research',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@research',
+      'ALL = NOPASSWD: /bin/journalctl *'
+    ]
+    system_members: [analytics-research]
+  analytics-platform-eng-admins:
+    gid: 831
+    description: Group of users for managing Platform Engineering related analytics/data jobs.
+    members: [*platform_engineering_members]
+    privileges: [
+      'ALL = (analytics-platform-eng) NOPASSWD: ALL',
+      # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
+      'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@platform-eng *',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@platform-eng *',
+      'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@platform-eng *',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-scheduler@platform-eng',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-scheduler@platform-eng',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-scheduler@platform-eng',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-webserver@platform-eng',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@platform-eng',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@platform-eng',
+      'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@platform-eng',
+      'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@platform-eng',
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@platform-eng',
+      'ALL = NOPASSWD: /bin/journalctl *'
+    ]
+    system_members: [analytics-platform-eng]
   reprepro:
     gid: 901
     system: true
@@ -872,7 +916,14 @@ groups:
     gid: 911
     system: true
     members: []
-
+  analytics-research:
+    gid: 912
+    system: true
+    members: []
+  analytics-platform-eng:
+    gid: 913
+    system: true
+    members: []
 
 users:
   reprepro:
@@ -925,6 +976,7 @@ users:
     gid: 906
     home_dir: none
     shell: '/bin/bash'
+    krb: present
   # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet.
   # druid:
@@ -941,6 +993,7 @@ users:
     gid: 909
     home_dir: none
     shell: '/bin/bash'
+    krb: present
   analytics-product:
     ensure: present
     system: true
@@ -948,6 +1001,7 @@ users:
     gid: 910
     home_dir: none
     shell: '/bin/bash'
+    krb: present
   analytics-search:
     ensure: present
     system: true
@@ -955,6 +1009,23 @@ users:
     gid: 911
     home_dir: none
     shell: '/bin/bash'
+    krb: present
+  analytics-research:
+    ensure: present
+    system: true
+    uid: 912
+    gid: 912
+    home_dir: none
+    shell: /bin/bash
+    krb: present
+  analytics-platform-eng:
+    ensure: present
+    system: true
+    uid: 913
+    gid: 913
+    home_dir: none
+    shell: /bin/bash
+    krb: present
 
   rush:
     ensure: absent
