@@ -16,6 +16,6 @@ defaults
 	retries	3
 	option redispatch
 	maxconn	2000
-	contimeout	50000
-	clitimeout	500000
-	srvtimeout	500000
+	timeout connect 50000
+	timeout client 500000
+	timeout server 500000
