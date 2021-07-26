@@ -4405,14 +4405,12 @@ users:
   htriedman:
     ensure: present
     realname: Hal Triedman
-    email: htriedman-ctr@wikimedia.org
+    email: htriedman@wikimedia.org
     uid: 30945
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHZXGVblGTOgm+IWr1kL109Zchw3pgG97PioMWLP0JS haltriedman@MacBook-Pro.local
     krb: present
-    expiry_date: 2021-07-31
-    expiry_contact: jbennett@wikimedia.org
   jelto:
     ensure: present
     realname: Jelto Wodstrcil
