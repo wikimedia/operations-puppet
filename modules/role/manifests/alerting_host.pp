@@ -23,6 +23,7 @@ class role::alerting_host {
     # backup checks directly to db to avoid spof
     include profile::mariadb::wmfmariadbpy
     include profile::dbbackups::check
+    include profile::statograph
 
     # Temporary until all hosts are on Buster
     # https://phabricator.wikimedia.org/T247966

@@ -1,0 +1,29 @@
+profile::statograph::ensure: present
+# in private repo
+# profile::statograph::api_key: private
+# profile::statograph::page_id: private
+profile::statograph::owner: root
+profile::statograph::group: root
+profile::statograph::mode: '0500'
+profile::statograph::thanos_url: https://thanos-query.discovery.wmnet/
+profile::statograph::graphite_url: https://graphite.wikimedia.org/
+profile::statograph::proxies:
+  statograph:
+    http: http://webproxy:8080
+    https: http://webproxy:8080
+profile::statograph::metrics:
+  - statuspage_id: wtbz5cdhk8rl # Total Request Volume
+    prometheus: "%{lookup('profile::statograph::thanos_url')}"
+    query: 'sum by () (job_method_status:varnish_requests:rate5m{method!="PURGE"})'
+
+  - statuspage_id: lyfcttm2lhw4  # Wiki response time
+    prometheus: "%{lookup('profile::statograph::thanos_url')}"
+    query: 'sum(rate(mediawiki_http_requests_duration_sum{handler="proxy:unix:/run/php/fpm-www.sock|fcgi://localhost",cluster="appserver"}[5m])) / 1000'
+
+  - statuspage_id: h5mvbny28713  # Error responses
+    prometheus: "%{lookup('profile::statograph::thanos_url')}"
+    query: 'sum by () (job_method_status:varnish_requests:rate5m{method!="PURGE", status=~"5.."})'
+
+  - statuspage_id: trkbds94n87s  # Successful edits
+    graphite: "%{lookup('profile::statograph::graphite_url')}"
+    query: 'MediaWiki.timing.editResponseTime.sample_rate'
