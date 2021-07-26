@@ -15,6 +15,7 @@ Further the stop and force-stop actions also result in no action
 """
 from argparse import ArgumentParser
 from pathlib import Path
+from subprocess import run, SubprocessError
 
 
 def get_args() -> None:
@@ -52,6 +53,24 @@ def main() -> int:
     """
     base_dir = Path('/etc/wikimedia/policy-rc.d/')
     args = get_args()
+    # If systemd doesn't know about the service then deny the action
+    # This is for puppet, when puppet ensures a resource is stopped and disabled
+    # it runs:
+    # - /usr/bin/systemctl is-active -- $initscript
+    # - /usr/bin/systemctl is-enabled -- $initscript
+    # and if both of theses fail it silently (doesn't appear in debug logs) runs
+    # /usr/sbin/policy-rc.d $initscript (start) 5
+    # https://github.com/puppetlabs/puppet/blob/5baab1e14226d284c3251ae34b713e6580de358f/lib/puppet/provider/service/systemd.rb#L104-L135
+    # The two use cases we have are:
+    # - check status after daemon has been installed as such ius-active should return correctly
+    # - The puppet check above
+    try:
+        result = run(['/usr/bin/systemctl', 'is-active', '--', args.initscript], check=False)
+        if result.returncode == 1:
+            return 101
+    except SubprocessError:
+        return 102
+
     # deny all action except stop which is used for uninstalling
     if (base_dir / args.initscript).is_file() and args.action not in [
         'stop',
