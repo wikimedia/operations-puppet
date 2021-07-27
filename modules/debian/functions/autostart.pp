@@ -29,7 +29,7 @@ function debian::autostart (
             target => '/run/wikimedia/systemd-preset',
         })
 
-        ensure_resource('file', "/run/wikimedia/system-preset/${service}.preset", {
+        ensure_resource('file', "/run/wikimedia/systemd-preset/${service}.preset", {
             ensure  => stdlib::ensure(!$enabled, 'file'),
             owner   => 'root',
             group   => 'root',
