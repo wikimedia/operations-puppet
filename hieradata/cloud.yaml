@@ -61,6 +61,19 @@ profile::debmonitor::server::enable_monitoring: false
 profile::debmonitor::server::required_groups: []
 profile::debmonitor::server::trusted_ca_source: '/etc/ssl/certs/Puppet_Internal_CA.pem'
 
+profile::gitlab::runner::ensure: present
+profile::gitlab::runner::access_level: not_protected
+profile::gitlab::runner::description: WMF GitLab runner
+profile::gitlab::runner::docker_image: docker-registry.wikimedia.org/buster:latest
+profile::gitlab::runner::docker_lvm_volume: false
+profile::gitlab::runner::docker_settings: {}
+profile::gitlab::runner::docker_version: '18.09.1+dfsg1-7.1+deb10u3'
+profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
+profile::gitlab::runner::locked: false
+# profile::gitlab::runner::registration_token: private
+profile::gitlab::runner::run_untagged: true
+profile::gitlab::runner::tags: []
+
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 
 profile::netbox::authentication_provider: 'ldap'

@@ -1,0 +1,3 @@
+profile::gitlab::runner::docker_settings:
+  log-driver: none
+# profile::gitlab::runner::registration_token: private
