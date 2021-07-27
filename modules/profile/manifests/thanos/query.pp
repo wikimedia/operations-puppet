@@ -34,7 +34,7 @@ class profile::thanos::query (
     }
 
     # Reach out to rule component for recording rules
-    $rule_targets = [ { 'targets' => $rule_hosts.keys.map |$h| { "${h}:17902" } } ]
+    $rule_targets = [ { 'targets' => $rule_hosts.keys.map |$h| { "${h}:17901" } } ]
     file { "${sd_files_path}/rule.yml":
         ensure  => present,
         mode    => '0444',
