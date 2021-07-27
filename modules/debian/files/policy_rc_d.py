@@ -15,7 +15,7 @@ Further the stop and force-stop actions also result in no action
 """
 from argparse import ArgumentParser
 from pathlib import Path
-from subprocess import run, SubprocessError
+from subprocess import CalledProcessError, run, SubprocessError
 
 
 def get_args() -> None:
@@ -65,9 +65,9 @@ def main() -> int:
     # - check status after daemon has been installed as such ius-active should return correctly
     # - The puppet check above
     try:
-        result = run(['/usr/bin/systemctl', 'is-active', '--', args.initscript], check=False)
-        if result.returncode == 1:
-            return 101
+        run(['/usr/bin/systemctl', 'is-active', '--', args.initscript], check=True)
+    except CalledProcessError:
+        return 101
     except SubprocessError:
         return 102
 
