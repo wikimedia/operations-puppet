@@ -64,6 +64,9 @@ route:
     - match:
         team: 'traffic'
       receiver: 'traffic-ircmail'
+    - match:
+        team: 'rweb'
+      receiver: 'rweb-mail'
 
 
     # Compat Icinga alerts are routed to a 'sink' channel
@@ -133,6 +136,10 @@ receivers:
   email_configs:
     - to: 'performance-team@<%= scope.lookupvar('::domain') %>'
       send_resolved: true
+
+- name: 'rweb-mail'
+  email_configs:
+    - to: 'reading-web-team@lists.wikimedia.org'
 
 - name: 'traffic-ircmail'
   webhook_configs:
