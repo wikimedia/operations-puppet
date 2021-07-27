@@ -24,19 +24,33 @@
 # @param ssh_keys An array of strings containing the SSH public keys.
 #
 define admin::user (
-    Wmflib::Ensure          $ensure     = present,
-    Optional[Integer]       $uid        = undef,
-    Optional[Integer]       $gid        = undef,
-    Array[String]           $groups     = [],
-    String                  $comment    = '',
-    String                  $shell      = '/bin/bash',
-    Optional[Array[String]] $privileges = undef,
-    Array[String]           $ssh_keys   = [],
-    Stdlib::Unixpath        $home_dir   = "/home/${name}",
+    Wmflib::Ensure                         $ensure     = present,
+    Optional[Integer]                      $uid        = undef,
+    Optional[Integer]                      $gid        = undef,
+    Array[String]                          $groups     = [],
+    String                                 $comment    = '',
+    String                                 $shell      = '/bin/bash',
+    Optional[Array[String]]                $privileges = undef,
+    Array[String]                          $ssh_keys   = [],
+    Variant[Enum['none'],Stdlib::Unixpath] $home_dir   = "/home/${name}",
 ) {
 
     include admin
 
+    # Add special hack for /nonexistent dir
+    # By default managehome is controlled at the class level so we
+    # can ensure all users for a specific role, profile, host are
+    # all configured the same regardless of this parameter we still
+    # sync files below from modules/admin/files/home/${user}
+    $managehome = $home_dir ? {
+        '/nonexistent' => false,
+        'none' => false,
+        default        => $admin::managehome,
+    }
+    $_home_dir = $home_dir ? {
+        'none'  => '/nonexistent',
+        default => $home_dir,
+    }
     user { $name:
         ensure     => $ensure,
         name       => $name,
@@ -45,19 +59,15 @@ define admin::user (
         gid        => $gid,
         groups     => [],
         shell      => $shell,
-        home       => $home_dir,
+        home       => $_home_dir,
         allowdupe  => false,
-        # managehome is controlled at the class level se we can ensure all users for
-        # a specific role, profile, host are all configured the same
-        # regardless of this parameter we still sync files below from
-        # modules/admin/files/home/${user}
-        managehome => $admin::managehome,
+        managehome => $managehome,
     }
 
     # This is all absented by the above /home/${user} cleanup
     # Puppet chokes if we try to absent subfiles to /home/${user}
-    if $ensure == 'present' {
-        file { $home_dir:
+    if $ensure == 'present' and $_home_dir != '/nonexistent' {
+        file { $_home_dir:
             ensure       => stdlib::ensure($ensure, 'directory'),
             source       => [
                 "puppet:///modules/admin/home/${name}/",
