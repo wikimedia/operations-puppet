@@ -25,6 +25,7 @@ function debian::autostart (
             owner  => 'root',
             group  => 'root',
             mode   => '0444',
+            force  => true,
             target => '/run/wikimedia/systemd-preset',
         })
 
