@@ -153,7 +153,7 @@ class profile::kubernetes::node(
             packages  => [
                 'iptables', 'libip4tc0', 'libip6tc0', 'libiptc0',
                 'libxtables12', 'libmnl0', 'libnetfilter-conntrack3',
-                'libnfnetlink0', 'libnftnl11'
+                'libnfnetlink0', 'libnftnl11', 'netbase'
             ],
         }
 
