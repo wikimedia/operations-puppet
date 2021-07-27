@@ -3,6 +3,8 @@ profile::thanos::frontends: "%{alias('__hosts_for_role_thanos__frontend')}"
 profile::thanos::backends: "%{alias('__hosts_for_role_thanos__backend')}"
 profile::thanos::swift::memcached_servers: "%{alias('__hosts_for_role_thanos__frontend')}"
 
+profile::thanos::retention: '1w'
+
 profile::thanos::objstore_password: 'foo'
 
 profile::thanos::rule_hosts:
