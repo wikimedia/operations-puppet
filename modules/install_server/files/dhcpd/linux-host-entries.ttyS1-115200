@@ -3664,21 +3664,6 @@ host logstash1035 {
     fixed-address logstash1035.eqiad.wmnet;
 }
 
-host logstash2020 {
-    hardware ethernet 14:18:77:39:6F:37;
-    fixed-address logstash2020.codfw.wmnet;
-}
-
-host logstash2021{
-    hardware ethernet 14:18:77:33:50:0D;
-    fixed-address logstash2021.codfw.wmnet;
-}
-
-host logstash2022 {
-    hardware ethernet 18:66:DA:7F:23:F0;
-    fixed-address logstash2022.codfw.wmnet;
-}
-
 host logstash2026 {
     hardware ethernet B0:26:28:CD:0C:A0;
     fixed-address logstash2026.codfw.wmnet;
