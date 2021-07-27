@@ -50,7 +50,7 @@ describe("Busted unit testing framework", function()
 
       require("x-wikimedia-debug-routing")
 
-      _G.ts.client_request.header['X-Wikimedia-Debug'] = "k8s-experimental"
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-experimental"
 
       do_remap()
 

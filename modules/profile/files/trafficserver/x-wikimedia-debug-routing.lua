@@ -28,7 +28,7 @@ function do_remap()
         ["k8s-experimental"]        = "mwdebug.discovery.wmnet",
     }
 
-    local backend = string.match(xwd, 'backend=([%a%d%.]+)')
+    local backend = string.match(xwd, 'backend=([%a%d%.-]+)')
 
     -- For backward-compatibility, if the header does not contain a
     -- well-formed 'backend' attribute, then the entire header is used as
