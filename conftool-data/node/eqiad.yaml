@@ -3,7 +3,6 @@ eqiad:
     mwdebug1001.eqiad.wmnet: [apache2]
     mwdebug1002.eqiad.wmnet: [apache2]
   appserver:
-    mw1269.eqiad.wmnet: [apache2,nginx]
     mw1271.eqiad.wmnet: [apache2,nginx]
     mw1319.eqiad.wmnet: [apache2,nginx]
     mw1320.eqiad.wmnet: [apache2,nginx]
