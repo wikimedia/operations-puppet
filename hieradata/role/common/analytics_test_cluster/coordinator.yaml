@@ -154,6 +154,8 @@ profile::oozie::server::spark_defaults_config_dir: '/etc/spark2/conf'
 profile::airflow::instances:
   # airflow@analytics-test instance.
   analytics-test:
+    # Being moved to an-test-client.  Will remove this declaration after.
+    ensure: absent
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics
     service_group: analytics
