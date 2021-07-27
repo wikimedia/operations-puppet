@@ -45,6 +45,7 @@ define admin::user (
         gid        => $gid,
         groups     => [],
         shell      => $shell,
+        home       => $home_dir,
         allowdupe  => false,
         # managehome is controlled at the class level se we can ensure all users for
         # a specific role, profile, host are all configured the same
