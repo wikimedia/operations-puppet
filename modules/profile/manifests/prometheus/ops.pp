@@ -1893,7 +1893,6 @@ class profile::prometheus::ops (
       },
       {
         'job_name'        => 'rails',
-        'metrics_path'    => '/-/metrics',
         'scheme'          => 'http',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/rails_*.yaml"] },
