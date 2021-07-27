@@ -12,7 +12,7 @@ class prometheus::node_pinger (
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus_node_pinger',
+        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus_node_pinger.sh',
     }
     if !empty($nodes_to_ping) {
         systemd::timer::job { 'prometheus-node-pinger':
