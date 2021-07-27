@@ -44,6 +44,20 @@ describe("Busted unit testing framework", function()
       assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
     end)
 
+    it("test - X-Wikimedia-Debug on k8s", function()
+      stub(ts.client_request, "set_url_host")
+      stub(ts.client_request, "set_url_port")
+
+      require("x-wikimedia-debug-routing")
+
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "k8s-experimental"
+
+      do_remap()
+
+      assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug.discovery.wmnet")
+      assert.stub(ts.client_request.set_url_port).was.called_with(4444)
+    end)
+
     it("test - X-Wikimedia-Debug with invalid value", function()
       stub(ts.client_request, "set_url_host")
       stub(ts, "hook")

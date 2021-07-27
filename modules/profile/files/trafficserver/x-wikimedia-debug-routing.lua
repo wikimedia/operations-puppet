@@ -39,7 +39,10 @@ function do_remap()
 
     if debug_map[backend] then
         ts.client_request.set_url_host(debug_map[backend])
-
+        -- Special case: mwdebug on kubernetes listens on port 4444
+        if backend == "k8s-experimental" then
+            ts.client_request.set_url_port(4444)
+        end
         -- Skip the cache if XWD is valid
         ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
 
