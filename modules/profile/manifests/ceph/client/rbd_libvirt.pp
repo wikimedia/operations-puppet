@@ -6,7 +6,7 @@
 class profile::ceph::client::rbd_libvirt(
     Boolean             $enable_v2_messenger     = lookup('profile::ceph::client::rbd::enable_v2_messenger'),
     Hash[String,Hash]   $mon_hosts               = lookup('profile::ceph::mon::hosts'),
-    Hash[String,Hash]   $osd_hosts               = lookup('profile::ceph::osd'),
+    Hash[String,Hash]   $osd_hosts               = lookup('profile::ceph::osd::hosts'),
     Stdlib::IP::Address $cluster_network         = lookup('profile::ceph::cluster_network'),
     Stdlib::IP::Address $public_network          = lookup('profile::ceph::public_network'),
     Stdlib::Unixpath    $data_dir                = lookup('profile::ceph::data_dir'),
