@@ -2,6 +2,7 @@
 #
 class profile::syslog::centralserver (
     Array[Stdlib::Host] $prometheus_nodes = lookup ('prometheus_nodes', {'default_value' => []}),
+    Integer $log_retention_days = lookup('profile::syslog::centralserver::log_retention_days'),
 ){
 
     ferm::service { 'rsyslog-receiver_udp':
@@ -25,7 +26,9 @@ class profile::syslog::centralserver (
         srange  => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
     }
 
-    class { 'rsyslog::receiver': }
+    class { 'rsyslog::receiver':
+        log_retention_days => $log_retention_days,
+    }
 
     class { 'profile::rsyslog::netdev_kafka_relay': }
 

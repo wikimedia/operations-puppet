@@ -5,3 +5,5 @@ monitoring_hosts:
   - '172.16.1.57' # pontoon-icinga-01
 
 public_domain: 'monitoring.wmflabs.org'
+
+profile::syslog::centralserver::log_retention_days: 5
