@@ -63,4 +63,15 @@ class openstack::wikitech::web(
         monitoring_contact_groups => 'wmcs-team',
         user                      => $::mediawiki::users::web,
     }
+
+    file { '/etc/wikitech-logoutd.ini':
+        content => "[logoutd]\ndbname=${wikidb}\n",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+    }
+
+    profile::logoutd::script { 'wikitech':
+        source => 'puppet:///modules/openstack/wikitech/wikitech-logout.py',
+    }
 }
