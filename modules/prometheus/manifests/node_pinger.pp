@@ -9,7 +9,7 @@ class prometheus::node_pinger (
     $script = '/usr/local/bin/prometheus-node-pinger'
     file { $script:
         ensure => $ensure,
-        mode   => '0555',
+        mode   => '0000',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/prometheus/usr/local/bin/prometheus_node_pinger.sh',
