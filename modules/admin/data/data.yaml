@@ -5074,7 +5074,7 @@ ldap_only_users:
     ensure: present
     realname: John Bolorinos
     email: jbolorinos-ctr@wikimedia.org
-    expiry_date: 2021-06-30
+    expiry_date: 2021-12-31
     expiry_contact: spatton@wikimedia.org
   dannys712:
     ensure: present
