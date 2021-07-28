@@ -450,6 +450,12 @@ monitoring::groups:
   ml_etcd_codfw:
     description: ML Team etcd machines (codfw)
 
+  # backup cluster (bacula, dbbackups and media backups)
+  backup_eqiad:
+    description: Backup cluster (eqiad)
+  backup_codfw:
+    description: Backup cluster (codfw)
+
 monitoring::mgmt_parents:
   eqiad: msw1-eqiad
   codfw: msw1-codfw

@@ -1,3 +1,5 @@
+cluster: backup
+
 profile::backup::director::offsite_pool: offsite
 profile::backup::director::onsite_sd: backup1001
 profile::backup::director::offsite_sd: backup2001
