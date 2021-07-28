@@ -122,6 +122,11 @@ define command {
         command_line    $USER1$/check_http --ssl --sni -C10,7 -I $HOSTADDRESS$ -H $ARG1$ -u $ARG2$ -e "HTTP/1.1 $ARG3$ " -J <%= @config_dir %>/ssl/cert.pem -K <%= @config_dir %>/ssl/server.key -j $ARG4$
     }
 
+define command {
+    command_name    check_https_client_auth_puppet_post
+        command_line    $USER1$/check_http --ssl --sni -C10,7 -I $HOSTADDRESS$ -H $ARG1$ --url $ARG2$ --post $ARG3$ --strings $ARG4$ --client-cert <%= @config_dir %>/ssl/cert.pem --private-key <%= @config_dir %>/ssl/server.key
+    }
+
 ## It seems some sites respond with location: and others with Location
 define command {
     command_name    check_http_redirect
