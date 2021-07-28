@@ -1,0 +1,39 @@
+nagios_group: analytics_eqiad
+cluster: analytics
+profile::standard::admin_groups:
+  - analytics-admins
+  - analytics-research-admins
+
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+profile::hive::client::hive_service_name: 'analytics-hive'
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'analytics-research'
+    owner: 'analytics-research'
+    group: 'analytics-research'
+    filename: 'analytics-research.keytab'
+# Context https://phabricator.wikimedia.org/T278353#6976509
+profile::kerberos::client::dns_canonicalize_hostname: false
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
+
+
+# Set up airflow instances.
+profile::airflow::instances:
+  # airflow@analytics instance.
+  research:
+    # Since we set security: kerberos a keytab must be deployed for the service_user.
+    service_user: analytics-research
+    service_group: analytics-research
+    monitoring_enabled: false
+    airflow_config:
+      core:
+        security: kerberos
+        executor: LocalExecutor
+        # This can be an ERB template that will be rendered in airflow::instance.
+        # db_user and db_password params should be set in puppet private
+        # in profile::airflow::instances_secrets.
+        sql_alchemy_conn: mysql://<%= @db_user %>:<%= @db_password %>@an-coord1001.eqiad.wmnet/airflow_research?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem

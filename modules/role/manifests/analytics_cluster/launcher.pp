@@ -3,7 +3,7 @@
 class role::analytics_cluster::launcher {
 
     system::role { 'analytics_cluster::launcher':
-        description => 'Analytics Cluster host running periodical jobs (Hadoop, Report Updater, etc..)'
+        description => 'Analytics Cluster host launching jobs (airflow-analytics, Spark, Report Updater, etc..)'
     }
 
     include ::profile::java
