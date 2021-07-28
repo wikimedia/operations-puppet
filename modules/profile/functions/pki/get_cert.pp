@@ -4,7 +4,7 @@
 # @param A common name to use for the certificate, this take precedent to over additional_params['common_name']
 # @param additional_params a hash of additional parameters to pass to cfssl::cert.
 function profile::pki::get_cert(
-  String $label,
+  String $label             = 'discovery',
   String $common_name       = $facts['networking']['fqdn'],
   Hash   $additional_params = {},
 ) >> Hash {

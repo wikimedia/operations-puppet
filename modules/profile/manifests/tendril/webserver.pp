@@ -25,7 +25,6 @@ class profile::tendril::webserver (
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     $ssl_certs = profile::pki::get_cert('discovery', 'dbtree.wikimedia.org', {
-        'profile' => 'server',
         'notify'  => Service['apache2'],
     })
 
