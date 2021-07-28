@@ -1814,7 +1814,7 @@ node /^mw140[57]\.eqiad\.wmnet$/ {
 }
 
 node /^mw14(3[4-6])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver::api)
+    role(mediawiki::appserver)
 }
 
 # rack C6
