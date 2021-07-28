@@ -201,6 +201,7 @@ sub cluster_fe_ratelimit {
 		    return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
 		}
 
+		// 2021-07-28: downloading too quickly, bypassing rate limits via multiple IPs
 		if (req.http.User-Agent ~ "^DownloadBot/") {
 		    return (synth(403, "Forbidden. Please contact noc@wikimedia.org"));
 		}
