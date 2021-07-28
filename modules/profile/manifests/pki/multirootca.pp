@@ -53,10 +53,7 @@ class profile::pki::multirootca (
     $document_root = '/srv/cfssl'
     $bundle_dir = "${document_root}/bundles"
     $check_command_base = '/usr/local/sbin/cfssl-certs check -l'
-    $ensure_monitoring = $enable_monitoring ? {
-        true    => present,
-        default => absent,
-    }
+    $ensure_monitoring = $enable_monitoring.bool2str('present', 'absent')
 
     wmflib::dir::mkdir_p($bundle_dir)
 
@@ -130,12 +127,18 @@ class profile::pki::multirootca (
             manage_db        => false,
             manage_services  => false,
         }
+        # this value is unlikely to need change much if ever so its not a parameter
 
         cfssl::ocsp{$intermediate:
             listen_port        => $config['ocsp_port'],
             db_conf_file       => $db_conf_file,
             ca_file            => $ca_file,
             ocsprefresh_update => $maintenance_jobs,
+        }
+        profile::pki::multirootca::monitoring { $intermediate:
+            ensure  => $ensure_monitoring,
+            vhost   => $vhost,
+            ca_file => $ca_file,
         }
         # Create a bundle file with the intermediate and root certs
         file {"${bundle_dir}/${safe_title}.pem":
