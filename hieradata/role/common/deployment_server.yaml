@@ -401,6 +401,12 @@ profile::kubernetes::deployment_server::general:
     # prometheus-statsd-exporter
     monitoring:
       image_version: 0.0.9
+    # This can be used to override standard environment
+    # variables pointing to k8s apiserver so that TLS
+    # certs can be validated.
+    kubernetesApi:
+      host: kubernetes.default.svc.cluster.local
+      port: 443
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server::tokens:
