@@ -16,6 +16,7 @@
 
 import argparse
 import logging
+import re
 
 from json import dumps as json_dumps
 from pathlib import Path
@@ -99,16 +100,23 @@ class Host:
         return '{s.name}: state={s.state}, optimal={s.optimal}, downtime={s.downtimed}'.format(
             s=self)
 
-    def __json__(self) -> Dict[str, Union[str, bool, List[Service]]]:
+    def __json__(
+            self, service_pattern: Optional[re.Pattern]
+    ) -> Dict[str, Union[str, bool, List[Service]]]:
         """Return a json representation of the service"""
-        return {
+        result: Dict[str, Union[str, bool, List[Service]]] = {
             'name': self.name,
             'state': self.state,
             'optimal': self.optimal,
-            'failed_services': self.failed_services,
             'downtimed': self.downtimed,
             'notifications_enabled': self.notifications_enabled,
         }
+        if service_pattern is not None:
+            result['services'] = [service for name, service in self.services.items()
+                                  if service_pattern.fullmatch(name)]
+        else:
+            result['failed_services'] = self.failed_services
+        return result
 
     to_json = __json__
 
@@ -253,6 +261,11 @@ def get_args() -> argparse.Namespace:
     parser.add_argument('--verbatim-hosts', action='store_true',
                         help=('Treat the hosts parameter as verbatim Icinga hostnames, without '
                               'extracting the hostname from the FQDN.'))
+    parser.add_argument('--services', default='FAILED',
+                        help=('select the service names to include in json output; full-match '
+                              'regex to include matching services regardless of status, or the '
+                              'magic string "FAILED" (default) to include all failed services '
+                              'regardless of name.'))
     return parser.parse_args()
 
 
@@ -297,10 +310,19 @@ def main() -> int:
             logging.error('%s, %s', host, [str(srv) for srv in status.failed_services])
             exit_code = 1
 
+    service_pattern = None if args.services == 'FAILED' else re.compile(args.services)
+
+    def to_json(o: Union[Host, Service]) -> Dict[str, Any]:
+        if isinstance(o, Host):
+            return o.to_json(service_pattern)
+        if isinstance(o, Service):
+            return o.to_json()
+        raise TypeError(o)
+
     if args.pretty_print:
-        print(json_dumps(hosts, sort_keys=True, indent=4, default=lambda o: o.to_json()))
+        print(json_dumps(hosts, sort_keys=True, indent=4, default=to_json))
     elif args.json:
-        print(json_dumps(hosts, default=lambda o: o.to_json()))
+        print(json_dumps(hosts, default=to_json))
     return exit_code
 
 
