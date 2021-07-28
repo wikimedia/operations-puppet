@@ -8,7 +8,4 @@ class profile::sretest {
         contacts => ['jbond', 'MoritzMuehlenhoff']
     }
 
-    # Temporarily for some tests
-    debian::autostart('nginx', false)
-    debian::autostart('apache2', false)
 }
