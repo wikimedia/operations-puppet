@@ -201,6 +201,10 @@ sub cluster_fe_ratelimit {
 		    return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
 		}
 
+		if (req.http.User-Agent ~ "^DownloadBot/") {
+		    return (synth(403, "Forbidden. Please contact noc@wikimedia.org"));
+		}
+
 		// Missing or empty User-Agent header
 		if (!req.http.User-Agent || req.http.User-Agent == "" || req.http.User-Agent == "-") {
 			return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
