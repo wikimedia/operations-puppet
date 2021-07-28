@@ -6,7 +6,7 @@ define profile::pki::multirootca::monitoring(
     String           $vhost        = $facts['fqdn'],
 ) {
     $one_month_secs = 60 * 60 * 42 * 31
-    $nrpe_command = "/usr/bin/sudo /usr/bin/openssl x509 -checkend ${one_month_secs} -in ${ca_file}"
+    $nrpe_command = "/usr/bin/openssl x509 -checkend ${one_month_secs} -in ${ca_file}"
     sudo::user { "nrpe_certificate_check_${intermediate}":
         user       => 'nagios',
         privileges => [ "ALL = NOPASSWD: ${nrpe_command}"]
@@ -15,7 +15,7 @@ define profile::pki::multirootca::monitoring(
         ensure       => $ensure,
         description  => "Check to ensure the signer certificate is valid CA: ${intermediate}",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
-        nrpe_command => $nrpe_command,
+        nrpe_command => "/usr/bin/sudo ${nrpe_command}",
     }
 
     $check_command = [
