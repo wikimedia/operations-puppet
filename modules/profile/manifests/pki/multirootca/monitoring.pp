@@ -13,7 +13,7 @@ define profile::pki::multirootca::monitoring(
     }
     nrpe::monitor_service { "check_certificate_expiry_${intermediate}":
         ensure       => $ensure,
-        description  => 'Check to ensure the signer certificate is valid',
+        description  => "Check to ensure the signer certificate is valid CA: ${intermediate}",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
         nrpe_command => $nrpe_command,
     }
@@ -28,7 +28,7 @@ define profile::pki::multirootca::monitoring(
     monitoring::service {"https_pki_signer_${intermediate}":
         ensure        => $ensure,
         check_command => $check_command,
-        description   => 'Check to ensure the cfssl signer is working',
+        description   => "Check to ensure the cfssl signer is working CA: ${intermediate}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations'
     }
 }
