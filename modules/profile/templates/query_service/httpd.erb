@@ -30,6 +30,10 @@
     Alias /querybuilder    "/srv/org/wikidata/query-builder"
     <Directory /srv/org/wikidata/query-builder>
         Header set Cache-Control "max-age=3600, must-revalidate"
+        Header set X-Xss-Protection "1; mode=block"
+        Header set X-Content-Type-Options "nosniff"
+        Header set X-Frame-Options "SAMEORIGIN"
+        Header set Content-Security-Policy "default-src 'self'; connect-src 'self' https://www.wikidata.org https://meta.wikimedia.org; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
