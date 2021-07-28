@@ -89,6 +89,7 @@ class profile::icinga(
     class { 'icinga::monitor::gerrit': }
     class { 'icinga::monitor::librenms': }
     class { 'icinga::monitor::debmonitor': }
+    class { 'icinga::monitor::gitlab': }
 
     # check planet for cert expiration and regular content updates
     # warn/crit = hours before content is considered stale
