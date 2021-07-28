@@ -83,6 +83,8 @@ monitoring::groups:
     description: Ganeti virt cluster esams
   ganeti_eqsin:
     description: Ganeti virt cluster eqsin
+  ganeti_test_codfw:
+    description: Ganeti virt cluster test environment
 
 # IRC Events
   irc_events_eqiad:

@@ -497,6 +497,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  ganeti_test:
+    description: "Ganeti Virt cluster test environment"
+    id: 96
+    sites:
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
