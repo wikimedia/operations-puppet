@@ -3,7 +3,7 @@ def sethandler
     <<-HEREDOC
     <FilesMatch "\.php$">
     # Send all php files to the FCGI backend (PHP7)
-        SetHandler "proxy:unix:/run/php/fpm-www.sock|fcgi://localhost"
+        SetHandler "proxy:#{@fcgi_proxy}"
     </FilesMatch>
     HEREDOC
 end

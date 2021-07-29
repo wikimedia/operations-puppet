@@ -6,8 +6,6 @@ class profile::kubernetes::deployment_server::mediawiki(
     String $deployment_server                           = lookup('deployment_server'),
     Array[Mediawiki::SiteCollection] $common_sites      = lookup('mediawiki::common_sites'),
     Array[Mediawiki::SiteCollection] $mediawiki_sites   = lookup('mediawiki::sites'),
-    Optional[Stdlib::Port::User] $fcgi_port             = lookup('profile::php_fpm::fcgi_port', {'default_value' => undef}),
-    String $fcgi_pool                                   = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
     String $domain_suffix                               = lookup('mediawiki::web::sites::domain_suffix', {'default_value' => 'org'}),
     Stdlib::Unixpath $general_dir                       = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
     Hash  $servers_by_datacenter_category               = lookup('profile::mediawiki::mcrouter_wancache::shards'),
@@ -23,7 +21,12 @@ class profile::kubernetes::deployment_server::mediawiki(
     }
     # Generate the apache-config defining yaml, and save it to
     # $general_dir/mediawiki/httpd.yaml
-    $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
+    # Beware: here we manually set the fcgi proxy, it should be changed
+    # if it gets changed on kubernetes.
+    # Uncomment if using FCGI_UNIX
+    #$fcgi_proxy = 'unix:/run/shared/fpm-www.sock|fcgi://localhost'
+    # Uncomment if using FCGI_TCP
+    $fcgi_proxy = 'fcgi://127.0.0.1:9000'
     $all_sites = $mediawiki_sites + $common_sites
     class { '::mediawiki::web::yaml_defs':
         path          => "${general_dir}/mediawiki/httpd.yaml",

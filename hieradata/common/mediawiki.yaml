@@ -336,7 +336,7 @@ mediawiki::sites:
   # search vhost
   - name: search.wikimedia
     priority: 5
-    source: mediawiki/apache/sites/search.wikimedia.conf
+    template: mediawiki/apache/sites/search.wikimedia.conf.erb
   # Old secure redirects. These happen *after* the main and remnant containers.
   - name: secure.wikimedia
     source: mediawiki/apache/sites/secure.wikimedia.conf

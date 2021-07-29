@@ -31,7 +31,8 @@ class profile::mediawiki::webserver(
 
     # Define all websites for apache, as the sum of general and env-specific stuff.
     class { '::mediawiki::web::sites':
-        siteconfigs => $common_sites + $sites
+        siteconfigs => $common_sites + $sites,
+        fcgi_proxy  => $fcgi_proxy,
     }
 
     if $has_lvs {

@@ -1,5 +1,6 @@
 class mediawiki::web::sites (
     Array[Mediawiki::SiteCollection] $siteconfigs,
+    String $fcgi_proxy,
     String $domain_suffix = 'org',
 ) {
     tag 'mediawiki', 'mw-apache-config'
