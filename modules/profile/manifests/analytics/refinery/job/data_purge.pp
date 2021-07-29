@@ -31,8 +31,6 @@ class profile::analytics::refinery::job::data_purge (
     # Send an email to analytics in case of failure
     $mail_to = 'analytics-alerts@wikimedia.org'
 
-    # Path format used by Camus when importing data, i.e. hourly/yyyy/mm/dd/hh
-    $camus_date_path_format = '(?P<year>[0-9]+)(/(?P<month>[0-9]+)(/(?P<day>[0-9]+)(/(?P<hour>[0-9]+))?)?)?'
     # Conventional Hive format path with partition keys (used by Gobblin), i.e. year=yyyy/month=mm/day=dd/hour=hh.
     $hive_date_path_format = 'year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+)(/hour=(?P<hour>[0-9]+))?)?)?'
 
@@ -88,15 +86,6 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
-    # mediawiki_job events are imported separately from regular events, so they need their own purge job.
-    kerberos::systemd_timer { 'refinery-drop-raw-mediawiki-job-event':
-        ensure      => 'absent',
-        description => 'Drop raw mediawiki job event (/wmf/data/raw/mediawiki_job) data imported on HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/mediawiki_job' --path-format='[^/]+/hourly/${camus_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='23ee7ee56c3b87b6f0b971d6fb29425f'",
-        interval    => '*-*-* 00/4:30:00',
-        environment => $systemd_env,
-        user        => 'analytics',
-    }
     # netflow events are imported separately from regular events, so they need their own purge job.
     kerberos::systemd_timer { 'refinery-drop-raw-netflow-event':
         ensure      => $ensure_timers,
@@ -130,15 +119,6 @@ class profile::analytics::refinery::job::data_purge (
         description => 'Drop Eventlogging legacy raw (/wmf/data/raw/eventlogging_legacy) data imported on HDFS following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_legacy' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='4ed6284d2bd995be7a0f65386468875e'",
         interval    => '*-*-* 00/4:15:00',
-        environment => $systemd_env,
-        user        => 'analytics',
-    }
-
-    kerberos::systemd_timer { 'refinery-drop-eventlogging-client-side-partitions':
-        ensure      => 'absent',
-        description => 'Drop Eventlogging Client Side data imported on HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_client_side' --path-format='eventlogging-client-side/hourly/${camus_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='1fcad629ec569645ff864686e523029d'",
-        interval    => '*-*-* 00/4:30:00',
         environment => $systemd_env,
         user        => 'analytics',
     }
@@ -229,26 +209,6 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
-    # Drop unsanitized EventLogging data from the event database after retention period.
-    # Runs once a day.
-    # NOTE: The regexes here don't include underscores '_' when matching table names or directory paths.
-    # No EventLogging (legacy) generated datasets have underscores, while all EventGate generated datasets do.
-    # This implicitly excludes non EventLogging (legacy) datasets from being deleted.
-    # Some EventGate datasets do need to be deleted.  This is done above by the refinery-drop-event job.
-    # NOTE: The tables parameter uses a double $$ sign. Systemd will transform this into a single $ sign.
-    # So, if you want to make changes to this job, make sure to execute all tests (DRY-RUN) with just 1
-    # single $ sign, to get the correct checksum. And then add the double $$ sign here.
-    kerberos::systemd_timer { 'drop-el-unsanitized-events':
-        # replaced by drop_event job.
-        ensure      => 'absent',
-        description => 'Drop unsanitized EventLogging data from the event database after retention period.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='event' --tables='.*' --base-path='/wmf/data/event' --path-format='[^/]+(/datacenter=[^/]+)?/${hive_date_path_format}' --older-than='90' --execute='ea43326f56fd374d895bb931dc0ce3d4' --log-file='${el_unsanitized_log_file}'",
-        interval    => '*-*-* 00:00:00',
-        environment => $systemd_env,
-        user        => 'analytics',
-    }
-
-    # drop data older than 2-3 months from cu_changes table, which is sqooped in
     # runs once a day (but only will delete data on the needed date)
     $geoeditors_private_retention_days = 60
     kerberos::systemd_timer { 'mediawiki-raw-cu-changes-drop-month':

@@ -47,16 +47,4 @@ class profile::analytics::refinery::job::hdfs_cleaner(
         logfile_basedir => '/var/log/hadoop-hdfs',
         user            => 'hdfs',
     }
-
-    # Ensuring absent the old existing time to faciliate puppet cleaning
-    $command = "${::profile::analytics::refinery::path}/bin/hdfs-cleaner --path=/tmp --older_than_seconds=${older_than_threshold}"
-    kerberos::systemd_timer { 'hdfs-cleaner':
-        ensure          => 'absent',
-        description     => 'Run the HDFSCleaner job to keep HDFS /tmp dir clean of old files.',
-        command         => $command,
-        interval        => '*-*-* 23:00:00',
-        logfile_name    => 'hdfs-cleaner.log',
-        logfile_basedir => '/var/log/hadoop-hdfs',
-        user            => 'hdfs',
-    }
 }
