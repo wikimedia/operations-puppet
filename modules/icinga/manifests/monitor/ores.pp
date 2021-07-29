@@ -4,24 +4,6 @@ class icinga::monitor::ores (
     String $icinga_group,
 ){
 
-    monitoring::grafana_alert { 'ores':
-        dashboard_uid => 'vAN_bQemz',
-        contact_group => 'team-scoring',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
-    }
-
-    # T154175
-    monitoring::grafana_alert { 'ores-extension':
-        dashboard_uid => '000000263',
-        contact_group => 'team-scoring',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
-    }
-
-    @monitoring::host { 'ores.wmflabs.org':
-        ensure    => 'absent',
-        host_fqdn => 'ores.wmflabs.org',
-    }
-
     @monitoring::host { 'ores.wikimedia.org':
         host_fqdn => 'ores.wikimedia.org',
     }
