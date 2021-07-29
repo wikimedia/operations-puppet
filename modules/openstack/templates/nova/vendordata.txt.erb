@@ -16,12 +16,10 @@ hostname: {{ds.meta_data.name}}
 fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 
 # APT fails to acquire GPG keys if packages dirmngr or gpg are missing
-# Mask the puppet service; we'll be updating puppet with a cron instead.
 bootcmd:
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
-  - [ cloud-init-per, once, mask-puppet-agent, systemctl, mask, puppet.service ]
 
 
 # /etc/block-ldap-key-lookup:
@@ -165,7 +163,7 @@ puppet agent --enable
 
 # Just in case puppet is already running for some reason, wait
 #  for it to finish.
-wait_for_puppet 10
+wait_for_puppet 120
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff
 
 # Refresh ldap now that puppet has updated our ldap.conf
@@ -186,6 +184,7 @@ done
 # Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
 # before, the puppet code that ensures the symlinks are created, etc may not
 # have run)
+wait_for_puppet 10
 puppet agent -t
 
 # sssd might be caching sudo rules and other ldap things from before puppet
