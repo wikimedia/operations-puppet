@@ -105,9 +105,12 @@ class bigtop::hive(
     $stats_dbconnectionstring    = 'jdbc:derby:;databaseName=TempStatsStore;create=true',
 
     $hive_site_template          = 'bigtop/hive/hive-site.xml.erb',
+    $hive_log4j_version          = 1,
     $hive_log4j_template         = 'bigtop/hive/hive-log4j.properties.erb',
-    $parquet_logging_template    = 'bigtop/hive/parquet-logging.properties.erb',
     $hive_exec_log4j_template    = 'bigtop/hive/hive-exec-log4j.properties.erb',
+    $hive_log4j2_template        = 'bigtop/hive/hive-log4j2.properties.erb',
+    $hive_exec_log4j2_template   = 'bigtop/hive/hive-exec-log4j2.properties.erb',
+    $parquet_logging_template    = 'bigtop/hive/parquet-logging.properties.erb',
     $hive_env_template           = 'bigtop/hive/hive-env.sh.erb',
 
     $java_home                   = undef,
@@ -216,18 +219,42 @@ class bigtop::hive(
         group   => $config_files_group_ownership,
         require => Package['hive'],
     }
+
+    # Remove log4j v1 configuration files if v2 has been specified for use
+    case $hive_log4j_version {
+        2: {
+            $ensure_log4j2_config = present
+            $ensure_log4j_config = absent
+        }
+        default: {
+            $ensure_log4j2_config = absent
+            $ensure_log4j_config = present
+        }
+    }
     file { "${config_directory}/hive-log4j.properties":
+        ensure  => $ensure_log4j_config,
         content => template($hive_log4j_template),
         require => Package['hive'],
     }
-
+    file { "${config_directory}/hive-log4j2.properties":
+        ensure  => $ensure_log4j2_config,
+        content => template($hive_log4j2_template),
+        require => Package['hive'],
+    }
+    file { "${config_directory}/hive-exec-log4j.properties":
+        ensure  => $ensure_log4j_config,
+        content => template($hive_exec_log4j_template),
+        require => Package['hive'],
+    }
+    file { "${config_directory}/hive-exec-log4j2.properties":
+        ensure  => $ensure_log4j2_config,
+        content => template($hive_exec_log4j2_template),
+        require => Package['hive'],
+    }
     # https://phabricator.wikimedia.org/T275757#6958662
     file { "${config_directory}/parquet-logging.properties":
         content => template($parquet_logging_template),
         require => Package['hive'],
     }
-    file { "${config_directory}/hive-exec-log4j.properties":
-        content => template($hive_exec_log4j_template),
-        require => Package['hive'],
-    }
+
 }

@@ -6,6 +6,7 @@ profile::standard::admin_groups:
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-test-hive'
+profile::hive::client::log4j_version: 2
 profile::hive::client::deploy_jdbc_settings: true
 profile::hive::client::hive_metastore_host: 'an-test-coord1001.eqiad.wmnet'
 

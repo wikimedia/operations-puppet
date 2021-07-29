@@ -9,6 +9,7 @@ class profile::hive::client(
     Optional[String] $config_files_group_ownership = lookup('profile::hive::client::config_files_group_ownership', { 'default_value' => undef }),
     Optional[String] $hive_metastore_jdbc_password = lookup('profile::hive::client::hive_metastore_jdbc_password', { 'default_value' => undef }),
     Boolean $deploy_jdbc_settings                  = lookup('profile::hive::client::deploy_jdbc_settings', { 'default_value' => false }),
+    Integer[1,2] $hive_log4j_version               = lookup('profile::hive::client::log4j_version', default_value => 1),
     Optional[Stdlib::Host] $hive_metastore_host    = lookup('profile::hive::client::hive_metastore_host', { 'default_value' => undef }),
 ) {
     require ::profile::hadoop::common
@@ -107,6 +108,9 @@ class profile::hive::client(
         config_files_group_ownership                          => $config_files_group_ownership,
         hive_cluster_delegation_token_store_class             => $hive_cluster_delegation_token_store_class,
         hive_metastore_disallow_incompatible_col_type_changes => $hive_metastore_disallow_incompatible_col_type_changes,
+
+        # Optional logging configuration
+        hive_log4j_version                                    => $hive_log4j_version,
     }
 
     # Set up a wrapper script for beeline, the command line

@@ -23,6 +23,7 @@ profile::base::linux419::enable: true
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-test-hive'
+profile::hive::client::log4j_version: 2
 
 profile::hadoop::common::datanode_mounts_prefix: '/srv/hadoop'
 
