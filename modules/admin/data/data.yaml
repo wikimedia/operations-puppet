@@ -44,7 +44,8 @@ groups:
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman, lsobanski,
-              razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis]
+              razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
+              mdipietro]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -3129,6 +3130,15 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8mCQQmAnqIJvvANonRbREzfJ0hi34IqfFtE++PjwT0oYcNnZKSjj/T3kRvZ+L29VgfE6+U7oEtAzgdTIe1o+CLLdtX0n0FQArjD94XxSboZwe0UlnqJSWuP2GKIaYPjaNUOROfEMpJ1C4mvoHaJRZPaUZJXKeuDvAx3wjrpoeSYZhPlQfXzEbMwUos16ycKiawCgMrtQ9JdrYclOyJXJj3RjWfqdvrP/lNHOJ3UsJu0BBQNWTQDX8oDCozGEHlXvQX0wL5IZcxfVTg13al3yqRzRssQgZLVYWtDi1wNUjUdACxYV8Bu36G+B7tUqVH3EHzuMJSeYQWNhcth9sy403vq34I1zYUVcIOPsm9VEzvQJdbQZ1shRAoS2aA5dpThnVn0dv9YwgjZF4lb8M2EIvT0MoKlEcFFCS92yklrtfvo7mgmxuL+pRDNHSz+sL7W34ObneUURgbLhqeKpGfpUaFUh449Kq32WCGrTApu9x+iaHKdzuunOoIN+p4Ib+Hkd9JobL7ivrFA6I70eQfajgu/xq/zhH5tNjJdFjJU/kONO2IqSZd/x+wpj4ZNdTKA2hY6WCCG6Ge9sZlyH5BQMWBiofSUrsk5S4r9/DoK2isMJIw/mxJzEmCOFiVk57yhLr94gvzgPEEZlyDEx/IJBfLYok9Lf/Y/mZeEYEG/2tKQ== bstorm@wikimedia.org
     uid: 18713
     email: bstorm@wikimedia.org
+  mdipietro:
+    ensure: present
+    gid: 500
+    name: mdipietro
+    realname: Michael DiPietro
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3xenp/i5Yv06X5KIEPPwpLSqE8d0KPCHHa/M8IgH4I mdipietro
+    uid: 32260
+    email: mdipietro@wikimedia.org
   gtirloni:
     ensure: absent
     gid: 500
