@@ -157,5 +157,9 @@ class profile::wmcs::instance(
         mode    => '0644',
     }
 
+    # this seems to be installed by default but doesn't do much on a VM.
+    #  T287309
+    systemd::mask { 'smartd.service': }
+
     class {'::cinderutils': }
 }
