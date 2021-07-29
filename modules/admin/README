@@ -88,7 +88,7 @@ Adding user 'foo':
 Add the ''realname'' of the user (most labs accounts don't have a real name set)
 
 Add the ''email'' address of the users:
-- If the user is WMF staff use the email address of his/her Google account
+- If the user is WMF staff use the email address of their Google account
   (usually the first letter of the first name and the surname, you can
   double-check the account name in the Gmail interface). Some users have
   aliases for their nickname e.g., don't use these, use the official Google
