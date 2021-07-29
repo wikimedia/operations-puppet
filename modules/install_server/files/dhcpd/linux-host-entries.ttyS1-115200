@@ -2519,7 +2519,6 @@ host dbprov2001 {
 host dbprov2002 {
     hardware ethernet B0:26:28:21:59:38;
     fixed-address dbprov2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host dbprov2003 {
