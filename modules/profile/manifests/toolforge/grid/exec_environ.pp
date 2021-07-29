@@ -10,7 +10,7 @@ class profile::toolforge::grid::exec_environ {
     include profile::locales::all
 
     class {'redis::client::python': }
-    class {'phabricator::arcanist': }
+    class {'phabricator::arcanist': }  # T139738 and T287390
 
     apt::repository { "mono-external-${::lsbdistcodename}":
         uri        => 'http://apt.wikimedia.org/wikimedia',
