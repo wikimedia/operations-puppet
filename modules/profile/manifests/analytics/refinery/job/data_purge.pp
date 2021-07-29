@@ -90,7 +90,7 @@ class profile::analytics::refinery::job::data_purge (
 
     # mediawiki_job events are imported separately from regular events, so they need their own purge job.
     kerberos::systemd_timer { 'refinery-drop-raw-mediawiki-job-event':
-        ensure      => $ensure_timers,
+        ensure      => 'absent',
         description => 'Drop raw mediawiki job event (/wmf/data/raw/mediawiki_job) data imported on HDFS following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/mediawiki_job' --path-format='[^/]+/hourly/${camus_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='23ee7ee56c3b87b6f0b971d6fb29425f'",
         interval    => '*-*-* 00/4:30:00',
@@ -135,7 +135,7 @@ class profile::analytics::refinery::job::data_purge (
     }
 
     kerberos::systemd_timer { 'refinery-drop-eventlogging-client-side-partitions':
-        ensure      => $ensure_timers,
+        ensure      => 'absent',
         description => 'Drop Eventlogging Client Side data imported on HDFS following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --base-path='/wmf/data/raw/eventlogging_client_side' --path-format='eventlogging-client-side/hourly/${camus_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='1fcad629ec569645ff864686e523029d'",
         interval    => '*-*-* 00/4:30:00',

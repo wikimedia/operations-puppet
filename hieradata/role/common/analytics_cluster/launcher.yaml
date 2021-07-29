@@ -15,8 +15,6 @@ profile::hive::client::config_files_group_ownership: 'analytics'
 
 profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
 
-profile::analytics::refinery::job::camus::monitoring_enabled: true
-
 profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
 
 profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1004.eqiad.wmnet'
