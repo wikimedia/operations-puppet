@@ -159,7 +159,14 @@ class profile::wmcs::instance(
 
     # this seems to be installed by default but doesn't do much on a VM.
     #  T287309
-    systemd::mask { 'smartd.service': }
+    package { 'smartmontools':
+        ensure => absent,
+        notify => Exec['reset-failed for smartontools'],
+    }
+    exec { 'reset-failed for smartontools':
+        command     => 'systemctl reset-failed smartd.service',
+        refreshonly => true,
+    }
 
     class {'::cinderutils': }
 }
