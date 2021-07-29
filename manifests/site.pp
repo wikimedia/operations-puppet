@@ -149,7 +149,7 @@ node 'an-airflow1002.eqiad.wmnet' {
 
 # analytics-platform-eng instance of Apache Airflow
 node 'an-airflow1003.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_cluster::airflow::platform_eng)
 }
 
 # Analytics Zookepeer cluster
