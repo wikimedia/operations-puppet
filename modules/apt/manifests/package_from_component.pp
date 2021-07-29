@@ -12,6 +12,15 @@
 #  however you're installing a more recent version of a package which also exists
 #  in Debian main, then you also need to list the dependencies so that the pinning
 #  configuration is also applied to them.
+#  This parameter can also accept a Hash[String, String] which allows you to override
+#  the ensure parameter and means you are able to create resources like the following
+#  however this syntax should be used with caution as ties software updates to a git
+#  commit to bump the version:
+#
+#    apt::package_from_component { 'foobar':
+#      component => 'component/foobar',
+#      packages => { 'foo' => 'present', 'bar' => '1.1.7-1~bpo10+1'}
+#    }
 #
 # [*distro*]
 #  The distribution for which the packages are built, defaults to the
@@ -34,11 +43,11 @@
 
 define apt::package_from_component(
     String          $component,
-    Array[String]   $packages        = [$name],
-    String          $distro          = "${::lsbdistcodename}-wikimedia",
-    Stdlib::HTTPUrl $uri             = 'http://apt.wikimedia.org/wikimedia',
-    Integer         $priority        = 1001,
-    Boolean         $ensure_packages = true,
+    Variant[Array[String],Hash[String,String]] $packages        = [$name],
+    String                                     $distro          = "${::lsbdistcodename}-wikimedia",
+    Stdlib::HTTPUrl                            $uri             = 'http://apt.wikimedia.org/wikimedia',
+    Integer                                    $priority        = 1001,
+    Boolean                                    $ensure_packages = true,
 ) {
     include apt
 
@@ -72,8 +81,13 @@ define apt::package_from_component(
     Apt::Repository["repository_${title}"] -> Exec["exec_apt_${title}"]
 
     if $ensure_packages {
-        ensure_packages($packages)
+        if $packages =~ Hash {
+            $packages.each |$pkg, $ensure| {
+                ensure_packages($pkg, {ensure => $ensure})
+            }
+        } else {
+            ensure_packages($packages)
+        }
         Exec["exec_apt_${title}"] -> Package[$packages]
     }
-
 }
