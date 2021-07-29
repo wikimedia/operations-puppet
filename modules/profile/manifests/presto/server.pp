@@ -30,6 +30,17 @@
 # [*heap_max*]
 #   -Xmx argument. Default: 2G
 #
+# [*generate_certificate*]
+#   Use the pki::get_cert function to generate a certificate for TLS authentication,
+#   using the discovery CA, as opposed to using the Puppet CA certificates. If this
+#   option is enabled, a certificate will be generated using the host's $::fqdn.
+#   Default: false
+#
+# [*ssl_certnames*]
+#   Optional array of SubjectAltNames that should be added to a certificate generated
+#   by the pki::get_cert function. This is only used if generate_certificates is true.
+#   Default: []
+#
 #  [*presto_clusters_secrets*]
 #    Hash of available/configured Presto clusters and their secret properties,
 #    like passwords, etc..
@@ -40,16 +51,18 @@
 #    Default: {}
 #
 class profile::presto::server(
-    String $cluster_name        = lookup('profile::presto::cluster_name'),
-    String $discovery_uri       = lookup('profile::presto::discovery_uri'),
-    Hash   $node_properties     = lookup('profile::presto::server::node_properties', { 'default_value' => {} }),
-    Hash   $config_properties   = lookup('profile::presto::server::config_properties', { 'default_value' => {} }),
-    Hash   $catalogs            = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
-    Hash   $log_properties      = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
-    String $heap_max            = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
-    String $ferm_srange         = lookup('profile::presto::server::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
-    Boolean $use_kerberos       = lookup('profile::presto::use_kerberos', { 'default_value' => true }),
-    Boolean $monitoring_enabled = lookup('profile::presto::monitoring_enabled', { 'default_value' => false }),
+    String        $cluster_name         = lookup('profile::presto::cluster_name'),
+    String        $discovery_uri        = lookup('profile::presto::discovery_uri'),
+    Hash          $node_properties      = lookup('profile::presto::server::node_properties', { 'default_value' => {} }),
+    Hash          $config_properties    = lookup('profile::presto::server::config_properties', { 'default_value' => {} }),
+    Hash          $catalogs             = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
+    Hash          $log_properties       = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
+    String        $heap_max             = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
+    String        $ferm_srange          = lookup('profile::presto::server::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
+    Array[String] $ssl_certnames        = lookup('profile::presto::server::ssl_certnames', { 'default_value' => [] }),
+    Boolean       $generate_certificate = lookup('profile::presto::server::generate_certificate', { 'default_value' => false }),
+    Boolean       $use_kerberos         = lookup('profile::presto::use_kerberos', { 'default_value' => true }),
+    Boolean       $monitoring_enabled   = lookup('profile::presto::monitoring_enabled', { 'default_value' => false }),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = lookup('presto_clusters_secrets', { 'default_value' => {} }),
 ) {
 
@@ -82,13 +95,38 @@ class profile::presto::server(
         $ssl_truststore_path = '/etc/ssl/certs/java/cacerts'
         $ssl_truststore_password = 'changeit'
 
-        base::expose_puppet_certs{ '/etc/presto':
-            user         => 'root',
-            group        => 'presto',
-            provide_p12  => true,
-            provide_pem  => false,
-            p12_password => $keystore_password,
-            require      => Package['presto-server'],
+        if $generate_certificate {
+            # Generate a certificate for each presto server. These will be used to secure traffic between
+            # 1) the clients and the co-ordinator and 2) between each server in the cluster
+            # The co-ordinator will use several SubJectAltNames in order to support DNS discovery
+            $ssl_cert = profile::pki::get_cert('discovery', $facts['fqdn'], {
+                'hosts'  => $ssl_certnames,
+                'outdir' => '/etc/presto/ssl',
+                'owner'  => 'presto',
+                notify   => Sslcert::X509_to_pkcs12['presto_keystore'],
+                require  => Package['presto-server'],
+                }
+            )
+            sslcert::x509_to_pkcs12 { 'presto_keystore' :
+                owner       => 'presto',
+                group       => 'presto',
+                public_key  => $ssl_cert['cert'],
+                private_key => $ssl_cert['key'],
+                certfile    => $ssl_cert['ca'],
+                outfile     => $ssl_keystore_path,
+                password    => $keystore_password,
+                require     => Package['presto-server'],
+                notify      => Service['presto-server'],
+            }
+        } else {
+            base::expose_puppet_certs{ '/etc/presto':
+                user         => 'root',
+                group        => 'presto',
+                provide_p12  => true,
+                provide_pem  => false,
+                p12_password => $keystore_password,
+                require      => Package['presto-server'],
+            }
         }
 
         file { '/usr/local/bin/presto':

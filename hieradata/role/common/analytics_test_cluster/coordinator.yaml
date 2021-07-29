@@ -25,10 +25,9 @@ profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 # Presto Server settings
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-test-presto
-profile::presto::discovery_uri: https://an-test-coord1001.eqiad.wmnet:8281
+profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 profile::presto::server::heap_max: 4G
 
-profile::presto::server::use_puppet_ssl_certs: true
 profile::presto::server::config_properties:
   coordinator: true
   # since we only run presto as a single node on the coordinator
@@ -45,6 +44,7 @@ profile::presto::server::config_properties:
   query.max-total-memory-per-node: 2GB
   http-server.authentication.type: 'KERBEROS'
   http.server.authentication.krb5.service-name: 'presto'
+  http.server.authentication.krb5.principal-hostname: 'analytics-test-presto.eqiad.wmnet'
   http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
   http.authentication.krb5.config: '/etc/krb5.conf'
   # Testing 0.246, see https://phabricator.wikimedia.org/T266640#6790318
@@ -90,6 +90,10 @@ profile::presto::server::catalogs:
       hive.max-partitions-per-scan: 840
 
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
+
+profile::presto::server::generate_certificate: true
+profile::presto::server::ssl_certnames:
+  - analytics-test-presto.eqiad.wmnet
 
 profile::analytics::database::meta::monitoring_enabled: true
 profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS))'

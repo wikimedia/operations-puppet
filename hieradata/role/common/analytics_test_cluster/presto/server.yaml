@@ -9,7 +9,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 # Presto (worker) Server settings
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-test-presto
-profile::presto::discovery_uri: https://an-test-coord1001.eqiad.wmnet:8281
+profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 profile::presto::server::heap_max: 4G
 profile::presto::server::config_properties:
   # Set network-topology to legacy since we are not (yet?) running
