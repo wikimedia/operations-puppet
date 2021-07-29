@@ -25,6 +25,9 @@ logstash::elasticsearch7:
 kafka::logging:
   - pontoon-kafka-01.monitoring.eqiad1.wikimedia.cloud
 
+kafka::monitoring_buster:
+  - pontoon-kafkamon-01.monitoring.eqiad1.wikimedia.cloud
+
 logstash7:
   - pontoon-logstash7-03.monitoring.eqiad1.wikimedia.cloud
 
