@@ -7,12 +7,16 @@ archive: False
 retention: 18
 stats_file: '/etc/wmfbackups/statistics.cnf'
 sections:
-  s1:
-    host: 'db2097.codfw.wmnet'
-    port: 3311
   s2:
-    host: 'db2097.codfw.wmnet'
+    host: 'db2101.codfw.wmnet'
     port: 3312
-  s7:
-    host: 'db2100.codfw.wmnet'
-    port: 3317
+  s5:
+    host: 'db2101.codfw.wmnet'
+    port: 3315
+  x1:
+    host: 'db2101.codfw.wmnet'
+    port: 3320
+    archive: True
+  zarcillo:
+    host: 'db2093.codfw.wmnet'
+
