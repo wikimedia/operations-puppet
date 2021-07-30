@@ -29,6 +29,9 @@ class profile::base(
 
     include passwords::root
     include network::constants
+
+    include profile::pontoon::base
+
     include profile::resolving
     include profile::mail::default_mail_relay
 

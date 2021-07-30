@@ -8,6 +8,8 @@ profile::base::labs::clean_kernels: false
 profile::base::production::enable: false
 profile::base::production::enable_ip6_mapped: false
 
+profile::pontoon::base::enabled: true
+
 profile::resolving::nameservers:
   - 208.80.154.143
   - 208.80.154.24
