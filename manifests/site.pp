@@ -1859,8 +1859,8 @@ node /^mw13(7[4-9]|8[0-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
-# rack D8
-node /^mw(1383|144[3-6])\.eqiad\.wmnet$/ {
+# rack D8 - API servers
+node /^mw(1383|144[3-4])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver::api)
 }
 
@@ -1869,17 +1869,19 @@ node /^mw143[7-8]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# rack D8
+# rack D8 - jobrunners
+node /^mw14(39|40|45|46)\.eqiad\.wmnet$/ {
+    role(mediawiki::jobrunner)
+}
+
+# rack D8 - appservers
 node /^mw1384\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# rack D8
-node /^mw14(39|4[0-2])\.eqiad\.wmnet$/ {
+node /^mw144([1-2])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
-
-# API (serving api traffic)
 
 # Row A
 
