@@ -677,7 +677,7 @@ def read_options():
     parser.add_argument('--port',
                         type=int,
                         default=DEFAULT_PORT,
-                        help=('When using the prometheus mode, it binds and listends '
+                        help=('When using the prometheus mode, it binds and listens '
                               'on this port. If no one is given, {} is used by default.'
                               ''.format(DEFAULT_PORT)))
     parser.add_argument('--icinga',
