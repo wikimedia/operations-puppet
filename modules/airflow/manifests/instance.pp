@@ -189,6 +189,7 @@ define airflow::instance(
 
     file { $airflow_home:
         ensure => $ensure_directory,
+        force  => true,
         mode   => '0755',
     }
     file { $airflow_config_file:
@@ -210,6 +211,7 @@ define airflow::instance(
         # Create $dags_folder if in $airflow_home
         file { $dags_folder:
             ensure => $ensure_directory,
+            force  => true,
             mode   => '0755',
         }
     } else {
