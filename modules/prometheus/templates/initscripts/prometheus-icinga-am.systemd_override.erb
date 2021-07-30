@@ -1,5 +1,6 @@
 [Service]
 # Required to be able to exec status.cgi
 Group=www-data
+# Clear ExecStart array
 ExecStart=
-ExecStart=/usr/bin/prometheus-icinga-am <%= @am_urls.sort.join(' ') %>
+ExecStart=/usr/bin/prometheus-icinga-am <%= @am_urls.sort.join(' ') %><% if @label_teams_config_file_ensure == 'present' %> --labels.team.config-file=<%= @label_teams_config_file %><% end %>
