@@ -1,6 +1,5 @@
 profile::standard::admin_groups:
   - builder-docker
-docker::registry: docker-registry.discovery.wmnet
 profile::docker::engine::version: "1.12.6-0~debian-jessie"
 profile::docker::engine::packagename: "docker-engine"
 profile::docker::engine::declare_service: true

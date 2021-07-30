@@ -393,3 +393,6 @@ profile::trafficserver::backend::trusted_ca_source: "%{facts.puppet_config.local
 
 profile::tcpircbot::irc::host: 'irc.libera.chat'
 profile::tcpircbot::irc::port: 6697
+
+# Will be overridden in toolforge
+docker::registry: ""
