@@ -44,7 +44,6 @@ profile::presto::server::config_properties:
   query.max-total-memory-per-node: 2GB
   http-server.authentication.type: 'KERBEROS'
   http.server.authentication.krb5.service-name: 'presto'
-  http.server.authentication.krb5.principal-hostname: 'analytics-test-presto.eqiad.wmnet'
   http.server.authentication.krb5.keytab: '/etc/security/keytabs/presto/presto.keytab'
   http.authentication.krb5.config: '/etc/krb5.conf'
   # Testing 0.246, see https://phabricator.wikimedia.org/T266640#6790318
