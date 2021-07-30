@@ -1709,6 +1709,8 @@ service::catalog:
         eqiad:
           hostname: prometheus.svc.eqiad.wmnet
     port: 80
+    # note: PoPs run prometheus::pop role, but not a problem in this case
+    role: 'prometheus'
     sites:
       - eqiad
       - codfw
