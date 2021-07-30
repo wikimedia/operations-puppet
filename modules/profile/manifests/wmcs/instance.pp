@@ -161,9 +161,9 @@ class profile::wmcs::instance(
     #  T287309
     package { 'smartmontools':
         ensure => absent,
-        notify => Exec['reset-failed for smartontools'],
+        notify => Exec['reset-failed for smartmontools'],
     }
-    exec { 'reset-failed for smartontools':
+    exec { 'reset-failed for smartmontools':
         command     => '/usr/bin/systemctl reset-failed smartd.service',
         refreshonly => true,
     }
