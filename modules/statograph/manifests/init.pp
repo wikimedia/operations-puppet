@@ -18,7 +18,7 @@ class statograph (
 )
 {
     $config_file = '/etc/statograph/config.yml'
-    $job_command = "/usr/bin/statograph -c ${config_file}"
+    $job_command = "/usr/bin/statograph -c ${config_file} upload_metrics"
 
     ensure_packages('statograph', {'ensure' => $ensure})
 
@@ -47,7 +47,7 @@ class statograph (
         require => Package['statograph'],
     }
 
-    systemd::timer::job { 'staograph_post':
+    systemd::timer::job { 'statograph_post':
         ensure             => $ensure,
         description        => 'Runs statograph to publish data to statuspage.io',
         user               => $owner,
