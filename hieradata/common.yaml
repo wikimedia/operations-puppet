@@ -35,6 +35,8 @@ kubernetes_clusters:
   eqiad: eqiad
   codfw: codfw
   staging: eqiad
+  ml-serve-eqiad: eqiad
+  ml-serve-codfw: codfw
 
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125
