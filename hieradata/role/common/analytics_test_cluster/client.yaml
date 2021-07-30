@@ -40,7 +40,7 @@ profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 profile::base::notifications: disabled
 
 profile::presto::cluster_name: analytics-test-presto
-profile::presto::discovery_uri: https://an-test-coord1001.eqiad.wmnet:8281
+profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 
 # Set up airflow instances.
 profile::airflow::instances:
