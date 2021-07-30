@@ -108,7 +108,7 @@ class profile::puppetmaster::pontoon (
     ferm::service { 'puppetmaster-pontoon':
         proto  => 'tcp',
         port   => 8140,
-        srange => '$LABS_NETWORKS',
+        srange => '$DOMAIN_NETWORKS',
     }
 
     # Fake confd using a file on disk.
