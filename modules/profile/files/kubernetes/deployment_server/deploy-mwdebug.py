@@ -23,12 +23,12 @@ WEB_IMAGE = "restricted/mediawiki-webserver"
 REGISTRY = "docker-registry.discovery.wmnet"
 VALUES_FILE = pathlib.Path("/etc/helmfile-defaults/mediawiki/releases.yaml")
 DEPLOY_DIR = "/srv/deployment-charts/helmfile.d/services/mwdebug"
+good_tag_regex = re.compile(r"\d{4}-\d{2}-\d{2}-\d{6}-publish")
 
 
 def find_last_tag(registry: operations.RegistryOperations) -> str:
     """Finds the last standard tag present on the registry"""
     maxtag = "0"
-    good_tag_regex = re.compile(r"\d{4}-\d{2}-\d{2}-d{6}-publish")
     for tag in registry.get_tags_for_image(IMAGE):
         m = good_tag_regex.match(tag)
         # This is a non-standard tag like "latest", skip it
@@ -51,12 +51,15 @@ def values_file_update(maxtag: str) -> bool:
             "mw": {"httpd": {"image_tag": f"{WEB_IMAGE}/{maxtag}"}},
         }
     )
-    orig_values = VALUES_FILE.read_text()
-    if values == orig_values:
-        return False
-    logger.info("Updating the values file")
-    with VALUES_FILE.open("w") as fh:
-        yaml.safe_dump(values, fh)
+    try:
+        orig_values = VALUES_FILE.read_text()
+        if values == orig_values:
+            return False
+        logger.info("Updating the values file")
+    except FileNotFoundError:
+        logger.info("Creating the releases file")
+    VALUES_FILE.write_text(values)
+
     return True
 
 

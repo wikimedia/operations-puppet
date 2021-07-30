@@ -62,6 +62,6 @@ class profile::kubernetes::deployment_server::mediawiki(
         source => 'puppet:///modules/profile/kubernetes/deployment_server/deploy-mwdebug.py',
         owner  => 'root',
         group  => 'root',
-        mode   => '0440',
+        mode   => '0550',
     }
 }
