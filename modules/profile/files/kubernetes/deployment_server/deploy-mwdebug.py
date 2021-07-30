@@ -26,10 +26,10 @@ DEPLOY_DIR = "/srv/deployment-charts/helmfile.d/services/mwdebug"
 good_tag_regex = re.compile(r"\d{4}-\d{2}-\d{2}-\d{6}-publish")
 
 
-def find_last_tag(registry: operations.RegistryOperations) -> str:
+def find_last_tag(registry: operations.RegistryOperations, image: str) -> str:
     """Finds the last standard tag present on the registry"""
     maxtag = "0"
-    for tag in registry.get_tags_for_image(IMAGE):
+    for tag in registry.get_tags_for_image(image):
         m = good_tag_regex.match(tag)
         # This is a non-standard tag like "latest", skip it
         if m is None:
@@ -43,12 +43,12 @@ def find_last_tag(registry: operations.RegistryOperations) -> str:
     return maxtag
 
 
-def values_file_update(maxtag: str) -> bool:
+def values_file_update(maxtag_mw: str, maxtag_web: str) -> bool:
     """Updates the values file, if necessary. Returns true in that case."""
     values = yaml.safe_dump(
         {
-            "main_app": {"image": f"{IMAGE}/{maxtag}"},
-            "mw": {"httpd": {"image_tag": f"{WEB_IMAGE}/{maxtag}"}},
+            "main_app": {"image": f"{IMAGE}/{maxtag_mw}"},
+            "mw": {"httpd": {"image_tag": f"{WEB_IMAGE}/{maxtag_web}"}},
         }
     )
     try:
@@ -77,8 +77,9 @@ def main():
         fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
         logging.basicConfig(level=logging.INFO)
         ops = operations.RegistryOperations(REGISTRY, logger=logger)
-        maxtag = find_last_tag(ops)
-        if values_file_update(maxtag):
+        maxtag_mw = find_last_tag(ops, IMAGE)
+        maxtag_web = find_last_tag(ops, WEB_IMAGE)
+        if values_file_update(maxtag_mw, maxtag_web):
             deployment()
         else:
             logger.info("Nothing to deploy")
