@@ -96,6 +96,10 @@ server {
       <%- @k8s_authenticated_nodes.sort.each do |node| -%>
       deny <%= node[1]['ipaddress'] %>; # <%= node[1]['fqdn'] %>
       <%- end -%>
+      # deployment hosts need to query /restricted/ to get image tags
+      <%- @deployment_hosts.each do |ip| -%>
+      deny <%= ip %>;
+      <%- end -%>
       allow all;
 
       auth_basic "docker-registry (push)";

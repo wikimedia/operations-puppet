@@ -24,6 +24,7 @@ class docker_registry_ha::web (
     Boolean $read_only_mode=false,
     String $homepage='/srv/homepage',
     Boolean $nginx_cache=true,
+    Array[Stdlib::Host] $deployment_hosts=[],
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')

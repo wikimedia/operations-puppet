@@ -93,6 +93,7 @@ class profile::docker_registry_ha::registry(
         http_allowed_hosts          => $cache_nodes['text']['eqiad'] + $cache_nodes['text']['codfw'],
         read_only_mode              => $registry_read_only_mode,
         nginx_cache                 => $nginx_cache,
+        deployment_hosts            => $deployment_hosts,
     }
 
     # T209709
