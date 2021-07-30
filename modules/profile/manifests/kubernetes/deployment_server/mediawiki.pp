@@ -48,30 +48,13 @@ class profile::kubernetes::deployment_server::mediawiki(
     # in the restricted namespace. This is ok since the credentials will be guarded by
     # being ran as root, and that is more restrictive than access to the stuff contained
     # in the restricted images.
-    # Registry credentials require push privileges
-    # uses strict_encode64 since encode64 adds newlines?!
-    $docker_auth = inline_template("<%= require 'base64'; Base64.strict_encode64('kubernetes:${docker_password}') -%>")
-
-    $docker_config = {
-        'auths' => {
-            "${docker_registry}" => {
-                'auth' => $docker_auth,
-            },
-        },
-    }
-
-    file { '/root/.docker':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550',
-    }
-
-    file { '/root/.docker/config.json':
-        content => ordered_json($docker_config),
-        owner   => 'root',
-        group   => 'docker',
-        mode    => '0440',
+    docker::credentials { '/root/.docker/config.json':
+        owner             => 'root',
+        group             => 'root',
+        registry          => $docker_registry,
+        registry_username => 'kubernetes',
+        registry_password => $docker_password,
+        allow_group       => false,
     }
 
     # Add a script that updates the mediawiki images.

@@ -93,20 +93,12 @@ class profile::docker::builder(
         }
     }
 
-    file { '/root/.docker':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0700',
-    }
-
-    $docker_auth = "prod-build:${password}";
-    file { '/root/.docker/config.json':
-        content => template('profile/docker/docker_config.json.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0600',
-        require => File['/root/.docker']
+    docker::credentials { '/root/.docker/config.json':
+        owner             => 'root',
+        group             => 'root',
+        registry          => $registry,
+        registry_username => 'prod-build',
+        registry_password => $password,
     }
 
     # Cronjob to refresh the production-images every week on sunday.

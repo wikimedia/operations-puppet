@@ -6,21 +6,17 @@ class docker_pusher(
     String $docker_registry_user,
     String $docker_registry_password,
 ) {
-    file { '/etc/docker-pusher':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0400',
-    }
-
-    $docker_auth = "${docker_registry_user}:${docker_registry_password}";
-    file { '/etc/docker-pusher/config.json':
-        ensure    => 'present',
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0400',
-        content   => template('docker_pusher/docker_config.json.erb'),
-        show_diff => false,
+    # TODO: actually fetch the registry url from hiera.
+    # TODO: currently we declare group ownership 'docker',
+    # but don't allow reading from the group, which seems
+    # pointless to me.
+    docker::credentials {'/etc/docker-pusher/config.json':
+        owner             => 'root',
+        group             => 'root',
+        registry          => 'docker-registry.discovery.wmnet',
+        registry_username => $docker_registry_user,
+        registry_password => $docker_registry_password,
+        allow_group       => false
     }
 
     file { '/usr/local/bin/docker-pusher':

@@ -34,30 +34,12 @@ class profile::toolforge::docker::image_builder(
     # Available in Toolforge's aptly repo
     ensure_packages(['pack'])
 
-    # Registry credentials require push privilages
-    # uses strict_encode64 since encode64 adds newlines?!
-    $docker_auth = inline_template("<%= require 'base64'; Base64.strict_encode64('${docker_username}:${docker_password}') -%>")
-
-    $docker_config = {
-        'auths' => {
-            "${docker_registry}" => {
-                'auth' => $docker_auth,
-            },
-        },
-    }
-
-    file { '/root/.docker':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0550',
-    }
-
-    file { '/root/.docker/config.json':
-        content => ordered_json($docker_config),
-        owner   => 'root',
-        group   => 'docker',
-        mode    => '0440',
-        require => File['/root/.docker'],
+    # Registry credentials require push privileges
+    docker::credentials { '/root/.docker/config.json':
+        owner             => 'root',
+        group             => 'docker',
+        registry          => $docker_registry,
+        registry_username => $docker_username,
+        registry_password => $docker_password,
     }
 }

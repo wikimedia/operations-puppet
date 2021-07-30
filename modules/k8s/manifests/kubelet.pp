@@ -59,13 +59,13 @@ class k8s::kubelet(
     }
 
     if $docker_kubernetes_user_password {
-        $docker_auth = "kubernetes:${docker_kubernetes_user_password}";
-        file { '/var/lib/kubelet/config.json':
-          content => template('k8s/docker_config.json.erb'),
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0440',
-          require => File['/var/lib/kubelet'],
+        # TODO: pass the docker registry to this class as a variable.
+        docker::credentials { '/var/lib/kubelet/config.json':
+            owner             => 'root',
+            group             => 'root',
+            registry          => 'docker-registry.discovery.wmnet',
+            registry_username => 'kubernetes',
+            registry_password => $docker_kubernetes_user_password,
         }
     }
 
