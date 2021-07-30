@@ -54,14 +54,14 @@ class profile::backup::director(
 
     # Databases-only pool
     bacula::director::pool { 'Databases':
-        max_vols         => 80,
+        max_vols         => 95,
         storage          => "${onsite_sd}-FileStorageDatabases",
         volume_retention => '90 days',
         label_fmt        => 'databases',
         max_vol_bytes    => '536870912000',
     }
     bacula::director::pool { 'DatabasesCodfw':
-        max_vols         => 80,
+        max_vols         => 95,
         storage          => "${offsite_sd}-FileStorageDatabasesCodfw",
         volume_retention => '90 days',
         label_fmt        => 'databases-codfw',
@@ -79,7 +79,7 @@ class profile::backup::director(
 
     # Eqiad pool for read-only External Storage backups
     bacula::director::pool { 'EsRoEqiad':
-        max_vols         => 160,
+        max_vols         => 50,
         storage          => 'backup1003-FileStorageEsRoEqiad',
         volume_retention => '5 years',
         label_fmt        => 'es-ro-eqiad',
@@ -87,7 +87,7 @@ class profile::backup::director(
     }
     # Codfw pool for read-only External Storage backups
     bacula::director::pool { 'EsRoCodfw':
-        max_vols         => 160,
+        max_vols         => 50,
         storage          => 'backup2003-FileStorageEsRoCodfw',
         volume_retention => '5 years',
         label_fmt        => 'es-ro-codfw',
@@ -95,7 +95,7 @@ class profile::backup::director(
     }
     # Eqiad pool for read-write External storage backups
     bacula::director::pool { 'EsRwEqiad':
-        max_vols         => 160,
+        max_vols         => 190,
         storage          => 'backup1003-FileStorageEsRwEqiad',
         volume_retention => '90 days',
         label_fmt        => 'es-rw-eqiad',
@@ -103,7 +103,7 @@ class profile::backup::director(
     }
     # Codfw pool for read-write External storage backups
     bacula::director::pool { 'EsRwCodfw':
-        max_vols         => 160,
+        max_vols         => 190,
         storage          => 'backup2003-FileStorageEsRwCodfw',
         volume_retention => '90 days',
         label_fmt        => 'es-rw-codfw',
