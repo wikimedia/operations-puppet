@@ -23,7 +23,7 @@ WEB_IMAGE = "restricted/mediawiki-webserver"
 REGISTRY = "docker-registry.discovery.wmnet"
 VALUES_FILE = pathlib.Path("/etc/helmfile-defaults/mediawiki/releases.yaml")
 DEPLOY_DIR = "/srv/deployment-charts/helmfile.d/services/mwdebug"
-good_tag_regex = re.compile(r"\d{4}-\d{2}-\d{2}-\d{6}-publish")
+good_tag_regex = re.compile(r"\d{4}-\d{2}-\d{2}-\d{6}-(publish|webserver)")
 
 
 def find_last_tag(registry: operations.RegistryOperations, image: str) -> str:
@@ -47,8 +47,8 @@ def values_file_update(maxtag_mw: str, maxtag_web: str) -> bool:
     """Updates the values file, if necessary. Returns true in that case."""
     values = yaml.safe_dump(
         {
-            "main_app": {"image": f"{IMAGE}/{maxtag_mw}"},
-            "mw": {"httpd": {"image_tag": f"{WEB_IMAGE}/{maxtag_web}"}},
+            "main_app": {"image": f"{IMAGE}:{maxtag_mw}"},
+            "mw": {"httpd": {"image_tag": f"{WEB_IMAGE}:{maxtag_web}"}},
         }
     )
     try:
