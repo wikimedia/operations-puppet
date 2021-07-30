@@ -110,7 +110,7 @@ profile::netbox::cas_username_attribute: ~
 
 profile::nginx::ensure: 'present'
 profile::nginx::managed: true
-profile::nginx::variant: 'full'
+profile::nginx::variant: 'light'
 profile::nginx::tmpfs_size: '1g'
 
 profile::puppetdb::gc_interval: 20

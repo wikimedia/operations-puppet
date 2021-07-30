@@ -1,5 +1,5 @@
 profile::tlsproxy::instance::bootstrap_protection: false
-profile::tlsproxy::instance::nginx_variant: full
+profile::tlsproxy::instance::nginx_variant: light
 profile::tlsproxy::instance::nginx_client_max_body_size: '100m'
 profile::tlsproxy::instance::nginx_tune_for_media: false
 profile::tlsproxy::instance::nginx_ssl_dyn_rec: false
