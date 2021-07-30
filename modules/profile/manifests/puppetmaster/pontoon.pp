@@ -2,6 +2,8 @@ class profile::puppetmaster::pontoon (
     Integer[1,30]                 $git_sync_minutes = lookup('profile::puppetmaster::pontoon::git_sync_minutes', {'default_value' => 10}),
     Enum['puppetdb', 'none']      $storeconfigs = lookup('profile::puppetmaster::common::storeconfigs', {'default_value' => 'none' }),
     Optional[Array[Stdlib::Host]] $puppetdb_hosts = lookup('profile::puppetmaster::common::puppetdb_hosts', {'default_value' => undef}),
+    Boolean                       $pki_enabled = lookup('profile::puppetmaster::pontoon::pki_enabled', {'default_value' => false}),
+    Array[String[3]]              $intermediates = lookup('profile::pki::root_ca::intermediates', {'default_value' => []}),
 ) {
     ensure_packages('libapache2-mod-passenger')
     class { 'pontoon::enc': }
@@ -135,5 +137,26 @@ class profile::puppetmaster::pontoon (
         ensure => present,
         mode   => '0444',
         source => 'puppet:///modules/puppet_compiler/mediawiki.yaml'
+    }
+
+    file { '/etc/pontoon':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+    }
+
+    if $pki_enabled {
+        include profile::pki::root_ca
+
+        # Wait for 'profile::pki::client::signer_host' to have an
+        # hostname in the rolemap
+        if pontoon::hosts_for_role('pki::multirootca') != undef {
+            include profile::pki::client
+        }
+
+        class { 'pontoon::pki_root':
+            intermediates => $intermediates,
+        }
     }
 }
