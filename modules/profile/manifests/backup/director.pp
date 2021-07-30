@@ -97,7 +97,7 @@ class profile::backup::director(
     bacula::director::pool { 'EsRwEqiad':
         max_vols         => 160,
         storage          => 'backup1003-FileStorageEsRwEqiad',
-        volume_retention => '60 days',
+        volume_retention => '90 days',
         label_fmt        => 'es-rw-eqiad',
         max_vol_bytes    => '536870912000',
     }
@@ -105,7 +105,7 @@ class profile::backup::director(
     bacula::director::pool { 'EsRwCodfw':
         max_vols         => 160,
         storage          => 'backup2003-FileStorageEsRwCodfw',
-        volume_retention => '60 days',
+        volume_retention => '90 days',
         label_fmt        => 'es-rw-codfw',
         max_vol_bytes    => '536870912000',
     }
