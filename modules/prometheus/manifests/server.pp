@@ -74,7 +74,7 @@ define prometheus::server (
     Hash                       $global_config_extra    = {},
     Array                      $scrape_configs_extra   = [],
     Array                      $rule_files_extra       = [],
-    Stdlib::HTTPUrl            $external_url           = "http://prometheus/${title}",
+    Stdlib::HTTPUrl            $external_url           = "http://prometheus.svc.${::site}.wmnet/${title}",
     String                     $min_block_duration     = '2h',
     String                     $max_block_duration     = '24h',
     Array                      $alertmanagers          = [],
