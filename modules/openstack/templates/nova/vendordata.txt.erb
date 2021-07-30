@@ -103,6 +103,7 @@ Content-Type: text/text/x-shellscript; charset="us-ascii"
 set -x
 
 # Function to test if puppet is running or not
+PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
 puppet_is_running() {
     # If no lockfile is defined, we can't really tell what's happening.
     # Assume puppet is not running in this case
@@ -131,9 +132,11 @@ wait_for_puppet() {
         if ! puppet_is_running; then
             return 0
         fi
+        echo "Waiting for puppet run to complete"
         sleep 10
     done
     # If puppet is still running at this point, report an error
+    echo "Tired of waiting for puppet run to complete; giving up"
     return 1
 }
 
