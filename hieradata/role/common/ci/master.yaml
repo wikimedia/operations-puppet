@@ -160,6 +160,10 @@ profile::kubernetes::deployment_server::services:
     username: shellbox
     group: wikidev
     mode: '0640'
+  shellbox-constraints:
+    username: shellbox-constraints
+    group: wikidev
+    mode: '0640'
   miscweb:
     username: miscweb
     group: wikidev
