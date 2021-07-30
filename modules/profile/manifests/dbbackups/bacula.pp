@@ -10,7 +10,7 @@ class profile::dbbackups::bacula (
             $jobdefaults = 'Weekly-Wed-DatabasesCodfw'
         } elsif $::site == 'codfw' {
             # dbprovs on codfw store data on eqiad (cross-dc)
-            $jobdefaults = 'Weekly-Wed-DatabasesEqiad'
+            $jobdefaults = 'Weekly-Wed-Databases'  # to be DatabasesEqiad
         } else {
             fail('Only eqiad or codfw pools are configured for database backups.')
         }

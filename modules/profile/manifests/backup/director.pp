@@ -168,7 +168,7 @@ class profile::backup::director(
 
     # Jobdefaults for regular Database backups
     $db_backup_day = 'Wed'
-    backup::weeklyjobdefaults { "Weekly-${db_backup_day}-DatabasesEqiad":
+    backup::weeklyjobdefaults { "Weekly-${db_backup_day}-Databases":
         day  => $db_backup_day,
         pool => 'Databases',  # pending pool rename
     }
