@@ -1,4 +1,30 @@
 #!/usr/bin/python3
+"""
+Modules that implements a Bacula class, as well as a command line
+interface to query the status of bacula backups, its jobs and
+its freshness, according to Wikimedia conventions. It requires
+a local instance of bacula running and access to the bconsole
+command.
+
+It also integrates the functionality to be kept listening on a
+TCP port indefinitely to allow the backup status to be scrapped
+by an http request, acting as a prometheus exporter for bacula.
+
+Usage:
+"check_bacula.py", with no parameters will output the list of
+jobs and its classification of freshness
+"check_bacula.py --list-jobs" will output the list of currently
+configured jobs, without checking the status
+"check_bacula.py <job_name>" will provide a list of currently
+kept jobs for the given job name, and its basic parameters
+(timestamp, level and success).
+"check_bacula.py --prometheus" will not finish, and just start
+listening on a port, responding to get http requests by
+outputing metrics for all configured jobs in the prometheus
+expected format
+
+See check_bacula.py --help for more parameters.
+"""
 import argparse
 import datetime
 import ipaddress
@@ -22,7 +48,7 @@ UNKNOWN = 3
 
 DEFAULT_JOB_CONFIG_PATH = '/etc/bacula/jobs.d'
 DEFAULT_BCONSOLE_PATH = '/usr/sbin/bconsole'
-DEFAULT_PARALLEL_THREADS = 4
+DEFAULT_PARALLEL_THREADS = 8
 JOB_PATTERN = r'\s*Job\s*\{\s*([^\}]*)\s*\}\s*'
 OPTION_PATTERN = r'\s*([^\=]+)\s*=\s*\"?([^\"\n]+)\"?\s*'
 DEFAULT_JOB_MONITORING_IGNORELIST = '/etc/bacula/job_monitoring_ignorelist'
@@ -268,7 +294,11 @@ class Bacula(object):
         return successful + failures, successful
 
     def print_job_list(self):
-        if not len(self.backups):
+        """
+        Prints the list of (previously generated) currently-configured
+        jobs; just the name, without the status, one per line
+        """
+        if len(self.backups) == 0:
             print('No configured jobs found.')
             sys.exit(-1)
         for job in sorted(self.backups):
@@ -284,8 +314,9 @@ class Bacula(object):
             print('No jobs found for {}'.format(job))
             sys.exit(-1)
         for status in result['executions']:
-            print('{}: type: {}, status: {}, bytes: {}'
-                  ''.format(status['starttime'],
+            print('id: {}, ts: {}, type: {}, status: {}, bytes: {}'
+                  ''.format(status['jobid'],
+                            status['starttime'],
                             status['level'],
                             status['jobstatus'],
                             status['jobbytes']))
