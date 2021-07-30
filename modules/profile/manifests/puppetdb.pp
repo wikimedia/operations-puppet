@@ -19,6 +19,7 @@ class profile::puppetdb(
     Stdlib::Unixpath                     $ca_path               = lookup('profile::puppetdb::ca_path'),
     String                               $puppetboard_hosts     = lookup('profile::puppetdb::puppetboard_hosts'),
     Boolean                              $tmpfs_stockpile_queue = lookup('profile::puppetdb::tmpfs_stockpile_queue'),
+    Boolean                              $clean_stockpile       = lookup('profile::puppetdb::clean_stockpile'),
     String                               $puppetdb_pass         = lookup('puppetdb::password::rw'),
     String                               $puppetdb_ro_pass      = lookup('puppetdb::password::ro'),
     Puppetdb::Loglevel                   $log_level             = lookup('profile::puppetdb::log_level'),
@@ -52,6 +53,30 @@ class profile::puppetdb(
         node_ttl              => $node_ttl,
         node_purge_ttl        => $node_purge_ttl,
         report_ttl            => $report_ttl,
+    }
+    # TODO: remove this when a fix is in place T263578
+    # This is quite a heavy hammer to work around on going issues
+    # Currently the postgresql server is struggling to perform its auto vacuum
+    # functions.  When this happens the stockpile queue starts to fill up.
+    # This code will monitor that directory and delete all queued reports
+    # when more then 1GB of space has been used.  Under normal operations
+    # only about 0->100MB is more then enough space.
+    # The result of this hack is that we will looses historical reports and fact
+    # information which could affect cumin/puppetboard operations
+    if $clean_stockpile {
+        file {'/usr/local/bin/puppetdb_clean_stockpile':
+            ensure => file,
+            owner  => 'root',
+            mode   => '0500',
+            source => 'puppet:///modules/profile/puppetdb/clean_stockpile.sh'
+        }
+        systemd::timer::job {'monitor_stockpile_queue':
+            ensure      => 'present',
+            user        => 'root',
+            command     => '/usr/local/bin/puppetdb_clean_stockpile',
+            description => 'Temporary job to clean out stockpile queue T263578',
+            interval    => {'start' => 'OnCalendar', 'interval' => '*:0/5'},  # every 5mins
+        }
     }
 
     # Export JMX metrics to prometheus

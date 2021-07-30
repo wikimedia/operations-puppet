@@ -6,6 +6,7 @@ profile::puppetdb::ssldir: ~
 profile::puppetdb::slaves: []
 profile::puppetdb::log_level: info
 profile::puppetdb::tmpfs_stockpile_queue: false
+profile::puppetdb::clean_stockpile: false
 profile::puppetdb::facts_blacklist: []
 profile::puppetdb::facts_blacklist_type: 'literal'
 profile::puppetdb::gc_interval: 20
