@@ -490,6 +490,10 @@ node 'db1124.eqiad.wmnet' {
     role(mariadb::core_test)
 }
 
+node 'db1125.eqiad.wmnet' {
+    role(mariadb::core_test)
+}
+
 # s4 (commons) core production dbs on codfw
 # codfw master
 node 'db2090.codfw.wmnet' {
@@ -669,11 +673,6 @@ node /^db21(43|44)\.codfw\.wmnet$/ {
 
 # m1 eqiad master
 node 'db1159.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-
-# temporary failover for db1159 #T286042
-node 'db1125.eqiad.wmnet' {
     role(mariadb::misc)
 }
 

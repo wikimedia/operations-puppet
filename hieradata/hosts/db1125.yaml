@@ -1,3 +1,4 @@
 # db1125
-mariadb::shard: 'm1'
+# Testing section
+mariadb::shard: 'test-s4'
 profile::base::notifications: disabled
