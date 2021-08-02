@@ -41,21 +41,7 @@ function do_remap()
         ts.client_request.set_url_host(debug_map[backend])
         -- Special case: mwdebug on kubernetes listens on port 4444
         if backend == "k8s-experimental" then
-            local req_host = ts.client_request.header.Host
-            -- temporarily limit to test.wikipedia, test2.wikipedia test.wikidata and mediawiki.org while
-            -- we iron out a few bugs.
-            local allowed_sites = {
-                ["test.wikipedia.org"] = true,
-                ["test2.wikipedia.org"] = true,
-                ["test.wikidata.org"] = true,
-                ["mediawiki.org"] = true,
-            }
-            if allowed_sites[req_host] then
-                ts.client_request.set_url_port(4444)
-            else
-                ts.http.set_resp(403, "x-wikimedia-debug-routing: only testwikis can be reached on k8s at the moment")
-                return TS_LUA_REMAP_NO_REMAP_STOP
-            end
+            ts.client_request.set_url_port(4444)
         end
         -- Skip the cache if XWD is valid
         ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
