@@ -32,6 +32,7 @@ sys.path.append("/usr/local/sbin/")
 # Nag if it's been 24 hours since the last puppet run
 NAG_INTERVAL = 60 * 60 * 24
 PUPPET_STATE_FILE = "/var/lib/puppet/state/last_run_summary.yaml"
+PUPPET_REPORT_FILE = "/var/lib/puppet/state/last_run_report.yaml"
 # last_run_summary.yaml reports the last run but it updates the stamp even
 # on failed runs. Instead, check to see the last time puppet actually did
 # something.
@@ -48,9 +49,45 @@ def get_last_run_summary():
     return yaml.load(open(PUPPET_STATE_FILE))
 
 
+def get_last_run_report():
+    """The custom loader is to ignore the special tags that puppet adds.
+
+    It will just ignore them, for example, at the start of the report, puppet adds the following
+    loader tag to the yaml:
+    ```
+    --- !ruby/object:Puppet::Transaction::Report
+    ...
+    ```
+    """
+
+    def unknown(loader, suffix, node):
+        if isinstance(node, yaml.ScalarNode):
+            constructor = loader.__class__.construct_scalar
+        elif isinstance(node, yaml.SequenceNode):
+            constructor = loader.__class__.construct_sequence
+        elif isinstance(node, yaml.MappingNode):
+            constructor = loader.__class__.construct_mapping
+        data = constructor(loader, node)
+        return data
+
+    yaml.add_multi_constructor('!', unknown)
+    yaml.add_multi_constructor('tag:', unknown)
+    return yaml.load(open(PUPPET_REPORT_FILE), Loader=yaml.Loader)
+
+
+def get_last_run_report_failed_resources():
+    last_run_report = get_last_run_report()
+    return [
+        resource_name
+        for resource_name, resource_data in last_run_report["resource_statuses"].items()
+        if resource_data["failed"]
+    ]
+
+
 def main():
     exception_msg = ""
     first_line = ""
+    failed_resources = []
 
     try:
         last_success_elapsed = (
@@ -68,6 +105,8 @@ def main():
     try:
         last_run_summary = get_last_run_summary()
         has_errors = last_run_summary["events"]["failure"] > 0
+        if has_errors:
+            failed_resources = get_last_run_report_failed_resources()
     except Exception as error:
         logging.warning("Unable to read puppet last run summary: %s", error)
         exception_msg += "\nUnable to read puppet last run summary: {}".format(
@@ -151,11 +190,22 @@ Some extra info follows:
 ---- Last run summary:
 {last_run_summary}
 
----- Exceptions that happened if any:
+---- Failed resources if any:
+
+{failed_resources_str}
+
+---- Exceptions that happened when running the script if any:
 {exception_msg}
     """.format(
-        fqdn=fqdn, ip=ip, first_line=first_line, project_name=project_name,
-        last_run_summary=yaml.dump(last_run_summary), exception_msg=exception_msg
+        fqdn=fqdn, ip=ip,
+        first_line=first_line,
+        project_name=project_name,
+        last_run_summary=yaml.dump(last_run_summary),
+        exception_msg=exception_msg or '  No exceptions happened.',
+        failed_resources_str=(
+            ('  * ' if failed_resources else '  No failed resources.')
+            + '\n  * '.join(failed_resources)
+        ),
     )
     email_admins(subject, body)
 
