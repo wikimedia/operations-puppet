@@ -20,6 +20,7 @@ ntp_peers:
   codfw: []
   ulsfo: []
   eqsin: []
+  drmrs: []
   esams: []
 wikimail_smarthost:
   - mx-out03.wmcloud.org
