@@ -61,7 +61,7 @@ def get_timestamp(line):
 def get_timestamp_from_mtime(path):
     '''given a path to a file, get the mtime, convert that
     to a timestamp in format YYYYMMDDHHMMSS and return it'''
-    mtime = os.stat(path()).st_mtime
+    mtime = os.stat(path).st_mtime
     return time.strftime("%Y%m%d%H%M%S", time.gmtime(mtime))
 
 
