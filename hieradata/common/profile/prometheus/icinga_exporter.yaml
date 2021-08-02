@@ -1,0 +1,11 @@
+profile::prometheus::icinga_exporter::label_teams_config:
+  wmcs:
+    alertname:
+      - '.*ceph.*'
+    instance:
+      - '.*cloud.*'
+      - '.*labs.*'
+  # this is the default team, must be the last in the definition.
+  sre:
+    alertname:
+      - '.*'
