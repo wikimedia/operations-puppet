@@ -3,6 +3,7 @@
 # * mcrouter pools
 
 class profile::kubernetes::deployment_server::mediawiki(
+    String $deployment_server                           = lookup('deployment_server'),
     Array[Mediawiki::SiteCollection] $common_sites      = lookup('mediawiki::common_sites'),
     Array[Mediawiki::SiteCollection] $mediawiki_sites   = lookup('mediawiki::sites'),
     Optional[Stdlib::Port::User] $fcgi_port             = lookup('profile::php_fpm::fcgi_port', {'default_value' => undef}),
@@ -39,6 +40,8 @@ class profile::kubernetes::deployment_server::mediawiki(
         redis_shards => $redis_shards,
     }
 
+    # "Automatic" deployment to mw on k8s. See T287570
+
     # Install docker-report in order to be able to list tags remotely
     package { 'python3-docker-report':
         ensure => present,
@@ -63,5 +66,28 @@ class profile::kubernetes::deployment_server::mediawiki(
         owner  => 'root',
         group  => 'root',
         mode   => '0550',
+    }
+    $ensure_deploy = $deployment_server ? {
+        $facts['networking']['fqdn'] => 'present',
+        default => 'absent'
+    }
+    # Run the deployment check every 5 minutes
+    systemd::timer::job { 'deploy_to_mwdebug':
+        ensure      => $ensure_deploy,
+        description => 'Deploy the latest available set of images to mw on k8s',
+        command     => '/usr/local/sbin/deploy-mwdebug',
+        user        => 'root',
+        interval    => {
+            'start'    => 'OnUnitInactiveSec',
+            'interval' => '300s',
+        },
+        environment => {
+            'HELM_CONFIG_HOME' => '/etc/helm',
+            'HELM_CACHE_HOME'  => '/var/cache/helm',
+            'HELM_DATA_HOME'   => '/usr/share/helm',
+            'HELM_HOME'        => '/etc/helm',
+            # This is what will get to SAL
+            'SUDO_USER'        => 'mwdebug-deploy',
+        }
     }
 }
