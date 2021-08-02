@@ -25,7 +25,7 @@ groups:
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
-              pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde]
+              pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5118,9 +5118,8 @@ ldap_only_users:
     realname: Ryan Brounley
     email: rbrounley@wikimedia.org
   criley:
-    ensure: present
+    ensure: absent
     realname: Chelsea Riley
-    email: criley@wikimedia.org
   sudhanshugautam:
     ensure: present
     realname: Sudhanshu Gautam
