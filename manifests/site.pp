@@ -689,6 +689,11 @@ node 'db1107.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
+# future m2 eqiad master #T287852
+node 'db1183.eqiad.wmnet' {
+    role(mariadb::misc)
+}
+
 # m2 codfw master
 node 'db2133.codfw.wmnet' {
     role(mariadb::misc)
@@ -717,11 +722,6 @@ node 'db1108.eqiad.wmnet' {
 
 # m5 eqiad master
 node 'db1128.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-
-# m5 eqiad replica - in progress
-node 'db1183.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
