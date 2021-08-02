@@ -172,6 +172,13 @@ profile::idp::services:
   wmcs_idp:
     id: 24
     service_id: 'https://idp.wmcloud.org(/.*)?'
+  gitlab-replica:
+    id: 25
+    service_id: 'https://gitlab-replica.wikimedia.org(/.*)?'
+    required_groups:
+      - ops
+      - wmf
+      - nda
 profile::idp::ldap_attributes:
   - cn
   - memberOf
