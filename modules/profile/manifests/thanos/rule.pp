@@ -25,7 +25,11 @@ class profile::thanos::rule (
     # XXX expose web interface like /bucket/ ?
     class { 'thanos::rule':
         alertmanagers     => $alertmanagers,
-        rule_files        => ['/etc/thanos-rule/rules/*.yaml', '/etc/thanos-rule/alerts/*.yaml'],
+        # /etc/thanos-rule paths are reserved for puppet-deployed files, whereas /srv paths
+        # will receive automatically-deployed alerts.
+        rule_files        => ['/etc/thanos-rule/rules/*.yaml',
+                              '/etc/thanos-rule/alerts/*.yaml',
+                              '/srv/alerts-thanos/*.yaml'],
         rule_hosts        => $thanos_rule_hosts,
         objstore_account  => $objstore_account,
         objstore_password => $objstore_password,
