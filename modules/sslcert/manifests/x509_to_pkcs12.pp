@@ -18,17 +18,24 @@ define sslcert::x509_to_pkcs12 (
         undef   => '',
         default => "-certfile ${certfile}",
     }
-    $command = @("COMMAND"/L)
+    $create_pkcs12_command = @("CREATE_PKCS12_COMMAND"/L)
         /usr/bin/openssl pkcs12 -export ${_certfile} \
         -in ${public_key} \
         -inkey ${private_key} \
         -out ${outfile} \
         -password 'pass:${password}'
-        | COMMAND
+        | CREATE_PKCS12_COMMAND
+
+    $check_certificates_match = @("CHECK_CERTIFICATES_MATCH_COMMAND"/L)
+        /usr/bin/test \
+            "$(/usr/bin/openssl x509 -in ${public_key})" == \
+            "$(/usr/bin/openssl pkcs12 -password -password 'pass:${password}' -in ${outfile} -clcerts -nokeys | openssl x509)"
+    | CHECK_CERTIFICATES_MATCH_COMMAND
+
     if $ensure == 'present' {
         exec {"sslcert generate ${title}.p12":
-            command => $command,
-            unless  => "/usr/bin/openssl pkcs12 -in ${outfile} -password 'pass:${password}' -noout",
+            command => $create_pkcs12_command,
+            unless  => $check_certificates_match,
             require => Package['openssl'],
             before  => File[$outfile],
         }
