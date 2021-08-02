@@ -95,8 +95,9 @@ sub cluster_fe_recv {
 		// traffic that is relevant to the Movement, and to not serve as a tileserver for the
 		// whole Internet; prior to this, much of our Maps traffic was serving unrelated sites,
 		// including for-profit organizations.
-		// See https://phabricator.wikimedia.org/T261424 and https://lists.wikimedia.org/pipermail/maps-l/2020-August/001729.html
-		// We allow a Referer of only Wikimedia domains, plus several affiliates: https://phabricator.wikimedia.org/T261694
+		// See T261424 and <https://lists.wikimedia.org/pipermail/maps-l/2020-August/001729.html>.
+		// We allow a Referer of only Wikimedia domains, plus several affiliates:
+		// <https://wikitech.wikimedia.org/wiki/Maps/External_usage>.
 		//
 		// To implement this, we regex on the Referer header.  Similar to wikimedia-frontend's
 		// normalize_request, said regex is encoded here as a VCL Long String with {""} delimiters
@@ -112,17 +113,17 @@ sub cluster_fe_recv {
 				|w\.wiki	# WMF-owned URL shortener
 				|localhost(:\d*)?	# to ease the lives of devs
 				|wmftest.net(:\d*)?	# to ease the lives of MediaWiki-Vagrant devs
-				# Now the affiliates https://phabricator.wikimedia.org/T261694
-				|wikilovesmonuments\.org
-				|wikimedia\.pl
-				|wikimedia\.cz
-				|wikimedia\.it
-				# Consultants working in https://phabricator.wikimedia.org/T276317
+				# Now the affiliates
+				|wikilovesmonuments\.org	# T260520
+				|wikimedia\.pl	# T261506
+				|wikimedia\.cz	# T261694#6522016
+				|wikimedia\.it	# T261694#7172223
+				# Consultants working in T276317
 				|gospatial\.org
 				|go-spatial\.org
 			)(/|$)		# Anchor to the end of the hostname portion: either end of string or a /.
 		"}) {
-			return (synth(403, "Forbidden: Map tiles are restricted to Wikimedia & affiliated sites only.  Please post on https://phabricator.wikimedia.org/T261694 if you believe your usage supports the Movement."));
+			return (synth(403, "Forbidden: Map tiles are restricted to Wikimedia & affiliated sites only.  See https://wikitech.wikimedia.org/wiki/Maps/External_usage if you believe your usage supports the Movement."));
 		}
 	}
 
