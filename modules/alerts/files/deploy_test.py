@@ -25,7 +25,7 @@ class AlertsDeployTest(unittest.TestCase):
                 pass
 
     def testSimpleDeploy(self):
-        self._add_rulefile("team-foo", "alert1.yaml", "alert2.yaml")
+        self._add_rulefile("team-foo", "alert1.yaml", "test.yaml", "alert2_test.yaml")
         rulefiles = deploy.all_rulefiles([self.alerts_dir.joinpath("team-foo")])
         deployed_paths = deploy.deploy_rulefiles(
             rulefiles, self.deploy_dir, self.alerts_dir
@@ -37,7 +37,7 @@ class AlertsDeployTest(unittest.TestCase):
         assert len(outfiles) == 2
         assert sorted([x.name for x in outfiles]) == [
             "team-foo_alert1.yaml",
-            "team-foo_alert2.yaml",
+            "team-foo_test.yaml",
         ]
 
     def testCleanup(self):
