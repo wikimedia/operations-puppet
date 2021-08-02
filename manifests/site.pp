@@ -164,7 +164,7 @@ node /^an-presto100[1-5]\.eqiad\.wmnet$/ {
 
 # Analytics Web Node.
 node 'an-web1001.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_cluster::webserver)
 }
 
 # notification server for Phabricator (T257617)
