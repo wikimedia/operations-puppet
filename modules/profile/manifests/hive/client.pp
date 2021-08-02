@@ -9,7 +9,7 @@ class profile::hive::client(
     Optional[String] $config_files_group_ownership = lookup('profile::hive::client::config_files_group_ownership', { 'default_value' => undef }),
     Optional[String] $hive_metastore_jdbc_password = lookup('profile::hive::client::hive_metastore_jdbc_password', { 'default_value' => undef }),
     Boolean $deploy_jdbc_settings                  = lookup('profile::hive::client::deploy_jdbc_settings', { 'default_value' => false }),
-    Integer[1,2] $hive_log4j_version               = lookup('profile::hive::client::log4j_version', default_value => 1),
+    Integer[1,2] $hive_log4j_version               = lookup('profile::hive::client::log4j_version', default_value => 2),
     Optional[Stdlib::Host] $hive_metastore_host    = lookup('profile::hive::client::hive_metastore_host', { 'default_value' => undef }),
 ) {
     require ::profile::hadoop::common
