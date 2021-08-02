@@ -199,5 +199,7 @@ systemctl restart sssd
 # Remove the non-root login restriction
 rm /etc/block-ldap-key-lookup
 
+# mark the host as ready, from now on alerts and checks will send notifications (ex. puppet_alert.py)
+touch /.cloud-init-finished
 exit 0
 --XXXXboundary text
