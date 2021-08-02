@@ -33,12 +33,17 @@ sys.path.append("/usr/local/sbin/")
 NAG_INTERVAL = 60 * 60 * 24
 PUPPET_STATE_FILE = "/var/lib/puppet/state/last_run_summary.yaml"
 PUPPET_REPORT_FILE = "/var/lib/puppet/state/last_run_report.yaml"
+READY_FILE = "/.cloud-init-finished"
 # last_run_summary.yaml reports the last run but it updates the stamp even
 # on failed runs. Instead, check to see the last time puppet actually did
 # something.
 PUPPET_SUCCESS_TIMESTAMP_FILE = "/var/lib/puppet/state/classes.txt"
 
 logger = logging.getLogger(__name__)
+
+
+def is_host_ready():
+    return os.path.exists(READY_FILE)
 
 
 def get_last_success_time():
@@ -88,6 +93,10 @@ def main():
     exception_msg = ""
     first_line = ""
     failed_resources = []
+
+    if not is_host_ready():
+        logging.info(f"Host is not ready yet, file {READY_FILE} does not exist.")
+        return
 
     try:
         last_success_elapsed = (
