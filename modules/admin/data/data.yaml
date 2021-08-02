@@ -25,7 +25,8 @@ groups:
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
-              pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley]
+              pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
+              jbol]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5133,11 +5134,8 @@ ldap_only_users:
     realname: Maryana Pinchuk
     email: mpinchuk@wikimedia.org
   jbol:
-    ensure: present
+    ensure: absent
     realname: John Bolorinos
-    email: jbolorinos-ctr@wikimedia.org
-    expiry_date: 2021-12-31
-    expiry_contact: spatton@wikimedia.org
   dannys712:
     ensure: present
     realname: (known to Legal)
