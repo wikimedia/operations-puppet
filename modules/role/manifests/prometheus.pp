@@ -13,7 +13,7 @@ class role::prometheus {
 
     include ::profile::prometheus::pushgateway
 
-    include ::profile::alerts::deploy
+    include ::profile::alerts::deploy::prometheus
 
     include ::profile::standard
     include ::profile::base::firewall
