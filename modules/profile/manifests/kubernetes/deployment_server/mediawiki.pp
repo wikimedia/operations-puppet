@@ -73,21 +73,22 @@ class profile::kubernetes::deployment_server::mediawiki(
     }
     # Run the deployment check every 5 minutes
     systemd::timer::job { 'deploy_to_mwdebug':
-        ensure      => $ensure_deploy,
-        description => 'Deploy the latest available set of images to mw on k8s',
-        command     => '/usr/local/sbin/deploy-mwdebug',
-        user        => 'root',
-        interval    => {
+        ensure            => $ensure_deploy,
+        description       => 'Deploy the latest available set of images to mw on k8s',
+        command           => '/usr/local/sbin/deploy-mwdebug',
+        user              => 'root',
+        interval          => {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '300s',
         },
-        environment => {
+        environment       => {
             'HELM_CONFIG_HOME' => '/etc/helm',
             'HELM_CACHE_HOME'  => '/var/cache/helm',
             'HELM_DATA_HOME'   => '/usr/share/helm',
             'HELM_HOME'        => '/etc/helm',
             # This is what will get to SAL
             'SUDO_USER'        => 'mwdebug-deploy',
-        }
+        },
+        syslog_identifier => 'deploy-mwdebug',
     }
 }
