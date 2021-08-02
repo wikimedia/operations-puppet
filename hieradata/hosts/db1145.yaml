@@ -1,3 +1,4 @@
 # db1145
 profile::mariadb::dbstore_multiinstance::instances:
   s4: 185G
+profile::base::notifications: disabled
