@@ -3,6 +3,7 @@
 import argparse
 import logging
 import pathlib
+import re
 import shutil
 import sys
 
@@ -59,6 +60,40 @@ def all_rulefiles(paths):
     return files
 
 
+def get_tag(fobj, name):
+    """Read tag 'name' from fobj "header". The header ends when a non-comment or non-empty line, the
+    rest is ignored. Return None on tag not found."""
+
+    # FIXME Use format strings when all Prometheus hosts run >= Buster
+    tag_re = re.compile("^# *{name}: *(\\S+)$".format(name=name))
+
+    for line in fobj:
+        m = tag_re.match(line)
+        if m:
+            return m.group(1)
+        # stop looking after comments and empty lines
+        if not line.startswith("#") and not line.startswith(" "):
+            return None
+    return None
+
+
+def filter_tag(files, tag_name, tag_value, default):
+    """Scan each of 'files' for 'tag_name' having 'tag_value'. A file without tags is assumed to
+    have 'tag_name' with value 'default'. Return the filtered list."""
+
+    res = []
+    for filename in files:
+        with open(filename) as f:
+            tag = get_tag(f, tag_name)
+            # tag found and has the value we're looking for
+            if tag == tag_value:
+                res.append(filename)
+            # tag not found, but we're looking for its default value
+            elif tag is None and tag_value == default:
+                res.append(filename)
+    return res
+
+
 def main():
     parser = argparse.ArgumentParser(description="Deploy alerting rules")
     parser.add_argument(
@@ -77,6 +112,14 @@ def main():
         help="Clean up DEPLOY_DIR of stray files",
     )
     parser.add_argument(
+        "--deploy-tag",
+        metavar="NAME",
+        default="local",
+        choices=["local", "global"],
+        help="Deploy alert files with 'deploy-tag' NAME. Files without 'deploy-tag'"
+             " will be considered to have tag 'local'.",
+    )
+    parser.add_argument(
         "deploy_dir", metavar="DEPLOY_DIR", help="Deploy alerts to DEPLOY_DIR"
     )
     args = parser.parse_args()
@@ -92,6 +135,7 @@ def main():
 
     log.debug("Inspecting %r", subdirs)
     rulefiles = all_rulefiles(subdirs)
+    rulefiles = filter_tag(rulefiles, "deploy-tag", args.deploy_tag, "local")
     log.debug("Found rulefiles %r", rulefiles)
     deployed_paths = deploy_rulefiles(rulefiles, deploy_dir, alerts_dir)
 

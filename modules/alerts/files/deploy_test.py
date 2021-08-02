@@ -57,3 +57,48 @@ class AlertsDeployTest(unittest.TestCase):
             "team-foo_alert1.yaml",
             "team-foo_alert2.yaml",
         ]
+
+
+class TagsTest(unittest.TestCase):
+    def setUp(self):
+        self.path = pathlib.Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        shutil.rmtree(self.path.as_posix())
+
+    def write_text(self, filename, text):
+        with open(self.path / filename, "w") as f:
+            f.write(text)
+
+    def result_ok(self, files, expected):
+        names = [x.name for x in files]
+        assert set(names) == set(expected)
+
+    def testTagDefaultValue(self):
+        self.write_text("no-tag", "# random header\n\n")
+        self.write_text("default-value", "# tag: default\n\n")
+        self.write_text("other-value", "# tag:other\n\n")
+        self.write_text("ok-value", "# tag:    value\n\n")
+
+        # Materialize the generator, we're going to reuse the list
+        files = list(self.path.glob("*"))
+
+        filtered = deploy.filter_tag(files, "tag", "default", "default")
+        self.result_ok(filtered, ["no-tag", "default-value"])
+
+        filtered = deploy.filter_tag(files, "tag", "value", "default")
+        self.result_ok(filtered, ["ok-value"])
+
+    def testTagNotReadInTrailer(self):
+        self.write_text(
+            "tag-end", "# header\n\n\nrestof\n\nfile\n# tag: value\ntrailer\n"
+        )
+
+        # Materialize the generator, we're going to reuse the list
+        files = list(self.path.glob("*"))
+
+        filtered = deploy.filter_tag(files, "tag", "default", "default")
+        self.result_ok(filtered, ["tag-end"])
+
+        filtered = deploy.filter_tag(files, "tag", "value", "default")
+        self.result_ok(filtered, [])
