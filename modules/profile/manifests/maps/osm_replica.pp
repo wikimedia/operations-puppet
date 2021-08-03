@@ -8,6 +8,14 @@ class profile::maps::osm_replica(
 
     require ::profile::maps::postgresql_common
 
+    $kubepods_networks = $network::constants::kubepods_networks
+
+    $pgversion = $::lsbdistcodename ? {
+        'buster'  => 11,
+        'stretch' => 9.6,
+    }
+
+
     class { '::postgresql::slave':
         master_server => $master,
         root_dir      => '/srv/postgresql',
@@ -22,6 +30,22 @@ class profile::maps::osm_replica(
         warning     => 2097152, # 2Mb
         retries     => 15, # compensate for spikes in lag when OSM database resync is underway.
     }
+
+    # tegola-vector-tiles will connect as user tilerator from
+    # kubernetes pods.
+    $kubepods_networks.each |String $subnet| {
+        if $subnet =~ Stdlib::IP::Address::V4 {
+            $_subnet = split($subnet, '/')[0]
+            postgresql::user::hba { "${_subnet}_kubepod":
+                user      => 'tilerator',
+                database  => 'all',
+                cidr      => $subnet,
+                hba_label => "${subnet}_kubepod",
+                pgversion => $pgversion,
+            }
+        }
+    }
+
 
     $prometheus_command = "/usr/bin/prometheus_postgresql_replication_lag -m ${master} -P ${replication_pass}"
     cron { 'prometheus-pg-replication-lag':
