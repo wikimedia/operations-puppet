@@ -2,7 +2,7 @@
 #
 # Rsyncs $source to $destination/$::hostname using the
 # published-sync script. The destination host is expected to use
-# theh statistics::published class to merge
+# the statistics::published class to merge
 # $::hostname directories into a single directory.
 # This class should be included on the source host, not the
 # remote destination host. The remote destination host must be able to accept

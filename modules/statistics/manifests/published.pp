@@ -18,7 +18,7 @@ class statistics::published(
     require statistics::user
 
     # Use hardsync script to hardlink merge files from various host 'published'
-    # directories.  These are rsync pushed here from those those hosts.
+    # directories.  These are rsync pushed here from those hosts.
     file { $source:
         ensure => 'directory',
         owner  => 'root',

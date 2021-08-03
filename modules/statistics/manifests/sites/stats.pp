@@ -14,6 +14,14 @@ class statistics::sites::stats {
     $geowiki_private_directory     = "${wikistats_web_directory}/htdocs/geowiki-private"
     $geowiki_private_htpasswd_file = '/etc/apache2/htpasswd.stats-geowiki'
 
+    # added due to this error: https://phabricator.wikimedia.org/T285355#7256778
+    file { $wikistats_web_directory:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'www-data',
+        mode   => '0775',
+    }
+
     # add htpasswd file for stats.wikimedia.org
     file { '/etc/apache2/htpasswd.stats':
         owner     => 'root',
