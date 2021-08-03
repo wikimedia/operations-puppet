@@ -1221,6 +1221,11 @@ node /^(ganeti2025|ganeti2026)\.codfw\.wmnet$/ {
     role(ganeti_test)
 }
 
+# New Test cluster for codfw T286484
+node /^ganeti-test200[123]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 node /^ganeti300[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
