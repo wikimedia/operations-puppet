@@ -2,7 +2,6 @@
 class dragonfly::supernode {
   ensure_packages('dragonfly-supernode')
 
-  # TODO: This could use TLS termination on port 8002
   # TODO: Add parameters for ports and cdnPatten maybe
   file { '/etc/dragonfly/supernode.yml':
       ensure  => file,

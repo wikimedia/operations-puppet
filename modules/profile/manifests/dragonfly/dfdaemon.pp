@@ -4,6 +4,7 @@ class profile::dragonfly::dfdaemon(
     Stdlib::Fqdn  $docker_registry_fqdn = lookup('profile::dragonfly::dfdaemon::docker_registry_fqdn'),
     Array[String] $proxy_urls_regex = lookup('profile::dragonfly::dfdaemon::proxy_urls_regex'),
     String $ratelimit = lookup('profile::dragonfly::dfdaemon::ratelimit'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
 ){
   # TODO: add a global hiera variable called docker_registry_fqdn and use it in the other
   #       places where we refer to it explicitly in hiera.
@@ -11,7 +12,7 @@ class profile::dragonfly::dfdaemon(
   # Generate a certificate to hijack/MITM requests to docker-registry as well as
   # accept connections via localhost.
   #
-  # FIXME: With ensure == 'absent' get_cert fails because the user (owner) does not exist:
+  # With ensure == 'absent' get_cert fails because the user (owner) does not exist:
   # Error: Could not execute posix command: Invalid user: dragonfly
   # The user (and /etc/dragonfly) is created by the debian package which will not be installed
   # in case of ensure == 'absent'
@@ -45,6 +46,14 @@ class profile::dragonfly::dfdaemon(
       srange => '$DOMAIN_NETWORKS',
   }
 
+  # Allow prometheus nodes to connec to dfdaemon to scrape metrics.
+  $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+  ferm::service { 'dragonfly_dfdaemon':
+      ensure => $ensure,
+      proto  => 'tcp',
+      port   => '65001',
+      srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+  }
+
   # TODO: Add monitoring
-  # TODO: Add prometheus scraping config
 }

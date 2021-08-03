@@ -9,6 +9,5 @@ class profile::dragonfly::supernode {
       srange => '$DOMAIN_NETWORKS',
   }
 
-  # TODO: Add monitoring
-  # TODO: Add prometheus scraping config
+  # TODO: Add icinga monitoring
 }

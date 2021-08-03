@@ -5,12 +5,13 @@
 registry_mirror:
   remote: "https://<%= @docker_registry_fqdn %>"
 
-# dfdaemon will listen on TCP 65001 by default for connections to be proxied to the registry
+# dfdaemon will listen on TCP 65001 by default for connections to be proxied to the registry.
 # If certpem and keypem is set, dfdaemon will only accept HTTPS connections.
-hostIp: 127.0.0.1
+# Prometheus metrics are served as well using this port, so we need to bind to 0.0.0.0.
+hostIp: 0.0.0.0
 port: 65001
 # We can't use HTTP even though we're localhost only as docker will refuse to send credentials
-# for a registry via HTTPS. So this needs to be a certificate for: 127.0.0.1, ::1, localhost
+# for a registry via HTTPS. So this needs to be a certificate for: 127.0.0.1, ::1, localhost and $(hostname -f) (for scraping metrics).
 certpem: "<%= @dfdaemon_ssl_cert %>"
 keypem: "<%= @dfdaemon_ssl_key %>"
 
