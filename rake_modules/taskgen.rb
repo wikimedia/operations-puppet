@@ -528,6 +528,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:mtail'
         end
+        alerts_files = filter_files_by("modules/alerts/files/**")
+        unless alerts_files.empty?
+          desc 'Run tox for alerts'
+          task :alerts do
+            res = system("tox -e alerts")
+            raise 'Tests for alerts failed!'.red unless res
+          end
+          tasks << 'tox:alerts'
+        end
         tslua_files = filter_files_by("modules/profile/files/trafficserver/**")
         unless tslua_files.empty?
           desc 'Run tox for tslua'
