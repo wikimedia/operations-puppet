@@ -11,6 +11,9 @@ profile::elasticsearch::dc_settings:
         - logstash1027.eqiad.wmnet
         - logstash1028.eqiad.wmnet
         - logstash1029.eqiad.wmnet
+        - logstash1033.eqiad.wmnet
+        - logstash1034.eqiad.wmnet
+        - logstash1035.eqiad.wmnet
     cluster_hosts:
         - logstash1010.eqiad.wmnet
         - logstash1011.eqiad.wmnet
@@ -25,5 +28,8 @@ profile::elasticsearch::dc_settings:
         - logstash1030.eqiad.wmnet
         - logstash1031.eqiad.wmnet
         - logstash1032.eqiad.wmnet
+        - logstash1033.eqiad.wmnet
+        - logstash1034.eqiad.wmnet
+        - logstash1035.eqiad.wmnet
 
 profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-eqiad'

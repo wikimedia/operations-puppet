@@ -1579,7 +1579,7 @@ node /^logstash100[7-9]\.eqiad\.wmnet$/ {
 
 # eqiad new logstash nodes T267666
 node /^logstash103[345]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(logstash::elasticsearch7)
 }
 
 # codfw logstash elasticsearch
