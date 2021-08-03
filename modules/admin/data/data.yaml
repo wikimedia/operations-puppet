@@ -46,7 +46,7 @@ groups:
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman, lsobanski,
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
-              mdipietro]
+              mdipietro, mvernon]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
@@ -1469,6 +1469,15 @@ users:
         mmullie@wikimedia.org]
     uid: 2269
     email: mmullie@wikimedia.org
+  mvernon:
+    email: mvernon@wikimedia.org
+    ensure: present
+    gid: 500
+    name: mvernon
+    realname: Matthew Vernon
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN+WQVCjTL/TRrb+ThEqJ0h6eyFvEE7u6X2t9h4DAK2z matthew@tsk
+    uid: 33349
   mwalker:
     ensure: absent
     gid: 500
