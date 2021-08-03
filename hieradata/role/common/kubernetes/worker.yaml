@@ -62,6 +62,7 @@ profile::lvs::realserver::pools:
   recommendation-api: {}
   apertium: {}
   shellbox: {}
+  shellbox-constraints: {}
   similar-users: {}
   linkrecommendation: {}
 prometheus::node_exporter::collectors_extra:

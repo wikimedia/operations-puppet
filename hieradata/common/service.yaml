@@ -2179,6 +2179,47 @@ service::catalog:
       - dnsdisc: shellbox
         active_active: true
 
+  shellbox-constraints:
+    description: Shellbox Constraints, shellbox-constraints.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.61
+      eqiad:
+        default: 10.2.2.61
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - https://localhost/healthz
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!shellbox-constraints.discovery.wmnet!4010!/healthz
+      critical: false # don't enable paging while testing
+      sites:
+        codfw:
+          hostname: shellbox-constraints.svc.codfw.wmnet
+        eqiad:
+          hostname: shellbox-constraints.svc.eqiad.wmnet
+    port: 4010
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: shellbox-constraints
+        active_active: true
+
   swift:
     description: Swift media storage
     encryption: false
