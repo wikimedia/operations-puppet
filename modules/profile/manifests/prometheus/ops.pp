@@ -1850,14 +1850,20 @@ class profile::prometheus::ops (
         hostnames_only => false,
     }
 
-    # Job definition for dragonfly
-    # Currently this is only the supernode, might include peers later
+    # Job definition for dragonfly supernode and clients (dfdaemon)
     $dragonfly_jobs = [
       {
-        'job_name'        => 'dragonfly',
+        'job_name'        => 'dragonfly_supernode',
         'scheme'          => 'http',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/dragonfly_*.yaml"] },
+          { 'files' => [ "${targets_path}/dragonfly_supernode_*.yaml"] },
+        ],
+      },
+      {
+        'job_name'        => 'dragonfly_dfdaemon',
+        'scheme'          => 'https',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/dragonfly_dfdaemon_*.yaml"] },
         ],
       },
     ]
@@ -1865,6 +1871,11 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/dragonfly_supernode_${::site}.yaml",
         class_name => 'dragonfly::supernode',
         port       => 8002,
+    }
+    prometheus::class_config{ "dragonfly_dfdaemon_${::site}":
+        dest       => "${targets_path}/dragonfly_dfdaemon_${::site}.yaml",
+        class_name => 'dragonfly::dfdaemon',
+        port       => 65001,
     }
 
     # Job definition for gitlab T275170
