@@ -61,3 +61,6 @@ cluster::management:
 
 pontoon::frontend:
   - pontoon-frontend-02.monitoring.eqiad1.wikimedia.cloud
+
+pontoon::lb:
+  - pontoon-lb-02.monitoring.eqiad1.wikimedia.cloud
