@@ -3894,7 +3894,7 @@ users:
   kormat:
     ensure: present
     realname: Stevie Beth Mhaol
-    email: sshirley@wikimedia.org
+    email: sbmhaol@wikimedia.org
     uid: 24118
     gid: 500
     ssh_keys:
