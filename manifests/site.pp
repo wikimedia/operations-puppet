@@ -1782,7 +1782,7 @@ node /^mw141([4-8])\.eqiad\.wmnet$/ {
 }
 
 node /^mw14(19|20)\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 node /^mw14(2[1-2])\.eqiad\.wmnet$/ {
@@ -1791,7 +1791,7 @@ node /^mw14(2[1-2])\.eqiad\.wmnet$/ {
 
 # rack A5
 node /^mw13(8[579]|91)\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # Row B
@@ -1802,40 +1802,40 @@ node /^mw14(2[3-8])\.eqiad\.wmnet$/ {
 }
 
 node /^mw14(29|3[0-3])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # rack B3 and B5
 node /^mw1(39[3579]|40[13])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # Row C
 
 # rack C3
 node /^mw140[57]\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 node /^mw14(3[4-6])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # rack C6
 node /^mw13(19|2[0-9]|3[0-3])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # rack C8
 node /^mw14(09|1[13])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # Row D
 
 # rack D1
 node /^mw13(49|5[0-5])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # rack D3
@@ -1845,12 +1845,12 @@ node /^mw1363\.eqiad\.wmnet$/ {
 
 # rack D3
 node /^mw136[45]\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # rack D6
 node /^mw13(6[6-9]|7[0-3])\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 # rack D6
