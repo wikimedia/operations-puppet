@@ -1101,6 +1101,11 @@ host testreduce1001 {
     fixed-address testreduce1001.eqiad.wmnet;
 }
 
+host testvm2002 {
+    hardware ethernet aa:00:00:d1:f1:02;
+    fixed-address testvm2002.codfw.wmnet;
+}
+
 host urldownloader1001.wikimedia.org {
     hardware ethernet aa:00:00:d2:7d:c6;
     fixed-address urldownloader1001.wikimedia.org;
