@@ -81,7 +81,8 @@ class docker_registry_ha::web (
     }
 
     # Find k8s nodes that have auth credentials (for restricted/)
-    $k8s_authenticated_nodes = query_facts("Class[k8s::kubelet] and File['/var/lib/kubelet/config.json']", ['fqdn', 'ipaddress'])
+    # FIXME: This currently also adds some appservers abused for testing dragonfly (see Bug: T286054)
+    $k8s_authenticated_nodes = query_facts("(Class[k8s::kubelet] and File['/var/lib/kubelet/config.json']) or Class[role::mediawiki::appserver_dragonfly]", ['fqdn', 'ipaddress'])
 
     # Create a directory for nginx cache if enabled
     if $nginx_cache {

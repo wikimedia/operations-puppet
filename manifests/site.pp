@@ -1875,7 +1875,7 @@ node /^mw14(39|40|45|46)\.eqiad\.wmnet$/ {
 
 # rack D8 - appservers
 node /^mw1384\.eqiad\.wmnet$/ {
-    role(mediawiki::appserver)
+    role(mediawiki::appserver_dragonfly)
 }
 
 node /^mw144([1-2])\.eqiad\.wmnet$/ {
