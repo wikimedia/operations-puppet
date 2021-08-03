@@ -47,6 +47,7 @@ profile::gerrit::replication:
             - '+refs/tags/*:refs/tags/*'
         createMissingRepositories: false
         maxRetries: 50
+        rescheduleDelay: 15
         replicatePermissions: false
         # Double escape backslashes:
         # once for regex, once for gitconfig formatting
@@ -60,6 +61,7 @@ profile::gerrit::replication:
         replicateHiddenProjects: true
         defaultForceUpdate: true
         replicationDelay: 5
+        rescheduleDelay: 5
 
 # Allow use of supplemental key for scap deployment
 profile::base::ssh_server_settings:
