@@ -1117,7 +1117,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     role: 'logstash7'
     public_endpoint: 'logstash'
 
