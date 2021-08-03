@@ -2215,7 +2215,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: monitoring_setup
     discovery:
       - dnsdisc: shellbox-constraints
         active_active: true
