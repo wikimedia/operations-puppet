@@ -125,6 +125,10 @@ profile::presto::server::catalogs:
 
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
+profile::presto::server::generate_certificate: true
+profile::presto::server::ssl_certnames:
+  - analytics-presto.eqiad.wmnet
+
 # Upload the spark2-assembly.zip file to HDFS
 profile::hadoop::spark2::install_assembly: true
 
