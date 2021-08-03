@@ -9,6 +9,7 @@ class profile::configmaster(
         'config-master.esams.wmnet',
         'config-master.ulsfo.wmnet',
         'config-master.eqsin.wmnet',
+        'config-master.drmrs.wmnet',
         'pybal-config',
     ]
 
