@@ -1591,7 +1591,7 @@ node /^logstash200[4-6]\.codfw\.wmnet$/ {
 
 #codfw new logstash nodes T267420
 node /^logstash203[345]\.codfw\.wmnet/ {
-    role(insetup)
+    role(logstash::elasticsearch7)
 }
 
 node /lvs101[3456]\.eqiad\.wmnet/ {

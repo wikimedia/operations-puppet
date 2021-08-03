@@ -8,6 +8,9 @@ profile::elasticsearch::dc_settings:
       - logstash2027.codfw.wmnet
       - logstash2028.codfw.wmnet
       - logstash2029.codfw.wmnet
+      - logstash2033.codfw.wmnet
+      - logstash2034.codfw.wmnet
+      - logstash2035.codfw.wmnet
     cluster_hosts:
       - logstash2001.codfw.wmnet
       - logstash2002.codfw.wmnet
@@ -21,6 +24,9 @@ profile::elasticsearch::dc_settings:
       - logstash2029.codfw.wmnet
       - logstash2030.codfw.wmnet
       - logstash2031.codfw.wmnet
+      - logstash2033.codfw.wmnet
+      - logstash2034.codfw.wmnet
+      - logstash2035.codfw.wmnet
 
 # nominate one host per cluster to run certain jobs
 profile::elasticsearch::logstash::jobs_host: 'logstash2026.codfw.wmnet'
