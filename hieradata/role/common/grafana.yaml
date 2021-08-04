@@ -23,6 +23,8 @@ profile::grafana::config:
     allow_embedding: true
   panels:
     disable_sanitize_html: true
+  dashboards:
+    min_refresh_interval: 30s
 profile::grafana::ldap:
   servers:
     eqiad:
