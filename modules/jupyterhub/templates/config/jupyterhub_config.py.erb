@@ -268,3 +268,7 @@ c.SystemdSpawner.disable_user_sudo = True
 c.SystemdSpawner.readonly_paths = ['/']
 c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user', '/tmp']
 
+# Create discrete log files for each user's notebook
+c.SystemdSpawner.unit_extra_properties = {
+    'SyslogIdentifier':'jupyterhub-conda-singleuser'
+}
