@@ -101,7 +101,7 @@ class Host:
             s=self)
 
     def __json__(
-            self, service_pattern: Optional[re.Pattern]
+            self, service_pattern: Optional[re.Pattern] = None
     ) -> Dict[str, Union[str, bool, List[Service]]]:
         """Return a json representation of the service"""
         result: Dict[str, Union[str, bool, List[Service]]] = {
@@ -261,11 +261,11 @@ def get_args() -> argparse.Namespace:
     parser.add_argument('--verbatim-hosts', action='store_true',
                         help=('Treat the hosts parameter as verbatim Icinga hostnames, without '
                               'extracting the hostname from the FQDN.'))
-    parser.add_argument('--services', default='FAILED',
+    parser.add_argument('--services',
                         help=('select the service names to include in json output; full-match '
-                              'regex to include matching services regardless of status, or the '
-                              'magic string "FAILED" (default) to include all failed services '
-                              'regardless of name.'))
+                              'regex to include matching services regardless of status, or leave '
+                              'this flag unset to include all failed services regardless of name. '
+                              'To include ALL services, set this flag to ".*"'))
     return parser.parse_args()
 
 
@@ -310,7 +310,7 @@ def main() -> int:
             logging.error('%s, %s', host, [str(srv) for srv in status.failed_services])
             exit_code = 1
 
-    service_pattern = None if args.services == 'FAILED' else re.compile(args.services)
+    service_pattern = None if args.services is None else re.compile(args.services)
 
     def to_json(o: Union[Host, Service]) -> Dict[str, Any]:
         if isinstance(o, Host):
