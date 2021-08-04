@@ -132,6 +132,10 @@ profile::services_proxy::envoy::listeners:
     port: 6024
     timeout: "60s"
     service: shellbox
+  - name: shellbox-constraints
+    port: 6025
+    timeout: "10s"
+    service: shellbox-constraints
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -232,6 +236,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - restbase
   - cxserver
   - shellbox
+  - shellbox-constraints
   - swift-eqiad
   - swift-codfw
   - search-chi-eqiad
