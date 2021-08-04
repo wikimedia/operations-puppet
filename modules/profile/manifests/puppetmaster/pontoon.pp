@@ -58,7 +58,7 @@ class profile::puppetmaster::pontoon (
         exec { 'probe puppetdb':
             # The jq "inputs |" form is to exit non-zero on empty input
             command => @("PROBER"/L)
-            curl --fail --silent \
+            /usr/bin/curl --fail --silent \
               --cacert /etc/ssl/certs/Puppet_Internal_CA.pem \
               'https://${puppetdb_hosts[0]}/status/v1/services/puppetdb-status' \
               | jq -ne 'inputs | .state == "running"'
