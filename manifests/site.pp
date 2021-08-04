@@ -2502,6 +2502,12 @@ node /^sretest100[1-2]\.eqiad\.wmnet$/ {
 node 'testreduce1001.eqiad.wmnet' {
     role(parsoid::testreduce)
 }
+
+# Test instances for Ganeti test cluster
+node /^testvm200[1-2]\.codfw\.wmnet$/ {
+    role(test)
+}
+
 # Used for various d-i tests
 node 'theemin.codfw.wmnet' {
     role(test)
