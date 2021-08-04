@@ -168,10 +168,8 @@ profile::idp::services:
   gitlab:
     id: 23
     service_id: 'https://gitlab.wikimedia.org(/.*)?'
-    required_groups:
-      - ops
-      - wmf
-      - nda
+    # No required_groups defined for gitlab.wm.o as GitLab should be open to
+    # any user with a Wikimedia developer account
   wmcs_idp:
     id: 24
     service_id: 'https://idp.wmcloud.org(/.*)?'
