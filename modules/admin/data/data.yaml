@@ -5287,3 +5287,7 @@ ldap_only_users:
     ensure: present
     realname: Christina Macholan
     email: cmacholan@wikimedia.org
+  elal:
+    ensure: present
+    realname: Elena Aleynikova
+    email: elena.aleynikova@wikimedia.de
