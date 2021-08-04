@@ -8,7 +8,7 @@ class role::mediawiki::appserver_dragonfly {
     include role::mediawiki::appserver
 
     # Install docker and set up credentials
-    ensure_packages(['docker-engine'], {'ensure' => present})
+    ensure_packages(['docker.io'], {'ensure' => present})
     docker::credentials { '/root/.docker/config.json':
         owner             => 'root',
         group             => 'root',
