@@ -1,6 +1,7 @@
 profile::admin::groups:
   - analytics-admins
   - analytics-privatedata-users
+profile::admin::managelingering: true
 cluster: analytics
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'

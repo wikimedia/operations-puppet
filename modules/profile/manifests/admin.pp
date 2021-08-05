@@ -5,13 +5,15 @@ class profile::admin (
     Array[String[1]] $always_groups   = lookup('profile::admin::always_groups'),
     Boolean          $purge_sudoers_d = lookup('profile::admin::purge_sudoers_d'),
     Boolean          $managehome      = lookup('profile::admin::managehome'),
+    Boolean          $managelingering = lookup('profile::admin::managelingering'),
 ) {
     class {'sudo':
         purge_sudoers_d => $purge_sudoers_d,
     }
     class {'admin':
-        groups        => $groups,
-        groups_no_ssh => $groups_no_ssh,
-        managehome    => $managehome,
+        groups          => $groups,
+        groups_no_ssh   => $groups_no_ssh,
+        managehome      => $managehome,
+        managelingering => $managelingering,
     }
 }

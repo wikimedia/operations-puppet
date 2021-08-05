@@ -6,16 +6,19 @@
 #    Array of valid groups (defined in yaml) to create with associated members,
 #    with the constraint that no ssh key for their users is deployed.
 # @param always_groups Array of valid groups to always run
-# @param manage_home if true puppet will use `useradd -m` when creating users.
+# @param managehome if true puppet will use `useradd -m` when creating users.
 #   This is useful if you want to make use of the /etc/skel directory to create additional
 #   files and directories.  For example on people1001 its nice to ensure all user have
 #   ~/public_html
+# @param managelingering if true puppet will enable lingering for all kerberos enabled users.
+#   Default false.
 
 class admin(
-    Array[String[1]] $groups        = [],
-    Array[String[1]] $groups_no_ssh = [],
-    Array[String[1]] $always_groups = ['absent', 'ops', 'wikidev', 'ops-adm-group', 'sre-admins'],
-    Boolean          $managehome    = false,
+    Array[String[1]] $groups          = [],
+    Array[String[1]] $groups_no_ssh   = [],
+    Array[String[1]] $always_groups   = ['absent', 'ops', 'wikidev', 'ops-adm-group', 'sre-admins'],
+    Boolean          $managehome      = false,
+    Boolean          $managelingering = false,
 )
 {
 
@@ -48,6 +51,9 @@ class admin(
     # we need to make sure that the two sets don't overlap.
     $users_set_nossh = unique_users($data, $groups_no_ssh).filter |$user| { !($user in $users_set_ssh) }
 
+    # List of Kerberos enabled users
+    $users_krb_enabled = admin::kerberos_users($data)
+
     file { '/usr/local/sbin/enforce-users-groups':
         ensure => file,
         mode   => '0555',
@@ -78,5 +84,17 @@ class admin(
         command   => '/usr/local/sbin/enforce-users-groups',
         unless    => '/usr/local/sbin/enforce-users-groups dryrun',
         logoutput => true,
+    }
+
+    # For hosts where we allow user lingering, create the directory to hold linger records
+    # Then create an empty file in that directory for each kerberos enabled user account
+    if $managelingering {
+        file { '/var/lib/systemd/linger':
+            ensure => directory,
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+        }
+        admin::userlinger { $users_krb_enabled: }
     }
 }

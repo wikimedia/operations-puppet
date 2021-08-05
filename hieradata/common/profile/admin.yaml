@@ -1,6 +1,7 @@
 profile::admin::groups: []
 profile::admin::groups_no_ssh: []
 profile::admin::managehome: false
+profile::admin::managelingering: false
 profile::admin::purge_sudoers_d: false
 profile::admin::always_groups:
   - 'absent'
