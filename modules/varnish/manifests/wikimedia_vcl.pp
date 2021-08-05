@@ -4,6 +4,7 @@ define varnish::wikimedia_vcl(
     $vcl_config = {},
     $backend_caches = [],
     $backend_options = {},
+    $dynamic_backend_caches = true,
     $vcl = '',
     $generate_extra_vcl = false,
     $is_separate_vcl=false,
@@ -11,10 +12,8 @@ define varnish::wikimedia_vcl(
     $wikimedia_trust=[],
 ) {
     if $varnish_testing  {
-        $dynamic_backend_caches = false
         $netmapper_dir = '/usr/share/varnish/tests'
     } else {
-        $dynamic_backend_caches = lookup('varnish::dynamic_backend_caches', {'default_value' => true})
         $netmapper_dir = '/var/netmapper'
     }
 

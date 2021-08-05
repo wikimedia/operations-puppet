@@ -77,6 +77,7 @@ profile::cache::varnish::cache_be_opts:
     between_bytes_timeout: '33s'
     max_connections: 5000
     probe: 'varnish'
+profile::cache::varnish::frontend::backends_in_etcd: false
 profile::cache::varnish::frontend::runtime_params:
     - default_ttl=3600
 profile::cache::varnish::frontend::fe_vcl_config:
@@ -175,7 +176,6 @@ profile::trafficserver::backend::logs:
     mode: ascii_pipe
     ensure: present
 profile::trafficserver::backend::default_lua_script: 'default'
-varnish::dynamic_backend_caches: false
 # Worst path rtt through our network, used in prod to determine timeouts. Not
 # particularly useful in labs, but necessary as the setting has no default
 # value in puppet.

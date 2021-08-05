@@ -9,6 +9,7 @@ define varnish::instance(
     $jemalloc_conf=undef,
     $backend_caches=[],
     $backend_options={},
+    $backends_in_etcd=true,
     $extra_vcl = [],
     $separate_vcl = [],
     $wikimedia_nets = [],
@@ -61,15 +62,16 @@ define varnish::instance(
 
     ([$vcl] + $separate_vcl).each |String $vcl_name| {
         varnish::wikimedia_vcl { "/etc/varnish/wikimedia_${vcl_name}.vcl":
-            require         => File["/etc/varnish/${vcl_name}.inc.vcl"],
-            template_path   => "${module_name}/wikimedia-frontend.vcl.erb",
-            vcl_config      => $vcl_config,
-            backend_caches  => $backend_caches,
-            backend_options => $backend_options,
-            vcl             => $vcl_name,
-            is_separate_vcl => $vcl_name in $separate_vcl,
-            wikimedia_nets  => $wikimedia_nets,
-            wikimedia_trust => $wikimedia_trust,
+            require                => File["/etc/varnish/${vcl_name}.inc.vcl"],
+            template_path          => "${module_name}/wikimedia-frontend.vcl.erb",
+            vcl_config             => $vcl_config,
+            backend_caches         => $backend_caches,
+            backend_options        => $backend_options,
+            dynamic_backend_caches => $backends_in_etcd,
+            vcl                    => $vcl_name,
+            is_separate_vcl        => $vcl_name in $separate_vcl,
+            wikimedia_nets         => $wikimedia_nets,
+            wikimedia_trust        => $wikimedia_trust,
         }
 
         # This version of wikimedia_${vcl_name}.vcl is exactly the same as the
@@ -78,33 +80,36 @@ define varnish::instance(
         # /usr/share/varnish/tests without having to modify any VCL file by
         # hand.
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/wikimedia_${vcl_name}.vcl":
-            require         => File['/usr/share/varnish/tests'],
-            varnish_testing => true,
-            template_path   => "${module_name}/wikimedia-frontend.vcl.erb",
-            vcl_config      => $vcl_config,
-            backend_caches  => $backend_caches,
-            backend_options => $backend_options,
-            vcl             => $vcl_name,
-            is_separate_vcl => $vcl_name in $separate_vcl,
-            wikimedia_nets  => $wikimedia_nets,
-            wikimedia_trust => $wikimedia_trust,
+            require                => File['/usr/share/varnish/tests'],
+            varnish_testing        => true,
+            template_path          => "${module_name}/wikimedia-frontend.vcl.erb",
+            vcl_config             => $vcl_config,
+            backend_caches         => $backend_caches,
+            backend_options        => $backend_options,
+            dynamic_backend_caches => false,
+            vcl                    => $vcl_name,
+            is_separate_vcl        => $vcl_name in $separate_vcl,
+            wikimedia_nets         => $wikimedia_nets,
+            wikimedia_trust        => $wikimedia_trust,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/${vcl_name}.inc.vcl":
-            template_path   => "varnish/${vcl_name}.inc.vcl.erb",
-            notify          => Exec["load-new-vcl-file${instancesuffix}"],
-            vcl_config      => $vcl_config,
-            backend_caches  => $backend_caches,
-            backend_options => $backend_options,
+            template_path          => "varnish/${vcl_name}.inc.vcl.erb",
+            notify                 => Exec["load-new-vcl-file${instancesuffix}"],
+            vcl_config             => $vcl_config,
+            backend_caches         => $backend_caches,
+            backend_options        => $backend_options,
+            dynamic_backend_caches => $backends_in_etcd,
         }
 
         varnish::wikimedia_vcl { "/usr/share/varnish/tests/${vcl_name}.inc.vcl":
-            require         => File['/usr/share/varnish/tests'],
-            varnish_testing => true,
-            template_path   => "varnish/${vcl_name}.inc.vcl.erb",
-            vcl_config      => $vcl_config,
-            backend_caches  => $backend_caches,
-            backend_options => $backend_options,
+            require                => File['/usr/share/varnish/tests'],
+            varnish_testing        => true,
+            template_path          => "varnish/${vcl_name}.inc.vcl.erb",
+            vcl_config             => $vcl_config,
+            backend_caches         => $backend_caches,
+            backend_options        => $backend_options,
+            dynamic_backend_caches => false,
         }
     }
 
