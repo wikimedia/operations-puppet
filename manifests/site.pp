@@ -925,7 +925,7 @@ node /^(doh[123]00[12]|doh4001|doh5001)\.wikimedia\.org$/ {
 }
 
 # Dragonfly Supernode (T286054)
-node 'dragonfly-supernode1001.eqiad.wmnet' {
+node /^dragonfly-supernode[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(dragonfly::supernode)
 }
 
