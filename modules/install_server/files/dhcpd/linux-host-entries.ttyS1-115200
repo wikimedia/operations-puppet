@@ -4389,7 +4389,6 @@ host maps2004 {
 host maps2005 {
     hardware ethernet 2C:EA:7F:56:9F:E6;
     fixed-address maps2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host maps2006 {
