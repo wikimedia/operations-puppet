@@ -1761,11 +1761,6 @@ node /^ms-be2\d\d\d\.codfw\.wmnet$/ {
     role(swift::storage)
 }
 
-# New nodes for codfw ms-be T285809
-node /^ms-be206[2345]\.codfw\.wmnet/ {
-    role(insetup)
-}
-
 ## MEDIAWIKI APPLICATION SERVERS
 
 ## DATACENTER: EQIAD
