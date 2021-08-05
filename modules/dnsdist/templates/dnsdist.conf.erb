@@ -77,7 +77,7 @@ addDOHLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['c
 <% if @enable_landing -%>
 -- static pages for the DoH frontend (/)
 -- used to display help information and/or privacy policy
-staticMap = { newDOHResponseMapEntry("^/$", 200, '<%= @landing_text %>') }
+staticMap = { newDOHResponseMapEntry("^/$", 200, [[ <%= @landing_text %> ]]) }
 
 -- dohFE0 is the DoH frontend for 0.0.0.0:443
 dohFE0 = getDOHFrontend(0)
