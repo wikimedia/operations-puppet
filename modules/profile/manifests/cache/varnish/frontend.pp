@@ -15,6 +15,7 @@ class profile::cache::varnish::frontend (
     Integer $fe_transient_gb = lookup('profile::cache::varnish::frontend::transient_gb', {'default_value' => 0}),
     Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
     Optional[Stdlib::Unixpath] $listen_uds = lookup('profile::cache::varnish::frontend::listen_uds', {'default_value' => undef}),
+    Optional[Stdlib::Fqdn] $single_backend_experiment = lookup('cache::single_backend_fqdn', {'default_value' => undef}),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -137,6 +138,20 @@ class profile::cache::varnish::frontend (
         metric  => 'node_varnish_filedescriptors_total',
     }
 
+    # Experiment with single backend CDN nodes T288106
+    if $single_backend_experiment {
+        if $::fqdn == $single_backend_experiment {
+            $backend_caches = [ $::fqdn ]
+            $etcd_backends = false
+        } else {
+            $backend_caches = $cache_nodes[$cache_cluster][$::site] - $single_backend_experiment
+            $etcd_backends = $backends_in_etcd
+        }
+    } else {
+        $backend_caches = $cache_nodes[$cache_cluster][$::site]
+        $etcd_backends = $backends_in_etcd
+    }
+
     # lint:ignore:arrow_alignment
     varnish::instance { "${cache_cluster}-frontend":
         instance_name      => 'frontend',
@@ -148,9 +163,9 @@ class profile::cache::varnish::frontend (
         runtime_params     => join(prefix($runtime_params, '-p '), ' '),
         storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
         jemalloc_conf      => $fe_jemalloc_conf,
-        backend_caches     => $cache_nodes[$cache_cluster][$::site],
+        backend_caches     => $backend_caches,
         backend_options    => $fe_cache_be_opts,
-        backends_in_etcd   => $backends_in_etcd,
+        backends_in_etcd   => $etcd_backends,
         vcl_config         => $vcl_config,
         wikimedia_nets     => $wikimedia_nets,
         wikimedia_trust    => $wikimedia_trust,
