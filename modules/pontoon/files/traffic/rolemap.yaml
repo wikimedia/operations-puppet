@@ -1,0 +1,2 @@
+puppetmaster::pontoon:
+  - pontoon.traffic.eqiad1.wikimedia.cloud
