@@ -24,3 +24,4 @@ profile::lvs::realserver::pools:
 #      - envoyproxy
 
 profile::nginx::variant: 'light'
+profile::nginx::tmpfs_size: '2g'
