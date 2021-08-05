@@ -180,7 +180,7 @@ profile::elasticsearch::logstash::curator_actions:
         unit_count: 31
 
   # For any indices prefixed by "logstash-", and have "index.routing.allocation.require.disktype":"ssd" set,
-  # and are older than 15 days, set "index.routing.allocation.require.disktype":"hdd".
+  # and are older than 30 days, set "index.routing.allocation.require.disktype":"hdd".
   40:
     description: 'logstash: allocate older shards on hdd nodes'
     action: allocation
@@ -202,7 +202,7 @@ profile::elasticsearch::logstash::curator_actions:
         source: creation_date
         direction: older
         unit: days
-        unit_count: 15
+        unit_count: 30
 
   # forceMerge "logstash-" prefixed indices older than 2 days (based on index creation_date) to 1 segments per shard.
   # Delay 120 seconds between each forceMerge operation to allow the cluster to quiesce.
