@@ -21,7 +21,7 @@ class profile::dragonfly::dfdaemon(
       'ensure' => $ensure,
       'owner'  => 'dragonfly',
       'outdir' => '/etc/dragonfly',
-      'hosts'  => [$facts['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost']
+      'hosts'  => [$facts['hostname'], $facts['fqdn'], $docker_registry_fqdn, '127.0.0.1', '::1', 'localhost']
     })
   } else {
     $ssl_paths = {'cert' => '/nonexistent', 'key' => '/nonexistent'}
