@@ -1,2 +1,2 @@
 profile::dragonfly::dfdaemon::supernodes:
-  - dragonfly-supernode1001.eqiad.wmnet:8002=1
+  - dragonfly-supernode2001.codfw.wmnet:8002=1
