@@ -26,6 +26,10 @@ route:
     - receiver: 'logger'
       continue: true
 
+    # Compat Icinga alerts are routed to a 'sink' channel
+    - match_re:
+        alertname: '^Icinga/.*'
+      receiver: 'irc-spam'
 
     # Team routes
     - match:
@@ -68,11 +72,6 @@ route:
         team: 'rweb'
       receiver: 'rweb-mail'
 
-
-    # Compat Icinga alerts are routed to a 'sink' channel
-    - match_re:
-        alertname: '^Icinga/.*'
-      receiver: 'irc-spam'
 
     # Default routing for page/critical alerts, if no team could be routed
     - match:
