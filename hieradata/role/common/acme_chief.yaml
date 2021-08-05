@@ -257,7 +257,7 @@ profile::acme_chief::certificates:
         authorized_regexes:
         - '^doh[123]00[12]\.wikimedia\.org$'
         - '^doh4001\.wikimedia\.org$'
-        - '^doh5001\.wikimedia\.org$'
+        - '^doh500[12]\.wikimedia\.org$'
     wikiworkshop:
         CN: 'wikiworkshop.org'
         SNI:
