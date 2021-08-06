@@ -3,8 +3,6 @@ class profile::mediawiki::maintenance::wikidata {
         $::site => 'present',
         default => 'absent',
     }
-    # We don't need to get more specific here at the moment.
-    $ensure_testwiki = $ensure
     require profile::mediawiki::common
 
     $dispatch_log_file = '/var/log/wikidata/dispatchChanges-wikidatawiki.log'
@@ -26,11 +24,15 @@ class profile::mediawiki::maintenance::wikidata {
     }
 
     cron { 'wikibase-dispatch-changes-test':
-        ensure  => $ensure_testwiki,
+        ensure  => absent,
         command => "echo \"\$\$: Starting dispatcher\" >> ${test_dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}",
         user    => $mediawiki::users::web,
         minute  => '*/15',
         require => File['/var/log/wikidata'],
+    }
+    profile::mediawiki::periodic_job { 'wikibase-dispatch-changes-test':
+        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki',
+        interval => '*-*-* *:0/15:00'
     }
 
     # Prune wb_changes entries no longer needed from (test)wikidata
