@@ -36,6 +36,7 @@
   ProxyPass / http://localhost:3000/
   ProxyPassReverse / http://localhost:3000/
 
+  RequestHeader unset X-CAS-uid
   RequestHeader unset X-WEBAUTH-USER
 
   # Automatically log in all visitors as anonymous.
