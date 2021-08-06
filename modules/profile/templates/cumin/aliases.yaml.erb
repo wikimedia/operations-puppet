@@ -100,6 +100,8 @@ dns-auth-canary: P{authdns2001.wikimedia.org}
 dns-rec: P{R:Class = profile::dns::recursor}
 docker-registry: P{O:docker::registry or O:docker_registry_ha::registry}
 dns-rec-canary: P{dns2001.wikimedia.org}
+dragonfly-peer: P{R:Class = dragonfly::dfdaemon}
+dragonfly-supernode: P{O:dragonfly::supernode}
 druid-analytics: P{O:druid::analytics::worker}
 druid-public: P{O:druid::public::worker}
 druid: A:druid-analytics or A:druid-public
