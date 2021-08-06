@@ -15,13 +15,15 @@ describe 'envoyproxy::tls_terminator' do
                     {
                         :server_names  => ['*'],
                         :upstream_port => 80,
-                        :cert_path => :undef,
-                        :key_path => :undef
+                        :certificates  => :undef
                     },
                 ],
-                :global_cert_path     => '/etc/ssl/localcerts/appservers.crt',
-                :global_key_path      => '/etc/ssl/localcerts/appservers.key',
-
+                :global_certs => [
+                    {
+                        :cert_path => '/etc/ssl/localcerts/appservers.crt',
+                        :key_path  => '/etc/ssl/localcerts/appservers.key',
+                    }
+                ]
             }
           end
           it { is_expected.to compile.with_all_deps }
@@ -40,14 +42,22 @@ describe 'envoyproxy::tls_terminator' do
               :upstreams => [
                 {
                   server_names: ['citoid.svc.eqiad.wmnet', 'citoid'],
-                  cert_path: '/etc/ssl/localcerts/citoid.crt',
-                  key_path: '/etc/ssl/localcerts/citoid.key',
+                  certificates: [
+                    {
+                        cert_path: '/etc/ssl/localcerts/citoid.crt',
+                        key_path: '/etc/ssl/localcerts/citoid.key',
+                    },
+                  ],
                   upstream_port: 1234
                 },
                 {
                   server_names: ['pdfrenderer.svc.eqiad.wmnet', 'pdfrenderer'],
-                  cert_path: '/etc/ssl/localcerts/evil.crt',
-                  key_path: '/etc/ssl/localcerts/evil.key',
+                  certificates: [
+                    {
+                        cert_path: '/etc/ssl/localcerts/evil.crt',
+                        key_path: '/etc/ssl/localcerts/evil.key',
+                    },
+                  ],
                   upstream_port: 666
                 }],
             }

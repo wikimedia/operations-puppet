@@ -22,10 +22,12 @@ filter_chains:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
       common_tls_context:
         tls_certificates:
-        - certificate_chain: { filename: "<%= upstream['cert_path'] %>" }
-          private_key: { filename: "<%= upstream['key_path'] %>" }
-<%- if upstream['ocsp_path'] -%>
-          ocsp_staple: { filename: "<%= upstream['ocsp_path'] %>" }
+<% upstream['certificates'].each do |certificate| -%>
+        - certificate_chain: { filename: "<%= certificate['cert_path'] %>" }
+          private_key: { filename: "<%= certificate['key_path'] %>" }
+<%- if certificate['ocsp_path'] -%>
+          ocsp_staple: { filename: "<%= certificate['ocsp_path'] %>" }
+<%- end -%>
 <%- end -%>
   filters:
   - name: envoy.http_connection_manager
@@ -84,7 +86,7 @@ filter_chains:
       server_header_transformation: APPEND_IF_ABSENT
 <%- end -%>
 <%- end -%>
-<%- if @global_cert_path != nil && @global_key_path != nil -%>
+<%- if @global_certs != nil -%>
 # Non-SNI support
 - transport_socket:
     name: envoy.transport_sockets.tls
@@ -92,10 +94,12 @@ filter_chains:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
       common_tls_context:
         tls_certificates:
-        - certificate_chain: { filename: "<%= @global_cert_path %>" }
-          private_key: { filename: "<%= @global_key_path %>" }
-<%- if @global_ocsp_path -%>
-          ocsp_staple: { filename: "<%= @global_ocsp_path %>" }
+<% @global_certs.each do |certificate| -%>
+        - certificate_chain: { filename: "<%= certificate['cert_path'] %>" }
+          private_key: { filename: "<%= certificate['key_path'] %>" }
+<%- if certificate['ocsp_path'] -%>
+          ocsp_staple: { filename: "<%= certificate['ocsp_path'] %>" }
+<%- end -%>
 <%- end -%>
   filters:
   - name: envoy.http_connection_manager

@@ -106,16 +106,20 @@ class profile::tlsproxy::envoy(
                         group  => 'envoy',
                         notify => Service['envoyproxy.service'],
                     }
-                    $cert = "/etc/ssl/localcerts/${service['cert_name']}.crt"
-                    $key = "/etc/ssl/private/${service['cert_name']}.key"
+                    $certificates = [{
+                        'cert_path' => "/etc/ssl/localcerts/${service['cert_name']}.crt",
+                        'key_path'  => "/etc/ssl/private/${service['cert_name']}.key",
+                    }]
                 }
                 'acme': {
                     acme_chief::cert { $service['cert_name']:
                         puppet_svc => 'envoyproxy.service',
                         key_group  => 'envoy',
                     }
-                    $cert = "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.chained.crt"
-                    $key = "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.key"
+                    $certificates = [{
+                        'cert_path' => "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.chained.crt",
+                        'key_path'  => "/etc/acmecerts/${service['cert_name']}/live/ec-prime256v1.key",
+                    }]
                 }
                 'cfssl': {
                     $_cfssl_options = $service['cfssl_options'] ? {
@@ -127,8 +131,10 @@ class profile::tlsproxy::envoy(
                         default => $service['cert_options'],
                     }
                     $ssl_paths = profile::pki::get_cert($_cfssl_label, $service['cert_name'], $_cfssl_options)
-                    $cert = $ssl_paths['chained']
-                    $key = $ssl_paths['key']
+                    $certificates = [{
+                        'cert_path' => $ssl_paths['chained'],
+                        'key_path'  => $ssl_paths['key'],
+                    }]
                 }
                 default: {
                     # shouldn't ever reach here
@@ -136,22 +142,19 @@ class profile::tlsproxy::envoy(
                 }
             }
         } else {
-            $cert = undef
-            $key = undef
+            $certificates = undef
         }
         # This is the variable that's returned to the map.
         $upstream = {
             'server_names'  => $service['server_names'],
-            'cert_path'     => $cert,
-            'key_path'      => $key,
+            'certificates'  => $certificates,
             'upstream_port' => $service['port'],
             'upstream_addr' => $upstream_addr
         }
     }
 
     if $sni_support == 'strict' {
-        $global_cert_path = undef
-        $global_key_path = undef
+        $global_certs = undef
     }
     else {
         unless $global_cert_name {
@@ -165,23 +168,29 @@ class profile::tlsproxy::envoy(
                     group  => 'envoy',
                     notify => Service['envoyproxy.service'],
                 }
-                $global_cert_path = "/etc/ssl/localcerts/${global_cert_name}.crt"
-                $global_key_path = "/etc/ssl/private/${global_cert_name}.key"
+                $global_certs = [{
+                    'cert_path' => "/etc/ssl/localcerts/${global_cert_name}.crt",
+                    'key_path'  => "/etc/ssl/private/${global_cert_name}.key",
+                }]
             }
             'acme': {
                 acme_chief::cert {$global_cert_name:
                     puppet_svc => 'envoyproxy.service',
                     key_group  => 'envoy',
                 }
-                $global_cert_path = "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.chained.crt"
-                $global_key_path = "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.key"
+                $global_certs = [{
+                    'cert_path' => "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.chained.crt",
+                    'key_path'  => "/etc/acmecerts/${global_cert_name}/live/ec-prime256v1.key",
+                }]
             }
             'cfssl': {
                 $ssl_paths = profile::pki::get_cert(
                     $cfssl_label, $global_cert_name, $base_cfssl_options + $cfssl_options
                 )
-                $global_cert_path = $ssl_paths['chained']
-                $global_key_path = $ssl_paths['key']
+                $global_certs = [{
+                    'cert_path' => $ssl_paths['chained'],
+                    'key_path'  => $ssl_paths['key'],
+                }]
             }
             default: {
                 # shouldn't ever reach here
@@ -206,8 +215,7 @@ class profile::tlsproxy::envoy(
             access_log                => $access_log,
             websockets                => $websockets,
             fast_open_queue           => 150,
-            global_cert_path          => $global_cert_path,
-            global_key_path           => $global_key_path,
+            global_certs              => $global_certs,
             retry_policy              => $retry_policy,
             upstream_response_timeout => $upstream_response_timeout,
             use_remote_address        => $use_remote_address,

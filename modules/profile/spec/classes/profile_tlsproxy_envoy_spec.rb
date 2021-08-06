@@ -29,7 +29,7 @@ describe 'profile::tlsproxy::envoy' do
         }
         it {
           is_expected.to contain_envoyproxy__tls_terminator('443')
-                           .with_global_cert_path('/etc/ssl/localcerts/example.crt')
+                           .with_global_certs([{'cert_path' => '/etc/ssl/localcerts/example.crt', 'key_path' => '/etc/ssl/private/example.key'}])
                            .with_retry_policy(nil)
         }
         it {
@@ -44,8 +44,7 @@ describe 'profile::tlsproxy::envoy' do
           it do
             is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
               'server_names'  => ['*'],
-              'cert_path'     => :undef,
-              'key_path'      => :undef,
+              'certificates'  => :undef,
               'upstream_port' => 80,
               'upstream_addr' => facts[:fqdn]
             ])
@@ -62,8 +61,7 @@ describe 'profile::tlsproxy::envoy' do
             it do
               is_expected.to contain_envoyproxy__tls_terminator('4443').with_upstreams([
                 'server_names'  => ['*'],
-                'cert_path'     => :undef,
-                'key_path'      => :undef,
+                'certificates'  => :undef,
                 'upstream_port' => 80,
                 'upstream_addr' => valid
               ])
