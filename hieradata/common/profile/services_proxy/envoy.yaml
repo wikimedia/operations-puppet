@@ -132,10 +132,12 @@ profile::services_proxy::envoy::listeners:
     port: 6024
     timeout: "60s"
     service: shellbox
+    keepalive: "4s"
   - name: shellbox-constraints
     port: 6025
     timeout: "10s"
     service: shellbox-constraints
+    keepalive: "4s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
