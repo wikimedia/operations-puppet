@@ -85,11 +85,12 @@ class jupyterhub::server (
     }
 
     systemd::syslog { $service_name:
-        readable_by => 'group',
-        base_dir    => '/var/log',
-        owner       => 'root',
-        group       => 'root',
-        force_stop  => true,
+        readable_by            => 'group',
+        base_dir               => '/var/log',
+        owner                  => 'root',
+        group                  => 'root',
+        force_stop             => true,
+        programname_comparison => 'isequal',
     }
 
     systemd::service { $service_name:
