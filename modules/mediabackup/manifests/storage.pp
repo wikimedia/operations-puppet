@@ -54,7 +54,7 @@ class mediabackup::storage (
 
     File { "${config_dir}/ssl":
         ensure  => directory,
-        mode    => '0400',
+        mode    => '0700',
         owner   => 'minio-user',
         group   => 'minio-user',
         require => [ File[$config_dir], User['minio-user'], Group['minio-user'] ],
