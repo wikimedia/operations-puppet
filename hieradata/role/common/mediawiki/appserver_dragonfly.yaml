@@ -61,4 +61,4 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
 
-profile::dragonfly::dfdaemon::ensure: present
+profile::dragonfly::dfdaemon::ensure: absent
