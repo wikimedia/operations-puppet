@@ -94,6 +94,7 @@ define envoyproxy::tls_terminator(
     Optional[Stdlib::Port]                                                $redir_port                = undef,
     Optional[String]                                                      $global_cert_path          = undef,
     Optional[String]                                                      $global_key_path           = undef,
+    Optional[String]                                                      $global_ocsp_path          = undef,
     Optional[Float]                                                       $idle_timeout              = undef,
     Optional[Integer]                                                     $max_requests_per_conn     = undef,
 ) {
