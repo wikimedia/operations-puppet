@@ -1,3 +1,6 @@
+profile::contacts::role_contacts:
+  - 'Observability'
+
 profile::logstash::apifeatureusage::targets:
   - search.svc.codfw.wmnet
   - search.svc.eqiad.wmnet

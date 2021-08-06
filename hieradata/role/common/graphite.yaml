@@ -1,1 +1,4 @@
+profile::contacts::role_contacts:
+  - 'Observability'
+
 cluster: graphite

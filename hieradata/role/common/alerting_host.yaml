@@ -1,3 +1,6 @@
+profile::contacts::role_contacts:
+  - 'Observability'
+
 cluster: alerting
 profile::base::domain_search:
   - wikimedia.org
