@@ -3,5 +3,5 @@ type Envoyproxy::Tlsconfig = Struct[{
     'certificates'  => Optional[Array[Envoyproxy::Tlscertificate]],
     'upstream_port' => Stdlib::Port,
     'upstream_addr' => Optional[Stdlib::Host],
-    'cipher_suites' => Optional[Array[String]],
+    'tlsparams'     => Optional[Envoyproxy::Tlsparams],
 }]

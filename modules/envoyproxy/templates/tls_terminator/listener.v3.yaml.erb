@@ -21,9 +21,14 @@ filter_chains:
     typed_config:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
       common_tls_context:
-<%- if upstream['cipher_suites'] != nil -%>
+<%- if upstream['tlsparams'] != nil -%>
         tls_params:
-          cipher_suites: <%= upstream['cipher_suites'] %>
+<%- if upstream['tlsparams']['cipher_suites'] != nil -%>
+          cipher_suites: <%= upstream['tlsparams']['cipher_suites'] %>
+<%- end -%>
+<%- if upstream['tlsparams']['ecdh_curves'] != nil -%>
+          ecdh_curves: <%= upstream['tlsparams']['ecdh_curves'] %>
+<%- end -%>
 <%- end -%>
         tls_certificates:
 <% upstream['certificates'].each do |certificate| -%>
@@ -97,9 +102,14 @@ filter_chains:
     typed_config:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
       common_tls_context:
-<%- if @global_cipher_suites != nil -%>
+<%- if @global_tlsparams != nil -%>
         tls_params:
-          cipher_suites: <%= @global_cipher_suites %>
+<%- if @global_tlsparams['cipher_suites'] != nil -%>
+          cipher_suites: <%= @global_tlsparams['cipher_suites'] %>
+<%- end -%>
+<%- if @global_tlsparams['ecdh_curves'] != nil -%>
+          ecdh_curves: <%= @global_tlsparams['ecdh_curves'] %>
+<%- end -%>
 <%- end -%>
         tls_certificates:
 <% @global_certs.each do |certificate| -%>
