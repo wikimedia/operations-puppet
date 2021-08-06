@@ -4346,7 +4346,6 @@ host maps1005 {
 host maps1006 {
     hardware ethernet 2C:EA:7F:56:A5:C1;
     fixed-address maps1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host maps1007 {

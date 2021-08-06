@@ -4,7 +4,6 @@ profile::maps::hosts:
   - 'maps1002.eqiad.wmnet'
   - 'maps1001.eqiad.wmnet'
   - 'maps1005.eqiad.wmnet'
-  - 'maps1006.eqiad.wmnet'
 
 profile::redis::master::clients:
   - 'maps1004.eqiad.wmnet'
@@ -12,7 +11,6 @@ profile::redis::master::clients:
   - 'maps1002.eqiad.wmnet'
   - 'maps1001.eqiad.wmnet'
   - 'maps1005.eqiad.wmnet'
-  - 'maps1006.eqiad.wmnet'
 
 profile::maps::apps::redis_server: 'redis://maps1004.eqiad.wmnet'
 profile::maps::apps::tilerator_enable: true
