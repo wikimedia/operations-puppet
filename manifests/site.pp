@@ -2409,11 +2409,6 @@ node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(rpkivalidator)
 }
 
-# T252210
-node 'peek2001.codfw.wmnet' {
-    role(peek)
-}
-
 # https://people.wikimedia.org - self-service file hosting
 # VMs on bullseye, access for all shell users (T280989)
 node 'people1003.eqiad.wmnet', 'people2002.codfw.wmnet' {

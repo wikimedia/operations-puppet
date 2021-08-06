@@ -896,11 +896,6 @@ host otrs1001 {
     fixed-address otrs1001.eqiad.wmnet;
 }
 
-host peek2001 {
-    hardware ethernet aa:00:00:82:d3:a5;
-    fixed-address peek2001.codfw.wmnet;
-}
-
 host people1003 {
     hardware ethernet aa:00:00:15:61:3b;
     fixed-address people1003.eqiad.wmnet;
