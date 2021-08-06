@@ -46,6 +46,23 @@ class profile::kubernetes::node(
         group           => 'root',
     }
 
+
+    # Figure out if this node has SSD or spinning disks
+    # TODO: We should have a fact for this
+    if $facts['is_virtual'] {
+        # disk_type will be "kvm" for example
+        $disk_type = $facts['virtual']
+    } else {
+        $ssd_disks = filter($facts['disks']) |$x| {
+            $x[1]['type'] == 'ssd' or $x[1]['model'] =~ /(?i:ssd)/
+        }
+        if $ssd_disks {
+            $disk_type = 'ssd'
+        } else {
+            $disk_type = 'hdd'
+        }
+    }
+    $node_labels = concat($kubelet_node_labels, "node.kubernetes.io/disk-type=${disk_type}")
     class { '::k8s::kubelet':
         listen_address                  => '0.0.0.0',
         cni                             => $use_cni,
@@ -55,7 +72,7 @@ class profile::kubernetes::node(
         tls_cert                        => '/etc/kubernetes/ssl/cert.pem',
         tls_key                         => '/etc/kubernetes/ssl/server.key',
         kubeconfig                      => $kubelet_config,
-        node_labels                     => $kubelet_node_labels,
+        node_labels                     => $node_labels,
         node_taints                     => $kubelet_node_taints,
         extra_params                    => $kubelet_extra_params,
         packages_from_future            => $packages_from_future,
