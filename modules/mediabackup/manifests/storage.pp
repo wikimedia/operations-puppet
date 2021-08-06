@@ -14,6 +14,9 @@ class mediabackup::storage (
     Stdlib::Port $port,
     String $root_user,
     String $root_password,
+    Optional[Stdlib::Unixpath] $cert_path,
+    Optional[Stdlib::Unixpath] $key_path,
+    Optional[Stdlib::Unixpath] $ca_path,
     Stdlib::Unixpath $config_dir = '/etc/minio',
 ) {
     ensure_packages(['minio', ])
@@ -22,7 +25,6 @@ class mediabackup::storage (
         ensure => present,
         system => true,
     }
-
     user { 'minio-user':
         ensure     => present,
         gid        => 'minio-user',
@@ -50,13 +52,17 @@ class mediabackup::storage (
         require => [ User['minio-user'], Group['minio-user'] ],
     }
 
-    # TLS certs handling (using Puppet ones for now)
-    base::expose_puppet_certs { $config_dir:
-        ensure          => present,
-        provide_private => true,
-        user            => 'minio-user',
-        group           => 'minio-user',
-        require         => [ File[$config_dir], User['minio-user'], Group['minio-user'] ],
+    File { "${config_dir}/ssl":
+        ensure  => directory,
+        mode    => '0400',
+        owner   => 'minio-user',
+        group   => 'minio-user',
+        require => [ File[$config_dir], User['minio-user'], Group['minio-user'] ],
+    }
+
+    # Delete old cert and key (ca is puppet, we don't delete that!)
+    File { ["${config_dir}/ssl/server.key", "${config_dir}/ssl/cert.pem"]:
+        ensure => absent,
     }
     File { "${storage_path}/.minio":
         ensure  => directory,
@@ -72,20 +78,23 @@ class mediabackup::storage (
         group   => 'minio-user',
         require => File["${storage_path}/.minio"],
     }
+
     # file names are hardcoded, so using symlinks to expose them
-    file { "${storage_path}/.minio/certs/private.key":
-        ensure  => 'link',
-        target  => "${config_dir}/ssl/server.key",
-        owner   => 'minio-user',
-        group   => 'minio-user',
-        require => Base::Expose_puppet_certs[$config_dir],
+    if $key_path {
+        file { "${storage_path}/.minio/certs/private.key":
+            ensure => 'link',
+            target => $key_path,
+            owner  => 'minio-user',
+            group  => 'minio-user',
+        }
     }
-    file { "${storage_path}/.minio/certs/public.crt":
-        ensure  => 'link',
-        target  => "${config_dir}/ssl/cert.pem",
-        owner   => 'minio-user',
-        group   => 'minio-user',
-        require => Base::Expose_puppet_certs[$config_dir],
+    if $cert_path {
+        file { "${storage_path}/.minio/certs/public.crt":
+            ensure => 'link',
+            target => $cert_path,
+            owner  => 'minio-user',
+            group  => 'minio-user',
+        }
     }
 
     File { '/etc/default/minio':

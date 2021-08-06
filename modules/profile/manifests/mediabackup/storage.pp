@@ -4,11 +4,23 @@ class profile::mediabackup::storage (
     Hash $mediabackup_config              = lookup('mediabackup', Hash, 'hash'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
+    $tls_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
+        'ensure'  => 'present',
+        'owner'   => 'minio-user',
+        'outdir'  => '/etc/minio/ssl',
+        'hosts'   => [$facts['hostname'], $facts['fqdn'], '127.0.0.1', '::1', 'localhost'],
+        'notify'  => Service['minio'],
+        'require' => [ User['minio-user'], File['/etc/minio/ssl']],
+    })
+
     class { 'mediabackup::storage':
         storage_path  => $mediabackup_config['storage_path'],
         port          => $mediabackup_config['storage_port'],
         root_user     => $mediabackup_config['storage_root_user'],
         root_password => $mediabackup_config['storage_root_password'],
+        cert_path     => $tls_paths['cert'],
+        key_path      => $tls_paths['key'],
+        ca_path       => $tls_paths['ca'],
     }
     nrpe::monitor_service { 'minio_server':
         description   => 'MinIO server processes',
