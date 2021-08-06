@@ -1844,10 +1844,9 @@ class profile::prometheus::ops (
       },
     ]
     prometheus::class_config{ "minio_${::site}":
-        dest           => "${targets_path}/minio_${::site}.yaml",
-        class_name     => 'profile::mediabackup::storage',
-        port           => 9000,
-        hostnames_only => false,
+        dest       => "${targets_path}/minio_${::site}.yaml",
+        class_name => 'profile::mediabackup::storage',
+        port       => 9000,
     }
 
     # Job definition for dragonfly supernode and clients (dfdaemon)
