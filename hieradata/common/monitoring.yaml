@@ -313,6 +313,8 @@ monitoring::groups:
     description: Equipment with asw2-d-eqiad as uplink
   cloudsw1-c8-eqiad.mgmt.eqiad.wmnet:
     description: Equipment with cloudsw1-c8-eqiad as uplink
+  cloudsw2-c8-eqiad.mgmt.eqiad.wmnet:
+    description: Equipment with cloudsw2-c8-eqiad as uplink
   cloudsw1-d5-eqiad.mgmt.eqiad.wmnet:
     description: Equipment with cloudsw1-d5-eqiad as uplink
   asw2-ulsfo:
