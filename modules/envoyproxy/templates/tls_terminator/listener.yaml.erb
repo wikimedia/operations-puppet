@@ -21,6 +21,10 @@ filter_chains:
     typed_config:
       '@type': type.googleapis.com/envoy.api.v2.auth.DownstreamTlsContext
       common_tls_context:
+<%- if upstream['cipher_suites'] != nil -%>
+        tls_params:
+          cipher_suites: <%= upstream['cipher_suites'] %>
+<%- end -%>
         tls_certificates:
 <% upstream['certificates'].each do |certificate| -%>
         - certificate_chain: { filename: "<%= certificate['cert_path'] %>" }
@@ -90,6 +94,10 @@ filter_chains:
     typed_config:
       '@type': type.googleapis.com/envoy.api.v2.auth.DownstreamTlsContext
       common_tls_context:
+<%- if @global_cipher_suites != nil -%>
+        tls_params:
+          cipher_suites: <%= @global_cipher_suites %>
+<%- end -%>
         tls_certificates:
 <% @global_certs.each do |certificate| -%>
         - certificate_chain: { filename: "<%= certificate['cert_path'] %>" }

@@ -75,6 +75,8 @@
 #     goes in the envoy configuration.
 # @param capitalize_headers
 #     If true, will capitalize headers for HTTP/1.1 requests
+# @param global_cipher_suites
+#     List of <= TLSv1.2 ciphersuites to use on the non-SNI listener
 # @param idle_timeout
 #     The time in seconds to wait before closing a keepalive connection when inactive.
 # @param max_requests_per_conn
@@ -93,6 +95,7 @@ define envoyproxy::tls_terminator(
     Optional[Hash]                                                        $retry_policy              = undef,
     Optional[Stdlib::Port]                                                $redir_port                = undef,
     Optional[Array[Envoyproxy::Tlscertificate]]                           $global_certs              = undef,
+    Optional[Array[String]]                                               $global_cipher_suites      = undef,
     Optional[Float]                                                       $idle_timeout              = undef,
     Optional[Integer]                                                     $max_requests_per_conn     = undef,
 ) {
