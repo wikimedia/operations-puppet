@@ -44,6 +44,8 @@ profile::redis::master::clients:
   - 'maps2010.codfw.wmnet'
 
 profile::maps::osm_master::replicas:
+  maps2005:
+    ip_address: '10.192.0.155'
   maps2006:
     ip_address: '10.192.16.31'
   maps2007:
