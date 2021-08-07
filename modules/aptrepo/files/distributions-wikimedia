@@ -126,7 +126,6 @@ Components: main
  thirdparty/gitlab
  thirdparty/grafana
  thirdparty/hwraid
- thirdparty/kubeadm-k8s-1-17
  thirdparty/kubeadm-k8s-1-18
  thirdparty/kubeadm-k8s-1-19
  thirdparty/matomo
@@ -155,7 +154,6 @@ Update:
  thirdparty/ceph-octopus
  thirdparty/gitlab
  thirdparty/helm3
- thirdparty/kubeadm-k8s-kubernetes.io-1-17
  thirdparty/kubeadm-k8s-kubernetes.io-1-18
  thirdparty/kubeadm-k8s-kubernetes.io-1-19
  thirdparty/kubeadm-k8s-kubernetes.io
