@@ -95,7 +95,7 @@ def main():
     failed_resources = []
 
     if not is_host_ready():
-        logging.info(f"Host is not ready yet, file {READY_FILE} does not exist.")
+        logging.info("Host is not ready yet, file {} does not exist.".format(READY_FILE))
         return
 
     try:
