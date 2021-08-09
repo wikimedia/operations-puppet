@@ -7,6 +7,7 @@ class role::cache::text {
     include ::profile::standard
     include ::profile::cache::base
     include ::profile::cache::varnish::frontend
+    include ::profile::prometheus::varnish_exporter
     include ::profile::cache::varnish::frontend::text
     include ::profile::trafficserver::backend
     include ::profile::trafficserver::tls
