@@ -12,6 +12,7 @@ class profile::kubernetes::deployment_server::mediawiki(
     Hash  $redis_shards                                 = lookup('redis::shards'),
     String $docker_password                             = lookup('kubernetes_docker_password'),
     Stdlib::Fqdn $docker_registry                       = lookup('docker::registry'),
+    Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
 ){
     file { "${general_dir}/mediawiki":
         ensure => directory,
@@ -42,6 +43,10 @@ class profile::kubernetes::deployment_server::mediawiki(
         path         => "${general_dir}/mediawiki/nutcracker_pools.yaml",
         redis_shards => $redis_shards,
     }
+    class { 'mediawiki::tlsproxy::yaml_defs':
+        path      => "${general_dir}/mediawiki/tlsproxy.yaml",
+        listeners => $enabled_listeners,
+    }
 
     # "Automatic" deployment to mw on k8s. See T287570
 
@@ -61,6 +66,13 @@ class profile::kubernetes::deployment_server::mediawiki(
         registry_username => 'kubernetes',
         registry_password => $docker_password,
         allow_group       => false,
+    }
+    # Directory where the file lock and error file are stored.
+    file { '/var/lib/deploy-mwdebug':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0700'
     }
 
     # Add a script that updates the mediawiki images.
