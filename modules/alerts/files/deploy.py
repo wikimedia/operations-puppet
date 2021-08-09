@@ -83,7 +83,7 @@ def filter_tag(files, tag_name, tag_value, default):
 
     res = []
     for filename in files:
-        with open(filename) as f:
+        with open(filename.as_posix()) as f:
             tag = get_tag(f, tag_name)
             # tag found and has the value we're looking for
             if tag == tag_value:
