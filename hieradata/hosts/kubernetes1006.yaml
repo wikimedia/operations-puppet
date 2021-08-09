@@ -4,6 +4,8 @@ profile::kubernetes::node::kubelet_node_labels:
   - dedicated=kask
   - failure-domain.beta.kubernetes.io/region=eqiad
   - failure-domain.beta.kubernetes.io/zone=row-c
+  - topology.kubernetes.io/region=eqiad
+  - topology.kubernetes.io/zone=row-c
 profile::kubernetes::node::kubelet_node_taints:
   - dedicated=kask:NoExecute
   - dedicated=kask:NoSchedule

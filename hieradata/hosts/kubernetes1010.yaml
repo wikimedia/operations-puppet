@@ -1,3 +1,5 @@
 profile::kubernetes::node::kubelet_node_labels:
   - failure-domain.beta.kubernetes.io/region=eqiad
   - failure-domain.beta.kubernetes.io/zone=row-b
+  - topology.kubernetes.io/region=eqiad
+  - topology.kubernetes.io/zone=row-b
