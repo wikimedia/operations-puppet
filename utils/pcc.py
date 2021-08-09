@@ -188,6 +188,9 @@ def parse_commit(change):
 
     for line in commit.splitlines():
         if line.startswith('Hosts:'):
+            # Strip any comments after '#'
+            if '#' in line:
+                line = line.split('#', 1)[0]
             hosts.append(line.split(':', 1)[1].strip())
 
     return ','.join(hosts)
