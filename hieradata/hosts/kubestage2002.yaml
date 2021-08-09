@@ -1,5 +1,0 @@
-profile::kubernetes::node::kubelet_node_labels:
-  - failure-domain.beta.kubernetes.io/region=codfw
-  - failure-domain.beta.kubernetes.io/zone=row-b
-  - topology.kubernetes.io/region=codfw
-  - topology.kubernetes.io/zone=row-b
