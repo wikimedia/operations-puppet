@@ -2,6 +2,8 @@
 # https://phabricator.wikimedia.org/T274458
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
+    Stdlib::Fqdn $passive_host = lookup('profile::gitlab::passive_host'),
+    Wmflib::Ensure $backup_sync_ensure = lookup('profile::gitlab::backup_sync::ensure'),
     Stdlib::IP::Address::V4 $service_ip_v4 = lookup('profile::gitlab::service_ip_v4'),
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
     Stdlib::Unixpath $backup_dir_data = lookup('profile::gitlab::backup_dir_data'),
@@ -186,4 +188,12 @@ class profile::gitlab(
     # rsyslog::input::file { 'gitlab-postgres':
     #   path => '/var/log/gitlab/postgresql/current',
     # }
+
+    # T285867 sync active and passive GitLab server backups
+    class { 'rsync::server': }
+    class { 'gitlab::rsync':
+        active_host  => $active_host,
+        passive_host => $passive_host,
+        ensure       => $backup_sync_ensure
+    }
 }
