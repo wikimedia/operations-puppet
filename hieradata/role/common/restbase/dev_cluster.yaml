@@ -59,7 +59,6 @@ profile::restbase::hosts:
 ## FIXME: No graphite_host since T209357 decomed graphite1003.
 graphite_host: 'none'
 profile::cassandra::allow_analytics: false
-profile::cassandra::disable_graphite_metrics: true
 profile::cassandra::client_ips:
   # Add the kubernetes pod IPs here
   # eqiad

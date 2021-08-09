@@ -14,8 +14,6 @@ profile::standard::admin_groups:
 #
 profile::cassandra::allow_analytics: true
 
-profile::cassandra::disable_graphite_metrics: true
-
 # Instances
 profile::cassandra::instances:
   "aqs1010.eqiad.wmnet":

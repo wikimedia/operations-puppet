@@ -167,9 +167,6 @@ scap::sources:
   # Time-window compaction strategy for Cassandra
   cassandra/twcs:
     repository: operations/software/cassandra-twcs
-  # Cassandra metrics collection
-  cassandra/metrics-collector:
-    repository: operations/software/cassandra-metrics-collector
   homer/deploy:
     repository: operations/software/homer/deploy
   zuul/deploy:

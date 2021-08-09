@@ -9,9 +9,6 @@ class profile::cassandra(
     Array[Stdlib::IP::Address] $client_ips = lookup('profile::cassandra::client_ips', {'default_value' => []}),
     Boolean $allow_analytics = lookup('profile::cassandra::allow_analytics'),
     Boolean $monitor_enabled = lookup('profile::cassandra::monitor_enabled', {'default_value' => true}),
-    Boolean $disable_graphite_metrics = lookup('profile::cassandra::disable_graphite_metrics', {'default_value' => false}),
-    Optional[Array[String]] $metrics_blacklist = lookup('profile::cassandra::metrics_blacklist', {'default_value' => undef}),
-    Optional[Array[String]] $metrics_whitelist = lookup('profile::cassandra::metrics_whitelist', {'default_value' => undef}),
 ){
 
     include ::passwords::cassandra
@@ -32,22 +29,9 @@ class profile::cassandra(
 
     create_resources('class', {'::cassandra' => $cassandra_real_settings})
 
-    # Selectively disable the cassandra metrics collector - T186567
-    $ensure_cassandra_metrics = $disable_graphite_metrics ? {
-        true    => absent,
-        default => present,
-    }
-
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     if $cassandra_real_settings['logstash_host'] == 'localhost' {
         class { '::profile::rsyslog::udp_json_logback_compat': }
-    }
-
-    class { '::cassandra::metrics':
-        graphite_host => $graphite_host,
-        whitelist     => $metrics_whitelist,
-        blacklist     => $metrics_blacklist,
-        ensure        => $ensure_cassandra_metrics,
     }
 
     class { '::cassandra::logging': }

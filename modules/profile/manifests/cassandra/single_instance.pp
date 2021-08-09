@@ -23,9 +23,6 @@ class profile::cassandra::single_instance(
       jmx_exporter_enabled   => $jmx_exporter_enabled,
     }
   }
-  class { 'cassandra::metrics':
-    graphite_host => $graphite_host,
-  }
   class {'cassandra::logging': }
 
   cassandra::instance::monitoring { 'default':
