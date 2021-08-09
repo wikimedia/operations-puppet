@@ -250,6 +250,15 @@ class druid(
     # require it to be created beforehand with specific uid/gid values
     include ::druid::bigtop::hadoop::user
 
+    # We have to create these directories and chown them to the druid user
+    # before installing the druid-common package. See T255148 for more details.
+    file { [ '/var/log/druid', '/srv/druid' ]:
+        ensure => directory,
+        owner  => 'druid',
+        group  => 'druid',
+        mode   => '0755',
+    }
+
     ensure_packages('druid-common')
 
     file { '/etc/druid/common.runtime.properties':

@@ -1009,13 +1009,8 @@ node /^dragonfly-supernode[12]001\.(codfw|eqiad)\.wmnet$/ {
 node /^druid100[123]\.eqiad\.wmnet$/ {
     role(druid::analytics::worker)
 }
-node /^an-druid100[1-4]\.eqiad\.wmnet$/ {
+node /^an-druid100[1-5]\.eqiad\.wmnet$/ {
     role(druid::analytics::worker)
-}
-
-# new an-druid nodes T274163
-node /^an-druid1005\.eqiad\.wmnet$/ {
-    role(insetup)
 }
 
 node /^an-test-druid1001\.eqiad\.wmnet$/ {
