@@ -245,12 +245,12 @@ class druid(
         $properties
     )
 
-    require_package('druid-common')
-
-    # Useful to resources that need the druid user to
-    # work properly. The user is created by druid-common, but is then managed
-    # explicitly by puppet in druid::bigtop::hadoop::user.
+    # Useful for resources that need the druid user to work properly.
+    # The user would normally be created by the druid-common package but we
+    # require it to be created beforehand with specific uid/gid values
     include ::druid::bigtop::hadoop::user
+
+    ensure_packages('druid-common')
 
     file { '/etc/druid/common.runtime.properties':
         content => template('druid/runtime.properties.erb'),
