@@ -81,18 +81,34 @@ class profile::cache::varnish::frontend (
 
     $separate_vcl_frontend = $separate_vcl.map |$vcl| { "${vcl}-frontend" }
 
-    # Backend caches used by this Frontend from Etcd
-    $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
-        $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
+    # Experiment with single backend CDN nodes T288106
+    if $single_backend_experiment {
+        if $::fqdn == $single_backend_experiment {
+            $backend_caches = [ $::fqdn ]
+            $etcd_backends = false
+        } else {
+            $backend_caches = $cache_nodes[$cache_cluster][$::site] - $single_backend_experiment
+            $etcd_backends = $backends_in_etcd
+        }
+    } else {
+        $backend_caches = $cache_nodes[$cache_cluster][$::site]
+        $etcd_backends = $backends_in_etcd
+    }
 
-    $keyspaces = [ "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be" ]
+    if $etcd_backends {
+        # Backend caches used by this Frontend from Etcd
+        $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
+            $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
 
-    confd::file { '/etc/varnish/directors.frontend.vcl':
-        ensure     => present,
-        watch_keys => $keyspaces,
-        content    => template('profile/cache/varnish-frontend.directors.vcl.tpl.erb'),
-        reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
-        before     => Service['varnish-frontend'],
+        $keyspaces = [ "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be" ]
+
+        confd::file { '/etc/varnish/directors.frontend.vcl':
+            ensure     => present,
+            watch_keys => $keyspaces,
+            content    => template('profile/cache/varnish-frontend.directors.vcl.tpl.erb'),
+            reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
+            before     => Service['varnish-frontend'],
+        }
     }
 
     # Transient storage limits T164768
@@ -136,20 +152,6 @@ class profile::cache::varnish::frontend (
         paths   => [ '/proc/$(pgrep -u vcache)/fd' ],
         outfile => '/var/lib/prometheus/node.d/vcache_fds.prom',
         metric  => 'node_varnish_filedescriptors_total',
-    }
-
-    # Experiment with single backend CDN nodes T288106
-    if $single_backend_experiment {
-        if $::fqdn == $single_backend_experiment {
-            $backend_caches = [ $::fqdn ]
-            $etcd_backends = false
-        } else {
-            $backend_caches = $cache_nodes[$cache_cluster][$::site] - $single_backend_experiment
-            $etcd_backends = $backends_in_etcd
-        }
-    } else {
-        $backend_caches = $cache_nodes[$cache_cluster][$::site]
-        $etcd_backends = $backends_in_etcd
     }
 
     # lint:ignore:arrow_alignment
