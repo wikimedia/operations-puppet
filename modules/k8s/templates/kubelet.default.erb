@@ -39,7 +39,7 @@ if @kubelet_ipv6
 	daemon_args.push("--feature-gates=IPv6DualStack=true")
 end
 if !@node_labels.empty?
-  daemon_args.push("--node_labels=#{@node_labels.sort.join(',')}")
+  daemon_args.push("--node-labels=#{@node_labels.sort.join(',')}")
 end
 if !@node_taints.empty?
   daemon_args.push("--register-with-taints=#{@node_taints.sort.join(',')}")
