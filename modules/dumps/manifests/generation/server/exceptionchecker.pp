@@ -11,12 +11,23 @@ class dumps::generation::server::exceptionchecker(
     }
 
     cron { 'dumps-exception-checker':
-        ensure      => 'present',
+        ensure      => 'absent',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         command     => "/usr/bin/python3 /usr/local/bin/dumps_exception_checker.py ${dumpsbasedir} 480 latest",
         user        => $user,
         minute      => '40',
         hour        => '*/8',
         require     => File['/usr/local/bin/dumps_exception_checker.py'],
+    }
+    systemd::timer::job { 'dumps-exception-checker':
+        ensure             => 'present',
+        description        => 'Regular jobs to check for exceptions',
+        user               => $user,
+        send_mail          => true,
+        monitoring_enabled => false,
+        command            => "/usr/bin/python3 /usr/local/bin/dumps_exception_checker.py ${dumpsbasedir} 480 latest",
+        environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 0/8:40:00'},
+        require            => File['/usr/local/bin/dumps_exception_checker.py'],
     }
 }
