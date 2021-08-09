@@ -287,6 +287,14 @@ define trafficserver::instance(
       }
     }
 
+    if $default_instance {
+      file { $paths['sysconfdir']:
+          ensure => directory,
+          owner  => $trafficserver::user,
+          mode   => '0755',
+      }
+    }
+
     $error_template_path = "${paths['sysconfdir']}/error_template"
     file {
       [$error_template_path, "${error_template_path}/default"]:
