@@ -41,10 +41,5 @@ define logstash::output::elasticsearch(
         content  => template('logstash/output/elasticsearch.erb'),
         priority => $priority,
     }
-
-    # TODO: this can be removed
-    cron { "logstash_cleanup_indices_${title}":
-      ensure  => 'absent'
-    }
 }
 # vim:sw=4 ts=4 sts=4 et:
