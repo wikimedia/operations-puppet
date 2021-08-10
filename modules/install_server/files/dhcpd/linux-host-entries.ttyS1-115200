@@ -2730,6 +2730,16 @@ host dumpsdata1003 {
     fixed-address dumpsdata1003.eqiad.wmnet;
 }
 
+host dumpsdata1004 {
+    hardware ethernet E4:3D:1A:17:CC:C6;
+    fixed-address dumpsdata1004.eqiad.wmnet;
+}
+
+host dumpsdata1005 {
+    hardware ethernet E4:3D:1A:17:C6:3C;
+    fixed-address dumpsdata1005.eqiad.wmnet;
+}
+
 host elastic1032 {
     hardware ethernet 14:02:EC:06:FE:54;
     fixed-address elastic1032.eqiad.wmnet;

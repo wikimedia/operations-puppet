@@ -1040,6 +1040,10 @@ node /^dumpsdata1002\.eqiad\.wmnet$/ {
 node /^dumpsdata1001\.eqiad\.wmnet$/ {
     role(dumps::generation::server::xmlfallback)
 }
+# new dumpsdata servers T283290
+node /^dumpsdata100[4-5]\.eqiad\.wmnet/ {
+    role(insetup)
+}
 
 node /^elastic103[2-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
