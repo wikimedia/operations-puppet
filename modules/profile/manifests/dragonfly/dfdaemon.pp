@@ -41,19 +41,19 @@ class profile::dragonfly::dfdaemon(
   # This is the port dfget (called by dfdaemon) will listen and serve chunks on.
   # dfdaemon itself does not receive connections from outside.
   ferm::service { 'dragonfly_dfget':
-      ensure => $ensure,
-      proto  => 'tcp',
-      port   => '15001',
-      srange => '$DOMAIN_NETWORKS',
+    ensure => $ensure,
+    proto  => 'tcp',
+    port   => '15001',
+    srange => '$DOMAIN_NETWORKS',
   }
 
   # Allow prometheus nodes to connec to dfdaemon to scrape metrics.
   $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
   ferm::service { 'dragonfly_dfdaemon':
-      ensure => $ensure,
-      proto  => 'tcp',
-      port   => '65001',
-      srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+    ensure => $ensure,
+    proto  => 'tcp',
+    port   => '65001',
+    srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
   }
 
   # TODO: Add monitoring

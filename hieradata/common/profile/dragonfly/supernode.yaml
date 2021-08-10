@@ -1,0 +1,3 @@
+  profile::dragonfly::supernode::listen_port: 8002
+  profile::dragonfly::supernode::download_port: 8002
+  profile::dragonfly::supernode::cdn_pattern: source
