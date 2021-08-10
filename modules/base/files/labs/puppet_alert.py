@@ -51,7 +51,8 @@ def get_last_success_time():
 
 
 def get_last_run_summary():
-    return yaml.load(open(PUPPET_STATE_FILE))
+    with open(PUPPET_STATE_FILE, encoding="utf-8") as puppet_state_fd:
+        return yaml.safe_load(puppet_state_fd)
 
 
 def get_last_run_report():
@@ -77,7 +78,8 @@ def get_last_run_report():
 
     yaml.add_multi_constructor('!', unknown)
     yaml.add_multi_constructor('tag:', unknown)
-    return yaml.load(open(PUPPET_REPORT_FILE), Loader=yaml.Loader)
+    with open(PUPPET_REPORT_FILE, encoding="utf-8") as puppet_report_fd:
+        return yaml.load(puppet_report_fd, Loader=yaml.Loader)
 
 
 def get_last_run_report_failed_resources():
@@ -148,7 +150,7 @@ def main():
         return
 
     try:
-        with open("/etc/wmflabs-project") as f:
+        with open("/etc/wmflabs-project", encoding="utf-8") as f:
             project_name = f.read().strip()
 
     except Exception as error:
