@@ -121,6 +121,7 @@ class zuul::merger (
     base::service_auto_restart { 'zuul-merger': }
 
     cron { 'zuul_repack':
+        ensure      => absent,
         user        => 'zuul',
         hour        => '4',
         minute      => '7',
@@ -130,5 +131,15 @@ class zuul::merger (
             'MAILTO="jenkins-bot@wikimedia.org"',
         ],
         require     => File[$git_dir],
+    }
+    systemd::timer::job { 'zuul_repack':
+        ensure       => present,
+        user         => 'zuul',
+        description  => 'Regular jobs for repacking heads and tags of repositories',
+        command      => "/usr/bin/find ${git_dir} -maxdepth 3 -type d -name '.git' -exec /usr/bin/git --git-dir='{}' pack-refs --all \\;",
+        send_mail    => true,
+        send_mail_to => 'jenkins-bot@wikimedia.org',
+        interval     => {'start' => 'OnCalendar', 'interval' => '*-*-* 4:07:00'},
+        require      => File[$git_dir],
     }
 }
