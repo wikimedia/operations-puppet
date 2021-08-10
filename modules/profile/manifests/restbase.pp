@@ -189,6 +189,15 @@ class profile::restbase(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
     }
 
+
+    nrpe::monitor_service { 'restbase_instance_space':
+        ensure       => $ensure_monitor_restbase,
+        description  => 'Cassandra instance data free space',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/RESTBase#instance-data',
+        nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 30% -c 20% -p /srv/cassandra/instance-data',
+    }
+
+
     # RESTBase rate limiting DHT firewall rule
     $rb_hosts_ferm = join($hosts, ' ')
     ferm::service { 'restbase-ratelimit':
