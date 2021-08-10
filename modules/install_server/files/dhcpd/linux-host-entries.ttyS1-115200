@@ -3441,6 +3441,18 @@ host ganeti1022 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host ganeti1023 {
+    hardware ethernet 34:73:5A:FB:85:54;
+    fixed-address ganeti1023.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host ganeti1024 {
+    hardware ethernet 34:73:5A:FB:84:AC;
+    fixed-address ganeti1024.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host ganeti2007 {
     hardware ethernet 18:66:DA:A3:EA:25;
     fixed-address ganeti2007.codfw.wmnet;
