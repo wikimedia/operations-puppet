@@ -19,7 +19,7 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov, liw, jkatz, gsingers]
+              crusnov, liw, jkatz, gsingers, toberto]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -305,7 +305,7 @@ groups:
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo,
-              htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, toberto]
+              htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval: Andrew Otto
@@ -4530,12 +4530,11 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwOSRMxXi6dgJc4Bg69itjllEM0EAPJuqYTgnUTn4eMjWGZQ4O1iO4Uf953IuWYFIfjC9oLM3zwDso7M1m4d0qa9aeIIeUV6B5KolPs3M+FepjcvT5rr6jemeY+ke1sMeA7c3t7D0hS887JTPHpMWWSeZoMF2pqdxX0uxl6tnODsO9J9wMoXghmEpVWA3a7qBYqzfW1vUU0yjMogPxzlMe/amschqEbHYx/ymjetOHQpOdIhOjd4K/pMDs0BJoue0H6dOoi9jDgHdm58CUcViQaiitQ7tHJLnQ1X33YpdppQU1dDF9kJ6vMJybqk7VzIEo85xLTLryyoPL9M/R2o7jJRSQBBJGjkEONk0trzdn09K72A508TOcgliAo8BXYn/fBetN9zcLxIz/R7IwMbTPJ7jq1tmNiajasmBuxlNAf8l+U2/8E+bIH8ifp0gsFLc9qhMLs/rmYWHanLRXn+qsufW6lwCqxC0I/+6RFprtRkd0MYfkDPLZI9lxJQp/9A4TNHs3j1iShPq7YA0TG7yXGFesFBGju/ZkXmPTxm2ReoiVz3rrOr2kr69XR+LSG2PxfVwz5XI96yPbBZXDw8K3mekYOHDk09BaOwRrhVO+fwPdKrGw/7SnuurMTK25DDLS9+Vnh6ljGrpwu1CH5KUaRlkmzQ1CkGDTsBP7Qur6lw== jabrams@Janinas-MBP.home
     krb: present
   toberto:
-    ensure: present
+    ensure: absent
     realname: Toni Oberto
-    email: toberto@wikimedia.org
     uid: 32038
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
 
 ldap_only_users:
   abartov:
