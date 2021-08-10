@@ -2288,7 +2288,7 @@ node 'mx2001.wikimedia.org' {
 }
 
 node 'mx2002.wikimedia.org' {
-    role(insetup)
+    role(mail::mx)
 }
 
 # ncredir instances
