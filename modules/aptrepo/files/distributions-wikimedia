@@ -180,6 +180,7 @@ Version: 11
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/jdk8
  thirdparty/hwraid
 UDebComponents: main
 Update:
