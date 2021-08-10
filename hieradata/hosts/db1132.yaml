@@ -1,4 +1,3 @@
 # db1132
-profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'm3'
 mariadb::binlog_format: 'ROW'
