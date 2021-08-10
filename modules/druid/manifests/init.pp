@@ -252,7 +252,14 @@ class druid(
 
     # We have to create these directories and chown them to the druid user
     # before installing the druid-common package. See T255148 for more details.
-    file { [ '/var/log/druid', '/srv/druid' ]:
+    $druid_directories = [
+        '/srv/druid',
+        '/srv/druid/deep-storage',
+        '/srv/druid/indexing-logs',
+        '/srv/druid/tmp',
+        '/var/log/druid'
+    ]
+    file { $druid_directories:
         ensure => directory,
         owner  => 'druid',
         group  => 'druid',
