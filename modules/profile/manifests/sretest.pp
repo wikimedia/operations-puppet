@@ -5,7 +5,7 @@ class profile::sretest {
     }
 
     profile::contact { $title:
-        contacts => ['jbond', 'MoritzMuehlenhoff']
+        contacts => ['jbond', 'jmm']
     }
 
 }

@@ -1,6 +1,7 @@
 # @summary add a contact to the system
 # @title the title should represent the area the contact is responsible for
-# @param param A list of contacts can be personal names or team names (minimum of 3 characters)
+# @param param A list of contacts, can be personal names (referring to a shell username
+#        as found in data.yaml or team names (minimum of 3 characters)
 define profile::contact (
     Array[String[3],1] $contacts,
 ) {
