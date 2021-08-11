@@ -141,6 +141,8 @@ cache::alternate_domains:
     caching: 'pass'
   ticket.wikimedia.org:
     caching: 'pass'
+  toolhub.wikimedia.org:
+    caching: 'normal'
   toolsadmin.wikimedia.org:
     caching: 'normal'
   transparency.wikimedia.org:
