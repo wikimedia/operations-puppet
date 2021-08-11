@@ -180,6 +180,10 @@ profile::kubernetes::deployment_server::services:
     username: rdf-streaming-updater
     group: wikidev
     mode: '0640'
+  toolhub:
+    username: toolhub
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server_secrets::services:
