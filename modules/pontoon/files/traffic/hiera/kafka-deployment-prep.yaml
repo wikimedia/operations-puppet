@@ -1,0 +1,10 @@
+kafka_clusters:
+  jumbo-eqiad:
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      deployment-kafka-jumbo-3.deployment-prep.eqiad1.wikimedia.cloud:
+        id: 1
+profile::cache::purge::kafka_cluster_name: jumbo-eqiad
+profile::cache::kafka::statsv::kafka_cluster_name: jumbo-eqiad
+profile::cache::kafka::webrequest::ssl_enabled: false
+profile::cache::kafka::eventlogging::ssl_enabled: false
