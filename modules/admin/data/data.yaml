@@ -4535,6 +4535,14 @@ users:
     uid: 32038
     gid: 500
     ssh_keys: []
+  aokoth:
+    ensure: present
+    realname: Arnold Okoth
+    email: aokoth@wikimedia.org
+    uid: 33489
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID7c4jD6uwQgWgvqthx4YnmmbkRpEHkCLBwpLrbowmUn arnoldokoth@Arnolds-MacBook-Pro-2.local
 
 ldap_only_users:
   abartov:
