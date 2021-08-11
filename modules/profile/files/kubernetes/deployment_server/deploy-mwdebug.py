@@ -16,12 +16,12 @@ import sys
 from datetime import datetime
 
 import yaml
+from wmflib.interactive import ask_confirmation, AbortError
 from docker_report.registry import operations
 
 logger = logging.getLogger()
 
-IMAGE = "restricted/mediawiki-multiversion"
-WEB_IMAGE = "restricted/mediawiki-webserver"
+# Default values we don't expect to change
 REGISTRY = "docker-registry.discovery.wmnet"
 VALUES_FILE = pathlib.Path("/etc/helmfile-defaults/mediawiki/releases.yaml")
 DEPLOY_DIR = "/srv/deployment-charts/helmfile.d/services/mwdebug"
@@ -32,18 +32,39 @@ LOCK_FILE = pathlib.Path("/var/lib/deploy-mwdebug/flock")
 # Error file, created when a deployment fails.
 # Further deployments can only happen if we set --force
 ERROR_FILE = pathlib.Path("/var/lib/deploy-mwdebug/error")
+# Clusters to deploy to
+CLUSTERS = ["eqiad", "codfw"]
 
 
 def parse_args(args=sys.argv[1:]):
     """Argument parser"""
     parser = argparse.ArgumentParser(
-        prog="deploy-mwdebug", description="script to automate deployments to mediawiki on k8s"
+        prog="deploy-mwdebug",
+        description="script to automate deployments to mediawiki on k8s",
     )
     parser.add_argument(
         "--force",
         "-f",
         action="store_true",
         help="force deployment even if there was a previous error or there is no apparent update.",
+    )
+    parser.add_argument(
+        "--mediawiki-image",
+        "-m",
+        help="The name:tag of the mediawiki image (without registry).",
+        default="restricted/mediawiki-multiversion",
+    )
+    parser.add_argument(
+        "--web-image",
+        "-w",
+        help="The name:tag of the web image (without registry).",
+        default="restricted/mediawiki-webserver",
+    )
+    parser.add_argument(
+        "--noninteractive",
+        "-n",
+        help="Run as a batch process (do not ask for confirmation before deployment)",
+        action="store_true",
     )
     return parser.parse_args(args)
 
@@ -62,15 +83,15 @@ def find_last_tag(registry: operations.RegistryOperations, image: str) -> str:
     if maxtag == "0":
         raise RuntimeError("No release tags found")
     logger.info(f"Found the most recent release, {maxtag}")
-    return maxtag
+    return f"{image}:{maxtag}"
 
 
 def values_file_update(maxtag_mw: str, maxtag_web: str) -> bool:
     """Updates the values file, if necessary. Returns true in that case."""
     values = yaml.safe_dump(
         {
-            "main_app": {"image": f"{IMAGE}:{maxtag_mw}"},
-            "mw": {"httpd": {"image_tag": f"{WEB_IMAGE}:{maxtag_web}"}},
+            "main_app": {"image": maxtag_mw},
+            "mw": {"httpd": {"image_tag": maxtag_web}},
         }
     )
     try:
@@ -85,12 +106,25 @@ def values_file_update(maxtag_mw: str, maxtag_web: str) -> bool:
     return True
 
 
-def deployment():
+def _deploy_to(env: str):
+    """Deploy to production automatically"""
+    logger.info(f"Deploying to {env}")
+    subprocess.run(["helmfile", "-e", env, "apply"], cwd=DEPLOY_DIR, check=True)
+
+
+def deployment(noninteractive: bool):
     """Deploy to production"""
-    logger.info("Deploying to eqiad")
-    subprocess.run(["helmfile", "-e", "eqiad", "apply"], cwd=DEPLOY_DIR, check=True)
-    logger.info("Deploying to codfw")
-    subprocess.run(["helmfile", "-e", "codfw", "apply"], cwd=DEPLOY_DIR, check=True)
+    for env in CLUSTERS:
+        if noninteractive:
+            _deploy_to(env)
+        else:
+            try:
+                ask_confirmation(f"Proceed to deploy to {env}?")
+                _deploy_to(env)
+            except AbortError:
+                logger.warning(f"Skipping {env}")
+            except subprocess.CalledProcessError as e:
+                logger.error(f"Deploiying to {env} failed: {e}")
 
 
 def main():
@@ -101,6 +135,7 @@ def main():
         # Before we try anything else: check if there is an error file.
         # If it does, exit with status code 2, unless --force is set on the command line
         opts = parse_args()
+
         if opts.force:
             ERROR_FILE.unlink()
         if ERROR_FILE.is_file():
@@ -110,16 +145,16 @@ def main():
             )
             sys.exit(1)
         ops = operations.RegistryOperations(REGISTRY, logger=logger)
-        maxtag_mw = find_last_tag(ops, IMAGE)
-        maxtag_web = find_last_tag(ops, WEB_IMAGE)
+        maxtag_mw = find_last_tag(ops, opts.mediawiki_image)
+        maxtag_web = find_last_tag(ops, opts.web_image)
         is_update = values_file_update(maxtag_mw, maxtag_web)
         if is_update or opts.force:
-            deployment()
+            deployment(opts.noninteractive)
         else:
             logger.info("Nothing to deploy")
     except BlockingIOError:
         logger.info("Unable to acquire the lock, not running")
-        sys.exit(1)
+        sys.exit(0)
     except subprocess.CalledProcessError:
         # The deployments have failed, so save the error file.
         ERROR_FILE.write_text(datetime.now().isoformat())

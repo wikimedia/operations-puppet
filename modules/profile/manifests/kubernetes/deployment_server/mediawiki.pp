@@ -90,7 +90,7 @@ class profile::kubernetes::deployment_server::mediawiki(
     systemd::timer::job { 'deploy_to_mwdebug':
         ensure            => $ensure_deploy,
         description       => 'Deploy the latest available set of images to mw on k8s',
-        command           => '/usr/local/sbin/deploy-mwdebug',
+        command           => '/usr/local/sbin/deploy-mwdebug --noninteractive',
         user              => 'root',
         interval          => {
             'start'    => 'OnUnitInactiveSec',
