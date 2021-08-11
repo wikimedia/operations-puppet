@@ -20,6 +20,13 @@ filter_chains:
     name: envoy.transport_sockets.tls
     typed_config:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+<%- if @stek_files -%>
+      session_ticket_keys:
+        keys:
+<% @stek_files.each do |stek_file| -%>
+        - filename: <%= stek_file %>
+<%- end -%>
+<%- end -%>
       common_tls_context:
 <%- if upstream['tlsparams'] != nil -%>
         tls_params:
@@ -101,6 +108,13 @@ filter_chains:
     name: envoy.transport_sockets.tls
     typed_config:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+<%- if @stek_files -%>
+      session_ticket_keys:
+        keys:
+<% @stek_files.each do |stek_file| -%>
+        - filename: <%= stek_file %>
+<%- end -%>
+<%- end -%>
       common_tls_context:
 <%- if @global_tlsparams != nil -%>
         tls_params:
