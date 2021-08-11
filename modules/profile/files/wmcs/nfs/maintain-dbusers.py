@@ -576,6 +576,9 @@ def populate_new_accounts(config, account_type="tool"):
             for del_account in deleted_accts:
                 if account_type != "paws":  # TODO: consider PAWS
                     delete_account(config, del_account, account_type)
+                    logging.info(
+                        "Deleted account %s %s", account_type, del_account
+                    )
 
     finally:
         acct_db.close()
@@ -697,7 +700,7 @@ def create_accounts(config):
         acct_db.close()
 
 
-def delete_account(config, account, account_type="tool", dryrun=True):
+def delete_account(config, account, account_type="tool"):
     """
     Deletes a mysql user account
 
@@ -719,10 +722,6 @@ def delete_account(config, account, account_type="tool", dryrun=True):
         acc_info = get_global_wiki_user(account)
         uid = account
         account = acc_info["query"]["globaluserinfo"]["name"]
-
-    if dryrun:
-        logging.info("I would have deleted %s", account)
-        return
 
     try:
         acct_db = get_accounts_db_conn(config)
@@ -920,7 +919,7 @@ def main():
         if args.extra_args is None:
             logging.error("Need to provide username to delete")
             sys.exit(1)
-        delete_account(config, args.extra_args, args.account_type, False)
+        delete_account(config, args.extra_args, args.account_type)
 
 
 if __name__ == "__main__":
