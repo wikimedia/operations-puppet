@@ -75,15 +75,6 @@ class labstore::fileserver::exports(
         interval    => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 0:00:00'},
         require     => File['/etc/exports.bak'],
     }
-    cron { 'archive_export_d':
-        ensure  => absent,
-        command => '/bin/cp -Rp /etc/exports.d /etc/exports.bak',
-        user    => 'root',
-        weekday => 1,
-        hour    => 0,
-        minute  => 0,
-        require => File['/etc/exports.bak'],
-    }
 
     # TODO: Remove after initial runs. This just cleans up the old setup.
     file { '/etc/exports.d/public_root.exports':
