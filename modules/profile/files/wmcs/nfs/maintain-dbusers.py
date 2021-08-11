@@ -484,6 +484,10 @@ def populate_new_accounts(config, account_type="tool"):
                 new_accounts = [
                     t for t in all_accounts if t[0] not in cur_accounts
                 ]
+                all_account_names = [y[0] for y in all_accounts]
+                deleted_accts = [
+                    x for x in cur_accounts if x not in all_account_names
+                ]
             else:
                 cur.execute(
                     """
@@ -497,12 +501,16 @@ def populate_new_accounts(config, account_type="tool"):
                     for t in all_accounts
                     if "p{}".format(t[1]) not in cur_accounts
                 ]
+                deleted_accts = []  # Need to check the logic for this on PAWS
 
             logging.debug(
-                "Found %s new %s accounts: %s",
+                "Found %s new %s accounts: %s and %s removed %s accounts: %s",
                 len(new_accounts),
                 account_type,
                 ", ".join([t[0] for t in new_accounts]),
+                len(deleted_accts),
+                account_type,
+                ", ".join([t[0] for t in deleted_accts]),
             )
             for new_account, new_account_id in new_accounts:
                 # if a homedir for this account does not exist yet, just ignore
@@ -564,6 +572,11 @@ def populate_new_accounts(config, account_type="tool"):
                 logging.info(
                     "Wrote replica.my.cnf for %s %s", account_type, new_account
                 )
+
+            for del_account in deleted_accts:
+                if account_type != "paws":  # TODO: consider PAWS
+                    delete_account(config, del_account, account_type)
+
     finally:
         acct_db.close()
 
@@ -684,7 +697,7 @@ def create_accounts(config):
         acct_db.close()
 
 
-def delete_account(config, account, account_type="tool"):
+def delete_account(config, account, account_type="tool", dryrun=True):
     """
     Deletes a mysql user account
 
@@ -692,6 +705,7 @@ def delete_account(config, account, account_type="tool"):
     - Removes them from accounts db
     - Drops users from labsdbs
     """
+    # TODO: Remove the dryrun arg once we think this works
     if account_type == "paws":
         # We have some special issues here. The file path is the UID, not username
         # and we really should enter the UID in general.
@@ -705,6 +719,10 @@ def delete_account(config, account, account_type="tool"):
         acc_info = get_global_wiki_user(account)
         uid = account
         account = acc_info["query"]["globaluserinfo"]["name"]
+
+    if dryrun:
+        logging.info("I would have deleted %s", account)
+        return
 
     try:
         acct_db = get_accounts_db_conn(config)
@@ -902,7 +920,7 @@ def main():
         if args.extra_args is None:
             logging.error("Need to provide username to delete")
             sys.exit(1)
-        delete_account(config, args.extra_args, args.account_type)
+        delete_account(config, args.extra_args, args.account_type, False)
 
 
 if __name__ == "__main__":
