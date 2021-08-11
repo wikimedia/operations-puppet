@@ -363,18 +363,6 @@ class profile::logstash::collector7 (
         }
     }
 
-    # TODO: cleanup -- T274394
-    file {
-        '/etc/curator/config-ecs-test.yaml':
-          ensure => absent;
-        '/etc/curator/cleanup_ecs-test.yaml':
-          ensure => absent
-    }
-
-    cron { 'logstash_cleanup_indices_ecs_test':
-        ensure => absent,
-    }
-
     $w3creportingapi_versions = {
         # version => revision
         '1.0.0' => '2'
