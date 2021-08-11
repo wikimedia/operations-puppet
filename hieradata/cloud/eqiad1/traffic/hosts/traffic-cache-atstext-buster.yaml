@@ -21,7 +21,6 @@ cache::text::nodes:
   - localhost
 cluster: cache_text
 do_acme: false
-kafka_cluster_name: analytics-traffic
 kafka_clusters:
   analytics-traffic:
     api_version: 0.9
