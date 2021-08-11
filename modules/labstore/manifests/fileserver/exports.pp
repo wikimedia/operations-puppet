@@ -68,7 +68,15 @@ class labstore::fileserver::exports(
         require => File['/usr/local/bin/nfs-exportd'],
     }
 
+    systemd::timer::job { 'archive_export_d':
+        description => 'Regular jobs for archiving exports.d',
+        command     => '/bin/cp -Rp /etc/exports.d /etc/exports.bak',
+        user        => 'root',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 0:00:00'},
+        require     => File['/etc/exports.bak'],
+    }
     cron { 'archive_export_d':
+        ensure  => absent,
         command => '/bin/cp -Rp /etc/exports.d /etc/exports.bak',
         user    => 'root',
         weekday => 1,
