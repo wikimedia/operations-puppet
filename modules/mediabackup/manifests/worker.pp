@@ -39,7 +39,15 @@ class mediabackup::worker (
     String              $secret_key,
     String              $db_schema = 'mediabackups',
 ) {
-    ensure_packages(['python3', ])  # placeholder until we have a package
+    ensure_packages([
+        'python3',  # most of this will go into package deps.
+        'python3-boto3',
+        'python3-numpy',
+        'python3-pymysql',
+        'python3-swiftclient',
+        'python3-yaml',
+        's3cmd',  # useful s3 command line util
+    ])
 
     # user and group so we don't run anything as a privileged user
     group { 'mediabackup':

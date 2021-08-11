@@ -1,5 +1,5 @@
-access_key: <%= @access_key %>
-secret_key: <%= @secret_key %>
+access_key: '<%= @access_key %>'
+secret_key: '<%= @secret_key %>'
 endpoints:
 <% @storage_hosts.each do |storage_host| -%>
  - https://<%= storage_host %>:<%= @storage_port %>
