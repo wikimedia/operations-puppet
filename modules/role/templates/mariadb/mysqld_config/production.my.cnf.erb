@@ -99,6 +99,8 @@ plugin_load                        = rpl_semi_sync_slave=semisync_slave.so
 <% end -%>
 <% if @semi_sync == 'master' or @semi_sync == 'both' -%>
 rpl_semi_sync_master_enabled       = 1
+<% end -%>
+<% if @semi_sync != 'off' -%>
 rpl_semi_sync_master_timeout       = 100
 rpl_semi_sync_master_wait_no_slave = 0
 <% end -%>
