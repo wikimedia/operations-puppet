@@ -56,7 +56,7 @@ class profile::kubernetes::node(
         $ssd_disks = filter($facts['disks']) |$x| {
             $x[1]['type'] == 'ssd' or $x[1]['model'] =~ /(?i:ssd)/
         }
-        if $ssd_disks {
+        if $ssd_disks.length > 0 {
             $disk_type = 'ssd'
         } else {
             $disk_type = 'hdd'
