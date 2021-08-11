@@ -85,32 +85,35 @@ class mediabackup::worker (
 
     # access to a backup source db to read mediawiki image metadata
     File { '/etc/mediabackup/mw_db.conf':
-        ensure  => present,
-        mode    => '0400',
-        owner   => 'mediabackup',
-        group   => 'mediabackup',
-        content => template('mediabackup/mw_db.conf.erb'),
-        require => File['/etc/mediabackup'],
+        ensure    => present,
+        mode      => '0400',
+        owner     => 'mediabackup',
+        group     => 'mediabackup',
+        content   => template('mediabackup/mw_db.conf.erb'),
+        show_diff => false,
+        require   => File['/etc/mediabackup'],
     }
 
     # access to a rw db to write and coordinate backup metadata
     File { '/etc/mediabackup/mediabackups_db.conf':
-        ensure  => present,
-        mode    => '0400',
-        owner   => 'mediabackup',
-        group   => 'mediabackup',
-        content => template('mediabackup/mediabackups_db.conf.erb'),
-        require => File['/etc/mediabackup'],
+        ensure    => present,
+        mode      => '0400',
+        owner     => 'mediabackup',
+        group     => 'mediabackup',
+        content   => template('mediabackup/mediabackups_db.conf.erb'),
+        show_diff => false,
+        require   => File['/etc/mediabackup'],
     }
 
     # access to final storage (S3-compatible cluster on the same dc)
     $tmpdir = '/srv/mediabackup'
     File { '/etc/mediabackup/mediabackups_storage.conf':
-        ensure  => present,
-        mode    => '0400',
-        owner   => 'mediabackup',
-        group   => 'mediabackup',
-        content => template('mediabackup/mediabackups_storage.conf.erb'),
-        require => [ File['/etc/mediabackup'], File['/srv/mediabackup'], ]
+        ensure    => present,
+        mode      => '0400',
+        owner     => 'mediabackup',
+        group     => 'mediabackup',
+        content   => template('mediabackup/mediabackups_storage.conf.erb'),
+        show_diff => false,
+        require   => [ File['/etc/mediabackup'], File['/srv/mediabackup'], ]
     }
 }

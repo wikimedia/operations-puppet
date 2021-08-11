@@ -60,10 +60,6 @@ class mediabackup::storage (
         require => [ File[$config_dir], User['minio-user'], Group['minio-user'] ],
     }
 
-    # Delete old cert and key (ca is puppet, we don't delete that!)
-    File { ["${config_dir}/ssl/server.key", "${config_dir}/ssl/cert.pem"]:
-        ensure => absent,
-    }
     File { "${storage_path}/.minio":
         ensure  => directory,
         mode    => '0700',
@@ -98,12 +94,13 @@ class mediabackup::storage (
     }
 
     File { '/etc/default/minio':
-        ensure  => present,
-        mode    => '0440',
-        owner   => 'minio-user',
-        group   => 'minio-user',
-        content => template('mediabackup/default_minio.erb'),
-        require => [ User['minio-user'], Group['minio-user'] ],
+        ensure    => present,
+        mode      => '0440',
+        owner     => 'minio-user',
+        group     => 'minio-user',
+        content   => template('mediabackup/default_minio.erb'),
+        show_diff => false,
+        require   => [ User['minio-user'], Group['minio-user'] ],
     }
 
     service { 'minio':
