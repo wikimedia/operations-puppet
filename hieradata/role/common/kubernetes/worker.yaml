@@ -67,6 +67,7 @@ profile::lvs::realserver::pools:
   shellbox-syntaxhighlight: {}
   shellbox-timeline: {}
   similar-users: {}
+  toolhub: {}
   linkrecommendation: {}
   tegola-vector-tiles: {}
 prometheus::node_exporter::collectors_extra:

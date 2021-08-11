@@ -2733,6 +2733,44 @@ service::catalog:
       - codfw
     state: production
 
+  toolhub:
+    description: Toolhub, toolhub.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.62
+      eqiad:
+        default: 10.2.2.62
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!toolhub.discovery.wmnet!4011!/healthz
+      critical: false # don't enable paging while testing
+      sites:
+        codfw:
+          hostname: toolhub.svc.codfw.wmnet
+        eqiad:
+          hostname: toolhub.svc.eqiad.wmnet
+    port: 4011
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: toolhub
+        active_active: false
+
   upload:
     description: Images and other media, upload.%{::site}.wikimedia.org
     encryption: false
