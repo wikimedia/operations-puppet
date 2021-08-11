@@ -585,7 +585,7 @@ zookeeper_clusters:
   druid-analytics-eqiad:
     hosts:
       an-druid1001.eqiad.wmnet: '1001'
-      druid1002.eqiad.wmnet: '1002'
+      an-druid1002.eqiad.wmnet: '1002'
       druid1003.eqiad.wmnet: '1003'
 
   # ZK cluster for Druid public-eqiad cluster, (for AQS, wikistats, etc.)
