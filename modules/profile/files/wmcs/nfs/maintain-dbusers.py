@@ -779,9 +779,16 @@ def delete_account(config, account, account_type="tool"):
             if account_type != "paws"
             else get_replica_path(account_type, uid)
         )
-        subprocess.check_output(["/usr/bin/chattr", "-i", replica_file_path])
-        os.remove(replica_file_path)
-        logging.info("Deleted %s", replica_file_path)
+        try:
+            subprocess.check_output(
+                ["/usr/bin/chattr", "-i", replica_file_path]
+            )
+            os.remove(replica_file_path)
+            logging.info("Deleted %s", replica_file_path)
+        except subprocess.CalledProcessError:
+            logging.info(
+                "Could not delete %s, file probably missing", replica_file_path
+            )
 
         # Now we get rid of the account itself
         with acct_db.cursor() as write_cur:
