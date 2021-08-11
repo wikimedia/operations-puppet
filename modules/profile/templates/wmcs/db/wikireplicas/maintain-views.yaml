@@ -11,7 +11,10 @@ mysql_instances:
 <%- end -%>
 
 add_to_all_dbs:
- - centralauth
+  s6:
+    - labswiki
+  s7:
+    - centralauth
 
 # These lists will be excluded entirely
 sensitive_db_lists:

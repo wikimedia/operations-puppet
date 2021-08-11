@@ -667,14 +667,14 @@ def main():
         # This will include private and deleted dbs at this stage
         if config["mysql_instances"][0] == "all":
             all_available_dbs = (
-                read_dblist("all", args.mediawiki_config) + config["add_to_all_dbs"]
+                read_dblist("all", args.mediawiki_config) + list(config["add_to_all_dbs"].values())
             )
         else:
             all_available_dbs = []
             for inst in config["mysql_instances"]:
                 all_available_dbs.extend(read_dblist(inst, args.mediawiki_config))
-                if inst == "s7":
-                    all_available_dbs.extend(config["add_to_all_dbs"])
+                if inst in config["add_to_all_dbs"].keys():
+                    all_available_dbs.extend(config["add_to_all_dbs"][inst])
 
         # argparse will ensure we are declaring explicitly
         dbs = all_available_dbs
