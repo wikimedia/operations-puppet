@@ -1,11 +1,5 @@
 http_proxy: ''
-profile::cache::base::performance_tweaks: false
 has_lvs: false
 has_nrpe: false
 profile::trafficserver::tls::unified_acme_chief: false
 profile::trafficserver::tls::extra_certs: {}
-profile::cache::varnish::frontend::backends_in_etcd: false
-profile::trafficserver::backend::storage_elements:
-  - devname: vdb
-  - pathname: /var/cache/trafficserver
-    size: 256M
