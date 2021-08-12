@@ -210,6 +210,11 @@ host doh4001 {
     fixed-address doh4001.wikimedia.org;
 }
 
+host doh4002 {
+    hardware ethernet aa:00:00:eb:dd:61;
+    fixed-address doh4002.wikimedia.org;
+}
+
 host doh5001 {
     hardware ethernet aa:00:00:9b:11:b0;
     fixed-address doh5001.wikimedia.org;
