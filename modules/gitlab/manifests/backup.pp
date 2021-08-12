@@ -1,40 +1,58 @@
 # @summary manage backup timers
 class gitlab::backup (
     Wmflib::Ensure $ensure                  = 'present',
-    # should be some Enum[daily, monthly, disabled]
-    String         $full                    = 'daily',
-    String         $partial                 = 'hourly',
-    String         $config                  = 'disabled',
+    Wmflib::Ensure $full_ensure             = 'present',
+    Wmflib::Ensure $partial_ensure          = 'present',
+    Wmflib::Ensure $config_ensure           = 'present',
     Boolean        $rsyncable_gzip          = true,
     Integer[1]     $max_concurrency         = 4,
     Integer[1]     $max_storage_concurrency = 1,
-    Stdlib::Unixpath $backup_dir_data       = '/srv/gitlab-backup/latest',
-    Stdlib::Unixpath $backup_dir_config     = '/etc/gitlab/config_backup/latest',
+    Integer[1]     $backup_keep_time        = 3,
+    Stdlib::Unixpath $backup_dir_data       = '/srv/gitlab-backup',
+    Stdlib::Unixpath $backup_dir_config     = '/etc/gitlab/config_backup',
 ) {
-    $full_cmd = @("CONFIG"/L)
-    /usr/bin/gitlab-backup create CRON=1 STRATEGY=copy \
-    GZIP_RSYNCABLE=${rsyncable_gzip.bool2str('yes', 'no')} \
-    GITLAB_BACKUP_MAX_CONCURRENCY=${max_concurrency} \
-    GITLAB_BACKUP_MAX_STORAGE_CONCURRENCY=${max_storage_concurrency} \
-    | CONFIG
-    $partial_cmd = "${full_cmd} SKIP=uploads,builds,artifacts,lfs,registry,pages"
-    # TODO create timer::job for full backup
-    $full_ensure = $full == 'disabled' ? {
-        true    => 'absent',
-        default => $ensure,
+
+    # install backup script
+    file { "${backup_dir_data}/gitlab-backup.sh":
+        ensure  => present,
+        mode    => '0744',
+        owner   => 'root',
+        group   => 'root',
+        content => template('gitlab/gitlab-backup.sh.erb')
     }
 
-    # TODO create timer::job for partial backup
-    $partial_ensure = $full == 'disabled' ? {
-        true    => 'absent',
-        default => $ensure,
-    }
-    # TODO create timer::job for config backup
-    # TODO create timer::job for config backup cleanup
-    $config_ensure = $full == 'disabled' ? {
-        true    => 'absent',
-        default => $ensure,
+    # systemd timer for full backups
+    systemd::timer::job { 'full-backup':
+        ensure      => $full_ensure,
+        user        => 'root',
+        description => 'GitLab full data backup',
+        command     => "${backup_dir_data}/gitlab-backup.sh full",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:04:00'},
     }
 
-    wmflib::dir::mkdir_p([$backup_dir_data, $backup_dir_config], {owner => 'root'})
+    # systemd timer for partial backups
+    systemd::timer::job { 'partial-backup':
+        ensure      => $partial_ensure,
+        user        => 'root',
+        description => 'GitLab partial data backup',
+        command     => "${backup_dir_data}/gitlab-backup.sh partial",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 19:07:00'},
+    }
+
+    # systemd timer for config backups
+    systemd::timer::job { 'config-backup':
+        ensure      => $config_ensure,
+        user        => 'root',
+        description => 'GitLab config backup',
+        command     => "${backup_dir_data}/gitlab-backup.sh config",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+    }
+
+    # make sure only root can access backup folders
+    # create folder for latest backup
+    wmflib::dir::mkdir_p(["${backup_dir_data}/latest", "${backup_dir_config}/latest"], {
+        owner => 'root',
+        group => 'root',
+        mode  => '0600',
+    })
 }

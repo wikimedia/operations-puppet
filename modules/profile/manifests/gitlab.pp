@@ -206,4 +206,22 @@ class profile::gitlab(
         passive_host => $passive_host,
         ensure       => $backup_sync_ensure
     }
+
+    if $active_host == $facts['fqdn'] {
+        # enable backups on active GitLab server
+        class { 'gitlab::backup':
+            full_ensure       => 'present',
+            partial_ensure    => 'absent',
+            config_ensure     => 'present',
+            backup_dir_data   => $backup_dir_data,
+            backup_dir_config => $backup_dir_config,
+            backup_keep_time  => 3
+        }
+    } else {
+        class { 'gitlab::backup':
+            full_ensure    => 'absent',
+            partial_ensure => 'absent',
+            config_ensure  => 'absent'
+        }
+    }
 }
