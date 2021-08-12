@@ -112,7 +112,7 @@ scap::dsh::groups:
       - {'cluster': 'maps', 'service': 'kartotherian'}
   maps-canaries:
     hosts:
-      - maps2004.codfw.wmnet
+      - maps2009.codfw.wmnet
   netbox:
     hosts:
       - netbox-dev2001.wikimedia.org
