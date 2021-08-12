@@ -7,6 +7,9 @@
 # https://doc.powerdns.com/3/authoritative/settings/
 # https://doc.powerdns.com/3/authoritative/performance/
 
+# increase the default number of tcp connections (10)
+max-tcp-connections=512
+
 # Always bind to specific addresses - pdns complains when using INADDR_ANY.
 # Change this to the external interface address
 local-address=<%= @dns_auth_ipaddress %>
