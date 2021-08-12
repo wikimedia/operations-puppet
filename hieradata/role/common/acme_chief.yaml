@@ -255,9 +255,7 @@ profile::acme_chief::certificates:
         - 'wikimedia-dns.org'
         challenge: dns-01
         authorized_regexes:
-        - '^doh[123]00[12]\.wikimedia\.org$'
-        - '^doh4001\.wikimedia\.org$'
-        - '^doh500[12]\.wikimedia\.org$'
+        - '^doh[12345]00[12]\.wikimedia\.org$'
     wikiworkshop:
         CN: 'wikiworkshop.org'
         SNI:
