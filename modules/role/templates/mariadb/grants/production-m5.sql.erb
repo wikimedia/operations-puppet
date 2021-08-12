@@ -165,6 +165,16 @@ IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 -- mailman3 databases T278614 from lists1001.wikimedia.org.
 GRANT ALL ON mailman3.* TO 'mailman3'@'208.80.154.31' IDENTIFIED BY '<%= @mailman3_pass %>';
 GRANT ALL ON mailman3web.* TO 'mailman3web'@'208.80.154.31' IDENTIFIED BY '<%= @mailman3web_pass %>';
+-- mailman3 from eqiad and codfw proxies
+-- dbproxy1017
+GRANT ALL ON mailman3.* TO 'mailman3'@'10.64.48.43' IDENTIFIED BY '<%= @mailman3_pass %>';
+GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.64.48.43' IDENTIFIED BY '<%= @mailman3web_pass %>';
+-- dbproxy1021
+GRANT ALL ON mailman3.* TO 'mailman3'@'10.64.32.180' IDENTIFIED BY '<%= @mailman3_pass %>';
+GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.64.32.180' IDENTIFIED BY '<%= @mailman3web_pass %>';
+-- dbproxy2004
+GRANT ALL ON mailman3.* TO 'mailman3'@'10.192.48.47' IDENTIFIED BY '<%= @mailman3_pass %>';
+GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.192.48.47' IDENTIFIED BY '<%= @mailman3web_pass %>';
 
 -- toolhub
 -- Grants from the k8s Pod IPs
