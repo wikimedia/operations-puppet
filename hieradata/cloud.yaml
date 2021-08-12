@@ -227,7 +227,8 @@ profile::mediawiki::mcrouter_wancache::prometheus_exporter: false
 profile::mediawiki::mcrouter_wancache::timeouts_until_tko: 10
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 60
 profile::mediawiki::mcrouter_wancache::port: 11213
-profile::mediawiki::mcrouter_wancache::memcached_tls_port: 11214
+profile::mediawiki::mcrouter_wancache::has_ssl: false
+profile::mediawiki::mcrouter_wancache::ssl_port: 11214
 profile::mediawiki::mcrouter_wancache::num_proxies: 1
 profile::mediawiki::mcrouter_wancache::shards:
   gutter:
