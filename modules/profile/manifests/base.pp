@@ -4,7 +4,7 @@ class profile::base(
     Boolean $enable_kafka_shipping = lookup('profile::base::enable_kafka_shipping', {default_value => true}),
     Enum['critical', 'disabled', 'enabled'] $notifications = lookup('profile::base::notifications',  {default_value => 'enabled'}),
     Boolean $monitor_systemd = lookup('profile::base::monitor_systemd', {default_value => true}),
-    Boolean $monitor_screens = lookup('monitor_screens', {default_value => true}),
+    Boolean $monitor_screens = lookup('monitor_screens', {default_value => false}),
     String $core_dump_pattern = lookup('profile::base::core_dump_pattern', {default_value => '/var/tmp/core/core.%h.%e.%p.%t'}),
     Hash $ssh_server_settings = lookup('profile::base::ssh_server_settings', {default_value => {}}),
     String $group_contact = lookup('contactgroups',  {default_value => 'admins'}),
