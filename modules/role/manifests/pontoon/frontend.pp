@@ -18,5 +18,8 @@ class role::pontoon::frontend {
         description => 'Pontoon frontend (public LB)',
     }
 
+    include ::profile::standard
+    include ::profile::base::firewall
+
     include ::profile::pontoon::frontend
 }
