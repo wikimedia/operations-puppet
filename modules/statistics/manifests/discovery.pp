@@ -22,10 +22,11 @@ class statistics::discovery {
     # This file will render at
     # /etc/mysql/conf.d/discovery-stats-client.cnf.
     ::mariadb::config::client { 'discovery-stats':
-        user  => $::passwords::mysql::research::user,
-        pass  => $::passwords::mysql::research::pass,
-        group => $group,
-        mode  => '0440',
+        ensure => 'absent',
+        user   => $::passwords::mysql::research::user,
+        pass   => $::passwords::mysql::research::pass,
+        group  => $group,
+        mode   => '0440',
     }
 
     $directories = [
@@ -35,26 +36,20 @@ class statistics::discovery {
     ]
 
     file { $directories:
-        ensure => 'directory',
+        ensure => 'absent',
         owner  => $user,
         group  => $group,
         mode   => '0775',
     }
 
     git::clone { 'wikimedia/discovery/golden':
-        ensure             => 'latest',
+        ensure             => 'absent',
         branch             => 'master',
         recurse_submodules => true,
         directory          => "${dir}/golden",
         owner              => $user,
         group              => $group,
         require            => File[$dir],
-    }
-
-    logrotate::conf { 'wikimedia-discovery-stats':
-        ensure  => absent,
-        content => template('statistics/discovery-stats.logrotate.erb'),
-        require => File[$log_dir],
     }
 
     # Assumes a virtual environment has been created as $dir/venv and that all
@@ -68,6 +63,7 @@ class statistics::discovery {
     # - It's ~9/10p Pacific time, so we're not likely to hinder people's work
     #   on analytics cluster, although we use `nice` & `ionice` as a courtesy.
     kerberos::systemd_timer { 'wikimedia-discovery-golden':
+        ensure            => 'absent',
         description       => 'Discovery golden daily run',
         environment       => $systemd_env,
         command           => "${dir}/golden/main.sh",

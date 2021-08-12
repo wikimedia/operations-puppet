@@ -65,6 +65,12 @@
   hr {
     border: 0.5px solid #AAA;
   }
+  .notice {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 10px;
+    background-color: yellow;
+  }
   .caption {
     font-size: 14px;
     padding-bottom: 10px;
@@ -89,6 +95,9 @@
     <div id="dashes">
 
       <h2>Legacy Dashboards</h2>
+
+      <p class="notice"><strong>Notice</strong>: these dashboards will soon be decommissioned. The underlying data will remain available <a href="https://analytics.wikimedia.org/published/datasets/discovery/metrics/">here</a> indefinitely. See <a href="https://phabricator.wikimedia.org/T227782">Phab:T227782</a> for more details.</p>
+
       <h3><a href = "./external/">External Referral Metrics</a></h3>
       <p class="caption">
         Dashboard for digging into search-engine-referred traffic (<a href="https://gerrit.wikimedia.org/g/wikimedia/discovery/wonderbolt">Source</a>, <a href="https://analytics.wikimedia.org/published/datasets/discovery/metrics/external_traffic/">Data</a>)
@@ -118,10 +127,7 @@
       <p>This project was developed by <a href="https://meta.wikimedia.org/wiki/User:MPopov_(WMF)">Mikhail Popov</a> and <a href="https://meta.wikimedia.org/wiki/User:CXie_(WMF)">Chelsy Xie</a> (former contributor) on top of RStudio's <a href = "https://shiny.rstudio.com/">Shiny</a> web application framework for R. <a href="https://meta.wikimedia.org/wiki/User:Okeyes_(WMF)">Os Keyes</a> was the original developer.</p>
 
       <h2>Who maintains it?</h2>
-      <p>This project is no longer actively maintained. It is maintained in a very limited capacity by <a href="https://www.mediawiki.org/wiki/Product_Analytics">Wikimedia Product Analytics</a>.</p>
-
-      <h2>How do I make one for my team's data?</h2>
-      <p>We wrote an article to help you do that! :D Head over to <em><a href="https://wikitech.wikimedia.org/wiki/Building_a_Shiny_Dashboard">Building a Shiny Dashboard</a></em> on Wikitech. To make the ops side of things easier, we've developed the <a href="https://github.com/wikimedia/puppet/tree/production/modules/shiny_server">Shiny Server module</a> for Puppet. See <a href="https://github.com/wikimedia/puppet/tree/production/modules/profile/manifests/discovery_dashboards">these profiles</a> for further reference. If you have other questions or would like further assistance, contact <a href="mailto:mpopov@wikimedia.org">Mikhail</a>.</p>
+      <p>This project is no longer actively maintained. It is owned by the <a href="https://www.mediawiki.org/wiki/Product_Analytics">Wikimedia Product Analytics</a> team.</p>
 
     </div>
 
