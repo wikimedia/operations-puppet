@@ -24,21 +24,27 @@ class mtail (
     Boolean $from_component         = false,
     String $additional_args         = ''
 ) {
-    if ( $from_component ) {
-        apt::package_from_component { 'mtail':
-            component => 'component/mtail'
-        }
+    # On bullseye simply use the default mtail package (3.0.0-rc43)
+    if debian::codename::eq('bullseye') {
+        ensure_packages('mtail')
     } else {
-        apt::pin { 'mtail':
-            pin      => 'version 3.0.0~rc35-3+wmf3',
-            package  => 'mtail',
-            priority => 1001,
-            before   => Package['mtail'],
-        }
-        # Not using require_package so apt::pin may be
-        # applied before attempting to install mtail.
-        package { 'mtail':
-            ensure => '3.0.0~rc35-3+wmf3',
+
+        if ( $from_component ) {
+            apt::package_from_component { 'mtail':
+                component => 'component/mtail'
+            }
+        } else {
+            apt::pin { 'mtail':
+                pin      => 'version 3.0.0~rc35-3+wmf3',
+                package  => 'mtail',
+                priority => 1001,
+                before   => Package['mtail'],
+            }
+            # Not using require_package so apt::pin may be
+            # applied before attempting to install mtail.
+            package { 'mtail':
+                ensure => '3.0.0~rc35-3+wmf3',
+            }
         }
     }
 
