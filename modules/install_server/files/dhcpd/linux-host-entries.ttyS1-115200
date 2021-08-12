@@ -2629,16 +2629,6 @@ host druid1001 {
     fixed-address druid1001.eqiad.wmnet;
 }
 
-host druid1002 {
-    hardware ethernet 14:02:EC:06:8B:EC;
-    fixed-address druid1002.eqiad.wmnet;
-}
-
-host druid1003 {
-    hardware ethernet 1C:98:EC:29:E2:78;
-    fixed-address druid1003.eqiad.wmnet;
-}
-
 host druid1004 {
     hardware ethernet 18:66:DA:AC:87:A1;
     fixed-address druid1004.eqiad.wmnet;
