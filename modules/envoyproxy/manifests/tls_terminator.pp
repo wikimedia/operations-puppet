@@ -120,10 +120,16 @@ define envoyproxy::tls_terminator(
 
     # We need a separate definition for each upstream cluster
     $upstreams.each |$upstream| {
-        $upstream_name = "local_port_${upstream['upstream_port']}"
-        envoyproxy::cluster { "cluster_${upstream_name}":
-            priority => 0,
-            content  => template('envoyproxy/tls_terminator/cluster.yaml.erb'),
+        $upstream_name = $upstream['upstream'] ? {
+            Envoyproxy::Ipupstream  => "local_port_${upstream['upstream']['port']}",
+            Envoyproxy::Udsupstream => "local_path_${upstream['upstream']['path']}",
+        }
+
+        if !defined(Envoyproxy::Cluster["cluster_${upstream_name}"]) { # nothing wrong with several listeners using the same cluster
+            envoyproxy::cluster { "cluster_${upstream_name}":
+                priority => 0,
+                content  => template('envoyproxy/tls_terminator/cluster.yaml.erb'),
+            }
         }
     }
     envoyproxy::listener { "tls_terminator_${name}":

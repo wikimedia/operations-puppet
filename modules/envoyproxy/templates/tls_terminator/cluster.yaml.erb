@@ -4,7 +4,11 @@ connect_timeout: <%= @connect_timeout %>s
 common_http_protocol_options:
   idle_timeout: <%= @idle_timeout %>s
 <%- end -%>
+<%- if @upstream['upstream'].include? 'port' -%>
 type: strict_dns
+<%- elsif @upstream['upstream'].include? 'path' -%>
+type: static
+<%- end -%>
 lb_policy: round_robin
 load_assignment:
   cluster_name: <%= @upstream_name %>
@@ -12,9 +16,14 @@ load_assignment:
   - lb_endpoints:
     - endpoint:
         address:
+<%- if @upstream['upstream'].include? 'port' -%>
           socket_address:
-            address: <%= @upstream.fetch('upstream_addr', @fqdn) %>
-            port_value: <%= @upstream['upstream_port'] %>
+            address: <%= @upstream['upstream'].fetch('addr', @fqdn) %>
+            port_value: <%= @upstream['upstream']['port'] %>
+<%- elsif @upstream['upstream'].include? 'path' -%>
+          pipe:
+            path: <%= @upstream['upstream']['path'] %>
+<%- end -%>
 <%- if @max_requests_per_conn
 # We limit persistent connections to a finite number of requests.
 # This can be important to keep our load-balancing in order if both the

@@ -14,8 +14,10 @@ describe 'envoyproxy::tls_terminator' do
                 :upstreams => [
                     {
                         :server_names  => ['*'],
-                        :upstream_port => 80,
-                        :certificates  => :undef
+                        :upstream      => {
+                            :port => 80,
+                        },
+                        :certificates => :undef
                     },
                 ],
                 :global_certs => [
@@ -48,7 +50,9 @@ describe 'envoyproxy::tls_terminator' do
                         key_path: '/etc/ssl/localcerts/citoid.key',
                     },
                   ],
-                  upstream_port: 1234
+                  upstream: {
+                      port: 1234,
+                  },
                 },
                 {
                   server_names: ['pdfrenderer.svc.eqiad.wmnet', 'pdfrenderer'],
@@ -58,7 +62,9 @@ describe 'envoyproxy::tls_terminator' do
                         key_path: '/etc/ssl/localcerts/evil.key',
                     },
                   ],
-                  upstream_port: 666
+                  upstream: {
+                      port: 666,
+                  },
                 }],
             }
           end

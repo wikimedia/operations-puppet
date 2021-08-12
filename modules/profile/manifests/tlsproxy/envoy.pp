@@ -148,8 +148,7 @@ class profile::tlsproxy::envoy(
         $upstream = {
             'server_names'  => $service['server_names'],
             'certificates'  => $certificates,
-            'upstream_port' => $service['port'],
-            'upstream_addr' => $upstream_addr
+            'upstream'      => {'port' => $service['port'], 'addr' => $upstream_addr},
         }
     }
 
