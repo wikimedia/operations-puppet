@@ -998,6 +998,10 @@ node /^(doh[1235]00[12]|doh4001)\.wikimedia\.org$/ {
     role(wikidough)
 }
 
+node 'doh4002.wikimedia.org' {
+    role(insetup)
+}
+
 # Dragonfly Supernode (T286054)
 node /^dragonfly-supernode[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(dragonfly::supernode)
