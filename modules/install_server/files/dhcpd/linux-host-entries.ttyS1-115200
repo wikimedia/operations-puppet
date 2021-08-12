@@ -7720,16 +7720,19 @@ host thanos-be2004 {
 host thanos-fe1001 {
     hardware ethernet BC:97:E1:28:74:40;
     fixed-address thanos-fe1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
    }
 
 host thanos-fe1002 {
     hardware ethernet BC:97:E1:28:5C:60;
     fixed-address thanos-fe1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
    }
 
 host thanos-fe1003 {
     hardware ethernet BC:97:E1:28:7D:A0;
     fixed-address thanos-fe1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
    }
 
 host thanos-fe2001 {
@@ -7741,11 +7744,13 @@ host thanos-fe2001 {
 host thanos-fe2002 {
     hardware ethernet BC:97:E1:28:31:F0;
     fixed-address thanos-fe2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host thanos-fe2003 {
     hardware ethernet BC:97:E1:28:54:60;
     fixed-address thanos-fe2003.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host theemin {
