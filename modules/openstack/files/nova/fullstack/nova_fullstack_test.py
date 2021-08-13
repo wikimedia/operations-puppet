@@ -129,8 +129,8 @@ def run_local(cmd):
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
 
-def verify_dns(hostname, nameservers, timeout=2.0):
-    """ ensure SSH works to an instance
+def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
+    """ ensure dns resolution for the created VM
     :param hostame: str
     :param nameservers: list
     :return: obj
@@ -143,8 +143,28 @@ def verify_dns(hostname, nameservers, timeout=2.0):
             dig_query.append('@{}'.format(server))
         dig_query.append(hostname)
         dig_options = ['+short', '+time=2', '+tries=1']
-        out = run_local(dig_query + dig_options)
-        logging.debug(out)
+
+        while True:
+            out = run_local(dig_query + dig_options)
+            logging.debug(out)
+
+            if out.decode('utf8') == expected_ip:
+                # Success
+                break
+
+            if out:
+                raise Exception(
+                    "DNS failure: got the wrong IP {} for hostname {}; expected {}".format(
+                        out.decode('utf8'), expected_ip, hostname))
+
+            # If we got here then dig returned an empty string which suggests NXDOMAIN.
+            # wait and see if something shows up.
+            dnswait = ns.progress()
+            if dnswait >= timeout:
+                raise Exception("Timed out waiting for A record for {}".format(hostname))
+
+            time.sleep(1)
+
     return ns.interval
 
 
@@ -586,8 +606,9 @@ def main():
                 host = '{}.{}.eqiad1.wikimedia.cloud'.format(server.name, server.tenant_id)
                 dnsd = args.dns_resolvers.split(',')
                 vdns = verify_dns(host,
+                                  addr,
                                   dnsd,
-                                  timeout=2.0)
+                                  timeout=30)
                 stat('verify.dns', vdns)
 
             if not args.skip_ssh:
