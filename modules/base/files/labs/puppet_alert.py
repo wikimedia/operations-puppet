@@ -23,6 +23,7 @@ import os
 import socket
 import sys
 import time
+import subprocess
 
 import yaml
 from notify_maintainers import email_admins
@@ -31,13 +32,7 @@ sys.path.append("/usr/local/sbin/")
 
 # Nag if it's been 24 hours since the last puppet run
 NAG_INTERVAL = 60 * 60 * 24
-PUPPET_STATE_FILE = "/var/lib/puppet/state/last_run_summary.yaml"
-PUPPET_REPORT_FILE = "/var/lib/puppet/state/last_run_report.yaml"
 READY_FILE = "/.cloud-init-finished"
-# last_run_summary.yaml reports the last run but it updates the stamp even
-# on failed runs. Instead, check to see the last time puppet actually did
-# something.
-PUPPET_SUCCESS_TIMESTAMP_FILE = "/var/lib/puppet/state/classes.txt"
 
 logger = logging.getLogger(__name__)
 
@@ -46,12 +41,33 @@ def is_host_ready():
     return os.path.exists(READY_FILE)
 
 
+def get_puppet_lastrunfile_path():
+    return subprocess.check_output([
+        "puppet", "config", "print", "lastrunfile"
+    ]).decode('utf-8').strip()
+
+
+def get_puppet_lastrunreport_path():
+    return subprocess.check_output([
+        "puppet", "config", "print", "lastrunreport"
+    ]).decode('utf-8').strip()
+
+
+def get_puppet_classfile_path():
+    # last_run_summary.yaml reports the last run but it updates the stamp even
+    # on failed runs. Instead, check to see the last time puppet actually did
+    # something.
+    return subprocess.check_output([
+        "puppet", "config", "print", "classfile"
+    ]).decode('utf-8').strip()
+
+
 def get_last_success_time():
-    return os.path.getmtime(PUPPET_SUCCESS_TIMESTAMP_FILE)
+    return os.path.getmtime(get_puppet_classfile_path())
 
 
 def get_last_run_summary():
-    with open(PUPPET_STATE_FILE, encoding="utf-8") as puppet_state_fd:
+    with open(get_puppet_lastrunfile_path(), encoding="utf-8") as puppet_state_fd:
         return yaml.safe_load(puppet_state_fd)
 
 
@@ -78,7 +94,7 @@ def get_last_run_report():
 
     yaml.add_multi_constructor('!', unknown)
     yaml.add_multi_constructor('tag:', unknown)
-    with open(PUPPET_REPORT_FILE, encoding="utf-8") as puppet_report_fd:
+    with open(get_puppet_lastrunreport_path(), encoding="utf-8") as puppet_report_fd:
         return yaml.load(puppet_report_fd, Loader=yaml.Loader)
 
 
