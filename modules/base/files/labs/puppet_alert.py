@@ -33,12 +33,17 @@ sys.path.append("/usr/local/sbin/")
 # Nag if it's been 24 hours since the last puppet run
 NAG_INTERVAL = 60 * 60 * 24
 READY_FILE = "/.cloud-init-finished"
+DISABLE_FILE = "/.no-puppet-checks"
 
 logger = logging.getLogger(__name__)
 
 
 def is_host_ready():
     return os.path.exists(READY_FILE)
+
+
+def alerts_disabled():
+    return os.path.exists(DISABLE_FILE)
 
 
 def get_puppet_lastrunfile_path():
@@ -114,6 +119,10 @@ def main():
 
     if not is_host_ready():
         logging.info("Host is not ready yet, file {} does not exist.".format(READY_FILE))
+        return
+
+    if alerts_disabled():
+        logging.info("Puppet alerts are disabled, file {} exists.".format(DISABLE_FILE))
         return
 
     try:
@@ -207,6 +216,9 @@ You are receiving this email because you are listed as member for the
 project that contains this instance.  Please take steps to repair
 this instance or contact a Cloud VPS admin for assistance.
 
+If your host is expected to fail puppet runs and you want to disable this
+alert, you can create a file under {disable_file}, that will skip the checks.
+
 You might find some help here:
     https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Runbooks/Cloud_VPS_alert_Puppet_failure_on
 
@@ -233,6 +245,7 @@ Some extra info follows:
             ('  * ' if failed_resources else '  No failed resources.')
             + '\n  * '.join(failed_resources)
         ),
+        disable_file=DISABLE_FILE,
     )
     email_admins(subject, body)
 
