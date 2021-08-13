@@ -5296,3 +5296,9 @@ ldap_only_users:
     ensure: present
     realname: Elena Aleynikova
     email: elena.aleynikova@wikimedia.de
+  tandic:
+    ensure: present
+    realname: Tanja Andic
+    email: tandic-ctr@wikimedia.org
+    expiry_date: 2022-06-30
+    expiry_contact: janstee@wikimedia.org
