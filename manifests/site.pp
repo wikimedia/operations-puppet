@@ -995,12 +995,8 @@ node 'doc1002.eqiad.wmnet', 'doc2001.codfw.wmnet' {
 }
 
 # Wikidough (T252132)
-node /^(doh[1235]00[12]|doh4001)\.wikimedia\.org$/ {
+node /^(doh[12345]00[12])\.wikimedia\.org$/ {
     role(wikidough)
-}
-
-node 'doh4002.wikimedia.org' {
-    role(insetup)
 }
 
 # Dragonfly Supernode (T286054)
