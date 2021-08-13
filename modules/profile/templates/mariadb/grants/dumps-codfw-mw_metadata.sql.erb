@@ -10,3 +10,10 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `centralauth`.* TO '<%= 
 GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO '<%= @dump_user %>'@'10.192.48.161' IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `%wik%`.* TO '<%= @dump_user %>'@'10.192.48.161';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `centralauth`.* TO '<%= @dump_user %>'@'10.192.48.161';
+-- Workaround account until we are given a proper mw maintenance api endpoint
+-- Grants for '<%= @mediabackup_mw_user %>'@'10.192.32.47'
+GRANT USAGE ON *.* TO `<%= @mediabackup_mw_user %>`@`10.192.32.47` IDENTIFIED BY PASSWORD '<%= @mediabackup_mw_pass %>';
+GRANT SELECT ON `%wik%`.* TO `<%= @mediabackup_mw_user %>`@`10.192.32.47`;
+-- Grants for '<%= @mediabackup_mw_user %>'@'10.192.48.42'
+GRANT USAGE ON *.* TO `<%= @mediabackup_mw_user %>`@`10.192.48.42` IDENTIFIED BY PASSWORD '<%= @mediabackup_mw_pass %>';
+GRANT SELECT ON `%wik%`.* TO `<%= @mediabackup_mw_user %>`@`10.192.48.42`;

@@ -1,1 +1,17 @@
--- TODO: Grants
+-- codfw
+
+-- Grants for '<%= @mediabackup_user %>'@'10.192.32.47'
+GRANT USAGE ON *.* TO `<%= @mediabackup_user %>`@`10.192.32.47` IDENTIFIED BY PASSWORD '<%= @mediabackup_pass %>';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `mediabackups`.* TO `<%= @mediabackup_user %>`@`10.192.32.47`;
+-- Grants for '<%= @mediabackup_user %>'@'10.192.48.42'
+GRANT USAGE ON *.* TO `<%= @mediabackup_user %>`@`10.192.48.42` IDENTIFIED BY PASSWORD '<%= @mediabackup_pass %>';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `mediabackups`.* TO `<%= @mediabackup_user %>`@`10.192.48.42`;
+
+-- eqiad
+
+-- Grants for '<%= @mediabackup_user %>'@'10.64.0.111'
+GRANT USAGE ON *.* TO `<%= @mediabackup_user %>`@`10.64.0.111` IDENTIFIED BY PASSWORD '<%= @mediabackup_pass %>';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `mediabackups`.* TO `<%= @mediabackup_user %>`@`10.64.0.111`;
+-- Grants for '<%= @mediabackup_user %>'@'10.64.32.144'
+GRANT USAGE ON *.* TO `<%= @mediabackup_user %>`@`10.64.32.144` IDENTIFIED BY PASSWORD '<%= @mediabackup_pass %>';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `mediabackups`.* TO `<%= @mediabackup_user %>`@`10.64.32.144`;
