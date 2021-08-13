@@ -145,14 +145,14 @@ def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
             out = run_local(dig_query + dig_options)
             logging.debug(out)
 
-            if out.decode("utf8") == expected_ip:
+            if out.decode("utf8").strip() == expected_ip.strip():
                 # Success
                 break
 
             if out:
                 raise Exception(
                     "DNS failure: got the wrong IP {} for hostname {}; expected {}".format(
-                        out.decode("utf8"), expected_ip, hostname
+                        out.decode("utf8").strip(), hostname, expected_ip
                     )
                 )
 
