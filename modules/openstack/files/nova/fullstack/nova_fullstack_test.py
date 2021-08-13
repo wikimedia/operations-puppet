@@ -36,7 +36,6 @@ from datetime import datetime
 
 
 class Timer:
-
     def __init__(self):
         self.start = self.now()
         self.wait = 0
@@ -74,12 +73,7 @@ def get_verify(prompt, invalid, valid):
             break
 
 
-def run_remote(node,
-               username,
-               keyfile,
-               bastion_ip,
-               cmd,
-               debug=False):
+def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
     """ Execute a remote command using SSH
     :param node: str
     :param cmd: str
@@ -92,32 +86,35 @@ def run_remote(node,
     # NumberOfPasswordPrompts=0 instructs not to
     # accept a password prompt.
     ssh = [
-        '/usr/bin/ssh',
-        '-o',
-        'ConnectTimeout=5',
-        '-o',
-        'UserKnownHostsFile=/dev/null',
-        '-o',
-        'StrictHostKeyChecking=no',
-        '-o',
-        'NumberOfPasswordPrompts=0',
-        '-o',
-        'LogLevel={}'.format('DEBUG' if debug else 'ERROR'),
-        '-o',
+        "/usr/bin/ssh",
+        "-o",
+        "ConnectTimeout=5",
+        "-o",
+        "UserKnownHostsFile=/dev/null",
+        "-o",
+        "StrictHostKeyChecking=no",
+        "-o",
+        "NumberOfPasswordPrompts=0",
+        "-o",
+        "LogLevel={}".format("DEBUG" if debug else "ERROR"),
+        "-o",
         'ProxyCommand="ssh -o StrictHostKeyChecking=no -i {} -W %h:%p {}@{}"'.format(
-            keyfile, username, bastion_ip),
-        '-i',
+            keyfile, username, bastion_ip
+        ),
+        "-i",
         keyfile,
-        '{}@{}'.format(username, node),
+        "{}@{}".format(username, node),
     ]
 
-    fullcmd = ssh + cmd.split(' ')
-    logging.debug(' '.join(fullcmd))
+    fullcmd = ssh + cmd.split(" ")
+    logging.debug(" ".join(fullcmd))
 
     # The nested nature of the proxycommand line is baffling to
     #  subprocess and/or ssh; joining a full shell commandline
     #  works and gives us something we can actually test by hand.
-    return subprocess.check_output(' '.join(fullcmd), shell=True, stderr=subprocess.STDOUT)
+    return subprocess.check_output(
+        " ".join(fullcmd), shell=True, stderr=subprocess.STDOUT
+    )
 
 
 def run_local(cmd):
@@ -125,7 +122,7 @@ def run_local(cmd):
     :param cmd: list
     :return: str
     """
-    logging.debug(' '.join(cmd))
+    logging.debug(" ".join(cmd))
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
 
@@ -138,30 +135,34 @@ def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
     with Timer() as ns:
         logging.info("Resolving {} from {}".format(hostname, nameservers))
         dig_query = []
-        dig_query.append('/usr/bin/dig')
+        dig_query.append("/usr/bin/dig")
         for server in nameservers:
-            dig_query.append('@{}'.format(server))
+            dig_query.append("@{}".format(server))
         dig_query.append(hostname)
-        dig_options = ['+short', '+time=2', '+tries=1']
+        dig_options = ["+short", "+time=2", "+tries=1"]
 
         while True:
             out = run_local(dig_query + dig_options)
             logging.debug(out)
 
-            if out.decode('utf8') == expected_ip:
+            if out.decode("utf8") == expected_ip:
                 # Success
                 break
 
             if out:
                 raise Exception(
                     "DNS failure: got the wrong IP {} for hostname {}; expected {}".format(
-                        out.decode('utf8'), expected_ip, hostname))
+                        out.decode("utf8"), expected_ip, hostname
+                    )
+                )
 
             # If we got here then dig returned an empty string which suggests NXDOMAIN.
             # wait and see if something shows up.
             dnswait = ns.progress()
             if dnswait >= timeout:
-                raise Exception("Timed out waiting for A record for {}".format(hostname))
+                raise Exception(
+                    "Timed out waiting for A record for {}".format(hostname)
+                )
 
             time.sleep(1)
 
@@ -175,15 +176,17 @@ def verify_dns_cleanup(hostname, nameservers, timeout=2.0):
     :return: obj
     """
     with Timer() as ns:
-        logging.info("Resolving {} from {}, waiting for cleanup".format(hostname, nameservers))
+        logging.info(
+            "Resolving {} from {}, waiting for cleanup".format(hostname, nameservers)
+        )
         while True:
             time.sleep(10)
             dig_query = []
-            dig_query.append('/usr/bin/dig')
+            dig_query.append("/usr/bin/dig")
             for server in nameservers:
-                dig_query.append('@{}'.format(server))
+                dig_query.append("@{}".format(server))
             dig_query.append(hostname)
-            dig_options = ['+short', '+time=2', '+tries=1']
+            dig_options = ["+short", "+time=2", "+tries=1"]
             out = run_local(dig_query + dig_options)
             if not out:
                 break
@@ -200,15 +203,15 @@ def verify_ssh(address, user, keyfile, bastion_ip, timeout):
     :return: float
     """
     with Timer() as vs:
-        logging.info('SSH to {}'.format(address))
+        logging.info("SSH to {}".format(address))
         while True:
             time.sleep(10)
             try:
-                run_remote(address, user, keyfile, bastion_ip, '/bin/true')
+                run_remote(address, user, keyfile, bastion_ip, "/bin/true")
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug(e)
-                logging.debug('SSH wait for {}'.format(vs.progress()))
+                logging.debug("SSH wait for {}".format(vs.progress()))
 
             sshwait = vs.progress()
             if sshwait >= timeout:
@@ -226,12 +229,12 @@ def verify_puppet(address, user, keyfile, bastion_ip, timeout):
         logging.info("Verify Puppet run on {}".format(address))
         while True:
             try:
-                cp = 'sudo cat /var/lib/puppet/state/last_run_summary.yaml'
+                cp = "sudo cat /var/lib/puppet/state/last_run_summary.yaml"
                 out = run_remote(address, user, keyfile, bastion_ip, cp)
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug(e)
-                logging.debug('Puppet wait {}'.format(pv.progress()))
+                logging.debug("Puppet wait {}".format(pv.progress()))
 
             pwait = pv.progress()
             if pwait > timeout:
@@ -249,13 +252,7 @@ def verify_puppet(address, user, keyfile, bastion_ip, timeout):
     return pv.interval, yprun
 
 
-def verify_create(nova_connection,
-                  name,
-                  image,
-                  flavor,
-                  timeout,
-                  network,
-                  on_host=None):
+def verify_create(nova_connection, name, image, flavor, timeout, network, on_host=None):
     """ Create and ensure creation for an instance
     :param nova_connection: nova connection obj
     :param name: str
@@ -277,14 +274,16 @@ def verify_create(nova_connection,
         else:
             nics = None
 
-        cserver = nova_connection.servers.create(name=name,
-                                                 image=image.id,
-                                                 flavor=flavor.id,
-                                                 nics=nics,
-                                                 availability_zone=availability_zone)
+        cserver = nova_connection.servers.create(
+            name=name,
+            image=image.id,
+            flavor=flavor.id,
+            nics=nics,
+            availability_zone=availability_zone,
+        )
         while True:
             server = nova_connection.servers.get(cserver.id)
-            if server.status == 'ACTIVE':
+            if server.status == "ACTIVE":
                 break
             cwait = vc.progress()
             logging.debug("creation at {}s".format(cwait))
@@ -327,358 +326,319 @@ def submit_stat(host, port, prepend, metric, value):
     :param metric: str
     :param value: int
     """
-    fmetric = '{}.{}'.format(prepend, metric)
+    fmetric = "{}.{}".format(prepend, metric)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
     s.connect((host, port))
-    s.send("{}:{}|g".format(fmetric, value).encode('utf8'))
-    logging.info('{} => {} {}'.format(fmetric, value, int(time.time())))
+    s.send("{}:{}|g".format(fmetric, value).encode("utf8"))
+    logging.info("{} => {} {}".format(fmetric, value, int(time.time())))
 
 
 def main():
 
     argparser = argparse.ArgumentParser()
 
+    argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
+
     argparser.add_argument(
-        '--debug',
-        help='Turn on debug logging',
-        action='store_true'
+        "--project", default="admin-monitoring", help="Set project to test creation for"
     )
 
     argparser.add_argument(
-        '--project',
-        default='admin-monitoring',
-        help='Set project to test creation for',
+        "--keyfile", default="", help="Path to SSH key file for verification"
     )
 
     argparser.add_argument(
-        '--keyfile',
-        default='',
-        help='Path to SSH key file for verification',
+        "--bastion-ip", default="", help="IP of bastion to use for ssh tests"
     )
 
     argparser.add_argument(
-        '--bastion-ip',
-        default='',
-        help='IP of bastion to use for ssh tests',
+        "--user",
+        default="",
+        help="Set username (Expected to be the same across all backends)",
     )
 
     argparser.add_argument(
-        '--user',
-        default='',
-        help='Set username (Expected to be the same across all backends)',
+        "--puppetmaster", default="", help="fqdn of the cloud frontend puppetmaster"
     )
 
     argparser.add_argument(
-        '--puppetmaster',
-        default='',
-        help='fqdn of the cloud frontend puppetmaster',
+        "--prepend",
+        default="test-create",
+        help="String to add to beginning of instance names",
     )
 
     argparser.add_argument(
-        '--prepend',
-        default='test-create',
-        help='String to add to beginning of instance names',
+        "--max-pool", default=1, type=int, help="Allow this many instances"
     )
 
     argparser.add_argument(
-        '--max-pool',
-        default=1,
-        type=int,
-        help='Allow this many instances',
+        "--preserve-leaks", help="Never delete failed VMs", action="store_true"
     )
 
     argparser.add_argument(
-        '--preserve-leaks',
-        help='Never delete failed VMs',
-        action='store_true'
-    )
-
-    argparser.add_argument(
-        '--keystone-url',
+        "--keystone-url",
         default="http://openstack.eqiad1.wikimediacloud.org:35357/v3",
-        help='Auth url for token and service discovery',
+        help="Auth url for token and service discovery",
     )
 
     argparser.add_argument(
-        '--interval',
+        "--interval",
         default=600,
         type=int,
-        help='Seconds delay for daemon (default: 600 [10m])',
+        help="Seconds delay for daemon (default: 600 [10m])",
     )
 
     argparser.add_argument(
-        '--creation-timeout',
+        "--creation-timeout",
         default=180,
         type=int,
-        help='Allow this long for creation to succeed.',
+        help="Allow this long for creation to succeed.",
     )
 
     argparser.add_argument(
-        '--ssh-timeout',
+        "--ssh-timeout",
         default=180,
         type=int,
-        help='Allow this long for SSH to succeed.',
+        help="Allow this long for SSH to succeed.",
     )
 
     argparser.add_argument(
-        '--puppet-timeout',
+        "--puppet-timeout",
         default=120,
         type=int,
-        help='Allow this long for Puppet to succeed.',
+        help="Allow this long for Puppet to succeed.",
     )
 
     argparser.add_argument(
-        '--deletion-timeout',
+        "--deletion-timeout",
         default=120,
         type=int,
-        help='Allow this long for delete to succeed.',
+        help="Allow this long for delete to succeed.",
+    )
+
+    argparser.add_argument("--image", default="debian-10.0-buster", help="Image to use")
+
+    argparser.add_argument("--flavor", default="m1.small", help="Flavor to use")
+
+    argparser.add_argument(
+        "--skip-puppet", help="Turn off Puppet validation", action="store_true"
     )
 
     argparser.add_argument(
-        '--image',
-        default='debian-10.0-buster',
-        help='Image to use',
+        "--skip-dns", help="Turn off DNS validation", action="store_true"
     )
 
     argparser.add_argument(
-        '--flavor',
-        default='m1.small',
-        help='Flavor to use',
+        "--dns-resolvers",
+        help="Comma separated list of nameservers",
+        default="208.80.154.143,208.80.154.24",
     )
 
     argparser.add_argument(
-        '--skip-puppet',
-        help='Turn off Puppet validation',
-        action='store_true'
+        "--skip-ssh", help="Turn off basic SSH validation", action="store_true"
     )
 
     argparser.add_argument(
-        '--skip-dns',
-        help='Turn off DNS validation',
-        action='store_true'
+        "--pause-for-deletion",
+        help="Wait for user input before deletion",
+        action="store_true",
     )
 
     argparser.add_argument(
-        '--dns-resolvers',
-        help='Comma separated list of nameservers',
-        default='208.80.154.143,208.80.154.24',
+        "--skip-deletion", help="Leave instance behind", action="store_true"
     )
 
     argparser.add_argument(
-        '--skip-ssh',
-        help='Turn off basic SSH validation',
-        action='store_true'
-    )
-
-    argparser.add_argument(
-        '--pause-for-deletion',
-        help='Wait for user input before deletion',
-        action='store_true'
-    )
-
-    argparser.add_argument(
-        '--skip-deletion',
-        help='Leave instance behind',
-        action='store_true'
-    )
-
-    argparser.add_argument(
-        '--virthost',
+        "--virthost",
         default=None,
-        help='Specify a particular host to launch on, e.g. labvirt1001.  Default'
-             'behavior is to use the standard scheduling pool.',
+        help="Specify a particular host to launch on, e.g. labvirt1001.  Default"
+        "behavior is to use the standard scheduling pool.",
     )
 
     argparser.add_argument(
-        '--adhoc-command',
-        default='',
-        help='Specify a command over SSH prior to deletion',
+        "--adhoc-command",
+        default="",
+        help="Specify a command over SSH prior to deletion",
     )
 
     argparser.add_argument(
-        '--network',
-        default='',
-        help='Specify a Neutron network for VMs',
+        "--network", default="", help="Specify a Neutron network for VMs"
     )
 
     argparser.add_argument(
-        '--statsd',
-        default='statsd.eqiad.wmnet',
-        help='Send statistics to statsd endpoint',
+        "--statsd",
+        default="statsd.eqiad.wmnet",
+        help="Send statistics to statsd endpoint",
     )
 
     args = argparser.parse_args()
 
     logging.basicConfig(
-        format='%(asctime)s %(levelname)s %(message)s',
-        level=logging.DEBUG if args.debug else logging.INFO)
+        format="%(asctime)s %(levelname)s %(message)s",
+        level=logging.DEBUG if args.debug else logging.INFO,
+    )
 
     if args.adhoc_command and args.skip_ssh:
         logging.error("cannot skip SSH with adhoc command specified")
         sys.exit(1)
 
     try:
-        with open(args.keyfile, 'r') as f:
+        with open(args.keyfile, "r") as f:
             f.read()
     except OSError:
         logging.error("keyfile {} cannot be read".format(args.keyfile))
         sys.exit(1)
 
-    pw = os.environ.get('OS_PASSWORD')
-    region = os.environ.get('OS_REGION_NAME')
-    user = os.environ.get('OS_USERNAME') or args.user
-    project = os.environ.get('OS_PROJECT_ID') or args.project
+    pw = os.environ.get("OS_PASSWORD")
+    region = os.environ.get("OS_REGION_NAME")
+    user = os.environ.get("OS_USERNAME") or args.user
+    project = os.environ.get("OS_PROJECT_ID") or args.project
     if not all([user, pw, project]):
-        logging.error('Set username and password environment variables')
+        logging.error("Set username and password environment variables")
         sys.exit(1)
 
     def stat(metric, value):
-        metric_prepend = 'cloudvps.novafullstack.{}'.format(socket.gethostname())
-        submit_stat(args.statsd,
-                    8125,
-                    metric_prepend,
-                    metric,
-                    value)
+        metric_prepend = "cloudvps.novafullstack.{}".format(socket.gethostname())
+        submit_stat(args.statsd, 8125, metric_prepend, metric, value)
 
     while True:
 
         loop_start = round(time.time(), 2)
 
-        auth = KeystonePassword(auth_url=args.keystone_url,
-                                username=user,
-                                password=pw,
-                                user_domain_name='Default',
-                                project_domain_name='Default',
-                                project_name=project)
+        auth = KeystonePassword(
+            auth_url=args.keystone_url,
+            username=user,
+            password=pw,
+            user_domain_name="Default",
+            project_domain_name="Default",
+            project_name=project,
+        )
 
         sess = keystone_session.Session(auth=auth)
-        nova_conn = nova_client.Client('2', session=sess, region_name=region)
+        nova_conn = nova_client.Client("2", session=sess, region_name=region)
 
         prepend = args.prepend
-        date = int(datetime.today().strftime('%Y%m%d%H%M%S'))
-        name = '{}-{}'.format(prepend, date)
+        date = int(datetime.today().strftime("%Y%m%d%H%M%S"))
+        name = "{}-{}".format(prepend, date)
 
         exist = nova_conn.servers.list()
         logging.debug(exist)
-        prependinstances = [server for server in exist
-                            if server.human_id.startswith(prepend)]
+        prependinstances = [
+            server for server in exist if server.human_id.startswith(prepend)
+        ]
         pexist_count = len(prependinstances)
 
-        stat('instances.count', pexist_count)
-        stat('instances.max', args.max_pool)
+        stat("instances.count", pexist_count)
+        stat("instances.max", args.max_pool)
 
         # If we're pushing up against max_pool, delete the oldest server
         if not args.preserve_leaks and pexist_count >= args.max_pool - 1:
-            logging.warning("There are {} leaked instances with prepend {}; "
-                            "cleaning up".format(pexist_count, prepend))
+            logging.warning(
+                "There are {} leaked instances with prepend {}; "
+                "cleaning up".format(pexist_count, prepend)
+            )
             servers = sorted(prependinstances, key=lambda server: server.human_id)
             servers[0].delete()
 
         if pexist_count >= args.max_pool:
             # If the cleanup in the last two cycles didn't get us anywhere,
             #  best to just bail out so we stop trampling on the API.
-            logging.error("max server(s) with prepend {} -- skipping creation".format(prepend))
+            logging.error(
+                "max server(s) with prepend {} -- skipping creation".format(prepend)
+            )
             continue
 
         cimage = nova_conn.glance.find_image(args.image)
         cflavor = nova_conn.flavors.find(name=args.flavor)
 
         try:
-            vc, server = verify_create(nova_conn,
-                                       name,
-                                       cimage,
-                                       cflavor,
-                                       args.creation_timeout,
-                                       args.network,
-                                       args.virthost)
-            stat('verify.creation', vc)
+            vc, server = verify_create(
+                nova_conn,
+                name,
+                cimage,
+                cflavor,
+                args.creation_timeout,
+                args.network,
+                args.virthost,
+            )
+            stat("verify.creation", vc)
 
-            if 'public' in server.addresses:
-                addr = server.addresses['public'][0]['addr']
-                if not addr.startswith('10.'):
+            if "public" in server.addresses:
+                addr = server.addresses["public"][0]["addr"]
+                if not addr.startswith("10."):
                     raise Exception("Bad address of {}".format(addr))
             else:
-                addr = server.addresses['lan-flat-cloudinstances2b'][0]['addr']
-                if not addr.startswith('172.'):
+                addr = server.addresses["lan-flat-cloudinstances2b"][0]["addr"]
+                if not addr.startswith("172."):
                     raise Exception("Bad address of {}".format(addr))
 
             if not args.skip_dns:
-                host = '{}.{}.eqiad1.wikimedia.cloud'.format(server.name, server.tenant_id)
-                dnsd = args.dns_resolvers.split(',')
-                vdns = verify_dns(host,
-                                  addr,
-                                  dnsd,
-                                  timeout=30)
-                stat('verify.dns', vdns)
+                host = "{}.{}.eqiad1.wikimedia.cloud".format(
+                    server.name, server.tenant_id
+                )
+                dnsd = args.dns_resolvers.split(",")
+                vdns = verify_dns(host, addr, dnsd, timeout=30)
+                stat("verify.dns", vdns)
 
             if not args.skip_ssh:
-                vs = verify_ssh(addr,
-                                user,
-                                args.keyfile,
-                                args.bastion_ip,
-                                args.ssh_timeout)
+                vs = verify_ssh(
+                    addr, user, args.keyfile, args.bastion_ip, args.ssh_timeout
+                )
 
-                stat('verify.ssh', vs)
+                stat("verify.ssh", vs)
                 if args.adhoc_command:
-                    sshout = run_remote(addr,
-                                        user,
-                                        args.keyfile,
-                                        args.bastion_ip,
-                                        args.adhoc_command,
-                                        debug=args.debug)
+                    sshout = run_remote(
+                        addr,
+                        user,
+                        args.keyfile,
+                        args.bastion_ip,
+                        args.adhoc_command,
+                        debug=args.debug,
+                    )
                     logging.debug(sshout)
 
             if not args.skip_puppet:
-                ps, puppetrun = verify_puppet(addr,
-                                              user,
-                                              args.keyfile,
-                                              args.bastion_ip,
-                                              args.puppet_timeout)
-                stat('verify.puppet', ps)
+                ps, puppetrun = verify_puppet(
+                    addr, user, args.keyfile, args.bastion_ip, args.puppet_timeout
+                )
+                stat("verify.puppet", ps)
 
-                categories = ['changes',
-                              'events',
-                              'resources',
-                              'time']
+                categories = ["changes", "events", "resources", "time"]
 
                 for d in categories:
                     for k, v in puppetrun[d].items():
-                        stat('puppet.{}.{}'.format(d, k), v)
+                        stat("puppet.{}.{}".format(d, k), v)
 
             if args.pause_for_deletion:
                 logging.info("Pausing for deletion")
-                get_verify('continue with deletion',
-                           'Not a valid response',
-                           ['y'])
+                get_verify("continue with deletion", "Not a valid response", ["y"])
 
             if not args.skip_deletion:
-                vd = verify_deletion(nova_conn,
-                                     server,
-                                     args.deletion_timeout)
+                vd = verify_deletion(nova_conn, server, args.deletion_timeout)
 
             if not args.pause_for_deletion:
-                stat('verify.deletion', vd)
+                stat("verify.deletion", vd)
                 loop_end = time.time()
-                stat('verify.fullstack', round(loop_end - loop_start, 2))
+                stat("verify.fullstack", round(loop_end - loop_start, 2))
 
             if not args.skip_dns:
-                host = '{}.{}.eqiad1.wikimedia.cloud'.format(server.name, server.tenant_id)
-                dnsd = args.dns_resolvers.split(',')
-                vdns = verify_dns_cleanup(host,
-                                          dnsd,
-                                          timeout=60.0)
-                stat('verify.dns-cleanup', vdns)
+                host = "{}.{}.eqiad1.wikimedia.cloud".format(
+                    server.name, server.tenant_id
+                )
+                dnsd = args.dns_resolvers.split(",")
+                vdns = verify_dns_cleanup(host, dnsd, timeout=60.0)
+                stat("verify.dns-cleanup", vdns)
 
             if not args.interval:
                 return
 
-            stat('verify.success', 1)
+            stat("verify.success", 1)
         except:  # noqa: E722
             logging.exception("{} failed, leaking".format(name))
-            stat('verify.success', 0)
+            stat("verify.success", 0)
 
         time.sleep(args.interval)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
