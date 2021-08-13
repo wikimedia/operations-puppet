@@ -127,6 +127,9 @@ class netops::monitoring(
         'cloudsw1-d5-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.6',
                                                   parents => ['cr1-eqiad', 'cr2-eqiad'],
                                                   vcp => false },
+        'cloudsw2-d5-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.1.198',
+                                                  parents => ['cloudsw1-d5-eqiad.mgmt.eqiad.wmnet'],
+                                                  vcp => false },
         # codfw
         'asw-a-codfw'   => { ipv4 => '10.193.0.16',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'asw-b-codfw'   => { ipv4 => '10.193.0.17',  parents => ['cr1-codfw', 'cr2-codfw'] },

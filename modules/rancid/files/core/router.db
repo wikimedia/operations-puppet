@@ -38,6 +38,7 @@ mr1-eqsin.wikimedia.org;juniper;up;
 cloudsw1-c8-eqiad.mgmt.eqiad.wmnet;juniper;up;
 cloudsw2-c8-eqiad.mgmt.eqiad.wmnet;juniper;up;
 cloudsw1-d5-eqiad.mgmt.eqiad.wmnet;juniper;up;
+cloudsw2-d5-eqiad.mgmt.eqiad.wmnet;juniper;up;
 scs-ulsfo.mgmt.ulsfo.wmnet;opengear;up;
 scs-a8-eqiad.mgmt.eqiad.wmnet;opengear;up;
 scs-a1-codfw.mgmt.codfw.wmnet;opengear;up;
