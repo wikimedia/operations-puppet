@@ -1862,8 +1862,12 @@ node /^mwdebug100[12]\.eqiad\.wmnet$/ {
 
 # Row A
 
-# rack A3
+# rack A1
+node /^mw14(5[1-2])\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
 
+# rack A3
 node /^mw141([4-8])\.eqiad\.wmnet$/ {
     role(mediawiki::canary_appserver)
 }
@@ -1878,6 +1882,11 @@ node /^mw14(2[1-2])\.eqiad\.wmnet$/ {
 
 # rack A5
 node /^mw13(8[579]|91)\.eqiad\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+# rack A8
+node /^mw14(5[3-6])\.eqiad\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
