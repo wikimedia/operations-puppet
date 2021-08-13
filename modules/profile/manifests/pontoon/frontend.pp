@@ -20,8 +20,7 @@ class profile::pontoon::frontend (
     }
 
     ferm::service { 'pontoon-frontend':
-        proto  => 'tcp',
-        port   => '(80 443)',
-        srange => '$DOMAIN_NETWORKS',
+        proto => 'tcp',
+        port  => '(80 443)',
     }
 }
