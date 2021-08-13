@@ -3,6 +3,19 @@ cluster: analytics
 profile::admin::groups:
   - analytics-admins
 
+profile::alluxio::common::alluxio_service_name: analytics-test-alluxio-presto
+profile::alluxio::common::zookeeper_cluster: druid-analytics-test-eqiad
+
+# This configuration is merged with the values in common.yaml
+profile::alluxio::common::config_override:
+  worker_properties:
+    'alluxio.worker.hostname': '%{::fqdn}'
+
+profile::alluxio::master_hosts:
+  - an-test-coord1001.eqiad.wmnet
+profile::alluxio::worker_hosts:
+  - an-test-presto1001.eqiad.wmnet
+
 # Hadoop settings, presto server needs Hadoop client configs
 profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 

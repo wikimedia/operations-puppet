@@ -865,6 +865,8 @@ hadoop_clusters:
     core_site_extra_properties:
       # User used in the Yarn UI to check job logs/statuses/etc..
       hadoop.http.staticuser.user: 'yarn'
+      hadoop.proxyuser.alluxio.hosts: '*'
+      hadoop.proxyuser.alluxio.groups: '*'
 
     yarn_site_extra_properties:
       yarn.resourcemanager.scheduler.class: 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler'
@@ -1049,6 +1051,15 @@ hadoop_clusters:
     # Xmx calculated adding +20% to what listed in the first link.
     hadoop_namenode_opts: "-Xms44266m -Xmx44266m -Djava.net.preferIPv4Stack=false -XX:+UseG1GC -XX:MaxGCPauseMillis=4000 -XX:ParallelGCThreads=20 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
     yarn_resourcemanager_opts: "-Xms4096m -Xmx4096m -Djava.net.preferIPv4Stack=false -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10083:/etc/prometheus/yarn_resourcemanager_jmx_exporter.yaml"
+
+# Alluxio configuration is common to multiple profiles, and must be kept
+# in sync. Values common to all roles are defined here, with role and node
+# specific values being merged from other yaml files.
+alluxio_services:
+  analytics-test-alluxio-presto:
+    master_properties:
+      'alluxio.master.journal.folder': 'hdfs://analytics-test-hadoop/wmf/alluxio/journal'
+      'alluxio.master.mount.table.root.ufs': 'hdfs://analytics-test-hadoop/wmf/alluxio/root'
 
 deployment_server: deploy1002.eqiad.wmnet
 

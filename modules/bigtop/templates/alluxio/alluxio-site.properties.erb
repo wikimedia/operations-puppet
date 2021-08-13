@@ -1,0 +1,58 @@
+## THIS FILE IS MANAGED BY PUPPET
+#
+# The Alluxio Open Foundation licenses this work under the Apache License, version 2.0
+# (the "License"). You may not use this work except in compliance with the License, which is
+# available at www.apache.org/licenses/LICENSE-2.0
+#
+# This software is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied, as more fully set forth in the License.
+#
+# See the NOTICE file distributed with this work for information regarding copyright ownership.
+#
+
+# Site specific configuration properties for Alluxio
+# Details about all configuration properties https://docs.alluxio.io/os/user/2.4/en/reference/Properties-List.html
+
+# Common properties
+<%if @zookeeper_hosts -%>
+alluxio.zookeeper.address=<%= @zookeeper_hosts %>
+<% end -%>
+<%if @alluxio_properties['common_properties'] != :undef -%>
+<% @alluxio_properties['common_properties'].sort.each do |name, value| -%>
+<%= name -%>=<%= value %>
+<% end -%>
+<%end -%>
+
+# Security properties
+<%if @alluxio_properties['security_properties'] != :undef -%>
+<% @alluxio_properties['security_properties'].sort.each do |name, value| -%>
+<%= name -%>=<%= value %>
+<% end -%>
+<% end -%>
+# Master properties
+<%if @alluxio_properties['master_properties'] != :undef -%>
+<% @alluxio_properties['master_properties'].sort.each do |name, value| -%>
+<%= name -%>=<%= value %>
+<% end -%>
+<% end -%>
+
+# Worker properties
+<%if @alluxio_properties['worker_properties'] != :undef -%>
+<% @alluxio_properties['worker_properties'].each do |name, value| -%>
+<%= name -%>=<%= value %>
+<% end -%>
+<% end -%>
+
+# User properties
+<%if @alluxio_properties['user_properties'] != :undef -%>
+<% @alluxio_properties['user_properties'].each do |name, value| -%>
+<%= name -%>=<%= value %>
+<% end -%>
+<% end -%>
+
+# Resource Manager properties
+<%if @alluxio_properties['resource_manager_properties'] != :undef -%>
+<% @alluxio_properties['resource_manager_properties'].each do |name, value| -%>
+<%= name -%>=<%= value %>
+<% end -%>
+<% end -%>

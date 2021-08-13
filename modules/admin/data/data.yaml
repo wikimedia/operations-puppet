@@ -974,7 +974,7 @@ groups:
   # hadoop:
   #   gid: 908
   #   system: true
-  #   members: [hdfs, yarn, mapred]
+  #   members: [hdfs, yarn, mapred, alluxio]
   analytics-privatedata:
     gid: 909
     system: true
@@ -995,6 +995,12 @@ groups:
     gid: 913
     system: true
     members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # alluxio:
+  #   gid: 914
+  #   system: true
+  #   members: []
 
 users:
   reprepro:
@@ -1097,7 +1103,15 @@ users:
     home_dir: none
     shell: /bin/bash
     krb: present
-
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # alluxio:
+  #   ensure: present
+  #   system: true
+  #   uid: 914
+  #   gid: 914
+  #   home_dir: '/var/lib/alluxio'
+  #   shell: '/bin/false'
   rush:
     ensure: absent
     gid: 500

@@ -24,4 +24,8 @@ class role::analytics_test_cluster::presto::server {
 
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
+
+    # HDFS caching using Alluxio - Presto server nodes run Alluxio worker services
+    include ::profile::alluxio::worker
+
 }
