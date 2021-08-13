@@ -2067,7 +2067,7 @@ node /^mw133[4-8]\.eqiad\.wmnet$/ {
 }
 
 # new mw hosts via T273915
-node /^mw14(44|4[7-9]|5[0-6])\.eqiad\.wmnet$/ {
+node /^mw14(4[7-9]|5[0-6])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
