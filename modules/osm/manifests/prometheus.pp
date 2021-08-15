@@ -14,8 +14,16 @@ class osm::prometheus(
         source => "puppet:///modules/${module_name}/osm_sync_lag.sh",
     }
 
+    systemd::timer::job { 'osm_sync_lag':
+        ensure          => $ensure,
+        description     => 'Regular jobs for running osm_sync_lag',
+        user            => 'root',
+        command         => "/usr/bin/osm_sync_lag ${state_path} ${prometheus_path}",
+        logging_enabled => false,
+        interval        => {'start' => 'OnCalendar', 'interval' => 'minutely'}
+    }
     cron { 'osm_sync_lag':
-        ensure  => $ensure,
+        ensure  => absent,
         command => "/usr/bin/osm_sync_lag ${state_path} ${prometheus_path} >/dev/null 2>&1",
     }
 }
