@@ -64,6 +64,11 @@ zones:
       - 172.16.1.148
   web.db.svc.eqiad.wmflabs.: *web
 cnames:
+  # wikitech's database is not in noc
+  s6.analytics.db.svc.wikimedia.cloud.:
+    - labswiki.analytics.db.svc.wikimedia.cloud.
+  s6.web.db.svc.wikimedia.cloud.:
+    - labswiki.web.db.svc.wikimedia.cloud.
   s7.analytics.db.svc.eqiad.wmflabs.:
     - centralauth.analytics.db.svc.eqiad.wmflabs.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
