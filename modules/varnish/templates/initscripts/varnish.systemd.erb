@@ -42,7 +42,11 @@ ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
 <%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
 <% if @listen_uds -%>
+<% if @proxy_on_uds -%>
 -a <%= @listen_uds -%>,PROXY \
+<% else -%>
+-a <%= @listen_uds -%> \
+<% end -%>
 <% end -%>
 -T 127.0.0.1:<%= @admin_port -%> \
 -f '' \

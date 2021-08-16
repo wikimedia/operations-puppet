@@ -16,6 +16,7 @@ class profile::cache::varnish::frontend (
     Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
     Optional[Stdlib::Unixpath] $listen_uds = lookup('profile::cache::varnish::frontend::listen_uds', {'default_value' => undef}),
     Optional[Stdlib::Fqdn] $single_backend_experiment = lookup('cache::single_backend_fqdn', {'default_value' => undef}),
+    Boolean $proxy_on_uds = lookup('profile::cache::varnish::frontend::proxy_on_uds', {'default_value' => false}),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -172,6 +173,7 @@ class profile::cache::varnish::frontend (
         wikimedia_nets     => $wikimedia_nets,
         wikimedia_trust    => $wikimedia_trust,
         listen_uds         => $listen_uds,
+        proxy_on_uds       => $proxy_on_uds,
     }
     # lint:endignore
 }

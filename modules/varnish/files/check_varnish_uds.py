@@ -16,9 +16,10 @@ OK = 0
 CRITICAL = 2
 UNKNOWN = 3
 
+PROXY_REQUEST = "PROXY TCP4 127.0.0.12 127.0.0.1 12345 80\r\n"
 
-REQUEST = "PROXY TCP4 127.0.0.12 127.0.0.1 12345 80\r\n" \
-          "GET /varnish-fe HTTP/1.0\r\n" \
+
+REQUEST = "GET /varnish-fe HTTP/1.0\r\n" \
           "Host: healthcheck.wikimedia.org\r\n" \
           "Connection: close\r\n" \
           "User-Agent: check_varnish_uds/0.1\r\n" \
@@ -42,6 +43,13 @@ def parse_args():
         help="Timeout for socket operations in seconds",
     )
 
+    parser.add_argument(
+        "--proxy",
+        default=False,
+        type=bool,
+        help="Enable PROXYv1 protocol support",
+    )
+
     return parser.parse_args()
 
 
@@ -57,6 +65,8 @@ def main():
         critical_exit("cannot connect to {}: {}".format(args.socket, msg))
 
     try:
+        if args.proxy:
+            sock.sendall(PROXY_REQUEST.encode())
         sock.sendall(REQUEST.encode())
     except socket.error as msg:
         critical_exit("cannot write to {}: {}".format(args.socket, msg))
