@@ -87,6 +87,11 @@ class swift::storage (
             content => template('swift/object-server.conf.erb');
         '/etc/swift/container-reconciler.conf':
             content => template('swift/container-reconciler.conf.erb');
+        # The uwsgi configurations are similar to what Debian ships but logging to syslog
+        '/etc/swift/swift-account-server-uwsgi.ini':
+            content => template('swift/swift-account-server-uwsgi.ini.erb');
+        '/etc/swift/swift-container-server-uwsgi.ini':
+            content => template('swift/swift-container-server-uwsgi.ini.erb');
         '/srv/swift-storage':
             ensure  => directory,
             require => Package['swift'],

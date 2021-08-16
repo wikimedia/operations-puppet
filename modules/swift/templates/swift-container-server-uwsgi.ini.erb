@@ -1,0 +1,55 @@
+[uwsgi]
+############################
+### Generic UWSGI config ###
+############################
+
+# Override the default size for headers from the 4k default.
+buffer-size = 65535
+
+# This is running standalone
+master = true
+
+# Threads and processes
+enable-threads = true
+
+# uwsgi recommends this to prevent thundering herd on accept.
+thunder-lock = true
+
+plugins = python3
+plugins = syslog
+
+# This ensures that file descriptors aren't shared between the WSGI application processes.
+lazy-apps = true
+
+# Log from the wsgi application: needs python3-pastescript as runtime depends.
+paste-logger = true
+
+# automatically kill workers if master dies
+no-orphans = true
+
+# exit instead of brutal reload on SIGTERM
+die-on-term = true
+
+threads = 1
+listen = 100
+
+# These are used in the gate.
+# The http-auto-chunked / http-chunked-input
+# are mandatory, specific to Glance, and are
+# the reasons why Glance doesn't work on Apache
+socket-timeout = 10
+http-auto-chunked = true
+http-chunked-input = true
+http-raw-body = true
+chmod-socket = 666
+add-header = Connection: close
+exit-on-reload = true
+die-on-term = true
+wsgi-manage-chunked-input = true
+
+logger = syslog:container-server
+name = swift-container-server
+uid = swift
+gid = swift
+chdir = /var/lib/swift
+wsgi-file = /usr/bin/swift-container-server-uwsgi
