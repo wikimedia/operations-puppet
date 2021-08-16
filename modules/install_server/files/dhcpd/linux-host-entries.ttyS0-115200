@@ -367,21 +367,9 @@ host kafka-test1010 {
     fixed-address kafka-test1010.eqiad.wmnet;
 }
 
-host kafkamon1001 {
-    hardware ethernet aa:00:00:ed:c5:11;
-    fixed-address kafkamon1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host kafkamon1002 {
     hardware ethernet aa:00:00:5f:fa:7f;
     fixed-address kafkamon1002.eqiad.wmnet;
-}
-
-host kafkamon2001 {
-    hardware ethernet aa:00:00:ca:30:e0;
-    fixed-address kafkamon2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host kafkamon2002 {

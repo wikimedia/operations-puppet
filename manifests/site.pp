@@ -1482,10 +1482,6 @@ node /^kafka-jumbo100[1-9]\.eqiad\.wmnet$/ {
 }
 
 # Kafka Burrow Consumer lag monitoring (T187901, T187805)
-node /kafkamon[12]001\.(codfw|eqiad)\.wmnet/ {
-    role(kafka::monitoring)
-}
-
 node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
     role(kafka::monitoring_buster)
 }
