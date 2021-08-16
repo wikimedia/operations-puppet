@@ -36,6 +36,12 @@ filter_chains:
 <%- if upstream['tlsparams']['ecdh_curves'] != nil -%>
           ecdh_curves: <%= upstream['tlsparams']['ecdh_curves'] %>
 <%- end -%>
+<%- if upstream['tlsparams']['tls_min_version'] != nil -%>
+          tls_minimum_protocol_version: <%= upstream['tlsparams']['tls_min_version'] %>
+<%- end -%>
+<%- if upstream['tlsparams']['tls_max_version'] != nil -%>
+          tls_maximum_protocol_version: <%= upstream['tlsparams']['tls_max_version'] %>
+<%- end -%>
 <%- end -%>
         tls_certificates:
 <% upstream['certificates'].each do |certificate| -%>
@@ -127,6 +133,12 @@ filter_chains:
 <%- end -%>
 <%- if @global_tlsparams['ecdh_curves'] != nil -%>
           ecdh_curves: <%= @global_tlsparams['ecdh_curves'] %>
+<%- end -%>
+<%- if @global_tlsparams['tls_min_version'] != nil -%>
+          tls_minimum_protocol_version: <%= @global_tlsparams['tls_min_version'] %>
+<%- end -%>
+<%- if @global_tlsparams['tls_max_version'] != nil -%>
+          tls_maximum_protocol_version: <%= @global_tlsparams['tls_max_version'] %>
 <%- end -%>
 <%- end -%>
         tls_certificates:
