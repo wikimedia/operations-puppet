@@ -111,7 +111,17 @@ filter_chains:
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>
                 <%- end -%>
               <%- end -%>
-      http_filters: [{name: envoy.filters.http.router, typed_config: {}}]
+      http_filters:
+<%- if @lua_script -%>
+      - name: envoy.filters.http.lua
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+          inline_code: |
+<%- @lua_script.each_line do |script_line| -%>
+            <%= script_line -%>
+<%- end -%>
+<%- end -%>
+      - name: envoy.filters.http.router
       server_header_transformation: APPEND_IF_ABSENT
 <%- end -%>
 <%- end -%>
@@ -213,7 +223,17 @@ filter_chains:
                 <%- end -%>
               <%- end -%>
         <%- end -%>
-      http_filters: [{name: envoy.filters.http.router, typed_config: {}}]
+      http_filters:
+<%- if @lua_script -%>
+      - name: envoy.filters.http.lua
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+          inline_code: |
+<%- @lua_script.each_line do |script_line| -%>
+            <%= script_line -%>
+<%- end -%>
+<%- end -%>
+      - name: envoy.filters.http.router
       http_protocol_options:
         accept_http_10: true
 <%- if @capitalize_headers -%>

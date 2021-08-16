@@ -88,6 +88,8 @@
 #     The time in seconds to wait before closing a keepalive connection when inactive.
 # @param max_requests_per_conn
 #     The maximum number of requests to send over a connection
+# @param lua_script
+#     lua script contents  to use as a global lua script. Only available for V3 configuration
 define envoyproxy::tls_terminator(
     Variant[Array[Envoyproxy::Tlsconfig], Array[Envoyproxy::TlsconfigV3]] $upstreams                 = [],
     Boolean                                                               $access_log                = false,
@@ -107,6 +109,7 @@ define envoyproxy::tls_terminator(
     Optional[Envoyproxy::Alpn]                                            $global_alpn_protocols     = undef,
     Optional[Float]                                                       $idle_timeout              = undef,
     Optional[Integer]                                                     $max_requests_per_conn     = undef,
+    Optional[String]                                                      $lua_script                = undef,
 ) {
 
     # First of all, we can't configure a tls terminator if envoy is not installed.
