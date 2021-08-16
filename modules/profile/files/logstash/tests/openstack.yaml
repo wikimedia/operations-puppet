@@ -148,4 +148,35 @@ testcases:
           name: "osstackcanary"
         ecs:
           version: "1.7.0"
-
+  - input:
+      - >
+        {
+          "facility": "daemon",
+          "logsource": "cloudcontrol1003",
+          "host": "cloudcontrol1003",
+          "program": "nova-fullstack",
+          "severity": "DEBUG",
+          "timestamp": "2021-08-16T20:28:22.170025",
+          "message": "SSH wait for 55.22",
+          "log.level": "DEBUG",
+          "host.name": "cloudcontrol1003",
+          "ecs.version": "1.7.0"
+        }
+    expected:
+      - message: "SSH wait for 55.22"
+        log:
+          level: "DEBUG"
+          syslog:
+            severity:
+              name: "debug"
+              code: 7
+            facility:
+              name: "daemon"
+              code: 3
+            priority: 31
+        host:
+          name: "cloudcontrol1003"
+        service:
+          type: "nova-fullstack"
+        ecs:
+          version: "1.7.0"
