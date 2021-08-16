@@ -42,6 +42,9 @@ filter_chains:
         - certificate_chain: { filename: "<%= certificate['cert_path'] %>" }
           private_key: { filename: "<%= certificate['key_path'] %>" }
 <%- end -%>
+<%- if upstream['alpn_protocols'] -%>
+        alpn_protocols: <%= upstream['alpn_protocols'] %>
+<%- end -%>
   filters:
   - name: envoy.http_connection_manager
     typed_config:
@@ -130,6 +133,9 @@ filter_chains:
 <% @global_certs.each do |certificate| -%>
         - certificate_chain: { filename: "<%= certificate['cert_path'] %>" }
           private_key: { filename: "<%= certificate['key_path'] %>" }
+<%- end -%>
+<%- if @global_alpn_protocols -%>
+        alpn_protocols: <%= @global_alpn_protocols %>
 <%- end -%>
   filters:
   - name: envoy.http_connection_manager
