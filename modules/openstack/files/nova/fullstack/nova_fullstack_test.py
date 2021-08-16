@@ -66,7 +66,7 @@ class ECSFormatter(logging.Formatter):
     def format(self, record):
         ecs_message = {
             'timestamp': datetime.utcnow().isoformat(),
-            'message': record.msg,
+            'message': str(record.msg),
             'log.level': record.levelname.upper(),
             'host.name': platform.node(),
             'ecs.version': '1.7.0'
