@@ -112,8 +112,14 @@ https://quality.wikimedia.org:
 
 https://otrs-wiki.wikimedia.org:
 - path: /wiki/Main_Page
+  assert_status: 301
+  assert_headers:
+    Location: https://vrt-wiki.wikimedia.org/wiki/Main_Page
+
+https://vrt-wiki.wikimedia.org:
+- path: /wiki/Main_Page
   assert_status: 200
-  assert_body_contains: OTRS Wiki
+  assert_body_contains: VRT Wiki
 
 https://exec.wikimedia.org:
 - path: /wiki/Main_Page
