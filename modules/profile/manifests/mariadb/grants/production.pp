@@ -35,14 +35,6 @@ class profile::mariadb::grants::production(
         content => template('role/mariadb/grants/production.sql.erb'),
     }
 
-    # To be deleted, see gerrit:321888
-    #file { '/root/.my.cnf':
-    #    owner   => 'root',
-    #    group   => 'root',
-    #    mode    => '0400',
-    #    content => template('mariadb/root.my.cnf.erb'),
-    #}
-
     if $shard {
         $designate_pass      = $passwords::designate::db_pass
         $keystone_pass       = $passwords::openstack::keystone::keystone_db_pass
