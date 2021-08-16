@@ -21,12 +21,14 @@ Expects env variables inline with our other nova tooling:
 """
 
 import argparse
+import json
 from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1 import session as keystone_session
 import logging
 import novaclient
 from novaclient import client as nova_client
 import os
+import platform
 import socket
 import subprocess
 import sys
@@ -57,6 +59,30 @@ class Timer:
 
     def __exit__(self, *args):
         self.close()
+
+
+class ECSFormatter(logging.Formatter):
+    """ECS 1.7.0 logging formatter"""
+    def format(self, record):
+        ecs_message = {
+            'timestamp': datetime.utcnow().isoformat(),
+            'message': record.msg,
+            'log.level': record.levelname.upper(),
+            'host.name': platform.node(),
+            'ecs.version': '1.7.0'
+        }
+        if record.exc_info:
+            ecs_message['error.stack'] = self.formatException(record.exc_info)
+        if not ecs_message.get('error.stack') and record.exc_text:
+            ecs_message['error.stack'] = record.exc_text
+        # Prefix "@cee" cookie indicating rsyslog should parse the message as JSON
+        return "@cee: %s" % json.dumps(ecs_message)
+
+
+def log_unhandled_exception(exc_type, exc_value, exc_traceback):
+    """Forwards unhandled exceptions to log handler.  Override sys.exechook to activate."""
+    logging.exception(
+        "Unhandled exception: %s" % exc_value, exc_info=(exc_type, exc_value, exc_traceback))
 
 
 def get_verify(prompt, invalid, valid):
@@ -473,10 +499,15 @@ def main():
 
     args = argparser.parse_args()
 
-    logging.basicConfig(
-        format="%(asctime)s %(levelname)s %(message)s",
-        level=logging.DEBUG if args.debug else logging.INFO,
-    )
+    # Override sys.excepthook to pass unhandled exceptions to the logger
+    sys.excepthook = log_unhandled_exception
+
+    # Set up logging
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
+    logHandler = logging.StreamHandler()
+    logHandler.setFormatter(ECSFormatter())
+    logger.addHandler(logHandler)
 
     if args.adhoc_command and args.skip_ssh:
         logging.error("cannot skip SSH with adhoc command specified")
