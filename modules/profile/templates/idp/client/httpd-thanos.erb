@@ -23,7 +23,7 @@
     </Location>
 
     # Object storage bucket web explorer
-    ProxyPass /bucket/ http://localhost:<%= @vhost_settings['bucket_web_port'] %>/
+    ProxyPass /bucket http://localhost:<%= @vhost_settings['bucket_web_port'] %>/bucket
 
     # max connections _per apache child process_
     # wait 1s to acquire a free connection before returning "server busy"
