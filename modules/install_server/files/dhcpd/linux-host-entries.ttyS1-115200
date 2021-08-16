@@ -6142,7 +6142,7 @@ host mw1452 {
 }
 
 host mw1453 {
-        hardware ethernet 2C:EA:7F:82:FF:DA;
+        hardware ethernet 2C:EA:7F:81:FF:DA;
         fixed-address mw1453.eqiad.wmnet;
 }
 
