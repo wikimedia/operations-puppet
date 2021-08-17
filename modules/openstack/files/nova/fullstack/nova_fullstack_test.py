@@ -219,7 +219,7 @@ def verify_dns_reverse(hostname, ip, nameservers, timeout=2.0):
             out = run_local(dig_query + dig_options)
             logging.debug(out)
 
-            if out.decode("utf8").strip() == hostname.strip():
+            if out.decode("utf8").strip().strip(".") == hostname.strip():
                 # Success
                 break
 
