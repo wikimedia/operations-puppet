@@ -304,3 +304,7 @@ hadoop_gpu_workers_buster:
 stat_gpu_hosts:
   __regex: !ruby/regexp /^stat100[58]\.eqiad\.wmnet$/
   profile::amd_gpu::rocm_version: '38'
+
+new_memcached_servers:
+  __regex: !ruby/regexp /^mc10(39|4[0-9]|5[0-4])\.eqiad\.wmnet/
+  profile::redis::multidc::version_override: ~
