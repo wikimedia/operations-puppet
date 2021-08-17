@@ -17,6 +17,10 @@ https://en.wikipedia.org:
   assert_status: 200
   assert_body_regex: >-
     "appID"\s*:\s*"AKK7J2GV64.org.wikimedia.wikipedia",\s*"paths":\s*\[\s*"/wiki/\*"
+- path: /favicon.ico
+  assert_status: 200
+  assert_headers:
+    Content-Type: image/vnd.microsoft.icon
 
 https://www.mediawiki.org:
 - path: /wiki/User_hub
