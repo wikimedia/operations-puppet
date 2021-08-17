@@ -50,6 +50,7 @@ acl local_host {
 
 acl local_tls_terminator {
        "<%= @ipaddress %>"; // note this matches nginx proxy_pass for TLS
+       "0.0.0.0"; // this matches incoming traffic via UDS
 }
 
 // external trusted proxies aren't allowed to set XCIP (via XFF) to wikimedia_nets,
@@ -355,7 +356,7 @@ sub recv_fe_ip_processing {
 	// it. We don't set or use this header internally (we use X-Client-IP)
 	unset req.http.X-Real-IP;
 
-	if (client.ip !~ wikimedia_trust) {
+	if (client.ip !~ wikimedia_trust && client.ip !~ local_tls_terminator) {
 		// Ensure we only accept XFP from our own networks.  Ideally
 		// it should only be set by our nginx TLS terminator
 		// specifically, but there are known cases where internal apps
@@ -375,6 +376,9 @@ sub recv_fe_ip_processing {
 		unset req.http.X-Client-IP;
 		unset req.http.X-Connection-Properties;
 	}
+
+	// If the client request is received via UDS 0.0.0.0 is added to XFF
+	set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, "0.0.0.0$", "<%= @ipaddress %>");
 
 	// To make further parsing/sanitizing simpler, convert all whitespace
 	// in XFF to single spaces, and make sure all commas have a space
