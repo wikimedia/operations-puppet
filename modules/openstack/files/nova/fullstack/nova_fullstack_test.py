@@ -28,7 +28,6 @@ import logging
 import novaclient
 from novaclient import client as nova_client
 import os
-import platform
 import socket
 import subprocess
 import sys
@@ -66,11 +65,17 @@ class ECSFormatter(logging.Formatter):
 
     def format(self, record):
         ecs_message = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "message": str(record.msg),
-            "log.level": record.levelname.upper(),
-            "host.name": platform.node(),
             "ecs.version": "1.7.0",
+            "log.level": record.levelname.upper(),
+            "log.origin.file.line": record.lineno,
+            "log.origin.file.name": record.filename,
+            "log.origin.file.path": record.pathname,
+            "log.origin.function": record.funcName,
+            "message": str(record.msg),
+            "process.name": record.processName,
+            "process.thread.id": record.process,
+            "process.thread.name": record.threadName,
+            "timestamp": datetime.utcnow().isoformat(),
         }
         if record.exc_info:
             ecs_message["error.stack"] = self.formatException(record.exc_info)
@@ -81,7 +86,7 @@ class ECSFormatter(logging.Formatter):
 
 
 def log_unhandled_exception(exc_type, exc_value, exc_traceback):
-    """Forwards unhandled exceptions to log handler.  Override sys.exechook to activate."""
+    """Forwards unhandled exceptions to log handler.  Override sys.excepthook to activate."""
     logging.exception(
         "Unhandled exception: %s" % exc_value,
         exc_info=(exc_type, exc_value, exc_traceback),
