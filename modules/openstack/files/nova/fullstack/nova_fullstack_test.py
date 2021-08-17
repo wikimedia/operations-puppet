@@ -211,8 +211,9 @@ def verify_dns_reverse(hostname, ip, nameservers, timeout=2.0):
         dig_query.append("/usr/bin/dig")
         for server in nameservers:
             dig_query.append("@{}".format(server))
+        dig_query.append("-x")
         dig_query.append(ip)
-        dig_options = ["+short", "+time=2", "-x", "+tries=1"]
+        dig_options = ["+short", "+time=2", "+tries=1"]
 
         while True:
             out = run_local(dig_query + dig_options)
@@ -283,8 +284,9 @@ def verify_dns_reverse_cleanup(ip, nameservers, timeout=2.0):
             dig_query.append("/usr/bin/dig")
             for server in nameservers:
                 dig_query.append("@{}".format(server))
+            dig_query.append("-x")
             dig_query.append(ip)
-            dig_options = ["+short", "-x", "+time=2", "+tries=1"]
+            dig_options = ["+short", "+time=2", "+tries=1"]
             out = run_local(dig_query + dig_options)
             if not out:
                 break
