@@ -1837,6 +1837,6 @@ mailman2_exclude_backups:
   - wpcivility
 
 mediabackup:
-  batchsize: 10000
-  storage_path: '/srv/mediabackups'
+  batchsize: 1000
+  storage_path: '/srv/objectstorage'
   storage_port: 9000
