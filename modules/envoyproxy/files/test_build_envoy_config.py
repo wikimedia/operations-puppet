@@ -32,6 +32,7 @@ class TestEnvoyConfig:
         ep = envoy.EnvoyConfig("/etc/envoy")
         assert ep.config_file == "/etc/envoy/envoy.yaml"
         assert ep.admin_file == "/etc/envoy/admin-config.yaml"
+        assert ep.runtime_file == "/etc/envoy/runtime.yaml"
 
     def test_populate_config_ok(self):
         """Full integration test of reading the config from files"""
@@ -43,6 +44,10 @@ class TestEnvoyConfig:
         resources = ep.config["static_resources"]["listeners"]
         assert resources[0]["address"]["socket_address"]["port_value"] == 443
         assert resources[1]["address"]["socket_address"]["port_value"] == 80
+        # Check that runtime layers are populated in order
+        static_layer = ep.config["layered_runtime"]["layers"][0]["static_layer"]
+        assert static_layer == {"health_check": {"min_interval": 10}}
+        assert ep.config["layered_runtime"]["layers"][1]["admin_layer"] == {}
 
     def test_populate_config_bad(self):
         """Test what happens when the yaml is bad"""

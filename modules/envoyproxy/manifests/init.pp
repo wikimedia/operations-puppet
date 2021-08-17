@@ -4,6 +4,7 @@ class envoyproxy(
     String $service_cluster,
     Enum['envoy', 'envoyproxy', 'getenvoy-envoy'] $pkg_name,
     Boolean $use_override = true,
+    Hash $runtime = {},
 ) {
 
     # Variables for zone-aware routing, useful if that is used.
@@ -72,6 +73,21 @@ class envoyproxy(
     file { "${envoy_directory}/admin-config.yaml":
         ensure  => $ensure,
         content => to_yaml($admin),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        notify  => Exec['verify-envoy-config'],
+    }
+
+    $runtime_ensure = $runtime ? {
+        {}      => 'absent',
+        default => $ensure
+    }
+
+    file { "${envoy_directory}/runtime.yaml":
+        # If the hash is empty, leave out the file. In that case, build-envoy-config omits the runtime stanza.
+        ensure  => $runtime_ensure,
+        content => to_yaml($runtime),
         owner   => 'root',
         group   => 'root',
         mode    => '0555',

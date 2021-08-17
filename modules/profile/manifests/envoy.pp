@@ -6,6 +6,7 @@ class profile::envoy(
     Wmflib::Ensure $ensure = lookup('profile::envoy::ensure'),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     String $cluster = lookup('cluster'),
+    Hash $runtime = lookup('profile::envoy::runtime', {'default_value' => {}}),
 ) {
     # Envoy supports tcp fast open
     require ::profile::tcp_fast_open
@@ -19,6 +20,7 @@ class profile::envoy(
         pkg_name        => $pkg_name,
         use_override    => $use_override,
         service_cluster => $cluster,
+        runtime         => $runtime,
     }
     # metrics collection from prometheus can just fetch data pulling via GET from
     # /stats/prometheus on the admin port

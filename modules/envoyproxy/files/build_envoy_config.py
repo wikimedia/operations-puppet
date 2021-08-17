@@ -74,6 +74,7 @@ class EnvoyConfig:
     def __init__(self, base_dir: str):
         self._base_dir = base_dir
         self.admin_file = os.path.join(base_dir, "admin-config.yaml")
+        self.runtime_file = os.path.join(base_dir, "runtime.yaml")
         self.config_file = os.path.join(base_dir, "envoy.yaml")
         self.config = {
             "admin": {},
@@ -84,6 +85,24 @@ class EnvoyConfig:
         with open(self.admin_file, "r") as admin_fh:
             admin = yaml.safe_load(admin_fh)
         self.config["admin"] = admin
+
+    def _read_runtime(self):
+        try:
+            with open(self.runtime_file, "r") as runtime_fh:
+                static_runtime = yaml.safe_load(runtime_fh)
+        except FileNotFoundError:
+            # Runtime config is optional. If the file is absent, don't set
+            # layered_runtime in the output config, so we get the default.
+            return
+        self.config["layered_runtime"] = {
+            "layers": [
+                {"name": "static_layer", "static_layer": static_runtime},
+                # Include an empty admin_layer *after* the static layer, so we can
+                # continue to make changes via the admin console and they'll overwrite
+                # values from the previous layer.
+                {"name": "admin_layer", "admin_layer": {}},
+            ]
+        }
 
     def _walk_dir(self, what: str, glob_expr: str) -> Generator[str, None, None]:
         """Returns the full path of files in a directory"""
@@ -103,6 +122,7 @@ class EnvoyConfig:
         If anything goes wrong, exceptions will be raised
         """
         self._read_admin()
+        self._read_runtime()
         for what in ["listeners", "clusters"]:
             dirname = os.path.join(self._base_dir, what + ".d")
             logger.debug("Reading %s from %s", what, dirname)

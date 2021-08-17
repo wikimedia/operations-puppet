@@ -1,0 +1,2 @@
+health_check:
+  min_interval: 10
