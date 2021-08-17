@@ -49,7 +49,7 @@
 #                 Default [{server_name: ['*'], port: 80}]
 # @param global_cert_name The name of the certificate to install via sslcert::certificate
 # @param access_log Whether to use an access log or not.
-# @param capitalize_headers Whether to capitalize headers when responding to HTTP/1.1 requests
+# @param header_key_format Allows capitalizing headers or maintain the original headers case on HTTP/1.1 requests
 # @param idle_timeout If indicated, that's how long an idle connection to the service is left open before closing it.
 #                     It should match the idle timeout of the upstream service.
 # @param cfssl_label if using cfssl this parameter is mandatory and should specify the CA label sign CSR's
@@ -61,7 +61,7 @@ class profile::tlsproxy::envoy(
     Boolean                          $retries                   = lookup('profile::tlsproxy::envoy::retries'),
     Boolean                          $use_remote_address        = lookup('profile::tlsproxy::envoy::use_remote_address'),
     Boolean                          $access_log                = lookup('profile::tlsproxy::envoy::access_log'),
-    Boolean                          $capitalize_headers        = lookup('profile::tlsproxy::envoy::capitalize_headers'),
+    Envoyproxy::Headerkeyformat      $header_key_format         = lookup('profile::tlsproxy::envoy::header_key_format'),
     Boolean                          $listen_ipv6               = lookup('profile::tlsproxy::envoy::listen_ipv6'),
     Boolean                          $floc_opt_out              = lookup('profile::tlsproxy::envoy::floc_opt_out'),
     Enum['sslcert', 'acme', 'cfssl'] $ssl_provider              = lookup('profile::tlsproxy::envoy::ssl_provider'),
@@ -218,7 +218,7 @@ class profile::tlsproxy::envoy(
             retry_policy              => $retry_policy,
             upstream_response_timeout => $upstream_response_timeout,
             use_remote_address        => $use_remote_address,
-            capitalize_headers        => $capitalize_headers,
+            header_key_format         => $header_key_format,
             listen_ipv6               => $listen_ipv6,
             idle_timeout              => $idle_timeout,
             max_requests_per_conn     => $max_requests,

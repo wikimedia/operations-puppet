@@ -73,8 +73,10 @@
 # @param retry_policy
 #     An optional hash specifying the retry policy. It should map 1:1 what
 #     goes in the envoy configuration.
-# @param capitalize_headers
-#     If true, will capitalize headers for HTTP/1.1 requests
+# @param header_key_format
+#     If proper_case, will capitalize headers for HTTP/1.1 requests
+#     If preserve_case, will preserve case on headers for HTTP/1.1 requests
+#     If none, will lowercase headers for HTTP/1.1 requests
 # @param global_tlsparams
 #     Set Tlsparams for the non-SNI listener:
 #       cipher_suites => <= TLSv1.2 cipher suites
@@ -98,7 +100,7 @@ define envoyproxy::tls_terminator(
     Integer                                                               $fast_open_queue           = 0,
     Float                                                                 $connect_timeout           = 1.0,
     Float                                                                 $upstream_response_timeout = 65.0,
-    Boolean                                                               $capitalize_headers        = false,
+    Envoyproxy::Headerkeyformat                                           $header_key_format         = 'none',
     Boolean                                                               $listen_ipv6               = false,
     Hash[String, String]                                                  $response_headers_to_add   = {},
     Optional[Hash]                                                        $retry_policy              = undef,

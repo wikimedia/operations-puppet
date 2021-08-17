@@ -151,7 +151,7 @@ profile::base::ssh_server_settings:
 
 ## TLS
 profile::gerrit::use_acmechief: false
-profile::tlsproxy::envoy::capitalize_headers: true
+profile::tlsproxy::envoy::header_key_format: 'proper_case'
 sslcert::certificate::skip_private: true
 
 ## Backups
