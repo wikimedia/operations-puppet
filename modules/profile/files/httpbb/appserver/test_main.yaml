@@ -106,14 +106,6 @@ https://de.wikipedia.org:
   assert_status: 200
   assert_body_contains: Portal:Geographie – Wikipedia
 
-# T75274 (Pages ending with .Z show garbage due to x-compress being sent)
-https://fr.wikipedia.org:
-- path: /wiki/K.A.Z
-  request_headers: {Accept-Encoding: "deflate, gzip"}
-  assert_status: 200
-  assert_headers: {Content-Encoding: gzip}
-  assert_body_contains: Kazuhito Iwaike
-
 https://it.wikiquote.org:
 - path: /wiki/Pagina_principale
   assert_status: 200
