@@ -11,7 +11,8 @@
 # standard locations and based on the resource's title.  For example, if the
 # resource title is "foo", the cert source will be "files/ssl/foo.crt", and the
 # private key should be located at "modules/secret/secrets/ssl/foo.key" in the
-# private repository.
+# private repository. Additionally, the certificate will be searched in the same
+# location as the private key (with .crt instead of .key).
 #
 # Unless the "use_cergen" parameter is set to true, in which case the private key
 # is expected at "modules/secret/secrets/certificates/foo/foo.key.private.pem.
@@ -63,22 +64,38 @@ define sslcert::certificate(
         $private_key_source="ssl/${title}.key"
     }
 
-    # lint:ignore:puppet_url_without_modules
-    # FIXME
+
+    # Look for a matching certificate on the puppet master first, and
+    # fallback to puppet.git if that fails.
+    $secrets_base = '/etc/puppet/private/modules/secret/secrets'
+    if !$use_cergen and find_file("${secrets_base}/ssl/${title}.crt") {
+        $cert_content = secret("ssl/${title}.crt")
+        $cert_source = undef
+    } elsif $use_cergen and find_file("${secrets_base}/certificates/${title}/${title}.crt.pem") {
+        $cert_content = secret("certificates/${title}/${title}.crt.pem")
+        $cert_source = undef
+    } else {
+        $cert_content = undef
+        $cert_source = "puppet:///files/ssl/${title}.crt" # lint:ignore:puppet_url_without_modules
+    }
+
     if $ensure != 'absent' {
         file { "/etc/ssl/localcerts/${title}.crt":
-            ensure => $ensure,
-            owner  => 'root',
-            group  => $group,
-            mode   => '0444',
-            source => "puppet:///files/ssl/${title}.crt",
+            ensure       => $ensure,
+            owner        => 'root',
+            group        => $group,
+            mode         => '0444',
+            content      => $cert_content,
+            source       => $cert_source,
+            # make sure we're not accidentally shipping combined
+            # certs (private + public)
+            validate_cmd => '/bin/sh -c "! grep --quiet \"PRIVATE KEY\" \"%\""',
         }
     } else {
         file { "/etc/ssl/localcerts/${title}.crt":
             ensure => $ensure,
         }
     }
-    # lint:endignore
 
     if !$skip_private {
         file { "/etc/ssl/private/${title}.key":
