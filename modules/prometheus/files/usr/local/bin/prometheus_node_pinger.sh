@@ -41,9 +41,11 @@ for host in "$@"; do
             -W "$PING_TIMEOUT_S" \
             -q \
             "$host" \
+            2>/dev/null \
         | grep min \
         | awk '{print $4}' \
-        | grep -o '^[^/]*'
+        | grep -o '^[^/]*' \
+        || echo '-1'
     )
     cat <<EOD
 node_ping_latency{dst_host="$host",src_host="$HOSTNAME"} $host_rtt
