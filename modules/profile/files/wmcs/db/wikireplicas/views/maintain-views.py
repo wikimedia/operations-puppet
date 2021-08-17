@@ -59,7 +59,7 @@ class SchemaOperations:
         :param view: str
         :return: bool
         """
-        self.write_execute("drop view {}.{}".format(self.db_p, view))
+        self.write_execute(f"drop view {self.db_p}.{view}")
         return not self.table_exists(view, self.db_p)
 
     def tables(self, database):
@@ -130,14 +130,12 @@ class SchemaOperations:
             ):
                 # Can't use pymysql to build this
                 self.write_execute(
-                    """
+                    f"""
                     CREATE OR REPLACE
-                    DEFINER={0}
-                    VIEW `{1}`.`{2}`
-                    AS SELECT * FROM `{3}`.`{2}`;
-                """.format(
-                        self.definer, self.db_p, view, self.db
-                    )
+                    DEFINER={self.definer}
+                    VIEW `{self.db_p}`.`{view}`
+                    AS SELECT * FROM `{self.db}`.`{view}`;
+                """
                 )
         else:
             # Some views only exist in CentralAuth, some only in MediaWiki,
@@ -161,9 +159,8 @@ class SchemaOperations:
         match = re.match(r"^(?:(.*)\.)?([^.]+)$", source)
         if not match:
             raise Exception(
-                "Custom view source does not look valid! Source: {}, view: {}".format(
-                    source, view_name
-                )
+                f"Custom view source does not look valid! "
+                f"Source: {source}, view: {view_name}"
             )
 
         # Effectively separate a db.table source into it's parts
@@ -216,7 +213,7 @@ class SchemaOperations:
             if not result:
                 break
             source_db, source_table = result
-            sources_checked.append("`{}`.`{}`".format(source_db, source_table))
+            sources_checked.append(f"`{source_db}`.`{source_table}`")
 
         # This cannot process a left-joined view that has multiple source tables
         # in the sources array
@@ -240,7 +237,7 @@ class SchemaOperations:
                 if not result:
                     break
                 source_db, j_table = result
-                joins_checked.append("`{}`.`{}`".format(source_db, j_table))
+                joins_checked.append(f"`{source_db}`.`{j_table}`")
 
             if len(joined_tables) != len(joins_checked):
                 # If any joined source was not found, ignore this view.
@@ -288,19 +285,13 @@ class SchemaOperations:
         :param sources: list
         """
 
-        query = """
+        query = f"""
             CREATE OR REPLACE
-            DEFINER={}
-            VIEW `{}`.`{}`
-            AS {}
-            FROM {}
-        """.format(
-            self.definer,
-            self.db_p,
-            view_name,
-            view_details["view"],
-            ",".join(sources),
-        )
+            DEFINER={self.definer}
+            VIEW `{self.db_p}`.`{view_name}`
+            AS {view_details["view"]}
+            FROM {",".join(sources)}
+        """
 
         # Note that we are only doing left outer joins for now.
         # To do an inner join, use multiple sources and a where clause.
@@ -310,21 +301,17 @@ class SchemaOperations:
                 if isinstance(join["table"], list):
                     join_table = "("
                     for subjoin in join["table"]:
-                        s_table = "`{}`.`{}`".format(self.db, subjoin["table"])
+                        s_table = f"`{self.db}`.`{subjoin['table']}`"
                         if "type" not in subjoin:
-                            join_table += "{}".format(s_table)
+                            join_table += f"{s_table}"
                         else:
-                            join_table += " {} {} {}".format(
-                                subjoin["type"], s_table, subjoin["condition"]
-                            )
+                            join_table += f" {subjoin['type']} {s_table} {subjoin['condition']}"
                     join_table += ")"
 
                 else:
-                    join_table = "`{}`.`{}`".format(self.db, join["table"])
+                    join_table = f"`{self.db}`.`{join['table']}`"
 
-                query += " LEFT JOIN {} {}".format(
-                    join_table, join["condition"]
-                )
+                query += f" LEFT JOIN {join_table} {join['condition']}"
 
         if "where" in view_details:
             # The comment table (and perhaps others in the future) needs the
@@ -350,9 +337,9 @@ class SchemaOperations:
                     flags=re.I | re.M,
                 )
 
-                query += " WHERE {}\n".format(where_str)
+                query += f" WHERE {where_str}\n"
             else:
-                query += " WHERE {}\n".format(view_details["where"])
+                query += f" WHERE {view_details['where']}\n"
 
         if "logging_where" in view_details:
             if "$INSERTED_EXPR$" in query:
@@ -373,7 +360,7 @@ class SchemaOperations:
 
         if "group" in view_details:
             # Technically nothing is using this at the moment...
-            query += " GROUP BY {}\n".format(view_details["group"])
+            query += f" GROUP BY {view_details['group']}\n"
 
         query += ";"
 
@@ -398,7 +385,7 @@ class SchemaOperations:
                     self.db_p.replace("_", "\\_")
                 )
             )
-            self.write_execute("CREATE DATABASE `{}`;".format(self.db_p))
+            self.write_execute(f"CREATE DATABASE `{self.db_p}`;")
 
         logging.info("Full views for %s:", self.db)
         for view in fullviews:
@@ -411,14 +398,14 @@ class SchemaOperations:
     def drop_public_database(self):
         """Drop a public database entirely."""
         if self.database_exists(self.db_p):
-            if self._confirm("Drop {}?".format(self.db_p)):
-                self.write_execute("DROP DATABASE `{}`;".format(self.db_p))
+            if self._confirm(f"Drop {self.db_p}?"):
+                self.write_execute(f"DROP DATABASE `{self.db_p}`;")
         else:
             logging.warning("DB %s does not exist", self.db_p)
 
     def _confirm(self, msg):
         """Prompt for confirmation unless self.replace_all is true."""
-        return self.replace_all or input("{} [y/N] ".format(msg)).lower() in [
+        return self.replace_all or input(f"{msg} [y/N] ").lower() in [
             "y",
             "yes",
         ]
@@ -437,11 +424,11 @@ def extract_tables(join_def):
 
 def read_dblist(db_list, mwroot):
     """Read a dblist from disk."""
-    dbs_file = "{}/dblists/{}.dblist".format(mwroot, db_list)
+    dbs_file = f"{mwroot}/dblists/{db_list}.dblist"
     with open(dbs_file) as f:
         lines = f.read().splitlines()
     if not lines:
-        raise RuntimeError("No databases found in dblist {}".format(db_list))
+        raise RuntimeError(f"No databases found in dblist {db_list}")
     dbs = []
     for line in lines:
         # Strip comments and trim whitespace
@@ -456,9 +443,7 @@ def read_dblist(db_list, mwroot):
         if line.startswith("%%"):
             if dbs:
                 raise RuntimeError(
-                    "Encountered a dblist expression inside dblist {}".format(
-                        db_list
-                    )
+                    f"Encountered a dblist expression inside dblist {db_list}"
                 )
             dbs = eval_dblist(line, mwroot)
             break
@@ -652,11 +637,7 @@ def main():
     db_connections = {}
     try:
         for instance in config["mysql_instances"]:
-            socket = (
-                "/run/mysqld/mysqld.sock"
-                if instance == "all"
-                else "/run/mysqld/mysqld.{}.sock".format(instance)
-            )
+            socket = f"/run/mysqld/mysqld.{instance}.sock"
             db_connections[instance] = pymysql.connect(
                 user=config["mysql_user"],
                 passwd=config["mysql_password"],
@@ -665,16 +646,11 @@ def main():
             )
 
         # This will include private and deleted dbs at this stage
-        if config["mysql_instances"][0] == "all":
-            all_available_dbs = (
-                read_dblist("all", args.mediawiki_config) + list(config["add_to_all_dbs"].values())
-            )
-        else:
-            all_available_dbs = []
-            for inst in config["mysql_instances"]:
-                all_available_dbs.extend(read_dblist(inst, args.mediawiki_config))
-                if inst in config["add_to_all_dbs"].keys():
-                    all_available_dbs.extend(config["add_to_all_dbs"][inst])
+        all_available_dbs = []
+        for inst in config["mysql_instances"]:
+            all_available_dbs.extend(read_dblist(inst, args.mediawiki_config))
+            if inst in config["add_to_all_dbs"].keys():
+                all_available_dbs.extend(config["add_to_all_dbs"][inst])
 
         # argparse will ensure we are declaring explicitly
         dbs = all_available_dbs
@@ -702,20 +678,6 @@ def main():
             for db in read_dblist(db_list, args.mediawiki_config):
                 if db in dbs_with_metadata:
                     dbs_with_metadata[db].update(meta)
-
-        if config["mysql_instances"][0] == "all":
-            return dbrun(
-                db_connections,
-                "all",
-                dbs_with_metadata,
-                args.dry_run,
-                args.replace_all,
-                args.drop,
-                fullviews,
-                args.clean,
-                customviews,
-                all_tables,
-            )
 
         # At this point we are on a multi-instance replica
         dbs_in_scope = set(dbs_with_metadata.keys())
