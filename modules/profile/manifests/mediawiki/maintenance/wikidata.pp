@@ -5,23 +5,12 @@ class profile::mediawiki::maintenance::wikidata {
     }
     require profile::mediawiki::common
 
-    $dispatch_log_file = '/var/log/wikidata/dispatchChanges-wikidatawiki.log'
-    $test_dispatch_log_file = '/var/log/wikidata/dispatchChanges-testwikidatawiki.log'
-
     # Starts a dispatcher instance every 3 minutes:
     # This handles inserting jobs into client job queue, which then processes the changes.
     # They will run for a limited time, so we can only have runTimeInMinutes/3m concurrent instances.
     # The settings for dispatchChanges.php can be found in mediawiki-config.
     # Docs for the settings can be found in https://doc.wikimedia.org/Wikibase/master/php/md_docs_topics_options.html by searching for "dispatchChanges.php"
     # All settings can still be overridden at run time if required.
-
-    cron { 'wikibase-dispatch-changes4':
-        ensure  => absent,
-        command => "echo \"\$\$: Starting dispatcher\" >> ${dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki >> ${dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${dispatch_log_file}",
-        user    => $mediawiki::users::web,
-        minute  => '*/3',
-        require => File['/var/log/wikidata'],
-    }
     profile::mediawiki::periodic_job { 'wikibase-dispatch-changes1':
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki',
         interval => '*-*-* *:0/3:00'
@@ -35,13 +24,6 @@ class profile::mediawiki::maintenance::wikidata {
         interval => '*-*-* *:02/3:00'
     }
 
-    cron { 'wikibase-dispatch-changes-test':
-        ensure  => absent,
-        command => "echo \"\$\$: Starting dispatcher\" >> ${test_dispatch_log_file}; /usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki >> ${test_dispatch_log_file} 2>&1; echo \"\$\$: Dispatcher exited with $?\" >> ${test_dispatch_log_file}",
-        user    => $mediawiki::users::web,
-        minute  => '*/15',
-        require => File['/var/log/wikidata'],
-    }
     profile::mediawiki::periodic_job { 'wikibase-dispatch-changes-test':
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki',
         interval => '*-*-* *:0/15:00'
