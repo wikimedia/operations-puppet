@@ -136,32 +136,42 @@ class swift::storage (
         refreshonly => true,
     }
 
-    # install swift-drive-audit as a cronjob;
-    # it checks the disks every 60 minutes
-    # and unmounts failed disks. It logs its actions to /var/log/syslog.
+    if debian::codename::le('buster') {
+        # this file comes from the python3-swift package
+        # but there are local improvements
+        # that are not yet merged upstream.
+        file { '/usr/bin/swift-drive-audit':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            source => 'puppet:///modules/swift/swift-drive-audit.py',
+        }
 
-    # this file comes from the python3-swift package
-    # but there are local improvements
-    # that are not yet merged upstream.
-    file { '/usr/bin/swift-drive-audit':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/swift/swift-drive-audit.py',
+        # install swift-drive-audit as a cronjob;
+        # it checks the disks every 60 minutes
+        # and unmounts failed disks. It logs its actions to /var/log/syslog.
+        cron { 'swift-drive-audit':
+            ensure  => present,
+            command => '/usr/bin/swift-drive-audit /etc/swift/swift-drive-audit.conf',
+            user    => 'root',
+            minute  => '1',
+            require => [File['/usr/bin/swift-drive-audit'],
+                        File['/etc/swift/swift-drive-audit.conf']],
+        }
+    } else {
+        # Drop our modifications starting with Bullseye, not enough wins
+        # to keep carrying the (minor) patch from upstream.
+        # See also https://review.opendev.org/c/openstack/swift/+/124398/
+        package { 'swift-drive-audit':
+            ensure => present,
+        }
     }
+
     file { '/etc/swift/swift-drive-audit.conf':
         owner  => 'root',
         group  => 'root',
         mode   => '0440',
         source => 'puppet:///modules/swift/swift-drive-audit.conf',
-    }
-    cron { 'swift-drive-audit':
-        ensure  => present,
-        command => '/usr/bin/swift-drive-audit /etc/swift/swift-drive-audit.conf',
-        user    => 'root',
-        minute  => '1',
-        require => [File['/usr/bin/swift-drive-audit'],
-                    File['/etc/swift/swift-drive-audit.conf']],
     }
 
     udev::rule{ 'swift_disks':
