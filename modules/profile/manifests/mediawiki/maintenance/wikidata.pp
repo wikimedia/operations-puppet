@@ -1,8 +1,4 @@
 class profile::mediawiki::maintenance::wikidata {
-    $ensure = mediawiki::state('primary_dc') ? {
-        $::site => 'present',
-        default => 'absent',
-    }
     require profile::mediawiki::common
 
     # Starts a dispatcher instance every 3 minutes:
@@ -38,13 +34,6 @@ class profile::mediawiki::maintenance::wikidata {
     profile::mediawiki::periodic_job { 'wikibase_repo_prune_test':
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3',
         interval => '*:00,15,30,45',
-    }
-
-    $log_ownership_user = $mediawiki::users::web
-    $log_ownership_group = $mediawiki::users::web
-    logrotate::conf { 'wikidata':
-        ensure  => absent,
-        content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),
     }
 
     # Update the cached query service maxlag value every minute
