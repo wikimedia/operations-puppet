@@ -40,18 +40,10 @@ class profile::mediawiki::maintenance::wikidata {
         interval => '*:00,15,30,45',
     }
 
-    file { '/var/log/wikidata':
-        ensure => stdlib::ensure($ensure, 'directory'),
-        owner  => $mediawiki::users::web,
-        group  => $mediawiki::users::web,
-        mode   => '0664',
-        force  => true,
-    }
-
     $log_ownership_user = $mediawiki::users::web
     $log_ownership_group = $mediawiki::users::web
     logrotate::conf { 'wikidata':
-        ensure  => $ensure,
+        ensure  => absent,
         content => template('mediawiki/maintenance/logrotate.d_wikidata.erb'),
     }
 
