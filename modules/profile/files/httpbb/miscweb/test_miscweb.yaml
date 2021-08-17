@@ -108,3 +108,6 @@ https://query.wikidata.org:
   assert_body_contains: Wikidata_Query_Service
 - path: /embed.html
   assert_status: 200
+- path: /querybuilder/
+  assert_status: 200
+  assert_body_contains: Wikidata Query Builder
