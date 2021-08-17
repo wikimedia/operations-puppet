@@ -63,18 +63,19 @@ class Timer:
 
 class ECSFormatter(logging.Formatter):
     """ECS 1.7.0 logging formatter"""
+
     def format(self, record):
         ecs_message = {
-            'timestamp': datetime.utcnow().isoformat(),
-            'message': str(record.msg),
-            'log.level': record.levelname.upper(),
-            'host.name': platform.node(),
-            'ecs.version': '1.7.0'
+            "timestamp": datetime.utcnow().isoformat(),
+            "message": str(record.msg),
+            "log.level": record.levelname.upper(),
+            "host.name": platform.node(),
+            "ecs.version": "1.7.0",
         }
         if record.exc_info:
-            ecs_message['error.stack'] = self.formatException(record.exc_info)
-        if not ecs_message.get('error.stack') and record.exc_text:
-            ecs_message['error.stack'] = record.exc_text
+            ecs_message["error.stack"] = self.formatException(record.exc_info)
+        if not ecs_message.get("error.stack") and record.exc_text:
+            ecs_message["error.stack"] = record.exc_text
         # Prefix "@cee" cookie indicating rsyslog should parse the message as JSON
         return "@cee: %s" % json.dumps(ecs_message)
 
@@ -82,7 +83,9 @@ class ECSFormatter(logging.Formatter):
 def log_unhandled_exception(exc_type, exc_value, exc_traceback):
     """Forwards unhandled exceptions to log handler.  Override sys.exechook to activate."""
     logging.exception(
-        "Unhandled exception: %s" % exc_value, exc_info=(exc_type, exc_value, exc_traceback))
+        "Unhandled exception: %s" % exc_value,
+        exc_info=(exc_type, exc_value, exc_traceback),
+    )
 
 
 def get_verify(prompt, invalid, valid):
@@ -155,6 +158,7 @@ def run_local(cmd):
 def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
     """ ensure dns resolution for the created VM
     :param hostame: str
+    :param expected_ip: str
     :param nameservers: list
     :return: obj
     """
@@ -195,6 +199,47 @@ def verify_dns(hostname, expected_ip, nameservers, timeout=2.0):
     return ns.interval
 
 
+def verify_dns_reverse(hostname, ip, nameservers, timeout=2.0):
+    """ ensure reverse dns resolution for the created VM
+    :param hostame: str
+    :param nameservers: list
+    :return: obj
+    """
+    with Timer() as ns:
+        logging.info("Resolving {} from {}".format(ip, nameservers))
+        dig_query = []
+        dig_query.append("/usr/bin/dig")
+        for server in nameservers:
+            dig_query.append("@{}".format(server))
+        dig_query.append(ip)
+        dig_options = ["+short", "+time=2", "-x", "+tries=1"]
+
+        while True:
+            out = run_local(dig_query + dig_options)
+            logging.debug(out)
+
+            if out.decode("utf8").strip() == hostname.strip():
+                # Success
+                break
+
+            if out:
+                raise Exception(
+                    "DNS -x failure: got the wrong hostname {} for ip {}; expected {}".format(
+                        out.decode("utf8").strip(), ip, hostname
+                    )
+                )
+
+            # If we got here then dig returned an empty string which suggests NXDOMAIN.
+            # wait and see if something shows up.
+            dnswait = ns.progress()
+            if dnswait >= timeout:
+                raise Exception("Timed out waiting for ptr record for {}".format(ip))
+
+            time.sleep(1)
+
+    return ns.interval
+
+
 def verify_dns_cleanup(hostname, nameservers, timeout=2.0):
     """ ensure the DNS entry was cleared
     :param hostame: str
@@ -219,6 +264,33 @@ def verify_dns_cleanup(hostname, nameservers, timeout=2.0):
             dnscleanupwait = ns.progress()
             if dnscleanupwait >= timeout:
                 raise Exception("Failed to clean up dns for {}".format(hostname))
+    return ns.interval
+
+
+def verify_dns_reverse_cleanup(ip, nameservers, timeout=2.0):
+    """ ensure the DNS entry was cleared
+    :param ip: str
+    :param nameservers: list
+    :return: obj
+    """
+    with Timer() as ns:
+        logging.info(
+            "Resolving {} from {}, waiting for cleanup".format(ip, nameservers)
+        )
+        while True:
+            time.sleep(10)
+            dig_query = []
+            dig_query.append("/usr/bin/dig")
+            for server in nameservers:
+                dig_query.append("@{}".format(server))
+            dig_query.append(ip)
+            dig_options = ["+short", "-x", "+time=2", "+tries=1"]
+            out = run_local(dig_query + dig_options)
+            if not out:
+                break
+            dnscleanupwait = ns.progress()
+            if dnscleanupwait >= timeout:
+                raise Exception("Failed to clean up dns ptr record for {}".format(ip))
     return ns.interval
 
 
@@ -610,6 +682,8 @@ def main():
                 dnsd = args.dns_resolvers.split(",")
                 vdns = verify_dns(host, addr, dnsd, timeout=30)
                 stat("verify.dns", vdns)
+                vdns_reverse = verify_dns_reverse(host, addr, dnsd, timeout=30)
+                stat("verify.dns-reverse", vdns_reverse)
 
             if not args.skip_ssh:
                 vs = verify_ssh(
@@ -659,6 +733,8 @@ def main():
                 dnsd = args.dns_resolvers.split(",")
                 vdns = verify_dns_cleanup(host, dnsd, timeout=60.0)
                 stat("verify.dns-cleanup", vdns)
+                vdns_reverse = verify_dns_reverse_cleanup(addr, dnsd, timeout=60.0)
+                stat("verify.dns-cleanup-reverse", vdns_reverse)
 
             if not args.interval:
                 return
