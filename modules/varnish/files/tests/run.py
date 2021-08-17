@@ -7,7 +7,7 @@ import tempfile
 
 import requests
 
-DC = ("eqiad", "codfw", "esams", "ulsfo", "eqsin")
+DC = ("eqiad", "codfw", "esams", "ulsfo", "eqsin", "drmrs")
 CLUSTERS = ("text", "upload")
 PATH_RE = re.compile("^(/etc/varnish/|/usr/share/varnish/)")
 COMPILER_RE = re.compile(
@@ -20,6 +20,9 @@ CC_COMMAND = (
     "-Werror=format-security -Wall -pthread -fpic -shared -Wl,-x "
     "-o %o %s -lmaxminddb"
 )
+
+CWD = os.path.dirname(__file__)
+PARENT_DIR = os.path.abspath(os.path.join(CWD, os.pardir))
 
 
 def find_cluster(hostname):
@@ -59,7 +62,7 @@ def dump_files(url, hostname):
             continue
         if "content" not in resource["parameters"]:
             continue
-        path = resource["title"].lstrip("/")
+        path = os.path.join(PARENT_DIR, resource["title"].lstrip("/"))
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "wb") as f:
             print("\tCreating {}".format(path))
@@ -80,10 +83,10 @@ def main(hostname, patch_id, pcc):
     print("\t{} is a cache_{} host\n".format(hostname, cluster))
 
     print("[*] Running varnishtest (this might take a while)...")
-    cwd = os.getcwd()
-    vcl_path = "{}/usr/share/varnish/tests:{}/etc/varnish".format(cwd, cwd)
+    vcl_path = "{}/usr/share/varnish/tests:{}/etc/varnish".format(PARENT_DIR, PARENT_DIR)
+    cluster_vtc_path = os.path.join(CWD, cluster)
     cmd = "{} -Dcc_command='{}' -Dbasepath={} -Dvcl_path={} {}/*.vtc".format(
-        "sudo varnishtest -k", CC_COMMAND, cwd, vcl_path, cluster
+        "sudo varnishtest -k", CC_COMMAND, PARENT_DIR, vcl_path, cluster_vtc_path
     )
     print("\t{}\n".format(cmd))
     t = tempfile.mkstemp()
