@@ -633,13 +633,13 @@ node 'db1158.eqiad.wmnet' {
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
 # codfw master
-node 'db2118.codfw.wmnet' {
+node 'db2121.codfw.wmnet' {
     role(mariadb::core)
 }
 
 # codfw replicas
 # See also db2086 and db2087 below
-node /^db2(108|120|121|122|150)\.codfw\.wmnet/ {
+node /^db2(108|118|120|122|150)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
