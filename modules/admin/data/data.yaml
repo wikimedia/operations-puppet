@@ -160,7 +160,7 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [addshore, hoo, tarrow, wmde-leszek, toan]
+    members: [addshore, hoo, tarrow, wmde-leszek, toan, dang]
   releasers-blubber:
     gid: 808
     description: people who upload blubber releases
@@ -4541,6 +4541,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID7c4jD6uwQgWgvqthx4YnmmbkRpEHkCLBwpLrbowmUn arnoldokoth@Arnolds-MacBook-Pro-2.local
+  dang:
+    ensure: present
+    realname: Tien Dat Nguyen
+    email: dat.nguyen@wikimedia.de
+    uid: 32183
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICnlB6UtmPKPJZOXl/2fkAC88ccb9dn15upi0SsifFg5 dang@C353
 
 ldap_only_users:
   abartov:
@@ -5272,10 +5280,6 @@ ldap_only_users:
     ensure: present
     realname: Wendy Quarshie
     email: wquarshie@wikimedia.org
-  dang:
-    ensure: present
-    realname: Tien Dat Nguyen
-    email: dat.nguyen@wikimedia.de
   kpayne:
     ensure: present
     realname: Kara Lynne Payne
