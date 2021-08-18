@@ -200,4 +200,6 @@ class profile::maps::osm_master (
         srange => "@resolve((${maps_hosts_ferm}))",
     }
 
+    # Enable venvs for ad-hoc python scripts
+    require_package('python3-venv')
 }
