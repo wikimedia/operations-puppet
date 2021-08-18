@@ -190,7 +190,17 @@ class profile::gitlab(
     # }
 
     # T285867 sync active and passive GitLab server backups
-    class { 'rsync::server': }
+
+    # rsync server is needed on passive server only
+    $ensure_rsyncd = $active_host ? {
+        $facts['fqdn'] => 'stopped',
+        default        => 'running'
+    }
+
+    class { 'rsync::server':
+        ensure_service => $ensure_rsyncd
+    }
+
     class { 'gitlab::rsync':
         active_host  => $active_host,
         passive_host => $passive_host,
