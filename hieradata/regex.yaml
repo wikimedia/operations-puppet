@@ -308,3 +308,8 @@ stat_gpu_hosts:
 new_memcached_servers:
   __regex: !ruby/regexp /^mc10(39|4[0-9]|5[0-4])\.eqiad\.wmnet/
   profile::redis::multidc::version_override: ~
+
+# This is temporary while we are shrinking our redis_sessions cluster T280582
+memcached_only_servers:
+  __regex: !ruby/regexp /^mc[12]019\.(codfw|eqiad)\.wmnet$/
+  profile::redis::multidc::version_override: ~
