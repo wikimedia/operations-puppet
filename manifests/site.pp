@@ -799,7 +799,7 @@ node 'db1128.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
-# future m5 eqiad master
+# future m5 eqiad master T288720
 node 'db1132.eqiad.wmnet' {
     role(mariadb::misc)
 }
