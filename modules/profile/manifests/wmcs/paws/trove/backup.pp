@@ -27,6 +27,13 @@ class profile::wmcs::paws::trove::backup (
         content => template('profile/wmcs/paws/trove/dbdump.cfg.erb'),
     }
 
+    file { '/var/log/paws':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     systemd::timer::job { 'paws-dbdump':
         ensure            => 'present',
         user              => 'root',
