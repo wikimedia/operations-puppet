@@ -129,6 +129,7 @@ Components: main
  thirdparty/kubeadm-k8s-1-18
  thirdparty/kubeadm-k8s-1-19
  thirdparty/matomo
+ thirdparty/opensearch1
  thirdparty/php56
  thirdparty/postgres96
  thirdparty/pyall
@@ -180,6 +181,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/jdk8
  thirdparty/hwraid
+ thirdparty/opensearch1
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
