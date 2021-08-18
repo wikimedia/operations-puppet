@@ -4,6 +4,8 @@ class profile::wmcs::paws::trove::backup (
     Stdlib::Fqdn $dbhost = lookup('profile::wmcs::paws::trove::dbhost', {default_value => 'q45euqdu26j.svc.trove.eqiad1.wikimedia.cloud'}),
     Stdlib::UnixPath $backupdir = lookup('profile::wmcs::paws::trove::backupdir', {default_value => '/data/project/dbbackups'}),
 ){
+    ensure_packages(['mariadb-client'])
+
     file { $backupdir:
         ensure => 'directory',
         owner  => 'root',
