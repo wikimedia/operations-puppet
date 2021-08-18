@@ -47,7 +47,7 @@ class profile::wmcs::paws::trove::backup (
         logging_enabled   => true,
         logfile_basedir   => '/var/log/paws/',
         logfile_name      => 'cleanup-mysqldump.log',
-        syslog_identifier => 'pawsdumps',
+        syslog_identifier => 'pawsdumps-cleanup',
         interval          => {'start' => 'OnCalendar', 'interval' => '*-*-* 23:23:00'},
     }
 }
