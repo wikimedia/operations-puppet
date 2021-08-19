@@ -20,7 +20,6 @@ profile::kubernetes::master::admission_plugins:
   enable:
     - PodSecurityPolicy
   disable:
-    - Priority
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
 profile::lvs::realserver::pools:
