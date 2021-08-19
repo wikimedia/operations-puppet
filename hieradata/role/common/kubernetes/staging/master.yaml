@@ -20,7 +20,6 @@ profile::kubernetes::master::admission_plugins:
   enable:
     - PodSecurityPolicy
   disable:
-    - Priority
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
 profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-staging"
