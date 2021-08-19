@@ -2690,12 +2690,12 @@ node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {
 
 # New wcqs node T276644
 node /^wcqs100[123]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(wcqs::public)
 }
 
 # New wcqs node T276647
 node /^wcqs200[123]\.codfw\.wmnet/ {
-    role(insetup)
+    role(wcqs::public)
 }
 
 # Wikidata query service

@@ -1,0 +1,31 @@
+profile::query_service::username: 'blazegraph'
+profile::query_service::deploy_mode: 'scap3'
+profile::query_service::package_dir: '/srv/deployment/wdqs/wdqs'
+profile::query_service::data_dir: '/srv/wdqs-data'
+profile::query_service::log_dir: '/var/log/wdqs'
+profile::query_service::deploy_name: 'wcqs'
+profile::query_service::endpoint: 'https://commons-query.wikimedia.org'
+profile::query_service::load_categories: 'none'
+profile::query_service::nodes:
+  - 'wcqs1001.eqiad.wmnet'
+  - 'wcqs1002.eqiad.wmnet'
+  - 'wcqs1003.eqiad.wmnet'
+  - 'wcqs2001.codfw.wmnet'
+  - 'wcqs2002.codfw.wmnet'
+  - 'wcqs2003.codfw.wmnet'
+
+profile::query_service::enable_ldf: false
+profile::query_service::high_query_time_port: true
+profile::query_service::blazegraph_main_ns: wcq
+profile::query_service::oauth: false
+profile::query_service::oauth_settings: null
+
+profile::query_service::blazegraph_heap_size: 31g
+profile::query_service::blazegraph_use_deployed_config: false
+profile::query_service::blazegraph_options: []
+profile::query_service::blazegraph_extra_jvm_opts: []
+contactgroups: admins,wdqs-admins
+profile::query_service::blazegraph::monitoring_enabled: true
+profile::query_service::sparql_query_stream: 'wcqs-external.sparql-query'
+profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'
+profile::query_service::federation_user_agent: 'Wikimedia Commons Query Service; https://commons-query.wikimedia.org/'
