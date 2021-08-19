@@ -202,4 +202,7 @@ class profile::maps::osm_master (
 
     # Enable venvs for ad-hoc python scripts
     require_package('python3-venv')
+
+    # Install kafkacat tool to interract with kafka for dev/debug reasons
+    require_package('kafkacat')
 }
