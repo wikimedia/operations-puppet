@@ -608,6 +608,9 @@ mediawiki::sites:
         params:
           server_name: "login.wikimedia.beta.wmflabs.org"
           variant_aliases: []
+      - name: wikifunctions
+        params:
+          server_aliases: ["*.wikifunctions.beta.wmflabs.org"]
       - name: wikimedia
         params:
           server_name: "misc-sites"
