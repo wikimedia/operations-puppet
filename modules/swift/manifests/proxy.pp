@@ -38,7 +38,9 @@ class swift::proxy (
     }
 
     $middlewares = debian::codename::ge('bullseye') ? {
-        true  => ['listing_formats'] + $base_middlewares,
+        # proxy-logging is repeated in the pipeline on purpose
+        # https://bugs.launchpad.net/swift/+bug/1939888
+        true  => ['proxy-logging', 'listing_formats'] + $base_middlewares,
         false => $base_middlewares,
     }
 
