@@ -1,53 +1,29 @@
+# In T280582, we reduced the number of shards. Generally, even-numbered
+# memcached server host a redis shard. Shards were not renamed, as
+# nutcracker uses a shard's name for key hasing
 redis::shards:
   sessions:
     eqiad:
       shard02:
         host: 10.64.0.81  # mc1020
         port: 6379
-      shard03:
-        host: 10.64.0.82  # mc1021
-        port: 6379
       shard04:
         host: 10.64.0.83  # mc1022
-        port: 6379
-      shard05:
-        host: 10.64.0.84  # mc1023
         port: 6379
       shard06:
         host: 10.64.0.125 # mc1038
         port: 6379
-      shard07:
-        host: 10.64.16.108 # mc1025
-        port: 6379
       shard08:
         host: 10.64.16.109 # mc1026
-        port: 6379
-      shard09:
-        host: 10.64.0.124  # mc1037
-        port: 6379
-      shard10:
-        host: 10.64.32.208 # mc1028
-        port: 6379
-      shard11:
-        host: 10.64.32.209 # mc1029
         port: 6379
       shard12:
         host: 10.64.32.210 # mc1030
         port: 6379
-      shard13:
-        host: 10.64.32.211 # mc1031
-        port: 6379
       shard14:
         host: 10.64.32.212 # mc1032
         port: 6379
-      shard15:
-        host: 10.64.48.155 # mc1033
-        port: 6379
       shard16:
         host: 10.64.48.156 # mc1034
-        port: 6379
-      shard17:
-        host: 10.64.48.157 # mc1035
         port: 6379
       shard18:
         host: 10.64.48.158 # mc1036
@@ -56,50 +32,23 @@ redis::shards:
       shard02:
         host: 10.192.0.84  # mc2020
         port: 6379
-      shard03:
-        host: 10.192.0.85  # mc2021
-        port: 6379
       shard04:
         host: 10.192.0.86  # mc2022
-        port: 6379
-      shard05:
-        host: 10.192.16.60 # mc2023
         port: 6379
       shard06:
         host: 10.192.16.61 # mc2024
         port: 6379
-      shard07:
-        host: 10.192.16.62  # mc2025
-        port: 6379
       shard08:
         host: 10.192.16.194 # mc2026
-        port: 6379
-      shard09:
-        host: 10.192.32.159 # mc2027
-        port: 6379
-      shard10:
-        host: 10.192.32.40  # mc2037
-        port: 6379
-      shard11:
-        host: 10.192.32.161 # mc2029
         port: 6379
       shard12:
         host: 10.192.32.162 # mc2030
         port: 6379
-      shard13:
-        host: 10.192.32.163 # mc2031
-        port: 6379
       shard14:
         host: 10.192.48.76 # mc2032
         port: 6379
-      shard15:
-        host: 10.192.48.77 # mc2033
-        port: 6379
       shard16:
         host: 10.192.48.78 # mc2034
-        port: 6379
-      shard17:
-        host: 10.192.48.79 # mc2035
         port: 6379
       shard18:
         host: 10.192.48.80 # mc2036
