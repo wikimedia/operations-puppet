@@ -1,0 +1,3 @@
+# Consider removing when systemd alerts can be sent to something other than the
+# server's alert setting
+profile::base::monitor_systemd: false
