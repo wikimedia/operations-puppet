@@ -8,6 +8,8 @@ class role::wcqs::public {
     include ::profile::base::firewall
     # Standard wcqs installation
     require ::profile::query_service::wcqs
+    # Public endpoint specific profiles
+    include profile::tlsproxy::envoy # TLS termination
 
     system::role { 'wcqs::public':
         ensure      => 'present',
