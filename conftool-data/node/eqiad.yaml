@@ -301,6 +301,10 @@ eqiad:
   prometheus:
     prometheus1003.eqiad.wmnet: [prometheus]
     prometheus1004.eqiad.wmnet: [prometheus]
+  wcqs:
+    wcqs1001.eqiad.wmnet: [wcqs]
+    wcqs1002.eqiad.wmnet: [wcqs]
+    wcqs1003.eqiad.wmnet: [wcqs]
   wdqs:
     wdqs1004.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs1005.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
