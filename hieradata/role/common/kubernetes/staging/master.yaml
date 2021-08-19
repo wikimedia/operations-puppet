@@ -1,20 +1,19 @@
 cluster: kubernetes
+profile::kubernetes::master::packages_from_future: true
+profile::kubernetes::client::packages_from_future: true
+profile::kubernetes::master::allow_privileged: true
 profile::kubernetes::master::accessible_to: all
 profile::kubernetes::master::apiserver_count: 1
 # TODO: re-evaluate this parameter since it is probably not needed
 # when using ssl_*_path settings
 profile::kubernetes::master::expose_puppet_certs: true
+profile::kubernetes::master::use_cergen: true
 profile::kubernetes::master::service_cert: "kubestagemaster.svc.%{::site}.wmnet"
 profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
 profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
+profile::kubernetes::master::authz_mode: "RBAC"
 profile::kubernetes::master::service_account_private_key_file: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
-profile::kubernetes::master::use_cergen: true
-profile::kubernetes::master::packages_from_future: true
-profile::kubernetes::client::packages_from_future: true
-profile::kubernetes::master::allow_privileged: true
-profile::kubernetes::master::authz_mode: 'RBAC'
-profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-staging"
-profile::kubernetes::master::service_node_port_range: '1-65535'
+profile::kubernetes::master::service_node_port_range: "1-65535"
 # See "kube-apiserver --help" for a list of available admission plugins
 # and details about which of them are enabled by default (e.g. need to be disabled here if you don't want them).
 profile::kubernetes::master::admission_plugins:
@@ -24,6 +23,7 @@ profile::kubernetes::master::admission_plugins:
     - Priority
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
+profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wmnet/k8s-staging"
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
