@@ -2623,11 +2623,6 @@ host deploy2002 {
     fixed-address deploy2002.codfw.wmnet;
 }
 
-host druid1001 {
-    hardware ethernet 1C:98:EC:29:E2:98;
-    fixed-address druid1001.eqiad.wmnet;
-}
-
 host druid1004 {
     hardware ethernet 18:66:DA:AC:87:A1;
     fixed-address druid1004.eqiad.wmnet;
