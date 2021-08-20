@@ -100,7 +100,7 @@ profile::mediawiki::mcrouter_wancache::shards:
         port: 11214
         ssl: true
       shard18:
-        host: 10.64.48.93   # mc1053
+        host: 10.64.48.93   # mc1054
         port: 11214
         ssl: true
     codfw:

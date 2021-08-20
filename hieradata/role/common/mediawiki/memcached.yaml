@@ -16,7 +16,7 @@ profile::redis::multidc::settings:
   slave_read_only: false
   stop_writes_on_bgsave_error: false
 profile::redis::multidc::aof: false
-profile::redis::multidc::version_override: 2
+profile::redis::multidc::version_override: ~
 profile::memcached::enable_16: true
 profile::memcached::version: 'present'
 profile::memcached::threads: 16

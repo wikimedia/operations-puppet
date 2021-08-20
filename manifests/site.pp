@@ -1727,12 +1727,11 @@ node 'matomo1002.eqiad.wmnet' {
     role(piwik)
 }
 
-node /^mc10(19|2[0-3]|2[5-9]|3[0-8])\.eqiad\.wmnet/ {
-    role(mediawiki::memcached)
+node /^mc10(19|2[0-3]|2[5-9]|3[0-6])\.eqiad\.wmnet/ {
+    role(spare::system)
 }
 
-# New MC nodes T274925
-node /^mc10(39|4[0-9]|5[0-4])\.eqiad\.wmnet/ {
+node /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\.wmnet/ {
     role(mediawiki::memcached)
 }
 
