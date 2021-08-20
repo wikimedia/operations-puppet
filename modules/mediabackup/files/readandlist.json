@@ -1,0 +1,15 @@
+{
+  "Version": "2021-09-20",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::mediabackups/*"
+      ]
+    }
+  ]
+}

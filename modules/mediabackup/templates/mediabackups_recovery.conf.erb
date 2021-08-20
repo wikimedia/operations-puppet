@@ -1,0 +1,8 @@
+access_key: '<%= @recovery_access_key %>'
+secret_key: '<%= @recovery_secret_key %>'
+endpoints:
+<% @storage_hosts.each do |storage_host| -%>
+ - https://<%= storage_host %>:<%= @storage_port %>
+<% end -%>
+region: <%= @site %>
+tmpdir: <%= @tmpdir %>

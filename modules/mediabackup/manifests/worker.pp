@@ -37,6 +37,8 @@ class mediabackup::worker (
     Stdlib::Port        $storage_port,
     String              $access_key,
     String              $secret_key,
+    String              $recovery_access_key,
+    String              $recovery_secret_key,
     String              $db_schema = 'mediabackups',
 ) {
     ensure_packages([
@@ -105,8 +107,9 @@ class mediabackup::worker (
         require   => File['/etc/mediabackup'],
     }
 
-    # access to final storage (S3-compatible cluster on the same dc)
     $tmpdir = '/srv/mediabackup'
+    # configuration and credentials to access final storage (S3-compatible
+    # cluster on the same dc) for writing (backup generation)
     File { '/etc/mediabackup/mediabackups_storage.conf':
         ensure    => present,
         mode      => '0400',
@@ -114,6 +117,29 @@ class mediabackup::worker (
         group     => 'mediabackup',
         content   => template('mediabackup/mediabackups_storage.conf.erb'),
         show_diff => false,
-        require   => [ File['/etc/mediabackup'], File['/srv/mediabackup'], ]
+        require   => [ File['/etc/mediabackup'], File['/srv/mediabackup'], ],
+    }
+    # extra read-only policy for the recovery account
+    File { '/etc/mediabackup/readandlist.json':
+        ensure => present,
+        owner  => 'mediabackup',
+        group  => 'mediabackup',
+        mode   => '0444',
+        source => 'puppet:///modules/mediabackup/readandlist.json',
+    }
+    # configuration and credentials to access final storage (S3-compatible
+    # cluster on the same dc) for reading and listing (backup recovery)
+    File { '/etc/mediabackup/mediabackups_recovery.conf':
+        ensure    => present,
+        mode      => '0400',
+        owner     => 'mediabackup',
+        group     => 'mediabackup',
+        content   => template('mediabackup/mediabackups_recovery.conf.erb'),
+        show_diff => false,
+        require   => [
+            File['/etc/mediabackup'],
+            File['/srv/mediabackup'],
+            File['/etc/mediabackup/readandlist.json'],
+        ],
     }
 }
