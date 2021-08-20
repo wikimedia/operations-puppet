@@ -3,3 +3,17 @@ profile::kubernetes::master::etcd_urls:
  - https://kubestagetcd2001.codfw.wmnet:2379
  - https://kubestagetcd2002.codfw.wmnet:2379
  - https://kubestagetcd2003.codfw.wmnet:2379
+# https://kubernetes.io/docs/reference/config-api/apiserver-config.v1alpha1/
+profile::kubernetes::master::admission_configuration:
+  - name: "ResourceQuota"
+    configuration:
+      apiVersion: resourcequota.admission.k8s.io/v1beta1
+      kind: Configuration
+      limitedResources:
+      - resource: pods
+        matchScopes:
+        - scopeName: PriorityClass
+          operator: In
+          values:
+            - system-cluster-critical
+            - system-node-critical

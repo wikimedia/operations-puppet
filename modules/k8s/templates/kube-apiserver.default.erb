@@ -46,5 +46,9 @@ if @runtime_config
   daemon_args.push("--runtime-config=#{@runtime_config}")
 end
 
+if @admission_configuration
+  daemon_args.push("--admission-control-config-file=#{@admission_configuration_file}")
+end
+
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

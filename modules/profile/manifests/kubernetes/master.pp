@@ -20,6 +20,7 @@ class profile::kubernetes::master(
     Optional[String] $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token', {default_value => undef}),
     Hash[String, Any] $infrastructure_users = lookup('profile::kubernetes::master::infrastructure_users'),
     Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', {default_value => undef}),
+    Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', {default_value => undef})
 
 ){
     # Exposing puppet certificates is not needed in the general prod use case
@@ -56,6 +57,7 @@ class profile::kubernetes::master(
         apiserver_count          => $apiserver_count,
         runtime_config           => $runtime_config,
         admission_plugins        => $admission_plugins,
+        admission_configuration  => $admission_configuration,
     }
 
     class { '::k8s::scheduler':

@@ -1,16 +1,16 @@
-# == Class: k8s::apiserver
-#
-# This class sets up and configures kube-apiserver
+# @summary
+#   This class sets up and configures kube-apiserver
 #
 # === Parameters
-# [*additional_admission_plugins*] Admission plugins that should be enabled in
-#   addition to default enabled ones (the defaults depend on the kubernetes
-#   version, see `kube-apiserver -h | grep admission-plugins`).
+# @param admission_plugins
+#   Admission plugins that should be enabled or disabled.
+#   Some plugins are enabled by default and need to be explicitely disabled.
+#   The defaults depend on the kubernetes version, see:
+#   `kube-apiserver -h | grep admission-plugins`.
 #
-# [*disable_admission_plugins*] Admission plugins that should be disabled
-#   although they are in the default enabled plugins list (which depends on
-#   the kubernetes version, see `kube-apiserver -h | grep admission-plugins`).
-#
+# @param admission_configuration
+#   Array of admission plugin configurations (as YAML)
+#   https://kubernetes.io/docs/reference/config-api/apiserver-config.v1alpha1/#apiserver-k8s-io-v1alpha1-AdmissionPluginConfiguration
 class k8s::apiserver(
     String $etcd_servers,
     Stdlib::Unixpath $ssl_cert_path,
@@ -26,6 +26,7 @@ class k8s::apiserver(
     Optional[Integer] $apiserver_count = undef,
     Optional[String] $runtime_config = undef,
     Optional[K8s::AdmissionPlugins] $admission_plugins = undef,
+    Optional[Array[Hash]] $admission_configuration = undef,
 ) {
     require k8s::base_dirs
 
@@ -58,6 +59,8 @@ class k8s::apiserver(
         notify  => Service['kube-apiserver'],
     }
 
+    # The admission config file needs to be available as parameter fo apiserver
+    $admission_configuration_file = '/etc/kubernetes/admission-config.yaml'
     file { '/etc/default/kube-apiserver':
         ensure  => file,
         owner   => 'root',
@@ -66,6 +69,27 @@ class k8s::apiserver(
         content => template('k8s/kube-apiserver.default.erb'),
         notify  => Service['kube-apiserver'],
     }
+
+    $admission_configuration_ensure = $admission_configuration ? {
+        undef   => absent,
+        default => file,
+    }
+    # .to_yaml in erb templates always adds a document separator so it's
+    # not possible to join yaml in the template with .to_yaml from a variable.
+    $admission_configuration_content = {
+        'apiVersion' => 'apiserver.k8s.io/v1alpha1',
+        'kind'       => 'AdmissionConfiguration',
+        'plugins'    => $admission_configuration,
+    }
+    file { $admission_configuration_file:
+        ensure  => $admission_configuration_ensure,
+        content => to_yaml($admission_configuration_content),
+        owner   => 'kube',
+        group   => 'kube',
+        mode    => '0400',
+        notify  => Service['kube-apiserver'],
+    }
+
 
     service { 'kube-apiserver':
         ensure => running,
