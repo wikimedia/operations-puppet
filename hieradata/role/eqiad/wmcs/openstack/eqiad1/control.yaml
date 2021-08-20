@@ -25,3 +25,7 @@ profile::wmcs::backy2::cluster_name: ceph
 
 profile::ceph::client::rbd::libvirt_rbd_uuid: 'ab1c8650-2983-45be-a9ea-4cdc6185155d'
 profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: '9dc683f1-f3d4-4c12-8b8f-f3ffdf36364d'
+
+# Consider removing when systemd alerts can be sent to something other than the
+# server's alert setting
+profile::base::monitor_systemd: false
