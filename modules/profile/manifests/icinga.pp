@@ -84,7 +84,6 @@ class profile::icinga(
     class { 'icinga::monitor::cloudelastic': }
 
     class { 'icinga::monitor::wdqs': }
-    class { 'icinga::monitor::reading_web': }
     class { 'icinga::monitor::gerrit': }
     class { 'icinga::monitor::librenms': }
     class { 'icinga::monitor::debmonitor': }
