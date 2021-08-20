@@ -20,9 +20,11 @@ class role::simplelamp2 {
     ensure_packages('libapache2-mod-php')
 
     # TODO: another use case for php_version fact
-    $apache_php_module = debian::codename::eq('buster') ? {
-        true    => 'php7.3',
-        default => 'php7.0',
+    $apache_php_module = debian::codename() ? {
+        'stretch'  => 'php7.0',
+        'buster'   => 'php7.3',
+        'bullseye' => 'php7.4',
+        default    => fail("unsupported on ${debian::codename()}"),
     }
 
     $apache_modules = concat($apache_modules_common, $apache_php_module)
