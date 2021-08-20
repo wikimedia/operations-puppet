@@ -5,28 +5,28 @@ redis::shards:
   sessions:
     eqiad:
       shard02:
-        host: 10.64.0.125  # mc1038
+        host: 10.64.0.125   # mc1038
         port: 6379
       shard04:
-        host: 10.64.0.65  # mc1040
+        host: 10.64.0.65    # mc1040
         port: 6379
       shard06:
-        host: 10.64.16.21  # mc1042
+        host: 10.64.16.21   # mc1042
         port: 6379
       shard08:
-        host: 10.64.16.109 # mc1026
+        host: 10.64.16.190  # mc1044
         port: 6379
       shard12:
-        host: 10.64.32.210 # mc1030
+        host: 10.64.32.153  # mc1048
         port: 6379
       shard14:
-        host: 10.64.32.212 # mc1032
+        host: 10.64.32.158  # mc1050
         port: 6379
       shard16:
-        host: 10.64.48.156 # mc1034
+        host: 10.64.48.156  # mc1034
         port: 6379
       shard18:
-        host: 10.64.48.158 # mc1036
+        host: 10.64.48.158  # mc1036
         port: 6379
     codfw:
       shard02:
