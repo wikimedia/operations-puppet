@@ -120,6 +120,11 @@ merged together. In case of duplicate keys, hashes to the right win.
 
 ## require_package
 
+DEPRECATED. No longer needed. Use stdlib ensure_packages() instead.
+
+See https://phabricator.wikimedia.org/T266479 and
+https://wikitech.wikimedia.org/wiki/Puppet_coding#Different_ways_to_install_apt_packages_with_puppet
+
 `require_package( string $package_name [, string $... ] )`
 
 Declare one or more packages a dependency for the current scope.
