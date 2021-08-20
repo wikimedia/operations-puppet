@@ -23,10 +23,10 @@ redis::shards:
         host: 10.64.32.158  # mc1050
         port: 6379
       shard16:
-        host: 10.64.48.156  # mc1034
+        host: 10.64.48.91   # mc1052
         port: 6379
       shard18:
-        host: 10.64.48.158  # mc1036
+        host: 10.64.48.93   # mc1054
         port: 6379
     codfw:
       shard02:
