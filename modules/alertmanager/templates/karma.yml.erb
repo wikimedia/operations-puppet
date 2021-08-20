@@ -24,8 +24,10 @@ labels:
     # Hide 'info' label since it is duplicated into 'summary' annotation for Icinga alerts
     - 'info'
   valueOnly:
-    # Don't display 'severity' label name since that's implied, and highlighted by colors
+    # Don't display 'severity' and 'alertname' label name since that's
+    # implied, and highlighted by colors
     - 'severity'
+    - 'alertname'
   color:
     custom:
       # Highlight 'instance' (host) label for better visibility
