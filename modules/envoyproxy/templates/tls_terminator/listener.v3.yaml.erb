@@ -16,6 +16,9 @@ filter_chains:
 <%- if upstream['cert_path'] != :undef -%>
 - filter_chain_match:
     server_names: <%= upstream['server_names'] %>
+<%- if @tls_handshake_timeout -%>
+  transport_socket_connect_timeout: <%= @tls_handshake_timeout %>s
+<%- end -%>
   transport_socket:
     name: envoy.transport_sockets.tls
     typed_config:
@@ -171,6 +174,9 @@ filter_chains:
 <%- end -%>
 <%- if @global_alpn_protocols -%>
         alpn_protocols: <%= @global_alpn_protocols %>
+<%- end -%>
+<%- if @tls_handshake_timeout -%>
+  transport_socket_connect_timeout: <%= @tls_handshake_timeout %>s
 <%- end -%>
   filters:
   - name: envoy.http_connection_manager
