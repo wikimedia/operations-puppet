@@ -10,9 +10,14 @@
 #   test_name:
 #     user: Basic base64($user:$password)
 #
+# [*hourly_tests*]
+#   Hash containing a mapping of tests to be run hourly. Each key is a directory
+#   name under httpbb-tests/, each value is an array of hostnames to pass to
+#   --hosts. If the array is empty, sets ensure => absent.
 
 class profile::httpbb (
     Optional[Hash[String, Hash[String, String]]] $plain_basicauth_credentials = lookup('profile::httpbb::basicauth_credentials', {default_value => undef}),
+    Hash[String, Array[String]] $hourly_tests = lookup('profile::httpbb::hourly_tests', {default_value => {}})
 ){
     class {'::httpbb':}
 
@@ -109,5 +114,25 @@ class profile::httpbb (
         },
         logging_enabled => false,
         user            => 'root',
+    }
+
+    $hourly_tests.each |String $test_dir, Array[String] $hosts| {
+        $joined_hosts = join($hosts, ',')
+        $ensure = $hosts ? {
+            []      => absent,
+            default => present
+        }
+        systemd::timer::job { "httpbb_hourly_${test_dir}":
+            ensure             => $ensure,
+            description        => "Run httpbb ${test_dir}/ tests hourly on ${joined_hosts}",
+            command            => "/usr/local/bin/httpbb /srv/deployment/httpbb-tests/${test_dir}/*.yaml --hosts ${joined_hosts}",
+            interval           => {
+                'start'    => 'OnUnitActiveSec',
+                'interval' => '1 hour',
+            },
+            # This doesn't really need access to anything in www-data, but it definitely doesn't need root.
+            user               => 'www-data',
+            monitoring_enabled => true,
+        }
     }
 }
