@@ -20,7 +20,7 @@ class profile::toolforge::grid::node::web (
     include profile::toolforge::k8s::client
 
     # We have a tmp file problem to clean up
-    package { ['tmpreaper', 'python-yaml'] :
+    package { 'tmpreaper':
         ensure => 'installed',
     }
 
@@ -38,21 +38,11 @@ class profile::toolforge::grid::node::web (
     }
 
     file { '/usr/local/lib/python2.7/dist-packages/portgrabber.py':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/profile/toolforge/portgrabber.py',
-        require => Package['python-yaml'],
+        ensure  => absent,
     }
 
     file { '/usr/local/bin/portgrabber':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/profile/toolforge/portgrabber_cli.py',
-        require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
+        ensure  => absent,
     }
 
     file { '/usr/local/bin/portreleaser':
@@ -61,7 +51,7 @@ class profile::toolforge::grid::node::web (
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/profile/toolforge/portreleaser.py',
-        require => File['/usr/local/lib/python2.7/dist-packages/portgrabber.py'],
+        require => Package['toollabs-webservice'],
     }
 
     file { '/usr/local/bin/jobkill':

@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Unregisters all ports registered with proxy for current tool user
 """
 
-import portgrabber
+from toolsws.proxy import unregister
 
-portgrabber.unregister()
+unregister()
