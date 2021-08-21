@@ -14,11 +14,18 @@ class profile::prometheus::node_local_crontabs {
         ],
     }
 
-    # Collect every 5 minutes
     cron { 'prometheus_local_crontabs':
-        ensure  => 'present',
+        ensure  => absent,
         user    => 'prometheus',
         minute  => '*/5',
         command => '/usr/local/bin/prometheus-local-crontabs',
+    }
+    systemd::timer::job { 'prometheus-local-crontabs':
+        ensure      => present,
+        description => 'Regular job to collect number of crontabs installed on this host',
+        user        => 'prometheus',
+        command     => '/usr/local/bin/prometheus-local-crontabs',
+        # Run every 5 minutes
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/5:00'},
     }
 }
