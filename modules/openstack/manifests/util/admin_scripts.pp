@@ -111,6 +111,14 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-dnsleaks.py",
     }
 
+    file { '/usr/local/sbin/wmcs-novastats-cephleaks':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-novastats/wmcs-novastats-cephleaks.py",
+    }
+
     file { '/usr/local/sbin/wmcs-puppetcertleaks':
         ensure => 'present',
         owner  => 'root',
