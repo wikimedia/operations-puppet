@@ -158,6 +158,8 @@ service::catalog:
         active_active: false
       - dnsdisc: api-ro
         active_active: true
+    aliases:
+      - 'api'
 
   appservers-https:
     description:
@@ -198,6 +200,8 @@ service::catalog:
         active_active: true
       - dnsdisc: appservers-rw
         active_active: false
+    aliases:
+      - 'appservers'
 
   aqs:
     description: Analytics Query Service, aqs.svc.%{::site}.wmnet
@@ -1676,6 +1680,8 @@ service::catalog:
     discovery:
       - dnsdisc: parsoid-php
         active_active: false
+    aliases:
+      - 'parsoid'
 
   prometheus:
     description: Prometheus monitoring
@@ -2300,6 +2306,8 @@ service::catalog:
         active_active: false
       - dnsdisc: swift-ro # TODO: remove this from DNS!
         active_active: true
+    aliases:
+      - 'ms-fe'
 
   thanos-query:
     description: Prometheus long-term storage, query service
