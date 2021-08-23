@@ -13,7 +13,11 @@ function pontoon::service_names(
           true  => $config['discovery'].map |$el| { $el['dnsdisc'] },
           false => [],
         }
-        $all_names = unique($disc_names + $service_name)
+        $aliases = ('aliases' in $config) ? {
+          true  => $config['aliases'],
+          false => [],
+        }
+        $all_names = unique($disc_names + $aliases + $service_name)
 
         $svc_names = $domains.map |$d| {
             $all_names.map |$n| {
