@@ -213,6 +213,13 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s"
     timeout: "120s"
     xfp: https
+  - name: mwapi # MediaWiki-internal requests (T288848)
+    port: 6501
+    service: "api-https"
+    upstream: "api-rw.discovery.wmnet"
+    keepalive: "4s"
+    timeout: "60s"
+    xfp: https
   - name: restbase-for-services # applications that have call loops with restbase
     port: 6503
     service: restbase-https
@@ -249,3 +256,4 @@ profile::services_proxy::envoy::enabled_listeners:
   - cloudelastic-chi-eqiad
   - cloudelastic-omega-eqiad
   - cloudelastic-psi-eqiad
+  - mwapi
