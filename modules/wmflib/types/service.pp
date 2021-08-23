@@ -35,7 +35,9 @@
 #     'public_endpoint: logstash' in production will be available at
 #     logstash.wikimedia.org. The parameter is optional for services not
 #     publicly available (e.g. internal only or fronted by restbase)
-#
+# @param Optional[Array[String]] aliases
+#     A list of alias names for the service. Useful for example to provide
+#     legacy names still referenced by configurations.
 #
 type Wmflib::Service = Struct[
     {
@@ -50,5 +52,6 @@ type Wmflib::Service = Struct[
     'discovery'       => Optional[Wmflib::Service::Discovery],
     'role'            => Optional[String],
     'public_endpoint' => Optional[String],
+    'aliases'         => Optional[Array[String]],
     }
 ]
