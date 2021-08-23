@@ -7,6 +7,9 @@ address:
 <%- else -%>
         address: 0.0.0.0
 <%- end -%>
+<%- if @connection_buffer_limit -%>
+per_connection_buffer_limit_bytes: <%= @connection_buffer_limit %>
+<%- end -%>
 listener_filters:
 - name: "envoy.filters.listener.tls_inspector"
   typed_config: {}
