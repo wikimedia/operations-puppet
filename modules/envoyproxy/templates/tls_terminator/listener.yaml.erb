@@ -32,6 +32,10 @@ filter_chains:
       upgrade_configs:
       - upgrade_type: "websocket"
 <%- end -%>
+<%- if @use_remote_address -%>
+      use_remote_address: true
+      skip_xff_append: false
+<%- end -%>
 <%- if @capitalize_headers -%>
       http_protocol_options:
         header_key_format:
