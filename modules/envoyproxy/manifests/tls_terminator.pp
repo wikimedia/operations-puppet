@@ -99,6 +99,8 @@
 # @param connection_buffer_limit
 #     Soft limit (in bytes) on size of the listener’s new connection read and write buffers.
 #     According to envoy documentation this must be configured in presence of untrusted downstreams.
+# @param http2_options
+#     Set HTTP/2 protocol options for downstream connections
 define envoyproxy::tls_terminator(
     Variant[Array[Envoyproxy::Tlsconfig], Array[Envoyproxy::TlsconfigV3]] $upstreams                 = [],
     Boolean                                                               $access_log                = false,
@@ -122,6 +124,7 @@ define envoyproxy::tls_terminator(
     Optional[Integer]                                                     $max_requests_per_conn     = undef,
     Optional[String]                                                      $lua_script                = undef,
     Optional[Integer]                                                     $connection_buffer_limit   = undef,
+    Optional[Envoyproxy::Http2options]                                    $http2_options             = undef,
 ) {
 
     # First of all, we can't configure a tls terminator if envoy is not installed.
