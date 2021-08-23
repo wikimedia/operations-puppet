@@ -35,7 +35,7 @@ class mediabackup::storage (
         require    => Group['minio-user'],
     }
 
-    File { $storage_path:
+    file { $storage_path:
         ensure  => directory,
         mode    => '0750',
         owner   => 'minio-user',
@@ -44,7 +44,7 @@ class mediabackup::storage (
     }
     # Please note that config dir option is deprecated:
     # https://docs.min.io/docs/minio-server-configuration-guide.html
-    File { $config_dir:
+    file { $config_dir:
         ensure  => directory,
         mode    => '0440',
         owner   => 'minio-user',
@@ -52,7 +52,7 @@ class mediabackup::storage (
         require => [ User['minio-user'], Group['minio-user'] ],
     }
 
-    File { "${config_dir}/ssl":
+    file { "${config_dir}/ssl":
         ensure  => directory,
         mode    => '0700',
         owner   => 'minio-user',
@@ -60,14 +60,14 @@ class mediabackup::storage (
         require => [ File[$config_dir], User['minio-user'], Group['minio-user'] ],
     }
 
-    File { "${storage_path}/.minio":
+    file { "${storage_path}/.minio":
         ensure  => directory,
         mode    => '0700',
         owner   => 'minio-user',
         group   => 'minio-user',
         require => File[$storage_path],
     }
-    File { "${storage_path}/.minio/certs":
+    file { "${storage_path}/.minio/certs":
         ensure  => directory,
         mode    => '0600',
         owner   => 'minio-user',
@@ -93,7 +93,7 @@ class mediabackup::storage (
         }
     }
 
-    File { '/etc/default/minio':
+    file { '/etc/default/minio':
         ensure    => present,
         mode      => '0440',
         owner     => 'minio-user',

@@ -68,7 +68,7 @@ class mediabackup::worker (
 
     # location of temporary storage to download and hash files before
     # sending it to its final location
-    File { '/srv/mediabackup':
+    file { '/srv/mediabackup':
         ensure  => directory,
         mode    => '0750',
         owner   => 'mediabackup',
@@ -77,7 +77,7 @@ class mediabackup::worker (
     }
 
     # backup execution configuration dir (including secrets)
-    File { '/etc/mediabackup':
+    file { '/etc/mediabackup':
         ensure  => directory,
         mode    => '0400',
         owner   => 'mediabackup',
@@ -86,7 +86,7 @@ class mediabackup::worker (
     }
 
     # access to a backup source db to read mediawiki image metadata
-    File { '/etc/mediabackup/mw_db.conf':
+    file { '/etc/mediabackup/mw_db.conf':
         ensure    => present,
         mode      => '0400',
         owner     => 'mediabackup',
@@ -97,7 +97,7 @@ class mediabackup::worker (
     }
 
     # access to a rw db to write and coordinate backup metadata
-    File { '/etc/mediabackup/mediabackups_db.conf':
+    file { '/etc/mediabackup/mediabackups_db.conf':
         ensure    => present,
         mode      => '0400',
         owner     => 'mediabackup',
@@ -110,7 +110,7 @@ class mediabackup::worker (
     $tmpdir = '/srv/mediabackup'
     # configuration and credentials to access final storage (S3-compatible
     # cluster on the same dc) for writing (backup generation)
-    File { '/etc/mediabackup/mediabackups_storage.conf':
+    file { '/etc/mediabackup/mediabackups_storage.conf':
         ensure    => present,
         mode      => '0400',
         owner     => 'mediabackup',
@@ -120,7 +120,7 @@ class mediabackup::worker (
         require   => [ File['/etc/mediabackup'], File['/srv/mediabackup'], ],
     }
     # extra read-only policy for the recovery account
-    File { '/etc/mediabackup/readandlist.json':
+    file { '/etc/mediabackup/readandlist.json':
         ensure => present,
         owner  => 'mediabackup',
         group  => 'mediabackup',
@@ -129,7 +129,7 @@ class mediabackup::worker (
     }
     # configuration and credentials to access final storage (S3-compatible
     # cluster on the same dc) for reading and listing (backup recovery)
-    File { '/etc/mediabackup/mediabackups_recovery.conf':
+    file { '/etc/mediabackup/mediabackups_recovery.conf':
         ensure    => present,
         mode      => '0400',
         owner     => 'mediabackup',
