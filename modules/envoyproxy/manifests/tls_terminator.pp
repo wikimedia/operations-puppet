@@ -88,6 +88,8 @@
 #     downstream H2 support
 # @param idle_timeout
 #     The time in seconds to wait before closing a keepalive connection when inactive.
+# @param downstream_idle_timeout
+#     The time in seconds to wait before closing a downstream keepalive connection when inactive.
 # @param tls_handshake_timeout
 #     TLS handshake timeout in seconds. Only available for V3 configuration and envoy >= 1.17.0
 # @param max_requests_per_conn
@@ -115,6 +117,7 @@ define envoyproxy::tls_terminator(
     Optional[Array[Stdlib::UnixPath]]                                     $stek_files                = undef,
     Optional[Envoyproxy::Alpn]                                            $global_alpn_protocols     = undef,
     Optional[Float]                                                       $idle_timeout              = undef,
+    Optional[Float]                                                       $downstream_idle_timeout   = undef,
     Optional[Float]                                                       $tls_handhshake_timeout    = undef,
     Optional[Integer]                                                     $max_requests_per_conn     = undef,
     Optional[String]                                                      $lua_script                = undef,

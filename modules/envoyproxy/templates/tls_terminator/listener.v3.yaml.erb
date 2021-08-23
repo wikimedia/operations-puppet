@@ -72,6 +72,10 @@ filter_chains:
       use_remote_address: true
       skip_xff_append: false
 <%- end -%>
+<%- if @downstream_idle_timeout -%>
+      common_http_protocol_options:
+        idle_timeout: <%= @downstream_idle_timeout %>s
+<%- end -%>
 <%- if @header_key_format != 'none' -%>
       http_protocol_options:
         header_key_format:
@@ -193,6 +197,10 @@ filter_chains:
 <%- if @use_remote_address -%>
       use_remote_address: true
       skip_xff_append: false
+<%- end -%>
+<%- if @downstream_idle_timeout -%>
+      common_http_protocol_options:
+        idle_timeout: <%= @downstream_idle_timeout %>s
 <%- end -%>
 <%- if @access_log -%>
       access_log:
