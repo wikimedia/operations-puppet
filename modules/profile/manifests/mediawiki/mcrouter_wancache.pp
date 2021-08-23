@@ -201,6 +201,10 @@ class profile::mediawiki::mcrouter_wancache(
             'key'     => '/etc/mcrouter/ssl/key.pem',
         }
 
+        class { 'mcrouter::monitoring':
+            mcrouter_ssl => present,
+        }
+
         # We can allow any other mcrouter to connect via SSL here
         ferm::service { 'mcrouter_ssl':
             desc    => 'Allow connections to mcrouter via SSL',
@@ -212,6 +216,9 @@ class profile::mediawiki::mcrouter_wancache(
     }
     else {
         $ssl_options = undef
+        class { 'mcrouter::monitoring':
+            mcrouter_ssl => absent,
+        }
     }
 
     class { 'mcrouter':
@@ -232,8 +239,6 @@ class profile::mediawiki::mcrouter_wancache(
         mode    => '0444',
         notify  => Exec['systemd daemon-reload for mcrouter.service']
     }
-
-    class { 'mcrouter::monitoring': }
 
     ferm::rule { 'skip_mcrouter_wancache_conntrack_out':
         desc  => 'Skip outgoing connection tracking for mcrouter',

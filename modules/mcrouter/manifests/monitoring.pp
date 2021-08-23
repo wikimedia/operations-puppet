@@ -2,14 +2,16 @@
 #
 # Provisions Icinga alerts for mcrouter.
 #
-class mcrouter::monitoring {
+class mcrouter::monitoring(
+    Wmflib::Ensure $mcrouter_ssl = absent
+) {
 
     require_package('python3-tz')
     require_package('python3-openssl')
     require_package('python3-nagiosplugin')
 
     file { '/usr/lib/nagios/plugins/nrpe_check_client_cert':
-        ensure  => present,
+        ensure  => $mcrouter_ssl,
         source  => 'puppet:///modules/mcrouter/nrpe_check_client_cert/check_client_cert.py',
         owner   => 'root',
         group   => 'root',
@@ -18,11 +20,13 @@ class mcrouter::monitoring {
     }
 
     sudo::user { 'nagios_check_mcrouter_client':
+        ensure     => $mcrouter_ssl,
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/lib/nagios/plugins/nrpe_check_client_cert'],
     }
 
     nrpe::monitor_service{ 'mcrouter_cert_expiration':
+        ensure         => $mcrouter_ssl,
         description    => 'mcrouter certs expiration check',
         # forcing --no-server-check as check doesnt send client cert
         # for validation and would fail against mcrouter
