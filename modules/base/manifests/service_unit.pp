@@ -1,5 +1,8 @@
 # == Base::service_unit ==
 #
+# DEPRECATED! New uses of this will fail CI.
+# Use systemd::service instead
+#
 # Allows defining services and their corresponding init scripts in a
 # init-system agnostic way on Debian derivatives.
 #
