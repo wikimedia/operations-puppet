@@ -24,7 +24,15 @@ define prometheus::mysqld_exporter (
     $client_password = '',
     $arguments = '',
 ) {
-    require_package('prometheus-mysqld-exporter')
+
+    #We only want to restart if the service is running
+    #(which it won't be if mariadb isn't)
+    exec { 'systemctl try-restart prometheus-mysqld-exporter':
+        refreshonly => true,
+        path        => '/usr/bin',
+    }
+
+    ensure_packages('prometheus-mysqld-exporter', {'notify' => Exec['systemctl try-restart prometheus-mysqld-exporter']})
 
     file { '/var/lib/prometheus':
         ensure => directory,
@@ -44,7 +52,7 @@ define prometheus::mysqld_exporter (
           Package['prometheus-mysqld-exporter'],
           File['/var/lib/prometheus'],
         ],
-        notify  => Service['prometheus-mysqld-exporter'],
+        notify  => Exec['systemctl try-restart prometheus-mysqld-exporter'],
     }
 
     # Set default arguments
@@ -73,13 +81,21 @@ define prometheus::mysqld_exporter (
         owner   => 'root',
         group   => 'root',
         content => "ARGS=\"${options}\"",
-        notify  => Service['prometheus-mysqld-exporter'],
+        notify  => Exec['systemctl try-restart prometheus-mysqld-exporter'],
     }
 
-    service { 'prometheus-mysqld-exporter':
-        ensure  => running,
-        require => [Package['prometheus-mysqld-exporter'],
-                    File['/var/lib/prometheus/.my.cnf']],
+    systemd::unit { 'prometheus-mysqld-exporter':
+        ensure   => present,
+        override => true,
+        restart  => false,
+        content  => @(EOT)
+            #Ensure the prometheus exporter is (re-)started and stopped
+            #with the mariadb service
+            [Unit]
+            After=mariadb.service
+            Requisite=mariadb.service
+            | EOT
+        ,
     }
 
     base::service_auto_restart { 'prometheus-mysqld-exporter': }
