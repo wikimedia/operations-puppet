@@ -125,7 +125,7 @@ class profile::httpbb (
         systemd::timer::job { "httpbb_hourly_${test_dir}":
             ensure             => $ensure,
             description        => "Run httpbb ${test_dir}/ tests hourly on ${joined_hosts}",
-            command            => "/usr/local/bin/httpbb /srv/deployment/httpbb-tests/${test_dir}/*.yaml --hosts ${joined_hosts}",
+            command            => "/bin/sh -c '/usr/local/bin/httpbb /srv/deployment/httpbb-tests/${test_dir}/*.yaml --hosts ${joined_hosts}'",
             interval           => {
                 'start'    => 'OnUnitActiveSec',
                 'interval' => '1 hour',
