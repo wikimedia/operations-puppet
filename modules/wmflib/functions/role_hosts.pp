@@ -27,5 +27,5 @@ function wmflib::role_hosts (
         type = "Class" and title = "${_role}"${site_constraint}
     }
     | PQL
-    puppetdb_query($pql).map |$resource| { $resource['certname'] }
+    puppetdb_query($pql).map |$resource| { $resource['certname'] }.sort
 }
