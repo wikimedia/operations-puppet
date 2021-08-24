@@ -34,6 +34,7 @@ sys.path.append("/usr/local/sbin/")
 NAG_INTERVAL = 60 * 60 * 24
 READY_FILE = "/.cloud-init-finished"
 DISABLE_FILE = "/.no-puppet-checks"
+OPT_OUT_PROJECTS = ["admin", "testlabs", "trove"]
 
 logger = logging.getLogger(__name__)
 
@@ -126,6 +127,21 @@ def main():
         return
 
     try:
+        with open("/etc/wmcs-project", encoding="utf-8") as f:
+            project_name = f.read().strip()
+
+    except Exception as error:
+        logger.warning("Unable to determine the current vm project: %s", error)
+        exception_msg += (
+            "\nUnable to determine the current vm project: {}".format(error)
+        )
+        project_name = "no_project"
+
+    if project_name in OPT_OUT_PROJECTS:
+        # Just stop running quietly. We don't want alerts for these.
+        return
+
+    try:
         last_success_elapsed = (
             calendar.timegm(time.gmtime()) - get_last_success_time()
         )
@@ -173,17 +189,6 @@ def main():
     if not too_old and not has_errors:
         logging.info("Puppet is running correctly, not notifying anyone.")
         return
-
-    try:
-        with open("/etc/wmflabs-project", encoding="utf-8") as f:
-            project_name = f.read().strip()
-
-    except Exception as error:
-        logger.warning("Unable to determine the current vm project: %s", error)
-        exception_msg += (
-            "\nUnable to determine the current vm project: {}".format(error)
-        )
-        project_name = "no_project"
 
     fqdn = socket.getfqdn()
     ip = socket.gethostbyname(socket.gethostname())
