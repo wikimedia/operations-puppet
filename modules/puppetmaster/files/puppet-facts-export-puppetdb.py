@@ -56,6 +56,8 @@ def main():
         nodename = node['certname']
         yaml_data = {}
         facts = pdb.get('nodes/{}/facts'.format(nodename))
+        if not facts:
+            continue
         for fact in facts:
             yaml_data[fact['name']] = fact['value']
         filename = os.path.join(factsdir, "{}.yaml".format(nodename))
