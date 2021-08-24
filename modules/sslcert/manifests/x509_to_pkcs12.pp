@@ -29,7 +29,7 @@ define sslcert::x509_to_pkcs12 (
     $check_certificates_match = @("CHECK_CERTIFICATES_MATCH_COMMAND"/L)
         /usr/bin/test \
             "$(/usr/bin/openssl x509 -in ${public_key})" == \
-            "$(/usr/bin/openssl pkcs12 -password -password 'pass:${password}' -in ${outfile} -clcerts -nokeys | openssl x509)"
+            "$(/usr/bin/openssl pkcs12 -password 'pass:${password}' -in ${outfile} -clcerts -nokeys | openssl x509)"
         |- CHECK_CERTIFICATES_MATCH_COMMAND
 
     if $ensure == 'present' {
