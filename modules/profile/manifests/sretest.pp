@@ -29,7 +29,7 @@ class profile::sretest {
     }
     file {'/var/tmp/testing/cache.nodes.pdb':
         ensure  => file,
-        content => wmflib::role_hosts('cache::upload').to_json,
+        content => wmflib::role_hosts('cache::upload').to_yaml,
     }
     file {'/var/tmp/testing/cache.nodes.hiera':
         ensure  => file,
