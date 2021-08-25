@@ -22,6 +22,20 @@ profile::kubernetes::master::admission_plugins:
   disable:
     - StorageObjectInUseProtection
     - PersistentVolumeClaimResize
+# https://kubernetes.io/docs/reference/config-api/apiserver-config.v1alpha1/
+profile::kubernetes::master::admission_configuration:
+  - name: "ResourceQuota"
+    configuration:
+      apiVersion: resourcequota.admission.k8s.io/v1beta1
+      kind: Configuration
+      limitedResources:
+      - resource: pods
+        matchScopes:
+        - scopeName: PriorityClass
+          operator: In
+          values:
+            - system-cluster-critical
+            - system-node-critical
 profile::lvs::realserver::pools:
   kubemaster:
     services:
