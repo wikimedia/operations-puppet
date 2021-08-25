@@ -102,6 +102,7 @@ set -x
 # Function to test if puppet is running or not
 PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
 puppet_is_running() {
+    echo "checking if puppet is running by looking at ${PUPPETLOCK}"
     # If no lockfile is defined, we can't really tell what's happening.
     # Assume puppet is not running in this case
     test -n "$PUPPETLOCK" || return 1
@@ -117,8 +118,9 @@ puppet_is_running() {
         grep -q puppet "$cmdline_file" && return 0
     fi
 
-    # The lock file is stale, ignore it
-    echo "Ignoring stale puppet agent lock for pid ${puppetpid}"
+    # The lock file is stale, delete it so that we're all on the same page
+    echo "Clearing stale puppet agent lock for pid ${puppetpid}"
+    rm $PUPPETLOCK
     return 1
 }
 
@@ -163,6 +165,8 @@ puppet agent --enable
 
 # Just in case puppet is already running for some reason, wait
 #  for it to finish.
+wait_for_puppet 120
+service puppet stop
 wait_for_puppet 120
 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff
 
