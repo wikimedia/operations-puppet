@@ -56,4 +56,9 @@ class profile::thanos::rule (
         port   => $grpc_port,
         srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
     }
+
+    # Deploy Thanos recording rules
+    thanos::recording_rule { 'recording_rules.yaml':
+        source   => 'puppet:///modules/profile/thanos/recording_rules.yaml',
+    }
 }

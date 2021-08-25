@@ -1,0 +1,21 @@
+groups:
+  - name: service_slis
+    rules:
+      - record: cluster_site:sli_etcd_http_error_ratio:increase90d
+        expr: 100 * sum by (cluster, site) (increase(etcd_http_failed_total{code=~"5.."}[90d])) /
+                    sum by (cluster, site) (increase(etcd_http_received_total[90d]))
+
+      - record: cluster_site:sli_etcd_http_error_ratio:increase91d
+        expr: 100 * sum by (cluster, site) (increase(etcd_http_failed_total{code=~"5.."}[91d])) /
+                    sum by (cluster, site) (increase(etcd_http_received_total[91d]))
+
+      - record: cluster_site:sli_etcd_http_error_ratio:increase92d
+        expr: 100 * sum by (cluster, site) (increase(etcd_http_failed_total{code=~"5.."}[92d])) /
+                    sum by (cluster, site) (increase(etcd_http_received_total[92d]))
+
+  - name: service_slo_targets
+    rules:
+      - record: service:error_slo:percent
+        labels:
+          service: "etcd"
+        expr: 0.1
