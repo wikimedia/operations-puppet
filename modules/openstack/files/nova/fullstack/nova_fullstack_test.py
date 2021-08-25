@@ -333,17 +333,24 @@ def verify_puppet(address, user, keyfile, bastion_ip, timeout):
     with Timer() as pv:
         logging.info("Verify Puppet run on {}".format(address))
         while True:
+            out = "No command run yet"
             try:
                 cp = "sudo cat /var/lib/puppet/state/last_run_summary.yaml"
-                out = run_remote(address, user, keyfile, bastion_ip, cp)
+                run_remote(address, user, keyfile, bastion_ip, cp)
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug(e)
+                logging.debug(e.stdout)
+                out = e.stdout
                 logging.debug("Puppet wait {}".format(pv.progress()))
 
             pwait = pv.progress()
             if pwait > timeout:
-                raise Exception("Timed out trying to verify puppet for {}.".format(address))
+                raise Exception(
+                    "Timed out trying to verify puppet for {}, last check run output: {}".format(
+                        address, out
+                    )
+                )
             time.sleep(10)
 
     logging.debug(out)
