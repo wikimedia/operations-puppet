@@ -343,7 +343,7 @@ def verify_puppet(address, user, keyfile, bastion_ip, timeout):
 
             pwait = pv.progress()
             if pwait > timeout:
-                raise Exception("Puppet for {} timed out".format(address))
+                raise Exception("Timed out trying to verify puppet for {}.".format(address))
             time.sleep(10)
 
     logging.debug(out)
