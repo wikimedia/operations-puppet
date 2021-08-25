@@ -19,7 +19,7 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov, liw, jkatz, gsingers, toberto, holger]
+              crusnov, liw, jkatz, gsingers, toberto, holger, jmads]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -298,7 +298,7 @@ groups:
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, snowick,
               aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
-              itamar, phedenskog, aaron, dpifke, aklapper, jmads, andrew-wmde, daniram,
+              itamar, phedenskog, aaron, dpifke, aklapper, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, razzi, cparle, klausman, sbisson, fab, cwhite,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
@@ -3907,16 +3907,12 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC70NjTsRUjZxH7bWPpRdaV8z9jD3RGnP25YbA4/DdN3 tklausmann@wikimedia.org-prod'
     krb: present
   jmads:
-    ensure: present
+    ensure: absent
     realname: Jim Maddock
-    email: jmaddock-ctr@wikimedia.org
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7ZsgXpcVy8P3a5jyg3+hlVbxpAHFw8wuXuB0IKSWD9 klogg@Jims-MacBook-Pro-2.local'
+    ssh_keys: []
     uid: 24076
     gid: 500
-    expiry_date: 2021-08-01
-    expiry_contact: mnovotny@wikimedia.org
-    krb: present
+    krb: absent
   wkandek:
     ensure: present
     realname: Wolfgang Kandek
