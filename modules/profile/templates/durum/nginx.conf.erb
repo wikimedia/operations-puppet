@@ -6,8 +6,6 @@ ssl_certificate_key /etc/acmecerts/durum/live/ec-prime256v1.key;
 ssl_certificate     /etc/acmecerts/durum/live/rsa-2048.chained.crt;
 ssl_certificate_key /etc/acmecerts/durum/live/rsa-2048.key;
 
-<%= @ssl_settings.join("\n") %>
-
 # Do not log any access/error logs; we should not save any data related to Wikidough.
 access_log off;
 error_log  off;
@@ -17,6 +15,8 @@ server {
 
   listen      <%= @ips['landing'] %>:443 ssl http2;
   server_name <%= @domain %>;
+
+  <%= @ssl_settings.join("\n") %>
 
   location / {
     include    uwsgi_params;
@@ -31,6 +31,8 @@ server {
   listen      <%= @ips['success'] %>:443 ssl http2;
   server_name *.<%= @domain %>;
 
+  <%= @ssl_settings.join("\n") %>
+
   location /check {
     default_type application/json;
     return 200   '{"result": true}';
@@ -43,6 +45,8 @@ server {
 
   listen      <%= @ips['failure'] %>:443 ssl http2;
   server_name *.<%= @domain %>;
+
+  <%= @ssl_settings.join("\n") %>
 
   location /check {
     default_type application/json;

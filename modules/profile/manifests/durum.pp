@@ -38,9 +38,9 @@ class profile::durum (
 
     include ::network::constants
     ferm::service { 'durum-https':
-        proto  => 'tcp',
-        port   => 443,
-        srange => '$PRODUCTION_NETWORKS',
+        proto   => 'tcp',
+        notrack => true,
+        port    => 443,
     }
 
     acme_chief::cert { 'durum':
