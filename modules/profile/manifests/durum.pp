@@ -23,7 +23,6 @@ class profile::durum (
           Package['python3-flask'],
           Uwsgi::App['durum'],
         ],
-        notify  => Service['uwsgi-durum'],
     }
 
     uwsgi::app { 'durum':
