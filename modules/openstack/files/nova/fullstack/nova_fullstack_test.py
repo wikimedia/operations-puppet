@@ -336,7 +336,7 @@ def verify_puppet(address, user, keyfile, bastion_ip, timeout):
             out = "No command run yet"
             try:
                 cp = "sudo cat /var/lib/puppet/state/last_run_summary.yaml"
-                run_remote(address, user, keyfile, bastion_ip, cp)
+                out = run_remote(address, user, keyfile, bastion_ip, cp)
                 break
             except subprocess.CalledProcessError as e:
                 logging.debug(e)
