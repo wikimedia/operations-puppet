@@ -74,7 +74,6 @@ Facter.add(:lldp_parent) do
              end
     if parent.nil?
       Facter.value(:lldp).each do |_, config|
-        STDERR.puts config.fetch('router')
         if config.fetch('router', false)
           parent = config['neighbor']
         end
