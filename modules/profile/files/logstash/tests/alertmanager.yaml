@@ -1,0 +1,110 @@
+fields:
+  type: "syslog"
+codec: "json_lines"
+ignore:
+  - "normalized"
+testcases:
+  - input:
+      - >
+        {
+          "timestamp": "2021-08-26T19:39:19.208Z",
+          "host": "alert2001",
+          "logsource": "alert2001",
+          "instance": "alert1001",
+          "summary": "cluster=alerting instance=alert2001 job=icinga site=codfw",
+          "msg": "<14>Aug 26 19:39:19 alertmanager-webhook-logger[18408]:{\"alertname\":\"Icinga/Elevated latency for icinga checks in codfw\",\"dashboard\":\"https://grafana.wikimedia.org/d/rsCfQfuZz/icinga\",\"endsAt\":\"2021-08-26T19:36:08.660803Z\",\"externalURL\":\"http://alert2001:9093\",\"generatorURL\":\"\",\"instance\":\"alert1001\",\"receiver\":\"logger\",\"runbook\":\"https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link\",\"severity\":\"warning\",\"startsAt\":\"2021-08-26T19:18:49.052190569Z\",\"status\":\"resolved\",\"summary\":\"cluster=alerting instance=alert2001 job=icinga site=codfw\",\"team\":\"sre\",\"timestamp\":\"2021-08-26T19:39:19.054744781Z\"}",
+          "timestamp": "2021-08-26T19:39:19.054744781Z",
+          "facility": "user",
+          "endsAt": "2021-08-26T19:36:08.660803Z",
+          "generatorURL": "",
+          "alertname": "Icinga/Elevated latency for icinga checks in codfw",
+          "receiver": "logger",
+          "dashboard": "https://grafana.wikimedia.org/d/rsCfQfuZz/icinga",
+          "level": "WARNING",
+          "program": "alertmanager-webhook-logger",
+          "team": "sre",
+          "externalURL": "http://alert2001:9093",
+          "startsAt": "2021-08-26T19:18:49.052190569Z",
+          "status": "resolved",
+          "runbook": "https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link"
+        }
+
+    expected:
+      - '@timestamp': "2021-08-26T19:39:19.054Z"
+        message: "[resolved] Icinga/Elevated latency for icinga checks in codfw (cluster=alerting instance=alert2001 job=icinga site=codfw - )"
+        host:
+          name: "alert2001"
+        log:
+          level: "WARNING"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            severity:
+              code: 4
+              name: "warning"
+            priority: 12
+        ecs:
+          version: "1.7.0"
+        labels:
+          status: "resolved"
+          team: "sre"
+        service:
+          type: "alertmanager-webhook-logger"
+        event:
+          kind: "alert"
+  - input:
+      - >
+        {
+          "timestamp": "2021-08-27T15:19:00.738126887Z",
+          "timestamp": "2021-08-27T15:19:00.883Z",
+          "metric": "speedindex",
+          "host": "alert2001",
+          "summary": "Increased Speed Index for en.wiki on desktop",
+          "msg": "<14>Aug 27 15:19:00 alertmanager-webhook-logger[18408]:{\"alertname\":\"Increased Speed Index for en.wiki on desktop\",\"browser\":\"firefox\",\"description\":\"All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.\",\"endsAt\":\"0001-01-01T00:00:00Z\",\"externalURL\":\"http://alert2001:9093\",\"generatorURL\":\"https://grafana.wikimedia.org/d/000000318/webpagetest-alerts?tab=alert\\u0026viewPanel=89\\u0026orgId=1\",\"metric\":\"speedindex\",\"receiver\":\"logger\",\"severity\":\"warning\",\"startsAt\":\"2021-08-27T07:18:24Z\",\"status\":\"firing\",\"summary\":\"Increased Speed Index for en.wiki on desktop\",\"team\":\"perf\",\"timestamp\":\"2021-08-27T15:19:00.738126887Z\",\"tool\":\"webpagetest\"}",
+          "tool": "webpagetest",
+          "facility": "user",
+          "endsAt": "0001-01-01T00:00:00Z",
+          "generatorURL": "https://grafana.wikimedia.org/d/000000318/webpagetest-alerts?tab=alert&viewPanel=89&orgId=1",
+          "alertname": "Increased Speed Index for en.wiki on desktop",
+          "description": "All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.",
+          "receiver": "logger",
+          "type": "syslog",
+          "level": "WARNING",
+          "browser": "firefox",
+          "program": "alertmanager-webhook-logger",
+          "logsource": "alert2001",
+          "team": "perf",
+          "externalURL": "http://alert2001:9093",
+          "startsAt": "2021-08-27T07:18:24Z",
+          "status": "firing"
+        }
+
+
+    expected:
+      - '@timestamp': "2021-08-27T15:19:00.883Z"
+        message: "[firing] Increased Speed Index for en.wiki on desktop (Increased Speed Index for en.wiki on desktop - All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.)"
+        host:
+          name: "alert2001"
+        log:
+          level: "WARNING"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            severity:
+              code: 4
+              name: "warning"
+            priority: 12
+        ecs:
+          version: "1.7.0"
+        labels:
+          status: "firing"
+          team: "perf"
+          tool: "webpagetest"
+          metric: "speedindex"
+          browser: "firefox"
+        service:
+          type: "alertmanager-webhook-logger"
+        event:
+          kind: "alert"
