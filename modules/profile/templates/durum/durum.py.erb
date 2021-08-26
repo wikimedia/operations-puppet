@@ -1,0 +1,46 @@
+# This file is managed by Puppet [see profile/durum/durum.py.erb].
+
+import uuid
+
+from flask import Flask, render_template_string
+
+
+CHECK_RESPONSE = """<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Wikidough Check</title>
+    <script>
+      const url = "https://{{ request.uuid }}.check.wikimedia-dns.org/check/";
+      fetch(url)
+      .then((response) => response.json())
+      .then(check => {
+        if (check.result === true) {
+          document.getElementById("check-result").innerHTML = "<%= @messages['check_success'] %>";
+        } else {
+          document.getElementById("check-result").innerHTML = "<%= @messages['check_failure'] %>";
+        }
+      })
+      .catch((error) => {
+          document.getElementById("check-result").innerHTML = "<%= @messages['check_error'] %>";
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Wikidough</h1>
+    <p id="check-result">Checking if you are using Wikidough...</p>
+  </body>
+</html>"""
+
+
+def create_app():
+    app = Flask(__name__)
+
+    @app.route("/")
+    def landing():
+        return render_template_string(CHECK_RESPONSE,
+                                      request={"uuid": uuid.uuid4()})
+
+    return app
+
+
+app = create_app()

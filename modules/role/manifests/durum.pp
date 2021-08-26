@@ -6,5 +6,8 @@ class role::durum {
 
     include profile::standard
     include profile::base::firewall
+    include profile::durum
+    include profile::nginx
+    include profile::bird::anycast
 
 }
