@@ -28,7 +28,7 @@ profile::kerberos::client::dns_canonicalize_hostname: false
 
 profile::kerberos::client::enable_autorenew: true
 
-profile::base::debdeploy::exclude_mounts:
+profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
 
 profile::java::java_packages:

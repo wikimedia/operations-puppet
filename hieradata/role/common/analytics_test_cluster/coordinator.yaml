@@ -183,7 +183,7 @@ profile::java::java_packages:
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 profile::java::trust_puppet_ca: true
 
-profile::base::debdeploy::exclude_mounts:
+profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
 
 profile::hadoop::common::use_puppet_ssl_certs: true

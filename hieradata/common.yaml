@@ -11,6 +11,8 @@ lookup_options:
     merge: hash
   profile::docker::engine::settings:
     merge: hash
+  profile::debdeploy::client::filter_services:
+    merge: hash
   labsldapconfig:
     merge: hash
   profile::statograph::api_key:

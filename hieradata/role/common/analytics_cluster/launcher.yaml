@@ -22,7 +22,7 @@ profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1004.eqi
 profile::statistics::base::enable_stat_host_addons: false
 profile::statistics::base::mysql_credentials_group: 'analytics'
 
-profile::base::debdeploy::exclude_mounts:
+profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
 
 profile::kerberos::keytabs::keytabs_metadata:

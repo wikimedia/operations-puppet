@@ -1,6 +1,6 @@
-profile::base::debdeploy::exclude_mounts: []
-profile::base::debdeploy::exclude_filesystems: []
-profile::base::debdeploy::filter_services:
+profile::debdeploy::client::exclude_mounts: []
+profile::debdeploy::client::exclude_filesystems: []
+profile::debdeploy::client::filter_services:
   bacula-fd:
     - '*'
   agetty:

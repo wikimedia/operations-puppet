@@ -170,8 +170,8 @@ profile::base::firewall::block_abuse_nets: false
 profile::base::firewall::default_reject: false
 
 profile::backup::director_seed: changeme
-profile::base::debdeploy::exclude_mounts: []
-profile::base::debdeploy::exclude_filesystems: []
+profile::debdeploy::client::exclude_mounts: []
+profile::debdeploy::client::exclude_filesystems: []
 profile::idp::ldap_schema: ldap
 # We set this to true so one has to consciously disable it
 profile::idp::ldap_start_tls: true

@@ -8,7 +8,7 @@ profile::standard::admin_groups:
 profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::apc_shm_size: 128M
-profile::base::debdeploy::filter_services:
+profile::debdeploy::client::filter_services:
   php7.2-fpm:
     - '*'
 # Enable icu63 component - T264991

@@ -249,7 +249,7 @@ ntp_peers:
 
 scap::version: present
 
-profile::base::debdeploy::exclude_filesystems:
+profile::debdeploy::client::exclude_filesystems:
   - nfs4
 
 profile::base::systemd::cpu_accounting: 'no'

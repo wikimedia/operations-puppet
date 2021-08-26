@@ -38,7 +38,7 @@ profile::hadoop::spark2::install_oozie_sharelib: false
 # Upload the spark2-assembly.zip file to HDFS
 profile::hadoop::spark2::install_assembly: false
 
-profile::base::debdeploy::exclude_mounts:
+profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
 
 profile::kerberos::keytabs::keytabs_metadata:

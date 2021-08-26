@@ -1,4 +1,4 @@
-# == Class: debdeploy
+# == Class: debdeploy::client
 #
 # debdeploy, used to rollout software updates. Updates are initiated via
 # the debdeploy tool on the Cumin master(s)
@@ -36,10 +36,10 @@
 #    'never_restart_multiple' => ['libssl', 'someotherlib']
 #  }
 #
-class debdeploy (
-  Optional[Array[Stdlib::Unixpath]]     $exclude_mounts      = [],
-  Optional[Array[String]]               $exclude_filesystems = [],
-  Optional[Hash[String, Array[String]]] $filter_services     = {},
+class debdeploy::client (
+  Array[Stdlib::Unixpath]     $exclude_mounts      = [],
+  Array[String]               $exclude_filesystems = [],
+  Hash[String, Array[String]] $filter_services     = {},
 ) {
     ensure_packages(['debdeploy-client', 'python3-dateutil'])
     $config = {

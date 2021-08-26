@@ -1,6 +1,6 @@
 profile::base::monitor_systemd: false
 cluster: wmcs
-profile::base::debdeploy::filter_services:
+profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
 contactgroups: wmcs-team

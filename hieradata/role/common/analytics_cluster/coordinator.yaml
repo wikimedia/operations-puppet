@@ -104,7 +104,7 @@ profile::hadoop::spark2::install_oozie_sharelib: true
 # Upload the spark2-assembly.zip file to HDFS
 profile::hadoop::spark2::install_assembly: true
 
-profile::base::debdeploy::exclude_mounts:
+profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
 
 profile::oozie::server::oozie_service_kerberos_enabled: true

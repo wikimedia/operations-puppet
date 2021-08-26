@@ -1,7 +1,7 @@
 profile::base::notifications: disabled
 profile::standard::admin_groups:
   - labtest-roots
-profile::base::debdeploy::filter_services:
+profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
 profile::openstack::eqiad1::nova::common::is_control_node: false
