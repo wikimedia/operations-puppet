@@ -134,7 +134,7 @@ class profile::base(
         overlayfs => $overlayfs,
     }
 
-    class { 'base::debdeploy':
+    class { 'debdeploy':
       exclude_mounts      => $debdeploy_exclude_mounts,
       exclude_filesystems => $debdeploy_exclude_filesystems,
       filter_services     => $debdeploy_filter_services,
