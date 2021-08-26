@@ -1,10 +1,4 @@
 class profile::base(
-    Boolean $use_apt_proxy = lookup('profile::base::use_apt_proxy'),
-    Boolean $purge_apt_sources = lookup('profile::base::purge_apt_sources'),
-    Boolean $purge_apt_preferences = lookup('profile::base::purge_apt_preferences'),
-    Boolean $manage_apt_source = lookup('profile::base::manage_apt_source'),
-    Boolean $apt_install_audit_installed = lookup('profile::base::apt_install_audit_installed'),
-    String  $mirror_server = lookup('profile::base::mirror_server'),
     Variant[Stdlib::Fqdn, Array[Stdlib::Fqdn]] $domain_search = lookup('profile::base::domain_search', {default_value => $::domain}),
     Array[Stdlib::Host] $nameservers = lookup('profile::base::nameservers', {default_value => $::nameservers}),
     Array $remote_syslog = lookup('profile::base::remote_syslog', {default_value => []}),
@@ -51,14 +45,7 @@ class profile::base(
     include profile::logoutd
     # Ensure we update the CA certificates before managing any services
     Exec['update-ca-certificates'] -> Service<| |>
-    class { 'apt':
-        use_proxy               => $use_apt_proxy,
-        purge_sources           => $purge_apt_sources,
-        purge_preferences       => $purge_apt_preferences,
-        manage_apt_source       => $manage_apt_source,
-        mirror                  => $mirror_server,
-        install_audit_installed => $apt_install_audit_installed,
-    }
+    include profile::apt
 
     file { ['/usr/local/sbin', '/usr/local/share/bash']:
         ensure => directory,

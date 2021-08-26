@@ -29,7 +29,7 @@ profile::base::remote_syslog_tls: []
 
 ## Customizations
 
-profile::base::use_apt_proxy: false
+profile::apt::use_proxy: false
 
 ## SSH access
 bastion_hosts:

@@ -1,0 +1,6 @@
+profile::apt::purge_sources: true
+profile::apt::purge_preferences: true
+profile::apt::use_proxy: true
+profile::apt::manage_apt_source: true
+profile::apt::install_audit_installed: true
+profile::apt::mirror: 'mirrors.wikimedia.org'

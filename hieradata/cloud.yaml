@@ -17,13 +17,13 @@ profile::standard::admin_managehome: false
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::certificates::puppet_ca_content: {}
 
-profile::base::use_apt_proxy: false
+profile::apt::use_proxy: false
 
-profile::base::purge_apt_sources: false
-profile::base::purge_apt_preferences: false
-profile::base::manage_apt_source: false
-profile::base::apt_install_audit_installed: false
-profile::base::mirror_server: 'mirrors.wikimedia.org'
+profile::apt::purge_sources: false
+profile::apt::purge_preferences: false
+profile::apt::manage_apt_source: false
+profile::apt::install_audit_installed: false
+profile::apt::mirror: 'mirrors.wikimedia.org'
 
 profile::base::netbase::manage_etc_services: true
 profile::base::netbase::extra_services: {}
