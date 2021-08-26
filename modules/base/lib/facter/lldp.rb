@@ -8,23 +8,42 @@ Facter.add(:lldp) do
   end
 
   setcode do
-    lldp = {}
+    primary = Facter.value(:networking)['primary']
+    lldp = {parent: nil}
     data = Facter::Util::Resolution.exec('/usr/sbin/lldpctl -f xml')
     document = REXML::Document.new(data)
 
     document.elements.each('lldp/interface') do |interface|
       eth = interface.attributes['name']
+      desc = interface.attributes['descr']
       lldp[eth] ||= {'neighbors' => []}
 
       interface.elements.each('chassis/name') do |switch|
         lldp[eth]['neighbor'] = switch.text
         lldp[eth]['neighbors'] << switch.text
+        if eth == primary
+          lldp[:parent] = switch.text
+        end
+      end
+      interface.elements.each('chassis/capability') do |capability|
+        next unless capability.attributes['type'] == 'Router'
+        router = capability.attributes.fetch('enabled', 'off').to_s == 'on'
+        lldp[eth]['router'] = router
+        # Ignore linux hosts when setting the parent
+        # VMs have a properly defined primary interface as such they are
+        # able to detect there parent with the block above.  This use case is
+        # for bare metal boxes that have linux VMs with ip_forwarding enabled and
+        # ensures we only pick none linux devices as the parent i.e. switches
+        if router && lldp[:parent].nil? && desc !~ (/Linux/)
+          lldp[:parent] = lldp[eth]['neighbor']
+        end
       end
       interface.elements.each('port') do |port|
         lldp[eth]['port'] = port.elements['id'].text
         lldp[eth]['descr'] = port.elements['descr'].text if port.elements['descr']
         lldp[eth]['mtu'] = port.elements['mfs'].text.to_i if port.elements['mfs']
       end
+
       next unless interface.elements['vlan']
       lldp[eth]['vlans'] = {'tagged_vlans' => []}
       interface.elements.each('vlan') do |vlan|
