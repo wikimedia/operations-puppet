@@ -291,3 +291,12 @@ Suite: buster
 Architectures: amd64
 VerifyRelease: 3F01618A51312F3F
 ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 14 -a -FVersion --ge 13.12 \) || [ $? -eq 1 ]
+
+Name: thirdparty/gitlab-runner
+Method: https://packages.gitlab.com/runner/gitlab-runner/debian/
+Components: main>thirdparty/gitlab-runner
+UDebComponents:
+Suite: buster
+Architectures: amd64
+VerifyRelease: 3F01618A51312F3F
+ListShellHook: grep-dctrl \( -P 'gitlab-runner' -a -FVersion --lt 14 -a -FVersion --ge 13.1 \) || [ $? -eq 1 ]
