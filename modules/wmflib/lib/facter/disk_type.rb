@@ -2,19 +2,18 @@ require 'facter'
 
 Facter.add(:disk_type) do
   confine :kernel => 'Linux'
-  base_dir = '/sys/block'
-
-  disk_type = {}
-  Facter.fact('disks').value.keys.each{ |disk| disk_type.merge!(disk => {}) }
-  virtual = Facter.fact('virtual').value
   setcode do
-    disk_type.each do |disk, value|
+    virtual = Facter.fact('virtual').value
+    disk_type = {}
+    Facter.fact('disks').value.keys.each do |disk|
       if virtual == 'physical'
-        type = File.read(File.join(base_dir, disk, 'queue/rotational')).strip
-        value[:type] = type == '0' ? 'ssd' : 'hdd'
+        path = File.join('/sys/block', disk, 'queue/rotational')
+        rotational = File.read(path).strip
+        type = rotational == '0' ? 'ssd' : 'hdd'
       else
-        value[:type] = 'virtual'
+        type = 'virtual'
       end
+      disk_type[disk] = type
     end
     disk_type
   end
