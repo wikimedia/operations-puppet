@@ -1,5 +1,5 @@
 cluster: memcached
-profile::standard::admin_groups:
+profile::admin::groups:
   - perf-roots
 profile::redis::multidc::category: sessions
 profile::redis::multidc::discovery: "appservers-rw"

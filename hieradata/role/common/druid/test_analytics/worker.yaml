@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - druid-admins
 
 cluster: 'druid_test_analytics'

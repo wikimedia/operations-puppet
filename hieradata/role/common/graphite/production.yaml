@@ -1,5 +1,5 @@
 cluster: graphite
-profile::standard::admin_groups:
+profile::admin::groups:
   - perf-roots
   - graphite-admins
 profile::graphite::base::uwsgi_processes: 16

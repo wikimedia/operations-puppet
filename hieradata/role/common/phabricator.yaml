@@ -1,5 +1,5 @@
 profile::standard::has_default_mail_relay: false
-profile::standard::admin_groups:
+profile::admin::groups:
   - phabricator-admin
   - phabricator-roots
   - phabricator-bulk-manager

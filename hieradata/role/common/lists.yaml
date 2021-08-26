@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - mailman3-roots
 
 profile::standard::has_default_mail_relay: false

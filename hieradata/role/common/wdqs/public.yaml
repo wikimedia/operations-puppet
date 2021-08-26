@@ -24,7 +24,7 @@ profile::query_service::nodes:
   - 'wdqs2002.codfw.wmnet'
   - 'wdqs2003.codfw.wmnet'
   - 'wdqs2007.codfw.wmnet'
-profile::standard::admin_groups:
+profile::admin::groups:
   - wdqs-admins
   - wdqs-roots
 cluster: wdqs

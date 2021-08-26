@@ -1,5 +1,5 @@
 cluster: misc
-profile::standard::admin_groups:
+profile::admin::groups:
   - gitlab-roots
 
 profile::gitlab::active_host: 'gitlab1001.wikimedia.org'

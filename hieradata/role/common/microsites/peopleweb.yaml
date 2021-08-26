@@ -2,7 +2,7 @@ profile::base::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet
-profile::standard::admin_groups:
+profile::admin::groups:
   - all-users
 profile::tlsproxy::envoy::global_cert_name: "peopleweb.discovery.wmnet"
 profile::microsites::peopleweb::sitename: 'people.wikimedia.org'

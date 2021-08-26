@@ -1,5 +1,5 @@
 cluster: memcached_gutter
-profile::standard::admin_groups:
+profile::admin::groups:
   - perf-roots
 profile::memcached::enable_16: true
 profile::memcached::version: 'present'

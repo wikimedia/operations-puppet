@@ -75,5 +75,5 @@ profile::cassandra::settings:
 #
 # General
 #
-profile::standard::admin_groups:
+profile::admin::groups:
   - sessionstore-roots

@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - datacenter-ops
 profile::installserver::dhcp::ensure_service: 'running'
 profile::installserver::tftp::ensure_service: 'running'

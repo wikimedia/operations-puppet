@@ -1,5 +1,5 @@
 cluster: webperf
-profile::standard::admin_groups:
+profile::admin::groups:
   - perf-team
 
 # primary node with logging::mediawiki::udp2log role.

@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - wmcs-roots
 
 profile::base::enable_microcode: true

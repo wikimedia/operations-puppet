@@ -9,5 +9,5 @@ profile::etcd::v3::max_latency: 10
 # We use the v3 api directly.
 profile::etcd::v3::adv_client_port: 2379
 
-profile::standard::admin_groups:
+profile::admin::groups:
   - ml-team-admins

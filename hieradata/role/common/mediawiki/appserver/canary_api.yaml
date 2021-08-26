@@ -1,5 +1,5 @@
 cluster: api_appserver
-profile::standard::admin_groups:
+profile::admin::groups:
   - deployment
   - perf-roots
 profile::mediawiki::php::enable_fpm: true

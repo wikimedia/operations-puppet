@@ -2,7 +2,7 @@
 memcached::ip: 127.0.0.1
 nginx::variant: light
 
-profile::standard::admin_groups:
+profile::admin::groups:
   - wmcs-roots
 striker::apache::server_name: toolsadmin.wikimedia.org
 striker::apache::docroot: /srv/deployment/striker/deploy/public_html

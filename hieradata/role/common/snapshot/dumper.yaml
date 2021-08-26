@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - udp2log-users
   - deployment
   - snapshot-admins

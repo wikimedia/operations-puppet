@@ -1,6 +1,6 @@
 # General configs
 cluster: elasticsearch
-profile::standard::admin_groups:
+profile::admin::groups:
   - elasticsearch-roots
 
 # Msearch daemons read same topic in same consumer group in all dcs. They

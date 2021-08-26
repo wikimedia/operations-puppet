@@ -149,6 +149,6 @@ profile::cassandra::settings:
 
 service::configuration::log_dir: "/var/log"
 
-profile::standard::admin_groups:
+profile::admin::groups:
   - restbase-roots
   - restbase-admins

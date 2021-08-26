@@ -3,5 +3,5 @@ profile::wmcs::nfs::monitoring::interfaces::contact_groups: 'wmcs-team,admins'
 profile::wmcs::nfs::monitoring::interfaces::int_throughput_warn: 93750000
 profile::wmcs::nfs::monitoring::interfaces::int_throughput_crit: 106250000
 
-profile::standard::admin_groups:
+profile::admin::groups:
   - wmcs-roots

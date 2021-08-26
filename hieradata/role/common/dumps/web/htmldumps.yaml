@@ -1,4 +1,4 @@
 cluster: dumps
-profile::standard::admin_groups:
+profile::admin::groups:
   - htmldumps-admin
 profile::nginx::variant: 'light'

@@ -1,6 +1,6 @@
 # General configs
 cluster: relforge
-profile::standard::admin_groups:
+profile::admin::groups:
   - elasticsearch-roots
 
 profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWORKS @resolve((contint1001.wikimedia.org contint2001.wikimedia.org))))'

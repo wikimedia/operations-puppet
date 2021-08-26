@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - gitpuppet
 profile::base::domain_search:
   - wikimedia.org

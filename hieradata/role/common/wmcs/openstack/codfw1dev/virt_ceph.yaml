@@ -1,5 +1,5 @@
 profile::base::notifications: disabled
-profile::standard::admin_groups:
+profile::admin::groups:
   - labtest-roots
 profile::debdeploy::client::filter_services:
   qemu-system-x86:

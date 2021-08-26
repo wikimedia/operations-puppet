@@ -1,2 +1,2 @@
-profile::standard::admin_groups:
+profile::admin::groups:
     - wmcs-roots

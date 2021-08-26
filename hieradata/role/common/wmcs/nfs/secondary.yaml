@@ -22,7 +22,7 @@ profile::base::ssh_server_settings:
     - '/etc/ssh/userkeys/%u.d/cumin'
     - '/etc/ssh/userkeys/%u.d/labstore'
 
-profile::standard::admin_groups:
+profile::admin::groups:
   - wmcs-roots
 
 contactgroups: wmcs-team

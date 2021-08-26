@@ -5,7 +5,7 @@ profile::dns::auth::acmechief_target::acmechief_hosts:
 - acmechief-test2001.codfw.wmnet
 profile::dns::auth::gitrepo: 'https://gerrit.wikimedia.org/r/operations/dns.git'
 prometheus::haproxy_exporter::endpoint: 'http://127.0.0.1:8404/?stats;csv'
-profile::standard::admin_groups:
+profile::admin::groups:
  - dns-admins
  - fr-tech-admins
 profile::bird::advertise_vips:

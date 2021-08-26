@@ -14,7 +14,7 @@ profile::query_service::blazegraph_extra_jvm_opts: []
 profile::query_service::nodes:
   - 'wdqs1009.eqiad.wmnet'
   - 'wdqs1010.eqiad.wmnet'
-profile::standard::admin_groups:
+profile::admin::groups:
   - wdqs-roots
   - wdqs-admins
   - wdqs-test-roots

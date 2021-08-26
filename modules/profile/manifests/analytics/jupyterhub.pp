@@ -37,10 +37,10 @@ class profile::analytics::jupyterhub(
     Optional[String] $http_proxy_host   = lookup('http_proxy_host', default_value => undef),
     Optional[Integer] $http_proxy_port  = lookup('http_proxy_port', default_value => undef),
 ) {
-    include profile::standard
-    $allowed_posix_groups = $profile::standard::admin_groups.empty ? {
+    include profile::admin
+    $allowed_posix_groups = $profile::admin::groups.empty ? {
         true    => ['wikidev'],
-        default => $profile::standard::admin_groups
+        default => $profile::admin::groups
     }
 
 

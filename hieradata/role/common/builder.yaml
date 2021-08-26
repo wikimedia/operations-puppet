@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - builder-docker
 profile::docker::engine::version: "1.12.6-0~debian-jessie"
 profile::docker::engine::packagename: "docker-engine"

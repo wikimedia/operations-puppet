@@ -34,5 +34,5 @@ prometheus::node_exporter::collectors_extra:
 # We don't need conftool safe restart scripts on k8s.
 #profile::lvs::realserver::use_conftool: false
 #profile::lvs::realserver::pools:
-profile::standard::admin_groups:
+profile::admin::groups:
   - ml-team-admins

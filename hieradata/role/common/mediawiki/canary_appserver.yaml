@@ -1,5 +1,5 @@
 cluster: appserver
-profile::standard::admin_groups:
+profile::admin::groups:
   - deployment
   - perf-roots
   - mediawiki-testers

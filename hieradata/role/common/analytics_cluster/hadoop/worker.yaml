@@ -1,9 +1,9 @@
 nagios_group: analytics_eqiad
 cluster: analytics
 
-profile::standard::admin_groups:
+profile::admin::groups:
   - analytics-admins
-profile::standard::admin_groups_no_ssh:
+profile::admin::groups_no_ssh:
   - analytics-privatedata-users
   # elasticsearch::analytics creates the analytics-search user and group
   # that analytics-search-users are allowed to sudo to.  This is used

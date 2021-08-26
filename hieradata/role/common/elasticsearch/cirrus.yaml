@@ -1,6 +1,6 @@
 # General configs
 cluster: elasticsearch
-profile::standard::admin_groups:
+profile::admin::groups:
   - elasticsearch-roots
 
 

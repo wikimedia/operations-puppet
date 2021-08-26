@@ -1,6 +1,6 @@
 nagios_group: analytics_eqiad
 cluster: analytics
-profile::standard::admin_groups:
+profile::admin::groups:
   - analytics-admins
 
 # Hadoop settings, presto server needs Hadoop client configs

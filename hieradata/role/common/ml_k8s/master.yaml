@@ -25,7 +25,7 @@ profile::lvs::realserver::pools:
   ml-ctrl:
     services:
       - "kube-apiserver"
-profile::standard::admin_groups:
+profile::admin::groups:
   - ml-team-admins
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:

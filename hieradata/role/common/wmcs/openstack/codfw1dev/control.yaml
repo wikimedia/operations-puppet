@@ -1,5 +1,5 @@
 profile::base::notifications: disabled
-profile::standard::admin_groups:
+profile::admin::groups:
   - labtest-roots
 raid::md::cron_ensure: absent
 

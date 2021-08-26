@@ -2,7 +2,7 @@ cluster: parsoid
 parsoid::testing::parsoid_port: 8142
 parsoid::testing::default_api_proxy_uri: 'http://api-rw.discovery.wmnet'
 
-profile::standard::admin_groups:
+profile::admin::groups:
   - parsoid-roots
   - parsoid-admin
   - parsoid-test-admins

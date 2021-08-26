@@ -5,7 +5,7 @@ profile::logstash::apifeatureusage::targets:
   - search.svc.codfw.wmnet
   - search.svc.eqiad.wmnet
 cluster: logstash
-profile::standard::admin_groups:
+profile::admin::groups:
   - logstash-roots
   - elasticsearch-roots
 

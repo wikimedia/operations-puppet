@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - analytics-privatedata-users
   - analytics-admins
   - gpu-users

@@ -4,7 +4,7 @@ contactgroups: 'wmcs-team,admins'
 mgmt_contactgroups: 'wmcs-team-email'
 profile::base::monitor_systemd: false
 
-profile::standard::admin_groups:
+profile::admin::groups:
   - analytics-admins
   - dumps-roots
 

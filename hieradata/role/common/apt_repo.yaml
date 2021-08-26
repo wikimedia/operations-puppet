@@ -4,7 +4,7 @@ profile::aptrepo::wikimedia::gpg_user: 'root'
 # The public keyring is built/managed by Puppet
 profile::aptrepo::wikimedia::gpg_secring: 'apt/secring.gpg'
 profile::nginx::variant: 'light'
-profile::standard::admin_groups:
+profile::admin::groups:
   - datacenter-ops
 profile::base::ssh_server_settings:
   enable_kerberos: true

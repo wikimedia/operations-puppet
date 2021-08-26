@@ -1,4 +1,4 @@
 profile::peek::to_email: security-team@wikimedia.org
-profile::standard::admin_groups:
+profile::admin::groups:
   - secteam-users
   - peek-admins

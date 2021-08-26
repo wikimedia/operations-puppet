@@ -20,7 +20,7 @@ profile::base::monitor_systemd: false
 profile::wmcs::nfs::primary::backup_servers:
   - cloudbackup2001.codfw.wmnet
   - cloudbackup2002.codfw.wmnet
-profile::standard::admin_groups:
+profile::admin::groups:
   - wmcs-roots
 
 profile::wmcs::nfs::primary::drbd_resource_config:

@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - deployment
   - restricted
   - mw-log-readers

@@ -1,4 +1,4 @@
-profile::standard::admin_groups:
+profile::admin::groups:
   - phabricator-roots
 profile::phabricator::aphlict::client_listen: "%{::ipaddress6}"
 profile::phabricator::aphlict::client_port: 22280
