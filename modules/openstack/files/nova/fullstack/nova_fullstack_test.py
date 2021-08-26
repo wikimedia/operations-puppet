@@ -334,9 +334,6 @@ def verify_puppet(address, user, keyfile, bastion_ip, timeout):
         logging.info("Verify Puppet run on {}".format(address))
         while True:
             out = "No command run yet"
-            # try a couple of known paths for the state, as the default has
-            # changed over time.
-
             try:
                 cp = "sudo cat /var/lib/puppet/state/last_run_summary.yaml"
                 run_remote(address, user, keyfile, bastion_ip, cp)
@@ -345,16 +342,6 @@ def verify_puppet(address, user, keyfile, bastion_ip, timeout):
                 logging.debug(e)
                 logging.debug(e.stdout)
                 out = e.stdout
-                logging.debug("Puppet wait {}".format(pv.progress()))
-
-            try:
-                cp = "sudo cat /var/cache/puppet/state/last_run_summary.yaml"
-                run_remote(address, user, keyfile, bastion_ip, cp)
-                break
-            except subprocess.CalledProcessError as e:
-                logging.debug(e)
-                logging.debug(e.stdout)
-                out += '\n---\n' + e.stdout
                 logging.debug("Puppet wait {}".format(pv.progress()))
 
             pwait = pv.progress()
