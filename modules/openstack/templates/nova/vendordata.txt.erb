@@ -90,6 +90,9 @@ puppet:
         agent:
             server: 'puppet'
             certname: '%f'
+            daemonize: false
+        exec: true
+        exec_args: ['--onetime', '--verbose', '--no-daemonize', '--no-splay', '--show_diff']
 
 
 --XXXXboundary text
@@ -158,18 +161,6 @@ dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 systemctl restart ssh.service
 nscd -i hosts
 
-# Run puppet, twice.  The second time is just to pick up packages
-#  that may have been unavailable in apt before the first puppet run
-#  updated sources.list
-puppet agent --enable
-
-# Just in case puppet is already running for some reason, wait
-#  for it to finish.
-wait_for_puppet 120
-service puppet stop
-wait_for_puppet 120
-puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff
-
 # Refresh ldap now that puppet has updated our ldap.conf
 systemctl restart nslcd.service
 
@@ -188,7 +179,7 @@ done
 # Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
 # before, the puppet code that ensures the symlinks are created, etc may not
 # have run)
-wait_for_puppet 10
+wait_for_puppet 120
 puppet agent -t
 
 # sssd might be caching sudo rules and other ldap things from before puppet
@@ -198,7 +189,6 @@ puppet agent -t
 systemctl stop sssd
 rm -rf /var/lib/sss/db/*
 systemctl restart sssd
-
 
 # Remove the non-root login restriction
 rm /etc/block-ldap-key-lookup
