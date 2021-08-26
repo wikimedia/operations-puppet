@@ -204,23 +204,4 @@ define prometheus::server (
             hasrestart => true,
         },
     }
-
-    # Prometheus artifacts can sometimes cause odd monitoring artifacts -- missing data,
-    # rate computations being lower than they should be, etc.
-    # Report to IRC any Prometheis with too-low uptime.
-    if $title == 'global' {
-      $alert_description = "Prometheus ${::hostname}/${title} (or a Prometheus it scrapes) was restarted: beware possible monitoring artifacts"
-    } else {
-      $alert_description = "Prometheus ${::hostname}/${title} restarted: beware possible monitoring artifacts"
-    }
-    monitoring::check_prometheus { "uptime-${::hostname}-${service_name}":
-      query           => 'time() - process_start_time_seconds{job="prometheus", instance=~"127\\.0\\.0\\.1:.*"}',
-      method          => 'lt',
-      warning         => 1800,
-      critical        => 600,
-      description     => $alert_description,
-      prometheus_url  => "http://${::fqdn}/${title}",
-      dashboard_links => ["https://grafana.wikimedia.org/d/GWvEXWDZk/prometheus-server?var-datasource=${::site} prometheus/${title}"],
-      notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Prometheus_was_restarted',
-    }
 }
