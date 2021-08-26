@@ -259,9 +259,6 @@ ntp_peers:
 
 scap::version: present
 
-profile::debdeploy::client::exclude_filesystems:
-  - nfs4
-
 profile::base::systemd::cpu_accounting: 'no'
 profile::base::systemd::blockio_accounting: 'no'
 profile::base::systemd::memory_accounting: 'no'

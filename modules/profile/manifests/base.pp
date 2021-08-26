@@ -1,11 +1,11 @@
 class profile::base(
-    Array $remote_syslog = lookup('profile::base::remote_syslog', {default_value => []}),
-    Array $remote_syslog_tls = lookup('profile::base::remote_syslog_tls', {default_value => []}),
+    Array $remote_syslog      = lookup('profile::base::remote_syslog', {default_value => []}),
+    Array $remote_syslog_tls  = lookup('profile::base::remote_syslog_tls', {default_value => []}),
     Hash $ssh_server_settings = lookup('profile::base::ssh_server_settings', {default_value => {}}),
-    Boolean $overlayfs = lookup('profile::base::overlayfs', {default_value => false}),
-    Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
-    String $cluster = lookup('cluster'),
-    Boolean $enable_contacts = lookup('profile::base::enable_contacts'),
+    Boolean $overlayfs        = lookup('profile::base::overlayfs', {default_value => false}),
+    Hash $wikimedia_clusters  = lookup('wikimedia_clusters'),
+    String $cluster           = lookup('cluster'),
+    Boolean $enable_contacts  = lookup('profile::base::enable_contacts'),
     String $core_dump_pattern = lookup('profile::base::core_dump_pattern'),
 ) {
     # Sanity checks for cluster - T234232
@@ -20,12 +20,6 @@ class profile::base(
     contain profile::base::puppet
     contain profile::base::certificates
     include profile::systemd::timesyncd
-    include profile::pki::client
-    if $enable_contacts {
-        include profile::contacts
-    }
-    include profile::base::netbase
-    include profile::logoutd
     include profile::apt
     class {'adduser': }
 
@@ -33,10 +27,8 @@ class profile::base(
 
     include passwords::root
     include network::constants
-
     include profile::resolving
     include profile::mail::default_mail_relay
-    include profile::monitoring
 
     include profile::prometheus::node_exporter
     class { 'rsyslog': }
@@ -56,19 +48,14 @@ class profile::base(
     class { 'base::sysctl': }
     class { 'motd': }
     class { 'base::standard_packages': }
-    if debian::codename::le('buster') {
-        class { 'toil::acct_handle_wtmp_not_rotated': }
-    }
     include profile::environment
     class { 'base::sysctl::core_dumps':
         core_dump_pattern => $core_dump_pattern,
     }
 
-    class { 'base::phaste': }
-    class { 'base::screenconfig': }
-
     class { 'ssh::client': }
 
+    # # TODO: create profile::ssh::server
     # Ssh server default settings are good for most installs, but some overrides
     # might be needed
 
@@ -83,12 +70,9 @@ class profile::base(
     class { 'base::initramfs': }
     include profile::auto_restarts
 
-
     class { 'prometheus::node_debian_version': }
 
     if $facts['is_virtual'] and debian::codename::le('buster') {
         class {'haveged': }
     }
-
-    include profile::emacs
 }

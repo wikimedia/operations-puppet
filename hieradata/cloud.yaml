@@ -7,9 +7,9 @@ ldap:
   groups_cn: ou=groups
 etcd::autogen_pwd_seed: 'seed'
 profile::contacts::role_contacts: []
+
 profile::mail::default_mail_relay::enabled: true
 profile::mail::default_mail_relay::template: 'profile/mail/default_mail_relay/exim4.minimal.wmcs.erb'
-profile::standard::enable_ip6_mapped: false
 
 profile::admin::managelingering: false
 profile::admin::purge_sudoers_d: false
