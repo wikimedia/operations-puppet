@@ -994,6 +994,11 @@ node /^(doh[12345]00[12])\.wikimedia\.org$/ {
     role(wikidough)
 }
 
+# durum for Wikidough (T289536)
+node 'durum1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 # Dragonfly Supernode (T286054)
 node /^dragonfly-supernode[12]001\.(codfw|eqiad)\.wmnet$/ {
     role(dragonfly::supernode)
