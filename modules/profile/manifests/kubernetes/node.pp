@@ -46,15 +46,14 @@ class profile::kubernetes::node(
         group           => 'root',
     }
 
-
     # Figure out if this node has SSD or spinning disks
-    # TODO: We should have a fact for this
+    # This is not the absolute correct approach, but it will do for now
     if $facts['is_virtual'] {
         # disk_type will be "kvm" for example
         $disk_type = $facts['virtual']
     } else {
-        $ssd_disks = filter($facts['disks']) |$x| {
-            $x[1]['type'] == 'ssd' or $x[1]['model'] =~ /(?i:ssd)/
+        $ssd_disks = filter($facts['disk_type']) |$x| {
+            $x[1] == 'ssd'
         }
         if $ssd_disks.length > 0 {
             $disk_type = 'ssd'
