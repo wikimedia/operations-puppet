@@ -196,7 +196,7 @@ profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:1
 profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path', 'geoip']
 profile::cache::varnish::frontend::transient_gb: 5
 
-profile::cache::kafka::eventlogging::monitoring_enabled: true
+profile::cache::kafka::statsv::ssl_enabled: true
 profile::cache::kafka::statsv::monitoring_enabled: true
 # Purges
 profile::cache::purge::kafka_topics:
