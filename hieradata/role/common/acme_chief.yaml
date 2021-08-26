@@ -44,6 +44,14 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^labstore100[67]\.wikimedia\.org$'
+    durum:
+        CN: 'check.wikimedia-dns.org'
+        SNI:
+        - 'check.wikimedia-dns.org'
+        - '*.check.wikimedia-dns.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'durum1001.eqiad.wmnet'
     gerrit:
         CN: 'gerrit.wikimedia.org'
         SNI:
