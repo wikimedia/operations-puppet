@@ -21,7 +21,6 @@ class profile::durum (
         content => template('profile/durum/durum.py.erb'),
         require => [
           Package['python3-flask'],
-          Uwsgi::App['durum'],
         ],
     }
 
