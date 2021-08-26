@@ -1,7 +1,8 @@
 profile::durum::service::domain: 'check.wikimedia-dns.org'
+profile::durum::service::ip: &landing_ip 185.71.138.139
 
 profile::durum::service::ips:
-  landing: &landing_ip 185.71.138.139
+  landing: *landing_ip
   success: &success_ip 185.71.138.140
   failure: &failure_ip 185.71.138.141
 
@@ -19,17 +20,17 @@ profile::bird::advertise_vips:
   check.wikimedia-dns.org:
     ensure: present
     address: *landing_ip
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ips::landing')} -u / -t 1"
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ip')} -u / -t 1"
     service_type: durum
   yes.check.wikimedia-dns.org:
     ensure: present
     address: *success_ip
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ips::landing')} -u / -t 1"
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ip')} -u / -t 1"
     service_type: durum
   no.check.wikimedia-dns.org:
     ensure: present
     address: *failure_ip
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ips::landing')} -u / -t 1"
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ip')} -u / -t 1"
     service_type: durum
 
 profile::nginx::variant: 'light'
