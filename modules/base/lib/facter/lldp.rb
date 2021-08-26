@@ -20,17 +20,11 @@ Facter.add(:lldp) do
         lldp[eth]['neighbor'] = switch.text
         lldp[eth]['neighbors'] << switch.text
       end
-      interface.elements.each('chassis/capability') do |capability|
-        if capability.attributes['type'] == 'Router'
-          lldp[eth]['router'] = capability.attributes.fetch('enabled', 'off').to_s == 'on'
-        end
-      end
       interface.elements.each('port') do |port|
         lldp[eth]['port'] = port.elements['id'].text
         lldp[eth]['descr'] = port.elements['descr'].text if port.elements['descr']
         lldp[eth]['mtu'] = port.elements['mfs'].text.to_i if port.elements['mfs']
       end
-
       next unless interface.elements['vlan']
       lldp[eth]['vlans'] = {'tagged_vlans' => []}
       interface.elements.each('vlan') do |vlan|
@@ -67,19 +61,11 @@ Facter.add(:lldp_parent) do
       primary = Facter.value(:interface_primary)
     end
 
-    parent = begin
-               Facter.value(:lldp)[primary]['neighbor']
-             rescue
-               nil
-             end
-    if parent.nil?
-      Facter.value(:lldp).each do |_, config|
-        if config.fetch('router', false)
-          parent = config['neighbor']
-        end
-      end
+    begin
+      Facter.value(:lldp)[primary]['neighbor']
+    rescue
+      nil
     end
-    parent
   end
 end
 
