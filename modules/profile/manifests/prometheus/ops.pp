@@ -1972,6 +1972,25 @@ class profile::prometheus::ops (
         port       => 9236
     }
 
+    $cfssl_jobs = [
+      {
+        'job_name'        => 'cfssl',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pki_*.yaml"] },
+        ],
+      },
+    ]
+    prometheus::class_config{ "pki_${::site}":
+        dest       => "${targets_path}/pki_${::site}.yaml",
+        port       => 80,
+        class_name => 'profile::pki::multirootca',
+        labels     => {
+            'cluster' => 'pki',
+            'app'     => 'cfssl',
+        },
+    }
+
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
@@ -2000,7 +2019,7 @@ class profile::prometheus::ops (
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
-            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs
+            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs,
         ].flatten,
         global_config_extra    => $config_extra,
     }
@@ -2079,14 +2098,6 @@ class profile::prometheus::ops (
         port    => 9331,
         labels  => {
           'layer' => 'frontend',
-        },
-    }
-    prometheus::cluster_config{ "pki_${::site}":
-        dest    => "${targets_path}/pki_${::site}.yaml",
-        cluster => 'pki',
-        port    => 80,
-        labels  => {
-          'cluster' => 'pki',
         },
     }
 
