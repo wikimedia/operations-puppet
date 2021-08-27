@@ -5306,3 +5306,9 @@ ldap_only_users:
     ensure: present
     realname: Natalia Rodriguez
     email: nrodriguez@wikimedia.org
+  simone-this-dot:
+    ensure: present
+    realname: Simone Cuomo
+    email: simone@thisdot.co
+    expiry_date: 2022-06-30
+    expiry_contact: abaso@wikimedia.org
