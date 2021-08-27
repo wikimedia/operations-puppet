@@ -401,7 +401,7 @@ class profile::logstash::collector7 (
         critical        => 0.10,
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#UDP_packet_loss',
     }
 
     # Ship logstash service logs to ELK
