@@ -110,6 +110,7 @@ class profile::configmaster(
     $ssh_fingerprints = query_facts('', ['ssh', 'networking'])
     file{"${document_root}/ssh-fingerprints.txt":
         ensure  => file,
+        backup  => false,  # Theses files change often don't back them up
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
@@ -118,6 +119,7 @@ class profile::configmaster(
     ['ecdsa', 'ed25519', 'rsa'].each |String $type| {
         file{"${document_root}/known_hosts.${type}":
             ensure  => file,
+            backup  => false,  # Theses files change often don't back them up
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
