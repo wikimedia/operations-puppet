@@ -403,26 +403,8 @@ tables:
     columns:
       - name: osm_id
         type: id
-      - name: member
-        type: member_id
-      - name: index
-        type: member_index
-      - name: role
-        type: member_role
-      - name: type
-        type: member_type
       - name: geometry
         type: geometry
-      - name: relname
-        key: name
-        type: string
-      - name: name
-        key: name
-        type: string
-        from_member: true
-      - key: ref
-        name: ref
-        type: string
       - key: wikidata
         name: wikidata
         type: string
@@ -439,3 +421,16 @@ tables:
       - connectivity
     mapping:
       wikidata: [__any__]
+
+  wikidata_relation_polygon:
+    type: polygon
+    mapping:
+      wikidata: [__any__]
+    columns:
+      - name: osm_id
+        type: id
+      - key: wikidata
+        name: wikidata
+        type: string
+      - name: geometry
+        type: geometry
