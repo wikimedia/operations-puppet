@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wikidough Check</title>
+    <style>
+      section {
+        text-align: center;
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        font-family: Verdana, sans-serif;
+      }
+      h1 {
+        font-size: 3vw;
+      }
+      p.result {
+        font-size: 2vw;
+      }
+    </style>
+    <script>
+      const url = "https://{{ request.uuid }}.check.wikimedia-dns.org/check/";
+      fetch(url)
+      .then((response) => response.json())
+      .then(check => {
+        if (check.result === true) {
+          document.getElementById("check-heading").innerHTML = "&#9745;";
+          document.getElementById("check-result").textContent = "Congratulations! You are using Wikidough.";
+        } else {
+          document.getElementById("check-heading").innerHTML = "&#9746;";
+          document.getElementById("check-result").textContent = "Sorry, you are not using Wikidough.";
+        }
+      })
+      .catch((error) => {
+          document.getElementById("check-heading").innerHTML = "&#63;";
+          document.getElementById("check-result").textContent = "We were unable to determine if you are using Wikidough.";
+      });
+    </script>
+  </head>
+  <body>
+    <section>
+      <h1 id="check-heading">&#8987;</h1>
+      <p class="result" id="check-result">Checking if you are using Wikidough...</p>
+      <p>Need help? Please visit the <a href="https://wikitech.wikimedia.org/wiki/Wikidough">Wikitech page</a>.</p>
+    </section>
+  </body>
+</html>

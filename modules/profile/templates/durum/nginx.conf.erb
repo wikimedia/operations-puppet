@@ -20,7 +20,7 @@ server {
 
   location / {
     include    uwsgi_params;
-    uwsgi_pass unix:<%= @common['sock_path'] %>;
+    uwsgi_pass unix:<%= @common['sock_file'] %>;
   }
 
 }

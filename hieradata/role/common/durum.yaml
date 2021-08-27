@@ -8,8 +8,9 @@ profile::durum::service::ips:
 
 profile::durum::service::common:
   durum_path: '/srv/durum'
-  app_path: '/srv/durum/durum.py'
-  sock_path: '/run/uwsgi/durum.sock'
+  sock_file: '/run/uwsgi/durum.sock'
+  app_file: 'durum.py'
+  template_file: 'index.html'
 
 profile::durum::service::messages:
   check_success: "Congratulations! You are using Wikidough :)"
