@@ -23,7 +23,8 @@ class profile::durum (
             mode    => '0440',
             require => Package['python3-flask'];
         $durum_file:
-            content => template('profile/durum/durum.py.erb');
+            content => template('profile/durum/durum.py.erb'),
+            notify  => Service['uwsgi-durum'];
         $template_file:
             content => template('profile/durum/index.html.erb');
     }
