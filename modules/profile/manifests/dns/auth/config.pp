@@ -75,6 +75,7 @@ class profile::dns::auth::config(
     # watcher can notice changes to it.
     file { '/etc/gdnsd/geoip/GeoIP2-City.mmdb':
         ensure => 'present',
+        backup => false,
         source => '/usr/share/GeoIP/GeoIP2-City.mmdb',
         before => Exec['authdns-local-update'],
     }
