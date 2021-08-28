@@ -12,11 +12,6 @@ profile::durum::service::common:
   app_file: 'durum.py'
   template_file: 'index.html'
 
-profile::durum::service::messages:
-  check_success: "Congratulations! You are using Wikidough :)"
-  check_failure: "Sorry, you are not using Wikidough :("
-  check_error: "Something went wrong. We were unable to determine if you are using Wikidough."
-
 profile::bird::advertise_vips:
   check.wikimedia-dns.org:
     ensure: present

@@ -21,10 +21,10 @@ class profile::durum (
             owner   => 'www-data',
             group   => 'www-data',
             mode    => '0440',
+            notify  => Service['uwsgi-durum'],
             require => Package['python3-flask'];
         $durum_file:
-            content => template('profile/durum/durum.py.erb'),
-            notify  => Service['uwsgi-durum'];
+            content => template('profile/durum/durum.py.erb');
         $template_file:
             content => template('profile/durum/index.html.erb');
     }
