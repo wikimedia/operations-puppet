@@ -147,16 +147,22 @@ class swift::storage (
             source => 'puppet:///modules/swift/swift-drive-audit.py',
         }
 
-        # install swift-drive-audit as a cronjob;
+        # install swift-drive-audit as a systemd timer job;
         # it checks the disks every 60 minutes
         # and unmounts failed disks. It logs its actions to /var/log/syslog.
+        systemd::timer::job { 'swift-drive-audit':
+            ensure      => present,
+            description => 'Regular jobs to unmount failed disks',
+            user        => 'root',
+            command     => '/usr/bin/swift-drive-audit /etc/swift/swift-drive-audit.conf',
+            interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:01:00'},
+            require     => [
+                File['/usr/bin/swift-drive-audit'],
+                File['/etc/swift/swift-drive-audit.conf']
+            ],
+        }
         cron { 'swift-drive-audit':
-            ensure  => present,
-            command => '/usr/bin/swift-drive-audit /etc/swift/swift-drive-audit.conf',
-            user    => 'root',
-            minute  => '1',
-            require => [File['/usr/bin/swift-drive-audit'],
-                        File['/etc/swift/swift-drive-audit.conf']],
+            ensure  => absent,
         }
     } else {
         # Drop our modifications starting with Bullseye, not enough wins
