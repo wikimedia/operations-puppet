@@ -83,7 +83,17 @@ profile::puppetdb::node_ttl: '7d'
 profile::puppetdb::node_purge_ttl: '14d'
 profile::puppetdb::report_ttl: '1d'
 
-profile::puppetdb::database::users: {}
+profile::puppetdb::database::users:
+  puppetdb@localhost:
+    user: puppetdb
+    password: "%{alias('puppetdb::password::rw')}"
+    database: puppetdb
+    cidr: "%{facts.networking.ip}/32"
+  prometheus@localhost:
+    user: 'prometheus'
+    database: 'postgres'
+    type: 'local'
+    method: 'peer'
 profile::puppetdb::database::shared_buffers: '768MB'
 profile::puppetdb::database::replication_lag_crit: 16777216
 profile::puppetdb::database::replication_lag_warn: 1048576
