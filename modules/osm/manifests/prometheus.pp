@@ -22,8 +22,4 @@ class osm::prometheus(
         logging_enabled => false,
         interval        => {'start' => 'OnCalendar', 'interval' => 'minutely'}
     }
-    cron { 'osm_sync_lag':
-        ensure  => absent,
-        command => "/usr/bin/osm_sync_lag ${state_path} ${prometheus_path} >/dev/null 2>&1",
-    }
 }
