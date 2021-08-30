@@ -89,6 +89,13 @@ profile::puppetdb::database::users:
     password: "%{alias('puppetdb::password::rw')}"
     database: puppetdb
     cidr: "%{facts.networking.ip}/32"
+  puppetdb_ro@localhost:
+    user: puppetdb_ro
+    password: "%{alias('puppetdb::password::ro')}"
+    database: puppetdb
+    cidr: "%{facts.networking.ip}/32"
+    privileges:
+      table: 'SELECT'
   prometheus@localhost:
     user: 'prometheus'
     database: 'postgres'
