@@ -1548,7 +1548,7 @@ node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
 
-# ceph storage nodes, 1018 is waiting on T285799
+# ceph storage nodes
 node /^cloudcephosd10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
 }
