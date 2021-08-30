@@ -5312,3 +5312,7 @@ ldap_only_users:
     email: simone@thisdot.co
     expiry_date: 2022-06-30
     expiry_contact: abaso@wikimedia.org
+  bgwiki:
+    ensure: present
+    realname: Bethany Gerdemann
+    email: bgerdemann@wikimedia.org
