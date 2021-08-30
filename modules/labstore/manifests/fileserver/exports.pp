@@ -76,11 +76,6 @@ class labstore::fileserver::exports(
         require     => File['/etc/exports.bak'],
     }
 
-    # TODO: Remove after initial runs. This just cleans up the old setup.
-    file { '/etc/exports.d/public_root.exports':
-        ensure => absent,
-    }
-
     file { '/usr/local/sbin/archive-project-volumes':
         owner  => 'root',
         group  => 'root',
