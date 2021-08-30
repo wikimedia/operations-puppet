@@ -112,13 +112,15 @@ class puppetdb::app(
     }[$db_driver]
 
     $db_settings = $db_driver_settings + {
-        'report-ttl'     => $report_ttl,
-        'gc-interval'    => $gc_interval,
-        'node-ttl'       => $node_ttl,
-        'node-purge-ttl' => $node_purge_ttl,
-        'subname'        => $postgres_rw_db_subname,
-        'username'       => 'puppetdb',
-        'password'       => $db_password,
+        'report-ttl'           => $report_ttl,
+        'gc-interval'          => $gc_interval,
+        'node-ttl'             => $node_ttl,
+        'node-purge-ttl'       => $node_purge_ttl,
+        'subname'              => $postgres_rw_db_subname,
+        'username'             => 'puppetdb',
+        'password'             => $db_password,
+        'facts-blacklist-type' => $facts_blacklist_type,
+        'facts-blacklist'      => $facts_blacklist.join(', '),
     }
     $read_db_settings = $db_driver_settings + {
         'subname'  => $postgres_ro_db_subname,
@@ -175,14 +177,6 @@ class puppetdb::app(
         settings => {
             'threads' => $command_processing_threads,
         },
-    }
-    unless $facts_blacklist.empty {
-        puppetdb::config { 'facts-blacklist':
-            settings => {
-                'facts-blacklist-type' => $facts_blacklist_type,
-                'facts-blacklist'      => $facts_blacklist.join(', '),
-            },
-        }
     }
     file {'/etc/puppetdb/logback.xml':
         ensure  => file,
