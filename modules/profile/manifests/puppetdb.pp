@@ -23,6 +23,8 @@ class profile::puppetdb(
     String                               $puppetdb_pass         = lookup('puppetdb::password::rw'),
     String                               $puppetdb_ro_pass      = lookup('puppetdb::password::ro'),
     Puppetdb::Loglevel                   $log_level             = lookup('profile::puppetdb::log_level'),
+    # TODO: rename to facts-blocklist when on 6.13.0 - T254646
+    # https://puppet.com/docs/puppetdb/6/release_notes.html#puppetdb-6130
     Array[String]                        $facts_blacklist       = lookup('profile::puppetdb::facts_blacklist'),
     Enum['literal', 'regex']             $facts_blacklist_type  = lookup('profile::puppetdb::facts_blacklist_type'),
     Integer[0]                           $gc_interval           = lookup('profile::puppetdb::gc_interval'),

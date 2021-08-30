@@ -62,5 +62,11 @@ profile::puppetdb::facts_blacklist:
   - '^network6_cali.*'
   - '^network6_tap.*'
   - '^lvm_vg_.*'
+  - '^blockdevices.*'
+  - '^cpu_flags.*'
+  - '^cpu_details.*'
+  - '^mountpoints.*'
+  - '^numa.*'
+  - '^partitions.*'
 profile::puppetdb::node_ttl: 14d
 profile::puppetdb::node_purge_ttl: 1d
