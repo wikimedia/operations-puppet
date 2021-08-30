@@ -16,6 +16,9 @@ define varnish::instance(
     $wikimedia_trust = [],
     $listen_uds = undef,
     $proxy_on_uds = false,
+    $uds_owner = 'root',
+    $uds_group = 'root',
+    $uds_mode = '700',
 ) {
 
     include ::varnish::common

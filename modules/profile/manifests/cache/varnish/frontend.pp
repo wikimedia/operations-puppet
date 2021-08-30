@@ -17,6 +17,9 @@ class profile::cache::varnish::frontend (
     Optional[Stdlib::Unixpath] $listen_uds = lookup('profile::cache::varnish::frontend::listen_uds', {'default_value' => undef}),
     Optional[Stdlib::Fqdn] $single_backend_experiment = lookup('cache::single_backend_fqdn', {'default_value' => undef}),
     Boolean $proxy_on_uds = lookup('profile::cache::varnish::frontend::proxy_on_uds', {'default_value' => false}),
+    String $uds_owner = lookup('profile::cache::varnish::frontend::uds_owner', {'default_value' => 'root'}),
+    String $uds_group = lookup('profile::cache::varnish::frontend::uds_group', {'default_value' => 'root'}),
+    Stdlib::Filemode $uds_mode = lookup('profile::cache::varnish::frontend::uds_mode', {'default_value' => '700'}),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -174,6 +177,9 @@ class profile::cache::varnish::frontend (
         wikimedia_trust    => $wikimedia_trust,
         listen_uds         => $listen_uds,
         proxy_on_uds       => $proxy_on_uds,
+        uds_owner          => $uds_owner,
+        uds_group          => $uds_group,
+        uds_mode           => $uds_mode,
     }
     # lint:endignore
 }

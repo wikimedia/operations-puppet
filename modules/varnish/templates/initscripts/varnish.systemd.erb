@@ -43,9 +43,9 @@ ExecStart=/usr/sbin/varnishd \
 <%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
 <% if @listen_uds -%>
 <% if @proxy_on_uds -%>
--a <%= @listen_uds -%>,PROXY \
+-a <%= @listen_uds -%>,PROXY,user=<%= @uds_owner -%>,group=<%= @uds_group -%>,mode=<%= @uds_mode -%> \
 <% else -%>
--a <%= @listen_uds -%> \
+-a <%= @listen_uds -%>,user=<%= @uds_owner -%>,group=<%= @uds_group -%>,mode=<%= @uds_mode -%> \
 <% end -%>
 <% end -%>
 -T 127.0.0.1:<%= @admin_port -%> \
