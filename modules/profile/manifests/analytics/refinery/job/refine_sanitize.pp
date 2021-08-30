@@ -107,7 +107,7 @@ class profile::analytics::refinery::job::refine_sanitize(
         interval      => '*-*-* 05:00:00',
         # delayed job should monitor around the day it is scheduled for.
         monitor_since => $delayed_since + 24,
-        monitor_until => $delayed_until - 24,
+        monitor_until => $delayed_until,
         job_config    => $event_sanitized_main_job_config.merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
