@@ -71,7 +71,9 @@ route:
     - match:
         team: 'rweb'
       receiver: 'rweb-mail'
-
+    - match:
+        team: 'wikidata'
+      receiver: 'wikidata-mail'
 
     # Default routing for page/critical alerts, if no team could be routed
     - match:
@@ -139,6 +141,10 @@ receivers:
 - name: 'rweb-mail'
   email_configs:
     - to: 'reading-web-team@lists.wikimedia.org'
+
+- name: 'wikidata-mail'
+  email_configs:
+    - to: 'wikidata-monitoring@wikimedia.de'
 
 - name: 'traffic-ircmail'
   webhook_configs:
