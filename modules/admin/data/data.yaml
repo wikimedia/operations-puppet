@@ -48,6 +48,10 @@ groups:
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
               mdipietro, mvernon]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+  sre-admins:
+    gid: 707
+    description: 'Used for SREs withour full root privlages'
+    members: &sre_admins_members [aokoth]
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
     description: Use the standard system provided staff group to provide ops with privileges that would allow easier administrative tasks
