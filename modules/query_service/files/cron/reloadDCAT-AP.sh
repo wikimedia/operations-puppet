@@ -6,6 +6,7 @@
 
 DCAT_SOURCE=${DCAT_SOURCE:-"https://dumps.wikimedia.org/wikidatawiki/entities/dcatap.rdf"}
 
+endpoint=http://localhost:9990
 newNamespace="dcatap${today}"
 # Drop old dumps
 rm -f ${DATA_DIR}/dcatap-*.rdf
@@ -14,5 +15,5 @@ cd $DEPLOY_DIR
 bash createNamespace.sh $newNamespace || exit 1
 # Load the data
 FILENAME=dcatap-${today}.rdf
-loadFileIntoBlazegraph $DCAT_SOURCE $FILENAME "http://localhost:9990/${NAMESPACE_URL}${newNamespace}/sparql"
-replaceNamespace dcatap $newNamespace http://localhost:9990
+loadFileIntoBlazegraph $DCAT_SOURCE $FILENAME "$endpoint${NAMESPACE_URL}${newNamespace}/sparql"
+replaceNamespace dcatap $newNamespace $endpoint
