@@ -79,7 +79,6 @@ define admin::user (
             owner        => $name,
             group        => $gid,
             force        => true,
-            require      => User[$name],
         }
     }
 
