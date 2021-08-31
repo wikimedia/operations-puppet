@@ -8,6 +8,26 @@ class profile::toolforge::apt_pinning {
     # linux-meta -> linux-meta-4.9 -> linux-image-4.9-xx
     $linux_meta_pkg =  'linux-image-amd64'
     case debian::codename() {
+        'bullseye': {
+            $linux_meta_pkg_version   = 'version 5.10.46-4'
+            # actual kernel package. Pinning only this is not enough, given that the meta-package
+            # could be upgraded pointing to another version and then you would have a pending reboot
+            $linux_pkg                = 'linux-image-5.10.0-8-amd64'
+            $linux_pkg_version        = 'version 5.10.46-4'
+            $libpam_pkg_version       = 'version 1.4.0-9'
+            $libpam_ldapd_pkg_version = 'version 0.9.11-1'
+            $ldap_utils_pkg_version   = 'version 2.4.57+dfsg-3'
+            $libnss3_pkg_version      = 'version 2:3.61-1'
+            $libnfsidmap2_pkg_version = 'version 0.25-6'
+            $ldapvi_pkg_version       = 'version 1.7-10*'
+            $sudo_ldap_pkg_version    = 'version 1.9.5p2-3'
+            $nscd_pkg_version         = 'version 2.31-13'
+            $python_ldap_pkg_version  = 'version 3.2.0-4'
+            $libnss_db_pkg_version    = 'version 2.2.3pre1-6'
+            $nfs_common_pkg_version   = 'version 1:1.3.4-6'
+            $sssd_pkg_version         = 'version 2.4.1-2'
+        }
+
         'buster': {
             $linux_meta_pkg_version   = 'version 4.19+105+deb10u1'
             # actual kernel package. Pinning only this is not enough, given that the meta-package
@@ -25,6 +45,7 @@ class profile::toolforge::apt_pinning {
             $python_ldap_pkg_version  = 'version 3.1.0-2'
             $libnss_db_pkg_version    = 'version 2.2.3pre1-6+b6'
             $nfs_common_pkg_version   = 'version 1:1.3.4-2.5'
+            $sssd_pkg_version         = 'version 1.16.3-3.2'
         }
         'stretch': {
             $linux_meta_pkg_version   = 'version 4.9+80+deb9u3'
@@ -103,10 +124,10 @@ class profile::toolforge::apt_pinning {
         priority => 1001,
     }
     # sssd
-    if debian::codename::eq('buster') {
+    if debian::codename::ge('buster') {
         apt::pin { 'toolforge-sssd-pinning':
             package  => 'sssd*',
-            pin      => 'version 1.16.3-3.2',
+            pin      => $sssd_pkg_version,
             priority => 1001,
         }
     }
