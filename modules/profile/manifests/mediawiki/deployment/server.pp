@@ -5,16 +5,16 @@
 # The parameter "deployment_group" only refers to the group of people able to deploy mediawiki
 # here, so to scap2 users. Scap3-related directories will be owned by wikidev unconditionally.
 class profile::mediawiki::deployment::server(
-    Stdlib::Fqdn $apache_fqdn            = lookup('apache_fqdn', {default_value => $::fqdn}),
-    String $deployment_group             = lookup('deployment_group', {default_value => 'wikidev'}),
-    Stdlib::Fqdn $deployment_server      = lookup('deployment_server'),
-    Stdlib::Fqdn $main_deployment_server = lookup('scap::deployment_server'),
-    Stdlib::Unixpath $base_path          = lookup('base_path', {default_value => '/srv/deployment'}),
-    Array[String] $deployment_hosts      = lookup('deployment_hosts', {default_value => []}),
-    Stdlib::Host $rsync_host             = lookup('profile::mediawiki::deployment::server::rsync_host'),
-    Stdlib::Fqdn $releases_server        = lookup('releases_server'),
+    Stdlib::Fqdn $apache_fqdn                   = lookup('apache_fqdn', {default_value => $facts['fqdn']}),
+    String $deployment_group                    = lookup('deployment_group', {default_value => 'wikidev'}),
+    Stdlib::Fqdn $deployment_server             = lookup('deployment_server'),
+    Stdlib::Fqdn $main_deployment_server        = lookup('scap::deployment_server'),
+    Stdlib::Unixpath $base_path                 = lookup('base_path', {default_value => '/srv/deployment'}),
+    Array[Stdlib::Host] $deployment_hosts       = lookup('deployment_hosts', {default_value => []}),
+    Stdlib::Host $rsync_host                    = lookup('profile::mediawiki::deployment::server::rsync_host'),
+    Stdlib::Fqdn $releases_server               = lookup('releases_server'),
     Array[Stdlib::Fqdn] $other_releases_servers = lookup('releases_servers_failover'),
-    String $statsd                       = lookup('statsd'),
+    String $statsd                              = lookup('statsd'),
     Hash[String, Struct[{
                         'origin'          => Optional[String],
                         'repository'      => Optional[String],
@@ -149,10 +149,11 @@ class profile::mediawiki::deployment::server(
         default => 'present'
     }
 
+    # Build array of deployment_hosts fqdn from array of ips and remove primary
+    $deployment_hosts_fqdn = unique($deployment_hosts.map | $ip | { ipresolve($ip, 'ptr') }) - $deployment_server
     class { '::deployment::rsync':
         deployment_server => $deployment_server,
-        job_ensure        => $secondary_deploy_ensure,
-        deployment_hosts  => $deployment_hosts,
+        deployment_hosts  => $deployment_hosts_fqdn,
     }
 
     motd::script { 'inactive_warning':
