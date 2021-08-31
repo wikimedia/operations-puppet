@@ -22,6 +22,7 @@ class profile::toolforge::redis_sentinel (
         'KEYS',
         'MONITOR',
         'RANDOMKEY',
+        'REPLICAOF',
         'SCAN',
         'SHUTDOWN',
         'SLAVEOF',
