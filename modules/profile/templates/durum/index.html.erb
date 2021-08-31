@@ -20,8 +20,13 @@
       p.result {
         font-size: 2em;
       }
+      p.info {
+        font-size: 1em;
+        color: gray;
+      }
     </style>
     <script>
+      const time = new Date().toLocaleTimeString();
       const url = "https://{{ request.uuid }}.check.wikimedia-dns.org/check/";
       fetch(url)
       .then((response) => response.json())
@@ -37,6 +42,9 @@
       .catch((error) => {
           document.getElementById("check-heading").innerHTML = "&#63;";
           document.getElementById("check-result").textContent = "We were unable to determine if you are using Wikidough.";
+      })
+      .finally(() => {
+          document.getElementById("check-info").textContent = `Tested at ${time} with UUID {{ request.uuid }}`;
       });
     </script>
     <noscript>Please enable JavaScript to view this page.</noscript>
@@ -45,6 +53,7 @@
     <section>
       <h1 id="check-heading">&#8987;</h1>
       <p class="result" id="check-result">Checking if you are using Wikidough...</p>
+      <p class="info" id="check-info">Waiting for the test results.</p>
       <p>Need help? Please visit the <a href="https://wikitech.wikimedia.org/wiki/Wikidough">Wikitech page</a>.</p>
     </section>
   </body>
