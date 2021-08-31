@@ -1,0 +1,5 @@
+<%- @certificates.each do |certificate| -%>
+<%- certificate['cert_paths'].each do |cert_path| -%>
+<%= cert_path -%> <%= certificate['server_names'].join(" ") %>
+<%- end -%>
+<%- end -%>

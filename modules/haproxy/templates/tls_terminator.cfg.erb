@@ -1,0 +1,5 @@
+listen tls
+    bind :<%= @port -%> ssl crt-list <%= @crt_list_path %>
+    bind :::<%= @port -%> v6only ssl crt-list <%= @crt_list_path %>
+
+    server backend_server unix@<%= @backend_socket %>
