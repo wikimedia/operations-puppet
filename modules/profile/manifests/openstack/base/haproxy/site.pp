@@ -79,7 +79,7 @@ define profile::openstack::base::haproxy::site(
             mode    => '0444',
             content => template('profile/openstack/base/haproxy/conf.d/http-service.cfg.erb'),
             # restart to pick up new config files in conf.d
-            notify  => Exec['restart-haproxy'],
+            notify  => Service['haproxy'],
         }
     } elsif $type == 'tcp' {
         file { "/etc/haproxy/conf.d/${title}.cfg":
@@ -89,7 +89,7 @@ define profile::openstack::base::haproxy::site(
             mode    => '0444',
             content => template('profile/openstack/base/haproxy/conf.d/tcp-service.cfg.erb'),
             # restart to pick up new config files in conf.d
-            notify  => Exec['restart-haproxy'],
+            notify  => Service['haproxy'],
         }
     } else {
         fail("Unknown service type ${type}")

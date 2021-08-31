@@ -41,6 +41,6 @@ define haproxy::site(
         mode    => '0444',
         content => $content,
         source  => $source,
-        notify  => Exec['restart-haproxy'],
+        notify  => Service['haproxy'],
     }
 }

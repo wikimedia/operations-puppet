@@ -54,12 +54,7 @@ class haproxy(
         owner   => 'root',
         group   => 'root',
         content => template($template),
-        notify  => Exec['restart-haproxy']
-    }
-
-    exec { 'restart-haproxy':
-        command     => '/bin/systemctl restart haproxy',
-        refreshonly => true,
+        notify  => Service['haproxy'],
     }
 
     # defaults file cannot be dynamic anymore on systemd
@@ -80,22 +75,12 @@ class haproxy(
         owner   => 'root',
         group   => 'root',
         content => template('haproxy/haproxy.default.erb'),
-        notify  => Exec['restart-haproxy'],
+        notify  => Service['haproxy'],
     }
 
-    # TODO: this should use the general systemd puppet abstraction instead
-    file { '/lib/systemd/system/haproxy.service':
-        ensure  => present,
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        content => template('haproxy/haproxy.service.erb'),
-        notify  => Exec['/bin/systemctl daemon-reload'],
-    }
-
-    exec { '/bin/systemctl daemon-reload':
-        user        => 'root',
-        refreshonly => true,
+    systemd::service { 'haproxy':
+        content        => template('haproxy/haproxy.service.erb'),
+        service_params => {'restart' => '/bin/systemctl reload haproxy.service',}
     }
 
     if $monitor {
