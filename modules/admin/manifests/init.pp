@@ -54,12 +54,7 @@ class admin(
         source => 'puppet:///modules/admin/enforce-users-groups.sh',
     }
 
-    admin::hashgroup { $all_groups:
-        before => [
-            Admin::Hashuser[$users_set_ssh],
-            Admin::Hashuser[$users_set_nossh],
-        ],
-    }
+    admin::hashgroup { $all_groups: }
 
     admin::hashuser { $users_set_ssh:
         ensure_ssh_key => true,
@@ -76,9 +71,6 @@ class admin(
     admin::groupmembers { $all_groups:
         before => Exec['enforce-users-groups-cleanup'],
     }
-
-    # Ensure ordering of resources
-    Admin::Hashuser<| |> -> Admin::Groupmembers<| |>
 
     # Declarative gotcha: non-defined users can get left behind
     # Here we cleanup anyone not in a supplementary group above a certain UID
