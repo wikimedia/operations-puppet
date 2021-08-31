@@ -5,7 +5,7 @@
 # The parameter "deployment_group" only refers to the group of people able to deploy mediawiki
 # here, so to scap2 users. Scap3-related directories will be owned by wikidev unconditionally.
 class profile::mediawiki::deployment::server(
-    Stdlib::Fqdn $apache_fqdn            = lookup('apache_fqdn', {default_value => $::fqdn}),
+    Stdlib::Fqdn $apache_fqdn            = lookup('apache_fqdn', {default_value => $facts['fqdn']}),
     String $deployment_group             = lookup('deployment_group', {default_value => 'wikidev'}),
     Stdlib::Fqdn $deployment_server      = lookup('deployment_server'),
     Stdlib::Fqdn $main_deployment_server = lookup('scap::deployment_server'),
@@ -151,7 +151,6 @@ class profile::mediawiki::deployment::server(
 
     class { '::deployment::rsync':
         deployment_server => $deployment_server,
-        job_ensure        => $secondary_deploy_ensure,
         deployment_hosts  => $deployment_hosts,
     }
 
