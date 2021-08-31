@@ -31,9 +31,11 @@
 #            To create exact mirrors instead of having old files that are deleted
 #            on the source pile up on the destination(s).
 #
-# [*server_uses_stunnel*]
-# For TLS-wrapping rsync.  Must be set here, and must be set true on rsync::server::wrap_with_stunnel
-# in the server's hiera.
+# [*server_uses_stunnel*] For TLS-wrapping rsync.  Must be set here, and must be set true on
+#                         rsync::server::wrap_with_stunnel in the server's hiera.
+#
+# [*auto_interval*] If $auto_sync is true, the interval to sync at. Defaults to every 10 minutes. See
+#                   systemd::timer::job's $interval parameter and Systemd::Timer::Schedule for more details.
 define rsync::quickdatacopy(
   Stdlib::Fqdn $source_host,
   Stdlib::Fqdn $dest_host,
@@ -46,6 +48,9 @@ define rsync::quickdatacopy(
   Optional[Boolean] $delete = false,
   Boolean $server_uses_stunnel = false,  # Must match rsync::server::wrap_with_stunnel as looked up via hiera by the *server*!
   Boolean $auto_ferm_ipv6 = true,
+  Variant[
+      Systemd::Timer::Schedule,
+      Array[Systemd::Timer::Schedule, 1]] $auto_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/10:00'}, # every 10 min
   ) {
       if ($title =~ /\s/) {
           fail('the title of rsync::quickdatacopy must not include whitespace')
@@ -126,6 +131,6 @@ define rsync::quickdatacopy(
           description => 'Transfer data periodically between hosts',
           user        => 'root',
           command     => "/usr/local/sbin/sync-${title}",
-          interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/10:00'}, # every 10 min
+          interval    => $auto_interval,
       }
 }
