@@ -2,6 +2,7 @@ cluster: management
 profile::standard::admin_groups:
   - datacenter-ops
   - wmcs-admin
+  - os-installers
 monitor_screens: false
 profile::conftool::client::etcd_user: 'root'
 profile::mariadb::wmfmariadbpy::role: 'admin'

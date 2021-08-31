@@ -870,6 +870,13 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Olja Dimitrjevic
+  os-installers:
+    gid: 832
+    description: users with privileges to install an OS via cookbook
+    privileges: ['ALL = NOPASSWD: /usr/local/sbin/wmf-auto-reimage*']
+    members: *sre_admins_members
+    approval:
+      - Wolfgang Kandek
   analytics-research-admins:
     gid: 830
     description: Group of users for managing research related analytics/data jobs.
