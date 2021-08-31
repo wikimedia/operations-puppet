@@ -1,2 +1,4 @@
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
+profile::standard::admin_groups:
+  - sretest-roots

@@ -14,7 +14,7 @@
 class admin(
     Array[String[1]] $groups        = [],
     Array[String[1]] $groups_no_ssh = [],
-    Array[String[1]] $always_groups = ['absent', 'ops', 'wikidev', 'ops-adm-group'],
+    Array[String[1]] $always_groups = ['absent', 'ops', 'wikidev', 'ops-adm-group', 'sre-admins'],
     Boolean          $managehome    = false,
 )
 {

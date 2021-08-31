@@ -48,10 +48,16 @@ groups:
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
               mdipietro, mvernon]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Joanna Borun
+      - Wolfgang Kandek
   sre-admins:
     gid: 707
     description: 'Used for SREs withour full root privlages'
     members: &sre_admins_members [aokoth]
+    approval:
+      - Joanna Borun
+      - Wolfgang Kandek
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
     description: Use the standard system provided staff group to provide ops with privileges that would allow easier administrative tasks
@@ -156,6 +162,13 @@ groups:
     gid: 712
     description: people who upload mobile app releases
     members: [brion, dbrant, mholloway-shell, cooltey, sharvaniharan]
+  sretest-roots:
+    gid: 716
+    description: users with root on sretest servers
+    members: *sre_admins_members
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Joanna Borun
   releasers-parsoid:
     gid: 802
     description: people who upload parsoid releases (T150672)
