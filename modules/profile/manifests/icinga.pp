@@ -58,8 +58,6 @@ class profile::icinga(
         icinga_group => $icinga_group,
     }
 
-    class { 'icinga::monitor::wikidata': }
-
     class { 'icinga::monitor::ores':
         icinga_user  => $icinga_user,
         icinga_group => $icinga_group,

@@ -109,6 +109,7 @@ class icinga::plugins(
 
     # Wikidata dispatcher monitoring
     file { '/usr/lib/nagios/plugins/check_wikidata_crit':
+        ensure => absent,
         source => 'puppet:///modules/icinga/check_wikidata_crit',
         owner  => 'root',
         group  => 'root',
@@ -182,7 +183,7 @@ class icinga::plugins(
     }
 
     nagios_common::check_command::config { 'check_wikidata_crit.cfg':
-        ensure     => present,
+        ensure     => absent,
         content    => template('icinga/check_commands/check_wikidata_crit.cfg.erb'),
         config_dir => '/etc/icinga',
         owner      => $icinga_user,

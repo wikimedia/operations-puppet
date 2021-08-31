@@ -73,7 +73,6 @@ class nagios_common::commands(
         'check_to_check_nagios_paging',
         'check_vcp.py',
         'check_vrrp.py',
-        'check_wikidata',
     ] :
         require    => File["${config_dir}/commands"],
         config_dir => $config_dir,
