@@ -10,7 +10,7 @@
 #
 # [*source_host*] What machine are we copying data from
 #
-# [*dest_host*] What machine are we copying data to
+# [*dest_host*] What machine(s) are we copying data to. Can be a single fqdn or an array of fqdns
 #
 # [*module_path*] What path are we giving to rsync as the docroot for syncing from
 #
@@ -40,7 +40,9 @@
 #                   systemd::timer::job's $interval parameter and Systemd::Timer::Schedule for more details.
 define rsync::quickdatacopy(
   Stdlib::Fqdn $source_host,
-  Stdlib::Fqdn $dest_host,
+  Variant[
+      Stdlib::Host,
+      Array[Stdlib::Host, 1]] $dest_host,
   Stdlib::Unixpath $module_path,
   Optional[Stdlib::Unixpath] $file_path = undef,
   Boolean $auto_sync = true,
@@ -61,6 +63,11 @@ define rsync::quickdatacopy(
 
       ensure_packages(['rsync'])
 
+      $dest_hosts = $dest_host ? {
+          Stdlib::Fqdn => [$dest_host],
+          default      => $dest_host,
+      }
+
       if $source_host == $::fqdn {
 
           include rsync::server
@@ -69,7 +76,7 @@ define rsync::quickdatacopy(
               ensure         => $ensure,
               read_only      => 'yes',
               path           => $module_path,
-              hosts_allow    => [$dest_host],
+              hosts_allow    => $dest_hosts,
               auto_ferm      => true,
               auto_ferm_ipv6 => $auto_ferm_ipv6,
           }
@@ -96,7 +103,9 @@ define rsync::quickdatacopy(
           default => "--chown=${chown}",
       }
 
-      if $dest_host == $::fqdn {
+      $is_dest_host = $facts['networking']['fqdn'] in $dest_hosts
+
+      if $is_dest_host {
 
           if $server_uses_stunnel {
               ensure_packages(['stunnel4'])
@@ -127,7 +136,7 @@ define rsync::quickdatacopy(
       # Default to 'absent' to handle proper cleanup when 'flipping' replication
       # (i.e. swap source and dest hosts)
 
-      if $auto_sync and ($dest_host == $::fqdn) {
+      if $auto_sync and $is_dest_host {
           $timer_ensure = $ensure
       } else {
           $timer_ensure = 'absent'
