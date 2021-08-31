@@ -22,7 +22,7 @@ class profile::mediawiki::maintenance::growthexperiments {
 
     # update data for the mentor dashboard (T285811)
     profile::mediawiki::periodic_job { 'growthexperiments-updateMenteeData':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateMenteeData.php',
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateMenteeData.php --statsd',
         interval => '*-*-* 04:15:00',
     }
 }
