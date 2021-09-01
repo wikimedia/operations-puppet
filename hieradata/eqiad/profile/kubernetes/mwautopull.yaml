@@ -1,0 +1,1 @@
+profile::kubernetes::mwautopull::ensure: present
