@@ -6,9 +6,8 @@ After=network.target
 User=<%= @user %>
 Group=<%= @group %>
 WorkingDirectory=<%= @working_dir %>
-ExecStart=<%= @celery_bin_path %>\
+ExecStart=<%= @celery_bin_path %> worker \
     --app <%= @app %> \
-    worker \
     --loglevel <%= @log_level %>
 SyslogIdentifier=celery-<%= @title %>
 LimitNOFILE=8192
