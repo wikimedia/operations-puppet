@@ -63,6 +63,7 @@ profile::puppetdb::facts_blacklist:
   - '^network6_tap.*'
   - '^lvm_vg_.*'
   - '^blockdevices.*'
+  - '^block_devices.*'
   - '^cpu_flags.*'
   - '^cpu_details.*'
   - '^mountpoints.*'
