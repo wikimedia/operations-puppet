@@ -11,7 +11,10 @@ then
 fi
 
 # Removes files under LOG_DIR
-/usr/bin/find $LOG_DIR -type f -mtime +30 -delete
+/usr/bin/find "$LOG_DIR" -type f -mtime +30 -delete
 
 # Removes empty dirs under LOG_DIR
-/usr/bin/find $LOG_DIR -type d -mtime +30 -empty -delete
+/usr/bin/find "$LOG_DIR" -type d -mtime +30 -empty -delete
+
+# Compress scheduler logs, they are verbose and repetitive
+/usr/bin/find "$LOG_DIR/scheduler" -type f -mtime +1 ! -name '*.gz' -exec gzip '{}' ';'
