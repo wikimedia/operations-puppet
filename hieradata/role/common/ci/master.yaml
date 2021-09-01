@@ -164,6 +164,14 @@ profile::kubernetes::deployment_server::services:
     username: shellbox-constraints
     group: wikidev
     mode: '0640'
+  shellbox-syntaxhighlight:
+    username: shellbox-syntaxhighlight
+    group: wikidev
+    mode: '0640'
+  shellbox-timeline:
+    username: shellbox-timeline
+    group: wikidev
+    mode: '0640'
   miscweb:
     username: miscweb
     group: wikidev
