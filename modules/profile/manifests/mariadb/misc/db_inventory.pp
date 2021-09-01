@@ -34,6 +34,8 @@ class profile::mariadb::misc::db_inventory(
         innodb_pool_size => $innodb_pool_size,
     }
 
+    class { 'mariadb::service': }
+
     include profile::mariadb::monitor::prometheus
 
     if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
