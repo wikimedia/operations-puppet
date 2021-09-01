@@ -77,3 +77,17 @@ Facter.add('ipaddress6') do
     ip
   end
 end
+#
+# copy the networking fact
+networking = Facter.fact(:networking).value
+# Clear the current fact if we dont do this the built in is always prefered
+Facter[:networking].flush
+Facter.add(:networking) do
+  has_weight 100
+  setcode do
+    # We override the ip6 fact with the one we calculate above as ours is better
+    # as it rejects slaac addresses. See comment under ipaddress6 fact for more detail
+    networking['ip6'] = Facter.fact(:ipaddress6).value
+    networking
+  end
+end
