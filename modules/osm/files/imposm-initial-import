@@ -53,33 +53,33 @@ filename="planet-${dump_date}.osm.pbf"
 function check_imposm() {
     imposm_pid=$(pgrep -f /usr/bin/imposm || true)
     if [ -n "$imposm_pid" ]; then
-        echo "Not starting import while imposm is running!" | ts | tee "${log_file}"
-        echo "Run `sudo service imposm stop` before starting - imposm will compete for postgres connections" | ts | tee "${log_file}"
+        echo "Not starting import while imposm is running!" | ts | tee -a "${log_file}"
+        echo "Run `sudo service imposm stop` before starting - imposm will compete for postgres connections" | ts | tee -a "${log_file}"
         exit 1
     fi
 }
 
 function download_pbf() {
-  echo "starting download of PBF from $MIRROR_PATH" | ts | tee "${log_file}"
+  echo "starting download of PBF from $MIRROR_PATH" | ts | tee -a "${log_file}"
   if [ ! -f "$download_dir/$filename.md5" ]; then
     curl https://"${MIRROR_PATH}/pbf/${filename}".md5 -o "${download_dir}/${filename}.md5"
   fi
   if [ ! -f "$download_dir/$filename" ]; then
     curl -L https://"${MIRROR_PATH}/pbf/${filename}" -o "${download_dir}/${filename}"
   fi
-  echo "starting md5sum check" | ts | tee "${log_file}"
+  echo "starting md5sum check" | ts | tee -a "${log_file}"
   pushd "${download_dir}"
   md5sum -c "${filename}.md5"
   popd
   if [ $? -ne 0 ] ; then
-    echo "Download of PBF file failed, md5sum is invalid" | ts | tee "${log_file}"
+    echo "Download of PBF file failed, md5sum is invalid" | ts | tee -a "${log_file}"
     exit 2
   fi
-  echo "download of PBF from planet.openstreetmap.org completed" | ts | tee "${log_file}"
+  echo "download of PBF from planet.openstreetmap.org completed" | ts | tee -a "${log_file}"
 }
 
 function initial_osm_import() {
-  echo "starting initial OSM import" | ts | tee "${log_file}"
+  echo "starting initial OSM import" | ts | tee -a "${log_file}"
 
   sudo -u postgres psql -d gis -c 'CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS hstore;' && \
   sudo -E -u osmupdater imposm import \
@@ -87,61 +87,61 @@ function initial_osm_import() {
       -overwritecache \
       -read "${download_dir}/${filename}" \
       -diff \
-      -write 2>&1 | ts | tee "${log_file}"
+      -write 2>&1 | ts | tee -a "${log_file}"
 
   if [ ${PIPESTATUS[0]} -ne 0 ]; then
-    echo "imposm3 failed to complete initial import" | ts | tee "${log_file}"
+    echo "imposm3 failed to complete initial import" | ts | tee -a "${log_file}"
     exit 3
   fi
-  echo "initial OSM import completed, ready for deploy" | ts | tee "${log_file}"
+  echo "initial OSM import completed, ready for deploy" | ts | tee -a "${log_file}"
 }
 
 function osm_production_deploy() {
-    echo "Starting OSM production deploy" | ts | tee "${log_file}"
-    sudo -u osmupdater imposm import -config /etc/imposm/imposm_config.json -deployproduction | ts | tee "${log_file}"
-    echo "Completed OSM production deploy" | ts | tee "${log_file}"
+    echo "Starting OSM production deploy" | ts | tee -a "${log_file}"
+    sudo -u osmupdater imposm import -config /etc/imposm/imposm_config.json -deployproduction | ts | tee -a "${log_file}"
+    echo "Completed OSM production deploy" | ts | tee -a "${log_file}"
 }
 
 function import_water_lines() {
-  echo "starting water line import" | ts | tee "${log_file}"
+  echo "starting water line import" | ts | tee -a "${log_file}"
   # TODO: do we need to install water line polygons in this step? Should we make it separate?
-  sudo -u osmupdater /usr/local/bin/import_waterlines create | ts | tee "${log_file}"
-  echo "water line import completed" | ts | tee "${log_file}"
+  sudo -u osmupdater /usr/local/bin/import_waterlines create | ts | tee -a "${log_file}"
+  echo "water line import completed" | ts | tee -a "${log_file}"
 
 }
 
 function custom_functions_and_indexes() {
-  echo "starting creation of custom functions and indexes" | ts | tee "${log_file}"
-  sudo -u postgres psql -Xd gis -f ${postgis_vt_util_sql_lib} | ts | tee "${log_file}"
+  echo "starting creation of custom functions and indexes" | ts | tee -a "${log_file}"
+  sudo -u postgres psql -Xd gis -f ${postgis_vt_util_sql_lib} | ts | tee -a "${log_file}"
 
   for module in ${modules_with_sql}; do
-    echo "executing SQL in: ${kartotherian_dir}/node_modules/${module}" | ts | tee "${log_file}"
+    echo "executing SQL in: ${kartotherian_dir}/node_modules/${module}" | ts | tee -a "${log_file}"
     for sql_file in "${kartotherian_dir}"/node_modules/"${module}"/*.sql; do
-      echo "  executing: ${sql_file}" | ts | tee "${log_file}"
-      sudo -u postgres psql -Xd gis -f "${sql_file}" | ts | tee "${log_file}"
+      echo "  executing: ${sql_file}" | ts | tee -a "${log_file}"
+      sudo -u postgres psql -Xd gis -f "${sql_file}" | ts | tee -a "${log_file}"
     done
   done
 
-  echo "creation of custom functions and indexes completed" | ts | tee "${log_file}"
+  echo "creation of custom functions and indexes completed" | ts | tee -a "${log_file}"
 }
 
 function layers_functions() {
-  echo "starting creation of layers functions" | ts | tee "${log_file}"
-  sudo -u postgres /usr/local/bin/create_layers_functions | ts | tee "${log_file}"
-  echo "creation of layers functions completed" | ts | tee "${log_file}"
+  echo "starting creation of layers functions" | ts | tee -a "${log_file}"
+  sudo -u postgres /usr/local/bin/create_layers_functions | ts | tee -a "${log_file}"
+  echo "creation of layers functions completed" | ts | tee -a "${log_file}"
 }
 
 function set_permissions() {
-    echo "Setting permissions for service users" | ts | tee "${log_file}"
-    sudo -u postgres psql -d gis < /usr/local/bin/maps-grants-gis.sql | ts | tee "${log_file}"
-    echo "Setting permissions for service users complete" | ts | tee "${log_file}"
+    echo "Setting permissions for service users" | ts | tee -a "${log_file}"
+    sudo -u postgres psql -d gis < /usr/local/bin/maps-grants-gis.sql | ts | tee -a "${log_file}"
+    echo "Setting permissions for service users complete" | ts | tee -a "${log_file}"
 }
 
 function cleanup() {
-  echo "starting cleanup" | ts | tee "${log_file}"
+  echo "starting cleanup" | ts | tee -a "${log_file}"
   rm "${download_dir}/${filename}.md5"
   rm "${download_dir}/${filename}"
-  echo "cleanup completed" | ts | tee "${log_file}"
+  echo "cleanup completed" | ts | tee -a "${log_file}"
 }
 
 check_imposm
