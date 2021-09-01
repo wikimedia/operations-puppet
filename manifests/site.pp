@@ -1813,6 +1813,11 @@ node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
+# newly racked and installed ms-be hosts
+node /^ms-be106[456]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
 node /^ms-be1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::storage)
