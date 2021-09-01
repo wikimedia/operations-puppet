@@ -81,12 +81,14 @@ groups:
     # qchris is T252194
     members: &gerrit_root_members [twentyafterfour, hashar, thcipriani, qchris, brennen, dancy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Tyler Cipriani
+    approval:
+      - Tyler Cipriani
   gerrit-admin:
     gid: 704
     description: assist in managing gerrit server
     members: [dduvall]
-    approval: Tyler Cipriani
+    approval:
+      - Tyler Cipriani
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
@@ -137,7 +139,8 @@ groups:
     description: manage elasticsearch nodes
     members: [ebernhardson, dcausse, mstyles, zpapierski]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Guillaume Lederrey
+    approval:
+      - Guillaume Lederrey
   dataset-admins:
     gid: 710
     description: does work on dataset hosts
@@ -178,7 +181,8 @@ groups:
     description: manage cloudelastic nodes
     members: [ebernhardson, dcausse, bd808, mstyles, zpapierski, nskaggs]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Guillaume Lederrey
+    approval:
+      - Guillaume Lederrey
   udp2log-users:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
@@ -203,17 +207,20 @@ groups:
     gid: 718
     description: users with accounts on jenkins hosts
     members: []
-    approval: Tyler Cipriani
+    approval:
+      - Tyler Cipriani
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
     members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, twentyafterfour, jhuneidi, dancy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Tyler Cipriani
+    approval:
+      - Tyler Cipriani
   contint-admins:
     gid: 719
     description: users with some sudo permissions on the CI masters (Jenkins, Zuul).
-    approval: Tyler Cipriani
+    approval:
+      - Tyler Cipriani
     members: [*ops_members, *contint_roots_members,
               bd808, cscott, krinkle, reedy, marktraceur,
               gjg, addshore, jhuneidi, dancy, ladsgroup]
@@ -312,7 +319,9 @@ groups:
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
-    approval: Olja Dimitrjevic, Andrew Otto
+    approval:
+      - Olja Dimitrjevic
+      - Andrew Otto
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
@@ -328,7 +337,9 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl stop *',
                  'ALL = NOPASSWD: /bin/systemctl status *',
                  'ALL = NOPASSWD: /bin/systemctl reset-failed *']
-    approval: Olja Dimitrjevic, Andrew Otto
+    approval:
+      - Olja Dimitrjevic
+      - Andrew Otto
   eventlogging-admins:
     gid: 733
     description: Login access for EventLogging deployment and investigation
@@ -343,19 +354,25 @@ groups:
     description: People who can sudo into the dumpsgen user on snapshot hosts.
     members: [*platform_engineering_members, hoo]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
-    approval: Will Doran, Mat Nadrofsky
+    approval:
+      - Will Doran
+      - Mat Nadrofsky
   dumpsdata-admins:
     gid: 825
     description: People who can sudo into the dumpsgen user on dumpsdata hosts.
     members: [*platform_engineering_members]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
-    approval: Will Doran, Mat Nadrofsky
+    approval:
+      - Will Doran
+      - Mat Nadrofsky
   dumps-roots:
     gid: 828
     description: People who have full root on snapshot, dumpsdata, and some labstore hosts
     members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Will Doran, Mat Nadrofsky
+    approval:
+      - Will Doran
+      - Mat Nadrofsky
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
@@ -373,7 +390,8 @@ groups:
                  * Silence notifications for maniphest bulk jobs
                  * Disable Herald rules
     members: [aklapper, gjg]
-    approval: Tyler Cipriani
+    approval:
+      - Tyler Cipriani
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/cache purge --caches user',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/herald',
                  'ALL = NOPASSWD: /srv/phab/phabricator/bin/move_project',
@@ -391,13 +409,15 @@ groups:
                  * Configure a bulk job to execute silently.
     members: [mbinder]
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/bulk make-silent --id *']
-    approval: Tyler Cipriani
+    approval:
+      - Tyler Cipriani
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
     members: [twentyafterfour, thcipriani, brennen]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Tyler Cipriani
+    approval:
+      - Tyler Cipriani
   htmldumps-admin:
     gid: 749
     description: users who maintain HTML/ZIM dumps
@@ -411,7 +431,8 @@ groups:
     gid: 753
     description: admin for maps clusters
     members: [eevans, sbisson, catrope, mholloway-shell]
-    approval: Subramanya Sastry
+    approval:
+      - Subramanya Sastry
     # TODO: Revisit this when moving into production
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
@@ -430,12 +451,14 @@ groups:
     description: Root level access for Maps servers
     members: [jgiannelos, mbsantos]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Subramanya Sastry
+    approval:
+      - Subramanya Sastry
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
     members: [sbisson, catrope, mholloway-shell]
-    approval: Subramanya Sastry
+    approval:
+      - Subramanya Sastry
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
                  'ALL = NOPASSWD: /bin/systemctl mask kartotherian.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask kartotherian.service',
@@ -463,13 +486,15 @@ groups:
                  'ALL = NOPASSWD: /usr/local/bin/pool',
                  'ALL = NOPASSWD: /bin/cat /var/log/nginx*',
                  'ALL = NOPASSWD: /usr/bin/jstack *']
-    approval: Guillaume Lederrey
+    approval:
+      - Guillaume Lederrey
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
     members: [smalyshev, hoo, ebernhardson, dcausse, mstyles, zpapierski, addshore]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Guillaume Lederrey
+    approval:
+      - Guillaume Lederrey
   mailman-admins:
     gid: 757
     description: Admins for mailman2
@@ -527,7 +552,8 @@ groups:
     description: Group of admins for the Analytics Query Service
     gid: 764
     members: [joal, milimetric, mobrovac]
-    approval: Olja Dimitrjevic
+    approval:
+      - Olja Dimitrjevic
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
                  'ALL = NOPASSWD: /usr/sbin/service cassandra-[a-z] *',
                  'ALL = (cassandra) NOPASSWD: ALL',
@@ -545,7 +571,8 @@ groups:
                  'ALL = NOPASSWD: /usr/local/sbin/run-puppet-agent *',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (syslog) NOPASSWD: ALL']
-    approval: Willy Pao
+    approval:
+      - Willy Pao
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
@@ -611,7 +638,8 @@ groups:
     description: users who have root on swift servers
     members: [gilles]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Lukasz Sobanski
+    approval:
+      - Lukasz Sobanski
   deploy-phabricator:
     gid: 778
     description: Group of phabricator deployers
@@ -710,18 +738,22 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/sbin/service coal *',
                  'ALL = NOPASSWD: /bin/journalctl *',
                  'ALL = (_graphite) NOPASSWD: ALL']
-    approval: Leo Mata
+    approval:
+      - Leo Mata
   snapshot-users:
     gid: 801
     description: People who have shell access to snapshot hosts and bastions only.
     members: [springle]
-    approval: Will Doran, Mat Nadrofsky
+    approval:
+      - Will Doran
+      - Mat Nadrofsky
   wdqs-test-roots:
     gid: 803
     description: users with root on WDQS test cluster
     members: [smalyshev]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Guillaume Lederrey
+    approval:
+      - Guillaume Lederrey
   sitemaps-admins:
     gid: 805
     description: People who upload files to sitemaps.wikimedia.org
@@ -761,7 +793,8 @@ groups:
     gid: 813
     description: members of wikimedia security
     members: [reedy, dsharpe, sbassett]
-    approval: John Bennett
+    approval:
+      - John Bennett
   gerrit-deployers:
     gid: 814
     description: deploy gerrit
@@ -808,19 +841,22 @@ groups:
     description: Group of users that have access to ML Team's machines
     members: [accraze, chrisalbon, kevinbazira]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Chris Albon
+    approval:
+      - Chris Albon
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
     members: [eugene-chernov, strofimovsky01, il, brennen, dancy, aokoth]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Wolfgang Kandek
+    approval:
+      - Wolfgang Kandek
   aqs-roots:
     gid: 829
     description: people who have full root on aqs nodes
     members: [eevans]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval: Olja Dimitrjevic
+    approval:
+      - Olja Dimitrjevic
   analytics-research-admins:
     gid: 830
     description: Group of users for managing research related analytics/data jobs.

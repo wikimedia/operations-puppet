@@ -23,7 +23,9 @@ definitions:
           items:
             type: string
         approval:
-          type: string
+          type: array
+          items:
+            type: string
       required:
         - members
       additionalProperties: false
