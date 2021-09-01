@@ -93,17 +93,6 @@ define command{
     command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-dcops.log
     }
 
-# IRC output for wikidata
-define command{
-    command_name    notify-host-by-irc-wikidata
-    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-wikidata.log
-    }
-
-define command{
-    command_name    notify-service-by-irc-wikidata
-    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-wikidata.log
-    }
-
 # IRC output for interactive
 define command{
     command_name    notify-host-by-irc-interactive
