@@ -5,6 +5,7 @@
 # You must create a manual config file at /etc/dbdump.cfg that is a basic mysql
 # ini file for setting the host, username and password until quarry has secrets
 # management.
+# Parameter backupdir is used in the templates.
 class profile::quarry::trove::backup (
     Stdlib::UnixPath $backupdir = lookup('profile::quarry::trove::backupdir', {default_value => '/data/project/dbbackups'}),
 ){
@@ -23,6 +24,14 @@ class profile::quarry::trove::backup (
         group   => 'root',
         mode    => '0554',
         content => template('profile/quarry/trove/dbdump.sh.erb'),
+    }
+
+    file { '/usr/local/bin/dbdumpcleanup.sh':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0554',
+        content => template('profile/quarry/trove/dbdumpcleanup.sh.erb'),
     }
 
     file { '/var/log/quarry':
@@ -48,7 +57,7 @@ class profile::quarry::trove::backup (
         ensure            => 'present',
         user              => 'root',
         description       => 'delete old dump files to avoid running out of disk space',
-        command           => "/usr/bin/find ${backupdir} -name \"*.sql.gz\" -mtime +7 -exec rm {} \\;",
+        command           => '/usr/local/bin/dbdumpcleanup.sh',
         logging_enabled   => true,
         logfile_basedir   => '/var/log/quarry/',
         logfile_name      => 'cleanup-mysqldump.log',
