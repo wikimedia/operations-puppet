@@ -192,6 +192,10 @@ profile::kubernetes::deployment_server::services:
     username: toolhub
     group: wikidev
     mode: '0640'
+  apple-search:
+    username: apple-search
+    group: wikidev
+    mode: '0640'
 
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server_secrets::services:
