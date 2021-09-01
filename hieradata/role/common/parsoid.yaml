@@ -1,6 +1,8 @@
 profile::admin::groups:
   - parsoid-roots
   - parsoid-admin
+  - deployment
+  - perf-roots
 cluster: parsoid
 
 profile::lvs::realserver::pools:
