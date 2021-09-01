@@ -127,7 +127,7 @@ groups:
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited,
-              daimona, mepps, jabrams]
+              daimona, mepps, jabrams, nforrester]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -316,7 +316,7 @@ groups:
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo,
-              htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm]
+              htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval:
@@ -4596,6 +4596,16 @@ users:
     expiry_date: 2022-07-19
     expiry_contact: eyener@wikimedia.org
     email: jmando-ctr@wikimedia.org
+    krb: present
+  nforrester:
+    ensure: present
+    gid: 500
+    realname: Nathan Forrester
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdxggtJm+mTopKHAWfpRmj0sN3+Lph1/fulIfYEts7S7xXciz4W2dFCh6BvImpKcG+F82fqrDDMPEupd22pRY+49STXBHXjI81wIgT5+vrexy5VlXUyMYbp+tz35C4JucdpBJUTNKtTnFVxPzxxr4+JAzF1col1orJiWn9pQjeUFyBckDHRzSjx3XVxO5yj0riWW5jb8p20f6y7E+0CkHt4GUeqIF20QFLJdUmZxOWy19v3SMbGL+S8yln245/wjudOdCnoG1Somi/2mvKgRPqx7ia720X8BWd//5i44fryN/N2OoeF6azuUpBmLX+D8Ho/VLKuSvtjwyZu7ddZKO3ADpPuUly68nM6wR83mRTkWskvnBC3MUnViyYDj3H0ky3BA6FwxP5caE2ArPD1qeq4AL6irHkKObj5tUjx5y4xHlHEVawAcyZ3yyAXhGCsvmxzaV36tqf+HC0ljc6cSiUCSJQCWwAHHEkB3oxtakgR8m6H6eXrauoJuSZpyqwAHwVXJM921tcTo7AGoWyWFb+8DHY4bGnLAqh9O7cJPbEOScHctelFsl7qLUpMPj+duUgLEdV8Pfm1wR6cYe2FfuM1lgNK6EBmsPAb++duiaKj/s6kSGKsN5lmA/hD0EBvTM8XzLYgTKjib3Yntan+NlLNNqIOz8mScI/YPx8q8SMbw== .
+    uid: 33650
+    comment: Trust and Safety
+    email: nforrester@wikimedia.org
     krb: present
 
 ldap_only_users:
