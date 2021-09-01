@@ -53,7 +53,7 @@ groups:
       - Wolfgang Kandek
   sre-admins:
     gid: 707
-    description: 'Used for SREs withour full root privlages'
+    description: 'Used for SREs without full root privileges'
     members: &sre_admins_members [aokoth]
     approval:
       - Joanna Borun
