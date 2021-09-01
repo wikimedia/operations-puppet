@@ -73,6 +73,30 @@ server s1 {
     expect req.http.x-tls-ciph == "CHACHA20-POLY1305-SHA256"
 
     txresp
+
+    rxreq
+    expect req.url == "/8"
+
+    expect req.http.x-tls-prot == "h2"
+    expect req.http.x-tls-vers == "TLSv1.3"
+    expect req.http.x-tls-sess == "unknown"
+    expect req.http.x-tls-keyx == "X25519"
+    expect req.http.x-tls-auth == "ECDSA"
+    expect req.http.x-tls-ciph == "CHACHA20-POLY1305-SHA256"
+
+    txresp
+
+    rxreq
+    expect req.url == "/9"
+
+    expect req.http.x-tls-prot == "invalid"
+    expect req.http.x-tls-vers == "invalid"
+    expect req.http.x-tls-sess == "invalid"
+    expect req.http.x-tls-keyx == "invalid"
+    expect req.http.x-tls-auth == "invalid"
+    expect req.http.x-tls-ciph == "invalid"
+
+    txresp
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -100,5 +124,11 @@ client c1 {
     rxresp
 
     txreq -url "/7" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=1; SSR=0; SSL=TLSv1.3; C=TLS_CHACHA20_POLY1305_SHA256; EC=X25519;"
+    rxresp
+
+    txreq -url "/8" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=1; SSR=2; SSL=TLSv1.3; C=TLS_CHACHA20_POLY1305_SHA256; EC=X25519;"
+    rxresp
+
+    txreq -url "/9" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=1; SSR=3; SSL=TLSv1.3; C=TLS_CHACHA20_POLY1305_SHA256; EC=X25519;"
     rxresp
 } -run
