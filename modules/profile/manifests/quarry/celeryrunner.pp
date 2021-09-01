@@ -7,7 +7,7 @@ class profile::quarry::celeryrunner(
 ) {
     require ::profile::quarry::base
 
-    celery::worker { 'quarry-worker':
+    quarry::worker { 'quarry-worker':
         app             => 'quarry.web.worker',
         working_dir     => $clone_path,
         celery_bin_path => "${venv_path}/bin/celery",

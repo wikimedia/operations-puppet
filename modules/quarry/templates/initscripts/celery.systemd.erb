@@ -1,0 +1,18 @@
+[Unit]
+Description=Celery workers
+After=network.target
+
+[Service]
+User=<%= @user %>
+Group=<%= @group %>
+WorkingDirectory=<%= @working_dir %>
+ExecStart=<%= @celery_bin_path %> \
+    --app <%= @app %> \
+    worker \
+    --loglevel <%= @log_level %>
+SyslogIdentifier=celery-<%= @title %>
+LimitNOFILE=8192
+LimitCORE=<%= @core_limit %>
+
+[Install]
+WantedBy=multi-user.target
