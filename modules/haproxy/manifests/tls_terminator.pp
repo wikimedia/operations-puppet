@@ -9,10 +9,28 @@
 #   List of TLS certificates used to listen on $port
 # @param crt_list_file
 #   Path used for the crt-list file. Defaults to /etc/haproxy/crt-list.cfg
+# @param tls_ciphers
+#   Allowed ciphersuites for <= TLSv1.2
+# @param tls13_ciphers
+#   Allowed ciphersuites for TLSv1.3
+# @param min_tls_version
+#   minimum supported TLS version. Defaults to TLSv1.2
+# @param max_tls_version
+#   minimum supported TLS version. Defaults to TLSv1.3
+# @param ecdhe_curves
+#   List of supported ECHDE curves. Defaults to X25519, P-256
+# @param alpn
+#   List of Application layer protocols (ALPN) supported. Defaults to h2, http/1.1
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Stdlib::Unixpath $backend_socket,
     Array[Haproxy::Tlscertificate] $certificates,
+    String $tls_ciphers,
+    String $tls13_ciphers,
+    Haproxy::Tlsversion $min_tls_version = 'TLSv1.2',
+    Haproxy::Tlsversion $max_tls_version = 'TLSv1.3',
+    Haproxy::Ecdhecurves $ecdhe_curves = ['X25519', 'P-256'],
+    Haproxy::Alpn $alpn = ['h2', 'http/1.1'],
     Stdlib::Unixpath $crt_list_path = '/etc/haproxy/crt-list.cfg',
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.

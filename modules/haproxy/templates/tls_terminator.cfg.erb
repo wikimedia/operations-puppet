@@ -1,3 +1,8 @@
+global
+    ssl-default-bind-options ssl-min-ver <%= @min_tls_version -%> ssl-max-ver <%= @max_tls_version %>
+    ssl-default-bind-ciphers <%= @tls_ciphers %>
+    ssl-default-bind-ciphersuites <%= @tls13_ciphers %>
+
 listen tls
     bind :<%= @port -%> ssl crt-list <%= @crt_list_path %>
     bind :::<%= @port -%> v6only ssl crt-list <%= @crt_list_path %>

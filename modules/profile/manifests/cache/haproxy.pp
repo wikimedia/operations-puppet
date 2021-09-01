@@ -5,6 +5,8 @@ class profile::cache::haproxy(
     Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', {'default_value' => undef}),
     Boolean $unified_acme_chief = lookup('profile::cache::haproxy::unified_acme_chief'),
     Stdlib::Unixpath $varnish_socket = lookup('profile::cache::haproxy::varnish_socket'),
+    String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
+    String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
 ) {
     class { '::haproxy':
@@ -46,5 +48,7 @@ class profile::cache::haproxy(
         port           => $tls_port,
         backend_socket => $varnish_socket,
         certificates   => $certificates,
+        tls_ciphers    => $tls_ciphers,
+        tls13_ciphers  => $tls13_ciphers,
     }
 }
