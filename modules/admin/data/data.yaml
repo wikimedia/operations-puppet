@@ -316,7 +316,7 @@ groups:
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo,
-              htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams]
+              htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval:
@@ -4585,6 +4585,18 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICnlB6UtmPKPJZOXl/2fkAC88ccb9dn15upi0SsifFg5 dang@C353
+  jm:
+    ensure: present
+    gid: 500
+    realname: Joseph Mando
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhRXJiQz3jMGbDfCY5VO8CZJQHMwfq6FQsBGUhHjXTs josephmando@wmf2938
+    uid: 33218
+    comment: Fundraising analytics team
+    expiry_date: 2022-07-19
+    expiry_contact: eyener@wikimedia.org
+    email: jmando-ctr@wikimedia.org
+    krb: present
 
 ldap_only_users:
   abartov:
