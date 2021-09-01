@@ -88,6 +88,8 @@ Facter.add(:networking) do
     # We override the ip6 fact with the one we calculate above as ours is better
     # as it rejects slaac addresses. See comment under ipaddress6 fact for more detail
     networking['ip6'] = Facter.fact(:ipaddress6).value
+    # remove k8s interfaces
+    networking['interfaces'].reject! { |key, _| key.start_with?('cali', 'tap') || key == ('lo:LVS') }
     networking
   end
 end
