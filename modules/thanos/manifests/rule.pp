@@ -66,6 +66,13 @@ class thanos::rule (
         group  => 'root',
     }
 
+    file { '/etc/thanos-rule/rules':
+        ensure => directory,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+    }
+
     file { $objstore_config_file:
         ensure    => $ensure,
         mode      => '0440',
