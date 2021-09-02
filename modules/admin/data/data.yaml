@@ -19,7 +19,7 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov, liw, jkatz, gsingers, toberto, holger, jmads]
+              crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -314,7 +314,7 @@ groups:
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               bmansurov, amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
-              piccardi, fdans, eevans, ladsgroup, musikanimal,
+              piccardi, eevans, ladsgroup, musikanimal,
               goransm, ema, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, gilles, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett, jdl,
@@ -341,7 +341,7 @@ groups:
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
-    members: &analytics_admins_members [joal, nuria, mforns, milimetric, fdans, oljad]
+    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
@@ -2944,15 +2944,13 @@ users:
     expiry_contact: mgerlach@wikimedia.org
     krb: present
   fdans:
-    ensure: present
+    ensure: absent
     gid: 500
     name: fdans
     realname: Francisco Dans
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCusvafyr2JyFMUuWJ3N7NMIrKXVGk3dpEhdeqkJIZdRU5+Zyq7sA47bKBP13M06oFhtDQv/77rsqKSS1zy4CSFs9RPR/WDzeRcuHRxxWbtA0+6A0pfmvxCfrF/008Scw5TH4MJPAuQjCFc5obqfNzgwAiOVikMAhpgYloywPBSMG9mPek7KSJ6b2bZy8Z7+gnesFqzaZ1o/UET+5lmyaMlFWhaKiSzNt/naa6prumQvuEvJf6tIOqsoEs/BsL4mTKTLuSnw/iEA9m/oJaOjyPnbHbn07ZHLRVoA/CwyJEf0VwfornPVAc/Uar6e7QdA+6/PSruHE/sVfj7B93pjgKUiFEfHZz90qZYnObbl47odVRvv182IfmugNOkTMJ199pKTzIvhNldto2zKH1aOgbBtNnkpZ6KLu3d1e1yTdRdcGS0jZsgyLZZSC6kFD/6JztfEbtcdO4aCsIR1tNT9ZxepwlZLavv76MVKxA57D4We7/TZ9ZSMRBCY0HUATAUjWBjxOsl47zj26Z3QGHI837xt4nD8lk97mH8x2owNUjp+zrqL57cYWe5nNNryi8T9nU0oGxNvG0twTHJlhDodHtJyWMXKMUymYrvCCXkLX4tlGpikWCUuHhW3MPpvRRay6nUHKE/DSg9mqgeD2f1p6xn2T3MmvarHUdhZqiQjTYtcQ== fdans@wikimedia.org
+    ssh_keys: []
     uid: 16067
-    email: fdans@wikimedia.org
-    krb: present
+    krb: absent
   musikanimal:
     ensure: present
     gid: 500
