@@ -74,6 +74,8 @@ groups:
     description: RT 5934
     members: [catrope]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Subramanya Sastry
   parsoid-admin:
     gid: 702
     description: RT 5934
@@ -81,6 +83,8 @@ groups:
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                  'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
                  'ALL = (mwdeploy) NOPASSWD: /usr/bin/scap pull']
+    approval:
+      - Subramanya Sastry
   gerrit-root:
     gid: 703
     description: manage gerrit server
@@ -631,10 +635,14 @@ groups:
     description: T125166 T125435
     members: [ssastry, sbailey, arlolra, cscott]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Subramanya Sastry
   parsoid-test-admins:
     gid: 773
     description: parsing team members for parsoid regression testing adminstration
     members: []
+    approval:
+      - Subramanya Sastry
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client *',
