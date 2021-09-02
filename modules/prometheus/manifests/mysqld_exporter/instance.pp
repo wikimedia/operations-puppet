@@ -53,6 +53,13 @@ define prometheus::mysqld_exporter::instance (
         ]
     }
 
+    #We only want to restart if the service is running
+    #(which it won't be if the relevant mariadb isn't)
+    exec { "systemctl try-restart ${service}":
+        refreshonly => true,
+        path        => '/usr/bin',
+    }
+
     $options_str = ($common_options + $version_specific_options).reduce('') |$memo, $value| {
         "${memo} ${option_switch}${value}"
     }.strip
@@ -63,7 +70,7 @@ define prometheus::mysqld_exporter::instance (
         owner   => 'root',
         group   => 'root',
         content => "ARGS='${options_str}'",
-        notify  => Service[$service],
+        notify  => Exec["systemctl try-restart ${service}"],
     }
 
     # a separate database config (.my.<instance_name>cnf) for each instance monitored
@@ -74,12 +81,7 @@ define prometheus::mysqld_exporter::instance (
         owner   => 'prometheus',
         group   => 'prometheus',
         content => template('prometheus/mysqld_exporter.cnf.erb'),
-        notify  => Service[$service],
-    }
-
-    service { $service:
-        ensure  => running,
-        require => File['/lib/systemd/system/prometheus-mysqld-exporter@.service'],
+        notify  => Exec["systemctl try-restart ${service}"],
     }
 
     base::service_auto_restart { $service: }
