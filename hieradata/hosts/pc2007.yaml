@@ -1,4 +1,2 @@
 # pc2007
-mariadb::parsercache::shard: 'pc1'
-profile::mariadb::mysql_role: 'master'
 profile::base::notifications: disabled
