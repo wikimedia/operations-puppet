@@ -127,8 +127,5 @@ class query_service::common(
         command     => "/usr/bin/find /var/log/${deploy_name} -name '${deploy_name}-*_jvm_gc.*.log*' -mtime +30 -delete",
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 2:12:00'},
     }
-    cron { 'query-service-gc-log-cleanup':
-        ensure => absent,
-    }
 
 }
