@@ -37,7 +37,7 @@ def register(params)
   @target = params["target"]
   @overwrite = params["overwrite"]
   @exclude_common_fields = params["exclude_common_fields"]
-  @common_fields = %w[logsource type host timestamp program message facility level path]
+  @common_fields = %w[logsource type host timestamp program message facility level path severity]
 end
 
 # get the event with an additional tag
@@ -64,6 +64,7 @@ def filter(event)
 
     event.to_hash.each_key do |k|
       next if k[0] == "@" # skip meta fields
+      next if k == "tags" # skip tags
       next if @exclude.include?(k) # skip excluded fields
       result[k] = event.get(k)
       event.remove(k)
