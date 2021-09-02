@@ -19,7 +19,7 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans]
+              crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -99,7 +99,7 @@ groups:
     gid: 705
     description: replaces 'mortals' for software deployment
     members: [*platform_engineering_members, bd808, brion, cscott, ebernhardson,
-              gilles, gjg, halfak, hashar, hoo,
+              gjg, halfak, hashar, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
               andyrussg, nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, twentyafterfour, catrope,
@@ -316,7 +316,7 @@ groups:
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, eevans, ladsgroup, musikanimal,
               goransm, ema, dsaez, rho, mirrys, slaporte, jk,
-              ayounsi, mepps, mmiller, seddon, gilles, tstarling, karen,
+              ayounsi, mepps, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
@@ -589,12 +589,12 @@ groups:
   perf-team:
     gid: 796
     description: performance team members with access to 'webperf' and 'xhgui' servers
-    members: [krinkle, gilles, phedenskog, aaron, dpifke]
+    members: [krinkle, phedenskog, aaron, dpifke]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   perf-roots:
     gid: 766
     description: users who have root on memcached, varnish, application servers, thumbor and xhgui servers
-    members: [krinkle, gilles, phedenskog, aaron]
+    members: [krinkle, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
     description: Group of users for the Analytics Query Service (Deprecated)
@@ -649,7 +649,7 @@ groups:
   swift-roots:
     gid: 777
     description: users who have root on swift servers
-    members: [gilles]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Lukasz Sobanski
@@ -770,7 +770,7 @@ groups:
   sitemaps-admins:
     gid: 805
     description: People who upload files to sitemaps.wikimedia.org
-    members: [krinkle, gilles, phedenskog, aaron]
+    members: [krinkle, phedenskog, aaron]
   contint-docker:
     # Generally speaking, avoiding direct docker access is the most prudent course of action, but if
     # needed the docker group does have elevated privileges allowing users to interact with docker
@@ -801,7 +801,7 @@ groups:
   analytics-deployers:
     gid: 812
     description: People able to deploy to analytics misc nodes.
-    members: [*analytics_admins_members, gilles]
+    members: [*analytics_admins_members]
   secteam-users:
     gid: 813
     description: members of wikimedia security
@@ -1396,15 +1396,13 @@ users:
     uid: 2875
     email: esanders@wikimedia.org
   gilles:
-    ensure: present
+    ensure: absent
     gid: 500
     name: gilles
     realname: Gilles Dubuc
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6rWxdWJ+Yh8nbepD73tlikm1vdCGkPei2Sy2imlxG2G0DY/FaGreg5PyRqa56YK7KVs6cfoSQ30wO5/Gx2emZpKRz9mlWq4u37Z0/DCzXq4vZnUt13PXxPn5bX1k8oEVH4obKT3FsLPfly3f1/zsqd7rPx5KY5GVRqEwEyf1TPrTRX6SMhhs9zLveFggAGkcNG0oeHhHhcyMUgUHhA/f5WByhv+nQslrVNkD5oQOlAQeneHZKH5T65T0yH2z83aW1ndQL0LEGFxBlVH5m0LdXxCqN2WXI3e8kjALqXDLvH2cLG4HePk3EYvRm1sfLMOHOrZQs06GhBHb7xYJqq4R7 cardno:000610394992
+    ssh_keys: []
     uid: 4319
-    email: gdubuc@wikimedia.org
-    krb: present
+    krb: absent
   gjg:
     ensure: present
     gid: 500
