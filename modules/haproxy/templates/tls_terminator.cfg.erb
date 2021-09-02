@@ -4,7 +4,7 @@ global
     ssl-default-bind-ciphersuites <%= @tls13_ciphers %>
 
 listen tls
-    bind :<%= @port -%> ssl crt-list <%= @crt_list_path %>
-    bind :::<%= @port -%> v6only ssl crt-list <%= @crt_list_path %>
+    bind :<%= @port -%> ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
+    bind :::<%= @port -%> v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
 
     server backend_server unix@<%= @backend_socket %>

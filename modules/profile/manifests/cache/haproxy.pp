@@ -13,6 +13,38 @@ class profile::cache::haproxy(
         logging => false,
     }
 
+    require_package('python3-pystemd')
+    file { '/usr/local/sbin/haproxy-stek-manager':
+        ensure => present,
+        source => 'puppet:///modules/profile/cache/haproxy_stek_manager.py',
+        owner  => root,
+        group  => root,
+        mode   => '0544',
+    }
+
+    systemd::tmpfile { 'haproxy_secrets_tmpfile':
+        content => 'd /run/haproxy-secrets 0700 haproxy haproxy -',
+    }
+
+    $tls_ticket_keys_path = '/run/haproxy-secrets/stek.keys'
+    systemd::timer::job { 'haproxy_stek_job':
+        ensure      => present,
+        description => 'HAProxy STEK manager',
+        command     => "/usr/local/sbin/haproxy-stek-manager ${tls_ticket_keys_path}",
+        interval    => [
+            {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 00/8:00:00', # every 8 hours
+            },
+            {
+            'start'    => 'OnBootSec',
+            'interval' => '0sec',
+            },
+        ],
+        user        => 'root',
+        require     => File['/usr/local/sbin/haproxy-stek-manager'],
+    }
+
     if !$available_unified_certificates[$public_tls_unified_cert_vendor] {
         fail('The specified TLS unified cert vendor is not available')
     }
@@ -45,10 +77,11 @@ class profile::cache::haproxy(
     }
 
     haproxy::tls_terminator { 'tls':
-        port           => $tls_port,
-        backend_socket => $varnish_socket,
-        certificates   => $certificates,
-        tls_ciphers    => $tls_ciphers,
-        tls13_ciphers  => $tls13_ciphers,
+        port                 => $tls_port,
+        backend_socket       => $varnish_socket,
+        certificates         => $certificates,
+        tls_ciphers          => $tls_ciphers,
+        tls13_ciphers        => $tls13_ciphers,
+        tls_ticket_keys_path => $tls_ticket_keys_path,
     }
 }

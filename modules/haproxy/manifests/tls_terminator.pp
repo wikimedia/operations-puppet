@@ -32,6 +32,7 @@ define haproxy::tls_terminator(
     Haproxy::Ecdhecurves $ecdhe_curves = ['X25519', 'P-256'],
     Haproxy::Alpn $alpn = ['h2', 'http/1.1'],
     Stdlib::Unixpath $crt_list_path = '/etc/haproxy/crt-list.cfg',
+    Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {
