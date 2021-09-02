@@ -219,11 +219,19 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-* 05:00:00',
         user        => 'analytics',
     }
-    # drop data older than 2-3 months from geoeditors_daily table
+    # drop data older than 2-3 months from editors_daily table
     # runs once a day (but only will delete data on the needed date)
-    # Temporary stopped to prevent data to be dropped.
-    kerberos::systemd_timer { 'mediawiki-geoeditors-drop-month':
+    kerberos::systemd_timer { 'mediawiki-editors-drop-month':
         ensure      => $ensure_timers,
+        description => 'Drop editors data, primarily used for the geoeditors dataset, from Hive/HDFS following data retention policies.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='editors_daily' --base-path='/wmf/data/wmf/mediawiki_private/editors_daily' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --skip-trash --execute='7d0d70d830a8e53fbe851809f76637af'",
+        environment => $systemd_env,
+        interval    => '*-*-* 06:00:00',
+        user        => 'analytics',
+    }
+    # old name of the timer above, absenting to delete later
+    kerberos::systemd_timer { 'mediawiki-geoeditors-drop-month':
+        ensure      => absent,
         description => 'Drop Geo-editors data from Hive/HDFS following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='geoeditors_daily' --base-path='/wmf/data/wmf/mediawiki_private/geoeditors_daily' --path-format='month=(?P<year>[0-9]+)-(?P<month>[0-9]+)' --older-than='${geoeditors_private_retention_days}' --skip-trash --execute='5faa519abce3840e7718cfbde8779078'",
         environment => $systemd_env,
