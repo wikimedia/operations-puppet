@@ -1,4 +1,4 @@
-profile::base::domain_search:
+profile::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet

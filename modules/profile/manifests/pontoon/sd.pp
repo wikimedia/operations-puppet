@@ -5,7 +5,7 @@
 # sd_nameservers.
 class profile::pontoon::sd (
     Array[Stdlib::IP::Address] $sd_nameservers = lookup('profile::pontoon::sd_nameservers'),
-    Array[Stdlib::IP::Address] $local_nameservers = lookup('profile::base::nameservers'),
+    Array[Stdlib::IP::Address] $local_nameservers = lookup('profile::resolving::nameservers'),
     Array[Stdlib::Fqdn] $lbs = pontoon::hosts_for_role('pontoon::lb'), # lint:ignore:wmf_styleguide
 ) {
     unless length($local_nameservers) == 1 and $local_nameservers[0] == '127.0.0.53' {

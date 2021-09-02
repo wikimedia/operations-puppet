@@ -1,0 +1,9 @@
+profile::resolving::disable_resolvconf: false
+profile::resolving::disable_dhcpupdates: false
+profile::resolving::timeout: 1
+profile::resolving::ndots: 1
+profile::resolving::attempts: 3
+profile::resolving::domain_search:
+  - "%{facts.networking.domain}"
+profile::resolving::nameservers:
+  - 10.3.0.1  # anycast

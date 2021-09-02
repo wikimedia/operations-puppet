@@ -54,7 +54,7 @@ EOF
 bastion_hosts:
   - 0.0.0.0/0
 
-profile::base::nameservers:
+profile::resolving::nameservers:
   - 8.8.8.8
 
 profile::base::manage_resolv_conf: false

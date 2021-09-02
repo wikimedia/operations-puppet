@@ -1,6 +1,4 @@
 class profile::base(
-    Variant[Stdlib::Fqdn, Array[Stdlib::Fqdn]] $domain_search = lookup('profile::base::domain_search', {default_value => $::domain}),
-    Array[Stdlib::Host] $nameservers = lookup('profile::base::nameservers', {default_value => $::nameservers}),
     Array $remote_syslog = lookup('profile::base::remote_syslog', {default_value => []}),
     Array $remote_syslog_tls = lookup('profile::base::remote_syslog_tls', {default_value => []}),
     Boolean $enable_kafka_shipping = lookup('profile::base::enable_kafka_shipping', {default_value => true}),
@@ -23,7 +21,6 @@ class profile::base(
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
     Wmflib::Ensure $hardware_monitoring = lookup('profile::base::hardware_monitoring', {'default_value' => 'present'}),
-    String $legacy_cloud_search_domain = lookup('profile::base::legacy_cloud_search_domain'),
     Boolean $enable_contacts = lookup('profile::base::enable_contacts')
 ) {
     # Sanity checks for cluster - T234232
@@ -59,11 +56,7 @@ class profile::base(
     include passwords::root
     include network::constants
 
-    class { 'base::resolving':
-        domain_search              => $domain_search,
-        nameservers                => $nameservers,
-        legacy_cloud_search_domain => $legacy_cloud_search_domain,
-    }
+    include profile::resolving
 
     class { 'rsyslog': }
     include profile::prometheus::rsyslog_exporter

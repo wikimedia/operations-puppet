@@ -1,3 +1,1 @@
 profile::base::enable_contacts: true
-profile::base::domain_search:
-  - "%{facts.networking.domain}"

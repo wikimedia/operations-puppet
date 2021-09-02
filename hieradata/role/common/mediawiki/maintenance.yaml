@@ -4,7 +4,7 @@ profile::admin::groups:
   - ldap-admins
   - maintenance-log-readers
   - perf-roots
-profile::base::domain_search:
+profile::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet

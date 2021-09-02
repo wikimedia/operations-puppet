@@ -2,7 +2,7 @@ profile::admin::groups:
   - gitpuppet
   - datacenter-ops
   - fr-tech-admins
-profile::base::domain_search:
+profile::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet

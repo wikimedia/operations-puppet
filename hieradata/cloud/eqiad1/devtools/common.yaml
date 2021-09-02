@@ -1,6 +1,6 @@
 profile::backup::director_seed: changeme
 
-profile::base::domain_search:
+profile::resolving::domain_search:
   - eqiad.wmflabs
   - codfw.wmflabs
 

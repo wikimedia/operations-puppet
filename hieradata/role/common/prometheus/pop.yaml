@@ -3,7 +3,7 @@ profile::contacts::role_contacts:
 
 cluster: prometheus
 profile::prometheus::ops::enable_thanos_upload: true
-profile::base::domain_search:
+profile::resolving::domain_search:
   - wikimedia.org
   - eqiad.wmnet
   - codfw.wmnet

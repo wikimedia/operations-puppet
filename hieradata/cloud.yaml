@@ -30,6 +30,16 @@ profile::apt::mirror: 'mirrors.wikimedia.org'
 profile::base::netbase::manage_etc_services: true
 profile::base::netbase::extra_services: {}
 
+profile::resolving::disable_dhcpupdates: true
+profile::resolving::disable_resolvconf: true
+profile::resolving::timeout: 1
+profile::resolving::ndots: 1
+profile::resolving::attempts: 3
+profile::resolving::domain_search:
+  - "%{facts.networking.domain}"
+profile::resolving::nameservers:
+  - "%{lookup('labsdnsconfig.recursor')}"
+  - "%{lookup('labsdnsconfig.recursor_secondary')}"
 
 profile::base::puppet::interval: 30
 profile::base::puppet::environment: production
@@ -41,8 +51,6 @@ profile::puppet::client_bucket::ensure: absent
 profile::puppet::client_bucket::file_age: 14
 profile::puppet::client_bucket::max_size: 100M
 
-profile::base::domain_search:
-  - "%{facts.networking.domain}"
 profile::base::legacy_cloud_search_domain: ~
 profile::base::enable_contacts: false
 puppet_ca_server: ''

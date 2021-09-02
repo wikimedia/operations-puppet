@@ -1,4 +1,4 @@
-profile::base::nameservers:
+profile::resolving::nameservers:
   - 127.0.0.53
 
 profile::pontoon::sd_nameservers:
