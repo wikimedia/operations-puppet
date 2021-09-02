@@ -133,7 +133,7 @@ groups:
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited,
-              daimona, mepps, jabrams, nforrester, katelevan]
+              daimona, mepps, jabrams, nforrester, katelevan, cmaslak]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -330,7 +330,7 @@ groups:
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
-              katelevan]
+              katelevan, cmaslak]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval:
@@ -4633,6 +4633,16 @@ users:
     uid: 33653
     comment: Trust and Safety
     email: klevan@wikimedia.org
+    krb: present
+  cmaslak:
+    ensure: present
+    gid: 500
+    realname: Chmielko Maslak
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRJxqMSX8mBEXwkSfmPligqsfmilDYiip+D4V3+b+sP+Kw2i0+Ti+CQzRxiw8k5wREXoRafMJw302m2/7bvZGcgy5WCG08btYO8OGoINYXbOphTZGmSiHMAjbM9pMfj4A1keJ01qoImQl6keoH37bhXaFbTv9Yi0Voq0ZeipsrtsW+D7DXiilzC43PyVAEouLN7wjVIzcXR9IYSQUlfbIbwOiVu7T4tsTRyDh2Q2g0/phMLoYeTRE6DqdI21XWcqHr1RGjQp+D1q0F59gWwc6/z+aR5Tfasujrd4RRbA01sYu8H4ATPCZUkjIVm+bgBARsFyBoUyUXcjTL9jdjmVT9mMvQz+mDzoFXSdBlbbLN6d/K0QwWw0l5E3iTo7Jcsr1/P1TfBoKT829p9/HhZiW/MlRk9TB6hezSXgwS2X9otUDXKDEOn9v6eJqwUI2cL0KA3NSw0bycDbLYc+n6jv/ogQZyID60va8RRE8qi6MixHZYbW0RMGpN7LwmVuXXan/GHl7gT0DMLXBIM8i5+PVxr4H4UnzF5MwuT3EMO8UB6x42TlHeg5nqzURp2AK+SbsySWob58O2p3VArTbf+rNeQoWG1dFstB5hT9lHNibHVFgcIQAhyHhagiHqaO9nhkdatAU5NoxBfnP6s8qmO4M9+9uEeb9T8ChE2jE7p2BATQ== .
+    uid: 33648
+    comment: Trust and Safety
+    email: cmaslak@wikimedia.org
     krb: present
 
 
