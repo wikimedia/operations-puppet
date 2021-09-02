@@ -14,12 +14,6 @@ class profile::prometheus::node_local_crontabs {
         ],
     }
 
-    cron { 'prometheus_local_crontabs':
-        ensure  => absent,
-        user    => 'prometheus',
-        minute  => '*/5',
-        command => '/usr/local/bin/prometheus-local-crontabs',
-    }
     systemd::timer::job { 'prometheus-local-crontabs':
         ensure      => present,
         description => 'Regular job to collect number of crontabs installed on this host',
