@@ -880,6 +880,26 @@ host cloudcephosd1020 {
     fixed-address cloudcephosd1020.eqiad.wmnet;
 }
 
+host cloudcephosd1021 {
+    hardware ethernet E4:3D:1A:0A:C9:E0;
+    fixed-address cloudcephosd1021.eqiad.wmnet;
+}
+
+host cloudcephosd1022 {
+    hardware ethernet E4:3D:1A:0B:84:30;
+    fixed-address cloudcephosd1022.eqiad.wmnet;
+}
+
+host cloudcephosd1023 {
+    hardware ethernet E4:3D:1A:0B:78:80;
+    fixed-address cloudcephosd1023.eqiad.wmnet;
+}
+
+host cloudcephosd1024 {
+    hardware ethernet E4:3D:1A:0A:F8:40;
+    fixed-address cloudcephosd1024.eqiad.wmnet;
+}
+
 host cloudcontrol1003 {
     hardware ethernet 30:e1:71:5f:6e:5c;
     fixed-address cloudcontrol1003.wikimedia.org;
