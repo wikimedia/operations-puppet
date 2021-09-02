@@ -39,7 +39,7 @@ class profile::envoy::builder {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '60s',
         },
-        monitoring_enabled        => false,
+        logging_enabled           => false,
         monitoring_contact_groups => 'admins',
         user                      => 'root',
     }
