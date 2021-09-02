@@ -10,6 +10,10 @@ class profile::microsites::query_service {
         deploy_name => 'wdqs',
     }
 
+    profile::microsites::query_service::site { 'wcqs':
+        domain_name => 'commons-query.wikimedia.org',
+    }
+
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikidata', {'ensure' => 'directory' })
     ensure_resource('file', '/srv/org/wikidata/query', {'ensure' => 'directory' })
