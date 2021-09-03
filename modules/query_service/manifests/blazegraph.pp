@@ -94,12 +94,12 @@ define query_service::blazegraph(
     # This works as:
     # if $data_file dose not exist then:
     #    * this resource state is not clean so run the command
-    #    * command returns false so the resource fails
-    #    * file{$data_file} resource does not run as a dependency fails
+    #    * command returns false so the resource fales
+    #    * file{$data_file} resource dose not run as a dependecy fails
     # else
-    #    * The file exists so the exec resource state is clean and dose not need to run command
-    #      This causes the exec resource to succeed without running command
-    #      and so the file can mange permissions
+    #  The file exists so the exec resource state is clean and dose not need to run command
+    #  This causes the exec resource to succeed without running command
+    #  and so the file can mange permissions
     exec { "${data_file} exists":
         command => '/bin/false',
         creates => $data_file,
