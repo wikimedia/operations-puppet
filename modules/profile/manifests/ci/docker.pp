@@ -23,13 +23,15 @@ class profile::ci::docker(
 
     # TODO: Drop the entire version-specific pinning once stretch is gone
     $docker_version = $::lsbdistcodename ? {
-        'stretch' => '5:19.03.5~3-0~debian-stretch',
-        'buster'  => '18.09.1+dfsg1-7.1+deb10u3',
+        'stretch'  => '5:19.03.5~3-0~debian-stretch',
+        # Docker version is ignored starting with Buster
+        default    => '',
     }
 
     $docker_package = $::lsbdistcodename ? {
-        'stretch' => 'docker-ce',
-        'buster'  => 'docker.io',
+        'stretch'  => 'docker-ce',
+        'buster'   => 'docker.io',
+        'bullseye' => 'docker.io',
     }
 
     class { 'docker':
@@ -50,7 +52,7 @@ class profile::ci::docker(
             unless  => "/usr/bin/id -Gn '${jenkins_agent_username}' | /bin/grep -qw 'docker'",
             command => "/usr/sbin/usermod -aG docker '${jenkins_agent_username}'",
             require => [
-                Package['docker-ce'],
+                Package[ $docker_package ],
             ],
         }
     }
