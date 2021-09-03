@@ -1,5 +1,11 @@
-
-# use lookup table to determine if log continues on to local outputs (defined in rsyslog.conf)
+# Use lookup table to determine if log continues on to local outputs (defined
+# in rsyslog.conf). If there is no entry in the lookup table for $programname,
+# the default value defined by "nomatch" is "local".
+# See https://www.rsyslog.com/doc/master/configuration/lookup_tables.html#lookup-table-file-format
+#
+# Note that the lookup is done at priority 10 by 10-lookup-output.conf, so
+# setting $.log_outputs in a configuration with higher priority overrides the
+# lookup.
 if ( not ($.log_outputs contains "local") ) then {
     stop
 }
