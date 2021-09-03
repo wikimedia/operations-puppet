@@ -49,6 +49,8 @@ testcases:
         labels:
           status: "resolved"
           team: "sre"
+          alertname: "Icinga/Elevated latency for icinga checks in codfw"
+          summary: "cluster=alerting instance=alert2001 job=icinga site=codfw"
         service:
           type: "alertmanager-webhook-logger"
         event:
@@ -104,6 +106,8 @@ testcases:
           tool: "webpagetest"
           metric: "speedindex"
           browser: "firefox"
+          alertname: "Increased Speed Index for en.wiki on desktop"
+          summary: "Increased Speed Index for en.wiki on desktop"
         service:
           type: "alertmanager-webhook-logger"
         event:
