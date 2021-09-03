@@ -535,18 +535,18 @@ define host {
     hostgroups               fundraising-payments
 }
 
-#define host {
-#    host_name                payments1008
-#    address                  10.64.40.12
-#    check_command            check_ping!500,20%!2000,100%
-#    max_check_attempts       2
-#    notification_options     d,u,r,f
-#    contact_groups           fr-tech-ops
-#    notification_interval    0
-#    notification_period      24x7
-#    check_period             24x7
-#    hostgroups               fundraising-payments
-#}
+define host {
+    host_name                payments1008
+    address                  10.64.40.12
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
 
 define host {
     host_name                payments2001
@@ -826,6 +826,14 @@ define service {
     use                      passive-service
     service_description      check_ssl
     host_name                frdev1001
+}
+
+# payments1008
+
+define service {
+    use                      passive-service
+    service_description      check_ssl_staging
+    host_name                payments1008
 }
 
 # SERVICES - HOSTGROUP
