@@ -46,7 +46,7 @@ packages:
     - dnsutils
     - dstat
     - ebtables
-    - emacs
+    - emacs-nox
     - ethtool
     - euca2ools
     - exim4-config

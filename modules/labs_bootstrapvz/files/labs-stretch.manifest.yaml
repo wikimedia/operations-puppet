@@ -41,7 +41,7 @@ packages:
     - debian-goodies
     - dnsutils
     - dstat
-    - emacs
+    - emacs-nox
     - ethtool
     - euca2ools
     - exim4-config
