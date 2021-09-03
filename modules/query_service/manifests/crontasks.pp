@@ -19,6 +19,25 @@ class query_service::crontasks(
     Boolean $run_tests,
     Boolean $reload_wcqs_data,
 ) {
+    ## BEGIN Temporary mitigation for T290330
+    # Script to restart wdqs-blazegraph.service if hostname starts with wdqs2
+    file { '/usr/local/bin/wdqs-codfw-restart-hourly-w-randomization.sh':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/query_service/cron/wdqs-codfw-restart-hourly-w-randomization.sh',
+    }
+
+    systemd::timer::job { 'wdqs-restart-hourly-w-random-delay':
+        description => 'Restarts WDQS on average once per hour to preserve WDQS availability',
+        command     => 'sudo systemctl restart wdqs-blazegraph',
+        user        => 'root',
+        interval    => [{'start' => 'OnUnitActiveSec', 'interval' => '45min'}, {'start' => 'RandomizedDelaySec', 'interval' => '30min'}],
+    }
+
+    ## END Temporary mitigation for T290330
+
     file { '/usr/local/bin/cronUtils.sh':
         ensure => present,
         source => 'puppet:///modules/query_service/cron/cronUtils.sh',
