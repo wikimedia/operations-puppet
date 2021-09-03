@@ -25,4 +25,10 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateMenteeData.php --statsd',
         interval => '*-*-* 04:15:00',
     }
+
+    # monitor dangling link recommendation entries (DB record without search index record or vice versa)
+    profile::mediawiki::periodic_job { 'growthexperiments-fixLinkRecommendationData-dryrun':
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
+        interval => '*-*-* 07:20:00',
+    }
 }
