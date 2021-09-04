@@ -198,10 +198,11 @@ class profile::wmcs::nfs::primary(
     if($drbd_actual_role == 'primary') {
         class { 'profile::prometheus::node_directory_size':
             directory_size_paths => {
-                'misc_home'     => { 'path' => '/srv/misc/shared/*/home' },
-                'misc_project'  => { 'path' => '/srv/misc/shared/*/project' },
-                'tools_home'    => { 'path' => '/srv/tools/shared/tools/home/*' },
-                'tools_project' => { 'path' => '/srv/tools/shared/tools/project/*' },
+                'misc_home'    => { 'path' => '/srv/misc/shared/*/home' },
+                'misc_project' => { 'path' => '/srv/misc/shared/*/project' },
+                'tools_home'   => { 'path' => '/srv/tools/shared/tools/home/*' },
+                # This isn't scaling well and causing high iowait on the server T290375
+                # 'tools_project' => { 'path' => '/srv/tools/shared/tools/project/*' },
             },
         }
 
