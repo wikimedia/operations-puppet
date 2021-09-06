@@ -7,10 +7,17 @@ class profile::cache::haproxy(
     Stdlib::Unixpath $varnish_socket = lookup('profile::cache::haproxy::varnish_socket'),
     String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
     String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
+    Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
+    String $ocsp_proxy = lookup('http_proxy'),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
 ) {
+    # variables used inside HAProxy's systemd unit
+    $pid = '/run/haproxy/haproxy.pid'
+    $exec_start = '/usr/sbin/haproxy -Ws'
+
     class { '::haproxy':
-        logging => false,
+        systemd_content => template('profile/cache/haproxy.service.erb'),
+        logging         => false,
     }
 
     require_package('python3-pystemd')
@@ -53,6 +60,24 @@ class profile::cache::haproxy(
         $unified_certs.each |String $cert| {
             sslcert::certificate { $cert:
                 before => Haproxy::Site['tls']
+            }
+
+            if $do_ocsp {
+                sslcert::ocsp::conf { $cert:
+                    proxy  => $ocsp_proxy,
+                    before => Service['haproxy'],
+                }
+                # HAProxy expects the prefetched OCSP response on the same path as the certificate
+                file { "/etc/ssl/private/${cert}.crt.key.ocsp":
+                    ensure  => link,
+                    target  => "/var/cache/ocsp/${cert}.ocsp",
+                    require => Sslcert::Ocsp::Conf[$cert],
+                }
+            }
+        }
+        if $do_ocsp {
+            sslcert::ocsp::hook { 'haproxy-ocsp':
+                content => file('profile/cache/update_ocsp_haproxy_hook.sh'),
             }
         }
     }
