@@ -1,0 +1,18 @@
+groups:
+  - name: thanos-sidecar
+    rules:
+    # This is temporary. The alert needs to be deployed via alerts.git
+    # only to the 'ops' Prometheus instance.
+    # See also https://phabricator.wikimedia.org/T289662
+    - alert: ThanosSidecarUploadFailure
+      annotations:
+        description: Thanos Sidecar {{$labels.instance}} is not configured to upload blocks.
+        summary: Thanos Sidecar is not uploading blocks.
+        dashboard: https://grafana.wikimedia.org/d/b19644bfbf0ec1e108027cce268d99f7/thanos-sidecar
+        runbook: https://wikitech.wikimedia.org/wiki/Thanos#Alerts
+      expr: absent(thanos_shipper_upload_failures_total)
+      for: 5m
+      labels:
+        severity: critical
+        team: o11y
+
