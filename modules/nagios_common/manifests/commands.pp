@@ -61,7 +61,6 @@ class nagios_common::commands(
         'check_bgp',
         'check_dsh_groups',
         'check_etcd_mw_config_lastindex.py',
-        'check_grafana_alert.py',
         'check_graphite.py',
         'check_graphite_freshness.py',
         'check_ifstatus_nomon',
