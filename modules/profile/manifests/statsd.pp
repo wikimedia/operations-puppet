@@ -66,15 +66,4 @@ class profile::statsd (
         graphite_host => $graphite_host,
         input_counter => "statsd.${::hostname}-8131.received",
     }
-
-    $prometheus_labels = "{instance=~\"${::hostname}.*\"}"
-    monitoring::check_prometheus { 'statsd_udp_inbound_errors':
-        description     => 'statsd UDP receive errors are elevated',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/graphite-${::site}?orgId=1&refresh=1m&panelId=16&fullscreen"],
-        query           => "scalar(100 * rate(node_netstat_Udp_InErrors${prometheus_labels}[5m]) / rate(node_netstat_Udp_InDatagrams${prometheus_labels}[5m]))",
-        warning         => 1,
-        critical        => 2,
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Statsd',
-    }
 }
