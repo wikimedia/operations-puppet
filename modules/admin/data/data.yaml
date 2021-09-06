@@ -26,7 +26,7 @@ groups:
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
-              jbol, nnair, jkroll]
+              jbol, nnair, jkroll, johlig]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5003,9 +5003,8 @@ ldap_only_users:
     realname: Johan Jönsson
     email: jjonsson@wikimedia.org
   johlig:
-    ensure: present
+    ensure: absent
     realname: Jens Ohlig
-    email: jens.ohlig@wikimedia.de
   pgrass:
     ensure: absent
     realname: Pablo Grass
