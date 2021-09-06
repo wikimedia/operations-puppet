@@ -2190,7 +2190,6 @@ host db2089 {
 host db2090 {
     hardware ethernet 18:66:DA:F8:DC:54;
     fixed-address db2090.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host db2091 {
