@@ -16,11 +16,12 @@
 import argparse
 import logging
 import os
+import re
 import sys
 
 import yaml
 
-from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
+from prometheus_client import CollectorRegistry, Gauge, Info, write_to_textfile
 from prometheus_client.exposition import generate_latest
 
 log = logging.getLogger(__name__)
@@ -48,6 +49,8 @@ def _summary_stats(puppet_state_dir, registry):
     collection_error = Gauge('collection_error', 'Error collecting data',
                              namespace='puppet_agent', registry=registry)
     collection_error.set(0)
+    catalog_version = Info('catalog_version', 'The current commit running on the host',
+                           namespace='puppet_agent', registry=registry)
 
     summary_file = os.path.join(puppet_state_dir, 'last_run_summary.yaml')
     try:
@@ -80,6 +83,11 @@ def _summary_stats(puppet_state_dir, registry):
     # Consider puppet failed even when we can't find the failure count
     else:
         failed.set(1)
+    if 'version' in summary_yaml:
+        version_pattern = re.compile(r'\((?<git_sha>\h+)\)')
+        match = version_pattern.match(summary_file['version']['config'])
+        if match:
+            catalog_version.info({'git_sha': match['git_sha']})
 
 
 def collect_puppet_stats(puppet_state_dir, registry):
