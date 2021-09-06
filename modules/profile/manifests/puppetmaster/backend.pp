@@ -14,7 +14,8 @@ class profile::puppetmaster::backend(
       '*.ulsfo.wmnet',
       '*.esams.wmnet',
       '*.codfw.wmnet',
-      '*.eqsin.wmnet'],
+      '*.eqsin.wmnet',
+      '*.drmrs.wmnet'],
     String $extra_auth_rules = '',
 
 ) {
