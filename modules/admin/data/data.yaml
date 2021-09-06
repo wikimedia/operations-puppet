@@ -4326,7 +4326,7 @@ users:
     uid: 29809
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILiOBrHGHChC2y9I7grsl4jCB3ziaLaVni/oUvQN+IS4 cd700@cam.ac.uk
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIQ4m+TcTh+/zNy40lQ11ULKrNezg38jC7oDUEOCDsli christinedekock11@gmail.com
     krb: present
   mattcleinman:
     ensure: present
