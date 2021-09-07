@@ -34,7 +34,9 @@ profile::kubernetes::master_fqdn: ml-ctrl.svc.%{::site}.wmnet
 prometheus::node_exporter::collectors_extra:
   - processes
 # We don't need conftool safe restart scripts on k8s.
-#profile::lvs::realserver::use_conftool: false
-#profile::lvs::realserver::pools:
+profile::lvs::realserver::use_conftool: false
+profile::lvs::realserver::pools:
+  inference: {}
+
 profile::admin::groups:
   - ml-team-admins

@@ -3784,3 +3784,48 @@ service::catalog:
       eqiad:
         default: 208.80.154.5
     state: production
+
+  # This service points to an Istio Ingress Gateway,
+  # that acts as L7 load balancer. It monitors backends
+  # by itself, and by default it exposes a separate port
+  # to check the status of its pods (not the backend services).
+  # Pybal doesn't support health checks on different ports than
+  # the service one. To keep this simple, we are not adding any
+  # L7 check for LVS, but we are simply relying on checking that
+  # a TCP conn can be established. This may change in the future
+  # as we get more experience with Istio.
+  inference:
+    description: Inference ML service
+    encryption: true
+    ip:
+      eqiad:
+        default: 10.2.2.63
+      codfw:
+        default: 10.2.1.63
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: ml_serve
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    monitoring:
+      check_command: check_tcp_ssl!inference.discovery.wmnet!30443
+      critical: false
+      sites:
+        eqiad:
+          hostname: inference.svc.eqiad.wmnet
+        codfw:
+          hostname: inference.svc.codfw.wmnet
+    port: 30443
+    sites:
+      - eqiad
+    state: service_setup
+    discovery:
+      - dnsdisc: inference
+        active_active: false

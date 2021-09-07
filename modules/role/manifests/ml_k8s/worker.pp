@@ -9,9 +9,9 @@ class role::ml_k8s::worker {
     include ::profile::kubernetes::node
     # Setup calico
     include ::profile::calico::kubernetes
+
     # Setup LVS
-    # Leabe LVS unconfigured during POC phase
-    #include ::profile::lvs::realserver
+    include ::profile::lvs::realserver
 
     system::role { 'kubernetes::worker':
         description => 'ML Kubernetes worker node',
