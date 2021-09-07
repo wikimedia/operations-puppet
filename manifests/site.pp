@@ -2371,7 +2371,7 @@ node 'pc1013.eqiad.wmnet' {
 
 # codfw
 # pc1
-node /^pc20(10|11|14)\.codfw\.wmnet$/ {
+node /^pc20(11|14)\.codfw\.wmnet$/ {
     role(mariadb::parsercache)
 }
 
