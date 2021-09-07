@@ -1814,7 +1814,7 @@ node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
 }
 
 # newly racked and installed ms-be hosts
-node /^ms-be106[456]\.eqiad\.wmnet/ {
+node /^ms-be106[4567]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
