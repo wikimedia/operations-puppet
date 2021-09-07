@@ -36,15 +36,13 @@ class profile::base(
     }
 
     contain profile::base::puppet
-    require profile::base::certificates
+    contain profile::base::certificates
     include profile::pki::client
     if $enable_contacts {
         include profile::contacts
     }
     include profile::base::netbase
     include profile::logoutd
-    # Ensure we update the CA certificates before managing any services
-    Exec['update-ca-certificates'] -> Service<| |>
     include profile::apt
 
     file { ['/usr/local/sbin', '/usr/local/share/bash']:
