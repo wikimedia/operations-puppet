@@ -11,63 +11,94 @@ require 'socket'
 require 'timeout'
 require 'json'
 require 'yaml'
+require 'time'
+require 'syslog'
 
 Puppet::Reports.register_report(:logstash) do
-    desc 'Send logs to a logstash instance'
+  desc 'Send logs to a logstash instance'
 
-    config_file = File.join([File.dirname(Puppet.settings[:config]), 'logstash.yaml'])
-    begin
-        CONFIG = YAML.load_file(config_file)
-    # rubocop:disable Lint/RescueException
-    rescue Exception => e
-        raise(Puppet::ParseError, "Failed to load logstash report config file #{config_file}: #{e.message}")
+  SERVER_NAME = Socket.gethostbyname(Socket.gethostname).first
+
+  def process
+    # Convert Puppet::Transaction::Report object to a logstash event
+    case status
+    when 'failed'
+      event_outcome = 'failure'
+      event_type = 'error'
+    when 'changed'
+      event_outcome = 'success'
+      event_type = 'change'
+    when 'unchanged'
+      event_outcome = 'success'
+      event_type = 'info'
     end
-    # rubocop:enable Lint/RescueException
 
-    SERVER_NAME = Socket.gethostbyname(Socket.gethostname).first
+    # during testing server_used wasn't avalible
+    server_name = local_variables.include?(:server_used) ? server_used : SERVER_NAME
 
-    def process
-        # Convert Puppet::Transaction::Report object to a logstash event
-        event = {
-            '@timestamp'            => logs.last.time.utc.iso8601,
-            '@version'              => 1,
-            'host'                  => host,
-            'client'                => host,
-            'server'                => SERVER_NAME,
-            'message'               => "Puppet run on #{host} - #{status}",
-            'type'                  => 'puppet',
-            'channel'               => kind,
-            'environment'           => environment,
-            'report_format'         => report_format,
-            'transaction_uuid'      => transaction_uuid,
-            'configuration_version' => configuration_version,
-            'puppet_version'        => puppet_version,
-            'status'                => status,
-            'start_time'            => logs.first.time.utc.iso8601,
-            'end_time'              => logs.last.time.utc.iso8601,
-            'log_messages'          => logs.map(&:to_report),
-            'metrics'               => {},
+    event = {
+      '@timestamp' => logs.last.time.utc.iso8601,
+      'message'    => "Puppet run on #{host} - #{status}",
+      'type'       => 'puppet',
+      'package'    => {
+        'name'    => 'puppet',
+        'version' =>  puppet_version
+      },
+      'ecs' => {
+        'version' => '1.7.0'
+      },
+      'host' => {
+        'name'     => host,
+        'hostname' => host.split('.')[0],
+        'domain'   => host.split('.', 2)[1],
+      },
+      'server' => {
+        'address' => server_name,
+        # from the docs it seems server.domain here should be the fqdn
+        # but when used above for host it is the hosts domain???
+        'domain'  => server_name,
+      },
+      'git' => {
+        'repo' => {
+          'name' => 'operations/puppet',
         }
+      },
+      'event' => {
+        'id'       => transaction_uuid,
+        'category' => 'configuration',
+        'type'     => event_type,
+        'kind'     => 'metric',
+        'provider' => 'puppet',
+        'created'  => Time.now.utc.iso8601,
+        'start'    => time.utc.iso8601,
+        'duration' => metrics['time']['total'],
+        'end'      => logs.last.time.utc.iso8601,
+        'outcome'  => event_outcome,
+        'reason'   => configuration_version,
+      },
+      'metrics' => {
+        'puppet' => {'changes' => {}, 'runtime' => {}, 'resources' => {}}
+      },
+    }
 
-        metrics.each do |category, v|
-            event['metrics'][category] = {}
-            v.values.each do |metric|
-                # Each element is of the form [name, titleized_name, value]
-                event['metrics'][category][metric[0]] = metric[2]
-            end
-        end
-
-        begin
-            Timeout.timeout(CONFIG[:timeout]) do
-                sock = TCPSocket.new "#{CONFIG[:host]}" , CONFIG[:port]
-                sock.puts event.to_json
-                sock.flush
-                sock.close
-            end
-        # rubocop:disable Lint/RescueException
-        rescue Exception => e
-            Puppet.err("Failed to write to #{CONFIG[:host]} on port #{CONFIG[:port]}: #{e.message}")
-        end
-        # rubocop:enable Lint/RescueException
+    # configuration_version looks like:
+    # ($git_sha) $author - $message
+    result = /\((?<sha1>\h+)\)\s+(?<author>\S+)/.match(configuration_version.to_s)
+    if result
+      event['git']['commit'] = {
+        'author' => result['author'],
+        'hash' => { 'sha1' => { 'short' => result['sha1'] }}
+      }
     end
+
+    event['metrics']['puppet']['changes']['total'] = metrics['changes'].values[0][2]
+    metrics['time'].values.each do |name, _, value|
+      event['metrics']['puppet']['runtime'][name] = {'seconds' => value}
+    end
+
+    metrics['resources'].values.each do |name, _, value|
+      event['metrics']['puppet']['resources'][name] = {'total' => value}
+    end
+    Syslog.log(Syslog::LOG_INFO, "@cee: #{event.to_json}")
+  end
 end
