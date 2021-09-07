@@ -26,8 +26,6 @@ profile::mariadb::section_ports:
 profile::mariadb::section_params:
   _defaults_:
     writeable_dc: 'mwprimary'
-    replication_type: 'unidir'
-  x1:
     replication_type: 'bidir'
   x2:
     writeable_dc: 'both'
@@ -41,10 +39,6 @@ profile::mariadb::section_params:
   es3:
     writeable_dc: 'none'
     replication_type: 'none'
-  es4:
-    replication_type: 'bidir'
-  es5:
-    replication_type: 'bidir'
   m1:
     writeable_dc: 'eqiad'
     replication_type: 'unidir'
