@@ -2,6 +2,6 @@
 # This file is managed by puppet. DO NOT EDIT
 # Keep a minimum of 7 DB backups, but cleanup older ones besides.
 
-if [ $(/usr/bin/ls -1 <%= @backupdir%>/*.sql.gz | /usr/bin/wc -l) -gt 7 ]
+if [ $(/usr/bin/ls -1 <%= @backupdir%>/*.sql.gz | /usr/bin/wc -l) -gt 7 ]; then
     /usr/bin/find <%= @backupdir%> -name "*.sql.gz" -mtime +7 -delete
 fi
