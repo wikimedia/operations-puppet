@@ -120,18 +120,6 @@ class zuul::merger (
 
     base::service_auto_restart { 'zuul-merger': }
 
-    cron { 'zuul_repack':
-        ensure      => absent,
-        user        => 'zuul',
-        hour        => '4',
-        minute      => '7',
-        command     => "find ${git_dir} -maxdepth 3 -type d -name '.git' -exec git --git-dir='{}' pack-refs --all \\;",
-        environment => [
-            'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
-            'MAILTO="jenkins-bot@wikimedia.org"',
-        ],
-        require     => File[$git_dir],
-    }
     systemd::timer::job { 'zuul_repack':
         ensure       => present,
         user         => 'zuul',
