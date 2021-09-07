@@ -2357,7 +2357,7 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
 # parser cache databases
 # eqiad
 # pc1
-node /^pc10(10|11|14)\.eqiad\.wmnet$/ {
+node /^pc10(11|14)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2

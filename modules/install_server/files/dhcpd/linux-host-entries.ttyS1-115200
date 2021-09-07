@@ -7143,11 +7143,6 @@ host parse2020 {
     fixed-address parse2020.codfw.wmnet;
 }
 
-host pc1010 {
-    hardware ethernet D0:94:66:86:4C:4B;
-    fixed-address pc1010.eqiad.wmnet;
-}
-
 host pc1011 {
     hardware ethernet 2C:EA:7F:A6:3D:7F;
     fixed-address pc1011.eqiad.wmnet;
