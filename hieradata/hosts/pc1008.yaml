@@ -1,4 +1,0 @@
-# pc1008
-mariadb::parsercache::shard: 'pc2'
-profile::mariadb::mysql_role: 'master'
-profile::base::notifications: disabled

@@ -2361,7 +2361,7 @@ node /^pc10(10|11|14)\.eqiad\.wmnet$/ {
     role(mariadb::parsercache)
 }
 # pc2
-node /^pc10(08|12)\.eqiad\.wmnet$/ {
+node 'pc1012.eqiad.wmnet' {
     role(mariadb::parsercache)
 }
 # pc3
