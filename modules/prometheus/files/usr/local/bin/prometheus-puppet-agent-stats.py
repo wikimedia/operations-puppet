@@ -16,7 +16,6 @@
 import argparse
 import logging
 import os
-import re
 import sys
 
 import yaml
@@ -84,10 +83,9 @@ def _summary_stats(puppet_state_dir, registry):
     else:
         failed.set(1)
     if 'version' in summary_yaml:
-        version_pattern = re.compile(r'\((?<git_sha>\h+)\)')
-        match = version_pattern.match(summary_file['version']['config'])
-        if match:
-            catalog_version.info({'git_sha': match['git_sha']})
+        # version is "(sha hash) $author - $subject"
+        git_sha = summary_file['version']['config'].split()[0].strip(['(', ')'])
+        catalog_version.info({'git_sha': git_sha})
 
 
 def collect_puppet_stats(puppet_state_dir, registry):
