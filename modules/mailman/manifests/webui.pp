@@ -33,7 +33,6 @@ class mailman::webui (
     # Add a new default theme to make mailman prettier
     file { '/var/lib/mailman/templates':
         ensure => absent,
-        target => '/etc/mailman',
     }
 
     # Add default theme to make mailman prettier.
@@ -41,11 +40,6 @@ class mailman::webui (
     #  while leaving the by-hand mailman config files in place.
     file { '/etc/mailman':
         ensure  => absent,
-        source  => 'puppet:///modules/mailman/templates/',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        recurse => 'remote',
     }
 
     # Not using require_package so apt::pin may be applied
