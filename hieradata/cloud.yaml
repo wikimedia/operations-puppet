@@ -219,6 +219,8 @@ profile::puppetmaster::frontend::signed_certs_critical: 604800  # 1 weeks
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::ssl_verify_depth: 1
+profile::puppetmaster::common::reports:
+  - puppetdb
 
 profile::base::firewall::block_abuse_nets: false
 profile::base::firewall::default_reject: false

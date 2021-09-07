@@ -6,11 +6,12 @@
 # $storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
 #
 class profile::puppetmaster::common (
-                        $base_config,
-                        $storeconfigs      = lookup('profile::puppetmaster::common::storeconfigs'),
-    Array[Stdlib::Host] $puppetdb_hosts    = lookup('profile::puppetmaster::common::puppetdb_hosts'),
-    Boolean             $command_broadcast = lookup('profile::puppetmaster::common::command_broadcast'),
-    Integer[1,2]        $ssl_verify_depth  = lookup('profile::puppetmaster::common::ssl_verify_depth')
+                                $base_config,
+                                $storeconfigs      = lookup('profile::puppetmaster::common::storeconfigs'),
+    Array[Stdlib::Host]         $puppetdb_hosts    = lookup('profile::puppetmaster::common::puppetdb_hosts'),
+    Boolean                     $command_broadcast = lookup('profile::puppetmaster::common::command_broadcast'),
+    Integer[1,2]                $ssl_verify_depth  = lookup('profile::puppetmaster::common::ssl_verify_depth'),
+    Array[Puppetmaster::Report] $reports   = lookup('profile::puppetmaster::common::reports'),
 ) {
     include passwords::puppet::database
 
@@ -34,7 +35,7 @@ class profile::puppetmaster::common (
     $puppetdb_config = {
         storeconfigs         => true,
         storeconfigs_backend => 'puppetdb',
-        reports              => 'puppetdb',
+        reports              => $reports.join(',')
     }
 
     if $storeconfigs == 'puppetdb' {
