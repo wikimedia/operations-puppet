@@ -28,7 +28,7 @@ class profile::local_dev::docker_publish(
         group     => 'wikidev',
         mode      => '0775',
         umask     => '002',
-        origin    => 'https://gerrit.wikimedia.org/r/releng/dev-images.git',
+        origin    => 'https://gitlab.wikimedia.org/releng/dev-images.git'
     }
 
     file { '/etc/docker-pkg/dev-images.yaml':
