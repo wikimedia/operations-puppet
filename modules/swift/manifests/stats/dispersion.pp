@@ -23,12 +23,23 @@ class swift::stats::dispersion(
 
     # XXX swift-dispersion-populate is not ran/initialized
     cron { 'swift-dispersion-stats':
-        ensure  => $ensure,
+        ensure  => 'absent',
         command => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port} >/dev/null 2>&1",
         user    => 'root',
         hour    => '*',
         minute  => '*/15',
         require => File['/usr/local/bin/swift-dispersion-stats'],
+    }
+
+    systemd::timer::job { 'swift_dispersion_stats':
+        ensure             => $ensure,
+        user               => 'root',
+        description        => 'swift dispersion statistics',
+        command            => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port}",
+        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '15m'},
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        require            => File['/usr/local/bin/swift-dispersion-stats'],
     }
 
     if $storage_policies {
