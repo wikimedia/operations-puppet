@@ -28,6 +28,7 @@ class profile::mediawiki::common(
             web              => 'www-data',
             extra_privileges => [
               "ALL = (root) NOPASSWD: /usr/local/sbin/check-and-restart-php php${php_version}-fpm *",
+              "ALL = (root) NOPASSWD: /usr/local/sbin/restart-php${php_version}-fpm --force",
             ]
         }
     } else {
