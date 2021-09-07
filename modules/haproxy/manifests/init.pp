@@ -15,13 +15,21 @@
 #   Useful for places where monitoring is not appropriate or impossible via icinga
 #   such as cloud or perhaps a PoC system
 #
+# [*systemd_override*]
+#   Override system-provided unit. Defaults to false
+#
+# [*systemd_tpl*]
+#   Template used to create the systemd::service. Defaults to haproxy/haproxy.service.erb
+#
 
 class haproxy(
-    $template = 'haproxy/haproxy.cfg.erb',
-    $socket   = '/run/haproxy/haproxy.sock',
-    $pid      = '/run/haproxy/haproxy.pid',
-    $monitor  = true,
-    $logging  = false,
+    $template                 = 'haproxy/haproxy.cfg.erb',
+    $socket                   = '/run/haproxy/haproxy.sock',
+    $pid                      = '/run/haproxy/haproxy.pid',
+    $monitor                  = true,
+    $logging                  = false,
+    Boolean $systemd_override = false,
+    String $systemd_tpl       = 'haproxy/haproxy.service.erb',
 ) {
 
     package { [
@@ -79,7 +87,8 @@ class haproxy(
     }
 
     systemd::service { 'haproxy':
-        content        => template('haproxy/haproxy.service.erb'),
+        override       => $systemd_override,
+        content        => template($systemd_tpl),
         service_params => {'restart' => '/bin/systemctl reload haproxy.service',}
     }
 
