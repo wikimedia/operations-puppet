@@ -2376,7 +2376,7 @@ node /^pc20(10|11|14)\.codfw\.wmnet$/ {
 }
 
 # pc2
-node /^pc20(08|12)\.codfw\.wmnet$/ {
+node 'pc2012.codfw.wmnet' {
     role(mariadb::parsercache)
 }
 # pc3

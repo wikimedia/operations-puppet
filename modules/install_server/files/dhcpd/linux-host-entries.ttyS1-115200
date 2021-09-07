@@ -7163,11 +7163,6 @@ host pc1014 {
     fixed-address pc1014.eqiad.wmnet;
 }
 
-host pc2008 {
-    hardware ethernet D0:94:66:87:25:32;
-    fixed-address pc2008.codfw.wmnet;
-}
-
 host pc2009 {
     hardware ethernet D0:94:66:87:9A:8B;
     fixed-address pc2009.codfw.wmnet;
