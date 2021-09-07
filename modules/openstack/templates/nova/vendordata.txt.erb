@@ -64,6 +64,11 @@ packages:
 disk_setup:
 fs_setup:
 
+# Mark out ephemeral0 so that cloud-init leaves it alone;
+#  we'll let puppet mount it later.
+mounts:
+    - [ephemeral0]
+
 # You'll see that we're setting apt_preserve_sources_list twice here.  That's
 #  because there's a bug in cloud-init where it tries to reconcile the
 #  two settings and if they're different the stage fails. That means that
