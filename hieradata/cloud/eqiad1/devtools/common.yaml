@@ -10,6 +10,7 @@ phabricator_logmail: false
 phabricator_deploy_user: 'deploy-devtools'
 phabricator::tools::dump: false
 
+docker::registry: 'localhost'
 
 profile::phabricator::main::manage_scap_user: false
 
