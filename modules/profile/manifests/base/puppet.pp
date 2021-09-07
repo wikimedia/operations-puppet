@@ -26,4 +26,5 @@ class profile::base::puppet(
       metric_format => 'puppet.<%= metric %>',
   }
   class { 'prometheus::node_puppet_agent': }
+  include profile::puppet::client_bucket
 }

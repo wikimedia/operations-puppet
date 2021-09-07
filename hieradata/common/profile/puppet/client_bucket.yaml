@@ -1,0 +1,3 @@
+profile::puppet::client_bucket::ensure: present
+profile::puppet::client_bucket::file_age: 14
+profile::puppet::client_bucket::max_size: 100M
