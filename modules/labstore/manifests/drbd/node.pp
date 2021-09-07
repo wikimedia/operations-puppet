@@ -12,8 +12,12 @@ class labstore::drbd::node (
     Stdlib::Datasize $sync_rate = '300M',
 ) {
 
-    package {'drbd8-utils':
-      ensure => present,
+    if debian::codename::eq('stretch') {
+        package {'drbd8-utils':
+            ensure => present,
+        }
+    } else {
+        ensure_packages('drbd-utils')
     }
 
     file {'/etc/drbd.conf':
