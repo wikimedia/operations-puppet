@@ -84,7 +84,7 @@ def _summary_stats(puppet_state_dir, registry):
         failed.set(1)
     if 'version' in summary_yaml:
         # version is "(sha hash) $author - $subject"
-        git_sha = summary_file['version']['config'].split()[0].strip('()')
+        git_sha = summary_yaml['version']['config'].split()[0].strip('()')
         catalog_version.info({'git_sha': git_sha})
 
 
