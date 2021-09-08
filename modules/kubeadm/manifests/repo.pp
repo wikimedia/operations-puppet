@@ -4,7 +4,7 @@ class kubeadm::repo (
     $repo_name = 'kubeadm-k8s-component-repo'
     apt::repository { $repo_name:
         uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => 'buster-wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
         components => $component,
         notify     => Exec['apt-get update'],
     }
