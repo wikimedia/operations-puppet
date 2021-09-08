@@ -18,18 +18,19 @@
 # [*systemd_override*]
 #   Override system-provided unit. Defaults to false
 #
-# [*systemd_tpl*]
-#   Template used to create the systemd::service. Defaults to haproxy/haproxy.service.erb
+# [*systemd_content*]
+#   Content used to create the systemd::service. If not provided a default template
+#   located on haproxy/haproxy.service.erb is used
 #
 
 class haproxy(
-    $template                 = 'haproxy/haproxy.cfg.erb',
-    $socket                   = '/run/haproxy/haproxy.sock',
-    $pid                      = '/run/haproxy/haproxy.pid',
-    $monitor                  = true,
-    $logging                  = false,
-    Boolean $systemd_override = false,
-    String $systemd_tpl       = 'haproxy/haproxy.service.erb',
+    $template                         = 'haproxy/haproxy.cfg.erb',
+    $socket                           = '/run/haproxy/haproxy.sock',
+    $pid                              = '/run/haproxy/haproxy.pid',
+    $monitor                          = true,
+    $logging                          = false,
+    Boolean $systemd_override         = false,
+    Optional[String] $systemd_content = undef,
 ) {
 
     package { [
@@ -86,9 +87,14 @@ class haproxy(
         notify  => Service['haproxy'],
     }
 
+    $systemd_service_content = $systemd_content? {
+        undef   => template('haproxy/haproxy.service.erb'),
+        default => $systemd_content,
+    }
+
     systemd::service { 'haproxy':
         override       => $systemd_override,
-        content        => template($systemd_tpl),
+        content        => $systemd_service_content,
         service_params => {'restart' => '/bin/systemctl reload haproxy.service',}
     }
 
