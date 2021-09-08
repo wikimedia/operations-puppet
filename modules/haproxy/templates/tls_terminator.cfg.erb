@@ -7,4 +7,19 @@ listen tls
     bind :<%= @port -%> ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
     bind :::<%= @port -%> v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
 
+    # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
+    timeout http-request <%= @timeout['http_request'] %>s
+    # set the maximum allowed time to wait for a new HTTP request to appear
+    timeout http-keep-alive <%= @timeout['keep_alive'] %>s
+    # set the maximum inactivity time on the client side
+    timeout client <%= @timeout['client'] %>s
+    # inactivity timeout on the client side for half-closed connections
+    timeout client-fin <%= @timeout['client_fin'] %>s
+    # connect timeout against a backend server
+    timeout connect <%= @timeout['connect'] %>s
+    # set the maximum inactivity time on the server side
+    timeout server <%= @timeout['server'] %>s
+    # timeout used after upgrading a connection (websockets) or after the first response when no keepalive/close option is specified
+    timeout tunnel <%= @timeout['tunnel'] %>s
+
     server backend_server unix@<%= @backend_socket %>
