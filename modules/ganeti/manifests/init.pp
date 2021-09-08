@@ -15,20 +15,23 @@
 class ganeti(
     String $certname,
     Boolean $with_drbd=true,
-    ) {
+    Boolean $ganeti216=false,
+) {
     include ::ganeti::kvm
+
+    if $ganeti216 {
+        apt::package_from_component { 'ganeti216':
+            component => 'component/ganeti216',
+            packages  => ['ganeti', 'ganeti-2.16', 'ganeti-haskell-2.16', 'ganeti-htools-2.16'],
+        }
+    } else {
+        ensure_packages('ganeti')
+    }
 
     # We're not using ganeti-instance-debootstrap to create images (we PXE-boot
     # the same images we use for baremetal servers), but /usr/share/ganeti/os/debootstrap
     # is needed as an OS provider for "gnt-instance add"
-    package { [
-            'ganeti',
-            'drbd-utils',
-            'ovmf',
-            'ganeti-instance-debootstrap',
-            ] :
-        ensure => installed,
-    }
+    ensure_packages(['drbd-utils', 'ovmf', 'ganeti-instance-debootstrap'])
 
     if $with_drbd {
         kmod::options { 'drbd':
@@ -75,6 +78,7 @@ class ganeti(
         mode    => '0644',
         content => template('ganeti/etc_default_ganeti.erb')
     }
+
     sslcert::certificate { $certname:
         ensure     => present,
         group      => 'gnt-admin',

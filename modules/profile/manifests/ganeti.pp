@@ -27,6 +27,9 @@
 # [*rapi_ro_password*]
 #   A string containing the password for the aforementioned user.
 #
+# [*ganeti216*]
+#   Add the repository component with the 2.16 backport
+#
 
 class profile::ganeti (
     Array[Stdlib::Fqdn] $nodes         = lookup('profile::ganeti::nodes'),
@@ -36,10 +39,12 @@ class profile::ganeti (
                                                 { default_value => undef }),
     Optional[String] $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
                                                 { default_value => undef }),
+    Boolean $ganeti216                 = lookup('profile::ganeti::ganeti216'),
 ) {
 
     class { 'ganeti':
-        certname => $rapi_certificate,
+        certname  => $rapi_certificate,
+        ganeti216 => $ganeti216,
     }
 
     # Ganeti needs intracluster SSH root access
