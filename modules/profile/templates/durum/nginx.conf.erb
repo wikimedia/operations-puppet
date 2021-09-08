@@ -16,11 +16,11 @@ server {
   listen      <%= @ips['landing'] %>:443 ssl http2;
   server_name <%= @domain %>;
 
-  <%= @ssl_settings.join("\n") %>
+  <%= @ssl_settings.join("\n  ") %>
 
   location / {
-    include    uwsgi_params;
-    uwsgi_pass unix:<%= @common['sock_file'] %>;
+    root      <%= @durum_path %>;
+    index     index.html;
   }
 
 }
@@ -31,7 +31,7 @@ server {
   listen      <%= @ips['success'] %>:443 ssl http2;
   server_name *.<%= @domain %>;
 
-  <%= @ssl_settings.join("\n") %>
+  <%= @ssl_settings.join("\n  ") %>
 
   add_header Access-Control-Allow-Origin https://<%= @domain %>;
 
@@ -50,7 +50,7 @@ server {
 
   add_header Access-Control-Allow-Origin https://<%= @domain %>;
 
-  <%= @ssl_settings.join("\n") %>
+  <%= @ssl_settings.join("\n  ") %>
 
   location /check {
     default_type application/json;

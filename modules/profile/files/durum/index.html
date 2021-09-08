@@ -25,10 +25,13 @@
         color: gray;
       }
     </style>
+    <script src="uuidv4.js"></script>
     <script>
-      const time = new Date().toLocaleTimeString();
-      const url = "https://{{ request.uuid }}.check.wikimedia-dns.org/check/";
-      fetch(url)
+      const testUUID = uuidv4();
+      const testTime = new Date().toLocaleTimeString();
+      const checkURL = `https://${testUUID}.check.wikimedia-dns.org/check/`;
+
+      fetch(checkURL)
       .then((response) => response.json())
       .then(check => {
         if (check.result === true) {
@@ -44,7 +47,7 @@
           document.getElementById("check-result").textContent = "We were unable to determine if you are using Wikidough.";
       })
       .finally(() => {
-          document.getElementById("check-info").textContent = `Tested at ${time} with UUID {{ request.uuid }}`;
+          document.getElementById("check-info").textContent = `Tested at ${testTime} with test ID ${testUUID}`;
       });
     </script>
     <noscript>Please enable JavaScript to view this page.</noscript>

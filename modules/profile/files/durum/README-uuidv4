@@ -1,0 +1,45 @@
+      Steps to generate an unminified uuidv4.js
+
+Since this involves npm, we recommend you perform these steps inside a
+container or a VM.
+
+(You can also use Fresh: https://gerrit.wikimedia.org/g/fresh).
+
+  $ sudo apt install npm
+  $ git clone https://github.com/uuidjs/uuid
+  $ cd uuid
+  $ git checkout v8.3.2
+  $ npm install --save-dev @babel/cli # (7.15.4; required by the build script)
+
+Edit rollup.config.js:
+
+  diff --git a/rollup.config.js b/rollup.config.js
+  index 37de405..4d038ec 100644
+  --- a/rollup.config.js
+  +++ b/rollup.config.js
+  @@ -8,9 +8,9 @@ function chunk(input, name) {
+         file: `dist/umd/${name}.min.js`,
+         format: 'umd',
+         name,
+  -      compact: true,
+  +      compact: false,
+       },
+  -    plugins: [nodeResolve({ browser: true }), terser()],
+  +    plugins: [nodeResolve({ browser: true })],
+     };
+   }
+
+To summarize, change compact to false, and remove terser.
+
+Finally, run the build script:
+
+  $ ./scripts/build.sh
+
+This will create the _unminified_ file in dist/umd/uuidv4.min.js. (Ignore the
+"min.js" in the output file name as we did not change the name.)
+
+  $ sha1sum dist/umd/uuidv4.min.js
+  693b3e5c4f1fd9e2741ec2bb71808b05af571c4e  dist/umd/uuidv4.min.js
+
+This checksum above should match the checksum of the uuidv4.js file, minus the
+top-level comment section.

@@ -5,43 +5,23 @@ class profile::durum (
 ) {
 
     $durum_path = $common['durum_path']
+    $index_file = "${durum_path}/index.html"
+    $js_file = "${durum_path}/uuidv4.js"
 
-    $durum_file = "${durum_path}/${common['app_file']}"
-    $template_file = "${durum_path}/templates/${common['template_file']}"
-
-    ensure_packages(['python3-flask'])
-
-    file { [$durum_path, "${durum_path}/templates"]:
+    file { $durum_path:
         ensure => 'directory',
     }
 
     file {
         default:
-            ensure  => 'present',
-            owner   => 'www-data',
-            group   => 'www-data',
-            mode    => '0440',
-            notify  => Service['uwsgi-durum'],
-            require => Package['python3-flask'];
-        $durum_file:
-            content => template('profile/durum/durum.py.erb');
-        $template_file:
-            content => template('profile/durum/index.html.erb');
-    }
-
-    uwsgi::app { 'durum':
-        settings => {
-            uwsgi => {
-                plugins   => 'python3',
-                socket    => $common['sock_file'],
-                wsgi-file => $durum_file,
-                callable  => 'app',
-            }
-        },
-        require  => [
-          File[$durum_file],
-          File[$template_file],
-        ],
+            ensure => 'present',
+            owner  => 'www-data',
+            group  => 'www-data',
+            mode   => '0440';
+        $index_file:
+            content => file('profile/durum/index.html');
+        $js_file:
+            content => file('profile/durum/uuidv4.js');
     }
 
     include network::constants
@@ -60,7 +40,10 @@ class profile::durum (
     $ssl_settings = ssl_ciphersuite('nginx', 'strong', true)
     nginx::site { 'durum':
         content => template('profile/durum/nginx.conf.erb'),
-        require => Uwsgi::App['durum'],
+        require => [
+          File[$index_file],
+          File[$js_file],
+        ]
     }
 
 }

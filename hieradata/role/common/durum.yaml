@@ -8,9 +8,6 @@ profile::durum::service::ips:
 
 profile::durum::service::common:
   durum_path: '/srv/durum'
-  sock_file: '/run/uwsgi/durum.sock'
-  app_file: 'durum.py'
-  template_file: 'index.html'
 
 profile::bird::advertise_vips:
   check.wikimedia-dns.org:
