@@ -1,13 +1,12 @@
-# Wikibase Query Service UI (T266702)
-class profile::microsites::query_service {
+# Wikidata Query Service UI (T266702)
+class profile::microsites::wdqs {
 
-    profile::microsites::query_service::site { 'wdqs':
-        domain_name => 'query.wikidata.org',
+    httpd::site { 'query.wikidata.org':
+        content => template('profile/wdqs/httpd-query.wikidata.org.erb'),
     }
 
-    profile::microsites::query_service::site { 'wdqs-preview':
-        domain_name => 'query-preview.wikidata.org',
-        deploy_name => 'wdqs',
+    httpd::site { 'query-preview.wikidata.org':
+        content => template('profile/wdqs/httpd-query-preview.wikidata.org.erb'),
     }
 
     ensure_resource('file', '/srv/org', {'ensure' => 'directory' })

@@ -1,0 +1,32 @@
+<VirtualHost *:80>
+    ServerName query-preview.wikidata.org
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot /srv/org/wikidata/query
+
+    ServerSignature On
+
+    LogLevel warn
+    ErrorLog /var/log/apache2/query-preview.wikidata.org.error.log
+    CustomLog /var/log/apache2/query-preview.wikidata.org.access.log wmf
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory /srv/org/wikidata/query>
+        Header set Cache-Control "max-age=3600, must-revalidate"
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    Alias /querybuilder    "/srv/org/wikidata/query-builder"
+    <Directory /srv/org/wikidata/query-builder>
+        Header set Cache-Control "max-age=3600, must-revalidate"
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+</VirtualHost>
