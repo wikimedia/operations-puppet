@@ -1,5 +1,5 @@
 class profile::wmcs::kubeadm::worker (
-    String $component = lookup('profile::wmcs::kubeadm::component', {default_value => 'thirdparty/kubeadm-k8s-1-18'}),
+    String $component = lookup('profile::wmcs::kubeadm::component', {default_value => 'thirdparty/kubeadm-k8s-1-19'}),
     Boolean $docker_vol = lookup('profile::wmcs::kubeadm::docker_vol', {default_value => true}),
 ) {
     require profile::wmcs::kubeadm::preflight_checks
