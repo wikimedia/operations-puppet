@@ -150,7 +150,11 @@ class profile::backup::filesets() {
     }
     bacula::director::fileset { 'contint':
         includes => [ '/srv', '/var/lib/zuul', '/var/lib/jenkins' ],
-        excludes => [ '/srv/jenkins/builds', '/var/lib/jenkins/builds', ],
+        excludes => [
+            '/srv/docker',
+            '/srv/jenkins/builds',
+            '/var/lib/jenkins/builds',
+        ],
     }
     bacula::director::fileset { 'etcd':
         includes => [ '/srv/backups/etcd' ]
