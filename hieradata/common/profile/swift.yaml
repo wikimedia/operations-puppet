@@ -128,6 +128,10 @@ profile::swift::storagehosts:
   - ms-be1061.eqiad.wmnet
   - ms-be1062.eqiad.wmnet
   - ms-be1063.eqiad.wmnet
+  - ms-be1064.eqiad.wmnet
+  - ms-be1065.eqiad.wmnet
+  - ms-be1066.eqiad.wmnet
+  - ms-be1067.eqiad.wmnet
   - ms-be2028.codfw.wmnet
   - ms-be2029.codfw.wmnet
   - ms-be2030.codfw.wmnet
