@@ -161,6 +161,7 @@ class thumbor (
     }
 
     cron { 'systemd-thumbor-tmpfiles-clean':
+        ensure   => 'absent',
         minute   => '*',
         hour     => '*',
         monthday => '*',
@@ -168,6 +169,16 @@ class thumbor (
         weekday  => '*',
         command  => '/bin/systemd-tmpfiles --clean --prefix=/srv/thumbor/tmp',
         user     => 'thumbor',
+    }
+
+    systemd::timer::job { 'thumbor_systemd_tmpfiles_clean':
+        ensure             => 'present',
+        user               => 'thumbor',
+        description        => 'clean systemd tmpfiles for thumbor',
+        command            => '/bin/systemd-tmpfiles --clean --prefix=/srv/thumbor/tmp',
+        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '1m'},
+        monitoring_enabled => false,
+        logging_enabled    => false,
     }
 
     file { '/usr/local/bin/generate-thumbor-age-metrics.sh':
