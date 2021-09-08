@@ -30,18 +30,6 @@ class mailman::webui (
         recurse => 'remote',
     }
 
-    # Add a new default theme to make mailman prettier
-    file { '/var/lib/mailman/templates':
-        ensure => absent,
-    }
-
-    # Add default theme to make mailman prettier.
-    #  Recurse => remote adds a bunch of files here and there
-    #  while leaving the by-hand mailman config files in place.
-    file { '/etc/mailman':
-        ensure  => absent,
-    }
-
     # Not using require_package so apt::pin may be applied
     # before attempting to install package.
     package { 'libapache2-mod-security2':
