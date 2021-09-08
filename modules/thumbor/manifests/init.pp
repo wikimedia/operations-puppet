@@ -176,7 +176,20 @@ class thumbor (
         source => 'puppet:///modules/thumbor/generate-thumbor-age-metrics.sh',
     }
 
+    file { '/usr/local/bin/generate-thumbor-age-metrics-nc.sh':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/thumbor/generate-thumbor-age-metrics-nc.sh',
+    }
+
+    file { '/etc/generate-thumbor-age-metrics':
+        ensure  => present,
+        mode    => '0555',
+        content => template('thumbor/generate-thumbor-age-metrics-nc-config.erb'),
+    }
+
     cron { 'process-age-statsd':
+        ensure   => 'absent',
         minute   => '*',
         hour     => '*',
         monthday => '*',
@@ -184,6 +197,16 @@ class thumbor (
         weekday  => '*',
         command  => "/usr/local/bin/generate-thumbor-age-metrics.sh | /bin/nc -w 1 -u ${statsd_host} ${statsd_port}",
         user     => 'thumbor',
+    }
+
+    systemd::timer::job { 'thumbor_process_age_statsd':
+        ensure             => 'present',
+        user               => 'thumbor',
+        description        => 'generate thumbor age metrics',
+        command            => '/usr/local/bin/generate-thumbor-age-metrics-nc.sh',
+        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '1m'},
+        monitoring_enabled => false,
+        logging_enabled    => false,
     }
 
     # create a list of installed fonts - T280718
