@@ -4,6 +4,12 @@
 # Set a k8s environment for your shell. This will allow correct usage of
 # kubectl and helm/helmfile
 kube_env() {
+
+    if [ $# -ne 2 ] ; then
+        echo 'Usage: kube_env NAMESPACE K8S_ENVIRONMENT'
+        return 1
+    fi
+
     if [[ "$1" == "admin" ]]; then
         TILLER_NAMESPACE="kube-system"
     else
