@@ -10,4 +10,5 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
+  - drmrs.wmnet
 prometheus::server::storage_retention_size: 80GB
