@@ -35,22 +35,23 @@
 #  include postgresql::master
 
 class postgresql::master(
-    Wmflib::Ensure             $ensure                     = 'present',
-    Stdlib::Host               $master_server              = $facts['fqdn'],
-    Array[String]              $includes                   = [],
-    Integer                    $max_wal_senders            = 5,
-    Integer                    $checkpoint_segments        = 64,
-    Integer                    $wal_keep_segments          = 128,
-    Stdlib::Unixpath           $root_dir                   = '/var/lib/postgresql',
-    Boolean                    $use_ssl                    = false,
-    String                     $locale                     = 'en_US.UTF-8',
-    Integer                    $sync_count                 = 1,
-    String                     $sync_mode                  = 'on',
-    String                     $log_line_prefix            = '%t ',
-    Optional[Stdlib::Unixpath] $ssldir                     = undef,
-    Optional[Array[String]]    $sync_replicas              = undef,
-    Optional[Integer[250]]     $log_min_duration_statement = undef,
-    Optional[Numeric]          $pgversion                  = undef,
+    Wmflib::Ensure             $ensure                      = 'present',
+    Stdlib::Host               $master_server               = $facts['fqdn'],
+    Array[String]              $includes                    = [],
+    Integer                    $max_wal_senders             = 5,
+    Integer                    $checkpoint_segments         = 64,
+    Integer                    $wal_keep_segments           = 128,
+    Stdlib::Unixpath           $root_dir                    = '/var/lib/postgresql',
+    Boolean                    $use_ssl                     = false,
+    String                     $locale                      = 'en_US.UTF-8',
+    Integer                    $sync_count                  = 1,
+    String                     $sync_mode                   = 'on',
+    String                     $log_line_prefix             = '%t ',
+    Optional[Stdlib::Unixpath] $ssldir                      = undef,
+    Optional[Array[String]]    $sync_replicas               = undef,
+    Optional[Integer[250]]     $log_min_duration_statement  = undef,
+    Optional[Integer]          $log_autovacuum_min_duration = undef,
+    Optional[Numeric]          $pgversion                   = undef,
 ) {
 
     $_pgversion = $pgversion ? {
@@ -65,14 +66,15 @@ class postgresql::master(
     $data_dir = "${root_dir}/${_pgversion}/main"
 
     class { 'postgresql::server':
-        ensure                     => $ensure,
-        pgversion                  => $_pgversion,
-        includes                   => $includes + ['master.conf'],
-        root_dir                   => $root_dir,
-        use_ssl                    => $use_ssl,
-        ssldir                     => $ssldir,
-        log_line_prefix            => $log_line_prefix,
-        log_min_duration_statement => $log_min_duration_statement,
+        ensure                      => $ensure,
+        pgversion                   => $_pgversion,
+        includes                    => $includes + ['master.conf'],
+        root_dir                    => $root_dir,
+        use_ssl                     => $use_ssl,
+        ssldir                      => $ssldir,
+        log_line_prefix             => $log_line_prefix,
+        log_min_duration_statement  => $log_min_duration_statement,
+        log_autovacuum_min_duration => $log_autovacuum_min_duration,
     }
 
     file { "/etc/postgresql/${_pgversion}/main/master.conf":

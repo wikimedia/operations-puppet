@@ -13,6 +13,7 @@ class profile::puppetdb::database(
     Array[Stdlib::Host]        $slaves               = lookup('profile::puppetdb::slaves'),
     Optional[Stdlib::Unixpath] $ssldir               = lookup('profile::puppetdb::database::ssldir'),
     Optional[Integer[250]] $log_min_duration_statement = lookup('profile::puppetdb::database::log_min_duration_statement'),
+    Optional[Integer]      $log_autovacuum_min_duration = lookup('profile::puppetdb::database::log_autovacuum_min_duration'),
 ) {
     $pgversion = debian::codename() ? {
         'bullseye' => 13,
@@ -38,12 +39,13 @@ class profile::puppetdb::database(
     }
     if $on_master {
         class { 'postgresql::master':
-            includes                   => ['tuning.conf'],
-            root_dir                   => '/srv/postgres',
-            use_ssl                    => true,
-            ssldir                     => $ssldir,
-            log_line_prefix            => $log_line_prefix,
-            log_min_duration_statement => $log_min_duration_statement,
+            includes                    => ['tuning.conf'],
+            root_dir                    => '/srv/postgres',
+            use_ssl                     => true,
+            ssldir                      => $ssldir,
+            log_line_prefix             => $log_line_prefix,
+            log_min_duration_statement  => $log_min_duration_statement,
+            log_autovacuum_min_duration => $log_autovacuum_min_duration,
         }
     } else {
         class { 'postgresql::slave':

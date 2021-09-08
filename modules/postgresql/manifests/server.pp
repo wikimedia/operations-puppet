@@ -27,16 +27,17 @@
 #  include postgresql::server
 #
 class postgresql::server(
-    Wmflib::Ensure             $ensure                     = 'present',
-    Array                      $includes                   = [],
-    String                     $listen_addresses           = '*',
-    Stdlib::Port               $port                       = 5432,
-    Stdlib::Unixpath           $root_dir                   = '/var/lib/postgresql',
-    Boolean                    $use_ssl                    = false,
-    String                     $log_line_prefix            = '%t ',
-    Optional[Integer[250]]     $log_min_duration_statement = undef,
-    Optional[Numeric]          $pgversion                  = undef,
-    Optional[Stdlib::Unixpath] $ssldir                     = undef,
+    Wmflib::Ensure             $ensure                      = 'present',
+    Array                      $includes                    = [],
+    String                     $listen_addresses            = '*',
+    Stdlib::Port               $port                        = 5432,
+    Stdlib::Unixpath           $root_dir                    = '/var/lib/postgresql',
+    Boolean                    $use_ssl                     = false,
+    String                     $log_line_prefix             = '%t ',
+    Optional[Integer[250]]     $log_min_duration_statement  = undef,
+    Optional[Integer]          $log_autovacuum_min_duration = undef,
+    Optional[Numeric]          $pgversion                   = undef,
+    Optional[Stdlib::Unixpath] $ssldir                      = undef,
 ) {
 
     case debian::codename() {

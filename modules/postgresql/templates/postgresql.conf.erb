@@ -335,6 +335,9 @@ listen_addresses = '<%= @listen_addresses %>'
 <%- if @log_min_duration_statement -%>
 log_min_duration_statement = <%= @log_min_duration_statement %>
 <%- end -%>
+<%- if @log_autovacuum_min_duration -%>
+log_autovacuum_min_duration = <%= @log_autovacuum_min_duration %>
+<%- end -%>
 log_line_prefix = '<%= @log_line_prefix %>'			# special values:
 					#   %a = application name
 					#   %u = user name
