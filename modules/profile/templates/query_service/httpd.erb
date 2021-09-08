@@ -1,13 +1,19 @@
 <VirtualHost *:80>
-    ServerName query.wikidata.org
+    ServerName <%= @domain_name %>
     ServerAdmin noc@wikimedia.org
     DocumentRoot /srv/org/wikidata/query
 
     ServerSignature On
 
     LogLevel warn
-    ErrorLog /var/log/apache2/query.wikidata.org.error.log
-    CustomLog /var/log/apache2/query.wikidata.org.access.log wmf
+    ErrorLog /var/log/apache2/<%= @domain_name %>.error.log
+    CustomLog /var/log/apache2/<%= @domain_name %>.access.log wmf
+
+    # Rewrite not-found top-level assets into the per-site docroot to
+    # support per-site favicon/etc.
+    RewriteEngine On
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+    RewriteRule ^/([^/]+)$ /srv/org/wikidata/query/sites/<%= @deploy_name %>/$1
 
     <Directory />
         Options FollowSymLinks

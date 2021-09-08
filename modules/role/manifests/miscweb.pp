@@ -26,5 +26,5 @@ class role::miscweb {
     include ::profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
     include ::profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
     include ::profile::microsites::security        # https://security.wikimedia.org (T257830)
-    include ::profile::microsites::wdqs            # parts of https://query.wikidata.org (T266702)
+    include ::profile::microsites::query_service   # parts of https://query.wikidata.org (T266702)
 }
