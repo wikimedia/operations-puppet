@@ -83,7 +83,8 @@ metadata:
     seccomp.security.alpha.kubernetes.io/defaultProfileName:  'runtime/default'
   name: default
 spec:
-  allowedCapabilities: []  # default set of capabilities are implicitly allowed
+  requiredDropCapabilities:
+  - ALL
   allowPrivilegeEscalation: false
   fsGroup:
     rule: 'MustRunAs'
@@ -130,3 +131,17 @@ spec:
     readOnly: true
   - pathPrefix: '/etc/ldap.conf'
     readOnly: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: default
+rules:
+- apiGroups:
+  - policy
+  resourceNames:
+  - default
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
