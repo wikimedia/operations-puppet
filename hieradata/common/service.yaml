@@ -3825,7 +3825,7 @@ service::catalog:
     port: 30443
     sites:
       - eqiad
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: inference
         active_active: false
