@@ -9,6 +9,7 @@ class profile::cache::haproxy(
     String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
+    Haproxy::Proxyprotocol $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol'),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     String $ocsp_proxy = lookup('http_proxy'),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
@@ -111,6 +112,7 @@ class profile::cache::haproxy(
         tls13_ciphers        => $tls13_ciphers,
         timeout              => $timeout,
         h2settings           => $h2settings,
+        proxy_protocol       => $proxy_protocol,
         tls_ticket_keys_path => $tls_ticket_keys_path,
     }
 }

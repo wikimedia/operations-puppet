@@ -26,4 +26,12 @@ listen tls
     # timeout used after upgrading a connection (websockets) or after the first response when no keepalive/close option is specified
     timeout tunnel <%= @timeout['tunnel'] %>s
 
+<%- if @proxy_protocol == nil -%>
     server backend_server unix@<%= @backend_socket %>
+<%- elsif @proxy_protocol == 'V1' -%>
+    server backend_server unix@<%= @backend_socket %> send-proxy
+<%- elsif @proxy_protocol == 'V2' -%>
+    server backend_server unix@<%= @backend_socket %> send-proxy-v2
+<%- elsif @proxy_protocol == 'V2-ssl' -%>
+    server backend_server unix@<%= @backend_socket %> send-proxy-v2-ssl
+<%- end -%>
