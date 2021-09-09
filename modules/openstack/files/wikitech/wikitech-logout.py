@@ -13,7 +13,7 @@ class WikitechLogoutd(LogoutdBase):
     def logout_user(self, user: str):
         config = configparser.ConfigParser()
         config.read('/etc/wikitech-logoutd.ini')
-        dbname = config.get('wikitech', 'dbname')
+        dbname = config.get('logoutd', 'dbname')
 
         try:
             command = [
