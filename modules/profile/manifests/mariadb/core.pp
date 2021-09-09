@@ -63,7 +63,8 @@ class profile::mariadb::core (
     $is_critical = profile::mariadb::section_params::is_alert_critical($shard, $mysql_role)
     mariadb::monitor_readonly { $shard:
         read_only   => $is_read_only,
-        is_critical => ($is_critical and $mysql_role == 'master'),
+        # XXX(kormat): Not using $is_critical, as we want to alert even for an inactive DC.
+        is_critical => ($mysql_role == 'master'),
     }
 
     class { 'mariadb::monitor_disk':

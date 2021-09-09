@@ -53,6 +53,8 @@ class profile::mariadb::parsercache (
 
     mariadb::monitor_readonly { [ $shard ]:
         read_only   => false,
+        # XXX(kormat): Deliberately using $is_primary_master here rather than $is_master,
+        # the inactive DC being read-only isn't a page-worthy event.
         is_critical => $is_primary_master,
     }
 

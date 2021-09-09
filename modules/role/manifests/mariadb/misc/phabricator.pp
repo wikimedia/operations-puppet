@@ -99,7 +99,8 @@ class role::mariadb::misc::phabricator(
 
     mariadb::monitor_readonly { $shard:
         read_only   => $read_only,
-        is_critical => $is_primary_master,
+        # XXX(kormat): Not using $is_primary_master, as we want to alert even for an inactive DC.
+        is_critical => $is_master,
     }
 
     class { 'mariadb::monitor_memory': }

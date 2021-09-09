@@ -58,7 +58,7 @@ class profile::mariadb::misc::db_inventory(
         # See T266003 for context.
         #read_only   => $is_read_only,
         read_only   => false,
-        is_critical => $is_critical,
+        is_critical => true,
     }
     class { 'mariadb::monitor_disk':
         is_critical => $is_critical,

@@ -61,7 +61,8 @@ class profile::mariadb::misc (
     }
     mariadb::monitor_readonly { $shard:
         read_only   => $read_only,
-        is_critical => $is_primary_master,
+        # XXX(kormat): Not using $is_primary_master, as we want to alert even for an inactive DC.
+        is_critical => $is_master,
     }
     if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
         $source_dc = profile::mariadb::section_params::get_repl_src_dc($mysql_role)
