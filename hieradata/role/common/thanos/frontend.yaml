@@ -9,6 +9,7 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
+  - drmrs.wmnet
 profile::lvs::realserver::pools:
   thanos-query:
     services:
