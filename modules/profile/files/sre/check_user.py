@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """A simple example of how to access the Google Analytics API."""
 
+import json
+
 from argparse import ArgumentParser
 from configparser import ConfigParser
 from os import access, environ, R_OK
 from textwrap import dedent
+from typing import Dict
+from spicerack import Spicerack
 
 from apiclient.discovery import build
 from google.oauth2 import service_account
@@ -29,7 +33,8 @@ class GsuiteUsers:
         """Return a credentials object"""
         if self._credentials is None:
             self._credentials = service_account.Credentials.from_service_account_file(
-                self.key_file_location, scopes=self.scopes)
+                self.key_file_location, scopes=self.scopes
+            )
             if self.impersonate is not None:
                 self._credentials = self._credentials.with_subject(self.impersonate)
         return self._credentials
@@ -38,7 +43,9 @@ class GsuiteUsers:
     def service(self):
         """Return a service object"""
         if self._service is None:
-            self._service = build(self.api_name, self.api_version, credentials=self.credentials)
+            self._service = build(
+                self.api_name, self.api_version, credentials=self.credentials
+            )
         return self._service
 
     def emails(self):
@@ -56,8 +63,11 @@ class GsuiteUsers:
 
     def get_users(self, page_token=None, max_results=25):
         """Get a list of users"""
-        return self.service.users().list(
-            domain=self.domain, maxResults=max_results, pageToken=page_token).execute()
+        return (
+            self.service.users()
+            .list(domain=self.domain, maxResults=max_results, pageToken=page_token)
+            .execute()
+        )
 
     def get_user(self, email):
         """Get a users object from the primary email address
@@ -72,16 +82,47 @@ class GsuiteUsers:
         return self.service.users().get(userKey=email).execute()
 
 
+def get_wikitech_user(email: str) -> Dict:
+    """Get the wikitech username, email and authenticated_email attributes from wikitech
+
+    Arguments:
+        email (str):  The email to query
+
+    Returns:
+        dict: Representing the user
+    """
+    spicerack = Spicerack(dry_run=False)
+    confctl = spicerack.confctl('mwconfig')
+    primary_site = next(confctl.get(scope='common', name='WMFMasterDatacenter')).val
+    mwmaint = spicerack.remote().query(f'A:mw-maintenance and A:{primary_site}')
+    command = ('mwscript extensions/WikimediaMaintenance/getUsersByEmail.php '
+               '--wiki=labswiki --email {email}')
+    if len(mwmaint) > 1:
+        raise ValueError('to many mwmaint hosts')
+    _, results = next(mwmaint.run_sync(command, print_output=False, print_progress_bars=False))
+    # TODO: remove the [:-2] which is only there due to a bug
+    # https://gerrit.wikimedia.org/r/c/mediawiki/extensions/WikimediaMaintenance/+/730021
+    results = json.loads(results.message().decode()[:-2])
+    print('WikiTech Users:')
+    for user in results:
+        verified = user['email_authenticated_date'] if user['email_authenticated_date'] else '*NO*'
+        print(f'\tUsername:\t{user["username"]}\n\tVerified Email:\t{verified}')
+
+
 def get_args():
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-i', '--impersonate', help='A super admin email address')
-    parser.add_argument('-c', '--config', default='/etc/check_user.conf',
-                        help='Location of the config file')
-    parser.add_argument('-K', '--key-file',
-                        help='The path to a valid service account JSON key file')
-    parser.add_argument('-p', '--proxy-host',
-                        help='The proxy host to use')
+    parser.add_argument(
+        '-c',
+        '--config',
+        default='/etc/check_user.conf',
+        help='Location of the config file',
+    )
+    parser.add_argument(
+        '-K', '--key-file', help='The path to a valid service account JSON key file'
+    )
+    parser.add_argument('-p', '--proxy-host', help='The proxy host to use')
     parser.add_argument('email', help='The primary email address of the user')
     return parser.parse_args()
 
@@ -94,14 +135,22 @@ def main():
         config.read(args.config)
     # prefer arguments to config file
     try:
-        impersonate = args.impersonate if args.impersonate else config['DEFAULT']['impersonate']
+        impersonate = (
+            args.impersonate if args.impersonate else config['DEFAULT']['impersonate']
+        )
         key_file = args.key_file if args.key_file else config['DEFAULT']['key_file']
-        proxy = args.proxy_host if args.proxy_host else config['DEFAULT'].get('proxy_host', None)
+        proxy = (
+            args.proxy_host
+            if args.proxy_host
+            else config['DEFAULT'].get('proxy_host', None)
+        )
     except KeyError as error:
         return 'no {} specified'.format(error)
     if not access(key_file, R_OK):
         return 'unable to access {}'.format(key_file)
 
+    # need to do this before setting the proxy
+    get_wikitech_user(args.email)
     if proxy:
         # the google api libraries use httplib2 which by default
         # looks in the environment for proxy servers
@@ -110,16 +159,21 @@ def main():
     users = GsuiteUsers(key_file, impersonate)
     user = users.get_user(args.email)
     # I dont think there would ever be more then one manager but just in case
-    manager = ', '.join([r['value'] for r in user['relations'] if r['type'] == 'manager'])
+    manager = ', '.join(
+        [r['value'] for r in user['relations'] if r['type'] == 'manager']
+    )
     msg = """
-    name:\t\t{}
-    title:\t\t{}
-    manager:\t{}
-    agreedToTerms:\t{}
-    """.format(user['name']['fullName'],
-               user['organizations'][0]['title'],
-               manager,
-               user['agreedToTerms'])
+    Gsuit User:
+    \tname:\t\t{}
+    \ttitle:\t\t{}
+    \tmanager:\t{}
+    \tagreedToTerms:\t{}
+    """.format(
+        user['name']['fullName'],
+        user['organizations'][0]['title'],
+        manager,
+        user['agreedToTerms'],
+    )
     print(dedent(msg))
     return 0
 
