@@ -107,7 +107,6 @@ class profile::icinga(
     class { 'profile::mediawiki::alerts': }
     class { 'profile::swift::alerts': }
     class { 'profile::ceph::alerts': }
-    class { 'profile::logstash::alerts': }
     class { 'profile::alertmanager::alerts': }
 
     class { 'profile::prometheus::icinga_exporter': }

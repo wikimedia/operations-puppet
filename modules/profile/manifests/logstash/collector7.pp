@@ -392,18 +392,6 @@ class profile::logstash::collector7 (
         ensure => 'absent'
     }
 
-    # Alerting
-    monitoring::check_prometheus { 'logstash-udp-loss-ratio':
-        description     => 'Packet loss ratio for UDP',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/logstash'],
-        query           => "sum(rate(node_netstat_Udp_InErrors{instance=\"${::hostname}:9100\"}[5m]))/(sum(rate(node_netstat_Udp_InErrors{instance=\"${::hostname}:9100\"}[5m]))+sum(rate(node_netstat_Udp_InDatagrams{instance=\"${::hostname}:9100\"}[5m])))",
-        warning         => 0.05,
-        critical        => 0.10,
-        method          => 'ge',
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Logstash#UDP_packet_loss',
-    }
-
     # Ship logstash service logs to ELK
     rsyslog::input::file { 'logstash-json':
         path => '/var/log/logstash/logstash-json.log'

@@ -253,12 +253,6 @@ class profile::prometheus::alerts (
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#NEL_alerts',
     }
 
-    monitoring::alerts::rsyslog{'rsyslog_eqiad': site => 'eqiad'}
-    monitoring::alerts::rsyslog{'rsyslog_codfw': site => 'codfw'}
-    monitoring::alerts::rsyslog{'rsyslog_esams': site => 'esams'}
-    monitoring::alerts::rsyslog{'rsyslog_ulsfo': site => 'ulsfo'}
-    monitoring::alerts::rsyslog{'rsyslog_eqsin': site => 'eqsin'}
-
     monitoring::check_prometheus { 'widespread-puppet-agent-fail':
         description     => 'Widespread puppet agent failures',
         dashboard_links => ['https://grafana.wikimedia.org/d/yOxVDGvWk/puppet'],
