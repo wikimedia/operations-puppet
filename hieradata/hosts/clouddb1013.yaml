@@ -1,4 +1,4 @@
 # clouddb1013
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
-  s1: 303G
+  s1: 243G
   s3: 100G
