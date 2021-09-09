@@ -177,6 +177,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query.wikidata.org
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
+      target: http://commons-query.wikimedia.org
+      replacement: https://wcqs.discovery.wmnet
+    - type: map
       target: http://racktables.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
