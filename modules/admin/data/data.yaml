@@ -26,7 +26,7 @@ groups:
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
-              jbol, nnair, jkroll, johlig, ataherivand, bteshome]
+              jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -4766,7 +4766,6 @@ ldap_only_users:
   greta:
     ensure: absent
     realname: Greta Doci
-    email: greta.doci@wikimedia.de
   ha78na:
     ensure: absent
     realname: Hana Worku
