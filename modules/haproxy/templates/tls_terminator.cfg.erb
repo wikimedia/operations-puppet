@@ -3,6 +3,10 @@ global
     ssl-default-bind-ciphers <%= @tls_ciphers %>
     ssl-default-bind-ciphersuites <%= @tls13_ciphers %>
 
+    tune.h2.header-table-size <%= @h2settings['header_table_size'] %>
+    tune.h2.initial-window-size <%= @h2settings['initial_window_size'] %>
+    tune.h2.max-concurrent-streams <%= @h2settings['max_concurrent_streams'] %>
+
 listen tls
     bind :<%= @port -%> ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
     bind :::<%= @port -%> v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>

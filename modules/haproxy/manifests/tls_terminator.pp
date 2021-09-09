@@ -15,6 +15,8 @@
 #   Allowed ciphersuites for TLSv1.3
 # @param timeout
 #   timeout configuration. See Haproxy::Timeout for more details
+# @param h2settings
+#   H2 performance tuning settings. See Haproxy::H2settings for more details
 # @param min_tls_version
 #   minimum supported TLS version. Defaults to TLSv1.2
 # @param max_tls_version
@@ -30,6 +32,7 @@ define haproxy::tls_terminator(
     String $tls_ciphers,
     String $tls13_ciphers,
     Haproxy::Timeout $timeout,
+    Haproxy::H2settings $h2settings,
     Haproxy::Tlsversion $min_tls_version = 'TLSv1.2',
     Haproxy::Tlsversion $max_tls_version = 'TLSv1.3',
     Haproxy::Ecdhecurves $ecdhe_curves = ['X25519', 'P-256'],
