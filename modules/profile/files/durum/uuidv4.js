@@ -25,11 +25,11 @@ https://github.com/uuidjs/uuid
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 
-This is an unmodified and unminified version of uuidv4.min.js.
+This is an unmodified and unminified version of uuidv4.min.js. For readability
+and transparency reasons, we bundle this version instead of the minified one.
 
-Please see README-uuidv4.js in the same folder as this file for instructions on
-how to generate one; for readability and transparency reasons, we bundle this
-version instead of the minified one.
+Please see modules/profile/files/durum/README-uuidv4 in the Puppet repository
+for instructions on how to generate this unminified version.
 
 The sha1sum of this file without this copyright notice:
 
