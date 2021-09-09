@@ -212,7 +212,7 @@ define systemd::timer::job(
     }
 
     if $monitoring_enabled {
-        systemd::monitor{$title:
+        systemd::monitor { $title:
             ensure        => $ensure,
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Managing_systemd_timers',
             contact_group => $monitoring_contact_groups,
