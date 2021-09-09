@@ -45,6 +45,11 @@ server {
         return 429;
     }
 
+    # Temporarily ban dailymotion (2021-09-09)
+    if ($http_user_agent ~ "VideocatalogTopic.*") {
+        return 429;
+    }
+
 <% if @oauth -%>
     location /error403 {
       internal;
