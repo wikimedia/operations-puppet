@@ -3,7 +3,7 @@
 
 from argparse import ArgumentParser
 from configparser import ConfigParser
-from os import access, R_OK
+from os import access, environ, R_OK
 from textwrap import dedent
 
 from apiclient.discovery import build
@@ -78,8 +78,10 @@ def get_args():
     parser.add_argument('-i', '--impersonate', help='A super admin email address')
     parser.add_argument('-c', '--config', default='/etc/check_user.conf',
                         help='Location of the config file')
-    parser.add_argument('-K', '--key_file',
+    parser.add_argument('-K', '--key-file',
                         help='The path to a valid service account JSON key file')
+    parser.add_argument('-p', '--proxy-host',
+                        help='The proxy host to use')
     parser.add_argument('email', help='The primary email address of the user')
     return parser.parse_args()
 
@@ -94,10 +96,16 @@ def main():
     try:
         impersonate = args.impersonate if args.impersonate else config['DEFAULT']['impersonate']
         key_file = args.key_file if args.key_file else config['DEFAULT']['key_file']
+        proxy = args.proxy_host if args.proxy_host else config['DEFAULT'].get('proxy_host', None)
     except KeyError as error:
         return 'no {} specified'.format(error)
     if not access(key_file, R_OK):
         return 'unable to access {}'.format(key_file)
+
+    if proxy:
+        # the google api libraries use httplib2 which by default
+        # looks in the environment for proxy servers
+        environ['https_proxy'] = proxy
 
     users = GsuiteUsers(key_file, impersonate)
     user = users.get_user(args.email)

@@ -1,2 +1,4 @@
-profile::sre::check_user::super_admin: admin@example.org
+# set in private repo
+# profile::sre::check_user::super_admin: admin@example.org
 profile::sre::check_user::service_file: 'gsuite/mail_serviceaccount.json'
+profile::sre::check_user::proxy_server: "%{lookup('http_proxy')}"
