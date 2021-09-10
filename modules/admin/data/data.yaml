@@ -5418,3 +5418,7 @@ ldap_only_users:
     ensure: present
     realname: Bethany Gerdemann
     email: bgerdemann@wikimedia.org
+  saisuman:
+    ensure: present
+    realname: Sai Suman Cherukuwada
+    email: scherukuwada@wikimedia.org
