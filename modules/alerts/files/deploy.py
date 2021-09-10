@@ -35,7 +35,7 @@ def deploy_rulefiles(src_paths, dest_dir, src_dir):
 
         log.info("Deploying %s to %s", src_path, dest_path)
 
-        shutil.copyfile(src_path.as_posix(), dest_path.as_posix())
+        shutil.copy2(src_path.as_posix(), dest_path.as_posix())
 
     return result
 
