@@ -148,7 +148,9 @@ def stage_git():
 def stage_sbuild():
     # simple sbuild. Well, some options were enabled to ensure a smooth run in
     # a non interactive session
-    sbuild_cmd = "cd {} ; sbuild -v -A -d {} --no-clean-source".format(
+
+    # TODO: using sudo here because T273942, but it isn't derisable and it shouldn't be neccesary
+    sbuild_cmd = "cd {} ; sudo sbuild -v -A -d {} --no-clean-source".format(
         ctx.git_repo_dir, ctx.args.build_dist
     )
     ssh(ctx.args.build_host, sbuild_cmd)
