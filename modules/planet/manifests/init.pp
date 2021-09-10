@@ -69,9 +69,8 @@ class planet (
 
     # creates one systemd timer for updates per language
     # all run hourly but each language at a different random minute
-    planet::updatejob { 'updatejob':
-        language_keys => $languages_keys,
-        https_proxy   => $https_proxy,
+    planet::updatejob { $languages_keys:
+        https_proxy => $https_proxy,
     }
 
     # creates one planet theme (css/logo) per language
