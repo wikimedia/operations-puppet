@@ -17,7 +17,7 @@ define planet::updatejob (
         user            => 'planet',
         description     => "Update feed content for Planet language version: ${title}",
         command         => $planet_cmd,
-        environment     => "HTTPS_PROXY='${https_proxy}",
+        environment     => { 'HTTPS_PROXY' => $https_proxy },
         interval        => [
             {
             'start'    => 'OnBootSec', # initially start the unit
