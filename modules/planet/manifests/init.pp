@@ -13,13 +13,13 @@
 #   see the role class for this
 # $meta_link - https:// link
 #   example: meta.wikimedia.org/wiki/Planet_Wikimedia
-# $http_proxy - set proxy to be used for downloading feeds
-#   example: http://url-downloader.${::site}.wikimedia.org:8080
+# $https_proxy - set proxy to be used for downloading feeds
+#   example: https://url-downloader.${::site}.wikimedia.org:8080
 class planet (
     Stdlib::Fqdn $domain_name,
     Hash $languages,
     Stdlib::Httpsurl $meta_link,
-    Stdlib::Httpurl $http_proxy,
+    Stdlib::Httpsurl $https_proxy,
 ) {
 
     # things done once for all planet per languages
@@ -69,7 +69,10 @@ class planet (
 
     # creates one systemd timer for updates per language
     # all run hourly but each language at a different random minute
-    planet::updatejob { $languages_keys: }
+    planet::updatejob { 'updatejob':
+        language_keys => $languages_keys,
+        https_proxy   => $https_proxy,
+    }
 
     # creates one planet theme (css/logo) per language
     planet::theme { $languages_keys: }

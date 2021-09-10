@@ -4,7 +4,7 @@
 #
 # $meta_link: protocol-relative link to a meta or index page for all planets
 #
-# $http_proxy: since we are on a private IP now we need to proxy to fetch external URLs
+# $https_proxy: since we are on a private IP now we need to proxy to fetch external URLs
 #
 # $languages: translated strings for the UI in various languages
 #                    list all planet languages and translations for index.html.tmpl here.
@@ -13,7 +13,7 @@
 class profile::planet (
     String $domain_name = lookup('profile::planet::domain_name'),
     Stdlib::HTTPUrl $meta_link = lookup('profile::planet::meta_link'),
-    Stdlib::HTTPUrl $http_proxy = lookup('profile::planet::http_proxy'),
+    Stdlib::HTTPSUrl $https_proxy = lookup('profile::planet::https_proxy'),
     Hash $languages = {
         ar => {
             'subscribe'     => '&#1575;&#1588;&#1578;&#1585;&#1603;',
@@ -187,7 +187,7 @@ class profile::planet (
         domain_name => $domain_name,
         languages   => $languages,
         meta_link   => $meta_link,
-        http_proxy  => $http_proxy,
+        https_proxy => $https_proxy,
     }
 
     class {'::httpd':
