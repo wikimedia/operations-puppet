@@ -7182,6 +7182,16 @@ host puppetmaster2003 {
     fixed-address puppetmaster2003.codfw.wmnet;
 }
 
+host puppetmaster2004 {
+    hardware ethernet B0:4F:13:B4:62:56;
+    fixed-address puppetmaster2004.codfw.wmnet;
+}
+
+host puppetmaster2005 {
+    hardware ethernet B0:4F:13:B4:64:DE;
+    fixed-address puppetmaster2005.codfw.wmnet;
+}
+
 host rdb1005 {
     hardware ethernet 14:18:77:33:46:B1;
     fixed-address rdb1005.eqiad.wmnet;
