@@ -17,9 +17,9 @@ profile::lvs::realserver::pools:
 # Any changes to the section_overrides key still require reloads of haproxy
 #
 profile::mariadb::proxy::multiinstance_replicas::section_overrides:
-   s1:
-     clouddb1013.eqiad.wmnet:
-       ipaddress: 10.64.0.28
+#   s1:
+#     clouddb1013.eqiad.wmnet:
+#       ipaddress: 10.64.0.28
 #   s2:
 #     clouddb1014.eqiad.wmnet:
 #       ipaddress: 10.64.0.29
