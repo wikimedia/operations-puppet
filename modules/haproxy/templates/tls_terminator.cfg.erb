@@ -1,4 +1,11 @@
 global
+
+<%- if @lua_scripts -%>
+<%- @lua_scripts.each do |lua_script| -%>
+    lua-load <%= lua_script %>
+<%- end -%>
+<%- end -%>
+
     ssl-default-bind-options ssl-min-ver <%= @min_tls_version -%> ssl-max-ver <%= @max_tls_version %>
     ssl-default-bind-ciphers <%= @tls_ciphers %>
     ssl-default-bind-ciphersuites <%= @tls13_ciphers %>
