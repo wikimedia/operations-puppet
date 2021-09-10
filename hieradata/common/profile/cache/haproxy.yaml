@@ -1,0 +1,50 @@
+profile::cache::haproxy::acls:
+    - name: missing_xwd
+      criterion: 'req.hdr_cnt(X-Wikimedia-Debug)'
+      operator: 'eq'
+      value: '0'
+
+profile::cache::haproxy::add_headers:
+    - direction: request
+      name: 'X-Client-IP'
+      value: '%[src]'
+    - direction: request
+      name: 'X-Client-Port'
+      value: '%[src_port]'
+    - direction: request
+      name: 'X-Forwarded-Proto'
+      value: 'https'
+    - direction: request
+      name: 'X-Connection-Properties'
+      value: '%[lua.xcps]'
+    - direction: request
+      name: 'X-Analytics-TLS'
+      value: '%[lua.analytics_tls'
+
+profile::cache::haproxy::del_headers:
+    - direction: response
+      name: 'X-Analytics'
+    - direction: response
+      name: 'Backend-Timing'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-ATS-Timestamp'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Envoy-Upstream-Service-Time'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Powered-By'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Request-Id'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Timestamp'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Trans-Id'
+      acl: missing_xwd
+    - direction: response
+      name: 'X-Varnish'
+      acl: missing_xwd

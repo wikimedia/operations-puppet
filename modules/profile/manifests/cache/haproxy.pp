@@ -10,6 +10,9 @@ class profile::cache::haproxy(
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
     Haproxy::Proxyprotocol $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol'),
+    Array[Haproxy::Acl] $acls = lookup('profile::cache::haproxy::acls'),
+    Array[Haproxy::Header] $add_headers = lookup('profile::cache::haproxy::add_headers'),
+    Array[Haproxy::Header] $del_headers = lookup('profile::cache::haproxy::del_headers'),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     String $ocsp_proxy = lookup('http_proxy'),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
@@ -104,6 +107,14 @@ class profile::cache::haproxy(
         $certificates = [$available_unified_certificates[$public_tls_unified_cert_vendor]]
     }
 
+    file { '/etc/haproxy/tls.lua':
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        mode    => '0444',
+        content => file('profile/cache/haproxy-tls.lua'),
+        notify  => Service['haproxy'],
+    }
+
     haproxy::tls_terminator { 'tls':
         port                 => $tls_port,
         backend_socket       => $varnish_socket,
@@ -114,5 +125,9 @@ class profile::cache::haproxy(
         h2settings           => $h2settings,
         proxy_protocol       => $proxy_protocol,
         tls_ticket_keys_path => $tls_ticket_keys_path,
+        lua_scripts          => ['/etc/haproxy/tls.lua'],
+        acls                 => $acls,
+        add_headers          => $add_headers,
+        del_headers          => $del_headers,
     }
 }
