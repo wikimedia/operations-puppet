@@ -334,7 +334,7 @@ groups:
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, kaywong, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
-              katelevan, cmaslak]
+              katelevan, cmaslak, abban]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval:
@@ -4652,6 +4652,13 @@ users:
     comment: Trust and Safety
     email: cmaslak@wikimedia.org
     krb: present
+  abban:
+    ensure: present
+    gid: 500
+    realname: Abban Dunne
+    ssh_keys: []
+    uid: 23605
+    email: abban.dunne@wikimedia.de
 
 
 ldap_only_users:
@@ -4659,10 +4666,6 @@ ldap_only_users:
     ensure: present
     realname: Asaf Bartov
     email: abartov@wikimedia.org
-  abban:
-    ensure: present
-    realname: Abban Dunne
-    email: abban.dunne@wikimedia.de
   adavenport:
     ensure: absent
     realname: Allison Davenport
