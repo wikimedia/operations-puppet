@@ -26,6 +26,19 @@ listen tls
     # timeout used after upgrading a connection (websockets) or after the first response when no keepalive/close option is specified
     timeout tunnel <%= @timeout['tunnel'] %>s
 
+<%- @acls.each do |acl| -%>
+    acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
+<%- end -%>
+
+<%- @add_headers.each do |add_header| -%>
+<%- if add_header['value'] -%>
+    http-<%= add_header['direction'] %> set-header <%= add_header['name'] %> <%= add_header['value'] %>
+<%- end -%>
+<%- end -%>
+<%- @del_headers.each do |del_header| -%>
+    http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
+<%- end -%>
+
 <%- if @proxy_protocol == nil -%>
     server backend_server unix@<%= @backend_socket %>
 <%- elsif @proxy_protocol == 'V1' -%>

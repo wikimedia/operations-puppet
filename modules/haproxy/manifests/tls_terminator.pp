@@ -25,6 +25,12 @@
 #   List of supported ECHDE curves. Defaults to X25519, P-256
 # @param alpn
 #   List of Application layer protocols (ALPN) supported. Defaults to h2, http/1.1
+# @param acls
+#   List of ACLs. They can be used to conditionally remove HTTP headers
+# @param add_headers
+#   List of headers to add on HTTP requests or responses
+# @param del_headers
+#   List of headers to remove on HTTP requests or respones
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Stdlib::Unixpath $backend_socket,
@@ -40,6 +46,9 @@ define haproxy::tls_terminator(
     Stdlib::Unixpath $crt_list_path = '/etc/haproxy/crt-list.cfg',
     Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = undef,
+    Optional[Array[Haproxy::Acl]] $acls = undef,
+    Optional[Array[Haproxy::Header]] $add_headers = undef,
+    Optional[Array[Haproxy::Header]] $del_headers = undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {
