@@ -8,7 +8,7 @@ define planet::updatejob (
     String $planet_options = '-v -u -w',
 ){
 
-    $planet_cmd = "HTTPS_PROXY='${https_proxy}' ${planet_bin} -d ${planet_conf_dir}/${title}/ ${planet_options}"
+    $planet_cmd = "${planet_bin} -d ${planet_conf_dir}/${title}/ ${planet_options}"
 
     $minute = Integer(seeded_rand(60, $title))
 
@@ -17,6 +17,7 @@ define planet::updatejob (
         user            => 'planet',
         description     => "Update feed content for Planet language version: ${title}",
         command         => $planet_cmd,
+        environment     => "HTTPS_PROXY='${https_proxy}",
         interval        => [
             {
             'start'    => 'OnBootSec', # initially start the unit
