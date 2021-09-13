@@ -24,6 +24,8 @@ WorkingDirectory=/usr/share/elasticsearch
 User=elasticsearch
 Group=elasticsearch
 
+# Force creation of /var/run/elasticsearch (see T276198)
+ExecPreStart=systemd-tmpfiles --create /usr/lib/tmpfiles.d/elasticsearch.conf
 ExecStart=/usr/share/elasticsearch/bin/elasticsearch \
         -p /var/run/elasticsearch/%i.pid \
         --quiet \
