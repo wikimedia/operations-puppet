@@ -5425,3 +5425,7 @@ ldap_only_users:
     ensure: present
     realname: Sai Suman Cherukuwada
     email: scherukuwada@wikimedia.org
+  jjbk:
+    ensure: present
+    realname: Jess Klien
+    email: jklein@wikimedia.org
