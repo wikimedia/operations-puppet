@@ -9,7 +9,7 @@ profile::mediawiki::mcrouter_wancache::num_proxies: 5
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached: true
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: true
-profile::prometheus::memcached_exporter::arguments: '--memcached.address=/var/run/memcached/memcached.sock'
+profile::prometheus::memcached_exporter::arguments: "--memcached.address=/var/run/memcached/memcached.sock"
 has_lvs: true
 profile::mediawiki::webserver::has_tls: true
 profile::envoy::ensure: present
@@ -39,7 +39,7 @@ profile::lvs::realserver::pools:
       - apache2
       - mcrouter
       - nutcracker
-      - envoy
+      - envoyproxy
 profile::mediawiki::php::php_version: "7.2"
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
