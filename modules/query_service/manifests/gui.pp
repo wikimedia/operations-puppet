@@ -1,10 +1,9 @@
 # == Class: query_service::gui
 #
-# Provisions Query Service GUI
+# Provisions proxy fronting the query service and gui
 #
 # == Parameters:
-# - $package_dir:  Directory where the service is installed.
-#   GUI files are expected to be under its gui/ directory.
+# - $package_dir: Directory where the service is installed.
 # - $data_dir: Where the data is installed.
 # - $log_dir: Directory where the logs go
 # - $username: Username owning the service
@@ -12,6 +11,9 @@
 # - enable_ldf: boolean flag for enabling or disabling ldf
 # - $max_query_time_millis: maximum query time in milliseconds
 # - $blazegraph_main_ns: The blazegraph namespace to expose over http at /sparql
+# - $gui_url: Url hosting the ui to forward non-blazegraph requests to. Undefined
+#    triggers back compat for a locally installed gui which must be found at
+#    $package_dir/gui.
 class query_service::gui(
     String $package_dir,
     String $data_dir,
@@ -22,7 +24,8 @@ class query_service::gui(
     Boolean $enable_ldf,
     Integer $max_query_time_millis,
     String $blazegraph_main_ns,
-    Boolean $oauth
+    Boolean $oauth,
+    Optional[Stdlib::HTTPSUrl] $gui_url,
 ) {
     $port = 80
     $additional_port = 8888
@@ -64,19 +67,27 @@ class query_service::gui(
         mode    => '0644',
     }
 
-    file { $gui_config:
-        ensure => present,
-        source => "puppet:///modules/query_service/gui/custom-config-${deploy_name}.json",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
+    if ($gui_url) {
+        # Cleanup old unused files
+        file { [$gui_config, $favicon]:
+            ensure => absent,
+        }
+    } else {
+        # Files needed when serving the GUI locally
+        file { $gui_config:
+            ensure => present,
+            source => "puppet:///modules/query_service/gui/custom-config-${deploy_name}.json",
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+        }
 
-    file { $favicon:
-      ensure => present,
-      source => "puppet:///modules/query_service/gui/favicon-${deploy_name}.ico",
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+        file { $favicon:
+          ensure => present,
+          source => "puppet:///modules/query_service/gui/favicon-${deploy_name}.ico",
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+        }
     }
 }

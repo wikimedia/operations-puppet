@@ -27,8 +27,14 @@ server {
 
     error_page 503 @maintenance;
     location @maintenance {
+<% if @gui_url -%>
+        # While not entirely obvious, this will get proxied to the microsite
+        # but maintain the 503 code
+        rewrite ^(.*)$ /maint.html;
+<% else -%>
         root <%= @package_dir %>/gui;
         rewrite ^(.*)$ /maint.html break;
+<% end -%>
     }
 
     # Rate limit error
@@ -72,15 +78,23 @@ server {
 <% end %>
 
     location / {
-      if (-f /var/lib/nginx/wdqs/data-reload) {
-        add_header Content-Type text/html always;
-        return 503 '<H2>Data Reload in progress</H2>\nPlease come back later.';
-      }
-    <% if @oauth -%>
+        if (-f /var/lib/nginx/wdqs/data-reload) {
+          add_header Content-Type text/html always;
+          return 503 '<H2>Data Reload in progress</H2>\nPlease come back later.';
+        }
+<% if @oauth -%>
         auth_request /_check_auth;
         error_page 403 = /error403;
-    <% end %>
+<% end -%>
 
+<% if @gui_url -%>
+        proxy_pass <%= @gui_url %>;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Cookie "";
+<% else -%>
         root <%= @package_dir %>/gui;
 
         location ~ ^/(css|js) {
@@ -88,8 +102,10 @@ server {
         }
 
         add_header Cache-Control "public, max-age=300, s-maxage=300";
+<% end -%>
     }
 
+<% if !@gui_url -%>
     location /custom-config.json {
         alias <%= @gui_config %>;
     }
@@ -97,6 +113,7 @@ server {
     location /favicon.ico {
         alias <%= @favicon %>;
     }
+<% end -%>
 
     location /status {
         stub_status  on;
@@ -121,14 +138,14 @@ server {
 <% else -%>
     location ~ ^/bigdata/(namespace/[a-zA-Z0-9_]+/sparql|assets) {
 <% end -%>
-      if (-f /var/lib/nginx/wdqs/data-reload) {
-        add_header Content-Type text/html always;
-        return 503 '<H2>Data Reload in progress</H2>\nPlease come back later.';
-      }
+        if (-f /var/lib/nginx/wdqs/data-reload) {
+          add_header Content-Type text/html always;
+          return 503 '<H2>Data Reload in progress</H2>\nPlease come back later.';
+        }
 <% if @oauth -%>
         auth_request /_check_auth;
         error_page 403 = /error403;
-      <% end %>
+<% end -%>
         if ( $uri ~ ^/bigdata/assets ) {
             add_header Cache-Control "public, max-age=604800, s-maxage=604800";
         }
