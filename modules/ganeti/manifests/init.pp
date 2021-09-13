@@ -20,9 +20,14 @@ class ganeti(
     include ::ganeti::kvm
 
     if $ganeti216 {
-        apt::package_from_component { 'ganeti216':
-            component => 'component/ganeti216',
-            packages  => ['ganeti', 'ganeti-2.16', 'ganeti-haskell-2.16', 'ganeti-htools-2.16'],
+        # apt::package_from_component { 'ganeti216':
+        #     component => 'component/ganeti216',
+        #     packages  => ['ganeti', 'ganeti-2.16', 'ganeti-haskell-2.16', 'ganeti-htools-2.16'],
+        # }
+        apt::repository { 'repository_ganeti216':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'stretch-wikimedia',
+            components => 'component/ganeti216',
         }
     } else {
         ensure_packages('ganeti')
