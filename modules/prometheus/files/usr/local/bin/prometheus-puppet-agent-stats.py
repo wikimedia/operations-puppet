@@ -82,7 +82,9 @@ def _summary_stats(puppet_state_dir, registry):
     # Consider puppet failed even when we can't find the failure count
     else:
         failed.set(1)
-    if 'version' in summary_yaml:
+
+    if ('version' in summary_yaml and 'config' in summary_yaml['version']
+            and summary_yaml['version']['config']):
         # version is "(sha hash) $author - $subject"
         git_sha = summary_yaml['version']['config'].split()[0].strip('()')
         catalog_version.info({'git_sha': git_sha})
