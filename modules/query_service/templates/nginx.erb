@@ -153,7 +153,7 @@ server {
         # use IP address for the backend and not "localhost" to ensure
         # connection is done over IPv4 (backend is configured as IPv4 only)
         set $endpoint "http://127.0.0.1:9999";
-        if ( $uri ~ ^/bigdata/namespace/categories ) {
+        if ( $uri ~ ^/bigdata/namespace/(categories|dcatap) ) {
                 set $endpoint "http://127.0.0.1:9990";
         }
         proxy_pass $endpoint;

@@ -12,7 +12,7 @@ newNamespace="dcatap${today}"
 rm -f ${DATA_DIR}/dcatap-*.rdf
 cd $DEPLOY_DIR
 # Create new NS
-bash createNamespace.sh $newNamespace || exit 1
+bash createNamespace.sh $newNamespace $endpoint || exit 1
 # Load the data
 FILENAME=dcatap-${today}.rdf
 loadFileIntoBlazegraph $DCAT_SOURCE $FILENAME "$endpoint${NAMESPACE_URL}${newNamespace}/sparql"
