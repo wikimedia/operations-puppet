@@ -2,4 +2,3 @@
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::instances:
   s8: 192G
-profile::base::notifications: disabled
