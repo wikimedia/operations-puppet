@@ -245,6 +245,16 @@ host durum1002 {
     fixed-address durum1002.eqiad.wmnet;
 }
 
+host durum2001 {
+    hardware ethernet aa:00:00:14:a0:19;
+    fixed-address durum2001.codfw.wmnet;
+}
+
+host durum2002 {
+    hardware ethernet aa:00:00:a5:c8:5d;
+    fixed-address durum2002.codfw.wmnet;
+}
+
 host etherpad1002 {
     hardware ethernet aa:00:00:70:0e:8b;
     fixed-address etherpad1002.eqiad.wmnet;
