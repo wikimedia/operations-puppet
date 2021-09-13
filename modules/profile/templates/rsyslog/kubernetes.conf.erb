@@ -1,4 +1,8 @@
 module(load="mmkubernetes"
         KubernetesURL="<%= @kubernetes_url %>"
         token="<%= @token %>")
-action(type="mmkubernetes" name="mmkubernetes")
+action(type="mmkubernetes"
+       name="mmkubernetes"
+       action.resumeRetryCount="-1"
+       action.resumeIntervalMax="300"
+       action.reportSuspensionContinuation="on")
