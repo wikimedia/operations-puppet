@@ -21,6 +21,18 @@ https://en.wikipedia.org:
   assert_status: 200
   assert_headers:
     Content-Type: image/vnd.microsoft.icon
+- path: /w/CREDITS
+  assert_status: 200
+  assert_body_contains: BEGIN CONTRIBUTOR LIST
+- path: /w/COPYING
+  assert_status: 200
+  assert_body_contains: License and copyright information
+- path: /static/current/resources/assets/licenses/README
+  assert_status: 200
+# Verify that php URLs accessed via /static/current/ are executed
+- path: /static/current/resources/Resources.php
+  assert_status: 200
+  assert_body_contains: Not an entry point
 
 https://www.mediawiki.org:
 - path: /wiki/User_hub
@@ -36,6 +48,9 @@ https://www.mediawiki.org:
   assert_status: 302
   assert_headers:
     Location: https://upload.wikimedia.org/mediawiki/test
+- path: /ontology/ontology.owl
+  assert_status: 200
+  assert_body_contains: The ontology of MediaWiki
 
 https://upload.wikimedia.org:
 - path: /mediawiki/test
