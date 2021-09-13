@@ -1,5 +1,5 @@
 # dbstore1007
 profile::mariadb::dbstore_multiinstance::instances:
-  s2: 90G
-  s3: 80G
-  s4: 190G
+  s2: 85G
+  s3: 75G
+  s4: 180G
