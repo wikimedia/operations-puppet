@@ -12,7 +12,7 @@ profile::ganeti::rapi_nodes:
     - cumin1001.eqiad.wmnet
     - cumin2001.codfw.wmnet
     - cumin2002.codfw.wmnet
-profile::ganeti::ganeti216: false
+profile::ganeti::ganeti216: true
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
