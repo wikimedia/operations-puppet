@@ -765,7 +765,7 @@ host mx1002 {
 host mx2001 {
     hardware ethernet aa:00:00:d2:18:cf;
     fixed-address mx2001.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host mx2002 {
