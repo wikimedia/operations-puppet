@@ -30,6 +30,7 @@ ntp_peers:
     - 'ntp-1.cloudinfra.codfw1dev.wikimedia.cloud'
     ulsfo: []
     eqsin: []
+    drmrs: []
     esams: []
 
 # VM instances require these keys because they are looked up by observerenv and

@@ -245,6 +245,7 @@ ntp_peers:
     codfw: []
     ulsfo: []
     eqsin: []
+    drmrs: []
     esams: []
 
 scap::version: present
@@ -311,6 +312,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   cache_upload:
     description: "Upload caches"
     id: 22
@@ -320,6 +322,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   parsoid:
     description: "Parsoid"
     id: 37

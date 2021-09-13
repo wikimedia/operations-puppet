@@ -184,6 +184,7 @@ profile::puppetmaster::frontend::allow_from:
   - '*.esams.wmnet'
   - '*.codfw.wmnet'
   - '*.eqsin.wmnet'
+  - '*.drmrs.wmnet'
   - '*.wmflabs'
   - '*.wikimedia.cloud'
 profile::puppetmaster::frontend: chain
