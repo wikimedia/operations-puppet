@@ -43,6 +43,9 @@ local_from_suffix = .*
 add_environment = <; PATH=/bin:/usr/bin
 keep_environment =
 
+# Listen on additional ports
+daemon_smtp_ports = 25 : 465 : 587
+
 # this is the default, per the docs we don't need to put this here, but anyway make it explicit
 spamd_address = 127.0.0.1 783
 
@@ -51,6 +54,8 @@ tls_certificate = /etc/acmecerts/<%= @cert_name %>/live/ec-prime256v1.chained.cr
 tls_privatekey = /etc/acmecerts/<%= @cert_name %>/live/ec-prime256v1.key
 tls_advertise_hosts = *
 tls_require_ciphers = NORMAL:%SERVER_PRECEDENCE
+
+tls_on_connect_ports = 465
 
 ###############################
 # Access Control Lists (ACLs) #
