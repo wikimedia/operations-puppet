@@ -1,4 +1,4 @@
 profile::homer::private_git_peer: cumin1001.eqiad.wmnet
 profile::homer::diff_timer_interval: ~  # Disabled, active only on cumin1001 and cumin2002
 profile::httpbb::hourly_tests:
-  appserver: [mw2271.codfw.wmnet]  # Run appserver tests against the lowest-numbered canary appserver in codfw.
+  appserver: []
