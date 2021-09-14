@@ -4,25 +4,11 @@ class profile::dns::auth::dotls(
 ) {
     include ::profile::prometheus::haproxy_exporter
 
-    # HAProxy needs the full chained cert *and* the private key in a single
-    # file, which we're calling the "kchained" variant here:
-    $chained_path = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.chained.crt"
-    $key_path = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.key"
-    $kchained_path = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.kchained.crt"
-
-    # Haproxy also wants the OCSP file to be the full path of the cert (kchained above) + ".ocsp"
-    $ocsp_path = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.ocsp"
-    $ocsp_full_path = "${kchained_path}.ocsp"
+    # HAProxy needs the full chained cert *and* the private key in a single file
+    $kchained_path = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.chained.crt.key"
 
     acme_chief::cert { $cert_name:
-        puppet_rsc => Exec['make-haproxy-crt'],
-    }
-
-    exec { 'make-haproxy-crt':
-        command     => "/bin/cat ${key_path} ${chained_path} >${kchained_path}; /bin/cp ${ocsp_path} ${ocsp_full_path}",
-        umask       => '027',
-        refreshonly => true,
-        notify      => Service['haproxy'],
+        puppet_rsc => Service['haproxy'],
     }
 
     file { '/etc/haproxy/haproxy.cfg':
