@@ -11,6 +11,9 @@ class query_service::deploy::scap(
         deploy_user               => $deploy_user,
         additional_services_names => ["${deploy_name}-updater", "${deploy_name}-categories"],
         manage_user               => true,
+        # This is required by the scap/config_files.yaml config inside the wdqs/wdqs repo which
+        # is referenced when performing the initial clone.
+        require                   => File['/etc/wdqs/vars.yaml'],
     }
 
     $git_deploy_dir = '/srv/deployment/wdqs/wdqs'
