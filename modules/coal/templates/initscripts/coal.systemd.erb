@@ -7,6 +7,10 @@ Group=nogroup
 Restart=always
 ExecStart=/srv/deployment/performance/coal/run_coal.py \
 	--brokers "<%= @kafka_brokers %>" \
+	--security-protocol "<%= @kafka_security_protocol %>" \
+  <% if @kafka_ssl_cafile -%>
+	--ssl-cafile "<%= @kafka_ssl_cafile %>" \
+  <% end -%>
 	--consumer-group "<%= @kafka_consumer_group %>" \
   <% @el_schemas.each do | schema | -%>
 	--schema "<%= schema %>" \

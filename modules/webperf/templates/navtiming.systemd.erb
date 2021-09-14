@@ -5,10 +5,14 @@ After=network-online.target
 [Service]
 WorkingDirectory=/srv/deployment/performance/navtiming
 ExecStart=/usr/bin/python3 /srv/deployment/performance/navtiming/run_navtiming.py \
-    --brokers <%= @kafka_brokers %> \
+    --brokers "<%= @kafka_brokers %>" \
+    --security-protocol "<%= @kafka_security_protocol %>" \
+<% if @kafka_ssl_cafile -%>
+    --ssl-cafile "<%= @kafka_ssl_cafile %>" \
+<% end -%>
     --consumer-group navtiming \
-    --statsd-host <%= @statsd_host %> \
-    --statsd-port <%= @statsd_port %>
+    --statsd-host "<%= @statsd_host %>" \
+    --statsd-port "<%= @statsd_port %>"
 User=nobody
 Restart=always
 SyslogIdentifier=navtiming

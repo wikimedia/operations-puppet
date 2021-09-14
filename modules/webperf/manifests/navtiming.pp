@@ -9,6 +9,9 @@
 # [*kafka_brokers*]
 #   String of comma separated Kafka bootstrap brokers.
 #
+# [*kafka_security_protocol*]
+#   one of "PLAINTEXT", "SSL", "SASL", "SASL_SSL"
+#
 # [*statsd_host*]
 #   Write stats to this StatsD instance. Default: '127.0.0.1'.
 #
@@ -16,9 +19,10 @@
 #   Write stats to this StatsD instance. Default: 8125.
 #
 class webperf::navtiming(
-    String $kafka_brokers,
-    Stdlib::Host $statsd_host = '127.0.0.1',
-    Stdlib::Port $statsd_port = 8125,
+    String           $kafka_brokers,
+    Optional[String] $kafka_security_protocol = 'PLAINTEXT',
+    Stdlib::Host     $statsd_host             = '127.0.0.1',
+    Stdlib::Port     $statsd_port             = 8125,
 ) {
     include ::webperf
 
@@ -42,9 +46,16 @@ class webperf::navtiming(
         deploy_user  => 'deploy-service',
     }
 
+    if $kafka_security_protocol in ['SSL', 'SASL_SSL'] {
+        $kafka_ssl_cafile = '/var/lib/puppet/ssl/certs/ca.pem'
+    } else {
+        $kafka_ssl_cafile = undef
+    }
+
     systemd::unit { 'navtiming':
         ensure  => present,
-        # uses $statsd_host, $statsd_port, $kafka_brokers
+        # uses $statsd_host, $statsd_port, $kafka_brokers,
+        # $kafka_security_protocol, and $kafka_ssl_cafile
         content => template('webperf/navtiming.systemd.erb'),
         restart => true,
     }

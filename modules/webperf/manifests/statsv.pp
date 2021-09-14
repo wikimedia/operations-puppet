@@ -5,6 +5,9 @@
 # [*kafka_brokers*]
 #   string of comma separated Kafka bootstrap brokers
 #
+# [*kafka_security_protocol*]
+#   one of "PLAINTEXT", "SSL", "SASL", "SASL_SSL"
+#
 # [*kafka_api_version*]
 #   Only set this if you need to specify the api version.  This should not be needed
 #   Beyond kafka 0.9.
@@ -19,11 +22,12 @@
 #   port of statsd instance.  Default: 8125
 #
 class webperf::statsv(
-    String $kafka_brokers,
-    Optional[String] $kafka_api_version = undef,
-    String $topics            = 'statsv',
-    Stdlib::Fqdn $statsd_host = 'localhost',
-    Integer $statsd_port      = 8125,
+    String           $kafka_brokers,
+    Optional[String] $kafka_security_protocol = 'PLAINTEXT',
+    Optional[String] $kafka_api_version       = undef,
+    String           $topics                  = 'statsv',
+    Stdlib::Fqdn     $statsd_host             = 'localhost',
+    Integer          $statsd_port             = 8125,
 ) {
     include ::webperf
 
@@ -34,7 +38,13 @@ class webperf::statsv(
         deploy_user  => 'deploy-service',
     }
 
-    # Uses $kafka_brokers and $statsd
+    if $kafka_security_protocol in ['SSL', 'SASL_SSL'] {
+        $kafka_ssl_cafile = '/var/lib/puppet/ssl/certs/ca.pem'
+    } else {
+        $kafka_ssl_cafile = undef
+    }
+
+    # Uses $kafka_brokers, $kafka_security_protocol, $kafka_ssl_cafile, and $statsd
     systemd::unit { 'statsv':
         ensure  => present,
         content => template('webperf/statsv.service.erb'),

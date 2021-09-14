@@ -31,13 +31,15 @@ class profile::webperf::processors(
     # profile::cache::kafka::statsv::kafka_cluster_name when the statsv varnishkafka
     # profile is included (as of this writing on text caches).
     $kafka_main_config = kafka_config('main')
-    $kafka_main_brokers = $kafka_main_config['brokers']['string']
+    $kafka_main_brokers = $kafka_main_config['brokers']['ssl_string']
+
     # Consume statsd metrics from Kafka and emit them to statsd.
     class { '::webperf::statsv':
-        kafka_brokers     => $kafka_main_brokers,
-        kafka_api_version => $kafka_main_config['api_version'],
-        statsd_host       => '127.0.0.1',  # relay through statsd_exporter
-        statsd_port       => 9125,
+        kafka_brokers           => $kafka_main_brokers,
+        kafka_security_protocol => 'SSL',
+        kafka_api_version       => $kafka_main_config['api_version'],
+        statsd_host             => '127.0.0.1',  # relay through statsd_exporter
+        statsd_port             => 9125,
     }
     class { 'profile::prometheus::statsd_exporter': }
 
@@ -45,15 +47,16 @@ class profile::webperf::processors(
     # is not yet mirrored to other data centers, so for prod,
     # assume eqiad.
     $kafka_config  = kafka_config('jumbo', 'eqiad')
-    $kafka_brokers = $kafka_config['brokers']['string']
+    $kafka_brokers = $kafka_config['brokers']['ssl_string']
 
     # Aggregate client-side latency measurements collected via the
     # NavigationTiming MediaWiki extension and send them to Graphite.
     # See <https://www.mediawiki.org/wiki/Extension:NavigationTiming>
     class { '::webperf::navtiming':
-        kafka_brokers => $kafka_brokers,
-        statsd_host   => $statsd_host,
-        statsd_port   => $statsd_port,
+        kafka_brokers           => $kafka_brokers,
+        kafka_security_protocol => 'SSL',
+        statsd_host             => $statsd_host,
+        statsd_port             => $statsd_port,
     }
 
     # navtiming exports Prometheus metrics on port 9230.
@@ -72,7 +75,8 @@ class profile::webperf::processors(
     # Make a valid target for coal, and set up what's needed for the consumer
     # Consumes from the jumbo-eqiad cluster, just like navtiming
     class { '::coal::processor':
-        kafka_brokers => $kafka_brokers,
-        graphite_host => $graphite_host,
+        kafka_brokers           => $kafka_brokers,
+        kafka_security_protocol => 'SSL',
+        graphite_host           => $graphite_host,
     }
 }

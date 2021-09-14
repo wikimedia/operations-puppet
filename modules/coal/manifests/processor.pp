@@ -12,6 +12,9 @@
 # [*kafka_brokers*]
 #   List of Kafka brokers to use for bootstrapping
 #
+# [*kafka_security_protocol*]
+#   one of "PLAINTEXT", "SSL", "SASL", "SASL_SSL"
+#
 # [*kafka_consumer_group*]
 #   Name of the consumer group to use for Kafka
 #
@@ -34,13 +37,14 @@
 #   in metrics like "coal.responseStart"
 #
 class coal::processor(
-    $kafka_brokers,
-    $kafka_consumer_group = "coal_${::site}",
-    $el_schemas = ['NavigationTiming', 'SaveTiming', 'PaintTiming'],
-    $log_dir = '/var/log/coal',
-    $graphite_host = 'localhost',
-    $graphite_port = 2003,
-    $graphite_prefix = 'coal'
+    String                  $kafka_brokers,
+    Optional[String]        $kafka_security_protocol = 'PLAINTEXT',
+    Optional[String]        $kafka_consumer_group    = "coal_${::site}",
+    Optional[Array[String]] $el_schemas              = ['NavigationTiming', 'SaveTiming', 'PaintTiming'],
+    Optional[String]        $log_dir                 = '/var/log/coal',
+    Optional[Stdlib::Host]  $graphite_host           = 'localhost',
+    Optional[Stdlib::Port]  $graphite_port           = 2003,
+    Optional[String]        $graphite_prefix         = 'coal'
 ) {
     # Include common elements
     include ::coal::common
@@ -68,6 +72,12 @@ class coal::processor(
     rsyslog::conf { 'coal':
         content  => template('coal/rsyslog.conf.erb'),
         priority => 80,
+    }
+
+    if $kafka_security_protocol in ['SSL', 'SASL_SSL'] {
+        $kafka_ssl_cafile = '/var/lib/puppet/ssl/certs/ca.pem'
+    } else {
+        $kafka_ssl_cafile = undef
     }
 
     systemd::service { 'coal':
