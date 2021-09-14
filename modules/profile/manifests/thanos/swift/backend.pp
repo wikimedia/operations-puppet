@@ -42,7 +42,9 @@ class profile::thanos::swift::backend (
         loopback_device_count            => $loopback_device_count,
     }
 
-    class { '::toil::systemd_scope_cleanup': }
+    class { '::toil::systemd_scope_cleanup':
+        ensure => absent,
+    }
 
     class { '::profile::prometheus::statsd_exporter':
         relay_address => '',
