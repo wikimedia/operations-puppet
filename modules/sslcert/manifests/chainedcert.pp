@@ -22,10 +22,6 @@
 #   The group name the resulting certificate file will be owned by. Defaults to
 #   the well-known 'ssl-cert'.
 #
-# [*skip_private*]
-#   If true, no private key is installed by standard means/paths.  The default
-#   is false.
-#
 # === Examples
 #
 #  sslcert::chainedcert { 'www.example.org':
@@ -34,14 +30,12 @@
 #
 
 define sslcert::chainedcert(
-  Wmflib::Ensure $ensure       = present,
-  String         $group        = 'ssl-cert',
-  Boolean        $skip_private = false,
+  Wmflib::Ensure $ensure = present,
+  String         $group  = 'ssl-cert',
 ) {
     require sslcert
 
     $chainedfile = "/etc/ssl/localcerts/${title}.chained.crt"
-    $chainedkeyfile = "/etc/ssl/private/${title}.chained.crt.key"
     $chainfile = "/etc/ssl/localcerts/${title}.chain.crt"
 
     if $ensure == 'present' {
@@ -61,16 +55,6 @@ define sslcert::chainedcert(
             unless  => "[ ${chainfile} -nt ${inpath} -a ${chainfile} -nt ${script} ]",
             require => [ File[$inpath], File[$script] ],
         }
-        if !$skip_private {
-            $privatekeyfile = "/etc/ssl/private/${title}.key"
-            exec { "x509-bundle ${title}-chainedkey":
-                path    => 'bin:/usr/bin',
-                cwd     => '/etc/ssl/localcerts',
-                command => "${script} --skip-root -c ${inpath} -p ${privatekeyfile} -o ${chainedfile}",
-                unless  => "[ ${chainedkeyfile} -nt ${inpath} -a ${chainedkeyfile} -nt ${script} -a ${chainedkeyfile} -nt ${privatekeyfile} ]",
-                require => [ File[$inpath], File[$privatekeyfile], File[$script] ],
-            }
-        }
 
         # set owner/group/permissions on the chained/chain files
         file { $chainedfile:
@@ -86,17 +70,6 @@ define sslcert::chainedcert(
             owner   => 'root',
             group   => $group,
             require => Exec["x509-bundle ${title}-chain"],
-        }
-        if !$skip_private {
-            file { $chainedkeyfile:
-                ensure    => $ensure,
-                mode      => '0440',
-                owner     => 'root',
-                group     => $group,
-                show_diff => false,
-                backup    => false,
-                require   => Exec["x509-bundle ${title}-chainedkey"],
-            }
         }
     } else {
         file { [$chainedfile, $chainfile]:

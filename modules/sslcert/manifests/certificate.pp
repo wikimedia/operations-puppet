@@ -94,9 +94,8 @@ define sslcert::certificate(
 
     if $chain {
         sslcert::chainedcert { $title:
-            ensure       => $ensure,
-            group        => $group,
-            skip_private => $skip_private,
+            ensure => $ensure,
+            group  => $group,
         }
     }
 }
