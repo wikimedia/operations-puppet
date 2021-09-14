@@ -35,6 +35,7 @@ profile::admin::groups:
   - wdqs-admins
   - wdqs-roots
 contactgroups: admins,wdqs-admins
+cluster: wcqs
 
 
 # Includes module for connection limits
