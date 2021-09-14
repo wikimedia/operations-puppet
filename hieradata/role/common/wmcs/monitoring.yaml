@@ -7,6 +7,7 @@ profile::base::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
+  - drmrs.wmnet
 
 
 profile::grafana::domain: grafana-labs.wikimedia.org
