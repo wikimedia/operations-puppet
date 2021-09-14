@@ -62,6 +62,10 @@ def parse_options():
     parser.add_argument('--output', '-o', dest="output",
                         help="output filename",
                         required=True)
+    parser.add_argument('--include-private-key', '-p', dest="private_key",
+                        type=file_exists,
+                        help="Attach the private key of the server certificate",
+                        default=None)
 
     return parser.parse_args()
 
@@ -124,6 +128,10 @@ def main():
     else:
         print("empty chain (due to skipped root/first?)")
 
+    if args.private_key:
+        certpath.append(args.private_key)
+        os.umask(0o66)
+
     # now that we have an issuer path, actually write the bundle
     with open(args.output, "w") as outfile:
         for cert in certpath:
@@ -131,7 +139,7 @@ def main():
             with open(cert, "r") as infile:
                 incontents = infile.read()
                 # add an eol if not already there, frequent source of trouble
-                if incontents[-1] != "\n":
+                if len(incontents) > 0 and incontents[-1] != "\n":
                     incontents += "\n"
                 outfile.write(incontents)
 
