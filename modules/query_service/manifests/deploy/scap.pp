@@ -13,7 +13,10 @@ class query_service::deploy::scap(
         manage_user               => true,
         # This is required by the scap/config_files.yaml config inside the wdqs/wdqs repo which
         # is referenced when performing the initial clone.
-        require                   => File['/etc/wdqs/vars.yaml'],
+        require                   => [
+            File["/etc/${deploy_name}/vars.yaml"],
+            File['/etc/query_service_vars.yaml'],
+        ],
     }
 
     $git_deploy_dir = '/srv/deployment/wdqs/wdqs'
