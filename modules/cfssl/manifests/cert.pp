@@ -156,11 +156,19 @@ define cfssl::cert (
         }
     }
 
-    file{[$cert_path, $key_path, $csr_pem_path]:
+    file { [$cert_path, $csr_pem_path]:
         ensure => stdlib::ensure($ensure, 'file'),
         owner  => $owner,
         group  => $group,
         mode   => '0440',
+    }
+    file { $key_path:
+        ensure    => stdlib::ensure($ensure, 'file'),
+        owner     => $owner,
+        group     => $group,
+        mode      => '0440',
+        show_diff => false,
+        backup    => false,
     }
     if $provide_chain {
         # TODO: we need to replace how we fetch bundles as fetching over a

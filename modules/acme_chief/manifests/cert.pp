@@ -42,6 +42,7 @@ define acme_chief::cert (
         mode      => '0640',
         recurse   => true,
         show_diff => false,
+        backup    => false,
         source    => "puppet://${::acmechief_host}/acmedata/${title}",
     }
 
