@@ -6,7 +6,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://analytics.wikimedia.org
-      replacement: https://thorium.eqiad.wmnet:8443
+      replacement: https://analytics-web.discovery.wmnet:8443
     - type: map
       target: http://annual.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
@@ -34,7 +34,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://cxserver.discovery.wmnet:4002
     - type: map
       target: http://datasets.wikimedia.org
-      replacement: https://thorium.eqiad.wmnet:8443
+      replacement: https://analytics-web.discovery.wmnet:8443
     - type: map
       target: http://dbtree.wikimedia.org
       replacement: https://dbmonitor1002.wikimedia.org
@@ -208,7 +208,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://stats.wikimedia.org
-      replacement: https://thorium.eqiad.wmnet:8443
+      replacement: https://analytics-web.discovery.wmnet:8443
     - type: map
       target: http://stream.wikimedia.org
       # XXX pipe requests to /v2/stream/.+ ?
