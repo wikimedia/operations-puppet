@@ -27,5 +27,17 @@ class rsyslog {
         require => Package['rsyslog'],
     }
 
+    # By default, rsyslogd startup is successful (exit status 0) even in the
+    # face of invalid configurations, for example due to syntax errors in one
+    # of the /etc/rsyslog.d/ files. Set the AbortOnUncleanConfig to 'on' to
+    # fail startup in such cases instead.
+    # https://phabricator.wikimedia.org/T290870
+    # https://www.rsyslog.com/doc/v8-stable/rainerscript/global.html
+    rsyslog::conf { 'abort_unclean_config':
+        ensure   => 'present',
+        content  => '$AbortOnUncleanConfig on',
+        priority => 00,
+    }
+
     base::service_auto_restart { 'rsyslog': }
 }
