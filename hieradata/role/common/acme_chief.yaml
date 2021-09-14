@@ -50,8 +50,8 @@ profile::acme_chief::certificates:
         - 'check.wikimedia-dns.org'
         - '*.check.wikimedia-dns.org'
         challenge: dns-01
-        authorized_hosts:
-        - 'durum1001.eqiad.wmnet'
+        authorized_regexes:
+        - '^durum[12345]00[12]\.(eqiad|codfw|esams|ulsfo|eqsin)\.wmnet$'
     gerrit:
         CN: 'gerrit.wikimedia.org'
         SNI:
