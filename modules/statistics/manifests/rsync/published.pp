@@ -10,7 +10,7 @@
 # set this up).
 #
 class statistics::rsync::published(
-    $destination = 'thorium.eqiad.wmnet::published-destination', # TODO: hiera-ize thorium.eqiad.wmnet
+    $destination = 'analytics-web.discovery.wmnet::published-destination',
     $source      = '/srv/published',
 ) {
     # Create $source directory. This directory will be
