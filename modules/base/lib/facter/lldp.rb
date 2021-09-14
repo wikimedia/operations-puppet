@@ -91,7 +91,8 @@ end
 Facter.add(:lldp_neighbors) do
   confine :kernel => %w{Linux FreeBSD OpenBSD}
   confine do
-    !Facter.value(:lldp).nil?
+    # lldp has always at least parent: nil.
+    Facter.value(:lldp).size > 1
   end
 
   setcode do
