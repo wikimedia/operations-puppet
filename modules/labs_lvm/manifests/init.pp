@@ -10,7 +10,10 @@
 #              unallocated segment of the disk)
 #
 
-class labs_lvm($disk = '/dev/sda') {
+class labs_lvm(
+    Stdlib::Unixpath $disk      = '/dev/sda',
+    Boolean          $ephemeral = false,
+) {
 
     package { ['lvm2', 'parted']:
         ensure => present,
@@ -20,6 +23,15 @@ class labs_lvm($disk = '/dev/sda') {
         ensure  => file,
         source  => 'puppet:///modules/labs_lvm/make-instance-vg',
         require => Package['lvm2', 'parted'],
+        mode    => '0544',
+        owner   => 'root',
+        group   => 'root',
+    }
+
+    file { '/usr/local/sbin/make-instance-vg-ephem':
+        ensure  => file,
+        source  => 'puppet:///modules/labs_lvm/make-instance-vg-ephem',
+        require => Package['lvm2'],
         mode    => '0544',
         owner   => 'root',
         group   => 'root',
@@ -52,12 +64,20 @@ class labs_lvm($disk = '/dev/sda') {
         group   => 'root',
     }
 
-    exec { 'create-volume-group':
-        logoutput => 'on_failure',
-        unless    => '/sbin/vgdisplay -c vd',
-        require   => File['/usr/local/sbin/make-instance-vg'],
-        command   => "/usr/local/sbin/make-instance-vg '${disk}'",
+    if $ephemeral {
+        exec { 'create-ephemeral-volume-group':
+            logoutput => 'on_failure',
+            unless    => '/sbin/vgdisplay -c vd',
+            require   => File['/usr/local/sbin/make-instance-vg-ephem'],
+            command   => "/usr/local/sbin/make-instance-vg-ephem '${disk}'",
+        }
+    } else {
+        exec { 'create-volume-group':
+            logoutput => 'on_failure',
+            unless    => '/sbin/vgdisplay -c vd',
+            require   => File['/usr/local/sbin/make-instance-vg'],
+            command   => "/usr/local/sbin/make-instance-vg '${disk}'",
+        }
     }
-
 }
 
