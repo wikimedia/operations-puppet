@@ -5428,3 +5428,9 @@ ldap_only_users:
     ensure: present
     realname: Jess Klien
     email: jklein@wikimedia.org
+  rhuang-ctr:
+    ensure: present
+    realname: Rui Huang
+    email: rhuang-ctr@wikimedia.org
+    expiry_date: 2022-05-02
+    expiry_contact: cmacholan@wikimedia.org
