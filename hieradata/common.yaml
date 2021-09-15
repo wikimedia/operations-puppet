@@ -1120,8 +1120,8 @@ authdns_addrs:
 acmechief_host: 'acmechief1001.eqiad.wmnet'
 
 mail_smarthost:
-- 'mx1001.wikimedia.org'
 - 'mx2001.wikimedia.org'
+- 'mx1001.wikimedia.org'
 
 wikimail_smarthost:
 - 'wiki-mail-eqiad.wikimedia.org'
