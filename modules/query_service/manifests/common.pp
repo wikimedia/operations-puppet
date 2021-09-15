@@ -109,6 +109,11 @@ class query_service::common(
         mode   => '0775',
     }
 
+    file { '/etc/query_service':
+        ensure => link,
+        target => "/etc/${deploy_name}"
+    }
+
     file { "/etc/${deploy_name}/vars.yaml":
         ensure  => present,
         content => template('query_service/vars.yaml.erb'),
@@ -116,6 +121,10 @@ class query_service::common(
         group   => 'root',
         mode    => '0644',
     }
+
+    # These variables are read by the scap promotion process for wdqs/wdqs, and thus must be
+    # made avaliable prior to installing the package.
+    File["/etc/${deploy_name}/vars.yaml"] -> Package['wdqs/wdqs']
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This systemd timer job takes care of
