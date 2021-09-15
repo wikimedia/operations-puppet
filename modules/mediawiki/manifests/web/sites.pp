@@ -15,7 +15,7 @@ class mediawiki::web::sites (
     $siteconfigs.each |$siteconfig| {
         $sitename = $siteconfig['name']
         # Generic sites get declared pretty simply:
-        # We either compile the template indicated in the data, interpolating with the 
+        # We either compile the template indicated in the data, interpolating with the
         # variables above, or we just source the file it's pointing at.
         if $siteconfig['template'] {
             ::httpd::site { $sitename:

@@ -11,7 +11,8 @@ class mediawiki::web::yaml_defs(
             # If we have a vhost, we have everything in the yaml.
             # We need to untangle the vhosts structures first
             $vhosts =  $siteconfig['vhosts'].map |$vhost| {
-                $vhost['params'].merge({'name' => $vhost['name']})
+                $k8s_params = pick($vhost['k8s_only_params'], {})
+                $vhost['params'].merge({'name' => $vhost['name']}).merge($k8s_params)
             }
             # Now copy over the siteconfig, not before patching the vhosts.
             $siteconfig.merge({'vhosts' => $vhosts})
