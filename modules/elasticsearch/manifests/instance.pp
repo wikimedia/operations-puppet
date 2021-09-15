@@ -291,7 +291,7 @@ define elasticsearch::instance(
       require => Package['elasticsearch'],
     }
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
-    # the previous instance are left alone. This cron takes care of cleaning up
+    # the previous instance are left alone. This systemd timer takes care of cleaning up
     # GC logs older than 30 days.
     #
     # We customize the instance title when $title == 'default' for purposes of
@@ -301,11 +301,21 @@ define elasticsearch::instance(
         'default' => 'elasticsearch-gc-log-cleanup',
         default   => "elasticsearch-${title}-gc-log-cleanup",
     }
+
+    # TODO: Absented as part of T273673, remove this cron block after initial deploy
     cron { $cron_title:
-        ensure  => present,
+        ensure  => absent,
         minute  => 12,
         hour    => 2,
         command => "find /var/log/elasticsearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
+    }
+    # TODO: T273673, change the name of $cron_title after initial deploy
+    systemd::timer::job { $cron_title:
+        ensure      => present,
+        user        => 'root',
+        description => 'Cleanup GC logs',
+        command     => "/usr/bin/find /var/log/elasticsearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00'},
     }
     # Note that we don't notify the Elasticsearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.

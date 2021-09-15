@@ -1,6 +1,6 @@
 # == Class: elasticsearch::log::hot_threads
 #
-# Install a cron job to log the hot threads.
+# Install a systemd timer job to log the hot threads.
 #
 class elasticsearch::log::hot_threads {
     require_package('python3-yaml')
@@ -26,13 +26,28 @@ class elasticsearch::log::hot_threads {
     # This log file contains only exceptions raised while
     # executing. See hot_threads_cluster for individual cluster
     # log file locations.
+    # TODO: Absented as part of T273673, remove this block after deploy
     $log = '/var/log/elasticsearch/elasticsearch_hot_threads_errors.log'
     cron { 'elasticsearch-hot-threads-log':
+        ensure  => absent,
         command => "${script} > /dev/null 2>&1",
         #So the destination directory exists
         require => [Package['elasticsearch'], File[$script]],
         user    => 'elasticsearch',
         minute  => '*/5',
+    }
+
+    systemd::timer::job { 'elasticsearch-hot-threads-log':
+        command            => $script,
+        description        => 'Archive exception logs of hot elasticsearch threads',
+        user               => 'elasticsearch',
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        interval           => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:00/5:00', # every 5 min
+            },
+        require            => [Package['elasticsearch'], File[$script]],
     }
 
     # The logrotate configuration for Elasticsearch will roll these logs just
