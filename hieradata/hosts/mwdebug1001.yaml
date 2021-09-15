@@ -1,8 +1,1 @@
 profile::mediawiki::webserver::stream_to_logstash: true
-#profile::mediawiki::php::fpm_config:
-#  opcache.memory_consumption: 512
-#profile::mediawiki::php::restarts::opcache_limit: 100
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached: true
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: true
-profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11210'
-profile::services_proxy::envoy::listen_ipv6: true
