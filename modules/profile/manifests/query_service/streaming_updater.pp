@@ -1,7 +1,7 @@
 class profile::query_service::streaming_updater (
     String $username = lookup('profile::query_service::username'),
-    String $kafka_cluster = lookup('profile::query_service::streaming_updater_kafka_cluster'),
-    String $kafka_topic = lookup('profile::query_service::streaming_updater_kafka_topic'),
+    String $kafka_cluster = lookup('profile::query_service::streaming_updater::kafka_cluster'),
+    String $kafka_topic = lookup('profile::query_service::streaming_updater::kafka_topic'),
     Stdlib::Port $logstash_logback_port = lookup('logstash_logback_port'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),

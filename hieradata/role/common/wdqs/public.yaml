@@ -48,3 +48,8 @@ profile::query_service::federation_user_agent: 'Wikidata Query Service; https://
 
 # Includes module for connection limits
 profile::nginx::variant: 'full'
+
+profile::query_service::updater_type: 'regular'
+profile::query_service::streaming_updater::kafka_cluster: main
+# enable by defaults when switching to the streaming_updater
+# profile::query_service::blazegraph_extra_jvm_opts: ["-DwikibaseSomeValueMode=skolem"]

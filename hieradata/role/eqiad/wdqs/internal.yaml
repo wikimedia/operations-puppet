@@ -6,3 +6,5 @@ profile::query_service::blazegraph_options:
   - '-Dwdqs.throttling-filter.throttle-bucket-capacity=100000'
   - '-Dwdqs.throttling-filter.throttle-bucket-refill-amount=100000'
   - '-XX:+ExitOnOutOfMemoryError'
+
+profile::query_service::streaming_updater::kafka_topic: eqiad.rdf-streaming-updater.mutation
