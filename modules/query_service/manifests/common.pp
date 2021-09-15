@@ -78,6 +78,15 @@ class query_service::common(
         mode   => '0775',
     }
 
+    # Only a single query_service can be installed per host, provide a common name
+    # to access logs without having to know which one we are on.
+    if ($log_dir != '/var/log/query_service') {
+        file { '/var/log/query_service':
+            ensure => link,
+            target => $log_dir
+        }
+    }
+
     # If we have data in separate dir, make link in package dir
     if $data_dir != $package_dir {
         file { $data_dir:
