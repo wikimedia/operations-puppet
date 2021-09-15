@@ -83,7 +83,10 @@ class query_service::common(
     if ($log_dir != '/var/log/query_service') {
         file { '/var/log/query_service':
             ensure => link,
-            target => $log_dir
+            target => $log_dir,
+            # This path is used by the scap promotion process for wdqs/wdqs, and thus must be
+            # made avaliable prior to installing the package.
+            before => Package['wdqs/wdqs'],
         }
     }
 
@@ -129,11 +132,10 @@ class query_service::common(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
+        # These variables are read by the scap promotion process for wdqs/wdqs, and thus must be
+        # made avaliable prior to installing the package.
+        before  => Package['wdqs/wdqs'],
     }
-
-    # These variables are read by the scap promotion process for wdqs/wdqs, and thus must be
-    # made avaliable prior to installing the package.
-    File["/etc/${deploy_name}/vars.yaml"] -> Package['wdqs/wdqs']
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This systemd timer job takes care of
