@@ -1,0 +1,48 @@
+# vim: sw=2 ts=2 sts=2 et ft=apache
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+
+<VirtualHost *:80>
+  ServerName <%= @vhost %>
+  ServerAdmin <%= @serveradmin %>
+
+  # Should never be seen, but apache needs this set to something
+  DocumentRoot /var/www/html
+
+  RewriteEngine on
+<%- if @require_ssl -%>
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{REQUEST_URI} !^/api/status$
+  RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
+  Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+<%- end -%>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+    Require all denied
+  </Directory>
+
+  <Location />
+    ProxyPass "http://localhost:5601/"
+<%= @apache_auth -%>
+  </Location>
+
+  ProxyRequests Off
+
+  <Proxy http://localhost:5601>
+    ProxySet connectiontimeout=5 timeout=90 retry=0
+  </Proxy>
+
+  # Tell caches that we are using http authentication
+  Header set Vary Authorization
+
+  # Expose the status api without authenticating
+  # Due to varnish frontend, all requests are seen by Apache as being internal
+  # so using IP ranges is not any more restrictive than "all"
+  <Location /api/status>
+    Require all granted
+  </Location>
+
+</VirtualHost>
