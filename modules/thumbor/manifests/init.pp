@@ -160,17 +160,6 @@ class thumbor (
         value => '1',
     }
 
-    cron { 'systemd-thumbor-tmpfiles-clean':
-        ensure   => 'absent',
-        minute   => '*',
-        hour     => '*',
-        monthday => '*',
-        month    => '*',
-        weekday  => '*',
-        command  => '/bin/systemd-tmpfiles --clean --prefix=/srv/thumbor/tmp',
-        user     => 'thumbor',
-    }
-
     systemd::timer::job { 'thumbor_systemd_tmpfiles_clean':
         ensure             => 'present',
         user               => 'thumbor',
