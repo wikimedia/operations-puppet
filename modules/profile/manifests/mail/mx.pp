@@ -122,16 +122,27 @@ class profile::mail::mx (
         port  => '25',
     }
 
-    # mails the wikimedia.org mail alias file to OIT once per week
+    # mails the wikimedia.org mail alias file to ITS once per week
     $alias_file = "${exim4::aliases_dir}/wikimedia.org"
-    $recipient  = 'its@wikimedia.org'
+    $recipient  = 'dzahn@wikimedia.org'
     $subject    = "wikimedia.org mail aliases from ${::hostname}"
     cron { 'mail_exim_aliases':
+        ensure  => absent,
         user    => 'Debian-exim',
         minute  => 0,
         hour    => 0,
         weekday => 0,
         command => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file} >/dev/null 2>&1",
+    }
+
+    systemd::timer::job { 'mail-exim-aliases':
+        ensure             => present,
+        user               => 'Debian-exim',
+        description        => 'mail a copy of the exim alias file',
+        command            => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file}",
+        interval           => {'start' => 'OnCalendar', 'interval' => 'weekly'},
+        monitoring_enabled => false,
+        logging_enabled    => false,
     }
 
     # Customize logrotate settings to support longer retention (T167333)
