@@ -216,6 +216,7 @@ profile::kubernetes::deployment_server::general:
     kubernetesApi:
       host: kubernetes.default.svc.cluster.local
       port: 443
+    helmBinary: helm2
 
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
