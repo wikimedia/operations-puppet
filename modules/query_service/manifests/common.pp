@@ -109,9 +109,7 @@ class query_service::common(
         mode   => '0775',
     }
 
-    # This can *not* use $deploy_name, as the value is hardcoded into the scap config
-    # for wikidata/query/deploy
-    file { '/etc/wdqs/vars.yaml':
+    file { "/etc/${deploy_name}/vars.yaml":
         ensure  => present,
         content => template('query_service/vars.yaml.erb'),
         owner   => 'root',
