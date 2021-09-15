@@ -1,0 +1,9 @@
+output {
+<%- if @guard_condition %>if <%= @guard_condition %> {<% end %>
+      udp {
+          host => '<%= @host %>'
+          port => '<%= @port %>'
+          codec =>'<%= @codec %>'
+      }
+<%- if @guard_condition %>}<% end %>
+}
