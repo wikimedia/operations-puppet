@@ -111,18 +111,12 @@ class query_service::common(
 
     # This can *not* use $deploy_name, as the value is hardcoded into the scap config
     # for wikidata/query/deploy
-    $vars_path = "/etc/${deploy_name}/vars.yaml"
-    file { $vars_path:
+    file { '/etc/wdqs/vars.yaml':
         ensure  => present,
         content => template('query_service/vars.yaml.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-    }
-
-    file { '/etc/query_service_vars.yaml':
-        ensure => link,
-        target => $vars_path,
     }
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by

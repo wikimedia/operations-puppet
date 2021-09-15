@@ -2,7 +2,7 @@ require_relative '../../../../rake_modules/spec_helper'
 
 describe 'query_service::deploy::scap', :type => :class do
   let(:pre_condition) { %(
-      file { ['/etc/wdqs/vars.yaml', '/etc/query_service_vars.yaml']:
+      file { '/etc/wdqs/vars.yaml':
         content => '',
       }
   ) }
