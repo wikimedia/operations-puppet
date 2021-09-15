@@ -8,6 +8,11 @@ class role::elasticsearch::cirrus {
     include ::profile::lvs::realserver
     include ::profile::elasticsearch::cirrus
 
+    # limit initial rollout of gelf_relay to elastic1049
+    if $::hostname == 'elastic1049' {
+        include ::profile::logstash::gelf_relay
+    }
+
     system::role { 'elasticsearch::cirrus':
         ensure      => 'present',
         description => 'elasticsearch cirrus',
