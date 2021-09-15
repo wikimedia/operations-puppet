@@ -24,21 +24,21 @@
 #   }
 #
 class logstash (
-    String $heap_memory               = '192m',
-    Integer $pipeline_workers         = $::processorcount,
-    Integer $pipeline_batch_size      = 125,
-    Integer $pipeline_batch_delay     = 50,
-    String $java_package              = 'openjdk-8-jdk',
-    String $logstash_package          = 'logstash',
-    Boolean $gc_log                   = true,
-    Integer $jmx_exporter_port        = undef,
-    String $jmx_exporter_config       = undef,
-    Integer[5,7] $logstash_version    = 5,
-    Boolean $manage_service           = true,
-    Enum['plain', 'json'] $log_format = 'plain',
-    Boolean $enable_dlq               = false,
-    String $dlq_max_bytes             = '1024mb',
-    Array[Stdlib::Fqdn] $dlq_hosts    = [],
+    String $heap_memory                   = '192m',
+    Integer $pipeline_workers             = $::processorcount,
+    Integer $pipeline_batch_size          = 125,
+    Integer $pipeline_batch_delay         = 50,
+    String $java_package                  = 'openjdk-8-jdk',
+    String $logstash_package              = 'logstash',
+    Boolean $gc_log                       = true,
+    Optional[Integer] $jmx_exporter_port  = undef,
+    Optional[String] $jmx_exporter_config = undef,
+    Integer[5,7] $logstash_version        = 5,
+    Boolean $manage_service               = true,
+    Enum['plain', 'json'] $log_format     = 'plain',
+    Boolean $enable_dlq                   = false,
+    String $dlq_max_bytes                 = '1024mb',
+    Array[Stdlib::Fqdn] $dlq_hosts        = [],
 ) {
     #TODO: fully remove when java installed with ::profile::java
     #require_package($java_package)
