@@ -1000,13 +1000,8 @@ node /^(doh[12345]00[12])\.wikimedia\.org$/ {
 }
 
 # durum for Wikidough (T289536)
-node 'durum1001.eqiad.wmnet' {
+node /^durum[12345]00[12]\.(eqiad|codfw|esams|ulsfo|eqsin)\.wmnet$/ {
     role(durum)
-}
-
-# durum for Wikidough (T290599)
-node 'durum1002.eqiad.wmnet' {
-    role(insetup)
 }
 
 # Dragonfly Supernode (T286054)
