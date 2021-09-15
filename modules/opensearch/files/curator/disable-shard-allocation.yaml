@@ -1,0 +1,12 @@
+actions:
+  1:
+    action: cluster_routing
+    description: >-
+      Disable non primaries allocation for the entire cluster.
+    options:
+      routing_type: allocation
+      value: primaries
+      setting: enable
+      wait_for_completion: True
+      max_wait: 300
+      wait_interval: 10
