@@ -26,7 +26,7 @@ groups:
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
-              jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta]
+              jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -334,7 +334,7 @@ groups:
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
-              katelevan, cmaslak, abban]
+              katelevan, cmaslak, abban, mikeraish]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
     approval:
@@ -4655,6 +4655,13 @@ users:
     ssh_keys: []
     uid: 23605
     email: abban.dunne@wikimedia.de
+  mikeraish:
+    ensure: present
+    gid: 500
+    realname: Michael Raish
+    ssh_keys: []
+    uid: 30902
+    email: mraish@wikimedia.org
 
 
 ldap_only_users:
@@ -4838,7 +4845,7 @@ ldap_only_users:
     realname: Monte Hurd
     email: mhurd@wikimedia.org
   mraish:
-    ensure: present
+    ensure: absent
     realname: Michael Raish
     email: mraish@wikimedia.org
   moushirael:
@@ -5315,10 +5322,6 @@ ldap_only_users:
     ensure: present
     realname: Bernard Wang
     email: bwang@wikimedia.org
-  mikeraish:
-    ensure: present
-    realname: Michael Raish
-    email: mraish@wikimedia.org
   lmeintrup:
     ensure: present
     realname: Lena Meintrup
