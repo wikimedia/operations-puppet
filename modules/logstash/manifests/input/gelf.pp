@@ -9,6 +9,7 @@
 # - $priority: Configuration loading priority. Default '10'.
 # - $ensure: Whether the config should exist.
 # - $plugin_id: Name associated with Logstash metrics
+# - $host: The IP or hostname to listen on, e.g. "0.0.0.0"
 #
 # == Sample usage:
 #
@@ -19,6 +20,7 @@
 define logstash::input::gelf(
     $ensure    = present,
     $port      = 12201,
+    $host      = undef,
     $priority  = 10,
     $plugin_id = "input/gelf/${port}",
     $tags      = undef,
