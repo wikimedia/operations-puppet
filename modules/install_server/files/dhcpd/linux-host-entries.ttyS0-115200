@@ -265,6 +265,17 @@ host durum3002 {
     fixed-address durum3002.esams.wmnet;
 }
 
+host durum4001 {
+    hardware ethernet aa:00:00:bc:fe:30;
+    fixed-address durum4001.ulsfo.wmnet;
+
+}
+
+host durum4002 {
+    hardware ethernet aa:00:00:c5:bd:4f;
+    fixed-address durum4002.ulsfo.wmnet;
+}
+
 host etherpad1002 {
     hardware ethernet aa:00:00:70:0e:8b;
     fixed-address etherpad1002.eqiad.wmnet;
