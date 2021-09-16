@@ -4,6 +4,7 @@ class profile::wmcs::nfs::secondary(
     Hash[String, Hash[String, Variant[Integer,String]]] $drbd_resource_config = lookup('profile::wmcs::nfs::secondary::drbd_resource_config'),
     Hash[String, Stdlib::IP::Address::V4] $drbd_cluster = lookup('profile::wmcs::nfs::secondary::drbd_cluster'),
     Stdlib::IP::Address $cluster_ip = lookup('profile::wmcs::nfs::secondary::cluster_ip'),
+    Integer $cluster_ip_netmask     = lookup('profile::wcms::nfs::secondary::cluster_ip_netmask'),
     Stdlib::IP::Address $subnet_gateway_ip = lookup('profile::wmcs::nfs::secondary::subnet_gateway_ip'),
     Stdlib::Fqdn $standby_server     = lookup('profile::wmcs::nfs::secondary::standby'),
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers'),

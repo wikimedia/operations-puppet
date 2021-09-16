@@ -45,6 +45,7 @@ profile::wmcs::nfs::primary::drbd_cluster:
   labstore1005: 192.168.0.4
 
 profile::wmcs::nfs::primary::cluster_ip: 10.64.37.18
+profile::wmcs::nfs::primary::cluster_ip_netmask: 24
 profile::wmcs::nfs::primary::subnet_gateway_ip: 10.64.37.1
 profile::wmcs::nfs::primary::mysql_variances:
   s52788: 48 # Quarry T180141

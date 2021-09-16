@@ -32,7 +32,7 @@ case $CMD in
         # know for /sure/ that you want the current node to take control
         # you can issue: /sbin/drbdadm primary all --force
         /sbin/drbdadm primary all
-        /bin/ip address add <%= @cluster_ip %>/24 dev <%= @monitor_iface %>
+        /bin/ip address add <%= @cluster_ip %>/<%= @cluster_ip_netmask %> dev <%= @monitor_iface %>
 
         /usr/sbin/arping -c 3 -S <%= @cluster_ip %> \
             -i <%= @monitor_iface %> <%= @subnet_gateway_ip %> &> /dev/null
@@ -62,7 +62,7 @@ case $CMD in
         <% end %>
 
         /sbin/drbdadm secondary all
-        /bin/ip a del <%= @cluster_ip %>/24 dev <%= @monitor_iface %>
+        /bin/ip a del <%= @cluster_ip %>/<%= @cluster_ip_netmask %> dev <%= @monitor_iface %>
         /usr/sbin/drbd-overview
         echo "done!"
         echo "If there are unmount errors above, running 'nfs-manage down' again will warn and display errors, but it will work."

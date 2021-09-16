@@ -2,6 +2,7 @@ ldap::client::nss::nsswitch_conf_source: file:///usr/share/libc-bin/nsswitch.con
 profile::wmcs::nfs::secondary::monitor_iface: eno1
 profile::ldap::client::labs::ldapincludes: ['openldap', 'nss', 'utils']
 profile::wmcs::nfs::secondary::cluster_ip: "208.80.155.119"
+profile::wmcs::nfs::secondary::cluster_ip_netmask: 27
 profile::wmcs::nfs::secondary::subnet_gateway_ip: 208.80.155.97
 
 # Anything we specifically want to monitor already pages, so this is annoying
