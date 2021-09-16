@@ -36,9 +36,7 @@ class geoip::data::maxmind(
   # Version 3 on buster has different config keys to version 2
   $legacy_format = debian::codename::lt('buster')
 
-  package { 'geoipupdate':
-    ensure => present,
-  }
+  ensure_packages(['geoipupdate'])
 
   if ! defined(File[$data_directory]) {
     file { $data_directory:
@@ -76,7 +74,7 @@ class geoip::data::maxmind(
   # weekly on Tuesdays, but there is no gaurantee as to the precise timing in
   # the long term.
   cron { 'geoipupdate':
-    ensure  => present,
+    ensure  => absent,
     command => "/bin/echo -e \"\$(/bin/date): geoipupdate downloading MaxMind .dat files into ${data_directory}\" >> ${geoipupdate_log} && ${geoipupdate_command} &>> /var/log/geoipupdate.log",
     user    => root,
     weekday => '*',
@@ -89,8 +87,35 @@ class geoip::data::maxmind(
     ],
   }
 
+  file { '/usr/local/bin/geoipupdate_job_legacy':
+      ensure => present,
+      mode   => '0555',
+      source => 'puppet:///modules/geoip/geoipupdate_job_legacy.sh',
+  }
+
+  file { '/etc/geoipupdate_job_legacy':
+      ensure  => present,
+      mode    => '0555',
+      content => template('geoip/geoipupdate_job_legacy.erb'),
+  }
+
+  systemd::timer::job { 'geoip_update_legacy':
+      ensure             => 'present',
+      user               => 'root',
+      description        => 'download geoip database from MaxMind',
+      command            => '/usr/local/bin/geoipupdate_job_legacy',
+      interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:30:0'},
+      monitoring_enabled => true,
+      logging_enabled    => true,
+      require            => [
+        Package['geoipupdate'],
+        File[$config_file],
+        File[$data_directory]
+      ],
+  }
+
   # logrotate for geoipupdate.log
-  logrotate::rule { 'geoipupdate':
+  logrotate::rule { 'geoipupdate_log_legacy':
     ensure       => present,
     file_glob    => $geoipupdate_log,
     size         => '1M',
