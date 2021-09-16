@@ -188,17 +188,6 @@ class thumbor (
         content => template('thumbor/generate-thumbor-age-metrics-nc-config.erb'),
     }
 
-    cron { 'process-age-statsd':
-        ensure   => 'absent',
-        minute   => '*',
-        hour     => '*',
-        monthday => '*',
-        month    => '*',
-        weekday  => '*',
-        command  => "/usr/local/bin/generate-thumbor-age-metrics.sh | /bin/nc -w 1 -u ${statsd_host} ${statsd_port}",
-        user     => 'thumbor',
-    }
-
     systemd::timer::job { 'thumbor_process_age_statsd':
         ensure             => 'present',
         user               => 'thumbor',
