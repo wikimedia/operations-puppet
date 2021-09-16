@@ -17,7 +17,9 @@ class mediawiki::packages {
     ])
 
     # Score
-    ensure_packages('lilypond')
+    package { [ 'lilypond', 'lilypond-data' ]:
+        ensure => absent
+    }
 
     # Used by captcha.py from ConfirmEdit extension (used to generate captchas)
     ensure_packages(['python-pil', 'python3-pil'])
