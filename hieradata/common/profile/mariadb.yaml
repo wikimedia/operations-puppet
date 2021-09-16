@@ -26,7 +26,7 @@ profile::mariadb::section_ports:
 profile::mariadb::section_params:
   _defaults_:
     writeable_dc: 'mwprimary'
-    replication_type: 'bidir'
+    replication_type: 'unidir'
   x2:
     writeable_dc: 'both'
     replication_type: 'bidir'
