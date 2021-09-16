@@ -13,6 +13,12 @@ class query_service::deploy::scap(
         manage_user               => true,
     }
 
+    # These paths are used by the scap promotion process for wdqs/wdqs, and
+    # thus must be made available prior to installing the package.
+    File['/var/log/query_service'] -> Package['wdqs/wdqs']
+    File["/etc/${deploy_name}/vars.yaml"] -> Package['wdqs/wdqs']
+    File['/etc/query_service'] -> Package['wdqs/wdqs']
+
     $git_deploy_dir = '/srv/deployment/wdqs/wdqs'
     if $package_dir != $git_deploy_dir {
 

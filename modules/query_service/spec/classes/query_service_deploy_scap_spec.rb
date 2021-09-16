@@ -1,6 +1,13 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'query_service::deploy::scap', :type => :class do
+  let(:pre_condition) do
+    'file { ["/var/log/query_service", "/etc/query_service", "/etc/wdqs/vars.yaml"]:
+      ensure => present,
+      content => "",
+    }'
+  end
+
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }

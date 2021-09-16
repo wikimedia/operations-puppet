@@ -84,9 +84,6 @@ class query_service::common(
         file { '/var/log/query_service':
             ensure => link,
             target => $log_dir,
-            # This path is used by the scap promotion process for wdqs/wdqs, and thus must be
-            # made avaliable prior to installing the package.
-            before => Package['wdqs/wdqs'],
         }
     }
 
@@ -132,9 +129,6 @@ class query_service::common(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        # These variables are read by the scap promotion process for wdqs/wdqs, and thus must be
-        # made avaliable prior to installing the package.
-        before  => Package['wdqs/wdqs'],
     }
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
