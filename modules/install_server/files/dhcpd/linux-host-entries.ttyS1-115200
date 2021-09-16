@@ -3625,6 +3625,11 @@ host ganeti4003 {
     fixed-address ganeti4003.ulsfo.wmnet;
 }
 
+host ganeti4004 {
+    hardware ethernet F4:E9:D4:BA:EE:D0;
+    fixed-address ganeti4004.ulsfo.wmnet;
+}
+
 host ganeti5001 {
     hardware ethernet D0:94:66:81:90:90;
     fixed-address ganeti5001.eqsin.wmnet;
