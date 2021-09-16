@@ -36,9 +36,6 @@ class profile::query_service::wcqs(
 
     $uri_scheme_options = ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org']
     $data_options = ['-DwikibaseSomeValueMode=skolem']
-    $event_sender_options = ['-Dwdqs.event-sender-filter.file-event-sender=true',
-        "-Dwdqs.event-sender-filter.file-event-sender-filepath=${query_event_log}",
-        '-Dwdqs.event-sender-filter.enable-event-sender-if-header=']
 
     logrotate::rule { 'query_event_sender_log':
       ensure        => present,
@@ -61,7 +58,7 @@ class profile::query_service::wcqs(
         heap_size              => $heap_size,
         use_deployed_config    => $use_deployed_config,
         options                => $options,
-        extra_jvm_opts         => $extra_jvm_opts + $uri_scheme_options + $event_sender_options + $data_options,
+        extra_jvm_opts         => $extra_jvm_opts + $uri_scheme_options + $data_options,
         prometheus_nodes       => $prometheus_nodes,
         contact_groups         => $contact_groups,
         monitoring_enabled     => $monitoring_enabled,
