@@ -31,22 +31,9 @@ class profile::query_service::wcqs(
     $blazegraph_port = 9999
     $prometheus_port = 9195
     $prometheus_agent_port = 9102
-    $query_event_log='/var/log/wdqs/query_event.log'
-
 
     $uri_scheme_options = ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org']
     $data_options = ['-DwikibaseSomeValueMode=skolem']
-
-    logrotate::rule { 'query_event_sender_log':
-      ensure        => present,
-      file_glob     => $query_event_log,
-      frequency     => 'weekly',
-      copy_truncate => true,
-      missing_ok    => true,
-      not_if_empty  => true,
-      rotate        => 7,
-      compress      => true,
-    }
 
     profile::query_service::blazegraph { $instance_name:
         username               => $username,
