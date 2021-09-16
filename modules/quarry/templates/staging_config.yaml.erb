@@ -1,0 +1,29 @@
+OAUTH_CONSUMER_TOKEN: "<%= @oauth_consumer_token %>"
+OAUTH_SECRET_TOKEN: "<%= @oauth_secret_token %>"
+SECRET_KEY: 'blank' # this may not be used
+DEBUG: True
+DB_HOST: 'localhost'
+DB_NAME: 'quarry'
+DB_USER: 'quarry'
+DB_PASSWORD: '<%= @dbpass %>'
+broker_url: 'redis://'
+result_backend: 'redis://'
+worker_concurrency: 24  # Since all tasks are IO bound
+task_acks_late: True  # Tasks are idempotent!
+task_track_started: True
+worker_prefetch_multiplier: 1 # Tasks can run for a long time
+# Just query the quarry database itself.
+REPLICA_HOST: 'enwiki.analytics.db.svc.eqiad.wmflabs'
+REPLICA_DOMAIN: 'analytics.db.svc.wikimedia.cloud'
+REPLICA_DB: 'enwiki_p'
+REPLICA_USER: '<%= @replicauser %>'
+REPLICA_PASSWORD: '<%= @replicapass %>'
+REPLICA_PORT: 3306
+OUTPUT_PATH_TEMPLATE: '/srv/results/%s/%s/%s.sqlite'
+REDIS_HOST: 'localhost'
+REDIS_PORT: 6379
+REDIS_DB: 0
+QUERY_TIME_LIMIT: 60  # 1 minute
+QUERY_RESULTS_PER_PAGE: 50
+KILLER_LOG_PATH: 'killer.log'
+MAINTENANCE_MSG: 'This is the shared development environment.'
