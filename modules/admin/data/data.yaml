@@ -336,7 +336,8 @@ groups:
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
-    system_members: [analytics-search, analytics, analytics-privatedata, analytics-product]
+    system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
+              analytics-research, analytics-platform-eng]
     approval:
       - Olja Dimitrjevic
       - Andrew Otto
