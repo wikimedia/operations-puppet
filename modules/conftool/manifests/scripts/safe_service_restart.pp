@@ -16,16 +16,12 @@
 # === Parameters
 # [*lvs_pools*]   names of the lvs pools we want to depool
 #
-# [*services*] The relevant part of the service catalog
-#
-# [*lvs_class_hosts*] LVS hosts classes, as defined in lvs::configuration::lvs_class_hosts.
+# [*max_concurrency*] Maximum number of servers to restart at the same time, if poolcounter is available.
 #
 # If no pool is provided, or the realm is not production, the restart scripts will not use conftool
 # and will just be a stub.
 define conftool::scripts::safe_service_restart(
     Array[String] $lvs_pools,
-    Hash[String, Wmflib::Service] $services,
-    Hash $lvs_class_hosts,
     Integer $max_concurrency = 0,
 ) {
 
