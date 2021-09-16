@@ -164,6 +164,10 @@ profile::kubernetes::deployment_server::services:
     username: shellbox-constraints
     group: wikidev
     mode: '0640'
+  shellbox-media:
+    username: shellbox-media
+    group: wikidev
+    mode: '0640'
   shellbox-syntaxhighlight:
     username: shellbox-syntaxhighlight
     group: wikidev

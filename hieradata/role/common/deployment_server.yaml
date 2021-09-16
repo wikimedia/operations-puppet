@@ -365,6 +365,12 @@ profile::kubernetes::deployment_server::services:
     namespace: shellbox-constraints
     mode: '0640'
     owner: mwdeploy
+  shellbox-media:
+    username: shellbox-media
+    group: wikidev
+    namespace: shellbox-media
+    mode: '0640'
+    owner: mwdeploy
   shellbox-syntaxhighlight:
     username: shellbox-syntaxhighlight
     group: wikidev
