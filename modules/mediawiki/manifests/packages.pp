@@ -17,19 +17,8 @@ class mediawiki::packages {
     ])
 
     # Score
-    if debian::codename::eq('stretch') {
-        apt::package_from_component { 'lilypond':
-            component => 'component/lilypond',
-            packages  => ['lilypond', 'lilypond-data']
-        }
-    } else {
-        ensure_packages('lilypond')
-    }
+    ensure_packages('lilypond')
 
     # Used by captcha.py from ConfirmEdit extension (used to generate captchas)
-    if debian::codename::eq('stretch') {
-        ensure_packages(['python-imaging', 'python3-pil'])
-    } else {
-        ensure_packages(['python-pil', 'python3-pil'])
-    }
+    ensure_packages(['python-pil', 'python3-pil'])
 }
