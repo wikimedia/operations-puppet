@@ -57,4 +57,34 @@ class profile::aqs (
         #}
     }
 
+    # T249755
+    # Set up temporary rsync modules
+    # in support of the cassndra 3 migration
+    # These should be removed once the migration is complete
+    if $::fqdn =~ /aqs101[0-5].eqiad.wmnet/ {
+
+        $aqs_hosts = [
+            'aqs1004.eqiad.wmnet',
+            'aqs1005.eqiad.wmnet',
+            'aqs1006.eqiad.wmnet',
+            'aqs1007.eqiad.wmnet',
+            'aqs1008.eqiad.wmnet',
+            'aqs1009.eqiad.wmnet'
+        ]
+
+        rsync::server::module { 'transfer_cassandra_a_tmp':
+            path        => '/srv/cassandra-a/tmp',
+            read_only   => 'no',
+            list        => 'yes',
+            hosts_allow => $aqs_hosts,
+            auto_ferm   => true,
+        }
+        rsync::server::module { 'transfer_cassandra_b_tmp':
+            path        => '/srv/cassandra-b/tmp',
+            read_only   => 'no',
+            list        => 'yes',
+            hosts_allow => $aqs_hosts,
+            auto_ferm   => true,
+        }
+    }
 }
