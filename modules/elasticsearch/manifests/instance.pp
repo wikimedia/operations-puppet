@@ -211,7 +211,7 @@ define elasticsearch::instance(
         content => template('elasticsearch/curator_cluster.yaml.erb'),
     }
 
-    # These are implied by the systmed unit
+    # These are implied by the systemd unit
     $config_dir = "/etc/elasticsearch/${cluster_name}"
     $data_dir = "${base_data_dir}/${cluster_name}"
 
@@ -293,24 +293,9 @@ define elasticsearch::instance(
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This systemd timer takes care of cleaning up
     # GC logs older than 30 days.
-    #
-    # We customize the instance title when $title == 'default' for purposes of
-    # comparing pre and post multi-instance refactor. If this was merged to
-    # master please fix.
-    $cron_title = $title ? {
-        'default' => 'elasticsearch-gc-log-cleanup',
-        default   => "elasticsearch-${title}-gc-log-cleanup",
-    }
+    $gc_cleanup_job_title = "elasticsearch-${title}-gc-log-cleanup"
 
-    # TODO: Absented as part of T273673, remove this cron block after initial deploy
-    cron { $cron_title:
-        ensure  => absent,
-        minute  => 12,
-        hour    => 2,
-        command => "find /var/log/elasticsearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
-    }
-    # TODO: T273673, change the name of $cron_title after initial deploy
-    systemd::timer::job { $cron_title:
+    systemd::timer::job { $gc_cleanup_job_title:
         ensure      => present,
         user        => 'root',
         description => 'Cleanup GC logs',
