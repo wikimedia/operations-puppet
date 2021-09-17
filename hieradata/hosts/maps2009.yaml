@@ -1,6 +1,2 @@
 cassandra::rack: a
 do_paging: false
-# Disable tile generation and OSM sync crons in order to OSM re-import
-profile::maps::apps::tilerator_enable: false
-profile::maps::osm_master::disable_tile_generation_cron: true
-profile::maps::osm_master::disable_replication_cron: true
