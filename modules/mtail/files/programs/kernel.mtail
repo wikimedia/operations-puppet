@@ -19,6 +19,7 @@ counter edac_events by hostname
 counter upstart_respawn by service, hostname
 counter oom_kill by binary, hostname
 counter segfault by binary, hostname
+counter traps by binary,hostname
 
 # TODO: when we are using mtail 3.0.0rc14 or better (likely with the
 # Buster upgrade), this duplicate parsing of hostname can be removed.
@@ -46,6 +47,10 @@ counter segfault by binary, hostname
 
 /(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] (?P<binary>[^\[]+)\[\d+\]: segfault at.*/ {
   segfault[$binary][$hostname]++
+}
+
+/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] traps: (?P<binary>[^\[]+)\[\d+\] .*/ {
+  traps[$binary][$hostname]++
 }
 
 }
