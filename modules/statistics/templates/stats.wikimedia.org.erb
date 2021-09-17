@@ -44,16 +44,11 @@
     Redirect permanent /v2/ /
 
 
-
     # --- Wikistats v1 ---
-    # Allow CGI scripts for this site
+    # CGI scripts are not enabled/used for this site
     <Directory "/srv/stats.wikimedia.org/cgi-bin">
-        Require all granted
-        AddHandler cgi-script .pl
+        Require all denied
     </Directory>
-    ScriptAlias /cgi-bin/ /srv/stats.wikimedia.org/cgi-bin/
-
-
 
     # --- Internal reportcards ---
     Alias /extended /srv/stats.wikimedia.org/htdocs/reportcard/extended

@@ -10,8 +10,7 @@ class profile::analytics::httpd {
                     'rewrite',
                     'headers',
                     'auth_basic',
-                    'alias',
-                    'cgi']
+                    'alias']
     }
 
 }
