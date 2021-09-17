@@ -4019,7 +4019,7 @@ users:
     uid: 14304
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJexC21uGdBW6jT1gyUGu/GGNWUBBLIcb1b6ALMLjAYX mbinder@Max-Binders-Super-Duper-Agile-Work-Robot-Clam.local
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFLrpbK99cmNng3y8t1qYOvTKksI4TZKtQSTsF9RZ1pC maxbinder@Maxs-MacBook-Air.local
   lulu:
     ensure: absent
     realname: Yi-Ju Lu
