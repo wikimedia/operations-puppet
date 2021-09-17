@@ -132,6 +132,36 @@ class profile::spicerack(
         content => ordered_yaml($netbox_config_data),
     }
 
+    # Install Kafka cluster brokers configuration
+    file { '/etc/spicerack/kafka':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'ops',
+        mode   => '0550',
+    }
+
+    $kafka_config_data = {
+        'main'   => {
+            'eqiad' => kafka_config('main', 'eqiad'),
+            'codfw' => kafka_config('main', 'codfw'),
+        },
+        'jumbo' => {
+            'eqiad' => kafka_config('jumbo', 'eqiad'),
+        },
+        'logging' => {
+            'eqiad' => kafka_config('logging', 'eqiad'),
+            'codfw' => kafka_config('logging', 'codfw'),
+        }
+    }
+
+    file { '/etc/spicerack/kafka/config.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+        content => ordered_yaml($kafka_config_data),
+    }
+
     file { '/etc/spicerack/cookbooks':
         ensure => directory,
         owner  => 'root',
