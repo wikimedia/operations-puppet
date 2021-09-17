@@ -63,6 +63,9 @@ profile::lvs::realserver::pools:
   apertium: {}
   shellbox: {}
   shellbox-constraints: {}
+  shellbox-media: {}
+  shellbox-syntaxhighlight: {}
+  shellbox-timeline: {}
   similar-users: {}
   linkrecommendation: {}
 prometheus::node_exporter::collectors_extra:

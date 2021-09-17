@@ -2226,6 +2226,120 @@ service::catalog:
       - dnsdisc: shellbox-constraints
         active_active: true
 
+  shellbox-media:
+    description: Shellbox Media, shellbox-media.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.64
+      eqiad:
+        default: 10.2.2.64
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!shellbox-media.discovery.wmnet!4015!/healthz
+      critical: false # don't enable paging while testing
+      sites:
+        codfw:
+          hostname: shellbox-media.svc.codfw.wmnet
+        eqiad:
+          hostname: shellbox-media.svc.eqiad.wmnet
+    port: 4015
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: shellbox-media
+        active_active: true
+
+  shellbox-syntaxhighlight:
+    description: Shellbox SyntaxHighlight, shellbox-syntaxhighlight.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.65
+      eqiad:
+        default: 10.2.2.65
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!shellbox-syntaxhighlight.discovery.wmnet!4014!/healthz
+      critical: false # don't enable paging while testing
+      sites:
+        codfw:
+          hostname: shellbox-syntaxhighlight.svc.codfw.wmnet
+        eqiad:
+          hostname: shellbox-syntaxhighlight.svc.eqiad.wmnet
+    port: 4014
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: shellbox-syntaxhighlight
+        active_active: true
+
+  shellbox-timeline:
+    description: Shellbox Timeline, shellbox-timeline.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.66
+      eqiad:
+        default: 10.2.2.66
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!shellbox-timeline.discovery.wmnet!4012!/healthz
+      critical: false # don't enable paging while testing
+      sites:
+        codfw:
+          hostname: shellbox-timeline.svc.codfw.wmnet
+        eqiad:
+          hostname: shellbox-timeline.svc.eqiad.wmnet
+    port: 4012
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: shellbox-timeline
+        active_active: true
+
   swift:
     description: Swift media storage
     encryption: false
