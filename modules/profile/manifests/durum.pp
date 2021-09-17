@@ -8,6 +8,12 @@ class profile::durum (
     $index_file = "${durum_path}/index.html"
     $js_file = "${durum_path}/uuidv4.js"
 
+    motd::script { 'durum-motd':
+        ensure   => 'present',
+        priority => 1,
+        content  => file('profile/durum/motd.sh'),
+    }
+
     file { $durum_path:
         ensure => 'directory',
     }
