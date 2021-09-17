@@ -174,7 +174,7 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
     datetime_stamp = datetime.datetime.now().strftime("%Y-%m-%d")
     file_name = 'os-report-{}-{}.html'.format(datetime_stamp, distro)
 
-    with dominate.document(title='OS deprecation report') as html_report:
+    with dominate.document(title='OS deprecation report for {}'.format(distro)) as html_report:
 
         tags.h1("Summary")
         with tags.div().add(tags.ul()):
@@ -237,7 +237,7 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
 def main():
 
     cfg = configparser.ConfigParser()
-    cfg.read("distro-tracking.cfg")
+    cfg.read("/etc/wikimedia/os-updates/os-updates-tracking.cfg")
     sections = cfg.sections()
 
     if 'general' not in sections:
