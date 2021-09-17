@@ -6,6 +6,10 @@
 
 class role::thumbor::mediawiki {
 
+    system::role { 'thumbor::mediawiki':
+        description => 'Thumbnailing server based on Thumbor',
+    }
+
     include ::profile::standard
     include ::profile::base::firewall
     include ::mediawiki::packages::fonts
