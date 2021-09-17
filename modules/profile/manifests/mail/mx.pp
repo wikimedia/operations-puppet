@@ -198,4 +198,6 @@ class profile::mail::mx (
         send_mail     => false,
         interval      => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
     }
+
+    ensure_packages(['swaks'])
 }
