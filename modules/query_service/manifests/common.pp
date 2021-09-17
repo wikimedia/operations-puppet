@@ -134,11 +134,17 @@ class query_service::common(
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This systemd timer job takes care of
     # cleaning up GC logs older than 30 days.
+    $gc_log_subpath = $deploy_name ? {
+        'wcqs'   => 'query_service',
+        default  => $deploy_name,
+    }
+    $gc_log_cleanup_cmd = "/usr/bin/find /var/log/${gc_log_subpath}/ -name '${deploy_name}-*_jvm_gc.*.log*' -mtime +30 -delete"
+
     systemd::timer::job { 'query-service-gc-log-cleanup':
         ensure      => present,
-        description => 'Regular jobs for cleaning up GC logs older than 30 days',
+        description => 'Regular job for cleaning up query service GC logs older than 30 days',
         user        => 'root',
-        command     => "/usr/bin/find /var/log/${deploy_name} -name '${deploy_name}-*_jvm_gc.*.log*' -mtime +30 -delete",
+        command     => $gc_log_cleanup_cmd,
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 2:12:00'},
     }
 
