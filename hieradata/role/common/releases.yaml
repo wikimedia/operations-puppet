@@ -16,6 +16,13 @@ profile::ci::kubernetes_config::owner: jenkins-slave
 profile::ci::kubernetes_config::group: contint-roots
 # Specified in the private repo:
 # profile::ci::kubernetes_config::token
+profile::kubernetes::deployment_server::services:
+  mwdebug:
+    username: mwdebug
+    group: wikidev
+    namespace: mwdebug
+    mode: '0640'
+    owner: jenkins-slave
 
 profile::docker::engine::packagename: "docker.io"
 profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u3"
