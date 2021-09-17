@@ -2259,7 +2259,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: shellbox-media
         active_active: true
@@ -2297,7 +2297,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: shellbox-syntaxhighlight
         active_active: true
@@ -2335,7 +2335,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: shellbox-timeline
         active_active: true
