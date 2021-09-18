@@ -97,9 +97,18 @@ if ( $trace === '' ) {
 	unset( $traceData, $level, $frame );
 }
 
+// Match mediawiki/core: WebRequest::getRequestId
+$reqId = $_SERVER['HTTP_X_REQUEST_ID'] ?? $_SERVER['UNIQUE_ID'] ?? null;
+
 // If the output has already been flushed, it may be unsafe to append an error message.
 if ( !headers_sent() ) {
 	header( 'HTTP/1.1 500 Internal Server Error' );
+
+	// Match mediawiki/core: HeaderCallback::callback
+	// This allows WikimediaDebug browser extension to link to relevant error logs.
+	if ( $reqId ) {
+		header( 'X-Request-Id: ' . $reqId );
+	}
 
 ?>
 <!DOCTYPE html>
@@ -128,9 +137,8 @@ code { font-family: inherit; }
 <div class="footer">
 <p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>
 <p class="text-muted"><code>
-  PHP fatal error<?php
-	echo ": <br/> " . htmlspecialchars( $message );
-?>
+  Request ID: <?php echo htmlspecialchars( $reqId ?? 'unknown' ); ?><br/>
+  <?php echo htmlspecialchars( $message ); ?>
 </code></p></div>
 </html>
 <?php
@@ -145,9 +153,6 @@ if ( $statsd_host && $statsd_port ) {
 	// Ignore errors
 	@socket_sendto( $sock, $stat, strlen( $stat ), 0, $statsd_host, $statsd_port );
 }
-
-// Match mediawiki/core: WebRequest::getRequestId
-$reqId = $_SERVER['HTTP_X_REQUEST_ID'] ?? $_SERVER['UNIQUE_ID'] ?? null;
 
 // This should array match the structure of exceptions logged by MediaWiki core.
 // so that it blends in with its log channel and the Logstash dashboards
