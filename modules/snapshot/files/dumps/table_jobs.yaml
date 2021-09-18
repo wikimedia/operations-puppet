@@ -96,10 +96,6 @@ tables:
       job: flaggedrevs
       description: This contains a row for each flagged revision containing who flagged it, when it was flagged, the flag values, and the quality tier those flags fall under.
       type: public
-    flaggedimages:
-      job: flaggedimages
-      description: This contains a row for each media file included in a flagged revision containing the rev id and name of the file as well as the rev id of the flagged revision.
-      type: public
     flaggedpage_config:
       job: flaggedpageconfig
       description: This stores settings on how to select the stable/default revision.
