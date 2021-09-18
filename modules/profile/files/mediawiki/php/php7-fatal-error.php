@@ -143,15 +143,6 @@ code { font-family: inherit; }
 
 } // !headers_sent
 
-include __DIR__ . '/error-params.php';
-
-if ( $statsd_host && $statsd_port ) {
-	$sock = socket_create( AF_INET, SOCK_DGRAM, SOL_UDP );
-	$stat = 'MediaWiki.errors.fatal:1|c';
-	// Ignore errors
-	@socket_sendto( $sock, $stat, strlen( $stat ), 0, $statsd_host, $statsd_port );
-}
-
 // This should array match the structure of exceptions logged by MediaWiki core.
 // so that it blends in with its log channel and the Logstash dashboards
 // written for it.
@@ -210,3 +201,11 @@ if ( $overflow > 0 ) {
 
 syslog( LOG_ERR, $syslogMessage );
 
+include __DIR__ . '/error-params.php';
+
+if ( $statsd_host && $statsd_port ) {
+	$sock = socket_create( AF_INET, SOCK_DGRAM, SOL_UDP );
+	$stat = 'MediaWiki.errors.fatal:1|c';
+	// Ignore errors
+	@socket_sendto( $sock, $stat, strlen( $stat ), 0, $statsd_host, $statsd_port );
+}
