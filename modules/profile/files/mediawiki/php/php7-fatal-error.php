@@ -98,7 +98,7 @@ if ( $trace === '' ) {
 }
 
 // Match mediawiki/core: WebRequest::getRequestId
-$reqId = $_SERVER['HTTP_X_REQUEST_ID'] ?? $_SERVER['UNIQUE_ID'] ?? null;
+$reqId = $_SERVER['HTTP_X_REQUEST_ID'] ?? $_SERVER['UNIQUE_ID'] ?? 'unknown';
 
 // If the output has already been flushed, it may be unsafe to append an error message.
 if ( !headers_sent() ) {
@@ -106,9 +106,7 @@ if ( !headers_sent() ) {
 
 	// Match mediawiki/core: HeaderCallback::callback
 	// This allows WikimediaDebug browser extension to link to relevant error logs.
-	if ( $reqId ) {
-		header( 'X-Request-Id: ' . $reqId );
-	}
+	header( 'X-Request-Id: ' . $reqId );
 
 ?>
 <!DOCTYPE html>
@@ -160,13 +158,16 @@ if ( $statsd_host && $statsd_port ) {
 $info = [
 	// Match mediawiki/core: MWExceptionHandler
 	'channel' => 'exception',
-	'message' => $messageLong,
+	// Match mediawiki/core: MWExceptionHandler
+	'message' => '[' . $reqId . '] ' . $messageLong,
 	'exception' => [
 		'message' => $message,
 		'file' => "{$err['file']}:{$err['line']}",
 		'trace' => $trace ?: 'unknown',
 	],
-	'caught_by' => '/etc/php/php7-fatal-error.php via php-wmerrors',
+	'caught_by' => 'php-wmerrors',
+	// Match mediawiki/core: MediaWiki\Logger\Monolog\WikiProcessor
+	'reqId' => $reqId,
 	// Match wmf-config: logging.php
 	'phpversion' => PHP_VERSION,
 	// Match wmf-config: logging.php
@@ -176,12 +177,6 @@ $info = [
 	'type' => 'mediawiki',
 	'normalized_message' => $messageNorm,
 ];
-if ( $reqId ) {
-	// Match mediawiki/core: MediaWiki\Logger\Monolog\WikiProcessor
-	$info['reqId'] = $reqId;
-	// Match mediawiki/core: MWExceptionHandler
-	$info['message'] = '[' . $reqId . '] ' . $info['message'];
-}
 // Match Monolog\Processor\WebProcessor
 // https://github.com/Seldaek/monolog/blob/2.0.0/src/Monolog/Processor/WebProcessor.php#L33
 if ( isset( $_SERVER['REQUEST_URI'] ) ) {
