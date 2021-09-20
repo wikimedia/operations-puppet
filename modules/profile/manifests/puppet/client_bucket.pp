@@ -17,16 +17,31 @@ class profile::puppet::client_bucket(
         monitoring_enabled => false,
         user               => 'root',
     }
-    $find_command = "/usr/bin/find /var/lib/puppet/clientbucket -type f -size +${max_size}"
+    $script = @("SCRIPT"/L)
+    #!/bin/bash
+    if [ -z "$(/usr/bin/find /var/lib/puppet/clientbucket -type f -size +${max_size} | head -c1)" ]
+    then
+        printf "OK: client bucket file ok\n"
+        exit 1
+    fi
+    printf "WARNING: large files in client bucket\n"
+    exit 2
+    | SCRIPT
+    $check_command = '/usr/local/lib/nagios/plugins/check_client_bucket'
+    file {$check_command:
+        ensure  => file,
+        mode    => '0555',
+        content => $script,
+    }
     sudo::user { 'nrpe_check_client_bucket_large_file':
         ensure     => $ensure,
         user       => 'nagios',
-        privileges => [ "ALL = NOPASSWD: ${find_command}"]
+        privileges => [ "ALL = NOPASSWD: ${check_command}"]
     }
-    nrpe::monitor_service { 'check_client_bucket_large_file':
-        ensure       => absent,  # TODO: fix once we fix the nrpe check
+    nrpe::monitor_service { 'client_bucket_large_file':
+        ensure       => $ensure,
         description  => 'Check for large files in client bucket',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Puppet#check_client_bucket_large_file',
-        nrpe_command => "/usr/bin/test -z \"$(/usr/bin/sudo ${find_command} | head -c1)\"",
+        nrpe_command => "/usr/bin/sudo -n ${check_command}",
     }
 }
