@@ -22,7 +22,7 @@ class profile::puppet::client_bucket(
     if [ -z "$(/usr/bin/find /var/lib/puppet/clientbucket -type f -size +${max_size} | head -c1)" ]
     then
         printf "OK: client bucket file ok\n"
-        exit 1
+        exit 0
     fi
     printf "WARNING: large files in client bucket\n"
     exit 2
