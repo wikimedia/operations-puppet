@@ -130,7 +130,7 @@ groups:
                  # command before checking sudoers -- but it disallows any arguments that don't
                  # exactly match what is below, so this is safe.
                  'ALL = NOPASSWD: /bin/bash -c /usr/local/sbin/restart-php7.2-fpm']
-  restricted:  # Is a subset of the deployment group
+  restricted:  # a subset of the deployment privileges
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access www-data resources
