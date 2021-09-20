@@ -35,7 +35,7 @@ class swift::stats::dispersion(
 
     if $storage_policies {
         cron { 'swift-dispersion-stats-lowlatency':
-            ensure  => $ensure,
+            ensure  => 'absent',
             command => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix}.lowlatency --statsd-host ${statsd_host} --statsd-port ${statsd_port} --policy-name lowlatency >/dev/null 2>&1",
             user    => 'root',
             hour    => '*',
