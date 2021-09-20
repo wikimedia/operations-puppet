@@ -65,7 +65,7 @@ class labs_lvm(
     }
 
     if $ephemeral {
-        exec { 'create-ephemeral-volume-group':
+        exec { 'create-volume-group':
             logoutput => 'on_failure',
             unless    => '/sbin/vgdisplay -c vd',
             require   => File['/usr/local/sbin/make-instance-vg-ephem'],
