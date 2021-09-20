@@ -40,7 +40,7 @@ class mediawiki::web::yaml_defs(
     $statsd_port = $statsd_parts[1]
     $wmerrors_config = {
         'error-params.php' => template('profile/mediawiki/error-params.php.erb'),
-        'fatal-error.php' => inline_template('<%= Pupppet::FileServing::Content.indirection.find("puppet:///modules/profile/mediawiki/php/php7-fatal-error.php").content.force_encoding("utf-8") %>')
+        'fatal-error.php' => inline_template('<%= Puppet::FileServing::Content.indirection.find("puppet:///modules/profile/mediawiki/php/php7-fatal-error.php").content.force_encoding("utf-8") %>')
     }
 
     file { $path:
