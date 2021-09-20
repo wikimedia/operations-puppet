@@ -6,7 +6,8 @@ class mediawiki::packages {
 
     ensure_packages([
         'fluidsynth', 'fluid-soundfont-gs', 'fluid-soundfont-gm', 'firejail',
-        'tidy',
+        # vips is needed for (rare) non-Thumbor scaling of TIFF/PNG uploads (T199938)
+        'tidy', 'libvips-tools',
         # PDF and DjVu
         'ghostscript', 'djvulibre-bin', 'librsvg2-bin', 'libtiff-tools', 'poppler-utils',
         # ploticus for EasyTimeline extension (T237304)
