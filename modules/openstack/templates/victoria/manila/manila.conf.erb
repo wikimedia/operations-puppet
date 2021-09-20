@@ -4,7 +4,7 @@ osapi_share_base_URL = <%= @keystone_api_fqdn %>
 auth_strategy = keystone
 state_path = /var/lib/manila
 my_ip = <%= @ipaddress %>
-osapi_share_listen = <% @ipaddress %>
+osapi_share_listen = <%= @ipaddress %>
 osapi_share_listen_port = 8786
 osapi_share_workers = 1
 osapi_share_use_ssl = false
@@ -122,7 +122,7 @@ share_helpers = NFS=manila.share.drivers.helpers.NFSHelper
 share_volume_fstype = ext4
 
 volume_api_class = manila.volume.cinder.API
-cinder_volume_type = <% @cinder_volume_type %>
+cinder_volume_type = <%= @cinder_volume_type %>
 
 # Base folder where exported shares are located. (string value)
 #lvm_share_export_root = $state_path/mnt
@@ -199,11 +199,11 @@ cinder_volume_type = <% @cinder_volume_type %>
 
 # ID of flavor, that will be used for service instance creation. Only
 # used if driver_handles_share_servers=True. (string value)
-service_instance_flavor_id = <% @nova_flavor_id %>
+service_instance_flavor_id = <%= @nova_flavor_id %>
 
 # Name of manila service network. Used only with Neutron. Only used if
 # driver_handles_share_servers=True. (string value)
-service_network_name = <% @manila_neutron_network_name %>
+service_network_name = <%= @manila_neutron_network_name %>
 
 # CIDR of manila service network. Used only with Neutron and if
 # driver_handles_share_servers=True. (string value)
@@ -290,7 +290,7 @@ project_name = admin
 username = novaadmin
 password = <%= @ldap_user_pass %>
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
-region_name = <% @region %>
+region_name = <%= @region %>
 # We want this but need to figure out about service roles first
 #service_token_roles_required = True
 
