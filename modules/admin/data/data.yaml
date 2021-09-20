@@ -138,7 +138,7 @@ groups:
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited,
-              daimona, mepps, jabrams, nforrester, katelevan, cmaslak]
+              daimona, mepps, jabrams, nforrester, katelevan, cmaslak, mewoph]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -335,7 +335,7 @@ groups:
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
-              katelevan, cmaslak, abban, mikeraish]
+              katelevan, cmaslak, abban, mikeraish, mewoph]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4662,6 +4662,15 @@ users:
     ssh_keys: []
     uid: 30902
     email: mraish@wikimedia.org
+  mewoph:
+    ensure: present
+    gid: 500
+    realname: Mew Ophaswongse
+    ssh_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGokQOi31ziMwiAy8AsY2SJ49n+WDC+tajTsZb7LzMWC mophaswongse@wikimedia.org
+    uid: 29526
+    email: mophaswongse@wikimedia.org
+    krb: present
 
 
 ldap_only_users:
@@ -5293,10 +5302,6 @@ ldap_only_users:
     ensure: present
     realname: Mohammed Sadat Abdulai
     email: mohammed.sadat_ext@wikimedia.de
-  mewoph:
-    ensure: present
-    realname: Mew Ophaswongse
-    email: mophaswongse@wikimedia.org
   jaz:
     ensure: present
     realname: Jazmin Tanner
