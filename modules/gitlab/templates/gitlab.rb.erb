@@ -1,9 +1,15 @@
 # The URL through which GitLab will be accessed.
 external_url "<%= @external_url %>"
 
-# gitlab.yml configuration
+# GitLab configuration
 gitlab_rails['time_zone'] = 'UTC'
 gitlab_rails['backup_keep_time'] = <%= @backup_keep_time %>
+
+# Users settings
+gitlab_rails['gitlab_default_can_create_group'] = <%= @gitlab_can_create_group %>
+gitlab_rails['gitlab_username_changing_enabled'] = <%= @gitlab_username_changing %>
+
+# Email settings
 gitlab_rails['gitlab_email_enabled'] = <%= @email_enable.to_s %>
 <%- if @email_enable -%>
 gitlab_rails['gitlab_email_from'] = "<%= @email_from %>"
@@ -14,6 +20,7 @@ gitlab_rails['gitlab_email_reply_to'] = "<%= @email_reply_to %>"
 # Default Theme
 gitlab_rails['gitlab_default_theme'] = "<%= @default_theme %>"
 
+# nginx and TLS configuration
 nginx['listen_port'] = <%= @listen_port %>
 <%- if @listent_https -%>
 # Whether to redirect http to https.
@@ -25,22 +32,120 @@ nginx['ssl_certificate_key'] = "<%= @key_path %>"
 nginx['listen_https'] = false
 <%- end -%>
 
+# Nginx access logging in JSON - see https://phabricator.wikimedia.org/T274462
+#
+# This is hacky: The whole string is just dumped into a template between
+# single-quotes, so we have to balance the quotes here.  Note that escape=json
+# is a parameter setting json escaping for variables, not part of the log
+# format itself.
+#
+# Relevant docs:
+#
+#   - https://docs.gitlab.com/omnibus/settings/logs.html#using-a-custom-nginx-log-format
+#   - https://nginx.org/en/docs/http/ngx_http_log_module.html#log_format
+nginx['log_format'] = 'escape=json\' \'@cee: {\'
+    \'"timestamp":"$time_iso8601",\'
+    \'"client.ip":"$remote_addr",\'
+    \'"user.name":"$remote_user",\'
+    \'"url.path":"$request_uri",\'
+    \'"url.domain":"$host",\'
+    \'"host.name":"$hostname",\'
+    \'"http.request.method":"$request_method",\'
+    \'"http.request.headers.referer":"$http_referer",\'
+    \'"http.response.status_code":"$status",\'
+    \'"http.response.body.bytes":"$body_bytes_sent",\'
+    \'"user_agent.original":"$http_user_agent",\'
+    \'"event.category":["network","web"],\'
+    \'"event.dataset":"nginx.access",\'
+    \'"event.kind":"event",\'
+    \'"event.type":["access","connection"],\'
+    \'"service.type":"nginx",\'
+    \'"ecs.version":"1.7.0"\'
+  \'}'
 
-# The directory where Git repositories will be stored.
+# Default feature settings:
+<%- ['issues', 'wiki', 'snippets'].each do |project| -%>
+gitlab_rails['gitlab_default_projects_features_<%= project %>'] = <%= @project_features.include?(project) %>
+<%- end -%>
+
+# The directory where Git repositories will be stored
 git_data_dirs({"default" => {"path" => "<%= @data_dir %>"} })
 
 # The directory where Gitlab backups will be stored
 gitlab_rails['backup_path'] = "<%= @backup_dir %>"
 
+# These settings are documented in more detail at
+# https://gitlab.com/gitlab-org/gitlab-ce/blob/master/config/gitlab.yml.example#L118
 gitlab_rails['ldap_enabled'] = false
+
+# Allow prometheus to scrape GitLab Nginx metrics T275170
+## https://docs.gitlab.com/ee/administration/monitoring/prometheus/#using-an-external-prometheus-server
+<%- unless @monitoring_whitelist.empty? -%>
+nginx['status']['options'] = {
+      "server_tokens" => "off",
+      "access_log" => "off",
+      <%- @monitoring_whitelist.each do |range| -%>
+      "allow" => "<%= range %>",
+      <%- end -%>
+      "deny" => "all",
+}
+<%- end -%>
 
 # Use smtp instead of sendmail/postfix
 # More details and example configuration at
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md#smtp-on-localhost
+<%- if @smtp_enabled -%>
 gitlab_rails['smtp_enable'] = true
+gitlab_rails['smtp_port'] = <%= @smtp_port %>
+<%- else -%>
+gitlab_rails['smtp_enable'] = false
+<%- end -%>
 
 # GitLab registry.
 registry['enable'] = false
+
+# GitLab monitoring
+<%- if @monitoring_whitelist -%>
+gitlab_rails['monitoring_whitelist'] = <%= @monitoring_whitelist %>
+<%- end -%>
+<%- if @gitlab_prometheus_address -%>
+gitlab_rails['prometheus_address'] = <%= @gitlab_prometheus_address %>
+<%- end -%>
+
+prometheus['enable'] = <%= @enable_prometheus %>
+grafana['enable'] = <%= @enable_grafana%>
+alertmanager['enable'] = <%= @enable_alertmanager %>
+
+# Exporters have to be enabled and disabled explicitly, otherwise some are started by default
+gitlab_exporter['enable'] = <%= @exporters.include?('gitlab') %>
+node_exporter['enable'] = <%= @exporters.include?('node') %>
+postgres_exporter['enable'] = <%= @exporters.include?('postgres') %>
+redis_exporter['enable'] = <%= @exporters.include?('redis') %>
+puma['exporter_enabled'] = <%= @exporters.include?('puma') %>
+
+<%- @exporters.each do |exporter, config| -%>
+<%- case exporter -%>
+<%- when 'gitlab' -%>
+gitlab_exporter['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>'
+gitlab_exporter['listen_port'] = '<%= config['port'] %>'
+<%- when 'node' -%>
+node_exporter['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
+<%- when 'postgres' -%>
+postgres_exporter['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
+<%- when 'redis' -%>
+redis_exporter['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
+<%- when 'puma' -%>
+puma['exporter_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>'
+puma['exporter_port'] = '<%= config['port'] %>'
+<%- when 'workhorse' -%>
+gitlab_workhorse['prometheus_listen_addr'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
+<%- when 'gitaly' -%>
+gitaly['prometheus_listen_addr'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
+<%- when 'sidekiq' -%>
+sidekiq['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>'
+sidekiq['listen_port'] = '<%= config['port'] %>'
+<% end -%>
+<% end -%>
 
 gitlab_rails['omniauth_allow_single_sign_on'] = ['cas3']
 gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'cas3'
@@ -56,11 +161,21 @@ gitlab_rails['omniauth_sync_profile_from_provider'] = ['cas3']
 gitlab_rails['omniauth_sync_profile_attributes'] = true
 <%- end -%>
 
+<%- if @cas_session_duration -%>
+gitlab_rails['omniauth_cas3_session_duration'] = <%= @cas_session_duration %>
+<%- end -%>
+
+# See https://github.com/tduehr/omniauth-cas3
+
 gitlab_rails['omniauth_providers'] = [
   {
     "name" => "cas3",
     "label" => "<%= @cas_label %>",
     "args" => {
+      "uid_field" => '<%= @cas_uid_field %>',
+      "uid_key" => '<%= @cas_uid_key %>',
+      "email_key" => '<%= @cas_email_key %>',
+      "name_key" => '<%= @cas_name_key %>',
       "url" => '<%= @cas_url %>',
       "login_url" => '<%= @cas_login_uri %>',
       "service_validate_url" => '<%= @cas_validate_uri %>',
@@ -68,11 +183,6 @@ gitlab_rails['omniauth_providers'] = [
     }
   }
 ]
-
-prometheus['enable'] = <%= @enable_prometheus %>
-node_exporter['enable'] = <%= @enable_node_exporter %>
-grafana['enable'] = <%= @enable_grafana %>
-alertmanager['enable'] = <%= @enable_alertmanager %>
 
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
