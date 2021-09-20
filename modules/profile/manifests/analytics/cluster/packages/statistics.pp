@@ -3,6 +3,12 @@
 # Specific packages that should be installed on analytics statistics
 # nodes (no Hadoop client related packages).
 #
+# NOTE: If done carefully, most if not all of the packages declared in this
+# class could probably be removed.  It doesn't hurt to have them, but if
+# you ever run into an issue (e.g. after an OS upgrade), be bold and
+# remove packages at will.
+# See also: https://phabricator.wikimedia.org/T275786
+#
 class profile::analytics::cluster::packages::statistics {
 
     include ::profile::analytics::cluster::packages::common
