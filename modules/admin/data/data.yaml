@@ -19,7 +19,8 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, etonkovidova, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong]
+              crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
+              mholloway-shell]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -108,7 +109,7 @@ groups:
               andyrussg, nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, twentyafterfour, catrope,
               mobrovac, nuria, thcipriani, joal,
-              mforns, dcausse, mholloway-shell, dduvall,
+              mforns, dcausse, dduvall,
               ladsgroup, addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, sbassett, tarrow, lucaswerkmeister-wmde,
@@ -165,7 +166,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [brion, dbrant, mholloway-shell, cooltey, sharvaniharan]
+    members: [brion, dbrant, cooltey, sharvaniharan]
   sretest-roots:
     gid: 716
     description: users with root on sretest servers
@@ -325,7 +326,7 @@ groups:
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, snowick,
-              aarora, zpapierski, knissen, jiawang, mholloway-shell, tarrow,
+              aarora, zpapierski, knissen, jiawang, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, razzi, cparle, klausman, sbisson, fab, cwhite,
@@ -449,7 +450,7 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [eevans, sbisson, catrope, mholloway-shell]
+    members: [eevans, sbisson, catrope]
     approval:
       - Subramanya Sastry
     # TODO: Revisit this when moving into production
@@ -475,7 +476,7 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [sbisson, catrope, mholloway-shell]
+    members: [sbisson, catrope]
     approval:
       - Subramanya Sastry
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
@@ -530,7 +531,7 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [sbisson, catrope, mholloway-shell, mbsantos, jgiannelos]
+    members: [sbisson, catrope, mbsantos, jgiannelos]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
                  'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
                  'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
@@ -549,7 +550,7 @@ groups:
     gid: 763
     description: Service deploy users
     members: [bd808, eevans, mobrovac, ppchelko, twentyafterfour, thcipriani, dduvall,
-              mholloway-shell, kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
+              kartik, halfak, ladsgroup, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
               kevinbazira, clarakosi, chrisalbon, jgiannelos]
@@ -2287,15 +2288,13 @@ users:
     email: pcoombe@wikimedia.org
     krb: present
   mholloway-shell:
-    ensure: present
+    ensure: absent
     gid: 500
     name: mholloway-shell
     realname: Michael Holloway
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4utj9osWuPYu5lxsbNoWMaae6K7rtabeoUDRkBw8Rs 2019-03-15-new-ubuntu-prod
+    ssh_keys: []
     uid: 11963
-    email: mholloway@wikimedia.org
-    krb: present
+    krb: absent
   madhuvishy:
     ensure: absent
     gid: 500
