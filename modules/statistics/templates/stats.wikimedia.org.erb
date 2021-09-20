@@ -50,30 +50,14 @@
         Require all denied
     </Directory>
 
-    # --- Internal reportcards ---
-    Alias /extended /srv/stats.wikimedia.org/htdocs/reportcard/extended
-    Alias /staff /srv/stats.wikimedia.org/htdocs/reportcard/staff
-
     <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/staff">
-        AllowOverride None
-        AuthName "Password protected area"
-        AuthType Basic
-        AuthUserFile /etc/apache2/htpasswd.stats
-        Require user wmf
+        Require all denied
     </Directory>
     <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/extended">
-        AllowOverride None
-        AuthName "Password protected area"
-        AuthType Basic
-        AuthUserFile /etc/apache2/htpasswd.stats
-        Require user internal
+        Require all denied
     </Directory>
     <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/pediapress">
-        AllowOverride None
-        AuthName "Password protected area"
-        AuthType Basic
-        AuthUserFile /etc/apache2/htpasswd.stats
-        Require user pediapress
+        Require all denied
     </Directory>
 
 

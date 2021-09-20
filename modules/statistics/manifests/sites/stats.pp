@@ -24,6 +24,7 @@ class statistics::sites::stats {
 
     # add htpasswd file for stats.wikimedia.org
     file { '/etc/apache2/htpasswd.stats':
+        ensure    => absent,
         owner     => 'root',
         group     => 'root',
         mode      => '0644',
@@ -34,7 +35,7 @@ class statistics::sites::stats {
     # add htpasswd file for private geowiki data
     # TODO: remove this when the geowiki site is removed.
     file { $geowiki_private_htpasswd_file:
-        ensure    => 'present',
+        ensure    => absent,
         owner     => 'root',
         group     => 'www-data',
         mode      => '0640',
