@@ -19,8 +19,6 @@
         Require all granted
     </Directory>
 
-
-
     # --- Wikistats v2 ---
     # Wikistats v2 is a single page (index.html) website.
     # Caching of the default page should not happen for long
@@ -48,32 +46,6 @@
     # CGI scripts are not enabled/used for this site
     <Directory "/srv/stats.wikimedia.org/cgi-bin">
         Require all denied
-    </Directory>
-
-    <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/staff">
-        Require all denied
-    </Directory>
-    <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/extended">
-        Require all denied
-    </Directory>
-    <Directory "/srv/stats.wikimedia.org/htdocs/reportcard/pediapress">
-        Require all denied
-    </Directory>
-
-
-
-    # --- Internal Geowiki ---
-    # Force https and use http auth for geowiki's private data
-    <Directory "<%= scope.lookupvar('::statistics::sites::stats::geowiki_private_directory') %>">
-        RewriteEngine On
-        RewriteCond %{HTTP:X-Forwarded-Proto} !https
-        RewriteRule ^/(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,E=ProtoRedirect]
-
-        AllowOverride None
-        AuthName "Geowiki's 'foundation only' files"
-        AuthType Basic
-        AuthUserFile "<%= scope.lookupvar('::statistics::sites::stats::geowiki_private_htpasswd_file') %>"
-        Require valid-user
     </Directory>
 
 </VirtualHost>

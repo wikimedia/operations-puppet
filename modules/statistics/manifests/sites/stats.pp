@@ -11,8 +11,6 @@ class statistics::sites::stats {
     require ::statistics::web
 
     $wikistats_web_directory       = '/srv/stats.wikimedia.org'
-    $geowiki_private_directory     = "${wikistats_web_directory}/htdocs/geowiki-private"
-    $geowiki_private_htpasswd_file = '/etc/apache2/htpasswd.stats-geowiki'
 
     # added due to this error: https://phabricator.wikimedia.org/T285355#7256778
     file {[$wikistats_web_directory, "${wikistats_web_directory}/htdocs"]:
@@ -20,27 +18,6 @@ class statistics::sites::stats {
         owner  => 'root',
         group  => 'www-data',
         mode   => '0775',
-    }
-
-    # add htpasswd file for stats.wikimedia.org
-    file { '/etc/apache2/htpasswd.stats':
-        ensure    => absent,
-        owner     => 'root',
-        group     => 'root',
-        mode      => '0644',
-        content   => secret('apache/htpasswd.stats'),
-        show_diff => false,
-    }
-
-    # add htpasswd file for private geowiki data
-    # TODO: remove this when the geowiki site is removed.
-    file { $geowiki_private_htpasswd_file:
-        ensure    => absent,
-        owner     => 'root',
-        group     => 'www-data',
-        mode      => '0640',
-        content   => secret('apache/htpasswd.stats-geowiki'),
-        show_diff => false,
     }
 
     # stats.wikimedia.org (Wikistats 2.0) setup:
