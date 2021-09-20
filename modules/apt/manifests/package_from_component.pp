@@ -51,6 +51,22 @@ define apt::package_from_component(
 ) {
     include apt
 
+    $exec_before = $ensure_packages ? {
+        false => undef,
+        default => $packages ? {
+            Hash    => Package[$packages.keys],
+            default => Package[$packages],
+        }
+    }
+
+    # We should be able to use the exec defined in the apt class, however this didn't
+    # see: 1f85c34357cb745e36d709e5e696bc92f42d8d2c
+    exec {"exec_apt_${title}":
+        command     => '/usr/bin/apt-get update',
+        refreshonly => true,
+        before      => $exec_before,
+    }
+
     apt::repository { "repository_${title}":
         uri        => $uri,
         dist       => $distro,
@@ -73,13 +89,6 @@ define apt::package_from_component(
         }
     }
 
-    exec {"exec_apt_${title}":
-        command     => '/usr/bin/apt-get update',
-        refreshonly => true,
-    }
-
-    Apt::Repository["repository_${title}"] -> Exec["exec_apt_${title}"]
-
     if $ensure_packages {
         if $packages =~ Hash {
             $packages.each |$pkg, $ensure| {
@@ -88,6 +97,5 @@ define apt::package_from_component(
         } else {
             ensure_packages($packages)
         }
-        Exec["exec_apt_${title}"] -> Package[$packages]
     }
 }
