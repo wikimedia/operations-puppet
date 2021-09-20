@@ -42,5 +42,16 @@ class swift::stats::dispersion(
             minute  => '*/15',
             require => File['/usr/local/bin/swift-dispersion-stats'],
         }
+
+        systemd::timer::job { 'swift_dispersion_stats_lowlatency':
+            ensure             => $ensure,
+            user               => 'root',
+            description        => 'swift dispersion statistics - low latency',
+            command            => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port} --policy-name lowlatency",
+            interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '15m'},
+            monitoring_enabled => false,
+            logging_enabled    => false,
+            require            => File['/usr/local/bin/swift-dispersion-stats'],
+        }
     }
 }
