@@ -1,0 +1,178 @@
+<% if @server_vols -%>
+volumes_served:
+  <% @server_vols.each do |vol| -%>
+  - <%= vol %>
+  <% end %>
+<% end -%>
+public:
+  scratch: '/srv/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
+private:
+  account-creation-assistance:
+    gid: 50088
+    mounts:
+      project: true
+  cvn:
+    gid: 50116
+    mounts:
+      project: true
+  dumps:
+    gid: 50124
+    mounts:
+      dumps: true
+      home: true
+      project: true
+      scratch: true
+  etytree:  # T151933
+    gid: 53231
+    mounts:
+      dumps: true
+  fastcci:
+    gid: 50983
+    mounts:
+      home: true
+      project: true
+  gratitude:  # T240737
+    gid: 54032
+    mounts:
+      dumps: true
+  huggle:
+    gid: 50168
+    mounts:
+      home: true
+      project: true
+  language:  # T242187
+    gid: 50794
+    mounts:
+      scratch: true
+  maps:
+    gid: 50196
+    mounts:
+      dumps: true
+      scratch: true
+      maps: true
+  math:  # T134026
+    gid: 50398
+    mounts:
+      project: true
+      scratch: true
+      dumps: true
+  mwoffliner:
+    gid: 52376
+    mounts:
+      scratch: true
+  ores-staging:  # T252204
+    gid: 52938
+    mounts:
+      dumps: true
+  osmit:  # T156586
+    gid: 51933
+    mounts:
+      dumps: true
+  paws:  # T219077
+    gid: 52863
+    mounts:
+      dumps: true
+      scratch: true
+      home: true
+      project: true
+  project-proxy:
+    gid: 50254
+    mounts:
+      project: true
+  quarry:
+    gid: 52243
+    mounts:
+      project: true
+  research-collaborations-api:  # T286635
+    gid: 54650
+    mounts:
+      dumps: true
+  recommendation-api:  # T244166
+    gid: 53150
+    mounts:
+      dumps: true
+  snuggle:
+    gid: 50470
+    mounts:
+      dumps: true
+      home: true
+  soweego:  # T209818
+    gid: 53892
+    mounts:
+      dumps: true
+  spi-tools: # T279555
+    gid: 54698
+    mounts:
+      dumps: true
+  testlabs:
+    gid: 50302
+    mounts:
+      dumps: true
+      home: true
+      project: true
+      scratch: true
+  tools:
+    gid: 50380
+    mounts:
+      dumps: true
+      scratch: true
+      tools-home: true
+      tools-project: true
+  toolsbeta:
+    gid: 50610
+    mounts:
+      dumps: true
+      home: true
+      project: true
+      scratch: true
+  tools-codfw1dev:
+    gid: 52918
+    mounts:
+      dumps: true
+  twl:
+    gid: 52777
+    mounts:
+      project: true
+  utrs:
+    gid: 50318
+    mounts:
+      home: true
+  video:
+    gid: 52318
+    mounts:
+      dumps: true
+      home: true
+      project: true
+      scratch: true
+  wcdo:  # T228450
+    gid: 53693
+    mounts:
+      dumps: true
+  wikidata-query:  # T128815, T135205
+    gid: 52354
+    mounts:
+      scratch: true
+      dumps: true
+  wikidumpparse:
+    gid: 51824
+    mounts:
+      dumps: true
+      home: true
+      project: true
+      scratch: true
+  wikilink:  # T264107
+    gid: 54031
+    mounts:
+      project: true
+  wikipathways:  # T276141
+    gid: 54611
+    mounts:
+      project: true
+  wmde-templates-alpha:  # T259254
+    gid: 54456
+    mounts:
+      project: true
+  wikicommunityhealth:  # T279558
+    gid: 54564
+    mounts:
+      dumps: true

@@ -1,0 +1,7 @@
+#  THIS FILE IS MANAGED BY PUPPET
+# /etc/exports: the access control list for filesystems which may be exported
+#		to NFS clients.  See exports(5).
+#
+
+/srv        *(ro,fsid=0,sec=sys,sync,subtree_check,root_squash,nocrossmnt)
+/srv/scratch *(rw,sec=sys,async,no_subtree_check,root_squash)

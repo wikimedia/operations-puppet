@@ -1,0 +1,8 @@
+[Unit]
+Description=NFS exports daemon
+
+[Service]
+ExecStart=/usr/local/bin/nfs-exportd --interval 300
+Restart=on-failure
+User=nfsmanager
+RestartSec=10
