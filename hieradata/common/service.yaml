@@ -63,9 +63,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/listPairs
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!apertium.discovery.wmnet!4737!/listPairs
@@ -159,7 +156,7 @@ service::catalog:
       - dnsdisc: api-ro
         active_active: true
     aliases:
-      - 'api'
+      - "api"
 
   appservers-https:
     description:
@@ -201,7 +198,7 @@ service::catalog:
       - dnsdisc: appservers-rw
         active_active: false
     aliases:
-      - 'appservers'
+      - "appservers"
 
   aqs:
     description: Analytics Query Service, aqs.svc.%{::site}.wmnet
@@ -291,9 +288,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!citoid.discovery.wmnet!4003!/_info
@@ -496,9 +490,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!cxserver.discovery.wmnet!4002!/_info
@@ -605,9 +596,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/healthz
       scheduler: wrr
     monitoring:
       check_command: check_https_port_status!8082!200!/healthz
@@ -645,9 +633,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-analytics.discovery.wmnet!4592!/_info
@@ -685,9 +670,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-logging-external.discovery.wmnet!4392!/_info
@@ -725,9 +707,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
       protocol: tcp
     monitoring:
@@ -766,9 +745,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-main.discovery.wmnet!4492!/_info
@@ -806,9 +782,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventstreams.discovery.wmnet!4892!/_info
@@ -846,9 +819,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!eventstreams-internal.discovery.wmnet!4992!/_info
@@ -1122,8 +1092,8 @@ service::catalog:
       - eqiad
       - codfw
     state: production
-    role: 'logstash7'
-    public_endpoint: 'logstash'
+    role: "logstash7"
+    public_endpoint: "logstash"
 
   kubemaster:
     description: Kubernetes master service. kubemaster.svc.%{::site}.wmnet
@@ -1383,9 +1353,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!mathoid.discovery.wmnet!4001!/_info
@@ -1681,7 +1648,7 @@ service::catalog:
       - dnsdisc: parsoid-php
         active_active: false
     aliases:
-      - 'parsoid'
+      - "parsoid"
 
   prometheus:
     description: Prometheus monitoring
@@ -1716,7 +1683,7 @@ service::catalog:
           hostname: prometheus.svc.eqiad.wmnet
     port: 80
     # note: PoPs run prometheus::pop role, but not a problem in this case
-    role: 'prometheus'
+    role: "prometheus"
     sites:
       - eqiad
       - codfw
@@ -1741,9 +1708,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!proton.discovery.wmnet!4030!/_info
@@ -1781,9 +1745,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!push-notifications.discovery.wmnet!4104!/_info
@@ -1821,9 +1782,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/robots.txt
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!recommendation-api.discovery.wmnet!4632!/robots.txt
@@ -2123,9 +2081,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/healthz
       scheduler: wrr
     monitoring:
       check_command: check_https_port_status!8081!200!/healthz
@@ -2163,9 +2118,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/healthz
       scheduler: wrr
       protocol: tcp
     monitoring:
@@ -2204,9 +2156,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/healthz
       scheduler: wrr
       protocol: tcp
     monitoring:
@@ -2421,7 +2370,7 @@ service::catalog:
       - dnsdisc: swift-ro # TODO: remove this from DNS!
         active_active: true
     aliases:
-      - 'ms-fe'
+      - "ms-fe"
 
   tegola-vector-tiles:
     description: Tegola Vector Tiles, tegola-vector-tiles.svc.%{::site}.wmnet
@@ -2500,8 +2449,8 @@ service::catalog:
     discovery:
       - dnsdisc: thanos-query
         active_active: true
-    role: 'thanos::frontend'
-    public_endpoint: 'thanos'
+    role: "thanos::frontend"
+    public_endpoint: "thanos"
 
   thanos-swift:
     description: Prometheus long-term storage, object storage (swift) access
@@ -2542,7 +2491,7 @@ service::catalog:
     discovery:
       - dnsdisc: thanos-swift
         active_active: true
-    role: 'thanos::frontend'
+    role: "thanos::frontend"
 
   termbox:
     description: Wikidata Termbox SSR termbox.svc.%{::site}.wmnet
@@ -2563,9 +2512,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!termbox.discovery.wmnet!4004!/_info
@@ -3118,9 +3064,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/_info
       scheduler: wrr
     monitoring:
       check_command: check_https_lvs_on_port!wikifeeds.discovery.wmnet!4101!/_info
@@ -3751,8 +3694,8 @@ service::catalog:
   # Observability services (non-lvs)
   alertmanager:
     encryption: true
-    role: 'alerting_host'
-    public_endpoint: 'alerts'
+    role: "alerting_host"
+    public_endpoint: "alerts"
     port: 443
     description: Alertmanager service
     # No 'monitoring' section, covered by metamonitoring.
@@ -3769,8 +3712,8 @@ service::catalog:
 
   graphite:
     encryption: true
-    role: 'graphite::production'
-    public_endpoint: 'graphite'
+    role: "graphite::production"
+    public_endpoint: "graphite"
     port: 443
     description: Graphite metrics platform
     monitoring:
@@ -3794,8 +3737,8 @@ service::catalog:
 
   grafana:
     encryption: true
-    role: 'grafana'
-    public_endpoint: 'grafana'
+    role: "grafana"
+    public_endpoint: "grafana"
     port: 443
     description: Graphing and dashboarding
     monitoring:
@@ -3819,8 +3762,8 @@ service::catalog:
 
   librenms:
     encryption: true
-    role: 'netmon'
-    public_endpoint: 'librenms'
+    role: "netmon"
+    public_endpoint: "librenms"
     port: 443
     description: Network device observability
     monitoring:
