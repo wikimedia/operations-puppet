@@ -20,3 +20,13 @@ profile::wmcs::backy2::cluster_name: ceph
 
 profile::ceph::client::rbd::libvirt_rbd_uuid: 'e6500406-304c-4a21-a5d0-8214a827a10d'
 profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: 'f83e2286-bff1-47bf-bf6d-109c427d63c9'
+
+# service disabled for now
+profile::openstack::codfw1dev::manila::service_enabled: false
+profile::openstack::codfw1dev::manila::cinder_volume_type: PLACEHOLDER-UNKNOWN-YET
+profile::openstack::codfw1dev::manila::db_user: manila
+# profile::openstack::codfw1dev::manila::db_pass set in private repo
+profile::openstack::codfw1dev::manila::db_name: manila
+profile::openstack::codfw1dev::manila::db_host: openstack.codfw1dev.wikimediacloud.org
+profile::openstack::codfw1dev::manila::nova_flavor_id: PLACEHOLDER-UNKNOWN-YET
+profile::openstack::codfw1dev::manila::neutron_network: PLACEHOLDER-UNKNOWN-YET
