@@ -38,7 +38,7 @@ profile::base::puppet::certificate_revocation: ~
 profile::base::puppet::dns_alt_names: []
 
 profile::puppet::client_bucket::ensure: absent
-profile::puppet::file_age: 14
+profile::puppet::client_bucket::file_age: 14
 profile::puppet::client_bucket::max_size: 100M
 
 profile::base::legacy_cloud_search_domain: ''
