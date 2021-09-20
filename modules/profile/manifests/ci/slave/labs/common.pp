@@ -8,7 +8,8 @@ class profile::ci::slave::labs::common {
     # needed by the slave agent, eg the java jre.
     include ::profile::java
 
-    # Need the labs instance extended disk space
+    # Need the labs instance extended disk space. T277078.
+    require ::profile::wmcs::lvm
     require ::profile::labs::lvm::srv
 
     # base directory
