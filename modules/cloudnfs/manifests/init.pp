@@ -9,8 +9,7 @@ class cloudnfs (
     Integer $nfsd_threads = 192,
 ){
 
-    require_package('nfs-kernel-server')
-    require_package('lvm2')
+    ensure_packages(['nfs-kernel-server', 'nfs-common', 'lvm2'])
 
     file { '/etc/idmapd.conf':
         ensure => present,
@@ -20,7 +19,6 @@ class cloudnfs (
         source => 'puppet:///modules/labstore/idmapd.conf',
     }
 
-    require_package('nfs-common')
     # Nethogs is useful to monitor NFS client resource utilization
     package { 'nethogs':
         ensure => present,
