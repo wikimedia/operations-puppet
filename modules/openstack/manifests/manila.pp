@@ -24,11 +24,12 @@ class openstack::manila (
     ])
 
     file { '/etc/manila/manila.conf':
-        owner   => 'manila',
-        group   => 'manila',
-        mode    => '0640',
-        content => template("openstack/${version}/manila/manila.conf.erb"),
-        require => Package['manila-api'],
+        owner     => 'manila',
+        group     => 'manila',
+        mode      => '0640',
+        content   => template("openstack/${version}/manila/manila.conf.erb"),
+        require   => Package['manila-api'],
+        show_diff => false,    # because it may contain passwords
     }
 
     service { 'manila-api':
