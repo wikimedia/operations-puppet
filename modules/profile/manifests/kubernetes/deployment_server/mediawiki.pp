@@ -13,6 +13,7 @@ class profile::kubernetes::deployment_server::mediawiki(
     String $docker_password                             = lookup('kubernetes_docker_password'),
     Stdlib::Fqdn $docker_registry                       = lookup('docker::registry'),
     Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
+    String $statsd_server                               = lookup('statsd'),
 ){
     file { "${general_dir}/mediawiki":
         ensure => directory,
@@ -34,6 +35,7 @@ class profile::kubernetes::deployment_server::mediawiki(
         siteconfigs   => $all_sites,
         fcgi_proxy    => $fcgi_proxy,
         domain_suffix => $domain_suffix,
+        statsd        => $statsd_server,
     }
     class { 'mediawiki::mcrouter::yaml_defs':
         path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
