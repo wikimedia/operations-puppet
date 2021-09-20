@@ -45,7 +45,7 @@ class mediawiki::web::yaml_defs(
 
     file { $path:
         ensure  => present,
-        content => to_yaml({'mw' => {'sites' => $all_defs}, 'wmerrors' => $wmerrors_config }),
+        content => to_yaml({'mw' => {'sites' => $all_defs, 'wmerrors' => $wmerrors_config}}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
