@@ -46,6 +46,11 @@ class profile::mail::mx (
         $disable_taint_check = true
     }
 
+    # enable dkim_verbose logs on bullseye hosts
+    if debian::codename::eq('bullseye') {
+        $log_selector_extra = '+dkim_verbose'
+    }
+
     class { 'exim4':
         variant => 'heavy',
         config  => template('role/exim/exim4.conf.mx.erb'),
