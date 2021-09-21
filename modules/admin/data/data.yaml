@@ -5438,3 +5438,9 @@ ldap_only_users:
     email: rhuang-ctr@wikimedia.org
     expiry_date: 2022-05-02
     expiry_contact: cmacholan@wikimedia.org
+  kcv-wikimf:
+    ensure: present
+    realname: Krishna Velaga
+    email: kcvelaga-ctr@wikimedia.org
+    expiry_date: 2022-05-02
+    expiry_contact: janstee@wikimedia.org
