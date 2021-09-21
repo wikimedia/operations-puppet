@@ -72,6 +72,7 @@ class profile::java (
     }
 
     $default_java_home = $java::java_home
+    $default_package_name = "openjdk-${java::default_java_package['variant']}-${java::default_java_package['version']}"
 
     if $extra_args {
 
