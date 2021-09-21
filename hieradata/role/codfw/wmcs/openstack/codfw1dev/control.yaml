@@ -30,3 +30,4 @@ profile::openstack::codfw1dev::manila::db_name: manila
 profile::openstack::codfw1dev::manila::db_host: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::manila::nova_flavor_id: PLACEHOLDER-UNKNOWN-YET
 profile::openstack::codfw1dev::manila::neutron_network: PLACEHOLDER-UNKNOWN-YET
+profile::openstack::codfw1dev::manila::rabbit_user: manila
