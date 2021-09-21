@@ -68,7 +68,8 @@ Facter.add('ipaddress6') do
     # (preferred_lft 0) addresses. Do our own parsing.
     ipout = Facter::Util::Resolution.exec("ip -6 address list dev #{intf}")
     ipout.each_line do |s|
-      if s =~ %r{^\s*inet6 ([0-9a-f:]+)\/([0-9]+) scope global (?!deprecated)}
+      # don't consider SLAAC and deprecated addresses
+      if s =~ %r{^\s*inet6 ([0-9a-f:]+)\/([0-9]+) scope global (?!deprecated|mngtmpaddr|dynamic)}
         ip = Regexp.last_match(1)
         break
       end
