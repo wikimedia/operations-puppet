@@ -11,7 +11,7 @@ class profile::openstack::base::manila (
     String              $db_name                      = lookup('profile::openstack::base::manila::db_name'),
     Stdlib::Fqdn        $db_host                      = lookup('profile::openstack::base::manila::db_host'),
     String              $rabbit_user                  = lookup('profile::openstack::base::manila::rabbit_user'),
-    String              $rabbit_pass                  = lookup('profile::openstack::base::manila::rabbit_host'),
+    String              $rabbit_pass                  = lookup('profile::openstack::base::manila::rabbit_pass'),
     String              $nova_flavor_id               = lookup('profile::openstack::base::manila::nova_flavor_id'),
     String              $neutron_network              = lookup('profile::openstack::base::manila::neutron_network'),
     String              $metadata_proxy_shared_secret = lookup('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
