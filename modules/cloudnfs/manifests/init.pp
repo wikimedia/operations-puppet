@@ -16,20 +16,12 @@ class cloudnfs (
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/labstore/idmapd.conf',
+        source => 'puppet:///modules/cloudnfs/idmapd.conf',
     }
 
     # Nethogs is useful to monitor NFS client resource utilization
     package { 'nethogs':
         ensure => present,
-    }
-
-    file { '/usr/local/sbin/snapshot-manager':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/labstore/snapshot-manager.py',
     }
 
     exec { '/bin/systemctl mask rpcbind.socket':
@@ -41,7 +33,7 @@ class cloudnfs (
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        content => template('labstore/nfs-kernel-server.erb'),
+        content => template('cloudnfs/nfs-kernel-server.erb'),
     }
 
     # For some reason, on stretch, this isn't created during install of the nfs
