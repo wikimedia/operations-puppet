@@ -10,6 +10,8 @@ class openstack::manila (
     String              $db_pass,
     String              $db_name,
     String              $db_host,
+    String              $rabbit_user,
+    String              $rabbit_pass,
     String              $nova_flavor_id,
     String              $neutron_network,
     String              $metadata_proxy_shared_secret,
