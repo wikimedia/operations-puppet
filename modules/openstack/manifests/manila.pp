@@ -26,6 +26,7 @@ class openstack::manila (
 
     require_package([
       'manila-api',
+      'manila-data',
       'manila-scheduler',
       'manila-share',
       'python3-manilaclient',
@@ -43,6 +44,11 @@ class openstack::manila (
     service { 'manila-api':
         ensure  => $enabled,
         require => Package['manila-api'],
+    }
+
+    service { 'manila-data':
+        ensure  => $enabled,
+        require => Package['manila-data'],
     }
 
     service { 'manila-scheduler':
