@@ -32,14 +32,6 @@ class cloudnfs (
         source => 'puppet:///modules/labstore/snapshot-manager.py',
     }
 
-    file { '/etc/default/nfs-common':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/labstore/nfs-common',
-    }
-
     service { 'rpcbind':
         ensure => stopped,
     }
