@@ -183,6 +183,14 @@ if ( isset( $_SERVER['SERVER_NAME'] ) ) {
 	$info['server'] = $_SERVER['SERVER_NAME'];
 }
 
+$mwversionPrefix = '/srv/mediawiki/php-';
+if ( strpos( $err['file'], $mwversionPrefix ) === 0 ) {
+	// Extract "1.37.0-wmf.23" from "/srv/mediawiki/php-1.37.0-wmf.23/foo/bar.php:123"
+	$mwversionRemain = substr( $err['file'], strlen( $mwversionPrefix ) );
+	// Match mediawiki/core: MediaWiki\Logger\Monolog\WikiProcessor
+	$info['mwversion'] = explode( '/', $mwversionRemain, 2 )[0];
+}
+
 $syslogMessage = '@cee: ' . json_encode( $info,  JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 $maxLength = 32765;
 $overflow = strlen( $syslogMessage ) - $maxLength;
