@@ -9,7 +9,7 @@ class profile::openstack::codfw1dev::manila (
     String              $db_user                      = lookup('profile::openstack::codfw1dev::manila::db_user'),
     String              $db_pass                      = lookup('profile::openstack::codfw1dev::manila::db_pass'),
     String              $db_name                      = lookup('profile::openstack::codfw1dev::manila::db_name'),
-    String              $db_host                      = lookup('profile::openstack::codfw1dev::manila::db_host'),
+    Stdlib::Fqdn        $db_host                      = lookup('profile::openstack::codfw1dev::manila::db_host'),
     String              $rabbit_user                  = lookup('profile::openstack::codfw1dev::manila::rabbit_user'),
     String              $rabbit_pass                  = lookup('profile::openstack::codfw1dev::manila::rabbit_host'),
     String              $nova_flavor_id               = lookup('profile::openstack::codfw1dev::manila::nova_flavor_id'),
