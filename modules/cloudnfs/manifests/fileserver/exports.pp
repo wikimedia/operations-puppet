@@ -46,12 +46,11 @@ class cloudnfs::fileserver::exports(
     }
 
     file { '/usr/local/bin/nfs-exportd':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/cloudnfs/nfs-exportd.py',
-        require => File['/usr/local/sbin/nfs-manage-binds'],
-        notify  => Service['nfs-exportd'],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/cloudnfs/nfs-exportd.py',
+        notify => Service['nfs-exportd'],
     }
 
     file { '/etc/exports.bak':
