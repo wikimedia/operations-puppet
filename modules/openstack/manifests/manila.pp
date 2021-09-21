@@ -28,6 +28,7 @@ class openstack::manila (
       'manila-api',
       'manila-scheduler',
       'manila-share',
+      'python3-manilaclient',
     ])
 
     file { '/etc/manila/manila.conf':
