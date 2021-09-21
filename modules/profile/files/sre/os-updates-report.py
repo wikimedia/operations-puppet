@@ -189,7 +189,8 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
                     format(hosts_needowner_count))
 
         if owners_to_contact_delayed:
-            tags.h1("The following hosts are lagging behind the current migration plan")
+            tags.h1("The following hosts are lagging behind the current migration plan",
+                    style="color:red")
             for owner in owners_to_contact_delayed:
                 tags.h2(owner)
                 with tags.div().add(tags.ul()):
@@ -199,7 +200,7 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
             tags.h1("No migration is delayed")
 
         if owners_to_contact_plan:
-            tags.h1("The following roles are missing a migration date")
+            tags.h1("The following roles are missing a migration date", style="color:red")
             for owner in owners_to_contact_plan:
                 tags.h2(owner)
                 with tags.div().add(tags.ul()):
@@ -209,13 +210,13 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
         else:
             tags.h1("All roles are covered with a migration date")
 
-        tags.h1("These hosts don't have owner information attached")
+        tags.h1("These hosts don't have owner information attached", style="color:red")
         with tags.div(id='header').add(tags.ul()):
             for i in need_owners:
                 tags.li(i)
 
         if hosts_needdata:
-            tags.h1("The following hosts are missing in the migration data")
+            tags.h1("The following hosts are missing in the migration data", style="color:red")
             with tags.div().add(tags.ul()):
                 for i in hosts_needdata:
                     tags.li(i)
@@ -223,7 +224,7 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
             tags.h1("All hosts are covered by existing migration data")
 
         if status_log:
-            tags.h1("The following errors were reported (malformed data)")
+            tags.h1("The following errors were reported (malformed data)", style="color:red")
             with tags.div().add(tags.ul()):
                 for i in status_log:
                     tags.li(i)
