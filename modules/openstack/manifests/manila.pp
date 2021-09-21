@@ -12,6 +12,7 @@ class openstack::manila (
     Stdlib::Fqdn        $db_host,
     String              $rabbit_user,
     String              $rabbit_pass,
+    String              $user_pass,
     String              $nova_flavor_id,
     String              $neutron_network,
     String              $metadata_proxy_shared_secret,

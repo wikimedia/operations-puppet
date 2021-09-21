@@ -279,16 +279,14 @@ username = novaadmin
 [keystone_authtoken]
 auth_host = <%= @keystone_api_fqdn %>
 auth_protocol = http
-admin_user = novaadmin
-admin_tenant_name = admin
 www_authenticate_uri = http://<%= @keystone_api_fqdn %>:5000
 auth_url = http://<%= @keystone_api_fqdn %>:35357
 auth_type = password
 project_domain_name = default
 user_domain_name = default
-project_name = admin
-username = novaadmin
-password = <%= @ldap_user_pass %>
+project_name = manila
+username = manila
+password = <%= @user_pass %>
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
 region_name = <%= @region %>
 # We want this but need to figure out about service roles first
