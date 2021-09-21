@@ -15,6 +15,9 @@ class profile::openstack::codfw1dev::manila (
     String              $user_pass                    = lookup('profile::openstack::codfw1dev::manila::user_pass'),
     String              $nova_flavor_id               = lookup('profile::openstack::codfw1dev::manila::nova_flavor_id'),
     String              $neutron_network              = lookup('profile::openstack::codfw1dev::manila::neutron_network'),
+    String              $service_image                = lookup('profile::openstack::codfw1dev::manila::service_image'),
+    String              $service_instance_user        = lookup('profile::openstack::codfw1dev::manila::service_instance_user'),
+    String              $service_instance_pass        = lookup('profile::openstack::codfw1dev::manila::service_instance_pass'),
     String              $metadata_proxy_shared_secret = lookup('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret'),
 ) {
 
@@ -35,6 +38,9 @@ class profile::openstack::codfw1dev::manila (
         user_pass                    => $user_pass,
         nova_flavor_id               => $nova_flavor_id,
         neutron_network              => $neutron_network,
+        service_image                => $service_image,
+        service_instance_user        => $service_instance_user,
+        service_instance_pass        => $service_instance_pass,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
     }
 }

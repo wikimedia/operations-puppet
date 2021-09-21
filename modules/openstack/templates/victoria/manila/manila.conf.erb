@@ -143,10 +143,10 @@ cinder_volume_type = <%= @cinder_volume_type %>
 
 # User in service instance that will be used for authentication.
 # (string value)
-#service_instance_user = <None>
+service_instance_user = <%= @service_instance_user %>
 
 # Password for service instance user. (string value)
-#service_instance_password = <None>
+service_instance_password = <%= @service_instance_pass %>
 
 # Path to host's private key. (string value)
 #path_to_private_key = <None>
@@ -178,7 +178,7 @@ cinder_volume_type = <%= @cinder_volume_type %>
 # Name of image in Glance, that will be used for service instance
 # creation. Only used if driver_handles_share_servers=True. (string
 # value)
-#service_image_name = manila-service-image
+service_image_name = <%= @service_image %>
 
 # Name of service instance. Only used if
 # driver_handles_share_servers=True. (string value)
@@ -203,7 +203,7 @@ service_instance_flavor_id = <%= @nova_flavor_id %>
 
 # Name of manila service network. Used only with Neutron. Only used if
 # driver_handles_share_servers=True. (string value)
-service_network_name = <%= @manila_neutron_network_name %>
+service_network_name = <%= @neutron_network %>
 
 # CIDR of manila service network. Used only with Neutron and if
 # driver_handles_share_servers=True. (string value)

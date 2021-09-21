@@ -15,6 +15,9 @@ class openstack::manila (
     String              $user_pass,
     String              $nova_flavor_id,
     String              $neutron_network,
+    String              $service_image,
+    String              $service_instance_user,
+    String              $service_instance_pass,
     String              $metadata_proxy_shared_secret,
     ) {
 
