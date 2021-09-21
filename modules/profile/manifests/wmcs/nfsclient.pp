@@ -83,6 +83,45 @@ class profile::wmcs::nfsclient(
         }
     }
 
+    if $::labsproject == 'toolsbeta' {
+        labstore::nfs_mount { 'toolsbeta-home-on-nfs-01':
+            mount_name  => 'toolsbeta-home',
+            project     => $::labsproject,
+            options     => ['rw', $mode],
+            mount_path  => '/mnt/nfs/nfs-01-toolsbeta-home',
+            server      => '185.15.56.104',
+            share_path  => '/srv/misc/shared/toolsbeta/home',
+            nfs_version => $nfs_version,
+        }
+
+        labstore::nfs_mount { 'toolsbeta-project-on-nfs-01':
+            mount_name  => 'toolsbeta-project',
+            project     => $::labsproject,
+            options     => ['rw', $home_mode],
+            mount_path  => '/mnt/nfs/nfs-01-toolsbeta-project',
+            server      => '185.15.56.104',
+            share_path  => '/srv/misc/shared/toolsbeta/project',
+            nfs_version => $nfs_version,
+        }
+
+        # Sets up symlinks from new tools mounts to /data/project and /home
+        if mount_nfs_volume($::labsproject, 'toolsbeta-project') {
+            file { '/data/project':
+                ensure  => 'link',
+                force   => true,
+                target  => '/mnt/nfs/nfs-01-toolsbeta-project',
+                require => Labstore::Nfs_mount['toolsbeta-project-on-nfs-01'],
+            }
+        }
+        if mount_nfs_volume($::labsproject, 'toolsbeta-home') {
+            file { '/home':
+                ensure  => 'link',
+                force   => true,
+                target  => '/mnt/nfs/nfs-01-toolsbeta-home',
+                require => Labstore::Nfs_mount['toolsbeta-home-on-nfs-01'],
+            }
+        }
+    }
     if $::labsproject == 'maps' {
 
         labstore::nfs_mount { 'maps-on-secondary':
