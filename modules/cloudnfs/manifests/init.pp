@@ -32,14 +32,6 @@ class cloudnfs (
         source => 'puppet:///modules/labstore/snapshot-manager.py',
     }
 
-    service { 'rpcbind':
-        ensure => stopped,
-    }
-
-    exec { '/bin/systemctl mask rpcbind.service':
-        creates => '/etc/systemd/system/rpcbind.service',
-    }
-
     exec { '/bin/systemctl mask rpcbind.socket':
         creates => '/etc/systemd/system/rpcbind.socket',
     }
