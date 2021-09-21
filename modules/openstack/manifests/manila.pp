@@ -5,6 +5,7 @@ class openstack::manila (
     Array[Stdlib::Fqdn] $openstack_controllers,
     Stdlib::Fqdn        $keystone_api_fqdn,
     String              $ldap_user_pass,
+    Stdlib::Port        $api_bind_port,
     String              $cinder_volume_type,
     String              $db_user,
     String              $db_pass,
@@ -41,5 +42,15 @@ class openstack::manila (
     service { 'manila-api':
         ensure  => $enabled,
         require => Package['manila-api'],
+    }
+
+    service { 'manila-scheduler':
+        ensure  => $enabled,
+        require => Package['manila-scheduler'],
+    }
+
+    service { 'manila-share':
+        ensure  => $enabled,
+        require => Package['manila-share'],
     }
 }

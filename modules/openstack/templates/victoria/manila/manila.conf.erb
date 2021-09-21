@@ -5,7 +5,7 @@ auth_strategy = keystone
 state_path = /var/lib/manila
 my_ip = <%= @ipaddress %>
 osapi_share_listen = <%= @ipaddress %>
-osapi_share_listen_port = 8786
+osapi_share_listen_port = <%= @api_bind_port %>
 osapi_share_workers = 1
 osapi_share_use_ssl = false
 transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
