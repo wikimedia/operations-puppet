@@ -104,6 +104,9 @@
 #   Cassandra superuser password.
 #   Default: cassandra
 #
+# [*java_package*]
+#   The java package name responsible for installing java
+#   If present this is used to add dependencies on the cassandra install
 class cassandra (
     String                           $cluster_name            = 'Test Cluster',
     Optional[String]                 $tls_cluster_name        = undef,
@@ -126,7 +129,8 @@ class cassandra (
     String                           $super_username          = 'cassandra',
     String                           $super_password          = 'cassandra',
     Optional[String]                 $version                 = undef,
-    Array[String]                    $users                   = []
+    Array[String]                    $users                   = [],
+    Optional[String]                 $java_package            = undef,
 ) {
 
     # Tools packages
@@ -157,9 +161,14 @@ class cassandra (
     }
 
 
+    $cassandra_require = $java_package ? {
+        undef   => undef,
+        default => Package[$java_package]
+    }
     apt::package_from_component { 'cassandra':
         packages  => { 'cassandra' => $package_version},
         component => $component,
+        require   => $cassandra_require,
     }
 
     package { 'cassandra-tools':

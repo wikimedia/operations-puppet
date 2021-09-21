@@ -14,6 +14,7 @@ class profile::cassandra::single_instance(
     seeds                   => $cassandra_hosts,
     dc                      => $dc,
     logstash_host           => 'localhost',
+    java_package            => $profile::java::default_package_name,
     default_instance_params => {
       data_directory_base    => '/srv/cassandra',
       commitlog_directory    => '/srv/cassandra/commitlog',

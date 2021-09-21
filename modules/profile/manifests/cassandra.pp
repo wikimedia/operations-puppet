@@ -26,6 +26,7 @@ class profile::cassandra(
         'seeds'               => $seeds,
         'logstash_host'       => 'localhost',
         'cassandra_passwords' => $cassandra_passwords,
+        'java_package'        => $profile::java::default_package_name,
     }
     $cassandra_real_settings = merge($base_settings, $cassandra_settings)
 
