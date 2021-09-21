@@ -52,6 +52,10 @@ class osm::imposm3 (
             source => 'puppet:///modules/osm/imposm-rollback-import';
         '/usr/local/bin/imposm-removebackup-import':
             source => 'puppet:///modules/osm/imposm-removebackup-import';
+        '/usr/local/bin/send-tile-expiration-events':
+            source => 'puppet:///modules/osm/send-tile-expiration-events.sh';
+        '/etc/imposm/event-template.json':
+            source => 'puppet:///modules/osm/event-template.json';
     }
 
     $ensure_replication = $disable_replication_cron ? {
