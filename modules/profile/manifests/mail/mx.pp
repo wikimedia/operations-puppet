@@ -14,6 +14,9 @@ class profile::mail::mx (
     Array[Stdlib::Host]   $verp_domains             = lookup('profile::mail::mx::verp_domains'),
     Stdlib::Host          $verp_post_connect_server = lookup('profile::mail::mx::verp_post_connect_server'),
     String[1]             $verp_bounce_post_url     = lookup('profile::mail::mx::verp_bounce_post_url'),
+    Stdlib::Unixpath      $alias_file               = lookup('profile::mail::mx::alias_file'),
+    String[1]             $alias_file_mail_rcpt     = lookup('profile::mail::mx::alias_file_mail_rcpt'),
+    String[1]             $alias_file_mail_subject  = lookup('profile::mail::mx::alias_file_mail_subject'),
 ) {
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -123,10 +126,6 @@ class profile::mail::mx (
     }
 
     # mails the wikimedia.org mail alias file to ITS once per week
-    $alias_file = "${exim4::aliases_dir}/wikimedia.org"
-    $recipient  = 'dzahn@wikimedia.org'
-    $subject    = "wikimedia.org mail aliases from ${::hostname}"
-
     file { '/etc/mail-exim-aliases':
         ensure  => present,
         mode    => '0444',
@@ -142,7 +141,7 @@ class profile::mail::mx (
     systemd::timer::job { 'mail-exim-aliases':
         ensure             => present,
         user               => 'Debian-exim',
-        description        => 'mail a copy of the exim alias file',
+        description        => 'send a copy of the exim alias file somewhere',
         command            => '/usr/local/bin/mail-exim-alias',
         interval           => {'start' => 'OnCalendar', 'interval' => 'weekly'},
         monitoring_enabled => false,
