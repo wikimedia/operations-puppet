@@ -138,6 +138,21 @@ profile::services_proxy::envoy::listeners:
     timeout: "10s"
     service: shellbox-constraints
     keepalive: "4s"
+  - name: shellbox-media
+    port: 6026
+    timeout: "10s"
+    service: shellbox-media
+    keepalive: "4s"
+  - name: shellbox-syntaxhighlight
+    port: 6027
+    timeout: "10s"
+    service: shellbox-syntaxhighlight
+    keepalive: "4s"
+  - name: shellbox-timeline
+    port: 6028
+    timeout: "10s"
+    service: shellbox-timeline
+    keepalive: "4s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -245,6 +260,9 @@ profile::services_proxy::envoy::enabled_listeners:
   - cxserver
   - shellbox
   - shellbox-constraints
+  - shellbox-media
+  - shellbox-syntaxhighlight
+  - shellbox-timeline
   - swift-eqiad
   - swift-codfw
   - search-chi-eqiad
