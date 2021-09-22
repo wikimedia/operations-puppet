@@ -27,6 +27,13 @@ class profile::kubernetes::deployment_server::helmfile(
         }
         $private_dir = "${general_private_dir}/${service_group}_services"
 
+        file { $private_dir:
+            ensure => directory,
+            owner  => 'root',
+            group  => 'wikidev',
+            mode   => '0750',
+        }
+
         # New-style private directories are one per service, not per cluster too.
         $merged_services.each |String $svcname, Hash $data| {
             file { "${private_dir}/${svcname}":
