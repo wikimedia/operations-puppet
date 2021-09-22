@@ -1,0 +1,22 @@
+section {
+  text-align: center;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  font-family: Verdana, sans-serif;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+p.result {
+  font-size: 2em;
+}
+
+p.info {
+  font-size: 1em;
+  color: gray;
+}

@@ -4,52 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wikidough Check</title>
-    <style>
-      section {
-        text-align: center;
-        position: absolute;
-        top: 25%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
-        font-family: Verdana, sans-serif;
-      }
-      h1 {
-        font-size: 3em;
-      }
-      p.result {
-        font-size: 2em;
-      }
-      p.info {
-        font-size: 1em;
-        color: gray;
-      }
-    </style>
-    <script src="uuidv4.js"></script>
-    <script>
-      const testUUID = uuidv4();
-      const testTime = new Date().toLocaleTimeString();
-      const checkURL = `https://${testUUID}.check.wikimedia-dns.org/check/`;
-
-      fetch(checkURL)
-      .then((response) => response.json())
-      .then(check => {
-        if (check.result === true) {
-          document.getElementById("check-heading").innerHTML = "&#9745;";
-          document.getElementById("check-result").textContent = "Congratulations! You are using Wikidough.";
-        } else {
-          document.getElementById("check-heading").innerHTML = "&#9746;";
-          document.getElementById("check-result").textContent = "Sorry, you are not using Wikidough.";
-        }
-      })
-      .catch((error) => {
-          document.getElementById("check-heading").innerHTML = "&#63;";
-          document.getElementById("check-result").textContent = "We were unable to determine if you are using Wikidough.";
-      })
-      .finally(() => {
-          document.getElementById("check-info").textContent = `Tested at ${testTime} with test ID ${testUUID}`;
-      });
-    </script>
+    <link rel="stylesheet" href="site.css">
     <noscript>Please enable JavaScript to view this page.</noscript>
   </head>
   <body>
@@ -59,5 +14,7 @@
       <p class="info" id="check-info">Waiting for the test results.</p>
       <p>Need help? Please visit the <a href="https://wikitech.wikimedia.org/wiki/Wikidough">Wikitech page</a>.</p>
     </section>
+    <script src="uuidv4.js"></script>
+    <script src="check.js"></script>
   </body>
 </html>

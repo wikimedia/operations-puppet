@@ -5,8 +5,11 @@ class profile::durum (
 ) {
 
     $durum_path = $common['durum_path']
+
     $index_file = "${durum_path}/index.html"
-    $js_file = "${durum_path}/uuidv4.js"
+    $uuid_js_file = "${durum_path}/uuidv4.js"
+    $check_js_file = "${durum_path}/check.js"
+    $css_file = "${durum_path}/site.css"
 
     motd::script { 'durum-motd':
         ensure   => 'present',
@@ -26,8 +29,12 @@ class profile::durum (
             mode   => '0440';
         $index_file:
             content => file('profile/durum/index.html');
-        $js_file:
+        $uuid_js_file:
             content => file('profile/durum/uuidv4.js');
+        $check_js_file:
+            content => file('profile/durum/check.js');
+        $css_file:
+            content => file('profile/durum/site.css');
     }
 
     include network::constants
@@ -48,7 +55,9 @@ class profile::durum (
         content => template('profile/durum/nginx.conf.erb'),
         require => [
           File[$index_file],
-          File[$js_file],
+          File[$uuid_js_file],
+          File[$check_js_file],
+          File[$css_file],
         ]
     }
 
