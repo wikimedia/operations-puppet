@@ -99,13 +99,6 @@ class rancid (
         $job_ensure = 'absent'
     }
 
-    cron { 'rancid_differ':
-        ensure  => 'absent',
-        command => 'SSH_AUTH_SOCK=/run/keyholder/proxy.sock /usr/lib/rancid/bin/rancid-run',
-        user    => 'rancid',
-        minute  => '1',
-    }
-
     systemd::timer::job { 'rancid-differ':
         ensure             => $job_ensure,
         user               => 'rancid',
@@ -115,14 +108,6 @@ class rancid (
         interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
         monitoring_enabled => false,
         logging_enabled    => false,
-    }
-
-    cron { 'rancid_clean_logs':
-        ensure  => 'absent',
-        command => '/usr/bin/find /var/log/rancid -type f -mtime +2 -exec rm {} \;',
-        user    => 'rancid',
-        minute  => '50',
-        hour    => '23',
     }
 
     systemd::timer::job { 'rancid-clean-logs':
