@@ -429,6 +429,7 @@ profile::kubernetes::deployment_server::services:
     revscoring-editquality:
       username: revscoring-editquality
       group: wikidev
+      namespace: revscoring-editquality
       mode: '0640'
       owner: mwdeploy
 
