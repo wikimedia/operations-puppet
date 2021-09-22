@@ -88,30 +88,14 @@ class puppetdb::app(
         group   => 'root',
         mode    => '0750',
         recurse => true,
-    }
-
-    # Ensure the default debian config file is not there
-    file { '/etc/puppetdb/conf.d/config.ini':
-        ensure => absent,
+        purge   => true,
     }
 
     $postgres_uri = "ssl=true&sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory&sslmode=verify-full&sslrootcert=${ca_path}"
     $postgres_rw_db_subname = "//${db_rw_host}:5432/puppetdb?${postgres_uri}"
     $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?${postgres_uri}"
 
-    $db_driver_settings = {
-        'postgres' => {
-            'classname'   => 'org.postgresql.Driver',
-            'subprotocol' => 'postgresql',
-        },
-        'hsqldb'   => {
-            'classname'   => 'org.hsqldb.jdbcDriver',
-            'subprotocol' => 'hsqldb',
-            'subname'     => 'file:/var/lib/puppetdb/db/puppet.hsql;hsqldb.tx=mvcc;sql.syntax_pgs=true',
-        }
-    }[$db_driver]
-
-    $db_settings = $db_driver_settings + {
+    $db_settings = {
         'report-ttl'           => $report_ttl,
         'gc-interval'          => $gc_interval,
         'node-ttl'             => $node_ttl,
@@ -122,7 +106,7 @@ class puppetdb::app(
         'facts-blacklist-type' => $facts_blacklist_type,
         'facts-blacklist'      => $facts_blacklist.join(', '),
     }
-    $read_db_settings = $db_driver_settings + {
+    $read_db_settings = {
         'subname'  => $postgres_ro_db_subname,
         'username' => 'puppetdb_ro',
         'password' => $db_ro_password,
@@ -144,7 +128,7 @@ class puppetdb::app(
         },
     }
 
-    puppetdb::config { 'repl':
+    puppetdb::config { 'nrepl':
         settings => {'enabled' => false},
     }
 
