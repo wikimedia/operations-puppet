@@ -21,7 +21,7 @@ class profile::sre::os_updates (
     file { '/srv/os-reports':
         ensure => 'directory',
         owner  => 'os-reports',
-        group  => 'os-report',
+        group  => 'os-reports',
         mode   => '0755',
     }
 
