@@ -7,3 +7,4 @@ monitor_screens: false
 profile::conftool::client::etcd_user: 'root'
 profile::mariadb::wmfmariadbpy::role: 'admin'
 profile::cumin::monitor_agentrun: true
+profile::sre::os_reports::host: cumin2002.codfw.wmnet

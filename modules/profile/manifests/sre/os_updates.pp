@@ -1,7 +1,29 @@
 # == Class profile::sre::os_updates
 #
 # Installs a script to track the status of OS upgrades across our fleet
-class profile::sre::os_updates {
+class profile::sre::os_updates (
+    Stdlib::Host $os_reports_host = lookup('profile::sre::os_reports::host'),
+) {
+
+    group { 'os-reports':
+        ensure => present,
+    }
+
+    user { 'os-reports':
+        ensure     => 'present',
+        gid        => 'os-reports',
+        shell      => '/bin/bash',
+        home       => '/nonexistent',
+        system     => true,
+        managehome => false,
+    }
+
+    file { '/srv/os-reports':
+        ensure => 'directory',
+        owner  => 'os-reports',
+        group  => 'os-report',
+        mode   => '0755',
+    }
 
     file { '/usr/local/bin/os-updates-report':
         ensure => file,
@@ -39,6 +61,19 @@ class profile::sre::os_updates {
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/profile/sre/stretch.yaml',
+    }
+
+    # The reports could be run on any Cumin host, but only generate it once
+    $os_reports_timer_ensure = ($facts['fqdn'] == $os_reports_host).bool2str('present', 'absent')
+
+    systemd::timer::job { 'generate_os_reports':
+        ensure          => $os_reports_timer_ensure,
+        description     => 'Generate OS migration report/overview',
+        user            => 'os-reports',
+        logging_enabled => false,
+        send_mail       => false,
+        command         => '/usr/local/bin/os-updates-report',
+        interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:00:00'},
     }
 
     ensure_packages(['python3-pypuppetdb', 'python3-dominate'])
