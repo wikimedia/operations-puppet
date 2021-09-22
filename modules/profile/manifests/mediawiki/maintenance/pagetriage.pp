@@ -1,5 +1,5 @@
 class profile::mediawiki::maintenance::pagetriage {
-    # TODO: Consider creating a single cron that runs all of these scripts at
+    # TODO: Consider creating a single periodic job that runs all of these scripts at
     # 48h intervals, rather than staggering them throughout the day.
 
     system::role { 'mediawiki::maintenance::pagetriage': description => 'MediaWiki Maintenance Server: pagetriage extension' }

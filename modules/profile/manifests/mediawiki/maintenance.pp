@@ -51,7 +51,7 @@ class profile::mediawiki::maintenance (
         mode   => '0555'
     }
 
-    # MediaWiki maintenance scripts (cron jobs)
+    # MediaWiki maintenance scripts (periodic jobs)
     include ::profile::mediawiki::maintenance::wikidata
     include ::profile::mediawiki::maintenance::growthexperiments
     include ::profile::mediawiki::maintenance::pagetriage

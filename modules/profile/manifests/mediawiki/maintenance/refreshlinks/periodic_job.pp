@@ -1,5 +1,5 @@
-# a mediawiki maintenance cron job to refresh link
-define profile::mediawiki::maintenance::refreshlinks::cronjob {
+# a mediawiki maintenance periodic job to refresh link
+define profile::mediawiki::maintenance::refreshlinks::periodic_job {
     $db_cluster = regsubst($name, '@.*', '\1')
     $monthday = regsubst($name, '.*@', '\1')
 

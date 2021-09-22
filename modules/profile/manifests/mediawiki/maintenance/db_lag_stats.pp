@@ -1,6 +1,6 @@
 # == Class: profile::mediawiki::maintenance::db_lag_stats
 #
-# Provisions a cron job which runs every minute and which reports the
+# Provisions a periodic job which runs every minute and which reports the
 # the amount of lag for MediaWiki-pooled DBs to StatsD.
 #
 class profile::mediawiki::maintenance::db_lag_stats {

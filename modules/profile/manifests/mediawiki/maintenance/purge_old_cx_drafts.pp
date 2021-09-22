@@ -1,4 +1,4 @@
-# This cron will purge unpublished articles from ContentTranslation older than
+# This periodic job will purge unpublished articles from ContentTranslation older than
 # 455 days (--age-in-days) and notify users 30 days prior (--notify-age-in-days)
 # See: T183890, T261189.
 class profile::mediawiki::maintenance::purge_old_cx_drafts {
