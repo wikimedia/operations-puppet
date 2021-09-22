@@ -15,8 +15,10 @@ Content-Type: text/jinja2; charset="us-ascii"
 hostname: {{ds.meta_data.name}}
 fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 
+# Prevent puppet from doing things before we're ready.
 # APT fails to acquire GPG keys if packages dirmngr or gpg are missing
 bootcmd:
+  - [ cloud-init-per, once, disablepuppet, puppet, agent, --disable, "prevent puppet runs during cloud-init" ]
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
@@ -194,6 +196,12 @@ done
 # Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
 # before, the puppet code that ensures the symlinks are created, etc may not
 # have run)
+wait_for_puppet 10
+puppet agent -t
+
+# One last puppet run to avoid possible races. I'm (AGB) not totally sure what's
+# happening here but occasionally the very first run fails but subsequent runs
+# work and we really need two good ones before logins work.
 wait_for_puppet 10
 puppet agent -t
 
