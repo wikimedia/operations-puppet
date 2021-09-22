@@ -140,17 +140,17 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s"
   - name: shellbox-media
     port: 6026
-    timeout: "10s"
+    timeout: "60s"
     service: shellbox-media
     keepalive: "4s"
   - name: shellbox-syntaxhighlight
     port: 6027
-    timeout: "10s"
+    timeout: "60s"
     service: shellbox-syntaxhighlight
     keepalive: "4s"
   - name: shellbox-timeline
     port: 6028
-    timeout: "10s"
+    timeout: "60s"
     service: shellbox-timeline
     keepalive: "4s"
   # Non-discovery records
