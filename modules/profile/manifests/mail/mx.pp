@@ -126,20 +126,24 @@ class profile::mail::mx (
     $alias_file = "${exim4::aliases_dir}/wikimedia.org"
     $recipient  = 'dzahn@wikimedia.org'
     $subject    = "wikimedia.org mail aliases from ${::hostname}"
-    cron { 'mail_exim_aliases':
-        ensure  => absent,
-        user    => 'Debian-exim',
-        minute  => 0,
-        hour    => 0,
-        weekday => 0,
-        command => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file} >/dev/null 2>&1",
+
+    file { '/etc/mail-exim-aliases':
+        ensure  => present,
+        mode    => '0444',
+        content => template('profile/mail/mx/mail-exim-aliases-config.erb'),
+    }
+
+    file { '/usr/local/bin/mail-exim-aliases':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/profile/mail/mx/mail-exim-aliases.sh',
     }
 
     systemd::timer::job { 'mail-exim-aliases':
         ensure             => present,
         user               => 'Debian-exim',
         description        => 'mail a copy of the exim alias file',
-        command            => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file}",
+        command            => '/usr/local/bin/mail-exim-alias',
         interval           => {'start' => 'OnCalendar', 'interval' => 'weekly'},
         monitoring_enabled => false,
         logging_enabled    => false,
