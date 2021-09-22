@@ -13,3 +13,4 @@ profile::idp::client::httpd::sites:
     acme_chief_cert: 'orchestrator'
     required_groups:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
+      - 'cn=sre-admins,ou=groups,dc=wikimedia,dc=org'

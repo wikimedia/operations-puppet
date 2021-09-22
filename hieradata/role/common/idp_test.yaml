@@ -27,6 +27,7 @@ profile::idp::services:
     service_id: 'https://(cas-)?puppetboard.wikimedia.org(/.*)?'
     required_groups:
       - ops
+      - sre-admins
   graphite:
     id: 4
     service_id: 'https://(cas-)?graphite.wikimedia.org(/.*)?'
@@ -54,6 +55,9 @@ profile::idp::services:
   librenms:
     id: 8
     service_id: 'https://librenms.wikimedia.org(/.*)?'
+    required_groups:
+      - ops
+      - sre-admins
 profile::idp::ldap_attributes:
   - cn
   - memberOf

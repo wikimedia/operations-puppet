@@ -40,6 +40,7 @@ profile::idp::services:
     service_id: 'https://puppetboard.wikimedia.org(/.*)?'
     required_groups:
       - ops
+      - sre-admins
   graphite:
     id: 4
     service_id: 'https://graphite.wikimedia.org(/.*)?'
@@ -71,6 +72,7 @@ profile::idp::services:
     service_id: 'https://librenms.wikimedia.org(/.*)?'
     required_groups:
       - ops
+      - sre-admins
       - librenms-readers
   piwik:
     id: 9
@@ -134,6 +136,7 @@ profile::idp::services:
     service_id: '^https://orchestrator.wikimedia.org(/.*)?'
     required_groups:
       - ops
+      - sre-admins
   racktables:
     id: 18
     service_id: 'https://racktables.wikimedia.org(/.*)?'

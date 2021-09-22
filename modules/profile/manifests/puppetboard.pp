@@ -88,7 +88,10 @@ class profile::puppetboard (
 
     profile::idp::client::httpd::site {'puppetboard.wikimedia.org':
         vhost_content    => 'profile/idp/client/httpd-puppetboard.erb',
-        required_groups  => ['cn=ops,ou=groups,dc=wikimedia,dc=org'],
+        required_groups  => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
+        ],
         proxied_as_https => true,
         document_root    => $directory,
     }
