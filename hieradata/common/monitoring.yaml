@@ -274,6 +274,12 @@ monitoring::groups:
   wdqs-test_eqiad:
     description: Wikidata Query Service - Test cluster (eqiad)
 
+# Wikimedia Commons Query Service
+  wcqs_eqiad:
+    description: Wikimedia Commons Query Service - Public cluster (eqiad)
+  wcqs_codfw:
+    description: Wikimedia Commons Query Service - Public cluster (codfw)
+
 # Labs
   labsnfs_eqiad:
     description: eqiad labsnfs server servers
