@@ -19,12 +19,6 @@ class puppetmaster::rsync(
             path => '/var/lib/puppet/server/ssl/ca';
     }
 
-    cron { 'sync_volatile':
-        ensure  => absent,
-        command => "/usr/bin/rsync -avz --delete ${server}::puppet_volatile /var/lib/puppet/volatile > /dev/null 2>&1",
-        minute  => '*/15',
-    }
-
     systemd::timer::job { 'sync-puppet-volatile':
         ensure             => $sync_ensure,
         user               => 'root',
@@ -33,12 +27,6 @@ class puppetmaster::rsync(
         interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '15m'},
         monitoring_enabled => false,
         logging_enabled    => false,
-    }
-
-    cron { 'sync_ca':
-        ensure  => absent,
-        command => "/usr/bin/rsync -avz --delete ${server}::puppet_ca /var/lib/puppet/server/ssl/ca > /dev/null 2>&1",
-        hour    => '4',
     }
 
     systemd::timer::job { 'sync-puppet-ca':
