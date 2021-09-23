@@ -111,7 +111,7 @@ def unroll_result_list(entries):
     return '\n'.join(sorted(entries))
 
 
-def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
+def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_dir):
     status_log = []
     owners_to_contact_plan = defaultdict(set)
     owners_to_contact_delayed = defaultdict(set)
@@ -172,7 +172,7 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os):
             hosts_delayed_count += 1
 
     datetime_stamp = datetime.datetime.now().strftime("%Y-%m-%d")
-    file_name = 'os-report-{}-{}.html'.format(datetime_stamp, distro)
+    file_name = os.path.join(target_dir, 'os-report-{}-{}.html'.format(datetime_stamp, distro))
 
     with dominate.document(title='OS deprecation report for {}'.format(distro)) as html_report:
 
@@ -253,6 +253,10 @@ def main():
         print("Malformed config file, no owners file configured")
         sys.exit(1)
 
+    if 'target_directory' not in cfg.options('general'):
+        print("Malformed config file, target directory specified")
+        sys.exit(1)
+
     owners = parse_yaml(cfg.get('general', 'owners'))
 
     for distro in sections:
@@ -281,7 +285,8 @@ def main():
                        cfg.get('general', 'puppetdb_host'),
                        owners,
                        distro,
-                       uptodate_os=uptodate_os,
+                       uptodate_os,
+                       cfg.get('general', 'target_directory'),
                        )
     sys.exit(1)
 
