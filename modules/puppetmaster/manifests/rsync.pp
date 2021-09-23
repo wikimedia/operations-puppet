@@ -4,7 +4,7 @@
 #
 class puppetmaster::rsync(
     String $server,
-    Wmflib::Ensure $cron_ensure = 'absent',
+    Wmflib::Ensure $sync_ensure = 'absent',
     Array[String] $frontends = [],
 ){
 
@@ -26,7 +26,7 @@ class puppetmaster::rsync(
     }
 
     systemd::timer::job { 'sync-puppet-volatile':
-        ensure             => $cron_ensure,
+        ensure             => $sync_ensure,
         user               => 'root',
         description        => 'rsync puppet volatile data to another server',
         command            => "/usr/bin/rsync -avz --delete ${server}::puppet_volatile /var/lib/puppet/volatile",
@@ -42,7 +42,7 @@ class puppetmaster::rsync(
     }
 
     systemd::timer::job { 'sync-puppet-ca':
-        ensure             => $cron_ensure,
+        ensure             => $sync_ensure,
         user               => 'root',
         description        => 'rsync puppet CA data to another server',
         command            => "/usr/bin/rsync -avz --delete ${server}::puppet_ca /var/lib/puppet/server/ssl/ca",

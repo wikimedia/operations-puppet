@@ -36,10 +36,10 @@ class profile::puppetmaster::frontend(
     # Puppet frontends are git masters at least for their datacenter
     if $ca_server == $::fqdn {
         $ca = true
-        $cron = 'absent'
+        $sync_ensure = 'absent'
     } else {
         $ca = false
-        $cron = 'present'
+        $sync_ensure = 'present'
     }
 
     if $ca {
@@ -144,10 +144,10 @@ class profile::puppetmaster::frontend(
     }
 
     # Run the rsync servers on all puppetmaster frontends, and activate
-    # crons syncing from the master
+    # timer jobs syncing from the master
     class { 'puppetmaster::rsync':
         server      => $ca_server,
-        cron_ensure => $cron,
+        sync_ensure => $sync_ensure,
         frontends   => keys($servers),
     }
 
