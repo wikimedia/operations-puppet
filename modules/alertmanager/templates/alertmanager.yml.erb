@@ -42,6 +42,18 @@ route:
             severity: 'critical'
           receiver: 'sre-irc'
     - match:
+        team: 'data-persistence'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'sre-page'
+        - match:
+            severity: 'critical'
+          receiver: 'data-persistence-ircmail'
+        - match:
+            severity: 'warning'
+          receiver: 'data-persistence-irc'
+    - match:
         team: 'dcops'
       receiver: 'dcops-mail'
       routes:
@@ -117,6 +129,16 @@ receivers:
     - routing_key: 'sre-batphone'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+
+- name: 'data-persistence-irc'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
+
+- name: 'data-persistence-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
+  email_configs:
+    - to: 'sre-data-persistence@<%= scope.lookupvar('::domain') %>'
 
 - name: 'noc-ircmail'
   webhook_configs:
