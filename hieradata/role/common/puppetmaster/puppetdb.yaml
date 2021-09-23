@@ -70,6 +70,5 @@ profile::puppetdb::facts_blacklist:
   - '^block_devices.*'
   - '^cpu_flags.*'
   - '^mountpoints.*'  # used in cloud by cinderutils::ensure but not in production
-  - '^partitions.*'
 profile::puppetdb::node_ttl: 14d
 profile::puppetdb::node_purge_ttl: 1d
