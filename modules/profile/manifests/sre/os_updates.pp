@@ -77,4 +77,15 @@ class profile::sre::os_updates (
     }
 
     ensure_packages(['python3-pypuppetdb', 'python3-dominate'])
+
+    # Allow miscweb hosts to pull reports for serving them via HTTP
+    $miscweb_rsync_clients = wmflib::role_hosts('miscweb')
+    rsync::server::module { 'osreports':
+        ensure         => $os_reports_timer_ensure,
+        path           => '/srv/os-reports',
+        read_only      => 'yes',
+        hosts_allow    => $miscweb_rsync_clients,
+        auto_ferm      => true,
+        auto_ferm_ipv6 => true,
+    }
 }
