@@ -2841,9 +2841,9 @@ service::catalog:
     encryption: true
     ip:
       codfw:
-        default: 10.2.2.67
-      eqiad:
         default: 10.2.1.67
+      eqiad:
+        default: 10.2.2.67
     lvs:
       class: low-traffic
       conftool:
