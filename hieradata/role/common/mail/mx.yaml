@@ -11,5 +11,5 @@ profile::mail::mx::verp_domains:
 profile::mail::mx::verp_post_connect_server: meta.wikimedia.org
 profile::mail::mx::verp_bounce_post_url: api-rw.discovery.wmnet/w/api.php
 profile::mail::mx::alias_file: /etc/exim4/aliases/wikimedia.org
-profile::mail::mx::alias_file_mail_rcpt: dzahn@wikimedia.org
+profile::mail::mx::alias_file_mail_rcpt: its@wikimedia.org
 profile::mail::mx::alias_file_mail_subject: wikimedia.org mail aliases
