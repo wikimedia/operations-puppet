@@ -10,6 +10,8 @@ class role::wcqs::public {
     require ::profile::query_service::wcqs
     # Public endpoint specific profiles
     include profile::tlsproxy::envoy # TLS termination
+    # Production specific profiles
+    include ::profile::lvs::realserver
 
     system::role { 'wcqs::public':
         ensure      => 'present',

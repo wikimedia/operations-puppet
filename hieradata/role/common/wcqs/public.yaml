@@ -37,6 +37,11 @@ profile::admin::groups:
 contactgroups: admins,wdqs-admins
 cluster: wcqs
 
+profile::lvs::realserver::pools:
+    wcqs:
+      services:
+        - wcqs-blazegraph
+        - nginx
 
 # Includes module for connection limits
 profile::nginx::variant: 'full'
