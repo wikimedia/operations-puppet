@@ -189,11 +189,19 @@ GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.192.48.47' 
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.192.48.47' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
 
 -- Pods ranges (to be reverted once we switch to the proxies)
+-- kubernetes pod IPs (eqiad) 10.64.64.0/21
 GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.64.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.65.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.66.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.67.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.68.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.69.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.70.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.71.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+-- kubernetes pod IPs staging (eqiad) 10.64.75.0/24
 GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.75.%' IDENTIFIED BY '<%= @toolhub_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.78.%' IDENTIFIED BY '<%= @toolhub_pass %>';
+-- kubernetes pod IPs staging (codfw) 10.192.75.0/24
 GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.192.75.%' IDENTIFIED BY '<%= @toolhub_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.192.78.%' IDENTIFIED BY '<%= @toolhub_pass %>';
 -- tool_admin access from mwmaint host (to be reverted once we switch to the proxies)
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.64.16.77' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.192.32.34' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
