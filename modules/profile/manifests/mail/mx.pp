@@ -142,7 +142,7 @@ class profile::mail::mx (
         ensure             => present,
         user               => 'Debian-exim',
         description        => 'send a copy of the exim alias file somewhere',
-        command            => '/usr/local/bin/mail-exim-alias',
+        command            => '/usr/local/bin/mail-exim-aliases',
         interval           => {'start' => 'OnCalendar', 'interval' => 'weekly'},
         monitoring_enabled => false,
         logging_enabled    => false,
