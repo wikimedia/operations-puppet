@@ -1,2 +1,2 @@
 cluster: spare
-profile::base::notifications: disabled
+profile::monitoring::host::notifications_enabled: false

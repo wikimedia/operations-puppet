@@ -2,24 +2,13 @@ class profile::base(
     Array $remote_syslog = lookup('profile::base::remote_syslog', {default_value => []}),
     Array $remote_syslog_tls = lookup('profile::base::remote_syslog_tls', {default_value => []}),
     Boolean $enable_kafka_shipping = lookup('profile::base::enable_kafka_shipping', {default_value => true}),
-    Enum['critical', 'disabled', 'enabled'] $notifications = lookup('profile::base::notifications',  {default_value => 'enabled'}),
-    Boolean $monitor_systemd = lookup('profile::base::monitor_systemd', {default_value => true}),
     String $core_dump_pattern = lookup('profile::base::core_dump_pattern', {default_value => '/var/tmp/core/core.%h.%e.%p.%t'}),
     Hash $ssh_server_settings = lookup('profile::base::ssh_server_settings', {default_value => {}}),
-    String $group_contact = lookup('contactgroups',  {default_value => 'admins'}),
-    String $mgmt_group_contact = lookup('mgmt_contactgroups', {default_value => 'admins'}),
-    String $check_disk_options = lookup('profile::base::check_disk_options', {default_value => '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs'}),
-    Boolean $check_disk_critical = lookup('profile::base::check_disk_critical', {default_value => false}),
-    Optional[String] $check_raid_policy = lookup('profile::base::check_raid_policy', {default_value => undef}),
-    Integer $check_raid_interval = lookup('profile::base::check_raid_interval', {default_value => 10}),
-    Integer $check_raid_retry = lookup('profile::base::check_raid_retry', {default_value => 10}),
-    Boolean $check_raid = lookup('profile::base::check_raid', {default_value => true}),
     Boolean $check_smart = lookup('profile::base::check_smart', {default_value => true}),
     Boolean $overlayfs = lookup('profile::base::overlayfs', {default_value => false}),
     Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
-    Wmflib::Ensure $hardware_monitoring = lookup('profile::base::hardware_monitoring', {'default_value' => 'present'}),
     Boolean $enable_contacts = lookup('profile::base::enable_contacts')
 ) {
     # Sanity checks for cluster - T234232
@@ -103,36 +92,10 @@ class profile::base(
 
     include profile::debdeploy::client
 
-    if $facts['has_ipmi'] {
-        class { 'ipmi::monitor':
-            ensure => $hardware_monitoring
-        }
-    }
-
     class { 'base::initramfs': }
     class { 'base::auto_restarts': }
 
-    $notifications_enabled = ($notifications != 'disabled')
-
-    class { 'base::monitoring::host':
-        contact_group            => $group_contact,
-        mgmt_contact_group       => $mgmt_group_contact,
-        nrpe_check_disk_options  => $check_disk_options,
-        nrpe_check_disk_critical => $check_disk_critical,
-        raid_write_cache_policy  => $check_raid_policy,
-        # for 'forking' checks (i.e. all but mdadm, which essentially just reads
-        # kernel memory from /proc/mdstat) check every $check_raid_interval
-        # minutes instead of default of one minute. If the check is non-OK, retry
-        # every $check_raid_retry
-        raid_check_interval      => $check_raid_interval,
-        raid_retry_interval      => $check_raid_retry,
-        notifications_enabled    => $notifications_enabled,
-        is_critical              => ($notifications == 'critical'),
-        monitor_systemd          => $monitor_systemd,
-        puppet_interval          => $profile::base::puppet::interval,
-        raid_check               => $check_raid,
-        hardware_monitoring      => $hardware_monitoring
-    }
+    include profile::monitoring::host
 
     class { 'prometheus::node_debian_version': }
 

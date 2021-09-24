@@ -18,4 +18,4 @@ profile::netbox::secondaries: []
 profile::netbox::frontends: ["netbox-dev2001.wikimedia.org"]
 
 # disable icinga alerting
-profile::base::notifications: disabled
+profile::monitoring::host::notifications_enabled: false

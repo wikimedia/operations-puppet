@@ -1,4 +1,4 @@
-profile::base::monitor_systemd: false
+profile::monitoring::host::monitor_systemd: false
 cluster: wmcs
 profile::debdeploy::client::filter_services:
   qemu-system-x86:

@@ -51,7 +51,7 @@ profile::zuul::server::email_server: localhost
 # profile::local_dev::ci_build_user_password: defined in the private repo
 profile::ci::pipeline::publisher::docker_registry_user: "ci-build"
 #profile::ci::pipeline::publisher::docker_registry_password: defined in the private repo
-profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|mnt|run|srv)/docker/.*' --exclude-type=tracefs
+profile::monitoring::host::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|mnt|run|srv)/docker/.*' --exclude-type=tracefs
 # Kubernetes configuration.
 # It gives access only to the staging cluster, and the "ci" namespace specifically.
 # kubernetes clusters by group.

@@ -1,47 +1,51 @@
-# == Class base::monitoring::host
-# Sets up base Nagios monitoring for the host.  This includes
-# - ping
-# - ssh
-# - dpkg
-# - disk space
-# - raid
-# - ipmi
+# @summary profile to configure icinga monitoring host
+#   Sets up base Nagios monitoring for the host.  This includes
+#   - ping
+#   - ssh
+#   - dpkg
+#   - disk space
+#   - raid
+#   - ipmi
 #
-# Note that this class is probably already included for your node
-# by the class base.  If you want to change the contact_group, set
-# the variable contactgroups in hiera.
-# class base will use this variable as the $contact_group argument
-# when it includes this class.
+#   Note that this class is probably already included for your node
+#   by the class base.  If you want to change the contact_group, set
+#   the variable contactgroups in hiera.
+#   class base will use this variable as the $contact_group argument
+#   when it includes this class.
 #
-# == Parameters
-# $contact_group            - Nagios contact_group to use for notifications. Defaults to
-#                             admins
-#
-# nrpe_check_disk_options   - Default options for checking disks.  Defaults to checking
-#                             all disks and warning at < 6% and critical at < 3% free.
-#
-# nrpe_check_disk_critical  - Make disk space alerts paging, defaults to not paging
-#
-# raid_monitor              - Boolean. Include or not RAID checks.
-#
-class base::monitoring::host(
-    Wmflib::Ensure $hardware_monitoring     = 'present',
-    String $contact_group                   = 'admins',
-    String $mgmt_contact_group              = 'admins',
-    # the -A -i ... part is a gross hack to workaround Varnish partitions
-    # that are purposefully at 99%. Better ideas are welcome.
-    String $nrpe_check_disk_options         = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs',
-    Boolean $nrpe_check_disk_critical       = false,
-    Integer $raid_check_interval            = 10,
-    Integer $raid_retry_interval            = 10,
-    Boolean $notifications_enabled          = true,
-    Boolean $is_critical                    = false,
-    Boolean $monitor_systemd                = true,
-    Integer $puppet_interval                = 30,
-    Boolean $raid_check                     = true,
-    Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = undef,
+# @param hardware_monitoring indicate if we should monitor HW
+# @param contact_group Nagios contact_group to use for notifications.
+# @param mgmt_contact_group Nagios contact_group to use for notifications related to the drac/ilo interface.
+# @param notifications_enabled inticate if we should send notifications
+# @param is_critical indicate this host is critical
+# @param monitor_systemd indicate if we should monitor systemd
+# @param monitor_screens indicate if we should monitor screens
+# @param puppet_interval interval for puppet checks
+# @param nrpe_check_disk_options Default options for checking disks.  Defaults to checking
+#   all disks and warning at < 6% and critical at < 3% free.
+# @param check_raid indicate if we should check raid
+# @param nrpe_check_disk_critical Make disk space alerts paging, defaults to not paging
+# @parma raid_check_interval check interval for raid checks
+# @parma raid_retry_interval retry interval for raid retrys
+class profile::monitoring::host(
+    Wmflib::Ensure $hardware_monitoring     = lookup('profile::monitoring::host::hardware_monitoring'),
+    # TODO: make this an array
+    String $contact_group                   = lookup('profile::monitoring::host::contact_group'),
+    String $mgmt_contact_group              = lookup('profile::monitoring::host::mgmt_contact_group'),
+    Boolean $is_critical                    = lookup('profile::monitoring::host::is_critical'),
+    Boolean $monitor_systemd                = lookup('profile::monitoring::host::monitor_systemd'),
+    String $nrpe_check_disk_options         = lookup('profile::monitoring::host::nrpe_check_disk_options'),
+    Boolean $nrpe_check_disk_critical       = lookup('profile::monitoring::host::nrpe_check_disk_critical'),
+    Boolean $raid_check                     = lookup('profile::monitoring::host::raid_check'),
+    Integer $raid_check_interval            = lookup('profile::monitoring::host::raid_check_interval'),
+    Integer $raid_retry_interval            = lookup('profile::monitoring::host::raid_retry_interval'),
+    Boolean $notifications_enabled          = lookup('profile::monitoring::host::notifications_enabled'),
+    Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = lookup('profile::monitoring::host::raid_write_cache_policy')
 ) {
     ensure_packages('ruby-safe-yaml')
+
+    include profile::base::puppet
+    $puppet_interval = $profile::base::puppet::interval
 
     if $raid_check and $hardware_monitoring == 'present'{
         # RAID checks
@@ -246,5 +250,8 @@ class base::monitoring::host(
         method          => 'ge',
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         notes_link      => 'https://phabricator.wikimedia.org/T199436',
+    }
+    if $facts['has_ipmi'] {
+        class { 'ipmi::monitor': ensure => $hardware_monitoring }
     }
 }

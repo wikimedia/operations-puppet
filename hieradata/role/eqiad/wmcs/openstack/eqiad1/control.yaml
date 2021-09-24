@@ -28,4 +28,4 @@ profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: '9dc683f1-f3d4-4c12-8b8f-f3
 
 # Consider removing when systemd alerts can be sent to something other than the
 # server's alert setting
-profile::base::monitor_systemd: false
+profile::monitoring::host::monitor_systemd: false

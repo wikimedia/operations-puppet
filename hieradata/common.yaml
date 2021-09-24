@@ -22,6 +22,8 @@ lookup_options:
 
 # General variables that once would have been in realm.pp
 cluster: misc
+contactgroups: 'admins'
+mgmt_contactgroups: 'admins'
 datacenters:
   - eqiad
   - codfw

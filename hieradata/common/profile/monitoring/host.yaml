@@ -1,0 +1,15 @@
+profile::monitoring::host::hardware_monitoring: 'present'
+profile::monitoring::host::contact_group: "%{alias('contactgroups')}"
+profile::monitoring::host::mgmt_contact_group: "%{alias('mgmt_contactgroups')}"
+# the -A -i ... part is a gross hack to workaround Varnish partitions
+# that are purposefully at 99%. Better ideas are welcome.
+profile::monitoring::host::nrpe_check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs'
+profile::monitoring::host::nrpe_check_disk_critical: false
+profile::monitoring::host::raid_check_interval: 10
+profile::monitoring::host::raid_retry_interval: 10
+profile::monitoring::host::notifications_enabled: true
+profile::monitoring::host::is_critical: false
+profile::monitoring::host::monitor_systemd: true
+profile::monitoring::host::monitor_screens: true
+profile::monitoring::host::raid_check: true
+profile::monitoring::host::raid_write_cache_policy: ~

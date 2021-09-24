@@ -1,4 +1,4 @@
-profile::base::notifications: disabled
+profile::monitoring::host::notifications_enabled: false
 
 # network settings
 profile::openstack::codfw1dev::cloudgw::nic_controlplane: eno1

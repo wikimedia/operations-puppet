@@ -66,7 +66,7 @@ profile::tlsproxy::envoy::global_cert_name: "releases.discovery.wmnet"
 profile::releases::mediawiki::jenkins_service_ensure: "stopped"
 profile::releases::mediawiki::jenkins_service_enable: "mask"
 profile::releases::mediawiki::jenkins_service_monitor: false
-profile::base::check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -i "/run/docker" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs
+profile::monitoring::host::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -i "/run/docker" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs
 # Docker requires the overlay / overlayFS kernel module
 profile::base::overlayfs: true
 

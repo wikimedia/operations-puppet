@@ -66,7 +66,7 @@ profile::kerberos::keytabs::keytabs_metadata:
     filename: 'analytics.keytab'
     parent_dir_grp: 'analytics'
 
-profile::base::notifications: disabled
+profile::monitoring::host::notifications_enabled: false
 
 profile::java::java_packages:
   - version: '8'

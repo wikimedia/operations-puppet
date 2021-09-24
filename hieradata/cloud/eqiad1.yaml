@@ -13,7 +13,7 @@ ldap:
   rw-server: ldap-labs.eqiad.wikimedia.org
   rw-server-fallback: ldap-labs.codfw.wikimedia.org
 profile::base::overlayfs: true
-profile::base::check_raid: false
+profile::monitoring::host::raid_check: false
 
 profile::resolving::domain_search:
   - "%{facts.networking.domain}"
