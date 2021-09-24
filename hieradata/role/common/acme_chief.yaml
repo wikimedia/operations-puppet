@@ -163,10 +163,9 @@ profile::acme_chief::certificates:
         SNI:
         - 'mx1001.wikimedia.org'
         - 'mx2001.wikimedia.org'
-        - 'mx2002.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^mx[12]00[12]\.wikimedia\.org$'
+        - '^mx[12]001\.wikimedia\.org$'
     netbox:
         CN: 'netbox.wikimedia.org'
         SNI:
