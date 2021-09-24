@@ -1032,7 +1032,7 @@ hadoop_clusters:
     # of datanodes, to allow room for other threads responding to the ZKFC health probes.
     # More info: T283733
     dfs_namenode_service_port: 8040
-    dfs_namenode_service_handler_count: 90
+    dfs_namenode_service_handler_count: 100
 
     # Allow a job to request up to the smallest value of yarn_nodemanager_resource_memory_mb
     # in the cluster. The smallest value is 52G on the R720s (analytics1069 and below).
