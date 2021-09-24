@@ -4,6 +4,7 @@ define apt::pin (
     String         $package       = $name,
     Wmflib::Ensure $ensure        = present,
 ) {
+    include apt
     # Braces required on puppet < 5.4 PUP-8067
     $filename = ($name =~ /\.pref$/) ? {
         true    => $name.regsubst('[^\w\.]', '_', 'G'),

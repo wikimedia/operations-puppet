@@ -2,14 +2,15 @@ require_relative '../../../../rake_modules/spec_helper'
 
 describe 'apt::pin' do
   let(:pre_condition) {
-    'exec { "apt-get update": path => "/usr/bin" }
-     exec { "foobar": command => "/bin/true" }'
+    'exec { "foobar": command => "/bin/true" }'
   }
   let(:params) { {
     :pin => 'release o=Wikimedia',
     :priority => 1042,
   } }
-  on_supported_os(WMFConfig.test_on).each do |os, _facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
+    let(:facts) { facts }
+
     context "#{os}" do
       let(:title) { 'mypackage' }
       it { should compile }

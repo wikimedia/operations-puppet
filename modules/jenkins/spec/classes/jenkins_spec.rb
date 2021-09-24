@@ -8,14 +8,7 @@ describe 'jenkins' do
           :initsystem => 'systemd'
         })
       }
-      precondition = <<-EOF
-        class profile::base {
-          $notifications_enabled = '1'
-        }
-        include ::profile::base
-      EOF
       let(:node_params) { {'site' => 'eqiad'} }
-      let(:pre_condition) { precondition }
       let(:params) { {
         :prefix => '/ci',
       } }

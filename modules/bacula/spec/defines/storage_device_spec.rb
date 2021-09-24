@@ -17,10 +17,7 @@ describe 'bacula::storage::device', :type => :define do
         director            => 'dir.example.com',
         sd_max_concur_jobs  => 5,
         sqlvariant          => 'mysql',
-      }
-      class profile::base ( $notifications_enabled = 1 ){}
-      include profile::base
-      class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
+      }"
       end
 
       context 'without spool_dir, max_spool_size' do

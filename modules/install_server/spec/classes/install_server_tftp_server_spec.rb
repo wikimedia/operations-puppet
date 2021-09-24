@@ -4,10 +4,6 @@ describe 'install_server::tftp_server', :type => :class do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
       let(:facts){ facts }
-      let(:pre_condition) do
-        'class profile::base { $notifications_enabled = "1"}
-        include profile::base'
-     end
 
       it { is_expected.to compile }
       it { is_expected.to contain_package('atftpd').with_ensure('present') }

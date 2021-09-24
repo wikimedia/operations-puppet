@@ -10,10 +10,7 @@ describe 'bacula::director::fileset', :type => :define do
         "class {'bacula::director':
         sqlvariant          => 'mysql',
         max_dir_concur_jobs => '10',
-      }
-      class profile::base ( $notifications_enabled = 1 ){}
-      include profile::base
-      class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
+      }"
       end
 
       it 'should create /etc/bacula/conf.d/fileset-something.conf' do

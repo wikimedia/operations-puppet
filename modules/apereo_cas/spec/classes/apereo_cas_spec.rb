@@ -16,11 +16,6 @@ describe 'apereo_cas' do
           ]
         }
       end
-      let(:pre_condition) do
-        "class profile::base ( $notifications_enabled = 1 ){}
-        service{'tomcat9':}
-        include profile::base"
-      end
       describe 'test with default settings' do
         it { is_expected.to compile.with_all_deps }
         ['/etc/cas', '/etc/cas/services', '/etc/cas/config'].each do |dir|

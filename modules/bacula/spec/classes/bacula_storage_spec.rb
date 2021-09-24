@@ -13,12 +13,6 @@ describe 'bacula::storage', :type => :class do
         :directorpassword => 'testdirectorpass',
       }
       }
-      let(:pre_condition) do
-        "class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}
-        class profile::base ( $notifications_enabled = 1 ){}
-          include profile::base
-        "
-      end
 
       context "when buster", if: facts[:os]['distro']['codename'] == 'buster' do
         it { is_expected.to contain_package('bacula-sd') }

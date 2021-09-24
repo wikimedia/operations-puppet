@@ -16,12 +16,9 @@ describe 'bacula::director::catalog', :type => :define do
       end
       let(:pre_condition) do
         "class {'bacula::director':
-        sqlvariant          => 'mysql',
-        max_dir_concur_jobs => '10',
-      }
-      class profile::base ( $notifications_enabled = 1 ){}
-      include profile::base
-      class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
+          sqlvariant          => 'mysql',
+          max_dir_concur_jobs => '10',
+        }"
       end
 
       it 'should create valid content for /etc/bacula/conf.d/catalog-something.conf' do

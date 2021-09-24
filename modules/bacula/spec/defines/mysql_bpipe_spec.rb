@@ -12,10 +12,7 @@ describe 'bacula::client::mysql_bpipe', :type => :define do
         file_retention   => 5,
         job_retention    => 5,
         directorpassword => 'SECRET',
-      }
-      class profile::base ( $notifications_enabled = 1 ){}
-      include profile::base
-      class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}"
+      }"
       end
       context 'with per database' do
         let(:params) { {

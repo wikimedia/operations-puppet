@@ -12,9 +12,7 @@ describe 'systemd::timer' do
       let(:facts) { facts.merge(initsystem: 'systemd') }
       let(:title) { 'dummy'}
       let(:pre_condition) do
-        'systemd::unit { "dummy.service": content => ""}
-        class profile::base { $notifications_enabled = "1"}
-        include profile::base'
+        'systemd::unit { "dummy.service": content => ""}'
       end
 
       context 'when using an invalid time spec' do

@@ -2,15 +2,9 @@ require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::services_proxy::envoy' do
   on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
-    context "on #{os}" do
-      let(:facts) { facts.merge({ initsystem: 'systemd' }) }
-      let(:pre_condition) {
-        [
-          'class profile::base { $notifications_enabled = false }',
-          'require ::profile::base'
-        ]
-      }
+    let(:facts) { facts }
 
+    context "on #{os}" do
       context 'with ensure present' do
         let(:params) {
           {

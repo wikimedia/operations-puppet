@@ -5,11 +5,6 @@ describe 'systemd::syslog' do
     context "On #{os}" do
       let(:title) { 'dummyservice' }
       let(:facts) { facts.merge(initsystem: 'systemd') }
-      let(:pre_condition) do
-        'class profile::base { $notifications_enabled = "1"}
-        include profile::base
-        '
-      end
 
       context 'when initsystem is unknown' do
         let(:facts) { super().merge(initsystem: 'unknown')  }
@@ -17,7 +12,7 @@ describe 'systemd::syslog' do
       end
 
       context 'when a service is defined' do
-        let(:pre_condition) { super() + 'service { "dummyservice": ensure => running, provider => "systemd"}' }
+        let(:pre_condition) { 'service { "dummyservice": ensure => running, provider => "systemd"}' }
         it 'should create syslog file before rsyslog configuration' do
           is_expected.to contain_file('/var/log/dummyservice/syslog.log')
                   .that_comes_before('Rsyslog::Conf[dummyservice]')

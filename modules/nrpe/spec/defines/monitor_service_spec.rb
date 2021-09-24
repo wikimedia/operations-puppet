@@ -16,10 +16,6 @@ describe 'nrpe::monitor_service', :type => :define do
           notes_url:     'https://wikitech.wikimedia.org/wiki/Monitoring'
         }
       end
-      let(:pre_condition) do
-        'class profile::base { $notifications_enabled = "1"}
-        include profile::base'
-      end
 
       context 'with ensure present' do
         it do

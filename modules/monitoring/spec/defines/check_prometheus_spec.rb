@@ -2,20 +2,7 @@
 
 require_relative '../../../../rake_modules/spec_helper'
 
-test_on = {
-  supported_os: [
-    {
-      'operatingsystem'        => 'Debian',
-      'operatingsystemrelease' => ['8', '9', '10'],
-    }
-  ]
-}
-
 describe 'monitoring::check_prometheus' do
-  let(:pre_condition) do
-    "class profile::base ( $notifications_enabled = 1 ){}
-    include profile::base"
-  end
   let(:title) { 'foobar' }
   let(:facts) { {} }
   let(:params) do
@@ -44,7 +31,7 @@ describe 'monitoring::check_prometheus' do
   # Puppet::Util::Log.newdestination(:console)
   # let (:pre_condition) { "class {'::foobar' }" }
 
-  on_supported_os(test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
 

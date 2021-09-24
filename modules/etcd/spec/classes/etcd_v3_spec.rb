@@ -5,10 +5,6 @@ default_file = '/etc/default/etcd'
 describe 'etcd::v3' do
     on_supported_os(WMFConfig.test_on(9, 9)).each do |os, facts|
         context "On #{os}" do
-            let(:pre_condition) do
-              'class profile::base { $notifications_enabled = "1"}
-              include profile::base'
-            end
             let(:facts) { facts.merge({ networking: { ip: '1.1.1.1'} }) }
 
             # Srv discovery test

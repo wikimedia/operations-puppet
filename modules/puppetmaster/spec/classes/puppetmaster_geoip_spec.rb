@@ -6,9 +6,6 @@ describe 'puppetmaster::geoip' do
       let(:facts) { facts }
       let(:pre_condition) {
         '''
-        class profile::base ($notifications_enabled = true){}
-        exec{"apt-get update": path => "/usr/bin" }
-        include profile::base
         include profile::base::puppet
         include httpd
         include puppetmaster

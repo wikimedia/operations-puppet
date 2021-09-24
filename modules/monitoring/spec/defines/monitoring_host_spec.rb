@@ -95,13 +95,7 @@ describe 'monitoring::host' do
       end
 
       context 'with an icinga host' do
-        let(:pre_condition){
-          """
-    class profile::base { $notifications_enabled = '1' }
-    include ::profile::base
-    class { 'icinga': icinga_user => 'icinga', icinga_group => 'icinga' }
-          """
-        }
+        let(:pre_condition) { "class { 'icinga': icinga_user => 'icinga', icinga_group => 'icinga' }" }
         let(:node_params) { {'cluster' => 'ci', 'site' => 'eqiad'} }
 
         describe 'monitoring itself' do

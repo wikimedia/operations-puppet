@@ -4,10 +4,6 @@ describe 'nrpe' do
   on_supported_os(WMFConfig.test_on(9, 9)).each do |os, facts|
     context "On #{os}" do
       let(:facts) { facts }
-      let(:pre_condition) do
-        'class profile::base { $notifications_enabled = "1"}
-        include profile::base'
-      end
 
       context "default run" do
         it { should contain_package('nagios-nrpe-server') }

@@ -4,13 +4,6 @@ describe 'profile::tlsproxy::envoy' do
   on_supported_os(WMFConfig.test_on(9)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
-      let(:pre_condition) {
-        [
-          'exec { "apt-get update": command => "/bin/true"}',
-          'class profile::base { $notifications_enabled = false }',
-          'require ::profile::base'
-        ]
-      }
       let(:params) {
         {
           services: [{server_names: ['*'], port: 80, cert_name: 'test'}],
