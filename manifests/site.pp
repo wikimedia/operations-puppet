@@ -2438,11 +2438,6 @@ node /^(rdb1006|rdb101[012])\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
-# being decommissioned (T273140)
-node /^rdb200[3456]\.codfw\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^rdb200[79]\.codfw\.wmnet$/ {
     role(redis::misc::master)
 }

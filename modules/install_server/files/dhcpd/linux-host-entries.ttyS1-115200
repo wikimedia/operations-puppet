@@ -7231,24 +7231,6 @@ host rdb1012 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
-host rdb2004 {
-    hardware ethernet B0:83:FE:E4:5E:1A;
-    fixed-address rdb2004.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host rdb2005 {
-    hardware ethernet 14:02:ec:42:b7:14;
-    fixed-address rdb2005.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
-host rdb2006 {
-    hardware ethernet 14:02:ec:42:05:cc;
-    fixed-address rdb2006.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
-}
-
 host rdb2007 {
     hardware ethernet 2C:EA:7F:42:00:B7;
     fixed-address rdb2007.codfw.wmnet;
@@ -7271,12 +7253,6 @@ host rdb2010 {
     hardware ethernet 2C:EA:7F:65:4D:FB;
     fixed-address rdb2010.codfw.wmnet;
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
-}
-
-host rdb2003 {
-    hardware ethernet B0:83:FE:E4:38:49;
-    fixed-address rdb2003.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host relforge1003 {
