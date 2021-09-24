@@ -8,6 +8,16 @@ class base::standard_packages {
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
         'icdiff', 'linux-perf', 'bsd-mailx', 'ack',
     ])
+    if debian::codename::lt('bullseye') {
+        # bullseye has version 2.30 which uses version 2 by default
+        git::systemconfig { 'protocol_v2':
+            settings => {
+                'protocol' => {
+                    'version' => '2',
+                }
+            }
+        }
+    }
     package { 'tzdata': ensure => latest }
 
     # Pulled in via tshark below, defaults to "no"
