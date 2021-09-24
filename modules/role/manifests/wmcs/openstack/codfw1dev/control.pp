@@ -40,5 +40,5 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::wmcs::backup_glance_images
 
     # TODO: work in progress, just a PoC, see T291257
-    include ::profile::openstack::codfw1dev::manila
+    include ::profile::openstack::codfw1dev::manila::service
 }

@@ -1,4 +1,4 @@
-class profile::openstack::base::manila (
+class profile::openstack::base::manila::service (
     String              $version                      = lookup('profile::openstack::base::version'),
     String              $region                       = lookup('profile::openstack::base::region'),
     Array[Stdlib::Fqdn] $openstack_controllers        = lookup('profile::openstack::base::openstack_controllers'),
@@ -23,8 +23,7 @@ class profile::openstack::base::manila (
     String              $metadata_proxy_shared_secret = lookup('profile::openstack::base::neutron::metadata_proxy_shared_secret'),
     ) {
 
-    class { 'openstack::manila':
-        enabled                      => $manila_service_enabled,
+    class { 'openstack::manila::configuration':
         version                      => $version,
         region                       => $region,
         openstack_controllers        => $openstack_controllers,
@@ -46,5 +45,10 @@ class profile::openstack::base::manila (
         service_instance_user        => $service_instance_user,
         service_instance_pass        => $service_instance_pass,
         metadata_proxy_shared_secret => $metadata_proxy_shared_secret,
+    }
+
+    class { 'openstack::manila::service':
+        enabled => $manila_service_enabled,
+        version => $version,
     }
 }

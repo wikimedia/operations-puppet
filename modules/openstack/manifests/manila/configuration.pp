@@ -1,5 +1,4 @@
-class openstack::manila (
-    Boolean             $enabled,
+class openstack::manila::configuration (
     String              $version,
     String              $region,
     Array[Stdlib::Fqdn] $openstack_controllers,
@@ -23,42 +22,11 @@ class openstack::manila (
     String              $metadata_proxy_shared_secret,
     ) {
 
-    require "openstack::serverpackages::${version}::${::lsbdistcodename}"
-
-    require_package([
-      'manila-api',
-      'manila-data',
-      'manila-scheduler',
-      'manila-share',
-      'python3-manilaclient',
-    ])
-
     file { '/etc/manila/manila.conf':
         owner     => 'manila',
         group     => 'manila',
         mode      => '0640',
         content   => template("openstack/${version}/manila/manila.conf.erb"),
-        require   => Package['manila-api'],
         show_diff => false,    # because it may contain passwords
-    }
-
-    service { 'manila-api':
-        ensure  => $enabled,
-        require => Package['manila-api'],
-    }
-
-    service { 'manila-data':
-        ensure  => $enabled,
-        require => Package['manila-data'],
-    }
-
-    service { 'manila-scheduler':
-        ensure  => $enabled,
-        require => Package['manila-scheduler'],
-    }
-
-    service { 'manila-share':
-        ensure  => $enabled,
-        require => Package['manila-share'],
     }
 }

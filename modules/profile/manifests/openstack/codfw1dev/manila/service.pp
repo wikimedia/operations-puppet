@@ -1,4 +1,4 @@
-class profile::openstack::codfw1dev::manila (
+class profile::openstack::codfw1dev::manila::service (
     String              $version                      = lookup('profile::openstack::codfw1dev::version'),
     String              $region                       = lookup('profile::openstack::codfw1dev::region'),
     Array[Stdlib::Fqdn] $openstack_controllers        = lookup('profile::openstack::codfw1dev::openstack_controllers'),
@@ -23,7 +23,7 @@ class profile::openstack::codfw1dev::manila (
     String              $metadata_proxy_shared_secret = lookup('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret'),
 ) {
 
-    class { 'profile::openstack::base::manila':
+    class { 'profile::openstack::base::manila::service':
         version                      => $version,
         region                       => $region,
         openstack_controllers        => $openstack_controllers,
