@@ -8,7 +8,7 @@ class openstack::manila::sharecontroller (
     Boolean $enabled,
     String  $version,
 ) {
-    require "openstack::clientpackages::vms::::${version}::${::lsbdistcodename}"
+    require "openstack::clientpackages::vms::${version}::${::lsbdistcodename}"
     require openstack::manila::configuration
     requires_realm('labs')
 
