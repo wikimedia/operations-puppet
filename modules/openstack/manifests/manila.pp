@@ -15,7 +15,7 @@ class openstack::manila (
     String              $rabbit_pass,
     String              $user_pass,
     String              $nova_flavor_id,
-    String              $nework_id,
+    String              $network_id,
     String              $subnet_id,
     String              $service_image,
     String              $service_instance_user,
