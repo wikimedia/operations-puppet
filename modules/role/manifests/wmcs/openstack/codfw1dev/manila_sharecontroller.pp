@@ -8,5 +8,5 @@ class role::wmcs::openstack::codfw1dev::manila_sharecontroller {
     # adding it for buster should be trivial, but ... worth it?
     debian::codename::require::min('bullseye')
 
-    include profile::openstack::coddfw1dev::manila::sharecontroller
+    include profile::openstack::codfw1dev::manila::sharecontroller
 }
