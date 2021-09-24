@@ -2456,7 +2456,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: monitoring_setup
+    state: production
     discovery:
       - dnsdisc: tegola-vector-tiles
         active_active: true
