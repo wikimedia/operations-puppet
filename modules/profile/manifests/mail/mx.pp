@@ -45,14 +45,10 @@ class profile::mail::mx (
 
     # Exim 4.94 introduces a new tainting mechanism. We're not adapting our configs
     # to his new scheme since the mail servers will be switched to Postfix anyway
-    if debian::codename::eq('bullseye') {
-        $disable_taint_check = true
-    }
+    $disable_taint_check = true
 
-    # enable dkim_verbose logs on bullseye hosts
-    if debian::codename::eq('bullseye') {
-        $log_selector_extra = '+dkim_verbose'
-    }
+    # enable dkim_verbose logs, needed for mtail metric collection
+    $log_selector_extra = '+dkim_verbose'
 
     class { 'exim4':
         variant => 'heavy',
