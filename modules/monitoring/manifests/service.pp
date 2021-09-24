@@ -14,7 +14,7 @@ define monitoring::service(
     String $contact_group   = lookup('contactgroups', {'default_value' => 'admins'}), # FIXME, defines should not have calls to hiera/lookup
     Stdlib::Unixpath $config_dir = '/etc/nagios',
     Optional[Variant[Boolean,String]] $event_handler = undef,
-    Optional[Variant[Integer[0, 1],Boolean,String]] $notifications_enabled = $::profile::base::notifications_enabled, # FIXME, base modules should not reference variables in the profile name space
+    Optional[Boolean] $notifications_enabled = $::profile::base::notifications_enabled, # FIXME, base modules should not reference variables in the profile name space
 ){
 
     # the list of characters is the default for illegal_object_name_chars
@@ -91,11 +91,9 @@ define monitoring::service(
 
     # Safeguard against notifications enabled not being defined due to class
     # declarations
-    if $notifications_enabled {
-        $real_notifications_enabled = $notifications_enabled
-    } else {
-        $real_notifications_enabled = '1'
-    }
+    # TODO: this is required by monitoring::host and monitoring::service
+    # we should refactor thoses classes so they dont need this variable
+    $real_notifications_enabled = ($notifications_enabled and true).bool2str('1', '0')
 
     # the nagios service instance
     $service = {

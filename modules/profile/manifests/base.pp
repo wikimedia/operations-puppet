@@ -112,10 +112,7 @@ class profile::base(
     class { 'base::initramfs': }
     class { 'base::auto_restarts': }
 
-    $notifications_enabled = $notifications ? {
-        'disabled' => '0',
-        default    => '1',
-    }
+    $notifications_enabled = ($notifications != 'disabled')
 
     class { 'base::monitoring::host':
         contact_group            => $group_contact,

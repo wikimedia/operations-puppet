@@ -34,13 +34,15 @@ class base::monitoring::host(
     Boolean $nrpe_check_disk_critical       = false,
     Integer $raid_check_interval            = 10,
     Integer $raid_retry_interval            = 10,
-    String $notifications_enabled           = '1',
+    Boolean $notifications_enabled          = true,
     Boolean $is_critical                    = false,
     Boolean $monitor_systemd                = true,
     Integer $puppet_interval                = 30,
     Boolean $raid_check                     = true,
     Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = undef,
 ) {
+    ensure_packages('ruby-safe-yaml')
+
     if $raid_check and $hardware_monitoring == 'present'{
         # RAID checks
         class { 'raid':
@@ -50,85 +52,52 @@ class base::monitoring::host(
         }
     }
 
-    ::monitoring::host { $::hostname:
+    monitoring::host { $facts['hostname']:
         notifications_enabled => $notifications_enabled,
         critical              => $is_critical,
         mgmt_contact_group    => $mgmt_contact_group
     }
 
-    ::monitoring::service { 'ssh':
+    monitoring::service { 'ssh':
         description   => 'SSH',
         check_command => 'check_ssh',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/SSH/monitoring',
     }
 
-    # Used by check_puppetrun
-    require_package('ruby-safe-yaml')
-    file { '/usr/local/lib/nagios/plugins/check_puppetrun':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/monitoring/check_puppetrun.rb';
-    }
-    file { '/usr/local/lib/nagios/plugins/check_eth':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => template('base/check_eth.erb'),
-    }
-    file { '/usr/lib/nagios/plugins/check_sysctl':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/check_sysctl',
-    }
-    file { '/usr/lib/nagios/plugins/check_established_connections':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/monitoring/check_established_connections.sh',
+    file {
+        default:
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555';
+        '/usr/local/lib/nagios/plugins/check_puppetrun':
+            source => 'puppet:///modules/base/monitoring/check_puppetrun.rb';
+        '/usr/local/lib/nagios/plugins/check_eth':
+            content => template('base/check_eth.erb');
+        '/usr/lib/nagios/plugins/check_sysctl':
+            source => 'puppet:///modules/base/check_sysctl';
+        '/usr/lib/nagios/plugins/check_established_connections':
+            source => 'puppet:///modules/base/monitoring/check_established_connections.sh';
+        '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py':
+            source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py';
     }
 
-    file { '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py',
-    }
-
-    ::sudo::user { 'nagios_puppetrun':
+    sudo::user { 'nagios_puppetrun':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
     }
 
-    # Check for disk usage on the root partition for labs instances
-    # This is mapped to the monitoring template - ensure you update
-    # labsnagiosbuilder/templates/classes/base.cfg under labs/nagios-builder
-    # to reflect this check name
-    if $::realm == 'labs' {
-        ::nrpe::monitor_service { 'root_disk_space':
-            description  => 'Disk space on /',
-            nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 5% -c 2% -l -e -p /',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/root_disk_space',
-        }
-    }
-
-    ::nrpe::monitor_service { 'disk_space':
+    nrpe::monitor_service { 'disk_space':
         description     => 'Disk space',
         critical        => $nrpe_check_disk_critical,
         nrpe_command    => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
         notes_url       => 'https://wikitech.wikimedia.org/wiki/Monitoring/Disk_space',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         check_interval  => 20,
         retry_interval  => 5,
     }
 
-    ::nrpe::monitor_service { 'dpkg':
+    nrpe::monitor_service { 'dpkg':
         description    => 'DPKG',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_dpkg',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/dpkg',
@@ -139,31 +108,27 @@ class base::monitoring::host(
     $warninginterval = $puppet_interval * 60 * 6
     $criticalinterval = $warninginterval * 2
 
-    ::nrpe::monitor_service { 'puppet_checkpuppetrun':
+    nrpe::monitor_service { 'puppet_checkpuppetrun':
         description    => 'puppet last run',
         nrpe_command   => "/usr/bin/sudo /usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
         check_interval => 5,
         retry_interval => 1,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/puppet_checkpuppetrun',
     }
-    ::nrpe::monitor_service {'check_eth':
+    nrpe::monitor_service {'check_eth':
         description    => 'configured eth',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_eth',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_eth',
         check_interval => 30,
     }
-    ::nrpe::monitor_service { 'check_dhclient':
+    nrpe::monitor_service { 'check_dhclient':
         description    => 'dhclient process',
         nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 0:0 -c 0:0 -C dhclient',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_dhclient',
         check_interval => 30,
     }
 
-    $ensure_monitor_systemd = $monitor_systemd ? {
-        true    => present,
-        false   => absent,
-        default => present,
-    }
+    $ensure_monitor_systemd = $monitor_systemd.bool2str('present','absent')
 
     file { '/usr/local/lib/nagios/plugins/check_systemd_state':
         ensure => $ensure_monitor_systemd,
@@ -173,14 +138,14 @@ class base::monitoring::host(
         mode   => '0555',
     }
 
-    ::nrpe::monitor_service { 'check_systemd_state':
+    nrpe::monitor_service { 'check_systemd_state':
         ensure       => $ensure_monitor_systemd,
         description  => 'Check systemd state',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_systemd_state',
     }
 
-    if $::productname == 'PowerEdge R320' {
+    if $facts['productname'] == 'PowerEdge R320' {
 
         file { '/usr/local/lib/nagios/plugins/check_cpufreq':
             ensure => present,
@@ -190,7 +155,7 @@ class base::monitoring::host(
             mode   => '0555',
         }
 
-        ::nrpe::monitor_service { 'check_cpufreq':
+        nrpe::monitor_service { 'check_cpufreq':
             description  => 'CPU frequency',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_cpufreq',
@@ -212,9 +177,9 @@ class base::monitoring::host(
         monitoring::check_prometheus { 'smart_healthy':
             ensure          => $hardware_monitoring,
             description     => 'Device not healthy (SMART)',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
             contact_group   => $contact_group,
-            query           => "device_smart_healthy{instance=\"${::hostname}:9100\"}",
+            query           => "device_smart_healthy{instance=\"${facts['hostname']}:9100\"}",
             method          => 'le',
             warning         => 0,
             critical        => 0,
@@ -231,9 +196,9 @@ class base::monitoring::host(
     monitoring::check_prometheus { 'edac_correctable_errors':
         ensure          => $hardware_monitoring,
         description     => 'Memory correctable errors (EDAC)',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         contact_group   => $contact_group,
-        query           => "sum(increase(node_edac_correctable_errors_total{instance=\"${::hostname}:9100\"}[4d]))",
+        query           => "sum(increase(node_edac_correctable_errors_total{instance=\"${facts['hostname']}:9100\"}[4d]))",
         warning         => 2,
         critical        => 4,
         check_interval  => 30,
@@ -251,9 +216,9 @@ class base::monitoring::host(
     monitoring::check_prometheus { 'edac_syslog_events':
         ensure          => $hardware_monitoring,
         description     => 'EDAC syslog messages',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         contact_group   => $contact_group,
-        query           => "sum(increase(edac_events{hostname=\"${::hostname}\"}[4d]))",
+        query           => "sum(increase(edac_events{hostname=\"${facts['hostname']}\"}[4d]))",
         warning         => 2,
         critical        => 4,
         check_interval  => 30,
@@ -268,9 +233,9 @@ class base::monitoring::host(
     # Ideally this would be in check_disk instead, see also https://phabricator.wikimedia.org/T199436
     monitoring::check_prometheus { 'filesystem_avail_bigger_than_size':
         description     => 'Filesystem available is greater than filesystem size',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         contact_group   => $contact_group,
-        query           => "node_filesystem_avail_bytes{instance=\"${::hostname}:9100\"} > node_filesystem_size_bytes",
+        query           => "node_filesystem_avail_bytes{instance=\"${facts['hostname']}:9100\"} > node_filesystem_size_bytes",
         # The query returns node_filesystem_avail_bytes metrics that match the condition. warning/critical
         # are required but placeholders in this case.
         warning         => 1,
