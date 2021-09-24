@@ -1,8 +1,8 @@
 class profile::debdeploy::client (
-    Array $ensure              = lookup('profile::debdeploy::client::ensure'),
-    Array $exclude_mounts      = lookup('profile::debdeploy::client::exclude_mounts'),
-    Array $exclude_filesystems = lookup('profile::debdeploy::client::exclude_filesystems'),
-    Hash  $filter_services     = lookup('profile::debdeploy::client::filter_services')
+    Stdlib::Ensure $ensure              = lookup('profile::debdeploy::client::ensure'),
+    Array          $exclude_mounts      = lookup('profile::debdeploy::client::exclude_mounts'),
+    Array          $exclude_filesystems = lookup('profile::debdeploy::client::exclude_filesystems'),
+    Hash           $filter_services     = lookup('profile::debdeploy::client::filter_services')
 ) {
     class { 'debdeploy::client':
         ensure              => $ensure,
