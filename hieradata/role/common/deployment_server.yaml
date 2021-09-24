@@ -130,16 +130,16 @@ scap::sources:
   integration/docroot: {}
   kartotherian/deploy:
     repository: maps/kartotherian/deploy
-#    lvs_service: kartotherian
+  #    lvs_service: kartotherian
   logstash/plugins:
     repository: operations/software/logstash/plugins
   analytics/turnilo/deploy: {}
   ores/deploy:
     repository: mediawiki/services/ores/deploy
-#    lvs_service: ores
+  #    lvs_service: ores
   parsoid/deploy:
     repository: mediawiki/services/parsoid/deploy
-#    lvs_service: parsoid
+  #    lvs_service: parsoid
   phabricator/deployment: {}
   restbase/deploy:
     repository: mediawiki/services/restbase/deploy
@@ -149,7 +149,7 @@ scap::sources:
     repository: openstack/horizon/deploy
   tilerator/deploy:
     repository: maps/tilerator/deploy
-#    lvs_service: tilerator
+  #    lvs_service: tilerator
   # Wikimania scholarships app
   scholarships/scholarships:
     repository: wikimedia/wikimania-scholarships
@@ -157,7 +157,7 @@ scap::sources:
     repository: wikimedia/discovery/analytics
   wdqs/wdqs:
     repository: wikidata/query/deploy
-#    lvs_service: wdqs
+  #    lvs_service: wdqs
   # Cassandra logback encoder for Logstash
   cassandra/logstash-logback-encoder:
     repository: operations/software/logstash-logback-encoder
@@ -194,243 +194,8 @@ scap::sources:
 
 profile::kubernetes::deployment_server::git_owner: trebuchet
 profile::kubernetes::deployment_server::git_group: wikidev
-profile::kubernetes::deployment_server::services:
-  main:
-    admin:
-      username: client-infrastructure
-      group: root
-      mode: '0400'
-      owner: mwdeploy
-    mathoid:
-      username: mathoid
-      group: wikidev
-      mode: '0640'
-      namespace: mathoid
-      owner: mwdeploy
-    zotero:
-      username: zotero
-      group: wikidev
-      mode: '0640'
-      namespace: zotero
-      owner: mwdeploy
-    blubberoid:
-      username: blubberoid
-      group: wikidev
-      mode: '0640'
-      namespace: blubberoid
-      owner: mwdeploy
-    eventgate-analytics:
-      username: eventgate-analytics
-      group: wikidev
-      mode: '0640'
-      namespace: eventgate-analytics
-      owner: mwdeploy
-    eventgate-main:
-      username: eventgate-main
-      group: wikidev
-      mode: '0640'
-      namespace: eventgate-main
-      owner: mwdeploy
-    citoid:
-      username: citoid
-      group: wikidev
-      mode: '0640'
-      namespace: citoid
-      owner: mwdeploy
-    cxserver:
-      username: cxserver
-      group: wikidev
-      mode: '0640'
-      namespace: cxserver
-      owner: mwdeploy
-    sessionstore:
-      username: sessionstore
-      group: wikidev
-      mode: '0640'
-      namespace: sessionstore
-      owner: mwdeploy
-    termbox:
-      username: termbox
-      group: wikidev
-      mode: '0640'
-      namespace: termbox
-      owner: mwdeploy
-    wikifeeds:
-      username: wikifeeds
-      group: wikidev
-      mode: '0640'
-      namespace: wikifeeds
-      owner: mwdeploy
-    echostore:
-      username: echostore
-      group: wikidev
-      mode: '0640'
-      namespace: echostore
-      owner: mwdeploy
-    eventgate-logging-external:
-      username: eventgate-logging-external
-      group: wikidev
-      mode: '0640'
-      namespace: eventgate-logging-external
-      owner: mwdeploy
-    eventstreams:
-      username: eventstreams
-      group: wikidev
-      namespace: eventstreams
-      mode: '0640'
-      owner: mwdeploy
-    eventstreams-internal:
-      username: eventstreams-internal
-      group: wikidev
-      namespace: eventstreams-internal
-      mode: '0640'
-      owner: mwdeploy
-    eventgate-analytics-external:
-      username: eventgate-analytics-external
-      group: wikidev
-      mode: '0640'
-      namespace: eventgate-analytics-external
-      owner: mwdeploy
-    changeprop:
-      username: changeprop
-      group: wikidev
-      namespace: changeprop
-      mode: '0640'
-      owner: mwdeploy
-    changeprop-jobqueue:
-      username: changeprop-jobqueue
-      group: wikidev
-      namespace: changeprop-jobqueue
-      mode: '0640'
-      owner: mwdeploy
-    proton:
-      username: proton
-      group: wikidev
-      namespace: proton
-      mode: '0640'
-      owner: mwdeploy
-    mobileapps:
-      username: mobileapps
-      group: wikidev
-      namespace: mobileapps
-      mode: '0640'
-      owner: mwdeploy
-    recommendation-api:
-      username: recommendation-api
-      group: wikidev
-      namespace: recommendation-api
-      mode: '0640'
-      owner: mwdeploy
-    push-notifications:
-      username: push-notifications
-      group: wikidev
-      namespace: push-notifications
-      mode: '0640'
-      owner: mwdeploy
-    api-gateway:
-      username: api-gateway
-      group: wikidev
-      namespace: api-gateway
-      mode: '0640'
-      owner: mwdeploy
-    apertium:
-      username: apertium
-      group: wikidev
-      namespace: apertium
-      mode: '0640'
-      owner: mwdeploy
-    linkrecommendation:
-      username: linkrecommendation
-      group: wikidev
-      namespace: linkrecommendation
-      mode: '0640'
-      owner: mwdeploy
-    similar-users:
-      username: similar-users
-      group: wikidev
-      namespace: similar-users
-      mode: '0640'
-      owner: mwdeploy
-    shellbox:
-      username: shellbox
-      group: wikidev
-      namespace: shellbox
-      mode: '0640'
-      owner: mwdeploy
-    shellbox-constraints:
-      username: shellbox-constraints
-      group: wikidev
-      namespace: shellbox-constraints
-      mode: '0640'
-      owner: mwdeploy
-    shellbox-media:
-      username: shellbox-media
-      group: wikidev
-      namespace: shellbox-media
-      mode: '0640'
-      owner: mwdeploy
-    shellbox-syntaxhighlight:
-      username: shellbox-syntaxhighlight
-      group: wikidev
-      namespace: shellbox-syntaxhighlight
-      mode: '0640'
-      owner: mwdeploy
-    shellbox-timeline:
-      username: shellbox-timeline
-      group: wikidev
-      namespace: shellbox-timeline
-      mode: '0640'
-      owner: mwdeploy
-    miscweb:
-      username: miscweb
-      group: wikidev
-      namespace: miscweb
-      mode: '0640'
-      owner: mwdeploy
-    mwdebug:
-      username: mwdebug
-      group: wikidev
-      namespace: mwdebug
-      mode: '0640'
-      owner: mwdeploy
-    tegola-vector-tiles:
-      username: tegola-vector-tiles
-      group: wikidev
-      namespace: tegola-vector-tiles
-      mode: '0640'
-      owner: mwdeploy
-    rdf-streaming-updater:
-      username: rdf-streaming-updater
-      group: wikidev
-      namespace: rdf-streaming-updater
-      mode: '0640'
-      owner: mwdeploy
-    toolhub:
-      username: toolhub
-      group: wikidev
-      namespace: toolhub
-      mode: '0640'
-      owner: mwdeploy
-    apple-search:
-      username: apple-search
-      group: wikidev
-      namespace: apple-search
-      mode: '0640'
-      owner: mwdeploy
-  ml-serve:
-    admin:
-      username: client-infrastructure
-      group: root
-      mode: '0400'
-      owner: mwdeploy
-    revscoring-editquality:
-      username: revscoring-editquality
-      group: wikidev
-      namespace: revscoring-editquality
-      mode: '0640'
-      owner: mwdeploy
-
 profile::kubernetes::deployment_server::packages_from_future: true
+profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:
 #   ..
@@ -451,83 +216,6 @@ profile::kubernetes::deployment_server::general:
       host: kubernetes.default.svc.cluster.local
       port: 443
 
-# Specified in the private repo in this form
-#profile::kubernetes::deployment_server::tokens:
-# main:
-#  admin:
-#    token: dummy
-#  mathoid:
-#    token: dummy
-#  zotero:
-#    token: dummy
-#  blubberoid:
-#    token: dummy
-#  eventgate-analytics:
-#    token: dummy
-#  eventgate-main:
-#    token: dummy
-#  citoid:
-#    token: dummy
-#  cxserver:
-#    token: dummy
-#  sessionstore:
-#    token: dummy
-#  termbox:
-#    token: dummy
-#  wikifeeds:
-#    token: dummy
-#  echostore:
-#    token: dummy
-#  eventgate-logging-external:
-#    token: dummy
-#  eventstreams:
-#    token: dummy
-#  eventstreams-internal:
-#    token: dummy
-#  eventgate-analytics-external:
-#    token: dummy
-#  changeprop:
-#    token: dummy
-#  changeprop-jobqueue:
-#    token: dummy
-#  proton:
-#    token: dummy
-#  mobileapps:
-#    token: dummy
-#  recommendation-api:
-#    token: dummy
-#  push-notifications:
-#    token: dummy
-#  shellbox:
-#    token: dummy
-#  miscweb:
-#    token: dummy
-#
-# ml-serve:
-#  admin:
-#    token: dummy
-#  revscoring-editquality:
-#    token: dummy
-#
-# Environment specific default secrets for services
-# may be overridden by each service
-#profile::kubernetes::deployment_server_secrets::defaults:
-#  staging:
-#    somekey: somevalue
-#  codfw:
-#    somekey: somevalue
-#  eqiad:
-#    somekey: somevalue
-#
-# Service specific secrets
-#profile::kubernetes::deployment_server_secrets::services:
-#  zotero:
-#    staging:
-#      somekey: somevalue
-#    codfw:
-#      somekey: somevalue
-#    eqiad:
-#      somekey: somevalue
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
 profile::mediawiki::php::php_version: "7.2"

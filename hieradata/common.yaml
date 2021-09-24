@@ -31,14 +31,35 @@ datacenters:
 
 public_domain: 'wikimedia.org'
 
-# List of kubernetes clusters installed in production.
-# the format is cluster_name => datacenter
-kubernetes_clusters:
-  eqiad: eqiad
-  codfw: codfw
-  staging: eqiad
-  ml-serve-eqiad: eqiad
-  ml-serve-codfw: codfw
+# kubernetes clusters by group.
+kubernetes_cluster_groups:
+  main:
+    eqiad:
+      dc: eqiad
+      master: kubemaster.svc.eqiad.wmnet
+    codfw:
+      dc: codfw
+      master: kubemaster.svc.codfw.wmnet
+    # active staging cluster.
+    staging:
+      dc: eqiad
+      master: kubestagemaster.svc.eqiad.wmnet
+    "staging-eqiad":
+      dc: eqiad
+      master: kubestagemaster.svc.eqiad.wmnet
+      add_private: false
+    "staging-codfw":
+      dc: codfw
+      master: kubestagemaster.svc.codfw.wmnet
+      add_private: false
+  "ml-serve":
+    "ml-serve-eqiad":
+      dc: eqiad
+      master: ml-ctrl.svc.eqiad.wmnet
+    "ml-serve-codfw":
+      dc: codfw
+      master: ml-ctrl.svc.codfw.wmnet
+
 
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125

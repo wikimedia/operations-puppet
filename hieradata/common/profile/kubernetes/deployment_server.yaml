@@ -1,0 +1,106 @@
+profile::kubernetes::deployment_server::user_defaults:
+  owner: mwdeploy
+  group: wikidev
+  mode: "0640"
+
+profile::kubernetes::deployment_server::services:
+  main:
+    mathoid:
+      usernames:
+        - name: mathoid
+    zotero:
+      usernames: [{ name: zotero }]
+    blubberoid:
+      usernames: [{ name: blubberoid }]
+    eventgate-analytics:
+      usernames: [{ name: eventgate-analytics }]
+    eventgate-main:
+      usernames: [{ name: eventgate-main }]
+    citoid:
+      usernames: [{ name: citoid }]
+    cxserver:
+      usernames: [{ name: cxserver }]
+    sessionstore:
+      usernames: [{ name: sessionstore }]
+    termbox:
+      usernames: [{ name: termbox }]
+    wikifeeds:
+      usernames: [{ name: wikifeeds }]
+    echostore:
+      usernames: [{ name: echostore }]
+    eventgate-logging-external:
+      usernames: [{ name: eventgate-logging-external }]
+    eventstreams:
+      usernames: [{ name: eventstreams }]
+    eventstreams-internal:
+      usernames: [{ name: eventstreams-internal }]
+    eventgate-analytics-external:
+      usernames: [{ name: eventgate-analytics-external }]
+    changeprop:
+      usernames: [{ name: changeprop }]
+    changeprop-jobqueue:
+      usernames: [{ name: changeprop-jobqueue }]
+    proton:
+      usernames: [{ name: proton }]
+    mobileapps:
+      usernames: [{ name: mobileapps }]
+    recommendation-api:
+      usernames: [{ name: recommendation-api }]
+    push-notifications:
+      usernames: [{ name: push-notifications }]
+    api-gateway:
+      usernames: [{ name: api-gateway }]
+    apertium:
+      usernames: [{ name: apertium }]
+    linkrecommendation:
+      usernames: [{ name: linkrecommendation }]
+    similar-users:
+      usernames: [{ name: similar-users }]
+    shellbox:
+      usernames: [{ name: shellbox }]
+    shellbox-constraints:
+      usernames: [{ name: shellbox-constraints }]
+    shellbox-media:
+      usernames: [{ name: shellbox-media }]
+    shellbox-syntaxhighlight:
+      usernames: [{ name: shellbox-syntaxhighlight }]
+    shellbox-timeline:
+      usernames: [{ name: shellbox-timeline }]
+    miscweb:
+      usernames: [{ name: miscweb }]
+    mwdebug:
+      usernames: [{ name: mwdebug }]
+    tegola-vector-tiles:
+      usernames: [{ name: tegola-vector-tiles }]
+    rdf-streaming-updater:
+      usernames: [{ name: rdf-streaming-updater }]
+    toolhub:
+      usernames: [{ name: toolhub }]
+    apple-search:
+      usernames: [{ name: apple-search }]
+  ml-serve:
+    revscoring-editquality:
+      usernames: [{ name: revscoring-editquality }]
+# Specified in the private repo in this form
+#profile::kubernetes::deployment_server_secrets::services:
+#    zotero:
+#      staging:
+#         somekey: somevalue
+#      codfw:
+#         somekey: somevalue
+#      eqiad:
+#         somekey: somevalue
+# Tokens are mandatory or the user won't be defined.
+# Tokens are per-user and should be specified in the private repo
+# in this form:
+#profile::kubernetes::deployment_server::tokens:
+#  main:
+#    mathoid:
+#      token: dummy
+# ...
+#  ml-serve:
+#    admin:
+#      token: dummy
+#    revscoring-editquality:
+#      token: dummy
+#

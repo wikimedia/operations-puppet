@@ -33,8 +33,8 @@ kube_env_clear() {
 }
 
 # Bash completion for kube_env
-__kube_env_environments="<%= @envs.keys.join(" ") %>"
-__kube_env_services="<%= @all_service_names.uniq.join(" ") %>"
+__kube_env_environments="<%= @kube_env_environments.join(" ") %>"
+__kube_env_services="<%= @kube_env_services.join(" ") %>"
 __kube_env_complete() {
     local cur
     cur="${COMP_WORDS[COMP_CWORD]}"

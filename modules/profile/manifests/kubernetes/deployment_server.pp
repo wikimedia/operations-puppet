@@ -1,11 +1,11 @@
 # Class makes sure we got a deployment server ready
 class profile::kubernetes::deployment_server(
-    Hash[String, Any] $services    = lookup('profile::kubernetes::deployment_server::services', {default_value => {}}),
-    Hash[String, Any] $tokens      = lookup('profile::kubernetes::deployment_server::tokens', {default_value => {}}),
-    String $git_owner              = lookup('profile::kubernetes::deployment_server::git_owner'),
-    String $git_group              = lookup('profile::kubernetes::deployment_server::git_group'),
-    Boolean $packages_from_future  = lookup('profile::kubernetes::deployment_server::packages_from_future', {default_value => false}),
-
+    Hash[String, Hash] $kubernetes_cluster_groups                      = lookup('kubernetes_cluster_groups'),
+    Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
+    Hash[String, Hash[String,Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', {default_value => {}}),
+    Hash[String, Hash[String, Struct[{'token' => String}]]] $tokens    = lookup('profile::kubernetes::deployment_server::tokens', {default_value => {}}),
+    Boolean $packages_from_future                                      = lookup('profile::kubernetes::deployment_server::packages_from_future', {default_value => false}),
+    Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', {default_value => false}),
 ){
     include profile::kubernetes::deployment_server::helmfile
     include profile::kubernetes::deployment_server::mediawiki
@@ -16,55 +16,72 @@ class profile::kubernetes::deployment_server(
 
     ensure_packages('istioctl')
 
-    $kube_clusters = {
-        'main' => {
-            'eqiad'         => 'kubemaster.svc.eqiad.wmnet',
-            'codfw'         => 'kubemaster.svc.codfw.wmnet',
-            'staging-eqiad' => 'kubestagemaster.svc.eqiad.wmnet',
-            'staging-codfw' => 'kubestagemaster.svc.codfw.wmnet',
-            # This represents the active staging cluster currently used by deployment tools (helmfile)
-            'staging'       => 'kubestagemaster.svc.eqiad.wmnet',
-        },
-        'ml-serve' => {
-            'ml-serve-eqiad' => 'ml-ctrl.svc.eqiad.wmnet',
-            'ml-serve-codfw' => 'ml-ctrl.svc.codfw.wmnet',
-        },
-    }
-
-    # For each cluster, define a map between its codename and:
-    # - Its kube-api endpoint fqdn.
-    # - The data structure containing k8s tokens for its cluster group
-    #   (all clusters in a group shares the same set of tokens).
-    $envs = $kube_clusters.map |$cluster_group, $clusters| {
-        $services = deep_merge($services[$cluster_group], $tokens[$cluster_group])
-        $clusters.map |$cluster, $master| {
-            { $cluster => {'master' => $master, 'services' => $services } }
-        }.reduce({}) |$m, $v| { $m.merge($v) }
-    }.reduce({}) |$mem, $val| { $mem.merge($val)}
-
-    # Now populate the /etc/kubernetes/ kubeconfig resources
-    $envs.each |String $env, Hash $env_data| {
-        $env_data['services'].each |String $service, Hash $data| {
-            # lint:ignore:variable_scope
-            if has_key($data, 'username') and has_key($data, 'token') {
-                k8s::kubeconfig { "/etc/kubernetes/${service}-${env}.config":
-                    master_host => $env_data['master'],
-                    username    => $data['username'],
-                    token       => $data['token'],
-                    group       => $data['group'],
-                    mode        => $data['mode'],
-                    namespace   => $data['namespace'],
+    # For each cluster group, then for each cluster, we gather
+    # the list of services, and the corresponding tokens, then we build
+    # the kubeconfigs for all of them.
+    $kubernetes_cluster_groups.map |$cluster_group, $clusters| {
+        $_tokens = $tokens[$cluster_group]
+        $_services = pick($services[$cluster_group], {})
+        # for each service installed on the cluster group,
+        # cycle through all clusters to define their kubeconfigs.
+        $_services.each |$srv, $data| {
+            # If the namespace is undefined, use the service name.
+            $namespace = $data['namespace'] ? {
+                undef   => $srv,
+                default => $data['namespace']
+            }
+            $clusters.each |$cluster, $cluster_data| {
+                $data['usernames'].each |$usr_raw| {
+                    $usr = $user_defaults.merge($usr_raw)
+                    $token = $_tokens[$usr['name']]
+                    $kubeconfig_path = "/etc/kubernetes/${usr['name']}-${cluster}.config"
+                    # TODO: separate username data from the services structure?
+                    if ($token and !defined(K8s::Kubeconfig[$kubeconfig_path])) {
+                        k8s::kubeconfig{ $kubeconfig_path:
+                            master_host => $cluster_data['master'],
+                            username    => $usr['name'],
+                            token       => $token['token'],
+                            owner       => $usr['owner'],
+                            group       => $usr['group'],
+                            mode        => $usr['mode'],
+                            namespace   => $namespace,
+                        }
+                    }
                 }
             }
-            # lint:endignore
+        }
+        # Now if we're including the admin account, add it for every cluster in the cluster
+        # group.
+        if $include_admin {
+            $clusters.each |$cluster, $cluster_data| {
+                k8s::kubeconfig { "/etc/kubernetes/admin-${cluster}.config":
+                    master_host => $cluster_data['master'],
+                    username    => 'client-infrastructure',
+                    token       => $_tokens['admin']['token'],
+                    group       => 'root',
+                    owner       => 'root',
+                    mode        => '0400'
+                }
+            }
         }
     }
 
+
+    $kube_env_services_base = $include_admin ? {
+        true  => ['admin'],
+        false => []
+    }
     # Used to support the kube-env.sh script. A list of service names is useful
     # to create an auto-complete feature for kube_env.
-    $all_service_names = $services.map |$group, $srvs| {
-        keys($srvs) }.reduce([]) |$mem, $val| { $mem + $val }
-
+    # Please note: here we're using the service names because we assume there is a user with that name
+    # If not, the service will break down the assumptions kube_env does and should not be included.
+    $kube_env_services = $kube_env_services_base + $services.map |$_, $srvs| {
+        # Filter out services that don't have a username
+        keys($srvs).filter |$svc_name| { $svc_name in $srvs[$svc_name]['usernames'].map |$u| {$u['name']}}
+    }.flatten().unique()
+    $kube_env_environments = $kubernetes_cluster_groups.map |$_, $clusters| {
+        keys($clusters)
+    }.flatten().unique()
     # Add a script to profile.d with functions to set the configuration for kubernetes.
     file { '/etc/profile.d/kube-env.sh':
         ensure  => present,

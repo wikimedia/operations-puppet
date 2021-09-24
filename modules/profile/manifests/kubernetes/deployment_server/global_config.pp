@@ -2,7 +2,7 @@
 # They include data that's useful to all deployed services.
 #
 class profile::kubernetes::deployment_server::global_config(
-    Hash[String, String] $clusters = lookup('kubernetes_clusters'),
+    Hash[String, Hash] $cluster_groups = lookup('kubernetes_cluster_groups'),
     Hash[String, Any] $general_values=lookup('profile::kubernetes::deployment_server::general', {'default_value' => {}}),
     $general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
     Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
@@ -83,30 +83,34 @@ class profile::kubernetes::deployment_server::global_config(
     }.reduce({}) | $mem, $val| { $mem.merge($val)}
 
     # Per-cluster general defaults.
-    $clusters.each |String $environment, $dc| {
-        $puppet_ca_data = file($facts['puppet_config']['localcacert'])
+    $cluster_groups.each |$_, $clusters| {
+        $clusters.each |String $environment, $data| {
+            $dc = $data['dc']
+            $puppet_ca_data = file($facts['puppet_config']['localcacert'])
 
-        $filtered_prometheus_nodes = $prometheus_nodes.filter |$node| { "${dc}.wmnet" in $node }.map |$node| { ipresolve($node) }
+            $filtered_prometheus_nodes = $prometheus_nodes.filter |$node| { "${dc}.wmnet" in $node }.map |$node| { ipresolve($node) }
 
-        unless empty($filtered_prometheus_nodes) {
-            $deployment_config_opts = {
-                'tls' => {
-                    'telemetry' => {
-                        'prometheus_nodes' => $filtered_prometheus_nodes
-                    }
-                },
-                'puppet_ca_crt' => $puppet_ca_data,
+            unless empty($filtered_prometheus_nodes) {
+                $deployment_config_opts = {
+                    'tls' => {
+                        'telemetry' => {
+                            'prometheus_nodes' => $filtered_prometheus_nodes
+                        }
+                    },
+                    'puppet_ca_crt' => $puppet_ca_data,
+                }
+            } else {
+                $deployment_config_opts = {
+                    'puppet_ca_crt' => $puppet_ca_data
+                }
             }
-        } else {
-            $deployment_config_opts = {
-                'puppet_ca_crt' => $puppet_ca_data
+            # TODO: add info about the cluster group? So we don't need to have unique cluster names.
+            # Merge default and environment specific general values with deployment config and service proxies
+            $opts = deep_merge($general_values['default'], $general_values[$environment], $deployment_config_opts, {'services_proxy' => $proxies, 'kafka_brokers' => $kafka_brokers})
+            file { "${general_dir}/general-${environment}.yaml":
+                content => to_yaml($opts),
+                mode    => '0444'
             }
-        }
-        # Merge default and environment specific general values with deployment config and service proxies
-        $opts = deep_merge($general_values['default'], $general_values[$environment], $deployment_config_opts, {'services_proxy' => $proxies, 'kafka_brokers' => $kafka_brokers})
-        file { "${general_dir}/general-${environment}.yaml":
-            content => to_yaml($opts),
-            mode    => '0444'
         }
     }
 }
