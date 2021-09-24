@@ -1,3 +1,4 @@
+profile::debdeploy::client::ensure: present
 profile::debdeploy::client::exclude_mounts: []
 profile::debdeploy::client::exclude_filesystems: []
 profile::debdeploy::client::filter_services:

@@ -447,6 +447,7 @@ profile::trafficserver::backend::trusted_ca_source: "%{facts.puppet_config.local
 profile::tcpircbot::irc::host: 'irc.libera.chat'
 profile::tcpircbot::irc::port: 6697
 
+profile::debdeploy::client::ensure: absent
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'

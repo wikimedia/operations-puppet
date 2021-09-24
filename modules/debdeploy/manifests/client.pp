@@ -37,25 +37,26 @@
 #  }
 #
 class debdeploy::client (
-  Array[Stdlib::Unixpath]     $exclude_mounts      = [],
-  Array[String]               $exclude_filesystems = [],
-  Hash[String, Array[String]] $filter_services     = {},
+    Wmflib::Ensure              $ensure              = present,
+    Array[Stdlib::Unixpath]     $exclude_mounts      = [],
+    Array[String]               $exclude_filesystems = [],
+    Hash[String, Array[String]] $filter_services     = {},
 ) {
     ensure_packages(['debdeploy-client', 'python3-dateutil'])
     $config = {
-      'exclude_mounts'      => $exclude_mounts,
-      'exclude_filesystems' => $exclude_filesystems,
-      'filter_services'     => $filter_services,
+        'exclude_mounts'      => $exclude_mounts,
+        'exclude_filesystems' => $exclude_filesystems,
+        'filter_services'     => $filter_services,
     }
     file { '/usr/local/bin/apt-upgrade-activity':
-        ensure => present,
+        ensure => stdlib::ensure($ensure, 'file'),
         source => 'puppet:///modules/base/apt-upgrade-activity.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
     }
     file { '/usr/local/sbin/reboot-host':
-        ensure => 'present',
+        ensure => stdlib::ensure($ensure, 'file'),
         owner  => 'root',
         group  => 'root',
         mode   => '0550',
@@ -63,10 +64,10 @@ class debdeploy::client (
     }
 
     file {'/etc/debdeploy-client':
-      ensure  => directory,
+        ensure => stdlib::ensure($ensure, 'directory'),
     }
     file {'/etc/debdeploy-client/config.json':
-      ensure  => file,
-      content => $config.to_json_pretty(),
+        ensure  => stdlib::ensure($ensure, 'file'),
+        content => $config.to_json_pretty(),
     }
 }
