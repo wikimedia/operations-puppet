@@ -37,7 +37,6 @@ class base::monitoring::host(
     $notifications_enabled = '1',
     Boolean $is_critical = false,
     $monitor_systemd = true,
-    $monitor_screens = true,
     Integer $puppet_interval = 30,
     Boolean $raid_check = true,
     Wmflib::Ensure $hardware_monitoring = 'present',
@@ -198,28 +197,15 @@ class base::monitoring::host(
         }
     }
 
-    if $monitor_screens {
 
-        file { '/usr/local/lib/nagios/plugins/check_long_procs':
-            ensure => present,
-            source => 'puppet:///modules/base/monitoring/check_long_procs',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-        }
+    # TODO: remove once absented
+    file { '/usr/local/lib/nagios/plugins/check_long_procs':
+        ensure => absent,
+    }
 
-        ::sudo::user { 'nagios_long_procs':
-            user       => 'nagios',
-            privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_long_procs'],
-        }
-
-        ::nrpe::monitor_service { 'check_long_procs':
-            check_interval => 240,
-            retry_interval => 10,
-            description    => 'Long running screen/tmux',
-            nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_long_procs -w 240 -c 480',
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Long_running_screens',
-        }
+    # TODO: remove once absented
+    ::nrpe::monitor_service { 'check_long_procs':
+        ensure => 'absent',
     }
 
     if ! $facts['is_virtual'] {
