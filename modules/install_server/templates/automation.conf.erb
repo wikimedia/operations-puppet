@@ -17,6 +17,6 @@ subnet <%= addr.to_s %> netmask <%= netmask %> {
      option subnet-mask <%= netmask %>;
      option domain-name "mgmt.<%= netname %>.wmnet";
 
-     include "/etc/dhcp/automation/proxies/proxy-mgmt.<%= netname %>.conf";
+     include "/etc/dhcp/automation/proxies/mgmt-<%= netname %>.conf";
 }
 <% end -%>

@@ -19,12 +19,13 @@ class install_server::dhcp_server (
     }
 
     # This is the general path of proxies for the automation include system.
-    wmflib::dir::mkdir_p('/etc/dhcp/automation/proxies/')
+    wmflib::dir::mkdir_p('/etc/dhcp/automation/proxies', {'purge' => true, 'recurse' => true})
 
     # Files with the entries matching DHCP option 82, those are managed by the automation Cookbooks
     # and included in the dhcpd.conf file. Puppet should not manage those but create them empty if
     # not present and fix their permissionsnd if different.
-    file { ['/etc/dhcp/opt82-entries.ttyS0-115200', '/etc/dhcp/opt82-entries.ttyS1-115200']:
+    file { ['/etc/dhcp/automation/proxies/opt82-ttyS0-115200.conf',
+            '/etc/dhcp/automation/proxies/opt82-ttyS1-115200.conf']:
         ensure  => file,
         mode    => '0644',
         owner   => 'root',
@@ -32,7 +33,9 @@ class install_server::dhcp_server (
         require => Package['isc-dhcp-server'],
     }
 
-    file { ['/etc/dhcp/automation/opt82-entries.ttyS0-115200/', '/etc/dhcp/automation/opt82-entries.ttyS1-115200/']:
+    # Those directories will be populated by the automation via cookbook with DHCP snippets
+    file { ['/etc/dhcp/automation/opt82-ttyS0-115200/',
+            '/etc/dhcp/automation/opt82-ttyS1-115200/']:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
@@ -49,13 +52,14 @@ class install_server::dhcp_server (
     }
 
     $mgmt_networks.keys.each | $netname | {
-      file { "/etc/dhcp/automation/proxies/proxy-mgmt.${netname}.conf":
+      file { "/etc/dhcp/automation/proxies/mgmt-${netname}.conf":
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0444'
       }
 
+      # Those directories will be populated by the automation via cookbook with DHCP snippets
       file { "/etc/dhcp/automation/mgmt-${netname}/":
         ensure => directory,
         owner  => 'root',

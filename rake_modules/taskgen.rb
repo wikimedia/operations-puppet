@@ -171,6 +171,7 @@ class TaskGen < ::Rake::TaskLib
         dhcp_config.scan(/include\s+\"(.+)\";/).each do |fname|
           next if File.file?(fname[0])
           print "DHCP include file '#{fname[0]}' does not exist. Touching for CI.\n"
+          FileUtils.makedirs(File.dirname(fname[0]))
           FileUtils.touch(fname[0])
         end
         begin
