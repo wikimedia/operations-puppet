@@ -5448,3 +5448,9 @@ ldap_only_users:
     ensure: present
     realname: Cai Blanton
     email: cblanton@wikimedia.org
+  statwithlatte:
+    ensure: present
+    realname: NaRay
+    email: naray-ctr@wikimedia.org
+    expiry_date: 2022-05-09
+    expiry_contact: janstee@wikimedia.org
