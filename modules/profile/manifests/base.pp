@@ -10,7 +10,7 @@ class profile::base(
     String $mgmt_group_contact = lookup('mgmt_contactgroups', {default_value => 'admins'}),
     String $check_disk_options = lookup('profile::base::check_disk_options', {default_value => '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs'}),
     Boolean $check_disk_critical = lookup('profile::base::check_disk_critical', {default_value => false}),
-    String $check_raid_policy = lookup('profile::base::check_raid_policy', {default_value => ''}),
+    Optional[String] $check_raid_policy = lookup('profile::base::check_raid_policy', {default_value => undef}),
     Integer $check_raid_interval = lookup('profile::base::check_raid_interval', {default_value => 10}),
     Integer $check_raid_retry = lookup('profile::base::check_raid_retry', {default_value => 10}),
     Boolean $check_raid = lookup('profile::base::check_raid', {default_value => true}),

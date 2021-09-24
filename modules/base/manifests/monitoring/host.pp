@@ -25,21 +25,21 @@
 # raid_monitor              - Boolean. Include or not RAID checks.
 #
 class base::monitoring::host(
-    $contact_group = 'admins',
-    $mgmt_contact_group = 'admins',
+    Wmflib::Ensure $hardware_monitoring     = 'present',
+    String $contact_group                   = 'admins',
+    String $mgmt_contact_group              = 'admins',
     # the -A -i ... part is a gross hack to workaround Varnish partitions
     # that are purposefully at 99%. Better ideas are welcome.
-    $nrpe_check_disk_options = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs',
-    $nrpe_check_disk_critical = false,
-    $raid_write_cache_policy = undef,
-    $raid_check_interval = 10,
-    $raid_retry_interval = 10,
-    $notifications_enabled = '1',
-    Boolean $is_critical = false,
-    $monitor_systemd = true,
-    Integer $puppet_interval = 30,
-    Boolean $raid_check = true,
-    Wmflib::Ensure $hardware_monitoring = 'present',
+    String $nrpe_check_disk_options         = '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs',
+    Boolean $nrpe_check_disk_critical       = false,
+    Integer $raid_check_interval            = 10,
+    Integer $raid_retry_interval            = 10,
+    String $notifications_enabled           = '1',
+    Boolean $is_critical                    = false,
+    Boolean $monitor_systemd                = true,
+    Integer $puppet_interval                = 30,
+    Boolean $raid_check                     = true,
+    Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = undef,
 ) {
     if $raid_check and $hardware_monitoring == 'present'{
         # RAID checks
