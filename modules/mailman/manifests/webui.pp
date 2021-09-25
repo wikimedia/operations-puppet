@@ -11,16 +11,6 @@ class mailman::webui (
         content => template('mailman/apache.conf.erb'),
     }
 
-    # htdigest file for private list archives
-    file { '/etc/apache2/arbcom-l.htdigest':
-        content   => secret('mailman/arbcom-l.htdigest'),
-        owner     => 'root',
-        group     => 'www-data',
-        mode      => '0440',
-        require   => Class['httpd'],
-        show_diff => false,
-    }
-
     # Add files in /var/www (docroot)
     file { '/var/www':
         source  => 'puppet:///modules/mailman/docroot/',
