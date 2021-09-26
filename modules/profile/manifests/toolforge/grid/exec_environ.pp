@@ -18,28 +18,40 @@ class profile::toolforge::grid::exec_environ {
         components => "thirdparty/mono-project-${::lsbdistcodename}",
     }
 
-    file { '/srv/composer':
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
+    if debian::codename::ge('buster') {
+        ensure_packages(['composer'])
 
-    git::clone { 'composer':
-        ensure             => 'latest',
-        directory          => '/srv/composer',
-        origin             => 'https://gerrit.wikimedia.org/r/integration/composer.git',
-        recurse_submodules => true,
-        require            => File['/srv/composer'],
-    }
+        file { '/srv/composer':
+            ensure => absent,
+        }
 
-    # Create a symbolic link for the composer executable.
-    file { '/usr/local/bin/composer':
-        ensure  => 'link',
-        target  => '/srv/composer/vendor/bin/composer',
-        owner   => 'root',
-        group   => 'root',
-        require => Git::Clone['composer'],
+        file { '/usr/local/bin/composer':
+            ensure => absent,
+        }
+    } else {
+        file { '/srv/composer':
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+
+        git::clone { 'composer':
+            ensure             => 'latest',
+            directory          => '/srv/composer',
+            origin             => 'https://gerrit.wikimedia.org/r/integration/composer.git',
+            recurse_submodules => true,
+            require            => File['/srv/composer'],
+        }
+
+        # Create a symbolic link for the composer executable.
+        file { '/usr/local/bin/composer':
+            ensure  => 'link',
+            target  => '/srv/composer/vendor/bin/composer',
+            owner   => 'root',
+            group   => 'root',
+            require => Git::Clone['composer'],
+        }
     }
 
     # Packages in all OSs
