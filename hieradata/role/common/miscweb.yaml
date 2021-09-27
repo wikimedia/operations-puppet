@@ -26,3 +26,5 @@ profile::idp::client::httpd::sites:
     required_groups:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
+
+profile::sre::os_reports::host: cumin2002.codfw.wmnet
