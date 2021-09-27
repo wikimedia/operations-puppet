@@ -56,6 +56,26 @@ https://www.mediawiki.org:
 - path: /ontology/ontology.owl
   assert_status: 200
   assert_body_contains: The ontology of MediaWiki
+- path: /wiki/Special:Code
+  assert_status: 302
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org
+- path: /wiki/Special:CodeReview/MediaWiki
+  assert_status: 302
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org
+- path: /wiki/Special:CodeReview/MediaWiki/1
+  assert_status: 302
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org/MediaWiki/1.html
+- path: /w/index.php?title=Special:CodeReview
+  assert_status: 302
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org
+- path: /w/index.php?title=Special:CodeReview&path=foo
+  assert_status: 302
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org
 
 https://upload.wikimedia.org:
 - path: /mediawiki/test
