@@ -18,7 +18,8 @@ function wmflib::dir::mkdir_p(
     Variant[Stdlib::Unixpath, Array[Stdlib::Unixpath]] $dirs,
     Hash                                               $params = {},
 ) {
-    $parents = wmflib::dir::split($dirs) - $dirs
+    $_dirs = wmflib::dir::normalise($dirs)
+    $parents = wmflib::dir::split($_dirs) - $_dirs
     # ensure all parent directories exist
     ensure_resource('file', $parents, {'ensure' => 'directory'})
     # Apply params only to the actual directories

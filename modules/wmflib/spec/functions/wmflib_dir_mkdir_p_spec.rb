@@ -16,6 +16,12 @@ describe 'wmflib::dir::mkdir_p' do
     expect(catalogue).to contain_file('/etc').with_ensure('directory')
     expect(catalogue).to contain_file('/etc/foo').with_ensure('directory')
   end
+  it "with '/etc/foo/'" do
+    is_expected.to run.with_params('/etc/foo/', {'owner' => 'foo'})
+    expect(catalogue).not_to contain_file('/').with_ensure('directory')
+    expect(catalogue).to contain_file('/etc').with_ensure('directory').without_owner
+    expect(catalogue).to contain_file('/etc/foo').with_ensure('directory').with_owner('foo')
+  end
   it "with '/etc/foo', '/foo'" do
     is_expected.to run.with_params(['/etc/foo', '/foo'])
     expect(catalogue).not_to contain_file('/').with_ensure('directory')
@@ -39,8 +45,8 @@ describe 'wmflib::dir::mkdir_p' do
       .with_owner('foo')
       .with_mode('0500')
   end
-  it "with '/etc/foo', '/foo' and custom params" do
-    is_expected.to run.with_params(['/etc/foo', '/etc/bar'], {'owner' => 'foo', 'mode' => '0500'})
+  it "with '/etc/foo', '/etc/bar/' and custom params" do
+    is_expected.to run.with_params(['/etc/foo', '/etc/bar/'], {'owner' => 'foo', 'mode' => '0500'})
     expect(catalogue).not_to contain_file('/').with_ensure('directory')
     expect(catalogue).to contain_file('/etc')
       .with_ensure('directory')
