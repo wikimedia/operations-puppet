@@ -161,9 +161,6 @@ class swift::storage (
                 File['/etc/swift/swift-drive-audit.conf']
             ],
         }
-        cron { 'swift-drive-audit':
-            ensure  => absent,
-        }
     } else {
         # Drop our modifications starting with Bullseye, not enough wins
         # to keep carrying the (minor) patch from upstream.
