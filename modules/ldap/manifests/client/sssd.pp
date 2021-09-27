@@ -17,6 +17,16 @@ class ldap::client::sssd(
         'libsss-sudo',
         'sssd',
     ]
+    # On bullseye, the services are started by socket, so there's no need to duplicate them in the sssd config itself.
+    $services = debian::codename::eq('bullseye') ? {
+        true    => [],
+        default => [
+            'nss',
+            'pam',
+            'ssh',
+            'sudo',
+        ]
+    }
 
     # mkhomedir is not enabled automatically; activate it if needed
     exec { 'pam-auth-enable-mkhomedir':

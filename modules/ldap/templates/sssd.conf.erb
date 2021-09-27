@@ -3,7 +3,7 @@
 domains = wikimedia.org
 default_domain_suffix = wikimedia.org
 full_name_format = %1$s
-services = nss, pam, ssh, sudo
+services = <%= @services.join(', ') %>
 config_file_version = 2
 
 [sudo]
