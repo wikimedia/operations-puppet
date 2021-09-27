@@ -85,6 +85,8 @@ cache::alternate_domains:
     caching: 'normal'
   noc.wikimedia.org:
     caching: 'pass'
+  os-reports.wikimedia.org:
+    caching: 'normal'
   ores.wikimedia.org:
     caching: 'normal'
   people.wikimedia.org:

@@ -117,6 +117,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://noc.wikimedia.org
       replacement: https://mwmaint.discovery.wmnet
     - type: map
+      target: http://os-reports.wikimedia.org
+      replacement: https://webserver-misc-apps.discovery.wmnet
+    - type: map
       target: http://ores.wikimedia.org
       replacement: https://ores.discovery.wmnet
     - type: map
