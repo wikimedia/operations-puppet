@@ -5,7 +5,6 @@ class profile::cassandra::single_instance(
   Array[Stdlib::Host] $cassandra_hosts      = lookup('profile::cassandra::single_instance::seeds'),
   String              $dc                   = lookup('profile::cassandra::single_instance::dc'),
   String              $super_pass           = lookup('profile::cassandra::single_instance::super_pass'),
-  Boolean             $jmx_exporter_enabled = lookup('profile::cassandra::single_instance::jmx_exporter_enabled'),
 ) {
   # localhost udp endpoint for logging pipeline
   class { 'profile::rsyslog::udp_json_logback_compat': }
@@ -19,8 +18,7 @@ class profile::cassandra::single_instance(
       data_directory_base    => '/srv/cassandra',
       commitlog_directory    => '/srv/cassandra/commitlog',
       saved_caches_directory => '/srv/cassandra/saved_caches',
-      super_password         => $super_pass,
-      jmx_exporter_enabled   => $jmx_exporter_enabled,
+      super_password         => $super_pass
     }
   }
   class {'cassandra::logging': }

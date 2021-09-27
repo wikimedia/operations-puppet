@@ -343,6 +343,4 @@ JVM_OPTS="$JVM_OPTS $JVM_EXTRA_OPTS"
 JVM_OPTS="$JVM_OPTS <%= Array(@additional_jvm_opts).join(' ') %>"
 <% end -%>
 
-<% if @jmx_exporter_enabled -%>
 JVM_OPTS="$JVM_OPTS -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=<%= @listen_address %>:7800:<%= @config_directory %>/prometheus_jmx_exporter.yaml"
-<% end -%>

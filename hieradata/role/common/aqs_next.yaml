@@ -17,23 +17,35 @@ profile::cassandra::allow_analytics: true
 # Instances
 profile::cassandra::instances:
   "aqs1010.eqiad.wmnet":
-    "a": { listen_address: 10.64.0.88, jmx_exporter_enabled: true }
-    "b": { listen_address: 10.64.0.120, jmx_exporter_enabled: true }
+    "a":
+      listen_address: 10.64.0.88
+    "b":
+      listen_address: 10.64.0.120
   "aqs1011.eqiad.wmnet":
-    "a": { listen_address: 10.64.16.204, jmx_exporter_enabled: true }
-    "b": { listen_address: 10.64.16.206, jmx_exporter_enabled: true }
+    "a":
+      listen_address: 10.64.16.204
+    "b":
+      listen_address: 10.64.16.206
   "aqs1012.eqiad.wmnet":
-    "a": { listen_address: 10.64.32.128, jmx_exporter_enabled: true }
-    "b": { listen_address: 10.64.32.145, jmx_exporter_enabled: true }
+    "a":
+      listen_address: 10.64.32.128
+    "b":
+      listen_address: 10.64.32.145
   "aqs1013.eqiad.wmnet":
-    "a": { listen_address: 10.64.32.146, jmx_exporter_enabled: true }
-    "b": { listen_address: 10.64.32.147, jmx_exporter_enabled: true }
+    "a":
+      listen_address: 10.64.32.146
+    "b":
+      listen_address: 10.64.32.147
   "aqs1014.eqiad.wmnet":
-    "a": { listen_address: 10.64.48.65, jmx_exporter_enabled: true }
-    "b": { listen_address: 10.64.48.67, jmx_exporter_enabled: true }
+    "a":
+      listen_address: 10.64.48.65
+    "b":
+      listen_address: 10.64.48.67
   "aqs1015.eqiad.wmnet":
-    "a": { listen_address: 10.64.48.68, jmx_exporter_enabled: true }
-    "b": { listen_address: 10.64.48.69, jmx_exporter_enabled: true }
+    "a":
+      listen_address: 10.64.48.68
+    "b":
+      listen_address: 10.64.48.69
 
 profile::cassandra::settings:
   dc: "%{::site}"

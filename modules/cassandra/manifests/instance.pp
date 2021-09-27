@@ -213,7 +213,6 @@ define cassandra::instance(
 
     # the following parameters have defaults that are sane both for single-
     # and multi-instances
-    Boolean                               $jmx_exporter_enabled             = false,
     Integer                               $num_tokens                       = 256,
     Boolean                               $authenticator                    = true,
     Boolean                               $authorizor                       = true,
@@ -367,17 +366,15 @@ define cassandra::instance(
         require => Package['cassandra'],
     }
 
-    if ($jmx_exporter_enabled) {
-        require_package('prometheus-jmx-exporter')
+    ensure_packages(['prometheus-jmx-exporter'])
 
-        $prometheus_target = $instance_name ? {
-            'default' => $::hostname,
-            default   => "${::hostname}-${instance_name}",
-        }
-        prometheus::jmx_exporter_instance { $prometheus_target:
-            hostname => $prometheus_target,
-            port     => 7800,
-        }
+    $prometheus_target = $instance_name ? {
+        'default' => $::hostname,
+        default   => "${::hostname}-${instance_name}",
+    }
+    prometheus::jmx_exporter_instance { $prometheus_target:
+        hostname => $prometheus_target,
+        port     => 7800,
     }
 
     if $application_username != undef {
