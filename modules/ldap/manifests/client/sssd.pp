@@ -4,7 +4,6 @@
 
 class ldap::client::sssd(
     $ldapconfig,
-    $ldapincludes,
 ) {
     # this provides the /etc/ldap.yaml file, which is used to
     # lookup for sshkeys. We could switch at some point to a native

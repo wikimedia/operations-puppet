@@ -14,7 +14,6 @@ describe 'ldap::client::sssd' do
                   'proxypass'            => 'proxypass_value',
                   'pagesize'             => '2000',
               },
-              'ldapincludes' => {},
           }
       }
       it { should compile }
