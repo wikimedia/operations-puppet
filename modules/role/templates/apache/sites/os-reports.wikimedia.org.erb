@@ -1,0 +1,7 @@
+<VirtualHost *:80>
+    ServerName os-reports.wikimedia.org
+    DocumentRoot <%= @docroot %>
+    <Directory <%= @docroot %>>
+        Require all granted
+    </Directory>
+</VirtualHost>
