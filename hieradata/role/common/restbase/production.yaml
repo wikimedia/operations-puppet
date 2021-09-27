@@ -55,6 +55,7 @@ profile::cassandra::client_ips:
 profile::cassandra::instances:
   "restbase1016.eqiad.wmnet":
     a:
+      tls_hostname: restbase1016-a
       listen_address: 10.64.0.32
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -66,6 +67,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1016-b
       listen_address: 10.64.0.33
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -77,6 +79,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1016-c
       listen_address: 10.64.0.34
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -89,6 +92,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1017.eqiad.wmnet":
     a:
+      tls_hostname: restbase1017-a
       listen_address: 10.64.16.126
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -100,6 +104,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1017-b
       listen_address: 10.64.16.127
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -111,6 +116,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1017-c
       listen_address: 10.64.16.128
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -123,6 +129,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1018.eqiad.wmnet":
     a:
+      tls_hostname: restbase1018-a
       listen_address: 10.64.48.98
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -134,6 +141,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1018-b
       listen_address: 10.64.48.99
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -145,6 +153,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1018-c
       listen_address: 10.64.48.100
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -157,6 +166,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1019.eqiad.wmnet":
     a:
+      tls_hostname: restbase1019-a
       listen_address: 10.64.0.101
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -167,6 +177,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1019-b
       listen_address: 10.64.0.102
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -177,6 +188,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1019-c
       listen_address: 10.64.0.103
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -188,6 +200,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1020.eqiad.wmnet":
     a:
+      tls_hostname: restbase1020-a
       listen_address: 10.64.0.105
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -198,6 +211,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1020-b
       listen_address: 10.64.0.106
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -208,6 +222,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1020-c
       listen_address: 10.64.0.146
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -219,6 +234,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1021.eqiad.wmnet":
     a:
+      tls_hostname: restbase1021-a
       listen_address: 10.64.0.148
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -229,6 +245,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1021-b
       listen_address: 10.64.0.149
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -239,6 +256,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1021-c
       listen_address: 10.64.0.150
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -250,6 +268,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1022.eqiad.wmnet":
     a:
+      tls_hostname: restbase1022-a
       listen_address: 10.64.16.114
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -260,6 +279,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1022-b
       listen_address: 10.64.16.115
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -270,6 +290,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1022-c
       listen_address: 10.64.16.116
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -281,6 +302,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1023.eqiad.wmnet":
     a:
+      tls_hostname: restbase1023-a
       listen_address: 10.64.16.118
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -291,6 +313,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1023-b
       listen_address: 10.64.16.119
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -301,6 +324,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1023-c
       listen_address: 10.64.16.120
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -312,6 +336,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1024.eqiad.wmnet":
     a:
+      tls_hostname: restbase1024-a
       listen_address: 10.64.16.122
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -322,6 +347,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1024-b
       listen_address: 10.64.16.123
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -332,6 +358,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1024-c
       listen_address: 10.64.16.124
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -343,6 +370,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1025.eqiad.wmnet":
     a:
+      tls_hostname: restbase1025-a
       listen_address: 10.64.48.126
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -353,6 +381,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1025-b
       listen_address: 10.64.48.127
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -363,6 +392,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1025-c
       listen_address: 10.64.48.128
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -374,6 +404,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1026.eqiad.wmnet":
     a:
+      tls_hostname: restbase1026-a
       listen_address: 10.64.48.180
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -384,6 +415,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1026-b
       listen_address: 10.64.48.181
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -394,6 +426,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1026-c
       listen_address: 10.64.48.182
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -405,6 +438,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1027.eqiad.wmnet":
     a:
+      tls_hostname: restbase1027-a
       listen_address: 10.64.48.184
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -415,6 +449,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1027-b
       listen_address: 10.64.48.185
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -425,6 +460,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1027-c
       listen_address: 10.64.48.186
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -436,6 +472,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1028.eqiad.wmnet":
     a:
+      tls_hostname: restbase1028-a
       listen_address: 10.64.0.209
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -446,6 +483,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1028-b
       listen_address: 10.64.0.210
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -456,6 +494,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1028-c
       listen_address: 10.64.0.211
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -467,6 +506,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1029.eqiad.wmnet":
     a:
+      tls_hostname: restbase1029-a
       listen_address: 10.64.16.180
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -477,6 +517,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1029-b
       listen_address: 10.64.16.181
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -487,6 +528,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1029-c
       listen_address: 10.64.16.182
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -498,6 +540,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase1030.eqiad.wmnet":
     a:
+      tls_hostname: restbase1030-a
       listen_address: 10.64.48.234
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -508,6 +551,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase1030-b
       listen_address: 10.64.48.235
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -518,6 +562,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase1030-c
       listen_address: 10.64.48.236
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -529,6 +574,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2009.codfw.wmnet":
     a:
+      tls_hostname: restbase2009-a
       listen_address: 10.192.48.54
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -540,6 +586,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2009-b
       listen_address: 10.192.48.55
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -551,6 +598,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2009-c
       listen_address: 10.192.48.56
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -563,6 +611,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2010.codfw.wmnet":
     a:
+      tls_hostname: restbase2010-a
       listen_address: 10.192.16.186
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -574,6 +623,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2010-b
       listen_address: 10.192.16.187
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -585,6 +635,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2010-c
       listen_address: 10.192.16.188
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -597,6 +648,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2011.codfw.wmnet":
     a:
+      tls_hostname: restbase2011-a
       listen_address: 10.192.32.152
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -608,6 +660,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2011-b
       listen_address: 10.192.32.153
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -619,6 +672,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2011-c
       listen_address: 10.192.32.154
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -631,6 +685,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2012.codfw.wmnet":
     a:
+      tls_hostname: restbase2012-a
       listen_address: 10.192.48.68
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -642,6 +697,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2012-b
       listen_address: 10.192.48.69
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -653,6 +709,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2012-c
       listen_address: 10.192.48.70
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -665,6 +722,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2013.codfw.wmnet":
     a:
+      tls_hostname: restbase2013-a
       listen_address: 10.192.16.82
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -675,6 +733,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2013-b
       listen_address: 10.192.16.83
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -685,6 +744,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2013-c
       listen_address: 10.192.16.84
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -696,6 +756,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2014.codfw.wmnet":
     a:
+      tls_hostname: restbase2014-a
       listen_address: 10.192.16.85
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -706,6 +767,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2014-b
       listen_address: 10.192.16.86
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -716,6 +778,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2014-c
       listen_address: 10.192.16.87
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -727,6 +790,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2015.codfw.wmnet":
     a:
+      tls_hostname: restbase2015-a
       listen_address: 10.192.32.22
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -737,6 +801,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2015-b
       listen_address: 10.192.32.25
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -747,6 +812,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2015-c
       listen_address: 10.192.32.105
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -758,6 +824,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2016.codfw.wmnet":
     a:
+      tls_hostname: restbase2016-a
       listen_address: 10.192.32.108
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -768,6 +835,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2016-b
       listen_address: 10.192.32.111
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -778,6 +846,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2016-c
       listen_address: 10.192.32.175
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -789,6 +858,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2017.codfw.wmnet":
     a:
+      tls_hostname: restbase2017-a
       listen_address: 10.192.48.121
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -799,6 +869,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2017-b
       listen_address: 10.192.48.122
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -809,6 +880,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2017-c
       listen_address: 10.192.48.123
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -820,6 +892,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2018.codfw.wmnet":
     a:
+      tls_hostname: restbase2018-a
       listen_address: 10.192.48.124
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -830,6 +903,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2018-b
       listen_address: 10.192.48.125
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -840,6 +914,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2018-c
       listen_address: 10.192.48.126
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -851,6 +926,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2019.codfw.wmnet":
     a:
+      tls_hostname: restbase2019-a
       listen_address: 10.192.16.98
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -861,6 +937,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2019-b
       listen_address: 10.192.16.99
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -871,6 +948,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2019-c
       listen_address: 10.192.16.100
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -882,6 +960,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2020.codfw.wmnet":
     a:
+      tls_hostname: restbase2020-a
       listen_address: 10.192.32.119
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -892,6 +971,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2020-b
       listen_address: 10.192.32.120
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -902,6 +982,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2020-c
       listen_address: 10.192.32.121
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -913,6 +994,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2021.codfw.wmnet":
     a:
+      tls_hostname: restbase2021-a
       listen_address: 10.192.16.153
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -923,6 +1005,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2021-b
       listen_address: 10.192.16.154
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -933,6 +1016,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2021-c
       listen_address: 10.192.16.155
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -944,6 +1028,7 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2022.codfw.wmnet":
     a:
+      tls_hostname: restbase2022-a
       listen_address: 10.192.32.191
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -954,6 +1039,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      tls_hostname: restbase2022-b
       listen_address: 10.192.32.192
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -964,6 +1050,7 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      tls_hostname: restbase2022-c
       listen_address: 10.192.32.193
       data_file_directories:
         - /srv/sda4/cassandra-c/data
@@ -975,6 +1062,8 @@ profile::cassandra::instances:
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-c/saved_caches
   "restbase2023.codfw.wmnet":
     a:
+      # Testing T141541 - use a full hostname in certificates
+      #tls_hostname: restbase2023-a
       listen_address: 10.192.48.142
       data_file_directories:
         - /srv/sda4/cassandra-a/data
@@ -985,6 +1074,8 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-a/saved_caches
     b:
+      # Testing T141541 - use a full hostname in certificates
+      #tls_hostname: restbase2023-b
       listen_address: 10.192.48.143
       data_file_directories:
         - /srv/sda4/cassandra-b/data
@@ -995,6 +1086,8 @@ profile::cassandra::instances:
       hints_directory: /srv/cassandra/instance-data/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/instance-data/cassandra-b/saved_caches
     c:
+      # Testing T141541 - use a full hostname in certificates
+      #tls_hostname: restbase2023-c
       listen_address: 10.192.48.144
       data_file_directories:
         - /srv/sda4/cassandra-c/data

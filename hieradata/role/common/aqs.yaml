@@ -18,33 +18,45 @@ profile::cassandra::allow_analytics: true
 profile::cassandra::instances:
   "aqs1004.eqiad.wmnet":
     "a":
+      tls_hostname: aqs1004-a
       listen_address: 10.64.0.126
     "b":
+      tls_hostname: aqs1004-b
       listen_address: 10.64.0.127
   "aqs1005.eqiad.wmnet":
     "a":
+      tls_hostname: aqs1005-a
       listen_address: 10.64.32.189
     "b":
+      tls_hostname: aqs1005-b
       listen_address: 10.64.32.190
   "aqs1006.eqiad.wmnet":
     "a":
+      tls_hostname: aqs1006-a
       listen_address: 10.64.48.148
     "b":
+      tls_hostname: aqs1006-b
       listen_address: 10.64.48.149
   "aqs1007.eqiad.wmnet":
     "a":
+      tls_hostname: aqs1007-a
       listen_address: 10.64.0.213
     "b":
+      tls_hostname: aqs1007-b
       listen_address: 10.64.0.237
   "aqs1008.eqiad.wmnet":
     "a":
+      tls_hostname: aqs1008-a
       listen_address: 10.64.16.74
     "b":
+      tls_hostname: aqs1008-b
       listen_address: 10.64.16.78
   "aqs1009.eqiad.wmnet":
     "a":
+      tls_hostname: aqs1009-a
       listen_address: 10.64.48.122
     "b":
+      tls_hostname: aqs1009-b
       listen_address: 10.64.48.123
 
 profile::cassandra::settings:

@@ -199,7 +199,7 @@ define cassandra::instance(
     # the following parameters need specific default values for single instance
     Stdlib::Unixpath        $config_directory       = "/etc/cassandra-${title}",
     String                  $service_name           = "cassandra-${title}",
-    String                  $tls_hostname           = "${::hostname}-${title}",
+    String                  $tls_hostname           = "${::hostname}-${title}.${facts['networking']['domain']}",
     Stdlib::Unixpath        $pid_file               = "/var/run/cassandra/cassandra-${title}.pid",
     String                  $instance_id            = "${::hostname}-${title}",
     Optional[Stdlib::Port]  $jmx_port               = undef,
@@ -427,7 +427,7 @@ define cassandra::instance(
         }
     }
 
-    file { "/etc/cassandra-instances.d/${tls_hostname}.yaml":
+    file { "/etc/cassandra-instances.d/${::hostname}-${title}.yaml":
         content => template("${module_name}/instance.yaml.erb"),
         owner   => 'cassandra',
         group   => 'cassandra',
