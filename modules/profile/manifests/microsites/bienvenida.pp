@@ -5,9 +5,7 @@ class profile::microsites::bienvenida {
         content => template('profile/bienvenida/apache-bienvenida.wikimedia.org.erb'),
     }
 
-    ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia/bienvenida', {'ensure' => 'directory' })
+    wmflib::dir::mkdir_p('/srv/org/wikimedia/bienvenida')
 
     git::clone { 'wikimedia/campaigns/eswiki-2018':
         ensure    => 'latest',

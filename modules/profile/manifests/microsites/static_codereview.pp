@@ -9,9 +9,7 @@ class profile::microsites::static_codereview {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Static-codereview.wikimedia.org',
     }
 
-    ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia/static-codereview', {'ensure' => 'directory' })
+    wmflib::dir::mkdir_p('/srv/org/wikimedia/static-codereview')
 
     file { '/srv/org/wikimedia/static-codereview/index.html':
         ensure => present,

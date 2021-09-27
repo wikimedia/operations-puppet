@@ -11,11 +11,9 @@ class profile::microsites::design(
     $design_blog_repo_dir = '/srv/org/wikimedia/design-blog'
     $design_blog_docroot  = "${design_blog_repo_dir}/_site"
 
-    ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia/design', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia/design-strategy', {'ensure' => 'directory' })
-    ensure_resource('file', $design_blog_repo_dir, {'ensure' => 'directory' })
+    wmflib::dir::mkdir_p($design_blog_repo_dir)
+    wmflib::dir::mkdir_p('/srv/org/wikimedia/design')
+    wmflib::dir::mkdir_p('/srv/org/wikimedia/design-strategy')
 
     git::clone { 'design/landing-page':
         ensure    => 'latest',

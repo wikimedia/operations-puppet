@@ -8,8 +8,7 @@ class profile::microsites::sitemaps(
         content => template('profile/sitemaps/apache-sitemaps.wikimedia.org.erb'),
     }
 
-    ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
+    wmflib::dir::mkdir_p('/srv/org/wikimedia')
 
     # ensure sitemaps-admins own files in the document root
     file { '/srv/org/wikimedia/sitemaps':

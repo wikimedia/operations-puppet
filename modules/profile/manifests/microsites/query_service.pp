@@ -14,10 +14,8 @@ class profile::microsites::query_service {
         domain_name => 'commons-query.wikimedia.org',
     }
 
-    ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikidata', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikidata/query', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikidata/query-builder', {'ensure' => 'directory' })
+    wmflib::dir::mkdir_p('/srv/org/wikidata/query')
+    wmflib::dir::mkdir_p('/srv/org/wikidata/query-builder')
 
     git::clone { 'wikidata/query/gui-deploy':
         ensure    => 'latest',

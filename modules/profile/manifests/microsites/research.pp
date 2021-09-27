@@ -8,9 +8,7 @@ class profile::microsites::research(
         content => template('profile/research/apache-research.wikimedia.org.erb'),
     }
 
-    ensure_resource('file', '/srv/org', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia', {'ensure' => 'directory' })
-    ensure_resource('file', '/srv/org/wikimedia/research', {'ensure' => 'directory' })
+    wmflib::dir::mkdir_p('/srv/org/wikimedia/research')
 
     git::clone { 'research/landing-page':
         ensure    => 'latest',
