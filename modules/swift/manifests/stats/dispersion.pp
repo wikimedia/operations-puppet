@@ -38,7 +38,7 @@ class swift::stats::dispersion(
             ensure             => $ensure,
             user               => 'root',
             description        => 'swift dispersion statistics - low latency',
-            command            => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port} --policy-name lowlatency",
+            command            => "/usr/local/bin/swift-dispersion-stats --prefix ${statsd_prefix}.lowlatency --statsd-host ${statsd_host} --statsd-port ${statsd_port} --policy-name lowlatency",
             interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '15m'},
             monitoring_enabled => false,
             logging_enabled    => false,
