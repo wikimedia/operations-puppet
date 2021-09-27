@@ -1,6 +1,5 @@
 # a placeholder profile for a manual gitlab setup by
 # https://phabricator.wikimedia.org/T274458
-# testing Arnold: sync with Daniel
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Stdlib::Fqdn $passive_host = lookup('profile::gitlab::passive_host'),
