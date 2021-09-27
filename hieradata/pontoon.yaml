@@ -31,6 +31,7 @@ profile::base::remote_syslog_tls: []
 ## Customizations
 
 profile::apt::use_proxy: false
+diamond::remove: true
 
 ## SSH access
 bastion_hosts:
