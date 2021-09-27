@@ -18,9 +18,6 @@ profile::admin::groups:
   - zuul-deployers
   - contint-admins
 
-# screen sessions are common on deployment servers (T165348)
-monitor_screens: false
-
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
 

@@ -265,18 +265,6 @@ db_like_raid_policy:
   __regex: !ruby/regexp /^(db|dbstore|es|pc|clouddb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
   profile::base::check_raid_policy: 'WriteBack'
 
-# disable screen monitoring, fallback for servers not covered by roles (T165348)
-db_without_role:
-  __regex: !ruby/regexp /^(db|dbstore|es|pc|clouddb)[12]\d\d\d\.(eqiad|codfw)\.wmnet$/
-  monitor_screens: false
-
-# Disable screen/tmux monitoring for:
-#  * stat boxes, since researchers/analysts are often doing long running
-#    data crunching sessions.
-analytics_no_monitor_screens:
-  __regex: !ruby/regexp /^stat1\d\d\d\.eqiad\.wmnet$/
-  monitor_screens: false
-
 # Old hosts with mpt controllers and to be decom'd
 # smartmontools broken out of the box - T179078 and T86552
 smart_health_mpt:

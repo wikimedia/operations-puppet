@@ -1,4 +1,3 @@
-monitor_screens: false
 mariadb::monitor_process::is_critical: false
 mariadb::monitor_disk::is_critical: false
 

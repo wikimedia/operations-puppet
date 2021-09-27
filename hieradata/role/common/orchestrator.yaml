@@ -5,8 +5,6 @@ profile::resolving::domain_search:
   - codfw.wmnet
 profile::orchestrator::server::db_backend_host: db2093.codfw.wmnet
 
-monitor_screens: false
-
 profile::idp::client::httpd::sites:
   'orchestrator.wikimedia.org':
     vhost_content: 'profile/idp/client/httpd-orchestrator.erb'
