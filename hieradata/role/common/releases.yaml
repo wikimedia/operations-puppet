@@ -18,14 +18,32 @@ profile::kubernetes::deployment_server::user_defaults:
   group: wikidev
   mode: "0640"
   owner: jenkins-slave
-# Specified in the private repo:
-# profile::ci::kubernetes_config::token
+# Kubernetes configuration.
+# It gives access only to the staging cluster, and the "ci" namespace specifically.
+# kubernetes clusters by group.
+kubernetes_cluster_groups:
+  main:
+    staging:
+      dc: eqiad
+      master: kubestagemaster.svc.eqiad.wmnet
+
 profile::kubernetes::deployment_server::services:
   main:
     mwdebug:
       usernames:
         - name: mwdebug
       namespace: mwdebug
+    ci:
+      usernames:
+        - name: jenkins
+          owner: jenkins-slave
+          group: contint-roots
+          mode: "0440"
+          kubeconfig: ci
+        # Not a real user. Just using it to ensure
+        # kube_env is properly populated.
+        - name: ci
+      namespace: ci
 
 profile::docker::engine::packagename: "docker.io"
 profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u3"

@@ -34,7 +34,12 @@ class profile::kubernetes::deployment_server(
                 $data['usernames'].each |$usr_raw| {
                     $usr = $user_defaults.merge($usr_raw)
                     $token = $_tokens[$usr['name']]
-                    $kubeconfig_path = "/etc/kubernetes/${usr['name']}-${cluster}.config"
+                    # Allow overriding the kubeconfig name
+                    $kubeconfig_name = $usr['kubeconfig'] ? {
+                        undef => $usr['name'],
+                        default => $usr['kubeconfig']
+                    }
+                    $kubeconfig_path = "/etc/kubernetes/${kubeconfig_name}-${cluster}.config"
                     # TODO: separate username data from the services structure?
                     if ($token and !defined(K8s::Kubeconfig[$kubeconfig_path])) {
                         k8s::kubeconfig{ $kubeconfig_path:

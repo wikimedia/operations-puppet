@@ -4,46 +4,46 @@ profile::admin::groups:
   - contint-roots
   - contint-docker
 cluster: ci
-contactgroups: 'admins,contint'
+contactgroups: "admins,contint"
 
-profile::ci::jenkins::prefix: '/ci'
+profile::ci::jenkins::prefix: "/ci"
 profile::ci::proxy_jenkins::http_port: 8080
-profile::ci::proxy_jenkins::prefix: '/ci'
-profile::ci::jenkins::builds_dir: '/srv/jenkins/builds/${ITEM_FULL_NAME}'
-profile::ci::jenkins::workspaces_dir: '/srv/jenkins/workspace/${ITEM_FULL_NAME}'
-profile::ci::jenkins::service_ensure: 'stopped'
-profile::ci::jenkins::service_enable: 'mask'
+profile::ci::proxy_jenkins::prefix: "/ci"
+profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
+profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
+profile::ci::jenkins::service_ensure: "stopped"
+profile::ci::jenkins::service_enable: "mask"
 
-profile::ci::jenkins::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
+profile::ci::jenkins::java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
 
 profile::java::java_packages:
-  - version: '11'
-    variant: 'jdk'
+  - version: "11"
+    variant: "jdk"
 
 profile::zuul::server::service_ensure: running
 profile::zuul::server::service_enable: true
 
 profile::zuul::merger::conf:
-    gearman_server: '208.80.153.15'  # contint2001.wikimedia.org
-    gerrit_ssh_key_file: 'ssh/ci/jenkins-bot_gerrit_id_rsa'
-    git_dir: '/srv/zuul/git'
-    git_email: "zuul-merger@%{::hostname}"
-    git_name: 'Wikimedia Zuul Merger'
-    zuul_url: "git://%{::fqdn}"
+  gearman_server: "208.80.153.15" # contint2001.wikimedia.org
+  gerrit_ssh_key_file: "ssh/ci/jenkins-bot_gerrit_id_rsa"
+  git_dir: "/srv/zuul/git"
+  git_email: "zuul-merger@%{::hostname}"
+  git_name: "Wikimedia Zuul Merger"
+  zuul_url: "git://%{::fqdn}"
 
 profile::zuul::server::conf:
-    # ferm defaults to ACCEPT on loopback:
-    gearman_server: 127.0.0.1
-    config_git_branch: master
-    gearman_server_start: true
-    statsd_host: localhost
-    url_pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console'
-    status_url: 'https://integration.wikimedia.org/zuul/'
+  # ferm defaults to ACCEPT on loopback:
+  gearman_server: 127.0.0.1
+  config_git_branch: master
+  gearman_server_start: true
+  statsd_host: localhost
+  url_pattern: "https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console"
+  status_url: "https://integration.wikimedia.org/zuul/"
 
 profile::zuul::merger::ferm_srange: >-
-    (($LABS_NETWORKS
-    @resolve((contint1001.wikimedia.org contint2001.wikimedia.org), A)
-    @resolve((contint1001.wikimedia.org contint2001.wikimedia.org), AAAA)))
+  (($LABS_NETWORKS
+  @resolve((contint1001.wikimedia.org contint2001.wikimedia.org), A)
+  @resolve((contint1001.wikimedia.org contint2001.wikimedia.org), AAAA)))
 
 profile::zuul::server::email_server: localhost
 
@@ -52,27 +52,38 @@ profile::zuul::server::email_server: localhost
 profile::ci::pipeline::publisher::docker_registry_user: "ci-build"
 #profile::ci::pipeline::publisher::docker_registry_password: defined in the private repo
 profile::base::check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|mnt|run|srv)/docker/.*' --exclude-type=tracefs
+# Kubernetes configuration.
+# It gives access only to the staging cluster, and the "ci" namespace specifically.
+# kubernetes clusters by group.
+kubernetes_cluster_groups:
+  main:
+    staging:
+      dc: eqiad
+      master: kubestagemaster.svc.eqiad.wmnet
 
-profile::kubernetes::deployment_server::git_owner: root
-profile::kubernetes::deployment_server::git_group: wikidev
+profile::kubernetes::deployment_server::services:
+  main:
+    ci:
+      usernames:
+        - name: jenkins
+          group: contint-admins
+          owner: jenkins-slave
+          mode: "0440"
+          kubeconfig: ci
+        # Not a real user. Just using it to ensure
+        # kube_env is properly populated.
+        - name: ci
+      namespace: ci
 
-profile::ci::kubernetes_config::user: jenkins
-profile::ci::kubernetes_config::namespace: ci
-profile::ci::kubernetes_config::master: kubestagemaster.svc.eqiad.wmnet
-profile::ci::kubernetes_config::owner: jenkins-slave
-profile::ci::kubernetes_config::group: contint-admins
-# Specified in the private repo:
-# profile::ci::kubernetes_config::token
-
-profile::ci::migration::rsync_src_host: 'contint2001.wikimedia.org'
+profile::ci::migration::rsync_src_host: "contint2001.wikimedia.org"
 profile::ci::migration::rsync_dst_hosts:
-  - 'contint1001.wikimedia.org'
+  - "contint1001.wikimedia.org"
 profile::ci::migration::rsync_data_dirs:
-  - '/var/lib/jenkins/'
-  - '/var/lib/zuul/'
-  - '/srv/'
+  - "/var/lib/jenkins/"
+  - "/var/lib/zuul/"
+  - "/srv/"
 
-profile::zuul::merger::ensure_service: 'running'
+profile::zuul::merger::ensure_service: "running"
 
 # Docker requires the overlay / overlayFS kernel module
 profile::base::overlayfs: true
@@ -80,9 +91,9 @@ profile::base::overlayfs: true
 # envoy for TLS termination for integration.wikimedia.org behind ATS
 profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:
-  - server_names: ['*']
+  - server_names: ["*"]
     port: 80
 profile::tlsproxy::envoy::global_cert_name: "contint.wikimedia.org"
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 1443
-profile::tlsproxy::envoy::ferm_srange: '$CACHES'
+profile::tlsproxy::envoy::ferm_srange: "$CACHES"
