@@ -2445,7 +2445,7 @@ service::catalog:
       scheduler: wrr
       protocol: tcp
     monitoring:
-      check_command: check_https_lvs_on_port!tegola-vector-tiles.discovery.wmnet!4105!/healthz
+      check_command: check_https_lvs_on_port!tegola-vector-tiles.discovery.wmnet!4105!/capabilities
       critical: false # don't enable paging while testing
       sites:
         codfw:
