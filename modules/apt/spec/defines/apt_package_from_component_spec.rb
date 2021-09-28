@@ -1,12 +1,13 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'apt::package_from_component' do
-  on_supported_os(WMFConfig.test_on(10)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     let(:title) { 'mypackage' }
-    let(:facts) { facts }
     let(:params) { { component: 'foobar' } }
 
     context os do
+      let(:facts) { os_facts }
+
       context 'default parameters' do
         it { is_expected.to compile }
         it do
