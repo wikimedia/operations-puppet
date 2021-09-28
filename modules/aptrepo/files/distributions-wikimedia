@@ -128,6 +128,7 @@ Components: main
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-19
+ thirdparty/kubeadm-k8s-1-20
  thirdparty/matomo
  thirdparty/opensearch1
  thirdparty/php56
@@ -157,6 +158,7 @@ Update:
  thirdparty/gitlab-runner
  thirdparty/helm3
  thirdparty/kubeadm-k8s-kubernetes.io-1-19
+ thirdparty/kubeadm-k8s-kubernetes.io-1-20
  thirdparty/kubeadm-k8s-kubernetes.io
  thirdparty/kubeadm-k8s-docker.com
 # NOTE:  Cloudera does not (yet) provide Stretch/Buster packages.  We use the Jessie ones,
