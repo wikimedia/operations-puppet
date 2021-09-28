@@ -19,10 +19,10 @@ network_plugin_ipv6_enabled = false
 
 # A list of share backend names to use. These backend names should be
 # backed by a unique [CONFIG] group with its options. (list value)
-enabled_share_backends = wmcsNFS
+enabled_share_backends = wmcs-nfs
 
-[wmcsNFS]
-share_backend_name = wmcscinderbackend
+[wmcs-nfs]
+share_backend_name = wmcs-nfs
 share_driver = manila.share.drivers.generic.GenericShareDriver
 driver_handles_share_servers = True
 interface_driver = manila.network.linux.interface.NoopInterfaceDriver
@@ -185,15 +185,20 @@ username = novaadmin
 
 [keystone_authtoken]
 auth_type = password
-www_authenticate_uri = http://<%= @keystone_api_fqdn %>:35357
-auth_url = http://<%= @keystone_api_fqdn %>:35357
+www_authenticate_uri = http://<%= @keystone_api_fqdn %>:5000
+auth_url = http://<%= @keystone_api_fqdn %>:5000/v3
 password = <%= @user_pass %>
 project_domain_id = default
 project_name = admin
 region_name = <%= @region %>
 user_domain_id = default
 username = novaadminmanila
+<%- if @realm == "production" then -%>
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
+<%- else -%>
+# not using this on the manila-sharecontroller VM
+#memcached_servers = none
+<%- end -%>
 
 [neutron]
 service_metadata_proxy = true
