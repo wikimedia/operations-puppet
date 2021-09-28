@@ -240,11 +240,25 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
     os.symlink(file_name, overview_file)
 
 
+def prepare_overview(distros, target_dir):
+    with dominate.document(title='OS deprecation reports') as overview_report:
+
+        tags.h1("Overview of OS reports")
+
+        for distro in distros:
+            tags.a(distro, href="{}.html".format(distro))
+
+    overview_file = os.path.join(target_dir, "index.html")
+    with open(overview_file, 'w') as overview_html:
+        overview_html.write(overview_report.render())
+
+
 def main():
 
     cfg = configparser.ConfigParser()
     cfg.read("/etc/wikimedia/os-updates/os-updates-tracking.cfg")
     sections = cfg.sections()
+    distros = []
 
     if 'general' not in sections:
         print("Malformed config file, no [general] section found")
@@ -293,6 +307,9 @@ def main():
                        uptodate_os,
                        cfg.get('general', 'target_directory'),
                        )
+        distros.append(distro)
+
+    prepare_overview(distros, cfg.get('general', 'target_directory'))
     sys.exit(1)
 
 
