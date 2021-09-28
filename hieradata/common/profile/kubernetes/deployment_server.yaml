@@ -80,7 +80,9 @@ profile::kubernetes::deployment_server::services:
       usernames: [{ name: apple-search }]
   ml-serve:
     revscoring-editquality:
-      usernames: [{ name: revscoring-editquality }]
+      usernames:
+        - name: revscoring-editquality
+        - name: revscoring-editquality-deploy
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server_secrets::services:
 #    zotero:
