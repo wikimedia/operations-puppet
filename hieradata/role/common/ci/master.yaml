@@ -61,14 +61,16 @@ kubernetes_cluster_groups:
       dc: eqiad
       master: kubestagemaster.svc.eqiad.wmnet
 
+profile::kubernetes::deployment_server::user_defaults:
+  owner: jenkins-slave
+  group: contint-admins
+  mode: "0440"
+
 profile::kubernetes::deployment_server::services:
   main:
     ci:
       usernames:
         - name: jenkins
-          group: contint-admins
-          owner: jenkins-slave
-          mode: "0440"
           kubeconfig: ci
         # Not a real user. Just using it to ensure
         # kube_env is properly populated.
