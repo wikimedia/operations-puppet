@@ -33,6 +33,16 @@ host an-coord1002.eqiad.wmnet {
     fixed-address an-coord1002.eqiad.wmnet;
 }
 
+host an-db1001.eqiad.wmnet {
+    hardware ethernet B0:4F:13:B0:D6:4E;
+    fixed-address an-db1001.eqiad.wmnet;
+}
+
+host an-db1002.eqiad.wmnet {
+    hardware ethernet B0:4F:13:B0:9A:96;
+    fixed-address an-db1002.eqiad.wmnet;
+}
+
 host an-launcher1002.eqiad.wmnet {
     hardware ethernet D0:94:66:1B:49:A6;
     fixed-address an-launcher1002.eqiad.wmnet;

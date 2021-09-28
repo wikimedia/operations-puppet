@@ -44,6 +44,10 @@ node 'an-coord1002.eqiad.wmnet' {
     role(analytics_cluster::coordinator::replica)
 }
 
+node /^an-db100[1-2]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 node 'an-launcher1002.eqiad.wmnet' {
     role(analytics_cluster::launcher)
 }
