@@ -2160,6 +2160,11 @@ node /^mw23(3[5-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
+# New appserver T290192
+node /^mw24(1[2-9])\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # Row D
 
 # rack D3

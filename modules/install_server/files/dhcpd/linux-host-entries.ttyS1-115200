@@ -728,7 +728,7 @@ host centrallog2001 {
 host centrallog2002 {
     hardware ethernet B0:4F:13:B4:62:4E;
     fixed-address centrallog2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseys-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host cescout1001 {
@@ -6915,6 +6915,46 @@ host mw2410 {
 host mw2411 {
     hardware ethernet 2C:EA:7F:82:1A:53;
     fixed-address mw2411.codfw.wmnet;
+}
+
+host mw2412 {
+    hardware ethernet B0:4F:13:B4:58:96;
+    fixed-address mw2412.codfw.wmnet;
+}
+
+host mw2413 {
+    hardware ethernet B0:4F:13:B4:63:0E;
+    fixed-address mw2413.codfw.wmnet;
+}
+
+host mw2414 {
+    hardware ethernet B0:4F:13:B4:33:F6;
+    fixed-address mw2414.codfw.wmnet;
+}
+
+host mw2415 {
+    hardware ethernet B0:4F:13:B0:81:0E;
+    fixed-address mw2415.codfw.wmnet;
+}
+
+host mw2416 {
+    hardware ethernet B0:4F:13:B4:54:E6;
+    fixed-address mw2416.codfw.wmnet;
+}
+
+host mw2417 {
+    hardware ethernet B0:4F:13:B0:A7:8E;
+    fixed-address mw2417.codfw.wmnet;
+}
+
+host mw2418 {
+    hardware ethernet B0:4F:13:B4:59:FE;
+    fixed-address mw2418.codfw.wmnet;
+}
+
+host mw2419 {
+    hardware ethernet B0:4F:13:B4:54:A6;
+    fixed-address mw2419.codfw.wmnet;
 }
 
 host mwmaint1002 {
