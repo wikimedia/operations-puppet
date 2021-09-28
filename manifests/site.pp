@@ -2618,6 +2618,11 @@ node /^thumbor100[1234]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
 }
 
+# New thumbor nodes T290190
+node /^thumbor200[56]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # New eqiad thumbor servers
 node /^thumbor100[56]\.eqiad\.wmnet/ {
     role(insetup)
