@@ -2765,6 +2765,7 @@ service::catalog:
     port: 4011
     sites:
       - eqiad
+      - codfw
     state: lvs_setup
     discovery:
       - dnsdisc: toolhub
