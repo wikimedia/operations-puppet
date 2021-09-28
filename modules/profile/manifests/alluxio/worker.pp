@@ -9,7 +9,7 @@ class profile::alluxio::worker(
 ) {
     require ::profile::alluxio::common
 
-    $alluxio_host_srange = "@resolve((${join($alluxio_worker_hosts, ' ')})) @resolve((${join($alluxio_master_hosts, ' ')}))"
+    $alluxio_host_srange = "@resolve((${join($alluxio_worker_hosts, ' ')} ${join($alluxio_master_hosts, ' ')}))"
 
     # The /etc/init.d/alluxio-worker script isn't great, so
     # we're not defining the service for now and starting the services manually.
