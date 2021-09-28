@@ -78,7 +78,7 @@ class profile::prometheus::global (
         listen_address       => '127.0.0.1:9904',
         scrape_configs_extra => $federation_jobs,
         alertmanagers        => $alertmanagers.map |$a| { "${a}:9093" },
-        alerts_deploy_files  => '/srv/alerts-global/*.yaml',
+        alerts_deploy_path   => '/srv/alerts-global',
     }
 
     prometheus::web { 'global':
