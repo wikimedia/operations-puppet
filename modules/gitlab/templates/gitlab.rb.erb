@@ -80,7 +80,7 @@ gitlab_rails['ldap_enabled'] = false
 
 # Allow prometheus to scrape GitLab Nginx metrics T275170
 ## https://docs.gitlab.com/ee/administration/monitoring/prometheus/#using-an-external-prometheus-server
-<%- unless @monitoring_whitelist.empty? -%>
+<%- unless @monitoring_whitelist.empty? or !@exporters.include?('nginx') -%>
 nginx['status']['options'] = {
       "server_tokens" => "off",
       "access_log" => "off",
@@ -127,7 +127,7 @@ puma['exporter_enabled'] = <%= @exporters.include?('puma') %>
 <%- case exporter -%>
 <%- when 'gitlab' -%>
 gitlab_exporter['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>'
-gitlab_exporter['listen_port'] = '<%= config['port'] %>'
+gitlab_exporter['listen_port'] = <%= config['port'] %>
 <%- when 'node' -%>
 node_exporter['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
 <%- when 'postgres' -%>
@@ -136,14 +136,14 @@ postgres_exporter['listen_address'] = '<%= config.fetch('listen_address', @expor
 redis_exporter['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
 <%- when 'puma' -%>
 puma['exporter_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>'
-puma['exporter_port'] = '<%= config['port'] %>'
+puma['exporter_port'] = <%= config['port'] %>
 <%- when 'workhorse' -%>
 gitlab_workhorse['prometheus_listen_addr'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
 <%- when 'gitaly' -%>
 gitaly['prometheus_listen_addr'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
 <%- when 'sidekiq' -%>
 sidekiq['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>'
-sidekiq['listen_port'] = '<%= config['port'] %>'
+sidekiq['listen_port'] = <%= config['port'] %>
 <% end -%>
 <% end -%>
 
@@ -176,6 +176,7 @@ gitlab_rails['omniauth_providers'] = [
       "uid_key" => '<%= @cas_uid_key %>',
       "email_key" => '<%= @cas_email_key %>',
       "name_key" => '<%= @cas_name_key %>',
+      "nickname_key" => '<%= @cas_nickname_key %>',
       "url" => '<%= @cas_url %>',
       "login_url" => '<%= @cas_login_uri %>',
       "service_validate_url" => '<%= @cas_validate_uri %>',

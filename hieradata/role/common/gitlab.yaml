@@ -12,5 +12,38 @@ profile::base::ssh_server_settings:
 
 profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
 profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
-
+profile::gitlab::backup_keep_time: 259200
 profile::gitlab::backup_sync::ensure: 'present'
+
+profile::gitlab::cas_label: 'Wikimedia Dev Account'
+profile::gitlab::cas_url: 'https://idp.wikimedia.org'
+profile::gitlab::cas_auto_create_users: false
+
+profile::gitlab::smtp_enabled: false
+
+profile::gitlab::monitoring_whitelist: ['127.0.0.1/32', '10.0.0.0/8']
+profile::gitlab::exporters:
+  nginx:
+    port: 8060
+    listen_address: "%{facts.networking.ip}"
+  gitlab:
+    port: 9168
+    listen_address: "%{facts.networking.ip}"
+  postgres:
+    port: 9187
+    listen_address: "%{facts.networking.ip}"
+  redis:
+    port: 9121
+    listen_address: "%{facts.networking.ip}"
+  workhorse:
+    port: 9229
+    listen_address: "%{facts.networking.ip}"
+  gitaly:
+    port: 9236
+    listen_address: "%{facts.networking.ip}"
+  sidekiq:
+    port: 8082
+    listen_address: "%{facts.networking.ip}"
+  puma:
+    port: 8083
+    listen_address: "%{facts.networking.ip}"

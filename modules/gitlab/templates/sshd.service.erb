@@ -5,9 +5,9 @@ After=network.target auditd.service
 ConditionPathExists=!<%= @base_dir %>/sshd_not_to_be_run
 
 [Service]
-ExecStartPre=/usr/sbin/sshd -t -f "<%= @base_dir %>/sshd_config"
-ExecStart=/usr/sbin/sshd -D $SSHD_OPTS -f "<%= @base_dir %>/sshd_config"
-ExecReload=/usr/sbin/sshd -t -f "<%= @base_dir %>/sshd_config"
+ExecStartPre=/usr/sbin/sshd -t -f "<%= @config_file %>"
+ExecStart=/usr/sbin/sshd -D $SSHD_OPTS -f "<%= @config_file %>"
+ExecReload=/usr/sbin/sshd -t -f "<%= @config_file %>"
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure

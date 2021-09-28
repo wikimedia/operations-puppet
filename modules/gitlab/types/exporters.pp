@@ -1,1 +1,1 @@
-type Gitlab::Exporters = Enum['node', 'gitlab', 'postgres', 'redis', 'puma', 'gitlay', 'sidekiq', 'workhorse']
+type Gitlab::Exporters = Enum['node', 'gitlab', 'postgres', 'redis', 'puma', 'gitaly', 'sidekiq', 'workhorse', 'nginx']

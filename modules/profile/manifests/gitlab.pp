@@ -1,5 +1,3 @@
-# a placeholder profile for a manual gitlab setup by
-# https://phabricator.wikimedia.org/T274458
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Stdlib::Fqdn $passive_host = lookup('profile::gitlab::passive_host'),
@@ -9,10 +7,18 @@ class profile::gitlab(
     Stdlib::Unixpath $backup_dir_data = lookup('profile::gitlab::backup_dir_data'),
     Stdlib::Unixpath $backup_dir_config = lookup('profile::gitlab::backup_dir_config'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
+    Array[Stdlib::IP::Address] $monitoring_whitelist  = lookup('profile::gitlab::monitoring_whitelist'),
+    String $cas_label = lookup('profile::gitlab::cas_label'),
+    Stdlib::Httpurl $cas_url = lookup('profile::gitlab::cas_url'),
+    Boolean $cas_auto_create_users = lookup('profile::gitlab::cas_auto_create_users'),
+    Integer[1] $backup_keep_time = lookup('profile::gitlab::backup_keep_time'),
+    Boolean  $smtp_enabled = lookup('profile::gitlab::smtp_enabled'),
+    Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = lookup('profile::gitlab::exporters', {default_value => []}),
 ){
 
     $acme_chief_cert = 'gitlab'
 
+    # TODO move backup logic from profile to module
     if $active_host == $facts['fqdn'] {
         # Bacula backups, also see profile::backup::filesets (T274463)
         backup::set { 'gitlab':
@@ -29,9 +35,6 @@ class profile::gitlab(
     # /etc/acmecerts/<%= @acme_chief_cert %>/live/
     acme_chief::cert { $acme_chief_cert:
         puppet_rsc => Exec['Reload nginx'],
-    }
-    apt::package_from_component{'gitlab-ce':
-        component => 'thirdparty/gitlab',
     }
 
     # add a service IP to the NIC - T276148
@@ -62,82 +65,21 @@ class profile::gitlab(
         port   => 22,
         drange => "(${service_ip_v4} ${service_ip_v6})",
     }
-    # Theses parameters are installed by gitlab when the package is updated
-    # However we purge this directory in puppet as such we need to add them here
-    # TODO: Ensure theses values actually make sense
-    sysctl::parameters {'omnibus-gitlab':
-        priority => 90,
-        values   => {
-            'kernel.sem'         => '250 32000 32 262',
-            'kernel.shmall'      => 4194304,
-            'kernel.shmmax'      => 17179869184,
-            'net.core.somaxconn' => 1024,
-        },
-    }
 
-    wmflib::dir::mkdir_p("${backup_dir_data}/latest", {
-        owner => 'root',
-        group => 'root',
-        mode  => '0600',
-    })
-
-    wmflib::dir::mkdir_p("${backup_dir_config}/latest", {
-        owner => 'root',
-        group => 'root',
-        mode  => '0600',
-    })
-
+    # create firewall rules for exporters T275170
     if !empty($prometheus_nodes) {
         # gitlab exports metrics on multiple ports and prometheus nodes need access
         $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
         $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
-        ferm::service { 'gitlab_nginx':
-            proto  => 'tcp',
-            port   => '8060',
-            srange => $ferm_srange,
-        }
-
-        ferm::service { 'gitlab_redis':
-            proto  => 'tcp',
-            port   => '9121',
-            srange => $ferm_srange,
-        }
-
-        ferm::service { 'gitlab_postgres':
-            proto  => 'tcp',
-            port   => '9187',
-            srange => $ferm_srange,
-        }
-
-        ferm::service { 'gitlab_workhorse':
-            proto  => 'tcp',
-            port   => '9229',
-            srange => $ferm_srange,
-        }
-
-        ferm::service { 'gitlab_rails':
-            proto  => 'tcp',
-            port   => '8083',
-            srange => $ferm_srange,
-        }
-
-        ferm::service { 'gitlab_sidekiq':
-            proto  => 'tcp',
-            port   => '8082',
-            srange => $ferm_srange,
-        }
-
-        ferm::service { 'gitlab_server':
-            proto  => 'tcp',
-            port   => '9168',
-            srange => $ferm_srange,
-        }
-
-        ferm::service { 'gitlab_gitaly':
-            proto  => 'tcp',
-            port   => '9236',
-            srange => $ferm_srange,
+        $exporters.each |$exporter, $config| {
+            unless $config['listen_address'] == '127.0.0.1' {
+                ferm::service { "${exporter}_exporter":
+                    proto  => 'tcp',
+                    port   => $config['port'],
+                    srange => $ferm_srange,
+                }
+            }
         }
     }
 
@@ -207,26 +149,17 @@ class profile::gitlab(
         ensure       => $backup_sync_ensure
     }
 
-    if $active_host == $facts['fqdn'] {
-        # enable backups on active GitLab server
-        class { 'gitlab::backup':
-            full_ensure       => 'present',
-            partial_ensure    => 'absent',
-            config_ensure     => 'present',
-            backup_dir_data   => $backup_dir_data,
-            backup_dir_config => $backup_dir_config,
-            backup_keep_time  => 3
-        }
-    } else {
-        class { 'gitlab::backup':
-            full_ensure    => 'absent',
-            partial_ensure => 'absent',
-            config_ensure  => 'absent'
-        }
-
-        class { 'gitlab::restore':
-            restore_ensure   => 'present',
-            restore_dir_data => $backup_dir_data
-        }
+    class { 'gitlab':
+        backup_dir             => $backup_dir_data,
+        exporters              => $exporters,
+        monitoring_whitelist   => $monitoring_whitelist,
+        cas_label              => $cas_label,
+        cas_url                => $cas_url,
+        cas_auto_create_users  => $cas_auto_create_users,
+        backup_keep_time       => $backup_keep_time,
+        smtp_enabled           => $smtp_enabled,
+        enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
+        listen_addresses       => [$service_ip_v4, $service_ip_v6],
+        enable_restore_replica => $active_host != $facts['fqdn'], # enable automated restore on passive GitLab server
     }
 }

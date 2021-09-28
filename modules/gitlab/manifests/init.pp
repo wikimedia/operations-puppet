@@ -26,10 +26,11 @@ class gitlab (
     Stdlib::Unixpath $cas_logout_uri                    = '/logout',
     Stdlib::Unixpath $cas_validate_uri                  = '/p3/serviceValidate',
     String           $cas_label                         = 'Cas Login',
-    String           $cas_uid_field                     = 'cn',
-    String           $cas_uid_key                       = 'cn',
+    String           $cas_uid_field                     = 'uid',
+    String           $cas_uid_key                       = 'uid',
     String           $cas_email_key                     = 'mail',
     String           $cas_name_key                      = 'cn',
+    String           $cas_nickname_key                  = 'uid',
     Boolean          $cas_sync_email                    = true,
     Boolean          $cas_sync_profile                  = true,
     Boolean          $cas_sync_attrs                    = true,
@@ -42,8 +43,11 @@ class gitlab (
     Boolean          $smtp_enabled                      = true,
     Integer          $smtp_port                         = 25,
     Stdlib::IP::Address $exporter_default_listen        = '127.0.0.1',
+    Array[Stdlib::IP::Address] $listen_addresses        = ['127.0.0.1', '::1'],
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = {},
     Array[Stdlib::IP::Address] $monitoring_whitelist    = ['127.0.0.1/32'],
+    Boolean          $enable_secondary_sshd             = true,
+    Boolean          $enable_restore_replica            = false,
 ) {
 
     apt::package_from_component{'gitlab-ce':
@@ -84,9 +88,17 @@ class gitlab (
         require => Package['gitlab-ce'],
     }
 
-    if $enable_backup {
-        include gitlab::backup
+    # enable backups on active GitLab server
+    $ensure_backup = $enable_backup.bool2str('present','absent')
+    class { 'gitlab::backup':
+        full_ensure       => $ensure_backup,
+        partial_ensure    => 'absent',
+        config_ensure     => $ensure_backup,
+        backup_dir_data   => $gitlab::backup_dir_data,
+        backup_dir_config => $gitlab::backup_dir_config,
+        backup_keep_time  => $gitlab::backup_keep_time,
     }
+
     # Theses parameters are installed by gitlab when the package is updated
     # However we purge this directory in puppet as such we need to add them here
     # TODO: Ensure theses values actually make sense
@@ -98,5 +110,19 @@ class gitlab (
             'kernel.shmmax'      => 17179869184,
             'net.core.somaxconn' => 1024,
         },
+    }
+
+    # enable dedicated sshd for GitLab
+    $ensure_sshd = $enable_secondary_sshd.bool2str('present','absent')
+    class { 'gitlab::ssh' :
+        ensure           => $ensure_sshd,
+        listen_addresses => $listen_addresses,
+    }
+
+    # enable automated restore from backup (for replica)
+    $ensure_restore_replica = $enable_restore_replica.bool2str('present','absent')
+    class { 'gitlab::restore' :
+        restore_ensure   => $ensure_restore_replica,
+        restore_dir_data => $gitlab::backup_dir_data,
     }
 }
