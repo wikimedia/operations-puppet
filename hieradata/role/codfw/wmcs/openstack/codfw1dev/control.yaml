@@ -21,6 +21,9 @@ profile::wmcs::backy2::cluster_name: ceph
 profile::ceph::client::rbd::libvirt_rbd_uuid: 'e6500406-304c-4a21-a5d0-8214a827a10d'
 profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: 'f83e2286-bff1-47bf-bf6d-109c427d63c9'
 
+# This FQDN was manually created and assigned to a floating IP (also manually created)
+# which points to an active manila-sharecontroller VM instance
+profile::openstack::codfw1dev::manila_sharecontroller: manila-sharecontroller.cloudinfra-codfw1dev.codfw1dev.wmcloud.org
 profile::openstack::codfw1dev::manila::service_enabled: true
 profile::openstack::codfw1dev::manila::api_bind_port: 18786
 profile::openstack::codfw1dev::manila::db_user: manila

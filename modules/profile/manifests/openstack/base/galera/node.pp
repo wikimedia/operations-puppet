@@ -1,12 +1,13 @@
 class profile::openstack::base::galera::node(
-    Integer             $server_id             = lookup('profile::openstack::base::galera::server_id'),
-    Boolean             $enabled               = lookup('profile::openstack::base::galera::enabled'),
-    Stdlib::Port        $listen_port           = lookup('profile::openstack::base::galera::listen_port'),
-    String              $prometheus_db_pass    = lookup('profile::openstack::base::galera::prometheus_db_pass'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
-    Array[Stdlib::Fqdn] $designate_hosts       = lookup('profile::openstack::base::designate_hosts'),
-    Array[Stdlib::Fqdn] $labweb_hosts          = lookup('profile::openstack::base::labweb_hosts'),
-    Stdlib::Fqdn        $puppetmaster          = lookup('profile::openstack::base::puppetmaster::web_hostname'),
+    Integer                $server_id              = lookup('profile::openstack::base::galera::server_id'),
+    Boolean                $enabled                = lookup('profile::openstack::base::galera::enabled'),
+    Stdlib::Port           $listen_port            = lookup('profile::openstack::base::galera::listen_port'),
+    String                 $prometheus_db_pass     = lookup('profile::openstack::base::galera::prometheus_db_pass'),
+    Array[Stdlib::Fqdn]    $openstack_controllers  = lookup('profile::openstack::base::openstack_controllers'),
+    Array[Stdlib::Fqdn]    $designate_hosts        = lookup('profile::openstack::base::designate_hosts'),
+    Array[Stdlib::Fqdn]    $labweb_hosts           = lookup('profile::openstack::base::labweb_hosts'),
+    Stdlib::Fqdn           $puppetmaster           = lookup('profile::openstack::base::puppetmaster::web_hostname'),
+    Optional[Stdlib::Fqdn] $manila_sharecontroller = lookup('profile::openstack::base::manila_sharecontroller', {default_value => undef}),
     ) {
 
     $socket = '/var/run/mysqld/mysqld.sock'
@@ -49,7 +50,14 @@ class profile::openstack::base::galera::node(
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
-    # Database access from each db node, HA-proxy, designate, web hosts
+
+    if $manila_sharecontroller == undef {
+        $manila_ip = ''
+    } else {
+        $manila_ip = "@resolve(${manila_sharecontroller}) @resolve(${manila_sharecontroller}, AAAA)"
+    }
+
+    # Database access from each db node, HA-proxy, designate, web hosts, manila-sharecontroller
     ferm::rule{'galera_db_access':
         ensure => 'present',
         rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
@@ -57,6 +65,7 @@ class profile::openstack::base::galera::node(
                           @resolve((${join($designate_hosts,' ')}))
                           @resolve((${join($designate_hosts,' ')}), AAAA)
                           @resolve(${puppetmaster}) @resolve(${puppetmaster}, AAAA)
+                          ${manila_ip}
                           ${labweb_ips} ${labweb_ip6s}
                           ) proto tcp dport (3306) ACCEPT;",
     }
