@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+import fnmatch
 import logging
 import pathlib
 import re
@@ -65,7 +66,7 @@ def get_tag(fobj, name):
     rest is ignored. Return None on tag not found."""
 
     # FIXME Use format strings when all Prometheus hosts run >= Buster
-    tag_re = re.compile("^# *{name}: *(\\S+)$".format(name=name))
+    tag_re = re.compile("^# *{name}: *(.+)$".format(name=name))
 
     for line in fobj:
         m = tag_re.match(line)
@@ -78,19 +79,32 @@ def get_tag(fobj, name):
 
 
 def filter_tag(files, tag_name, tag_value, default):
-    """Scan each of 'files' for 'tag_name' having 'tag_value'. A file without tags is assumed to
-    have 'tag_name' with value 'default'. Return the filtered list."""
+    """Scan each of 'files' for 'tag_name' matching 'tag_value'. A file without tags is assumed to
+    have 'tag_name' with value 'default'. The tag specification within
+    the file can have multiple comma-separated values. Each tag found
+    will be matched against tag_value with fnmatch.
+
+    Return the filtered list."""
 
     res = []
     for filename in files:
         with open(filename.as_posix()) as f:
             tag = get_tag(f, tag_name)
-            # tag found and has the value we're looking for
-            if tag == tag_value:
-                res.append(filename)
-            # tag not found, but we're looking for its default value
-            elif tag is None and tag_value == default:
-                res.append(filename)
+            if tag is None:
+                # tag not found, but we're looking for its default value
+                if tag_value == default:
+                    res.append(filename)
+            else:
+                tags = re.split(r',\s*', tag)
+                # tag found and has the value we're looking for
+                if tag_value in tags:
+                    res.append(filename)
+
+                # scan for matches in tag values
+                for tag_pattern in tags:
+                    if fnmatch.fnmatch(tag_value, tag_pattern):
+                        res.append(filename)
+
     return res
 
 
@@ -115,7 +129,6 @@ def main():
         "--deploy-tag",
         metavar="NAME",
         default="local",
-        choices=["local", "global"],
         help="Deploy alert files with 'deploy-tag' NAME. Files without 'deploy-tag'"
              " will be considered to have tag 'local'.",
     )

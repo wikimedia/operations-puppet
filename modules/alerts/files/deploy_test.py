@@ -89,6 +89,23 @@ class TagsTest(unittest.TestCase):
         filtered = deploy.filter_tag(files, "tag", "value", "default")
         self.result_ok(filtered, ["ok-value"])
 
+    def testTagPatternMatch(self):
+        self.write_text("multiple-values", "# tag: foo, bar,baz\n\n")
+        self.write_text("pattern", "# tag:prefix*\n\n")
+        self.write_text("multiple-pattern", "# tag: foo, prefix1*, prefix2\n\n")
+
+        # Materialize the generator, we're going to reuse the list
+        files = list(self.path.glob("*"))
+
+        filtered = deploy.filter_tag(files, "tag", "bar", "default")
+        self.result_ok(filtered, ["multiple-values"])
+
+        filtered = deploy.filter_tag(files, "tag", "prefix1foo", "default")
+        self.result_ok(filtered, ["pattern", "multiple-pattern"])
+
+        filtered = deploy.filter_tag(files, "tag", "prefix2", "default")
+        self.result_ok(filtered, ["pattern", "multiple-pattern"])
+
     def testTagNotReadInTrailer(self):
         self.write_text(
             "tag-end", "# header\n\n\nrestof\n\nfile\n# tag: value\ntrailer\n"
