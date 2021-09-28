@@ -77,7 +77,7 @@ master_rsync: <%= @deployment_server %>
 statsd_host: statsd.eqiad.wmnet
 tcpircbot_host: icinga.wikimedia.org
 
-canary_dashboard_url: https://logstash.wikimedia.org/goto/83629bcb5560d11e61d3085c89dd9ed6
+canary_dashboard_url: https://logstash.wikimedia.org
 #php7-admin-port: <%= @php7_admin_port %>
 mw_web_clusters: appserver,api_appserver,jobrunner,testserver,parsoid_php
 mediawiki_canary_swagger_url: https://en.wikipedia.org
@@ -121,7 +121,7 @@ udp2log_host: <%= @betacluster_udplog_host %>
 wmf_realm: labs
 # No pybal in labs, but pretend that there is anyway
 pybal_interface: lo
-canary_dashboard_url: https://logstash-beta.wmflabs.org/goto/ff3530979bc5a54b9779ac9cbd4fc819
+canary_dashboard_url: https://logstash-beta.wmflabs.org
 delay_messageblobstore_purge: true
 
 # Restart php-fpm only when running from the deployment servers for now.
