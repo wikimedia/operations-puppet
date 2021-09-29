@@ -157,9 +157,8 @@ receivers:
     - to: 'sre-traffic@<%= scope.lookupvar('::domain') %>'
 
 - name: 'search-platform-ircmail'
-  # TODO: uncomment IRC pings when alerts are stabilized
-  # webhook_configs:
-  #  - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
     - to: 'discovery-alerts@lists.wikimedia.org'
 
