@@ -2542,16 +2542,9 @@ node 'sodium.wikimedia.org' {
 }
 
 node 'thorium.eqiad.wmnet' {
-    # thorium is used to host public Analytics websites like:
-    # - https://stats.wikimedia.org (Wikistats)
-    # - https://analytics.wikimedia.org (Analytics dashboards and datasets)
-    # - https://datasets.wikimedia.org (deprecated, redirects to analytics.wm.org/datasets/archive)
-    #
-    # For a complete and up to date list please check the
-    # related role/module.
-    #
-    # This node is not intended for data processing.
-    role(analytics_cluster::webserver)
+    # replaced by an-web1001, being decommissioned:
+    # https://phabricator.wikimedia.org/T292075
+    role(spare::system)
 }
 
 # The hosts contain all the tools and libraries to access
