@@ -91,6 +91,10 @@ TCPKeepAlive yes
 AllowTcpForwarding <%= @ssh_tcp_forwarding %>
 <%- end -%>
 
+<%- if @gateway_ports -%>
+# Allow remote hosts to connect to ports forwarded by the client
+GatewayPorts yes
+<%- end -%>
 <%- if @max_sessions -%>
 MaxSessions <%= @max_sessions %>
 <%- end -%>
