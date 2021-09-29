@@ -210,10 +210,6 @@ externallinks,el_to,K
 externallinks,el_index,K
 filearchive,fa_description_id,K
 filearchive,fa_deleted_reason_id,K
-flaggedimages,fi_rev_id,K
-flaggedimages,fi_name,K
-flaggedimages,fi_img_timestamp,K
-flaggedimages,fi_img_sha1,K
 flaggedpage_config,fpc_page_id,K
 flaggedpage_config,fpc_select,K
 flaggedpage_config,fpc_override,K
