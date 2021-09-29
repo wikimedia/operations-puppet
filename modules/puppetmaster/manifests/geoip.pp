@@ -1,11 +1,10 @@
+# Fetch the GeoIP databases into puppet's volatile dir, so that other hosts
+# can then just sync that directory into their own /usr/share/GeoIP via a
+# normal puppet File resource (see the geoip module for more)
 class puppetmaster::geoip(
     Boolean $fetch_private = true,
     Boolean $use_proxy = true,
 ){
-
-    # Fetch the GeoIP databases into puppet's volatile dir, so that other hosts
-    # can then just sync that directory into their own /usr/share/GeoIP via a
-    # normal puppet File resource (see the geoip module for more)
 
     $geoip_destdir = "${puppetmaster::volatiledir}/GeoIP"
 
@@ -20,9 +19,11 @@ class puppetmaster::geoip(
         $webproxy = undef
     }
 
+    # Fetch the proprietary paid-for MaxMind database
     if $fetch_private {
-        # Fetch the proprietary paid-for MaxMind database
-        include ::passwords::geoip
+
+        # FIXME: password classes should not be used within other modules
+        include ::passwords::geoip # lint:ignore:wmf_styleguide
 
         class { '::geoip::data::maxmind':
             data_directory => $geoip_destdir,
@@ -42,7 +43,28 @@ class puppetmaster::geoip(
                 'GeoIP2-ISP',
                 ],
         }
+
+        # T288844
+        $geoip_destdir_ipinfo = "${puppetmaster::volatiledir}/GeoIPInfo"
+
+        file { $geoip_destdir_ipinfo:
+            ensure => directory,
+        }
+
+        # FIXME: modules should not use other modules directly
+        class { 'geoip::data::maxmind::ipinfo': # lint:ignore:wmf_styleguide
+            data_directory => $geoip_destdir_ipinfo,
+            proxy          => $webproxy,
+            user_id        => $passwords::geoip::user_id_ipinfo,
+            license_key    => $passwords::geoip::license_key_ipinfo,
+            product_ids    => [
+                'GeoIP2-Anonymous-IP',
+                'GeoIP2-Enterprise',
+                ],
+        }
+
     } else {
+    # fall back to public legacy databases
         class { '::geoip::data::maxmind':
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
@@ -55,8 +77,8 @@ class puppetmaster::geoip(
                 ],
         }
 
-        # compatibility symlinks, so that users can use the stable paths
-        # GeoIP.dat/GeoIPCity.dat between labs and production
+        # If using public databases also install compatibility symlinks so that users
+        # can use the stable paths GeoIP.dat/GeoIPCity.dat between labs and production
         file { "${geoip_destdir}/GeoIP.dat":
             ensure => link,
             target => 'GeoLiteCountry.dat',
