@@ -27,5 +27,10 @@ class rsyslog {
         require => Package['rsyslog'],
     }
 
+    file { '/etc/rsyslog.d/00-abort-unclean-config.conf':
+        ensure => absent,
+        notify => Service['rsyslog'],
+    }
+
     base::service_auto_restart { 'rsyslog': }
 }
