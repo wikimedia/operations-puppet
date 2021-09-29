@@ -2598,7 +2598,7 @@ node 'testreduce1001.eqiad.wmnet' {
 }
 
 # Test instances for Ganeti test cluster
-node /^testvm200[1-2]\.codfw\.wmnet$/ {
+node /^testvm200[1-3]\.codfw\.wmnet$/ {
     role(test)
 }
 
