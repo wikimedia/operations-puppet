@@ -17,7 +17,7 @@ profile::query_service::nodes:
 profile::query_service::enable_ldf: false
 profile::query_service::high_query_time_port: true
 profile::query_service::blazegraph_main_ns: wcq
-profile::query_service::oauth: false
+profile::query_service::oauth: true
 profile::query_service::oauth_settings: null
 
 profile::query_service::blazegraph_heap_size: 31g
@@ -54,3 +54,4 @@ profile::query_service::oauth_settings:
     oauth_nice_url: https://commons.wikimedia.org/wiki/
     oauth_session_store_limit: 100
     oauth_wiki_logout_link: https://commons.wikimedia.org/w/index.php?title=Special:UserLogout
+    oauth_success_redirect_url: https://commons-query.wikimedia.org/

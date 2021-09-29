@@ -10,4 +10,5 @@ type Query_service::OAuthSettings = Struct[{
   'oauth_nice_url'             => Stdlib::HTTPSUrl,
   'oauth_index_url'            => Stdlib::HTTPSUrl,
   'oauth_wiki_logout_link'     => Stdlib::HTTPSUrl,
+  'oauth_success_redirect_url' => Stdlib::HTTPSUrl,
 }]

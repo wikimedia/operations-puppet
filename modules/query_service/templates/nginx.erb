@@ -69,7 +69,7 @@ server {
 
     location /_oauth_token_verify {
       error_page 403 = /error403;
-      proxy_set_header 'X-redirect-url' 'https://wcqs-beta.wmflabs.org/'; # TODO should be generalized if we ever go oauth with other endpoints
+      proxy_set_header 'X-redirect-url' '<%= @oauth_success_redirect_url %>';
       proxy_pass http://127.0.0.1:9999/oauth/oauth_verify$is_args$args;
     }
     location /_logout {
