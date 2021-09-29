@@ -62,9 +62,11 @@ class debdeploy::client (
         mode   => '0550',
         source => 'puppet:///modules/base/reboot-host',
     }
-
+    #  TODO: update to use stdlib::ensure($ensure, 'directory'),
+    #  currently Base::Service_auto_restart needs this folder
+    #  we should roll that functionality into this module
     file {'/etc/debdeploy-client':
-        ensure => stdlib::ensure($ensure, 'directory'),
+        ensure => directory,
     }
     file {'/etc/debdeploy-client/config.json':
         ensure  => stdlib::ensure($ensure, 'file'),
