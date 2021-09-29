@@ -155,17 +155,15 @@ automatic_share_server_cleanup = false
 region_name = <%= @region %>
 auth_url = http://<%= @keystone_api_fqdn %>:8776/v3/
 auth_type = v3password
-password = <%= @ldap_user_pass %>
+password = <%= @user_pass %>
 project_domain_name = default
-project_name = admin
 auth_type = v3password
-default_domain_name = admin
-password = <%= @ldap_user_pass %>
+default_domain_name = default
 project_domain_name = default
-project_name = admin
+project_name = service
 user_domain_id = default
 user_domain_name = default
-username = novaadmin
+username = manila-srv
 
 [database]
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
@@ -176,12 +174,12 @@ region_name = <%= @region %>
 auth_url = http://<%= @keystone_api_fqdn %>:5000/v3
 auth_type = v3password
 default_domain_name = default
-password = <%= @ldap_user_pass %>
+password = <%= @user_pass %>
 project_domain_name = default
-project_name = admin
+project_name = service
 user_domain_id = default
 user_domain_name = default
-username = novaadmin
+username = manila-srv
 
 [keystone_authtoken]
 auth_type = password
@@ -189,10 +187,10 @@ www_authenticate_uri = http://<%= @keystone_api_fqdn %>:5000
 auth_url = http://<%= @keystone_api_fqdn %>:5000/v3
 password = <%= @user_pass %>
 project_domain_id = default
-project_name = admin
+project_name = service
 region_name = <%= @region %>
 user_domain_id = default
-username = novaadminmanila
+username = manila-srv
 <%- if @realm == "production" then -%>
 memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(",") %>
 <%- else -%>
@@ -205,26 +203,26 @@ service_metadata_proxy = true
 metadata_proxy_shared_secret = <%= @metadata_proxy_shared_secret %>
 auth_url = http://<%= @keystone_api_fqdn %>:5000/v3
 auth_type = v3password
-password = <%= @ldap_user_pass %>
+password = <%= @user_pass %>
 project_domain_name = default
-project_name = admin
-tenant_name = admin
+project_name = service
+tenant_name = service
 user_domain_id = default
 user_domain_name = default
-username = novaadmin
+username = manila-srv
 region_name = <%= @region %>
 
 [nova]
 region_name = <%= @region %>
 auth_url = http://<%= @keystone_api_fqdn %>:5000/v3
 auth_type = v3password
-password = <%= @ldap_user_pass %>
+password = <%= @user_pass %>
 project_domain_name = default
-project_name = admin
-tenant_name = admin
+project_name = service
+tenant_name = service
 user_domain_id = default
 user_domain_name = default
-username = novaadmin
+username = manila-srv
 
 [oslo_concurrency]
 lock_path = /var/lock/manila
