@@ -111,7 +111,7 @@ def unroll_result_list(entries):
     return '\n'.join(sorted(entries))
 
 
-def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_dir):
+def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_dir, eol_date):
     status_log = []
     owners_to_contact_plan = defaultdict(set)
     owners_to_contact_delayed = defaultdict(set)
@@ -178,6 +178,19 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
 
         tags.h1("Summary")
         with tags.div().add(tags.ul()):
+
+            eol = datetime.datetime.fromisoformat(eol_date)
+            today = datetime.datetime.now()
+
+            if today > eol:
+                lapsed = (today-eol).days
+                tags.li("{} is behind designated EOL date by {} days".
+                        format(distro, lapsed), style="color:red")
+            else:
+                remainder = (eol-today).days
+                tags.li("{} remaining days until {} reaches designated EOL date".
+                        format(remainder, distro))
+
             tags.li("A total of {} hosts are running {}".format(deprecated_count, distro))
             tags.li("A total of {} hosts are running a more recent OS".format(hosts_current_count))
             tags.li("A total of {} hosts are being migrated and lagging behind plan".
@@ -305,6 +318,7 @@ def main():
                        distro,
                        uptodate_os,
                        cfg.get('general', 'target_directory'),
+                       cfg.get(distro, 'end-of-life'),
                        )
         distros.append(distro)
 

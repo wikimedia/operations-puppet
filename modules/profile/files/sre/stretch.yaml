@@ -1,4 +1,3 @@
-end-of-life: 2021-2
 role::mediawiki::canary_appserver:
   owner: ServiceOps SREs
   target-q: TBD
