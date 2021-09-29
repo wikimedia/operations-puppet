@@ -13,17 +13,20 @@ class openstack::manila::service (
     ])
 
     service { 'manila-api':
-        ensure  => $enabled,
-        require => Package['manila-api'],
+        ensure    => $enabled,
+        require   => Package['manila-api'],
+        subscribe => File['/etc/manila/manila.conf'],
     }
 
     service { 'manila-data':
-        ensure  => $enabled,
-        require => Package['manila-data'],
+        ensure    => $enabled,
+        require   => Package['manila-data'],
+        subscribe => File['/etc/manila/manila.conf'],
     }
 
     service { 'manila-scheduler':
-        ensure  => $enabled,
-        require => Package['manila-scheduler'],
+        ensure    => $enabled,
+        require   => Package['manila-scheduler'],
+        subscribe => File['/etc/manila/manila.conf'],
     }
 }

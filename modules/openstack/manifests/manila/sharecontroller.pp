@@ -15,7 +15,8 @@ class openstack::manila::sharecontroller (
     require_package('manila-share')
 
     service { 'manila-share':
-        ensure  => $enabled,
-        require => Package['manila-share'],
+        ensure    => $enabled,
+        require   => Package['manila-share'],
+        subscribe => File['/etc/manila/manila.conf'],
     }
 }
