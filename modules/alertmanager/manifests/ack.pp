@@ -9,7 +9,7 @@ class alertmanager::ack (
     Stdlib::Port $listen_port = 19195,
     Wmflib::Ensure $ensure = absent,
 ) {
-    require_package('kthxbye')
+    ensure_packages(['kthxbye'])
 
     systemd::service { 'kthxbye':
         ensure   => $ensure,

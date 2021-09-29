@@ -5,7 +5,7 @@ class alertmanager::phab (
     String $listen_host = '::',
     Stdlib::Port $listen_port = 8292,
 ) {
-    require_package('phalerts')
+    ensure_packages(['phalerts'])
 
     service { 'phalerts':
         ensure  => running,

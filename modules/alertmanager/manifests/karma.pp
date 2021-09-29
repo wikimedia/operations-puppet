@@ -6,7 +6,7 @@ class alertmanager::karma (
     Stdlib::Port $listen_port = 19194,
     Optional[String] $auth_header = undef,
 ) {
-    require_package('karma')
+    ensure_packages(['karma'])
 
     systemd::service { 'karma':
         ensure   => present,
