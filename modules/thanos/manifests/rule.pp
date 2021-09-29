@@ -36,7 +36,7 @@ class thanos::rule (
     Stdlib::Port::Unprivileged $http_port = 17902,
     Stdlib::Port::Unprivileged $grpc_port = 17901,
 ) {
-    require_package('thanos')
+    ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $grpc_address = "0.0.0.0:${grpc_port}"

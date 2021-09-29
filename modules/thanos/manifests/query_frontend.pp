@@ -20,7 +20,7 @@ class thanos::query_frontend (
     Array[Stdlib::Host] $memcached_hosts = [],
     Stdlib::Port $memcached_port = 11211,
 ) {
-    require_package('thanos')
+    ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $service_name = 'thanos-query-frontend'

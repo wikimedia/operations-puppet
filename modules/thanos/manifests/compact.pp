@@ -21,7 +21,7 @@ class thanos::compact (
     Stdlib::Port::Unprivileged $http_port = 12902,
     Integer $concurrency = max($::processorcount / 2, 1),
 ) {
-    require_package('thanos')
+    ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $service_name = 'thanos-compact'

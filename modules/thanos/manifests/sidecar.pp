@@ -23,7 +23,7 @@ define thanos::sidecar (
     Optional[String] $objstore_password = undef,
     Optional[String] $min_time = undef,
 ) {
-    require_package('thanos')
+    ensure_packages(['thanos'])
 
     $grpc_address = "0.0.0.0:${grpc_port}"
     $http_address = "0.0.0.0:${http_port}"

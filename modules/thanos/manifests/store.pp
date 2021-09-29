@@ -26,7 +26,7 @@ class thanos::store (
     Optional[String] $max_time = undef,
     Optional[String] $consistency_delay = undef,
 ) {
-    require_package('thanos')
+    ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $grpc_address = "0.0.0.0:${grpc_port}"

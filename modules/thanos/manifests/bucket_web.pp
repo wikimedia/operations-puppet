@@ -10,7 +10,7 @@ class thanos::bucket_web (
     String $objstore_password,
     Stdlib::Port::Unprivileged $http_port = 15902,
 ) {
-    require_package('thanos')
+    ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $service_name = 'thanos-bucket-web'

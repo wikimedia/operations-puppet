@@ -13,7 +13,7 @@ class thanos::query (
     String $replica_label = 'replica',
     String $sd_files = '/etc/thanos-query/stores/*.yml',
 ) {
-    require_package('thanos')
+    ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $service_name = 'thanos-query'
