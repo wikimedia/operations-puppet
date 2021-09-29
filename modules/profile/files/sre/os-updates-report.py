@@ -234,10 +234,9 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
     with open(file_name, 'w') as report_html:
         report_html.write(html_report.render())
 
-    overview_file = os.path.join(target_dir, "{}.html".format(distro))
-    if os.path.exists(overview_file):
-        os.remove(overview_file)
-    os.symlink(file_name, overview_file)
+    latest = os.path.join(target_dir, '{}.html'.format(distro))
+    with open(latest, 'w') as latest_html:
+        latest_html.write(html_report.render())
 
 
 def prepare_overview(distros, target_dir):
