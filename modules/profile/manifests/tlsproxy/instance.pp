@@ -1,17 +1,11 @@
 # This defines the actual nginx daemon/instance which tlsproxy "sites" belong to
 class profile::tlsproxy::instance(
-    Boolean $nginx_ssl_dyn_rec                              = lookup('cache::ssl_dyn_rec',
-                                                              {default_value => false}),
-    Boolean $nginx_tune_for_media                           = lookup('cache::tune_for_media',
-                                                              {default_value => false}),
-    String $nginx_client_max_body_size                      = lookup('tlsproxy::nginx_client_max_body_size',
-                                                              {default_value => '100m'}),
-    Boolean $bootstrap_protection                           = lookup('profile::tlsproxy::instance::bootstrap_protection',
-                                                              {default_value => false}),
-    Enum['full', 'extras', 'light'] $nginx_variant          = lookup('profile::tlsproxy::instance::nginx_variant',
-                                                              {default_value => 'full'}),
-    Enum['strong', 'mid', 'compat'] $ssl_compatibility_mode = lookup('profile::tlsproxy::instance::ssl_compatibility_mode',
-                                                              {default_value => 'compat'}),
+    Boolean $bootstrap_protection                           = lookup('profile::tlsproxy::instance::bootstrap_protection'),
+    Boolean $nginx_ssl_dyn_rec                              = lookup('profile::tlsproxy::instance::nginx_ssl_dyn_rec'),
+    Boolean $nginx_tune_for_media                           = lookup('profile::tlsproxy::instance::nginx_tune_for_media'),
+    String $nginx_client_max_body_size                      = lookup('profile::tlsproxy::instance::nginx_client_max_body_size'),
+    Enum['full', 'extras', 'light'] $nginx_variant          = lookup('profile::tlsproxy::instance::nginx_variant'),
+    Enum['strong', 'mid', 'compat'] $ssl_compatibility_mode = lookup('profile::tlsproxy::instance::ssl_compatibility_mode'),
 ){
     # Enable client/server TCP Fast Open (TFO)
     require ::profile::tcp_fast_open

@@ -454,3 +454,11 @@ profile::debdeploy::client::filter_services:
 
 # Will be overridden in toolforge
 docker::registry: ""
+
+# profile::tlsproxy::instance defaults
+profile::tlsproxy::instance::bootstrap_protection: false
+profile::tlsproxy::instance::nginx_variant: full
+profile::tlsproxy::instance::nginx_client_max_body_size: '100m'
+profile::tlsproxy::instance::nginx_tune_for_media: false
+profile::tlsproxy::instance::nginx_ssl_dyn_rec: false
+profile::tlsproxy::instance::ssl_compatibility_mode: compat
