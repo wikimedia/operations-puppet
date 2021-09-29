@@ -782,6 +782,7 @@ docker::registry: ""
 
 # profile::tlsproxy::instance defaults
 profile::tlsproxy::instance::bootstrap_protection: false
+profile::tlsproxy::instance::numa_iface: 'lo'
 profile::tlsproxy::instance::nginx_variant: full
 profile::tlsproxy::instance::nginx_client_max_body_size: "100m"
 profile::tlsproxy::instance::ssl_compatibility_mode: compat

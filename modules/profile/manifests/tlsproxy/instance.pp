@@ -3,6 +3,7 @@
 class profile::tlsproxy::instance(
     Boolean $bootstrap_protection                           = lookup('profile::tlsproxy::instance::bootstrap_protection'),
     String $nginx_client_max_body_size                      = lookup('profile::tlsproxy::instance::nginx_client_max_body_size'),
+    String  $numa_iface                                     = lookup('profile::tlsproxy::instance::numa_iface'),
     Enum['full', 'extras', 'light'] $nginx_variant          = lookup('profile::tlsproxy::instance::nginx_variant'),
     Enum['strong', 'mid', 'compat'] $ssl_compatibility_mode = lookup('profile::tlsproxy::instance::ssl_compatibility_mode'),
 ){
@@ -11,16 +12,6 @@ class profile::tlsproxy::instance(
 
     $nginx_worker_connections = '131072'
     $nginx_ssl_conf = ssl_ciphersuite('nginx', $ssl_compatibility_mode)
-
-    # If numa_networking is turned on, use interface_primary for NUMA hinting,
-    # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
-    # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
-    # in turn consumed by the systemd unit and config templates.
-    if $::numa_networking != 'off' {
-        $numa_iface = $facts['interface_primary']
-    } else {
-        $numa_iface = 'lo'
-    }
 
     # If nginx will be installed on a system where apache is already
     # running, the postinst script will fail to start it with the default
