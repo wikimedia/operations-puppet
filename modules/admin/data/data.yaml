@@ -5469,3 +5469,7 @@ ldap_only_users:
     email: naray-ctr@wikimedia.org
     expiry_date: 2022-05-09
     expiry_contact: janstee@wikimedia.org
+  ksiebert:
+    ensure: present
+    realname: Karolin Siebert
+    email: ksiebert@wikimedia.org
