@@ -11,6 +11,7 @@ network_infra = scope.lookupvar('network::constants::network_infra')
 mgmt_networks = scope.lookupvar('network::constants::mgmt_networks')
 services_kubepods_networks = scope.lookupvar('network::constants::services_kubepods_networks')
 staging_kubepods_networks = scope.lookupvar('network::constants::staging_kubepods_networks')
+mlserve_kubepods_networks = scope.lookupvar('network::constants::mlserve_kubepods_networks')
 # TODO: Compatibility var. Remove
 kubepods_networks = services_kubepods_networks + staging_kubepods_networks
 
@@ -36,6 +37,7 @@ kubepods_networks = services_kubepods_networks + staging_kubepods_networks
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
 @def $SERVICES_KUBEPODS_NETWORKS  = (<%- services_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 @def $STAGING_KUBEPODS_NETWORKS  = (<%- staging_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
+@def $MLSERVE_KUBEPODS_NETWORKS = (<%- mlserve_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 # TODO: Compatibility var. Remove
 @def $KUBEPODS_NETWORKS  = (<%- kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 
