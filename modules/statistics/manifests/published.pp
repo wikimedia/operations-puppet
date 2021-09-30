@@ -39,19 +39,6 @@ class statistics::published(
         require     => File[$source],
     }
 
-    # T285355
-    # Set up a temporary rsync module
-    # (in /etc/rsyncd.conf) for all of /srv.
-    # TODO: remove this declaration once ensured absent.
-    rsync::server::module { 'transfer_from_thorium':
-        ensure      => 'absent',
-        path        => '/srv/',
-        read_only   => 'no',
-        list        => 'yes',
-        hosts_allow => ['thorium.eqiad.wmnet', 'an-web1001.eqiad.wmnet'],
-        auto_ferm   => true,
-    }
-
     # Merge files in published-rsynced/* via hardlinks into $document_root/published
     cron { 'hardsync-published':
         # This script is installed by ::statistics::web.
