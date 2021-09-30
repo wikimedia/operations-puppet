@@ -1138,7 +1138,7 @@ host testreduce1001 {
 }
 
 host testvm2001 {
-    hardware ethernet aa:00:00:f4:41:2c;
+    hardware ethernet aa:00:00:8c:be:2c;
     fixed-address testvm2001.codfw.wmnet;
 }
 
