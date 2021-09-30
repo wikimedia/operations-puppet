@@ -2,19 +2,19 @@ define monitoring::openapi_service (  # aka swagger
     String $target,
     String $description,
     String $notes_url,
-    String $active_host                 = $::profile::icinga::active_host,
-    Wmflib::Ensure $ensure              = 'present',
-    String $site                        = $::site,
-    Hash[String, Array[String]] $params = {},
-    Integer $timeout                    = 10,
-    String $host                        = $::hostname,
-    Integer $retries                    = 3,
-    Variant[String, Undef] $group       = undef,
-    Boolean $critical                   = false,
-    Integer $check_interval             = 1,
-    Integer $retry_interval             = 1,
-    String $contact_group               = lookup('contactgroups', {'default_value' => 'admins'}), # lint:ignore:wmf_styleguide
-    String $notifications_enabled       = $::profile::base::notifications_enabled,
+    String $active_host                      = $::profile::icinga::active_host,
+    Wmflib::Ensure $ensure                   = 'present',
+    String $site                             = $::site,
+    Hash[String, Array[String]] $params      = {},
+    Integer $timeout                         = 10,
+    String $host                             = $::hostname,
+    Integer $retries                         = 3,
+    Variant[String, Undef] $group            = undef,
+    Boolean $critical                        = false,
+    Integer $check_interval                  = 1,
+    Integer $retry_interval                  = 1,
+    String $contact_group                    = lookup('contactgroups', {'default_value' => 'admins'}), # lint:ignore:wmf_styleguide
+    Optional[Boolean] $notifications_enabled = $::profile::monitoring::host::notifications_enabled
 ) {
     # only export if this is the active host
     if ($::fqdn == $active_host) {
