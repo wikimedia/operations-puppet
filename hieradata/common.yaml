@@ -26,8 +26,11 @@ lookup_options:
 
 # General variables that once would have been in realm.pp
 cluster: misc
+# TODO: move all of theses directly under P:monitoring::host
 contactgroups: 'admins'
 mgmt_contactgroups: 'admins'
+do_paging: true
+nagios_group: "%{lookup('cluster')}_%{::site}"
 datacenters:
   - eqiad
   - codfw
