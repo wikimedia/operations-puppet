@@ -2,3 +2,8 @@
 profile::gitlab::service_ip_v4: '208.80.153.105'
 profile::gitlab::service_ip_v6: '2620:0:860:4:208:80:153:105'
 profile::gitlab::service_name: 'gitlab-replica.wikimedia.org'
+
+# Content-Security-Policy
+profile::gitlab::csp_enabled: true
+profile::gitlab::csp_report_only: true
+

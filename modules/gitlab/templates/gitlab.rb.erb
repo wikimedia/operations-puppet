@@ -20,6 +20,40 @@ gitlab_rails['gitlab_email_reply_to'] = "<%= @email_reply_to %>"
 # Default Theme
 gitlab_rails['gitlab_default_theme'] = "<%= @default_theme %>"
 
+# Content-Security-Policy
+#
+# Upstream has not enabled it by default yet:
+# https://gitlab.com/gitlab-org/gitlab/-/issues/30720
+# We want some report while upstream is polishing the rules
+# https://gitlab.com/groups/gitlab-org/-/epics/6363
+#
+# Upstream defaults are in `config/gitlab.yml.example`
+gitlab_rails['content_security_policy'] = {
+    enabled: <%= @csp_enabled %>,
+    report_only: <%= @csp_report_only %>,
+    directives: {
+        base_uri: "'self'",
+        child_src: "'self'",
+        # Web sockets must be explicitly allowed (different scheme)
+        connect_src: "'self', wss://<%= @gitlab_domain %>:*",
+        default_src: "'self'",
+        font_src: nil,
+        form_action: nil,
+        frame_ancestors: "'self'",
+        frame_src: "'self'",
+        img_src: "* data: blob:",
+        manifest_src: nil,
+        media_src: nil,
+        object_src: "'none'",
+        script_src: "'self' 'unsafe-eval' 'report-sample'",
+        style_src: "'self' 'unsafe-inline' 'report-sample'",
+        worker_src: "'self' blob:",
+        # https://logstash.wikimedia.org/app/dashboards#/view/AW0h61hZZKA7RpiroFmS?_a=(query:(term:(source.keyword:gitlab.wikimedia.org)))
+        report_uri: 'https://meta.wikimedia.org/w/api.php?action=cspreport&reportonly=1&source=<%= @gitlab_domain %>&format=json',
+    }
+}
+
+
 # nginx and TLS configuration
 nginx['listen_port'] = <%= @listen_port %>
 <%- if @listent_https -%>

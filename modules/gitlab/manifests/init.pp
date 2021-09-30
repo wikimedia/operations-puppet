@@ -35,6 +35,8 @@ class gitlab (
     Boolean          $cas_sync_profile                  = true,
     Boolean          $cas_sync_attrs                    = true,
     Integer          $cas_session_duration              = 604800,
+    Boolean          $csp_enabled                       = false,
+    Boolean          $csp_report_only                   = false,
     Hash             $extra_settings                    = {},
     Boolean          $enable_prometheus                 = false,
     Boolean          $enable_grafana                    = false,

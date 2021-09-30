@@ -12,6 +12,8 @@ class profile::gitlab(
     String $cas_label = lookup('profile::gitlab::cas_label'),
     Stdlib::Httpurl $cas_url = lookup('profile::gitlab::cas_url'),
     Boolean $cas_auto_create_users = lookup('profile::gitlab::cas_auto_create_users'),
+    Boolean $csp_enabled = lookup('profile::gitlab::csp_enabled', {default_value => false}),
+    Boolean $csp_report_only = lookup('profile::gitlab::csp_enabled', {default_value => false}),
     Integer[1] $backup_keep_time = lookup('profile::gitlab::backup_keep_time'),
     Boolean  $smtp_enabled = lookup('profile::gitlab::smtp_enabled'),
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = lookup('profile::gitlab::exporters', {default_value => []}),
@@ -159,6 +161,8 @@ class profile::gitlab(
         cas_label              => $cas_label,
         cas_url                => $cas_url,
         cas_auto_create_users  => $cas_auto_create_users,
+        csp_enabled            => $csp_enabled,
+        csp_report_only        => $csp_report_only,
         backup_keep_time       => $backup_keep_time,
         smtp_enabled           => $smtp_enabled,
         enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
