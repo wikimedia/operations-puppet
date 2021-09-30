@@ -4691,6 +4691,13 @@ users:
     email: scherukuwada@wikimedia.org
     uid: 34007
     ssh_keys: []
+  swak:
+    ensure: present
+    gid: 500
+    realname: Shari Wakiyama
+    email: swakiyama@wikimedia.org
+    uid: 34598
+    ssh_keys: []
 
 ldap_only_users:
   abartov:
