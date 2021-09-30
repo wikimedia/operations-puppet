@@ -5473,3 +5473,7 @@ ldap_only_users:
     ensure: present
     realname: Karolin Siebert
     email: ksiebert@wikimedia.org
+  erayfield:
+    ensure: present
+    realname: Ellen Rayfield
+    email: erayfield@wikimedia.org
