@@ -33,6 +33,8 @@ profile::maps::osm_master::planet_sync_hours: '*/12'
 profile::maps::osm_master::disable_replication_cron: false
 profile::maps::osm_master::disable_admin_cron: true
 profile::maps::osm_master::engine: "imposm3"
+# Disable tile generation trigger while testing Tegola in k8s
+profile::maps::osm_master::disable_tile_generation_cron: true
 
 profile::maps::osm_master::replicas:
   maps2005:
