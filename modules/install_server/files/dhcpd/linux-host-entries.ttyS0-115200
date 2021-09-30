@@ -1094,7 +1094,6 @@ host rpki2001 {
 host seaborgium {
     hardware ethernet aa:00:00:4d:be:84;
     fixed-address seaborgium.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 # schema* (Ganeti VMs)
@@ -1131,7 +1130,6 @@ host search-loader2001 {
 host serpens {
     hardware ethernet aa:00:00:0e:a4:81;
     fixed-address serpens.wikimedia.org;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host testreduce1001 {
