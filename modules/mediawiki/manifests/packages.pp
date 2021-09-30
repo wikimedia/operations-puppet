@@ -10,11 +10,14 @@ class mediawiki::packages {
         'tidy', 'libvips-tools',
         # PDF and DjVu
         'ghostscript', 'djvulibre-bin', 'librsvg2-bin', 'libtiff-tools', 'poppler-utils',
-        # ploticus for EasyTimeline extension (T237304)
-        'ploticus',
         # SecurePoll is incompatible with gpg2 (T209802)
         'gnupg1',
     ])
+
+    # ploticus for EasyTimeline extension (T237304)
+    package { 'ploticus':
+        ensure => absent
+    }
 
     # Score
     package { [ 'lilypond', 'lilypond-data' ]:
