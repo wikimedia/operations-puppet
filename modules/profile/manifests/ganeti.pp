@@ -30,6 +30,16 @@
 # [*ganeti216*]
 #   Add the repository component with the 2.16 backport
 #
+# [*critical_memory*]
+#   Percentage of memory (0-100) which, if using over it, it will throw a
+#   critical alert due to memory pressure. It must be higher than warning
+#   memory.
+#
+# [*warning_memory*]
+#   Percentage of memory (0-100) which, if using over it, it will throw a
+#   warning alert due to memory pressure. It must be lower than
+#   critical_memory.
+#
 
 class profile::ganeti (
     Array[Stdlib::Fqdn] $nodes         = lookup('profile::ganeti::nodes'),
@@ -40,6 +50,8 @@ class profile::ganeti (
     Optional[String] $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
                                                 { default_value => undef }),
     Boolean $ganeti216                 = lookup('profile::ganeti::ganeti216'),
+    Integer[0, 100] $critical_memory   = lookup('profile::ganeti::critical_memory'),
+    Integer[0, 100] $warning_memory    = lookup('profile::ganeti::warning_memory'),
 ) {
 
     class { 'ganeti':
@@ -156,7 +168,7 @@ class profile::ganeti (
     # cluster yet, so don't monitor
     if $facts['ganeti_cluster'] {
 
-        # Monitoring
+        # Service monitoring
         nrpe::monitor_service{ 'ganeti-noded':
             description  => 'ganeti-noded running',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:2 -c 1:2 -u root -C ganeti-noded',
@@ -174,6 +186,18 @@ class profile::ganeti (
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-mond',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
         }
+
+        # Memory monitoring
+        ensure_packages( 'nagios-plugins-contrib' )  # for pmp-check-unix-memory
+        $check_path = '/usr/lib/nagios/plugins/pmp-check-unix-memory'
+        $check_command = "${check_path} -c ${critical_memory} -w ${warning_memory}"
+        nrpe::monitor_service { 'ganeti_memory':
+            description  => 'Ganeti memory',
+            nrpe_command => $check_command,
+            require      => Package['nagios-plugins-contrib'],
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti#Memory_pressure',
+        }
+
 
 
         if $facts['ganeti_master'] == $facts['fqdn'] {
