@@ -34,8 +34,6 @@ define logstash::output::elasticsearch(
     String                                     $template_name    = $title,
     String                                     $plugin_id        = "output/elasticsearch/${title}",
 ) {
-    require ::logstash::output::elasticsearch::scripts
-
     logstash::conf{ "output-elasticsearch-${title}":
         ensure   => $ensure,
         content  => template('logstash/output/elasticsearch.erb'),
