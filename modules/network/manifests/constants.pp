@@ -72,26 +72,28 @@ class network::constants {
 
     # Kubernetes pods subnets. We could revisit in the future if we makes sense to have
     # this at a global level or not (effie).
-    $kubepods_networks = flatten([
+    $services_kubepods_networks = flatten([
         slice_network_constants('production', {
             'site'        => 'eqiad',
             'sphere'      => 'private',
-            'description' => 'kubepods',
+            'description' => 'services-kubepods',
             }),
         slice_network_constants('production', {
             'site'        => 'codfw',
             'sphere'      => 'private',
-            'description' => 'kubepods',
+            'description' => 'services-kubepods',
             }),
+        ])
+    $staging_kubepods_networks = flatten([
         slice_network_constants('production', {
             'site'        => 'eqiad',
             'sphere'      => 'private',
-            'description' => 'kubestagepods',
+            'description' => 'staging-kubepods',
             }),
         slice_network_constants('production', {
             'site'        => 'codfw',
             'sphere'      => 'private',
-            'description' => 'kubestagepods',
+            'description' => 'staging-kubepods',
             }),
         ])
     # Networks that Scap will be able to deploy to.

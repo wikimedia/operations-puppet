@@ -116,16 +116,16 @@ network::subnets:
           ipv6: 2620:0:861:108::/64
         private1-lvs-eqiad:
           ipv4: 10.2.2.0/24
-        private1-kubepods-eqiad:
+        private1-services-kubepods-eqiad:
           ipv4: 10.64.64.0/21
           ipv6: 2620:0:861:cabe::/64
-        private1-kubesvc-eqiad:
+        private1-services-kubesvc-eqiad:
           ipv4: 10.64.72.0/24
           ipv6: 2620:0:861:cabf::/64
-        private1-kubestagepods-eqiad:
+        private1-staging-kubepods-eqiad:
           ipv4: 10.64.75.0/24
           ipv6: 2620:0:861:babe::/64
-        private1-kubestagesvc-eqiad:
+        private1-staging-kubesvc-eqiad:
           ipv4: 10.64.76.0/24
           ipv6: 2620:0:861:babf::/64
     codfw:
@@ -166,16 +166,16 @@ network::subnets:
           ipv6: 2620:0:860:122::/64
         private1-lvs-codfw:
           ipv4: 10.2.1.0/24
-        private1-kubepods-codfw:
+        private1-services-kubepods-codfw:
           ipv4: 10.192.64.0/21
           ipv6: 2620:0:860:cabe::/64
-        private1-kubesvc-codfw:
+        private1-services-kubesvc-codfw:
           ipv4: 10.192.72.0/24
           ipv6: 2620:0:860:cabf::/64
-        private1-kubestagepods-codfw:
+        private1-staging-kubepods-codfw:
           ipv4: 10.192.75.0/24
           ipv6: 2620:0:860:babe::/64
-        private1-kubestagesvc-codfw:
+        private1-staging-kubesvc-codfw:
           ipv4: 10.192.76.0/24
           ipv6: 2620:0:860:babf::/64
     esams:
