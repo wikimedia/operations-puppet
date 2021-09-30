@@ -17,7 +17,7 @@ profile::query_service::nodes:
 profile::query_service::enable_ldf: false
 profile::query_service::high_query_time_port: true
 profile::query_service::blazegraph_main_ns: wcq
-profile::query_service::oauth: false
+profile::query_service::oauth: true
 profile::query_service::oauth_settings: null
 
 profile::query_service::blazegraph_heap_size: 31g
