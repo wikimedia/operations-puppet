@@ -1052,6 +1052,12 @@ groups:
   #   gid: 916
   #   system: true
   #   members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in statistics::user
+  # stats:
+  #   gid: 918
+  #   system: true
+  #   members: []
 
 users:
   reprepro:

@@ -4,18 +4,17 @@ class statistics::user {
     $username = 'stats'
     $homedir  = "/var/lib/${username}"
 
-    group { $username:
-        ensure => present,
-        name   => $username,
-        system => true,
-    }
+    # From Buster onward, we want to have fixed uid/gids for daemons.
+    # We manage service system users in puppet classes, but declare
+    # commented placeholders for them in the admin module's data.yaml file
+    # to ensure that people don't accidentally add uid/gid conflicts.
+    $stats_uid = 918
+    $stats_gid = 918
 
-    user { $username:
-        home       => $homedir,
-        groups     => [],
-        shell      => '/bin/bash',
-        managehome => true,
-        system     => true,
+    systemd::sysuser { $username:
+        id       => "${stats_uid}:${stats_gid}",
+        shell    => '/bin/bash',
+        home_dir => $homedir,
     }
 
     $git_settings = {
@@ -51,7 +50,7 @@ class statistics::user {
         $git_http_proxy_settings = {}
     }
 
-    git::userconfig { 'stats':
+    git::userconfig { $username:
         homedir  => $homedir,
         settings => merge($git_settings, $git_http_proxy_settings),
         require  => User[$username],
