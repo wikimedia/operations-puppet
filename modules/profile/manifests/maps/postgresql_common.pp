@@ -51,6 +51,6 @@ class profile::maps::postgresql_common(
     ferm::service { 'kubepods-maps-postgres':
         proto  => 'tcp',
         port   => '5432',
-        srange => '$KUBEPODS_NETWORKS',
+        srange => '($SERVICES_KUBEPODS_NETWORKS $STAGING_KUBEPODS_NETWORKS)',
     }
 }

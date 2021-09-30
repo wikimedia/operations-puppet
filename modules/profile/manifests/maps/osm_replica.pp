@@ -8,7 +8,10 @@ class profile::maps::osm_replica(
 
     require ::profile::maps::postgresql_common
 
-    $kubepods_networks = $network::constants::kubepods_networks
+    $tegola_networks = flatten([
+        $network::constants::services_kubepods_networks,
+        $network::constants::staging_kubepods_networks,
+    ])
 
     $pgversion = $::lsbdistcodename ? {
         'buster'  => 11,
@@ -33,7 +36,7 @@ class profile::maps::osm_replica(
 
     # tegola-vector-tiles will connect as user tilerator from
     # kubernetes pods.
-    $kubepods_networks.each |String $subnet| {
+    $tegola_networks.each |String $subnet| {
         if $subnet =~ Stdlib::IP::Address::V4 {
             $_subnet = split($subnet, '/')[0]
             postgresql::user::hba { "${_subnet}_kubepod":
