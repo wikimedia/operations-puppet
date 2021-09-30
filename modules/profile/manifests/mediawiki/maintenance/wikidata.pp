@@ -21,6 +21,7 @@ class profile::mediawiki::maintenance::wikidata {
     }
 
     profile::mediawiki::periodic_job { 'wikibase-dispatch-changes-test':
+        ensure   => absent,
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki',
         interval => '*-*-* *:0/15:00'
     }
@@ -32,6 +33,7 @@ class profile::mediawiki::maintenance::wikidata {
     }
 
     profile::mediawiki::periodic_job { 'wikibase_repo_prune_test':
+        ensure   => absent,
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3',
         interval => '*:00,15,30,45',
     }
