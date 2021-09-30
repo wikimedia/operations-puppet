@@ -10,7 +10,7 @@ class profile::query_service::gui (
     Boolean $high_query_time_port = lookup('profile::query_service::high_query_time_port', {default_value => false}),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
     Boolean $oauth = lookup('profile::query_service::oauth'),
-    Optional[Hash] $oauth_settings = lookup('profile::query_service::oauth_settings'),
+    Optional[Hash] $oauth_settings = lookup('profile::query_service::oauth_settings', {default_value => {}}),
     Optional[Stdlib::HTTPSUrl] $gui_url = lookup('profile::query_service::gui_url', {default_value => undef})
 ) {
     require ::profile::query_service::common
