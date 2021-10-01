@@ -1143,7 +1143,7 @@ host testvm2001 {
 }
 
 host testvm2002 {
-    hardware ethernet aa:00:00:d1:f1:02;
+    hardware ethernet aa:00:00:b2:df:fb;
     fixed-address testvm2002.codfw.wmnet;
 }
 
