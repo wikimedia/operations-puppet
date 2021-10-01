@@ -21,11 +21,6 @@ class profile::mediawiki::maintenance::growthexperiments {
     }
 
     # update data for the mentor dashboard (T285811)
-    profile::mediawiki::periodic_job { 'growthexperiments-updateMenteeData':
-        ensure   => absent,
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateMenteeData.php --statsd',
-        interval => '*-*-* 04:15:00',
-    }
     profile::mediawiki::maintenance::growthexperiments::updatementeedata { [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8' ]: }
 
     # monitor dangling link recommendation entries (DB record without search index record or vice versa)
