@@ -1,33 +1,17 @@
-
-# Class profile::rsyslog::kafka_shipper - generalized rsyslog configuration to ship logs into logging pipeline
-#                                         comprised of rsyslog -> kafka -> logstash
-#
-#              @@@@@@@@@
-#                    __\_\__
-#         ___________|_____|___________
-#          \ logs logs logs logs logs /
-#           \  O  O  O  O  O  O  O  /
-#^^^^^^^^^^^^\_____________________/^^^^^^^^^^^
-#
-#
-# $logging_kafka_brokers - array of kafka broker used in rsyslog omkafka config
-#
+# @summary generalized rsyslog configuration to ship logs into logging pipeline
+# @param logging_kafka_brokers array of kafka broker used in rsyslog omkafka config
+# @param enable if true enable config
+# @param queue_enabled_sites list of sites to enable queues
 
 class profile::rsyslog::kafka_shipper (
-    Array   $logging_kafka_brokers = lookup('profile::rsyslog::kafka_shipper::kafka_brokers',
-                                            {'default_value' => []}),
-    Boolean $enable                = lookup('profile::rsyslog::kafka_shipper::enable',
-                                            {'default_value' => true}),
-    Array[String] $queue_enabled_sites = lookup('profile::rsyslog::kafka_queue_enabled_sites',
-                                                {'default_value' => []}),
+    Array         $logging_kafka_brokers = lookup('profile::rsyslog::kafka_shipper::kafka_brokers'),
+    Boolean       $enable                = lookup('profile::rsyslog::kafka_shipper::enable'),
+    Array[String] $queue_enabled_sites   = lookup('profile::rsyslog::kafka_queue_enabled_sites')
 ) {
 
-    require_package('rsyslog-kafka')
+    ensure_packages('rsyslog-kafka')
 
-    $ensure = $enable ? {
-      true    => present,
-      default => absent,
-    }
+    $ensure = $enable.bool2str('present', 'absent')
 
     $queue_size = $::site in $queue_enabled_sites ? {
         true  => 10000,

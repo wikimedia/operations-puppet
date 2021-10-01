@@ -430,8 +430,11 @@ mediawiki::common_sites:
     priority: 1
     template: mediawiki/apache/sites/wwwportals.conf.erb
 
+profile::rsyslog::kafka_shipper::enable: false
+profile::rsyslog::kafka_queue_enabled_sites: []
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - localhost:9093
+
 profile::syslog::centralserver::log_retention_days: 90
 
 profile::openstack::base::radosgw::service_user: 'swift'

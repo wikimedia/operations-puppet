@@ -47,9 +47,7 @@ class profile::base(
     class { 'rsyslog': }
     include profile::prometheus::rsyslog_exporter
 
-    class {'profile::rsyslog::kafka_shipper':
-        enable => $enable_kafka_shipping,
-    }
+    include profile::rsyslog::kafka_shipper
 
     unless empty($remote_syslog) and empty($remote_syslog_tls) {
         class { 'base::remote_syslog':

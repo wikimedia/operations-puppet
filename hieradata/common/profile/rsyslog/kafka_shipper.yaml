@@ -1,3 +1,5 @@
+profile::rsyslog::kafka_shipper::enable: true
+profile::rsyslog::kafka_queue_enabled_sites: []
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - kafka-logging1001.eqiad.wmnet:9093
   - kafka-logging1002.eqiad.wmnet:9093
