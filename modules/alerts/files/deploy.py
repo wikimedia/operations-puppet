@@ -45,6 +45,9 @@ def cleanup_dir(target_path, expected_paths):
     """Clean up target_path of all files not in expected_paths."""
 
     for path in target_path.glob("*"):
+        if not path.is_file():
+            continue
+
         if path.relative_to(target_path) not in expected_paths:
             log.warning("Removing %s", path)
             path.unlink()
