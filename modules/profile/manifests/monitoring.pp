@@ -28,18 +28,20 @@
 # @parma raid_check_interval check interval for raid checks
 # @parma raid_retry_interval retry interval for raid retrys
 class profile::monitoring (
-    Wmflib::Ensure $hardware_monitoring = lookup('profile::monitoring::hardware_monitoring'),
+    Wmflib::Ensure $hardware_monitoring   = lookup('profile::monitoring::hardware_monitoring'),
     # TODO: make this an array
-    String $contact_group               = lookup('profile::monitoring::contact_group'),
-    String $mgmt_contact_group          = lookup('profile::monitoring::mgmt_contact_group'),
-    Boolean $is_critical                = lookup('profile::monitoring::is_critical'),
-    Boolean $monitor_systemd            = lookup('profile::monitoring::monitor_systemd'),
-    String $nrpe_check_disk_options     = lookup('profile::monitoring::nrpe_check_disk_options'),
-    Boolean $nrpe_check_disk_critical   = lookup('profile::monitoring::nrpe_check_disk_critical'),
-    Boolean $raid_check                 = lookup('profile::monitoring::raid_check'),
-    Integer $raid_check_interval        = lookup('profile::monitoring::raid_check_interval'),
-    Integer $raid_retry_interval        = lookup('profile::monitoring::raid_retry_interval'),
-    Boolean $notifications_enabled      = lookup('profile::monitoring::notifications_enabled'),
+    String $contact_group                 = lookup('profile::monitoring::contact_group'),
+    String $mgmt_contact_group            = lookup('profile::monitoring::mgmt_contact_group'),
+    Boolean $is_critical                  = lookup('profile::monitoring::is_critical'),
+    Boolean $monitor_systemd              = lookup('profile::monitoring::monitor_systemd'),
+    String $nrpe_check_disk_options       = lookup('profile::monitoring::nrpe_check_disk_options'),
+    Boolean $nrpe_check_disk_critical     = lookup('profile::monitoring::nrpe_check_disk_critical'),
+    Boolean $raid_check                   = lookup('profile::monitoring::raid_check'),
+    Boolean $check_smart                  = lookup('profile::monitoring::check_smart'),
+    Integer $raid_check_interval          = lookup('profile::monitoring::raid_check_interval'),
+    Integer $raid_retry_interval          = lookup('profile::monitoring::raid_retry_interval'),
+    Boolean $notifications_enabled        = lookup('profile::monitoring::notifications_enabled'),
+    Array[Stdlib::Host] $monitoring_hosts = lookup('profile::monitoring::monitoring_hosts'),
     Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = lookup('profile::monitoring::raid_write_cache_policy')
 ) {
     ensure_packages('ruby-safe-yaml')
@@ -89,6 +91,10 @@ class profile::monitoring (
     sudo::user { 'nagios_puppetrun':
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
+    }
+
+    class { 'nrpe':
+        allowed_hosts => $monitoring_hosts.join(','),
     }
 
     nrpe::monitor_service { 'disk_space':
@@ -193,6 +199,14 @@ class profile::monitoring (
             prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
             notes_link      => 'https://wikitech.wikimedia.org/wiki/SMART#Alerts',
         }
+        include profile::prometheus::nic_saturation_exporter
+        class { 'prometheus::node_nic_firmware': }
+        if $check_smart {
+            class { '::smart': }
+        }
+        if $::processor0 !~ /AMD/ {
+            class { 'prometheus::node_intel_microcode': }
+        }
     }
 
     # Did an host register an increase in correctable errors over the last 4d? Might indicate faulty
@@ -253,5 +267,11 @@ class profile::monitoring (
     }
     if $facts['has_ipmi'] {
         class { 'ipmi::monitor': ensure => $hardware_monitoring }
+    }
+    # This is responsible for ~75%+ of all recdns queries...
+    # https://phabricator.wikimedia.org/T239862
+    host { 'statsd.eqiad.wmnet':
+        ip           => '10.64.16.149', # graphite1004
+        host_aliases => 'statsd',
     }
 }

@@ -4,9 +4,7 @@ class profile::base(
     Boolean $enable_kafka_shipping = lookup('profile::base::enable_kafka_shipping', {default_value => true}),
     String $core_dump_pattern = lookup('profile::base::core_dump_pattern', {default_value => '/var/tmp/core/core.%h.%e.%p.%t'}),
     Hash $ssh_server_settings = lookup('profile::base::ssh_server_settings', {default_value => {}}),
-    Boolean $check_smart = lookup('profile::base::check_smart', {default_value => true}),
     Boolean $overlayfs = lookup('profile::base::overlayfs', {default_value => false}),
-    Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
     Boolean $enable_contacts = lookup('profile::base::enable_contacts')
@@ -82,10 +80,6 @@ class profile::base(
 
     create_resources('class', {'ssh::server' => $ssh_server_settings})
 
-    class { 'nrpe':
-        allowed_hosts => join($monitoring_hosts, ','),
-    }
-
     class { 'base::kernel':
         overlayfs => $overlayfs,
     }
@@ -100,22 +94,7 @@ class profile::base(
     class { 'prometheus::node_debian_version': }
 
     if $facts['is_virtual'] and debian::codename::le('buster') {
-            class {'haveged': }
-    } elsif !$facts['is_virtual'] {
-        include profile::prometheus::nic_saturation_exporter
-        class { 'prometheus::node_nic_firmware': }
-        if $check_smart {
-            class { '::smart': }
-        }
-        if $::processor0 !~ /AMD/ {
-            class { 'prometheus::node_intel_microcode': }
-        }
-    }
-    # This is responsible for ~75%+ of all recdns queries...
-    # https://phabricator.wikimedia.org/T239862
-    host { 'statsd.eqiad.wmnet':
-        ip           => '10.64.16.149', # graphite1004
-        host_aliases => 'statsd',
+        class {'haveged': }
     }
 
     include profile::emacs
