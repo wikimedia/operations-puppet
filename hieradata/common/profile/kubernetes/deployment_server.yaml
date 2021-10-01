@@ -83,6 +83,19 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: revscoring-editquality
         - name: revscoring-editquality-deploy
+    kubeflow-kfserving:
+      usernames: []
+      private_files:
+        owner: 'root'
+        group: 'root'
+        mode: '640'
+    knative-serving:
+      usernames: []
+      private_files:
+        owner: 'root'
+        group: 'root'
+        mode: '640'
+
 # Specified in the private repo in this form
 #profile::kubernetes::deployment_server_secrets::services:
 #    zotero:
