@@ -11,6 +11,10 @@ class profile::envoy(
     # Envoy supports tcp fast open
     require ::profile::tcp_fast_open
 
+    # Work around Let's Encrypt / DST Root CA X3 issues for bundled BoringSSL
+    # from T292291
+    class { 'sslcert::ca_deselect_dstx3': }
+
     $pkg_name = 'envoyproxy'
     $use_override = true
     $admin_port = 9631
