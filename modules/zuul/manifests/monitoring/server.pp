@@ -39,8 +39,8 @@ class zuul::monitoring::server (
         contact_group   => 'contint',
         from            => '10min',
         percentage      => 100,
-        warning         => 90,
-        critical        => 150,
+        warning         => 200,
+        critical        => 400,
         notes_link      => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
     }
 
