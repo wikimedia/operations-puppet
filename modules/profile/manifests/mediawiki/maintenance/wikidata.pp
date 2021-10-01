@@ -20,21 +20,9 @@ class profile::mediawiki::maintenance::wikidata {
         interval => '*-*-* *:02/3:00'
     }
 
-    profile::mediawiki::periodic_job { 'wikibase-dispatch-changes-test':
-        ensure   => absent,
-        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki testwikidatawiki',
-        interval => '*-*-* *:0/15:00'
-    }
-
-    # Prune wb_changes entries no longer needed from (test)wikidata
+    # Prune wb_changes entries no longer needed from wikidata
     profile::mediawiki::periodic_job { 'wikibase_repo_prune2':
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3',
-        interval => '*:00,15,30,45',
-    }
-
-    profile::mediawiki::periodic_job { 'wikibase_repo_prune_test':
-        ensure   => absent,
-        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki testwikidatawiki --number-of-days=3',
         interval => '*:00,15,30,45',
     }
 
