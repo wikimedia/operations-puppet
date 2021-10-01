@@ -20,8 +20,8 @@ parsoid::statsd_prefix: parsoid-tests
 
 # No Icinga monitoring for systemd state because services
 # can often go down during tests. (also T254025)
-profile::monitoring::host::monitor_systemd: false
-profile::monitoring::host::notifications_enabled: false
+profile::monitoring::monitor_systemd: false
+profile::monitoring::notifications_enabled: false
 profile::mediawiki::php::monitoring::monitor_opcache: false
 
 profile::parsoid::testreduce::install_node: true

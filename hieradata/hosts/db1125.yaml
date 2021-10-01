@@ -1,4 +1,4 @@
 # db1125
 # Testing section
 mariadb::shard: 'test-s4'
-profile::monitoring::host::notifications_enabled: false
+profile::monitoring::notifications_enabled: false

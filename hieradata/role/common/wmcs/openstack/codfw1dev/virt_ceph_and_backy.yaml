@@ -1,4 +1,4 @@
-profile::monitoring::host::notifications_enabled: false
+profile::monitoring::notifications_enabled: false
 profile::admin::groups:
   - labtest-roots
 profile::debdeploy::client::filter_services:

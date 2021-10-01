@@ -11,7 +11,7 @@ profile::admin::groups:
 parsoid::logging_name: parsoid-tests
 parsoid::statsd_prefix: parsoid-tests
 
-profile::monitoring::host::notifications_enabled: false
+profile::monitoring::notifications_enabled: false
 
 profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::webserver::has_tls: false
@@ -37,7 +37,7 @@ profile::mediawiki::php::restarts::opcache_limit: 200
 
 # No Icinga monitoring for systemd state because services
 # can often go down during tests.
-profile::monitoring::host::monitor_systemd: false
+profile::monitoring::monitor_systemd: false
 # T254025
 profile::mediawiki::php::monitoring::monitor_opcache: false
 

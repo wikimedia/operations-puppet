@@ -61,7 +61,7 @@ profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 prometheus::node_exporter::collectors_extra:
   - meminfo_numa
 
-profile::monitoring::host::notifications_enabled: false
+profile::monitoring::notifications_enabled: false
 
 profile::hadoop::common::use_puppet_ssl_certs: true
 

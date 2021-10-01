@@ -2,4 +2,4 @@
 # Testing section
 mariadb::shard: 'test-s4'
 profile::mariadb::mysql_role: 'master'
-profile::monitoring::host::notifications_enabled: false
+profile::monitoring::notifications_enabled: false

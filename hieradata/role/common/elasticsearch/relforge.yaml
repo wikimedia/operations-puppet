@@ -7,7 +7,7 @@ profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWOR
 profile::elasticsearch::cirrus::expose_http: false
 
 # T130329
-profile::monitoring::host::nrpe_check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
+profile::monitoring::nrpe_check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
 
 profile::elasticsearch::rack: ''
 profile::elasticsearch::row: ''

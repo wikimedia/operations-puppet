@@ -2,7 +2,7 @@ cluster: wmcs
 
 contactgroups: 'wmcs-team,admins'
 mgmt_contactgroups: 'wmcs-team-email'
-profile::monitoring::host::monitor_systemd: false
+profile::monitoring::monitor_systemd: false
 
 profile::admin::groups:
   - analytics-admins

@@ -1,2 +1,2 @@
 # Node is out of warranty and due for replacement: T234785.
-profile::monitoring::host::hardware_monitoring: 'absent'
+profile::monitoring::hardware_monitoring: 'absent'

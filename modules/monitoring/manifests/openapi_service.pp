@@ -14,7 +14,7 @@ define monitoring::openapi_service (  # aka swagger
     Integer $check_interval                  = 1,
     Integer $retry_interval                  = 1,
     String $contact_group                    = lookup('contactgroups', {'default_value' => 'admins'}), # lint:ignore:wmf_styleguide
-    Optional[Boolean] $notifications_enabled = $::profile::monitoring::host::notifications_enabled
+    Optional[Boolean] $notifications_enabled = $::profile::monitoring::notifications_enabled
 ) {
     # only export if this is the active host
     if ($::fqdn == $active_host) {

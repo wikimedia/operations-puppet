@@ -95,7 +95,7 @@ class profile::base(
     class { 'base::initramfs': }
     class { 'base::auto_restarts': }
 
-    include profile::monitoring::host
+    include profile::monitoring
 
     class { 'prometheus::node_debian_version': }
 

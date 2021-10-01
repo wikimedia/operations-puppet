@@ -22,7 +22,7 @@ profile::druid::turnilo::druid_clusters:
     sourceReintrospectInterval: 120000
     type: druid
 
-profile::monitoring::host::notifications_enabled: false
+profile::monitoring::notifications_enabled: false
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'superset'

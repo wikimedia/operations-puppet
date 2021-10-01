@@ -184,7 +184,7 @@ profile::alluxio::common::config_override:
 profile::alluxio::worker_hosts:
   - an-test-presto1001.eqiad.wmnet
 
-profile::monitoring::host::notifications_enabled: false
+profile::monitoring::notifications_enabled: false
 
 profile::java::java_packages:
   - version: '8'

@@ -27,20 +27,20 @@
 # @param nrpe_check_disk_critical Make disk space alerts paging, defaults to not paging
 # @parma raid_check_interval check interval for raid checks
 # @parma raid_retry_interval retry interval for raid retrys
-class profile::monitoring::host(
-    Wmflib::Ensure $hardware_monitoring     = lookup('profile::monitoring::host::hardware_monitoring'),
+class profile::monitoring (
+    Wmflib::Ensure $hardware_monitoring = lookup('profile::monitoring::hardware_monitoring'),
     # TODO: make this an array
-    String $contact_group                   = lookup('profile::monitoring::host::contact_group'),
-    String $mgmt_contact_group              = lookup('profile::monitoring::host::mgmt_contact_group'),
-    Boolean $is_critical                    = lookup('profile::monitoring::host::is_critical'),
-    Boolean $monitor_systemd                = lookup('profile::monitoring::host::monitor_systemd'),
-    String $nrpe_check_disk_options         = lookup('profile::monitoring::host::nrpe_check_disk_options'),
-    Boolean $nrpe_check_disk_critical       = lookup('profile::monitoring::host::nrpe_check_disk_critical'),
-    Boolean $raid_check                     = lookup('profile::monitoring::host::raid_check'),
-    Integer $raid_check_interval            = lookup('profile::monitoring::host::raid_check_interval'),
-    Integer $raid_retry_interval            = lookup('profile::monitoring::host::raid_retry_interval'),
-    Boolean $notifications_enabled          = lookup('profile::monitoring::host::notifications_enabled'),
-    Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = lookup('profile::monitoring::host::raid_write_cache_policy')
+    String $contact_group               = lookup('profile::monitoring::contact_group'),
+    String $mgmt_contact_group          = lookup('profile::monitoring::mgmt_contact_group'),
+    Boolean $is_critical                = lookup('profile::monitoring::is_critical'),
+    Boolean $monitor_systemd            = lookup('profile::monitoring::monitor_systemd'),
+    String $nrpe_check_disk_options     = lookup('profile::monitoring::nrpe_check_disk_options'),
+    Boolean $nrpe_check_disk_critical   = lookup('profile::monitoring::nrpe_check_disk_critical'),
+    Boolean $raid_check                 = lookup('profile::monitoring::raid_check'),
+    Integer $raid_check_interval        = lookup('profile::monitoring::raid_check_interval'),
+    Integer $raid_retry_interval        = lookup('profile::monitoring::raid_retry_interval'),
+    Boolean $notifications_enabled      = lookup('profile::monitoring::notifications_enabled'),
+    Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = lookup('profile::monitoring::raid_write_cache_policy')
 ) {
     ensure_packages('ruby-safe-yaml')
 

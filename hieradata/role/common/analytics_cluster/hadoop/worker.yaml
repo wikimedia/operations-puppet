@@ -30,8 +30,8 @@ profile::base::linux419::enable: true
 
 # Analytics worker disks are large.  We will install a custom
 # NRPE check for them, so the base module's should ignore them.
-profile::monitoring::host::nrpe_check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/var/lib/hadoop/data" --exclude-type=tracefs'
-profile::monitoring::host::raid_write_cache_policy: 'WriteBack'
+profile::monitoring::nrpe_check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/var/lib/hadoop/data" --exclude-type=tracefs'
+profile::monitoring::raid_write_cache_policy: 'WriteBack'
 
 profile::hadoop::worker::ferm_srange: '(($ANALYTICS_NETWORKS $DRUID_PUBLIC_HOSTS $LABSTORE_HOSTS))'
 

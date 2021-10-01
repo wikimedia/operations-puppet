@@ -2,7 +2,7 @@ ldap::client::nss::nsswitch_conf_source: puppet:///modules/labstore/nsswitch.con
 profile::ldap::client::labs::ldapincludes: ['openldap', 'nss', 'utils']
 # the snapshots created by the backup process cannot be checked
 # by the check_disk nrpe plugin so need to be excluded.
-profile::monitoring::host::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i /run/lock/storage-replicate-.*/snapshot -i /exp/.* --exclude-type=tracefs
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i /run/lock/storage-replicate-.*/snapshot -i /exp/.* --exclude-type=tracefs
 profile::base::ssh_server_settings:
   # Paramiko needs to ssh into these for replication/backups
   # Otherwise throws: SSHException: Incompatible ssh peer (no acceptable kex algorithm)
@@ -16,7 +16,7 @@ profile::base::ssh_server_settings:
     - '/etc/ssh/userkeys/%u.d/labstore'
 
 # Anything we specifically want to monitor already pages, so this is annoying
-profile::monitoring::host::monitor_systemd: false
+profile::monitoring::monitor_systemd: false
 profile::wmcs::nfs::primary::backup_servers:
   - cloudbackup2001.codfw.wmnet
   - cloudbackup2002.codfw.wmnet
