@@ -73,21 +73,21 @@ class geoip::data::maxmind::ipinfo(
   # the specified MaxMind Product IDs.  We expect new data to generally arrive
   # weekly on Tuesdays, but there is no gaurantee as to the precise timing in
   # the long term.
-  file { '/usr/local/bin/geoipupdate_ipinfo_job':
+  file { '/usr/local/bin/geoipupdate_job':
       ensure => present,
       mode   => '0555',
-      source => 'puppet:///modules/geoip/geoipupdate_ipinfo_job.sh',
+      source => 'puppet:///modules/geoip/geoipupdate_job.sh',
   }
-  file { '/etc/geoipupdate_ipinfo_job':
+  file { '/etc/geoipupdate_job':
       ensure  => present,
       mode    => '0555',
-      content => template('geoip/geoipupdate_ipinfo_job.erb'),
+      content => template('geoip/geoipupdate_job.erb'),
   }
-  systemd::timer::job { 'geoip_update_ipinfo':
+  systemd::timer::job { 'geoip_update':
       ensure             => 'present',
       user               => 'root',
       description        => 'download geoip database for IP Info from MaxMind',
-      command            => '/usr/local/bin/geoipupdate_ipinfo_job',
+      command            => '/usr/local/bin/geoipupdate_job',
       interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 4:30:0'},
       monitoring_enabled => false,
       logging_enabled    => true,
@@ -98,7 +98,7 @@ class geoip::data::maxmind::ipinfo(
       ],
   }
 
-  logrotate::rule { 'geoipupdate_ipinfo':
+  logrotate::rule { 'geoipupdate_log':
     ensure       => present,
     file_glob    => $geoipupdate_log,
     size         => '1M',
