@@ -553,7 +553,6 @@ groups:
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
               kevinbazira, clarakosi, chrisalbon, jgiannelos]
     privileges: []
-
   deploy-aqs:
     gid: 786
     description: Deployers for the Analytics Query Service
@@ -861,8 +860,15 @@ groups:
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
-    members: [accraze, chrisalbon, kevinbazira]
+    members: &ml-team-admins [accraze, chrisalbon, kevinbazira]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Chris Albon
+  deploy-ml-service:
+    gid: 833
+    description: Users allowed to deploy k8s Machine Learning Services
+    members: [*ml-team-admins]
+    privileges: []
     approval:
       - Chris Albon
   gitlab-roots:

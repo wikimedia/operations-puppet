@@ -6,6 +6,7 @@ cluster: misc
 profile::admin::groups:
   - deployment
   - deploy-service
+  - deploy-ml-service
   - parsoid-admin
   - wdqs-admins
   - eventlogging-admins
