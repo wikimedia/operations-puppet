@@ -9,7 +9,7 @@
 #   See documentation for values at http://man7.org/linux/man-pages/man5/core.5.html under 'Naming of core dump files'
 #
 class base::environment(
-    $core_dump_pattern = '/var/tmp/core/core.%h.%e.%p.%t',
+    String $core_dump_pattern = '/var/tmp/core/core.%h.%e.%p.%t',
 ){
     case $::realm {
         'production': {
