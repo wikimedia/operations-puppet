@@ -13,85 +13,109 @@ class base::environment(
 ){
     case $::realm {
         'production': {
-            exec { 'uncomment root bash aliases':
-                path    => '/bin:/usr/bin',
-                command => "sed -i '
-                        /^#alias ll=/ s/^#//
-                        /^#alias la=/ s/^#//
-                    ' /root/.bashrc",
-                onlyif  => "grep -q '^#alias ll' /root/.bashrc",
+            $ls_aliases = true
+            $custom_bashrc = undef
+            $custom_skel_bashrc = undef
+            $editor = 'vim'
+            $with_wmcs_etc_files = false
+            $profile_scripts = {
+                'mysql-ps1.sh' => 'puppet:///modules/base/environment/mysql-ps1.sh',
+                'bash_autologout.sh' => 'puppet:///modules/base/environment/bash_autologout.sh',
+                'field.sh' => 'puppet:///modules/base/environment/field.sh',
             }
-
-            file { '/etc/profile.d/mysql-ps1.sh':
-                    ensure => present,
-                    owner  => 'root',
-                    group  => 'root',
-                    mode   => '0444',
-                    source => 'puppet:///modules/base/environment/mysql-ps1.sh',
-            }
-
-            file { '/etc/profile.d/bash_autologout.sh':
-                    ensure => present,
-                    owner  => 'root',
-                    group  => 'root',
-                    mode   => '0755',
-                    source => 'puppet:///modules/base/environment/bash_autologout.sh',
-            }
-
-            file { '/etc/alternatives/editor':
-                ensure => link,
-                target => '/usr/bin/vim',
-            }
-
         } # /production
         'labs': {
-            file { '/etc/bash.bashrc':
-                    content => template('base/environment/bash.bashrc.erb'),
-                    owner   => 'root',
-                    group   => 'root',
-                    mode    => '0444',
-            }
-
-            file { '/etc/skel/.bashrc':
-                    content => template('base/environment/skel/bashrc.erb'),
-                    owner   => 'root',
-                    group   => 'root',
-                    mode    => '0644',
-            }
-
-            # wmflabs_imageversion is provided by labs_vmbuilder/files/postinst.copy
-            # because this is a pre-installed file, migrating is nontrivial, so we keep
-            # the original file name.
-            file { '/etc/wmcs-imageversion':
-                ensure => link,
-                target => '/etc/wmflabs_imageversion',
-            }
-
-            file { '/etc/wmcs-instancename':
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0444',
-                content => "${::hostname}\n",
-            }
-            file { '/etc/wmflabs-instancename':
-                ensure => link,
-                target => '/etc/wmcs-instancename',
-            }
-            if( $::labsproject ) {
-                file { '/etc/wmcs-project':
-                    owner   => 'root',
-                    group   => 'root',
-                    mode    => '0444',
-                    content => "${::labsproject}\n",
-                }
-                file { '/etc/wmflabs-project':
-                    ensure => link,
-                    target => '/etc/wmcs-project',
-                }
+            $ls_aliases = false
+            $custom_bashrc = template('base/environment/bash.bashrc.erb')
+            $custom_skel_bashrc = template('base/environment/skel/bashrc.erb')
+            $editor = 'use_default'
+            $with_wmcs_etc_files = true
+            $profile_scripts = {
+                'field.sh' => 'puppet:///modules/base/environment/field.sh',
             }
         } # /labs
         default: {
             err('realm must be either "labs" or "production".')
+        }
+    }
+
+    if $ls_aliases {
+        exec { 'uncomment root bash aliases':
+            path    => '/bin:/usr/bin',
+            command => "sed -i '
+                    /^#alias ll=/ s/^#//
+                    /^#alias la=/ s/^#//
+                ' /root/.bashrc",
+            onlyif  => "grep -q '^#alias ll' /root/.bashrc",
+        }
+    }
+
+    if $custom_bashrc {
+        file { '/etc/bash.bashrc':
+                content => $custom_bashrc,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+        }
+    }
+    if $custom_skel_bashrc {
+        file { '/etc/skel/.bashrc':
+                content => $custom_skel_bashrc,
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+        }
+    }
+
+    if $editor != 'use_default' {
+        file { '/etc/alternatives/editor':
+            ensure => link,
+            target => "/usr/bin/${editor}",
+        }
+    }
+
+    if $with_wmcs_etc_files {
+        # TODO in next patches: Move to it's own cloud profile/class
+        # wmflabs_imageversion is provided by labs_vmbuilder/files/postinst.copy
+        # because this is a pre-installed file, migrating is nontrivial, so we keep
+        # the original file name.
+        file { '/etc/wmcs-imageversion':
+            ensure => link,
+            target => '/etc/wmflabs_imageversion',
+        }
+
+        file { '/etc/wmcs-instancename':
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => "${::hostname}\n",
+        }
+        file { '/etc/wmflabs-instancename':
+            ensure => link,
+            target => '/etc/wmcs-instancename',
+        }
+        if( $::labsproject ) {
+            file { '/etc/wmcs-project':
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                content => "${::labsproject}\n",
+            }
+            file { '/etc/wmflabs-project':
+                ensure => link,
+                target => '/etc/wmcs-project',
+            }
+        }
+    }
+
+    $profile_scripts.each |$name, $source| {
+        file {
+            "/etc/profile.d/${name}":
+                ensure => present,
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0444',
+                source => $source,
         }
     }
 
@@ -109,13 +133,6 @@ class base::environment(
         content => $wikimedia_cluster,
     }
 
-    file { '/etc/profile.d/field.sh':
-        source => 'puppet:///modules/base/environment/field.sh',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-    }
-
     # script to generate ssh fingerprints of the server
     file { '/usr/local/bin/gen_fingerprints':
         source => 'puppet:///modules/base/environment/gen_fingerprints',
@@ -125,7 +142,7 @@ class base::environment(
     }
 
     ### Core dumps
-
+    # TODO in next patches: move under base::sysctl::coredupms
     # Write core dumps to /var/tmp/core/core.<host>.<executable>.<pid>.<timestamp>.
     # Remove core dumps with atime > one week.
 
