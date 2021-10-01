@@ -223,5 +223,10 @@ class profile::gitlab(
             partial_ensure => 'absent',
             config_ensure  => 'absent'
         }
+
+        class { 'gitlab::restore':
+            restore_ensure   => 'present',
+            restore_dir_data => $backup_dir_data
+        }
     }
 }
