@@ -116,6 +116,7 @@ Components: main
  component/varnish6
  component/wmf-sre-laptop
  thirdparty/amd-rocm38
+ thirdparty/amd-rocm431
  thirdparty/bigtop14
  thirdparty/bigtop15
  thirdparty/ceph-nautilus-buster
@@ -141,6 +142,7 @@ UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm38
+ amd-rocm431
  bigtop14
  bigtop15
  confluent
