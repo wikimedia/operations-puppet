@@ -63,7 +63,7 @@ use Pod::Usage;
 # development purposes:
 local $SIG{__WARN__} = sub {
   my $message = shift;
-  warn($message) unless $message =~ m/^utf.*/;
+  warn($message) unless $message =~ m/^utf.*/i;
 };
 
 my $window = 0; # minutes.  0 means no window defined
