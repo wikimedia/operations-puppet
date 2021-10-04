@@ -336,19 +336,4 @@ class profile::prometheus::alerts (
             retries         => 3,
         }
     }
-
-    # Check for signs of icinga overload
-    ['eqiad', 'codfw'].each |String $site| {
-        monitoring::check_prometheus { "icinga_check_latency_${site}":
-            description     => "Elevated latency for icinga checks in ${site}",
-            query           => 'icinga_avg_check_latency',
-            prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
-            warning         => 85,
-            critical        => 110,
-            method          => 'ge',
-            dashboard_links => ['https://grafana.wikimedia.org/d/rsCfQfuZz/icinga'],
-            check_interval  => 5,
-            retries         => 3,
-        }
-    }
 }
