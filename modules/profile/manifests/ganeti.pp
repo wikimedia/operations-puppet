@@ -164,6 +164,14 @@ class profile::ganeti (
         srange => "@resolve((${ganeti_ferm_nodes}))",
     }
 
+    file { '/usr/local/sbin/ganeti_rebalance':
+        ensure => present,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/profile/ganeti/ganeti_rebalance.sh',
+    }
+
     # If ganeti_cluster fact is not defined, the node has not been added to a
     # cluster yet, so don't monitor
     if $facts['ganeti_cluster'] {
@@ -212,6 +220,25 @@ class profile::ganeti (
                 nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-masterd -C ganeti-wconfd',
                 notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
             }
+        }
+        # Run a montly rebalancing for all nodegroups
+        # Note: We only run this on the first Wednesday of the month
+        # This should only be run on the master and absented from all other
+        # nodes
+        $hbal_presence = $facts['ganeti_master'] ? {
+            $facts['fqdn'] => present,
+            default        => absent,
+        }
+        systemd::timer::job { 'monthly_ganeti_rebalance':
+            ensure      => $hbal_presence,
+            description => 'Run a monthly rebalance of Ganeti instances',
+            command     => '/usr/local/sbin/ganeti_rebalance',
+            user        => 'root',
+            interval    => [{
+                'start'    => 'OnCalendar',
+                'interval' => 'Wed, *-*-1,2,3,4,5,6,7 11:47:00',
+                }
+            ]
         }
     }
 }
