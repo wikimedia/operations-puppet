@@ -159,7 +159,7 @@ def main():
         cleanup_dir(deploy_dir, deployed_paths)
 
     # Report success when something has been deployed
-    return 0 if len(deployed_paths) > 0 else 1
+    return 0 if len(deployed_paths) > 0 else 42
 
 
 if __name__ == "__main__":

@@ -6,23 +6,21 @@ class alerts::deploy::thanos(
 ) {
     require ::alerts
 
-    file { $deploy_dir:
-        ensure => directory,
-        owner  => 'alerts-deploy',
-        group  => 'alerts-deploy',
-        mode   => '0755',
+    alerts::deploy::instance { 'global':
+        alerts_dir => $git_dir,
+        deploy_dir => $deploy_dir,
+        deploy_tag => 'global',
     }
 
     git::clone { 'operations/alerts':
         ensure    => latest,
         directory => $git_dir,
         branch    => 'master',
-        notify    => Exec['deploy thanos alerts'],
+        notify    => Exec['start alerts-deploy for thanos'],
     }
 
-    exec { 'deploy thanos alerts':
-        command     => "/usr/local/bin/alerts-deploy --deploy-tag global --cleanup --alerts-dir ${git_dir} ${deploy_dir}",
-        user        => 'alerts-deploy',
+    exec { 'start alerts-deploy for thanos':
+        command     => '/bin/systemctl start alerts-deploy.target',
         refreshonly => true,
         notify      => Exec['reload thanos-rule'],
     }

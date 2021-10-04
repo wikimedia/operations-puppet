@@ -7,42 +7,32 @@ class alerts::deploy::prometheus(
 ) {
     require ::alerts
 
-    file { $deploy_dir:
-        ensure => directory,
-        owner  => 'alerts-deploy',
-        group  => 'alerts-deploy',
-        mode   => '0755',
+
+    alerts::deploy::instance { 'local':
+        alerts_dir => $git_dir,
+        deploy_dir => $deploy_dir,
+    }
+
+    # Deploy instance-specific alerts
+    $instances.each |$instance| {
+        alerts::deploy::instance { $instance:
+            alerts_dir => $git_dir,
+            deploy_dir => "${deploy_dir}/${instance}",
+            deploy_tag => $instance,
+        }
     }
 
     git::clone { 'operations/alerts':
         ensure    => latest,
         directory => $git_dir,
         branch    => 'master',
-        notify    => Exec['deploy alerts'],
+        notify    => Exec['start alerts-deploy'],
     }
 
-    exec { 'deploy alerts':
-        command     => "/usr/local/bin/alerts-deploy --cleanup --alerts-dir ${git_dir} ${deploy_dir}",
-        user        => 'alerts-deploy',
+    exec { 'start alerts-deploy':
+        command     => '/bin/systemctl start alerts-deploy.target',
         refreshonly => true,
         notify      => Exec['reload all prometheus instances'],
-    }
-
-    # Deploy instance-specific alerts
-    $instances.each |$instance| {
-        file { "${deploy_dir}/${instance}":
-            ensure => directory,
-            owner  => 'alerts-deploy',
-            group  => 'alerts-deploy',
-            mode   => '0755',
-        }
-
-        exec { "deploy alerts for instance ${instance}":
-            command     => "/usr/local/bin/alerts-deploy --cleanup --alerts-dir ${git_dir} ${deploy_dir}/${instance} --deploy-tag ${instance}",
-            user        => 'alerts-deploy',
-            refreshonly => true,
-            notify      => Exec['reload all prometheus instances'],
-        }
     }
 
     exec { 'reload all prometheus instances':
