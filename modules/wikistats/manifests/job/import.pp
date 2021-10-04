@@ -15,6 +15,8 @@ define wikistats::job::import(
         logging_enabled => true,
         logfile_basedir => '/var/log/wikistats/',
         logfile_name    => "import-${project}.log",
+        send_mail       => true,
+        environment     => {'MAILTO' => 'dzahn@wikimedia.org'},
         interval        => {'start' => 'OnCalendar', 'interval' => "${weekday} *-*-* ${hour}:${minute}:00"},
     }
 }
