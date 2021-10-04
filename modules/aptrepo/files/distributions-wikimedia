@@ -36,6 +36,7 @@ Components: main
  component/thumbor
  component/vp9
  thirdparty/amd-rocm38
+ thirdparty/amd-rocm431
  thirdparty/bigtop14
  thirdparty/bigtop15
  thirdparty/ci
@@ -57,6 +58,7 @@ UDebComponents: main component/node10 component/systemd241
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm38
+ amd-rocm431
  bigtop14
  bigtop15
  confluent
