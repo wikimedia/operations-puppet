@@ -1,0 +1,46 @@
+fields:
+  program: "input-file-kubernetes"
+  host: "kubernetes1008"
+  logsource: "kubernetes1008"
+  facility: "local0"
+  severity: "NOTICE"
+codec: "json_lines"
+ignore:
+  - "[normalized][dropped]"
+testcases:
+  # TODO: fill in kubernetes metadata
+  - input:
+      - >
+        {
+          "log": "{\"@timestamp\":\"2021-10-04T15:08:24.011Z\",\"message\":\"Not Found: /favicon.ico\",\"ecs\":{\"version\":\"1.7.0\"},\"http\":{\"response\":{\"status_code\":404}},\"log\":{\"level\":\"warning\",\"logger\":\"django.request\",\"origin\":{\"file\":{\"line\":228,\"name\":\"log.py\"},\"function\":\"log_response\"}},\"process\":{\"name\":\"MainProcess\",\"pid\":1,\"thread\":{\"id\":140602175903488,\"name\":\"Thread-49780\"}},\"trace\":{\"id\":\"4e2aa2ef-eb87-4e0f-b1ac-5627d27e399e\"}}\n",
+          "stream": "stderr",
+          "time": "2021-10-04T15:08:24.012628201Z"
+        }
+    expected:
+      - message: "Not Found: /favicon.ico"
+        normalized:
+          message: "not found: /favicon.ico"
+        "@timestamp": "2021-10-04T15:08:24.011Z"
+        host:
+          name: "kubernetes1008"
+        log:
+          level: "warning"
+          logger: "django.request"
+          origin:
+            file:
+              line: 228
+              name: "log.py"
+            function: "log_response"
+        http:
+          response:
+            status_code: 404
+        process:
+          name: "MainProcess"
+          pid: 1
+          thread:
+            id: 140602175903488
+            name: "Thread-49780"
+        trace:
+          id: "4e2aa2ef-eb87-4e0f-b1ac-5627d27e399e"
+        ecs:
+          version: "1.7.0"
