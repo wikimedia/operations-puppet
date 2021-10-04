@@ -10,6 +10,11 @@ class geoip::data::puppet(
   String $source = 'puppet:///volatile/GeoIP',
   # lint:endignore
   Stdlib::Unixpath $data_directory = '/usr/share/GeoIP',
+  Optional[Boolean] $fetch_ipinfo_dbs = false,
+  # lint:ignore:puppet_url_without_modules
+  Optional[String] $source_ipinfo = 'puppet:///volatile/GeoIPInfo',
+  # lint:endignore
+  Optional[Stdlib::Unixpath] $data_directory_ipinfo = '/usr/share/GeoIPInfo',
 ){
 
   # recursively copy the $data_directory from $source.
@@ -23,4 +28,16 @@ class geoip::data::puppet(
     backup    => false,
     show_diff => false,
   }
+
+  file { $data_directory_ipinfo:
+    ensure    =>  stdlib::ensure($fetch_ipinfo_dbs, 'directory'),
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0644',
+    source    => $source_ipinfo,
+    recurse   => true,
+    backup    => false,
+    show_diff => false,
+  }
+
 }
