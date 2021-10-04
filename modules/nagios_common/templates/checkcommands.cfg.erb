@@ -293,7 +293,7 @@ define command {
 # 'check_https_upload' command definition, querying a different URL
 define command {
     command_name    check_https_upload
-    command_line    $USER1$/check_http -H upload.wikimedia.org --ssl --sni -I $HOSTADDRESS$ -u /monitoring/backend
+    command_line    $USER1$/check_http -H upload.wikimedia.org --ssl -C7,10 --sni -I $HOSTADDRESS$ -u /monitoring/backend
     }
 
 # 'check_http_varnish' command definition
@@ -379,7 +379,7 @@ define command {
 
 define command {
     command_name    check_https_lvs_on_port
-    command_line    $USER1$/check_http --ssl --sni -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3$"
+    command_line    $USER1$/check_http --ssl -C7,10 --sni -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3$"
     }
 
 define command {
@@ -558,18 +558,18 @@ define command {
 # other project
 define command {
     command_name    check_https_phabricator
-    command_line    $USER1$/check_http --ssl --sni -H phabricator.wikimedia.org phabricator.wikimedia.org
+    command_line    $USER1$/check_http --ssl -C7,10 --sni -H phabricator.wikimedia.org phabricator.wikimedia.org
 }
 
 # check the Apple dictionary bridge on search.wm.org
 define command {
     command_name    check_https_dictbridge
-    command_line    $USER1$/check_http --ssl --sni -H 'search.wikimedia.org' -u 'https://search.wikimedia.org/?lang=en&site=wikipedia&search=Wikimedia_Foundation&limit=1' -s 'Wikimedia_Foundation'
+    command_line    $USER1$/check_http --ssl -C7,10 --sni -H 'search.wikimedia.org' -u 'https://search.wikimedia.org/?lang=en&site=wikipedia&search=Wikimedia_Foundation&limit=1' -s 'Wikimedia_Foundation'
 }
 
 # These are so specific that a special command had to be created
 define command {
     command_name    check_https_zotero_lvs_on_port
-    command_line    $USER1$/check_http --ssl --sni -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -P '[{"itemType":"journalArticle"}]' -T 'application/json' -u "$ARG3$"
+    command_line    $USER1$/check_http --ssl --sni -C7,10 -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -P '[{"itemType":"journalArticle"}]' -T 'application/json' -u "$ARG3$"
 }
 
