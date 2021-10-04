@@ -8,14 +8,17 @@ class profile::mediawiki::maintenance::wikidata {
     # Docs for the settings can be found in https://doc.wikimedia.org/Wikibase/master/php/md_docs_topics_options.html by searching for "dispatchChanges.php"
     # All settings can still be overridden at run time if required.
     profile::mediawiki::periodic_job { 'wikibase-dispatch-changes1':
+        ensure   => absent,
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki',
         interval => '*-*-* *:0/3:00'
     }
     profile::mediawiki::periodic_job { 'wikibase-dispatch-changes2':
+        ensure   => absent,
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki',
         interval => '*-*-* *:01/3:00'
     }
     profile::mediawiki::periodic_job { 'wikibase-dispatch-changes3':
+        ensure   => absent,
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki',
         interval => '*-*-* *:02/3:00'
     }
