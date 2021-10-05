@@ -6,17 +6,13 @@ role::mediawiki::appserver:
   owner: ServiceOps SREs
 role::wmcs::nfs::primary:
   owner: WMCS SREs
-role::installserver:
-  owner: Infrastructure Foundations SREs
-role::installserver::apt:
+role::installserver::light:
   owner: Infrastructure Foundations SREs
 role::wdqs::internal:
   owner: Search Platform SREs
 role::wdqs::autodeploy:
   owner: Search Platform SREs
 role::wdqs::public:
-  owner: Search Platform SREs
-role::wdqs:
   owner: Search Platform SREs
 role::wdqs::test:
   owner: Search Platform SREs
@@ -52,9 +48,7 @@ role::analytics_cluster::hadoop::worker:
   owner: Analytics SREs
 role::aqs:
   owner: Analytics SREs
-role::bastionhost::pop:
-  owner: Infrastructure Foundations SREs
-role::bastionhost::general:
+role::bastionhost:
   owner: Infrastructure Foundations SREs
 role::elasticsearch::cloudelastic:
   owner: Search Platform SREs
@@ -94,8 +88,6 @@ role::druid::public::worker:
   owner: Analytics SREs
 role::elasticsearch::cirrus:
   owner: Search Platform SREs
-role::mariadb::temporary_storage:
-  owner: Data Persistence SREs
 role::wmcs::openstack::eqiad1::virt:
   owner: WMCS SREs
 role::wmcs::openstack::codfw1dev::virt:
@@ -134,12 +126,6 @@ role::analytics_cluster::hadoop::client:
   owner: Analytics SREs
 role::cluster::management:
   owner: Infrastructure Foundations SREs
-role::labs::db::wikireplica_web:
-  owner: WMCS SREs
-role::labs::db::wikireplica_analytics:
-  owner: WMCS SREs
-role::labs::db::wikireplica_analytics::dedicated:
-  owner: Analytics SREs
 role::openldap::replica:
   owner: Infrastructure Foundations SREs
 role::wmcs::openstack::eqiad1::labweb:
@@ -152,8 +138,6 @@ role::kubernetes::staging::master:
   owner: ServiceOps SREs
 role::netmon:
   owner: Observability SREs
-role::swap:
-  owner: Analytics SREs
 role::analytics_cluster::coordinator:
   owner: Analytics SREs
 role::analytics_cluster::hadoop::master:
@@ -186,7 +170,7 @@ role::eventlogging::analytics:
   owner: Analytics SREs
 role::dumps::web::htmldumps:
   owner: ServiceOps SREs
-role::kafka::monitoring:
+role::kafka::monitoring_buster:
   owner: Analytics SREs
 role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
   owner: WMCS SREs
@@ -214,13 +198,9 @@ role::mirrors:
   owner: Infrastructure Foundations SREs
 role::statistics::explorer:
   owner: Analytics SREs
-role::statistics::cruncher:
-  owner: Analytics SREs
-role::statistics::private:
-  owner: Analytics SREs
 role::analytics_cluster::webserver:
   owner: Analytics SREs
-role::logging::webrequest::ops:
+role::syslog::centralserver:
   owner: Observability SREs
 role::analytics_test_cluster::hadoop::worker:
   owner: Analytics SREs
