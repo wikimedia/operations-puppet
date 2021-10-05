@@ -168,7 +168,7 @@ class IcingaStatus:
     def __init__(self, status_path: Path, target_hostnames: Set[str]):
         try:
             status_text = status_path.read_text()
-        except OSError as error:
+        except (OSError, UnicodeDecodeError) as error:
             raise IcingaStatusParseError('corrupt status.dat: Failed to open file: {}'.format(
                 error))
 
