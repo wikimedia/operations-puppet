@@ -1,28 +1,6 @@
 class profile::mediawiki::maintenance::wikidata {
     require profile::mediawiki::common
 
-    # Starts a dispatcher instance every 3 minutes:
-    # This handles inserting jobs into client job queue, which then processes the changes.
-    # They will run for a limited time, so we can only have runTimeInMinutes/3m concurrent instances.
-    # The settings for dispatchChanges.php can be found in mediawiki-config.
-    # Docs for the settings can be found in https://doc.wikimedia.org/Wikibase/master/php/md_docs_topics_options.html by searching for "dispatchChanges.php"
-    # All settings can still be overridden at run time if required.
-    profile::mediawiki::periodic_job { 'wikibase-dispatch-changes1':
-        ensure   => absent,
-        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki',
-        interval => '*-*-* *:0/3:00'
-    }
-    profile::mediawiki::periodic_job { 'wikibase-dispatch-changes2':
-        ensure   => absent,
-        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki',
-        interval => '*-*-* *:01/3:00'
-    }
-    profile::mediawiki::periodic_job { 'wikibase-dispatch-changes3':
-        ensure   => absent,
-        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/dispatchChanges.php --wiki wikidatawiki',
-        interval => '*-*-* *:02/3:00'
-    }
-
     # Prune wb_changes entries no longer needed from wikidata
     profile::mediawiki::periodic_job { 'wikibase_repo_prune2':
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3',
