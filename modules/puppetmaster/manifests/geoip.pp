@@ -4,6 +4,7 @@
 class puppetmaster::geoip(
     Boolean $fetch_private = true,
     Boolean $use_proxy = true,
+    Stdlib::Host $ca_server = $facts['fqdn'],
 ){
 
     $geoip_destdir = "${puppetmaster::volatiledir}/GeoIP"
@@ -55,6 +56,7 @@ class puppetmaster::geoip(
         class { 'geoip::data::maxmind::ipinfo': # lint:ignore:wmf_styleguide
             data_directory => $geoip_destdir_ipinfo,
             proxy          => $webproxy,
+            ca_server      => $ca_server,
             user_id        => $passwords::geoip::user_id_ipinfo,
             license_key    => $passwords::geoip::license_key_ipinfo,
             product_ids    => [

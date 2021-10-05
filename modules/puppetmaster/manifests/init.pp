@@ -152,7 +152,9 @@ class puppetmaster(
     }
 
     if $enable_geoip {
-        class { 'puppetmaster::geoip': }
+        class { 'puppetmaster::geoip':
+            ca_server => $ca_server,
+        }
     }
     include puppetmaster::gitpuppet
     include puppetmaster::generators
