@@ -1,7 +1,7 @@
 fields:
   program: "input-file-kubernetes"
-  host: "kubernetes1008"
-  logsource: "kubernetes1008"
+  host: "kubestage1008"
+  logsource: "kubestage1008"
   facility: "local0"
   severity: "NOTICE"
 codec: "json_lines"
@@ -22,9 +22,17 @@ testcases:
           message: "not found: /favicon.ico"
         "@timestamp": "2021-10-04T15:08:24.011Z"
         host:
-          name: "kubernetes1008"
+          name: "kubestage1008"
         log:
-          level: "warning"
+          level: "WARNING"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 132
+            severity:
+              code: 4
+              name: "warning"
           logger: "django.request"
           origin:
             file:
