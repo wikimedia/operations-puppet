@@ -19,7 +19,6 @@ class profile::toolforge::harbor::db (
 
     if $on_primary {
         class { 'postgresql::master':
-            includes => ['tuning.conf'],
             root_dir => $root_dir,
         }
         if $db_replica {
@@ -53,7 +52,6 @@ class profile::toolforge::harbor::db (
         class {'postgresql::slave':
             master_server    => $db_primary,
             replication_pass => $replication_pass,
-            includes         => ['tuning.conf'],
             root_dir         => $root_dir,
         }
     } else {
