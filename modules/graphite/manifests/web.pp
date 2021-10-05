@@ -66,8 +66,9 @@ class graphite::web(
     require_package('memcached')
 
     $python_version = $::lsbdistcodename ? {
-        buster  => 'python3',
-        stretch => 'python',
+        buster   => 'python3',
+        bullseye => 'python3',
+        stretch  => 'python',
     }
 
     require_package("${python_version}-memcache")

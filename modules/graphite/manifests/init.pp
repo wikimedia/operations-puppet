@@ -19,21 +19,25 @@ class graphite(
 ) {
 
     $required_packages = $::lsbdistcodename ? {
-        buster  => [ 'graphite-carbon', 'python3-whisper' ],
-        stretch => [ 'graphite-carbon', 'python-whisper' ],
+        buster   => [ 'graphite-carbon', 'python3-whisper' ],
+        bullseye => [ 'graphite-carbon', 'python3-whisper' ],
+        stretch  => [ 'graphite-carbon', 'python-whisper' ],
     }
 
     package { $required_packages:
         ensure => installed,
     }
 
-    # force installation of python-twisted-core separatedly, there seem to be a
-    # race condition with dropin.cache generation when apt-get installing
-    # graphite and twisted at the same time.
-    # https://bugs.launchpad.net/graphite/+bug/833196
-    package { 'python-twisted-core':
-        ensure => installed,
-        before => Package['graphite-carbon'],
+    # Remove once all graphite hosts run Bullseye
+    if debian::codename::le('buster') {
+        # force installation of python-twisted-core separatedly, there seem to be a
+        # race condition with dropin.cache generation when apt-get installing
+        # graphite and twisted at the same time.
+        # https://bugs.launchpad.net/graphite/+bug/833196
+        package { 'python-twisted-core':
+            ensure => installed,
+            before => Package['graphite-carbon'],
+        }
     }
 
     $default_c_relay_settings = {

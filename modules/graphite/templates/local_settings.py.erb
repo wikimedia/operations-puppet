@@ -67,6 +67,11 @@ CARBONLINK_HOSTS = [<%=
 %>]
 <%- end -%>
 
+# See also https://github.com/graphite-project/graphite-web/pull/2462
+import django
+if django.VERSION >= (2, 2):
+    from graphite.app_settings import *
+    INSTALLED_APPS = INSTALLED_APPS + ('django.contrib.messages',)
 
 ## CORS
 
