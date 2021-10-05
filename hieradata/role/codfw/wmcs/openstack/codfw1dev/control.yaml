@@ -20,23 +20,3 @@ profile::wmcs::backy2::cluster_name: ceph
 
 profile::ceph::client::rbd::libvirt_rbd_uuid: 'e6500406-304c-4a21-a5d0-8214a827a10d'
 profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: 'f83e2286-bff1-47bf-bf6d-109c427d63c9'
-
-# This FQDN was manually created and assigned to a floating IP (also manually created)
-# which points to an active manila-sharecontroller VM instance
-profile::openstack::codfw1dev::manila_sharecontroller: manila-sharecontroller.cloudinfra-codfw1dev.codfw1dev.wmcloud.org
-profile::openstack::codfw1dev::manila::service_enabled: true
-profile::openstack::codfw1dev::manila::api_bind_port: 18786
-profile::openstack::codfw1dev::manila::db_user: manila
-profile::openstack::codfw1dev::manila::db_name: manila
-profile::openstack::codfw1dev::manila::db_host: openstack.codfw1dev.wikimediacloud.org
-profile::openstack::codfw1dev::manila::rabbit_user: manila
-profile::openstack::codfw1dev::manila::service_instance_user: manila
-profile::openstack::codfw1dev::manila::service_image: manila-service-image-1.3.0-75-g631a854
-# this is 'g3.cores1.ram2.disk10'
-profile::openstack::codfw1dev::manila::nova_flavor_id: cb15aca6-3ff5-4623-8d21-0d37d3092835
-# this is 'standard'
-profile::openstack::codfw1dev::manila::cinder_volume_type: 31fc5bfc-bc32-40e8-8865-90cfdf67a977
-# this is 'lan-flat-cloudinstances2b'
-profile::openstack::codfw1dev::manila::network_id: 05a5494a-184f-4d5c-9e98-77ae61c56daa
-# this is 'cloud-instances2-b-codfw'
-profile::openstack::codfw1dev::manila::subnet_id: 7adfcebe-b3d0-4315-92fe-e8365cc80668

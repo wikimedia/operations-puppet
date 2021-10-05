@@ -40,7 +40,6 @@ password_safelist = project-proxy-dns-manager:<%=subnet%>
 password_safelist = paws-dns-manager:<%=subnet%>
 password_safelist = cloudinfra-dns-manager:<%=subnet%>
 password_safelist = codfw1dev-proxy-dns-manager:<%=subnet%>
-password_safelist = manila-srv:<%= subnet %>
 <% end -%>
 <% @prod_networks.each do |subnet| -%>
 password_safelist = *:<%=subnet%>

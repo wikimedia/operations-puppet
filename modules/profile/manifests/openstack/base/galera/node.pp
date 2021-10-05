@@ -7,7 +7,6 @@ class profile::openstack::base::galera::node(
     Array[Stdlib::Fqdn]    $designate_hosts        = lookup('profile::openstack::base::designate_hosts'),
     Array[Stdlib::Fqdn]    $labweb_hosts           = lookup('profile::openstack::base::labweb_hosts'),
     Stdlib::Fqdn           $puppetmaster           = lookup('profile::openstack::base::puppetmaster::web_hostname'),
-    Optional[Stdlib::Fqdn] $manila_sharecontroller = lookup('profile::openstack::base::manila_sharecontroller', {default_value => undef}),
     ) {
 
     $socket = '/var/run/mysqld/mysqld.sock'
@@ -51,13 +50,7 @@ class profile::openstack::base::galera::node(
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
 
-    if $manila_sharecontroller == undef {
-        $manila_ip = ''
-    } else {
-        $manila_ip = "@resolve(${manila_sharecontroller}) @resolve(${manila_sharecontroller}, AAAA)"
-    }
-
-    # Database access from each db node, HA-proxy, designate, web hosts, manila-sharecontroller
+    # Database access from each db node, HA-proxy, designate, web hosts
     ferm::rule{'galera_db_access':
         ensure => 'present',
         rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
@@ -65,7 +58,6 @@ class profile::openstack::base::galera::node(
                           @resolve((${join($designate_hosts,' ')}))
                           @resolve((${join($designate_hosts,' ')}), AAAA)
                           @resolve(${puppetmaster}) @resolve(${puppetmaster}, AAAA)
-                          ${manila_ip}
                           ${labweb_ips} ${labweb_ip6s}
                           ) proto tcp dport (3306) ACCEPT;",
     }
