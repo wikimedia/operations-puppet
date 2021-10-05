@@ -167,7 +167,10 @@ class IcingaStatus:
 
     def __init__(self, status_path: Path, target_hostnames: Set[str]):
         try:
-            status_text = status_path.read_text()
+            # While reading the status file replace all unicode errors with ? instead of failing
+            # because the file might contain output from any check and potentially invalid UTF-8
+            # characters, for example if the output gets truncated by NRPE.
+            status_text = status_path.read_text(encoding='utf-8', errors='replace')
         except (OSError, UnicodeDecodeError) as error:
             raise IcingaStatusParseError('corrupt status.dat: Failed to open file: {}'.format(
                 error))
