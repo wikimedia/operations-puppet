@@ -31,6 +31,7 @@ class geoip::data::maxmind(
   String $user_id                  = '999999',
   String $license_key              = '000000000000',
   Array $product_ids               = [506],
+  Stdlib::Host $ca_server          = $facts['fqdn'],
   Optional[Stdlib::Httpurl] $proxy = undef,
 ) {
   # Version 3 on buster has different config keys to version 2

@@ -29,6 +29,7 @@ class puppetmaster::geoip(
         class { '::geoip::data::maxmind':
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
+            ca_server      => $ca_server,
             user_id        => $passwords::geoip::user_id,
             license_key    => $passwords::geoip::license_key,
             product_ids    => [
