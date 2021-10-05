@@ -43,6 +43,7 @@ class profile::base(
     include network::constants
 
     include profile::resolving
+    include profile::monitoring
 
     class { 'rsyslog': }
     include profile::prometheus::rsyslog_exporter
@@ -87,7 +88,6 @@ class profile::base(
     class { 'base::initramfs': }
     class { 'base::auto_restarts': }
 
-    include profile::monitoring
 
     class { 'prometheus::node_debian_version': }
 
