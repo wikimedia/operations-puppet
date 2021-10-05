@@ -216,7 +216,7 @@ Components: main>thirdparty/amd-rocm431
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
-ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib64|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rocm-smi|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|hip-rocclr|rocsolver|migraphx)$' || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|hip-rocclr|rocsolver|migraphx|half|openmp-extras|hipfft)$' || [ $? -eq 1 ]
 
 Name: thirdparty/ceph-nautilus-buster
 Method: https://mirror.croit.io/debian-nautilus

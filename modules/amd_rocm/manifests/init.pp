@@ -76,10 +76,15 @@ class amd_rocm (
         'rocm-libs',
         'rocm-opencl',
         'rocm-opencl-dev',
-        'rocm-smi',
         'rocm-utils',
         'rocrand',
     ]
+
+    if $version == '431' {
+      $extra_packages = ['rocm-smi-lib', 'migraphx']
+    } else {
+      $extra_packages = ['rocm-smi']
+    }
 
     apt::package_from_component { "amd-rocm${version}":
         component => "thirdparty/amd-rocm${version}",
