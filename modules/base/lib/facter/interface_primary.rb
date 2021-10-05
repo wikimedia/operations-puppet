@@ -61,16 +61,18 @@ Facter.add('ipaddress6') do
   setcode do
     ip = nil
     intf = Facter.fact('interface_primary').value
+    ipv4_mapped = Facter.fact('ipaddress').value.gsub('.', ':')
 
     # Do not rely on ipaddress6_#{interface_primary}, as its underlying
     # implementation is unreliable and often wrong. Among other issues, it uses
     # ifconfig instead of iproute and does not filter out deprecated
     # (preferred_lft 0) addresses. Do our own parsing.
-    ipout = Facter::Util::Resolution.exec("ip -6 address list dev #{intf}")
-    ipout.each_line do |s|
-      # don't consider SLAAC and deprecated addresses
-      if s =~ %r{^\s*inet6 ([0-9a-f:]+)\/([0-9]+) scope global (?!deprecated|mngtmpaddr|dynamic)}
-        ip = Regexp.last_match(1)
+    ipout = Facter::Util::Resolution.exec("ip --oneline -6 address list dev #{intf}")
+    ipout.each_line do |line|
+      tmp_ip = line.split[3].split('/')[0]
+      # If we have a mapped address use it, otherwise just keep facters default
+      if tmp_ip.end_with?(ipv4_mapped)
+        ip = tmp_ip
         break
       end
     end
