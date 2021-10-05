@@ -4058,7 +4058,7 @@ users:
     name: lmata
     realname: Leo Mata
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJAL01LpnPg8qhPGkSnOxaKvXMO2uoXofcSnwCkLgww0 lmata@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhvXwYfX/8SM+Lq8Ed8G+uBiUEorPGjA6V61aZBQPbz lmata@wikimedia.org
     uid: 24566
     email: lmata@wikimedia.org
   dancy:
