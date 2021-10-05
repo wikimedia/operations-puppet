@@ -35,6 +35,6 @@ class alerts {
 
     # The target to be started after puppet has updated git
     systemd::unit { 'alerts-deploy.target':
-        content => '[Unit]\nDescription=alerts-deploy\n',
+        content => "[Unit]\nDescription=alerts-deploy\n",
     }
 }
