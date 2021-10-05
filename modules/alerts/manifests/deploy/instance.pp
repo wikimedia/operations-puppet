@@ -23,10 +23,12 @@ define alerts::deploy::instance (
     systemd::unit { $service_name:
         ensure  => present,
         content => systemd_template('alerts-deploy@'),
+        before  => Git::Clone['operations/alerts'],
     }
 
     exec { "enable ${service_name}":
         command => "/bin/systemctl enable ${service_name}",
         unless  => "/bin/systemctl -q is-enabled ${service_name}",
+        require => Systemd::Unit[$service_name],
     }
 }
