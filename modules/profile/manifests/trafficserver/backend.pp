@@ -19,6 +19,7 @@ class profile::trafficserver::backend (
     Optional[TrafficServer::Negative_Caching] $negative_caching=lookup('profile::trafficserver::backend::negative_caching', {default_value => undef}),
     String $default_lua_script=lookup('profile::trafficserver::backend::default_lua_script', {default_value => ''}),
     Array[TrafficServer::Storage_element] $storage=lookup('profile::trafficserver::backend::storage_elements', {default_value => []}),
+    Integer $ram_cache_size=lookup('profile::trafficserver::backend::ram_cache_size', {default_value => 2147483648}),
     Array[TrafficServer::Log_format] $log_formats=lookup('profile::trafficserver::backend::log_formats', {default_value => []}),
     Array[TrafficServer::Log_filter] $log_filters=lookup('profile::trafficserver::backend::log_filters', {default_value => []}),
     Array[TrafficServer::Log] $logs=lookup('profile::trafficserver::backend::logs', {default_value => []}),
@@ -106,7 +107,7 @@ class profile::trafficserver::backend (
         global_lua_script       => $global_lua_script,
         max_lua_states          => $max_lua_states,
         storage                 => $storage,
-        ram_cache_size          => 2147483648, # 2G
+        ram_cache_size          => $ram_cache_size,
         mapping_rules           => $mapping_rules,
         guaranteed_max_lifetime => 86400, # 24 hours
         caching_rules           => profile::trafficserver_caching_rules($req_handling, $alternate_domains, $mapping_rules),
