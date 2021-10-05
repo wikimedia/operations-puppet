@@ -70,6 +70,17 @@ class profile::monitoring (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/SSH/monitoring',
     }
 
+
+    sudo::user { 'nagios_puppetrun':
+        user       => 'nagios',
+        privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
+    }
+
+    class { 'nrpe':
+        allowed_hosts => $monitoring_hosts.join(','),
+    }
+    # the nrpe class installs monitoring-plugins-* which creates the following directory
+    contain nrpe  # lint:ignore:wmf_styleguide
     file {
         default:
             ensure => present,
@@ -86,15 +97,6 @@ class profile::monitoring (
             source => 'puppet:///modules/base/monitoring/check_established_connections.sh';
         '/usr/lib/nagios/plugins/check-fresh-files-in-dir.py':
             source => 'puppet:///modules/base/monitoring/check-fresh-files-in-dir.py';
-    }
-
-    sudo::user { 'nagios_puppetrun':
-        user       => 'nagios',
-        privileges => ['ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_puppetrun'],
-    }
-
-    class { 'nrpe':
-        allowed_hosts => $monitoring_hosts.join(','),
     }
 
     nrpe::monitor_service { 'disk_space':
@@ -172,16 +174,6 @@ class profile::monitoring (
         }
     }
 
-
-    # TODO: remove once absented
-    file { '/usr/local/lib/nagios/plugins/check_long_procs':
-        ensure => absent,
-    }
-
-    # TODO: remove once absented
-    ::nrpe::monitor_service { 'check_long_procs':
-        ensure => 'absent',
-    }
 
     if ! $facts['is_virtual'] {
         monitoring::check_prometheus { 'smart_healthy':
