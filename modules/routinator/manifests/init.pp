@@ -21,7 +21,16 @@ class routinator(
   Optional[String] $proxy,
   ){
 
-    require_package('routinator', 'rsync')
+    ensure_packages('rsync')
+
+    if debian::codename::ge('bullseye') {
+        apt::package_from_component { 'routinator':
+            component => 'thirdparty/routinator',
+            packages  => ['routinator'],
+        }
+    } else {
+        ensure_packages('routinator')
+    }
 
     group { 'routinator':
         ensure  => present,
