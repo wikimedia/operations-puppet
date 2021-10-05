@@ -18,14 +18,6 @@ class etcd::backup ($cluster_name=$::domain, $backup_dir='/srv/backups/etcd') {
         mode   => '0555',
     }
 
-    cron { 'etcdbackup':
-        ensure  => absent,
-        command => "/usr/local/bin/etcd-backup ${cluster_name} ${backup_dir}",
-        user    => 'root',
-        hour    => 0,
-        minute  => fqdn_rand(60, 'etcd_backup'),
-    }
-
     $backup_minute = fqdn_rand(60, 'etcd_backup')
 
     systemd::timer::job { 'etcd-backup':
