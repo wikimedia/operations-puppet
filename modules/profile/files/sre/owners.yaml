@@ -19,9 +19,9 @@ role::wdqs::test:
 role::sessionstore:
   owner: CPT SREs
 role::dumps::generation::worker::dumper:
-  owner: ServiceOps SREs
+  owner: CPT SREs
 role::dumps::generation::worker::testbed:
-  owner: ServiceOps SREs
+  owner: CPT SREs
 role::openldap::labs:
   owner: Infrastructure Foundations SREs
 role::eventschemas::service:
@@ -39,9 +39,9 @@ role::mail::mx:
 role::lvs::balancer:
   owner: Traffic SREs
 role::maps::replica:
-  owner: Search Platform SREs
+  owner: CPT SREs
 role::maps::master:
-  owner: Search Platform SREs
+  owner: CPT SREs
 role::alerting_host:
   owner: Observability SREs
 role::analytics_cluster::hadoop::worker:
@@ -133,7 +133,7 @@ role::wmcs::openstack::eqiad1::labweb:
 role::piwik:
   owner: Analytics SREs
 role::mediawiki::maintenance:
-  owner: Analytics SREs
+  owner: ServiceOps SREs
 role::kubernetes::staging::master:
   owner: ServiceOps SREs
 role::netmon:
@@ -169,7 +169,7 @@ role::wmcs::openstack::codfw1dev::cloudweb:
 role::eventlogging::analytics:
   owner: Analytics SREs
 role::dumps::web::htmldumps:
-  owner: ServiceOps SREs
+  owner: CPT SREs
 role::kafka::monitoring_buster:
   owner: Analytics SREs
 role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
@@ -191,9 +191,9 @@ role::elasticsearch::relforge:
 role::restbase::dev_cluster:
   owner: CPT SREs
 role::dumps::generation::worker::dumper_monitor:
-  owner: ServiceOps SREs
+  owner: CPT SREs
 role::dumps::generation::worker::dumper_misc_crons_only:
-  owner: ServiceOps SREs
+  owner: CPT SREs
 role::mirrors:
   owner: Infrastructure Foundations SREs
 role::statistics::explorer:
@@ -225,6 +225,6 @@ role::ores:
 role::pybaltest:
   owner: Traffic SREs
 role::insetup:
-  owner: SRE at large
+  owner: Infrastructure Foundations SREs
 role::thumbor::mediawiki:
   owner: ServiceOps SREs

@@ -1,2 +1,2 @@
 profile::monitoring::notifications_enabled: false
-profile::contacts::role_contacts: ['SRE at large']
+profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
