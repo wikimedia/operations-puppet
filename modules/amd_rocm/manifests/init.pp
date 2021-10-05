@@ -23,7 +23,7 @@ class amd_rocm (
     Optional[String] $kfd_access_group = undef,
 ) {
 
-    $supported_versions = ['38', '431']
+    $supported_versions = ['38', '42', '431']
 
     if ! ($version in $supported_versions) {
         fail('The version of ROCm requested is not supported or misspelled.')
@@ -80,7 +80,7 @@ class amd_rocm (
         'rocrand',
     ]
 
-    if $version == '431' {
+    if $version == '431' or $version == '42' {
       $extra_packages = ['rocm-smi-lib', 'migraphx']
     } else {
       $extra_packages = ['rocm-smi']

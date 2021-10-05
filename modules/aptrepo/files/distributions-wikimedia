@@ -36,6 +36,7 @@ Components: main
  component/thumbor
  component/vp9
  thirdparty/amd-rocm38
+ thirdparty/amd-rocm42
  thirdparty/amd-rocm431
  thirdparty/bigtop14
  thirdparty/bigtop15
@@ -58,6 +59,7 @@ UDebComponents: main component/node10 component/systemd241
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm38
+ amd-rocm42
  amd-rocm431
  bigtop14
  bigtop15
@@ -116,6 +118,7 @@ Components: main
  component/varnish6
  component/wmf-sre-laptop
  thirdparty/amd-rocm38
+ thirdparty/amd-rocm42
  thirdparty/amd-rocm431
  thirdparty/bigtop14
  thirdparty/bigtop15
@@ -142,6 +145,7 @@ UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm38
+ amd-rocm42
  amd-rocm431
  bigtop14
  bigtop15
