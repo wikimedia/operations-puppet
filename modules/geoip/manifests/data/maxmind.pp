@@ -1,7 +1,7 @@
 # == Class geoip::data::maxmind
 # Installs Maxmind GeoIP database files by downloading
 # them from Maxmind with the geoipupdate command.
-# This also installs a cron job to do this weekly.
+# This also installs a timer job to do this weekly.
 #
 # == Parameters
 # $data_directory - Where the data files should live.
@@ -69,23 +69,10 @@ class geoip::data::maxmind(
 
   $geoipupdate_log = '/var/log/geoipupdate.log'
 
-  # Set up a cron to run geoipupdate daily. This will download .dat files for
+  # Set up a timer job to run geoipupdate daily. This will download .dat files for
   # the specified MaxMind Product IDs.  We expect new data to generally arrive
-  # weekly on Tuesdays, but there is no gaurantee as to the precise timing in
+  # weekly on Tuesdays, but there is no guarantee as to the precise timing in
   # the long term.
-  cron { 'geoipupdate':
-    ensure  => absent,
-    command => "/bin/echo -e \"\$(/bin/date): geoipupdate downloading MaxMind .dat files into ${data_directory}\" >> ${geoipupdate_log} && ${geoipupdate_command} &>> /var/log/geoipupdate.log",
-    user    => root,
-    weekday => '*',
-    hour    => 3,
-    minute  => 30,
-    require => [
-        Package['geoipupdate'],
-        File[$config_file],
-        File[$data_directory]
-    ],
-  }
 
   file { '/usr/local/bin/geoipupdate_job_legacy':
       ensure => present,
