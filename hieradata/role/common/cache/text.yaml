@@ -262,3 +262,4 @@ profile::lvs::realserver::pools:
   text:
     services:
       - varnish-fe
+profile::contacts::role_contacts: ['Traffic SREs']

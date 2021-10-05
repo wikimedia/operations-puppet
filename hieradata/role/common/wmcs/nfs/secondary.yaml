@@ -49,3 +49,4 @@ profile::wmcs::nfs::secondary::standby: cloudstore1009.wikimedia.org
 
 prometheus::node_exporter::collectors_extra:
   - drbd
+profile::contacts::role_contacts: ['WMCS SREs']

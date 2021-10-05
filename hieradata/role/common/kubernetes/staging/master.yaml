@@ -40,3 +40,4 @@ profile::kubernetes::master::prometheus_url: "http://prometheus.svc.%{::site}.wm
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
+profile::contacts::role_contacts: ['ServiceOps SREs']

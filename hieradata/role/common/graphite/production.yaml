@@ -24,3 +24,4 @@ profile::idp::client::httpd::sites:
     proxied_as_https: true
     environment: staging
     enable_monitor: false
+profile::contacts::role_contacts: ['Observability SREs']

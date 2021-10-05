@@ -12,3 +12,4 @@ profile::memcached::size: 2000
 profile::memcached::port: 11211
 
 profile::openstack::eqiad1::nova::common::is_control_node: true
+profile::contacts::role_contacts: ['WMCS SREs']

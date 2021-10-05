@@ -2,3 +2,4 @@ cluster: wmcs
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 profile::standard::enable_ip6_mapped: false
+profile::contacts::role_contacts: ['WMCS SREs']

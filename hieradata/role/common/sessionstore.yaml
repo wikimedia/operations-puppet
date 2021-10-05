@@ -71,3 +71,4 @@ profile::cassandra::settings:
 #
 profile::admin::groups:
   - sessionstore-roots
+profile::contacts::role_contacts: ['CPT SREs']

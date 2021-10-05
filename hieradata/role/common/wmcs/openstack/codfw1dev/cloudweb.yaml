@@ -1,1 +1,2 @@
 profile::base::firewall::block_abuse_nets: true
+profile::contacts::role_contacts: ['WMCS SREs']

@@ -88,3 +88,4 @@ profile::lvs::realserver::pools:
   upload:
     services:
       - varnish-fe
+profile::contacts::role_contacts: ['Traffic SREs']

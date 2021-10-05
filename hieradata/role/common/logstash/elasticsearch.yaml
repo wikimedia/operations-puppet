@@ -72,3 +72,4 @@ profile::elasticsearch::monitor::threshold: '>=0.34'
 
 profile::kibana::region_map_enabled: false
 profile::kibana::tile_map_enabled: false
+profile::contacts::role_contacts: ['Observability SREs']

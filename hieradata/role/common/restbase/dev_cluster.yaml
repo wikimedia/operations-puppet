@@ -145,3 +145,4 @@ service::configuration::log_dir: "/var/log"
 profile::admin::groups:
   - restbase-roots
   - restbase-admins
+profile::contacts::role_contacts: ['CPT SREs']

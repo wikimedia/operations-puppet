@@ -43,3 +43,4 @@ profile::lvs::realserver::pools:
 # Define in the private repo
 # profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
+profile::contacts::role_contacts: ['ServiceOps SREs']

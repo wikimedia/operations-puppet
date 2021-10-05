@@ -1,3 +1,4 @@
 mtail::service_ensure: absent
 profile::ncredir::monitoring: true
 profile::nginx::variant: 'light'
+profile::contacts::role_contacts: ['Traffic SREs']
