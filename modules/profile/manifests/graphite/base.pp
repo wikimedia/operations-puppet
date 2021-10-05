@@ -31,11 +31,6 @@ class profile::graphite::base(
 ) {
     include ::passwords::graphite
 
-    if $::realm == 'labs' {
-        # Mount extra disk on /srv so carbon has somewhere to store metrics
-        require ::profile::labs::lvm::srv
-    }
-
     $carbon_storage_dir = $storage_dir
 
     class { '::graphite':
