@@ -61,7 +61,7 @@ define uwsgi::app(
         nrpe::monitor_service { "uwsgi-${title}":
             ensure       => present,
             description  => "${title} uWSGI web app",
-            nrpe_command => "LC_CTYPE=C /usr/bin/systemctl status uwsgi-${title}",
+            nrpe_command => "/usr/bin/systemctl status uwsgi-${title}",
             require      => Base::Service_unit["uwsgi-${title}"],
             notes_url    => "https://wikitech.wikimedia.org/wiki/Monitoring/Services/${title}",
         }
