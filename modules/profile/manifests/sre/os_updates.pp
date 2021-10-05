@@ -47,6 +47,14 @@ class profile::sre::os_updates (
         source => 'puppet:///modules/profile/sre/os-updates-tracking.cfg',
     }
 
+    file { '/etc/wikimedia/os-updates/puppetdb_owners.yaml':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => profile::contacts::get_owners().to_yaml,
+    }
+
     file { '/etc/wikimedia/os-updates/owners.yaml':
         ensure => file,
         owner  => 'root',
