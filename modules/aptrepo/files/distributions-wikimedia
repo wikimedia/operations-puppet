@@ -188,10 +188,12 @@ Components: main
  component/jdk8
  thirdparty/hwraid
  thirdparty/opensearch1
+ thirdparty/routinator
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  hwraid-stretch
+ routinator
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override

@@ -318,3 +318,13 @@ Suite: buster
 Architectures: amd64
 VerifyRelease: 3F01618A51312F3F
 ListShellHook: grep-dctrl \( -P 'gitlab-runner' -a -FVersion --lt 14.4 -a -FVersion --ge 14.3 \) || [ $? -eq 1 ]
+
+Name: routinator
+Method: https://packages.nlnetlabs.nl/linux/debian/
+Suite: bullseye
+Components: main>thirdparty/routinator
+UDebComponents:
+Architectures: amd64
+GetInRelease: no
+VerifyRelease: 94E92A0708C4CC43
+ListShellHook: grep-dctrl -X -S routinator || [ $? -eq 1 ]
