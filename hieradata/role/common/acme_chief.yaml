@@ -184,6 +184,20 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'netbox-dev2001.wikimedia.org'
+    openstack-codfw1dev:
+        CN: 'openstack.codfw1dev.wikimediacloud.org'
+        SNI:
+        - 'openstack.codfw1dev.wikimediacloud.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^cloudcontrol200[134]-dev\.wikimedia\.org$'
+    openstack-eqiad1:
+        CN: 'openstack.eqiad1.wikimediacloud.org'
+        SNI:
+        - 'openstack.eqiad1.wikimediacloud.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^cloudcontrol100[345]\.wikimedia\.org$'
     orchestrator:
         CN: 'orchestrator.wikimedia.org'
         SNI:
