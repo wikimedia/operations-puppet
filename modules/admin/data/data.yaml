@@ -4969,6 +4969,10 @@ ldap_only_users:
     ensure: present
     realname: Stella Chang
     email: schang@wikimedia.org
+  sgimeno:
+    ensure: present
+    realname: Sergio Gimeno
+    email: sgimeno@wikimedia.org
   siddharth11:
     ensure: absent
     realname: Siddarth Parmar
