@@ -38,11 +38,7 @@ class geoip::data::maxmind(
 
   ensure_packages(['geoipupdate'])
 
-  if ! defined(File[$data_directory]) {
-    file { $data_directory:
-      ensure => directory,
-    }
-  }
+  ensure_resource('file', $data_directory, {'ensure' => 'directory'})
 
   $config_file = '/etc/GeoIP.conf'
 
@@ -69,7 +65,7 @@ class geoip::data::maxmind(
 
   $geoipupdate_log = '/var/log/geoipupdate.log'
 
-  # Set up a timer job to run geoipupdate daily. This will download .dat files for
+  # Set up a timer to run geoipupdate daily. This will download .dat files for
   # the specified MaxMind Product IDs.  We expect new data to generally arrive
   # weekly on Tuesdays, but there is no guarantee as to the precise timing in
   # the long term.
