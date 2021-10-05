@@ -1,5 +1,5 @@
 graphite::production:
-  - pontoon-graphite-03.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-graphite-04.monitoring.eqiad1.wikimedia.cloud
 
 syslog::centralserver:
   - pontoon-log-01.monitoring.eqiad1.wikimedia.cloud
