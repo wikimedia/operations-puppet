@@ -7,10 +7,10 @@
 class profile::dbbackups::mydumper {
     include ::passwords::mysql::dump
 
-    require_package(
+    ensure_packages([
         'wmfbackups',  # we now install all software from debian package
         'mydumper',  # mydumper is only a soft dependency, explicitly install it
-    )
+    ])
 
     group { 'dump':
         ensure => present,

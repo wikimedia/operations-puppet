@@ -22,7 +22,7 @@ class r_lang (
         # To get higher performance for linear algebra operations
         'libopenblas-dev'
     ]
-    require_package($essentials)
+    ensure_packages($essentials)
 
     file { '/usr/local/lib/R/site-library':
         ensure => 'directory',
@@ -56,7 +56,7 @@ class r_lang (
             'libcurl4-openssl-dev', # for curl
             'libssh2-1-dev'         # for git2r
         ]
-        require_package($devtools_essentials)
+        ensure_packages($devtools_essentials)
 
         r_lang::cran { 'openssl':
             require => Package['libssl-dev'],

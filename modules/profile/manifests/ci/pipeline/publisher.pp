@@ -7,7 +7,7 @@ class profile::ci::pipeline::publisher(
     String $docker_registry_user = lookup('profile::ci::pipeline::publisher::docker_registry_user'),
     String $docker_registry_password = lookup('profile::ci::pipeline::publisher::docker_registry_password'),
 ){
-    require_package('python3-ruamel.yaml')
+    ensure_packages('python3-ruamel.yaml')
 
     class{ '::docker_pusher':
         docker_pusher_user       => $docker_pusher_user,

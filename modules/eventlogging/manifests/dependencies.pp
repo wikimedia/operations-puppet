@@ -14,7 +14,7 @@
 class eventlogging::dependencies {
 
     # Install all eventlogging dependencies from .debs.
-    require_package([
+    ensure_packages([
         'python3-dateutil',
         'python3-jsonschema',
         'python3-confluent-kafka',

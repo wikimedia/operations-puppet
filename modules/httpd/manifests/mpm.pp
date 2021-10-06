@@ -29,7 +29,7 @@ class httpd::mpm(
     Optional[String] $source  = undef,
     Optional[String] $content  = undef,
 ) {
-    require_package('apache2')
+    ensure_packages('apache2')
     $selected_mod = "mpm_${mpm}"
     $available_mpms = ['prefork', 'worker', 'event']
 

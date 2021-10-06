@@ -8,7 +8,7 @@ class pybal::monitoring(
     Hash[String, Wmflib::Service] $services,
 ) {
     require ::pybal::configuration
-    require_package([
+    ensure_packages([
         'libmonitoring-plugin-perl',
         'libwww-perl',
         'python-prometheus-client',

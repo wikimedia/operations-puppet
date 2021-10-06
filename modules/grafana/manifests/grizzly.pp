@@ -6,7 +6,7 @@ class grafana::grizzly (
     Optional[String] $grafana_token = undef,
 ) {
 
-    require_package('grizzly')
+    ensure_packages('grizzly')
 
     file { '/etc/grafana/grizzly.env':
         owner     => grafana,

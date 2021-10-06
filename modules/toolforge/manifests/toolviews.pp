@@ -5,11 +5,11 @@ class toolforge::toolviews (
     $mysql_user,
     $mysql_password,
 ) {
-    require_package(
+    ensure_packages([
         'python3-ldap3',
         'python3-pymysql',
         'python3-yaml',
-    )
+    ])
 
     file { '/etc/toolviews.yaml':
         ensure  => file,

@@ -42,7 +42,7 @@ class clush::master(
         show_diff => false,
     }
 
-    require_package('clustershell')
+    ensure_packages('clustershell')
 
     $config = {
         'Main' => {

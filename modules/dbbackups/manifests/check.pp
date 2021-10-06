@@ -14,7 +14,7 @@ define dbbackups::check (
     $crit_size_percentage = 15,
 ) {
     # require ::profile::mariadb::wmfmariadbpy
-    require_package('wmfbackups-check')
+    ensure_packages('wmfbackups-check')
 
     $check_command = "check-mariadb-backups \
 --host='${db_host}' --user='${db_user}' --password='${db_password}' --database='${db_database}' \

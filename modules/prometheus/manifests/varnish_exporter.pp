@@ -12,7 +12,7 @@ define prometheus::varnish_exporter (
     $instance  = $::hostname,
     $listen_address = ':9131',
 ) {
-    require_package('prometheus-varnish-exporter')
+    ensure_packages('prometheus-varnish-exporter')
 
     exec { "mask_default_varnish_exporter_${title}":
         command => '/bin/systemctl mask prometheus-varnish-exporter.service',

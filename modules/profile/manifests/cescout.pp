@@ -4,10 +4,10 @@ class profile::cescout (
     String           $http_proxy       = lookup('http_proxy'),
 ) {
 
-    require_package('cescout')
+    ensure_packages('cescout')
 
     # required by metadb_s3_tarx
-    require_package('make', 'bc')
+    ensure_packages(['make', 'bc'])
 
     # for the specific version of postgres required, 9.6
     apt::package_from_component { 'thirdparty-postgres96':

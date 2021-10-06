@@ -4,7 +4,7 @@ class profile::prometheus::pdns_rec_exporter (
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
-    require_package('prometheus-pdns-rec-exporter')
+    ensure_packages('prometheus-pdns-rec-exporter')
 
     service { 'prometheus-pdns-rec-exporter':
         ensure  => running,

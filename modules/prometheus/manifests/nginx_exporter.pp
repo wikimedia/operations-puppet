@@ -7,7 +7,7 @@ class prometheus::nginx_exporter (
     Stdlib::HTTPUrl $nginx_scrape_uri = 'http://localhost:8080/nginx_status',
 ) {
     debian::codename::require::min('buster')
-    require_package('prometheus-nginx-exporter')
+    ensure_packages('prometheus-nginx-exporter')
 
     # in Debian Buster, the default is to produce metrics at :9113/metrics
     # extend the ARGS with more parameters if you need to change the defaults

@@ -13,7 +13,7 @@ class proxysql (
     ) {
 
     # Install package
-    require_package ('proxysql')
+    ensure_packages ('proxysql')
 
     # Users are setup by the package
 

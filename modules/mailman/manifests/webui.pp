@@ -20,7 +20,7 @@ class mailman::webui (
         recurse => 'remote',
     }
 
-    # Not using require_package so apt::pin may be applied
+    # Not using ensure_packages so apt::pin may be applied
     # before attempting to install package.
     package { 'libapache2-mod-security2':
         ensure => present,

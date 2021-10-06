@@ -84,7 +84,7 @@ define burrow (
     $consumer_groups_blacklist = '^(console-consumer-|python-kafka-consumer-|test_).*$',
 )
 {
-    require_package('burrow')
+    ensure_packages('burrow')
 
     $pidfile_dir = '/var/run/burrow'
     if !defined(File[$pidfile_dir]) {

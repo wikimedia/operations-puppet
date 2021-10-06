@@ -48,7 +48,7 @@ class profile::hue (
     class { '::passwords::ldap::production': }
 
     # For snappy support with Hue.
-    require_package('python-snappy')
+    ensure_packages('python-snappy')
 
     class { '::bigtop::hue':
         # We always host hive-server on the same node as hive-metastore.

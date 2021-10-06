@@ -13,7 +13,7 @@ class profile::prometheus::openstack_exporter (
     String              $observer_password      = lookup('profile::prometheus::observer_password'),
 ){
 
-    require_package('prometheus-openstack-exporter')
+    ensure_packages('prometheus-openstack-exporter')
 
     file { '/etc/prometheus-openstack-exporter.yaml':
         ensure  => 'present',

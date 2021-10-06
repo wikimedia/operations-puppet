@@ -16,7 +16,7 @@ class prometheus::node_gdnsd (
         fail("outfile (${outfile}): Must have a .prom extension")
     }
 
-    require_package( [
+    ensure_packages( [
         'python-prometheus-client',
         'python-requests',
     ] )

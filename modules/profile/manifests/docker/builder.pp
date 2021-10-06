@@ -37,7 +37,7 @@ class profile::docker::builder(
         distributions   => ['bullseye', 'buster', 'stretch'],
     }
 
-    require_package('python3-virtualenv', 'virtualenv')
+    ensure_packages(['python3-virtualenv', 'virtualenv'])
 
     git::clone { 'operations/docker-images/production-images':
         ensure    => present,

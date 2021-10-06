@@ -6,10 +6,10 @@
 # Please do not edit manually!
 
 class profile::toolforge::genpp::python_dev_buster {
-    require_package(
+    ensure_packages([
         'python-coverage',      # 4.5.2
         'python3-coverage',     # 4.5.2
         'python-stdeb',         # 0.8.5
         'python3-stdeb',        # 0.8.5
-    )
+    ])
 }

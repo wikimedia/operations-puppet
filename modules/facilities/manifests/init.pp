@@ -5,9 +5,7 @@ class facilities {
     # The PDUs are queried over SNMP using the snmp command provided by the snmp
     # package. For now ensure it here but it may need to be put in another place
     # in the future
-    package { 'snmp':
-        ensure => installed,
-    }
+    ensure_packages('snmp')
 
     # ulsfo, single phase PDUs
     facilities::monitor_pdu_1phase { 'ps1-22-ulsfo':

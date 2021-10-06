@@ -13,7 +13,7 @@ class profile::toolforge::clush::master(
         username => 'clushuser',
     }
 
-    require_package('python3-yaml')
+    ensure_packages('python3-yaml')
 
     file { '/usr/local/sbin/tools-clush-generator':
         ensure => file,

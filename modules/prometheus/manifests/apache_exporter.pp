@@ -10,7 +10,7 @@
 define prometheus::apache_exporter (
     $arguments = '-scrape_uri http://127.0.0.1/server-status/?auto',
 ) {
-    require_package('prometheus-apache-exporter')
+    ensure_packages('prometheus-apache-exporter')
 
     file { '/etc/default/prometheus-apache-exporter':
         ensure  => present,

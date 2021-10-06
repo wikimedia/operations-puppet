@@ -20,10 +20,10 @@ class openstack::wikitech::web(
         gerrit_api_password                => $gerrit_api_password,
     }
 
-    require_package([
+    ensure_packages([
         'python-mysqldb',
-        'php-ldap']
-    )
+        'php-ldap'
+    ])
 
     backup::set {'cloudweb-srv-backup': }
 

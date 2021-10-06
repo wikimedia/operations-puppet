@@ -7,7 +7,7 @@ class ldap::management(
     $user,
     $password,
 ) {
-    require_package([
+    ensure_packages([
         'ldapvi',
         'python3-yaml',
     ])

@@ -8,17 +8,10 @@
 # Usage:
 #   include systemtap::devserver
 class systemtap::devserver {
-    require_package([
+    ensure_packages([
         'build-essential',
         "linux-image-${::kernelrelease}-dbg",
-        "linux-headers-${::kernelrelease}"
+        "linux-headers-${::kernelrelease}",
+        'systemtap',
     ])
-
-    # require_package creates a dynamic intermediate class that makes declaring
-    # dependencies a bit strange. Let's use package directly here.
-    if !defined(Package['systemtap']) {
-        package { 'systemtap':
-            ensure => 'present',
-        }
-    }
 }

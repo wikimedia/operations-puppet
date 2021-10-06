@@ -40,7 +40,7 @@ define druid::service(
     $logger_prefix    = 'io.druid',
 )
 {
-    require_package("druid-${service}")
+    ensure_packages("druid-${service}")
 
     file { "/etc/druid/${service}/runtime.properties":
         content => template('druid/runtime.properties.erb'),

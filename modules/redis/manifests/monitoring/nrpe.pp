@@ -1,5 +1,5 @@
 class redis::monitoring::nrpe {
-    require_package('libredis-perl')
+    ensure_packages('libredis-perl')
 
     file { '/usr/lib/nagios/plugins/check_redis':
         ensure => present,

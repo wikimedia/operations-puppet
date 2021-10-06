@@ -1,7 +1,7 @@
 class grafana::ldap_sync (
   Wmflib::Ensure $ensure,
 ) {
-    require_package('python3-ldap', 'python3-requests')
+    ensure_packages(['python3-ldap', 'python3-requests'])
 
     file { '/usr/local/bin/grafana-ldap-users-sync':
         ensure => present,

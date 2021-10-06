@@ -48,7 +48,7 @@ class k8s::apiserver(
             packages  => ['kubernetes-master'],
         }
     } else {
-        require_package('kubernetes-master')
+        ensure_packages('kubernetes-master')
     }
 
     file { '/etc/kubernetes/infrastructure-users':

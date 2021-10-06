@@ -53,7 +53,7 @@ class profile::superset(
     Optional[String] $cache_uri         = lookup('profile::superset::cache_uri', { 'default_value' => undef })
 ) {
 
-    require_package('libmariadb3')
+    ensure_packages('libmariadb3')
 
     # If given $database_password, insert it into $database_uri.
     $full_database_uri = $database_password ? {

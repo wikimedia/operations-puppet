@@ -7,7 +7,7 @@ class profile::toolforge::package_builder(
     class { '::package_builder': }
 
     # Packages needed by the packages used in toolforge
-    require_package(
+    ensure_packages(
         'python-all',
     )
 

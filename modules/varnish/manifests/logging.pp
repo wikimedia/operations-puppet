@@ -19,7 +19,7 @@ class varnish::logging(
     $mtail_progs='/etc/mtail',
     $mtail_additional_args=''
 ){
-    require_package('python3-logstash')
+    ensure_packages('python3-logstash')
 
     rsyslog::conf { 'varnish':
         ensure   => absent,

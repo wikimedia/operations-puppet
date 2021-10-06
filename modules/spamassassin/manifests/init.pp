@@ -63,7 +63,7 @@ class spamassassin(
         ensure => present,
     }
 
-    require_package('libmail-spf-perl', 'libmail-dkim-perl')
+    ensure_packages(['libmail-spf-perl', 'libmail-dkim-perl'])
 
     file { '/etc/spamassassin/local.cf':
         content => template('spamassassin/local.cf'),

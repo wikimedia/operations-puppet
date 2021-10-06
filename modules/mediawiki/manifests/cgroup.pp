@@ -8,7 +8,7 @@
 #
 class mediawiki::cgroup {
 
-    require_package('cgroup-bin')
+    ensure_packages('cgroup-bin')
 
     # The cgroup-mediawiki-clean script is used as the release_agent
     # script for the cgroup. When the last task in the cgroup exits,

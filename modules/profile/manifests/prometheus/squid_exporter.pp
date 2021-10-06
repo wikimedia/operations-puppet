@@ -8,7 +8,7 @@ class profile::prometheus::squid_exporter (
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
     # Note that prometheus-squid-exporter is only in buster and up
-    require_package('prometheus-squid-exporter')
+    ensure_packages('prometheus-squid-exporter')
 
     service { 'prometheus-squid-exporter':
         ensure  => running,

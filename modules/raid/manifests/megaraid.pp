@@ -2,7 +2,7 @@
 class raid::megaraid {
   include raid
 
-  require_package('megacli')
+  ensure_packages('megacli')
   $get_raid_status_megacli = '/usr/local/lib/nagios/plugins/get-raid-status-megacli'
 
   file { $get_raid_status_megacli:

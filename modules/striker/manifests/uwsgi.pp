@@ -86,7 +86,7 @@ class striker::uwsgi(
     include service::configuration
 
     # Packages needed by python wheels
-    require_package(
+    ensure_packages([
         'libffi6',
         'libldap-2.4-2',
         'libmariadb3',
@@ -94,7 +94,7 @@ class striker::uwsgi(
         'python3-venv',
         'python3-virtualenv',
         'python3-wheel',
-    )
+    ])
 
     # Striker is controlled via a custom systemd unit (uwsgi-striker),
     #  so avoid the generic uwsgi sysvinit script

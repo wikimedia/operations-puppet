@@ -3,7 +3,7 @@ class cloudnfs::fileserver::exports(
     Array[String] $server_vols,
     Boolean $cinder_attached = true,
 ){
-    require_package(['python3-yaml'])
+    ensure_packages(['python3-yaml'])
 
     group { 'nfsmanager':
         ensure => present,

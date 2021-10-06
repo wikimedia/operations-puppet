@@ -9,6 +9,6 @@ class k8s::client(
             packages  => ['kubernetes-client'],
         }
     } else {
-        require_package('kubernetes-client')
+        ensure_packages('kubernetes-client')
     }
 }

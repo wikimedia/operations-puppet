@@ -41,7 +41,7 @@ class logstash (
     Array[Stdlib::Fqdn] $dlq_hosts        = [],
 ) {
     #TODO: fully remove when java installed with ::profile::java
-    #require_package($java_package)
+    #ensure_packages($java_package)
 
     package { 'logstash':
         ensure  => 'present',

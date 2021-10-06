@@ -12,7 +12,7 @@ class profile::toolforge::checker {
     include profile::toolforge::k8s::client
 
     # Packages needed by the uwsgi services
-    require_package(
+    ensure_packages([
         'python3-flask',
         'python3-ldap3',
         'python3-psycopg2',
@@ -20,7 +20,7 @@ class profile::toolforge::checker {
         'python3-redis',
         'python3-requests',
         'python3-yaml',
-    )
+    ])
 
     # For etcd checks, we need the puppet certs to act as client
     $puppet_cert_pub  = "/var/lib/puppet/ssl/certs/${::fqdn}.pem"

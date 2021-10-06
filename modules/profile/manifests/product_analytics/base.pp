@@ -38,7 +38,7 @@ class profile::product_analytics::base {
         'cython',             # C-Extensions for Python
         'cython3'
     ]
-    require_package($essentials)
+    ensure_packages($essentials)
 
     $cran_packages = [
         # Essentials

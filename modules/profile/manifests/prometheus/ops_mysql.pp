@@ -11,10 +11,10 @@ class profile::prometheus::ops_mysql (
     # Do not apply it on pops (role != prometheus), as they are outdated and do not hold
     # any production database
     if $mysql_host != 'UNDEFINED' {
-        require_package (
+        ensure_packages ([
             'python3-pymysql',
             'python3-yaml',
-        )
+        ])
         file { '/etc/prometheus/zarcillo.cnf':
             content   => template('profile/prometheus/zarcillo.cnf.erb'),
             mode      => '0400',

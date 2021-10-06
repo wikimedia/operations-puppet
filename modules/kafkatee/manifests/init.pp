@@ -17,7 +17,7 @@
 class kafkatee(
     $configure_rsyslog = true,
 ) {
-    require_package('kafkatee')
+    ensure_packages('kafkatee')
 
     file { '/etc/kafkatee':
         ensure => 'directory',

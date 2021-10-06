@@ -2,7 +2,7 @@ define trafficserver::lua_infra(
     String $service_name='trafficserver',
     Stdlib::Absolutepath $config_prefix='/etc/trafficserver',
 ) {
-    require_package('lua-busted')
+    ensure_packages('lua-busted')
 
     file { "${config_prefix}/lua/":
         ensure => directory,

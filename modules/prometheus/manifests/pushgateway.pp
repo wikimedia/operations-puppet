@@ -3,7 +3,7 @@ class prometheus::pushgateway (
     Stdlib::Port   $listen_port = 9091,
     String         $vhost = 'prometheus-pushgateway.discovery.wmnet',
 ) {
-    require_package('prometheus-pushgateway')
+    ensure_packages('prometheus-pushgateway')
 
     httpd::site{ 'pushgateway':
         priority => 30, # Earlier than main prometheus* vhost wildcard matching

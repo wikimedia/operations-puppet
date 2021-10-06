@@ -21,7 +21,7 @@ class profile::puppetboard (
     $puppet_ssl_dir = puppet_ssldir()
 
     $packages = ['make', 'python3-pip', 'virtualenv']
-    require_package($packages)
+    ensure_packages($packages)
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { 'profile::rsyslog::udp_json_logback_compat': }

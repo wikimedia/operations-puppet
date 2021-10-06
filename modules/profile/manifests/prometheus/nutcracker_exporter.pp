@@ -4,7 +4,7 @@ class profile::prometheus::nutcracker_exporter (
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
-    require_package('prometheus-nutcracker-exporter')
+    ensure_packages('prometheus-nutcracker-exporter')
 
     service { 'prometheus-nutcracker-exporter':
         ensure  => running,

@@ -23,7 +23,7 @@ class prometheus::statsd_exporter (
     String $listen_address = ':9112',
     String $arguments = '',
 ) {
-    require_package('prometheus-statsd-exporter')
+    ensure_packages('prometheus-statsd-exporter')
 
     $basedir = '/etc/prometheus'
     $config = "${basedir}/statsd_exporter.conf"

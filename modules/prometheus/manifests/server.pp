@@ -82,7 +82,7 @@ define prometheus::server (
 ) {
     include prometheus
 
-    require_package('prometheus')
+    ensure_packages('prometheus')
 
     $global_config_default = {
       'scrape_interval' => $scrape_interval,

@@ -104,7 +104,7 @@ class profile::toolforge::proxy (
         mode   => '0444',
     }
 
-    require_package('goaccess')  # webserver statistics, T121233
+    ensure_packages('goaccess')  # webserver statistics, T121233
 
     $graphite_metric_prefix = "${::labsproject}.reqstats"
 

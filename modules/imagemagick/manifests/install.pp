@@ -2,18 +2,14 @@
 #
 # Installs imagemagick and our custom policy
 class imagemagick::install {
-    require_package('imagemagick')
-    require_package('webp')
+    ensure_packages('imagemagick')
+    ensure_packages('webp')
 
     file { '/etc/ImageMagick-6/policy.xml':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        source  => 'puppet:///modules/imagemagick/policy.xml',
-        require => [
-            Class['packages::imagemagick'],
-            Class['packages::webp']
-        ]
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/imagemagick/policy.xml',
     }
 }

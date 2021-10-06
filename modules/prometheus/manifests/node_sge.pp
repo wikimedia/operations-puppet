@@ -9,7 +9,7 @@ class prometheus::node_sge (
         fail("outfile (${outfile}): Must have a .prom extension")
     }
 
-    require_package('python3-prometheus-client')
+    ensure_packages('python3-prometheus-client')
 
     file { '/usr/local/bin/prometheus-sge-stats':
         ensure => file,

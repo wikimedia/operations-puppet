@@ -1,7 +1,7 @@
 class profile::conftool::dbctl_client() {
     require ::profile::conftool::client
 
-    require_package('python3-conftool-dbctl', 'etcd-client')
+    ensure_packages(['python3-conftool-dbctl', 'etcd-client'])
 
     # Set up a check for uncommitted diffs
     $uncom_diffs_filename = '/usr/local/lib/nagios/plugins/check_dbctl_uncommitted_diffs'

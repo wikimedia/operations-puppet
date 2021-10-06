@@ -1,8 +1,8 @@
 #
 
 class osm {
-    require_package('osm2pgsql')
-    require_package('osmosis')
-    require_package('osmium-tool')
-    require_package('osmborder')
+    ensure_packages('osm2pgsql')
+    ensure_packages('osmosis')
+    ensure_packages('osmium-tool')
+    ensure_packages('osmborder')
 }

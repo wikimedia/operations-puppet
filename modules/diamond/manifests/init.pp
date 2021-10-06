@@ -61,7 +61,7 @@ class diamond(
         batch => '20',
     },
 ) {
-    require_package('python-statsd')
+    ensure_packages('python-statsd')
     if empty($handler) {
         fail('$handler cannot be empty')
     }

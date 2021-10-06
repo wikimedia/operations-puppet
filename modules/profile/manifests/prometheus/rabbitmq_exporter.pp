@@ -21,7 +21,7 @@ class profile::prometheus::rabbitmq_exporter (
         require => File['/etc/prometheus/'],
     }
 
-    require_package('prometheus-rabbitmq-exporter')
+    ensure_packages('prometheus-rabbitmq-exporter')
 
     service { 'prometheus-rabbitmq-exporter':
         ensure  => running,

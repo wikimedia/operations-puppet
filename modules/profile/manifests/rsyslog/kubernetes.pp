@@ -14,7 +14,7 @@ class profile::rsyslog::kubernetes (
             packages  => ['rsyslog-kubernetes'],
         }
     } else {
-        require_package('rsyslog-kubernetes')
+        ensure_packages('rsyslog-kubernetes')
     }
 
     $ensure = $enable ? {

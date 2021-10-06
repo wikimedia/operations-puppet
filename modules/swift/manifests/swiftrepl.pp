@@ -3,7 +3,7 @@ class swift::swiftrepl (
   $destination_site,
   $source_site = $::site,
 ) {
-    require_package(['python-cloudfiles', 'time'])
+    ensure_packages(['python-cloudfiles', 'time'])
 
     $basedir = '/srv/software'
     $account = 'mw:media'

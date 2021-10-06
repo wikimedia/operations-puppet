@@ -16,7 +16,7 @@
 #  }
 #
 class cpufrequtils( $governor = 'performance' ) {
-    require_package('cpufrequtils')
+    ensure_packages('cpufrequtils')
 
     service { 'cpufrequtils':
         enable => true,

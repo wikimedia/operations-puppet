@@ -12,6 +12,7 @@ class extdist(
     $src_path     = "${base_dir}/src"
     $composer_dir = "${base_dir}/composer"
     $pid_folder   = '/run/extdist'
+    ensure_packages(['python3-requests', 'php-cli', 'unzip'])
 
     $ext_settings = {
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
@@ -61,7 +62,6 @@ class extdist(
         group     => 'extdist',
     }
 
-    require_package('python3-requests', 'php-cli', 'unzip' )
 
     git::clone { 'integration/composer':
         ensure             => latest,

@@ -5,7 +5,7 @@
 # elasticsearch::curator::cluster.
 #
 class elasticsearch::curator {
-    require_package('elasticsearch-curator')
+    ensure_packages('elasticsearch-curator')
 
     file { '/etc/curator/':
         ensure  => directory,

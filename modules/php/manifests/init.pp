@@ -12,7 +12,7 @@ class php(
     debian::codename::require::min('stretch')
 
     # We need php-common everywhere
-    require_package("php${version}-common", "php${version}-opcache")
+    ensure_packages(["php${version}-common", "php${version}-opcache"])
 
     $config_dir = "/etc/php/${version}"
 

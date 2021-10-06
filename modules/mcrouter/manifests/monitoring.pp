@@ -6,9 +6,9 @@ class mcrouter::monitoring(
     Wmflib::Ensure $mcrouter_ssl = absent
 ) {
 
-    require_package('python3-tz')
-    require_package('python3-openssl')
-    require_package('python3-nagiosplugin')
+    ensure_packages('python3-tz')
+    ensure_packages('python3-openssl')
+    ensure_packages('python3-nagiosplugin')
 
     file { '/usr/lib/nagios/plugins/nrpe_check_client_cert':
         ensure  => $mcrouter_ssl,

@@ -2,7 +2,7 @@ class openstack::puppet::master::enc(
     $puppetmaster,
     ) {
 
-    require_package('python3-yaml', 'python3-ldap3')
+    ensure_packages(['python3-yaml', 'python3-ldap3'])
 
     include ldap::yamlcreds
 

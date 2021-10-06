@@ -3,7 +3,7 @@
 # Provides the required integration with puppet.git for pontoon::lb class.
 
 class profile::pontoon::lb {
-    require_package('hatop')
+    ensure_packages('hatop')
 
     $role_services = wmflib::service::fetch().filter |$name, $config| {
         ('role' in $config and pontoon::hosts_for_role($config['role']))

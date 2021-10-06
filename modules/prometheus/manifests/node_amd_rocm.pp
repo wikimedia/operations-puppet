@@ -16,7 +16,7 @@ class prometheus::node_amd_rocm (
         fail("outfile (${outfile}): Must have a .prom extension")
     }
 
-    require_package( [
+    ensure_packages( [
         'python3-prometheus-client',
         'python3-requests',
     ] )

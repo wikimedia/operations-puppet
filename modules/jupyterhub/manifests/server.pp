@@ -16,7 +16,7 @@ class jupyterhub::server (
         'port' => '8880'
     }
 ) {
-    require_package('anaconda-wmf')
+    ensure_packages('anaconda-wmf')
 
     # TODO: 'jupyterhub' is defined by the deprecated jupyterhub class in init.pp.
     # Rename it to 'jupyterhub' here when we remove the other one.

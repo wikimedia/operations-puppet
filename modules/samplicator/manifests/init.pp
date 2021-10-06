@@ -17,7 +17,7 @@ class samplicator(
   Integer $recvbuf = 50*1024*1024,
   ) {
 
-    require_package('samplicator')
+    ensure_packages('samplicator')
 
     systemd::service { 'samplicator':
         content        => template('samplicator/samplicator.service.erb'),

@@ -12,7 +12,7 @@ class netops::atlasexporter(
     Hash[String, Hash] $atlas_measurements,
     Stdlib::Port $exporter_port,
 ) {
-    require_package('prometheus-atlas-exporter')
+    ensure_packages('prometheus-atlas-exporter')
 
     $config_file = '/etc/prometheus-atlas-exporter.yaml'
 

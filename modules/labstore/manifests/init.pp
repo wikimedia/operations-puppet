@@ -9,8 +9,8 @@ class labstore (
     Integer $nfsd_threads = 192,
 ){
 
-    require_package('nfs-kernel-server')
-    require_package('lvm2')
+    ensure_packages('nfs-kernel-server')
+    ensure_packages('lvm2')
 
     file { '/etc/idmapd.conf':
         ensure => present,
@@ -20,8 +20,8 @@ class labstore (
         source => 'puppet:///modules/labstore/idmapd.conf',
     }
 
-    require_package('nfs-common')
-    require_package('nfsd-ldap')
+    ensure_packages('nfs-common')
+    ensure_packages('nfsd-ldap')
 
     # Nethogs is useful to monitor NFS client resource utilization
     package { 'nethogs':

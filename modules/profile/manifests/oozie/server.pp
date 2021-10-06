@@ -32,7 +32,7 @@ class profile::oozie::server(
     # bigtop::oozie::server will ensure that its MySQL DB is
     # properly initialized.  For puppet to do this,
     # it needs a mysql client.
-    require_package('default-mysql-client')
+    ensure_packages('default-mysql-client')
 
     class { '::bigtop::oozie::server':
         smtp_host                                   => 'localhost',

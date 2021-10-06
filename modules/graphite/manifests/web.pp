@@ -63,7 +63,7 @@ class graphite::web(
 ) {
     include graphite
 
-    require_package('memcached')
+    ensure_packages('memcached')
 
     $python_version = $::lsbdistcodename ? {
         buster   => 'python3',
@@ -71,9 +71,9 @@ class graphite::web(
         stretch  => 'python',
     }
 
-    require_package("${python_version}-memcache")
-    require_package('libapache2-mod-uwsgi')
-    require_package('graphite-web')
+    ensure_packages("${python_version}-memcache")
+    ensure_packages('libapache2-mod-uwsgi')
+    ensure_packages('graphite-web')
 
     file { '/etc/graphite/cors.py':
         source  => 'puppet:///modules/graphite/cors.py',

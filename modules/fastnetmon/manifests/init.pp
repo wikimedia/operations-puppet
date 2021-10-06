@@ -27,7 +27,7 @@ class fastnetmon(
   Optional[Stdlib::Unixpath] $icinga_dir = undef,
   ) {
 
-    require_package('fastnetmon','python3-geoip2')
+    ensure_packages(['fastnetmon','python3-geoip2'])
 
     file { '/etc/fastnetmon.conf':
         ensure  => present,

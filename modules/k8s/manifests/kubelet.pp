@@ -29,7 +29,7 @@ class k8s::kubelet(
         # apparmor is needed for PodSecurityPolicy to be able to enforce profiles
         ensure_packages('apparmor')
     } else {
-        require_package('kubernetes-node')
+        ensure_packages('kubernetes-node')
         # Old kubernetes nodes can't create containers when apparmor is installed (due to missing profiles)
         # Bug: T273563
         # TODO: Remove this after all clusters have been upgraded to kubernetes >=1.16

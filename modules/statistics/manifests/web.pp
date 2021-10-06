@@ -16,7 +16,7 @@ class statistics::web {
         mode   => '0750',
     }
 
-    require_package([
+    ensure_packages([
         'mc',
         'unzip',
         'zip',

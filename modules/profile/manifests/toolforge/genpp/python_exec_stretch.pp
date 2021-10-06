@@ -6,7 +6,7 @@
 # Please do not edit manually!
 
 class profile::toolforge::genpp::python_exec_stretch {
-    require_package(
+    ensure_packages([
         'python-babel',         # 2.3.4
         'python3-babel',        # 2.3.4
         'python-beautifulsoup', # 3.2.1
@@ -139,5 +139,5 @@ class profile::toolforge::genpp::python_exec_stretch {
         # python3-zbar is not available
         'python-zmq',           # 16.0.2
         'python3-zmq',          # 16.0.2
-    )
+    ])
 }

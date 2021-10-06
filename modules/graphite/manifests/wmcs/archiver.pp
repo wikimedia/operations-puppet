@@ -21,7 +21,7 @@ class graphite::wmcs::archiver {
         group  => '_graphite',
     }
 
-    require_package('python-yaml')
+    ensure_packages('python-yaml')
 
     file { '/usr/local/bin/archive-instances':
         source => 'puppet:///modules/graphite/archive-instances.py',

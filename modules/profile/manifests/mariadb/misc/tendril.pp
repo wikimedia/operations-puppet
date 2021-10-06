@@ -1,6 +1,6 @@
 # tendril.wikimedia.org db
 class profile::mariadb::misc::tendril {
-    require_package('libodbc1') # hack to fix CONNECT dependency
+    ensure_packages('libodbc1') # hack to fix CONNECT dependency
 
     profile::mariadb::section { 'tendril': }
 

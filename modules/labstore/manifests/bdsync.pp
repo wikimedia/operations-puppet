@@ -1,5 +1,5 @@
 class labstore::bdsync {
-    require_package(['python3-dateutil', 'bdsync'])
+    ensure_packages(['python3-dateutil', 'bdsync'])
 
     file { '/usr/local/sbin/block_sync':
         source => 'puppet:///modules/labstore/block_sync.py',

@@ -10,7 +10,7 @@
 define prometheus::memcached_exporter (
     $arguments = '',
 ) {
-    require_package('prometheus-memcached-exporter')
+    ensure_packages('prometheus-memcached-exporter')
 
     file { '/etc/default/prometheus-memcached-exporter':
         ensure  => present,

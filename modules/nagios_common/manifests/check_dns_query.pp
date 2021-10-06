@@ -3,8 +3,8 @@
 # modules. It's used by nagios_common::commands as well as profiles which need
 # this for other healthcheck purposes.
 class nagios_common::check_dns_query($ensure = present) {
-    require_package('libmonitoring-plugin-perl')
-    require_package('libnet-dns-perl')
+    ensure_packages('libmonitoring-plugin-perl')
+    ensure_packages('libnet-dns-perl')
     file { '/usr/lib/nagios/plugins/check_dns_query':
         ensure => $ensure,
         source => 'puppet:///modules/nagios_common/check_commands/check_dns_query',

@@ -12,7 +12,7 @@ class prometheus::haproxy_exporter (
     Stdlib::HTTPUrl $endpoint  = 'http://localhost:9100/?stats;csv',
     Stdlib::Port::User $listen_port = 9901,
 ) {
-    require_package('prometheus-haproxy-exporter')
+    ensure_packages('prometheus-haproxy-exporter')
 
     $exec_binary = $::lsbdistcodename ? {
         buster  => '/usr/bin/prometheus-haproxy-exporter',

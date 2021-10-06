@@ -156,7 +156,7 @@ class profile::trafficserver::tls (
 
     if $inbound_tls_settings['session_ticket_enable'] == 1 {
         $ensure_stek = present
-        require_package('python3-pystemd')
+        ensure_packages('python3-pystemd')
     } else {
         $ensure_stek = absent
     }

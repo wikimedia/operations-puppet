@@ -32,7 +32,7 @@ define prometheus::node_file_count (
         fail("\$metric should begin with 'node_' then lowercase chars or _ and end with '_total' but is [${metric}]")
     }
 
-    require_package(['python3-prometheus-client'])
+    ensure_packages(['python3-prometheus-client'])
 
     if (!defined(File['/usr/local/bin/prometheus-file-count'])) {
         file { '/usr/local/bin/prometheus-file-count':

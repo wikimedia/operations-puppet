@@ -1,6 +1,6 @@
 # HP Raid controller
 class raid::ssacli {
-  require_package('ssacli')
+  ensure_packages('ssacli')
 
   sudo::user { 'nagios_ssacli':
     user       => 'nagios',

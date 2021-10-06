@@ -1,5 +1,5 @@
 class pontoon::enc {
-    require_package(['python3-yaml'])
+    ensure_packages(['python3-yaml'])
 
     # /etc/pontoon-stack is the entry point for Pontoon to know which stack we're in.
     # The bootstrap process will set the value of this file to 'bootstrap'.

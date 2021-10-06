@@ -4,7 +4,7 @@
 # * The instance service (different from the package one)
 
 class prometheus::mysqld_exporter::common {
-    require_package('prometheus-mysqld-exporter')
+    ensure_packages('prometheus-mysqld-exporter')
 
     file { '/etc/default/prometheus':
         ensure => directory,

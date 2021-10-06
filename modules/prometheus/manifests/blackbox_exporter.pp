@@ -5,7 +5,7 @@
 # and reports status to the prometheus scraper
 
 class prometheus::blackbox_exporter{
-    require_package('prometheus-blackbox-exporter')
+    ensure_packages('prometheus-blackbox-exporter')
 
     file { '/etc/prometheus/blackbox.yml':
         ensure  => present,

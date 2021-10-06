@@ -22,7 +22,7 @@ define etcdmirror::instance(
     Stdlib::Unixpath $dst_path,
     Boolean          $enable
 ) {
-    require_package('etcd-mirror')
+    ensure_packages('etcd-mirror')
 
     # safe version of the title
     $prefix = regsubst("etcdmirror${title}", '\W', '-', 'G')

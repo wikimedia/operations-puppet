@@ -2,7 +2,7 @@
 # See https://github.com/wikimedia/search-extra/blob/master/src/main/java/org/wikimedia/search/extra/latency/LatencyStatsAction.java
 class prometheus::wmf_elasticsearch_exporter::common {
 
-    require_package('python3-prometheus-client')
+    ensure_packages('python3-prometheus-client')
 
     file { '/usr/local/bin/prometheus-wmf-elasticsearch-exporter':
         ensure => present,

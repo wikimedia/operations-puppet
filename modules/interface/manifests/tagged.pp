@@ -1,5 +1,5 @@
 define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family='inet', $method='static', $up=undef, $down=undef, $remove=undef, $legacy_vlan_naming=true) {
-    require_package('vlan')
+    ensure_packages('vlan')
 
     if $legacy_vlan_naming {
         $intf = "${base_interface}.${vlan_id}"

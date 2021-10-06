@@ -26,11 +26,11 @@ class statistics::wmde::graphite(
 
     $scripts_dir  = "${dir}/src/scripts"
 
-    require_package(
+    ensure_packages([
         'php',
         'php-cli',
         'php-xml'
-    )
+    ])
 
     include ::passwords::mysql::research
     # This file will render at

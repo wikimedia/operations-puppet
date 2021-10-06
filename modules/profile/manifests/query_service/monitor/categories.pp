@@ -1,6 +1,6 @@
 # Monitor external blazegraph (categories) settings
 class profile::query_service::monitor::categories {
-    require_package('python3-requests')
+    ensure_packages('python3-requests')
     file { '/usr/lib/nagios/plugins/check_categories.py':
         source => 'puppet:///modules/query_service/nagios/check_categories.py',
         mode   => '0555',

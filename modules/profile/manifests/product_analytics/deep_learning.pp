@@ -15,7 +15,7 @@ class profile::product_analytics::deep_learning {
         'python-skimage',    # Python2 modules for image processing
         'python3-skimage',   # Python3 modules for image processing
     ]
-    require_package($pkgs)
+    ensure_packages($pkgs)
 
     package { 'keras':
         ensure   => 'installed',

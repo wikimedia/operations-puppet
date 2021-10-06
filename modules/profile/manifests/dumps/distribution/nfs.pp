@@ -5,7 +5,7 @@ class profile::dumps::distribution::nfs (
     $nfs_clients = lookup('profile::dumps::distribution::nfs_clients')
   ) {
 
-    require_package('nfs-kernel-server', 'nfs-common', 'rpcbind')
+    ensure_packages(['nfs-kernel-server', 'nfs-common', 'rpcbind'])
 
     file { '/etc/default/nfs-common':
         ensure => present,

@@ -34,7 +34,7 @@ class profile::icinga(
 ){
     $is_passive = !($::fqdn == $active_host)
 
-    require_package('mariadb-client')
+    ensure_packages('mariadb-client')
 
     # leaving address blank means also using IPv6
     class { 'rsync::server':

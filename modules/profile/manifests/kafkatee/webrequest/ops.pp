@@ -7,7 +7,7 @@ class profile::kafkatee::webrequest::ops (
     include ::profile::kafkatee::webrequest::base
     include ::geoip
 
-    require_package('socat')
+    ensure_packages('socat')
 
     $log_directory = '/srv/log'
     $webrequest_log_directory = "${log_directory}/webrequest"

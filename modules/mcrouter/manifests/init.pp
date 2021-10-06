@@ -85,7 +85,7 @@ class mcrouter(
     Integer           $probe_delay_initial_ms   = 3000,
     Optional[Integer] $timeouts_until_tko       = undef,
 ) {
-    require_package('mcrouter')
+    ensure_packages('mcrouter')
 
     $config = { 'pools' => $pools, 'routes' => $routes }
 

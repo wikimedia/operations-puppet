@@ -1,9 +1,9 @@
 # Postprocess xtrabackup/mariabackup snapshots so they
 # are placed on the right place at the provisioning server
 class profile::dbbackups::snapshot {
-    require_package(
+    ensure_packages([
         'wmfbackups',  # recommends either mariabackup or wmf-mariadb*
-    )
+    ])
     require profile::mariadb::packages_wmf  # needed for xbstream and --prepare
 
     file { '/srv/backups/snapshots':

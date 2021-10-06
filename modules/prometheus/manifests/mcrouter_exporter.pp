@@ -10,7 +10,7 @@
 define prometheus::mcrouter_exporter (
     $arguments = '',
 ) {
-    require_package('prometheus-mcrouter-exporter')
+    ensure_packages('prometheus-mcrouter-exporter')
 
     file { '/etc/default/prometheus-mcrouter-exporter':
         ensure  => present,

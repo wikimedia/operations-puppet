@@ -9,5 +9,5 @@ class profile::puppetmaster::updatenetboot {
         group  => 'root',
     }
 
-    require_package('pax')
+    ensure_packages('pax')
 }

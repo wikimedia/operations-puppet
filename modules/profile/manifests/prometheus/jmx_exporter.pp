@@ -73,7 +73,7 @@ define profile::prometheus::jmx_exporter (
         fail('"source" and "content" are mutually exclusive')
     }
 
-    require_package('prometheus-jmx-exporter')
+    ensure_packages('prometheus-jmx-exporter')
 
     if $config_dir and ! defined(File[$config_dir]) {
         # Create the Prometheus JMX Exporter configuration's parent dir

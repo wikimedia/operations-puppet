@@ -29,7 +29,7 @@ class base::remote_syslog (
     $group = 'root'
 
     if $enable {
-        require_package('rsyslog-gnutls')
+        ensure_packages('rsyslog-gnutls')
 
         if empty($central_hosts) and empty($central_hosts_tls) {
             fail('::base::remote_syslog::central_hosts or central_hosts_tls required')

@@ -21,8 +21,8 @@ class elasticsearch::packages (
     # we only require the packages, we do not remove them as there might be
     # other dependencies
     if $send_logs_to_logstash {
-        require_package('liblogstash-gelf-java')
-        require_package('libjson-simple-java')
+        ensure_packages('liblogstash-gelf-java')
+        ensure_packages('libjson-simple-java')
     }
 
     # symlinks are removed if log shipping is disabled

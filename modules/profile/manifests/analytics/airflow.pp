@@ -21,7 +21,7 @@ class profile::analytics::airflow(
     String $db_user               = lookup('profile::analytics::airflow::db_user'),
     String $db_password           = lookup('profile::analytics::airflow::db_password'),
 ) {
-    require_package([
+    ensure_packages([
         'python3',
         'python3-virtualenv',
         'virtualenv',

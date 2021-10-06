@@ -9,8 +9,8 @@ class vagrant::lxc {
     require ::vagrant
     require ::lxc
 
-    require_package('build-essential')
-    require_package('ruby-dev')
+    ensure_packages('build-essential')
+    ensure_packages('ruby-dev')
 
     ::vagrant::plugin { 'vagrant-lxc':
         ensure  => present,

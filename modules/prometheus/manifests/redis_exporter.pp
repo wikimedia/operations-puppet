@@ -25,7 +25,7 @@ define prometheus::redis_exporter (
     $hostname = $::hostname,
     $port = '9121'
 ) {
-    require_package('prometheus-redis-exporter')
+    ensure_packages('prometheus-redis-exporter')
 
     $service_name = "prometheus-redis-exporter@${instance}"
     $listen_address = "${hostname}:${port}"

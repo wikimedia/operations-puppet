@@ -72,11 +72,11 @@ class ulogd (
   # An array of supported extensions that require additional packages
   # dbi, mysql, pgsql and sqlite are options for the future
   $supported_extensions = ['JSON', 'PCAP']
-  require_package('ulogd2')
+  ensure_packages('ulogd2')
 
   $supported_extensions.each |String $extension| {
     if $extension in union($nflog, $nfct, $acct)  {
-      require_package("ulogd2-${extension.downcase}")
+      ensure_packages("ulogd2-${extension.downcase}")
     }
   }
   file {$config_file:

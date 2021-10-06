@@ -11,7 +11,7 @@ class etcd::client::globalconfig(
     # Initially added for etcd-manage, but it's not really clear
     # if any roles implicitly depend on it, so keep older distros
     if debian::codename::lt('bullseye'){
-        require_package('python-etcd')
+        ensure_packages('python-etcd')
     }
 
     file { '/etc/etcd':

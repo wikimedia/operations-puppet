@@ -14,7 +14,7 @@ class k8s::proxy(
             packages  => ['kubernetes-node'],
         }
     } else {
-        require_package('kubernetes-node')
+        ensure_packages('kubernetes-node')
     }
 
     file { '/etc/default/kube-proxy':

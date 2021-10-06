@@ -2,7 +2,7 @@
 # Original file from https://github.com/unixsurfer/anycast_healthchecker/blob/master/contrib/nagios/check_anycast_healthchecker.py
 class profile::bird::anycast_healthchecker_monitoring{
 
-    require_package('python3-docopt')
+    ensure_packages('python3-docopt')
 
     file { 'check_anycast_healthchecker':
         path    => '/usr/lib/nagios/plugins/check_anycast_healthchecker.py',

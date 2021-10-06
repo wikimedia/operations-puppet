@@ -10,7 +10,7 @@ class mariadb::monitor_memory(
     Boolean $is_critical      = false,
     String $contact_group     = 'admins',
 ) {
-    require_package ('nagios-plugins-contrib')  # for pmp-check-unix-memory
+    ensure_packages ('nagios-plugins-contrib')  # for pmp-check-unix-memory
 
     $path = '/usr/lib/nagios/plugins'
     $check_command = "${path}/pmp-check-unix-memory -c ${critical} -w ${warning}"

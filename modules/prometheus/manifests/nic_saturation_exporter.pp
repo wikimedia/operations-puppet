@@ -8,7 +8,7 @@ class prometheus::nic_saturation_exporter(
     Wmflib::Ensure         $ensure         = 'present',
     Optional[Stdlib::Host] $listen_address = undef,
 ) {
-    require_package(['python3-prometheus-client'])
+    ensure_packages(['python3-prometheus-client'])
 
     $script_path = '/usr/local/bin/prometheus-nic-saturation-exporter'
 

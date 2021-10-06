@@ -14,7 +14,7 @@ class tendril::maintenance (
     $ensure = present,
 ){
 
-    require_package('libdbi-perl', 'libdbd-mysql-perl')
+    ensure_packages(['libdbi-perl', 'libdbd-mysql-perl'])
 
     File {
         ensure => present

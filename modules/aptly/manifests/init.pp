@@ -7,8 +7,8 @@ class aptly(
     $owner='root',
     $group='root',
 ){
-    require_package('aptly')
-    require_package('graphviz') # for aptly graph
+    ensure_packages('aptly')
+    ensure_packages('graphviz') # for aptly graph
 
     file { '/srv/packages':
         ensure => directory,

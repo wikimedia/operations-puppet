@@ -1,7 +1,7 @@
 # HP Raid controller
 class raid::hpsa {
   include raid
-  require_package('hpssacli', 'hpssaducli', 'lsscsi')
+  ensure_packages(['hpssacli', 'hpssaducli', 'lsscsi'])
 
   file { '/usr/local/lib/nagios/plugins/check_hpssacli':
     ensure => present,

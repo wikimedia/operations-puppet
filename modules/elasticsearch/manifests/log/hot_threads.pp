@@ -3,7 +3,7 @@
 # Install a systemd timer job to log the hot threads.
 #
 class elasticsearch::log::hot_threads {
-    require_package('python3-yaml')
+    ensure_packages('python3-yaml')
 
     file { '/etc/elasticsearch_hot_threads.d':
         ensure => directory,

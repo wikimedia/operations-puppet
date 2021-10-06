@@ -16,7 +16,7 @@ class orchestrator::server (
             fail("\$db_backend_password must be set if \$db_backend is 'mysql'")
         }
     } elsif $db_backend == 'sqlite' {
-        require_package('sqlite3')
+        ensure_packages('sqlite3')
     }
 
     ensure_packages('orchestrator')

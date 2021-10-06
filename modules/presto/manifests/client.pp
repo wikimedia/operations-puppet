@@ -13,7 +13,7 @@ class presto::client(String $discovery_uri = 'http://localhost:8080') {
         fail('Class presto::client and presto::server should not be included on the same node; presto::server will include the presto-cli package itself.')
     }
 
-    require_package('presto-cli')
+    ensure_packages('presto-cli')
 
     presto::properties { 'config':
         owner      => 'root',

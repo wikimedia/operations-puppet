@@ -2,7 +2,7 @@ class toolforge::k8s::nginx_ingress_yaml (
     Integer $ingress_replicas = 2,
 ) {
     # Helm 3 from component/kubeadm-*
-    require_package('helm')
+    ensure_packages('helm')
 
     # make sure you declare ::kubeadm::core somewhere in the calling profile
     # because /etc/kubernetes

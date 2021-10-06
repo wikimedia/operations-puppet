@@ -14,7 +14,7 @@ class profile::cyberbot::db{
         require => File['/srv/mysql'],
     }
 
-    require_package('mariadb-server')
+    ensure_packages('mariadb-server')
 
     service { 'mysql':
         ensure  => 'running',

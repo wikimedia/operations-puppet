@@ -16,7 +16,7 @@ class profile::acme_chief::cloud (
         }
     }
 
-    require_package('python3-keystoneauth1', 'python3-designateclient')
+    ensure_packages(['python3-keystoneauth1', 'python3-designateclient'])
 
     file { '/usr/local/bin/acme-chief-designate-sync.py':
         ensure  => present,

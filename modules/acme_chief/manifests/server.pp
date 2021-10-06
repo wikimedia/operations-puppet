@@ -11,7 +11,7 @@ class acme_chief::server (
     $is_active = $::fqdn == $active_host
 
     # For the gdnsd-sync script
-    require_package('python3-clustershell')
+    ensure_packages('python3-clustershell')
 
     user { 'acme-chief':
         ensure => present,

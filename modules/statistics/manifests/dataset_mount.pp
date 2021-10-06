@@ -11,7 +11,7 @@ class statistics::dataset_mount (
       $dumps_active_server,
   ){
     # need this for NFS mounts.
-    require_package('nfs-common')
+    ensure_packages('nfs-common')
 
     file {'/mnt/nfs':
         ensure => 'directory',

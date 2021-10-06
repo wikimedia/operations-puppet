@@ -14,7 +14,7 @@ class osm::imposm3 (
     $imposm_mapping_file = '/etc/imposm/imposm_mapping.yml'
     $imposm_config_file = '/etc/imposm/imposm_config.json'
 
-    require_package('imposm3')
+    ensure_packages('imposm3')
 
     file {
         default:

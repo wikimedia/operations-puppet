@@ -32,8 +32,8 @@ class toolforge::bastion_proc_management (
     Integer $min_uid = 500,
     String  $project = 'tools',
 ){
-    require_package('python3-psutil')
-    require_package('python3-ldap3')
+    ensure_packages('python3-psutil')
+    ensure_packages('python3-ldap3')
 
     # Script to stop long-running services, sometimes
     file { '/usr/local/sbin/wmcs-wheel-of-misfortune':

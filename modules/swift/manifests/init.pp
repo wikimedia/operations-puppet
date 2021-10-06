@@ -46,7 +46,7 @@ class swift (
         $python_swift_pkg = 'python-swift'
     }
 
-    # Use 'package' as opposed to require_packages to avoid dependency cycles
+    # Use 'package' as opposed to ensure_packagess to avoid dependency cycles
     package { [
         'swift',
         $python_swift_pkg,
@@ -56,7 +56,7 @@ class swift (
         ensure => present,
     }
 
-    require_package(['python3-statsd'])
+    ensure_packages(['python3-statsd'])
 
     file {
         default:

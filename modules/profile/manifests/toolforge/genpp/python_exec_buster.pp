@@ -6,7 +6,7 @@
 # Please do not edit manually!
 
 class profile::toolforge::genpp::python_exec_buster {
-    require_package(
+    ensure_packages([
         'python-babel',         # 2.6.0
         'python3-babel',        # 2.6.0
         # python-beautifulsoup is not available
@@ -139,5 +139,5 @@ class profile::toolforge::genpp::python_exec_buster {
         # python3-zbar is not available
         'python-zmq',           # 17.1.2
         'python3-zmq',          # 17.1.2
-    )
+    ])
 }

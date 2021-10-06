@@ -7,7 +7,7 @@ class profile::miscweb::httpd (
     $apache_php_module = 'php7.3'
     $apache_modules = concat($apache_modules_common, $apache_php_module)
 
-    require_package('libapache2-mod-php')
+    ensure_packages('libapache2-mod-php')
 
     class { '::httpd':
         modules => $apache_modules,

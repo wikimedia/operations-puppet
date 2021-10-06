@@ -28,11 +28,11 @@ define service::packages(
     # it is possible for a service not to have run-time dependencies while still
     # having compile-time ones, so ensure we are actually requiring something
     if is_array($pkgs) and size($pkgs) > 0 {
-        require_package($pkgs)
+        ensure_packages($pkgs)
     }
 
     if $use_dev and is_array($dev_pkgs) and size($dev_pkgs) > 0 {
-        require_package($dev_pkgs)
+        ensure_packages($dev_pkgs)
     }
 
 }

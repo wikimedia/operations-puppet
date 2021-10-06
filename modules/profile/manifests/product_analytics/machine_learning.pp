@@ -11,7 +11,7 @@ class profile::product_analytics::machine_learning {
         'python-sklearn',  # Python modules for machine learning and data mining
         'python3-sklearn',
     ]
-    require_package($python_packages)
+    ensure_packages($python_packages)
 
     $r_packages = [
         # Frameworks/utilities:

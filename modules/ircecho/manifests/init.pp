@@ -16,7 +16,7 @@ class ircecho (
     $ensure = 'present',
 ) {
 
-    require_package(['python-pyinotify', 'python-irc'])
+    ensure_packages(['python-pyinotify', 'python-irc'])
 
     file { '/usr/local/bin/ircecho':
         ensure => 'present',

@@ -32,12 +32,12 @@ class openstack::horizon::source_deploy(
     Stdlib::Fqdn  $webserver_hostname = 'horizon.wikimedia.org',
     Boolean       $maintenance_mode   = false,
 ) {
-    require_package(
+    ensure_packages([
         'python-wheel',
         'python-virtualenv',
         'virtualenv',
         'gettext',
-    )
+    ])
 
     $puppet_git_repo_key_path = '/home/horizon/.ssh/instance-puppet-user.priv'
 

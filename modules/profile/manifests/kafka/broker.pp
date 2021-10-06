@@ -200,7 +200,7 @@ class profile::kafka::broker(
     $jvm_performance_opts = '-server -XX:MetaspaceSize=96m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80'
 
     # kafkacat is handy!
-    require_package('kafkacat')
+    ensure_packages('kafkacat')
 
     $plaintext_port     = 9092
     $plaintext_listener = "PLAINTEXT://:${plaintext_port}"

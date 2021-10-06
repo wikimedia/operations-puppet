@@ -25,7 +25,7 @@ class k8s::controller(
             packages  => ['kubernetes-master'],
         }
     } else {
-        require_package('kubernetes-master')
+        ensure_packages('kubernetes-master')
     }
 
     file { '/etc/default/kube-controller-manager':
