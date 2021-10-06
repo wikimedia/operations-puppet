@@ -53,15 +53,6 @@ class dynamicproxy::api(
             source => 'puppet:///modules/dynamicproxy/proxydb-bak.sh',
     }
 
-    cron { 'proxydb-bak':
-            ensure  => absent,
-            user    => 'root',
-            hour    => '1',
-            minute  => '0',
-            command => '/usr/local/sbin/proxydb-bak.sh > /dev/null 2>&1',
-            require => File['/data/project/backup'],
-    }
-
     systemd::timer::job { 'proxydb-backup':
         ensure             => present,
         user               => 'root',
