@@ -1,0 +1,24 @@
+output {
+<% if @guard_condition %>if <%= @guard_condition %> {<% end %>
+    # We use the http protocol so that the cluster and logstash don't have to
+    # be tightly coupled by the binary protocol
+    opensearch {
+        hosts           => ["<%= @host %>:<%= @port %>"]
+        index           => "<%= @index %>"
+<% if @template %>
+        manage_template    => true
+        template           => "<%= @template %>"
+        template_name      => "<%= @template_name %>"
+        template_overwrite => true
+<% else %>
+        manage_template => false
+<% end %>
+<% if @document_type %>
+        document_type   => "<%= @document_type %>"
+<% end %>
+<% if @plugin_id %>
+        id              => "<%= @plugin_id %>"
+<% end %>
+    }
+<% if @guard_condition %>}<% end %>
+}
