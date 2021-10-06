@@ -76,7 +76,8 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
             elif metric == 'Temperature (Sensor junction) (C)':
                 gpu_stats['temperature'].labels(card=card, location="junction").set(
                     rocm_metrics[card][metric].strip())
-            elif metric == 'Temperature (Sensor mem) (C)':
+            elif metric == 'Temperature (Sensor mem) (C)' \
+                    or metric == 'Temperature (Sensor memory) (C)':
                 gpu_stats['temperature'].labels(card=card, location="mem").set(
                     rocm_metrics[card][metric].strip())
 
@@ -87,33 +88,42 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
                     rocm_metrics[card][metric].strip())
 
             # Fan speeds
-            elif metric == 'Fan Speed (%)':
+            elif metric == 'Fan Speed (%)' \
+                    or metric == 'Fan speed (%)':
                 # format example: 14
                 gpu_stats['fan'].labels(card=card).set(
                     rocm_metrics[card][metric].strip())
-            elif metric == 'Fan Speed (level)':
+            elif metric in ['Fan Speed (level)', 'Fan speed (level)', 'Fan RPM']:
                 # we care only about the percentage value
                 continue
 
             # Memory
             # Total memory amounts, for percentage calculation with used memory
-            elif metric == 'vram Total Memory (B)':
+            # Note: there are two formats since we support multiple versions
+            # of rocm-smi, once all nodes are on the same version we'll cleanup.
+            elif metric == 'vram Total Memory (B)' \
+                    or metric == 'VRAM Total Memory (B)':
                 gpu_stats['memory_total'].labels(card=card, memtype='vram').set(
                     rocm_metrics[card][metric].strip())
-            elif metric == 'gtt Total Memory (B)':
+            elif metric == 'gtt Total Memory (B)' \
+                    or metric == 'GTT Total Memory (B)':
                 gpu_stats['memory_total'].labels(card=card, memtype='gtt').set(
                     rocm_metrics[card][metric].strip())
-            elif metric == 'vis_vram Total Memory (B)':
+            elif metric == 'vis_vram Total Memory (B)' \
+                    or metric == 'VIS_VRAM Total Memory (B)':
                 gpu_stats['memory_total'].labels(card=card, memtype='vis').set(
                     rocm_metrics[card][metric].strip())
             # Used memory amounts
-            elif metric == 'vram Total Used Memory (B)':
+            elif metric == 'vram Total Used Memory (B)' \
+                    or metric == 'VRAM Total Used Memory (B)':
                 gpu_stats['memory_used'].labels(card=card, memtype='vram').set(
                     rocm_metrics[card][metric].strip())
-            elif metric == 'gtt Total Used Memory (B)':
+            elif metric == 'gtt Total Used Memory (B)' \
+                    or metric == 'GTT Total Used Memory (B)':
                 gpu_stats['memory_used'].labels(card=card, memtype='gtt').set(
                     rocm_metrics[card][metric].strip())
-            elif metric == 'vis_vram Total Used Memory (B)':
+            elif metric == 'vis_vram Total Used Memory (B)' \
+                    or metric == 'VIS_VRAM Total Used Memory (B)':
                 gpu_stats['memory_used'].labels(card=card, memtype='vis').set(
                     rocm_metrics[card][metric].strip())
 
@@ -129,6 +139,7 @@ def main():
     parser.add_argument('--outfile', metavar='FILE.prom',
                         help='Output file (stdout)')
     parser.add_argument('--rocm-smi-path', metavar='/opt/rocm/bin/rocm-smi',
+                        default='/opt/rocm/bin/rocm-smi',
                         help='Full path of the rocm-smi tool')
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Enable debug logging (false)')
