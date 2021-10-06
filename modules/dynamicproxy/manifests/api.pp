@@ -54,12 +54,23 @@ class dynamicproxy::api(
     }
 
     cron { 'proxydb-bak':
-            ensure  => present,
+            ensure  => absent,
             user    => 'root',
             hour    => '1',
             minute  => '0',
             command => '/usr/local/sbin/proxydb-bak.sh > /dev/null 2>&1',
             require => File['/data/project/backup'],
+    }
+
+    systemd::timer::job { 'proxydb-backup':
+        ensure             => present,
+        user               => 'root',
+        description        => 'run proxydb-bak.sh',
+        command            => '/usr/local/sbin/proxydb-bak.sh',
+        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => 'daily'},
+        monitoring_enabled => false,
+        logging_enabled    => false,
+        require            => File['/data/project/backup'],
     }
 
     # Create initial db file if it doesn't exist, but don't clobber if it does.
