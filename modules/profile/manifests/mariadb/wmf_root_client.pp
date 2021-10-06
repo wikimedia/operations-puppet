@@ -34,4 +34,15 @@ class profile::mariadb::wmf_root_client {
         show_diff => false,
         content   => template('profile/mariadb/mysqld_config/root.my.cnf.erb'),
     }
+
+    # small script to perform an emergency query killing on a database
+    file { '/usr/local/bin/db-kill':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0540',
+        source  => 'puppet:///modules/profile/mariadb/db_kill.py',
+        require => [  Package['python3-wmfmariadbpy'],  # dependency on wmfmariadbpy.dbutil
+                      Package['percona-toolkit'],  # dependency on pt-kill
+        ],
+    }
 }
