@@ -16,6 +16,8 @@ service::configuration::restbase_uri: http://deployment-restbase03.deployment-pr
 service::configuration::statsd_host: cloudmetrics1001.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
 profile::cache::purge::kafka_cluster_name: main-deployment-prep
+# T286502
+profile::trafficserver::backend::ram_cache_size: 134217728
 # T247147
 profile::envoy::ensure: absent
 # Used to sync the setting between all Kafka clusters and clients.
