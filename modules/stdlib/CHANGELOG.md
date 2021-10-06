@@ -2,7 +2,76 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v6.6.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v6.6.0) (2021-02-01)
+## [v8.1.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v8.1.0) (2021-10-04)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v8.0.0...v8.1.0)
+
+### Added
+
+- pdksync - \(IAC-1751\) - Add Support for Rocky 8 [\#1214](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1214) ([david22swan](https://github.com/david22swan))
+- stdlib::ensure: Add support for package resource [\#1213](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1213) ([david-caro](https://github.com/david-caro))
+- Added to\_toml function [\#1209](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1209) ([nmaludy](https://github.com/nmaludy))
+
+### Fixed
+
+- \[MODULES-11195\] Add lint-ignore for pattern length [\#1212](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1212) ([carabasdaniel](https://github.com/carabasdaniel))
+- pdksync - \(IAC-1598\) - Remove Support for Debian 8 [\#1210](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1210) ([david22swan](https://github.com/david22swan))
+- os\_version\_gte: fix version comparison logic [\#1207](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1207) ([kenyon](https://github.com/kenyon))
+- max, lstrip: fix deprecated message [\#1204](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1204) ([b4ldr](https://github.com/b4ldr))
+- \(MODULES-11126\) Replacing URI.escape with URI::DEFAULT\_PARSER [\#1195](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1195) ([valleedelisle](https://github.com/valleedelisle))
+
+## [v8.0.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v8.0.0) (2021-08-24)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v7.1.0...v8.0.0)
+
+### Changed
+
+- Flip installed and present in Function ensure\_packages [\#1196](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1196) ([cocker-cc](https://github.com/cocker-cc))
+
+### Added
+
+- New function to\_python\(\) / to\_ruby\(\) [\#1200](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1200) ([smortex](https://github.com/smortex))
+- pdksync - \(IAC-1709\) - Add Support for Debian 11 [\#1199](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1199) ([david22swan](https://github.com/david22swan))
+- Stdlib::Http::Method: Add new type for http methods [\#1192](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1192) ([b4ldr](https://github.com/b4ldr))
+
+### Fixed
+
+- \(MODULES-11099\) Make merge parameter data types actually backwards compatible [\#1191](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1191) ([SimonPe](https://github.com/SimonPe))
+
+## [v7.1.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v7.1.0) (2021-05-17)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v7.0.1...v7.1.0)
+
+### Added
+
+- pw\_hash: add support for bcrypt variants [\#1173](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1173) ([kjetilho](https://github.com/kjetilho))
+
+## [v7.0.1](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v7.0.1) (2021-04-12)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v7.0.0...v7.0.1)
+
+### Fixed
+
+- Fix typo in validate\_ipv6\_address function [\#1176](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1176) ([nbarrientos](https://github.com/nbarrientos))
+
+## [v7.0.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v7.0.0) (2021-03-01)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v6.6.0...v7.0.0)
+
+### Changed
+
+- pdksync - Remove Puppet 5 from testing and bump minimal version to 6.0.0 [\#1164](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1164) ([carabasdaniel](https://github.com/carabasdaniel))
+
+### Added
+
+- Stdlib::Email type [\#1160](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1160) ([b4ldr](https://github.com/b4ldr))
+
+### Fixed
+
+- \(bugfix\) Setting stricter email validation [\#1163](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1163) ([pmcmaw](https://github.com/pmcmaw))
+- \(IAC-1414\) Throw error in range\(\) function when step size invalid [\#1161](https://github.com/puppetlabs/puppetlabs-stdlib/pull/1161) ([sanfrancrisko](https://github.com/sanfrancrisko))
+
+## [v6.6.0](https://github.com/puppetlabs/puppetlabs-stdlib/tree/v6.6.0) (2021-02-02)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-stdlib/compare/v6.5.0...v6.6.0)
 

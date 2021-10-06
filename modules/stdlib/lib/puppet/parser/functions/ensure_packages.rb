@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 #
 # ensure_packages.rb
 #
 module Puppet::Parser::Functions
-  newfunction(:ensure_packages, :type => :statement, :doc => <<-DOC
+  newfunction(:ensure_packages, type: :statement, doc: <<-DOC
     @summary
       Takes a list of packages and only installs them if they don't already exist.
 
@@ -12,19 +14,18 @@ module Puppet::Parser::Functions
     @return
       install the passed packages
   DOC
-             ) do |arguments|
-
+  ) do |arguments|
     raise(Puppet::ParseError, "ensure_packages(): Wrong number of arguments given (#{arguments.size} for 1 or 2)") if arguments.size > 2 || arguments.empty?
     raise(Puppet::ParseError, 'ensure_packages(): Requires second argument to be a Hash') if arguments.size == 2 && !arguments[1].is_a?(Hash)
 
     if arguments[0].is_a?(Hash)
       if arguments[1]
-        defaults = { 'ensure' => 'present' }.merge(arguments[1])
-        if defaults['ensure'] == 'installed'
-          defaults['ensure'] = 'present'
+        defaults = { 'ensure' => 'installed' }.merge(arguments[1])
+        if defaults['ensure'] == 'present'
+          defaults['ensure'] = 'installed'
         end
       else
-        defaults = { 'ensure' => 'present' }
+        defaults = { 'ensure' => 'installed' }
       end
 
       Puppet::Parser::Functions.function(:ensure_resources)
@@ -33,12 +34,12 @@ module Puppet::Parser::Functions
       packages = Array(arguments[0])
 
       if arguments[1]
-        defaults = { 'ensure' => 'present' }.merge(arguments[1])
-        if defaults['ensure'] == 'installed'
-          defaults['ensure'] = 'present'
+        defaults = { 'ensure' => 'installed' }.merge(arguments[1])
+        if defaults['ensure'] == 'present'
+          defaults['ensure'] = 'installed'
         end
       else
-        defaults = { 'ensure' => 'present' }
+        defaults = { 'ensure' => 'installed' }
       end
 
       Puppet::Parser::Functions.function(:ensure_resource)

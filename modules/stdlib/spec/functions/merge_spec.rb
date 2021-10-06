@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'merge' do
@@ -7,7 +9,7 @@ describe 'merge' do
       .with_params({}, 'two') \
       .and_raise_error(
         ArgumentError, \
-        Regexp.new(Regexp.escape("rejected: parameter 'args' expects a value of type Undef, Hash, or String[0, 0], got String")),
+        Regexp.new(Regexp.escape("rejected: parameter 'args' expects a value of type Undef, Hash[Scalar, Any], or String[0, 0], got String")),
       )
   }
   it {

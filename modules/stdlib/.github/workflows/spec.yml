@@ -1,0 +1,64 @@
+name: "Spec Tests"
+
+on: [pull_request]
+
+jobs:
+  setup_matrix:
+    name: "Setup Test Matrix"
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v2
+
+      - name: Activate Ruby 2.5
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.5"
+          bundler-cache: true
+
+      - name: Print bundle environment
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+  Spec:
+    name: "Spec Tests (Puppet: ${{matrix.puppet_version}}, Ruby Ver: ${{matrix.ruby_version}})"
+
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - puppet_version: '~> 5.5.0'
+            ruby_version: '2.5'
+
+    env:
+      BUILDEVENT_FILE: '../buildevents.txt'
+      PUPPET_GEM_VERSION: ${{ matrix.puppet_version }}
+
+    steps:
+      - run: |
+          echo "SANITIZED_PUPPET_VERSION=$(echo '${{ matrix.puppet_version }}' | sed 's/~> //g')" >> $GITHUB_ENV
+
+      - run: |
+          echo 'puppet_version=${{ env.SANITIZED_PUPPET_VERSION }}' >> $BUILDEVENT_FILE
+
+      - name: Checkout Source
+        uses: actions/checkout@v2
+
+      - name: "Activate Ruby ${{ matrix.ruby_version }}"
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{matrix.ruby_version}}
+          bundler-cache: true
+
+      - name: Print bundle environment
+        run: |
+          echo ::group::bundler environment
+          bundle env
+          echo ::endgroup::
+
+      - name: Run parallel_spec tests
+        run: bundle exec rake parallel_spec

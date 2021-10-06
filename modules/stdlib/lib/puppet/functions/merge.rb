@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # @summary
 #   Merges two or more hashes together or hashes resulting from iteration, and returns
 #   the resulting hash.
@@ -38,8 +40,8 @@ Puppet::Functions.create_function(:merge) do
   # @return
   #   The merged hash
   dispatch :merge2hashes do
-    repeated_param 'Variant[Hash, Undef, String[0,0]]', :args # this strange type is backwards compatible
-    return_type 'Hash'
+    repeated_param 'Variant[Hash[Scalar,Any], Undef, String[0,0]]', :args # this strange type is backwards compatible
+    return_type 'Hash[Scalar,Any]'
   end
 
   # @param args
@@ -102,7 +104,7 @@ Puppet::Functions.create_function(:merge) do
           accumulator.merge!(r) if r.is_a?(Hash)
           index += 1
         end
-      rescue StopIteration # rubocop:disable Lint/HandleExceptions
+      rescue StopIteration
       end
     end
     accumulator
