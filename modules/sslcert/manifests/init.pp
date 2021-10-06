@@ -10,9 +10,7 @@
 #
 
 class sslcert {
-    package { [ 'openssl', 'ssl-cert', 'ca-certificates' ]:
-        ensure => present,
-    }
+    ensure_packages([ 'openssl', 'ssl-cert', 'ca-certificates' ])
 
     exec { 'update-ca-certificates':
         command     => '/usr/sbin/update-ca-certificates',
