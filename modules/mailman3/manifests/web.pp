@@ -40,11 +40,6 @@ class mailman3::web (
         require   => Package['dbconfig-no-thanks'],
     }
 
-    package { 'mailman3-web':
-        ensure  => present,
-        require => Package['dbconfig-no-thanks'],
-    }
-
     file { '/etc/mailman3/mailman-web.py':
         owner   => 'root',
         group   => 'root',
