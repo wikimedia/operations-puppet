@@ -24,12 +24,11 @@ class ferm {
         mode    => '0444',
         content => "nf_conntrack\n",
         require => File['/etc/modprobe.d/nf_conntrack.conf'],
+        before  => Package['ferm', 'libnet-dns-perl', 'conntrack'],
     }
 
-    package { ['ferm', 'libnet-dns-perl', 'conntrack']:
-        ensure  => present,
-        require => File['/etc/modprobe.d/nf_conntrack.conf'],
-    }
+    ensure_packages(['ferm', 'libnet-dns-perl', 'conntrack'])
+
     file {'/usr/local/sbin/ferm-status':
         ensure  => file,
         mode    => '0550',

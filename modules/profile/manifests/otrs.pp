@@ -89,9 +89,5 @@ class profile::otrs(
     }
 
     # can conflict with ferm module
-    if ! defined(Package['libnet-dns-perl']){
-        package { 'libnet-dns-perl':
-            ensure => present,
-        }
-    }
+    ensure_packages('libnet-dns-perl')
 }
