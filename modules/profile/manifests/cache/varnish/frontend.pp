@@ -94,9 +94,11 @@ class profile::cache::varnish::frontend (
             $backend_caches = $cache_nodes[$cache_cluster][$::site] - $single_backend_experiment
             $etcd_backends = $backends_in_etcd
         }
+        $confd_experiment_fqdn = $single_backend_experiment
     } else {
         $backend_caches = $cache_nodes[$cache_cluster][$::site]
         $etcd_backends = $backends_in_etcd
+        $confd_experiment_fqdn = ''
     }
 
     if $etcd_backends {
