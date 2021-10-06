@@ -3,6 +3,7 @@ class profile::mediawiki::maintenance::wikidata {
 
     # Prune wb_changes entries no longer needed from wikidata
     profile::mediawiki::periodic_job { 'wikibase_repo_prune2':
+        ensure   => absent,
         command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3',
         interval => '*:00,15,30,45',
     }
