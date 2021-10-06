@@ -214,13 +214,14 @@ END
 # see https://phabricator.wikimedia.org/T260428
 result_dashboard_panels=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
 
-SELECT CONCAT("https://phabricator.wikimedia.org/p/", u.userName) AS author,
-    CONCAT("https://phabricator.wikimedia.org/W", dp.id) AS panel,
-    dp.name,
+SELECT CONCAT("https://phabricator.wikimedia.org/W", dp.id) AS panel,
+    u.userName AS author,
+    u.isDisabled AS disabled,
+    dp.name AS panelName,
+    dp.viewPolicy AS viewPolicy
     FROM phabricator_dashboard.dashboard_panel dp
     INNER JOIN phabricator_user.user u
-    WHERE dp.isArchived = 0
-    AND dp.authorPHID = u.phid
+    WHERE dp.authorPHID = u.phid
     AND dp.dateModified > (UNIX_TIMESTAMP() - 605300)
     ORDER BY dp.dateModified;
 END
