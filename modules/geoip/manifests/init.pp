@@ -14,9 +14,13 @@
 # == Class geoip
 # Convenience class that installs the MaxMind binaries, library & all data
 #
-class geoip {
+class geoip(
+    Optional[Boolean] $fetch_ipinfo_dbs = false,
+){
   # load the data from the puppetmaster. You need to make sure the puppetmaster
   # includes one or more of the other data classes
-  include ::geoip::data::puppet
+    class { 'geoip::data::puppet':
+        fetch_ipinfo_dbs => $fetch_ipinfo_dbs,
+    }
   include ::geoip::bin
 }

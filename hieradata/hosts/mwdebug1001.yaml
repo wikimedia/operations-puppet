@@ -1,1 +1,2 @@
 profile::mediawiki::webserver::stream_to_logstash: true
+profile::mediawiki::common::fetch_ipinfo_dbs: true
