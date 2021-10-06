@@ -4,13 +4,10 @@ class profile::mediawiki::common(
     String $log_aggregator = lookup('udp2log_aggregator'),
     Optional[String] $php_version = lookup('profile::mediawiki::php::php_version', {'default_value' => undef}),
     Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
-    Optional[Boolean] $fetch_ipinfo_dbs = lookup('profile::mediawiki::common::fetch_ipinfo_dbs', {'default_value' => false}),
 ){
 
     # GeoIP is needed for MW
-    class { '::geoip':
-        fetch_ipinfo_dbs => $fetch_ipinfo_dbs,
-    }
+    class { '::geoip': }
 
     # Enable systemd coredump on all servers running mediawiki
     # Whether php7 will produce coredumps is configurable through
