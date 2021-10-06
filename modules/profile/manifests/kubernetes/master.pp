@@ -1,4 +1,5 @@
 class profile::kubernetes::master(
+    String $kubernetes_cluster_group = lookup('profile::kubernetes::master::cluster_group'),
     Array[String] $etcd_urls=lookup('profile::kubernetes::master::etcd_urls'),
     # List of hosts this is accessible to.
     # SPECIAL VALUE: use 'all' to have this port be open to the world
@@ -18,7 +19,7 @@ class profile::kubernetes::master(
     Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', {default_value => false}),
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', {default_value => false}),
     Optional[String] $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token', {default_value => undef}),
-    Hash[String, Any] $infrastructure_users = lookup('profile::kubernetes::master::infrastructure_users'),
+    Hash[String, Any] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
     Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', {default_value => undef}),
     Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', {default_value => undef})
 
@@ -48,7 +49,7 @@ class profile::kubernetes::master(
         etcd_servers             => $etcd_servers,
         ssl_cert_path            => $ssl_cert_path,
         ssl_key_path             => $ssl_key_path,
-        users                    => $infrastructure_users,
+        users                    => $all_infrastructure_users[$kubernetes_cluster_group],
         authz_mode               => $authz_mode,
         allow_privileged         => $allow_privileged,
         packages_from_future     => $packages_from_future,

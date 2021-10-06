@@ -6,7 +6,7 @@
 -%>
 <%-
   @users.each do |k, v|
-    entry = "#{v['token']},#{k},#{k},\"#{v['groups'].join(',')}\""
+    entry = "#{v['token']},#{k},#{k},\"#{v.fetch('groups', ['deploy']).join(',')}\""
 -%>
 <%= entry %>
 <%- end -%>

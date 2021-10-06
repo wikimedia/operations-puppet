@@ -3,7 +3,7 @@ class profile::kubernetes::deployment_server(
     Hash[String, Hash] $kubernetes_cluster_groups                      = lookup('kubernetes_cluster_groups'),
     Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
     Hash[String, Hash[String,Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', {default_value => {}}),
-    Hash[String, Hash[String, Struct[{'token' => String}]]] $tokens    = lookup('profile::kubernetes::deployment_server::tokens', {default_value => {}}),
+    Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', {default_value => {}}),
     Boolean $packages_from_future                                      = lookup('profile::kubernetes::deployment_server::packages_from_future', {default_value => false}),
     Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', {default_value => false}),
 ){
