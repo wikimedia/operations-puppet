@@ -27,7 +27,13 @@ define statsite::instance(
     String         $input_counter     = "statsd.${::hostname}.received",
     Integer        $extended_counters = 1,
 ) {
-    $stream_cmd = "python /usr/lib/statsite/sinks/graphite.py ${graphite_host} ${graphite_port} \"\""
+    $python = $::lsbdistcodename ? {
+        default => 'python3',
+        stretch => 'python',
+        buster  => 'python',
+    }
+
+    $stream_cmd = "${python} /usr/lib/statsite/sinks/graphite.py ${graphite_host} ${graphite_port} \"\""
 
     file { "/etc/statsite/${port}.ini":
         ensure  => $ensure,
