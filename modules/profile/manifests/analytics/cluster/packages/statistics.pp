@@ -15,6 +15,11 @@ class profile::analytics::cluster::packages::statistics {
 
     class { '::imagemagick::install': }
 
+    # Needed for the Oct 2021 DSE hackathon
+    # More info https://phabricator.wikimedia.org/T292306
+    # TBD: do we want to keep them permanently?
+    ensure_packages(['libasound2-dev', 'libjack-dev', 'portaudio19-dev'])
+
     ensure_packages([
         'time',
         'mc',
