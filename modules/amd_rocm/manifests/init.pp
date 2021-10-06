@@ -9,7 +9,7 @@
 #  The ROCm version to deploy in digits without dots.
 #  The version corresponds to a component in reprepro,
 #  so please check the supported versions before setting it.
-#  Default: "25"
+#  Default: "42"
 #
 # [*kfd_access_group*]
 #  Add a udev rule for the kfd device to allow access to users
@@ -19,7 +19,7 @@
 #
 #
 class amd_rocm (
-    String $version = '38',
+    String $version = '42',
     Optional[String] $kfd_access_group = undef,
 ) {
 
