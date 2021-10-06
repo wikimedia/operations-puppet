@@ -48,14 +48,9 @@ eventlogging_schemas_disabled = (
     # NavigationTiming extension legacy schemas
     'CentralNoticeTiming',
     'CpuBenchmark',
-    'ElementTiming',
     'FeaturePolicyViolation',
-    'FirstInputTiming',
-    'LayoutShift',
     'NavigationTiming',
     'PaintTiming',
-    'ResourceTiming',
-    'RUMSpeedIndex',
     'SaveTiming',
 
     # WMDE Technical Wishes schemas

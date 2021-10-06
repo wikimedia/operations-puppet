@@ -165,14 +165,9 @@ class profile::analytics::refinery::job::refine(
         # NavigationTiming extension legacy schemas
         'CentralNoticeTiming',
         'CpuBenchmark',
-        'ElementTiming',
         'FeaturePolicyViolation',
-        'FirstInputTiming',
-        'LayoutShift',
         'NavigationTiming',
         'PaintTiming',
-        'ResourceTiming',
-        'RUMSpeedIndex',
         'SaveTiming',
 
         # WMDE Technical Wishes team schemas
