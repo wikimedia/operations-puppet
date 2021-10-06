@@ -47,3 +47,6 @@ profile::gitlab::exporters:
   puma:
     port: 8083
     listen_address: "%{facts.networking.ip}"
+
+profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.crt'
+profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'

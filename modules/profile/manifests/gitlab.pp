@@ -4,6 +4,7 @@ class profile::gitlab(
     Wmflib::Ensure $backup_sync_ensure = lookup('profile::gitlab::backup_sync::ensure'),
     Stdlib::IP::Address::V4 $service_ip_v4 = lookup('profile::gitlab::service_ip_v4'),
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
+    Stdlib::Host $service_name = lookup('profile::gitlab::service_name'),
     Stdlib::Unixpath $backup_dir_data = lookup('profile::gitlab::backup_dir_data'),
     Stdlib::Unixpath $backup_dir_config = lookup('profile::gitlab::backup_dir_config'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
@@ -14,6 +15,8 @@ class profile::gitlab(
     Integer[1] $backup_keep_time = lookup('profile::gitlab::backup_keep_time'),
     Boolean  $smtp_enabled = lookup('profile::gitlab::smtp_enabled'),
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = lookup('profile::gitlab::exporters', {default_value => []}),
+    Stdlib::Unixpath $cert_path = lookup('profile::gitlab::cert_path'),
+    Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -161,5 +164,8 @@ class profile::gitlab(
         enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         listen_addresses       => [$service_ip_v4, $service_ip_v6],
         enable_restore_replica => $active_host != $facts['fqdn'], # enable automated restore on passive GitLab server
+        cert_path              => $cert_path,
+        key_path               => $key_path,
+        gitlab_domain          => $service_name,
     }
 }
