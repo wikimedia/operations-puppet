@@ -1,7 +1,6 @@
 class profile::base(
     Array $remote_syslog = lookup('profile::base::remote_syslog', {default_value => []}),
     Array $remote_syslog_tls = lookup('profile::base::remote_syslog_tls', {default_value => []}),
-    String $core_dump_pattern = lookup('profile::base::core_dump_pattern', {default_value => '/var/tmp/core/core.%h.%e.%p.%t'}),
     Hash $ssh_server_settings = lookup('profile::base::ssh_server_settings', {default_value => {}}),
     Boolean $overlayfs = lookup('profile::base::overlayfs', {default_value => false}),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
@@ -56,9 +55,7 @@ class profile::base(
     if debian::codename::le('buster') {
         class { 'toil::acct_handle_wtmp_not_rotated': }
     }
-    class { 'base::environment':
-        core_dump_pattern => $core_dump_pattern,
-    }
+    include profile::environment
 
     class { 'base::phaste': }
     class { 'base::screenconfig': }

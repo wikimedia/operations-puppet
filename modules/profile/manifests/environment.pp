@@ -1,44 +1,25 @@
-# = Class: base::environment
+# == Class profile::environment
 #
 # Sets up the base environment for all hosts (profile, editor, sysctl, etc)
 #
-# = Parameters
+# === Parameters
+# @ls_aliases if true, will setup the ll/la aliases
+# @custom_bashrc when set, will replace the system bashrc with the given template (as a path)
+# @custom_skel_bashrc when set, will replace the system skel bashrc with the given template (as a path)
+# @editor choose the default editor, if 'use_default' will use the system's default
+# @with_wmcs_etc_files if true, will add some extra files to /etc related to wmcs project, instance name, etc.
+# @profile_scripts list of script names to be added to /etc/profile.d and their source
+# @core_dump_pattern pattern to use when generating core dumps
 #
-# [*core_dump_pattern*]
-#   Sets the pattern for the path where core dumps are kept.
-#   See documentation for values at http://man7.org/linux/man-pages/man5/core.5.html under 'Naming of core dump files'
-#
-class base::environment(
-    String $core_dump_pattern = '/var/tmp/core/core.%h.%e.%p.%t',
-){
-    case $::realm {
-        'production': {
-            $ls_aliases = true
-            $custom_bashrc = undef
-            $custom_skel_bashrc = undef
-            $editor = 'vim'
-            $with_wmcs_etc_files = false
-            $profile_scripts = {
-                'mysql-ps1.sh' => 'puppet:///modules/base/environment/mysql-ps1.sh',
-                'bash_autologout.sh' => 'puppet:///modules/base/environment/bash_autologout.sh',
-                'field.sh' => 'puppet:///modules/base/environment/field.sh',
-            }
-        } # /production
-        'labs': {
-            $ls_aliases = false
-            $custom_bashrc = template('base/environment/bash.bashrc.erb')
-            $custom_skel_bashrc = template('base/environment/skel/bashrc.erb')
-            $editor = 'use_default'
-            $with_wmcs_etc_files = true
-            $profile_scripts = {
-                'field.sh' => 'puppet:///modules/base/environment/field.sh',
-            }
-        } # /labs
-        default: {
-            err('realm must be either "labs" or "production".')
-        }
-    }
-
+class profile::environment (
+    Boolean $ls_aliases = lookup('profile::environment::ls_aliases'),
+    Optional[String[1]] $custom_skel_bashrc = lookup('profile::environment::custom_skel_bashrc'),
+    Optional[String[1]] $custom_bashrc = lookup('profile::environment::custom_bashrc'),
+    Enum['vim', 'use_default'] $editor = lookup('profile::environment::editor'),
+    Boolean $with_wmcs_etc_files = lookup('profile::environment::with_wmcs_etc_files'),
+    Hash[String, Stdlib::Filesource] $profile_scripts = lookup('profile::environment::profile_scripts'),
+    String $core_dump_pattern = lookup('profile::environment::core_dump_pattern'),
+) {
     if $ls_aliases {
         exec { 'uncomment root bash aliases':
             path    => '/bin:/usr/bin',
@@ -52,7 +33,7 @@ class base::environment(
 
     if $custom_bashrc {
         file { '/etc/bash.bashrc':
-                content => $custom_bashrc,
+                content => template($custom_bashrc),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0444',
@@ -60,7 +41,7 @@ class base::environment(
     }
     if $custom_skel_bashrc {
         file { '/etc/skel/.bashrc':
-                content => $custom_skel_bashrc,
+                content => template($custom_skel_bashrc),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',
