@@ -35,6 +35,9 @@
 # [*ssl_truststore_password*]
 #   jks truststore password value. Default: none. Requires $security_protocol = 'SSL'
 #
+# [*manage_truststore*]
+#   Enables puppet to manage the deployed truststore file. Default: true
+#
 # [*priority*]
 #   Configuration loading priority. Default: '10'.
 #
@@ -70,6 +73,7 @@ define logstash::input::kafka(
     Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,
     Optional[String] $ssl_truststore_password                                        = undef,
     Optional[String] $ssl_endpoint_identification_algorithm                          = undef,
+    Boolean $manage_truststore                                                       = true,
 
     $priority                                                                        = 10,
     $tags                                                                            = [$title],
@@ -92,7 +96,7 @@ define logstash::input::kafka(
         $bootstrap_servers = $kafka_config['brokers']['ssl_string']
         $ssl_truststore_location = "/etc/logstash/kafka_${kafka_cluster_name_full}.truststore.jks"
 
-        if !defined(File[$ssl_truststore_location]) {
+        if !defined(File[$ssl_truststore_location]) and $manage_truststore {
             file { $ssl_truststore_location:
                 content => secret("certificates/kafka_${kafka_cluster_name_full}_broker/truststore.jks"),
                 owner   => 'logstash',
@@ -114,7 +118,7 @@ define logstash::input::kafka(
 
     # If using SSL, the Kafka input logstash conf
     # should depend on File $ssl_truststore_location.
-    if ($security_protocol == 'SSL') {
+    if ($security_protocol == 'SSL' and $manage_truststore) {
         Logstash::Conf[$logstash_conf_title] { require => File[$ssl_truststore_location] }
     }
 }
