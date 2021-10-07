@@ -7,7 +7,7 @@ describe 'install_server::dhcp_server', :type => :class do
       it { is_expected.to compile }
 
       it 'should have isc-dhcp-server' do
-        is_expected.to contain_package('isc-dhcp-server').with_ensure('present')
+        is_expected.to contain_package('isc-dhcp-server').with_ensure('installed')
         is_expected.to contain_service('isc-dhcp-server').with_ensure('running')
 
         is_expected.to contain_file('/etc/dhcp').with(

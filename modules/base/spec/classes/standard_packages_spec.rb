@@ -20,11 +20,11 @@ describe 'base::standard_packages' do
       end
       it { is_expected.to compile }
       # tests a some random packages
-      it { is_expected.to contain_package('vim').with_ensure('present') }
+      it { is_expected.to contain_package('vim').with_ensure('installed') }
       it { is_expected.to contain_package('tzdata').with_ensure('latest') }
       it 'test debian specific present package' do
         installed_packages.each do |package|
-          is_expected.to contain_package(package).with_ensure('present')
+          is_expected.to contain_package(package).with_ensure('installed')
         end
       end
       it 'test debian specific absent package' do

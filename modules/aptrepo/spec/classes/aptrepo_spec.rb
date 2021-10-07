@@ -13,10 +13,10 @@ describe 'aptrepo', :type => :class do
       }
       it { should compile }
 
-      it { should contain_package('dpkg-dev').with_ensure('present') }
-      it { should contain_package('gnupg').with_ensure('present') }
-      it { should contain_package('reprepro').with_ensure('present') }
-      it { should contain_package('dctrl-tools').with_ensure('present') }
+      it { should contain_package('dpkg-dev').with_ensure('installed') }
+      it { should contain_package('gnupg').with_ensure('installed') }
+      it { should contain_package('reprepro').with_ensure('installed') }
+      it { should contain_package('dctrl-tools').with_ensure('installed') }
 
       it do
         should contain_file('/srv/wikimedia').with({
