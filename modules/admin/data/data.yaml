@@ -335,7 +335,8 @@ groups:
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
-              katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak, ifried]
+              katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
+              ifried, cmacholan]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4720,6 +4721,13 @@ users:
     email: ifried@wikimedia.org
     uid: 21746
     ssh_keys: []
+  cmacholan:
+    ensure: present
+    gid: 500
+    realname: Christina Macholan
+    email: cmacholan@wikimedia.org
+    uid: 33118
+    ssh_keys: ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFiinksr9bokRPqdmFwQl8ZDzfk1VLE0WlnqynTAPxXB cmacholan@wikimedia.org"]
 
 
 ldap_only_users:
@@ -5449,10 +5457,6 @@ ldap_only_users:
     ensure: present
     realname: Frances Goodwin
     email: fgoodwin@wikimedia.org
-  cmacholan:
-    ensure: present
-    realname: Christina Macholan
-    email: cmacholan@wikimedia.org
   elal:
     ensure: present
     realname: Elena Aleynikova
