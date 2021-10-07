@@ -236,7 +236,7 @@ class profile::ganeti (
             user        => 'root',
             interval    => [{
                 'start'    => 'OnCalendar',
-                'interval' => 'Wed, *-*-1,2,3,4,5,6,7 11:47:00',
+                'interval' => 'Wed *-*-01,02,03,04,05,06,07 11:47:00',
                 }
             ]
         }
