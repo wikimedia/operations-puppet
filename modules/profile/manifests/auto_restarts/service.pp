@@ -27,8 +27,8 @@ define profile::auto_restarts::service(
     if $profile::auto_restarts::with_debdeploy {
         # The include here and the check for ensure is really nuts and bolts
         # to ensure this code path works with rspec tests
-        include profile::debdeploy
-        if $profile::debdeploy::ensure == 'present' {
+        include profile::debdeploy::client
+        if $profile::debdeploy::client::ensure == 'present' {
             file_line { "auto_restart_file_presence_${title}":
                 ensure  => $ensure,
                 path    => '/etc/debdeploy-client/autorestarts.conf',
