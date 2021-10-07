@@ -26,14 +26,6 @@ class profile::base(
     include profile::base::netbase
     include profile::logoutd
     include profile::apt
-
-    file { ['/usr/local/sbin', '/usr/local/share/bash']:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
     class {'adduser': }
 
     class { 'grub::defaults': }
