@@ -11,5 +11,5 @@ function profile::contacts::get_owners (
         # but there are a couple of outliers, either way it should be fine
         $role_tag = $resource['tags'].filter |$t| { $t.stdlib::start_with('role::') }[0]
         [$role_tag, $contacts]
-    })
+    }.sort)
 }
