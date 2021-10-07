@@ -69,6 +69,7 @@ class debdeploy::client (
         ensure  => stdlib::ensure($ensure, 'directory'),
         recurse => true,
         purge   => true,
+        force   => true,
     }
     file {'/etc/debdeploy-client/config.json':
         ensure  => stdlib::ensure($ensure, 'file'),
