@@ -4727,6 +4727,7 @@ users:
     realname: Christina Macholan
     email: cmacholan@wikimedia.org
     uid: 33118
+    krb: present
     ssh_keys: ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFiinksr9bokRPqdmFwQl8ZDzfk1VLE0WlnqynTAPxXB cmacholan@wikimedia.org"]
 
 
