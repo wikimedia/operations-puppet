@@ -52,7 +52,7 @@ class clamav($proxy=undef) {
         require => Package['clamav-freshclam'],
     }
 
-    base::service_auto_restart { 'clamav-freshclam': }
+    profile::auto_restarts::service { 'clamav-freshclam': }
 
     service { 'clamav-daemon':
         ensure    => running,

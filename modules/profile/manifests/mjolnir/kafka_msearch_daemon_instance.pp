@@ -19,7 +19,7 @@ define profile::mjolnir::kafka_msearch_daemon_instance(
       require  => Systemd::Unit['mjolnir-kafka-msearch-daemon@.service'],
     }
 
-    ::base::service_auto_restart { $service_name:
+    ::profile::auto_restarts::service { $service_name:
         ensure => $ensure,
     }
 }

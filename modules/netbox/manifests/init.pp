@@ -229,7 +229,7 @@ class netbox(
     content => file('netbox/rq-netbox.service'),
   }
 
-  base::service_auto_restart { 'uwsgi-netbox': }
-  base::service_auto_restart { 'rq-netbox': }
+  profile::auto_restarts::service { 'uwsgi-netbox': }
+  profile::auto_restarts::service { 'rq-netbox': }
 
 }

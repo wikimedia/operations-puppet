@@ -13,5 +13,5 @@ class profile::netmon::httpd (
         extra_pkgs => ['libapache2-mod-fcgid'],
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 }

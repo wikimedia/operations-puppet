@@ -12,5 +12,5 @@ class profile::parsoid::vd_client (
         parsoid_port   => $parsoid_port,
     }
 
-    base::service_auto_restart { 'parsoid-vd-client': }
+    profile::auto_restarts::service { 'parsoid-vd-client': }
 }

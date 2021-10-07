@@ -1,0 +1,1 @@
+profile::auto_restarts::with_debdeploy: true

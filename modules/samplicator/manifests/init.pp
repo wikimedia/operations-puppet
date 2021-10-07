@@ -28,7 +28,7 @@ class samplicator(
         },
     }
 
-    base::service_auto_restart { 'samplicator': }
+    profile::auto_restarts::service { 'samplicator': }
 
     nrpe::monitor_service { 'samplicator-process':
         description  => 'Samplicator process',

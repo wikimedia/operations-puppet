@@ -35,5 +35,5 @@ class prometheus::postgres_exporter(
         enable => true,
     }
 
-    base::service_auto_restart { 'prometheus-postgres-exporter': }
+    profile::auto_restarts::service { 'prometheus-postgres-exporter': }
 }

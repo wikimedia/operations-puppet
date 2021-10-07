@@ -77,7 +77,7 @@ class profile::base(
     include profile::debdeploy::client
 
     class { 'base::initramfs': }
-    class { 'base::auto_restarts': }
+    include profile::auto_restarts
 
 
     class { 'prometheus::node_debian_version': }

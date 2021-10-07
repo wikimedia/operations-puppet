@@ -17,5 +17,5 @@ class profile::parsoid::rt_server (
         service_ensure => $service_ensure,
     }
 
-    base::service_auto_restart { 'parsoid-rt': }
+    profile::auto_restarts::service { 'parsoid-rt': }
 }

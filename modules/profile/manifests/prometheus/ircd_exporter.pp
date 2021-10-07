@@ -19,7 +19,7 @@ class profile::prometheus::ircd_exporter (
         srange => $ferm_srange,
     }
 
-    base::service_auto_restart { 'prometheus-ircd-exporter':
+    profile::auto_restarts::service { 'prometheus-ircd-exporter':
         ensure => absent,
     }
 }

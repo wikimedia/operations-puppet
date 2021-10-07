@@ -53,5 +53,5 @@ class ircecho (
     }
 
 
-    base::service_auto_restart { 'ircecho': }
+    profile::auto_restarts::service { 'ircecho': }
 }

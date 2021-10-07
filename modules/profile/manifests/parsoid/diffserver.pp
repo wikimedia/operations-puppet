@@ -10,5 +10,5 @@ class profile::parsoid::diffserver {
         webapp_port   => 8012,
     }
 
-    base::service_auto_restart { 'diffserver': }
+    profile::auto_restarts::service { 'diffserver': }
 }

@@ -12,7 +12,7 @@ class profile::requesttracker {
         modules => ['headers', 'rewrite', 'perl', $cgi_module],
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 
     class { '::requesttracker':
         apache_site => 'rt.wikimedia.org',

@@ -29,5 +29,5 @@ class prometheus::nginx_exporter (
         subscribe => File['/etc/default/prometheus-nginx-exporter'],
     }
 
-    base::service_auto_restart { 'prometheus-nginx-exporter': }
+    profile::auto_restarts::service { 'prometheus-nginx-exporter': }
 }

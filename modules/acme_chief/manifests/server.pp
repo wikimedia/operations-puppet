@@ -157,7 +157,7 @@ class acme_chief::server (
         require  => Package['acme-chief'],
     }
 
-    base::service_auto_restart { 'uwsgi-acme-chief': }
+    profile::auto_restarts::service { 'uwsgi-acme-chief': }
 
     require sslcert::dhparam # lint:ignore:wmf_styleguide
     $ssl_settings = ssl_ciphersuite('nginx', 'strong')

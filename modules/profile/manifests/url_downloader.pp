@@ -81,5 +81,5 @@ class profile::url_downloader (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Url-downloader',
     }
 
-    base::service_auto_restart { 'squid': }
+    profile::auto_restarts::service { 'squid': }
 }

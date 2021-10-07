@@ -76,7 +76,7 @@ class profile::webperf::xhgui (
         content => template('profile/webperf/xhgui/httpd.conf.erb'),
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 
     if $::realm == 'production' {
         $::admin::data['groups']['perf-team']['members'].each |String $user| {

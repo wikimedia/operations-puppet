@@ -43,5 +43,5 @@ class profile::meet::accountmanager(
         },
     }
 
-    base::service_auto_restart { 'meet-accountmanager': }
+    profile::auto_restarts::service { 'meet-accountmanager': }
 }

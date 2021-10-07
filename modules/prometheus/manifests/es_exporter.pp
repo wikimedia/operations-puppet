@@ -27,5 +27,5 @@ class prometheus::es_exporter {
         restart  => true,
     }
 
-    base::service_auto_restart { 'prometheus-es-exporter': }
+    profile::auto_restarts::service { 'prometheus-es-exporter': }
 }

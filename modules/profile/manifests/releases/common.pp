@@ -56,7 +56,7 @@ class profile::releases::common(
     }
 
     if $::fqdn == $primary_server {
-            base::service_auto_restart { 'rsync': }
+            profile::auto_restarts::service { 'rsync': }
     }
 
     class { '::httpd':

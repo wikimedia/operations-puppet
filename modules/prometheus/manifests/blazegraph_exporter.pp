@@ -24,5 +24,5 @@ define prometheus::blazegraph_exporter (
         srange => $ferm_srange,
     }
 
-    base::service_auto_restart { "prometheus-blazegraph-exporter-${title}": }
+    profile::auto_restarts::service { "prometheus-blazegraph-exporter-${title}": }
 }

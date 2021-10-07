@@ -21,6 +21,6 @@ class profile::hadoop::yarn_proxy_testcluster (
     }
 
     if !defined(Base::Service_auto_restart['apache2']) {
-        base::service_auto_restart { 'apache2': }
+        profile::auto_restarts::service { 'apache2': }
     }
 }

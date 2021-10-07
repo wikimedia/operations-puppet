@@ -208,7 +208,7 @@ class profile::icinga(
           content => file('role/icinga/sync_icinga_state.sh'),
         }
 
-        base::service_auto_restart { 'apache2': }
+        profile::auto_restarts::service { 'apache2': }
 
     }
 

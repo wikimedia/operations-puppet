@@ -47,5 +47,5 @@ class prometheus::php_fpm_exporter (
         require  => Package[$sw_name],
     }
 
-    base::service_auto_restart { $sw_name: }
+    profile::auto_restarts::service { $sw_name: }
 }

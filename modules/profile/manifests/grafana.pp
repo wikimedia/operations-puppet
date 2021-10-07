@@ -164,5 +164,5 @@ class profile::grafana (
         require => Git::Clone['operations/software/grafana/simple-json-datasource'],
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 }

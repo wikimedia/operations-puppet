@@ -15,5 +15,5 @@ define prometheus::wmf_elasticsearch_exporter(
         require => File['/usr/local/bin/prometheus-wmf-elasticsearch-exporter'],
     }
 
-    base::service_auto_restart { $service_name: }
+    profile::auto_restarts::service { $service_name: }
 }

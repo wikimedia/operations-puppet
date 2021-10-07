@@ -107,7 +107,7 @@ class profile::wmcs::instance(
             },
         }
 
-        base::service_auto_restart { 'diamond': }
+        profile::auto_restarts::service { 'diamond': }
 
         diamond::collector { 'MinimalPuppetAgent':
             ensure => 'absent',

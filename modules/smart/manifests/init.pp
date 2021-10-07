@@ -19,7 +19,7 @@ class smart (
     if debian::codename::ge('buster') and 'hpsa' in $facts['raid'] {
         systemd::mask { 'smartd.service': }
     } else {
-        base::service_auto_restart { 'smartd': }
+        profile::auto_restarts::service { 'smartd': }
     }
 
     # Make sure we send smart alerts from smartd via syslog and not email.

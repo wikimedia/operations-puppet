@@ -19,5 +19,5 @@ class profile::parsoid::vd_server(
         service_ensure => $service_ensure,
     }
 
-    base::service_auto_restart { 'parsoid-vd': }
+    profile::auto_restarts::service { 'parsoid-vd': }
 }

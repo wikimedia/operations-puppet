@@ -28,7 +28,7 @@ class profile::prometheus::rabbitmq_exporter (
         require => File['/etc/prometheus/rabbitmq-exporter.yaml'],
     }
 
-    base::service_auto_restart { 'prometheus-rabbitmq-exporter': }
+    profile::auto_restarts::service { 'prometheus-rabbitmq-exporter': }
 
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
     $prometheus_ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"

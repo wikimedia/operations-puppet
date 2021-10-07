@@ -16,5 +16,5 @@ class profile::prometheus::pdns_exporter (
         srange => $ferm_srange,
     }
 
-    base::service_auto_restart { 'prometheus-pdns-exporter': }
+    profile::auto_restarts::service { 'prometheus-pdns-exporter': }
 }

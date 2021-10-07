@@ -66,10 +66,19 @@ class debdeploy::client (
     #  currently Base::Service_auto_restart needs this folder
     #  we should roll that functionality into this module
     file {'/etc/debdeploy-client':
-        ensure => directory,
+        ensure  => stdlib::ensure($ensure, 'directory'),
+        recurse => true,
+        purge   => true,
     }
     file {'/etc/debdeploy-client/config.json':
         ensure  => stdlib::ensure($ensure, 'file'),
         content => $config.to_json_pretty(),
+    }
+
+    file { '/etc/debdeploy-client/autorestarts.conf':
+        ensure => stdlib::ensure($ensure, 'file'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
     }
 }

@@ -118,7 +118,7 @@ class zuul::merger (
         ],
     }
 
-    base::service_auto_restart { 'zuul-merger': }
+    profile::auto_restarts::service { 'zuul-merger': }
 
     systemd::timer::job { 'zuul_repack':
         ensure       => present,

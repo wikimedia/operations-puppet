@@ -84,5 +84,5 @@ define prometheus::mysqld_exporter::instance (
         notify  => Exec["systemctl try-restart ${service}"],
     }
 
-    base::service_auto_restart { $service: }
+    profile::auto_restarts::service { $service: }
 }

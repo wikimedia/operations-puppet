@@ -32,7 +32,7 @@ class profile::microsites::peopleweb (
         mpm => 'prefork'
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 
     rsyslog::input::file { 'apache2-error':
         path => '/var/log/apache2/*error*.log',

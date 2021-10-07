@@ -5,10 +5,10 @@
 # if that's the case, a restart is triggered. The restarts are spread out over
 # the course of the day via fqdn_rand()
 #
-define base::service_auto_restart(
-    $ensure  = present,
+define profile::auto_restarts::service(
+    Wmflib::Ensure $ensure  = present,
 ) {
-    include base::auto_restarts
+    include profile::auto_restarts
 
     $hour = fqdn_rand(23, "${title}_auto_restart")
     $minute = fqdn_rand(59, "${title}_auto_restart")
@@ -24,11 +24,18 @@ define base::service_auto_restart(
         require     => File['/usr/local/sbin/wmf-auto-restart'],
     }
 
-    file_line { "auto_restart_file_presence_${title}":
-        ensure  => $ensure,
-        path    => '/etc/debdeploy-client/autorestarts.conf',
-        line    => $title,
-        require => File['/etc/debdeploy-client/autorestarts.conf'],
+    if $profile::auto_restarts::with_debdeploy {
+        # The include here and the check for ensure is really nuts and bolts
+        # to ensure this code path works with rspec tests
+        include profile::debdeploy
+        if $profile::debdeploy::ensure == 'present' {
+            file_line { "auto_restart_file_presence_${title}":
+                ensure  => $ensure,
+                path    => '/etc/debdeploy-client/autorestarts.conf',
+                line    => $title,
+                require => File['/etc/debdeploy-client/autorestarts.conf'],
+            }
+        }
     }
 
 }

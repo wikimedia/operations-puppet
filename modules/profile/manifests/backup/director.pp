@@ -229,7 +229,7 @@ class profile::backup::director(
     class { 'bacula::director::prometheus_exporter':
         port => '9133',
     }
-    base::service_auto_restart { 'prometheus-bacula-exporter': }
+    profile::auto_restarts::service { 'prometheus-bacula-exporter': }
 
     file { '/etc/bacula/job_monitoring_ignorelist':
         ensure => present,

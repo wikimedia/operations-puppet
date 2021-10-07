@@ -14,7 +14,7 @@ class profile::base::linux419(
         # real-hardware specific
         unless $facts['is_virtual'] {
             ensure_packages('rasdaemon')
-            base::service_auto_restart { 'rasdaemon': }
+            profile::auto_restarts::service { 'rasdaemon': }
 
             # Mask mcelog systemd unit if this host is *running*
             # a kernel >= 4.12.

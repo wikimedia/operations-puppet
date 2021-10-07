@@ -46,7 +46,7 @@ class purged (
         restart   => true,
     }
 
-    base::service_auto_restart { 'purged':
+    profile::auto_restarts::service { 'purged':
         ensure => $ensure,
     }
 }

@@ -10,5 +10,5 @@ class profile::parsoid::rt_client(
         parsoid_port   => $parsoid_port,
     }
 
-    base::service_auto_restart { 'parsoid-rt-client': }
+    profile::auto_restarts::service { 'parsoid-rt-client': }
 }

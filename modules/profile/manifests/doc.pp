@@ -108,5 +108,5 @@ class profile::doc (
         ],
     }
 
-    base::service_auto_restart { 'rsync': }
+    profile::auto_restarts::service { 'rsync': }
 }

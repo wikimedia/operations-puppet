@@ -107,21 +107,21 @@ class profile::analytics::airflow(
         require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 
-    base::service_auto_restart { 'airflow-webserver': }
+    profile::auto_restarts::service { 'airflow-webserver': }
 
     systemd::service { 'airflow-scheduler':
         content => template('profile/analytics/airflow/scheduler.service.erb'),
         require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 
-    base::service_auto_restart { 'airflow-scheduler': }
+    profile::auto_restarts::service { 'airflow-scheduler': }
 
     systemd::service { 'airflow-kerberos':
         content => template('profile/analytics/airflow/kerberos.service.erb'),
         require => File[$log_dir, $run_dir, "${conf_dir}/${conf_file}", $airflow_wrapper],
     }
 
-    base::service_auto_restart { 'airflow-kerberos': }
+    profile::auto_restarts::service { 'airflow-kerberos': }
 
     # Include analytics mediawiki sql replica credentials at
     # /etc/mysql/conf.d/analytics-research-client.cnf. This is only readable to

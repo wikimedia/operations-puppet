@@ -8,7 +8,7 @@ class profile::installserver::proxy(
         config_content => template('role/caching-proxy/squid.conf.erb'),
     }
 
-    base::service_auto_restart { 'squid': }
+    profile::auto_restarts::service { 'squid': }
 
     systemd::timer::job { 'squid-logrotate':
         ensure      => $ensure,

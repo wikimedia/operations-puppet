@@ -11,7 +11,7 @@ class profile::prometheus::pdns_rec_exporter (
         require => Service['pdns-recursor'],
     }
 
-    base::service_auto_restart { 'prometheus-pdns-rec-exporter': }
+    profile::auto_restarts::service { 'prometheus-pdns-rec-exporter': }
 
     ferm::service { 'prometheus-pdns-rec-exporter':
         proto  => 'tcp',

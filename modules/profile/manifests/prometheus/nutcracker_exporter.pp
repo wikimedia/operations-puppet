@@ -16,5 +16,5 @@ class profile::prometheus::nutcracker_exporter (
         srange => $ferm_srange,
     }
 
-    base::service_auto_restart { 'prometheus-nutcracker-exporter': }
+    profile::auto_restarts::service { 'prometheus-nutcracker-exporter': }
 }

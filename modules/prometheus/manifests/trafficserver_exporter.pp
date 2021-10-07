@@ -46,5 +46,5 @@ define prometheus::trafficserver_exporter (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
     }
 
-    base::service_auto_restart { $service_name: }
+    profile::auto_restarts::service { $service_name: }
 }

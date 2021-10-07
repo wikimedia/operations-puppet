@@ -78,5 +78,5 @@ class fastnetmon(
         ensure => running,
         enable => true,
     }
-    base::service_auto_restart { 'fastnetmon': }
+    profile::auto_restarts::service { 'fastnetmon': }
 }

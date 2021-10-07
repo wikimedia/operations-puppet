@@ -77,5 +77,5 @@ class pmacct(
         enable => true,
     }
 
-    base::service_auto_restart { 'nfacctd': }
+    profile::auto_restarts::service { 'nfacctd': }
 }

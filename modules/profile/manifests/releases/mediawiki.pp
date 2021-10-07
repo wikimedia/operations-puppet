@@ -34,7 +34,7 @@ class profile::releases::mediawiki (
         default => 'present',
     }
 
-    base::service_auto_restart { 'jenkins':
+    profile::auto_restarts::service { 'jenkins':
         ensure => $jenkins_restart_ensure,
     }
 

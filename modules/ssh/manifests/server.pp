@@ -43,7 +43,7 @@ class ssh::server (
         subscribe => File['/etc/ssh/sshd_config'],
     }
 
-    base::service_auto_restart { 'ssh': }
+    profile::auto_restarts::service { 'ssh': }
 
     file { '/etc/ssh/userkeys':
         ensure  => directory,

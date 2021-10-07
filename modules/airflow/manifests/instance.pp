@@ -311,7 +311,7 @@ define airflow::instance(
             'subscribe' => $service_dependencies,
         }
     }
-    base::service_auto_restart { "airflow-webserver@${title}":
+    profile::auto_restarts::service { "airflow-webserver@${title}":
         ensure => $ensure,
     }
 
@@ -328,7 +328,7 @@ define airflow::instance(
             'subscribe' => $service_dependencies,
         },
     }
-    base::service_auto_restart { "airflow-scheduler@${title}":
+    profile::auto_restarts::service { "airflow-scheduler@${title}":
         ensure => $ensure,
     }
 
@@ -352,7 +352,7 @@ define airflow::instance(
             'subscribe' => File[$airflow_config_file],
         },
     }
-    base::service_auto_restart { "airflow-kerberos@${title}":
+    profile::auto_restarts::service { "airflow-kerberos@${title}":
         ensure => $kerberos_ensure,
     }
 

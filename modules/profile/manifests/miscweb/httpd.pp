@@ -13,7 +13,7 @@ class profile::miscweb::httpd (
         modules => $apache_modules,
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 
     ferm::service { 'miscweb-http-envoy':
         proto  => 'tcp',

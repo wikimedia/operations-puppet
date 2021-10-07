@@ -30,5 +30,5 @@ class rsyslog {
         notify => Service['rsyslog'],
     }
 
-    base::service_auto_restart { 'rsyslog': }
+    profile::auto_restarts::service { 'rsyslog': }
 }

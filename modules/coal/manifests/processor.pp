@@ -89,5 +89,5 @@ class coal::processor(
         ],
     }
 
-    base::service_auto_restart { 'coal': }
+    profile::auto_restarts::service { 'coal': }
 }

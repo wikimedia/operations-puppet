@@ -484,3 +484,5 @@ profile::monitoring::monitor_screens: true
 profile::monitoring::monitoring_hosts: "%{alias('monitoring_hosts')}"
 profile::monitoring::raid_check: true
 profile::monitoring::raid_write_cache_policy: ~
+
+profile::auto_restarts::with_debdeploy: false

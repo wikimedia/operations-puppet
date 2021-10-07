@@ -92,7 +92,7 @@ class base::standard_packages {
                 package { 'mcelog':
                     ensure => $mcelog_ensure,
                 }
-                base::service_auto_restart { 'mcelog':
+                profile::auto_restarts::service { 'mcelog':
                     ensure => $mcelog_ensure,
                 }
             }
@@ -100,7 +100,7 @@ class base::standard_packages {
         # rasdaemon replaces mcelog on buster
         if debian::codename::eq('buster') {
             ensure_packages('rasdaemon')
-            base::service_auto_restart { 'rasdaemon': }
+            profile::auto_restarts::service { 'rasdaemon': }
         }
 
         # for HP servers only - install the backplane health service and CLI
@@ -148,8 +148,8 @@ class base::standard_packages {
     package {$absent_packages: ensure => 'absent'}
     package {$purged_packages: ensure => 'purged'}
 
-    base::service_auto_restart { 'lldpd': }
-    base::service_auto_restart { 'cron': }
+    profile::auto_restarts::service { 'lldpd': }
+    profile::auto_restarts::service { 'cron': }
 
     # Safe restarts are supported since systemd 219:
     # * systemd now provides a way to store file descriptors
@@ -161,6 +161,6 @@ class base::standard_packages {
     # various sockets connected to all the system's stdout/stderr
     # are not lost when journald is restarted.
     if debian::codename::ge('stretch') {
-        base::service_auto_restart { 'systemd-journald': }
+        profile::auto_restarts::service { 'systemd-journald': }
     }
 }

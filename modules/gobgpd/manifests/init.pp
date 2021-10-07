@@ -37,6 +37,6 @@ class gobgpd(
     }
 
     # Routes are kept in memory, so a restart need to be properly planned between the two instances
-    # base::service_auto_restart { 'gobgpd': }
+    # profile::auto_restarts::service { 'gobgpd': }
 
 }

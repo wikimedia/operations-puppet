@@ -54,5 +54,5 @@ define prometheus::burrow_exporter(
         require => Package['prometheus-burrow-exporter'],
     }
 
-    base::service_auto_restart { $service_name: }
+    profile::auto_restarts::service { $service_name: }
 }

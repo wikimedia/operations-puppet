@@ -140,7 +140,7 @@ class striker::uwsgi(
         add_logging_config => false,
     }
 
-    base::service_auto_restart { 'uwsgi-striker': }
+    profile::auto_restarts::service { 'uwsgi-striker': }
 
     # Our ini() function does a shallow merge rather than a deep merge, so
     # merge the config sections before passing to ini() below.

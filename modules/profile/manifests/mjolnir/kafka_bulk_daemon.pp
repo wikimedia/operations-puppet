@@ -32,7 +32,7 @@ class profile::mjolnir::kafka_bulk_daemon(
         content => template('profile/mjolnir/kafka-bulk-daemon.service.erb'),
     }
 
-    ::base::service_auto_restart { 'mjolnir-kafka-bulk-daemon':
+    ::profile::auto_restarts::service { 'mjolnir-kafka-bulk-daemon':
         ensure => $ensure,
     }
 

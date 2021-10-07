@@ -111,8 +111,8 @@ class profile::debmonitor::server (
         ],
     }
 
-    base::service_auto_restart { 'uwsgi-debmonitor': }
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'uwsgi-debmonitor': }
+    profile::auto_restarts::service { 'apache2': }
 
     # Internal endpoint: incoming updates from all production hosts via debmonitor CLI
     ferm::service { 'apache-https':

@@ -26,5 +26,5 @@ define prometheus::apache_exporter (
         require => Package['prometheus-apache-exporter'],
     }
 
-    base::service_auto_restart { 'prometheus-apache-exporter': }
+    profile::auto_restarts::service { 'prometheus-apache-exporter': }
 }

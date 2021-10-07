@@ -31,5 +31,5 @@ class prometheus::varnishkafka_exporter(
     enable => true,
   }
 
-  base::service_auto_restart { 'prometheus-varnishkafka-exporter': }
+  profile::auto_restarts::service { 'prometheus-varnishkafka-exporter': }
 }

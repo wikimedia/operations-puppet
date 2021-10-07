@@ -16,5 +16,5 @@ class profile::prometheus::mcrouter_exporter (
         srange => $ferm_srange,
     }
 
-    base::service_auto_restart { 'prometheus-mcrouter-exporter': }
+    profile::auto_restarts::service { 'prometheus-mcrouter-exporter': }
 }

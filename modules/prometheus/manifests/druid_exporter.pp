@@ -53,5 +53,5 @@ define prometheus::druid_exporter (
             File[$metrics_config_file]]
     }
 
-    base::service_auto_restart { 'prometheus-druid-exporter': }
+    profile::auto_restarts::service { 'prometheus-druid-exporter': }
 }

@@ -10,5 +10,5 @@ class prometheus::swagger_exporter(
     enable => true,
   }
 
-  base::service_auto_restart { 'prometheus-swagger-exporter': }
+  profile::auto_restarts::service { 'prometheus-swagger-exporter': }
 }

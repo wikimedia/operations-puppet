@@ -26,5 +26,5 @@ define prometheus::memcached_exporter (
         require => Package['prometheus-memcached-exporter'],
     }
 
-    base::service_auto_restart { 'prometheus-memcached-exporter': }
+    profile::auto_restarts::service { 'prometheus-memcached-exporter': }
 }

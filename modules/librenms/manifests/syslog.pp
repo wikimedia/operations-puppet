@@ -34,5 +34,5 @@ class librenms::syslog {
         subscribe => File['/etc/librenms-rsyslog.conf'],
     }
 
-    base::service_auto_restart { 'librenms-syslog': }
+    profile::auto_restarts::service { 'librenms-syslog': }
 }

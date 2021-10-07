@@ -161,7 +161,7 @@ define varnish::instance(
         ]
     }
 
-    base::service_auto_restart { "varnish${instancesuffix}-slowlog": }
+    profile::auto_restarts::service { "varnish${instancesuffix}-slowlog": }
 
     systemd::service { "varnish${instancesuffix}-hospital":
         ensure         => present,
@@ -177,7 +177,7 @@ define varnish::instance(
         ]
     }
 
-    base::service_auto_restart { "varnish${instancesuffix}-hospital": }
+    profile::auto_restarts::service { "varnish${instancesuffix}-hospital": }
 
     systemd::service { "varnish${instancesuffix}-fetcherr":
         ensure         => present,
@@ -193,7 +193,7 @@ define varnish::instance(
         ]
     }
 
-    base::service_auto_restart { "varnish${instancesuffix}-fetcherr": }
+    profile::auto_restarts::service { "varnish${instancesuffix}-fetcherr": }
 
     # This mechanism with the touch/rm conditionals in the pair of execs
     #   below should ensure that reload-vcl failures are retried on

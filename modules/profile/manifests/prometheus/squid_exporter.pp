@@ -27,7 +27,7 @@ class profile::prometheus::squid_exporter (
     }
 
 
-    base::service_auto_restart { 'prometheus-squid-exporter': }
+    profile::auto_restarts::service { 'prometheus-squid-exporter': }
 
     ferm::service { 'prometheus-squid-exporter':
         proto  => 'tcp',

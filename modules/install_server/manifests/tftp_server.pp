@@ -51,5 +51,5 @@ class install_server::tftp_server (
         require   => Package['atftpd'],
     }
 
-    base::service_auto_restart { 'atftpd': }
+    profile::auto_restarts::service { 'atftpd': }
 }

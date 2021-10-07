@@ -25,5 +25,5 @@ class prometheus::haproxy_exporter (
         content => systemd_template('prometheus-haproxy-exporter'),
     }
 
-    base::service_auto_restart { 'prometheus-haproxy-exporter': }
+    profile::auto_restarts::service { 'prometheus-haproxy-exporter': }
 }

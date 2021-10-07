@@ -32,7 +32,7 @@ class standard::ntp::timesyncd () {
         enable   => true,
     }
 
-    base::service_auto_restart { 'systemd-timesyncd': }
+    profile::auto_restarts::service { 'systemd-timesyncd': }
 
     file { '/usr/lib/nagios/plugins/check_timedatectl':
         source => 'puppet:///modules/base/check_timedatectl',

@@ -60,7 +60,7 @@ class nrpe($allowed_hosts='127.0.0.1') {
         require => Package['nagios-nrpe-server'],
     }
 
-    base::service_auto_restart { 'nagios-nrpe-server': }
+    profile::auto_restarts::service { 'nagios-nrpe-server': }
 
     #Collect virtual nrpe checks
     File <| tag == 'nrpe::check' |> {

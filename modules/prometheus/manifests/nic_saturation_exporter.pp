@@ -28,7 +28,7 @@ class prometheus::nic_saturation_exporter(
         subscribe => File[$script_path],
     }
 
-    base::service_auto_restart { $service_name:
+    profile::auto_restarts::service { $service_name:
         ensure => $ensure,
     }
 }

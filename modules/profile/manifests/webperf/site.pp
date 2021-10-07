@@ -79,5 +79,5 @@ class profile::webperf::site (
 
     ensure_packages(['libapache2-mod-uwsgi'])
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 }

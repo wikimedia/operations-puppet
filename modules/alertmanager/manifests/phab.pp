@@ -11,7 +11,7 @@ class alertmanager::phab (
         ensure  => running,
     }
 
-    base::service_auto_restart { 'phalerts': }
+    profile::auto_restarts::service { 'phalerts': }
 
     file { '/etc/default/phalerts':
         ensure    => present,

@@ -65,5 +65,5 @@ class webperf::navtiming(
         provider => systemd,
     }
 
-    base::service_auto_restart { 'navtiming': }
+    profile::auto_restarts::service { 'navtiming': }
 }

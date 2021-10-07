@@ -134,7 +134,7 @@ class profile::netbox (
         content => template('profile/netbox/netbox.wikimedia.org.erb'),
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 
     if $deploy_acme {
         acme_chief::cert { $acme_certificate:

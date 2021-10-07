@@ -112,5 +112,5 @@ class prometheus::node_exporter (
         require          => Package['prometheus-node-exporter'],
     }
 
-    base::service_auto_restart { 'prometheus-node-exporter': }
+    profile::auto_restarts::service { 'prometheus-node-exporter': }
 }

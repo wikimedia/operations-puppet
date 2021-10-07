@@ -73,5 +73,5 @@ class prometheus::statsd_exporter (
         ensure  => running,
     }
 
-    base::service_auto_restart { 'prometheus-statsd-exporter': }
+    profile::auto_restarts::service { 'prometheus-statsd-exporter': }
 }

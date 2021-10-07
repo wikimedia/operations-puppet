@@ -98,5 +98,5 @@ define prometheus::mysqld_exporter (
         ,
     }
 
-    base::service_auto_restart { 'prometheus-mysqld-exporter': }
+    profile::auto_restarts::service { 'prometheus-mysqld-exporter': }
 }

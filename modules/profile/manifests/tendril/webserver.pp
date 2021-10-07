@@ -32,7 +32,7 @@ class profile::tendril::webserver (
         content => template('dbtree/dbtree.wikimedia.org.erb'),
     }
 
-    base::service_auto_restart { 'apache2': }
+    profile::auto_restarts::service { 'apache2': }
 
     # HTTPS monitoring, if enabled
     if $monitor_https {
