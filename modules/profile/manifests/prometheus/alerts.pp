@@ -251,6 +251,7 @@ class profile::prometheus::alerts (
         method          => 'ge',
         dashboard_links => ['https://logstash.wikimedia.org/goto/5c8f4ca1413eda33128e5c5a35da7e28'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#NEL_alerts',
+        nagios_critical => true,
     }
 
     monitoring::check_prometheus { 'widespread-puppet-agent-fail':
