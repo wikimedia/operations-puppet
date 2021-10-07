@@ -12,7 +12,7 @@ class k8s::scheduler(
             packages  => ['kubernetes-master'],
         }
     } else {
-        require_package('kubernetes-master')
+        ensure_packages('kubernetes-master')
     }
 
     file { '/etc/default/kube-scheduler':

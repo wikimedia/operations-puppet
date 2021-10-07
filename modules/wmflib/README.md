@@ -118,33 +118,6 @@ merged together. In case of duplicate keys, hashes to the right win.
     php_ini({'server' => {'port' => 80}}) # => server.port = 80
 
 
-## require_package
-
-DEPRECATED. No longer needed. Use stdlib ensure_packages() instead.
-
-See https://phabricator.wikimedia.org/T266479 and
-https://wikitech.wikimedia.org/wiki/Puppet_coding#Different_ways_to_install_apt_packages_with_puppet
-
-`require_package( string $package_name [, string $... ] )`
-
-Declare one or more packages a dependency for the current scope.
-This is equivalent to declaring and requiring the package resources.
-In other words, it ensures the package(s) are installed before
-evaluating any of the resources in the current scope.
-
-### Examples
-
-    # Single package
-    require_package('python-redis')
-
-    # Multiple packages as arguments
-    require_package('redis-server', 'python-redis')
-
-    # Multiple packages as array
-    $deps = [ 'redis-server', 'python-redis' ]
-    require_package($deps)
-
-
 ## requires_realm
 
 `requires_realm( string $realm, [ string $message ] )`
