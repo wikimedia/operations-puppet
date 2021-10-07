@@ -62,7 +62,7 @@ class profile::kubernetes::deployment_server(
                 k8s::kubeconfig { "/etc/kubernetes/admin-${cluster}.config":
                     master_host => $cluster_data['master'],
                     username    => 'client-infrastructure',
-                    token       => $_tokens['client-inrastructure']['token'],
+                    token       => $_tokens['client-infrastructure']['token'],
                     group       => 'root',
                     owner       => 'root',
                     mode        => '0400'
