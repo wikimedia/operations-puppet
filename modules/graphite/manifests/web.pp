@@ -134,6 +134,8 @@ class graphite::web(
                 'master'    => true,
                 'processes' => $uwsgi_processes,
             },
+            # Change settings module explicitly to work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=995461
+            if debian::codename::ge('bullseye')  { {'env' => 'GRAPHITE_SETTINGS_MODULE=local_settings'} },
             if $uwsgi_max_request_duration_seconds != undef  { {'harakiri' => $uwsgi_max_request_duration_seconds} },
             if $uwsgi_max_request_rss_megabytes != undef     { {'evil-reload-on-rss' => $uwsgi_max_request_rss_megabytes} })
         },
