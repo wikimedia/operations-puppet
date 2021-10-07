@@ -19,7 +19,7 @@ class statistics::product_analytics {
     ]
 
     file { $directories:
-        ensure => 'present',
+        ensure => 'directory',
         owner  => $user,
         group  => $group,
         mode   => '0775',
