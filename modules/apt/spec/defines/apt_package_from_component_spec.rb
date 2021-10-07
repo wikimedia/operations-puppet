@@ -17,7 +17,7 @@ describe 'apt::package_from_component' do
             components: 'foobar'
           )
         end
-        it { is_expected.to contain_package('mypackage').with_ensure('present') }
+        it { is_expected.to contain_package('mypackage').with_ensure('installed') }
         it { is_expected.not_to contain_apt__pin('apt_pin_mypackage') }
       end
 
@@ -36,7 +36,7 @@ describe 'apt::package_from_component' do
       context "override ensure_packages" do
         let(:params) { super().merge(ensure_packages: false) }
         it { is_expected.to compile }
-        it { is_expected.not_to contain_package('mypackage').with_ensure('installed') }
+        it { is_expected.not_to contain_package('mypackage') }
       end
 
       context "pass packages as hash" do
