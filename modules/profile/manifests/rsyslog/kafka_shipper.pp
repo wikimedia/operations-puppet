@@ -23,7 +23,7 @@ class profile::rsyslog::kafka_shipper (
     }
 
     file { '/etc/rsyslog.lookup.d/lookup_table_output.json':
-        ensure  => $ensure,
+        ensure  => stdlib::ensure($ensure, 'file'),
         source  => 'puppet:///modules/profile/rsyslog/lookup_table_output.json',
         require => File['/etc/rsyslog.lookup.d'],
         notify  => Service['rsyslog'],

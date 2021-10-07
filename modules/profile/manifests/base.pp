@@ -1,7 +1,6 @@
 class profile::base(
     Array $remote_syslog = lookup('profile::base::remote_syslog', {default_value => []}),
     Array $remote_syslog_tls = lookup('profile::base::remote_syslog_tls', {default_value => []}),
-    Boolean $enable_kafka_shipping = lookup('profile::base::enable_kafka_shipping', {default_value => true}),
     String $core_dump_pattern = lookup('profile::base::core_dump_pattern', {default_value => '/var/tmp/core/core.%h.%e.%p.%t'}),
     Hash $ssh_server_settings = lookup('profile::base::ssh_server_settings', {default_value => {}}),
     Boolean $overlayfs = lookup('profile::base::overlayfs', {default_value => false}),
