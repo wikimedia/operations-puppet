@@ -4997,6 +4997,10 @@ ldap_only_users:
     ensure: present
     realname: Sam Patton
     email: spatton@wikimedia.org
+  taavi:
+    ensure: present
+    realname: Taavi Väänänen
+    email: hi+wm@taavi.wtf
   tbolliger:
     ensure: absent
     realname: Trevor Bolliger
