@@ -432,7 +432,7 @@ class TaskGen < ::Rake::TaskLib
       common_yaml = YAML.safe_load(File.open(common_yaml_file[0]))
       common_yaml.each_key do |key|
         next unless key.include?('::')
-        key_path = key.split('::')[0..-1].join('/')
+        key_path = key.split('::')[0..-2].join('/')
         $stderr.puts "#{key} in hieradata/common.yaml is qualified".red
         $stderr.puts "\tIf this is for labs it should go in hieradata/labs.yaml".red
         $stderr.puts "\tIf this is for production it should go in common/#{key_path}.yaml".red
