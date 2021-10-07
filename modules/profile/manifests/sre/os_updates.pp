@@ -86,6 +86,9 @@ class profile::sre::os_updates (
 
     ensure_packages(['python3-pypuppetdb', 'python3-dominate'])
 
+    class {'rsync::server':
+        ensure_service => stdlib::ensure($os_reports_timer_ensure, 'service')
+    }
     # Allow miscweb hosts to pull reports for serving them via HTTP
     $miscweb_rsync_clients = wmflib::role_hosts('miscweb')
     rsync::server::module { 'osreports':
