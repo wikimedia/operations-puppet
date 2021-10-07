@@ -19,7 +19,7 @@ class profile::kubernetes::master(
     Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', {default_value => false}),
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', {default_value => false}),
     Optional[String] $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token', {default_value => undef}),
-    Hash[String, Any] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
+    Hash[String, Profile::Kubernetes::User_tokens] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
     Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', {default_value => undef}),
     Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', {default_value => undef})
 
@@ -45,11 +45,21 @@ class profile::kubernetes::master(
     }
 
     $etcd_servers = join($etcd_urls, ',')
+    # Get the local users and the corresponding tokens.
+    $_tokens = $all_infrastructure_users[$kubernetes_cluster_group].filter |$_,$data| {
+        # If "constrain_to" is defined, restrict the user to the masters that meet the regexp
+        $data['constrain_to'] ? {
+            undef => true,
+            default => ($facts['fqdn'] =~ Regexp($data['constrain_to']))
+        }
+    }
+
+
     class { '::k8s::apiserver':
         etcd_servers             => $etcd_servers,
         ssl_cert_path            => $ssl_cert_path,
         ssl_key_path             => $ssl_key_path,
-        users                    => $all_infrastructure_users[$kubernetes_cluster_group],
+        users                    => $_tokens,
         authz_mode               => $authz_mode,
         allow_privileged         => $allow_privileged,
         packages_from_future     => $packages_from_future,
