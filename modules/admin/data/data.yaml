@@ -5515,3 +5515,7 @@ ldap_only_users:
     ensure: present
     realname: Ellen Rayfield
     email: erayfield@wikimedia.org
+  deerbee:
+    ensure: present
+    realname: Deniz Erdogan
+    email: deniz.erdogan@wikimedia.de
