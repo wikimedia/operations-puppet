@@ -7,3 +7,14 @@ check_rise        = 10
 check_disabled    = false
 on_disabled       = withdraw
 ip_prefix         = <%= @address %>/32
+<% if @do_ipv6 %>
+[<%= @title_ipv6 %>]
+check_cmd         = <%= @check_cmd_ipv6 %>
+check_interval    = 1
+check_timeout     = 1
+check_fail        = <%= @check_fail %>
+check_rise        = 10
+check_disabled    = false
+on_disabled       = withdraw
+ip_prefix         = <%= @address_ipv6 %>/128
+<% end -%>

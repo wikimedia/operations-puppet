@@ -14,6 +14,7 @@
 #
 class bird::anycast_healthchecker(
   Optional[String] $bind_service = undef,
+  Boolean $do_ipv6 = false,
 ){
 
   ensure_packages(['anycast-healthchecker'])
@@ -23,7 +24,7 @@ class bird::anycast_healthchecker(
       owner   => 'bird',
       group   => 'bird',
       mode    => '0664',
-      source  => 'puppet:///modules/bird/anycast-healthchecker.conf',
+      source  => template('bird/anycast-healthchecker.conf.erb'),
       require => Package['anycast-healthchecker'],
 
   }

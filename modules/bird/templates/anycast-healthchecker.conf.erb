@@ -4,7 +4,7 @@ interface            = lo
 [daemon]
 pidfile                = /var/run/anycast-healthchecker/anycast-healthchecker.pid
 ipv4                   = true
-ipv6                   = false
+ipv6                   = <%= @do_ipv6 ? 'true' : 'false' %>
 bird_conf              = /etc/bird/anycast-prefixes.conf
 bird6_conf             = /etc/bird/anycast6-prefixes.conf
 bird_variable          = ACAST_PS_ADVERTISE

@@ -23,12 +23,15 @@
 # [*routerid*]
 #   The router ID of the bird instance
 #
-#
+# [*do_ipv6*]
+#   Whether to enable IPv6 support. default: false.
+
 class bird(
   Array[Stdlib::IP::Address] $neighbors,
   String                     $config_template = 'bird/bird_anycast.conf.epp',
   Boolean                    $bfd             = true,
   Optional[String]           $bind_service    = undef,
+  Boolean                    $do_ipv6         = false,
   Stdlib::IP::Address        $routerid        = $facts['ipaddress'],
   ){
 
@@ -49,18 +52,28 @@ class bird(
         require => Package['bird'],
         notify  => Exec['bird-systemd-reload-enable'],
     }
+    systemd::service { 'bird6':
+      ensure         => $do_ipv6.bool2str('present', 'absent'),
+      restart        => true,
+      content        => template('bird/bird6.service.erb'),
+      require        => [
+          Package['bird'],
+      ],
+      service_params => {
+          restart => 'systemctl reload bird6.service',
+      },
+    }
+  } else {
+    service { 'bird6':
+        enable  => true,
+        restart => 'systemctl reload bird6.service',
+        require => Package['bird'],
+    }
   }
 
   service { 'bird':
       enable  => true,
       restart => 'service bird reload',
-      require => Package['bird'],
-  }
-
-  service { 'bird6':
-      ensure  => stopped,
-      enable  => false,
-      restart => 'service bird6 reload',
       require => Package['bird'],
   }
 
@@ -71,6 +84,15 @@ class bird(
       mode    => '0640',
       content => epp($config_template),
       notify  => Service['bird'],
+  }
+
+  file { '/etc/bird/bird6.conf':
+      ensure  => stdlib::ensure($do_ipv6, 'file'),
+      owner   => 'bird',
+      group   => 'bird',
+      mode    => '0640',
+      content => epp($config_template, {'do_ipv6' => $do_ipv6}),
+      notify  => Service['bird6'],
   }
 
   service { 'prometheus-bird-exporter':

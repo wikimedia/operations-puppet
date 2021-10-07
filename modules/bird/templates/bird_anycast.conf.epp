@@ -1,5 +1,9 @@
-
+<%- | Boolean $do_ipv6 = false | -%>
+<% if $do_ipv6 { -%>
+include "/etc/bird/anycast6-prefixes.conf";
+<% } else { -%>
 include "/etc/bird/anycast-prefixes.conf";
+<% } -%>
 
 router id <%= $bird::routerid %>;
 
@@ -14,11 +18,29 @@ protocol direct {
     interface "*";
 }
 
+<% if $do_ipv6 { -%>
+function match_route6()
+{
+    return net ~ ACAST6_PS_ADVERTISE;
+}
+<% } else { -%>
 function match_route()
 {
     return net ~ ACAST_PS_ADVERTISE;
 }
+<% } -%>
 
+<% if $do_ipv6 { -%>
+# TODO: update and replace net with the IPv6 address of the first service that uses it.
+filter vips_filter{
+    if ( net.len = 128 && ( net ~ 2620:0:860::/46 ) && match_route6() ) then {
+        accept;
+    }
+    else {
+        reject;
+    }
+}
+<% } else { -%>
 filter vips_filter{
     if ( net.len = 32 && ( net ~ 10.3.0.0/24 || net ~ 198.35.27.0/24 || net ~ 185.71.138.0/24 ) && match_route() ) then {
         accept;
@@ -27,6 +49,7 @@ filter vips_filter{
         reject;
     }
 }
+<% } -%>
 
 <%- if $bird::bfd { -%>
 protocol bfd {
