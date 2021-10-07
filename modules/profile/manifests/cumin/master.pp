@@ -65,55 +65,12 @@ class profile::cumin::master (
         require => File['/etc/cumin'],
     }
 
-    # Auto reimage script
-    # Temporarily in Puppet, once the spinoff from Switchdc will be in production
-    # This will just become an available task in it
-
-    file { '/var/log/wmf-auto-reimage':
-        ensure => directory,
-        mode   => '0750',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    if debian::codename::eq('stretch') {
-        $python_version = '3.5'
-    } elsif debian::codename::eq('buster') {
-        $python_version = '3.7'
-
+    if debian::codename::eq('buster') {
         apt::package_from_component { 'spicerack':
             component => 'component/spicerack',
             packages  => ['python3-tqdm'],
             priority  => 1002,
         }
-    } elsif debian::codename::eq('bullseye') {
-        $python_version = '3.9'
-    } else {
-        fail("codename (${debian::codename()}): not supported")
-    }
-
-    file { "/usr/local/lib/python${python_version}/dist-packages/wmf_auto_reimage_lib.py":
-        ensure => present,
-        source => 'puppet:///modules/profile/cumin/wmf_auto_reimage_lib.py',
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/usr/local/sbin/wmf-auto-reimage':
-        ensure => present,
-        source => 'puppet:///modules/profile/cumin/wmf_auto_reimage.py',
-        mode   => '0544',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    file { '/usr/local/sbin/wmf-auto-reimage-host':
-        ensure => present,
-        source => 'puppet:///modules/profile/cumin/wmf_auto_reimage_host.py',
-        mode   => '0544',
-        owner  => 'root',
-        group  => 'root',
     }
 
     file { '/usr/local/sbin/check-cumin-aliases':
