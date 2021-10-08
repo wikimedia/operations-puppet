@@ -10,6 +10,7 @@ class profile::toolforge::harbor (
 ) {
     # Easy way to get docker and such from our repos.
     require profile::wmcs::kubeadm::client
+    class { 'kubeadm::docker': }
 
     # Useful for troubleshooting, etc.
     ensure_packages(['postgresql-client', 'redis-tools'])
