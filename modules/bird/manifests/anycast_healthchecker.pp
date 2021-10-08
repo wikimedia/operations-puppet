@@ -24,7 +24,7 @@ class bird::anycast_healthchecker(
       owner   => 'bird',
       group   => 'bird',
       mode    => '0664',
-      source  => template('bird/anycast-healthchecker.conf.erb'),
+      content => template('bird/anycast-healthchecker.conf.erb'),
       require => Package['anycast-healthchecker'],
 
   }
