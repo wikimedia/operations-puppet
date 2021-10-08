@@ -972,7 +972,7 @@ hadoop_clusters:
       an-worker1091.eqiad.wmnet:  /eqiad/C/7
       an-worker1109.eqiad.wmnet:  /eqiad/C/7
       an-worker1110.eqiad.wmnet:  /eqiad/C/7
-      am-worker1133.eqiad.wmnet:  /eqiad/C/7
+      an-worker1133.eqiad.wmnet:  /eqiad/C/7
       an-worker1111.eqiad.wmnet:  /eqiad/C/8
 
       analytics1067.eqiad.wmnet:  /eqiad/D/2
