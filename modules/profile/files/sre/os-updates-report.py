@@ -157,7 +157,9 @@ def prepare_report(datafile, puppetdb_host, owners, distro, uptodate_os, target_
             hosts_needowner_count += 1
             continue
 
-        owner = owners.get(role).get('owner')
+        # On the Puppet/Hiera level a role can have multiple owners, but for tracking we only
+        # use the primarily responsible team
+        owner = owners.get(role)[0]
 
         target_quarter = distro_data.get(role, None).get('target-q', 'TBD')
         if target_quarter == 'TBD':
