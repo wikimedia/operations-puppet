@@ -14,8 +14,8 @@ https:
   # https port for harbor, default is 443
   port: 443
   # The path of cert and key files for nginx
-  certificate: <%= @tlscert %>
-  private_key: <%= @tlskey %>
+  certificate: <%= @tlscertfile %>
+  private_key: <%= @tlskeyfile %>
 
 # # Uncomment following will enable tls communication between all harbor components
 # internal_tls:

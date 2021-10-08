@@ -1,7 +1,8 @@
 class profile::toolforge::harbor (
     Stdlib::Unixpath $data_volume = lookup('profile::toolforge::harbor::data_volume', {default_value => '/srv/harbor/data'}),
-    Stdlib::Unixpath $tlscert = lookup('profile::toolforge::harbor::tlscert', {default_value => '/etc/acmecerts/toolforge/live/ec-prime256v1.chained.crt'}),
-    Stdlib::Unixpath $tlskey = lookup('profile::toolforge::harbor::tlskey', {default_value => '/etc/acmecerts/toolforge/live/ec-prime256v1.key'}),
+    Stdlib::Unixpath $tlscert = lookup('profile::toolforge::harbor::tlscert', {default_value => 'ec-prime256v1.chained.crt'}),
+    Stdlib::Unixpath $tlskey = lookup('profile::toolforge::harbor::tlskey', {default_value => 'ec-prime256v1.key'}),
+    Stdlib::Unixpath $tlscertdir = lookup('profile::toolforge::harbor::tlscertdir', {default_value => '/etc/acmecerts/toolforge/live'}),
     Boolean $cinder_attached = lookup('profile::toolforge::harbor::cinder_attached', {default_value => false}),
     String $harbor_init_pwd = lookup('profile::toolforge::harbor::init_pwd', {default_value => 'insecurityrules'}),
     String $harbor_db_pwd = lookup('profile::toolforge::harbor::db::harbor_pwd'),
@@ -17,6 +18,8 @@ class profile::toolforge::harbor (
 
     acme_chief::cert { 'toolforge': }
 
+    $tlscertfile = "${tlscertdir}/${tlscert}"
+    $tlskeyfile = "${tlscertdir}/${tlskey}"
     # There must be some kind of puppet fact for this?
     if $cinder_attached {
         file { '/srv/ops':
@@ -33,6 +36,18 @@ class profile::toolforge::harbor (
             ensure  => present,
             mode    => '0600',
             content => template('profile/toolforge/harbor/harbor-docker.yaml.erb'),
+        }
+
+        # The downloaded default prepare script tries to get certs by
+        # mounting / and fails. We just change the volume mount. This only matters
+        # on a new install, normally. New versions may need an update here.
+        file { '/srv/ops/harbor/prepare':
+            ensure  => present,
+            mode    => '0655',
+            owner   => 'root',
+            group   => 'root',
+            content => template('profile/toolforge/harbor/prepare.erb'),
+            require => File['/srv/ops/harbor'],
         }
     }
 }
