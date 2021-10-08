@@ -18,7 +18,6 @@ class profile::environment (
     Enum['vim', 'use_default'] $editor = lookup('profile::environment::editor'),
     Boolean $with_wmcs_etc_files = lookup('profile::environment::with_wmcs_etc_files'),
     Hash[String, Stdlib::Filesource] $profile_scripts = lookup('profile::environment::profile_scripts'),
-    String $core_dump_pattern = lookup('profile::environment::core_dump_pattern'),
 ) {
     if $ls_aliases {
         exec { 'uncomment root bash aliases':
@@ -120,29 +119,6 @@ class profile::environment (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-    }
-
-    ### Core dumps
-    # TODO in next patches: move under base::sysctl::coredupms
-    # Write core dumps to /var/tmp/core/core.<host>.<executable>.<pid>.<timestamp>.
-    # Remove core dumps with atime > one week.
-
-    file { '/var/tmp/core':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '1773',
-    }
-
-    sysctl::parameters { 'core_dumps':
-        values  => { 'kernel.core_pattern' => $core_dump_pattern, },
-        require => File['/var/tmp/core'],
-    }
-
-    tidy { '/var/tmp/core':
-        age     => '1w',
-        recurse => 1,
-        matches => 'core.*',
     }
 
     # Global vim defaults

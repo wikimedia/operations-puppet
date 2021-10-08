@@ -1,1 +1,2 @@
 profile::base::enable_contacts: true
+profile::base::core_dump_pattern:  '/var/tmp/core/core.%h.%e.%p.%t'

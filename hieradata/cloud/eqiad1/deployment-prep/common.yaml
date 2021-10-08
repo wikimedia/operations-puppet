@@ -95,7 +95,7 @@ profile::memcached::ssl_cert: ~
 profile::memcached::ssl_key: ~
 "keyholder::trusted_groups":
    - wikidev
-profile::environment::core_dump_pattern: '/data/project/cores/%{facts.hostname}-core.%h.%e.%p.%t'
+profile::base::core_dump_pattern: '/data/project/cores/%{facts.hostname}-core.%h.%e.%p.%t'
 
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog

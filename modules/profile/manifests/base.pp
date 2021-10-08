@@ -5,7 +5,8 @@ class profile::base(
     Boolean $overlayfs = lookup('profile::base::overlayfs', {default_value => false}),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
     String $cluster = lookup('cluster'),
-    Boolean $enable_contacts = lookup('profile::base::enable_contacts')
+    Boolean $enable_contacts = lookup('profile::base::enable_contacts'),
+    String $core_dump_pattern = lookup('profile::base::core_dump_pattern'),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -56,6 +57,9 @@ class profile::base(
         class { 'toil::acct_handle_wtmp_not_rotated': }
     }
     include profile::environment
+    class { 'base::sysctl::core_dumps':
+        core_dump_pattern => $core_dump_pattern,
+    }
 
     class { 'base::phaste': }
     class { 'base::screenconfig': }

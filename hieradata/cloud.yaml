@@ -53,6 +53,7 @@ profile::puppet::client_bucket::max_size: 100M
 
 profile::base::legacy_cloud_search_domain: ~
 profile::base::enable_contacts: false
+profile::base::core_dump_pattern:  '/var/tmp/core/core.%h.%e.%p.%t'
 puppet_ca_server: ''
 manage_puppet_ca_file: false
 
@@ -493,4 +494,3 @@ profile::environment::editor: 'use_default'
 profile::environment::with_wmcs_etc_files: true
 profile::environment::profile_scripts:
   field.sh: 'puppet:///modules/base/environment/field.sh'
-profile::environment::core_dump_pattern:  '/var/tmp/core/core.%h.%e.%p.%t'
