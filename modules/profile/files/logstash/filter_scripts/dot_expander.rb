@@ -1,5 +1,6 @@
 # dot_expander.rb
 # Logstash Ruby script to expand dot-delimited fields into nested hashes
+# @version 1.0.2
 
 def register(params) end
 
@@ -66,10 +67,18 @@ def filter(event)
   # Filter entrypoint
   nested = {}
   event.to_hash.each do | key, value |
-    if key.include? '.'
-      nested = deep_merge(expand_dots(key, value), nested)
-      event.remove(key)
-    end
+    next unless key.include? '.'
+
+    # get the top level key and data from the event
+    top_level_key = key.split('.')[0]
+    entity = event.get(top_level_key)
+
+    # if entity is a hash, add it to the output before merging
+    nested[top_level_key] = entity if entity.is_a? Hash
+    # otherwise, merging is impossible.  the object shall take its place in the output.
+
+    nested = deep_merge(expand_dots(key, value), nested)
+    event.remove(key)
   end
   nested.each do | key, value |
     event.set(key, value)
