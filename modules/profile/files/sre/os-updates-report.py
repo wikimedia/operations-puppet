@@ -323,7 +323,7 @@ def main():
         distros.append(distro)
 
     prepare_overview(distros, cfg.get('general', 'target_directory'))
-    sys.exit(1)
+    sys.exit(0)
 
 
 if __name__ == '__main__':
