@@ -1,7 +1,7 @@
 class profile::toolforge::harbor (
     Stdlib::Unixpath $data_volume = lookup('profile::toolforge::harbor::data_volume', {default_value => '/srv/harbor/data'}),
-    Stdlib::Unixpath $tlscert = lookup('profile::toolforge::harbor::tlscert', {default_value => 'ec-prime256v1.chained.crt'}),
-    Stdlib::Unixpath $tlskey = lookup('profile::toolforge::harbor::tlskey', {default_value => 'ec-prime256v1.key'}),
+    String $tlscert = lookup('profile::toolforge::harbor::tlscert', {default_value => 'ec-prime256v1.chained.crt'}),
+    String $tlskey = lookup('profile::toolforge::harbor::tlskey', {default_value => 'ec-prime256v1.key'}),
     Stdlib::Unixpath $tlscertdir = lookup('profile::toolforge::harbor::tlscertdir', {default_value => '/etc/acmecerts/toolforge/live'}),
     Boolean $cinder_attached = lookup('profile::toolforge::harbor::cinder_attached', {default_value => false}),
     String $harbor_init_pwd = lookup('profile::toolforge::harbor::init_pwd', {default_value => 'insecurityrules'}),
