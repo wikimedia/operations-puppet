@@ -4195,6 +4195,16 @@ host cloudmetrics1002 {
     fixed-address cloudmetrics1002.eqiad.wmnet;
 }
 
+host cloudmetrics1003 {
+    hardware ethernet B0:4F:13:B4:6D:6E;
+    fixed-address cloudmetrics1003.eqiad.wmnet;
+}
+
+host cloudmetrics1004 {
+    hardware ethernet B0:4F:13:B4:6C:DE;
+    fixed-address cloudmetrics1004.eqiad.wmnet;
+}
+
 host cloudservices1003 {
     hardware ethernet 30:e1:71:70:ad:48;
     fixed-address cloudservices1003.wikimedia.org;
