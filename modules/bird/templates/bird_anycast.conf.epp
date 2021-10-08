@@ -1,4 +1,7 @@
-<%- | Boolean $do_ipv6 = false | -%>
+<%- |
+  Array[Stdlib::IP::Address] $neighbors,
+  Boolean $do_ipv6 = false,
+| -%>
 <% if $do_ipv6 { -%>
 include "/etc/bird/anycast6-prefixes.conf";
 <% } else { -%>
@@ -64,7 +67,7 @@ protocol bfd {
 }
 <%- } -%>
 
-<%- $bird::neighbors.each |$neighbor| { -%>
+<%- $neighbors.each |$neighbor| { -%>
 protocol bgp {
     import none;
     multihop 2;

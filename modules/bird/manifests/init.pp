@@ -37,6 +37,9 @@ class bird(
 
   ensure_packages(['bird', 'prometheus-bird-exporter'])
 
+  $neighbors_v4 = $neighbors.filter |$neighbor| { $neighbor =~ Stdlib::IP::Address::V4::Nosubnet }
+  $neighbors_v6 = $neighbors.filter |$neighbor| { $neighbor =~ Stdlib::IP::Address::V6::Nosubnet }
+
   if $bind_service {
     exec { 'bird-systemd-reload-enable':
         command     => 'systemctl daemon-reload; systemctl enable bird.service',
@@ -82,7 +85,7 @@ class bird(
       owner   => 'bird',
       group   => 'bird',
       mode    => '0640',
-      content => epp($config_template),
+      content => epp($config_template, {'neighbors' => $neighbors_v4}),
       notify  => Service['bird'],
   }
 
@@ -91,7 +94,7 @@ class bird(
       owner   => 'bird',
       group   => 'bird',
       mode    => '0640',
-      content => epp($config_template, {'do_ipv6' => $do_ipv6}),
+      content => epp($config_template, {'do_ipv6' => $do_ipv6, 'neighbors' => $neighbors_v6}),
       notify  => Service['bird6'],
   }
 
