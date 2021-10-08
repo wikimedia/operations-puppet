@@ -7,14 +7,15 @@ class mediawiki::packages::fonts {
     ensure_packages([
         'fonts-arabeyes',
         'fonts-arphic-ukai',
-        'fonts-noto-hinted', # T184664
-        'fonts-noto-unhinted', # T184664
+        'fonts-noto-hinted',         # T184664
+        'fonts-noto-unhinted',       # T184664
         'fonts-arphic-uming',
         'fonts-farsiweb',
         'fonts-kacst',
         'fonts-khmeros',
         'fonts-lao',
         'fonts-liberation',
+        'fonts-liberation2',         # T253600
         'fonts-linuxlibertine',
         'fonts-manchufont',
         'fonts-nafees',
