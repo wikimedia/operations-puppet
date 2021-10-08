@@ -22,12 +22,12 @@ class profile::toolforge::harbor (
             ensure => directory,
             owner  => 'root',
             group  => 'root',
-            mode   => '0640',
+            mode   => '0755',
         } -> file { '/srv/ops/harbor':
             ensure => directory,
             owner  => 'root',
             group  => 'root',
-            mode   => '0640',
+            mode   => '0755',
         } -> file { '/srv/ops/harbor/harbor.yml':
             ensure  => present,
             mode    => '0600',
