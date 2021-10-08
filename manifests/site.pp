@@ -1826,12 +1826,6 @@ node /^ms-backup200[12]\.codfw\.wmnet/ {
     role(mediabackup::worker)
 }
 
-node /^ms-fe1005\.eqiad\.wmnet$/ {
-    role(swift::proxy)
-    include ::role::swift::swiftrepl # lint:ignore:wmf_styleguide
-    include ::lvs::realserver
-}
-
 node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
@@ -1840,12 +1834,6 @@ node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
 node /^ms-be1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::storage)
-}
-
-node /^ms-fe2005\.codfw\.wmnet$/ {
-    role(swift::proxy)
-    include ::role::swift::swiftrepl # lint:ignore:wmf_styleguide
-    include ::lvs::realserver
 }
 
 node /^ms-fe2\d\d\d\.codfw\.wmnet$/ {

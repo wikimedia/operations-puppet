@@ -218,8 +218,6 @@ role::swift::storage:
   owner: Data Persistence SREs
 role::swift::proxy:
   owner: Data Persistence SREs
-role::swift::swiftrepl:
-  owner: Data Persistence SREs
 role::ores:
   owner: Machine Learning SREs
 role::pybaltest:

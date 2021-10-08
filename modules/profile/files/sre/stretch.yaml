@@ -121,8 +121,6 @@ role::mediawiki::appserver::api:
   target-q: TBD
 role::swift::storage:
   target-q: TBD
-role::swift::swiftrepl:
-  target-q: TBD
 role::swift::proxy:
   target-q: TBD
 role::lvs::balancer:

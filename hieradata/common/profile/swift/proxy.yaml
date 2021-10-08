@@ -100,3 +100,4 @@ profile::swift::proxy::private_container_list: [
  ]
 profile::swift::proxy::thumborhost: ~
 profile::swift::proxy::inactivedc_thumborhost: ~
+profile::swift::proxy::enable_swiftrepl: false
