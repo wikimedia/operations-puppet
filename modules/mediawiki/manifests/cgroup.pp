@@ -1,8 +1,8 @@
 # == Class: mediawiki::cgroup
 #
 # MediaWiki uses cgroups (abbreviated from control groups) to limit the
-# resource usage of commands invoked in a subprocess via wfShellExec(),
-# like texvc and lilypond. The cgroup is specified by via $wgShellCgroup.
+# resource usage of commands invoked in a subprocess via Shell::command().
+# The cgroup is specified by via $wgShellCgroup.
 #
 # See also: <https://www.mediawiki.org/wiki/Manual:$wgShellCgroup>
 #
