@@ -60,11 +60,10 @@ class profile::bird::anycast(
   require ::profile::bird::anycast_healthchecker_monitoring
 
   class { '::bird':
-      config_template => 'bird/bird_anycast.conf.erb',
-      neighbors       => $neighbors_list,
-      bind_service    => 'anycast-healthchecker.service',
-      bfd             => $bfd,
-      require         => Class['::bird::anycast_healthchecker'],
+      neighbors    => $neighbors_list,
+      bind_service => 'anycast-healthchecker.service',
+      bfd          => $bfd,
+      require      => Class['::bird::anycast_healthchecker'],
   }
 
   $advertise_vips.each |$vip_fqdn, $vip_params| {

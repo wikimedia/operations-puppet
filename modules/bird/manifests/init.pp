@@ -25,16 +25,16 @@
 #
 #
 class bird(
-  $neighbors,
-  $config_template,
-  $bfd = true,
-  Optional[String] $bind_service = undef,
-  $routerid= $::ipaddress,
+  Array[Stdlib::IP::Address] $neighbors,
+  String                     $config_template = 'bird/bird_anycast.conf.epp',
+  Boolean                    $bfd             = true,
+  Optional[String]           $bind_service    = undef,
+  Stdlib::IP::Address        $routerid        = $facts['ipaddress'],
   ){
 
   ensure_packages(['bird', 'prometheus-bird-exporter'])
 
-  if $bind_service != '' {
+  if $bind_service {
     exec { 'bird-systemd-reload-enable':
         command     => 'systemctl daemon-reload; systemctl enable bird.service',
         path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
@@ -69,7 +69,7 @@ class bird(
       owner   => 'bird',
       group   => 'bird',
       mode    => '0640',
-      content => template($config_template),
+      content => epp($config_template),
       notify  => Service['bird'],
   }
 
