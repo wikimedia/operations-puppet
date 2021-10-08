@@ -14,16 +14,6 @@ class mediawiki::packages {
         'gnupg1',
     ])
 
-    # ploticus for EasyTimeline extension (T237304)
-    package { 'ploticus':
-        ensure => absent
-    }
-
-    # Score
-    package { [ 'lilypond', 'lilypond-data' ]:
-        ensure => absent
-    }
-
     # Used by captcha.py from ConfirmEdit extension (used to generate captchas)
     ensure_packages(['python-pil', 'python3-pil'])
 }
