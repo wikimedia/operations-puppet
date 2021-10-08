@@ -879,6 +879,13 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Wolfgang Kandek
+  vrts-roots:
+    gid: 834
+    description: Group of users with full root access on VRTS (formerly OTRS) machines
+    members: [aokoth]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Wolfgang Kandek
   aqs-roots:
     gid: 829
     description: people who have full root on aqs nodes
