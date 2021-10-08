@@ -1,5 +1,5 @@
 profile::contacts::role_contacts:
-  - 'Observability'
+  - 'Observability SREs'
 
 cluster: alerting
 profile::resolving::domain_search:
