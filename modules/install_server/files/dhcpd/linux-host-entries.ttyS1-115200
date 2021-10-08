@@ -4161,6 +4161,18 @@ host kubestage1002 {
      option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
+host kubestage1003 {
+     hardware ethernet B0:4F:13:B3:69:06;
+     fixed-address kubestage1003.eqiad.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
+host kubestage1004 {
+     hardware ethernet B0:4F:13:B4:66:96;
+     fixed-address kubestage1004.eqiad.wmnet;
+     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+}
+
 host kubestage2001 {
      hardware ethernet 4C:D9:8F:AF:4F:B1;
      fixed-address kubestage2001.codfw.wmnet;
