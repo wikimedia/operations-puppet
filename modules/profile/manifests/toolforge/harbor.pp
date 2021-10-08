@@ -12,8 +12,8 @@ class profile::toolforge::harbor (
     require profile::wmcs::kubeadm::client
     class { 'kubeadm::docker': }
 
-    # Useful for troubleshooting, etc.
-    ensure_packages(['postgresql-client', 'redis-tools'])
+    # Useful packages and harbor runs in docker-compose
+    ensure_packages(['postgresql-client', 'redis-tools', 'docker-compose'])
 
     acme_chief::cert { 'toolforge': }
 
