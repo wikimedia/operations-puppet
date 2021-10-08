@@ -1250,6 +1250,11 @@ node 'furud.codfw.wmnet' {
     role(analytics_cluster::hadoop::client)
 }
 
+# New Kubernetes host T290202  - eqiad
+node /^kubernetes10(1[8-9]|2[0-1])\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # Etcd clusters for kubernetes, v3
 node /^kubetcd[12]00[456]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::v3::kubernetes)
