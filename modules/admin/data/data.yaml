@@ -1126,6 +1126,15 @@ users:
   #   gid: 914
   #   home_dir: '/var/lib/alluxio'
   #   shell: '/bin/false'
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # git:
+  #   ensure: present
+  #   system: true
+  #   uid: 915
+  #   gid: 915
+  #   home_dir: /var/opt/gitlab
+  #   shell: /bin/sh
   rush:
     ensure: absent
     gid: 500

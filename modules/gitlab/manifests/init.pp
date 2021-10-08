@@ -53,6 +53,12 @@ class gitlab (
     Boolean          $enable_restore_timer              = false,
 ) {
 
+    systemd::sysuser { 'git':
+      id          => '915:915',
+      description => 'git used by GitLab',
+      home_dir    => '/var/opt/gitlab',
+    }
+
     apt::package_from_component{'gitlab-ce':
         component => 'thirdparty/gitlab',
     }
