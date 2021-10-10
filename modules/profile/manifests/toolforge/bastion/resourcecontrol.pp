@@ -10,11 +10,9 @@ class profile::toolforge::bastion::resourcecontrol(
         pkg_ensure             => 'latest',
     }
 
-    # This needs updates to work with buster. Enable only on stretch for now.
-    if debian::codename::eq('stretch') {
-        class { 'toolforge::bastion_proc_management':
-            project => $::labsproject,
-        }
+    class { 'toolforge::bastion_proc_management':
+        project => $::labsproject,
+        dry_run => !debian::codename::eq('stretch'),
     }
 
     file {'/etc/security/limits.conf':

@@ -18,6 +18,9 @@
 # [*project*]
 #  String. Cloud VPS project this is running on.
 #
+# [*dry_run*]
+#  Boolean. If true, will only log instead of actually killing processes.
+#
 # === Example ===
 #
 # A accepting defaults, but setting the project correctly.
@@ -31,6 +34,7 @@ class toolforge::bastion_proc_management (
     Integer $script_victims = 2,
     Integer $min_uid = 500,
     String  $project = 'tools',
+    Boolean $dry_run = false,
 ){
     ensure_packages('python3-psutil')
     ensure_packages('python3-ldap3')
@@ -50,7 +54,8 @@ class toolforge::bastion_proc_management (
     $age = " --age ${days_allowed}"
     $uids = " --min-uid ${min_uid}"
     $vics = " --victims ${script_victims}"
-    $timer_cmd = "${main_cmd}${proj}${age}${uids}${vics}"
+    $dry_run_cmd = $dry_run.bool2str(' --dry-run', '')
+    $timer_cmd = "${main_cmd}${proj}${age}${uids}${vics}${dry_run_cmd}"
 
     systemd::timer::job { 'wmcs-wheel-of-misfortune-runner':
         ensure                    => 'present',
