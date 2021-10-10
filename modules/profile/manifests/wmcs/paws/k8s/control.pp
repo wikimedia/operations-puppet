@@ -1,9 +1,15 @@
 class profile::wmcs::paws::k8s::control (
 ) {
-    ensure_packages('helm3') # this package lives in buster-wikimedia/main
-
     class { '::profile::wmcs::kubeadm::control': }
     contain '::profile::wmcs::kubeadm::control'
+
+    # To avoid confusion, we use the same helm binary that Toolforge
+    # uses, which is imported to the kubeadm component from upstream
+    # repositories directly (named helm, not helm3), instead of using
+    # the packages WMF's serviceops team builds locally.
+    package { 'helm3':
+        ensure => absent,
+    }
 
     # To facilitate deploying manifests directly from the repo to k8s.
     # This would allow paws admins more flexibility for k8s-controlled elements

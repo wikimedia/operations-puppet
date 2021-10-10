@@ -74,6 +74,7 @@ class profile::wmcs::kubeadm::control (
     }
     class { '::kubeadm::core': }
     class { '::kubeadm::docker': }
+    class { '::kubeadm::helm': }
 
     # TODO: eventually we may need overriding this CIDR
     $pod_subnet = '192.168.0.0/16'
