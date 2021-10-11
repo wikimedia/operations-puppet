@@ -64,4 +64,38 @@ define systemd::sysuser (
         require => File['/etc/sysusers.d'],
         notify  => Exec['Refresh sysusers'],
     }
+    if $usertype == 'group' and $id_type == 'integer' {
+        group { $username:
+            ensure => $ensure,
+            gid    => $id,
+            system => true,
+        }
+    }
+    if $usertype == 'user' and (!($id_type in ['default', 'path']) or $home_dir or $shell) {
+        case $id {
+            Integer: {
+                $uid = $id
+                $gid = undef
+            }
+            # this captures both uid:gid and uid:groupname
+            Pattern[/\A\d+:[\w-]+\z/]: {
+                $data = $id.split(':')
+                $uid = $data[0]
+                $gid = $data[1]
+            }
+            default: {
+                $uid = undef
+                $gid = undef
+            }
+        }
+
+        user { $username:
+            ensure => $ensure,
+            gid    => $gid,
+            home   => $home_dir,
+            shell  => $shell,
+            system => true,
+            uid    => $uid,
+        }
+    }
 }
