@@ -9,75 +9,145 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mathoid
     zotero:
-      usernames: [{ name: zotero }]
+      usernames:
+        - name: zotero
+        - name: zotero-deploy
     blubberoid:
-      usernames: [{ name: blubberoid }]
+      usernames:
+        - name: blubberoid
+        - name: blubberoid-deploy
     eventgate-analytics:
-      usernames: [{ name: eventgate-analytics }]
+      usernames:
+        - name: eventgate-analytics
+        - name: eventgate-analytics-deploy
     eventgate-main:
-      usernames: [{ name: eventgate-main }]
+      usernames:
+        - name: eventgate-main
+        - name: eventgate-main-deploy
     citoid:
-      usernames: [{ name: citoid }]
+      usernames:
+        - name: citoid
+        - name: citoid-deploy
     cxserver:
-      usernames: [{ name: cxserver }]
+      usernames:
+        - name: cxserver
+        - name: cxserver-deploy
     sessionstore:
-      usernames: [{ name: sessionstore }]
+      usernames:
+        - name: sessionstore
+        - name: sessionstore-deploy
     termbox:
-      usernames: [{ name: termbox }]
+      usernames:
+        - name: termbox
+        - name: termbox-deploy
     wikifeeds:
-      usernames: [{ name: wikifeeds }]
+      usernames:
+        - name: wikifeeds
+        - name: wikifeeds-deploy
     echostore:
-      usernames: [{ name: echostore }]
+      usernames:
+        - name: echostore
+        - name: echostore-deploy
     eventgate-logging-external:
-      usernames: [{ name: eventgate-logging-external }]
+      usernames:
+        - name: eventgate-logging-external
+        - name: eventgate-logging-external-deploy
     eventstreams:
-      usernames: [{ name: eventstreams }]
+      usernames:
+        - name: eventstreams
+        - name: eventstreams-deploy
     eventstreams-internal:
-      usernames: [{ name: eventstreams-internal }]
+      usernames:
+        - name: eventstreams-internal
+        - name: eventstreams-internal-deploy
     eventgate-analytics-external:
-      usernames: [{ name: eventgate-analytics-external }]
+      usernames:
+        - name: eventgate-analytics-external
+        - name: eventgate-analytics-external-deploy
     changeprop:
-      usernames: [{ name: changeprop }]
+      usernames:
+        - name: changeprop
+        - name: changeprop-deploy
     changeprop-jobqueue:
-      usernames: [{ name: changeprop-jobqueue }]
+      usernames:
+        - name: changeprop-jobqueue
+        - name: changeprop-jobqueue-deploy
     proton:
-      usernames: [{ name: proton }]
+      usernames:
+        - name: proton
+        - name: proton-deploy
     mobileapps:
-      usernames: [{ name: mobileapps }]
+      usernames:
+        - name: mobileapps
+        - name: mobileapps-deploy
     recommendation-api:
-      usernames: [{ name: recommendation-api }]
+      usernames:
+        - name: recommendation-api
+        - name: recommendation-api-deploy
     push-notifications:
-      usernames: [{ name: push-notifications }]
+      usernames:
+        - name: push-notifications
+        - name: push-notifications-deploy
     api-gateway:
-      usernames: [{ name: api-gateway }]
+      usernames:
+        - name: api-gateway
+        - name: api-gateway-deploy
     apertium:
-      usernames: [{ name: apertium }]
+      usernames:
+        - name: apertium
+        - name: apertium-deploy
     linkrecommendation:
-      usernames: [{ name: linkrecommendation }]
+      usernames:
+        - name: linkrecommendation
+        - name: linkrecommendation-deploy
     similar-users:
-      usernames: [{ name: similar-users }]
+      usernames:
+        - name: similar-users
+        - name: similar-users-deploy
     shellbox:
-      usernames: [{ name: shellbox }]
+      usernames:
+        - name: shellbox
+        - name: shellbox-deploy
     shellbox-constraints:
-      usernames: [{ name: shellbox-constraints }]
+      usernames:
+        - name: shellbox-constraints
+        - name: shellbox-constraints-deploy
     shellbox-media:
-      usernames: [{ name: shellbox-media }]
+      usernames:
+        - name: shellbox-media
+        - name: shellbox-media-deploy
     shellbox-syntaxhighlight:
-      usernames: [{ name: shellbox-syntaxhighlight }]
+      usernames:
+        - name: shellbox-syntaxhighlight
+        - name: shellbox-syntaxhighlight-deploy
     shellbox-timeline:
-      usernames: [{ name: shellbox-timeline }]
+      usernames:
+        - name: shellbox-timeline
+        - name: shellbox-timeline-deploy
     miscweb:
-      usernames: [{ name: miscweb }]
+      usernames:
+        - name: miscweb
+        - name: miscweb-deploy
     mwdebug:
-      usernames: [{ name: mwdebug }]
+      usernames:
+        - name: mwdebug
+        - name: mwdebug-deploy
     tegola-vector-tiles:
-      usernames: [{ name: tegola-vector-tiles }]
+      usernames:
+        - name: tegola-vector-tiles
+        - name: tegola-vector-tiles-deploy
     rdf-streaming-updater:
-      usernames: [{ name: rdf-streaming-updater }]
+      usernames:
+        - name: rdf-streaming-updater
+        - name: rdf-streaming-updater-deploy
     toolhub:
-      usernames: [{ name: toolhub }]
+      usernames:
+        - name: toolhub
+        - name: toolhub-deploy
     apple-search:
-      usernames: [{ name: apple-search }]
+      usernames:
+        - name: apple-search
+        - name: apple-search-deploy
   ml-serve:
     revscoring-editquality:
       usernames:
