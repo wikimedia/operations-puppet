@@ -127,13 +127,13 @@ class graphite::web(
             # So, some messy stuff to only include our optional configuration settings iff
             # they are provided.
             uwsgi => merge({
-                'plugins'    => $python_version,
-                'socket'     => '/run/uwsgi/graphite-web.sock',
-                'stats'      => '/run/uwsgi/graphite-web-stats.sock',
-                'wsgi-file'  => '/usr/share/graphite-web/graphite.wsgi',
-                'master'     => true,
-                'processes'  => $uwsgi_processes,
-                'block-size' => 8192, # bump request buffer space T292877
+                'plugins'     => $python_version,
+                'socket'      => '/run/uwsgi/graphite-web.sock',
+                'stats'       => '/run/uwsgi/graphite-web-stats.sock',
+                'wsgi-file'   => '/usr/share/graphite-web/graphite.wsgi',
+                'master'      => true,
+                'processes'   => $uwsgi_processes,
+                'buffer-size' => 8192, # bump request buffer space T292877
             },
             # Change settings module explicitly to work around https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=995461
             if debian::codename::ge('bullseye')  { {'env' => 'GRAPHITE_SETTINGS_MODULE=local_settings'} },
