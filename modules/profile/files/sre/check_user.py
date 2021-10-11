@@ -10,9 +10,9 @@ from textwrap import dedent
 from typing import Dict
 
 from apiclient.discovery import build
-from cumin.remote import RemoteExecutionError
 from google.oauth2 import service_account
 from spicerack import Spicerack
+from spicerack.remote import RemoteExecutionError
 
 
 class GsuiteUsers:
