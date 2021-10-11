@@ -5,7 +5,7 @@
 # Instance requires people to authenticate via LDAP before they can see metrics.
 #
 class profile::graphite::production {
-    $storage_dir = '/var/lib/carbon'
+    $storage_dir = '/srv/carbon'
 
     class { '::httpd':
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'uwsgi', 'authnz_ldap'],
@@ -36,6 +36,18 @@ class profile::graphite::production {
             'queue_depth'    => 500000,
             'batch_size'     => 8000,
         },
+    }
+
+    file { '/var/lib/carbon':
+        ensure  => directory,
+    }
+
+    file { '/var/lib/carbon/whisper':
+        ensure  => link,
+        target  => "${storage_dir}/whisper",
+        owner   => '_graphite',
+        group   => '_graphite',
+        require => Class['profile::graphite::base']
     }
 
     # Cleanup stale labs instances data - T143405
@@ -118,6 +130,6 @@ class profile::graphite::production {
 
     profile::auto_restarts::service { 'apache2': }
 
-    backup::set { 'var-lib-carbon-whisper-coal': }
+    backup::set { 'srv-carbon-whisper-coal': }
     backup::set { 'var-lib-graphite-web-graphite-db': }
 }
