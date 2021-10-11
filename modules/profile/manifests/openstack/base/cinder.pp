@@ -19,9 +19,7 @@ class profile::openstack::base::cinder(
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
 
-    class { '::openstack::cinder::service':
-        version                 => $version,
-        active                  => $active,
+    class { "::openstack::cinder::config::${version}":
         openstack_controllers   => $openstack_controllers,
         keystone_admin_uri      => $keystone_admin_uri,
         region                  => $region,
@@ -35,6 +33,12 @@ class profile::openstack::base::cinder(
         rabbit_user             => $rabbit_user,
         rabbit_pass             => $rabbit_pass,
         libvirt_rbd_cinder_uuid => $libvirt_rbd_cinder_uuid,
+    }
+
+    class { '::openstack::cinder::service':
+        version       => $version,
+        active        => $active,
+        api_bind_port => $api_bind_port,
     }
 
     include ::network::constants
