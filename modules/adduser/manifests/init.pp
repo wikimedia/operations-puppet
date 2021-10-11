@@ -46,6 +46,8 @@ class adduser (
     }
 
     systemd::sysuser { 'sysusers-base-config':
-        content => ['usertype' => 'r', 'name' => '-', 'id' => "${first_system_uid}-${last_system_uid}"]
+        usertype => 'range',
+        username => '-',
+        id       => "${first_system_uid}-${last_system_uid}",
     }
 }

@@ -27,13 +27,8 @@ class planet (
     include ::planet::dirs
 
     systemd::sysuser { 'planet':
-      content    => [
-      'usertype' => 'u',
-      'name'     => 'planet',
-      'gecos'    => 'planet_RSS_aggregator',
-      'id'       => '-',
-      'home_dir' => '/var/lib/planet',
-                    ]
+      description => 'planet_RSS_aggregator',
+      home_dir    => '/var/lib/planet',
     }
 
     class { '::planet::index_site':
