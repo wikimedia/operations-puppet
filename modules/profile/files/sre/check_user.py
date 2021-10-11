@@ -96,7 +96,7 @@ def get_wikitech_user(email: str) -> Dict:
     primary_site = next(confctl.get(scope='common', name='WMFMasterDatacenter')).val
     mwmaint = spicerack.remote().query(f'A:mw-maintenance and A:{primary_site}')
     command = ('mwscript extensions/WikimediaMaintenance/getUsersByEmail.php '
-               '--wiki=labswiki --email {email}')
+               f'--wiki=labswiki --email {email}')
     if len(mwmaint) > 1:
         raise ValueError('to many mwmaint hosts')
     _, results = next(mwmaint.run_sync(command, print_output=False, print_progress_bars=False))
