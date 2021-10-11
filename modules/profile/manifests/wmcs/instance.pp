@@ -49,7 +49,8 @@ class profile::wmcs::instance(
         service { 'rpcbind':
             ensure => 'stopped',
         }
-        exec { '/usr/bin/systemctl mask rpcbind.service':
+        exec { 'systemctl mask rpcbind.service':
+            path    => ['/bin', '/usr/bin'],
             creates => '/etc/systemd/system/rpcbind.service',
         }
     }
@@ -164,7 +165,8 @@ class profile::wmcs::instance(
         notify => Exec['reset-failed for smartmontools'],
     }
     exec { 'reset-failed for smartmontools':
-        command     => '/usr/bin/systemctl reset-failed smartd.service',
+        path        => ['/bin', '/usr/bin'],
+        command     => 'systemctl reset-failed smartd.service',
         refreshonly => true,
     }
 
