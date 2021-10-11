@@ -104,7 +104,7 @@ def get_wikitech_user(email: str) -> Dict:
     try:
         _, results = next(mwmaint.run_sync(command, print_output=False, print_progress_bars=False))
     except RemoteExecutionError:
-        print('\tno user found with {email}')
+        print(f'\tno user found with {email}')
         return
 
     # TODO: remove the [:-2] which is only there due to a bug
