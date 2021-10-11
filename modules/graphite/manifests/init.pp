@@ -77,6 +77,7 @@ class graphite(
         storage_dir              => $storage_dir,
         whitelists_dir           => "${storage_dir}/lists",
         local_data_dir           => "${storage_dir}/whisper",
+        enable_tags              => false,
     }
 
     $carbon_defaults = {
