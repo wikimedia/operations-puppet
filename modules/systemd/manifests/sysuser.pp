@@ -16,6 +16,31 @@ define systemd::sysuser (
     Optional[Stdlib::Unixpath] $home_dir    = undef,
     Optional[Stdlib::Unixpath] $shell       = undef,
 ) {
+    $id_type = $id ? {
+        '-'                       => 'default',
+        Integer                   => 'integer',
+        Stdlib::Unixpath          => 'path',
+        Pattern[/\A\d+:\d+\z/]    => 'uid:gid',
+        Pattern[/\A\d+-\d+\z/]    => 'range',
+        Pattern[/\A\d+:[\w-]+\z/] => 'uid:groupname',
+        Pattern[/\A[\w-]+\z/]     => 'groupname',
+    }
+
+    if $usertype != 'user' and ($description or $home_dir or $shell) {
+        fail("usertype: ${usertype} does not support \$description, \$home_dir or \$shell")
+    }
+    if $usertype ==  'user' and $id_type in ['groupname', 'range'] {
+        fail("usertype: ${usertype} does not support ${id_type} id's")
+    }
+    if $usertype ==  'group' and $id_type in ['groupname', 'range', 'uid:gid', 'uid:groupname'] {
+        fail("usertype: ${usertype} does not support ${id_type} id's")
+    }
+    if $usertype ==  'modify' and !($id_type in ['groupname', 'default', 'range']) {
+        fail("usertype: ${usertype} does not support ${id_type} id's")
+    }
+    if $usertype ==  'range' and !($id_type in ['range', 'default']) {
+        fail("usertype: ${usertype} does not support ${id_type} id's")
+    }
     $_usertype = $usertype ? {
         'group'  => 'g',
         'modify' => 'm',
