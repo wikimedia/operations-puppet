@@ -7,6 +7,7 @@ class acme_chief::server (
     String $active_host = '',
     String $passive_host = '',
     Array[Stdlib::Fqdn] $authdns_hosts = [],
+    Integer $watchdog_sec = 0,
 ) {
     $is_active = $::fqdn == $active_host
 
