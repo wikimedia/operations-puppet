@@ -13,10 +13,7 @@ class openstack::clientpackages::vms::common(
             'python-neutronclient',
             'python-netaddr',
         ]
-
-        package{ $py2packages:
-            ensure => 'present',
-        }
+        ensure_packages($py2packages)
     }
 
     $py3packages = [
@@ -30,18 +27,12 @@ class openstack::clientpackages::vms::common(
         'python3-troveclient',
         'python3-netaddr',
     ]
-
-    package{ $py3packages:
-        ensure => 'present',
-    }
+    ensure_packages($py3packages)
 
     $otherpackages = [
         'ebtables',
     ]
-
-    package { $otherpackages:
-        ensure => 'present',
-    }
+    ensure_packages($otherpackages)
 
     # Wrapper python class to easily query openstack clients
     file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
