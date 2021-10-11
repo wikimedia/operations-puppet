@@ -155,6 +155,8 @@ def mount_volume(args):
 
     print("Mounting on %s..." % args.mountpoint)
     subprocess.run(["mount", "-o", mount_options, devpath, args.mountpoint])
+    # readjust the permissions
+    os.chmod(args.mountpoint, octalmode)
 
     updated_devdict = block_dev_dict()
     uuid = updated_devdict[args.device]["uuid"]
