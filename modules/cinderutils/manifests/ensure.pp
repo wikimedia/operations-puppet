@@ -62,6 +62,8 @@ define cinderutils::ensure(
             fstype  => $cinder_vol['fstype'],
         }
     } else {
+        $min_size_bytes = $min_gb * 1024 * 1024 * 1024
+        $max_size_bytes = $max_gb * 1024 * 1024 * 1024
         # find the first available volume of adequate size
         $cinder_vol = $facts['block_devices'].reduce(undef) |$memo, $volume| {
             if (!$memo and
@@ -69,8 +71,8 @@ define cinderutils::ensure(
                 $volume['dev'] != 'sda' and
                 $volume['mountpoint'] == '' and
                 $volume['type'] == 'disk' and
-                $volume['size'] >= $min_gb * 1024 * 1024 * 1024 and
-                $volume['size'] <= $max_gb * 1024 * 1024 * 1024) {
+                $volume['size'] >= $min_size_bytes and
+                $volume['size'] <= $max_size_bytes) {
                 exec { "prepare_cinder_volume_${mount_point}":
                     command => "/usr/local/sbin/wmcs-prepare-cinder-volume --force --device ${volume['dev']} --mountpoint ${mount_point} --options ${mount_options} --mountmode ${mount_mode}",
                     user    => 'root',
@@ -84,7 +86,7 @@ define cinderutils::ensure(
             }
         }
         if $cinder_vol == undef {
-            fail("No mount at ${mount_point} and no volumes are available to mount.\n\nTo proceed, create and attach a Cinder volume of at least size ${min_gb}GB.")
+            fail("No mount at ${mount_point} and no volumes are available to mount.\n\nTo proceed, create and attach a Cinder volume of size between ${min_gb}GB (${min_size_bytes} bytes) and ${max_gb}GB (${max_size_bytes} bytes). Got devices: ${facts['block_devices']}")
         }
     }
 }
