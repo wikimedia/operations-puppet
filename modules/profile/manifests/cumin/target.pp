@@ -35,4 +35,13 @@ class profile::cumin::target(
         skey    => 'cumin',
         content => template('profile/cumin/userkey.erb'),
     }
+
+    # Wrapper used by cumin to reboot hosts without losing the ssh connection
+    file { '/usr/local/sbin/reboot-host':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+        source => 'puppet:///modules/cumin/reboot-host',
+    }
 }
