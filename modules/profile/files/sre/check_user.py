@@ -8,10 +8,11 @@ from configparser import ConfigParser
 from os import access, environ, R_OK
 from textwrap import dedent
 from typing import Dict
-from spicerack import Spicerack
 
 from apiclient.discovery import build
+from cumin.remote import RemoteExecutionError
 from google.oauth2 import service_account
+from spicerack import Spicerack
 
 
 class GsuiteUsers:
@@ -99,11 +100,16 @@ def get_wikitech_user(email: str) -> Dict:
                f'--wiki=labswiki --email {email}')
     if len(mwmaint) > 1:
         raise ValueError('to many mwmaint hosts')
-    _, results = next(mwmaint.run_sync(command, print_output=False, print_progress_bars=False))
+    print('WikiTech Users:')
+    try:
+        _, results = next(mwmaint.run_sync(command, print_output=False, print_progress_bars=False))
+    except RemoteExecutionError:
+        print('\tno user found with {email}')
+        return
+
     # TODO: remove the [:-2] which is only there due to a bug
     # https://gerrit.wikimedia.org/r/c/mediawiki/extensions/WikimediaMaintenance/+/730021
     results = json.loads(results.message().decode()[:-2])
-    print('WikiTech Users:')
     for user in results:
         verified = user['email_authenticated_date'] if user['email_authenticated_date'] else '*NO*'
         print(f'\tUsername:\t{user["username"]}\n\tVerified Email:\t{verified}')
