@@ -336,7 +336,7 @@ groups:
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
-              ifried, cmacholan, etonkovidova]
+              ifried, cmacholan, etonkovidova, ldelench]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4729,6 +4729,13 @@ users:
     uid: 33118
     krb: present
     ssh_keys: ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFiinksr9bokRPqdmFwQl8ZDzfk1VLE0WlnqynTAPxXB cmacholan@wikimedia.org"]
+  ldelench:
+    ensure: present
+    gid: 500
+    realname: Lauren de Lench
+    email: ldelench@wikimedia.org
+    uid: 32067
+    ssh_keys: []
 
 
 ldap_only_users:
