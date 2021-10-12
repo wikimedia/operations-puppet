@@ -16,7 +16,6 @@
 import argparse
 import configparser
 import datetime
-import exception
 import ldap
 import ldap.modlist
 
@@ -62,8 +61,6 @@ def _open_ldap(args):
     ds.simple_bind_s(binddn, bindpw)
     return ds
 
-    return None
-
 
 def _get_tool_dn(args):
     return "uid=%s.%s,%s" % (args.project, args.tool, args.ldap_base_dn)
@@ -82,7 +79,7 @@ def disable_tool(args, delete=False):
     ds = _open_ldap(args)
     if not ds:
         print("Failed to connect to ldap.")
-        raise exception.ValidationError()
+        raise
 
     existingEntry = _get_ldap_entry(args, ds)
 
@@ -107,7 +104,7 @@ def enable_tool(args):
     ds = _open_ldap(args)
     if not ds:
         print("Failed to connect to ldap.")
-        raise exception.ValidationError()
+        raise
 
     existingEntry = _get_ldap_entry(args, ds)
 
