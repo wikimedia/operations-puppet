@@ -7,6 +7,7 @@ define thanos::recording_rule (
     Optional[String] $content   = undef,
     Stdlib::Unixpath $rules_dir = '/etc/thanos-rule/rules',
 ) {
+    require ::thanos
 
     # The thanos config includes glob $rules_dir/*.yaml, so require a .yaml file extension
     if $title !~ '.yaml$' {

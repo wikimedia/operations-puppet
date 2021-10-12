@@ -22,10 +22,10 @@ class alerts::deploy::thanos(
     exec { 'start alerts-deploy for thanos':
         command     => '/bin/systemctl start alerts-deploy.target',
         refreshonly => true,
-        notify      => Exec['reload thanos-rule'],
+        notify      => Exec['reload thanos-rule for alerts'],
     }
 
-    exec { 'reload thanos-rule':
+    exec { 'reload thanos-rule for alerts':
         command     => '/bin/systemctl reload thanos-rule',
         refreshonly => true,
     }
