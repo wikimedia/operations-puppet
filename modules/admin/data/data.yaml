@@ -336,7 +336,7 @@ groups:
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
-              ifried, cmacholan, etonkovidova, ldelench]
+              ifried, cmacholan, etonkovidova, ldelench, cjming]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
