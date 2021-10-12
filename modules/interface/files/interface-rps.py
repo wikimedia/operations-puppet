@@ -104,7 +104,17 @@ def cmd_failable(cmd):
 
 
 def get_cpu_list(device, numa_filter, avoid_cpu0):
-    """Get a list of all CPUs by their number (e.g. [0, 1, 2, 3])"""
+    """Get a list of all CPUs number excluding HT siblings or CPUs with a different numa
+
+    Arguments:
+        device (str): the name of the device
+        numa_filter (bool): Indicate if the CPU numa node should be considered
+        avoid_cpu0 (bool): filter out cpu0
+
+    Returns:
+        list: A list of cpus filtered based on the arguments
+
+    """
     path_cpu = '/sys/devices/system/cpu/'
     cpu_nodes = glob.glob(os.path.join(path_cpu, 'cpu[0-9]*'))
     cpus = [int(os.path.basename(c)[3:]) for c in cpu_nodes]
@@ -116,15 +126,18 @@ def get_cpu_list(device, numa_filter, avoid_cpu0):
             dev_numa = int(get_value(path_dev_numa))
             if dev_numa >= 0:
                 path_numa = '/sys/devices/system/node/node%d' % dev_numa
-                cpus_numa = [cpu for cpu in cpus if os.path.exists(
-                    os.path.join(path_numa, 'cpu%d' % cpu)
-                )]
+                cpus_numa = [
+                    cpu
+                    for cpu in cpus
+                    if os.path.exists(os.path.join(path_numa, 'cpu%d' % cpu))
+                ]
 
     # filter-out HyperThreading siblings
     cores = []
     for cpu in cpus_numa:
-        path_threads = os.path.join(path_cpu, 'cpu%d' % cpu,
-                                    'topology', 'thread_siblings_list')
+        path_threads = os.path.join(
+            path_cpu, 'cpu%d' % cpu, 'topology', 'thread_siblings_list'
+        )
         thread_siblings = get_value(path_threads).split(',')
         cores.append(int(thread_siblings[0]))
 
@@ -138,8 +151,7 @@ def get_cpu_list(device, numa_filter, avoid_cpu0):
 
 def get_queues(device, qtype):
     """Get a list of rx or tx queues for device"""
-    nodes = glob.glob(os.path.join('/sys/class/net', device, 'queues',
-                                   '%s-*' % qtype))
+    nodes = glob.glob(os.path.join('/sys/class/net', device, 'queues', '%s-*' % qtype))
     queues = [int(os.path.basename(q)[3:]) for q in nodes]
 
     return sorted(queues)
@@ -167,8 +179,9 @@ def get_bnx2x_cos_queue_map(tx_queues, rx_queues):
 def detect_rss_pattern(device, q_offset):
     """Detect RSS IRQ Name pattern based on device, if possible"""
 
-    rss_patt_re = re.compile(r'^\s*[0-9]+:.*\s' + device + r'([^\s0-9]+)'
-                             + str(q_offset) + r'\n$')
+    rss_patt_re = re.compile(
+        r'^\s*[0-9]+:.*\s' + device + r'([^\s0-9]+)' + str(q_offset) + r'\n$'
+    )
     irq_file = open('/proc/interrupts', 'r')
     for line in irq_file:
         match = rss_patt_re.match(line)
@@ -231,13 +244,14 @@ def setup_qdisc(device, num_queues, qdisc):
     """Sets up transmit qdiscs"""
     cmd_failable('/sbin/tc qdisc del dev %s root' % device)
     if num_queues < 2:
-        cmd_nofail('/sbin/tc qdisc add dev %s root handle 100: %s'
-                   % (device, qdisc))
+        cmd_nofail('/sbin/tc qdisc add dev %s root handle 100: %s' % (device, qdisc))
     else:
         cmd_nofail('/sbin/tc qdisc add dev %s root handle 100: mq' % (device))
         for slot in range(1, num_queues + 1):
-            cmd_nofail('/sbin/tc qdisc add dev %s handle %x: parent 100:%x %s'
-                       % (device, slot, slot, qdisc))
+            cmd_nofail(
+                '/sbin/tc qdisc add dev %s handle %x: parent 100:%x %s'
+                % (device, slot, slot, qdisc)
+            )
 
 
 def get_options(device):
@@ -245,9 +259,9 @@ def get_options(device):
 
     opts = {
         'rss_pattern': None,
-        'qdisc':       None,
+        'qdisc': None,
         'numa_filter': True,
-        'avoid_cpu0':  False,
+        'avoid_cpu0': False,
     }
     config_file = os.path.join('/etc/interface-rps.d/', device)
     if os.path.isfile(config_file):
