@@ -8,6 +8,7 @@ profile::kubernetes::deployment_server::services:
     mathoid:
       usernames:
         - name: mathoid
+        - name: mathoid-deploy
     zotero:
       usernames:
         - name: zotero
