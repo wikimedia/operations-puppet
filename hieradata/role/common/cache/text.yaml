@@ -173,7 +173,7 @@ profile::cache::varnish::frontend::runtime_params:
     - idle_send_timeout=125
     - nuke_limit=1000 # T266373
 profile::cache::varnish::frontend::fe_vcl_config:
-    allowed_methods: '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$'
+    allowed_methods: '^(GET|HEAD|OPTIONS|PATCH|POST|PURGE|PUT|DELETE)$'
     # accept "not upload" purge traffic
     purge_host_regex: '^(?!(upload|maps)\.wikimedia\.org)'
     static_host: 'en.wikipedia.org'

@@ -87,7 +87,7 @@ profile::cache::varnish::frontend::backends_in_etcd: false
 profile::cache::varnish::frontend::runtime_params:
     - default_ttl=3600
 profile::cache::varnish::frontend::fe_vcl_config:
-    allowed_methods: '^(GET|HEAD|OPTIONS|POST|PURGE|PUT|DELETE)$'
+    allowed_methods: '^(GET|HEAD|OPTIONS|PATCH|POST|PURGE|PUT|DELETE)$'
     purge_host_regex: '^(?!(upload|upload\.wikimedia|maps)\.beta\.wmflabs\.org)'
     static_host: 'en.wikipedia.beta.wmflabs.org'
     top_domain: 'beta.wmflabs.org'
