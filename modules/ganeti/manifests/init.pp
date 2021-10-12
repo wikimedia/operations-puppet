@@ -19,7 +19,7 @@ class ganeti(
 ) {
     include ::ganeti::kvm
 
-    if $ganeti216 {
+    if $ganeti216 and debian::codename::eq('stretch') {
         # apt::package_from_component { 'ganeti216':
         #     component => 'component/ganeti216',
         #     packages  => ['ganeti', 'ganeti-2.16', 'ganeti-haskell-2.16', 'ganeti-htools-2.16'],
