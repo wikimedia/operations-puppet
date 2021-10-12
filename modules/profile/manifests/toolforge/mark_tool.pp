@@ -4,8 +4,8 @@
 #  password.
 #
 class profile::toolforge::mark_tool (
-    String $novaadmin_bind_dn = lookup('profile::openstack::eqiad1::ldap_user_pass'),
-    String $novaadmin_bind_pass = lookup('profile::openstack::base::ldap_user_dn')
+    String $novaadmin_bind_dn = lookup('profile::openstack::base::ldap_user_dn'),
+    String $novaadmin_bind_pass = lookup('profile::openstack::eqiad1::ldap_user_pass')
 ) {
     file { '/etc/mark_tool.conf':
         ensure  => file,
