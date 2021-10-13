@@ -4,6 +4,8 @@ role::mediawiki::appserver::canary_api:
   owner: ServiceOps SREs
 role::mediawiki::appserver:
   owner: ServiceOps SREs
+role::mediawiki::appserver::api:
+  owner: ServiceOps SREs
 role::wmcs::nfs::primary:
   owner: WMCS SREs
 role::installserver::light:
@@ -70,10 +72,6 @@ role::mariadb::sanitarium_multiinstance:
   owner: Data Persistence SREs
 role::mariadb::misc::multiinstance:
   owner: Data Persistence SREs
-role::mariadb::misc::eventlogging::replica:
-  owner: Analytics SREs
-role::mariadb::backups:
-  owner: Data Persistence SREs
 role::mariadb::proxy::master:
   owner: Data Persistence SREs
 role::mariadb::proxy::replicas:
@@ -87,8 +85,6 @@ role::druid::public::worker:
 role::elasticsearch::cirrus:
   owner: Search Platform SREs
 role::wmcs::openstack::eqiad1::virt:
-  owner: WMCS SREs
-role::wmcs::openstack::codfw1dev::virt:
   owner: WMCS SREs
 role::wmcs::openstack::codfw1dev::cloudweb:
   owner: WMCS SREs
@@ -118,9 +114,7 @@ role::kubernetes::worker:
   owner: ServiceOps SREs
 role::kubernetes::staging::worker:
   owner: ServiceOps SREs
-role::logstash:
-  owner: Observability SREs
-role::logstash::elasticsearch:
+role::logstash7:
   owner: Observability SREs
 role::analytics_cluster::hadoop::client:
   owner: Analytics SREs
@@ -164,16 +158,12 @@ role::wmcs::openstack::eqiad1::services:
   owner: WMCS SREs
 role::wmcs::openstack::codfw1dev::services:
   owner: WMCS SREs
-role::wmcs::openstack::codfw1dev::cloudweb:
-  owner: WMCS SREs
 role::eventlogging::analytics:
   owner: Analytics SREs
 role::dumps::web::htmldumps:
   owner: CPT SREs
 role::kafka::monitoring_buster:
   owner: Analytics SREs
-role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
-  owner: WMCS SREs
 role::prometheus:
   owner: Observability SREs
 role::prometheus::pop
