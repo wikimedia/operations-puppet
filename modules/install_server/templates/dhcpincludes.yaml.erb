@@ -2,10 +2,10 @@ service-name: isc-dhcp-server
 dhcpd: /usr/sbin/dhcpd
 dhcpd.conf: /etc/dhcp/dhcpd.conf
 paths:
-  - path: /etc/dhcp/automation/opt82-ttyS0-115200
-    file: /etc/dhcp/automation/proxies/opt82-ttyS0-115200.conf
-  - path: /etc/dhcp/automation/opt82-ttyS1-115200
-    file: /etc/dhcp/automation/proxies/opt82-ttyS1-115200.conf
+  - path: /etc/dhcp/automation/ttyS0-115200
+    file: /etc/dhcp/automation/proxies/ttyS0-115200.conf
+  - path: /etc/dhcp/automation/ttyS1-115200
+    file: /etc/dhcp/automation/proxies/ttyS1-115200.conf
 <% @mgmt_networks.each_key do |mgmt| -%>
   - path: /etc/dhcp/automation/mgmt-<%= mgmt %>/
     file: /etc/dhcp/automation/proxies/mgmt-<%= mgmt %>.conf
