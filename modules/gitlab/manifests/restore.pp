@@ -11,4 +11,13 @@ class gitlab::restore(
       group  => 'root',
       source => 'puppet:///modules/gitlab/gitlab-restore.sh';
   }
+
+  # systemd timer for backup restore
+  systemd::timer::job { 'backup-restore':
+      ensure      => $restore_ensure,
+      user        => 'root',
+      description => 'GitLab Backup Restore',
+      command     => "${restore_dir_data}/gitlab-restore.sh",
+      interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:05:00'},
+  }
 }
