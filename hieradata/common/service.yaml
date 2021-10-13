@@ -3829,3 +3829,30 @@ service::catalog:
     discovery:
       - dnsdisc: inference
         active_active: false
+  # apt is not an LVS service. However it does warrant using discovery DC records for it.
+  # Note the lack of an 'lvs' stanza in the configuration below.
+  apt:
+    description: Internal apt package repository
+    encryption: false
+    ip:
+      codfw:
+        default: 208.80.154.30
+      eqiad:
+        default: 208.80.153.42
+    monitoring:
+      check_command: "check_http_url!apt.wikimedia.org!/wikimedia/"
+      notes_url: "https://wikitech.wikimedia.org/wiki/APT_repository"
+      critical: false  # update this to true after testing complete
+      sites:
+        codfw:
+          hostname: apt2001
+        eqiad:
+          hostname: apt1001
+    sites:
+      - eqiad
+      - codfw
+    port: 80
+    state: production
+    discovery:
+      - dnsdisc: apt
+        active_active: false
