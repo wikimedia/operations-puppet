@@ -82,6 +82,12 @@ class profile::graphite::production {
         keep_days => 30,
     }
 
+    # General cleanup of metric files not updated. ~3y
+    graphite::whisper_cleanup { 'graphite-stale-metrics':
+        directory => "${storage_dir}/whisper",
+        keep_days => 1024,
+    }
+
     $graphite_hosts = [
         'graphite1004.eqiad.wmnet',
         'graphite2003.codfw.wmnet',
