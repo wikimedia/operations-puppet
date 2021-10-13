@@ -41,7 +41,7 @@ class profile::mariadb::wmf_root_client {
         group   => 'root',
         mode    => '0540',
         source  => 'puppet:///modules/profile/mariadb/db_kill.py',
-        require => [  Package['wmfmariadbpy-admin'],  # dependency on wmfmariadbpy.dbutil
+        require => [  Package['python3-wmfmariadbpy'],  # dependency on wmfmariadbpy.dbutil
                       Package['percona-toolkit'],  # dependency on pt-kill
         ],
     }
