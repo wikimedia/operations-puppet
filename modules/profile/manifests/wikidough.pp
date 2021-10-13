@@ -69,13 +69,13 @@ class profile::wikidough (
 
     monitoring::service { 'check_wikidough_doh':
         description   => 'Wikidough DoH Check',
-        check_command => "check_https_url_custom_ip!${wikidough_domain}!${wikidough_ipv4}!/",
+        check_command => "check_https_url_custom_ip!${wikidough_domain}!${facts['ipaddress']}!/",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
 
     monitoring::service { 'check_wikidough_dot':
         description   => 'Wikidough DoT Check',
-        check_command => "check_tcp_ssl!${wikidough_ipv4}!853",
+        check_command => "check_tcp_ssl!${facts['ipaddress']}!853",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
 
