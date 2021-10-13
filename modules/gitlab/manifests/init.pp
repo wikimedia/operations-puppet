@@ -50,6 +50,7 @@ class gitlab (
     Array[Stdlib::IP::Address] $monitoring_whitelist    = ['127.0.0.1/32'],
     Boolean          $enable_secondary_sshd             = true,
     Boolean          $enable_restore_replica            = false,
+    Boolean          $enable_restore_timer              = false,
 ) {
 
     apt::package_from_component{'gitlab-ce':
@@ -123,8 +124,10 @@ class gitlab (
 
     # enable automated restore from backup (for replica)
     $ensure_restore_replica = $enable_restore_replica.bool2str('present','absent')
+    $ensure_restore_timer = $enable_restore_timer.bool2str('present','absent')
     class { 'gitlab::restore' :
-        restore_ensure   => $ensure_restore_replica,
-        restore_dir_data => $gitlab::backup_dir_data,
+        restore_ensure       => $ensure_restore_replica,
+        restore_ensure_timer => $ensure_restore_timer,
+        restore_dir_data     => $gitlab::backup_dir_data,
     }
 }

@@ -1,5 +1,6 @@
 class gitlab::restore(
   Wmflib::Ensure   $restore_ensure          = 'present',
+  Wmflib::Ensure   $restore_ensure_timer    = 'present',
   Stdlib::Unixpath $restore_dir_data        = '/srv/gitlab-backup',
 ){
 
@@ -14,7 +15,7 @@ class gitlab::restore(
 
   # systemd timer for backup restore
   systemd::timer::job { 'backup-restore':
-      ensure      => $restore_ensure,
+      ensure      => $restore_ensure_timer,
       user        => 'root',
       description => 'GitLab Backup Restore',
       command     => "${restore_dir_data}/gitlab-restore.sh",
