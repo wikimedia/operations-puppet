@@ -336,7 +336,7 @@ groups:
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
-              ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf]
+              ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4746,6 +4746,18 @@ users:
     uid: 34397
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKek16uOk9+HF1bkH4lphtdtVdDgsNhFlcjJdvpLyIb9 kcvelaga-ctr@wikimedia.org
+  mnz:
+    ensure: present
+    email: munaslam001@gmail.com
+    realname: MunizaA
+    expiry_date: 2022-07-01
+    expiry_contact: diego@wikimedia.org
+    gid: 500
+    uid: 32084
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSPgGHinj/fzfnq8BCYVnegcJ0/Z//hMpGYrgBJnLJQ muniza@wlt
+
 
 ldap_only_users:
   abartov:
