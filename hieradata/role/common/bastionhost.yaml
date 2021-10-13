@@ -8,3 +8,4 @@ profile::resolving::domain_search:
   - eqsin.wmnet
 profile::admin::groups:
   - all-users
+profile::contacts::role_contacts: ['Infrastructure Foundations SREs']

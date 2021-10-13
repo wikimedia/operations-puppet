@@ -10,8 +10,6 @@ role::installserver::light:
   owner: Infrastructure Foundations SREs
 role::wdqs::internal:
   owner: Search Platform SREs
-role::wdqs::autodeploy:
-  owner: Search Platform SREs
 role::wdqs::public:
   owner: Search Platform SREs
 role::wdqs::test:
@@ -112,6 +110,8 @@ role::wmcs::openstack::codfw1dev::control:
   owner: WMCS SREs
 role::graphite::production:
   owner: Observability SREs
+role::grafana
+  owner: Observability SREs
 role::kafka::jumbo::broker:
   owner: Analytics SREs
 role::kubernetes::worker:
@@ -176,6 +176,12 @@ role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
   owner: WMCS SREs
 role::prometheus:
   owner: Observability SREs
+role::prometheus::pop
+  owner: Observability SREs
+role::thanos::backend
+  owner: Observability SREs
+role::thanos::frontend
+  owner: Observability SREs
 role::puppetboard:
   owner: Infrastructure Foundations SREs
 role::redis::misc::slave:
@@ -226,3 +232,9 @@ role::insetup:
   owner: Infrastructure Foundations SREs
 role::thumbor::mediawiki:
   owner: ServiceOps SREs
+role::ping_offload
+  owner: Infrastructure Foundations SREs
+role::netinsights
+  owner: Infrastructure Foundations SREs
+role::sretest
+  owner: Infrastructure Foundations SREs
