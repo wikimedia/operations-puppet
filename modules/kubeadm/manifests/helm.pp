@@ -9,8 +9,8 @@ class kubeadm::helm (
     }
 
     file { '/etc/profile.d/helm-config.sh':
-        ensure  => present,
-        mode    => '0555',
-        content => 'puppet:///modules/kubeadm/helm-config.sh',
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/kubeadm/helm-config.sh',
     }
 }
