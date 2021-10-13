@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# cp /etc/gitlab/gitlab.rb /etc/gitlab/gitlab.rb.bak
-# cp /etc/gitlab/gitlab-secrets.json /etc/gitlab/gitlab-secrets.json.bak
 echo "Running Pre-requisites..."
 
 # Create Backup Configuration Files
@@ -16,8 +14,6 @@ else
     echo "Configuration File: $CONFIG_FILE Not Found"
     exit 1
 fi
-
-# cp /srv/gitlab-backup/latest/latest.tar /srv/gitlab-backup/latest_gitlab_backup.tar
 
 OLD_BACKUP_FILE=/srv/gitlab-backup/latest/latest.tar
 NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
@@ -34,18 +30,7 @@ CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
 
 # Change Permissions
 chmod 600 $NEW_BACKUP_FILE $CONFIG_BACKUP
-# chown git.git $NEW_BACKUP_FILE $CONFIG_BACKUP
 
-
-# normal replica restore
-# chown git.git /srv/gitlab-backup/latest_gitlab_backup.tar
-# chown git.git /etc/gitlab/config_backup/latest/latest.tar
-
-# Diskspace Check
-# df -h
-
-# Package Installation Check
-# dpkg -l | grep gitlab
 
 # Extract Configuration Backup
 tar -xvf $CONFIG_BACKUP --strip-components=2 -C /etc/gitlab/
@@ -57,9 +42,6 @@ else
     echo "Configuration backup files $CONFIG_FILE.bak $SECRETS_FILE.bak not found"
     exit
 fi
-
-# Disable Prompts
-# GITLAB_ASSUME_YES=1
 
 /usr/bin/gitlab-ctl reconfigure
 /usr/bin/gitlab-ctl status
