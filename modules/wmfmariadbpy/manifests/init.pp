@@ -19,10 +19,13 @@ class wmfmariadbpy (
         content => template('wmfmariadbpy/section_ports.csv.erb'),
     }
 
-    $packages = $role ? {
+    # Always install this explicitly, so that other puppet modules can refer to it.
+    ensure_packages('python3-wmfmariadbpy')
+
+    $extra_packages = $role ? {
         'admin'   => ['wmfmariadbpy-admin'],
-        'library' => ['python3-wmfmariadbpy'],
+        'library' => [],
         default   => ['wmfmariadbpy-common'],
     }
-    ensure_packages($packages)
+    ensure_packages($extra_packages)
 }
