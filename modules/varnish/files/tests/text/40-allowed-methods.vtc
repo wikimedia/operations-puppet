@@ -1,0 +1,71 @@
+varnishtest "Check that allowed request methods go through, and those not allowed get a 405 Method Not Allowed"
+
+server s1 {
+    loop 7 {
+        rxreq
+        txresp
+    }
+} -start
+
+
+varnish v1 -arg "-a ${tmpdir}/v1.sock -p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 -connect "${tmpdir}/v1.sock" {
+    txreq -req GET -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+
+    txreq -req HEAD -url "/2" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+
+    # OPTIONS requires the Origin request header too
+    txreq -req OPTIONS -url "/3" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Origin: https://en.wikipedia.org"
+    rxresp
+
+    expect resp.status == 200
+
+    txreq -req PATCH -url "/4" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+
+    txreq -req POST -url "/5" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+
+    txreq -req PUT -url "/6" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+
+    txreq -req DELETE -url "/7" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 200
+
+    txreq -req TRACE -url "/8" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    expect resp.status == 405
+} -run
