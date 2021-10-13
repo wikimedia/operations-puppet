@@ -88,6 +88,14 @@ define systemd::sysuser (
                 $gid = undef
             }
         }
+        # only manage the group if we got an int gid
+        if $gid =~ Pattern[/\A\d+\z/] {
+            group { $username:
+                ensure => $ensure,
+                gid    => $gid,
+                system => true,
+            }
+        }
 
         user { $username:
             ensure => $ensure,

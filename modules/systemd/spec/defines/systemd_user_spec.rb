@@ -12,6 +12,7 @@ describe 'systemd::sysuser' do
           .with_content("u\tdummy\t-\t-\t-\t-\n")
         end
         it { is_expected.not_to contain_user('dummy') }
+        it { is_expected.not_to contain_group('dummy') }
       end
       context 'users' do
         context "id uid" do
@@ -29,6 +30,7 @@ describe 'systemd::sysuser' do
             .with_content("u\tdummy\t999:999\t-\t-\t-\n")
           end
           it { is_expected.to contain_user('dummy').with_uid(999).with_gid(999) }
+          it { is_expected.to contain_group('dummy').with_gid(999) }
         end
         context "id uid:groupname" do
           let(:params) { {id: '999:foobar'} }
@@ -37,6 +39,7 @@ describe 'systemd::sysuser' do
             .with_content("u\tdummy\t999:foobar\t-\t-\t-\n")
           end
           it { is_expected.to contain_user('dummy').with_uid(999).with_gid('foobar') }
+          it { is_expected.not_to contain_group('dummy') }
         end
         context "id /some/path" do
           let(:params) { {id: '/some/path'} }
@@ -45,6 +48,7 @@ describe 'systemd::sysuser' do
             .with_content("u\tdummy\t/some/path\t-\t-\t-\n")
           end
           it { is_expected.not_to contain_user('dummy') }
+          it { is_expected.not_to contain_group('dummy') }
         end
         context "id String" do
           let(:params) { {id: 'groupname'} }
@@ -63,6 +67,7 @@ describe 'systemd::sysuser' do
             .with_content("u\tdummy\t-\t\"foo bar\"\t-\t-\n")
           end
           it { is_expected.not_to contain_user('dummy') }
+          it { is_expected.not_to contain_group('dummy') }
         end
         context "homedir" do
           let(:params) { {home_dir: '/home/foobar'} }
@@ -71,6 +76,7 @@ describe 'systemd::sysuser' do
             .with_content("u\tdummy\t-\t-\t/home/foobar\t-\n")
           end
           it { is_expected.to contain_user('dummy').with_home('/home/foobar') }
+          it { is_expected.not_to contain_group('dummy') }
         end
         context "shell" do
           let(:params) { {shell: '/bin/sh'} }
@@ -79,6 +85,7 @@ describe 'systemd::sysuser' do
             .with_content("u\tdummy\t-\t-\t-\t/bin/sh\n")
           end
           it { is_expected.to contain_user('dummy').with_shell('/bin/sh') }
+          it { is_expected.not_to contain_group('dummy') }
         end
       end
       context 'groups' do
@@ -113,6 +120,7 @@ describe 'systemd::sysuser' do
           it do is_expected.to contain_file('/etc/sysusers.d/dummy.conf')
             .with_content("g\tdummy\t/some/path\t-\t-\t-\n")
           end
+          it { is_expected.not_to contain_group('dummy') }
         end
         context "id String" do
           let(:params) { super().merge(id: 'foobar') }
@@ -147,6 +155,7 @@ describe 'systemd::sysuser' do
           .with_ensure('file')
           .with_content("m\tdummy\t-\t-\t-\t-\n")
         end
+        it { is_expected.not_to contain_group('dummy') }
         context "id gid" do
           let(:params) { super().merge(id: 999) }
 
@@ -173,6 +182,7 @@ describe 'systemd::sysuser' do
           it do is_expected.to contain_file('/etc/sysusers.d/dummy.conf')
             .with_content("m\tdummy\tfoobar\t-\t-\t-\n")
           end
+          it { is_expected.not_to contain_group('dummy') }
         end
         context "id uid-gid" do
           let(:params) { super().merge(id: '500-999') }
@@ -181,6 +191,7 @@ describe 'systemd::sysuser' do
           it do is_expected.to contain_file('/etc/sysusers.d/dummy.conf')
             .with_content("m\tdummy\t500-999\t-\t-\t-\n")
           end
+          it { is_expected.not_to contain_group('dummy') }
         end
         context "description" do
           let(:params) { super().merge(description: 'foo bar') }
@@ -205,6 +216,7 @@ describe 'systemd::sysuser' do
           .with_ensure('file')
           .with_content("r\tdummy\t-\t-\t-\t-\n")
         end
+        it { is_expected.not_to contain_group('dummy') }
         context "id gid" do
           let(:params) { super().merge(id: 999) }
 
@@ -236,6 +248,7 @@ describe 'systemd::sysuser' do
           it do is_expected.to contain_file('/etc/sysusers.d/dummy.conf')
             .with_content("r\tdummy\t500-999\t-\t-\t-\n")
           end
+          it { is_expected.not_to contain_group('dummy') }
         end
         context "description" do
           let(:params) { super().merge(description: 'foo bar') }
