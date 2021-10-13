@@ -167,7 +167,7 @@ class profile::gitlab(
         smtp_enabled           => $smtp_enabled,
         enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         listen_addresses       => [$service_ip_v4, $service_ip_v6],
-        enable_restore_replica => $active_host != $facts['fqdn'], # enable automated restore on passive GitLab server
+        enable_restore_replica => false, # temp. deactivated
         cert_path              => $cert_path,
         key_path               => $key_path,
         gitlab_domain          => $service_name,
