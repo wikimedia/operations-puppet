@@ -1,11 +1,13 @@
 class role::osm::replica (
     $osm_master = undef,
 ) {
-    include role::osm::common
+    include profile::standard
     include postgresql::postgis
     include passwords::osm
-    include ::profile::base::firewall
-    include ::profile::prometheus::postgres_exporter
+    include profile::base::firewall
+    include profile::prometheus::postgres_exporter
+    include profile::osm::common
+
     # Note: This is here to illustrate the fact that the replica is expected to
     # have the same dbs as the master.
     #postgresql::spatialdb { 'gis': }
