@@ -54,12 +54,16 @@ class profile::openstack::base::cinder::backup (
         size   => $lvm_lv_size,
     }
 
+    file { $backup_path :
+        ensure => directory,
+    }
+
     mount { $backup_path :
         ensure  => mounted,
         device  => "/dev/${lvm_vg_name}/${lvm_lv_name}",
         fstype  => $lvm_lv_format,
         options => 'defaults',
         atboot  => true,
-        require => Lvm::Volume[$lvm_lv_name],
+        require => [Lvm::Volume[$lvm_lv_name], File[$backup_path]],
     }
 }
