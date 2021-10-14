@@ -41,6 +41,7 @@ bootstrap_server() {
   install -v $git/puppet/manifests/realm.pp $init/00realm.pp
   cat <<EOF > $init/bootstrap.pp
 \$_role = 'puppetmaster/pontoon'
+\$pontoon_bootstrap = true
 include "role::puppetmaster::pontoon"
 EOF
 

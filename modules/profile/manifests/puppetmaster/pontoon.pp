@@ -13,7 +13,7 @@ class profile::puppetmaster::pontoon (
     # Generating all service certificates can take a long time.
     # Therefore run cert generation only when a load balancer is deployed, this
     # saves time during stack bootstrap.
-    if pontoon::hosts_for_role('pontoon::lb') != undef {
+    if (!$::pontoon_bootstrap and pontoon::hosts_for_role('pontoon::lb') != undef) {
         $tls_services = wmflib::service::fetch().filter |$name, $config| {
             ('encryption' in $config and $config['encryption'])
         }
