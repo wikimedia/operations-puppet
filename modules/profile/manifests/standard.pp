@@ -12,7 +12,6 @@ class profile::standard(
 
     }
 
-    class { 'standard': }
     if $enable_ip6_mapped {
         interface::add_ip6_mapped { 'main': }
     }
