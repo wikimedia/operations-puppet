@@ -1,11 +1,8 @@
-# == Class profile::ntp
-#
-# Ntp server profile
+# @summary profile to configure ntp
+# @monitoring_hosts list of monitoring hosts
 class profile::ntp (
     Array[Stdlib::Host] $monitoring_hosts = lookup('monitoring_hosts'),
 ){
-    contain standard::ntp
-    # A list of all global peers, used in the core sites' case below
     $wmf_all_peers = [
         $::ntp_peers['eqiad'],
         $::ntp_peers['codfw'],

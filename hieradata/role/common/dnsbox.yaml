@@ -24,3 +24,5 @@ profile::dns::auth::acmechief_target::acmechief_hosts:
 - acmechief-test2001.codfw.wmnet
 profile::dns::auth::gitrepo: 'https://gerrit.wikimedia.org/r/operations/dns.git'
 profile::bird::bind_anycast_service: 'pdns-recursor.service'
+
+profile::systemd::timesyncd::ensure: absent

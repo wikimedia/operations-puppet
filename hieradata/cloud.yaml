@@ -494,3 +494,6 @@ profile::environment::custom_skel_bashrc: 'base/environment/skel/bashrc.erb'
 profile::environment::editor: 'use_default'
 profile::environment::profile_scripts:
   field.sh: 'puppet:///modules/base/environment/field.sh'
+
+profile::systemd::timesyncd::ensure: present
+profile::systemd::timesyncd::ntp_servers: []

@@ -19,6 +19,7 @@ class profile::base(
 
     contain profile::base::puppet
     contain profile::base::certificates
+    include profile::systemd::timesyncd
     include profile::pki::client
     if $enable_contacts {
         include profile::contacts
