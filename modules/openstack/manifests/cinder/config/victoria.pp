@@ -12,6 +12,7 @@ class openstack::cinder::config::victoria(
     String[1]           $rabbit_pass,
     Stdlib::Port        $api_bind_port,
     String[1]           $libvirt_rbd_cinder_uuid,
+    Stdlib::Unixpath    $backup_path,
 ) {
     require 'openstack::cinder::user'
 

@@ -15,6 +15,7 @@ class profile::openstack::base::cinder(
     String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
     String $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
     Boolean $active = lookup('profile::openstack::base::cinder_active'),
+    Stdlib::Unixpath    $backup_path           = lookup('profile::openstack::base::cinder::backup::path'),
     ) {
 
     $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
@@ -33,6 +34,7 @@ class profile::openstack::base::cinder(
         rabbit_user             => $rabbit_user,
         rabbit_pass             => $rabbit_pass,
         libvirt_rbd_cinder_uuid => $libvirt_rbd_cinder_uuid,
+        backup_path             => $backup_path,
     }
 
     class { '::openstack::cinder::service':

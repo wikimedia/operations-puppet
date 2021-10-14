@@ -1,2 +1,4 @@
 profile::ceph::admin_keyring: '/etc/ceph/ceph.client.admin.keyring'
 profile::ceph::data_dir: '/var/lib/ceph'
+profile::ceph::cinder_backup_nodes:
+  - cloudbackup2002.codfw.wmnet

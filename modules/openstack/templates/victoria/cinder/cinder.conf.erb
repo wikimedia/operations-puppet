@@ -12,6 +12,20 @@ my_ip = <%= @ipaddress %>
 # Availability zone of this node. Can be overridden per volume backend with the option "backend_availability_zone". (string value)
 storage_availability_zone = nova
 
+#
+# backup stuff
+#
+backup_driver = cinder.backup.drivers.posix.PosixBackupDriver
+# this is for ceilometer, but we don't use it
+backup_enable_progress_timer = False
+# where to store backups
+backup_posix_path = <%= @backup_path %>
+# The size in bytes that changes are tracked for incremental backups.
+# backup_file_size has to be multiple of backup_sha_block_size_bytes.
+backup_sha_block_size_bytes = 32768
+# split binary backup files in chunks of this size. This seems to be the default.
+backup_file_size = 1999994880
+
 # Default availability zone for new volumes. If not set, the storage_availability_zone option value is used as the default for new volumes.
 # (string value)
 #default_availability_zone = <None>

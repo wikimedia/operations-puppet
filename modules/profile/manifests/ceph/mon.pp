@@ -13,7 +13,8 @@ class profile::ceph::mon(
     String               $admin_keydata    = lookup('profile::ceph::admin_keydata'),
     String               $fsid             = lookup('profile::ceph::fsid'),
     String               $mon_keydata      = lookup('profile::ceph::mon::keydata'),
-    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
+    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
+    Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
     include network::constants
     # Limit the client connections to the hypervisors in eqiad and codfw
@@ -26,7 +27,8 @@ class profile::ceph::mon(
     $osd_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
 
     $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
-    $ferm_srange = join(concat($mon_addrs, $osd_addrs, $client_networks, $openstack_controller_ips), ' ')
+    $cinder_backup_nodes_ips  = $cinder_backup_nodes.map |$host| { ipresolve($host, 4) }
+    $ferm_srange = join(concat($mon_addrs, $osd_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
     ferm::service { 'ceph_mgr_v2':
         proto  => 'tcp',
         port   => 6800,

@@ -11,6 +11,7 @@ class profile::openstack::base::rabbitmq(
     $nova_rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     $nova_rabbit_password = lookup('profile::openstack::base::nova::rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
+    Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
 ){
 
     class { '::rabbitmq':
@@ -101,5 +102,13 @@ class profile::openstack::base::rabbitmq(
         proto  => 'tcp',
         port   => '5672',
         srange => "(${labs_networks})",
+    }
+
+    # cinder-backup requires access to rabbit
+    ferm::rule { 'rabbit_for_cinder_backup_nodes':
+        ensure => 'present',
+        rule   => "saddr (@resolve((${join($cinder_backup_nodes,' ')}))
+                          @resolve((${join($cinder_backup_nodes,' ')}), AAAA))
+                   proto tcp dport 5672 ACCEPT;",
     }
 }
