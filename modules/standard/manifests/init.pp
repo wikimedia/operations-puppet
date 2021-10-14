@@ -8,8 +8,6 @@ class standard {
         include standard::ntp::timesyncd
     }
 
-    include standard::prometheus
-
     # For historical reasons, users in modules/admin/data/data.yaml
     # (for production) and in LDAP (for Labs) start at uid/gid 500, so
     # we need to guard against system users being created in that
