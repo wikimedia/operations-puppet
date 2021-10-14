@@ -12,7 +12,6 @@ class prometheus::node_puppet_agent (
     }
 
     ensure_packages(['python3-prometheus-client', 'python3-yaml'])
-    require prometheus::node_exporter
 
     file { '/usr/local/bin/prometheus-puppet-agent-stats':
         ensure => file,
@@ -29,5 +28,6 @@ class prometheus::node_puppet_agent (
         user        => 'prometheus',
         command     => "/usr/local/bin/prometheus-puppet-agent-stats --outfile ${outfile}",
         interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
+        require     => File[$outfile.dirname]
     }
 }
