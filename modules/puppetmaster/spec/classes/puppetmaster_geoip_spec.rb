@@ -9,7 +9,7 @@ describe 'puppetmaster::geoip' do
         include profile::base::puppet
         include httpd
         include puppetmaster
-        include standard::prometheus
+        include prometheus::node_exporter
         '''
       }
       it { is_expected.to compile }
