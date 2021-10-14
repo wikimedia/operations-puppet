@@ -1,8 +1,9 @@
-fields:
-  type: "syslog"
 codec: "json_lines"
 ignore:
   - "@timestamp"
+  - "timestamp"
+  - "tags"
+  - "normalized"
 testcases:
   - input:
       - >
@@ -54,10 +55,228 @@ testcases:
         "server": "en.wikipedia.org"
         "severity": "err"
         "shard": "s1"
-        "timestamp": "2020-06-08T04:23:54+00:00"
-        "type":
-          - "mediawiki"
-          - "syslog"
+        "type": "mediawiki"
         "unique_id": "Xt29WQpAMOIAAuGj4nYAAAAY"
         "url": "/wiki/User:Bennylin/Color/RG?TSQZPPYR=XTPN"
         "wiki": "enwiki"
+  - input:
+      - >
+        {
+          "timestamp": "2021-10-08T05:09:10+00:00",
+          "logsource": "wtp1037",
+          "host": "wtp1037",
+          "program": "mediawiki",
+          "severity": "err",
+          "facility": "user",
+          "@timestamp": "2021-10-08T05:09:10.951366+00:00",
+          "@version": 1,
+          "message": "[8fabbd5e-184a-47e0-9bb8-514846c8ae2c] /w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string",
+          "type": "mediawiki",
+          "channel": "exception",
+          "level": "ERROR",
+          "monolog_level": 400,
+          "url": "/w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636",
+          "ip": "10.64.32.229",
+          "http_method": "GET",
+          "server": "zh.wikipedia.org",
+          "referrer": null,
+          "phpversion": "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2",
+          "servergroup": "parsoid",
+          "normalized_message": "[{reqId}] {exception_url}   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string",
+          "shard": "s2",
+          "wiki": "zhwiki",
+          "mwversion": "1.38.0-wmf.3",
+          "reqId": "8fabbd5e-184a-47e0-9bb8-514846c8ae2c",
+          "exception": {
+            "class": "Wikimedia\\Assert\\InvariantException",
+            "message": "Invariant failed: Bad UTF-8 at start of string",
+            "code": 0,
+            "file": "/srv/mediawiki/php-1.38.0-wmf.3/vendor/wikimedia/assert/src/Assert.php:224",
+            "trace": "from /srv/mediawiki/php-1.38.0-wmf.3/vendor/wikimedia/assert/src/Assert.php(224)\n#0 ..."
+          },
+          "exception_url": "/w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636",
+          "caught_by": "mwe_handler"
+        }
+    expected:
+      - message: "[8fabbd5e-184a-47e0-9bb8-514846c8ae2c] /w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string"
+        caught_by: "mwe_handler"
+        channel: "exception"
+        exception:
+          class: "Wikimedia\\Assert\\InvariantException"
+          code: 0
+          file: "/srv/mediawiki/php-1.38.0-wmf.3/vendor/wikimedia/assert/src/Assert.php:224"
+          message: "Invariant failed: Bad UTF-8 at start of string"
+          trace: "from /srv/mediawiki/php-1.38.0-wmf.3/vendor/wikimedia/assert/src/Assert.php(224)\n#0 ..."
+        exception_url: "/w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636"
+        host: "wtp1037"
+        logsource: "wtp1037"
+        program: "mediawiki"
+        severity: "err"
+        facility: "user"
+        type: "mediawiki"
+        level: "ERROR"
+        monolog_level: 400
+        url: "/w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636"
+        ip: "10.64.32.229"
+        http_method: "GET"
+        server: "zh.wikipedia.org"
+        referrer: null
+        phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2"
+        servergroup: "parsoid"
+        normalized_message: "[{reqId}] {exception_url}   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string"
+        shard: "s2"
+        wiki: "zhwiki"
+        mwversion: "1.38.0-wmf.3"
+        reqId: "8fabbd5e-184a-47e0-9bb8-514846c8ae2c"
+        message_checksum: "4c615270691b88c41beb7266cb1225f3"
+      - message: "[8fabbd5e-184a-47e0-9bb8-514846c8ae2c] /w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string"
+        log:
+          level: "ERROR"
+          origin:
+            file:
+              line: "224"
+              name: "/srv/mediawiki/php-1.38.0-wmf.3/vendor/wikimedia/assert/src/Assert.php"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            priority: 11
+            severity:
+              code: 3
+              name: "error"
+        host:
+          name: "wtp1037"
+        labels:
+          channel: "exception"
+          wiki: "zhwiki"
+          shard: "s2"
+          caught_by: "mwe_handler"
+          phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2"
+          servergroup: "parsoid"
+          normalized_message: "[{reqId}] {exception_url}   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string"
+        service:
+          type: "mediawiki"
+          version: "1.38.0-wmf.3"
+        error:
+          type: "Wikimedia\\Assert\\InvariantException"
+          message: "Invariant failed: Bad UTF-8 at start of string"
+          stack_trace: "from /srv/mediawiki/php-1.38.0-wmf.3/vendor/wikimedia/assert/src/Assert.php(224)\n#0 ..."
+        trace:
+          id: "8fabbd5e-184a-47e0-9bb8-514846c8ae2c"
+        http:
+          request:
+            referrer: null
+        url:
+          full: "https://zh.wikipedia.org/w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636"
+        ecs:
+          version: "1.7.0"
+  - input:
+      - >
+        {
+          "timestamp": "2021-10-14T09:08:00+00:00",
+          "logsource": "mw1432",
+          "host": "mw1432",
+          "program": "mediawiki",
+          "severity": "err",
+          "facility": "user",
+          "@timestamp": "2021-10-14T09:08:00.378391+00:00",
+          "@version": 1,
+          "message": "[46c86a62-c331-4e29-ac35-a6ab1d19fe47] /w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013   PHP Notice: A non well formed numeric value encountered",
+          "type": "mediawiki",
+          "channel": "error",
+          "level": "ERROR",
+          "monolog_level": 400,
+          "url": "/w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013",
+          "ip": "2620:0:861:102:10:64:16:215",
+          "http_method": "GET",
+          "server": "www.wikidata.org",
+          "referrer": "https://www.wikidata.org/",
+          "phpversion": "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2",
+          "servergroup": "appserver",
+          "normalized_message": "[{reqId}] {exception_url}   PHP Notice: A non well formed numeric value encountered",
+          "shard": "s8",
+          "wiki": "wikidatawiki",
+          "mwversion": "1.38.0-wmf.4",
+          "reqId": "46c86a62-c331-4e29-ac35-a6ab1d19fe47",
+          "exception": {
+            "class": "ErrorException",
+            "message": "PHP Notice: A non well formed numeric value encountered",
+            "code": 0,
+            "file": "/srv/mediawiki/php-1.38.0-wmf.4/includes/pager/ReverseChronologicalPager.php:148",
+            "trace": "from /srv/mediawiki/php-1.38.0-wmf.4/includes/pager/ReverseChronologicalPager.php(148)\n#0 ..."
+          },
+          "exception_url": "/w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013",
+          "caught_by": "mwe_handler"
+        }
+    expected:
+      - message: "[46c86a62-c331-4e29-ac35-a6ab1d19fe47] /w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013   PHP Notice: A non well formed numeric value encountered"
+        caught_by: "mwe_handler"
+        channel: "error"
+        exception:
+          class: "ErrorException"
+          code: 0
+          file: "/srv/mediawiki/php-1.38.0-wmf.4/includes/pager/ReverseChronologicalPager.php:148"
+          message: "PHP Notice: A non well formed numeric value encountered"
+          trace: "from /srv/mediawiki/php-1.38.0-wmf.4/includes/pager/ReverseChronologicalPager.php(148)\n#0 ..."
+        exception_url: "/w/index.php?contribs=user\u0026limit=50\u0026month=1*318*313*0\u0026namespace=\u0026tagfilter=\u0026target=127.0.0.1\u0026title=Special:Contributions\u0026year=2013"
+        host: "mw1432"
+        logsource: "mw1432"
+        program: "mediawiki"
+        severity: "err"
+        facility: "user"
+        type: "mediawiki"
+        level: "ERROR"
+        monolog_level: 400
+        url: "/w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013"
+        ip: "2620:0:861:102:10:64:16:215"
+        http_method: "GET"
+        server: "www.wikidata.org"
+        referrer: "https://www.wikidata.org/"
+        phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2"
+        servergroup: "appserver"
+        normalized_message: "[{reqId}] {exception_url}   PHP Notice: A non well formed numeric value encountered"
+        shard: "s8"
+        wiki: "wikidatawiki"
+        mwversion: "1.38.0-wmf.4"
+        reqId: "46c86a62-c331-4e29-ac35-a6ab1d19fe47"
+      - message: "[46c86a62-c331-4e29-ac35-a6ab1d19fe47] /w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013   PHP Notice: A non well formed numeric value encountered"
+        log:
+          level: "ERROR"
+          origin:
+            file:
+              line: "148"
+              name: "/srv/mediawiki/php-1.38.0-wmf.4/includes/pager/ReverseChronologicalPager.php"
+          syslog:
+            facility:
+              code: 1
+              name: "user"
+            priority: 11
+            severity:
+              code: 3
+              name: "error"
+        host:
+          name: "mw1432"
+        labels:
+          channel: "error"
+          wiki: "wikidatawiki"
+          shard: "s8"
+          caught_by: "mwe_handler"
+          phpversion: "7.2.34-18+0~20210223.60+debian10~1.gbpb21322+wmf2"
+          servergroup: "appserver"
+          normalized_message: "[{reqId}] {exception_url}   PHP Notice: A non well formed numeric value encountered"
+        service:
+          type: "mediawiki"
+          version: "1.38.0-wmf.4"
+        error:
+          type: "ErrorException"
+          message: "PHP Notice: A non well formed numeric value encountered"
+          stack_trace: "from /srv/mediawiki/php-1.38.0-wmf.4/includes/pager/ReverseChronologicalPager.php(148)\n#0 ..."
+        trace:
+          id: "46c86a62-c331-4e29-ac35-a6ab1d19fe47"
+        http:
+          request:
+            referrer: "https://www.wikidata.org/"
+        url:
+          full: "https://www.wikidata.org/w/index.php?contribs=user&limit=50&month=1*318*313*0&namespace=&tagfilter=&target=127.0.0.1&title=Special:Contributions&year=2013"
+        ecs:
+          version: "1.7.0"
