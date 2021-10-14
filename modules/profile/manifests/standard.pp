@@ -1,6 +1,5 @@
 class profile::standard(
     Boolean                    $has_default_mail_relay = lookup('profile::standard::has_default_mail_relay'),
-    Array[Stdlib::IP::Address] $monitoring_hosts       = lookup('monitoring_hosts'),
     Boolean                    $enable_ip6_mapped      = lookup('profile::standard::enable_ip6_mapped'),
 ) {
     include profile::base
@@ -18,9 +17,7 @@ class profile::standard(
         include profile::mail::default_mail_relay
     }
 
-    class { 'standard':
-        monitoring_hosts       => $monitoring_hosts,
-    }
+    class { 'standard': }
     if $enable_ip6_mapped {
         interface::add_ip6_mapped { 'main': }
     }
