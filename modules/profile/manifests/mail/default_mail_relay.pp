@@ -1,10 +1,11 @@
 class profile::mail::default_mail_relay (
-    Boolean $enabled = lookup('profile::mail::default_mail_relay::enabled')
+    Boolean $enabled  = lookup('profile::mail::default_mail_relay::enabled'),
+    String  $template = lookup('profile::mail::default_mail_relay::template'),
 ) {
     if $enabled {
         class { 'exim4':
             queuerunner => 'combined',
-            config      => template("standard/mail/exim4.minimal.${::realm}.erb"),
+            config      => template($template),
         }
 
         profile::auto_restarts::service { 'exim4': }
