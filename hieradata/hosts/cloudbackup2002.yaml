@@ -5,7 +5,7 @@ profile::openstack::codfw1dev::cinder::backup::lvm::pv_units:
   - /dev/sda5
   - /dev/sdb1
   - /dev/sdc1
-profile::openstack::codfw1dev::cinder::backup::lvm::vg_name: backups
+profile::openstack::codfw1dev::cinder::backup::lvm::vg_name: backup
 profile::openstack::codfw1dev::cinder::backup::lvm::lv_name: cinder-backups
 profile::openstack::codfw1dev::cinder::backup::lvm::lv_size: 80TB
 profile::openstack::codfw1dev::cinder::backup::lvm::lv_format: ext4
