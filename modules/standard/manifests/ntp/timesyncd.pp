@@ -11,7 +11,7 @@ class standard::ntp::timesyncd () {
     # This maps the servers that regular clients use
     $ntp_servers = {
         eqiad => concat($::ntp_peers['eqiad'], $::ntp_peers['codfw']),
-        codfw => concat($::ntp_peers['eqiad'], $::ntp_peers['codfw']),
+        codfw => concat($::ntp_peers['codfw'], $::ntp_peers['eqiad']),
         esams => concat($::ntp_peers['esams'], $::ntp_peers['eqiad']),
         ulsfo => concat($::ntp_peers['ulsfo'], $::ntp_peers['codfw']),
         eqsin => concat($::ntp_peers['eqsin'], $::ntp_peers['codfw']),
