@@ -3836,9 +3836,9 @@ service::catalog:
     encryption: false
     ip:
       codfw:
-        default: 208.80.154.30
-      eqiad:
         default: 208.80.153.42
+      eqiad:
+        default: 208.80.154.30
     monitoring:
       check_command: "check_http_url!apt.wikimedia.org!/wikimedia/"
       notes_url: "https://wikitech.wikimedia.org/wiki/APT_repository"
