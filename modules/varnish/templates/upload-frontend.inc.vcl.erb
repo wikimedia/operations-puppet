@@ -198,6 +198,11 @@ sub cluster_fe_ratelimit {
 			}
 		}
 
+		// Bytedance issue mitigation: 100/10s (10/s long term, with 100 burst)
+		if (req.http.X-Client-IP ~ "^130\.44\.21[2345]\." && vsthrottle.is_denied("bytedance", 100, 10s)) {
+			return (synth(429, "Too Many Requests"));
+                }
+
 		// 403 all python-requests UA
 		if (req.http.User-Agent ~ "^python-requests") {
 		    return (synth(403, "Forbidden. Please comply with the User-Agent policy: https://meta.wikimedia.org/wiki/User-Agent_policy"));
