@@ -67,7 +67,7 @@ role::mariadb::misc::phabricator:
 role::mariadb::core_multiinstance:
   owner: Data Persistence SREs
 role::mariadb::dbstore_multiinstance:
-  owner: Data Persistence SREs and Analytics SREs (dbstore1003-1005)
+  owner: Data Persistence SREs
 role::mariadb::sanitarium_multiinstance:
   owner: Data Persistence SREs
 role::mariadb::misc::multiinstance:
@@ -106,7 +106,7 @@ role::wmcs::openstack::codfw1dev::control:
   owner: WMCS SREs
 role::graphite::production:
   owner: Observability SREs
-role::grafana
+role::grafana:
   owner: Observability SREs
 role::kafka::jumbo::broker:
   owner: Analytics SREs
@@ -114,6 +114,8 @@ role::kubernetes::worker:
   owner: ServiceOps SREs
 role::kubernetes::staging::worker:
   owner: ServiceOps SREs
+role::logstash:
+  owner: Observability SREs
 role::logstash7:
   owner: Observability SREs
 role::analytics_cluster::hadoop::client:
@@ -166,11 +168,11 @@ role::kafka::monitoring_buster:
   owner: Analytics SREs
 role::prometheus:
   owner: Observability SREs
-role::prometheus::pop
+role::prometheus::pop:
   owner: Observability SREs
-role::thanos::backend
+role::thanos::backend:
   owner: Observability SREs
-role::thanos::frontend
+role::thanos::frontend:
   owner: Observability SREs
 role::puppetboard:
   owner: Infrastructure Foundations SREs
@@ -222,9 +224,9 @@ role::insetup:
   owner: Infrastructure Foundations SREs
 role::thumbor::mediawiki:
   owner: ServiceOps SREs
-role::ping_offload
+role::ping_offload:
   owner: Infrastructure Foundations SREs
-role::netinsights
+role::netinsights:
   owner: Infrastructure Foundations SREs
-role::sretest
+role::sretest:
   owner: Infrastructure Foundations SREs
