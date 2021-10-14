@@ -284,7 +284,7 @@ node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
 
 # New centrallog node T289624
 node 'centrallog2002.codfw.wmnet' {
-    role(insetup)
+    role(syslog::centralserver)
 }
 
 node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {
