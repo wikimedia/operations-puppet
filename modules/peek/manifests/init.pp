@@ -1,4 +1,9 @@
 # https://wikitech.wikimedia.org/wiki/Security/Peek
+#
+# If you want to use this class again you'll want to add
+# some systemd timers that similar to the ones suggested
+# at https://gerrit.wikimedia.org/r/c/operations/puppet/+/730867/3
+#
 class peek (
     String $to_email,
     String $asana_token,
@@ -6,7 +11,6 @@ class peek (
     Stdlib::Unixpath $template_dir='/var/lib/peek/git/templates/',
     )
 {
-    include ::peek::cron
 
     package { [
         'python3-jinja2',
