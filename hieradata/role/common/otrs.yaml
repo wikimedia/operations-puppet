@@ -9,7 +9,7 @@ profile::otrs::daemon: true
 # Set up in the private repo
 #profile::otrs::database_pass:
 #profile::otrs::exim_database_pass:
-profile::standard::has_default_mail_relay: false
+profile::mail::default_mail_relay::enabled: false
 
 # envoy for TLS termination behind ATS
 profile::tlsproxy::envoy::global_cert_name: "ticket.discovery.wmnet"

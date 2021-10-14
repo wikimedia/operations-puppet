@@ -1,7 +1,7 @@
 profile::admin::groups:
   - mailman3-roots
 
-profile::standard::has_default_mail_relay: false
+profile::mail::default_mail_relay::enabled: false
 mailman::lists_servername: 'lists.wikimedia.org'
 mtail::logs:
   - /var/log/exim4/mainlog

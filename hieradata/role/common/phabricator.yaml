@@ -1,4 +1,4 @@
-profile::standard::has_default_mail_relay: false
+profile::mail::default_mail_relay::enabled: false
 profile::admin::groups:
   - phabricator-admin
   - phabricator-roots

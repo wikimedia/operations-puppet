@@ -34,6 +34,7 @@ class profile::base(
     include network::constants
 
     include profile::resolving
+    include profile::mail::default_mail_relay
     include profile::monitoring
 
     class { 'rsyslog': }

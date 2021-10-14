@@ -1,5 +1,4 @@
 class profile::standard(
-    Boolean                    $has_default_mail_relay = lookup('profile::standard::has_default_mail_relay'),
     Boolean                    $enable_ip6_mapped      = lookup('profile::standard::enable_ip6_mapped'),
 ) {
     include profile::base
@@ -11,10 +10,6 @@ class profile::standard(
         include profile::cumin::target
         include profile::debmonitor::client
 
-    }
-
-    if $has_default_mail_relay {
-        include profile::mail::default_mail_relay
     }
 
     class { 'standard': }
