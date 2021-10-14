@@ -51,7 +51,7 @@ profile::acme_chief::certificates:
         - '*.check.wikimedia-dns.org'
         challenge: dns-01
         authorized_regexes:
-        - '^durum[12345]00[12]\.(eqiad|codfw|esams|ulsfo|eqsin)\.wmnet$'
+        - '^durum[123456]00[12]\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs)\.wmnet$'
     gerrit:
         CN: 'gerrit.wikimedia.org'
         SNI:
@@ -271,6 +271,7 @@ profile::acme_chief::certificates:
         - '^cp3[0-9][0-9][0-9]\.esams\.wmnet$'
         - '^cp4[0-9][0-9][0-9]\.ulsfo\.wmnet$'
         - '^cp5[0-9][0-9][0-9]\.eqsin\.wmnet$'
+        - '^cp6[0-9][0-9][0-9]\.drmrs\.wmnet$'
     wikidough:
         CN: 'wikimedia-dns.org'
         SNI:
@@ -291,6 +292,7 @@ profile::acme_chief::certificates:
         - '^cp3[0-9][0-9][0-9]\.esams\.wmnet$'
         - '^cp4[0-9][0-9][0-9]\.ulsfo\.wmnet$'
         - '^cp5[0-9][0-9][0-9]\.eqsin\.wmnet$'
+        - '^cp6[0-9][0-9][0-9]\.drmrs\.wmnet$'
 profile::acme_chief::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/acme-chief-gdnsd-sync.py
