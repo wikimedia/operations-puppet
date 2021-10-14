@@ -15,7 +15,7 @@ import yaml
 
 TLS_TRUSTED_CA = '/etc/ssl/certs/Puppet_Internal_CA.pem'
 DB_CONFIG_FILE = '/etc/prometheus/zarcillo.cnf'
-DATACENTERS = ['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin']
+DATACENTERS = ['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin', 'drmrs']
 
 
 def get_socket(instance):
