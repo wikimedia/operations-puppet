@@ -31,4 +31,23 @@ class profile::bird::anycast_monitoring{
     monitoring::host { 'syslog.anycast.wmnet':
         host_fqdn => 'syslog.anycast.wmnet',
     }
+
+    # Wikidough.
+    monitoring::host { '185.71.138.138':
+        ip_address => '185.71.138.138',
+    }
+
+    monitoring::service { 'check_wikidough_doh':
+        host          => '185.71.138.138',
+        description   => 'Wikidough DoH Check',
+        check_command => 'check_https_url_custom_ip!wikimedia-dns.org!185.71.138.138!/',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+    }
+
+    monitoring::service { 'check_wikidough_dot':
+        host          => '185.71.138.138',
+        description   => 'Wikidough DoT Check',
+        check_command => 'check_tcp_ssl!185.71.138.138!853',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+    }
 }
