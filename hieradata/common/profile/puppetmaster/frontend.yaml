@@ -9,6 +9,7 @@ profile::puppetmaster::frontend::allow_from:
   - '*.esams.wmnet'
   - '*.codfw.wmnet'
   - '*.eqsin.wmnet'
+  - '*.drmrs.wmnet'
 profile::puppetmaster::frontend: chain
 profile::puppetmaster::frontend::extra_auth_rules: ''
 profile::puppetmaster::frontend::secure_private: true
