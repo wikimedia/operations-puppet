@@ -25,6 +25,12 @@ def get_args() -> None:
     nextgid = subparsers.add_parser('nextgid')
     nextgid.add_argument('--min', help='The minimum gid (inclusive)', default=700, type=int)
     nextgid.add_argument('--max', help='The maximum gid (inclusive)', default=899, type=int)
+
+    nextgid = subparsers.add_parser('findusers')
+    nextgid.add_argument('--min', help='The minimum gid (inclusive)', default=500, type=int)
+    nextgid.add_argument('--max', help='The maximum gid (inclusive)', default=999, type=int)
+    nextgid.add_argument('--system', help='Wether to include system users', action='store_true')
+
     return parser.parse_args()
 
 
@@ -91,6 +97,14 @@ def get_nextgid(data: Dict, args: Namespace) -> int:
     return get_next(gids)
 
 
+def findusers(data: Dict, args: Namespace) -> list:
+    """return a list of user matching the query"""
+    if args.system:
+        return [k for k, v in data['users'].items() if args.min <= v['uid'] <= args.max]
+    return [k for k, v in data['users'].items()
+            if args.min <= v['uid'] <= args.max and not v.get('system', False)]
+
+
 def main() -> int:
     """Main entry point.
 
@@ -100,7 +114,11 @@ def main() -> int:
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
     data = yaml.safe_load(args.data_yaml.read_text())
-    print({'nextgid': get_nextgid}.get(args.action)(data, args))
+    results = {
+        'nextgid': get_nextgid,
+        'findusers': findusers,
+    }.get(args.action)(data, args)
+    print(results)
     return 0
 
 
