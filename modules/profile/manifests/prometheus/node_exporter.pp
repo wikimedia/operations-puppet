@@ -1,6 +1,6 @@
-# == Class: role::prometheus::node_exporter
+# == Class: profile::prometheus::node_exporter
 #
-# Role to provision prometheus machine metrics exporter. See also
+# Profile to provision prometheus machine metrics exporter. See also
 # https://github.com/prometheus/node_exporter and the module's documentation.
 #
 # filtertags: labs-project-automation-framework labs-project-graphite
