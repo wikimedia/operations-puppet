@@ -6,6 +6,7 @@ profile::resolving::domain_search:
   - esams.wmnet
   - ulsfo.wmnet
   - eqsin.wmnet
+  - drmrs.wmnet
 profile::admin::groups:
   - all-users
 profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
