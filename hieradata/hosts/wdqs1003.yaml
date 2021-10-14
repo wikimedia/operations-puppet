@@ -1,0 +1,2 @@
+profile::query_service::updater_type: 'streaming'
+profile::query_service::blazegraph_extra_jvm_opts: ["-DwikibaseSomeValueMode=skolem"]
