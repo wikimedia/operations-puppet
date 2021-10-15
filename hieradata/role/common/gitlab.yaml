@@ -52,4 +52,4 @@ profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.cr
 profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
 
 # Disable Restore-Backup Timer Job
-profile::gitlab::enable_restore_timer: false
+profile::gitlab::enable_restore_timer: true
