@@ -27,3 +27,10 @@ profile::statograph::metrics:
   - statuspage_id: trkbds94n87s  # Successful edits
     graphite: "%{lookup('profile::statograph::graphite_url')}"
     query: 'MediaWiki.timing.editResponseTime.sample_rate'
+
+  - statuspage_id: 1vzzyvjxzgsf  # User-reported networking errors
+    prometheus: "%{lookup('profile::statograph::thanos_url')}"
+    # 'max by (type)' because there's one ES exporter in each core DC, but the underlying data is
+    # identical -- a simple sum() would double-count.
+    # These two report types are ones that have high signal for issues on intermediate networks.
+    query: 'sum(max by (type) (log_w3c_networkerror_type_doc_count{type=~"tcp.timed_out|tcp.address_unreachable"}))/60'
