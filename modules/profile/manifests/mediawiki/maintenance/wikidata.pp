@@ -1,13 +1,6 @@
 class profile::mediawiki::maintenance::wikidata {
     require profile::mediawiki::common
 
-    # Prune wb_changes entries no longer needed from wikidata
-    profile::mediawiki::periodic_job { 'wikibase_repo_prune2':
-        ensure   => absent,
-        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3',
-        interval => '*:00,15,30,45',
-    }
-
     # Update the cached query service maxlag value every minute
     # We don't need to ensure present/absent as the wrapper will ensure nothing
     # is run unless we're in the master dc
