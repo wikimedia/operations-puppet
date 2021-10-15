@@ -7,7 +7,6 @@
 # @custom_bashrc when set, will replace the system bashrc with the given template (as a path)
 # @custom_skel_bashrc when set, will replace the system skel bashrc with the given template (as a path)
 # @editor choose the default editor, if 'use_default' will use the system's default
-# @with_wmcs_etc_files if true, will add some extra files to /etc related to wmcs project, instance name, etc.
 # @profile_scripts list of script names to be added to /etc/profile.d and their source
 # @core_dump_pattern pattern to use when generating core dumps
 #
@@ -16,7 +15,6 @@ class profile::environment (
     Optional[String[1]] $custom_skel_bashrc = lookup('profile::environment::custom_skel_bashrc'),
     Optional[String[1]] $custom_bashrc = lookup('profile::environment::custom_bashrc'),
     Enum['vim', 'use_default'] $editor = lookup('profile::environment::editor'),
-    Boolean $with_wmcs_etc_files = lookup('profile::environment::with_wmcs_etc_files'),
     Hash[String, Stdlib::Filesource] $profile_scripts = lookup('profile::environment::profile_scripts'),
 ) {
     if $ls_aliases {
@@ -51,40 +49,6 @@ class profile::environment (
         file { '/etc/alternatives/editor':
             ensure => link,
             target => "/usr/bin/${editor}",
-        }
-    }
-
-    if $with_wmcs_etc_files {
-        # TODO in next patches: Move to it's own cloud profile/class
-        # wmflabs_imageversion is provided by labs_vmbuilder/files/postinst.copy
-        # because this is a pre-installed file, migrating is nontrivial, so we keep
-        # the original file name.
-        file { '/etc/wmcs-imageversion':
-            ensure => link,
-            target => '/etc/wmflabs_imageversion',
-        }
-
-        file { '/etc/wmcs-instancename':
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => "${::hostname}\n",
-        }
-        file { '/etc/wmflabs-instancename':
-            ensure => link,
-            target => '/etc/wmcs-instancename',
-        }
-        if( $::labsproject ) {
-            file { '/etc/wmcs-project':
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0444',
-                content => "${::labsproject}\n",
-            }
-            file { '/etc/wmflabs-project':
-                ensure => link,
-                target => '/etc/wmcs-project',
-            }
         }
     }
 

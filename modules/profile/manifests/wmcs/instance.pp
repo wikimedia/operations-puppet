@@ -31,6 +31,35 @@ class profile::wmcs::instance(
         readable => true,
     }
 
+    # wmflabs_imageversion is provided by labs_vmbuilder/files/postinst.copy
+    # because this is a pre-installed file, migrating is nontrivial, so we keep
+    # the original file name.
+    file { '/etc/wmcs-imageversion':
+        ensure => link,
+        target => '/etc/wmflabs_imageversion',
+    }
+
+    file { '/etc/wmcs-instancename':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "${::hostname}\n",
+    }
+    file { '/etc/wmflabs-instancename':
+        ensure => link,
+        target => '/etc/wmcs-instancename',
+    }
+    file { '/etc/wmcs-project':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "${::labsproject}\n",
+    }
+    file { '/etc/wmflabs-project':
+        ensure => link,
+        target => '/etc/wmcs-project',
+    }
+
     file { '/etc/mailname':
         ensure  => present,
         content => "${::fqdn}\n",

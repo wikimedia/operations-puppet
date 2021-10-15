@@ -492,6 +492,5 @@ profile::environment::ls_aliases: false
 profile::environment::custom_bashrc: 'base/environment/bash.bashrc.erb'
 profile::environment::custom_skel_bashrc: 'base/environment/skel/bashrc.erb'
 profile::environment::editor: 'use_default'
-profile::environment::with_wmcs_etc_files: true
 profile::environment::profile_scripts:
   field.sh: 'puppet:///modules/base/environment/field.sh'
