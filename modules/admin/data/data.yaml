@@ -5562,3 +5562,7 @@ ldap_only_users:
     ensure: present
     realname: Deniz Erdogan
     email: deniz.erdogan@wikimedia.de
+  jacquelinechen:
+    ensure: present
+    realname: Jacqueline Chen
+    email: jchen@wikimedia.org
