@@ -10,8 +10,7 @@ class bigtop::alluxio::user {
         gid    => 914,
     }
 
-    # The alluxio user is a member of the hadoop group, which means that it has
-    # superuser privileges on HDFS.
+    # The alluxio user is to be removed once all of the packages have been removed
     user { 'alluxio':
         ensure     => 'present',
         uid        => 914,
@@ -20,9 +19,8 @@ class bigtop::alluxio::user {
         home       => '/var/lib/alluxio',
         system     => true,
         managehome => false,
-        groups     => 'hadoop',
         require    => [
-            Group['alluxio'], Group['hadoop']
+            Group['alluxio']
         ],
     }
 }

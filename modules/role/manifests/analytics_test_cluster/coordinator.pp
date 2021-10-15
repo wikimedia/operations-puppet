@@ -38,9 +38,6 @@ class role::analytics_test_cluster::coordinator {
     # This node is marked as a coordinator in hiera.
     include ::profile::presto::server
 
-    # HDFS caching using Alluxio - Coordinator nodes run Alluxio master services
-    include ::profile::alluxio::master
-
     # The Hadoop job scheduler
     include ::profile::oozie::server
 

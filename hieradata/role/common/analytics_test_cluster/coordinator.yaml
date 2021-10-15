@@ -133,10 +133,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'presto'
     group: 'presto'
     filename: 'presto.keytab'
-  - role: 'alluxio'
-    owner: 'alluxio'
-    group: 'alluxio'
-    filename: 'alluxio.keytab'
   - role: 'hadoop'
     owner: 'hdfs'
     group: 'hdfs'
@@ -174,15 +170,6 @@ profile::airflow::instances:
         # db_user and db_password params should be set in puppet private
         # in profile::airflow::instances_secrets.
         sql_alchemy_conn: mysql://<%= @db_user %>:<%= @db_password %>@an-test-coord1001.eqiad.wmnet/airflow_analytics_test?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
-
-profile::alluxio::common::alluxio_service_name: analytics-test-alluxio-presto
-profile::alluxio::common::zookeeper_cluster: druid-analytics-test-eqiad
-# This configuration is merged with the values in common.yaml
-profile::alluxio::common::config_override:
-  master_properties:
-    'alluxio.master.hostname': '%{::fqdn}'
-profile::alluxio::worker_hosts:
-  - an-test-presto1001.eqiad.wmnet
 
 profile::monitoring::notifications_enabled: false
 
