@@ -35,8 +35,12 @@ import yaml
 VALID_DOMAINS = ["checkpoint", "queue", "hosts"]
 GRID_HOST_TYPE = ["exec", "submit"]
 GRID_HOST_PREFIX = {
+    # TODO: old name, deprecate once we have no hosts with this name
     "sgewebgrid-generic": ["exec", "submit"],
+    "sgewebgen": ["exec", "submit"],
+    # TODO: old name, deprecate once we have no hosts with this name
     "sgewebgrid-lighttpd": ["exec", "submit"],
+    "sgeweblight": ["exec", "submit"],
     "sgeexec": ["exec", "submit"],
     "sgebastion": "submit",
     "sgecron": "submit",
