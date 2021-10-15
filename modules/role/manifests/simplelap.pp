@@ -24,4 +24,8 @@ class role::simplelap{
     class { 'httpd':
         modules => ['rewrite', $php_module],
     }
+
+    class { 'httpd::mpm':
+        mpm => 'prefork'
+    }
 }
