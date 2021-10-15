@@ -26,6 +26,10 @@
 #   Default: admins
 # [*monitoring_notes_url*]
 #   The notes url used to resolve issues, if monitoring_enabled is true this is required
+# [*monitoring_critical*]
+#   If monitoring is enabled allows paging if the execution of the unit ended up
+#   in a failed state.
+#   Default: false
 # [*service_params*]
 #   Additional service parameters we want to specify
 #
@@ -38,6 +42,7 @@ define systemd::service(
     Boolean                   $monitoring_enabled       = false,
     String                    $monitoring_contact_group = 'admins',
     Optional[Stdlib::HTTPUrl] $monitoring_notes_url     = undef,
+    Boolean                   $monitoring_critical      = false,
     Hash                      $service_params           = {},
 ){
     if $unit_type == 'service' {
@@ -78,6 +83,7 @@ define systemd::service(
             ensure        => $ensure,
             notes_url     => $monitoring_notes_url,
             contact_group => $monitoring_contact_group,
+            critical      => $monitoring_critical,
         }
     }
 }
