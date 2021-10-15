@@ -57,6 +57,7 @@ class gitlab (
       id          => '915:915',
       description => 'git used by GitLab',
       home_dir    => '/var/opt/gitlab',
+      allow_login => true,
     }
 
     apt::package_from_component{'gitlab-ce':

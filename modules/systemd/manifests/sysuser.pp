@@ -12,6 +12,7 @@ define systemd::sysuser (
     String                     $username    = $title,
     Systemd::Sysuser::Usertype $usertype    = 'user',
     Systemd::Sysuser::Id       $id          = '-',
+    Boolean                    $allow_login = false,
     Optional[String[1]]        $description = undef,
     Optional[Stdlib::Unixpath] $home_dir    = undef,
     Optional[Stdlib::Unixpath] $shell       = undef,
@@ -96,14 +97,16 @@ define systemd::sysuser (
                 system => true,
             }
         }
+        $password = $allow_login.bool2str('*', '!')
 
         user { $username:
-            ensure => $ensure,
-            gid    => $gid,
-            home   => $home_dir,
-            shell  => $shell,
-            system => true,
-            uid    => $uid,
+            ensure   => $ensure,
+            gid      => $gid,
+            home     => $home_dir,
+            shell    => $shell,
+            system   => true,
+            uid      => $uid,
+            password => $password,
         }
     }
 }
