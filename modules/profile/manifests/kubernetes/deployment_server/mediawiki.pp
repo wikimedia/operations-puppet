@@ -14,6 +14,7 @@ class profile::kubernetes::deployment_server::mediawiki(
     Stdlib::Fqdn $docker_registry                       = lookup('docker::registry'),
     Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
     String $statsd_server                               = lookup('statsd'),
+    String $udp2log_aggregator                          = lookup('udp2log_aggregator')
 ){
     file { "${general_dir}/mediawiki":
         ensure => directory,
@@ -36,6 +37,16 @@ class profile::kubernetes::deployment_server::mediawiki(
         fcgi_proxy    => $fcgi_proxy,
         domain_suffix => $domain_suffix,
         statsd        => $statsd_server,
+    }
+
+    # logging.
+    # TODO: use codfw logging pipeline for codfw once it's ready
+    $kafka_config = kafka_config('logging-eqiad')
+    $kafka_brokers = $kafka_config['brokers']['array']
+    class { 'mediawiki::logging::yaml_defs':
+        path          => "${general_dir}/mediawiki/logging.yaml",
+        udp2log       => $udp2log_aggregator,
+        kafka_brokers => $kafka_brokers,
     }
     class { 'mediawiki::mcrouter::yaml_defs':
         path                           => "${general_dir}/mediawiki/mcrouter_pools.yaml",
