@@ -336,7 +336,7 @@ groups:
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
-              ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz]
+              ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4773,6 +4773,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSPgGHinj/fzfnq8BCYVnegcJ0/Z//hMpGYrgBJnLJQ muniza@wlt
+  lbowmaker:
+    ensure: present
+    email: lbowmaker@wikimedia.org
+    realname: Luke Bowmaker
+    gid: 500
+    uid: 34472
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIDFAMA39ztgFi5ECZb5JUN8BEUNR6UdckIzZBP8gQq9 lbowmaker@wikimedia.org
 
 
 ldap_only_users:
