@@ -33,6 +33,10 @@ class role::simplelamp2 {
         purge_manual_config => false,
     }
 
+    class { 'httpd::mpm':
+        mpm => 'prefork'
+    }
+
     class { 'memcached':
         # TODO: the following were implicit defaults from
         # MW settings, need to be reviewed.
