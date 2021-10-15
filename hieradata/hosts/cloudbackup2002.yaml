@@ -10,3 +10,4 @@ profile::openstack::codfw1dev::cinder::backup::lvm::lv_name: cinder-backups
 profile::openstack::codfw1dev::cinder::backup::lvm::lv_size: 80TB
 profile::openstack::codfw1dev::cinder::backup::lvm::lv_format: ext4
 profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: 'f83e2286-bff1-47bf-bf6d-109c427d63c9'
+profile::ceph::client::rbd::enable_v2_messenger: true

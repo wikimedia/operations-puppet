@@ -1,0 +1,3 @@
+profile::ceph::client::rbd::client_name: 'codfw1dev-compute'
+profile::ceph::client::rbd::keyfile_group: 'root'
+profile::ceph::client::rbd::keyfile_owner: 'root'
