@@ -70,6 +70,8 @@ role::rpkivalidator:
   target-q: TBD
 role::parsoid::testing:
   target-q: TBD
+role::parsoid::testreduce:
+  target-q: TBD
 role::eventschemas::service:
   target-q: TBD
 role::restbase::production:
@@ -351,4 +353,16 @@ role::insetup:
 role::mariadb::misc::db_inventory:
   target-q: TBD
 role::dbbackups::metadata:
+  target-q: TBD
+role::syslog::centralserver:
+  target-q: TBD
+role::dns::auth:
+  target-q: TBD
+role::mariadb::proxy::replicas:
+  target-q: TBD
+role::logstash::elasticsearch7:
+  target-q: TBD
+role::wmcs::ceph::osd:
+  target-q: TBD
+role::dnsbox:
   target-q: TBD
