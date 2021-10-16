@@ -50,4 +50,9 @@ class profile::bird::anycast_monitoring{
         check_command => 'check_tcp_ssl!185.71.138.138!853',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
+
+    # Wikidough durum.
+    monitoring::host { 'check.wikimedia-dns.org':
+        host_fqdn => 'check.wikimedia-dns.org',
+    }
 }
