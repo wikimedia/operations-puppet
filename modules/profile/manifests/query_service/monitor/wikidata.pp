@@ -35,10 +35,10 @@ class profile::query_service::monitor::wikidata (
             monitoring::check_prometheus { 'WDQS_Lag_Streaming':
                 description     => 'WDQS high update lag',
                 dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
-                query           => "scalar(wdqs_streaming_updater_kafka_stream_consumer_lag{instance=\"${::hostname}:9101\"})",
+                query           => "scalar(wdqs_streaming_updater_kafka_stream_consumer_lag_Value{instance=\"${::hostname}:9101\"})",
                 prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-                warning         => $lag_warning,
-                critical        => $lag_critical,
+                warning         => $lag_warning * 1000, # the metric is in ms
+                critical        => $lag_critical * 1000, # the metric is in ms
                 contact_group   => $contact_groups,
                 notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook#Update_lag',
             }
