@@ -130,6 +130,15 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/poty_index.html',
     }
 
+    file { "${miscdatasetsdir}/enterprise_html/index.html":
+        ensure => 'present',
+        path   => "${miscdatasetsdir}/enterprise_html/index.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/enterprise_html_index.html',
+    }
+
     file { "${xmldumpsdir}/archive/index.html":
         ensure => 'present',
         path   => "${xmldumpsdir}/archive/index.html",
