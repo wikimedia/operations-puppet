@@ -24,6 +24,10 @@ role::configcluster:
   target-q: TBD
 role::wmcs::nfs::primary:
   target-q: TBD
+role::wmcs::nfs::primary_backup::tools:
+  target-q: TBD
+role::wmcs::nfs::primary_backup::misc:
+  target-q: TBD
 role::installserver::light:
   target-q: TBD
 role::dumps::distribution::server:
@@ -67,6 +71,12 @@ role::sessionstore:
 role::dumps::generation::worker::dumper:
   target-q: TBD
 role::dumps::generation::worker::testbed:
+  target-q: TBD
+role::dumps::generation::server::xmldumps:
+  target-q: TBD
+role::dumps::generation::server::misccrons:
+  target-q: TBD
+role::dumps::generation::server::xmlfallback:
   target-q: TBD
 role::openldap::labs:
   target-q: TBD
@@ -118,7 +128,13 @@ role::ganeti_test:
   target-q: TBD
 role::alerting_host:
   target-q: TBD
+role::analytics_cluster::launcher:
+  target-q: TBD
+  phab-task: 288804
 role::analytics_cluster::ui::staging:
+  target-q: TBD
+  phab-task: 288804
+role::analytics_cluster::ui::superset:
   target-q: TBD
   phab-task: 288804
 role::analytics_cluster::presto::server:
@@ -205,7 +221,13 @@ role::mariadb::temporary_storage:
   target-q: TBD
 role::wmcs::openstack::eqiad1::virt:
   target-q: TBD
+role::wmcs::openstack::eqiad1::virt_ceph:
+  target-q: TBD
+role::wmcs::openstack::eqiad1::virt_ceph_and_backy:
+  target-q: TBD
 role::wmcs::openstack::codfw1dev::virt:
+  target-q: TBD
+role::wmcs::openstack::codfw1dev::virt_ceph:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: TBD
@@ -219,7 +241,7 @@ role::wmcs::openstack::codfw1dev::net:
   target-q: TBD
 role::wmcs::openstack::eqiad1::net:
   target-q: TBD
-role::webserver_misc_static:
+role::miscweb:
   target-q: TBD
 role::builder:
   target-q: TBD
@@ -336,6 +358,8 @@ role::wmcs::openstack::codfw1dev::services:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: TBD
+role::wmcs::openstack::codfw1dev::cloudgw:
+  target-q: TBD
 role::eventlogging::analytics:
   target-q: TBD
   phab-task: 288804
@@ -396,7 +420,7 @@ role::webperf::profiling_tools:
 role::analytics_test_cluster::hadoop::worker:
   target-q: TBD
   phab-task: 288804
-role::analytics_test_cluster::hadoop::yarn:
+role::analytics_cluster::hadoop::yarn:
   target-q: TBD
   phab-task: 288804
 role::wmcs::openstack::eqiad1::virt_ceph:
@@ -431,7 +455,7 @@ role::netbox::standalone:
   target-q: TBD
 role::grafana:
   target-q: TBD
-role:analytics_cluster::zookeeper:
+role::analytics_cluster::zookeeper:
   target-q: TBD
 role::zookeeper::test:
   target-q: TBD
@@ -439,7 +463,7 @@ role::apt_repo:
   target-q: TBD
 role::backup:
   target-q: TBD
-role::backup:es:
+role::backup::es:
   target-q: TBD
 role::dbbackups::content:
   target-q: TBD
@@ -498,4 +522,12 @@ role::chartmuseum:
 role::acme_chief:
   target-q: TBD
 role::mw_rc_irc:
+  target-q: TBD
+role::aphlict:
+  target-q: TBD
+role::phabricator:
+  target-q: TBD
+role::mediabackup::worker:
+  target-q: TBD
+role::mediabackup::storage:
   target-q: TBD
