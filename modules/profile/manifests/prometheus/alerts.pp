@@ -63,13 +63,15 @@ class profile::prometheus::alerts (
     profile::kafka::mirror::alerts { 'main-eqiad_to_main-codfw':
         prometheus_url        => 'http://prometheus.svc.codfw.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.eqiad.wmnet/ops',
-        # Less data (resource_change) from main eqiad -> codfw.
-        warning_throughput    => 25,
     }
+    # main-eqiad is getting the bulk of the traffic from MediaWiki,
+    # and it currently pulls msgs from main-codfw at a very low rate
+    # (but we want to make sure that it doesn't drop to zero).
     profile::kafka::mirror::alerts { 'main-codfw_to_main-eqiad':
         #  For now, alert analytics admins, until alerts are more stable.
         prometheus_url        => 'http://prometheus.svc.eqiad.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.codfw.wmnet/ops',
+        warning_throughput    => 3,
     }
 
 
