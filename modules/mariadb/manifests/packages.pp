@@ -3,12 +3,10 @@
 
 class mariadb::packages {
 
-    package { [
+    ensure_packages([
         'mariadb-client',
         'mariadb-server',
         'percona-toolkit',
         # 'percona-xtrabackup',
-    ]:
-        ensure => present,
-    }
+    ])
 }
