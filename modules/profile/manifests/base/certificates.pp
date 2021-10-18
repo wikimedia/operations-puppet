@@ -7,7 +7,11 @@ class profile::base::certificates (
     Hash             $puppet_ca_content = lookup('profile::base::certificates::puppet_ca_content'),
     Optional[String] $puppetmaster_key  = lookup('puppetmaster'),
 ) {
-    include ::sslcert
+    # Includes internal root CA's e.g.
+    # * puppet CA
+    # * CFSSL CA
+    ensure_packages(['wmf-certificates'])
+    include sslcert
 
     sslcert::ca { 'wmf_ca_2017_2020':
         source  => 'puppet:///modules/base/ca/wmf_ca_2017_2020.crt',

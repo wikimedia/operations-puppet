@@ -53,14 +53,4 @@ class profile::pki::client (
             *      => $cert,
         }
     }
-    sslcert::ca { $root_ca:
-        ensure => $ensure,
-        source => "puppet:///modules/profile/pki/ROOT/${root_ca}.pem",
-    }
-    $intermediate_cas.each |$ca| {
-        sslcert::ca { $ca:
-            ensure => $ensure,
-            source => "puppet:///modules/profile/pki/intermediates/${ca}.pem",
-        }
-    }
 }
