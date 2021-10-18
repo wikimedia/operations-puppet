@@ -12,7 +12,11 @@ role::mediawiki::memcached:
 role::mediawiki::memcached::gutter:
   target-q: TBD
   phab-task: T293216
-role::etcd::kubernetes:
+role::etcd::v3::kubernetes:
+  target-q: TBD
+role::etcd::v3::kubernetes::staging:
+  target-q: TBD
+role::etcd::v3::ml_etcd:
   target-q: TBD
 role::lists:
   target-q: TBD
@@ -20,13 +24,11 @@ role::configcluster:
   target-q: TBD
 role::wmcs::nfs::primary:
   target-q: TBD
-role::installserver:
-  target-q: TBD
-role::installserver::apt:
+role::installserver::light:
   target-q: TBD
 role::dumps::distribution::server:
   target-q: TBD
-role::xhgui::app:
+role::webperf::xhgui:
   target-q: TBD
 role::tendril:
   target-q: TBD
@@ -56,6 +58,8 @@ role::wdqs:
   target-q: TBD
 role::wdqs::test:
   target-q: TBD
+role::wcqs::public:
+  target-q: TBD
 role::thumbor::mediawiki:
   target-q: TBD
 role::sessionstore:
@@ -79,6 +83,8 @@ role::restbase::production:
 role::restbase::base:
   target-q: TBD
 role::ores:
+  target-q: TBD
+role::orespoolcounter:
   target-q: TBD
 role::mariadb::parsercache:
   target-q: TBD
@@ -108,17 +114,38 @@ role::planet:
   target-q: TBD
 role::ganeti:
   target-q: TBD
+role::ganeti_test:
+  target-q: TBD
 role::alerting_host:
   target-q: TBD
+role::analytics_cluster::ui::staging:
+  target-q: TBD
+  phab-task: 288804
+role::analytics_cluster::presto::server:
+  target-q: TBD
+  phab-task: 288804
 role::analytics_cluster::hadoop::worker:
+  target-q: TBD
+  phab-task: 288804
+role::analytics_cluster::turnilo:
+  target-q: TBD
+  phab-task: 288804
+role::search::airflow:
+  target-q: TBD
+  phab-task: 288804
+role::analytics_cluster::airflow::research:
+  target-q: TBD
+  phab-task: 288804
+role::analytics_cluster::airflow::platform_eng:
   target-q: TBD
   phab-task: 288804
 role::aqs:
   target-q: TBD
   phab-task: 288804
-role::bastionhost::pop:
+role::aqs_next:
   target-q: TBD
-role::bastionhost::general:
+  phab-task: 288804
+role::bastionhost:
   target-q: TBD
 role::elasticsearch::cloudelastic:
   target-q: TBD
@@ -133,6 +160,8 @@ role::mariadb::core:
   target-q: TBD
 role::mariadb::misc:
   target-q: TBD
+role::mariadb::misc::analytics::backup:
+  target-q: TBD
 role::mariadb::core_test:
   target-q: TBD
 role::mariadb::misc::tendril:
@@ -146,6 +175,8 @@ role::mariadb::core_multiinstance:
 role::mariadb::dbstore_multiinstance:
   target-q: TBD
 role::mariadb::sanitarium_multiinstance:
+  target-q: TBD
+role::mariadb::sanitarium_master:
   target-q: TBD
 role::mariadb::misc::multiinstance:
   target-q: TBD
@@ -209,6 +240,8 @@ role::kafka::jumbo::broker:
   phab-task: 288804
 role::kafka::main:
   target-q: TBD
+role::kafka::test::broker:
+  target-q: TBD
 role::kafka::main::logging:
   target-q: TBD
 role::kafka::logging:
@@ -219,20 +252,30 @@ role::kubernetes::staging::worker:
   target-q: TBD
 role::logstash:
   target-q: TBD
+role::logstash7:
+  target-q: TBD
 role::logstash::elasticsearch:
+  target-q: TBD
+role::logstash::elasticsearch7:
+  target-q: TBD
+role::kibana7_ecs:
   target-q: TBD
 role::analytics_cluster::hadoop::client:
   target-q: TBD
   phab-task: 288804
 role::cluster::management:
   target-q: TBD
-role::labs::db::wikireplica_web:
+role::cluster::unprivmanagement:
   target-q: TBD
-role::labs::db::wikireplica_analytics:
+role::wmcs::db::wikireplicas::web_multiinstance:
   target-q: TBD
-role::labs::db::wikireplica_analytics::dedicated:
+role::wmcs::db::wikireplicas::analytics_multiinstance:
+  target-q: TBD
+role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance:
   target-q: TBD
 role::openldap::replica:
+  target-q: TBD
+role::openldap::corp:
   target-q: TBD
 role::wmcs::openstack::eqiad1::labweb:
   target-q: TBD
@@ -251,6 +294,9 @@ role::swap:
   target-q: TBD
   phab-task: 288804
 role::analytics_cluster::coordinator:
+  target-q: TBD
+  phab-task: 288804
+role::analytics_cluster::coordinator::replica:
   target-q: TBD
   phab-task: 288804
 role::analytics_cluster::hadoop::master:
@@ -284,6 +330,8 @@ role::wmcs::openstack::codfw1dev::db:
   target-q: TBD
 role::wmcs::openstack::eqiad1::services:
   target-q: TBD
+role::wmcs::openstack::eqiad1::cloudgw:
+  target-q: TBD
 role::wmcs::openstack::codfw1dev::services:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::cloudweb:
@@ -293,7 +341,7 @@ role::eventlogging::analytics:
   phab-task: 288804
 role::dumps::web::htmldumps:
   target-q: TBD
-role::kafka::monitoring:
+role::kafka::monitoring_buster:
   target-q: TBD
   phab-task: 288804
 role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
@@ -301,6 +349,8 @@ role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
 role::microsites::peopleweb:
   target-q: TBD
 role::prometheus:
+  target-q: TBD
+role::prometheus::pop:
   target-q: TBD
 role::proton:
   target-q: TBD
@@ -346,6 +396,9 @@ role::webperf::profiling_tools:
 role::analytics_test_cluster::hadoop::worker:
   target-q: TBD
   phab-task: 288804
+role::analytics_test_cluster::hadoop::yarn:
+  target-q: TBD
+  phab-task: 288804
 role::wmcs::openstack::eqiad1::virt_ceph:
   target-q: TBD
 role::insetup:
@@ -364,5 +417,85 @@ role::logstash::elasticsearch7:
   target-q: TBD
 role::wmcs::ceph::osd:
   target-q: TBD
+role::wmcs::ceph::mon:
+  target-q: TBD
+role::wmcs::monitoring:
+  target-q: TBD
 role::dnsbox:
+  target-q: TBD
+role::netbox::frontend:
+  target-q: TBD
+role::netbox::database:
+  target-q: TBD
+role::netbox::standalone:
+  target-q: TBD
+role::grafana:
+  target-q: TBD
+role:analytics_cluster::zookeeper:
+  target-q: TBD
+role::zookeeper::test:
+  target-q: TBD
+role::apt_repo:
+  target-q: TBD
+role::backup:
+  target-q: TBD
+role::backup:es:
+  target-q: TBD
+role::dbbackups::content:
+  target-q: TBD
+role::ml_k8s::master:
+  target-q: TBD
+role::ml_k8s::worker:
+  target-q: TBD
+role::poolcounter::server:
+  target-q: TBD
+role::orchestrator:
+  target-q: TBD
+role::durum:
+  target-q: TBD
+role::flowspec:
+  target-q: TBD
+role::thanos::backend:
+  target-q: TBD
+role::requesttracker:
+  target-q: TBD
+role::netinsights:
+  target-q: TBD
+role::url_downloader:
+  target-q: TBD
+role::gerrit:
+  target-q: TBD
+role::dragonfly::supernode:
+  target-q: TBD
+role::etherpad:
+  target-q: TBD
+role::puppetmaster::puppetdb:
+  target-q: TBD
+role::puppetmaster::frontend:
+  target-q: TBD
+role::puppetmaster::backend:
+  target-q: TBD
+role::sretest:
+  target-q: TBD
+role::wikidough:
+  target-q: TBD
+role::kerberos::kdc:
+  target-q: TBD
+role::pki::multirootca:
+  target-q: TBD
+role::pki::root:
+  target-q: TBD
+role::idp:
+  target-q: TBD
+role::idp_test:
+  target-q: TBD
+role::search::loader:
+  target-q: TBD
+role::gitlab:
+  target-q: TBD
+role::chartmuseum:
+  target-q: TBD
+role::acme_chief:
+  target-q: TBD
+role::mw_rc_irc:
   target-q: TBD
