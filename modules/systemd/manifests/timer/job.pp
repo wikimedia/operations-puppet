@@ -14,6 +14,9 @@
 #   Systemd interval to use. See Systemd::Timer::Schedule for the format.
 #   Several intervals can be provided as Array[See Systemd::Timer::Schedule]
 #
+# [*splay*]
+#   Passed to systemd::timer. See RandomizedDelaySec in systemd.timer(5)
+#
 # [*user*]
 #   User that runs the Systemd unit.
 #
@@ -130,6 +133,7 @@ define systemd::timer::job(
     String                                  $send_mail_to              = "root@${facts['fqdn']}",
     Boolean                                 $ignore_errors             = false,
     Boolean                                 $send_mail_only_on_error   = true,
+    Optional[Integer]                       $splay                     = undef,
     Optional[String]                        $logfile_owner             = undef,
     Optional[String]                        $syslog_identifier         = undef,
     Optional[Integer]                       $max_runtime_seconds       = undef,
@@ -178,6 +182,7 @@ define systemd::timer::job(
     systemd::timer { $title:
         ensure          => $ensure,
         timer_intervals => $mangled_intervals,
+        splay           => $splay,
         unit_name       => "${title}.service",
     }
 

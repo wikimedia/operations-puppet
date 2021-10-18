@@ -84,6 +84,22 @@ describe 'systemd::timer::job' do
           expect(intervals).to include(include('start' => 'OnActiveSec'))
         end
       end
+      context 'with splay' do
+        let(:params) {
+          {
+            description: 'Timer with splay set',
+            command: '/bin/true',
+            interval: {start: 'OnCalendar', interval: 'Daily'},
+            user: 'root',
+            splay: 42,
+          }
+        }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_systemd__timer('dummy-test')
+            .with_splay(42)
+        end
+      end
     end
   end
 end
