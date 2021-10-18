@@ -20,14 +20,14 @@ groups:
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
-              mholloway-shell]
+              mholloway-shell, tonina]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
               marble, mmarble, raz-shuty, jeroendedauw, nharateh, pdrouin, tschumann, jaufrecht,
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
-              jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune]
+              jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -313,7 +313,7 @@ groups:
               nuria, otto, jgreen, sguebo, zxane,
               dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, akosiaris, tonina, pearley, ktsouroupidou,
+              joal, akosiaris, pearley, ktsouroupidou,
               andyrussg, hoo, daniel, krinkle, tgr,
               ebernhardson, addshore, jminor, neilpquinn-wmf,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
@@ -3335,12 +3335,11 @@ users:
     ssh_keys: []
     uid: 19170
   tonina:
-    ensure: present
+    ensure: absent
     realname: Tonina Zhelyazkova
     name: tonina
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6GvnAGyZIE/zjBpRQINxGS8fzTTj1TjSLczbSaVhQOw52NrelEPw2yI0NyLaBPcPD1awob/seIigrJls+Cx3cxSww1fWEe+rRanUy3MXckcK0Hy1U+Ut+Aj9XcBYGl83oanriTXYiIKgSv0w2NzH0ttIwQqPpI2P4ahu2N5psZHU9GE3ccSH+enZ6eF8RmiWR2thGM84axCHqsuOMScmReYwJfxMi0zRyg7ag9HfLHZSrE6X4Y1buJf82bEUJVs7S77TiFfr7u3VIxupEM3amLD3EF1NTTEhUKiDXD07frOuen1KeJfjbDWFBpTA0ai0DE67dn8FfL6sJzEmmg7XD
+    ssh_keys: []
     uid: 18640
     email: tonina.zhelyazkova@wikimedia.de
   pearley:
@@ -5147,7 +5146,7 @@ ldap_only_users:
     realname: Jan Dittrich
     email: jan.dittrich@wikimedia.de
   tonina:
-    ensure: present
+    ensure: absent
     realname: Tonina Zhelyazkova
     email: tonina.zhelyazkova@wikimedia.de
   tskaff:
