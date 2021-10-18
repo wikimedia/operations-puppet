@@ -497,3 +497,17 @@ profile::environment::profile_scripts:
 
 profile::systemd::timesyncd::ensure: present
 profile::systemd::timesyncd::ntp_servers: []
+
+# puppetboard
+profile::puppetboard::ng::ensure: present
+profile::puppetboard::ng::puppetdb_host: 'localhost'
+profile::puppetboard::ng::puppetdb_port: 8080
+profile::puppetboard::ng::puppetdb_ssl_verify: true
+profile::puppetboard::ng::puppetdb_cert: ~
+profile::puppetboard::ng::puppetdb_cert: ~
+profile::puppetboard::ng::puppetdb_proto: ~
+profile::puppetboard::ng:page_title: 'Puppetboard'
+profile::puppetboard::ng::localise_timestamp: false
+profile::puppetboard::ng::graph_type: 'pie'
+profile::puppetboard::ng::graph_facts_override: []
+profile::puppetboard::ng::secret_key: ~
