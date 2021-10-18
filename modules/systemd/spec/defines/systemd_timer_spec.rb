@@ -87,6 +87,21 @@ describe 'systemd::timer' do
         }
         it { is_expected.to compile.with_all_deps }
       end
+      context 'when using splay' do
+        let(:params) {
+          {
+            :timer_intervals => [{'start' => 'OnCalendar', 'interval' => 'Daily' }],
+            :splay => 42,
+          }
+        }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_systemd__service('dummy')
+            .with_unit_type('timer')
+          is_expected.to contain_file('/lib/systemd/system/dummy.timer')
+            .with_content(/^RandomizedDelaySec=42$/)
+        end
+      end
       context 'when referring to an inexistent unit' do
         let(:pre_condition) {}
         let(:params) {
