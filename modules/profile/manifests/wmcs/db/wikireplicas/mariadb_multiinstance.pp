@@ -41,7 +41,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             port                    => $port,
             innodb_buffer_pool_size => $buffer_pool,
         }
-        profile::mariadb::section { $section: }
+        profile::mariadb::section { $section: mention_alias => true }
         ferm::service { "mysql_admin_${section}":
             proto  => 'tcp',
             port   => $port,

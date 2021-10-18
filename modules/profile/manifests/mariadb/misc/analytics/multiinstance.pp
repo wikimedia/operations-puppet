@@ -48,7 +48,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
         # Declare a mariadb::instance named $section with $mariadb_instance_params.
         create_resources('mariadb::instance', { $section => $mariadb_instance_params })
-        profile::mariadb::section { $section: }
+        profile::mariadb::section { $section: mention_alias => true }
         profile::mariadb::ferm { $section: port => $port }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
     }

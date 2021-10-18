@@ -53,7 +53,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             innodb_buffer_pool_size => $buffer_pool,
             read_only               => $read_only,
         }
-        profile::mariadb::section { $section: }
+        profile::mariadb::section { $section: mention_alias => true }
         profile::mariadb::ferm { $section: port => $port, }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
     }

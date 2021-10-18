@@ -73,4 +73,12 @@ define mariadb::instance(
         port      => $port,
         read_only => $read_only,
     }
+
+    file { "/etc/profile.d/mysql-${title}.sh":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "alias mysql.${title}=\"sudo mysql -S /run/mysqld/mysqld.${title}.sock --prompt='\\u@$(hostname):${title}[\\d]> '\"",
+    }
 }
