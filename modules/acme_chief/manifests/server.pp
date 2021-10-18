@@ -123,11 +123,14 @@ class acme_chief::server (
         default => 'absent',
     }
     systemd::service { 'acme-chief':
-        ensure         => $ensure,
-        require        => Package['acme-chief'],
-        content        => template('acme_chief/acme-chief.service.erb'),
-        override       => true,
-        service_params => {
+        ensure               => $ensure,
+        require              => Package['acme-chief'],
+        content              => template('acme_chief/acme-chief.service.erb'),
+        override             => true,
+        monitoring_enabled   => true,
+        monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Acme-chief#Monitoring',
+        monitoring_critical  => false,
+        service_params       => {
             restart   => '/bin/systemctl reload acme-chief',
         },
     }
