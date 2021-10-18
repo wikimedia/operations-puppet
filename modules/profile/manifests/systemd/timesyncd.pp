@@ -11,7 +11,9 @@ class profile::systemd::timesyncd (
         ntp_servers => $ntp_servers,
     }
 
-    profile::auto_restarts::service { 'systemd-timesyncd': }
+    profile::auto_restarts::service { 'systemd-timesyncd':
+        ensure => $ensure,
+    }
 
     file { '/usr/lib/nagios/plugins/check_timedatectl':
         ensure => stdlib::ensure($ensure, file),
