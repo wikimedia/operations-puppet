@@ -263,7 +263,7 @@ class profile::monitoring (
     # This is responsible for ~75%+ of all recdns queries...
     # https://phabricator.wikimedia.org/T239862
     host { 'statsd.eqiad.wmnet':
-        ip           => '10.64.16.149', # graphite1004
+        ip           => '10.192.0.102', # graphite2003
         host_aliases => 'statsd',
     }
 }
