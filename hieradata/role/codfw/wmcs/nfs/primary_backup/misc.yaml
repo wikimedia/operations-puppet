@@ -1,4 +1,4 @@
 # this should match profile::openstack::codfw1dev::cinder::ceph_pool
 profile::ceph::client::rbd::client_name: 'codfw1dev-cinder'
-profile::ceph::client::rbd::keyfile_group: 'root'
-profile::ceph::client::rbd::keyfile_owner: 'root'
+profile::ceph::client::rbd::keyfile_group: 'cinder'
+profile::ceph::client::rbd::keyfile_owner: 'cinder'
