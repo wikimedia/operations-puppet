@@ -4759,6 +4759,7 @@ users:
     expiry_contact: janstee@wikimedia.org
     gid: 500
     uid: 34397
+    krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKek16uOk9+HF1bkH4lphtdtVdDgsNhFlcjJdvpLyIb9 kcvelaga-ctr@wikimedia.org
   mnz:
