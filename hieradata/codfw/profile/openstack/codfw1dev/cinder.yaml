@@ -1,3 +1,4 @@
 profile::openstack::codfw1dev::cinder::api_bind_port: 18776
 profile::openstack::codfw1dev::cinder::db_host: 'openstack.codfw1dev.wikimediacloud.org'
+# this should likely match profile::ceph::client::rbd::client_name
 profile::openstack::codfw1dev::cinder::ceph_pool: codfw1dev-cinder
