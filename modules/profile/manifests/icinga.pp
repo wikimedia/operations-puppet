@@ -31,6 +31,7 @@ class profile::icinga(
     Integer                       $shard_size_critical   = lookup('profile::elasticsearch::monitor::shard_size_critical', {'default_value' => 140}),
     String                        $threshold             = lookup('profile::elasticsearch::monitor::threshold', {'default_value' => '>=0.2'}),
     Integer                       $timeout               = lookup('profile::elasticsearch::monitor::timeout', {'default_value' => 4}),
+    Hash                          $wikimedia_clusters    = lookup('wikimedia_clusters'),
 ){
     $is_passive = !($::fqdn == $active_host)
 
@@ -120,6 +121,14 @@ class profile::icinga(
 
 
     class { 'snmp::mibs': }
+
+    $wikimedia_clusters.each |String $cluster_name, Hash $cluster_config| {
+        $cluster_config['sites'].keys.each |String $cluster_site| {
+            monitoring::group { "${cluster_name}_${cluster_site}":
+                description => "Hosts for cluster ${cluster_name} in ${cluster_site}"
+            }
+        }
+    }
 
     create_resources(monitoring::group, $monitoring_groups)
 
