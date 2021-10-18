@@ -35,7 +35,7 @@ gitlab_rails['content_security_policy'] = {
         base_uri: "'self'",
         child_src: "'self'",
         # Web sockets must be explicitly allowed (different scheme)
-        connect_src: "'self', wss://<%= @gitlab_domain %>:*",
+        connect_src: "'self' wss://<%= @gitlab_domain %>:*",
         default_src: "'self'",
         font_src: nil,
         form_action: nil,
