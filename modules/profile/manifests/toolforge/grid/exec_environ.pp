@@ -23,6 +23,7 @@ class profile::toolforge::grid::exec_environ {
 
         file { '/srv/composer':
             ensure => absent,
+            force  => true,
         }
 
         file { '/usr/local/bin/composer':
