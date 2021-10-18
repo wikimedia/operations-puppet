@@ -5,4 +5,3 @@ profile::acme_chief::accounts:
 profile::acme_chief::active: acmechief-test1001.eqiad.wmnet
 profile::acme_chief::passive: acmechief-test2001.codfw.wmnet
 profile::monitoring::notifications_enabled: false
-profile::acme_chief::watchdog_sec: 600
