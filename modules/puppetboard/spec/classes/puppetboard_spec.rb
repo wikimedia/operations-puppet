@@ -9,7 +9,7 @@ describe 'puppetboard' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('puppetboard') }
         it do
-          is_expected.to contain_file('/etc/puppetboard/config.yaml')
+          is_expected.to contain_file('/etc/puppetboard/settings.py')
             .with_content(/SECRET_KEY = os.urandom\(24\)/)
             .with_content(/LOCALISE_TIMESTAMP = True/)
             .with_content(/PUPPETDB_CERT = None/)
