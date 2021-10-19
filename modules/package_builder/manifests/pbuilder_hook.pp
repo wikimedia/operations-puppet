@@ -53,20 +53,14 @@ define package_builder::pbuilder_hook(
         content => template('package_builder/D05localsources.erb'),
     }
 
-    file { "${basepath}/hooks/${distribution}/D04php72":
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/package_builder/hooks/D04php72'
-    }
-
-    file { "${basepath}/hooks/${distribution}/D04php74":
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/package_builder/hooks/D04php74'
+    ['72', '74'].each|String $php_version| {
+        file { "${basepath}/hooks/${distribution}/D04php${php_version}":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0555',
+            content => template('package_builder/D04php.erb'),
+        }
     }
 
     # on stretch and buster, add a hook for building Spicerack dependencies from a dedicated component
