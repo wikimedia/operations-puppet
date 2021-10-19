@@ -427,13 +427,13 @@ node 'db1106.eqiad.wmnet' {
 
 # s1 (enwiki) core production dbs on codfw
 # codfw master
-node 'db2112.codfw.wmnet' {
+node 'db2103.codfw.wmnet' {
     role(mariadb::core)
 }
 
 # codfw replicas
 # See also db2085 and db2088 below
-node /^db2(071|092|103|116|130|145|146)\.codfw\.wmnet/ {
+node /^db2(071|092|112|116|130|145|146)\.codfw\.wmnet/ {
     role(mariadb::core)
 }
 
