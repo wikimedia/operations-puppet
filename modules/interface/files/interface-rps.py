@@ -96,13 +96,17 @@ def write_value(path, value):
 def cmd_nofail(cmd, capture_output=False):
     """echo + exec cmd with normal output, raises on rv!=0"""
     print('Executing: %s' % cmd)
-    return subprocess.run(cmd, shell=True, check=True, capture_output=capture_output)
+    # TODO: switch to capture_output once we drop stretch support
+    # however this will also capture stderr which may not bee needed
+    return subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE)
 
 
 def cmd_failable(cmd, capture_output=False):
     """echo + exec cmd with normal output, ignores errors"""
     print('Executing: %s' % cmd)
-    return subprocess.run(cmd, shell=True, check=False, capture_output=capture_output)
+    # TODO: switch to capture_output once we drop stretch support
+    # however this will also capture stderr which may not bee needed
+    return subprocess.run(cmd, shell=True, check=False, stdout=subprocess.PIPE)
 
 
 def get_cpu_list(device, numa_filter, avoid_cpu0):
