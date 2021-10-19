@@ -25,6 +25,7 @@ Components: main
  component/mtail
  component/node10
  component/php72
+ component/php74
  component/prometheus-node-exporter
  component/puppet5
  component/puppetdb4
@@ -109,6 +110,7 @@ Components: main
  component/mtail
  component/pdns-recursor
  component/php72
+ component/php74
  component/postgis
  component/pygments
  component/redis2
