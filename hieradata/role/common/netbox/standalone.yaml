@@ -1,1 +1,2 @@
 profile::netbox::authentication_provider: cas
+profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
