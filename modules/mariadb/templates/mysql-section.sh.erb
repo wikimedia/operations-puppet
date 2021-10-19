@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec sudo mysql -S /run/mysqld/mysqld.<%= @title %>.sock --prompt='\u@$(hostname):<%= @title %>[\d]> '

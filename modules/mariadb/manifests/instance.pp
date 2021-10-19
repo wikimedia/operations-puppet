@@ -74,11 +74,20 @@ define mariadb::instance(
         read_only => $read_only,
     }
 
+    # XXX(kormat): remove once puppet has had a chance to run across the fleet.
     file { "/etc/profile.d/mysql-${title}.sh":
-        ensure  => present,
+        ensure  => absent,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => "alias mysql.${title}=\"sudo mysql -S /run/mysqld/mysqld.${title}.sock --prompt='\\u@$(hostname):${title}[\\d]> '\"",
+    }
+
+    file { "/usr/local/bin/mysql.${title}":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('mariadb/mysql-section.sh.erb'),
     }
 }
