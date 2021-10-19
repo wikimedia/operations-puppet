@@ -100,7 +100,7 @@ define profile::openstack::base::haproxy::site(
         }
 
         if $frontend_tls_cert_name != undef or $frontend_tls_cert_name != undef {
-            fail('TLS termination is not supported for type="tls"')
+            fail('TLS termination is not supported for type="tcp"')
         }
     } else {
         fail("Unknown service type ${type}")

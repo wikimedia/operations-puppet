@@ -9,6 +9,7 @@ frontend <%= @title %>_frontend_tls
     mode http
     bind *:<%= @port_frontend_tls %> ssl crt <%= @cert_file %>
     default_backend <%= @title %>_backend
+    http-request add-header X-Forwarded-Proto https
 <%- end -%>
 
 backend <%= @title %>_backend
