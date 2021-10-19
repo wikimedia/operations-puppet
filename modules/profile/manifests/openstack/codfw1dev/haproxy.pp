@@ -77,11 +77,13 @@ class profile::openstack::codfw1dev::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'trove_api':
-        servers            => $openstack_controllers,
-        healthcheck_method => 'GET',
-        healthcheck_path   => '/',
-        port_frontend      => 8779,
-        port_backend       => $trove_api_bind_port,
+        servers                => $openstack_controllers,
+        healthcheck_method     => 'GET',
+        healthcheck_path       => '/',
+        port_frontend          => 8779,
+        port_backend           => $trove_api_bind_port,
+        frontend_tls_cert_name => $acme_chief_cert_name,
+        port_frontend_tls      => 28779,
     }
 
     profile::openstack::base::haproxy::site { 'radosgw_api':
