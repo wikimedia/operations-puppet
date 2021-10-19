@@ -175,7 +175,7 @@ def get_ethtool_queues(device):
     raise KeyError('{}:unable to get current queue count from ethtool'.format(device))
 
 
-def set_ethtool_queues(device, desired_queues):
+def set_ethtool_queues(device, driver, desired_queues):
     """Use ethtool to set the number of queues
 
     Arguments:
@@ -184,7 +184,7 @@ def set_ethtool_queues(device, desired_queues):
 
     """
     supported_driver_prefix = ('bnx2x', 'bnxt_en', 'i40e')
-    if not device.startswith(supported_driver_prefix):
+    if not driver.startswith(supported_driver_prefix):
         print('Interface ({}) has unsuported driver, not setting queue count'.format(device))
         return
 
@@ -343,7 +343,7 @@ def main():
     )
 
     cpu_list = get_cpu_list(device, opts['numa_filter'], opts['avoid_cpu0'])
-    set_ethtool_queues(driver, len(cpu_list))
+    set_ethtool_queues(device, driver, len(cpu_list))
     rx_queues = get_queues(device, 'rx')
     tx_queues = get_queues(device, 'tx')
 
