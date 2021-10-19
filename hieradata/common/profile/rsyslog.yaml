@@ -4,3 +4,4 @@ profile::rsyslog::kafka_queue_enabled_sites:
   - 'eqsin'
   - 'eqiad'
   - 'codfw'
+  - 'drmrs'
