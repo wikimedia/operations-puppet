@@ -101,11 +101,13 @@ class profile::openstack::codfw1dev::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'neutron':
-        servers            => $openstack_controllers,
-        healthcheck_method => 'GET',
-        healthcheck_path   => '/',
-        port_frontend      => 9696,
-        port_backend       => $neutron_bind_port,
+        servers                => $openstack_controllers,
+        healthcheck_method     => 'GET',
+        healthcheck_path       => '/',
+        port_frontend          => 9696,
+        port_backend           => $neutron_bind_port,
+        frontend_tls_cert_name => $acme_chief_cert_name,
+        port_frontend_tls      => 29696,
     }
 
     profile::openstack::base::haproxy::site { 'nova_api':
