@@ -97,7 +97,11 @@ class profile::openstack::base::keystone::service(
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
 
-    # keystone admin API only for openstack services that might need it
+    # keystone admin API only for openstack services that might need it.
+    #
+    # Note that because keystone admin uses a weird, extremely-high-number
+    #  port by default, we need to use a non-standard port for its
+    #  tls port as well: 25357 rather than the more expected 235357
     ferm::rule{'keystone_admin':
         ensure => 'present',
         rule   => "saddr (${labs_hosts_range} ${labs_hosts_range_v6}
@@ -107,7 +111,7 @@ class profile::openstack::base::keystone::service(
                              @resolve((${join($designate_hosts,' ')}), AAAA)
                              ${labweb_ips} ${labweb_ip6s}
                              @resolve(${osm_host})
-                             ) proto tcp dport (35357) ACCEPT;",
+                             ) proto tcp dport (35357 25357) ACCEPT;",
     }
 
     ferm::rule{'keystone_public':
