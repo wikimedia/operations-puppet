@@ -8,7 +8,7 @@ define ntp::daemon(
     Wmflib::Ensure      $ensure       = lookup('ntp::daemon::ensure', {'default_value' => 'present'}),
 ){
 
-    package { 'ntp': ensure => present }
+    ensure_packages(['ntp'])
 
     file { 'ntp.conf':
         mode    => '0644',

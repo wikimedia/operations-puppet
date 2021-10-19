@@ -7,9 +7,7 @@ class systemd::timesyncd (
 ) {
     # only purge ntp if we are ensuring timesyncd
     if $ensure == 'present' {
-        package { 'ntp':
-            ensure => purged,
-        }
+        ensure_packages(['ntp'], {'ensure' => 'purged'})
     }
 
     file { '/etc/systemd/timesyncd.conf':
