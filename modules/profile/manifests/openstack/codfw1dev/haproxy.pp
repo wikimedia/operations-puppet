@@ -23,11 +23,14 @@ class profile::openstack::codfw1dev::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'designate':
-        servers            => $designate_hosts,
-        healthcheck_method => 'HEAD',
-        healthcheck_path   => '/',
-        port_frontend      => 9001,
-        port_backend       => 9001,
+        servers                => $designate_hosts,
+        healthcheck_method     => 'HEAD',
+        healthcheck_path       => '/',
+        port_frontend          => 9001,
+        port_backend           => 9001,
+        frontend_tls_cert_name => $acme_chief_cert_name,
+        port_frontend_tls      => 29001,
+
     }
 
     profile::openstack::base::haproxy::site { 'keystone_admin':
