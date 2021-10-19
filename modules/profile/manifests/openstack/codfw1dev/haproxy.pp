@@ -49,11 +49,13 @@ class profile::openstack::codfw1dev::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'glance_api':
-        servers            => $openstack_controllers,
-        healthcheck_method => 'GET',
-        healthcheck_path   => '/',
-        port_frontend      => 9292,
-        port_backend       => $glance_api_bind_port,
+        servers                => $openstack_controllers,
+        healthcheck_method     => 'GET',
+        healthcheck_path       => '/',
+        port_frontend          => 9292,
+        port_backend           => $glance_api_bind_port,
+        frontend_tls_cert_name => $acme_chief_cert_name,
+        port_frontend_tls      => 29292,
     }
 
     profile::openstack::base::haproxy::site { 'cinder_api':
@@ -97,11 +99,13 @@ class profile::openstack::codfw1dev::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'nova_api':
-        servers            => $openstack_controllers,
-        healthcheck_method => 'HEAD',
-        healthcheck_path   => '/',
-        port_frontend      => 8774,
-        port_backend       => $nova_osapi_compute_listen_port,
+        servers                => $openstack_controllers,
+        healthcheck_method     => 'HEAD',
+        healthcheck_path       => '/',
+        port_frontend          => 8774,
+        port_backend           => $nova_osapi_compute_listen_port,
+        frontend_tls_cert_name => $acme_chief_cert_name,
+        port_frontend_tls      => 28774,
     }
 
     profile::openstack::base::haproxy::site { 'placement_api':

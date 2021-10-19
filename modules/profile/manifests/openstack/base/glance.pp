@@ -44,7 +44,7 @@ class profile::openstack::base::glance(
     ferm::rule {'glance_api_all':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (9292) ACCEPT;",
+                             ) proto tcp dport (9292 29292) ACCEPT;",
     }
 
     openstack::db::project_grants { 'glance':
