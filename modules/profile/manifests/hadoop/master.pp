@@ -140,19 +140,6 @@ class profile::hadoop::master(
             ],
         }
 
-        # Alert if the HDFS space consumption raises above a safe threshold.
-        monitoring::check_prometheus { 'hadoop-hdfs-capacity-remaining-percent':
-            description     => 'HDFS capacity reimaing percent',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=106&fullscreen"],
-            query           => "scalar(Hadoop_NameNode_CapacityRemainingGB{instance=\"${::hostname}:10080\"} * 100 / Hadoop_NameNode_CapacityTotalGB{instance=\"${::hostname}:10080\"})",
-            warning         => 10,
-            critical        => 5,
-            method          => 'le',
-            contact_group   => 'analytics',
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
-        }
-
         # Alert in case of HDFS currupted or missing blocks. In the ideal state
         # these values should always be 0.
         monitoring::check_prometheus { 'hadoop-hdfs-corrupt-blocks':
