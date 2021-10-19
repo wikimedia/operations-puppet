@@ -42,6 +42,21 @@ route:
             severity: 'critical'
           receiver: 'sre-irc'
     - match:
+        team: 'data-engineering'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'data-engineering-page'
+        - match:
+            severity: 'critical'
+          receiver: 'data-engineering-ircmail'
+        - match:
+            severity: 'warning'
+          receiver: 'data-engineering-irc'
+        - match:
+            severity: 'task'
+          receiver: 'data-engineering-task'
+    - match:
         team: 'data-persistence'
       routes:
         - match:
@@ -130,6 +145,22 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
 
+- name: 'data-engineering-page'
+  victorops_configs:
+    - routing_key: 'analytics'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
+
+- name: 'data-engineering-irc'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
+
+- name: 'data-engineering-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
+  email_configs:
+    - to: 'analytics-alerts@<%= scope.lookupvar('::domain') %>'
+
 - name: 'data-persistence-irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
@@ -212,6 +243,12 @@ receivers:
   webhook_configs:
     # #netops
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-h2zjwfqqi5cxjonrkfa7'
+      send_resolved: false
+
+- name: 'data-engineering-task'
+  webhook_configs:
+    # #data-engineering
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-gsfmtborh6beh6xj5lz6'
       send_resolved: false
 
 - name: 'dcops-task'
