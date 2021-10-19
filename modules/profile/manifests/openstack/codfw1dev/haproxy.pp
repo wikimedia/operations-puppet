@@ -1,4 +1,5 @@
 class profile::openstack::codfw1dev::haproxy(
+    Optional[String] $acme_chief_cert_name = lookup('profile::openstack::codfw1dev::haproxy::acme_chief_cert_name', {default_value => undef}),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Stdlib::Port $glance_api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
@@ -15,6 +16,12 @@ class profile::openstack::codfw1dev::haproxy(
     Stdlib::Fqdn $galera_primary_host = lookup('profile::openstack::codfw1dev::galera::primary_host'),
     Stdlib::Port $nova_osapi_compute_listen_port = lookup('profile::openstack::codfw1dev::nova::osapi_compute_listen_port'),
 ) {
+    if $acme_chief_cert_name != undef {
+        acme_chief::cert { $acme_chief_cert_name:
+            puppet_svc => 'haproxy',
+        }
+    }
+
     profile::openstack::base::haproxy::site { 'designate':
         servers            => $designate_hosts,
         healthcheck_method => 'HEAD',
@@ -32,11 +39,13 @@ class profile::openstack::codfw1dev::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'keystone_public':
-        servers            => $openstack_controllers,
-        healthcheck_method => 'GET',
-        healthcheck_path   => '/',
-        port_frontend      => 5000,
-        port_backend       => $keystone_public_bind_port,
+        servers                => $openstack_controllers,
+        healthcheck_method     => 'GET',
+        healthcheck_path       => '/',
+        port_frontend          => 5000,
+        port_backend           => $keystone_public_bind_port,
+        frontend_tls_cert_name => $acme_chief_cert_name,
+        port_frontend_tls      => 25000,
     }
 
     profile::openstack::base::haproxy::site { 'glance_api':

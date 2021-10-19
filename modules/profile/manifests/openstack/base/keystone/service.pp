@@ -113,7 +113,7 @@ class profile::openstack::base::keystone::service(
     ferm::rule{'keystone_public':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (5000) ACCEPT;",
+                             ) proto tcp dport (5000 25000) ACCEPT;",
     }
 
     openstack::db::project_grants { 'keystone':

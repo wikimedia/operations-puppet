@@ -4,6 +4,13 @@ frontend <%= @title %>_frontend
     bind *:<%= @port_frontend %>
     default_backend <%= @title %>_backend
 
+<%- if @port_frontend_tls and @cert_file -%>
+frontend <%= @title %>_frontend_tls
+    mode http
+    bind *:<%= @port_frontend_tls %> ssl crt <%= @cert_file %>
+    default_backend <%= @title %>_backend
+<%- end -%>
+
 backend <%= @title %>_backend
     balance leastconn
 <% @healthcheck_options.each do |option| -%>

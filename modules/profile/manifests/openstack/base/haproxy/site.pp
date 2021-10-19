@@ -56,8 +56,15 @@ define profile::openstack::base::haproxy::site(
     Array[String] $healthcheck_options = [],
     Wmflib::Ensure $ensure = present,
     Enum['http', 'tcp'] $type = 'http',
+    Optional[String] $frontend_tls_cert_name = undef,
+    Optional[Stdlib::Port] $port_frontend_tls = undef,
 ) {
     include profile::openstack::base::haproxy
+
+    $cert_file = $frontend_tls_cert_name ? {
+        undef   => undef,
+        default => "/etc/acmecerts/${frontend_tls_cert_name}/live/ec-prime256v1.chained.crt.key"
+    }
 
     # If the host's FQDN is in $servers configure FERM to allow peer
     # connections on the backend service port.
@@ -90,6 +97,10 @@ define profile::openstack::base::haproxy::site(
             content => template('profile/openstack/base/haproxy/conf.d/tcp-service.cfg.erb'),
             # restart to pick up new config files in conf.d
             notify  => Service['haproxy'],
+        }
+
+        if $frontend_tls_cert_name != undef or $frontend_tls_cert_name != undef {
+            fail('TLS termination is not supported for type="tls"')
         }
     } else {
         fail("Unknown service type ${type}")
