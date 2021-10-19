@@ -2,6 +2,7 @@
 # @param ensure Ensure of the resources that support it
 # @param access_level Whether the runner is protected or not. Whenever a runner is protected, it
 # picks only jobs created on protected branches or protected tags, and ignores other jobs.
+# @param concurrent Number of concurrent jobs allowed by this runner.
 # @param docker_image Default Docker image to use for job execution
 # @param docker_lvm_volume Use a separate LVM volume for docker data (for use on WMCS)
 # @param docker_settings Docker daemon settings
@@ -14,6 +15,7 @@
 class profile::gitlab::runner (
     Wmflib::Ensure                         $ensure             = lookup('profile::gitlab::runner::ensure'),
     Enum['not_protected', 'ref_protected'] $access_level       = lookup('profile::gitlab::runner::access_level'),
+    Integer                                $concurrent         = lookup('profile::gitlab::runner::concurrent'),
     String                                 $docker_image       = lookup('profile::gitlab::runner::docker_image'),
     Boolean                                $docker_lvm_volume  = lookup('profile::gitlab::runner::docker_lvm_volume'),
     Hash                                   $docker_settings    = lookup('profile::gitlab::runner::docker_settings'),
@@ -74,6 +76,23 @@ class profile::gitlab::runner (
             ,
             unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name} '",
             require => Apt::Package_from_component['gitlab-runner'],
+        }
+
+        # Believe it or not, there's no CLI for modifying the global
+        # concurrent setting.
+        # See https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1539
+        file_line { 'gitlab-runner-config-concurrent':
+            path    => '/etc/gitlab-runner/config.toml',
+            match   => '^concurrent *=',
+            line    => "concurrent = ${concurrent}",
+            require => Exec['gitlab-register-runner'],
+            notify  => Exec['gitlab-runner-restart'],
+        }
+
+        exec { 'gitlab-runner-restart':
+            user        => 'root',
+            command     => '/usr/bin/gitlab-runner restart',
+            refreshonly =>  true,
         }
     } else {
         exec { 'gitlab-unregister-runner':
