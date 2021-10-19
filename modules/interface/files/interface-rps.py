@@ -180,6 +180,7 @@ def set_ethtool_queues(device, driver, desired_queues):
 
     Arguments:
         device (str): the device name to configure
+        driver (str): the driver used by the device
         desired_queues (int): The number of queues to configure
 
     """
