@@ -16,7 +16,7 @@ class profile::openstack::base::radosgw(
     ferm::rule {'radosgw_api':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (8080) ACCEPT;",
+                             ) proto tcp dport (8080 28080) ACCEPT;",
     }
 
     # The keydata used in this step is pre-created on one of the ceph mon hosts
