@@ -238,6 +238,10 @@ def slay(
 ) -> None:
     hostname = socket.gethostname()
     for vic in victims:
+        if not psutil.pid_exists(vic.pid):
+            logging.warning("Victim %s does not exist; skipping", vic.pid)
+            continue
+
         logging.info(
             "Killing %s", vic.as_dict(attrs=["pid", "username", "uids", "name"])
         )
