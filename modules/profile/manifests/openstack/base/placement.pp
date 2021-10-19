@@ -35,7 +35,7 @@ class profile::openstack::base::placement(
     ferm::rule {'placement_ha_api_all':
         ensure => 'present',
         rule   => "saddr (${prod_networks} ${labs_networks}
-                             ) proto tcp dport (8778) ACCEPT;",
+                             ) proto tcp dport (8778 28778) ACCEPT;",
     }
 
     ferm::rule {'placement_api_all':
