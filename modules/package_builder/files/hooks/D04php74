@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# If pbuilder is called by gbp DIST is stored in GBP_PBUILDER_DIST
+DIST=${GBP_PBUILDER_DIST:-$DIST}
+
+# Avoid running hooks if PHP74 is not specified
+if [ "$PHP74" = "yes" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-php74.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia buster-wikimedia component/php74
+    deb-src http://apt.wikimedia.org/wikimedia buster-wikimedia component/php74
+EOF
+    apt-get update
+fi
