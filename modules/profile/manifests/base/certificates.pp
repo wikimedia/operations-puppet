@@ -25,6 +25,12 @@ class profile::base::certificates (
     sslcert::ca { 'DigiCert_SHA2_High_Assurance_Server_CA':
         source => 'puppet:///modules/base/ca/DigiCert_SHA2_High_Assurance_Server_CA.crt',
     }
+    sslcert::ca { 'DigiCert_TLS_RSA_SHA256_2020_CA1':
+        source => 'puppet:///modules/base/ca/DigiCert_TLS_RSA_SHA256_2020_CA1.crt',
+    }
+    sslcert::ca { 'DigiCert_TLS_Hybrid_ECC_SHA384_2020_CA1':
+        source => 'puppet:///modules/base/ca/DigiCert_TLS_Hybrid_ECC_SHA384_2020_CA1.crt',
+    }
     sslcert::ca { 'GlobalSign_Organization_Validation_CA_-_SHA256_-_G2':
         source  => 'puppet:///modules/base/ca/GlobalSign_Organization_Validation_CA_-_SHA256_-_G2.crt',
     }
