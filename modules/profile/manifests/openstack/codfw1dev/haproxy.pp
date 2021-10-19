@@ -97,11 +97,13 @@ class profile::openstack::codfw1dev::haproxy(
     }
 
     profile::openstack::base::haproxy::site { 'barbican':
-        servers            => $openstack_controllers,
-        healthcheck_method => 'GET',
-        healthcheck_path   => '/',
-        port_frontend      => 9311,
-        port_backend       => $barbican_bind_port,
+        servers                => $openstack_controllers,
+        healthcheck_method     => 'GET',
+        healthcheck_path       => '/',
+        port_frontend          => 9311,
+        port_backend           => $barbican_bind_port,
+        frontend_tls_cert_name => $acme_chief_cert_name,
+        port_frontend_tls      => 29311,
     }
 
     profile::openstack::base::haproxy::site { 'neutron':
