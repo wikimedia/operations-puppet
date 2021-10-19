@@ -107,9 +107,7 @@ def get_wikitech_user(email: str) -> Dict:
         print(f'\tno user found with {email}')
         return
 
-    # TODO: remove the [:-2] which is only there due to a bug
-    # https://gerrit.wikimedia.org/r/c/mediawiki/extensions/WikimediaMaintenance/+/730021
-    results = json.loads(results.message().decode()[:-2])
+    results = json.loads(results.message().decode())
     for user in results:
         verified = user['email_authenticated_date'] if user['email_authenticated_date'] else '*NO*'
         print(f'\tUsername:\t{user["username"]}\n\tVerified Email:\t{verified}')
