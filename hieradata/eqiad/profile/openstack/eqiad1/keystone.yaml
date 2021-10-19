@@ -1,4 +1,4 @@
-profile::openstack::eqiad1::keystone::admin_bind_port: 45357
+profile::openstack::eqiad1::keystone::admin_bind_port: 15357
 profile::openstack::eqiad1::keystone::daemon_active: false
 profile::openstack::eqiad1::keystone::db_host: 'openstack.eqiad1.wikimediacloud.org'
 profile::openstack::eqiad1::keystone::db_user: 'keystone'
