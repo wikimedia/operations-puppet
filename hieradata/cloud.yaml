@@ -504,7 +504,7 @@ profile::puppetboard::ng::puppetdb_host: 'localhost'
 profile::puppetboard::ng::puppetdb_port: 8080
 profile::puppetboard::ng::puppetdb_ssl_verify: true
 profile::puppetboard::ng::puppetdb_cert: ~
-profile::puppetboard::ng::puppetdb_cert: ~
+profile::puppetboard::ng::puppetdb_key: ~
 profile::puppetboard::ng::puppetdb_proto: ~
 profile::puppetboard::ng:page_title: 'Puppetboard'
 profile::puppetboard::ng::localise_timestamp: false

@@ -1,3 +1,4 @@
+profile::puppetboard::ng::vhost: 'pdev-puppetboard.wmcloud.org'
 profile::puppetboard::ng::puppetdb_host: 'pdev-pdb.puppet-dev.eqiad1.wikimedia.cloud'
 profile::puppetboard::ng::puppetdb_port: 443
 profile::puppetboard::ng::puppetdb_proto: 'https'
