@@ -129,4 +129,13 @@ define package_builder::pbuilder_hook(
       mode   => '0555',
       source => 'puppet:///modules/package_builder/hooks/A04elk710'
     }
+
+    # Disable rebuilding man-db (T276632)
+    file { "${basepath}/hooks/${distribution}/D80no-man-db-rebuild":
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0555',
+      source => 'puppet:///modules/package_builder/hooks/D80no-man-db-rebuild'
+    }
 }

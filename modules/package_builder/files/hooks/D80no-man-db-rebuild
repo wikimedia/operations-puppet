@@ -1,0 +1,8 @@
+#!/bin/sh
+# Don't rebuild man-db
+# Source: <https://salsa.debian.org/pbuilder-team/pbuilder/-/blob/master/examples/D80no-man-db-rebuild>
+
+echo "I: Preseed man-db/auto-update to false"
+debconf-set-selections <<EOF
+man-db man-db/auto-update boolean false
+EOF
