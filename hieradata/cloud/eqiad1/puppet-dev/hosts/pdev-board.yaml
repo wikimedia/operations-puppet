@@ -1,3 +1,7 @@
+apereo_cas:
+  production:
+    login_url: 'https://idp.wmcloud.org/login'
+    validate_url: 'https://idp.wmcloud.org/serviceValidate'
 profile::puppetboard::ng::vhost: 'pdev-puppetboard.wmcloud.org'
 profile::puppetboard::ng::puppetdb_host: 'pdev-pdb.puppet-dev.eqiad1.wikimedia.cloud'
 profile::puppetboard::ng::puppetdb_port: 443
