@@ -59,7 +59,7 @@ class profile::puppetboard::ng (
         no_workers => 4,
         config     => {
             need-plugins => 'python3',
-            wsgi         => '/usr/share/puppetboard/puppetboard.wsgi',
+            wsgi         => 'puppetboard.wsgi',
             buffer-size  => 8096,
             vacuum       => true,
             http-socket  => "127.0.0.1:${uwsgi_port}",
