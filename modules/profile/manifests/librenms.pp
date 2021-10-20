@@ -50,6 +50,11 @@ class profile::librenms (
 
         'snmp'             => {
             'community' => [ $passwords::network::snmp_ro_community ],
+            # Provide an empty 'v3' section for SNMP v3 "addhost" to work
+            # https://github.com/librenms/librenms/issues/13390
+            'v3'        => [
+              { 'authname' => 'root' },
+            ],
         },
 
         'autodiscovery'    => {
