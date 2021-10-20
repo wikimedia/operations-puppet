@@ -4,7 +4,9 @@
 # picks only jobs created on protected branches or protected tags, and ignores other jobs.
 # @param concurrent Number of concurrent jobs allowed by this runner.
 # @param docker_image Default Docker image to use for job execution
-# @param docker_lvm_volume Use a separate LVM volume for docker data (for use on WMCS)
+# @param docker_volume Use a separate volume for docker data (for use on WMCS)
+# @param docker_volume_min Minimum size (Gb) of attached volumes considered for the docker mount.
+# @param docker_volume_max Maximum size (Gb) of attached volumes considered for the docker mount.
 # @param docker_settings Docker daemon settings
 # @param docker_version Version of Docker to install
 # @param gitlab_url URL of the GitLab instance on which to register
@@ -17,7 +19,9 @@ class profile::gitlab::runner (
     Enum['not_protected', 'ref_protected'] $access_level       = lookup('profile::gitlab::runner::access_level'),
     Integer                                $concurrent         = lookup('profile::gitlab::runner::concurrent'),
     String                                 $docker_image       = lookup('profile::gitlab::runner::docker_image'),
-    Boolean                                $docker_lvm_volume  = lookup('profile::gitlab::runner::docker_lvm_volume'),
+    Boolean                                $docker_volume      = lookup('profile::gitlab::runner::docker_volume'),
+    Integer                                $docker_volume_min  = lookup('profile::gitlab::runner::docker_volume_min'),
+    Integer                                $docker_volume_max  = lookup('profile::gitlab::runner::docker_volume_max'),
     Hash                                   $docker_settings    = lookup('profile::gitlab::runner::docker_settings'),
     String                                 $docker_version     = lookup('profile::gitlab::runner::docker_version'),
     Stdlib::HTTPSUrl                       $gitlab_url         = lookup('profile::gitlab::runner::gitlab_url'),
@@ -35,10 +39,14 @@ class profile::gitlab::runner (
         version      => $docker_version,
     }
 
-    if $docker_lvm_volume {
-        labs_lvm::volume { '/var/lib/docker':
-            mountmode => '711',
-            before    =>  Class['docker'],
+    if $docker_volume {
+        cinderutils::ensure { '/var/lib/docker':
+            min_gb        => $docker_volume_min,
+            max_gb        => $docker_volume_max,
+            mount_point   => '/var/lib/docker',
+            mount_mode    => '711',
+            mount_options => 'discard,defaults',
+            before        => Class['docker'],
         }
     }
 
