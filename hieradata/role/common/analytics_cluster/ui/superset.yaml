@@ -40,3 +40,5 @@ profile::memcached::port: 11211
 profile::memcached::size: 32768
 profile::memcached::extended_options:
   - 'modern'
+
+profile::contacts::role_contacts: ['Analytics SREs']

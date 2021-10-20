@@ -71,3 +71,5 @@ profile::airflow::instances:
         conn_type: fs
         description: Local filesystem on the Airflow Scheduler node
       # TODO: add more as needed
+
+profile::contacts::role_contacts: ['Analytics SREs']

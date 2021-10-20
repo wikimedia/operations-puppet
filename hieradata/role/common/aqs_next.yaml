@@ -124,3 +124,5 @@ profile::lvs::realserver::pools:
   aqs:
     services:
       - aqs
+
+profile::contacts::role_contacts: ['Analytics SREs']
