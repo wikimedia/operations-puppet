@@ -18,6 +18,7 @@
     RequestHeader unset Proxy early
     ProxyPreserveHost On
     ProxyPassMatch "^/static/" !
+    ProxyPassMatch "^/javascript/" !
     ProxyPass / http://127.0.0.1:<%= @vhost_settings['uwsgi_port'] %>/
     ProxyPassReverse / http://127.0.0.1:<%= @vhost_settings['uwsgi_port'] %>/
 
@@ -38,6 +39,14 @@
         AllowOverride None
         Require all granted
     </Location>
+
+
+    # Some javascript libraries are provided by debian libjs-* packages
+    Alias /javascript /usr/share/javascript/
+
+    <Directory "/usr/share/javascript/">
+        Options FollowSymLinks MultiViews
+    </Directory>
 
     <Proxy *>
       <%- @cas_auth_settings.each_pair do |key, setting| -%>
