@@ -16,8 +16,8 @@ https://foundation.wikimedia.org:
   assert_headers_absent:
     - Content-Encoding
     - Vary
-  assert_headers:
-    Content-Type: text/css
+  assert_headers_regex:
+    Content-Type: ^text/css
 
 https://donate.wikimedia.org:
 - path: /
