@@ -2439,7 +2439,7 @@ node /^puppetboard[12]001\.(codfw|eqiad)\.wmnet$/ {
 }
 
 node /^puppetboard[12]002\.(codfw|eqiad)\.wmnet$/ {
-    role(insetup)
+    role(puppetboard::ng)
 }
 
 node /^puppetdb[12]002\.(codfw|eqiad)\.wmnet$/ {
