@@ -53,3 +53,163 @@ profile::cache::haproxy::del_headers:
     - direction: response
       name: 'X-Varnish'
       acl: missing_xwd
+
+profile::cache::haproxy::available_unified_certificates:
+  digicert-2021:
+    cert_paths:
+        - /etc/ssl/private/digicert-2021-ecdsa-unified.chained.crt.key
+        - /etc/ssl/private/digicert-2021-rsa-unified.chained.crt.key
+    server_names:
+        - wikipedia.org
+        - '*.wikipedia.org'
+        - '*.m.wikipedia.org'
+        - wikimedia.org
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - mediawiki.org
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - wikibooks.org
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - wikidata.org
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - wikinews.org
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - wikiquote.org
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - wikisource.org
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - wikiversity.org
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - wikivoyage.org
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - wiktionary.org
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - wikimediafoundation.org
+        - '*.wikimediafoundation.org'
+        - wmfusercontent.org
+        - '*.wmfusercontent.org'
+        - w.wiki
+  digicert-2020:
+    cert_paths:
+        - /etc/ssl/private/digicert-2020-ecdsa-unified.chained.crt.key
+        - /etc/ssl/private/digicert-2020-rsa-unified.chained.crt.key
+    server_names:
+        - wikipedia.org
+        - '*.wikipedia.org'
+        - '*.m.wikipedia.org'
+        - wikimedia.org
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - mediawiki.org
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - wikibooks.org
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - wikidata.org
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - wikinews.org
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - wikiquote.org
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - wikisource.org
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - wikiversity.org
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - wikivoyage.org
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - wiktionary.org
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - wikimediafoundation.org
+        - '*.wikimediafoundation.org'
+        - wmfusercontent.org
+        - '*.wmfusercontent.org'
+        - w.wiki
+  lets-encrypt:
+    cert_paths:
+        - /etc/acmecerts/unified/live/rsa-2048.chained.crt.key
+        - /etc/acmecerts/unified/live/ec-prime256v1.chained.crt.key
+    server_names:
+        - wikipedia.org
+        - '*.wikipedia.org'
+        - '*.m.wikipedia.org'
+        - wikimedia.org
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - mediawiki.org
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - wikibooks.org
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - wikidata.org
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - wikinews.org
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - wikiquote.org
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - wikisource.org
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - wikiversity.org
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - wikivoyage.org
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - wiktionary.org
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - wikimediafoundation.org
+        - '*.wikimediafoundation.org'
+        - wmfusercontent.org
+        - '*.wmfusercontent.org'
+        - w.wiki
+
+profile::cache::haproxy::do_ocsp: true
+profile::cache::haproxy::h2settings:
+  header_table_size: 4096
+  initial_window_size: 65535
+  max_concurrent_streams: 100
+profile::cache::haproxy::proxy_protocol: V2
+profile::cache::haproxy::timeout:
+  client: 120
+  client_fin: 120
+  connect: 3
+  http_request: 3600
+  keep_alive: 120
+  server: 180
+  tunnel: 3600
+profile::cache::haproxy::tls13_ciphers: TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256
+profile::cache::haproxy::tls_ciphers: -ALL:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256
+profile::cache::haproxy::tls_port: 443
+profile::cache::haproxy::tls_cachesize: 512000
+profile::cache::haproxy::tls_session_lifetime: 86400
+profile::cache::haproxy::unified_acme_chief: true
+profile::cache::haproxy::unified_certs:
+    - digicert-2020-ecdsa-unified
+    - digicert-2020-rsa-unified
+    - digicert-2021-ecdsa-unified
+    - digicert-2021-rsa-unified
