@@ -92,5 +92,6 @@ class profile::puppetboard::ng (
             'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
         ],
         proxied_as_https => true,
+        vhost_settings   => {'uwsgi_port' => $uwsgi_port},
     }
 }
