@@ -10,7 +10,6 @@
 #
 # maintainer: dzahn
 # phabricator-tag: VPS-project-Wikistats
-# filtertags: labs-project-wikistats
 class profile::wikistats (
     Wmflib::Ensure $jobs_ensure = lookup('profile::wikistats::jobs_ensure', {default_value => 'present'}),
 ){

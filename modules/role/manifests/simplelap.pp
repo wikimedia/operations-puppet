@@ -9,7 +9,6 @@
 # that needed to go away. This probably will
 # not end up being publicly used
 #
-# filtertags: labs-project-signwriting labs-project-editor-engagement
 class role::simplelap{
 
     # TODO: another case for php_version facte

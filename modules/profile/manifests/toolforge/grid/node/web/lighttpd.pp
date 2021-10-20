@@ -10,7 +10,6 @@
 #
 # Sample Usage:
 #
-# filtertags: toolforge
 class profile::toolforge::grid::node::web::lighttpd(
     $collectors = lookup('profile::toolforge::grid::base::collectors'),
 ) {

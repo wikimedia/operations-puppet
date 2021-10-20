@@ -1,7 +1,6 @@
 # == Class profile::hive::client
 # Installs base configs and packages for hive client nodes.
 #
-# filtertags: labs-project-analytics labs-project-math
 class profile::hive::client(
     Hash[String, Any] $zookeeper_clusters          = lookup('zookeeper_clusters'),
     Hash[String, Any] $hive_services               = lookup('hive_services'),

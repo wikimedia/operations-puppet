@@ -3,7 +3,6 @@
 # Install and configure Shiny Server, install Discovery-specific R packages,
 # and clone release-ready versions of Discovery's dashboards.
 #
-# filtertags: labs-project-search labs-project-shiny-r
 class profile::discovery_dashboards::production {
     require profile::discovery_dashboards::base
 

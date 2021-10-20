@@ -4,7 +4,6 @@
 # R/Python2 packages for learning with deep neural networks. The R interfaces
 # are available through RStudio's reticulate package.
 #
-# filtertags: labs-project-discovery-stats
 class profile::product_analytics::deep_learning {
     require profile::product_analytics::base
 

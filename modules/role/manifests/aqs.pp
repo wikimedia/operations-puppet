@@ -4,7 +4,6 @@
 # AQS is made up of a RESTBase instance backed by Cassandra.
 # Each AQS node has both colocated.
 #
-# filtertags: labs-project-deployment-prep
 class role::aqs {
     system::role { 'aqs':
         description => 'Analytics Query Service Node',

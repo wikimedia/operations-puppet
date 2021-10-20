@@ -3,7 +3,6 @@
 # Install and configure R and install Product Analytics-specific essential
 # R/Python2 packages for machine learning.
 #
-# filtertags: labs-project-discovery-stats
 class profile::product_analytics::machine_learning {
     require profile::product_analytics::base
 

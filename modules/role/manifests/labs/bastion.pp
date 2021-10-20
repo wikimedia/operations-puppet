@@ -1,4 +1,3 @@
-# filtertags: labs-project-bastion labs-project-mwoffliner
 class role::labs::bastion {
     system::role { 'labs::bastion':
         description => 'Cloud VPS bastion host (with mosh enabled)',

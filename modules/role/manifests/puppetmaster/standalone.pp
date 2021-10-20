@@ -43,7 +43,6 @@
 #  use the ::geoip::data::puppet class in their manifests.
 #  Default: false
 #
-# filtertags: labs-common
 class role::puppetmaster::standalone(
                                 $autosign = false,
     Boolean                     $prevent_cherrypicks = false,

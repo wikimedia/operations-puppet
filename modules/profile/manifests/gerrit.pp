@@ -1,6 +1,5 @@
 # modules/profile/manifests/gerrit/server.pp
 #
-# filtertags: labs-project-git
 class profile::gerrit(
     Hash                              $ldap_config       = lookup('ldap', Hash, hash, {}),
     Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::ipv4'),

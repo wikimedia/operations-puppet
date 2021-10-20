@@ -1,7 +1,6 @@
 # Uses the prometheus module and generates the specific configuration
 # needed for WMF production
 #
-# filtertags: labs-project-monitoring
 class profile::prometheus::ops (
     Array[Stdlib::Host] $prometheus_nodes              = lookup('prometheus_nodes'),
     String $storage_retention                          = lookup('prometheus::server::storage_retention', { 'default_value' => '3024h' }), # 4.5 months

@@ -15,7 +15,6 @@
 # - $ldap_binddn: AuthLDAPBindDN for $auth_type == 'ldap'
 # - $ldap_groups: List of ldap-group names for $auth_type == 'ldap'
 #
-# filtertags: labs-project-deployment-prep
 class profile::kibana::httpd_proxy (
     String $vhost                          = lookup('profile::kibana::httpd_proxy::vhost'),
     String $serveradmin                    = lookup('profile::kibana::httpd_proxy::serveradmin'),

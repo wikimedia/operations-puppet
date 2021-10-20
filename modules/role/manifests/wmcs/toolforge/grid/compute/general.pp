@@ -10,7 +10,6 @@
 #
 # Sample Usage:
 #
-# filtertags: toolforge
 class role::wmcs::toolforge::grid::compute::general {
     system::role { $name:
         description => 'Toolforge general computation node'

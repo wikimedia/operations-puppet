@@ -1,4 +1,3 @@
-# filtertags: labs-project-git labs-project-integration
 class role::ci::slave::package_builder {
   requires_realm('labs')
 

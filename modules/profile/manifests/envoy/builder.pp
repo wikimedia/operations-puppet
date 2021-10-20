@@ -1,5 +1,4 @@
 # Add tools to build envoy
-# filtertags: packaging
 class profile::envoy::builder {
     # we need a very large /tmp because the envoy build dumps more than 100 GB of
     # waste into it.

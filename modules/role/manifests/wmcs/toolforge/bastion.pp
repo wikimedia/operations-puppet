@@ -1,4 +1,3 @@
-# filtertags: labs-project-tools
 class role::wmcs::toolforge::bastion {
     system::role { $name:
         description => 'Toolforge bastion'

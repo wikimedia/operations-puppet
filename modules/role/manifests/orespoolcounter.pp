@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep
 class role::orespoolcounter {
     include ::profile::base::production
     include ::profile::poolcounter

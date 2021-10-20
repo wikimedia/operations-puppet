@@ -20,7 +20,6 @@
 #     },
 # }
 #
-# filtertags: labs-project-google-api-proxy
 class role::labs::google_api_proxy (
     $instances,
 ) {

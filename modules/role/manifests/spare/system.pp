@@ -7,7 +7,6 @@
 # This role is entirely transient. Once a system has been reclaimed to spares
 # or decomissioned, this role is removed from site.pp along with the host entry.
 #
-# filtertags: labs-project-puppet
 class role::spare::system {
     include ::profile::base::production
     include ::profile::base::firewall

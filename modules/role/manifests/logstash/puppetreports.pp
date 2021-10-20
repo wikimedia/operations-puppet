@@ -3,7 +3,6 @@
 #
 # Set up a TCP listener to listen for puppet failure reports.
 #
-# filtertags: labs-project-deployment-prep
 class role::logstash::puppetreports {
     system::role { 'logstash::puppetreports':
       description => 'Logstash, Kibana and Elasticsearch ingest node for puppet reports',

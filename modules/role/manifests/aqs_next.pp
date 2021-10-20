@@ -5,7 +5,6 @@
 # node has both colocated. aqs_next was created as a role used for AQS
 # hosts running on buster with an updated version of Cassandra.
 #
-# filtertags: labs-project-deployment-prep
 class role::aqs_next {
     system::role { 'aqs_next':
         description => 'Analytics Query Service Node - next generation',

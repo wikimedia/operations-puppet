@@ -1,6 +1,5 @@
 # phabricator instance
 #
-# filtertags: labs-project-deployment-prep labs-project-devtools
 class profile::phabricator::main (
     Hash                        $cache_nodes        = lookup('cache::nodes',
                                                       { 'default_value' => {} }),

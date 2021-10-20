@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep labs-project-automation-framework labs-project-toolsbeta
 class role::puppetmaster::puppetdb {
     include profile::base::production
     include profile::base::firewall

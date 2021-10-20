@@ -10,7 +10,6 @@
 #   Hash of kafka cluster name to password for jks truststore used by logstash kafka input plugin,
 #   e.g. $input_kafka_ssl_truststore_passwords['logging-eqiad'] == 'XXXXXX', etc.
 #
-# filtertags: labs-project-deployment-prep
 class profile::logstash::collector7 (
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => []}),
     Hash[String, String] $input_kafka_ssl_truststore_passwords = lookup('profile::logstash::collector::input_kafka_ssl_truststore_passwords'),

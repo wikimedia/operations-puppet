@@ -1,6 +1,5 @@
 # == Class: profile::toolforge::toolviews
 #
-# filtertags: labs-project-tools
 class profile::toolforge::toolviews (
     $mysql_host     = lookup('profile::toolforge::toolviews::mysql_host',     {default_value => 'localhost'}),
     $mysql_db       = lookup('profile::toolforge::toolviews::mysql_db',       {default_value => 'example_db'}),

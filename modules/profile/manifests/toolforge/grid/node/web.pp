@@ -12,7 +12,6 @@
 #
 # Sample Usage:
 #
-# filtertags: labs-project-tools
 class profile::toolforge::grid::node::web (
     Stdlib::Unixpath $etcdir = lookup('profile::toolforge::etcdir'),
 ){

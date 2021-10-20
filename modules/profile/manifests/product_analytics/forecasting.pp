@@ -3,7 +3,6 @@
 # Install and configure R and install Product Analytics-specific essential
 # R/Python2 packages for training time series models and generating forecasts.
 #
-# filtertags: labs-project-discovery-stats
 class profile::product_analytics::forecasting {
     require profile::product_analytics::probabilistic
 

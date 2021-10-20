@@ -6,7 +6,6 @@
 #
 #     require ::profile::labs::lvm::srv
 #
-# filtertags: labs-common
 class role::labs::lvm::srv {
     include ::profile::labs::lvm::srv
 }

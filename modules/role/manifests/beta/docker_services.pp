@@ -1,6 +1,5 @@
 # Role to run services from docker images in beta
 #
-# filtertags: labs-project-deployment-prep
 class role::beta::docker_services {
     include ::profile::base::production
     include ::profile::docker::engine

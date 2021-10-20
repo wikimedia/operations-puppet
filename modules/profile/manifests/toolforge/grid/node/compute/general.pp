@@ -10,7 +10,6 @@
 #
 # Sample Usage:
 #
-# filtertags: toolforge
 class profile::toolforge::grid::node::compute::general(
     $collectors = lookup('profile::toolforge::grid::base::collectors'),
 ) {

@@ -1,4 +1,3 @@
-# filtertags: labs-project-packaging
 class role::builder {
 
     include profile::base::production

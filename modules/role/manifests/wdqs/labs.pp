@@ -3,7 +3,6 @@
 # This class defines a Wikidata Query Service endpoint inside
 # Wikimedia Cloud Services.
 #
-# filtertags: labs-project-wikidata-query
 class role::wdqs::labs () {
     # Standard for all roles
     include profile::base::production

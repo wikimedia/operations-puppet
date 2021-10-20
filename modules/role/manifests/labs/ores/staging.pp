@@ -1,4 +1,3 @@
-# filtertags: labs-project-ores-staging
 class role::labs::ores::staging {
     class { '::git::lfs': }
     include ::ores::base

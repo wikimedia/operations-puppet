@@ -11,7 +11,6 @@
 # giving some extra lvm space locally mounted on
 # which to write the dumps.
 #
-# filtertags: labs-project-deployment-prep
 class role::dumps::generation::worker::beta_testbed {
     include ::profile::base::production
 

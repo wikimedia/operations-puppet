@@ -1,6 +1,5 @@
 # mediawiki udp2log instance.  Does not use monitoring.
 #
-# filtertags: labs-project-deployment-prep
 class role::logging::mediawiki::udp2log(
     $logstash_host,
     $monitor = true,

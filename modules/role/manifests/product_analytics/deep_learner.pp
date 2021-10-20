@@ -3,7 +3,6 @@
 # This class sets up R and Python packages for machine learning with deep
 # neural networks.
 #
-# filtertags: labs-project-discovery-stats
 class role::product_analytics::deep_learner {
     # include ::profile::base::production
     # include ::profile::base::firewall

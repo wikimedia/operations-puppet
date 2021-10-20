@@ -11,7 +11,6 @@
 #
 # maintainer: dzahn
 # phabricator-tag: VPS-project-Wikistats
-# filtertags: labs-project-wikistats
 class role::wikistats::instance {
 
     system::role { 'wikistats': description => 'wikistats instance' }

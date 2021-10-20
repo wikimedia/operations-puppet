@@ -3,7 +3,6 @@
 #
 # Extension:ApiFeatureUsage into Elasticsearch.
 #
-# filtertags: labs-project-deployment-prep
 class profile::logstash::apifeatureusage(
     Array[Stdlib::Host]    $targets         = lookup('profile::logstash::apifeatureusage::targets'),
     Hash                   $curator_actions = lookup('profile::logstash::apifeatureusage::curator_actions'),

@@ -1,6 +1,5 @@
 # Simple nginx HTTP load balancer for ores
 #
-# filtertags: labs-project-ores
 class profile::labs::ores::lb (
     Array $realservers = lookup('role::labs::ores::lb::realservers'),
     Optional[Boolean] $cache = str2bool(lookup('role::labs::ores::lb::cache',{'default_value' => ''})),

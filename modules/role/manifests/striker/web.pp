@@ -3,7 +3,6 @@
 # Striker is a Django application for managing data related to Toolforge
 # tools.
 #
-# filtertags: labs-project-striker
 class role::striker::web {
 
     ensure_packages('libapache2-mod-wsgi-py3')

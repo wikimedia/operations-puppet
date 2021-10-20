@@ -1,4 +1,3 @@
-# filtertags: labs-project-ores
 class role::labs::ores::worker {
     include ::profile::ores::worker
     include ::role::labs::ores::redisproxy # lint:ignore:wmf_styleguide

@@ -4,7 +4,6 @@
 # computing, forecasting, Bayesian inference, and machine learning (including
 # deep neural networks). Once it's up and running: get your game on, go play.
 #
-# filtertags: labs-project-discovery-stats
 class role::product_analytics::allstar_cruncher {
     # include ::profile::base::production
     # include ::profile::base::firewall

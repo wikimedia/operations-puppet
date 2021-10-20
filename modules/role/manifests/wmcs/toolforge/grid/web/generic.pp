@@ -10,7 +10,6 @@
 #
 # Sample Usage:
 #
-# filtertags: toolforge
 class role::wmcs::toolforge::grid::web::generic {
     system::role { $name:
         description => 'Toolforge generic web exec node'

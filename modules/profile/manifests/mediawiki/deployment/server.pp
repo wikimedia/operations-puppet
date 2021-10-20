@@ -2,7 +2,6 @@
 #
 # Sets up scap and the corresponding apache site, and rsync daemon.
 #
-# filtertags: labs-project-deployment-prep labs-project-devtools labs-project-striker
 class profile::mediawiki::deployment::server(
     Stdlib::Fqdn $apache_fqdn            = lookup('apache_fqdn', {default_value => $::fqdn}),
     String $deployment_group             = lookup('deployment_group', {default_value => 'wikidev'}),

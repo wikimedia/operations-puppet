@@ -3,7 +3,6 @@
 # Profile to provision prometheus machine metrics exporter. See also
 # https://github.com/prometheus/node_exporter and the module's documentation.
 #
-# filtertags: labs-project-automation-framework labs-project-graphite
 
 class profile::prometheus::node_exporter (
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),

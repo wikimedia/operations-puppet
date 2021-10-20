@@ -3,7 +3,6 @@
 # Install Linux Containers (LXC) and Vagrant along with helper programs for
 # use as a generic vagrant container host.
 #
-# filtertags: labs-project-search labs-project-shiny-r
 class role::labs::vagrant_lxc {
     include ::profile::wmcs::vagrant_lxc
 

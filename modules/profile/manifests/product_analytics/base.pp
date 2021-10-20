@@ -3,7 +3,6 @@
 # Install and configure R & Python and install Product Analytics-specific
 # essential R/Python packages.
 #
-# filtertags: labs-project-discovery-stats
 class profile::product_analytics::base {
     # `include ::r` would not install devtools, which would mean that we could
     # not install R packages from Git/GitHub

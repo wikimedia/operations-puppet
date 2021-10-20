@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep
 class role::mail::mx {
     include profile::base::production
     include network::constants

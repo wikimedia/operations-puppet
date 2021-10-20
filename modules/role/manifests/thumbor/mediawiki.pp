@@ -2,7 +2,6 @@
 #
 # Installs a Thumbor image scaling server to be used with MediaWiki.
 #
-# filtertags: labs-project-deployment-prep
 
 class role::thumbor::mediawiki {
 

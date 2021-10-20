@@ -10,7 +10,6 @@
 #
 # Sample Usage:
 #
-# filtertags: toolforge
 class role::wmcs::toolforge::grid::web::lighttpd {
     system::role { $name:
         description => 'Toolforge lighttpd web exec node'

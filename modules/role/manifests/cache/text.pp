@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep
 class role::cache::text {
 
     system::role { 'cache::text':

@@ -3,7 +3,6 @@
 # Install Linux Containers (LXC) and Vagrant along with helper programs and
 # provision a MediaWiki-Vagrant clone for shared use.
 #
-# filtertags: labs-common
 class role::labs::mediawiki_vagrant {
     include ::profile::wmcs::mediawiki_vagrant
 

@@ -1,7 +1,6 @@
 # Uses the prometheus module and generates the specific configuration
 # needed for WMF production
 #
-# filtertags: labs-project-monitoring
 class profile::prometheus::services (
     String $replica_label              = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload      = lookup('profile::prometheus::services::thanos', { 'default_value' => false }),

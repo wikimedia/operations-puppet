@@ -7,7 +7,6 @@
 # As opposed to the original simplelamp role it uses
 # MariaDB instead of MySQL and the httpd instead of the apache module.
 #
-# filtertags: labs-common
 class role::simplelamp2 {
 
     system::role { 'simplelamp2':

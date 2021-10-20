@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep
 class profile::swift::stats_reporter (
     Wmflib::Ensure         $ensure        = lookup('profile::swift::stats_reporter::ensure'),
     String                 $swift_cluster = lookup('profile::swift::cluster'),

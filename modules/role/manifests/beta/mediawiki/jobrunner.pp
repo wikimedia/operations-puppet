@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep
 # like role::mediawiki::jobrunner but without LVS and envoy
 class role::beta::mediawiki::jobrunner {
     system::role { 'beta::mediawiki::jobrunner': }

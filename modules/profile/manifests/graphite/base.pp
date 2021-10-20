@@ -16,7 +16,6 @@
 #   If enabled, configure an Apache vhost config (which is provided by a different
 #   profile if running with CAS auth)
 #
-# filtertags: labs-project-graphite
 class profile::graphite::base(
     $storage_dir      = '/var/lib/carbon',
     $hostname         = 'graphite.wikimedia.org',

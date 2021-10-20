@@ -2,7 +2,6 @@
 #
 # Provisions Elasticsearch node with nginx reverse proxy
 #
-# filtertags: labs-project-tools
 class profile::elasticsearch::toolforge (
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     Elasticsearch::InstanceParams $elastic_settings = lookup('profile::elasticsearch::common_settings'),

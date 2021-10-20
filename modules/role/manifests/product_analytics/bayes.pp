@@ -2,7 +2,6 @@
 #
 # This class sets up R and Python packages for Bayesian inference.
 #
-# filtertags: labs-project-discovery-stats
 class role::product_analytics::bayes {
     # include ::profile::base::production
     # include ::profile::base::firewall

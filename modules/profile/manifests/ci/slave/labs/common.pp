@@ -1,6 +1,5 @@
 # Common configuration to be applied on any labs Jenkins slave
 #
-# filtertags: labs-project-deployment-prep labs-project-git
 class profile::ci::slave::labs::common {
 
     # The slaves on labs use the `jenkins-deploy` user which is already

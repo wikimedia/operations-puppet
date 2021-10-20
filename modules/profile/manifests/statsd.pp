@@ -4,7 +4,6 @@
 # on UDP port 8125 and forwards to backends on UDP ports 8126+,
 # as well as the set of statsite backends that listen on these ports.
 #
-# filtertags: labs-project-graphite
 class profile::statsd (
     Stdlib::Host   $graphite_host = lookup('graphite_host'),
 ){

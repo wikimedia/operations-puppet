@@ -1,7 +1,6 @@
 # == Class role::analytics_test_cluster::hadoop::master
 # Includes bigtop::hadoop::master classes
 #
-# filtertags: labs-project-analytics labs-project-math
 class role::analytics_test_cluster::hadoop::master {
     system::role { 'analytics_test_cluster::hadoop::master':
         description => 'Hadoop Master (NameNode & ResourceManager)',

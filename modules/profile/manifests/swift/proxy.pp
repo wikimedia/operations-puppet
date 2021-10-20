@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep labs-project-swift
 class profile::swift::proxy (
     Hash $accounts                             = lookup('profile::swift::accounts'),
     Hash $accounts_keys                        = lookup('profile::swift::accounts_keys'),

@@ -4,7 +4,6 @@
 # R/Python packages for statistical inference and modeling with probabilistic
 # programming and Bayesian methods.
 #
-# filtertags: labs-project-discovery-stats
 class profile::product_analytics::probabilistic_programming {
     require profile::product_analytics::base
 

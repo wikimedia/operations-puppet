@@ -5,7 +5,6 @@
 # === Parameters
 # [*nodes*] List of prometheus nodes
 #
-# filtertags: labs-project-deployment-prep
 
 class profile::prometheus::varnish_exporter(
     Array[Stdlib::Host] $nodes = lookup('prometheus_nodes')

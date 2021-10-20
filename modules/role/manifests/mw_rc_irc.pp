@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep labs-project-ircd
 class role::mw_rc_irc {
 
     system::role { 'mw_rc_irc': description => 'MW Changes IRC Broadcast Server' }

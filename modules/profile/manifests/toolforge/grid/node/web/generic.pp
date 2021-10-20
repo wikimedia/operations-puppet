@@ -3,7 +3,6 @@
 # Sets up a node for running generic webservices.
 # Currently explicitly supports nodejs
 #
-# filtertags: labs-project-tools
 class profile::toolforge::grid::node::web::generic(
     $collectors = lookup('profile::toolforge::grid::base::collectors'),
 ) {

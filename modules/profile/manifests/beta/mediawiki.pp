@@ -3,7 +3,6 @@
 # Allow mwdeploy to login from scap deployment host. Adds an exception in
 # /etc/security/access.conf to work around labs-specific restrictions
 #
-# filtertags: labs-project-deployment-prep
 class profile::beta::mediawiki (
     Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', {'default_value' => []})
 ) {

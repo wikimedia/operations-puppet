@@ -1,6 +1,5 @@
 # Simple file server for the 'download' project
 #
-# filtertags: labs-project-download
 class profile::labs::downloadserver {
     file { '/srv/public_files':
         ensure => directory,

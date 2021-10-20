@@ -1,4 +1,3 @@
-# filtertags: labs-project-deployment-prep
 class role::mediawiki::jobrunner {
     system::role { 'mediawiki::jobrunner': }
 

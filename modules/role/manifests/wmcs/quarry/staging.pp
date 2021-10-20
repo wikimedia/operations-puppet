@@ -1,4 +1,3 @@
-# filtertags: labs-project-quarry
 class role::wmcs::quarry::staging {
     system::role { $name:
         description => 'staging instance deployment for quarry'

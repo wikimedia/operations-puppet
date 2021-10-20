@@ -4,7 +4,6 @@
 # and clone "develop" branch of Discovery's dashboards so it has the latest
 # versions (which may have unfinished features).
 #
-# filtertags: labs-project-search labs-project-shiny-r
 class profile::discovery_dashboards::development {
     require profile::discovery_dashboards::base
 

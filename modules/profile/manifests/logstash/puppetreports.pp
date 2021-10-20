@@ -3,7 +3,6 @@
 #
 # Set up a TCP listener to listen for puppet failure reports.
 #
-# filtertags: labs-project-deployment-prep
 class profile::logstash::puppetreports {
 
     if $::realm != 'labs' {

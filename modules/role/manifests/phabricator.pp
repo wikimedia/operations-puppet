@@ -1,6 +1,5 @@
 # phabricator instance
 #
-# filtertags: labs-project-deployment-prep labs-project-devtools
 class role::phabricator {
 
     system::role { 'phabricator':

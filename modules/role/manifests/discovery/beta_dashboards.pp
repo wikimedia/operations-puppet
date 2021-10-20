@@ -4,7 +4,6 @@
 # for tracking Search, Wikipedia.org portal, Wikidata
 # Query Service, and Maps usage metrics and other KPIs.
 #
-# filtertags: labs-project-search labs-project-shiny-r
 class role::discovery::beta_dashboards {
     include ::profile::discovery_dashboards::development
 
