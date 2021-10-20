@@ -32,17 +32,19 @@ class profile::puppetboard::ng (
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     include profile::rsyslog::udp_json_logback_compat
     class {'puppetboard':
-        ensure               => $ensure,
-        puppetdb_host        => $puppetdb_host,
-        puppetdb_port        => $puppetdb_port,
-        puppetdb_ssl_verify  => $puppetdb_ssl_verify,
-        puppetdb_cert        => $puppetdb_cert,
-        puppetdb_key         => $puppetdb_key,
-        puppetdb_proto       => $puppetdb_proto,
-        page_title           => $page_title,
-        localise_timestamp   => $localise_timestamp,
-        graph_type           => $graph_type,
-        graph_facts_override => $graph_facts_override,
+        ensure                   => $ensure,
+        puppetdb_host            => $puppetdb_host,
+        puppetdb_port            => $puppetdb_port,
+        puppetdb_ssl_verify      => $puppetdb_ssl_verify,
+        puppetdb_cert            => $puppetdb_cert,
+        puppetdb_key             => $puppetdb_key,
+        puppetdb_proto           => $puppetdb_proto,
+        page_title               => $page_title,
+        localise_timestamp       => $localise_timestamp,
+        graph_type               => $graph_type,
+        graph_facts_override     => $graph_facts_override,
+        query_endpoints_override => $query_endpoints_override,
+        secret_key               => $secret_key,
     }
 
 
