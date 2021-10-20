@@ -37,7 +37,7 @@
         Options FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
-    </Directory>
+    </Location>
 
     <Proxy *>
       <%- @cas_auth_settings.each_pair do |key, setting| -%>
