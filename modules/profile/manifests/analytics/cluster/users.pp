@@ -19,6 +19,6 @@ class profile::analytics::cluster::users {
     # When Kerberos is enabled, indexation jobs will run on workers as user 'druid'.
     class { '::druid::bigtop::hadoop::user': }
 
-    # All hadoop nodes need to have a common alluxio user and group defined
+    # All hadoop nodes had a common alluxio user and group defined, but this is now being removed.
     class { '::bigtop::alluxio::user': }
 }
