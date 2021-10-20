@@ -18,8 +18,8 @@
     RequestHeader unset Proxy early
     ProxyPreserveHost On
     ProxyPassMatch "^/static/" !
-    ProxyPass / http://127.0.0.1:<%= @uwsgi_port %>/
-    ProxyPassReverse / http://127.0.0.1:<%= @uwsgi_port %>/
+    ProxyPass / http://127.0.0.1:<%= @vhost_settings['uwsgi_port'] %>/
+    ProxyPassReverse / http://127.0.0.1:<%= @vhost_settings['uwsgi_port'] %>/
 
     RewriteEngine On
 
