@@ -51,7 +51,7 @@ class profile::toolforge::grid::node::web (
         group   => 'root',
         mode    => '0555',
         source  => 'puppet:///modules/profile/toolforge/portreleaser.py',
-        require => Package['toollabs-webservice'],
+        require => Package['toolforge-webservice'],
     }
 
     file { '/usr/local/bin/jobkill':
