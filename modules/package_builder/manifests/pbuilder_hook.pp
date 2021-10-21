@@ -129,18 +129,4 @@ define package_builder::pbuilder_hook(
       mode   => '0555',
       source => 'puppet:///modules/package_builder/hooks/A04elk710'
     }
-
-    # Dependency info
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/C10shell.wikimedia.org"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D01apt.wikimedia.org"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D02backports"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D05localsources"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04php72"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04php74"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D03spicerack"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04vp9"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04java8"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04cergen"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/D04elk710"]
-    File["${basepath}/hooks/${distribution}"] -> File["${basepath}/hooks/${distribution}/A04elk710"]
 }

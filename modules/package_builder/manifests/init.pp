@@ -13,10 +13,10 @@ class package_builder(
     Stdlib::Unixpath                      $basepath       = '/var/cache/pbuilder',
     Hash[Debian::Codename, Array[String]] $extra_packages = {}
 ) {
-    class { '::package_builder::hooks':
+    class { 'package_builder::hooks':
         basepath => $basepath,
     }
-    class { '::package_builder::environments':
+    class { 'package_builder::environments':
         basepath       => $basepath,
         extra_packages => $extra_packages,
     }

@@ -28,6 +28,4 @@ class package_builder::hooks(
         components   => 'main',
         basepath     => $basepath,
     }
-
-    File["${basepath}/hooks"] -> Package_builder::Pbuilder_hook <| |>
 }
