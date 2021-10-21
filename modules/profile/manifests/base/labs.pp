@@ -6,6 +6,8 @@ class profile::base::labs(
     Integer $client_bucket_file_age = lookup('profile::base::labs::client_bucket_file_age', {'default_value' => 14}),
 ){
 
+    # profile base is shared with production
+    include profile::base
     include ::apt::noupgrade
     class {'::apt::unattendedupgrades':
         unattended_wmf    => $unattended_wmf,
