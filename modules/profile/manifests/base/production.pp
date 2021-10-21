@@ -27,6 +27,8 @@ class profile::base::production (
             class { 'toil::acct_handle_wtmp_not_rotated': }
         }
         include profile::monitoring
+        include profile::rsyslog::kafka_shipper
+
         include profile::emacs
 
         if $enable_ip6_mapped {
