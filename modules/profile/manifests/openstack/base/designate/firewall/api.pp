@@ -23,6 +23,12 @@ class profile::openstack::base::designate::firewall::api(
         srange => inline_template("(@resolve((<%= @clients_ipv4.join(' ') %>)) @resolve((<%= @clients_ipv6.join(' ') %>), AAAA))")
     }
 
+    ferm::service { 'designate-tls-api':
+        proto  => 'tcp',
+        port   => '29001',
+        srange => inline_template("(@resolve((<%= @clients_ipv4.join(' ') %>)) @resolve((<%= @clients_ipv6.join(' ') %>), AAAA))")
+    }
+
     # Allow labs instances to hit the designate api.
     # This is not as permissive as it looks; The wmfkeystoneauth
     # plugin (via the password whitelist) only allows 'novaobserver'
@@ -34,6 +40,12 @@ class profile::openstack::base::designate::firewall::api(
     ferm::service { 'designate-api-for-labs':
         proto  => 'tcp',
         port   => '9001',
+        srange => "(${labs_networks})",
+    }
+
+    ferm::service { 'designate-tls-api-for-labs':
+        proto  => 'tcp',
+        port   => '29001',
         srange => "(${labs_networks})",
     }
 }

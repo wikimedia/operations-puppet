@@ -67,7 +67,7 @@ class profile::openstack::base::designate::service(
         rule => "saddr (@resolve((${join($openstack_controllers,' ')}))
                         @resolve((${join($openstack_controllers,' ')}), AAAA)
                         ${prometheus_ferm_srange}
-                 ) proto tcp dport (9001 29001) ACCEPT;",
+                 ) proto tcp dport (9001) ACCEPT;",
     }
 
     # allow axfr traffic between mdns and pdns on the pdns hosts
