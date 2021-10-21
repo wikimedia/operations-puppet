@@ -144,7 +144,6 @@ fullviews:
   - global_group_restrictions
   - global_user_groups
   - globalblocks
-  - localuser
   - wikiset
   - wb_changes_dispatch
   - wb_changes_subscription
@@ -564,6 +563,13 @@ customviews:
       ipb_create_account, ipb_expiry, ipb_range_start, ipb_range_end, ipb_enable_autoblock, ipb_deleted,
       ipb_block_email, ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id, ipb_sitewide
     where: ipb_deleted=0 and ipb_auto=0
+  localuser:
+    source:
+      - localuser
+      - globaluser
+    view: >
+      select lu_wiki, lu_name, lu_attached_timestamp, lu_attached_method, lu_local_id, lu_global_id
+    where: lu_global_id = gu_id AND gu_hidden=''
   logging:
     source: logging
     view: >
