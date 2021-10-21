@@ -519,6 +519,33 @@ profile::puppetboard::ng::secret_key: ~
 profile::base::production::enable: false
 profile::base::production::enable_ip6_mapped: false
 
+kafka_clusters:
+  logging-eqiad:
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      kafka-logging1001.eqiad.wmnet:
+        id: 1004
+        rack: B
+      kafka-logging1002.eqiad.wmnet:
+        id: 1005
+        rack: C
+      kafka-logging1003.eqiad.wmnet:
+        id: 1006
+        rack: D
+
+  logging-codfw:
+    zookeeper_cluster_name: main-codfw
+    brokers:
+      kafka-logging2001.codfw.wmnet:
+        id: 2001
+        rack: A
+      kafka-logging2002.codfw.wmnet:
+        id: 2002
+        rack: C
+      kafka-logging2003.codfw.wmnet:
+        id: 2003
+        rack: D
+
 profile::rsyslog::kafka_destination_clusters:
   eqiad: 'logging-eqiad'
   codfw: 'logging-codfw'
