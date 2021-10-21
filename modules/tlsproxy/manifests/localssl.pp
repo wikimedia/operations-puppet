@@ -177,7 +177,7 @@ define tlsproxy::localssl(
     if $acme_chief {
         if !defined(Acme_chief::Cert[$acme_certname]) {
             acme_chief::cert { $acme_certname:
-                before => Service['nginx']
+                puppet_svc => 'nginx',
             }
         }
         if $do_ocsp {
