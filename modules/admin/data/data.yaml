@@ -336,7 +336,8 @@ groups:
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
-              ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker, statwithlatte]
+              ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
+              statwithlatte, effeietsanders]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -1433,6 +1434,16 @@ users:
     uid: 3088
     email: ebernhardson@wikimedia.org
     krb: present
+  effeietsanders:
+    ensure: present
+    gid: 500
+    name: effeietsanders
+    realname: Lodewijk Gelauff
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO3Jzytoma85Fpr+Sy/BuCIJZ16xWMYEPyY0jHPcDkdG]
+    uid: 16702
+    email: effeietsanders@gmail.com
+    expiry_date: 2022-04-15
+    expiry_contact: mgerlach@wikimedia.org
   esanders:
     ensure: present
     gid: 500
