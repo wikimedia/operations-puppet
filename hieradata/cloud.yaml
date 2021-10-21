@@ -518,11 +518,3 @@ profile::puppetboard::ng::secret_key: ~
 # defaults for cloud (mostly deployment prep)
 profile::base::production::enable: false
 profile::base::production::enable_ip6_mapped: false
-
-profile::rsyslog::kafka_destination_clusters:
-  eqiad: 'logging-eqiad'
-  codfw: 'logging-codfw'
-  ulsfo: 'logging-eqiad'
-  esams: 'logging-eqiad'
-  eqsin: 'logging-eqiad'
-  drmrs: 'logging-eqiad'
