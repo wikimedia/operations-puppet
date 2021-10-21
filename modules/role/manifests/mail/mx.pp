@@ -1,6 +1,6 @@
 # filtertags: labs-project-deployment-prep
 class role::mail::mx {
-    include profile::standard
+    include profile::base::production
     include network::constants
     include privateexim::aliases::private
     include profile::base::firewall

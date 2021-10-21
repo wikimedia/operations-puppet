@@ -1,7 +1,7 @@
 # filtertags: labs-project-deployment-prep
 class role::mediawiki::appserver {
     system::role { 'mediawiki::appserver': }
-    include ::profile::standard
+    include ::profile::base::production
     include ::role::mediawiki::common
 
     include ::profile::base::firewall

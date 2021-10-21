@@ -5,7 +5,7 @@ class role::backup::es {
     }
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 
     include ::profile::backup::storage::es
 }

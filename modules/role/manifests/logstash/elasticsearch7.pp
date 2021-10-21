@@ -8,7 +8,7 @@ class role::logstash::elasticsearch7 {
       description => "Logstash elasticsearch backend node in the production-elk7-${::site} cluster",
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::elasticsearch::logstash
     include ::profile::elasticsearch::monitor::base_checks

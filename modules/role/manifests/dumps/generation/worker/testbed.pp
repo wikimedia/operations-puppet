@@ -1,5 +1,5 @@
 class role::dumps::generation::worker::testbed {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include profile::dumps::generation::worker::common

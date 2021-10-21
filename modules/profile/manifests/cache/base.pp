@@ -28,7 +28,7 @@ class profile::cache::base(
     # Needed profiles
     require ::profile::conftool::client
     require ::profile::prometheus::cadvisor_exporter
-    require ::profile::standard
+    require ::profile::base::production
     require ::profile::base::systemd
 
     # FIXME: this cannot be required or it will cause a dependency cycle. It might be a good idea not to include it here

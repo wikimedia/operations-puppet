@@ -17,5 +17,5 @@ class role::analytics_cluster::hadoop::yarn {
     include ::profile::kerberos::keytabs
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 }

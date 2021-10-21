@@ -3,7 +3,7 @@
 # see role/eqiad/wmcs/openstack/eqiad1/virt.yaml
 class role::wmcs::openstack::eqiad1::virt {
     system::role { $name: }
-    include ::profile::standard
+    include ::profile::base::production
     # include ::profile::base::firewall
     include ::profile::ceph::client::rbd_libvirt
     include ::profile::openstack::eqiad1::clientpackages

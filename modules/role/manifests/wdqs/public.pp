@@ -3,7 +3,7 @@
 # This class sets up Wikidata Query Service for the public facing endpoint.
 class role::wdqs::public {
     # Standard for all roles
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     # Standard wdqs installation
     require profile::nginx

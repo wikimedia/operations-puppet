@@ -6,7 +6,7 @@ class role::libraryupgrader {
         description => 'libraryupgrader instance'
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::libraryupgrader
 }

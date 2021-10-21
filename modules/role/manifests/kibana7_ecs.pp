@@ -3,7 +3,7 @@ class role::kibana7_ecs {
         description => 'ELK7 Kibana ECS host',
     }
 
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     include profile::elasticsearch::logstash
     include profile::elasticsearch::monitor::base_checks

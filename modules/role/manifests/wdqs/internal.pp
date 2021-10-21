@@ -4,7 +4,7 @@
 # cases.
 class role::wdqs::internal {
     # Standard for all roles
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     # Standard wdqs installation
     require profile::nginx

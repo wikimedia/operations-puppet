@@ -21,6 +21,6 @@ class role::analytics_cluster::hadoop::standby {
     include ::profile::kerberos::keytabs
     include ::profile::base::firewall
     include ::profile::base::linux419
-    include ::profile::standard
+    include ::profile::base::production
 
 }

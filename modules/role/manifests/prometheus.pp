@@ -15,7 +15,7 @@ class role::prometheus {
 
     include ::profile::alerts::deploy::prometheus
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::lvs::realserver

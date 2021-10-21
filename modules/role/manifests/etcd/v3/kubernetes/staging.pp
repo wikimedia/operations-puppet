@@ -1,7 +1,7 @@
 # Role class for the etcdv3 cluster used by kubernetes staging.
 
 class role::etcd::v3::kubernetes::staging {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::etcd::v3
 

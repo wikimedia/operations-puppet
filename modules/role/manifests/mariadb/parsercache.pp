@@ -5,7 +5,7 @@ class role::mariadb::parsercache {
     system::role { 'mariadb::parsercache':
         description => 'Parser Cache Database',
     }
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     ::profile::mariadb::ferm { 'parsercache': }
 

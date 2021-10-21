@@ -4,7 +4,7 @@ class role::kafka::monitoring_buster {
         description => 'Kafka consumer groups lag monitoring'
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::kafka::monitoring
 }

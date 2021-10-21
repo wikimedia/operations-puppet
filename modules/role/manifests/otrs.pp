@@ -7,7 +7,7 @@ class role::otrs {
     system::role { 'otrs':
         description => 'OTRS Web Application Server',
     }
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::otrs
     include ::profile::tlsproxy::envoy # TLS termination

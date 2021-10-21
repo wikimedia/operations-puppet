@@ -12,7 +12,7 @@
 #
 
 class role::netbox::frontend {
-    include ::profile::standard
+    include ::profile::base::production
     system::role { 'netbox::frontend': description => 'Netbox frontend server' }
 
     include ::profile::netbox

@@ -13,7 +13,7 @@ class role::logging::mediawiki::udp2log(
         description => 'MediaWiki log collector',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::mediawiki::mwlog
 

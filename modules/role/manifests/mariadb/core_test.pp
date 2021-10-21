@@ -4,7 +4,7 @@ class role::mariadb::core_test {
         description => 'Core Test DB Server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::mariadb::monitor
     include ::role::mariadb::ferm

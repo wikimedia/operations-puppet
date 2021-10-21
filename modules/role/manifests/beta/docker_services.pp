@@ -2,7 +2,7 @@
 #
 # filtertags: labs-project-deployment-prep
 class role::beta::docker_services {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::docker::engine
     include ::profile::docker::runner
     system::role { 'Service running via docker': }

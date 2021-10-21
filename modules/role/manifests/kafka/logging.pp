@@ -6,5 +6,5 @@ class role::kafka::logging {
     }
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 }

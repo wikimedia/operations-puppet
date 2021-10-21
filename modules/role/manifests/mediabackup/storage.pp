@@ -4,7 +4,7 @@ class role::mediabackup::storage {
         description => 'Media backups storage server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::mediabackup::storage

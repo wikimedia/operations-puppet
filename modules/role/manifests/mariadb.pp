@@ -7,6 +7,6 @@ class role::mariadb {
         description => 'database server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::mariadb
 }

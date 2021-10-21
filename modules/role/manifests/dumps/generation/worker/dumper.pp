@@ -1,5 +1,5 @@
 class role::dumps::generation::worker::dumper {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include profile::dumps::generation::worker::common

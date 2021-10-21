@@ -3,7 +3,7 @@ class role::logstash7 {
         description => 'ELK7 Logstash/Kibana host',
     }
 
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     include profile::logstash::collector7
     include profile::elasticsearch::logstash

@@ -7,7 +7,7 @@ class role::mirrors {
         description => 'Mirrors server',
     }
 
-    include profile::standard
+    include profile::base::production
     include profile::nginx
     include mirrors::serve
     include mirrors::tails

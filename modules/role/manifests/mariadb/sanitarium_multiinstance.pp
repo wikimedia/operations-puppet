@@ -12,7 +12,7 @@ class role::mariadb::sanitarium_multiinstance {
         description => 'Sanitarium DB Server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::wmcs::db::scriptconfig

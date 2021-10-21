@@ -13,7 +13,7 @@
 #
 
 class role::netbox::standalone {
-    include ::profile::standard
+    include ::profile::base::production
     system::role { 'netbox::standalone': description => 'Netbox frontend and database in one box' }
 
     include ::profile::netbox

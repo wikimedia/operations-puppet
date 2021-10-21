@@ -15,7 +15,7 @@ class role::wmcs::db::wikireplicas::dedicated::analytics {
         description => 'wikireplica database - analytics (Analytics team\'s special db host)',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
     class { '::mariadb::service': }

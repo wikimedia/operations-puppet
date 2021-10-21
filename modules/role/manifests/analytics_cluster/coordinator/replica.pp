@@ -21,6 +21,6 @@ class role::analytics_cluster::coordinator::replica {
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 }

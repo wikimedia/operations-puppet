@@ -4,7 +4,7 @@
 # set up a Airflow instance in the Analytics Cluster.
 #
 class profile::analytics::cluster::airflow {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::java

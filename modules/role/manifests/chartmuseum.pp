@@ -4,7 +4,7 @@
 class role::chartmuseum {
     system::role { 'chartmuseum': description => 'ChartMuseum Helm chart repository server' }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::chartmuseum
 }

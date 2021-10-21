@@ -12,5 +12,5 @@ class role::kafka::jumbo::broker {
     # Mirror main-eqiad -> jumbo-eqiad
     include profile::kafka::mirror
 
-    include ::profile::standard
+    include ::profile::base::production
 }

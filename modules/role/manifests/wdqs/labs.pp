@@ -6,7 +6,7 @@
 # filtertags: labs-project-wikidata-query
 class role::wdqs::labs () {
     # Standard for all roles
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     # Standard wdqs installation
     require profile::nginx

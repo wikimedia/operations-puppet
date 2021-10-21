@@ -25,5 +25,5 @@ class role::analytics_cluster::hadoop::worker {
     #   AMD GPU drivers.
     include ::profile::base::linux419
     include ::profile::base::linux510
-    include ::profile::standard
+    include ::profile::base::production
 }

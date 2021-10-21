@@ -8,7 +8,7 @@ class role::logstash::puppetreports {
     system::role { 'logstash::puppetreports':
       description => 'Logstash, Kibana and Elasticsearch ingest node for puppet reports',
     }
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     include profile::logstash::collector
     include profile::elasticsearch::logstash

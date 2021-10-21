@@ -10,7 +10,7 @@ class role::thumbor::mediawiki {
         description => 'Thumbnailing server based on Thumbor',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::mediawiki::packages::fonts
     include ::profile::prometheus::haproxy_exporter

@@ -1,5 +1,5 @@
 class role::ml_k8s::worker {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     # Sets up docker on the machine

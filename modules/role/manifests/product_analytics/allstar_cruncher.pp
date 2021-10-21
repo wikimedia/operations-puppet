@@ -6,7 +6,7 @@
 #
 # filtertags: labs-project-discovery-stats
 class role::product_analytics::allstar_cruncher {
-    # include ::profile::standard
+    # include ::profile::base::production
     # include ::profile::base::firewall
     include ::profile::product_analytics::forecasting
     # ^ includes ::profile::product_analytics::probabilistic_programming

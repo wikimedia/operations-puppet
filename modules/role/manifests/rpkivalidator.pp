@@ -13,7 +13,7 @@
 class role::rpkivalidator {
     system::role { 'rpkivalidator': description => 'RPKI Validator' }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::rpkivalidator
 }

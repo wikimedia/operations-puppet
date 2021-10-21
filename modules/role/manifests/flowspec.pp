@@ -7,7 +7,7 @@ class role::flowspec {
   system::role { 'flowspec':
       description => 'Flowspec network controller',
   }
-  include profile::standard
+  include profile::base::production
   include profile::base::firewall
   include profile::flowspec
 }

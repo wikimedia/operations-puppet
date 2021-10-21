@@ -5,7 +5,7 @@ class role::mariadb::misc {
         description => 'Misc DB Server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::mariadb::misc
 }

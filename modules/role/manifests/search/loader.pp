@@ -5,7 +5,7 @@ class role::search::loader {
         description => 'Search models loader for ElasticSearch',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::mjolnir::kafka_bulk_daemon

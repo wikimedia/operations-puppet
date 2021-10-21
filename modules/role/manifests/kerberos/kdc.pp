@@ -1,5 +1,5 @@
 class role::kerberos::kdc {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     system::role { 'kdc': description => 'Kerberos KDC' }

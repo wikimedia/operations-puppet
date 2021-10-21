@@ -5,7 +5,7 @@ class role::swift::storage {
         description => 'swift storage brick',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::swift::storage
     include ::toil::systemd_scope_cleanup

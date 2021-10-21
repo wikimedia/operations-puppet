@@ -4,7 +4,7 @@
 # Data on Commons dataset inside Wikimedia Cloud Services.
 class role::wcqs::cloud {
     # Standard for all roles
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     # Standard wcqs installation
     require ::profile::query_service::wcqs

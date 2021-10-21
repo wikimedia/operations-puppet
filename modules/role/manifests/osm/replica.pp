@@ -1,7 +1,7 @@
 class role::osm::replica (
     $osm_master = undef,
 ) {
-    include profile::standard
+    include profile::base::production
     include postgresql::postgis
     include passwords::osm
     include profile::base::firewall

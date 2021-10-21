@@ -4,7 +4,7 @@
 # Provisions Elasticsearch backend node for a Logstash cluster.
 #
 class role::logstash::elasticsearch {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::elasticsearch::logstash
     include ::profile::elasticsearch::monitor::base_checks

@@ -18,5 +18,5 @@ class role::analytics_test_cluster::hadoop::ui {
     include ::profile::kerberos::keytabs
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 }

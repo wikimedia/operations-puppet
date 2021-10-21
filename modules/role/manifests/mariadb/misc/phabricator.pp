@@ -11,7 +11,7 @@ class role::mariadb::misc::phabricator(
         description => "Misc Services Database ${shard} (phabricator)",
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
     include mariadb::service

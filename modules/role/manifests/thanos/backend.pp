@@ -3,7 +3,7 @@ class role::thanos::backend {
         description => 'Thanos (Prometheus long-term storage) backend',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::thanos::swift::backend

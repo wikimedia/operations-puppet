@@ -10,8 +10,6 @@ class profile::wmcs::nfs::backup::primary::misc (
     ),
 ){
 
-    include ::profile::standard
-
     file { '/srv/backup/misc':
         ensure  => 'directory',
         require => File['/srv/backup'],

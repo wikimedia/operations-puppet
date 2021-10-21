@@ -5,7 +5,7 @@ class role::search::airflow {
         description => 'orchestrates search platform data workflows',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::java

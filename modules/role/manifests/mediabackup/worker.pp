@@ -7,7 +7,7 @@ class role::mediabackup::worker {
         description => 'Media backups worker server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::mediabackup::worker

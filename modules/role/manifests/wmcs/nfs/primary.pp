@@ -3,7 +3,7 @@ class role::wmcs::nfs::primary {
         description => 'NFS primary share cluster',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
     include ::profile::wmcs::nfs::ferm

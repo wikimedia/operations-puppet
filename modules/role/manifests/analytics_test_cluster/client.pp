@@ -7,7 +7,7 @@ class role::analytics_test_cluster::client {
     }
 
     include ::profile::java
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::analytics::cluster::client
     include ::profile::kerberos::client

@@ -1,7 +1,7 @@
 # LDAP servers for labs (based on OpenLDAP)
 
 class role::openldap::labs {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::prometheus::openldap_exporter

@@ -3,7 +3,7 @@
 class role::wmcs::openstack::eqiad1::labweb {
     system::role { $name: }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::ldap::client::labs
     include ::profile::base::firewall
 

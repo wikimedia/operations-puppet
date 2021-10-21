@@ -5,7 +5,7 @@ class role::requesttracker {
         description => 'RT server'
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::requesttracker
     include ::profile::tlsproxy::envoy # TLS termination

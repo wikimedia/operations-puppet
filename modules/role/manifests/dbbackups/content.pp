@@ -11,7 +11,7 @@ class role::dbbackups::content {
     }
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 
     include ::profile::dbbackups::mydumper
     include ::profile::dbbackups::snapshot

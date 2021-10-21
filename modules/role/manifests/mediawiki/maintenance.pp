@@ -1,5 +1,5 @@
 class role::mediawiki::maintenance {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     # MediaWiki

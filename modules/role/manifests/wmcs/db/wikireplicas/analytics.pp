@@ -4,7 +4,7 @@ class role::wmcs::db::wikireplicas::analytics {
         description => 'Labs replica database - analytics',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
     class { '::mariadb::service': }

@@ -11,5 +11,5 @@ class role::insetup_noferm {
         description => 'Host being setup for later application of a role (no ferm)',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
 }

@@ -7,7 +7,7 @@ class role::phabricator {
         description => 'Phabricator (Main) Server'
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::phabricator::main

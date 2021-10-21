@@ -5,7 +5,7 @@ class role::parsoid::testreduce {
         description => 'Parsoid visual diffing tests'
     }
 
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
 
     include profile::nginx

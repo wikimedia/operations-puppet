@@ -4,7 +4,7 @@
 # Data on Commons dataset to service public queries from prod infra
 class role::wcqs::public {
     # Standard for all roles
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     # Standard wcqs installation
     require ::profile::query_service::wcqs

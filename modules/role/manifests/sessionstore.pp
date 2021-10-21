@@ -8,7 +8,7 @@ class role::sessionstore {
     }
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::sessionstore
     include ::profile::cassandra
 }

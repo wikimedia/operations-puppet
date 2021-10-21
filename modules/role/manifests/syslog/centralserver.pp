@@ -8,7 +8,7 @@ class role::syslog::centralserver {
         description => 'Central syslog server and web requests debugging'
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::syslog::centralserver

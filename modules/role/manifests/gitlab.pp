@@ -6,7 +6,7 @@ class role::gitlab {
         description => 'A virtual machine running gitlab.',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::gitlab

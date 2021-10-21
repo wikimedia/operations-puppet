@@ -4,7 +4,7 @@
 
 class role::tendril {
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 
     system::role { 'tendril': description => 'tendril server' }
 

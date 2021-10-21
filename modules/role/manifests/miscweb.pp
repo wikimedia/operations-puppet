@@ -5,7 +5,7 @@ class role::miscweb {
         description => 'WMF misc apps and sites web server'
     }
 
-    include profile::standard                    # base tools
+    include profile::base::production                    # base tools
     include profile::base::firewall              # firewalling
     include profile::backup::host                # Bacula backups 
     include profile::miscweb::httpd              # common webserver setup

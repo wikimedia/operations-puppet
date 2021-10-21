@@ -6,7 +6,7 @@ class role::codesearch {
         description => 'MediaWiki Codesearch instance'
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::codesearch
 }

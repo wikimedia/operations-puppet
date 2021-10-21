@@ -15,7 +15,7 @@ class role::dbbackups::metadata {
     }
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 
     include ::profile::backup::host
     include ::profile::mariadb::wmfmariadbpy

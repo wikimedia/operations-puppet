@@ -13,7 +13,7 @@ class role::striker::web {
                     'lbmethod_byrequests'],
     }
 
-    include profile::standard
+    include profile::base::production
     include memcached
     include striker::apache
     include striker::uwsgi

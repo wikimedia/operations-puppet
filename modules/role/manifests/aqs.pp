@@ -10,7 +10,7 @@ class role::aqs {
         description => 'Analytics Query Service Node',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::cassandra

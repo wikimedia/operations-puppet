@@ -3,7 +3,7 @@ class role::pontoon::lb {
         description => 'Pontoon Load Balancer',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::pontoon::lb

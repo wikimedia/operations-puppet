@@ -4,7 +4,7 @@ class role::wmcs::db::wikireplicas::web {
         description => 'Wikireplica database - web requests',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
     class { '::mariadb::service': }

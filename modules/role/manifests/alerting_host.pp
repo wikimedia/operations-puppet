@@ -11,7 +11,7 @@ class role::alerting_host {
         description => 'central host for health checking and alerting'
     }
 
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
 
     include profile::icinga

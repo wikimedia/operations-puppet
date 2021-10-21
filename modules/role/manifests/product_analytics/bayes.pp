@@ -4,7 +4,7 @@
 #
 # filtertags: labs-project-discovery-stats
 class role::product_analytics::bayes {
-    # include ::profile::standard
+    # include ::profile::base::production
     # include ::profile::base::firewall
     include ::profile::product_analytics::probabilistic_programming
 

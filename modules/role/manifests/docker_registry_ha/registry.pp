@@ -1,5 +1,5 @@
 class role::docker_registry_ha::registry {
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     include profile::nginx
     include profile::docker_registry_ha::registry

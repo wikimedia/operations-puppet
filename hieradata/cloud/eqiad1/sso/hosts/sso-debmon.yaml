@@ -1,7 +1,7 @@
 classes:
   - profile::base::firewall
   - profile::base::firewall::extra
-  - profile::standard
+  - profile::base::production
   - profile::debmonitor::server
   - profile::debmonitor::client
 profile::debmonitor::client::ssl_ca: 'cfssl'

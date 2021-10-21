@@ -6,7 +6,7 @@
 #
 # filtertags: labs-project-search labs-project-shiny-r
 class role::discovery::dashboards {
-    # include ::profile::standard
+    # include ::profile::base::production
     # include ::profile::base::firewall
     include ::profile::discovery_dashboards::production
 

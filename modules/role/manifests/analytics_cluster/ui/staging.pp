@@ -9,7 +9,7 @@ class role::analytics_cluster::ui::staging {
     include ::profile::superset
     include ::profile::druid::turnilo
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
     include ::profile::memcached::instance

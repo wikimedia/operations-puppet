@@ -8,13 +8,10 @@ class profile::racktables (
     Stdlib::Fqdn $racktables_host = lookup('profile::racktables::racktables_host'),
     Stdlib::Fqdn $racktables_db_host = lookup('profile::racktables::racktables_db_host'),
 ){
-    system::role { 'racktables': description => 'Racktables server' }
-
-    include profile::standard
     include profile::idp::client::httpd
-    include ::passwords::racktables
+    include passwords::racktables
 
-    class { '::racktables':
+    class { 'racktables':
         racktables_host    => $racktables_host,
         racktables_db_host => $racktables_db_host,
         racktables_db      => 'racktables',

@@ -1,5 +1,5 @@
 class role::redis::misc::master {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     # maxmemory depends on host's total memory

@@ -5,7 +5,7 @@ class role::mediawiki::memcached::gutter {
         description => 'memcached gutter/failover cluster',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include profile::memcached::instance
     include profile::memcached::memkeys

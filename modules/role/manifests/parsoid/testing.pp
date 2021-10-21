@@ -6,7 +6,7 @@ class role::parsoid::testing {
     }
 
     ## Basics
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
 
     ## Parsoid

@@ -1,5 +1,5 @@
 classes:
-  - profile::standard
+  - profile::base::production
   - profile::base::firewall
   - profile::java
   - profile::idp

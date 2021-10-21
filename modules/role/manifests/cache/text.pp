@@ -4,7 +4,7 @@ class role::cache::text {
     system::role { 'cache::text':
         description => 'text Varnish/ATS cache server',
     }
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::cache::base
     include ::profile::cache::varnish::frontend
     include ::profile::prometheus::varnish_exporter

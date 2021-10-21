@@ -6,7 +6,7 @@ class role::meet::accountmanager {
         description => 'account manager for Wikimedia Meet'
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::backup::host
     include ::profile::base::firewall
     include ::profile::meet::accountmanager

@@ -2,7 +2,7 @@ class role::configcluster {
     system::role { 'Configcluster':
         description => 'Configuration cluster server'
     }
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::zookeeper::server

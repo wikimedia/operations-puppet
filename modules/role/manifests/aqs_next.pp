@@ -11,7 +11,7 @@ class role::aqs_next {
         description => 'Analytics Query Service Node - next generation',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     include ::profile::cassandra

@@ -9,7 +9,7 @@ class role::puppetmaster::pontoon {
         description => 'Pontoon puppetmaster',
     }
 
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
 
     include profile::puppetmaster::pontoon

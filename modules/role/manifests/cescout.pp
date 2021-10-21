@@ -1,7 +1,7 @@
 # server running the censorship monitoring tools
 class role::cescout {
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::cescout
 

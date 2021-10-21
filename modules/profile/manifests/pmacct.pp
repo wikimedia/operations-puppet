@@ -43,8 +43,6 @@ class profile::pmacct (
         networks          => $::network::constants::external_networks,
     }
 
-    include ::profile::standard
-
     ferm::service { 'bgp':
         proto  => 'tcp',
         port   => '179',

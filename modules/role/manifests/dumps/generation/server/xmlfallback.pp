@@ -1,7 +1,7 @@
 class role::dumps::generation::server::xmlfallback {
     system::role { 'dumps::generation::server': description => 'Fallback NFS server of xml dumps generation filesystem to dumps producer hosts' }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::dumps::nfs
     include ::profile::dumps::generation::server::rsync_firewall

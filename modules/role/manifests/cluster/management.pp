@@ -9,7 +9,7 @@ class role::cluster::management {
         description => 'Cluster management',
     }
 
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
 
     # Temporary hack; for now cumin2001 is kept as a DBA management host,

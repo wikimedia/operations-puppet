@@ -3,7 +3,7 @@ class role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance {
         description => 'wikireplica database - analytics, multi-instance (Analytics team\'s special db host)',
     }
 
-    include profile::standard
+    include profile::base::production
     include profile::wmcs::db::wikireplicas::mariadb_multiinstance
     include profile::base::firewall
     include profile::wmcs::db::wikireplicas::views

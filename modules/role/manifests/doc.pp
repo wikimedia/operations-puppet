@@ -9,7 +9,7 @@ class role::doc {
         description => 'Wikimedia Documentation Server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::doc

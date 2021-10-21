@@ -8,7 +8,7 @@ class role::druid::analytics::worker {
         description => "Druid worker in the analytics-${::site} cluster",
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::java
     include ::profile::druid::broker

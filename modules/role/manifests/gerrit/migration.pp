@@ -5,7 +5,7 @@ class role::gerrit::migration {
         description => 'temp role to allow migrating Gerrit data to a new server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::gerrit::migration_base
     include ::profile::gerrit::migration

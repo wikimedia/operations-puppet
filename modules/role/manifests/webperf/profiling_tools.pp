@@ -9,7 +9,7 @@ class role::webperf::profiling_tools {
         description => 'profiling tools host'
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::backup::host
     include ::profile::webperf::arclamp

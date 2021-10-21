@@ -3,7 +3,7 @@ class role::mariadb::core_multiinstance {
         description => 'Core multi-instance server',
     }
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 
     include ::profile::mariadb::core::multiinstance
 }

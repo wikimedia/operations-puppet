@@ -2,6 +2,6 @@
 #
 class role::mediawiki::irc_events {
     system::role { 'mediawiki::irc_events': }
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 }

@@ -9,6 +9,6 @@ class role::insetup {
         description => 'Host being setup for later application of a role',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 }

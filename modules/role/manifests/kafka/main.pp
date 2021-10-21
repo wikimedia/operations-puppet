@@ -16,5 +16,5 @@ class role::kafka::main {
         include ::profile::kafka::mirror
     }
 
-    include ::profile::standard
+    include ::profile::base::production
 }

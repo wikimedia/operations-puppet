@@ -9,7 +9,7 @@
 # which was the old MongoDB-backed version.
 #
 class role::webperf::xhgui {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::webperf::xhgui
 

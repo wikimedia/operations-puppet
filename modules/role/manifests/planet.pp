@@ -1,7 +1,7 @@
 # server running a planet RSS feed aggregator
 class role::planet {
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::planet
 

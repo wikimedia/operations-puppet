@@ -1,5 +1,5 @@
 class role::backup::offsite {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::backup::storage::main
 
     system::role { 'backup::offsite':

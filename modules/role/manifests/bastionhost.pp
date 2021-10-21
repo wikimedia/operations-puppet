@@ -4,7 +4,7 @@ class role::bastionhost{
         description => 'Bastion host for all shell users',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::backup::host
 

@@ -3,7 +3,7 @@
 class role::dnsbox {
     system::role { 'dnsbox': description => 'DNS/NTP Site Infra Server' }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::ntp
     include ::profile::dns::auth
     class { '::profile::dns::recursor':

@@ -1,5 +1,5 @@
 class role::dragonfly::supernode {
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
 
     include profile::dragonfly::supernode

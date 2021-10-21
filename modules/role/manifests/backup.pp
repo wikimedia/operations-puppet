@@ -4,7 +4,7 @@ class role::backup {
     include ::profile::backup::director
     include ::profile::backup::filesets
     include ::profile::backup::storage::main
-    include ::profile::standard
+    include ::profile::base::production
 
     system::role { 'backup':
         description => 'Backup server',

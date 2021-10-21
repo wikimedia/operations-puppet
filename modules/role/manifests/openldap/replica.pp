@@ -1,7 +1,7 @@
 # LDAP servers for labs (based on OpenLDAP)
 
 class role::openldap::replica {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::base::firewall
 
     if debian::codename::le('buster') {

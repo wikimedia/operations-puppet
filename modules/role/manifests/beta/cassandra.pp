@@ -4,6 +4,6 @@
 # filtertags: labs-project-deployment-prep
 class role::beta::cassandra {
     system::role { 'Basic Cassandra cluster': }
-    include profile::standard
+    include profile::base::production
     include profile::cassandra
 }

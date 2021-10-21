@@ -12,5 +12,5 @@ class role::analytics_cluster::webserver {
     include ::profile::statistics::web
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
 }

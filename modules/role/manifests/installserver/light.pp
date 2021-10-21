@@ -2,7 +2,7 @@
 class role::installserver::light {
     system::role { 'installserver-without-apt-repo': }
 
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     include profile::base::cuminunpriv
     include profile::backup::host

@@ -13,7 +13,7 @@ class role::puppetboard {
     system::role { 'puppetboard': description => 'Puppetboard server' }
 
     include ::profile::base::firewall
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::puppetboard
     include ::profile::tlsproxy::envoy # TLS termination
 }

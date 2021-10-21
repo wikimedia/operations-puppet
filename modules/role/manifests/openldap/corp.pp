@@ -2,7 +2,7 @@
 # verification during email accept
 # vim: set ts=4 et sw=4:
 class role::openldap::corp {
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::backup::host
     include ::profile::base::firewall
     include ::profile::openldap_corp

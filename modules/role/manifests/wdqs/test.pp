@@ -4,7 +4,7 @@
 # exposed to public or private clients.
 class role::wdqs::test {
     # Standard for all roles
-    include profile::standard
+    include profile::base::production
     include profile::base::firewall
     # Standard wdqs installation
     require profile::nginx

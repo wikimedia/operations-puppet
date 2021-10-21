@@ -9,7 +9,6 @@ class profile::openstack::codfw1dev::db(
     Array[String] $mysql_root_clients = lookup('mysql_root_clients', {default_value => []}),
     Array[String] $maintenance_hosts = lookup('maintenance_hosts'),
 ) {
-    include ::profile::standard
 
     package {'mysql-server':
         ensure => 'present',

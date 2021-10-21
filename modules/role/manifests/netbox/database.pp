@@ -12,7 +12,7 @@
 #
 
 class role::netbox::database {
-    include ::profile::standard
+    include ::profile::base::production
 
     system::role { 'netbox::database': description => 'Netbox database server' }
 
