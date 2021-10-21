@@ -52,6 +52,7 @@ profile::query_service::oauth_settings:
     oauth_consumer_key: aa08b5587b35bad12d1145d03fc6ebbd
     oauth_index_url: https://commons.wikimedia.org/w/index.php
     oauth_nice_url: https://commons.wikimedia.org/wiki/
-    oauth_session_store_limit: 100
     oauth_wiki_logout_link: https://commons.wikimedia.org/w/index.php?title=Special:UserLogout
     oauth_success_redirect_url: https://commons-query.wikimedia.org/
+    oauth_session_store_host: sessionstore.discovery.wmnet
+    oauth_session_store_port: 8081

@@ -19,6 +19,7 @@ class profile::query_service::wcqs(
     Optional[String] $sparql_query_stream = lookup('profile::query_service::sparql_query_stream', {'default_value' => undef}),
     Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
     Hash $oauth_settings = lookup('profile::query_service::oauth_settings'),
+    String $oauth_access_token_secret = lookup('profile::query_service::oauth_access_token_secret'),
     String $oauth_consumer_secret = lookup('profile::query_service::oauth_consumer_secret'),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns')
@@ -61,7 +62,10 @@ class profile::query_service::wcqs(
         use_geospatial         => true,
         journal                => 'wcqs',
         blazegraph_main_ns     => $blazegraph_main_ns,
-        oauth_settings         => $oauth_settings + {'oauth_consumer_secret' => $oauth_consumer_secret },
+        oauth_settings         => $oauth_settings + {
+            'oauth_consumer_secret'     => $oauth_consumer_secret,
+            'oauth_access_token_secret' => $oauth_access_token_secret,
+        },
         federation_user_agent  => $federation_user_agent,
     }
 }
