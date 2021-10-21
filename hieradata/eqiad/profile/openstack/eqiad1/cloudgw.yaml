@@ -65,9 +65,6 @@ profile::openstack::eqiad1::cloudgw::dmz_cidr:
  # there is no other access (NAT or not) to other 10.x.x.x services anyway
  # VMs --> nfs-tools-project.svc.eqiad.wmnet
  - "10.64.37.18"
- # VMs --> wiki replicas (dbproxy1019 & dbproxy1018)
- - "10.64.37.28"
- - "10.64.37.27"
  # VMs --> cloudmetrics1001 / cloudmetrics1002
  - "10.64.37.13"
  - "10.64.4.15"
