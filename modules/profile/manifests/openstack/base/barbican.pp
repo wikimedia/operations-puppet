@@ -13,8 +13,8 @@ class profile::openstack::base::barbican(
     String $crypto_kek = lookup('profile::openstack::base::barbican::kek'),
     ) {
 
-    $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
-    $keystone_public_uri = "http://${keystone_fqdn}:${public_port}"
+    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
+    $keystone_public_uri = "https://${keystone_fqdn}:${public_port}"
 
     class { '::openstack::barbican::service':
         version             => $version,

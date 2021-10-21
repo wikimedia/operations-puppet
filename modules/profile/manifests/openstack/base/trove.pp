@@ -22,9 +22,9 @@ class profile::openstack::base::trove(
     String              $trove_dns_zone_id       = lookup('profile::openstack::base::trove::dns_zone_id'),
     ) {
 
-    $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
-    $keystone_internal_uri = "http://${keystone_fqdn}:${internal_auth_port}"
-    $designate_internal_uri = "http://${keystone_fqdn}:9001"
+    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
+    $keystone_internal_uri = "https://${keystone_fqdn}:${internal_auth_port}"
+    $designate_internal_uri = "https://${keystone_fqdn}:29001"
 
     class { '::openstack::trove::service':
         version                 => $version,

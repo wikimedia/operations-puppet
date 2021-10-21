@@ -103,7 +103,7 @@ class profile::openstack::base::keystone::service(
     #
     # Note that because keystone admin uses a weird, extremely-high-number
     #  port by default, we need to use a non-standard port for its
-    #  tls port as well: 25357 rather than the more expected 235357
+    #  tls port as well: 25357 rather than the more expected 225357
     ferm::rule{'keystone_admin':
         ensure => 'present',
         rule   => "saddr (${labs_hosts_range} ${labs_hosts_range_v6}

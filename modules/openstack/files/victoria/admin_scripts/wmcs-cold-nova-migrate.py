@@ -101,7 +101,7 @@ if __name__ == "__main__":
     argparser.add_argument(
         '--nova-url',
         help='url for nova auth',
-        default='http://openstack.eqiad1.wikimediacloud.org:35357/v2.0'
+        default='https://openstack.eqiad1.wikimediacloud.org:25357/v2.0'
     )
     argparser.add_argument(
         '--nova-project',

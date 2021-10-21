@@ -18,7 +18,7 @@ class profile::openstack::base::cinder(
     Stdlib::Unixpath    $backup_path           = lookup('profile::openstack::base::cinder::backup::path'),
     ) {
 
-    $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
+    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
 
     class { "::openstack::cinder::config::${version}":
         openstack_controllers   => $openstack_controllers,

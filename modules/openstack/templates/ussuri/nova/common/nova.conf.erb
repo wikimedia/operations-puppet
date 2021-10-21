@@ -94,7 +94,7 @@ auth_protocol = http
 admin_user = novaadmin
 admin_tenant_name = admin
 www_authenticate_uri = http://<%= @keystone_api_fqdn %>:5000
-auth_url = http://<%= @keystone_api_fqdn %>:35357
+auth_url = https://<%= @keystone_api_fqdn %>:25357
 auth_type = password
 project_domain_name = default
 user_domain_name = default
@@ -166,7 +166,7 @@ project_domain_name = Default
 project_name = admin
 auth_type = password
 user_domain_name = Default
-auth_url = http://<%= @keystone_api_fqdn %>:35357/v3
+auth_url = https://<%= @keystone_api_fqdn %>:25357/v3
 username = novaadmin
 password = <%= @ldap_user_pass %>
 

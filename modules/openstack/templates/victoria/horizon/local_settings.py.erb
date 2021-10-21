@@ -139,11 +139,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 OPENSTACK_HOST = "<%= @keystone_api_fqdn %>"
 # AVAILABLE_REGIONS = [
 # <% @all_regions.each do |region| -%>
-#     ("http://%s:5000/v3" % OPENSTACK_HOST, "<%=region%>"),
+#     ("https://%s:25000/v3" % OPENSTACK_HOST, "<%=region%>"),
 # <% end -%>
 # ]
 
-OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
+OPENSTACK_KEYSTONE_URL = "https://%s:25000/v3" % OPENSTACK_HOST
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
 DEFAULT_SERVICE_REGIONS = {
     OPENSTACK_KEYSTONE_URL: 'eqiad'

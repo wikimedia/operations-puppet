@@ -17,8 +17,8 @@ class profile::openstack::base::neutron::common(
     Stdlib::Port $public_port = lookup('profile::openstack::base::keystone::public_port'),
     ) {
 
-    $keystone_admin_uri = "http://${keystone_api_fqdn}:${auth_port}"
-    $keystone_public_uri = "http://${keystone_api_fqdn}:${public_port}"
+    $keystone_admin_uri = "https://${keystone_api_fqdn}:${auth_port}"
+    $keystone_public_uri = "https://${keystone_api_fqdn}:${public_port}"
 
     class {'::openstack::neutron::common':
         version               => $version,

@@ -42,7 +42,7 @@ striker::uwsgi::config:
   static:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
   openstack:
-    URL: http://openstack.eqiad1.wikimediacloud.org:5000/v3
+    URL: http://openstack.eqiad1.wikimediacloud.org:25000/v3
   features:
     ACCOUNT_CREATE: true
 

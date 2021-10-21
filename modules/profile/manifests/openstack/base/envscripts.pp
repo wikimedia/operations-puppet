@@ -12,7 +12,7 @@ class profile::openstack::base::envscripts(
     openstack::util::envscript { 'novaadmin':
         region                 => $region,
         keystone_api_fqdn      => $keystone_api_fqdn,
-        keystone_api_port      => 35357,
+        keystone_api_port      => 25357,
         keystone_api_interface => 'admin',
         os_user                => 'novaadmin',
         os_password            => $ldap_user_pass,
@@ -25,7 +25,7 @@ class profile::openstack::base::envscripts(
     openstack::util::envscript { 'wmflabsorg-domainadminenv':
         region                 => $region,
         keystone_api_fqdn      => $keystone_api_fqdn,
-        keystone_api_port      => 35357,
+        keystone_api_port      => 25357,
         keystone_api_interface => 'admin',
         os_user                => $wmflabsdotorg_admin,
         os_password            => $wmflabsdotorg_project,
@@ -39,7 +39,7 @@ class profile::openstack::base::envscripts(
     openstack::util::envscript { 'oss-canary':
         region                 => $region,
         keystone_api_fqdn      => $keystone_api_fqdn,
-        keystone_api_port      => 5000,
+        keystone_api_port      => 25000,
         os_password            => $osstackcanary_pass,
         keystone_api_interface => 'public',
         os_user                => 'osstackcanary',

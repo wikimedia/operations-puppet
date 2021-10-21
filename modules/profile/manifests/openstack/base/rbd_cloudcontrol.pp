@@ -10,7 +10,7 @@ class profile::openstack::base::rbd_cloudcontrol(
     String              $radosgw_service_user_project = lookup('profile::openstack::base::radosgw::service_user_project'),
     ) {
 
-    $keystone_internal_uri = "http://${keystone_fqdn}:${internal_auth_port}"
+    $keystone_internal_uri = "https://${keystone_fqdn}:${internal_auth_port}"
 
     # Many of the settings for this class will be pulled in by the profile
     #  and are DC-specific but not deloyment-specific.  If/when we add a new

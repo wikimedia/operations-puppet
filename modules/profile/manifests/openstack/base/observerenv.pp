@@ -10,7 +10,7 @@ class profile::openstack::base::observerenv(
     openstack::util::envscript { 'novaobserver':
         region                 => $region,
         keystone_api_fqdn      => $keystone_api_fqdn,
-        keystone_api_port      => 5000,
+        keystone_api_port      => 25000,
         keystone_api_interface => 'public',
         os_user                => $os_user,
         os_password            => $os_password,

@@ -89,9 +89,9 @@ class profile::openstack::eqiad1::keystone::service(
 
     # allow foreign designate(and co) to call back to admin auth port
     # to validate issued tokens
-    ferm::rule{'main_designate_35357':
+    ferm::rule{'main_designate_25357':
         ensure => 'present',
-        rule   => "saddr @resolve((${join($designate_hosts,' ')})) proto tcp dport (35357) ACCEPT;",
+        rule   => "saddr @resolve((${join($designate_hosts,' ')})) proto tcp dport (25357) ACCEPT;",
     }
 
     file { '/etc/cron.hourly/keystone':

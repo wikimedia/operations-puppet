@@ -95,7 +95,7 @@ class profile::openstack::base::pdns::recursor::service(
     class { '::dnsrecursor::labsaliaser':
         username              => $observer_user,
         password              => $observer_password,
-        nova_api_url          => "http://${keystone_api_fqdn}:5000/v3",
+        nova_api_url          => "https://${keystone_api_fqdn}:25000/v3",
         extra_records         => $aliaser_extra_records,
         observer_project_name => $observer_project,
     }

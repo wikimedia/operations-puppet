@@ -22,7 +22,7 @@ class profile::openstack::base::cinder::backup (
     String[1]               $lvm_lv_size             = lookup('profile::openstack::base::cinder::backup::lvm::lv_size'),
     String[1]               $lvm_lv_format           = lookup('profile::openstack::base::cinder::backup::lvm::lv_format'),
 ) {
-    $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
+    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
 
     class { "::openstack::cinder::config::${version}":
         openstack_controllers   => $openstack_controllers,

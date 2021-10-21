@@ -90,7 +90,7 @@ memcached_servers = <%= @openstack_controllers.map{|host| "#{host}:11211"}.join(
 
 [nova]
 region_name = <%= @region %>
-auth_url = http://<%= @keystone_api_fqdn %>:5000/v3
+auth_url = https://<%= @keystone_api_fqdn %>:25000/v3
 auth_type = v3password
 password = <%= @ldap_user_pass %>
 project_domain_name = default

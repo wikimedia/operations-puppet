@@ -35,12 +35,12 @@ class profile::openstack::codfw1dev::haproxy(
 
     # Note that because keystone admin uses a weird, extremely-high-number
     #  port by default, we need to use a non-standard port for its
-    #  tls port as well: 25357 rather than the more expected 235357
+    #  tls port as well: 25357 rather than the more expected 225357
     profile::openstack::base::haproxy::site { 'keystone_admin':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
-        port_frontend          => 35357,
+        port_frontend          => 25357,
         port_backend           => $keystone_admin_bind_port,
         frontend_tls_cert_name => $acme_chief_cert_name,
         port_frontend_tls      => 25357,

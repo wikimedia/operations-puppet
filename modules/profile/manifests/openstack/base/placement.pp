@@ -12,8 +12,8 @@ class profile::openstack::base::placement(
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::placement::api_bind_port'),
     ) {
 
-    $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
-    $keystone_public_uri = "http://${keystone_fqdn}:${public_port}"
+    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
+    $keystone_public_uri = "https://${keystone_fqdn}:${public_port}"
 
     class { '::openstack::placement::service':
         openstack_controllers => $openstack_controllers,

@@ -17,8 +17,8 @@ class profile::openstack::base::glance(
     Boolean $active = lookup('profile::openstack::base::glance_active'),
     ) {
 
-    $keystone_admin_uri = "http://${keystone_fqdn}:${auth_port}"
-    $keystone_public_uri = "http://${keystone_fqdn}:${public_port}"
+    $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
+    $keystone_public_uri = "https://${keystone_fqdn}:${public_port}"
 
     class { '::openstack::glance::service':
         version             => $version,
