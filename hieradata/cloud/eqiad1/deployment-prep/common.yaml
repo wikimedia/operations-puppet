@@ -352,6 +352,8 @@ deployment_hosts:
 - '172.16.4.18' # deployment-deploy01.deployment-prep.eqiad1.wikimedia.cloud
 - '172.16.4.233' # deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 
+profile::rsyslog::kafka_destination_clusters:
+  eqiad: logging-eqiad
 profile::rsyslog::kafka_shipper::kafka_brokers:
   - 'deployment-logstash03.deployment-prep.eqiad.wmflabs:9093'
 

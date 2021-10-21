@@ -1,13 +1,20 @@
 # @summary generalized rsyslog configuration to ship logs into logging pipeline
-# @param logging_kafka_brokers array of kafka broker used in rsyslog omkafka config
 # @param enable if true enable config
 # @param queue_enabled_sites list of sites to enable queues
+# @param kafka_destination_clusters hash of site -> kafka cluster name, used to look up broker details via kafka_config()
 
 class profile::rsyslog::kafka_shipper (
-    Array         $logging_kafka_brokers = lookup('profile::rsyslog::kafka_shipper::kafka_brokers'),
-    Boolean       $enable                = lookup('profile::rsyslog::kafka_shipper::enable'),
-    Array[String] $queue_enabled_sites   = lookup('profile::rsyslog::kafka_queue_enabled_sites')
+    Boolean       $enable                     = lookup('profile::rsyslog::kafka_shipper::enable'),
+    Array[String] $queue_enabled_sites        = lookup('profile::rsyslog::kafka_queue_enabled_sites'),
+    Hash          $kafka_destination_clusters = lookup('profile::rsyslog::kafka_destination_clusters'),
 ) {
+
+    # use kafka_config to build the ssl broker string to be used in the rsyslog omkafka configs for our site
+    # clusters are defined under kafka_clusters in hieradata/common.yaml
+    if $enable {
+        $config                = kafka_config($kafka_destination_clusters[$::site])
+        $logging_kafka_brokers = split($config['brokers']['ssl_string'], ',')
+    }
 
     ensure_packages('rsyslog-kafka')
 
