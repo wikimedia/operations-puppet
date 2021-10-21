@@ -26,6 +26,7 @@ class profile::openstack::eqiad1::keystone::service(
     $puppetmaster_hostname = lookup('profile::openstack::eqiad1::puppetmaster_hostname'),
     $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
     $public_port = lookup('profile::openstack::base::keystone::public_port'),
+    Stdlib::Fqdn $keystone_fqdn           = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     Boolean $daemon_active = lookup('profile::openstack::eqiad1::keystone::daemon_active'),
     String $wsgi_server = lookup('profile::openstack::eqiad1::keystone::wsgi_server'),
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::eqiad1::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
@@ -66,6 +67,7 @@ class profile::openstack::eqiad1::keystone::service(
         bastion_project_id          => $bastion_project_id,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
+        keystone_fqdn               => $keystone_fqdn,
     }
     contain '::profile::openstack::base::keystone::service'
 

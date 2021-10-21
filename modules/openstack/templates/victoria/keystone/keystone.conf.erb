@@ -139,7 +139,7 @@ expiration = 613440
 [wmfhooks]
 region = <%= @region %>
 admin_pass = <%= @ldap_user_pass %>
-auth_url = <%= @auth_protocol %>://<%= @fqdn %>:<%= @auth_port %>/v3
+auth_url = <%= @keystone_admin_uri %>
 instance_ip_range = <%= @instance_ip_range %>
 wmcloud_domain_owner = <%= @wmcloud_domain_owner %>
 bastion_project_id = <%= @bastion_project_id %>

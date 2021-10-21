@@ -20,6 +20,7 @@ class profile::openstack::base::keystone::service(
     $ldap_user_dn = lookup('profile::openstack::base::ldap_user_dn'),
     $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     $auth_protocol = lookup('profile::openstack::base::keystone::auth_protocol'),
+    Stdlib::Fqdn $keystone_fqdn           = lookup('profile::openstack::base::keystone_api_fqdn'),
     $auth_port = lookup('profile::openstack::base::keystone::auth_port'),
     $public_port = lookup('profile::openstack::base::keystone::public_port'),
     $wiki_status_page_prefix = lookup('profile::openstack::base::keystone::wiki_status_page_prefix'),
@@ -42,6 +43,8 @@ class profile::openstack::base::keystone::service(
     Boolean $enforce_policy_scope = lookup('profile::openstack::base::keystone::enforce_policy_scope'),
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::base::keystone::enforce_new_policy_defaults'),
     ) {
+
+    $keystone_admin_uri = "${auth_protocol}://${keystone_fqdn}:${auth_port}/v3"
 
     include ::network::constants
     $prod_networks = join($::network::constants::production_networks, ' ')
@@ -67,8 +70,6 @@ class profile::openstack::base::keystone::service(
         ldap_user_dn                => $ldap_user_dn,
         ldap_user_pass              => $ldap_user_pass,
         region                      => $region,
-        auth_protocol               => $auth_protocol,
-        auth_port                   => $auth_port,
         wiki_status_page_prefix     => $wiki_status_page_prefix,
         wiki_status_consumer_token  => $wiki_status_consumer_token,
         wiki_status_consumer_secret => $wiki_status_consumer_secret,
@@ -86,6 +87,7 @@ class profile::openstack::base::keystone::service(
         labs_networks               => $::network::constants::labs_networks,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
+        keystone_admin_uri          => $keystone_admin_uri,
     }
     contain '::openstack::keystone::service'
 
