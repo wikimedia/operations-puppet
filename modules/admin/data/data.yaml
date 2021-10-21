@@ -1442,6 +1442,7 @@ users:
     ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO3Jzytoma85Fpr+Sy/BuCIJZ16xWMYEPyY0jHPcDkdG]
     uid: 16702
     email: effeietsanders@gmail.com
+    krb: present
     expiry_date: 2022-04-15
     expiry_contact: mgerlach@wikimedia.org
   esanders:
