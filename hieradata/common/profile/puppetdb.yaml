@@ -1,7 +1,7 @@
 profile::puppetdb::jvm_opts: '-Xmx4G'
 profile::puppetdb::elk_logging: true
 profile::puppetdb::ca_path: '/etc/ssl/certs/Puppet_Internal_CA.pem'
-profile::puppetdb::puppetboard_hosts: ''
+profile::puppetdb::puppetboard_hosts: []
 profile::puppetdb::ssldir: ~
 profile::puppetdb::slaves: []
 profile::puppetdb::log_level: info

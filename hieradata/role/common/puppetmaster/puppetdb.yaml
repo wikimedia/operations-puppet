@@ -1,7 +1,11 @@
 cluster: puppet
 profile::nginx::variant: 'light'
 profile::puppetdb::jvm_opts: '-Xmx6g'
-profile::puppetdb::puppetboard_hosts: 'puppetboard1001.eqiad.wmnet puppetboard2001.codfw.wmnet'
+profile::puppetdb::puppetboard_hosts:
+  - 'puppetboard1001.eqiad.wmnet'
+  - 'puppetboard2001.codfw.wmnet'
+  - 'puppetboard1002.eqiad.wmnet'
+  - 'puppetboard2002.codfw.wmnet'
 profile::puppetdb::rsyslog::elk: false
 profile::puppetdb::tmpfs_stockpile_queue: true
 profile::puppetdb::clean_stockpile: false
@@ -48,7 +52,6 @@ profile::puppetdb::database::users:
     method: 'peer'
 profile::puppetdb::master: puppetdb1002.eqiad.wmnet
 profile::puppetdb::slaves: [puppetdb2002.codfw.wmnet]
-profile::puppetdb::puppetboard_hosts: 'puppetboard1001.eqiad.wmnet puppetboard2001.codfw.wmnet'
 profile::puppetdb::tmpfs_stockpile_queue: true
 profile::puppetdb::facts_blacklist_type: 'regex'
 # The following list should only include facts which are not used by for catalog compilation

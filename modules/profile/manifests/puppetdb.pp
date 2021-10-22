@@ -17,7 +17,7 @@ class profile::puppetdb(
     String                               $jvm_opts              = lookup('profile::puppetdb::jvm_opts'),
     Boolean                              $elk_logging           = lookup('profile::puppetdb::elk_logging'),
     Stdlib::Unixpath                     $ca_path               = lookup('profile::puppetdb::ca_path'),
-    String                               $puppetboard_hosts     = lookup('profile::puppetdb::puppetboard_hosts'),
+    Array[Stdlib::Host]                  $puppetboard_hosts     = lookup('profile::puppetdb::puppetboard_hosts'),
     Boolean                              $tmpfs_stockpile_queue = lookup('profile::puppetdb::tmpfs_stockpile_queue'),
     Boolean                              $clean_stockpile       = lookup('profile::puppetdb::clean_stockpile'),
     String                               $puppetdb_pass         = lookup('puppetdb::password::rw'),
@@ -108,11 +108,11 @@ class profile::puppetdb(
         srange => '$CUMIN_MASTERS',
     }
 
-    if !empty($puppetboard_hosts) {
+    unless $puppetboard_hosts.empty {
         ferm::service { 'puppetboard':
             proto  => 'tcp',
             port   => 443,
-            srange => "@resolve((${puppetboard_hosts}))",
+            srange => "@resolve((${puppetboard_hosts.join(' ')}))",
         }
     }
 
