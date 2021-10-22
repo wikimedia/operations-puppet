@@ -140,19 +140,6 @@ class profile::hadoop::master(
             ],
         }
 
-        # Alert in case of HDFS currupted or missing blocks. In the ideal state
-        # these values should always be 0.
-        monitoring::check_prometheus { 'hadoop-hdfs-corrupt-blocks':
-            description     => 'HDFS corrupt blocks',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=39&fullscreen"],
-            query           => "scalar(Hadoop_NameNode_CorruptBlocks{instance=\"${::hostname}:10080\"})",
-            warning         => 30,
-            critical        => 50,
-            contact_group   => 'analytics',
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_corrupt_blocks',
-        }
-
         monitoring::check_prometheus { 'hadoop-yarn-unhealthy-workers':
             description     => 'Yarn Nodemanagers in unhealthy status',
             dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&orgId=1&panelId=46&fullscreen"],
