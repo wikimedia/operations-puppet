@@ -293,9 +293,10 @@
       {
         "allValue": null,
         "current": {
-          "text": "codfw + eqiad + eqsin + esams + ulsfo",
+          "text": "codfw + drmrs + eqiad + eqsin + esams + ulsfo",
           "value": [
             "codfw",
+            "drmrs",
             "eqiad",
             "eqsin",
             "esams",
