@@ -48,13 +48,11 @@ class thumbor (
         'binutils', # The find_library() function in ctypes/Python uses objdump
     ])
 
-    if debian::codename::eq('stretch') {
-        apt::package_from_component { 'wikimedia-thumbor':
-            component => 'component/thumbor',
-            packages  => ['librsvg2-2', 'librsvg2-common', 'librsvg2-bin',
-                          'python-thumbor-wikimedia'],
-            priority  => 1002,
-        }
+    apt::package_from_component { 'wikimedia-thumbor':
+        component => 'component/thumbor',
+        packages  => ['librsvg2-2', 'librsvg2-common', 'librsvg2-bin',
+                      'python-thumbor-wikimedia'],
+        priority  => 1002,
     }
 
     file { '/usr/local/lib/thumbor/':
