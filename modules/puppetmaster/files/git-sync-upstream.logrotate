@@ -1,9 +1,0 @@
-## Managed by puppet
-
-/var/log/git-sync-upstream.log {
-    daily
-    copytruncate
-    missingok
-    notifempty
-    rotate 7
-}

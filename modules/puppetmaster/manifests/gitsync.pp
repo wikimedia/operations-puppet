@@ -19,6 +19,8 @@ class puppetmaster::gitsync(
         $prometheus_arg = ''
     }
 
+    $private_arg = $private_only.bool2str(' --private-only', '')
+
     file { '/usr/local/bin/git-sync-upstream':
         ensure => present,
         source => 'puppet:///modules/puppetmaster/git-sync-upstream.py',
@@ -27,27 +29,27 @@ class puppetmaster::gitsync(
         mode   => '0555',
     }
 
-    if ($private_only) {
-        cron { 'rebase_labs_private_puppet':
-            ensure  => present,
-            user    => 'root',
-            minute  => "*/${run_every_minutes}",
-            command => "/usr/local/bin/git-sync-upstream --private-only ${prometheus_arg} >>/var/log/git-sync-upstream.log 2>&1",
-            require => File['/usr/local/bin/git-sync-upstream'],
-        }
-    } else {
-        cron { 'rebase_operations_puppet':
-            ensure  => present,
-            user    => 'root',
-            minute  => "*/${run_every_minutes}",
-            command => "/usr/local/bin/git-sync-upstream ${prometheus_arg} >>/var/log/git-sync-upstream.log 2>&1",
-            require => File['/usr/local/bin/git-sync-upstream'],
-        }
+    systemd::timer::job { 'puppet-git-sync-upstream':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'Update local Puppet repository copies',
+        command     => "/usr/local/bin/git-sync-upstream ${prometheus_arg} ${private_arg}",
+        interval    => {
+            'start'    => 'OnUnitInactiveSec',
+            'interval' => "${run_every_minutes}m",
+        },
     }
 
+    cron { 'rebase_labs_private_puppet':
+        ensure => absent,
+        user   => 'root',
+    }
+    cron { 'rebase_operations_puppet':
+        ensure => absent,
+        user   => 'root',
+    }
     logrotate::conf { 'git-sync-upstream':
-        ensure => present,
-        source => 'puppet:///modules/puppetmaster/git-sync-upstream.logrotate',
+        ensure => absent,
     }
 }
 
