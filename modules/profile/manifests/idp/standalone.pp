@@ -2,7 +2,7 @@
 class profile::idp::standalone {
   ensure_packages(['python3-flask'])
   # Standard stuff
-  include profile::standard
+  include profile::base::production
   include profile::base::firewall
 
   # configure database
