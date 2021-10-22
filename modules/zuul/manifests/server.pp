@@ -43,7 +43,7 @@ class zuul::server (
     Stdlib::HTTPUrl         $status_url         = "https://${facts['fqdn']}/zuul/status",
     Optional[Stdlib::Host]  $email_server       = undef,
     Stdlib::Port            $email_server_port  = 25,
-    String                  $email_default_from = 'jenkins-bot@wikimedia.org',
+    String                  $email_default_from = 'releng@lists.wikimedia.org',
     String                  $email_default_to   = 'qa-alerts@lists.wikimedia.org',
 ) {
 
