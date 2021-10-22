@@ -22,6 +22,10 @@
 #
 # [*bwlimit*] Optionally limit the maxmium bandwith used
 #
+# [*exclude*] Optionally ignore certain files at the source. Skip them during transfer.
+#             A single string passed to rsync's --exclude parameter.
+#             Can match a single file, multiple files/directories or use wildcards.
+#
 # [*delete*] Optionally let rsync delete files on the _destination_ side if they
 #            do not exist on the source.
 #            To create exact mirrors instead of having old files that are deleted
@@ -38,6 +42,7 @@ define rsync::quickdatacopy(
   Boolean $auto_sync = true,
   Wmflib::Ensure $ensure = present,
   Optional[Integer] $bwlimit = undef,
+  Optional[String] $exclude = undef,
   Optional[Boolean] $delete = false,
   Boolean $server_uses_stunnel = false,  # Must match rsync::server::wrap_with_stunnel as looked up via hiera by the *server*!
   Boolean $auto_ferm_ipv6 = true,
@@ -65,7 +70,10 @@ define rsync::quickdatacopy(
           undef   => '',
           default => "--bwlimit=${bwlimit}",
       }
-
+      $_exclude = $exclude ? {
+          undef   => '',
+          default => "--exclude '${exclude}' ",
+      }
       $ssl_wrapper_path = "/usr/local/sbin/sync-${title}-ssl-wrapper"
       $_rsh = $server_uses_stunnel ? {
           false   => '',
@@ -91,7 +99,7 @@ define rsync::quickdatacopy(
           }
           $quickdatacopy = @("SCRIPT")
           #!/bin/sh
-          /usr/bin/rsync ${_rsh}${_delete}-a ${_bwlimit} rsync://${source_host}/${title} ${module_path}/
+          /usr/bin/rsync ${_rsh}${_delete}-a ${_bwlimit} ${_exclude}rsync://${source_host}/${title} ${module_path}/
           | SCRIPT
 
           file { "/usr/local/sbin/sync-${title}":
