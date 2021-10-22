@@ -9,7 +9,7 @@ ExecStart=/srv/deployment/zuul/venv/bin/zuul-merger -d -c /etc/zuul/zuul-merger.
 <%- else -%>
 ExecStart=/usr/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
 <%- end -%>
-ExecStop=/bin/kill -USR1 $MAINPID
+KillSignal=SIGUSR1
 TimeoutStopSec=infinity
 EnvironmentFile=/etc/default/zuul-merger
 
