@@ -19,7 +19,7 @@ class role::simplelap{
         default => fail("unsupported on ${debian::codename()}")
     }
 
-    ensure_packages(["libapac is he2-mod-${php_module}", 'php-cli'])
+    ensure_packages(["libapache2-mod-${php_module}", 'php-cli'])
 
     class { 'httpd':
         modules => ['rewrite', $php_module],
