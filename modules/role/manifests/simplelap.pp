@@ -21,11 +21,14 @@ class role::simplelap{
 
     ensure_packages(["libapache2-mod-${php_module}", 'php-cli'])
 
-    class { 'httpd':
-        modules => ['rewrite', $php_module],
-    }
-
     class { 'httpd::mpm':
         mpm => 'prefork'
     }
+
+    class { 'httpd':
+        modules             => ['rewrite', $php_module],
+        purge_manual_config => false,
+        require             => Class['httpd::mpm'],
+    }
+
 }
