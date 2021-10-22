@@ -1,3 +1,10 @@
+cluster: puppet
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::ssl_provider: discovery
+profile::tlsproxy::envoy::global_cert_name: "puppetboard.discovery.wmnet"
+# Ship logs to logging pipeline local shim
+service::configuration::logstash_host: localhost
+profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
 profile::puppetboard::ng::vhost: 'puppetboard.wikimedia.org'
 profile::puppetboard::ng::puppetdb_host: "%{lookup('puppetdb_host')}"
 profile::puppetboard::ng::puppetdb_port: 443
