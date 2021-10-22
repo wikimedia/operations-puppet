@@ -34,7 +34,8 @@ class role::simplelamp2 {
     }
 
     class { 'httpd::mpm':
-        mpm => 'prefork'
+        mpm    => 'prefork',
+        notify => Exec['apache2_test_config_and_restart'],
     }
 
     class { 'memcached':
