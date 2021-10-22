@@ -9,7 +9,7 @@ class kubeadm::kubectl (
 
     file { '/usr/local/bin/kubectl-sudo':
         ensure => present,
-        mode   => '0444',
+        mode   => '0555',
         source => 'puppet:///modules/kubeadm/kubectl-sudo.sh',
     }
 }
