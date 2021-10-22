@@ -1,0 +1,19 @@
+profile::gitlab::backup_dir_config: '/srv/gitlab-backup'
+profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
+profile::gitlab::backup_keep_time: 259200
+profile::gitlab::backup_sync::ensure: 'absent'
+profile::gitlab::cas_auto_create_users: false
+profile::gitlab::cas_label: 'Wikimedia Dev Account'
+profile::gitlab::cas_url: 'https://localhost'
+profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.crt'
+profile::gitlab::exporters:
+  nginx:
+    listen_address: '127.0.0.1'
+    port: 8060
+profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
+profile::gitlab::monitoring_whitelist:
+- '127.0.0.1/32'
+- '10.0.0.0/8'
+profile::gitlab::service_ip_v4: '127.0.0.1'
+profile::gitlab::service_ip_v6: 'fe80::f816:3eff:fedd:5a57'
+profile::gitlab::smtp_enabled: false
