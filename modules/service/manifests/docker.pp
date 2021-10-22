@@ -7,21 +7,29 @@
 #
 # === Parameters
 #
-# [*port*] the IP port the service runs on, and that will be exposed
-#   on. For now, the port needs to be the same.
+# [*image_name*]
+#   Name of the Docker image.  Default: $title
 #
 # [*version*] The docker image tag
 #
 # [*namespace*] The namespace of the image on the registry, if any
+#
+#   The fully qualified image name (FQIN) of the image
+#   will be docker-registry.wikimedia.org/${namespace}/${image_name}
+#   or docker-registry.wikimedia.org/${image_name} if the namespace
+#   is undefined.
+#
+#
+# [*port*] the IP port the service runs on, and that will be exposed
+#   on. For now, the container port and the host port must be the same
+#   and cannot be specified separately.
 #
 # [*override_cmd*] The command to run if different from what defined
 #   in the images's CMD stanza.
 #
 # [*environment*] k-v hash of env variables to pass to the container
 #
-# [*image_name*]
-#   Name of the Docker image.  Default: $title
-# [*volume*]
+# [*volume*] Boolean. default false.
 #   Whether a volume should be reserved for the configuration file. This is here
 #   just to bypass a 64KB limitation of horizon, so don't use it for other
 #   reasons. If set to true, then instead of bind mounting /etc/${title} from
@@ -50,6 +58,9 @@ define service::docker(
     if $version == 'latest' {
         fail('Meta tags like "latest" are not allowed')
     }
+
+    $fqin = "${image_full_name}:${version}"
+
     # The config file will be mounted as a read-only volume inside the container
     file { "/etc/${title}":
         ensure => stdlib::ensure($ensure, 'directory'),
@@ -68,11 +79,10 @@ define service::docker(
         }
     }
 
-    # Make sure we have at least one version installed. It's strongly
-    # recommended that you properly configure this.
-    exec { "docker pull of ${image_name}:${version} for ${title}":
-        command => "/usr/bin/docker pull '${image_full_name}:${version}'",
-        unless  => "/usr/bin/docker images | fgrep '${image_full_name}' | fgrep -q '${version}'",
+    # Make sure the image has been pulled before starting the service
+    exec { "docker pull of ${fqin} for ${title}":
+        command => "/usr/bin/docker pull '${fqin}'",
+        unless  => "/usr/bin/docker image inspect '${fqin}' >/dev/null",
         notify  => Systemd::Service[$title],
     }
 
