@@ -36,7 +36,7 @@ class profile::zuul::merger(
     # Serves Zuul git repositories
     class { 'contint::zuul::git_daemon':
         zuul_git_dir    => $conf_merger['git_dir'],
-        max_connections => 48,
+        max_connections => 96,
     }
 
     # We run a git-daemon process to expose the zuul-merger git repositories.
