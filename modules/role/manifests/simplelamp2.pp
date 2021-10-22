@@ -28,14 +28,14 @@ class role::simplelamp2 {
 
     $apache_modules = concat($apache_modules_common, $apache_php_module)
 
+    class { 'httpd::mpm':
+        mpm    => 'prefork',
+    }
+
     class { 'httpd':
         modules             => $apache_modules,
         purge_manual_config => false,
-    }
-
-    class { 'httpd::mpm':
-        mpm    => 'prefork',
-        notify => Exec['apache2_test_config_and_restart'],
+        require             => Class['httpd::mpm'],
     }
 
     class { 'memcached':
