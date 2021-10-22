@@ -1,10 +1,21 @@
 # Manage the crons for the Toolforge grid users
 
 class profile::toolforge::grid::cronrunner(
-    $sysdir = lookup('profile::toolforge::grid::base::sysdir'),
+    Stdlib::Fqdn $active_host = lookup('profile::toolforge::grid::cronrunner::active_host'),
+    Stdlib::Unixpath $sysdir = lookup('profile::toolforge::grid::base::sysdir'),
 ) {
     include ::profile::toolforge::grid::hba
     include ::profile::toolforge::disable_tool
+
+    $is_active = $active_host == $::facts['fqdn']
+
+    # With Puppet-managed infra crons moved to systemd services,
+    # we can disable the cron service if we don't want tool crons running,
+    # for example for replacing the crontab host with another
+    service { 'cron':
+        ensure => $is_active.bool2str('running', 'stopped'),
+        enable => $is_active,
+    }
 
     motd::script { 'submithost-banner':
         ensure => present,
@@ -62,7 +73,7 @@ class profile::toolforge::grid::cronrunner(
     }
 
     systemd::timer::job { 'disable-tool':
-        ensure          => 'present',
+        ensure          => $is_active.bool2str('present', 'absent'),
         logging_enabled => false,
         user            => 'root',
         description     => 'Archive crontab for disabled tools',
@@ -75,7 +86,7 @@ class profile::toolforge::grid::cronrunner(
     }
 
     systemd::timer::job { 'disable-tool-archive-dbs':
-        ensure          => 'present',
+        ensure          => $is_active.bool2str('present', 'absent'),
         logging_enabled => false,
         user            => 'root',
         description     => 'Archive databases for expired tools',
