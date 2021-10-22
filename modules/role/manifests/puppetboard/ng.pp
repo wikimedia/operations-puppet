@@ -12,8 +12,8 @@
 class role::puppetboard::ng {
     system::role { 'puppetboard': description => 'Puppetboard server' }
 
+    include profile::base::production
     include profile::base::firewall
-    include profile::standard
     include profile::puppetboard::ng
     include profile::tlsproxy::envoy # TLS termination
 }
