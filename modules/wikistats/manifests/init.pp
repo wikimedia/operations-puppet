@@ -92,11 +92,6 @@ class wikistats (
         group     => 'wikistatsuser',
     }
 
-    # webserver setup for wikistats
-    class { 'wikistats::web':
-        wikistats_host => $wikistats_host,
-    }
-
     $db_pass = fqdn_rand_string(23, 'Random9Fn0rd8Seed')
 
     # install a db on localhost
