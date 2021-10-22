@@ -8,8 +8,7 @@ class profile::ntp (
         $::ntp_peers['codfw'],
         $::ntp_peers['esams'],
         $::ntp_peers['ulsfo'],
-        $::ntp_peers['eqsin'],
-        $::ntp_peers['drmrs']
+        $::ntp_peers['eqsin']
     ].flatten
 
     # ntp_peers is a list of peer servers that exist within each site,
@@ -22,7 +21,6 @@ class profile::ntp (
         esams   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['esams']].flatten,
         ulsfo   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['ulsfo']].flatten,
         eqsin   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['eqsin']].flatten,
-        drmrs   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['drmrs']].flatten,
         default => $wmf_all_peers, # core sites
     }
     $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
@@ -30,7 +28,6 @@ class profile::ntp (
     $pool_zone = $::site ? {
         esams   => 'nl',
         eqsin   => 'sg',
-        drmrs   => 'fr',
         default => 'us',
     }
 
