@@ -1,50 +1,6 @@
-counter varnish_frontend_origin_ttfb_bucket by le, origin, cache_status
-counter varnish_frontend_origin_ttfb_sum by origin, cache_status
-counter varnish_frontend_origin_ttfb_count by origin, cache_status
+histogram varnish_frontend_origin_ttfb by origin, cache_status buckets 0.001, 0.005, 0.01, 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 1.2
 
 # Only match "backend" side requests (varnishncsa -b)
 /^side b\t.*\tttfb (?P<ttfb>[0-9\.]+)\tcache_int (?P<origin>cp[0-9]+) (?P<cache_status>(hit|miss|pass))/ {
-    varnish_frontend_origin_ttfb_count[$origin][$cache_status]++
-
-    # varnishncsa reports ttfb in seconds
-    varnish_frontend_origin_ttfb_sum[$origin][$cache_status] += $ttfb
-
-    # Define the following milliseconds buckets:
-    # 1, 5, 10, 45, 70, 100, 150, 250, 350, 500, and 1200
-
-    $ttfb < 0.001 {
-        varnish_frontend_origin_ttfb_bucket["0.001"][$origin][$cache_status]++
-    }
-    $ttfb < 0.005 {
-        varnish_frontend_origin_ttfb_bucket["0.005"][$origin][$cache_status]++
-    }
-    $ttfb < 0.01 {
-        varnish_frontend_origin_ttfb_bucket["0.01"][$origin][$cache_status]++
-    }
-    $ttfb < 0.045 {
-        varnish_frontend_origin_ttfb_bucket["0.045"][$origin][$cache_status]++
-    }
-    $ttfb < 0.07 {
-        varnish_frontend_origin_ttfb_bucket["0.07"][$origin][$cache_status]++
-    }
-    $ttfb < 0.1 {
-        varnish_frontend_origin_ttfb_bucket["0.1"][$origin][$cache_status]++
-    }
-    $ttfb < 0.15 {
-        varnish_frontend_origin_ttfb_bucket["0.15"][$origin][$cache_status]++
-    }
-    $ttfb < 0.25 {
-        varnish_frontend_origin_ttfb_bucket["0.25"][$origin][$cache_status]++
-    }
-    $ttfb < 0.35 {
-        varnish_frontend_origin_ttfb_bucket["0.35"][$origin][$cache_status]++
-    }
-    $ttfb < 0.5 {
-        varnish_frontend_origin_ttfb_bucket["0.5"][$origin][$cache_status]++
-    }
-    $ttfb < 1.2 {
-        varnish_frontend_origin_ttfb_bucket["1.2"][$origin][$cache_status]++
-    }
-
-    varnish_frontend_origin_ttfb_bucket["+Inf"][$origin][$cache_status]++
+    varnish_frontend_origin_ttfb[$origin][$cache_status] = $ttfb
 }

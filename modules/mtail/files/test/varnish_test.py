@@ -65,20 +65,22 @@ class VarnishTTFBTest(unittest.TestCase):
                 os.path.join(test_dir, '../programs/varnishttfb.mtail'),
                 os.path.join(test_dir, 'logs/varnish.test'))
 
-    def testTTFBCount(self):
-        s = self.store.get_samples('varnish_frontend_origin_ttfb_count')
-        self.assertIn(('origin=cp3052,cache_status=hit', 1), s)
-        self.assertIn(('origin=cp3062,cache_status=miss', 1), s)
+    def testTTFBHistogram(self):
+        s = self.store.get_samples('varnish_frontend_origin_ttfb')
+        s_dict = dict(s)
+        self.assertIn('origin=cp3052,cache_status=hit', s_dict)
+        self.assertIn('origin=cp3062,cache_status=miss', s_dict)
 
     def testTTFBSum(self):
-        s = self.store.get_samples('varnish_frontend_origin_ttfb_sum')
-        self.assertIn(('origin=cp3062,cache_status=miss', 0.155195), s)
+        s = self.store.get_samples('varnish_frontend_origin_ttfb')
+        values = dict(s)['origin=cp3062,cache_status=miss']
+        self.assertEqual(values['sum'], 0.155195)
 
     def testTTFBBucket(self):
-        s = self.store.get_samples('varnish_frontend_origin_ttfb_bucket')
-        self.assertIn(('le=1.2,origin=cp3050,cache_status=pass', 2), s)
-        self.assertIn(('le=0.5,origin=cp3062,cache_status=miss', 1), s)
-        self.assertIn(('le=+Inf,origin=cp3062,cache_status=miss', 1), s)
+        s = self.store.get_samples('varnish_frontend_origin_ttfb')
+        values = dict(s)
+        self.assertEqual(values['origin=cp3050,cache_status=pass']['buckets']['0.001'], 2)
+        self.assertEqual(values['origin=cp3062,cache_status=miss']['buckets']['0.25'], 1)
 
 
 class VarnishProcessingSecondsTest(unittest.TestCase):
