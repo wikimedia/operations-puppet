@@ -29,11 +29,12 @@ class openstack::nova::fullstack::monitor {
 
     # Script to make sure that every flavor is assigned to a host aggregate
     file { '/usr/local/bin/check_flavor_properties':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/openstack/monitor/nova/check_flavor_properties.py',
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        source  => 'puppet:///modules/openstack/monitor/nova/check_flavor_properties.py',
+        timeout => 500,
     }
 
     # Make sure every flavor is assigned to an aggregate, to avoid
