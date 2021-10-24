@@ -44,7 +44,7 @@ striker::uwsgi::config:
   static:
     STATIC_ROOT: /srv/deployment/striker/deploy/public_html/static
   openstack:
-    URL: http://cloudcontrol2004-dev.wikimedia.org:25000/v3
+    URL: https://cloudcontrol2004-dev.wikimedia.org:25000/v3
 
 # striker::uwsgi::secret_config: exists in private repo
 

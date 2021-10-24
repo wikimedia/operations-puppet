@@ -55,7 +55,7 @@
 #        'LOGSTASH_PORT'      => 11514,
 #      }
 #      'static'               => { 'STATIC_ROOT' => '/srv/www' },
-#      'openstack'            => { 'URL' => 'http://openstack.example.net/v3' },
+#      'openstack'            => { 'URL' => 'https://openstack.example.net/v3' },
 #     }
 #     secret_config => {
 #       'secrets'       => {
