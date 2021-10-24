@@ -21,7 +21,7 @@ class openstack::keystone::monitor::services(
         ensure        => $ensure,
         critical      => $critical,
         description   => "keystone admin endpoint port ${auth_port}",
-        check_command => "check_http_on_port!${auth_port}",
+        check_command => "check_https_on_port!${auth_port}",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
@@ -30,7 +30,7 @@ class openstack::keystone::monitor::services(
         ensure        => $ensure,
         critical      => $critical,
         description   => "keystone public endoint port ${public_port}",
-        check_command => "check_http_on_port!${public_port}",
+        check_command => "check_https_on_port!${public_port}",
         contact_group => $contact_groups,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
