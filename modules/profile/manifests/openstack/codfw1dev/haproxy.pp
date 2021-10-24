@@ -40,7 +40,7 @@ class profile::openstack::codfw1dev::haproxy(
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
-        port_frontend          => 25357,
+        port_frontend          => 35357,
         port_backend           => $keystone_admin_bind_port,
         frontend_tls_cert_name => $acme_chief_cert_name,
         port_frontend_tls      => 25357,
