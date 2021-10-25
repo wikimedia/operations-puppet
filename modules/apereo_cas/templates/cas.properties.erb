@@ -117,7 +117,7 @@ cas.authn.mfa.u2f.jpa.dialect=org.hibernate.dialect.MariaDBDialect
 
 <%- if @u2f_token_expiry_days -%>
 cas.authn.mfa.u2f.core.expire-devices=<%= @u2f_token_expiry_days %>
-cas.authn.mfa.u2f.core.expire-devices-unit=DAYS
+cas.authn.mfa.u2f.core.expire-devices-time-unit=DAYS
 <%- end -%>
 <% if @tgc_signing_key %>cas.tgc.crypto.signing.key=<%= @tgc_signing_key %><% end %>
 <% if @tgc_encryption_key %>cas.tgc.crypto.encryption.key=<%= @tgc_encryption_key %><% end %>
