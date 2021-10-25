@@ -383,8 +383,10 @@ mwverpbounceprocessor:
 
 begin retry
 
-*	*	senders=wiki@wikimedia.org	F,1h,15m; G,8h,1h,1.5
-*	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
+# retry deliveries to *@alert.victorops.com every minute for 2 hours
+alert.victorops.com	*	F,2h,1m
+*			*	senders=wiki@wikimedia.org	F,1h,15m; G,8h,1h,1.5
+*			*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
 
 #################
 # Rewrite rules #
