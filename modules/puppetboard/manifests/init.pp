@@ -105,7 +105,8 @@ class puppetboard (
     SECRET_KEY = ${_secret_key}
     ${config}
     | CONFIG
-    file {'/etc/puppetboard/settings.py':
+    $config_file = '/etc/puppetboard/settings.py'
+    file {$config_file:
         ensure  => stdlib::ensure($ensure, 'file'),
         content => $config_content,
     }

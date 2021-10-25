@@ -59,11 +59,13 @@ class profile::puppetboard::ng (
     }
 
     service::uwsgi { 'puppetboard':
-        port       => $uwsgi_port,
+        # this port is only used for the icinga check
+        port            => 443,
         # This application is deployed by apt
-        deployment => 'No Deploy',
-        no_workers => 4,
-        config     => {
+        healthcheck_url => '/',
+        deployment      => 'No Deploy',
+        no_workers      => 4,
+        config          => {
             need-plugins => 'python3',
             wsgi         => 'puppetboard.wsgi',
             buffer-size  => 8096,
@@ -78,6 +80,8 @@ class profile::puppetboard::ng (
         },
     }
 
+    # Service::Uwsgi['puppetboard'] ultimately creates Service['uwsgi-puppetboard']
+    File[$puppetboard::config_file] ~> Service['uwsgi-puppetboard']
     profile::auto_restarts::service { 'uwsgi-puppetboard': }
     profile::auto_restarts::service { 'apache2': }
 
