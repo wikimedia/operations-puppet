@@ -11,9 +11,8 @@ controller:
   name: controller
   image:
     repository: docker-registry.tools.wmflabs.org/nginx-ingress-controller
-    # TODO: make configurable
-    tag: "v0.46.0"
-    digest: sha256:be724c71b4ad5086a734b777a9478e44e68dea1bdd00fbed345a122fb141274b
+    tag: "v1.0.4"
+    digest: sha256:a7fb797e0b1c919a49cf9b3f9bb90ebca39bc85d0edd11c9a5cf897da5eb5a3f
     pullPolicy: IfNotPresent
     # www-data -> uid 101
     runAsUser: 101
@@ -102,6 +101,12 @@ controller:
   metrics:
     port: 10254
     enabled: true
+
+  ingressClassResource:
+    name: "toolforge"
+    default: true
+  # https://phabricator.wikimedia.org/T292771#7455219
+  watchIngressWithoutClass: true
 
 defaultBackend:
   # We run our own (tool-fourohfour).
