@@ -374,6 +374,18 @@
     <value>false</value>
   </property>
 
+  <!--
+    hive.warehouse.subdir.inherit.perms defaults to true in Hive 2.3.6.
+    We set an explicit Hadoop umask, and expect it to be respected
+    even when Hive is creating HDFS directories.
+    See: https://phabricator.wikimedia.org/T291664
+   -->
+  <property>
+    <name>hive.warehouse.subdir.inherit.perms</name>
+    <value>false</value>
+  </property>
+
+
 <% if @hive_server2_authentication -%>
   <property>
     <name>hive.server2.authentication</name>
