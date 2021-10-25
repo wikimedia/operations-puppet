@@ -851,7 +851,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl, bumeh-ctr, iflorez]
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl, bumeh-ctr, iflorez, echetty]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
   peek-admins:
@@ -4783,7 +4783,9 @@ users:
     realname: Emil Chetty
     gid: 500
     uid: 34931
-    ssh_keys: []  # none - analytics-privatedata-users without ssh access or kerberos
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINePauIf1ypkDo5OXhkw4TyuUAToQy2qR4SLdj6nMBE8 emilchetty@MacBook-Pro-2.cable.virginm.net
   ejoseph:
     ensure: present
     realname: Emmanuel Joseph
