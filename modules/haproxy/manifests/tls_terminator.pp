@@ -44,6 +44,8 @@
 #   List of headers to add on HTTP requests or responses
 # @param del_headers
 #   List of headers to remove on HTTP requests or respones
+# @param prometheus_port
+#   Port to expose stats and prometheus metrics. Requires HAProxy >= 2.0
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Stdlib::Unixpath $backend_socket,
@@ -67,6 +69,7 @@ define haproxy::tls_terminator(
     Optional[Array[Haproxy::Acl]] $acls = undef,
     Optional[Array[Haproxy::Header]] $add_headers = undef,
     Optional[Array[Haproxy::Header]] $del_headers = undef,
+    Optional[Stdlib::Port] $prometheus_port = undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {

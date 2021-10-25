@@ -1,5 +1,6 @@
 class profile::cache::haproxy(
     Stdlib::Port $tls_port = lookup('profile::cache::haproxy::tls_port'),
+    Stdlib::Port $prometheus_port = lookup('profile::cache::haproxy::prometheus_port', {'default_value' => 9422}),
     Hash[String, Haproxy::Tlscertificate] $available_unified_certificates = lookup('profile::cache::haproxy::available_unified_certificates'),
     Optional[Hash[String, Haproxy::Tlscertificate]] $extra_certificates = lookup('profile::cache::haproxy::extra_certificates', {'default_value' => undef}),
     Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', {'default_value' => undef}),
@@ -25,6 +26,14 @@ class profile::cache::haproxy(
     # variables used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'
     $exec_start = '/usr/sbin/haproxy -Ws'
+
+
+    # Use HAProxy 2.2 from buster-backports
+    apt::pin { 'haproxy-buster-bpo':
+        package  => 'haproxy',
+        pin      => 'release n=buster-backports',
+        priority => 1002,
+    }
 
     class { '::haproxy':
         systemd_content => template('profile/cache/haproxy.service.erb'),
@@ -137,5 +146,6 @@ class profile::cache::haproxy(
         acls                 => $acls,
         add_headers          => $add_headers,
         del_headers          => $del_headers,
+        prometheus_port      => $prometheus_port,
     }
 }

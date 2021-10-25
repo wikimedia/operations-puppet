@@ -66,3 +66,13 @@ listen tls
 <%- elsif @proxy_protocol == 'V2-ssl' -%>
     server backend_server unix@<%= @backend_socket %> send-proxy-v2-ssl
 <%- end -%>
+
+<%- if @prometheus_port -%>
+frontend stats
+    bind :<%= @prometheus_port %>
+    bind :::<%= @prometheus_port %> v6only
+    http-request use-service prometheus-exporter if { path /metrics }
+    stats enable
+    stats uri /stats
+    stats refresh 10s
+<%- end -%>
