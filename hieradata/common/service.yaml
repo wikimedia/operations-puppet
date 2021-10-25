@@ -3856,3 +3856,30 @@ service::catalog:
     discovery:
       - dnsdisc: apt
         active_active: false
+  # puppetboard is not an LVS service. However it does warrant using discovery DC records for it.
+  # Note the lack of an 'lvs' stanza in the configuration below.
+  puppetboard:
+    description: Internal production Puppetboard interface
+    encryption: true
+    ip:
+      codfw:
+        default: 10.192.32.30
+      eqiad:
+        default: 10.64.48.59
+    monitoring:
+      check_command: "check_https_sso_redirect!puppetboard.wikimedia.org!/"
+      notes_url: "https://wikitech.wikimedia.org/wiki/Puppet"
+      critical: false  # update this to true after testing complete
+      sites:
+        codfw:
+          hostname: puppetboard2002
+        eqiad:
+          hostname: puppetboard1002
+    sites:
+      - eqiad
+      - codfw
+    port: 443
+    state: production
+    discovery:
+      - dnsdisc: puppetboard
+        active_active: true
