@@ -21,6 +21,7 @@ class profile::grafana::production (
       dest_host           => $standby_host,
       module_path         => '/var/lib/grafana',
       server_uses_stunnel => true,
+      exclude             => 'grafana.db-journal',
     }
 
     class {'::grafana::ldap_sync':
