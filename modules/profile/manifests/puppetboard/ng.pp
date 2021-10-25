@@ -22,9 +22,11 @@ class profile::puppetboard::ng (
     # Application settings
     String                          $page_title               = lookup('profile::puppetboard::ng:page_title'),
     Boolean                         $localise_timestamp       = lookup('profile::puppetboard::ng::localise_timestamp'),
+    Boolean                         $enable_catalog           = lookup('profile::puppetboard::ng::enable_catalog'),
     String                          $graph_type               = lookup('profile::puppetboard::ng::graph_type'),
     Array[String]                   $graph_facts_override     = lookup('profile::puppetboard::ng::graph_facts_override'),
     Array[String]                   $query_endpoints_override = lookup('profile::puppetboard::ng::query_endpoints_override'),
+    Hash[String, String]            $inventory_facts_override = lookup('profile::puppetboard::ng::inventory_facts_override'),
     Optional[String]                $secret_key               = lookup('profile::puppetboard::ng::secret_key'),
 
 ) {
@@ -41,9 +43,11 @@ class profile::puppetboard::ng (
         puppetdb_proto           => $puppetdb_proto,
         page_title               => $page_title,
         localise_timestamp       => $localise_timestamp,
+        enable_catalog           => $enable_catalog,
         graph_type               => $graph_type,
         graph_facts_override     => $graph_facts_override,
         query_endpoints_override => $query_endpoints_override,
+        inventory_facts_override => $inventory_facts_override,
         secret_key               => $secret_key,
     }
 

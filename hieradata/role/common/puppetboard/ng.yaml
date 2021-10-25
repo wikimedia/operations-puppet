@@ -11,6 +11,7 @@ profile::puppetboard::ng::puppetdb_port: 443
 profile::puppetboard::ng::puppetdb_proto: 'https'
 profile::puppetboard::ng:page_title: 'WMF Puppetboard'
 profile::puppetboard::ng::localise_timestamp: true
+profile::puppetboard::ng::enable_catalog: true
 profile::puppetboard::ng::graph_type: 'donut'
 profile::puppetboard::ng::graph_facts_override:
 - architecture
@@ -59,3 +60,14 @@ profile::puppetboard::ng::query_endpoints_override:
 - fact-contents
 - fact-paths
 - nodes
+profile::puppetboard::ng::inventory_facts_override:
+  Hostname: 'fqdn'
+  Vendor: 'manufacturer'
+  Model: 'productname'
+  CPUs: 'processorcount'
+  Memory: 'memorysize'
+  'BIOS Version': 'bios_version'
+  'BIOS Date': 'bios_release_date'
+  Serial: 'serialnumber'
+  OS: 'lsbdistcodename'
+  'Kernel Version': 'kernelrelease'

@@ -7,6 +7,8 @@ profile::puppetboard::ng::puppetdb_key: ~
 profile::puppetboard::ng::puppetdb_proto: ~
 profile::puppetboard::ng:page_title: 'Puppetboard'
 profile::puppetboard::ng::localise_timestamp: false
+profile::puppetboard::ng::enable_catalog: false
 profile::puppetboard::ng::graph_type: 'pie'
 profile::puppetboard::ng::graph_facts_override: []
 profile::puppetboard::ng::secret_key: ~
+profile::puppetboard::ng::inventory_facts_override: {}
