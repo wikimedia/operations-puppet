@@ -162,6 +162,12 @@ profile::kubernetes::deployment_server::services:
         - name: revscoring-draftquality-deploy
           owner: root
           group: deploy-ml-service
+    revscoring-articlequality:
+      usernames:
+        - name: revscoring-articlequality
+        - name: revscoring-articlequality-deploy
+          owner: root
+          group: deploy-ml-service
     kubeflow-kfserving:
       usernames: []
       private_files:
