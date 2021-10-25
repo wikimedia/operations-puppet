@@ -1,6 +1,6 @@
 class profile::base(
     Array $remote_syslog      = lookup('profile::base::remote_syslog', {default_value => []}),
-    Array $remote_syslog_tls  = lookup('profile::base::remote_syslog_tls', {default_value => []}),
+    Hash  $remote_syslog_tls  = lookup('profile::base::remote_syslog_tls', {default_value => {}}),
     Hash $ssh_server_settings = lookup('profile::base::ssh_server_settings', {default_value => {}}),
     Boolean $overlayfs        = lookup('profile::base::overlayfs', {default_value => false}),
     Hash $wikimedia_clusters  = lookup('wikimedia_clusters'),
@@ -34,11 +34,13 @@ class profile::base(
     class { 'rsyslog': }
     include profile::prometheus::rsyslog_exporter
 
-    unless empty($remote_syslog) and empty($remote_syslog_tls) {
+    $remote_syslog_tls_servers = $remote_syslog_tls[$::site]
+
+    unless empty($remote_syslog) and empty($remote_syslog_tls_servers) {
         class { 'base::remote_syslog':
             enable            => true,
             central_hosts     => $remote_syslog,
-            central_hosts_tls => $remote_syslog_tls,
+            central_hosts_tls => $remote_syslog_tls_servers,
         }
     }
 
