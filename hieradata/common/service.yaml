@@ -3842,7 +3842,7 @@ service::catalog:
     monitoring:
       check_command: "check_http_url!apt.wikimedia.org!/wikimedia/"
       notes_url: "https://wikitech.wikimedia.org/wiki/APT_repository"
-      critical: false  # update this to true after testing complete
+      critical: true
       sites:
         codfw:
           hostname: apt2001
