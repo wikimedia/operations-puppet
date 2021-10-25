@@ -78,8 +78,8 @@ cas.authn.accept.users=
 
 cas.ticket.tgt.remember-me.enabled=true
 cas.ticket.tgt.remember-me.time-to-kill-in-seconds=<%= @max_rememberme_session_length %>
-cas.ticket.tgt.time-to-kill-in-seconds=<%= @session_inactivity_timeout %>
-cas.ticket.tgt.max-time-to-live-in-seconds=<%= @max_session_length %>
+cas.ticket.tgt.primary.time-to-kill-in-seconds=<%= @session_inactivity_timeout %>
+cas.ticket.tgt.primary.max-time-to-live-in-seconds=<%= @max_session_length %>
 
 <%- if @enable_ldap -%>
 cas.authn.ldap[0].principal-attribute-list=<%= @ldap_attribute_list.join(',') %>
@@ -95,10 +95,10 @@ cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
 
 <%- if @enable_mfa -%>
   <%- if @groovy_source -%>
-cas.authn.mfa.globalprincipalattributepredicate=file:<%= @groovy_file -%>
+cas.authn.mfa.triggers.principal.global-principal-attribute-predicate.location=file:<%= @groovy_file -%>
   <%- else -%>
-cas.authn.mfa.global-principal-attribute-name-triggers=<%= @mfa_attribute_trigger %>
-cas.authn.mfa.global-principal-attribute-value-regex=<%= @mfa_attribut_value.join('|') %>
+cas.authn.mfa.triggers.principal.global-principal-attribute-name-triggers=<%= @mfa_attribute_trigger %>
+cas.authn.mfa.triggers.principal.global-principal-attribute-value-regex=<%= @mfa_attribut_value.join('|') %>
   <%- end -%>
 <%- end -%>
 
