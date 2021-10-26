@@ -25,4 +25,10 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
         interval => '*-*-* 07:20:00',
     }
+
+    # purge expired rows from the database (Mentor dashboard, T280307)
+    profile::mediawiki::periodic_job { 'growthexperiments-purgeExpiredMentorStatus':
+        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/purgeExpiredMentorStatus.php',
+        interval => '*-*-01,15 8:45:00',
+    }
 }
