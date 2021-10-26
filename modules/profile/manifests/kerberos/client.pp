@@ -40,11 +40,15 @@ class profile::kerberos::client (
         mode   => '0750',
     }
 
+    # Create the keytabs directory and remove any unmanaged files.
+    # See T294124 for further detail.
     file { '/etc/security/keytabs':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
     }
 
     motd::script { 'kerberos-client-info':
