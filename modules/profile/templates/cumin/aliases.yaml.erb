@@ -38,6 +38,9 @@ cloudcephmon-eqiad1: P{O:wmcs::ceph::mon} and A:eqiad
 cloudcephosd: P{O:wmcs::ceph::osd}
 cloudcephosd-eqiad1: P{O:wmcs::ceph::osd} and A:eqiad
 cloudceph: A:cloudcephmon or A:cloudcephosd
+cloudcephosd-codfw: A:cloudcephosd and A:codfw
+cloudcephmon-codfw: A:cloudcephmon and A:codfw
+cloudceph-codfw: A:cloudcephosd-codfw or A:cloudcephmon-codfw
 cloudceph-eqiad1: A:cloudcephmon-eqiad1 or A:cloudcephosd-eqiad1
 cloudmetrics: P{O:wmcs::monitoring}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
@@ -54,7 +57,7 @@ cloudstore: P{O:wmcs::nfs::secondary}
 cloudvirt-codfw1dev: P{O:wmcs::openstack::codfw1dev::virt_ceph}
 clouddb-codfw1dev: P{O:wmcs::openstack::codfw1dev::db}
 cloudgw-codfw1dev: P{O:wmcs::openstack::codfw1dev::cloudgw}
-cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev or A:cloudgw-codfw1dev
+cloud-codfw1dev: A:cloudcontrol-codfw1dev or A:cloudnet-codfw1dev or A:cloudservices-codfw1dev or A:cloudvirt-codfw1dev or A:clouddb-codfw1dev or A:cloudgw-codfw1dev or A:cloudceph-codfw
 conf: P{O:configcluster}
 conf-canary: P{conf2004.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
