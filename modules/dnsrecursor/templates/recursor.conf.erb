@@ -61,7 +61,12 @@ forward-zones=<%= @forward_zones -%>, <%= @additional_forward_zones -%>
 
 <% if @allow_edns_whitelist -%>
 # we need ECS to ensure our geoip resolution (e.g. for discovery hostnames) works correctly regardless of which recursor (x-dc) a client uses
+<% if @install_from_component -%>
+# https://doc.powerdns.com/recursor/upgrade.html#x-to-4-5-1
+edns-subnet-allow-list=<%= @wmf_authdns.join(', ') %>
+<%- else -%>
 edns-subnet-whitelist=<%= @wmf_authdns.join(', ') %>
+<%- end -%>
 <% end -%>
 <% if @allow_incoming_ecs -%>
 # whether to process and pass along source ECS information (example: received by and passed from dnsdist)
