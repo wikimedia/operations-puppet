@@ -13,7 +13,9 @@ hierarchy:
       - "cloud/%{::wmcs_deployment}.yaml"
       - "cloud.yaml"
   - name: "Secret hierarchy"
-    path: "%{::labsproject}.yaml"
+    paths:
+      - "hosts/%{::trusted.certname}.yaml"
+      - "%{::labsproject}.yaml"
     datadir: "/etc/puppet/secret/hieradata"
   - name: "Private hierarchy"
     paths:
