@@ -21,6 +21,7 @@ class role::dumps::distribution::server {
     include profile::dumps::distribution::datasets::dumpstatusfiles_sync
     include profile::dumps::distribution::datasets::rsync_config
     include profile::dumps::distribution::datasets::fetcher
+    include profile::dumps::distribution::datasets::enterprise
 
     include profile::dumps::distribution::mirrors::rsync_config
 
