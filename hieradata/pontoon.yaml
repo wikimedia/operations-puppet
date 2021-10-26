@@ -4,6 +4,10 @@ profile::base::labs::unattended_distro: 'present'
 profile::openstack::eqiad1::version: 'victoria'
 profile::base::labs::clean_kernels: false
 
+# Pontoon is including 'role' classes directly in Cloud VPS
+profile::base::production::enable: false
+profile::base::production::enable_ip6_mapped: false
+
 profile::resolving::nameservers:
   - 208.80.154.143
   - 208.80.154.24
