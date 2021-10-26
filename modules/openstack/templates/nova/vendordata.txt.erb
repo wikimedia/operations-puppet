@@ -107,8 +107,8 @@ Content-Type: text/text/x-shellscript; charset="us-ascii"
 set -x
 
 # Function to test if puppet is running or not
-PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
 puppet_is_running() {
+    PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
     echo "checking if puppet is running by looking at ${PUPPETLOCK}"
     # If no lockfile is defined, we can't really tell what's happening.
     # Assume puppet is not running in this case
