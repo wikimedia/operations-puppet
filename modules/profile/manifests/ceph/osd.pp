@@ -16,7 +16,8 @@ class profile::ceph::osd(
     Array[String]        $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
     Array[String]        $os_disks = lookup('profile::ceph::osd::os_disks'),
     String               $disks_io_scheduler = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
-    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
+    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
+    Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
     # Ceph OSDs should use the performance governor, not the default 'powersave'
     # governor
@@ -83,7 +84,8 @@ class profile::ceph::osd(
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
     $osd_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
     $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
-    $ferm_public_srange = join(concat($mon_addrs, $osd_addrs, $client_networks, $openstack_controller_ips), ' ')
+    $cinder_backup_nodes_ips  = $cinder_backup_nodes.map |$host| { ipresolve($host, 4) }
+    $ferm_public_srange = join(concat($mon_addrs, $osd_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
     ferm::service { 'ceph_osd_range':
         proto  => 'tcp',
         port   => '6800:7100',
