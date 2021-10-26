@@ -509,14 +509,15 @@ profile::puppetboard::ng::puppetdb_ssl_verify: true
 profile::puppetboard::ng::puppetdb_cert: ~
 profile::puppetboard::ng::puppetdb_key: ~
 profile::puppetboard::ng::puppetdb_proto: ~
+profile::puppetboard::ng::vhost: "%{facts.networking.fqdn}"
 profile::puppetboard::ng:page_title: 'Puppetboard'
 profile::puppetboard::ng::localise_timestamp: false
 profile::puppetboard::ng::enable_catalog: false
 profile::puppetboard::ng::graph_type: 'pie'
 profile::puppetboard::ng::graph_facts_override: []
 profile::puppetboard::ng::secret_key: ~
+profile::puppetboard::ng::inventory_facts_override: {}
 
 # defaults for cloud (mostly deployment prep)
 profile::base::production::enable: false
 profile::base::production::enable_ip6_mapped: false
-profile::puppetboard::ng::graph_facts_override: {}
