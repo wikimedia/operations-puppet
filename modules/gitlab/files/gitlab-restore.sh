@@ -10,8 +10,8 @@ SECRETS_FILE=/etc/gitlab/gitlab-secrets.json
 
 if [ -f "$CONFIG_FILE" ] && [ -f "$SECRETS_FILE" ]; then
     /usr/bin/echo "Creating backup of $CONFIG_FILE and $SECRETS_FILE" >> $LOGFILE
-    /usr/bin/cp $CONFIG_FILE $CONFIG_FILE.bak
-    /usr/bin/cp $SECRETS_FILE $SECRETS_FILE.bak
+    /usr/bin/cp $CONFIG_FILE $CONFIG_FILE.restore
+    /usr/bin/cp $SECRETS_FILE $SECRETS_FILE.restore
 else
     /usr/bin/echo "Configuration File: $CONFIG_FILE Not Found" >> $LOGFILE
     exit 1
@@ -37,12 +37,12 @@ echo "changing permissions - chmod 600"  >> $LOGFILE
 
 # Extract Configuration Backup
 /usr/bin/tar -xvf $CONFIG_BACKUP --strip-components=2 -C /etc/gitlab/
-if [ -f $CONFIG_FILE.bak ] && [ -f "$SECRETS_FILE" ]; then
+if [ -f $CONFIG_FILE.restore ] && [ -f $SECRETS_FILE.restore ]; then
     echo "Reverting configuration files to those of the replica..." >> $LOGFILE
-    /usr/bin/cp $CONFIG_FILE.bak $CONFIG_FILE
-    /usr/bin/cp $SECRETS_FILE.bak $SECRETS_FILE
+    /usr/bin/cp $CONFIG_FILE.restore $CONFIG_FILE
+    /usr/bin/cp $SECRETS_FILE.restore $SECRETS_FILE
 else
-    echo "Configuration backup files $CONFIG_FILE.bak $SECRETS_FILE.bak not found" >> $LOGFILE
+    echo "Configuration backup files $CONFIG_FILE.restore $SECRETS_FILE.restore not found" >> $LOGFILE
     exit
 fi
 
