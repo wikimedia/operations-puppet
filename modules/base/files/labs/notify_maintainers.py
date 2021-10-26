@@ -95,7 +95,7 @@ def email_members(subject, msg):
     members = member_rec[0][1]["member"]
 
     for member in members:
-        _email_member(member, subject, msg)
+        _email_member(member.decode(), subject, msg)
 
 
 def _email_member(member, subject, body):
@@ -105,7 +105,7 @@ def _email_member(member, subject, body):
     userrec = ldap_conn.search_s(member, ldap.SCOPE_BASE)
     email = userrec[0][1]["mail"][0]
 
-    args = ["/usr/bin/mail", "-s", subject, email]
+    args = ["/usr/bin/mail", "-s", subject, email.decode()]
 
     p = subprocess.Popen(
         args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT
