@@ -20,7 +20,7 @@ groups:
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
-              mholloway-shell, tonina]
+              mholloway-shell, tonina, eugene-chernov, strofimovsky01, il]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -876,7 +876,7 @@ groups:
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
-    members: [eugene-chernov, strofimovsky01, il, brennen, dancy, aokoth]
+    members: [brennen, dancy, aokoth]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Wolfgang Kandek
@@ -4382,25 +4382,17 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   eugene-chernov:
-    ensure: present
-    realname: Eugene Chernov
+    ensure: absent
     email: eugene.chernov@speedandfunction.com
     uid: 30039
     gid: 500
-    ssh_keys:
-      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDXSV4ht0Q6zuWnnNuBH08/li10vGy/23z4Zw42JbgeGIE8MNdNaZePFk8LIvWr89j2FLBsOCTNkpNfBAgQhnIDouZW+JlypZrTa9plWwxRKJ2UhBkSigN5D4cDg5s5UnAuDj39C4wdeexJUEK1ElXlyJGEUipWCNE6SNdZJaN54aepGKENybjWSK6L4eNIPz3G+mTeTgAAvFXxPwkVGOY2uH3PtjRJqThdH5zKtfPdttsCAMwvYOv2UghtHjW5klmerKOehfqfLzZJ9OlsE8NyEWTxS8Usnpy3ch1N30CK+2K2eRbbX4QUWDbZYYZQ7n2amch9Bti1T7yBrUxAmO1CKI52RuRnWyYwLSPCDqk6rW5z5OHmOfJhuTHzXwIL8N01Duf638aHc5vGiyGl87BPY+G9QTr8oIR2vD9dUEn/rIhVskBmQ9dWYx6lD6qxuJOIWN2OPPAQ+NGi3QmR+3Ihy6GJbVBqyZqSeL6cmqbdGy3mpbRTRyY4wlkflOhtjfE= ievgen_chernov"
-    expiry_date: 2021-10-31
-    expiry_contact: wkandek@wikimedia.org
+    ssh_keys: []
   strofimovsky01:
-    ensure: present
+    ensure: absent
     realname: Sergey Trofimovsky
-    email: sergey.trofimovsky@speedandfunction.com
     uid: 30206
     gid: 500
-    ssh_keys:
-      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YOTFRFIXsSXERnbkkt2NUV+WgZhl7Ep7NWn4dpYsB troff@quiet.paranoia.ru"
-    expiry_date: 2021-10-31
-    expiry_contact: wkandek@wikimedia.org
+    ssh_keys: []
   olykalinichenko:
     ensure: absent
     realname: Oly Kalinichenko
@@ -4439,16 +4431,11 @@ users:
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPofgCuu5AVNvAyH2qs3IFOhpByNCfO5HMVnTBG6IdX corybant@delphi"
   il:
-    ensure: present
+    ensure: absent
     realname: Igor L
-    email: igor.l@speedandfunction.com
     uid: 30732
     gid: 500
-    krb: present
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGBEh/vX39DqVkpUkNc1ODW/MO/9laxPOD5ci64v0T97 igor.l@speedandfunction.com'
-    expiry_date: 2021-10-31
-    expiry_contact: wkandek@wikimedia.org
+    ssh_keys: []
   sihe:
     ensure: present
     realname: Silvan Heintze
