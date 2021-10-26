@@ -20,6 +20,8 @@ class dumps::web::dirs(
     $miscdatasetsdir_commons_legacy  = "${miscdatasetsdir}/commons"
     $relative_wikidatawiki    = 'other/wikibase/wikidatawiki'
     $relative_commonswiki     = 'other/wikibase/commonswiki'
+    $enterprisedir            = "${miscdatasetsdir}/enterprise_html"
+    $enterpriserunsdir        = "${enterprisedir}/runs"
 
     # subdirs for misc datasets that aren't dumps
     file { [ $analyticsdir, $othertestfilesdir ]:
@@ -46,5 +48,13 @@ class dumps::web::dirs(
     file { "${xmldumpsdir}/commonswiki/entities":
         ensure => 'link',
         target => "../${relative_commonswiki}",
+    }
+
+    # subdirs for Wikimedia Enterprise datasets
+    file { [ $enterprisedir, $enterpriserunsdir ]:
+        ensure => 'directory',
+        mode   => '0755',
+        owner  => $user,
+        group  => $group,
     }
 }
