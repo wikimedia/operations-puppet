@@ -4,7 +4,10 @@
 #
 class threedtopng::deploy (
 ) {
-    ensure_packages(['nodejs', 'nodejs-legacy', 'xvfb', 'xauth', 'libgl1-mesa-dri'])
+    ensure_packages(['nodejs', 'xvfb', 'xauth', 'libgl1-mesa-dri'])
+    if debian::codename::eq('stretch') {
+        ensure_packages(['nodejs-legacy'])
+    }
 
     # On Thumbor servers the mwdeploy user and group are not present by default
     scap::target { '3d2png/deploy':
