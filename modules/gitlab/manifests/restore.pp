@@ -19,6 +19,6 @@ class gitlab::restore(
       user        => 'root',
       description => 'GitLab Backup Restore',
       command     => "${restore_dir_data}/gitlab-restore.sh",
-      interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:05:00'},
+      interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:45:00'},
   }
 }

@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# disable puppet to prevent stopped services from restart
+# during the backup restoration process
+/usr/local/sbin/disable-puppet "Running Backup Restore"
+
 LOGFILE=/var/log/gitlab-restore-backup.log
 
 echo "Running Pre-requisites..." >> $LOGFILE
@@ -124,3 +128,5 @@ fi
 echo "ApplicationSetting.last.update(home_page_url: 'https://gitlab-replica.wikimedia.org/explore')" | /usr/bin/gitlab-rails console >> $LOGFILE
 
 /usr/bin/systemctl restart ssh-gitlab
+
+/usr/local/sbin/enable-puppet "Running Backup Restore"
