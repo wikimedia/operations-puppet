@@ -22,7 +22,7 @@ OAUTH_INDEX_URL_PARAM="-D${OAUTH_PROPS_PREFIX}.indexUrl=<%= @oauth_settings['oau
 OAUTH_WIKI_LOGOUT_LINK_PARAM="-D${OAUTH_PROPS_PREFIX}.wikiLogoutLink=<%= @oauth_settings['oauth_wiki_logout_link'] %>"
 OAUTH_SESSION_STORE_HOSTNAME="-D${OAUTH_PROPS_PREFIX}.sessionStoreHostname=<%= @oauth_settings['oauth_session_store_host'] %>"
 OAUTH_SESSION_STORE_PORT="-D${OAUTH_PROPS_PREFIX}.sessionStorePort=<%= @oauth_settings['oauth_session_store_port'] %>"
-OAUTH_SESSION_STORE_KEY_PREFIX="-d${OAUTH_PROPS_PREFIX}.sessionStoreKeyPrefix=mw-oauth-proxy:<%= @deploy_name %>:"
+OAUTH_SESSION_STORE_KEY_PREFIX="-D${OAUTH_PROPS_PREFIX}.sessionStoreKeyPrefix=mw-oauth-proxy:<%= @deploy_name %>:"
 OAUTH_ACCESS_TOKEN_SECRET="-D${OAUTH_PROPS_PREFIX}.accessTokenSecret=<%= @oauth_settings['oauth_access_token_secret'] %>"
 <%- end -%>
 
