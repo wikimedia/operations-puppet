@@ -43,17 +43,8 @@ class thumbor (
     $logstash_port = 11514,
     $stl_support = undef,
 ) {
-    case debian::codename() {
-        'stretch': {
-            $python_logstash_package = 'python-logstash'
-        }
-        default: {
-            $python_logstash_package = 'python3-logstash'
-        }
-    }
-
     ensure_packages([
-        'firejail', $python_logstash_package,
+        'firejail', 'python-logstash',
         'binutils', # The find_library() function in ctypes/Python uses objdump
     ])
 
