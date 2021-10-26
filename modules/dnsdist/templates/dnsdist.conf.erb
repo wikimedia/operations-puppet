@@ -1,6 +1,6 @@
 -- This file is managed by Puppet [see dnsdist/dnsdist.conf.erb].
 
--- == Generic Configuration (dnsdist 1.5.1) ==
+-- == Generic Configuration (dnsdist 1.6.1) ==
 
 -- dnsdist by default restricts queries from private IPs and other local addresses
 -- we allow traffic from anywhere as a public service
@@ -25,8 +25,8 @@ setKey('<%= @console_key %>')
 
 <% if @enable_webserver -%>
 -- web server and API access (primarily used for Prometheus)
--- nil indicates custom headers, which we don't use/set
-webserver('<%= @webserver['host'] %>:<%= @webserver['port'] %>', '<%= @webserver['password'] %>', '<%= @webserver['api_key'] %>', nil, '<%= @webserver['acl'].join(", ") %>')
+webserver('<%= @webserver['host'] %>:<%= @webserver['port'] %>')
+setWebserverConfig({password='<%= @webserver['password'] %>', apiKey='<%= @webserver['api_key'] %>', custom_headers=nil, acl='<%= @webserver['acl'].join(", ") %>'})
 <% end -%>
 
 -- limit the number of queries per second from an IP (default: /32 for IPv4, /64 for IPv6)
