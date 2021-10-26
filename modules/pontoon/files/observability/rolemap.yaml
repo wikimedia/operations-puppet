@@ -15,6 +15,7 @@ builder:
 
 prometheus:
   - pontoon-prometheus-01.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-prometheus-02.monitoring.eqiad1.wikimedia.cloud
 
 grafana:
   - pontoon-grafana-01.monitoring.eqiad1.wikimedia.cloud
