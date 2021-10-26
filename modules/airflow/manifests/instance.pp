@@ -87,6 +87,10 @@
 #   If undef, the timer will not be created.
 #   Default: 90
 #
+# [*ferm_srange*]
+#   ferm srange on which to allow access to Airflow (really just the airflow-webserver port).
+#   Default: $ANALYTICS_NETWORKS
+#
 # [*ensure*]
 #   Default: present
 #
@@ -100,6 +104,7 @@ define airflow::instance(
     Optional[Hash] $connections         = undef,
     Boolean $monitoring_enabled         = false,
     Integer $clean_logs_older_than_days = 90,
+    String $ferm_srange                 = '$ANALYTICS_NETWORKS',
     Wmflib::Ensure $ensure              = 'present',
 ) {
     require ::airflow
@@ -123,7 +128,7 @@ define airflow::instance(
             'base_log_folder' => "${airflow_home}/logs",
         },
         'webserver' => {
-            'web_server_host' => '127.0.0.1',
+            'web_server_host' => '0.0.0.0',
             'web_server_port' => '8600',
             'instance_name' => $title,
             # Since the webserver Public as Admin role, and is only
@@ -210,6 +215,7 @@ define airflow::instance(
     $logs_folder = $_airflow_config['logging']['base_log_folder']
     $airflow_config_file = "${airflow_home}/airflow.cfg"
     $webserver_config_file = "${airflow_home}/webserver_config.py"
+    $webserver_port = $_airflow_config['webserver']['web_server_port']
 
     # Default file resource params for this airflow instance.
     File {
@@ -398,6 +404,12 @@ define airflow::instance(
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 03:00:00',  # Every day at 3:00
         },
+    }
+
+    ferm::service { "airflow-webserver@${title}":
+        proto  => 'tcp',
+        port   => $webserver_port,
+        srange => $ferm_srange,
     }
 
 }
