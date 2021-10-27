@@ -2,7 +2,9 @@
 #
 # Provisions font packages used by MediaWiki.
 #
-class mediawiki::packages::fonts {
+class mediawiki::packages::fonts (
+    Enum['installed', 'absent'] $ensure = 'installed',
+){
 
     ensure_packages([
         'fonts-arabeyes',
@@ -64,7 +66,7 @@ class mediawiki::packages::fonts {
         'fonts-sil-lateef',
         'fonts-ipafont-gothic',
         'fonts-ipafont-mincho',
-    ])
+    ], {'ensure' => $ensure })
 
     # Not released under a free license :(
     package { [ 'fonts-ubuntu', 'ttf-ubuntu-font-family' ]:

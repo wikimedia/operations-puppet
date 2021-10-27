@@ -9,7 +9,8 @@ class profile::mediawiki::webserver(
     # Sites shared between different installations
     Array[Mediawiki::SiteCollection] $common_sites = lookup('mediawiki::common_sites'),
     # Installation/site dependent sites
-    Array[Mediawiki::SiteCollection] $sites = lookup('mediawiki::sites')
+    Array[Mediawiki::SiteCollection] $sites = lookup('mediawiki::sites'),
+    Boolean $install_fonts = lookup('profile::mediawiki::webserver::install_fonts', {'default_value' => true}),
 ) {
     include ::profile::mediawiki::httpd
     $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
@@ -20,8 +21,11 @@ class profile::mediawiki::webserver(
         content => template('mediawiki/apache/fcgi_proxies.conf.erb')
     }
 
-    # we need fonts!
-    class { '::mediawiki::packages::fonts': }
+    # we may not need fonts anymore! (T294378)
+    $font_ensure = $install_fonts.bool2str('installed','absent')
+    class { '::mediawiki::packages::fonts':
+        ensure => $font_ensure,
+    }
 
     # Set feature flags for all mediawiki::web::vhost resources
     Mediawiki::Web::Vhost {
