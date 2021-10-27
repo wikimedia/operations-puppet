@@ -20,7 +20,7 @@ class statistics::compute(
 
         file { "${::statistics::working_path}/mediawiki":
             ensure => 'directory',
-            owner  => $::statistics::username,
+            owner  => $statistics::user::username,
             group  => 'wikidev',
         }
         # clones mediawiki core at $working_path/mediawiki/core
@@ -31,7 +31,7 @@ class statistics::compute(
             ensure    => 'latest',
             directory => $statistics_mediawiki_directory,
             origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
-            owner     => $::statistics::username,
+            owner     => $statistics::user::username,
             group     => 'wikidev',
         }
 
