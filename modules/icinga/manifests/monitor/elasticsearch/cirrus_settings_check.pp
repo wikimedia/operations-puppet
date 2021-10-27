@@ -4,7 +4,7 @@ define icinga::monitor::elasticsearch::cirrus_settings_check(
     Hash[String, Elasticsearch::InstanceParams] $settings,
     Boolean $enable_remote_search,
 ) {
-    require ::icinga::elasticsearch::cirrus_settings_plugin
+    require icinga::elasticsearch::cirrus_settings_plugin
 
     if $enable_remote_search {
         $remote_clusters = $settings.filter |$instance| { $instance[1]['cluster_name'] != $title }
@@ -16,6 +16,9 @@ define icinga::monitor::elasticsearch::cirrus_settings_check(
                 }
             }
         }
+    } else {
+        # We set this to undef to make sure its at least defined
+        $extracted_settings = undef
     }
 
     # This file is used to make sure puppet settings are aligned with API settings
