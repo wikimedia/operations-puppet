@@ -55,6 +55,8 @@ profile::trafficserver::tls::parent_rules: []
 profile::trafficserver::tls::unified_certs:
   - 'digicert-2020-ecdsa-unified'
   - 'digicert-2020-rsa-unified'
+  - 'digicert-2021-ecdsa-unified'
+  - 'digicert-2021-rsa-unified'
 profile::trafficserver::tls::unified_acme_chief: true
 profile::trafficserver::tls::available_unified_certs:
   digicert-2021:
