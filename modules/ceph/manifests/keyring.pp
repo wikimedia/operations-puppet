@@ -62,28 +62,29 @@ define ceph::keyring(
     Optional[String]     $keydata = undef,
 ) {
     # If a keydata was provided use ceph-authtool, else use ceph auth get-or-create
-    if $keydata {
-        $opt_prefix = '--cap'
-    } else {
-        $opt_prefix = undef
+    $opt_prefix = $keydata ? {
+        undef   => '',
+        default => '--cap',
     }
+    $mds_opts = $cap_mds ? {
+        undef   => '',
+        default => "${opt_prefix} mds '${cap_mds}'",
+    }
+    $mgr_opts = $cap_mgr ? {
+        undef   => '',
+        default => "${opt_prefix} mgr '${cap_mgr}'",
+    }
+    $mon_opts = $cap_mon ? {
+        undef   => '',
+        default => "${opt_prefix} mon '${cap_mon}'",
+    }
+    $osd_opts = $cap_osd ? {
+        undef   => '',
+        default => "${opt_prefix} osd '${cap_osd}'",
+    }
+    $opts = "${mds_opts} ${mgr_opts} ${mon_opts} ${osd_opts}"
 
     if $ensure == 'present' {
-        if $cap_mds {
-            $mds_opts = "${opt_prefix} mds '${cap_mds}'"
-        }
-        if $cap_mgr {
-            $mgr_opts = "${opt_prefix} mgr '${cap_mgr}'"
-        }
-        if $cap_mon {
-            $mon_opts = "${opt_prefix} mon '${cap_mon}'"
-        }
-        if $cap_osd {
-            $osd_opts = "${opt_prefix} osd '${cap_osd}'"
-        }
-
-        $opts = "${mds_opts} ${mgr_opts} ${mon_opts} ${osd_opts}"
-
         if $keydata {
             exec { "ceph-keyring-${name}":
                 command => "/usr/bin/ceph-authtool --create-keyring ${keyring} \
