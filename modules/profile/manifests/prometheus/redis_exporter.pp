@@ -18,14 +18,14 @@
 #   A list of hosts to allow access to redis-exporter
 #
 define profile::prometheus::redis_exporter (
-    String $password,
+    String              $password,
     Array[Stdlib::Host] $prometheus_nodes,
-    Stdlib::Host $hostname = $::hostname,
-    Stdlib::Port $port = $title + 10000,
-    String $arguments = '',
+    Stdlib::Host        $hostname  = $facts['hostname'],
+    Stdlib::Port        $port      = Integer($title) + 10000,
+    String              $arguments = '',
 ){
 
-    ::prometheus::redis_exporter { $title:
+    prometheus::redis_exporter { $title:
         hostname  => $hostname,
         port      => $port,
         password  => $password,
