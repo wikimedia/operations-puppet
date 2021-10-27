@@ -328,6 +328,8 @@ class bigtop::hue(
             group  => 'hue',
             before => Service['hue'],
         }
+    } else {
+        $ssl_enabled = false
     }
 
     # Stupid Puppet hack:  Need to select all
