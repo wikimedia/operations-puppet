@@ -197,7 +197,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, zpapierski, nskaggs]
+    members: [ebernhardson, dcausse, bd808, zpapierski, nskaggs, ejoseph]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -337,7 +337,7 @@ groups:
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
-              statwithlatte, effeietsanders, echetty]
+              statwithlatte, effeietsanders, echetty, ejoseph]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4784,6 +4784,15 @@ users:
     gid: 500
     uid: 34931
     ssh_keys: []  # none - analytics-privatedata-users without ssh access or kerberos
+  ejoseph:
+    ensure: present
+    realname: Emmanuel Joseph
+    email: ejoseph@wikimedia.org
+    uid: 34889
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFQvFscO99eUfcg51aOxPekk5JW1QIBVMjhNbAEuIlR5 ejoseph@wikimedia.org
 
 ldap_only_users:
   abartov:
