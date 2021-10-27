@@ -20,7 +20,7 @@ class profile::webperf::processors(
 
     $statsd_parts = split($statsd, ':')
     $statsd_host = $statsd_parts[0]
-    $statsd_port = 0 + $statsd_parts[1]
+    $statsd_port = 0 + Integer($statsd_parts[1])
 
     # statsv is on main kafka, not analytics or jumbo kafka.
     # Note that at any given time, all statsv varnishkafka producers are
