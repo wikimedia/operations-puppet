@@ -49,7 +49,7 @@
 module Puppet::Parser::Functions
   newfunction(:kafka_config, :type => :rvalue, :arity => -2) do |args|
     fqdn = lookupvar('::fqdn').to_s
-    clusters = call_function(:hiera, ['kafka_clusters', {}])
+    clusters = call_function(:lookup, ['kafka_clusters', {'default_value' => {}}])
     cluster_name = clusters.key?(args[0]) ? args[0] : function_kafka_cluster_name(args)
 
     cluster = clusters[cluster_name] || {
@@ -63,7 +63,7 @@ module Puppet::Parser::Functions
     zk_cluster_name = cluster['zookeeper_cluster_name']
 
     # Lookup all zookeeper clusters config
-    zk_clusters = call_function(:hiera, ['zookeeper_clusters'])
+    zk_clusters = call_function(:lookup, ['zookeeper_clusters'])
 
     # These are the zookeeper hosts for this kafka cluster.
     zk_hosts = zk_clusters[zk_cluster_name]['hosts'].keys.sort

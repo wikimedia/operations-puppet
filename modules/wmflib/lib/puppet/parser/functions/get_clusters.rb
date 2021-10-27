@@ -24,7 +24,7 @@ module Puppet::Parser::Functions
   newfunction(:get_clusters, :type => :rvalue) do |args|
     all = {}
     # Hiera is the source of truth about clusters/site
-    cluster_config = call_function(:hiera, ['wikimedia_clusters', {}])
+    cluster_config = call_function(:lookup, ['wikimedia_clusters', {'default_value' => {}}])
 
     # Arguments are an hash of selectors
     selector ||= {}

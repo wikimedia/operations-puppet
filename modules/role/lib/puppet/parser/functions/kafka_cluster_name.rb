@@ -31,7 +31,7 @@
 module Puppet::Parser::Functions
   newfunction(:kafka_cluster_name, :type => :rvalue, :arity => -2) do |args|
     # If kafka_cluster_name is set in scope in hiera, then just return it.
-    name = call_function(:hiera, ['kafka_cluster_name', :none])
+    name = call_function(:lookup, ['kafka_cluster_name', {'default_value' => :none}])
     return name unless name == :none
 
     # Otherwise build name from prefix and site.
