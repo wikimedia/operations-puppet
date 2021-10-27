@@ -8,17 +8,24 @@
 #     contact_group  => ...
 # }
 define cassandra::instance::monitoring (
-    $instances        = $::cassandra::instances,
-    $contact_group    = 'admins,team-services',
-    $tls_cluster_name = $::cassandra::tls_cluster_name,
-    $monitor_enabled  = $::cassandra::monitor_enabled,
+    String            $contact_group    = 'admins,team-services',
+    Boolean           $monitor_enabled  = true,
+    Hash              $instances        = {},
+    Optional[String]  $tls_cluster_name = undef,
 ) {
+
+    include cassandra
+    $_instances = $instances.empty ? {
+        true    => $cassandra::instances,
+        default => $instances,
+    }
+    $_tls_cluster_name = pick_default($tls_cluster_name, $cassandra::tls_cluster_name)
     $instance_name  = $title
-    $this_instance  = $instances[$instance_name]
+    $this_instance  = $_instances[$instance_name]
     $listen_address = $this_instance['listen_address']
 
     if ! has_key($instances, $instance_name) {
-        fail("instance ${instance_name} not found in ${instances}")
+        fail("instance ${instance_name} not found in ${_instances}")
     }
 
     $service_name = $instance_name ? {
@@ -26,11 +33,7 @@ define cassandra::instance::monitoring (
         default   => "cassandra-${instance_name}"
     }
 
-    $ensure_monitor = $monitor_enabled ? {
-        true    => present,
-        false   => absent,
-        default => present,
-    }
+    $ensure_monitor = $monitor_enabled.bool2str('present', 'absent')
 
     nrpe::monitor_systemd_unit_state { $service_name:
         ensure  => $ensure_monitor,
@@ -47,11 +50,11 @@ define cassandra::instance::monitoring (
     }
 
     # SSL cert expiration monitoring (T120662)
-    if !empty($tls_cluster_name) {
+    if $_tls_cluster_name {
         monitoring::service { "${service_name}-ssl":
             ensure        => $ensure_monitor,
             description   => "${service_name} SSL ${listen_address}:7001",
-            check_command => "check_ssl_on_host_port!${::hostname}-${instance_name}!${listen_address}!7001",
+            check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!7001",
             contact_group => $contact_group,
             notes_url     => 'https://phabricator.wikimedia.org/T120662',
         }
