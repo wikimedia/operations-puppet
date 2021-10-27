@@ -40,7 +40,7 @@ class profile::analytics::refinery::job::refine(
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
         # Use this value as default refinery_job_jar.
-        refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}.jar",
+        refinery_job_jar => "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}-shaded.jar",
         # Production refine jobs can use a lot of memory, especially for larger datasets.
         # We choose to use 4 cores with lots of executor memory and extra memoryOverhead to
         # reduce JVM container overhead.  Each executor can run more tasks in parallel
