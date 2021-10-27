@@ -71,7 +71,5 @@ class profile::redis::multidc(
             notrack => true,
             port    => inline_template('(<%= @redis_ports %>)'),
         }
-    } else {
-        warning('Not installing redis-server on this host because $version_override is undefined')
     }
 }
