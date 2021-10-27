@@ -84,7 +84,9 @@ remote_smtp:
 
 begin retry
 
-*	*	F,2h,5m; F,1d,15m
+# retry deliveries to *@alert.victorops.com every minute for 2 hours
+alert.victorops.com	*	F,2h,1m
+*			*	F,2h,5m; F,1d,15m
 
 
 begin rewrite
