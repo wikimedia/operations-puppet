@@ -5,7 +5,7 @@ class aptrepo::rsync (
     $secondary_servers,
 ){
     # only activate rsync/firewall hole on the server that is NOT active
-    if $::fqdn == $primary_server {
+    if $facts['fqdn'] == $primary_server {
 
         $ensure_ferm = 'absent'
         $ensure_job = 'present'
@@ -18,6 +18,7 @@ class aptrepo::rsync (
         $ensure_sync = 'present'
 
         include rsync::server
+        include aptrepo::rsync
 
         rsync::server::module { 'install-srv':
             ensure         => $aptrepo::rsync::ensure,
