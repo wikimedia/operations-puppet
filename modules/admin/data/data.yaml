@@ -148,7 +148,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [ebernhardson, dcausse, mstyles, zpapierski]
+    members: [ebernhardson, dcausse, zpapierski]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -197,7 +197,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, mstyles, zpapierski, nskaggs]
+    members: [ebernhardson, dcausse, bd808, zpapierski, nskaggs]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -489,7 +489,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, mstyles, zpapierski, addshore]
+    members: [smalyshev, hoo, ebernhardson, dcausse, zpapierski, addshore]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -513,7 +513,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, mstyles, zpapierski, addshore]
+    members: [smalyshev, hoo, ebernhardson, dcausse, zpapierski, addshore]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -628,7 +628,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, mstyles, zpapierski, tjones, akhatun]
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, zpapierski, tjones, akhatun]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -825,7 +825,7 @@ groups:
   airflow-search-admins:
     gid: 816
     description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, bearloga, chelsyx, mstyles, zpapierski, tjones]
+    members: [ebernhardson, dcausse, bearloga, chelsyx, zpapierski, tjones]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos *',
