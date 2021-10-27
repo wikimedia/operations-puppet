@@ -267,7 +267,7 @@ define cassandra::instance(
     $instance_name = $title
 
     # Default jmx port; only works with 1-letter instnaces
-    $default_jmx_port     = 7189 + inline_template("<%= @title.ord - 'a'.ord %>")
+    $default_jmx_port     = 7189 + Integer(inline_template("<%= @title.ord - 'a'.ord %>"))
 
     # Relevant values, choosing convention over configuration
     $instance_jmx_port    = pick($jmx_port, $default_jmx_port)
