@@ -44,17 +44,18 @@
 #  Default: false
 #
 class role::puppetmaster::standalone(
-                                $autosign = false,
+                                $autosign            = false,
     Boolean                     $prevent_cherrypicks = false,
-    Array[Stdlib::IP::Address]  $allow_from = ['10.0.0.0/8', '172.16.0.0/21'],
-    Integer[1,30]               $git_sync_minutes = 10,
-    String                      $extra_auth_rules = '',
-    Stdlib::Host                $server_name = $::fqdn,
-    Stdlib::Host                $labs_puppet_master = lookup('labs_puppet_master'),
-                                $storeconfigs = false,
-    Boolean                     $enable_geoip = false,
-    Boolean                     $command_broadcast = false,
-    String[1]                   $hiera_config = $::realm,
+    Array[Stdlib::IP::Address]  $allow_from          = ['10.0.0.0/8', '172.16.0.0/21'],
+    Integer[1,30]               $git_sync_minutes    = 10,
+    String                      $extra_auth_rules    = '',
+    Stdlib::Host                $server_name         = $facts['fqdn'],
+    Stdlib::Host                $labs_puppet_master  = lookup('labs_puppet_master'),
+                                $storeconfigs        = false,
+    Boolean                     $enable_geoip        = false,
+    Boolean                     $command_broadcast   = false,
+    String[1]                   $hiera_config        = $::realm,
+    Array[Puppetmaster::Report] $reports             = ['puppetdb'],
     Optional[Variant[Array[Stdlib::Host], Stdlib::Host]] $puppetdb_host = undef,
 ) {
     $puppetdb_hosts = ($puppetdb_host =~ Stdlib::Host) ? {
@@ -82,7 +83,7 @@ class role::puppetmaster::standalone(
         storeconfigs         => true,
         thin_storeconfigs    => true,
         storeconfigs_backend => 'puppetdb',
-        reports              => 'puppetdb',
+        reports              => $reports.join(','),
     }
 
     if $storeconfigs == 'puppetdb' {
