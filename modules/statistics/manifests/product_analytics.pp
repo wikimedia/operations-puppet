@@ -37,17 +37,11 @@ class statistics::product_analytics {
         require            => File[$dir],
     }
 
-    # Initially, since the jobs/movement_metrics dir only has a test notebook
-    # we want to verify that the scheduled execution works as expected. After
-    # verification we can switch the interval from the initial configuration
-    # of Monday and Wednesday to monthly -- for example, the 9th of every month
-    # to make sure that a new MediaWiki History snapshot has been generated
-    # (since those take up to 8 days).
     kerberos::systemd_timer { 'product-analytics-movement-metrics':
         ensure            => 'present',
         description       => 'Product Analytics monthly Movement Metrics run',
         command           => "${jobs_dir}/movement_metrics/main.sh",
-        interval          => 'Mon,Wed *-*-* 00:00:00', # execute every Mon & Wed
+        interval          => '*-*-9 00:00:00',
         user              => $user,
         logfile_basedir   => $log_dir,
         logfile_name      => 'monthly_movement_metrics.log',
