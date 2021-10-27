@@ -75,11 +75,9 @@ define netops::check(
 ) {
 
     # If we get an array convert it to a comma separated string
-    if $parents and is_array($parents) {
-        $real_parents = join($parents, ',')
-    # Otherwise, pass it as is (undef or string)
-    } else {
-        $real_parents = $parents
+    $real_parents = $parents ? {
+        Array   => $parents.join(','),
+        default => $parents,
     }
 
     @monitoring::host { $title:
