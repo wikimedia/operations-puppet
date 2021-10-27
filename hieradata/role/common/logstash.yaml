@@ -76,7 +76,7 @@ profile::kibana::tile_map_enabled: false
 
 profile::logstash::apifeatureusage::jobs_host: 'logstash1007.eqiad.wmnet'
 profile::logstash::apifeatureusage::curator_actions:
-  '1':
+  1:
     description: 'apifeatureusage: delete older than 91 days'
     action: delete_indices
     options:
@@ -91,7 +91,7 @@ profile::logstash::apifeatureusage::curator_actions:
         timestring: '%Y.%m.%d'
         unit: days
         unit_count: 91
-  '2':
+  2:
     description: 'apifeatureusage: set replicas to 1 after 31 days'
     action: replicas
     options:
@@ -107,7 +107,7 @@ profile::logstash::apifeatureusage::curator_actions:
         direction: older
         unit: days
         unit_count: 31
-  '5':
+  5:
     description: 'forcemerge indexes older than 2 days'
     action: forcemerge
     options:
