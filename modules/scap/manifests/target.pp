@@ -77,8 +77,7 @@ define scap::target(
         fail('service_name must be set if additional_services_names is set')
     }
 
-    if $manage_user
-    {
+    if $manage_user {
         if !defined(Group[$deploy_user]) {
             group { $deploy_user:
                 ensure => $ensure,
@@ -99,8 +98,6 @@ define scap::target(
                 group  => $deploy_user,
                 mode   => '0755',
             }
-        } else {
-            notice("manage_user=true but user ${deploy_user} already defined")
         }
     }
     if $manage_ssh_key {
