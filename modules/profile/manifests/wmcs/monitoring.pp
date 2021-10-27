@@ -47,7 +47,7 @@ class profile::wmcs::monitoring (
             shell  => '/bin/rbash',
         }
     } else {
-        $cron_ensure = 'present'
+        $rsync_ensure = 'present'
 
         user { '_graphite':
             ensure => present,
