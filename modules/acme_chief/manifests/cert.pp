@@ -9,21 +9,12 @@
 #           [rsa-2048,ec-prime256v1].crt
 #           [rsa-2048,ec-prime256v1].ocsp
 define acme_chief::cert (
-    $ensure = present,
+    Wmflib::Ensure   $ensure     = present,
+    String           $key_group  = 'root',
     Optional[String] $puppet_svc = undef,
-    Optional[Type] $puppet_rsc = undef,
-    String $key_group = 'root',
-    Optional[Boolean] $ocsp = undef, # deprecated, it will be removed soon
-    Optional[String] $ocsp_proxy = undef, # deprecated, it will be removed soon
+    Optional[Type]   $puppet_rsc = undef,
 ) {
-    require ::acme_chief
-
-    if defined('$ocsp') {
-        warning('ocsp parameter will be removed soon')
-    }
-    if $ocsp_proxy {
-        warning('ocsp_proxy parameter will be removed soon')
-    }
+    require acme_chief
 
     if !defined(File['/etc/acmecerts']) {
         file { '/etc/acmecerts':
