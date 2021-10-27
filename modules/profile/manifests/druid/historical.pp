@@ -35,6 +35,7 @@ class profile::druid::historical(
     } else {
         $extra_properties = {}
         $max_direct_memory = undef
+        $max_direct_memory_java_opt = undef
     }
 
     if $monitoring_java_opts or $max_direct_memory_java_opt {
