@@ -6,6 +6,9 @@ defaults:
   datadir: /etc/puppet/hieradata
   data_hash: yaml_data
 hierarchy:
+  - name: "private node"
+    datadir: "/etc/puppet/private/hieradata"
+    path: "hosts/%{::hostname}.yaml"
   - name: "node hierarchy"
     path: "hosts/%{::hostname}.yaml"
   - name: "netbox node hierarchy"
@@ -20,9 +23,6 @@ hierarchy:
     lookup_key: 'wmflib::expand_path'
     datadir: "/etc/puppet/private/hieradata"
     path: "%{::site}"
-  - name: "private node"
-    datadir: "/etc/puppet/private/hieradata"
-    path: "hosts/%{::hostname}.yaml" # Currently only used for labtest hosts
   - name: "expand_path site"
     path: "%{::site}"
     lookup_key: 'wmflib::expand_path'
