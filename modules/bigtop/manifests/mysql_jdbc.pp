@@ -12,13 +12,12 @@ define bigtop::mysql_jdbc (
         default => '/usr/share/java/mysql-connector-java.jar',
     }
 
-    if debian::codename::le('stretch') {
-        $package_name = 'libmysql-java'
-    } elsif debian::codename::eq('buster') {
+    $package_name = 'libmysql-java'
+    if debian::codename::eq('buster') {
         if !defined(Apt::Package_from_component['libmysql-java-component']) {
             apt::package_from_component { 'libmysql-java-component':
                 component => 'component/libmysql-java',
-                packages  => ['libmysql-java']
+                packages  => [$package_name]
             }
         }
     } else {
@@ -28,11 +27,7 @@ define bigtop::mysql_jdbc (
         fail('OS not supported, please follow up with the Analytics team. Context: T278424')
     }
 
-    if ($package_name and !defined(Package[$package_name])) {
-        package { $package_name:
-            ensure => 'installed',
-        }
-    }
+    ensure_packages($package_name)
     file { $link_path:
         ensure  => 'link',
         target  => $jar_path,
