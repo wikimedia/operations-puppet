@@ -19,6 +19,8 @@ class profile::mariadb::grants::production(
     include passwords::labsdbaccounts
     include passwords::mysql::phabricator
     include passwords::recommendationapi::mysql
+    include passwords::designate
+    include passwords::rddmarc
 
     $root_pass       = $passwords::misc::scripts::mysql_root_pass
     $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
