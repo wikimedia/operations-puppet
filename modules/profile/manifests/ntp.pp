@@ -8,7 +8,8 @@ class profile::ntp (
         $::ntp_peers['codfw'],
         $::ntp_peers['esams'],
         $::ntp_peers['ulsfo'],
-        $::ntp_peers['eqsin']
+        $::ntp_peers['eqsin'],
+        $::ntp_peers['drmrs']
     ].flatten
 
     # ntp_peers is a list of peer servers that exist within each site,
@@ -21,6 +22,7 @@ class profile::ntp (
         esams   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['esams']].flatten,
         ulsfo   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['ulsfo']].flatten,
         eqsin   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['eqsin']].flatten,
+        drmrs   => [$::ntp_peers['eqiad'], $::ntp_peers['codfw'], $::ntp_peers['drmrs']].flatten,
         default => $wmf_all_peers, # core sites
     }
     $wmf_server_peers = delete($wmf_server_peers_plus_self, $::fqdn)
@@ -28,6 +30,7 @@ class profile::ntp (
     $pool_zone = $::site ? {
         esams   => 'nl',
         eqsin   => 'sg',
+        drmrs   => 'fr',
         default => 'us',
     }
 
@@ -60,8 +63,8 @@ class profile::ntp (
     #     upstreams, not all).  A plausible scenario here would be some global
     #     screwup of pool.ntp.org DNS ops.  So set cores to do the orphan job.
     $extra_config = $::site ? {
-        eqiad   => 'tos maxclock 14 minsane 2 orphan 12',
-        codfw   => 'tos maxclock 14 minsane 2 orphan 12',
+        eqiad   => 'tos maxclock 16 minsane 2 orphan 12',
+        codfw   => 'tos maxclock 16 minsane 2 orphan 12',
         default => 'tos minsane 2 orphan 13',
     }
 
