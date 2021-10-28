@@ -30,6 +30,7 @@ datacenters:
   - esams
   - ulsfo
   - eqsin
+  - drmrs
 
 public_domain: 'wikimedia.org'
 
@@ -84,6 +85,7 @@ prometheus_all_nodes:
   - prometheus3001.esams.wmnet
   - prometheus4001.ulsfo.wmnet
   - prometheus5001.eqsin.wmnet
+# - prometheus6001.drmrs.wmnet #DRMRS-TODO
 
 alertmanagers:
   - alert1001.wikimedia.org
@@ -106,6 +108,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   puppet:
     description: "Puppetmasters"
     id: 3
@@ -143,6 +146,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   kubernetes:
     description: "Kubernetes"
     id: 9
@@ -170,6 +174,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   cache_canary:
     description: "Canary caches"
     id: 21
@@ -187,6 +192,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   payments:
     description: "Fundraiser payments"
     id: 23
@@ -303,6 +309,7 @@ wikimedia_clusters:
       ulsfo: []
       esams: []
       eqsin: []
+      drmrs: []
   aqs:
     description: "Analytics Query Service"
     id: 54
@@ -381,6 +388,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   spare:
     description: "Spare servers"
     id: 70
@@ -390,6 +398,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   prometheus:
     description: "Prometheus servers"
     id: 71
@@ -399,6 +408,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   graphite:
     description: "Graphite servers"
     id: 72
@@ -414,6 +424,7 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+      drmrs: []
   alerting:
     description: "Icinga"
     id: 75
@@ -1128,6 +1139,8 @@ authdns_servers:
   'dns4002.wikimedia.org': 198.35.26.8
   'dns5001.wikimedia.org': 103.102.166.8
   'dns5002.wikimedia.org': 103.102.166.9
+#  'dns6001.wikimedia.org': #DRMRS-TODO
+#  'dns6002.wikimedia.org': #DRMRS-TODO
 
 # .. and this is the set of public IPs they provide service on, which is
 # consumed by both authdns servers and the icinga monitoring of them.
@@ -1173,6 +1186,9 @@ ntp_peers:
     eqsin:
     - 'dns5001.wikimedia.org'
     - 'dns5002.wikimedia.org'
+    drmrs:
+    - 'dns6001.wikimedia.org'
+    - 'dns6002.wikimedia.org'
 
 # Url to use for reaching graphite
 
@@ -1208,6 +1224,7 @@ bastion_hosts:
 - 2620:0:863:1:198:35:26:13     # bast4003.wikimedia.org
 - 103.102.166.6                 # bast5002.wikimedia.org
 - 2001:df2:e500:1:103:102:166:6 # bast5002.wikimedia.org
+# bast6002.wikimedia.org #DRMRS-TODO
 
 cache_hosts:
 - 10.64.0.130                    # cp1075.eqiad.wmnet
@@ -1362,6 +1379,38 @@ cache_hosts:
 - 2001:df2:e500:101:10:132:0:8   # cp5015.eqsin.wmnet
 - 10.132.0.9                     # cp5016.eqsin.wmnet
 - 2001:df2:e500:101:10:132:0:9   # cp5016.eqsin.wmnet
+- 10.136.0.6                     # cp6001.drmrs.wmnet
+- 2a02:ec80:600:101:10:136:0:6   # cp6001.drmrs.wmnet
+- 10.136.1.6                     # cp6002.drmrs.wmnet
+- 2a02:ec80:600:102:10:136:1:6   # cp6002.drmrs.wmnet
+- 10.136.0.7                     # cp6003.drmrs.wmnet
+- 2a02:ec80:600:101:10:136:0:7   # cp6003.drmrs.wmnet
+- 10.136.1.7                     # cp6004.drmrs.wmnet
+- 2a02:ec80:600:102:10:136:1:7   # cp6004.drmrs.wmnet
+- 10.136.0.8                     # cp6005.drmrs.wmnet
+- 2a02:ec80:600:101:10:136:0:8   # cp6005.drmrs.wmnet
+- 10.136.1.8                     # cp6006.drmrs.wmnet
+- 2a02:ec80:600:102:10:136:1:8   # cp6006.drmrs.wmnet
+- 10.136.0.9                     # cp6007.drmrs.wmnet
+- 2a02:ec80:600:101:10:136:0:9   # cp6007.drmrs.wmnet
+- 10.136.1.9                     # cp6008.drmrs.wmnet
+- 2a02:ec80:600:102:10:136:1:9   # cp6008.drmrs.wmnet
+- 10.136.0.10                    # cp6009.drmrs.wmnet
+- 2a02:ec80:600:101:10:136:0:10  # cp6009.drmrs.wmnet
+- 10.136.1.10                    # cp6010.drmrs.wmnet
+- 2a02:ec80:600:102:10:136:1:10  # cp6010.drmrs.wmnet
+- 10.136.0.11                    # cp6011.drmrs.wmnet
+- 2a02:ec80:600:101:10:136:0:11  # cp6011.drmrs.wmnet
+- 10.136.1.11                    # cp6012.drmrs.wmnet
+- 2a02:ec80:600:102:10:136:1:11  # cp6012.drmrs.wmnet
+- 10.136.0.12                    # cp6013.drmrs.wmnet
+- 2a02:ec80:600:101:10:136:0:12  # cp6013.drmrs.wmnet
+- 10.136.1.12                    # cp6014.drmrs.wmnet
+- 2a02:ec80:600:102:10:136:1:12  # cp6014.drmrs.wmnet
+- 10.136.0.13                    # cp6015.drmrs.wmnet
+- 2a02:ec80:600:101:10:136:0:13  # cp6015.drmrs.wmnet
+- 10.136.1.13                    # cp6016.drmrs.wmnet
+- 2a02:ec80:600:102:10:136:1:13  # cp6016.drmrs.wmnet
 
 kafka_brokers_main:
 - 10.64.0.200                  # kafka-main1001.eqiad.wmnet
@@ -1520,6 +1569,7 @@ shared_acme_certificates:
     - '^ncredir300[12]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
+    - '^ncredir600[12]\.drmrs\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-2:
@@ -1569,6 +1619,7 @@ shared_acme_certificates:
     - '^ncredir300[12]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
+    - '^ncredir600[12]\.drmrs\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-3:
@@ -1618,6 +1669,7 @@ shared_acme_certificates:
     - '^ncredir300[12]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
+    - '^ncredir600[12]\.drmrs\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-4:
@@ -1657,6 +1709,7 @@ shared_acme_certificates:
     - '^ncredir300[12]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
+    - '^ncredir600[12]\.drmrs\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-5:
@@ -1710,6 +1763,7 @@ shared_acme_certificates:
     - '^ncredir300[12]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
+    - '^ncredir600[12]\.drmrs\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-6:
@@ -1763,6 +1817,7 @@ shared_acme_certificates:
     - '^ncredir300[12]\.esams\.wmnet$'
     - '^ncredir400[12]\.ulsfo\.wmnet$'
     - '^ncredir500[12]\.eqsin\.wmnet$'
+    - '^ncredir600[12]\.drmrs\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
 labsldapconfig: {}
@@ -1804,6 +1859,7 @@ asns:
   esams: 65003
   ulsfo: 65004
   eqsin: 65005
+  drmrs: 65006
   eqord: 65020
 
 swift_storage_drives:
