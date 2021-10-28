@@ -53,10 +53,9 @@ class profile::analytics::refinery::job::hdfs_cleaner(
     # some Gobblin data got deleted.
     $command_gobblin = "${::profile::analytics::refinery::path}/bin/hdfs-cleaner --path=/wmf/gobblin --older_than_seconds=${older_than_threshold}"
     kerberos::systemd_timer { 'hdfs-cleaner-gobblin':
-        ensure          => absent,
         description     => 'Run the HDFSCleaner job to keep HDFS /wmf/gobblin dir clean of old files.',
         command         => $command_gobblin,
-        interval        => '*-*-* 23:45:00',
+        interval        => '*-*-* 23:40:00',
         logfile_name    => 'hdfs-cleaner-gobblin.log',
         logfile_basedir => '/var/log/hadoop-hdfs',
         user            => 'hdfs',
