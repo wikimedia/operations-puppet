@@ -21,6 +21,9 @@ controller:
   # Use Toolforge privileged PSP
   existingPsp: "privileged-psp"
 
+  # T294330: snippet annotations are insecure
+  allowSnippetAnnotations: false
+
   config:
     # T241310: pass the incoming X-Forwarded-* headers to upstreams
     use-forwarded-headers: "true"
