@@ -26,7 +26,7 @@ class profile::cache::haproxy(
         logging         => false,
     }
 
-    require_package('python3-pystemd')
+    ensure_packages('python3-pystemd')
     file { '/usr/local/sbin/haproxy-stek-manager':
         ensure => present,
         source => 'puppet:///modules/profile/cache/haproxy_stek_manager.py',
