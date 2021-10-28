@@ -14,7 +14,7 @@ class base::standard_packages {
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'quickstack', 'screen', 'strace', 'sysstat', 'tcpdump',
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
-        'icdiff', 'linux-perf', 'bsd-mailx', 'ack',
+        'icdiff', 'linux-perf', 'bsd-mailx', 'ack', 'netcat-openbsd',
     ])
     if debian::codename::lt('bullseye') {
         # bullseye has version 2.30 which uses version 2 by default
