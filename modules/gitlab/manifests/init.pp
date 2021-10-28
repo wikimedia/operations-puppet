@@ -131,12 +131,14 @@ class gitlab (
         listen_addresses => $listen_addresses,
     }
 
-    # enable automated restore from backup (for replica)
-    $ensure_restore_replica = $enable_restore_replica.bool2str('present','absent')
-    $ensure_restore_timer = $enable_restore_timer.bool2str('present','absent')
-    class { 'gitlab::restore' :
-        restore_ensure       => $ensure_restore_replica,
-        restore_ensure_timer => $ensure_restore_timer,
-        restore_dir_data     => $backup_dir_data,
+    if $enable_restore_replica {
+        # enable automated restore from backup (for replica)
+        $ensure_restore_replica = $enable_restore_replica.bool2str('present','absent')
+        $ensure_restore_timer = $enable_restore_timer.bool2str('present','absent')
+        class { 'gitlab::restore' :
+            restore_ensure       => $ensure_restore_replica,
+            restore_ensure_timer => $ensure_restore_timer,
+            restore_dir_data     => $backup_dir_data,
+        }
     }
 }
