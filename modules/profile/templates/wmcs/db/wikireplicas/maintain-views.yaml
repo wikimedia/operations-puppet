@@ -131,11 +131,17 @@ fullviews:
   - pr_index
   - redirect
   - renameuser_status
+  - revtag                 # T289952
   - site_identifiers
   - sites
   - site_stats
   - slot_roles
   - templatelinks
+  - translate_groupreviews # T289952
+  - translate_groupstats   # T289952
+  - translate_metadata     # T289952
+  - translate_reviews      # T289952
+  - translate_sections     # T289952
   - transcode
   - updatelog
   - updates
