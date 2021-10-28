@@ -129,7 +129,7 @@ class acme_chief::server (
         override             => true,
         monitoring_enabled   => true,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Acme-chief#Monitoring',
-        monitoring_critical  => false,
+        monitoring_critical  => true,
         service_params       => {
             restart   => '/bin/systemctl reload acme-chief',
         },
