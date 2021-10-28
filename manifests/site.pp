@@ -382,6 +382,11 @@ node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
     role(cache::text)
 }
 
+node /^cp403[3-6]\.ulsfo\.wmnet$/ {
+    role(insetup::nofirm)
+}
+
+
 #
 # eqsin caches
 #
