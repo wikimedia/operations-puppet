@@ -7,7 +7,7 @@
 
 class profile::bird::anycast(
   Boolean $bfd = lookup('profile::bird::bfd', {'default_value' => true}),
-  Optional[Array[Stdlib::IP::Address::V4::Nosubnet]] $neighbors_list = lookup('profile::bird::neighbors_list', {'default_value' => []}),
+  Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list = lookup('profile::bird::neighbors_list', {'default_value' => []}),
   Optional[String] $bind_anycast_service = lookup('profile::bird::bind_anycast_service', {'default_value' => undef}),
   Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
   Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => undef}),
@@ -21,16 +21,25 @@ class profile::bird::anycast(
   }
 
   if $neighbors_list {
-    $neighbors_for_ferm = join($neighbors_list, ' ')
-    ferm::service { 'bird-bgp':
-        proto  => 'tcp',
-        port   => '179',
-        srange => "(${neighbors_for_ferm})",
-        before => Class['::bird'],
+    $_neighbors_list = $neighbors_list
+  } else {
+    $_neighbors_list = $do_ipv6 ? {
+        true    => [$facts['default_routes']['ipv4'], $facts['default_routes']['ipv6']],
+        default => [$facts['default_routes']['ipv4']],
     }
   }
+
+  $neighbors_for_ferm = join($_neighbors_list, ' ')
+
+  ferm::service { 'bird-bgp':
+      proto  => 'tcp',
+      port   => '179',
+      srange => "(${neighbors_for_ferm})",
+      before => Class['::bird'],
+  }
+
   # Ports from https://github.com/BIRD/bird/blob/master/proto/bfd/bfd.h#L28-L30
-  if $neighbors_list and $bfd {
+  if $bfd {
     ferm::service { 'bird-bfd-control':
         proto  => 'udp',
         port   => '3784',
@@ -69,7 +78,7 @@ class profile::bird::anycast(
   require ::profile::bird::anycast_healthchecker_monitoring
 
   class { '::bird':
-      neighbors    => $neighbors_list,
+      neighbors    => $_neighbors_list,
       bind_service => 'anycast-healthchecker.service',
       bfd          => $bfd,
       do_ipv6      => $do_ipv6,
