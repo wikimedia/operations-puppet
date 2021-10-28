@@ -9,6 +9,9 @@ define profile::trafficserver::monitoring(
     String $instance_name = 'backend',
     String $user = 'trafficserver',
 ){
+    # This profile depends on some resources created by profile::monitoring
+    include profile::monitoring
+
     if $inbound_tls {
         $endpoint = "https://127.0.0.1:${port}/_stats"
         $traffic_manager_http_check = 'check_https_hostheader_port_url'
