@@ -1,3 +1,0 @@
-profile::releases::mediawiki::jenkins_service_ensure: 'stopped'
-profile::releases::mediawiki::jenkins_service_enable: 'mask'
-profile::releases::mediawiki::jenkins_service_monitor: false

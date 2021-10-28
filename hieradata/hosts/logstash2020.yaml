@@ -1,7 +1,0 @@
-profile::elasticsearch::common_settings:
-    heap_memory: '26G'
-
-lookup_options:
-  profile::elasticsearch::common_settings:
-    merge:
-      strategy: deep
