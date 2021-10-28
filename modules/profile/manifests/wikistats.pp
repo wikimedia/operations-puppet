@@ -21,7 +21,6 @@ class profile::wikistats (
     }
 
     class { '::wikistats':
-        wikistats_host => $::fqdn,
         jobs_ensure    => $jobs_ensure,
     }
 }

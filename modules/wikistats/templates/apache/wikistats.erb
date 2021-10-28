@@ -6,10 +6,7 @@
 
 <VirtualHost *:80>
 
-    ServerName <%= @wikistats_host %>
-
-    # RewriteEngine on
-    # RewriteRule ^/(.*)$ https://<%= @wikistats_host %>/$1 [R=301]
+    ServerName wikistats-cloud-vps
 
     DocumentRoot /var/www/wikistats
 

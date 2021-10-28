@@ -1,7 +1,5 @@
 # sets up a webserver for wikistats
-class profile::wikistats::httpd (
-    Stdlib::Fqdn $wikistats_host = lookup('profile::wikistats::httpd::wikistats_host'),
-){
+class profile::wikistats::httpd {
 
     # TODO: we have this php version logic in  a lot of places we shold have a phpe fact
     $php_version = debian::codename() ? {
@@ -27,7 +25,7 @@ class profile::wikistats::httpd (
         group  => 'www-data',
     }
 
-    httpd::site { $wikistats_host:
+    httpd::site { 'wikistats-cloud-vps':
         content => template('wikistats/apache/wikistats.erb'),
         require => Package["libapache2-mod-php${php_version}"],
     }

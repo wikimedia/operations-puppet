@@ -38,7 +38,6 @@
 # tag a ticket with 'VPS-project-Wikistats'.
 #
 class wikistats (
-    Stdlib::Fqdn $wikistats_host,
     Wmflib::Ensure $jobs_ensure,
 ){
 
