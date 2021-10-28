@@ -30,7 +30,7 @@ datacenters:
   - esams
   - ulsfo
   - eqsin
-  - drmrs
+#  - drmrs # DRMRS-TODO - this apparently turns on a lot of icinga checks that would break config if they're not ready
 
 public_domain: 'wikimedia.org'
 
