@@ -51,6 +51,8 @@ class gitlab (
     Boolean          $enable_secondary_sshd             = true,
     Boolean          $enable_restore_replica            = false,
     Boolean          $enable_restore_timer              = false,
+    Stdlib::Unixpath $backup_dir_data                   = '/srv/gitlab-backup',
+    Stdlib::Unixpath $backup_dir_config                 = '/etc/gitlab/config_backup',
 ) {
 
     systemd::sysuser { 'git':
@@ -104,9 +106,9 @@ class gitlab (
         full_ensure       => $ensure_backup,
         partial_ensure    => 'absent',
         config_ensure     => $ensure_backup,
-        backup_dir_data   => $gitlab::backup_dir_data,
-        backup_dir_config => $gitlab::backup_dir_config,
-        backup_keep_time  => $gitlab::backup_keep_time,
+        backup_dir_data   => $backup_dir_data,
+        backup_dir_config => $backup_dir_config,
+        backup_keep_time  => $backup_keep_time,
     }
 
     # Theses parameters are installed by gitlab when the package is updated
@@ -135,6 +137,6 @@ class gitlab (
     class { 'gitlab::restore' :
         restore_ensure       => $ensure_restore_replica,
         restore_ensure_timer => $ensure_restore_timer,
-        restore_dir_data     => $gitlab::backup_dir_data,
+        restore_dir_data     => $backup_dir_data,
     }
 }
