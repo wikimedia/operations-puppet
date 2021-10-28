@@ -33,6 +33,12 @@ listen tls
     # timeout used after upgrading a connection (websockets) or after the first response when no keepalive/close option is specified
     timeout tunnel <%= @timeout['tunnel'] %>s
 
+<%- if @vars -%>
+<%- @vars.each do |var| -%>
+    http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %>
+<%- end -%>
+<%- end -%>
+
 <%- @acls.each do |acl| -%>
     acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
 <%- end -%>

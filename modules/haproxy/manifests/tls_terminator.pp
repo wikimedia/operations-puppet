@@ -27,6 +27,8 @@
 #   List of Application layer protocols (ALPN) supported. Defaults to h2, http/1.1
 # @param lua_scripts
 #   List of lua scripts to be loaded
+# @param vars
+#   List of variables to set based on HTTP request|response data
 # @param acls
 #   List of ACLs. They can be used to conditionally remove HTTP headers
 # @param add_headers
@@ -49,6 +51,7 @@ define haproxy::tls_terminator(
     Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = undef,
     Optional[Array[Stdlib::Unixpath]] $lua_scripts = undef,
+    Optional[Array[Haproxy::Var]] $vars = undef,
     Optional[Array[Haproxy::Acl]] $acls = undef,
     Optional[Array[Haproxy::Header]] $add_headers = undef,
     Optional[Array[Haproxy::Header]] $del_headers = undef,
