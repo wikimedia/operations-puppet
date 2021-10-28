@@ -175,14 +175,6 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
-  cache_canary:
-    description: "Canary caches"
-    id: 21
-    sites:
-      eqiad: []
-      codfw: []
-      esams: []
-      ulsfo: []
   cache_upload:
     description: "Upload caches"
     id: 22
