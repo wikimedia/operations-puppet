@@ -7,10 +7,6 @@ prometheus_nodes:
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "lets-encrypt"
 
-# Reasonable expected max RTT in ms to furthest core DC
-# (given worst alternate network paths, and plus a small fudge factor)
-max_core_rtt: 100 # to eqiad via codfw->eqord, ~92ms rounded up to 100
-
 mail_smarthost:
 - 'mx2001.wikimedia.org'
 - 'mx1001.wikimedia.org'

@@ -182,10 +182,6 @@ profile::trafficserver::backend::logs:
     mode: ascii_pipe
     ensure: present
 profile::trafficserver::backend::default_lua_script: 'default'
-# Worst path rtt through our network, used in prod to determine timeouts. Not
-# particularly useful in labs, but necessary as the setting has no default
-# value in puppet.
-max_core_rtt: 60
 
 zookeeper_clusters:
   "%{::labsproject}":

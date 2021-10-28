@@ -7,10 +7,6 @@ prometheus_nodes:
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "digicert-2021"
 
-# Reasonable expected max RTT in ms to furthest core DC
-# (given worst alternate network paths, and plus a small fudge factor)
-max_core_rtt: 300 # ulsfo-telia-tunnel(163)->worst-ulsfo-eqiad(92) -> ~255ms rounded up to 300
-
 mail_smarthost:
 - 'mx2001.wikimedia.org'
 - 'mx1001.wikimedia.org'

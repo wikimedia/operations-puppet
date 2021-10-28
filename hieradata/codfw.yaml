@@ -33,10 +33,6 @@ arclamp_host: webperf2002.codfw.wmnet
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "lets-encrypt"
 
-# Reasonable expected max RTT in ms to furthest core DC
-# (given worst alternate network paths, and plus a small fudge factor)
-max_core_rtt: 60 # to eqiad via eqord, ~53ms rounded up to 60
-
 mail_smarthost:
 - 'mx2001.wikimedia.org'
 - 'mx1001.wikimedia.org'
