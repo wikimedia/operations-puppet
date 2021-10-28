@@ -19,7 +19,7 @@ profile::cache::haproxy::add_headers:
       value: '%[lua.xcps]'
     - direction: request
       name: 'X-Analytics-TLS'
-      value: '%[lua.analytics_tls'
+      value: '%[lua.analytics_tls]'
 
 profile::cache::haproxy::del_headers:
     - direction: response
