@@ -1,6 +1,11 @@
+profile::cache::haproxy::vars:
+    - direction: request
+      name: 'txn.xwd_count'
+      value: 'req.hdr_cnt(X-Wikimedia-Debug)'
+
 profile::cache::haproxy::acls:
     - name: missing_xwd
-      criterion: 'req.hdr_cnt(X-Wikimedia-Debug)'
+      criterion: 'var(txn.xwd_count)'
       operator: 'eq'
       value: '0'
 
