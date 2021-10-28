@@ -1,23 +1,22 @@
 counter varnish_resourceloader_inm
 counter varnish_resourceloader_resp by status, cache_control, x_cache
 
-/\thttp_method PURGE\t/ {
-    # noop
-} else {
-    # Match: /w/load.php, /w/load.php?query, /w/load.php/path
-    # Do not match: /w/loadXphp,  /w/load.phpXX?query
-    /^side c\turl \/w\/load\.php([\?\/].*)?\tcache_status (?P<x_cache>.*)\thttp_status (?P<status>[0-9]{3}).*\tcache_control.*(?P<maxage>( -|max-age=([0-9]+))).*\tinm (?P<inm>[[:print:]]+)\t.*$/ {
-        $inm != "-" {
-            varnish_resourceloader_inm++
-        }
-        $maxage != " -" {
-            $maxage == "max-age=300" {
-                varnish_resourceloader_resp[$status]["short"][$x_cache]++
-            } else {
-                varnish_resourceloader_resp[$status]["long"][$x_cache]++
-            }
+# Match: /w/load.php, /w/load.php?query, /w/load.php/path
+# Do not match: /w/loadXphp,  /w/load.phpXX?query
+/\turl \/w\/load\.php([\?\/].*)?\tcache_status (?P<x_cache>hit-front|hit-local|miss|pass|int-front|int-local)\thttp_status (?P<status>[0-9]{3})/ {
+    /\tcache_control -\t/ {
+        varnish_resourceloader_resp[$status]["no"][$x_cache]++
+    } else {
+        /\tcache_control public, max-age=300, / {
+            varnish_resourceloader_resp[$status]["short"][$x_cache]++
         } else {
-            varnish_resourceloader_resp[$status]["no"][$x_cache]++
+            varnish_resourceloader_resp[$status]["long"][$x_cache]++
         }
+    }
+
+    /\tinm -\t/ {
+        # noop
+    } else {
+        varnish_resourceloader_inm++
     }
 }
