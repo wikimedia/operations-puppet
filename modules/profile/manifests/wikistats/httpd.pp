@@ -14,8 +14,8 @@ class profile::wikistats::httpd {
     }
 
     ensure_packages([
-        "php${php_version}-xml",
-        "libapache2-mod-php${php_version}",
+        "${php_version}-xml",
+        "libapache2-mod-${php_version}",
     ])
 
     file { '/var/www/wikistats':
@@ -27,6 +27,6 @@ class profile::wikistats::httpd {
 
     httpd::site { 'wikistats-cloud-vps':
         content => template('wikistats/apache/wikistats.erb'),
-        require => Package["libapache2-mod-php${php_version}"],
+        require => Package["libapache2-mod-${php_version}"],
     }
 }
