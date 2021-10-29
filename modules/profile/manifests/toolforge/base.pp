@@ -6,6 +6,9 @@ class profile::toolforge::base(
 
     require ::profile::toolforge::clush::target
 
+    # T292289
+    class { 'sslcert::ca_deselect_dstx3': }
+
     package { 'nano':
         ensure => latest,
     }
