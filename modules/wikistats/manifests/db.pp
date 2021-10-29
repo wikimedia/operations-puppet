@@ -11,7 +11,7 @@ class wikistats::db (
     ensure_packages("php${php_version}-mysql")
 
     # db backup
-
+    wmflib::dir::mkdir_p('/usr/local/bin/wikistats')
     file { '/usr/local/bin/wikistats/dbdump.sh':
         ensure => 'present',
         owner  => 'wikistatsuser',
@@ -19,7 +19,7 @@ class wikistats::db (
         mode   => '0554',
         source => 'puppet:///modules/wikistats/dbdump.sh',
     }
-
+    wmflib::dir::mkdir_p('/etc/wikistats')
     file { '/etc/wikistats/dbdump.cfg':
         ensure  => 'present',
         owner   => 'wikistatsuser',
@@ -53,6 +53,7 @@ class wikistats::db (
 
     # (random) db pass is stored here to that deployment-script can
     # get it and replace it in the config file after deploying
+    wmflib::dir::mkdir_p('/usr/lib/wikistats')
     file { '/usr/lib/wikistats/wikistats-db-pass':
         ensure  => 'present',
         owner   => 'wikistatsuser',
