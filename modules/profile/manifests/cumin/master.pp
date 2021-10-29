@@ -3,6 +3,7 @@ class profile::cumin::master (
     Array[String] $datacenters          = lookup('datacenters'),
     Stdlib::Host  $kerberos_kadmin_host = lookup('kerberos_kadmin_server_primary'),
     Boolean       $monitor_agentrun     = lookup('profile::cumin::monitor_agentrun'),
+    Boolean       $email_alerts         = lookup('profile::cumin::master::email_alerts'),
 ) {
     include passwords::phabricator
     $cumin_log_path = '/var/log/cumin'
@@ -105,7 +106,7 @@ class profile::cumin::master (
         user          => 'root',
         description   => 'Checks the cumin aliases file for problems.',
         command       => '/usr/local/sbin/check-cumin-aliases',
-        send_mail     => true,
+        send_mail     => $email_alerts,
         ignore_errors => true,
         interval      => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']}
     }

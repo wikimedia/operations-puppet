@@ -8,3 +8,4 @@ profile::mariadb::wmfmariadbpy::role: 'admin'
 profile::cumin::monitor_agentrun: true
 profile::sre::os_reports::host: cumin2002.codfw.wmnet
 profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::cumin::master::email_alerts: true
