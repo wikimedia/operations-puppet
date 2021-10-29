@@ -36,6 +36,9 @@ ntp_peers:
 profile::base::remote_syslog: []
 profile::base::remote_syslog_tls: {}
 
+# Disable email alerts
+profile::cumin::master::email_alerts: false
+
 ## Customizations
 
 profile::apt::use_proxy: false
