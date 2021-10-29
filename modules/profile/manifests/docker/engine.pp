@@ -32,9 +32,10 @@ class profile::docker::engine(
         $docker_storage_options = $profile::docker::storage::thinpool::options
     } elsif defined(Class['profile::docker::storage::loopback']) {
         $docker_storage_options = $profile::docker::storage::loopback::options
-    } else {
-        include profile::docker::storage
+    } elsif defined(Class['profile::docker::storage']) {
         $docker_storage_options = $profile::docker::storage::options
+    } else {
+        $docker_storage_options = {}
     }
 
     # We need to import one storage config
