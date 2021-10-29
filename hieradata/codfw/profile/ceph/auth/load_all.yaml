@@ -1,0 +1,9 @@
+profile::ceph::auth::load_all::enabled: true
+profile::ceph::auth::load_all::configuration:
+  cinder-backups:
+    # commented out as sometimes public repo takes precedence over private one
+    # keydata: "tobeoverridenbyprivaterepo"
+    keyring_path: "/etc/ceph/ceph.client.cinder-backups.keyring"
+    caps:
+      mon: profile rbd
+      osd: profile rbd pool=codfw1dev-cinder

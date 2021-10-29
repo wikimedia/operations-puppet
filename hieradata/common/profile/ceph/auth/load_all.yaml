@@ -1,0 +1,26 @@
+profile::ceph::auth::load_all::enabled: false
+profile::ceph::auth::load_all::configuration: {}
+# Example data structure
+#profile::ceph::auth::load_all::configuration:
+#  # this is the client name, without the 'client.' prefix, usually a service using ceph
+#  cinder-backups:
+#    keydata: "this will be overriden in the private repos"
+#    keyring_path: /path/to/file.keyring
+#    caps:
+#        mon: "whatever"
+#        osd: "whatever"
+#  cloudvirt:
+#    keydata: "this will be overriden in the private repos"
+#    keyring_path: /path/to/file.keyring
+#    caps:
+#        mds: "whatever"
+#        mgr: "whatever"
+#        mon: "whatever"
+#        osd: "whatever"
+#  osd:
+#    keydata: "this will be overriden in the private repos"
+#    keyring_path: /path/to/file.keyring
+#    caps:
+#        mgr: "whatever"
+#        mon: "whatever"
+#        osd: "whatever"

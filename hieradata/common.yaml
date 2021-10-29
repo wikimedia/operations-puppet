@@ -19,6 +19,8 @@ lookup_options:
     convert_to: 'Sensitive'
   profile::statograph::page_id:
     convert_to: 'Sensitive'
+  profile::ceph::auth::load_all::configuration:
+    merge: deep
 
 # General variables that once would have been in realm.pp
 cluster: misc
