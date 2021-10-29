@@ -38,6 +38,8 @@ profile::admin::groups:
 # usable to schedule pods onto.
 profile::kubernetes::node::kubelet_node_taints:
   - node-role.kubernetes.io/master:NoSchedule
+profile::kubernetes::node::kubelet_node_labels:
+  - node-role.kubernetes.io/master=""
 profile::kubernetes::node::packages_from_future: true
 profile::docker::storage::physical_volumes: "/dev/vdb"
 profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u3"
