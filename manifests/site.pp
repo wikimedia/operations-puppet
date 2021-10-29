@@ -383,7 +383,7 @@ node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
 }
 
 node /^cp403[3-6]\.ulsfo\.wmnet$/ {
-    role(insetup::noferm)
+    role(insetup_noferm)
 }
 
 
