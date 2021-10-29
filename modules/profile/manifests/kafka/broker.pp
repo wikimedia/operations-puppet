@@ -151,6 +151,7 @@ class profile::kafka::broker(
 
     Boolean $ssl_enabled                                   = lookup('profile::kafka::broker::ssl_enabled', {'default_value' => false}),
     Optional[String] $ssl_password                         = lookup('profile::kafka::broker::ssl_password', {'default_value' => undef}),
+    Boolean $ssl_generate_certificates                     = lookup('profile::kafka::broker::ssl_generate_certificates', {'default_value' => false}),
     Optional[Boolean] $inter_broker_ssl_enabled            = lookup('profile::kafka::broker::inter_broker_ssl_enabled', {'default_value' => undef}),
 
     Array[Stdlib::Unixpath] $log_dirs                      = lookup('profile::kafka::broker::log_dirs', {'default_value' => ['/srv/kafka/data']}),
@@ -233,20 +234,10 @@ class profile::kafka::broker(
 
         # Distribute Java keystore and truststore for this broker.
         $ssl_location                = '/etc/kafka/ssl'
-
-        $ssl_keystore_secrets_path   = "certificates/kafka_${cluster_name}_broker/kafka_${cluster_name}_broker.keystore.jks"
-        $ssl_keystore_location       = "${ssl_location}/kafka_${cluster_name}_broker.keystore.jks"
-
-        $ssl_truststore_secrets_path = "certificates/kafka_${cluster_name}_broker/truststore.jks"
-        $ssl_truststore_location     = "${ssl_location}/truststore.jks"
-
         $ssl_enabled_protocols       = 'TLSv1.2'
         $ssl_cipher_suites           = 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
-
         # https://phabricator.wikimedia.org/T182993#4208208
         $ssl_java_opts               = '-Djdk.tls.namedGroups=secp256r1 -XX:+UseAES -XX:+UseAESIntrinsics'
-
-        $super_users                 = ["User:CN=kafka_${cluster_name}_broker"]
 
         if !defined(File[$ssl_location]) {
             file { $ssl_location:
@@ -259,21 +250,69 @@ class profile::kafka::broker(
                 require => Class['::confluent::kafka::common'],
             }
         }
-        file { $ssl_keystore_location:
-            content => secret($ssl_keystore_secrets_path),
-            owner   => 'kafka',
-            group   => 'kafka',
-            mode    => '0440',
-            before  => Class['::confluent::kafka::broker'],
-        }
 
-        if !defined(File[$ssl_truststore_location]) {
-            file { $ssl_truststore_location:
-                content => secret($ssl_truststore_secrets_path),
+        # Context in T291905
+        # We are moving from a single cergen TLS certificate, shared among all
+        # the brokers, to hostname-based TLS certificates issued by the PKI kafka
+        # intermediate CA.
+        if $ssl_generate_certificates {
+            # To ensure a smooth transition on a given cluster, we need to make
+            # sure that brokers trust both the old 'single' CN and all the new
+            # ones (basically all the Kafka broker hostnames).
+            $brokers = $config['brokers']['array']
+            $super_users_brokers = $brokers.map |String $hostname| {
+                "User:CN=${hostname}"
+            }
+            $super_users = ["User:CN=kafka_${cluster_name}_broker"] + $super_users_brokers
+
+            $ssl_cert = profile::pki::get_cert('kafka', $facts['fqdn'], {
+                'outdir' => $ssl_location,
+                'owner'  => 'kafka',
+                notify   => Sslcert::X509_to_pkcs12['kafka_keystore'],
+                require  => Class['::confluent::kafka::common'],
+                }
+            )
+
+            # We shouldn't need any truststore since all jvms trust
+            # the root PKI (that signed the Kafka intermediate).
+            $ssl_truststore_location = undef
+            $ssl_truststore_password = undef
+
+            $ssl_keystore_location   = "${ssl_location}/kafka_${cluster_name}_broker.keystore.p12"
+            sslcert::x509_to_pkcs12 { 'kafka_keystore' :
+                owner       => 'kafka',
+                group       => 'kafka',
+                public_key  => $ssl_cert['cert'],
+                private_key => $ssl_cert['key'],
+                certfile    => $ssl_cert['ca'],
+                outfile     => $ssl_keystore_location,
+                password    => $ssl_password,
+                require     => Class['::confluent::kafka::common'],
+            }
+        } else {
+            $ssl_keystore_location       = "${ssl_location}/kafka_${cluster_name}_broker.keystore.jks"
+            $ssl_truststore_location     = "${ssl_location}/truststore.jks"
+            $ssl_truststore_password     = $ssl_password
+            $ssl_keystore_secrets_path   = "certificates/kafka_${cluster_name}_broker/kafka_${cluster_name}_broker.keystore.jks"
+            $ssl_truststore_secrets_path = "certificates/kafka_${cluster_name}_broker/truststore.jks"
+            $super_users                 = ["User:CN=kafka_${cluster_name}_broker"]
+
+            file { $ssl_keystore_location:
+                content => secret($ssl_keystore_secrets_path),
                 owner   => 'kafka',
                 group   => 'kafka',
-                mode    => '0444',
+                mode    => '0440',
                 before  => Class['::confluent::kafka::broker'],
+            }
+
+            if !defined(File[$ssl_truststore_location]) {
+                file { $ssl_truststore_location:
+                    content => secret($ssl_truststore_secrets_path),
+                    owner   => 'kafka',
+                    group   => 'kafka',
+                    mode    => '0444',
+                    before  => Class['::confluent::kafka::broker'],
+                }
             }
         }
     }
@@ -361,7 +400,7 @@ class profile::kafka::broker(
         ssl_keystore_password            => $ssl_password,
         ssl_key_password                 => $ssl_password,
         ssl_truststore_location          => $ssl_truststore_location,
-        ssl_truststore_password          => $ssl_password,
+        ssl_truststore_password          => $ssl_truststore_password,
         ssl_client_auth                  => $ssl_client_auth,
         ssl_enabled_protocols            => $ssl_enabled_protocols,
         ssl_cipher_suites                => $ssl_cipher_suites,
