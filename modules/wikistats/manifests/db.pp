@@ -1,5 +1,6 @@
 # the database server setup for the wikistats site
 class wikistats::db (
+    Wmflib::Php_version $php_version,
     String $db_pass,
     String $db_name = 'wikistats',
     Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
@@ -7,7 +8,7 @@ class wikistats::db (
     Stdlib::Unixpath $mysqldump = '/usr/bin/mysqldump',
 ){
 
-    ensure_packages('php7.3-mysql')
+    ensure_packages("php${php_version}-mysql")
 
     # db backup
 

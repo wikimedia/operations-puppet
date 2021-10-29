@@ -3,9 +3,10 @@
 class wikistats::updates (
     String $db_pass,
     Wmflib::Ensure $ensure,
+    Wmflib::Php_version $php_version,
 ){
 
-    ensure_packages('php7.3-cli')
+    ensure_packages("php${php_version}-cli")
 
     file { '/var/log/wikistats':
         ensure => directory,

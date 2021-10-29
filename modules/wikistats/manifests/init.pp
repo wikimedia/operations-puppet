@@ -41,6 +41,13 @@ class wikistats (
     Wmflib::Ensure $jobs_ensure,
 ){
 
+    $php_version = debian::codename() ? {
+        'stretch'  => '7.0',
+        'buster'   => '7.3',
+        'bullseye' => '7.4',
+        default    => fail("unsupported on ${debian::codename()}"),
+    }
+
     group { 'wikistatsuser':
         ensure => present,
         name   => 'wikistatsuser',
@@ -95,7 +102,8 @@ class wikistats (
 
     # install a db on localhost
     class { 'wikistats::db':
-        db_pass => $db_pass,
+        db_pass     => $db_pass,
+        php_version => $php_version,
     }
 
     # location to dump as XML files
@@ -107,8 +115,8 @@ class wikistats (
     }
 
     class { 'wikistats::updates':
-        db_pass => $db_pass,
-        ensure  => $jobs_ensure,
+        db_pass     => $db_pass,
+        ensure      => $jobs_ensure,
+        php_version => $php_version,
     }
 }
-
