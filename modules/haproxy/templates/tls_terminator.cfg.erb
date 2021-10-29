@@ -15,8 +15,9 @@ global
     tune.h2.max-concurrent-streams <%= @h2settings['max_concurrent_streams'] %>
 
 listen tls
-    bind :<%= @port -%> ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
-    bind :::<%= @port -%> v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
+    bind :<%= @port -%> tfo ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
+
+    bind :::<%= @port -%> tfo v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
 
     # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
     timeout http-request <%= @timeout['http_request'] %>s
