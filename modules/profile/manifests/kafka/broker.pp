@@ -282,7 +282,7 @@ class profile::kafka::broker(
             sslcert::x509_to_pkcs12 { 'kafka_keystore' :
                 owner       => 'kafka',
                 group       => 'kafka',
-                public_key  => $ssl_cert['cert'],
+                public_key  => $ssl_cert['chained'],
                 private_key => $ssl_cert['key'],
                 certfile    => $ssl_cert['ca'],
                 outfile     => $ssl_keystore_location,
