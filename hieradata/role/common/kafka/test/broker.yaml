@@ -11,9 +11,6 @@ profile::kafka::broker::monitoring::is_critical: false
 
 profile::kafka::broker::max_heap_size: '2g'
 
-# Context: T291905
-profile::kafka::broker::ssl_generate_certificates: true
-
 profile::kafka::mirror::source_cluster_name: jumbo-eqiad
 profile::kafka::mirror::destination_cluster_name: test-eqiad
 
