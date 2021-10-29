@@ -7,6 +7,9 @@ describe 'profile::ceph::osd' do
   }
   on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
     context "on #{os}" do
+      before(:each) do
+        Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| '127.0.0.10' }
+      end
       base_params = {
         'bootstrap_keydata' => 'NOTAREALKEY==',
         'osd_hosts' => {
