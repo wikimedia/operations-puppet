@@ -5,8 +5,9 @@ class profile::puppetmaster::pontoon (
     Optional[Array[Stdlib::Host]] $puppetdb_hosts = lookup('profile::puppetmaster::common::puppetdb_hosts', {'default_value' => undef}),
 ) {
     ensure_packages('libapache2-mod-passenger')
-    class { 'pontoon::enc': }
 
+    class { 'base::puppet': }
+    class { 'pontoon::enc': }
     class { 'cergen': }
     class { 'profile::java': }
 
