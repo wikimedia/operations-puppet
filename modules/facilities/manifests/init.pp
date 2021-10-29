@@ -423,14 +423,16 @@ class facilities {
     }
 
     facilities::monitor_pdu_3phase { 'ps1-b12-drmrs':
-        ip   => '10.136.128.8',
-        row  => '54',
-        site => 'drmrs',
+        ip    => '10.136.128.8',
+        row   => '54',
+        site  => 'drmrs',
+        model => 'sentry4',
     }
 
     facilities::monitor_pdu_3phase { 'ps1-b13-drmrs':
-        ip   => '10.136.128.9',
-        row  => '54',
-        site => 'drmrs',
+        ip    => '10.136.128.9',
+        row   => '54',
+        site  => 'drmrs',
+        model => 'sentry4',
     }
 }
