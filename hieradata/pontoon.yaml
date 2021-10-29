@@ -34,7 +34,7 @@ ntp_peers:
 
 ## Disable remote syslog logging, as it breaks rsyslog in cloud VPSes.
 profile::base::remote_syslog: []
-profile::base::remote_syslog_tls: []
+profile::base::remote_syslog_tls: {}
 
 ## Customizations
 
