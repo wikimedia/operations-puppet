@@ -63,3 +63,6 @@ cumin_masters:
 manage_puppet_ca_file: false
 puppetmaster: "%{alias('__master_for_role_puppetmaster__pontoon')}"
 puppet_ca_server: "%{alias('__master_for_role_puppetmaster__pontoon')}"
+
+# profile::apt hardcodes http proxy that only works in production.  We don't need this in cloud.
+profile::apt::use_proxy: false
