@@ -69,15 +69,6 @@ fullviews:
   - cn_template_mixins
   - cn_templates
   - content_models
-  - ep_articles
-  - ep_cas
-  - ep_events
-  - ep_instructors
-  - ep_oas
-  - ep_orgs
-  - ep_revisions
-  - ep_students
-  - ep_users_per_course
   - externallinks
   - flaggedpage_config
   - flaggedpage_pending
@@ -442,14 +433,6 @@ customviews:
       LEFT JOIN revision ON(rev_id = slot_revision_id)
       WHERE content_id = slot_content_id
       AND (ar_deleted&1=0 OR rev_deleted&1=0))
-  ep_courses:
-    source: ep_courses
-    view: >
-      select course_id, course_org_id, course_title, course_name, course_start,
-      course_end, course_description, course_students, course_online_ambs,
-      course_campus_ambs, course_instructors, NULL as course_token, course_field,
-      course_level, course_term, course_lang, course_instructor_count, course_oa_count,
-      course_ca_count, course_student_count, course_touched
   filearchive:
     source: filearchive
     view: >
