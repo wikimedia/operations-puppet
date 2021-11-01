@@ -17,9 +17,6 @@ esams:
     cp3061.esams.wmnet: [varnish-fe, ats-be, ats-tls]
     cp3063.esams.wmnet: [varnish-fe, ats-be, ats-tls]
     cp3065.esams.wmnet: [varnish-fe, ats-be, ats-tls]
-  dns:
-    dns3001.wikimedia.org: [pdns_recursor]
-    dns3002.wikimedia.org: [pdns_recursor]
   ncredir:
     ncredir3001.esams.wmnet: [nginx]
     ncredir3002.esams.wmnet: [nginx]
