@@ -15,7 +15,7 @@ adminsettings=private/PrivateSettings.php
 multiversion=<%= @apachedir -%>/multiversion
 
 [output]
-dumpdir=<%= scope.lookupvar('snapshot::dumps::dirs::cronsdir') -%>/incr
+dumpdir=<%= scope.lookupvar('snapshot::dumps::dirs::systemdjobsdir') -%>/incr
 templatedir=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') %>
 indextmpl=<%= scope.lookupvar('snapshot::dumps::dirs::templsdir') -%>/incrs-index.html
 temp=<%= scope.lookupvar('snapshot::dumps::dirs::dumpstempdir') %>

@@ -44,7 +44,7 @@ class profile::dumps::generation::worker::common(
         xmldumpspublicdir  =>  "${xmldumpsmount}/xmldatadumps/public",
         xmldumpsprivatedir =>  "${xmldumpsmount}/xmldatadumps/private",
         dumpstempdir       =>  "${xmldumpsmount}/xmldatadumps/temp",
-        cronsdir           =>  "${xmldumpsmount}/otherdumps",
+        systemdjobsdir     =>  "${xmldumpsmount}/otherdumps",
         apachedir          => '/srv/mediawiki',
     }
     class { '::snapshot::dumps': php => $php}

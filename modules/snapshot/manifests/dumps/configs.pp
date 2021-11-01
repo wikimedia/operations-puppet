@@ -220,7 +220,7 @@ class snapshot::dumps::configs(
     }
 
     # for xml/sql dumps running on dumpsdata host
-    # as well as misc dumps via various cron jobs
+    # as well as misc dumps via various periodic systemd jobs
     snapshot::dumps::wikiconf { 'wikidump.conf.dumps':
         configtype => 'allwikis',
         config     => $config,

@@ -7,7 +7,7 @@ class snapshot::addschanges(
     $apachedir = $snapshot::dumps::dirs::apachedir
     $dblistsdir = $snapshot::dumps::dirs::dblistsdir
     $templsdir = $snapshot::dumps::dirs::templsdir
-    $cronsdir = $snapshot::dumps::dirs::cronsdir
+    $systemdjobsdir = $snapshot::dumps::dirs::systemdjobsdir
 
     # for adds/changes dumps in production
     snapshot::addschangesconf { 'addschanges.conf':

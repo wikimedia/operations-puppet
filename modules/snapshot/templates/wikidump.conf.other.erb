@@ -12,10 +12,10 @@ privatelist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/
 multiversion=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/multiversion
 
 [output]
-temp=<%= scope.lookupvar('snapshot::cron::configure::tempdir') %>
+temp=<%= scope.lookupvar('snapshot::systemdjobs::configure::tempdir') %>
 
 [tools]
-php=<%= scope.lookupvar('snapshot::cron::configure::php') %>
+php=<%= scope.lookupvar('snapshot::systemdjobs::configure::php') %>
 mysqldump=/usr/bin/mysqldump
 gzip=/bin/gzip
 lbzip2=/usr/bin/lbzip2

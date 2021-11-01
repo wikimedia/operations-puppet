@@ -4,7 +4,7 @@
 # modules/snapshot/dumps/fulldumps.sh
 #############################################################
 
-# This script is intended to be run out of cron, set to start
+# This script is intended to be run as a periodic job, set to start
 # daily, with a given date range supplied, but it will
 # actually start that dump run only once during that date range.
 # If there is another copy of this script already running
@@ -13,7 +13,7 @@
 #
 # This permits the window for completion of dump runs to slip
 # some if there are errors or parts that need to be rerun,
-# without requiring manual intervention for the next cron run.
+# without requiring manual intervention for the next timer/service run.
 #
 # The script runs on a dedicated snapshot host for enwiki,
 # a dedicated host for wikidatawiki, and on the rest of the

@@ -122,7 +122,7 @@ maxrevs=100000
 <% end -%>
 
 [media]
-# generic settings for media title cron jobs
+# generic settings for media title periodic jobs
 <% @config[@configtype]['media'].keys.sort.each do |mediasetting| -%>
 <% if mediasetting != 'wikis' -%>
 <%= mediasetting %>=<%= @config[@configtype]['media'][mediasetting] %>

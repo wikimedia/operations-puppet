@@ -4,7 +4,7 @@ class snapshot::dumps::dirs(
     $xmldumpspublicdir = undef,
     $xmldumpsprivatedir = undef,
     $dumpstempdir = undef,
-    $cronsdir = undef,
+    $systemdjobsdir = undef,
     $apachedir = undef,
 ) {
     # need to create and manage these, and have them
@@ -45,7 +45,7 @@ class snapshot::dumps::dirs(
     $repodir = '/srv/deployment/dumps/dumps/xmldumps-backup'
 
     # here's that script; it gets sourced by
-    # various cron jobs so they know where to
+    # various periodic systemd jobs so they know where to
     # write output, where to find dump scripts, etc.
     file { '/usr/local/etc/set_dump_dirs.sh':
         ensure  => 'present',

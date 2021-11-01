@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# set some directory paths many cron jobs need
+# set some directory paths many periodic jobs need
 confsdir="<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>"
 repodir="<%= scope.lookupvar('snapshot::dumps::dirs::repodir') -%>"
 xmldumpspublicdir="<%= scope.lookupvar('snapshot::dumps::dirs::xmldumpspublicdir') -%>"
 dumpstempdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpstempdir') -%>"
-cronsdir="<%= scope.lookupvar('snapshot::dumps::dirs::cronsdir') -%>"
+systemdjobsdir="<%= scope.lookupvar('snapshot::dumps::dirs::systemdjobsdir') -%>"
 dumpsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dumpsdir') -%>"
 dblistsdir="<%= scope.lookupvar('snapshot::dumps::dirs::dblistsdir') -%>"
 apachedir="<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>"

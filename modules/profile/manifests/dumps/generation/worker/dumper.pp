@@ -4,7 +4,7 @@ class profile::dumps::generation::worker::dumper(
     $runtype = lookup('profile::dumps::generation::worker::dumper::runtype'),
     $maxjobs = lookup('profile::dumps::generation::worker::dumper::maxjobs'),
 ) {
-    class { 'snapshot::dumps::cron':
+    class { 'snapshot::dumps::systemdjobs':
         user    => 'dumpsgen',
         maxjobs => $maxjobs,
         runtype => $runtype,
