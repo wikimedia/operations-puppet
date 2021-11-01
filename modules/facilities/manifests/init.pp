@@ -62,6 +62,21 @@ class facilities {
         model => 'sentry4',
     }
 
+    # drmrs, single phase PDUs
+    facilities::monitor_pdu_1phase { 'ps1-b12-drmrs':
+        ip    => '10.136.128.8',
+        row   => '54',
+        site  => 'drmrs',
+        model => 'sentry4',
+    }
+
+    facilities::monitor_pdu_1phase { 'ps1-b13-drmrs':
+        ip    => '10.136.128.9',
+        row   => '54',
+        site  => 'drmrs',
+        model => 'sentry4',
+    }
+
     # eqiad
     # A
     facilities::monitor_pdu_3phase { 'ps1-a1-eqiad':
@@ -422,17 +437,4 @@ class facilities {
         site => 'codfw',
     }
 
-    facilities::monitor_pdu_3phase { 'ps1-b12-drmrs':
-        ip    => '10.136.128.8',
-        row   => '54',
-        site  => 'drmrs',
-        model => 'sentry4',
-    }
-
-    facilities::monitor_pdu_3phase { 'ps1-b13-drmrs':
-        ip    => '10.136.128.9',
-        row   => '54',
-        site  => 'drmrs',
-        model => 'sentry4',
-    }
 }
