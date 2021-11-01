@@ -11,6 +11,7 @@ class profile::swift::proxy_tls (
         do_ocsp         => false,
         ocsp_proxy      => $ocsp_proxy,
         ssl_ecdhe_curve => false,
+        enable_http2    => false,
     }
 
     ferm::service { 'swift-proxy-https':

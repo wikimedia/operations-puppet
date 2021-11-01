@@ -12,6 +12,7 @@ class profile::maps::tlsproxy(
         do_ocsp         => false,
         ocsp_proxy      => $ocsp_proxy,
         ssl_ecdhe_curve => $ssl_ecdhe_curve,
+        enable_http2    => true,
     }
 
     monitoring::service { 'maps-https':

@@ -88,6 +88,11 @@
 # [*ssl_ecdhe_curve*]
 #  Whether or not the nginx package has support for $ssl_ecdhe_curve. Defaults
 #  to true.
+# [*enable_http2*]
+#  Whether to enable http2 or not. Defaults to false. It's best to only enable
+#  this on public facing instances since in internal services (even if proxied
+#  by the edge cache) it adds 1 more moving part without providing considerable
+#  benefits
 
 define tlsproxy::localssl(
     Array                  $certs              = [],
@@ -111,6 +116,7 @@ define tlsproxy::localssl(
     String                 $ocsp_proxy         = '',
     Boolean                $only_get_requests  = false,
     Boolean                $ssl_ecdhe_curve    = true,
+    Boolean                $enable_http2       = false,
 ) {
     if (!empty($certs) and !empty($acme_subjects)) or ($acme_chief and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects) and !$acme_chief) {
         fail('Specify exactly one of certs (and optionally acme_chief) or acme_subjects')

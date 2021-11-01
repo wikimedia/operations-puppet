@@ -22,6 +22,7 @@ define elasticsearch::tlsproxy (
     Optional[String] $acme_certname = undef,
     String $server_name = $::fqdn,
     Boolean $read_only = false,
+    Boolean $enable_http2 = false,
 ){
     tlsproxy::localssl { $title:
         certs             => $certificate_names,
@@ -32,6 +33,7 @@ define elasticsearch::tlsproxy (
         upstream_ports    => [$upstream_port],
         tls_port          => $tls_port,
         only_get_requests => $read_only,
+        enable_http2      => $enable_http2,
     }
 
     $check_command = $acme_chief ? {

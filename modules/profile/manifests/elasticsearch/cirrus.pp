@@ -17,6 +17,7 @@ class profile::elasticsearch::cirrus(
     Boolean $use_acme_chief = lookup('profile::elasticsearch::cirrus::use_acme_chief', {default_value => false}),
     Boolean $enable_remote_search = lookup('profile::elasticsearch::cirrus::enable_remote_search'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    Boolean $enable_http2 = lookup('profile::elasticsearch::cirrus::enable_http2', {default_value => false}),
 ) {
     include ::profile::elasticsearch
 
@@ -75,6 +76,7 @@ class profile::elasticsearch::cirrus(
         $proxy_params = merge($proxy_cert_params, {
             upstream_port => $http_port,
             tls_port      => $tls_port,
+            enable_http2  => $enable_http2,
         })
 
         elasticsearch::tlsproxy { $cluster_name:
