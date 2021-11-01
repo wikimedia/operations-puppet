@@ -374,18 +374,13 @@ node /^cp30(5[13579]|6[135])\.esams\.wmnet$/ {
 # ulsfo caches
 #
 
-node /^cp402[1-6]\.ulsfo\.wmnet$/ {
+node /^cp40(2[1-6]|3[34])\.ulsfo\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp40(2[789]|3[012])\.ulsfo\.wmnet$/ {
+node /^cp40(2[789]|3[01256])\.ulsfo\.wmnet$/ {
     role(cache::text)
 }
-
-node /^cp403[3-6]\.ulsfo\.wmnet$/ {
-    role(insetup_noferm)
-}
-
 
 #
 # eqsin caches

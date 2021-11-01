@@ -6,6 +6,8 @@ ulsfo:
     cp4030.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4031.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4032.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp4035.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp4036.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
   cache_upload:
     cp4021.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4022.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
@@ -13,6 +15,8 @@ ulsfo:
     cp4024.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4025.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
     cp4026.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp4033.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp4034.ulsfo.wmnet: [varnish-fe, ats-be, ats-tls]
   dns:
     dns4001.wikimedia.org: [pdns_recursor]
     dns4002.wikimedia.org: [pdns_recursor]
