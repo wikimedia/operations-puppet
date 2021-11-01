@@ -1296,6 +1296,7 @@ users:
     realname: Aaron Schulz
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICbkUdkdNfnufBSoAQbtZKJ2n+WFYjiZPm6+fY+5PXeZ aschulz@encrypted-usb
+      - ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBIJFojS5ZK7QN0MR9Ev2eHM4Ca5cH4UfCokvsN0Jx/s0TBINvxAv/K4LP55zlhn3XwTL7IZVtKV5uwC3MCuCMKptMeWU8q7KPY+O+w9iLCKkDpQCLG/w2HffZATQgsxk9Q== aschulz@yubikey-4
       - ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBKamm3DYoDu3G4YaK1WDvB3ze3vbSj95tuWXbsEJeKuarkdC5YJ/1xl+FD4YZeWkLFNG+ImjOe+w8HykRlBL0iwqn0n2SanKBctV0nGUVJOAkZfvXi9ttsFvxF4SWRsbAA== aschulz@yubikey-5c
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDn/Y3cKWbwPc8g0sJ45fkFWlKIyiu3u+1rOFDgqvp8qhJTWwXNYaR2ykv4mRbD5kv2JZT1XD72LbhSTx8bn3hoTh02IWoRdjuhcrvPWe+9Cz4otKpeDXJoYll/eNgX3dW0hHBBc2YSuYnj3DROswg0gcgST40GoIqECgD3zDdJEl723q178mjlRDboM7JXQNStPvbi+JS1ebmj17J/p3CGIvLnvGEReUDFpJSRI+nAkzOCITF4cXn8K3RKJaaQHUVGGqcNs3zqxNxfeeUCoTiGq+5q2eUdZuWkSlMtLnDirMukRBZy0KJ/63sFucoTN/+AFcTYWXcUzR8ikgCqu6hl aschulz@yubi-neo
     uid: 544
