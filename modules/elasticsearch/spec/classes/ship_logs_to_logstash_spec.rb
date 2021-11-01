@@ -28,7 +28,7 @@ describe 'elasticsearch', :type => :class do
           }
         } }
 
-        it { should contain_package('liblogstash-gelf-java').with({ :ensure => 'present' }) }
+        it { should contain_package('liblogstash-gelf-java').with({ :ensure => 'installed' }) }
       end
     end
   end
