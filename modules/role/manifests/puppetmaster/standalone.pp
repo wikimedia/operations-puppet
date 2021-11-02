@@ -54,9 +54,10 @@ class role::puppetmaster::standalone(
                                 $storeconfigs        = false,
     Boolean                     $enable_geoip        = false,
     Boolean                     $command_broadcast   = false,
-    Boolean                     $use_environments    = false,
     String[1]                   $hiera_config        = $::realm,
+    Boolean                     $use_r10k            = false,
     Array[Puppetmaster::Report] $reports             = ['puppetdb'],
+    Hash[String, Puppetmaster::R10k::Source]             $r10k_sources  = {},
     Optional[Variant[Array[Stdlib::Host], Stdlib::Host]] $puppetdb_host = undef,
 ) {
     $puppetdb_hosts = ($puppetdb_host =~ Stdlib::Host) ? {
@@ -68,7 +69,7 @@ class role::puppetmaster::standalone(
         puppetmaster => $labs_puppet_master,
     }
 
-    $env_config = $use_environments ? {
+    $env_config = $use_r10k ? {
         true    =>  {},
         default => {
             'environmentpath'  => '$confdir/environments',
@@ -118,7 +119,6 @@ class role::puppetmaster::standalone(
     }
     ensure_packages('libapache2-mod-passenger')
 
-    # TODO: need to pass use_environments  through to puppetmaster::gitclone
     class { 'puppetmaster':
         server_name         => $server_name,
         allow_from          => $allow_from,
@@ -128,6 +128,8 @@ class role::puppetmaster::standalone(
         config              => $config,
         enable_geoip        => $enable_geoip,
         hiera_config        => $hiera_config,
+        use_r10k            => $use_r10k,
+        r10k_sources        => $r10k_sources,
     }
 
     # Don't attempt to use puppet-master service, we're using passenger.
