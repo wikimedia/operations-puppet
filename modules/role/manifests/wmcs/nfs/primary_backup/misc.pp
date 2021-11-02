@@ -10,4 +10,5 @@ class role::wmcs::nfs::primary_backup::misc {
     # is probably no longer accurate
     include profile::openstack::codfw1dev::rbd_cloudcontrol
     include profile::openstack::codfw1dev::cinder::backup
+    include profile::ceph::auth::deploy
 }

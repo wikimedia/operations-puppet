@@ -528,3 +528,7 @@ profile::cumin::master::email_alerts: false
 
 profile::ceph::auth::load_all::enabled: false
 profile::ceph::auth::load_all::configuration: {}
+
+profile::ceph::auth::deploy::enabled: false
+profile::ceph::auth::deploy::selected_creds: []
+profile::ceph::auth::deploy::configuration: {}
