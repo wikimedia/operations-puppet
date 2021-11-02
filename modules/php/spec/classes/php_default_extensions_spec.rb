@@ -14,12 +14,12 @@ describe 'php::default_extensions' do
         it { is_expected.to compile }
 
         it { is_expected.to contain_php__extension('tokenizer')
-          .with_package_name('')
+          .with_install_packages(false)
           .with_priority(20)
         }
 
         it { is_expected.to contain_php__extension('opcache')
-          .with_package_name('')
+          .with_install_packages(false)
           .with_priority(10)
           .with_config({'zend_extension' => 'opcache.so'})
         }

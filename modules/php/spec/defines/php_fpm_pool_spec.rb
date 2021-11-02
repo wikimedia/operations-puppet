@@ -27,6 +27,17 @@ describe 'php::fpm::pool' do
           .with_content(/listen = 127.0.0.1:9000\n/)
         }
       end
+      context 'when defining a php version' do
+        let(:pre_condition) {
+          [
+            'class { "::php": sapis => ["fpm"], versions => ["7.2"],}',
+            'class { "::php::fpm": }'
+          ]
+        }
+        let(:params) { { 'version' => '7.2' } }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/etc/php/7.2/fpm/pool.d/www.conf') }
+      end
     end
   end
 end

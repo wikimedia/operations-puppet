@@ -34,15 +34,17 @@ class php::default_extensions {
     # None of these extensions need to install a package - they're part of the core
     # package on debian. So, pass an empty string as a package name.
     php::extension { $base_extensions:
-        package_name => '',
-        priority     => 20,
+        install_packages => false,
+        versions         => $php::php_versions,
+        priority         => 20,
     }
 
     # Hi-priority extensions
     php::extension{
         default:
-            package_name => '',
-            priority     => 10,;
+            install_packages => false,
+            priority         => 10,
+            versions         => $php::php_versions,;
         'pdo':
             ;
         'opcache':

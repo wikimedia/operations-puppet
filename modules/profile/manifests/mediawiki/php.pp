@@ -173,13 +173,12 @@ class profile::mediawiki::php(
                 'igbinary.compact_strings' => 'Off',
             };
         'mysqli':
-            package_name => "php${php_version}-mysql",
-            config       => {
+            package_overrides => {"${php_version}" => "php${php_version}-mysql"},
+            config            => {
                 'extension'                 => 'mysqli.so',
                 'mysqli.allow_local_infile' => 'Off',
             }
             ;
-
         'dba':
             package_name => "php${php_version}-dba",
     }
@@ -231,8 +230,9 @@ class profile::mediawiki::php(
         # edge-case spikes in p99 latency
         $num_workers = max(floor($facts['processors']['count'] * $fpm_workers_multiplier), 8)
         php::fpm::pool { $fcgi_pool:
-            port   => $port,
-            config => {
+            port    => $port,
+            version => $php_version,
+            config  => {
                 'pm'                        => 'static',
                 'pm.max_children'           => $num_workers,
                 'request_terminate_timeout' => $request_timeout,

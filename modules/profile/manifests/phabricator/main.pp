@@ -368,7 +368,7 @@ class profile::phabricator::main (
             package_name => "php${php_version}-xml",
             priority     => 15;
         'mysqli':
-            package_name => "php${php_version}-mysql";
+            package_overrides => {"${php_version}" =>"php${php_version}-mysql"},;
     }
 
     $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
@@ -376,7 +376,8 @@ class profile::phabricator::main (
     $max_spare = ceiling($num_workers * 0.3)
     $min_spare = ceiling($num_workers * 0.1)
     php::fpm::pool { 'www':
-        config => {
+        version => $php_version,
+        config  => {
             'pm'                   => 'dynamic',
             'pm.max_spare_servers' => $max_spare,
             'pm.min_spare_servers' => $min_spare,
