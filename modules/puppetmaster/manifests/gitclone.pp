@@ -245,7 +245,10 @@ class puppetmaster::gitclone(
 
     if $use_environments {
         # TODO: at some point use r10k, for now just configure the production environment
-        file { '/etc/puppet/environments/production':
+        file { '/etc/puppet/code/environments':
+            ensure => directory,
+        }
+        file { '/etc/puppet/code/environments/production':
             ensure => link,
             target => "${puppetmaster::gitdir}/operations/puppet",
             force  => true,
