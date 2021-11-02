@@ -93,6 +93,7 @@
     {"index" : "navtiming", "value" : "kafka local" },
     {"index" : "coal", "value" : "kafka local" },
     {"index" : "uwsgi-coal", "value" : "kafka local" },
-    {"index" : "jupyterhub-conda-singleuser", "value" : "kafka ecs_170" }
+    {"index" : "jupyterhub-conda-singleuser", "value" : "kafka ecs_170" },
+    {"index" : "puppet-master", "value" : "kafka local ecs_170" }
   ]
 }
