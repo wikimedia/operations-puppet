@@ -61,14 +61,6 @@ class profile::kubernetes::node(
             $disk_type = 'hdd'
         }
     }
-
-    # Note:
-    # These labels are added to the node by the Kubelet only when it registers
-    # to the cluster. If you need to add a specific label after the cluster is
-    # bootstrapped, the best way (for the moment) is to:
-    # 1) Add the label via kubectl
-    # 2) Update the node_labels hiera value to keep consistency (if the cluster
-    #    is bootstrapped again the labels will be assigned by the Kubelet).
     $node_labels = concat($kubelet_node_labels, "node.kubernetes.io/disk-type=${disk_type}")
     class { '::k8s::kubelet':
         listen_address                  => '0.0.0.0',
