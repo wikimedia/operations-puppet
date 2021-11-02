@@ -22,6 +22,7 @@ class puppetmaster::gitclone(
     Boolean   $secure_private      = true,
     Boolean   $is_git_master       = false,
     Boolean   $prevent_cherrypicks = true,
+    Boolean   $use_environments    = false,
     String[1] $user                = 'gitpuppet',
     String[1] $group               = 'gitpuppet',
     Hash[String, Puppetmaster::Backends] $servers = {},
@@ -242,36 +243,45 @@ class puppetmaster::gitclone(
         origin    => 'https://gerrit.wikimedia.org/r/operations/software';
     }
 
-    # These symlinks will allow us to use /etc/puppet for the puppetmaster to
-    # run out of.
-    file { '/etc/puppet/templates':
-        ensure => link,
-        target => "${puppetmaster::gitdir}/operations/puppet/templates",
-        force  => true,
-    }
-    file { '/etc/puppet/files':
-        ensure => link,
-        target => "${puppetmaster::gitdir}/operations/puppet/files",
-        force  => true,
-    }
-    file { '/etc/puppet/manifests':
-        ensure => link,
-        target => "${puppetmaster::gitdir}/operations/puppet/manifests",
-        force  => true,
-    }
-    file { '/etc/puppet/modules':
-        ensure => link,
-        target => "${puppetmaster::gitdir}/operations/puppet/modules",
-        force  => true,
-    }
-    file { '/etc/puppet/hieradata':
-        ensure => link,
-        target => "${puppetmaster::gitdir}/operations/puppet/hieradata",
-        force  => true,
-    }
-    file { '/etc/puppet/environments':
-        ensure => link,
-        target => "${puppetmaster::gitdir}/operations/puppet/environments",
-        force  => true,
+    if $use_environments {
+        # TODO: at some point use r10k, for now just configure the production environment
+        file { '/etc/puppet/environments/production':
+            ensure => link,
+            target => "${puppetmaster::gitdir}/operations/puppet",
+            force  => true,
+        }
+    } else {
+        # These symlinks will allow us to use /etc/puppet for the puppetmaster to
+        # run out of.
+        file { '/etc/puppet/templates':
+            ensure => link,
+            target => "${puppetmaster::gitdir}/operations/puppet/templates",
+            force  => true,
+        }
+        file { '/etc/puppet/files':
+            ensure => link,
+            target => "${puppetmaster::gitdir}/operations/puppet/files",
+            force  => true,
+        }
+        file { '/etc/puppet/manifests':
+            ensure => link,
+            target => "${puppetmaster::gitdir}/operations/puppet/manifests",
+            force  => true,
+        }
+        file { '/etc/puppet/modules':
+            ensure => link,
+            target => "${puppetmaster::gitdir}/operations/puppet/modules",
+            force  => true,
+        }
+        file { '/etc/puppet/hieradata':
+            ensure => link,
+            target => "${puppetmaster::gitdir}/operations/puppet/hieradata",
+            force  => true,
+        }
+        file { '/etc/puppet/environments':
+            ensure => link,
+            target => "${puppetmaster::gitdir}/operations/puppet/environments",
+            force  => true,
+        }
     }
 }
