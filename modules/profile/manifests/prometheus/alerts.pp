@@ -8,47 +8,6 @@ class profile::prometheus::alerts (
     Array[String] $datacenters = lookup('datacenters'),
 ) {
 
-    # Monitor Druid realtime ingestion event rate.
-    monitoring::check_prometheus { 'druid_netflow_supervisor':
-        description     => 'Number of Netflow realtime events received by Druid over a 30 minutes period',
-        query           => 'scalar(sum(sum_over_time(druid_realtime_ingest_events_processed_count{cluster="druid_analytics", instance=~".*:8000", datasource=~"wmf_netflow"}[30m])))',
-        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
-        method          => 'le',
-        warning         => 10,
-        critical        => 0,
-        contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&var-cluster=druid_analytics&panelId=41&fullscreen&orgId=1']
-    }
-
-    # Monitor Druid segments reported as unavailable by the Coordinator
-    monitoring::check_prometheus { 'druid_coordinator_segments_unavailable_analytics':
-        description     => 'Number of segments reported as unavailable by the Druid Coordinators of the Analytics cluster',
-        query           => 'scalar(sum(sum_over_time(druid_coordinator_segment_unavailable_count{cluster="druid_analytics", instance=~".*:8000", datasource=~".*"}[15m])))',
-        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
-        method          => 'gt',
-        warning         => 180,
-        critical        => 200,
-        retry_interval  => 15,
-        retries         => 6,
-        contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_analytics&var-druid_datasource=All'],
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid#Troubleshooting',
-    }
-
-    monitoring::check_prometheus { 'druid_coordinator_segments_unavailable_public':
-        description     => 'Number of segments reported as unavailable by the Druid Coordinators of the Public cluster',
-        query           => 'scalar(sum(sum_over_time(druid_coordinator_segment_unavailable_count{cluster="druid_public", instance=~".*:8000", datasource=~".*"}[15m])))',
-        prometheus_url  => 'http://prometheus.svc.eqiad.wmnet/analytics',
-        method          => 'gt',
-        warning         => 180,
-        critical        => 200,
-        retry_interval  => 15,
-        retries         => 6,
-        contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/druid?refresh=1m&panelId=46&fullscreen&orgId=1&var-cluster=druid_public&var-druid_datasource=All'],
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid#Troubleshooting',
-    }
-
     # Monitor throughput and dropped messages on MirrorMaker instances.
     # main-eqiad -> jumbo MirrorMaker
     profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad':
