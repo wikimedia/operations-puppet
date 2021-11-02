@@ -1527,7 +1527,7 @@ users:
     realname: Amir Sarabadani
     ssh_keys: []
     uid: 3182
-    email: amir.sarabadani@wikimedia.de
+    email: asarabadani@wikimedia.org
     krb: present
   manybubbles:
     ensure: absent
