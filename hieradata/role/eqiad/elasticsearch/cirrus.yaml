@@ -9,10 +9,11 @@ profile::elasticsearch::instances:
         transport_tcp_port: 9300
 
         # ES-specific: Not default
+        # We want each master on a different row
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic1036.eqiad.wmnet
-          - elastic1040.eqiad.wmnet
-          - elastic1054.eqiad.wmnet
+          - elastic1054.eqiad.wmnet # Row A3
+          - elastic1074.eqiad.wmnet # Row B2
+          - elastic1081.eqiad.wmnet # Row C4
 
 
         cluster_hosts:
@@ -98,10 +99,12 @@ profile::elasticsearch::instances:
         transport_tcp_port: 9500
         heap_memory: '8G'
         # ES-specific: Not default
+        # We want each master on a different row
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic1034.eqiad.wmnet
-          - elastic1038.eqiad.wmnet
-          - elastic1040.eqiad.wmnet
+          - elastic1068.eqiad.wmnet # Row A4
+          - elastic1076.eqiad.wmnet # Row B4
+          - elastic1057.eqiad.wmnet # Row C3
+
 
         # We want roughly half of hosts to be in omega and half to be in psi
         cluster_hosts:
@@ -154,10 +157,11 @@ profile::elasticsearch::instances:
         transport_tcp_port: 9700
         heap_memory: '8G'
         # ES-specific: Not default
+        # We want each master on a different row
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic1048.eqiad.wmnet
-          - elastic1050.eqiad.wmnet
-          - elastic1052.eqiad.wmnet
+          - elastic1070.eqiad.wmnet # Row A7
+          - elastic1055.eqiad.wmnet # Row B1
+          - elastic1082.eqiad.wmnet # Row C7
 
         # We want roughly half of hosts to be in omega and half to be in psi
         cluster_hosts:
