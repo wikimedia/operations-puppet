@@ -9,18 +9,4 @@ class role::lists {
 
     include profile::lists
     include profile::locales::extended
-    class { 'httpd':
-        modules => [
-            'ssl',
-            'cgid',
-            'headers',
-            'rewrite',
-            'alias',
-            'setenvif',
-            'auth_digest',
-            'proxy_http',
-            'proxy_uwsgi'
-            ],
-    }
-
 }

@@ -18,6 +18,8 @@ class profile::lists (
     Optional[String] $archiver_key            = lookup('profile::mailman3::archiver_key', {'default_value' => undef}),
     Optional[String] $memcached               = lookup('profile::mailman3::memcached', {'default_value' => undef}),
     Hash[String, String] $renamed_lists       = lookup('profile::lists::renamed_lists'),
+    # Conditions to deny access to the lists web interface. Found in the private repository if needed.
+    Array[String] $web_deny_conditions        = lookup('profile::lists::web_deny_conditions', {'default_value' => []})
 ){
     include network::constants
     include privateexim::listserve
@@ -44,7 +46,19 @@ class profile::lists (
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
-
+    class { 'httpd':
+        modules => [
+            'ssl',
+            'cgid',
+            'headers',
+            'rewrite',
+            'alias',
+            'setenvif',
+            'auth_digest',
+            'proxy_http',
+            'proxy_uwsgi'
+            ],
+    }
     httpd::site { $lists_servername:
         content => template('profile/lists/apache.conf.erb'),
     }

@@ -90,6 +90,9 @@
         <RequireAll>
             Require all granted
             Require not env bad_browser
+            <%- @web_deny_conditions.each do |cnd| -%>
+            Require not <%= cnd %>
+            <%- end %>
         </RequireAll>
     </Location>
 
