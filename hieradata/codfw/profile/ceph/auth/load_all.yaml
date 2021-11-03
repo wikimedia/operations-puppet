@@ -6,3 +6,8 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mon: profile rbd
       osd: profile rbd pool=codfw1dev-cinder
+  codfw1dev-compute:
+    keyring_path: "/etc/ceph/ceph.client.codfw1dev-compute.keyring"
+    caps:
+      mon: profile rbd
+      osd: profile rbd-read-only pool=codfw1dev-glance-images, profile rbd pool=codfw1dev-compute
