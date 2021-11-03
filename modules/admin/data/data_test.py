@@ -10,6 +10,7 @@ from collections import Counter, defaultdict
 from collections.abc import Iterable
 from datetime import datetime
 
+import sshpubkeys
 import yaml
 
 
@@ -212,6 +213,20 @@ class DataTest(unittest.TestCase):
             raise ValueError(
                 'The following users have an expiry_contact set without an expiry_date: {}'.format(
                     ', '.join(wrong_expiries)))
+
+    def test_ssh_keys_are_valid(self):
+        users_with_invalid_keys = set()
+        for username, attrs in self.admins['users'].items():
+            for key in attrs.get('ssh_keys', []):
+                try:
+                    sshpubkeys.SSHKey(key, strict=True).parse()
+                except sshpubkeys.InvalidKeyError:
+                    users_with_invalid_keys.add(username)
+
+        if len(users_with_invalid_keys) > 0:
+            raise ValueError(
+                'The following users have invalid SSH keys: {}'.format(
+                    ', '.join(users_with_invalid_keys)))
 
 
 if __name__ == '__main__':
