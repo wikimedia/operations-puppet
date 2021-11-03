@@ -38,7 +38,11 @@ except subprocess.CalledProcessError:
 
 state = yaml.safe_load(CONFD_FILE.read_text())
 primary_dc = state["primary_dc"]
-my_dc = Path("/etc/wikimedia-cluster").read_text().strip()
+my_dc = Path("/etc/wikimedia-cluster").read_text("utf-8").strip()
+# HACK: In Beta Cluster, Puppet provisions /etc/wikimedia-cluster as "labs",
+#       but etcd/conftool uses "eqiad".
+if my_dc == "labs":
+    my_dc = "eqiad"
 read_only = state["read_only"][my_dc]
 
 # We don't exit with an error status code, it doesn't really
@@ -53,5 +57,5 @@ else:
     # with how these scripts were run historically.
     # TODO: when running on python 3.8 or newer,
     # use shlex.join
-    cmd = ' '.join(map(quote, sys.argv[1:]))
+    cmd = " ".join(map(quote, sys.argv[1:]))
     subprocess.run(cmd, check=True, shell=True)
