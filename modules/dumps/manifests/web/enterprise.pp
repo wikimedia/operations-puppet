@@ -1,12 +1,19 @@
 class dumps::web::enterprise {
     file { '/usr/local/bin/wm_enterprise_downloader.py':
         ensure => 'present',
-        path   => '/usr/local/bin/wm_enterprise_downloader.py',
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/dumps/web/wm_enterprise_downloader.py',
     }
 
-    # the systemd timer to run the content pull will go here later.
+    file { '/etc/dumps/wm_enterprise_creds':
+        ensure  => 'present',
+        mode    => '0640',
+        owner   => 'root',
+        group   => 'root',
+        content => secret('dumps/wm_enterprise_creds'),
+    }
+
+    # the systemd timer to run the content pull and rsync will go here later.
 }
