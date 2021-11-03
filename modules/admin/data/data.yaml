@@ -5587,3 +5587,11 @@ ldap_only_users:
     ensure: present
     realname: Jacqueline Chen
     email: jchen@wikimedia.org
+  cmelo:
+    ensure: present
+    realname: Claudio Melo
+    email: cmelo@wikimedia.org
+  jcarvalho:
+    ensure: present
+    realname: João Carvalho
+    email: jcarvalho@wikimedia.org
