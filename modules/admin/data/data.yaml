@@ -48,7 +48,7 @@ groups:
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman, lsobanski,
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
-              mdipietro, mvernon]
+              mdipietro, mvernon, ladsgroup]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Joanna Borun
