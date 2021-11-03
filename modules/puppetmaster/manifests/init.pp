@@ -172,8 +172,14 @@ class puppetmaster(
 
     $hiera_source = "puppet:///modules/puppetmaster/${hiera_config}.hiera.yaml"
 
-    class { 'puppetmaster::hiera':
+    file { '/etc/puppet/hiera.yaml':
+        # We dont want global hiera when using r10k
+        ensure => stdlib::ensure(!$use_r10k, 'file'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
         source => $hiera_source,
+        notify => Service['apache2'],
     }
 
     # Small utility to generate ECDSA certs and submit the CSR to the puppet master
