@@ -30,16 +30,6 @@ class snapshot::dumps::cron(
     # fixme there is an implicit dependency on
     # wikidump.conf.dumps plus some stage files, make explicit
 
-    cron { 'fulldumps_rest':
-        ensure      => 'absent',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => $user,
-        command     => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} full ${maxjobs} > /dev/null",
-        minute      => '05',
-        hour        => [8, 20],
-        monthday    => '01-14',
-    }
-
     systemd::timer::job { 'fulldumps-rest':
         ensure             => present,
         description        => 'snapshot - full dumps - rest',
@@ -49,16 +39,6 @@ class snapshot::dumps::cron(
         environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
         command            => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} full ${maxjobs} silent",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-01..14 08,20:05:00'},
-    }
-
-    cron { 'partialdumps_rest':
-        ensure      => 'absent',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
-        user        => $user,
-        command     => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial ${maxjobs} > /dev/null",
-        minute      => '05',
-        hour        => [8, 20],
-        monthday    => '20-25',
     }
 
     systemd::timer::job { 'partialdumps-rest':
