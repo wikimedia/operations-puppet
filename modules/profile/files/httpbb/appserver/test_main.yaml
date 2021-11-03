@@ -1,5 +1,10 @@
 # This file tests some urls for wikis in the main.conf file
 
+https://wikipedia.org:
+  - path: /.well-known/assetlinks.json
+    assert_status: 200
+    assert_body_contains: org.wikipedia
+
 https://en.wikipedia.org:
 - path: /wiki/Main_Page
   assert_status: 200

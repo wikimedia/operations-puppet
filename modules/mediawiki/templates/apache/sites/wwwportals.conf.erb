@@ -19,9 +19,11 @@ end
 
     RewriteRule ^/([a-z]{2}|meta)/(.*)$ %{ENV:RW_PROTO}://$1.wikipedia.<%= @domain_suffix %>/wiki/$2 [R=301,L,NE]
 
-    # Prevent the catch-all redirect below from breaking the apple-app-site-association alias
+    # Prevent the catch-all redirect below from breaking the Apple and Android site association aliases.
     RewriteRule /apple-app-site-association - [L]
     Alias /apple-app-site-association /srv/mediawiki/docroot/wikipedia.org/apple-app-site-association
+    RewriteRule /.well-known/assetlinks.json - [L]
+    Alias /.well-known/assetlinks.json /srv/mediawiki/docroot/wikipedia.org/.well-known/assetlinks.json
 
     RewriteRule ^(.*)$ %{ENV:RW_PROTO}://www.wikipedia.<%= @domain_suffix %>$1 [R=301,L]
 </VirtualHost>
@@ -73,9 +75,11 @@ end
 
     RewriteRule ^/wiki\.cgi$ %{ENV:RW_PROTO}://en.wikipedia.<%= @domain_suffix %>/ [R=302,L]
 
-    # Prevent the catch-all redirect below from breaking the apple-app-site-association alias
+    # Prevent the catch-all redirect below from breaking the Apple and Android site association aliases.
     RewriteRule /apple-app-site-association - [L]
     Alias /apple-app-site-association /srv/mediawiki/docroot/wikipedia.org/apple-app-site-association
+    RewriteRule /.well-known/assetlinks.json - [L]
+    Alias /.well-known/assetlinks.json /srv/mediawiki/docroot/wikipedia.org/.well-known/assetlinks.json
 
     # Everything else
     # ErrorDocument defined in sites-available/01-main.conf should be served directly and not redirected
