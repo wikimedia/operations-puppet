@@ -33,15 +33,15 @@ class puppetmaster::r10k (
     file { $config_file:
         ensure  => file,
         content => $config.to_yaml,
+        notify  => Exec['deploy r10k'],
     }
     exec { 'deploy r10k':
-        command => "/usr/bin/r10k -c ${config_file} deploy environment",
-        # Puppet automatically creates the production environment so we
-        # need to check for a file inside the repo
-        creates => "${environments_path}/production/Gemfile",
-        require => [
+        command     => "/usr/bin/r10k -c ${config_file} deploy environment",
+        refreshonly => true,
+        require     => [
             Package['r10k'],
             File[$config_file],
         ],
     }
+    # TODD: create a job/update git-sync-upstream to sync r10k
 }
