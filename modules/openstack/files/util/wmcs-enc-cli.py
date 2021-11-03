@@ -31,7 +31,7 @@ class EncConnection:
         )
         if not response.ok:
             raise EncError(
-                f"Unable to get prefix data for "
+                "Unable to get prefix data for "
                 f"enc_url='{self.enc_url}', "
                 f"prefix='{prefix}', "
                 f"openstack_project='{self.openstack_project}'"
@@ -48,15 +48,37 @@ class EncConnection:
                 prefix,
             ),
             # make sure it's pretty formatted
-            yaml.dump(yaml.load(data, Loader=yaml.SafeLoader)),
+            yaml.dump(yaml.safe_load(data)),
         )
         if not response.ok:
             raise EncError(
-                f"Unable to set prefix data for "
+                "Unable to set prefix data for "
                 f"enc_url='{self.enc_url}', "
                 f"prefix='{prefix}', "
                 f"openstack_project='{self.openstack_project}'"
-                f"data=data"
+                f"data={data}"
+                f"\n{response}"
+            )
+
+        return response
+
+    def set_prefix_roles(self, prefix: str, data: str) -> requests.Response:
+        response = requests.post(
+            "{0}/{1}/prefix/{2}/roles".format(
+                self.enc_url,
+                self.openstack_project,
+                prefix,
+            ),
+            # make sure it's pretty formatted
+            yaml.dump(yaml.safe_load(data)),
+        )
+        if not response.ok:
+            raise EncError(
+                "Unable to set roles for "
+                f"enc_url='{self.enc_url}', "
+                f"prefix='{prefix}', "
+                f"openstack_project='{self.openstack_project}'"
+                f"data={data}"
                 f"\n{response}"
             )
 
@@ -76,7 +98,7 @@ class EncConnection:
         )
         if not response.ok:
             raise EncError(
-                f"Unable to get node info data for "
+                "Unable to get node info data for "
                 f"enc_url='{self.enc_url}', "
                 f"fqdn='{fqdn}', "
                 f"openstack_project='{self.openstack_project}'"
@@ -100,7 +122,7 @@ class EncConnection:
         )
         if not response.ok:
             raise EncError(
-                f"Unable to get node info data for "
+                "Unable to get node info data for "
                 f"enc_url='{self.enc_url}', "
                 f"fqdn='{fqdn}', "
                 f"openstack_project='{self.openstack_project}'"
