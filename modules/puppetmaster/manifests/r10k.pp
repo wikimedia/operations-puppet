@@ -28,7 +28,9 @@ class puppetmaster::r10k (
     }
     exec { 'deploy r10k':
         command => "/usr/bin/r10k -c ${config_file} deploy environment",
-        creates => "${environments_path}/production",
+        # Puppet automatically creates the production environment so we
+        # need to check for a file inside the repo
+        creates => "${environments_path}/production/Gemfile",
         require => [
             Package['r10k'],
             File[$config_file],
