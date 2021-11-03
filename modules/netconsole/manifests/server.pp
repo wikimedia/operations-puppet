@@ -8,10 +8,6 @@ class netconsole::server (
     Wmflib::Ensure $ensure = present,
     Stdlib::Port::User $port = 6666,
 ) {
-    package { 'netcat-openbsd':
-        ensure => present,
-    }
-
     systemd::service { 'netconsole':
         ensure  => $ensure,
         content => systemd_template('netconsole'),
