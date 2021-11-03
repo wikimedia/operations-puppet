@@ -18,7 +18,6 @@
 class profile::mediawiki::php(
     Boolean $enable_fpm = lookup('profile::mediawiki::php::enable_fpm'),
     Optional[Hash] $fpm_config = lookup('profile::mediawiki::php::fpm_config', {default_value => undef}),
-    Wmflib::Php_version $php_version = lookup('profile::mediawiki::php::php_version', {default_value => '7.0'}),
     Optional[Stdlib::Port::User] $port = lookup('profile::php_fpm::fcgi_port', {default_value => undef}),
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
     Integer $request_timeout = lookup('profile::mediawiki::php::request_timeout', {default_value => 240}),
@@ -33,19 +32,34 @@ class profile::mediawiki::php(
     Optional[Boolean] $enable_php_core_dumps = lookup('profile::mediawiki::php:::enable_php_core_dumps', {'default_value' => false}),
     Integer $slowlog_limit = lookup('profile::mediawiki::php::slowlog_limit', {'default_value' => 15}),
     Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
+    Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions'),
 ){
-
+    # The first listed php version is the default one
+    $default_php_version = $php_versions[0]
     # Use component/php72. The core php7.2 package is imported from Ondrej Sury's repository,
     # but it's rebuilt (along with a range of extensions) against Stretch only (while
     # the repository also imports/forks a number of low level libraries to accomodate
     # the PHP packages for older distros
-    if $php_version == '7.2' {
+    if ('7.2' in $php_versions) {
         apt::repository { 'wikimedia-php72':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'component/php72',
             notify     => Exec['apt_update_php'],
-            before     => Package["php${php_version}-common", "php${php_version}-opcache"]
+            before     => Package['php7.2-common', 'php7.2-opcache']
+        }
+    }
+    # Use component/php74 if php 7.4 is installed.
+    if ('7.4' in $php_versions) {
+        if debian::codename::lt('buster') {
+            fail('php 7.4 is only available on buster or above.')
+        }
+        apt::repository { 'wikimedia-php74':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/php74',
+            notify     => Exec['apt_update_php'],
+            before     => Package['php7.4-common', 'php7.4-opcache']
         }
     }
 
@@ -97,11 +111,14 @@ class profile::mediawiki::php(
         # Add systemd override for php-fpm, that should prevent a reload
         # if the fpm config files are broken.
         # This should prevent us from shooting our own foot as happened before.
-        systemd::unit { "php${php_version}-fpm.service":
-            ensure   => present,
-            content  => template('profile/mediawiki/php-fpm-systemd-override.conf.erb'),
-            override => true,
-            restart  => false,
+        $php_versions.each |$php_version| {
+            $svcname = php::fpm::programname($php_version)
+            systemd::unit { "${svcname}.service":
+                ensure   => present,
+                content  => template('profile/mediawiki/php-fpm-systemd-override.conf.erb'),
+                override => true,
+                restart  => false,
+            }
         }
     } else {
         $_sapis = ['cli']
@@ -112,7 +129,7 @@ class profile::mediawiki::php(
     # Install the runtime
     class { 'php':
         ensure         => present,
-        version        => $php_version,
+        versions       => $php_versions,
         sapis          => $_sapis,
         config_by_sapi => $_config,
     }
@@ -131,12 +148,12 @@ class profile::mediawiki::php(
         'intl',
         'mbstring',
     ]
-
-    $core_extensions.each |$extension| {
-        php::extension { $extension:
-            package_name => "php${php_version}-${extension}"
-        }
+    php::extension { $core_extensions:
+        install_packages   => true,
+        versioned_packages => true,
+        versions           => $php_versions
     }
+
     # Extensions that are installed with package-name php-$extension and, based
     # on the php version selected above, will install the proper extension
     # version based on apt priorities.
@@ -144,50 +161,61 @@ class profile::mediawiki::php(
     # compatible with all supported PHP versions.
     # Technically, it would be needed to inject ensure => latest in the packages,
     # but we prefer to handle the transitions with other tools than puppet.
-    php::extension { [
+    # As a complication, these extensions have a different package name under php
+    # 7.4.
+    $generic_name_extensions = [
         'apcu',
         'geoip',
         'msgpack',
         'redis',
         'luasandbox',
         'wikidiff2',
-    ]:
-        ensure => present
+    ]
+    $generic_name_extensions.each |$ext| {
+        php::extension { $ext:
+            package_overrides => {'7.4' => "php7.4-${ext}"}
+        }
     }
 
     # Extensions that require configuration.
+    # Group 1: extensions that only have version-specific packages.
+    $mysql_package_overrides = $php_versions.map |$v| {{$v => "php${v}-mysql"}}.reduce({}) |$m, $val| {$m.merge($val)}
     php::extension {
         'xml':
-            package_name => "php${php_version}-xml",
-            priority     => 15;
+            versioned_packages => true,
+            priority           => 15;
+        'mysqli':
+            package_overrides => $mysql_package_overrides,
+            config            => {
+                'extension'                 => 'mysqli.so',
+                'mysqli.allow_local_infile' => 'Off',
+            };
+        'dba':
+            versioned_packages => true,
+    }
+
+    # Group 2: extensions that have a mix if 7.4 is involved.
+    php::extension {
         'memcached':
-            priority => 25,
-            config   => {
+            package_overrides => {'7.4' => 'php7.4-memcached'},
+            priority          => 25,
+            config            => {
                 'extension'                   => 'memcached.so',
                 'memcached.serializer'        => 'php',
                 'memcached.store_retry_count' => '0'
             };
         'igbinary':
-            config   => {
+            package_overrides => {'7.4' => 'php7.4-igbinary'},
+            config            => {
                 'extension'                => 'igbinary.so',
                 'igbinary.compact_strings' => 'Off',
             };
-        'mysqli':
-            package_overrides => {"${php_version}" => "php${php_version}-mysql"},
-            config            => {
-                'extension'                 => 'mysqli.so',
-                'mysqli.allow_local_infile' => 'Off',
-            }
-            ;
-        'dba':
-            package_name => "php${php_version}-dba",
     }
-
     # Additional config files are needed by some extensions, add them
     # MySQL
     php::extension {
         default:
-            package_name => '',;
+            install_packages => false,;
         'pdo_mysql':
             ;
         'mysqlnd':
@@ -202,13 +230,12 @@ class profile::mediawiki::php(
         'xsl',
         'wddx',
     ]:
-        package_name => '',
+        install_packages => false,
     }
 
     if $phpdbg {
-      package { "php${php_version}-phpdbg":
-        ensure => present
-      }
+        $dbg_packages = $php_versions.map |$v| { "php${v}-phpdbg" }
+        ensure_packages($dbg_packages)
     }
 
     ### FPM configuration
@@ -229,9 +256,15 @@ class profile::mediawiki::php(
         # That number will be raised. Also move to pm = static as pm = dynamic caused some
         # edge-case spikes in p99 latency
         $num_workers = max(floor($facts['processors']['count'] * $fpm_workers_multiplier), 8)
+
+
+        # PHP-fpm pools.
+        # We define the pool for the first php version "www" for backwards compatibility.
+        # The pools for the other versions will be called "www-$version" instead.
+        $remaining_versions = $php_versions - $default_php_version
         php::fpm::pool { $fcgi_pool:
             port    => $port,
-            version => $php_version,
+            version => $default_php_version,
             config  => {
                 'pm'                        => 'static',
                 'pm.max_children'           => $num_workers,
@@ -239,18 +272,41 @@ class profile::mediawiki::php(
                 'request_slowlog_timeout'   => $slowlog_limit,
             }
         }
+        # Version specific pools
+        $remaining_versions.each |$idx, $php_version| {
+            # If a port is defined, use subsequent ones for
+            # the various versioned pools.
+            # If the port is undefined, the unix socket depends on the
+            # pool name.
+            $pool_port = $port ? {
+                undef => $port,
+                default => $port + $idx + 1
+            }
+            php::fpm::pool { "${fcgi_pool}-${php_version}":
+                port    => $pool_port,
+                version => $php_version,
+                config  => {
+                    'pm'                        => 'static',
+                    'pm.max_children'           => $num_workers,
+                    'request_terminate_timeout' => $request_timeout,
+                    'request_slowlog_timeout'   => $slowlog_limit,
+                }
+            }
+        }
 
         # Send logs locally to /var/log/php7.x-fpm/error.log
         # Please note: this replaces the logrotate rule coming from the package,
         # because we use syslog-based logging. This will also prevent an fpm reload
         # for every logrotate run.
-        $fpm_programname = "php${php_version}-fpm"
-        systemd::syslog { $fpm_programname:
-            base_dir     => '/var/log',
-            owner        => 'www-data',
-            group        => 'wikidev',
-            readable_by  => 'group',
-            log_filename => 'error.log'
+        $php_versions.each |$php_version| {
+            $fpm_programname = php::fpm::programname($php_version)
+            systemd::syslog { $fpm_programname:
+                base_dir     => '/var/log',
+                owner        => 'www-data',
+                group        => 'wikidev',
+                readable_by  => 'group',
+                log_filename => 'error.log'
+            }
         }
     }
 
@@ -260,39 +316,42 @@ class profile::mediawiki::php(
         true    => 'present',
         default => 'absent'
     }
-
     php::extension { 'tideways-xhprof':
-        ensure   => $profiling_ensure,
-        priority => 30,
-        config   => {
+        ensure            => $profiling_ensure,
+        package_overrides => {'7.4' => 'php7.4-tideways'},
+        priority          => 30,
+        config            => {
             'extension'                       => 'tideways_xhprof.so',
             'tideways_xhprof.clock_use_rdtsc' => '0',
         }
     }
 
+
     ## Install excimer, our php profiler, if we're on a newer version of php
     # Please note this is not a single request profiler, it is rather a profiling sampler.
     # Thus, it is active on all appserver and not just on the ones that allow running profiling.
-    if $php_version != '7.0' {
+    if $php_versions != ['7.0'] {
         php::extension { 'excimer':
-            ensure => present,
+            ensure            => present,
+            package_overrides => {'7.4' => 'php7.4-excimer'};
         }
     }
-
     # Set the default interpreter to php7
-    $cli_path = "/usr/bin/php${php_version}"
-    $pkg = "php${php_version}-cli"
+    # We default to the first version
+    $cli_path = "/usr/bin/php${default_php_version}"
+    $pkg = "php${default_php_version}-cli"
     alternatives::select { 'php':
         path    => $cli_path,
         require => Package[$pkg],
     }
 
     ## Install wmerrors, on fpm only.
-    if $php_version != '7.0' and $enable_fpm {
+    if $php_versions != ['7.0'] and $enable_fpm {
         php::extension { 'wmerrors':
-            ensure => present,
-            sapis  => ['fpm'],
-            config => {
+            ensure            => present,
+            package_overrides => {'7.4' => 'php7.4-wmerrors'},
+            sapis             => ['fpm'],
+            config            => {
                 'extension'                  => 'wmerrors.so',
                 'wmerrors.error_script_file' => '/etc/php/php7-fatal-error.php',
                 'wmerrors.enabled'           => true,
@@ -316,12 +375,6 @@ class profile::mediawiki::php(
             owner   => 'root',
             group   => 'root',
             content => template('profile/mediawiki/error-params.php.erb'),
-        }
-    }
-    else {
-        # Temoprary cleanup for the previous error
-        php::extension { 'wmerrors':
-            ensure => absent,
         }
     }
 }

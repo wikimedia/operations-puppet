@@ -13,7 +13,6 @@ profile::lvs::realserver::pools:
       - mcrouter
       - nutcracker
 
-profile::mediawiki::php::php_version: "7.2"
 has_lvs: true
 profile::mediawiki::webserver::has_tls: true
 profile::envoy::ensure: present

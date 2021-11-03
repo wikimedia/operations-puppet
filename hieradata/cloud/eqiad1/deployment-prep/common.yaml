@@ -336,7 +336,6 @@ profile::maps::apps::wikidata_query_service: https://query.wikidata.org/bigdata/
 # - no tls
 # - lvs
 profile::mediawiki::webserver::has_tls: false
-profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::vhost_feature_flags: {}
 
 # Beta Cluster has no mwdebug servers or X-Wikimedia-Debug routing,

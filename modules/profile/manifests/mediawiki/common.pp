@@ -2,7 +2,7 @@ class profile::mediawiki::common(
     Stdlib::Host $logstash_host = lookup('logstash_host'),
     Stdlib::Port $logstash_syslog_port = lookup('logstash_syslog_port'),
     String $log_aggregator = lookup('udp2log_aggregator'),
-    Optional[String] $php_version = lookup('profile::mediawiki::php::php_version', {'default_value' => undef}),
+    Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
     Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
     Optional[Boolean] $fetch_ipinfo_dbs = lookup('profile::mediawiki::common::fetch_ipinfo_dbs', {'default_value' => false}),
 ){
@@ -26,12 +26,16 @@ class profile::mediawiki::common(
     class { '::mediawiki::packages': }
     # Install the users needed for MediaWiki
     if $php_restarts {
+        $extra_privileges = $php_versions.map |$v| {
+            $pn = php::fpm::programname($v)
+            [
+            "ALL = (root) NOPASSWD: /usr/local/sbin/check-and-restart-php ${pn} *",
+            "ALL = (root) NOPASSWD: /usr/local/sbin/restart-${pn} --force",
+            ]
+        }.flatten
         class { '::mediawiki::users':
             web              => 'www-data',
-            extra_privileges => [
-              "ALL = (root) NOPASSWD: /usr/local/sbin/check-and-restart-php php${php_version}-fpm *",
-              "ALL = (root) NOPASSWD: /usr/local/sbin/restart-php${php_version}-fpm --force",
-            ]
+            extra_privileges => $extra_privileges,
         }
     } else {
         class { '::mediawiki::users':

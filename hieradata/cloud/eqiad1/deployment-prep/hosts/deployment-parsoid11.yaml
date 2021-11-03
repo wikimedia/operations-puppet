@@ -9,7 +9,6 @@ profile::mediawiki::php::fpm_config:
   apc.ttl: 10
   opcache.interned_strings_buffer: 96
   opcache.memory_consumption: 1024
-profile::mediawiki::php::php_version: '7.2'
 profile::mediawiki::php::request_timeout: 201
 profile::mediawiki::php::restarts::ensure: present
 profile::mediawiki::php::restarts::has_lvs: false

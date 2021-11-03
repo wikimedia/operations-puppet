@@ -75,7 +75,6 @@ profile::openstack::codfw1dev::wikitech::web::osm_host: 'labtestwikitech.wikimed
 profile::openstack::codfw1dev::wikitech::web::webserver_hostname_aliases: ''
 profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 
-profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::apc_shm_size: 128M
 
 lvs::realserver::realserver_ips:

@@ -40,7 +40,6 @@ profile::lvs::realserver::pools:
       - mcrouter
       - nutcracker
       - envoyproxy
-profile::mediawiki::php::php_version: "7.2"
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
 profile::mediawiki::php::request_timeout: 201

@@ -13,7 +13,7 @@ class profile::mediawiki::php::restarts(
     }
 
     # Service name
-    $service = $::profile::mediawiki::php::fpm_programname
+    $service = php::fpm::programname($profile::mediawiki::php::default_php_version)
     # Check, then restart php-fpm if needed.
     # This implicitly depends on the other MediaWiki/PHP profiles
     # Setting $opcache_limit to 0 will replace the script with a noop and thus disable restarts

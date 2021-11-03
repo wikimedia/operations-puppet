@@ -13,7 +13,6 @@ parsoid::statsd_prefix: parsoid-tests
 
 profile::monitoring::notifications_enabled: false
 
-profile::mediawiki::php::php_version: "7.2"
 profile::mediawiki::webserver::has_tls: false
 has_lvs: false
 

@@ -65,7 +65,7 @@ class php::fpm(
         # - Changes to the config (including adding and removing extensions)
         # - Reconfigure a pool
         if $ensure == 'present' {
-            $service_name = "php${version}-fpm"
+            $service_name = php::fpm::programname($version)
             service { $service_name:
                 ensure    => running,
                 provider  => 'systemd',

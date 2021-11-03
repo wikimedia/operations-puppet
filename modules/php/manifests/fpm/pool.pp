@@ -69,11 +69,12 @@ define php::fpm::pool(
 
     $pool_config = merge($base_config, $config)
     $config_dir = php::config_dir($version)
+    $service = php::fpm::programname($version)
     file { "${config_dir}/fpm/pool.d/${title_safe}.conf":
         content => template("php/php${version}-fpm.pool.conf.erb"),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        notify  => Service["php${version}-fpm"]
+        notify  => Service[$service],
     }
 }
