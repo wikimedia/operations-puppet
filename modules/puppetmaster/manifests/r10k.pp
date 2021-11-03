@@ -1,6 +1,8 @@
 class puppetmaster::r10k (
     Stdlib::Unixpath                         $environments_path = '/etc/puppet/code/environments',
     Stdlib::Unixpath                         $config_file       = '/etc/puppet/r10k.conf',
+    Stdlib::Unixpath                         $cache_dir         = '/var/cache/r10k',
+    Boolean                                  $exclude_spec      = true,
     Hash[String, Puppetmaster::R10k::Source] $sources           = {},
 ) {
     include puppetmaster
@@ -8,18 +10,24 @@ class puppetmaster::r10k (
     $default_sources = {
         'production'  => {
             'remote'  => "${puppetmaster::gitdir}/operations/puppet",
-            'basedir' => '/etc/puppet/code/environments',
+            'basedir' => $environments_path,
         },
         'dev' => {
             'remote'  => 'https://gerrit.wikimedia.org/r/operations/puppet',
-            'basedir' => '/etc/puppet/code/environments',
+            'basedir' => $environments_path,
             'prefix'  => true,
         },
     }
-    $config = {
-        'sources' => $default_sources + $sources,
+    $_sources = $sources.empty ? {
+        true    => $default_sources,
+        default => Hash($sources.map |$items| { [$items[0], {'basedir' => $environments_path} + $items[1]]}),
     }
-    file { $environments_path:
+    $config = {
+        'cachedir' => $cache_dir,
+        'sources'  => $_sources,
+        'deploy'   => {'exclude_spec' => $exclude_spec},
+    }
+    file { [$environments_path, $cache_dir]:
         ensure => directory,
     }
     file { $config_file:
@@ -36,5 +44,4 @@ class puppetmaster::r10k (
             File[$config_file],
         ],
     }
-
 }
