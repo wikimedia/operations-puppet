@@ -50,8 +50,16 @@ groups:
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
               mdipietro, mvernon, ladsgroup]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    # Approved by the person's manager:
     approval:
+      - Chris Albon
+      - Guillaume Lederrey
       - Joanna Borun
+      - Leo Mata
+      - Lukasz Sobanski
+      - Mark Bergsma
+      - Nicholas Skaggs
+      - Olja Dimitrjevic
       - Wolfgang Kandek
   sre-admins:
     gid: 707
