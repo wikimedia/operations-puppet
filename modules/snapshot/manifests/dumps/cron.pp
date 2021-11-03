@@ -31,7 +31,7 @@ class snapshot::dumps::cron(
     # wikidump.conf.dumps plus some stage files, make explicit
 
     cron { 'fulldumps_rest':
-        ensure      => 'present',
+        ensure      => 'absent',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         command     => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} full ${maxjobs} > /dev/null",
@@ -40,8 +40,19 @@ class snapshot::dumps::cron(
         monthday    => '01-14',
     }
 
+    systemd::timer::job { 'fulldumps-rest':
+        ensure             => present,
+        description        => 'snapshot - full dumps - rest',
+        user               => $user,
+        monitoring_enabled => false,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+        command            => "/usr/local/bin/fulldumps.sh 01 14 ${runtype} full ${maxjobs} silent",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-01..14 08,20:05:00'},
+    }
+
     cron { 'partialdumps_rest':
-        ensure      => 'present',
+        ensure      => 'absent',
         environment => 'MAILTO=ops-dumps@wikimedia.org',
         user        => $user,
         command     => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial ${maxjobs} > /dev/null",
@@ -50,4 +61,14 @@ class snapshot::dumps::cron(
         monthday    => '20-25',
     }
 
+    systemd::timer::job { 'partialdumps-rest':
+        ensure             => present,
+        description        => 'snapshot - partial dumps - rest',
+        user               => $user,
+        monitoring_enabled => false,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
+        command            => "/usr/local/bin/fulldumps.sh 20 25 ${runtype} partial ${maxjobs} silent",
+        interval           => {'start' => 'OnCalendar', 'interval' => '*-*-20..25 08,20:05:00'},
+    }
 }
