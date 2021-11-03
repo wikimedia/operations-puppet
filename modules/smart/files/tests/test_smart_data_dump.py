@@ -37,7 +37,7 @@ class TestSmartDataDump(unittest.TestCase):
     def test_suppressed_errors_cmd(self):
         output = smart_data_dump._check_output('nonexistentcommand', suppress_errors=True)
         self.assertEqual(output, '/usr/bin/timeout: failed to run command'
-                                 ' ‘nonexistentcommand’: No such file or directory')
+                                 " 'nonexistentcommand': No such file or directory")
 
     def test_timeout(self):
         with self.assertRaises(subprocess.CalledProcessError):
