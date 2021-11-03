@@ -94,11 +94,11 @@ class rsyslog::receiver (
     }
 
     rsync::quickdatacopy { 'centrallog':
-        ensure              => absent,
-        source_host         => 'centrallog1001.eqiad.wmnet',
-        dest_host           => 'centrallog2001.codfw.wmnet',
+        ensure              => present,
+        source_host         => 'centrallog2001.codfw.wmnet',
+        dest_host           => 'centrallog2002.codfw.wmnet',
         auto_sync           => false,
-        module_path         => '/srv/syslog',
+        module_path         => '/srv',
         server_uses_stunnel => true,
     }
 }
