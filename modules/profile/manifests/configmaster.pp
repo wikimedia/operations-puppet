@@ -34,12 +34,16 @@ class profile::configmaster(
 
     # Dump a list of abuse_networks for NDA users to view
     # unfortunately this does not preserve the comments
-    file {"${nda_dir}/absue_networks.yaml":
+    file {"${nda_dir}/abuse_networks.yaml":
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => $abuse_networks.to_yaml,
+    }
+
+    file {"${nda_dir}/absue_networks.yaml":
+        ensure => absent,
     }
 
     # The contents of these files are managed by puppet-merge, but user
