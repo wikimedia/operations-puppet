@@ -273,10 +273,12 @@ class profile::kafka::broker(
                 }
             )
 
-            # We shouldn't need any truststore since all jvms trust
-            # the root PKI (that signed the Kafka intermediate).
-            $ssl_truststore_location = undef
-            $ssl_truststore_password = undef
+            $ssl_truststore_location = "${ssl_location}/truststore.p12"
+            $ssl_truststore_password = ''
+            sslcert::trusted_ca { 'kafka_truststore':
+                truststore_password => $ssl_truststore_password,
+                p12_truststore_path => $ssl_truststore_location,
+            }
 
             $ssl_keystore_location   = "${ssl_location}/kafka_${cluster_name}_broker.keystore.p12"
             sslcert::x509_to_pkcs12 { 'kafka_keystore' :
