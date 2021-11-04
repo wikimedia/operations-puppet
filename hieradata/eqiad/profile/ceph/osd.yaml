@@ -189,7 +189,7 @@ profile::ceph::osd::hosts:
     cluster:
       addr: '192.168.4.23'
       prefix: '24'
-      iface: 'ens3f0np1'
+      iface: 'ens3f1np1'
   'cloudcephosd1024.eqiad.wmnet':
     public:
       addr: '10.64.20.20'
@@ -197,4 +197,4 @@ profile::ceph::osd::hosts:
     cluster:
       addr: '192.168.4.24'
       prefix: '24'
-      iface: 'ens3f0np1'
+      iface: 'ens3f1np1'
