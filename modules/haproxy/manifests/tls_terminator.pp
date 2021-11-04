@@ -7,8 +7,17 @@
 #   Absolute path to the UNIX socket acting as backend service
 # @param certificates
 #   List of TLS certificates used to listen on $port
-# @param crt_list_file
+# @param crt_list_path
 #   Path used for the crt-list file. Defaults to /etc/haproxy/crt-list.cfg
+# @param tls_dh_param_path
+#   Path used for the DH param file. Defaults to /etc/ssl/dhparam.pem
+# @param tls_cachesize
+#   Sets the size of the global SSL session cache, in a number of blocks. A block
+#   is large enough to contain an encoded session without peer certificate.
+#   Defaults to 20000
+# @param tls_session_lifetime
+#   Sets how long a cached SSL session may remain valid.
+#   Defaults to 300 seconds
 # @param tls_ciphers
 #   Allowed ciphersuites for <= TLSv1.2
 # @param tls13_ciphers
@@ -48,6 +57,9 @@ define haproxy::tls_terminator(
     Haproxy::Ecdhecurves $ecdhe_curves = ['X25519', 'P-256'],
     Haproxy::Alpn $alpn = ['h2', 'http/1.1'],
     Stdlib::Unixpath $crt_list_path = '/etc/haproxy/crt-list.cfg',
+    Stdlib::Unixpath $tls_dh_param_path = '/etc/ssl/dhparam.pem',
+    Integer[0] $tls_cachesize = 20000,
+    Integer[0] $tls_session_lifetime = 300,
     Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = undef,
     Optional[Array[Stdlib::Unixpath]] $lua_scripts = undef,

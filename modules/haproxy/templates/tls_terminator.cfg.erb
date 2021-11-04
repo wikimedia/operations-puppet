@@ -9,6 +9,10 @@ global
     ssl-default-bind-options ssl-min-ver <%= @min_tls_version -%> ssl-max-ver <%= @max_tls_version %>
     ssl-default-bind-ciphers <%= @tls_ciphers %>
     ssl-default-bind-ciphersuites <%= @tls13_ciphers %>
+    ssl-dh-param-file <%= @tls_dh_param_path %>
+    tune.ssl.cachesize <%= @tls_cachesize %>
+    tune.ssl.lifetime <%= @tls_session_lifetime %>
+
 
     tune.h2.header-table-size <%= @h2settings['header_table_size'] %>
     tune.h2.initial-window-size <%= @h2settings['initial_window_size'] %>

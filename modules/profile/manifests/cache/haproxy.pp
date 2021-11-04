@@ -7,6 +7,8 @@ class profile::cache::haproxy(
     Stdlib::Unixpath $varnish_socket = lookup('profile::cache::haproxy::varnish_socket'),
     String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
     String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
+    Integer[0] $tls_cachesize = lookup('profile::cache::haproxy::tls_cachesize'),
+    Integer[0] $tls_session_lifetime = lookup('profile::cache::haproxy::tls_session_lifetime'),
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
     Haproxy::Proxyprotocol $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol'),
@@ -18,6 +20,8 @@ class profile::cache::haproxy(
     String $ocsp_proxy = lookup('http_proxy'),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
 ) {
+    class { '::sslcert::dhparam': }
+
     # variables used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'
     $exec_start = '/usr/sbin/haproxy -Ws'
@@ -125,6 +129,8 @@ class profile::cache::haproxy(
         timeout              => $timeout,
         h2settings           => $h2settings,
         proxy_protocol       => $proxy_protocol,
+        tls_cachesize        => $tls_cachesize,
+        tls_session_lifetime => $tls_session_lifetime,
         tls_ticket_keys_path => $tls_ticket_keys_path,
         lua_scripts          => ['/etc/haproxy/tls.lua'],
         vars                 => $vars,
