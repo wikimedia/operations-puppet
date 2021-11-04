@@ -872,7 +872,7 @@ groups:
     gid: 823
     description: Group of users that have access to ML Team's machines
     members: &ml-team-admins [accraze, chrisalbon, kevinbazira]
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    privileges: []
     approval:
       - Chris Albon
   deploy-ml-service:
