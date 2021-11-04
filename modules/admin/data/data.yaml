@@ -48,7 +48,7 @@ groups:
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman, lsobanski,
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
-              mdipietro, mvernon, ladsgroup]
+              mdipietro, mvernon, ladsgroup, aokoth]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -64,7 +64,7 @@ groups:
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
-    members: &sre_admins_members [aokoth]
+    members: &sre_admins_members []
     approval:
       - Joanna Borun
       - Wolfgang Kandek
@@ -885,14 +885,14 @@ groups:
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
-    members: [brennen, dancy, aokoth]
+    members: [brennen, dancy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Wolfgang Kandek
   vrts-roots:
     gid: 834
     description: Group of users with full root access on VRTS (formerly OTRS) machines
-    members: [aokoth]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Wolfgang Kandek
