@@ -1,0 +1,53 @@
+#!/bin/bash
+set -e
+function help {
+  local ecode=${2:-0}
+  [[ -n $1 ]] && printf "\n $1\n" >&2
+cat >&2 << helpMessage
+  Usage: ${0##*/} <model-file> <model-type> <model-lang> <bucket> <config-file>
+    ${0##*/} uploads a model binary to Swift/S3 via s3cmd.
+    This script will attempt to create a bucket and will version
+    the model using a timestamp following Y-m-D-H-M-S format.
+    The full S3 path should look like the following:
+    s3://bucket/class/language/timestamp/model.bin
+    The model-file arg should be the path to a model binary named model.bin
+    The model-type arg is the type of model (i.e. goodfaith, damaging, etc.)
+    The model-lang arg should reflect the wiki language code of model (enwiki)
+    The bucket arg is optional and default to 'wmf-ml-models'.
+    The config-file arg is optional and default to '<%= @swift_cfg_file %>'
+  Options:
+    -h  |  --help  program help (this file)
+helpMessage
+  exit "$ecode"
+}
+function usage {
+  local ecode=${2:-0}
+  [[ -n $1 ]] && printf "\n $1\n" >&2
+  printf "\n  Usage: %s <model-file> <model-type> <model-lang> <bucket>\n\n" "${0##*/}"
+  exit "$ecode"
+}
+## test for help and log flags and parse remaining args as cflags
+for i in "$@"; do
+    test "$i" == "-h" || test "$i" == "--help" && help
+done
+[ -f "$1" ] || usage "error: first argument is not a file." 1
+[ -n "$2" ] || usage "error: second argument is required." 1
+[ -n "$3" ] || usage "error: third argument is required." 1
+TIMESTAMP=$(date "+%Y%m%d%H%M%S")
+MODEL_FILE=$1
+MODEL_TYPE=$2
+MODEL_LANG=$3
+MODEL_BUCKET=${4:-'wmf-ml-models'}
+CONFIG_FILE=${5:-'<%= @swift_cfg_file %>'}
+MODEL_PREFIX="${MODEL_TYPE}/${MODEL_LANG}/${TIMESTAMP}"
+S3_PATH="s3://${MODEL_BUCKET}/${MODEL_PREFIX}"
+# check to see if s3cmd is in $PATH
+type s3cmd
+echo "CHECKING FOR MODEL_BUCKET: ${MODEL_BUCKET}"
+# make sure model bucket exists
+s3cmd -c $CONFIG_FILE mb "s3://${MODEL_BUCKET}" || error_code=$?
+if [[ $error_code -ne 1  ]]; then
+echo "BUCKET ALREADY EXISTS, SKIPPING CREATION..."
+fi
+echo "UPLOADING ${MODEL_FILE} to ${S3_PATH}"
+s3cmd -c $CONFIG_FILE put "${MODEL_FILE}" "${S3_PATH}/${MODEL_FILE}" --multipart-chunk-size-mb=5
