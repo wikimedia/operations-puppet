@@ -92,20 +92,19 @@ class profile::openstack::eqiad1::cumin::master(
             require => File['/etc/cumin'],
         }
 
-        if debian::codename::eq('stretch') {
-            $python_version = '3.5'
-        } elsif debian::codename::eq('buster') {
-            $python_version = '3.7'
-
+        if debian::codename::eq('buster') {
             apt::package_from_component { 'spicerack':
                 component => 'component/spicerack',
                 packages  => ['python3-tqdm'],
                 priority  => 1002,
             }
+        }
 
-        } else {
-            fail("Don't know which python3 version to use on this distribution")
-
+        $python_version = debian::codename() ? {
+            'bullseye' => '3.9',
+            'buster'   => '3.7',
+            'stretch'  => '3.5',
+            default    => fail("unsupported on ${debian::codename()}"),
         }
 
         file { "/usr/local/lib/python${python_version}/dist-packages/cumin_file_backend.py":
