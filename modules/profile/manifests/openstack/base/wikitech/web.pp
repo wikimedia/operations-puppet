@@ -7,12 +7,18 @@ class profile::openstack::base::wikitech::web(
     $phabricator_api_token = lookup('profile::openstack::base::wikitech::web::phabricator_api_token'),
     $gerrit_api_user = lookup('profile::openstack::base::wikitech::web::gerrit_api_user'),
     $gerrit_api_password = lookup('profile::openstack::base::wikitech::web::gerrit_api_password'),
+    Boolean $install_fonts = lookup('profile::openstack::base::wikitech::web::install_fonts', {'default_value' => true}),
 ) {
 
     require profile::mediawiki::common
     require ::profile::services_proxy::envoy
 
-    class {'::mediawiki::packages::fonts': }
+    # we may not need fonts anymore! (T294378)
+    $font_ensure = $install_fonts.bool2str('installed','absent')
+    class { '::mediawiki::packages::fonts':
+        ensure => $font_ensure,
+    }
+
     class {'::profile::backup::host':}
 
     class { '::scap::scripts': }
