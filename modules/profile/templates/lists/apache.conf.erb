@@ -9,7 +9,7 @@
         # Note: even though this looks like it's going to pass all traffic over
         # to mailman3-web, the above rewrite will send all non-hyperkitty paths
         # to HTTPS. So only hyperkitty will be served through this.
-        ProxyPass / unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost
+        ProxyPass / unix:/run/mailman3-web/uwsgi.sock|uwsgi://localhost/
     </IfModule>
 </VirtualHost>
 
