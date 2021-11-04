@@ -9,6 +9,7 @@ class prometheus::logstash_exporter{
   file { '/etc/default/prometheus-logstash-exporter':
     ensure  => present,
     mode    => '0644',
+    notify  => Service['prometheus-logstash-exporter'],
     require => Package['prometheus-logstash-exporter'],
     content => template('prometheus/prometheus-logstash-exporter.defaults.erb'),
   }
