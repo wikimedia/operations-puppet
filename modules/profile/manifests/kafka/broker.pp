@@ -153,7 +153,7 @@ class profile::kafka::broker(
     Optional[String] $ssl_password                         = lookup('profile::kafka::broker::ssl_password', {'default_value' => undef}),
     Boolean $ssl_generate_certificates                     = lookup('profile::kafka::broker::ssl_generate_certificates', {'default_value' => false}),
     Optional[Boolean] $inter_broker_ssl_enabled            = lookup('profile::kafka::broker::inter_broker_ssl_enabled', {'default_value' => undef}),
-
+    Boolean $use_pki_super_users                           = lookup('profile::kafka::broker:use_pki_super_users', {'default_value' => false}),
     Array[Stdlib::Unixpath] $log_dirs                      = lookup('profile::kafka::broker::log_dirs', {'default_value' => ['/srv/kafka/data']}),
     Boolean $auto_leader_rebalance_enable                  = lookup('profile::kafka::broker::auto_leader_rebalance_enable', {'default_value' => true}),
     Integer $log_retention_hours                           = lookup('profile::kafka::broker::log_retention_hours', {'default_value' => 168}),
@@ -251,20 +251,28 @@ class profile::kafka::broker(
             }
         }
 
+        # To ensure a smooth transition on a given cluster, we need to make
+        # sure that brokers trust both the old 'single' CN and all the new
+        # ones (basically all the Kafka broker hostnames).
+        $brokers = $config['brokers']['array']
+        $super_users_brokers = $brokers.map |String $hostname| {
+            "User:CN=${hostname}"
+        }
+        if $use_pki_super_users {
+            $super_users = $super_users_brokers + ["User:CN=kafka_${cluster_name}_broker"]
+        } else {
+            if $ssl_generate_certificates {
+                $super_users = $super_users_brokers
+            } else {
+                $super_users = ["User:CN=kafka_${cluster_name}_broker"]
+            }
+        }
+
         # Context in T291905
         # We are moving from a single cergen TLS certificate, shared among all
         # the brokers, to hostname-based TLS certificates issued by the PKI kafka
         # intermediate CA.
         if $ssl_generate_certificates {
-            # To ensure a smooth transition on a given cluster, we need to make
-            # sure that brokers trust both the old 'single' CN and all the new
-            # ones (basically all the Kafka broker hostnames).
-            $brokers = $config['brokers']['array']
-            $super_users_brokers = $brokers.map |String $hostname| {
-                "User:CN=${hostname}"
-            }
-            $super_users = ["User:CN=kafka_${cluster_name}_broker"] + $super_users_brokers
-
             $ssl_cert = profile::pki::get_cert('kafka', $facts['fqdn'], {
                 'outdir' => $ssl_location,
                 'owner'  => 'kafka',
@@ -297,7 +305,6 @@ class profile::kafka::broker(
             $ssl_truststore_password     = $ssl_password
             $ssl_keystore_secrets_path   = "certificates/kafka_${cluster_name}_broker/kafka_${cluster_name}_broker.keystore.jks"
             $ssl_truststore_secrets_path = "certificates/kafka_${cluster_name}_broker/truststore.jks"
-            $super_users                 = ["User:CN=kafka_${cluster_name}_broker"]
 
             file { $ssl_keystore_location:
                 content => secret($ssl_keystore_secrets_path),
