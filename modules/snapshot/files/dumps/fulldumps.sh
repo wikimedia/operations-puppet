@@ -35,7 +35,7 @@ usage(){
 }
 
 show (){
-    if [ $dryrun -ne 0 ]; then
+    if [ $dryrun -ne 0 ] && [ $silent -ne 0 ]; then
         echo "$1"
     fi
 }
@@ -103,10 +103,16 @@ if [ "$wikitype" == 'none' ]; then
     # do nothing
     exit 0
 fi
+
+dryrun=0
+silent=0
+
 if [ "$6" == "dryrun" ]; then
     dryrun=1
-else
-    dryrun=0
+fi
+
+if [ "$6" == "silent" ]; then
+    silent=1
 fi
 
 # don't run if there's already an instance running
