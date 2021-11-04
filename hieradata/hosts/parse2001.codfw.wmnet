@@ -1,0 +1,2 @@
+# T294378
+profile::mediawiki::webserver::install_fonts: false
