@@ -105,13 +105,12 @@ class dnsdist (
     }
 
     file { '/etc/dnsdist/dnsdist.conf':
-        ensure       => 'present',
-        require      => Package['dnsdist'],
-        owner        => 'root',
-        group        => '_dnsdist',
-        mode         => '0440',
-        content      => template('dnsdist/dnsdist.conf.erb'),
-        validate_cmd => '/usr/bin/dnsdist --check-config --config %',
+        ensure  => 'present',
+        require => Package['dnsdist'],
+        owner   => 'root',
+        group   => '_dnsdist',
+        mode    => '0440',
+        content => template('dnsdist/dnsdist.conf.erb'),
     }
 
     systemd::service { 'dnsdist':
