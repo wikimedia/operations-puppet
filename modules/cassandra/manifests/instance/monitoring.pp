@@ -19,7 +19,6 @@ define cassandra::instance::monitoring (
         true    => $cassandra::instances,
         default => $instances,
     }
-    $_tls_cluster_name = pick_default($tls_cluster_name, $cassandra::tls_cluster_name)
     $instance_name  = $title
     $this_instance  = $_instances[$instance_name]
     $listen_address = $this_instance['listen_address']
@@ -50,7 +49,7 @@ define cassandra::instance::monitoring (
     }
 
     # SSL cert expiration monitoring (T120662)
-    if $_tls_cluster_name {
+    if $tls_cluster_name {
         monitoring::service { "${service_name}-ssl":
             ensure        => $ensure_monitor,
             description   => "${service_name} SSL ${listen_address}:7001",

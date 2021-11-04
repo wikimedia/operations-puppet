@@ -43,17 +43,12 @@ class profile::cassandra(
         vm_dirty_background_bytes => 25165824,
     }
 
-    if $cassandra_settings['tls_cluster_name'] {
-        $tls_cluster_name = $cassandra_settings['tls_cluster_name']
-    } else {
-        $tls_cluster_name = ''
-    }
     if $instances {
         $instance_names = keys($instances)
         ::cassandra::instance::monitoring{ $instance_names:
             monitor_enabled  => $monitor_enabled,
             instances        => $instances,
-            tls_cluster_name => $tls_cluster_name,
+            tls_cluster_name => $cassandra_settings['tls_cluster_name'],
         }
     } else {
         $default_instances = {
@@ -63,7 +58,7 @@ class profile::cassandra(
         ::cassandra::instance::monitoring{ 'default':
             monitor_enabled  => $monitor_enabled,
             instances        => $default_instances,
-            tls_cluster_name => $tls_cluster_name,
+            tls_cluster_name => $cassandra_settings['tls_cluster_name'],
         }
     }
 
