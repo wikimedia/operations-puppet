@@ -267,13 +267,6 @@ class profile::prometheus::ops (
           { 'files' => ["${targets_path}/trafficserver-upload_*.yaml"] },
         ],
       },
-      {
-        'job_name'        => 'varnish-canary',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/varnish-canary_*.yaml"] },
-        ],
-        'metric_relabel_configs' => [$varnish_be_uuid_relabel],
-      },
     ]
 
     # Pull varnish-related metrics generated via mtail (frontend)
@@ -2098,11 +2091,6 @@ class profile::prometheus::ops (
         labels  => {
           'layer' => 'frontend',
         },
-    }
-
-    prometheus::varnish_2layer{ 'canary':
-        targets_path => $targets_path,
-        cache_name   => 'canary',
     }
 
     # Used for  migrations / hardware refresh, but not continuously
