@@ -1581,7 +1581,7 @@ node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # ceph storage nodes
-node /^cloudcephosd10(0[1-9]|1[0-9]|2[1-4])\.eqiad\.wmnet$/ {
+node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
 }
 
