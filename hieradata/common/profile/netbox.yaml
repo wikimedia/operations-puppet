@@ -83,10 +83,9 @@ profile::netbox::ganeti_sync_profiles:
     - profile: eqsin
       url: ganeti01.svc.eqsin.wmnet
       port: 5080
-# Comment out the codfw test cluster for now as it's being rebuilt T286206
-#    - profile: codfw_test
-#      url: ganeti-test01.svc.codfw.wmnet
-#      port: 5080
+    - profile: codfw_test
+      url: ganeti-test01.svc.codfw.wmnet
+      port: 5080
 
 profile::netbox::dump_interval: '*-*-* *:32:00'
 
