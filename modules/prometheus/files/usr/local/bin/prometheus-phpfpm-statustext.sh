@@ -17,32 +17,36 @@
 # that would be otherwise lost when all php-fpm workers are busy.
 # https://phabricator.wikimedia.org/T252605
 
+# TODO: make this whole script python if it's here to stay
 set -eu
 set -o pipefail
-
-UNIT="${1:-php7.2-fpm.service}"
-OUTFILE="${2:-/var/lib/prometheus/node.d/phpfpm-statustext.prom}"
-
-# If our service isn't running, nothing to do.
-/bin/systemctl is-active --quiet "$UNIT" || exit 0
-
-# Scrape available metrics from the status text, exiting on failure.
-SEDSCRIPT='s!^StatusText=Processes active: ([0-9]+), idle: ([0-9]+),'
-SEDSCRIPT+=' Requests: ([0-9]+), slow: ([0-9]+), Traffic: ([0-9.]+)req/sec$'
-SEDSCRIPT+='!\1 \2 \3 \4 \5!; t; Q99'  # if no match, exit 99 without printing
-
-PARSED="$(systemctl show -p StatusText php7.2-fpm.service \
-          | sed -E "$SEDSCRIPT")"
-
+OUTFILE="${1:-/var/lib/prometheus/node.d/phpfpm-statustext.prom}"
+shift
+VERSIONS="${@:-7.2}"
 TMPOUTFILE="${OUTFILE}.$$"
 function cleanup {
     rm -f "$TMPOUTFILE"
 }
 trap cleanup EXIT
+# Just to be sure, clean the file up before starting to append to it
+cleanup
+for version in $VERSIONS; do
+    UNIT="php${version}-fpm.service"
+    # If our service isn't running, nothing to do.
+    /bin/systemctl is-active --quiet "$UNIT" || continue
 
-# Now write output.
-echo "$PARSED" | (read procs_act procs_idle req_total req_slow_total rps
-cat <<EOF >"$TMPOUTFILE"
+    # Scrape available metrics from the status text, exiting on failure.
+    SEDSCRIPT='s!^StatusText=Processes active: ([0-9]+), idle: ([0-9]+),'
+    SEDSCRIPT+=' Requests: ([0-9]+), slow: ([0-9]+), Traffic: ([0-9.]+)req/sec$'
+    SEDSCRIPT+='!\1 \2 \3 \4 \5!; t; Q99'  # if no match, exit 99 without printing
+
+    PARSED="$(systemctl show -p StatusText "$UNIT" \
+            | sed -E "$SEDSCRIPT")"
+
+
+    # Now write output.
+    echo "$PARSED" | (read procs_act procs_idle req_total req_slow_total rps
+    cat <<EOF >>"$TMPOUTFILE"
 # HELP phpfpm_statustext_processes Number of php-fpm worker processes in each state
 # TYPE phpfpm_statustext_processes gauge
 phpfpm_statustext_processes{service="${UNIT}",state="active"} ${procs_act}
@@ -56,6 +60,10 @@ phpfpm_statustext_requests_total{service="${UNIT}"} ${req_total}
 # TYPE phpfpm_statustext_slow_requests_total counter
 phpfpm_statustext_slow_requests_total{service="${UNIT}"} ${req_slow_total}
 EOF
-)
+    )
+done
 
-mv "$TMPOUTFILE" "$OUTFILE"
+if [ -f "$TMPOUTFILE" ]; then
+    mv "$TMPOUTFILE" "$OUTFILE"
+fi
+

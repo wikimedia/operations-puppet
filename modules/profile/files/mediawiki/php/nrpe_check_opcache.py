@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import argparse
+import json
 import os
 import sys
 import traceback
@@ -25,6 +26,36 @@ import requests
 
 # Tell requests to use our non-standard .netrc
 os.environ["NETRC"] = "/etc/php7adm.netrc"
+with open("/etc/php7adm.versions", "r") as fh:
+    PHP_VERSIONS = json.load(fh)
+
+
+class Alerts:
+    criticals = []
+    warnings = []
+
+    def critical(self, msg):
+        self.criticals.append(msg)
+
+    def warning(self, msg):
+        self.warnings.append(msg)
+
+    def __str__(self):
+        # If we have critical alerts, print them.
+        if self.criticals:
+            return f"CRITICAL: {'; '.join(self.criticals)}"
+        elif self.warnings:
+            return f"WARNING: {'; '.join(self.warnings)}"
+        else:
+            return "OK: opcache is healthy"
+
+    def retval(self):
+        if self.criticals:
+            return 2
+        elif self.warnings:
+            return 1
+        else:
+            return 0
 
 
 def parse_args():
@@ -36,51 +67,49 @@ def parse_args():
     return parser.parse_args()
 
 
-def opcache_info():
-    req = requests.get(
-        "http://localhost:9181/opcache-info",
+def opcache_info(port):
+    resp = requests.get(
+        f"http://localhost:{port}/opcache-info",
         headers={"user-agent": "nrpe_check_opcache.py"},
     )
-    req.raise_for_status()
-    return req.json()
+    resp.raise_for_status()
+    return resp.json()
 
 
 def main():
+    alerts = Alerts()
     args = parse_args()
-    info = opcache_info()
-    # First check if the opcache is full
-    if info["cache_full"]:
-        print("CRITICAL: opcache full.")
-        return 2
-    # Now check for the opcache cache-hit ratio. If it's below 99.85%, it's a critical alert.
-    scripts = info["opcache_statistics"]["num_cached_scripts"]
-    hits = info["opcache_statistics"]["hits"]
-    # Skip the check if the service has been restarted since a few minutes, and we
-    # don't have enough traffic to reach the stats.
-    # Specifically, we need to have a number of hits that, given the number of scripts,
-    # would allow to reach such thresholds.
-    threshold = scripts * 10000  # 1 miss out of 10k => 99.99%
-    if hits > threshold:
-        hit_rate = info["opcache_statistics"]["opcache_hit_rate"]
-        if hit_rate < 99.85:
-            print("CRITICAL: opcache cache-hit ratio is below 99.85%")
-            return 2
-        elif hit_rate < 99.99:
-            print("WARNING: opcache cache-hit ratio is below 99.99%")
-            return 1
+    for (version, port) in PHP_VERSIONS.items():
+        info = opcache_info(port)
+        # First check if the opcache is full
+        if info["cache_full"]:
+            alerts.critical(f"opcache full on php {version}.")
+            continue
+        # Now check for the opcache cache-hit ratio. If it's below 99.85%, it's a critical alert.
+        scripts = info["opcache_statistics"]["num_cached_scripts"]
+        hits = info["opcache_statistics"]["hits"]
+        # Skip the check if the service has been restarted since a few minutes, and we
+        # don't have enough traffic to reach the stats.
+        # Specifically, we need to have a number of hits that, given the number of scripts,
+        # would allow to reach such thresholds.
+        threshold = scripts * 10000  # 1 miss out of 10k => 99.99%
+        if hits > threshold:
+            hit_rate = info["opcache_statistics"]["opcache_hit_rate"]
+            if hit_rate < 99.85:
+                alerts.critical(f"opcache cache-hit ratio is below 99.85% on php {version}.")
+            elif hit_rate < 99.99:
+                alerts.warning(f"opcache cache-hit ratio is below 99.99% on php {version}.")
 
-    # Now check if the free space is below the critical level
-    free_space = info["memory_usage"]["free_memory"] / (1024 * 1024)
-    if free_space < args.critical:
-        print("CRITICAL: opcache free space is below {args.critical} MB".format(args=args))
-        return 2
-    elif free_space < args.warning:
-        print("WARNING: opcache free space is below {args.warning} MB".format(args=args))
-        return 1
+        # Now check if the free space is below the critical level
+        free_space = info["memory_usage"]["free_memory"] / (1024 * 1024)
+        if free_space < args.critical:
+            alerts.critical(f"opcache free space is below {args.critical} MB on php {version}.")
+        elif free_space < args.warning:
+            alerts.warning(f"opcache free space is below {args.warning} MB on php {version}.")
 
-    # Haven't bailed yet, everything is good
-    print("OK: opcache is healthy")
-    return 0
+    # Print out the results!
+    print(alerts)
+    return alerts.retval()
 
 
 if __name__ == "__main__":

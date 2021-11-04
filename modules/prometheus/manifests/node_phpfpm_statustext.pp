@@ -10,13 +10,13 @@
 # [*outfile*]
 #   Path to write the finished textfile-exporter-format file.
 #
-# [*service*]
-#   The name of the systemd service with the php-fpm pool you want to monitor.
+# [*php_versions*]
+#   List of php versions with the php-fpm pools you want to monitor.
 
 class prometheus::node_phpfpm_statustext (
     Wmflib::Ensure $ensure = 'present',
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/phpfpm-statustext.prom',
-    Systemd::Servicename $service = 'php7.2-fpm.service',
+    Array[Wmflib::Php_version] $php_versions = ['7.2'],
 ) {
     $exec = '/usr/local/bin/prometheus-phpfpm-statustext'
     file { $exec:
@@ -31,7 +31,7 @@ class prometheus::node_phpfpm_statustext (
     systemd::timer::job { 'prometheus-phpfpm-statustext-textfile':
         ensure          => $ensure,
         description     => 'Update PHP-FPM worker count stats exported by node_exporter',
-        command         => "${exec} ${service} ${outfile}",
+        command         => "${exec} ${outfile} ${php_versions.join(' ')}",
         user            => 'root',
         logging_enabled => false,
         require         => [File[$exec]],

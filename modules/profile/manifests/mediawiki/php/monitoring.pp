@@ -10,8 +10,26 @@ class profile::mediawiki::php::monitoring(
 ) {
     require ::network::constants
     require ::profile::mediawiki::php
-    $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
+    $php_versions = $profile::mediawiki::php::php_versions
+    $default_php_version = $php_versions[0]
     $admin_port = 9181
+    $admin_data = $php_versions.map |$idx, $php_version| {
+        $versioned_fcgi_pool = $php_version ? {
+            $default_php_version => $fcgi_pool,
+            default              => "${fcgi_pool}-${php_version}"
+        }
+        $versioned_admin_port = $admin_port + $idx
+        $versioned_fcgi_port = $fcgi_port ? {
+            undef   => undef,
+            default => $fcgi_port + $idx
+        }
+        $retval = {
+            'version'    => $php_version,
+            'fcgi_proxy' => mediawiki::fcgi_endpoint($versioned_fcgi_port, $versioned_fcgi_pool),
+            'admin_port' => $versioned_admin_port
+        }
+    }
+
     $docroot = '/var/www/php-monitoring'
     $htpasswd_file = '/etc/apache2/htpasswd.php7adm'
     $prometheus_nodes_str = join($prometheus_nodes, ' ')
@@ -26,8 +44,9 @@ class profile::mediawiki::php::monitoring(
     }
     httpd::conf { 'php-admin-port':
         ensure  => present,
-        content => "# This file is managed by puppet\nListen ${admin_port}\n"
+        content => template('profile/mediawiki/php-admin-ports.conf.erb')
     }
+    # Will actually be one virtualhost per php version.
     httpd::site { 'php-admin':
         ensure  => present,
         content => template('profile/mediawiki/php-admin.conf.erb')
@@ -42,7 +61,8 @@ class profile::mediawiki::php::monitoring(
         mode    => '0440'
     }
 
-    # Needed to allow scap to perform opcache invalidation.
+    # TODO: remove this. It was added to allow opcache invalidation from scap but we're definitely
+    # not doing it now. Also remove it from the virtualhosts.
     ferm::service { 'phpadmin_deployment':
         ensure => present,
         proto  => 'tcp',
@@ -65,6 +85,17 @@ class profile::mediawiki::php::monitoring(
         group  => 'root',
         mode   => '0555',
     }
+    # Create a hash of php_version => admin port, save it as json in a file.
+    $version_ports = $admin_data.map |$d| {
+        {$d['version'] => $d['admin_port']}
+    }.reduce({}) |$m,$v| {$m.merge($v)}
+    file { '/etc/php7adm.versions':
+        ensure  => present,
+        content => $version_ports.to_json,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+    }
     file { '/etc/php7adm.netrc':
         ensure  => present,
         content => "machine localhost login root password ${auth_passwd}\n",
@@ -74,13 +105,18 @@ class profile::mediawiki::php::monitoring(
     }
     ## Monitoring
     # Check that php-fpm is running
-    $svc_name = php::fpm::programname($profile::mediawiki::php::default_php_version)
-    nrpe::monitor_systemd_unit_state{ $svc_name: }
-    # Export basic php-fpm stats using a textfile exporter
-    class { '::prometheus::node_phpfpm_statustext':
-        service => "${svc_name}.service",
+    $php_versions.each |$php_version| {
+        $svc_name = php::fpm::programname($php_version)
+        nrpe::monitor_systemd_unit_state{ $svc_name: }
     }
 
+    # Export basic php-fpm stats using a textfile exporter
+    class { '::prometheus::node_phpfpm_statustext':
+        php_versions => $php_versions,
+    }
+    # TODO: extend all this beyond the default php version that is assumed here.
+    # It will be done once we've moved to serving actual traffic with more than one version of
+    # php.
     if $monitor_page {
         # Check that a simple page can be rendered via php-fpm.
         # If a service check happens to run while we are performing a
@@ -89,7 +125,6 @@ class profile::mediawiki::php::monitoring(
         monitoring::service { 'appserver_http_php7':
             description    => 'PHP7 rendering',
             check_command  => 'check_http_wikipedia_main_php7',
-            retries        => 2,
             retry_interval => 2,
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Application_servers/Runbook#PHP7_rendering',
         }

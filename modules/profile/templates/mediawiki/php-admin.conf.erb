@@ -1,4 +1,6 @@
-<VirtualHost *:<%= @admin_port %>>
+<%- @admin_data.each do |data| -%>
+# Virtualhost for php<%= data['php_version'] %>
+<VirtualHost *:<%= data['admin_port'] %>>
     DocumentRoot <%= @docroot %>
     <Location />
         Require local
@@ -17,20 +19,12 @@
            Require local
        </RequireAny>
    </Location>
-   # disabled for now, would need more apache modules
-   # to be enabled
-   #<LocationMatch "/(apcu|opcache)-free">
-   #    AuthType Basic
-   #    AuthName "Administrative action"
-   #    AuthBasicProvider file
-   #    AuthUserFile "/etc/apache/htpasswd.php7adm"
-   #    Require valid-user
-   #</LocationMatch>
    RewriteEngine On
    RewriteRule .* /index.php [L]
    <FilesMatch "\.php$">
-       SetHandler "proxy:<%= @fcgi_proxy %>"
+       SetHandler "proxy:<%= data['fcgi_proxy'] %>"
    </FilesMatch>
    ErrorLog ${APACHE_LOG_DIR}/php-admin-error.log
    CustomLog ${APACHE_LOG_DIR}/php-admin-access.log wmf
 </VirtualHost>
+<%- end -%>
