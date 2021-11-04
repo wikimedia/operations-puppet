@@ -97,7 +97,11 @@ Puppet::Reports.register_report(:logstash) do
     end
 
     metrics['resources'].values.each do |name, _, value|
-      event['metrics']['puppet']['resources'][name] = {'total' => value}
+      if name == 'total'
+        event['metrics']['puppet']['resources'][name] = value
+      else
+        event['metrics']['puppet']['resources'][name] = {'total' => value}
+      end
     end
     Syslog.log(Syslog::LOG_INFO, "@cee: #{event.to_json}")
   end
