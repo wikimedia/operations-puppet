@@ -1,0 +1,15 @@
+# Place flags to be passed to logstash_exporter here
+ARGS='--logstash.endpoint="http://localhost:9675"'
+
+# usage: logstash_exporter [<flags>]
+#
+# Flags:
+#   -h, --help              Show context-sensitive help (also try --help-long and --help-man).
+#       --logstash.endpoint="http://localhost:9600"
+#                           The protocol, host and port on which logstash metrics API listens
+#       --web.listen-address=":9198"
+#                           Address on which to expose metrics and web interface.
+#       --log.level="info"  Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal]
+#       --log.format="logger:stderr"
+#                           Set the log target and format. Example: "logger:syslog?appname=bob&local=7" or "logger:stdout?json=true"
+#       --version           Show application version.

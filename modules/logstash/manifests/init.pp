@@ -147,6 +147,7 @@ class logstash (
             'log.format'                  => $log_format,
             'dead_letter_queue.enable'    => $enable_dlq,
             'dead_letter_queue.max_bytes' => $dlq_max_bytes,
+            'http.port'                   => '9675',
         }),
         owner   => 'root',
         group   => 'root',
