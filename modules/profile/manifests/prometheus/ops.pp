@@ -2097,12 +2097,15 @@ class profile::prometheus::ops (
         source   => 'puppet:///modules/role/prometheus/alerts_ops.yml',
     }
 
-    prometheus::varnish_2layer{ 'text':
-        targets_path => $targets_path,
-        cache_name   => 'text',
+    prometheus::cluster_config{ 'text_frontend':
+        dest    => "${targets_path}/varnish-text_${::site}_frontend.yaml",
+        cluster => 'cache_text',
+        port    => 9331,
+        labels  => {
+          'layer' => 'frontend',
+        },
     }
 
-    # Upload has Varnish only on the frontend
     prometheus::cluster_config{ 'upload_frontend':
         dest    => "${targets_path}/varnish-upload_${::site}_frontend.yaml",
         cluster => 'cache_upload',
