@@ -4,6 +4,10 @@
 # tools (Superset, Druid, Matomo, etc..) and this profile implements
 # a mariadb multi-instance environment that can be used as replica.
 #
+# This class is used to do MariaDB logical backups via profile::dbbackups::mydumper.
+# (As of 2021-11, dbprov1002 is taking remote backups.)
+# See: https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Logical_backups
+#
 class profile::mariadb::misc::analytics::multiinstance (
     Hash[String, Hash] $instances = lookup('profile::mariadb::misc::analytics::multiinstance::instances'),
     Hash[String, Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports'),
@@ -18,12 +22,14 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     include profile::mariadb::wmfmariadbpy
 
     class { 'mariadb::config':
-        basedir       => $profile::mariadb::packages_wmf::basedir,
-        config        => 'profile/mariadb/mysqld_config/analytics_multiinstance.my.cnf.erb',
-        p_s           => 'on',
-        ssl           => 'puppet-cert',
-        binlog_format => 'ROW',
-        read_only     => 1,
+        basedir            => $profile::mariadb::packages_wmf::basedir,
+        config             => 'profile/mariadb/mysqld_config/analytics_multiinstance.my.cnf.erb',
+        p_s                => 'on',
+        ssl                => 'puppet-cert',
+        # MUST use ROW, hive metastore database is not compatible with other kinds.
+        binlog_format      => 'ROW',
+        max_allowed_packet => '32M',
+        read_only          => 1,
     }
 
     file { '/etc/mysql/mysqld.conf.d':
