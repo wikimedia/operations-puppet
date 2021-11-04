@@ -167,7 +167,7 @@ class cassandra (
 
 
     apt::package_from_component { 'cassandra':
-        packages  => { 'cassandra' => $target_version},
+        packages  => { 'cassandra' => $package_version},
         component => $component,
     }
 
