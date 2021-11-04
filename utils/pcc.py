@@ -155,7 +155,7 @@ def parse_nodes(string_list, default_suffix='.eqiad.wmnet'):
 
     Otherwise qualify any unqualified nodes in a comma-separated list by
     appending a default domain suffix."""
-    if string_list.startswith(('P:', 'C:', 'O:', 're:', 'parse_commit')):
+    if string_list.startswith(('P:', 'C:', 'O:', 're:', 'parse_commit', 'cumin:')):
         return string_list
     return ','.join(node if '.' in node else node + default_suffix
                     for node in string_list.split(','))
