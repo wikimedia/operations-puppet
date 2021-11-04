@@ -1341,6 +1341,11 @@ node /^ganeti500[123]\.eqsin\.wmnet$/ {
     role(ganeti)
 }
 
+
+node /^ganeti600[1234]\.drmrs\.wmnet$/ {
+    role(insetup)
+}
+
 # T274459
 node 'gitlab1001.wikimedia.org' {
     role(gitlab)
