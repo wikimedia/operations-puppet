@@ -346,7 +346,7 @@ groups:
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
-              statwithlatte, effeietsanders, echetty, ejoseph]
+              statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4805,6 +4805,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFQvFscO99eUfcg51aOxPekk5JW1QIBVMjhNbAEuIlR5 ejoseph@wikimedia.org
+  natalia-rodriguez:
+    ensure: present
+    realname: Natalia Rodriguez
+    email: nrodriguez@wikimedia.org
+    uid: 32643
+    gid: 500
+    krb: present
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDehX55erRQ47CLU3dsUTzHKf/Sfq20IXIl9eCxEqrt9wr8/urrwA6vKTIjS4s5prOOAJUEUauY5Ls6d3EjTvQ3cf/ojBjXzgH1PEjk+gZmlKbj05AiiFiMM2uwWVEkVjMzBhsLhH5BSVO1a1ZJj3jyPhid74qdW4Ikd4Jynb+R/nTYhdT7zXkzmJNeXUzYeDA0cvsdg/3k1SrR4oLrtR69n4R6JAKHdkjiOBSv5VdLKYcRs7R7uxgx7kmn9x05FFieDNCco4uD1vX6maT1QjRH0uT/u3vAHCJhq7K6HjTOgbkhZsAJH1jn7o4x+zI2WeiwEwkwUaV7hyDAY0vUSiP9JuWvcxoA+0SK2JQ13Xmb0u7iG2u8pNNAjetgM2ivdvWSW8Uxb8WQrXv8OyHSufZHYr2zUGUwp7LLw/JRa90RJ/imAx8By/yb33bpmrgG0wmCAFrdh5MzxAPofvjBw6xTdiZB9KPNWJmu9oY8nMAg88SBJN+u1E/S41E8GnGo47rNvuNrLk3JkwY4/ebuXADYN7PV+07jdPxb0tR3zv3adqaw5ranJWYlA0hqUm5Ev7D6iHsZPMxluRTaflcofTCIQTr/BcaDMz2XJ9GLK7sWNRYcNlLsdTPyhKSVIj78eKH352/JU3lGKr3AaO5TKj/YnplvqAx3DshEv6RXRE6vFw== natalia@wmf2868
 
 ldap_only_users:
   abartov:
@@ -5545,10 +5554,6 @@ ldap_only_users:
     email: tandic-ctr@wikimedia.org
     expiry_date: 2022-06-30
     expiry_contact: janstee@wikimedia.org
-  natalia-rodriguez:
-    ensure: present
-    realname: Natalia Rodriguez
-    email: nrodriguez@wikimedia.org
   simone-this-dot:
     ensure: present
     realname: Simone Cuomo
