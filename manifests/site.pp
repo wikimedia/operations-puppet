@@ -984,7 +984,7 @@ node 'deneb.codfw.wmnet' {
     role(builder)
 }
 
-node /^dns[12345]00[12]\.wikimedia\.org$/ {
+node /^dns[123456]00[12]\.wikimedia\.org$/ {
     role(dnsbox)
 }
 

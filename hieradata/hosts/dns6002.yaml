@@ -1,0 +1,4 @@
+profile::resolving::nameservers:
+#  - '185.15.58.5'    # dns6001 #DRMRS-TODO
+  - '208.80.154.10'  # dns1001
+  - '208.80.155.108' # dns1002

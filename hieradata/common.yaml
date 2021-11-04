@@ -1133,8 +1133,8 @@ authdns_servers:
   'dns4002.wikimedia.org': 198.35.26.8
   'dns5001.wikimedia.org': 103.102.166.8
   'dns5002.wikimedia.org': 103.102.166.9
-#  'dns6001.wikimedia.org': #DRMRS-TODO
-#  'dns6002.wikimedia.org': #DRMRS-TODO
+#  'dns6001.wikimedia.org': 185.15.58.5  #DRMRS-TODO
+#  'dns6002.wikimedia.org': 185.15.58.37 #DRMRS-TODO
 
 # .. and this is the set of public IPs they provide service on, which is
 # consumed by both authdns servers and the icinga monitoring of them.
