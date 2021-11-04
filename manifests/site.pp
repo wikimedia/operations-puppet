@@ -1581,12 +1581,8 @@ node /^cloudcephmon100[1-3]\.eqiad\.wmnet$/ {
 }
 
 # ceph storage nodes
-node /^cloudcephosd10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
+node /^cloudcephosd10(0[1-9]|1[0-9]|2[1-4])\.eqiad\.wmnet$/ {
     role(wmcs::ceph::osd)
-}
-# new hosts via T274945, T284471
-node /^cloudcephosd10(2[1-5])\.eqiad\.wmnet$/ {
-    role(insetup)
 }
 
 # New systems placed into service by cloud team via T194186 and T249062
