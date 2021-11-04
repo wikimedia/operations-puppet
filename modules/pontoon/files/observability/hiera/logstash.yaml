@@ -27,7 +27,7 @@ profile::elasticsearch::common_settings:
 # nominate one host per cluster to run certain jobs
 profile::elasticsearch::logstash::jobs_host: "%{alias('__master_for_role_logstash__elasticsearch7')}"
 profile::elasticsearch::logstash::curator_actions:
-  1:
+  '01':
     description: 'delete older than 1 day'
     action: delete_indices
     options:
