@@ -11,6 +11,9 @@ zookeeper_clusters:
     hosts:
       deployment-zookeeper02.eqiad.wmflabs: '2'
 
+prometheus_nodes:
+  - logging-alert-01.logging.eqiad1.wikimedia.cloud
+
 # known public
 profile::logstash::collector::input_kafka_ssl_truststore_passwords:
   logging-beta: qwerty
