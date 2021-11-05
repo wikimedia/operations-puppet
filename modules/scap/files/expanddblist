@@ -2,6 +2,16 @@
 <?php
 include "/srv/mediawiki/multiversion/MWWikiversions.php";
 chdir( "/srv/mediawiki" );
-foreach ( MWWikiversions::evalDbListExpression( $argv[1] ) as $wiki ) {
+
+$expr = $argv[1];
+
+// T43285, T357877: In Beta Cluster, limit `foreachwiki`, `foreachwikiindblist`,
+// and direct use of `expanddblist` to wikis that exist on Beta.
+$realm = trim( @file_get_contents( "/etc/wikimedia-cluster" ) ?: "" );
+if ( $realm === "labs" ) {
+        $expr .= " & all-labs";
+}
+
+foreach ( MWWikiversions::evalDbListExpression( $expr ) as $wiki ) {
         echo $wiki . "\n";
 }

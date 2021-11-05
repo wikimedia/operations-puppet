@@ -16,6 +16,7 @@ if [ $# -lt 2 ]; then
 fi
 
 . /etc/profile.d/mediawiki.sh
+
 DBLIST=$(/usr/local/bin/expanddblist "$1")
 CMD=$2
 shift

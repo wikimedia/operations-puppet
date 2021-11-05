@@ -11,12 +11,4 @@ if [ -z "$1" ] || [ "$1" = "--help" ]; then
     usage
 fi
 
-. /etc/profile.d/mediawiki.sh
-
-if [ -f /etc/wikimedia-cluster ] && [ $(cat /etc/wikimedia-cluster) = "labs" ]; then
-    ALL_DBLIST="$MEDIAWIKI_STAGING_DIR/dblists/all-labs.dblist"
-else
-    ALL_DBLIST="$MEDIAWIKI_STAGING_DIR/dblists/all.dblist"
-fi
-
-exec "$(dirname "$0")/foreachwikiindblist" "$ALL_DBLIST" "${@}"
+exec "$(dirname "$0")/foreachwikiindblist" "all" "${@}"
