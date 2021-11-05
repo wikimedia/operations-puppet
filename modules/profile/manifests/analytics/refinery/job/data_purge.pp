@@ -123,8 +123,12 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
-    # keep this many days of druid webrequest sampled
-    # Currently being tested as systemd timer, see below
+    # Keep this many days of druid webrequest sampled
+    # Please note: we are currently setting a custom loadPolicy of (now-30 days)
+    # in Druid (for more info, check the Coordinator's UI -> Datasources -> ..)
+    # that limits the segments pulled by Druid from deep storage.
+    # The value defined below is related only to the retention period for
+    # the Druid segments stored in deep storage.
     $druid_webrequest_sampled_retention_days = 60
     kerberos::systemd_timer { 'refinery-drop-webrequest-sampled-druid':
         ensure      => $ensure_timers,
