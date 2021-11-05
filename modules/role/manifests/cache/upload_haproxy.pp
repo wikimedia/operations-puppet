@@ -4,7 +4,7 @@ class role::cache::upload_haproxy {
         description => 'upload HAProxy/Varnish/ATS cache server',
     }
 
-    include ::profile::standard
+    include ::profile::base::production
     include ::profile::netconsole::client
 
     include ::profile::cache::base
