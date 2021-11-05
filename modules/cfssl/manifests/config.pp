@@ -32,9 +32,13 @@ define cfssl::config (
         'ocsp_url'    => $default_ocsp_url,
         'auth_remote' => $default_auth_remote,
     }.filter |$key, $value| { $value =~ Boolean or !$value.empty() }
-    # make sure all profiles use the default auth key
+    # inject the default auth key if profiles dont specify one
     # first map to an array of [key, values] then convert to a hash
     $_profiles = Hash($profiles.map |$key, $value| {
+        # Make sure any profile specific auth keys are defined
+        if $value.has_key('auth_key') and !$auth_keys.has_key($value['auth_key']) {
+            fail("${key} must have an entry for 'auth_key:'")
+        }
         [$key, {'auth_key' => $default_auth_key} + $value]
     })
     $signing = {
