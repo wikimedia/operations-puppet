@@ -13,7 +13,7 @@ define java::cacert (
     include java
 
     if $keystore_path != undef {
-        $keystore = $keystore_path
+        $keystore = "-keystore ${keystore_path}"
         $trust_cacert = ''
     } else {
         $keystore = $java::default_java_package['version'] ? {
