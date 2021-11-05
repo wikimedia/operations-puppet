@@ -88,17 +88,17 @@ datacenter: eqiad
 git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
 statsd_host: <%= @cloud_statsd_host %>
-logstash_host: logstash.svc.deployment-prep.eqiad1.wikimedia.cloud:9200
+logstash_host: logging-logstash-01.logging.eqiad1.wikimedia.cloud:9200
 udp2log_host: <%= @betacluster_udplog_host %>
 mediawiki_canary_swagger_url: https://en.wikipedia.beta.wmflabs.org
-canary_dashboard_url: https://logstash-beta.wmcloud.org
+canary_dashboard_url: https://beta-logs.wmcloud.org
 wmf_realm: labs
 delay_messageblobstore_purge: true
 
 [eqiad.wmflabs]
 # Wikimedia Foundation beta eqiad datacenter (legacy duplicate)
 datacenter: eqiad
-logstash_host: logstash.svc.deployment-prep.eqiad1.wikimedia.cloud:9200
+logstash_host: logging-logstash-01.logging.eqiad1.wikimedia.cloud:9200
 mediawiki_canary_swagger_url: https://en.wikipedia.beta.wmflabs.org
 
 
@@ -122,7 +122,7 @@ udp2log_host: <%= @betacluster_udplog_host %>
 wmf_realm: labs
 # No pybal in labs, but pretend that there is anyway
 pybal_interface: lo
-canary_dashboard_url: https://logstash-beta.wmcloud.org
+canary_dashboard_url: https://beta-logs.wmcloud.org
 delay_messageblobstore_purge: true
 
 # Restart php-fpm only when running from the deployment servers for now.
