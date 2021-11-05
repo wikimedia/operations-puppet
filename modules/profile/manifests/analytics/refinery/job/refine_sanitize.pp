@@ -105,9 +105,9 @@ class profile::analytics::refinery::job::refine_sanitize(
     }
     profile::analytics::refinery::job::refine_job { 'event_sanitized_main_delayed':
         interval      => '*-*-* 05:00:00',
-        # delayed job should monitor around the day it is scheduled for.
-        monitor_since => $delayed_since + 24,
-        monitor_until => $delayed_until,
+        # Monitor with a couple hours delay to allow for refine to finish.
+        monitor_since => $delayed_since + 26,
+        monitor_until => $delayed_until + 2,
         job_config    => $event_sanitized_main_job_config.merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
@@ -127,9 +127,9 @@ class profile::analytics::refinery::job::refine_sanitize(
     }
     profile::analytics::refinery::job::refine_job { 'event_sanitized_analytics_delayed':
         interval      => '*-*-* 06:00:00',
-        # delayed job should monitor around the day it is scheduled for.
-        monitor_since => $delayed_since + 24,
-        monitor_until => $delayed_until,
+        # Monitor with a couple hours delay to allow for refine to finish.
+        monitor_since => $delayed_since + 26,
+        monitor_until => $delayed_until + 2,
         job_config    => $event_sanitized_analytics_job_config.merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
