@@ -263,27 +263,24 @@ class profile::kafka::broker(
         $super_users_brokers = $brokers.map |String $hostname| {
             "User:CN=${hostname}"
         }
+        $ssl_truststore_location     = "${ssl_location}/truststore.jks"
+        $ssl_truststore_password     = $ssl_password
+
         if $use_pki_migration_settings {
             $super_users = $super_users_brokers + ["User:CN=kafka_${cluster_name}_broker"]
-            $ssl_truststore_location = "${ssl_location}/truststore.p12"
-            $ssl_truststore_password = $ssl_password
             sslcert::trusted_ca { 'kafka_truststore':
                 truststore_password => $ssl_truststore_password,
-                p12_truststore_path => $ssl_truststore_location,
+                jks_truststore_path => $ssl_truststore_location,
             }
         } else {
             if $ssl_generate_certificates {
                 $super_users = $super_users_brokers
-                $ssl_truststore_location = "${ssl_location}/truststore.p12"
-                $ssl_truststore_password = $ssl_password
                 sslcert::trusted_ca { 'kafka_truststore':
                     truststore_password => $ssl_truststore_password,
-                    p12_truststore_path => $ssl_truststore_location,
+                    jks_truststore_path => $ssl_truststore_location,
                 }
             } else {
                 $super_users = ["User:CN=kafka_${cluster_name}_broker"]
-                $ssl_truststore_location     = "${ssl_location}/truststore.jks"
-                $ssl_truststore_password     = $ssl_password
                 $ssl_truststore_secrets_path = "certificates/kafka_${cluster_name}_broker/truststore.jks"
                 if !defined(File[$ssl_truststore_location]) {
                     file { $ssl_truststore_location:
