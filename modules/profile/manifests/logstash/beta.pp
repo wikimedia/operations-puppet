@@ -12,6 +12,15 @@ class profile::logstash::beta (
   # Until this is no longer the case, don't overwrite the truststore.
   $manage_truststore = false
 
+  # Allow API access to LABS_NETWORKS via ferm, but control access via "scap-access" security group.
+  # Will be obseleted by T216141.
+  ferm::service { 'opensearch-labs-9200':
+    proto   => 'tcp',
+    port    => 9200,
+    notrack => true,
+    srange  => '$LABS_NETWORKS',
+  }
+
   include profile::logstash::common
 
   # Custom Filters and Overrides
