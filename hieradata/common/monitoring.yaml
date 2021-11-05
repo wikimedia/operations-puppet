@@ -18,9 +18,9 @@ monitoring::groups:
     description: Networking equipment (routers/switches/etc.)
   asw1-eqsin:
     description: Equipment with asw1-eqsin as uplink
-  asw1-b12-drmrs:
+  asw1-b12-drmrs.wikimedia.org:
     description: Equipment with asw1-b12-drmrs as uplink
-  asw1-b13-drmrs:
+  asw1-b13-drmrs.wikimedia.org:
     description: Equipment with asw1-b13-drmrs as uplink
   asw2-a-eqiad:
     description: Equipment with asw2-a-eqiad as uplink
