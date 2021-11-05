@@ -13,6 +13,14 @@ class gitlab::restore(
       source => 'puppet:///modules/gitlab/gitlab-restore.sh';
   }
 
+  file {"${restore_dir_data}/gitlab-restore-v2.sh":
+      ensure => $restore_ensure,
+      mode   => '0744' ,
+      owner  => 'root',
+      group  => 'root',
+      source => 'puppet:///modules/gitlab/gitlab-restore-v2.sh';
+    }
+
   # systemd timer for backup restore
   systemd::timer::job { 'backup-restore':
       ensure      => $restore_ensure_timer,
