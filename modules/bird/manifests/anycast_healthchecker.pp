@@ -13,8 +13,9 @@
 #
 #
 class bird::anycast_healthchecker(
-  Optional[String] $bind_service = undef,
-  Boolean $do_ipv6 = false,
+  Optional[String]        $bind_service = undef,
+  Boolean                 $do_ipv6      = false,
+  Bird::Anycasthc_logging $logging      = {'level' => 'info', 'num_backups' => 8},
 ){
 
   ensure_packages(['anycast-healthchecker'])

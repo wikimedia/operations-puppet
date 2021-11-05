@@ -18,9 +18,9 @@ bird6_keep_changes     = false
 bird_changes_counter   = 128
 bird6_changes_counter  = 128
 purge_ip_prefixes      = false
-loglevel               = info
+loglevel               = <%= @logging['level'] %>
 log_maxbytes           = 104857600
-log_backups            = 8
+log_backups            = <%= @logging['num_backups'] %>
 log_file               = /var/log/anycast-healthchecker/anycast-healthchecker.log
 json_stdout            = false
 json_log_file          = false

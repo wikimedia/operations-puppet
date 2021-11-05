@@ -6,12 +6,13 @@
 #
 
 class profile::bird::anycast(
-  Boolean $bfd = lookup('profile::bird::bfd', {'default_value' => true}),
-  Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list = lookup('profile::bird::neighbors_list', {'default_value' => []}),
-  Optional[String] $bind_anycast_service = lookup('profile::bird::bind_anycast_service', {'default_value' => undef}),
-  Optional[Hash[String, Wmflib::Advertise_vip]] $advertise_vips = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
-  Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => undef}),
-  Optional[Boolean] $do_ipv6 = lookup('profile::bird::do_ipv6', {'default_value' => false}),
+  Boolean                                        $bfd                  = lookup('profile::bird::bfd', {'default_value' => true}),
+  Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list       = lookup('profile::bird::neighbors_list', {'default_value' => []}),
+  Optional[String]                               $bind_anycast_service = lookup('profile::bird::bind_anycast_service', {'default_value' => undef}),
+  Optional[Hash[String, Wmflib::Advertise_vip]]  $advertise_vips       = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
+  Optional[Array[Stdlib::Fqdn]]                  $prometheus_nodes     = lookup('prometheus_nodes', {'default_value' => undef}),
+  Optional[Boolean]                              $do_ipv6              = lookup('profile::bird::do_ipv6', {'default_value' => false}),
+  Optional[Bird::Anycasthc_logging]              $anycasthc_logging    = lookup('profile::bird::anycasthc_logging', {'default_value' => undef}),
 ){
 
   $advertise_vips.each |$vip_fqdn, $vip_params| {
@@ -73,6 +74,7 @@ class profile::bird::anycast(
   class { '::bird::anycast_healthchecker':
       bind_service => $bind_anycast_service,
       do_ipv6      => $do_ipv6,
+      logging      => $anycasthc_logging,
   }
 
   require ::profile::bird::anycast_healthchecker_monitoring
