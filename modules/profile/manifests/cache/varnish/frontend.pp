@@ -46,6 +46,7 @@ class profile::cache::varnish::frontend (
             component => $packages_component,
             packages  => $packages,
             before    => Mount['/var/lib/varnish'],
+            priority  => 1002, # Take precedence over main
         }
     }
 
