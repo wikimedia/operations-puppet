@@ -4,13 +4,12 @@ profile::ceph::auth::load_all::configuration: {}
 #profile::ceph::auth::load_all::configuration:
 #  # this is the client name, without the 'client.' prefix, usually a service using ceph
 #  cinder-backups:
-#    keydata: "this will be overriden in the private repos"
+#    # if no keydata is provided, it will ignore this key (remember that you'll have to provide it in the secret repo)
 #    keyring_path: /path/to/file.keyring
 #    caps:
 #        mon: "whatever"
 #        osd: "whatever"
 #  cloudvirt:
-#    keydata: "this will be overriden in the private repos"
 #    keyring_path: /path/to/file.keyring
 #    caps:
 #        mds: "whatever"
@@ -18,7 +17,6 @@ profile::ceph::auth::load_all::configuration: {}
 #        mon: "whatever"
 #        osd: "whatever"
 #  osd:
-#    keydata: "this will be overriden in the private repos"
 #    keyring_path: /path/to/file.keyring
 #    caps:
 #        mgr: "whatever"

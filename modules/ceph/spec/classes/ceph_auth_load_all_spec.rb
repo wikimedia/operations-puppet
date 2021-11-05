@@ -61,6 +61,19 @@ describe 'ceph::auth::load_all' do
           .with_keyring_path('/etc/cept/ceph.client.client1.keyring')
         }
       end
+
+      describe 'Discards a key if it has no keydata' do
+        let(:params) { super().merge({
+          :configuration => {
+            'client1' => {
+              'caps' => {
+                'mon' => 'my mon_caps',
+              }
+            }
+        }})}
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to_not contain_ceph__auth__keyring('client1')}
+      end
     end
   end
 end
