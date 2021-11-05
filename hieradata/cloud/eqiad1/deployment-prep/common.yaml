@@ -134,7 +134,7 @@ scap::dsh::groups:
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-deploy01.deployment-prep.eqiad.wmflabs
             - deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
-            - deployment-mwmaint01.deployment-prep.eqiad.wmflabs
+            - deployment-mwmaint02.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
         hosts:
