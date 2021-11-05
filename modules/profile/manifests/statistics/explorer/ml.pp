@@ -37,7 +37,7 @@ class profile::statistics::explorer::ml(
         ensure  => file,
         owner   => 'root',
         group   => 'deploy-ml-service',
-        mode    => '0664',
+        mode    => '0550',
         content => template('profile/statistics/explorer/ml/model_upload.sh.erb'),
     }
 }
