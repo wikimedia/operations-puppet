@@ -38,6 +38,7 @@ class profile::cache::haproxy(
     class { '::haproxy':
         systemd_content => template('profile/cache/haproxy.service.erb'),
         logging         => false,
+        require         => Apt::Pin['haproxy-buster-bpo'],
     }
 
     ensure_packages('python3-pystemd')
