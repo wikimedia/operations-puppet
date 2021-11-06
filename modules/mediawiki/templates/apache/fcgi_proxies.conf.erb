@@ -1,5 +1,7 @@
 # Configure the proxies
-<Proxy "<%= @fcgi_proxy %>">
+<%- @fcgi_proxies.each do |fcgi_proxy| -%>
+# Proxy for php version <%= fcgi_proxy[0] %>
+<Proxy "<%= fcgi_proxy[1] %>">
        ProxySet retry=0
 </Proxy>
-
+<%- end -%>

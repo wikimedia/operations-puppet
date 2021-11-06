@@ -41,8 +41,11 @@
 #   * 'domain_catchall' (string) is the domain for which to do catchall
 #   * 'rewrite_prefix'  (string) The prefix to use in the rewrite
 #
-# [*php_fpm_fcgi_endpoint*] Endpoint to use to reach php-fpm.
+# [*php_fpm_fcgi_endpoint*] Endpoint to use to reach php-fpm by default
 #   Default: fcgi://127.0.0.1:8000
+#
+# [*additional_fcgi_endpoints*] Additional endpoints that can be reached with a specific
+#   value of the PHP_ENGINE cookie. By default empty.
 #
 # [*feature_flags*] A general container for feature flags, that is changes to the
 #   vhosts that we are introducing/testing and are destined to be the default for
@@ -68,8 +71,9 @@ define mediawiki::web::vhost(
     Boolean $declare_site = false,
     String $domain_suffix = 'org',
     Optional[Mediawiki::Upload_rewrite] $upload_rewrite = undef,
-    String $php_fpm_fcgi_endpoint = 'fcgi://127.0.0.1:8000',
+    Tuple[Wmflib::Php_version, String] $php_fpm_fcgi_endpoint = ['7.2', 'fcgi://127.0.0.1:8000'],
     Mediawiki::Vhost_feature_flags $feature_flags = {},
+    Array[Tuple[Wmflib::Php_version, String]] $additional_fcgi_endpoints = [],
 ) {
     # The vhost content
     $content = template('mediawiki/apache/mediawiki-vhost.conf.erb')

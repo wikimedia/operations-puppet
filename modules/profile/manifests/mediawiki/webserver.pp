@@ -4,6 +4,7 @@ class profile::mediawiki::webserver(
     Boolean $stream_to_logstash = lookup('profile::mediawiki::webserver::stream_to_logstash', {'default_value' => false}),
     Optional[Stdlib::Port::User] $fcgi_port = lookup('profile::php_fpm::fcgi_port', {'default_value' => undef}),
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
+    Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = lookup('profile::mediawiki::vhost_feature_flags', {'default_value' => {}}),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     # Sites shared between different installations
@@ -13,7 +14,14 @@ class profile::mediawiki::webserver(
     Boolean $install_fonts = lookup('profile::mediawiki::webserver::install_fonts', {'default_value' => true}),
 ) {
     include ::profile::mediawiki::httpd
-    $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
+    $versioned_port = php::fpm::versioned_port($fcgi_port, $php_versions)
+    $fcgi_proxies = $php_versions.map |$idx, $version| {
+        $fcgi_pool_name = $idx? {
+            0 => $fcgi_pool,
+            default => "${fcgi_pool}-${version}"
+        }
+        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], $fcgi_pool_name)]
+    }
 
     # Declare the proxies explicitly with retry=0
     httpd::conf { 'fcgi_proxies':
@@ -29,14 +37,17 @@ class profile::mediawiki::webserver(
 
     # Set feature flags for all mediawiki::web::vhost resources
     Mediawiki::Web::Vhost {
-        php_fpm_fcgi_endpoint => $fcgi_proxy,
+        php_fpm_fcgi_endpoint => $fcgi_proxies[0],
         feature_flags         => $vhost_feature_flags,
+        additional_fcgi_endpoints => $fcgi_proxies[1, -1]
     }
 
     # Define all websites for apache, as the sum of general and env-specific stuff.
+    # Note: "fcgi_proxy" is used in the additonal non-MediaWiki sites, and is
+    # set to the default php engine.
     class { '::mediawiki::web::sites':
         siteconfigs => $common_sites + $sites,
-        fcgi_proxy  => $fcgi_proxy,
+        fcgi_proxy  => $fcgi_proxies[0][1],
     }
 
     if $has_lvs {

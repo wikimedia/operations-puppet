@@ -19,12 +19,23 @@ class profile::mediawiki::jobrunner(
     Optional[Stdlib::Port::User] $fcgi_port = lookup('profile::php_fpm::fcgi_port', {default_value => undef}),
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {default_value => 'www'}),
     Boolean $expose_endpoint = lookup('profile::mediawiki::jobrunner::expose_endpoint', {default_value => false}),
+    Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
+
 ) {
     # Parameters we don't need to override
     $port = 9005
     $local_only_port = 9006
-    $fcgi_proxy = mediawiki::fcgi_endpoint($fcgi_port, $fcgi_pool)
-
+    $versioned_port = php::fpm::versioned_port($fcgi_port, $php_versions)
+    $fcgi_proxies = $php_versions.map |$idx, $version| {
+        $fcgi_pool_name = $idx? {
+            0 => $fcgi_pool,
+            default => "${fcgi_pool}-${version}"
+        }
+        $retval = [$version, mediawiki::fcgi_endpoint($versioned_port[$version], $fcgi_pool_name)]
+    }
+    # We're sharing template functions with mediawiki::web::vhost, so keep the same nomenclature.
+    $php_fpm_fcgi_endpoint = $fcgi_proxies[0]
+    $additional_fcgi_endpoints = $fcgi_proxies[1, -1]
     # Add headers lost by mod_proxy_fastcgi
     # The apache module doesn't pass along to the fastcgi appserver
     # a few headers, like Content-Type and Content-Length.

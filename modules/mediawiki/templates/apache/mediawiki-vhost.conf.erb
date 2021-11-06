@@ -20,6 +20,12 @@
     RewriteCond %{ENV:RW_PROTO} !=https
     RewriteRule . - [E=RW_PROTO:http]
 <%- end -%>
+<%- unless @additional_fcgi_endpoints.empty? -%>
+    # Pick the backend based on the PHP_ENGINE cookie.
+    # Given we have a default value, we don't care about
+    # malicious input.
+    SetEnvIf Cookie "PHP_ENGINE=(7.\d)" backend=$1
+<%- end -%>
 
 <%- if @upload_rewrite  -%>
 <%- if @upload_rewrite['domain_catchall'] -%>
@@ -88,9 +94,7 @@
 <%- end -%>
     # Forbid accessing files under /w/extensions
     RewriteRule ^/w/extensions/.*\.php - [F,L]
-    <FilesMatch "\.php$">
-        SetHandler "proxy:<%= @php_fpm_fcgi_endpoint %>"
-    </FilesMatch>
+<%= scope.function_template(["mediawiki/apache/php_backend_selection.erb"]) %>
 
     RewriteRule ^/\.well-known/change-password$ /wiki/Special:ChangeCredentials/MediaWiki\\Auth\\PasswordAuthenticationRequest [R=302]
 </VirtualHost>

@@ -11,6 +11,7 @@ class profile::mediawiki::php::monitoring(
     require ::network::constants
     require ::profile::mediawiki::php
     $php_versions = $profile::mediawiki::php::php_versions
+    $versioned_port = php::fpm::versioned_port($fcgi_port, $php_versions)
     $default_php_version = $php_versions[0]
     $admin_port = 9181
     $admin_data = $php_versions.map |$idx, $php_version| {
@@ -19,13 +20,9 @@ class profile::mediawiki::php::monitoring(
             default              => "${fcgi_pool}-${php_version}"
         }
         $versioned_admin_port = $admin_port + $idx
-        $versioned_fcgi_port = $fcgi_port ? {
-            undef   => undef,
-            default => $fcgi_port + $idx
-        }
         $retval = {
             'version'    => $php_version,
-            'fcgi_proxy' => mediawiki::fcgi_endpoint($versioned_fcgi_port, $versioned_fcgi_pool),
+            'fcgi_proxy' => mediawiki::fcgi_endpoint($versioned_port[$php_version], $versioned_fcgi_pool),
             'admin_port' => $versioned_admin_port
         }
     }

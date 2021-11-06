@@ -261,9 +261,10 @@ class profile::mediawiki::php(
         # PHP-fpm pools.
         # We define the pool for the first php version "www" for backwards compatibility.
         # The pools for the other versions will be called "www-$version" instead.
+        $versioned_port = php::fpm::versioned_port($port, $php_versions)
         $remaining_versions = $php_versions - $default_php_version
         php::fpm::pool { $fcgi_pool:
-            port    => $port,
+            port    => $versioned_port[$default_php_version],
             version => $default_php_version,
             config  => {
                 'pm'                        => 'static',
@@ -273,17 +274,9 @@ class profile::mediawiki::php(
             }
         }
         # Version specific pools
-        $remaining_versions.each |$idx, $php_version| {
-            # If a port is defined, use subsequent ones for
-            # the various versioned pools.
-            # If the port is undefined, the unix socket depends on the
-            # pool name.
-            $pool_port = $port ? {
-                undef => $port,
-                default => $port + $idx + 1
-            }
+        $remaining_versions.each |$php_version| {
             php::fpm::pool { "${fcgi_pool}-${php_version}":
-                port    => $pool_port,
+                port    => $versioned_port[$php_version],
                 version => $php_version,
                 config  => {
                     'pm'                        => 'static',

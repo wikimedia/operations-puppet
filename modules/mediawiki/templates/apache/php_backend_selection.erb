@@ -1,0 +1,20 @@
+    <FilesMatch "\.php$">
+    <%- if @additional_fcgi_endpoints.empty? -%>
+        SetHandler "proxy:<%= @php_fpm_fcgi_endpoint[1] %>"
+    <%- else -%>
+    # Default: no/invalid cookie or default version
+    <If "reqenv('backend') in  {'', '<%= @php_fpm_fcgi_endpoint[0] %>'}">
+        SetHandler "proxy:<%= @php_fpm_fcgi_endpoint[1] %>"
+    </If>
+    <%- @additional_fcgi_endpoints.each do |ep| -%>
+    # Version <%= ep[0] %>
+    <ElseIf "reqenv('backend') == '<%= ep[0] %>'">
+        SetHandler "proxy:<%= ep[1] %>"
+    </ElseIf>
+    <%- end -%>
+    <Else>
+        # Catchall: someone requested a version that is not available.
+        SetHandler "proxy:<%= @php_fpm_fcgi_endpoint[1] %>"
+    </Else>
+    <%- end -%>
+    </FilesMatch>

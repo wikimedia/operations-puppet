@@ -1,3 +1,5 @@
+<%-
+-%>
 # This file is managed by Puppet
 <VirtualHost *:<%= @port %>>
     DocumentRoot "/srv/mediawiki"
@@ -8,9 +10,9 @@
     </Directory>
     RewriteCond  %{REQUEST_URI} !^/w/health-check.php
     RewriteRule ^ - [R=404,L]
-    # This takes precedence over the catchall in the general configuration
+    # Just use the default php version.
     <FilesMatch "\.php$">
-        SetHandler "proxy:<%= @fcgi_proxy %>"
+        SetHandler "proxy:<%= @php_fpm_fcgi_endpoint[1] %>"
     </FilesMatch>
     ErrorLog ${APACHE_LOG_DIR}/jq-public-error.log
     CustomLog ${APACHE_LOG_DIR}/jq-public-access.log wmf
@@ -25,13 +27,18 @@
     <Directory /srv/mediawiki>
        Require all granted
     </Directory>
+    <%- unless @additional_fcgi_endpoints.empty? -%>
+    # Pick the backend based on the PHP_ENGINE cookie.
+    # Given we have a default value, we don't care about
+    # malicious input.
+    SetEnvIf Cookie "PHP_ENGINE=(7.\d)" backend=$1
+    <%- end -%>
     # Only selected paths are allowed here
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob)\.php
     RewriteRule ^ - [R=404,L]
 
-    <FilesMatch "\.php$">
-        SetHandler "proxy:<%= @fcgi_proxy %>"
-    </FilesMatch>
+<%= scope.function_template(["mediawiki/apache/php_backend_selection.erb"]) %>
+
     ErrorLog ${APACHE_LOG_DIR}/jobqueue-error.log
     CustomLog ${APACHE_LOG_DIR}/jobqueue-access.log wmf
 </VirtualHost>
@@ -47,14 +54,17 @@
     <Directory /srv/mediawiki>
        Require all granted
     </Directory>
-
+    <%- unless @additional_fcgi_endpoints.empty? -%>
+    # Pick the backend based on the PHP_ENGINE cookie.
+    # Given we have a default value, we don't care about
+    # malicious input.
+    SetEnvIf Cookie "PHP_ENGINE=(7.\d)" backend=$1
+    <%- end -%>
     # Only selected paths are allowed here
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob)\.php
     RewriteRule ^ - [R=404,L]
 
-    <FilesMatch "\.php$">
-        SetHandler "proxy:<%= @fcgi_proxy %>"
-    </FilesMatch>
+<%= scope.function_template(["mediawiki/apache/php_backend_selection.erb"]) %>
     ErrorLog ${APACHE_LOG_DIR}/videoscaler-error.log
     CustomLog ${APACHE_LOG_DIR}/videoscaler-access.log wmf
 </VirtualHost>
