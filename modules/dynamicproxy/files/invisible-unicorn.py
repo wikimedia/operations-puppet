@@ -1,4 +1,5 @@
 #   Copyright 2013 Yuvi Panda <yuvipanda@gmail.com>
+#   Copyright 2021 Taavi Väänänen <hi@taavi.wtf>
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -29,14 +30,33 @@ API is meant to be used by Wikitech only, and nothing else"""
 import flask
 import redis
 import re
-from flask_sqlalchemy import SQLAlchemy
 
+from flask_keystone import FlaskKeystone
+from flask_oslolog import OsloLog
+from flask_sqlalchemy import SQLAlchemy
+from oslo_config import cfg
+
+cfgGroup = cfg.OptGroup('dynamicproxy')
+opts = [
+    cfg.StrOpt('sqlalchemy_uri'),
+]
+
+db = SQLAlchemy()
+key = FlaskKeystone()
+log = OsloLog()
+
+cfg.CONF.register_group(cfgGroup)
+cfg.CONF.register_opts(opts, group=cfgGroup)
+
+cfg.CONF(default_config_files=['/etc/dynamicproxy-api/config.ini'])
 
 app = flask.Flask(__name__)
-# FIXME: move out to a config file
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////etc/dynamicproxy-api/data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = cfg.CONF.dynamicproxy.sqlalchemy_uri
 
 db = SQLAlchemy(app)
+
+key.init_app(app)
+log.init_app(app)
 
 
 class Project(db.Model):
