@@ -1,5 +1,6 @@
 kafka_clusters:
   jumbo-eqiad:
+    ipv6: false
     zookeeper_cluster_name: main-eqiad
     brokers:
       deployment-kafka-jumbo-3.deployment-prep.eqiad1.wikimedia.cloud:

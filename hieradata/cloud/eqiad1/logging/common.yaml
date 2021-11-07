@@ -5,6 +5,7 @@ kafka_clusters:
       deployment-kafka-logging01.deployment-prep.eqiad1.wikimedia.cloud:
         id: 1001
         rack: B
+    ipv6: false
 
 zookeeper_clusters:
   main-deployment-prep:

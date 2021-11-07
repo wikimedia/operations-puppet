@@ -743,6 +743,9 @@ kafka_clusters:
       kafka-logging1003.eqiad.wmnet:
         id: 1006
         rack: D
+    # The logging infra doesn't support ipv6 for now.
+    # see https://phabricator.wikimedia.org/T279342#7002887
+    ipv6: false
 
   logging-codfw:
     zookeeper_cluster_name: main-codfw
@@ -756,6 +759,9 @@ kafka_clusters:
       kafka-logging2003.codfw.wmnet:
         id: 2003
         rack: D
+    # The logging infra doesn't support ipv6 for now.
+    # see https://phabricator.wikimedia.org/T279342#7002887
+    ipv6: false
 
   test-eqiad:
     zookeeper_cluster_name: test-eqiad

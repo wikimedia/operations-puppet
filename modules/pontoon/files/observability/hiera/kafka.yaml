@@ -18,30 +18,35 @@ kafka_brokers_logging:
 # XXX the %{alias} parametrization here supports only one host now!
 kafka_clusters:
   main-eqiad:
+    ipv6: false
     zookeeper_cluster_name: main-eqiad
     brokers:
       "%{alias('__master_for_role_kafka__logging')}":
         id: 1042
         rack: na
   main-codfw:
+    ipv6: false
     zookeeper_cluster_name: main-eqiad
     brokers:
       "%{alias('__master_for_role_kafka__logging')}":
         id: 1042
         rack: na
   logging-eqiad:
+    ipv6: false
     zookeeper_cluster_name: main-eqiad
     brokers:
       "%{alias('__master_for_role_kafka__logging')}":
         id: 1042
         rack: na
   logging-codfw:
+    ipv6: false
     zookeeper_cluster_name: main-eqiad
     brokers:
       "%{alias('__master_for_role_kafka__logging')}":
         id: 1042
         rack: na
   jumbo-eqiad:
+    ipv6: false
     zookeeper_cluster_name: main-eqiad
     brokers:
       "%{alias('__master_for_role_kafka__logging')}":

@@ -23,6 +23,7 @@ cluster: cache_text
 do_acme: false
 kafka_clusters:
   analytics-traffic:
+    ipv6: false
     api_version: 0.9
     brokers:
       deployment-kafka01.deployment-prep.eqiad.wmflabs:
@@ -31,6 +32,7 @@ kafka_clusters:
         id: 2
     zookeeper_cluster_name: main-deployment-prep
   main-deployment-prep:
+    ipv6: false
     api_version: 0.9
     brokers:
       deployment-kafka04.deployment-prep.eqiad.wmflabs:

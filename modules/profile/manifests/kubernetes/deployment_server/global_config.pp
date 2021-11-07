@@ -69,9 +69,7 @@ class profile::kubernetes::deployment_server::global_config(
         # We need both v4 and v6 addresses
         $ips = $data['brokers'].keys().map |$n| {
             $v4 = ipresolve($n)
-            # The logging infra doesn't support ipv6 for now.
-            # see https://phabricator.wikimedia.org/T279342#7002887
-            if ($cl !~ /logging/) {
+            if (pick($data['ipv6'], true)) {
                 $v6 = ipresolve($n, 6)
                 $ret = ["${v4}/32", "${v6}/128"]
             } else {
