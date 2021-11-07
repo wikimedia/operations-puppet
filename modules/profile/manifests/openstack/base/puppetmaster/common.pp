@@ -16,8 +16,6 @@ class profile::openstack::base::puppetmaster::common(
     # array of puppetmasters
     $all_puppetmasters = inline_template('<%= @puppetmasters.values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
 
-    class {'::puppetmaster::labsrootpass':}
-
     class {'::openstack::puppet::master::enc':
         puppetmaster => $puppetmaster_webhostname,
     }

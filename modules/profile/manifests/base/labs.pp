@@ -81,24 +81,4 @@ class profile::base::labs(
         monitoring_enabled => false,
         user               => 'root',
     }
-
-    # Set a root password only if we're still governed by the official Labs
-    #  puppetmaster.  Self- and locally-hosted instances are on their own,
-    #  but most likely already registered a password during their initial
-    #  setup.
-    #
-    # Compare IPs rather than hostnames since we use an alias for the
-    #  actual labs_puppet_master variable.  We only store passwords
-    #  on the frontend puppetmaster, not on the workers.
-    #
-    #  (this is disabled pending some security work)
-    #
-    #if $::servername == 'labs-puppetmaster.wikimedia.org' {
-    #    # Create a root password and store it on the puppetmaster
-    #    user { 'root':
-    #        password => regsubst(
-    #            generate('/usr/local/sbin/make-labs-root-password', $::labsproject),
-    #            '\s$', ''),
-    #    }
-    #}
 }
