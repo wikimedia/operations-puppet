@@ -32,6 +32,7 @@ class openstack::monitor::networktests (
 
     file { '/usr/local/bin/cmd-checklist-runner':
         ensure => present,
+        mode   => '0755',
         source => 'puppet:///modules/openstack/monitor/cmd-checklist-runner.py',
     }
 

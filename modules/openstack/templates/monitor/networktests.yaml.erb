@@ -69,53 +69,53 @@
 
 - name: VM (no floating IP) contacting the internet gets NAT'd using routing_source_ip
   tests:
-    - cmd: ssh $NO_FLOATING_VM "curl -s ifconfig.me | grep -q $ROUTING_SOURCE_IP"
+    - cmd: $SSH $NO_FLOATING_VM "curl -s ifconfig.me | grep -q $ROUTING_SOURCE_IP"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (no floating IP) contacting an address covered by dmz_cidr doesn't get NAT'd
   tests:
-    - cmd: ssh $NO_FLOATING_VM "curl -Is https://es.wikipedia.org | grep x-client-ip: | grep -q $VM_IP_PREFIX"
+    - cmd: $SSH $NO_FLOATING_VM "curl -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (using floating IP) isn't affected by either routing_source_ip or dmz_cidr
   tests:
-    - cmd: ssh $FLOATING_VM_FQDN "curl -s ifconfig.me | grep -q $FLOATING_VM_IP"
+    - cmd: $SSH $FLOATING_VM_FQDN "curl -s ifconfig.me | grep -q $FLOATING_VM_IP"
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: ssh $FLOATING_VM_FQDN "curl -Is https://es.wikipedia.org | grep x-client-ip | grep -q $FLOATING_VM_IP"
+    - cmd: $SSH $FLOATING_VM_FQDN "curl -Is https://es.wikipedia.org | grep x-client-ip | grep -q $FLOATING_VM_IP"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (no floating IP) can contact auth DNS server
   tests:
-    - cmd: ssh $NO_FLOATING_VM "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+    - cmd: $SSH $NO_FLOATING_VM "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (no floating IP) can contact recursor DNS server
   tests:
-    - cmd: ssh $NO_FLOATING_VM "dig +short www.basket.com @${DNS_RECURSOR_IP} | wc -l"
+    - cmd: $SSH $NO_FLOATING_VM "dig +short www.basket.com @${DNS_RECURSOR_IP} | wc -l"
       stdout: "1"
       retcode: 0
       stderr: ""
 
 - name: VM (using floating IP) can contact auth DNS server
   tests:
-    - cmd: ssh $FLOATING_VM_FQDN "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+    - cmd: $SSH $FLOATING_VM_FQDN "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (using floating IP) can contact recursor DNS server
   tests:
-    - cmd: ssh $FLOATING_IP_VM "dig +short www.basket.com @${DNS_RECURSOR_IP} | wc -l"
+    - cmd: $SSH $FLOATING_IP_VM "dig +short www.basket.com @${DNS_RECURSOR_IP} | wc -l"
       # this a somewhat random IPv4 on the internet, so only check that we get "something"
       stdout: "1"
       retcode: 0
@@ -123,53 +123,53 @@
 
 - name: VM (using floating IP) can contact LDAP server
   tests:
-    - cmd: ssh $FLOATING_VM_FQDN 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+    - cmd: $SSH $FLOATING_VM_FQDN 'ldapsearch -x whatever | grep -q ^"# numResponses"'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (not using floating IP) can contact LDAP server
   tests:
-    - cmd: ssh $NO_FLOATING_VM 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+    - cmd: $SSH $NO_FLOATING_VM 'ldapsearch -x whatever | grep -q ^"# numResponses"'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (using floating IP) can contact openstack API
   tests:
-    - cmd: ssh $FLOATING_IP_VM 'curl -s $KEYSTONE_URL | grep -qo identity'
+    - cmd: $SSH $FLOATING_IP_VM 'curl -s $KEYSTONE_URL | grep -qo identity'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (no floating IP) can contact openstack API
   tests:
-    - cmd: ssh $NO_FLOATING_VM 'curl -s $KEYSTONE_URL | grep -qo identity'
+    - cmd: $SSH $NO_FLOATING_VM 'curl -s $KEYSTONE_URL | grep -qo identity'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: puppetmasters can sync git tree
   tests:
-    - cmd: ssh $GENERAL_PUPPETMASTER 'sudo git-sync-upstream 2>&1 | grep -q Up-to-date'
+    - cmd: $SSH $GENERAL_PUPPETMASTER 'sudo git-sync-upstream 2>&1 | grep -q Up-to-date'
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: ssh $LOCAL_PUPPETMASTER 'sudo git-sync-upstream 2>&1 | grep -q Up-to-date'
+    - cmd: $SSH $LOCAL_PUPPETMASTER 'sudo git-sync-upstream 2>&1 | grep -q Up-to-date'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (using floating IP) can read dumps NFS
   tests:
-    - cmd: ssh $FLOATING_VM_FQDN 'file /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html | grep -q HTML'
+    - cmd: $SSH $FLOATING_VM_FQDN 'file /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html | grep -q HTML'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (no floating IP) can read dumps NFS
   tests:
-    - cmd: ssh $NO_FLOATING_VM 'file /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html | grep -q HTML'
+    - cmd: $SSH $NO_FLOATING_VM 'file /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html | grep -q HTML'
       stdout: ""
       retcode: 0
       stderr: ""
@@ -180,11 +180,11 @@
 #
 - name: VM (using floating IP) can connect to wikireplicas from Toolforge
   tests:
-    - cmd: ssh $TOOLFORGE_BASTION_LOGIN 'sudo -iu tools.arturo-test-tool sql enwiki "select * from page limit 2;" | grep page_id | wc -l'
+    - cmd: $SSH $TOOLFORGE_BASTION_LOGIN 'sudo -iu tools.arturo-test-tool sql enwiki "select * from page limit 2;" | grep page_id | wc -l'
       stdout: "1"
       retcode: 0
       stderr: ""
-    - cmd: ssh $TOOLFORGE_BASTION_DEV 'sudo -iu tools.arturo-test-tool sql enwiki "select * from page limit 2;" | grep page_id | wc -l'
+    - cmd: $SSH $TOOLFORGE_BASTION_DEV 'sudo -iu tools.arturo-test-tool sql enwiki "select * from page limit 2;" | grep page_id | wc -l'
       stdout: "1"
       retcode: 0
       stderr: ""
@@ -198,11 +198,11 @@
 
 - name: Toolforge bastions see herald file on project NFS
   tests:
-    - cmd: timeout -k5s 60s ssh $TOOLFORGE_BASTION_LOGIN "file /mnt/nfs/labstore-secondary-tools-project/herald"
+    - cmd: timeout -k5s 60s $SSH $TOOLFORGE_BASTION_LOGIN "file /mnt/nfs/labstore-secondary-tools-project/herald"
       stdout: "/mnt/nfs/labstore-secondary-tools-project/herald: ASCII text"
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 60s ssh $TOOLFORGE_BASTION_DEV "file /mnt/nfs/labstore-secondary-tools-project/herald"
+    - cmd: timeout -k5s 60s $SSH $TOOLFORGE_BASTION_DEV "file /mnt/nfs/labstore-secondary-tools-project/herald"
       stdout: "/mnt/nfs/labstore-secondary-tools-project/herald: ASCII text"
       retcode: 0
       stderr: ""
