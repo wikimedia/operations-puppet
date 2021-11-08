@@ -65,6 +65,13 @@ class profile::docker::builder(
         mode    => '0444'
     }
 
+    file { '/etc/production-images/config-cert-manager.yaml':
+        ensure  => present,
+        content => template('profile/docker/production-images-config-cert-manager.yaml.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444'
+    }
 
     file { '/usr/local/bin/build-production-images':
         ensure => present,

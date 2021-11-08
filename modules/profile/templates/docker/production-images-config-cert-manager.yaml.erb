@@ -1,0 +1,9 @@
+<%- if @proxy_address and @proxy_address != '' -%>
+http_proxy: "http://<%= @proxy_address %>:<%= @proxy_port %>"
+<%- end -%>
+registry: <%= @registry %>
+seed_image: <%= @registry %>/wikimedia-buster:latest
+namespace: cert-manager
+username: prod-build
+password: <%= @password %>
+ca_bundle: /etc/ssl/certs/ca-certificates.crt
