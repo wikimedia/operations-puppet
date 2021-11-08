@@ -36,13 +36,13 @@ class varnish::logging(
         creates => '/etc/systemd/system/mtail.service',
     }
 
-    file { '/usr/local/bin/varnishmtail':
+    file { '/usr/local/bin/varnishmtail-default':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/varnish/varnishmtail.sh',
-        notify => Systemd::Service['varnishmtail'],
+        source => 'puppet:///modules/varnish/varnishmtail-default.sh',
+        notify => Systemd::Service['varnishmtail@default'],
     }
 
     file { '/etc/default/varnishmtail':
@@ -51,20 +51,31 @@ class varnish::logging(
         group   => 'root',
         mode    => '0555',
         content => "MTAIL_ARGS=\"${mtail_additional_args}\"\n",
-        notify  => Systemd::Service['varnishmtail'],
+        notify  => Systemd::Service['varnishmtail@default'],
     }
 
+    # TODO: remove after migration to varnishmtail@default
     systemd::service { 'varnishmtail':
+        ensure  => absent,
+        content => '',
+    }
+
+    # TODO: remove after migration to varnishmtail-default
+    file { '/usr/local/bin/varnishmtail':
+        ensure => absent,
+    }
+
+    systemd::service { 'varnishmtail@default':
         ensure  => present,
-        content => systemd_template('varnishmtail'),
+        content => systemd_template('varnishmtail@'),
         restart => true,
-        require => File['/usr/local/bin/varnishmtail'],
+        require => File['/usr/local/bin/varnishmtail-default'],
     }
 
     ['varnishreqstats', 'varnishttfb', 'varnishprocessing', 'varnisherrors', 'varnishsli', 'varnishxcache'].each |String $name| {
         mtail::program { $name:
             source => "puppet:///modules/mtail/programs/${name}.mtail",
-            notify => Service['varnishmtail'],
+            notify => Systemd::Service['varnishmtail@default'],
         }
     }
 
