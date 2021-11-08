@@ -1087,10 +1087,10 @@ class profile::prometheus::ops (
         ],
       },
       {
-        'job_name'        => 'jmx_wdqs_blazegraph',
+        'job_name'        => 'jmx_query_service_blazegraph',
         'scheme'          => 'http',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/jmx_wdqs_blazegraph_*.yaml" ]}
+          { 'files' => [ "${targets_path}/jmx_query_service_blazegraph_*.yaml" ]}
         ],
       },
       {
@@ -1101,10 +1101,10 @@ class profile::prometheus::ops (
         ],
       },
       {
-        'job_name'        => 'jmx_wdqs_streaming_updater',
+        'job_name'        => 'jmx_query_service_streaming_updater',
         'scheme'          => 'http',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/jmx_wdqs_streaming_updater_*.yaml" ]}
+          { 'files' => [ "${targets_path}/jmx_query_service_streaming_updater_*.yaml" ]}
         ],
       },
       {
@@ -1136,16 +1136,15 @@ class profile::prometheus::ops (
         instance_selector => 'kafka_mirror_.*',
     }
 
-
     prometheus::jmx_exporter_config{ "puppetdb_${::site}":
         dest       => "${targets_path}/jmx_puppetdb_${::site}.yaml",
         class_name => 'role::puppetdb',
     }
 
-    prometheus::jmx_exporter_config{ "wdqs_blazegraph_${::site}":
-        dest              => "${targets_path}/jmx_wdqs_blazegraph_${::site}.yaml",
-        class_name        => 'profile::query_service::wikidata',
-        instance_selector => 'wdqs-blazegraph',
+    prometheus::jmx_exporter_config{ "query_service_blazegraph_${::site}":
+        dest              => "${targets_path}/jmx_query_service_blazegraph_${::site}.yaml",
+        class_name        => 'profile::query_service::blazegraph',
+        instance_selector => '.*-blazegraph',
     }
 
     prometheus::jmx_exporter_config { "wdqs_updater_${::site}":
@@ -1154,10 +1153,10 @@ class profile::prometheus::ops (
         instance_selector => 'wdqs-updater',
     }
 
-    prometheus::jmx_exporter_config { "wdqs_streaming_updater_${::site}":
-        dest              => "${targets_path}/jmx_wdqs_streaming_updater_${::site}.yaml",
+    prometheus::jmx_exporter_config { "query_service_streaming_updater_${::site}":
+        dest              => "${targets_path}/jmx_query_service_streaming_updater_${::site}.yaml",
         class_name        => 'profile::query_service::streaming_updater',
-        instance_selector => 'wdqs-updater',
+        instance_selector => '.*-updater',
     }
 
     prometheus::jmx_exporter_config{ "zookeeper_${::site}":
