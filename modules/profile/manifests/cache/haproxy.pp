@@ -37,6 +37,7 @@ class profile::cache::haproxy(
     }
 
     class { '::haproxy':
+        template        => 'profile/cache/haproxy.cfg.erb',
         systemd_content => template('profile/cache/haproxy.service.erb'),
         logging         => false,
     }

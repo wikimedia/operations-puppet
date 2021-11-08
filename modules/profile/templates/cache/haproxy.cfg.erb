@@ -1,0 +1,16 @@
+# Note: This file is managed by puppet.
+
+global
+	user haproxy
+	group haproxy
+	stats socket <%= @socket %> mode 666 level user
+
+
+defaults
+	mode	http
+	option	httplog
+	option	dontlognull
+	retries 1
+	timeout connect 50000
+	timeout client 500000
+	timeout server 500000
