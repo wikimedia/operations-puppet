@@ -15,6 +15,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::trove
     include ::profile::openstack::codfw1dev::radosgw
     include ::profile::openstack::codfw1dev::rbd_cloudcontrol
+    include profile::openstack::codfw1dev::networktests
 
     # For testing purposes:
     include ::profile::openstack::codfw1dev::barbican
@@ -38,4 +39,5 @@ class role::wmcs::openstack::codfw1dev::control {
     include ::profile::openstack::codfw1dev::galera::backup
 
     include ::profile::wmcs::backup_glance_images
+
 }
