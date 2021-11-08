@@ -33,12 +33,12 @@ class profile::cache::haproxy(
         package  => 'haproxy',
         pin      => 'release n=buster-backports',
         priority => 1002,
+        before   => Class['::haproxy'],
     }
 
     class { '::haproxy':
         systemd_content => template('profile/cache/haproxy.service.erb'),
         logging         => false,
-        require         => Apt::Pin['haproxy-buster-bpo'],
     }
 
     ensure_packages('python3-pystemd')
@@ -127,6 +127,7 @@ class profile::cache::haproxy(
         group   => 'haproxy',
         mode    => '0444',
         content => file('profile/cache/haproxy-tls.lua'),
+        before  => Service['haproxy'],
         notify  => Service['haproxy'],
     }
 
