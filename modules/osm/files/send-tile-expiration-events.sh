@@ -29,10 +29,10 @@ if [ "${#expired_tile_dirs[@]}" -ne 0 ]; then
   find "${expired_tile_dirs[@]}" -type f -exec cat {} + |
     maps-deduped-tilelist "$minzoom" "$maxzoom" |
     xargs --max-lines=100 |
-    xargs -I {} jq --arg hostname "$(hostname -f)" --arg tiles "{}" \
+    xargs -I {} jq -c --arg hostname "$(hostname -f)" --arg tiles "{}" \
       '.meta.domain |= $hostname | .changes |= ($tiles | split(" ") | map({"tile": . , "state": "expired"}))' \
       /etc/imposm/event-template.json |
-    xargs -d "\n" -0 -I {} curl -X POST -H 'Content-Type: application/json' -d '{}' "$eventgate_endpoint"
+    xargs -I {} -d "\n" curl -X POST -H 'Content-Type: application/json' -d '{}' "$eventgate_endpoint"
 
   # Store current run timestamp as latest run
   date +%s >"$osm_dir"/last_expiration_event_timestamp
