@@ -358,7 +358,7 @@ sub recv_fe_ip_processing {
 	// it. We don't set or use this header internally (we use X-Client-IP)
 	unset req.http.X-Real-IP;
 
-	if (client.ip !~ wikimedia_trust && client.ip !~ local_tls_terminator) {
+	if (client.ip !~ wikimedia_trust && remote.ip !~ local_tls_terminator) {
 		// Ensure we only accept XFP from our own networks.  Ideally
 		// it should only be set by our nginx TLS terminator
 		// specifically, but there are known cases where internal apps
@@ -372,7 +372,7 @@ sub recv_fe_ip_processing {
 		unset req.http.X-Request-Id;
 	}
 
-	if (client.ip !~ local_host && client.ip !~ local_tls_terminator) {
+	if (client.ip !~ local_host && remote.ip !~ local_tls_terminator) {
 		// only the local nginx TLS terminator should set these at all -
 		// there are no other internal exceptions to that rule
 		unset req.http.X-Client-IP;
