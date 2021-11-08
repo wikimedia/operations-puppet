@@ -179,8 +179,6 @@ role::mariadb::temporary_storage:
   target-q: 2020-4
 role::wmcs::openstack::eqiad1::virt:
   target-q: 2020-4
-role::wmcs::openstack::codfw1dev::virt:
-  target-q: 2020-4
 role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: 2020-4
 role::configcluster_stretch:
