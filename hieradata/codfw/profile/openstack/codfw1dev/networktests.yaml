@@ -1,6 +1,6 @@
 profile::openstack::codfw1dev::networktests::sshbastion: bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
-
 profile::openstack::codfw1dev::networktests::envvars:
+    ROUTING_SOURCE_IP: 185.15.57.1
     FLOATING_VM_FQDN: proxy-01.proxy-codfw1dev.codfw1dev.wikimedia.cloud
     FLOATING_VM_IP: 185.15.57.6
     VM_IP_PREFIX: 172.16.128.
