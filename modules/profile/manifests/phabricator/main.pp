@@ -340,8 +340,8 @@ class profile::phabricator::main (
 
     $core_extensions.each |$extension| {
         php::extension { $extension:
-            package_name => "php${php_version}-${extension}",
-            sapis        => ['cli', 'fpm'],
+            versioned_packages => true,
+            sapis              => ['cli', 'fpm'],
         }
     }
 
@@ -362,11 +362,11 @@ class profile::phabricator::main (
         'mailparse':
             priority     => 21;
         'mysqlnd':
-            package_name => '',
-            priority     => 10;
+            install_packages => false,
+            priority         => 10;
         'xml':
-            package_name => "php${php_version}-xml",
-            priority     => 15;
+            versioned_packages => true,
+            priority           => 15;
         'mysqli':
             package_overrides => {"${php_version}" =>"php${php_version}-mysql"},;
     }
