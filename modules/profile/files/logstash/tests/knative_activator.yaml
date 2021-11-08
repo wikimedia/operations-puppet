@@ -1,0 +1,28 @@
+codec: "json_lines"
+ignore:
+  - "level"
+  - "program"
+  - "type"
+  - "host"
+  - "@timestamp"
+  - "normalized_message"
+  - "tags"
+testcases:
+  - input:
+      - >
+        {
+          "kubernetes": {
+              "namespace_name": "knative-serving"
+          },
+          "error": "error roundtripping http://10.64.77.193:80/healthz: context deadline exceeded",
+          "program": "input-file-kubernetes",
+          "level": "ERROR",
+          "type": "syslog"
+        }
+
+
+    expected:
+      - error:
+          message: "error roundtripping http://10.64.77.193:80/healthz: context deadline exceeded"
+        kubernetes:
+          namespace_name: "knative-serving"
