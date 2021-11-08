@@ -4,8 +4,10 @@
 # with the new one. This will make it able to talk to the new puppetmaster on its next run.
 # A puppetmaster's CA cert can be found at /var/lib/puppet/server/ssl/certs/ca.pem
 class profile::base::certificates (
-    Hash             $puppet_ca_content = lookup('profile::base::certificates::puppet_ca_content'),
-    Optional[String] $puppetmaster_key  = lookup('puppetmaster'),
+    Hash              $puppet_ca_content  = lookup('profile::base::certificates::puppet_ca_content'),
+    Optional[String]  $puppetmaster_key   = lookup('puppetmaster'),
+    Boolean           $include_bundle_jks = lookup('profile::base::certificates::include_bundle_jks'),
+    Boolean           $include_bundle_p12 = lookup('profile::base::certificates::include_bundle_p12'),
 ) {
     # Includes internal root CA's e.g.
     # * puppet CA
@@ -44,6 +46,19 @@ class profile::base::certificates (
     # the more-widely-known R3 root instead of its default R5 root.
     sslcert::ca { 'GlobalSign_ECC_Root_CA_R5_R3_Cross.crt':
         source  => 'puppet:///modules/base/ca/GlobalSign_ECC_Root_CA_R5_R3_Cross.crt',
+    }
+
+    $jks_truststore_path = $include_bundle_jks ? {
+        true  => '/etc/ssl/localcerts/trusted_root_ca.jks',
+        false => undef,
+    }
+    $p12_truststore_path = $include_bundle_p12 ? {
+        true  => '/etc/ssl/localcerts/trusted_root_ca.p12',
+        false => undef,
+    }
+    class { 'sslcert::trusted_ca':
+        jks_truststore_path => $jks_truststore_path,
+        p12_truststore_path => $p12_truststore_path,
     }
 
     if has_key($puppet_ca_content, $puppetmaster_key) {

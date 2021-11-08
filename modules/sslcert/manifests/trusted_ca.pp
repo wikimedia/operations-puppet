@@ -6,11 +6,11 @@
 # @param jks_truststore_path location on the fs where to create the .jks truststore
 # @param owner user set as owner of the files to be created
 # @param group group set as group-owner of the files to be created
-define sslcert::trusted_ca (
+class sslcert::trusted_ca (
     Wmflib::Ensure             $ensure                 = 'present',
     String                     $trusted_root_ca_source = 'puppet:///modules/sslcert/trusted_root_ca.pem',
     Stdlib::Unixpath           $trusted_ca_path        = '/etc/ssl/localcerts/trusted_root_ca.pem',
-    String                     $truststore_password    = '',
+    String                     $truststore_password    = 'changeit',
     String                     $owner                  = 'root',
     String                     $group                  = 'root',
     Optional[Stdlib::Unixpath] $p12_truststore_path    = undef,
