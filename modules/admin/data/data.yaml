@@ -5608,3 +5608,7 @@ ldap_only_users:
     ensure: present
     realname: João Carvalho
     email: jcarvalho@wikimedia.org
+  dmartin:
+    ensure: present
+    realname: David Martin
+    email: dmartin@wikimedia.org
