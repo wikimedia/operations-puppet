@@ -213,3 +213,4 @@ profile::cache::haproxy::unified_certs:
     - digicert-2020-rsa-unified
     - digicert-2021-ecdsa-unified
     - digicert-2021-rsa-unified
+profile::cache::haproxy::varnish_socket: /run/varnish-frontend.socket
