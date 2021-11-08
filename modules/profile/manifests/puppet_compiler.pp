@@ -22,7 +22,7 @@ class profile::puppet_compiler(
     description => 'Clean up old PCC reports',
     command     => "/usr/bin/find ${output_dir} -ctime +31 -delete",
     user        => 'root',
-    interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'daily'},
+    interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
   }
   $large_cleanup_cmd = @("CLEANUP_CMD"/L$)
   /usr/bin/find ${output_dir} -mindepth 1 -maxdepth 1 -type d -ctime +7 -exec du -ks {} + | \
@@ -34,7 +34,7 @@ class profile::puppet_compiler(
     description => 'Clean up PCC reports older then 7 days and biger then 1G',
     command     => $large_cleanup_cmd,
     user        => 'root',
-    interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'daily'},
+    interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
   }
 
   class {'puppet_compiler': }
