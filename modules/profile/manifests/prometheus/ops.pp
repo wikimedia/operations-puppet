@@ -354,17 +354,17 @@ class profile::prometheus::ops (
         }
     }
 
-    $haproxy_tls_jobs = [
+    $cache_haproxy_tls_jobs = [
       {
-        'job_name'        => 'haproxy_tls',
+        'job_name'        => 'cache_haproxy_tls',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/haproxy_tls_*.yaml"] },
+          { 'files' => [ "${targets_path}/cache_haproxy_tls_*.yaml"] },
         ],
       },
     ]
 
-    prometheus::class_config{ "haproxy_tls_upload_${::site}":
-        dest       => "${targets_path}/haproxy_tls_upload_${::site}.yaml",
+    prometheus::class_config{ "cache_haproxy_tls_upload_${::site}":
+        dest       => "${targets_path}/cache_haproxy_tls_upload_${::site}.yaml",
         class_name => 'role::cache::upload_haproxy',
         port       => 9422,
         labels     => {
@@ -2030,7 +2030,7 @@ class profile::prometheus::ops (
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
-            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $haproxy_tls_jobs,
+            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
         ].flatten,
         global_config_extra    => $config_extra,
     }
