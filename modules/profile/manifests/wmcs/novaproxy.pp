@@ -51,6 +51,7 @@ class profile::wmcs::novaproxy(
     }
 
     if $acme_certname != '' {
+        class { '::sslcert::dhparam': }
         acme_chief::cert { $acme_certname:
             puppet_rsc => Exec['nginx-reload'],
         }
@@ -58,6 +59,7 @@ class profile::wmcs::novaproxy(
         $ssl_certificate_name = $acme_certname
         $use_acme_chief = true
     } elsif $use_ssl {
+        class { '::sslcert::dhparam': }
         sslcert::certificate { 'star.wmflabs.org':
             skip_private => true,
             before       => Class['dynamicproxy'],
