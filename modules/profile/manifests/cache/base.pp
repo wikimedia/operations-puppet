@@ -16,7 +16,6 @@ class profile::cache::base(
     Boolean $performance_tweaks                      = lookup('profile::cache::base::performance_tweaks', {'default_value' => true}),
     Array $extra_trust                               = lookup('profile::cache::base::extra_trust', {'default_value' => []}),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
-    String $mtail_additional_args                    = lookup('profile::cache::base::mtail_additional_args', {'default_value' => ''}),
 ){
 
     require network::constants
@@ -90,8 +89,7 @@ class profile::cache::base(
     }
 
     class { '::varnish::logging':
-        mtail_additional_args => $mtail_additional_args,
-        mtail_programs        => $mtail_programs,
+        mtail_programs => $mtail_programs,
     }
 
     # auto-depool on shutdown + conditional one-shot auto-pool on start

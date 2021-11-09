@@ -8,7 +8,6 @@
 #   The list of mtail programs to install. Defaults to [].
 #
 class varnish::logging(
-    $mtail_additional_args='',
     $mtail_programs=[],
 ){
     ensure_packages('python3-logstash')
@@ -38,12 +37,7 @@ class varnish::logging(
     }
 
     file { '/etc/default/varnishmtail':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        content => "MTAIL_ARGS=\"${mtail_additional_args}\"\n",
-        notify  => Systemd::Service['varnishmtail@default'],
+        ensure => absent,
     }
 
     systemd::service { 'varnishmtail@default':
