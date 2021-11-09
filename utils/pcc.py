@@ -279,7 +279,9 @@ def main():  # pylint: disable=too-many-locals
     jenkins = jenkinsapi.jenkins.Jenkins(
         baseurl=JENKINS_URL,
         username=args.username,
-        password=args.api_token
+        password=args.api_token,
+        # sometimes jenkins is quite slow to reply
+        timeout=30,
     )
 
     print(yellow('Compiling {change_number} on node(s) {nodes}...'.format(
