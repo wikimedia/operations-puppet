@@ -115,7 +115,7 @@
 
 - name: VM (using floating IP) can contact recursor DNS server
   tests:
-    - cmd: $SSH $FLOATING_IP_VM "dig +short www.basket.com @${DNS_RECURSOR_IP} | wc -l"
+    - cmd: $SSH $FLOATING_VM_FQDN "dig +short www.basket.com @${DNS_RECURSOR_IP} | wc -l"
       # this a somewhat random IPv4 on the internet, so only check that we get "something"
       stdout: "1"
       retcode: 0
@@ -137,14 +137,14 @@
 
 - name: VM (using floating IP) can contact openstack API
   tests:
-    - cmd: $SSH $FLOATING_IP_VM 'curl -s $KEYSTONE_URL | grep -qo identity'
+    - cmd: $SSH $FLOATING_VM_FQDN 'curl -s $KEYSTONE_URL | grep -q identity'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (no floating IP) can contact openstack API
   tests:
-    - cmd: $SSH $NO_FLOATING_VM 'curl -s $KEYSTONE_URL | grep -qo identity'
+    - cmd: $SSH $NO_FLOATING_VM 'curl -s $KEYSTONE_URL | grep -q identity'
       stdout: ""
       retcode: 0
       stderr: ""
@@ -162,14 +162,14 @@
 
 - name: VM (using floating IP) can read dumps NFS
   tests:
-    - cmd: $SSH $FLOATING_VM_FQDN 'file /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html | grep -q HTML'
+    - cmd: $SSH $DUMPS_FLOATING_VM_FQDN 'file $DUMPSFILE | grep -q HTML'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: VM (no floating IP) can read dumps NFS
   tests:
-    - cmd: $SSH $NO_FLOATING_VM 'file /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html | grep -q HTML'
+    - cmd: $SSH $DUMPS_NO_FLOATING_VM 'file $DUMPSFILE | grep -q HTML'
       stdout: ""
       retcode: 0
       stderr: ""
