@@ -159,12 +159,18 @@ def stage_run_tests(args):
         test_run(test_definition)
 
 
-def stage_report():
+def stage_report(args):
     logging.info("---")
     total = ctx.counter_test_ok + ctx.counter_test_failed
     logging.info("--- passed tests: {}".format(ctx.counter_test_ok))
     logging.info("--- failed tests: {}".format(ctx.counter_test_failed))
     logging.info("--- total tests: {}".format(total))
+
+    exit_code = 0
+    if args.exit_code_fail and ctx.counter_test_failed > 0:
+        exit_code = 1
+
+    sys.exit(exit_code)
 
 
 def parse_args():
@@ -176,6 +182,11 @@ def parse_args():
         help="File with configuration and testcase definitions. Defaults to '%(default)s'",
     )
     parser.add_argument("--debug", action="store_true", help="debug mode")
+    parser.add_argument(
+        "--exit-code-fail",
+        action="store_true",
+        help="report in the exit code if a check fails",
+    )
 
     return parser.parse_args()
 
@@ -210,7 +221,7 @@ def main():
     if not stage_validate_config(args):
         sys.exit(1)
     stage_run_tests(args)
-    stage_report()
+    stage_report(args)
 
 
 if __name__ == "__main__":
