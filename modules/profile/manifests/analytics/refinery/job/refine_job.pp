@@ -13,9 +13,12 @@
 #
 # == Properties
 #
-# [*job_config*]
+# [*job_config*] (required)
 #   A hash of job config properites that will be rendered as a .properties file and
 #   given to the Refine job as the --config_file argument.
+#
+# [*monitor_interval*] (required)
+#   Systemd time interval for running the RefineMonitor job.
 #
 # [*job_name*]
 #   The Spark job name. Default: refine_$title
@@ -46,11 +49,9 @@
 #   If true, a RefineMonitor job will be scheduled using the same job_config
 #   for Refine plus any refine_monitor_job_config overrides. RefineMonitor
 #   alerts on missing dataset hours or failure flags.
-#
-# [*monitor_interval*]
-#   Systemd time interval for runnint the RefineMonitor job.
 define profile::analytics::refinery::job::refine_job (
     $job_config,
+    $monitor_interval,
     $job_name                         = "refine_${title}",
     $refinery_job_jar                 = undef,
     $job_class                        = 'org.wikimedia.analytics.refinery.job.refine.Refine',
@@ -69,7 +70,6 @@ define profile::analytics::refinery::job::refine_job (
     $interval                         = '*-*-* *:00:00',
     $monitoring_enabled               = true,
     $refine_monitor_enabled           = $monitoring_enabled,
-    $monitor_interval                 = '*-*-* 04:15:00',
     $ensure                           = 'present',
     $use_keytab                       = false,
 ) {

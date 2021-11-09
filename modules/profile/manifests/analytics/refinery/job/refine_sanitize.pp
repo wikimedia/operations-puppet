@@ -100,15 +100,17 @@ class profile::analytics::refinery::job::refine_sanitize(
         'keep_all_enabled' => true,
     })
     profile::analytics::refinery::job::refine_job { 'event_sanitized_main_immediate':
-        interval   => '*-*-* *:05:00',
-        job_config => $event_sanitized_main_job_config
+        interval         => '*-*-* *:05:00',
+        monitor_interval => '*-*-* 04:15:00',
+        job_config       => $event_sanitized_main_job_config
     }
     profile::analytics::refinery::job::refine_job { 'event_sanitized_main_delayed':
-        interval      => '*-*-* 05:00:00',
+        interval         => '*-*-* 05:00:00',
+        monitor_interval => '*-*-* 05:45:00',
         # Monitor with a couple hours delay to allow for refine to finish.
-        monitor_since => $delayed_since + 26,
-        monitor_until => $delayed_until + 2,
-        job_config    => $event_sanitized_main_job_config.merge({
+        monitor_since    => $delayed_since + 24,
+        monitor_until    => $delayed_until +2,
+        job_config       => $event_sanitized_main_job_config.merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
         }),
@@ -122,15 +124,17 @@ class profile::analytics::refinery::job::refine_sanitize(
         'keep_all_enabled' => false,
     })
     profile::analytics::refinery::job::refine_job { 'event_sanitized_analytics_immediate':
-        interval   => '*-*-* *:02:00',
-        job_config => $event_sanitized_analytics_job_config,
+        interval         => '*-*-* *:02:00',
+        monitor_interval => '*-*-* 04:20:00',
+        job_config       => $event_sanitized_analytics_job_config,
     }
     profile::analytics::refinery::job::refine_job { 'event_sanitized_analytics_delayed':
-        interval      => '*-*-* 06:00:00',
+        interval         => '*-*-* 06:00:00',
+        monitor_interval => '*-*-* 06:45:00',
         # Monitor with a couple hours delay to allow for refine to finish.
-        monitor_since => $delayed_since + 26,
-        monitor_until => $delayed_until + 2,
-        job_config    => $event_sanitized_analytics_job_config.merge({
+        monitor_since    => $delayed_since + 24,
+        monitor_until    => $delayed_until +2,
+        job_config       => $event_sanitized_analytics_job_config.merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
         }),
