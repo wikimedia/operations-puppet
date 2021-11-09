@@ -100,7 +100,7 @@ def cmd_run(cmd, expected_retcode, expected_stdout, expected_stderr):
     success = True
     expanded_cmd = os.path.expandvars(cmd)
     logging.debug(f"running command: {expanded_cmd}")
-    r = subprocess.run(cmd, capture_output=True, shell=True)
+    r = subprocess.run(expanded_cmd, capture_output=True, shell=True)
 
     if expected_retcode is not None:
         if r.returncode != expected_retcode:
