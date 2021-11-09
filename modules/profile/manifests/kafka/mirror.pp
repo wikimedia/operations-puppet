@@ -100,6 +100,7 @@ class profile::kafka::mirror(
     Stdlib::Port $jmx_exporter_base_port  = lookup('profile::kafka::mirror:jmx_exporter_base_port', {'default_value' => 7900}),
     Integer $message_max_bytes            = lookup('kafka_message_max_bytes'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
+    Boolean $use_pki_migration_settings   = lookup('profile::kafka::mirror:use_pki_migration_settings', {'default_value' => false}),
 ) {
     $source_config            = kafka_config($source_cluster_name)
     $destination_config       = kafka_config($destination_cluster_name)
@@ -116,14 +117,20 @@ class profile::kafka::mirror(
 
     # Consumer and Producer use the same SSL properties.
     if $consumer_ssl_enabled or $producer_ssl_enabled {
-        $ssl_keystore_secrets_path      = "certificates/${certificate_name}/${certificate_name}.keystore.jks"
-        $ssl_keystore_location          = "${ssl_location}/${certificate_name}.keystore.jks"
-
-        $ssl_truststore_secrets_path    = "certificates/${certificate_name}/truststore.jks"
-        $ssl_truststore_location        = "${ssl_location}/truststore.jks"
+        if $use_pki_migration_settings {
+            include profile::base::certificates
+            $ssl_truststore_location = $profile::base::certificates::jks_truststore_path
+            $ssl_truststore_password = $profile::base::certificates::truststore_password
+        } else {
+            $ssl_truststore_secrets_path = "certificates/${certificate_name}/truststore.jks"
+            $ssl_truststore_location = "${ssl_location}/truststore.jks"
+            $ssl_truststore_password = $ssl_password
+        }
+        $ssl_keystore_secrets_path = "certificates/${certificate_name}/${certificate_name}.keystore.jks"
+        $ssl_keystore_location = "${ssl_location}/${certificate_name}.keystore.jks"
 
         # https://phabricator.wikimedia.org/T182993#4208208
-        $ssl_java_opts                  = '-Djdk.tls.namedGroups=secp256r1 '
+        $ssl_java_opts = '-Djdk.tls.namedGroups=secp256r1 '
 
         if !defined(File[$ssl_location]) {
             file { $ssl_location:
@@ -136,6 +143,7 @@ class profile::kafka::mirror(
                 require => Class['::confluent::kafka::common'],
             }
         }
+
         file { $ssl_keystore_location:
             content => secret($ssl_keystore_secrets_path),
             owner   => 'kafka',
@@ -144,13 +152,14 @@ class profile::kafka::mirror(
         }
         File[$ssl_keystore_location] -> Confluent::Kafka::Mirror::Instance <| |>
 
-
-        if !defined(File[$ssl_truststore_location]) {
-            file { $ssl_truststore_location:
-                content => secret($ssl_truststore_secrets_path),
-                owner   => 'kafka',
-                group   => 'kafka',
-                mode    => '0444',
+        if !$use_pki_migration_settings {
+            if !defined(File[$ssl_truststore_location]) {
+                file { $ssl_truststore_location:
+                    content => secret($ssl_truststore_secrets_path),
+                    owner   => 'kafka',
+                    group   => 'kafka',
+                    mode    => '0444',
+                }
             }
         }
         File[$ssl_truststore_location] -> Confluent::Kafka::Mirror::Instance <| |>
@@ -160,7 +169,7 @@ class profile::kafka::mirror(
         $ssl_properties = {
             'security.protocol'       => 'SSL',
             'ssl.truststore.location' => $ssl_truststore_location,
-            'ssl.truststore.password' => $ssl_password,
+            'ssl.truststore.password' => $ssl_truststore_password,
             'ssl.keystore.location'   => $ssl_keystore_location,
             'ssl.keystore.password'   => $ssl_password,
             'ssl.key.password'        => $ssl_password,
