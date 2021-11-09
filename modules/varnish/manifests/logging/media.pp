@@ -14,6 +14,6 @@ define varnish::logging::media {
 
     mtail::program { 'varnishmedia':
         source => 'puppet:///modules/mtail/programs/varnishmedia.mtail',
-        notify => Service['varnishmtail'],
+        notify => Service['varnishmtail@default'],
     }
 }

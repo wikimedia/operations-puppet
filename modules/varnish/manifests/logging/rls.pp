@@ -8,6 +8,6 @@ define varnish::logging::rls {
 
     mtail::program { 'varnishrls':
         source => 'puppet:///modules/mtail/programs/varnishrls.mtail',
-        notify => Service['varnishmtail'],
+        notify => Service['varnishmtail@default'],
     }
 }
