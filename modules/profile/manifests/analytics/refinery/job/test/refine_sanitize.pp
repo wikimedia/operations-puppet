@@ -95,9 +95,6 @@ class profile::analytics::refinery::job::test::refine_sanitize(
         job_config       => $event_sanitized_main_job_config
     }
     profile::analytics::refinery::job::refine_job { 'event_sanitized_main_test_delayed':
-        # TODO; The delayed job needs to be absent until after 2021-06.
-        # After that, it should work as normal and can be made present.
-        ensure           => 'absent',
         interval         => '*-*-* 05:00:00',
         monitor_interval => '*-*-* 05:45:00',
         # delayed job should monitor around the day it is scheduled for.
@@ -122,11 +119,8 @@ class profile::analytics::refinery::job::test::refine_sanitize(
         job_config       => $event_sanitized_analytics_job_config,
     }
     profile::analytics::refinery::job::refine_job { 'event_sanitized_analytics_test_delayed':
-        # TODO; The delayed job needs to be absent until after 2021-06.
-        # After that, it should work as normal and can be made present.
-        ensure           => 'absent',
         interval         => '*-*-* 06:00:00',
-        monitor_interval => '*-*-* 00:45:00',
+        monitor_interval => '*-*-* 06:45:00',
         # delayed job should monitor around the day it is scheduled for.
         monitor_since    => $delayed_since + 24,
         monitor_until    => $delayed_until - 24,
