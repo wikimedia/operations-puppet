@@ -21,7 +21,7 @@ class openstack::monitor::networktests (
     $sshuser = 'srv-networktests'
 
     $ssh_identity = "-i ${sshkeyfile} -o User=${sshuser}"
-    $ssh_opts = '-o ConnectTimeout=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o NumberOfPasswordPrompts=0'
+    $ssh_opts = '-q -o ConnectTimeout=5 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o NumberOfPasswordPrompts=0'
     $ssh_proxy = "-o Proxycommand=\"ssh -o StrictHostKeyChecking=no -i ${sshkeyfile} -W %h:%p ${sshuser}@${sshbastion}\""
     $ssh = "/usr/bin/ssh ${ssh_identity} ${ssh_opts} ${ssh_proxy}"
 
