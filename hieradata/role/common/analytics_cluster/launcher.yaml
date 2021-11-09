@@ -53,6 +53,7 @@ profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: present
 profile::airflow::instances:
   # airflow@analytics instance.
   analytics:
+    ferm_srange: $ANALYTICS_NETWORKS
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics
     service_group: analytics
@@ -71,5 +72,10 @@ profile::airflow::instances:
         conn_type: fs
         description: Local filesystem on the Airflow Scheduler node
       # TODO: add more as needed
+# TODO: remove this override to automatically deploy and use
+# airflow-dags/platform_eng/dags from data-engineering/airflow-dags
+# repository once we are ready.
+# https://phabricator.wikimedia.org/T295380
+profile::airflow::use_wmf_defaults: false
 
 profile::contacts::role_contacts: ['Analytics SREs']

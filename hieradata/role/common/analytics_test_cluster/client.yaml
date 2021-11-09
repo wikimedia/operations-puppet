@@ -51,16 +51,16 @@ profile::airflow::instances:
     service_group: analytics
     db_user: airflow_analytics_test
     monitoring_enabled: false
+    scap_targets:
+      'airflow-dags/analytics':
+        deploy_user: analytics
+        manage_user: false
+        key_name: deploy_airflow
+        ensure: present
     airflow_config:
       core:
-        # NOE: This is a temporary airflow dags directory that will be
-        # used as an initial development playground for the
-        # airflow-analytics-test instance.
-        dags_folder: /srv/airflow-analytics-test-dags
-        security: kerberos
-        executor: LocalExecutor
-        # This can be an ERB template that will be rendered in airflow::instance.
-        # db_user and db_password params should be set in puppet private
-        # in profile::airflow::instances_secrets.
-        sql_alchemy_conn: mysql://<%= @db_user %>:<%= @db_password %>@an-test-coord1001.eqiad.wmnet/airflow_analytics_test?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+        dags_folder: /srv/deployment/airflow-dags/analytics/analytics/dags
+
+profile::airflow::database_host_default: an-test-coord1001.eqiad.wmnet
+
 profile::contacts::role_contacts: ['Analytics SREs']

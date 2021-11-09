@@ -91,6 +91,13 @@
 #   ferm srange on which to allow access to Airflow (really just the airflow-webserver port).
 #   Default: $ANALYTICS_NETWORKS
 #
+# [*scap_targets*]
+#   scap::target resource definitions to declare.
+#   This is useful to have here at the airflow::instance level so that we
+#   can automate deployment of repositories needed for this airflow::instance.
+#   These must also be declared in scap::sources in deployment_server.yaml hiera.
+#   Default: undef
+#
 # [*ensure*]
 #   Default: present
 #
@@ -104,12 +111,18 @@ define airflow::instance(
     Optional[Hash] $connections         = undef,
     Boolean $monitoring_enabled         = false,
     Integer $clean_logs_older_than_days = 90,
-    String $ferm_srange                 = '$ANALYTICS_NETWORKS',
+    String $ferm_srange                 = '$INTERNAL',
+    Optional[Hash] $scap_targets        = undef,
     Wmflib::Ensure $ensure              = 'present',
 ) {
     require ::airflow
 
     $airflow_prefix = $::airflow::airflow_prefix
+
+    # Declare any scap::targets for this instance.
+    if $scap_targets != undef {
+        create_resources('scap::target', $scap_targets)
+    }
 
     # First, construct smart default values and merge them together
     # to build $_airflow_config.  The $_airflow_config Hash will be usd

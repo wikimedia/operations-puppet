@@ -102,11 +102,36 @@ profile::keyholder::server::agents:
     trusted_groups:
       - deploy-design
 
+  # Shared deploy ssh key for Data Engineering maintained
+  # Airflow instances. For now, all admins of Airflow instances
+  # can deploy any Airflow instance.
+  deploy_airflow:
+    trusted_groups:
+      - analytics-deployers
+      # TODO:
+      # - analytics-research-admins
+      # - analytics-platform-eng-admins
+
+
+
+
 # scap::source declarations.  These are created
-# by the scap::server class.  Each source listed here
-# will be cloned on the scap deploy server.
+# by the profile::mediawiki::deployment::server class.
+# Each source listed here will be cloned on the scap deploy server.
 scap::sources:
   3d2png/deploy: {}
+
+  # airflow-dags is a shared airflow repository for the various
+  # Data Engineering maintained airflow instances.
+  # Each instance (used by a team), gets its own
+  # scap deployment source and target. Each
+  # of these uses the same source repo, but an
+  # instances specific scap repo.
+  airflow-dags/analytics:
+    repository: data-engineering/airflow-dags
+    scap_repository: data-engineering/airflow-dags-scap-analytics
+    origin: gitlab
+
   analytics/refinery:
     scap_repository: analytics/refinery/scap
   analytics/hdfs-tools/deploy: {}
