@@ -234,7 +234,7 @@ define varnish::instance(
     nrpe::monitor_service { "check-varnish-uds${instancesuffix}":
         ensure       => $ensure_uds_check,
         description  => 'Check Varnish UDS',
-        nrpe_command => "/usr/local/lib/nagios/plugins/check_varnish_uds --socket ${listen_uds} --proxy ${proxy_on_uds}",
+        nrpe_command => "sudo -u root /usr/local/lib/nagios/plugins/check_varnish_uds --socket ${listen_uds} --proxy ${proxy_on_uds}",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
         require      => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
     }

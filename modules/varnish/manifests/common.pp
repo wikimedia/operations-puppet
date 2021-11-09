@@ -111,4 +111,10 @@ class varnish::common(
         mode   => '0555',
         source => 'puppet:///modules/varnish/check_varnish_uds.py';
     }
+
+    sudo::user { 'nagios_varnish_uds':
+        ensure     => 'present',
+        user       => 'nagios',
+        privileges => ['ALL = (root) NOPASSWD: /usr/local/lib/nagios/plugins/check_varnish_uds'],
+    }
 }
