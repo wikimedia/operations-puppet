@@ -7,7 +7,7 @@
     <%= key %>: <%= value %>
 <% end -%>
 ---
-- name: basic ping to cloudgw addresses (raw addresses)
+- name: basic ping to cloudgw addresses (raw addresses) from outside the cloud network
   tests:
     - cmd: timeout -k5s 10s ping -c1 $CLOUDGW_A_IP >/dev/null
       stdout: ""
@@ -26,7 +26,7 @@
       retcode: 0
       stderr: ""
 
-- name: basic ping to cloudgw addresses (DNS names)
+- name: basic ping to cloudgw addresses (DNS names) from outside the cloud network
   tests:
     - cmd: timeout -k5s 10s ping -c1 $CLOUDGW_A_FQDN >/dev/null
       stdout: ""
@@ -45,27 +45,39 @@
       retcode: 0
       stderr: ""
 
-- name: basic ping to neutron addresses (raw addresses)
+- name: basic ping to neutron WAN from outside the cloud network
   tests:
     - cmd: timeout -k5s 10s ping -c1 $NEUTRON_WAN_IP >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 10s ping -c1 $NEUTRON_VIRT_IP >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic ping to neutron addresses (DNS names)
-  tests:
     - cmd: timeout -k5s 10s ping -c1 $NEUTRON_WAN_FQDN >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 10s ping -c1 $NEUTRON_VIRT_FQDN >/dev/null
+
+- name: basic ping to neutron VIRT gateway from within the cloud virtual network, no floating IP
+  tests:
+    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping -c1 $NEUTRON_VIRT_IP >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
+    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping -c1 $NEUTRON_VIRT_FQDN >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic ping to neutron VIRT gateway from within the cloud virtual network, with floating IP
+  tests:
+    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping -c1 $NEUTRON_VIRT_IP >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping -c1 $NEUTRON_VIRT_FQDN >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
 
 - name: VM (no floating IP) contacting the internet gets NAT'd using routing_source_ip
   tests:
