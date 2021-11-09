@@ -5,3 +5,4 @@ prometheus_ports:
  - 9105
  # nic saturation exporter
  - 9710
+profile::contacts::role_contacts: ['WMCS SREs']

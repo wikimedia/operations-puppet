@@ -9,3 +9,5 @@ profile::discovery::path: "/srv/config-master/discovery"
 profile::discovery::watch_interval: 60
 profile::puppetmaster::frontend::prevent_cherrypicks: false
 puppet_ca_server: puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org
+profile::contacts::role_contacts:
+- WMCS SREs

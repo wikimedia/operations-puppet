@@ -1,6 +1,0 @@
-profile::monitoring::notifications_enabled: false
-profile::admin::groups:
-  - labtest-roots
-# See T224828
-raid::md::cron_ensure: absent
-profile::contacts::role_contacts: ['WMCS SREs']

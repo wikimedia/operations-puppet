@@ -1,7 +1,0 @@
-profile::monitoring::notifications_enabled: false
-profile::admin::groups:
-  - labtest-roots
-raid::md::cron_ensure: absent
-
-profile::openstack::eqiad1::nova::common::is_control_node: true
-profile::contacts::role_contacts: ['WMCS SREs']
