@@ -151,4 +151,12 @@ class profile::cache::haproxy(
         del_headers          => $del_headers,
         prometheus_port      => $prometheus_port,
     }
+
+    profile::cache::haproxy::monitoring { 'haproxy_tls_monitoring':
+        port         => $tls_port,
+        certificates => $certificates,
+        do_ocsp      => $do_ocsp,
+        acme_chief   => $unified_acme_chief,
+        require      => Haproxy::Tls_terminator['tls'],
+    }
 }

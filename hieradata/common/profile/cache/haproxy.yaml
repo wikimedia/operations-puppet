@@ -99,6 +99,8 @@ profile::cache::haproxy::available_unified_certificates:
         - wmfusercontent.org
         - '*.wmfusercontent.org'
         - w.wiki
+    warning_threshold: 30
+    critical_threshold: 15
   digicert-2020:
     cert_paths:
         - /etc/ssl/private/digicert-2020-ecdsa-unified.chained.crt.key
@@ -143,6 +145,8 @@ profile::cache::haproxy::available_unified_certificates:
         - wmfusercontent.org
         - '*.wmfusercontent.org'
         - w.wiki
+    warning_threshold: 30
+    critical_threshold: 15
   lets-encrypt:
     cert_paths:
         - /etc/acmecerts/unified/live/rsa-2048.chained.crt.key
@@ -187,6 +191,8 @@ profile::cache::haproxy::available_unified_certificates:
         - wmfusercontent.org
         - '*.wmfusercontent.org'
         - w.wiki
+    warning_threshold: 21
+    critical_threshold: 15
 
 profile::cache::haproxy::do_ocsp: true
 profile::cache::haproxy::h2settings:
