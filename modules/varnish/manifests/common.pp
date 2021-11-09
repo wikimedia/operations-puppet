@@ -96,12 +96,8 @@ class varnish::common(
         ensure => absent,
     }
 
-    # Install cachestats.py
     file { '/usr/local/lib/python2.7/dist-packages/cachestats.py':
-        source => 'puppet:///modules/varnish/cachestats.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
+        ensure => absent,
     }
 
     file { '/usr/local/lib/nagios/plugins/check_varnish_uds':
