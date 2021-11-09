@@ -21,6 +21,9 @@ profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: '9dc683f1-f3d4-4c12-8b8f-f3
 
 profile::ceph::client::rbd::enable_nova_rbd: true
 
+profile::ceph::auth::deploy::enabled: true
+profile::ceph::auth::deploy::selected_creds:
+- eqiad1-compute
 
 # Backup things:
 profile::wmcs::backy2::cluster_name: ceph
