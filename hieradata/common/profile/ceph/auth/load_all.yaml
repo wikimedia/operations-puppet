@@ -1,4 +1,4 @@
-profile::ceph::auth::load_all::enabled: false
+profile::ceph::auth::load_all::enabled: true
 profile::ceph::auth::load_all::configuration: {}
 # Example data structure
 #profile::ceph::auth::load_all::configuration:

@@ -1,4 +1,3 @@
-profile::ceph::auth::load_all::enabled: true
 profile::ceph::auth::load_all::configuration:
   cinder-backups:
     caps:
