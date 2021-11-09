@@ -29,6 +29,9 @@ profile::wikidough::dnsdist::tls::dot:
     - 'TLS_CHACHA20_POLY1305_SHA256'
     - 'TLS_AES_128_GCM_SHA256'
 
+profile::wikidough::dnsdist::custom_headers:
+  strict-transport-security: 'max-age=106384710; includeSubDomains; preload'
+
 # password and api_key are defined in the private repo.
 profile::wikidough::dnsdist::webserver:
   host: 0.0.0.0

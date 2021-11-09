@@ -62,34 +62,30 @@
 #  [*landing_text*]
 #    [string] text on the landing page. default: undef.
 #
-#  [*enable_hsts*]
-#    [bool] whether the HSTS header is set in the DoH response. default: true.
-#
-#  [*hsts_max_age*]
-#    [int] time in seconds for the max-age directive. default: 106384710 (~3.37 years).
+#  [*custom_headers*]
+#    [Dnsdist::Http_headers] custom HTTP headers. default: {}.
 
 
 class dnsdist (
-    Dnsdist::Resolver                   $resolver,
-    Dnsdist::TLS_common                 $tls_common,
-    Dnsdist::TLS_config                 $tls_config_doh,
-    Dnsdist::TLS_config                 $tls_config_dot,
-    Array[String[1]]                    $doh_paths              = ['/', '/dns-query'],
-    Integer[1]                          $qps_max                = 40,
-    Boolean                             $enable_packetcache     = true,
-    Integer[1]                          $packetcache_max        = 10000000,
-    Integer[1]                          $ringbuffer_max         = 10,
-    Integer[1]                          $tcp_client_threads_max = 20,
-    Boolean                             $enable_console         = false,
-    Optional[String]                    $console_key            = undef,
-    Boolean                             $enable_webserver       = false,
-    Boolean                             $drop_querytype_any     = true,
-    Optional[Dnsdist::Webserver_config] $webserver              = undef,
-    Boolean                             $enable_ecs             = true,
-    Boolean                             $enable_landing         = false,
-    Optional[String]                    $landing_text           = undef,
-    Boolean                             $enable_hsts            = true,
-    Integer[300]                        $hsts_max_age           = 106384710,
+    Dnsdist::Resolver                      $resolver,
+    Dnsdist::TLS_common                    $tls_common,
+    Dnsdist::TLS_config                    $tls_config_doh,
+    Dnsdist::TLS_config                    $tls_config_dot,
+    Array[String[1]]                       $doh_paths              = ['/', '/dns-query'],
+    Integer[1]                             $qps_max                = 40,
+    Boolean                                $enable_packetcache     = true,
+    Integer[1]                             $packetcache_max        = 10000000,
+    Integer[1]                             $ringbuffer_max         = 10,
+    Integer[1]                             $tcp_client_threads_max = 20,
+    Boolean                                $enable_console         = false,
+    Optional[String]                       $console_key            = undef,
+    Boolean                                $enable_webserver       = false,
+    Boolean                                $drop_querytype_any     = true,
+    Optional[Dnsdist::Webserver_config]    $webserver              = undef,
+    Boolean                                $enable_ecs             = true,
+    Boolean                                $enable_landing         = false,
+    Optional[String]                       $landing_text           = undef,
+    Dnsdist::Http_headers                  $custom_headers         = {},
 ) {
 
     if ($enable_console and $console_key == undef) {
