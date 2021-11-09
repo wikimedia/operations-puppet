@@ -58,7 +58,7 @@ describe 'ceph::auth::load_all' do
         }})}
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_ceph__auth__keyring('client1')
-          .with_keyring_path('/etc/cept/ceph.client.client1.keyring')
+          .with_keyring_path('/etc/ceph/ceph.client.client1.keyring')
         }
       end
 
