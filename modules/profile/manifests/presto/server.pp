@@ -73,14 +73,21 @@ class profile::presto::server(
     }
 
     $default_config_properties = {
-        'http-server.http.port'              => '8280',
         'jmx.rmiregistry.port'               => '8279',
         'discovery.uri'                      => $discovery_uri,
+
         # flat will try to schedule splits on the host where the data is located by reserving
         # 50% of the work queue for local splits. It is recommended to use flat for clusters
         # where distributed storage runs on the same nodes as Presto workers.
         # You should change this if your Presto cluster is not colocated with storage.
         'node-scheduler.network-topology'    => 'flat',
+
+        # Enables accessing the Presto UI over http. Access it as follows:
+        # ssh -NL 8280:an-test-coord1001.eqiad.wmnet:8280 an-test-coord1001.eqiad.wmnet
+        # (for the test cluster, for the production cluster use an-coord1001).
+        # Then visit http://localhost:8280 (which should redirect to http://localhost:8280/ui/)
+        'http-server.http.port'              => '8280',
+        'http-server.http.enabled'           => true,
     }
 
     if $use_kerberos {
@@ -147,7 +154,6 @@ class profile::presto::server(
             'internal-communication.https.keystore.path' => $ssl_keystore_path,
             'internal-communication.https.keystore.key' => $ssl_keystore_password,
             'http-server.https.port' => '8281',
-            'http-server.http.enabled' => false,
             'http-server.https.enabled' => true,
         }
     } else {
