@@ -25,7 +25,7 @@ class profile::openstack::base::wikitech::web(
 
     # Wikitech needs to talk to LDAP directories
     php::extension { 'ldap':
-        package_name => 'php7.2-ldap',
+        versioned_packages => true,
     }
 
     # Packages (potentially) used for local image scaling, this can be removed once

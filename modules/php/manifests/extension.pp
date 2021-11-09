@@ -1,6 +1,5 @@
 define php::extension(
     Wmflib::Ensure $ensure = 'present',
-    String $package_name = "php-${name}",
     Boolean $install_packages = true,
     Boolean $versioned_packages = false,
     Hash[Wmflib::Php_version, String] $package_overrides = {},
@@ -14,18 +13,6 @@ define php::extension(
     }
     $_versions = pick($versions, $php::php_versions)
     $_sapis = pick($sapis, $php::sapis)
-    # Backwards compatibility:
-    # If package name is empty, don't install packages
-    $install_pkg = $package_name ? {
-        '' => false,
-        default => $install_packages
-    }
-    # If the package name is not the default value,
-    # assume we're using versioned packages
-    $versioned_pkg = $package_name ? {
-        "php-${name}" => $versioned_packages,
-        default => true
-    }
 
     # Install packages.
     # Sadly package naming in Debian for php is quite irregular,
@@ -40,9 +27,9 @@ define php::extension(
     # Given the general irregularity, and the possibility we will
     # change this schema again in the future, we choose to leave more
     # flexibility to the user of this class.
-    if ($install_pkg) {
+    if ($install_packages) {
         $actual_overrides = $package_overrides.filter |$k, $v| {$k in $_versions}
-        if ($versioned_pkg) {
+        if ($versioned_packages) {
             $version_packages = $_versions.map |$v| {{"${v}" => "php${v}-${name}"}}.reduce({}) |$m,$val| { $m.merge($val)}.merge($actual_overrides)
         } else {
             $version_packages = $_versions.map |$v| {{"${v}" => "php-${name}"}}.reduce({}) |$m,$val| { $m.merge($val)}.merge($actual_overrides)
@@ -77,7 +64,7 @@ define php::extension(
             tag     => prefix($_sapis, "php::config::${version}::")
         }
         # Ensure the package is installed after the mod file is installed.
-        if $install_pkg {
+        if $install_packages {
             File[$mod_file] -> Package[$version_packages[$version]]
         }
         # If your provided list of PHP SAPIs is not compatible with the installed SAPIs

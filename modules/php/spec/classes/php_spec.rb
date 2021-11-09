@@ -64,21 +64,20 @@ describe 'php' do
         let(:params) do
           {
             'extensions' => {
-              'igbinary' => {'package_name' => 'php7.0-igbinary', 'ensure' => 'absent'},
+              'igbinary' => {'versioned_packages' => true, 'ensure' => 'absent'},
               'mysqlnd'  => {'config' => {'mysql.persistent_connections' => false}}
             }
           }
         end
         it { is_expected.to compile }
 
-        it { is_expected.to contain_php__extension('igbinary')
-          .with_package_name('php7.0-igbinary')
-          .with_ensure('absent')
-        }
+        it { is_expected.to contain_php__extension('igbinary') }
+
+        it { is_expected.to contain_package('php7.0-igbinary').with_ensure('absent') }
 
         it { is_expected.to contain_php__extension('mysqlnd')
           .with_ensure('present')
-          .with_package_name('php-mysqlnd')
+          .with_versioned_packages(false)
           .with_priority(20)
           .with_config({'mysql.persistent_connections' => false})
         }

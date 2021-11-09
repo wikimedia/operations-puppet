@@ -41,15 +41,6 @@ describe 'php::extension' do
             .that_requires('File[/etc/php/7.0/mods-available/xml.ini]')
           }
         end
-        context 'with empty package name' do
-          let(:params) {
-            {'package_name' => ''}
-          }
-          it { is_expected.to compile.with_all_deps }
-          it 'should not contain packages' do
-            is_expected.not_to contain_package('php-xml')
-          end
-        end
         context 'with different priority' do
           let(:params){
             {'priority' => 15}
@@ -63,6 +54,20 @@ describe 'php::extension' do
           it { is_expected.to contain_file('/etc/php/7.0/cli/conf.d/15-xml.ini')
             .with_ensure('link')
           }
+        end
+        context 'with versioned packages' do
+          let(:params) {
+            {'versioned_packages' => true}
+          }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_package('php7.0-xml')}
+        end
+        context 'without installing packages' do
+          let(:params) {
+            {'install_packages' => false}
+          }
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_package('php-xml') }
         end
         context 'with custom config' do
           let(:params) {
