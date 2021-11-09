@@ -4,20 +4,20 @@
 #
 # === Parameters
 #
-# [*cache_cluster*]
-#   The cache cluster we're part of.
-#
 # [*statsd_host*]
 #   The statsd host to send stats to.
 #
 # [*mtail_progs*]
 #   Directory with mtail programs. Defaults to /etc/mtail.
 #
+# [*mtail_programs*]
+#   The list of mtail programs to install. Defaults to [].
+#
 class varnish::logging(
-    $cache_cluster,
     $statsd_host,
     $mtail_progs='/etc/mtail',
-    $mtail_additional_args=''
+    $mtail_additional_args='',
+    $mtail_programs=[],
 ){
     ensure_packages('python3-logstash')
 
@@ -61,16 +61,10 @@ class varnish::logging(
         require => File['/usr/local/bin/varnishmtail-default'],
     }
 
-    ['varnishreqstats', 'varnishttfb', 'varnishprocessing', 'varnisherrors', 'varnishsli', 'varnishxcache'].each |String $name| {
+    $mtail_programs.each |String $name| {
         mtail::program { $name:
             source => "puppet:///modules/mtail/programs/${name}.mtail",
             notify => Systemd::Service['varnishmtail@default'],
-        }
-    }
-
-    if $cache_cluster == 'upload' {
-        # Media browser cache hit rate and request volume stats.
-        ::varnish::logging::media { 'media':
         }
     }
 

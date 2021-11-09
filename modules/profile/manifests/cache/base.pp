@@ -77,10 +77,23 @@ class profile::cache::base(
     ###########################################################################
     # Analytics/Logging stuff
     ###########################################################################
+
+    # Programs installed on both text and upload nodes
+    $common_mtail_programs = ['varnishreqstats', 'varnishttfb', 'varnishprocessing', 'varnisherrors', 'varnishsli', 'varnishxcache']
+
+    # Programs specific to either upload or text
+    if $cache_cluster == 'upload' {
+        # Media browser cache hit rate and request volume stats.
+        $mtail_programs = $common_mtail_programs + [ 'varnishmedia' ]
+    } else {
+        # ResourceLoader browser cache hit rate and request volume stats.
+        $mtail_programs = $common_mtail_programs + [ 'varnishrls' ]
+    }
+
     class { '::varnish::logging':
-        cache_cluster         => $cache_cluster,
         statsd_host           => $statsd_host,
-        mtail_additional_args => $mtail_additional_args
+        mtail_additional_args => $mtail_additional_args,
+        mtail_programs        => $mtail_programs,
     }
 
     # auto-depool on shutdown + conditional one-shot auto-pool on start
