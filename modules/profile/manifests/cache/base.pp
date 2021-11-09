@@ -8,7 +8,6 @@
 #
 class profile::cache::base(
     String $cache_cluster                            = lookup('cache::cluster'),
-    String $statsd_host                              = lookup('statsd'),
     Optional[Stdlib::Host] $logstash_host            = lookup('logstash_host', {'default_value' => undef}),
     Optional[Stdlib::Port] $logstash_syslog_port     = lookup('logstash_syslog_port', {'default_value' => undef}),
     Optional[Stdlib::Port] $logstash_json_lines_port = lookup('logstash_json_lines_port', {'default_value' => undef}),
@@ -91,7 +90,6 @@ class profile::cache::base(
     }
 
     class { '::varnish::logging':
-        statsd_host           => $statsd_host,
         mtail_additional_args => $mtail_additional_args,
         mtail_programs        => $mtail_programs,
     }

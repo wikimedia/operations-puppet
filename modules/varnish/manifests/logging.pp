@@ -4,18 +4,10 @@
 #
 # === Parameters
 #
-# [*statsd_host*]
-#   The statsd host to send stats to.
-#
-# [*mtail_progs*]
-#   Directory with mtail programs. Defaults to /etc/mtail.
-#
 # [*mtail_programs*]
 #   The list of mtail programs to install. Defaults to [].
 #
 class varnish::logging(
-    $statsd_host,
-    $mtail_progs='/etc/mtail',
     $mtail_additional_args='',
     $mtail_programs=[],
 ){
