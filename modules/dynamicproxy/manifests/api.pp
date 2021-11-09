@@ -1,5 +1,5 @@
-class dynamicproxy::api(
-    $port = 5668,
+class dynamicproxy::api (
+    Boolean $read_only = false,
 ) {
     file { '/usr/local/bin/invisible-unicorn.py':
         source => 'puppet:///modules/dynamicproxy/invisible-unicorn.py',
@@ -15,7 +15,7 @@ class dynamicproxy::api(
             uwsgi => {
                 plugins            => 'python3',
                 master             => true,
-                http-socket        => '0.0.0.0:5668',
+                socket             => '/run/uwsgi/invisible-unicorn.sock',
                 mount              => '/dynamicproxy-api=/usr/local/bin/invisible-unicorn.py',
                 callable           => 'app',
                 manage-script-name => true,
@@ -26,31 +26,31 @@ class dynamicproxy::api(
     }
 
     file { '/etc/dynamicproxy-api':
-            ensure => directory,
-            owner  => 'www-data',
-            group  => 'www-data',
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
     }
 
     file { '/data/project/backup':
-            ensure => directory,
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
     }
 
     file { '/data/project/backup/README':
-            source  => 'puppet:///modules/dynamicproxy/BackupReadme',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            require => File['/data/project/backup'],
+        source  => 'puppet:///modules/dynamicproxy/BackupReadme',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => File['/data/project/backup'],
     }
 
     file { '/usr/local/sbin/proxydb-bak.sh':
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-            source => 'puppet:///modules/dynamicproxy/proxydb-bak.sh',
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dynamicproxy/proxydb-bak.sh',
     }
 
     systemd::timer::job { 'proxydb-backup':
@@ -72,6 +72,11 @@ class dynamicproxy::api(
         require => File['/etc/dynamicproxy-api'],
         owner   => 'www-data',
         group   => 'www-data',
+    }
+
+    nginx::site { 'invisible-unicorn':
+        content => template('dynamicproxy/api.conf.erb'),
+        require => Uwsgi::App['invisible-unicorn'],
     }
 
     # This is a GET-only front end that sits on port 5669.  We can

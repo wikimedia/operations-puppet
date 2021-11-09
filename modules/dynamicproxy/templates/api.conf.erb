@@ -1,0 +1,14 @@
+server {
+    listen 5668;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/run/uwsgi/invisible-unicorn.sock;
+
+<%- if @read_only -%>
+        limit_except GET {
+            deny all;
+        }
+<%- end -%>
+    }
+}

@@ -7,8 +7,9 @@ class profile::wmcs::novaproxy(
     String              $block_ref_re          = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
     Array[Stdlib::Fqdn] $xff_fqdns             = lookup('profile::wmcs::novaproxy::xff_fqdns',    {default_value => []}),
     Boolean             $use_wmflabs_root      = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
-    Boolean             $do_https              = lookup('profile::wmcs::novaproxy::do_https',   {default_value => true}),
+    Boolean             $do_https              = lookup('profile::wmcs::novaproxy::do_https',     {default_value => true}),
     Array[Stdlib::IP::Address::V4] $banned_ips = lookup('profile::wmcs::novaproxy::banned_ips',   {default_value => []}),
+    Boolean             $api_readonly          = lookup('profile::wmcs::novaproxy::api_readonly', {default_value => false}),
 ) {
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
@@ -86,7 +87,10 @@ class profile::wmcs::novaproxy(
         use_acme_chief           => $use_acme_chief,
     }
 
-    class { '::dynamicproxy::api': }
+    class { '::dynamicproxy::api':
+        # Read only if specified in hiera or not an active proxy
+        read_only => $api_readonly or $::hostname != $active_proxy,
+    }
 
     if $use_wmflabs_root {
         nginx::site { 'wmflabs.org':
