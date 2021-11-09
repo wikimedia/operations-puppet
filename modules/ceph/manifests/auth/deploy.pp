@@ -10,6 +10,9 @@ class ceph::auth::deploy (
                 keydata        => $client_auth['keydata'],
                 import_to_ceph => false,
                 caps           => $client_auth['caps'],
+                owner          => $client_auth['owner'],
+                group          => $client_auth['group'],
+                mode           => $client_auth['mode'],
             }
         }
     }

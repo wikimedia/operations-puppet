@@ -50,6 +50,20 @@ describe 'ceph::auth::keyring', :type => :define do
             "'some-mon-capabilities' mgr 'some-mgr-capabilities'"
         ) }
       end
+
+      describe 'passes owner, group and mode through' do
+        let(:params) { super().merge({
+          'owner' => 'dummy_owner',
+          'group' => 'dummy_group',
+          'mode' => '000',
+        })}
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/path/to/dummy.keyring')
+          .with_owner('dummy_owner')
+          .with_group('dummy_group')
+          .with_mode('000')
+        }
+      end
     end
   end
 end

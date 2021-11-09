@@ -91,6 +91,29 @@ describe 'ceph::auth::deploy' do
           .with_keyring_path('/etc/ceph/ceph.client.client1.keyring')
         }
       end
+
+      describe 'passes owner, group and mode through' do
+        let(:params) { super().merge({
+          :configuration => {
+            'client1' => {
+              'keydata' => 'dummy_keydata1',
+              'owner' => 'dummy_owner',
+              'group' => 'dummy_group',
+              'mode' => '000',
+              'caps' => {
+                'mon' => 'my mon_caps',
+              }
+            }
+          },
+          :selected_creds => ['client1']
+        })}
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_ceph__auth__keyring('client1')
+          .with_owner('dummy_owner')
+          .with_group('dummy_group')
+          .with_mode('000')
+        }
+      end
     end
   end
 end
