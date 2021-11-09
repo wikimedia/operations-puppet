@@ -20,7 +20,8 @@ class sslcert {
 
     # server certificates go in here; /etc/ssl/certs is a misnomer and actually
     # is just for CAs. See e.g. <https://bugs.debian.org/608719>
-    file { '/etc/ssl/localcerts':
+    $localcerts = '/etc/ssl/localcerts'
+    file { $localcerts:
         ensure  => directory,
         owner   => 'root',
         group   => 'ssl-cert',

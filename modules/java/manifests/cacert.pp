@@ -8,6 +8,8 @@ define java::cacert (
     Stdlib::Unixpath           $path,
     Wmflib::Ensure             $ensure        = 'present',
     String                     $storepass     = 'changeit',
+    String                     $owner         = 'root',
+    String                     $group         = 'root',
     Optional[Stdlib::Unixpath] $keystore_path = undef,
 ) {
     include java
@@ -32,12 +34,26 @@ define java::cacert (
     if $ensure == 'present' {
         exec {"java__cacert_${title}":
             command => $import_cmd,
+            user    => 'root',
+            group   => 'root',
             unless  => $validate_cmd,
         }
     } else {
         exec {"java__cacert_${title}":
             command => $delete_cmd,
+            user    => 'root',
+            group   => 'root',
             onlyif  => $validate_cmd,
+        }
+    }
+    if $keystore_path {
+        ensure_resource('file', $keystore_path, {
+            ensure  => stdlib::ensure($ensure, 'file'),
+            owner   => $owner,
+            group   => $group,
+        })
+        Exec["java__cacert_${title}"] {
+            before => File[$keystore_path]
         }
     }
 }

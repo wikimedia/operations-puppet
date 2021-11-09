@@ -65,6 +65,10 @@ class profile::base::certificates (
     $truststore_password = 'changeit'
 
     class { 'sslcert::trusted_ca':
+        trusted_certs       =>  [
+            '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt',
+            '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt',
+        ],
         jks_truststore_path => $jks_truststore_path,
         p12_truststore_path => $p12_truststore_path,
         truststore_password => $truststore_password,
