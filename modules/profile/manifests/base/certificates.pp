@@ -56,9 +56,18 @@ class profile::base::certificates (
         true  => '/etc/ssl/localcerts/trusted_root_ca.p12',
         false => undef,
     }
+
+    # The truststore files contain public certificates bundle,
+    # we don't really need any password protection.
+    # Java truststores for example (.jks) can't be passwordless,
+    # so we explicitly set a password to use it in various configs
+    # if needed. The default cacert truststore in Debian has the same password.
+    $truststore_password = 'changeit'
+
     class { 'sslcert::trusted_ca':
         jks_truststore_path => $jks_truststore_path,
         p12_truststore_path => $p12_truststore_path,
+        truststore_password => $truststore_password,
     }
 
     if has_key($puppet_ca_content, $puppetmaster_key) {
