@@ -49,8 +49,12 @@ acl local_host {
 }
 
 acl local_tls_terminator {
-       "<%= @ipaddress %>"; // note this matches nginx proxy_pass for TLS
+       "<%= @vcl_ip %>"; // note this matches nginx proxy_pass for TLS
        "0.0.0.0"; // this matches incoming traffic via UDS
+}
+
+acl UDS {
+       "0.0.0.0";
 }
 
 // external trusted proxies aren't allowed to set XCIP (via XFF) to wikimedia_nets,
@@ -379,8 +383,15 @@ sub recv_fe_ip_processing {
 		unset req.http.X-Connection-Properties;
 	}
 
-	// If the client request is received via UDS 0.0.0.0 is added to XFF
-	set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, "0.0.0.0$", "<%= @ipaddress %>");
+	if (local.ip ~ UDS && remote.ip ~ UDS) {
+		if (client.ip ~ UDS) {
+			// If the client request is received via UDS without PROXY protocol 0.0.0.0 is added to XFF
+			set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, "0.0.0.0$", "<%= @vcl_ip %>");
+		} else {
+			// If UDS is used along with PROXY protocol we need to append the varnish IP to keep the applayer happy
+			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + "<%= @vcl_ip %>";
+		}
+	}
 
 	// To make further parsing/sanitizing simpler, convert all whitespace
 	// in XFF to single spaces, and make sure all commas have a space

@@ -13,8 +13,10 @@ define varnish::wikimedia_vcl(
 ) {
     if $varnish_testing  {
         $netmapper_dir = '/usr/share/varnish/tests'
+        $vcl_ip = '10.128.0.129'
     } else {
         $netmapper_dir = '/var/netmapper'
+        $vcl_ip = $::ipaddress
     }
 
     # Hieradata switch to shut users out of a DC/cluster. T129424
