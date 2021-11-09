@@ -61,17 +61,18 @@ class sslcert::trusted_ca (
     # Same thing if a jks truststore is needed. In this case, since the keytool
     # command is needed, Java dependencies will be deployed as well.
     if $jks_truststore_path {
-        file { $jks_truststore_path:
-            ensure => $ensure,
-            owner  => $owner,
-            group  => $group,
-            mode   => '0444',
-        }
         java::cacert { 'trusted_root_ca':
             ensure        => $ensure,
             path          => $trusted_ca_path,
             storepass     => $truststore_password,
             keystore_path => $jks_truststore_path,
+        }
+        file { $jks_truststore_path:
+            ensure  => $ensure,
+            owner   => $owner,
+            group   => $group,
+            mode    => '0444',
+            require => Java::Cacert['trusted_root_ca'],
         }
     }
 }
