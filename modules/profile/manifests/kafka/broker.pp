@@ -298,7 +298,6 @@ class profile::kafka::broker(
         # intermediate CA.
         if $ssl_generate_certificates {
             $ssl_cert = profile::pki::get_cert('kafka', $facts['fqdn'], {
-                profile  => 'server',
                 'outdir' => $ssl_location,
                 'owner'  => 'kafka',
                 notify   => Sslcert::X509_to_pkcs12['kafka_keystore'],
