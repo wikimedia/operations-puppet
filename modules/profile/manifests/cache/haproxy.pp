@@ -90,7 +90,7 @@ class profile::cache::haproxy(
                     before => Service['haproxy'],
                 }
                 # HAProxy expects the prefetched OCSP response on the same path as the certificate
-                file { "/etc/ssl/private/${cert}.crt.key.ocsp":
+                file { "/etc/ssl/private/${cert}.chained.crt.key.ocsp":
                     ensure  => link,
                     target  => "/var/cache/ocsp/${cert}.ocsp",
                     require => Sslcert::Ocsp::Conf[$cert],
