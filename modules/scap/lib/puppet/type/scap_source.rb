@@ -42,7 +42,7 @@
 #   Default: wikidev
 #
 # [*origin*]
-#   VCS to checkout from. Available values are gerrit and phabricator
+#   VCS to checkout from. Available values are gerrit, phabricator and gitlab
 #
 #   Default: gerrit
 #
@@ -150,7 +150,7 @@ EOT
 
   newparam(:origin) do
     desc "The VCS to fetch data from"
-    newvalues(:gerrit, :phabricator)
+    newvalues(:gerrit, :phabricator, :gitlab)
     defaultto :gerrit
   end
 

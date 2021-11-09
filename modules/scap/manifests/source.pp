@@ -46,7 +46,7 @@
 #   Default: /srv/deployment
 #
 # [*origin*]
-#   Origin of cloned repository, either gerrit or phabricator
+#   Origin of cloned repository, either gerrit, phabricator or gitlab
 #   Default: gerrit
 #
 # [*lvs_service*]
