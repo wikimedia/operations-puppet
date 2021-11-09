@@ -40,10 +40,35 @@ fi
 
 # Aliases
 alias set_proxy="export http_proxy=http://webproxy.eqiad.wmnet:8080; export HTTPS_PROXY=http://webproxy.eqiad.wmnet:8080;"
-alias pdisable="sudo puppet agent --disable $@"
-alias penable="sudo puppet agent --enable"
-alias prun="sudo puppet agent -tv"
+alias pdisable="sudo disable-puppet $@"
+alias penable="sudo enable-puppet $@"
+alias prun="sudo run-puppet-agent"
 alias please="sudo !!"
+
+# Set envoy runtime values on a physical host.
 function envoy-runtime-set {
-	curl -X POST "http://localhost:9631/runtime_modify?${1}=${2}"
+    curl -X POST "http://localhost:9631/runtime_modify?${1}=${2}"
 }
+
+function gitroot() {
+    cd `git rev-parse --show-toplevel`
+}
+
+# Docker-related shortcuts. Only defined if docker is present.
+if command -v docker > /dev/null; then
+    debian-shell() {
+        DISTRO=${1:-buster}
+        shift
+        docker run --rm -ti $@ docker-registry.discovery.wmnet/$DISTRO:latest /bin/bash
+    }
+
+    docker-root-shell() {
+        IMG=${1}
+        if [ -n "$IMG" ]; then
+            docker run --rm -ti --user root --entrypoint /bin/bash "docker-registry.discovery.wmnet/$IMG"
+        else
+            echo "usage: docker-root-shell IMAGE:TAG"
+            return 1
+        fi
+    }
+fi
