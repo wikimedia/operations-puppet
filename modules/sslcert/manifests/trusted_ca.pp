@@ -67,7 +67,7 @@ class sslcert::trusted_ca (
             group  => $group,
             mode   => '0444',
         }
-        java::cacert { $title:
+        java::cacert { 'trusted_root_ca':
             ensure        => $ensure,
             path          => $trusted_ca_path,
             storepass     => $truststore_password,
