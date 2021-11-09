@@ -54,6 +54,17 @@ class varnish::logging(
         notify  => Systemd::Service['varnishmtail@default'],
     }
 
+    # TODO: remove after migration to varnishmtail@default
+    systemd::service { 'varnishmtail':
+        ensure  => absent,
+        content => '',
+    }
+
+    # TODO: remove after migration to varnishmtail-default
+    file { '/usr/local/bin/varnishmtail':
+        ensure => absent,
+    }
+
     systemd::service { 'varnishmtail@default':
         ensure  => present,
         content => systemd_template('varnishmtail@'),
