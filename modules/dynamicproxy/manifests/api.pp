@@ -58,7 +58,7 @@ class dynamicproxy::api(
         user               => 'root',
         description        => 'run proxydb-bak.sh',
         command            => '/usr/local/sbin/proxydb-bak.sh',
-        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => 'daily'},
+        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
         monitoring_enabled => false,
         logging_enabled    => false,
         require            => File['/data/project/backup'],
