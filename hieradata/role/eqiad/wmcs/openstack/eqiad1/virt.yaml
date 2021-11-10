@@ -9,10 +9,8 @@ mgmt_contactgroups: wmcs-team-email
 
 # Reveal these to local-storage virts so we can transfer
 #  things into rbd by hand
-profile::ceph::client::rbd::keyfile_group: 'libvirt-qemu'
 profile::ceph::client::rbd::client_name: 'eqiad1-compute'
 profile::ceph::client::rbd::cinder_client_name: 'eqiad1-cinder'
-profile::ceph::client::rbd::keyfile_owner: 'nova'
 profile::ceph::client::rbd::pool: 'eqiad1-compute'
 profile::ceph::client::rbd::enable_v2_messenger: false
 # This key is shared across all the libvirt / nova hosts

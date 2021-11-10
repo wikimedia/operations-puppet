@@ -36,8 +36,6 @@ describe 'profile::ceph::client::rbd_libvirt' do
         'fsid' => 'dummyfsid-17bc-44dc-9aeb-1d044c9bba9e',
         'keydata' => 'NOTAREALKEY==',
         'cinder_keydata' => 'NOTAREALCINDERKEY==',
-        'keyfile_group' => 'dummy_keyfile_group',
-        'keyfile_owner' => 'dummy_keyfile_owner',
         'libvirt_rbd_uuid' => 'dummy_libvirt_rbd_uuid',
         'libvirt_rbd_cinder_uuid' => 'dummy_libvirt_rbd_cinder_uuid',
       }

@@ -36,6 +36,9 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mon: allow profile bootstrap-rgw
   codfw1dev-cinder:
+    owner: cinder
+    group: cinder
+    mode: '0440'
     caps:
       mon: profile rbd
       osd: profile rbd pool=codfw1dev-cinder
