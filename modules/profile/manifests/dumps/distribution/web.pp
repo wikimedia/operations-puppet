@@ -34,4 +34,9 @@ class profile::dumps::distribution::web (
         proto => 'tcp',
         port  => '443',
     }
+
+    class { '::dumps::web::enterprise':
+        user  => 'dumpsgen',
+        group => 'dumpsgen',
+    }
 }

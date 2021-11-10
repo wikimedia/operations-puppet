@@ -1,5 +1,9 @@
-class dumps::web::enterprise {
-    file { '/usr/local/bin/wm_enterprise_downloader.py':
+class dumps::web::enterprise(
+    $user = undef,
+    $group = undef,
+){
+    $script_path = '/usr/local/bin/wm_enterprise_downloader.py'
+    file { $script_path:
         ensure => 'present',
         mode   => '0644',
         owner  => 'root',
@@ -7,13 +11,21 @@ class dumps::web::enterprise {
         source => 'puppet:///modules/dumps/web/wm_enterprise_downloader.py',
     }
 
-    file { '/etc/dumps/wm_enterprise_creds':
+    $creds_path = '/etc/dumps/wm_enterprise_creds'
+    file { $creds_path:
         ensure  => 'present',
         mode    => '0640',
-        owner   => 'root',
-        group   => 'root',
+        owner   => $user,
+        group   => $group,
         content => secret('dumps/wm_enterprise_creds'),
     }
 
-    # the systemd timer to run the content pull and rsync will go here later.
+    $settings_path = '/etc/dumps/wm_enterprise_settings'
+    file { $settings_path:
+        ensure => 'present',
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/wm_enterprise_settings',
+    }
 }

@@ -1,0 +1,39 @@
+# This file is maintained in puppet: dumps/files/web/wm_enterprise_settings
+#
+# settings file for the Wikimedia Enterprise html dumps downloader script
+
+# url for retrieving jwt auth tokens for WME API access
+authurl=https://auth.enterprise.wikimedia.com/v1/login
+
+# url for refreshing jwt auth tokens for WME API access
+refreshauthurl=https://auth.enterprise.wikimedia.com/v1/token-refresh
+
+# url for retrieving via the Enterprise api the list of namespaces of projects that
+# are dumped
+namespacesurl=https://api.enterprise.wikimedia.com/v1/namespaces
+
+# url for retrieving via the Enterprise api the list of wiki projects that are dumped
+wikilisturl=https://api.enterprise.wikimedia.com/v1/exports/meta/
+
+# url for retrieving, via the Enterprise api, a single dump, except for the wiki name
+# which will be added on to the end
+basedumpurl=https://api.enterprise.wikimedia.com/v1/exports/download
+
+# url for retrieving, via the Enterprise api, information about a single dump
+# for one wiki for a specific namespace, provided that /ns_id/projectname
+# are appended
+dumpinfourl=https://api.enterprise.wikimedia.com/v1/exports/meta
+
+# full path to the base directory under which downloaded dumps will be stored in
+# subdirectories by date downloaded, all wikis together for one date
+baseoutdir=/srv/dumps/xmldatadumps/public/other/enterprise_html/runs
+
+# full path to a directory where temporary files may be stored; these will be removed
+# after the step in which they are needed completes successfully.
+tempoutdir=/srv/dumps/temp
+
+# number of SECONDS to wait in between downloading wikis
+wait=20
+
+# number of MINUTES to wait before retrying the loop over all wikis, in case of failure
+retrywait=10
