@@ -5,8 +5,9 @@ global
     daemon
     group haproxy
     log /dev/log local0 notice
-    stats socket <%= @socket %> mode 666 level user
+    stats socket <%= @socket %> mode 666 expose-fd listeners level user
     user haproxy
+
 
 defaults
     log global
