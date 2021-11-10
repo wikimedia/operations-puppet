@@ -32,27 +32,27 @@ class wikimania_scholarships(
 
     include ::passwords::mysql::wikimania_scholarships
 
-    ensure_packages(['php-mysql'])
+    # ensure_packages(['php-mysql']) # can't absent, still used by iegreview
 
     $mysql_user = $passwords::mysql::wikimania_scholarships::app_user
     $mysql_pass = $passwords::mysql::wikimania_scholarships::app_password
     $log_file   = "udp://${udp2log_host}:${udp2log_port}/scholarships"
 
-    system::role { 'wikimania_scholarships':
-        description => 'Wikimania Scholarships server'
-    }
-
-    scap::target { 'scholarships/scholarships':
-        service_name => 'scholarships',
-        deploy_user  => 'deploy-service'
-    }
+    # can't absent, scap still used by other sites (design)
+    # and would remove Sudo::User[scap_deploy-service]
+    #scap::target { 'scholarships/scholarships':
+    #    ensure       => present,
+    #    service_name => 'scholarships',
+    #    deploy_user  => 'deploy-service'
+    #}
 
     httpd::site { 'scholarships.wikimedia.org':
+        ensure  => absent,
         content => template('wikimania_scholarships/apache.conf.erb'),
     }
 
     file { '/etc/wikimania-scholarships.ini':
-        ensure  => present,
+        ensure  => absent,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -61,7 +61,7 @@ class wikimania_scholarships(
     }
 
     file { $cache_dir:
-        ensure => directory,
+        ensure => absent,
         mode   => '0755',
         owner  => 'www-data',
         group  => 'root',
