@@ -310,10 +310,6 @@ scap::sources:
   cassandra/twcs:
     repository: operations/software/cassandra-twcs
 
-  # Wikimania scholarships app
-  scholarships/scholarships:
-    repository: wikimedia/wikimania-scholarships
-
   # Xml/sql dumps
   dumps/dumps:
     repository: operations/dumps
