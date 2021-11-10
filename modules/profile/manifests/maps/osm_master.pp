@@ -15,6 +15,7 @@ class profile::maps::osm_master (
     Boolean $disable_admin_cron                 = lookup('profile::maps::osm_master::disable_admin_cron', { 'default_value' => false }),
     String $tilerator_storage_id                = lookup('profile::maps::apps::tilerator_storage_id'),
     Boolean $use_proxy                          = lookup('profile::maps::apps::use_proxy'),
+    String $eventgate_endpoint                  = lookup('profile::maps::osm_master::eventgate_endpoint'),
 ) {
 
     require profile::maps::postgresql_common
@@ -167,6 +168,7 @@ class profile::maps::osm_master (
         postreplicate_command        => 'sudo -u tileratorui /usr/local/bin/notify-tilerator',
         disable_replication_cron     => $disable_replication_cron,
         disable_tile_generation_cron => $disable_tile_generation_cron,
+        eventgate_endpoint           => $eventgate_endpoint,
     }
 
     if ($osm_engine == 'osm2pgsql') {

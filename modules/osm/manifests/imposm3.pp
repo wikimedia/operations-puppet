@@ -7,12 +7,15 @@ class osm::imposm3 (
     String $expire_dir                = '/srv/osm_expire',
     Integer $expire_levels            = 15,
     Boolean $disable_replication_cron = false,
+    String $eventgate_endpoint        = 'https://eventgate-main.discovery.wmnet:4492/v1/events',
 ) {
 
+    $imposm_dir = '/srv/osm'
     $imposm_diff_dir = '/srv/osm/diff'
     $imposm_cache_dir = '/srv/osm/cache'
     $imposm_mapping_file = '/etc/imposm/imposm_mapping.yml'
     $imposm_config_file = '/etc/imposm/imposm_config.json'
+    $min_expire_level = 0
 
     ensure_packages('imposm3')
 
@@ -74,5 +77,16 @@ class osm::imposm3 (
             File[$imposm_mapping_file],
             File[$imposm_config_file],
         ],
+    }
+
+    systemd::timer::job { 'send_tile_invalidations':
+        ensure      => present,
+        description => 'Send events to EventPlatform to invalidate stale tiles',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 13:00:00',
+        },
+        user        => 'osmupdater',
+        command     => "/usr/local/bin/send-tile-expiration-events ${imposm_dir} ${expire_dir} ${min_expire_level} ${expire_levels} ${eventgate_endpoint}"
     }
 }

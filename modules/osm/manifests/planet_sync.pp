@@ -80,6 +80,7 @@ define osm::planet_sync (
     String $input_reader_format             = 'xml',
     Boolean $disable_replication_cron       = false,
     Boolean $disable_tile_generation_cron   = false,
+    String $eventgate_endpoint              = 'https://eventgate-main.discovery.wmnet:4492/v1/events',
 ) {
     include ::osm::users
 
@@ -117,6 +118,7 @@ define osm::planet_sync (
                 expire_dir               => $expire_dir,
                 expire_levels            => $expire_levels,
                 disable_replication_cron => $disable_replication_cron,
+                eventgate_endpoint       => $eventgate_endpoint,
             }
         }
         'osm2pgsql': {
