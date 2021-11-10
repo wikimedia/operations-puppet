@@ -21,11 +21,7 @@ describe 'profile::ceph::client::rbd_glance' do
         'cluster_network' => '192.168.4.0/22',
         'public_network' => '10.192.20.0/24',
         'data_dir' => '/data/dir',
-        'client_name' => 'dummy_client_name',
         'fsid' => 'dummyfsid-17bc-44dc-9aeb-1d044c9bba9e',
-        'keydata' => 'NOTAREALKEY==',
-        'keyfile_group' => 'dummy_keyfile_group',
-        'keyfile_owner' => 'dummy_keyfile_owner',
       }
       let(:facts) { facts }
       let(:params) { base_params }

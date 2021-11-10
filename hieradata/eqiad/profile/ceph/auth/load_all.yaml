@@ -39,6 +39,9 @@ profile::ceph::auth::load_all::configuration:
       mon: profile rbd
       osd: profile rbd pool=eqiad1-cinder
   eqiad1-glance-images:
+    owner: glance
+    group: glance
+    mode: '0440'
     caps:
       mon: allow r
       osd: allow class-read object_prefix rbd_children, allow rwx pool=eqiad1-glance-images
