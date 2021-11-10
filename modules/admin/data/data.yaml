@@ -20,7 +20,7 @@ groups:
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
-              mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek]
+              mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -340,7 +340,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, jmixter, cmadeo,
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, cmadeo,
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
@@ -4542,17 +4542,13 @@ users:
     krb: present
     email: bumeh-ctr@wikimedia.org
   jmixter:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jmixter
     realname: Jeff Mixter
-    expiry_date: 2021-11-15
-    expiry_contact: cbogen@wikimedia.org
-    ssh_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDaVO6HOaJ52AL+0pQ2Up1yarHk5g1GD+oBfnh1xcbk0 mixters@Mixters-MacBook-Air.local
+    ssh_keys: []
     uid: 31942
-    krb: present
-    email: jmixter-ctr@wikimedia.org
+    krb: absent
   cmadeo:
     ensure: present
     gid: 500
