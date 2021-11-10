@@ -132,7 +132,7 @@ class arclamp(
         logging_enabled    => false,
         send_mail          => true,
         environment        => $timer_environment + $swift_timer_environment,
-        command            => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 7',
+        command            => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 3',
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:17:0'},
         require            => Package['performance/arc-lamp']
     }
