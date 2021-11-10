@@ -4,6 +4,8 @@ define arclamp::profiler(
     Stdlib::Port::Unprivileged $redis_port,
     String $label = ".${title}",
     Wmflib::Ensure $ensure = 'present',
+    Integer $retain_hourly_logs_hours = 336, # 14 days
+    Integer $retain_daily_logs_days = 90,
 ) {
     # Verify the title will not create us any issues
     assert_type(Pattern[/[a-z]+/], $title)
@@ -16,9 +18,14 @@ define arclamp::profiler(
         },
         redis_channel => $title,
         logs          => [
-            # 336 hours is 14 days * 24 hours (T166624)
-            { period => 'hourly',  format => "%Y-%m-%d_%H${label}", retain => 336 },
-            { period => 'daily',   format => "%Y-%m-%d${label}",    retain => 90 },
+          { period => 'hourly',
+            format => "%Y-%m-%d_%H${label}",
+            retain => $retain_hourly_logs_hours,
+          }, {
+            period => 'daily',
+            format => "%Y-%m-%d${label}",
+            retain => $retain_daily_logs_days,
+          },
         ],
     }
 

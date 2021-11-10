@@ -22,6 +22,10 @@
 #   Port of Redis server that is publishing stack traces.
 #   Default: 6379.
 #
+# [*compress_logs_days*]
+#   How many days to wait before compressing logs.
+#   Default: 3
+#
 # === Examples
 #
 #  class { 'arclamp':
@@ -31,10 +35,13 @@
 #  }
 #
 class arclamp(
-    Wmflib::Ensure $ensure   = 'present',
-    Stdlib::Host $redis_host = '127.0.0.1',
-    Stdlib::Port $redis_port = 6379,
-    String $errors_mailto    = 'performance-team@wikimedia.org',
+    Wmflib::Ensure $ensure               = 'present',
+    Stdlib::Host $redis_host             = '127.0.0.1',
+    Stdlib::Port $redis_port             = 6379,
+    String $errors_mailto                = 'performance-team@wikimedia.org',
+    Integer $compress_logs_days          = 3,
+    Integer $retain_hourly_logs_hours    = 336, # 14 days
+    Integer $retain_daily_logs_days      = 90,
     Optional[String] $swift_account_name = undef,
     Optional[String] $swift_auth_url     = undef,
     Optional[String] $swift_user         = undef,
@@ -123,7 +130,7 @@ class arclamp(
         require            => Package['performance/arc-lamp']
     }
 
-    # Compress logs older than 7 days:
+    # Compress logs older than X days:
     systemd::timer::job { 'arclamp_compress_logs':
         ensure             => $ensure,
         description        => 'Regular jobs to compress arclamp logs',
@@ -132,7 +139,7 @@ class arclamp(
         logging_enabled    => false,
         send_mail          => true,
         environment        => $timer_environment + $swift_timer_environment,
-        command            => '/srv/deployment/performance/arc-lamp/arclamp-compress-logs 3',
+        command            => "/srv/deployment/performance/arc-lamp/arclamp-compress-logs ${compress_logs_days}",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:17:0'},
         require            => Package['performance/arc-lamp']
     }
@@ -155,9 +162,11 @@ class arclamp(
     # wall clock time separately.
     arclamp::profiler {
         default:
-            ensure     => present,
-            redis_host => $redis_host,
-            redis_port => $redis_port;
+            ensure                   => present,
+            redis_host               => $redis_host,
+            redis_port               => $redis_port,
+            retain_hourly_logs_hours => $retain_hourly_logs_hours,
+            retain_daily_logs_days   => $retain_daily_logs_days;
         'excimer':
             description => 'PHP Excimer (CPU)';
         'excimer-wall':

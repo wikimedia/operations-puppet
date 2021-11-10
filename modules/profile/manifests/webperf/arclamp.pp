@@ -18,21 +18,36 @@
 # [*errors_mailto*]
 #   Email address for cron errors (usually performance-team@wikimedia.org)
 #
+# [*compress_logs_days*]
+#   How many days to wait before compressing logs.
+#
+# [*retain_hourly_logs_hours*]
+#   How many hourly captures to retain on local disk.
+#
+# [*retain_daily_logs_days*]
+#   How many daily captures to retain on local disk.
+#
 class profile::webperf::arclamp (
     Stdlib::Fqdn $redis_host                 = lookup('profile::webperf::arclamp::redis_host'),
     Stdlib::Port $redis_port                 = lookup('profile::webperf::arclamp::redis_port'),
     String $errors_mailto                    = lookup('profile::webperf::arclamp::errors_mailto'),
+    Integer $compress_logs_days              = lookup('profile::webperf::arclamp::compress_logs_days'),
+    Integer $retain_hourly_logs_hours        = lookup('profile::webperf::arclamp::retain_hourly_logs_hours'),
+    Integer $retain_daily_logs_days          = lookup('profile::webperf::arclamp::retain_daily_logs_days'),
     Hash[String, Hash] $swift_accounts       = lookup('profile::swift::accounts'),
     Hash[String, String] $swift_account_keys = lookup('profile::swift::accounts_keys'),
 ) {
     class { 'arclamp':
-        redis_host         => $redis_host,
-        redis_port         => $redis_port,
-        errors_mailto      => $errors_mailto,
-        swift_account_name => $swift_accounts['performance_arclamp']['account_name'],
-        swift_auth_url     => $swift_accounts['performance_arclamp']['auth'],
-        swift_user         => $swift_accounts['performance_arclamp']['user'],
-        swift_key          => $swift_account_keys['performance_arclamp'],
+        redis_host               => $redis_host,
+        redis_port               => $redis_port,
+        errors_mailto            => $errors_mailto,
+        compress_logs_days       => $compress_logs_days,
+        retain_hourly_logs_hours => $retain_hourly_logs_hours,
+        retain_daily_logs_days   => $retain_daily_logs_days,
+        swift_account_name       => $swift_accounts['performance_arclamp']['account_name'],
+        swift_auth_url           => $swift_accounts['performance_arclamp']['auth'],
+        swift_user               => $swift_accounts['performance_arclamp']['user'],
+        swift_key                => $swift_account_keys['performance_arclamp'],
     }
 
     httpd::site { 'arclamp':
