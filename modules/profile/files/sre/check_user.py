@@ -166,18 +166,14 @@ def main():
     manager = ', '.join(
         [r['value'] for r in user['relations'] if r['type'] == 'manager']
     )
-    msg = """
+    msg = f"""
     Gsuit User:
-    \tname:\t\t{}
-    \ttitle:\t\t{}
-    \tmanager:\t{}
-    \tagreedToTerms:\t{}
-    """.format(
-        user['name']['fullName'],
-        user['organizations'][0]['title'],
-        manager,
-        user['agreedToTerms'],
-    )
+    \tPrimary Email:\t{user['primaryEmail']}
+    \tAliases:\t{','.join(user['aliases'])}
+    \ttitle:\t\t{user['organizations'][0]['title']}
+    \tmanager:\t{manager}
+    \tagreedToTerms:\t{user['agreedToTerms']}
+    """
     print(dedent(msg))
     return 0
 
