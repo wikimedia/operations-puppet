@@ -1,8 +1,7 @@
 profile::backup::director_seed: changeme
 
 profile::resolving::domain_search:
-  - eqiad.wmflabs
-  - codfw.wmflabs
+  - eqiad1.wikimedia.cloud
 
 # Phabricator
 profile::mail::default_mail_relay::enabled: false
@@ -64,7 +63,7 @@ profile::kubernetes::deployment_server::user_defaults:
   mode: '0640'
   owner: mwdeploy
 profile::mediawiki::apc_shm_size: 128M
-profile::mediawiki::deployment::server::rsync_host: deploy1002.devtools.eqiad.wmflabs
+profile::mediawiki::deployment::server::rsync_host: deploy-1002.devtools.eqiad.wmflabs
 profile::mediawiki::php::enable_fpm: true
 profile::rsyslog::kafka_shipper::kafka_brokers: []
 redis::shards:
