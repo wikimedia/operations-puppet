@@ -25,6 +25,10 @@ ob_start();
 
 switch ($_SERVER['SCRIPT_NAME']) {
 	case '/metrics':
+		# This will make requests to the other php admin ports for /local-metrics, and combine them all
+		# in a single output.
+		show_all_prometheus_metrics();
+	case '/local-metrics':
 		show_prometheus_metrics();
 		break;
 	case '/apcu-info':

@@ -90,7 +90,7 @@ class PrometheusMetric {
 		if (is_bool($value) === true) {
 			$this->value = (int) $value;
 		} elseif (is_array($value)) {
-			$this->value = implode($value, " ");
+			$this->value = implode(" ", $value);
 		} else {
 			$this->value = $value;
 		}
@@ -318,6 +318,70 @@ function prometheus_metrics(): array {
 	return $metrics;
 }
 
+
+/**
+ * Simple class to manage combining prometheus metrics from multiple ports/php versions
+ */
+class RemoteMetrics {
+	const VERSIONS_FILE = '/etc/php7adm.versions';
+	const ADMIN_PORT_BASE = 9181;
+	private $_admin_ports;
+	function __construct() {
+		$this->_admin_ports = $this->_read_ports();
+	}
+
+	private function _read_ports() {
+		$contents = @file_get_contents(self::VERSIONS_FILE);
+		// If no file is present, assume we're the only version available.
+		if ($contents === false) {
+			return [];
+		}
+		$ports = json_decode($contents, true);
+		if ($ports === null) {
+			return [];
+		}
+		// We don't need the port for the current version.
+		$version_brief = preg_filter("#^(\d.\d).*$#", "$1", PHP_VERSION);
+		if (array_key_exists($version_brief, $ports)) {
+			unset($ports[$version_brief]);
+		}
+		return $ports;
+	}
+
+	private static function _url($port) {
+		return sprintf("http://localhost:%d/local-metrics", $port);
+	}
+
+	private function _get_remote_metrics() {
+		$output = "";
+		# Ok in theory this is bad - I'm downloading metrics from the other php versions in sequence.
+		# But in practice, I doubt we'll have more than two versions of php at any time, so this is a single download.
+		foreach (array_values($this->_admin_ports) as $additional_port) {
+			$url = self::_url($additional_port);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
+			// Set a 2 seconds timeout, and a stringent connect timeout.
+			// The idea here is that if it takes more than 10 ms to connect to the other admin port, that
+			// php-fpm instance, or the apache server itself, are overwhelmed and should be left alone.
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 10);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+			$response = curl_exec($ch);
+			if ($response !== false) {
+				$output .= "\n" . $response;
+			} else {
+				error_log("Error fetching ${url}: " . curl_error($ch));
+			}
+			curl_close($ch);
+		}
+		return $output;
+	}
+
+	public function show_metrics() {
+		echo $this->_get_remote_metrics();
+	}
+}
+
 function dump_file($name, $contents) {
 	if (is_file($name)) {
 		if (!unlink($name)) {
@@ -337,6 +401,12 @@ function show_prometheus_metrics() {
 	foreach (prometheus_metrics() as $k) {
 		printf("%s", $k);
 	}
+}
+
+function show_all_prometheus_metrics() {
+	show_prometheus_metrics();
+	$rm = new RemoteMetrics();
+	$rm->show_metrics();
 }
 
 function show_apcu_info() {
@@ -395,3 +465,4 @@ function ini_value() {
 	# Add a new line to beautify output on the console
 	print "\n";
 }
+

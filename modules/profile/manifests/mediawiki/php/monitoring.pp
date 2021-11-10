@@ -91,7 +91,7 @@ class profile::mediawiki::php::monitoring(
         content => $version_ports.to_json,
         owner   => 'root',
         group   => 'ops',
-        mode    => '0440',
+        mode    => '0444',
     }
     file { '/etc/php7adm.netrc':
         ensure  => present,
