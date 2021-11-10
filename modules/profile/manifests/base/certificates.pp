@@ -4,10 +4,11 @@
 # with the new one. This will make it able to talk to the new puppetmaster on its next run.
 # A puppetmaster's CA cert can be found at /var/lib/puppet/server/ssl/certs/ca.pem
 class profile::base::certificates (
-    Hash              $puppet_ca_content  = lookup('profile::base::certificates::puppet_ca_content'),
-    Optional[String]  $puppetmaster_key   = lookup('puppetmaster'),
-    Boolean           $include_bundle_jks = lookup('profile::base::certificates::include_bundle_jks'),
-    Boolean           $include_bundle_p12 = lookup('profile::base::certificates::include_bundle_p12'),
+    Hash              $puppet_ca_content   = lookup('profile::base::certificates::puppet_ca_content'),
+    Optional[String]  $puppetmaster_key    = lookup('puppetmaster'),
+    Boolean           $include_bundle_jks  = lookup('profile::base::certificates::include_bundle_jks'),
+    Boolean           $include_bundle_p12  = lookup('profile::base::certificates::include_bundle_p12'),
+    Array[Stdlib::Unixpath] $trusted_certs = lookup('profile::base::certificates::trusted_certs'),
 ) {
     # Includes internal root CA's e.g.
     # * puppet CA
@@ -65,10 +66,7 @@ class profile::base::certificates (
     $truststore_password = 'changeit'
 
     class { 'sslcert::trusted_ca':
-        trusted_certs       =>  [
-            '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt',
-            '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt',
-        ],
+        trusted_certs       => $trusted_certs,
         jks_truststore_path => $jks_truststore_path,
         p12_truststore_path => $p12_truststore_path,
         truststore_password => $truststore_password,

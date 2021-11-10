@@ -32,7 +32,11 @@ class sslcert::trusted_ca (
                 notify => Exec['generate trusted_ca'],
             }
             if $jks_truststore_path {
-                java::cacert { $cert.basename('.crt'):
+                $cert_basename = '.pem' in $cert.basename ? {
+                    true  => $cert.basename('.pem'),
+                    false => $cert.basename('.crt'),
+                }
+                java::cacert { $cert_basename:
                     ensure        => $ensure,
                     owner         => $owner,
                     path          => $cert,
