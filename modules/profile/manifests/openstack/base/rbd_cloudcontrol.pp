@@ -16,7 +16,7 @@ class profile::openstack::base::rbd_cloudcontrol(
     #  and are DC-specific but not deloyment-specific.  If/when we add a new
     #  region with a new ceph cluster they will need to be overridden
     #  with deployment-specific hiera.
-    class { '::profile::ceph::client::rbd_cloudcontrol':
+    class { 'profile::ceph::client::rbd_cloudcontrol':
         radosgw_port                 => $api_bind_port,
         keystone_internal_uri        => $keystone_internal_uri,
         radosgw_service_user         => $radosgw_service_user,
