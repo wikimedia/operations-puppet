@@ -49,11 +49,11 @@ class profile::base::certificates (
     }
 
     $jks_truststore_path = $include_bundle_jks ? {
-        true  => '/etc/ssl/localcerts/trusted_root_ca.jks',
+        true  => '/etc/ssl/localcerts/wmf_trusted_root_cas.jks',
         false => undef,
     }
     $p12_truststore_path = $include_bundle_p12 ? {
-        true  => '/etc/ssl/localcerts/trusted_root_ca.p12',
+        true  => '/etc/ssl/localcerts/wmf_trusted_root_cas.p12',
         false => undef,
     }
 
