@@ -3,8 +3,8 @@ cluster: kafka_test
 profile::kafka::broker::kafka_cluster_name: test-eqiad
 
 profile::kafka::broker::ssl_enabled: true
-profile::kafka::broker:use_pki_migration_settings: true
-profile::kafka::mirror:use_pki_migration_settings: true
+profile::kafka::broker:use_pki_migration_settings: false
+profile::kafka::mirror:use_pki_migration_settings: false
 profile::base::certificates::include_bundle_jks: true
 
 profile::kafka::broker::auth_acls_enabled: true
