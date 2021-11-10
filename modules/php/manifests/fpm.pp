@@ -30,7 +30,7 @@ class php::fpm(
         fail('You need to declare fpm as a sapi in the php class to be able to use fpm')
     }
 
-    $php::php_versions.each |$version| {
+    $php::versions.each |$version| {
         $config_dir = php::config_dir($version)
         $main_config_file = "${config_dir}/fpm/php-fpm.conf"
         # Default config values

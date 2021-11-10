@@ -10,7 +10,7 @@ describe 'php::default_extensions' do
       end
 
       context 'when called from the php class' do
-        let(:pre_condition) { 'include php' }
+        let(:pre_condition) { 'class { "::php": versions => ["7.2"]}' }
         it { is_expected.to compile }
 
         it { is_expected.to contain_php__extension('tokenizer')

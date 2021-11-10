@@ -35,7 +35,7 @@ class php::default_extensions {
     # package on debian. So, pass an empty string as a package name.
     php::extension { $base_extensions:
         install_packages => false,
-        versions         => $php::php_versions,
+        versions         => $php::versions,
         priority         => 20,
     }
 
@@ -44,7 +44,7 @@ class php::default_extensions {
         default:
             install_packages => false,
             priority         => 10,
-            versions         => $php::php_versions,;
+            versions         => $php::versions,;
         'pdo':
             ;
         'opcache':

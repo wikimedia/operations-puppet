@@ -6,7 +6,7 @@ describe 'php::extension' do
       let(:facts) {facts}
       let(:title) { 'xml' }
       context 'when php is defined' do
-        let(:pre_condition) { 'include php' }
+        let(:pre_condition) { 'class { "::php": versions => ["7.0"]}' }
 
         context 'with default parameters' do
           it { is_expected.to compile.with_all_deps }

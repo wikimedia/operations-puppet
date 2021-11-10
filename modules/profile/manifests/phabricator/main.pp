@@ -331,7 +331,7 @@ class profile::phabricator::main (
     # Install the runtime
     class { '::php':
         ensure         => present,
-        version        => $php_version,
+        versions       => [$php_version],
         sapis          => ['cli', 'fpm'],
         config_by_sapi => {
             'fpm' => $fpm_config,

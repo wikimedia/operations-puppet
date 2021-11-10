@@ -3,7 +3,6 @@
 # Basic installation of php - only cli modules.
 #
 class php(
-    Wmflib::Php_version $version = '7.0',
     Array[Wmflib::Php_version] $versions = [],
     Wmflib::Ensure $ensure             = present,
     Array[Php::Sapi] $sapis            = ['cli'],
@@ -11,12 +10,6 @@ class php(
     Hash $extensions                   = {}
 ) {
     debian::codename::require::min('stretch')
-    # Backwards compatibility
-    # TODO: drop this once we've managed to move all clients.
-    $php_versions = $versions ? {
-        [] => [$version],
-        default => $versions
-    }
 
     # Basic configuration parameters.
     # Please note all these parameters can be overridden
@@ -43,7 +36,7 @@ class php(
 
 
     # We need php-common everywhere
-    $php_versions.each |$version| {
+    $versions.each |$version| {
         ensure_packages(["php${version}-common", "php${version}-opcache"])
         $config_dir = php::config_dir($version)
 

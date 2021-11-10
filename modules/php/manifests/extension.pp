@@ -11,7 +11,7 @@ define php::extension(
     if !defined(Class['php']) {
         fail('php::extension is not meant to be used before the php class is declared.')
     }
-    $_versions = pick($versions, $php::php_versions)
+    $_versions = pick($versions, $php::versions)
     $_sapis = pick($sapis, $php::sapis)
 
     # Install packages.

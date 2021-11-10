@@ -7,7 +7,7 @@ describe 'php::fpm::pool' do
       let(:title) { 'www' }
       let(:pre_condition) {
         [
-          'class { "::php": sapis => ["fpm"]}',
+          'class { "::php": versions => ["7.0"], sapis => ["fpm"]}',
           'class { "::php::fpm": }'
         ]
       }
