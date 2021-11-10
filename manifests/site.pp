@@ -670,13 +670,13 @@ node 'db2077.codfw.wmnet' {
 
 # s8 (wikidata) core production dbs on eqiad
 # eqiad master
-node 'db1104.eqiad.wmnet' {
+node 'db1109.eqiad.wmnet' {
     role(mariadb::core)
 }
 
 # eqiad replicas
 # See also db1099 and db1101 below
-node /^db1(109|111|114|126|172|177)\.eqiad\.wmnet/ {
+node /^db1(104|111|114|126|172|177)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
