@@ -75,7 +75,7 @@ class coal::processor(
     }
 
     if $kafka_security_protocol in ['SSL', 'SASL_SSL'] {
-        $kafka_ssl_cafile = '/var/lib/puppet/ssl/certs/ca.pem'
+        $kafka_ssl_cafile = '/etc/ssl/localcerts/wmf_trusted_root_CAs.pem'
     } else {
         $kafka_ssl_cafile = undef
     }
