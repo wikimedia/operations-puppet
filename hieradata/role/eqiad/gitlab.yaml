@@ -5,4 +5,4 @@ profile::gitlab::service_name: 'gitlab.wikimedia.org'
 
 # Content-Security-Policy
 profile::gitlab::csp_enabled: true
-profile::gitlab::csp_report_only: true  # Still being polished T285363
+profile::gitlab::csp_report_only: false

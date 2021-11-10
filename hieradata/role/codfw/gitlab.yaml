@@ -5,5 +5,5 @@ profile::gitlab::service_name: 'gitlab-replica.wikimedia.org'
 
 # Content-Security-Policy
 profile::gitlab::csp_enabled: true
-profile::gitlab::csp_report_only: true
+profile::gitlab::csp_report_only: false
 
