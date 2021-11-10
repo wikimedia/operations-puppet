@@ -42,7 +42,7 @@ class sslcert::trusted_ca (
             }
         }
         exec { 'generate trusted_ca':
-            command     => "/usr/bin/cat ${trusted_certs.join(' ')} > ${trusted_ca_path}",
+            command     => "/bin/cat ${trusted_certs.join(' ')} > ${trusted_ca_path}",
             refreshonly => true,
             user        => $owner,
             group       => $group,
