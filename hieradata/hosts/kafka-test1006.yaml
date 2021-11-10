@@ -1,1 +1,1 @@
-profile::kafka::broker::ssl_generate_certificates: false
+profile::kafka::broker::ssl_generate_certificates: true
