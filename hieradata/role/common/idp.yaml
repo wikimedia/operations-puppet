@@ -137,6 +137,8 @@ profile::idp::services:
     required_groups:
       - ops
       - sre-admins
+      - nda
+      - wmf
   racktables:
     id: 18
     service_id: 'https://racktables.wikimedia.org(/.*)?'
