@@ -28,7 +28,7 @@ phabricator_phd_taskmasters: 4
 phabricator_domain: phab.wmflabs.org
 phabricator_altdomain: phab-prod-usercontent.wmflabs.org
 
-profile::envoy::ensure: present
+profile::envoy::ensure: absent
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80
@@ -59,8 +59,12 @@ has_tls: false
 
 profile::kubernetes::deployment_server::git_group: wikidev
 profile::kubernetes::deployment_server::git_owner: trebuchet
+profile::kubernetes::deployment_server::user_defaults:
+  group: wikidev
+  mode: '0640'
+  owner: mwdeploy
 profile::mediawiki::apc_shm_size: 128M
-profile::mediawiki::deployment::server::rsync_host: deploy1001.devtools.eqiad.wmflabs
+profile::mediawiki::deployment::server::rsync_host: deploy1002.devtools.eqiad.wmflabs
 profile::mediawiki::php::enable_fpm: true
 profile::rsyslog::kafka_shipper::kafka_brokers: []
 redis::shards:
@@ -132,6 +136,7 @@ profile::gerrit::bacula: gerrit-repo-data
 profile::gerrit::java_version: 8
 
 ## Deployment
+scap::wmflabs_master: deploy-1002.devtools.eqiad.wmflabs
 profile::gerrit::scap_user: 'gerrit2'
 profile::gerrit::scap_key_name: 'gerrit'
 profile::base::ssh_server_settings:
@@ -143,6 +148,7 @@ profile::base::ssh_server_settings:
 ## TLS
 profile::gerrit::use_acmechief: false
 profile::tlsproxy::envoy::capitalize_headers: true
+sslcert::certificate::skip_private: true
 
 ## Backups
 profile::gerrit::backups_enabled: false
@@ -178,4 +184,5 @@ role::puppetmaster::standalone::autosign: 'true'
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false
 profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: false
+
 
