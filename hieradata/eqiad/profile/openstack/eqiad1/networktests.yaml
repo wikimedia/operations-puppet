@@ -1,0 +1,32 @@
+profile::openstack::eqiad1::networktests::sshbastion: eqiad1-restricted.bastion.wmcloud.org
+profile::openstack::eqiad1::networktests::envvars:
+    ROUTING_SOURCE_IP: 185.15.56.1
+    FLOATING_VM_FQDN: bastion-eqiad1-01.bastion.eqiad1.wikimedia.cloud
+    FLOATING_VM_IP: 185.15.56.13
+    VM_IP_PREFIX: 172.16.
+    NO_FLOATING_VM: tools-docker-imagebuilder-01.tools.eqiad1.wikimedia.cloud
+    GENERAL_PUPPETMASTER: cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud
+    LOCAL_PUPPETMASTER: cloudinfra-internal-puppetmaster-02.cloudinfra.eqiad1.wikimedia.cloud
+    CLOUDGW_A_IP: 185.15.56.245
+    CLOUDGW_B_IP: 185.15.56.246
+    CLOUDGW_VIRT_IP: 185.15.56.237
+    CLOUDGW_WAN_IP: 185.15.56.244
+    CLOUDGW_A_FQDN: cloudgw1001.eqiad1.wikimediacloud.org
+    CLOUDGW_B_FQDN: cloudgw1002.eqiad1.wikimediacloud.org
+    CLOUDGW_VIRT_FQDN: virt.cloudgw.eqiad1.wikimediacloud.org
+    CLOUDGW_WAN_FQDN: wan.cloudgw.eqiad1.wikimediacloud.org
+    NEUTRON_WAN_IP: 185.15.56.238
+    NEUTRON_WAN_FQDN: cloudinstances2b-gw.openstack.eqiad1.wikimediacloud.org
+    NEUTRON_VIRT_IP: 172.16.0.1
+    NEUTRON_VIRT_FQDN: cloudinstances2b-gw.svc.eqiad.wmflabs
+    DNS_RECURSOR_IP: 208.80.154.24
+    DNS_AUTH_IP: 208.80.154.11
+    DNS_AUTH_DOMAIN: toolforge.org
+    DNS_AUTH_DOMAIN_A_RECORD: 172.16.0.17
+    KEYSTONE_URL: https://openstack.eqiad1.wikimediacloud.org:25000/v3
+    DUMPSFILE: /mnt/nfs/dumps-labstore1006.wikimedia.org/index.html
+    DUMPS_FLOATING_VM_FQDN: tools-sgebastion-11.tools.eqiad1.wikimedia.cloud
+    DUMPS_NO_FLOATING_VM: tools-k8s-worker-79.tools.eqiad1.wikimedia.cloud
+    TOOLFORGE_BASTION_LOGIN: login.toolforge.org
+    TOOLFORGE_BASTION_DEV: dev.toolforge.org
+
