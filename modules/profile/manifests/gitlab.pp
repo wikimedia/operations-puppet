@@ -169,7 +169,7 @@ class profile::gitlab(
         enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         listen_addresses       => [$service_ip_v4, $service_ip_v6],
         enable_restore_replica => $active_host != $facts['fqdn'], # install restore script on passive GitLab server
-        enable_restore_timer   => $active_host != $facts['fqdn'], # enable automated restore timer on passive GitLab server
+        enable_restore_timer   => false, # enable automated restore timer on passive GitLab server
         cert_path              => $cert_path,
         key_path               => $key_path,
         gitlab_domain          => $service_name,
