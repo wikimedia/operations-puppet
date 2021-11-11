@@ -14,3 +14,4 @@ profile::idp::client::httpd::sites:
       - 'cn=sre-admins,ou=groups,dc=wikimedia,dc=org'
       - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
       - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+profile::contacts::role_contacts: ['Data Persistence SREs']
