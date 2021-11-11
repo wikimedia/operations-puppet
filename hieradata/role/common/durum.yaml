@@ -27,3 +27,4 @@ profile::bird::advertise_vips:
     service_type: durum
 
 profile::nginx::variant: 'light'
+profile::contacts::role_contacts: ['Traffic SREs']

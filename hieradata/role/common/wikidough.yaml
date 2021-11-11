@@ -54,3 +54,5 @@ profile::bird::advertise_vips:
 profile::bird::anycasthc_logging:
   level: 'critical'
   num_backups: 2
+
+profile::contacts::role_contacts: ['Traffic SREs']
