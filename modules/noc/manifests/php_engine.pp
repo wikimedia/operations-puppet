@@ -12,7 +12,7 @@ class noc::php_engine($catchall_ensure=present) {
 
     httpd::conf { 'php_catchall':
         ensure   => $catchall_ensure,
-        source   => 'puppet:///modules/mediawiki/apache/configs/php_catchall.conf',
+        source   => 'puppet:///modules/noc/php_catchall.conf',
         priority => 50,
     }
 
