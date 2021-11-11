@@ -72,7 +72,7 @@ class openstack::monitor::networktests (
         user                => $usr,
         interval            => {
             'start'    => 'OnCalendar',
-            'interval' => '15m',
+            'interval' => '*:0/15:00', # every 15 minutes
         },
         max_runtime_seconds => 600, # kill if running after 10 mins
     }
