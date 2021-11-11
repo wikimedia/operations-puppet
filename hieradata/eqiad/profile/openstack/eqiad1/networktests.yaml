@@ -1,4 +1,4 @@
-profile::openstack::eqiad1::networktests::sshbastion: eqiad1-restricted.bastion.wmcloud.org
+profile::openstack::eqiad1::networktests::sshbastion: eqiad1.bastion.wmcloud.org
 profile::openstack::eqiad1::networktests::envvars:
     ROUTING_SOURCE_IP: 185.15.56.1
     FLOATING_VM_FQDN: bastion-eqiad1-01.bastion.eqiad1.wikimedia.cloud
