@@ -46,8 +46,6 @@ profile::cassandra::settings:
   tls_cluster_name: "sessions"
   dc: "%{::site}"
   cluster_name: "sessions"
-  application_username: sessions
-  application_password: "%{passwords::cassandra::sessions}"
   super_username: cassandra
   super_password: "%{passwords::cassandra::super_password}"
   target_version: '3.x'
@@ -64,7 +62,8 @@ profile::cassandra::settings:
     trickle_fsync: false
     client_encryption_enabled: true
     disk_failure_policy: best_effort
-
+  users:
+    - sessionstore
 
 #
 # General

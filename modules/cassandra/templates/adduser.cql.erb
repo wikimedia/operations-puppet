@@ -1,8 +1,0 @@
-
-CREATE USER IF NOT EXISTS <%= @application_username %> WITH PASSWORD '<%= @application_password %>';
-
-GRANT CREATE ON ALL KEYSPACES TO '<%= @application_username %>';
-GRANT ALTER  ON ALL KEYSPACES TO '<%= @application_username %>';
-GRANT DROP   ON ALL KEYSPACES TO '<%= @application_username %>';
-GRANT SELECT ON ALL KEYSPACES TO '<%= @application_username %>';
-GRANT MODIFY ON ALL KEYSPACES TO '<%= @application_username %>';

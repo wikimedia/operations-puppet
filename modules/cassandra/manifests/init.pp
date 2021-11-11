@@ -74,17 +74,8 @@
 #   The off-heap memory allocator.
 #   Default: JEMallocAllocator
 #
-# [*application_username*]
-#   Non-superuser user; Username for application access.
-#   Default: undef
-#
-#   If set, a CQL file will be created in /etc/cassandra/adduser.cql to
-#   provision the respective user and grants with cqlsh:
-#
-#   cqlsh --cqlshrc=/etc/cassandra/cqlshrc -f /etc/cassandra/adduser.cql $HOSTNAME
-#
-# [*application_password*]
-#   Password for application user.
+# [*cassandra_passwords*]
+#   A hash containing user->pass mappings
 #   Default: undef
 #
 # [*native_transport_port*]
@@ -124,8 +115,7 @@ class cassandra (
     Array[String]                    $extra_classpath         = [],
     Enum['2.2', '3.x', 'dev']        $target_version          = '2.2',
     String                           $memory_allocator        = 'JEMallocAllocator',
-    Optional[String]                 $application_username    = undef,
-    Optional[String]                 $application_password    = undef,
+    Hash[String, String]             $cassandra_passwords     = {},
     Stdlib::Port                     $native_transport_port   = 9042,
     String                           $dc                      = 'datacenter1',
     String                           $rack                    = 'rack1',
@@ -135,7 +125,8 @@ class cassandra (
     Array[String]                    $jbod_devices            = [],
     String                           $super_username          = 'cassandra',
     String                           $super_password          = 'cassandra',
-    Optional[String]                 $version                 = undef
+    Optional[String]                 $version                 = undef,
+    Array[String]                    $users                   = []
 ) {
 
     # Tools packages
@@ -199,8 +190,7 @@ class cassandra (
         extra_classpath       => $extra_classpath,
         memory_allocator      => $memory_allocator,
         listen_address        => $listen_address,
-        application_username  => $application_username,
-        application_password  => $application_password,
+        users                 => $users,
         native_transport_port => $native_transport_port,
         target_version        => $target_version,
         dc                    => $dc,
@@ -210,6 +200,7 @@ class cassandra (
         start_rpc             => $start_rpc,
         super_username        => $super_username,
         super_password        => $super_password,
+        cassandra_passwords   => $cassandra_passwords,
     }
 
     if empty($instances) {

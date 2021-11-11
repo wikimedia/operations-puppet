@@ -73,14 +73,8 @@ profile::cassandra::settings:
     # so we need to increase caching to allow better performances
     # (default value 2s).
     permissions_validity_in_ms: 600000
-
-  # AQS Cassandra user
-
-  # This configuration creates the adduser.cql script that must be used
-  # to create the new user on the Cassandra cluster. This configuration alone
-  # does not create any user on the Cassandra cluster.
-  application_username: aqs
-  application_password: "%{alias('profile::aqs::cassandra_password')}"
+  users:
+    - aqs
 
 #
 # AQS service

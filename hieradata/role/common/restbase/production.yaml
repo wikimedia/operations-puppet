@@ -1010,8 +1010,6 @@ profile::cassandra::settings:
   tls_cluster_name: "restbase"
   dc: "%{::site}"
   cluster_name: "restbase"
-  application_username: restb
-  application_password: "%{passwords::cassandra::restbase}"
   target_version: "3.x"
   default_instance_params:
     max_heap_size: 12g
@@ -1026,6 +1024,8 @@ profile::cassandra::settings:
     trickle_fsync: false
     client_encryption_enabled: true
     disk_failure_policy: best_effort
+  users:
+    - restbase
 
 #
 # General

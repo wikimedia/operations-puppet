@@ -72,6 +72,15 @@
 #   Directory where Cassandra should store saved caches.
 #   Default: /var/lib/cassandra/saved_caches
 #
+# [*users*]
+#   Users to enable on the instance - grants must exist in
+#   templates/users
+#   Default: []
+#
+# [*cassandra_passwords*]
+#  A mapping of user->passwords from secrets
+#  Default: undef
+#
 # [*concurrent_reads*]
 #   Number of allowed concurrent reads.
 #   Default: 32
@@ -181,8 +190,7 @@ define cassandra::instance(
     Optional[String]                 $memory_allocator      = undef,
     Optional[Stdlib::IP::Address]    $listen_address        = undef,
     Optional[String]                 $tls_cluster_name      = undef,
-    Optional[String]                 $application_username  = undef,
-    Optional[String]                 $application_password  = undef,
+    Optional[String]                 $default_applications  = undef,
     Optional[Stdlib::Port]           $native_transport_port = undef,
     Optional[String]                 $target_version        = undef,
     Optional[Array[Stdlib::Host, 1]] $seeds                 = undef,
@@ -210,6 +218,8 @@ define cassandra::instance(
     Stdlib::Unixpath        $hints_directory        = "/srv/cassandra-${title}/data/hints",
     Stdlib::Unixpath        $heapdump_directory     = "/srv/cassandra-${title}",
     Stdlib::Unixpath        $saved_caches_directory = "/srv/cassandra-${title}/saved_caches",
+    Array[String]           $users                  = [],
+    Hash[String, String]    $cassandra_passwords    = {},
 
     # the following parameters have defaults that are sane both for single-
     # and multi-instances
@@ -377,9 +387,10 @@ define cassandra::instance(
         port     => 7800,
     }
 
-    if $application_username != undef {
-        file { "${config_directory}/adduser.cql":
-            content => template("${module_name}/adduser.cql.erb"),
+    $users.each |String $username| {
+        $application_password = $cassandra_passwords[$username]
+        file { "${config_directory}/user_${username}.cql":
+            content => template("${module_name}/users/${username}.cql.erb"),
             owner   => 'root',
             group   => 'root',
             mode    => '0400',

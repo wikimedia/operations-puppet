@@ -1,14 +1,15 @@
 # == Class profile::cassandra
 #
 class profile::cassandra(
-    Hash $all_instances = lookup('profile::cassandra::instances'),
-    String $rack = lookup('profile::cassandra::rack'),
-    Hash $cassandra_settings = lookup('profile::cassandra::settings'),
-    Stdlib::Host $graphite_host = lookup('graphite_host'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-    Array[Stdlib::IP::Address] $client_ips = lookup('profile::cassandra::client_ips', {'default_value' => []}),
-    Boolean $allow_analytics = lookup('profile::cassandra::allow_analytics'),
-    Boolean $monitor_enabled = lookup('profile::cassandra::monitor_enabled', {'default_value' => true}),
+    Hash $all_instances                       = lookup('profile::cassandra::instances'),
+    String $rack                              = lookup('profile::cassandra::rack'),
+    Hash $cassandra_settings                  = lookup('profile::cassandra::settings'),
+    Stdlib::Host $graphite_host               = lookup('graphite_host'),
+    Array[Stdlib::Host] $prometheus_nodes     = lookup('prometheus_nodes'),
+    Array[Stdlib::IP::Address] $client_ips    = lookup('profile::cassandra::client_ips', {'default_value' => []}),
+    Boolean $allow_analytics                  = lookup('profile::cassandra::allow_analytics'),
+    Boolean $monitor_enabled                  = lookup('profile::cassandra::monitor_enabled', {'default_value' => true}),
+    Hash[String, String] $cassandra_passwords = lookup('profile::cassandra::user_credentials', {'default_value' => {}}),
 ){
 
     include ::passwords::cassandra
@@ -21,10 +22,11 @@ class profile::cassandra(
     $ferm_seeds = split($all_seeds[1], ',')
 
     $base_settings = {
-        'instances'     => $instances,
-        'rack'          => $rack,
-        'seeds'         => $seeds,
-        'logstash_host' => 'localhost',
+        'instances'           => $instances,
+        'rack'                => $rack,
+        'seeds'               => $seeds,
+        'logstash_host'       => 'localhost',
+        'cassandra_passwords' => $cassandra_passwords,
     }
     $cassandra_real_settings = merge($base_settings, $cassandra_settings)
 
