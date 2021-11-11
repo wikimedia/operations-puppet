@@ -1,4 +1,6 @@
 class dynamicproxy::api (
+    Optional[String] $acme_certname = undef,
+    Optional[Array[String]] $ssl_settings = undef,
     Boolean $read_only = false,
 ) {
     file { '/usr/local/bin/invisible-unicorn.py':

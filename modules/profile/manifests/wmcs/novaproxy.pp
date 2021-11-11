@@ -88,8 +88,10 @@ class profile::wmcs::novaproxy(
     }
 
     class { '::dynamicproxy::api':
+        acme_certname => $acme_certname,
+        ssl_settings  => $ssl_settings,
         # Read only if specified in hiera or not an active proxy
-        read_only => $api_readonly or $::hostname != $active_proxy,
+        read_only     => $api_readonly or $::hostname != $active_proxy,
     }
 
     if $use_wmflabs_root {
