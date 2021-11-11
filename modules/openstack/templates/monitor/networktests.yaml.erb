@@ -203,7 +203,7 @@
 
 - name: Toolforge webservice can be accessed from the internet
   tests:
-    - cmd: curl -f --no-progress-meter https://network-tests.toolforge.org/files/1MB.bin --output - | file -
+    - cmd: curl -s -f https://network-tests.toolforge.org/files/1MB.bin --output - | file -
       stdout: "/dev/stdin: data"
       retcode: 0
       stderr: ""
