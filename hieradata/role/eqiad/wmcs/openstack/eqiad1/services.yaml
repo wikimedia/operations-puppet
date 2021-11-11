@@ -6,3 +6,10 @@ mgmt_contactgroups: wmcs-team-email
 
 profile::openstack::eqiad1::horizon::puppet_git_repo_name: instance-puppet
 profile::openstack::eqiad1::horizon::puppet_git_repo_user: instance-puppet-user
+cluster: wmcs
+profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
+contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email
+# See T224828
+raid::md::cron_ensure: absent
+profile::contacts::role_contacts: ['WMCS SREs']

@@ -9,3 +9,5 @@ profile::puppetmaster::frontend::prevent_cherrypicks: false
 
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
+cluster: wmcs
+contactgroups: 'wmcs-team-email,wmcs-bots'

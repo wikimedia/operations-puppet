@@ -27,3 +27,12 @@ profile::ceph::auth::deploy::selected_creds:
 
 # Backup things:
 profile::wmcs::backy2::cluster_name: ceph
+profile::monitoring::monitor_systemd: false
+cluster: wmcs
+profile::debdeploy::client::filter_services:
+  qemu-system-x86:
+    - '*'
+contactgroups: wmcs-team
+mgmt_contactgroups: wmcs-team-email
+profile::openstack::eqiad1::nova::common::is_control_node: false
+profile::contacts::role_contacts: ['WMCS SREs']

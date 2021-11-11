@@ -102,3 +102,11 @@ profile::monitoring::is_critical: true
 profile::mediawiki::apc_shm_size: 128M
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
+profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
+profile::tlsproxy::envoy::global_cert_name: "labweb.discovery.wmnet"
+profile::tlsproxy::envoy::tls_port: 7443
+profile::base::firewall::block_abuse_nets: true
+profile::contacts::role_contacts: ['WMCS SREs']
+
+# T294378
+profile::openstack::base::wikitech::web::install_fonts: false
