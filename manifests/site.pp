@@ -410,6 +410,13 @@ node /^cp50(0[789]|1[01256])\.eqsin\.wmnet$/ {
     role(cache::text)
 }
 
+#
+# cp drmrs nodes
+#
+node /^cp60(0[1-9]|1[0-6])\.drmrs\.wmnet$/ {
+    role(insetup_noferm)
+}
+
 node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
     role(cluster::management)
 }
