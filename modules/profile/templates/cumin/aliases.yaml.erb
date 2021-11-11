@@ -63,8 +63,8 @@ conf-canary: P{conf2004.codfw.wmnet}
 conf-codfw: A:conf and A:codfw
 conf-eqiad: A:conf and A:eqiad
 contint: P{O:ci::master}
-cp: P{O:cache::upload or O:cache::text}
-cp-upload: P{O:cache::upload}
+cp: A:cp-upload or A:cp-text
+cp-upload: P{O:cache::upload or O:cache::upload_haproxy}
 cp-text: P{O:cache::text}
 <% @datacenters.each do |dc| -%>
 cp-<%= dc %>: A:cp and A:<%= dc %>
