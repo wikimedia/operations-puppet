@@ -3,6 +3,23 @@ class openstack::monitor::networktests (
     Stdlib::Fqdn $sshbastion,
     Hash         $envvars,
 ) {
+    $usr = 'srv-networktests'
+
+    group { $usr:
+        ensure => 'present',
+        name   => $usr,
+    }
+
+    user { $usr:
+        ensure     => 'present',
+        gid        => $usr,
+        shell      => '/bin/false',
+        home       => "/var/lib/${usr}",
+        managehome => true,
+        system     => true,
+        require    => Group[$usr],
+    }
+
     $basedir = '/etc/networktests'
     file { $basedir:
         ensure => directory,
@@ -12,6 +29,8 @@ class openstack::monitor::networktests (
     file { $sshkeyfile:
         ensure    => present,
         mode      => '0600',
+        owner     => $usr,
+        group     => $usr,
         show_diff => false,
         content   => secret("openstack/monitor/networktests/${region}/sshkeyfile"),
     }
