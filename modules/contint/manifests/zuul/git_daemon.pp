@@ -16,7 +16,7 @@ class contint::zuul::git_daemon(
   #
   # We dont want to honor `git send-pack` commands so make sure the receive-pack
   # service is always disabled. Default is to allow 32 connections.
-  $daemon_options = "--export-all --forbid-override=receive-pack --max-connections=${max_connections}"
+  $daemon_options = "--export-all --informative-errors --forbid-override=receive-pack --max-connections=${max_connections}"
 
   user { 'gitdaemon':
     system => true,
