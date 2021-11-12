@@ -15,6 +15,10 @@
 #   Useful for places where monitoring is not appropriate or impossible via icinga
 #   such as cloud or perhaps a PoC system
 #
+# [*monitor_check_haproxy*]
+#   If set to false, monitoring based on icinga check_haproxy will be disabled.
+#   This can be useful on certain environments where access to the HAProxy stats socket
+#   needs to be as restricted as possible.
 # [*systemd_override*]
 #   Override system-provided unit. Defaults to false
 #
@@ -28,6 +32,7 @@ class haproxy(
     $socket                           = '/run/haproxy/haproxy.sock',
     $pid                              = '/run/haproxy/haproxy.pid',
     $monitor                          = true,
+    $monitor_check_haproxy            = true,
     $logging                          = false,
     Boolean $systemd_override         = false,
     Optional[String] $systemd_content = undef,
@@ -100,6 +105,7 @@ class haproxy(
 
     if $monitor {
         file { '/usr/lib/nagios/plugins/check_haproxy':
+            ensure  => bool2str($monitor_check_haproxy, 'present', 'absent'),
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
@@ -113,6 +119,7 @@ class haproxy(
         }
 
         nrpe::monitor_service { 'haproxy_alive':
+            ensure       => bool2str($monitor_check_haproxy, 'present', 'absent'),
             description  => 'haproxy alive',
             nrpe_command => '/usr/lib/nagios/plugins/check_haproxy --check=alive',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/HAProxy',
