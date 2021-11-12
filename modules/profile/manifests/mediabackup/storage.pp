@@ -18,7 +18,7 @@ class profile::mediabackup::storage (
         port          => $mediabackup_config['storage_port'],
         root_user     => $mediabackup_config['storage_root_user'],
         root_password => $mediabackup_config['storage_root_password'],
-        cert_path     => $tls_paths['cert'],
+        cert_path     => $tls_paths['chained'],
         key_path      => $tls_paths['key'],
         ca_path       => $tls_paths['ca'],
     }
