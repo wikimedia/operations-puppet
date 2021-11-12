@@ -37,6 +37,10 @@
 #   This should be set to false if you have defined the user elsewhere.
 #   Default: true
 #
+# [*manage_ssh_key*]
+#   If a ssh::userkey should be declared for the $deploy_user.
+#   Default: $manage_user
+#
 # [*sudo_rules*]
 #   An array of additional sudo rules pertaining to the service to install on
 #   the target node. Default: []
@@ -62,6 +66,7 @@ define scap::target(
     Array[String]    $additional_services_names = [],
     String           $package_name              = $title,
     Boolean          $manage_user               = true,
+    Boolean          $manage_ssh_key            = $manage_user,
     Array[String]    $sudo_rules                = [],
 ) {
     # Include scap3 package and ssh ferm rules.
@@ -97,6 +102,8 @@ define scap::target(
         } else {
             notice("manage_user=true but user ${deploy_user} already defined")
         }
+    }
+    if $manage_ssh_key {
         if !defined(Ssh::Userkey[$deploy_user]) {
             $key_name_safe = regsubst($key_name, '\W', '_', 'G')
 
@@ -104,6 +111,8 @@ define scap::target(
                 ensure  => $ensure,
                 content => secret("keyholder/${key_name_safe}.pub"),
             }
+        } else {
+            notice("mange_ssh_key=true but ssh::userkey ${deploy_user} already defined.")
         }
     }
 

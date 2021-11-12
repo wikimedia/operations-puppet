@@ -92,7 +92,12 @@ class profile::airflow(
                 default => {
                     "airflow-dags/${instance_name}" => {
                         'deploy_user' => $instance_params['service_user'],
+                        # The service user (that runs airflow) will be managed
+                        # by airflow::instance, but the deploy_airflow ssh key
+                        # is only used for scap deployments.  scap::target should
+                        # not manage the user, but it should manage the ssh key.
                         'manage_user' => false,
+                        'manage_ssh_key' => true,
                         # key_name must match a keyholder::agent declared in profile::keyholder::server::agents,
                         # which also must match an ssh keypair added in puppet private repo
                         # in modules/secret/secrets/keyholder.
