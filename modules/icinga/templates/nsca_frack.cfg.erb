@@ -692,6 +692,7 @@ define service {
     freshness_threshold      360
     contact_groups           fr-tech-ops
     check_command            nsca-fail!1!'passive check is awol - see T196336'
+    notes_url                https://icinga.wikimedia.org/cgi-bin/icinga/extinfo.cgi?type=2&host=$HOSTNAME$&service=$SERVICEDESC$
     notification_interval    0
     notification_period      24x7
     notification_options     c,r,f,w
