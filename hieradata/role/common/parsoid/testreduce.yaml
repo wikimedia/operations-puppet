@@ -32,3 +32,5 @@ profile::tlsproxy::envoy::services:
     port: 8001
 
 profile::nginx::variant: 'light'
+
+profile::contacts::role_contacts: ['ServiceOps SREs']

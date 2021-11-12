@@ -47,3 +47,5 @@ profile::parsoid::rt_server::service_ensure: 'running'
 
 profile::parsoid::testreduce::install_node: false
 profile::nginx::variant: 'light'
+
+profile::contacts::role_contacts: ['ServiceOps SREs']
