@@ -6,7 +6,7 @@ Requires=varnish-frontend.service
 [Service]
 SyslogIdentifier=varnishmtail-%i
 Restart=always
-ExecStart=/usr/local/bin/varnishmtail-%i
+ExecStart=/usr/local/bin/varnishmtail-%i <%= @mtail_dir %> <%= @mtail_port %>
 
 [Install]
 WantedBy=multi-user.target

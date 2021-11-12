@@ -27,31 +27,9 @@ class varnish::logging(
         creates => '/etc/systemd/system/mtail.service',
     }
 
-    file { '/usr/local/bin/varnishmtail-default':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/varnish/varnishmtail-default.sh',
-        notify => Systemd::Service['varnishmtail@default'],
-    }
-
-    file { '/etc/default/varnishmtail':
-        ensure => absent,
-    }
-
-    systemd::service { 'varnishmtail@default':
-        ensure  => present,
-        content => systemd_template('varnishmtail@'),
-        restart => true,
-        require => File['/usr/local/bin/varnishmtail-default'],
-    }
-
-    $mtail_programs.each |String $name| {
-        mtail::program { $name:
-            source => "puppet:///modules/mtail/programs/${name}.mtail",
-            notify => Systemd::Service['varnishmtail@default'],
-        }
+    varnish::logging::mtail { 'default':
+        mtail_programs => $mtail_programs,
+        mtail_port     => 3903,
     }
 
     file { "/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py":
