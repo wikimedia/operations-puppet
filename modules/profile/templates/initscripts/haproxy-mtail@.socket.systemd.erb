@@ -1,0 +1,11 @@
+[Unit]
+Description=rsyslog<->mtail FIFO (instance %i)
+# rsyslog requires the fifo to be created before it's started
+# https://www.rsyslog.com/doc/v8-stable/configuration/modules/ompipe.html
+Before=rsyslog.service
+
+[Socket]
+ListenFIFO=<%= @mtail_fifo %>
+SocketMode=700
+SocketUser=root
+PipeSize=1M

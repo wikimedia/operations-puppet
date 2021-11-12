@@ -1,0 +1,12 @@
+[Unit]
+Description=HAProxy mtail instance %i
+After=haproxy-mtail@%i.socket
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mtail --progs <%= @mtail_dir %> --port <%= @mtail_port %> -logs <%= @mtail_fifo %> -disable_fsnotify --logtostderr
+ExecReload=/bin/kill -SIGHUP $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

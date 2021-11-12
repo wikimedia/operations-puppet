@@ -20,6 +20,9 @@ class profile::cache::haproxy(
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     String $ocsp_proxy = lookup('http_proxy'),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
+    Stdlib::Unixpath $mtail_dir = lookup('profile::cache::haproxy::mtail_dir', {'default_value' => '/etc/haproxymtail'}),
+    Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', {'default_value' => 3906}),
+    Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', {'default_value' => '/var/log/haproxy.fifo'}),
 ) {
     class { '::sslcert::dhparam': }
 
@@ -159,5 +162,23 @@ class profile::cache::haproxy(
         do_ocsp      => $do_ocsp,
         acme_chief   => $unified_acme_chief,
         require      => Haproxy::Tls_terminator['tls'],
+    }
+
+    systemd::service { 'haproxy-mtail@tls.socket':
+        content => systemd_template('haproxy-mtail@.socket'),
+    }
+
+    systemd::service { 'haproxy-mtail@tls':
+        content => systemd_template('haproxy-mtail@'),
+    }
+
+    rsyslog::conf { 'haproxy@tls':
+        content => template('profile/cache/haproxy.rsyslog.conf.erb'),
+    }
+
+    mtail::program { 'cache_haproxy':
+        source      => 'puppet:///modules/mtail/programs/cache_haproxy.mtail',
+        destination => $mtail_dir,
+        notify      => Service['haproxy-mtail@tls'],
     }
 }

@@ -1,0 +1,4 @@
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 1 1 400
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 2 1 400
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 3 50 200
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 4 120 200

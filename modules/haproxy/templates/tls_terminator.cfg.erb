@@ -20,6 +20,7 @@ global
     tune.h2.max-concurrent-streams <%= @h2settings['max_concurrent_streams'] %>
 
 listen tls
+    log global
     maxconn 120000
     bind :<%= @port -%> tfo ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
 
@@ -71,6 +72,7 @@ listen tls
 
 <%- if @prometheus_port -%>
 frontend stats
+    no log
     maxconn 1000
     bind :<%= @prometheus_port %>
     bind :::<%= @prometheus_port %> v6only

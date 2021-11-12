@@ -1,16 +1,17 @@
 # Note: This file is managed by puppet.
 
 global
-	user haproxy
-	group haproxy
-	stats socket <%= @socket %> mode 600 expose-fd listeners level user
+    user haproxy
+    group haproxy
+    stats socket <%= @socket %> mode 600 expose-fd listeners level user
+    log /dev/log local0 info
 
 
 defaults
-	mode	http
-	option	httplog
-	option	dontlognull
-	retries 1
-	timeout connect 50000
-	timeout client 500000
-	timeout server 500000
+    mode       http
+    log-format "%rt %Tr %ST"
+    option     dontlognull
+    retries    1
+    timeout    connect 50000
+    timeout    client 500000
+    timeout    server 500000
