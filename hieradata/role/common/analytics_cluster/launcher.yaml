@@ -58,24 +58,5 @@ profile::airflow::instances:
     service_user: analytics
     service_group: analytics
     monitoring_enabled: false
-    airflow_config:
-      core:
-        dags_folder: /srv/deployment/analytics/refinery/airflow/dags
-        security: kerberos
-        executor: LocalExecutor
-        # This can be an ERB template that will be rendered in airflow::instance.
-        # db_user and db_password params should be set in puppet private
-        # in profile::airflow::instances_secrets.
-        sql_alchemy_conn: mysql://<%= @db_user %>:<%= @db_password %>@an-coord1001.eqiad.wmnet/airflow_analytics?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
-    connections:
-      fs_local:
-        conn_type: fs
-        description: Local filesystem on the Airflow Scheduler node
-      # TODO: add more as needed
-# TODO: remove this override to automatically deploy and use
-# airflow-dags/platform_eng/dags from data-engineering/airflow-dags
-# repository once we are ready.
-# https://phabricator.wikimedia.org/T295380
-profile::airflow::use_wmf_defaults: false
 
 profile::contacts::role_contacts: ['Analytics SREs']
