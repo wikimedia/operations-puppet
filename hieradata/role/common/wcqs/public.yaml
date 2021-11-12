@@ -56,3 +56,5 @@ profile::query_service::oauth_settings:
     oauth_success_redirect_url: https://commons-query.wikimedia.org/
     oauth_session_store_host: sessionstore.discovery.wmnet
     oauth_session_store_port: 8081
+
+profile::contacts::role_contacts: ['Search Platform SREs']
