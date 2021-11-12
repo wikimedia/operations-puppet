@@ -97,7 +97,7 @@ route:
       receiver: 'traffic-ircmail'
     - match:
         team: 'releng'
-      receiver: 'releng-irc'
+      receiver: 'releng-ircmail'
     - match:
         team: 'rweb'
       receiver: 'rweb-mail'
@@ -206,11 +206,9 @@ receivers:
     - to: 'wikidata-monitoring@wikimedia.de'
       send_resolved: true
 
-- name: 'releng-irc'
+- name: 'releng-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-releng'
-
-- name: 'releng-mail'
   email_configs:
     - to: 'releng@lists.wikimedia.org'
 
