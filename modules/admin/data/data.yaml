@@ -20,7 +20,7 @@ groups:
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
-              mholloway-shell, tonina, eugene-chernov, strofimovsky01, il]
+              mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -46,7 +46,7 @@ groups:
               ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
-              rzl, hnowlan, jayme, kormat, wkandek, ryankemper, lmata, klausman, lsobanski,
+              rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
               mdipietro, mvernon, ladsgroup, aokoth]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
@@ -60,14 +60,12 @@ groups:
       - Mark Bergsma
       - Nicholas Skaggs
       - Olja Dimitrjevic
-      - Wolfgang Kandek
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
     members: &sre_admins_members []
     approval:
       - Joanna Borun
-      - Wolfgang Kandek
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
     description: Use the standard system provided staff group to provide ops with privileges that would allow easier administrative tasks
@@ -4022,13 +4020,11 @@ users:
     gid: 500
     krb: absent
   wkandek:
-    ensure: present
+    ensure: absent
     realname: Wolfgang Kandek
-    email: wkandek@wikimedia.org
     uid: 23948
     gid: 500
-    ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZ4qNjoBpqHTj25VV1MgfQiNqv5jupK1FtJ6M84dLxHQZgaoSvoDsoBJrfgVxZXC46b8S31rv46VkG6WPTfN4Y+h8w39RlK3ekUl+UjUdC9h45e0q1jlbufW97ISa3n8iCaY87bs8GKx5MiGjGtLpmEz3evKLkqhXTvRhe9vU/XMVLQBVKESSMCfJF5Hiz4W6bndF3tFiFJZzF/VzMW9J8Wlfd6lfsYxXhBC4KNy/vivCCajPXJwUtlcvTEFMbbZHMf+m37hzzG8E+HNScRTO5jsqiHw4Ga+v+Roos/rh43wUmv/yE+rcwISPS6ghePy59hUbirjuCkysan5tOdcjb1NTu6aUekQYEO+mkitRFCZVb7aJctlrLoC/F2zaK+MjvmHuV1M/NSrYfk9fir0fX+XErgjsF73mr7H0cHDh9FiMfMGqmSdQdthqR0V7aFfZ/46Gt4lLlegYQFQYdF8H5ZptvQgIh1otBmH9omOFTWKqzrOQfAua569ZjXA/+aBWqbKxS1kThp6LGlZkNR7rCdjbRZ08AXF54iLU2XpLjBZRWm6Y4RroG1tgc7x2pAU/8p61Ll2eLO9aZEMeWGFYDS70wSkmy8DZi8UAS0d4pdIy6GVqMbcIJC/AkfVsk+JBDhcMp2kWGkKIAL0p5IO6Gc/WjioRChfBX06yTkhHWnw== cardno:000611108181'
+    ssh_keys: []
   ryankemper:
     ensure: present
     realname: Ryan Kemper
