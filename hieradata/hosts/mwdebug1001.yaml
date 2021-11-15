@@ -1,3 +1,1 @@
 profile::mediawiki::webserver::stream_to_logstash: true
-# Remove font packages (T294378)
-profile::mediawiki::webserver::install_fonts: false

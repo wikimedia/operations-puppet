@@ -7,7 +7,7 @@ class profile::openstack::base::wikitech::web(
     $phabricator_api_token = lookup('profile::openstack::base::wikitech::web::phabricator_api_token'),
     $gerrit_api_user = lookup('profile::openstack::base::wikitech::web::gerrit_api_user'),
     $gerrit_api_password = lookup('profile::openstack::base::wikitech::web::gerrit_api_password'),
-    Boolean $install_fonts = lookup('profile::openstack::base::wikitech::web::install_fonts', {'default_value' => true}),
+    Boolean $install_fonts = lookup('profile::openstack::base::wikitech::web::install_fonts', {'default_value' => false}),
 ) {
 
     require profile::mediawiki::common

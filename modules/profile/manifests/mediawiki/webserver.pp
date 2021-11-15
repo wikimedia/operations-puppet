@@ -11,7 +11,7 @@ class profile::mediawiki::webserver(
     Array[Mediawiki::SiteCollection] $common_sites = lookup('mediawiki::common_sites'),
     # Installation/site dependent sites
     Array[Mediawiki::SiteCollection] $sites = lookup('mediawiki::sites'),
-    Boolean $install_fonts = lookup('profile::mediawiki::webserver::install_fonts', {'default_value' => true}),
+    Boolean $install_fonts = lookup('profile::mediawiki::webserver::install_fonts', {'default_value' => false}),
 ) {
     include ::profile::mediawiki::httpd
     $versioned_port = php::fpm::versioned_port($fcgi_port, $php_versions)

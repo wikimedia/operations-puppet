@@ -47,6 +47,3 @@ profile::parsoid::rt_server::service_ensure: 'running'
 
 profile::parsoid::testreduce::install_node: false
 profile::nginx::variant: 'light'
-
-# T294378
-profile::mediawiki::webserver::install_fonts: false
