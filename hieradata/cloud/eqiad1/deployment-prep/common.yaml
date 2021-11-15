@@ -98,7 +98,6 @@ profile::memcached::ssl_key: ~
 profile::base::core_dump_pattern: '/data/project/cores/%{facts.hostname}-core.%h.%e.%p.%t'
 profile::base::certificates::trusted_certs:
   - '/var/lib/puppet/ssl/certs/ca.pem'
-  - '/etc/ssl/localcerts/pki_api_CA.pem'
 
 "role::cxserver::cxserver_port": 8080
 "misc::syslog-server::basepath": /data/project/syslog
