@@ -14,11 +14,6 @@ class profile::ceph::mon(
     String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
     Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
-    # enable in later step
-    if ! defined(Ceph::Auth::Keyring['admin']) {
-        notify {'profile::ceph::mon: Admin keyring not defined, things might not work as expected.': }
-    }
-
     include network::constants
     # Limit the client connections to the hypervisors in eqiad and codfw
     $client_networks = [

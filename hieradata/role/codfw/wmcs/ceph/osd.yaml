@@ -1,4 +1,4 @@
 profile::monitoring::notifications_enabled: false
-# enable in a later step
-#profile::ceph::auth::deploy::selected_creds:
-#  - admin
+profile::ceph::auth::deploy::enabled: true
+profile::ceph::auth::deploy::selected_creds:
+  - admin

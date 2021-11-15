@@ -17,8 +17,11 @@ class ceph::mon(
     String               $mon_keydata,
     String               $fsid,
 ) {
-    # enable in later step
-    #Ceph::Auth::Keyring['admin'] -> Class['ceph::mon']
+    if defined(Ceph::Auth::Keyring['admin']) {
+        Ceph::Auth::Keyring['admin'] -> Class['ceph::mon']
+    } else {
+        notify {'ceph::mon: admin keyring not defined, things might not work as expected.': }
+    }
 
     $keyring = "${data_dir}/tmp/ceph.mon.keyring"
 

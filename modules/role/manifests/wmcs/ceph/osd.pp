@@ -3,4 +3,5 @@ class role::wmcs::ceph::osd {
     include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::ceph::osd
+    include profile::ceph::auth::deploy
 }

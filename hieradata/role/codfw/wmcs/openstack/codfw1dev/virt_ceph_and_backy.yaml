@@ -5,6 +5,6 @@ profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
 profile::openstack::eqiad1::nova::common::is_control_node: false
-# enable in a later step
-#profile::ceph::auth::deploy::selected_creds:
-#  - admin
+profile::ceph::auth::deploy::enabled: true
+profile::ceph::auth::deploy::selected_creds:
+  - admin
