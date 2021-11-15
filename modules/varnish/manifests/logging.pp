@@ -4,11 +4,15 @@
 #
 # === Parameters
 #
-# [*mtail_programs*]
-#   The list of mtail programs to install. Defaults to [].
+# [*default_mtail_programs*]
+#   The list of mtail programs to install.
+#
+# [*internal_mtail_programs*]
+#   The list of internal mtail programs to install.
 #
 class varnish::logging(
-    $mtail_programs=[],
+    Array[String] $default_mtail_programs,
+    Array[String] $internal_mtail_programs,
 ){
     ensure_packages('python3-logstash')
 
@@ -27,9 +31,23 @@ class varnish::logging(
         creates => '/etc/systemd/system/mtail.service',
     }
 
+    # Common wrapper used by all varnishmtail instances
+    file { '/usr/local/bin/varnishmtail-wrapper':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/varnish/varnishmtail-wrapper.sh',
+    }
+
     varnish::logging::mtail { 'default':
-        mtail_programs => $mtail_programs,
+        mtail_programs => $default_mtail_programs,
         mtail_port     => 3903,
+    }
+
+    varnish::logging::mtail { 'internal':
+        mtail_programs => $internal_mtail_programs,
+        mtail_port     => 3913,
     }
 
     file { "/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py":

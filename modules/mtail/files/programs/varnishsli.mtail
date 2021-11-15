@@ -40,6 +40,6 @@ hidden gauge internal_time
 
 # Neither error nor fetcherror should be set, and the total time has to be
 # within the chosen threshold (0.1s).
-/\terror -\tfetcherror -\t/ && internal_time < 0.1 {
+/^error -\tfetcherror -\t/ && internal_time < 0.1 {
     varnish_sli_good++
 }

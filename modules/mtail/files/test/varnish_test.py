@@ -87,14 +87,14 @@ class VarnishProcessingSecondsTest(unittest.TestCase):
     def setUp(self):
         self.store = mtail_store.MtailMetricStore(
                 os.path.join(test_dir, '../programs/varnishprocessing.mtail'),
-                os.path.join(test_dir, 'logs/varnish.test'))
+                os.path.join(test_dir, 'logs/varnishinternal.test'))
 
     def testProcessingCount(self):
         s = dict(self.store.get_samples('varnish_processing_seconds'))
         expected_process = {
            '+Inf': 0,
-           '0.0001': 0,
-           '0.0005': 3,
+           '0.0001': 4,
+           '0.0005': 6,
            '0.001': 0,
            '0.005': 0,
            '0.01': 0,
@@ -111,7 +111,7 @@ class VarnishErrorsTest(unittest.TestCase):
     def setUp(self):
         self.store = mtail_store.MtailMetricStore(
                 os.path.join(test_dir, '../programs/varnisherrors.mtail'),
-                os.path.join(test_dir, 'logs/varnish.test'))
+                os.path.join(test_dir, 'logs/varnishinternal.test'))
 
     def testErrors(self):
         s = dict(self.store.get_samples('varnish_errors'))
@@ -126,11 +126,11 @@ class VarnishSLITest(unittest.TestCase):
     def setUp(self):
         self.store = mtail_store.MtailMetricStore(
                 os.path.join(test_dir, '../programs/varnishsli.mtail'),
-                os.path.join(test_dir, 'logs/varnishsli.test'))
+                os.path.join(test_dir, 'logs/varnishinternal.test'))
 
     def testSLI(self):
         sli_all = self.store.get_samples('varnish_sli_all')
-        self.assertIn(('', 10), sli_all)
+        self.assertIn(('', 11), sli_all)
 
         # Two lines are not good: one has a fetcherror (Resource temporarily
         # unavailable), another has "trestart 0.099903", which makes the

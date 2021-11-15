@@ -77,7 +77,7 @@ class profile::cache::base(
     ###########################################################################
 
     # Programs installed on both text and upload nodes
-    $common_mtail_programs = ['varnishreqstats', 'varnishttfb', 'varnishprocessing', 'varnisherrors', 'varnishsli', 'varnishxcache']
+    $common_mtail_programs = ['varnishreqstats', 'varnishttfb', 'varnishxcache']
 
     # Programs specific to either upload or text
     if $cache_cluster == 'upload' {
@@ -89,7 +89,8 @@ class profile::cache::base(
     }
 
     class { '::varnish::logging':
-        mtail_programs => $mtail_programs,
+        default_mtail_programs  => $mtail_programs,
+        internal_mtail_programs => [ 'varnishprocessing', 'varnisherrors', 'varnishsli' ],
     }
 
     # auto-depool on shutdown + conditional one-shot auto-pool on start
