@@ -46,22 +46,6 @@ describe 'ceph::auth::load_all' do
         it { is_expected.to contain_ceph__auth__keyring('client2') }
       end
 
-      describe 'Fills up correct keyring_path if none passed' do
-        let(:params) { super().merge({
-          :configuration => {
-            'client1' => {
-              'keydata' => 'dummy_keydata1',
-              'caps' => {
-                'mon' => 'my mon_caps',
-              }
-            }
-        }})}
-        it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_ceph__auth__keyring('client1')
-          .with_keyring_path('/etc/ceph/ceph.client.client1.keyring')
-        }
-      end
-
       describe 'Discards a key if it has no keydata' do
         let(:params) { super().merge({
           :configuration => {

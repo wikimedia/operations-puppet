@@ -72,6 +72,25 @@ describe 'ceph::auth::keyring', :type => :define do
           .with_content(/^\[mon.dummy_client\]/)
         }
       end
+
+      describe 'generates the correct keypath if none passed' do
+        let(:params) {{
+          :keydata => "dummykeydata",
+          :caps    => {}
+        }}
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/etc/ceph/ceph.client.dummy_client.keyring') }
+      end
+
+      describe 'uses generated client name for the generated keypath if none passed' do
+        let(:title) { 'mon.dummy_client' }
+        let(:params) {{
+          :keydata => "dummykeydata",
+          :caps    => {}
+        }}
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/etc/ceph/ceph.mon.dummy_client.keyring') }
+      end
     end
   end
 end

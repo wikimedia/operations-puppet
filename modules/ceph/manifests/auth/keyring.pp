@@ -1,22 +1,23 @@
 define ceph::auth::keyring (
-    Stdlib::AbsolutePath $keyring_path,
-    String[1]            $keydata,
-    Ceph::Auth::Caps     $caps,
-    Boolean              $import_to_ceph = false,
-    String[1]            $cluster        = 'ceph',
-    String[1]            $ensure         = 'present',
-    String[1]            $group          = 'ceph',
-    String[1]            $mode           = '0600',
-    String[1]            $owner          = 'ceph',
+    String[1]                      $keydata,
+    Ceph::Auth::Caps               $caps,
+    Optional[Stdlib::AbsolutePath] $keyring_path   = undef,
+    Boolean                        $import_to_ceph = false,
+    String[1]                      $cluster        = 'ceph',
+    String[1]                      $ensure         = 'present',
+    String[1]                      $group          = 'ceph',
+    String[1]                      $mode           = '0600',
+    String[1]                      $owner          = 'ceph',
 ) {
     $client_name = $name ? {
         /\./    => $name,
         default => "client.${name}",
     }
+    $_keyring_path = pick($keyring_path, "/etc/ceph/ceph.${client_name}.keyring")
 
     ensure_packages('ceph-common')
 
-    file { $keyring_path:
+    file { $_keyring_path:
         ensure    => present,
         mode      => $mode,
         owner     => $owner,
@@ -38,11 +39,11 @@ define ceph::auth::keyring (
         exec { "ceph-auth-load-key-${name}":
             # the following command creates new keys if they are not there, or updates them with the
             # new capabilities.
-            command => "/usr/bin/ceph --in-file '${keyring_path}' auth import",
+            command => "/usr/bin/ceph --in-file '${_keyring_path}' auth import",
             # the following command either creates the auth, or if it's there already, it checks if it has the
             # same key data and capabilities and fails if there's any difference.
-            unless  => "/usr/bin/ceph --in-file '${keyring_path}' auth get-or-create-key '${client_name}' ${caps_opts}",
-            require =>  [Package['ceph-common'], File[$keyring_path]],
+            unless  => "/usr/bin/ceph --in-file '${_keyring_path}' auth get-or-create-key '${client_name}' ${caps_opts}",
+            require =>  [Package['ceph-common'], File[$_keyring_path]],
         }
     }
 }
