@@ -229,7 +229,7 @@ ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc
 
 Name: amd-rocm45
 Method: http://repo.radeon.com/rocm/apt/4.5/
-Suite: xenial
+Suite: ubuntu
 Components: main>thirdparty/amd-rocm45
 UDebComponents:
 Architectures: amd64
