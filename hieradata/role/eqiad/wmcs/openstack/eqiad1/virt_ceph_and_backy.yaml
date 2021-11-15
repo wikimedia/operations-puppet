@@ -22,6 +22,8 @@ profile::ceph::client::rbd::enable_nova_rbd: true
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:
 - eqiad1-compute
+# enable in a later step
+# - admin
 
 # Backup things:
 profile::wmcs::backy2::cluster_name: ceph

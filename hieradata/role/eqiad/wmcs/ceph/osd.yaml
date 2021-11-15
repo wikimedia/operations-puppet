@@ -1,2 +1,5 @@
 contactgroups: 'wmcs-team'
 mgmt_contactgroups: 'wmcs-team-email'
+# enable in a later step
+#profile::ceph::auth::deploy::selected_creds:
+#  - admin

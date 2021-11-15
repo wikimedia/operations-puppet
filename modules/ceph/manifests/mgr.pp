@@ -8,13 +8,19 @@
 class ceph::mgr(
     Stdlib::Unixpath $data_dir,
 ) {
-    Class['ceph::admin'] -> Class['ceph::mgr']
+    if defined(Ceph::Auth::Keyring['admin']) {
+        Ceph::Auth::Keyring['admin'] -> Class['ceph::mon']
+    } else {
+        notify {'ceph::mgr: Admin keyring not defined, things might not work as expected.': }
+    }
 
     # If the daemon hasn't been setup yet, first verify we can connect to the ceph cluster
     exec { 'ceph-mgr-check':
         command => '/usr/bin/ceph -s',
         onlyif  => "/usr/bin/test ! -e ${data_dir}/mgr/ceph-${::hostname}/keyring",
-        require => Ceph::Keyring['client.admin'],
+    }
+    if defined(Ceph::Auth::Keyring['admin']) {
+        Ceph::Auth::Keyring['admin'] -> Exec['ceph-mgr-check']
     }
 
     file { "${data_dir}/mgr/ceph-${::hostname}":

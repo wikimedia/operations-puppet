@@ -6,8 +6,6 @@ describe 'profile::wmcs::backy2' do
       base_params = {
         'cluster_name' => 'dummy_cluster',
         'data_dir' => '/dummy/data/dir',
-        'admin_keyring' => '/dummy/admin/keyring',
-        'admin_keydata' => 'dummy admin key data',
         'ceph_vm_pool' => 'dummy_ceph_vm_pool',
         'backup_interval' => '*-*-* 1:00:00',
       }

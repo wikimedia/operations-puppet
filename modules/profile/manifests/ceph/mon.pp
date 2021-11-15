@@ -6,16 +6,19 @@ class profile::ceph::mon(
     Array[Stdlib::Fqdn]  $openstack_controllers = lookup('profile::ceph::openstack_controllers'),
     Hash[String,Hash]    $mon_hosts        = lookup('profile::ceph::mon::hosts'),
     Hash[String,Hash]    $osd_hosts        = lookup('profile::ceph::osd::hosts'),
-    Stdlib::AbsolutePath $admin_keyring    = lookup('profile::ceph::admin_keyring'),
     Stdlib::IP::Address  $cluster_network  = lookup('profile::ceph::cluster_network'),
     Stdlib::IP::Address  $public_network   = lookup('profile::ceph::public_network'),
     Stdlib::Unixpath     $data_dir         = lookup('profile::ceph::data_dir'),
-    String               $admin_keydata    = lookup('profile::ceph::admin_keydata'),
     String               $fsid             = lookup('profile::ceph::fsid'),
     String               $mon_keydata      = lookup('profile::ceph::mon::keydata'),
     String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
     Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
+    # enable in later step
+    if ! defined(Ceph::Auth::Keyring['admin']) {
+        notify {'profile::ceph::mon: Admin keyring not defined, things might not work as expected.': }
+    }
+
     include network::constants
     # Limit the client connections to the hypervisors in eqiad and codfw
     $client_networks = [
@@ -69,15 +72,9 @@ class profile::ceph::mon(
         public_network      => $public_network,
     }
 
-    class { 'ceph::admin':
-        admin_keyring => $admin_keyring,
-        admin_keydata => $admin_keydata,
-        data_dir      => $data_dir,
-    }
-
     Class['ceph::mon'] -> Class['ceph::mgr']
     class { 'ceph::mon':
-        admin_keyring => $admin_keyring,
+        admin_keyring => '/etc/ceph/ceph.client.admin.keyring',
         data_dir      => $data_dir,
         fsid          => $fsid,
         mon_keydata   => $mon_keydata,

@@ -39,11 +39,9 @@ describe 'profile::ceph::mon' do
             }
           }
         },
-        'admin_keyring' => '/path/to/adming.keyring',
         'cluster_network' => '192.168.4.0/22',
         'public_network' => '10.192.20.0/24',
         'data_dir' => '/path/to/data',
-        'admin_keydata' => 'NOTAREALKEYADMIN==',
         'fsid' => 'dummy_fsid',
         'mon_keydata' => 'NOTAREALKEY==',
       }

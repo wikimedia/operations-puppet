@@ -17,7 +17,8 @@ class ceph::mon(
     String               $mon_keydata,
     String               $fsid,
 ) {
-    Class['ceph::admin'] -> Class['ceph::mon']
+    # enable in later step
+    #Ceph::Auth::Keyring['admin'] -> Class['ceph::mon']
 
     $keyring = "${data_dir}/tmp/ceph.mon.keyring"
 
@@ -39,7 +40,11 @@ class ceph::mon(
         command     => "/usr/bin/ceph-authtool ${keyring} \
                         --import-keyring ${admin_keyring}",
         refreshonly => true,
-        require     => Ceph::Keyring['client.admin'],
+    }
+    if defined(Ceph::Auth::Keyring['admin']) {
+        Ceph::Auth::Keyring['admin'] -> Exec['import-keyring-admin']
+    } else {
+        notify {'ceph::mon: Admin keyring not defined, things might not work as expected.': }
     }
 
     exec { 'ceph-mon-mkfs':
