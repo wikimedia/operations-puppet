@@ -10,6 +10,7 @@ class MediaWikiAccessLogTest(unittest.TestCase):
     def setUp(self):
         self._handler_codes = {
             'php7': 'proxy:unix:/run/php/fpm-www.sock|fcgi://localhost',
+            'php74': 'proxy:unix:/run/php/fpm-www-7.4.sock|fcgi://localhost',
             'static': '-'
         }
         self.store = mtail_store.MtailMetricStore(
@@ -31,6 +32,8 @@ class MediaWikiAccessLogTest(unittest.TestCase):
             if sample[0] == self.id_str('php7'):
                 self.assertEqual(sample[1]['count'], 6)
             elif sample[0] == self.id_str('static', code=301):
+                self.assertEqual(sample[1]['count'], 1)
+            elif sample[0] == self.id_str('php74'):
                 self.assertEqual(sample[1]['count'], 1)
 
     def testByBucket(self):
