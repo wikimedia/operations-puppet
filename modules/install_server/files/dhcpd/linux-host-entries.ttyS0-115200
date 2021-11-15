@@ -1079,7 +1079,7 @@ host registry2004 {
 }
 
 host rpki1001 {
-    hardware ethernet aa:00:00:64:75:b9;
+    hardware ethernet aa:00:00:37:44:a1;
     fixed-address rpki1001.eqiad.wmnet;
 }
 
