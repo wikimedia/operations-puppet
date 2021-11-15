@@ -19,4 +19,14 @@ class profile::analytics::refinery::job::import_commons_mediainfo_dumps (
         timer_description => 'Schedules daily an hdfs-rsync of the commons mediainfo-ttl dumps into HDFS',
         timer_interval    => '*-*-* 02:30:00',
     }
+
+    # Import mediainfo-json dumps
+    profile::analytics::refinery::job::import_wikibase_dumps_config { 'refinery-import-commons-mediainfo-json-dumps':
+        ensure            => $ensure_timers,
+        include_pattern   => '/*/*-mediainfo.json.bz2',
+        local_source      => $mediainfo_local_source,
+        hdfs_destination  => '/wmf/data/raw/commons/dumps/mediainfo-json',
+        timer_description => 'Schedules daily an hdfs-rsync of the commons mediainfo-json dumps into HDFS',
+        timer_interval    => '*-*-* 03:00:00',
+    }
 }
