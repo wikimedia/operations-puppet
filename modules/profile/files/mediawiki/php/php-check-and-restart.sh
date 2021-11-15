@@ -14,6 +14,10 @@ set -euo pipefail
 
 # Service name
 SERVICE="$1"
+# Extract the php version from the service name.
+PHP_VERSION=${SERVICE#php}
+PHP_VERSION=${PHP_VERSION%-fpm}
+export PHP_VERSION
 # Minimum opcache free MB.
 MIN_OPCACHE_FREE="$2"
 OPCACHE_FREE=$(php7adm /opcache-info | jq .memory_usage.free_memory/1024/1024 2>&1)
