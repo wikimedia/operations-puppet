@@ -886,14 +886,16 @@ groups:
     members: [brennen, dancy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Wolfgang Kandek
+      - Lukasz Sobanski
+      - Alexandros Kosiaris
   vrts-roots:
     gid: 834
     description: Group of users with full root access on VRTS (formerly OTRS) machines
     members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Wolfgang Kandek
+      - Lukasz Sobanski
+      - Alexandros Kosiaris
   aqs-roots:
     gid: 829
     description: people who have full root on aqs nodes
