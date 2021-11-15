@@ -7,6 +7,7 @@ class profile::rsyslog::kubernetes (
     Optional[Stdlib::HTTPSUrl] $kubernetes_url = lookup(
         'profile::rsyslog::kubernetes::kubernetes_url', {'default_value' => undef}),
 ) {
+    include profile::rsyslog::shellbox
 
     if debian::codename::eq('buster') {
         apt::package_from_component { 'rsyslog_kubernetes':
