@@ -26,13 +26,23 @@ define varnish::logging::mtail(
   Array[String] $mtail_programs,
   Stdlib::Port::User $mtail_port,
 ) {
-    file { "/usr/local/bin/varnishmtail-${title}":
+    # Common wrapper used by all varnishmtail instances
+    file { '/usr/local/bin/varnishmtail-wrapper':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => "puppet:///modules/varnish/varnishmtail-${title}.sh",
-        notify => Systemd::Service["varnishmtail@${title}"],
+        source => 'puppet:///modules/varnish/varnishmtail-wrapper.sh',
+    }
+
+    file { "/usr/local/bin/varnishmtail-${title}":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => "puppet:///modules/varnish/varnishmtail-${title}.sh",
+        notify  => Systemd::Service["varnishmtail@${title}"],
+        require => File['/usr/local/bin/varnishmtail-wrapper'],
     }
 
     $mtail_dir = "/etc/mtail-${title}"

@@ -43,14 +43,4 @@ fmt_timestamp_error='terror %{VSL:Timestamp:Error[3]}x'
 
 FMT="${fmt_side}\t${fmt_url}\t${fmt_cache_status}\t${fmt_http_status}\t${fmt_http_method}\t${fmt_cache_control}\t${fmt_inm}\t${fmt_ttfb}\t${fmt_cache_int}\t${fmt_error}\t${fmt_fetch_error}\t${fmt_timestamp_start}\t${fmt_timestamp_req}\t${fmt_timestamp_reqbody}\t${fmt_timestamp_waitinglist}\t${fmt_timestamp_fetch}\t${fmt_timestamp_process}\t${fmt_timestamp_resp}\t${fmt_timestamp_restart}\t${fmt_timestamp_pipe}\t${fmt_timestamp_pipesess}\t${fmt_timestamp_bereq}\t${fmt_timestamp_beresp}\t${fmt_timestamp_berespbody}\t${fmt_timestamp_retry}\t${fmt_timestamp_error}\t"
 
-# Pass -c and -b to log requests from clients (tls terminators) and to backends (origin)
-/usr/bin/varnishncsa -P /run/varnishncsa-mtail.pid -n frontend -c -b -F "${FMT}" | mtail -progs "${PROGS}" -port "${PORT}" -logs /dev/stdin -disable_fsnotify &
-
-while :; do
-    sleep 1
-
-    if ! kill -0 "$(cat /run/varnishncsa-mtail.pid)" 2> /dev/null ; then
-        echo "varnishncsa seems to have crashed, exiting" >&2
-        exit 1
-    fi
-done
+/usr/local/bin/varnishmtail-wrapper "${PROGS}" "${PORT}" varnishmtail-default "${FMT}"
