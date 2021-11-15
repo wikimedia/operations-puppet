@@ -64,6 +64,14 @@ describe 'ceph::auth::keyring', :type => :define do
           .with_mode('000')
         }
       end
+
+      describe 'does not prepend "client." if the key name has a dot already' do
+        let(:title) { 'mon.dummy_client' }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file('/path/to/dummy.keyring')
+          .with_content(/^\[mon.dummy_client\]/)
+        }
+      end
     end
   end
 end

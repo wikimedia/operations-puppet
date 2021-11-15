@@ -9,7 +9,10 @@ define ceph::auth::keyring (
     String[1]            $mode           = '0600',
     String[1]            $owner          = 'ceph',
 ) {
-    $client_name = "client.${name}"
+    $client_name = $name ? {
+        /\./    => $name,
+        default => "client.${name}",
+    }
 
     ensure_packages('ceph-common')
 
