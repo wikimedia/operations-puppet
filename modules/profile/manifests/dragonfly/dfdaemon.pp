@@ -31,7 +31,7 @@ class profile::dragonfly::dfdaemon(
   class {'dragonfly::dfdaemon':
     ensure               => $ensure,
     supernodes           => $supernodes,
-    dfdaemon_ssl_cert    => $ssl_paths['cert'],
+    dfdaemon_ssl_cert    => $ssl_paths['chained'],
     dfdaemon_ssl_key     => $ssl_paths['key'],
     docker_registry_fqdn => $docker_registry_fqdn,
     proxy_urls_regex     => $proxy_urls_regex,
