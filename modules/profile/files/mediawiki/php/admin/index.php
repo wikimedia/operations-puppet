@@ -28,6 +28,7 @@ switch ($_SERVER['SCRIPT_NAME']) {
 		# This will make requests to the other php admin ports for /local-metrics, and combine them all
 		# in a single output.
 		show_all_prometheus_metrics();
+		break;
 	case '/local-metrics':
 		show_prometheus_metrics();
 		break;
