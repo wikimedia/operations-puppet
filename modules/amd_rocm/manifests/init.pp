@@ -23,7 +23,7 @@ class amd_rocm (
     Optional[String] $kfd_access_group = undef,
 ) {
 
-    $supported_versions = ['38', '42', '431']
+    $supported_versions = ['42', '431', '45']
 
     if ! ($version in $supported_versions) {
         fail('The version of ROCm requested is not supported or misspelled.')
@@ -78,13 +78,9 @@ class amd_rocm (
         'rocm-opencl-dev',
         'rocm-utils',
         'rocrand',
+        'rocm-smi-lib',
+        'migraphx'
     ]
-
-    if $version == '431' or $version == '42' {
-      $extra_packages = ['rocm-smi-lib', 'migraphx']
-    } else {
-      $extra_packages = ['rocm-smi']
-    }
 
     apt::package_from_component { "amd-rocm${version}":
         component => "thirdparty/amd-rocm${version}",

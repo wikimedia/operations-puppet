@@ -35,9 +35,9 @@ Components: main
  component/tesseract-410-bpo
  component/thumbor
  component/vp9
- thirdparty/amd-rocm38
  thirdparty/amd-rocm42
  thirdparty/amd-rocm431
+ thirdparty/amd-rocm451
  thirdparty/bigtop14
  thirdparty/bigtop15
  thirdparty/ci
@@ -58,9 +58,9 @@ Components: main
 UDebComponents: main component/node10 component/systemd241
 Update:
 # sorted list, leading whitespace matters!
- amd-rocm38
  amd-rocm42
  amd-rocm431
+ amd-rocm45
  bigtop14
  bigtop15
  confluent
@@ -118,9 +118,9 @@ Components: main
  component/spicerack
  component/varnish6
  component/wmf-sre-laptop
- thirdparty/amd-rocm38
  thirdparty/amd-rocm42
  thirdparty/amd-rocm431
+ thirdparty/amd-rocm45
  thirdparty/bigtop14
  thirdparty/bigtop15
  thirdparty/ceph-nautilus-buster
@@ -146,9 +146,9 @@ Components: main
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
- amd-rocm38
  amd-rocm42
  amd-rocm431
+ amd-rocm45
  bigtop14
  bigtop15
  confluent
