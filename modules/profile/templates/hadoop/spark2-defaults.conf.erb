@@ -35,6 +35,9 @@ spark.port.maxRetries                               <%= @port_max_retries %>
 <% if @ui_port -%>
 spark.ui.port                                       <%= @ui_port %>
 <% end -%>
+<% if @local_dir -%>
+spark.local.dir                                     <%= @local_dir %>
+<% end -%>
 <% if @driver_blockmanager_port -%>
 spark.driver.blockManager.port                      <%= @driver_blockmanager_port %>
 <% end -%>

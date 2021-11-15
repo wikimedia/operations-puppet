@@ -74,6 +74,11 @@
 #   on all Spark 2 client/worker node.
 #   Default: true
 #
+# [*local_dir*]
+#   This option is used as a default value for the spark.local.dir configuration
+#   parameter. It is used for scratch file storage space. If not specified, it will
+#   be omitted from the configuration file and the compiled-in default value of /tmp
+#   will be used.
 class profile::hadoop::spark2(
     Boolean $install_yarn_shuffle_jar          = lookup('profile::hadoop::spark2::install_yarn_shuffle_jar', {'default_value' => true}),
     Boolean $install_oozie_sharelib            = lookup('profile::hadoop::spark2::install_oozie_sharelib', {'default_value' => false}),
@@ -85,6 +90,7 @@ class profile::hadoop::spark2(
     Integer $port_max_retries                  = lookup('profile::hadoop::spark2::port_max_retries', {'default_value' => 100}),
     Stdlib::Unixpath $executor_env_ld_lib_path = lookup('profile::hadoop::spark2::executor_env_ld_lib_path', {'default_value' => '/usr/lib/hadoop/lib/native'}),
     Boolean $encryption_enabled                = lookup('profile::hadoop::spark2::encryption_enabled', {'default_value' => true}),
+    Optional[Stdlib::Unixpath] $local_dir      = lookup('profile::hadoop::spark2::local_dir', {'default_value' => undef }),
     String $default_version                    = lookup('profile::hadoop::spark::default_version', { 'default_value' => '2.4.4'}),
 ) {
     require ::profile::hadoop::common
@@ -211,6 +217,15 @@ class profile::hadoop::spark2(
             proto  => 'tcp',
             port   => "${ui_port}:${ui_port_max}",
             srange => '$ANALYTICS_NETWORKS',
+        }
+    }
+
+    if $local_dir {
+        file { $local_dir:
+            ensure => directory,
+            mode   => '1777',
+            owner  => 'root',
+            group  => 'root',
         }
     }
 }
