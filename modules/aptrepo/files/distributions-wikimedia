@@ -51,6 +51,7 @@ Components: main
  thirdparty/k8s
  thirdparty/kubeadm-k8s-1-19
  thirdparty/kubeadm-k8s-1-20
+ thirdparty/kubeadm-k8s-1-21
  thirdparty/matomo
  thirdparty/mono-project-stretch
  thirdparty/oath
@@ -77,6 +78,7 @@ Update:
  thirdparty/helm3
  thirdparty/kubeadm-k8s-kubernetes.io-1-19
  thirdparty/kubeadm-k8s-kubernetes.io-1-20
+ thirdparty/kubeadm-k8s-kubernetes.io-1-21
  thirdparty/kubeadm-k8s-kubernetes.io
 Description: Wikimedia packages for Debian stretch
 SignWith: 9D392D3FFADF18FB
