@@ -456,71 +456,26 @@ testcases:
           "severity": "NOTICE",
           "host": "gitlab1001",
           "severity": "INFO",
-          "time": "2021-06-10T21:58:24.815Z",
-          "class": "MergeRequestMergeabilityCheckWorker",
-          "args": [
-            "2270"
-          ],
-          "retry": 3,
-          "queue": "merge_request_mergeability_check",
-          "version": 0,
-          "jid": "0060a3526bf690ad6298ff1c",
-          "created_at": "2021-06-10T21:58:24.725Z",
-          "meta.project": "gpt/large_projects/gitlabhq1",
-          "meta.root_namespace": "gpt",
-          "meta.caller_id": "Projects::MergeRequestsController#show",
-          "meta.remote_ip": "127.0.0.1",
-          "meta.feature_category": "code_review",
-          "meta.client_id": "ip/127.0.0.1",
-          "correlation_id": "01F7VYXYK8YSNBK8SNGKKPZCXA",
-          "enqueued_at": "2021-06-10T21:58:24.727Z",
-          "pid": 19901,
-          "message": "MergeRequestMergeabilityCheckWorker JID-0060a3526bf690ad6298ff1c: done: 0.085083 sec",
-          "job_status": "done",
-          "scheduling_latency_s": 0.002865,
-          "job_size_bytes": 508,
-          "cpu_s": 0.059214,
-          "mem_objects": 10513,
-          "mem_bytes": 1251970,
-          "mem_mallocs": 2586,
-          "redis_calls": 5,
-          "redis_duration_s": 0.0018189999999999999,
-          "redis_read_bytes": 22,
-          "redis_write_bytes": 766,
-          "redis_cache_read_bytes": 16,
-          "redis_cache_write_bytes": 168,
-          "redis_queues_calls": 2,
-          "redis_queues_duration_s": 0.000681,
-          "redis_queues_read_bytes": 2,
-          "redis_queues_write_bytes": 201,
-          "redis_shared_state_calls": 3,
-          "redis_shared_state_duration_s": 0.001138,
-          "redis_shared_state_read_bytes": 4,
-          "redis_shared_state_write_bytes": 397,
-          "db_count": 17,
-          "db_write_count": 5,
-          "db_cached_count": 1,
-          "duration_s": 0.085083,
-          "completed_at": "2021-06-10T21:58:24.815Z",
-          "db_duration_s": 0.02378
+          "time": "2021-11-15T22:39:46.304Z",
+          "message":"Enqueuing scheduled jobs",
+          "status":"done",
+          "sorted_set":"schedule",
+          "jobs_count":0,
+          "redundant_jobs_count":0,
+          "duration_s":0.0005855746567249298,
+          "retry":0
         }
 
     expected:
-      - message: "MergeRequestMergeabilityCheckWorker JID-0060a3526bf690ad6298ff1c: done: 0.085083 sec"
-        "@timestamp": "2021-06-10T21:58:24.815Z"
+      - message: "Enqueuing scheduled jobs: done"
+        "@timestamp": "2021-11-15T22:39:46.304Z"
         host:
           name: "gitlab1001"
         service:
           type: "gitlab"
           name: "gitlab-sidekiq"
-        trace:
-          id: "01F7VYXYK8YSNBK8SNGKKPZCXA"
-        client:
-          ip: "127.0.0.1"
-        process:
-          pid: 19901
         event:
-          duration: 0.085083
+          duration: 0.0005855746567249298
         log:
           level: "INFO"
           syslog:
