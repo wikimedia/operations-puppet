@@ -1,0 +1,230 @@
+#!/usr/bin/env ruby
+# Purpose: run Debian package checks using lintian and report in JUnit format
+################################################################################
+# Notes:
+# * for JUnit spec details see http://windyroad.org/dl/Open%20Source/JUnit.xsd
+#
+# This is loosely based on PHPUnit 4.x JUnit output an XSD for it can be found
+# at https://github.com/jenkinsci/xunit-plugin
+#
+# Ideas:
+# * integrate within Jenkins plugin (using jruby)
+# * integrate in Violations plugin (for further reporting options)
+#   git://github.com/jenkinsci/violations-plugin.git
+################################################################################
+
+require 'shellwords'
+
+### cmdline parsing {{{
+require 'optparse'
+options = {}
+lintian_options = []
+
+# default
+lintian_file = "lintian.txt"
+
+o = OptionParser.new do|opts|
+  opts.banner = "Usage: #{$0} [<options>] <debian_package_file(s)>"
+
+  options[:warnings] = false
+  opts.on( '-w', '--warnings', 'Output lintian errors *AND* warnings' ) do
+    options[:warnings] = true
+  end
+
+  options[:disablenotes] = false
+  opts.on('--disable-notes', 'Disable verbose lintian output' ) do
+    options[:disablenotes] = true
+  end
+
+  opts.on("--filename <filename>", String, "Write lintian output to <filename> (defaults to lintian.txt)") do |f|
+    lintian_file = f
+  end
+
+  options[:skiplintian] = false
+  opts.on("--skip-lintian", String, "filename file will be processed") do
+    options[:skiplintian] = true
+  end
+
+  options[:disableplaintext] = false
+  opts.on('--disable-plaintext', 'Disable recording lintian output in lintian.txt' ) do
+    options[:disableplaintext] = true
+  end
+
+  opts.on('--lintian-opt=OPTION', 'Pass OPTION to lintian. Can be given multiple times.') do |lo|
+    lintian_options << lo
+  end
+
+  opts.on('--mark-warnings-skipped',
+          'Mark warnings as skipped test cases.') do
+    options[:markwarningsskipped] = true
+  end
+
+  opts.on('--mark-as-skipped=tag1,tag2,...', Array,
+          'Mark selected tags as skipped.') do |l|
+    options[:markasskipped] = l
+  end
+
+  opts.on( '-h', '--help', 'Display this screen' ) do
+    puts opts
+    exit
+  end
+end
+
+begin o.parse! ARGV
+  rescue OptionParser::InvalidOption => e
+  puts e
+  puts o
+  exit(1)
+end
+
+# brrr!
+def usage
+  $stderr.puts "Usage: #{$0} [<options>] <debian_package_file(s)>"
+  exit(1)
+end
+
+files = ARGV
+usage if files.empty?
+### }}}
+
+if ! options[:skiplintian] then
+### make sure lintian is available {{{
+  if not system("which lintian >/dev/null 2>&1") then
+    $stderr.puts "Error: lintian not available."
+    exit(1)
+  end
+# }}}
+
+### run lintian {{{
+  start = Time.now.to_f
+
+  lintian_options << "--info" unless options[:disablenotes]
+
+  # Ruby 1.8's IO.popen expects a string instead of an array :(
+  lintian_cmd = (['lintian'] + lintian_options + files).collect { |v| Shellwords.escape(v) }.join(" ")
+  $output = IO.popen(lintian_cmd) do |io|
+    io.read
+  end
+
+  $duration = Time.now.to_f - start
+
+  if ! options[:disablenotes] then
+    File.open(lintian_file, 'w') {|f| f.write($output) }
+  end
+### }}}
+else
+  $duration = 0
+  $output = File.open(lintian_file, 'r').read
+end
+
+class JUnitOutput
+  require 'rexml/formatters/transitive'
+  require 'rexml/document'
+
+  def initialize(duration)
+    @duration = duration
+    @document = REXML::Document::new
+    @document << REXML::XMLDecl::new
+    @failures = 0
+    @skipped = 0
+    @suite = @document.add_element 'testsuite', {'time' => duration, 'name' => 'lintian'}
+  end
+
+  def add_case(package, tag)
+    tc = @suite.add_element 'testcase'
+    tc.attributes['name'] = "#{tag}"
+    tc.attributes['classname'] = "lintian.#{package}"
+    tc.attributes['assertions'] = 0
+    @last_tag = tag
+    @last_package = package
+  end
+
+  def mark(kind, message)
+    tc = @suite[-1]
+    e = tc.add_element kind
+    e.attributes['type'] = @last_tag
+    e.attributes['message'] = message
+  end
+
+  def mark_skipped(message = '')
+    @skipped += 1
+    mark('skipped', message)
+  end
+
+  def mark_failure(message = '')
+    @failures += 1
+    mark('failure', message)
+  end
+
+  def append_stdout(s)
+     stdout = @suite[-1].get_elements('system-out')[0]
+     stdout ||= @suite[-1].add_element 'system-out'
+     stdout.add_text(s)
+  end
+
+  def add_success
+    self.add_case('<all>', 'lintian-checks')
+  end
+
+  def finish
+    self.add_success unless @suite.has_elements?
+    tc_time = @duration / @suite.size
+    @suite.each { |tc| tc.attributes['time'] = tc_time }
+    @suite.attributes['tests'] = @suite.size
+    @suite.attributes['failures'] = @failures
+    @suite.attributes['skipped'] = @skipped
+    @suite.attributes['errors'] = 0
+    @suite.attributes['assertions'] = 0
+  end
+
+  def write
+    self.finish
+    formatter = REXML::Formatters::Transitive::new
+    formatter.write(@document, $stdout)
+  end
+end
+
+junit_output = JUnitOutput::new($duration)
+
+infos = Hash.new { |hash, key| hash[key] = "" }
+last_tag = nil
+tc_open = false
+
+$output.each_line do |line|
+  case line
+  when /^([EW]):\s([^:]*):\s(.*)/
+    kind, package, note = $~.captures
+
+    if tc_open then
+      junit_output.append_stdout(infos[last_tag])
+      tc_open = false
+    end
+
+    tag = note.match('^[^\s]*')[0]
+
+    if kind == 'E' || options[:warnings] then
+      junit_output.add_case(package, note)
+      if (kind == 'W' && options[:markwarningsskipped]) ||
+          (options[:markasskipped] && options[:markasskipped].include?(tag))
+        junit_output.mark_skipped(line.rstrip)
+      else
+        junit_output.mark_failure(line.rstrip)
+      end
+      tc_open = true
+    end
+
+    last_tag = tag
+
+  # Tag descriptions are prefixed with four spaces, which differentiates them
+  # from debug messages
+  when /^N:\s{4}/
+    infos[last_tag] << line if last_tag
+  end
+end
+
+junit_output.append_stdout(infos[last_tag]) if tc_open
+junit_output.write
+### }}}
+
+## END OF FILE #################################################################
+# vim:foldmethod=marker ts=2 ft=sh ai expandtab tw=80 sw=2 ft=ruby

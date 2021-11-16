@@ -57,5 +57,14 @@ class profile::ci::package_builder (
               File['/var/cache/pbuilder'],
             ],
     }
+    # Buster has jenkins-debian-glue v0.20.0 and we need to patch
+    # lintian-junit-report so it can work with Jenkins Xunit plugin 2.x or
+    # later. T295719
+    file { '/usr/local/bin/lintian-junit-report':
+        source => 'puppet:///modules/profile/ci/lintian-junit-report',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 
 }
