@@ -2,3 +2,4 @@ profile::gitlab::runner::docker_settings:
   log-driver: none
 # profile::gitlab::runner::registration_token: private
 profile::gitlab::runner::docker_volume: true
+puppetmaster: gitlab-runners-puppetmaster-01.gitlab-runners.eqiad1.wikimedia.cloud
