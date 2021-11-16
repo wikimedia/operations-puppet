@@ -79,3 +79,5 @@ profile::kibana::enable_phatality: false
 
 profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['Search Platform SREs']
+
+logstash_host: 'localhost'
