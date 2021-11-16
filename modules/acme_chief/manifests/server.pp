@@ -135,9 +135,8 @@ class acme_chief::server (
         },
     }
 
-
     cron { 'reload-acme-chief-backend':
-        ensure   => $ensure, # TODO: replace with https://gerrit.wikimedia.org/r/460397
+        ensure   => absent,
         command  => '/bin/systemctl reload acme-chief',
         user     => 'root',
         minute   => '0',
@@ -146,6 +145,19 @@ class acme_chief::server (
         month    => '*',
         monthday => '*',
         require  => Service['acme-chief'],
+    }
+
+    # TODO: replace with https://gerrit.wikimedia.org/r/460397
+    systemd::timer::job { 'reload-acme-chief-backend':
+        ensure             => $ensure,
+        description        => 'reload the acme-chief service',
+        user               => 'root',
+        monitoring_enabled => false,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
+        command            => '/bin/systemctl reload acme-chief',
+        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+        require            => Service['acme-chief'],
     }
 
     uwsgi::app { 'acme-chief':
