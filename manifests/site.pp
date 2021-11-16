@@ -2644,17 +2644,12 @@ node /^thanos-fe200[123]\.codfw\.wmnet/ {
 }
 
 # Thumbor servers for MediaWiki image scaling
-node /^thumbor100[12345]\.eqiad\.wmnet/ {
+node /^thumbor100[123456]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
 }
 
 # New thumbor nodes T290190
 node /^thumbor200[56]\.codfw\.wmnet/ {
-    role(insetup)
-}
-
-# New eqiad thumbor servers
-node /^thumbor1006\.eqiad\.wmnet/ {
     role(insetup)
 }
 
