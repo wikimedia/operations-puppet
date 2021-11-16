@@ -66,14 +66,6 @@ https://iegreview.wikimedia.org:
 - path: /campaigns
   assert_status: 200
 
-https://scholarships.wikimedia.org:
-- path: /
-  assert_status: 302
-  assert_headers:
-    Location: /apply
-- path: /apply
-  assert_status: 200
-
 https://security.wikimedia.org:
 - path: /
   assert_status: 200
