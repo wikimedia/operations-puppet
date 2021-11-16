@@ -4940,6 +4940,10 @@ ldap_only_users:
     ensure: present
     realname: James Buatti
     email: jbuatti@wikimedia.org
+  jkieserman:
+    ensure: present
+    realname: Julia Kieserman
+    email: jkieserman@wikimedia.org
   jmatazzoni:
     ensure: absent
     realname: James Matazzoni
