@@ -140,6 +140,13 @@ class apereo_cas (
         group  => 'root',
         source => 'puppet:///modules/apereo_cas/return-tgt-for-user.py',
     }
+    file { '/usr/local/sbin/cas-remove-u2f':
+        ensure => present,
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/apereo_cas/cas_remove_u2f.py',
+    }
 
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
