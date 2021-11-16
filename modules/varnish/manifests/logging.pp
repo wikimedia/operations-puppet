@@ -40,6 +40,14 @@ class varnish::logging(
         source => 'puppet:///modules/varnish/varnishmtail-wrapper.sh',
     }
 
+    # Remove internal scripts from default instance
+    $internal_mtail_programs.each |String $name| {
+        file { "/etc/mtail/${name}.mtail":
+            ensure => absent,
+            notify => Systemd::Service['varnishmtail@default'],
+        }
+    }
+
     varnish::logging::mtail { 'default':
         mtail_programs => $default_mtail_programs,
         mtail_port     => 3903,
