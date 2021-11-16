@@ -24,6 +24,11 @@ class profile::gitlab::runner (
     Integer                                $docker_volume_max  = lookup('profile::gitlab::runner::docker_volume_max'),
     Hash                                   $docker_settings    = lookup('profile::gitlab::runner::docker_settings'),
     String                                 $docker_version     = lookup('profile::gitlab::runner::docker_version'),
+    String                                 $docker_gc_interval = lookup('profile::gitlab::runner::docker_gc_interval'),
+    String                                 $docker_gc_images_high_water_mark  = lookup('profile::gitlab::runner::docker_gc_images_high_water_mark'),
+    String                                 $docker_gc_images_low_water_mark   = lookup('profile::gitlab::runner::docker_gc_images_low_water_mark'),
+    String                                 $docker_gc_volumes_high_water_mark = lookup('profile::gitlab::runner::docker_gc_volumes_high_water_mark'),
+    String                                 $docker_gc_volumes_low_water_mark  = lookup('profile::gitlab::runner::docker_gc_volumes_low_water_mark'),
     Stdlib::HTTPSUrl                       $gitlab_url         = lookup('profile::gitlab::runner::gitlab_url'),
     Boolean                                $locked             = lookup('profile::gitlab::runner::locked'),
     String                                 $registration_token = lookup('profile::gitlab::runner::registration_token'),
@@ -59,6 +64,15 @@ class profile::gitlab::runner (
     apt::package_from_component{ 'gitlab-runner':
         component => 'thirdparty/gitlab-runner',
         require   =>  Class['docker'],
+    }
+
+    class { 'docker::gc':
+        ensure                  => $ensure,
+        interval                => $docker_gc_interval,
+        images_high_water_mark  => $docker_gc_images_high_water_mark,
+        images_low_water_mark   => $docker_gc_images_low_water_mark,
+        volumes_high_water_mark => $docker_gc_volumes_high_water_mark,
+        volumes_low_water_mark  => $docker_gc_volumes_low_water_mark,
     }
 
     $runner_name = "${::hostname}.${::domain}"

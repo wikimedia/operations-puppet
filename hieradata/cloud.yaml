@@ -94,6 +94,11 @@ profile::gitlab::runner::docker_volume_min: 40
 profile::gitlab::runner::docker_volume_max: 200
 profile::gitlab::runner::docker_settings: {}
 profile::gitlab::runner::docker_version: '18.09.1+dfsg1-7.1+deb10u3'
+profile::gitlab::runner::docker_gc_interval: 5m
+profile::gitlab::runner::docker_gc_images_high_water_mark: 20gb
+profile::gitlab::runner::docker_gc_images_low_water_mark: 10gb
+profile::gitlab::runner::docker_gc_volumes_high_water_mark: 20gb
+profile::gitlab::runner::docker_gc_volumes_low_water_mark: 10gb
 profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
 profile::gitlab::runner::locked: false
 # profile::gitlab::runner::registration_token: private
