@@ -59,6 +59,8 @@ class profile::lists::monitoring (
             dashboard_links => ['https://grafana.wikimedia.org/d/GvuAmuuGk/mailman3'],
             nrpe_command    => '/usr/bin/sudo -u list /usr/local/lib/nagios/plugins/check_mailman_queue --mailman3 25 25 25',
             notes_url       => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+            check_interval  => 5,
+            retry_interval  => 5,
         }
 
         nrpe::monitor_service { 'mailman3_runners':
