@@ -295,6 +295,7 @@ eqiad:
     thumbor1002.eqiad.wmnet: [thumbor]
     thumbor1003.eqiad.wmnet: [thumbor]
     thumbor1004.eqiad.wmnet: [thumbor]
+    thumbor1005.eqiad.wmnet: [thumbor]
   prometheus:
     prometheus1003.eqiad.wmnet: [prometheus]
     prometheus1004.eqiad.wmnet: [prometheus]
