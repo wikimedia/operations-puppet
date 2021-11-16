@@ -46,6 +46,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/noc',
             '/srv/deployment/httpbb-tests/doc',
             '/srv/deployment/httpbb-tests/parse',
+            '/srv/deployment/httpbb-tests/thumbor',
             '/srv/deployment/httpbb-tests/docker-registry',
         ]:
             ensure => directory
@@ -95,6 +96,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'parse/test_parse.yaml':
         source => 'puppet:///modules/profile/httpbb/parse/test_parse.yaml'
+    }
+    httpbb::test_suite {'thumbor/test_thumbor.yaml':
+        source => 'puppet:///modules/profile/httpbb/thumbor/test_thumbor.yaml'
     }
 
     if $basicauth_credentials and $basicauth_credentials['docker-registry'] {

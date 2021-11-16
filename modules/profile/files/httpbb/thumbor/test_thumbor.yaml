@@ -1,0 +1,42 @@
+# Tries one of every file type, verifying that it's an HTTP 200 status code.
+#
+# TODO:
+# * JPG that uses vips
+# * non-animated GIF
+# * WebP
+# * XCF
+# * DjVu
+# * STL (3D)
+
+# Use HTTP because thumbor appears to not support HTTPS
+http://upload.wikimedia.org:
+# JPG
+- path: /wikipedia/commons/thumb/5/50/STS41B-35-1613_-_Bruce_McCandless_II_during_EVA_(Retouched).jpg/738px-STS41B-35-1613_-_Bruce_McCandless_II_during_EVA_(Retouched).jpg
+  assert_status: 200
+  assert_headers:
+    Xkey: File:STS41B-35-1613_-_Bruce_McCandless_II_during_EVA_(Retouched).jpg
+    Content-Type: image/jpeg
+# SVG with a PNG thumbnail
+- path: /wikipedia/commons/thumb/e/e5/NASA_logo.svg/574px-NASA_logo.svg.png
+  assert_status: 200
+  assert_headers:
+    Xkey: File:NASA_logo.svg
+    Content-Type: image/png
+# TIFF with a JPG thumbnail
+- path: /wikipedia/commons/thumb/6/6b/STS41B-35-1613_-_Bruce_McCandless_II_during_EVA_(Raw_scan).tif/lossy-page1-742px-STS41B-35-1613_-_Bruce_McCandless_II_during_EVA_(Raw_scan).tif.jpg
+  assert_status: 200
+  assert_headers:
+    Xkey: File:STS41B-35-1613_-_Bruce_McCandless_II_during_EVA_(Raw_scan).tif
+    Content-Type: image/jpeg
+# Animated GIF
+- path: /wikipedia/commons/thumb/a/ad/The_animated_satellite_image_of_Earth_during_solar_eclipse_of_2020_June_21.gif/480px-The_animated_satellite_image_of_Earth_during_solar_eclipse_of_2020_June_21.gif
+  assert_status: 200
+  assert_headers:
+    Xkey: File:The_animated_satellite_image_of_Earth_during_solar_eclipse_of_2020_June_21.gif
+    Content-Type: image/gif
+# PDF with a JPG thumbnail
+- path: /wikipedia/commons/thumb/b/bc/RP1357.pdf/page1-371px-RP1357.pdf.jpg
+  assert_status: 200
+  assert_headers:
+    Xkey: File:RP1357.pdf
+    Content-Type: image/jpeg
