@@ -1,0 +1,18 @@
+# README:
+# cinder-backup servers for eqiad1 run in the codfw DC. In order to fully recreate
+# the mirror setup, the cinder-backup servers for codfw1dev run in the eqiad DC.
+# That's why this hiera is in role/eqiad/ but namespaced codfw1dev.
+
+profile::openstack::codfw1dev::cinder::backup::active: true
+profile::openstack::codfw1dev::cinder::backup::path: /srv/cinder-backups/
+profile::openstack::codfw1dev::cinder::backup::lvm::pv_units:
+  # TBD, see T295584
+  - /dev/sdb1
+profile::openstack::codfw1dev::cinder::backup::lvm::vg_name: backup
+profile::openstack::codfw1dev::cinder::backup::lvm::lv_name: cinder-backups
+profile::openstack::codfw1dev::cinder::backup::lvm::lv_size: 20GB
+profile::openstack::codfw1dev::cinder::backup::lvm::lv_format: ext4
+profile::ceph::auth::deploy::enabled: true
+profile::ceph::auth::deploy::selected_creds:
+- cinder-backups
+
