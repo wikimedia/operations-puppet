@@ -4,6 +4,7 @@ class profile::wmcs::backy2(
     String               $ceph_vm_pool    = lookup('profile::ceph::client::rbd::pool'),
     String               $backup_interval = lookup('profile::wmcs::backy2::backup_time'),
 ) {
+    require profile::ceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
         notify{'profile::wmcs::backy2: Admin keyring not defined, things might not work as expected.': }
     }

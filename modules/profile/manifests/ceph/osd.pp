@@ -17,6 +17,7 @@ class profile::ceph::osd(
     String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
     Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
+    require profile::ceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
         notify{'profile::ceph::osd: Admin keyring not defined, things might not work as expected.': }
     }

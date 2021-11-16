@@ -5,6 +5,7 @@ class profile::wmcs::backup_glance_images(
     String               $backup_interval = lookup('profile::wmcs::backy2::backup_time'),
     Boolean              $enabled         = lookup('profile::wmcs::backy2::backup_glance_images::enabled'),
 ) {
+    require profile::ceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
         notify{'profile::wmcs::backup_glance_images: Admin keyring not defined, things might not work as expected.': }
     }
