@@ -13,15 +13,24 @@ class profile::pki::client (
     Stdlib::IP::Address          $listen_addr            = lookup('profile::pki::client::listen_addr'),
     Stdlib::Port                 $listen_port            = lookup('profile::pki::client::listen_port'),
     String                       $root_ca                = lookup('profile::pki::client::root_ca_cn'),
-    Array[String[1]]             $intermediate_cas       = lookup('profile::pki::client::intermediate_cas'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_cert = lookup('profile::pki::client::mutual_tls_client_cert'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_key  = lookup('profile::pki::client::mutual_tls_client_key'),
     Optional[Stdlib::Unixpath]   $tls_remote_ca          = lookup('profile::pki::client::tls_remote_ca'),
     Optional[Stdlib::Filesource] $tls_remote_ca_source   = lookup('profile::pki::client::tls_remote_ca_source'),
+    Optional[Stdlib::Filesource] $root_ca_source         = lookup('profile::pki::client::root_ca_source'),
     Hash                         $certs                  = lookup('profile::pki::client::certs'),
 ) {
     $signer = "https://${signer_host}:${signer_port}"
     $bundles_source = 'puppet:///modules/profile/pki/intermediates'
+    if $root_ca_source {
+        file { "/etc/ssl/certs/${root_ca}.pem":
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => $root_ca_source,
+        }
+    }
     if $tls_remote_ca_source {
         if $tls_remote_ca == $facts['puppet_config']['localcacert'] {
             fail('When setting \$tls_remote_ca_source you must change \$tls_remote_ca')

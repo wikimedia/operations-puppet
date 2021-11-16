@@ -93,15 +93,16 @@ profile::memcached::enable_tls: false
 profile::memcached::notls_port: ~
 profile::memcached::ssl_cert: ~
 profile::memcached::ssl_key: ~
-"keyholder::trusted_groups":
+keyholder::trusted_groups:
    - wikidev
 profile::base::core_dump_pattern: '/data/project/cores/%{facts.hostname}-core.%h.%e.%p.%t'
 profile::base::certificates::trusted_certs:
   - '/var/lib/puppet/ssl/certs/ca.pem'
+  - "/etc/ssl/certs/%{lookup('profile::pki::client::root_ca_cn')}.pem"
 
-"role::cxserver::cxserver_port": 8080
-"misc::syslog-server::basepath": /data/project/syslog
-"profile::cxserver::apertium_uri": http://apertium-beta.wmflabs.org
+role::cxserver::cxserver_port: 8080
+misc::syslog-server::basepath: /data/project/syslog
+profile::cxserver::apertium_uri: http://apertium-beta.wmflabs.org
 role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a7:df:4c:0a:e3
 # Enable php-fpm
 profile::mediawiki::php::enable_fpm: true
@@ -115,14 +116,14 @@ profile::mediawiki::jobrunner::runners:
   basic: 5
   gwt: 1
 profile::mediawiki::jobrunner::expose_endpoint: true
-"hhvm::base_jit_size": 183500800
-"role::logging::mediawiki::log_directory": /data/project/logs
-"beta::syncsiteresources::user": www-data
-"profile::url_downloader::url_downloader_port": 8080
+hhvm::base_jit_size: 183500800
+role::logging::mediawiki::log_directory: /data/project/logs
+beta::syncsiteresources::user: www-data
+profile::url_downloader::url_downloader_port: 8080
 
-"zotero::http_proxy": deployment-urldownloader02.deployment-prep.eqiad.wmflabs:8080
+zotero::http_proxy: deployment-urldownloader02.deployment-prep.eqiad.wmflabs:8080
 deployment_server: deployment-deploy01.deployment-prep.eqiad.wmflabs
-"scap::deployment_server": deployment-deploy01.deployment-prep.eqiad.wmflabs
+scap::deployment_server: deployment-deploy01.deployment-prep.eqiad.wmflabs
 
 scap::dsh::scap_masters:
     - deployment-deploy01.deployment-prep.eqiad.wmflabs
@@ -162,7 +163,7 @@ etcd_client_srv_domain: "conftool.deployment-prep.eqiad.wmflabs"
 etcd_host: ~
 etcd_port: ~
 
-"profile::etcd::tlsproxy::read_only": false
+profile::etcd::tlsproxy::read_only: false
 profile::etcd::tlsproxy::listen_port: 2379
 profile::etcd::tlsproxy::upstream_port: 2378
 profile::etcd::tlsproxy::tls_upstream: false
