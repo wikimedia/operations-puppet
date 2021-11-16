@@ -31,32 +31,14 @@ DISABLED_LOGINSHELL = b"/bin/disabledtoolshell"
 ENABLED_LOGINSHELL = b"/bin/bash"
 
 
-def _getLdapInfo(attr, conffile="/etc/ldap.conf"):
-    try:
-        f = open(conffile)
-    except IOError:
-        if conffile == "/etc/ldap.conf":
-            # fallback to /etc/ldap/ldap.conf, which will likely
-            # have less information
-            f = open("/etc/ldap/ldap.conf")
-    for line in f:
-        if line.strip() == "":
-            continue
-        if line.split()[0].lower() == attr.lower():
-            return line.split(None, 1)[1].strip()
-            break
-
-
 def _open_ldap(args):
-    ldapHost = _getLdapInfo("uri")
-    sslType = _getLdapInfo("ssl")
-
+    ldapHost = args.ldap_uri
     binddn = args.ldap_user
     bindpw = args.ldap_password
+
     ds = ldap.initialize(ldapHost)
     ds.protocol_version = ldap.VERSION3
-    if sslType == "start_tls":
-        ds.start_tls_s()
+    ds.start_tls_s()
 
     ds.simple_bind_s(binddn, bindpw)
     return ds
@@ -128,6 +110,11 @@ if __name__ == "__main__":
         description="Disable or delete toolforge tool accounts. All actions are idempotent.",
     )
 
+    argparser.add_argument(
+        "--ldap-uri",
+        help="uri for ldap server, e.g. ldap://host.example.org:389",
+        default=config.get("ldap", "URI"),
+    )
     argparser.add_argument(
         "--ldap-user",
         help="dn to use for editing ldap entries",

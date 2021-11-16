@@ -2,6 +2,7 @@
 project = tools
 
 [ldap]
+URI = <%= @ldap_uri %>
 basedn = ou=people,ou=servicegroups,dc=wikimedia,dc=org
 user=<%= @novaadmin_bind_dn %>
 password=<%= @novaadmin_bind_pass %>
