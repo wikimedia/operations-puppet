@@ -8,6 +8,7 @@ class role::elasticsearch::cloudelastic {
     include ::profile::elasticsearch::cirrus
     include ::profile::elasticsearch::monitor::base_checks
     include ::profile::lvs::realserver
+    include ::profile::logstash::gelf_relay
 
     system::role { 'elasticsearch::cloudelastic':
         ensure      => 'present',
