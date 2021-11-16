@@ -12,9 +12,8 @@
 #       include profile::netbox::scripts
 #
 class profile::netbox::scripts (
-    Boolean $deploy_acme = lookup('profile::netbox::acme', {'default_value' => true}),
-    String $acme_certificate = lookup('profile::netbox::acme_certificate', {'default_value' => 'netbox'}),
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => []}),
+    Boolean $deploy_acme      = lookup('profile::netbox::acme', {'default_value' => true}),
+    String  $acme_certificate = lookup('profile::netbox::acme_certificate', {'default_value' => 'netbox'}),
 ) {
     $uwsgi_environ=[
         'LANG=C.UTF-8',
@@ -46,13 +45,16 @@ class profile::netbox::scripts (
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
+    # netbox is only in the primary site so we dont need to worry about prometheus::pop
+    $prometheus_nodes = wmflib::role_hosts('prometheus', $::site)
+    $cumin_nodes = wmflib::role_hosts('cluster::management')
+    $ferm_nodes = ($prometheus_nodes + $cumin_nodes).sort.join(' ')
 
     ferm::service { 'netbox_scripts_https':
         proto  => 'tcp',
         port   => $apache_port,
         desc   => 'Semi-restricted access to Netbox script proxy',
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
+        srange => "(@resolve((${ferm_nodes})) @resolve((${ferm_nodes}), AAAA))",
     }
 
     httpd::site { $::fqdn:
