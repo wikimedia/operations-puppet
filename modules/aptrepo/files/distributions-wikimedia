@@ -49,7 +49,6 @@ Components: main
  thirdparty/grafana
  thirdparty/hwraid
  thirdparty/k8s
- thirdparty/kubeadm-k8s-1-19
  thirdparty/kubeadm-k8s-1-20
  thirdparty/kubeadm-k8s-1-21
  thirdparty/matomo
@@ -74,7 +73,6 @@ Update:
  mono-project-stretch
  thirdparty/docker-ci
  thirdparty/helm3
- thirdparty/kubeadm-k8s-kubernetes.io-1-19
  thirdparty/kubeadm-k8s-kubernetes.io-1-20
  thirdparty/kubeadm-k8s-kubernetes.io-1-21
  thirdparty/kubeadm-k8s-kubernetes.io
@@ -134,7 +132,6 @@ Components: main
  thirdparty/gitlab-runner
  thirdparty/grafana
  thirdparty/hwraid
- thirdparty/kubeadm-k8s-1-19
  thirdparty/kubeadm-k8s-1-20
  thirdparty/kubeadm-k8s-1-21
  thirdparty/matomo
@@ -166,7 +163,6 @@ Update:
  thirdparty/gitlab
  thirdparty/gitlab-runner
  thirdparty/helm3
- thirdparty/kubeadm-k8s-kubernetes.io-1-19
  thirdparty/kubeadm-k8s-kubernetes.io-1-20
  thirdparty/kubeadm-k8s-kubernetes.io-1-21
  thirdparty/kubeadm-k8s-kubernetes.io
