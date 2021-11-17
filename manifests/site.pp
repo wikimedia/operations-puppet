@@ -1562,7 +1562,6 @@ node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
 # virtual machines for misc. applications and static sites
 # replaced miscweb1001/2001 in T247648 and bromine/vega in T247650
 #
-# profile::wikimania_scholarships      # https://scholarships.wikimedia.org/
 # profile::iegreview                   # https://iegreview.wikimedia.org
 # profile::racktables                  # https://racktables.wikimedia.org
 # profile::microsites::annualreport    # https://annual.wikimedia.org
