@@ -657,7 +657,8 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd *',
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
                'ALL = NOPASSWD: /usr/sbin/service diffservice *',
-               'ALL = NOPASSWD: /bin/journalctl *']
+               'ALL = NOPASSWD: /bin/journalctl *',
+               'ALL = NOPASSWD: /usr/bin/mysql *']
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
