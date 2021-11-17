@@ -330,7 +330,7 @@ otrs:
 	driver = manualroute
 	domains = +local_domains
 	require_files = <%= @otrs_aliases_file %>
-	data = ${lookup{$local_part@$domain}lsearch*{<%= @otrs_aliases_file %>}}
+	condition = ${lookup{$local_part@$domain}lsearch*{<%= @otrs_aliases_file %>}}
 	route_list = *  otrs1001.eqiad.wmnet  byname
 	transport = remote_smtp
 
