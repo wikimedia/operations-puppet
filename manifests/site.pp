@@ -2538,7 +2538,7 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/RPKI#Validation
-node /^rpki[12]001\.(eqiad|codfw)\.wmnet$/ {
+node /^rpki[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(rpkivalidator)
 }
 
