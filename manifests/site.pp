@@ -2659,12 +2659,7 @@ node /^thumbor100[123456]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
 }
 
-# New thumbor nodes T290190
-node /^thumbor200[56]\.codfw\.wmnet/ {
-    role(insetup)
-}
-
-node /^thumbor200[1234]\.codfw\.wmnet/ {
+node /^thumbor200[123456]\.codfw\.wmnet/ {
     role(thumbor::mediawiki)
 }
 
