@@ -207,7 +207,22 @@ if ( $overflow > 0 ) {
 	$syslogMessage = '@cee: ' . json_encode( $info, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 }
 
-syslog( LOG_ERR, $syslogMessage );
+if ( strpos( ( $_SERVER['SERVERGROUP'] ?? null ), 'kube-' ) === 0 ) {
+	// On kubernetes, send to rsyslog port directly, same as MediaWiki does.
+	$sock = socket_create( AF_INET, SOCK_DGRAM, SOL_UDP );
+	// Match string format of MediaWiki\Logger\Monolog\SyslogHandler
+	// Match appname, hostname, and socket destination from wmf-config/logging.php.
+	// priority 11 = 3 (LOG_ERR severity) + 8 (LOG_USER facility).
+	$syslogMessage = sprintf( "<11>%s %s mediawiki: %s",
+		date( 'M j H:i:s' ),
+		php_uname( 'n' ),
+		$syslogMessage
+	);
+	// Match destination of wmf-config/logging.php
+	@socket_sendto( $sock, $syslogMessage, strlen( $syslogMessage ), 0, '127.0.0.1', 10514 );
+} else {
+	syslog( LOG_ERR, $syslogMessage );
+}
 
 include __DIR__ . '/error-params.php';
 
