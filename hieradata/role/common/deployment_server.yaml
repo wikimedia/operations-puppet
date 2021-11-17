@@ -176,9 +176,6 @@ scap::sources:
   tilerator/deploy:
     repository: maps/tilerator/deploy
   #    lvs_service: tilerator
-  # Wikimania scholarships app
-  scholarships/scholarships:
-    repository: wikimedia/wikimania-scholarships
   wikimedia/discovery/analytics:
     repository: wikimedia/discovery/analytics
   wdqs/wdqs:
