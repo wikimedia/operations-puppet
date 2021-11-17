@@ -21,7 +21,6 @@ profile::ceph::client::rbd::enable_nova_rbd: false
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:
 - eqiad1-compute
-- eqiad1-cinder
 profile::monitoring::monitor_systemd: false
 cluster: wmcs
 profile::debdeploy::client::filter_services:
