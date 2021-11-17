@@ -60,3 +60,5 @@ profile::airflow::instances:
     monitoring_enabled: false
 
 profile::contacts::role_contacts: ['Analytics SREs']
+
+profile::base::certificates::include_bundle_jks: true
