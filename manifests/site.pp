@@ -1371,7 +1371,7 @@ node /^ganeti500[123]\.eqsin\.wmnet$/ {
 
 
 node /^ganeti600[1234]\.drmrs\.wmnet$/ {
-    role(insetup)
+    role(ganeti)
 }
 
 # T274459
