@@ -1669,8 +1669,10 @@ node 'cloudbackup2002.codfw.wmnet' {
     role(wmcs::nfs::primary_backup::misc)
 }
 
+# the cinder-backup nodes for codfw1dev run in the eqiad DC and
+# they are ganeti virtual machines. See T295584 for details.
 node /^cloudbackup100[1-2]-dev\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(wmcs::openstack::codfw1dev::backups)
 }
 
 # LDAP servers with a replica of OIT's user directory (used by mail servers)
