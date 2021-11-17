@@ -1664,6 +1664,10 @@ node 'cloudbackup2002.codfw.wmnet' {
     role(wmcs::nfs::primary_backup::misc)
 }
 
+node /^cloudbackup100[1-2]-dev\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # LDAP servers with a replica of OIT's user directory (used by mail servers)
 node /^ldap-corp[1-2]001\.wikimedia\.org$/ {
     role(openldap::corp)
