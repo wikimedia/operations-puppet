@@ -83,6 +83,12 @@ profile::netbox::ganeti_sync_profiles:
     - profile: eqsin
       url: ganeti01.svc.eqsin.wmnet
       port: 5080
+    - profile: drmrs01
+      url: ganeti01.svc.drmrs.wmnet
+      port: 5080
+    - profile: drmrs02
+      url: ganeti02.svc.drmrs.wmnet
+      port: 5080
     - profile: codfw_test
       url: ganeti-test01.svc.codfw.wmnet
       port: 5080
