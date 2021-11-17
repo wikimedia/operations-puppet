@@ -305,12 +305,15 @@ define elasticsearch::instance(
     # Note that we don't notify the Elasticsearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.
     # So, for now at least, we'll be restarting it manually.
+    # As a further countermeasure, tell puppet to run a noop instead of restarting
     service { "elasticsearch_${version}@${cluster_name}":
-        ensure   => running,
-        provider => 'systemd',
-        enable   => true,
-        tag      => 'elasticsearch_services',
-        require  => [
+        ensure     => running,
+        provider   => 'systemd',
+        enable     => true,
+        hasrestart => false,
+        restart    => '/bin/true',
+        tag        => 'elasticsearch_services',
+        require    => [
             Package['elasticsearch'],
             Systemd::Unit["elasticsearch_${version}@.service"],
             File["${config_dir}/elasticsearch.yml"],
