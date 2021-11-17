@@ -4701,7 +4701,8 @@ users:
     realname: Sai Suman Cherukuwada
     email: scherukuwada@wikimedia.org
     uid: 34007
-    ssh_keys: []
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEGfIPqZ/ifg46GOJmcACuFtAt2VaJ2ABJ0ZUkaEWWiasuYIDdgPMnhfBCiHQecKATDi/ijrFdT5PkvwdA9j/x8ilc9NPri8N2TmXdTy7si1Gk0WEZFCC82I1xaQSni8LHr2ljRVG/Z7sLR2uPnMuKy1V8RK+/ouY8ngV7hGL+KUTdkXqL9SEpljam/+mZ1ROiVthhp+4VeQ3upiu7EX+NJ6oEuLjBk28nZuLE2BlRO+IQ2U/jiIAP6fOaeGml+X1E4M/2X5FRlvzjS4s1nH7QPmvEO/G7NKjm9R6A0fybCvcz5rjTSMzRyo8smIoT2/nPtzrBLuVHJEULRncWt7ja6MpEnscAOoszGWvt2fBmVLap9WBKmlmQGp0Q08cV2pjzm8/cfWPyo/4sfBNyQjmP23yKBvOr+T0f4OkhBxAPENrba1dZX7mvvOyaEi9UvQfH7/717WcxVWuAl3mcvn/B9d55+HnKfdermbqNZ9zwott0Tyy7oZ7EUKcde65KA0G5CT0rJUOfrd1cjiog+IAB1a3N2fmMVRj1RCvGxf1nS52xSNEIx8OwonntkNZqjAUJ5Q0SyQsTAomQCWrAt1COCojiXMPvJlNCAO+S+KRwdBQtDrXp/sCOBd4PxAgBP2xE7OBGMPEz84aVSDfkhsd1f2jIVn3gzN9dHUkD7du23w==
   swak:
     ensure: present
     gid: 500
