@@ -75,3 +75,5 @@ profile::java::java_packages:
 profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 
 profile::monitoring::notifications_enabled: false
+
+profile::base::certificates::include_bundle_jks: true
