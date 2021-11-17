@@ -42,7 +42,7 @@ class varnish::logging(
 
     # Remove internal scripts from default instance
     $internal_mtail_programs.each |String $name| {
-        file { "/etc/mtail/${name}.mtail":
+        file { "/etc/mtail-default/${name}.mtail":
             ensure => absent,
             notify => Systemd::Service['varnishmtail@default'],
         }
