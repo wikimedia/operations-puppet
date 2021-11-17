@@ -31,6 +31,7 @@ class profile::mail::mx (
     $trusted_networks = $network::constants::aggregate_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
     }
+    $otrs_aliases_file = '/etc/exim4/otrs_emails'
 
     class { 'spamassassin':
         required_score   => '4.0',
@@ -189,7 +190,6 @@ class profile::mail::mx (
     }
 
     ensure_packages(['python3-pymysql'])
-    $otrs_aliases_file = '/etc/exim4/otrs_emails'
     file { "${exim4::config_dir}/otrs.conf":
         ensure  => present,
         owner   => 'root',

@@ -331,7 +331,7 @@ otrs:
 	domains = +local_domains
 	require_files = <%= @otrs_aliases_file %>
 	data = ${lookup{$local_part@$domain}lsearch*{<%= @otrs_aliases_file %>}}
-	route_list = *  mendelevium.eqiad.wmnet  byname
+	route_list = *  otrs1001.eqiad.wmnet  byname
 	transport = remote_smtp
 
 # Gsuite accounts
