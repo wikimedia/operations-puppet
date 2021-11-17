@@ -7,4 +7,5 @@ class role::wmcs::openstack::codfw1dev::virt {
     include ::profile::openstack::codfw1dev::nova::compute::service
     include ::profile::openstack::codfw1dev::envscripts
     include ::profile::ceph::client::rbd_libvirt
+    include profile::ceph::auth::deploy
 }

@@ -13,11 +13,10 @@ class profile::ceph::client::rbd_libvirt(
     String              $client_name             = lookup('profile::ceph::client::rbd::client_name'),
     String              $cinder_client_name      = lookup('profile::ceph::client::rbd::cinder_client_name'),
     String              $fsid                    = lookup('profile::ceph::fsid'),
-    String              $keydata                 = lookup('profile::ceph::client::rbd::keydata'),
-    String              $cinder_keydata          = lookup('profile::ceph::client::rbd::cinder_client_keydata'),
     String              $libvirt_rbd_uuid        = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
     String              $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
-    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
+    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
+    Ceph::Auth::Conf    $ceph_auth_conf             = lookup('profile::ceph::auth::deploy::configuration'),
 ) {
 
     class { 'ceph::common':
@@ -34,13 +33,28 @@ class profile::ceph::client::rbd_libvirt(
         public_network      => $public_network,
     }
 
+    if ! $ceph_auth_conf[$client_name] {
+        fail("missing '${client_name}' in ceph auth configuration")
+    }
+    if ! $ceph_auth_conf[$client_name]['keydata'] {
+        fail("missing '${client_name}' keydata in ceph auth configuration")
+    }
+
     openstack::nova::libvirt::secret { 'nova-compute':
-        keydata      => $keydata,
+        keydata      => $ceph_auth_conf[$client_name]['keydata'],
         client_name  => $client_name,
         libvirt_uuid => $libvirt_rbd_uuid,
     }
+
+    if ! $ceph_auth_conf[$cinder_client_name] {
+        fail("missing '${cinder_client_name}' in ceph auth configuration")
+    }
+    if ! $ceph_auth_conf[$cinder_client_name]['keydata'] {
+        fail("missing '${cinder_client_name}' keydata in ceph auth configuration")
+    }
+
     openstack::nova::libvirt::secret { 'nova-compute-cinder':
-        keydata      => $cinder_keydata,
+        keydata      => $ceph_auth_conf[$cinder_client_name]['keydata'],
         client_name  => $cinder_client_name,
         libvirt_uuid => $libvirt_rbd_cinder_uuid,
     }

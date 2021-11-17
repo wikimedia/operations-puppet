@@ -34,10 +34,22 @@ describe 'profile::ceph::client::rbd_libvirt' do
         'client_name' => 'dummy_client_name',
         'cinder_client_name' => 'dummy_cinder_client_name',
         'fsid' => 'dummyfsid-17bc-44dc-9aeb-1d044c9bba9e',
-        'keydata' => 'NOTAREALKEY==',
-        'cinder_keydata' => 'NOTAREALCINDERKEY==',
         'libvirt_rbd_uuid' => 'dummy_libvirt_rbd_uuid',
         'libvirt_rbd_cinder_uuid' => 'dummy_libvirt_rbd_cinder_uuid',
+        'ceph_auth_conf' => {
+            'dummy_client_name' => {
+                'keydata' => 'dummykeydata',
+                'caps' => {
+                    'mon' => 'whatever',
+                },
+            },
+            'dummy_cinder_client_name' => {
+                'keydata' => 'dummykeydatacinder',
+                'caps' => {
+                    'mon' => 'whatever',
+                },
+            },
+        },
       }
       let(:facts) { facts }
       let(:params) { base_params }
