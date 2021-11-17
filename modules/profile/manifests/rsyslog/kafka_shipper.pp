@@ -55,6 +55,8 @@ class profile::rsyslog::kafka_shipper (
         priority => 10,
     }
 
+    include profile::base::certificates
+    $trusted_ca_path = $profile::base::certificates::trusted_ca_path
     rsyslog::conf { 'output_kafka':
         ensure   => $ensure,
         content  => template('profile/rsyslog/output_kafka.conf.erb'),
