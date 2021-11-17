@@ -12,7 +12,7 @@ class profile::toolforge::bastion::resourcecontrol(
 
     class { 'toolforge::bastion_proc_management':
         project => $::labsproject,
-        dry_run => !debian::codename::eq('stretch'),
+        dry_run => false,
     }
 
     file {'/etc/security/limits.conf':
