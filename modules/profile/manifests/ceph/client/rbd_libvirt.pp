@@ -34,57 +34,23 @@ class profile::ceph::client::rbd_libvirt(
         public_network      => $public_network,
     }
 
-    #TODO libvirt dependency
-    file { '/etc/ceph/libvirt-secret.xml':
-        ensure    => present,
-        mode      => '0400',
-        owner     => 'root',
-        group     => 'root',
-        content   => epp(
-            'profile/ceph/libvirt-secret.xml.epp',
-            { 'uuid' => $libvirt_rbd_uuid, 'ceph_client_name' => $client_name },
-        ),
-        show_diff => false,
-        require   => Package['ceph-common'],
+    openstack::nova::libvirt::secret { 'nova-compute':
+        keydata      => $keydata,
+        client_name  => $client_name,
+        libvirt_uuid => $libvirt_rbd_uuid,
     }
+    openstack::nova::libvirt::secret { 'nova-compute-cinder':
+        keydata      => $cinder_keydata,
+        client_name  => $cinder_client_name,
+        libvirt_uuid => $libvirt_rbd_cinder_uuid,
+    }
+
+    # TODO: cleanup old files
     file { '/etc/ceph/libvirt-cinder-secret.xml':
-        ensure    => present,
-        mode      => '0400',
-        owner     => 'root',
-        group     => 'root',
-        content   => epp(
-            'profile/ceph/libvirt-secret.xml.epp',
-            { 'uuid' => $libvirt_rbd_cinder_uuid, 'ceph_client_name' => $cinder_client_name },
-        ),
-        show_diff => false,
-        require   => Package['ceph-common'],
+        ensure => absent,
     }
-
-    # Add the keydata to libvirt, which is referenced by nova-compute in nova.conf
-    exec { 'check-virsh-secret':
-        command   => '/usr/bin/virsh secret-define --file /etc/ceph/libvirt-secret.xml',
-        unless    => "/usr/bin/virsh secret-list | grep -q ${libvirt_rbd_uuid}",
-        logoutput => false,
-        require   => File['/etc/ceph/libvirt-secret.xml'],
-    }
-    exec { 'set-virsh-secret':
-        command   => "/usr/bin/virsh secret-set-value --secret ${libvirt_rbd_uuid} --base64 ${keydata}",
-        unless    => "/usr/bin/virsh secret-get-value --secret ${libvirt_rbd_uuid} | grep -q ${keydata}",
-        logoutput => false,
-        require   => Exec['check-virsh-secret'],
-    }
-
-    exec { 'check-virsh-secret-cinder':
-        command   => '/usr/bin/virsh secret-define --file /etc/ceph/libvirt-cinder-secret.xml',
-        unless    => "/usr/bin/virsh secret-list | grep -q ${libvirt_rbd_cinder_uuid}",
-        logoutput => false,
-        require   => File['/etc/ceph/libvirt-cinder-secret.xml'],
-    }
-    exec { 'set-virsh-secret-cinder':
-        command   => "/usr/bin/virsh secret-set-value --secret ${libvirt_rbd_cinder_uuid} --base64 ${cinder_keydata}",
-        unless    => "/usr/bin/virsh secret-get-value --secret ${libvirt_rbd_cinder_uuid} | grep -q ${cinder_keydata}",
-        logoutput => false,
-        require   => Exec['check-virsh-secret-cinder'],
+    file { '/etc/ceph/libvirt-secret.xml':
+        ensure => absent,
     }
 
     class { 'prometheus::node_pinger':

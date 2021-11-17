@@ -9,9 +9,10 @@ class openstack::nova::compute::service::victoria::buster() {
         ensure => 'present',
     }
 
+    ensure_packages(['libvirt-clients'])
+
     $packages = [
         'libvirt-daemon-system',
-        'libvirt-clients',
         'python3-libvirt',
         'qemu-system',
         'spice-html5',
