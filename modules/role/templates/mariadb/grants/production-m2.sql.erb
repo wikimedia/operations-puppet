@@ -59,27 +59,6 @@ GRANT ALL PRIVILEGES
     ON `otrs`.* TO 'otrs'@'10.64.16.19';
 
 
--- scholarships
-
-GRANT USAGE
-    ON *.* TO 'scholarships'@'10.64.16.19'
-    IDENTIFIED BY PASSWORD '*3C360067424B9E199203EBB681E50A1A352086D9'
-    WITH MAX_USER_CONNECTIONS 10;
-
-GRANT ALL PRIVILEGES
-    ON `scholarships`.* TO 'scholarships'@'10.64.16.19';
-
--- scholarships_app
-
-GRANT USAGE
-    ON *.* TO 'scholarships_app'@'10.64.16.19'
-    IDENTIFIED BY PASSWORD '*BFEB5829004F51D1134870E54A958145F689809A'
-    WITH MAX_USER_CONNECTIONS 50;
-
-GRANT DELETE, INSERT, SELECT, UPDATE
-    ON `scholarships`.* TO 'scholarships_app'@'10.64.16.19';
-
-
 -- Recommendation API
 -- (admin account)
 GRANT USAGE
@@ -153,26 +132,6 @@ GRANT USAGE
 
 GRANT ALL PRIVILEGES
     ON `otrs`.* TO 'otrs'@'10.192.16.9';
-
--- scholarships
-
-GRANT USAGE
-    ON *.* TO 'scholarships'@'10.192.16.9'
-    IDENTIFIED BY PASSWORD '*3C360067424B9E199203EBB681E50A1A352086D9'
-    WITH MAX_USER_CONNECTIONS 10;
-
-GRANT ALL PRIVILEGES
-    ON `scholarships`.* TO 'scholarships'@'10.192.16.9';
-
--- scholarships_app
-
-GRANT USAGE
-    ON *.* TO 'scholarships_app'@'10.192.16.9'
-    IDENTIFIED BY PASSWORD '*BFEB5829004F51D1134870E54A958145F689809A'
-    WITH MAX_USER_CONNECTIONS 50;
-
-GRANT DELETE, INSERT, SELECT, UPDATE
-    ON `scholarships`.* TO 'scholarships_app'@'10.192.16.9';
 
 -- Recommendation API
 -- (admin account)
@@ -249,25 +208,6 @@ GRANT USAGE
 GRANT ALL PRIVILEGES
     ON `otrs`.* TO 'otrs'@'10.64.0.135';
 
--- scholarships
-
-GRANT USAGE
-    ON *.* TO 'scholarships'@'10.64.0.135'
-    IDENTIFIED BY PASSWORD '*3C360067424B9E199203EBB681E50A1A352086D9'
-    WITH MAX_USER_CONNECTIONS 10;
-
-GRANT ALL PRIVILEGES
-    ON `scholarships`.* TO 'scholarships'@'10.64.0.135';
-
--- scholarships_app
-
-GRANT USAGE
-    ON *.* TO 'scholarships_app'@'10.64.0.135'
-    IDENTIFIED BY PASSWORD '*BFEB5829004F51D1134870E54A958145F689809A'
-    WITH MAX_USER_CONNECTIONS 50;
-
-GRANT DELETE, INSERT, SELECT, UPDATE
-    ON `scholarships`.* TO 'scholarships_app'@'10.64.0.135';
 
 -- Recommendation API
 -- (admin account)
