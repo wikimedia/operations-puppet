@@ -64,14 +64,6 @@ class beta::autoupdater {
         require => Git::Clone['beta-mediawiki-core'],
     }
 
-    file { "${stage_dir}/php-master/cache/l10n":
-        ensure  => directory,
-        owner   => 'l10nupdate',
-        group   => 'wikidev',
-        mode    => '0755',
-        require => Git::Clone['beta-mediawiki-core'],
-    }
-
     # Remove the placeholder extension directory of the mediawiki/core
     # checkout so that we can checkout the complete extension repository.
     exec { "/bin/rm -r ${stage_dir}/php-master/extensions":
