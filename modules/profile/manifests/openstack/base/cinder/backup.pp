@@ -47,6 +47,8 @@ class profile::openstack::base::cinder::backup (
         active  => $active,
     }
 
+    ensure_packages(['lvm2'])
+
     lvm::volume { $lvm_lv_name :
         ensure => present,
         vg     => $lvm_vg_name,
