@@ -344,7 +344,7 @@ groups:
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
-              statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez]
+              statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -3414,6 +3414,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCw97od+vFEHe59KQiWTTpKASaX5AfzcuifR8XYqfY4ZzcXNq1rhWiAzvtXvlkMwCG39ja7EkUgIQEJHN7uswVNbsM0e7VKMvE8rw0zqrTJBxUOMgGlhO468JCSOsU8AXWzXyoiJN1yoxkeK+wG6dCmA8rtiwe00majxtlr3lltxStz5sAg71UvJWyZFdJBcODG3sTm6FPDcuGZVwjzCTckH9DdplClY7Nb95EfsJKuKqbVOrWv6kAefOlZ2JAbwNgjMeIIaejwwvI3bNZqipSgfHEp0G4mW++qFfO54SfY8bSUCNvP1rq/moxOFpOsjJd+NUjWb5JmiAW8T+Etf15ZTveo96VQbsmb9HRSmj8AAdmrhD4G53RRoiv69a4M2YgVKug9L7Y3C/TVoHEF4ADRkrK/LfbDPiVmRfJbFXo7lC1M+EWIo5+vOkYcc43Vh0vJF5XDGbZkSC47Za1yUY7VSst90iAIoUtM/SnzndNtaKfgTB2txqmqRMCI31LEGhuxRb7XzYPALPAkRoU1R+QP4VbkFfTPvy1sxv0pCsrsE7GZhjcTYHFxTOicJBc2kvEmZojqVVkDt0ccuN7vUU9FHTMuHtfJjX5ZIQBzjx5QbjvCIh2QDoSDAhu5JKrW/MRPhCUx2xAUzeW7N4Qd5T2E9imAsftR2mCaRxsCLP3kzw==
     uid: 10388
     email: christoph.jauera@wikimedia.de
+    krb: present
   thargrove:
     ensure: absent
     realname: Ty Hargrove
