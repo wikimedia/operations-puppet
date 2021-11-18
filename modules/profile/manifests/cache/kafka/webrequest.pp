@@ -28,6 +28,7 @@ class profile::cache::kafka::webrequest(
     String $statsd              = lookup('statsd'),
     String $kafka_cluster_name  = lookup('profile::cache::kafka::webrequest::kafka_cluster_name'),
     Boolean $ssl_enabled        = lookup('profile::cache::kafka::webrequest::ssl_enabled', {'default_value' => false}),
+    Boolean $use_pki_settings   = lookup('profile::cache::kafka::webrequest::use_pki_settings', {'default_value' => false}),
     Boolean $monitoring_enabled = lookup('profile::cache::kafka::webrequest::monitoring_enabled', {'default_value' => false}),
     Boolean $atskafka_enabled   = lookup('profile::cache::kafka::webrequest::atskafka_enabled', {'default_value' => false}),
 ) {
@@ -108,7 +109,11 @@ class profile::cache::kafka::webrequest(
         # Include this class to get key and certificate for varnishkafka
         # to produce to Kafka over SSL/TLS.
         require ::profile::cache::kafka::certificate
-        $ssl_ca_location          = $::profile::cache::kafka::certificate::ssl_ca_location
+        if $use_pki_settings {
+            $ssl_ca_location = '/etc/ssl/localcerts/wmf_trusted_root_CAs.pem'
+        } else {
+            $ssl_ca_location = $::profile::cache::kafka::certificate::ssl_ca_location
+        }
         $ssl_key_password         = $::profile::cache::kafka::certificate::ssl_key_password
         $ssl_key_location         = $::profile::cache::kafka::certificate::ssl_key_location
         $ssl_certificate_location = $::profile::cache::kafka::certificate::ssl_certificate_location
