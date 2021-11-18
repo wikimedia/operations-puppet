@@ -8,6 +8,7 @@
 # the codfw DC
 profile::monitoring::notifications_enabled: false
 
+profile::contacts::role_contacts: ['WMCS SREs']
 profile::ceph::auth::deploy::enabled: true
 
 profile::ceph::auth::deploy::configuration:
