@@ -3,16 +3,34 @@
 # the mirror setup, the cinder-backup servers for codfw1dev run in the eqiad DC.
 # That's why this hiera is in role/eqiad/ but namespaced codfw1dev.
 
+profile::ceph::auth::deploy::enabled: true
+
+profile::ceph::auth::deploy::configuration:
+  cinder-backups:
+    caps:
+      mon: profile rbd
+      osd: profile rbd pool=codfw1dev-cinder
+
+profile::ceph::auth::deploy::selected_creds:
+  - cinder-backups
+
+profile::openstack::codfw1dev::region: codfw1dev-r
+profile::openstack::codfw1dev::version: victoria
+profile::openstack::codfw1dev::cinder::db_host: openstack.codfw1dev.wikimediacloud.org
+profile::openstack::codfw1dev::keystone_api_fqdn: openstack.codfw1dev.wikimedia.org
+profile::openstack::codfw1dev::openstack_controllers:
+    - cloudcontrol1003.wikimedia.org
+    - cloudcontrol1004.wikimedia.org
+    - cloudcontrol1005.wikimedia.org
+profile::openstack::codfw1dev::cinder::api_bind_port: 18776
+profile::openstack::codfw1dev::cinder::ceph_pool: codfw1dev-cinder
+profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: f83e2286-bff1-47bf-bf6d-109c427d63c9
+
 profile::openstack::codfw1dev::cinder::backup::active: true
 profile::openstack::codfw1dev::cinder::backup::path: /srv/cinder-backups/
 profile::openstack::codfw1dev::cinder::backup::lvm::pv_units:
-  # TBD, see T295584
-  - /dev/sdb1
+  - /dev/vdb
 profile::openstack::codfw1dev::cinder::backup::lvm::vg_name: backup
 profile::openstack::codfw1dev::cinder::backup::lvm::lv_name: cinder-backups
 profile::openstack::codfw1dev::cinder::backup::lvm::lv_size: 20GB
 profile::openstack::codfw1dev::cinder::backup::lvm::lv_format: ext4
-profile::ceph::auth::deploy::enabled: true
-profile::ceph::auth::deploy::selected_creds:
-- cinder-backups
-
