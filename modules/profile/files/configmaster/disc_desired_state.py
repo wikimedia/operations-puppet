@@ -67,7 +67,8 @@ DESIRED_STATE = [
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=api-rw'},
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=echostore'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=echostore'},
-    {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=kartotherian'},
+    # kartotherian is disabled in codfw temporarily as part of tegola rollout T280767
+    {'codfw': {'pooled': False, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=kartotherian'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=kartotherian'},
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=proton'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=proton'},
