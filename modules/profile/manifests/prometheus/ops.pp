@@ -401,7 +401,7 @@ class profile::prometheus::ops (
     }
 
     prometheus::class_config{ "cache_haproxy_tls_mtail_upload_${::site}":
-        dest       => "${targets_path}/cache_haproxy_tls_mtail_upload_${::site}",
+        dest       => "${targets_path}/cache_haproxy_tls_mtail_upload_${::site}.yaml",
         class_name => 'role::cache::upload_haproxy',
         port       => 3906,
         labels     => {
