@@ -1771,6 +1771,11 @@ node /^lvs500[123]\.eqsin\.wmnet$/ {
     role(lvs::balancer)
 }
 
+# DRMRS lvs servers
+node /^lvs600[123]\.drmrs\.wmnet$/ {
+    role(insetup_noferm)
+}
+
 node /^maps10(0[5-8]|1[0])\.eqiad\.wmnet/ {
     role(maps::replica)
 }
