@@ -215,7 +215,7 @@ class profile::wmcs::nfs::primary(
             command         => '/srv/disable-tool/disable_tool.py archive',
             interval        => {
             'start'    => 'OnCalendar',
-            'interval' => '*:0/5', # every 5 minutes
+            'interval' => '*:0/2', # every 2 minutes
             },
             require         => Class['::profile::toolforge::disable_tool'],
         }
