@@ -57,6 +57,9 @@ bastion_hosts:
 - 172.16.128.14 # bastion-codfw1dev-01.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
 - 172.16.128.19 # bastion-codfw1dev-02.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
 
+profile::openstack::base::keystone::auth_protocol: https
+profile::openstack::base::keystone::public_port: 25000
+
 profile::mariadb::cloudinfra::puppetmasters:
 - puppetmaster-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 profile::mariadb::cloudinfra::cloudinfra_dbs:
