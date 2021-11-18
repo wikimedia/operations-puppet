@@ -2,6 +2,10 @@
 # cinder-backup servers for eqiad1 run in the codfw DC. In order to fully recreate
 # the mirror setup, the cinder-backup servers for codfw1dev run in the eqiad DC.
 # That's why this hiera is in role/eqiad/ but namespaced codfw1dev.
+#
+# Moreover, there is a bunch of config duplication here, because otherwise the
+# config this role would use comes from the eqiad DC, and we need it to be from
+# the codfw DC
 
 profile::ceph::auth::deploy::enabled: true
 
@@ -13,6 +17,25 @@ profile::ceph::auth::deploy::configuration:
 
 profile::ceph::auth::deploy::selected_creds:
   - cinder-backups
+
+
+profile::ceph::client::rbd::enable_v2_messenger: true
+profile::ceph::mon::hosts:
+  'cloudcephmon2002-dev.codfw.wmnet':
+    public:
+      addr: '10.192.20.7'
+  'cloudcephmon2003-dev.codfw.wmnet':
+    public:
+      addr: '10.192.20.9'
+  'cloudcephmon2004-dev.codfw.wmnet':
+    public:
+      addr: '10.192.20.19'
+
+profile::ceph::cluster_network: 192.168.4.0/22
+profile::ceph::public_network: 10.192.20.0/24
+profile::ceph::data_dir: /var/lib/ceph
+profile::ceph::fsid: 489c4187-17bc-44dc-9aeb-1d044c9bba9e
+profile::ceph::ceph_repository_component: thirdparty/ceph-nautilus-buster
 
 profile::openstack::codfw1dev::region: codfw1dev-r
 profile::openstack::codfw1dev::version: victoria
