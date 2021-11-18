@@ -1,5 +1,5 @@
 # == Class profile::analytics::refinery::job::sqoop_mediawiki
-# Schedules sqoop to import MediaWiki databases into Hadoop monthly.
+# Schedules sqoop to import MediaWiki databases into Hadoop monthly and daily.
 # NOTE: This requires that role::analytics_cluster::mysql_password has
 # been included somewhere, so that /user/hdfs/mysql-analytics-research-client-pw.txt
 # exists in HDFS.  (We can't require it here, since it needs to only be included once
@@ -27,8 +27,9 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
     # Sqoop anything private out of analytics-store
     $private_db_user            = $::passwords::mysql::research::user
     $private_log_file           = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-private.log"
-    # Separate log for sqoops from production replicas
+    # Separate logs for sqoops from production replicas
     $production_log_file        = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production.log"
+    $production_daily_log_file  = "${::profile::analytics::refinery::log_dir}/sqoop-mediawiki-production-daily.log"
     # These are rendered elsewhere by role::analytics_cluster::mysql_password.
     $db_password_labs           = '/user/analytics/mysql-analytics-labsdb-client-pw.txt'
     $db_password_private        = '/user/analytics/mysql-analytics-research-client-pw.txt'
@@ -108,5 +109,28 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         interval    => '*-*-02 00:00:00',
         user        => 'analytics',
         require     => [File['/usr/local/bin/refinery-sqoop-mediawiki-private'], File['/tmp/sqoop-jars']],
+    }
+
+    ############################################################################
+    # daily sqoop of all data in some small tables.  Expected to last an hour or
+    # two on most runs and not use up too many resources.
+    # Template uses num_mappers_one_month
+    # Tables: discussiontools_subscription
+
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-production-daily':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production-daily.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    kerberos::systemd_timer { 'refinery-sqoop-mediawiki-production-daily':
+        ensure      => $ensure_timers,
+        description => 'Schedules sqoop to import one-off MediaWiki tables into Hadoop daily.',
+        command     => '/usr/local/bin/refinery-sqoop-mediawiki-production-daily',
+        interval    => '*-*-* 05:00:00',
+        user        => 'analytics',
+        require     => [File['/tmp/sqoop-jars']],
     }
 }

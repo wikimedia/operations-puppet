@@ -1,0 +1,20 @@
+#!/bin/bash
+# NOTE: This file is managed by puppet
+#
+
+export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
+
+/usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
+    --job-name sqoop-mediawiki-daily-production \
+    --output-dir <%= @output_directory_private %> \
+    --wiki-file <%= @wiki_file %> \
+    --tables discussiontools_subscription \
+    --user <%= @private_db_user %> \
+    --password-file <%= @db_password_private %> \
+    --partition-name snapshot \
+    --partition-value latest \
+    --mappers <%= @num_mappers_one_month %> \
+    --processors <%= @num_processors %> \
+    --yarn-queue <%= @yarn_queue %> \
+    --output-format avrodata \
+    --log-file <%= @production_daily_log_file %>
