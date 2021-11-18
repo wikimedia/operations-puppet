@@ -173,7 +173,8 @@ class profile::cache::haproxy(
     }
 
     rsyslog::conf { 'haproxy@tls':
-        content => template('profile/cache/haproxy.rsyslog.conf.erb'),
+        priority => 20,
+        content  => template('profile/cache/haproxy.rsyslog.conf.erb'),
     }
 
     mtail::program { 'cache_haproxy':
