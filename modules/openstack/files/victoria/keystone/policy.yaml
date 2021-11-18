@@ -19,6 +19,9 @@
 projectadmin_role: role:projectadmin
 admin_or_projectadmin: rule:admin_required or rule:projectadmin_role
 
+keystonevalidate_role: role:keystonevalidate
+service_admin_or_keystone_validate_or_token_subject: "rule:service_or_admin or rule:token_subject or rule:keystonevalidate_role"
+
 # We basically never want to give rights to mere project members, only
 #  project admins.  So, replace this (upstream) rule with the admin_or_owner
 #  rule below
@@ -61,6 +64,8 @@ identity:list_roles_for_trust: ''
 identity:list_services: ''
 identity:list_user_projects: ''
 identity:list_users: ''
+
+identity:validate_token: rule:service_admin_or_keystone_validate_or_token_subject
 
 # These are custom rules added by WMF to manage the member
 #  panel in Horizon
