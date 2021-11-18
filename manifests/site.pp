@@ -70,6 +70,11 @@ node 'an-test-coord1001.eqiad.wmnet' {
     role(analytics_test_cluster::coordinator)
 }
 
+# new an-test-coord1002  T293938
+node 'an-test-coord1002.eqiad.wmnet' {
+    role(insetup)
+}
+
 node 'an-test-client1001.eqiad.wmnet' {
     role(analytics_test_cluster::client)
 }
