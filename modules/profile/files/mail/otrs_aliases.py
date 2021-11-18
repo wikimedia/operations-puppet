@@ -87,7 +87,7 @@ def main():
         LOG.error(error)
         return 1
     with Path(config['DEFAULT']['aliases_file']).open('w') as aliases_fh:
-        aliases_fh.writelines([f'{row[0]}: {row[0].split("@")[0]}\n' for row in available])
+        aliases_fh.writelines([f'{row[0]}: {row[0]}\n' for row in available])
     return return_code
 
 
