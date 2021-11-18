@@ -6,16 +6,12 @@ nginx::variant: extras
 thumbor_memcached_servers:
   - thumbor1001.eqiad.wmnet
   - thumbor1002.eqiad.wmnet
-  - thumbor1003.eqiad.wmnet
-  - thumbor1004.eqiad.wmnet
   - thumbor1005.eqiad.wmnet
   - thumbor1006.eqiad.wmnet
 
 thumbor_memcached_servers_nutcracker:
   - '10.64.16.56:11211:1 "shard01"' # thumbor1001
   - '10.64.16.57:11211:1 "shard02"' # thumbor1002
-  - '10.64.48.71:11211:1 "shard03"' # thumbor1003
-  - '10.64.48.72:11211:1 "shard04"' # thumbor1004
   - '10.64.0.161:11211:1 "shard05"' # thumbor1005
   - '10.64.32.149:11211:1 "shard06"' # thumbor1006
 
