@@ -6,6 +6,7 @@ import smtplib
 
 from argparse import ArgumentParser
 from configparser import ConfigParser
+from pathlib import Path
 
 import pymysql
 
@@ -15,7 +16,7 @@ LOG = logging.getLogger(__file__)
 def get_args():
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument('-c', '--config', default='/etc/exim4/otrs.conf')
+    parser.add_argument('-c', '--config', default=Path('/etc/exim4/otrs.conf'))
     parser.add_argument('-v', '--verbose', action='count')
     return parser.parse_args()
 
@@ -37,7 +38,7 @@ def verify_email(email, smtp_server):
     status, _ = smtp.helo()
     if status != 250:
         smtp.quit()
-        raise ConnectionError('Failed helo status: {}'.format(status))
+        raise ConnectionError('Failed helo status: {status}')
     smtp.mail('')
     status, _ = smtp.rcpt(email)
     smtp.quit()
@@ -60,7 +61,7 @@ def main():
     config = ConfigParser()
     config.read(args.config)
 
-    with open(config['DEFAULT']['valid_domains']) as config_fh:
+    with Path(config['DEFAULT']['valid_domains']).open() as config_fh:
         valid_domains = [line.strip() for line in config_fh.readlines()
                          if line.strip() and not line.startswith('#')]
     LOG.debug('valid domains: %s', ', '.join(valid_domains))
@@ -85,8 +86,8 @@ def main():
             smtplib.SMTPConnectError, ConnectionError) as error:
         LOG.error(error)
         return 1
-    with open(config['DEFAULT']['aliases_file'], 'w') as aliases_fh:
-        aliases_fh.writelines(['{}\n'.format(row[0]) for row in available])
+    with Path(config['DEFAULT']['aliases_file']).open('w') as aliases_fh:
+        aliases_fh.writelines([f'{row[0]}: {row[0].split("@")[0]}\n' for row in available])
     return return_code
 
 
