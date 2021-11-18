@@ -827,9 +827,15 @@ customviews:
       up_property in ( 'disablemail', 'fancysig', 'gender', 'nickname' )
   user_properties_anon:
     limit: 2
-    source: ["user_properties", "user", "meta_p.properties_anon_whitelist" ]
+    source:
+      - user_properties
+      - user
     view: select cast(extract(year_month from user_touched)*100+1 as date) upa_touched, up_property, up_value
-    where: user_id=up_user and up_property like pw_property
+    where: >
+      user_id=up_user and (
+        up_property in ( 'language', 'skin', 'variant' )
+        or up_property like 'gadget-%'
+      )
   wb_changes:
     source: wb_changes
     view: >

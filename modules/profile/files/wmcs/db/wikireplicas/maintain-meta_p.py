@@ -107,11 +107,6 @@ def seed_schema(ops):
             FROM meta_p.wiki;"""
     )
 
-    ops.write_execute(
-        """CREATE TABLE IF NOT EXISTS meta_p.properties_anon_whitelist (
-        pw_property varbinary(255) PRIMARY KEY);"""
-    )
-
 
 def main():
 
@@ -405,15 +400,6 @@ def main():
                 % fields
             )
 
-        ops.write_execute("COMMIT;")
-
-        ops.write_execute("START TRANSACTION;")
-        ops.write_execute("DELETE FROM meta_p.properties_anon_whitelist;")
-        # This is hardcoded for now
-        ops.write_execute(
-            """INSERT INTO meta_p.properties_anon_whitelist
-            VALUES ('gadget-%'), ('language'), ('skin'), ('variant');"""
-        )
         ops.write_execute("COMMIT;")
     finally:
         dbh.close()
