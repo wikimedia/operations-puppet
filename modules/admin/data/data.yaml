@@ -658,7 +658,12 @@ groups:
                'ALL = NOPASSWD: /usr/sbin/service parsoid-vd-client *',
                'ALL = NOPASSWD: /usr/sbin/service diffservice *',
                'ALL = NOPASSWD: /bin/journalctl *',
-               'ALL = NOPASSWD: /usr/bin/mysql *']
+               'ALL = NOPASSWD: /usr/bin/mysql *',
+               'ALL = NOPASSWD: /bin/journalctl -f -u parsoid*',
+               'ALL = NOPASSWD: /bin/systemctl start php*-fpm.service',
+               'ALL = NOPASSWD: /bin/systemctl stop php*-fpm.service',
+               'ALL = NOPASSWD: /bin/systemctl restart php*-fpm.service',
+               'ALL = NOPASSWD: /usr/sbin/service mysql *']
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
