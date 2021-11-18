@@ -6,6 +6,8 @@ class role::wmcs::openstack::codfw1dev::backups {
     # That's why this role is namespaced 'codfw1dev' but is meant to be applied to
     # servers in the eqiad DC.
 
+    include profile::base::production
+    include profile::base::firewall
     include profile::ceph::auth::deploy
     include profile::ceph::client::rbd_cloudbackup
     include profile::openstack::codfw1dev::cinder::backup

@@ -6,6 +6,7 @@
 # Moreover, there is a bunch of config duplication here, because otherwise the
 # config this role would use comes from the eqiad DC, and we need it to be from
 # the codfw DC
+profile::monitoring::notifications_enabled: false
 
 profile::ceph::auth::deploy::enabled: true
 
