@@ -2665,7 +2665,7 @@ node /^thanos-fe200[123]\.codfw\.wmnet/ {
 }
 
 # Thumbor servers for MediaWiki image scaling
-node /^thumbor100[123456]\.eqiad\.wmnet/ {
+node /^thumbor100[1256]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
 }
 
