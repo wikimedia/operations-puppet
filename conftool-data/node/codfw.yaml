@@ -271,6 +271,7 @@ codfw:
     thumbor2002.codfw.wmnet: [thumbor]
     thumbor2003.codfw.wmnet: [thumbor]
     thumbor2004.codfw.wmnet: [thumbor]
+    thumbor2005.codfw.wmnet: [thumbor]
   prometheus:
     prometheus2003.codfw.wmnet: [prometheus]
     prometheus2004.codfw.wmnet: [prometheus]
