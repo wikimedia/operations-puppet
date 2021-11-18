@@ -1298,11 +1298,6 @@ node /^kubetcd[12]00[456]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::v3::kubernetes)
 }
 
-# new kubestage servers T290894
-node /^kubestage100[34]\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
 # Etcd cluster for kubernetes staging, v3
 node /^kubestagetcd100[456]\.eqiad\.wmnet$/ {
     role(etcd::v3::kubernetes::staging)
@@ -1587,7 +1582,7 @@ node /kubernetes[12]0(0[1-9]|1[0-7])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 
-node /kubestage100[12]\.eqiad\.wmnet/ {
+node /kubestage100[1234]\.eqiad\.wmnet/ {
     role(kubernetes::staging::worker)
 }
 
