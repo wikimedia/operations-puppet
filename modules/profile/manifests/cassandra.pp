@@ -8,6 +8,7 @@ class profile::cassandra(
     Array[Stdlib::IP::Address] $client_ips    = lookup('profile::cassandra::client_ips', {'default_value' => []}),
     Boolean $allow_analytics                  = lookup('profile::cassandra::allow_analytics'),
     Boolean $monitor_enabled                  = lookup('profile::cassandra::monitor_enabled', {'default_value' => true}),
+    Boolean $auto_apply_grants                = lookup('profile::cassandra::auto_apply_grants', {'default_value' => false}),
     Hash[String, String] $cassandra_passwords = lookup('profile::cassandra::user_credentials', {'default_value' => {}}),
 ){
 
@@ -27,6 +28,7 @@ class profile::cassandra(
         'logstash_host'       => 'localhost',
         'cassandra_passwords' => $cassandra_passwords,
         'java_package'        => $profile::java::default_package_name,
+        'auto_apply_grants'   => $auto_apply_grants,
     }
     $cassandra_real_settings = merge($base_settings, $cassandra_settings)
 

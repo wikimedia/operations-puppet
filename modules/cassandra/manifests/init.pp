@@ -107,6 +107,9 @@
 # [*java_package*]
 #   The java package name responsible for installing java
 #   If present this is used to add dependencies on the cassandra install
+#
+# [*auto_apply_grants*]
+#   If true, automatically apply grants files on this node when there is a change.
 class cassandra (
     String                           $cluster_name            = 'Test Cluster',
     Optional[String]                 $tls_cluster_name        = undef,
@@ -131,6 +134,7 @@ class cassandra (
     Optional[String]                 $version                 = undef,
     Array[String]                    $users                   = [],
     Optional[String]                 $java_package            = undef,
+    Boolean                          $auto_apply_grants       = false,
 ) {
 
     # Tools packages
@@ -210,6 +214,7 @@ class cassandra (
         super_username        => $super_username,
         super_password        => $super_password,
         cassandra_passwords   => $cassandra_passwords,
+        auto_apply_grants     => $auto_apply_grants,
     }
 
     if empty($instances) {
@@ -299,4 +304,13 @@ class cassandra (
         mode    => '0755',
         require => Package['cassandra'],
     }
+    file { '/usr/local/bin/cassandra_validate_grants':
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/validate_grant_statements.py",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => Package['cassandra'],
+    }
+
 }

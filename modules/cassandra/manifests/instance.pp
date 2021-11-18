@@ -189,6 +189,10 @@
 #   Control whether new nodes joining the cluster will get data they own.
 #   Default: true
 #
+# [*auto_apply_grants*]
+#   Toggle whether changes to grants files are applied automatically
+#   Default: false
+#
 define cassandra::instance(
     # the following parameters are injected by the main cassandra class
     Optional[String]                 $cluster_name          = undef,
@@ -261,6 +265,7 @@ define cassandra::instance(
     Boolean                               $client_encryption_optional       = false,
     Boolean                               $auto_bootstrap                   = true,
     Boolean                               $monitor_enabled                  = true,
+    Boolean                               $auto_apply_grants                = false,
 ) {
 
     $instance_data_file_directories = $data_file_directories.empty? {
@@ -394,6 +399,14 @@ define cassandra::instance(
     }
 
     $users.each |String $username| {
+        if $auto_apply_grants {
+            exec { "load_${username}_grants_${title}":
+                command     => "/usr/local/bin/cassandra_validate_grants ${config_directory}/user_${username}.cql && /usr/bin/c-cqlsh ${title} -f ${config_directory}/user_${username}.cql",
+                subscribe   => File["${config_directory}/user_${username}.cql"],
+                refreshonly => true,
+            }
+        }
+
         $application_password = $cassandra_passwords[$username]
         file { "${config_directory}/user_${username}.cql":
             content => template("${module_name}/users/${username}.cql.erb"),
