@@ -31,6 +31,8 @@ profile::wikidough::dnsdist::tls::dot:
 
 profile::wikidough::dnsdist::custom_headers:
   strict-transport-security: 'max-age=106384710; includeSubDomains; preload'
+  content-security-policy: >-
+    default-src 'none'; script-src 'self'; style-src 'self'; frame-src 'none'; frame-ancestors 'none';
 
 # password and api_key are defined in the private repo.
 profile::wikidough::dnsdist::webserver:
