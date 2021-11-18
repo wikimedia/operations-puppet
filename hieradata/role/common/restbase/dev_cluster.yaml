@@ -12,6 +12,8 @@ profile::restbase::cassandra_local_dc: "%{::site}"
 profile::restbase::logging_label: restbase-dev
 profile::restbase::cassandra_datacenters:
     - "eqiad"
+profile::restbase::cassandra_user: restb
+profile::restbase::cassandra_password: "%{passwords::cassandra::restbase}"
 
 # Skip Icinga "root URL" monitoring check on dev hosts (T189050)
 profile::restbase::monitor_restbase: false
