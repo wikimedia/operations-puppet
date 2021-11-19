@@ -11,6 +11,7 @@ class profile::openstack::codfw1dev::rabbitmq(
     $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
     $neutron_rabbit_password = lookup('profile::openstack::codfw1dev::neutron::rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::codfw1dev::rabbit_erlang_cookie'),
+    Array[Stdlib::Fqdn] $cinder_backup_nodes   = lookup('profile::openstack::codfw1dev::cinder::backup::nodes'),
 ){
 
     class {'::profile::openstack::base::rabbitmq':
@@ -24,6 +25,7 @@ class profile::openstack::codfw1dev::rabbitmq(
         designate_hosts       => $designate_hosts,
         nova_rabbit_password  => $nova_rabbit_password,
         rabbit_erlang_cookie  => $rabbit_erlang_cookie,
+        cinder_backup_nodes   => $cinder_backup_nodes,
     }
     contain '::profile::openstack::base::rabbitmq'
 

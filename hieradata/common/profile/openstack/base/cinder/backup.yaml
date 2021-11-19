@@ -1,4 +1,2 @@
 profile::openstack::base::cinder::backup::path: /srv/cinder-backups/
-profile::openstack::base::cinder::backup::nodes:
-  - cloudbackup2002.codfw.wmnet
 profile::openstack::base::cinder::backup::user: cinder

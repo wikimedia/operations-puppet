@@ -7,3 +7,8 @@ profile::ceph::openstack_controllers:
   - cloudcontrol2001-dev.wikimedia.org
   - cloudcontrol2003-dev.wikimedia.org
   - cloudcontrol2004-dev.wikimedia.org
+
+# NOTE: remember, backups nodes for codfw1dev are in the eqiad DC
+# and backup nodes for eqiad1 are in the codfw DC
+profile::ceph::cinder_backup_nodes:
+  - cloudbackup1001-dev.eqiad.wmnet

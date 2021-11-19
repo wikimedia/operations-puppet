@@ -7,6 +7,7 @@ class profile::openstack::codfw1dev::galera::node(
     Array[Stdlib::Fqdn]    $designate_hosts        = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Array[Stdlib::Fqdn]    $labweb_hosts           = lookup('profile::openstack::codfw1dev::labweb_hosts'),
     Stdlib::Fqdn           $puppetmaster           = lookup('profile::openstack::codfw1dev::puppetmaster::web_hostname'),
+    Array[Stdlib::Fqdn]    $cinder_backup_nodes    = lookup('profile::openstack::codfw1dev::cinder::backup::nodes'),
     ) {
 
     class {'::profile::openstack::base::galera::node':
@@ -18,5 +19,6 @@ class profile::openstack::codfw1dev::galera::node(
         labweb_hosts          => $labweb_hosts,
         puppetmaster          => $puppetmaster,
         prometheus_db_pass    => $prometheus_db_pass,
+        cinder_backup_nodes   => $cinder_backup_nodes,
     }
 }

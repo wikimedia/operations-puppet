@@ -44,6 +44,7 @@ describe 'profile::ceph::mon' do
         'data_dir' => '/path/to/data',
         'fsid' => 'dummy_fsid',
         'mon_keydata' => 'NOTAREALKEY==',
+        'cinder_backup_nodes' => ['cloudbackupxxxx.example.com'],
       }
       let(:facts) { facts.merge({
         'fqdn' => 'dummyhost1',

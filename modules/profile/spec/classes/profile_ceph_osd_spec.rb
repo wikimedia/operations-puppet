@@ -28,6 +28,7 @@ describe 'profile::ceph::osd' do
         'disk_models_without_write_cache' => ['matchingmodel'],
         'os_disks' => [],
         'disks_io_scheduler' => 'dummy_io_scheduler',
+        'cinder_backup_nodes' => ['cloudbackupxxxx.example.com'],
       }
       let(:facts) { facts.merge({
         'fqdn' => 'dummyhost1',
