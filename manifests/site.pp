@@ -1293,6 +1293,11 @@ node /^kubernetes10(1[8-9]|2[0-1])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
+#New Kubernetes node for codfw T294299
+node 'kubernetes2018.codfw.wmnet' {
+    role(insetup)
+}
+
 # Etcd clusters for kubernetes, v3
 node /^kubetcd[12]00[456]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::v3::kubernetes)
