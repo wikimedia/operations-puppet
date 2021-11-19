@@ -5617,3 +5617,7 @@ ldap_only_users:
     ensure: present
     realname: David Martin
     email: dmartin@wikimedia.org
+  essexigyan:
+    ensure: present
+    realname: Essex Igyan
+    email: eigyan@wikimedia.org
