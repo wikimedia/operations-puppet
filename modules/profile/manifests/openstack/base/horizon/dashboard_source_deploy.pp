@@ -6,6 +6,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     String        $wmflabsdotorg_pass = lookup('profile::openstack::base::designate::wmflabsdotorg_pass'),
     String        $dhcp_domain = lookup('profile::openstack::base::nova::dhcp_domain'),
     String        $instance_network_id = lookup('profile::openstack::base::horizon::instance_network_id'),
+    Hash          $ldap_config = lookup('ldap'),
     String        $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
     Stdlib::Fqdn  $webserver_hostname = lookup('profile::openstack::base::horizon::webserver_hostname'),
     Array[String] $all_regions = lookup('profile::openstack::base::all_regions'),
@@ -17,6 +18,8 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
     Hash          $proxy_zone_passwords = lookup('profile::openstack::base::horizon::proxy_zone_passwords'),
     ) {
 
+    $ldap_rw_host = $ldap_config['rw-server']
+
     class { '::openstack::horizon::source_deploy':
         horizon_version      => $horizon_version,
         openstack_version    => $openstack_version,
@@ -25,6 +28,7 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         wmflabsdotorg_pass   => $wmflabsdotorg_pass,
         dhcp_domain          => $dhcp_domain,
         instance_network_id  => $instance_network_id,
+        ldap_rw_host         => $ldap_rw_host,
         ldap_user_pass       => $ldap_user_pass,
         webserver_hostname   => $webserver_hostname,
         all_regions          => $all_regions,

@@ -21,6 +21,7 @@ class openstack::horizon::source_deploy(
     String        $wmflabsdotorg_pass,
     Stdlib::Fqdn  $dhcp_domain,
     String        $instance_network_id,
+    Stdlib::Host  $ldap_rw_host,
     String        $ldap_user_pass,
     Array[String] $all_regions,
     String        $puppet_git_repo_name,
