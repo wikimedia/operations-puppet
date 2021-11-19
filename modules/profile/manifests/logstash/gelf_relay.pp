@@ -23,7 +23,7 @@ class profile::logstash::gelf_relay (
     logstash::input::gelf { 'gelf_relay':
         host => 'localhost',
         port => '12201',
-        tags => ['input-gelf-12201'],
+        tags => ['input-gelf-relay'],
     }
 
     # Logstash outputs json formatted logs to rsyslog listener on localhost:11514/UDP

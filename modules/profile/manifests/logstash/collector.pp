@@ -74,7 +74,7 @@ class profile::logstash::collector (
 
     logstash::input::gelf { 'gelf':
         port => 12201,
-        tags => ['input-gelf-12201'],
+        tags => ['input-gelf-12201', 'deprecated-input'],
     }
 
     ferm::service { 'logstash_gelf':
