@@ -2457,6 +2457,11 @@ node /^prometheus200[34]\.codfw\.wmnet$/ {
     role(prometheus)
 }
 
+# New prometheus node for codfw T294302
+node /^prometheus200[56]\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 node /^prometheus100[34]\.eqiad\.wmnet$/ {
     role(prometheus)
 }
