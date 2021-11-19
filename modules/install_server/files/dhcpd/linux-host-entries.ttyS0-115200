@@ -1,5 +1,9 @@
 #####################################################################
 #### THIS FILE IS MANAGED BY PUPPET
+#### Note: This file contains only Ganeti VMs. This is due to how serial
+### interfaces are being numbered in Ganeti VMs vs our current hardware
+###  Hardware nodes DHCP config is automated using Netbox
+#### https://wikitech.wikimedia.org/wiki/Server_Lifecycle/Reimage#DHCP_Automation
 #### puppet:///modules/install_server/dhcpd/linux-host-entries.ttyS0-115200
 ######################################################################
 
