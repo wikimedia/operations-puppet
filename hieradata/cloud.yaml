@@ -431,7 +431,6 @@ profile::pki::client::tls_remote_ca: '/etc/ssl/localcerts/pki_api_CA.pem'
 profile::pki::client::tls_remote_ca_source: 'puppet:///modules/profile/pki/cloud/pki_api_ca.pem'
 profile::pki::client::certs: {}
 
-profile::ceph::cinder_backup_nodes: []
 profile::ceph::osd::bootstrap_keyring: BOOTSRAP_KEYRING_DEFAULT_PLACEHOLDER
 profile::ceph::osd::disk_models_without_write_cache:
   - DISK_MODEL_DEFAULT_PLACEHOLDER
