@@ -71,6 +71,7 @@ class profile::analytics::refinery::job::druid_load(
         ensure_hourly    => 'absent',
         daily_days_since => 61,
         daily_days_until => 60,
+        daily_shards     => 2,
         job_config       => {
             database         => 'event',
             table            => 'netflow',
