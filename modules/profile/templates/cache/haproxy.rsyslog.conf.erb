@@ -1,3 +1,4 @@
+$AddUnixListenSocket /var/lib/haproxy/dev/log
 # forward haproxy logs to the FIFO and stop them from being logged on disk
 if $programname == "haproxy" then |<%= @mtail_fifo %>
 & stop
