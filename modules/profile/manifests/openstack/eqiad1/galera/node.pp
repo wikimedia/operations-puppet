@@ -18,5 +18,6 @@ class profile::openstack::eqiad1::galera::node(
         labweb_hosts          => $labweb_hosts,
         puppetmaster          => $puppetmaster,
         prometheus_db_pass    => $prometheus_db_pass,
+        cinder_backup_nodes   => [],  # TODO: add a hiera lookup when service is introduced
     }
 }

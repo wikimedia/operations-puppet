@@ -25,6 +25,7 @@ class profile::openstack::eqiad1::rabbitmq(
         designate_hosts       => $designate_hosts,
         nova_rabbit_password  => $nova_rabbit_password,
         rabbit_erlang_cookie  => $rabbit_erlang_cookie,
+        cinder_backup_nodes   => [],  # TODO: add a hiera lookup when service is introduced
     }
     contain '::profile::openstack::base::rabbitmq'
 
