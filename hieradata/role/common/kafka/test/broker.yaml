@@ -4,6 +4,7 @@ profile::kafka::broker::kafka_cluster_name: test-eqiad
 
 profile::kafka::broker::ssl_enabled: true
 profile::kafka::broker:use_pki_migration_settings: true
+profile::kafka::broker::ssl_generate_certificates: true
 profile::kafka::mirror:use_pki_migration_settings: true
 profile::base::certificates::include_bundle_jks: true
 
