@@ -23,32 +23,13 @@ from oslo_config import cfg
 LOG = logging.getLogger('nova.%s' % __name__)
 
 
-def _getLdapInfo(attr, conffile="/etc/ldap.conf"):
-    try:
-        f = open(conffile)
-    except IOError:
-        if conffile == "/etc/ldap.conf":
-            # fallback to /etc/ldap/ldap.conf, which will likely
-            # have less information
-            f = open("/etc/ldap/ldap.conf")
-    for line in f:
-        if line.strip() == "":
-            continue
-        if line.split()[0].lower() == attr.lower():
-            return line.split(None, 1)[1].strip()
-            break
-
-
 def _open_ldap():
-    ldapHost = _getLdapInfo("uri")
-    sslType = _getLdapInfo("ssl")
-
+    ldapHost = cfg.CONF.wmfhooks.ldap_rw_uri
     binddn = cfg.CONF.ldap.user
     bindpw = cfg.CONF.ldap.password
     ds = ldap.initialize(ldapHost)
     ds.protocol_version = ldap.VERSION3
-    if sslType == "start_tls":
-        ds.start_tls_s()
+    ds.start_tls_s()
 
     try:
         ds.simple_bind_s(binddn, bindpw)

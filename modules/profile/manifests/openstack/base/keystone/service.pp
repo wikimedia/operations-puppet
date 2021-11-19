@@ -14,6 +14,7 @@ class profile::openstack::base::keystone::service(
     $nova_db_pass = lookup('profile::openstack::base::nova::db_pass'),
     $token_driver = lookup('profile::openstack::base::keystone::token_driver'),
     $ldap_hosts = lookup('profile::openstack::base::ldap_hosts'),
+    $ldap_config = lookup('ldap'),
     $ldap_base_dn = lookup('profile::openstack::base::ldap_base_dn'),
     $ldap_user_id_attribute = lookup('profile::openstack::base::ldap_user_id_attribute'),
     $ldap_user_name_attribute = lookup('profile::openstack::base::ldap_user_name_attribute'),
@@ -49,6 +50,7 @@ class profile::openstack::base::keystone::service(
     include ::network::constants
     $prod_networks = join($::network::constants::production_networks, ' ')
     $labs_networks = join($::network::constants::labs_networks, ' ')
+    $ldap_rw_host = $ldap_config['rw-server']
 
     class {'::openstack::keystone::service':
         active                      => $daemon_active,
@@ -64,6 +66,7 @@ class profile::openstack::base::keystone::service(
         public_workers              => $public_workers,
         token_driver                => $token_driver,
         ldap_hosts                  => $ldap_hosts,
+        ldap_rw_host                => $ldap_rw_host,
         ldap_base_dn                => $ldap_base_dn,
         ldap_user_id_attribute      => $ldap_user_id_attribute,
         ldap_user_name_attribute    => $ldap_user_name_attribute,

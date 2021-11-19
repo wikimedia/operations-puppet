@@ -9,6 +9,7 @@ class openstack::keystone::service::victoria(
     $public_workers,
     $admin_workers,
     $ldap_hosts,
+    $ldap_rw_host,
     $ldap_base_dn,
     $ldap_user_id_attribute,
     $ldap_user_name_attribute,
