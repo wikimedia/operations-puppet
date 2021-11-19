@@ -2674,7 +2674,7 @@ node /^thumbor100[1256]\.eqiad\.wmnet/ {
     role(thumbor::mediawiki)
 }
 
-node /^thumbor200[123456]\.codfw\.wmnet/ {
+node /^thumbor200[3456]\.codfw\.wmnet/ {
     role(thumbor::mediawiki)
 }
 
