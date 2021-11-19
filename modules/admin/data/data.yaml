@@ -5621,3 +5621,7 @@ ldap_only_users:
     ensure: present
     realname: Essex Igyan
     email: eigyan@wikimedia.org
+  mmartorana:
+    ensure: present
+    realname: Manfredi Martorana
+    email: mmartorana@wikimedia.org
