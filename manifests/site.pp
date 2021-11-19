@@ -2314,7 +2314,7 @@ node /^mw227[8-9]\.codfw\.wmnet$/ {
 }
 
 # rack D4 - jobrunners
-node /^mw228[0-2]\.codfw\.wmnet$/ {
+node /^mw228[1-2]\.codfw\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
