@@ -13,7 +13,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-"""Simple HTTP  API for controlling a dynamic HTTP Proxy
+"""Simple HTTP API for controlling a dynamic HTTP Proxy.
 
 Stores canonical information about the proxying rules in a database.
 Proxying rules are also replicated to a Redis instance, from where the actual
@@ -22,11 +22,7 @@ dynamic proxy will read them & route requests coming to it appropriately.
 The db is the canonical information source, and hence we do not put anything in
 Redis until the data has been commited to the database. Hence it is possible
 for the db call to succeed and the redis call to fail, causing the db and
-redis to be out of sync. Currently this is not really handled by the API.
-
-This service is considered 'internal' - it will run on the same server as
-the dynamic http proxy, and access a local database & redis instance. This
-API is meant to be used by Wikitech only, and nothing else"""
+redis to be out of sync. Currently this is not really handled by the API."""
 import flask
 import redis
 import re
@@ -35,13 +31,15 @@ from flask_keystone import FlaskKeystone
 from flask_oslolog import OsloLog
 from flask_sqlalchemy import SQLAlchemy
 from oslo_config import cfg
+from oslo_context import context
+from oslo_policy import policy
+from werkzeug.exceptions import HTTPException
 
 cfgGroup = cfg.OptGroup('dynamicproxy')
 opts = [
     cfg.StrOpt('sqlalchemy_uri'),
 ]
 
-db = SQLAlchemy()
 key = FlaskKeystone()
 log = OsloLog()
 
@@ -49,6 +47,17 @@ cfg.CONF.register_group(cfgGroup)
 cfg.CONF.register_opts(opts, group=cfgGroup)
 
 cfg.CONF(default_config_files=['/etc/dynamicproxy-api/config.ini'])
+
+enforcer = policy.Enforcer(cfg.CONF)
+enforcer.register_defaults([
+    policy.RuleDefault('admin', 'role:admin'),
+    policy.RuleDefault('admin_or_projectadmin', 'rule:admin or role:projectadmin'),
+    policy.RuleDefault('proxy:index', ''),
+    policy.RuleDefault('proxy:view', ''),
+    policy.RuleDefault('proxy:create', 'rule:admin_or_projectadmin'),
+    policy.RuleDefault('proxy:update', 'rule:admin_or_projectadmin'),
+    policy.RuleDefault('proxy:delete', 'rule:admin_or_projectadmin'),
+])
 
 app = flask.Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = cfg.CONF.dynamicproxy.sqlalchemy_uri
@@ -66,6 +75,7 @@ class Project(db.Model):
 
     Not represented at the Redis level at all"""
     id = db.Column(db.Integer, primary_key=True)
+    # this is actually what openstack calls "project id"
     name = db.Column(db.String(256), unique=True)
 
     def __init__(self, name):
@@ -129,6 +139,11 @@ class RedisStore(object):
 redis_store = RedisStore(redis.Redis())
 
 
+class Forbidden(HTTPException):
+    code = 403
+    description = 'Forbidden.'
+
+
 def is_valid_domain(hostname):
     """
     Credit for this function goes to Tim Pietzcker and other StackOverflow contributors
@@ -143,8 +158,33 @@ def is_valid_domain(hostname):
     return all(allowed.match(x) for x in hostname.split("."))
 
 
+def environify_header_name(name):
+    return "HTTP_{}".format(name.upper().replace('-', '_'))
+
+
+def enforce_policy(rule, project_id):
+    # headers in a specific format that oslo.context wants
+    headers = {environify_header_name(name): value for name, value in flask.request.headers.items()}
+    ctx = context.RequestContext.from_environ(headers)
+
+    # if the project in the url is for a different project than what
+    # the keystone token is, error out early.
+    if ctx.project_id != project_id:
+        raise Forbidden("Invalid project id.")
+
+    enforcer.authorize(
+        rule,
+        {'project_id': project_id},
+        ctx,
+        do_raise=True,
+        exc=Forbidden,
+    )
+
+
 @app.route('/v1/<project_name>/mapping', methods=['GET'])
 def all_mappings(project_name):
+    enforce_policy('proxy:index', project_name)
+
     project = Project.query.filter_by(name=project_name).first()
     if project is None:
         return "No such project", 400
@@ -177,11 +217,14 @@ def create_mapping(project_name):
 
     route = Route.query.filter_by(domain=domain).first()
     if route is None:
+        enforce_policy('proxy:create', project_name)
         route = Route(domain)
         route.project = project
         db.session.add(route)
     elif route.project_id != project.id:
         return "Can't edit backend of another project", 403
+    else:
+        enforce_policy('proxy:update', project_name)
 
     for backend_url in backend_urls:
         # FIXME: Add validation for making sure these are valid
@@ -198,6 +241,8 @@ def create_mapping(project_name):
 
 @app.route('/v1/<project_name>/mapping/<domain>', methods=['DELETE'])
 def delete_mapping(project_name, domain):
+    enforce_policy('proxy:delete', project_name)
+
     project = Project.query.filter_by(name=project_name).first()
     if project is None:
         return "No such project", 400
@@ -216,6 +261,8 @@ def delete_mapping(project_name, domain):
 
 @app.route('/v1/<project_name>/mapping/<domain>', methods=['GET'])
 def get_mapping(project_name, domain):
+    enforce_policy('proxy:view', project_name)
+
     project = Project.query.filter_by(name=project_name).first()
     if project is None:
         return "No such project", 400
@@ -234,6 +281,8 @@ def update_mapping(project_name, domain):
     project = Project.query.filter_by(name=project_name).first()
     if project is None:
         return "No such project", 400
+
+    enforce_policy('proxy:update', project_name)
 
     route = Route.query.filter_by(project=project, domain=domain).first()
     if route is None:

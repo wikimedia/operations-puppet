@@ -22,6 +22,8 @@ class dynamicproxy::api (
         'python3-redis',
         'python3-flask-sqlalchemy',
         'python3-flask-keystone',  # this one is built and maintained by us
+        'python3-oslo.context',
+        'python3-oslo.policy',
         'sqlite3'
     ])
 
