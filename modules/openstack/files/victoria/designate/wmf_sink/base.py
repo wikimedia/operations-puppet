@@ -240,10 +240,9 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 # found match, deleting.
                 LOG.debug("Cleaning up proxy record %s" % proxy)
                 zone = proxy['domain']
-                endpoint = self._get_proxy_endpoint()
-                requrl = endpoint.replace("$(tenant_id)s", project)
-                req = requests.delete(requrl + '/mapping/' + zone)
-                req.raise_for_status()
+
+                proxy_url, session = self._get_proxy_client(project)
+                session.delete("{}/mapping/{}".format(proxy_url, zone))
 
                 LOG.warning("We also need to delete the dns entry for %s" % proxy)
                 self._delete_proxy_dns_record(proxy['domain'])
@@ -277,9 +276,8 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         central_api.delete_recordset(context, zonerecords[0].id, recordsets[0].id)
 
     def _get_proxy_list_for_project(self, project):
-        endpoint = self._get_proxy_endpoint()
-        requrl = endpoint.replace("$(tenant_id)s", project)
-        resp = requests.get(requrl + '/mapping')
+        proxy_url, session = self._get_proxy_client(project)
+        resp = session.get("{}/mapping".format(proxy_url), raise_exc=False)
         if resp.status_code == 400 and resp.text == 'No such project':
             return []
         elif not resp:
@@ -298,6 +296,11 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             project_name=project_name)
 
         return(keystone_session.Session(auth=auth))
+
+    def _get_proxy_client(self, project):
+        proxy_url = self._get_proxy_endpoint().replace("$(tenant_id)s", project)
+        session = self._get_keystone_session(project)
+        return proxy_url, session
 
     def _get_proxy_endpoint(self):
         if not self.proxy_endpoint:

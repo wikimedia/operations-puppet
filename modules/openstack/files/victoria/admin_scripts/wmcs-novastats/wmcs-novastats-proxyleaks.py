@@ -29,27 +29,27 @@ clients = mwopenstackclients.clients()
 PROXY_BACKEND_IP = "185.15.56.49"
 
 
-def proxy_endpoint():
-    services = clients.keystoneclient().services.list()
-    for service in services:
-        if service.type == "proxy":
-            serviceid = service.id
-            break
-    endpoints = clients.keystoneclient().endpoints.list(serviceid)
-    for endpoint in endpoints:
-        if endpoint.interface == "public":
-            url = endpoint.url
+def url_template():
+    """Get the url template for accessing the proxy service."""
+    keystone = clients.keystoneclient()
+    proxy = keystone.services.list(type='proxy')[0]
+    endpoint = keystone.endpoints.list(
+        service=proxy.id, interface='public', enabled=True)[0]
+    return endpoint.url
 
-    return url
+
+def proxy_client(project):
+    proxy_url = url_template().replace("$(tenant_id)s", project)
+    session = clients.session(project)
+    return proxy_url, session
 
 
 def all_mappings(project):
     """Return a list of proxies for a given project
     """
-    endpoint = proxy_endpoint()
-    requrl = endpoint.replace("$(tenant_id)s", project)
-    url = requrl + "/mapping"
-    resp = requests.get(url, verify=False)
+    proxy_url, session = proxy_client(project)
+    resp = session.get(f"{proxy_url}/mapping", raise_exc=False)
+
     if resp.status_code == 400 and resp.text == "No such project":
         return []
     elif not resp:
@@ -58,14 +58,11 @@ def all_mappings(project):
         return resp.json()["routes"]
 
 
-def delete_mapping(projectid, domain):
+def delete_mapping(project, domain):
     """Delete a single proxy
     """
-    endpoint = proxy_endpoint()
-    requrl = endpoint.replace("$(tenant_id)s", projectid)
-    url = requrl + "/mapping/" + domain
-    req = requests.delete(url, verify=False)
-    req.raise_for_status()
+    proxy_url, session = proxy_client(project)
+    session.delete(f"{proxy_url}/mapping/{domain}")
 
 
 def get_proxy_dns_zones():

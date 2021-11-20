@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Copyright (c) 2019 Wikimedia Foundation and contributors
 #
@@ -30,7 +30,6 @@ import logging
 import operator
 
 import mwopenstackclients
-import requests
 
 
 ZONE = 'wmflabs.org.'
@@ -47,6 +46,12 @@ def url_template(client):
     return endpoint.url
 
 
+def proxy_client(client, project):
+    proxy_url = url_template(client).replace("$(tenant_id)s", project)
+    session = client.session(project)
+    return proxy_url, session
+
+
 def update_proxies(args):
     """List proxies for a tenant."""
     client = mwopenstackclients.Clients(envfile=args.envfile)
@@ -58,9 +63,10 @@ def update_proxies(args):
 
     for projectid in allprojectslist:
         print(" ----  project: %s" % projectid)
-        base_url = url_template(client).replace('$(tenant_id)s', projectid)
 
-        resp = requests.get('{}/mapping'.format(base_url))
+        proxy_url, session = proxy_client(client, projectid)
+        resp = session.get(f"{proxy_url}/mapping", raise_exc=False)
+
         if resp.status_code != 400:
             data = resp.json()
             for route in sorted(data['routes'], key=operator.itemgetter('domain')):
