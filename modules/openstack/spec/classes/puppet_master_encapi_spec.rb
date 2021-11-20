@@ -14,8 +14,6 @@ describe 'openstack::puppet::master::encapi' do
           'mysql_host'            => '127.0.0.1',
           'mysql_db'              => 'testdb',
           'mysql_username'        => 'dummyuser',
-          'statsd_host'           => 'statsd.host.localhost',
-          'statsd_prefix'         => 'dummy_statsd_prefix',
           'mysql_password'        => 'dummypass',
           'puppetmasters'         => {
             'dummy.puppetmaster' => [

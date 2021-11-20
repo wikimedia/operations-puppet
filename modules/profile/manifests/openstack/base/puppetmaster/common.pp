@@ -8,8 +8,6 @@ class profile::openstack::base::puppetmaster::common(
     $encapi_db_name = lookup('profile::openstack::base::puppetmaster::common::encapi_db_name'),
     $encapi_db_user = lookup('profile::openstack::base::puppetmaster::common::encapi_db_user'),
     $encapi_db_pass = lookup('profile::openstack::base::puppetmaster::common::encapi_db_pass'),
-    $encapi_statsd_prefix = lookup('profile::openstack::base::puppetmaster::common::encapi_statsd_prefix'),
-    $statsd_host = lookup('profile::openstack::base::puppetmaster::common::statsd_host'),
     $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     ) {
 
@@ -26,8 +24,6 @@ class profile::openstack::base::puppetmaster::common(
         mysql_db              => $encapi_db_name,
         mysql_username        => $encapi_db_user,
         mysql_password        => $encapi_db_pass,
-        statsd_host           => $statsd_host,
-        statsd_prefix         => $encapi_statsd_prefix,
         puppetmasters         => $puppetmasters,
         labweb_hosts          => $labweb_hosts,
         openstack_controllers => $openstack_controllers,

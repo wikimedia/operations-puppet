@@ -2,8 +2,6 @@ class openstack::puppet::master::encapi(
     String $mysql_host,
     String $mysql_db,
     String $mysql_username,
-    String $statsd_host,
-    String $statsd_prefix,
     String $mysql_password,
     Hash[Stdlib::Fqdn, Puppetmaster::Backends] $puppetmasters,
     Array[Stdlib::Fqdn] $labweb_hosts,
@@ -26,12 +24,10 @@ class openstack::puppet::master::encapi(
     }
 
     ensure_packages(['python3-pymysql',
-                    'python3-statsd',
                     'python3-flask',
                     'python3-yaml',
                     'python-flask',
-                    'python-pymysql',
-                    'python-statsd'])
+                    'python-pymysql'])
 
     $python_version = $::lsbdistcodename ? {
         'stretch' => 'python3.5',
@@ -92,8 +88,6 @@ class openstack::puppet::master::encapi(
                     "MYSQL_DB=${mysql_db}",
                     "MYSQL_USERNAME=${mysql_username}",
                     "MYSQL_PASSWORD=${mysql_password}",
-                    "STATSD_HOST=${statsd_host}",
-                    "STATSD_PREFIX=${statsd_prefix}",
                     "ALLOWED_WRITERS=${allowed_writers}",
                 ],
             },

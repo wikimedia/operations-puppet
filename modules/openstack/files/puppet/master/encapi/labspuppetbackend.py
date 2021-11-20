@@ -1,5 +1,4 @@
 from flask import Flask, request, g, Response
-from statsd.defaults.env import statsd
 import pymysql
 import os
 import re
@@ -47,7 +46,6 @@ def teardown_request(exception):
         db.close()
 
 
-@statsd.timer('get_roles')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['GET'])
 def get_roles(project, prefix):
     prefix = _preprocess_prefix(prefix)
@@ -74,7 +72,6 @@ def get_roles(project, prefix):
         cur.close()
 
 
-@statsd.timer('get_all_roles')
 @app.route('/v1/roles', methods=['GET'])
 def get_all_roles():
     cur = g.db.cursor()
@@ -98,7 +95,6 @@ def get_all_roles():
         cur.close()
 
 
-@statsd.timer('get_all_projects')
 @app.route('/v1/projects', methods=['GET'])
 def get_all_projects():
     cur = g.db.cursor()
@@ -122,7 +118,6 @@ def get_all_projects():
         cur.close()
 
 
-@statsd.timer('set_roles')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['POST'])
 def set_roles(project, prefix):
 
@@ -184,7 +179,6 @@ def set_roles(project, prefix):
     )
 
 
-@statsd.timer('get_hiera')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['GET'])
 def get_hiera(project, prefix):
     prefix = _preprocess_prefix(prefix)
@@ -211,7 +205,6 @@ def get_hiera(project, prefix):
         cur.close()
 
 
-@statsd.timer('set_hiera')
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['POST'])
 def set_hiera(project, prefix):
 
@@ -268,7 +261,6 @@ def set_hiera(project, prefix):
     )
 
 
-@statsd.timer('get_node_config')
 @app.route('/v1/<string:project>/node/<string:fqdn>', methods=['GET'])
 def get_node_config(project, fqdn):
 
@@ -315,7 +307,6 @@ def get_node_config(project, fqdn):
     )
 
 
-@statsd.timer('get_prefixes')
 @app.route('/v1/<string:project>/prefix', methods=['GET'])
 def get_prefixes(project):
     cur = g.db.cursor()
@@ -336,7 +327,6 @@ def get_prefixes(project):
         cur.close()
 
 
-@statsd.timer('get_prefixes_for_project_and_role')
 @app.route('/v1/<string:project>/prefix/<string:role>', methods=['GET'])
 def get_prefixes_for_project_and_role(project, role):
     cur = g.db.cursor()
@@ -360,7 +350,6 @@ def get_prefixes_for_project_and_role(project, role):
         cur.close()
 
 
-@statsd.timer('get_prefixes_for_role')
 @app.route('/v1/prefix/<string:role>', methods=['GET'])
 def get_prefixes_for_role(role):
     cur = g.db.cursor()
@@ -386,7 +375,6 @@ def get_prefixes_for_role(role):
         cur.close()
 
 
-@statsd.timer('delete_prefix')
 @app.route('/v1/<string:project>/prefix/<string:prefix>', methods=['DELETE'])
 def delete_prefix(project, prefix):
 
@@ -434,7 +422,6 @@ def delete_prefix(project, prefix):
         cur.close()
 
 
-@statsd.timer('healthz')
 @app.route('/v1/healthz')
 def healthz():
     """

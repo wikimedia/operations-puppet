@@ -9,8 +9,6 @@ class profile::openstack::base::puppetmaster::frontend(
     $encapi_db_name = lookup('profile::openstack::base::puppetmaster::encapi::db_name'),
     $encapi_db_user = lookup('profile::openstack::base::puppetmaster::encapi::db_user'),
     $encapi_db_pass = lookup('profile::openstack::base::puppetmaster::encapi::db_pass'),
-    $encapi_statsd_prefix = lookup('profile::openstack::base::puppetmaster::encapi::statsd_prefix'),
-    $statsd_host = lookup('profile::openstack::base::statsd_host'),
     $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     $cert_secret_path = lookup('profile::openstack::base::puppetmaster::cert_secret_path'),
     ) {
@@ -40,8 +38,6 @@ class profile::openstack::base::puppetmaster::frontend(
         encapi_db_name           => $encapi_db_name,
         encapi_db_user           => $encapi_db_user,
         encapi_db_pass           => $encapi_db_pass,
-        encapi_statsd_prefix     => $encapi_statsd_prefix,
-        statsd_host              => $statsd_host,
         labweb_hosts             => $labweb_hosts,
     }
 
