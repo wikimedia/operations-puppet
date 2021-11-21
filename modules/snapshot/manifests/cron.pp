@@ -53,6 +53,10 @@ class snapshot::cron(
         user      => $miscdumpsuser,
         filesonly => $filesonly,
     }
+    class { '::snapshot::cron::dump_growth_mentorship':
+        user      => $miscdumpsuser,
+        filesonly => $filesonly,
+    }
     # this class does not do any dumps, it just sets up
     # requirements for any wikibase type dumps
     # it cannot be imply included in those dumps classes
