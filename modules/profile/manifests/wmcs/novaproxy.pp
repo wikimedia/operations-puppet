@@ -1,22 +1,15 @@
 class profile::wmcs::novaproxy(
-    Array[Stdlib::Fqdn]   $all_proxies              = lookup('profile::wmcs::novaproxy::all_proxies',  {default_value => ['localhost']}),
-    Stdlib::Fqdn          $active_proxy             = lookup('profile::wmcs::novaproxy::active_proxy', {default_value => 'localhost'}),
-    Boolean               $use_ssl                  = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
-    String                $acme_certname            = lookup('profile::wmcs::novaproxy::acme_certname',{default_value => ''}),
-    String                $block_ua_re              = lookup('profile::wmcs::novaproxy::block_ua_re',  {default_value => ''}),
-    String                $block_ref_re             = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
-    Array[Stdlib::Fqdn]   $xff_fqdns                = lookup('profile::wmcs::novaproxy::xff_fqdns',    {default_value => []}),
-    Boolean               $use_wmflabs_root         = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
-    Boolean               $do_https                 = lookup('profile::wmcs::novaproxy::do_https',     {default_value => true}),
-    Array[Stdlib::IP::Address::V4] $banned_ips      = lookup('profile::wmcs::novaproxy::banned_ips',   {default_value => []}),
-    Boolean               $api_readonly             = lookup('profile::wmcs::novaproxy::api_readonly', {default_value => false}),
-    Enum['http', 'https'] $keystone_api_protocol    = lookup('profile::openstack::base::keystone::auth_protocol'),
-    Stdlib::Port          $keystone_api_port        = lookup('profile::openstack::base::keystone::public_port'),
-    # I don't want to add per-deployment profiles, so this is duplicated instead of using profile::openstack::$DEPLOYMENT::keystone_api_fqdn
-    Stdlib::Fqdn          $keystone_api_fqdn        = lookup('profile::wmcs::novaproxy::keystone_api_fqdn'),
-    String                $token_validator_username = lookup('profile::wmcs::novaproxy::token_validator_username'),
-    String                $token_validator_project  = lookup('profile::wmcs::novaproxy::token_validator_project'),
-    String                $token_validator_password = lookup('profile::wmcs::novaproxy::token_validator_password'),
+    Array[Stdlib::Fqdn] $all_proxies           = lookup('profile::wmcs::novaproxy::all_proxies',  {default_value => ['localhost']}),
+    Stdlib::Fqdn        $active_proxy          = lookup('profile::wmcs::novaproxy::active_proxy', {default_value => 'localhost'}),
+    Boolean             $use_ssl               = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
+    String              $acme_certname         = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => ''}),
+    String              $block_ua_re           = lookup('profile::wmcs::novaproxy::block_ua_re',  {default_value => ''}),
+    String              $block_ref_re          = lookup('profile::wmcs::novaproxy::block_ref_re', {default_value => ''}),
+    Array[Stdlib::Fqdn] $xff_fqdns             = lookup('profile::wmcs::novaproxy::xff_fqdns',    {default_value => []}),
+    Boolean             $use_wmflabs_root      = lookup('profile::wmcs::novaproxy::use_ssl',      {default_value => true}),
+    Boolean             $do_https              = lookup('profile::wmcs::novaproxy::do_https',     {default_value => true}),
+    Array[Stdlib::IP::Address::V4] $banned_ips = lookup('profile::wmcs::novaproxy::banned_ips',   {default_value => []}),
+    Boolean             $api_readonly          = lookup('profile::wmcs::novaproxy::api_readonly', {default_value => false}),
 ) {
     $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
@@ -95,14 +88,10 @@ class profile::wmcs::novaproxy(
     }
 
     class { '::dynamicproxy::api':
-        acme_certname            => $acme_certname,
-        ssl_settings             => $ssl_settings,
+        acme_certname => $acme_certname,
+        ssl_settings  => $ssl_settings,
         # Read only if specified in hiera or not an active proxy
-        read_only                => $api_readonly or $::hostname != $active_proxy,
-        keystone_api_url         => "${keystone_api_protocol}://${keystone_api_fqdn}:${keystone_api_port}",
-        token_validator_username => $token_validator_username,
-        token_validator_password => $token_validator_password,
-        token_validator_project  => $token_validator_project,
+        read_only     => $api_readonly or $::hostname != $active_proxy,
     }
 
     if $use_wmflabs_root {

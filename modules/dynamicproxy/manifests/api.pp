@@ -1,15 +1,8 @@
 class dynamicproxy::api (
-    Stdlib::HTTPUrl         $keystone_api_url,
-    String[1]               $token_validator_username,
-    String[1]               $token_validator_password,
-    String[1]               $token_validator_project,
-    Optional[String]        $acme_certname = undef,
+    Optional[String] $acme_certname = undef,
     Optional[Array[String]] $ssl_settings = undef,
-    Boolean                 $read_only = false,
+    Boolean $read_only = false,
 ) {
-    # for new enough python3-keystonemiddleware versions
-    debian::codename::require('bullseye', '>=')
-
     file { '/usr/local/bin/invisible-unicorn.py':
         source => 'puppet:///modules/dynamicproxy/invisible-unicorn.py',
         owner  => 'root',
@@ -17,13 +10,7 @@ class dynamicproxy::api (
         mode   => '0555',
     }
 
-    ensure_packages([
-        'python3-flask',
-        'python3-redis',
-        'python3-flask-sqlalchemy',
-        'python3-flask-keystone',  # this one is built and maintained by us
-        'sqlite3'
-    ])
+    ensure_packages(['python3-flask', 'python3-redis', 'python3-flask-sqlalchemy', 'sqlite3'])
 
     uwsgi::app { 'invisible-unicorn':
         settings  => {
@@ -44,14 +31,6 @@ class dynamicproxy::api (
         ensure => directory,
         owner  => 'www-data',
         group  => 'www-data',
-    }
-
-    file { '/etc/dynamicproxy-api/config.ini':
-        content => template('dynamicproxy/invisible-unicorn.ini.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        notify  => Uwsgi::App['invisible-unicorn'],
     }
 
     file { '/data/project/backup':
