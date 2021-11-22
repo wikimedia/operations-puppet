@@ -22,6 +22,7 @@ from oslo_log import log as logging
 from nova_fixed_multi.base import BaseAddressMultiHandler
 
 import sys
+import traceback
 
 LOG = logging.getLogger(__name__)
 
@@ -67,9 +68,10 @@ class NovaFixedMultiHandler(BaseAddressMultiHandler):
                              resource_id=payload['instance_id'],
                              resource_type='instance')
             except:
-                LOG.warn("--------------------     Unexpected error: %s" %
-                         sys.exc_info()[0])
+                LOG.warn("--------------------     Unexpected error: %s %s" %
+                         (sys.exc_info()[0], traceback.format_exc()))
                 LOG.warn("--------------------     (swallowed)")
+                traceback.print_exc()
 
         elif event_type == 'compute.instance.delete.start':
             LOG.warn('NovaFixedHandler deleting records  - %s' % event_type)
@@ -77,8 +79,8 @@ class NovaFixedMultiHandler(BaseAddressMultiHandler):
                 self._delete(resource_id=payload['instance_id'],
                              resource_type='instance')
             except:
-                LOG.warn("--------------------     Unexpected error: %s" %
-                         sys.exc_info()[0])
+                LOG.warn("--------------------     Unexpected error: %s %s" %
+                         (sys.exc_info()[0], traceback.format_exc()))
                 LOG.warn("--------------------     (swallowed)")
         else:
             raise ValueError('NovaFixedHandler received an invalid event type')
