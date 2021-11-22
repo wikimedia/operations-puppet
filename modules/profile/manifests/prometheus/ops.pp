@@ -410,6 +410,26 @@ class profile::prometheus::ops (
         }
     }
 
+    prometheus::class_config{ "cache_haproxy_tls_text_${::site}":
+        dest       => "${targets_path}/cache_haproxy_tls_text_${::site}.yaml",
+        class_name => 'role::cache::text_haproxy',
+        port       => 9422,
+        labels     => {
+          'layer'   => 'tls',
+          'cluster' => 'cache_text',
+        }
+    }
+
+    prometheus::class_config{ "cache_haproxy_tls_mtail_text_${::site}":
+        dest       => "${targets_path}/cache_haproxy_tls_mtail_text_${::site}.yaml",
+        class_name => 'role::cache::text_haproxy',
+        port       => 3906,
+        labels     => {
+            'layer'   => 'tls',
+            'cluster' => 'cache_text',
+        }
+    }
+
     # Job definition for purged
     $purged_jobs = [
       {
