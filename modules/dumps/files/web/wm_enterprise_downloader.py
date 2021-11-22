@@ -604,7 +604,7 @@ def fillin_args(options, args):
     for (opt, val) in options:
         if opt in ["-c", "--creds"]:
             args['creds'] = val
-        if opt in ["-n", "--namespace"]:
+        elif opt in ["-n", "--namespace"]:
             args['ns_id'] = val
         elif opt in ["-w", "--wiki"]:
             args['wiki'] = val
