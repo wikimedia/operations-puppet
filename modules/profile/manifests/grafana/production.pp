@@ -16,7 +16,7 @@ class profile::grafana::production (
     }
 
     rsync::quickdatacopy { 'var-lib-grafana':
-      ensure              => present,
+      ensure              => absent,
       source_host         => $active_host,
       dest_host           => $standby_host,
       module_path         => '/var/lib/grafana',
