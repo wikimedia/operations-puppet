@@ -1,5 +1,5 @@
 profile::ceph::auth::load_all::configuration:
-  cinder-backups:
+  codfw1dev-cinder-backups:
     caps:
       mon: profile rbd
       osd: profile rbd pool=codfw1dev-cinder

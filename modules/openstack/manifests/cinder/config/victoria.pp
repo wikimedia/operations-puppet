@@ -8,6 +8,7 @@ class openstack::cinder::config::victoria(
     String[1]           $keystone_admin_uri,
     String[1]           $region,
     String[1]           $ceph_pool,
+    String[1]           $ceph_rbd_client_name,
     String[1]           $rabbit_user,
     String[1]           $rabbit_pass,
     Stdlib::Port        $api_bind_port,

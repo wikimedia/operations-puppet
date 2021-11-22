@@ -9,8 +9,8 @@ class profile::openstack::codfw1dev::cinder(
     String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
-    ) {
-
+    String[1]           $ceph_rbd_client_name  = lookup('profile::openstack::codfw1dev::cinder::ceph_rbd_client_name'),
+) {
     class {'::profile::openstack::base::cinder':
         version               => $version,
         openstack_controllers => $openstack_controllers,
@@ -19,10 +19,10 @@ class profile::openstack::codfw1dev::cinder(
         db_host               => $db_host,
         api_bind_port         => $api_bind_port,
         ceph_pool             => $ceph_pool,
+        ceph_rbd_client_name  => $ceph_rbd_client_name,
         ldap_user_pass        => $ldap_user_pass,
         rabbit_pass           => $rabbit_pass,
         region                => $region,
         active                => true,
     }
-
 }
