@@ -1,5 +1,5 @@
-# a placeholder role for a manual gitlab setup by
-# https://phabricator.wikimedia.org/T274458
+# https://gitlab.wikimedia.org/
+# https://phabricator.wikimedia.org/project/view/5057/
 class role::gitlab {
 
     system::role { 'gitlab':
