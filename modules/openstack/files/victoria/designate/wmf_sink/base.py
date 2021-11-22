@@ -129,13 +129,14 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         records = central_api.find_records(context, crit)
 
-        # We only care about the IP, and that's the same in both records.
-        ip = records[0].data
-        LOG.debug("Cleaning up proxy records for IP %s" % ip)
-        try:
-            self._delete_proxies_for_ip(data['project_name'], ip)
-        except requests.exceptions.ConnectionError:
-            LOG.warning("Caught exception when deleting proxy records", exc_info=True)
+        if records:
+            # We only care about the IP, and that's the same in both records.
+            ip = records[0].data
+            LOG.debug("Cleaning up proxy records for IP %s" % ip)
+            try:
+                self._delete_proxies_for_ip(data['project_name'], ip)
+            except requests.exceptions.ConnectionError:
+                LOG.warning("Caught exception when deleting proxy records", exc_info=True)
 
     @staticmethod
     def _run_remote_command(server, username, command):
