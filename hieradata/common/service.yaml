@@ -3387,11 +3387,11 @@ service::catalog:
           hostname: apple-search.svc.codfw.wmnet
         eqiad:
           hostname: apple-search.svc.eqiad.wmnet
-    port: 4005
+    port: 4013
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: apple-search
         active_active: true
