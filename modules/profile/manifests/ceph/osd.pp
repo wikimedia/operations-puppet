@@ -14,7 +14,7 @@ class profile::ceph::osd(
     Array[String]        $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
     Array[String]        $os_disks = lookup('profile::ceph::osd::os_disks'),
     String               $disks_io_scheduler = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
-    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
+    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
     require profile::ceph::auth::deploy

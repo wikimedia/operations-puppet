@@ -11,7 +11,7 @@ class profile::ceph::mon(
     Stdlib::Unixpath     $data_dir         = lookup('profile::ceph::data_dir'),
     String               $fsid             = lookup('profile::ceph::fsid'),
     String               $mon_keydata      = lookup('profile::ceph::mon::keydata'),
-    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
+    String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
     include network::constants

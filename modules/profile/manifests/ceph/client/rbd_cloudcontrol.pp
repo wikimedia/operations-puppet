@@ -5,7 +5,7 @@ class profile::ceph::client::rbd_cloudcontrol(
     Stdlib::IP::Address $public_network      = lookup('profile::ceph::public_network'),
     Stdlib::Unixpath    $data_dir            = lookup('profile::ceph::data_dir'),
     String              $fsid                = lookup('profile::ceph::fsid'),
-    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
+    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
     Stdlib::Port        $radosgw_port        = lookup('profile::ceph::client::rbd::radosgw_port'),
     String              $keystone_internal_uri = lookup('profile::ceph::client::rbd::keystone_internal_uri'),
     String              $radosgw_service_user = lookup('profile::ceph::client::rbd::radosgw_service_user'),

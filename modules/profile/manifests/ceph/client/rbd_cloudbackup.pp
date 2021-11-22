@@ -5,7 +5,7 @@ class profile::ceph::client::rbd_cloudbackup (
     Stdlib::IP::Address $public_network            = lookup('profile::ceph::public_network'),
     Stdlib::Unixpath    $data_dir                  = lookup('profile::ceph::data_dir'),
     String[1]           $fsid                      = lookup('profile::ceph::fsid'),
-    String[1]           $ceph_repository_component = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
+    String[1]           $ceph_repository_component = lookup('profile::ceph::ceph_repository_component'),
 ) {
     class { 'ceph::common':
         home_dir                  => $data_dir,

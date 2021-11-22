@@ -15,7 +15,7 @@ class profile::ceph::client::rbd_libvirt(
     String              $fsid                    = lookup('profile::ceph::fsid'),
     String              $libvirt_rbd_uuid        = lookup('profile::ceph::client::rbd::libvirt_rbd_uuid'),
     String              $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
-    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' }),
+    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
     Ceph::Auth::Conf    $ceph_auth_conf             = lookup('profile::ceph::auth::deploy::configuration'),
 ) {
 

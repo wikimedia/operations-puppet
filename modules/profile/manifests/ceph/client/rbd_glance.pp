@@ -5,7 +5,7 @@ class profile::ceph::client::rbd_glance(
     Stdlib::IP::Address $public_network      = lookup('profile::ceph::public_network'),
     Stdlib::Unixpath    $data_dir            = lookup('profile::ceph::data_dir'),
     String              $fsid                = lookup('profile::ceph::fsid'),
-    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
+    String              $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
 ) {
 
     class { 'ceph::common':

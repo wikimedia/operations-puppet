@@ -5,7 +5,7 @@
 #
 class profile::ceph::common(
     Stdlib::Unixpath $data_dir = lookup('profile::ceph::data_dir'),
-    String           $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component',  { 'default_value' => 'thirdparty/ceph-nautilus-buster' })
+    String           $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
 ) {
     class { 'ceph::common':
         home_dir                  => $data_dir,
