@@ -415,13 +415,6 @@ sub cluster_fe_ratelimit {
 		}
 	}
 
-<% if @vcl_config.fetch("public_clouds_shutdown") -%>
-	// Unconditionally return 403 to all traffic from public clouds like ec2
-	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets) {
-		return (synth(403));
-	}
-<% end -%>
-
 	// T284479
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ google_cloud_nets && req.http.User-Agent ~ "HeadlessChrome/" && req.url ~ "/w/index.php" && req.url ~ "[?&]search=") {
 		return (synth(403, "Forbidden; please contact noc@wikimedia.org"));
@@ -618,3 +611,4 @@ sub cluster_fe_err_synth {
 		return (deliver);
 	}
 }
+# vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:

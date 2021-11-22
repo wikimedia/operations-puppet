@@ -136,6 +136,17 @@ backend <%= 'be_' + backend.gsub(/[-.]/, '_') %> {
 
 <% end # !varnish_testing -%>
 
+// ** Engineer public cloud flows
+// by default rate limit but if public_clouds_shutdown is set block
+sub shutdown_public_clouds {
+<% if @vcl_config.fetch("public_clouds_shutdown") -%>
+	// Unconditionally return 403 to all traffic from public clouds like ec2
+	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets) {
+		return (synth(403));
+	}
+<% end -%>
+}
+
 // *** HTTPS-forcing recv code
 sub https_recv_redirect {
 	if (req.http.X-Forwarded-Proto != "https") {
@@ -763,6 +774,7 @@ sub vcl_hit {
 
 sub vcl_miss {
 	set req.http.X-CDIS = "miss";
+	call shutdown_public_clouds;
 	call cluster_fe_miss;
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
@@ -777,6 +789,7 @@ sub vcl_pass {
 	set req.backend_hint = cache_local_random.backend();
 <% end -%>
 
+	call shutdown_public_clouds;
 	call cluster_fe_pass;
 	return (fetch); // no default VCL (which is just "return (fetch)" anyways)
 }
