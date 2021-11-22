@@ -156,7 +156,7 @@ class acme_chief::server (
         send_mail          => true,
         environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
         command            => '/bin/systemctl reload acme-chief',
-        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
         require            => Service['acme-chief'],
     }
 
