@@ -57,18 +57,27 @@ class profile::java (
         true    => 'present',
         default => 'absent',
     }
-    # This is also included in P:base::certificates however it
-    # provides the following two files so we also include it here
-    ensure_packages(['wmf-certificates'])
-    $cacerts = {
-        'wmf:puppetca.pem' => {
-            'ensure' => $cacerts_ensure,
-            'path'  => '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt',
-        },
-        'wmf:Wikimedia_Internal_Root_CA' => {
-            'ensure' => $cacerts_ensure,
-            'path'  => '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt',
+
+    if $::realm == 'production' {
+        $cacerts = {
+            'wmf:puppetca.pem' => {
+                'ensure' => $cacerts_ensure,
+                'path'  => '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt',
+            },
+            'wmf:Wikimedia_Internal_Root_CA' => {
+                'ensure' => $cacerts_ensure,
+                'path'   => '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt',
+            }
         }
+        $java_require = Package['wmf-certificates']
+    } else {
+        $cacerts = {
+            'wmf:puppetca.pem' => {
+                'ensure' => $cacerts_ensure,
+                'path'   => $facts['puppet_config']['localcacert']
+            }
+        }
+        $java_require = undef
     }
     class { 'java':
         java_packages => $_java_packages,
@@ -76,8 +85,9 @@ class profile::java (
         egd_source    => $egd_source,
         cacerts       => $cacerts,
         enable_dbg    => $enable_dbg,
-        require       => Package['wmf-certificates'],
+        require       => $java_require,
     }
+
 
     $default_java_home = $java::java_home
     $default_package_name = "openjdk-${java::default_java_package['version']}-${java::default_java_package['variant']}"

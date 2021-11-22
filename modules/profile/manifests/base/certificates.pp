@@ -13,7 +13,9 @@ class profile::base::certificates (
     # Includes internal root CA's e.g.
     # * puppet CA
     # * CFSSL CA
-    ensure_packages(['wmf-certificates'])
+    $ensure_wmf_certificates = stdlib::ensure($::realm == 'production', 'package')
+    ensure_packages(['wmf-certificates'], {'ensure' => $ensure_wmf_certificates })
+
     include sslcert
 
     sslcert::ca { 'wmf_ca_2017_2020':
