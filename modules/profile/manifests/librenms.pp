@@ -137,8 +137,12 @@ class profile::librenms (
         'auth_ldap_groupmembertype' => 'fulldn',
 
         # Give all ops full read/write permissions
-        'auth_ldap_group'  => ['cn=ops,ou=groups,dc=wikimedia,dc=org', 'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org'],
-        'auth_ldap_groups' => {'ops' => {'level' => 10}, 'librenms-readers' => {'level' => 5}},
+        'auth_ldap_group'  => [
+            'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+            'cn=nda,ou=groups,dc=wikimedia,dc=org'
+        ],
+        'auth_ldap_groups' => {'ops' => {'level' => 10}, 'wmf' => {'level' => 5}, 'nda' => {'level' => 5}},
     }
     $sso = {
         'sso' => {
@@ -152,7 +156,8 @@ class profile::librenms (
             'group_attr'      => 'HTTP_X_CAS_MEMBEROF',
             'group_level_map' => {
                 'cn=ops,ou=groups,dc=wikimedia,dc=org' => 10,
-                'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org' => 5,
+                'cn=wmf,ou=groups,dc=wikimedia,dc=org' => 5,
+                'cn=nda,ou=groups,dc=wikimedia,dc=org' => 5,
             },
             'group_delimiter' => ':',
         }

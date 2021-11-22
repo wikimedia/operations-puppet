@@ -72,8 +72,8 @@ profile::idp::services:
     service_id: 'https://librenms.wikimedia.org(/.*)?'
     required_groups:
       - ops
-      - sre-admins
-      - librenms-readers
+      - nda
+      - wmf
   piwik:
     id: 9
     service_id: 'https://piwik.wikimedia.org(/.*)?'

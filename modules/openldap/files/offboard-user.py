@@ -161,7 +161,6 @@ delete: userPassword
                          'cn=ops,ou=groups,dc=wikimedia,dc=org',
                          'cn=ldap_ops,ou=groups,dc=wikimedia,dc=org',
                          'cn=wmde,ou=groups,dc=wikimedia,dc=org',
-                         'cn=librenms-readers,ou=groups,dc=wikimedia,dc=org',
                          'cn=grafana-admin,ou=groups,dc=wikimedia,dc=org',
                          'cn=ciadmin,ou=groups,dc=wikimedia,dc=org',
                          'cn=releng,ou=groups,dc=wikimedia,dc=org',
