@@ -1403,6 +1403,11 @@ node 'gitlab1001.wikimedia.org' {
     role(gitlab)
 }
 
+# T295481
+node 'gitlab-runner1001.eqiad.wmnet' {
+    role(insetup)
+}
+
 # T285867
 node 'gitlab2001.wikimedia.org' {
     role(gitlab)
