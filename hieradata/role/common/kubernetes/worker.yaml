@@ -73,6 +73,7 @@ profile::lvs::realserver::pools:
   linkrecommendation: {}
   tegola-vector-tiles: {}
   miscweb: {}
+  apple-search: {}
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::contacts::role_contacts: ['ServiceOps SREs']

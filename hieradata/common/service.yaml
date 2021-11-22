@@ -3358,7 +3358,45 @@ service::catalog:
     discovery:
       - dnsdisc: linkrecommendation
         active_active: true
+  apple-search:
+    description: Apple search service, apple-search.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.68
+      eqiad:
+        default: 10.2.2.68
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    monitoring:
+      check_command: check_https_lvs_on_port!apple-search.discovery.wmnet!4013!/healthz
+      critical: true
+      sites:
+        codfw:
+          hostname: apple-search.svc.codfw.wmnet
+        eqiad:
+          hostname: apple-search.svc.eqiad.wmnet
+    port: 4005
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: apple-search
+        active_active: true
 
+## WIKIREPLICAS sections.
   wikireplicas-a-s1:
     description: "lvs for a-side wikireplicas section s1"
     encryption: false
