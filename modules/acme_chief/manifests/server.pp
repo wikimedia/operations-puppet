@@ -135,18 +135,6 @@ class acme_chief::server (
         },
     }
 
-    cron { 'reload-acme-chief-backend':
-        ensure   => absent,
-        command  => '/bin/systemctl reload acme-chief',
-        user     => 'root',
-        minute   => '0',
-        hour     => '*',
-        weekday  => '*',
-        month    => '*',
-        monthday => '*',
-        require  => Service['acme-chief'],
-    }
-
     # TODO: replace with https://gerrit.wikimedia.org/r/460397
     systemd::timer::job { 'reload-acme-chief-backend':
         ensure             => $ensure,
