@@ -847,15 +847,14 @@ node 'db1108.eqiad.wmnet' {
 # See also multiinstance misc hosts db1117 and db2078 below
 
 # m5 eqiad master
-node 'db1128.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-
-# future m5 eqiad master T288720
 node 'db1132.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
+# old m5 eqiad master T288720
+node 'db1128.eqiad.wmnet' {
+    role(mariadb::misc)
+}
 
 # m5 codfw master
 node 'db2135.codfw.wmnet' {
