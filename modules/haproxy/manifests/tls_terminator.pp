@@ -18,6 +18,9 @@
 # @param tls_session_lifetime
 #   Sets how long a cached SSL session may remain valid.
 #   Defaults to 300 seconds
+# @param http_reuse
+#   HTTP connection reuse policy.
+#   Defaults to safe
 # @param tls_ciphers
 #   Allowed ciphersuites for <= TLSv1.2
 # @param tls13_ciphers
@@ -62,6 +65,7 @@ define haproxy::tls_terminator(
     Stdlib::Unixpath $tls_dh_param_path = '/etc/ssl/dhparam.pem',
     Integer[0] $tls_cachesize = 20000,
     Integer[0] $tls_session_lifetime = 300,
+    Haproxy::Httpreuse $http_reuse = 'safe',
     Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = undef,
     Optional[Array[Stdlib::Unixpath]] $lua_scripts = undef,
