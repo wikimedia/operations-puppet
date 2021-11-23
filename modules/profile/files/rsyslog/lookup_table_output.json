@@ -63,6 +63,7 @@
     {"index" : "nova-scheduler", "value" : "kafka local" },
     {"index" : "nova-fullstack", "value" : "kafka local" },
     {"index" : "cinder-api", "value" : "kafka local" },
+    {"index" : "cinder-backup", "value": "kafka local" },
     {"index" : "cinder-wsgi", "value" : "kafka local" },
     {"index" : "cinder-scheduler", "value" : "kafka local" },
     {"index" : "cinder-volume", "value" : "kafka local" },
