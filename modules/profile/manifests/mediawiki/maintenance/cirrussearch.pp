@@ -22,8 +22,7 @@ class profile::mediawiki::maintenance::cirrussearch {
     }
 
     # T295705 2021-11-22 Temporarily disabling saneitizer for at least the next several days
-    # TODO when we re-enable, let's change the name to cirrus_saneitize_jobs
-    profile::mediawiki::periodic_job { 'cirrus_sanitize_jobs':
+    profile::mediawiki::periodic_job { 'cirrus_saneitize_jobs':
         ensure   => absent,
         command  => '/usr/local/bin/foreachwiki extensions/CirrusSearch/maintenance/SaneitizeJobs.php --push --refresh-freq=7200',
         interval => '0/2:10',
