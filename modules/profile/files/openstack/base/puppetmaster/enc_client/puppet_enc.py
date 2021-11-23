@@ -67,8 +67,8 @@ if __name__ == '__main__':
 
     classes = set()
 
-    url = 'http://{host}:8100/v1/{project}/node/{fqdn}'.format(
-        host=encconfig['host'],
+    url = '{api_endpoint}/v1/{project}/node/{fqdn}'.format(
+        api_endpoint=encconfig['api_endpoint'],
         project=project,
         fqdn=hostname
     )

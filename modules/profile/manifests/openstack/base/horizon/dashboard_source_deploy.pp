@@ -1,21 +1,23 @@
 class profile::openstack::base::horizon::dashboard_source_deploy(
-    String        $horizon_version = lookup('profile::openstack::base::horizon_version'),
-    String        $openstack_version = lookup('profile::openstack::base::version'),
-    Stdlib::Fqdn  $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
-    String        $wmflabsdotorg_admin = lookup('profile::openstack::base::designate::wmflabsdotorg_admin'),
-    String        $wmflabsdotorg_pass = lookup('profile::openstack::base::designate::wmflabsdotorg_pass'),
-    String        $dhcp_domain = lookup('profile::openstack::base::nova::dhcp_domain'),
-    String        $instance_network_id = lookup('profile::openstack::base::horizon::instance_network_id'),
-    Hash          $ldap_config = lookup('ldap'),
-    String        $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
-    Stdlib::Fqdn  $webserver_hostname = lookup('profile::openstack::base::horizon::webserver_hostname'),
-    Array[String] $all_regions = lookup('profile::openstack::base::all_regions'),
-    String        $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
-    String        $puppet_git_repo_user = lookup('profile::openstack::base::horizon::puppet_git_repo_user'),
-    Boolean       $maintenance_mode = lookup('profile::openstack::base::horizon::maintenance_mode'),
-    String        $secret_key = lookup('profile::openstack::base::horizon::secret_key'),
-    Hash          $proxy_zone_dict = lookup('profile::openstack::base::horizon::proxy_zone_dict'),
-    Hash          $proxy_zone_passwords = lookup('profile::openstack::base::horizon::proxy_zone_passwords'),
+    String          $horizon_version = lookup('profile::openstack::base::horizon_version'),
+    String          $openstack_version = lookup('profile::openstack::base::version'),
+    Stdlib::Fqdn    $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
+    String          $wmflabsdotorg_admin = lookup('profile::openstack::base::designate::wmflabsdotorg_admin'),
+    String          $wmflabsdotorg_pass = lookup('profile::openstack::base::designate::wmflabsdotorg_pass'),
+    String          $dhcp_domain = lookup('profile::openstack::base::nova::dhcp_domain'),
+    String          $instance_network_id = lookup('profile::openstack::base::horizon::instance_network_id'),
+    Hash            $ldap_config = lookup('ldap'),
+    String          $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
+    Stdlib::Fqdn    $webserver_hostname = lookup('profile::openstack::base::horizon::webserver_hostname'),
+    Array[String]   $all_regions = lookup('profile::openstack::base::all_regions'),
+    String          $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
+    String          $puppet_git_repo_user = lookup('profile::openstack::base::horizon::puppet_git_repo_user'),
+    Boolean         $maintenance_mode = lookup('profile::openstack::base::horizon::maintenance_mode'),
+    String          $secret_key = lookup('profile::openstack::base::horizon::secret_key'),
+    Hash            $proxy_zone_dict = lookup('profile::openstack::base::horizon::proxy_zone_dict'),
+    Hash            $proxy_zone_passwords = lookup('profile::openstack::base::horizon::proxy_zone_passwords'),
+    Stdlib::HTTPUrl $puppet_api_endpoint = lookup('profile::openstack::base::horizon::puppet_api_endpoint'),
+    Stdlib::HTTPUrl $puppet_enc_endpoint = lookup('profile::openstack::base::horizon::puppet_enc_endpoint'),
     ) {
 
     $ldap_rw_host = $ldap_config['rw-server']
@@ -38,7 +40,10 @@ class profile::openstack::base::horizon::dashboard_source_deploy(
         secret_key           => $secret_key,
         proxy_zone_dict      => $proxy_zone_dict,
         proxy_zone_passwords => $proxy_zone_passwords,
+        puppet_api_endpoint  => $puppet_api_endpoint,
+        puppet_enc_endpoint  => $puppet_enc_endpoint,
     }
+
     contain '::openstack::horizon::source_deploy'
 
     ferm::service { 'horizon_http':

@@ -50,7 +50,6 @@ class role::puppetmaster::standalone(
     Integer[1,30]               $git_sync_minutes    = 10,
     String                      $extra_auth_rules    = '',
     Stdlib::Host                $server_name         = $facts['fqdn'],
-    Stdlib::Host                $labs_puppet_master  = lookup('labs_puppet_master'),
                                 $storeconfigs        = false,
     Boolean                     $enable_geoip        = false,
     Boolean                     $command_broadcast   = false,
@@ -60,13 +59,11 @@ class role::puppetmaster::standalone(
     Hash[String, Puppetmaster::R10k::Source]             $r10k_sources  = {},
     Optional[Variant[Array[Stdlib::Host], Stdlib::Host]] $puppetdb_host = undef,
 ) {
+    include profile::openstack::base::puppetmaster::enc_client
+
     $puppetdb_hosts = ($puppetdb_host =~ Stdlib::Host) ? {
         true    => [$puppetdb_host],
         default => $puppetdb_host,
-    }
-
-    class {'openstack::puppet::master::enc':
-        puppetmaster => $labs_puppet_master,
     }
 
     $env_config = $use_r10k ? {

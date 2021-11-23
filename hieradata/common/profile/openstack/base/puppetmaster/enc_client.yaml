@@ -1,0 +1,2 @@
+# work around https://phabricator.wikimedia.org/T296327
+profile::openstack::base::puppetmaster::enc_client::api_endpoint: "http://obviously-fake-url-for-ci-only-do-not-use-this-on-production.cloudinfra.wmcloud.org"

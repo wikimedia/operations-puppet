@@ -126,7 +126,6 @@ if __name__ == "__main__":
     variables.update(
         {
             "puppetmaster": agent_server,
-            "labs_puppet_master": agent_server,
             # Set variables for role() emulation
             "_role": role.replace("::", "/"),
             "_roles": {role: "true"},

@@ -1,8 +1,6 @@
 class profile::openstack::base::puppetmaster::backend(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
-    $puppetmaster_webhostname = lookup('profile::openstack::base::puppetmaster::web_hostname'),
-    $puppetmaster_hostname = lookup('profile::openstack::base::puppetmaster_hostname'),
     $puppetmaster_ca = lookup('profile::openstack::base::puppetmaster::ca'),
     $puppetmasters = lookup('profile::openstack::base::puppetmaster::servers'),
     $encapi_db_host = lookup('profile::openstack::base::puppetmaster::encapi::db_host'),
@@ -15,16 +13,14 @@ class profile::openstack::base::puppetmaster::backend(
     require ::profile::conftool::client
     include ::network::constants
     class {'profile::openstack::base::puppetmaster::common':
-        openstack_controllers    => $openstack_controllers,
-        designate_hosts          => $designate_hosts,
-        puppetmaster_webhostname => $puppetmaster_webhostname,
-        puppetmaster_hostname    => $puppetmaster_hostname,
-        puppetmasters            => $puppetmasters,
-        encapi_db_host           => $encapi_db_host,
-        encapi_db_name           => $encapi_db_name,
-        encapi_db_user           => $encapi_db_user,
-        encapi_db_pass           => $encapi_db_pass,
-        labweb_hosts             => $labweb_hosts,
+        openstack_controllers => $openstack_controllers,
+        designate_hosts       => $designate_hosts,
+        puppetmasters         => $puppetmasters,
+        encapi_db_host        => $encapi_db_host,
+        encapi_db_name        => $encapi_db_name,
+        encapi_db_user        => $encapi_db_user,
+        encapi_db_pass        => $encapi_db_pass,
+        labweb_hosts          => $labweb_hosts,
     }
 
     # Only allow puppet access from the instances

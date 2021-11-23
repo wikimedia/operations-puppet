@@ -3,7 +3,6 @@ class profile::openstack::base::puppetmaster::frontend(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $puppetmasters = lookup('profile::openstack::base::puppetmaster::servers'),
     $puppetmaster_ca = lookup('profile::openstack::base::puppetmaster::ca'),
-    $puppetmaster_hostname = lookup('profile::openstack::base::puppetmaster_hostname'),
     $puppetmaster_webhostname = lookup('profile::openstack::base::puppetmaster::web_hostname'),
     $encapi_db_host = lookup('profile::openstack::base::puppetmaster::encapi::db_host'),
     $encapi_db_name = lookup('profile::openstack::base::puppetmaster::encapi::db_name'),
@@ -29,16 +28,14 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class {'profile::openstack::base::puppetmaster::common':
-        openstack_controllers    => $openstack_controllers,
-        designate_hosts          => $designate_hosts,
-        puppetmaster_webhostname => $puppetmaster_webhostname,
-        puppetmaster_hostname    => $puppetmaster_hostname,
-        puppetmasters            => $puppetmasters,
-        encapi_db_host           => $encapi_db_host,
-        encapi_db_name           => $encapi_db_name,
-        encapi_db_user           => $encapi_db_user,
-        encapi_db_pass           => $encapi_db_pass,
-        labweb_hosts             => $labweb_hosts,
+        openstack_controllers => $openstack_controllers,
+        designate_hosts       => $designate_hosts,
+        puppetmasters         => $puppetmasters,
+        encapi_db_host        => $encapi_db_host,
+        encapi_db_name        => $encapi_db_name,
+        encapi_db_user        => $encapi_db_user,
+        encapi_db_pass        => $encapi_db_pass,
+        labweb_hosts          => $labweb_hosts,
     }
 
     $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }

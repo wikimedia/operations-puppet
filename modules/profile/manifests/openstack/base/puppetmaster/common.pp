@@ -1,22 +1,17 @@
 class profile::openstack::base::puppetmaster::common(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::puppetmaster::common::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::puppetmaster::common::designate_hosts'),
-    $puppetmaster_webhostname = lookup('profile::openstack::base::puppetmaster::web_hostname'),
-    $puppetmaster_hostname = lookup('profile::openstack::base::puppetmaster::common::puppetmaster_hostname'),
     $puppetmasters = lookup('profile::openstack::base::puppetmaster::common::puppetmasters'),
     $encapi_db_host = lookup('profile::openstack::base::puppetmaster::common::encapi_db_host'),
     $encapi_db_name = lookup('profile::openstack::base::puppetmaster::common::encapi_db_name'),
     $encapi_db_user = lookup('profile::openstack::base::puppetmaster::common::encapi_db_user'),
     $encapi_db_pass = lookup('profile::openstack::base::puppetmaster::common::encapi_db_pass'),
     $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
-    ) {
+) {
+    include profile::openstack::base::puppetmaster::enc_client
 
     # array of puppetmasters
     $all_puppetmasters = inline_template('<%= @puppetmasters.values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
-
-    class {'::openstack::puppet::master::enc':
-        puppetmaster => $puppetmaster_webhostname,
-    }
 
     $labs_networks = join($network::constants::labs_networks, ' ')
     class { '::openstack::puppet::master::encapi':

@@ -6,10 +6,6 @@
 #
 puppetdb_host: puppetdb2002.codfw.wmnet
 
-# Cloud Services <
-#
-labs_puppet_master: "puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org"
-
 labsdnsconfig:
   host: 'ns0.openstack.codfw1dev.wikimediacloud.org'
   host_secondary: 'ns1.openstack.codfw1dev.wikimediacloud.org'
