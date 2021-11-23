@@ -12,3 +12,4 @@ profile::ceph::openstack_controllers:
 # and backup nodes for eqiad1 are in the codfw DC
 profile::ceph::cinder_backup_nodes:
   - cloudbackup1001-dev.eqiad.wmnet
+  - cloudbackup1002-dev.eqiad.wmnet
