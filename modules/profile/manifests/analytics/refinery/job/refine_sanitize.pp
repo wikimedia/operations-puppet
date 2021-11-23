@@ -106,10 +106,13 @@ class profile::analytics::refinery::job::refine_sanitize(
     }
     profile::analytics::refinery::job::refine_job { 'event_sanitized_main_delayed':
         interval         => '*-*-* 05:00:00',
-        monitor_interval => '*-*-* 05:45:00',
         # Monitor with a couple hours delay to allow for refine to finish.
-        monitor_since    => $delayed_since + 24,
-        monitor_until    => $delayed_until +2,
+        monitor_interval => '*-*-* 07:00:00',
+        # The monitor job checks the last 48 hours processed.
+        # Since the monitor job started a couple hours after the refine job,
+        # those hours need to be counted when defining monitor since and until.
+        monitor_since    => $delayed_since + 26,
+        monitor_until    => $delayed_until + 2,
         job_config       => $event_sanitized_main_job_config.merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
@@ -130,10 +133,13 @@ class profile::analytics::refinery::job::refine_sanitize(
     }
     profile::analytics::refinery::job::refine_job { 'event_sanitized_analytics_delayed':
         interval         => '*-*-* 06:00:00',
-        monitor_interval => '*-*-* 06:45:00',
         # Monitor with a couple hours delay to allow for refine to finish.
-        monitor_since    => $delayed_since + 24,
-        monitor_until    => $delayed_until +2,
+        monitor_interval => '*-*-* 08:00:00',
+        # The monitor job checks the last 48 hours processed.
+        # Since the monitor job started a couple hours after the refine job,
+        # those hours need to be counted when defining monitor since and until.
+        monitor_since    => $delayed_since + 26,
+        monitor_until    => $delayed_until + 2,
         job_config       => $event_sanitized_analytics_job_config.merge({
             'since' => $delayed_since,
             'until' => $delayed_until,
