@@ -344,7 +344,7 @@ groups:
               htriedman, cooltey, schoenbaechler, christinedk, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
-              statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch]
+              statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4589,6 +4589,13 @@ users:
     uid: 17817
     gid: 500
     ssh_keys: []  # no SSH keys, for Superset dashboards with private data
+  ksiebert:
+    ensure: present
+    realname: Karolin Siebert
+    email: ksiebert@wikimedia.org
+    uid: 33506
+    gid: 500
+    ssh_keys: []  # no SSH keys, for Superset dashboards with private data
   btullis:
     ensure: present
     realname: Ben Tullis
@@ -5594,10 +5601,6 @@ ldap_only_users:
     email: naray-ctr@wikimedia.org
     expiry_date: 2022-05-09
     expiry_contact: janstee@wikimedia.org
-  ksiebert:
-    ensure: present
-    realname: Karolin Siebert
-    email: ksiebert@wikimedia.org
   erayfield:
     ensure: present
     realname: Ellen Rayfield
