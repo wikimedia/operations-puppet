@@ -156,7 +156,10 @@ def main():
 
     try:
         last_run_summary = get_last_run_summary()
-        has_errors = last_run_summary["events"]["failure"] > 0
+        has_errors = (
+            last_run_summary["events"]["failure"] > 0
+            or last_run_summary["events"]["total"] == 0
+        )
         if has_errors:
             failed_resources = get_last_run_report_failed_resources()
     except Exception as error:
