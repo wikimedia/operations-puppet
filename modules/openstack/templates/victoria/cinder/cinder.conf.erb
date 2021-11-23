@@ -48,6 +48,10 @@ auth_strategy = keystone
 # A list of backend names to use. These backend names should be backed by a unique [CONFIG] group with its options (list value)
 enabled_backends = rbd
 
+# Cinder backups happen across datacenters so we want to give
+#  the backup agents a good long time to respond.
+rpc_response_timeout=300
+
 #
 # Enable image signature verification.
 #
