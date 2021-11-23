@@ -148,6 +148,7 @@ class profile::cache::haproxy(
         tls_cachesize        => $tls_cachesize,
         tls_session_lifetime => $tls_session_lifetime,
         tls_ticket_keys_path => $tls_ticket_keys_path,
+        http_reuse           => 'always',
         lua_scripts          => ['/etc/haproxy/tls.lua'],
         vars                 => $vars,
         acls                 => $acls,
