@@ -1,7 +1,7 @@
 class role::elasticsearch::alerts {
     monitoring::graphite_threshold { 'cirrussearch_eqiad_95th_percentile':
         description     => 'CirrusSearch eqiad 95th percentile latency',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/elasticsearch-percentiles?panelId=19&fullscreen&orgId=1&var-cluster=eqiad&var-smoothing=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000455/elasticsearch-percentiles?orgId=1&var-cirrus_group=eqiad&var-cluster=elasticsearch&var-exported_cluster=production-search&var-smoothing=1'],
         metric          => 'transformNull(MediaWiki.CirrusSearch.eqiad.requestTime.p95, 0)',
         from            => '10min',
         warning         => 500,
@@ -13,7 +13,7 @@ class role::elasticsearch::alerts {
 
     monitoring::graphite_threshold { 'cirrussearch_codfw_95th_percentile':
         description     => 'CirrusSearch codfw 95th percentile latency - more_like',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/elasticsearch-percentiles?panelId=39&fullscreen&orgId=1&var-cluster=codfw&var-smoothing=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000455/elasticsearch-percentiles?orgId=1&var-cirrus_group=codfw&var-cluster=elasticsearch&var-exported_cluster=production-search&var-smoothing=1'],
         metric          => 'transformNull(MediaWiki.CirrusSearch.codfw.requestTimeMs.more_like.p95, 0)',
         from            => '10min',
         warning         => 1200,
