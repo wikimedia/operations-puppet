@@ -168,6 +168,7 @@ def purge_duplicates(project_id, delete=False):
         ]
         all_possible_names.extend(all_codfw1dev_nova_instances_legacy_shortname)
 
+        ptrcounts = {}
         for recordset in recordsets:
             name = recordset["name"].lower()
             if recordset_is_service(recordset):
@@ -202,6 +203,16 @@ def purge_duplicates(project_id, delete=False):
                 for record in originalrecords:
                     if record.lower() in all_possible_names:
                         goodrecords += [record]
+
+                        # Make sure we don't have multiple recordsets for the same VM
+                        if record.lower() in ptrcounts:
+                            ptrcounts[record.lower()].append(recordset['name'])
+                            print("Found %s ptr recordsets for the same VM: %s" %
+                                  (len(ptrcounts[record.lower()]),
+                                   ptrcounts[record.lower()]))
+                        else:
+                            ptrcounts[record.lower()] = [recordset['name']]
+
                     else:
                         print(
                             (
@@ -244,6 +255,10 @@ parser.add_argument(
     action="store_true",
 )
 args = parser.parse_args()
+
+# We don't want to hear about https certs
+requests.packages.urllib3.disable_warnings(
+    requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
 purge_duplicates("cloudinfra", args.delete)
 purge_duplicates("noauth-project", args.delete)
