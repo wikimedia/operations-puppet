@@ -188,7 +188,9 @@ role::mariadb::misc::phabricator:
   target-q: TBD
 role::mariadb::core_multiinstance:
   target-q: TBD
-role::mariadb::dbstore_multiinstance:
+role::mariadb::analytics_replica:
+  target-q: TBD
+role::mariadb::backup_source:
   target-q: TBD
 role::mariadb::sanitarium_multiinstance:
   target-q: TBD

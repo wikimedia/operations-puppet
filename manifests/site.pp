@@ -905,61 +905,61 @@ node 'db2151.codfw.wmnet' {
 # eqiad backup sources
 ## s2, s3 & x1, buster
 node 'db1102.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s8, buster
 node 'db1116.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s1, buster
 node 'db1139.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s1 & s6, buster
 node 'db1140.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s4, buster
 node 'db1145.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s4 & s5, buster
 node 'db1150.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s7 & s8, buster
 node 'db1171.eqiad.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 
 # codfw backup sources
 ## s1, buster
 node 'db2097.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s7 & s8, buster
 node 'db2098.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s4, buster
 node 'db2099.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s8, buster
 node 'db2100.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s2, s5, & x1, buster
 node 'db2101.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s3 & s4, buster
 node 'db2139.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 ## s1 & s6, buster
 node 'db2141.codfw.wmnet' {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::backup_source)
 }
 
 # backup testing hosts
@@ -973,7 +973,7 @@ node 'db2102.codfw.wmnet' {
 
 # Analytics production replicas
 node /^dbstore100([3-5]|7)\.eqiad\.wmnet$/ {
-    role(mariadb::dbstore_multiinstance)
+    role(mariadb::analytics_replica)
 }
 
 # database-provisioning and short-term/postprocessing backups servers

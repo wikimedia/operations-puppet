@@ -83,7 +83,7 @@ db-misc: P{O:mariadb::misc or O:mariadb::misc::multiinstance or O:mariadb::misc:
 db-parsercache: P{O:mariadb::parsercache}
 db-sanitarium-master: P{O:mariadb::sanitarium_master}
 db-sanitarium: P{O:mariadb::sanitarium_multiinstance}
-db-store: P{O:mariadb::dbstore_multiinstance}
+db-store: P{O:mariadb::backup_source or O:mariadb::analytics_replica}
 <% @mariadb_roles.each do |role| -%>
 db-role-<%= role %>: P{P:mariadb::mysql_role%role = <%= role %>}
 <% end -%>
