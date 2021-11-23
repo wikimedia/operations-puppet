@@ -30,7 +30,7 @@ import yaml
 
 DISABLED_PWDPOLICY = "cn=disabled,ou=ppolicies,dc=wikimedia,dc=org"
 
-with open('/etc/wmflabs-project') as f:
+with open('/etc/wmcs-project') as f:
     PROJECT_NAME = f.read().strip()
 
 

@@ -45,7 +45,7 @@ def connect(server, username, password):
     return conn
 
 
-with open("/etc/wmflabs-project") as f:
+with open("/etc/wmcs-project") as f:
     project_name = f.read().strip()
 
 

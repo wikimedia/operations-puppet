@@ -41,7 +41,7 @@ LOG_FORMAT = "%(asctime)s %(message)s"
 
 logging.basicConfig(filename=LOG_FILE, format=LOG_FORMAT, level=logging.DEBUG)
 
-with open('/etc/wmflabs-project', 'r') as f:
+with open('/etc/wmcs-project', 'r') as f:
     projectprefix = f.read().strip() + '.'
 
 

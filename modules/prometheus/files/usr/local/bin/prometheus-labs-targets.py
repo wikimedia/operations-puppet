@@ -83,11 +83,11 @@ def main():
 
     if args.project is None:
         try:
-            with open("/etc/wmflabs-project") as f:
+            with open("/etc/wmcs-project") as f:
                 args.project = f.read().strip()
         except IOError as e:
             parser.error(
-                "Unable to detect project from /etc/wmflabs-project: {!r}".format(
+                "Unable to detect project from /etc/wmcs-project: {!r}".format(
                     e
                 )
             )
