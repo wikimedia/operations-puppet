@@ -13,6 +13,9 @@ profile::ceph::auth::deploy::enabled: true
 
 profile::ceph::auth::deploy::configuration:
   codfw1dev-cinder:
+    owner: cinder
+    group: cinder
+    mode: '0440'
     caps:
       mon: profile rbd
       osd: profile rbd pool=codfw1dev-cinder
