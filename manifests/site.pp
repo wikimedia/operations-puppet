@@ -2782,6 +2782,11 @@ node /^wdqs200[568]\.codfw\.wmnet$/ {
     role(wdqs::internal)
 }
 
+# Codfw new wdqs nodes T294297
+node /^(wdqs2009|wdqs2010|wdqs2011|wdqs2012)\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # Wikidata query service test
 node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
