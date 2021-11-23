@@ -285,6 +285,11 @@ class profile::prometheus::ops (
         class_name => 'role::cache::text',
         port       => 3903,
     }
+    prometheus::class_config{ "varnish-text_haproxy_mtail_${::site}":
+        dest       => "${targets_path}/varnish-text_haproxy_mtail_${::site}.yaml",
+        class_name => 'role::cache::text_haproxy',
+        port       => 3903,
+    }
 
     # Pull varnish-related metrics generated via varnishmtail (internal instance)
     prometheus::class_config{ "varnish-upload_mtail_internal_${::site}":
@@ -300,6 +305,11 @@ class profile::prometheus::ops (
     prometheus::class_config{ "varnish-text_mtail_internal_${::site}":
         dest       => "${targets_path}/varnish-text_mtail_internal_${::site}.yaml",
         class_name => 'role::cache::text',
+        port       => 3913,
+    }
+    prometheus::class_config{ "varnish-text_haproxy_mtail_internal_${::site}":
+        dest       => "${targets_path}/varnish-text_haproxy_mtail_internal_${::site}.yaml",
+        class_name => 'role::cache::text_haproxy',
         port       => 3913,
     }
 
@@ -318,6 +328,11 @@ class profile::prometheus::ops (
     prometheus::class_config{ "trafficserver-text_backendmtail_${::site}":
         dest       => "${targets_path}/trafficserver-text_backendmtail_${::site}.yaml",
         class_name => 'role::cache::text',
+        port       => 3904,
+    }
+    prometheus::class_config{ "trafficserver-text_haproxy_backendmtail_${::site}":
+        dest       => "${targets_path}/trafficserver-text_haproxy_backendmtail_${::site}.yaml",
+        class_name => 'role::cache::text_haproxy',
         port       => 3904,
     }
 
