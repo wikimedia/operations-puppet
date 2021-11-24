@@ -20,6 +20,7 @@ AllCops:
     # bundler installation files
     - 'vendor/**/*'
     - '**/Vagrantfile'
+    - 'modules/profile/files/ci/lintian-junit-report'
 
 # Uncomment when lines are 100 characters or less
 # Metrics/LineLength:
