@@ -1126,6 +1126,11 @@ node 'elastic2060.codfw.wmnet' {
     role(elasticsearch::cirrus)
 }
 
+# new codfw elastic servers T294154
+node /^(elastic206[1-9]|elastic207[0-2])\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # External Storage, Shard 1 (es1) databases
 
 ## eqiad servers
