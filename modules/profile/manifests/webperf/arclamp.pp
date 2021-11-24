@@ -16,7 +16,7 @@
 #   Port of Redis server that is publishing stack traces (usually port 6379).
 #
 # [*errors_mailto*]
-#   Email address for cron errors (usually performance-team@wikimedia.org)
+#   Email address for cron errors
 #
 # [*compress_logs_days*]
 #   How many days to wait before compressing logs.

@@ -225,7 +225,7 @@ datasources:
    withCredentials: false
    version: 1
 
-# External graphite instance used by performance-team for recording the
+# External graphite instance used by Performance Team for recording the
 # results of synthetic measurements.
 # See also https://phabricator.wikimedia.org/T231870.
  - name: graphite-synthetic-testing

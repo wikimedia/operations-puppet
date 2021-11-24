@@ -4,7 +4,7 @@
 # @param config a hash of config settings.  This paramater uses a 'deep' merge strategy
 # @param ldap a Hash of ldap servers
 # @param wpt_graphite_proxy_port If set  Configure a local Apache which will serve as
-#        a reverse proxy for performance-team's Graphite instance.
+#        a reverse proxy for WebPageTest's external Graphite instance.
 class profile::grafana (
     Stdlib::Fqdn $domain             = lookup('profile::grafana::domain'),
     Optional[Stdlib::Fqdn] $domainrw = lookup('profile::grafana::domainrw', {'default_value' => undef}),
@@ -133,9 +133,9 @@ class profile::grafana (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org',
     }
 
-    # Configure a local Apache which will serve as a reverse proxy for performance-team's
-    # Graphite instance.  That Apache uses our outbound proxies as its own forward proxy
-    # for those requests.  Despite being a mouthful, this seems preferable to setting the
+    # Configure a local Apache which will serve as a reverse proxy for Performance Team's
+    # Graphite instance for WebPageTest. That Apache uses our outbound proxy as its forward
+    # proxy for those requests. Despite being a mouthful, this seems preferable to setting the
     # http_proxy env var for the grafana process itself (and then also needing to set
     # no_proxy for every datasource URL other than the one of the perf-team Graphite).
     # https://phabricator.wikimedia.org/T231870

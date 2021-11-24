@@ -3,7 +3,7 @@
 # Provision the coal_web service on a webperf node.
 # Consumes from Kafka EventLogging, and produces to Graphite.
 #
-# Contact: performance-team@wikimedia.org
+# Contact: Performance Team
 # See also: <https://wikitech.wikimedia.org/wiki/Webperf>
 #
 class profile::webperf::coal_web {

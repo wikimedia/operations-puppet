@@ -3,7 +3,7 @@
 # Provision the webperf data processors. Consumes from Kafka (incl. EventLogging),
 # and produces to StatsD and Graphite.
 #
-# Contact: performance-team@wikimedia.org
+# Contact: Performance Team
 # See also: <https://wikitech.wikimedia.org/wiki/Webperf>
 #
 # Services:

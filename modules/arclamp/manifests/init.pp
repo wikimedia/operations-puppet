@@ -38,7 +38,7 @@ class arclamp(
     Wmflib::Ensure $ensure               = 'present',
     Stdlib::Host $redis_host             = '127.0.0.1',
     Stdlib::Port $redis_port             = 6379,
-    String $errors_mailto                = 'performance-team@wikimedia.org',
+    String $errors_mailto                = 'performance-team-alert@wikimedia.org',
     Integer $compress_logs_days          = 3,
     Integer $retain_hourly_logs_hours    = 336, # 14 days
     Integer $retain_daily_logs_days      = 90,

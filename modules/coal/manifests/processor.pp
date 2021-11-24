@@ -4,7 +4,7 @@
 # values from incoming RUM performance data (Extension:NavigationTiming).
 # Consumes from Kafka EventLogging, produces to Graphite.
 #
-# Contact: performance-team@wikimedia.org
+# Contact: Performance Team
 # See also: <https://wikitech.wikimedia.org/wiki/Webperf>
 #
 # === Parameters
