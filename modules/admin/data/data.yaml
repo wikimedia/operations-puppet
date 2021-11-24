@@ -4544,7 +4544,7 @@ users:
     gid: 500
     name: bumeh-ctr
     realname: Benjamin Umeh
-    expiry_date: 2021-11-30
+    expiry_date: 2021-01-31
     expiry_contact: janstee@wikimedia.org
     ssh_keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBam9QwFHv3+Mt0Sai36wBlKhf0VG1pyuHpd+jcCtUJI benjamin@Benjamins-MacBook-Pro.local
