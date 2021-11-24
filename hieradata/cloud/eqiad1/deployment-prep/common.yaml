@@ -610,7 +610,7 @@ mediawiki::sites:
           variant_aliases: []
       - name: wikifunctions
         params:
-          server_aliases: ["*.wikifunctions.beta.wmflabs.org"]
+          server_aliases: ["wikifunctions.beta.wmflabs.org", "*.wikifunctions.beta.wmflabs.org"]
       - name: wikimedia
         params:
           server_name: "misc-sites"
