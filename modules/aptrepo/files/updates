@@ -255,6 +255,16 @@ VerifyRelease: E84AC2C0460F3994
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
 ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
 
+Name: thirdparty/ceph-octopus
+Method: https://download.ceph.com/debian-octopus
+Components: main>thirdparty/ceph-octopus
+UDebComponents:
+Suite: bullseye
+Architectures: amd64
+VerifyRelease: E84AC2C0460F3994
+# skip any debugging package, as they are too big and can be manually installed if needed for debugging
+ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
+
 Name: bigtop14
 Method: http://repos.bigtop.apache.org/releases/1.4.0/debian/9/amd64
 Components: contrib>thirdparty/bigtop14

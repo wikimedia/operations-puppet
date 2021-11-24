@@ -191,6 +191,7 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  component/jdk8
+ thirdparty/ceph-octopus
  thirdparty/hwraid
  thirdparty/opensearch1
  thirdparty/routinator
@@ -199,6 +200,7 @@ Update:
 # sorted list, leading whitespace matters!
  hwraid-stretch
  routinator
+ thirdparty/ceph-octopus
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
