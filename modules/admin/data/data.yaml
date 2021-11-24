@@ -668,8 +668,10 @@ groups:
   labtest-roots:
     gid: 776
     description: allows full sudo on labtest cluster, T131166
-    members: [bd808, nskaggs]
+    members: [bd808, nskaggs, taavi]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Nicholas Skaggs
   swift-roots:
     gid: 777
     description: users who have root on swift servers
@@ -740,8 +742,10 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: [bd808, nskaggs]
+    members: [bd808, nskaggs, taavi]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Nicholas Skaggs
   wmcs-admin:
     description: admin for cloud services infrastructure (labsdb only atm)
     gid: 793
@@ -4833,6 +4837,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ4HIpqQ4r+t8Z3My6k4f32xsa2tkfFXQ0LYayd0RyIg isa-wmf@rocinante
+  taavi:
+    ensure: present
+    realname: Taavi Väänänen
+    email: hi+wm@taavi.wtf
+    uid: 21215
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINkJb5JcREGn4L0yM+lx2DK12aSd12vHA1mis7DLAhLY taavi@runko wmf prod
 ldap_only_users:
   abartov:
     ensure: present
@@ -5103,10 +5115,6 @@ ldap_only_users:
     ensure: present
     realname: Sam Patton
     email: spatton@wikimedia.org
-  taavi:
-    ensure: present
-    realname: Taavi Väänänen
-    email: hi+wm@taavi.wtf
   tbolliger:
     ensure: absent
     realname: Trevor Bolliger
