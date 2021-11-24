@@ -1,5 +1,10 @@
 profile::backup::director_seed: changeme
 
+profile::doc::active_host: doc.devtools.eqiad1.wikimedia.cloud
+profile::doc::all_hosts:
+  - doc.devtools.eqiad1.wikimedia.cloud
+  - doc1002.devtools.eqiad1.wikimedia.cloud
+
 profile::resolving::domain_search:
   - eqiad1.wikimedia.cloud
 

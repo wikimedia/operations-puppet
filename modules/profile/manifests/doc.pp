@@ -1,6 +1,8 @@
 # web server hosting https://doc.wikimedia.org
 class profile::doc (
-    Stdlib::Unixpath $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/doc'}),
+    Stdlib::Fqdn        $active_host  = lookup('profile::doc::active_host'),
+    Array[Stdlib::Fqdn] $all_hosts    = lookup('profile::doc::all_hosts'),
+    Stdlib::Unixpath    $wmf_doc_path = lookup('profile::doc::wmf_doc_path', {'default_value' => '/srv/doc'}),
 ) {
 
     $deploy_user = 'deploy-ci-docroot'
@@ -91,8 +93,11 @@ class profile::doc (
 
     class { '::rsync::server': }
 
+    $is_active = $::fqdn == $active_host
+    $ensure_on_active = $is_active.bool2str('present', 'absent')
+
     rsync::server::module { 'doc':
-        ensure         => present,
+        ensure         => $ensure_on_active,
         comment        => 'Docroot of https://doc.wikimedia.org/',
         read_only      => 'no',
         path           => '/srv/doc',
@@ -106,6 +111,27 @@ class profile::doc (
             User['doc-uploader'],
             File['/srv/doc'],
         ],
+    }
+
+    rsync::server::module { 'doc-between-nodes':
+        ensure         => $is_active.bool2str('absent', 'present'),
+        path           => '/srv/doc',
+        read_only      => 'no',
+        hosts_allow    => [$active_host],
+        auto_ferm      => true,
+        auto_ferm_ipv6 => true,
+    }
+
+    $all_hosts.each |Stdlib::Fqdn $other_host| {
+        if $::fqdn != $other_host {
+            systemd::timer::job { "rsync-doc-${other_host}":
+                ensure      => $ensure_on_active,
+                user        => 'root',
+                description => 'rsync documentation to a non-active server',
+                command     => "/usr/bin/rsync -avp --delete /srv/doc/ rsync://${other_host}/doc-between-nodes",
+                interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
+            }
+        }
     }
 
     profile::auto_restarts::service { 'rsync': }
