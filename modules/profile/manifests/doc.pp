@@ -49,7 +49,7 @@ class profile::doc (
 
     httpd::conf { 'wmf_doc_path':
         priority => 40,
-        content  => "Define WMF_DOC_PATH ${wmf_doc_path}",
+        content  => "Define WMF_DOC_PATH ${wmf_doc_path}\nDefine WMF_DOC_PHP_VERSION ${php}",
     }
 
     # Apache configuration for doc.wikimedia.org
