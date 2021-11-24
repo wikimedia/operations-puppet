@@ -86,21 +86,22 @@
 #    }
 #
 define service::uwsgi(
-    Stdlib::Port  $port,
-    Hash          $config                 = {},
-    Integer       $no_workers             = $::processorcount,
-    String        $healthcheck_url        = '/_info',
-    Boolean       $has_spec               = false,
-    String        $repo                   = "${title}/deploy",
-    Boolean       $firejail               = true,
-    Boolean       $icinga_check           = true,
-    Boolean       $local_logging          = true,
-    String        $deployment_user        = 'deploy-service',
-    Boolean       $deployment_manage_user = true,
-    String        $deployment             = 'scap3',
-    Array[String] $sudo_rules             = [],
-    Boolean       $add_logging_config     = true,
-    String        $core_limit             = '0',
+    Stdlib::Port               $port,
+    Hash                       $config                 = {},
+    Integer                    $no_workers             = $::processorcount,
+    String                     $healthcheck_url        = '/_info',
+    Boolean                    $has_spec               = false,
+    String                     $repo                   = "${title}/deploy",
+    Boolean                    $firejail               = true,
+    Boolean                    $icinga_check           = true,
+    Boolean                    $local_logging          = true,
+    String                     $deployment_user        = 'deploy-service',
+    Boolean                    $deployment_manage_user = true,
+    String                     $deployment             = 'scap3',
+    Array[String]              $sudo_rules             = [],
+    Boolean                    $add_logging_config     = true,
+    String                     $core_limit             = '0',
+    Optional[Nrpe::Check_http] $nrpe_check_http        = undef,
     # lint:ignore:wmf_styleguide
     String        $contact_groups         = lookup('contactgroups', {'default_value' => 'admins'}),
     # lint:endignore
@@ -224,6 +225,14 @@ define service::uwsgi(
             service::deployment_script { $name:
                 monitor_url     => $monitor_url,
             }
+        } elsif $nrpe_check_http {
+            nrpe::monitor_service {"uwsgi-nrpe-${title}":
+                description   => "uWSGI ${title} (http via nrpe)",
+                nrpe_command  => wmflib::argparse($nrpe_check_http, '/usr/lib/nagios/plugins/check_http'),
+                contact_group => $contact_groups,
+                notes_url     => "https://wikitech.wikimedia.org/wiki/Services/Monitoring/${title}",
+            }
+
         } else {
             # Basic monitoring
             monitoring::service { $title:
