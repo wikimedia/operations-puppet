@@ -4845,6 +4845,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINkJb5JcREGn4L0yM+lx2DK12aSd12vHA1mis7DLAhLY taavi@runko wmf prod
+  jhathaway:
+    ensure: present
+    gid: 500
+    realname: Jesse Hathaway
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxzkpwZTCnNAt+68xnpk0tWVkioq0jP6Y66/uiGZylm jhathaway-prod
+    uid: 35873
+    email: jhathaway@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
