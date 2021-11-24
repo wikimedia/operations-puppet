@@ -4,8 +4,8 @@
 #   '--hostname foo.example.org --port 8080 --ssl'
 #
 function wmflib::argparse (
-    Hash   $args,
-    String $prefix = '',
+    Hash[String[2], Variant[Boolean, String, Numeric, Array[Variant[String, Numeric]]]] $args,
+    String                                                                              $prefix = '',
 ) >> String {
     $args.reduce($prefix) |$memo, $value| {
         $args_str = $value[1] ? {
