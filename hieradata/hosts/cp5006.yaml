@@ -1,4 +1,2 @@
 profile::cache::varnish::frontend::listen_uds: /run/varnish-frontend.socket
-profile::cache::varnish::frontend::proxy_on_uds: false 
 profile::cache::varnish::frontend::uds_owner: haproxy
-profile::cache::haproxy::proxy_protocol: ~ 
