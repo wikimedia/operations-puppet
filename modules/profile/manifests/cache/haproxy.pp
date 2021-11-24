@@ -12,7 +12,7 @@ class profile::cache::haproxy(
     Integer[0] $tls_session_lifetime = lookup('profile::cache::haproxy::tls_session_lifetime'),
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
-    Haproxy::Proxyprotocol $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol'),
+    Optional[Haproxy::Proxyprotocol] $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol'),
     Array[Haproxy::Var] $vars = lookup('profile::cache::haproxy::vars'),
     Array[Haproxy::Acl] $acls = lookup('profile::cache::haproxy::acls'),
     Array[Haproxy::Header] $add_headers = lookup('profile::cache::haproxy::add_headers'),

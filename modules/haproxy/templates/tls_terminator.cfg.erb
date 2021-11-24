@@ -64,6 +64,7 @@ listen tls
 
 <%- if @proxy_protocol == nil -%>
     server backend_server unix@<%= @backend_socket %>
+    option forwardfor
 <%- elsif @proxy_protocol == 'V1' -%>
     server backend_server unix@<%= @backend_socket %> send-proxy
 <%- elsif @proxy_protocol == 'V2' -%>
