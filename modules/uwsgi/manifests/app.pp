@@ -29,14 +29,14 @@
 #  }
 #
 define uwsgi::app(
-    $settings = {},
-    $service_settings = '--die-on-term',
-    $core_limit = '0',
-    $ensure   = present,
-    $enabled  = true,
-    Array[Struct[{'route' => String, 'action' => String}]] $routes = [],
+    Wmflib::Ensure      $ensure           = present,
+    Boolean             $enabled          = true,
+    String              $service_settings = '--die-on-term',
+    String              $core_limit       = '0',
+    Hash                $settings         = {},
+    Array[Uwsgi::Route] $routes           = [],
 ) {
-    include ::uwsgi
+    include uwsgi
 
     $basename = regsubst($title, '\W', '-', 'G')
 
