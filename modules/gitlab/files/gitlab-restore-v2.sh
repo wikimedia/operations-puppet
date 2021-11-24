@@ -6,8 +6,9 @@
 
 LOGFILE=/var/log/gitlab-restore-backup.log
 
-REQUESTED_BACKUP=""
 DEFAULT_BACKUP="latest"
+KEEP_CONFIG="false"
+REQUESTED_BACKUP=""
 
 usage() {
   /usr/bin/echo "Usage: $0 [ -f REQUESTED_BACKUP ]" 1>&2
@@ -18,11 +19,13 @@ exit_error() {
     exit 1
 }
 
-while getopts ":f:" options; do
+while getopts ":f:k:" options; do
     case "${options}" in
          f)
-         /usr/bin/echo "${OPTARG}"
          REQUESTED_BACKUP=${OPTARG}
+         ;;
+         k)
+         KEEP_CONFIG=${OPTARG}
          ;;
          :)
          /usr/bin/echo "ERROR -${OPTARG} requires an argument"
@@ -35,12 +38,13 @@ while getopts ":f:" options; do
 done
 
 
-if [ "$REQUESTED_BACKUP" = "" ]; then
+if [ -z "$REQUESTED_BACKUP" ]; then
     BACKUP=$DEFAULT_BACKUP
 else
     BACKUP="$REQUESTED_BACKUP"
 fi
 
+/usr/bin/echo "Keeping Config: $KEEP_CONFIG"
 /usr/bin/echo "Restoring Backup: $BACKUP" >> $LOGFILE
 
 /usr/bin/echo "Running Pre-requisites..." >> $LOGFILE
@@ -49,25 +53,32 @@ fi
 CONFIG_FILE=/etc/gitlab/gitlab.rb
 SECRETS_FILE=/etc/gitlab/gitlab-secrets.json
 
-if [ -f "$CONFIG_FILE" ] && [ -f "$SECRETS_FILE" ]; then
-    /usr/bin/echo "Creating backup of $CONFIG_FILE and $SECRETS_FILE" >> $LOGFILE
-    /usr/bin/cp $CONFIG_FILE $CONFIG_FILE.restore
-    /usr/bin/cp $SECRETS_FILE $SECRETS_FILE.restore
+# Run keep_config check here
+if [ $KEEP_CONFIG == "false" ]; then
+    if [ -f "$CONFIG_FILE" ] && [ -f "$SECRETS_FILE" ]; then
+        /usr/bin/echo "Creating backup of $CONFIG_FILE and $SECRETS_FILE" >> $LOGFILE
+        /usr/bin/cp $CONFIG_FILE $CONFIG_FILE.restore
+        /usr/bin/cp $SECRETS_FILE $SECRETS_FILE.restore
+    else
+        /usr/bin/echo "Configuration File: $CONFIG_FILE Not Found" >> $LOGFILE
+        exit 1
+    fi
 else
-    /usr/bin/echo "Configuration File: $CONFIG_FILE Not Found" >> $LOGFILE
-    exit 1
+    /usr/bin/echo "Keeping Config" >> $LOGFILE
 fi
 
-OLD_BACKUP_FILE=/srv/gitlab-backup/latest/latest.tar
-NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
-if [ -f "$OLD_BACKUP_FILE" ]; then
-    echo "Moving $OLD_BACKUP_FILE to $NEW_BACKUP_FILE"  >> $LOGFILE
-    /usr/bin/cp $OLD_BACKUP_FILE $NEW_BACKUP_FILE  >> $LOGFILE
-else
-    echo "Backup File $OLD_BACKUP_FILE Not Found"  >> $LOGFILE
-    exit 1
+# Check If File Exists
+if [ $REQUESTED_BACKUP == "latest" ]; then
+    OLD_BACKUP_FILE=/srv/gitlab-backup/latest/${BACKUP}.tar
+    NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
+    if [ -f "$OLD_BACKUP_FILE" ]; then
+        /usr/bin/echo "Moving $OLD_BACKUP_FILE to $NEW_BACKUP_FILE"  >> $LOGFILE
+        /usr/bin/cp $OLD_BACKUP_FILE $NEW_BACKUP_FILE  >> $LOGFILE
+    else
+        echo "Backup File $OLD_BACKUP_FILE Not Found"  >> $LOGFILE
+        exit 1
+    fi
 fi
-
 
 CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
 
@@ -75,16 +86,20 @@ CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
 echo "changing permissions - chmod 600"  >> $LOGFILE
 /usr/bin/chmod 600 $NEW_BACKUP_FILE $CONFIG_BACKUP
 
-
+# Run keep_config check here
 # Extract Configuration Backup
-/usr/bin/tar -xvf $CONFIG_BACKUP --strip-components=2 -C /etc/gitlab/
-if [ -f $CONFIG_FILE.restore ] && [ -f $SECRETS_FILE.restore ]; then
-    echo "Reverting configuration files to those of the replica..." >> $LOGFILE
-    /usr/bin/cp $CONFIG_FILE.restore $CONFIG_FILE
-    /usr/bin/cp $SECRETS_FILE.restore $SECRETS_FILE
+if [ $KEEP_CONFIG == "false" ]; then
+    /usr/bin/tar -xvf $CONFIG_BACKUP --strip-components=2 -C /etc/gitlab/
+    if [ -f $CONFIG_FILE.restore ] && [ -f $SECRETS_FILE.restore ]; then
+        echo "Reverting configuration files to those of the replica..." >> $LOGFILE
+        /usr/bin/cp $CONFIG_FILE.restore $CONFIG_FILE
+        /usr/bin/cp $SECRETS_FILE.restore $SECRETS_FILE
+    else
+        echo "Configuration backup files $CONFIG_FILE.restore $SECRETS_FILE.restore not found" >> $LOGFILE
+        exit
+    fi
 else
-    echo "Configuration backup files $CONFIG_FILE.restore $SECRETS_FILE.restore not found" >> $LOGFILE
-    exit
+    /usr/bin/echo "Keeping Config" >> $LOGFILE
 fi
 
 echo "running gitlab-ctl reconfigure" >> $LOGFILE
@@ -128,7 +143,13 @@ else
 fi
 
 echo "running gitlab-backup restore"
-BACKUP=latest
+if [ -f $REQUESTED_BACKUP ]; then
+    BACKUP=${REQUESTED_BACKUP}
+else
+    echo "Backup File; ${REQUESTED_BACKUP} Not Found. Using Latest"
+    BACKUP="latest"
+fi
+
 /usr/bin/gitlab-backup restore GITLAB_ASSUME_YES=1 BACKUP=$BACKUP >> $LOGFILE
 if [ $? == 0 ]; then
    echo "Successfully Restored Backup: $BACKUP" >> $LOGFILE
