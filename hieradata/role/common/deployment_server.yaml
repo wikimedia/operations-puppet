@@ -252,6 +252,8 @@ profile::kubernetes::deployment_server::general:
       rsyslogd: rsyslog:8.2102.0-1-20211010
   codfw:
     helmBinary: helm3
+  eqiad:
+    helmBinary: helm3
   staging:
     helmBinary: helm3
 # Enable icu63 component - T264991
