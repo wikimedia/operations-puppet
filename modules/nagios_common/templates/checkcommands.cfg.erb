@@ -561,12 +561,6 @@ define command {
     command_line    $USER1$/check_http --ssl -C7,10 --sni -H phabricator.wikimedia.org phabricator.wikimedia.org
 }
 
-# check the Apple dictionary bridge on search.wm.org
-define command {
-    command_name    check_https_dictbridge
-    command_line    $USER1$/check_http --ssl -C7,10 --sni -H 'search.wikimedia.org' -u 'https://search.wikimedia.org/?lang=en&site=wikipedia&search=Wikimedia_Foundation&limit=1' -s 'Wikimedia_Foundation'
-}
-
 # These are so specific that a special command had to be created
 define command {
     command_name    check_https_zotero_lvs_on_port

@@ -335,10 +335,6 @@ mediawiki::sites:
               - "    # /data/ path T163922"
               - "    RewriteRule ^/data/(.*)/(.*)$ %%{}{ENV:RW_PROTO}://test-commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]"
 
-  # search vhost
-  - name: search.wikimedia
-    priority: 5
-    template: mediawiki/apache/sites/search.wikimedia.conf.erb
   # Old secure redirects. These happen *after* the main and remnant containers.
   - name: secure.wikimedia
     source: mediawiki/apache/sites/secure.wikimedia.conf
