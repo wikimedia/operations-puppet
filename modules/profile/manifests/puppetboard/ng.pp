@@ -57,13 +57,17 @@ class profile::puppetboard::ng (
     systemd::mask { 'mask_default_uwsgi_puppetboard':
         unit => 'uwsgi.service',
     }
+    $nrpe_check_http = {
+        'hostname' => 'localhost',
+        'port'     => $uwsgi_port,
+    }
 
     service::uwsgi { 'puppetboard':
-        port         => $uwsgi_port,
-        deployment   => 'No Deploy',
-        icinga_check => false,
-        no_workers   => 4,
-        config       => {
+        port            => $uwsgi_port,
+        deployment      => 'No Deploy',
+        nrpe_check_http => $nrpe_check_http,
+        no_workers      => 4,
+        config          => {
             need-plugins => 'python3',
             wsgi         => 'puppetboard.wsgi',
             buffer-size  => 8096,
