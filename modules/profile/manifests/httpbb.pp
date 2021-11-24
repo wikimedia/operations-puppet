@@ -40,6 +40,7 @@ class profile::httpbb (
     file {
         [
             '/srv/deployment/httpbb-tests/appserver',
+            '/srv/deployment/httpbb-tests/apple-search',
             '/srv/deployment/httpbb-tests/miscweb',
             '/srv/deployment/httpbb-tests/people',
             '/srv/deployment/httpbb-tests/releases',
@@ -49,7 +50,8 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/thumbor',
             '/srv/deployment/httpbb-tests/docker-registry',
         ]:
-            ensure => directory
+            ensure => directory,
+            purge  => true
     }
 
     httpbb::test_suite {'appserver/test_foundation.yaml':
@@ -67,9 +69,6 @@ class profile::httpbb (
     httpbb::test_suite {'appserver/test_remnant.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_remnant.yaml'
     }
-    httpbb::test_suite {'appserver/test_search.yaml':
-        source => 'puppet:///modules/profile/httpbb/appserver/test_search.yaml'
-    }
     httpbb::test_suite {'appserver/test_secure.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_secure.yaml'
     }
@@ -78,6 +77,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'appserver/test_wwwportals.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_wwwportals.yaml'
+    }
+    httpbb::test_suite {'apple-search/test_search.yaml':
+        source => 'puppet:///modules/profile/httpbb/apple-search/test_search.yaml'
     }
     httpbb::test_suite {'miscweb/test_miscweb.yaml':
         source => 'puppet:///modules/profile/httpbb/miscweb/test_miscweb.yaml'
