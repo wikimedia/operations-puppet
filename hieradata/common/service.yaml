@@ -2158,7 +2158,7 @@ service::catalog:
       protocol: tcp
     monitoring:
       check_command: check_https_lvs_on_port!shellbox.discovery.wmnet!4008!/healthz
-      critical: false # don't enable paging while testing
+      critical: true
       sites:
         codfw:
           hostname: shellbox.svc.codfw.wmnet
@@ -2196,7 +2196,7 @@ service::catalog:
       protocol: tcp
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-constraints.discovery.wmnet!4010!/healthz
-      critical: false # don't enable paging while testing
+      critical: true
       sites:
         codfw:
           hostname: shellbox-constraints.svc.codfw.wmnet
@@ -2234,7 +2234,7 @@ service::catalog:
       protocol: tcp
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-media.discovery.wmnet!4015!/healthz
-      critical: false # don't enable paging while testing
+      critical: true
       sites:
         codfw:
           hostname: shellbox-media.svc.codfw.wmnet
@@ -2272,7 +2272,7 @@ service::catalog:
       protocol: tcp
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-syntaxhighlight.discovery.wmnet!4014!/healthz
-      critical: false # don't enable paging while testing
+      critical: true
       sites:
         codfw:
           hostname: shellbox-syntaxhighlight.svc.codfw.wmnet
@@ -2310,7 +2310,7 @@ service::catalog:
       protocol: tcp
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-timeline.discovery.wmnet!4012!/healthz
-      critical: false # don't enable paging while testing
+      critical: true
       sites:
         codfw:
           hostname: shellbox-timeline.svc.codfw.wmnet
