@@ -13,6 +13,10 @@ class ceph::common (
     Stdlib::Unixpath $home_dir,
     String           $ceph_repository_component,
 ) {
+    # this class should support both buster & bullseye
+    debian::codename::require::min('buster')
+    debian::codename::require::max('bullseye')
+
     group { 'ceph':
         ensure => present,
         system => true,
@@ -66,14 +70,12 @@ class ceph::common (
         group  => 'ceph',
     }
 
-    if debian::codename::eq('buster') {
-      # Make sure that the ceph component is preferred to any other backports repository
-      apt::package_from_component { 'ceph':
-          ensure_packages => false,
-          priority        => 1003,
-          packages        => ['*'],
-          component       => $ceph_repository_component,
-          before          => Package['ceph-common'],
-      }
+    # Make sure that the ceph component is preferred to any other backports repository
+    apt::package_from_component { 'ceph':
+        ensure_packages => false,
+        priority        => 1003,
+        packages        => ['*'],
+        component       => $ceph_repository_component,
+        before          => Package['ceph-common'],
     }
 }
