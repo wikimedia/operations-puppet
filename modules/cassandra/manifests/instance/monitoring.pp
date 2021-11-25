@@ -55,7 +55,7 @@ define cassandra::instance::monitoring (
             description   => "${service_name} SSL ${listen_address}:7001",
             check_command => "check_ssl_on_host_port!${facts['hostname']}-${instance_name}!${listen_address}!7001",
             contact_group => $contact_group,
-            notes_url     => 'https://phabricator.wikimedia.org/T120662',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Cassandra#Installing_and_generating_certificates',
         }
     }
 }
