@@ -67,5 +67,4 @@ puppet_ca_server: "%{alias('__master_for_role_puppetmaster__pontoon')}"
 # profile::apt hardcodes http proxy that only works in production.  We don't need this in cloud.
 profile::apt::use_proxy: false
 
-profile::base::certificates::trusted_certs:
-  - '/var/lib/puppet/ssl/certs/ca.pem'
+profile::base::certificates::trusted_certs: ~

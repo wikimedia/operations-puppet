@@ -22,7 +22,7 @@ profile::base::certificates::puppet_ca_content: {}
 profile::base::certificates::include_bundle_jks: false
 profile::base::certificates::include_bundle_p12: false
 
-profile::base::certificates::trusted_certs: []
+profile::base::certificates::trusted_certs: ~
 
 profile::apt::use_proxy: false
 

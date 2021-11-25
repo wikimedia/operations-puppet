@@ -97,9 +97,10 @@ keyholder::trusted_groups:
    - wikidev
 profile::base::core_dump_pattern: '/data/project/cores/%{facts.hostname}-core.%h.%e.%p.%t'
 profile::base::certificates::trusted_certs:
-  - '/var/lib/puppet/ssl/certs/ca.pem'
+  bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
+  certs:
+  - "%{facts.puppet_config.localcacert}"
   - "/etc/ssl/certs/%{lookup('profile::pki::client::root_ca_cn')}.pem"
-
 role::cxserver::cxserver_port: 8080
 misc::syslog-server::basepath: /data/project/syslog
 profile::cxserver::apertium_uri: http://apertium-beta.wmflabs.org

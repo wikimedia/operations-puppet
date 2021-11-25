@@ -4,18 +4,11 @@
 # with the new one. This will make it able to talk to the new puppetmaster on its next run.
 # A puppetmaster's CA cert can be found at /var/lib/puppet/server/ssl/certs/ca.pem
 class profile::base::certificates (
-    Hash              $puppet_ca_content   = lookup('profile::base::certificates::puppet_ca_content'),
-    Optional[String]  $puppetmaster_key    = lookup('puppetmaster'),
-    Boolean           $include_bundle_jks  = lookup('profile::base::certificates::include_bundle_jks'),
-    Boolean           $include_bundle_p12  = lookup('profile::base::certificates::include_bundle_p12'),
-    Array[Stdlib::Unixpath] $trusted_certs = lookup('profile::base::certificates::trusted_certs'),
+    Hash             $puppet_ca_content  = lookup('profile::base::certificates::puppet_ca_content'),
+    Optional[String] $puppetmaster_key   = lookup('puppetmaster'),
+    Boolean          $include_bundle_jks = lookup('profile::base::certificates::include_bundle_jks'),
+    Optional[Sslcert::Trusted_certs] $trusted_certs = lookup('profile::base::certificates::trusted_certs'),
 ) {
-    # Includes internal root CA's e.g.
-    # * puppet CA
-    # * CFSSL CA
-    $ensure_wmf_certificates = stdlib::ensure($::realm == 'production', 'package')
-    ensure_packages(['wmf-certificates'], {'ensure' => $ensure_wmf_certificates })
-
     include sslcert
 
     sslcert::ca { 'wmf_ca_2017_2020':
@@ -51,28 +44,13 @@ class profile::base::certificates (
         source  => 'puppet:///modules/base/ca/GlobalSign_ECC_Root_CA_R5_R3_Cross.crt',
     }
 
-    $jks_truststore_path = $include_bundle_jks ? {
-        true  => '/etc/ssl/localcerts/wmf_trusted_root_cas.jks',
-        false => undef,
-    }
-    $p12_truststore_path = $include_bundle_p12 ? {
-        true  => '/etc/ssl/localcerts/wmf_trusted_root_cas.p12',
-        false => undef,
-    }
-
-    # The truststore files contain public certificates bundle,
-    # we don't really need any password protection.
-    # Java truststores for example (.jks) can't be passwordless,
-    # so we explicitly set a password to use it in various configs
-    # if needed. The default cacert truststore in Debian has the same password.
-    $truststore_password = 'changeit'
-
     class { 'sslcert::trusted_ca':
-        trusted_certs       => $trusted_certs,
-        jks_truststore_path => $jks_truststore_path,
-        p12_truststore_path => $p12_truststore_path,
-        truststore_password => $truststore_password,
+        trusted_certs      => $trusted_certs,
+        include_bundle_jks => $include_bundle_jks,
     }
+    $trusted_ca_path = $sslcert::trusted_ca::trusted_ca_path
+    $jks_truststore_path = $sslcert::trusted_ca::jks_truststore_path
+    $truststore_password = $sslcert::trusted_ca::truststore_password
 
     if has_key($puppet_ca_content, $puppetmaster_key) {
         exec { 'clear-old-puppet-ssl':
