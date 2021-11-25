@@ -468,6 +468,11 @@ node /^db1(119|134|135|163|164|169|184)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
+# test-s1 to test bullseye T295965
+node 'db1128.eqiad.wmnet' {
+    role(mariadb::core_test)
+}
+
 # eqiad sanitarium master
 node 'db1106.eqiad.wmnet' {
     role(mariadb::sanitarium_master)
@@ -848,11 +853,6 @@ node 'db1108.eqiad.wmnet' {
 
 # m5 eqiad master
 node 'db1132.eqiad.wmnet' {
-    role(mariadb::misc)
-}
-
-# old m5 eqiad master T288720
-node 'db1128.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
