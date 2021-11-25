@@ -966,6 +966,21 @@ host ping3001 {
     fixed-address ping3001.esams.wmnet;
 }
 
+host ping1002 {
+    hardware ethernet aa:00:00:33:b5:65;
+    fixed-address ping1002.eqiad.wmnet;
+}
+
+host ping2002 {
+    hardware ethernet aa:00:00:b2:31:33;
+    fixed-address ping2002.codfw.wmnet;
+}
+
+host ping3002 {
+    hardware ethernet aa:00:00:bb:15:11;
+    fixed-address ping3002.esams.wmnet;
+}
+
 host planet1002 {
     hardware ethernet aa:00:00:df:7b:8f;
     fixed-address planet1002.eqiad.wmnet;
