@@ -15,32 +15,22 @@ class puppet_compiler(
     ensure_packages([
         'python-yaml', 'python-requests', 'python-jinja2', 'nginx',
         'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', 'ruby-multi-json',
-        ])
-        file {'/usr/lib/ruby/vendor_ruby/puppet/application/master.rb':
-            ensure  => present,
-            content => file('puppet_compiler/puppet_master_pup-8187.rb.nocheck'),
-        }
+    ])
+    file {'/usr/lib/ruby/vendor_ruby/puppet/application/master.rb':
+        ensure  => present,
+        content => file('puppet_compiler/puppet_master_pup-8187.rb.nocheck'),
+    }
 
-
-    wmflib::dir::mkdir_p($libdir, {
-        ensure => stdlib::ensure($ensure, 'directory'),
-        owner  => $user,
-        mode   => '0644',
-        recurse => true,
-    })
-    wmflib::dir::mkdir_p($workdir, {
-        ensure => stdlib::ensure($ensure, 'directory'),
-        owner  => $user,
-        mode   => '0644',
-    })
+    # We cant use wmflib::dir::mkdir_p because the following creates /srv and /srv/jenkins-workspace
+    # profile::ci::slave::labs::common
     file{
         default:
             ensure => stdlib::ensure($ensure, 'directory'),
             owner  => $user,
             mode   => '0644';
-        $vardir: ;
-    $yamldir:
-        recurse => true;
+        [$workdir, $vardir]: ;
+        [$yamldir, $libdir]:
+            recurse => true;
     }
 
     if $ensure == 'present' {
