@@ -1,2 +1,3 @@
 ---
+profile::wmcs::lvm::ephemeral: false
 profile::puppet_compiler::enable_web: false
