@@ -28,7 +28,7 @@ class systemd::timesyncd (
     # * ensure => 'absent'
     # * debian::codename::ge bullseye
     # As in this case there is no systemd-timesync service available to manage.
-    if (!defined(Package['systemd-timesyncd']) or $ensure == 'present') {
+    if (defined(Package['systemd-timesyncd']) or $ensure == 'present') {
         service { 'systemd-timesyncd':
             ensure => stdlib::ensure($ensure, 'service'),
             enable => true,
