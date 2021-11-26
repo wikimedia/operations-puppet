@@ -192,7 +192,10 @@ groups:
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
-    members: [addshore, hoo, tarrow, wmde-leszek, toan, dang]
+    members: [addshore, hoo, tarrow, wmde-leszek, toan, dang, rosalie-wmde]
+    approval:
+      - Leszek Manicki
+      - Tobias Andersson
   releasers-blubber:
     gid: 808
     description: people who upload blubber releases
@@ -4853,6 +4856,14 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxzkpwZTCnNAt+68xnpk0tWVkioq0jP6Y66/uiGZylm jhathaway-prod
     uid: 35873
     email: jhathaway@wikimedia.org
+  rosalie-wmde:
+    ensure: present
+    gid: 500
+    realname: Rosalie Perside
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhtzgtkM7gSFryQSznJ3HF68JJrf25Mdt7K/GOSB3bI pero@C303
+    uid: 21251
+    email: perside.rosalie@wikimedia.de
 ldap_only_users:
   abartov:
     ensure: present
@@ -5314,10 +5325,6 @@ ldap_only_users:
     ensure: present
     realname: Noa Rave
     email: noa.rave@wikimedia.de
-  rosalie-wmde:
-    ensure: present
-    realname: Rosalie Perside
-    email: perside.rosalie@wikimedia.de
   dz1:
     ensure: absent
     realname: Deb Zierten
