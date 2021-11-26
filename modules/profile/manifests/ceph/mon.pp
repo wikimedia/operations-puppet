@@ -15,7 +15,7 @@ class profile::ceph::mon(
     Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
 ) {
     include network::constants
-    # Limit the client connections to the hypervisors in eqiad and codfw
+
     $client_networks = [
         $network::constants::all_network_subnets['production']['eqiad']['private']['labs-hosts1-b-eqiad']['ipv4'],
         $network::constants::all_network_subnets['production']['codfw']['private']['labs-hosts1-b-codfw']['ipv4'],

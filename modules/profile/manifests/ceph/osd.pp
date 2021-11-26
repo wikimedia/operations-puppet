@@ -27,13 +27,6 @@ class profile::ceph::osd(
     # governor
     class { 'cpufrequtils': }
 
-    include network::constants
-    # Limit the client connections to the hypervisors in eqiad and codfw
-    $client_networks = [
-        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-hosts1-b-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['codfw']['private']['labs-hosts1-b-codfw']['ipv4'],
-    ]
-
     # Each ceph osd server runs multiple daemons, each daemon listens on 6 ports
     # The ports can range anywhere between 6800 and 7100. This can be controlled
     # with the `ms bind port min` and `ms bind port max` ceph config parameters.
@@ -84,7 +77,13 @@ class profile::ceph::osd(
         before => Class['ceph::common'],
     }
 
-    # The public network is used for communication between Ceph serivces and client traffic
+    include network::constants
+
+    $client_networks = [
+        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-hosts1-b-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['private']['labs-hosts1-b-codfw']['ipv4'],
+    ]
+
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
     $osd_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
     $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
