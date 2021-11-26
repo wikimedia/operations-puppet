@@ -11,6 +11,8 @@ defaults
     mode       http
     log-format "%rt %Tr %ST"
     option     dontlognull
+    option     accept-invalid-http-request
+    option     accept-invalid-http-response
     retries    1
     timeout    connect 50000
     timeout    client 500000
