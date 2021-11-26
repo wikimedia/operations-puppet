@@ -8,7 +8,9 @@ class role::puppetmaster::pontoon {
         description => 'Pontoon puppetmaster',
     }
 
-    include profile::base::production
+    # profile::base is needed here for bootstraps to happen, ideally
+    # profile::base::production is used instead
+    include profile::base
     include profile::base::firewall
 
     include profile::puppetmaster::pontoon
