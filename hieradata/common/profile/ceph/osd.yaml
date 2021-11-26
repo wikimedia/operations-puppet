@@ -1,4 +1,3 @@
-profile::ceph::osd::bootstrap_keyring: '/var/lib/ceph/bootstrap-osd/ceph.keyring'
 profile::ceph::osd::disk_models_without_write_cache:
   # gotten by running: sudo cumin 'cloudcephosd*' 'hdparm -I /dev/sdd | grep Model'
   - SSDSC2KG019T8R  # cloudcephosd[1001-1003].eqiad.wmnet

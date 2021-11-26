@@ -11,7 +11,6 @@ describe 'profile::ceph::osd' do
         Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| '127.0.0.10' }
       end
       base_params = {
-        'bootstrap_keydata' => 'NOTAREALKEY==',
         'osd_hosts' => {
           'dummyhost1' => {
             'public'  => {

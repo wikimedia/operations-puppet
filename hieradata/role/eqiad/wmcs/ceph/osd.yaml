@@ -3,3 +3,4 @@ mgmt_contactgroups: 'wmcs-team-email'
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:
   - admin
+  - bootstrap-osd

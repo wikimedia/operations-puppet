@@ -9,8 +9,6 @@ class profile::ceph::osd(
     Stdlib::IP::Address  $public_network    = lookup('profile::ceph::public_network'),
     Stdlib::Unixpath     $data_dir          = lookup('profile::ceph::data_dir'),
     String               $fsid              = lookup('profile::ceph::fsid'),
-    Stdlib::AbsolutePath $bootstrap_keyring = lookup('profile::ceph::osd::bootstrap_keyring'),
-    String               $bootstrap_keydata = lookup('profile::ceph::osd::bootstrap_keydata'),
     Array[String]        $disk_models_without_write_cache = lookup('profile::ceph::osd::disk_models_without_write_cache'),
     Array[String]        $os_disks = lookup('profile::ceph::osd::os_disks'),
     String               $disks_io_scheduler = lookup('profile::ceph::osd::disks_io_scheduler', { default_value => 'mq-deadline'}),
@@ -20,6 +18,9 @@ class profile::ceph::osd(
     require profile::ceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
         notify{'profile::ceph::osd: Admin keyring not defined, things might not work as expected.': }
+    }
+    if ! defined(Ceph::Auth::Keyring['bootstrap-osd']) {
+        notify{'profile::ceph::osd: bootstrap-osd keyring not defined, things might not work as expected.': }
     }
 
     # Ceph OSDs should use the performance governor, not the default 'powersave'
@@ -110,12 +111,6 @@ class profile::ceph::osd(
         mon_hosts           => $mon_hosts,
         osd_hosts           => $osd_hosts,
         public_network      => $public_network,
-    }
-
-    # We need this to finish initial osd setup
-    ceph::keyring { 'client.bootstrap-osd':
-        keyring => $bootstrap_keyring,
-        keydata => $bootstrap_keydata,
     }
 
     # This adds latency stats between from this osd to the rest of the ceph fleet

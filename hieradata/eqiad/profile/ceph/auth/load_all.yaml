@@ -23,6 +23,7 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mon: allow profile bootstrap-mgr
   bootstrap-osd:
+    keyring_path: /var/lib/ceph/bootstrap-osd/ceph.keyring
     caps:
       mon: profile bootstrap-osd
   bootstrap-rbd:
