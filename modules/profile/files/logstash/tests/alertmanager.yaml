@@ -51,6 +51,7 @@ testcases:
           team: "sre"
           alertname: "Icinga/Elevated latency for icinga checks in codfw"
           summary: "cluster=alerting instance=alert2001 job=icinga site=codfw"
+          instance: "alert1001"
         service:
           type: "alertmanager-webhook-logger"
         event:
