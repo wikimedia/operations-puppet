@@ -1,63 +1,38 @@
 # Common configuration to be applied on any labs Jenkins slave
 #
-class profile::ci::slave::labs::common {
+class profile::ci::slave::labs::common (
+    Boolean $manage_srv = lookup('profile::ci::slave::labs::common::manage_srv')
+) {
 
     # The slaves on labs use the `jenkins-deploy` user which is already
     # configured in labs LDAP.  Thus, we only need to install the dependencies
     # needed by the slave agent, eg the java jre.
-    include ::profile::java
+    include profile::java
 
-    # Need the labs instance extended disk space. T277078.
-    require ::profile::wmcs::lvm
-    require ::profile::labs::lvm::srv
+    if $manage_srv {
+        # Need the labs instance extended disk space. T277078.
+        include profile::wmcs::lvm
+        include profile::labs::lvm::srv
+        $require_srv = Mount['/srv']
+    } else {
+        $require_srv = undef
+    }
 
     # base directory
-    file { '/srv/jenkins':
-        ensure  => directory,
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',
-        mode    => '0775',
-        require => Mount['/srv'],
-    }
-
-    file { '/srv/jenkins/cache':
-        ensure  => directory,
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',
-        mode    => '0775',
-        require => File['/srv/jenkins'],
-    }
-
-    file { '/srv/jenkins/workspace':
-        ensure  => directory,
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',
-        mode    => '0775',
-        require => File['/srv/jenkins'],
-    }
-
-    # Legacy from /mnt era
-    file { '/srv/jenkins-workspace':
-        ensure  => directory,
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',  # useless, but we need a group
-        mode    => '0775',
-        require => Mount['/srv'],
-    }
-
-    file { '/srv/home':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        require => Mount['/srv'],
-    }
-    file { '/srv/home/jenkins-deploy':
-        ensure  => directory,
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',
-        mode    => '0775',
-        require => File['/srv/home'],
+    file {
+        default:
+            ensure => directory,
+            owner  => 'jenkins-deploy',
+            group  => 'wikidev',
+            mode   => '0775';
+        ['/srv/home']:
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            require => $require_srv;
+        ['/srv/jenkins', '/srv/jenkins-workspace']:
+            require => $require_srv;
+        ['/srv/jenkins/cache', '/srv/jenkins/workspace', '/srv/home/jenkins-deploy']: ;
     }
 
     git::userconfig { '.gitconfig for jenkins-deploy user':

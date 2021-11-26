@@ -67,6 +67,7 @@ profile::cumin::monitor_agentrun: false
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
 
+profile::ci::slave::labs::common::manage_srv: true
 profile::ci::package_builder::extra_packages: []
 
 profile::debmonitor::client::ssl_ca: 'puppet'
