@@ -3,6 +3,7 @@ class profile::puppet_compiler::postgres_database {
     # set ssldir to location of the local catalog-differ puppet CA.
     # this allows catalog-differ runs to validate local puppetdb connections.
     $ssldir='/var/lib/catalog-differ/puppet/ssl'
+    wmflib::dir::mkdir_p($ssldir)
 
     # here a ca_path is specificed so that the ca cert copied below
     # is used to validate connection to nginx puppetdb frontend
