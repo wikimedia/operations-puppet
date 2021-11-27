@@ -78,3 +78,15 @@ lvs::realserver::realserver_ips:
     - '208.80.153.60' # cloudweb2001-dev.wikimedia.org
 profile::base::firewall::block_abuse_nets: true
 profile::contacts::role_contacts: ['WMCS SREs']
+
+# TLS for caches -> web interfaces
+profile::tlsproxy::envoy::tls_port: 7443
+profile::tlsproxy::envoy::global_cert_name: "%{facts.fqdn}"
+profile::tlsproxy::envoy::ferm_srange: "$CACHES"
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_label: 'discovery'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - labtesthorizon.wikimedia.org
+    - labtesttooladmin.wikimedia.org
+    - labtestwikitech.wikimedia.org
