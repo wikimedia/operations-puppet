@@ -286,7 +286,7 @@ cache_hosts:
 - 172.16.0.165 # proxy-02.project-proxy.eqiad1.wikimedia.cloud
 - 172.16.5.238 # proxy-03.project-proxy.eqiad1.wikimedia.cloud
 - 172.16.5.200 # proxy-04.project-proxy.eqiad1.wikimedia.cloud
-- 172.16.1.181 # deployment-cache-text06.deployment-prep.eqiad1.wikimedia.cloud
+
 # use aliases to provide for backwards compatibility
 # perhaps this doesn't work with our current version of puppet
 # profile::base::puppet::puppetmaster: "%{alias('puppetmaster')}"

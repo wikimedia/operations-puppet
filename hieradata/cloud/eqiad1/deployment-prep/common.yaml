@@ -2,6 +2,14 @@
 classes:
   - profile::beta::motd
 
+# can't use lookup_options to merge as that would include production too
+cache_hosts:
+  - 172.16.0.164 # proxy-01.project-proxy.eqiad1.wikimedia.cloud
+  - 172.16.0.165 # proxy-02.project-proxy.eqiad1.wikimedia.cloud
+  - 172.16.5.238 # proxy-03.project-proxy.eqiad1.wikimedia.cloud
+  - 172.16.5.200 # proxy-04.project-proxy.eqiad1.wikimedia.cloud
+  - 172.16.1.181 # deployment-cache-text06.deployment-prep.eqiad1.wikimedia.cloud
+
 profile::base::remote_syslog:
   - "deployment-logstash03.deployment-prep.eqiad.wmflabs:10514"
 profile::apt::purge_sources: true
