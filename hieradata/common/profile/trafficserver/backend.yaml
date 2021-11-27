@@ -100,13 +100,13 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://contint.wikimedia.org:1443
     - type: map
       target: http://labtesthorizon.wikimedia.org
-      replacement: http://cloudweb2001-dev.wikimedia.org
+      replacement: https://cloudweb2001-dev.wikimedia.org:7443
     - type: map
       target: http://labtestwikitech.wikimedia.org
-      replacement: http://cloudweb2001-dev.wikimedia.org
+      replacement: https://cloudweb2001-dev.wikimedia.org:7443
     - type: map
       target: http://labtesttoolsadmin.wikimedia.org
-      replacement: http://cloudweb2001-dev.wikimedia.org
+      replacement: https://cloudweb2001-dev.wikimedia.org:7443
     - type: map
       target: http://logstash.wikimedia.org
       replacement: https://kibana7.svc.eqiad.wmnet
