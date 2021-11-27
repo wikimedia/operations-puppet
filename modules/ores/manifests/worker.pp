@@ -10,6 +10,5 @@ class ores::worker(
         group           => 'www-data',
         celery_bin_path => "${ores::base::venv_path}/bin/celery",
         log_level       => $log_level,
-        core_limit      => '10G',
     }
 }
