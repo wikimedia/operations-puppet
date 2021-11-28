@@ -4,15 +4,40 @@
 # extension enabled on mediawiki.org.
 #
 class extdist(
-    $base_dir = '/srv',
-    $log_dir = '/var/log/'
-){
-    $dist_dir     = "${base_dir}/dist"
-    $clone_dir    = "${base_dir}/extdist"
-    $src_path     = "${base_dir}/src"
-    $composer_dir = "${base_dir}/composer"
-    $pid_folder   = '/run/extdist'
+    Stdlib::Unixpath $base_dir = '/srv',
+    Stdlib::Unixpath $log_dir  = '/var/log/'
+) {
+    $dist_dir   = "${base_dir}/dist"
+    $clone_dir  = "${base_dir}/extdist"
+    $src_path   = "${base_dir}/src"
+    $pid_folder = '/run/extdist'
+
     ensure_packages(['python3-requests', 'php-cli', 'unzip'])
+
+    if debian::codename::ge('bullseye') {
+        ensure_packages(['composer'])
+        $composer_bin_path = '/usr/bin/composer'
+    } else {
+        $composer_dir = "${base_dir}/composer"
+        $composer_bin_path = "${composer_dir}/vendor/bin/composer"
+
+        file { $composer_dir:
+            ensure => directory,
+            owner  => 'extdist',
+            group  => 'www-data',
+            mode   => '0755',
+        }
+
+        git::clone { 'integration/composer':
+            ensure             => latest,
+            directory          => $composer_dir,
+            branch             => 'master',
+            require            => [File[$composer_dir], User['extdist'], Package['php-cli']],
+            recurse_submodules => true,
+            owner              => 'extdist',
+            group              => 'extdist',
+        }
+    }
 
     $ext_settings = {
         'API_URL'   => 'https://www.mediawiki.org/w/api.php',
@@ -21,7 +46,7 @@ class extdist(
         'LOG_FILE'  => "${log_dir}/extdist",
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/pid.lock",
-        'COMPOSER'  => "${composer_dir}/vendor/bin/composer",
+        'COMPOSER'  => $composer_bin_path,
     }
 
     $skin_settings = {
@@ -31,7 +56,7 @@ class extdist(
         'LOG_FILE'  => "${log_dir}/skindist",
         'SRC_PATH'  => $src_path,
         'PID_FILE'  => "${pid_folder}/skinpid.lock",
-        'COMPOSER'  => "${composer_dir}/vendor/bin/composer",
+        'COMPOSER'  => $composer_bin_path,
     }
 
     user { 'extdist':
@@ -46,7 +71,7 @@ class extdist(
     }
 
     file { [$dist_dir, $clone_dir, $src_path,
-            $pid_folder, $composer_dir, $log_dir]:
+            $pid_folder, $log_dir]:
         ensure => directory,
         owner  => 'extdist',
         group  => 'www-data',
@@ -60,17 +85,6 @@ class extdist(
         require   => [File[$clone_dir], User['extdist']],
         owner     => 'extdist',
         group     => 'extdist',
-    }
-
-
-    git::clone { 'integration/composer':
-        ensure             => latest,
-        directory          => $composer_dir,
-        branch             => 'master',
-        require            => [File[$composer_dir], User['extdist'], Package['php-cli']],
-        recurse_submodules => true,
-        owner              => 'extdist',
-        group              => 'extdist',
     }
 
     file { '/etc/extdist.conf':
