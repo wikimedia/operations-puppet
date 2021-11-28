@@ -7,6 +7,7 @@ class openstack::cinder::backup (
     require "openstack::cinder::config::${version}"
 
     service { 'cinder-backup':
-        ensure => $active,
+        ensure    => $active,
+        subscribe => Class["openstack::cinder::config::${version}"],
     }
 }
