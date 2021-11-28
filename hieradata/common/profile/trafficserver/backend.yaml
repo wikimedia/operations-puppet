@@ -97,7 +97,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://integration.wikimedia.org
-      replacement: http://contint.wikimedia.org
+      replacement: https://contint.wikimedia.org:1443
     - type: map
       target: http://labtesthorizon.wikimedia.org
       replacement: http://cloudweb2001-dev.wikimedia.org
