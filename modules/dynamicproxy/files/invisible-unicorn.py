@@ -180,6 +180,8 @@ def create_mapping(project_name):
         route = Route(domain)
         route.project = project
         db.session.add(route)
+    elif route.project_id != project.id:
+        return "Can't edit backend of another project", 403
 
     for backend_url in backend_urls:
         # FIXME: Add validation for making sure these are valid
