@@ -79,6 +79,9 @@ innodb_large_prefix            = 1
 # innodb_default_row_format is not available until 5.7.9 / 10.2.2
 aria_pagecache_buffer_size     = 512M
 
+# T287244
+innodb_checksum_algorithm = full_crc32
+
 # gtid_domain_id flag is needed for multisource replication and GTID.
 # Strictly it is only needed on masters or servers that can potentially be
 # masters but for consistency it should be set in all of them.
