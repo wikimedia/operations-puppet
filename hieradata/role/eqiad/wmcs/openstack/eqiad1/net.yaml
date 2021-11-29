@@ -1,5 +1,4 @@
 profile::admin::groups:
-  - labnet-users
   - wmcs-roots
 
 # routing and nat host with lots of addresses

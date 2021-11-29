@@ -699,9 +699,9 @@ groups:
     members: []
     privileges: []
   labnet-users:
-    description: unprivileged access on labnet servers
+    description: obsolete group, was in the past used for access to Nodepool
     gid: 781
-    members: [thcipriani, hashar, dduvall, twentyafterfour]
+    members: []
   ores-admin:
     description: ORES admins
     gid: 782
