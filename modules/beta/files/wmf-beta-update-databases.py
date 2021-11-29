@@ -11,6 +11,7 @@ import os
 import sys
 import errno
 import multiprocessing
+import tempfile
 import subprocess
 import argparse
 
@@ -28,12 +29,16 @@ def do_wait(procs):
     wait for command in procs array to execute, dump their output
     """
     for p, f, cmd in procs:
-        if p.wait() > 0:
-            f.seek(0)
-            raise Exception("command: ", cmd, "output: ", f.read())
+        exit_code = p.wait()
         f.seek(0)
-        print f.read().strip()
+        output = f.read().strip()
         f.close()
+
+        if exit_code > 0:
+            print("Command failed: {}".format(cmd))
+            raise SystemExit(output)
+        else:
+            print(output)
 
 
 def ignore_comments_and_emptylines(lines):
@@ -62,10 +67,10 @@ def run_updates(staging, cores):
     with open(staging, "r") as dblist:
         dbs = ignore_comments_and_emptylines(dblist)
         for db in dbs:
-            f = os.tmpfile()
+            f = tempfile.TemporaryFile("w+")
             cmd = ("echo '%(db)s'; /usr/local/bin/mwscript update.php --wiki=%(db)s --quick"
                    % {'db': db})
-            p = subprocess.Popen(cmd, stdout=f, stderr=f, shell=True)
+            p = subprocess.Popen(cmd, stdout=f, stderr=f, shell=True, universal_newlines=True)
             procs.append((p, f, cmd))
             if (len(procs) >= cores):
                 do_wait(procs)
