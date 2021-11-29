@@ -1,0 +1,19 @@
+profile::gitlab::runner::ensure: present
+profile::gitlab::runner::access_level: ref_protected
+profile::gitlab::runner::concurrent: 1
+profile::gitlab::runner::docker_image: docker-registry.discovery.wmnet/buster:latest
+profile::gitlab::runner::docker_volume: false
+profile::gitlab::runner::docker_volume_min: 40
+profile::gitlab::runner::docker_volume_max: 40
+profile::gitlab::runner::docker_settings: {}
+profile::gitlab::runner::docker_version: '18.09.1+dfsg1-7.1+deb10u3'
+profile::gitlab::runner::docker_gc_interval: 5m
+profile::gitlab::runner::docker_gc_images_high_water_mark: 20gb
+profile::gitlab::runner::docker_gc_images_low_water_mark: 10gb
+profile::gitlab::runner::docker_gc_volumes_high_water_mark: 20gb
+profile::gitlab::runner::docker_gc_volumes_low_water_mark: 10gb
+profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
+profile::gitlab::runner::locked: true
+# profile::gitlab::runner::registration_token: private
+profile::gitlab::runner::run_untagged: false
+profile::gitlab::runner::tags: ['protected']
