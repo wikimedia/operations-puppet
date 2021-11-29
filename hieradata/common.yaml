@@ -60,10 +60,12 @@ kubernetes_cluster_groups:
       dc: eqiad
       master: kubestagemaster.svc.eqiad.wmnet
       add_private: false
+      imagecatalog: true
     "staging-codfw":
       dc: codfw
       master: kubestagemaster.svc.codfw.wmnet
       add_private: false
+      imagecatalog: true
   "ml-serve":
     "ml-serve-eqiad":
       dc: eqiad

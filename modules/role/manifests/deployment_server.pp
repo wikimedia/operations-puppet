@@ -30,6 +30,7 @@ class role::deployment_server {
 
     # Kubernetes deployments
     include profile::kubernetes::deployment_server
+    include profile::imagecatalog
 
     # tool to test webserver config changes
     include profile::httpbb
