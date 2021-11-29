@@ -366,3 +366,6 @@ role::mariadb::misc::db_inventory:
   target-q: TBD
 role::dbbackups::metadata:
   target-q: TBD
+role::doc:
+  target-q: TBD
+  phab-task: 247653
