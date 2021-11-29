@@ -8,6 +8,8 @@ extra-port = <%= Integer(@port) + 20 %>
 <% if @innodb_buffer_pool_size -%>
 innodb_buffer_pool_size = <%= @innodb_buffer_pool_size %>
 <% end -%>
+# T287244
+innodb_checksum_algorithm = full_crc32
 
 innodb_ft_server_stopword_table = phabricator_search/phabricator_stopwords
 innodb_ft_enable_stopword       = 1
