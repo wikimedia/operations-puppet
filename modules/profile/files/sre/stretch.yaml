@@ -81,7 +81,7 @@ role::restbase::production:
 role::restbase::base:
   target-q: TBD
 role::ores:
-  target-q: TBD
+  target-q: 2022-2
 role::mariadb::parsercache:
   target-q: 2021-3
 role::ncredir:
@@ -336,7 +336,7 @@ role::dumps::generation::worker::dumper_monitor:
 role::dumps::generation::worker::dumper_misc_crons_only:
   target-q: TBD
 role::mirrors:
-  target-q: 2021-3
+  target-q: 2021-4
 role::statistics::explorer:
   target-q: 2020-2
   phab-task: 234629
@@ -361,7 +361,7 @@ role::analytics_test_cluster::hadoop::worker:
 role::wmcs::openstack::eqiad1::virt_ceph:
   target-q: 2020-4
 role::insetup:
-  target-q: 2021-3
+  target-q: 2021-4
 role::mariadb::misc::db_inventory:
   target-q: TBD
 role::dbbackups::metadata:
