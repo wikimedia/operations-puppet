@@ -11,7 +11,7 @@ class sslcert::trusted_ca (
     String                           $owner               = 'root',
     String                           $group               = 'root',
     Boolean                          $include_bundle_jks  = false,
-    Optional[Sslcert::Trusted_certs] $trusted_certs       = [],
+    Optional[Sslcert::Trusted_certs] $trusted_certs       = undef,
 ) {
 
     contain sslcert
