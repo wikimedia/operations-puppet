@@ -74,8 +74,8 @@ cp-<%= cache %>_<%= dc %>: A:cp-<%= cache %> and A:<%= dc %>
 <% end -%>
 cumin: P{O:cluster::management}
 cuminunpriv: P{O:cluster::unprivmanagement}
-db-all: A:db-core or A:db-inventory or A:db-wikireplica or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-store
-db-multiinstance: P{O:mariadb::core_multiinstance or O:mariadb::misc::analytics::backup or O:mariadb::misc::multiinstance} or A:db-sanitarium or A:db-store
+db-all: A:db-core or A:db-inventory or A:db-wikireplica or A:db-misc or A:db-parsercache or A:db-sanitarium or A:db-backup-source or A:db-store
+db-multiinstance: P{O:mariadb::core_multiinstance or O:mariadb::misc::analytics::backup or O:mariadb::misc::multiinstance} or A:db-sanitarium or A:db-backup-source or A:db-store
 db-core: P{O:mariadb::core or O:mariadb::core_multiinstance or O:mariadb::sanitarium_master}
 db-inventory: P{O:mariadb::misc::db_inventory}
 db-wikireplica: P{O:wmcs::db::wikireplicas::web_multiinstance or O:wmcs::db::wikireplicas::analytics_multiinstance or O:wmcs::db::wikireplicas::dedicated::analytics_multiinstance}
@@ -83,7 +83,8 @@ db-misc: P{O:mariadb::misc or O:mariadb::misc::multiinstance or O:mariadb::misc:
 db-parsercache: P{O:mariadb::parsercache}
 db-sanitarium-master: P{O:mariadb::sanitarium_master}
 db-sanitarium: P{O:mariadb::sanitarium_multiinstance}
-db-store: P{O:mariadb::backup_source or O:mariadb::analytics_replica}
+db-backup-source: P{O:mariadb::backup_source}
+db-store: P{O:mariadb::analytics_replica}
 <% @mariadb_roles.each do |role| -%>
 db-role-<%= role %>: P{P:mariadb::mysql_role%role = <%= role %>}
 <% end -%>
