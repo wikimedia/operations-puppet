@@ -1208,10 +1208,17 @@ class profile::prometheus::ops (
         ],
       },
       {
-        'job_name'        => 'jmx_query_service_blazegraph',
+        'job_name'        => 'jmx_wcqs_blazegraph',
         'scheme'          => 'http',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/jmx_query_service_blazegraph_*.yaml" ]}
+          { 'files' => [ "${targets_path}/jmx_wcqs_blazegraph_*.yaml" ]}
+        ],
+      },
+      {
+        'job_name'        => 'jmx_wdqs_blazegraph',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_wdqs_blazegraph_*.yaml" ]}
         ],
       },
       {
@@ -1262,10 +1269,16 @@ class profile::prometheus::ops (
         class_name => 'role::puppetdb',
     }
 
-    prometheus::jmx_exporter_config{ "query_service_blazegraph_${::site}":
-        dest              => "${targets_path}/jmx_query_service_blazegraph_${::site}.yaml",
-        class_name        => 'profile::query_service::blazegraph',
-        instance_selector => '.*-blazegraph',
+    prometheus::jmx_exporter_config{ "wcqs_blazegraph_${::site}":
+        dest              => "${targets_path}/jmx_wcqs_blazegraph_${::site}.yaml",
+        class_name        => 'profile::query_service::wcqs',
+        instance_selector => 'wcqs-blazegraph',
+    }
+
+    prometheus::jmx_exporter_config{ "wdqs_blazegraph_${::site}":
+        dest              => "${targets_path}/jmx_wdqs_blazegraph_${::site}.yaml",
+        class_name        => 'profile::query_service::wikidata',
+        instance_selector => 'wdqs-blazegraph',
     }
 
     prometheus::jmx_exporter_config { "wdqs_updater_${::site}":
