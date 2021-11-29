@@ -2,6 +2,7 @@ class profile::openstack::base::puppetmaster::enc_client (
     Stdlib::HTTPUrl $api_endpoint = lookup('profile::openstack::base::puppetmaster::enc_client::api_endpoint'),
 ) {
     ensure_packages([
+        'python3-requests',
         'python3-yaml',
     ])
 

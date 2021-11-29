@@ -1,7 +1,7 @@
 #!/usr/bin/python3
+import requests
 import yaml
 import sys
-from urllib.request import urlopen
 
 
 def _is_valid_hostname(name):
@@ -73,7 +73,10 @@ if __name__ == '__main__':
         fqdn=hostname
     )
 
-    rest_response = yaml.safe_load(urlopen(url))
+    response = requests.get(url)
+    response.raise_for_status()
+
+    rest_response = yaml.safe_load(response.text)
 
     classes.update(rest_response.get('roles', []))
     yaml.safe_dump({
