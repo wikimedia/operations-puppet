@@ -65,8 +65,8 @@ class sslcert::trusted_ca (
     } else {
         $trusted_ca_path = $facts['puppet_config']['localcacert']
         $jks_truststore_path = $include_bundle_jks ? {
-            true   => '/etc/ssl/certs/java/cacerts',
-            defaut => undef,
+            true    => '/etc/ssl/certs/java/cacerts',
+            default => undef,
         }
     }
 }
