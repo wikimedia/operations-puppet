@@ -106,13 +106,13 @@ class profile::cache::kafka::webrequest(
     if $ssl_enabled {
         $kafka_brokers = $kafka_config['brokers']['ssl_array']
 
+        require ::profile::cache::kafka::certificate
         if $use_pki_settings {
             include profile::base::certificates
             $ssl_ca_location = $profile::base::certificates::trusted_ca_path
         } else {
             # Include this class to get key and certificate for varnishkafka
             # to produce to Kafka over SSL/TLS.
-            require ::profile::cache::kafka::certificate
             $ssl_ca_location = $::profile::cache::kafka::certificate::ssl_ca_location
         }
         $ssl_key_password         = $::profile::cache::kafka::certificate::ssl_key_password
