@@ -8,10 +8,10 @@
 #
 #  [*wmflabs_master*]
 #    Master scap rsync host in the wmflabs domain.
-#    Default 'deployment-deploy01.deployment-prep.eqiad1.wikimedia.cloud'.
+#    Default 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud'.
 class scap (
     Variant[Stdlib::Host,String] $deployment_server = 'deployment',
-    Stdlib::Fqdn $wmflabs_master                    = 'deployment-deploy01.deployment-prep.eqiad1.wikimedia.cloud',
+    Stdlib::Fqdn $wmflabs_master                    = 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud',
     String $version                                 = 'present',
     Stdlib::Port::Unprivileged $php7_admin_port     = 9181,
     Stdlib::Fqdn $cloud_statsd_host                 = 'cloudmetrics1002.eqiad.wmnet',

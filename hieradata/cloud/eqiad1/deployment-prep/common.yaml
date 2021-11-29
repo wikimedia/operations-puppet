@@ -123,8 +123,8 @@ beta::syncsiteresources::user: www-data
 profile::url_downloader::url_downloader_port: 8080
 
 zotero::http_proxy: deployment-urldownloader02.deployment-prep.eqiad.wmflabs:8080
-deployment_server: deployment-deploy01.deployment-prep.eqiad.wmflabs
-scap::deployment_server: deployment-deploy01.deployment-prep.eqiad.wmflabs
+deployment_server: deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
+scap::deployment_server: deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 
 scap::dsh::scap_masters:
     - deployment-deploy01.deployment-prep.eqiad.wmflabs
@@ -508,7 +508,7 @@ profile::swift::storage::statsd_host: localhost
 logstash::heap_memory: 1G
 logstash::pipeline_batch_size: 1000
 
-profile::mediawiki::deployment::server::rsync_host: deployment-deploy01.deployment-prep.eqiad.wmflabs
+profile::mediawiki::deployment::server::rsync_host: deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
 profile::mediawiki::apc_shm_size: 128M
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
 profile::mediawiki::mcrouter_wancache::shards:
