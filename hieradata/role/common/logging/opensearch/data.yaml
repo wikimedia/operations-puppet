@@ -1,0 +1,227 @@
+# General configs
+profile::contacts::role_contacts: ['Observability SREs']
+cluster: logstash
+
+profile::admin::groups:
+  - logstash-roots
+  - elasticsearch-roots
+
+# Install openjdk-8 using ::profile::java
+# TODO: Install openjdk-8 and openjdk-11 at the same time
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+  - version: '11'
+    variant: 'jdk'
+
+# OpenSearch
+# NOTE: short_cluster_name must be kept in sync with the collector role (logging/opensearch/collector.yaml)
+profile::opensearch::server::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
+profile::opensearch::server::config_version: '7'
+profile::opensearch::server::rack: ''
+profile::opensearch::server::row: ''
+profile::opensearch::server::instances: {}
+profile::opensearch::server::dc_settings: {}
+profile::opensearch::server::base_data_dir: '/srv/opensearch'
+profile::opensearch::server::common_settings:
+  awareness_attributes: ''
+  auto_create_index: true
+  short_cluster_name: production-logging
+  expected_nodes: 10
+  heap_memory: '24G'
+  minimum_master_nodes: 2
+  recover_after_nodes: 2
+  recover_after_time: '1m'
+  # Dont encourage some sort of accidental feedback loop
+  send_logs_to_logstash: false
+  curator_uses_unicast_hosts: false
+  http_port: 9200
+  transport_tcp_port: 9300
+  filter_cache_size: '10%'
+  disktype: 'hdd'
+
+profile::opensearch::monitoring::shard_size_warning: 150
+profile::opensearch::monitoring::shard_size_critical: 350
+
+# the logstash cluster has 3 data nodes, and each shard has 3 replica (each
+# shard is present on each node). If one node is lost, 1/3 of the shards
+# will be unassigned, with no way to reallocate them on another node, which
+# is fine and should not raise an alert. So threshold needs to be > 1/3.
+profile::opensearch::monitoring::threshold: '>=0.34'
+
+profile::opensearch::logstash::curator_actions:
+  '01':
+    description: 'logstash: delete older than 91 days'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'logstash-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 91
+
+  '02':
+    description: 'dlq: delete older than 2 days'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'dlq-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 2
+
+  '03':
+    description: 'ecs-1.7.0 default: delete older than 12 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^ecs-1.7.0-\d\d?-default-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 12
+
+  '04':
+    description: 'ecs-1.7.0 test: delete older than 2 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^ecs-1.7.0-\d\d?-test-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 2
+
+  '05':
+    description: 'ecs-1.7.0 alerts: delete older than 53 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^ecs-1.7.0-\d\d?-alerts-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 53
+
+  '06':
+    description: 'w3creportingapi-1.0.0: delete older than 3 months'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^w3creportingapi-1.0.0-[2-9]-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: months
+        unit_count: 3
+
+  '07':
+    description: 'w3creportingapi-1.0.0-1: delete older than 3 months - T274005 can be cleaned up in May 2021'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^w3creportingapi-1.0.0-1-.*$'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m'
+        unit: months
+        unit_count: 3
+
+  '20':
+    description: 'all: after 31 days set number of replicas to 1'
+    action: replicas
+    options:
+      count: 1
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        exclude: true  # exclude special indexes
+        value: '^\..*'
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 31
+
+  # For any indices prefixed by "logstash-", and have "index.routing.allocation.require.disktype":"ssd" set,
+  # and are older than 30 days, set "index.routing.allocation.require.disktype":"hdd".
+  '40':
+    description: 'logstash: allocate older shards on hdd nodes'
+    action: allocation
+    options:
+      key: disktype
+      value: hdd
+      allocation_type: require
+      ignore_empty_list: true
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'logstash-'
+      - filtertype: allocated
+        key: disktype
+        value: ssd
+        allocation_type: require
+        exclude: false
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 30
+
+  # forceMerge "logstash-" prefixed indices older than 2 days (based on index creation_date) to 1 segments per shard.
+  # Delay 120 seconds between each forceMerge operation to allow the cluster to quiesce.
+  # This action will ignore indices already forceMerged to the same or fewer number of segments per shard,
+  # so the 'forcemerged' filter is unneeded.
+  '90':
+    description: 'all: forcemerge indexes older than 2 days'
+    action: forcemerge
+    options:
+      max_num_segments: 1
+      delay: 120
+      continue_if_exception: false
+    filters:
+      - filtertype: pattern
+        kind: regex
+        exclude: true  # exclude special indexes
+        value: '^\..*'
+      - filtertype: age
+        source: creation_date
+        direction: older
+        unit: days
+        unit_count: 2
