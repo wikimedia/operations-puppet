@@ -38,7 +38,7 @@ class snapshot::cron::configure(
         },
         commons => {
             shards   => 2,
-            fileSize => 'mediainfo:1000000',
+            fileSizes => 'mediainfo:500000',
             pagesPerBatch => 20000,
         },
     }
