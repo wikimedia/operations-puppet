@@ -1733,52 +1733,39 @@ node /^ldap-replica200[5-6]\.wikimedia\.org$/ {
     role(openldap::replica)
 }
 
-# ELK7 ES only HDD backends
-node /^logstash101[012]\.eqiad\.wmnet$/ {
+# Logging data nodes (codfw)
+node /^logstash20(0[123]|2[6789]|3[345])\.codfw\.wmnet$/ {
     role(logstash::elasticsearch7)
 }
 
-# ELK 7 ES only SSD backends (no kafka-logging brokers)
-node /^logstash[12]02[6-9]\.(eqiad|codfw)\.wmnet$/ {
-    role(logstash::elasticsearch7)
-}
-
-# ELK 7 logstash collectors (Ganeti)
-node /^logstash[12]02[345]\.(eqiad|codfw)\.wmnet$/ {
+# Logging collector nodes (codfw)
+node /^logstash20(2[345]|3[012])\.codfw\.wmnet$/ {
     role(logstash7)
 }
-node /^logstash[12]03[01]\.(eqiad|codfw)\.wmnet$/ {
+
+# Logging data nodes (eqiad)
+node /^logstash10(1[012]|2[6789]|3[345])\.eqiad\.wmnet$/ {
+    role(logstash::elasticsearch7)
+}
+
+# Logging collector nodes (eqiad)
+node /^logstash10(2[345]|3[01])\.eqiad\.wmnet$/ {
     role(logstash7)
 }
 node 'logstash1032.eqiad.wmnet' {
     role(kibana7_ecs)
 }
 
-# eqiad logstash collectors (Ganeti)
-node /^logstash100[7-9]\.eqiad\.wmnet$/ {
-    role(logstash)
-    include ::lvs::realserver
-}
-
-# eqiad new logstash nodes T267666
-node /^logstash103[345]\.eqiad\.wmnet/ {
-    role(logstash::elasticsearch7)
-}
-
-# codfw logstash elasticsearch
-node /^logstash200[123]\.codfw\.wmnet$/ {
-    role(logstash::elasticsearch7)
-}
-
-# codfw logstash collectors (Ganeti)
+# Deprecated Logstash collectors (codfw)
 node /^logstash200[4-6]\.codfw\.wmnet$/ {
     role(logstash)
     include ::lvs::realserver # lint:ignore:wmf_styleguide
 }
 
-#codfw new logstash nodes T267420
-node /^logstash203[345]\.codfw\.wmnet/ {
-    role(logstash::elasticsearch7)
+# Deprecated Logstash collectors (eqiad)
+node /^logstash100[7-9]\.eqiad\.wmnet$/ {
+    role(logstash)
+    include ::lvs::realserver
 }
 
 node /lvs101[3456]\.eqiad\.wmnet/ {
