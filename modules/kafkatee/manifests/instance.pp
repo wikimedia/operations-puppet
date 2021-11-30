@@ -66,7 +66,7 @@ define kafkatee::instance (
     Optional[Integer] $output_queue_size                      = undef,
     Boolean $output_config                                    = true,
     Boolean $ssl_enabled                                      = false,
-    Stdlib::Unixpath $ssl_ca_location                         = '/etc/ssl/localcerts/wmf_trusted_root_CAs.pem',
+    Stdlib::Unixpath $ssl_ca_location                         = $facts['puppet_config']['localcacert'],
     String $ssl_cipher_suites                                 = 'ECDHE-ECDSA-AES256-GCM-SHA384',
     String $ssl_curves_list                                   = 'P-256',
     String $ssl_sigalgs_list                                  = 'ECDSA+SHA256',

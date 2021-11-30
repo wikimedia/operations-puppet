@@ -35,6 +35,7 @@ class profile::kafkatee::webrequest::analytics(
         output_encoding => 'json',
         inputs          => [$input_webrequest_text],
         ssl_enabled     => true,
+        ssl_ca_location => profile::base::certificates::get_trusted_ca_path(),
     }
 
     kafkatee::output { 'webrequest-test-output':

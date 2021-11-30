@@ -39,6 +39,7 @@ class profile::mediawiki::mwlog (
         output_encoding => 'json',
         inputs          => $mwlog_inputs,
         ssl_enabled     => true,
+        ssl_ca_location => profile::base::certificates::get_trusted_ca_path(),
     }
 
     kafkatee::output { 'udp2log-compat':

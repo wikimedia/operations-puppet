@@ -43,5 +43,6 @@ class profile::kafkatee::webrequest::base(
         ],
         output_config   => $output_config,
         ssl_enabled     => true,
+        ssl_ca_location => profile::base::certificates::get_trusted_ca_path(),
     }
 }
