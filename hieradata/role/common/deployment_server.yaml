@@ -203,8 +203,6 @@ scap::sources:
   performance/navtiming: {}
   docker-pkg/deploy:
     repository: operations/docker-images/docker-pkg/deploy
-  puppetboard/deploy:
-    repository: operations/software/puppetboard/deploy
   debmonitor/deploy:
     repository: operations/software/debmonitor/deploy
   releng/phatality: {}
