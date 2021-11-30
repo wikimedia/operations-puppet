@@ -348,7 +348,7 @@ groups:
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
-              samwilson, tillmletzko-wmde]
+              samwilson, tillmletzko-wmde, janjaquemot]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4871,6 +4871,13 @@ users:
     gid: 500
     uid: 27770
     ssh_keys: []
+  janjaquemot:
+    ensure: present
+    realname: Jan Jaquemot
+    email: Jan.Jaquemot@wikimedia.de
+    uid: 27782
+    gid: 500
+    ssh_keys: []
 ldap_only_users:
   abartov:
     ensure: present
@@ -5487,10 +5494,6 @@ ldap_only_users:
     ensure: present
     realname: Tobias Schumann
     email: tobias.schumann_ext@wikimedia.de
-  janjaquemot:
-    ensure: present
-    realname: Jan Jaquemot
-    email: Jan.Jaquemot@wikimedia.de
   gengh:
     ensure: present
     realname: Genoveva Galarza
