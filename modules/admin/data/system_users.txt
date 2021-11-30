@@ -15,7 +15,6 @@ otrs
 osmupdater
 druid
 mwdeploy
-deploy-puppetboard
 tcpircbot
 recommendation_api
 kafka

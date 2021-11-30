@@ -69,10 +69,6 @@ profile::keyholder::server::agents:
     trusted_groups:
       - ops
 
-  deploy-puppetboard:
-    trusted_groups:
-      - ops
-
   deploy-debmonitor:
     trusted_groups:
       - ops
