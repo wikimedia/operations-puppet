@@ -10,10 +10,12 @@ class profile::ceph::mon(
     Stdlib::IP::Address  $public_network   = lookup('profile::ceph::public_network'),
     Stdlib::Unixpath     $data_dir         = lookup('profile::ceph::data_dir'),
     String               $fsid             = lookup('profile::ceph::fsid'),
-    String               $mon_keydata      = lookup('profile::ceph::mon::keydata'),
     String               $ceph_repository_component  = lookup('profile::ceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]  $cinder_backup_nodes        = lookup('profile::ceph::cinder_backup_nodes'),
+    Ceph::Auth::Conf     $ceph_auth_conf             = lookup('profile::ceph::auth::load_all::configuration'),
 ) {
+    require 'profile::ceph::auth::load_all'
+
     include network::constants
 
     $client_networks = [
@@ -67,13 +69,14 @@ class profile::ceph::mon(
         public_network      => $public_network,
     }
 
-    Class['ceph::mon'] -> Class['ceph::mgr']
     class { 'ceph::mon':
-        admin_keyring => '/etc/ceph/ceph.client.admin.keyring',
-        data_dir      => $data_dir,
-        fsid          => $fsid,
-        mon_keydata   => $mon_keydata,
+        data_dir   => $data_dir,
+        fsid       => $fsid,
+        admin_auth => $ceph_auth_conf['admin'],
+        mon_auth   => $ceph_auth_conf["mon.${::hostname}"],
     }
+
+    Class['ceph::mon'] -> Class['ceph::mgr']
 
     class { 'ceph::mgr':
         data_dir => $data_dir,

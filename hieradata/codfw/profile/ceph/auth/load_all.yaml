@@ -54,3 +54,18 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mon: allow rw
       osd: allow rwx
+  mon.cloudcephmon2001-dev:
+    keyring_path: /etc/ceph/ceph.mon.cloudcephmon2001-dev.keyring
+    import_to_ceph: false
+    caps:
+      mon: allow *
+  mon.cloudcephmon2002-dev:
+    keyring_path: /etc/ceph/ceph.mon.cloudcephmon2002-dev.keyring
+    import_to_ceph: false
+    caps:
+      mon: allow *
+  mon.cloudcephmon2003-dev:
+    keyring_path: /etc/ceph/ceph.mon.cloudcephmon2003-dev.keyring
+    import_to_ceph: false
+    caps:
+      mon: allow *
