@@ -13,7 +13,7 @@ define ceph::auth::keyring (
         /\./    => $name,
         default => "client.${name}",
     }
-    $_keyring_path = pick($keyring_path, "/etc/ceph/ceph.${client_name}.keyring")
+    $_keyring_path = ceph::auth::get_keyring_path($client_name, $keyring_path)
 
     ensure_packages('ceph-common')
 
