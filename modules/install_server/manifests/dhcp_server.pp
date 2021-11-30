@@ -51,7 +51,8 @@ class install_server::dhcp_server (
       owner   => 'root',
       group   => 'root',
       mode    => '0444',
-      content => template('install_server/automation.conf.erb')
+      content => template('install_server/automation.conf.erb'),
+      notify  => Service['isc-dhcp-server'],
     }
 
     $mgmt_networks.keys.each | $netname | {
