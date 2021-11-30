@@ -266,7 +266,7 @@ c.SystemdSpawner.disable_user_sudo = True
 
 # Only allow specific directories to be written to
 c.SystemdSpawner.readonly_paths = ['/']
-c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user', '/tmp']
+c.SystemdSpawner.readwrite_paths = ['/home/{USERNAME}', '/dev/shm', '/run/user', '/tmp', '/srv/spark-tmp']
 
 # Create discrete log files for each user's notebook
 c.SystemdSpawner.unit_extra_properties = {
