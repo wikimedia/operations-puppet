@@ -30,9 +30,6 @@ profile::opensearch::dashboards::httpd_proxy::auth_realm: 'local'
 profile::opensearch::dashboards::httpd_proxy::vhost: 'beta-logs.wmcloud.org'
 profile::opensearch::dashboards::httpd_proxy::serveradmin: 'root@logging-logstash-01.logging.eqiad1.wikimedia.cloud'
 
-# phatality will need ported before it can be enabled
-profile::opensearch::dashboards::enable_phatality: false
-
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
 profile::opensearch::instances: {}
