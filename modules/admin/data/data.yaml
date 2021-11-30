@@ -348,7 +348,7 @@ groups:
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
-              samwilson, tillmletzko-wmde, janjaquemot, mmartorana]
+              samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4887,6 +4887,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD3MDrcsdZnKKsWTXJ8rU4wa3AZnkb8ngd0eyAkt0u9q4Uvs7xhIlnEawD59Vf0GBtRSs384Zyms4beV/W5R4kVfE2xelZITbwYggFpz1xAHu1mwz9Kw1oUad+G/GFkTgxy4kGbHDkjASzM6fCLxBlhq3aviLh7VhANHtjIBHOVL3c1h5/4cD0/faZxrR3ZmuHKf6BmjBxFLPz8XrKgvlsZ7B6V25GiuQqDBt/AA43ei9pX0I4Pu3dggZGkEP3YzE/zoAd+VjhTStHOHI3LTC+GiaxkrHOHxhnOCFHP84PkS0Di81V6Ug47bTquSZQxJ/NiHefZrz2PLTAtxlIUJeAm2CA5XrK0ZH/qvLXTEaxR05nN9RLO3EdKl8AZPXYO89TLhC9NB8CL54MV/FjZWbLWi8vO1b46qWXnzSeJ7EkHHuFFHg+8dx+4KBCQ6R3kmCxanqX2NgrRoBhyswEUtBBmSt7+4TRwwXi7FUmWvRGl+Km5gZW463MQkwncVB6JVMZxzwRyphZhp3vF6iHCK9+i2T9D++fFquDyK1dAHv06JY4GIKs9OcBFPdL5gvnFkWL0WKM2mHnczHrElKEdEx8g2qqJMhm6QyBNK2RfTWMuxlwYanZ1cnL6XCizHr8Pk3hFkYuueA5mZHhdHz6ooCd4cxBJFPukfNa8ToGm2F9Ipw== mmartorana@wikimedia.org
+  dbad2021:
+    ensure: present
+    realname: Desiree Abad
+    email: dabad@wikimedia.org
+    krb: present
+    uid: 29520
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMCL89wONrqDKRSFKETmGNyQ5OCPlZWjDpYODpBXOMg dabad@wikimedia.org
 ldap_only_users:
   abartov:
     ensure: present
