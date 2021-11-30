@@ -27,7 +27,7 @@ class profile::query_service::wikidata(
     Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
-    Enum['regular','streaming'] $updater_type = lookup('profile::query_service::updater_type', {'default_value' => 'regular'})
+    Enum['regular','streaming'] $updater_type = lookup('profile::query_service::updater_type', {'default_value' => 'streaming'})
 ) {
     require ::profile::query_service::common
     case $updater_type {
