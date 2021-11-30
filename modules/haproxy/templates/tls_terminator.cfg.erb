@@ -45,7 +45,9 @@ listen tls
 
 <%- if @vars -%>
 <%- @vars.each do |var| -%>
+<%- if var['acl'] == nil -%>
     http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %>
+<%- end -%>
 <%- end -%>
 <%- end -%>
 
@@ -53,9 +55,17 @@ listen tls
     acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
 <%- end -%>
 
+<%- if @vars -%>
+<%- @vars.each do |var| -%>
+<%- if var['acl'] -%>
+    http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %> if <%= var['acl'] %>
+<%- end -%>
+<%- end -%>
+<%- end -%>
+
 <%- @add_headers.each do |add_header| -%>
 <%- if add_header['value'] -%>
-    http-<%= add_header['direction'] %> set-header <%= add_header['name'] %> <%= add_header['value'] %>
+    http-<%= add_header['direction'] %> set-header <%= add_header['name'] %> "<%= add_header['value'] %>"
 <%- end -%>
 <%- end -%>
 <%- @del_headers.each do |del_header| -%>

@@ -2,12 +2,59 @@ profile::cache::haproxy::vars:
     - direction: request
       name: 'txn.xwd_count'
       value: 'req.hdr_cnt(X-Wikimedia-Debug)'
+    - direction: request
+      name: 'req.h2'
+      value: 'int(1)'
+      acl: 'h2'
+    - direction: request
+      name: 'req.h2'
+      value: 'int(0)'
+      acl: '!h2'
+    - direction: request
+      name: 'req.h2s'
+      value: 'str(h2)'
+      acl: 'h2'
+    - direction: request
+      name: 'req.h2s'
+      value: 'str(h1)'
+      acl: '!h2'
+    - direction: request
+      name: 'req.sess'
+      value: 'str(new)'
+      acl: '!ssl_session_reused'
+    - direction: request
+      name: 'req.sess'
+      value: 'str(reused)'
+      acl: 'ssl_session_reused'
+    - direction: request
+      name: 'req.ciph'
+      value: "ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^ECDHE-RSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')"
+    - direction: request
+      name: 'req.auth'
+      value: 'str(RSA)'
+      acl: 'ssl_auth_rsa'
+    - direction: request
+      name: 'req.auth'
+      value: 'str(ECDSA)'
+      acl: '!ssl_auth_rsa'
 
 profile::cache::haproxy::acls:
     - name: missing_xwd
       criterion: 'var(txn.xwd_count)'
       operator: 'eq'
       value: '0'
+    - name: h2
+      criterion: 'fc_http_major'
+      operator: 'eq'
+      value: '2'
+    - name: ssl_session_reused
+      criterion: 'ssl_fc_is_resumed'
+      operator: 'eq'
+      value: '1'
+    - name: ssl_auth_rsa
+      criterion: 'ssl_fc_cipher'
+      operator: '-m reg'
+      value: '^ECDHE-RSA'
 
 profile::cache::haproxy::add_headers:
     - direction: request
@@ -21,10 +68,10 @@ profile::cache::haproxy::add_headers:
       value: 'https'
     - direction: request
       name: 'X-Connection-Properties'
-      value: '%[lua.xcps]'
+      value: 'H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN;'
     - direction: request
       name: 'X-Analytics-TLS'
-      value: '%[lua.analytics_tls]'
+      value: 'vers=%[ssl_fc_protocol];keyx=unknown;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]'
 
 profile::cache::haproxy::del_headers:
     - direction: response

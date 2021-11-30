@@ -128,12 +128,11 @@ class profile::cache::haproxy(
     }
 
     file { '/etc/haproxy/tls.lua':
+        ensure  => absent,
         owner   => 'haproxy',
         group   => 'haproxy',
         mode    => '0444',
         content => file('profile/cache/haproxy-tls.lua'),
-        before  => Service['haproxy'],
-        notify  => Service['haproxy'],
     }
 
     haproxy::tls_terminator { 'tls':
@@ -149,7 +148,6 @@ class profile::cache::haproxy(
         tls_session_lifetime => $tls_session_lifetime,
         tls_ticket_keys_path => $tls_ticket_keys_path,
         http_reuse           => 'always',
-        lua_scripts          => ['/etc/haproxy/tls.lua'],
         vars                 => $vars,
         acls                 => $acls,
         add_headers          => $add_headers,
