@@ -265,16 +265,14 @@ class profile::kafka::broker(
         }
 
         if $use_pki_migration_settings {
-            include profile::base::certificates
             $super_users = $super_users_brokers + ["User:CN=kafka_${cluster_name}_broker"]
-            $ssl_truststore_location = $profile::base::certificates::jks_truststore_path
-            $ssl_truststore_password = $profile::base::certificates::truststore_password
+            $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
+            $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
         } else {
             if $ssl_generate_certificates {
-                include profile::base::certificates
                 $super_users = $super_users_brokers
-                $ssl_truststore_location = $profile::base::certificates::jks_truststore_path
-                $ssl_truststore_password = $profile::base::certificates::truststore_password
+                $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
+                $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
             } else {
                 $super_users = ["User:CN=kafka_${cluster_name}_broker"]
                 $ssl_truststore_location = "${ssl_location}/truststore.jks"
