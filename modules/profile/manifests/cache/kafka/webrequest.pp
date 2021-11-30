@@ -194,7 +194,7 @@ class profile::cache::kafka::webrequest(
             request_required_acks => 1,
             socket                => '/srv/trafficserver/tls/var/run/analytics.sock',
             tls                   => {
-                ca_location          => '/etc/ssl/localcerts/wmf_trusted_root_CAs.pem',
+                ca_location          => $ssl_ca_location,
                 key_location         => $ssl_key_location,
                 key_password         => $ssl_key_password,
                 certificate_location => $ssl_certificate_location,
