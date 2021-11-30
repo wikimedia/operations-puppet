@@ -5677,3 +5677,7 @@ ldap_only_users:
     ensure: present
     realname: Essex Igyan
     email: eigyan@wikimedia.org
+  jsn:
+    ensure: present
+    realname: Jason Sherman
+    email: jsherman@wikimedia.org
