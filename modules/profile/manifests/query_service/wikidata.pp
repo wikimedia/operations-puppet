@@ -52,7 +52,8 @@ class profile::query_service::wikidata(
         logstash_logback_port  => $logstash_logback_port,
         heap_size              => $heap_size,
         use_deployed_config    => $use_deployed_config,
-        extra_jvm_opts         => $extra_jvm_opts,
+        # force skolem for wikibase:isSomeValue (T244341)
+        extra_jvm_opts         => $extra_jvm_opts + ['-DwikibaseSomeValueMode=skolem'],
         contact_groups         => $contact_groups,
         monitoring_enabled     => $monitoring_enabled,
         sparql_query_stream    => $sparql_query_stream,

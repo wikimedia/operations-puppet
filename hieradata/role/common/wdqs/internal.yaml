@@ -12,8 +12,6 @@ profile::query_service::blazegraph_extra_jvm_opts:
   - '-Dwdqs.throttling-filter.time-bucket-capacity-in-seconds=240'
   - '-Dwdqs.throttling-filter.time-bucket-refill-amount-in-seconds=120'
   - '-Dwdqs.throttling-filter.ban-duration-in-minutes=60'
-  # required to have wikibase:isSomeValue using skolems instead of blank nodes
-  - '-DwikibaseSomeValueMode=skolem'
 
 profile::query_service::sparql_query_stream: 'wdqs-internal.sparql-query'
 profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'
@@ -46,7 +44,6 @@ profile::query_service::federation_user_agent: 'Wikidata Query Service (internal
 # Includes module for connection limits
 profile::nginx::variant: 'full'
 
-profile::query_service::updater_type: 'streaming'
 profile::query_service::streaming_updater::kafka_cluster: main
 profile::query_service::streaming_updater::journal: 'wikidata'
 profile::query_service::legacy_updater::journal: 'wikidata'

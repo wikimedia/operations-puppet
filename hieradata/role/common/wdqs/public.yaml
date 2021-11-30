@@ -8,9 +8,7 @@ profile::query_service::updater_options: '-n wdq'
 profile::query_service::deploy_mode: 'scap3'
 profile::query_service::enable_ldf: true
 profile::query_service::high_query_time_port: true
-profile::query_service::blazegraph_extra_jvm_opts:
-  # required to have wikibase:isSomeValue using skolems instead of blank nodes
-  - '-DwikibaseSomeValueMode=skolem'
+profile::query_service::blazegraph_extra_jvm_opts: []
 profile::query_service::sparql_query_stream: 'wdqs-external.sparql-query'
 profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'
 profile::query_service::lag_warning: 21600 # 6 hours
@@ -48,7 +46,6 @@ profile::query_service::federation_user_agent: 'Wikidata Query Service; https://
 # Includes module for connection limits
 profile::nginx::variant: 'full'
 
-profile::query_service::updater_type: 'streaming'
 profile::query_service::streaming_updater::kafka_cluster: main
 profile::query_service::streaming_updater::journal: 'wikidata'
 profile::query_service::legacy_updater::journal: 'wikidata'
