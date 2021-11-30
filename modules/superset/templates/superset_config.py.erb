@@ -1,5 +1,7 @@
 # NOTE: This file is managed by Puppet.
 
+import datetime
+
 #---------------------------------------------------------
 # Flask App Builder configuration
 #---------------------------------------------------------
@@ -13,7 +15,10 @@ SECRET_KEY = '<%= @secret_key %>'
 # you want to explore are managed directly in the web UI
 SQLALCHEMY_DATABASE_URI = '<%= @database_uri %>'
 
-SQLLAB_TIMEOUT=180
+wikimedia_superset_timeout = datetime.timedelta(minutes=3).seconds
+
+SQLLAB_TIMEOUT = wikimedia_superset_timeout
+SUPERSET_WEBSERVER_TIMEOUT = wikimedia_superset_timeout
 
 # Uploaded files will temporarily be stored in this directory.
 # This is used to support superset CSV uploads.
