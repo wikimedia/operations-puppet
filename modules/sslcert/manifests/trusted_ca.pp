@@ -45,6 +45,14 @@ class sslcert::trusted_ca (
                 group       => $group,
             }
             $res_subscribe = Exec['generate trusted_ca']
+
+            # Ensure readability for user/group/others of the cert bundle.
+            file { $trusted_ca_path:
+                ensure => file,
+                owner  => $owner,
+                group  => $group,
+                mode   => '0644',
+            }
         }
         $trusted_certs['certs'].each |$cert| {
             if $include_bundle_jks {
