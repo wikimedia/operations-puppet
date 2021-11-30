@@ -27,7 +27,7 @@
 class profile::cache::kafka::certificate(
     Optional[String] $ssl_key_password = lookup('profile::cache::kafka::certificate::ssl_key_password', {'default_value' => undef}),
     String $certificate_name           = lookup('profile::cache::kafka::certificate::certificate_name', {'default_value' => 'varnishkafka'}),
-    Boolean $use_puppet_internal_ca    = lookup('profile::cache::kafka::certificate::use_puppet_internal_ca', {'default_value' => true}),
+    Boolean $use_internal_ca           = lookup('profile::cache::kafka::certificate::use_internal_ca', {'default_value' => true}),
     String $ssl_cipher_suites          = lookup('profile::cache::kafka::certificate::ssl_cipher_suites', {'default_value' => 'ECDHE-ECDSA-AES256-GCM-SHA384'}),
     String $ssl_curves_list            = lookup('profile::cache::kafka::certificate::ssl_curves_list', {'default_value' => 'P-256'}),
     String $ssl_sigalgs_list           = lookup('profile::cache::kafka::certificate::ssl_sigalgs_list', {'default_value' => 'ECDSA+SHA256'}),
@@ -72,8 +72,8 @@ class profile::cache::kafka::certificate(
         mode    => '0444',
     }
 
-    if $use_puppet_internal_ca {
-        $ssl_ca_location = '/etc/ssl/certs/Puppet_Internal_CA.pem'
+    if $use_internal_ca {
+        $ssl_ca_location = profile::base::certificates::get_trusted_ca_path()
     }
     else {
         $ssl_ca_location_secrets_path = "certificates/${certificate_name}/ca.crt.pem"

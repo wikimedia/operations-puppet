@@ -28,7 +28,6 @@ class profile::cache::kafka::webrequest(
     String $statsd              = lookup('statsd'),
     String $kafka_cluster_name  = lookup('profile::cache::kafka::webrequest::kafka_cluster_name'),
     Boolean $ssl_enabled        = lookup('profile::cache::kafka::webrequest::ssl_enabled', {'default_value' => false}),
-    Boolean $use_pki_settings   = lookup('profile::cache::kafka::webrequest::use_pki_settings', {'default_value' => false}),
     Boolean $monitoring_enabled = lookup('profile::cache::kafka::webrequest::monitoring_enabled', {'default_value' => false}),
     Boolean $atskafka_enabled   = lookup('profile::cache::kafka::webrequest::atskafka_enabled', {'default_value' => false}),
 ) {
@@ -107,20 +106,13 @@ class profile::cache::kafka::webrequest(
         $kafka_brokers = $kafka_config['brokers']['ssl_array']
 
         require ::profile::cache::kafka::certificate
-        if $use_pki_settings {
-            include profile::base::certificates
-            $ssl_ca_location = $profile::base::certificates::trusted_ca_path
-        } else {
-            # Include this class to get key and certificate for varnishkafka
-            # to produce to Kafka over SSL/TLS.
-            $ssl_ca_location = $::profile::cache::kafka::certificate::ssl_ca_location
-        }
         $ssl_key_password         = $::profile::cache::kafka::certificate::ssl_key_password
         $ssl_key_location         = $::profile::cache::kafka::certificate::ssl_key_location
         $ssl_certificate_location = $::profile::cache::kafka::certificate::ssl_certificate_location
         $ssl_cipher_suites        = $::profile::cache::kafka::certificate::ssl_cipher_suites
         $ssl_curves_list          = $::profile::cache::kafka::certificate::ssl_curves_list
         $ssl_sigalgs_list         = $::profile::cache::kafka::certificate::ssl_sigalgs_list
+        $ssl_ca_location          = $::profile::cache::kafka::certificate::ssl_ca_location
     }
     else {
         $kafka_brokers = $kafka_config['brokers']['array']
