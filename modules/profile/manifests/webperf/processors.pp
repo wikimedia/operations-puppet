@@ -33,6 +33,8 @@ class profile::webperf::processors(
     $kafka_main_config = kafka_config('main')
     $kafka_main_brokers = $kafka_main_config['brokers']['ssl_string']
 
+    $kafka_ssl_cafile = profile::base::certificates::get_trusted_ca_path()
+
     # Consume statsd metrics from Kafka and emit them to statsd.
     class { '::webperf::statsv':
         kafka_brokers           => $kafka_main_brokers,
@@ -40,6 +42,7 @@ class profile::webperf::processors(
         kafka_api_version       => $kafka_main_config['api_version'],
         statsd_host             => '127.0.0.1',  # relay through statsd_exporter
         statsd_port             => 9125,
+        kafka_ssl_cafile        => $kafka_ssl_cafile,
     }
     class { 'profile::prometheus::statsd_exporter': }
 
@@ -57,6 +60,7 @@ class profile::webperf::processors(
         kafka_security_protocol => 'SSL',
         statsd_host             => $statsd_host,
         statsd_port             => $statsd_port,
+        kafka_ssl_cafile        => $kafka_ssl_cafile,
     }
 
     # navtiming exports Prometheus metrics on port 9230.
@@ -78,5 +82,6 @@ class profile::webperf::processors(
         kafka_brokers           => $kafka_brokers,
         kafka_security_protocol => 'SSL',
         graphite_host           => $graphite_host,
+        kafka_ssl_cafile        => $kafka_ssl_cafile,
     }
 }

@@ -19,10 +19,11 @@
 #   Write stats to this StatsD instance. Default: 8125.
 #
 class webperf::navtiming(
-    String           $kafka_brokers,
-    Optional[String] $kafka_security_protocol = 'PLAINTEXT',
-    Stdlib::Host     $statsd_host             = '127.0.0.1',
-    Stdlib::Port     $statsd_port             = 8125,
+    String                     $kafka_brokers,
+    Optional[String]           $kafka_security_protocol = 'PLAINTEXT',
+    Stdlib::Host               $statsd_host             = '127.0.0.1',
+    Stdlib::Port               $statsd_port             = 8125,
+    Optional[Stdlib::Unixpath] $kafka_ssl_cafile        = undef,
 ) {
     include ::webperf
 
@@ -44,12 +45,6 @@ class webperf::navtiming(
     scap::target { 'performance/navtiming':
         service_name => 'navtiming',
         deploy_user  => 'deploy-service',
-    }
-
-    if $kafka_security_protocol in ['SSL', 'SASL_SSL'] {
-        $kafka_ssl_cafile = '/etc/ssl/localcerts/wmf_trusted_root_CAs.pem'
-    } else {
-        $kafka_ssl_cafile = undef
     }
 
     systemd::unit { 'navtiming':

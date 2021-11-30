@@ -22,12 +22,13 @@
 #   port of statsd instance.  Default: 8125
 #
 class webperf::statsv(
-    String           $kafka_brokers,
-    Optional[String] $kafka_security_protocol = 'PLAINTEXT',
-    Optional[String] $kafka_api_version       = undef,
-    String           $topics                  = 'statsv',
-    Stdlib::Fqdn     $statsd_host             = 'localhost',
-    Integer          $statsd_port             = 8125,
+    String                     $kafka_brokers,
+    Optional[String]           $kafka_security_protocol = 'PLAINTEXT',
+    Optional[String]           $kafka_api_version       = undef,
+    String                     $topics                  = 'statsv',
+    Stdlib::Fqdn               $statsd_host             = 'localhost',
+    Integer                    $statsd_port             = 8125,
+    Optional[Stdlib::Unixpath] $kafka_ssl_cafile        = undef,
 ) {
     include ::webperf
 
@@ -36,12 +37,6 @@ class webperf::statsv(
     scap::target { 'statsv/statsv':
         service_name => 'statsv',
         deploy_user  => 'deploy-service',
-    }
-
-    if $kafka_security_protocol in ['SSL', 'SASL_SSL'] {
-        $kafka_ssl_cafile = '/etc/ssl/localcerts/wmf_trusted_root_CAs.pem'
-    } else {
-        $kafka_ssl_cafile = undef
     }
 
     # Uses $kafka_brokers, $kafka_security_protocol, $kafka_ssl_cafile, and $statsd

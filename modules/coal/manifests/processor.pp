@@ -44,7 +44,8 @@ class coal::processor(
     Optional[String]        $log_dir                 = '/var/log/coal',
     Optional[Stdlib::Host]  $graphite_host           = 'localhost',
     Optional[Stdlib::Port]  $graphite_port           = 2003,
-    Optional[String]        $graphite_prefix         = 'coal'
+    Optional[String]        $graphite_prefix         = 'coal',
+    Optional[Stdlib::Unixpath] $kafka_ssl_cafile     = undef,
 ) {
     # Include common elements
     include ::coal::common
@@ -72,12 +73,6 @@ class coal::processor(
     rsyslog::conf { 'coal':
         content  => template('coal/rsyslog.conf.erb'),
         priority => 80,
-    }
-
-    if $kafka_security_protocol in ['SSL', 'SASL_SSL'] {
-        $kafka_ssl_cafile = '/etc/ssl/localcerts/wmf_trusted_root_CAs.pem'
-    } else {
-        $kafka_ssl_cafile = undef
     }
 
     systemd::service { 'coal':
