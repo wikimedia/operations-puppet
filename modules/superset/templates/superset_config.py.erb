@@ -13,10 +13,7 @@ SECRET_KEY = '<%= @secret_key %>'
 # you want to explore are managed directly in the web UI
 SQLALCHEMY_DATABASE_URI = '<%= @database_uri %>'
 
-WIKIMEDIA_SUPERSET_TIMEOUT = int(timedelta(minutes=3).total_seconds())
-
-SQLLAB_TIMEOUT = WIKIMEDIA_SUPERSET_TIMEOUT
-SUPERSET_WEBSERVER_TIMEOUT = WIKIMEDIA_SUPERSET_TIMEOUT
+SQLLAB_TIMEOUT=180
 
 # Uploaded files will temporarily be stored in this directory.
 # This is used to support superset CSV uploads.
