@@ -3,6 +3,7 @@ all: P{*}
 <% @datacenters.each do |dc| -%>
 <%= dc %>: P{P:cumin::target%site = <%= dc %>}
 <% end -%>
+edges: A:esams or A:ulsfo or A:eqsin
 
 # Distros
 <% ['stretch', 'buster', 'bullseye'].each do |distro| -%>
