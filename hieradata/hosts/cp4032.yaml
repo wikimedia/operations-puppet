@@ -1,2 +1,10 @@
-profile::cache::varnish::frontend::listen_uds: /run/varnish-frontend.socket
+profile::cache::varnish::frontend::listen_uds:
+  - /run/varnish-frontend-0.socket
+  - /run/varnish-frontend-1.socket
+  - /run/varnish-frontend-2.socket
+  - /run/varnish-frontend-3.socket
+  - /run/varnish-frontend-4.socket
+  - /run/varnish-frontend-5.socket
+  - /run/varnish-frontend-6.socket
+  - /run/varnish-frontend-7.socket
 profile::cache::varnish::frontend::uds_owner: haproxy

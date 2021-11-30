@@ -51,7 +51,7 @@
 #   Port to expose stats and prometheus metrics. Requires HAProxy >= 2.0
 define haproxy::tls_terminator(
     Stdlib::Port $port,
-    Stdlib::Unixpath $backend_socket,
+    Array[Stdlib::Unixpath] $backend_socket,
     Array[Haproxy::Tlscertificate] $certificates,
     String $tls_ciphers,
     String $tls13_ciphers,

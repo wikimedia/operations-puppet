@@ -5,7 +5,7 @@ class profile::cache::haproxy(
     Optional[Hash[String, Haproxy::Tlscertificate]] $extra_certificates = lookup('profile::cache::haproxy::extra_certificates', {'default_value' => undef}),
     Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', {'default_value' => undef}),
     Boolean $unified_acme_chief = lookup('profile::cache::haproxy::unified_acme_chief'),
-    Stdlib::Unixpath $varnish_socket = lookup('profile::cache::haproxy::varnish_socket'),
+    Array[Stdlib::Unixpath] $varnish_socket = lookup('profile::cache::haproxy::varnish_socket'),
     String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
     String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
     Integer[0] $tls_cachesize = lookup('profile::cache::haproxy::tls_cachesize'),

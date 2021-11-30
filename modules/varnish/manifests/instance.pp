@@ -15,7 +15,6 @@ define varnish::instance(
     $wikimedia_nets = [],
     $wikimedia_trust = [],
     $listen_uds = undef,
-    $proxy_on_uds = false,
     $uds_owner = 'root',
     $uds_group = 'root',
     $uds_mode = '700',
@@ -227,20 +226,16 @@ define varnish::instance(
         instance => $title,
     }
 
-    $ensure_uds_check = $listen_uds? {
-        undef   => 'absent',
-        default => 'present',
-    }
-    $uds_nrpe_cmd = $proxy_on_uds? {
-        true    => "sudo -u root /usr/local/lib/nagios/plugins/check_varnish_uds --socket ${listen_uds} --proxy true",
-        default => "sudo -u root /usr/local/lib/nagios/plugins/check_varnish_uds --socket ${listen_uds}",
-    }
-    nrpe::monitor_service { "check-varnish-uds${instancesuffix}":
-        ensure       => $ensure_uds_check,
-        description  => 'Check Varnish UDS',
-        nrpe_command => $uds_nrpe_cmd,
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
-        require      => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
+    if $listen_uds {
+        $listen_uds.each |Stdlib::Unixpath $uds_path| {
+            nrpe::monitor_service { "check-varnish-uds${instancesuffix}-${uds_path}":
+                ensure       => present,
+                description  => "Check Varnish UDS ${uds_path}",
+                nrpe_command => "sudo -u root /usr/local/lib/nagios/plugins/check_varnish_uds --socket ${uds_path}",
+                notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
+                require      => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
+            }
+        }
     }
 
 }

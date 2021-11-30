@@ -72,16 +72,10 @@ listen tls
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
 <%- end -%>
 
-<%- if @proxy_protocol == nil -%>
-    server backend_server unix@<%= @backend_socket %>
-    option forwardfor
-<%- elsif @proxy_protocol == 'V1' -%>
-    server backend_server unix@<%= @backend_socket %> send-proxy
-<%- elsif @proxy_protocol == 'V2' -%>
-    server backend_server unix@<%= @backend_socket %> send-proxy-v2
-<%- elsif @proxy_protocol == 'V2-ssl' -%>
-    server backend_server unix@<%= @backend_socket %> send-proxy-v2-ssl
+<%- @backend_socket.each_with_index do |socket_path, socket_index| -%>
+    server backend_server_<%= socket_index %> unix@<%= socket_path %>
 <%- end -%>
+    option forwardfor
 
 <%- if @prometheus_port -%>
 frontend stats
