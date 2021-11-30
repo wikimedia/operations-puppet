@@ -1,5 +1,5 @@
 # @summary a profile to configure puppetboard
-#  profile::puppetboard::ng is only around while we transition and will be moved
+#  profile::puppetboard is only around while we transition and will be moved
 #  renamed when we are happy with it
 #
 # Actions:
@@ -7,27 +7,27 @@
 #       Install apache, uwsgi, configure reverse proxy to uwsgi
 #
 # Sample Usage:
-#       include profile::puppetboard::ng
+#       include profile::puppetboard
 #
-class profile::puppetboard::ng (
-    Wmflib::Ensure                  $ensure                   = lookup('profile::puppetboard::ng::ensure'),
-    Stdlib::Fqdn                    $vhost                    = lookup('profile::puppetboard::ng::vhost'),
+class profile::puppetboard (
+    Wmflib::Ensure                  $ensure                   = lookup('profile::puppetboard::ensure'),
+    Stdlib::Fqdn                    $vhost                    = lookup('profile::puppetboard::vhost'),
     # puppet db settings
-    Stdlib::Host                    $puppetdb_host            = lookup('profile::puppetboard::ng::puppetdb_host'),
-    Stdlib::Port                    $puppetdb_port            = lookup('profile::puppetboard::ng::puppetdb_port'),
-    Puppetboard::SSL_verify         $puppetdb_ssl_verify      = lookup('profile::puppetboard::ng::puppetdb_ssl_verify'),
-    Optional[Stdlib::Unixpath]      $puppetdb_cert            = lookup('profile::puppetboard::ng::puppetdb_cert'),
-    Optional[Stdlib::Unixpath]      $puppetdb_key             = lookup('profile::puppetboard::ng::puppetdb_key'),
-    Optional[Enum['http', 'https']] $puppetdb_proto           = lookup('profile::puppetboard::ng::puppetdb_proto'),
+    Stdlib::Host                    $puppetdb_host            = lookup('profile::puppetboard::puppetdb_host'),
+    Stdlib::Port                    $puppetdb_port            = lookup('profile::puppetboard::puppetdb_port'),
+    Puppetboard::SSL_verify         $puppetdb_ssl_verify      = lookup('profile::puppetboard::puppetdb_ssl_verify'),
+    Optional[Stdlib::Unixpath]      $puppetdb_cert            = lookup('profile::puppetboard::puppetdb_cert'),
+    Optional[Stdlib::Unixpath]      $puppetdb_key             = lookup('profile::puppetboard::puppetdb_key'),
+    Optional[Enum['http', 'https']] $puppetdb_proto           = lookup('profile::puppetboard::puppetdb_proto'),
     # Application settings
-    String                          $page_title               = lookup('profile::puppetboard::ng:page_title'),
-    Boolean                         $localise_timestamp       = lookup('profile::puppetboard::ng::localise_timestamp'),
-    Boolean                         $enable_catalog           = lookup('profile::puppetboard::ng::enable_catalog'),
-    String                          $graph_type               = lookup('profile::puppetboard::ng::graph_type'),
-    Array[String]                   $graph_facts_override     = lookup('profile::puppetboard::ng::graph_facts_override'),
-    Array[String]                   $query_endpoints_override = lookup('profile::puppetboard::ng::query_endpoints_override'),
-    Hash[String, String]            $inventory_facts_override = lookup('profile::puppetboard::ng::inventory_facts_override'),
-    Optional[String]                $secret_key               = lookup('profile::puppetboard::ng::secret_key'),
+    String                          $page_title               = lookup('profile::puppetboard:page_title'),
+    Boolean                         $localise_timestamp       = lookup('profile::puppetboard::localise_timestamp'),
+    Boolean                         $enable_catalog           = lookup('profile::puppetboard::enable_catalog'),
+    String                          $graph_type               = lookup('profile::puppetboard::graph_type'),
+    Array[String]                   $graph_facts_override     = lookup('profile::puppetboard::graph_facts_override'),
+    Array[String]                   $query_endpoints_override = lookup('profile::puppetboard::query_endpoints_override'),
+    Hash[String, String]            $inventory_facts_override = lookup('profile::puppetboard::inventory_facts_override'),
+    Optional[String]                $secret_key               = lookup('profile::puppetboard::secret_key'),
 
 ) {
     $uwsgi_port = 8001

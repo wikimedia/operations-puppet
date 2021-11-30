@@ -518,21 +518,21 @@ profile::systemd::timesyncd::ensure: present
 profile::systemd::timesyncd::ntp_servers: []
 
 # puppetboard
-profile::puppetboard::ng::ensure: present
-profile::puppetboard::ng::puppetdb_host: 'localhost'
-profile::puppetboard::ng::puppetdb_port: 8080
-profile::puppetboard::ng::puppetdb_ssl_verify: true
-profile::puppetboard::ng::puppetdb_cert: ~
-profile::puppetboard::ng::puppetdb_key: ~
-profile::puppetboard::ng::puppetdb_proto: ~
-profile::puppetboard::ng::vhost: "%{facts.networking.fqdn}"
-profile::puppetboard::ng:page_title: 'Puppetboard'
-profile::puppetboard::ng::localise_timestamp: false
-profile::puppetboard::ng::enable_catalog: false
-profile::puppetboard::ng::graph_type: 'pie'
-profile::puppetboard::ng::graph_facts_override: []
-profile::puppetboard::ng::secret_key: ~
-profile::puppetboard::ng::inventory_facts_override: {}
+profile::puppetboard::ensure: present
+profile::puppetboard::puppetdb_host: 'localhost'
+profile::puppetboard::puppetdb_port: 8080
+profile::puppetboard::puppetdb_ssl_verify: true
+profile::puppetboard::puppetdb_cert: ~
+profile::puppetboard::puppetdb_key: ~
+profile::puppetboard::puppetdb_proto: ~
+profile::puppetboard::vhost: "%{facts.networking.fqdn}"
+profile::puppetboard:page_title: 'Puppetboard'
+profile::puppetboard::localise_timestamp: false
+profile::puppetboard::enable_catalog: false
+profile::puppetboard::graph_type: 'pie'
+profile::puppetboard::graph_facts_override: []
+profile::puppetboard::secret_key: ~
+profile::puppetboard::inventory_facts_override: {}
 
 # defaults for cloud (mostly deployment prep)
 profile::base::production::enable: false

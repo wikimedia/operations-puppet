@@ -1,0 +1,14 @@
+profile::puppetboard::ensure: present
+profile::puppetboard::puppetdb_host: 'localhost'
+profile::puppetboard::puppetdb_port: 8080
+profile::puppetboard::puppetdb_ssl_verify: true
+profile::puppetboard::puppetdb_cert: ~
+profile::puppetboard::puppetdb_key: ~
+profile::puppetboard::puppetdb_proto: ~
+profile::puppetboard:page_title: 'Puppetboard'
+profile::puppetboard::localise_timestamp: false
+profile::puppetboard::enable_catalog: false
+profile::puppetboard::graph_type: 'pie'
+profile::puppetboard::graph_facts_override: []
+profile::puppetboard::secret_key: ~
+profile::puppetboard::inventory_facts_override: {}

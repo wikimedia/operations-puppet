@@ -9,11 +9,11 @@
 #       role(puppetboard)
 #
 
-class role::puppetboard::ng {
+class role::puppetboard {
     system::role { 'puppetboard': description => 'Puppetboard server' }
 
     include profile::base::production
     include profile::base::firewall
-    include profile::puppetboard::ng
+    include profile::puppetboard
     include profile::tlsproxy::envoy # TLS termination
 }

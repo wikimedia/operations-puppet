@@ -2,15 +2,15 @@ apereo_cas:
   production:
     login_url: 'https://idp.wmcloud.org/login'
     validate_url: 'https://idp.wmcloud.org/serviceValidate'
-profile::puppetboard::ng::vhost: 'pdev-puppetboard.wmcloud.org'
-profile::puppetboard::ng::puppetdb_host: 'pdev-pdb.puppet-dev.eqiad1.wikimedia.cloud'
-profile::puppetboard::ng::puppetdb_port: 443
-profile::puppetboard::ng::puppetdb_proto: 'https'
-profile::puppetboard::ng::vhost: pdev-puppetboard.wmcloud.org
-profile::puppetboard::ng:page_title: 'WMF Puppetboard (development)'
-profile::puppetboard::ng::localise_timestamp: true
-profile::puppetboard::ng::graph_type: 'donut'
-profile::puppetboard::ng::graph_facts_override:
+profile::puppetboard::vhost: 'pdev-puppetboard.wmcloud.org'
+profile::puppetboard::puppetdb_host: 'pdev-pdb.puppet-dev.eqiad1.wikimedia.cloud'
+profile::puppetboard::puppetdb_port: 443
+profile::puppetboard::puppetdb_proto: 'https'
+profile::puppetboard::vhost: pdev-puppetboard.wmcloud.org
+profile::puppetboard:page_title: 'WMF Puppetboard (development)'
+profile::puppetboard::localise_timestamp: true
+profile::puppetboard::graph_type: 'donut'
+profile::puppetboard::graph_facts_override:
 - architecture
 - augeasversion
 - bios_vendor
@@ -51,7 +51,7 @@ profile::puppetboard::ng::graph_facts_override:
 - service_provider
 - type
 - virtual
-profile::puppetboard::ng::query_endpoints_override:
+profile::puppetboard::query_endpoints_override:
 - facts
 - factsets
 - fact-contents

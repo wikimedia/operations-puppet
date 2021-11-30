@@ -8,15 +8,15 @@ profile::tlsproxy::envoy::cfssl_options:
 # Ship logs to logging pipeline local shim
 service::configuration::logstash_host: localhost
 profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
-profile::puppetboard::ng::vhost: 'puppetboard.wikimedia.org'
-profile::puppetboard::ng::puppetdb_host: "%{lookup('puppetdb_host')}"
-profile::puppetboard::ng::puppetdb_port: 443
-profile::puppetboard::ng::puppetdb_proto: 'https'
-profile::puppetboard::ng:page_title: 'WMF Puppetboard'
-profile::puppetboard::ng::localise_timestamp: true
-profile::puppetboard::ng::enable_catalog: true
-profile::puppetboard::ng::graph_type: 'donut'
-profile::puppetboard::ng::graph_facts_override:
+profile::puppetboard::vhost: 'puppetboard.wikimedia.org'
+profile::puppetboard::puppetdb_host: "%{lookup('puppetdb_host')}"
+profile::puppetboard::puppetdb_port: 443
+profile::puppetboard::puppetdb_proto: 'https'
+profile::puppetboard:page_title: 'WMF Puppetboard'
+profile::puppetboard::localise_timestamp: true
+profile::puppetboard::enable_catalog: true
+profile::puppetboard::graph_type: 'donut'
+profile::puppetboard::graph_facts_override:
 - architecture
 - augeasversion
 - bios_vendor
@@ -57,13 +57,13 @@ profile::puppetboard::ng::graph_facts_override:
 - service_provider
 - type
 - virtual
-profile::puppetboard::ng::query_endpoints_override:
+profile::puppetboard::query_endpoints_override:
 - facts
 - factsets
 - fact-contents
 - fact-paths
 - nodes
-profile::puppetboard::ng::inventory_facts_override:
+profile::puppetboard::inventory_facts_override:
   Hostname: 'fqdn'
   Vendor: 'manufacturer'
   Model: 'productname'
