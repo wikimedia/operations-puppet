@@ -4,7 +4,7 @@ GRANT PROCESS, REPLICATION CLIENT
     ON *.* TO 'wikiadmin'@'10.%'
     IDENTIFIED BY '<%= @wikiadmin_pass %>';
 
-GRANT ALL PRIVILEGES
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER 
     ON `%wik%`.* TO 'wikiadmin'@'10.%';
 
 GRANT ALL PRIVILEGES
@@ -12,6 +12,12 @@ GRANT ALL PRIVILEGES
 
 GRANT SELECT
     ON `heartbeat`.`heartbeat` TO 'wikiadmin'@'10.%';
+
+GRANT SELECT, EXECUTE
+    ON `sys`.* TO 'wikiadmin'@'10.%';
+
+GRANT SELECT
+    ON `performance_schema`.* TO 'wikiadmin'@'10.%';
 
 -- wikiuser 10.64.%
 
