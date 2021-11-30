@@ -131,10 +131,6 @@ scap::dsh::groups:
   phatality:
     conftool:
       - {'cluster': 'kibana7', 'service': 'kibana7'}
-  puppetboard:
-    hosts:
-      - puppetboard1001.eqiad.wmnet
-      - puppetboard2001.codfw.wmnet
   debmonitor:
     hosts:
       - debmonitor1002.eqiad.wmnet
