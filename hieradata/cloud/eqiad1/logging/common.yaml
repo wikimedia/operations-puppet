@@ -24,6 +24,9 @@ profile::java::java_packages:
   - version: '11'
     variant: 'jdk'
 
+# There is no deployment server in the logging env.
+scap::deployment_server: "%{facts.fqdn}"
+
 profile::opensearch::dashboards::httpd_proxy::auth_file: '/etc/logstash/htpasswd'
 profile::opensearch::dashboards::httpd_proxy::auth_type: 'local'
 profile::opensearch::dashboards::httpd_proxy::auth_realm: 'local'
