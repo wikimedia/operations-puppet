@@ -18,3 +18,8 @@ endif
 if $header_from: matches "keineantwortadresse@web.de" and $header_to: matches "abuse@wikipedia.org" then
 	fail text "Message rejected due to excessive volume. If you believe this is an error please contact postmaster@wikimedia.org"
 endif
+if $header_from: matches "@unn-212-102-49-71.cdn77.com" and $header_to: matches "abuse@wikimediafoundation.org" then
+	logfile "/var/spool/exim4/filter_T298038.log"
+	logwrite "$tod_log $message_id dropped silently because T298038"
+	seen finish
+endif
