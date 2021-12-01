@@ -347,8 +347,13 @@ node 'copernicium.wikimedia.org' {
     role(insetup)
 }
 
-node /^cp10(7[579]|8[13579])\.eqiad\.wmnet$/ {
+node /^cp10(7[579]|8[1357])\.eqiad\.wmnet$/ {
     role(cache::text)
+}
+
+# HAproxy test T290005
+node 'cp1089.eqiad.wmnet' {
+    role(cache::text_haproxy)
 }
 
 node /^cp10(7[68]|8[02468])\.eqiad\.wmnet$/ {
