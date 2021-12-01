@@ -98,8 +98,8 @@ class profile::presto::server(
 
         $keystore_password = $presto_clusters_secrets[$cluster_name]['ssl_keystore_password']
         $ssl_keystore_path = '/etc/presto/ssl/server.p12'
-        $ssl_truststore_path = profile::base::certificates::get_trusted_ca_jks_path()
-        $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
+        $ssl_truststore_path = '/etc/ssl/certs/java/cacerts'
+        $ssl_truststore_password = 'changeit'
 
         if $generate_certificate {
             # Generate a certificate for each presto server. These will be used to secure traffic between
@@ -152,8 +152,8 @@ class profile::presto::server(
             'internal-communication.https.required' => true,
             'internal-communication.https.keystore.path' => $ssl_keystore_path,
             'internal-communication.https.keystore.key' => $ssl_keystore_password,
-            'internal-communication.https.trust-store-path' => profile::base::certificates::get_trusted_ca_jks_path(),
-            'internal-communication.https.trust-store-password' => profile::base::certificates::get_trusted_ca_jks_password(),
+            'internal-communication.https.trust-store-path' => '/etc/ssl/certs/java/cacerts',
+            'internal-communication.https.trust-store-password' => 'changeit',
             'http-server.https.port' => '8281',
             'http-server.https.enabled' => true,
         }
