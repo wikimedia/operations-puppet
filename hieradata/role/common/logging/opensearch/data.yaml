@@ -16,14 +16,14 @@ profile::java::java_packages:
 
 # OpenSearch
 # NOTE: short_cluster_name must be kept in sync with the collector role (logging/opensearch/collector.yaml)
-profile::opensearch::server::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
-profile::opensearch::server::config_version: '7'
-profile::opensearch::server::rack: ''
-profile::opensearch::server::row: ''
-profile::opensearch::server::instances: {}
-profile::opensearch::server::dc_settings: {}
-profile::opensearch::server::base_data_dir: '/srv/opensearch'
-profile::opensearch::server::common_settings:
+profile::opensearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
+profile::opensearch::config_version: '7'
+profile::opensearch::rack: ''
+profile::opensearch::row: ''
+profile::opensearch::instances: {}
+profile::opensearch::dc_settings: {}
+profile::opensearch::base_data_dir: '/srv/opensearch'
+profile::opensearch::common_settings:
   awareness_attributes: ''
   auto_create_index: true
   short_cluster_name: production-logging
