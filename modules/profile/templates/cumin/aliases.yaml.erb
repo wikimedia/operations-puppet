@@ -281,7 +281,7 @@ presto-analytics-test: P{O:analytics_test_cluster::presto::server}
 # after T243057 is done, replace the following with `prometheus: P{O:prometheus}`
 prometheus: P{P:prometheus::ops}
 puppetboard: P{O:puppetboard}
-puppetdb: P{O:puppetmaster::puppetdb}
+puppetdb: P{O:puppetdb}
 puppetmaster: A:puppetmaster-backend or A:puppetmaster-frontend
 puppetmaster-backend: P{O:puppetmaster::backend}
 puppetmaster-frontend: P{O:puppetmaster::frontend}
