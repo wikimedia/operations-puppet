@@ -350,7 +350,7 @@ profile::mediawiki::vhost_feature_flags: {}
 profile::mediawiki::php::enable_request_profiling: true
 
 wikimail_smarthost:
-- 'deployment-mx02.deployment-prep.eqiad.wmflabs'
+- 'deployment-mx03.deployment-prep.eqiad1.wikimedia.cloud'
 
 deployment_hosts:
 - '172.16.4.233' # deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
