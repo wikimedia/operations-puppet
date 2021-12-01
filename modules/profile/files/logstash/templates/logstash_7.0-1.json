@@ -102,7 +102,9 @@
       "udp_sender" : { "type" : "keyword", "index" : true, "doc_values": true, "copy_to": "all" },
       "request_time" : { "type" : "float", "doc_values": true },
       "upstream_time" : { "type" : "float", "doc_values": true },
-      "response_size" : { "type" : "long", "doc_values": true }
+      "response_size" : { "type" : "long", "doc_values": true },
+      "maxSeconds": { "type" : "float", "doc_values": true },
+      "actualSeconds": { "type" : "float", "doc_values": true }
     }
   }
 }
