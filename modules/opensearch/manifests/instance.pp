@@ -282,23 +282,20 @@ define opensearch::instance(
       mode    => '0755',
       require => Package['opensearch'],
     }
+
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
-    # the previous instance are left alone. This cron takes care of cleaning up
+    # the previous instance are left alone. This systemd timer takes care of cleaning up
     # GC logs older than 30 days.
-    #
-    # We customize the instance title when $title == 'default' for purposes of
-    # comparing pre and post multi-instance refactor. If this was merged to
-    # master please fix.
-    $cron_title = $title ? {
-        'default' => 'opensearch-gc-log-cleanup',
-        default   => "opensearch-${title}-gc-log-cleanup",
+    $gc_cleanup_job_title = "opensearch-${title}-gc-log-cleanup"
+
+    systemd::timer::job { $gc_cleanup_job_title:
+      ensure      => present,
+      user        => 'root',
+      description => 'Cleanup GC logs',
+      command     => "/usr/bin/find /var/log/opensearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
+      interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00'},
     }
-    cron { $cron_title:
-        ensure  => present,
-        minute  => 12,
-        hour    => 2,
-        command => "find /var/log/opensearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
-    }
+
     # Note that we don't notify the OpenSearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.
     # So, for now at least, we'll be restarting it manually.
