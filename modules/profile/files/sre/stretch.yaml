@@ -100,7 +100,7 @@ role::swift::proxy:
 role::lvs::balancer:
   target-q: 2020-1
 role::spare::system:
-  target-q: 2020-2
+  target-q: 2020-4
 role::maps::replica:
   target-q: TBD
 role::maps::master:
@@ -215,6 +215,7 @@ role::kafka::jumbo::broker:
   phab-task: 234629
 role::kafka::main:
   target-q: TBD
+  phab-task: 296641
 role::kafka::main::logging:
   target-q: 2020-2
 role::kafka::logging:
@@ -313,6 +314,7 @@ role::microsites::peopleweb:
   target-q: 2020-2
 role::prometheus:
   target-q: TBD
+  phab-task: 296199
 role::proton:
   target-q: 2020-2
 role::puppetboard:
