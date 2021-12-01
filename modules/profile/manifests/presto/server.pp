@@ -152,6 +152,8 @@ class profile::presto::server(
             'internal-communication.https.required' => true,
             'internal-communication.https.keystore.path' => $ssl_keystore_path,
             'internal-communication.https.keystore.key' => $ssl_keystore_password,
+            'internal-communication.https.trust-store-path' => profile::base::certificates::get_trusted_ca_jks_path(),
+            'internal-communication.https.trust-store-password' => profile::base::certificates::get_trusted_ca_jks_password(),
             'http-server.https.port' => '8281',
             'http-server.https.enabled' => true,
         }
