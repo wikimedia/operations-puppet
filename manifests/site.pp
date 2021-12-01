@@ -1743,12 +1743,12 @@ node /^ldap-replica200[5-6]\.wikimedia\.org$/ {
 
 # Logging data nodes (codfw)
 node /^logstash20(0[123]|2[6789]|3[345])\.codfw\.wmnet$/ {
-    role(logstash::elasticsearch7)
+    role(logging::opensearch::data)
 }
 
 # Logging collector nodes (codfw)
 node /^logstash20(2[345]|3[012])\.codfw\.wmnet$/ {
-    role(logstash7)
+    role(logging::opensearch::collector)
 }
 
 # Logging data nodes (eqiad)
