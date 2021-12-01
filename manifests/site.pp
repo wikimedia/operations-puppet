@@ -2517,10 +2517,6 @@ node /^puppetmaster200[45]\.codfw\.wmnet/ {
     role(insetup)
 }
 
-node /^puppetboard[12]001\.(codfw|eqiad)\.wmnet$/ {
-    role(spare::system)
-}
-
 node /^puppetboard[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(puppetboard)
 }
