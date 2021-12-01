@@ -1,0 +1,44 @@
+# Provide a TCP input to accept JSON payloads on localhost and forward them to logstash via Kakfa.
+
+module(load="imtcp")
+module(load="mmjsonparse")
+module(load="omkafka")
+
+template(name="template_tcp_json_lines_compat" type="list") {
+  property(name="$!all-json")
+}
+
+# Use the parsed json "level" field value as the kafka topic suffix
+template(name="tcp_json_lines_compat_topic" type="string" string="logback-%!level:::lowercase%")
+
+# Use a separate (in memory) queue to limit message processing to this ruleset only.
+ruleset(name="ruleset_tcp_json_lines_compat" queue.type="LinkedList") {
+
+  action(type="mmjsonparse" name="mmjsonparse_tcp_json_lines_compat" cookie="" useRawMsg="on")
+
+  if $parsesuccess == "OK" then {
+    action(type="omkafka"
+           broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
+           topic="tcp_json_lines_compat_topic"
+           dynatopic="on"
+           dynatopic.cachesize="1000"
+           partitions.auto="on"
+           template="template_tcp_json_lines_compat"
+       <%- if scope['queue_size'] > 0 -%>
+           queue.type="LinkedList" queue.size="<%= scope['queue_size'] %>" queue.filename="tcp_json_lines_compat"
+           queue.highWatermark="<%= (scope['queue_size'] * 0.7).to_i %>" queue.lowWatermark="<%= (scope['queue_size'] * 0.6).to_i %>"
+           queue.checkpointInterval="5"
+       <%- end -%>
+           confParam=[ "security.protocol=ssl",
+                       "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                       "compression.codec=snappy",
+                       "socket.timeout.ms=60000",
+                       "socket.keepalive.enable=true",
+                       "queue.buffering.max.ms=50",
+                       "batch.num.messages=1000" ]
+    )
+  }
+
+}
+
+input(type="imtcp" port="<%= @port %>" address="localhost" ruleset="ruleset_tcp_json_lines_compat")

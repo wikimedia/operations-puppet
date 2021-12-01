@@ -25,5 +25,6 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
 
     # Striker:
     include ::profile::wmcs::striker::web
+    include ::profile::rsyslog::tcp_json_lines_compat
 
 }
