@@ -1,5 +1,5 @@
 # NOTE: cluster_name must be kept in sync with the collector role (logging/opensearch/collector.yaml)
-profile::opensearch::server::dc_settings:
+profile::opensearch::dc_settings:
   cluster_name: production-logging-codfw
   unicast_hosts:
     - logstash2001.codfw.wmnet
@@ -30,4 +30,4 @@ profile::opensearch::server::dc_settings:
     - logstash2035.codfw.wmnet
 
 # pick one host per cluster to run singleton jobs
-profile::elasticsearch::logstash::jobs_host: 'logstash2026.codfw.wmnet'
+profile::opensearch::logstash::jobs_host: 'logstash2026.codfw.wmnet'
