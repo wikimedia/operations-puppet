@@ -125,8 +125,8 @@ role::bastionhost::pop:
 role::bastionhost::general:
   target-q: 2020-2
 role::elasticsearch::cloudelastic:
-  target-q: TBD
-  phab-task: 244736
+  target-q: 2022-1
+  phab-task: 289135
 role::cache::upload:
   target-q: 2020-1
 role::cache::text:
@@ -174,8 +174,8 @@ role::druid::public::worker:
   target-q: 2020-3
   phab-task: 234629
 role::elasticsearch::cirrus:
-  target-q: TBD
-  phab-task: 244736
+  target-q: 2022-1
+  phab-task: 289135
 role::mariadb::temporary_storage:
   target-q: 2020-4
 role::wmcs::openstack::eqiad1::virt:
@@ -327,8 +327,8 @@ role::docker_registry_ha::registry:
 role::releases:
   target-q: TBD
 role::elasticsearch::relforge:
-  target-q: TBD
-  phab-task: 244736
+  target-q: 2022-1
+  phab-task: 289135
 role::restbase::dev_cluster:
   target-q: TBD
 role::dumps::generation::worker::dumper_monitor:
