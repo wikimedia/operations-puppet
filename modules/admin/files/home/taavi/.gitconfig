@@ -1,0 +1,34 @@
+[user]
+	name = Taavi Väänänen
+	email = hi@taavi.wtf
+
+[alias]
+	a = add
+	authors = "!git shortlog -s | sort -nr"
+	b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+	c = commit
+	ca = c --amend
+	can = ca --no-edit
+	co = checkout
+	d = diff
+	f = fetch
+	l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%aN]\\ %Cgreen[%cN]" --decorate --date=relative
+	ll = log --pretty=format:"%C(yellow)%h\\ %ad\\%Cred%d\\ %Creset%s%Cblue\\ [%aN]" --decorate --numstat --date=relative
+	r = rebase
+	rc = rebase --continue
+	ri = rebase --interactive
+	rr = review -R
+	s = status
+	sh = show --pretty=fuller
+
+[pull]
+	ff = only
+
+[rebase]
+	stat = true
+
+[status]
+	submoduleSummary = true
+
+[blame]
+	coloring = highlightRecent
