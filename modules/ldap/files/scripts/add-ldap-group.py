@@ -19,7 +19,7 @@ def main():
     parser = OptionParser(conflict_handler="resolve")
     parser.set_usage('add-ldap-group [options] <groupname>\nexample: add-ldap-group wikidev')
 
-    ldap_support_lib = ldapsupportlib.LDAPSupportLib()
+    ldap_support_lib = ldapsupportlib.LDAPSupportLib(enable_rw=True)
     ldap_support_lib.addParserOptions(parser, "scriptuser")
 
     parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager",

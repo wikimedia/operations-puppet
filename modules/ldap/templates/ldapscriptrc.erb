@@ -1,2 +1,6 @@
+URI     <%= @ldapconfig['servernames'].map {|server| "ldap://#{server}:389"}.join(' ') %>
+<%- if @ldapconfig.include?('servernames_rw') -%>
+URI_RW  <%= @ldapconfig['servernames_rw'].map {|server| "ldap://#{server}:389"}.join(' ') %>
+<%- end -%>
 USER    <%= @ldapconfig["script_user_dn"] %>
 PASS    <%= @ldapconfig["script_user_pass"] %>

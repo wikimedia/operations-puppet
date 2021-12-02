@@ -21,9 +21,13 @@ except ImportError:
 # TODO: move all configuration to scriptconfig
 class LDAPSupportLib:
 
-    def __init__(self):
+    def __init__(self, enable_rw=True):
         self.base = self.getLdapInfo("base")
-        self.ldapHost = self.getLdapInfo("uri")
+        server_key = 'uri_rw' if enable_rw else 'uri_rw'
+        self.ldapHost = self.getLdapInfo(server_key, "/etc/ldap/.ldapscriptrc")
+        if not self.ldapHost:
+            print('Unable to find ldap server')
+            sys.exit(1)
         self.sslType = self.getLdapInfo("ssl")
         self.binddn = self.getLdapInfo("binddn")
         self.bindpw = self.getLdapInfo("bindpw")

@@ -77,7 +77,7 @@ class LdapUser:
 def main():
     """main script entry"""
 
-    ldap_support_lib = ldapsupportlib.LDAPSupportLib()
+    ldap_support_lib = ldapsupportlib.LDAPSupportLib(enable_rw=True)
 
     parser = OptionParser(conflict_handler="resolve")
     parser.set_usage(
