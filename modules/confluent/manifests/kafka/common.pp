@@ -21,7 +21,8 @@
 #
 class confluent::kafka::common(
     $java_home     = undef,
-    $scala_version = '2.11'
+    $scala_version = '2.11',
+    $user_group_id = undef,
 ) {
     $package = "confluent-kafka-${scala_version}"
 
@@ -46,12 +47,14 @@ class confluent::kafka::common(
 
     group { 'kafka':
         ensure  => 'present',
+        gid     => $user_group_id,
         system  => true,
         require => Package[$package],
     }
     # Kafka system user
     user { 'kafka':
         gid        => 'kafka',
+        uid        => $user_group_id,
         shell      => '/bin/false',
         home       => '/nonexistent',
         comment    => 'Apache Kafka',
