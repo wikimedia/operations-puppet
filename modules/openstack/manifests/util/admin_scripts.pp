@@ -215,6 +215,15 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-flavorusage.py",
     }
 
+    # Script to dump wikitext for the annual purge wikitech page
+    file { '/usr/local/sbin/wmcs-annual-purge':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-annual-purge.py",
+    }
+
     # Script to list all images and number of VMs using the flavor
     file { '/usr/local/sbin/wmcs-imageusage':
         ensure => 'present',
