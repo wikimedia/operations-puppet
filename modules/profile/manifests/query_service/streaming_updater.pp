@@ -7,6 +7,7 @@ class profile::query_service::streaming_updater (
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
+    String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     require ::profile::query_service::common
@@ -41,7 +42,7 @@ class profile::query_service::streaming_updater (
         deploy_name            => $deploy_name,
         username               => $username,
         logstash_logback_port  => $logstash_logback_port,
-        options                => ['--'] + $kafka_options,
+        options                => ['-n', $blazegraph_main_ns, '--'] + $kafka_options,
         extra_jvm_opts         => $default_jvm_options,
         updater_startup_script => 'runStreamingUpdater.sh',
         updater_service_desc   => 'Query Service Streaming Updater',
