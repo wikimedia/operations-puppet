@@ -5687,3 +5687,7 @@ ldap_only_users:
     ensure: present
     realname: Jason Sherman
     email: jsherman@wikimedia.org
+  eleoni:
+    ensure: present
+    realname: Emanuele Leoni
+    email: eleoni@wikimedia.org
