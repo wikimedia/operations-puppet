@@ -12,7 +12,7 @@ global
     ssl-dh-param-file <%= @tls_dh_param_path %>
     tune.ssl.cachesize <%= @tls_cachesize %>
     tune.ssl.lifetime <%= @tls_session_lifetime %>
-    maxconn 130000
+    maxconn 200000
 
 
     tune.h2.header-table-size <%= @h2settings['header_table_size'] %>
@@ -21,7 +21,7 @@ global
 
 listen tls
     log global
-    maxconn 120000
+    maxconn 199000
     bind :<%= @port -%> tfo ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
 
     bind :::<%= @port -%> tfo v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
