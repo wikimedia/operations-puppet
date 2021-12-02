@@ -1,0 +1,1 @@
+profile::query_service::streaming_updater::kafka_topic: codfw.mediainfo-streaming-updater.mutation
