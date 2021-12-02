@@ -5691,3 +5691,7 @@ ldap_only_users:
     ensure: present
     realname: Emanuele Leoni
     email: eleoni@wikimedia.org
+  aminalhazwani:
+    ensure: present
+    realname: Amin Al Hazwani
+    email: aalhazwani@wikimedia.org
