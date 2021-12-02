@@ -25,7 +25,6 @@ class role::wmcs::openstack::eqiad1::labweb {
 
     # Striker:
     include ::profile::wmcs::striker::web
-    #include ::profile::rsyslog::tcp_json_lines_compat to be enabled after dev host
 
     include ::profile::tlsproxy::envoy # TLS termination
 }
