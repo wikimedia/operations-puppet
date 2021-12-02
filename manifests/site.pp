@@ -2714,11 +2714,9 @@ node /^cloudvirt101[2-7]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
-# Cloudvirt1018 is special: it hosts VMs using local storage.
-#  This, along with 1019 and 1020, allows us to host etcd
-#  clusters which are incredibly sensitive to iowait.
+# Soon to be decommissioned, T296790
 node 'cloudvirt1018.eqiad.wmnet' {
-    role(wmcs::openstack::eqiad1::virt)
+    role(spare::system)
 }
 
 # Cloudvirt1019 and 1020 are special hypervisors;
@@ -2732,8 +2730,15 @@ node 'cloudvirt1020.eqiad.wmnet' {
 
 # cloudvirts using Ceph backend storage
 # https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
-node /^cloudvirt102[1-8]\.eqiad\.wmnet$/ {
+node /^cloudvirt102[1-7]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph_and_backy)
+}
+
+# Cloudvirt1028 is special: it hosts VMs using local storage.
+#  This, along with 1019 and 1020, allows us to host etcd
+#  clusters which are incredibly sensitive to iowait.
+node 'cloudvirt1026.eqiad.wmnet' {
+    role(wmcs::openstack::eqiad1::virt)
 }
 
 node 'cloudvirt1029.eqiad.wmnet' {
