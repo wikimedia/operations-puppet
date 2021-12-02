@@ -118,7 +118,7 @@ role::analytics_cluster::hadoop::worker:
   target-q: 2020-3
   phab-task: 234629
 role::aqs:
-  target-q: 2021-1
+  target-q: 2022-1
   phab-task: 234629
 role::bastionhost::pop:
   target-q: 2020-2
