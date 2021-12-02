@@ -227,9 +227,7 @@ role::kubernetes::staging::worker:
   target-q: TBD
   phab-task: 245272
 role::logstash:
-  target-q: TBD
-role::logstash::elasticsearch:
-  target-q: TBD
+  target-q: 2022-1
 role::analytics_cluster::hadoop::client:
   target-q: 2020-3
   phab-task: 234629
@@ -313,7 +311,7 @@ role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
 role::microsites::peopleweb:
   target-q: 2020-2
 role::prometheus:
-  target-q: TBD
+  target-q: 2022-1
   phab-task: 296199
 role::proton:
   target-q: 2020-2
