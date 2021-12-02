@@ -1,0 +1,32 @@
+# Minimal Exim 4 configuration file to blackhole all messages. Useful in
+# testing environments where outbound mail is not desired.
+
+# Main configuration options
+
+local_interfaces = <; 127.0.0.1; ::1
+
+# Allow the -f cli option to work
+untrusted_set_sender = *
+local_from_check = false
+
+add_environment = <; PATH=/bin:/usr/bin
+keep_environment =
+
+# 4.87+ defaults to *, which errors if tls_certificate etc. is not present
+tls_advertise_hosts =
+
+# ACL
+acl_smtp_rcpt = acl_check_rcpt
+
+begin acl
+
+acl_check_rcpt:
+
+	# Accept from local interfaces
+	accept hosts = @[]
+
+begin routers
+
+blackhole:
+	driver = redirect
+	data = :blackhole:
