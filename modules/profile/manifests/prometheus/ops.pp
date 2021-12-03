@@ -40,7 +40,7 @@ class profile::prometheus::ops (
 
     $blackbox_jobs = [
       {
-        'job_name'        => 'blackbox_icmp',
+        'job_name'        => 'blackbox/icmp',
         'metrics_path'    => '/probe',
         'params'          => {
           'module' => [ 'icmp' ],
@@ -61,7 +61,7 @@ class profile::prometheus::ops (
         ],
       },
       {
-        'job_name'        => 'blackbox_ssh',
+        'job_name'        => 'blackbox/ssh',
         'metrics_path'    => '/probe',
         'params'          => {
           'module' => [ 'ssh_banner' ],
@@ -82,7 +82,7 @@ class profile::prometheus::ops (
         ],
       },
       {
-        'job_name'        => 'blackbox_tcp',
+        'job_name'        => 'blackbox/tcp',
         'metrics_path'    => '/probe',
         'params'          => {
           'module' => [ 'tcp_connect' ],
@@ -103,7 +103,7 @@ class profile::prometheus::ops (
         ],
       },
       {
-        'job_name'        => 'blackbox_http',
+        'job_name'        => 'blackbox/http',
         'metrics_path'    => '/probe',
         'params'          => {
           'module' => [ 'http_connect' ],
@@ -124,7 +124,7 @@ class profile::prometheus::ops (
         ],
       },
       {
-        'job_name'        => 'blackbox_https',
+        'job_name'        => 'blackbox/https',
         'metrics_path'    => '/probe',
         'params'          => {
           'module' => [ 'https_connect' ],
