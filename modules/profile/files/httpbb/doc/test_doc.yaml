@@ -4,7 +4,7 @@ http://doc.wikimedia.org:
   assert_body_contains: Wikimedia Open Source
 - path: /index/
   assert_status: 200
-  assert_body_contains: <li><a href="/Wikibase/">Wikibase</a>
+  assert_body_contains: <li><a href="/Wikibase">Wikibase</a>
 - path: /mediawiki-core
   assert_status: 301
   assert_headers:
