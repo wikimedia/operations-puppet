@@ -57,9 +57,10 @@ class prometheus::blackbox_exporter{
         path    => '/usr/local/bin',
     }
 
-    service { 'prometheus-blackbox-exporter':
-        ensure     => running,
-        hasrestart => true,
-        provider   => 'systemd',
+    systemd::service { 'prometheus-blackbox-exporter':
+        ensure   => present,
+        content  => init_template('prometheus-blackbox-exporter', 'systemd_override'),
+        override => true,
+        restart  => true,
     }
 }
