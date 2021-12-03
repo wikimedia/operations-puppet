@@ -5,7 +5,7 @@
 #
 class role::extdist {
 
-    if debian::codename::le('bullseye') {
+    if debian::codename::lt('bullseye') {
         require ::profile::labs::lvm::srv
     }
 
