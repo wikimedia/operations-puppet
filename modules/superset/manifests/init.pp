@@ -64,29 +64,36 @@
 # [*enable_cas*]
 #   Enable authentication via CAS instead of LDAP
 #
+# [*metadata_cache_uri*]
+#   If specified, Superset uses this to cache its own metadata to speed up rendering the interface.
+#
+# [*data_cache_uri*]
+#   If specified, Superset uses this to cache the results of data queries.
+#
 class superset(
-    $port              = 9080,
-    $database_uri      = 'sqlite:////var/lib/superset/superset.db',
-    $workers           = 1,
-    $worker_class      = 'sync',
-    $admin_user        = 'admin',
-    $admin_password    = 'admin',
-    $secret_key        = 'not_really_a_secret_key',
-    $password_mapping  = undef,
-    $auth_type         = undef,
-    $auth_settings     = undef,
-    $statsd            = undef,
-    $deployment_user   = 'analytics_deploy',
-    $gunicorn_app      = 'superset:app',
-    $enable_cas        = false,
-    $cache_uri         = undef,
+    $port               = 9080,
+    $database_uri       = 'sqlite:////var/lib/superset/superset.db',
+    $workers            = 1,
+    $worker_class       = 'sync',
+    $admin_user         = 'admin',
+    $admin_password     = 'admin',
+    $secret_key         = 'not_really_a_secret_key',
+    $password_mapping   = undef,
+    $auth_type          = undef,
+    $auth_settings      = undef,
+    $statsd             = undef,
+    $deployment_user    = 'analytics_deploy',
+    $gunicorn_app       = 'superset:app',
+    $enable_cas         = false,
+    $metadata_cache_uri = undef,
+    $data_cache_uri     = undef,
 ) {
     ensure_packages([
         'virtualenv',
         'firejail',
     ])
 
-    if $cache_uri {
+    if $metadata_cache_uri or $data_cache_uri {
         ensure_packages(['python3-pylibmc'])
     }
 

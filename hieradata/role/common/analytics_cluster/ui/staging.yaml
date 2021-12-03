@@ -12,7 +12,8 @@ profile::superset::proxy::x_forwarded_proto: 'http'
 profile::superset::proxy::ferm_srange: '($CACHES $ANALYTICS_NETWORKS)'
 profile::superset::enable_cas: false
 # Disabling due to permission issue https://phabricator.wikimedia.org/T273850
-# profile::superset::cache_uri: 'localhost'
+# profile::superset::data_cache_uri: 'localhost'
+profile::superset::metadata_cache_uri: 'localhost'
 
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters:

@@ -79,18 +79,20 @@ SQLALCHEMY_CUSTOM_PASSWORD_STORE = lookup_password
 
 <% end -%>
 
-<% if @cache_uri -%>
+<% if @metadata_cache_uri -%>
 CACHE_CONFIG = {
     'CACHE_TYPE': 'memcached',
     'CACHE_DEFAULT_TIMEOUT': 60 * 60 * 12, # 12 hour default (in secs)
     'CACHE_KEY_PREFIX': 'superset_metadata',
-    'CACHE_MEMCACHED_SERVERS': ['<%= @cache_uri %>'],
+    'CACHE_MEMCACHED_SERVERS': ['<%= @metadata_cache_uri %>'],
 }
+<% end -%>
 
+<% if @data_cache_uri -%>
 DATA_CACHE_CONFIG = {
     'CACHE_TYPE': 'memcached',
     'CACHE_DEFAULT_TIMEOUT': 60 * 60 * 12, # 12 hour default (in secs)
     'CACHE_KEY_PREFIX': 'superset_results',
-    'CACHE_MEMCACHED_SERVERS': ['<%= @cache_uri %>'],
+    'CACHE_MEMCACHED_SERVERS': ['<%= @data_cache_uri %>'],
 }
 <% end -%>

@@ -10,7 +10,8 @@ profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::enable_cas: true
 # Temporary disabled, see https://phabricator.wikimedia.org/T273850
-#profile::superset::cache_uri: 'localhost'
+#profile::superset::data_cache_uri: 'localhost'
+profile::superset::metadata_cache_uri: 'localhost'
 
 # TLS Terminator settings
 # Please note: the service name is used to pick up the

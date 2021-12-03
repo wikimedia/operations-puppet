@@ -35,22 +35,27 @@
 # [*statsd*]
 #   statsd host:port
 #
-# [*cache_uri*]
-#   If set, used to configure the superset cache.
+# [*metadata_cache_uri*]
+#   If set, this is used to configure the superset metadata cache.
 #   Multiple backends are available but only memcached is supported here.
-
+#
+# [*data_cache_uri*]
+#   If set, this is used to configure the superset data cache with the results of queries.
+#   Multiple backends are available but only memcached is supported here.
+#
 class profile::superset(
-    Integer $workers                    = lookup('profile::superset::workers', { 'default_value' => 1 }),
-    String $database_uri                = lookup('profile::superset::database_uri', { 'default_value' => 'sqlite:////var/lib/superset/superset.db' }),
-    Optional[String] $database_password = lookup('profile::superset::database_password', { 'default_value' => undef }),
-    String $admin_user                  = lookup('profile::superset::admin_user', { 'default_value' => 'admin' }),
-    String $admin_password              = lookup('profile::superset::admin_password', { 'default_value' => 'admin' }),
-    String $secret_key                  = lookup('profile::superset::secret_key', { 'default_value' => 'not_really_a_secret_key' }),
-    Boolean $ldap_proxy_enabled         = lookup('profile::superset::ldap_proxy_enabled', { 'default_value' => false }),
-    Optional[String] $statsd            = lookup('statsd', { 'default_value' => undef }),
-    String $gunicorn_app                = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
-    Boolean $enable_cas                 = lookup('profile::superset::enable_cas'),
-    Optional[String] $cache_uri         = lookup('profile::superset::cache_uri', { 'default_value' => undef })
+    Integer $workers                     = lookup('profile::superset::workers', { 'default_value' => 1 }),
+    String $database_uri                 = lookup('profile::superset::database_uri', { 'default_value' => 'sqlite:////var/lib/superset/superset.db' }),
+    Optional[String] $database_password  = lookup('profile::superset::database_password', { 'default_value' => undef }),
+    String $admin_user                   = lookup('profile::superset::admin_user', { 'default_value' => 'admin' }),
+    String $admin_password               = lookup('profile::superset::admin_password', { 'default_value' => 'admin' }),
+    String $secret_key                   = lookup('profile::superset::secret_key', { 'default_value' => 'not_really_a_secret_key' }),
+    Boolean $ldap_proxy_enabled          = lookup('profile::superset::ldap_proxy_enabled', { 'default_value' => false }),
+    Optional[String] $statsd             = lookup('statsd', { 'default_value' => undef }),
+    String $gunicorn_app                 = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
+    Boolean $enable_cas                  = lookup('profile::superset::enable_cas'),
+    Optional[String] $metadata_cache_uri = lookup('profile::superset::metadata_cache_uri', { 'default_value' => undef }),
+    Optional[String] $data_cache_uri     = lookup('profile::superset::data_cache_uri', { 'default_value' => undef })
 ) {
 
     ensure_packages('libmariadb3')
@@ -103,19 +108,20 @@ class profile::superset(
     }
 
     class { '::superset':
-        workers          => $workers,
-        worker_class     => 'gevent',
-        database_uri     => $full_database_uri,
-        secret_key       => $secret_key,
-        admin_user       => $admin_user,
-        admin_password   => $admin_password,
-        auth_type        => $auth_type,
-        auth_settings    => $auth_settings,
-        password_mapping => $password_mapping,
-        statsd           => $statsd,
-        gunicorn_app     => $gunicorn_app,
-        enable_cas       => $enable_cas,
-        cache_uri        => $cache_uri,
+        workers            => $workers,
+        worker_class       => 'gevent',
+        database_uri       => $full_database_uri,
+        secret_key         => $secret_key,
+        admin_user         => $admin_user,
+        admin_password     => $admin_password,
+        auth_type          => $auth_type,
+        auth_settings      => $auth_settings,
+        password_mapping   => $password_mapping,
+        statsd             => $statsd,
+        gunicorn_app       => $gunicorn_app,
+        enable_cas         => $enable_cas,
+        metadata_cache_uri => $metadata_cache_uri,
+        data_cache_uri     => $data_cache_uri,
     }
 
     monitoring::service { 'superset':
