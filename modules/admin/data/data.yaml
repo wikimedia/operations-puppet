@@ -5695,3 +5695,7 @@ ldap_only_users:
     ensure: present
     realname: Amin Al Hazwani
     email: aalhazwani@wikimedia.org
+  ollieshotton:
+    ensure: present
+    realname: Ollie Shotton
+    email: oliver.shotton@wikimedia.de
