@@ -107,3 +107,6 @@ optionsDOT = {
 -- enable DoT (default port is 853)
 addTLSLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', optionsDOT)
 addTLSLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', optionsDOT)
+
+-- wikidough easter egg (and a reminder)
+addAction(AndRule({QNameRule('dough.wikimedia-dns.org.'), QTypeRule(DNSQType.TXT)}), SpoofRawAction("\027Be\032excellent\032to\032each\032other\033", {ttl=2022}))
