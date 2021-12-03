@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 #####################################################################
 # THIS FILE IS MANAGED BY PUPPET
@@ -9,6 +9,7 @@ import getpass
 import os
 import sys
 import traceback
+# TODO: work out why this is needed
 sys.path.append('/etc/ldap')
 
 try:

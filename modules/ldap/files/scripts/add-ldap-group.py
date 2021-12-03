@@ -1,8 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import grp
 import pwd
 import sys
 import traceback
+
 from optparse import OptionParser
 
 import ldapsupportlib

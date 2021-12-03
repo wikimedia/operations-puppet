@@ -56,19 +56,16 @@ class ldap::client::utils($ldapconfig) {
         '8'     => '3.4',
         '9'     => '3.5',
         '10'    => '3.7',
+        '11'    => '3.9',
         default => '3.7',
     }
 
-    # We barely need this on Buster or Stretch but we're definitely never
-    #  going to port it to python3.
-    if debian::codename::le('buster') {
-        file { ['/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py',
-                "/usr/local/lib/python${python3_version}/dist-packages/ldapsupportlib.py"]:
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/ldap/scripts/ldapsupportlib.py',
-        }
+    file { ['/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py',
+            "/usr/local/lib/python${python3_version}/dist-packages/ldapsupportlib.py"]:
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/ldap/scripts/ldapsupportlib.py',
     }
 
     if ( $::realm != 'labs' ) {
