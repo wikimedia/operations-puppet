@@ -1,0 +1,82 @@
+modules:
+  tcp_connect:
+    prober: tcp
+    timeout: 5s
+
+  ssh_banner:
+    prober: tcp
+    timeout: 5s
+    tcp:
+      query_response:
+      - expect: "^SSH-2.0-"
+
+  icmp:
+    prober: icmp
+    timeout: 5s
+
+  http_connect:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: ip4
+      no_follow_redirects: false
+      fail_if_ssl: true
+
+  http_200_300_connect:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: ip4
+      no_follow_redirects: false
+      fail_if_ssl: true
+      valid_status_codes: [200, 201, 202, 203, 204, 205, 206, 207, 208,
+        226, 300, 301, 302, 303, 304, 305, 306, 307, 308]
+
+  https_connect:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: ip4
+      no_follow_redirects: false
+      fail_if_not_ssl: true
+      tls_config:
+        insecure_skip_verify: false
+
+  # IP protocol-specific modules
+  tcp_ip4:
+    prober: tcp
+    tcp:
+      preferred_ip_protocol: ip4
+      ip_protocol_fallback: false
+
+  tcp_tls_ip4:
+    prober: tcp
+    tcp:
+      preferred_ip_protocol: ip4
+      ip_protocol_fallback: false
+      tls: true
+
+  tcp_ip6:
+    prober: tcp
+    tcp:
+      preferred_ip_protocol: ip6
+      ip_protocol_fallback: false
+
+  tcp_tls_ip6:
+    prober: tcp
+    tcp:
+      preferred_ip_protocol: ip6
+      ip_protocol_fallback: false
+      tls: true
+
+  icmp_ip4:
+    prober: icmp
+    icmp:
+      preferred_ip_protocol: ip4
+      ip_protocol_fallback: false
+
+  icmp_ip6:
+    prober: icmp
+    icmp:
+      preferred_ip_protocol: ip6
+      ip_protocol_fallback: false
