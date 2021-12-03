@@ -1836,6 +1836,9 @@ ldap:
   groups_cn: 'ou=groups'
   users_cn: 'ou=people'
   proxyagent: 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org'
+  proxypass: "%{lookup('labsldapconfig.proxypass')}"
+  script_user_dn: 'cn=scriptuser,ou=profile,dc=wikimedia,dc=org'
+  script_user_pass: "%{lookup('labsldapconfig.script_user_pass')}"
 apereo_cas:
   production:
     base_url: 'https://idp.wikimedia.org/'

@@ -1,6 +1,6 @@
-BASE            <%= @ldapconfig["basedn"] %>
-URI             <% @ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
 
+BASE            <%= @ldapconfig["basedn"] %>
+URI             <%= @ldapconfig['servernames'].map {|server| "ldap://#{server}:389" }.join(' ') %>
 # The next settings are not honored by OpenLDAP but are honored by sudo-ldap and /etc/sudo-ldap.conf is a symlink to /etc/ldap/ldap.conf
 BINDDN          cn=proxyagent,ou=profile,<%= @ldapconfig["basedn"] %>
 BINDPW          <%= @ldapconfig["proxypass"] %>
