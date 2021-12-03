@@ -216,6 +216,8 @@ def get_args():
                         help="Post PCC report to gerrit when polling fails")
     parser.add_argument('-N', '--no-post-success', action='store_true',
                         help="Do not post PCC report to gerrit")
+    parser.add_argument('-f', '--fail-fast', action='store_true',
+                        help="If passed, will stop the compilation when the first failure happens.")
     parser.add_argument('-v', '--verbose', action='count')
     return parser.parse_args()
 
@@ -300,6 +302,7 @@ def main():  # pylint: disable=too-many-locals
         'GERRIT_CHANGE_NUMBER': str(change['number']),
         'LIST_OF_NODES': nodes,
         'COMPILER_MODE': 'change',
+        'FAIL_FAST': "YES" if args.fail_fast else ""
     }
 
     invocation = job.invoke(build_params=build_params)
