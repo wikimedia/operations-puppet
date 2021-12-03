@@ -593,10 +593,13 @@ node 'db1121.eqiad.wmnet' {
     role(mariadb::sanitarium_master)
 }
 
+# Testing cluster
+# Testing master
 node 'db1124.eqiad.wmnet' {
     role(mariadb::core_test)
 }
 
+# Testing replica
 node 'db1125.eqiad.wmnet' {
     role(mariadb::core_test)
 }
