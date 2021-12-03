@@ -2568,6 +2568,11 @@ node /^restbase20(09|1[0-9]|2[0-3])\.codfw\.wmnet$/ {
     role(restbase::production)
 }
 
+# New restbase codfw cluster T294377
+node /^restbase202[456]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # cassandra/restbase dev cluster
 node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
