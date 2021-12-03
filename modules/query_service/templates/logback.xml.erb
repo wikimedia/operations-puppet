@@ -6,10 +6,11 @@
 
     <%- if @evaluators -%>
     <evaluator name="SYNTAX_ERROR">
+        <!-- This has to work in class loaders that don't have org.openrdf.query.MalformedQueryException too -->
         <expression>
             throwable != null &amp;&amp; throwable.getCause() != null &amp;&amp;
             throwable instanceof java.util.concurrent.ExecutionException &amp;&amp;
-            throwable.getCause() instanceof org.openrdf.query.MalformedQueryException
+            throwable.getCause().getClass().getName().equals("org.openrdf.query.MalformedQueryException")
         </expression>
     </evaluator>
     <evaluator name="QUERY_TIMEOUT">
