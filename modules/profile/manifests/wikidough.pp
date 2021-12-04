@@ -1,12 +1,12 @@
 class profile::wikidough (
-    Stdlib::Fqdn                 $wikidough_domain = lookup('profile::wikidough::service_domain'),
-    Stdlib::IP::Address::V4      $wikidough_ipv4   = lookup('profile::wikidough::service_ipv4'),
-    Dnsdist::Resolver            $resolver         = lookup('profile::wikidough::dnsdist::resolver'),
-    Dnsdist::TLS_common          $tls_common       = lookup('profile::wikidough::dnsdist::tls::common'),
-    Dnsdist::TLS_config          $tls_config_doh   = lookup('profile::wikidough::dnsdist::tls::doh'),
-    Dnsdist::TLS_config          $tls_config_dot   = lookup('profile::wikidough::dnsdist::tls::dot'),
-    Dnsdist::Webserver_config    $webserver_config = lookup('profile::wikidough::dnsdist::webserver', {'merge' => hash}),
-    Dnsdist::Http_headers        $custom_headers   = lookup('profile::wikidough::dnsdist::custom_headers'),
+    Stdlib::Fqdn              $wikidough_domain = lookup('profile::wikidough::service_domain'),
+    Stdlib::IP::Address::V4   $wikidough_ipv4   = lookup('profile::wikidough::service_ipv4'),
+    Dnsdist::Resolver         $resolver         = lookup('profile::wikidough::dnsdist::resolver'),
+    Dnsdist::TLS_common       $tls_common       = lookup('profile::wikidough::dnsdist::tls::common'),
+    Dnsdist::TLS_config       $tls_config_doh   = lookup('profile::wikidough::dnsdist::tls::doh'),
+    Dnsdist::TLS_config       $tls_config_dot   = lookup('profile::wikidough::dnsdist::tls::dot'),
+    Dnsdist::Webserver_config $webserver_config = lookup('profile::wikidough::dnsdist::webserver', {'merge' => hash}),
+    Dnsdist::Http_headers     $custom_headers   = lookup('profile::wikidough::dnsdist::custom_headers'),
 ) {
 
     include network::constants
