@@ -243,7 +243,7 @@ profile::kubernetes::deployment_server::general:
         nutcracker: nutcracker:0.0.4-20211010
         exporter: prometheus-nutcracker-exporter:0.0.2-20211010
       envoy: 1.15.5-1-20211010
-      rsyslogd: rsyslog:8.2102.0-1-20211010
+      rsyslogd: rsyslog:8.2102.0-2
   codfw:
     helmBinary: helm3
   eqiad:
