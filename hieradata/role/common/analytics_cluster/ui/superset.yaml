@@ -19,7 +19,10 @@ profile::superset::enable_cas: true
 # name listed does not reflect how the envoy proxy is set up.
 # superset.wikimedia.org is a SAN of the yarn.wikimedia.org
 # TLS certificate.
+# We also increate the envoy timeout here to just over 3 minutes.
+# As per: https://phabricator.wikimedia.org/T294771
 profile::envoy::ensure: present
+profile::tlsproxy::envoy::upstream_response_timeout: 185.0
 profile::tlsproxy::envoy::services:
    - server_names: ['*']
      port: 80
