@@ -240,21 +240,6 @@ class profile::prometheus::alerts (
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
     }
 
-    monitoring::check_prometheus { 'prometheus-job-unavailable':
-        description     => 'Prometheus jobs reduced availability',
-        dashboard_links => ['https://grafana.wikimedia.org/d/NEJu05xZz/prometheus-targets'],
-        # See https://phabricator.wikimedia.org/T276749 for netbox_device_statistics
-        # 'rails' excluded until Alertmanager migration https://phabricator.wikimedia.org/T289454
-        query           => 'site_job:up:avail{job\!~"(netbox_device_statistics|rails)"}',
-        warning         => 0.6,
-        critical        => 0.5,
-        method          => 'le',
-        retries         => 2,
-        # Icinga will query the site-local Prometheus 'global' instance
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/global",
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#Prometheus_job_unavailable',
-    }
-
     # Check metrics from Prometheus exporters about the underlying service
     # health (e.g. was the exporter able to gather metrics from the service?)
     # Upon changing this list the expression on this panel needs updating too:
