@@ -22,10 +22,17 @@ class pontoon::public_lb (
     $t = $services_config.map |$service_name, $config| {
         $server_name = "${config['public_endpoint']}.${public_domain}"
 
+        if 'public_aliases' in $config {
+            $aliases = $config['public_aliases'].map |$a| { "${a}.${public_domain}" }
+        } else {
+            $aliases = []
+        }
+
         [
             $service_name,
             {
                 'public_name'     => $server_name,
+                'public_aliases'  => $aliases,
                 'port'            => $config['port'],
                 'hosts'           => pontoon::hosts_for_role($config['role']),
                 'backend_use_tls' => $config['encryption'],

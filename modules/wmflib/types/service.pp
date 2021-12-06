@@ -38,6 +38,8 @@
 # @param Optional[Array[String]] aliases
 #     A list of alias names for the service. Useful for example to provide
 #     legacy names still referenced by configurations.
+# @param Optional[Array[String]] public_aliases
+#     A list of aliases for public names of the service. See also 'public_domain'.
 #
 type Wmflib::Service = Struct[
     {
@@ -53,5 +55,6 @@ type Wmflib::Service = Struct[
     'role'            => Optional[String],
     'public_endpoint' => Optional[String],
     'aliases'         => Optional[Array[String]],
+    'public_aliases'  => Optional[Array[String]],
     }
 ]

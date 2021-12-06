@@ -4,6 +4,9 @@ frontend public
     option forwardfor
 <%- @services.sort.each do |name, svc| -%>
     use_backend <%= name %> if { ssl_fc_sni -i <%= svc['public_name'] %> }
+    <%- svc['public_aliases'].sort.each do |name_alias| %>
+    use_backend <%= name %> if { ssl_fc_sni -i <%= name_alias %> }
+    <% end %>
 <% end %>
 
 <%- @services.sort.each do |name, svc| -%>

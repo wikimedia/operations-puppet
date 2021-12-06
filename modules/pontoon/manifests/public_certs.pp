@@ -11,7 +11,14 @@ class pontoon::public_certs (
 
     $public_names = $services_config.reduce([]) |$memo, $el| {
         [$service_name, $config] = $el
-        $memo << "${config['public_endpoint']}.${public_domain}"
+
+        if 'public_aliases' in $config {
+            $aliases = $config['public_aliases'].map |$a| { "${a}.${public_domain}" }
+        } else {
+            $aliases = []
+        }
+
+        $memo + $aliases + "${config['public_endpoint']}.${public_domain}"
     }
 
     file { '/etc/apache2/sites-enabled/000-default.conf':
