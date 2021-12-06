@@ -7,8 +7,9 @@
   .then((response) => response.json())
   .then(check => {
     if (check.result === true) {
+      const doughService = check.service;
       document.getElementById("check-heading").innerHTML = "&#9745;";
-      document.getElementById("check-result").textContent = "Congratulations! You are using Wikidough.";
+      document.getElementById("check-result").textContent = `Congratulations! You are using Wikidough (${doughService}).`;
     } else {
       document.getElementById("check-heading").innerHTML = "&#9746;";
       document.getElementById("check-result").textContent = "Sorry, you are not using Wikidough.";
