@@ -41,6 +41,19 @@ addAction(QTypeRule(DNSQType.ANY), RCodeAction(DNSRCode.NOTIMP))
 -- disable broken security polling due to custom Debian build (see T273322)
 setSecurityPollSuffix("")
 
+<% if @enable_wikidough -%>
+-- configuration settings specific to Wikidough
+
+-- intercept queries for durum, the check service
+-- let queries for the check service go through as they would to pdns-recursor
+addAction(QNameRule("check.wikimedia-dns.org."), PoolAction(""))
+-- to make a distinction between DoH and DoT, add a rule to check where the query was received
+addAction(AndRule({DSTPortRule(443), RegexRule("\\.check\\.wikimedia-dns\\.org$")}), SpoofAction("185.71.138.140"))
+addAction(AndRule({DSTPortRule(853), RegexRule("\\.check\\.wikimedia-dns\\.org$")}), SpoofAction("185.71.138.142"))
+
+addAction(AndRule({QNameRule('dough.wikimedia-dns.org.'), QTypeRule(DNSQType.TXT)}), SpoofRawAction("\027Be\032excellent\032to\032each\032other\033", {ttl=2022}))
+<% end -%>
+
 -- == Performance Tuning ==
 
 -- set the maximum number of TCP client threads (dnsdist's default is 10)
@@ -107,6 +120,3 @@ optionsDOT = {
 -- enable DoT (default port is 853)
 addTLSLocal('0.0.0.0', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', optionsDOT)
 addTLSLocal('[::]', '<%= @tls_common['cert_chain_path'] %>', '<%= @tls_common['cert_privkey_path'] %>', optionsDOT)
-
--- wikidough easter egg (and a reminder)
-addAction(AndRule({QNameRule('dough.wikimedia-dns.org.'), QTypeRule(DNSQType.TXT)}), SpoofRawAction("\027Be\032excellent\032to\032each\032other\033", {ttl=2022}))

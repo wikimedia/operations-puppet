@@ -20,6 +20,9 @@
 #  [*tls_config_dot*]
 #    [Dnsdist::TLS_config] TLS configuration for DoT. required.
 #
+#  [*enable_wikidough*]
+#    [bool] whether Wikidough-specific settings are enabled. default: true.
+#
 #  [*doh_paths*]
 #    [array] URL paths to accept queries on. default: /, /dns-query.
 #
@@ -67,25 +70,26 @@
 
 
 class dnsdist (
-    Dnsdist::Resolver                      $resolver,
-    Dnsdist::TLS_common                    $tls_common,
-    Dnsdist::TLS_config                    $tls_config_doh,
-    Dnsdist::TLS_config                    $tls_config_dot,
-    Array[String[1]]                       $doh_paths              = ['/', '/dns-query'],
-    Integer[1]                             $qps_max                = 40,
-    Boolean                                $enable_packetcache     = true,
-    Integer[1]                             $packetcache_max        = 10000000,
-    Integer[1]                             $ringbuffer_max         = 10,
-    Integer[1]                             $tcp_client_threads_max = 20,
-    Boolean                                $enable_console         = false,
-    Optional[String]                       $console_key            = undef,
-    Boolean                                $enable_webserver       = false,
-    Boolean                                $drop_querytype_any     = true,
-    Optional[Dnsdist::Webserver_config]    $webserver              = undef,
-    Boolean                                $enable_ecs             = true,
-    Boolean                                $enable_landing         = false,
-    Optional[String]                       $landing_text           = undef,
-    Dnsdist::Http_headers                  $custom_headers         = {},
+    Dnsdist::Resolver                   $resolver,
+    Dnsdist::TLS_common                 $tls_common,
+    Dnsdist::TLS_config                 $tls_config_doh,
+    Dnsdist::TLS_config                 $tls_config_dot,
+    Boolean                             $enable_wikidough       = true,
+    Array[String[1]]                    $doh_paths              = ['/', '/dns-query'],
+    Integer[1]                          $qps_max                = 40,
+    Boolean                             $enable_packetcache     = true,
+    Integer[1]                          $packetcache_max        = 10000000,
+    Integer[1]                          $ringbuffer_max         = 10,
+    Integer[1]                          $tcp_client_threads_max = 20,
+    Boolean                             $enable_console         = false,
+    Optional[String]                    $console_key            = undef,
+    Boolean                             $enable_webserver       = false,
+    Boolean                             $drop_querytype_any     = true,
+    Optional[Dnsdist::Webserver_config] $webserver              = undef,
+    Boolean                             $enable_ecs             = true,
+    Boolean                             $enable_landing         = false,
+    Optional[String]                    $landing_text           = undef,
+    Dnsdist::Http_headers               $custom_headers         = {},
 ) {
 
     if ($enable_console and $console_key == undef) {
