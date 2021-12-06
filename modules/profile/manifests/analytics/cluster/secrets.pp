@@ -5,6 +5,10 @@
 # This is so we can automate sqooping of data
 # out of MySQL into Hadoop and uploading into Swift.
 #
+# Commands here are all run by the hdfs user, so this
+# must be included on a node where the hdfs user exists
+# and has a kerberos keytab.
+#s
 # == Parameters
 #
 # [*swift_group*]
@@ -91,10 +95,10 @@ class profile::analytics::cluster::secrets(
     $swift_research_poc_user     = $swift_thanos_accounts['research_poc']['user']
     $swift_research_poc_key      = $swift_thanos_account_keys['research_poc']
     $swift_research_poc_auth_env_content = "export ST_AUTH=${swift_research_poc_auth_url}\nexport ST_USER=${swift_research_poc_user}\nexport ST_KEY=${swift_research_poc_key}\n"
-    $swift_research_poc_auth_env_path    = "/user/${analytics_research_user}/swift_auth_analytics_admin.env"
+    $swift_research_poc_auth_env_path    = "/user/${analytics_research_user}/swift_auth_research_poc.env"
     kerberos::exec { 'hdfs_put_swift_auth_research_poc.env':
         command => "/bin/echo -n '${swift_research_poc_auth_env_content}' | /usr/bin/hdfs dfs -put - ${swift_research_poc_auth_env_path} && /usr/bin/hdfs dfs -chmod 440 ${swift_research_poc_auth_env_path} && /usr/bin/hdfs dfs -chown ${analytics_research_user}:${analytics_research_group} ${swift_analytics_admin_auth_env_path}",
-        unless  => "/usr/bin/hdfs dfs -test -e ${swift_analytics_admin_auth_env_path}",
+        unless  => "/usr/bin/hdfs dfs -test -e ${swift_research_poc_auth_env_path}",
         user    => 'hdfs',
     }
 
