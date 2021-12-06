@@ -17,3 +17,4 @@ profile::gitlab::runner::locked: true
 # profile::gitlab::runner::registration_token: private
 profile::gitlab::runner::run_untagged: false
 profile::gitlab::runner::tags: ['protected']
+profile::gitlab::runner::enable_exporter: true
