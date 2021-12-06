@@ -3589,6 +3589,8 @@ service::catalog:
     encryption: true
     role: "grafana"
     public_endpoint: "grafana"
+    public_aliases:
+      - "grafana-rw"
     port: 443
     description: Graphing and dashboarding
     monitoring:
