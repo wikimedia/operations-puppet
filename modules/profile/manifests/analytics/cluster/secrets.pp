@@ -47,7 +47,7 @@ class profile::analytics::cluster::secrets(
     kerberos::exec { 'hdfs_put_mysql-analytics-research-client-pw.txt':
         command => "/bin/echo -n '${research_pass}' | /usr/bin/hdfs dfs -put - ${research_path} && /usr/bin/hdfs dfs -chmod 600 ${research_path} && /usr/bin/hdfs dfs -chown ${analytics_user}:${analytics_group} ${research_path}",
         unless  => "/usr/bin/hdfs dfs -test -e ${research_path}",
-        user    => $analytics_user,
+        user    => 'hdfs',
     }
 
     # mysql clouddb1021 analytics user creds
@@ -58,7 +58,7 @@ class profile::analytics::cluster::secrets(
     kerberos::exec { 'hdfs_put_mysql-analytics-labsdb-client-pw.txt':
         command => "/bin/echo -n '${labsdb_pass}' | /usr/bin/hdfs dfs -put - ${labsdb_path} && /usr/bin/hdfs dfs -chmod 600 ${labsdb_path} && /usr/bin/hdfs dfs -chown ${analytics_user}:${analytics_group} ${labsdb_path}",
         unless  => "/usr/bin/hdfs dfs -test -e ${labsdb_path}",
-        user    => $analytics_user,
+        user    => 'hdfs',
     }
 
 
@@ -74,7 +74,7 @@ class profile::analytics::cluster::secrets(
     kerberos::exec { 'hdfs_put_swift_auth_analytics_admin.env':
         command => "/bin/echo -n '${swift_analytics_admin_auth_env_content}' | /usr/bin/hdfs dfs -put - ${swift_analytics_admin_auth_env_path} && /usr/bin/hdfs dfs -chmod 640 ${swift_analytics_admin_auth_env_path} && /usr/bin/hdfs dfs -chown ${analytics_user}:${swift_group} ${swift_analytics_admin_auth_env_path}",
         unless  => "/usr/bin/hdfs dfs -test -e ${swift_analytics_admin_auth_env_path}",
-        user    => $analytics_user,
+        user    => 'hdfs',
     }
 
     # Render the research_poc thanos swift account Auth v1 env file for use by the analytics-research posix user.
@@ -95,7 +95,7 @@ class profile::analytics::cluster::secrets(
     kerberos::exec { 'hdfs_put_swift_auth_research_poc.env':
         command => "/bin/echo -n '${swift_research_poc_auth_env_content}' | /usr/bin/hdfs dfs -put - ${swift_research_poc_auth_env_path} && /usr/bin/hdfs dfs -chmod 440 ${swift_research_poc_auth_env_path} && /usr/bin/hdfs dfs -chown ${analytics_research_user}:${analytics_research_group} ${swift_analytics_admin_auth_env_path}",
         unless  => "/usr/bin/hdfs dfs -test -e ${swift_analytics_admin_auth_env_path}",
-        user    => $analytics_research_user,
+        user    => 'hdfs',
     }
 
 }
