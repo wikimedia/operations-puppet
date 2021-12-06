@@ -63,6 +63,7 @@ role::thumbor::mediawiki:
   target-q: TBD
 role::sessionstore:
   target-q: TBD
+  target-q: 2022-1
 role::dumps::generation::worker::dumper:
   target-q: TBD
 role::dumps::generation::worker::testbed:
@@ -78,8 +79,7 @@ role::eventschemas::service:
   target-q: 2020-3
 role::restbase::production:
   target-q: TBD
-role::restbase::base:
-  target-q: TBD
+  target-q: 2022-1
 role::ores:
   target-q: 2022-2
 role::mariadb::parsercache:
@@ -330,7 +330,7 @@ role::elasticsearch::relforge:
   target-q: 2022-1
   phab-task: 289135
 role::restbase::dev_cluster:
-  target-q: TBD
+  target-q: 2022-1
 role::dumps::generation::worker::dumper_monitor:
   target-q: TBD
 role::dumps::generation::worker::dumper_misc_crons_only:
