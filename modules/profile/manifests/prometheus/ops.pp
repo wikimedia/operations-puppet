@@ -146,6 +146,81 @@ class profile::prometheus::ops (
       },
     ]
 
+    # Local blackbox_exporter configuration
+    class { '::prometheus::blackbox::modules::service_catalog':
+        services_config => wmflib::service::fetch(),
+    }
+
+    # Generate target files for blackbox_service jobs below.
+    $probe_services = wmflib::service::fetch().filter |$name, $config| {
+        ('probes' in $config and
+          'discovery' in $config and
+          $config['state'] in ['production', 'monitoring_setup'])
+    }
+
+    # Restrict discovery probes to run from "main sites" since this
+    # profile is used in PoPs as well.
+    if ($::site in ['eqiad', 'codfw']) {
+        # XXX Export 'state' from catalog as a metric
+        class { '::prometheus::service_catalog_targets':
+            services_config => $probe_services,
+            targets_path    => $targets_path,
+        }
+    }
+
+    $blackbox_service_jobs = [
+      # Jobs for blackbox probing of discovery services (HTTP/TCP/ICMP)
+      # The scrape interval is 15s since we'd like to have higher
+      # resolution probe status (e.g. to see recovery faster)
+      {
+        'job_name'        => 'blackbox/discovery',
+        'metrics_path'    => '/probe',
+        'scrape_interval' => '15s',
+        'scrape_timeout'  => '3s',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_discovery.yaml" ] }
+        ],
+        # Relabel configuration to support for targets in the following forms to
+        # keep 'instance' label readable:
+        # - bare target (i.e. no @) -> copy unmodified to 'instance'
+        # - target in the form of foo@bar -> use foo as 'instance' and 'bar' as target
+
+        # This allows targets in the form of e.g.:
+        # - target: 'foo:443@https://foo.discovery.wmnet:443/path'
+        # will become:
+        # - instance: 'foo:443' (for usage as metric label)
+        # - target: 'https://foo.discovery.wmnet:443/path' (full url for bb to probe)
+
+        # Note that all regex here are implicitly anchored (^<regex>$)
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'regex'         => '([^@]+)',
+            'target_label'  => 'instance',
+          },
+          { 'source_labels' => ['__address__'],
+            'regex'         => '([^@]+)',
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__address__'],
+            'regex'         => '(.+)@(.+)',
+            'target_label'  => 'instance',
+            'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
+          },
+          { 'source_labels' => ['__address__'],
+            'regex'         => '(.+)@(.+)',
+            'target_label'  => '__param_target',
+            'replacement'   => '${2}', # lint:ignore:single_quote_string_with_variables
+          },
+          { 'source_labels' => ['module'],
+            'target_label'  => '__param_module',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+    ]
+
     # Special setup for Gerrit, internal hostnames don't serve data, thus limit polling gerrit
     # from eqiad and codfw only (as opposed to all sites).
     # See also https://phabricator.wikimedia.org/T184086
@@ -2090,7 +2165,7 @@ class profile::prometheus::ops (
         scrape_configs_extra   => [
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $ml_etcd_jobs, $mcrouter_jobs, $pdu_jobs,
-            $pybal_jobs, $blackbox_jobs, $jmx_exporter_jobs,
+            $pybal_jobs, $blackbox_jobs, $blackbox_service_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs, $ipsec_jobs,
