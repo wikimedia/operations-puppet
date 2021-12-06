@@ -1,6 +1,6 @@
 # NOTE: cluster_name must be kept in sync with the data role (logging/opensearch/data.yaml)
 profile::opensearch::dc_settings:
-  cluster_name: production-logging-codfw
+  cluster_name: production-elk7-codfw
   unicast_hosts:
     - logstash2001.codfw.wmnet
     - logstash2002.codfw.wmnet

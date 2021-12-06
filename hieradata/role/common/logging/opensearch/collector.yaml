@@ -46,7 +46,7 @@ profile::opensearch::base_data_dir: '/srv/opensearch'
 profile::opensearch::common_settings:
   awareness_attributes: ''
   auto_create_index: true
-  short_cluster_name: production-logging
+  short_cluster_name: elk7
   expected_nodes: 10
   heap_memory: '4G'
   # The OpenSearch nodes that are run on the same box as Logstash+OpenSearch Dashboards are only used
