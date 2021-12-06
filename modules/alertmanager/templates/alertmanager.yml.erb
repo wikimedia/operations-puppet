@@ -284,3 +284,26 @@ receivers:
     # #ops-eqsin
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7ooh7jsiccviqsicgfzy'
       send_resolved: false
+
+inhibit_rules:
+  # When ICMP has failed, inhibit TCP/UDP/HTTP since we know they can't
+  # work
+  - source_match_re:
+      module: '^icmp_.*'
+    target_match_re:
+      module: '^(tcp|udp|http)_.*'
+    equal:
+      - 'alertname'
+      - 'instance'
+      - 'site'
+
+  # Ditto for TCP, inhibit HTTP when the former has failed
+  - source_match_re:
+      module: '^tcp_.*'
+    target_match_re:
+      module: '^http_.*'
+    equal:
+      - 'alertname'
+      - 'instance'
+      - 'site'
+
