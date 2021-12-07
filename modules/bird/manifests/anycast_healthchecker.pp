@@ -21,12 +21,13 @@ class bird::anycast_healthchecker(
   ensure_packages(['anycast-healthchecker'])
 
   file { '/etc/anycast-healthchecker.conf':
-      ensure  => present,
-      owner   => 'bird',
-      group   => 'bird',
-      mode    => '0664',
-      content => template('bird/anycast-healthchecker.conf.erb'),
-      require => Package['anycast-healthchecker'],
+      ensure       => present,
+      owner        => 'bird',
+      group        => 'bird',
+      mode         => '0664',
+      content      => template('bird/anycast-healthchecker.conf.erb'),
+      validate_cmd => '/usr/bin/anycast-healthchecker --check',
+      require      => Package['anycast-healthchecker'],
 
   }
 
