@@ -5,6 +5,7 @@
 # @param max_content_length The maximum upload size
 class puppet_compiler::uploader (
     Wmflib::Ensure   $ensure             = 'present',
+    Stdlib::Port     $port               = 8001,
     Stdlib::Unixpath $app_dir            = '/usr/local/share/ppc_uploader',
     Stdlib::Unixpath $upload_dir         = '/srv/pcc_uploader',
     Integer          $max_content_length = 16000000,  # 16MB
@@ -32,7 +33,7 @@ class puppet_compiler::uploader (
             uwsgi => {
                 'plugins'     => 'python3',
                 'master'      => true,
-                'http-socket' => '127.0.0.1:8081',
+                'http-socket' => "127.0.0.1:${port}",
                 'wsgi-file'   => $wsgi_file,
                 'die-on-term' => true,
             }
