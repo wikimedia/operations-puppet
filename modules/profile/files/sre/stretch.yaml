@@ -78,7 +78,6 @@ role::parsoid::testing:
 role::eventschemas::service:
   target-q: 2020-3
 role::restbase::production:
-  target-q: TBD
   target-q: 2022-1
 role::ores:
   target-q: 2022-2
