@@ -23,12 +23,26 @@ backup_enable_progress_timer = False
 backup_posix_path = <%= @backup_path %>
 # The size in bytes that changes are tracked for incremental backups.
 # backup_file_size has to be multiple of backup_sha_block_size_bytes.
-backup_sha_block_size_bytes = 32768
+backup_sha_block_size_bytes = <%= 32 * 1024 %>
+
+
 # split binary backup files in chunks of this size.
 # This needs to be an integer multiple of backup_sha_block_size_bytes
-# Experimentation shows this to be a value that permits several simultaneous
-#  backups; larger values seem to cause intermittent backup failures
-backup_file_size = 983040000
+#
+# This number is the file size but it's also the buffer size
+#  (as of Victoria at least). So a large number here will
+#  cause OOM failures that leave orphaned jobs.
+#
+# I want this value to be be something like
+#  (<system RAM> - <safety margin>)/<number of workers> 
+#
+# But testing suggests that there's a number hidden multiplier in there someplace
+#  (a thread count?) so we divide everything by 8 at the end to be really careful
+#
+# The div(32)*32 no-op here is to round things off to an even multiple of
+# backup_sha_block_size_bites_data
+#
+backup_file_size = <%= (((@facts['memorysize_mb'] - 1024).div(2)  * 1024).div(32) * 32 * 1024)/8 %>
 
 # Default availability zone for new volumes. If not set, the storage_availability_zone option value is used as the default for new volumes.
 # (string value)
