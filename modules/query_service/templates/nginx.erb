@@ -133,7 +133,7 @@ server {
     }
     # See if we have an alias. If we do, rewrite to use the alias.
     if ( $aliased ) {
-        rewrite ^ /bigdata/namespace/$aliased/sparql last;
+        rewrite ^/bigdata/namespace/ /bigdata/namespace/$aliased/sparql last;
     }
 
 <% if @enable_ldf -%>
