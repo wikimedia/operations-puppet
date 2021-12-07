@@ -9,14 +9,16 @@ class puppet_compiler::uploader (
     Stdlib::Unixpath $upload_dir         = '/srv/pcc_uploader',
     Integer          $max_content_length = 16000000,  # 16MB
 ) {
-    ensure_packages(['python3-flask', 'python3-magic'])
-    wmflib::dir::mkdir($app_dir, $upload_dir)
     $wsgi_file = "${app_dir}/wsgi.py"
     $config_file = "${app_dir}/pcc_uploader.settings"
     $config = {
         'UPLOAD_FOLDER' => $upload_dir,
         'MAX_CONTENT_LENGTH' => $max_content_length,
     }
+
+    ensure_packages(['python3-flask', 'python3-magic'])
+    wmflib::dir::mkdir_p($app_dir, $upload_dir)
+
     file { $config_file:
         ensure  => stdlib::ensure($ensure, 'file'),
         content => $config.to_json,
