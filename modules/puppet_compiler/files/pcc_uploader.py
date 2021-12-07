@@ -22,6 +22,7 @@ def upload():
     upload_file = request.files['file']
     # 2048 is recommended by upstream docs
     mime_type = magic.detect_from_content(upload_file.stream.read(2048))
+    upload_file.stream.seek(0)
     if mime_type.mime_type != 'application/x-xz':
         raise werkzeug.exceptions.UnsupportedMediaType(mime_type.name)
     if upload_file:
