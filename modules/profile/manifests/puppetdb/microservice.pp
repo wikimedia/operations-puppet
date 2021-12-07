@@ -15,7 +15,7 @@ class profile::puppetdb::microservice (
         default => 'absent',
     }
 
-    ensure_packages(['python3-flask'], {'ensure' => $ensure})
+    ensure_packages(['python3-flask'])
 
     if $enabled {
         $certs = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
