@@ -1,5 +1,7 @@
 # opensearchDashboards.defaultAppId deprecated as of 1.0.0
 opensearchDashboards.defaultAppId: <%= @default_app_id %>
+# allow importing <64mb backups
+savedObjects.maxImportPayloadBytes: 67108864
 logging.quiet: <%= @logging_quiet %>
 metrics.enabled: <%= @metrics_enabled %>
 <%- unless @region_map_enabled.nil? or @region_map_enabled == :undef -%>
