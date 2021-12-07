@@ -27,27 +27,21 @@
 # @param nrpe_check_disk_critical Make disk space alerts paging, defaults to not paging
 # @parma raid_check_interval check interval for raid checks
 # @parma raid_retry_interval retry interval for raid retrys
-class profile::monitoring(
-    Wmflib::Ensure      $hardware_monitoring        = lookup('profile::monitoring::hardware_monitoring'),
+class profile::monitoring (
+    Wmflib::Ensure $hardware_monitoring   = lookup('profile::monitoring::hardware_monitoring'),
     # TODO: make this an array
-    String              $contact_group              = lookup('profile::monitoring::contact_group'),
-    String              $mgmt_contact_group         = lookup('profile::monitoring::mgmt_contact_group'),
-    String              $cluster                    = lookup('profile::monitoring::cluster'),
-    Boolean             $is_critical                = lookup('profile::monitoring::is_critical'),
-    Boolean             $monitor_systemd            = lookup('profile::monitoring::monitor_systemd'),
-    String              $nrpe_check_disk_options    = lookup('profile::monitoring::nrpe_check_disk_options'),
-    Boolean             $nrpe_check_disk_critical   = lookup('profile::monitoring::nrpe_check_disk_critical'),
-    Boolean             $check_smart                = lookup('profile::monitoring::check_smart'),
-    Boolean             $raid_check                 = lookup('profile::monitoring::raid_check'),
-    Integer             $raid_check_interval        = lookup('profile::monitoring::raid_check_interval'),
-    Integer             $raid_retry_interval        = lookup('profile::monitoring::raid_retry_interval'),
-    Boolean             $notifications_enabled      = lookup('profile::monitoring::notifications_enabled'),
-    Boolean             $do_paging                  = lookup('profile::monitoring::do_paging'),
-    String              $nagios_group               = lookup('profile::monitoring::nagios_group'),
-    Hash                $mgmt_parents               = lookup('profile::monitoring::mgmt_parents'),
-    Hash                $services                   = lookup('profile::monitoring::services'),
-    Hash                $hosts                      = lookup('profile::monitoring::hosts'),
-    Array[Stdlib::Host] $monitoring_hosts           = lookup('profile::monitoring::monitoring_hosts'),
+    String $contact_group                 = lookup('profile::monitoring::contact_group'),
+    String $mgmt_contact_group            = lookup('profile::monitoring::mgmt_contact_group'),
+    Boolean $is_critical                  = lookup('profile::monitoring::is_critical'),
+    Boolean $monitor_systemd              = lookup('profile::monitoring::monitor_systemd'),
+    String $nrpe_check_disk_options       = lookup('profile::monitoring::nrpe_check_disk_options'),
+    Boolean $nrpe_check_disk_critical     = lookup('profile::monitoring::nrpe_check_disk_critical'),
+    Boolean $raid_check                   = lookup('profile::monitoring::raid_check'),
+    Boolean $check_smart                  = lookup('profile::monitoring::check_smart'),
+    Integer $raid_check_interval          = lookup('profile::monitoring::raid_check_interval'),
+    Integer $raid_retry_interval          = lookup('profile::monitoring::raid_retry_interval'),
+    Boolean $notifications_enabled        = lookup('profile::monitoring::notifications_enabled'),
+    Array[Stdlib::Host] $monitoring_hosts = lookup('profile::monitoring::monitoring_hosts'),
     Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = lookup('profile::monitoring::raid_write_cache_policy')
 ) {
     ensure_packages('ruby-safe-yaml')
@@ -64,16 +58,16 @@ class profile::monitoring(
         }
     }
 
-    class { 'monitoring':
-        contact_group         => $contact_group,
-        mgmt_contact_group    => $mgmt_contact_group,
-        nagios_group          => $nagios_group,
-        cluster               => $cluster,
+    monitoring::host { $facts['hostname']:
         notifications_enabled => $notifications_enabled,
-        do_paging             => $do_paging,
-        mgmt_parents          => $mgmt_parents,
-        hosts                 => $hosts,
-        services              => $services,
+        critical              => $is_critical,
+        mgmt_contact_group    => $mgmt_contact_group
+    }
+
+    monitoring::service { 'ssh':
+        description   => 'SSH',
+        check_command => 'check_ssh',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/SSH/monitoring',
     }
 
 

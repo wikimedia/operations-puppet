@@ -26,7 +26,6 @@ class profile::icinga(
     Array[String]                 $datacenters           = lookup('datacenters'),
     Hash[String, Hash]            $atlas_measurements    = lookup('ripeatlas_measurements'),
     Integer[1]                    $logs_keep_days        = lookup('profile::icinga::logs_keep_days'),
-    Hash[String, String]          $mgmt_parents          = lookup('profile::icinga::mgmt_parents'),
     Boolean                       $stub_contactgroups    = lookup('profile::icinga::stub_contactgroups', {'default_value' => false}),
     Integer                       $shard_size_warning    = lookup('profile::elasticsearch::monitor::shard_size_warning', {'default_value' => 110}),
     Integer                       $shard_size_critical   = lookup('profile::elasticsearch::monitor::shard_size_critical', {'default_value' => 140}),
@@ -46,9 +45,7 @@ class profile::icinga(
     class { 'netops::monitoring':
         atlas_measurements => $atlas_measurements,
     }
-    class { 'facilities':
-        mgmt_parents => $mgmt_parents
-    }
+    class { 'facilities': }
     class { 'service::monitor': }
     # Experimental load-balancer monitoring for services using service-checker
     class { 'lvs::monitor_services':

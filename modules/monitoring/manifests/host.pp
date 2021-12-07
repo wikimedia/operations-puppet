@@ -2,30 +2,37 @@
 # Exports the resource that monitors hosts in icinga
 #
 define monitoring::host (
-    Wmflib::Ensure         $ensure                = present,
-    String                 $os                    = $facts['operatingsystem'],
-    Boolean                $critical              = false,
-    Optional[Stdlib::Host] $ip_address            = $facts['ipaddress'],
-    Optional[Stdlib::Fqdn] $host_fqdn             = undef,
-    Optional[String]       $contact_group         = undef,
-    Optional[String]       $group                 = undef,
-    Optional[String]       $parents               = undef,
-    Optional[Boolean]      $notifications_enabled = undef,
+    $ip_address            = $facts['ipaddress'],
+    $os                    = $facts['operatingsystem'],
+    $host_fqdn             = undef,
+    $group                 = undef,
+    $ensure                = present,
+    $critical              = false,
+    $parents               = undef,
+    $contact_group         = lookup('contactgroups', {'default_value' => 'admins'}),
+    $mgmt_contact_group    = 'admins',
+    Boolean $notifications_enabled = true,
+    Hash[String, String] $mgmt_parents = lookup('monitoring::mgmt_parents', {'default_value' => {}}), # lint:ignore:wmf_styleguide
+    String $cluster = lookup('cluster'),
+    String $hostgroup_default = lookup('nagios_group', {'default_value' => "${cluster}_${::site}"}), # lint:ignore:wmf_styleguide
 ){
 
-    include monitoring
-    $_contact_group          = pick($contact_group, $monitoring::contact_group)
-    $mgmt_contact_group     = $monitoring::mgmt_contact_group
-    $mgmt_parents           = $monitoring::mgmt_parents
-    # Use pick default as it allows an undef default
-    $_notifications_enabled = pick($notifications_enabled, $monitoring::notifications_enabled)
-    $hostgroup              = pick($group, $monitoring::nagios_group)
-    $nagios_address         = pick($ip_address, $host_fqdn)
+    $nagios_address = $host_fqdn ? {
+        undef   => $ip_address,
+        default => $host_fqdn,
+    }
+
+    # Determine the hostgroup:
+    # If defined in the declaration of resource, we use it;
+    # If not, adopt the standard format
+    $hostgroup = $group ? {
+        /.+/    => $group,
+        default => $hostgroup_default,
+    }
 
     $real_contact_groups = $critical ? {
-        # TODO: we should probably move this to the profile
-        true    => "${_contact_group},sms,admins",
-        default => $_contact_group,
+        true    => "${contact_group},sms,admins",
+        default => $contact_group,
     }
 
     # Define the nagios host instance
@@ -33,10 +40,12 @@ define monitoring::host (
     # attributes in the case the host exports it's configuration. Since this
     # definition is also used for non-exported resources as well, this if guard
     # is required
-    if $title == $facts['hostname'] {
+    if $title == $::hostname {
         $image = $os ? {
+            'Ubuntu'  => 'ubuntu',
+            'Debian'  => 'debian',
             'Junos'   => 'juniper',
-            default   => 'debian'
+            default   => 'linux40'
         }
         $icon_image      = "vendors/${image}.png"
         $vrml_image      = "vendors/${image}.png"
@@ -105,7 +114,7 @@ define monitoring::host (
             check_command         => 'check_ping!500,20%!2000,100%',
             check_period          => '24x7',
             max_check_attempts    => 2,
-            notifications_enabled => $_notifications_enabled.bool2str('1', '0'),
+            notifications_enabled => $notifications_enabled.bool2str('1', '0'),
             contact_groups        => $real_contact_groups,
             notification_interval => 0,
             notification_period   => '24x7',

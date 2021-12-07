@@ -1,35 +1,43 @@
 define monitoring::service(
-    String                            $check_command,
-    String                            $notes_url,
-    Wmflib::Ensure                    $ensure                = present,
-    Optional[String]                  $description           = undef,
-    Integer                           $retries               = 3,
-    Boolean                           $critical              = false,
-    Boolean                           $passive               = false,
-    Integer                           $freshness             = 36000,
-    Integer                           $check_interval        = 1,
-    Integer                           $retry_interval        = 1,
-    Stdlib::Unixpath                  $config_dir            = '/etc/nagios',
-    Variant[Stdlib::Host,String]      $host                  = $facts['hostname'],
-    Optional[String]                  $contact_group         = undef,
-    Optional[String]                  $group                 = undef,
-    Optional[Boolean]                 $notifications_enabled = undef,
-    Optional[Variant[Boolean,String]] $event_handler         = undef,
+    Optional[String] $description,
+    String $check_command,
+    String $notes_url,
+    Variant[Stdlib::Host,String] $host = $::hostname,
+    Integer $retries        = 3,
+    Optional[String] $group = undef,
+    Wmflib::Ensure $ensure  = present,
+    Boolean $critical       = false,
+    Boolean $passive        = false,
+    Integer $freshness      = 36000,
+    Integer $check_interval = 1,
+    Integer $retry_interval = 1,
+    String $contact_group   = lookup('contactgroups', {'default_value' => 'admins'}), # FIXME, defines should not have calls to hiera/lookup
+    Stdlib::Unixpath $config_dir = '/etc/nagios',
+    Optional[Variant[Boolean,String]] $event_handler = undef,
+    Optional[Boolean] $notifications_enabled = $::profile::monitoring::notifications_enabled # FIXME, base modules should not reference variables in the profile name space
 ){
 
-    include monitoring
-    $cluster_name           = $monitoring::cluster
-    $do_paging              = $monitoring::do_paging
-    # cast undef to an empty string
-    # lint:ignore:only_variable_string
-    $description_safe       = "${description}".regsubst('[`~!$%^&*"|\'<>?,()=]', '-', 'G')
-    # lint:endignore
-    $_notifications_enabled = pick($notifications_enabled, $monitoring::notifications_enabled)
-    $servicegroups          = pick($group, $monitoring::nagios_group)
-    $_contact_group         = pick($contact_group, $monitoring::contact_group)
+    # the list of characters is the default for illegal_object_name_chars
+    # nagios/icinga option
+    if $description {
+        $description_safe = regsubst($description, '[`~!$%^&*"|\'<>?,()=]', '-', 'G')
+    } else {
+        $description_safe = ''
+    }
 
     if $check_command =~ /\\n/ {
         fail("Parameter check_command cannot contain newlines: ${check_command}")
+    }
+
+    if ! $host {
+        fail("Parameter ${host} not defined!")
+    }
+
+    $cluster_name = lookup('cluster')
+
+    $servicegroups = $group ? {
+        /.+/    => $group,
+        default => lookup('nagios_group', {'default_value' => "${cluster_name}_${::site}"}),
     }
 
     $notification_interval = $critical ? {
@@ -40,34 +48,52 @@ define monitoring::service(
     # If a service is set to critical and
     # paging is not disabled for this machine in hiera,
     # then use the "sms" contact group which creates pages.
+    $do_paging = lookup('do_paging', {'default_value' => true})
 
     case $critical {
         true: {
             case $do_paging {
                 true:    {
-                  $real_contact_groups = "${_contact_group},sms,admins"
+                  $real_contact_groups = "${contact_group},sms,admins"
                   $real_description = "${description_safe} #page"
                 }
                 default: {
-                  $real_contact_groups = "${_contact_group},admins"
+                  $real_contact_groups = "${contact_group},admins"
                   $real_description = $description_safe
                 }
             }
         }
         default: {
-          $real_contact_groups = $_contact_group
+          $real_contact_groups = $contact_group
           $real_description = $description_safe
         }
     }
 
-    $check_volatile = $passive.bool2num
-    $check_fresh = $passive.bool2num
-    $is_active = (!$passive).bool2num
+    $is_active = $passive ? {
+        true    => 0,
+        default => 1,
+    }
+
+    $check_volatile = $passive ? {
+        true    => 1,
+        default => 0,
+    }
+
+    $check_fresh = $passive ? {
+        true    => 1,
+        default => 0,
+    }
 
     $is_fresh = $passive ? {
         true    => $freshness,
         default => undef,
     }
+
+    # Safeguard against notifications enabled not being defined due to class
+    # declarations
+    # TODO: this is required by monitoring::host and monitoring::service
+    # we should refactor thoses classes so they dont need this variable
+    $real_notifications_enabled = ($notifications_enabled and true).bool2str('1', '0')
 
     # the nagios service instance
     $service = {
@@ -84,7 +110,7 @@ define monitoring::service(
             notification_interval  => $notification_interval,
             notification_period    => '24x7',
             notification_options   => 'c,r,f',
-            notifications_enabled  => $_notifications_enabled.bool2str('1', '0'),
+            notifications_enabled  => $real_notifications_enabled,
             contact_groups         => $real_contact_groups,
             passive_checks_enabled => 1,
             active_checks_enabled  => $is_active,
