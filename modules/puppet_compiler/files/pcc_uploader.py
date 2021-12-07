@@ -27,7 +27,8 @@ def upload():
         raise werkzeug.exceptions.UnsupportedMediaType(mime_type.name)
     if upload_file:
         filename = secure_filename(upload_file.filename)
-        upload_file.save(Path(app.config['UPLOAD_FOLDER'], filename))
+        # TODO: no need to cast in when on bullseye
+        upload_file.save(str(Path(app.config['UPLOAD_FOLDER'], filename)))
         return jsonify(result=True)
     raise werkzeug.exceptions.NotImplemented('Unknown Error')
 
