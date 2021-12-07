@@ -17,7 +17,7 @@ class puppet_compiler::uploader (
     }
 
     ensure_packages(['python3-flask', 'python3-magic'])
-    wmflib::dir::mkdir_p($app_dir, $upload_dir)
+    wmflib::dir::mkdir_p([$app_dir, $upload_dir])
 
     file { $config_file:
         ensure  => stdlib::ensure($ensure, 'file'),
