@@ -1,6 +1,8 @@
 # monitoring of non-server data center
 # hardware like power distribution units and cameras
-class facilities {
+class facilities (
+    Hash[String, String] $mgmt_parents = {}
+) {
 
     # The PDUs are queried over SNMP using the snmp command provided by the snmp
     # package. For now ensure it here but it may need to be put in another place

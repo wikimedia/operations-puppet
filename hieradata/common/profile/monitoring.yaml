@@ -14,4 +14,22 @@ profile::monitoring::monitor_systemd: true
 profile::monitoring::monitor_screens: true
 profile::monitoring::monitoring_hosts: "%{alias('monitoring_hosts')}"
 profile::monitoring::raid_check: true
+profile::monitoring::do_paging: "%{alias('do_paging')}"
+profile::monitoring::cluster: "%{alias('cluster')}"
+profile::monitoring::nagios_group: "%{alias('nagios_group')}"
 profile::monitoring::raid_write_cache_policy: ~
+profile::monitoring::hosts:
+  "%{facts.hostname}":
+    critical: "%{alias('profile::monitoring::is_critical')}"
+profile::monitoring::services:
+  ssh:
+    description: 'SSH'
+    check_command: 'check_ssh'
+    notes_url: 'https://wikitech.wikimedia.org/wiki/SSH/monitoring'
+profile::monitoring::mgmt_parents:
+  eqiad: msw1-eqiad
+  codfw: msw1-codfw
+  ulsfo: mr1-ulsfo
+  esams: mr1-esams
+  eqsin: mr1-eqsin
+  drmrs: mr1-drmrs

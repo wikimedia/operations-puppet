@@ -50,12 +50,3 @@ monitoring::groups:
     description: Equipment with asw-d-codfw as uplink
   asw2-esams.mgmt.esams.wmnet:
     description: Equipment with asw2-esams as uplink
-
-
-monitoring::mgmt_parents:
-  eqiad: msw1-eqiad
-  codfw: msw1-codfw
-  ulsfo: mr1-ulsfo
-  esams: mr1-esams
-  eqsin: mr1-eqsin
-  drmrs: mr1-drmrs
