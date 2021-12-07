@@ -81,9 +81,13 @@ class swift::proxy (
 
     if debian::codename::lt('bullseye') {
         $python_version = '2.7'
+        $monotonic_package = 'python-monotonic'
     } else {
         $python_version = '3.9'
+        $monotonic_package = 'python3-monotonic'
     }
+
+    ensure_packages($monotonic_package)
 
     file { "/usr/local/lib/python${python_version}/dist-packages/wmf/":
         owner   => 'root',
