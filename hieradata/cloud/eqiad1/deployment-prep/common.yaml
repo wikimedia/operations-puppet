@@ -24,6 +24,8 @@ service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqi
 profile::cache::purge::kafka_cluster_name: main-deployment-prep
 # T286502
 profile::trafficserver::backend::ram_cache_size: 134217728
+profile::trafficserver::backend::monitor_enable: false
+profile::trafficserver::tls::monitor_enable: false
 # T247147
 profile::envoy::ensure: absent
 # Used to sync the setting between all Kafka clusters and clients.

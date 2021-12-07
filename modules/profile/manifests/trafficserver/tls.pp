@@ -29,6 +29,7 @@ class profile::trafficserver::tls (
     Stdlib::Absolutepath $atsmtail_progs=lookup('profile::trafficserver::tls::atsmtail_tls_progs', {'default_value' => '/etc/atsmtail-tls'}),
     Stdlib::Port::User $atsmtail_port=lookup('profile::trafficserver::tls::atsmtail_tls_port', {'default_value' => 3905}),
     String $mtail_args=lookup('profile::trafficserver::tls::mtail_args', {'default_value' => ''}),
+    Boolean $monitor_enable=lookup('profile::trafficserver::tls::monitor_enable'),
 ){
     $errorpage = {
         title       => 'Wikimedia Error',
@@ -217,16 +218,18 @@ class profile::trafficserver::tls (
         config_prefix => $paths['sysconfdir'],
     }
 
-    # Monitoring
-    profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
-        paths                    => $paths,
-        port                     => $https_port,
-        prometheus_exporter_port => $prometheus_exporter_port,
-        inbound_tls              => $inbound_tls_settings,
-        instance_name            => $instance_name,
-        acme_chief               => $unified_acme_chief,
-        disable_config_check     => true,
-        user                     => $user,
+    if $monitor_enable {
+        # Monitoring
+        profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
+            paths                    => $paths,
+            port                     => $https_port,
+            prometheus_exporter_port => $prometheus_exporter_port,
+            inbound_tls              => $inbound_tls_settings,
+            instance_name            => $instance_name,
+            acme_chief               => $unified_acme_chief,
+            disable_config_check     => true,
+            user                     => $user,
+        }
     }
 
     profile::trafficserver::logs { "trafficserver_${instance_name}_logs":

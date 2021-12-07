@@ -1,5 +1,6 @@
 profile::trafficserver::backend::trusted_ca_source: 'puppet:///modules/profile/trafficserver/ats_trusted_ca.pem'
 profile::trafficserver::backend::trusted_ca_path: '/etc/ssl/certs/ats_trusted_ca.pem'
+profile::trafficserver::backend::monitor_enable: true
 profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://15.wikipedia.org

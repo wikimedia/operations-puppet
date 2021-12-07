@@ -30,6 +30,7 @@ class profile::trafficserver::backend (
     Boolean $systemd_hardening=lookup('profile::trafficserver::backend::systemd_hardening', {default_value => true}),
     Stdlib::Filesource $trusted_ca_source = lookup('profile::trafficserver::backend::trusted_ca_source'),
     Stdlib::Unixpath $trusted_ca_path = lookup('profile::trafficserver::backend::trusted_ca_path'),
+    Boolean $monitor_enable=lookup('profile::trafficserver::backend::monitor_enable'),
 ){
     $global_lua_script = $default_lua_script? {
         ''      => '',
@@ -63,11 +64,13 @@ class profile::trafficserver::backend (
         source => $trusted_ca_source,
     }
 
-    nrpe::monitor_service { 'default_ats_lua_conf':
-        description  => 'Default ATS Lua configuration file',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_default_ats_lua_conf',
-        require      => File['/usr/local/lib/nagios/plugins/check_default_ats_lua_conf'],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
+    if $monitor_enable {
+        nrpe::monitor_service { 'default_ats_lua_conf':
+            description  => 'Default ATS Lua configuration file',
+            nrpe_command => '/usr/local/lib/nagios/plugins/check_default_ats_lua_conf',
+            require      => File['/usr/local/lib/nagios/plugins/check_default_ats_lua_conf'],
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
+        }
     }
 
     $errorpage = {
@@ -144,14 +147,16 @@ class profile::trafficserver::backend (
         source    => 'puppet:///modules/profile/trafficserver/x-wikimedia-debug-routing.lua',
     }
 
-    # Monitoring
-    profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
-        paths                    => $paths,
-        port                     => $http_port,
-        prometheus_exporter_port => $prometheus_exporter_port,
-        default_instance         => true,
-        instance_name            => $instance_name,
-        user                     => $user,
+    if $monitor_enable {
+        # Monitoring
+        profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
+            paths                    => $paths,
+            port                     => $http_port,
+            prometheus_exporter_port => $prometheus_exporter_port,
+            default_instance         => true,
+            instance_name            => $instance_name,
+            user                     => $user,
+        }
     }
 
     profile::trafficserver::logs { "trafficserver_${instance_name}_logs":

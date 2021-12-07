@@ -1,4 +1,5 @@
 profile::trafficserver::tls::https_port: 443
+profile::trafficserver::tls::monitor_enable: true
 profile::trafficserver::tls::network_settings:
   connections_throttle: 0
   sock_option_flag_in: 0xd
