@@ -347,6 +347,42 @@ profile::mediawiki::vhost_feature_flags: {}
 # - T180761.
 profile::mediawiki::php::enable_request_profiling: true
 
+profile::monitoring::hardware_monitoring: 'absent'
+profile::monitoring::contact_group: "%{alias('contactgroups')}"
+profile::monitoring::mgmt_contact_group: "%{alias('mgmt_contactgroups')}"
+# the -A -i ... part is a gross hack to workaround Varnish partitions
+# that are purposefully at 99%. Better ideas are welcome.
+profile::monitoring::nrpe_check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -i "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs'
+profile::monitoring::nrpe_check_disk_critical: false
+profile::monitoring::raid_check_interval: 10
+profile::monitoring::raid_retry_interval: 10
+profile::monitoring::check_smart: false
+profile::monitoring::notifications_enabled: false
+profile::monitoring::is_critical: false
+profile::monitoring::monitor_systemd: false
+profile::monitoring::monitor_screens: false
+profile::monitoring::monitoring_hosts: "%{alias('monitoring_hosts')}"
+profile::monitoring::raid_check: false
+profile::monitoring::do_paging: "%{alias('do_paging')}"
+profile::monitoring::cluster: "%{alias('cluster')}"
+profile::monitoring::nagios_group: "%{alias('nagios_group')}"
+profile::monitoring::raid_write_cache_policy: ~
+profile::monitoring::hosts:
+  "%{facts.hostname}":
+    critical: "%{alias('profile::monitoring::is_critical')}"
+profile::monitoring::services:
+  ssh:
+    description: 'SSH'
+    check_command: 'check_ssh'
+    notes_url: 'https://wikitech.wikimedia.org/wiki/SSH/monitoring'
+profile::monitoring::mgmt_parents:
+  eqiad: msw1-eqiad
+  codfw: msw1-codfw
+  ulsfo: mr1-ulsfo
+  esams: mr1-esams
+  eqsin: mr1-eqsin
+  drmrs: mr1-drmrs
+
 wikimail_smarthost:
 - 'deployment-mx03.deployment-prep.eqiad1.wikimedia.cloud'
 
