@@ -60,12 +60,20 @@ class ldap::client::utils($ldapconfig) {
         default => '3.7',
     }
 
-    file { ['/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py',
-            "/usr/local/lib/python${python3_version}/dist-packages/ldapsupportlib.py"]:
+    file { "/usr/local/lib/python${python3_version}/dist-packages/ldapsupportlib.py":
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/ldap/scripts/ldapsupportlib.py',
+    }
+
+    if debian::codename::le('buster') {
+        file { '/usr/local/lib/python2.7/dist-packages/ldapsupportlib.py':
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => 'puppet:///modules/ldap/scripts/ldapsupportlib.py',
+        }
     }
 
     if ( $::realm != 'labs' ) {
