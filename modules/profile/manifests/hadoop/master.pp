@@ -137,41 +137,5 @@ class profile::hadoop::master(
                 Sudo::User['nagios-check_hdfs_active_namenode'],
             ],
         }
-
-        monitoring::check_prometheus { 'hadoop-yarn-unhealthy-workers':
-            description     => 'Yarn Nodemanagers in unhealthy status',
-            dashboard_links => ["https://grafana.wikimedia.org/d/000000585/hadoop?orgId=1&viewPanel=46&var-hadoop_cluster=${cluster_name}"],
-            query           => "scalar(Hadoop_ResourceManager_NumUnhealthyNMs{instance=\"${::hostname}:10083\"})",
-            warning         => 1,
-            critical        => 3,
-            contact_group   => 'analytics',
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Unhealthy_Yarn_Nodemanagers',
-        }
-
-        # Thresholds for the HDFS namenode are higher since it has always
-        # filled most of its heap. This is not bad of course, but we'd like to know
-        # if the usage stays above 90% over time to see if anything is happening.
-        monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
-            description     => 'HDFS active Namenode JVM Heap usage',
-            dashboard_links => ["https://grafana.wikimedia.org/d/000000585/hadoop?orgId=1&viewPanel=4&var-hadoop_cluster=${cluster_name}"],
-            query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}[60m]))",
-            warning         => 0.9,
-            critical        => 0.95,
-            contact_group   => 'analytics',
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
-        }
-
-        monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
-            description     => 'YARN active ResourceManager JVM Heap usage',
-            dashboard_links => ["https://grafana.wikimedia.org/d/000000585/hadoop?orgId=1&viewPanel=12&var-hadoop_cluster=${cluster_name}"],
-            query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}[60m]))",
-            warning         => 0.9,
-            critical        => 0.95,
-            contact_group   => 'analytics',
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
-        }
     }
 }

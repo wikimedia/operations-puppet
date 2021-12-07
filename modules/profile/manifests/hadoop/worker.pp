@@ -92,27 +92,5 @@ class profile::hadoop::worker(
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
             }
         }
-
-        monitoring::check_prometheus { 'analytics_hadoop_hdfs_datanode':
-            description     => 'HDFS DataNode JVM Heap usage',
-            dashboard_links => ["https://grafana.wikimedia.org/d/000000585/hadoop?orgId=1&viewPanel=1&var-hadoop_cluster=${cluster_name}"],
-            query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:51010\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:51010\",area=\"heap\"}[60m]))",
-            warning         => 0.9,
-            critical        => 0.95,
-            contact_group   => 'analytics',
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
-        }
-
-        monitoring::check_prometheus { 'analytics_hadoop_yarn_nodemanager':
-            description     => 'YARN NodeManager JVM Heap usage',
-            dashboard_links => ["https://grafana.wikimedia.org/d/000000585/hadoop?orgId=1&viewPanel=17&var-hadoop_cluster=${cluster_name}"],
-            query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:8141\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:8141\",area=\"heap\"}[60m]))",
-            warning         => 0.9,
-            critical        => 0.95,
-            contact_group   => 'analytics',
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/analytics",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
-        }
     }
 }
