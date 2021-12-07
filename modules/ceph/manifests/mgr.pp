@@ -9,7 +9,7 @@ class ceph::mgr(
     Stdlib::Unixpath $data_dir,
 ) {
     if defined(Ceph::Auth::Keyring['admin']) {
-        Ceph::Auth::Keyring['admin'] -> Class['ceph::mon']
+        Ceph::Auth::Keyring['admin'] -> Class['ceph::mgr']
     } else {
         notify {'ceph::mgr: Admin keyring not defined, things might not work as expected.': }
     }
