@@ -6,12 +6,12 @@
 class puppet_compiler::uploader (
     Wmflib::Ensure   $ensure             = 'present',
     Stdlib::Port     $port               = 8001,
-    Stdlib::Unixpath $app_dir            = '/usr/local/share/ppc_uploader',
+    Stdlib::Unixpath $app_dir            = '/usr/local/share/pcc_uploader',
     Stdlib::Unixpath $upload_dir         = '/srv/pcc_uploader',
     Integer          $max_content_length = 16000000,  # 16MB
 ) {
     $wsgi_file = "${app_dir}/wsgi.py"
-    $config_file = "${app_dir}/pcc_uploader.settings"
+    $config_file = "${app_dir}/pcc_uploader.json"
     $config = {
         'UPLOAD_FOLDER' => $upload_dir,
         'MAX_CONTENT_LENGTH' => $max_content_length,
