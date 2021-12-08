@@ -18,8 +18,9 @@ server {
 
   <%= @ssl_settings.join("\n  ") %>
 
-  add_header Content-Security-Policy     "default-src 'self'; script-src 'self'; style-src 'self'; connect-src https://*.check.wikimedia-dns.org; frame-src 'none'; frame-ancestors 'none';";
-  add_header X-Content-Type-Options      "nosniff";
+  add_header  Content-Security-Policy     "default-src 'self'; script-src 'self'; style-src 'self'; connect-src https://*.check.wikimedia-dns.org; frame-src 'none'; frame-ancestors 'none';";
+  add_header  X-Content-Type-Options      "nosniff";
+  add_header  Cache-Control               "no-store";
 
   location / {
     root      <%= @durum_path %>;
@@ -37,6 +38,7 @@ server {
   <%= @ssl_settings.join("\n  ") %>
 
   add_header  Access-Control-Allow-Origin https://<%= @domain %>;
+  add_header  Cache-Control               "no-store";
 
   location /check {
     default_type application/json;
@@ -52,6 +54,7 @@ server {
   server_name *.<%= @domain %>;
 
   add_header  Access-Control-Allow-Origin https://<%= @domain %>;
+  add_header  Cache-Control               "no-store";
 
   <%= @ssl_settings.join("\n  ") %>
 
@@ -71,6 +74,7 @@ server {
   <%= @ssl_settings.join("\n  ") %>
 
   add_header  Access-Control-Allow-Origin https://<%= @domain %>;
+  add_header  Cache-Control               "no-store";
 
   location /check {
     default_type application/json;
