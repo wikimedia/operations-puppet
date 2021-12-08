@@ -10,6 +10,7 @@ class profile::openstack::eqiad1::rabbitmq(
     $nova_rabbit_password = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
     $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
     $neutron_rabbit_password = lookup('profile::openstack::eqiad1::neutron::rabbit_pass'),
+    Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::codfw1dev::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     $rabbit_erlang_cookie = lookup('profile::openstack::eqiad1::rabbit_erlang_cookie'),
 ){
 
@@ -25,6 +26,7 @@ class profile::openstack::eqiad1::rabbitmq(
         designate_hosts       => $designate_hosts,
         nova_rabbit_password  => $nova_rabbit_password,
         rabbit_erlang_cookie  => $rabbit_erlang_cookie,
+        rabbit_cfssl_label    => $rabbit_cfssl_label,
         cinder_backup_nodes   => [],  # TODO: add a hiera lookup when service is introduced
     }
     contain '::profile::openstack::base::rabbitmq'

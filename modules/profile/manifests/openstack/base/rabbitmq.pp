@@ -11,12 +11,38 @@ class profile::openstack::base::rabbitmq(
     $nova_rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     $nova_rabbit_password = lookup('profile::openstack::base::nova::rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
+    Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::base::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
 ){
+    if $rabbit_cfssl_label {
+        $cert_paths = profile::pki::get_cert(
+            $rabbit_cfssl_label,
+            $facts['networking']['fqdn'],
+            {
+                provide_chain => true,
+                owner         => 'rabbitmq',
+                group         => 'rabbitmq',
+                require       => Package['rabbitmq-server'],
+                before        => File['/etc/rabbitmq/rabbitmq.config'],
+                notify        => Service['rabbitmq-server'],
+            }
+        )
+
+        $rabbitmq_tls_key_file = $cert_paths['key']
+        $rabbitmq_tls_cert_file = $cert_paths['chained']
+        $rabbitmq_tls_ca_file = '/etc/ssl/certs/wmf-ca-certificates.crt'
+    } else {
+        $rabbitmq_tls_key_file = undef
+        $rabbitmq_tls_cert_file = undef
+        $rabbitmq_tls_ca_file = undef
+    }
 
     class { '::rabbitmq':
         file_handles  => $file_handles,
         erlang_cookie => $rabbit_erlang_cookie,
+        tls_cert_file => $rabbitmq_tls_cert_file,
+        tls_key_file  => $rabbitmq_tls_key_file,
+        tls_ca_file   => $rabbitmq_tls_ca_file,
     }
     contain '::rabbitmq'
     class{'::rabbitmq::plugins':}

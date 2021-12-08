@@ -22,11 +22,6 @@
    %% {tcp_listeners, [{"127.0.0.1", 5672},
    %%                  {"::1",       5672}]},
 
-   %% SSL listeners are configured in the same fashion as TCP listeners,
-   %% including the option to control the choice of interface.
-   %%
-   %% {ssl_listeners, [5671]},
-
    %% Number of Erlang processes that will accept connections for the TCP
    %% and SSL listeners.
    %%
@@ -60,11 +55,12 @@
    %% Configuring SSL.
    %% See http://www.rabbitmq.com/ssl.html for full documentation.
    %%
-   %% {ssl_options, [{cacertfile,           "/path/to/testca/cacert.pem"},
-   %%                {certfile,             "/path/to/server/cert.pem"},
-   %%                {keyfile,              "/path/to/server/key.pem"},
-   %%                {verify,               verify_peer},
-   %%                {fail_if_no_peer_cert, false}]},
+   <%- if @tls_cert_file and @tls_key_file and @tls_ca_file %>
+   {ssl_listeners, [5671]},
+   {ssl_options, [{cacertfile, "<%= @tls_ca_file %>"},
+                  {certfile,   "<%= @tls_cert_file %>"},
+                  {keyfile,    "<%= @tls_key_file %>"}]},
+   <%- end -%>
 
    %% Choose the available SASL mechanism(s) to expose.
    %% The two default (built in) mechanisms are 'PLAIN' and

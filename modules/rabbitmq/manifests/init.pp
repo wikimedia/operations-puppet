@@ -19,7 +19,10 @@ class rabbitmq(
     $running = true,
     $file_handles = '1024',
     $erlang_cookie = '',
-    ) {
+    Optional[Stdlib::Unixpath] $tls_key_file = undef,
+    Optional[Stdlib::Unixpath] $tls_cert_file = undef,
+    Optional[Stdlib::Unixpath] $tls_ca_file = undef,
+) {
 
     package { [ 'rabbitmq-server' ]:
         ensure  => 'present',
@@ -49,8 +52,9 @@ class rabbitmq(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        source  => 'puppet:///modules/rabbitmq/rabbitmq.config',
+        content => template('rabbitmq/rabbitmq.config.erb'),
         require => Package['rabbitmq-server'],
+        notify  => Service['rabbitmq-server'],
     }
 
     file {'/usr/local/sbin/rabbit_random_guest':
