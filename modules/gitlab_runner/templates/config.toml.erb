@@ -5,7 +5,7 @@ check_interval = <%= @check_interval %>
 
 <%- if @enable_exporter -%>
 # Defines an address (<host>:<port>) the Prometheus metrics HTTP server should listen on.
-listen_address = <%= @exporter_listen_address %>:<%= @exporter_listen_port %>
+listen_address = '<%= @exporter_listen_address %>:<%= @exporter_listen_port %>'
 <%- end -%>
 
 [session_server]
@@ -14,15 +14,15 @@ listen_address = <%= @exporter_listen_address %>:<%= @exporter_listen_port %>
 
 [runners]
   # The runner’s description. Informational only.
-  name = <%= @runner_name %>
+  name = '<%= @runner_name %>'
   # GitLab instance URL.
-  url = <%= @gitlab_url %>
+  url = '<%= @gitlab_url %>'
   # Select how a project should be built. Fixed to docker executor for security reasons.
   executor = "docker"
 
 [runners.docker]
   # The image to run jobs with.
-  image = <%= @docker_image %>
+  image = '<%= @docker_image %>'
   # Disable to run container in privileged mode, for security reasons.
   privileged = false
 #  TODO T291978
