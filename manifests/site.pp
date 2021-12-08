@@ -2750,7 +2750,7 @@ node /^cloudvirt102[1-7]\.eqiad\.wmnet$/ {
 # Cloudvirt1028 is special: it hosts VMs using local storage.
 #  This, along with 1019 and 1020, allows us to host etcd
 #  clusters which are incredibly sensitive to iowait.
-node 'cloudvirt1026.eqiad.wmnet' {
+node 'cloudvirt1028.eqiad.wmnet' {
     role(wmcs::openstack::eqiad1::virt)
 }
 
