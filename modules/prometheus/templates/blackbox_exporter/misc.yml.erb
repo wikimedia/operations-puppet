@@ -15,17 +15,3 @@ modules:
         - 'href="https://foundation\.(m\.)?wikimedia\.org/wiki/Terms_of_Use"'
       tls_config:
         insecure_skip_verify: false
-
-  # Mimick check_http_url_at_address_for_string!tools.wmflabs.org!/!Magnus
-  http_tools:
-    prober: http
-    timeout: 5s
-    http:
-      preferred_ip_protocol: "ip4"
-      no_follow_redirects: false
-<% if ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
-      fail_if_not_matches_regexp:
-<% else -%>
-      fail_if_body_not_matches_regexp:
-<%- end -%>
-        - 'Magnus'
