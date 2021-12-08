@@ -1386,8 +1386,12 @@ node /^ganeti20(0[7-9]|1[0-9]|2[0-4])\.codfw\.wmnet$/ {
 }
 
 # To be added to the codfw cluster once Buster upgrade completed
-node /^(ganeti2025|ganeti2026|ganeti2027|ganeti2028)\.codfw\.wmnet$/ {
+node /^(ganeti2025|ganeti2026|ganeti2028)\.codfw\.wmnet$/ {
     role(insetup)
+}
+
+node 'ganeti2027.codfw.wmnet' {
+    role(ganeti)
 }
 
 # Ganeti test cluster
