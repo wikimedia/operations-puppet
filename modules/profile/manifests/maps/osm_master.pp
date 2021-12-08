@@ -208,8 +208,8 @@ class profile::maps::osm_master (
     # Enable venvs for ad-hoc python scripts
     ensure_packages('python3-venv')
 
-    # Install kafkacat tool to interract with kafka for dev/debug reasons
-    ensure_packages('kafkacat')
+    # Install kafkacat and python lib to interract with kafka for dev/debug reasons
+    ensure_packages(['kafkacat', 'python3-kafka'])
 
     # T290982
     ensure_packages('python3-maps-deduped-tilelist')
