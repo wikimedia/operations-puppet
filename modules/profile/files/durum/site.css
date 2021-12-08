@@ -16,6 +16,23 @@ p.result {
   font-size: 2em;
 }
 
+p.service {
+  font-size: 1em;
+  font-style: italic;
+  margin-top: -2em;
+  margin-bottom: 2em;
+}
+
+p.warning {
+  font-size: 1em;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  width: 16em;
+  white-space: pre-wrap;
+  visibility: hidden;
+}
+
 p.info {
   font-size: 1em;
   color: gray;

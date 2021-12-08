@@ -40,7 +40,7 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"result": true, "service": "DoH"}';
+    return 200   '{"wikidough": true, "service": "doh"}';
   }
 
 }
@@ -57,7 +57,7 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"result": false}';
+    return 200   '{"wikidough": false, "service": null}';
   }
 
 }
@@ -74,7 +74,7 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"result": true, "service": "DoT"}';
+    return 200   '{"wikidough": true, "service": "dot"}';
   }
 
 }

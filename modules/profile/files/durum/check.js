@@ -6,13 +6,22 @@
   fetch(checkURL)
   .then((response) => response.json())
   .then(check => {
-    if (check.result === true) {
+    if (check.wikidough === true) {
       const doughService = check.service;
+      if (doughService === "doh") {
+        document.getElementById("check-doh-warning").style.visibility = "visible";
+      }
+      const description = doughService === "doh" ? "DoH (DNS-over-HTTPS)" : "DoT (DNS-over-TLS)";
+
       document.getElementById("check-heading").innerHTML = "&#9745;";
-      document.getElementById("check-result").textContent = `Congratulations! You are using Wikidough (${doughService}).`;
+      document.getElementById("check-result").textContent = "Congratulations! You are using Wikidough.";
+      document.getElementById("check-result").style.color = 'green';
+      document.getElementById("check-service").textContent = `Connected over ${description}`;
     } else {
       document.getElementById("check-heading").innerHTML = "&#9746;";
       document.getElementById("check-result").textContent = "Sorry, you are not using Wikidough.";
+      document.getElementById("check-result").style.color = 'red';
+      document.getElementById("check-service").textContent = "Not connected over DoH or DoT";
     }
   })
   .catch((error) => {
