@@ -94,6 +94,7 @@ class profile::gitlab::runner (
             user    => 'root',
             command => @("CMD"/L$)
                 /usr/bin/gitlab-runner register \
+                --config /etc/gitlab-runner/config.toml \
                 --non-interactive \
                 --registration-token "${registration_token}" \
                 --tag-list "${tag_list}" \
