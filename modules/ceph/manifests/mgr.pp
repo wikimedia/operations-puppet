@@ -29,7 +29,12 @@ class ceph::mgr (
         Ceph::Auth::Keyring['admin'] -> Exec['ceph-mgr-check']
     }
 
-    file { "${data_dir}/mgr/ceph-${::hostname}":
+    $dirs = [
+        "${data_dir}/mgr",
+        "${data_dir}/mgr/ceph-${::hostname}",
+    ]
+
+    file { $dirs:
         ensure => 'directory',
         owner  => 'ceph',
         group  => 'ceph',
