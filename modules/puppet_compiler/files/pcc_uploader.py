@@ -30,13 +30,13 @@ def get_save_dir() -> Path:
         raise werkzeug.exceptions.NotImplemented("'realm' required")
     realm = request.form['realm']
     if realm not in app.config['REALMS']:
-        raise werkzeug.exceptions.Forbidden
+        raise werkzeug.exceptions.Forbidden(f'unknown realm: {realm}')
     # TODO: probably need to use IPaddr to compare ipv6 addrs properly
     if request.remote_addr not in app.config['REALMS'][realm]:
-        raise werkzeug.exceptions.Forbidden
+        raise werkzeug.exceptions.Forbidden(f'unknown client: {request.remote_addr}')
     save_dir = Path(app.config['UPLOAD_FOLDER'], realm)
     if not save_dir.is_dir():
-        raise werkzeug.exceptions.Forbidden
+        raise werkzeug.exceptions.FailedDependency(f'{save_dir} not found')
     return save_dir
 
 
