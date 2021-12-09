@@ -7,6 +7,7 @@ describe 'profile::ceph::mon' do
      'class { "::prometheus::node_exporter": }',
      'ceph::auth::keyring { "admin": keydata => "dummy", caps => {mon => "allow *" }}',
      'ceph::auth::keyring { "mon.dummyhost1": keydata => "dummy", caps => {mon => "allow *" }}',
+     'ceph::auth::keyring { "mgr.dummyhost1": keydata => "dummy", caps => {mon => "allow *" }}',
     ]
   end
   on_supported_os(WMFConfig.test_on(10, 10)).each do |os, facts|
@@ -50,6 +51,11 @@ describe 'profile::ceph::mon' do
         'cinder_backup_nodes' => ['cloudbackupxxxx.example.com'],
         'ceph_auth_conf' => {
           'mon.dummyhost1' => {
+            'keyring_path' => "/whatever1",
+            'keydata' => 'dummykeydata',
+            'caps' => {},
+          },
+          'mgr.dummyhost1' => {
             'keyring_path' => "/whatever1",
             'keydata' => 'dummykeydata',
             'caps' => {},

@@ -80,6 +80,7 @@ class profile::ceph::mon(
 
     class { 'ceph::mgr':
         data_dir => $data_dir,
+        mgr_auth => $ceph_auth_conf["mgr.${::hostname}"],
     }
 
     # This adds latency stats between from this mon to the rest of the ceph fleet
