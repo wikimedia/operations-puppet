@@ -12,6 +12,29 @@ profile::pki::multirootca::intermediates:
       - 'digital signature'
       - 'key encipherment'
       - 'server auth'
+    profiles:
+      # ocsp and server is from profile::pki::multirootca::default_profiles.
+      ocsp:
+        usages:
+          - 'digital signature'
+          - 'ocsp signing'
+        expiry: '43800h'
+      server:
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'server auth'
+        expiry: '672h'
+      k8s_staging:
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'server auth'
+        # Short expiry for staging to regularly test cert refresh
+        expiry: '24h'
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_staging'
   kafka:
     ocsp_port: 10003
     default_usages:
