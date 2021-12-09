@@ -22,6 +22,9 @@ profile::restbase::hosts:
   - restbase2021.codfw.wmnet
   - restbase2022.codfw.wmnet
   - restbase2023.codfw.wmnet
+  - restbase2024.codfw.wmnet
+  - restbase2025.codfw.wmnet
+  - restbase2026.codfw.wmnet
 
 lvs::realserver::realserver_ips:
   - '10.2.1.17' # restbase.svc.codfw.wmnet

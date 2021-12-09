@@ -1,0 +1,2 @@
+profile::cassandra::rack: 'c'
+cassandra::jbod_devices: ['sda4', 'sdb4', 'sdc4']
