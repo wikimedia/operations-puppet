@@ -342,11 +342,6 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 
 }
 
-# New node mirror1001
-node 'mirror1001.wikimedia.org' {
-    role(insetup)
-}
-
 node /^cp10(7[579]|8[1357])\.eqiad\.wmnet$/ {
     role(cache::text)
 }
@@ -2647,7 +2642,7 @@ node /^(seaborgium|serpens)\.wikimedia\.org$/ {
     role(openldap::labs)
 }
 
-node 'sodium.wikimedia.org' {
+node 'sodium.wikimedia.org', 'mirror1001.wikimedia.org' {
     role(mirrors)
 }
 
