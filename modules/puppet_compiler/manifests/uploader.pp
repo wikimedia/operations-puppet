@@ -3,13 +3,14 @@
 # @param app_dir location to install the flask app
 # @param upload_dir location to store uploaded files
 # @param max_content_length The maximum upload size
+# @param realms a hash of realms and the ip addresses that are allowed to make submissions
 class puppet_compiler::uploader (
-    Wmflib::Ensure                    $ensure             = 'present',
-    Stdlib::Port                      $port               = 8001,
-    Stdlib::Unixpath                  $app_dir            = '/usr/local/share/pcc_uploader',
-    Stdlib::Unixpath                  $upload_dir         = '/srv/pcc_uploader',
-    Integer                           $max_content_length = 16000000,  # 16MB
-    Hash[String[1], Stdlib::IP::Addr] $realms             = {}
+    Wmflib::Ensure                       $ensure             = 'present',
+    Stdlib::Port                         $port               = 8001,
+    Stdlib::Unixpath                     $app_dir            = '/usr/local/share/pcc_uploader',
+    Stdlib::Unixpath                     $upload_dir         = '/srv/pcc_uploader',
+    Integer                              $max_content_length = 16000000,  # 16MB
+    Hash[String[1], Stdlib::IP::Address] $realms             = {}
 ) {
     $wsgi_file = "${app_dir}/wsgi.py"
     $config_file = "${app_dir}/pcc_uploader.json"
