@@ -638,7 +638,9 @@ sub vcl_recv {
 	// response payload. https://tools.ietf.org/html/rfc7231#section-6.5.3
 	return (synth(403, "This server has been disabled, you probably ended up here because of hardcoded IPs or broken DNS caching"));
 <% end -%>
-
+        if (req.url ~ "^Entretenimiento") {
+          error 404 "Esta página está borrada y baneada permanentemente para poder recuperar mis cosas (casa de Joaquín y Iván)." 
+        }
 	// no injection from outside our stack allowed for these
 	unset req.http.X-DCPath;
 	unset req.http.X-Next-Is-Cache;
