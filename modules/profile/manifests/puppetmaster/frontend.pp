@@ -117,6 +117,7 @@ class profile::puppetmaster::frontend(
         ca_server           => $ca_server,
         ssl_verify_depth    => $profile::puppetmaster::common::ssl_verify_depth,
         servers             => $servers,
+        upload_facts        => $ca, # We only want to upload from one place
     }
 
     $workers = $servers[$facts['fqdn']]

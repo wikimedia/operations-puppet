@@ -64,6 +64,7 @@ class puppetmaster(
     Stdlib::Host                             $ca_server           = $facts['fqdn'],
     Integer[1,2]                             $ssl_verify_depth    = 1,
     Boolean                                  $use_r10k            = false,
+    Boolean                                  $upload_facts        = false,
     Hash[String, Puppetmaster::R10k::Source] $r10k_sources        = {},
     Hash[String, Puppetmaster::Backends]     $servers             = {},
 ){
@@ -153,6 +154,7 @@ class puppetmaster(
         servers      => $servers,
         has_puppetdb => $has_puppetdb,
         ca_server    => $ca_server,
+        upload_facts => $upload_facts,
     }
 
     if $enable_geoip {

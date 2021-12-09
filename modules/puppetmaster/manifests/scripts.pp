@@ -13,6 +13,7 @@ class puppetmaster::scripts(
     Integer      $keep_reports_minutes = 960, # 16 hours
     Boolean      $has_puppetdb         = true,
     Stdlib::Host $ca_server            = $facts['fqdn'],
+    Boolean      $upload_facts         = true,
     Hash[String, Puppetmaster::Backends] $servers = {},
 ){
 
@@ -53,35 +54,32 @@ class puppetmaster::scripts(
         source => 'puppet:///modules/puppetmaster/puppet-merge.py',
     }
 
-    file {'/usr/local/bin/puppet-facts-export-puppetdb':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/puppet-facts-export-puppetdb.py',
-    }
-
-    # this performs the same task as puppet-facts-export but can
-    #  run on a host without puppetdb.  This is useful because
-    #  the cloud puppetmasters don't use puppetdb to preserve
-    #  tenant separation
-    file {'/usr/local/bin/puppet-facts-export-nodb':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/puppet-facts-export-nodb.sh',
-    }
-
-    # Link to the appropriate fact exporter, as appropriate
-    #  depending on the presence of puppetdb
-    $puppet_facts_export = $has_puppetdb ? {
-        false   => '/usr/local/bin/puppet-facts-export-nodb',
-        default => '/usr/local/bin/puppet-facts-export-puppetdb',
+    $puppet_facts_export_source = $has_puppetdb ? {
+        false   => 'puppet:///modules/puppetmaster/puppet-facts-export-nodb.sh',
+        default => 'puppet:///modules/puppetmaster/puppet-facts-export-puppetdb.py',
     }
     file { '/usr/local/bin/puppet-facts-export':
-        ensure => link,
-        target => $puppet_facts_export
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => $puppet_facts_export_source,
+    }
+
+    file { '/usr/local/sbin/puppet-facts-upload':
+        ensure => stdlib::ensure($upload_facts, 'file'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0554',
+        source => 'puppet:///modules/puppetmaster/puppet-facts-upload.py',
+    }
+
+    systemd::timer::job { 'upload_puppet_facts':
+        ensure      => $upload_facts.bool2str('present', 'absent'),
+        user        => 'root',
+        description => 'Upload facts export to puppet compiler',
+        command     => '/usr/local/sbin/puppet-facts-upload',
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
     }
 
     # Clear out older reports
@@ -92,5 +90,4 @@ class puppetmaster::scripts(
         command     => "/usr/bin/find /var/lib/puppet/reports -type f -mmin +${keep_reports_minutes} -delete",
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '8h'},
     }
-
 }
