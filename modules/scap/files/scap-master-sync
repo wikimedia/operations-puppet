@@ -1,19 +1,60 @@
 #!/bin/bash
-# Rsync the common module from the given deployment master to the local
-# staging directory (/srv/mediawiki-staging)
 
 set -eu
 
-MASTER=${1:?No master provided}
+function usage {
+    cat <<EOF 1>&2
+Usage: $0 [-c] MASTER
+
+Rsync from MASTER:/srv/{mediawiki-staging,patches} to the corresponding
+directories on the local host.
+
+MASTER is the name or address of the rsync source
+
+If '-c' is supplied, CDB files will be included in the rsync.  Otherwise
+they will be excluded.
+
+This script must be run as root.
+
+EOF
+    exit 1
+}
+
+include_cdbs=
+
+while getopts "c" o; do
+    case "${o}" in
+        c)
+            include_cdbs=t
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [[ -z "${1:-}" ]]; then
+    echo "No master provided" 1>&2
+    usage
+fi
+
+MASTER=$1
 
 if [[ $EUID -ne 0 ]]; then
     echo "$0 must be run as root" 1>&2
     exit 2
 fi
 
+if [[ "$include_cdbs" ]]; then
+    cdb_exclude=
+else
+    cdb_exclude='--exclude="**/cache/l10n/*.cdb"'
+fi
+
 /usr/bin/rsync \
     --archive --delete-delay --delay-updates --compress --delete \
-    --exclude="**/cache/l10n/*.cdb" \
+    $cdb_exclude \
     --exclude="*.swp" \
     "${MASTER}::common" /srv/mediawiki-staging
 
