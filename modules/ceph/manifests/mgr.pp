@@ -20,9 +20,6 @@ class ceph::mgr (
 
     $keyring_path = ceph::auth::get_keyring_path($client, $mgr_auth['keyring_path'])
 
-    # we're using a particular keyring path, make sure parent dirs are known to puppet
-    wmflib::dir::mkdir_p($keyring_path.dirname, {before => Ceph::Auth::Keyring[$client]})
-
     # If the daemon hasn't been setup yet, first verify we can connect to the ceph cluster
     exec { 'ceph-mgr-check':
         command => '/usr/bin/ceph -s',
@@ -31,7 +28,6 @@ class ceph::mgr (
     if defined(Ceph::Auth::Keyring['admin']) {
         Ceph::Auth::Keyring['admin'] -> Exec['ceph-mgr-check']
     }
-
 
     service { "ceph-mgr@${::hostname}":
         ensure    => running,

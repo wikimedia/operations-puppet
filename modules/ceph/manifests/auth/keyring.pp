@@ -17,6 +17,10 @@ define ceph::auth::keyring (
 
     ensure_packages('ceph-common')
 
+    # make sure the path hosting the file exists. This method should allow for
+    # callers to declare a File resource for the parent dir elsewhere in the code
+    wmflib::dir::mkdir_p($_keyring_path.dirname)
+
     file { $_keyring_path:
         ensure    => present,
         mode      => $mode,
