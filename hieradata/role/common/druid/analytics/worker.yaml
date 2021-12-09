@@ -101,13 +101,12 @@ profile::druid::broker::properties:
   # https://github.com/apache/druid/issues/325#issuecomment-32744317
   # [num of brokers] * broker:druid.processing.numThreads > historical:druid.server.http.numThreads
   druid.processing.numThreads: 25
-  # To avoid excessive queueing on the Historicals,
-  # the Broker fails fast if it doesn't receive any data
-  # from the Historical after 10s (as opposed to minutes
-  # like set in the defaults) or if a query takes more than
-  # 10s to complete.
-  druid.broker.http.readTimeout: PT10S
-  druid.server.http.defaultQueryTimeout: 10000
+  # The Broker fails if it doesn't receive any data from the Historical after
+  # 175s, or if a query takes more than 175s to complete. Superset is set to
+  # timeout at 180 seconds so when Druid is queried through the Superset UI, Druid
+  # should timeout slightly before Superset does.
+  druid.broker.http.readTimeout: PT30S
+  druid.server.http.defaultQueryTimeout: 30000
   # https://druid.apache.org/docs/latest/operations/basic-cluster-tuning.html#broker-backpressure
   druid.broker.http.maxQueuedBytes: 10485760 # 5 * 2MB
   # https://druid.apache.org/docs/latest/querying/caching.html#query-caching-on-brokers
