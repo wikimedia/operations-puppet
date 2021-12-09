@@ -3,5 +3,4 @@
 profile::mariadb::dbstore_multiinstance::instances:
   s2: 128G
   s3: 128G
-  # reduced memory due to bad memory stick
-  x1: 50G
+  x1: 100G
