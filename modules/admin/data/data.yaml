@@ -5699,3 +5699,7 @@ ldap_only_users:
     ensure: present
     realname: Ollie Shotton
     email: oliver.shotton@wikimedia.de
+  damilare:
+    ensure: present
+    realname: Damilare Adedoyin
+    email: dadedoyin@wikimedia.org
