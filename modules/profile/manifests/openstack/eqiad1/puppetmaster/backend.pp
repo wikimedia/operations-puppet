@@ -12,6 +12,7 @@ class profile::openstack::eqiad1::puppetmaster::backend(
     class {'::profile::openstack::base::puppetmaster::backend':
         openstack_controllers => $openstack_controllers,
         designate_hosts       => $designate_hosts,
+        puppetmaster_ca       => $puppetmaster_ca,
         puppetmasters         => $puppetmasters,
         encapi_db_host        => $encapi_db_host,
         encapi_db_name        => $encapi_db_name,
