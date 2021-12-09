@@ -1,4 +1,2 @@
 profile::netconsole::client::ensure: present
-profile::netconsole::client::remote_ip: 10.20.0.32
-profile::netconsole::client::remote_mac: b0:26:28:41:23:f0
 cache::single_backend_fqdn: cp3051.esams.wmnet

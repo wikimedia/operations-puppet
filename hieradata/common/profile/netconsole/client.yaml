@@ -1,0 +1,2 @@
+# Use syslog.anycast.wmnet since netconsole server is deployed there.
+profile::netconsole::client::remote_ip: 10.3.0.4
