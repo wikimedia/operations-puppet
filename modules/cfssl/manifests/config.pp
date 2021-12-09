@@ -37,7 +37,7 @@ define cfssl::config (
     $_profiles = Hash($profiles.map |$key, $value| {
         # Make sure any profile specific auth keys are defined
         if $value.has_key('auth_key') and !$auth_keys.has_key($value['auth_key']) {
-            fail("${key} must have an entry for 'auth_key:'")
+            fail("${key} 'auth_key: ${$value['auth_key']}', not found in auth_keys (${auth_keys.keys.join(',')})")
         }
         [$key, {'auth_key' => $default_auth_key} + $value]
     })
