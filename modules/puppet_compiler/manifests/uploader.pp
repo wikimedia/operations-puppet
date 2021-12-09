@@ -5,12 +5,12 @@
 # @param max_content_length The maximum upload size
 # @param realms a hash of realms and the ip addresses that are allowed to make submissions
 class puppet_compiler::uploader (
-    Wmflib::Ensure                       $ensure             = 'present',
-    Stdlib::Port                         $port               = 8001,
-    Stdlib::Unixpath                     $app_dir            = '/usr/local/share/pcc_uploader',
-    Stdlib::Unixpath                     $upload_dir         = '/srv/pcc_uploader',
-    Integer                              $max_content_length = 16000000,  # 16MB
-    Hash[String[1], Stdlib::IP::Address] $realms             = {}
+    Wmflib::Ensure   $ensure             = 'present',
+    Stdlib::Port     $port               = 8001,
+    Stdlib::Unixpath $app_dir            = '/usr/local/share/pcc_uploader',
+    Stdlib::Unixpath $upload_dir         = '/srv/pcc_uploader',
+    Integer          $max_content_length = 16000000,  # 16MB
+    Hash[String[1], Array[Stdlib::IP::Address]] $realms = {}
 ) {
     $wsgi_file = "${app_dir}/wsgi.py"
     $config_file = "${app_dir}/pcc_uploader.json"
@@ -34,6 +34,7 @@ class puppet_compiler::uploader (
     file { $wsgi_file:
         ensure => stdlib::ensure($ensure, 'file'),
         source => 'puppet:///modules/puppet_compiler/pcc_uploader.py',
+        notify => Uwsgi::App['pcc-uploader'],
     }
     uwsgi::app{'pcc-uploader':
         settings => {
