@@ -925,7 +925,7 @@ node 'db2151.codfw.wmnet' {
 node 'db1102.eqiad.wmnet' {
     role(mariadb::backup_source)
 }
-## s8, buster
+## s8 & x1, buster
 node 'db1116.eqiad.wmnet' {
     role(mariadb::backup_source)
 }
