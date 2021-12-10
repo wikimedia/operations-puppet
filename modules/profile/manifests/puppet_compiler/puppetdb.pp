@@ -48,7 +48,7 @@ class profile::puppet_compiler::puppetdb (
         srange => '$LABS_NETWORKS'
     }
     nginx::site {'puppet-compiler':
-        content => template('puppet_compiler/nginx_site.erb'),
+        content => template('profile/puppet_compiler/nginx_site.erb'),
     }
 
     file_line { 'modify_nginx_magic_types':
