@@ -1,3 +1,2 @@
 ---
-profile::ci::slave::labs::common::manage_srv: false
 profile::puppet_compiler::enable_web: false
