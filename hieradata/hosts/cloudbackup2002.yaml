@@ -13,4 +13,4 @@ profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: 'f83e2286-bff1-47bf-bf6d-10
 profile::ceph::client::rbd::enable_v2_messenger: true
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:
-- cinder-backups
+- eqiad1-cinder

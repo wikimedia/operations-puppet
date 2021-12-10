@@ -33,7 +33,7 @@ profile::openstack::codfw1dev::openstack_controllers:
     - cloudcontrol2004-dev.wikimedia.org
 profile::openstack::codfw1dev::cinder::api_bind_port: 18776
 profile::openstack::codfw1dev::cinder::ceph_pool: codfw1dev-cinder
-profile::openstack::codfw1dev::cinder::ceph_rbd_client_name: codfw1dev-cinder-backups
+profile::openstack::codfw1dev::cinder::ceph_rbd_client_name: codfw1dev-cinder
 profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: f83e2286-bff1-47bf-bf6d-109c427d63c9
 
 profile::openstack::codfw1dev::cinder::backup::active: true
