@@ -37,6 +37,12 @@ function do_remap()
         backend = xwd
     end
 
+    -- Temporarily disable mwdebug on kubernetes for T297322
+    if backend == "k8s-experimental" then
+        ts.http.set_resp(400, "x-wikimedia-debug-routing: k8s-experimental is temporarily disabled, T297322")
+        return TS_LUA_REMAP_NO_REMAP_STOP
+    end
+
     if debug_map[backend] then
         ts.client_request.set_url_host(debug_map[backend])
         -- Special case: mwdebug on kubernetes listens on port 4444
