@@ -342,8 +342,8 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 
 }
 
-# New node copernicium
-node 'copernicium.wikimedia.org' {
+# New node mirror1001
+node 'mirror1001.wikimedia.org' {
     role(insetup)
 }
 
