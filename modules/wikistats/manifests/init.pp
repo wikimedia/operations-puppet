@@ -114,6 +114,15 @@ class wikistats (
         mode   => '0644',
     }
 
+    # add /usr/local/bin/wikistats/ to PATH for all users
+    file { '/etc/profile.d/wikistats_path.sh':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        source => 'puppet:///modules/wikistats/wikistats_path.sh',
+    }
+
     class { 'wikistats::updates':
         db_pass     => $db_pass,
         ensure      => $jobs_ensure,
