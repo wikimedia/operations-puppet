@@ -13,8 +13,8 @@ class puppet_compiler(
     $yamldir = "${vardir}/yaml"
 
     ensure_packages([
-        'python-yaml', 'python-requests', 'python-jinja2', 'nginx',
-        'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', 'ruby-multi-json',
+        'python3-yaml', 'python3-requests', 'python3-jinja2', 'python3-clustershell',
+        'nginx', 'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', 'ruby-multi-json',
     ])
     file {'/usr/lib/ruby/vendor_ruby/puppet/application/master.rb':
         ensure  => present,
