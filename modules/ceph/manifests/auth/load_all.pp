@@ -1,5 +1,5 @@
 class ceph::auth::load_all (
-    Hash $configuration,
+    Ceph::Auth::Conf $configuration,
 ) {
     $configuration.each |String $client_name, Ceph::Auth::ClientAuth $client_auth| {
         if ($client_auth['keydata'] == undef) {
