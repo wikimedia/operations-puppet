@@ -13,7 +13,7 @@ class profile::microsites::annualreport {
     }
 
     git::clone { 'wikimedia/annualreport':
-        ensure    => 'latest',
+        ensure    => 'present',
         directory => '/srv/org/wikimedia/annualreport',
         branch    => 'master',
     }
