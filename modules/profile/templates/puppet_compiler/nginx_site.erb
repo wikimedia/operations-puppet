@@ -11,6 +11,8 @@ server {
   }
 
   location /upload {
+    rewrite  ^/upload/?.* / break;
+    include uwsgi_params;
     uwsgi_pass uwsgi://127.0.0.1:8001;
   }
 
