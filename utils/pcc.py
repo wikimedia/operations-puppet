@@ -201,9 +201,9 @@ def get_args():
 
     parser = ArgumentParser(description=__doc__,
                             formatter_class=RawDescriptionHelpFormatter)
-    parser.add_argument('change', help='The change number or change ID to test. '
+    parser.add_argument('change', default='last', help='The change number or change ID to test. '
                         'Alternatively last or latest to test head')
-    parser.add_argument('nodes', type=parse_nodes,
+    parser.add_argument('nodes', type=parse_nodes, default='parse_commit',
                         help='Either a Comma-separated list of nodes or a Host Variable Override. '
                              'Alternatively use `parse_commit` to parse')
     parser.add_argument('--api-token', default=os.environ.get('JENKINS_API_TOKEN'),
