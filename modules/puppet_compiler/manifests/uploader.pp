@@ -41,7 +41,7 @@ class puppet_compiler::uploader (
             uwsgi => {
                 'plugins'     => 'python3',
                 'master'      => true,
-                'http-socket' => "127.0.0.1:${port}",
+                'socket'      => "127.0.0.1:${port}",
                 'wsgi-file'   => $wsgi_file,
                 'die-on-term' => true,
             }

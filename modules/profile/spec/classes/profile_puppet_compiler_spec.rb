@@ -4,7 +4,6 @@ describe 'profile::puppet_compiler' do
     context "on #{os}" do
       let(:facts) { facts }
       let(:node_params) {{'realm' => 'labs'}}
-      let(:params) { {enable_web: true} }
 
       it { is_expected.to compile.with_all_deps }
     end

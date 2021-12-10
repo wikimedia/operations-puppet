@@ -2,7 +2,6 @@
 profile::puppet_compiler::puppetdb::ssldir: '/var/lib/catalog-differ/puppet/ssl'
 profile::puppet_compiler::puppetdb::master: "%{facts.networking.fqdn}"
 profile::puppetdb::database::shared_buffers: '2048MB'
-profile::puppet_compiler::enable_web: true
 profile::ci::slave::labs::common::manage_srv: false
 
 

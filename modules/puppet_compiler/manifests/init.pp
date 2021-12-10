@@ -6,7 +6,6 @@ class puppet_compiler(
     Wmflib::Ensure   $ensure     = 'present',
     String           $user       = 'jenkins-deploy',
     Stdlib::Unixpath $homedir    = '/srv/home/jenkins-deploy',
-    Boolean          $enable_web = true,
 ) {
 
     $vardir = "${libdir}/puppet"
@@ -49,10 +48,6 @@ class puppet_compiler(
     file { '/usr/local/bin/naggen2':
         ensure => stdlib::ensure($ensure, 'link'),
         target => '/bin/true',
-    }
-
-    class {'puppet_compiler::web':
-        ensure => $enable_web.bool2str('present', 'absent')
     }
 
     ## Git cloning

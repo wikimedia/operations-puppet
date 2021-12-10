@@ -2,7 +2,7 @@ class profile::puppet_compiler::puppetdb (
     Stdlib::Unixpath $ssldir = lookup('profile::puppet_compiler::puppetdb::ssldir'),
     Stdlib::Fqdn     $master = lookup('profile::puppet_compiler::puppetdb::master'),
 ) {
-    include puppet_compiler
+    class {'puppet_compiler': }
     class { 'puppetmaster::puppetdb::client':
         hosts => [$::fqdn],
     }
@@ -37,5 +37,25 @@ class profile::puppet_compiler::puppetdb (
         hour    => 4,
         minute  => 0,
         weekday => 0,
+    }
+    class {'puppet_compiler::uploader': }
+    $docroot = $puppet_compiler::workdir
+
+    ferm::service {'puppet_compiler_web':
+        proto  => 'tcp',
+        port   => 'http',
+        prio   => '30',
+        srange => '$LABS_NETWORKS'
+    }
+    nginx::site {'puppet-compiler':
+        content => template('puppet_compiler/nginx_site.erb'),
+    }
+
+    file_line { 'modify_nginx_magic_types':
+        path    => '/etc/nginx/mime.types',
+        line    => "    text/plain                            txt pson err diff;",
+        match   => '\s+text/plain\s+txt',
+        require => Nginx::Site['puppet-compiler'],
+        notify  => Service['nginx'],
     }
 }

@@ -1,0 +1,24 @@
+server {
+  listen 80;
+  server_name localhost puppet-compiler.wmflabs.org <%= @fqdn -%>;
+
+  root <%= @docroot -%>/output;
+  index index.html index.htm;
+
+  location = / {
+    autoindex on;
+    try_files $uri $uri/ 404;
+  }
+
+  location /upload {
+    uwsgi_pass uwsgi://127.0.0.1:8001;
+  }
+
+
+# Proxy-pass requests for stretch compilers
+  location ~ '^/(?<fwd_host>(compiler|pcc-worker)\d{4})/.*$' {
+    resolver <%= scope.lookupvar('::nameservers')[0] %>;
+    proxy_pass http://$fwd_host.puppet-diffs.eqiad1.wikimedia.cloud;
+  }
+}
+# vim: set filetype=nginx:
