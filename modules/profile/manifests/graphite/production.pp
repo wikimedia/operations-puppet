@@ -137,5 +137,9 @@ class profile::graphite::production {
     profile::auto_restarts::service { 'apache2': }
 
     backup::set { 'srv-carbon-whisper-coal': }
+    # Backup 'daily' metrics, only every week
+    backup::set { 'srv-carbon-whisper-daily':
+        jobdefaults => 'Weekly-Mon-production',
+    }
     backup::set { 'var-lib-graphite-web-graphite-db': }
 }
