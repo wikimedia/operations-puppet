@@ -65,9 +65,7 @@ profile::openstack::codfw1dev::cloudgw::dmz_cidr:
  # there is no other access (NAT or not) to other 10.x.x.x services anyway
  # VMs --> nfs-tools-project.svc.eqiad.wmnet
  - "10.64.37.18"
- # VMs --> cloudmetrics1001 / cloudmetrics1002 /cloudmetrics1003 / cloudmetrics1004
- - "10.64.37.13"
- - "10.64.4.15"
+ # VMs --> cloudmetrics1003 / cloudmetrics1004
  - "10.64.4.6"
  - "10.64.37.6"
 

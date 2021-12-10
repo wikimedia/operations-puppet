@@ -1649,14 +1649,13 @@ node /cloudvirt200[1-3]\-dev\.codfw\.wmnet/ {
     role(wmcs::openstack::codfw1dev::virt_ceph)
 }
 
-# new cloudmetrics servers T289888
+# WMCS Graphite and StatsD hosts
 node /cloudmetrics100[34]\.eqiad\.wmnet/ {
     role(wmcs::monitoring)
 }
 
-# WMCS Graphite and StatsD hosts
 node /cloudmetrics100[1-2]\.eqiad\.wmnet/ {
-    role(wmcs::monitoring)
+    role(spare::system)
 }
 
 node /^cloudcontrol100[3-5]\.wikimedia\.org$/ {
