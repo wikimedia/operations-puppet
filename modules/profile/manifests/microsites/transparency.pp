@@ -7,7 +7,7 @@ class profile::microsites::transparency {
     $docroot  = "${repo_dir}/build"
 
     git::clone { 'wikimedia/TransparencyReport':
-        ensure    => latest,
+        ensure    => present,
         directory => $repo_dir,
     }
 
