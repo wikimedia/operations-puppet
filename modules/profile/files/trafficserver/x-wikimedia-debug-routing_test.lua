@@ -47,7 +47,6 @@ describe("Busted unit testing framework", function()
     it("test - X-Wikimedia-Debug on k8s", function()
       stub(ts.client_request, "set_url_host")
       stub(ts.client_request, "set_url_port")
-      stub(ts.http, "set_resp")
 
       require("x-wikimedia-debug-routing")
 
@@ -56,7 +55,8 @@ describe("Busted unit testing framework", function()
 
       do_remap()
 
-      assert.stub(ts.http.set_resp).was.called_with(400, "x-wikimedia-debug-routing: k8s-experimental is temporarily disabled, T297322")
+      assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug.discovery.wmnet")
+      assert.stub(ts.client_request.set_url_port).was.called_with(4444)
     end)
 
     it("test - X-Wikimedia-Debug with invalid value", function()
