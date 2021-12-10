@@ -4528,7 +4528,7 @@ users:
     name: oljad
     realname: Olja Dimitrjevic
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOSW1UYgPQG6SdTPQbc/s1T5kvlnrZI8A6WbPz3NXjUw odimitrijevic@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK8e7O4MKQRRlqkGm3vQQOrkD+i/xzgXfBoThGFVWsiJ odimitrijevic@wikimedia.org
     uid: 31599
     krb: present
     email: odimitrijevic@wikimedia.org
