@@ -1,1 +1,3 @@
+profile::admin::groups:
+  - wmcs-roots
 profile::contacts::role_contacts: ['WMCS']
