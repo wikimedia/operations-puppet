@@ -8,7 +8,7 @@ class profile::microsites::bienvenida {
     wmflib::dir::mkdir_p('/srv/org/wikimedia/bienvenida')
 
     git::clone { 'wikimedia/campaigns/eswiki-2018':
-        ensure    => 'latest',
+        ensure    => 'present',
         source    => 'gerrit',
         directory => '/srv/org/wikimedia/bienvenida',
         branch    => 'master',
