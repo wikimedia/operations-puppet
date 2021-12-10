@@ -842,6 +842,12 @@ define service {
     host_name                frdev1001
 }
 
+define service {
+    use                      passive-service
+    service_description      check_mailq
+    host_name                frdev1001
+}
+
 # payments1008
 
 define service {
