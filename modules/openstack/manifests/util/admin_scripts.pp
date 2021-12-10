@@ -34,6 +34,15 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-cold-nova-migrate.py",
     }
 
+    # Script to backup up/restore cinder volumes
+    file { '/usr/local/sbin/wmcs-cinder-volume-backup':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-cinder-volume-backup.py",
+    }
+
     # Script to generate a new base image from an upstream image
     file { '/usr/local/sbin/wmcs-image-create':
         ensure => 'present',
