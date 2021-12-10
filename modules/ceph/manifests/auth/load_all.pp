@@ -4,7 +4,8 @@ class ceph::auth::load_all (
     $configuration.each |String $client_name, Ceph::Auth::ClientAuth $client_auth| {
         if ($client_auth['keydata'] == undef) {
             notify{"No keydata found for key ${client_name}, skipping.": }
-
+        } elsif ($client_auth['caps'] == undef) {
+            notify{"No caps found for key ${client_name}, skipping.": }
         } else {
             if ($client_auth['import_to_ceph'] == undef) {
                 # the default value
