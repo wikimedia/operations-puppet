@@ -31,17 +31,20 @@ class tomcat (
     String                 $shutdown_string          = 'SHUTDOWN',
     Stdlib::Unixpath       $public_key_path          = '/etc/tomcat9/ssl/cert.pem',
     Stdlib::Unixpath       $private_key_path         = '/etc/tomcat9/ssl/server.key',
-    Array[String[1]]       $watched_resources        = ['WEB-INF/web.xml',
+    Hash[String[1], String[1]] $java_opts            = {'java.awt.headless'         => 'true',
+                                                        'log4j2.formatMsgNoLookups' => 'true'},
+    Array[String[1]]           $watched_resources    = ['WEB-INF/web.xml',
                                                         'WEB-INF/tomcat-web.xml',
     # lint:ignore:single_quote_string_with_variables
                                                         '${catalina.base}/conf/web.xml'],
     # lint:endignore
-    Optional[Stdlib::Port] $shutdown_port           = undef,
+    Optional[Stdlib::Port]     $shutdown_port           = undef,
 ){
     ensure_packages(['tomcat9'])
     if $apr_listener {
       ensure_packages(['libtcnative-1'])
     }
+    $_java_opts  = $java_opts.reduce('') |$memo, $value| { "-D${value[0]}=${value[1]} ${memo}" }.strip
 
     file{
         default:
@@ -58,6 +61,10 @@ class tomcat (
             content => template('tomcat/context.xml.erb');
         "${config_basedir}/web.xml":
             content => template('tomcat/web.xml.erb');
+        '/etc/default/tomcat9':
+            mode    => '0644',
+            group   => 'root',
+            content => "JAVA_OPTS=\"${_java_opts}\"\n";
     }
     service{'tomcat9':
         ensure => 'running',
