@@ -1651,7 +1651,7 @@ node /cloudvirt200[1-3]\-dev\.codfw\.wmnet/ {
 
 # new cloudmetrics servers T289888
 node /cloudmetrics100[34]\.eqiad\.wmnet/ {
-    role(insetup)
+    role(wmcs::monitoring)
 }
 
 # WMCS Graphite and StatsD hosts

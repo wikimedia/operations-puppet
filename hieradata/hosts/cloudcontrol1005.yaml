@@ -3,6 +3,8 @@
 prometheus_nodes:
     - cloudmetrics1001.eqiad.wmnet
     - cloudmetrics1002.eqiad.wmnet
+    - cloudmetrics1003.eqiad.wmnet
+    - cloudmetrics1004.eqiad.wmnet
     - prometheus1003.eqiad.wmnet
     - prometheus1004.eqiad.wmnet
 
