@@ -22,7 +22,7 @@ class puppet_compiler::uploader (
         'REALMS'             => $realms,
     }
 
-    ensure_packages(['python3-flask', 'python3-magic'])
+    ensure_packages(['python3-flask', 'python3-magic', 'python3-pypuppetdb'])
     wmflib::dir::mkdir_p([$app_dir, $upload_dir])
     $realms.keys.each |$realm| {
         file { "${upload_dir}/${realm}":
@@ -51,5 +51,12 @@ class puppet_compiler::uploader (
                 'die-on-term' => true,
             }
         }
+    }
+    file {'/usr/local/sbin/pcc_facts_processor':
+        ensure => stdlib::ensure($ensure, 'file'),
+        source => 'puppet:///modules/puppet_compiler/pcc_facts_processor.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
     }
 }
