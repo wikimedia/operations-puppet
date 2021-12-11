@@ -9,6 +9,8 @@ class puppet_compiler::uploader (
     Stdlib::Port     $port               = 8001,
     Stdlib::Unixpath $app_dir            = '/usr/local/share/pcc_uploader',
     Stdlib::Unixpath $upload_dir         = '/srv/pcc_uploader',
+    String[1]        $web_user           = 'www-data',
+    String[1]        $web_group          = 'www-data',
     Integer          $max_content_length = 16000000,  # 16MB
     Hash[String[1], Hash[Stdlib::Host, String[1]]] $realms = {}
 ) {
@@ -25,6 +27,8 @@ class puppet_compiler::uploader (
     $realms.keys.each |$realm| {
         file { "${upload_dir}/${realm}":
             ensure => stdlib::ensure($ensure, 'directory'),
+            owner  => $web_user,
+            group  => $web_group,
         }
     }
     file { $config_file:
