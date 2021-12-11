@@ -30,6 +30,7 @@ class puppet_compiler::uploader (
     file { $config_file:
         ensure  => stdlib::ensure($ensure, 'file'),
         content => $config.to_json,
+        notify  => Uwsgi::App['pcc-uploader'],
     }
     file { $wsgi_file:
         ensure => stdlib::ensure($ensure, 'file'),
