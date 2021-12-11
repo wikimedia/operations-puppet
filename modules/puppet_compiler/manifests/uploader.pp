@@ -10,7 +10,7 @@ class puppet_compiler::uploader (
     Stdlib::Unixpath $app_dir            = '/usr/local/share/pcc_uploader',
     Stdlib::Unixpath $upload_dir         = '/srv/pcc_uploader',
     Integer          $max_content_length = 16000000,  # 16MB
-    Hash[String[1], Array[Stdlib::IP::Address]] $realms = {}
+    Hash[String[1], Hash[Stdlib::Host, String[1]]] $realms = {}
 ) {
     $wsgi_file = "${app_dir}/wsgi.py"
     $config_file = "${app_dir}/pcc_uploader.json"
