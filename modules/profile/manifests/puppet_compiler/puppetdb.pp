@@ -1,6 +1,7 @@
 class profile::puppet_compiler::puppetdb (
-    Stdlib::Unixpath $ssldir = lookup('profile::puppet_compiler::puppetdb::ssldir'),
-    Stdlib::Fqdn     $master = lookup('profile::puppet_compiler::puppetdb::master'),
+    Stdlib::Unixpath $ssldir             = lookup('profile::puppet_compiler::puppetdb::ssldir'),
+    Stdlib::Fqdn     $master             = lookup('profile::puppet_compiler::puppetdb::master'),
+    Integer          $max_content_length = lookup('profile::puppet_compiler::puppetdb::max_content_length'),
 ) {
     class {'puppet_compiler': }
     class { 'puppetmaster::puppetdb::client':
@@ -38,7 +39,9 @@ class profile::puppet_compiler::puppetdb (
         minute  => 0,
         weekday => 0,
     }
-    class {'puppet_compiler::uploader': }
+    class {'puppet_compiler::uploader':
+        max_content_length => $max_content_length,
+    }
     $docroot = $puppet_compiler::workdir
 
     ferm::service {'puppet_compiler_web':
