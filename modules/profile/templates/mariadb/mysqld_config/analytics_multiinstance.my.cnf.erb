@@ -99,6 +99,8 @@ innodb_locks_unsafe_for_binlog = 1
 # innodb_default_row_format is not available until 5.7.9 / 10.2.2
 aria_pagecache_buffer_size     = 512M
 
+# T287244
+innodb_checksum_algorithm = full_crc32
 
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 
