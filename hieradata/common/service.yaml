@@ -64,6 +64,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /listPairs
     monitoring:
       check_command: check_https_lvs_on_port!apertium.discovery.wmnet!4737!/listPairs
       critical: false
@@ -252,6 +255,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /?spec
     monitoring:
       check_command: check_https_port_status!4666!200!/?spec
       critical: false
@@ -597,6 +603,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_port_status!8082!200!/healthz
       critical: false
@@ -671,6 +680,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-logging-external.discovery.wmnet!4392!/_info
       critical: false
@@ -709,6 +721,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-analytics-external.discovery.wmnet!4692!/_info
       critical: false
@@ -783,6 +798,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventstreams.discovery.wmnet!4892!/_info
       critical: false
@@ -820,6 +838,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventstreams-internal.discovery.wmnet!4992!/_info
       critical: false
@@ -962,6 +983,9 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+    probes:
+      - type: http
+        path: /osm-intl/6/23/24.png
     monitoring:
       check_command: check_https_url!kartotherian.discovery.wmnet!/osm-intl/6/23/24.png
       critical: false
@@ -1370,6 +1394,7 @@ service::catalog:
     discovery:
       - dnsdisc: mathoid
         active_active: true
+
   miscweb:
     description: Misc static sites, miscweb.svc.%{::site}.wmnet
     encryption: true
@@ -1391,6 +1416,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!miscweb.discovery.wmnet!4111!/healthz
       critical: false # don't enable paging while testing
@@ -1407,6 +1435,7 @@ service::catalog:
     discovery:
       - dnsdisc: miscweb
         active_active: true
+
   ml-ctrl:
     description: Kubernetes master service for ML cluster. ml-ctrl.svc.%{::site}.wmnet
     encryption: true
@@ -1745,6 +1774,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!proton.discovery.wmnet!4030!/_info
       critical: false
@@ -1782,6 +1814,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!push-notifications.discovery.wmnet!4104!/_info
       critical: false #change to true when in production
@@ -1930,6 +1965,9 @@ service::catalog:
           url:
             - https://localhost/repositories/
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!schema.discovery.wmnet!443!/repositories/
       critical: false
@@ -2429,6 +2467,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /capabilities
     monitoring:
       check_command: check_https_lvs_on_port!tegola-vector-tiles.discovery.wmnet!4105!/capabilities
       critical: false # don't enable paging while testing
@@ -2736,6 +2777,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!toolhub.discovery.wmnet!4011!/healthz
       critical: false # don't enable paging while testing
@@ -2917,6 +2961,9 @@ service::catalog:
           url:
             - https://localhost/readiness-probe
       scheduler: wrr
+    probes:
+      - type: http
+        path: /readiness-probe
     monitoring:
       check_command: check_https_url!wcqs.discovery.wmnet!/readiness-probe
       critical: false # don't enable paging while testing
@@ -2933,7 +2980,6 @@ service::catalog:
     discovery:
       - dnsdisc: wcqs
         active_active: true
-
 
   wdqs:
     description: Wikidata Query Service
@@ -3232,6 +3278,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!api-gateway.discovery.wmnet!8087!/healthz
       critical: false # don't enable paging while testing
@@ -3270,6 +3319,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!similar-users.discovery.wmnet!4110!/healthz
       critical: false # don't enable paging while testing
@@ -3308,6 +3360,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!linkrecommendation.discovery.wmnet!4005!/healthz
       critical: false # don't enable paging while setting up
@@ -3342,6 +3397,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!linkrecommendation.discovery.wmnet!4006!/healthz
       critical: false # don't enable paging while setting up
@@ -3358,6 +3416,7 @@ service::catalog:
     discovery:
       - dnsdisc: linkrecommendation
         active_active: true
+
   apple-search:
     description: Apple search service, apple-search.svc.%{::site}.wmnet
     encryption: true
@@ -3682,6 +3741,7 @@ service::catalog:
     discovery:
       - dnsdisc: inference
         active_active: true
+
   # apt is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below.
   apt:
@@ -3709,6 +3769,7 @@ service::catalog:
     discovery:
       - dnsdisc: apt
         active_active: false
+
   # puppetboard is not an LVS service. However it does warrant using discovery DC records for it.
   # Note the lack of an 'lvs' stanza in the configuration below.
   puppetboard:
