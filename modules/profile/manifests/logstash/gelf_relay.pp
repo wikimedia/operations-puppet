@@ -14,9 +14,17 @@ class profile::logstash::gelf_relay (
 
     # run a lightweight logstash instance
     class { '::logstash':
-        logstash_version => 7,
+        logstash_package => 'logstash-oss',
+        logstash_version => 6,
         pipeline_workers => 2,
         log_format       => 'json',
+    }
+
+    # Clean up old logstash package name - T297468
+    package { 'logstash-old-name':
+        ensure => absent,
+        name   => 'logstash',
+        before => Package['logstash']
     }
 
     # Logstash listens on localhost:12201/UDP for GELF formatted logs
