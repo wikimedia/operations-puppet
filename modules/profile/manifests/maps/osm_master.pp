@@ -8,6 +8,8 @@ class profile::maps::osm_master (
     String $tilerator_pass                      = lookup('profile::maps::osm_master::tilerator_pass'),
     String $tileratorui_pass                    = lookup('profile::maps::osm_master::tileratorui_pass'),
     String $replication_pass                    = lookup('profile::maps::osm_master::replication_pass'),
+    String $swift_key_id                        = lookup('profile::maps::osm_master::swift_key_id'),
+    String $swift_password                      = lookup('profile::maps::osm_master::swift_password'),
     Hash[String, Struct[{ip_address => Stdlib::IP::Address}]] $postgres_replicas = lookup('profile::maps::osm_master::replicas', { 'default_value' => {}}),
     String $osm_engine                          = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
     Boolean $disable_replication_cron           = lookup('profile::maps::osm_master::disable_replication_cron', { 'default_value' => false }),
@@ -136,6 +138,14 @@ class profile::maps::osm_master (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/profile/maps/logging.conf',
+    }
+
+    file { '/root/.tegola_credentials':
+        ensure  => 'present',
+        mode    => '0600',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/maps/swift_config.erb'),
     }
 
     if $postgres_replicas {
