@@ -904,6 +904,12 @@ host netflow2001 {
     fixed-address netflow2001.codfw.wmnet;
 }
 
+host netflow2002 {
+    hardware ethernet aa:00:00:92:e9:d5;
+    fixed-address netflow2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host netflow3001 {
     hardware ethernet aa:00:00:f1:d3:9e;
     fixed-address netflow3001.esams.wmnet;
