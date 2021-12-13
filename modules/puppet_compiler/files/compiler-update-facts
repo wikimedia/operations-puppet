@@ -7,7 +7,7 @@
 
 set -eu
 
-COMPILERS=${PUPPET_COMPILERS:-compiler1001.puppet-diffs.eqiad1.wikimedia.cloud compiler1002.puppet-diffs.eqiad1.wikimedia.cloud pcc-worker1001.puppet-diffs.eqiad1.wikimedia.cloud}
+COMPILERS=${PUPPET_COMPILERS:-compiler1001.puppet-diffs.eqiad1.wikimedia.cloud pcc-worker1002.puppet-diffs.eqiad1.wikimedia.cloud pcc-worker1001.puppet-diffs.eqiad1.wikimedia.cloud}
 RUBY_SCRIPT=$(cat <<'RUBY_SCRIPT'
 require 'safe_yaml'
 SafeYAML::OPTIONS[:default_mode] = :safe
