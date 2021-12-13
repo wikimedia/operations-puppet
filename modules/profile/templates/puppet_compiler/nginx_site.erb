@@ -19,10 +19,10 @@ server {
 
 
 # Proxy-pass requests for stretch compilers
-  location ~ '^/(?<fwd_host>(compiler|pcc-worker)\d{4})/' {
+  location ~ '^/(?<fwd_host>(compiler|pcc-worker)\d{4})/(?<uri_path>.*)$' {
     resolver <%= scope.lookupvar('::nameservers')[0] %>;
     # strip first directory
-    rewrite '^/[^/]+/(.*)' /$1 break;
+    rewrite '.*' /$uri_path break;
     proxy_pass http://$fwd_host.puppet-diffs.eqiad1.wikimedia.cloud;
   }
 }
