@@ -3,6 +3,7 @@ profile::pki::root_ca::intermediates:
   - debmonitor
   - discovery
   - kafka
+  - cloud_wmnet_ca
 profile::pki::root_ca::common_name: 'Wikimedia_Internal_Root_CA'
 # This is the vhost used for the ocsp/crl responder
 profile::pki::root_ca::vhost: 'pki.discovery.wmnet'
