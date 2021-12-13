@@ -410,8 +410,13 @@ node 'cp3065.esams.wmnet' {
 #
 
 
-node /^cp40(2[1-5]|3[34])\.ulsfo\.wmnet$/ {
+node /^cp40(2[1-4]|3[34])\.ulsfo\.wmnet$/ {
     role(cache::upload)
+}
+
+# Envoy test - T271421
+node 'cp4025.ulsfo.wmnet' {
+    role(cache::upload_envoy)
 }
 
 # HAProxy test
