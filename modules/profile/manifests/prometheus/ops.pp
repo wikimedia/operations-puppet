@@ -979,6 +979,11 @@ class profile::prometheus::ops (
         class_name => 'profile::envoy',
         port       => 9631,
     }
+    prometheus::class_config{ "cache_envoy_${::site}":
+        dest       => "${targets_path}/cache_envoy_${::site}.yaml",
+        class_name => 'profile::cache::envoy',
+        port       => 9631,
+    }
 
     $pdu_jobs = [
       {
