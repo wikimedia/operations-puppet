@@ -56,12 +56,6 @@ class profile::pmacct (
         desc   => 'NetFlow',
         srange => '($NETWORK_INFRA $MGMT_NETWORKS)',
     }
-    ferm::service { 'sflow':
-        proto  => 'udp',
-        port   => '6343',
-        desc   => 'SFlow',
-        srange => '($NETWORK_INFRA $MGMT_NETWORKS)',
-    }
     profile::contact { $title:
         contacts => ['ayounsi']
     }
