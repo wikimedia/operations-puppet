@@ -1789,6 +1789,11 @@ node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
+# new lvs servers T295804
+node /^lvs10(1[7-9]|2[0])\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 node /lvs101[3456]\.eqiad\.wmnet/ {
     role(lvs::balancer)
 }
