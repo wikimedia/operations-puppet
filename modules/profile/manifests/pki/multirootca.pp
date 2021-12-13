@@ -34,6 +34,7 @@ class profile::pki::multirootca (
     Stdlib::Filesource            $client_ca_source   = lookup('profile::pki::multirootca::client_ca_source'),
     Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
     Boolean                       $maintenance_jobs   = lookup('profile::pki::multirootca::maintenance_jobs'),
+    Boolean                       $enable_k8s_vhost   = lookup('profile::pki::multirootca::enable_k8s_vhost'),
     Array[Stdlib::Host]           $prometheus_nodes   = lookup('profile::pki::multirootca::prometheus_nodes'),
     Array[Cfssl::Usage]           $default_usages     = lookup('profile::pki::multirootca::default_usages'),
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
@@ -194,6 +195,18 @@ class profile::pki::multirootca (
         proto  => 'tcp',
         port   => '443',
         srange => '$DOMAIN_NETWORKS',
+    }
+    if $enable_k8s_vhost {
+        include network::constants
+        $srange = ($network::constants::services_kubepods_networks +
+                  $network::constants::staging_kubepods_networks +
+                  $network::constants::mlserve_kubepods_networks).join(' ')
+
+        ferm::service{'multirootca tls termination for cfssl-issuer k8s pods':
+            proto  => 'tcp',
+            port   => '8443',
+            srange => "(${srange})",
+        }
     }
     systemd::timer::job {'cfssl-gc-expired-certs':
         ensure      => $maintenance_jobs.bool2str('present', 'absent'),

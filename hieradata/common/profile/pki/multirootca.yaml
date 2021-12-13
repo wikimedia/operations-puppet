@@ -9,6 +9,7 @@ profile::pki::multirootca::enable_client_auth: true
 profile::pki::multirootca::client_ca_source: "%{facts.puppet_config.localcacert}"
 # certs should auto renew 10 days before expiry
 profile::pki::multirootca::enable_monitoring: true
+profile::pki::multirootca::enable_k8s_vhost: true
 profile::pki::multirootca::default_usages:
   - 'signing'
   - 'key encipherment'

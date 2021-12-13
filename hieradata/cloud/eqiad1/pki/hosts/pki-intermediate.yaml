@@ -2,6 +2,7 @@
 # and all _key paramtetes are passed to the secret function
 profile::pki::multirootca::prometheus_nodes: "%{alias('prometheus_nodes')}"
 profile::pki::multirootca::enable_monitoring: false
+profile::pki::multirootca::enable_k8s_vhost: true
 profile::pki::multirootca::intermediates:
   WMF_test_intermediate_ca:
     ocsp_port: 10001
