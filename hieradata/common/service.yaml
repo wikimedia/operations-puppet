@@ -1967,7 +1967,7 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
-        path: /_info
+        path: /repositories/
     monitoring:
       check_command: check_https_lvs_on_port!schema.discovery.wmnet!443!/repositories/
       critical: false
