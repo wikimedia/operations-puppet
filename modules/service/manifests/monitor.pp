@@ -2,10 +2,7 @@
 class service::monitor() {
     # Services in "monitoring_setup" state will be configured but won't page.
     # Services in "production" state will be fully configured.
-    $enabled_states = ['monitoring_setup', 'production']
-    $monitored_services = wmflib::service::fetch().filter |$n, $data| {
-        ('monitoring' in $data and $data['state'] in $enabled_states)
-    }
+    $monitored_services = wmflib::service::get_services_for('monitoring')
     # First let's declare all the hosts.
     $hosts = $monitored_services.map |$n, $data | {
         # TODO: use get() in puppet 6.x
@@ -64,7 +61,7 @@ class service::monitor() {
                 $protocol = 'tcp'  # NOTE: We are making an assumption here
                 $descr_prefix = ''
             }
-            # Ensure the description matches the actual site we're setting the alert up for, 
+            # Ensure the description matches the actual site we're setting the alert up for,
             # not the one evaluated by $::site. See T283762
             $description = regsubst($data['description'], "svc\\.${::site}\\.wmnet", "svc.${sitename}.wmnet")
             $check_description = "${descr_prefix}${n} ${sitename} port ${port}/${protocol} - ${description}"

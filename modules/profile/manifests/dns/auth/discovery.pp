@@ -3,7 +3,7 @@ class profile::dns::auth::discovery(
     String $conftool_prefix = lookup('conftool_prefix'),
 ) {
     # Create a list of all available discovery services.
-    $discovery_services = wmflib::service::fetch().filter |$n, $svc| { 'discovery' in $svc  and $svc['state'] == 'production' }
+    $discovery_services = wmflib::service::get_services_for('discovery')
         .map|$n, $svc| { $svc['discovery'].map |$record| {$record + {'ip' => $svc['ip']}}}
         .flatten()
         .unique()
