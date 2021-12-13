@@ -3,7 +3,7 @@ class profile::puppet_compiler::puppetdb (
     Stdlib::Fqdn     $master             = lookup('profile::puppet_compiler::puppetdb::master'),
     Integer          $max_content_length = lookup('profile::puppet_compiler::puppetdb::max_content_length'),
 ) {
-    class {'puppet_compiler': }
+    include profile::puppet_compiler  # lint:ignore:wmf_styleguide
     class { 'puppetmaster::puppetdb::client':
         hosts => [$::fqdn],
     }
