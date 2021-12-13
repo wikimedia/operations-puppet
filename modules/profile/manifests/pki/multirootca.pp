@@ -196,17 +196,16 @@ class profile::pki::multirootca (
         port   => '443',
         srange => '$DOMAIN_NETWORKS',
     }
-    if $enable_k8s_vhost {
-        include network::constants
-        $srange = ($network::constants::services_kubepods_networks +
-                  $network::constants::staging_kubepods_networks +
-                  $network::constants::mlserve_kubepods_networks).join(' ')
+    include network::constants
+    $srange = ($network::constants::services_kubepods_networks +
+                $network::constants::staging_kubepods_networks +
+                $network::constants::mlserve_kubepods_networks).join(' ')
 
-        ferm::service{'multirootca tls termination for cfssl-issuer k8s pods':
-            proto  => 'tcp',
-            port   => '8443',
-            srange => "(${srange})",
-        }
+    ferm::service{'multirootca tls termination for cfssl-issuer k8s pods':
+        ensure => $enable_k8s_vhost.bool2str('present', 'absent'),
+        proto  => 'tcp',
+        port   => '8443',
+        srange => "(${srange})",
     }
     systemd::timer::job {'cfssl-gc-expired-certs':
         ensure      => $maintenance_jobs.bool2str('present', 'absent'),
