@@ -5,19 +5,25 @@ class prometheus::blackbox::modules::service_catalog (
   $modules = $services_config.reduce({}) |$memo, $el| {
       $service_name = $el[0]
       $service_config = $el[1]
+      if 'discovery' in $service_config {
+        $discovery_name = $service_config['discovery'][0]['dnsdisc']
+
+        $tls_config = {
+          'tls_config' => {
+              'server_name' => "${discovery_name}.discovery.wmnet",
+          },
+        }
+      } else {
+        $tls_config = {}
+      }
 
       # XXX add other overrides from service config (e.g. headers)
       if debian::codename::ge('bullseye') {
-        $http_opts = {
-          'ip_protocol_fallback' => false,
-          'fail_if_ssl'           => !$service_config['encryption'],
-          'fail_if_not_ssl'       => $service_config['encryption'],
+        $extra_http_opts = {
+          'ip_protocol_fallback'  => false,
         }
       } else {
-        $http_opts = {
-          'fail_if_ssl'           => !$service_config['encryption'],
-          'fail_if_not_ssl'       => $service_config['encryption'],
-        }
+        $extra_http_opts = {}
       }
 
       $memo.merge({
@@ -27,13 +33,15 @@ class prometheus::blackbox::modules::service_catalog (
                   'preferred_ip_protocol' => 'ip4',
                   'fail_if_ssl'           => !$service_config['encryption'],
                   'fail_if_not_ssl'       => $service_config['encryption'],
-              } + $http_opts
+              } + $extra_http_opts + $tls_config
         },
         "http_${service_name}_ip6" => {
               'prober'                => 'http',
               'http'                  => {
                   'preferred_ip_protocol' => 'ip6',
-              } + $http_opts
+                  'fail_if_ssl'           => !$service_config['encryption'],
+                  'fail_if_not_ssl'       => $service_config['encryption'],
+              } + $extra_http_opts + $tls_config
         },
       })
   }
