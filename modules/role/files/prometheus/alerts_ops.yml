@@ -9,7 +9,7 @@ groups:
      expr: avg_over_time(probe_success{job="blackbox/discovery"}[1m]) * 100 < 80
      for: 0m
      labels:
-       severity: critical
+       severity: warning
 
    - alert: ProbeSlow
      annotations:
@@ -18,4 +18,4 @@ groups:
      expr: probe_duration_seconds{job="blackbox/discovery"} * probe_success > 1
      for: 2m
      labels:
-       severity: critical
+       severity: warning
