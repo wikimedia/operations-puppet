@@ -1791,7 +1791,7 @@ node /^logstash100[7-9]\.eqiad\.wmnet$/ {
 
 # new lvs servers T295804
 node /^lvs10(1[7-9]|2[0])\.eqiad\.wmnet/ {
-    role(insetup)
+    role(insetup_noferm)
 }
 
 node /lvs101[3456]\.eqiad\.wmnet/ {
