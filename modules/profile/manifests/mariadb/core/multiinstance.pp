@@ -10,6 +10,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
 
     include ::profile::mariadb::mysql_role
     include profile::mariadb::wmfmariadbpy
+    require passwords::misc::scripts
 
     # Read only forced on also for the masters of the primary datacenter
     class { 'mariadb::config':
@@ -45,6 +46,10 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::mariadb::ferm { $section: port => $port }
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
         profile::mariadb::replication_lag { $section: prom_port => $prom_port }
+        profile::mariadb::grants::core { $section:
+            wikiadmin_pass => $passwords::misc::scripts::wikiadmin_pass,
+            wikiuser_pass  => $passwords::misc::scripts::wikiuser_pass,
+        }
 
         # hack; remove after wikitech moves to a standard app server
         #  T282209

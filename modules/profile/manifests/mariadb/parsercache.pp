@@ -21,7 +21,10 @@ class profile::mariadb::parsercache (
     include profile::mariadb::wmfmariadbpy
     class { 'mariadb::service': }
 
-    include ::profile::mariadb::grants::core
+    profile::mariadb::grants::core { $shard:
+        wikiadmin_pass => $passwords::misc::scripts::wikiadmin_pass,
+        wikiuser_pass  => $passwords::misc::scripts::wikiuser_pass,
+    }
     class { 'profile::mariadb::grants::production':
         shard    => 'parsercache',
         prompt   => 'PARSERCACHE',

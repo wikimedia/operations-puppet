@@ -41,7 +41,10 @@ class profile::mariadb::core (
 
     profile::mariadb::section { $shard: }
 
-    class { 'profile::mariadb::grants::core': }
+    profile::mariadb::grants::core { $shard:
+        wikiadmin_pass => $passwords::misc::scripts::wikiadmin_pass,
+        wikiuser_pass  => $passwords::misc::scripts::wikiuser_pass,
+    }
     class { 'profile::mariadb::grants::production':
         shard    => 'core',
         prompt   => "PRODUCTION ${shard} ${mysql_role}",
