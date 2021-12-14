@@ -221,6 +221,21 @@ class profile::prometheus::ops (
       },
     ]
 
+    # Export local textfile metrics.
+    # Restricted to localhost (i.e. Prometheus hosts) and used to export
+    # arbitrarily-labeled metrics (e.g. metrics with 'instance' labels)
+    class{ '::prometheus::mini_textfile_exporter': }
+    $mini_textfile_jobs = [
+      {
+        'job_name'        => 'mini-textfile',
+        'honor_labels'    => true,
+        'static_configs' => [
+          { 'targets' => [ 'localhost:9716' ] },
+        ],
+      },
+    ]
+
+
     # Special setup for Gerrit, internal hostnames don't serve data, thus limit polling gerrit
     # from eqiad and codfw only (as opposed to all sites).
     # See also https://phabricator.wikimedia.org/T184086
@@ -2220,7 +2235,8 @@ class profile::prometheus::ops (
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
-            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs, $cache_envoy_jobs,
+            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
+            $cache_envoy_jobs, $mini_textfile_jobs,
         ].flatten,
         global_config_extra    => $config_extra,
     }

@@ -1,0 +1,10 @@
+[Unit]
+Description=Prometheus mini textfile exporter
+
+[Service]
+Restart=always
+User=prometheus
+ExecStart=/usr/local/bin/prometheus-mini-textfile-exporter --glob <%= @glob %>
+
+[Install]
+WantedBy=multi-user.target
