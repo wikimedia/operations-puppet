@@ -1,0 +1,10 @@
+profile::lvs::interface_tweaks:
+  eno1np0:
+    txqlen: 10000
+  eno2np1:
+    txqlen: 10000
+  ens1f0np0:
+    txqlen: 10000
+  ens1f1np1:
+    txqlen: 10000
+profile::pybal::primary: false
