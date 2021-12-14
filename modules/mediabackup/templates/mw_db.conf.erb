@@ -1,6 +1,11 @@
 host: <%= @mw_db_host %>
 port: <%= @mw_db_port %>
+<% if @wiki -%>
 wiki: '<%= @wiki %>'
+<% end -%>
+<% if @dblist -%>
+dblist: '<%= @dblist %>'
+<% end -%>
 user: '<%= @mw_db_user %>'
 password: '<%= @mw_db_password %>'
 batchsize: <%= @batchsize %>

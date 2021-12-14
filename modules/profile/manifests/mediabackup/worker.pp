@@ -13,6 +13,7 @@ class profile::mediabackup::worker (
         mw_db_port          => $mediabackup_config['mw_db_port'],
         mw_db_user          => $mediabackup_config['mw_db_user'],
         mw_db_password      => $mediabackup_config['mw_db_password'],
+        dblist              => $mediabackup_config['dblist'],
         wiki                => $mediabackup_config['wiki'],
         batchsize           => $mediabackup_config['batchsize'],
         db_host             => $mediabackup_config['db_host'],
