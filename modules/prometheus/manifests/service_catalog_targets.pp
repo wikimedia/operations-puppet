@@ -57,7 +57,12 @@ class prometheus::service_catalog_targets (
       $memo + $res
     }
 
-    $memo + $probes
+    # Skip services not deployed in the current site
+    if $::site in $service_config['sites'] {
+      $memo + $probes
+    } else {
+      $memo
+    }
   }
 
   file { "${targets_path}/blackbox_discovery.yaml":
