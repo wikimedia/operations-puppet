@@ -355,6 +355,11 @@ class profile::prometheus::ops (
         class_name => 'role::cache::upload_haproxy',
         port       => 3903,
     }
+    prometheus::class_config{ "varnish-upload_envoy_mtail_${::site}":
+        dest       => "${targets_path}/varnish-upload_envoy_mtail_${::site}.yaml",
+        class_name => 'role::cache::upload_envoy',
+        port       => 3903,
+    }
     prometheus::class_config{ "varnish-text_mtail_${::site}":
         dest       => "${targets_path}/varnish-text_mtail_${::site}.yaml",
         class_name => 'role::cache::text',
@@ -377,6 +382,11 @@ class profile::prometheus::ops (
         class_name => 'role::cache::upload_haproxy',
         port       => 3913,
     }
+    prometheus::class_config{ "varnish-upload_envoy_mtail_internal_${::site}":
+        dest       => "${targets_path}/varnish-upload_envoy_mtail_internal_${::site}.yaml",
+        class_name => 'role::cache::upload_envoy',
+        port       => 3913,
+    }
     prometheus::class_config{ "varnish-text_mtail_internal_${::site}":
         dest       => "${targets_path}/varnish-text_mtail_internal_${::site}.yaml",
         class_name => 'role::cache::text',
@@ -397,6 +407,11 @@ class profile::prometheus::ops (
     prometheus::class_config{ "trafficserver-upload_haproxy_backendmtail_${::site}":
         dest       => "${targets_path}/trafficserver-upload_haproxy_backendmtail_${::site}.yaml",
         class_name => 'role::cache::upload_haproxy',
+        port       => 3904,
+    }
+    prometheus::class_config{ "trafficserver-upload_envoy_backendmtail_${::site}":
+        dest       => "${targets_path}/trafficserver-upload_envoy_backendmtail_${::site}.yaml",
+        class_name => 'role::cache::upload_envoy',
         port       => 3904,
     }
 
