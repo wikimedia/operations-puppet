@@ -169,7 +169,7 @@ def main():
     msg = f"""
     Gsuit User:
     \tPrimary Email:\t{user['primaryEmail']}
-    \tAliases:\t{','.join(user['aliases'])}
+    \tAliases:\t{','.join(user.get('aliases', []))}
     \ttitle:\t\t{user['organizations'][0]['title']}
     \tmanager:\t{manager}
     \tagreedToTerms:\t{user['agreedToTerms']}
