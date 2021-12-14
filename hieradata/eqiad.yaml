@@ -48,6 +48,7 @@ mediabackup:
   db_user: 'mediabackup'
   # please note db_password is setup on the secret puppet repo
   db_schema: 'mediabackups'
+  # please note encryption_key is setup on the secret puppet repo
   worker_hosts:
     - ms-backup1001.eqiad.wmnet
     - ms-backup1002.eqiad.wmnet

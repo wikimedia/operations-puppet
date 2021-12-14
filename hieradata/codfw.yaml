@@ -54,6 +54,7 @@ mediabackup:
   db_user: 'mediabackup'
   # please note db_password is setup on the secret puppet repo
   db_schema: 'mediabackups'
+  # please note encryption_key is setup on the secret puppet repo
   worker_hosts:
     - ms-backup2001.codfw.wmnet
     - ms-backup2002.codfw.wmnet

@@ -1,7 +1,7 @@
 # mediabackup storage hosts expose the api and store
 # the files generated from the media backup workers.
 class profile::mediabackup::storage (
-    Hash $mediabackup_config              = lookup('mediabackup', Hash, 'hash'),
+    Hash $mediabackup_config              = lookup('mediabackup'),
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     $tls_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {

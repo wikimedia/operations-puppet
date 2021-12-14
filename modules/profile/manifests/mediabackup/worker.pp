@@ -2,7 +2,7 @@
 # the schedule needed to trigger the generation and
 # recovery of media (swift) backups for wikis.
 class profile::mediabackup::worker (
-    Hash $mediabackup_config = lookup('mediabackup', Hash, 'hash'),
+    Hash $mediabackup_config = lookup('mediabackup'),
 ){
     # Setup the media backups worker in production.
     # Some of the static configuration used here should probably
@@ -21,6 +21,7 @@ class profile::mediabackup::worker (
         db_user             => $mediabackup_config['db_user'],
         db_password         => $mediabackup_config['db_password'],
         db_schema           => $mediabackup_config['db_schema'],
+        encryption_key      => $mediabackup_config['encryption_key'],
         storage_hosts       => $mediabackup_config['storage_hosts'],
         storage_port        => $mediabackup_config['storage_port'],
         access_key          => $mediabackup_config['access_key'],

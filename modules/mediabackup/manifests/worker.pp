@@ -6,6 +6,9 @@
 #               SELECT grants on the image, oldimage and filearchive tables)
 # * mw_db_password: password used to authenticate to the mediawiki database
 # * wiki: name of the mediawiki database that will be read
+# * dblist: name of the list from mediawiki-config/dblists (including the
+#           extension) that will be used instead of a single wiki. If both wiki
+#           and this are provided, dblist is ignored.
 # * batchsize: maximum number of rows (files) of metadata to be read into memory and
 #              processed for both mw metadata and backups metadata
 # * db_host: fqdn of the database used to write the media backups metadata backend
@@ -19,9 +22,17 @@
 # * storage_port: Port where all storage nodes will be listening to (it may
 #                 change in the future to a per-host configuration (socket)
 #                 to allow for multiplexing with multiple services per host
+# * encryption_key: String used for encryption and decryption of private files
+#                   Can be an age secret key or an ssh file
 # * access_key: identifier to authenticate on the s3-compatible api to store
-#               the backup files
-# * secret_key: password to authenticate on the s3-compatible api
+#               the backup files (it has both read and write permissions)
+# * secret_key: password to authenticate on the s3-compatible api for backing
+#               up files
+# * recovery_access_key: identifier to authenticate on the s3-compatible api to
+#                        restore  the backup files (only has read and list
+#                        permissions)
+# * recovery_secret_key: password to authenticate on the s3-compatible api
+#                        for recovering files
 class mediabackup::worker (
     Stdlib::Fqdn        $mw_db_host,
     Stdlib::Port        $mw_db_port,
@@ -36,6 +47,7 @@ class mediabackup::worker (
     String              $db_password,
     Array[Stdlib::Fqdn] $storage_hosts,
     Stdlib::Port        $storage_port,
+    String              $encryption_key,
     String              $access_key,
     String              $secret_key,
     String              $recovery_access_key,
@@ -50,6 +62,7 @@ class mediabackup::worker (
         'python3-swiftclient',
         'python3-yaml',
         's3cmd',  # useful s3 command line util
+        'age',  # used for encryption and decryption
     ])
 
     # user and group so we don't run anything as a privileged user
@@ -120,6 +133,17 @@ class mediabackup::worker (
         show_diff => false,
         require   => [ File['/etc/mediabackup'], File['/srv/mediabackup'], ],
     }
+
+    # identity file used for encryption with age
+    file { '/etc/mediabackup/encryption.key':
+        ensure    => present,
+        mode      => '0400',
+        owner     => 'mediabackup',
+        group     => 'mediabackup',
+        content   => $encryption_key,
+        show_diff => false,
+    }
+
     # extra read-only policy for the recovery account
     file { '/etc/mediabackup/readandlist.json':
         ensure => present,

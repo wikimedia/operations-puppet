@@ -23,6 +23,8 @@ lookup_options:
     merge: deep
   profile::ceph::auth::deploy::configuration:
     merge: deep
+  mediabackup:
+    merge: hash
 
 # General variables that once would have been in realm.pp
 cluster: misc
