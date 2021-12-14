@@ -894,14 +894,10 @@ host netbox-dev2001 {
    fixed-address netbox-dev2001.wikimedia.org;
 }
 
-host netflow1001 {
-    hardware ethernet aa:00:00:3a:1d:c3;
-    fixed-address netflow1001.eqiad.wmnet;
-}
-
-host netflow2001 {
-    hardware ethernet aa:00:00:b4:c1:eb;
-    fixed-address netflow2001.codfw.wmnet;
+host netflow1002 {
+    hardware ethernet aa:00:00:08:ac:4b;
+    fixed-address netflow1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host netflow2002 {
@@ -910,19 +906,22 @@ host netflow2002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
-host netflow3001 {
-    hardware ethernet aa:00:00:f1:d3:9e;
-    fixed-address netflow3001.esams.wmnet;
+host netflow3002 {
+    hardware ethernet aa:00:00:0f:6b:e2;
+    fixed-address netflow3002.esams.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
-host netflow4001 {
-    hardware ethernet aa:00:00:01:9e:83;
-    fixed-address netflow4001.ulsfo.wmnet;
+host netflow4002 {
+    hardware ethernet aa:00:00:50:f3:24;
+    fixed-address netflow4002.ulsfo.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
-host netflow5001 {
-    hardware ethernet aa:00:00:13:2f:96;
-    fixed-address netflow5001.eqsin.wmnet;
+host netflow5002 {
+    hardware ethernet aa:00:00:b2:d0:d7;
+    fixed-address netflow5002.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host orespoolcounter1003 {
