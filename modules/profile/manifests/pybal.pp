@@ -28,7 +28,7 @@ class profile::pybal(
         # per-DC.  Perhaps we can pull this from other shared site hieradata
         # instead after we're done with the conversion?
         'bgp-peer-address' => $::hostname ? {
-            /^lvs101[3-6]$/     => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
+            /^lvs10[0-9][0-9]$/ => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
             /^lvs20[01][0789]$/ => "[ '208.80.153.192', '208.80.153.193' ]", # cr1-codfw,cr2-codfw
             /^lvs300[567]$/     => "[ '91.198.174.244', '91.198.174.245' ]", # cr2-esams,cr3-esams
             /^lvs400[567]$/     => "[ '198.35.26.192', '198.35.26.193' ]",   # cr3-ulsfo,cr4-ulsfo
