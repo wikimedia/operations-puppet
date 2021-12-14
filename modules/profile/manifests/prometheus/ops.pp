@@ -520,6 +520,22 @@ class profile::prometheus::ops (
         }
     }
 
+    $cache_envoy_jobs = [
+        {
+        'job_name'          => 'cache_envoy',
+        'metrics_path'      => '/stats/prometheus',
+        'scheme'            => 'http',
+        'file_sd_configs'   => [
+            { 'files' => [ "${targets_path}/cache_envoy_*.yaml" ]}
+        ],
+        },
+    ]
+    prometheus::class_config{ "cache_envoy_${::site}":
+        dest       => "${targets_path}/cache_envoy_${::site}.yaml",
+        class_name => 'profile::cache::envoy',
+        port       => 9631,
+    }
+
     # Job definition for purged
     $purged_jobs = [
       {
@@ -977,11 +993,6 @@ class profile::prometheus::ops (
     prometheus::class_config{ "envoy_${::site}":
         dest       => "${targets_path}/envoy_${::site}.yaml",
         class_name => 'profile::envoy',
-        port       => 9631,
-    }
-    prometheus::class_config{ "cache_envoy_${::site}":
-        dest       => "${targets_path}/cache_envoy_${::site}.yaml",
-        class_name => 'profile::cache::envoy',
         port       => 9631,
     }
 
@@ -2181,7 +2192,7 @@ class profile::prometheus::ops (
             $atlas_exporter_jobs, $exported_blackbox_jobs, $cadvisor_jobs,
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
-            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
+            $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs, $cache_envoy_jobs,
         ].flatten,
         global_config_extra    => $config_extra,
     }
