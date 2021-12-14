@@ -4987,6 +4987,10 @@ ldap_only_users:
     ensure: present
     realname: Eduardo Medina
     email: eamedina@wikimedia.org
+  elapps:
+    ensure: present
+    realname: Elena Lappen
+    email: elappen@wikimedia.org
   elitre:
     ensure: present
     realname: Erica Litrenta
