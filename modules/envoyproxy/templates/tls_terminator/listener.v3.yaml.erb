@@ -94,6 +94,9 @@ filter_chains:
               "@type": type.googleapis.com/envoy.extensions.http.header_formatters.preserve_case.v3.PreserveCaseFormatterConfig
 <%- end -%>
 <%- end -%>
+<%- unless @generate_request_id -%>
+      generate_request_id: false
+<%- end -%>
       stat_prefix: ingress_http
 <%- if @access_log -%>
       access_log:
@@ -198,6 +201,9 @@ filter_chains:
 <%- if @websockets -%>
       upgrade_configs:
       - upgrade_type: "websocket"
+<%- end -%>
+<%- unless @generate_request_id -%>
+      generate_request_id: false
 <%- end -%>
       stat_prefix: ingress_http
 <%- if @use_remote_address -%>

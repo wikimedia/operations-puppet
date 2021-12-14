@@ -70,6 +70,9 @@
 # @param listen_ipv6
 #     Listen on IPv6 adding ipv4_compat  allow both IPv4 and IPv6 connections,
 #     with peer IPv4 addresses mapped into IPv6 space as ::FFFF:<IPv4-address>
+# @param generate_request_id
+#    If true x-request-id will be populateed with a random UUID4 if the header
+#    does not exist.
 # @param retry_policy
 #     An optional hash specifying the retry policy. It should map 1:1 what
 #     goes in the envoy configuration.
@@ -111,6 +114,7 @@ define envoyproxy::tls_terminator(
     Float                                                                 $upstream_response_timeout = 65.0,
     Envoyproxy::Headerkeyformat                                           $header_key_format         = 'none',
     Boolean                                                               $listen_ipv6               = false,
+    Boolean                                                               $generate_request_id       = true,
     Hash[String, String]                                                  $response_headers_to_add   = {},
     Optional[Hash]                                                        $retry_policy              = undef,
     Optional[Stdlib::Port]                                                $redir_port                = undef,
