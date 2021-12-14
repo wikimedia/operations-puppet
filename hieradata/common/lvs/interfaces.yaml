@@ -5,6 +5,7 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs1014': 'enp5s0f0:10.64.37.14'
       'lvs1016': 'enp5s0f1:10.64.37.16'
+      'lvs1020': 'ens1f1np1:10.64.37.17'
   private1-a-eqiad:
     id: "1017"
     netmask: 255.255.252.0
@@ -12,6 +13,7 @@ lvs::interfaces::vlan_data:
       'lvs1014': 'enp4s0f1:10.64.1.14'
       'lvs1015': 'enp5s0f0:10.64.1.15'
       'lvs1016': 'enp4s0f1:10.64.1.16'
+      'lvs1020': 'eno2np1:10.64.1.17'
   private1-b-eqiad:
     id: "1018"
     netmask: 255.255.252.0
@@ -19,6 +21,7 @@ lvs::interfaces::vlan_data:
       'lvs1013': 'enp4s0f1:10.64.17.13'
       'lvs1015': 'enp4s0f1:10.64.17.15'
       'lvs1016': 'enp5s0f0:10.64.17.16'
+      'lvs1020': 'ens1f0np0:10.64.17.17'
   private1-c-eqiad:
     id: "1019"
     netmask: 255.255.252.0
@@ -26,6 +29,7 @@ lvs::interfaces::vlan_data:
       'lvs1013': 'enp5s0f0:10.64.33.13'
       'lvs1014': 'enp5s0f0:10.64.33.14'
       'lvs1016': 'enp5s0f1:10.64.33.16'
+      'lvs1020': 'ens1f1np1:10.64.33.17'
   private1-d-eqiad:
     id: "1020"
     netmask: 255.255.252.0
@@ -41,6 +45,7 @@ lvs::interfaces::vlan_data:
       'lvs1014': 'enp4s0f1:208.80.154.53'
       'lvs1015': 'enp5s0f0:208.80.154.54'
       'lvs1016': 'enp4s0f1:208.80.154.61'
+      'lvs1020': 'eno2np1:208.80.154.62'
   public1-b-eqiad:
     id: "1002"
     netmask: "255.255.255.192"
@@ -49,6 +54,7 @@ lvs::interfaces::vlan_data:
       'lvs1014': 'enp4s0f0:208.80.154.168'
       'lvs1015': 'enp4s0f1:208.80.154.169'
       'lvs1016': 'enp5s0f0:208.80.154.170'
+      'lvs1020': 'ens1f0np0:208.80.154.171'
   public1-c-eqiad:
     id: "1003"
     netmask: "255.255.255.192"
@@ -57,6 +63,7 @@ lvs::interfaces::vlan_data:
       'lvs1014': 'enp5s0f0:208.80.154.103'
       'lvs1015': 'enp4s0f0:208.80.154.104'
       'lvs1016': 'enp5s0f1:208.80.154.105'
+      'lvs1020': 'ens1f1np1:208.80.154.106'
   public1-d-eqiad:
     id: "1004"
     netmask: "255.255.255.224"
@@ -65,6 +72,7 @@ lvs::interfaces::vlan_data:
       'lvs1014': 'enp5s0f1:208.80.155.122'
       'lvs1015': 'enp5s0f1:208.80.155.123'
       'lvs1016': 'enp4s0f0:208.80.155.124'
+      'lvs1020': 'eno1np0:208.80.155.113'
   public1-a-codfw:
     id: "2001"
     netmask: '255.255.255.224'
