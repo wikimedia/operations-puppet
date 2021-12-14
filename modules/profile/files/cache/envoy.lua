@@ -2,7 +2,7 @@ function envoy_on_request(request_handle)
     local connection = request_handle:connection()
     local stream_info = request_handle:streamInfo()
     local ssl_info = connection:ssl()
-    local client_ip, client_port = string.match(stream_info:downstreamDirectRemoteAddress(), "^(%[?[%x.:]+%]?):(%d+)$")
+    local client_ip, client_port = string.match(stream_info:downstreamDirectRemoteAddress(), "^%[?([%x.:]+)%]?:(%d+)$")
     -- envoy doesn't expose if a TLS session is being reused or not
     local ssl_reused = "2"
     local x_tls_sess = 'unknown'
