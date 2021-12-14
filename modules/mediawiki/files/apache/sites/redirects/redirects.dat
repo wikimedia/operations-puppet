@@ -297,3 +297,7 @@ funnel	als.wikibooks.org	https://als.wikipedia.org/wiki/Buech:Houptsyte
 # redirect Moldovan Wikipedia and Wiktionary to Romanian Wikipedia and Wiktionary - T169450
 funnel	mo.wikipedia.org	https://ro.wikipedia.org/wiki/Pagina_principală
 funnel	mo.wiktionary.org	https://ro.wiktionary.org/wiki/Pagina_principală
+
+# Enterprise redirects for typos - T296445
+rewrite enterprise.wikimedia.org	https://enterprise.wikimedia.com
+rewrite enterprise.wikipedia.org	https://enterprise.wikimedia.com

@@ -106,6 +106,9 @@ rewrite	*wikipedia.fi	https://fi.wikipedia.org
 
 # Wikipedia
 
+# Enterprise redirect for .com - T296445
+rewrite enterprise.wikipedia.com	https://enterprise.wikimedia.com
+
 rewrite	*en-wp.com	https://en.wikipedia.org
 rewrite	*en-wp.org	https://en.wikipedia.org
 
