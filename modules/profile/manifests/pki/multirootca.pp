@@ -165,7 +165,7 @@ class profile::pki::multirootca (
     class { 'sslcert::dhparam': }
     # CRL and OCSP responder
     class {'httpd':
-        modules => ['proxy_http', 'ssl', 'headers']
+        modules              => ['proxy_http', 'ssl', 'headers']
     }
     # TODO: probably replace this with acmechief
     $tls_termination_cert = $facts['puppet_config']['hostcert']
@@ -201,8 +201,13 @@ class profile::pki::multirootca (
                 $network::constants::staging_kubepods_networks +
                 $network::constants::mlserve_kubepods_networks).join(' ')
 
+    $k8s_vhost_ensure = $enable_k8s_vhost.bool2str('present', 'absent')
+    httpd::conf {'cfssl-issuer-k8s-pods-vhost-port':
+        ensure  => $k8s_vhost_ensure,
+        content => 'Listen 8443',
+    }
     ferm::service{'multirootca tls termination for cfssl-issuer k8s pods':
-        ensure => $enable_k8s_vhost.bool2str('present', 'absent'),
+        ensure => $k8s_vhost_ensure,
         proto  => 'tcp',
         port   => '8443',
         srange => "(${srange})",
