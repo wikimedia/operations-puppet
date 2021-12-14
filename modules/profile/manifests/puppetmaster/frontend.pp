@@ -20,7 +20,10 @@ class profile::puppetmaster::frontend(
     Optional[String[1]] $mcrouter_ca_secret      = lookup('profile::puppetmaster::frontend::mcrouter_ca_secret',
                                                           {'default_value' => undef}),
 ) {
-    ensure_packages('libapache2-mod-passenger')
+    ensure_packages([
+      'libapache2-mod-passenger',
+      'age'  # useful file encryption tool, modern gpg replacement
+    ])
 
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
