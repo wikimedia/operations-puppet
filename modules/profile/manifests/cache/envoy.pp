@@ -42,7 +42,7 @@ class profile::cache::envoy(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => '[Service]\nExecStartPre=/usr/local/sbin/update-ocsp-all\n',
+        content => "[Service]\nExecStartPre=/usr/local/sbin/update-ocsp-all\n",
     }
 
     unless empty($unified_certs) {
