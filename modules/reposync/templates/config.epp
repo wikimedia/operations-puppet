@@ -1,0 +1,11 @@
+<%- | Stdlib::Unixpath $repo_path, Array[Stdlib::Host] $remotes | -%>
+# MANAGED BY PUPPET
+[core]
+    repositoryformatversion = 0
+    filemode = true
+    bare = true
+<%- $remotes.each |$remote| { -%>
+[remote "<%= $remote %>"]
+    url = ssh://root@<%= $remote %><%= $repo_path %>/
+    fetch = +refs/heads/*:refs/remotes/<%= $remote %>/*
+<%- } -%>
