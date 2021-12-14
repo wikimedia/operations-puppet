@@ -39,12 +39,12 @@ class pmacct(
     # Valid only when librdkafka_config is not undef
     $kafka_config_file = '/etc/pmacct/librdkafka.conf'
 
-    file { '/etc/pmacct/pretag.map':
+    file { '/etc/pmacct/pretag-nfacctd.map':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0440',
-        content => template('pmacct/pretag.map.erb'),
+        content => template('pmacct/pretag-nfacctd.map.erb'),
         before  => File['/etc/pmacct/nfacctd.conf'],
     }
 
@@ -55,9 +55,28 @@ class pmacct(
         mode    => '0440',
         content => template('pmacct/nfacctd.conf.erb'),
         require => Package['pmacct'],
-        before  => Service['nfacctd'],
         notify  => Service['nfacctd'],
     }
+
+    file { '/etc/pmacct/pretag-sfacctd.map':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('pmacct/pretag-sfacctd.map.erb'),
+        before  => File['/etc/pmacct/sfacctd.conf'],
+    }
+
+    file { '/etc/pmacct/sfacctd.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0440',
+        content => template('pmacct/sfacctd.conf.erb'),
+        require => Package['pmacct'],
+        notify  => Service['sfacctd'],
+    }
+
 
     if $librdkafka_config != undef {
         file { $kafka_config_file:
@@ -67,8 +86,8 @@ class pmacct(
             mode    => '0440',
             content => template('pmacct/librdkafka.conf.erb'),
             require => Package['pmacct'],
-            before  => Service['nfacctd'],
-            notify  => Service['nfacctd'],
+            before  => [Service['nfacctd'], Service['sfacctd']],
+            notify  => [Service['nfacctd'], Service['sfacctd']],
         }
     }
 
@@ -76,6 +95,12 @@ class pmacct(
         ensure => running,
         enable => true,
     }
+    service { 'sfacctd':
+        ensure => running,
+        enable => true,
+    }
 
     profile::auto_restarts::service { 'nfacctd': }
+    profile::auto_restarts::service { 'sfacctd': }
+
 }
