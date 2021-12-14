@@ -161,7 +161,11 @@ class profile::prometheus::ops (
     # Restrict discovery probes to run from "main sites" since this
     # profile is used in PoPs as well.
     if ($::site in ['eqiad', 'codfw']) {
-        # XXX Export 'state' from catalog as a metric
+        class { '::prometheus::service_catalog_metrics':
+            services_config => wmflib::service::fetch(),
+            outfile         => '/var/lib/prometheus/mini-textfile.d/service_catalog_metrics.prom',
+        }
+
         class { '::prometheus::service_catalog_targets':
             services_config => $probe_services,
             targets_path    => $targets_path,

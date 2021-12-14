@@ -1,0 +1,5 @@
+# HELP service_catalog_info State information for service::catalog
+# TYPE service_catalog_info gauge
+<% @state_by_service.sort.each do |service, state| -%>
+service_catalog_info{instance="<%= service %>", state="<%= state %>"} 1
+<% end %>
