@@ -34,8 +34,6 @@ class profile::mediawiki::php(
     Integer $slowlog_limit = lookup('profile::mediawiki::php::slowlog_limit', {'default_value' => 15}),
     Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions'),
-    # temporary while being rolled out
-    Boolean $enable_yaml = lookup('profile::mediawiki::php::enable_yaml', {'default_value' => false}),
 ){
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]
@@ -173,17 +171,11 @@ class profile::mediawiki::php(
         'redis',
         'luasandbox',
         'wikidiff2',
+        'yaml',
     ]
     $generic_name_extensions.each |$ext| {
         php::extension { $ext:
             package_overrides => {'7.4' => "php7.4-${ext}"}
-        }
-    }
-
-    # TODO: Merge into $generic_name_extensions once enabled everywhere
-    if $enable_yaml {
-        php::extension { 'yaml':
-            package_overrides => {'7.4' => 'php7.4-yaml'}
         }
     }
 
