@@ -13,6 +13,7 @@
 # - $template: Path to Elasticsearch mapping template. Default undef.
 # - $template_name: Name of Elasticsearch mapping template.
 #       Default $title.
+# - $document_type: Set the elasticsearch document type to write events to. Default undef.
 # - $plugin_id: Name associated with Logstash metrics
 #
 # == Sample usage:
@@ -32,6 +33,7 @@ define logstash::output::elasticsearch(
     Integer                                    $priority         = 10,
     Optional[String]                           $template         = undef,
     String                                     $template_name    = $title,
+    Optional[String]                           $document_type    = undef,
     String                                     $plugin_id        = "output/elasticsearch/${title}",
 ) {
     logstash::conf{ "output-elasticsearch-${title}":

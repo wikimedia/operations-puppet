@@ -13,6 +13,9 @@ output {
 <% else %>
         manage_template => false
 <% end %>
+<% if @document_type %>
+        document_type   => "<%= @document_type %>"
+<% end %>
 <% if @plugin_id %>
         id              => "<%= @plugin_id %>"
 <% end %>
