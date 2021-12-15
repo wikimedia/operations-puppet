@@ -1,0 +1,34 @@
+# Apache config for tendril.wikimedia.org
+# ! THIS FILE IS MANAGED BY PUPPET !
+
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+    ServerName tendril.wikimedia.org
+    DocumentRoot /srv/org/wikimedia/static-tendril
+
+    RewriteEngine On
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{REQUEST_URI} !^/status$
+    RewriteRule ^/(.*)$ https://%{HTTP_HOST}/ [R=301,E=ProtoRedirect]
+    Header always merge Vary X-Forwarded-Proto env=ProtoRedirect
+
+    RewriteEngine On
+    RewriteRule ^/(.+)$ https://%{HTTP_HOST}/ [R=permanent,L]
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+
+ErrorLog /var/log/apache2/error.log
+
+# Possible values include: debug, info, notice, warn, error, crit,
+# alert, emerg.
+LogLevel warn
+
+CustomLog /var/log/apache2/access.log wmf
+ServerSignature On
+
+</VirtualHost>
+

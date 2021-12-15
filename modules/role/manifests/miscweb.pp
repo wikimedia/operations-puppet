@@ -27,4 +27,5 @@ class role::miscweb {
     include profile::microsites::security        # https://security.wikimedia.org (T257830)
     include profile::microsites::query_service   # parts of https://query.wikidata.org (T266702)
     include profile::microsites::os_reports      # https://os-reports.wikimedia.org
+    include profile::microsites::static_tendril  # https://tendril.wikimedia.org and dbtree.wikimedia.org (T297605)
 }

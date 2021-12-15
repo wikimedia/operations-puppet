@@ -1,0 +1,24 @@
+# Provisions static site as graveyard of tendril
+# hosted at <http://tendril.wikimedia.org> and <http://dbtree.wikimedia.org>.
+#
+class profile::microsites::static_tendril {
+
+    $docroot = '/srv/org/wikimedia/static-tendril'
+
+    file { "${docroot}/index.html":
+        source => 'puppet:///modules/profile/microsites/static-tendril-index.html',
+        mode   => '0444',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+
+    httpd::site { 'tendril.wikimedia.org':
+        content => template('profile/microsites/static-tendril.wikimedia.org.erb'),
+    }
+
+    httpd::site { 'dbtree.wikimedia.org':
+        content => template('profile/microsites/static-tendril.wikimedia.org.erb'),
+    }
+
+}

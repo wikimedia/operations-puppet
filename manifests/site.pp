@@ -1615,7 +1615,7 @@ node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
 # profile::microsites::bienvenida      # https://bienvenida.wikimedia.org (T207816)
 # profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
 # profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
-
+# profile::microsites::static_tendril  # https://tendril.wikimedia.org and https://dbtree.wikimedia.org (T297605)
 node 'miscweb1002.eqiad.wmnet', 'miscweb2002.codfw.wmnet' {
     role(miscweb)
 }
