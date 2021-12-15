@@ -1,0 +1,4 @@
+profile::prometheus::ops::blackbox_watchrat_http_check_urls:
+- https://wikimedia.org
+- https://www.wiktionary.org
+- https://store.wikimedia.org

@@ -4,7 +4,9 @@
 # This does 'active' checks over TCP / UDP / ICMP / HTTP / DNS
 # and reports status to the prometheus scraper
 
-class prometheus::blackbox_exporter{
+class prometheus::blackbox_exporter(
+    Optional[Stdlib::HTTPUrl] $http_proxy = undef,
+) {
 
     # Grant permissions to send out ICMP probes
     debconf::set { 'prometheus-blackbox-exporter/want_cap_net_raw':

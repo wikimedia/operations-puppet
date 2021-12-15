@@ -2,19 +2,21 @@
 # needed for WMF production
 #
 class profile::prometheus::ops (
-    Array[Stdlib::Host] $prometheus_nodes              = lookup('prometheus_nodes'),
-    String $storage_retention                          = lookup('prometheus::server::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
-    Optional[Stdlib::Datasize] $storage_retention_size = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
-    Integer $max_chunks_to_persist                     = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
-    Integer $memory_chunks                             = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
-    Stdlib::Unixpath $targets_path                     = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
-    Array[Stdlib::Host] $bastion_hosts                 = lookup('bastion_hosts', { 'default_value' => [] }),
-    Stdlib::Host $netmon_server                        = lookup('netmon_server'),
-    String $replica_label                              = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
-    Boolean $enable_thanos_upload                      = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
-    Optional[String] $thanos_min_time                  = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
-    Array $alertmanagers                               = lookup('alertmanagers', {'default_value' => []}),
-    Boolean $disable_compaction                        = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
+    Array[Stdlib::Host] $prometheus_nodes                     = lookup('prometheus_nodes'),
+    String $storage_retention                                 = lookup('prometheus::server::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
+    Optional[Stdlib::Datasize] $storage_retention_size        = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
+    Integer $max_chunks_to_persist                            = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
+    Integer $memory_chunks                                    = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
+    Stdlib::Unixpath $targets_path                            = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
+    Array[Stdlib::Host] $bastion_hosts                        = lookup('bastion_hosts', { 'default_value' => [] }),
+    Stdlib::Host $netmon_server                               = lookup('netmon_server'),
+    String $replica_label                                     = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
+    Boolean $enable_thanos_upload                             = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
+    Optional[String] $thanos_min_time                         = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
+    Array $alertmanagers                                      = lookup('alertmanagers', {'default_value' => []}),
+    Boolean $disable_compaction                               = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
+    Array[Stdlib::HTTPUrl] $blackbox_watchrat_http_check_urls = lookup('profile::prometheus::ops::blackbox_watchrat_http_check_urls', { 'default_value' => [] }),
+    Optional[Stdlib::HTTPUrl] $http_proxy                     = lookup('http_proxy', {default_value => undef}),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -35,7 +37,9 @@ class profile::prometheus::ops (
     }
 
     class{ '::prometheus::swagger_exporter': }
-    class{ '::prometheus::blackbox_exporter': }
+    class{ '::prometheus::blackbox_exporter':
+        http_proxy => $http_proxy,
+    }
 
     $blackbox_jobs = [
       {
@@ -130,6 +134,27 @@ class profile::prometheus::ops (
         },
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/blackbox_https_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => '127.0.0.1:9115',
+          },
+        ],
+      },
+      {
+        'job_name'        => 'blackbox/watchrat',
+        'metrics_path'    => '/probe',
+        'params'          => {
+          'module' => [ 'http_connect_23xx_proxied' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_watchrat_http_check_urls.yaml" ] }
         ],
         'relabel_configs' => [
           { 'source_labels' => ['__address__'],
@@ -2311,6 +2336,9 @@ class profile::prometheus::ops (
             }]);
         "${targets_path}/gerrit.yaml":
             content => ordered_yaml([$gerrit_targets]);
+        # Generic HTTPS probes for a static list of urls defined in hiera
+        "${targets_path}/blackbox_watchrat_http_check_urls.yaml":
+            content => ordered_yaml([{'targets' => $blackbox_watchrat_http_check_urls}]);
     }
 
     prometheus::rule { 'rules_ops.yml':

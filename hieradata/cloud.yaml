@@ -557,10 +557,11 @@ profile::ceph::auth::deploy::enabled: false
 profile::ceph::auth::deploy::selected_creds: []
 profile::ceph::auth::deploy::configuration: {}
 
-
 # Do not build images or generate reports
 profile::docker::builder::rebuild_images: false
 profile::docker::reporter::generate_reports: false
 
 # Do not use kafka shipping for central syslogserver
 profile::syslog::centralserver::use_kafka_relay: false
+
+profile::prometheus::ops::blackbox_watchrat_http_check_urls: []
