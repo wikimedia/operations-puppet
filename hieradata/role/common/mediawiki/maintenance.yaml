@@ -33,3 +33,4 @@ profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
 profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::mediawiki::php::enable_yaml: true
