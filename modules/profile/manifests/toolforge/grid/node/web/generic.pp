@@ -22,14 +22,13 @@ class profile::toolforge::grid::node::web::generic(
         ensure => latest,
     }
 
-    # tomcat support
-    if $facts['lsbdistcodename'] == 'stretch' {
-        package { [ 'tomcat8-user', 'xmlstarlet' ]:
-            ensure => latest,
-        }
-    } else {
-        package { [ 'tomcat7-user', 'xmlstarlet' ]:
-            ensure => latest,
-        }
+    $tomcat_package = debian::codename() ? {
+        'stretch' => 'tomcat8-user',
+        'buster'  => 'tomcat9-user',
+        default   => fail('unsupported debian version'),
+    }
+
+    package { [ $tomcat_package, 'xmlstarlet' ]:
+        ensure => latest,
     }
 }
