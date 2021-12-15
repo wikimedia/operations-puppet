@@ -148,6 +148,8 @@ groups:
               daimona, mepps, jabrams, nforrester, katelevan, cmaslak, mewoph,
               komla]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
+    approval:
+      - Tyler Cipriani
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
