@@ -224,6 +224,8 @@ service::catalog:
           url:
             - http://localhost/
       scheduler: wrr
+    probes:
+      - type: http
     monitoring:
       check_command: check_http_lvs_on_port!aqs.svc.eqiad.wmnet!7232!/
       critical: true
@@ -295,6 +297,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!citoid.discovery.wmnet!4003!/_info
       contact_group: admins,parsoid
@@ -497,6 +502,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!cxserver.discovery.wmnet!4002!/_info
       critical: true
@@ -534,6 +542,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /v2/
     monitoring:
       check_command: check_https_url!docker-registry.discovery.wmnet!/v2/
       critical: true
@@ -572,6 +583,9 @@ service::catalog:
           url:
             - http://localhost/status
       scheduler: wrr
+    probes:
+      - type: http
+        path: /status
     monitoring:
       check_command: check_http_lvs_on_port!druid-public-broker.svc.eqiad.wmnet!8082!/status
       critical: false
@@ -643,6 +657,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-analytics.discovery.wmnet!4592!/_info
       critical: true
@@ -761,6 +778,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-main.discovery.wmnet!4492!/_info
       critical: true
@@ -909,6 +929,9 @@ service::catalog:
           url:
             - https://localhost/w/health-check.php
       scheduler: wrr
+    probes:
+      - type: http
+        path: /w/health-check.php
     monitoring:
       check_command: check_https_url!jobrunner.discovery.wmnet!/w/health-check.php
       critical: true
@@ -1200,6 +1223,8 @@ service::catalog:
           url:
             - https://wikitech.wikimedia.org:7443
       scheduler: wrr
+    probes:
+      - type: http
     port: 7443
     sites:
       - eqiad
@@ -1378,6 +1403,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!mathoid.discovery.wmnet!4001!/_info
       critical: true
@@ -1484,6 +1512,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!mobileapps.discovery.wmnet!4102!/_info
       contact_group: mobileapps
@@ -1656,6 +1687,9 @@ service::catalog:
           url:
             - https://localhost/v2/scores/
       scheduler: wrr
+    probes:
+      - type: http
+        path: /v2/scores/
     monitoring:
       check_command: check_https_url!ores.discovery.wmnet!/v2/scores/
       critical: true
@@ -1738,6 +1772,8 @@ service::catalog:
           url:
             - http://prometheus/
       scheduler: wrr
+    probes:
+      - type: http
     monitoring:
       check_command: check_http_lvs_on_port!prometheus!80!/
       critical: true
@@ -1854,6 +1890,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /robots.txt
     monitoring:
       check_command: check_https_lvs_on_port!recommendation-api.discovery.wmnet!4632!/robots.txt
       critical: true
@@ -1923,6 +1962,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+    probes:
+      - type: http
     monitoring:
       check_command: check_https_lvs_on_port!restbase.discovery.wmnet!7443!/
       critical: true
@@ -2045,6 +2086,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+    probes:
+      - type: http
     monitoring:
       check_command: check_https_on_port!9243
       critical: true
@@ -2085,6 +2128,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+    probes:
+      - type: http
     monitoring:
       check_command: check_https_on_port!9443
       critical: true
@@ -2098,6 +2143,8 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+    aliases:
+      - "search"
 
   search-psi-https:
     description: Elasticsearch search for MediaWiki (Psi cluster) - HTTPS
@@ -2122,6 +2169,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+    probes:
+      - type: http
     monitoring:
       check_command: check_https_on_port!9643
       critical: true
@@ -2135,6 +2184,8 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+    aliases:
+      - "search"
 
   sessionstore:
     description: Session store, sessionstore.svc.%{::site}.wmnet
@@ -2156,6 +2207,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_port_status!8081!200!/healthz
       critical: true
@@ -2194,6 +2248,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox.discovery.wmnet!4008!/healthz
       critical: true
@@ -2232,6 +2289,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-constraints.discovery.wmnet!4010!/healthz
       critical: true
@@ -2270,6 +2330,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-media.discovery.wmnet!4015!/healthz
       critical: true
@@ -2308,6 +2371,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-syntaxhighlight.discovery.wmnet!4014!/healthz
       critical: true
@@ -2346,6 +2412,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-timeline.discovery.wmnet!4012!/healthz
       critical: true
@@ -2423,6 +2492,9 @@ service::catalog:
           url:
             - https://localhost/monitoring/frontend
       scheduler: wrr
+    probes:
+      - type: http
+        path: /monitoring/frontend
     monitoring:
       check_command: check_https_url!localhost!/monitoring/frontend
       critical: true
@@ -2510,6 +2582,9 @@ service::catalog:
           url:
             - https://thanos-query.discovery.wmnet/-/ready
       scheduler: wrr
+    probes:
+      - type: http
+        path: /-/ready
     monitoring:
       check_command: check_https_url!thanos-query.discovery.wmnet!/-/ready
       critical: true
@@ -2552,6 +2627,9 @@ service::catalog:
           url:
             - https://thanos-swift.discovery.wmnet/healthcheck
       scheduler: wrr
+    probes:
+      - type: http
+        path: /healthcheck
     monitoring:
       check_command: check_https_url!thanos-swift.discovery.wmnet!/healthcheck
       critical: true
@@ -2590,6 +2668,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!termbox.discovery.wmnet!4004!/_info
       critical: true
@@ -2754,6 +2835,9 @@ service::catalog:
           url:
             - http://localhost/healthcheck
       scheduler: wrr
+    probes:
+      - type: http
+        path: /healthcheck
     monitoring:
       check_command: check_http_lvs_on_port_timeout!thumbor.discovery.wmnet!8800!/healthcheck!20
       critical: true
@@ -2943,6 +3027,9 @@ service::catalog:
           url:
             - https://localhost/w/health-check.php
       scheduler: wrr
+    probes:
+      - type: http
+        path: /w/health-check.php
     monitoring:
       check_command: check_https_url!videoscaler.discovery.wmnet!/w/health-check.php
       critical: true
@@ -3092,6 +3179,9 @@ service::catalog:
           url:
             - http://localhost/readiness-probe
       scheduler: wrr
+    probes:
+      - type: http
+        path: /readiness-probe
     monitoring:
       check_command: check_http_lvs_on_port!wdqs-internal.discovery.wmnet!80!/readiness-probe
       critical: true
@@ -3132,6 +3222,9 @@ service::catalog:
           url:
             - https://localhost/readiness-probe
       scheduler: wrr
+    probes:
+      - type: http
+        path: /readiness-probe
     monitoring:
       check_command: check_https_url!wdqs.discovery.wmnet!/readiness-probe
       critical: true
@@ -3169,6 +3262,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!wikifeeds.discovery.wmnet!4101!/_info
       critical: true
@@ -3468,6 +3564,9 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!apple-search.discovery.wmnet!4013!/healthz
       critical: true
