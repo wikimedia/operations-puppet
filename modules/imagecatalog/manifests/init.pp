@@ -33,7 +33,7 @@ class imagecatalog(
       ensure => directory,
       owner  => 'imagecatalog',
       group  => 'imagecatalog',
-      mode   => '0440',
+      mode   => '0770',
   }
 
   $db_path = "${data_dir}/catalog.sqlite"
