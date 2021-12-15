@@ -1792,18 +1792,24 @@ node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
-# new lvs servers T295804
+# new lvs servers T295804 (still insetup)
 node /^lvs101[7-9]\.eqiad\.wmnet/ {
     role(insetup_noferm)
 }
 
-# new lvs servers T295804
+# new lvs servers T295804 (in prod use)
 node 'lvs1020.eqiad.wmnet' {
     role(lvs::balancer)
 }
 
-node /lvs101[3456]\.eqiad\.wmnet/ {
+# old lvs servers T295804 (in prod use)
+node /lvs101[345]\.eqiad\.wmnet/ {
     role(lvs::balancer)
+}
+
+# old lvs servers T295804 (insetup for future experimentation!)
+node 'lvs1016.eqiad.wmnet' {
+    role(insetup_noferm)
 }
 
 # codfw lvs
