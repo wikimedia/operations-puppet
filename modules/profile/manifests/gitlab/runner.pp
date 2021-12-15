@@ -34,6 +34,7 @@ class profile::gitlab::runner (
     String                                 $registration_token = lookup('profile::gitlab::runner::registration_token'),
     Boolean                                $run_untagged       = lookup('profile::gitlab::runner::run_untagged'),
     Array[String]                          $tags               = lookup('profile::gitlab::runner::tags'),
+    Boolean                                $enable_exporter    = lookup('profile::gitlab::runner::enable_exporter', {default_value => false}),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -77,6 +78,15 @@ class profile::gitlab::runner (
 
     $runner_name = "${::hostname}.${::domain}"
 
+    class { 'gitlab_runner::config':
+        concurrent              => $concurrent,
+        docker_image            => $docker_image,
+        gitlab_url              => $gitlab_url,
+        runner_name             => $runner_name,
+        exporter_listen_address => $facts['ipaddress'],
+        enable_exporter         => $enable_exporter,
+    }
+
     if $ensure == 'present' {
         $tag_list = join($tags, ',')
 
@@ -84,12 +94,10 @@ class profile::gitlab::runner (
             user    => 'root',
             command => @("CMD"/L$)
                 /usr/bin/gitlab-runner register \
+                --template-config /etc/gitlab-runner/config-template.toml \
                 --non-interactive \
                 --name "${runner_name}" \
-                --url "${gitlab_url}" \
                 --registration-token "${registration_token}" \
-                --executor "docker" \
-                --docker-image "${docker_image}" \
                 --tag-list "${tag_list}" \
                 --run-untagged="${run_untagged}" \
                 --locked="${locked}" \
@@ -98,22 +106,6 @@ class profile::gitlab::runner (
             ,
             unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name} '",
             require => Apt::Package_from_component['gitlab-runner'],
-        }
-
-        # Believe it or not, there's no CLI for modifying the global
-        # concurrent setting.
-        # See https://gitlab.com/gitlab-org/gitlab-runner/-/issues/1539
-        file_line { 'gitlab-runner-config-concurrent':
-            path    => '/etc/gitlab-runner/config.toml',
-            match   => '^concurrent *=',
-            line    => "concurrent = ${concurrent}",
-            require => Exec['gitlab-register-runner'],
-            notify  => Exec['gitlab-runner-restart'],
-        }
-        exec { 'gitlab-runner-restart':
-            user        => 'root',
-            command     => '/usr/bin/gitlab-runner restart',
-            refreshonly =>  true,
         }
 
     } else {

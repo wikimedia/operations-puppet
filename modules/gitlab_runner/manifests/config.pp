@@ -11,12 +11,30 @@ class gitlab_runner::config (
 )
 {
 
-    file {'/etc/gitlab-runner/config.toml':
+    # Setup config template which is used while registering new runners
+    file {'/etc/gitlab-runner/config-template.toml':
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('gitlab_runner/config.toml.erb'),
-        notify  => Exec['gitlab-runner-restart'],
+        content => template('gitlab_runner/config-template.toml.erb'),
+    }
+
+    # Believe it or not, there's no config template or CLI to modifying
+    # the global concurrent Runner settings.
+    file_line { 'gitlab-runner-config-concurrent':
+        path   => '/etc/gitlab-runner/config.toml',
+        match  => '^concurrent *=',
+        line   => "concurrent = ${concurrent}",
+        notify => Exec['gitlab-runner-restart'],
+    }
+
+    # Believe it or not, there's no config template or CLI to modifying
+    # the global Prometheus listener settings.
+    file_line { 'gitlab-runner-config-exporter':
+        ensure => $enable_exporter.bool2str('present','absent'),
+        path   => '/etc/gitlab-runner/config.toml',
+        line   => "listen_address = \"${exporter_listen_address}:${exporter_listen_port}\"",
+        notify => Exec['gitlab-runner-restart'],
     }
 
     exec { 'gitlab-runner-restart':
