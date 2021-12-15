@@ -10,9 +10,9 @@ function wmflib::role_hosts (
     Variant[Wmflib::Sites, Array[Wmflib::Sites]] $location = [],
 ) {
 
-    $_role = $role.stdlib::start_with('role::') ? {
+    $_role = $role.capitalize.stdlib::start_with('Role::') ? {
         true    => $role,
-        default => "role::${role}",
+        default => "Role::${role}",
     }.split('::').capitalize.join('::')
 
     # TODO: need a better way to determin site
