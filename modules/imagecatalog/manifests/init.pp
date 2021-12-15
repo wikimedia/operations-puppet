@@ -50,6 +50,6 @@ class imagecatalog(
       restart => true,
   }
 
-  # TODO: Hourly systemd timer to scan for what's currently running (as root, in order to use the admin k8s configs).
+  # TODO: Hourly systemd timer to scan for what's currently running.
   # TODO: Systemd timer to sync data dir from active to passive hosts
 }
