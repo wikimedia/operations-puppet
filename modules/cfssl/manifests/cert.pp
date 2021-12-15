@@ -198,7 +198,7 @@ define cfssl::cert (
             "$(/bin/cat ${cert_chained_path} | sha512sum)"
             | TEST_CHAINED
         # TODO: use sslcert::chained
-        exec {"cretate chained cert ${cert_chain_path}":
+        exec {"create chained cert ${cert_chain_path}":
             command => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
             unless  => $test_chained,
             notify  => $_notify_service,
@@ -207,7 +207,7 @@ define cfssl::cert (
             ensure  => stdlib::ensure($ensure, 'file'),
             owner   => $owner,
             group   => $group,
-            require => Exec["cretate chained cert ${cert_chain_path}"]
+            require => Exec["create chained cert ${cert_chain_path}"]
         }
     }
 }
