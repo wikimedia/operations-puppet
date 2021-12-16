@@ -79,14 +79,17 @@ https://sitemaps.wikimedia.org:
 https://wikiworkshop.org:
 - path: /
   assert_status: 200
-  assert_body_contains: wikiworkshop.org/2021
-- path: /2021
+  assert_body_contains: wikiworkshop.org/2022
+- path: /2022
   assert_status: 301
   assert_headers:
-    Location: http://wikiworkshop.org/2021/
+    Location: http://wikiworkshop.org/2022/
 - path: /2021/
   assert_status: 200
   assert_body_contains: Wiki Workshop 2021
+- path: /2022/
+  assert_status: 200
+  assert_body_contains: Wiki Workshop 2022
 
 https://www.wikiworkshop.org:
 - path: /
