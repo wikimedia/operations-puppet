@@ -113,6 +113,7 @@ my %consolidate_patterns = (
   qr/the(?: maximum)? execution time(?: limit)? of \d+ seconds was exceeded/i => '[time]',
   qr/Memcached::setMulti\(\): failed to set key/           => '[memcache]',
   qr/Cannot access the database:/                          => '[db]',
+  qr/max_statement_time exceeded/                          => '[db]',
 );
 
 # YYYY-MM-DD HH:MM:SS [requestid] host wiki version ......
