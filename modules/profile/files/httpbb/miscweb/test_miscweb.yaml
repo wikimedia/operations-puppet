@@ -25,11 +25,6 @@ https://static-codereview.wikimedia.org:
   assert_status: 200
   assert_body_contains: MediaWiki SVN CodeReview archive
 
-https://static-tendril.wikimedia.org:
-- path: /index.html
-  assert_status: 200
-  assert_body_contains: tendril and dbtree
-
 https://15.wikipedia.org:
 - path: /
   assert_status: 200
