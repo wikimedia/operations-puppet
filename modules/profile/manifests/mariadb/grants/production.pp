@@ -34,7 +34,7 @@ class profile::mariadb::grants::production(
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
-        content => template('role/mariadb/grants/production.sql.erb'),
+        content => template('profile/mariadb/grants/production.sql.erb'),
     }
 
     if $shard {
