@@ -287,6 +287,11 @@ node 'bast5002.wikimedia.org' {
     role(bastionhost)
 }
 
+# drmrs/bastion on Ganeti
+node 'bast6001.wikimedia.org' {
+    role(bastionhost)
+}
+
 node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
     role(syslog::centralserver)
 }
