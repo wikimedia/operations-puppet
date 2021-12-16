@@ -11,10 +11,11 @@
 # @core_dump_pattern pattern to use when generating core dumps
 #
 class profile::environment (
-    Boolean $ls_aliases = lookup('profile::environment::ls_aliases'),
-    Optional[String[1]] $custom_skel_bashrc = lookup('profile::environment::custom_skel_bashrc'),
-    Optional[String[1]] $custom_bashrc = lookup('profile::environment::custom_bashrc'),
-    Enum['vim', 'use_default'] $editor = lookup('profile::environment::editor'),
+    Boolean                    $ls_aliases         = lookup('profile::environment::ls_aliases'),
+    Optional[String[1]]        $custom_skel_bashrc = lookup('profile::environment::custom_skel_bashrc'),
+    Optional[String[1]]        $custom_skel_zshrc  = lookup('profile::environment::custom_skel_zshrc'),
+    Optional[String[1]]        $custom_bashrc      = lookup('profile::environment::custom_bashrc'),
+    Enum['vim', 'use_default'] $editor             = lookup('profile::environment::editor'),
     Hash[String, Stdlib::Filesource] $profile_scripts = lookup('profile::environment::profile_scripts'),
 ) {
     if $ls_aliases {
@@ -39,6 +40,14 @@ class profile::environment (
     if $custom_skel_bashrc {
         file { '/etc/skel/.bashrc':
                 content => template($custom_skel_bashrc),
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+        }
+    }
+    if $custom_skel_bashrc {
+        file { '/etc/skel/.zshrc':
+                content => template($custom_skel_zshrc),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0644',

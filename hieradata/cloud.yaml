@@ -515,6 +515,7 @@ profile::auto_restarts::with_debdeploy: false
 profile::environment::ls_aliases: false
 profile::environment::custom_bashrc: 'base/environment/bash.bashrc.erb'
 profile::environment::custom_skel_bashrc: 'base/environment/skel/bashrc.erb'
+profile::environment::custom_skel_zshrc: 'base/environment/skel/zshrc.erb'
 profile::environment::editor: 'use_default'
 profile::environment::profile_scripts:
   field.sh: 'puppet:///modules/base/environment/field.sh'

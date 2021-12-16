@@ -1,6 +1,7 @@
 profile::environment::ls_aliases: true
 profile::environment::custom_bashrc: null
 profile::environment::custom_skel_bashrc: null
+profile::environment::custom_skel_zshrc: null
 profile::environment::editor: 'vim'
 profile::environment::profile_scripts:
   field.sh: 'puppet:///modules/base/environment/field.sh'
