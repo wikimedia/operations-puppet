@@ -1330,7 +1330,7 @@ node 'furud.codfw.wmnet' {
 }
 
 # New Kubernetes host T290202  - eqiad
-node /^kubernetes10(1[8-9]|2[0-1])\.eqiad\.wmnet$/ {
+node /^kubernetes10(1[8-9]|2[0-2])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
