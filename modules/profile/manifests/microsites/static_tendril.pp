@@ -5,6 +5,8 @@ class profile::microsites::static_tendril {
 
     $docroot = '/srv/org/wikimedia/static-tendril'
 
+    wmflib::dir::mkdir_p($docroot)
+
     file { "${docroot}/index.html":
         source => 'puppet:///modules/profile/microsites/static-tendril-index.html',
         mode   => '0444',
