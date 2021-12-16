@@ -2,7 +2,7 @@ class profile::imagecatalog (
     Hash[String, Hash] $kubernetes_cluster_groups = lookup('kubernetes_cluster_groups'),
     Hash[String, Hash[String, Hash]] $tokens      = lookup('profile::kubernetes::infrastructure_users', {default_value => {}}),
 ) {
-    $kubernetes_configs = $kubernetes_cluster_groups.map |$cluster_group, $clusters| {
+    $kubernetes_clusters = $kubernetes_cluster_groups.map |$cluster_group, $clusters| {
         $_tokens = $tokens[$cluster_group]
         $token = $_tokens['imagecatalog']
         if ($token) {
@@ -16,15 +16,15 @@ class profile::imagecatalog (
                         owner       => 'imagecatalog',
                         group       => 'imagecatalog',
                     }
-                    $kubeconfig_path
+                    [$cluster, $kubeconfig_path]
                 }
             }
         }
     }.flatten().filter |$v| { $v =~ NotUndef }
 
     class {'imagecatalog':
-        port               => 3691,
-        data_dir           => '/srv/deployment/imagecatalog',
-        kubernetes_configs => $kubernetes_configs,
+        port                => 3691,
+        data_dir            => '/srv/deployment/imagecatalog',
+        kubernetes_clusters => $kubernetes_clusters,
     }
 }
