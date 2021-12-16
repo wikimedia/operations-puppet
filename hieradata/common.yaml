@@ -502,12 +502,6 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-  irc_events:
-    description: "MediaWiki events on IRC"
-    id: 89
-    sites:
-      eqiad: []
-      codfw: []
   thanos:
     description: "Prometheus long-term storage"
     id: 90
