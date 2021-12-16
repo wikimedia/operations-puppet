@@ -1375,8 +1375,8 @@ node 'lists1001.wikimedia.org' {
     role(lists)
 }
 
-# New ganeti hosts for eqiad T283036
-node /^ganeti102[34]\.eqiad\.wmnet/ {
+# New ganeti hosts for eqiad T283036 and T293909
+node /^ganeti102[345678]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
