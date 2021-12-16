@@ -3206,6 +3206,10 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
+        post_json: '[{"itemType":"journalArticle"}]'
+        path: /export?format=wikipedia
     monitoring:
       check_command: check_https_zotero_lvs_on_port!zotero.discovery.wmnet!4969!/export?format=wikipedia
       critical: true
@@ -3233,6 +3237,10 @@ service::catalog:
         default: 10.192.48.159
       eqiad:
         default: 10.64.48.26
+    probes:
+      - type: http
+        path: /health
+        must_contain_regexp: '"healthy".*:.*true'
     monitoring:
       check_command: check_https_url_for_string!helm-charts.discovery.wmnet!/health!true
       notes_url: "https://wikitech.wikimedia.org/wiki/ChartMuseum"
