@@ -1,0 +1,14 @@
+# Temporarily pretend this is a Parsoid server for benchmarking (T297259)
+cluster: parsoid
+# 65 is the default
+profile::tlsproxy::envoy::upstream_response_timeout: 65.0
+profile::tlsproxy::envoy::request_timeout: 201.0
+profile::mediawiki::vhost_feature_flags: {}
+# 1.5 is the default
+profile::mediawiki::php::fpm_workers_multiplier: 1.5
+profile::mediawiki::apc_shm_size: 4096M
+profile::mediawiki::php::fpm_config:
+  opcache.interned_strings_buffer: 96
+  opcache.memory_consumption: 1024
+  apc.ttl: 10 # <-- this is the newly added part
+  max_execution_time: 210 # we don't really want max_execution_time to kick in ever, see T248564
