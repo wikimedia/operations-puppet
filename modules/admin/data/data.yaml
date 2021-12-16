@@ -5528,10 +5528,6 @@ ldap_only_users:
     ensure: present
     realname: (known to Legal)
     email: dannyS712.wiki@gmail.com
-  gmodena:
-    ensure: present
-    realname: Gabriele Modena
-    email: gmodena@wikimedia.org
   ijethrobt:
     ensure: present
     realname: Christopher Schilling
