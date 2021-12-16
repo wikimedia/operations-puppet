@@ -15,12 +15,8 @@ class profile::microsites::static_tendril {
     }
 
 
+    # tendril.wikimedia.org and dbtree.wikimedia.org as alias
     httpd::site { 'tendril.wikimedia.org':
         content => template('profile/microsites/static-tendril.wikimedia.org.erb'),
     }
-
-    httpd::site { 'dbtree.wikimedia.org':
-        content => template('profile/microsites/static-tendril.wikimedia.org.erb'),
-    }
-
 }
