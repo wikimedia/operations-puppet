@@ -4,15 +4,6 @@ class profile::puppet_compiler::puppetdb (
     Integer          $max_content_length = lookup('profile::puppet_compiler::puppetdb::max_content_length'),
 ) {
     include profile::puppet_compiler  # lint:ignore:wmf_styleguide
-    class { 'puppetmaster::puppetdb::client':
-        hosts => [$::fqdn],
-    }
-    # puppetdb configuration
-    file { "${puppet_compiler::vardir}/puppetdb.conf":
-        source  => '/etc/puppet/puppetdb.conf',
-        owner   => $puppet_compiler::user,
-        require => File['/etc/puppet/puppetdb.conf']
-    }
 
     # copy the catalog-differ puppet CA to validate connections to puppetdb
     file { '/etc/puppetdb/ssl/ca.pem':

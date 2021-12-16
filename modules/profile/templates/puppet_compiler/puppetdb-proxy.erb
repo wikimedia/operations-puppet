@@ -1,0 +1,34 @@
+# This file is managed by puppet. Do not edit
+log_format  show_client_cert '$remote_addr - $ssl_client_s_dn - $ssl_client_verify - $remote_user [$time_local] "$request" '
+    '$status $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$upstream_response_time"';
+
+server {
+
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server ipv6only=on;
+
+    # SSL settings
+    ssl_certificate     <%= @ssldir %>/certs/<%= @facts['fqdn'] %>.pem;
+    ssl_certificate_key <%= @ssldir %>/private_keys/<%= @facts['fqdn'] %>.pem;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 5m;
+
+    ssl_verify_client optional;
+    ssl_client_certificate <%= @ssldir %>/certs/ca.pem;
+
+    <%= @ssl_settings.join("\n    ") %>
+
+    access_log   /var/log/nginx/puppetdb_access.log show_client_cert;
+    error_log    /var/log/nginx/puppetdb_error.log;
+
+    root /dev/null;
+
+    location / {
+        proxy_pass http://<%= @puppetdb_host %>:<%= @puppetdb_port %>/;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Real-IP $remote_addr;
+        client_max_body_size 60m;
+    }
+}
+

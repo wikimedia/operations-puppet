@@ -59,7 +59,9 @@ profile::base::puppet::dns_alt_names: []
 profile::puppet::client_bucket::ensure: absent
 profile::puppet::client_bucket::file_age: 14
 profile::puppet::client_bucket::max_size: 100M
-
+profile::puppet_compiler::puppetdb_host: ~
+profile::puppet_compiler::puppetdb_port: ~
+profile::puppet_compiler::puppetdb_proxy: false
 profile::base::legacy_cloud_search_domain: ~
 profile::base::enable_contacts: false
 profile::base::core_dump_pattern:  '/var/tmp/core/core.%h.%e.%p.%t'

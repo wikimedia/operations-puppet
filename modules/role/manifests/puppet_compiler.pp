@@ -6,6 +6,5 @@ class role::puppet_compiler {
     # https://wikitech.wikimedia.org/wiki/Help:Adding_Disk_Space_to_Cloud_VPS_instances
     include profile::ci::slave::labs::common
     include profile::puppet_compiler
-    include profile::puppet_compiler::puppetdb
     include profile::puppet_compiler::clean_reports
 }
