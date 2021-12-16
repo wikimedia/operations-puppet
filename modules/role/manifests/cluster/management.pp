@@ -21,6 +21,7 @@ class role::cluster::management {
         include profile::homer
     }
     # lint:endignore
+    include profile::spicerack::reposync
 
     include profile::cumin::master
     include profile::ipmi::mgmt

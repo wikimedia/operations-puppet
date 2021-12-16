@@ -1,0 +1,3 @@
+profile::spicerack::reposync::ensure: present
+profile::spicerack::reposync::repos: []
+profile::spicerack::reposync::remotes: []
