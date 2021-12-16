@@ -22,13 +22,13 @@
     </Directory>
 
 
-ErrorLog /var/log/apache2/error.log
+ErrorLog /var/log/apache2/static-tendril.error.log
 
 # Possible values include: debug, info, notice, warn, error, crit,
 # alert, emerg.
 LogLevel warn
 
-CustomLog /var/log/apache2/access.log wmf
+CustomLog /var/log/apache2/static-tendril.access.log wmf
 ServerSignature On
 
 </VirtualHost>
