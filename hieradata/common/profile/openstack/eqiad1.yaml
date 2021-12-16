@@ -62,3 +62,5 @@ profile::openstack::eqiad1::purge_projects:
     - project: sre-sandbox
       days_to_nag: 10
       days_to_delete: 15
+
+profile::openstack::eqiad1::cinder_backup_volumes: {}

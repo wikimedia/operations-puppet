@@ -2,6 +2,7 @@ class openstack::cinder::service(
     $active,
     $version,
     Stdlib::Port $api_bind_port,
+    Hash $cinder_backup_volumes,
 ) {
     class { "openstack::cinder::service::${version}":
         api_bind_port           => $api_bind_port,
@@ -31,5 +32,29 @@ class openstack::cinder::service(
     rsyslog::conf { 'cinder':
         source   => 'puppet:///modules/openstack/cinder/cinder.rsyslog.conf',
         priority => 20,
+    }
+
+    if $cinder_backup_volumes != {} {
+        file { '/etc/wmcs-cinder-backup-manager.yaml':
+            content   => $cinder_backup_volumes,
+            owner     => 'cinder',
+            group     => 'cinder',
+            mode      => '0440',
+            show_diff => false,
+        }
+
+        systemd::timer::job { 'backup_cinder_volumes':
+            description               => 'Backup select cinder volumes using wmcs-cinder-backup-manager.py',
+            command                   => '/usr/local/sbin/wmcs-cinder-backup-manager',
+            user                      => 'root',
+            logging_enabled           => true,
+            logfile_name              => 'wmcs-cinder-backup-manager.log',
+            interval                  => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 10:30:00', # daily at 10:30 UTC
+            },
+            monitoring_enabled        => true,
+            monitoring_contact_groups => 'wmcs-team-email',
+        }
     }
 }

@@ -9,6 +9,7 @@ class profile::openstack::codfw1dev::cinder(
     String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
+    Hash   $cinder_backup_volumes = lookup('profile::openstack::codfw1dev::cinder_backup_volumes'),
     String[1]           $ceph_rbd_client_name  = lookup('profile::openstack::codfw1dev::cinder::ceph_rbd_client_name'),
 ) {
     class {'::profile::openstack::base::cinder':
@@ -24,5 +25,6 @@ class profile::openstack::codfw1dev::cinder(
         rabbit_pass           => $rabbit_pass,
         region                => $region,
         active                => true,
+        cinder_backup_volumes => $cinder_backup_volumes,
     }
 }

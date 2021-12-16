@@ -57,3 +57,8 @@ profile::openstack::codfw1dev::ldap_proxyuser_pass: 'Eche0ieng8UaNoo'
 profile::openstack::codfw1dev::labweb_hosts:
   - cloudweb2001-dev.wikimedia.org
 profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']
+
+
+# This is empty here and will be overridden on a single cloudcontrol
+#  so we only backup once
+profile::openstack::codfw1dev::cinder_backup_volumes: {}

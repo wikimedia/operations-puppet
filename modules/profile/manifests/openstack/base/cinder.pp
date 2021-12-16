@@ -14,6 +14,7 @@ class profile::openstack::base::cinder(
     String $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     String $rabbit_pass = lookup('profile::openstack::base::nova::rabbit_pass'),
     String $libvirt_rbd_cinder_uuid = lookup('profile::ceph::client::rbd::libvirt_rbd_cinder_uuid'),
+    Hash   $cinder_backup_volumes = lookup('profile::openstack::base::cinder_backup_volumes'),
     Boolean $active = lookup('profile::openstack::base::cinder_active'),
     Stdlib::Unixpath    $backup_path           = lookup('profile::openstack::base::cinder::backup::path'),
     String              $ceph_rbd_client_name  = lookup('profile::openstack::base::cinder::ceph_rbd_client_name'),
@@ -40,9 +41,10 @@ class profile::openstack::base::cinder(
     }
 
     class { '::openstack::cinder::service':
-        version       => $version,
-        active        => $active,
-        api_bind_port => $api_bind_port,
+        version               => $version,
+        active                => $active,
+        api_bind_port         => $api_bind_port,
+        cinder_backup_volumes => $cinder_backup_volumes,
     }
 
     include ::network::constants
