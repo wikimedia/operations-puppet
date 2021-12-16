@@ -8,11 +8,11 @@
 # == Parameters
 # - $port: Port for web serving.
 # - $data_dir: Path to a directory for the sqlite database. Directory is managed by this module.
-# - $kubernetes_configs: List of paths to kubeconfig files, one for each cluster to be monitored.
+# - $kubernetes_clusters: For each cluster to be monitored, its name and the path to a kubeconfig file.
 class imagecatalog(
     Stdlib::Port $port,
     Stdlib::Unixpath $data_dir,
-    Array[Stdlib::Unixpath] $kubernetes_configs,
+    Array[Tuple[String, Stdlib::Unixpath]] $kubernetes_clusters,
 ) {
   ensure_packages(['gunicorn3', 'python3-imagecatalog'])
 
