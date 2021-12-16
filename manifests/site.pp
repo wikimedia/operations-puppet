@@ -1410,16 +1410,7 @@ node /^ganeti10(0[5-9]|1[0-9]|2[0-2])\.eqiad\.wmnet$/ {
     role(ganeti)
 }
 # Ganeti virtualization hosts - codfw
-node /^ganeti20(0[7-9]|1[0-9]|2[0-5])\.codfw\.wmnet$/ {
-    role(ganeti)
-}
-
-# To be added to the codfw cluster once Buster upgrade completed
-node 'ganeti2026.codfw.wmnet' {
-    role(insetup)
-}
-
-node /^(ganeti2027|ganeti2028)\.codfw\.wmnet$/ {
+node /^ganeti20(0[7-9]|1[0-9]|2[0-8])\.codfw\.wmnet$/ {
     role(ganeti)
 }
 
