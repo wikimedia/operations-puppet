@@ -267,6 +267,7 @@ class HostProcessor:
         self.observer_pass = observer_pass
         self.project = "toolsbeta" if beta else "tools"
         self.regions = self._get_regions()
+        self.os_instances = {}
         self.host_set = self._hosts(host_prefixes, host_types)
         self.legacy_domain = f"{self.project}.eqiad.wmflabs"
         self.config_dir = config_dir
@@ -308,7 +309,12 @@ class HostProcessor:
             # region is like 'whatever-r', remove trailing '-r', the domain doesn't have it
             domain = f"{self.project}.{region[:-2]}.wikimedia.cloud"
 
-            for instance in client.servers.list():
+            self.os_instances[region] = client.servers.list()
+            if len(self.os_instances[region]) == 0:
+                logging.error("empty instance list from openstack is likely an error")
+                sys.exit(1)
+
+            for instance in self.os_instances[region]:
                 name = instance.name
                 for prefix in host_prefixes:
                     full_prefix = "{}-{}".format(self.project, prefix)
