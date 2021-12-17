@@ -11,7 +11,7 @@ class puppet_compiler::uploader (
     Stdlib::Unixpath $upload_dir         = '/srv/pcc_uploader',
     Stdlib::Unixpath $webroot            = '/srv/www',
     String[1]        $jenkins_user       = 'jenkins-deploy',
-    String[1]        $jenkins_group      = 'jenkins-deploy',
+    String[1]        $jenkins_group      = 'wikidev',
     String[1]        $web_user           = 'www-data',
     String[1]        $web_group          = 'www-data',
     Integer          $max_content_length = 16000000,  # 16MB
