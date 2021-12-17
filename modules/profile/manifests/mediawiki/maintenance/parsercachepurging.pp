@@ -1,7 +1,5 @@
 class profile::mediawiki::maintenance::parsercachepurging {
 
-    system::role { 'mediawiki::maintenance::parsercachepurging': description => 'MediaWiki Maintenance Server: purge parser cache' }
-
     # Every day, Purge entries older than 21d * 86400s/d = 1814400s
     #
     # WARNING: Increasing msleep may cause exponential growth. Deletes must outpace other writes! (T282761)

@@ -1,9 +1,6 @@
 class profile::mediawiki::maintenance::pagetriage {
     # TODO: Consider creating a single periodic job that runs all of these scripts at
     # 48h intervals, rather than staggering them throughout the day.
-
-    system::role { 'mediawiki::maintenance::pagetriage': description => 'MediaWiki Maintenance Server: pagetriage extension' }
-
     profile::mediawiki::periodic_job { 'pagetriage_cleanup_en':
         interval => '*-2/2 20:55',
         command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki',
