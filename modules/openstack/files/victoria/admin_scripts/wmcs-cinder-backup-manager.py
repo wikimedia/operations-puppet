@@ -7,15 +7,19 @@ For any given project you can either enumerate one or more specific
 voluem IDs, or specify ALL volumes:
 
 <project2>
-- <volume1ID>
-  <volume2ID>
-  <volume3ID>
+  Volumes:
+  - <volume1ID>
+    <volume2ID>
+    <volume3ID>
+  FULL_FREQUENCY: 7
+  PURGE_AFTER: 20
 <project2>
-- ALL
+  Volumes: [ALL]
 
 """
 
 import argparse
+import datetime
 import logging
 import shutil
 import subprocess
@@ -64,11 +68,14 @@ if __name__ == "__main__":
         cinderclient = osclients.cinderclient(project=project)
         all_volumes = cinderclient.volumes.list()
         volume_ids = []
-        if "ALL" in conf[project]:
+        full_frequency = int(conf[project].get("FULL_FREQUENCY", "7"))
+        purge_after = int(conf[project].get("PURGE_AFTER", "30"))
+        volumes = conf[project].get("volumes")
+        if "ALL" in volumes:
             # just grab all the ids
             volume_ids = [volume.id for volume in all_volumes]
         else:
-            for requested_volume in conf[project]:
+            for requested_volume in volumes:
                 # support names or ids
                 thisid = None
                 for volume in all_volumes:
@@ -87,7 +94,26 @@ if __name__ == "__main__":
         if volume_ids:
             logging.info("Backing up %s in project %s" % (volume_ids, project))
             for volume_id in volume_ids:
+                # Create today's backup
+
                 backupargs = [backup_tool, volume_id, "--timeout", str(args.timeout)]
+                if (
+                    datetime.datetime.now() - datetime.datetime.min
+                ).days % full_frequency == 0:
+                    backupargs.append("--full")
+
                 r = subprocess.call(backupargs)
                 if r:
                     logging.warning("Failed to backup volume %s" % volume_id)
+                logging.info("Purging old backups of %s" % volume_id)
+
+                # Purge old backups
+                purgeargs = [
+                    backup_tool,
+                    volume_id,
+                    "--purge-older-than",
+                    str(purge_after),
+                ]
+                r = subprocess.call(purgeargs)
+                if r:
+                    logging.warning("Failed to purge backups for volume %s" % volume_id)
