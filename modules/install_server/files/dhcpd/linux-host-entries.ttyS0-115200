@@ -113,6 +113,11 @@ host bast5002 {
     fixed-address bast5002.wikimedia.org;
 }
 
+host bast6001 {
+    hardware ethernet AA:00:00:4B:65:48;
+    fixed-address bast6001.wikimedia.org;
+}
+
 host chartmuseum1001 {
     hardware ethernet aa:00:00:fa:99:04;
     fixed-address chartmuseum1001.eqiad.wmnet;
