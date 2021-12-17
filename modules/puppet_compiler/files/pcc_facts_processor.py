@@ -68,7 +68,7 @@ def compile_node(config, node):
         if succ:
             logging.info("%s: OK", node)
         else:
-            logging.error(err)
+            logging.error(err.read())
 
 
 def update_puppetdb(facts_dir, config):
