@@ -48,7 +48,7 @@ groups:
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
-              mdipietro, mvernon, ladsgroup, aokoth, jhathaway]
+              mdipietro, mvernon, ladsgroup, aokoth, jhathaway, bking]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -350,7 +350,7 @@ groups:
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper]
+              mmunyoki, ryankemper, bking]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
