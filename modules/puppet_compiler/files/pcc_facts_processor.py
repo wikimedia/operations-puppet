@@ -101,7 +101,7 @@ def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
     shutil.rmtree(tmpdir)
 
 
-def process_tar(tar_file: tarfile.TarFile, config: ControllerConfig, realm: str) -> bool:
+def process_tar(tar_file: Path, config: ControllerConfig, realm: str) -> bool:
     """Unpack and process all facts files in a tar"""
     logging.debug('processing tar: %s', tar_file)
     facts_dir = config.puppet_var / 'yaml' / realm
@@ -127,7 +127,7 @@ def process_tar(tar_file: tarfile.TarFile, config: ControllerConfig, realm: str)
     return True
 
 
-def update_webroot(tar_file: tarfile.TarFile, dst_file: Path) -> None:
+def update_webroot(tar_file: Path, dst_file: Path) -> None:
     """Move the tar file to the webroot for other clients to easily download"""
     logging.debug('copy: %s -> %s', tar_file, dst_file)
     if not dst_file.parent.is_dir():
@@ -135,7 +135,7 @@ def update_webroot(tar_file: tarfile.TarFile, dst_file: Path) -> None:
     # TODO: python 3.8 use missing_ok=True
     if dst_file.exists():
         dst_file.unlink()
-    Path(tar_file.fileobj.name).rename(dst_file)
+    tar_file.rename(dst_file)
 
 
 def process_dir(
@@ -154,7 +154,9 @@ def process_dir(
                 allowd_idx += 1
             else:
                 update_webroot(tar_file, webroot_dir / f'{directory.name}_facts.tar.gz')
+                continue
         logging.debug('delete tar file: %s', tar_file)
+        tar_file.unlink()
 
 
 def main():

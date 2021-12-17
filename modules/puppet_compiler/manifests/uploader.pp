@@ -37,7 +37,8 @@ class puppet_compiler::uploader (
         file { "${upload_dir}/${realm}":
             ensure => stdlib::ensure($ensure, 'directory'),
             owner  => $web_user,
-            group  => $web_group,
+            mode   => '0660',
+            group  => $jenkins_group,
         }
     }
     file { $config_file:
