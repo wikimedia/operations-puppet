@@ -409,6 +409,12 @@ host install5001 {
     next-server 208.80.153.51; # install2003 (tftp server)
 }
 
+host install6001 {
+    hardware ethernet aa:00:00:1b:87:c1;
+    fixed-address install6001.wikimedia.org;
+    next-server 208.80.154.32; # install1003 (tftp server)
+}
+
 host irc1001 {
     hardware ethernet aa:00:00:43:5b:18;
     fixed-address irc1001.wikimedia.org;
