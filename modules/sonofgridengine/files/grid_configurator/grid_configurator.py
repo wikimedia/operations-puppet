@@ -300,7 +300,14 @@ class HostProcessor:
     application of it to the grid itself"""
 
     def __init__(
-        self, keystone_url, observer_pass, host_prefixes, beta, config_dir, host_types
+        self,
+        keystone_url,
+        observer_pass,
+        host_prefixes,
+        beta,
+        config_dir,
+        grid_root: str,
+        host_types,
     ):
         self.keystone_url = keystone_url
         self.observer_pass = observer_pass
@@ -310,6 +317,7 @@ class HostProcessor:
         self.host_set = self._hosts(host_prefixes, host_types)
         self.legacy_domain = f"{self.project}.eqiad.wmflabs"
         self.config_dir = config_dir
+        self.grid_root = grid_root
 
     def _get_regions(self):
         client = keystone_client.Client(
@@ -385,8 +393,47 @@ class HostProcessor:
 
         return False
 
+    def _handle_dead_store(self, dry_run):
+        basedir = f"{self.grid_root}/store"
+        try:
+            dir_list = os.listdir(basedir)
+        except OSError as error:
+            logging.warning(f"unable to list directory {basedir}: {error}")
+            return
+
+        # files may be:
+        # execnode-hostname1.domain.tld
+        # hostkey-hostname1.domain.tld
+        # submithost-hostname1.domain.tld
+        known_prefix = {"execnode-", "hostkey-", "submithost-"}
+
+        for file in dir_list:
+            fullpath = f"{basedir}/{file}"
+            logging.debug(
+                f"detected file in grid store {fullpath}, evaluating if dead config"
+            )
+
+            for prefix in known_prefix:
+                if not file.startswith(prefix):
+                    continue
+
+                fqdn = "-".join(file.split("-")[1:])
+                hostname = fqdn.split(".")[0]
+
+                if self._host_exists(hostname):
+                    continue
+
+                if dry_run:
+                    logging.info(f"would delete file {fullpath}, VM doesn't exists (dry run)")
+                else:
+                    logging.info(f"deleting file {fullpath}, VM doesn't exists")
+                    try:
+                        os.remove(fullpath)
+                    except OSError as error:
+                        logging.warning(f"unable to delete dead file {fullpath}: {error}")
+
     def _handle_dead_config_dir(self, directory: str, dry_run):
-        dir = os.path.join(self.config_dir, directory)
+        dir = os.path.join(self.grid_root, directory)
         try:
             dir_list = os.listdir(dir)
         except OSError as error:
@@ -448,7 +495,10 @@ class HostProcessor:
                         sed_replace(fullpath, host, "")
 
     def _handle_dead_config(self, dry_run):
-        self._handle_dead_config_dir("hosts", dry_run)
+        self._handle_dead_store(dry_run)
+        self._handle_dead_config_dir("gridengine/collectors/queues", dry_run)
+        self._handle_dead_config_dir("gridengine/collectors/hostgroups", dry_run)
+        self._handle_dead_config_dir("gridengine/etc/hosts", dry_run)
         self._handle_dead_config_hostlist("hostgroups", dry_run)
         self._handle_dead_config_hostlist("queues", dry_run)
 
@@ -607,7 +657,11 @@ def get_args():
         help="Filesystem absolute path to find the configuration file. Defaults to '%(default)s'",
         default="/data/project/.system_sge/gridengine/etc",
     )
-
+    argparser.add_argument(
+        "--grid-root",
+        help="Location of the grid root. Defaults to '%(default)s'",
+        default="/data/project/.system_sge",
+    )
     argparser.add_argument(
         "--keystone-url",
         help="Endpoint for openstack keystone. Only for hosts. Defaults to '%(default)s'",
@@ -725,6 +779,7 @@ def main():
             GRID_HOST_PREFIX,
             args.beta,
             args.config_dir,
+            args.grid_root,
             GRID_HOST_TYPE,
         )
 

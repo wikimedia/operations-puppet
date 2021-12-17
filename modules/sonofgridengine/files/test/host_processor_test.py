@@ -72,7 +72,8 @@ class HostProcessorTest(unittest.TestCase):
             "not-a-password",
             grid_configurator.GRID_HOST_PREFIX,
             True,
-            tmp_dir,
+            tmp_dir,  # this is config_dir, the temp file
+            tmp_dir,  # this is grid_root: we don't really care, nothing here is checking it
             grid_configurator.GRID_HOST_TYPE,
         )
 
