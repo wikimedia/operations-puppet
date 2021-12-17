@@ -5082,6 +5082,10 @@ ldap_only_users:
     ensure: present
     realname: Monte Hurd
     email: mhurd@wikimedia.org
+  mmunyoki:
+    ensure: present
+    realname: Mary Munyoki
+    email: mmunyoki@wikimedia.org
   mraish:
     ensure: absent
     realname: Michael Raish
