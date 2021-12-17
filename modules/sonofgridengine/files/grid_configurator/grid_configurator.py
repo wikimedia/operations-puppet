@@ -24,6 +24,7 @@ import logging
 import os
 import subprocess
 import sys
+import re
 
 from keystoneauth1 import session
 from keystoneauth1.identity import v3
@@ -47,6 +48,44 @@ GRID_HOST_PREFIX = {
     "sgegrid": "submit",
     "checker": "submit",
 }
+
+
+def sed_replace(filepath: str, string: str, replacement: str):
+    try:
+        with open(filepath, "rt") as f:
+            data = f.read()
+            data = data.replace(string, replacement)
+        with open(filepath, "wt") as f:
+            f.write(data)
+    except OSError as error:
+        logging.warning(
+            f"couldn't replace string '{string}' with '{replacement}' in {filepath}: {error}"
+        )
+
+
+# from https://stackoverflow.com/questions/11809631/fully-qualified-domain-name-validation
+fqdn_regex = r"(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}$)"
+fqdn_pattern = re.compile(fqdn_regex, re.IGNORECASE)
+
+
+def grep_hosts_from_hostlist(filepath: str):
+    ret = set()
+    with open(filepath, "r") as file:
+        for line in file.readlines():
+            if not line.startswith("hostlist"):
+                # not interested in this line
+                continue
+
+            # line is something like:
+            # hostlist #@# host1.x.y host2.x.y host3.x.y
+            hostlist_content = line.split()[1:]
+            for content in hostlist_content:
+                # beware, the grid can have weird config stuff in here
+                # like '#@#' and other stuff that is clearly not a FQDN
+                if fqdn_pattern.match(content):
+                    ret.add(content)
+
+    return ret
 
 
 class GridConfig:
@@ -327,7 +366,92 @@ class HostProcessor:
                             host_set[role].append(f"{name}.{domain}")
         return host_set
 
+    def _host_exists(self, hostname: str):
+        for region in self.regions:
+            for vm in self.os_instances[region]:
+                if hostname == vm.name:
+                    return True
+
+        # NOTE: always assume master/shadow exists, even if the VM is transiently not there.
+        # You DON'T want to destroy master/shadow configuration by assuming they're not there.
+        # Hardcoded, I know. Hopefully grid is deprecated before we introduce a new pattern here.
+        master = f"{self.project}-sgegrid-master"
+        shadow = f"{self.project}-sgegrid-shadow"
+        if hostname == master or hostname == shadow:
+            logging.warning(
+                f"{hostname} is not an openstack VM ?! Continuing now, but REVIEW IT"
+            )
+            return True
+
+        return False
+
+    def _handle_dead_config_hosts_config_file(self, dry_run):
+        dir = os.path.join(self.config_dir, "hosts")
+        try:
+            dir_list = os.listdir(dir)
+        except OSError as error:
+            logging.warning(f"unable to list directory {dir}: {error}")
+            return
+
+        for host in dir_list:
+            file = f"{dir}/{host}"
+            hostname = host.split(".")[0]
+
+            logging.debug(
+                f"detected host file for {hostname} ({file}), evaluating if dead config"
+            )
+            if not self._host_exists(hostname):
+                if dry_run:
+                    logging.info(
+                        f"would remove {file}, '{hostname}' is not a VM (dry run)"
+                    )
+                else:
+                    logging.info(f"removing {file}, '{hostname}' is not a VM")
+                    # it is actually a config directory
+                    try:
+                        os.rmdir(file)
+                    except OSError as error:
+                        logging.warning(f"couldn't remove {file}: {error}")
+
+    def _handle_dead_config_hostlist(self, filetype: str, dry_run):
+        dir = os.path.join(self.config_dir, filetype)
+        try:
+            listing = os.listdir(dir)
+        except OSError as error:
+            logging.warning(f"unable to list directory {dir}: {error}")
+            return
+
+        for file in listing:
+            fullpath = f"{dir}/{file}"
+
+            logging.debug(
+                f"evaluating if {fullpath} has dead config in the 'hostlist' paremeter"
+            )
+            hosts = grep_hosts_from_hostlist(fullpath)
+            for host in hosts:
+                hostname = host.split(".")[0]
+                if not self._host_exists(hostname):
+                    if dry_run:
+                        logging.info(
+                            f"would rm '{host}' from 'hostlist' parameter at {fullpath} (dry run)"
+                        )
+                    else:
+                        logging.info(
+                            f"removing mention to '{host}' from 'hostlist' parameter at {fullpath}"
+                        )
+                        sed_replace(fullpath, host, "")
+
+    def _handle_dead_config(self, dry_run):
+        self._handle_dead_config_hosts_config_file(dry_run)
+        self._handle_dead_config_hostlist("hostgroups", dry_run)
+        self._handle_dead_config_hostlist("queues", dry_run)
+
     def run_updates(self, dry_run, host_types):
+        # pre-step: check for dead configuration that may prevent any further changes to
+        # the grid configuration. Dead config happens when a VM is deleted but we still
+        # have config files referencing the now missing VM
+        self._handle_dead_config(dry_run)
+
         for host_class in sorted(host_types):
             self._run_updates(dry_run, host_types, host_class)
 
