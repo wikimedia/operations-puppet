@@ -1032,6 +1032,11 @@ host prometheus5001 {
     fixed-address prometheus5001.eqsin.wmnet;
 }
 
+host prometheus6001 {
+    hardware ethernet aa:00:00:a0:94:b4;
+    fixed-address prometheus6001.drmrs.wmnet;
+}
+
 host puppetboard1002 {
     hardware ethernet aa:00:00:15:89:65;
     fixed-address puppetboard1002.eqiad.wmnet;

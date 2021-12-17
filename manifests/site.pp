@@ -2535,7 +2535,7 @@ node /^prometheus100[56]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-node /^prometheus[345]001\.(esams|ulsfo|eqsin)\.wmnet$/ {
+node /^prometheus[3456]001\.(esams|ulsfo|eqsin|drmrs)\.wmnet$/ {
     role(prometheus::pop)
 }
 
