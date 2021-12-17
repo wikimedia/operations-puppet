@@ -65,7 +65,7 @@ class puppet_compiler::uploader (
         ensure => stdlib::ensure($ensure, 'file'),
         source => 'puppet:///modules/puppet_compiler/pcc_facts_processor.py',
         owner  => 'root',
-        group  => jenkins_group,
+        group  => $jenkins_group,
         mode   => '0550',
     }
     systemd::timer::job { 'pcc_facts_processor':
