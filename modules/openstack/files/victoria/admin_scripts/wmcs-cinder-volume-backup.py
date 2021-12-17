@@ -20,7 +20,7 @@ import novaclient.exceptions
 
 
 class CinderBackup(object):
-    def __init__(self, osclients, volume_id, timeout=43200):
+    def __init__(self, osclients, volume_id, full=False, timeout=43200):
         self.volume_id = volume_id
         self.backup_id = None
         self.snapshot_id = None
@@ -28,6 +28,7 @@ class CinderBackup(object):
         self.cinderclient = osclients.cinderclient()
         self.volume = self.cinderclient.volumes.get(self.volume_id)
         self.volume_name = self.volume.name
+        self.force_full = full
 
     def wait_for_resource_status(self, resource_id, refreshfunction, desiredstatuses):
         oldstatus = ""
@@ -74,20 +75,25 @@ class CinderBackup(object):
 
     def backup_volume(self):
         logging.info("Backup up volume %s" % self.volume.id)
+        new_backup_name = f"{self.volume.name}-{datetime.now().isoformat()}"
 
         # First figure out if we need a full backup or not
         incremental = False
-        existing_backups = self.cinderclient.backups.list(
-            search_opts={"volume_id": self.volume_id}
-        )
+        if not self.force_full:
+            existing_backups = self.cinderclient.backups.list(
+                search_opts={"volume_id": self.volume_id}
+            )
 
-        # search for a non-incremental backup. If we don't find one then
-        # we might have lost the original so let's do a full backup now.
-        new_backup_name = f"{self.volume.name}-{datetime.now().isoformat()}"
-        for backup in existing_backups:
-            if not backup.is_incremental:
-                incremental = True
-                break
+            # search for a non-incremental backup. If we don't find one then
+            # we might have lost the original so let's do a full backup now.
+            for backup in existing_backups:
+                if not backup.is_incremental:
+                    incremental = True
+                    logging.info("Full backup is available; doing incremental backup")
+                    break
+        else:
+            logging.info("User requested full backup")
+
         try:
             if self.volume.status == "available":
                 logging.info("Volume is idle, no snapshot needed")
@@ -163,7 +169,8 @@ class CinderBackup(object):
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(
         "wmcs-cinder-volume-backup",
-        description="Back up a volume using the cinder-backup service",
+        description="Back up a volume using the cinder-backup service. "
+        "Default to incremental backup if a full backup is available.",
     )
     argparser.add_argument(
         "--timeout",
@@ -175,6 +182,11 @@ if __name__ == "__main__":
         "--restore",
         help="ID of backup to restore. This will overwrite the specified volume.",
     )
+    argparser.add_argument(
+        "--full",
+        action="store_true",
+        help="Run a full backup of the requested volume, even if incremental is possible",
+    )
     argparser.add_argument("volume_id", help="id of volume to back up")
 
     args = argparser.parse_args()
@@ -185,8 +197,10 @@ if __name__ == "__main__":
         stream=sys.stdout,
     )
 
-    osclients = mwopenstackclients.clients(envfile='/etc/novaadmin.yaml')
-    backup = CinderBackup(osclients, args.volume_id, args.timeout)
+    osclients = mwopenstackclients.clients(envfile="/etc/novaadmin.yaml")
+    backup = CinderBackup(
+        osclients, args.volume_id, full=args.full, timeout=args.timeout
+    )
 
     if args.restore:
         backup.restore_backup(args.restore)
