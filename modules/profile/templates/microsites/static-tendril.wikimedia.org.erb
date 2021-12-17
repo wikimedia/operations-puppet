@@ -1,11 +1,18 @@
 # Apache config for tendril.wikimedia.org
+# and dbtree.wikimedia.org
 # ! THIS FILE IS MANAGED BY PUPPET !
 
 <VirtualHost *:80>
-    ServerAdmin noc@wikimedia.org
     ServerName tendril.wikimedia.org
     ServerAlias dbtree.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+    ServerSignature On
+
     DocumentRoot /srv/org/wikimedia/static-tendril
+
+    LogLevel warn
+    CustomLog /var/log/apache2/static-tendril.access.log wmf
+    ErrorLog /var/log/apache2/static-tendril.error.log
 
     RewriteEngine On
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
@@ -21,15 +28,9 @@
         AllowOverride None
     </Directory>
 
-
-ErrorLog /var/log/apache2/static-tendril.error.log
-
-# Possible values include: debug, info, notice, warn, error, crit,
-# alert, emerg.
-LogLevel warn
-
-CustomLog /var/log/apache2/static-tendril.access.log wmf
-ServerSignature On
+    <Directory /srv/org/wikimedia/static-tendril>
+        AllowOverride None
+        Require all granted
+    </Directory>
 
 </VirtualHost>
-
