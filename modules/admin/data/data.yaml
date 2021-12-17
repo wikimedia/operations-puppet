@@ -348,7 +348,8 @@ groups:
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
-              samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021]
+              samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
+              mmunyoki]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4898,6 +4899,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEMCL89wONrqDKRSFKETmGNyQ5OCPlZWjDpYODpBXOMg dabad@wikimedia.org
+  mmunyoki:
+    ensure: present
+    uid: 36524
+    gid: 500
+    realname: Mary Munyoki
+    email: mmunyoki@wikimedia.org
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 ldap_only_users:
   abartov:
     ensure: present
@@ -5082,10 +5090,6 @@ ldap_only_users:
     ensure: present
     realname: Monte Hurd
     email: mhurd@wikimedia.org
-  mmunyoki:
-    ensure: present
-    realname: Mary Munyoki
-    email: mmunyoki@wikimedia.org
   mraish:
     ensure: absent
     realname: Michael Raish
