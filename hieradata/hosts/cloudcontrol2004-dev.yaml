@@ -24,5 +24,5 @@ profile::wmcs::backy2::backup_glance_images::enabled: true
 profile::openstack::codfw1dev::cinder_backup_volumes:
   andrewtestproject:
     - backmeup
-      secondvolume
+    - secondvolume
   trove: [ALL]
