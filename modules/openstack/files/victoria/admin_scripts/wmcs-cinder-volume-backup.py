@@ -185,7 +185,7 @@ if __name__ == "__main__":
         stream=sys.stdout,
     )
 
-    osclients = mwopenstackclients.clients()
+    osclients = mwopenstackclients.clients(envfile='/etc/novaadmin.yaml')
     backup = CinderBackup(osclients, args.volume_id, args.timeout)
 
     if args.restore:
