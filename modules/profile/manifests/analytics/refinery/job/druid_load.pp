@@ -48,7 +48,7 @@ class profile::analytics::refinery::job::druid_load(
         },
     }
 
-    # Load wmf.netflow
+    # Load event.netflow
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'netflow':
@@ -78,6 +78,40 @@ class profile::analytics::refinery::job::druid_load(
             druid_datasource => 'wmf_netflow',
             timestamp_column => 'stamp_inserted',
             dimensions       => 'as_dst,as_path,peer_as_dst,as_src,ip_proto,tag2,country_ip_src,country_ip_dst,parsed_comms,as_name_src,as_name_dst,ip_version,region',
+            metrics          => 'bytes,packets',
+        },
+    }
+
+    # Load event.network_internal_flows
+    # Note that this data set does not belong to EventLogging, but the
+    # eventlogging_to_druid_job wrapper is compatible and very convenient!
+    profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_internal_flows':
+        job_config        => {
+            database         => 'event',
+            druid_datasource => 'network_internal_flows',
+            timestamp_column => 'stamp_inserted',
+            dimensions       => 'ip_dst,ip_proto,ip_src,port_dst,port_src,peer_ip_src,ip_version,region',
+            metrics          => 'bytes,packets',
+        },
+        # settings copied from webrequest_sampled_128 load job
+        # as data-size is similar
+        hourly_shards     => 4,
+        hourly_reduce_mem => '8192',
+        daily_shards      => 32,
+    }
+    # This second round serves as sanitization, after 90 days of data loading.
+    # Note that some dimensions are not present, thus nullifying their values.
+    profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_internal_flows-sanitization':
+        ensure_hourly    => 'absent',
+        daily_days_since => 61,
+        daily_days_until => 60,
+        daily_shards     => 2,
+        job_config       => {
+            database         => 'event',
+            table            => 'network_internal_flows',
+            druid_datasource => 'wmf_netflow',
+            timestamp_column => 'stamp_inserted',
+            dimensions       => 'ip_proto,ip_version,region',
             metrics          => 'bytes,packets',
         },
     }

@@ -35,7 +35,7 @@ class profile::analytics::refinery::job::refine(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the refine job.
-    $refinery_version = '0.1.21'
+    $refinery_version = '0.1.24'
 
     # Use this value by default
     Profile::Analytics::Refinery::Job::Refine_job {
@@ -274,7 +274,7 @@ class profile::analytics::refinery::job::refine(
     # === Netflow data ===
     # /wmf/data/raw/netflow -> /wmf/data/event
     $netflow_input_path = '/wmf/data/raw/netflow'
-    $netflow_input_path_regex = "${netflow_input_path}/(netflow)/${hive_hourly_path_regex}"
+    $netflow_input_path_regex = "${netflow_input_path}/([^/]+)/${hive_hourly_path_regex}"
     $netflow_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
 
     profile::analytics::refinery::job::refine_job { 'netflow':
