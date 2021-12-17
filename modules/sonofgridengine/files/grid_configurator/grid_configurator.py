@@ -385,8 +385,8 @@ class HostProcessor:
 
         return False
 
-    def _handle_dead_config_hosts_config_file(self, dry_run):
-        dir = os.path.join(self.config_dir, "hosts")
+    def _handle_dead_config_dir(self, directory: str, dry_run):
+        dir = os.path.join(self.config_dir, directory)
         try:
             dir_list = os.listdir(dir)
         except OSError as error:
@@ -407,9 +407,15 @@ class HostProcessor:
                     )
                 else:
                     logging.info(f"removing {file}, '{hostname}' is not a VM")
-                    # it is actually a config directory
                     try:
-                        os.rmdir(file)
+                        if os.path.isfile(file):
+                            os.remove(file)
+                        elif os.path.isdir(file):
+                            os.rmdir(file)
+                        else:
+                            logging.warning(
+                                f"we don't know what {file} is, so cannot delete it"
+                            )
                     except OSError as error:
                         logging.warning(f"couldn't remove {file}: {error}")
 
@@ -442,7 +448,7 @@ class HostProcessor:
                         sed_replace(fullpath, host, "")
 
     def _handle_dead_config(self, dry_run):
-        self._handle_dead_config_hosts_config_file(dry_run)
+        self._handle_dead_config_dir("hosts", dry_run)
         self._handle_dead_config_hostlist("hostgroups", dry_run)
         self._handle_dead_config_hostlist("queues", dry_run)
 
