@@ -6,11 +6,13 @@ This is a wrapper around the cinder-backup API. It automates the following:
 - Backup from snapshot if the volume is attached to a VM
 - Block until a backup job completes
 - Impose a timeout so we have some chance of noticing stuck jobs
+- (--restore) Restore a specific backup to a specific cinder volume
+- (--purge-older-than) Purge old backups that don't have newer dependencies
 
 """
 
 import argparse
-from datetime import datetime
+import datetime
 import logging
 import sys
 import time
@@ -73,9 +75,53 @@ class CinderBackup(object):
             self.volume_id, self.cinderclient.volumes.get, ["available"]
         )
 
+    # Delete backups older than 'days' days
+    def purge_backups_older_than(self, days):
+        existing_backups = self.cinderclient.backups.list(
+            search_opts={"volume_id": self.volume_id}
+        )
+        to_delete = {}
+        for backup in existing_backups:
+            # Use updated_at rather than created_at in the interest of purging too few things
+            # rather than too many.
+            updated_at = datetime.datetime.strptime(
+                backup.updated_at, "%Y-%m-%dT%H:%M:%S.%f"
+            )
+            if updated_at < datetime.datetime.now() - datetime.timedelta(days=days):
+                to_delete[backup.id] = backup
+
+        # Here is where it gets messy:
+        #
+        # We can tell whether or not a backup has dependent incrementals but
+        # cannot tell what those incrementals are. Similarly, we can tell
+        # if a backup is incremental but not what it depends on.
+        #
+        # So, we iterate.  Delete anything that doesn't have any dependencies, then
+        # update our knowledge of each remaining backup.  At that point the set
+        # of things without dependencies will have changed.  Refresh, and try again.
+        # Once we make a pass where there's nothing to delete, we're done.
+        delete_count = 0
+        work_might_remain = True
+        while work_might_remain:
+            work_might_remain = False
+            for id, backup in to_delete.copy().items():
+                if not backup.has_dependent_backups:
+                    self.cinderclient.backups.delete(id)
+                    logging.info("deleted backup %s" % id)
+                    del to_delete[id]
+                    delete_count += 1
+                    work_might_remain = True
+
+            # Refresh and locate backups that no longer have dependencies
+            if work_might_remain:
+                time.sleep(10)  # 1 second wasn't long enough
+                for id in to_delete.keys():
+                    to_delete[id] = self.cinderclient.backups.get(id)
+        logging.info("Purged %d backups" % delete_count)
+
     def backup_volume(self):
         logging.info("Backup up volume %s" % self.volume.id)
-        new_backup_name = f"{self.volume.name}-{datetime.now().isoformat()}"
+        new_backup_name = f"{self.volume.name}-{datetime.datetime.now().isoformat()}"
 
         # First figure out if we need a full backup or not
         incremental = False
@@ -178,16 +224,24 @@ if __name__ == "__main__":
         type=int,
         default=43200,
     )
-    argparser.add_argument(
+    argparser.add_argument("volume_id", help="id of volume to back up")
+
+    chooseone = argparser.add_mutually_exclusive_group()
+    chooseone.add_argument(
         "--restore",
         help="ID of backup to restore. This will overwrite the specified volume.",
     )
-    argparser.add_argument(
+    chooseone.add_argument(
+        "--purge-older-than",
+        type=int,
+        help="Number of days. All backups older than this will be deleted. Any backups with "
+        " newer incremental dependencies are preserved.",
+    )
+    chooseone.add_argument(
         "--full",
         action="store_true",
         help="Run a full backup of the requested volume, even if incremental is possible",
     )
-    argparser.add_argument("volume_id", help="id of volume to back up")
 
     args = argparser.parse_args()
 
@@ -204,6 +258,8 @@ if __name__ == "__main__":
 
     if args.restore:
         backup.restore_backup(args.restore)
+    elif args.purge_older_than:
+        backup.purge_backups_older_than(args.purge_older_than - 1)
     else:
         backup.backup_volume()
 
