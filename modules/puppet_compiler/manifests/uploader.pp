@@ -61,7 +61,7 @@ class puppet_compiler::uploader (
     }
     systemd::timer::job { 'pcc_facts_processor':
         ensure      => $ensure,
-        user        => 'root',
+        user        => 'jenkins-deploy',
         description => 'Process uploaded facts',
         command     => '/usr/local/sbin/pcc_facts_processor',
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
