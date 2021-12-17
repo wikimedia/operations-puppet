@@ -8,6 +8,10 @@ ldap:
 etcd::autogen_pwd_seed: 'seed'
 profile::contacts::role_contacts: []
 
+# There are no prod-like Kubernetes clusters unless a project has
+# specifically created them
+kubernetes_cluster_groups: {}
+
 profile::mail::default_mail_relay::enabled: true
 profile::mail::default_mail_relay::template: 'profile/mail/default_mail_relay/exim4.minimal.wmcs.erb'
 
