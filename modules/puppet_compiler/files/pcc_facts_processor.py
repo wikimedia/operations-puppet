@@ -7,7 +7,7 @@ import shutil
 import tarfile
 import tempfile
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from pathlib import Path
 
 import pypuppetdb
@@ -17,10 +17,11 @@ from puppet_compiler.config import ControllerConfig
 from puppet_compiler import directories, prepare, puppet, utils
 
 
-def get_args():
+def get_args() -> Namespace:
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-u', '--upload-dir', type=Path, default='/srv/pcc_uploader')
+    parser.add_argument('-w', '--webroot-dir', type=Path, default='/srv/www/facts')
     parser.add_argument(
         '-c', '--config', type=Path, default='/etc/puppet-compiler.conf'
     )
@@ -30,7 +31,7 @@ def get_args():
     return parser.parse_args()
 
 
-def get_log_level(args_level):
+def get_log_level(args_level: int) -> int:
     """Configure logging"""
     return {
         None: logging.ERROR,
@@ -40,7 +41,8 @@ def get_log_level(args_level):
     }.get(args_level, logging.DEBUG)
 
 
-def prepare_dir(basedir, config):
+def prepare_dir(basedir: Path, config: ControllerConfig) -> prepare.ManageCode:
+    """Prepare the puppet_compiler directory"""
     # TODO: we should have a helper method like this in puppet_compiler
     jobid = 1
     directories.FHS.setup(jobid, basedir)
@@ -52,7 +54,8 @@ def prepare_dir(basedir, config):
     return managecode
 
 
-def compile_node(config, node):
+def compile_node(config: ControllerConfig, node: str) -> None:
+    """Compile the catalog for a node"""
     logging.debug('processing facts file for: %s', node)
     try:
         utils.refresh_yaml_date(utils.facts_file(config.puppet_var, node))
@@ -63,15 +66,16 @@ def compile_node(config, node):
         dir_str = manifest_dir if manifest_dir is not None else 'default'
         logging.debug(f"manifest_dir: {dir_str}")
         succ, _, err = puppet.compile_storeconfigs(
-                node, config.puppet_var, manifest_dir
-                )
+            node, config.puppet_var, manifest_dir
+        )
         if succ:
             logging.info("%s: OK", node)
         else:
             logging.error(err.read())
 
 
-def update_puppetdb(facts_dir, config):
+def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
+    """Update puppetdb with node facts"""
     tmpdir = tempfile.mkdtemp(prefix=__name__)
     environment = 'production' if facts_dir.name == 'production' else 'labs'
     managecode = prepare_dir(tmpdir, config)
@@ -97,7 +101,8 @@ def update_puppetdb(facts_dir, config):
     shutil.rmtree(tmpdir)
 
 
-def process_tar(tar_file, config, realm):
+def process_tar(tar_file: tarfile.TarFile, config: ControllerConfig, realm: str) -> bool:
+    """Unpack and process all facts files in a tar"""
     logging.debug('processing tar: %s', tar_file)
     facts_dir = config.puppet_var / 'yaml' / realm
     tar = tarfile.open(tar_file)
@@ -122,7 +127,18 @@ def process_tar(tar_file, config, realm):
     return True
 
 
-def process_dir(directory, all, config):
+def update_webroot(tar_file: tarfile.TarFile, dst_file: Path) -> None:
+    """Move the tar file to the webroot for other clients to easily download"""
+    logging.debug('copy: %s -> %s', tar_file, dst_file)
+    if not dst_file.parent.is_dir():
+        logging.error("%s: directory doesn't exist cant copy facts", dst_file.parent)
+    dst_file.unlink(missing_ok=True)
+    Path(tar_file.fileobj.name).rename(dst_file)
+
+
+def process_dir(
+    directory: Path, process_all: bool, config: ControllerConfig, webroot_dir: Path
+) -> None:
     """process facts in a directory"""
     logging.debug('processing dir: %s', directory)
     tar_files = sorted(
@@ -131,9 +147,11 @@ def process_dir(directory, all, config):
     # This is used to process the most recent working tar ball
     allowd_idx = 0
     for idx, tar_file in enumerate(tar_files):
-        if all or idx == allowd_idx:
+        if process_all or idx == allowd_idx:
             if not process_tar(tar_file, config, directory.name):
                 allowd_idx += 1
+            else:
+                update_webroot(tar_file, webroot_dir / f'{directory.name}_facts.tar.gz')
         logging.debug('delete tar file: %s', tar_file)
         tar_file.unlink()
 
@@ -143,9 +161,9 @@ def main():
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
     config = ControllerConfig.from_file(args.config, dict())
-    for dir in args.upload_dir.iterdir():
-        if dir.is_dir():
-            process_dir(dir, args.all, config)
+    for sub_dir in args.upload_dir.iterdir():
+        if sub_dir.is_dir():
+            process_dir(sub_dir, args.all, config, args.webroot_dir)
     return 0
 
 

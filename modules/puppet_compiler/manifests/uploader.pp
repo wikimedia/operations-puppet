@@ -9,6 +9,9 @@ class puppet_compiler::uploader (
     Stdlib::Port     $port               = 8001,
     Stdlib::Unixpath $app_dir            = '/usr/local/share/pcc_uploader',
     Stdlib::Unixpath $upload_dir         = '/srv/pcc_uploader',
+    Stdlib::Unixpath $webroot            = '/srv/www',
+    String[1]        $jenkins_user       = 'jenkins-deploy',
+    String[1]        $jenkins_group      = 'jenkins-deploy',
     String[1]        $web_user           = 'www-data',
     String[1]        $web_group          = 'www-data',
     Integer          $max_content_length = 16000000,  # 16MB
@@ -23,7 +26,13 @@ class puppet_compiler::uploader (
     }
 
     ensure_packages(['python3-flask', 'python3-magic', 'python3-pypuppetdb'])
-    wmflib::dir::mkdir_p([$app_dir, $upload_dir])
+    wmflib::dir::mkdir_p([$app_dir, $upload_dir, $webroot])
+    file { "${webroot}/facts":
+        ensure => stdlib::ensure($ensure, 'directory'),
+        mode   => '0660',
+        owner  => $web_user,
+        group  => $jenkins_group,
+    }
     $realms.keys.each |$realm| {
         file { "${upload_dir}/${realm}":
             ensure => stdlib::ensure($ensure, 'directory'),
@@ -61,7 +70,7 @@ class puppet_compiler::uploader (
     }
     systemd::timer::job { 'pcc_facts_processor':
         ensure      => $ensure,
-        user        => 'jenkins-deploy',
+        user        => $jenkins_user,
         description => 'Process uploaded facts',
         command     => '/usr/local/sbin/pcc_facts_processor',
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
