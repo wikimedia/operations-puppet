@@ -323,125 +323,126 @@ class HostProcessor:
 
     def run_updates(self, dry_run, host_types):
         for host_class in sorted(host_types):
-            if host_class == "exec":
-                get_arg = "-sel"
-                add_arg = "-Ae"
-                del_arg = "-de"
-                exec_host_dir = os.path.join(self.config_dir, "exechosts")
-                try:
-                    conf_files = os.listdir(exec_host_dir)
-                except NameError:
-                    logging.error(
-                        "%s is not a valid directory", os.path.join(exec_host_dir)
-                    )
-                    raise
+            self._run_updates(dry_run, host_types, host_class)
 
-                exec_conf_files = [c for c in conf_files if not c.startswith(".")]
-            else:
-                get_arg = "-s{}".format(host_class[0])
-                add_arg = "-a{}".format(host_class[0])
-                del_arg = "-d{}".format(host_class[0])
-
+    def _run_updates(self, dry_run, host_types, host_class):
+        if host_class == "exec":
+            get_arg = "-sel"
+            add_arg = "-Ae"
+            del_arg = "-de"
+            exec_host_dir = os.path.join(self.config_dir, "exechosts")
             try:
-                result = subprocess.run(
-                    ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
+                conf_files = os.listdir(exec_host_dir)
+            except NameError:
+                logging.error(
+                    "%s is not a valid directory", os.path.join(exec_host_dir)
                 )
-            except subprocess.CalledProcessError:
-                result = False
+                raise
 
-            current_hosts = current_hosts = (
-                result.stdout.decode("utf-8").splitlines() if result else []
+            exec_conf_files = [c for c in conf_files if not c.startswith(".")]
+        else:
+            get_arg = "-s{}".format(host_class[0])
+            add_arg = "-a{}".format(host_class[0])
+            del_arg = "-d{}".format(host_class[0])
+
+        try:
+            result = subprocess.run(
+                ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
             )
+        except subprocess.CalledProcessError:
+            result = False
 
-            # additional step: cleanup duplicate hosts that may exist. We know this is
-            # happening if there are 2 hosts with the exact same hostname but different
-            # domain (legacy vs new). Leave the legacy one, for manual cleanup
-            for current_host in current_hosts[:]:
-                if not current_host.endswith(self.legacy_domain):
-                    # already configured host but it uses the new domain. This is fine, continue
-                    # with normal script operations
-                    continue
+        current_hosts = current_hosts = (
+            result.stdout.decode("utf-8").splitlines() if result else []
+        )
+
+        # additional step: cleanup duplicate hosts that may exist. We know this is
+        # happening if there are 2 hosts with the exact same hostname but different
+        # domain (legacy vs new). Leave the legacy one, for manual cleanup
+        for current_host in current_hosts[:]:
+            if not current_host.endswith(self.legacy_domain):
+                # already configured host but it uses the new domain. This is fine, continue
+                # with normal script operations
+                continue
 
                 # there is a host using the legacy domain. Do we have a host with the same hostname
                 # in the list of new domain hosts? If so, remove the duplicate.
-                current_host_hostname = current_host.split(".")[0]
-                for nova_host in self.host_set[host_class][:]:
-                    nova_host_hostname = nova_host.split(".")[0]
-                    if current_host_hostname == nova_host_hostname:
-                        logging.info(f"Leaving {current_host} as is instead of using {nova_host}")
-                        self.host_set[host_class].remove(nova_host)
-                        current_hosts.remove(current_host)
+            current_host_hostname = current_host.split(".")[0]
+            for nova_host in self.host_set[host_class][:]:
+                nova_host_hostname = nova_host.split(".")[0]
+                if current_host_hostname == nova_host_hostname:
+                    logging.info(
+                        f"Leaving {current_host} as is instead of using {nova_host}"
+                    )
+                    self.host_set[host_class].remove(nova_host)
+                    current_hosts.remove(current_host)
 
-            for host in self.host_set[host_class]:
-                if host_class == "exec":
-                    if host in current_hosts and host in exec_conf_files:
-                        # Here we need to check for config changes
-                        grid_exec_host = GridExecHost(host)
-                        grid_exec_host.compare_and_update(
-                            os.path.join(exec_host_dir, host), dry_run
-                        )
-                        current_hosts.remove(host)
-                        continue
-                    elif host in current_hosts:
-                        # Oops - no host config
-                        logging.warning(
-                            "%s cannot be added without a config file", host
-                        )
-                        current_hosts.remove(host)
-                        continue
-                    elif host not in exec_conf_files:
-                        # Oops - no host config
-                        logging.warning(
-                            "%s cannot be added without a config file", host
-                        )
-                        continue
+        for host in self.host_set[host_class]:
+            if host_class == "exec":
+                if host in current_hosts and host in exec_conf_files:
+                    # Here we need to check for config changes
+                    grid_exec_host = GridExecHost(host)
+                    grid_exec_host.compare_and_update(
+                        os.path.join(exec_host_dir, host), dry_run
+                    )
+                    current_hosts.remove(host)
+                    continue
+                elif host in current_hosts:
+                    # Oops - no host config
+                    logging.warning("%s cannot be added without a config file", host)
+                    current_hosts.remove(host)
+                    continue
+                elif host not in exec_conf_files:
+                    # Oops - no host config
+                    logging.warning("%s cannot be added without a config file", host)
+                    continue
 
-                    # Add the host
-                    this_host_config = os.path.join(self.config_dir, "exechosts", host)
-                    if not dry_run:
-                        result = subprocess.run(
-                            ["qconf", add_arg, this_host_config],
-                            timeout=60,
-                            stdout=subprocess.PIPE,
-                            check=True,
-                        )
-                    else:
-                        logging.info(
-                            "Would run: qconf {} {}".format(add_arg, this_host_config)
-                        )
-
+                # Add the host
+                this_host_config = os.path.join(self.config_dir, "exechosts", host)
+                if not dry_run:
+                    result = subprocess.run(
+                        ["qconf", add_arg, this_host_config],
+                        timeout=60,
+                        stdout=subprocess.PIPE,
+                        check=True,
+                    )
                 else:
-                    if host in current_hosts:
-                        current_hosts.remove(host)
-                        continue
+                    logging.info(
+                        "Would run: qconf {} {}".format(add_arg, this_host_config)
+                    )
 
-                    if not dry_run:
-                        result = subprocess.run(
-                            ["qconf", add_arg, host],
-                            timeout=60,
-                            stdout=subprocess.PIPE,
-                            check=True,
-                        )
-                    else:
-                        logging.info("Would run: qconf {} {}".format(add_arg, host))
+            else:
+                if host in current_hosts:
+                    current_hosts.remove(host)
+                    continue
 
-            if current_hosts:
-                # This suggests there are hosts listed that don't exist and must
-                # be expunged
-                for host in current_hosts:
-                    if not dry_run:
-                        result = subprocess.run(
-                            ["qconf", del_arg, host],
-                            timeout=60,
-                            stdout=subprocess.PIPE,
-                            check=True,
+                if not dry_run:
+                    result = subprocess.run(
+                        ["qconf", add_arg, host],
+                        timeout=60,
+                        stdout=subprocess.PIPE,
+                        check=True,
+                    )
+                else:
+                    logging.info("Would run: qconf {} {}".format(add_arg, host))
+
+        if current_hosts:
+            # This suggests there are hosts listed that don't exist and must
+            # be expunged
+            for host in current_hosts:
+                if not dry_run:
+                    result = subprocess.run(
+                        ["qconf", del_arg, host],
+                        timeout=60,
+                        stdout=subprocess.PIPE,
+                        check=True,
+                    )
+                else:
+                    logging.info(
+                        "Would delete {} host: qconf {} {}".format(
+                            host_class, del_arg, host
                         )
-                    else:
-                        logging.info(
-                            "Would delete {} host: qconf {} {}".format(
-                                host_class, del_arg, host
-                            )
-                        )
+                    )
 
 
 # Utility Functions
