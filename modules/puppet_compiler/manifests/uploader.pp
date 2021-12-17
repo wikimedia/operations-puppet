@@ -60,7 +60,7 @@ class puppet_compiler::uploader (
         mode   => '0550',
     }
     systemd::timer::job { 'pcc_facts_processor':
-        ensure      => $ensure.bool2str('present', 'absent'),
+        ensure      => $ensure,
         user        => 'root',
         description => 'Process uploaded facts',
         command     => '/usr/local/sbin/pcc_facts_processor',
