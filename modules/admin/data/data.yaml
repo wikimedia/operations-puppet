@@ -145,7 +145,8 @@ groups:
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited,
-              daimona, mepps, jabrams, nforrester, katelevan, cmaslak, mewoph]
+              daimona, mepps, jabrams, nforrester, katelevan, cmaslak, mewoph,
+              komla]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
   cassandra-test-roots:
     gid: 708
@@ -1540,6 +1541,13 @@ users:
     realname: Katie Horn
     ssh_keys: []
     uid: 2049
+  komla:
+    ensure: present
+    uid: 36186
+    gid: 500
+    realname: Komla Sapaty
+    email: ssapaty@wikimedia.org
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAs5NKeBkraiJmfOVa36lmFXUEpgCvOsQE+tqTQrKDnC ssapaty@wikimedia.org]
   krinkle:
     ensure: present
     gid: 500
