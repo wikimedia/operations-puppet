@@ -132,7 +132,9 @@ def update_webroot(tar_file: tarfile.TarFile, dst_file: Path) -> None:
     logging.debug('copy: %s -> %s', tar_file, dst_file)
     if not dst_file.parent.is_dir():
         logging.error("%s: directory doesn't exist cant copy facts", dst_file.parent)
-    dst_file.unlink(missing_ok=True)
+    # TODO: python 3.8 use missing_ok=True
+    if dst_file.exists():
+        dst_file.unlink()
     Path(tar_file.fileobj.name).rename(dst_file)
 
 
@@ -153,7 +155,6 @@ def process_dir(
             else:
                 update_webroot(tar_file, webroot_dir / f'{directory.name}_facts.tar.gz')
         logging.debug('delete tar file: %s', tar_file)
-        tar_file.unlink()
 
 
 def main():
