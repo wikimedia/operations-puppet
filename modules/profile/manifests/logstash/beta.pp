@@ -161,7 +161,7 @@ filter {
   $ecs_versions = {
     # version => revision
     '1.7.0'  => '5',
-    '1.11.0' => '1'
+    '1.11.0' => '2'
   }
   $ecs_versions.each |String $ecs_version, String $ecs_revision| {
     logstash::output::elasticsearch { "ecs_${ecs_version}-${ecs_revision}":
