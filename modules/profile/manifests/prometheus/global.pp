@@ -52,6 +52,7 @@ class profile::prometheus::global (
               'prometheus.svc.ulsfo.wmnet',
               'prometheus.svc.esams.wmnet',
               'prometheus.svc.eqsin.wmnet',
+              'prometheus.svc.drmrs.wmnet',
             ],
           },
         ],

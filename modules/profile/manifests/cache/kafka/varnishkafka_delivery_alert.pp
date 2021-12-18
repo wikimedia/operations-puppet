@@ -58,4 +58,5 @@ define profile::cache::kafka::varnishkafka_delivery_alert(
         contact_group   => 'analytics',
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
+    # DRMRS-TODO: add vk delivery alert once cps are configured, etc
 }
