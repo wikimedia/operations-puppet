@@ -15,6 +15,10 @@ profile::openstack::eqiad1::cloudgw::dmz_cidr:
  - "103.102.166.224"
  # VMs --> wiki (upload-lb.eqsin)
  - "103.102.166.240"
+ # VMs --> wiki (text-lb.drmrs)
+ - "185.15.58.224"
+ # VMs --> wiki (upload-lb.drmrs)
+ - "185.15.58.240"
  # VMs --> wiki (text-lb.esams)
  - "91.198.174.192"
  # VMs --> wiki (upload-lb.esams)
