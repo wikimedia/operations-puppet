@@ -62,7 +62,7 @@ if __name__ == "__main__":
         logging.error("Unable to locate %s" % backup_tool_name)
         exit(1)
 
-    osclients = mwopenstackclients.clients()
+    osclients = mwopenstackclients.clients(envfile='/etc/novaadmin.yaml')
 
     for project in conf:
         cinderclient = osclients.cinderclient(project=project)
