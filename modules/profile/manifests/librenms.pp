@@ -76,6 +76,7 @@ class profile::librenms (
             'knams' => 'Vancis, Amsterdam, The Netherlands',
             'esams' => 'EvoSwitch, Amsterdam, The Netherlands',
             'eqsin' => 'Equinix, Singapore',
+            'drmrs' => 'Interxion, Marseille, France',
         },
         'astext'       => {
             '64600' => 'PyBal',
@@ -90,6 +91,7 @@ class profile::librenms (
             '65003' => 'confed-esams',
             '65004' => 'confed-ulsfo',
             '65005' => 'confed-eqsin',
+            '65006' => 'confed-drmrs',
             '65020' => 'confed-eqord',
             '65517' => 'Equinix',
         },

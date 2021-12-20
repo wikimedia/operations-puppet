@@ -11,7 +11,7 @@ from cumin.backends import InvalidQueryError
 
 
 # Hardcoded DC aliases to verify them.
-DCS = {'eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin'}
+DCS = {'eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin', 'drmrs'}
 
 # Aliases that are allowed to match zero hosts.
 OPTIONAL_ALIASES = {'spare'}
