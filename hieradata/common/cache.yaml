@@ -45,6 +45,15 @@ cache::nodes:
       - 'cp5012.eqsin.wmnet'
       - 'cp5015.eqsin.wmnet'
       - 'cp5016.eqsin.wmnet'
+    drmrs:
+      - 'cp6009.drmrs.wmnet'
+      - 'cp6010.drmrs.wmnet'
+      - 'cp6011.drmrs.wmnet'
+      - 'cp6012.drmrs.wmnet'
+      - 'cp6013.drmrs.wmnet'
+      - 'cp6014.drmrs.wmnet'
+      - 'cp6015.drmrs.wmnet'
+      - 'cp6016.drmrs.wmnet'
   upload:
     codfw:
       - 'cp2028.codfw.wmnet'
@@ -91,3 +100,12 @@ cache::nodes:
       - 'cp5006.eqsin.wmnet'
       - 'cp5013.eqsin.wmnet'
       - 'cp5014.eqsin.wmnet'
+    drmrs:
+      - 'cp6001.drmrs.wmnet'
+      - 'cp6002.drmrs.wmnet'
+      - 'cp6003.drmrs.wmnet'
+      - 'cp6004.drmrs.wmnet'
+      - 'cp6005.drmrs.wmnet'
+      - 'cp6006.drmrs.wmnet'
+      - 'cp6007.drmrs.wmnet'
+      - 'cp6008.drmrs.wmnet'

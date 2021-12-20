@@ -33,6 +33,8 @@ class profile::pybal(
             /^lvs300[567]$/     => "[ '91.198.174.244', '91.198.174.245' ]", # cr2-esams,cr3-esams
             /^lvs400[567]$/     => "[ '198.35.26.192', '198.35.26.193' ]",   # cr3-ulsfo,cr4-ulsfo
             /^lvs500[123]$/     => "[ '103.102.166.131', '103.102.166.130' ]", # cr3-eqsin,cr2-eqsin
+            # DRMRS-TODO: below probably won't work until we switch to crX-drmrs?
+            # /^lvs600[123]$/     => "[ '185.15.58.131', '185.15.58.132' ]", # asw1-b12-drmrs,asw1-b13-drmrs
             default             => '(unspecified)'
             },
         'bgp-nexthop-ipv4'    => $facts['ipaddress'],

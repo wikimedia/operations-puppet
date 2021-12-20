@@ -10,6 +10,7 @@ class lvs::configuration {
                 'esams' => [ 'lvs3005', 'lvs3007' ],
                 'ulsfo' => [ 'lvs4005', 'lvs4007' ],
                 'eqsin' => [ 'lvs5001', 'lvs5003' ],
+                'drmrs' => [ 'lvs6001', 'lvs6003' ],
                 default => undef,
             },
             'labs' => $::site ? {
@@ -24,6 +25,7 @@ class lvs::configuration {
                 'esams' => [ 'lvs3006', 'lvs3007' ],
                 'ulsfo' => [ 'lvs4006', 'lvs4007' ],
                 'eqsin' => [ 'lvs5002', 'lvs5003' ],
+                'drmrs' => [ 'lvs6002', 'lvs6003' ],
                 default => undef,
             },
             'labs' => $::site ? {
@@ -38,6 +40,7 @@ class lvs::configuration {
                 'esams' => [ ],
                 'ulsfo' => [ ],
                 'eqsin' => [ ],
+                'drmrs' => [ ],
                 default => undef,
             },
             'labs' => $::labsproject ? {
@@ -68,6 +71,9 @@ class lvs::configuration {
         'lvs5001'      => 'high-traffic1',
         'lvs5002'      => 'high-traffic2',
         'lvs5003'      => 'secondary',
+        'lvs6001'      => 'high-traffic1',
+        'lvs6002'      => 'high-traffic2',
+        'lvs6003'      => 'secondary',
         default        => 'unknown',
     }
 }

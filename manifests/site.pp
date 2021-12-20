@@ -477,8 +477,12 @@ node 'cp5012.eqsin.wmnet' {
 #
 # cp drmrs nodes
 #
-node /^cp60(0[1-9]|1[0-6])\.drmrs\.wmnet$/ {
-    role(insetup_noferm)
+node /^cp600[1-8]\.drmrs\.wmnet$/ {
+    role(cache::upload)
+}
+
+node /^cp60(09|1[0-6])\.drmrs\.wmnet$/ {
+    role(cache::text)
 }
 
 node /^cumin[12]001\.(eqiad|codfw)\.wmnet$/ {
@@ -1856,7 +1860,7 @@ node /^lvs500[123]\.eqsin\.wmnet$/ {
 
 # DRMRS lvs servers
 node /^lvs600[123]\.drmrs\.wmnet$/ {
-    role(insetup_noferm)
+    role(lvs::balancer)
 }
 
 node /^maps10(0[5-8]|1[0])\.eqiad\.wmnet/ {

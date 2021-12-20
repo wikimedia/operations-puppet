@@ -1,0 +1,19 @@
+drmrs:
+  cache_text:
+    cp6009.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6010.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6011.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6012.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6013.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6014.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6015.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6016.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+  cache_upload:
+    cp6001.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6002.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6003.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6004.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6005.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6006.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6007.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+    cp6008.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]

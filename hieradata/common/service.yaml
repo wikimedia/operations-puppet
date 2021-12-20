@@ -2636,6 +2636,11 @@ service::catalog:
         testlb6: 2620:0:863:ed1a::2
         textlb: 198.35.26.96
         textlb6: 2620:0:863:ed1a::1
+      drmrs: &id016
+        testlb: 185.15.58.225
+        testlb6: 2a02:ec80:600:ed1a::2
+        textlb: 185.15.58.224
+        textlb6: 2a02:ec80:600:ed1a::1
     lvs:
       class: high-traffic1
       conftool:
@@ -2662,6 +2667,8 @@ service::catalog:
           hostname: text-lb.esams.wikimedia.org
         ulsfo:
           hostname: text-lb.ulsfo.wikimedia.org
+        drmrs:
+          hostname: text-lb.drmrs.wikimedia.org
     port: 80
     sites:
       - codfw
@@ -2669,6 +2676,7 @@ service::catalog:
       - esams
       - ulsfo
       - eqsin
+      - drmrs
     state: production
 
   text-https:
@@ -2680,6 +2688,7 @@ service::catalog:
       eqsin: *id008
       esams: *id009
       ulsfo: *id010
+      drmrs: *id016
     lvs:
       class: high-traffic1
       conftool:
@@ -2709,6 +2718,8 @@ service::catalog:
           hostname: text-lb.esams.wikimedia.org
         ulsfo:
           hostname: text-lb.ulsfo.wikimedia.org
+        drmrs:
+          hostname: text-lb.drmrs.wikimedia.org
     port: 443
     sites:
       - codfw
@@ -2716,6 +2727,7 @@ service::catalog:
       - esams
       - ulsfo
       - eqsin
+      - drmrs
     state: production
 
   thumbor:
@@ -2816,6 +2828,9 @@ service::catalog:
       ulsfo: &id015
         uploadlb: 198.35.26.112
         uploadlb6: 2620:0:863:ed1a::2:b
+      drmrs: &id017
+        uploadlb: 185.15.58.240
+        uploadlb6: 2a02:ec80:600:ed1a::2:b
     lvs:
       class: high-traffic2
       conftool:
@@ -2842,6 +2857,8 @@ service::catalog:
           hostname: upload-lb.esams.wikimedia.org
         ulsfo:
           hostname: upload-lb.ulsfo.wikimedia.org
+        drmrs:
+          hostname: upload-lb.drmrs.wikimedia.org
     port: 80
     sites:
       - codfw
@@ -2849,6 +2866,7 @@ service::catalog:
       - esams
       - ulsfo
       - eqsin
+      - drmrs
     state: production
 
   upload-https:
@@ -2860,6 +2878,7 @@ service::catalog:
       eqsin: *id013
       esams: *id014
       ulsfo: *id015
+      drmrs: *id017
     lvs:
       class: high-traffic2
       conftool:
@@ -2889,6 +2908,8 @@ service::catalog:
           hostname: upload-lb.esams.wikimedia.org
         ulsfo:
           hostname: upload-lb.ulsfo.wikimedia.org
+        drmrs:
+          hostname: upload-lb.drmrs.wikimedia.org
     port: 443
     sites:
       - codfw
@@ -2896,6 +2917,7 @@ service::catalog:
       - esams
       - ulsfo
       - eqsin
+      - drmrs
     state: production
 
   videoscaler:
