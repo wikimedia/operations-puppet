@@ -11,7 +11,7 @@ Restart=always
 RestartSec=2s
 TimeoutStopSec=10
 Environment='IMAGE_CATALOG_DB=<%= @db_path %>'
-Environment='IMAGE_CATALOG_KUBERNETES_CLUSTERS=<%= @kubernetes_clusters.map {|c| c[0] + ":" + c[1]}.join(" ") %>'
+Environment='IMAGE_CATALOG_KUBERNETES_CONFIGS=<%= @kubernetes_configs.join(',') %>'
 ExecStart=/usr/bin/gunicorn3 --workers=1 --threads=1 --bind=[::]:<%= @port %> 'imagecatalog.web:create_app()'
 SyslogIdentifier=imagecatalog
 
