@@ -64,6 +64,13 @@ profile::airflow::instances:
     airflow_config:
       core:
         dags_folder: /srv/deployment/airflow-dags/analytics/analytics/dags
+    connections:
+      analytics-test-hive:
+        conn_type: hive_metastore
+        host: analytics-test-hive.eqiad.wmnet
+        port: 9083
+        extra_dejson: {'authMechanism': 'GSSAPI'}
+
 
 profile::airflow::database_host_default: an-test-coord1001.eqiad.wmnet
 
