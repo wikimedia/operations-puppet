@@ -35,12 +35,6 @@ profile::openstack::codfw1dev::cloudgw::dmz_cidr:
  - "208.80.153.107"
  # VMs --> gerrit.wikimedia.org
  - "208.80.154.137"
- # VMs --> apt1001.wikimedia.org
- - "208.80.154.30"
- # VMs --> apt2001.wikimedia.org
- - "208.80.153.42"
- # VMs --> sodium.wikimedia.org
- - "208.80.154.15"
  # VMs --> cloudcontrol1003.wikimedia.org
  - "208.80.154.23"
  # VMs --> cloudcontrol1004.wikimedia.org
