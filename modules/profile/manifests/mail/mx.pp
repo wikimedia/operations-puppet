@@ -3,6 +3,9 @@
 # @param verp_domains configure verp for theses domains
 # @param verp_post_connect_server the server to post verp bounces too
 # @param verp_bounce_post_url the url top post verp bounces to
+# @param sender_discards
+#   Sender address patterns to silently discard, these patterns should conform to the Exim syntax:
+#   http://www.exim.org/exim-html-current/doc/html/spec_html/ch-domain_host_address_and_local_part_lists.html
 class profile::mail::mx (
     Stdlib::Host          $gmail_smtp_server        = lookup('profile::mail::mx::gmail_smtp_server'),
     Stdlib::Host          $otrs_mysql_server        = lookup('profile::mail::mx::otrs_mysql_server'),
@@ -16,6 +19,7 @@ class profile::mail::mx (
     String[1]             $alias_file_mail_rcpt     = lookup('profile::mail::mx::alias_file_mail_rcpt'),
     String[1]             $alias_file_mail_subject  = lookup('profile::mail::mx::alias_file_mail_subject'),
     Boolean               $enable_ldap              = lookup('profile::mail::mx::enable_ldap'),
+    Array[String[1]]      $sender_discards          = lookup('profile::mail::mx::sender_discards', {'default_value' => []})
 ) {
     mailalias { 'root':
         recipient => 'root@wikimedia.org',
@@ -97,6 +101,14 @@ class profile::mail::mx (
         group  => 'Debian-exim',
         mode   => '0444',
         source => 'puppet:///modules/role/exim/warn_message_file',
+    }
+
+    file { "${exim4::config_dir}/sender_discards":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'Debian-exim',
+        mode    => '0444',
+        content => $sender_discards.join("\n"),
     }
 
     exim4::dkim { 'wikimedia.org':

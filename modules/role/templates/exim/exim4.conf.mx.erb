@@ -122,6 +122,15 @@ acl_check_rcpt:
 	# Deny if the local part contains @, %, /, | or !, or starts with a dot
 	deny local_parts = ^.*[@%!/|] : ^\\.
 
+	# CONFDIR/sender_discards: Holds a list of envelope senders that should have
+	# their messages discarded. Incoming messages from one of these senders
+	# appear accepted from an SMTP perspective, but are silently discarded.
+	discard
+		senders = ${if exists{CONFDIR/sender_discards}\
+			{CONFDIR/sender_discards}\
+			{}}
+		log_message = Discarded $local_part@$domain as matched in sender_discards
+
 	# Accept relaying from networks we control. Note: no address verification
 	# is done at this point, which is good for mail submission, but may render
 	# recipient callout verification by affected hosts useless.
