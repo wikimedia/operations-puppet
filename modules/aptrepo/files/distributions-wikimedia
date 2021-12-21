@@ -201,7 +201,7 @@ Update:
  hwraid-stretch
  routinator
  thirdparty/ceph-octopus-bullseye
-Description: Wikimedia packages for Debian buster
+Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
 Log:
