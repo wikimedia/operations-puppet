@@ -17,17 +17,13 @@ class profile::envoy::builder {
         size    => '10G',
         mountat => '/usr/src',
     }
-    # We also need a volume to use for docker. We can't use labs_lvm::volume for it
-    # as it contrasts with profile::docker::storage::loopback
-    exec { 'create-vd-docker':
-        creates => '/dev/vd/docker',
-        require => [
-            File['/usr/local/sbin/make-instance-vol'],
-            Exec['create-volume-group']
-        ],
-        before  => Class['profile::docker::storage::loopback'],
-        command => '/usr/local/sbin/make-instance-vol "docker" "10%FREE" "ext4"',
+    # We also need a volume to use for docker.
+    labs_lvm::volume { 'docker':
+        size    => '10%FREE',
+        mountat => '/var/lib/docker',
+        before  => Class['docker'],
     }
+
     # Now let's ensure envoy sources are checked out
     git::clone { 'operations/debs/envoyproxy':
         directory => '/usr/src/envoyproxy',

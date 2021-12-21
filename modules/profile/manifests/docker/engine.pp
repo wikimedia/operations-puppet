@@ -30,8 +30,6 @@ class profile::docker::engine(
     # I know this is horrible
     if defined(Class['profile::docker::storage::thinpool']) {
         $docker_storage_options = $profile::docker::storage::thinpool::options
-    } elsif defined(Class['profile::docker::storage::loopback']) {
-        $docker_storage_options = $profile::docker::storage::loopback::options
     } elsif defined(Class['profile::docker::storage']) {
         $docker_storage_options = $profile::docker::storage::options
     } else {
