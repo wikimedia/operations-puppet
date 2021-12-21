@@ -50,6 +50,22 @@ class imagecatalog(
       restart => true,
   }
 
-  # TODO: Hourly systemd timer to scan for what's currently running.
+  $clusters_flag = $kubernetes_clusters.map |$cluster| {
+      $name = $cluster[0]
+      $config_path = $cluster[1]
+      "${name}:${config_path}"
+  }.join(',')
+
+  systemd::timer::job { 'imagecatalog_record':
+      ensure      => present,
+      description => 'update the image catalog with all images running in prod',
+      command     => "/usr/bin/imagecatalog --database=${db_path} --clusters=${clusters_flag} record",
+      interval    => {
+          start    => 'OnUnitActiveSec',
+          interval => '1h',
+      },
+      user        => 'imagecatalog',
+  }
+
   # TODO: Systemd timer to sync data dir from active to passive hosts
 }
