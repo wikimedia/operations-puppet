@@ -329,6 +329,7 @@ define airflow::instance(
         File[$airflow_config_file],
         File[$webserver_config_file],
         File[$connections_file],
+        File[$profile_file],
     ]
 
     # Control service for all services for this airflow instance.
