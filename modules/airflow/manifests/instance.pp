@@ -78,6 +78,11 @@
 #   the airflow CLI like: airflow connections get <connection_name>.
 #   They can of course be used in DAGs.
 #
+# [*environment_extra*]
+#   Hash of environment variables to set in the airflow
+#   instance's scheduler and webserver processes.
+#   Default: {}
+#
 # [*monitoring_enabled*]
 #   Default: false
 #
@@ -109,6 +114,7 @@ define airflow::instance(
     String $db_user                     = "airflow_${title}",
     String $db_password                 = 'batman',
     Optional[Hash] $connections         = undef,
+    Hash $environment_extra             = {},
     Boolean $monitoring_enabled         = false,
     Integer $clean_logs_older_than_days = 90,
     String $ferm_srange                 = '$INTERNAL',
@@ -229,6 +235,9 @@ define airflow::instance(
     $airflow_config_file = "${airflow_home}/airflow.cfg"
     $webserver_config_file = "${airflow_home}/webserver_config.py"
     $webserver_port = $_airflow_config['webserver']['web_server_port']
+    $profile_file = "${airflow_home}/bin/airflow-${title}-profile.sh"
+    $airflow_cli_file = "${airflow_home}/bin/airflow-${title}"
+
 
     # Default file resource params for this airflow instance.
     File {
@@ -245,7 +254,7 @@ define airflow::instance(
         default => 'link',
     }
 
-    file { $airflow_home:
+    file { [$airflow_home, "${airflow_home}/bin"]:
         ensure => $ensure_directory,
         force  => true,
         mode   => '0755',
@@ -255,6 +264,29 @@ define airflow::instance(
         mode    => '0440', # Likely has $db_password in it.
         content => template('airflow/airflow.cfg.erb'),
         require => File[$airflow_home],
+    }
+
+    file { $profile_file:
+        ensure  => $ensure,
+        mode    => '0440',
+        content => template('airflow/profile.sh.erb')
+    }
+
+    # airflow CLI wrapper for this instance.
+    # Aides running airflow commands without having to think about how
+    # to properly set things like AIRFLOW_HOME.
+    file { $airflow_cli_file:
+        ensure  => $ensure,
+        mode    => '0555',
+        content => template('airflow/airflow.sh.erb'),
+        require => File[$profile_file],
+    }
+    # Link the airflow command wrapper in /usr/local/bin
+    # so it is on regular users PATH.
+    file { "/usr/local/bin/airflow-${title}":
+        ensure  => $ensure_link,
+        target  => "${airflow_home}/bin/airflow-${title}",
+        require => File[$airflow_cli_file],
     }
 
     # No per instance webserver configuration yet.
@@ -290,15 +322,6 @@ define airflow::instance(
         ensure  => $connections_file_ensure,
         mode    => '0440', # Could have secrets in it.
         content => template('airflow/connections.yaml.erb')
-    }
-
-    # airflow command wrapper for this instance.
-    # Aides running airflow commands without having to think about how
-    # to properly set things like AIRFLOW_HOME.
-    file { "/usr/local/bin/airflow-${title}":
-        ensure  => $ensure,
-        mode    => '0555',
-        content => template('airflow/airflow.sh.erb'),
     }
 
     # DRY variable for dependencies for airflow webserver and scheduler services.

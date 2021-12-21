@@ -1,0 +1,28 @@
+# NOTE: This file is managed by Puppet.
+
+#
+# Sets environment variables for airflow instance <%= @title %>
+#
+
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]; then
+    echo "${BASH_SOURCE[0]} is meant to be sourced by a bash shell."
+    echo "  source $0"
+    exit 1
+fi
+
+# AIRFLOW_HOME is needed by airflow to
+# locate config files, etc.
+export AIRFLOW_HOME=<%= @airflow_home %>
+
+# AIRFLOW_INSTANCE_NAME is an arbitrary WMF Airflow concept.
+# We run multiple instances.  User DAG code might use this to
+# vary dynamimc config based on which instance it is running in.
+export AIRFLOW_INSTANCE_NAME=<%= @title %>
+
+<%- @environment_extra.keys.sort.each do |key| %>
+# Extra environment variables.
+export <%= key %>=<%= @environment_extra[key] %>
+<%- end -%>
+
+# Include the airflow python environnet prefix bin dir on PATH.
+export PATH=<%= @airflow_prefix %>/bin:$PATH

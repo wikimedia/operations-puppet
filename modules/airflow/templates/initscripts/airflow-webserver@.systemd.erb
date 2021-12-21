@@ -6,9 +6,7 @@ After=network.target airflow-kerberos@%i.service
 [Service]
 User=<%= @service_user %>
 Group=<%= @service_group %>
-Environment=PATH=<%= @airflow_prefix %>/bin:/usr/bin:/bin
-Environment=AIRFLOW_HOME=<%= @airflow_home %>
-ExecStart=<%= @airflow_prefix %>/bin/airflow webserver --pid <%= @airflow_home %>/webserver.pid
+ExecStart=<%= @airflow_cli_file %>  webserver --pid <%= @airflow_home %>/webserver.pid
 Type=simple
 SyslogIdentifier=airflow-webserver@%i
 PrivateTmp=true
