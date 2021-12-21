@@ -350,7 +350,7 @@ groups:
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking]
+              mmunyoki, ryankemper, bking, spatel]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4923,6 +4923,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoIiYDYAlWVxK2i1xGHGp5a5+qH0LHJyoJqsHitqsAF bking@wikimedia.org prod
+  spatel:
+    ensure: present
+    uid: 36549
+    gid: 500
+    realname: Sneha Patel
+    email: spatel@wikimedia.org
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
