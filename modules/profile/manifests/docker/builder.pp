@@ -22,6 +22,7 @@ class profile::docker::builder(
     String $password = lookup('profile::docker::builder::prod_build_password'),
     Boolean $docker_pkg = lookup('profile::docker::docker_pkg', {default_value => false}),
     Boolean $prune_prod_images = lookup('profile::docker::builder::prune_images'),
+    Boolean $rebuild_images = lookup('profile::docker::builder::rebuild_images'),
 ){
 
     if $docker_pkg {
@@ -108,8 +109,13 @@ class profile::docker::builder(
         registry_password => $password,
     }
 
+    $timer_ensure = $rebuild_images ? {
+        true    => 'present',
+        default => 'absent',
+    }
     # Cronjob to refresh the production-images every week on sunday.
     systemd::timer::job { 'production-images-weekly-rebuild':
+        ensure              => $timer_ensure,
         description         => 'Weekly job to rebuild the production-images',
         command             => '/usr/local/bin/build-production-images --nightly',
         interval            => {'start' => 'OnCalendar', 'interval' => 'Sun *-*-* 06:00:00'},

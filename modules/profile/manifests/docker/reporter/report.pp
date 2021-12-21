@@ -1,9 +1,10 @@
 define profile::docker::reporter::report(
+    Wmflib::Ensure $ensure,
     Enum['daily', 'weekly'] $frequency,
     String $proxy
 ) {
     file { "/etc/docker-report/${title}_rules.ini":
-        ensure => present,
+        ensure => $ensure,
         owner  => 'root',
         group  => 'root',
         source => "puppet:///modules/profile/docker/reporter/${title}_rules.ini",
@@ -14,6 +15,7 @@ define profile::docker::reporter::report(
         'weekly' => "Mon *-*-* ${hour}:00:00"
     }
     systemd::timer::job { "docker-reporter-${title}-images":
+        ensure            => $ensure,
         description       => "Report on upgrades to ${title} images.",
         command           => "/usr/bin/docker-report --filter-file /etc/docker-report/${title}_rules.ini docker-registry.wikimedia.org",
         interval          => {'start' => 'OnCalendar', 'interval' => $interval},

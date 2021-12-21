@@ -552,3 +552,8 @@ profile::ceph::auth::load_all::configuration: {}
 profile::ceph::auth::deploy::enabled: false
 profile::ceph::auth::deploy::selected_creds: []
 profile::ceph::auth::deploy::configuration: {}
+
+
+# Do not build images or generate reports
+profile::docker::builder::rebuild_images: false
+profile::docker::reporter::generate_reports: false
