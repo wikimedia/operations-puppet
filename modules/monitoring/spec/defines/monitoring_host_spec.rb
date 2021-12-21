@@ -7,7 +7,7 @@ describe 'monitoring::host' do
         facts.merge!(
           ipaddress: '192.0.2.42',
           hostname: 'ahost',
-          lldp_parent: 'ahosts_parent',
+          lldp: { 'parent' => 'ahosts_parent' },
           has_ipmi: true,
           ipmi_lan: {'ipaddress' => '198.51.100.42' }
         )

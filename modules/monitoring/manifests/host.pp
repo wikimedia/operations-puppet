@@ -46,12 +46,12 @@ define monitoring::host (
         # functionality in the case of an exported host
         if $parents {
             $real_parents = $parents
-        } elsif ($facts['is_virtual'] == false) and $facts['lldp_parent'] {
+        } elsif ($facts['is_virtual'] == false) and $facts['lldp'] {
             # Only set the (automatic) parent for physical hosts. We want to
             # still alert for each individual VM when the hosts die, as:
             # a) just a host DOWN alert for the VM node is too inconspicuous,
             # b) it's usually the case that VMs can be relocated to other nodes
-            $real_parents = $facts['lldp_parent']
+            $real_parents = $facts['lldp']['parent']
         } else {
             $real_parents = undef
         }
@@ -82,8 +82,8 @@ define monitoring::host (
         }
         # Populate a network related hostgroup for directly connected to switches
         # hosts
-        if $facts['lldp_parent'] and $facts['lldp_parent'] =~ /asw|csw/ {
-            $hostgroups = "${hostgroup},${facts['lldp_parent']}"
+        if $facts['lldp'] and $facts['lldp']['parent'] =~ /asw|csw/ {
+            $hostgroups = "${hostgroup},${facts['lldp']['parent']}"
         } else {
             $hostgroups = $hostgroup
         }
