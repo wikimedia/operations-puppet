@@ -26,7 +26,6 @@ profile::puppetboard::graph_facts_override:
 - kernelmajversion
 - kernelrelease
 - kernelversion
-- lldp_parent
 - lsbdistcodename
 - lsbdistid
 - lsbdistrelease
