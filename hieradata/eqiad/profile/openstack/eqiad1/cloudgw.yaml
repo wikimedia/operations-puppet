@@ -41,6 +41,8 @@ profile::openstack::eqiad1::cloudgw::dmz_cidr:
  - "208.80.153.42"
  # VMs --> sodium.wikimedia.org
  - "208.80.154.15"
+ # VMs --> mirror1001.wikimedia.org
+ - "208.80.154.139"
  # VMs --> cloudcontrol1003.wikimedia.org
  - "208.80.154.23"
  # VMs --> cloudcontrol1004.wikimedia.org
