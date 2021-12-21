@@ -268,7 +268,7 @@ define airflow::instance(
 
     file { $profile_file:
         ensure  => $ensure,
-        mode    => '0440',
+        mode    => '0444',
         content => template('airflow/profile.sh.erb')
     }
 
