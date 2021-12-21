@@ -951,7 +951,7 @@ groups:
   analytics-platform-eng-admins:
     gid: 831
     description: Group of users for managing Platform Engineering related analytics/data jobs.
-    members: [*platform_engineering_members]
+    members: [*platform_engineering_members, lbowmaker]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
