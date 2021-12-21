@@ -6,7 +6,7 @@ class role::puppetdb {
     include profile::puppetdb
     include profile::prometheus::postgres_exporter
 
-    system::role { "puppetmaster::puppetdb (postgres ${profile::puppetdb::database::db_role})":
+    system::role { "puppetdb (postgres ${profile::puppetdb::database::db_role})":
         ensure      => 'present',
         description => 'PuppetDB server',
     }
