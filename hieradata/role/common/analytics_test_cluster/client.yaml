@@ -51,16 +51,6 @@ profile::airflow::instances:
     service_group: analytics
     db_user: airflow_analytics_test
     monitoring_enabled: false
-    # This needs to be overridden for test.  Test uses
-    # the same repo as the 'analytics' instance,
-    # but is deployed using separate scap environment.
-    scap_targets:
-      'airflow-dags/analytics':
-        deploy_user: analytics
-        manage_user: false
-        manage_ssh_key: true
-        key_name: deploy_airflow
-        ensure: present
     connections:
       analytics-test-hive:
         conn_type: hive_metastore
