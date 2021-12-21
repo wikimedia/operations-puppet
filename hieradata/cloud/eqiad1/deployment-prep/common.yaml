@@ -382,6 +382,8 @@ profile::monitoring::mgmt_parents:
   eqsin: mr1-eqsin
   drmrs: mr1-drmrs
 
+profile::openstack::eqiad1::cumin::master::puppetdb_host: deployment-puppetdb03.deployment-prep.eqiad.wmflabs
+
 wikimail_smarthost:
 - 'deployment-mx03.deployment-prep.eqiad1.wikimedia.cloud'
 

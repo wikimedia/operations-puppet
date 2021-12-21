@@ -9,6 +9,15 @@ clustershell:
     ssh_options:
         - '-F <%= @ssh_config_path %>'
 
+<%- if @puppetdb_host -%>
+puppetdb:
+    host: <%= @puppetdb_host %>
+    port: 443
+    api_version: 4
+    urllib3_disable_warnings:
+      - SubjectAltNameWarning  # Temporary fix for T158757
+<%- end -%>
+
 openstack:
     auth_url: <%= @keystone_protocol %>://<%= @keystone_api_fqdn %>:<%= @keystone_port %>
     username: <%= @observer_username %>

@@ -13,6 +13,10 @@
 #   Optional hash of Cumin aliases in the form:
 #     key: 'alias query'
 #
+# [*profile::openstack::eqiad1::puppetdb_host*]
+#   FQDN (the form used in Puppet certificates, so .wmflabs for older hosts)
+#   of a project-local PuppetDB host, if any.
+#
 class profile::openstack::eqiad1::cumin::master(
     $keystone_protocol = lookup('profile::openstack::base::keystone::auth_protocol'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
@@ -23,7 +27,8 @@ class profile::openstack::eqiad1::cumin::master(
     Hash $aliases = lookup('profile::openstack::eqiad1::cumin::aliases'),
     $project_ssh_priv_key_path = lookup('profile::openstack::eqiad1::cumin::project_ssh_priv_key_path'),
     $region = lookup('profile::openstack::eqiad1::region'),
-    ) {
+    Optional[Stdlib::Host] $puppetdb_host = lookup('profile::openstack::eqiad1::cumin::master::puppetdb_host', {default_value => undef}),
+) {
         # TODO: simplify once hiera converts null properly to undef (this can be fixed now)
         if $::labsproject and $project_ssh_priv_key_path and $project_ssh_priv_key_path != '' and $project_ssh_priv_key_path != 'undef' {
             $is_project = true
