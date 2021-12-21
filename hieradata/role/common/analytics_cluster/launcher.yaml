@@ -58,6 +58,12 @@ profile::airflow::instances:
     service_user: analytics
     service_group: analytics
     monitoring_enabled: false
+    connections:
+      analytics-hive:
+        conn_type: hive_metastore
+        host: analytics-hive.eqiad.wmnet
+        port: 9083
+        extra_dejson: {'authMechanism': 'GSSAPI'}
 
 profile::contacts::role_contacts: ['Analytics SREs']
 
