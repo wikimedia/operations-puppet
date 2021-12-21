@@ -12,7 +12,7 @@ if [ "$(whoami)" != "<%= @service_user %>" ]; then
 fi
 
 # If an airflow profile.sh exists for this airflow instance, source it now.
-test -f <%= @profile_file %> && source <%= $profile_file %>
+test -f <%= @profile_file %> && source <%= @profile_file %>
 
 if [ -z "${AIRFLOW_HOME}" ]; then
     echo "ERROR: AIRFLOW_HOME is not set."
