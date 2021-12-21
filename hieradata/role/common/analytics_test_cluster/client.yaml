@@ -61,9 +61,6 @@ profile::airflow::instances:
         manage_ssh_key: true
         key_name: deploy_airflow
         ensure: present
-    airflow_config:
-      core:
-        dags_folder: /srv/deployment/airflow-dags/analytics/analytics/dags
     connections:
       analytics-test-hive:
         conn_type: hive_metastore
