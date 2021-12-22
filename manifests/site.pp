@@ -2750,7 +2750,7 @@ node /^thumbor200[3456]\.codfw\.wmnet/ {
 
 # deployment servers
 node /^deploy[12]002\.(eqiad|codfw)\.wmnet$/ {
-    role(deployment_server)
+    role(deployment_server::kubernetes)
 }
 
 # new url-downloaders (T224551)

@@ -3,6 +3,8 @@ profile::resolving::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 cluster: misc
+# Needed for docker
+profile::base::overlayfs: true
 profile::admin::groups:
   - deployment
   - deploy-service
@@ -260,3 +262,13 @@ profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M
 
 profile::contacts::role_contacts: ['ServiceOps SREs']
+
+# enable docker at the correct version with the desired settings
+profile::docker::engine::packagename: "docker.io"
+profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u3"
+profile::docker::engine::declare_service: false
+profile::docker::engine::settings:
+  data-root: "/srv/docker"
+  live-restore: true
+  iptables: false
+  storage-driver: "overlay2"
