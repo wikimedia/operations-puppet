@@ -112,8 +112,8 @@ broke                   VERY
 
         # If they match, it should only call the subprocess once
         mock_run.assert_called_once_with(
-            ["/bin/echo", "get", "dummy_intance"],
-            stdout=grid_configurator.subprocess.PIPE,
-            check=True,
+            "/bin/echo get dummy_intance",
+            capture_output=True,
+            shell=True,
             timeout=60,
         )

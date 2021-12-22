@@ -26,6 +26,8 @@ import subprocess
 import sys
 import re
 
+from typing import List
+
 from keystoneauth1 import session
 from keystoneauth1.identity import v3
 from keystoneclient.v3 import client as keystone_client
@@ -48,6 +50,19 @@ GRID_HOST_PREFIX = {
     "sgegrid": "submit",
     "checker": "submit",
 }
+
+
+def cmd_run(cmd: List[str], **kwargs):
+    cmd_string = " ".join(cmd)
+    logging.debug(f"running cmd: {cmd_string}")
+
+    r = subprocess.run(cmd_string, capture_output=True, shell=True, **kwargs)
+
+    stderr = r.stderr.decode("utf-8")
+    if stderr != "":
+        logging.warning(f"command '{cmd_string}' generated stderr: '{stderr}'")
+
+    return r
 
 
 def sed_replace(filepath: str, string: str, replacement: str):
@@ -123,7 +138,7 @@ class GridConfig:
 
         if not dryrun:
             self.modcmd.append(input_file)
-            result = subprocess.run(self.modcmd, timeout=60)
+            result = cmd_run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
         return True
@@ -131,14 +146,14 @@ class GridConfig:
     def create(self, input_file, dryrun):
         if not dryrun:
             self.addcmd.append(input_file)
-            result = subprocess.run(self.addcmd, timeout=60)
+            result = cmd_run(self.addcmd, timeout=60)
             return not bool(result.returncode)
 
         return True
 
     def check_exists(self):
         try:
-            result = subprocess.run(self.getcmd, stdout=subprocess.PIPE, timeout=60)
+            result = cmd_run(self.getcmd, timeout=60)
         except subprocess.CalledProcessError:
             return False
 
@@ -151,11 +166,11 @@ class GridConfig:
         return self.create(incoming_config, dryrun)
 
     def rundel(self):
-        return subprocess.run(self.delcmd, timeout=60)
+        return cmd_run(self.delcmd, timeout=60)
 
     def _get_config(self):
-        result = subprocess.run(
-            self.getcmd, timeout=60, stdout=subprocess.PIPE, check=True
+        result = cmd_run(
+            self.getcmd, timeout=60
         )
         current_state = {}
         last_key = ""
@@ -214,8 +229,8 @@ class GridHostGroup(GridConfig):
         )
 
     def _get_config(self):
-        result = subprocess.run(
-            self.getcmd, timeout=60, stdout=subprocess.PIPE, check=True
+        result = cmd_run(
+            self.getcmd, timeout=60
         )
         current_state = {}
         rawconfig = result.stdout.decode("utf-8")  # You get bytes out of this.
@@ -254,7 +269,7 @@ class GridHostGroup(GridConfig):
 
         if not dryrun:
             self.modcmd.append(input_file)
-            result = subprocess.run(self.modcmd, timeout=60)
+            result = cmd_run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
         return True
@@ -289,7 +304,7 @@ class GridExecHost(GridConfig):
 
         if not dryrun:
             self.modcmd.append(input_file)
-            result = subprocess.run(self.modcmd, timeout=60)
+            result = cmd_run(self.modcmd, timeout=60)
             return not bool(result.returncode)
 
         return True
@@ -535,16 +550,8 @@ class HostProcessor:
             add_arg = "-a{}".format(host_class[0])
             del_arg = "-d{}".format(host_class[0])
 
-        try:
-            result = subprocess.run(
-                ["qconf", get_arg], timeout=60, stdout=subprocess.PIPE, check=True
-            )
-        except subprocess.CalledProcessError:
-            result = False
-
-        current_hosts = current_hosts = (
-            result.stdout.decode("utf-8").splitlines() if result else []
-        )
+        result = cmd_run(["qconf", get_arg], timeout=60)
+        current_hosts = result.stdout.decode("utf-8").splitlines()
 
         # additional step: cleanup duplicate hosts that may exist. We know this is
         # happening if there are 2 hosts with the exact same hostname but different
@@ -590,11 +597,9 @@ class HostProcessor:
                 # Add the host
                 this_host_config = os.path.join(self.config_dir, "exechosts", host)
                 if not dry_run:
-                    result = subprocess.run(
+                    result = cmd_run(
                         ["qconf", add_arg, this_host_config],
-                        timeout=60,
-                        stdout=subprocess.PIPE,
-                        check=True,
+                        timeout=60
                     )
                 else:
                     logging.info(
@@ -607,11 +612,9 @@ class HostProcessor:
                     continue
 
                 if not dry_run:
-                    result = subprocess.run(
+                    result = cmd_run(
                         ["qconf", add_arg, host],
-                        timeout=60,
-                        stdout=subprocess.PIPE,
-                        check=True,
+                        timeout=60
                     )
                 else:
                     logging.info("Would run: qconf {} {}".format(add_arg, host))
@@ -621,11 +624,9 @@ class HostProcessor:
             # be expunged
             for host in current_hosts:
                 if not dry_run:
-                    result = subprocess.run(
+                    result = cmd_run(
                         ["qconf", del_arg, host],
                         timeout=60,
-                        stdout=subprocess.PIPE,
-                        check=True,
                     )
                 else:
                     logging.info(

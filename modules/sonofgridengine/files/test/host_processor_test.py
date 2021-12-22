@@ -93,17 +93,14 @@ toolsbeta-sgecron-0000.toolsbeta.eqiad1.wikimedia.cloud
             MagicMock(stdout=GRID_MOCK_SUBMIT_HOSTS, returncode=0),
         ]
         self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPE)
+        path = os.path.join(
+            self.exec_dir,
+            "toolsbeta-sgeexec-0002.toolsbeta.eqiad1.wikimedia.cloud"
+        )
         mock_run.assert_any_call(
-            [
-                "qconf",
-                "-Ae",
-                os.path.join(
-                    self.exec_dir,
-                    "toolsbeta-sgeexec-0002.toolsbeta.eqiad1.wikimedia.cloud",
-                ),
-            ],
-            stdout=grid_configurator.subprocess.PIPE,
-            check=True,
+            "qconf -Ae {}".format(path),
+            capture_output=True,
+            shell=True,
             timeout=60,
         )
         self.assertEqual(mock_run.call_count, 4)
@@ -128,9 +125,9 @@ toolsbeta-sgecron-0000.toolsbeta.eqiad1.wikimedia.cloud
         ]
         self.host_proc_object.run_updates(False, grid_configurator.GRID_HOST_TYPE)
         mock_run.assert_any_call(
-            ["qconf", "-de", "toolsbeta-sgeexec-0001.toolsbeta.eqiad1.wikimedia.cloud"],
-            stdout=grid_configurator.subprocess.PIPE,
-            check=True,
+            "qconf -de toolsbeta-sgeexec-0001.toolsbeta.eqiad1.wikimedia.cloud",
+            capture_output=True,
+            shell=True,
             timeout=60,
         )
         self.assertEqual(mock_run.call_count, 5)

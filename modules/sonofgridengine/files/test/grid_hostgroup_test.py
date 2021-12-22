@@ -101,8 +101,8 @@ hostlist dummy01 dummy02 dummy03
 
         # If they match, it should only call the subprocess once
         mock_run.assert_called_once_with(
-            ["qconf", "-shgrp", "@dummies"],
-            stdout=grid_configurator.subprocess.PIPE,
-            check=True,
+            "qconf -shgrp @dummies",
+            capture_output=True,
+            shell=True,
             timeout=60,
         )
