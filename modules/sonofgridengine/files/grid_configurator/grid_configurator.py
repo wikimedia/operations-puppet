@@ -169,9 +169,7 @@ class GridConfig:
         return cmd_run(self.delcmd, timeout=60)
 
     def _get_config(self):
-        result = cmd_run(
-            self.getcmd, timeout=60
-        )
+        result = cmd_run(self.getcmd, timeout=60)
         current_state = {}
         last_key = ""
         rawconfig = result.stdout.decode("utf-8")
@@ -229,17 +227,13 @@ class GridHostGroup(GridConfig):
         )
 
     def _get_config(self):
-        result = cmd_run(
-            self.getcmd, timeout=60
-        )
+        result = cmd_run(self.getcmd, timeout=60)
         current_state = {}
         rawconfig = result.stdout.decode("utf-8")  # You get bytes out of this.
         lines = rawconfig.splitlines()
         [k, v] = lines.pop(0).split(maxsplit=1)  # First line like 'group_name @general'
         current_state.update({k: v})
-        hosts = [
-            host for x in lines for host in x.split() if host not in ["hostlist", "\\"]
-        ]
+        hosts = [host for x in lines for host in x.split() if host not in ["hostlist", "\\"]]
         current_state["hostlist"] = hosts
         return current_state
 
@@ -401,9 +395,7 @@ class HostProcessor:
         master = f"{self.project}-sgegrid-master"
         shadow = f"{self.project}-sgegrid-shadow"
         if hostname == master or hostname == shadow:
-            logging.warning(
-                f"{hostname} is not an openstack VM ?! Continuing now, but REVIEW IT"
-            )
+            logging.warning(f"{hostname} is not an openstack VM ?! Continuing now, but REVIEW IT")
             return True
 
         return False
@@ -424,9 +416,7 @@ class HostProcessor:
 
         for file in dir_list:
             fullpath = f"{basedir}/{file}"
-            logging.debug(
-                f"detected file in grid store {fullpath}, evaluating if dead config"
-            )
+            logging.debug(f"detected file in grid store {fullpath}, evaluating if dead config")
 
             prefix = file.split("-")[0]
             if prefix not in known_prefixes:
@@ -460,14 +450,10 @@ class HostProcessor:
             file = f"{dir}/{host}"
             hostname = host.split(".")[0]
 
-            logging.debug(
-                f"detected host file for {hostname} ({file}), evaluating if dead config"
-            )
+            logging.debug(f"detected host file for {hostname} ({file}), evaluating if dead config")
             if not self._host_exists(hostname):
                 if dry_run:
-                    logging.info(
-                        f"would remove {file}, '{hostname}' is not a VM (dry run)"
-                    )
+                    logging.info(f"would remove {file}, '{hostname}' is not a VM (dry run)")
                 else:
                     logging.info(f"removing {file}, '{hostname}' is not a VM")
                     try:
@@ -476,9 +462,7 @@ class HostProcessor:
                         elif os.path.isdir(file):
                             os.rmdir(file)
                         else:
-                            logging.warning(
-                                f"we don't know what {file} is, so cannot delete it"
-                            )
+                            logging.warning(f"we don't know what {file} is, so cannot delete it")
                     except OSError as error:
                         logging.warning(f"couldn't remove {file}: {error}")
 
@@ -493,9 +477,7 @@ class HostProcessor:
         for file in listing:
             fullpath = f"{dir}/{file}"
 
-            logging.debug(
-                f"evaluating if {fullpath} has dead config in the 'hostlist' paremeter"
-            )
+            logging.debug(f"evaluating if {fullpath} has dead config in the 'hostlist' paremeter")
             hosts = grep_hosts_from_hostlist(fullpath)
             for host in hosts:
                 hostname = host.split(".")[0]
@@ -539,9 +521,7 @@ class HostProcessor:
             try:
                 conf_files = os.listdir(exec_host_dir)
             except NameError:
-                logging.error(
-                    "%s is not a valid directory", os.path.join(exec_host_dir)
-                )
+                logging.error("%s is not a valid directory", os.path.join(exec_host_dir))
                 raise
 
             exec_conf_files = [c for c in conf_files if not c.startswith(".")]
@@ -568,9 +548,7 @@ class HostProcessor:
             for nova_host in self.host_set[host_class][:]:
                 nova_host_hostname = nova_host.split(".")[0]
                 if current_host_hostname == nova_host_hostname:
-                    logging.info(
-                        f"Leaving {current_host} as is instead of using {nova_host}"
-                    )
+                    logging.info(f"Leaving {current_host} as is instead of using {nova_host}")
                     self.host_set[host_class].remove(nova_host)
                     current_hosts.remove(current_host)
 
@@ -579,9 +557,7 @@ class HostProcessor:
                 if host in current_hosts and host in exec_conf_files:
                     # Here we need to check for config changes
                     grid_exec_host = GridExecHost(host)
-                    grid_exec_host.compare_and_update(
-                        os.path.join(exec_host_dir, host), dry_run
-                    )
+                    grid_exec_host.compare_and_update(os.path.join(exec_host_dir, host), dry_run)
                     current_hosts.remove(host)
                     continue
                 elif host in current_hosts:
@@ -597,14 +573,9 @@ class HostProcessor:
                 # Add the host
                 this_host_config = os.path.join(self.config_dir, "exechosts", host)
                 if not dry_run:
-                    result = cmd_run(
-                        ["qconf", add_arg, this_host_config],
-                        timeout=60
-                    )
+                    result = cmd_run(["qconf", add_arg, this_host_config], timeout=60)
                 else:
-                    logging.info(
-                        "Would run: qconf {} {}".format(add_arg, this_host_config)
-                    )
+                    logging.info("Would run: qconf {} {}".format(add_arg, this_host_config))
 
             else:
                 if host in current_hosts:
@@ -612,10 +583,7 @@ class HostProcessor:
                     continue
 
                 if not dry_run:
-                    result = cmd_run(
-                        ["qconf", add_arg, host],
-                        timeout=60
-                    )
+                    result = cmd_run(["qconf", add_arg, host], timeout=60)
                 else:
                     logging.info("Would run: qconf {} {}".format(add_arg, host))
 
@@ -630,9 +598,7 @@ class HostProcessor:
                     )
                 else:
                     logging.info(
-                        "Would delete {} host: qconf {} {}".format(
-                            host_class, del_arg, host
-                        )
+                        "Would delete {} host: qconf {} {}".format(host_class, del_arg, host)
                     )
 
 
@@ -689,8 +655,7 @@ def get_args():
 
     argparser.add_argument(
         "--dry-run",
-        help="Give this parameter if you don't want the script to actually"
-        " make changes.",
+        help="Give this parameter if you don't want the script to actually" " make changes.",
         action="store_true",
     )
     argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
@@ -704,9 +669,7 @@ def get_args():
 
                 args.observer_pass = nova_observer_config["OS_PASSWORD"]
             else:
-                argparser.error(
-                    "To process hosts the --observer-pass argument is required"
-                )
+                argparser.error("To process hosts the --observer-pass argument is required")
 
     return args
 
@@ -763,18 +726,14 @@ def main():
                 sys.exit(1)
             if line[:-1] != "tools" and not args.beta:
                 f.close()
-                logging.error(
-                    "If running in a project other than 'tools' you need --beta"
-                )
+                logging.error("If running in a project other than 'tools' you need --beta")
                 sys.exit(1)
             # that file should only have 1 line
             break
         f.close()
 
     except Exception as e:
-        logging.warning(
-            f"Failed to read /etc/wmcs-project file {e}. Project won't be validated."
-        )
+        logging.warning(f"Failed to read /etc/wmcs-project file {e}. Project won't be validated.")
 
     if "hosts" in domains:
         logging.debug("Running configuration updates for hosts")
