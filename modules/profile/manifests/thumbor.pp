@@ -9,7 +9,7 @@ class profile::thumbor(
     Stdlib::Port $statsd_port = lookup('statsd_exporter_port'),
     Hash $swift_account_keys = lookup('profile::swift::accounts_keys'),
 ){
-
+    require profile::base::memory_cgroup
     include ::profile::conftool::client
     class { 'conftool::scripts': }
 

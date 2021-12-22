@@ -14,7 +14,7 @@ class profile::docker::engine(
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
     Boolean $declare_service = lookup('profile::docker::engine::declare_service')
 ) {
-
+    require ::profile::base::memory_cgroup
     # On Buster and later we use Docker from Debian
     if debian::codename::lt('buster') {
         apt::repository { 'thirdparty-k8s':
@@ -52,15 +52,6 @@ class profile::docker::engine(
     class { 'docker':
         version      => $version,
         package_name => $packagename,
-    }
-
-    # Enable memory cgroup
-    grub::bootparam { 'cgroup_enable':
-        value => 'memory',
-    }
-
-    grub::bootparam { 'swapaccount':
-        value => '1',
     }
 
     if $declare_service {

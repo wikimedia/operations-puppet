@@ -150,14 +150,6 @@ class thumbor (
         priority => 40,
     }
 
-    grub::bootparam { 'cgroup_enable':
-        value => 'memory',
-    }
-
-    grub::bootparam { 'swapaccount':
-        value => '1',
-    }
-
     systemd::timer::job { 'thumbor_systemd_tmpfiles_clean':
         ensure             => 'present',
         user               => 'thumbor',

@@ -6,7 +6,8 @@ class profile::mediawiki::common(
     Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
     Optional[Boolean] $fetch_ipinfo_dbs = lookup('profile::mediawiki::common::fetch_ipinfo_dbs', {'default_value' => false}),
 ){
-
+    # Enable the memory cgroup
+    require ::profile::base::memory_cgroup
     # GeoIP is needed for MW
     class { '::geoip':
         fetch_ipinfo_dbs => $fetch_ipinfo_dbs,
