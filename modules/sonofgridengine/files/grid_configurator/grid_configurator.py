@@ -405,7 +405,7 @@ class HostProcessor:
         # execnode-hostname1.domain.tld
         # hostkey-hostname1.domain.tld
         # submithost-hostname1.domain.tld
-        known_prefix = {"execnode-", "hostkey-", "submithost-"}
+        known_prefixes = {"execnode", "hostkey", "submithost"}
 
         for file in dir_list:
             fullpath = f"{basedir}/{file}"
@@ -413,24 +413,25 @@ class HostProcessor:
                 f"detected file in grid store {fullpath}, evaluating if dead config"
             )
 
-            for prefix in known_prefix:
-                if not file.startswith(prefix):
-                    continue
+            prefix = file.split("-")[0]
+            if prefix not in known_prefixes:
+                logging.warning(f"unknown file prefix: {fullpath}, we only know {known_prefixes}")
+                continue
 
-                fqdn = "-".join(file.split("-")[1:])
-                hostname = fqdn.split(".")[0]
+            fqdn = "-".join(file.split("-")[1:])
+            hostname = fqdn.split(".")[0]
 
-                if self._host_exists(hostname):
-                    continue
+            if self._host_exists(hostname):
+                continue
 
-                if dry_run:
-                    logging.info(f"would delete file {fullpath}, VM doesn't exists (dry run)")
-                else:
-                    logging.info(f"deleting file {fullpath}, VM doesn't exists")
-                    try:
-                        os.remove(fullpath)
-                    except OSError as error:
-                        logging.warning(f"unable to delete dead file {fullpath}: {error}")
+            if dry_run:
+                logging.info(f"would delete file {fullpath}, VM doesn't exists (dry run)")
+            else:
+                logging.info(f"deleting file {fullpath}, VM doesn't exists")
+                try:
+                    os.remove(fullpath)
+                except OSError as error:
+                    logging.warning(f"unable to delete dead file {fullpath}: {error}")
 
     def _handle_dead_config_dir(self, directory: str, dry_run):
         dir = os.path.join(self.grid_root, directory)
