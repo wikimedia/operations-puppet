@@ -33,6 +33,12 @@ class profile::docker::engine(
     } elsif defined(Class['profile::docker::storage']) {
         $docker_storage_options = $profile::docker::storage::options
     } else {
+        # This will pick the storage setup that is default with docker, which
+        # on servers >= buster means overlay2 if available, else the devicemapper-on-disk
+        # driver that is highly discouraged
+        if (defined(Class['profile::base']) and $profile::base::overlayfs == false) {
+            warning('Using the default configuration of docker without enabling overlayfs, this is discouraged. Please ensure you declare profile::base::overlayfs: true in hiera.')
+        }
         $docker_storage_options = {}
     }
 
