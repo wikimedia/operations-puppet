@@ -26,6 +26,7 @@ class profile::puppet_compiler (
     if $puppetdb_proxy {
         $ssldir = "${puppet_compiler::vardir}/ssl"
         $ssl_settings = ssl_ciphersuite('nginx', 'strong')
+        $docroot = $puppet_compiler::workdir
 
         nginx::site {'puppet-compiler':
             content => template('profile/puppet_compiler/puppetdb-proxy.erb'),
