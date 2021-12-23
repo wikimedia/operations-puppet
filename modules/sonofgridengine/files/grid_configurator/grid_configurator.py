@@ -542,13 +542,13 @@ class HostProcessor:
                 # with normal script operations
                 continue
 
-                # there is a host using the legacy domain. Do we have a host with the same hostname
-                # in the list of new domain hosts? If so, remove the duplicate.
+            # there is a host using the legacy domain. Do we have a host with the same hostname
+            # in the list of new domain hosts? If so, remove the duplicate.
             current_host_hostname = current_host.split(".")[0]
             for nova_host in self.host_set[host_class][:]:
                 nova_host_hostname = nova_host.split(".")[0]
                 if current_host_hostname == nova_host_hostname:
-                    logging.info(f"Leaving {current_host} as is instead of using {nova_host}")
+                    logging.debug(f"Leaving {current_host} as is instead of using {nova_host}")
                     self.host_set[host_class].remove(nova_host)
                     current_hosts.remove(current_host)
 
