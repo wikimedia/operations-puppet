@@ -12,10 +12,13 @@ class profile::toolforge::grid::exec_environ {
     class {'redis::client::python': }
     class {'phabricator::arcanist': }  # T139738 and T287390
 
-    apt::repository { "mono-external-${::lsbdistcodename}":
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
-        components => "thirdparty/mono-project-${::lsbdistcodename}",
+    if debian::codename::eq('stretch') {
+        # we use default buster mono version in the buster grid
+        apt::repository { "mono-external-${::lsbdistcodename}":
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => "thirdparty/mono-project-${::lsbdistcodename}",
+        }
     }
 
     if debian::codename::ge('buster') {
