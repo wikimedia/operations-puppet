@@ -1,6 +1,6 @@
 # Installs the puppet compiler and all the other software we need.
 class puppet_compiler(
-    String           $version    = '2.0.0',  # The compiler* hosts override this in horizon
+    String           $version    = '2.0.1',  # can and often is overridden in horizon
     Stdlib::Unixpath $workdir    = '/srv/jenkins-workspace/puppet-compiler',
     Stdlib::Unixpath $libdir     = '/var/lib/catalog-differ',
     Wmflib::Ensure   $ensure     = 'present',
