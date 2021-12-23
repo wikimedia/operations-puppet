@@ -25,7 +25,7 @@ $site = $facts['ipaddress'] ? {
 # or puppet lookup --compile.  As such we use the fqdn when the trusted facts are
 # not available T248169
 $_trusted_certname = $trusted['certname'] ? {
-    undef   => $facts['networking']['fqdn'],
+    undef   => $facts['fqdn'],
     default => $trusted['certname'],
 }
 if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.cloud$' {
