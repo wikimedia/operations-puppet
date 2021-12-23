@@ -16,11 +16,18 @@ class profile::puppet_compiler (
         source => '/etc/puppet/puppetdb.conf',
         owner  => $puppet_compiler::user,
     }
+    ferm::service {'puppet_compiler_web':
+        proto  => 'tcp',
+        port   => 'http',
+        prio   => '30',
+        # TODO: could restrict this to just the db1001 and localhost
+        srange => '$LABS_NETWORKS'
+    }
     if $puppetdb_proxy {
         $ssldir = "${puppet_compiler::vardir}/ssl"
         $ssl_settings = ssl_ciphersuite('nginx', 'strong')
 
-        nginx::site {'puppetdb-proxy':
+        nginx::site {'puppet-compiler':
             content => template('profile/puppet_compiler/puppetdb-proxy.erb'),
         }
         ferm::service {'puppetdb-proxy':
@@ -29,5 +36,16 @@ class profile::puppet_compiler (
             prio   => '30',
             srange => '$LABS_NETWORKS'
         }
+    } else {
+        nginx::site {'puppet-compiler':
+          content => template('profile/puppet_compiler/nginx_site.erb'),
+        }
+    }
+    file_line { 'modify_nginx_magic_types':
+        path    => '/etc/nginx/mime.types',
+        line    => "    text/plain                            txt pson err diff;",
+        match   => '\s+text/plain\s+txt',
+        require => Nginx::Site['puppet-compiler'],
+        notify  => Service['nginx'],
     }
 }

@@ -31,4 +31,15 @@ server {
         client_max_body_size 60m;
     }
 }
+server {
+  listen 80;
+  server_name localhost puppet-compiler.wmflabs.org <%= @fqdn -%>;
 
+  root <%= @docroot -%>/output;
+  index index.html index.htm;
+
+  location = / {
+    autoindex on;
+    try_files $uri $uri/ 404;
+  }
+}

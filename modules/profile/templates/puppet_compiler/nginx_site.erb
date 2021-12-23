@@ -2,7 +2,7 @@ server {
   listen 80;
   server_name localhost puppet-compiler.wmflabs.org <%= @fqdn -%>;
 
-  root <%= @docroot -%>/output;
+  root /srv/www/facts/;
   index index.html index.htm;
 
   location = / {
@@ -11,7 +11,7 @@ server {
   }
 
   location /upload {
-    client_max_body_size <%= @max_content_length/1000/1000 %>M;
+    client_max_body_size 16M;
     rewrite  ^/upload/?.* / break;
     include uwsgi_params;
     uwsgi_pass uwsgi://127.0.0.1:8001;

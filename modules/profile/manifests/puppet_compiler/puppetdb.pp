@@ -33,23 +33,4 @@ class profile::puppet_compiler::puppetdb (
     class {'puppet_compiler::uploader':
         max_content_length => $max_content_length,
     }
-    $docroot = $puppet_compiler::workdir
-
-    ferm::service {'puppet_compiler_web':
-        proto  => 'tcp',
-        port   => 'http',
-        prio   => '30',
-        srange => '$LABS_NETWORKS'
-    }
-    nginx::site {'puppet-compiler':
-        content => template('profile/puppet_compiler/nginx_site.erb'),
-    }
-
-    file_line { 'modify_nginx_magic_types':
-        path    => '/etc/nginx/mime.types',
-        line    => "    text/plain                            txt pson err diff;",
-        match   => '\s+text/plain\s+txt',
-        require => Nginx::Site['puppet-compiler'],
-        notify  => Service['nginx'],
-    }
 }
