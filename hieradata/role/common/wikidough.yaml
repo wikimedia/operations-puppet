@@ -55,4 +55,6 @@ profile::bird::anycasthc_logging:
   level: 'critical'
   num_backups: 1
 
+profile::base::firewall::enable_logging: false
+
 profile::contacts::role_contacts: ['Traffic SREs']
