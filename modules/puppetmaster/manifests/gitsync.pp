@@ -39,18 +39,6 @@ class puppetmaster::gitsync(
             'interval' => "${run_every_minutes}m",
         },
     }
-
-    cron { 'rebase_labs_private_puppet':
-        ensure => absent,
-        user   => 'root',
-    }
-    cron { 'rebase_operations_puppet':
-        ensure => absent,
-        user   => 'root',
-    }
-    logrotate::conf { 'git-sync-upstream':
-        ensure => absent,
-    }
 }
 
 
