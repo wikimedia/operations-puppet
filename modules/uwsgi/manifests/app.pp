@@ -29,12 +29,13 @@
 #  }
 #
 define uwsgi::app(
-    Wmflib::Ensure      $ensure           = present,
-    Boolean             $enabled          = true,
-    String              $service_settings = '--die-on-term',
-    String              $core_limit       = '0',
-    Hash                $settings         = {},
-    Array[Uwsgi::Route] $routes           = [],
+    Wmflib::Ensure      $ensure             = present,
+    Boolean             $enabled            = true,
+    String              $service_settings   = '--die-on-term',
+    String              $core_limit         = '0',
+    Hash                $settings           = {},
+    Array[Uwsgi::Route] $routes             = [],
+    Hash                $extra_systemd_opts = {},
 ) {
     include uwsgi
 

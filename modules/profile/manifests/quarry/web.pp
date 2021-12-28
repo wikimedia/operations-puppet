@@ -9,9 +9,21 @@ class profile::quarry::web(
 ) {
     require ::profile::quarry::base
 
+    $metrics_dir = '/run/quarry-metrics'
+
+    # Needed for prometheus exporter to share metrics between uwsgi processes
+    file { $metrics_dir:
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+    }
+    systemd::tmpfile { 'quarry-shared-metrics':
+        content => "d ${metrics_dir} 0755 www-data www-data",
+    }
+
     uwsgi::app { 'quarry-web':
-        require  => Git::Clone['analytics/quarry/web'],
-        settings => {
+        require            => Git::Clone['analytics/quarry/web'],
+        settings           => {
             uwsgi => {
                 'plugins'   => 'python3',
                 'socket'    => '/run/uwsgi/quarry-web.sock',
@@ -20,7 +32,17 @@ class profile::quarry::web(
                 'processes' => 8,
                 'chdir'     => $clone_path,
                 'venv'      => $venv_path,
+                'env'       => [
+                    # fix prometheus exporter for multiple uwsgi processes/workers
+                    "PROMETHEUS_MULTIPROC_DIR=${metrics_dir}",
+                ],
             },
+        },
+        extra_systemd_opts => {
+            'ExecStartPre' => [
+                # Clear out metrics caches for previous runs
+                "/bin/bash -c \"rm -rf ${metrics_dir}/*\"",
+            ],
         },
     }
 

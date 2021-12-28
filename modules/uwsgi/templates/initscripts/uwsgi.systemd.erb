@@ -3,6 +3,11 @@
 Description = uwsgi-<%= @title %> uwsgi app
 
 [Service]
+<%- @extra_systemd_opts.each do |option, entries| -%>
+<%- entries.each do |entry| -%>
+<%= option %> = <%= entry %>
+<%- end -%>
+<%- end -%>
 ExecStart = /usr/bin/uwsgi <%= @service_settings %> --ini <%= @inipath %>
 ExecReload = /bin/kill -HUP $MAINPID
 User = www-data
