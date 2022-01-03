@@ -101,28 +101,38 @@ class extdist(
         require => User['extdist'],
     }
 
-    cron { 'extdist-generate-tarballs':
-        command => "/usr/bin/python3 ${clone_dir}/nightly.py --all",
-        user    => 'extdist',
-        minute  => '0',
-        hour    => '*',
-        require => [
+    systemd::timer::job { 'extdist-generate-tarballs':
+        ensure      => present,
+        description => 'Regular jobs to generate extdist tarballs',
+        user        => 'extdist',
+        command     => "/usr/bin/python3 ${clone_dir}/nightly.py --all",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:00:00'},
+        require     => [
             Git::Clone['labs/tools/extdist'],
             User['extdist'],
             File['/etc/extdist.conf'],
         ],
     }
 
-    cron { 'skindist-generate-tarballs':
-        command => "/usr/bin/python3 ${clone_dir}/nightly.py --all --skins",
-        user    => 'extdist',
-        minute  => '30',
-        hour    => '*',
-        require => [
+    systemd::timer::job { 'skindist-generate-tarballs':
+        ensure      => present,
+        description => 'Regular jobs to generate skindist tarballs',
+        user        => 'extdist',
+        command     => "/usr/bin/python3 ${clone_dir}/nightly.py --all --skins",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:30:00'},
+        require     => [
             Git::Clone['labs/tools/extdist'],
             User['extdist'],
             File['/etc/skindist.conf'],
         ],
+    }
+
+    cron { 'extdist-generate-tarballs':
+        ensure => absent,
+    }
+
+    cron { 'skindist-generate-tarballs':
+        ensure => absent,
     }
 
     nginx::site { 'extdist':
