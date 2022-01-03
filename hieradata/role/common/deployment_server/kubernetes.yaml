@@ -19,7 +19,7 @@ profile::admin::groups:
   - analytics-deployers
   - gerrit-deployers
   - zuul-deployers
-  - contint-admins
+  - deployment-ci-admins
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
@@ -90,7 +90,7 @@ profile::keyholder::server::agents:
 
   deploy-ci-docroot:
     trusted_groups:
-      - contint-admins
+      - deployment-ci-admins
 
   deploy-zuul:
     trusted_groups:

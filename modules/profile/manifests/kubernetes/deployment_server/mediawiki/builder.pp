@@ -4,10 +4,15 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
     String $docker_password = lookup('profile::ci::pipeline::publisher::docker_registry_password')
 
 ) {
-    # Create the mwbuilder user. Ensure it's part of the docker group
+    # Create the mwbuilder user. This is the user that is allowed to run docker-pusher to publish
+    # the images, and that should run the tasks in mediawiki/tools/release.
+    group { 'mwbuilder':
+        ensure => present,
+        system => true,
+    }
     user { 'mwbuilder':
         ensure     => present,
-        gid        => 'docker',
+        gid        => 'mwbuilder',
         shell      => '/bin/false',
         comment    => '',
         home       => '/srv/mwbuilder',
@@ -29,9 +34,22 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
         ensure    => present,
         directory => '/srv/mwbuilder/release',
         owner     => 'mwbuilder',
-
     }
+    # Make sure "make" is installed
+    ensure_packages(['make'])
+
     # Deployers should be able to execute whatever wrapper we will write for tools/release
     # as user mwbuilder.
-    # TODO: add the new sudo rule to admin/data/data.yaml  for group 'deployment'
+    sudo::group { 'deploy_build_image':
+        group      => 'deployment',
+        privileges => ['ALL = (mwbuilder) NOPASSWD: /usr/bin/make -C /srv/mwbuilder/release/make-container-image -f Makefile *']
+    }
+    # Install a small wrapper around git pull --ff-only
+    file { '/usr/local/bin/update-mediawiki-tools-release':
+        ensure  => present,
+        mode    => '0555',
+        owner   => 'mwbuilder',
+        group   => 'mwbuilder',
+        content => "#!/bin/bash\ngit -C /srv/mwbuilder/release pull --ff-only\n",
+    }
 }
