@@ -62,7 +62,6 @@ class nagios_common::commands(
         'check_dsh_groups',
         'check_etcd_mw_config_lastindex.py',
         'check_graphite.py',
-        'check_graphite_freshness.py',
         'check_ifstatus_nomon',
         'check_jnx_alarms',
         'check_lastmod.py',
@@ -77,6 +76,11 @@ class nagios_common::commands(
         config_dir => $config_dir,
         owner      => $owner,
         group      => $group,
+    }
+
+    nagios_common::check_command { 'check_graphite_freshness.py':
+        ensure     => 'absent',
+        config_dir => $config_dir,
     }
 
     nagios_common::check_command::config { [
