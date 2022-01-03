@@ -299,7 +299,7 @@ node 'bast6001.wikimedia.org' {
 
 # Debian package/docker images building host in production (Bullseye)
 node 'build2001.codfw.wmnet' {
-    role(insetup)
+    role(builder)
 }
 
 node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
