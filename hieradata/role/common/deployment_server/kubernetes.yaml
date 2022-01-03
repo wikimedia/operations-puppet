@@ -272,3 +272,4 @@ profile::docker::engine::settings:
   live-restore: true
   iptables: false
   storage-driver: "overlay2"
+profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
