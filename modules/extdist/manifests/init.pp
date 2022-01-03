@@ -127,14 +127,6 @@ class extdist(
         ],
     }
 
-    cron { 'extdist-generate-tarballs':
-        ensure => absent,
-    }
-
-    cron { 'skindist-generate-tarballs':
-        ensure => absent,
-    }
-
     nginx::site { 'extdist':
         content => template('extdist/extdist.nginx.erb'),
     }
