@@ -238,7 +238,6 @@ profile::kubernetes::deployment_server::general:
     kubernetesApi:
       host: kubernetes.default.svc.cluster.local
       port: 443
-    helmBinary: helm2
     # common sidecar images versions
     # TODO: autogenerate this from the registry.
     common_images:
@@ -250,12 +249,6 @@ profile::kubernetes::deployment_server::general:
         exporter: prometheus-nutcracker-exporter:0.0.2-20211010
       envoy: 1.15.5-1-20211010
       rsyslogd: rsyslog:8.2102.0-2
-  codfw:
-    helmBinary: helm3
-  eqiad:
-    helmBinary: helm3
-  staging:
-    helmBinary: helm3
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
