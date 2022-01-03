@@ -4,13 +4,6 @@
 #
 #   include geoip
 #
-# Otherwise, you can manually mix and match any of the geoip::data classes,
-# e.g. the easiest option would be to
-#
-#   include geoip::data::package
-#
-# which installs the Debian geoip-database package.
-#
 # == Class geoip
 # Convenience class that installs the MaxMind binaries, library & all data
 #
