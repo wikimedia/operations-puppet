@@ -587,15 +587,18 @@ groups:
   aqs-admins:
     description: Group of admins for the Analytics Query Service
     gid: 764
-    members: [joal, milimetric, mobrovac]
+    members: [*analytics_admins_members, mobrovac]
     approval:
       - Olja Dimitrjevic
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
-                 'ALL = NOPASSWD: /usr/sbin/service cassandra-[a-z] *',
+                 'ALL = NOPASSWD: /usr/sbin/service cassandra-[ab] *',
                  'ALL = (cassandra) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service restbase *',
                  'ALL = (restbase) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl *']
+                 'ALL = NOPASSWD: /bin/journalctl *',
+                 'ALL = NOPASSWD: /bin/systemctl start cassandra-[ab]',
+                 'ALL = NOPASSWD: /bin/systemctl stop cassandra-[ab]',
+                 'ALL = NOPASSWD: /bin/systemctl restart cassandra-[ab]']
   datacenter-ops:
     gid: 765
     description: Group of datacenter ops engineers
