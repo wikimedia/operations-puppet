@@ -5602,7 +5602,7 @@ ldap_only_users:
     ensure: present
     realname: Luca Martinelli
     email: sannita-ctr@wikimedia.org
-    expiry_date: 2021-12-31
+    expiry_date: 2022-09-30
     expiry_contact: elitrenta@wikimedia.org
   stei:
     ensure: present
