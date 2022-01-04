@@ -99,11 +99,7 @@ class phabricator::vcs (
         notify { 'Warning: phabricator::vcs::listen_address is empty': }
     } else {
         $drange = $listen_addresses.map |$addr| { $addr.regsubst(/[\[\]]/, '', 'G') }
-        ferm::service {'ssh_public':
-            proto  => 'tcp',
-            port   => 22,
-            drange => "(${drange.join(' ')})",
-        }
+
         file { $sshd_config:
             content => template('phabricator/vcs/sshd_config.phabricator.erb'),
             mode    => '0644',
