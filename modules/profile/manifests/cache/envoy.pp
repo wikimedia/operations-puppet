@@ -43,6 +43,19 @@ class profile::cache::envoy(
         group   => 'root',
         mode    => '0444',
         content => "[Service]\nExecStartPre=/usr/local/sbin/update-ocsp-all\n",
+        notify  => Exec['systemd daemon-reload for envoyproxy.service'],
+    }
+
+    # since LimitNOFILE is also defined on puppet-override.conf
+    # we need a filename that triggers it to be evaluated *after*
+    # puppet-override.conf
+    file { '/etc/systemd/system/envoyproxy.service.d/traffic-limits.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => "[Service]\nLimitNOFILE=500000\n",
+        notify  => Exec['systemd daemon-reload for envoyproxy.service'],
     }
 
     unless empty($unified_certs) {
