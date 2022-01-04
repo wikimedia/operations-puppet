@@ -2,7 +2,7 @@ class profile::tendril(
     Hash $ldap_config = lookup('ldap', Hash, hash, {}),
 ) {
     class { '::tendril':
-        site_name    => 'tendril.wikimedia.org',
+        site_name    => 'tendril-legacy.wikimedia.org',
         docroot      => '/srv/tendril/web',
         ldap_binddn  => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org',
         ldap_authurl => "ldaps://${ldap_config[ro-server]} ${ldap_config[ro-server-fallback]}/ou=people,dc=wikimedia,dc=org?cn",

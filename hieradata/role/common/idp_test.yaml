@@ -37,7 +37,7 @@ profile::idp::services:
       - wmf
   tendril:
     id: 5
-    service_id: '^https://tendril.wikimedia.org(/.*)?'
+    service_id: '^https://tendril-legacy.wikimedia.org(/.*)?'
     required_groups:
       - ops
       - nda

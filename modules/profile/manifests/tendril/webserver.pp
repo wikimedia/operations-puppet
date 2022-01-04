@@ -43,7 +43,7 @@ class profile::tendril::webserver (
         }
         monitoring::service { 'https-tendril':
             description   => 'HTTPS-tendril',
-            check_command => 'check_ssl_http_letsencrypt!tendril.wikimedia.org',
+            check_command => 'check_ssl_http_letsencrypt!tendril-legacy.wikimedia.org',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Tendril',
         }
     }
@@ -52,7 +52,7 @@ class profile::tendril::webserver (
     if $monitor_auth {
         monitoring::service { 'https-tendril-unauthorized':
             description   => 'Tendril requires authentication',
-            check_command => 'check_https_unauthorized!tendril.wikimedia.org!/!401',
+            check_command => 'check_https_unauthorized!tendril-legacy.wikimedia.org!/!401',
             contact_group => 'admins',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Tendril',
         }

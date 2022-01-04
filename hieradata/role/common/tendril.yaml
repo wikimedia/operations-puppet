@@ -1,5 +1,5 @@
 profile::idp::client::httpd::sites:
-  'tendril.wikimedia.org':
+  'tendril-legacy.wikimedia.org':
     vhost_content: 'profile/idp/client/httpd-tendril.erb'
     document_root: '/srv/tendril/web'
     validate_saml: true
