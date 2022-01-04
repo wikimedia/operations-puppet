@@ -78,11 +78,6 @@ class nagios_common::commands(
         group      => $group,
     }
 
-    nagios_common::check_command { 'check_graphite_freshness.py':
-        ensure     => 'absent',
-        config_dir => $config_dir,
-    }
-
     nagios_common::check_command::config { [
         'apt',
         'breeze',
