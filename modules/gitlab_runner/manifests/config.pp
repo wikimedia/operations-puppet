@@ -8,6 +8,7 @@ class gitlab_runner::config (
     Integer             $exporter_listen_port    = 9252,
     Integer             $check_interval          = 3,
     Integer             $session_timeout         = 1800,
+    Array[Stdlib::Host] $prometheus_nodes        = [],
 )
 {
 
@@ -42,6 +43,19 @@ class gitlab_runner::config (
         command     => '/usr/bin/gitlab-runner restart',
         onlyif      => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name} '",
         refreshonly =>  true,
+    }
+
+    if !empty($prometheus_nodes) {
+        # gitlab-runner exports metric and prometheus nodes need access
+        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
+        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
+
+        ferm::service { 'gitlab_runner':
+            ensure => $enable_exporter.bool2str('present','absent'),
+            proto  => 'tcp',
+            port   => $exporter_listen_port,
+            srange => $ferm_srange,
+        }
     }
 
 }

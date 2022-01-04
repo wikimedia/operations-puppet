@@ -2192,6 +2192,22 @@ class profile::prometheus::ops (
         port       => 9236
     }
 
+    # Job definition for gitlab-runner monitoring T295481
+    $gitlab_runner_jobs = [
+      {
+        'job_name'        => 'gitlab_runner',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/gitlab_runner_*.yaml"] },
+        ]
+      },
+    ]
+    prometheus::class_config{ "gitlab_runner_${::site}":
+        dest       => "${targets_path}/gitlab_runner_${::site}.yaml",
+        class_name => 'profile::gitlab::runner',
+        port       => 9252
+    }
+
     $cfssl_jobs = [
       {
         'job_name'        => 'cfssl',
@@ -2240,7 +2256,7 @@ class profile::prometheus::ops (
             $envoy_jobs, $webperf_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
-            $cache_envoy_jobs, $mini_textfile_jobs,
+            $cache_envoy_jobs, $mini_textfile_jobs, $gitlab_runner_jobs,
         ].flatten,
         global_config_extra    => $config_extra,
     }
