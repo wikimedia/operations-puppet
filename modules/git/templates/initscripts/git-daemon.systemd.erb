@@ -1,0 +1,21 @@
+[Unit]
+Description=Git daemon
+
+[Service]
+User=<%= @user %>
+Group=<%= @group %>
+Environment="PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/lib/git-core"
+
+# We dont want to honor `git send-pack` commands so make sure the
+# receive-pack service is always disabled.
+ExecStart=/usr/lib/git-core/git-daemon \
+          --syslog \
+          --reuseaddr \
+          <%= @daemon_options -%> \
+          <% if @base_path -%>
+          --base-path=<%= @base_path -%> \
+          <% end -%>
+          <%= @directories.join(" ") %>
+
+[Install]
+WantedBy=multi-user.target

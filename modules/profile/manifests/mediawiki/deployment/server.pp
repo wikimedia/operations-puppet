@@ -10,6 +10,8 @@ class profile::mediawiki::deployment::server(
     Stdlib::Unixpath $base_path          = lookup('base_path', {default_value => '/srv/deployment'}),
     Array[String] $deployment_hosts      = lookup('deployment_hosts', {default_value => []}),
     Stdlib::Host $rsync_host             = lookup('profile::mediawiki::deployment::server::rsync_host'),
+    Stdlib::Fqdn $releases_server        = lookup('releases_server'),
+    Array[Stdlib::Fqdn] $other_releases_servers = lookup('releases_servers_failover'),
     String $statsd                       = lookup('statsd'),
     Hash[String, Struct[{
                         'origin'          => Optional[String],
@@ -59,6 +61,13 @@ class profile::mediawiki::deployment::server(
 
     class {'::httpd': }
 
+    # T298165
+    class { '::git::daemon':
+        directories => ['/srv/patches', '/srv/mediawiki-staging/private'],
+        user        => 'mwdeploy',
+        group       => $deployment_group,
+    }
+
     ensure_packages('default-mysql-client')
 
     ferm::service { 'rsyncd_scap_master':
@@ -66,7 +75,6 @@ class profile::mediawiki::deployment::server(
         port   => '873',
         srange => '$MW_APPSERVER_NETWORKS',
     }
-
 
     # T113351
     ferm::service { 'http_deployment_server':
@@ -76,6 +84,14 @@ class profile::mediawiki::deployment::server(
         srange => "(${deployable_networks_ferm})",
     }
 
+    # T298165
+    $releases_servers = [ $releases_server ] + $other_releases_servers
+    ferm::service { 'git-daemon':
+        desc   => 'Git daemon',
+        proto  => 'tcp',
+        port   => '9418',
+        srange => "(@resolve((${releases_servers})))",
+    }
     ### End firewall rules
 
     #T83854
