@@ -94,6 +94,14 @@ class graphite(
         require => Package['graphite-carbon'],
     }
 
+    file { '/usr/local/bin/whisper-cleanup':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/graphite/whisper-cleanup',
+    }
+
     # Dummy config file to use with carbonate during metric sync/backfill
     file { '/etc/carbon/carbonate.conf':
         ensure  => present,

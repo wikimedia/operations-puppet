@@ -11,10 +11,21 @@ define graphite::whisper_cleanup (
   $keep_days = 30,
   $user = '_graphite',
 ) {
+    $hour = fqdn_rand(24, $title)
+    $minute = fqdn_rand(60, $title)
+
+    systemd::timer::job { $title:
+        ensure      => present,
+        description => 'Regular jobs for cleanup of whisper directories',
+        user        => $user,
+        command     => "/usr/local/bin/whisper-cleanup ${directory} ${keep_days}",
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hour}:${minute}:00"},
+        require     => [
+            File['/usr/local/bin/whisper-cleanup']
+        ],
+    }
     cron { $title:
-        command => "[ -d ${directory} ] && find ${directory} -type f -mtime +${keep_days} -delete && find ${directory} -type d -empty -delete",
-        user    => $user,
-        hour    => fqdn_rand(24, $title),
-        minute  => fqdn_rand(60, $title),
+        ensure => absent,
+        user   => $user,
     }
 }
