@@ -7,8 +7,7 @@ class profile::kubernetes::deployment_server(
     Boolean $packages_from_future                                      = lookup('profile::kubernetes::deployment_server::packages_from_future', {default_value => false}),
     Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', {default_value => false}),
 ){
-    include profile::kubernetes::deployment_server::helmfile
-    include profile::kubernetes::deployment_server::mediawiki
+
     class { '::helm': }
     class { '::k8s::client':
         packages_from_future => $packages_from_future,
