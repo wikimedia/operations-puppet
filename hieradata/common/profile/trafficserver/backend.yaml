@@ -38,7 +38,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://analytics-web.discovery.wmnet:8443
     - type: map
       target: http://dbtree.wikimedia.org
-      replacement: https://dbmonitor1002.wikimedia.org
+      replacement: https://webserver-misc-apps.discovery.wmnet
+    - type: map
+      target: http://tendril.wikimedia.org
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://debmonitor.wikimedia.org
       replacement: https://debmonitor.discovery.wmnet:7443
