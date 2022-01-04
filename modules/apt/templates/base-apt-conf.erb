@@ -1,3 +1,15 @@
+##
+## This file is managed by puppet.
+## Any local changes will be swiftly overwritten
+##
+## Most cloud-vps projects can make persistent changes to apt sources
+## by adding a new .list file in /etc/apt/sources.list.d.
+##
+## Some cloud-vps projects have 'cloud.yaml:profile::apt::purge_sources'
+## set to 'true', in which case apt sources can only be managed
+## via puppet.
+##
+
 deb http://<%= @mirror %>/debian/ <%= @facts['os']['distro']['codename'] %> main contrib non-free
 deb-src http://<%= @mirror %>/debian/ <%= @facts['os']['distro']['codename'] %> main contrib non-free
 
