@@ -36,8 +36,7 @@
 #       (in addition to the base indices)
 #    $size_limit
 #       Optional. Specify the maximum number of entries to return from a search
-#       operation. May be set to a number or to 'unlimited'. If unset, the default
-#       is 2048.
+#       operation. May be set to a number. If unset, the default is 2048.
 #    $logging
 #       Optional. Specify the kind of logging desired. Defaults to "sync"
 #       And it is not named loglevel cause that's a puppet metaparameter
@@ -61,22 +60,22 @@
 #           datadir = '/var/lib/ldap',
 #       }
 class openldap(
-    Integer                             $server_id,
-    String                              $suffix,
-    Stdlib::Unixpath                    $datadir,
-    Optional[Stdlib::Host]              $master=undef,
-    Optional[String]                    $sync_pass=undef,
-    Boolean                             $mirrormode=false,
-    Optional[Stdlib::Unixpath]          $certificate=undef,
-    Optional[Stdlib::Unixpath]          $key=undef,
-    Optional[Stdlib::Unixpath]          $ca=undef,
-    Array[String]                       $extra_schemas=[],
-    Optional[String]                    $extra_acls=undef,
-    Optional[String]                    $extra_indices=undef,
-    Optional[String]                    $size_limit=undef,
-    String                              $logging='sync',
-    Openldap::Hashing_scheme            $hash_passwords='SHA',
-    Boolean                             $read_only=false,
+    Integer                    $server_id,
+    String                     $suffix,
+    Stdlib::Unixpath           $datadir,
+    Optional[Stdlib::Host]     $master=undef,
+    Optional[String]           $sync_pass=undef,
+    Boolean                    $mirrormode=false,
+    Optional[Stdlib::Unixpath] $certificate=undef,
+    Optional[Stdlib::Unixpath] $key=undef,
+    Optional[Stdlib::Unixpath] $ca=undef,
+    Array[String]              $extra_schemas=[],
+    Optional[String]           $extra_acls=undef,
+    Optional[String]           $extra_indices=undef,
+    Integer                    $size_limit=2048,
+    String                     $logging='sync',
+    Openldap::Hashing_scheme   $hash_passwords='SHA',
+    Boolean                    $read_only=false,
 ) {
 
     ensure_packages(['slapd', 'ldap-utils'])

@@ -10,6 +10,7 @@ class profile::openldap (
     $read_only = lookup('profile::openldap::read_only'),
     $certname = lookup('profile::openldap::certname'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Integer             $size_limit = lookup('profile::openldap::size_limit'),
 ){
     # Certificate needs to be readable by slapd
     acme_chief::cert { $certname:
@@ -35,6 +36,7 @@ class profile::openldap (
         master         => $master,
         hash_passwords => $hash_passwords,
         read_only      => $read_only,
+        size_limit     => $size_limit,
     }
 
     # Ldap services are used all over the place, including within
