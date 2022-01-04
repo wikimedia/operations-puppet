@@ -28,9 +28,7 @@ class profile::docker::engine(
     # Docker config
     # Fetch the storage config from the related driver
     # I know this is horrible
-    if defined(Class['profile::docker::storage::thinpool']) {
-        $docker_storage_options = $profile::docker::storage::thinpool::options
-    } elsif defined(Class['profile::docker::storage']) {
+    if defined(Class['profile::docker::storage']) {
         $docker_storage_options = $profile::docker::storage::options
     } else {
         # This will pick the storage setup that is default with docker, which
