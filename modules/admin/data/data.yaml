@@ -227,10 +227,7 @@ groups:
     gid: 715
     description: ldap admins
     members: [reedy, foks]
-    privileges: ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
-                 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
-                 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
-                 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
+    privileges: ['ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
                  'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group',
                  'ALL = (www-data) NOPASSWD: ALL']
 
