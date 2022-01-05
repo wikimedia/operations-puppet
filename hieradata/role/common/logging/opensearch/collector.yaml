@@ -36,10 +36,8 @@ profile::opensearch::dashboards::httpd_proxy::ldap_groups:
 # OpenSearch
 # NOTE: short_cluster_name must be kept in sync with the data role (logging/opensearch/data.yaml)
 profile::opensearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
-profile::opensearch::config_version: '7'
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
-profile::opensearch::ferm_srange: ''
 profile::opensearch::instances: {}
 profile::opensearch::dc_settings: {}
 profile::opensearch::base_data_dir: '/srv/opensearch'
