@@ -25,6 +25,7 @@ class profile::services_proxy::envoy(
     Array[Profile::Service_listener] $all_listeners     = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
     Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
     Boolean                          $listen_ipv6       = lookup('profile::services_proxy::envoy::listen_ipv6'),
+    Integer[2,3]                     $api_version       = lookup('profile::envoy::api_version'),
 ) {
     if $enabled_listeners == undef {
         $listeners = $all_listeners
@@ -37,9 +38,9 @@ class profile::services_proxy::envoy(
             fail('You must declare services if the proxy is to be present')
         }
         require ::profile::envoy
+
     }
     $all_services = wmflib::service::fetch()
-
     $listeners.each |$listener| {
         $cluster_label = $listener['service']
         $svc = $all_services[$cluster_label]
@@ -81,6 +82,7 @@ class profile::services_proxy::envoy(
         } else {
             $retry_policy = $listener['retry']
         }
+
         envoyproxy::listener { $listener['name']:
             content => template('profile/services_proxy/envoy_service_listener.yaml.erb')
         }

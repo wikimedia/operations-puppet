@@ -6,9 +6,13 @@ describe 'profile::services_proxy::envoy' do
 
     context "on #{os}" do
       context 'with ensure present' do
+        let(:pre_condition) {
+          'class { "profile::envoy": api_version => 3 }'
+        }
         let(:params) {
           {
             ensure: 'present',
+            api_version: 3,
             all_listeners: [
               {
                 name: 'commons',
@@ -41,6 +45,7 @@ describe 'profile::services_proxy::envoy' do
           is_expected.to contain_envoyproxy__cluster('text-https_eqiad_cluster')
                            .with_content(/address: text-lb.eqiad.wikimedia.org/)
                            .with_content(/name: text-https_eqiad/)
+                           .with_content(/envoy\.extensions\.transport_sockets\.tls\.v3/)
                            .without_content(/common_http_protocol_options/)
         }
         it {
@@ -64,6 +69,7 @@ describe 'profile::services_proxy::envoy' do
                            .with_content(/num_retries: 0/)
                            .with_content(/cluster: text-https_eqiad/)
                            .with_content(/port_value: 9876/)
+                           .with_content(/envoy\.extensions\.access_loggers/)
         }
       end
     end
