@@ -347,6 +347,19 @@ class profile::logstash::collector7 (
     #
     # Expects a template file conforming to "ecs_<VERSION>-<REVISION>.json" in "profile/files/logstash/templates/"
     # The most recently built template can be found here: https://doc.wikimedia.org/ecs/#downloads
+    #
+    # Date templates for indexes use Joda Time pattern syntax (T298619):
+    # https://www.joda.org/joda-time/apidocs/org/joda/time/format/DateTimeFormat.html
+    #   x = weekyear
+    #   Y = year of era
+    #   M = month of year
+    #   w = week of weekyear
+    #   d = day of month
+    #
+    # NOTE: Week of weekyear (x) and year of era (Y) desynchronize when the new year does not fall on ISO first week [0].
+    #       Only combine weekyear (x) with week of weekyear (w) when managing weekly indexes.
+    #
+    # [0] https://en.wikipedia.org/wiki/ISO_week_date#First_week
     $ecs_versions = {
         # version => revision
         '1.7.0'  => '5',
@@ -356,7 +369,7 @@ class profile::logstash::collector7 (
         logstash::output::elasticsearch { "ecs_${ecs_version}-${ecs_revision}":
           host            => '127.0.0.1',
           guard_condition => "\"es\" in [tags] and [ecs][version] == \"${ecs_version}\"",
-          index           => "ecs-${ecs_version}-${ecs_revision}-%{[@metadata][partition]}-%{+YYYY.ww}",
+          index           => "ecs-${ecs_version}-${ecs_revision}-%{[@metadata][partition]}-%{+xxxx.ww}",
           priority        => 90,
           template        => "/etc/logstash/templates/ecs_${ecs_version}-${ecs_revision}.json",
           require         => File['/etc/logstash/templates'],
@@ -371,7 +384,7 @@ class profile::logstash::collector7 (
         logstash::output::elasticsearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
           host            => '127.0.0.1',
           guard_condition => "[\$schema] == \"/w3c/reportingapi/network_error/${w3creportingapi_version}\"",
-          index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+YYYY.ww}",
+          index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+xxxx.ww}",
           priority        => 90,
           template        => "/etc/logstash/templates/w3creportingapi_${w3creportingapi_version}-${w3creportingapi_revision}.json",
           require         => File['/etc/logstash/templates'],
