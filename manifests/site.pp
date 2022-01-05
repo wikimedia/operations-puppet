@@ -1651,7 +1651,7 @@ node /kubernetes[12]0(0[1-9]|1[0-7])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 
-node /kubestage100[1234]\.eqiad\.wmnet/ {
+node /kubestage100[34]\.eqiad\.wmnet/ {
     role(kubernetes::staging::worker)
 }
 

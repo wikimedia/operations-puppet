@@ -1,6 +1,4 @@
 profile::calico::kubernetes::bgp_peers:
-- kubestage1001.eqiad.wmnet
-- kubestage1002.eqiad.wmnet
 - kubestage1003.eqiad.wmnet
 - kubestage1004.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
