@@ -8,8 +8,6 @@ role::scb:
   target-q: 2020-2
 role::mediawiki::memcached:
   target-q: 2020-2
-role::memcached:
-  target-q: 2020-2
 role::etcd::kubernetes:
   target-q: 2020-2
 role::lists:
