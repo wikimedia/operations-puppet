@@ -210,6 +210,7 @@ class profile::tlsproxy::envoy(
         }
 
         envoyproxy::tls_terminator{ "${tls_port}": # lint:ignore:only_variable_string
+            api_version               => $::profile::envoy::api_version,
             upstreams                 => $upstreams,
             access_log                => $access_log,
             websockets                => $websockets,

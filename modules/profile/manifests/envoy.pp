@@ -7,6 +7,7 @@ class profile::envoy(
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     String $cluster = lookup('cluster'),
     Hash $runtime = lookup('profile::envoy::runtime', {'default_value' => {}}),
+    Integer[2,3] $api_version = lookup('profile::envoy::api_version'),
 ) {
     # Envoy supports tcp fast open
     require ::profile::tcp_fast_open

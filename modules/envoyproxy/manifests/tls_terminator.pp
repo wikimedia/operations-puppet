@@ -120,6 +120,7 @@
 # @param http2_options
 #     Set HTTP/2 protocol options for downstream connections
 define envoyproxy::tls_terminator(
+    Integer[2,3]                                                          $api_version               = 2,
     Variant[Array[Envoyproxy::Tlsconfig], Array[Envoyproxy::TlsconfigV3]] $upstreams                 = [],
     Boolean                                                               $access_log                = false,
     Boolean                                                               $websockets                = false,
@@ -154,9 +155,10 @@ define envoyproxy::tls_terminator(
         fail('envoyproxy::tls_terminator should only be used once the envoyproxy class is declared.')
     }
 
-    $listeners_template = $upstreams[0] ? {
-        Envoyproxy::Tlsconfig   => 'envoyproxy/tls_terminator/listener.yaml.erb',
-        Envoyproxy::TlsconfigV3 => 'envoyproxy/tls_terminator/listener.v3.yaml.erb',
+    $listeners_template = $api_version ? {
+        2   => 'envoyproxy/tls_terminator/listener.yaml.erb',
+        3   => 'envoyproxy/tls_terminator/listener.v3.yaml.erb',
+        default => fail("Unsupported api version '${api_version}'")
     }
 
     # As this is a fundamental function, install it with high priority
