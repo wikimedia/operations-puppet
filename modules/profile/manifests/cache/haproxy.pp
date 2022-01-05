@@ -24,7 +24,12 @@ class profile::cache::haproxy(
     Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', {'default_value' => 3906}),
     Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', {'default_value' => '/var/log/haproxy.fifo'}),
 ) {
-    class { '::sslcert::dhparam': }
+    class { 'sslcert::dhparam':
+    }
+    if $do_ocsp {
+        class { 'sslcert::ocsp::init':
+        }
+    }
 
     # variables used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'

@@ -2,7 +2,7 @@
 #
 # Installs a cronjob that periodically fetches an OCSP response for a
 # certificate (or a bundle of certificates) and stores it to a well-known path,
-# under /var/cache/$title.ocsp.
+# under /var/cache/ocsp/$title.ocsp.
 #
 # === Parameters
 #
@@ -28,7 +28,9 @@ define sslcert::ocsp::conf(
   Array[String]    $certs  = [$title],
   Optional[String] $proxy  = undef,
 ) {
-    require sslcert::ocsp::init
+    if !defined(Class['sslcert::ocsp::init']) {
+        fail('sslcert::ocsp::conf should only be used once the sslcert::ocsp::init class is declared.')
+    }
 
     $output = "/var/cache/ocsp/${title}.ocsp"
     $config = "/etc/update-ocsp.d/${title}.conf"

@@ -97,6 +97,11 @@ class profile::trafficserver::tls (
         $keepalive_arg = 'false' # lint:ignore:quoted_booleans
     }
 
+    if num2bool($inbound_tls_settings['do_ocsp']) {
+        class { 'sslcert::ocsp::init':
+        }
+    }
+
     # Write configuration file for global TLS Lua script
     # TODO: Remove entirely on a following commit
     file { "${tls_lua_script_path}.conf":

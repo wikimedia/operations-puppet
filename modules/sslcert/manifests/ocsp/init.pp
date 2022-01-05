@@ -4,11 +4,17 @@
 #
 # === Parameters
 #
+# [*cache_group*]
+#   Allows configuring the group that owns /var/cache/ocsp
+#   Defaults to root
+#
 # === Examples
 #
 #  include sslcert::ocsp::init
 #
-class sslcert::ocsp::init {
+class sslcert::ocsp::init(
+    String $cache_group = 'root',
+) {
     require sslcert
 
     # generic script for fetching the OCSP file for a given cert
@@ -45,8 +51,8 @@ class sslcert::ocsp::init {
     file { '/var/cache/ocsp':
         ensure => 'directory',
         owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+        group  => $cache_group,
+        mode   => '0775',
     }
 
     # Twice a day, 12h apart

@@ -17,6 +17,11 @@ class profile::cache::envoy(
     String $ocsp_proxy = lookup('http_proxy'),
 ) {
     require profile::envoy
+    if $do_ocsp {
+        class { 'sslcert::ocsp::init':
+            cache_group => 'envoy',
+        }
+    }
 
     apt::package_from_component { 'envoyproxy':
         component       => 'component/envoy-future',
