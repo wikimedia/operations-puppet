@@ -4,7 +4,6 @@
 # - r_lang::cran for installing from Comprehensive R Archive Network (CRAN)
 # - r_lang::git for installing from any Git repository (e.g. Gerrit)
 # - r_lang::github for installing from a GitHub-hosted repository
-# - r_lang::bioc for installing from Bioconductor
 #
 # Also provides a utility script for updating library of installed R packages.
 #
