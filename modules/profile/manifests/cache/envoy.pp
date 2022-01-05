@@ -61,6 +61,7 @@ class profile::cache::envoy(
     unless empty($unified_certs) {
         $unified_certs.each |String $cert| {
             sslcert::certificate { $cert:
+                group  => 'envoy',
                 before => Envoyproxy::Tls_terminator["${tls_port}"], # lint:ignore:only_variable_string
             }
             if $do_ocsp {
