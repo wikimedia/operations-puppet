@@ -276,8 +276,6 @@ role::logstash:
   target-q: TBD
 role::logstash7:
   target-q: TBD
-role::logstash::elasticsearch:
-  target-q: TBD
 role::logstash::elasticsearch7:
   target-q: TBD
 role::kibana7_ecs:
