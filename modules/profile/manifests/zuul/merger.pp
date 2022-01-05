@@ -34,9 +34,23 @@ class profile::zuul::merger(
     }
 
     # Serves Zuul git repositories
-    class { 'contint::zuul::git_daemon':
-        zuul_git_dir    => $conf_merger['git_dir'],
+    user { 'gitdaemon':
+        system => true,
+        gid    => 'nogroup',
+        home   => '/nonexistent',  # like "nobody"
+    }
+
+    class { '::git::daemon':
+        description     => 'Git daemon for Zuul merger',
+        base_path       => $conf_merger['git_dir'],
+        directories     => [$conf_merger['git_dir']],
+        user            => 'gitdaemon',
+        group           => 'nogroup',
         max_connections => 96,
+        environment     => {
+            'HOME' => '/var/lib/gitdaemon',
+        },
+        require         => User['gitdaemon'],
     }
 
     # We run a git-daemon process to expose the zuul-merger git repositories.

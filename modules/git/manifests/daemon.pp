@@ -17,6 +17,11 @@
 # $user/$group: The user and group to run git-daemon as.
 #
 # $max_connections: The maximum number of simultaneous connections to allow.
+#
+# $description: The systemd service description to use.
+#
+# $environment: A hash of environment variable name/value pairs
+#  to pass to the git-daemon process.
 
 class git::daemon(
     Optional[Stdlib::Unixpath] $base_path = undef,
@@ -24,10 +29,12 @@ class git::daemon(
     String $user = 'nobody',
     String $group = 'nobody',
     Integer $max_connections = 32,
+    String $description = 'Git daemon',
+    Hash $environment = {},
 ) {
     # We dont want to honor `git send-pack` commands so make sure the
     # receive-pack service is always disabled.
-    $daemon_options = "--export-all --forbid-override=receive-pack --max-connections=${max_connections}"
+    $daemon_options = "--export-all --informative-errors --forbid-override=receive-pack --max-connections=${max_connections}"
 
     systemd::service { 'git-daemon':
         ensure  => present,

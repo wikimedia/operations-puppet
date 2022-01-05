@@ -1,10 +1,13 @@
 [Unit]
-Description=Git daemon
+Description=<%= @description %>
 
 [Service]
 User=<%= @user %>
 Group=<%= @group %>
 Environment="PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/lib/git-core"
+<% @environment.sort.each do |name, value| -%>
+Environment="<%= name %>=<%= value %>"
+<% end -%>
 
 # We dont want to honor `git send-pack` commands so make sure the
 # receive-pack service is always disabled.
@@ -12,9 +15,9 @@ ExecStart=/usr/lib/git-core/git-daemon \
           --syslog \
           --reuseaddr \
           <%= @daemon_options -%> \
-          <% if @base_path -%>
+          <%- if @base_path -%>
           --base-path=<%= @base_path -%> \
-          <% end -%>
+          <%- end -%>
           <%= @directories.join(" ") %>
 
 [Install]
