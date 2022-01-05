@@ -90,7 +90,7 @@ class profile::mediawiki::deployment::server(
         desc   => 'Git daemon',
         proto  => 'tcp',
         port   => '9418',
-        srange => "(@resolve((${releases_servers})))",
+        srange => "(@resolve((${releases_servers.join(' ')})))",
     }
     ### End firewall rules
 
