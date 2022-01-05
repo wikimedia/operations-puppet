@@ -76,6 +76,11 @@ class profile::cache::envoy(
                 }
             }
         }
+        if $do_ocsp {
+            sslcert::ocsp::hook { 'envoyproxy-ocsp':
+                content => file('profile/cache/update_ocsp_envoyproxy_hook.sh'),
+            }
+        }
     }
 
     if $unified_acme_chief {
