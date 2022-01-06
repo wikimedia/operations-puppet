@@ -354,7 +354,7 @@ groups:
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel]
+              mmunyoki, ryankemper, bking, spatel, aqu]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4934,6 +4934,16 @@ users:
     realname: Sneha Patel
     email: spatel@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  aqu:
+    ensure: present
+    gid: 500
+    name: aqu
+    realname: Antoine Qu'hen
+    email: aquhen@wikimedia.org
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDYrjilJIe+R2sk2apaP0VXzfc7yheF78o7zHYhQ+/E88q/EgZWj5c7cMelaw/W6B4d096sl8DK1yjJ8mDwFfc2iPv7hvUA8awH5jCKUwgRtmaqYc8mCsBYLg6AgUzUDZkM99bZCUXIgKQGeppAXTmvm95Q9rKPJboZzygr4Bg37QacxJqBPLsuJL663gBG88VA6jU5ayZp4HyAfj6VU2xQ0WwzQV11H5Q1QnXbA7GYaeHYKHWz6Rqt32i9qjxduk4ERAMSB/wgschnvI41M+i0APqvz18E8mlvi5HXpIFBqhZwt6IcDffTsdbUx/ckeUFjlWB0KLZ9hpZmmyWRxYWz5BGf3MalrbNDioJWARYFfVG51wKQlMxJj6tO4E/ihH3l0oZqqficstssmHiY2sbPrdBOObAtFnlJJzFUusBy1WGvOi+JT9IBZtFssOI1u8INlKRm5jHfxvpTa+fLEnoX1y8qatyxMDcflibiqjFnCgEPoxenii/L/7AjCsJngxxU+St+gHFJNW4lRHWTnEJr+EPj32zhwYTKlTqG0NtdWC3uwkhXrTH2pQYc2ge1ObtiC0h5xVIUcaFr1n6+i3uliW5stCO54xcncmLbWmgi/ZIfB6Kdekl5r1UyPKD/HMFQt9qQWYHp/ygsasRRkokU56Sbpby8FnJSZ423bqTHOw== aquhen@wikimedia.org production
+    krb: present
+    uid: 36836
 
 ldap_only_users:
   abartov:
