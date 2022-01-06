@@ -159,7 +159,6 @@ profile::acme_chief::certificates:
         - 'mirrors.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
-        - 'sodium.wikimedia.org'
         - 'mirror1001.wikimedia.org'
     mx:
         CN: 'mx1001.wikimedia.org'
