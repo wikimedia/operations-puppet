@@ -553,6 +553,15 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  wikidough:
+    description: "DoH and DoT recursive resolver"
+    id: 99
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet

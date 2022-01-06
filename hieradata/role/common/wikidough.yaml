@@ -1,3 +1,5 @@
+cluster: 'wikidough'
+
 profile::wikidough::service_domain: &domain 'wikimedia-dns.org'
 profile::wikidough::service_ipv4: &ipv4 '185.71.138.138'
 
