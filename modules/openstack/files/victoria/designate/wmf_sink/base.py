@@ -245,16 +245,18 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 session.delete("{}/mapping/{}".format(proxy_url, zone))
 
                 LOG.warning("We also need to delete the dns entry for %s" % proxy)
-                self._delete_proxy_dns_record(proxy['domain'])
+                self._delete_proxy_dns_record(project, proxy['domain'])
 
-    def _delete_proxy_dns_record(self, proxyzone):
+    def _delete_proxy_dns_record(self, project, proxyzone):
         if not proxyzone.endswith('.'):
             proxyzone += '.'
         context = DesignateContext().elevated()
         context.all_tenants = True
         context.edit_managed_records = True
 
-        parentzone = '.'.join(proxyzone.split('.')[1:])
+        # These gymnastics are to handle the case where the
+        #  parent zone == the proxy zone.
+        parentzone = '.'.join(proxyzone.split('.')[proxyzone.split('.').index(project):])
         crit = {'name': parentzone}
 
         zonerecords = central_api.find_zones(context, crit)
@@ -264,7 +266,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                                                              zonerecords))
             return
 
-        crit = {'zone_id': zonerecords[0].id, 'name': proxyzone}
+        crit = {'zone_id': zonerecords[0].id, 'name': proxyzone, 'type': "A"}
         recordsets = central_api.find_recordsets(context, crit)
         if len(recordsets) != 1:
             LOG.warning("Unable to clean up this DNS proxy record. "
