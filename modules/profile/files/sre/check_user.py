@@ -162,10 +162,13 @@ def main():
 
     users = GsuiteUsers(key_file, impersonate)
     user = users.get_user(args.email)
-    # I dont think there would ever be more then one manager but just in case
-    manager = ', '.join(
-        [r['value'] for r in user['relations'] if r['type'] == 'manager']
-    )
+    if 'relations' in user:  # no manager can sometimes be there - T298808
+        # I dont think there would ever be more then one manager but just in case
+        manager = ', '.join(
+            [r['value'] for r in user['relations'] if r['type'] == 'manager']
+        )
+    else:
+        manager = 'No manager found.'
     msg = f"""
     Gsuit User:
     \tPrimary Email:\t{user['primaryEmail']}
