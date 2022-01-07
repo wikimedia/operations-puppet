@@ -34,7 +34,7 @@ profile::maps::apps::tilerator_ncpu_ratio: 0.3
 
 profile::maps::apps::use_proxy: true
 
-profile::maps::apps::tilerator_enable: true
+profile::maps::apps::tilerator_enable: false
 profile::maps::apps::wikidata_query_service: http://wdqs.discovery.wmnet/bigdata/namespace/wdq/sparql
 profile::maps::tlsproxy::servicename: kartotherian.discovery.wmnet
 profile::tlsproxy::instance::nginx_variant: 'light'
