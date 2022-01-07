@@ -97,6 +97,7 @@ class profile::gitlab::runner (
                 --template-config /etc/gitlab-runner/config-template.toml \
                 --non-interactive \
                 --name "${runner_name}" \
+                --url "${gitlab_url}" \
                 --registration-token "${registration_token}" \
                 --tag-list "${tag_list}" \
                 --run-untagged="${run_untagged}" \
