@@ -99,6 +99,8 @@ class profile::gitlab::runner (
                 --name "${runner_name}" \
                 --url "${gitlab_url}" \
                 --registration-token "${registration_token}" \
+                --executor "docker" \
+                --docker-image "${docker_image}" \
                 --tag-list "${tag_list}" \
                 --run-untagged="${run_untagged}" \
                 --locked="${locked}" \
