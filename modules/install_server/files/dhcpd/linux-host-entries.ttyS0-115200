@@ -23,6 +23,16 @@ host acmechief-test2001 {
     fixed-address acmechief-test2001.codfw.wmnet;
 }
 
+host apifeatureusage1001 {
+    hardware ethernet aa:00:00:21:ad:b1;
+    fixed-address apifeatureusage1001.eqiad.wmnet;
+}
+
+host apifeatureusage2001 {
+    hardware ethernet aa:00:00:a5:14:1c;
+    fixed-address apifeatureusage2001.codfw.wmnet;
+}
+
 host aphlict1001 {
     hardware ethernet aa:00:00:1b:6e:94;
     fixed-address aphlict1001.eqiad.wmnet;

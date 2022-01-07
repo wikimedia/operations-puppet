@@ -171,6 +171,11 @@ node 'an-web1001.eqiad.wmnet' {
     role(analytics_cluster::webserver)
 }
 
+# API Feature Usage log pipeline procesors
+node /^apifeatureusage[12]001\.(eqiad|codfw)\.wmnet$/ {
+    role(insetup)
+}
+
 # notification server for Phabricator (T257617)
 node 'aphlict1001.eqiad.wmnet' {
     role(aphlict)
