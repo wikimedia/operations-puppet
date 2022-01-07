@@ -562,6 +562,15 @@ wikimedia_clusters:
       esams: []
       ulsfo: []
       eqsin: []
+  durum:
+    description: "Wikidough check service"
+    id: 100
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet

@@ -1,3 +1,5 @@
+cluster: 'durum'
+
 profile::durum::service::domain: 'check.wikimedia-dns.org'
 profile::durum::service::ip: &landing_ip 185.71.138.139
 
