@@ -10,14 +10,15 @@
 class profile::logstash::gelf_relay (
 ) {
 
-    require ::profile::java
+    contain profile::java
 
     # run a lightweight logstash instance
-    class { '::logstash':
+    class { 'logstash':
         logstash_package => 'logstash-oss',
         logstash_version => 6,
         pipeline_workers => 2,
         log_format       => 'json',
+        java_package     => $profile::java::default_package_name,
     }
 
     # Clean up old logstash package name - T297468
