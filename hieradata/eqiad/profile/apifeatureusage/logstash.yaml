@@ -1,0 +1,1 @@
+profile::apifeatureusage::logstash::input_kafka_consumer_group_id: 'logstash'

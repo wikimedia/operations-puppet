@@ -173,7 +173,7 @@ node 'an-web1001.eqiad.wmnet' {
 
 # API Feature Usage log pipeline procesors
 node /^apifeatureusage[12]001\.(eqiad|codfw)\.wmnet$/ {
-    role(insetup)
+    role(apifeatureusage::logstash)
 }
 
 # notification server for Phabricator (T257617)
