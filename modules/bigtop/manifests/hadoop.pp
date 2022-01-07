@@ -400,6 +400,7 @@ class bigtop::hadoop(
     $nodemanager_jmxremote_port                  = 9984,
     $proxyserver_jmxremote_port                  = 9985,
     $mapreduce_history_jmxremote_port            = 9986,
+    $enable_log4j_extras                         = true,
 ) {
 
     if $yarn_resourcemanager_fs_state_store_uri and $yarn_resourcemanager_zk_state_store_parent_path {

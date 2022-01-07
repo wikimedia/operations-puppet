@@ -369,6 +369,11 @@ class profile::hadoop::common (
         default => $hadoop_config['yarn_resourcemanager_zk_timeout_ms'],
     }
 
+    $enable_log4j_extras                      = $hadoop_config['enable_log4j_extras'] ? {
+        undef   => true,
+        default => $hadoop_config['enable_log4j_extras'],
+    }
+
     # The datanode mountpoints are retrieved from facter, among the list of mounted
     # partitions on the host. Once a partition is not available anymore (disk broken for example),
     # it is sufficient to run puppet to update the configs (and restart daemons if needed).
@@ -564,6 +569,7 @@ class profile::hadoop::common (
         yarn_nodemanager_container_executor_config       => $yarn_nodemanager_container_executor_config_default + $yarn_nm_container_executor_config,
 
         java_home                                        => $java_home,
+        enable_log4j_extras                              => $enable_log4j_extras,
     }
 
     # The following code deploys TLS certificates to the Hadoop cluster hosts.
