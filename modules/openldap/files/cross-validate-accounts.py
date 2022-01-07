@@ -311,10 +311,12 @@ def validate_duplicated_ops_permissions(users):
                 # contint-docker is about being able to issue docker commands
                 # builder-docker is about being able to issue docker commands
                 # directly and execute scripts issuing docker commands
+                # deployment-ci-admins includes contint-admins
                 groups.difference_update(['analytics-privatedata-users', 'gitpuppet', 'ops',
                                           'ops-adm-group', 'gpu-users', 'contint-admins',
                                           'contint-docker', 'builder-docker',
-                                          'deploy-phabricator', 'analytics-search-users'])
+                                          'deploy-phabricator', 'analytics-search-users',
+                                          'deployment-ci-admins'])
                 if len(set(groups)) > 0:
                     log += "Malformed membership for ops user " + i + ", has additional group(s): "
                     log += str(groups) + "\n"
