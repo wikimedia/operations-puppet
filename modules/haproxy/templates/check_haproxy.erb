@@ -53,10 +53,15 @@ if [ "$check" == "check_failover" ]; then
 
     up=$(grep L7OK $tmp | wc -l)
     down=$(grep DOWN $tmp | wc -l)
+    down_entries=($(grep ',DOWN,' $tmp | cut -d, -f1,2 | sed -e 's/,/:/'))
+    OLDIFS=$IFS
+    IFS=', '
+    down_string="${down_entries[@]}"
+    IFS=$OLDIFS
 
     rm -f $tmp
 
-    msg="servers up ${up} down ${down}"
+    msg="servers up ${up} down ${down}:\n${down_string}"
 
     if [ $down -eq 0 ]; then
         echo "${OK} ${check} ${msg}"
