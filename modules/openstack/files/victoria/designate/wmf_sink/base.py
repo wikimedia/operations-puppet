@@ -256,7 +256,10 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         # These gymnastics are to handle the case where the
         #  parent zone == the proxy zone.
-        parentzone = '.'.join(proxyzone.split('.')[proxyzone.split('.').index(project):])
+        if proxyzone.split('.')[0] == project:
+            parentzone = proxyzone
+        else:
+            parentzone = '.'.join(proxyzone.split('.')[1:])
         crit = {'name': parentzone}
 
         zonerecords = central_api.find_zones(context, crit)
