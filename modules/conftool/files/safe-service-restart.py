@@ -403,9 +403,10 @@ def parse_args():
     )
     parser.add_argument(
         "--grace-period",
-        default=0,
+        default=3,
         type=int,
-        help="Number of seconds, if any, to wait after depooling a server before restarting it.",
+        help="Number of seconds, if any, to wait after depooling a server before restarting it."
+        " Defaults to 3 seconds",
     )
     parser.add_argument(
         "--catalog",
