@@ -44,3 +44,5 @@ profile::java::java_packages:
     variant: 'jdk'
 
 profile::contacts::role_contacts: ['Observability SREs']
+
+profile::kafka::broker::use_fixed_uid_gid: true
