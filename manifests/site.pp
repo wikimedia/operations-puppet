@@ -1790,15 +1790,12 @@ node /^logstash20(2[345]|3[012])\.codfw\.wmnet$/ {
 
 # Logging data nodes (eqiad)
 node /^logstash10(1[012]|2[6789]|3[345])\.eqiad\.wmnet$/ {
-    role(logstash::elasticsearch7)
+    role(logging::opensearch::data)
 }
 
 # Logging collector nodes (eqiad)
-node /^logstash10(2[345]|3[01])\.eqiad\.wmnet$/ {
-    role(logstash7)
-}
-node 'logstash1032.eqiad.wmnet' {
-    role(kibana7_ecs)
+node /^logstash10(2[345]|3[012])\.eqiad\.wmnet$/ {
+    role(logging::opensearch::collector)
 }
 
 # Deprecated Logstash collectors (codfw)
