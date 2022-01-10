@@ -192,6 +192,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/jdk8
  thirdparty/ceph-octopus
+ thirdparty/elastic65
  thirdparty/hwraid
  thirdparty/opensearch1
  thirdparty/routinator
