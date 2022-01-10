@@ -38,3 +38,5 @@ profile::contacts::role_contacts: ['ServiceOps SREs']
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
+
+profile::kafka::broker::use_fixed_uid_gid: true
