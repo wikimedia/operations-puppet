@@ -26,6 +26,7 @@ class profile::query_service::wcqs(
 ) {
     require ::profile::query_service::common
     require ::profile::query_service::gui
+    require ::profile::query_service::streaming_updater
 
     $username = 'blazegraph'
     $instance_name = "${deploy_name}-blazegraph"
