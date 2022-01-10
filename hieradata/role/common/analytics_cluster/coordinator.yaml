@@ -144,3 +144,10 @@ profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
 profile::contacts::role_contacts: ['Analytics SREs']
 
 profile::base::certificates::include_bundle_jks: true
+
+# Context for the flag in https://phabricator.wikimedia.org/T276906
+# The Hive daemons, now running a more up-to-date version of log4j,
+# should not load the extra log4jv1 jars to avoid classpath loading issues
+# (see https://issues.apache.org/jira/browse/BIGTOP-3619).
+profile::hadoop::common::config_override:
+  enable_log4j_extras: false
