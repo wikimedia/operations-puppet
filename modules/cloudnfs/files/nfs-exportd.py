@@ -145,11 +145,13 @@ def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
     region_recs = keystoneclient.regions.list()
     regions = [region.id for region in region_recs]
 
+    public_vols = mounts_config["public"]
     server_vols = mounts_config["volumes_served"]
+    private_vols = set(server_vols) - set(public_vols)
     for name, config in mounts_config["private"].items():
         if "mounts" in config:
             mounts = [
-                k for k, v in config["mounts"].items() if k in server_vols and v
+                k for k, v in config["mounts"].items() if k in private_vols and v
             ]
             if len(mounts) == 0:
                 # Skip project if it has no private mounts
@@ -235,12 +237,8 @@ def check_exports(no_exports_is_ok, project_paths, public_paths):
 
     msg = "This could be an error somewhere, so doing nothing. Override with `--no-exports-is-ok'"
 
-    if len(project_paths) == 0:
-        logging.warning("no projects with NFS exports. {}".format(msg))
-        return False
-
-    if len(public_paths) == 0:
-        logging.warning("no public NFS exports. {}".format(msg))
+    if len(project_paths) == 0 and len(public_paths) == 0:
+        logging.warning("nothing to export. {}".format(msg))
         return False
 
     return True
