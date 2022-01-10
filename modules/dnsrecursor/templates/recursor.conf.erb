@@ -127,15 +127,22 @@ security-poll-suffix=
 # Root hints distributed by Debian w/ 4.x
 hint-file=/usr/share/dns/root.hints
 
-<% if @install_from_component and @allow_qname_minimisation -%>
-# QNAME minimisation support was added in pdns 4.3.0.
-qname-minimization=yes
-<% end -%>
 # DNSSEC support is new in pdns-recursor 4.x, and buggy until 4.1.x
 # https://doc.powerdns.com/recursor/dnssec.html
 dnssec=<%= @dnssec %>
-<% if @install_from_component and @allow_edns_padding -%>
+<% if @install_from_component -%>
+<% if @allow_qname_minimisation -%>
+# QNAME minimisation support was added in pdns 4.3.0.
+qname-minimization=yes
+<% end -%>
+<% if @allow_edns_padding -%>
 # EDNS Padding: RFC 7830, used by Wikidough
 edns-padding-mode=<%= @edns_padding_mode %>
 edns-padding-from=<%= @edns_padding_from %>
+<% end -%>
+<% if @allow_dot_to_auth -%>
+# Use DNS over TLS (DoT) for queries to WMF auth servers. gdnsd support DoT.
+dot-to-port-853=yes
+dot-to-auth-names=ns0.wikimedia.org,ns1.wikimedia.org,ns2.wikimedia.org
+<% end -%>
 <% end -%>

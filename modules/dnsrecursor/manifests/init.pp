@@ -28,6 +28,7 @@ class dnsrecursor(
     $allow_edns_whitelist     = true,
     $allow_incoming_ecs       = false,
     $allow_qname_minimisation = false,
+    $allow_dot_to_auth        = false,
     $allow_edns_padding       = false,
     $edns_padding_mode        = undef,
     $edns_padding_from        = undef,
