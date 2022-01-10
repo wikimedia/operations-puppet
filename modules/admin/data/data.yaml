@@ -5093,6 +5093,10 @@ ldap_only_users:
     ensure: present
     realname: Jessica Robell
     email: jrobell@wikimedia.org
+  jvargas:
+    ensure: present
+    realname: Jorge Vargas
+    email: jvargas@wikimedia.org
   krli:
     ensure: present
     realname: Kris Litson
