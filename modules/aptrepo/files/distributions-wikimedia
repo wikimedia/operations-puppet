@@ -199,6 +199,7 @@ Components: main
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
+ elastic65
  hwraid-stretch
  routinator
  thirdparty/ceph-octopus-bullseye
