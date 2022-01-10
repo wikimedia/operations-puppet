@@ -1,0 +1,33 @@
+# NOTE: cluster_name must be kept in sync with the data role (logging/opensearch/data.yaml)
+profile::opensearch::dc_settings:
+  cluster_name: production-elk7-eqiad
+  unicast_hosts:
+    - logstash1010.eqiad.wmnet
+    - logstash1011.eqiad.wmnet
+    - logstash1012.eqiad.wmnet
+    - logstash1026.eqiad.wmnet
+    - logstash1027.eqiad.wmnet
+    - logstash1028.eqiad.wmnet
+    - logstash1029.eqiad.wmnet
+    - logstash1033.eqiad.wmnet
+    - logstash1034.eqiad.wmnet
+    - logstash1035.eqiad.wmnet
+  cluster_hosts:
+    - logstash1010.eqiad.wmnet
+    - logstash1011.eqiad.wmnet
+    - logstash1012.eqiad.wmnet
+    - logstash1023.eqiad.wmnet
+    - logstash1024.eqiad.wmnet
+    - logstash1025.eqiad.wmnet
+    - logstash1026.eqiad.wmnet
+    - logstash1027.eqiad.wmnet
+    - logstash1028.eqiad.wmnet
+    - logstash1029.eqiad.wmnet
+    - logstash1030.eqiad.wmnet
+    - logstash1031.eqiad.wmnet
+    - logstash1032.eqiad.wmnet
+    - logstash1033.eqiad.wmnet
+    - logstash1034.eqiad.wmnet
+    - logstash1035.eqiad.wmnet
+
+profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-eqiad'
