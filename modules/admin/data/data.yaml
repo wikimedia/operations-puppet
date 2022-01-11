@@ -354,7 +354,7 @@ groups:
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel, aqu]
+              mmunyoki, ryankemper, bking, spatel, aqu, ebysans]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -367,7 +367,7 @@ groups:
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
-    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad]
+    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
@@ -4948,6 +4948,15 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDYrjilJIe+R2sk2apaP0VXzfc7yheF78o7zHYhQ+/E88q/EgZWj5c7cMelaw/W6B4d096sl8DK1yjJ8mDwFfc2iPv7hvUA8awH5jCKUwgRtmaqYc8mCsBYLg6AgUzUDZkM99bZCUXIgKQGeppAXTmvm95Q9rKPJboZzygr4Bg37QacxJqBPLsuJL663gBG88VA6jU5ayZp4HyAfj6VU2xQ0WwzQV11H5Q1QnXbA7GYaeHYKHWz6Rqt32i9qjxduk4ERAMSB/wgschnvI41M+i0APqvz18E8mlvi5HXpIFBqhZwt6IcDffTsdbUx/ckeUFjlWB0KLZ9hpZmmyWRxYWz5BGf3MalrbNDioJWARYFfVG51wKQlMxJj6tO4E/ihH3l0oZqqficstssmHiY2sbPrdBOObAtFnlJJzFUusBy1WGvOi+JT9IBZtFssOI1u8INlKRm5jHfxvpTa+fLEnoX1y8qatyxMDcflibiqjFnCgEPoxenii/L/7AjCsJngxxU+St+gHFJNW4lRHWTnEJr+EPj32zhwYTKlTqG0NtdWC3uwkhXrTH2pQYc2ge1ObtiC0h5xVIUcaFr1n6+i3uliW5stCO54xcncmLbWmgi/ZIfB6Kdekl5r1UyPKD/HMFQt9qQWYHp/ygsasRRkokU56Sbpby8FnJSZ423bqTHOw== aquhen@wikimedia.org production
     krb: present
     uid: 36836
+  ebysans:
+    ensure: present
+    uid: 36868
+    gid: 500
+    realname: Sandra Ebele Nwachukwu
+    email: snwachukwu@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILdxCaU2CJ8Q+P8lJgbodjK5HijU24+XuihTLdUYvU/Z sandra
+    krb: present
 
 ldap_only_users:
   abartov:
