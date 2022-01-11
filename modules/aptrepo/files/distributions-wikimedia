@@ -121,7 +121,7 @@ Components: main
  thirdparty/amd-rocm42
  thirdparty/amd-rocm431
  thirdparty/amd-rocm45
- thirdparty/bigtop15-buster
+ thirdparty/bigtop15
  thirdparty/ceph-nautilus-buster
  thirdparty/ceph-octopus
  thirdparty/ci
@@ -148,8 +148,7 @@ Update:
  amd-rocm42
  amd-rocm431
  amd-rocm45
- bigtop14
- bigtop15
+ bigtop15-buster
  confluent
  elastic74
  elastic78
