@@ -48,7 +48,7 @@ mediabackup:
   mw_db_port: 3314
   mw_db_user: 'mediabackup'
   # please note mw_db_password is setup on the secret puppet repo
-  wiki: 'commonswiki'
+  wiki: 'testcommonswiki'
   db_host: 'db2151.codfw.wmnet'
   db_port: 3306
   db_user: 'mediabackup'
