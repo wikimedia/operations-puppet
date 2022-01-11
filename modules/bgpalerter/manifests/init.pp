@@ -67,7 +67,7 @@ class bgpalerter (
         'httpProxy'                   => $http_proxy,
         'checkForUpdatesAtBoot'       => $check_for_updates_at_boot,
         'generatePrefixListEveryDays' => $generate_prefix_list_every_days,
-        'monitoredPrefixesFiles'      => ['prefixes.yml'],
+        'monitoredPrefixesFiles'      => ['prefixes.yaml'],
         'rpki'                        => $rpki,
         # Advanced settings (Don't touch here!)
         'alertOnlyOnce'               => false,
@@ -112,7 +112,7 @@ class bgpalerter (
     file { "${base_dir}/prefixes.yaml":
         ensure  => file,
         mode    => '0444',
-        content => $config.to_yaml,
+        content => $_prefixes.to_yaml,
     }
     systemd::service { 'bgpalerter':
         content   => template('bgpalerter/bgpalerter.service.erb'),
