@@ -2,7 +2,6 @@ lookup_options:
   bgpalerter::reports:
     merge: unique
 bgpalerter::rest_host: '0.0.0.0'
-bgpalerter::rest_port: 80
 bgpalerter::reports:
 - file: reportPullAPI
   channels:
