@@ -19,7 +19,7 @@ class bgpalerter (
     Stdlib::Host               $rest_host                           = 'localhost',
     Stdlib::Port               $rest_port                           = 8011,
     Boolean                    $check_for_updates_at_boot           = true,
-    Integer                    $generate_prefix_list_every_days     = 86400,
+    Integer                    $generate_prefix_list_every_days     = 0,
     Boolean                    $manage_user                         = false,
     String                     $user                                = 'bgpalerter',
     Optional[Stdlib::HTTPUrl]  $http_proxy                          = undef,
@@ -30,6 +30,7 @@ class bgpalerter (
     $working_dir = '/run/bgpalerter'
     $bgpalerter_bin = '/usr/local/bin/bgpalerter'
     $config_file = "${base_dir}/config.yaml"
+    $prefix_file = "${base_dir}/prefixes.yaml"
     $log_dir = $logging['directory'] ? {
         Stdlib::Unixpath => $logging['directory'],
         default          => "${base_dir}/${logging['directory']}"
@@ -67,7 +68,7 @@ class bgpalerter (
         'httpProxy'                   => $http_proxy,
         'checkForUpdatesAtBoot'       => $check_for_updates_at_boot,
         'generatePrefixListEveryDays' => $generate_prefix_list_every_days,
-        'monitoredPrefixesFiles'      => ['prefixes.yaml'],
+        'monitoredPrefixesFiles'      => [$prefix_file],
         'rpki'                        => $rpki,
         # Advanced settings (Don't touch here!)
         'alertOnlyOnce'               => false,
@@ -75,7 +76,7 @@ class bgpalerter (
         'checkFadeOffGroupsSeconds'   => 30,
         'pidFile'                     => 'bgpalerter.pid',
         'maxMessagesPerSecond'        => 6000,
-        'multiProcesscw'              => false,
+        'multiProcess'                => false,
         'environment'                 => 'production',
         'configVersion'               => 2,
     }
@@ -109,7 +110,7 @@ class bgpalerter (
         undef   => $prefixes,
         default => $prefixes + {'options' => $prefixes_options},
     }
-    file { "${base_dir}/prefixes.yaml":
+    file { $prefix_file:
         ensure  => file,
         mode    => '0444',
         content => $_prefixes.to_yaml,

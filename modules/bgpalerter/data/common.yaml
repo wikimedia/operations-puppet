@@ -218,7 +218,7 @@ bgpalerter::reports:
 #    params:
 #      maxAlertsAmount: 25
 bgpalerter::logging:
-  directory: logs
+  directory: /var/log/bgpalerter
   logRotatePattern: YYYY-MM-DD
   maxRetainedFiles: 10
   maxFileSizeMB: 15
