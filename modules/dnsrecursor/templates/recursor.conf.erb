@@ -44,8 +44,10 @@ quiet=yes
 trace=off
 max-mthreads=512
 
+<% unless @install_from_component -%>
 # which domains we only accept delegations from
 delegation-only=com,net
+<% end -%>
 
 # If set, only allow these comma separated netmasks to recurse
 <%- if @allow_from_listen -%>
