@@ -265,24 +265,6 @@ VerifyRelease: E84AC2C0460F3994
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
 ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
 
-Name: bigtop14
-Method: http://repos.bigtop.apache.org/releases/1.4.0/debian/9/amd64
-Components: contrib>thirdparty/bigtop14
-UDebComponents:
-Suite: bigtop
-Architectures: amd64 source
-VerifyRelease: DBBF9D42B7B4BD70
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-groovy|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper|flink)$' || [ $? -eq 1 ]
-
-Name: bigtop15
-Method: http://repos.bigtop.apache.org/releases/1.5.0/debian/9/amd64
-Components: contrib>thirdparty/bigtop15
-UDebComponents:
-Suite: bigtop
-Architectures: amd64 source
-VerifyRelease: 2922A48261524827
-ListShellHook: grep-dctrl -e -S '^(avro-libs|bigtop-groovy|bigtop-jsvc|bigtop-tomcat|bigtop-utils|crunch|hadoop|hbase|hive|hue|impala|kite|llama|mahout|oozie|parquet|parquet-format|sentry|solr|flume-ng|spark-core|sqoop|sqoop2|whirr|zookeeper|flink)$' || [ $? -eq 1 ]
-
 Name: bigtop15-buster
 Method: http://repos.bigtop.apache.org/releases/1.5.0/debian/10/amd64
 Components: contrib>thirdparty/bigtop15
