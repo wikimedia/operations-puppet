@@ -1,3 +1,19 @@
+lookup_options:
+  bgpalerter::reports:
+    merge: unique
+bgpalerter::rest_host: '0.0.0.0'
+bgpalerter::rest_port: 80
+bgpalerter::reports:
+- file: reportPullAPI
+  channels:
+    - hijack
+    - newprefix
+    - visibility
+    - path
+    - misconfiguration
+    - rpki
+  params:
+    maxAlertsAmount: 25
 bgpalerter::manage_user: true
 # use the following to generate this config
 # bgpalerter-linux-x64 generate -a 14907 -o prefixes.yaml
