@@ -1,0 +1,15 @@
+[Unit]
+Description=BGPalerter
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+User=<%= @user %>
+WorkingDirectory=<%= @working_dir %>
+ConditionPathExists=<%= @config_file %>
+ExecStart=<%= @bgpalerter_bin %> --config <%= @config_file %>
+
+[Install]
+WantedBy=multi-user.target
+
