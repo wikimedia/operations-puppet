@@ -1,4 +1,4 @@
-bgpalerter::manag_user: true
+bgpalerter::manage_user: true
 # use the following to generate this config
 # bgpalerter-linux-x64 generate -a 14907 -o prefixes.yaml
 bgpalerter::prefixes:
