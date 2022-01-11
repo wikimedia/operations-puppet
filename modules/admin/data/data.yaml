@@ -1668,6 +1668,7 @@ users:
     ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAnEjA0oe02knj1brNjdKUOLU1RT+1fspeoa/K59r2zQ reedy@Sams-MacBook-Pro.local]
     uid: 1226
     email: sreed@wikimedia.org
+    krb: present
   rmoen:
     ensure: absent
     gid: 500
