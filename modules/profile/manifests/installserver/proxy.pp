@@ -1,10 +1,16 @@
 # @summary Installs a proxy server for the install server
 # @param ensure ensurable parameter
 # @param structured_logs use the cee structured logs format
-class profile::installserver::proxy (
-    Wmflib::Ensure $ensure          = lookup('profile::installserver::proxy::ensure'),
-    Boolean        $structured_logs = lookup('profile::installserver::proxy::structured_logs'),
-) {
+# @param ssl_ports list of ssl ports
+# @param safe_ports list of safe ports
+class profile::installserver::proxy(
+    Wmflib::Ensure      $ensure          = lookup('profile::installserver::proxy::ensure'),
+    Boolean             $structured_logs = lookup('profile::installserver::proxy::structured_logs'),
+    Array[Stdlib::Port] $ssl_ports       = lookup('profile::installserver::proxy::ssl_ports'),
+    Array[Stdlib::Port] $safe_ports      = lookup('profile::installserver::proxy::safe_ports'),
+){
+    include network::constants
+    $wiki_networks = $network::constants::aggregate_networks
 
     $syslog_facility = 'local0'
     $syslog_priority = 'info'

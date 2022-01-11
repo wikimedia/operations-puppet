@@ -21,36 +21,18 @@ refresh_pattern \/(Packages|Sources)(|\.bz2|\.gz|\.xz)$ 0 0% 0 refresh-ims
 refresh_pattern \/Release(|\.gpg)$ 0 0% 0 refresh-ims
 refresh_pattern \/InRelease$ 0 0% 0 refresh-ims
 refresh_pattern \/(Translation-.*)(|\.bz2|\.gz|\.xz)$ 0 0% 0 refresh-ims
-refresh_pattern ^ftp:		1440	20%	10080
-refresh_pattern ^gopher:	1440	0%	1440
 refresh_pattern .		0	20%	4320
-acl SSL_ports port 443 563	# https, snews
-acl SSL_ports port 873		# rsync
-acl Safe_ports port 80		# http
-acl Safe_ports port 21		# ftp
-acl Safe_ports port 443 563	# https, snews
-acl Safe_ports port 70		# gopher
-acl Safe_ports port 210		# wais
-acl Safe_ports port 1025-65535	# unregistered ports
-acl Safe_ports port 280		# http-mgmt
-acl Safe_ports port 488		# gss-http
-acl Safe_ports port 591		# filemaker
-acl Safe_ports port 777		# multiling http
-acl Safe_ports port 631		# cups
-acl Safe_ports port 873		# rsync
-acl Safe_ports port 901		# SWAT
+<%- @ssl_ports.each do |port| -%>
+acl SSL_ports port <%= port %>
+<%- end -%>
+<%- (@safe_ports + @ssl_ports).uniq.each do |port| -%>
+acl Safe_ports port <%= port %>
+<%- end -%>
 acl purge method PURGE
 acl CONNECT method CONNECT
-# TODO: Fix this to use templates and be populated from network.pp
-acl wikimedia src 208.80.152.0/22
-acl wikimedia src 91.198.174.0/24
-acl wikimedia src 198.35.26.0/23
-acl wikimedia src 103.102.166.0/24
-acl wikimedia src 185.15.58.0/24
-acl wikimedia src 10.0.0.0/8
-acl wikimedia src 2620:0:860::/46
-acl wikimedia src 2001:df2:e500::/48
-acl wikimedia src 2a02:ec80::/32
+<%- @wiki_networks.each do |net| -%>
+acl wikimedia src <%= net %>
+<%- end -%>
 http_access allow manager localhost
 http_access deny manager
 http_access allow purge localhost
