@@ -205,6 +205,12 @@ def write_public_exports(public_exports, exports_d_path):
         with open(path, "w") as f:
             f.write(content)
         public_paths.append(path)
+
+        # Make sure that the public mount is actually public
+        make_public = ["/usr/bin/sudo", "/usr/bin/chmod", "1777",
+                       f"/srv/{name}"]
+        logging.warning(" ".join(make_public))
+        subprocess.call(make_public)
     logging.warning("found %s public NFS exports" % (len(public_paths)))
     return public_paths
 
