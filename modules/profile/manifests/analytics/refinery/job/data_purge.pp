@@ -302,4 +302,16 @@ class profile::analytics::refinery::job::data_purge (
         interval    => '*-*-* 00/4:50:00',
         user        => 'analytics',
     }
+
+    # Drop old anomaly detection data. The retention days are set to 182,
+    # because the anomaly detection system groups the data in chunks of 7 days
+    # (for weekly seasonality) and 182 is a multiple of 7.
+    kerberos::systemd_timer { 'drop-anomaly-detection':
+        ensure      => $ensure_timers,
+        description => 'Drop wmf.anomaly_detection data from Hive and HDFS after about 6 months.',
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='anomaly_detection' --base-path='/wmf/data/wmf/anomaly_detection' --path-format='source=[^/]+/year=(?P<year>[0-9]+)(/month=(?P<month>[0-9]+)(/day=(?P<day>[0-9]+))?)?' --older-than='182' --execute='6726880685f7b96b02a55ed7513d78c5'",
+        environment => $systemd_env,
+        interval    => '*-*-* 02:00:00',
+        user        => 'analytics',
+    }
 }
