@@ -129,7 +129,7 @@ bgpalerter::prefixes:
     ignore: false
     group: noc
 bgpalerter::prefixes_options:
-    monitorASns:
+  monitorASns:
     '14907':
       group: noc
       upstreams:
