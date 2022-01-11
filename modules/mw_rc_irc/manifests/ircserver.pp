@@ -6,50 +6,35 @@ class mw_rc_irc::ircserver {
     ensure_packages(['ircd-ratbox', 'irssi'])
 
     # public part of the ircd config
-    file { '/usr/etc/ircd.conf':
-        mode    => '0444',
-        owner   => 'irc',
-        group   => 'irc',
-        content => template('mw_rc_irc/ircd.conf.erb');
+    file {
+        default:
+            mode  => '0444',
+            owner => 'irc',
+            group => 'irc';
+        '/usr/etc/ircd.conf':
+            notify  => Service['ircd'],
+            content => template('mw_rc_irc/ircd.conf.erb');
+        '/usr/etc/auth.conf':
+            notify    => Service['ircd'],
+            show_diff => false,
+            content   => secret('mw_rc_irc/auth.conf');
+        '/usr/etc/operator.conf':
+            notify    => Service['ircd'],
+            show_diff => false,
+            content   => secret('mw_rc_irc/operator.conf');
+        '/usr/etc/ircd.motd':
+            notify  => Exec['reload ircd-motd'],
+            content => template('mw_rc_irc/motd.erb');
     }
 
-    # private config block for auth/allowed users
-    file { '/usr/etc/auth.conf':
-        mode      => '0444',
-        owner     => 'irc',
-        group     => 'irc',
-        content   => secret('mw_rc_irc/auth.conf'),
-        show_diff => false,
+    exec {'reload ircd-motd':
+        command     => '/usr/bin/systemctl kill --signalt=SIGUSR1 ircd',
+        refreshonly => true,
     }
 
-    # private config block for operators and their passwords
-    file { '/usr/etc/operator.conf':
-        mode      => '0444',
-        owner     => 'irc',
-        group     => 'irc',
-        content   => secret('mw_rc_irc/operator.conf'),
-        show_diff => false,
-    }
-
-    # message of the day / connect banner
-    file { '/usr/etc/ircd.motd':
-        mode    => '0444',
-        owner   => 'irc',
-        group   => 'irc',
-        content => template('mw_rc_irc/motd.erb');
-    }
-
-    file { '/etc/systemd/system/ircd.service':
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/mw_rc_irc/systemd/ircd.service',
-    }
-
-    service { 'ircd':
-        ensure   => running,
-        provider => 'systemd',
-        require  => File['/etc/systemd/system/ircd.service'],
+    systemd::service { 'ircd':
+        content        => file('mw_rc_irc/systemd/ircd.service'),
+        service_params => {'restart' => '/usr/bin/systemctl reload ircd'},
     }
 
     monitoring::service { 'ircd':

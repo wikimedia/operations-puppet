@@ -6,5 +6,6 @@ After=network.target
 User=irc
 Group=irc
 ExecStart=/usr/bin/ircd -foreground
+ExecReload=/usr/bin/kill -HUP $MAINPID
 [Install]
 WantedBy=multi-user.target
