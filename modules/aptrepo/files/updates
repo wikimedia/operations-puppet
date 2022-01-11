@@ -266,7 +266,7 @@ VerifyRelease: E84AC2C0460F3994
 ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg_.*$' || [ $? -eq 1 ]
 
 Name: bigtop15-buster
-Method: http://repos.bigtop.apache.org/releases/1.5.0/debian/10/amd64
+Method: http://repo.bigtop.apache.org.s3.amazonaws.com/releases/1.5.0/debian/10/amd64
 Components: contrib>thirdparty/bigtop15
 UDebComponents:
 Suite: bigtop
