@@ -83,7 +83,7 @@ class profile::phabricator::main (
 
     Boolean                     $manage_scap_user   = lookup('profile::phabricator::main::manage_scap_user',
                                                       { 'default_value' => true }),
-    Optional[Array[Stdlib::IP::Address]] $vcs_addresses = lookup('phabricator::vcs::listen_addressses',
+    Optional[Array]             $vcs_addresses      = lookup('profile::phabricator::main::vcs_addressses',
                                                       { 'default_value' => [] }),
 ) {
 
@@ -408,10 +408,10 @@ class profile::phabricator::main (
     }
 
     # This was (once) done to let the git sshd listen on multiple IPs, incl. v4 and v6.
-    if !empty($vcs_addresses) {
-
+    if empty($vcs_addresses) {
+        notify { 'Warning: profile::phabricator::main::vcs_addresses is empty': }
+    } else {
         $drange = $vcs_addresses.map |$addr| { $addr.regsubst(/[\[\]]/, '', 'G') }
-
         ferm::service { 'ssh_public':
             proto  => 'tcp',
             port   => 22,

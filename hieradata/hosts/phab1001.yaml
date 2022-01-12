@@ -5,8 +5,14 @@ profile::base::ssh_server_settings:
 
 # phabricator's git backend uses a separate sshd with separate IPs on both
 # the public and private networks.
-# This is used in modules/phabricator/templates/sshd_config.phabricator.erb
+# This is used in modules/phabricator/templates/sshd_config.phabricator.err
 phabricator::vcs::listen_addresses:
+  - "208.80.154.250"
+  - "10.64.16.100"
+  - "[2620:0:861:ed1a::3:16]"
+  - "[2620:0:861:102:10:64:16:100]"
+# TODO: don't repeat yourself here
+profile::phabricator::main::vcs_addresses:
   - "208.80.154.250"
   - "10.64.16.100"
   - "[2620:0:861:ed1a::3:16]"
