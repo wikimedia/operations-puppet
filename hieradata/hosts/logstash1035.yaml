@@ -2,7 +2,7 @@ profile::elasticsearch::common_settings:
   disktype: 'ssd'
   heap_memory: '32G'
 
-profile::opensearch::server::common_settings:
+profile::opensearch::common_settings:
   disktype: 'ssd'
   heap_memory: '32G'
 
@@ -10,6 +10,6 @@ lookup_options:
   profile::elasticsearch::common_settings:
     merge:
       strategy: deep
-  profile::opensearch::server::common_settings:
+  profile::opensearch::common_settings:
     merge:
       strategy: deep
