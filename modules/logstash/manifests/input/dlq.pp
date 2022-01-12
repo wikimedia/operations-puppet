@@ -29,4 +29,11 @@ define logstash::input::dlq(
         content  => template('logstash/input/dlq.erb'),
         priority => $priority,
     }
+
+    file { "dlq-path-${title}":
+        ensure => 'directory',
+        path   => $path,
+        owner  => 'logstash',
+        group  => 'logstash',
+    }
 }
