@@ -11,6 +11,7 @@
 class bgpalerter (
     # defaults loaded from data/common.yaml
     Bgpalerter::Logging        $logging,
+    Bgpalerter::Rpki           $rpki,
     Array[Bgpalerter::Report]  $reports,
     Array[Bgpalerter::Monitor] $monitors,
 
@@ -50,12 +51,6 @@ class bgpalerter (
                 'socketOptions' => {'includeRaw' => false},
             }
         }
-    }
-    $rpki = {
-        'vrpProvider'                 => 'rpkiclient',
-        'preCacheROAs'                => true,
-        'refreshVrpListMinutes'       => 15,
-        'markDataAsStaleAfterMinutes' => 120,
     }
     $config = {
         'connectors'                  => [$ris_connector],

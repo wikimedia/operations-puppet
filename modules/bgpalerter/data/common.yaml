@@ -1,3 +1,8 @@
+bgpalerter::rpki:
+  vrpProvider: 'rpkiclient'
+  preCacheROAs: true
+  refreshVrpListMinutes:  15
+  markDataAsStaleAfterMinutes:  120
 bgpalerter::monitors:
   - file: monitorHijack
     channel: hijack
