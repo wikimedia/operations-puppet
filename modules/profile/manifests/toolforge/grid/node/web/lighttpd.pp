@@ -15,14 +15,14 @@ class profile::toolforge::grid::node::web::lighttpd(
 ) {
     include profile::toolforge::grid::node::web
 
-    if $facts['lsbdistcodename'] == 'stretch' {
-        package { 'php7.2-cgi':
-            ensure => latest,
-        }
-    } else {
-        package { 'php5-cgi':
-            ensure => latest,
-        }
+    $php_cgi_package = debian::codename() ? {
+        'stretch' => 'php7.2-cgi',
+        'buster'  => 'php7.3-cgi',
+        default   => fail('unsupported debian version'),
+    }
+
+    package { $php_cgi_package:
+        ensure => latest,
     }
 
     package { [
