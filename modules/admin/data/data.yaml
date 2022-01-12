@@ -5765,3 +5765,7 @@ ldap_only_users:
     ensure: present
     realname: Alexander Vorwerk
     email: alexander.vorwerk@stud.uni-goettingen.de
+  nmaphophe:
+    ensure: present
+    realname: Ntsako Maphophe
+    email: nmaphophe@wikimedia.org
