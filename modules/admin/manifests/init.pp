@@ -58,7 +58,7 @@ class admin(
     $users_set_nossh = admin::unique_users($groups_no_ssh).filter |$user| { !($user in $users_set_ssh) }
 
     # List of Kerberos enabled users
-    $users_krb_enabled = admin::kerberos_users($data)
+    $users_krb_enabled = admin::kerberos_users().keys.flatten
 
     file { '/usr/local/sbin/enforce-users-groups':
         ensure => file,
