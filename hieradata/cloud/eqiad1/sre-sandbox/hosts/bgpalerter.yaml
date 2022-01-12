@@ -229,4 +229,5 @@ bgpalerter::prefixes_options:
         - 9050
       downstreams:
         - 11820
+        - 12654 # https://github.com/nttgin/BGPalerter/issues/732
 
