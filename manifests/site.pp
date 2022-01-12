@@ -508,8 +508,9 @@ node /^db1(119|134|135|163|164|169|184)\.eqiad\.wmnet/ {
 }
 
 # test-s1 to test bullseye T295965
+# Temporary place db1128 in core, once done it should go back to core_test
 node 'db1128.eqiad.wmnet' {
-    role(mariadb::core_test)
+    role(mariadb::core)
 }
 
 # eqiad sanitarium master
