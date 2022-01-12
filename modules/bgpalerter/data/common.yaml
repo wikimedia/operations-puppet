@@ -14,11 +14,11 @@ bgpalerter::monitors:
 #    name: prefix-detection
 #    params:
 #      thresholdMinPeers: 3
-  - file: monitorPath
-    channel: path
-    name: path-matching
-    params:
-      thresholdMinPeers: 1
+#  - file: monitorPath
+#    channel: path
+#    name: path-matching
+#    params:
+#      thresholdMinPeers: 1
   - file: monitorVisibility
     channel: visibility
     name: withdrawal-detection
@@ -34,20 +34,16 @@ bgpalerter::monitors:
     name: rpki-monitor
     params:
       thresholdMinPeers: 3
-      checkUncovered: false
+      checkUncovered: true
       checkDisappearing: false
   - file: monitorROAS
     channel: rpki
     name: rpki-diff
     params:
-      enableDiffAlerts: true
+      enableDiffAlerts: false
       enableExpirationAlerts: true
-      enableExpirationCheckTA: true
-      enableDeletedCheckTA: true
-      roaExpirationAlertHours: 2
-      checkOnlyASns: true
-      toleranceDeletedRoasTA: 20
-      toleranceExpiredRoasTA: 20
+      enableExpirationCheckTA: false
+      enableDeletedCheckTA: false
   - file: monitorPathNeighbors
     channel: path
     name: path-neighbors
@@ -64,7 +60,6 @@ bgpalerter::reports:
       - rpki
     params:
       persistAlertData: false
-      alertDataDirectory: alertdata/
 #  - file: reportEmail
 #    channels:
 #      - hijack

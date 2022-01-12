@@ -1,4 +1,4 @@
 type Bgpalerter::Report::Params::File = Struct[{
     persistAlertData   => Optional[Boolean],
-    alertDataDirectory => String[1],
+    alertDataDirectory => Optional[String[1]],
 }]

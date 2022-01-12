@@ -13,6 +13,30 @@ bgpalerter::reports:
     - rpki
   params:
     maxAlertsAmount: 25
+- file: reportEmail
+  channels:
+    - hijack
+    - newprefix
+    - visibility
+    - path
+    - misconfiguration
+    - rpki
+  params:
+    showPaths: 5 # Amount of AS_PATHs to report in the alert
+    senderEmail: bgpalerter@wikimedia.org
+    # BGPalerter uses nodemailer.
+    # The smtp section can be configured with all the parameters available at https://nodemailer.com/smtp/
+    # the following are just the most useful one
+    smtp:
+      host: localhost
+      port: 25
+      secure: false # If true the connection will use TLS when connecting to server. If false it will be still possible doing connection upgrade via STARTTLS
+    notifiedEmails:
+      noc:
+        - ayounsi@wikimedia.org
+        - cmooney@wikimedia.org
+        - jbond@wikimedia.org
+    'notifiedEmails.default': noc
 bgpalerter::manage_user: true
 # use the following to generate this config
 # bgpalerter-linux-x64 generate -a 14907 -o prefixes.yaml
