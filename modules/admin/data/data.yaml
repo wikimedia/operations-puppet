@@ -5769,3 +5769,7 @@ ldap_only_users:
     ensure: present
     realname: Ntsako Maphophe
     email: nmaphophe@wikimedia.org
+  mfossati:
+    ensure: present
+    realname: Marco Fossati
+    email: mfossati@wikimedia.org
