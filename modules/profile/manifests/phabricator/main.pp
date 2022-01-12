@@ -83,6 +83,8 @@ class profile::phabricator::main (
 
     Boolean                     $manage_scap_user   = lookup('profile::phabricator::main::manage_scap_user',
                                                       { 'default_value' => true }),
+    Optional[Array[Stdlib::IP::Address]] $vcs_addresses = lookup('phabricator::vcs::listen_addressses',
+                                                      { 'default_value' => [] }),
 ) {
 
     $mail_alias = $::realm ? {
@@ -396,12 +398,24 @@ class profile::phabricator::main (
         require    => Class[phabricator],
     }
 
-    # This exists to offer git services at git-ssh.wikimedia.org
+    # This exists to offer git services at git-ssh.wikimedia.org.
 
     if $vcs_ip_v4 or $vcs_ip_v6 {
         interface::alias { 'phabricator vcs':
             ipv4 => $vcs_ip_v4,
             ipv6 => $vcs_ip_v6,
+        }
+    }
+
+    # This was (once) done to let the git sshd listen on multiple IPs, incl. v4 and v6.
+    if !empty($vcs_addresses) {
+
+        $drange = $vcs_addresses.map |$addr| { $addr.regsubst(/[\[\]]/, '', 'G') }
+
+        ferm::service { 'ssh_public':
+            proto  => 'tcp',
+            port   => 22,
+            drange => "(${drange.join(' ')})",
         }
     }
 
