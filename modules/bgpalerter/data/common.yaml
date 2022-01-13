@@ -1,3 +1,6 @@
+bgpalerter::rest:
+  host: localhost
+  port: 8011
 bgpalerter::rpki:
   vrpProvider: 'rpkiclient'
   preCacheROAs: true

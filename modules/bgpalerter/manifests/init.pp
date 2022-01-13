@@ -12,13 +12,12 @@ class bgpalerter (
     # defaults loaded from data/common.yaml
     Bgpalerter::Logging        $logging,
     Bgpalerter::Rpki           $rpki,
+    Bgpalerter::Rest           $rest,
     Array[Bgpalerter::Report]  $reports,
     Array[Bgpalerter::Monitor] $monitors,
 
     Integer                    $notification_interval_seconds       = 86400,
     Boolean                    $persist_status                      = true,
-    Stdlib::Host               $rest_host                           = 'localhost',
-    Stdlib::Port               $rest_port                           = 8011,
     Boolean                    $check_for_updates_at_boot           = true,
     Integer                    $generate_prefix_list_every_days     = 0,
     Boolean                    $manage_user                         = false,
@@ -58,7 +57,7 @@ class bgpalerter (
         'reports'                     => $reports,
         'notificationIntervalSeconds' => $notification_interval_seconds,
         'persistStatus'               => $persist_status,
-        'rest'                        => {'host' => $rest_host, 'port' => $rest_port},
+        'rest'                        => $rest,
         'logging'                     => $logging,
         'httpProxy'                   => $http_proxy,
         'checkForUpdatesAtBoot'       => $check_for_updates_at_boot,
