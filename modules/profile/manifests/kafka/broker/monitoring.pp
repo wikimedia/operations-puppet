@@ -5,11 +5,16 @@
 # [*is_critical]
 #   Whether or not to generate critical alerts.
 #   Hiera: profile::kafka::broker::monitoring::is_critical
+#
+# [*should_monitor_tls*]
+#   Whether or not to add monitors for TLS certificate expiry/validity.
+#   Hiera: profile::kafka::broker::ssl_enabled
 
 class profile::kafka::broker::monitoring (
     Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     String $kafka_cluster_name            = lookup('profile::kafka::broker::kafka_cluster_name'),
     Boolean $is_critical                  = lookup('profile::kafka::broker::monitoring::is_critical', {'default_value' => false}),
+    Boolean $should_monitor_tls           = lookup('profile::kafka::broker::ssl_enabled', {'default_value' => false }),
 ) {
     # Get fully qualified Kafka cluster name
     $config        = kafka_config($kafka_cluster_name)
@@ -80,5 +85,14 @@ class profile::kafka::broker::monitoring (
         retry_interval  => 5,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration',
+    }
+
+    if $should_monitor_tls {
+        $kafka_ssl_port = $config['brokers']['hash'][$::fqdn]['ssl_port']
+        monitoring::service { 'kafka-broker-tls':
+            description   => 'Kafka broker TLS certificate validity',
+            check_command => "check_ssl_kafka!${::fqdn}!${::fqdn}!${kafka_ssl_port}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#Renew_TLS_certificate',
+        }
     }
 }

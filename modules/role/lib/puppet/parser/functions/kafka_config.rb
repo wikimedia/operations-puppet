@@ -38,6 +38,8 @@
 #       'size'       => # number of brokers
 #     }
 #     'jmx_port'  => # the JMX port (9999)
+#     'port'      => # the plaintext port (9092)
+#     'ssl_port'  => # the TLS/SSL port (9093)
 #     'zookeeper' => {
 #       'name'   => # Zookeeper cluster name used by this Kafka cluster
 #       'hosts'  => # array of defined zookeeper hosts
@@ -68,9 +70,12 @@ module Puppet::Parser::Functions
     # These are the zookeeper hosts for this kafka cluster.
     zk_hosts = zk_clusters[zk_cluster_name]['hosts'].keys.sort
 
-    default_port = 9092
-    default_ssl_port = 9093
+    default_port = '9092'
+    default_ssl_port = '9093'
     jmx_port = '9999'
+
+    brokers.each{ |_, conf| conf['ssl_port'] ||= default_ssl_port }
+    brokers.each{ |_, conf| conf['port'] ||= default_port }
 
     config = {
       'name'      => cluster_name,
@@ -79,12 +84,12 @@ module Puppet::Parser::Functions
         # array of broker hostnames without port.  TODO: change this to use host:port?
         'array'      => brokers.keys.sort,
         # string list of comma-separated host:port broker
-        'string'     => brokers.map { |host, conf| "#{host}:#{conf['port'] || default_port}" }.sort.join(','),
+        'string'     => brokers.map { |host, conf| "#{host}:#{conf['port']}" }.sort.join(','),
 
         # array host:ssl_port brokers
-        'ssl_array'  => brokers.map { |host, conf| "#{host}:#{conf['ssl_port'] || default_ssl_port}" }.sort,
+        'ssl_array'  => brokers.map { |host, conf| "#{host}:#{conf['ssl_port']}" }.sort,
         # string list of comma-separated host:ssl_port brokers
-        'ssl_string' => brokers.map { |host, conf| "#{host}:#{conf['ssl_port'] || default_ssl_port}" }.sort.join(','),
+        'ssl_string' => brokers.map { |host, conf| "#{host}:#{conf['ssl_port']}" }.sort.join(','),
 
         # list of comma-separated host_9999 broker pairs used as graphite wildcards
         'graphite'   => "{#{brokers.keys.map { |b| "#{b.tr '.', '_'}_#{jmx_port}" }.sort.join(',')}}",
