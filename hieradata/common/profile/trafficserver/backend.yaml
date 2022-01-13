@@ -212,7 +212,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://static-bugzilla.wikimedia.org
-      replacement: https://miscweb.discovery.wmnet:4111
+      replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://static-codereview.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
