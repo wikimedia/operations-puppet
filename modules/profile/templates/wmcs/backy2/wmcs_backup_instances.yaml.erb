@@ -25,6 +25,10 @@ exclude_servers:
     - ".*"
   paws:
     - "^paws-k8s-worker.*$"
+  recommendation-api:
+    - "^.*-test.*$"
+    - "^.*-prototype.*$"
+    - "^.*-build.*$"
   sre-sandbox:
     - ".*"
   testlabs:
@@ -40,51 +44,47 @@ exclude_servers:
     - ".*"
   video:
     - "encoding.*$"
-  wmf-research-tools:
-    - "^.*-test.*$"
-    - "^.*-prototype.*$"
-    - "^.*-build.*$"
-  recommendation-api:
-    - "^.*-test.*$"
-    - "^.*-prototype.*$"
-    - "^.*-build.*$"
   wikidata-query:
     - "^wcqs-beta-01$"
   wikiwho:
     # these use localdisc
     - "^wikiwho-api.*$"
+  wmf-research-tools:
+    - "^.*-test.*$"
+    - "^.*-prototype.*$"
+    - "^.*-build.*$"
 
 project_assignments:
+  ALLOTHERS: cloudvirt1024
   admin: ignore
   analytics: cloudvirt1023
   clouddb-services: ignore
+  cloudinfra-nfs: ignore
   cloudinfra: cloudvirt1021
   cyberbot: cloudvirt1021
-  wikitextexp: cloudvirt1021
-  wmflabsdotorg: ignore
   deployment-prep: cloudvirt1023
+  devtools: cloudvirt1025
+  download: cloudvirt1025
+  dumps: cloudvirt1024
+  dwl: cloudvirt1025
+  ign2commons: cloudvirt1025
   integration: cloudvirt1021
   language: cloudvirt1023
+  maps: cloudvirt1025
+  metricsinfra: cloudvirt1025
   monitoring: cloudvirt1021
   mwoffliner: cloudvirt1021
   ores: cloudvirt1021
+  packaging: cloudvirt1025
   paws: cloudvirt1023
   recommendation-api: cloudvirt1021
   tools: cloudvirt1022
-  wikidata-query: cloudvirt1021
   wikidata-dev: cloudvirt1025
-  packaging: cloudvirt1025
-  dwl: cloudvirt1025
-  maps: cloudvirt1025
-  wmde-dashboards: cloudvirt1025
-  download: cloudvirt1025
-  ign2commons: cloudvirt1025
-  metricsinfra: cloudvirt1025
-  wmf-research-tools: cloudvirt1025
+  wikidata-query: cloudvirt1021
   wikidumpparse: cloudvirt1025
-  devtools: cloudvirt1025
-  dumps: cloudvirt1024
-  cloudinfra-nfs: ignore
-  ALLOTHERS: cloudvirt1024
+  wikitextexp: cloudvirt1021
+  wmde-dashboards: cloudvirt1025
+  wmf-research-tools: cloudvirt1025
+  wmflabsdotorg: ignore
 
 live_for_days: 5
