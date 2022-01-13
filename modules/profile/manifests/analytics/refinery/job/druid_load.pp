@@ -109,7 +109,7 @@ class profile::analytics::refinery::job::druid_load(
         job_config       => {
             database         => 'event',
             table            => 'network_internal_flows',
-            druid_datasource => 'wmf_netflow',
+            druid_datasource => 'network_internal_flows',
             timestamp_column => 'stamp_inserted',
             dimensions       => 'ip_proto,ip_version,region',
             metrics          => 'bytes,packets',
