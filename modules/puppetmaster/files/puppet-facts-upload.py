@@ -21,7 +21,7 @@ def get_args():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-u', '--uri', default='https://puppet-compiler.wmflabs.org/upload')
     parser.add_argument('-s', '--skip', action='store_true')
-    parser.add_argument('-p', '--proxy', default='http://webproxy:8080')
+    parser.add_argument('-p', '--proxy')
     parser.add_argument('-v', '--verbose', action='count')
     return parser.parse_args()
 
@@ -96,7 +96,7 @@ def main():
 
     data = {'realm': get_realm(), 'hostname': gethostname(), 'signature': signature}
     files = {'file': facts_file.read_bytes()}
-    proxies = {'http': args.proxy, 'https': args.proxy}
+    proxies = {'http': args.proxy, 'https': args.proxy} if args.proxy else None
 
     logging.debug('Posting data to: %s', args.uri)
     resp = post(args.uri, data=data, files=files, proxies=proxies)

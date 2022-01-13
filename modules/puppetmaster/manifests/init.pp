@@ -67,6 +67,7 @@ class puppetmaster(
     Boolean                                  $upload_facts        = false,
     Hash[String, Puppetmaster::R10k::Source] $r10k_sources        = {},
     Hash[String, Puppetmaster::Backends]     $servers             = {},
+    Optional[Stdlib::HTTPUrl]                $http_proxy            = undef,
 ){
 
     $workers = $servers[$facts['fqdn']]
@@ -155,6 +156,7 @@ class puppetmaster(
         has_puppetdb => $has_puppetdb,
         ca_server    => $ca_server,
         upload_facts => $upload_facts,
+        http_proxy   => $http_proxy,
     }
 
     if $enable_geoip {

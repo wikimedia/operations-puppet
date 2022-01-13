@@ -17,6 +17,7 @@ class profile::puppetmaster::frontend(
     Hash[String, Puppetmaster::Backends] $servers          = lookup('puppetmaster::servers'),
     Hash[Stdlib::Host, Stdlib::Host]     $locale_servers   = lookup('puppetmaster::locale_servers'),
     Enum['chain', 'leaf', 'none'] $ssl_ca_revocation_check = lookup('profile::puppetmaster::frontend::ssl_ca_revocation_check'),
+    Optional[Stdlib::HTTPUrl] $http_proxy        = lookup('http_proxy'),
     Optional[String[1]] $mcrouter_ca_secret      = lookup('profile::puppetmaster::frontend::mcrouter_ca_secret',
                                                           {'default_value' => undef}),
 ) {
@@ -118,6 +119,7 @@ class profile::puppetmaster::frontend(
         ssl_verify_depth    => $profile::puppetmaster::common::ssl_verify_depth,
         servers             => $servers,
         upload_facts        => $ca, # We only want to upload from one place
+        http_proxy          => $http_proxy,
     }
 
     $workers = $servers[$facts['fqdn']]

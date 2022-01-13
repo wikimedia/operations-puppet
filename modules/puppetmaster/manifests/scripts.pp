@@ -10,11 +10,12 @@
 #   The job to remove these is run only every 8 hours, however,
 #   to prevent excess load on the prod puppetmasters.
 class puppetmaster::scripts(
-    Integer      $keep_reports_minutes = 960, # 16 hours
-    Boolean      $has_puppetdb         = true,
-    Stdlib::Host $ca_server            = $facts['fqdn'],
-    Boolean      $upload_facts         = true,
-    Hash[String, Puppetmaster::Backends] $servers = {},
+    Integer                              $keep_reports_minutes = 960, # 16 hours
+    Boolean                              $has_puppetdb         = true,
+    Stdlib::Host                         $ca_server            = $facts['fqdn'],
+    Boolean                              $upload_facts         = true,
+    Hash[String, Puppetmaster::Backends] $servers              = {},
+    Optional[Stdlib::HTTPUrl]            $http_proxy             = undef,
 ){
 
     $masters = $servers.keys().filter |$server| { $server != $facts['fqdn'] }
@@ -74,11 +75,15 @@ class puppetmaster::scripts(
         source => 'puppet:///modules/puppetmaster/puppet-facts-upload.py',
     }
 
+    $timer_command = $http_proxy ? {
+        undef   => '/usr/local/sbin/puppet-facts-upload',
+        default => "/usr/local/sbin/puppet-facts-upload --proxy ${http_proxy}"
+    }
     systemd::timer::job { 'upload_puppet_facts':
         ensure      => $upload_facts.bool2str('present', 'absent'),
         user        => 'root',
         description => 'Upload facts export to puppet compiler',
-        command     => '/usr/local/sbin/puppet-facts-upload',
+        command     => $timer_command,
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
     }
 
