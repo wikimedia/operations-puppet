@@ -16,13 +16,16 @@ class bgpalerter (
     Array[Bgpalerter::Report]  $reports,
     Array[Bgpalerter::Monitor] $monitors,
 
-    Integer                    $notification_interval_seconds       = 86400,
-    Boolean                    $persist_status                      = true,
-    Boolean                    $check_for_updates_at_boot           = true,
-    Integer                    $generate_prefix_list_every_days     = 0,
     Boolean                    $manage_user                         = false,
     String                     $user                                = 'bgpalerter',
-    Optional[Stdlib::HTTPUrl]  $http_proxy                          = undef,
+    # ignore camel case as that's what the app uses
+    # lint:ignore:variable_is_lowercase
+    Integer                    $notificationIntervalSeconds         = 86400,
+    Boolean                    $persistStatus                       = true,
+    Boolean                    $checkForUpdatesAtBoot               = true,
+    Integer                    $generatePrefixListEveryDays         = 0,
+    Optional[Stdlib::HTTPUrl]  $httpProxy                           = undef,
+    # lint:endignore
     Optional[Bgpalerter::Prefix::Options]         $prefixes_options = undef,
     Hash[Stdlib::IP::Address, Bgpalerter::Prefix] $prefixes         = {},
 ) {
@@ -35,6 +38,7 @@ class bgpalerter (
         Stdlib::Unixpath => $logging['directory'],
         default          => "${base_dir}/${logging['directory']}"
     }
+    # list of params which are not config keys
     # hard code this as there is only one set of options that make senses
     $ris_connector = {
         'file'   => 'connectorRIS',
@@ -51,28 +55,19 @@ class bgpalerter (
             }
         }
     }
-    $config = {
-        'connectors'                  => [$ris_connector],
-        'monitors'                    => $monitors,
-        'reports'                     => $reports,
-        'notificationIntervalSeconds' => $notification_interval_seconds,
-        'persistStatus'               => $persist_status,
-        'rest'                        => $rest,
-        'logging'                     => $logging,
-        'httpProxy'                   => $http_proxy,
-        'checkForUpdatesAtBoot'       => $check_for_updates_at_boot,
-        'generatePrefixListEveryDays' => $generate_prefix_list_every_days,
-        'monitoredPrefixesFiles'      => [$prefix_file],
-        'rpki'                        => $rpki,
+    $filter_params = ['name', 'user', 'manage_user', 'prefixes', 'prefixes_options']
+    $config = wmflib::dump_params($filter_params) + {
+        'connectors'                => [$ris_connector],
+        'monitoredPrefixesFiles'    => [$prefix_file],
         # Advanced settings (Don't touch here!)
-        'alertOnlyOnce'               => false,
-        'fadeOffSeconds'              => 360,
-        'checkFadeOffGroupsSeconds'   => 30,
-        'pidFile'                     => 'bgpalerter.pid',
-        'maxMessagesPerSecond'        => 6000,
-        'multiProcess'                => false,
-        'environment'                 => 'production',
-        'configVersion'               => 2,
+        'alertOnlyOnce'             => false,
+        'fadeOffSeconds'            => 360,
+        'checkFadeOffGroupsSeconds' => 30,
+        'pidFile'                   => 'bgpalerter.pid',
+        'maxMessagesPerSecond'      => 6000,
+        'multiProcess'              => false,
+        'environment'               => 'production',
+        'configVersion'             => 2,
     }
     # TODO: install bgpalerter
     if $manage_user {
