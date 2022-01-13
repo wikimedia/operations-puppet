@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Easily trigger zuul pipelines for a Gerrit repository."""
-# Copyright 2015, 2021 Kunal Mehta <legoktm@member.fsf.org>
+# Copyright 2015, 2021 Kunal Mehta <legoktm@debian.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
