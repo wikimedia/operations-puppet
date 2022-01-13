@@ -354,7 +354,7 @@ groups:
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel, aqu, ebysans]
+              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -367,7 +367,7 @@ groups:
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
-    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu]
+    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu, ntsako]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
@@ -4957,6 +4957,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILdxCaU2CJ8Q+P8lJgbodjK5HijU24+XuihTLdUYvU/Z sandra
     krb: present
+  ntsako:
+    ensure: present
+    gid: 500
+    uid: 36856
+    realname: Ntsako Maphophe
+    email: nmaphophe@wikimedia.org
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8VroNKYrtpnPeziIFkmpF1RhX15Z0uLYWmOfybAnijSV4P6gDPYuzLyniCekkeq6dF9KDU+IfoIwIjV5p6XnsJ6RRQbhQoQUAGThpvPh/0QetFhuLHK77kfmxxhJP04TANgLjVkGyyzbcckkqu7V47hbMuw7jUCsForbVHVbdYF3xdTd494xd6T/eFE8TUcyzpQDsAkzyvWbSwz/g9Ord8zIJicqcgYAzHVaNIt0/qUeyccT6Ql55W2Cftj6BJrT1xHXD4a/yRXN7nvMZnUkJYknoA1fAygkp+4wgBSpjqvP5YNTUVjvLyRCqEiXENMcIW6KSygAWVkqy3Hnj3lYHd+HlMehHoDjqRXXTwBvgXns2b81LxftF8iZNvmk5rD6fRLGqKrCeG8gzeb7QU34umA3iMrPHd3qIGnbhlYTFM+0WbgoxLYEL82PYLhlr6OmKnRmUwTH7FtoTxRfzWhgFVd4Scgyw3UWNrf0IX1WqqKzNwGPXOCLpOoMXNBupY0c= nmaphophe@wikimedia.org
+    krb: present
 
 ldap_only_users:
   abartov:
@@ -5765,10 +5774,6 @@ ldap_only_users:
     ensure: present
     realname: Alexander Vorwerk
     email: alexander.vorwerk@stud.uni-goettingen.de
-  nmaphophe:
-    ensure: present
-    realname: Ntsako Maphophe
-    email: nmaphophe@wikimedia.org
   mfossati:
     ensure: present
     realname: Marco Fossati
