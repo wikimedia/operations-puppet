@@ -135,6 +135,8 @@ DESIRED_STATE = [
     {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=puppetdb-api'},
     {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=mwdebug'},
     {'codfw': {'pooled': False, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=mwdebug'},
+    {'eqiad': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=miscweb'},
+    {'codfw': {'pooled': True, 'references': [], 'ttl': 300}, 'tags': 'dnsdisc=miscweb'},
 ]
 
 
