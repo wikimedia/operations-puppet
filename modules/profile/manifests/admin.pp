@@ -11,10 +11,6 @@ class profile::admin (
         purge_sudoers_d => $purge_sudoers_d,
     }
     class {'admin':
-        always_groups   => $always_groups,
-        groups          => $groups,
-        groups_no_ssh   => $groups_no_ssh,
-        managehome      => $managehome,
-        managelingering => $managelingering,
+        * => wmflib::dump_params(['name', 'purge_sudoers_d'])
     }
 }
