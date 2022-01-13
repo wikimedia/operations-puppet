@@ -55,15 +55,6 @@ class beta::autoupdater {
         target => '../../portal-master/prod',
     }
 
-    file { "${stage_dir}/php-master/LocalSettings.php":
-        ensure  => present,
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',
-        mode    => '0444',
-        source  => 'puppet:///modules/beta/LocalSettings.php',
-        require => Git::Clone['beta-mediawiki-core'],
-    }
-
     # Remove the placeholder extension directory of the mediawiki/core
     # checkout so that we can checkout the complete extension repository.
     exec { "/bin/rm -r ${stage_dir}/php-master/extensions":
