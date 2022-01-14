@@ -9,6 +9,7 @@ StartLimitBurst=5
 
 [Service]
 Type=simple
+Environment="QUERY_SERVICE=<%= @deploy_name %>"
 WorkingDirectory=<%= @package_dir %>
 ExecStart=/bin/bash <%= @package_dir %>/<%= @updater_startup_script %> <%= @options.join(' ') %>
 User=<%= @username %>
