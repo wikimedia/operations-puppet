@@ -303,13 +303,12 @@ node 'build2001.codfw.wmnet' {
     role(builder)
 }
 
-node 'centrallog1001.eqiad.wmnet', 'centrallog2001.codfw.wmnet' {
+node 'centrallog1001.eqiad.wmnet', 'centrallog2002.codfw.wmnet' {
     role(syslog::centralserver)
 }
 
-# New centrallog node T289624
-node 'centrallog2002.codfw.wmnet' {
-    role(syslog::centralserver)
+node 'centrallog2001.codfw.wmnet' {
+    role(spare::system)
 }
 
 node /^chartmuseum[12]001\.(eqiad|codfw)\.wmnet$/ {

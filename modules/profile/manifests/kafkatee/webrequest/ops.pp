@@ -55,12 +55,4 @@ class profile::kafkatee::webrequest::ops (
         type          => 'pipe',
     }
 
-    rsync::quickdatacopy { 'webrequest':
-        ensure              => absent,
-        source_host         => 'centrallog1001.eqiad.wmnet',
-        dest_host           => 'centrallog2001.codfw.wmnet',
-        auto_sync           => false,
-        module_path         => '/srv/log',
-        server_uses_stunnel => true,
-    }
 }
