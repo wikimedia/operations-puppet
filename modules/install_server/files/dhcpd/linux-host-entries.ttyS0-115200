@@ -131,6 +131,7 @@ host bast6001 {
 host build2001 {
     hardware ethernet aa:00:00:18:6a:34;
     fixed-address build2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host chartmuseum1001 {
