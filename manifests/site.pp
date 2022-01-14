@@ -2482,7 +2482,7 @@ node /orespoolcounter[12]00[34]\.(codfw|eqiad)\.wmnet/ {
 }
 
 node 'otrs1001.eqiad.wmnet' {
-    role(otrs)
+    role(vrts)
 }
 
 # new parsoid nodes - codfw (T243112, T247441)
