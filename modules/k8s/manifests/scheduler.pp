@@ -3,7 +3,7 @@ class k8s::scheduler(
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
     Boolean $packages_from_future = false,
-    Optional[String] $kubeconfig = undef,
+    Optional[Stdlib::Unixpath] $kubeconfig = undef,
 ) {
 
     if $packages_from_future {
