@@ -247,7 +247,6 @@ codfw:
     elastic2059.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2060.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
   restbase:
-    restbase2009.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase2010.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase2011.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase2012.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
