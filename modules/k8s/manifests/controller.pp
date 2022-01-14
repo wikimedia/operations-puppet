@@ -12,11 +12,10 @@
 #       apiserver, but to the LVS service instead (to be able to verify TLS cert).
 class k8s::controller(
     String $service_account_private_key_file,
-    Boolean $use_service_account_credentials=false,
+    Stdlib::Unixpath $kubeconfig,
     Boolean $logtostderr=true,
     Integer $v_log_level=0,
     Boolean $packages_from_future = false,
-    Optional[String] $kubeconfig=undef,
 ){
 
     if $packages_from_future {

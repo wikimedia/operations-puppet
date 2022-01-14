@@ -18,7 +18,7 @@ class profile::kubernetes::master(
     Optional[String] $runtime_config=lookup('profile::kubernetes::master::runtime_config', {'default_value' => undef}),
     Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', {default_value => false}),
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', {default_value => false}),
-    Optional[String] $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token', {default_value => undef}),
+    String $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token'),
     Hash[String, Profile::Kubernetes::User_tokens] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
     Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', {default_value => undef}),
     Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', {default_value => undef})
@@ -75,29 +75,20 @@ class profile::kubernetes::master(
         packages_from_future => $packages_from_future,
     }
 
-    # TODO: We should remove this gate after migrating all clusters to kubernetes 1.16
-    #       and only allow the controller-manager to be run with service-account credentials
-    #       e.g. make controllermanager_token mandatory.
-    if $controllermanager_token {
-        $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager_config'
-        # $service_cert holds the FQDN for the load balanced API
-        k8s::kubeconfig { $controllermanager_kubeconfig:
-            master_host => $service_cert,
-            username    => 'system:kube-controller-manager',
-            token       => $controllermanager_token,
-            owner       => 'kube',
-            group       => 'kube',
-        }
-        $use_service_account_credentials = true
-    } else {
-        $use_service_account_credentials = false
+    $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager_config'
+    # $service_cert holds the FQDN for the load balanced API
+    k8s::kubeconfig { $controllermanager_kubeconfig:
+        master_host => $service_cert,
+        username    => 'system:kube-controller-manager',
+        token       => $controllermanager_token,
+        owner       => 'kube',
+        group       => 'kube',
     }
 
     class { '::k8s::controller':
         service_account_private_key_file => $service_account_private_key_file,
-        packages_from_future             => $packages_from_future,
         kubeconfig                       => $controllermanager_kubeconfig,
-        use_service_account_credentials  => $use_service_account_credentials,
+        packages_from_future             => $packages_from_future,
     }
 
 
