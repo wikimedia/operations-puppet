@@ -56,7 +56,7 @@ class profile::wmcs::nfsclient(
         project     => $::labsproject,
         options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
         mount_path  => '/mnt/nfs/secondary-scratch',
-        server      => 'nfs-maps.wikimedia.org',
+        server      => 'scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud',
         share_path  => '/srv/scratch',
         nfs_version => $nfs_version,
     }
