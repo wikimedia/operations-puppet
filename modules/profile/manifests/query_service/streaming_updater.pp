@@ -9,6 +9,7 @@ class profile::query_service::streaming_updater (
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
     Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
+    String $journal = lookup('profile::query_service::streaming_updater::journal'),
 ) {
     require ::profile::query_service::common
 
@@ -46,6 +47,7 @@ class profile::query_service::streaming_updater (
         extra_jvm_opts         => $default_jvm_options,
         updater_startup_script => 'runStreamingUpdater.sh',
         updater_service_desc   => 'Query Service Streaming Updater',
+        journal                => $journal,
     }
 
     class { 'query_service::monitor::updater':

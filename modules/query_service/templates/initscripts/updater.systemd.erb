@@ -2,7 +2,7 @@
 Description=<%= @updater_service_desc %>
 Wants=<%= @deploy_name %>-blazegraph.service
 After=<%= @deploy_name %>-blazegraph.service
-ConditionPathExists=<%= @data_dir %>/wikidata.jnl
+ConditionPathExists=<%= @data_dir %>/<%= @journal %>.jnl
 ConditionPathExists=<%= @data_dir %>/data_loaded
 StartLimitIntervalSec=300
 StartLimitBurst=5

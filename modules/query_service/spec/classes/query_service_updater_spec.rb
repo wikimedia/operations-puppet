@@ -17,7 +17,8 @@ describe 'query_service::updater', :type => :class do
         :logstash_logback_port => 11_514,
         :extra_jvm_opts => [],
         :updater_startup_script => 'runUpdate.sh',
-        :updater_service_desc   => 'Query Service Updater',
+        :updater_service_desc => 'Query Service Updater',
+        :journal => 'wikidata',
         }
    }
 

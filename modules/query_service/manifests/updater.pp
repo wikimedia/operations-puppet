@@ -11,6 +11,7 @@
 # - $logstash_logback_port: port which rsyslog server is listening on
 # - $username: Username owning the service.
 # - $extra_jvm_opts: extra JVM options for updater.
+# - $journal: Name to assign instance journal. Must be unique per data_dir.
 # - $log_sparql: enable SPARQL logging.
 class query_service::updater(
     Array[String] $options,
@@ -23,6 +24,7 @@ class query_service::updater(
     Array[String] $extra_jvm_opts,
     String $updater_startup_script,
     String $updater_service_desc,
+    String $journal,
     Boolean $log_sparql = false,
 ) {
     file { "/etc/default/${deploy_name}-updater":
