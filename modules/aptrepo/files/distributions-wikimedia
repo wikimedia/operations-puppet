@@ -10,6 +10,7 @@ Components: main
  component/calico-future
  component/cassandra22
  component/cassandra311
+ component/cassandradev
  component/ceph
  component/ci
  component/elastalert
@@ -93,6 +94,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/calico-future
  component/cassandra311
+ component/cassandradev
  component/cergen
  component/ci
  component/dnsdist
