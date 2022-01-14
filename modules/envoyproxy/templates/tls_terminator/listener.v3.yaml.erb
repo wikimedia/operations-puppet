@@ -76,6 +76,15 @@ filter_chains:
       common_http_protocol_options:
         idle_timeout: <%= @downstream_idle_timeout %>s
 <%- end -%>
+<%- if @stream_idle_timeout -%>
+      stream_idle_timeout: <%= @stream_idle_timeout %>s
+<%- end -%>
+<%- if @request_timeout -%>
+      request_timeout: <%= @request_timeout %>s
+<%- end -%>
+<%- if @request_headers_timeout -%>
+      request_headers_timeout: <%= @request_headers_timeout %>s
+<%- end -%>
 <%- if @http2_options -%>
       http2_protocol_options:
         max_concurrent_streams: <%= @http2_options['max_concurrent_streams'] %>
@@ -213,6 +222,15 @@ filter_chains:
 <%- if @downstream_idle_timeout -%>
       common_http_protocol_options:
         idle_timeout: <%= @downstream_idle_timeout %>s
+<%- end -%>
+<%- if @stream_idle_timeout -%>
+      stream_idle_timeout: <%= @stream_idle_timeout %>s
+<%- end -%>
+<%- if @request_timeout -%>
+      request_timeout: <%= @request_timeout %>s
+<%- end -%>
+<%- if @request_headers_timeout -%>
+      request_headers_timeout: <%= @request_headers_timeout %>s
 <%- end -%>
 <%- if @http2_options -%>
       http2_protocol_options:

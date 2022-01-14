@@ -93,6 +93,21 @@
 #     The time in seconds to wait before closing a keepalive connection when inactive.
 # @param downstream_idle_timeout
 #     The time in seconds to wait before closing a downstream keepalive connection when inactive.
+# @param stream_idle_timeout
+#      The stream idle timeout for connections managed by the connection manager.
+#      If not specified, this defaults to 5 minutes.
+#      This timeout *SHOULD* be configured in the presence of untrusted downstreams.
+# @param request_timeout
+#      The amount of time that Envoy will wait for the entire request to be received.
+#      The timer is activated when the request is initiated, and is disarmed when the last byte
+#      of the request is sent upstream. If not specified or set to 0, this timeout is disabled.
+#      This timeout *SHOULD* be configured in the presence of untrusted downstreams.
+# @param request_headers_timeout
+#       The amount of time that Envoy will wait for the request headers to be received.
+#       The timer is activated when the first byte of the headers is received, and is disarmed
+#       when the last byte of the headers has been received. If not specified or set to 0,
+#       this timeout is disabled.
+#      This timeout *SHOULD* be configured in the presence of untrusted downstreams.
 # @param tls_handshake_timeout
 #     TLS handshake timeout in seconds. Only available for V3 configuration and envoy >= 1.17.0
 # @param max_requests_per_conn
@@ -124,6 +139,9 @@ define envoyproxy::tls_terminator(
     Optional[Envoyproxy::Alpn]                                            $global_alpn_protocols     = undef,
     Optional[Float]                                                       $idle_timeout              = undef,
     Optional[Float]                                                       $downstream_idle_timeout   = undef,
+    Optional[Float]                                                       $stream_idle_timeout       = undef,
+    Optional[Float]                                                       $request_timeout           = undef,
+    Optional[Float]                                                       $request_headers_timeout   = undef,
     Optional[Float]                                                       $tls_handhshake_timeout    = undef,
     Optional[Integer]                                                     $max_requests_per_conn     = undef,
     Optional[String]                                                      $lua_script                = undef,
