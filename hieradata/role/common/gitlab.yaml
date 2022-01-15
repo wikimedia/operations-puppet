@@ -13,7 +13,7 @@ profile::base::ssh_server_settings:
 profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
 profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
 profile::gitlab::backup_keep_time: 259200
-profile::gitlab::backup_sync::ensure: 'present'
+profile::gitlab::enable_backup_sync: true
 
 profile::gitlab::cas_label: 'Wikimedia Dev Account'
 profile::gitlab::cas_url: 'https://idp.wikimedia.org'
@@ -52,6 +52,6 @@ profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.cr
 profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
 
 # Disable Restore-Backup Timer Job
-profile::gitlab::enable_restore_timer: false
+profile::gitlab::enable_restore: false
 
 profile::contacts::role_contacts: ['ServiceOps SREs']

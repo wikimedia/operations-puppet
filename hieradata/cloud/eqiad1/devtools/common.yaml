@@ -205,3 +205,41 @@ zookeeper_clusters:
 prometheus_nodes:
   - logging-alert-01.logging.eqiad1.wikimedia.cloud
 
+# GitLab
+profile::gitlab::active_host: 'gitlab1001.wikimedia.org'
+profile::gitlab::passive_host: 'gitlab-test.wmcloud.org'
+
+profile::base::ssh_server_settings:
+    listen_addresses:
+    - "%{facts.ipaddress}"
+#    - "%{facts.ipaddress6}" # no ipv6 on cloud test instance
+
+
+profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
+profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
+profile::gitlab::backup_keep_time: 259200
+# Disable sync on cloud test instance
+profile::gitlab::enable_backup_sync: false
+
+profile::gitlab::cas_label: 'Wikimedia Dev Account'
+profile::gitlab::cas_url: 'https://idp.wikimedia.org'
+profile::gitlab::cas_auto_create_users: false
+
+profile::gitlab::smtp_enabled: false
+
+profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.crt'
+profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
+
+# Disable restore backup sync on cloud test instance
+profile::gitlab::enable_restore: false
+
+profile::contacts::role_contacts: ['ServiceOps SREs']
+
+# service IP for public https and ssh (T276148)
+# profile::gitlab::service_ip_v4: '127.0.0.1' TODO: floating IP needed
+profile::gitlab::service_ip_v6: '::1'
+profile::gitlab::service_name: 'gitlab-test.wmcloud.org'
+
+# Content-Security-Policy
+profile::gitlab::csp_enabled: false
+profile::gitlab::csp_report_only: false

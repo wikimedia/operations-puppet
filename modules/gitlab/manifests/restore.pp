@@ -1,12 +1,12 @@
 # install restore script on secondary gitlab host
 class gitlab::restore(
-    Wmflib::Ensure   $restore_ensure          = 'present',
-    Wmflib::Ensure   $restore_ensure_timer    = 'present',
-    Stdlib::Unixpath $restore_dir_data        = '/srv/gitlab-backup',
+    Wmflib::Ensure   $ensure_restore_script = 'present',
+    Wmflib::Ensure   $ensure_restore        = 'absent',
+    Stdlib::Unixpath $restore_dir_data      = '/srv/gitlab-backup',
 ){
 
     file {"${restore_dir_data}/gitlab-restore.sh":
-        ensure => $restore_ensure,
+        ensure => $ensure_restore_script,
         mode   => '0744' ,
         owner  => 'root',
         group  => 'root',
@@ -14,7 +14,7 @@ class gitlab::restore(
     }
 
     file {"${restore_dir_data}/gitlab-restore-v2.sh":
-        ensure => $restore_ensure,
+        ensure => $ensure_restore_script,
         mode   => '0744' ,
         owner  => 'root',
         group  => 'root',
@@ -22,7 +22,7 @@ class gitlab::restore(
     }
 
     systemd::timer::job { 'backup-restore':
-        ensure      => $restore_ensure_timer,
+        ensure      => $ensure_restore,
         user        => 'root',
         description => 'GitLab Backup Restore',
         command     => "${restore_dir_data}/gitlab-restore.sh",

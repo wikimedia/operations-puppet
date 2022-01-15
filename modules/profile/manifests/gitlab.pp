@@ -1,7 +1,7 @@
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Stdlib::Fqdn $passive_host = lookup('profile::gitlab::passive_host'),
-    Wmflib::Ensure $backup_sync_ensure = lookup('profile::gitlab::backup_sync::ensure'),
+    Boolean $enable_backup_sync = lookup('profile::gitlab::enable_backup_sync'),
     Stdlib::IP::Address::V4 $service_ip_v4 = lookup('profile::gitlab::service_ip_v4'),
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
     Stdlib::Host $service_name = lookup('profile::gitlab::service_name'),
@@ -19,7 +19,7 @@ class profile::gitlab(
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = lookup('profile::gitlab::exporters', {default_value => []}),
     Stdlib::Unixpath $cert_path = lookup('profile::gitlab::cert_path'),
     Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
-    Boolean $enable_restore_timer = lookup('profile::gitlab::enable_restore_timer', {default_value => true}),
+    Boolean $enable_restore = lookup('profile::gitlab::enable_restore', {default_value => false}),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -152,7 +152,7 @@ class profile::gitlab(
     class { 'gitlab::rsync':
         active_host  => $active_host,
         passive_host => $passive_host,
-        ensure       => $backup_sync_ensure
+        ensure       => $enable_backup_sync.bool2str('present','absent')
     }
 
     class { 'gitlab':
@@ -168,8 +168,8 @@ class profile::gitlab(
         smtp_enabled           => $smtp_enabled,
         enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         listen_addresses       => [$service_ip_v4, $service_ip_v6],
-        enable_restore_replica => $active_host != $facts['fqdn'], # install restore script on passive GitLab server
-        enable_restore_timer   => $active_host != $facts['fqdn'], # enable automated restore timer on passive GitLab server
+        install_restore_script => $active_host != $facts['fqdn'], # install restore script on passive GitLab server
+        enable_restore         => $enable_restore,
         cert_path              => $cert_path,
         key_path               => $key_path,
         gitlab_domain          => $service_name,

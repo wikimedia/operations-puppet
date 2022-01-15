@@ -49,8 +49,8 @@ class gitlab (
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = {},
     Array[Stdlib::IP::Address] $monitoring_whitelist    = ['127.0.0.1/32'],
     Boolean          $enable_secondary_sshd             = true,
-    Boolean          $enable_restore_replica            = false,
-    Boolean          $enable_restore_timer              = false,
+    Boolean          $install_restore_script            = false,
+    Boolean          $enable_restore                    = false,
     Stdlib::Unixpath $backup_dir_data                   = '/srv/gitlab-backup',
     Stdlib::Unixpath $backup_dir_config                 = '/etc/gitlab/config_backup',
 ) {
@@ -131,14 +131,14 @@ class gitlab (
         listen_addresses => $listen_addresses,
     }
 
-    if $enable_restore_replica {
+    if $install_restore_script or $enable_restore {
         # enable automated restore from backup (for replica)
-        $ensure_restore_replica = $enable_restore_replica.bool2str('present','absent')
-        $ensure_restore_timer = $enable_restore_timer.bool2str('present','absent')
+        $ensure_restore_script = $install_restore_script.bool2str('present','absent')
+        $ensure_restore = $enable_restore.bool2str('present','absent')
         class { 'gitlab::restore' :
-            restore_ensure       => $ensure_restore_replica,
-            restore_ensure_timer => $ensure_restore_timer,
-            restore_dir_data     => $backup_dir_data,
+            ensure_restore_script => $ensure_restore_script,
+            ensure_restore        => $ensure_restore,
+            restore_dir_data      => $backup_dir_data,
         }
     }
 }
