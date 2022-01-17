@@ -13,6 +13,6 @@ function wmflib::service::get_services_for(Enum['monitoring', 'discovery'] $what
   }
   wmflib::service::fetch().filter |$name, $srv| {
       $present = $srv.keys.filter |$k| {$k in $needed_properties}
-      $srv['state'] in $needed_statuses and $present
+      ($srv['state'] in $needed_statuses and $present != [])
   }
 }
