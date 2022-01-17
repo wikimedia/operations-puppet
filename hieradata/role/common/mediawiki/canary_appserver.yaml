@@ -67,3 +67,4 @@ profile::mediawiki::php::icu63: true
 profile::mediawiki::common::fetch_ipinfo_dbs: true
 
 profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::envoy::api_version: 3
