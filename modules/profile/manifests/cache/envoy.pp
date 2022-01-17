@@ -154,6 +154,7 @@ class profile::cache::envoy(
         header_key_format         => 'preserve_case',
         listen_ipv6               => true,
         generate_request_id       => false,
+        circuit_breakers_config   => 'disabled',
         global_tlsparams          => $tlsparams,
         global_alpn_protocols     => $alpn,
         lua_script                => file('profile/cache/envoy.lua'),
