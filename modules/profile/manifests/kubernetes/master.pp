@@ -55,6 +55,14 @@ class profile::kubernetes::master(
         }
     }
 
+    # Temporary switch to disable insecure API on systems
+    # where the last consumer (kube-scheduler) has been moved
+    # off of the insecure API.
+    if $scheduler_token {
+        $disable_insecure_api = true
+    } else {
+        $disable_insecure_api = false
+    }
 
     class { '::k8s::apiserver':
         etcd_servers             => $etcd_servers,
@@ -70,6 +78,7 @@ class profile::kubernetes::master(
         runtime_config           => $runtime_config,
         admission_plugins        => $admission_plugins,
         admission_configuration  => $admission_configuration,
+        disable_insecure_api     => $disable_insecure_api,
     }
 
     if $scheduler_token {

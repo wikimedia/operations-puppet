@@ -21,6 +21,7 @@ class k8s::apiserver(
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
     Boolean $packages_from_future = false,
+    Boolean $disable_insecure_api = false,
     Optional[Stdlib::IP::Address] $service_cluster_ip_range = undef,
     Optional[String] $service_node_port_range = undef,
     Optional[Integer] $apiserver_count = undef,
