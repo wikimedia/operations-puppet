@@ -3,3 +3,19 @@ profile::kubernetes::master::etcd_urls:
  - https://kubestagetcd2001.codfw.wmnet:2379
  - https://kubestagetcd2002.codfw.wmnet:2379
  - https://kubestagetcd2003.codfw.wmnet:2379
+
+# Needed to run kubelet on the master node (T290967)
+profile::calico::kubernetes::bgp_peers:
+- kubestagemaster2001.codfw.wmnet
+- kubestage2001.codfw.wmnet
+- kubestage2002.codfw.wmnet
+- cr1-codfw.wikimedia.org
+- cr2-codfw.wikimedia.org
+profile::kubernetes::master_hosts:
+- kubestagemaster2001.codfw.wmnet
+profile::kubernetes::node::kubelet_cluster_dns: "10.192.76.3"
+
+# TODO: re-evaluate this parameter since it is probably not needed
+# when using ssl_*_path settings.
+# See role/common/kubernetes/staging/master.yaml
+profile::kubernetes::master::expose_puppet_certs: false
