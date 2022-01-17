@@ -1877,21 +1877,43 @@ apereo_cas:
     validate_url: 'https://idp-test.wikimedia.org/serviceValidate'
 
 ripeatlas_measurements:
-  eqiad:
-    ipv4: '1790945'
-    ipv6: '1790947'
-  codfw:
-    ipv4: '32390538'
-    ipv6: '32390541'
+  eqiad:  # https://atlas.ripe.net/frames/probes/6092/
+    ipv4:
+      - '1790945'  # anchors pings
+      - '1790944'  # anchors traceroutes
+      - '9183717'  # probes pings
+      - '9183716'  # probes traceroutes
+    ipv6:
+      - '1790947'  # anchors pings
+      - '1790946'  # anchors traceroutes
+      - '9183720'  # probes pings
+      - '9183719'  # probes traceroutes
+  codfw:  # https://atlas.ripe.net/frames/probes/7038/
+    ipv4:
+      - '32390538'  # anchors pings
+      - '32390537'  # anchors traceroutes
+      - '32391305'  # probes pings
+      - '32391304'  # probes traceroutes
+    ipv6:
+      - '32390541'  # anchors pings
+      - '32390540'  # anchors traceroutes
+      - '32391312'  # probes pings
+      - '32391311'  # probes traceroutes
   esams:
-    ipv4: '23449935'
-    ipv6: '23449938'
+    ipv4:
+      - '23449935'  # anchors pings
+    ipv6:
+      - '23449938'  # anchors pings
   ulsfo:
-    ipv4: '1791307'
-    ipv6: '1791309'
+    ipv4:
+      - '1791307'  # anchors pings
+    ipv6:
+      - '1791309'  # anchors pings
   eqsin:
-    ipv4: '11645085'
-    ipv6: '11645088'
+    ipv4:
+      - '11645085'  # anchors pings
+    ipv6:
+      - '11645088'  # anchors pings
 
 asns:
   eqiad: 65001

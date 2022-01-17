@@ -5,7 +5,7 @@
 # === Parameters
 #
 # [*atlas_measurements*]
-# a hash of datacenter => ipv4 and ipv6 measurement IDs
+# a hash of datacenter => ipv4 and ipv6 array measurements IDs
 #
 # === Examples
 #

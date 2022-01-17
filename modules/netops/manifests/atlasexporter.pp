@@ -18,9 +18,8 @@ class netops::atlasexporter(
 
     # For the exporter, we need to write out key=>value pairs of key 'id'
     # and value of the measurement ID.
-    $measurement_ids = $atlas_measurements.reduce([]) |$acc, $elem| {
-        concat($acc, [{'id' => $elem[1]['ipv4']},
-                      {'id' => $elem[1]['ipv6']}])
+    $measurement_ids = $atlas_measurements.values.reduce([]) |$memo, $site| {
+            $memo + $site.values.flatten.map |$msm_id| { {'id' => $msm_id} }
     }
 
     file { $config_file:
