@@ -16,7 +16,7 @@ listener_filters:
 tcp_fast_open_queue_length: <%= @fast_open_queue %>
 filter_chains:
 <%- @upstreams.each do |upstream| -%>
-<%- if upstream['cert_path'] != :undef -%>
+<%- if upstream['certificates'] != :undef -%>
 - filter_chain_match:
     server_names: <%= upstream['server_names'] %>
 <%- if @tls_handshake_timeout -%>
