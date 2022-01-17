@@ -166,5 +166,6 @@ class profile::cache::envoy(
         stream_idle_timeout       => $stream_idle_timeout,
         request_timeout           => $request_timeout,
         request_headers_timeout   => $request_headers_timeout,
+        max_requests_per_conn     => 10000,
     }
 }
