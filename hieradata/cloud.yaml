@@ -170,7 +170,7 @@ profile::puppetdb::clean_stockpile: false
 profile::puppetdb::facts_blacklist: []
 profile::puppetdb::facts_blacklist_type: 'literal'
 profile::envoy::ensure: present
-profile::envoy::api_version: 2
+profile::envoy::api_version: 3
 profile::tlsproxy::envoy::sni_support: 'no'
 profile::tlsproxy::envoy::tls_port: 443
 profile::tlsproxy::envoy::websockets: false

@@ -1109,4 +1109,3 @@ profile::contacts::role_contacts: ['CPT SREs']
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
-profile::envoy::api_version: 3

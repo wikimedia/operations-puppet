@@ -93,6 +93,3 @@ profile::lvs::realserver::pools:
     services:
       - varnish-fe
 profile::contacts::role_contacts: ['Traffic SREs']
-
-# Force the use of the v3 configuration api
-profile::envoy::api_version: 3
