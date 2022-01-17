@@ -21,6 +21,7 @@ class k8s::scheduler(
         group   => 'root',
         mode    => '0444',
         content => template('k8s/kube-scheduler.default.erb'),
+        notify  => Service['kube-scheduler'],
     }
 
     service { 'kube-scheduler':
