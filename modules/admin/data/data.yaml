@@ -5779,3 +5779,7 @@ ldap_only_users:
     ensure: present
     realname: Marco Fossati
     email: mfossati@wikimedia.org
+  slopes:
+    ensure: present
+    realname: Sérgio Lopes
+    email: slopes@wikimedia.org
