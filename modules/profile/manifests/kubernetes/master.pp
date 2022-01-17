@@ -19,7 +19,7 @@ class profile::kubernetes::master(
     Boolean $packages_from_future = lookup('profile::kubernetes::master::packages_from_future', {default_value => false}),
     Boolean $allow_privileged = lookup('profile::kubernetes::master::allow_privileged', {default_value => false}),
     String $controllermanager_token = lookup('profile::kubernetes::master::controllermanager_token'),
-    Optional[String] $scheduler_token = lookup('profile::kubernetes::master::scheduler_token', {default_value => undef}),
+    String $scheduler_token = lookup('profile::kubernetes::master::scheduler_token'),
     Hash[String, Profile::Kubernetes::User_tokens] $all_infrastructure_users = lookup('profile::kubernetes::infrastructure_users'),
     Optional[K8s::AdmissionPlugins] $admission_plugins = lookup('profile::kubernetes::master::admission_plugins', {default_value => undef}),
     Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', {default_value => undef})
@@ -55,15 +55,6 @@ class profile::kubernetes::master(
         }
     }
 
-    # Temporary switch to disable insecure API on systems
-    # where the last consumer (kube-scheduler) has been moved
-    # off of the insecure API.
-    if $scheduler_token {
-        $disable_insecure_api = true
-    } else {
-        $disable_insecure_api = false
-    }
-
     class { '::k8s::apiserver':
         etcd_servers             => $etcd_servers,
         ssl_cert_path            => $ssl_cert_path,
@@ -78,19 +69,16 @@ class profile::kubernetes::master(
         runtime_config           => $runtime_config,
         admission_plugins        => $admission_plugins,
         admission_configuration  => $admission_configuration,
-        disable_insecure_api     => $disable_insecure_api,
     }
 
-    if $scheduler_token {
-        $scheduler_kubeconfig = '/etc/kubernetes/scheduler_config'
-        # $service_cert holds the FQDN for the load balanced API
-        k8s::kubeconfig { $scheduler_kubeconfig:
-            master_host => $service_cert,
-            username    => 'system:kube-scheduler',
-            token       => $scheduler_token,
-            owner       => 'kube',
-            group       => 'kube',
-        }
+    $scheduler_kubeconfig = '/etc/kubernetes/scheduler_config'
+    # $service_cert holds the FQDN for the load balanced API
+    k8s::kubeconfig { $scheduler_kubeconfig:
+        master_host => $service_cert,
+        username    => 'system:kube-scheduler',
+        token       => $scheduler_token,
+        owner       => 'kube',
+        group       => 'kube',
     }
     class { '::k8s::scheduler':
         packages_from_future => $packages_from_future,

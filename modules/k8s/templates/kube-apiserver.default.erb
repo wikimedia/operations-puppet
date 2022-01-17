@@ -14,12 +14,9 @@ daemon_args = [
   "--tls-cert-file=#{@ssl_cert_path}",
   "--tls-private-key-file=#{@ssl_key_path}",
   "--service-account-key-file=#{@ssl_cert_path}",
-]
-
-if @disable_insecure_api
   # disable the unprotected API port that used to be open on 127.0.0.1:8080
-  daemon_args.push("--insecure-port=0")
-end
+  "--insecure-port=0",
+]
 
 if @service_cluster_ip_range
   daemon_args.push("--service-cluster-ip-range=#{@service_cluster_ip_range}")

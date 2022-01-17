@@ -1,9 +1,9 @@
 #  Class that sets up and configures kube-scheduler
 class k8s::scheduler(
+    Stdlib::Unixpath $kubeconfig,
     Boolean $logtostderr = true,
     Integer $v_log_level = 0,
     Boolean $packages_from_future = false,
-    Optional[Stdlib::Unixpath] $kubeconfig = undef,
 ) {
 
     if $packages_from_future {
