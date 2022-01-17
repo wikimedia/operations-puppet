@@ -3,12 +3,7 @@ profile::calico::kubernetes::bgp_peers:
 - kubestage2002.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
-profile::kubernetes::master_fqdn: kubestagemaster.svc.codfw.wmnet
 profile::kubernetes::master_hosts:
 - kubestagemaster2001.codfw.wmnet
-profile::kubernetes::node::prometheus_url: http://prometheus.svc.codfw.wmnet/k8s-staging
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.76.3"
-profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.codfw.wmnet:6443
 profile::monitoring::notifications_enabled: false
-profile::kubernetes::node::masquerade_all: false
-profile::dragonfly::dfdaemon::ensure: present

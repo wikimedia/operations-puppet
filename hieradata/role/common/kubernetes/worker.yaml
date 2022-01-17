@@ -38,6 +38,8 @@ profile::kubernetes::node::masquerade_all: false
 #profile::kubernetes::node::docker_kubernetes_user_password
 profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
 profile::rsyslog::kubernetes::enable: true
+profile::rsyslog::kubernetes::kubernetes_url: https://kubemaster.svc.%{::site}.wmnet:6443
+profile::dragonfly::dfdaemon::ensure: present
 # We don't need conftool safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:

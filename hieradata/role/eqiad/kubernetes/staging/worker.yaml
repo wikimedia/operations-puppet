@@ -3,10 +3,6 @@ profile::calico::kubernetes::bgp_peers:
 - kubestage1004.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
-profile::kubernetes::master_fqdn: kubestagemaster.svc.eqiad.wmnet
 profile::kubernetes::master_hosts:
 - kubestagemaster1001.eqiad.wmnet
-profile::kubernetes::node::prometheus_url: http://prometheus.svc.eqiad.wmnet/k8s-staging
 profile::kubernetes::node::kubelet_cluster_dns: "10.64.76.3"
-profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.eqiad.wmnet:6443
-profile::dragonfly::dfdaemon::ensure: present

@@ -33,3 +33,8 @@ profile::rsyslog::kubernetes::enable: true
 profile::base::linux419::enable: true
 profile::kubernetes::node::kubelet_ipv6: true
 profile::contacts::role_contacts: ['ServiceOps SREs']
+
+profile::dragonfly::dfdaemon::ensure: present
+profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.%{::site}.wmnet:6443
+profile::kubernetes::master_fqdn: kubestagemaster.svc.%{::site}.wmnet
+profile::kubernetes::node::prometheus_url: http://prometheus.svc.%{::site}.wmnet/k8s-staging
