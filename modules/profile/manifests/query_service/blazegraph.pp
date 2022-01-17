@@ -66,6 +66,7 @@ define profile::query_service::blazegraph (
         prometheus_port    => $prometheus_port,
         prometheus_nodes   => $prometheus_nodes,
         blazegraph_main_ns => $blazegraph_main_ns,
+        collect_via_nginx  => $oauth_settings == undef
     }
 
     query_service::blazegraph { $instance_name:

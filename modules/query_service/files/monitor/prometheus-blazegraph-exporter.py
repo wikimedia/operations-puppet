@@ -41,10 +41,14 @@ class PrometheusBlazeGraphExporter(object):
     def __init__(self, nginx_port, blazegraph_port, namespace):
 
         self.url = 'http://localhost:{port}/bigdata'.format(port=blazegraph_port)
-        self.nginx_base_url = 'http://localhost:{nginx_port}/bigdata'.format(nginx_port=nginx_port)
         self.counters = []
-        self.sparql_endpoint = '{nginx_base_url}/namespace/{namespace}/sparql'.format(
-                                nginx_base_url=self.nginx_base_url, namespace=namespace)
+        if nginx_port is None:
+            self.sparql_endpoint = '{base_url}/namespace/{namespace}/sparql'.format(
+                                    base_url=self.url, namespace=namespace)
+        else:
+            nginx_base_url = 'http://localhost:{nginx_port}/bigdata'.format(nginx_port=nginx_port)
+            self.sparql_endpoint = '{base_url}/namespace/{namespace}/sparql'.format(
+                                    base_url=nginx_base_url, namespace=namespace)
 
     def query_to_metric(self, qname):
         return qname.replace(' ', '_').replace('/', '.').lstrip('.')
@@ -266,7 +270,7 @@ def main():
     parser.add_argument('-l', '--listen', metavar='ADDRESS',
                         help='Listen on this address', default=':9193')
     parser.add_argument('--nginx-port', metavar='NGINX_PORT',
-                        help='Nginx port to query for namespace metrics', default='80', type=int)
+                        help='Nginx port to query for namespace metrics', type=int)
     parser.add_argument('--blazegraph-port', metavar='BLAZEGRAPH_PORT',
                         help='Blazegraph port to query for metrics', default='9999', type=int)
     parser.add_argument('-d', '--debug', action='store_true',
