@@ -2,7 +2,7 @@
 class service::monitor() {
     # Services in "monitoring_setup" state will be configured but won't page.
     # Services in "production" state will be fully configured.
-    $monitored_services = wmflib::service::get_services_for('monitoring')
+    $monitored_services = wmflib::service::get_services_for('monitoring').filter |$n, $d| { $d['monitoring'] != undef }
     # First let's declare all the hosts.
     $hosts = $monitored_services.map |$n, $data | {
         # TODO: use get() in puppet 6.x
