@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Avoid running hooks if OPENSEARCH1 is not specified
+if [ "$OPENSEARCH1" = "yes" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-opensearch.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia buster-wikimedia thirdparty/opensearch1
+    deb-src http://apt.wikimedia.org/wikimedia buster-wikimedia thirdparty/opensearch1
+EOF
+    apt-get update
+fi
