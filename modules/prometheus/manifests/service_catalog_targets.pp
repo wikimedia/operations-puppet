@@ -1,6 +1,10 @@
+# Read service::catalog entries and generate suitable Prometheus target files
+# for blackbox exporter.
+
 class prometheus::service_catalog_targets (
   Hash[String, Wmflib::Service] $services_config,
   String $targets_path,
+  Hash[String, Stdlib::IP::Address::V4] $service_ips_override = {},
 ) {
 
   # Iterate over services
@@ -18,9 +22,9 @@ class prometheus::service_catalog_targets (
     }
     $port = $service_config['port']
 
-    # Find out the service name in 'svc' zone. The name is used to find which
-    # IP address to talk to. For TLS services the blackbox exporter 'module'
-    # configuration knows which SNI to send
+    # Find out the service name in 'svc' zone.
+    # For TLS services the blackbox exporter 'module' configuration
+    # knows which SNI to send
     if 'aliases' in $service_config {
       $svc_name = $service_config['aliases'][0]
     } elsif 'discovery' in $service_config {
@@ -29,6 +33,21 @@ class prometheus::service_catalog_targets (
       $svc_name = $service_name
     }
     $dns_name = "${svc_name}.svc.${::site}.wmnet"
+
+    # Select the final name or address to talk to.
+    #
+    # For load balanced services (i.e. 'lvs' stanza is present) use the DNS
+    # name in the 'svc' zone.
+    # For non-lvs use the hardcoded IPs in the catalog, unless overridden
+    # via $service_ips_override (e.g. for testing environments).
+    if 'lvs' in $service_config {
+      $name_or_address = $dns_name
+    } elsif $service_name in $service_ips_override {
+      $name_or_address = $service_ips_override[$service_name]
+    } else {
+      $service_ips = wmflib::service::get_ips_for_services($service_name => $service_config, $::site)
+      $name_or_address = $service_ips[0]
+    }
 
     # Iterate over this service's probes and collect targets.
     $probes = $service_config['probes'].reduce([]) |$memo, $el| {
@@ -41,15 +60,15 @@ class prometheus::service_catalog_targets (
         $res = [
           {
             'labels'  => { 'module' => "http_${service_name}_ip4" },
-            'targets' => [ "${service_name}:${port}@${scheme}://${dns_name}:${port}${path}" ]
+            'targets' => [ "${service_name}:${port}@${scheme}://${name_or_address}:${port}${path}" ]
           },
           {
             'labels'  => { 'module' => "tcp_${module_tls}ip4" },
-            'targets' => [ "${service_name}:${port}@${dns_name}:${port}" ]
+            'targets' => [ "${service_name}:${port}@${name_or_address}:${port}" ]
           },
           {
             'labels'  => { 'module' => 'icmp_ip4' },
-            'targets' => [ "${service_name}:${port}@${dns_name}" ]
+            'targets' => [ "${service_name}:${port}@${name_or_address}" ]
           },
         ]
       }
