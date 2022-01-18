@@ -128,7 +128,7 @@ filter {
 
   # Outputs (90)
   # logstash-* indexes output
-  logstash::output::elasticsearch { 'logstash':
+  logstash::output::opensearch { 'logstash':
     host            => '127.0.0.1',
     guard_condition => '"es" in [tags] and ![ecs]',
     index           => '%{[@metadata][index_name]}-%{+YYYY.MM.dd}',
@@ -138,7 +138,7 @@ filter {
   }
 
   # dlq-* indexes output
-  logstash::output::elasticsearch { 'dlq-1.0.0-1':
+  logstash::output::opensearch { 'dlq-1.0.0-1':
     host            => '127.0.0.1',
     guard_condition => '[type] == "dlq"',
     index           => 'dlq-1.0.0-1-%{+YYYY.MM.dd}',
@@ -177,7 +177,7 @@ filter {
     '1.11.0' => '2'
   }
   $ecs_versions.each |String $ecs_version, String $ecs_revision| {
-    logstash::output::elasticsearch { "ecs_${ecs_version}-${ecs_revision}":
+    logstash::output::opensearch { "ecs_${ecs_version}-${ecs_revision}":
       host            => '127.0.0.1',
       guard_condition => "\"es\" in [tags] and [ecs][version] == \"${ecs_version}\"",
       index           => "ecs-${ecs_version}-${ecs_revision}-%{[@metadata][partition]}-%{+xxxx.ww}",
@@ -192,7 +192,7 @@ filter {
     '1.0.0' => '2'
   }
   $w3creportingapi_versions.each |String $w3creportingapi_version, String $w3creportingapi_revision| {
-    logstash::output::elasticsearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
+    logstash::output::opensearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
       host            => '127.0.0.1',
       guard_condition => "[\$schema] == \"/w3c/reportingapi/network_error/${w3creportingapi_version}\"",
       index           => "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}-%{+xxxx.ww}",
