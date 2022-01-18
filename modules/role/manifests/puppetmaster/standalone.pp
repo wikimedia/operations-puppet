@@ -55,6 +55,7 @@ class role::puppetmaster::standalone(
     Boolean                            $command_broadcast   = false,
     String[1]                          $hiera_config        = $::realm,
     Boolean                            $use_r10k            = false,
+    Boolean                            $upload_facts        = false,
     Array[Puppetmaster::Report]        $reports             = ['puppetdb'],
     Hash[String, Puppetmaster::R10k::Source]             $r10k_sources  = {},
     Optional[Variant[Array[Stdlib::Host], Stdlib::Host]] $puppetdb_host = undef,
@@ -127,6 +128,7 @@ class role::puppetmaster::standalone(
         hiera_config        => $hiera_config,
         use_r10k            => $use_r10k,
         r10k_sources        => $r10k_sources,
+        upload_facts        => $upload_facts,
     }
 
     # Don't attempt to use puppet-master service, we're using passenger.
