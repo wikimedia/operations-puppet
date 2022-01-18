@@ -2,6 +2,7 @@ profile::cache::envoy::tls_port: 443
 profile::cache::envoy::websockets: false
 profile::cache::envoy::upstream_connect_timeout: 3.0
 profile::cache::envoy::upstream_response_timeout: 3600.0
+profile::cache::envoy::upstream_idle_timeout: 59.0
 profile::cache::envoy::connection_buffer_limit: 32768
 profile::cache::envoy::downstream_idle_timeout: 3600.0
 profile::cache::envoy::stream_idle_timeout: 300.0
