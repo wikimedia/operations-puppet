@@ -28,7 +28,12 @@ class puppet_compiler(
             owner  => $user,
             mode   => '0644';
         [$workdir, $vardir]: ;
-        [$yamldir, $libdir]:
+        $libdir:
+            recurse => true;
+        $yamldir:
+            ensure  => link,
+            target  => '/mnt/nfs/labstore-secondary-project',
+            require => Labstore::Nfs_mount['project-on-labstore-secondary'],
             recurse => true;
     }
 
