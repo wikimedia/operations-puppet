@@ -1745,7 +1745,11 @@ node 'cloudbackup2001.codfw.wmnet' {
 #  duplicate the work of labstore1004 (but on
 #  a different day of the week)
 node 'cloudbackup2002.codfw.wmnet' {
-    role(wmcs::nfs::primary_backup::misc)
+    role(wmcs::openstack::eqiad1::backups)
+
+    # Transitional: once we've fully moved to NFS-on-cinder
+    #  this role can be removed.
+    include ::role::wmcs::nfs::primary_backup::misc
 }
 
 # the cinder-backup nodes for codfw1dev run in the eqiad DC and
