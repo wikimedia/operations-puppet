@@ -153,7 +153,7 @@ class cassandra (
     $component = $target_version  ? {
         '2.2' => 'component/cassandra22',
         '3.x' => 'component/cassandra311',
-        'dev' => 'component/cassandra311'
+        'dev' => 'component/cassandradev'
     }
 
 
