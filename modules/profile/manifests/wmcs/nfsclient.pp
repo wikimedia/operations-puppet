@@ -51,20 +51,6 @@ class profile::wmcs::nfsclient(
         }
     }
 
-    # These are actually the secondary servers, not the servers formerly known as
-    # secondary.  These are not connected to the above TODO
-    $secondary_servers.each |String $server| {
-        labstore::nfs_mount { $server:
-            ensure      => 'absent',
-            mount_name  => 'scratch',
-            project     => $::labsproject,
-            options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
-            mount_path  => "/mnt/nfs/secondary-${server}-scratch",
-            share_path  => '/srv/scratch',
-            server      => $server,
-            nfs_version => $nfs_version,
-        }
-    }
     labstore::nfs_mount { 'scratch-on-secondary':
         mount_name  => 'scratch',
         project     => $::labsproject,
