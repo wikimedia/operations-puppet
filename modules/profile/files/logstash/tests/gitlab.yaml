@@ -8,6 +8,70 @@ ignore:
   - "[url][path]"  # when not defined, path is populated by logstash-filter-verifier
 testcases:
   - input:
+    - >
+      {
+        "program": "input-file-gitlab-gitaly-json",
+        "severity": "NOTICE",
+        "host": "gitlab1001",
+        "correlation_id": "01FSQ0W47M3C7ADEQCGMNTXEGB",
+        "grpc.meta.auth_version": "v2",
+        "grpc.meta.client_name": "gitlab-workhorse",
+        "grpc.meta.deadline_type": "none",
+        "grpc.meta.method_type": "server_stream",
+        "grpc.method": "InfoRefsUploadPack",
+        "grpc.request.fullMethod": "/gitaly.SmartHTTPService/InfoRefsUploadPack",
+        "grpc.request.glProjectPath": "thcipriani/train-stats",
+        "grpc.request.glRepository": "project-15",
+        "grpc.request.repoPath": "@hashed/e6/29/e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb.git",
+        "grpc.request.repoStorage": "default",
+        "grpc.service": "gitaly.SmartHTTPService",
+        "grpc.start_time": "2022-01-18T16:38:42.727",
+        "level": "info",
+        "msg": "cache miss for InfoRefsUploadPack response",
+        "peer.address": "@",
+        "pid": 31636,
+        "service": "upload-pack",
+        "span.kind": "server",
+        "system": "grpc",
+        "time": "2022-01-18T16:38:42.735Z"
+      }
+
+    expected:
+      - "@timestamp": "2022-01-18T16:38:42.735Z"
+        message: "cache miss for InfoRefsUploadPack response"
+        labels:
+          client_name: "gitlab-workhorse"
+          project_path: "thcipriani/train-stats"
+          repo_path: "@hashed/e6/29/e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb.git"
+          repo_storage: "default"
+          repository: "project-15"
+          service: "upload-pack"
+        host:
+          name: "gitlab1001"
+        log:
+          level: "INFO"
+          logger: "gitaly.SmartHTTPService"
+          origin:
+            function: "/gitaly.SmartHTTPService/InfoRefsUploadPack"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 134
+            severity:
+              code: 6
+              name: "informational"
+        process:
+          pid: 31636
+        service:
+          name: "gitlab-gitaly"
+          type: "gitlab"
+        trace:
+          id: "01FSQ0W47M3C7ADEQCGMNTXEGB"
+        ecs:
+          version: "1.7.0"
+
+  - input:
       - >
         {
           "program": "input-file-gitlab-gitaly-json",
