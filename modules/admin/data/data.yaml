@@ -354,7 +354,7 @@ groups:
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray]
+              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4972,6 +4972,15 @@ users:
     realname: Nicholas Ray
     email: nray@wikimedia.org
     ssh_keys: []
+  mfossati:
+    ensure: present
+    gid: 500
+    uid: 36876
+    realname: Marco Fossati
+    email: mfossati@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA5/YSLfsC+/YmMmMx91QzJ/yAsl4e3ubOFnBIqvPY2W galmac-prod
+    krb: present
 
 ldap_only_users:
   abartov:
