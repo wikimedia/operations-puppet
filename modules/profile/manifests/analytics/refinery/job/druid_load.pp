@@ -86,9 +86,6 @@ class profile::analytics::refinery::job::druid_load(
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_internal_flows':
-        # There currently is no data flowing in ,so the source table hasn't been created,
-        # and the job fails. Absenting until data flows in.
-        ensure            => 'absent',
         job_config        => {
             database         => 'event',
             druid_datasource => 'network_internal_flows',
@@ -105,9 +102,6 @@ class profile::analytics::refinery::job::druid_load(
     # This second round serves as sanitization, after 90 days of data loading.
     # Note that some dimensions are not present, thus nullifying their values.
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_internal_flows-sanitization':
-        # There currently is no data flowing in ,so the source table hasn't been created,
-        # and the job fails. Absenting until data flows in.
-        ensure           => 'absent',
         ensure_hourly    => 'absent',
         daily_days_since => 61,
         daily_days_until => 60,
