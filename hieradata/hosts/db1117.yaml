@@ -4,4 +4,3 @@ profile::mariadb::misc::multiinstance::instances:
   m2: 100G
   m3: 100G
   m5: 100G
-profile::monitoring::notifications_enabled: false
