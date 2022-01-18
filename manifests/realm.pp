@@ -205,6 +205,7 @@ $private_tables = [
     'growthexperiments_mentee_data',
     'hidden',
     'image_old',
+    'ipinfo_ip_changes',
     'job',
     'ldap_domains',
     'linkscc',
