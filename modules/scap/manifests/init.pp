@@ -29,12 +29,4 @@ class scap (
         group   => 'root',
         mode    => '0444',
     }
-
-    ensure_packages([
-        'python-psutil',
-        'python-netifaces',
-        'python-yaml',
-        'python-requests',
-        'python-jinja2',
-    ])
 }
