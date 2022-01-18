@@ -9,14 +9,27 @@
 # @param default_usages the default signing usages
 # @param default_crl_url the URL of the CRL
 # @param default_ocsp_url the URL of the OCSP responder
+# @param serve_ensure ensurable paramter for local serve service
+# @param manage_db boolean to manage the db
+# @param manage_services boolean to manage the services
+# @param db_driver DB Driver
+# @param db_user DB user
+# @param db_pass DB pass
+# @param db_name DB name
+# @param db_host DB host
 # @param profiles A hash of signing profiles
 # @param auth_keys A hash of authentication keys, this must contain an entry for the default_auth_key
+# @param serve_service Name of the service seving this signer e.g. the multirootca
+# @param db_conf_file database config file location
+# @param ca_key_file CA private key file location
+# @param ca_file CA public key file location
+# @param ca_bundle_file CA chain file including the root ca
 define cfssl::signer (
-    Stdlib::Host                  $listen_addr      = $facts['fqdn'],
+    Stdlib::Host                  $listen_addr      = $facts['networking']['fqdn'],
     Stdlib::Port                  $listen_port      = 8888,
     Cfssl::Loglevel               $log_level        = 'info',
     String                        $default_auth_key = 'default_auth',
-    Cfssl::Expiry                 $default_expiry   = '627h',
+    Cfssl::Expiry                 $default_expiry   = '672h',  # 28days
     Array[Cfssl::Usage]           $default_usages   = ['signing', 'key encipherment', 'client auth'],
     Stdlib::HTTPUrl               $default_crl_url  = "http://${listen_addr}/crl",
     Stdlib::HTTPUrl               $default_ocsp_url = "http://${listen_addr}/ocsp",
@@ -81,7 +94,7 @@ define cfssl::signer (
             host           => $db_host,
             notify_service => $_serve_service,
             sqlite_path    => $sqlite_path,
-            conf_file      => $_db_conf_file
+            conf_file      => $_db_conf_file,
         }
     }
 
