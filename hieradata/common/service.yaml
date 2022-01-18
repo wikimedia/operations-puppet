@@ -1446,9 +1446,8 @@ service::catalog:
       protocol: tcp
     probes:
       - type: http
-        path: /healthz
     monitoring:
-      check_command: check_https_lvs_on_port!miscweb.discovery.wmnet!4111!/healthz
+      check_command: check_https_lvs_on_port!miscweb.discovery.wmnet!4111!/
       critical: false # don't enable paging while testing
       sites:
         codfw:
