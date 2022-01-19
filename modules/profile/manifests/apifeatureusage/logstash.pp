@@ -60,27 +60,29 @@ class profile::apifeatureusage::logstash (
 
   # Inputs
   logstash::input::kafka { 'rsyslog-udp-localhost-eqiad':
-    kafka_cluster_name      => 'logging-eqiad',
-    topics_pattern          => 'udp_localhost-.*',
-    group_id                => $input_kafka_consumer_group_id,
-    type                    => 'syslog',
-    tags                    => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
-    codec                   => 'json',
-    security_protocol       => 'SSL',
-    ssl_truststore_password => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
-    consumer_threads        => 3,
+    kafka_cluster_name                    => 'logging-eqiad',
+    topics_pattern                        => 'udp_localhost-.*',
+    group_id                              => $input_kafka_consumer_group_id,
+    type                                  => 'syslog',
+    tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    ssl_endpoint_identification_algorithm => '',
+    consumer_threads                      => 3,
   }
 
   logstash::input::kafka { 'rsyslog-udp-localhost-codfw':
-    kafka_cluster_name      => 'logging-codfw',
-    topics_pattern          => 'udp_localhost-.*',
-    group_id                => $input_kafka_consumer_group_id,
-    type                    => 'syslog',
-    tags                    => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
-    codec                   => 'json',
-    security_protocol       => 'SSL',
-    ssl_truststore_password => $input_kafka_ssl_truststore_passwords['logging-codfw'],
-    consumer_threads        => 3,
+    kafka_cluster_name                    => 'logging-codfw',
+    topics_pattern                        => 'udp_localhost-.*',
+    group_id                              => $input_kafka_consumer_group_id,
+    type                                  => 'syslog',
+    tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+    ssl_endpoint_identification_algorithm => '',
+    consumer_threads                      => 3,
   }
 
   # Filters
@@ -100,7 +102,7 @@ class profile::apifeatureusage::logstash (
   $targets.each |Stdlib::Host $cluster| {
     logstash::output::elasticsearch { "apifeatureusage-${cluster}":
       host            => $cluster,
-      index           => 'apifeatureusage-%{YYYY.MM.dd}',
+      index           => 'apifeatureusage-%{+YYYY.MM.dd}',
       guard_condition => '[type] == "api-feature-usage-sanitized"',
       priority        => 95,
       template        => '/etc/logstash/templates/apifeatureusage_6.0-1.json',
