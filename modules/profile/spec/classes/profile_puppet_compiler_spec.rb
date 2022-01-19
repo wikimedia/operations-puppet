@@ -11,6 +11,14 @@ describe 'profile::puppet_compiler' do
           puppetdb_proxy: true
         }
       end
+      let(:pre_condition) do
+        "
+        labstore::nfs_mount{project-on-labstore-secondary:
+          mount_path => '/foo',
+          mount_name => 'foo',
+        }
+        "
+      end
 
       it { is_expected.to compile.with_all_deps }
     end

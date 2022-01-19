@@ -11,6 +11,14 @@ describe 'profile::puppet_compiler::puppetdb' do
           max_content_length: 42,
         }
       end
+      let(:pre_condition) do
+        "
+        labstore::nfs_mount{project-on-labstore-secondary:
+          mount_path => '/foo',
+          mount_name => 'foo',
+        }
+        "
+      end
 
       it { is_expected.to compile.with_all_deps }
     end
