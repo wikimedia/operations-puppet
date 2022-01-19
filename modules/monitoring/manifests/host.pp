@@ -82,7 +82,7 @@ define monitoring::host (
         }
         # Populate a network related hostgroup for directly connected to switches
         # hosts
-        if $facts['lldp'] and $facts['lldp']['parent'] =~ /asw|csw/ {
+        if $facts['lldp'] and $facts['lldp']['parent'] =~ /asw|cloudsw/ {
             $hostgroups = "${hostgroup},${facts['lldp']['parent']}"
         } else {
             $hostgroups = $hostgroup
