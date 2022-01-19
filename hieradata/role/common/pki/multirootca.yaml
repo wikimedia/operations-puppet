@@ -20,28 +20,14 @@ profile::pki::multirootca::intermediates:
           - 'digital signature'
           - 'ocsp signing'
         expiry: '43800h'
-      server:
-        usages:
-          - 'digital signature'
-          - 'key encipherment'
-          - 'server auth'
-        expiry: '672h'
+      server: {}
       k8s_staging:
-        usages:
-          - 'digital signature'
-          - 'key encipherment'
-          - 'server auth'
         # Short expiry for staging to regularly test cert refresh
         expiry: '24h'
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
         auth_key: 'k8s_staging'
       k8s_mlserve:
-        usages:
-          - 'digital signature'
-          - 'key encipherment'
-          - 'server auth'
-        expiry: '672h'
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
         auth_key: 'k8s_mlserve'
