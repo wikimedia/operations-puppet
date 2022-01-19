@@ -8,6 +8,7 @@ class profile::cache::envoy(
     Float                         $stream_idle_timeout       = lookup('profile::cache::envoy::stream_idle_timeout'),
     Float                         $request_timeout           = lookup('profile::cache::envoy::request_timeout'),
     Float                         $request_headers_timeout   = lookup('profile::cache::envoy::request_headers_timeout'),
+    Float                         $delayed_close_timeout     = lookup('profile::cache::envoy::delayed_close_timeout'),
     Hash[String, Envoyproxy::TlsconfigV3] $available_unified_upstreams = lookup('profile::cache::envoy::available_unified_upstreams'),
     Optional[Hash[String, Envoyproxy::TlsconfigV3]] $extra_upstreams = lookup('profile::cache::envoy::extra_upstreams', {'default_value' => undef}),
     Optional[Array[String]]       $unified_certs             = lookup('profile::cache::envoy::unified_certs'),
@@ -169,6 +170,7 @@ class profile::cache::envoy(
         stream_idle_timeout       => $stream_idle_timeout,
         request_timeout           => $request_timeout,
         request_headers_timeout   => $request_headers_timeout,
+        delayed_close_timeout     => $delayed_close_timeout,
         max_requests_per_conn     => 10000,
     }
 }

@@ -8,6 +8,7 @@ profile::cache::envoy::downstream_idle_timeout: 3600.0
 profile::cache::envoy::stream_idle_timeout: 300.0
 profile::cache::envoy::request_timeout: 180.0
 profile::cache::envoy::request_headers_timeout: 120.0
+profile::cache::envoy::delayed_close_timeout: 20.0
 profile::cache::envoy::unified_certs:
   - 'digicert-2021-ecdsa-unified'
   - 'digicert-2021-rsa-unified'
