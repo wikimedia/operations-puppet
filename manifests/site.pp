@@ -229,6 +229,11 @@ node /^backup100[4567]\.eqiad\.wmnet$/ {
     role(mediabackup::storage)
 }
 
+# new backup storage eqiad T294974
+node 'backup1008.eqiad.wmnet' {
+    role(insetup)
+}
+
 # codfw storage daemon
 node 'backup2001.codfw.wmnet' {
     role(backup::offsite)
