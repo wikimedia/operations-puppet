@@ -48,3 +48,35 @@ puppet_compiler::uploader::realms:
       C0gyRPFAn46QOzOJQgzMneMSVp7IN05i4IYW/1kiQOT7Ks22UEJyZhXYpTkTnuQ6
       2jK3v7JNqnd3yHHg/iCdroUCAwEAAQ==
       -----END PUBLIC KEY-----
+  tools:
+    tools-puppetmaster-02: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwFJKcHDf2j1f76imoC+a
+      KEOqrxM/bq6Kf9Uy3N18S7YTTRYi8k9MdOWen0Yzmugcm0AG6SJFBw4nb3Md7kKE
+      599hvoTQec535EuV8DgK9ryeCur+UtrTUb9+vYyfobNSErwBD/YbfOxXRVU3VlIU
+      +uJasWwxL4BXSxWXAZREiGIawvMbk/MtSoi7j4r+CcKge3zvUdHm16gqomVtPQvp
+      LZTbQpqCpgspQhCPfdLIIP77bFZhPnjR6ofnBpStKZe9DCcbTyDRF8lAcb5gD/yz
+      asJzHNRRV5oB7zpHAQ0OLrO3M1gcv1+TyjIK/g+790g4wt2CcDC/yDdE5SmgnBOu
+      AtYLZ3K1OupMZ9JHbLDeNlHVrpfvuHwIxuOIpjzy0jI+ny67OLtNgtNYvu0k2feR
+      zoVB9AnEnMjsJlAhxxKAfjLZkcfhDGoMSw36vwKX56TFeTt4kb/Fzie8GEFgAKAl
+      g5/3PvAtH1fd6B59FM0wsboISYvh6B40QupZ8pNrUaaJvfjc7y2gVhnfrqP6VIMG
+      YMCwWmmKDb8MXqdJ9ntZjyvTi+NwT/cRHY5laFZiJChf6IoaOo5UJYkUzVVG0JIu
+      cq2SKnTSqjIwZdbe+NNVAkVDh5rFk2KTxfoj0+k5Lp3fhHBjNVyXkVdTQgWamdKJ
+      XqXaLTp89ICMQK1dCMVw7CsCAwEAAQ==
+      -----END PUBLIC KEY-----
+  toolsbeta:
+    toolsbeta-puppetmaster-04: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA4CE1fDuR/C8hHALdJCvo
+      kI8zUSpRbzg6eRyEGdigXvRwNnwz84ewTinUu4Yq7OzhvsUN9YljBCgzHeCv6VYL
+      k/vZTy3AvRH0nUTgMx6Ak8pQHKfcLVMUNdWE2dqLRj683Pb7XJ7O45BJ59DjmRea
+      pzGioKaOer6OmCwTe/sY5Dy0rbq1WvWFAcQR6MPsQoea3A6OcU4+NqJx+rGNk8db
+      RmlaEniC4vX9Pjl219UuGDEN+m6dmjQXSPTc4FqodPZa+sQicL7/taq02n33T74d
+      VOSnljO0yy8ctvPYUotQ77UIlIV4fSjcf83kh/yWOaqz3Um9N7/SUb+5SfuClL5Z
+      qHKc4ydppqYqwtYHH31Zht2n3FJb2/N/Hks8v/cf/eM+dqvYByqYvQGigZ8ndLfM
+      +Xtj0M5M/C+Ai2+O+cUeRcM92mK6+OyT9aKoPzkuVtxYYn6xbSO+CheA9HnmgcEo
+      ViCFq3IbxaXnazzqi8ADl5Z77WDEs2/O0z47OmlwRwSU+MKoRIExvM3K3//Bof1t
+      9HLlqICw+0EC0ae2c4Afb54YcawmQfcsLPvqXr6425kKgebYdV5IeHOMVbgpk+1u
+      XRZcgbmwvtYIkaU/DY0D0Kcmh/gRP29IE2AVBqWlkzrS90y8HedBDEA4jmW0fKvx
+      +iOcRuNWOD+fII/vM8WAtjkCAwEAAQ==
+      -----END PUBLIC KEY-----
