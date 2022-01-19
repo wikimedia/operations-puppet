@@ -12,7 +12,7 @@ class dumps::web::rsync::nginxlogs (
         monitoring_enabled => false,
         send_mail          => true,
         environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
-        command            => "/usr/bin/rsync ${rsync_args} /var/log/nginx/*.gz ${dest}",
+        command            => "/usr/bin/rsync ${rsync_args} '/var/log/nginx/*.gz' ${dest}",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 4:55:0'},
     }
 }
