@@ -4,8 +4,6 @@
 # @param db_pass The db pass to use
 # @param db_name The db name to use
 # @param db_host The db host to use
-# @param root_ca_content the content of the root CA public key as a string passed to the file command
-# @param root_ca_cn The CN of the root ca used for creating the ocsp responder
 # @param root_ocsp_cert The Root CA ocsp signing certificate as a string passed to the file command
 # @param root_ocsp_key The Root CA ocsp signing key as a string passed to secret
 # @param root_ocsp_port the ocsp listening port
@@ -40,7 +38,7 @@ class profile::pki::multirootca (
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
     Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
     Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirootca::default_profiles'),
-    Hash[String, Hash]            $intermediates      = lookup('profile::pki::multirootca::intermediates'),
+    Hash[String, Profile::Pki::Intermediate] $intermediates = lookup('profile::pki::multirootca::intermediates'),
 
 ) {
     # we need to include this as we use some of the variables
@@ -160,12 +158,14 @@ class profile::pki::multirootca (
         }
     }
     class {'cfssl::multirootca':
-        signers  => $signers,
+        signers             => $signers,
+        enable_monitoring   => $enable_monitoring,
+        monitoring_critical => $enable_monitoring,
     }
     class { 'sslcert::dhparam': }
     # CRL and OCSP responder
     class {'httpd':
-        modules              => ['proxy_http', 'ssl', 'headers']
+        modules => ['proxy_http', 'ssl', 'headers']
     }
     # TODO: probably replace this with acmechief
     $tls_termination_cert = $facts['puppet_config']['hostcert']
