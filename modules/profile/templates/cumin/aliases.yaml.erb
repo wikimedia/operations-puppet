@@ -265,7 +265,6 @@ ores-canary: P{ores1001.eqiad.wmnet}
 ores-eqiad: A:ores and A:eqiad
 ores-codfw: A:ores and A:codfw
 ores-poolcounter: P{O:orespoolcounter}
-otrs: P{O:otrs}
 parsoid: P{O:parsoid}
 parsoid-canary: P{wtp1025.eqiad.wmnet or wtp1026.eqiad.wmnet or parse2001.codfw.wmnet or parse2002.codfw.wmnet}
 parsoid-codfw: A:parsoid and A:codfw
@@ -333,6 +332,7 @@ thumbor-canary: P{thumbor1001.eqiad.wmnet}
 thumbor-codfw: A:thumbor and A:codfw
 thumbor-eqiad: A:thumbor and A:eqiad
 url-downloader: P{O:url_downloader}
+vrts: P{O:vrts}
 wcqs-public: P{O:wcqs::public}
 wdqs-all: A:wdqs-public or A:wdqs-internal or A:wdqs-test
 wdqs-main: P{O:wdqs::public or O:wdqs::internal}
@@ -353,7 +353,7 @@ zookeeper-analytics: P{O:analytics_cluster::zookeeper}
 
 # Miscellaneous groups
 misc-analytics: P{O:statistics::web or O:piwik or O:analytics_cluster::webserver} or A:eventlogging
-misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:doc or O:requesttracker or O:otrs or O:miscweb} or A:planet or A:releases
+misc-apache: P{O:microsites::peopleweb or C:grafana::production or O:doc or O:requesttracker or O:vrts or O:miscweb} or A:planet or A:releases
 misc-devel: P{O:webperf::processors_and_site or O:webperf::profiling_tools or O:ve or O:archiva or O:docker::registry} or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:insetup or O:insetup_noferm or O:sretest}
 misc-ops: A:installserver or A:cumin or A:url-downloader or A:icinga or A:netmon or A:kafkamon or A:puppetboard or A:apt or A:debmonitor or A:debmonitor or A:backup or A:ping or A:rpki or A:flowspec or A:pki or P{O:logging::webrequest::ops or O:builder or O:syslog::centralserver or O:pmacct or O:mirrors}
