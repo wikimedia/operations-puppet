@@ -1,15 +1,13 @@
-# This profile installs docker-report, and runs the report with the required frequency.
+# @summary This profile installs docker-report, and runs the report with the required frequency.
+# @param proxy the http procy to use if any
+# @param generate_reports if we should generate reports
 class profile::docker::reporter(
-    String $proxy = lookup('http_proxy'),
-    Boolean $generate_reports = lookup('profile::docker::reporter::generate_reports'),
+    Boolean                   $generate_reports = lookup('profile::docker::reporter::generate_reports'),
+    Optional[Stdlib::HTTPUrl] $proxy            = lookup('http_proxy'),
 ) {
-    package { 'python3-docker-report':
-        ensure => present,
-    }
-    $report_ensure = $generate_reports ? {
-        true => 'present',
-        default => 'absent',
-    }
+    ensure_packages(['python3-docker-report'])
+    $report_ensure = $generate_reports.bool2str('present', 'absent')
+
     profile::docker::reporter::report {
         default:
             ensure => $report_ensure,
