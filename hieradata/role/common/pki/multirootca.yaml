@@ -41,6 +41,7 @@ profile::pki::multirootca::intermediates:
           - 'digital signature'
           - 'key encipherment'
           - 'server auth'
+        expiry: '672h'
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
         auth_key: 'k8s_mlserve'
