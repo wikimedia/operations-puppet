@@ -1326,7 +1326,7 @@ service::catalog:
       scheduler: sh
     monitoring:
       check_command: check_tcp!11514
-      critical: true
+      critical: false
       sites:
         eqiad:
           hostname: logstash.svc.eqiad.wmnet
