@@ -94,6 +94,7 @@ class profile::toolforge::grid::exec_environ {
         'fonts-sil-nuosusil',        # T83288
         'culmus',                    # T40946
         'culmus-fancy',              # T40946
+        'fdm',                       # T297683
         'fonts-lklug-sinhala',       # T57462
         'fonts-vlgothic',            # T66002
         'fonts-dejavu-core',         # T65206
