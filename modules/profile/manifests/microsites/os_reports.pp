@@ -16,7 +16,7 @@ class profile::microsites::os_reports (
         user            => 'root',
         logging_enabled => false,
         send_mail       => false,
-        command         => "/usr/bin/rsync rsync://${os_reports_host}/osreports/* ${docroot}",
+        command         => "/usr/bin/rsync -tr rsync://${os_reports_host}/osreports/ ${docroot}",
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 03:00:00'},
     }
 }
