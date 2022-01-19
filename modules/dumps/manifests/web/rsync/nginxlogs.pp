@@ -4,7 +4,7 @@ class dumps::web::rsync::nginxlogs (
 {
     ensure_packages('rsync')
 
-    $rsync_args = '-rt --perms --chmod=go+r --bwlimit=50000'
+    $rsync_args = '--include "*.gz" --exclude "*" -rt --perms --chmod=go+r --bwlimit=50000'
     systemd::timer::job { 'rsync_nginxlogs':
         ensure             => present,
         description        => 'Regular jobs to rsync nginx logs',
@@ -12,7 +12,7 @@ class dumps::web::rsync::nginxlogs (
         monitoring_enabled => false,
         send_mail          => true,
         environment        => {'MAILTO' => 'ops-dumps@wikimedia.org'},
-        command            => "/usr/bin/rsync ${rsync_args} '/var/log/nginx/*.gz' ${dest}",
+        command            => "/usr/bin/rsync ${rsync_args} /var/log/nginx/ ${dest}",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 4:55:0'},
     }
 }
