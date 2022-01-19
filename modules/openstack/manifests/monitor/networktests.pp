@@ -52,14 +52,6 @@ class openstack::monitor::networktests (
         content => template('openstack/monitor/networktests.yaml.erb'),
     }
 
-    $cmd = '/usr/local/bin/cmd-checklist-runner'
-
-    file { $cmd:
-        ensure => present,
-        mode   => '0755',
-        source => 'puppet:///modules/openstack/monitor/cmd-checklist-runner.py',
-    }
-
     $timer_ensure = $timer_active ? {
         true    => 'present',
         default => 'absent',
@@ -68,13 +60,14 @@ class openstack::monitor::networktests (
     systemd::timer::job { 'cloud-vps-networktest':
         ensure              => $timer_ensure,
         description         => 'Run the Cloud VPS network tests',
-        command             => "${cmd} --config ${config} --exit-code-fail",
+        command             => "/usr/local/bin/cmd-checklist-runner --config ${config} --exit-code-fail",
         user                => $usr,
         interval            => {
             'start'    => 'OnCalendar',
             'interval' => '*:0/15:00', # every 15 minutes
         },
         max_runtime_seconds => 600, # kill if running after 10 mins
+        require             => Class['cmd_checklist_runner'],
     }
 
     # TODO: deploy some kind of emailer with the results
