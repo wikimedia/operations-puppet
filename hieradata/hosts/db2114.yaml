@@ -2,4 +2,3 @@
 # candidate master for s6
 mariadb::shard: 's6'
 mariadb::binlog_format: 'STATEMENT'
-profile::monitoring::notifications_enabled: false
