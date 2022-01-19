@@ -12,7 +12,6 @@ import sys
 import time
 import traceback
 import requests
-from requests.auth import HTTPBasicAuth
 
 
 # pylint: disable=W0703
@@ -29,14 +28,157 @@ MAX_REQUEST_TIME = 60 * 90
 LOG = logging.getLogger(__name__)
 
 
+class AuthManager():
+    '''
+    get and manage JWT auth tokens for WME applications
+    '''
+    def __init__(self, credsfile_path, settings):
+        self.settings = settings
+        self.creds = self.get_creds(credsfile_path)
+        self.auth_tokens = self.get_auth_tokens()
+
+    def get_creds(self, credspath):
+        '''
+        get and return username and password for retrieval of JWT auth tokens
+        '''
+        if not os.path.exists(credspath):
+            usage('Failed to find specified credentials file ' + credspath)
+        user, passwd = self.read_creds(credspath)
+        if not user or not passwd:
+            usage("username and password file must be set up with both user and password")
+        LOG.debug("Credentials retrieved")
+        creds = {'user': user, 'passwd': passwd}
+        return creds
+
+    @staticmethod
+    def read_creds(filepath):
+        '''
+        read path and return values for user, passwd
+        '''
+        user = None
+        passwd = None
+        if not os.path.exists(filepath):
+            usage("Failed to find credentials file: " + filepath)
+        try:
+            with open(filepath) as infile:
+                contents = infile.read()
+            entries = contents.splitlines()
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            LOG.error(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+            usage("Problem with credentials file " + filepath)
+
+        for entry in entries:
+            if entry.startswith('#'):
+                continue
+            entry = entry.strip()
+            if not entry:
+                continue
+            if '=' not in entry:
+                usage("Bad format for credentials in " + filepath)
+            name, value = entry.split('=', 1)
+            if name == 'user':
+                user = value
+            elif name == 'passwd':
+                passwd = value
+            else:
+                usage("Unknown entry in credentials file " + filepath)
+
+        if not user or not passwd:
+            usage("Both 'user' and 'passwd' must be specified in credentials file")
+
+        return user, passwd
+
+    def get_auth_tokens(self):
+        '''
+        retreive jwt auth tokens via WME api
+        '''
+        auth_url = self.settings['authurl']
+        headers = {'user-agent': USERAGENT, "Accept": "application/json"}
+        try:
+            response = requests.post(auth_url,
+                                     data={'username': self.creds['user'],
+                                           'password': self.creds['passwd']},
+                                     headers=headers, timeout=TIMEOUT)
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            LOG.error(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+            LOG.error("failed to get jwt auth tokens for WME API access")
+            raise
+
+        if response.status_code != 200:
+            LOG.error("failed to get jwt auth tokens response code %s (%s)",
+                      response.status_code, response.reason)
+            raise requests.HTTPError(response.reason, response)
+
+        try:
+            json_contents = json.loads(response.content)
+        except Exception:
+            LOG.error("failed to load json for jwt auth tokens, got: %s", response.content)
+            raise
+
+        # schema:
+        # {
+        # "id_token": string
+        # "access_token": string
+        # "refresh_token": string
+        # "expires_in": 86400
+        # }
+        try:
+            tokens = {'access': json_contents['access_token'],
+                      'refresh': json_contents['refresh_token']}
+        except Exception:
+            LOG.error("bad json content retrieved for jwt auth tokens, got: %s", response.content)
+            raise
+        LOG.debug("JWT auth tokens retrieved")
+        return tokens
+
+    def refresh(self):
+        '''refresh access token'''
+        refresh_url = self.settings['refreshauthurl']
+        headers = {'user-agent': USERAGENT, "Accept": "application/json"}
+
+        try:
+            response = requests.get(refresh_url,
+                                    data={'username': self.creds['user'],
+                                          'refresh_token': self.creds['refresh']},
+                                    headers=headers, timeout=TIMEOUT)
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            LOG.error(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+            LOG.error("failed to refresh access token for WME API access")
+            raise
+        if response.status_code != 200:
+            LOG.error("failed to refresh access token, response code %s (%s)",
+                      response.status_code, response.reason)
+            raise requests.HTTPError(response.reason, response)
+
+        try:
+            json_contents = json.loads(response.content)
+        except Exception:
+            LOG.error("failed to load json for access token, got: %s", response.content)
+            raise
+
+        # schema:
+        # {
+        # "id_token": string
+        # "access_token": string
+        # }
+        try:
+            self.auth_tokens['access'] = json_contents['access_token']
+        except Exception:
+            LOG.error("bad json content retrieved for jwt auth tokens, got: %s", response.content)
+            raise
+
+
 class Downloader():
     '''
     retrieve and stash dumps for one or more wikis
     if we fail for more than maxfail wikis in a row, stop; this means something more
     fundamentally broken and a human should intervene
     '''
-    def __init__(self, creds, settings, maxfails=5, date=None):
-        self.creds = creds
+    def __init__(self, auth_mgr, settings, maxfails=5, date=None):
+        self.auth_mgr = auth_mgr
         self.settings = settings
         self.date = date
         if not date:
@@ -47,21 +189,27 @@ class Downloader():
         tempdir = os.path.join(settings['tempoutdir'], self.date)
         os.makedirs(tempdir, exist_ok=True)
 
+    def get_req_headers(self):
+        '''get standard headers for http(s) request'''
+        headers = {'user-agent': USERAGENT, "Accept": "application/json",
+                   "authorization": "Bearer " + self.auth_mgr.auth_tokens['access']}
+        return headers
+
     def get_namespace_ids(self):
         '''
         via Wikimedia Enterprise api, get the ids of all of the supported namespaces for which
         dumps of wikis are created
         '''
-        headers = {'user-agent': USERAGENT, "Accept": "application/json"}
         try:
             # even without the timeout, same thing. and I only get the first 565816 bytes,
             # not even a full 1mb so what's up with that.
             url_toget = self.settings['namespacesurl']
             LOG.debug("getting %s", url_toget)
             response = requests.get(url_toget,
-                                    auth=HTTPBasicAuth(self.creds['user'], self.creds['passwd']),
-                                    headers=headers, timeout=TIMEOUT)
+                                    headers=self.get_req_headers(), timeout=TIMEOUT)
 
+            if response.status_code == 401:
+                self.auth_mgr.refresh()
             if response.status_code != 200:
                 LOG.error("failed to get namespaces list with response code %s (%s)",
                           response.status_code, response.reason)
@@ -94,16 +242,16 @@ class Downloader():
         via Wikimedia Enterprise api, get the list of all projects in the given namespace for which
         dumps are created and return it, or None on error
         '''
-        headers = {'user-agent': USERAGENT, "Accept": "application/json"}
         try:
             # even without the timeout, same thing. and I only get the first 565816 bytes,
             # not even a full 1mb so what's up with that.
             url_toget = self.settings['wikilisturl'] + str(namespace_id)
             LOG.debug("getting %s", url_toget)
             response = requests.get(url_toget,
-                                    auth=HTTPBasicAuth(self.creds['user'], self.creds['passwd']),
-                                    headers=headers, timeout=TIMEOUT)
+                                    headers=self.get_req_headers(), timeout=TIMEOUT)
 
+            if response.status_code == 401:
+                self.auth_mgr.refresh()
             if response.status_code != 200:
                 LOG.error("failed to get wiki list with response code %s (%s)\n",
                           response.status_code, response.reason)
@@ -209,15 +357,14 @@ class Downloader():
         except Exception:
             pass
 
-        headers = {'user-agent': USERAGENT, "Accept": "application/json"}
         if dryrun:
             LOG.info("would download: %s", os.path.join(
                 self.settings['basedumpurl'], str(namespace_id), wiki))
             return True
         try:
             with requests.get(os.path.join(self.settings['basedumpurl'], str(namespace_id), wiki),
-                              auth=HTTPBasicAuth(self.creds['user'], self.creds['passwd']),
-                              headers=headers, stream=True, timeout=TIMEOUT) as response:
+                              headers=self.get_req_headers(), stream=True,
+                              timeout=TIMEOUT) as response:
                 with open(outfile_tmp, 'wb') as outf:
                     start = time.time()
                     # Chunk size seems ok for speed in limited testing
@@ -284,13 +431,14 @@ class Downloader():
             return "dummymd5", "dummydate"
         md5sum = None
         last_modified = None
-        headers = {'user-agent': USERAGENT, "Accept": "application/json"}
+
         try:
             response = requests.get(
                 os.path.join(self.settings['dumpinfourl'], str(namespace_id), wiki),
-                auth=HTTPBasicAuth(self.creds['user'], self.creds['passwd']),
-                headers=headers, timeout=TIMEOUT)
+                headers=self.get_req_headers(), timeout=TIMEOUT)
 
+            if response.status_code == 401:
+                self.auth_mgr.refresh()
             if response.status_code != 200:
                 LOG.error("failed to get latest dump info for wiki "
                           " %s, namespace %s with response code %s (%s)",
@@ -655,51 +803,14 @@ def get_args():
     return args
 
 
-def read_creds(filepath):
-    '''
-    read path and return values for user, passwd
-    '''
-    user = None
-    passwd = None
-    if not os.path.exists(filepath):
-        usage("Failed to find credentials file: " + filepath)
-    try:
-        with open(filepath) as infile:
-            contents = infile.read()
-        entries = contents.splitlines()
-    except Exception:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        LOG.error(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
-        usage("Problem with credentials file " + filepath)
-
-    for entry in entries:
-        if entry.startswith('#'):
-            continue
-        entry = entry.strip()
-        if not entry:
-            continue
-        if '=' not in entry:
-            usage("Bad format for credentials in " + filepath)
-        name, value = entry.split('=', 1)
-        if name == 'user':
-            user = value
-        elif name == 'passwd':
-            passwd = value
-        else:
-            usage("Unknown entry in credentials file " + filepath)
-
-    if not user or not passwd:
-        usage("Both 'user' and 'passwd' must be specified in credentials file")
-
-    return user, passwd
-
-
 def read_settings(filepath):
     '''
     read path and return values for various settings, falling back to defaults
     if they are not in the file
     '''
     settings = {
+        'authurl': "https://auth.enterprisewikimedia.com/v1/login",
+        'refreshauthurl': "https://auth.enterprisewikimedia.com/v1/token-refresh",
         'namespacesurl': "https://api.enterprise.wikimedia.com/v1/namespaces",
         'wikilisturl': "https://api.enterprise.wikimedia.com/v1/exports/meta",
         'basedumpurl': "https://api.enterprise.wikimedia.com/v1/exports/download",
@@ -752,21 +863,6 @@ def setup_logging(args):
         LOG.setLevel(logging.INFO)
 
 
-def get_creds(args):
-    '''
-    get and return user credentials for access to the WM Enterprise API
-    '''
-    credspath = args['creds']
-    if not os.path.exists(credspath):
-        usage('Failed to find specified credentials file ' + credspath)
-    user, passwd = read_creds(credspath)
-    if not user or not passwd:
-        usage("username and password file must be set up with both user and password")
-    LOG.debug("Credentials retrieved")
-    creds = {'user': user, 'passwd': passwd}
-    return creds
-
-
 def get_settings(args):
     '''
     get and return settings from the file specified in the args
@@ -779,13 +875,21 @@ def get_settings(args):
 
 
 def do_main():
-    '''entry point'''
+    '''
+    entry point
+
+    AuthManager can fail to get initial tokens; if so, exceptions are thrown and we want to exit
+
+    Downloader can invoke AuthManager to refresh tokens and that can throw an exception upon which
+    we likewise want to exit
+
+    All other errors except usage issues (bad creds file, bad args and so on) should be retriable
+    '''
     args = get_args()
     setup_logging(args)
-    creds = get_creds(args)
     settings = get_settings(args)
-
-    downloader = Downloader(creds, settings, args['maxfails'])
+    auth_mgr = AuthManager(args['creds'], settings)
+    downloader = Downloader(auth_mgr, settings, args['maxfails'])
 
     retries = 0
     while retries <= args['retries']:
