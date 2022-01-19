@@ -1804,14 +1804,12 @@ node /^logstash10(2[345]|3[012])\.eqiad\.wmnet$/ {
 
 # Deprecated Logstash collectors (codfw)
 node /^logstash200[4-6]\.codfw\.wmnet$/ {
-    role(logstash)
-    include ::lvs::realserver # lint:ignore:wmf_styleguide
+    role(spare::system)
 }
 
 # Deprecated Logstash collectors (eqiad)
 node /^logstash100[7-9]\.eqiad\.wmnet$/ {
-    role(logstash)
-    include ::lvs::realserver
+    role(spare::system)
 }
 
 # new lvs servers T295804 (still insetup)
