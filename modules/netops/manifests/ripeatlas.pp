@@ -20,8 +20,8 @@
 #  }
 
 define netops::ripeatlas(
-    Optional[String] $ipv4=undef,
-    Optional[String] $ipv6=undef,
+    Optional[Tuple[String,1]] $ipv4=undef,
+    Optional[Tuple[String,1]] $ipv6=undef,
     Integer[0,100] $loss_allow=50,
     Integer $ipv4_failures=35,
     Integer $ipv6_failures=65,
@@ -34,7 +34,7 @@ define netops::ripeatlas(
     if $ipv4 {
         monitoring::service { "atlas-ping-${title}-ipv4":
             description    => "IPv4 ping to ${title}",
-            check_command  => "check_ripe_atlas!${ipv4}!${loss_allow}!${ipv4_failures}",
+            check_command  => "check_ripe_atlas!${ipv4[0]}!${loss_allow}!${ipv4_failures}",
             host           => "ripe-atlas-${title}",
             group          => $group,
             check_interval => 5,
@@ -45,7 +45,7 @@ define netops::ripeatlas(
     if $ipv6 {
         monitoring::service { "atlas-ping-${title}-ipv6":
             description    => "IPv6 ping to ${title}",
-            check_command  => "check_ripe_atlas!${ipv6}!${loss_allow}!${ipv6_failures}",
+            check_command  => "check_ripe_atlas!${ipv6[0]}!${loss_allow}!${ipv6_failures}",
             host           => "ripe-atlas-${title} IPv6",
             group          => $group,
             check_interval => 5,
