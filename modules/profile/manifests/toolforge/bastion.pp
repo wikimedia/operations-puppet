@@ -77,4 +77,13 @@ class profile::toolforge::bastion(
         mode   => '0444',
         source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
     }
+
+    if debian::codename::ge('buster') {
+        # stretch python can't handle f-string, don't deploy the testsuite there
+        class { 'cmd_checklist_runner': }
+        class { 'toolforge::automated_toolforge_tests':
+            envvars => {},
+            require => Class['cmd_checklist_runner'],
+        }
+    }
 }
