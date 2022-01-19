@@ -1,7 +1,7 @@
 class cmd_checklist_runner (
 ) {
     $runner = 'cmd-checklist-runner'
-    $cmd = "/usr/local/bin/${name}"
+    $cmd = "/usr/local/bin/${runner}"
 
     file { $cmd:
         ensure => present,
