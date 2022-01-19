@@ -37,7 +37,7 @@ class pontoon::service_certs (
         $memo.merge(
             $service => {
                 'authority' => 'pontoon_puppet_ca',
-                'expiry'    => 'null',
+                'expiry'    => '6/6/6666',
                 'key'       => {'algorithm' => 'ec'},
                 'alt_names' => $service_names[$service],
             }
