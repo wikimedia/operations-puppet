@@ -111,6 +111,11 @@
 #       when the last byte of the headers has been received. If not specified or set to 0,
 #       this timeout is disabled.
 #      This timeout *SHOULD* be configured in the presence of untrusted downstreams.
+# @param delayed_close_timeout
+#        It is defined as a grace period after connection close processing has been locally initiated during which
+#        Envoy will wait for the peer to close (i.e., a TCP FIN/RST is received by Envoy from the downstream connection)
+#        prior to Envoy closing the socket associated with that connection
+#        The default timeout is 1s if this option is not specified
 # @param tls_handshake_timeout
 #     TLS handshake timeout in seconds. Only available for V3 configuration and envoy >= 1.17.0
 # @param max_requests_per_conn
@@ -147,6 +152,7 @@ define envoyproxy::tls_terminator(
     Optional[Float]                                                       $stream_idle_timeout       = undef,
     Optional[Float]                                                       $request_timeout           = undef,
     Optional[Float]                                                       $request_headers_timeout   = undef,
+    Optional[Float]                                                       $delayed_close_timeout     = undef,
     Optional[Float]                                                       $tls_handhshake_timeout    = undef,
     Optional[Integer]                                                     $max_requests_per_conn     = undef,
     Optional[String]                                                      $lua_script                = undef,

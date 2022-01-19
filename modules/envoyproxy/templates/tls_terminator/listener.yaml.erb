@@ -79,6 +79,9 @@ filter_chains:
 <%- if @request_headers_timeout -%>
       request_headers_timeout: <%= @request_headers_timeout %>s
 <%- end -%>
+<%- if @delayed_close_timeout -%>
+      delayed_close_timeout: <%= @delayed_close_timeout %>s
+<%- end -%>
 <%- if @http2_options -%>
       http2_protocol_options:
         max_concurrent_streams: <%= @http2_options['max_concurrent_streams'] %>
@@ -202,6 +205,9 @@ filter_chains:
 <%- end -%>
 <%- if @request_headers_timeout -%>
       request_headers_timeout: <%= @request_headers_timeout %>s
+<%- end -%>
+<%- if @delayed_close_timeout -%>
+      delayed_close_timeout: <%= @delayed_close_timeout %>s
 <%- end -%>
 <%- if @http2_options -%>
       http2_protocol_options:
