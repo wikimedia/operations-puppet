@@ -82,13 +82,13 @@ class profile::analytics::refinery::job::druid_load(
         },
     }
 
-    # Load event.network_internal_flows
+    # Load event.network_flows_internal
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
-    profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_internal_flows':
+    profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_flows_internal':
         job_config        => {
             database         => 'event',
-            druid_datasource => 'network_internal_flows',
+            druid_datasource => 'network_flows_internal',
             timestamp_column => 'stamp_inserted',
             dimensions       => 'ip_dst,ip_proto,ip_src,port_dst,port_src,peer_ip_src,ip_version,region',
             metrics          => 'bytes,packets',
@@ -101,15 +101,15 @@ class profile::analytics::refinery::job::druid_load(
     }
     # This second round serves as sanitization, after 90 days of data loading.
     # Note that some dimensions are not present, thus nullifying their values.
-    profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_internal_flows-sanitization':
+    profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_flows_internal-sanitization':
         ensure_hourly    => 'absent',
         daily_days_since => 61,
         daily_days_until => 60,
         daily_shards     => 2,
         job_config       => {
             database         => 'event',
-            table            => 'network_internal_flows',
-            druid_datasource => 'network_internal_flows',
+            table            => 'network_flows_internal',
+            druid_datasource => 'network_flows_internal',
             timestamp_column => 'stamp_inserted',
             dimensions       => 'ip_proto,ip_version,region',
             metrics          => 'bytes,packets',
