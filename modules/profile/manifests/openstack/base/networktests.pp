@@ -7,7 +7,8 @@ class profile::openstack::base::networktests (
     class { 'cmd_checklist_runner': }
 
     class { 'openstack::monitor::networktests':
-        timer_active => ($::fqdn == $openstack_controllers[1]), # not [0] because decoupling
+        timer_active => false, # not providing a lot of value today
+        #timer_active => ($::fqdn == $openstack_controllers[1]), # not [0] because decoupling
         region       => $region,
         sshbastion   => $sshbastion,
         envvars      => $envvars,
