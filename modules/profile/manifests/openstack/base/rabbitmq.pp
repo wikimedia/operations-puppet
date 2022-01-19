@@ -88,7 +88,7 @@ class profile::openstack::base::rabbitmq(
     ferm::rule{'rabbit_for_designate':
         ensure => 'present',
         rule   =>  "saddr (@resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA))
-                    proto tcp dport 5672 ACCEPT;",
+                    proto tcp dport (5671 5672) ACCEPT;",
     }
 
     ferm::rule{'beam_nova':
@@ -100,7 +100,7 @@ class profile::openstack::base::rabbitmq(
         ensure => 'present',
         rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
                           @resolve((${join($openstack_controllers,' ')}), AAAA))
-                   proto tcp dport 5672 ACCEPT;",
+                   proto tcp dport (5671 5672) ACCEPT;",
     }
 
     # Rabbit uses epmd for clustering
@@ -126,7 +126,7 @@ class profile::openstack::base::rabbitmq(
 
     ferm::service { 'rabbitmq-access-for-cloud-vps-instances':
         proto  => 'tcp',
-        port   => '5672',
+        port   => '(5671 5672)',
         srange => "(${labs_networks})",
     }
 
@@ -135,6 +135,6 @@ class profile::openstack::base::rabbitmq(
         ensure => 'present',
         rule   => "saddr (@resolve((${join($cinder_backup_nodes,' ')}))
                           @resolve((${join($cinder_backup_nodes,' ')}), AAAA))
-                   proto tcp dport 5672 ACCEPT;",
+                   proto tcp dport (5671 5672) ACCEPT;",
     }
 }
