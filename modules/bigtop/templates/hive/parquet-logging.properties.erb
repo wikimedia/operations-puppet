@@ -33,7 +33,7 @@
 # Comma-separated list of class names.
 # (? LogManager docs say no comma here, but JDK example has comma.)
 # handlers=java.util.logging.ConsoleHandler
-org.apache.parquet.handlers= java.util.logging.FileHandler
+org.apache.parquet.handlers= java.util.logging.ConsoleHandler
 
 # Default global logging level.
 # Loggers and Handlers may override this level
@@ -44,27 +44,6 @@ org.apache.parquet.handlers= java.util.logging.FileHandler
 
 # --- ConsoleHandler ---
 # Override of global logging level
-java.util.logging.ConsoleHandler.level=INFO
+java.util.logging.ConsoleHandler.level=SEVERE
 java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
 java.util.logging.SimpleFormatter.format=[%1$tc] %4$s: %2$s - %5$s %6$s%n
-
-# --- FileHandler ---
-# Override of global logging level
-java.util.logging.FileHandler.level=ALL
-
-# Naming style for the output file:
-# (The output file is placed in the system temporary directory.
-# %u is used to provide unique identifier for the file.
-# For more information refer
-# https://docs.oracle.com/javase/7/docs/api/java/util/logging/FileHandler.html)
-java.util.logging.FileHandler.pattern=%t/parquet-%u.log
-
-# Limiting size of output file in bytes:
-java.util.logging.FileHandler.limit=50000000
-
-# Number of output files to cycle through, by appending an
-# integer to the base file name:
-java.util.logging.FileHandler.count=1
-
-# Style of output (Simple or XML):
-java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
