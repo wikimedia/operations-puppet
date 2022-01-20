@@ -1,5 +1,15 @@
 # @summary create a cfssl json config file
-# @param auth_keys
+# @param ensure ensurable parameter
+# @param default_auth_key the default key to use if none specified
+# @param default_usages the default usages to use if none specified
+# @param default_auth_remote the default auth_remote to use if none specified
+# @param auth_keys Hash of auth keys to configure
+# @param profiles Hash of profiles to configure
+# @param remotes Hash of remotes to configure
+# @param default_expiry The default expiry to use if none provided in profile
+# @param default_crl_url The default crl_url to use if none provided in profile
+# @param default_ocsp_url The default ocsp_url to use if none provided in profile
+# @param path the path to store the config file
 define cfssl::config (
     Wmflib::Ensure                $ensure              = 'present',
     String                        $default_auth_key    = 'default_auth',
@@ -13,6 +23,12 @@ define cfssl::config (
     Optional[Stdlib::HTTPUrl]     $default_ocsp_url    = undef,
     Optional[Stdlib::Unixpath]    $path                = undef,
 ) {
+    if !$profiles.empty and $default_expiry == undef {
+        fail('must provide a value for default_expiry if providing profiles')
+    }
+    if !$profiles.empty and $default_usages.empty {
+        fail('must provide a value for default_usages if providing profiles')
+    }
     unless $auth_keys.has_key($default_auth_key) {
         fail("auth_keys must have an entry for '${default_auth_key}'")
     }
@@ -35,11 +51,18 @@ define cfssl::config (
     # inject the default auth key if profiles dont specify one
     # first map to an array of [key, values] then convert to a hash
     $_profiles = Hash($profiles.map |$key, $value| {
-        # Make sure any profile specific auth keys are defined
-        if $value.has_key('auth_key') and !$auth_keys.has_key($value['auth_key']) {
-            fail("${key} 'auth_key: ${$value['auth_key']}', not found in auth_keys (${auth_keys.keys.join(',')})")
+        $_auth_key = pick($value['auth_key'], $default_auth_key)
+        $_expiry = pick($value['expiry'], $default_expiry)
+        $_usages = pick($value['usages'], $default_usages)
+        # Make sure the specific auth key is defined
+        unless $auth_keys.has_key($_auth_key) {
+            fail("${key} 'auth_key: ${_auth_key}', not found in auth_keys (${auth_keys.keys.join(',')})")
         }
-        [$key, {'auth_key' => $default_auth_key} + $value]
+        [$key, {
+            'auth_key' => $_auth_key,
+            'expiry'   => $_expiry,
+            'usages'   => $_usages,
+        } + $value]  # we still add value incase it has ca_constraint
     })
     $signing = {
         'default'  => $default,
@@ -59,5 +82,3 @@ define cfssl::config (
         content   => Sensitive($config.to_json()),
     }
 }
-
-
