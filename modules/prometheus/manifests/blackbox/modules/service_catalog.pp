@@ -1,7 +1,8 @@
+# Generate blackbox modules configuration from service::catalog entries.
+# The main use case is to have customised modules for HTTP(s) services.
 class prometheus::blackbox::modules::service_catalog (
   Hash[String, Wmflib::Service] $services_config,
 ) {
-
   $modules = $services_config.reduce({}) |$memo, $el| {
     $service_name = $el[0]
     $service_config = $el[1]

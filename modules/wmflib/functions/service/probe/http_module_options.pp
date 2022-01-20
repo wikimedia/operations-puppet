@@ -35,5 +35,15 @@ function wmflib::service::probe::http_module_options(
     $post_json = {}
   }
 
-  return $compat + $match + $post_json
+  if 'host' in $service_config['probes'][0] {
+    $host_header = {
+      'headers' => {
+        'Host' => $service_config['probes'][0]['host'],
+      },
+    }
+  } else {
+    $host_header = {}
+  }
+
+  return deep_merge($compat, $match, $post_json, $host_header)
 }
