@@ -1,0 +1,2 @@
+prometheus::replica_label: 'a'
+profile::prometheus::enable_thanos_upload: false
