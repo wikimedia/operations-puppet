@@ -207,12 +207,14 @@ def get_args():
     parser.add_argument(
         "change",
         default="last",
+        nargs='?',
         help="The change number or change ID to test. " "Alternatively last or latest to test head",
     )
     parser.add_argument(
         "nodes",
         type=parse_nodes,
         default="parse_commit",
+        nargs='?',
         help="Either a Comma-separated list of nodes or a Host Variable Override. "
         "Alternatively use `parse_commit` to parse",
     )
