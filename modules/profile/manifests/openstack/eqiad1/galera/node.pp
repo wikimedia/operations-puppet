@@ -7,6 +7,7 @@ class profile::openstack::eqiad1::galera::node(
     Array[Stdlib::Fqdn] $designate_hosts       = lookup('profile::openstack::eqiad1::designate_hosts'),
     Array[Stdlib::Fqdn] $labweb_hosts          = lookup('profile::openstack::eqiad1::labweb_hosts'),
     Stdlib::Fqdn        $puppetmaster          = lookup('profile::openstack::eqiad1::puppetmaster::web_hostname'),
+    Array[Stdlib::Fqdn] $cinder_backup_nodes   = lookup('profile::openstack::eqiad1::cinder::backup::nodes'),
     ) {
 
     class {'::profile::openstack::base::galera::node':
@@ -18,6 +19,6 @@ class profile::openstack::eqiad1::galera::node(
         labweb_hosts          => $labweb_hosts,
         puppetmaster          => $puppetmaster,
         prometheus_db_pass    => $prometheus_db_pass,
-        cinder_backup_nodes   => [],  # TODO: add a hiera lookup when service is introduced
+        cinder_backup_nodes   => $cinder_backup_nodes,
     }
 }
