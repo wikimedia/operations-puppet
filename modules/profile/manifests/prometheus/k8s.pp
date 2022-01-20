@@ -5,7 +5,7 @@ class profile::prometheus::k8s (
     Hash                $k8s_clusters          = lookup('profile::prometheus::kubernetes::clusters'),
     Hash                $k8s_cluster_tokens    = lookup('profile::prometheus::kubernetes::cluster_tokens'),
     String              $replica_label         = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
-    Boolean             $enable_thanos_upload  = lookup('profile::prometheus::k8s::thanos', { 'default_value' => false }),
+    Boolean             $enable_thanos_upload  = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String]    $thanos_min_time       = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array[Stdlib::Host] $alertmanagers         = lookup('alertmanagers', {'default_value' => []}),
     String              $storage_retention     = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),

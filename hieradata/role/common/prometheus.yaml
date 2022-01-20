@@ -16,10 +16,7 @@ prometheus::server::mysqld_exporter::mysql::database: zarcillo
 prometheus::server::mysqld_exporter::mysql::user: prometheus-mysqld-exporter
 # prometheus::server::mysqld_exporter::mysql::password: stored on the private repo
 
-profile::prometheus::k8s::staging::thanos: true
-profile::prometheus::analytics::thanos: true
-profile::prometheus::services::thanos: true
-profile::prometheus::k8s::thanos: true
+profile::prometheus::enable_thanos_upload: true
 
 # Thanos will ask Prometheus (via Thanos Sidecar) for last 15d only
 profile::prometheus::thanos::min_time: '-15d'
