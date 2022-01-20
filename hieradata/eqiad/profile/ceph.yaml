@@ -8,6 +8,7 @@ profile::ceph::openstack_controllers:
   - cloudcontrol1004.wikimedia.org
   - cloudcontrol1005.wikimedia.org
 
-# TODO: update this when deploying eqiad1 cinder-backups
-# likely values are: cloudbackup2001.codfw.wmnet & cloudbackup2002.codfw.wmnet
-profile::ceph::cinder_backup_nodes: []
+# NOTE: remember, backups nodes for codfw1dev are in the eqiad DC
+# and backup nodes for eqiad1 are in the codfw DC
+profile::ceph::cinder_backup_nodes:
+  - cloudbackup2002.codfw.wmnet
