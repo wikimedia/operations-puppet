@@ -32,12 +32,12 @@ https://en.wikipedia.org:
 - path: /w/COPYING
   assert_status: 200
   assert_body_contains: License and copyright information
-- path: /static/current/resources/assets/licenses/README
-  assert_status: 200
-# Verify that php URLs accessed via /static/current/ are executed
-- path: /static/current/resources/Resources.php
-  assert_status: 200
-  assert_body_contains: Not an entry point
+# Verify that php URLs accessed via /static/current/ are not reachable.
+# This returns a 404 on k8s (which is better! and a 200 'Not an entry point'
+# on the legacy appservers.
+# TODO: uncomment this once the move to k8s is complete
+#- path: /static/current/resources/Resources.php
+#  assert_status: 404
 
 https://www.mediawiki.org:
 - path: /wiki/User_hub
