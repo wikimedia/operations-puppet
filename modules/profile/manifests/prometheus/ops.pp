@@ -1813,6 +1813,7 @@ class profile::prometheus::ops (
       {
         'job_name'        => 'atlas_exporter',
         'scheme'          => 'http',
+        'scrape_timeout'  => '30s',  # Pulling lots of RIPE mesurements takes > 10s
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/atlas_exporter_*.yaml" ]}
         ],
