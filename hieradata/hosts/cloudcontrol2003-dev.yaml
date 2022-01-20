@@ -9,6 +9,8 @@ prometheus_nodes:
     - cloudmetrics1004.eqiad.wmnet
     - prometheus2003.codfw.wmnet
     - prometheus2004.codfw.wmnet
+    - prometheus2005.codfw.wmnet
+    - prometheus2006.codfw.wmnet
 
 profile::openstack::codfw1dev::fernet_key_rotate_time: '08:00:00'
 profile::openstack::codfw1dev::fernet_key_sync_time: '09:00:00'

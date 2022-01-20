@@ -24,6 +24,8 @@ labsldapconfig:
 prometheus_nodes:
     - prometheus1003.eqiad.wmnet
     - prometheus1004.eqiad.wmnet
+    - prometheus1005.eqiad.wmnet
+    - prometheus1006.eqiad.wmnet
 
 # webperf
 arclamp_host: webperf1002.eqiad.wmnet

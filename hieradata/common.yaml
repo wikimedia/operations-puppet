@@ -97,6 +97,10 @@ prometheus_all_nodes:
   - prometheus4001.ulsfo.wmnet
   - prometheus5001.eqsin.wmnet
   - prometheus6001.drmrs.wmnet
+  - prometheus1005.eqiad.wmnet
+  - prometheus1006.eqiad.wmnet
+  - prometheus2005.codfw.wmnet
+  - prometheus2006.codfw.wmnet
 
 alertmanagers:
   - alert1001.wikimedia.org

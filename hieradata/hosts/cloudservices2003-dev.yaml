@@ -1,10 +1,12 @@
-# prometheus-pdns-exporter is scrapped by cloudmetrics
+# prometheus-pdns-exporter is scraped by cloudmetrics
 # prometheus-node-exporter by prod servers
 prometheus_nodes:
     - cloudmetrics1003.eqiad.wmnet
     - cloudmetrics1004.eqiad.wmnet
     - prometheus2003.codfw.wmnet
     - prometheus2004.codfw.wmnet
+    - prometheus2005.codfw.wmnet
+    - prometheus2006.codfw.wmnet
 
 profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor1.openstack.codfw1dev.wikimediacloud.org
 
