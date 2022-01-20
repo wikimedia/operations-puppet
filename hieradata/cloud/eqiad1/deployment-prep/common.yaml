@@ -690,3 +690,6 @@ mediawiki::sites:
               "zh-sg",
               "zh-tw",
             ]
+profile::mediawiki::php::php_versions:
+  - "7.2"
+  - "7.4"
