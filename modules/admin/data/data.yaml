@@ -4842,7 +4842,7 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFQvFscO99eUfcg51aOxPekk5JW1QIBVMjhNbAEuIlR5 ejoseph@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEyb+tb1j4OG2HHW1fDSEtTLB0rV532F3Q1zB42z9dH ejoseph@wikimedia.org
   natalia-rodriguez:
     ensure: present
     realname: Natalia Rodriguez
