@@ -3735,6 +3735,8 @@ service::catalog:
         default: 10.192.0.147
       eqiad:
         default: 10.64.32.80
+    probes:
+      - type: http
     monitoring:
       check_command: "check_https_on_port!8090"
       notes_url: "https://wikitech.wikimedia.org/wiki/Puppet#Micro_Service"
@@ -3778,6 +3780,8 @@ service::catalog:
     public_endpoint: "graphite"
     port: 443
     description: Graphite metrics platform
+    probes:
+      - type: http
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/Graphite"
@@ -3805,6 +3809,8 @@ service::catalog:
       - "grafana-rw"
     port: 443
     description: Graphing and dashboarding
+    probes:
+      - type: http
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org"
@@ -3830,6 +3836,8 @@ service::catalog:
     public_endpoint: "librenms"
     port: 443
     description: Network device observability
+    probes:
+      - type: http
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/LibreNMS"
@@ -3878,6 +3886,8 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    probes:
+      - type: http
     monitoring:
       check_command: check_tcp_ssl!inference.discovery.wmnet!30443
       critical: false
