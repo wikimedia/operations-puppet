@@ -4,7 +4,7 @@
 #
 class profile::ci::dockervolume {
     labs_lvm::volume { 'docker':
-        size      => '70%FREE',
+        size      => '24G',
         mountat   => '/var/lib/docker',
         mountmode => '711',
     }

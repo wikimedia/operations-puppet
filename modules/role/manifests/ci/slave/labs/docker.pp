@@ -6,9 +6,8 @@
 #
 # [*docker_lvm_volume*]
 #
-#   Give Docker its own volume mounted at /var/lib/docker. This uses 70% of
-#   /dev/vda4 and leaves the rest for /srv. This should be used for instance
-#   types with larger disks (xlarge, bigram, etc.).
+#   Give Docker its own volume mounted at /var/lib/docker and leaves the rest
+#   for /srv. This should be used for instance types with larger disks.
 #
 class role::ci::slave::labs::docker(
     $docker_lvm_volume = false,
