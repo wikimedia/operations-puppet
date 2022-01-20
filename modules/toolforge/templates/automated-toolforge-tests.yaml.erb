@@ -29,7 +29,7 @@
 - name: setup jsub env for later tests
   tests:
     # cleanup
-    - cmd: $SUDO rm -fv ${JOB_SCRIPT} ${JOB_NAME}.err ${JOB_NAME}.out $HASH_FILE
+    - cmd: $SUDO rm -fv ${JOB_SCRIPT} ${JOB_NAME}.err ${JOB_NAME}.out
     # create script reused by later tests
     - cmd: |
            cat << EOF > ${SCRIPT_FULLPATH}
