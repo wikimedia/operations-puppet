@@ -1641,7 +1641,6 @@ node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
 # profile::iegreview                   # https://iegreview.wikimedia.org
 # profile::racktables                  # https://racktables.wikimedia.org
 # profile::microsites::annualreport    # https://annual.wikimedia.org
-# profile::microsites::static_bugzilla # https://static-bugzilla.wikimedia.org
 # profile::microsites::static_rt       # https://static-rt.wikimedia.org
 # profile::microsites::transparency    # https://transparency.wikimedia.org
 # profile::microsites::research        # https://research.wikimedia.org (T183916)
