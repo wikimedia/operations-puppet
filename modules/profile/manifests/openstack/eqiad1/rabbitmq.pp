@@ -12,6 +12,7 @@ class profile::openstack::eqiad1::rabbitmq(
     $neutron_rabbit_password = lookup('profile::openstack::eqiad1::neutron::rabbit_pass'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::codfw1dev::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     $rabbit_erlang_cookie = lookup('profile::openstack::eqiad1::rabbit_erlang_cookie'),
+    Array[Stdlib::Fqdn] $cinder_backup_nodes = lookup('profile::openstack::eqiad1::cinder::backup::nodes'),
 ){
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -27,7 +28,7 @@ class profile::openstack::eqiad1::rabbitmq(
         nova_rabbit_password  => $nova_rabbit_password,
         rabbit_erlang_cookie  => $rabbit_erlang_cookie,
         rabbit_cfssl_label    => $rabbit_cfssl_label,
-        cinder_backup_nodes   => [],  # TODO: add a hiera lookup when service is introduced
+        cinder_backup_nodes   => $cinder_backup_nodes,
     }
     contain '::profile::openstack::base::rabbitmq'
 
