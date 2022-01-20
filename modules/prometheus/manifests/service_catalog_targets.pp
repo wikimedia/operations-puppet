@@ -6,7 +6,6 @@ class prometheus::service_catalog_targets (
   String $targets_path,
   Hash[String, Stdlib::IP::Address::V4] $service_ips_override = {},
 ) {
-
   # Iterate over services
   $targets = $services_config.reduce([]) |$memo, $el| {
     $service_name = $el[0]
@@ -15,10 +14,6 @@ class prometheus::service_catalog_targets (
     $scheme = $service_config['encryption'] ? {
       false   => 'http',
       default => 'https',
-    }
-    $module_tls = $service_config['encryption'] ? {
-      false   => '',
-      default => 'tls_',
     }
     $port = $service_config['port']
 
@@ -61,10 +56,6 @@ class prometheus::service_catalog_targets (
           {
             'labels'  => { 'module' => "http_${service_name}_ip4" },
             'targets' => [ "${service_name}:${port}@${scheme}://${name_or_address}:${port}${path}" ]
-          },
-          {
-            'labels'  => { 'module' => "tcp_${module_tls}ip4" },
-            'targets' => [ "${service_name}:${port}@${name_or_address}:${port}" ]
           },
           {
             'labels'  => { 'module' => 'icmp_ip4' },
