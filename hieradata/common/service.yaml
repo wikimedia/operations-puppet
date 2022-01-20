@@ -140,6 +140,10 @@ service::catalog:
           url:
             - https://en.wikipedia.org/w/api.php
       scheduler: wrr
+    probes:
+      - type: http
+        path: /w/api.php?action=query&meta=siteinfo
+        host: en.wikipedia.org
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
       critical: true
@@ -182,6 +186,10 @@ service::catalog:
           url:
             - https://en.wikipedia.org/wiki/Special:BlankPage
       scheduler: wrr
+    probes:
+      - type: http
+        path: /wiki/Special:Blankpage
+        host: en.wikipedia.org
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
       critical: true
@@ -1126,6 +1134,10 @@ service::catalog:
           url:
             - https://localhost/api/status
       scheduler: sh
+    probes:
+      - type: http
+        path: /api/status
+        host: logstash.wikimedia.org
     monitoring:
       check_command: check_https_url!logstash.wikimedia.org!/api/status
       critical: true
@@ -1553,6 +1565,10 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    probes:
+      - type: http
+        path: /wiki/Special:BlankPage
+        host: en.wikipedia.org
     monitoring:
       check_command: check_https_lvs_on_port!en.wikipedia.org!4444!/wiki/Special:BlankPage
       critical: false # don't enable paging while testing
@@ -1729,6 +1745,10 @@ service::catalog:
           url:
             - https://en.wikipedia.org/wiki/Special:BlankPage
       scheduler: wrr
+    probes:
+      - type: http
+        path: /wiki/Special:BlankPage
+        host: en.wikipedia.org
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
       critical: true
@@ -3364,6 +3384,11 @@ service::catalog:
         default: 10.192.16.180
       eqiad:
         default: 10.64.48.17
+    probes:
+      - type: http
+        path: /mediawiki
+        host: releases.wikimedia.org
+        must_contain_regexp: MediaWiki
     monitoring:
       check_command: check_https_url_for_string!releases.wikimedia.org!/mediawiki/!MediaWiki
       notes_url: "https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org"
@@ -3880,6 +3905,10 @@ service::catalog:
         default: 208.80.153.42
       eqiad:
         default: 208.80.154.30
+    probes:
+      - type: http
+        host: apt.wikimedia.org
+        path: /wikimedia/
     monitoring:
       check_command: "check_http_url!apt.wikimedia.org!/wikimedia/"
       notes_url: "https://wikitech.wikimedia.org/wiki/APT_repository"
@@ -3908,6 +3937,9 @@ service::catalog:
         default: 10.192.32.30
       eqiad:
         default: 10.64.48.59
+    probes:
+      - type: http
+        host: puppetboard.wikimedia.org
     monitoring:
       check_command: "check_https_sso_redirect!puppetboard.wikimedia.org!/"
       notes_url: "https://wikitech.wikimedia.org/wiki/Puppet"
