@@ -9,9 +9,13 @@ class prometheus::blackbox::modules::service_catalog (
 
     # Find out which SNI to send. Similar logic to
     # prometheus::service_catalog_targets for DNS names; in this case
-    # try discovery first since that is the standard going forward and
+    # try discovery since that is the standard going forward and
     # more likely for services to have it in SNI.
-    if 'discovery' in $service_config {
+
+    # Offer users the option to override Host and SNI via probe 'host' field.
+    if 'probes' in $service_config and 'host' in $service_config['probes'][0] {
+      $tls_server_name = $service_config['probes'][0]['host']
+    } elsif 'discovery' in $service_config {
       $disc_name = $service_config['discovery'][0]['dnsdisc']
       $tls_server_name = "${disc_name}.discovery.wmnet"
     } elsif 'aliases' in $service_config {
@@ -19,12 +23,6 @@ class prometheus::blackbox::modules::service_catalog (
       $tls_server_name = "${first_alias}.svc.${::site}.wmnet"
     } else {
       $tls_server_name = "${service_name}.svc.${::site}.wmnet"
-    }
-
-    $tls_config = {
-      'tls_config' => {
-        'server_name' => $tls_server_name,
-      },
     }
 
     $probe_options = 'probes' in $service_config ? {

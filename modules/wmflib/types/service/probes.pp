@@ -5,7 +5,7 @@
 # @param [Optional[String]] path
 #     The URL path to use when probing the service
 # @param [Optional[String]] host
-#     The Host header to send
+#     The Host header to send. Overrides SNI too.
 # @param [Optional[String]] post_json
 #     POST the given JSON string
 # @param [Optional[String]] must_contain_regexp
