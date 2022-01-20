@@ -9,13 +9,20 @@
     JOB_SCRIPT: ./grid-test-script.sh
     SCRIPT_FULLPATH: /data/project/automated-toolforge-tests/grid-test-script.sh
     VERIFY_TIMEOUT: "30"
+<% if @labsproject == 'toolsbeta' -%>
+    # toolsbeta using special cloudstore VM NFS server
+    NFS_PATH: /mnt/nfs/nfs-01-toolsbeta-project/automated-toolforge-tests
+<% end -%>
+<% if @labsproject == 'tools' -%>
+    NFS_PATH: /mnt/nfs/labstore-secondary-tools-project/automated-toolforge-tests
+<% end -%>
 <% @envvars.each do |key, value| -%>
     <%= key %>: <%= value %>
 <% end -%>
 ---
 - name: verify the grid knows about this tool account
   tests:
-    - cmd: $SUDO pwd | grep -q /mnt/nfs/nfs-01-${PROJECT}-project/${TOOLNAME}
+    - cmd: $SUDO pwd | grep -q ${NFS_PATH}
       retcode: 0
       stderr: ""
 
