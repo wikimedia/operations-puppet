@@ -180,6 +180,7 @@ class netops::monitoring(
     $scs = {
         'scs-a8-eqiad'   => { ipv4 => '10.65.0.11',    parents => ['msw1-eqiad'] },
         'scs-c1-eqiad'   => { ipv4 => '10.65.0.22',    parents => ['msw1-eqiad'] },
+        'scs-f8-eqiad'   => { ipv4 => '10.65.0.4',     parents => ['msw2-eqiad'] },
         'scs-a1-codfw'   => { ipv4 => '10.193.0.14',   parents => ['msw1-codfw'] },
         'scs-c1-codfw'   => { ipv4 => '10.193.0.15',   parents => ['msw1-codfw'] },
         'scs-oe16-esams' => { ipv4 => '10.21.0.9',     parents => ['mr1-esams'] },
