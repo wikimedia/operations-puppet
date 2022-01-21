@@ -3888,6 +3888,8 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
+        valid_status_codes:
+          - 404
     monitoring:
       check_command: check_tcp_ssl!inference.discovery.wmnet!30443
       critical: false

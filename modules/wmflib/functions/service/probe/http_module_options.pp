@@ -45,5 +45,13 @@ function wmflib::service::probe::http_module_options(
     $host_header = {}
   }
 
-  return deep_merge($compat, $match, $post_json, $host_header)
+  if 'valid_status_codes' in $service_config['probes'][0] {
+    $valid_status_codes = {
+      'valid_status_codes' => $service_config['probes'][0]['valid_status_codes'],
+    }
+  } else {
+    $valid_status_codes = {}
+  }
+
+  return deep_merge($compat, $match, $post_json, $host_header, $valid_status_codes)
 }
