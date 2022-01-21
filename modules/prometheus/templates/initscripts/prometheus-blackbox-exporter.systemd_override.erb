@@ -1,3 +1,4 @@
 [Service]
 ExecStart=
 ExecStart=/usr/bin/prometheus-blackbox-exporter --config.file /etc/prometheus/blackbox.yml --log.level=debug
+LimitNOFILE=16535
