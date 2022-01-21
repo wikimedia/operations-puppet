@@ -43,11 +43,6 @@ class profile::logstash::common (
     logstash_version    => 7,
   }
 
-  package { 'logstash-plugins':
-    ensure  => present,
-    require => Package['logstash']
-  }
-
   sysctl::parameters { 'logstash_receive_skbuf':
     values => {
       'net.core.rmem_default' => 8388608,
