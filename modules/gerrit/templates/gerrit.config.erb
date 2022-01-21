@@ -250,6 +250,10 @@
     mac = -hmac-md5-96
     threads = 28
     batchThreads = 4
+    # Avoid some fetches issues over ssh
+    # Intentionally undocumented upstream
+    # T263293
+    enableChannelIdTracking = false
 [theme]
     backgroundColor = fff
     topMenuColor = fff
