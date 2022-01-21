@@ -2,16 +2,7 @@
 #
 # Experimental Jenkins slave instance for providing Docker based CI builds.
 #
-# === Parameters
-#
-# [*docker_lvm_volume*]
-#
-#   Give Docker its own volume mounted at /var/lib/docker and leaves the rest
-#   for /srv. This should be used for instance types with larger disks.
-#
-class role::ci::slave::labs::docker(
-    $docker_lvm_volume = false,
-) {
+class role::ci::slave::labs::docker {
     requires_realm('labs')
 
     system::role { 'role::ci::slave::labs::docker':
@@ -19,10 +10,7 @@ class role::ci::slave::labs::docker(
 
     include profile::ci::slave::labs::common
     include profile::ci::docker
+    # Extended volume for /var/lib/docker
+    include profile::ci::dockervolume
     include profile::ci::gitcache
-
-    # If specified, give Docker its own volume mounted at /var/lib/docker
-    if $docker_lvm_volume {
-        include profile::ci::dockervolume
-    }
 }
