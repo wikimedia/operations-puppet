@@ -2683,10 +2683,6 @@ node 'mirror1001.wikimedia.org' {
     role(mirrors)
 }
 
-node 'sodium.wikimedia.org' {
-    role(spare::system)
-}
-
 node 'thorium.eqiad.wmnet' {
     # replaced by an-web1001, being decommissioned:
     # https://phabricator.wikimedia.org/T292075
