@@ -83,6 +83,9 @@ innodb_large_prefix            = 1
 # Changed because of https://jira.mariadb.org/browse/MDEV-22373
 innodb_change_buffering        = none
 
+# T287244
+innodb_checksum_algorithm = full_crc32
+
 # innodb_default_row_format is not available until 5.7.9 and maybe until 10.2
 aria_pagecache_buffer_size     = 512M
 
