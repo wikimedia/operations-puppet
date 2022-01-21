@@ -1,9 +1,10 @@
 #
 class profile::puppetdb::microservice (
-    Boolean             $enabled       = lookup('profile::puppetdb::microservice::enabled'),
-    Stdlib::Port        $port          = lookup('profile::puppetdb::microservice::port'),
-    Stdlib::Port        $uwsgi_port    = lookup('profile::puppetdb::microservice::uwsgi_port'),
-    Array[Stdlib::Host] $allowed_hosts = lookup('profile::puppetdb::microservice::allowed_hosts'),
+    Boolean             $enabled          = lookup('profile::puppetdb::microservice::enabled'),
+    Stdlib::Port        $port             = lookup('profile::puppetdb::microservice::port'),
+    Stdlib::Port        $uwsgi_port       = lookup('profile::puppetdb::microservice::uwsgi_port'),
+    Array[Stdlib::Host] $allowed_hosts    = lookup('profile::puppetdb::microservice::allowed_hosts'),
+    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     $ssl_settings = ssl_ciphersuite('nginx', 'strong', true)
     $ensure = $enabled ? {
@@ -51,11 +52,15 @@ class profile::puppetdb::microservice (
             },
         },
     }
+
+    # Network probes will be coming from Prometheus hosts
+    $ferm_allow_hosts = $allowed_hosts + $prometheus_nodes
+
     ferm::service { 'puppetdb-microservice':
         ensure => $ferm_ensure,
         proto  => 'tcp',
         port   => $port,
-        srange => "@resolve((${allowed_hosts.join(' ')}))",
+        srange => "@resolve((${ferm_allow_hosts.join(' ')}))",
     }
 }
 
