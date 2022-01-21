@@ -1,5 +1,6 @@
 class profile::dumps::distribution::web (
     $is_primary_server = lookup('profile::dumps::distribution::web::is_primary_server'),
+    $dumps_active_web_server = lookup('dumps_dist_active_web'),
     $datadir = lookup('profile::dumps::distribution::basedatadir'),
     $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
@@ -36,7 +37,10 @@ class profile::dumps::distribution::web (
     }
 
     class { '::dumps::web::enterprise':
-        user  => 'dumpsgen',
-        group => 'dumpsgen',
+        is_primary_server => $is_primary_server,
+        dumps_web_server  => $dumps_active_web_server,
+        user              => 'dumpsgen',
+        group             => 'dumpsgen',
+        miscdumpsdir      => $miscdatasetsdir,
     }
 }
