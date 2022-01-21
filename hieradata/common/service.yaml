@@ -1069,7 +1069,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
 
   kibana-ssl:
     description: Kibana - HTTPS
@@ -1106,7 +1106,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: kibana
         active_active: false
@@ -1316,7 +1316,7 @@ service::catalog:
     port: 12201
     sites:
       - eqiad
-    state: lvs_setup
+    state: service_setup
 
   logstash-json-tcp:
     description: Logstash ingestion json tcp
@@ -1345,7 +1345,7 @@ service::catalog:
     port: 11514
     sites:
       - eqiad
-    state: lvs_setup
+    state: service_setup
 
   logstash-json-udp:
     description: Logstash ingestion json udp
@@ -1369,7 +1369,7 @@ service::catalog:
     port: 11514
     sites:
       - eqiad
-    state: lvs_setup
+    state: service_setup
 
   logstash-udp2log:
     description: Logstash ingestion udp2log
@@ -1393,7 +1393,7 @@ service::catalog:
     port: 8324
     sites:
       - eqiad
-    state: lvs_setup
+    state: service_setup
 
   mathoid:
     description: Mathematical rendering service, mathoid.svc.%{::site}.wmnet
