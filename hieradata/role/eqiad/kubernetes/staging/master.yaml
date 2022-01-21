@@ -3,3 +3,14 @@ profile::kubernetes::master::etcd_urls:
  - https://kubestagetcd1004.eqiad.wmnet:2379
  - https://kubestagetcd1005.eqiad.wmnet:2379
  - https://kubestagetcd1006.eqiad.wmnet:2379
+
+# Needed to run kubelet on the master node (T290967)
+profile::calico::kubernetes::bgp_peers:
+- kubestagemaster1001.eqiad.wmnet
+- kubestage1003.eqiad.wmnet
+- kubestage1004.eqiad.wmnet
+- cr1-eqiad.wikimedia.org
+- cr2-eqiad.wikimedia.org
+profile::kubernetes::master_hosts:
+- kubestagemaster1001.eqiad.wmnet
+profile::kubernetes::node::kubelet_cluster_dns: "10.64.76.3"
