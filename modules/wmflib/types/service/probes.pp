@@ -12,6 +12,8 @@
 #     Search the response's body for this regular expression
 # @param [Optional[Array[Stdlib::HttpStatus]]] valid_status_codes
 #     Accept these HTTP statuses as valid (default 200-299)
+# @param [Optional[Boolean] expect_sso
+#     Expect a SSO login from the endpoint (default false)
 
 type Wmflib::Service::Probes = Array[
   Struct[{
@@ -21,5 +23,6 @@ type Wmflib::Service::Probes = Array[
     'post_json'           => Optional[String],
     'must_contain_regexp' => Optional[String],
     'valid_status_codes'  => Optional[Array[Stdlib::HttpStatus]],
+    'expect_sso'          => Optional[Boolean],
   }]
 ]

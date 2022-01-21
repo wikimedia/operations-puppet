@@ -3952,6 +3952,7 @@ service::catalog:
     probes:
       - type: http
         host: puppetboard.wikimedia.org
+        expect_sso: true
     monitoring:
       check_command: "check_https_sso_redirect!puppetboard.wikimedia.org!/"
       notes_url: "https://wikitech.wikimedia.org/wiki/Puppet"
