@@ -95,13 +95,16 @@ class profile::analytics::refinery::job::druid_load(
         },
         # settings copied from webrequest_sampled_128 load job
         # as data-size is similar
-        hourly_shards     => 4,
+        hourly_shards     => 1,
         hourly_reduce_mem => '8192',
-        daily_shards      => 32,
+        daily_shards      => 1,
     }
     # This second round serves as sanitization, after 90 days of data loading.
     # Note that some dimensions are not present, thus nullifying their values.
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_flows_internal-sanitization':
+        # This sanitization job runs on 60 days old data and fails when there is no input data
+        # Absenting the job until 2022-03-21
+        ensure           => 'absent',
         ensure_hourly    => 'absent',
         daily_days_since => 61,
         daily_days_until => 60,
