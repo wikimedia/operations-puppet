@@ -62,7 +62,11 @@ def add_proxy(args):
         data=json.dumps({
             'backends': [args.target_url],
             'domain': fqdn.rstrip('.')
-        }))
+        }),
+        headers={
+            "X-Novaproxy-Edit-Dns": "false"
+        }
+    )
     if not resp:
         raise Exception(
             'HTTP {} response from dynamicproxy: {}'.format(
@@ -98,7 +102,13 @@ def delete_proxy(args):
 
     # Remove proxy
     proxy_url, session = proxy_client(client, args.project)
-    resp = session.delete(f"{proxy_url}/mapping/{fqdn.rstrip('.')}")
+    resp = session.delete(
+        f"{proxy_url}/mapping/{fqdn.rstrip('.')}",
+        headers={
+            "X-Novaproxy-Edit-Dns": "false"
+        }
+    )
+
     if resp:
         # Remove DNS
         rs = dns.recordsets(zone_id, name=fqdn)[0]

@@ -242,7 +242,12 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 zone = proxy['domain']
 
                 proxy_url, session = self._get_proxy_client(project)
-                session.delete("{}/mapping/{}".format(proxy_url, zone))
+                session.delete(
+                    "{}/mapping/{}".format(proxy_url, zone),
+                    headers={
+                        "X-Novaproxy-Edit-Dns": "false"
+                    }
+                )
 
                 LOG.warning("We also need to delete the dns entry for %s" % proxy)
                 self._delete_proxy_dns_record(project, proxy['domain'])

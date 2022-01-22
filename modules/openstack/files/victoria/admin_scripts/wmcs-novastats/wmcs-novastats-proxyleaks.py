@@ -62,7 +62,12 @@ def delete_mapping(project, domain):
     """Delete a single proxy
     """
     proxy_url, session = proxy_client(project)
-    session.delete(f"{proxy_url}/mapping/{domain}")
+    session.delete(
+        f"{proxy_url}/mapping/{domain}",
+        headers={
+            "X-Novaproxy-Edit-Dns": "false"
+        }
+    )
 
 
 def get_proxy_dns_zones():
