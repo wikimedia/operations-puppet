@@ -52,5 +52,14 @@ class toolserver_legacy {
         source  => 'puppet:///modules/toolserver_legacy/notfound.html',
         require => File['/var/www/html'],
     }
+
+    file { '/var/www/html/robots.txt':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/toolserver_legacy/robots.txt',
+        require => File['/var/www/html'],
+    }
 }
 
