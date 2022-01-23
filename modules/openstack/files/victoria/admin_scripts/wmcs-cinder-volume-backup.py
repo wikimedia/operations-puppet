@@ -39,6 +39,13 @@ class CinderBackup(object):
 
         resource = refreshfunction(resource_id)
         while resource.status not in desiredstatuses:
+            if resource.status == 'error':
+                logging.error("Waiting for state {} but state is {}".format(
+                        desiredstatuses, resource.status
+                    )
+                )
+                raise RuntimeError("Openstack resource {} in error state.".format(resource_id))
+
             if resource.status != oldstatus:
                 oldstatus = resource.status
                 logging.info(
