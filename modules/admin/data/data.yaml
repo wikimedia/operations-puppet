@@ -354,7 +354,7 @@ groups:
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati]
+              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4983,6 +4983,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA5/YSLfsC+/YmMmMx91QzJ/yAsl4e3ubOFnBIqvPY2W galmac-prod
     krb: present
+  skvjold:
+    ensure: present
+    gid: 500
+    uid: 20201
+    realname: Margeigh Novotny
+    email: mnovotny@wikimedia.org
+    ssh_keys: []
 
 ldap_only_users:
   abartov:
@@ -5179,10 +5186,6 @@ ldap_only_users:
   moushirael:
     ensure: absent
     realname: Moushira Elamrawy
-  skvjold:
-    ensure: present
-    realname: Margeigh Novotny
-    email: mnovotny@wikimedia.org
   lmata:
     ensure: present
     realname: Leonardo Mata
