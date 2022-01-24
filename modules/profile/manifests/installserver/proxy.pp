@@ -16,9 +16,9 @@ class profile::installserver::proxy (
     $rsyslog_content = @("CONF"/L$)
     # Send squid access logs
     if \$programname startswith 'squid' \
-        and  \$syslogfacility-text == ${syslog_facility} \
-        and \$syslogpriority-text == ${syslog_priority} \
-        then /var/log/squid/access.log
+    and  \$syslogfacility-text == '${syslog_facility}' \
+    and \$syslogpriority-text == '${syslog_priority}' \
+    then /var/log/squid/access.log
     &~
     | CONF
 
