@@ -13,7 +13,7 @@ class profile::installserver::proxy (
 
     profile::auto_restarts::service { 'squid': }
 
-    $rsyslog_content = @("CONF"/L)
+    $rsyslog_content = @("CONF"/L$)
     # Send squid access logs
     if \$programname startswith 'squid' \
         and  \$syslogfacility-text == ${syslog_facility} \
