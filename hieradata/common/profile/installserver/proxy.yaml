@@ -1,0 +1,2 @@
+profile::installserver::proxy::ensure: 'present'
+profile::installserver::proxy::structured_logs: false

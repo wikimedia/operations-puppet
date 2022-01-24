@@ -11,7 +11,8 @@ cache deny AUTOINSTALL
 acl apache rep_header Server ^Apache
 cache_replacement_policy heap LFUDA
 cache_dir aufs /var/spool/squid 1000 16 256
-access_log syslog:<%= @syslog_facility %>.<%= @syslog_priority %>
+logformat ceejson "@cee": { "clientip": "%>a", "ident": "%ui", "uname": "%un", "timestamp": "%{%FT%T%z}tg", "verb": "%rm", "request": "%ru", "httpversion": "HTTP/%rv", "response": %>Hs, "bytes": %<st, "referer": "%{Referer}>h", "agent": "%{User-Agent}>h", "request_status": "%Sh", "hierarchy_status": "%Sh" }
+access_log syslog:<%= @syslog_facility %>.<%= @syslog_priority %><% if @structured_logs %> logformat=ceejson<% end %>
 coredump_dir /var/spool/squid
 logfile_rotate 10
 cache_store_log none
