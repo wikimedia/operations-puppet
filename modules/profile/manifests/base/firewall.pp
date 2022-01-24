@@ -2,8 +2,6 @@
 class profile::base::firewall (
     Array[Stdlib::IP::Address] $monitoring_hosts        = lookup('monitoring_hosts',
                                                                 {default_value => []}),
-    Array[Stdlib::IP::Address] $prometheus_nodes        = lookup('prometheus_nodes',
-                                                                {default_value => []}),
     Array[Stdlib::IP::Address] $cumin_masters           = lookup('cumin_masters',
                                                                 {default_value => []}),
     Array[Stdlib::IP::Address] $bastion_hosts           = lookup('bastion_hosts',
@@ -33,7 +31,7 @@ class profile::base::firewall (
     Boolean                    $default_reject   = lookup('profile::base::firewall::default_reject'),
 ) {
     class { '::base::firewall':
-        monitoring_hosts        => $monitoring_hosts + $prometheus_nodes,
+        monitoring_hosts        => $monitoring_hosts,
         cumin_masters           => $cumin_masters,
         bastion_hosts           => $bastion_hosts,
         cache_hosts             => $cache_hosts,
