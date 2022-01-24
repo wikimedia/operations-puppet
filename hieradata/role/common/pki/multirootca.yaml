@@ -38,6 +38,16 @@ profile::pki::multirootca::intermediates:
       - 'key encipherment'
       - 'server auth'
       - 'client auth'
+    profiles:
+      kafka_11:
+        # Kafka 1.1 supports dynamic reload of the TLS keystore (that contains
+        # the certificate that the broker uses) but in order to work it needs
+        # a different filepath/password
+        # (see https://issues.apache.org/jira/browse/KAFKA-7429 and T299409).
+        # For the moment the only way to reload the keystore is via a rolling
+        # restart of the brokers, that we don't want to do every month or so.
+        # Once we migrate to Kafka 2.x we'll be able to remove this constraint.
+        expiry: '8760h'
   cloud_wmnet_ca:
     ocsp_port: 10004
     default_usages:
