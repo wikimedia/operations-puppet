@@ -2926,7 +2926,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: monitoring_setup
+    state: production
     discovery:
       - dnsdisc: wcqs
         active_active: true
