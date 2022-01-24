@@ -2563,7 +2563,7 @@ node /^prometheus100[34]\.eqiad\.wmnet$/ {
 }
 
 node /^prometheus100[56]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(prometheus)
 }
 
 node /^prometheus[3456]001\.(esams|ulsfo|eqsin|drmrs)\.wmnet$/ {
