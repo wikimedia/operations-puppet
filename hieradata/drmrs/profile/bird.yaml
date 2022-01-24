@@ -1,3 +1,0 @@
-profile::bird::neighbors_list:
-  - '10.136.0.1' # asw1-b12-drmrs gateway
-  - '10.136.1.1' # asw1-b13-drmrs gateway
