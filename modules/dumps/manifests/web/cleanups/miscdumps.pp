@@ -11,8 +11,12 @@ class dumps::web::cleanups::miscdumps(
         source => 'puppet:///modules/dumps/web/cleanups/cleanup_old_miscdumps.sh',
     }
 
+    # some datasets are pulled to replicas and not generated, so these lists don't
+    # necessarily contain the same items. Note that 'replica' also includes
+    # the dumpsdata fallback host(s), which will also not have any datasets pulled
+    # directly to the public-facing (web/nfs) servers.
     $keep_generator=['categoriesrdf:3', 'categoriesrdf/daily:3', 'cirrussearch:2', 'contenttranslation:3', 'globalblocks:3', 'imageinfo:3', 'machinevision:3', 'mediatitles:3', 'pagetitles:3', 'shorturls:3', 'wikibase/wikidatawiki:3', 'wikibase/commonswiki:3']
-    $keep_replicas=['categoriesrdf:11', 'categoriesrdf/daily:15', 'cirrussearch:11', 'contenttranslation:14', 'globalblocks:13', 'imageinfo:32', 'machinevision:13', 'mediatitles:90', 'pagetitles:90', 'shorturls:7', 'wikibase/wikidatawiki:20', 'wikibase/commonswiki:20']
+    $keep_replicas=['categoriesrdf:11', 'categoriesrdf/daily:15', 'cirrussearch:11', 'contenttranslation:14', 'enterprise_html/runs:6', 'globalblocks:13', 'imageinfo:32', 'machinevision:13', 'mediatitles:90', 'pagetitles:90', 'shorturls:7', 'wikibase/wikidatawiki:20', 'wikibase/commonswiki:20']
     if ($isreplica == true) {
         $content= join($keep_replicas, "\n")
     } else {

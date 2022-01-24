@@ -68,7 +68,11 @@ for entry in $config_entries; do
   IFS=':' read -r subdir keep <<<"$entry"
 
   if [ ! -d "$subdir" ]; then
-      echo "subdir $subdir does not exist, skipping"
+      # we used to complain about this but now some directories may exist on some
+      # replicas (dumpsdata fallback) and not on others (public web/nfs servers),
+      # so we avoid cronspam for the moment by shutting up. FIXME we should adapt the
+      # script so that we can be notified of actual errors without false positives.
+      # echo "subdir $subdir does not exist, skipping"
       continue
   elif [[ ! "$keep" =~ ^[0-9]+$ ]]; then
       echo "keep value $keep is not a number, skipping"
