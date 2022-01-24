@@ -91,15 +91,4 @@ class profile::prometheus::global (
         port   => '80',
         srange => '$DOMAIN_NETWORKS',
     }
-
-    # Used for migrations / hardware refresh, but not continuously
-    $prometheus_nodes = lookup('prometheus_nodes')
-    rsync::server::module { 'prometheus-global':
-        ensure      => absent,
-        path        => '/srv/prometheus/global/metrics',
-        uid         => 'prometheus',
-        gid         => 'prometheus',
-        hosts_allow => $prometheus_nodes,
-        auto_ferm   => true,
-    }
 }
