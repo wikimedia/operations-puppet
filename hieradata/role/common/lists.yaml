@@ -1,6 +1,5 @@
 profile::admin::groups:
   - mailman3-roots
-profile::base::firewall::block_abuse_nets: true
 profile::mail::default_mail_relay::enabled: false
 mailman::lists_servername: 'lists.wikimedia.org'
 mtail::logs:

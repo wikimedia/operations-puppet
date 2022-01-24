@@ -32,4 +32,3 @@ profile::tlsproxy::envoy::global_cert_name: "phabricator.discovery.wmnet"
 profile::tlsproxy::envoy::websockets: true
 
 profile::phabricator::main::http_srange: '$DEPLOYMENT_HOSTS'
-profile::base::firewall::block_abuse_nets: true

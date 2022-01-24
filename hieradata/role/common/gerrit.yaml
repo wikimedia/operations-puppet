@@ -70,7 +70,6 @@ profile::base::ssh_server_settings:
       - '/etc/ssh/userkeys/%u'
       - '/etc/ssh/userkeys/%u.d/cumin'
       - '/etc/ssh/userkeys/%u.d/gerrit-scap'
-profile::base::firewall::block_abuse_nets: true
 
 profile::java::java_packages:
   - version: '11'

@@ -15,4 +15,3 @@ profile::idp::client::httpd::sites:
     document_root: "%{alias('profile::microsites::peopleweb::docroot')}"
     proxied_as_https: true
     protected_uri: '/~cdanis/sremap/'
-profile::base::firewall::block_abuse_nets: true
