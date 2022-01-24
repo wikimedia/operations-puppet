@@ -1237,7 +1237,6 @@ users:
     realname: Jeff Green
     ssh_keys:
       - ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCJCPZPfCVBxsT2ZJ6CIEF2tQPGtUtaEhyhhI4SGV+vIe+eowuE2BJE3/XyDxkz9P8hxiKQSspRYNWl4rmecf90= jgreen@weasel
-
     uid: 2074
     email: jgreen@wikimedia.org
   gage:
