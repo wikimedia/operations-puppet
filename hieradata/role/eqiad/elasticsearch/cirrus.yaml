@@ -5,6 +5,7 @@ profile::elasticsearch::instances:
         short_cluster_name: chi
         http_port: 9200
         tls_port: 9243
+        certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9300
 
         # ES-specific: Not default
@@ -77,6 +78,7 @@ profile::elasticsearch::instances:
         short_cluster_name: omega
         http_port: 9400
         tls_port: 9443
+        certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9500
         heap_memory: '8G'
         # ES-specific: Not default
@@ -123,6 +125,7 @@ profile::elasticsearch::instances:
         short_cluster_name: psi
         http_port: 9600
         tls_port: 9643
+        certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9700
         heap_memory: '8G'
         # ES-specific: Not default
@@ -163,9 +166,4 @@ profile::elasticsearch::instances:
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
 
-profile::elasticsearch::dc_settings:
-
-    # This doesn't really go here, it's only used in the elasticsearch::cirrus
-    # profile and not from the elasticsearch profile directly. Need better
-    # way to declare per-cluster values for sub-profiles.
-    certificate_name: 'search.svc.eqiad.wmnet'
+profile::elasticsearch::dc_settings: {}

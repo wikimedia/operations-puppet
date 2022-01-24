@@ -5,6 +5,7 @@ profile::elasticsearch::instances:
         short_cluster_name: chi
         http_port: 9200
         tls_port: 9243
+        certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9300
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
@@ -74,6 +75,7 @@ profile::elasticsearch::instances:
         short_cluster_name: omega
         http_port: 9400
         tls_port: 9443
+        certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9500
         heap_memory: '8G'
         # ES-specific: Not default
@@ -120,6 +122,7 @@ profile::elasticsearch::instances:
         short_cluster_name: psi
         http_port: 9600
         tls_port: 9643
+        certificate_name: 'search.discovery.wmnet'
         transport_tcp_port: 9700
         heap_memory: '8G'
         # ES-specific: Not default
@@ -160,5 +163,4 @@ profile::elasticsearch::instances:
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
 
-profile::elasticsearch::dc_settings:
-    certificate_name: 'search.svc.codfw.wmnet'
+profile::elasticsearch::dc_settings: {}

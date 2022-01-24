@@ -18,6 +18,7 @@ define elasticsearch::tlsproxy (
     Stdlib::Port $upstream_port,
     Stdlib::Port $tls_port,
     Array[String] $certificate_names = [],
+    Array[Stdlib::Host] $server_aliases = [],
     Boolean $acme_chief = false,
     Optional[String] $acme_certname = undef,
     String $server_name = $::fqdn,
@@ -27,6 +28,7 @@ define elasticsearch::tlsproxy (
     tlsproxy::localssl { $title:
         certs             => $certificate_names,
         server_name       => $server_name,
+        server_aliases    => $server_aliases,
         default_server    => true,
         acme_chief        => $acme_chief,
         acme_certname     => $acme_certname,
