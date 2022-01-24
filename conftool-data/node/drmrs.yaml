@@ -17,3 +17,6 @@ drmrs:
     cp6006.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
     cp6007.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
     cp6008.drmrs.wmnet: [varnish-fe, ats-be, ats-tls]
+  ncredir:
+    ncredir6001.drmrs.wmnet: [nginx]
+    ncredir6002.drmrs.wmnet: [nginx]

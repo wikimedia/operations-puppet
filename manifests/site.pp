@@ -2463,6 +2463,10 @@ node /^ncredir500[12]\.eqsin\.wmnet$/ {
     role(ncredir)
 }
 
+node /^ncredir600[12]\.drmrs\.wmnet$/ {
+    role(ncredir)
+}
+
 node /^netbox(1001|2001)\.wikimedia\.org$/ {
     role(netbox::frontend)
 }
