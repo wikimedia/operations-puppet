@@ -14,9 +14,9 @@
 #   Port (int)
 #   The backend port HAProxy will use to connect to the backend servers.
 #
-# [*port_frontend*]
-#   Port (int)
-#   The frontend port HAproxy will bind to for this service.
+# [*frontends*]
+#   Array of OpenStack::HAProxy::Frontend
+#   Array of ports and possible acme-chief certificates to listen on.
 #
 # [*primary_host*]
 #   Stdlib::Fqdn
@@ -49,21 +49,14 @@
 define openstack::haproxy::site(
     Array[Stdlib::Fqdn] $servers,
     Stdlib::Port $port_backend,
-    Stdlib::Port $port_frontend,
+    Array[OpenStack::HAProxy::Frontend] $frontends,
     Optional[Stdlib::Fqdn] $primary_host = undef,
     Stdlib::Compat::String $healthcheck_path = '',
     String $healthcheck_method = '',
     Array[String] $healthcheck_options = [],
     Wmflib::Ensure $ensure = present,
     Enum['http', 'tcp'] $type = 'http',
-    Optional[String] $frontend_tls_cert_name = undef,
-    Optional[Stdlib::Port] $port_frontend_tls = undef,
 ) {
-    $cert_file = $frontend_tls_cert_name ? {
-        undef   => undef,
-        default => "/etc/acmecerts/${frontend_tls_cert_name}/live/ec-prime256v1.chained.crt.key"
-    }
-
     # If the host's FQDN is in $servers configure FERM to allow peer
     # connections on the backend service port.
     if $::fqdn in $servers {
@@ -95,10 +88,6 @@ define openstack::haproxy::site(
             content => template('openstack/haproxy/conf.d/tcp-service.cfg.erb'),
             # restart to pick up new config files in conf.d
             notify  => Service['haproxy'],
-        }
-
-        if $frontend_tls_cert_name != undef or $frontend_tls_cert_name != undef {
-            fail('TLS termination is not supported for type="tcp"')
         }
     } else {
         fail("Unknown service type ${type}")

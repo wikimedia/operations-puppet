@@ -1,7 +1,9 @@
 # Note: This file is managed by puppet.
 
 listen <%= @title %>
-    bind *:<%= @port_frontend %>
+<%- @frontends.each do |frontend| -%>
+    bind *:<%= frontend['port'] %>
+<%- end -%>
     mode tcp
     option tcpka
 <% @healthcheck_options.each do |option| -%>

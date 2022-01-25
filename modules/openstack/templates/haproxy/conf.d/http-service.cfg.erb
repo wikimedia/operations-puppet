@@ -1,16 +1,11 @@
 # Note: This file is managed by puppet.
 
 frontend <%= @title %>_frontend
-    bind *:<%= @port_frontend %>
-    default_backend <%= @title %>_backend
-
-<%- if @port_frontend_tls and @cert_file -%>
-frontend <%= @title %>_frontend_tls
-    mode http
-    bind *:<%= @port_frontend_tls %> ssl crt <%= @cert_file %>
-    default_backend <%= @title %>_backend
-    http-request add-header X-Forwarded-Proto https
+<%- @frontends.each do |frontend| -%>
+    bind *:<%= frontend['port'] %><% if frontend.include? 'acme_chief_cert_name' %> ssl crt /etc/acmecerts/<%= frontend['acme_chief_cert_name'] %>/live/ec-prime256v1.chained.crt.key<% end %>
 <%- end -%>
+    default_backend <%= @title %>_backend
+    http-request set-header X-Forwarded-Proto https if { ssl_fc }
 
 backend <%= @title %>_backend
     balance leastconn

@@ -25,133 +25,206 @@ class profile::openstack::codfw1dev::haproxy(
     include profile::openstack::base::haproxy
 
     openstack::haproxy::site { 'designate':
-        servers                => $designate_hosts,
-        healthcheck_method     => 'HEAD',
-        healthcheck_path       => '/',
-        port_frontend          => 9001,
-        port_backend           => 9001,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 29001,
-
+        servers            => $designate_hosts,
+        healthcheck_method => 'HEAD',
+        healthcheck_path   => '/',
+        port_backend       => 9001,
+        frontends          => [
+            {
+                port => 9001,
+            },
+            {
+                port                 => 29001,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     # Note that because keystone admin uses a weird, extremely-high-number
     #  port by default, we need to use a non-standard port for its
     #  tls port as well: 25357 rather than the more expected 225357
     openstack::haproxy::site { 'keystone_admin':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 35357,
-        port_backend           => $keystone_admin_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 25357,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $keystone_admin_bind_port,
+        frontends          => [
+            {
+                port => 35357,
+            },
+            {
+                port                 => 25357,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'keystone_public':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 5000,
-        port_backend           => $keystone_public_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 25000,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $keystone_public_bind_port,
+        frontends          => [
+            {
+                port => 5000,
+            },
+            {
+                port                 => 25000,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'glance_api':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 9292,
-        port_backend           => $glance_api_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 29292,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $glance_api_bind_port,
+        frontends          => [
+            {
+                port => 9292,
+            },
+            {
+                port                 => 29292,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'cinder_api':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 8776,
-        port_backend           => $cinder_api_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 28776,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $cinder_api_bind_port,
+        frontends          => [
+            {
+                port => 8776,
+            },
+            {
+                port                 => 28776,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'trove_api':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 8779,
-        port_backend           => $trove_api_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 28779,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $trove_api_bind_port,
+        frontends          => [
+            {
+                port => 8779,
+            },
+            {
+                port                 => 28779,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'radosgw_api':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 8080,
-        port_backend           => $radosgw_api_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 28080,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $radosgw_api_bind_port,
+        frontends          => [
+            {
+                port => 8080,
+            },
+            {
+                port                 => 28080,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'barbican':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 9311,
-        port_backend           => $barbican_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 29311,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $barbican_bind_port,
+        frontends          => [
+            {
+                port => 9311,
+            },
+            {
+                port                 => 29311,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'neutron':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 9696,
-        port_backend           => $neutron_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 29696,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $neutron_bind_port,
+        frontends          => [
+            {
+                port => 9696,
+            },
+            {
+                port                 => 29696,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'nova_api':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'HEAD',
-        healthcheck_path       => '/',
-        port_frontend          => 8774,
-        port_backend           => $nova_osapi_compute_listen_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 28774,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'HEAD',
+        healthcheck_path   => '/',
+        port_backend       => $nova_osapi_compute_listen_port,
+        frontends          => [
+            {
+                port => 8774,
+            },
+            {
+                port                 => 28774,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'placement_api':
-        servers                => $openstack_controllers,
-        healthcheck_method     => 'GET',
-        healthcheck_path       => '/',
-        port_frontend          => 8778,
-        port_backend           => $placement_api_bind_port,
-        frontend_tls_cert_name => $acme_chief_cert_name,
-        port_frontend_tls      => 28778,
+        servers            => $openstack_controllers,
+        healthcheck_method => 'GET',
+        healthcheck_path   => '/',
+        port_backend       => $placement_api_bind_port,
+        frontends          => [
+            {
+                port => 8778,
+            },
+            {
+                port                 => 28778,
+                acme_chief_cert_name => $acme_chief_cert_name,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'nova_metadata':
         servers            => $openstack_controllers,
         healthcheck_method => 'HEAD',
         healthcheck_path   => '/',
-        port_frontend      => 8775,
         port_backend       => $nova_metadata_listen_port,
+        frontends          => [
+            {
+                port => 8775,
+            },
+        ],
     }
 
     openstack::haproxy::site { 'mysql':
         servers             => $openstack_controllers,
-        port_frontend       => 3306,
         port_backend        => $galera_listen_port,
         primary_host        => $galera_primary_host,
         healthcheck_options => ['option httpchk'],
-        type                => 'tcp'
+        type                => 'tcp',
+        frontends           => [
+            {
+                port => 3306,
+            },
+        ],
     }
 }
