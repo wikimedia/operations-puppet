@@ -1,4 +1,4 @@
-# == Define: profile::openstack::base::haproxy::site
+# == Define: openstack::haproxy::site
 #
 # Configures a HAProxy layer7 backend and frontend configuration for the
 # requested service endpoint.
@@ -40,13 +40,13 @@
 #
 # === Examples
 #
-#  profile::openstack::base::haproxy::site { 'nova_metadata':
+#  openstack::haproxy::site { 'nova_metadata':
 #      port_frontend => '8775',
 #      port_backend  => '18775',
 #      servers       => ['backend-host01', 'backend-host02'],
 #  }
 #
-define profile::openstack::base::haproxy::site(
+define openstack::haproxy::site(
     Array[Stdlib::Fqdn] $servers,
     Stdlib::Port $port_backend,
     Stdlib::Port $port_frontend,
@@ -59,8 +59,6 @@ define profile::openstack::base::haproxy::site(
     Optional[String] $frontend_tls_cert_name = undef,
     Optional[Stdlib::Port] $port_frontend_tls = undef,
 ) {
-    include profile::openstack::base::haproxy
-
     $cert_file = $frontend_tls_cert_name ? {
         undef   => undef,
         default => "/etc/acmecerts/${frontend_tls_cert_name}/live/ec-prime256v1.chained.crt.key"
@@ -84,7 +82,7 @@ define profile::openstack::base::haproxy::site(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => template('profile/openstack/base/haproxy/conf.d/http-service.cfg.erb'),
+            content => template('openstack/haproxy/conf.d/http-service.cfg.erb'),
             # restart to pick up new config files in conf.d
             notify  => Service['haproxy'],
         }
@@ -94,7 +92,7 @@ define profile::openstack::base::haproxy::site(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            content => template('profile/openstack/base/haproxy/conf.d/tcp-service.cfg.erb'),
+            content => template('openstack/haproxy/conf.d/tcp-service.cfg.erb'),
             # restart to pick up new config files in conf.d
             notify  => Service['haproxy'],
         }

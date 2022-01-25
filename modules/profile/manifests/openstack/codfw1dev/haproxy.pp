@@ -22,7 +22,9 @@ class profile::openstack::codfw1dev::haproxy(
         }
     }
 
-    profile::openstack::base::haproxy::site { 'designate':
+    include profile::openstack::base::haproxy
+
+    openstack::haproxy::site { 'designate':
         servers                => $designate_hosts,
         healthcheck_method     => 'HEAD',
         healthcheck_path       => '/',
@@ -36,7 +38,7 @@ class profile::openstack::codfw1dev::haproxy(
     # Note that because keystone admin uses a weird, extremely-high-number
     #  port by default, we need to use a non-standard port for its
     #  tls port as well: 25357 rather than the more expected 225357
-    profile::openstack::base::haproxy::site { 'keystone_admin':
+    openstack::haproxy::site { 'keystone_admin':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -46,7 +48,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 25357,
     }
 
-    profile::openstack::base::haproxy::site { 'keystone_public':
+    openstack::haproxy::site { 'keystone_public':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -56,7 +58,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 25000,
     }
 
-    profile::openstack::base::haproxy::site { 'glance_api':
+    openstack::haproxy::site { 'glance_api':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -66,7 +68,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 29292,
     }
 
-    profile::openstack::base::haproxy::site { 'cinder_api':
+    openstack::haproxy::site { 'cinder_api':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -76,7 +78,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 28776,
     }
 
-    profile::openstack::base::haproxy::site { 'trove_api':
+    openstack::haproxy::site { 'trove_api':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -86,7 +88,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 28779,
     }
 
-    profile::openstack::base::haproxy::site { 'radosgw_api':
+    openstack::haproxy::site { 'radosgw_api':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -96,7 +98,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 28080,
     }
 
-    profile::openstack::base::haproxy::site { 'barbican':
+    openstack::haproxy::site { 'barbican':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -106,7 +108,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 29311,
     }
 
-    profile::openstack::base::haproxy::site { 'neutron':
+    openstack::haproxy::site { 'neutron':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -116,7 +118,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 29696,
     }
 
-    profile::openstack::base::haproxy::site { 'nova_api':
+    openstack::haproxy::site { 'nova_api':
         servers                => $openstack_controllers,
         healthcheck_method     => 'HEAD',
         healthcheck_path       => '/',
@@ -126,7 +128,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 28774,
     }
 
-    profile::openstack::base::haproxy::site { 'placement_api':
+    openstack::haproxy::site { 'placement_api':
         servers                => $openstack_controllers,
         healthcheck_method     => 'GET',
         healthcheck_path       => '/',
@@ -136,7 +138,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_frontend_tls      => 28778,
     }
 
-    profile::openstack::base::haproxy::site { 'nova_metadata':
+    openstack::haproxy::site { 'nova_metadata':
         servers            => $openstack_controllers,
         healthcheck_method => 'HEAD',
         healthcheck_path   => '/',
@@ -144,7 +146,7 @@ class profile::openstack::codfw1dev::haproxy(
         port_backend       => $nova_metadata_listen_port,
     }
 
-    profile::openstack::base::haproxy::site { 'mysql':
+    openstack::haproxy::site { 'mysql':
         servers             => $openstack_controllers,
         port_frontend       => 3306,
         port_backend        => $galera_listen_port,
