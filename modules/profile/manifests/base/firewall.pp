@@ -26,11 +26,13 @@ class profile::base::firewall (
                                                                 {default_value => []}),
     Array[Stdlib::IP::Address] $deployment_hosts        = lookup('deployment_hosts',
                                                                 {default_value => []}),
+    Array[Stdlib::Host]        $prometheus_nodes        = lookup('prometheus_nodes',
+                                                                {default_value => []}),
     Boolean                    $enable_logging   = lookup('profile::base::firewall::enable_logging'),
     Boolean                    $block_abuse_nets = lookup('profile::base::firewall::block_abuse_nets'),
     Boolean                    $default_reject   = lookup('profile::base::firewall::default_reject'),
 ) {
-    class { '::base::firewall':
+    class { 'base::firewall':
         monitoring_hosts        => $monitoring_hosts,
         cumin_masters           => $cumin_masters,
         bastion_hosts           => $bastion_hosts,
@@ -44,6 +46,7 @@ class profile::base::firewall (
         labstore_hosts          => $labstore_hosts,
         mysql_root_clients      => $mysql_root_clients,
         deployment_hosts        => $deployment_hosts,
+        prometheus_hosts        => $prometheus_nodes,
         block_abuse_nets        => $block_abuse_nets,
         default_reject          => $default_reject,
     }

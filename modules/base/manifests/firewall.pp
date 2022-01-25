@@ -1,21 +1,22 @@
 # Don't include this sub class on all hosts yet
 # NOTE: Policy is DROP by default
 class base::firewall (
-    Array[Stdlib::IP::Address] $monitoring_hosts = [],
-    Array[Stdlib::IP::Address] $cumin_masters = [],
-    Array[Stdlib::IP::Address] $bastion_hosts = [],
-    Array[Stdlib::IP::Address] $cache_hosts = [],
-    Array[Stdlib::IP::Address] $kafka_brokers_main = [],
+    Array[Stdlib::IP::Address] $monitoring_hosts        = [],
+    Array[Stdlib::IP::Address] $cumin_masters           = [],
+    Array[Stdlib::IP::Address] $bastion_hosts           = [],
+    Array[Stdlib::IP::Address] $cache_hosts             = [],
+    Array[Stdlib::IP::Address] $kafka_brokers_main      = [],
     Array[Stdlib::IP::Address] $kafka_brokers_analytics = [],
-    Array[Stdlib::IP::Address] $kafka_brokers_jumbo = [],
-    Array[Stdlib::IP::Address] $kafka_brokers_logging = [],
-    Array[Stdlib::IP::Address] $zookeeper_hosts_main = [],
-    Array[Stdlib::IP::Address] $druid_public_hosts = [],
-    Array[Stdlib::IP::Address] $labstore_hosts = [],
-    Array[Stdlib::IP::Address] $mysql_root_clients = [],
-    Array[Stdlib::IP::Address] $deployment_hosts = [],
-    Boolean                    $block_abuse_nets = false,
-    Boolean                    $default_reject = false,
+    Array[Stdlib::IP::Address] $kafka_brokers_jumbo     = [],
+    Array[Stdlib::IP::Address] $kafka_brokers_logging   = [],
+    Array[Stdlib::IP::Address] $zookeeper_hosts_main    = [],
+    Array[Stdlib::IP::Address] $druid_public_hosts      = [],
+    Array[Stdlib::IP::Address] $labstore_hosts          = [],
+    Array[Stdlib::IP::Address] $mysql_root_clients      = [],
+    Array[Stdlib::IP::Address] $deployment_hosts        = [],
+    Array[Stdlib::Host]        $prometheus_hosts        = [],
+    Boolean                    $block_abuse_nets        = false,
+    Boolean                    $default_reject          = false,
 ) {
     include network::constants
     include ferm
@@ -66,6 +67,10 @@ class base::firewall (
     $monitoring_hosts_str = join($monitoring_hosts, ' ')
     ferm::rule { 'monitoring-all':
         rule   => "saddr (${monitoring_hosts_str}) ACCEPT;",
+    }
+
+    ferm::rule { 'prometheus-all':
+        rule   => "saddr (@resolve(${prometheus_hosts.join(' ')})) ACCEPT;",
     }
 
     ferm::service { 'ssh-from-cumin-masters':
