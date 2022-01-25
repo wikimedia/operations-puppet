@@ -1690,11 +1690,11 @@ node /cloudvirt200[1-3]\-dev\.codfw\.wmnet/ {
 
 # WMCS Graphite and StatsD hosts
 node /cloudmetrics100[34]\.eqiad\.wmnet/ {
-    role(wmcs::monitoring)
+    role(spare::system)
 }
 
 node /cloudmetrics100[1-2]\.eqiad\.wmnet/ {
-    role(spare::system)
+    role(wmcs::monitoring)
 }
 
 node /^cloudcontrol100[3-5]\.wikimedia\.org$/ {
