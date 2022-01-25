@@ -896,6 +896,11 @@ host ncredir5002 {
     fixed-address ncredir5002.eqsin.wmnet;
 }
 
+host ncredir6001 {
+    hardware ethernet aa:00:00:25:46:e0;
+    fixed-address ncredir6001.drmrs.wmnet;
+}
+
 host netbox1001 {
    hardware ethernet aa:00:00:84:f1:9d;
    fixed-address netbox1001.wikimedia.org;
