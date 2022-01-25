@@ -141,12 +141,11 @@ class profile::idp(
     }
 
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
-        hostname         => $facts['networking']['hostname'],
-        port             => $jmx_port,
-        prometheus_nodes => $prometheus_nodes,
-        config_dir       => $jmx_config.dirname,
-        config_file      => $jmx_config,
-        content          => file('profile/idp/cas_jmx_exporter.yaml'),
+        hostname    => $facts['networking']['hostname'],
+        port        => $jmx_port,
+        config_dir  => $jmx_config.dirname,
+        config_file => $jmx_config,
+        content     => file('profile/idp/cas_jmx_exporter.yaml'),
     }
     if $memcached_enable {
         class {'profile::idp::memcached':

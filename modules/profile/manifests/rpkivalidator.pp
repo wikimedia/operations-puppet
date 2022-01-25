@@ -14,16 +14,12 @@
 #  [*rtr_port*]
 #   Port on which the RPKI-to-router daemon listens
 #
-# [*prometheus_nodes*]
-#   Prometheus nodes that should be allowed to query the exporter (optional)
-#
 # === Examples
 #       include profile::rpkivalidator
 #
 class profile::rpkivalidator(
   Optional[String] $http_proxy = lookup('http_proxy', {'default_value' => undef}),
   Stdlib::Port $rtr_port = lookup('rtr_port', {'default_value' => 3323}),
-  Optional[Array[Stdlib::Fqdn]] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => undef}),
 ){
 
     # Remove the http:// prefix to only keep webproxy.%{::site}.wmnet:8080
@@ -38,15 +34,6 @@ class profile::rpkivalidator(
         rtr_port => $rtr_port,
     }
 
-    if $prometheus_nodes {
-        $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-        ferm::service { 'routinator-prometheus-acl':
-            desc   => 'Routinator prometheus port',
-            proto  => 'tcp',
-            port   => '9556',
-            srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
-        }
-    }
     # Standard port is 323 but using 3323 to run the daemon as unpriviledge user
     # MGMT_NETWORKS is also included as devices can (should?) querry it over their mgmt port
     ferm::service { 'rpkivalidator-rtr-acl':

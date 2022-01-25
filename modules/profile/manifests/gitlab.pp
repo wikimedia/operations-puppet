@@ -7,7 +7,6 @@ class profile::gitlab(
     Stdlib::Host $service_name = lookup('profile::gitlab::service_name'),
     Stdlib::Unixpath $backup_dir_data = lookup('profile::gitlab::backup_dir_data'),
     Stdlib::Unixpath $backup_dir_config = lookup('profile::gitlab::backup_dir_config'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
     Array[Stdlib::IP::Address] $monitoring_whitelist  = lookup('profile::gitlab::monitoring_whitelist'),
     String $cas_label = lookup('profile::gitlab::cas_label'),
     Stdlib::Httpurl $cas_url = lookup('profile::gitlab::cas_url'),
@@ -70,23 +69,6 @@ class profile::gitlab(
         proto  => 'tcp',
         port   => 22,
         drange => "(${service_ip_v4} ${service_ip_v6})",
-    }
-
-    # create firewall rules for exporters T275170
-    if !empty($prometheus_nodes) {
-        # gitlab exports metrics on multiple ports and prometheus nodes need access
-        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
-        $exporters.each |$exporter, $config| {
-            unless $config['listen_address'] == '127.0.0.1' {
-                ferm::service { "${exporter}_exporter":
-                    proto  => 'tcp',
-                    port   => $config['port'],
-                    srange => $ferm_srange,
-                }
-            }
-        }
     }
 
     # JSON Logs

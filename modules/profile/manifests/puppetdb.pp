@@ -11,7 +11,6 @@
 # @param report_ttl Automatically delete reports that are older than the specified amount of time.
 #
 class profile::puppetdb(
-    Array[Stdlib::Host]                  $prometheus_nodes      = lookup('prometheus_nodes'),
     Hash[String, Puppetmaster::Backends] $puppetmasters         = lookup('puppetmaster::servers'),
     Stdlib::Host                         $master                = lookup('profile::puppetdb::master'),
     String                               $jvm_opts              = lookup('profile::puppetdb::jvm_opts'),
@@ -83,11 +82,10 @@ class profile::puppetdb(
 
     # Export JMX metrics to prometheus
     profile::prometheus::jmx_exporter { "puppetdb_${::hostname}":
-        hostname         => $::hostname,
-        port             => $prometheus_jmx_exporter_port,
-        prometheus_nodes => $prometheus_nodes,
-        config_file      => $jmx_exporter_config_file,
-        content          => file('profile/puppetmaster/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml'),
+        hostname    => $::hostname,
+        port        => $prometheus_jmx_exporter_port,
+        config_file => $jmx_exporter_config_file,
+        content     => file('profile/puppetmaster/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml'),
     }
 
     # Firewall rules

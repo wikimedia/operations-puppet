@@ -45,10 +45,7 @@ class profile::netbox::scripts (
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
-    # netbox is only in the primary site so we dont need to worry about prometheus::pop
-    $prometheus_nodes = wmflib::role_hosts('prometheus', $::site)
-    $cumin_nodes = wmflib::role_hosts('cluster::management')
-    $ferm_nodes = ($prometheus_nodes + $cumin_nodes).sort.join(' ')
+    $ferm_nodes = wmflib::role_hosts('cluster::management').sort.join(' ')
 
     ferm::service { 'netbox_scripts_https':
         proto  => 'tcp',

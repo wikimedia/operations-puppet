@@ -3,7 +3,6 @@ class profile::redis::slave(
     Hash $instance_overrides = lookup('profile::redis::slave::instance_overrides', {'default_value' => {}}),
     Stdlib::Host $master = lookup('profile::redis::slave::master'),
     Boolean $aof = lookup('profile::redis::slave::aof', {'default_value' => false}),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     # Figure out the redis instances running on the master from Puppetdb
     $resources = query_resources(
@@ -47,8 +46,7 @@ class profile::redis::slave(
     redis::monitoring::nrpe_instance { $instances: }
 
     profile::prometheus::redis_exporter{ $instances:
-        password         => $password,
-        prometheus_nodes => $prometheus_nodes,
+        password => $password,
     }
 
     ferm::service { 'redis_slave_role':

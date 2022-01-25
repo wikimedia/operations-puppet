@@ -6,7 +6,6 @@ class profile::ncredir(
     Boolean $monitoring = lookup('profile::ncredir::monitoring', {default_value => false}),
     Stdlib::Port::User $mtail_access_log_port = lookup('profile::ncredir::mtail_access_log_port', {default_value => 3904}),
     String $mtail_args = lookup('profile::ncredir::mtail_args', {default_value => ''}),
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
     Integer[0] $hsts_max_age = lookup('profile::ncredir::hsts_max_age', {default_value => 106384710}),
 ) {
 
@@ -62,12 +61,5 @@ class profile::ncredir(
     ferm::service { 'ncredir_https':
         proto => 'tcp',
         port  => $https_port,
-    }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'mtail':
-      proto  => 'tcp',
-      port   => '3904',
-      srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }

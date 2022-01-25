@@ -8,7 +8,6 @@ class profile::redis::master(
                                                     {'default_value' => false}),
     Array[String]       $clients            = lookup('profile::redis::master::clients',
                                                     {'default_value' => []}),
-    Array[Stdlib::Host] $prometheus_nodes   = lookup('prometheus_nodes'),
 ){
     $uris = $instances.map |$instance| { "localhost:${instance}/${password}" }
     $redis_ports = join($instances, ' ')
@@ -39,8 +38,7 @@ class profile::redis::master(
     redis::monitoring::nrpe_instance { $instances: }
 
     profile::prometheus::redis_exporter{ $instances:
-        password         => $password,
-        prometheus_nodes => $prometheus_nodes,
+        password => $password,
     }
 
     ferm::service { 'redis_master_role':

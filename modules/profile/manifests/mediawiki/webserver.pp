@@ -6,7 +6,6 @@ class profile::mediawiki::webserver(
     String $fcgi_pool = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
     Mediawiki::Vhost_feature_flags $vhost_feature_flags = lookup('profile::mediawiki::vhost_feature_flags', {'default_value' => {}}),
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     # Sites shared between different installations
     Array[Mediawiki::SiteCollection] $common_sites = lookup('mediawiki::common_sites'),
     # Installation/site dependent sites
@@ -130,13 +129,4 @@ class profile::mediawiki::webserver(
             syslog_tag         => "${server_role}-mw-access",
         }
     }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-
-    ferm::service { 'mtail':
-        proto  => 'tcp',
-        port   => '3903',
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
-    }
-
 }

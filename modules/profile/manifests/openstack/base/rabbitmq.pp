@@ -1,5 +1,4 @@
 class profile::openstack::base::rabbitmq(
-    Array[Stdlib::Fqdn] $prometheus_nodes        = lookup('prometheus_nodes'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     $monitor_user = lookup('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = lookup('profile::openstack::base::rabbit_monitor_pass'),
@@ -79,7 +78,6 @@ class profile::openstack::base::rabbitmq(
     }
 
     class { '::profile::prometheus::rabbitmq_exporter':
-        prometheus_nodes        => $prometheus_nodes,
         rabbit_monitor_username => $monitor_user,
         rabbit_monitor_password => $monitor_password,
     }

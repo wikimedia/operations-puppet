@@ -2,7 +2,6 @@
 #
 # This profile configures Ceph monitor hosts with the mon and mgr daemons
 class profile::ceph::mon(
-    Array[Stdlib::Fqdn]  $prometheus_nodes = lookup('prometheus_nodes'),
     Array[Stdlib::Fqdn]  $openstack_controllers = lookup('profile::ceph::openstack_controllers'),
     Hash[String,Hash]    $mon_hosts        = lookup('profile::ceph::mon::hosts'),
     Hash[String,Hash]    $osd_hosts        = lookup('profile::ceph::osd::hosts'),
@@ -86,12 +85,5 @@ class profile::ceph::mon(
     # This adds latency stats between from this mon to the rest of the ceph fleet
     class { 'prometheus::node_pinger':
         nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
-    }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'ceph_mgr_prometheus_lvs':
-        proto  => 'tcp',
-        port   => 9283,
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))"
     }
 }

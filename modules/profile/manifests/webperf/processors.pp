@@ -13,9 +13,8 @@
 # - coal
 #
 class profile::webperf::processors(
-    String              $statsd                = lookup('statsd'),
-    Stdlib::Fqdn        $graphite_host         = lookup('graphite_host'),
-    Array[Stdlib::Fqdn] $prometheus_nodes      = lookup('prometheus_nodes'),
+    String       $statsd        = lookup('statsd'),
+    Stdlib::Fqdn $graphite_host = lookup('graphite_host'),
 ){
 
     $statsd_parts = split($statsd, ':')
@@ -65,15 +64,11 @@ class profile::webperf::processors(
 
     # navtiming exports Prometheus metrics on port 9230.
     if $::realm == 'labs' {
-        $ferm_srange = '$LABS_NETWORKS'
-    } else {
-        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-    }
-    ferm::service { 'prometheus-navtiming-exporter':
-        proto  => 'tcp',
-        port   => '9230',
-        srange => $ferm_srange,
+        ferm::service { 'prometheus-navtiming-exporter':
+            proto  => 'tcp',
+            port   => '9230',
+            srange => '$LABS_NETWORKS',
+        }
     }
 
     # Make a valid target for coal, and set up what's needed for the consumer

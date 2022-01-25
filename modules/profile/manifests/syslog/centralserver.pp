@@ -1,7 +1,6 @@
 # Setup rsyslog as a receiver of cluster wide syslog messages.
 #
 class profile::syslog::centralserver (
-    Array[Stdlib::Host] $prometheus_nodes = lookup ('prometheus_nodes', {'default_value' => []}),
     Integer $log_retention_days = lookup('profile::syslog::centralserver::log_retention_days'),
     Boolean $use_kafka_relay = lookup('profile::syslog::centralserver::use_kafka_relay', {'default_value' => true}),
 ){
@@ -58,12 +57,5 @@ class profile::syslog::centralserver (
         ensure => present,
         source => 'puppet:///modules/mtail/programs/ulogd.mtail',
         notify => Service['mtail'],
-    }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'mtail':
-        proto  => 'tcp',
-        port   => '3903',
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }

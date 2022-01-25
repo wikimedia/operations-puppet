@@ -1,5 +1,4 @@
 class profile::openstack::base::metrics(
-    Array[Stdlib::Fqdn]  $prometheus_nodes       = lookup('prometheus_nodes'),
     Float                $cpu_allocation_ratio   = lookup('profile::openstack::base::metrics::cpu_allocation_ratio'),
     Float                $ram_allocation_ratio   = lookup('profile::openstack::base::metrics::ram_allocation_ratio'),
     Float                $disk_allocation_ratio  = lookup('profile::openstack::base::metrics::disck_allocation_ratio'),
@@ -14,7 +13,6 @@ class profile::openstack::base::metrics(
   ) {
 
     class {'::profile::prometheus::openstack_exporter':
-        prometheus_nodes       => $prometheus_nodes,
         cpu_allocation_ratio   => $cpu_allocation_ratio,
         ram_allocation_ratio   => $ram_allocation_ratio,
         disk_allocation_ratio  => $disk_allocation_ratio,

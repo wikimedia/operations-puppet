@@ -11,7 +11,6 @@ class profile::calico::kubernetes(
     String $calicoctl_token = lookup('profile::calico::kubernetes::calicoctl::token'),
     Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
 ){
 
     class { '::calico':
@@ -29,8 +28,6 @@ class profile::calico::kubernetes(
 
     # TODO: We need to configure BGP peers in calico datastore (helm chart) as well.
     $bgp_peers_ferm = join($bgp_peers, ' ')
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-
     ferm::service { 'calico-bird':
         proto  => 'tcp',
         port   => '179', # BGP
@@ -43,15 +40,5 @@ class profile::calico::kubernetes(
         proto  => 'tcp',
         port   => '5473',
         srange => "(@resolve((${bgp_peers_ferm})) @resolve((${bgp_peers_ferm}), AAAA))",
-    }
-    ferm::service { 'calico-felix-prometheus':
-        proto  => 'tcp',
-        port   => '9091', # Prometheus metrics port of calico node pods (running in host network namespace)
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
-    }
-    ferm::service { 'calico-typha-prometheus':
-        proto  => 'tcp',
-        port   => '9093', # Prometheus metrics port of calico typha pods (running in host network namespace)
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }

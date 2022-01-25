@@ -14,15 +14,11 @@
 # [*port*]
 #   The port for redis-exporter to listen on.
 #
-# [*prometheus_nodes*]
-#   A list of hosts to allow access to redis-exporter
-#
 define profile::prometheus::redis_exporter (
-    String              $password,
-    Array[Stdlib::Host] $prometheus_nodes,
-    Stdlib::Host        $hostname  = $facts['hostname'],
-    Stdlib::Port        $port      = Integer($title) + 10000,
-    String              $arguments = '',
+    String       $password,
+    Stdlib::Host $hostname  = $facts['hostname'],
+    Stdlib::Port $port      = Integer($title) + 10000,
+    String       $arguments = '',
 ){
 
     prometheus::redis_exporter { $title:
@@ -30,12 +26,5 @@ define profile::prometheus::redis_exporter (
         port      => $port,
         password  => $password,
         arguments => $arguments,
-    }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { "redis_exporter_${title}":
-        proto  => 'tcp',
-        port   => $port,
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }

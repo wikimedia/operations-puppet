@@ -4,7 +4,6 @@
 # Provisions OpenSearch backend node for a Logstash cluster.
 #
 class profile::opensearch::logstash(
-    Array[String]              $prometheus_nodes = lookup('prometheus_nodes'),
     Optional[Stdlib::Fqdn]     $jobs_host        = lookup('profile::opensearch::logstash::jobs_host',       { default_value => undef }),
     Optional[Hash]             $curator_actions  = lookup('profile::opensearch::logstash::curator_actions', { default_value => undef }),
     Opensearch::InstanceParams $dc_settings      = lookup('profile::opensearch::dc_settings'),
@@ -40,7 +39,6 @@ class profile::opensearch::logstash(
         $http_port = $cluster_params['http_port']
 
         profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
-            prometheus_nodes   => $prometheus_nodes,
             prometheus_port    => $prometheus_port,
             elasticsearch_port => $http_port,
         }

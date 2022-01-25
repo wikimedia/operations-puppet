@@ -1,13 +1,4 @@
-class profile::lists::ferm (
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes')
-) {
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'mtail':
-        proto  => 'tcp',
-        port   => '3903',
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
-    }
-
+class profile::lists::ferm {
     ferm::service { 'mailman-smtp':
         proto => 'tcp',
         port  => '25',

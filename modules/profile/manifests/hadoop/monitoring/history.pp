@@ -5,20 +5,18 @@
 # up its configuration file, but it does not instruct the target JVM to use it.
 #
 class profile::hadoop::monitoring::history(
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-    String $hadoop_cluster_name           = lookup('profile::hadoop::common::hadoop_cluster_name'),
+    String $hadoop_cluster_name = lookup('profile::hadoop::common::hadoop_cluster_name'),
 ){
 
     $jmx_exporter_config_file = '/etc/prometheus/mapreduce_history_jmx_exporter.yaml'
     $prometheus_jmx_exporter_history_port = 10086
     profile::prometheus::jmx_exporter { "mapreduce_history_${::hostname}":
-        hostname         => $::hostname,
-        port             => $prometheus_jmx_exporter_history_port,
-        prometheus_nodes => $prometheus_nodes,
+        hostname    => $::hostname,
+        port        => $prometheus_jmx_exporter_history_port,
         # Label these metrics with the hadoop cluster name.
-        labels           => { 'hadoop_cluster' => $hadoop_cluster_name },
-        config_file      => $jmx_exporter_config_file,
-        config_dir       => '/etc/prometheus',
-        source           => 'puppet:///modules/profile/hadoop/prometheus_mapreduce_history_jmx_exporter.yaml',
+        labels      => { 'hadoop_cluster' => $hadoop_cluster_name },
+        config_file => $jmx_exporter_config_file,
+        config_dir  => '/etc/prometheus',
+        source      => 'puppet:///modules/profile/hadoop/prometheus_mapreduce_history_jmx_exporter.yaml',
     }
 }

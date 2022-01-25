@@ -2,9 +2,7 @@
 #
 # Profile for package_builder
 #
-class profile::package_builder (
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes')
-){
+class profile::package_builder {
     class { '::package_builder': }
 
     # this uses modules/rsync to
@@ -22,13 +20,6 @@ class profile::package_builder (
         proto  => 'tcp',
         port   => 873,
         srange => '$DOMAIN_NETWORKS',
-    }
-    $prometheus_hosts = join($prometheus_nodes, ' ')
-    # So prometheus blackbox exporter can monitor ssh
-    ferm::service { 'ssh-prometheus':
-        proto  => 'tcp',
-        port   => '22',
-        srange => "@resolve((${prometheus_hosts}))",
     }
 
     monitoring::service { 'package_builder_rsync':

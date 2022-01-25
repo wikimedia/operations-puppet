@@ -85,15 +85,6 @@ class profile::openstack::base::galera::node(
         client_socket   => $socket,
     }
 
-    $prometheus_nodes = lookup('prometheus_nodes')
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-
-    ferm::service { 'prometheus-mysqld-exporter':
-        proto  => 'tcp',
-        port   => '9104',
-        srange => "@resolve((${prometheus_ferm_nodes}))",
-    }
-
     openstack::db::project_grants { 'prometheus':
         privs        => 'REPLICATION CLIENT, PROCESS',
         access_hosts => $openstack_controllers,

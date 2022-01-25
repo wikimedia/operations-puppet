@@ -23,7 +23,6 @@ class profile::openstack::base::designate::service(
     $osm_host = lookup('profile::openstack::base::osm_host'),
     $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     $region = lookup('profile::openstack::base::region'),
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     $puppet_git_repo_name = lookup('profile::openstack::base::horizon::puppet_git_repo_name'),
     $puppet_git_repo_user = lookup('profile::openstack::base::horizon::puppet_git_repo_user'),
     Integer $mcrouter_port = lookup('profile::openstack::base::designate::mcrouter_port'),
@@ -60,13 +59,10 @@ class profile::openstack::base::designate::service(
 
     $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
     $labweb_ip6s = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $prometheus_ferm_srange = "@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA)"
-    # Open designate API to WMCS web UIs and the commandline on control servers, also prometheus
+    # Open designate API to WMCS web UIs and the commandline on control servers
     ferm::rule { 'designate-api':
         rule => "saddr (@resolve((${join($openstack_controllers,' ')}))
                         @resolve((${join($openstack_controllers,' ')}), AAAA)
-                        ${prometheus_ferm_srange}
                  ) proto tcp dport (9001) ACCEPT;",
     }
 

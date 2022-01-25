@@ -10,7 +10,6 @@ class profile::otrs(
     String $exim_database_name       = lookup('profile::otrs::exim_database_name'),
     String $exim_database_user       = lookup('profile::otrs::exim_database_user'),
     String $exim_database_pass       = lookup('profile::otrs::exim_database_pass'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter

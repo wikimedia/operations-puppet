@@ -1,6 +1,5 @@
 class profile::lists (
     Stdlib::Fqdn $lists_servername            = lookup('mailman::lists_servername'),
-    Array[String] $prometheus_nodes           = lookup('prometheus_nodes'),
     Optional[String] $primary_host            = lookup('profile::lists::primary_host', {'default_value' => undef}),
     Optional[String] $standby_host            = lookup('profile::lists::standby_host', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),
@@ -167,5 +166,5 @@ class profile::lists (
         lists_servername => $lists_servername,
         standby_host     => $standby_host
     }
-    class { 'profile::lists::ferm': prometheus_nodes => $prometheus_nodes }
+    class { 'profile::lists::ferm': }
 }

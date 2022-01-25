@@ -1,8 +1,4 @@
-class profile::prometheus::snmp_exporter (
-    # Allow Prometheus (ops instance) hosts to talk to netmon's snmp_exporter in
-    # eqiad and codfw.
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_all_nodes'),
-) {
+class profile::prometheus::snmp_exporter {
     include passwords::network
 
     class { '::prometheus::snmp_exporter': }
@@ -48,15 +44,10 @@ class profile::prometheus::snmp_exporter (
     }
 
     if $::realm == 'labs' {
-        $ferm_srange = '$LABS_NETWORKS'
-    } else {
-        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-    }
-
-    ferm::service { 'prometheus-snmp-exporter':
-        proto  => 'tcp',
-        port   => '9116',
-        srange => $ferm_srange,
+        ferm::service { 'prometheus-snmp-exporter':
+            proto  => 'tcp',
+            port   => '9116',
+            srange => '$LABS_NETWORKS'
+        }
     }
 }

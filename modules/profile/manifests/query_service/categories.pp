@@ -19,7 +19,6 @@ class profile::query_service::categories(
     Boolean $use_deployed_config = lookup('profile::query_service::blazegraph_use_deployed_config', {'default_value' => false}),
     Array[String] $options = lookup('profile::query_service::blazegraph_options'),
     Array[String] $extra_jvm_opts = lookup('profile::query_service::blazegraph_extra_jvm_opts'),
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
 ) {
@@ -48,7 +47,6 @@ class profile::query_service::categories(
         use_deployed_config    => $use_deployed_config,
         options                => $options,
         extra_jvm_opts         => $extra_jvm_opts,
-        prometheus_nodes       => $prometheus_nodes,
         contact_groups         => $contact_groups,
         monitoring_enabled     => true, # ????
         sparql_query_stream    => undef,

@@ -6,20 +6,9 @@
 # [*nodes*] List of prometheus nodes
 #
 
-class profile::prometheus::varnish_exporter(
-    Array[Stdlib::Host] $nodes = lookup('prometheus_nodes')
-) {
-    $prometheus_ferm_nodes = join($nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
+class profile::prometheus::varnish_exporter {
     prometheus::varnish_exporter{ 'frontend':
         instance       => 'frontend',
         listen_address => ':9331',
-    }
-
-    ferm::service { 'prometheus-varnish-exporter-frontend':
-        proto  => 'tcp',
-        port   => '9331',
-        srange => $ferm_srange,
     }
 }

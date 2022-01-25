@@ -5,7 +5,6 @@ class profile::redis::multidc(
     Hash $settings = lookup('profile::redis::multidc::settings'),
     Optional[String] $discovery = lookup('profile::redis::multidc::discovery', {'default_value' => undef}),
     Boolean $aof = lookup('profile::redis::multidc::aof', {default_value => false}),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Optional[Integer] $version_override = lookup('profile::redis::multidc::version_override'),
 ) {
     # Hosts where we will install redis multidc are hosts where
@@ -62,8 +61,7 @@ class profile::redis::multidc(
         redis::monitoring::nrpe_instance { $instances: }
 
         ::profile::prometheus::redis_exporter{ $instances:
-            password         => $password,
-            prometheus_nodes => $prometheus_nodes,
+            password => $password,
         }
 
         ferm::service { "redis_${category}_role":

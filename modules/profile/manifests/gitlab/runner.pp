@@ -35,7 +35,6 @@ class profile::gitlab::runner (
     Boolean                                $run_untagged       = lookup('profile::gitlab::runner::run_untagged'),
     Array[String]                          $tags               = lookup('profile::gitlab::runner::tags'),
     Boolean                                $enable_exporter    = lookup('profile::gitlab::runner::enable_exporter', {default_value => false}),
-    Array[Stdlib::Host]                    $prometheus_nodes   = lookup('prometheus_nodes', {default_value => []}),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -86,7 +85,6 @@ class profile::gitlab::runner (
         runner_name             => $runner_name,
         exporter_listen_address => $facts['ipaddress'],
         enable_exporter         => $enable_exporter,
-        prometheus_nodes        => $prometheus_nodes,
     }
 
     if $ensure == 'present' {

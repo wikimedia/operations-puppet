@@ -18,9 +18,6 @@
 #  [*port*]
 #    Port used by the exporter for the listen socket.
 #
-#  [*prometheus_nodes*]
-#    List of Prometheus master nodes.
-#
 #  [*config_file*]
 #    The full path of the configuration file to create. Check 'config_dir' for
 #    more info about how its parent directory is handled.
@@ -51,13 +48,12 @@
 #    Default: {}
 #
 #  [*extra_ferm_allowed_nodes*]
-#    In addition to $prometheus_nodes, nodes in this list will also be allowed to talk to the
+#    Nodes in this list will also be allowed to talk to the
 #    prometheus jmx exporter in ferm rules.
 #
 define profile::prometheus::jmx_exporter (
     Stdlib::Host               $hostname,
     Stdlib::Port               $port,
-    Array[Stdlib::Host]        $prometheus_nodes,
     Stdlib::Unixpath           $config_file,
     Optional[Stdlib::Unixpath] $config_dir = undef,
     Optional[String]           $content = undef,
@@ -102,12 +98,5 @@ define profile::prometheus::jmx_exporter (
         hostname => $hostname,
         port     => $port,
         labels   => $labels,
-    }
-
-    $allowed_nodes_to_prometheus_exporter_ferm = join($prometheus_nodes + $extra_ferm_allowed_nodes, ' ')
-    ferm::service { "${title}_jmx_exporter":
-        proto  => 'tcp',
-        port   => $port,
-        srange => "(@resolve((${allowed_nodes_to_prometheus_exporter_ferm})) @resolve((${allowed_nodes_to_prometheus_exporter_ferm}), AAAA))",
     }
 }

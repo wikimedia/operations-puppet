@@ -16,7 +16,6 @@ class profile::mjolnir::kafka_bulk_daemon(
     String $es_cluster_endpoint = lookup('profile::mjolnir::kafka_bulk_daemon::es_cluster_endpoint', { 'default_value' => 'localhost:9200' }),
     Array[String] $topics = lookup('profile::mjolnir::kafka_bulk_daemon::topics'),
     Array[String] $priority_topics = lookup('profile::mjolnir::kafka_bulk_daemon::priority_topics'),
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes', { 'default_value' => [] }),
     Wmflib::Ensure $ensure = lookup('profile::mjolnir::kafka_bulk_daemon::ensure', { 'default_value' => 'present' }),
 ) {
     require ::profile::mjolnir
@@ -34,13 +33,5 @@ class profile::mjolnir::kafka_bulk_daemon(
 
     ::profile::auto_restarts::service { 'mjolnir-kafka-bulk-daemon':
         ensure => $ensure,
-    }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'mjolnir-bulk-metrics':
-        ensure => $ensure,
-        proto  => 'tcp',
-        port   => $prometheus_port,
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 }

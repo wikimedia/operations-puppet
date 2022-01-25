@@ -5,7 +5,6 @@ class profile::thumbor(
     Array[String] $swift_sharded_containers = lookup('profile::swift::proxy::shard_container_list', {'merge' => 'unique'}),
     Array[String] $swift_private_containers = lookup('profile::swift::proxy::private_container_list', {'merge' => 'unique'}),
     String $thumbor_mediawiki_shared_secret = lookup('thumbor::mediawiki::shared_secret'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {'default_value' => []}),
     Stdlib::Port $statsd_port = lookup('statsd_exporter_port'),
     Hash $swift_account_keys = lookup('profile::swift::accounts_keys'),
 ){
@@ -40,14 +39,6 @@ class profile::thumbor(
         proto  => 'tcp',
         port   => '8800',
         srange => '$DOMAIN_NETWORKS',
-    }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-
-    ferm::service { 'mtail':
-      proto  => 'tcp',
-      port   => '3903',
-      srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 
     $thumbor_memcached_servers_ferm = join($memcached_servers, ' ')

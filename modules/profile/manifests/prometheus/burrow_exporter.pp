@@ -17,7 +17,6 @@
 #  Default: 3
 #
 define profile::prometheus::burrow_exporter(
-    Array[Stdlib::Host] $prometheus_nodes,
     $burrow_addr = 'localhost:8000',
     $hostname = '0.0.0.0',
     $port = '9000',
@@ -28,14 +27,5 @@ define profile::prometheus::burrow_exporter(
         metrics_addr => "${hostname}:${port}",
         interval     => 30,
         api_version  => 3,
-    }
-
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
-    ferm::service { "prometheus-burrow_exporter-${title}":
-        proto  => 'tcp',
-        port   => $port,
-        srange => $ferm_srange,
     }
 }

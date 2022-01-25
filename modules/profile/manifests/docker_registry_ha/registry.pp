@@ -31,7 +31,6 @@ class profile::docker_registry_ha::registry(
     Optional[String] $redis_password = lookup('profile::docker_registry_ha::registry::redis_password', { 'default_value' => undef }),
     Optional[String] $docker_registry_shared_secret = lookup('profile::docker_registry_ha::registry::shared_secret', { 'default_value' => undef }),
     Boolean $registry_read_only_mode = lookup('profile::docker_registry_ha::registry::read_only_mode', { 'default_value' => false }),
-    Array[Stdlib::Host] $metrics_allowed_hosts = lookup('prometheus_nodes'),
     Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', { 'default_value' => [] }),
     Boolean $nginx_cache = lookup('profile::docker_registry_ha::registry::nginx_cache', { 'default_value' => true }),
 ) {
@@ -106,17 +105,6 @@ class profile::docker_registry_ha::registry(
         port   => 'https',
         srange => '$DOMAIN_NETWORKS',
     }
-
-    $metrics_ferm_nodes = join($metrics_allowed_hosts, ' ')
-    $ferm_srange = "(@resolve((${metrics_ferm_nodes})) @resolve((${metrics_ferm_nodes}), AAAA))"
-
-
-    ferm::service { 'registry-prometheus-metrics':
-        proto  => 'tcp',
-        port   => '5001',
-        srange => $ferm_srange,
-    }
-
 
     # Monitoring
     # This will test both nginx and the docker registry application

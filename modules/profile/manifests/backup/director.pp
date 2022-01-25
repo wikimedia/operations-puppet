@@ -14,7 +14,6 @@ class profile::backup::director(
     Stdlib::Port        $dbport           = lookup('profile::backup::director::dbport'),
     String              $dbuser           = lookup('profile::backup::director::dbuser'),
     String              $dbpass           = lookup('profile::backup::director::dbpass'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     include profile::base::firewall
 
@@ -243,11 +242,5 @@ class profile::backup::director(
         proto  => 'tcp',
         port   => '9101',
         srange => '$PRODUCTION_NETWORKS',
-    }
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'bacula-prometheus-exporter':
-        proto  => 'tcp',
-        port   => '9133',
-        srange => "@resolve((${prometheus_nodes_ferm}))",
     }
 }

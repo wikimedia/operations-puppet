@@ -4,7 +4,6 @@ class profile::zuul::server(
     Variant[Enum['mask', 'manual'], Boolean] $service_enable = lookup('profile::zuul::server::service_enable', {default_value => true}),
     Variant[Enum['running', 'stopped'], Boolean] $service_ensure = lookup('profile::zuul::server::service_ensure', {default_value => 'running'}),
     Stdlib::Fqdn $email_server = lookup('profile::zuul::server::email_server'),
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     system::role { 'zuul::server': description => 'Zuul server (scheduler)' }
 
@@ -13,8 +12,7 @@ class profile::zuul::server(
         default => 'present',
     }
     class { 'zuul::monitoring::server':
-        ensure           => $monitoring_active,
-        prometheus_nodes => $prometheus_nodes,
+        ensure => $monitoring_active,
     }
     # This ensures that the mtail package is installed,
     # /etc/default/mtail exists, and systemd service is prepped.

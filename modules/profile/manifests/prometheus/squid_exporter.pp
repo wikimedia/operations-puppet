@@ -1,12 +1,8 @@
 # Installs prometheus-squid-exporter and open matching ACLs
 
 class profile::prometheus::squid_exporter (
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Stdlib::HTTPUrl $http_proxy = lookup('http_proxy', {'default_value' => undef}),
 ) {
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
     # Note that prometheus-squid-exporter is only in buster and up
     ensure_packages('prometheus-squid-exporter')
 
@@ -28,10 +24,4 @@ class profile::prometheus::squid_exporter (
 
 
     profile::auto_restarts::service { 'prometheus-squid-exporter': }
-
-    ferm::service { 'prometheus-squid-exporter':
-        proto  => 'tcp',
-        port   => '9301',
-        srange => $ferm_srange,
-    }
 }

@@ -1,6 +1,5 @@
 class profile::openstack::base::designate::firewall::api(
     Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
     Stdlib::Fqdn $osm_host = lookup('profile::openstack::base::osm_host'),
 ) {
@@ -8,13 +7,11 @@ class profile::openstack::base::designate::firewall::api(
     $clients_ipv4 = flatten([
         $labweb_hosts,
         $openstack_controllers,
-        $prometheus_nodes,
         $osm_host,
     ])
     $clients_ipv6 = flatten([
         $labweb_hosts,
         $openstack_controllers,
-        $prometheus_nodes,
     ])
 
     ferm::service { 'designate-api':

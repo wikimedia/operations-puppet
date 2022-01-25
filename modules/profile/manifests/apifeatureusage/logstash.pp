@@ -10,7 +10,6 @@ class profile::apifeatureusage::logstash (
   Optional[String]       $input_kafka_consumer_group_id        = lookup('profile::apifeatureusage::logstash::input_kafka_consumer_group_id', { default_value => undef }),
   Optional[Stdlib::Fqdn] $jobs_host                            = lookup('profile::apifeatureusage::logstash::jobs_host',                     { default_value => undef }),
   Stdlib::Port           $jmx_exporter_port                    = lookup('profile::apifeatureusage::logstash::jmx_exporter_port',             { default_value => 7800  }),
-  Array[Stdlib::Host]    $prometheus_nodes                     = lookup('prometheus_nodes',                                                  { default_value => []    }),
 ) {
   require ::profile::java
 
@@ -21,12 +20,11 @@ class profile::apifeatureusage::logstash (
 
   # Prometheus JVM metrics
   profile::prometheus::jmx_exporter { "logstash_collector_${::hostname}":
-    hostname         => $::hostname,
-    port             => $jmx_exporter_port,
-    prometheus_nodes => $prometheus_nodes,
-    config_file      => $jmx_exporter_config_file,
-    config_dir       => $config_dir,
-    source           => 'puppet:///modules/profile/logstash/jmx_exporter.yaml',
+    hostname    => $::hostname,
+    port        => $jmx_exporter_port,
+    config_file => $jmx_exporter_config_file,
+    config_dir  => $config_dir,
+    source      => 'puppet:///modules/profile/logstash/jmx_exporter.yaml',
   }
 
   sysctl::parameters { 'logstash_receive_skbuf':

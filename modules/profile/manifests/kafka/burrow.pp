@@ -4,7 +4,6 @@
 # Compatible only with burrow >= 1.0.
 #
 define profile::kafka::burrow(
-    $prometheus_nodes,
     $monitoring_config,
 ) {
     $config = kafka_config($title)
@@ -32,9 +31,8 @@ define profile::kafka::burrow(
     }
 
     profile::prometheus::burrow_exporter { $title:
-        burrow_addr      => "localhost:${burrow_http_port}",
-        port             => $prometheus_burrow_http_port,
-        prometheus_nodes => $prometheus_nodes,
+        burrow_addr => "localhost:${burrow_http_port}",
+        port        => $prometheus_burrow_http_port,
     }
 
     # Burrow offers a HTTP REST API

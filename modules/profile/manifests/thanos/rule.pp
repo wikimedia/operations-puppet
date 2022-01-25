@@ -3,7 +3,6 @@
 # Thanos rule is in charge of evaluating Prometheus recording and alerting rules.
 #
 # = Parameters
-# [*prometheus_nodes*] The list of Prometheus hosts available in this site.
 # [*rule_hosts*] A mapping from fqdn to labels to use. See thanos::rule for details.
 # [*query_hosts*] A list of Thanos query hosts to allow access from.
 # [*objstore_account*] The account to use to access object storage
@@ -12,7 +11,6 @@
 
 
 class profile::thanos::rule (
-    Array $prometheus_nodes = lookup('prometheus_nodes'),
     Hash[Stdlib::Fqdn, Hash] $thanos_rule_hosts = lookup('profile::thanos::rule_hosts'),
     Array $query_hosts = lookup('profile::thanos::frontends'),
     Hash[String, String] $objstore_account = lookup('profile::thanos::objstore_account'),
@@ -39,14 +37,6 @@ class profile::thanos::rule (
 
     if $::fqdn in $thanos_rule_hosts {
         class { 'thanos::rule::prometheus': }
-    }
-
-    # Allow access only to rule to scrape metrics
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    ferm::service { 'thanos_rule':
-        proto  => 'tcp',
-        port   => $http_port,
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 
     # Allow access from query hosts

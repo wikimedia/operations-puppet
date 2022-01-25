@@ -16,7 +16,6 @@ describe 'profile::ceph::mon' do
         Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| '127.0.0.10' }
       end
       base_params = {
-        'prometheus_nodes' => ['dummyprometheus1.local.lo'],
         'openstack_controllers' => ['dummyprometheus1.local.lo'],
         'mon_hosts' => {
           'dummyhost1' => {

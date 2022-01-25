@@ -5,7 +5,6 @@ describe 'profile::prometheus::icinga_exporter' do
     context "on #{os}" do
       let(:facts) { os_facts }
       let(:params) { {
-        'prometheus_nodes' => ['prometheus01', 'prometheus02'],
         'active_host'      => 'prometheus01',
         'partners'         => ['prometheus02'],
         'alertmanagers'    => ['am01', 'am02'],

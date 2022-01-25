@@ -1,7 +1,6 @@
 class profile::prometheus::rabbitmq_exporter (
-    Array[Stdlib::Host] $prometheus_nodes        = lookup('prometheus_nodes'),
-    String              $rabbit_monitor_username = lookup('profile::prometheus::rabbit_monitor_user'),
-    String              $rabbit_monitor_password = lookup('profile::prometheus::rabbit_monitor_pass'),
+    String $rabbit_monitor_username = lookup('profile::prometheus::rabbit_monitor_user'),
+    String $rabbit_monitor_password = lookup('profile::prometheus::rabbit_monitor_pass'),
 ){
 
     $rabbit_host = 'localhost:15672'
@@ -29,12 +28,4 @@ class profile::prometheus::rabbitmq_exporter (
     }
 
     profile::auto_restarts::service { 'prometheus-rabbitmq-exporter': }
-
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $prometheus_ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-    ferm::service { 'prometheus-rabbitmq-exporter':
-        proto  => 'tcp',
-        port   => '9195',
-        srange => $prometheus_ferm_srange,
-    }
 }

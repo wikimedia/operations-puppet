@@ -4,7 +4,6 @@
 class profile::prometheus::php_fpm_exporter (
     Optional[Stdlib::Port::User] $fcgi_port        = lookup('profile::php_fpm::fcgi_port', {'default_value' => undef}),
     String                       $fcgi_pool        = lookup('profile::mediawiki::fcgi_pool', {'default_value' => 'www'}),
-    Array[Stdlib::Host]          $prometheus_nodes = lookup('prometheus_nodes'),
 ){
 
     if $fcgi_port == undef {
@@ -16,13 +15,5 @@ class profile::prometheus::php_fpm_exporter (
     class { 'prometheus::php_fpm_exporter':
         port          => 9180,
         fcgi_endpoint => $fcgi_endpoint
-    }
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
-    ferm::service { 'prometheus-php-fpm-exporter':
-        proto  => 'tcp',
-        port   => '9180',
-        srange => $ferm_srange,
     }
 }

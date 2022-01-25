@@ -11,7 +11,6 @@
 #   Hiera: profile::kafka::broker::ssl_enabled
 
 class profile::kafka::broker::monitoring (
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     String $kafka_cluster_name            = lookup('profile::kafka::broker::kafka_cluster_name'),
     Boolean $is_critical                  = lookup('profile::kafka::broker::monitoring::is_critical', {'default_value' => false}),
     Boolean $should_monitor_tls           = lookup('profile::kafka::broker::ssl_enabled', {'default_value' => false }),
@@ -33,7 +32,6 @@ class profile::kafka::broker::monitoring (
     profile::prometheus::jmx_exporter { "kafka_broker_${::hostname}":
         hostname                 => $::hostname,
         port                     => $prometheus_jmx_exporter_port,
-        prometheus_nodes         => $prometheus_nodes,
         # Allow each kafka broker node access to other broker's prometheus JMX exporter port.
         # This will help us use kafka-tools to calculate partition reassignements
         # based on broker metrics like partition sizes, etc.

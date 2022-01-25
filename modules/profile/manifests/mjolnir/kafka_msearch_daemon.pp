@@ -12,7 +12,6 @@ class profile::mjolnir::kafka_msearch_daemon(
   Integer $num_workers = lookup('profile::mjolnir::kafka_msearch_daemon::num_workers'),
   Integer $max_concurrent_searches = lookup('profile::mjolnir::kafka_msearch_daemon::max_concurrent_searches'),
   Integer $num_running_daemons = lookup('profile::mjolnir::kafka_msearch_daemon::num_running_daemons'),
-  Array[String] $prometheus_nodes = lookup('prometheus_nodes',  {'default_value' => []}),
   Wmflib::Ensure $ensure = lookup('profile::mjolnir::kafka_msearch_daemon::ensure', { 'default_value' => 'present' }),
 ) {
 
@@ -20,7 +19,6 @@ class profile::mjolnir::kafka_msearch_daemon(
 
     $kafka_config = kafka_config($kafka_cluster)
     $prometheus_port = 9171
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 
     systemd::unit { 'mjolnir-kafka-msearch-daemon@.service':
       ensure  => $ensure,
@@ -30,9 +28,7 @@ class profile::mjolnir::kafka_msearch_daemon(
     range('0', $num_running_daemons - 1).each |$i| {
       $title = String($i)
       profile::mjolnir::kafka_msearch_daemon_instance { $title:
-        ensure                => $ensure,
-        prometheus_port       => $prometheus_port + $i,
-        prometheus_nodes_ferm => $prometheus_nodes_ferm,
+        ensure => $ensure,
       }
     }
 }

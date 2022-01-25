@@ -4,7 +4,6 @@
 #
 class profile::envoy(
     Wmflib::Ensure $ensure = lookup('profile::envoy::ensure'),
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     String $cluster = lookup('cluster'),
     Hash $runtime = lookup('profile::envoy::runtime', {'default_value' => {}}),
     Integer[2,3] $api_version = lookup('profile::envoy::api_version'),
@@ -26,17 +25,6 @@ class profile::envoy(
         use_override    => $use_override,
         service_cluster => $cluster,
         runtime         => $runtime,
-    }
-    # metrics collection from prometheus can just fetch data pulling via GET from
-    # /stats/prometheus on the admin port
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
-    ferm::service { 'prometheus-envoy-admin':
-        ensure => $ensure,
-        proto  => 'tcp',
-        port   => $admin_port,
-        srange => $ferm_srange,
     }
 
     nrpe::monitor_systemd_unit_state{ 'envoyproxy.service':

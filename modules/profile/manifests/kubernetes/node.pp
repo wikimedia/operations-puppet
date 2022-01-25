@@ -4,7 +4,6 @@ class profile::kubernetes::node(
     String $infra_pod = lookup('profile::kubernetes::infra_pod'),
     Boolean $use_cni = lookup('profile::kubernetes::use_cni'),
     Boolean $masquerade_all = lookup('profile::kubernetes::node::masquerade_all', {default_value => true}),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
     Stdlib::Unixpath $kubelet_config = lookup('profile::kubernetes::node::kubelet_config', {default_value => '/etc/kubernetes/kubelet_config'}),
     Stdlib::Unixpath $kubeproxy_config = lookup('profile::kubernetes::node::kubeproxy_config', {default_value => '/etc/kubernetes/kubeproxy_config'}),
     Stdlib::Httpurl $prometheus_url   = lookup('profile::kubernetes::node::prometheus_url', {default_value => "http://prometheus.svc.${::site}.wmnet/k8s"}),
@@ -113,19 +112,6 @@ class profile::kubernetes::node(
         srange => "(@resolve((${master_hosts_ferm})) @resolve((${master_hosts_ferm}), AAAA))",
     }
 
-    if !empty($prometheus_nodes) {
-        $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-        ferm::service { 'kubelet-http-readonly-prometheus':
-            proto  => 'tcp',
-            port   => '10255',
-            srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-        }
-        ferm::service { 'kube-proxy-http-readonly-prometheus':
-            proto  => 'tcp',
-            port   => '10249',
-            srange => "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-        }
-    }
     # Alert us if kubelet operational latencies exceed a certain threshold. TODO: reevaluate
     # thresholds
     monitoring::check_prometheus { 'kubelet_operational_latencies':

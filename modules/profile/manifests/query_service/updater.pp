@@ -8,7 +8,6 @@ class profile::query_service::updater (
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     Boolean $log_sparql = lookup('profile::query_service::log_sparql', {'default_value' => false}),
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     Boolean $use_kafka_for_updates = lookup('profile::query_service::use_kafka_for_updates', {'default_value' => true}),
     String $kafka_options = lookup('profile::query_service::kafka_updater_options', {'default_value' => '-b 700'}),
     String $kafka_reporting_topic = lookup('profile::query_service::kafka_reporting_topic', {'default_value' => 'eqiad.mediawiki.revision-create'}),
@@ -25,12 +24,11 @@ class profile::query_service::updater (
     $prometheus_agent_port = 9101
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
     profile::prometheus::jmx_exporter { "${instance_name}_${::hostname}":
-        hostname         => $::hostname,
-        port             => $prometheus_agent_port,
-        prometheus_nodes => $prometheus_nodes,
-        config_file      => $prometheus_agent_config,
-        source           => 'puppet:///modules/profile/query_service/updater-prometheus-jmx.yaml',
-        before           => Service[$instance_name],
+        hostname    => $::hostname,
+        port        => $prometheus_agent_port,
+        config_file => $prometheus_agent_config,
+        source      => 'puppet:///modules/profile/query_service/updater-prometheus-jmx.yaml',
+        before      => Service[$instance_name],
     }
 
     $default_jvm_options = ['-XX:+UseNUMA', "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}"]

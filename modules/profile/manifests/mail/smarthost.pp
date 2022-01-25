@@ -1,7 +1,5 @@
 # profile::mail::smarthost - configure an outbound smarthost
 #
-# * $prometheus_nodes - hosts allowed to reach prometheus exporter (passed to ferm)
-#
 # * $dkim_domains     - DKIM signing specifics. More than one may be supplied
 #                         * domain: the domain upon whcih dkim should be enabled for signing outgoing messages
 #                         * selector: the dkim selector which should be used for this domain
@@ -26,7 +24,6 @@
 # * $exim_primary_hostname    - The desired hostname of the exim mail system.  Useful if hostname is within .wmflabs
 
 class profile::mail::smarthost (
-    $prometheus_nodes         = lookup('prometheus_nodes', {'default_value' => []}),
     $dkim_domains             = lookup('profile::mail::smarthost::dkim_domains', {'default_value' => []}),
     $cert_name                = lookup('profile::mail::smarthost::cert_name', {'default_value' => $facts['hostname']}),
     $relay_from_hosts         = lookup('profile::mail::smarthost::relay_from_hosts', {'default_value' => []}),
@@ -78,19 +75,11 @@ class profile::mail::smarthost (
         puppet_svc => 'exim4',
     }
 
-    ferm::service { 'mtail':
-        proto  => 'tcp',
-        port   => '3903',
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
-    }
-
     mtail::program { 'exim':
         ensure => present,
         notify => Service['mtail'],
         source => 'puppet:///modules/mtail/programs/exim.mtail',
     }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
 
     # Customize logrotate settings to support longer retention (T167333)
     logrotate::conf { 'exim4-base':

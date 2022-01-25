@@ -5,7 +5,6 @@ class profile::openstack::codfw1dev::db(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Stdlib::Fqdn        $puppetmaster = lookup('profile::openstack::codfw1dev::puppetmaster::web_hostname'),
     Stdlib::Compat::Array $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
-    Array[Stdlib::Fqdn] $prometheus_nodes  = lookup('prometheus_nodes'),
     Array[String] $mysql_root_clients = lookup('mysql_root_clients', {default_value => []}),
     Array[String] $maintenance_hosts = lookup('maintenance_hosts'),
 ) {
@@ -25,13 +24,6 @@ class profile::openstack::codfw1dev::db(
     prometheus::mysqld_exporter { 'default':
         client_password => '',
         client_socket   => '/var/run/mysqld/mysqld.sock',
-    }
-
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    ferm::service { 'prometheus-mysqld-exporter':
-        proto  => 'tcp',
-        port   => '9104',
-        srange => "@resolve((${prometheus_ferm_nodes}))",
     }
 
     ferm::rule { 'cloudcontrol_mysql':

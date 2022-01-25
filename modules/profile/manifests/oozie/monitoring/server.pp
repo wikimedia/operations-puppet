@@ -4,16 +4,13 @@
 # This profile takes care of installing the Prometheus exporter and setting
 # up its configuration file, but it does not instruct the target JVM to use it.
 #
-class profile::oozie::monitoring::server(
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
-) {
+class profile::oozie::monitoring::server {
     $jmx_exporter_config_file = '/etc/oozie/prometheus_oozie_server_jmx_exporter.yaml'
     $prometheus_jmx_exporter_oozie_server_port = 12000
     profile::prometheus::jmx_exporter { "oozie_server_${::hostname}":
-        hostname         => $::hostname,
-        port             => $prometheus_jmx_exporter_oozie_server_port,
-        prometheus_nodes => $prometheus_nodes,
-        config_file      => $jmx_exporter_config_file,
-        source           => 'puppet:///modules/profile/oozie/prometheus_oozie_server_jmx_exporter.yaml',
+        hostname    => $::hostname,
+        port        => $prometheus_jmx_exporter_oozie_server_port,
+        config_file => $jmx_exporter_config_file,
+        source      => 'puppet:///modules/profile/oozie/prometheus_oozie_server_jmx_exporter.yaml',
     }
 }

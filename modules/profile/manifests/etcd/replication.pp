@@ -25,7 +25,6 @@
 class profile::etcd::replication(
     Hash $origin = lookup('profile::etcd::replication::origin'),
     Stdlib::Unixpath $destination_path = lookup('profile::etcd::replication::destination_path'),
-    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     Boolean $active = lookup('profile::etcd::replication::active'),
     Stdlib::Httpurl $dst_url = lookup('profile::etcd::replication::dst_url', {'default_value' => 'http://localhost:2378'}),
     Stdlib::Port $src_port = lookup('profile::etcd::replication::src_port', {'default_value' => 2379})
@@ -56,15 +55,5 @@ class profile::etcd::replication(
             critical      => true,
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Etcd',
         }
-    }
-
-    # ferm for the prometheus exporter
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
-
-    ferm::service { 'etcdmirror_prometheus':
-        proto  => 'tcp',
-        port   => $etcdmirror_web_port,
-        srange => $ferm_srange,
     }
 }

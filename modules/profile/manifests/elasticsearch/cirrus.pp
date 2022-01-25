@@ -16,7 +16,6 @@ class profile::elasticsearch::cirrus(
     String $storage_device = lookup('profile::elasticsearch::cirrus::storage_device'),
     Boolean $use_acme_chief = lookup('profile::elasticsearch::cirrus::use_acme_chief', {default_value => false}),
     Boolean $enable_remote_search = lookup('profile::elasticsearch::cirrus::enable_remote_search'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Boolean $enable_http2 = lookup('profile::elasticsearch::cirrus::enable_http2', {default_value => false}),
 ) {
     include ::profile::elasticsearch
@@ -158,12 +157,10 @@ class profile::elasticsearch::cirrus(
         }
 
         profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
-            prometheus_nodes   => $prometheus_nodes,
             prometheus_port    => $prometheus_port,
             elasticsearch_port => $http_port,
         }
         profile::prometheus::wmf_elasticsearch_exporter { "${::hostname}:${http_port}":
-            prometheus_nodes   => $prometheus_nodes,
             prometheus_port    => $prometheus_port + 1,
             elasticsearch_port => $http_port,
             indices_to_monitor => $indices_to_monitor,

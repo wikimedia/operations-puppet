@@ -1,11 +1,9 @@
 # @summary profile to configure exim on mx hosts
-# @param prometheus_nodes The set of Prometheus servers which will query for metrics
 # @param dkim_domain Configure dkim for this domain
 # @param verp_domains configure verp for theses domains
 # @param verp_post_connect_server the server to post verp bounces too
 # @param verp_bounce_post_url the url top post verp bounces to
 class profile::mail::mx (
-    Array[Stdlib::Host]   $prometheus_nodes         = lookup('prometheus_nodes'),
     Stdlib::Host          $gmail_smtp_server        = lookup('profile::mail::mx::gmail_smtp_server'),
     Stdlib::Host          $otrs_mysql_server        = lookup('profile::mail::mx::otrs_mysql_server'),
     Stdlib::Host          $otrs_mysql_user          = lookup('profile::mail::mx::otrs_mysql_user'),
@@ -180,14 +178,6 @@ class profile::mail::mx (
         ensure => present,
         notify => Service['mtail'],
         source => 'puppet:///modules/mtail/programs/exim.mtail',
-    }
-
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-
-    ferm::service { 'mtail':
-        proto  => 'tcp',
-        port   => '3903',
-        srange => "(@resolve((${prometheus_nodes_ferm})) @resolve((${prometheus_nodes_ferm}), AAAA))",
     }
 
     ensure_packages(['python3-pymysql'])

@@ -9,7 +9,6 @@ define profile::query_service::blazegraph (
     Boolean $use_deployed_config,
     Array[String] $options,
     Array[String] $extra_jvm_opts,
-    Array[String] $prometheus_nodes,
     String $contact_groups,
     Boolean $monitoring_enabled,
     Stdlib::Port $nginx_port,
@@ -52,19 +51,17 @@ define profile::query_service::blazegraph (
 
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
     profile::prometheus::jmx_exporter { $instance_name:
-        hostname         => $::hostname,
-        port             => $prometheus_agent_port,
-        prometheus_nodes => $prometheus_nodes,
-        config_file      => $prometheus_agent_config,
-        source           => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',
-        before           => Service[$instance_name],
+        hostname    => $::hostname,
+        port        => $prometheus_agent_port,
+        config_file => $prometheus_agent_config,
+        source      => 'puppet:///modules/profile/query_service/blazegraph-prometheus-jmx.yaml',
+        before      => Service[$instance_name],
     }
 
     prometheus::blazegraph_exporter { $instance_name:
         nginx_port         => $nginx_port,
         blazegraph_port    => $blazegraph_port,
         prometheus_port    => $prometheus_port,
-        prometheus_nodes   => $prometheus_nodes,
         blazegraph_main_ns => $blazegraph_main_ns,
         collect_via_nginx  => $oauth_settings == undef
     }

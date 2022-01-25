@@ -2,7 +2,6 @@
 # the files generated from the media backup workers.
 class profile::mediabackup::storage (
     Hash $mediabackup_config              = lookup('mediabackup'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
 ){
     $tls_paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
         'ensure'  => 'present',
@@ -40,14 +39,5 @@ class profile::mediabackup::storage (
             notrack => true,
             srange  => $srange_workers,
         }
-    }
-    # firewall for prometheus metrics - metrics will require no authentication
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
-    $srange_prometheus = join(['@resolve((', $prometheus_nodes_ferm, '))'], ' ')
-    ferm::service { 'minio-prometheus-monitoring':
-        proto   => 'tcp',
-        port    => $mediabackup_config['storage_port'],
-        notrack => true,
-        srange  => $srange_prometheus,
     }
 }

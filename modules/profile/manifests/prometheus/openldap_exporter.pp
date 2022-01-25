@@ -1,10 +1,6 @@
 class profile::prometheus::openldap_exporter (
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     String $monitor_pass = lookup('profile::prometheus::openldap_exporter::monitor_pass')
 ){
-
-    $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_ferm_nodes})) @resolve((${prometheus_ferm_nodes}), AAAA))"
 
     package { 'prometheus-openldap-exporter':
         ensure => present,
@@ -25,10 +21,4 @@ class profile::prometheus::openldap_exporter (
     }
 
     profile::auto_restarts::service { 'prometheus-openldap-exporter': }
-
-    ferm::service { 'prometheus-openldap-exporter':
-        proto  => 'tcp',
-        port   => '9142',
-        srange => $ferm_srange,
-    }
 }

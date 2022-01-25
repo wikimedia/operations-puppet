@@ -5,7 +5,6 @@ class profile::cassandra(
     String $rack                              = lookup('profile::cassandra::rack'),
     Hash $cassandra_settings                  = lookup('profile::cassandra::settings'),
     Stdlib::Host $graphite_host               = lookup('graphite_host'),
-    Array[Stdlib::Host] $prometheus_nodes     = lookup('prometheus_nodes'),
     Array[Stdlib::IP::Address] $client_ips    = lookup('profile::cassandra::client_ips', {'default_value' => []}),
     Boolean $allow_analytics                  = lookup('profile::cassandra::allow_analytics'),
     Boolean $monitor_enabled                  = lookup('profile::cassandra::monitor_enabled', {'default_value' => true}),
@@ -69,7 +68,6 @@ class profile::cassandra(
     }
 
     $cassandra_hosts_ferm = join($ferm_seeds, ' ')
-    $prometheus_nodes_ferm = join($prometheus_nodes, ' ')
     $client_ips_ferm = join($client_ips, ' ')
 
     # Cassandra intra-node messaging
@@ -102,12 +100,6 @@ class profile::cassandra(
         proto  => 'tcp',
         port   => '9042',
         srange => "(@resolve((${cassandra_hosts_ferm})) ${client_ips_ferm})",
-    }
-    # Prometheus jmx_exporter for Cassandra
-    ferm::service { 'cassandra-jmx_exporter':
-        proto  => 'tcp',
-        port   => '7800',
-        srange => "@resolve((${prometheus_nodes_ferm}))",
     }
     if $allow_analytics {
         include ::network::constants

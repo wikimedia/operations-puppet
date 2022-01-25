@@ -83,9 +83,6 @@
 # [*message_max_bytes*]
 #   Max Kafka message size.  Should be synchronized between all producers, brokers, and consumers.
 #
-# [*prometheus_nodes*]
-#   Prometheus nodes that should be allowed to query the JMX exporter.
-#
 class profile::kafka::mirror(
     Boolean $enabled                      = lookup('profile::kafka::mirror::enabled', {'default_value' => true}),
     String $source_cluster_name           = lookup('profile::kafka::mirror::source_cluster_name'),
@@ -99,7 +96,6 @@ class profile::kafka::mirror(
     Stdlib::Port $jmx_base_port           = lookup('profile::kafka:mirror:jmx_base_port', {'default_value' => 9900}),
     Stdlib::Port $jmx_exporter_base_port  = lookup('profile::kafka::mirror:jmx_exporter_base_port', {'default_value' => 7900}),
     Integer $message_max_bytes            = lookup('kafka_message_max_bytes'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Boolean $use_pki_migration_settings   = lookup('profile::kafka::mirror:use_pki_migration_settings', {'default_value' => false}),
 ) {
     $source_config            = kafka_config($source_cluster_name)
@@ -242,12 +238,11 @@ class profile::kafka::mirror(
             # This will render the config file, declare the jmx_exporter_instance,
             # and configure ferm.
             profile::prometheus::jmx_exporter { "kafka_mirror_${$mirror_process_name}_${::hostname}":
-                hostname         => $::hostname,
-                port             => $prometheus_jmx_exporter_port,
-                prometheus_nodes => $prometheus_nodes,
-                config_file      => $jmx_exporter_config_file,
-                content          => template('profile/kafka/mirror_maker_prometheus_jmx_exporter.yaml.erb'),
-                labels           => {
+                hostname    => $::hostname,
+                port        => $prometheus_jmx_exporter_port,
+                config_file => $jmx_exporter_config_file,
+                content     => template('profile/kafka/mirror_maker_prometheus_jmx_exporter.yaml.erb'),
+                labels      => {
                     'mirror_name' => $mirror_instance_name,
                 },
             }

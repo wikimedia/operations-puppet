@@ -29,6 +29,7 @@ class profile::mediawiki::php::monitoring(
 
     $docroot = '/var/www/php-monitoring'
     $htpasswd_file = '/etc/apache2/htpasswd.php7adm'
+    # used in php-admin.conf.erb
     $prometheus_nodes_str = join($prometheus_nodes, ' ')
     # Admin interface (and prometheus metrics) for APCu and opcache
     file { $docroot:
@@ -65,13 +66,6 @@ class profile::mediawiki::php::monitoring(
         proto  => 'tcp',
         port   => $admin_port,
         srange => '$DEPLOYMENT_HOSTS',
-    }
-
-    $ferm_srange = "(@resolve((${prometheus_nodes_str})) @resolve((${prometheus_nodes_str}), AAAA))"
-    ferm::service { 'prometheus-php-cache-exporter':
-        proto  => 'tcp',
-        port   => $admin_port,
-        srange => $ferm_srange,
     }
 
     ## Admin script

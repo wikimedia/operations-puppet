@@ -8,7 +8,6 @@ class profile::query_service::streaming_updater (
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
-    Array[String] $prometheus_nodes = lookup('prometheus_nodes'),
     String $journal = lookup('profile::query_service::streaming_updater::journal'),
 ) {
     require ::profile::query_service::common
@@ -18,12 +17,11 @@ class profile::query_service::streaming_updater (
     $prometheus_agent_port = 9101
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
     profile::prometheus::jmx_exporter { $instance_name:
-        hostname         => $::hostname,
-        port             => $prometheus_agent_port,
-        prometheus_nodes => $prometheus_nodes,
-        config_file      => $prometheus_agent_config,
-        source           => 'puppet:///modules/profile/query_service/updater-prometheus-jmx.yaml',
-        before           => Service[$instance_name],
+        hostname    => $::hostname,
+        port        => $prometheus_agent_port,
+        config_file => $prometheus_agent_config,
+        source      => 'puppet:///modules/profile/query_service/updater-prometheus-jmx.yaml',
+        before      => Service[$instance_name],
     }
 
     $default_jvm_options = ['-XX:+UseNUMA', "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}"]

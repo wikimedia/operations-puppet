@@ -6,9 +6,7 @@
 # Piwik has been rebranded to 'Matomo', but to avoid too many changes
 # we are going to just keep the previous name.
 #
-class profile::piwik::webserver(
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes')
-){
+class profile::piwik::webserver {
     include profile::prometheus::apache_exporter
 
     $php_module = 'php7.3'

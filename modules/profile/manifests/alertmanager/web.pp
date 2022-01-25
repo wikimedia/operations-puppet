@@ -6,7 +6,6 @@ class profile::alertmanager::web (
     # lint:endignore
     Boolean $enable_sso  = lookup('profile::alertmanager::web::enable_sso', {'default_value' => true}),
     Boolean $readonly  = lookup('profile::alertmanager::web::readonly', {'default_value' => false}),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     Hash[String, String] $ldap_config = lookup('ldap', {'merge' => 'hash'}),
 ) {
     $auth_header = $enable_sso ? {
@@ -37,12 +36,5 @@ class profile::alertmanager::web (
         httpd::site { $vhost:
             content => template('profile/alertmanager/web.apache.erb'),
         }
-    }
-
-    $hosts = join($prometheus_nodes, ' ')
-    ferm::service { 'alertmanager-web':
-        proto  => 'tcp',
-        port   => 19194,
-        srange => "@resolve((${hosts}))",
     }
 }

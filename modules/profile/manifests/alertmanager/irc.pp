@@ -6,7 +6,6 @@ class profile::alertmanager::irc (
     String              $irc_nickname = lookup('profile::alertmanager::irc::nickname'),
     String              $irc_realname = lookup('profile::alertmanager::irc::realname'),
     String              $irc_nickname_password = lookup('profile::alertmanager::irc::nickname_password'),
-    Array[Stdlib::Host] $prometheus_nodes = lookup('prometheus_nodes'),
     String              $vhost = lookup('profile::alertmanager::web::vhost'),
 ) {
     if $active_host == $::fqdn {
@@ -27,8 +26,8 @@ class profile::alertmanager::irc (
         dashboard_url         => "https://${vhost}",
     }
 
-    # API (webhook) + metrics access
-    $hosts = join($partners + $active_host + $prometheus_nodes, ' ')
+    # API (webhook)
+    $hosts = join($partners + $active_host)
     ferm::service { 'alertmanager-irc':
         proto  => 'tcp',
         port   => 19190,

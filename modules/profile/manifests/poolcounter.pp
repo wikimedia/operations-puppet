@@ -1,5 +1,4 @@
 class profile::poolcounter(
-    $prometheus_nodes = lookup('prometheus_nodes'),
     $exporter_port = lookup('profile::poolcounter::exporter_port'),
 ) {
     class {'::poolcounter' : }
@@ -33,13 +32,5 @@ class profile::poolcounter(
         content => systemd_template('poolcounter-prometheus-exporter'),
         require => Package['poolcounter-prometheus-exporter'],
         restart => true,
-    }
-
-    $prometheus_nodes_str = join($prometheus_nodes, ' ')
-    $ferm_srange = "(@resolve((${prometheus_nodes_str})) @resolve((${prometheus_nodes_str}), AAAA))"
-    ferm::service { 'poolcounter-prometheus-exporter':
-        proto  => 'tcp',
-        port   => $exporter_port,
-        srange => $ferm_srange,
     }
 }
