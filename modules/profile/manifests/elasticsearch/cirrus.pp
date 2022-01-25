@@ -65,8 +65,8 @@ class profile::elasticsearch::cirrus(
         if !$use_acme_chief {
             $proxy_cert_params = {
                 certificate_names => [$instance_params['certificate_name']],
-                server_name       => "search.svc.${::site}.wmnet",
-                server_aliases    => [$instance_params['certificate_name']],
+                server_name       => $instance_params['certificate_name'],
+                server_aliases    => ["search.svc.${::site}.wmnet"],
             }
         } else {
             $proxy_cert_params = {
