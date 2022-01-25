@@ -64,9 +64,11 @@ class base::firewall (
         rule   => "proto tcp dport ssh saddr (${bastion_hosts_str}) ACCEPT;",
     }
 
-    $monitoring_hosts_str = join($monitoring_hosts, ' ')
-    ferm::rule { 'monitoring-all':
-        rule   => "saddr (${monitoring_hosts_str}) ACCEPT;",
+    if !empty($monitoring_hosts) {
+        $monitoring_hosts_str = join($monitoring_hosts, ' ')
+        ferm::rule { 'monitoring-all':
+            rule   => "saddr (${monitoring_hosts_str}) ACCEPT;",
+        }
     }
 
     ferm::rule { 'prometheus-all':

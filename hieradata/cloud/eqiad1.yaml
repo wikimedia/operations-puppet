@@ -292,8 +292,7 @@ cache_hosts:
 profile::idp::key_password: changeit
 profile::idp::keystore_password: changeit
 
-monitoring_hosts:
-- 172.16.7.178 # was once shinken but has been deleted
+monitoring_hosts: []
 
 # We do not have support for LVS systems in Cloud VPS
 has_lvs: false
