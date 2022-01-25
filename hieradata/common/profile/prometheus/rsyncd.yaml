@@ -1,0 +1,1 @@
+profile::prometheus::rsyncd::ensure: absent

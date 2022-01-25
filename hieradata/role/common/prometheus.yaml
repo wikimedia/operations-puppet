@@ -18,6 +18,8 @@ prometheus::server::mysqld_exporter::mysql::user: prometheus-mysqld-exporter
 
 profile::prometheus::enable_thanos_upload: true
 
+profile::prometheus::rsyncd::ensure: present
+
 # Thanos will ask Prometheus (via Thanos Sidecar) for last 15d only
 profile::prometheus::thanos::min_time: '-15d'
 

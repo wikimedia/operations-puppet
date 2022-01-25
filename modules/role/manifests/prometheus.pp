@@ -20,6 +20,8 @@ class role::prometheus {
 
     include ::profile::lvs::realserver
 
+    include ::profile::prometheus::rsyncd
+
     class { '::httpd':
         modules => ['proxy', 'proxy_http', 'rewrite'],
     }

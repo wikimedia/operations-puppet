@@ -10,6 +10,8 @@ class role::prometheus::pop {
 
     include ::profile::alerts::deploy::prometheus
 
+    include ::profile::prometheus::rsyncd
+
     class { '::httpd':
         # 'rewrite' is used by ::profile::prometheus::ops
         modules => ['proxy', 'proxy_http', 'rewrite'],

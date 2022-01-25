@@ -10,7 +10,6 @@ class profile::prometheus::ops (
     Stdlib::Unixpath $targets_path                     = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
     Array[Stdlib::Host] $bastion_hosts                 = lookup('bastion_hosts', { 'default_value' => [] }),
     Stdlib::Host $netmon_server                        = lookup('netmon_server'),
-    Wmflib::Ensure $ensure_rsync                       = lookup('profile::prometheus::ops::ensure_rsync'),
     String $replica_label                              = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload                      = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time                  = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
@@ -2340,20 +2339,6 @@ class profile::prometheus::ops (
         labels  => {
           'layer' => 'frontend',
         },
-    }
-
-    # Used for  migrations / hardware refresh, but not continuously
-    class {'rsync::server':
-        ensure_service => stdlib::ensure($ensure_rsync, 'service')
-    }
-    rsync::server::module { 'prometheus-ops':
-        ensure         => $ensure_rsync,
-        path           => '/srv/prometheus/ops/metrics',
-        uid            => 'prometheus',
-        gid            => 'prometheus',
-        hosts_allow    => $prometheus_nodes,
-        auto_ferm      => true,
-        auto_ferm_ipv6 => true,
     }
 
     if $::site in ['eqiad', 'codfw'] {
