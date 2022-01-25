@@ -46,13 +46,18 @@ class profile::wmcs::monitoring (
             ensure => present,
             shell  => '/bin/rbash',
         }
-    } else {
+    } elsif $::facts['fqdn'] == $monitoring_standby {
         $rsync_ensure = 'present'
 
         user { '_graphite':
             ensure => present,
             shell  => '/bin/false',
         }
+    } else {
+        # all other nodes should have this rsync disable, to avoid overwritting data on-flight
+        # sadly, this puppet code only supports 2 nodes (primary/backup) and not something like
+        # 1 primary / 3 backups which is the current situation as of this writing.
+        $rsync_ensure = 'absent'
     }
 
     $whisper_dir = '/srv/carbon/whisper/'
@@ -62,7 +67,7 @@ class profile::wmcs::monitoring (
         command                   => "/usr/bin/rsync --delete --delete-after -aSOrd ${monitoring_master}:${whisper_dir} ${whisper_dir}",
         interval                  => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* 00/8:00:00', # Every 8 hours
+            'interval' => '*-*-* 00/1:00:00', # Every 8 hours
         },
         logging_enabled           => false,
         monitoring_enabled        => true,
