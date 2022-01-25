@@ -1,3 +1,3 @@
 # pc1014
-mariadb::parsercache::shard: 'pc3'
+mariadb::parsercache::shard: 'pc1'
 profile::monitoring::notifications_enabled: false
