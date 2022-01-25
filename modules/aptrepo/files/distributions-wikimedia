@@ -17,6 +17,7 @@ Components: main
  component/elastic55
  component/elastic56
  component/elastic65
+ component/elastic68
  component/facter3
  component/ganeti216
  component/git
@@ -46,6 +47,7 @@ Components: main
  thirdparty/elastic55
  thirdparty/elastic56
  thirdparty/elastic65
+ thirdparty/elastic68
  thirdparty/elasticsearch-curator5
  thirdparty/grafana
  thirdparty/hwraid
@@ -66,6 +68,7 @@ Update:
  elastic55
  elastic56
  elastic65
+ elastic68
  elasticsearch-curator5
  grafana
  hp-mcp-stretch
@@ -185,8 +188,10 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  component/jdk8
+ component/elastic68
  thirdparty/ceph-octopus
  thirdparty/elastic65
+ thirdparty/elastic68
  thirdparty/hwraid
  thirdparty/opensearch1
  thirdparty/routinator
@@ -194,6 +199,7 @@ UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  elastic65
+ elastic68
  hwraid-stretch
  routinator
  thirdparty/ceph-octopus-bullseye

@@ -69,6 +69,16 @@ Architectures: amd64
 VerifyRelease: D27D666CD88E42B4
 ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq 6.5.4 \) -o \( -S 'kibana-oss' -a -F Version --eq 6.5.4 \) -o \( -S logstash -a -F Version --eq 1:6.8.21-1 \) || [ $? -eq 1 ]
 
+Name: elastic68
+Method: https://artifacts.elastic.co/packages/oss-6.x/apt
+Components: main>thirdparty/elastic68
+UDebComponents:
+Suite: stable
+GetInRelease: no
+Architectures: amd64
+VerifyRelease: D27D666CD88E42B4
+ListShellHook: grep-dctrl \( -S 'elasticsearch-oss' -a -F Version --eq  \)
+
 Name: elasticsearch-curator5
 Method: https://packages.elastic.co/curator/5/debian9
 Components: main>thirdparty/elasticsearch-curator5
