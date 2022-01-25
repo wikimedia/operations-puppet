@@ -1167,7 +1167,7 @@ node /^dumpsdata100[4-5]\.eqiad\.wmnet/ {
 
 # new elastic servers T281989
 node /^(elastic106[8-9]|elastic10[7-8][0-9])\.eqiad\.wmnet$/ {
-    role(elasticsearch::cirrus)
+    role(insetup)
 }
 node /^elastic103[2-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
