@@ -2835,6 +2835,11 @@ node /^cloudvirt104[0-6]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
+# new cloudvirt server T293391
+node 'cloudvirt1047.eqiad.wmnet' {
+    role(insetup)
+}
+
 # Private virt hosts for wdqs T221631
 node /^cloudvirt-wdqs100[123]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt)
