@@ -1,0 +1,20 @@
+fields:
+  type: "ores"
+ignore:
+  - "@timestamp"
+  - "host"
+  - "tags"
+  - "normalized"
+  - "normalized_message"
+testcases:
+  - input:
+      - '[pid: 6277] 10.192.16.63 (-) {32 vars in 460 bytes} [Tue Jan 25 16:16:04 2022] POST /v3/precache => generated 5606 bytes in 323 msecs (HTTP/1.1 200) 8 headers in 288 bytes (1 switches on core 0) user agent "ChangePropagation/WMF"'
+    expected:
+      - uri: "/v3/precache"
+        method: "POST"
+        user_agent: "ChangePropagation/WMF"
+        response_size: "5606"
+        duration: "323"
+        return_code: "200"
+        type: "ores"
+        message: '[pid: 6277] 10.192.16.63 (-) {32 vars in 460 bytes} [Tue Jan 25 16:16:04 2022] POST /v3/precache => generated 5606 bytes in 323 msecs (HTTP/1.1 200) 8 headers in 288 bytes (1 switches on core 0) user agent "ChangePropagation/WMF"'
