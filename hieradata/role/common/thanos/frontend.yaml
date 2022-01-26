@@ -29,6 +29,7 @@ profile::tlsproxy::envoy::services:
      - 'thanos-swift.svc.codfw.wmnet'
      - 'thanos-swift.discovery.wmnet'
      port: 8888
+     cert_name: 'thanos-swift.discovery.wmnet'
    - server_names:
      - 'thanos-query'
      - 'thanos-query.svc.eqiad.wmnet'
@@ -37,7 +38,7 @@ profile::tlsproxy::envoy::services:
      - 'thanos.wikimedia.org'
      port: 80
      cert_name: 'thanos-query.discovery.wmnet'
-profile::tlsproxy::envoy::global_cert_name: 'thanos-swift.discovery.wmnet'
+profile::tlsproxy::envoy::global_cert_name: 'thanos-fe-combined.discovery.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 
 profile::swift::stats_reporter_host: 'thanos-fe1001.eqiad.wmnet'
