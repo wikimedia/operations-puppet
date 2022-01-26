@@ -67,16 +67,6 @@ table inet basefirewall {
         }
         <%- end -%>
     }
-    set prometheus_ports {
-        type inet_service
-        <%- if !@prometheus_ports.empty? -%>
-        elements = {
-        <% @prometheus_ports.each do |port| -%>
-            <%= port %> ,
-        <% end -%>
-        }
-        <%- end -%>
-    }
 
     chain input {
         type filter hook input priority 0 ; policy drop;
@@ -93,12 +83,8 @@ table inet basefirewall {
         ip saddr @ssh_allowed_ipv4 tcp dport 22 ct state new counter accept;
         ip6 saddr @ssh_allowed_ipv6 tcp dport 22 ct state new counter accept;
 
-        # TODO: we could build a more fine-grained policy for this. We have the use case
-        # of different prometheus nodes scraping different endpoints. We could store a hash in
-        # hiera and then use here a concatenation like: { prometheus_node_ipv4 . port }. But such
-        # situation is rather a corner case, we mostly scrape from the same prometheus node
-        ip saddr @prometheus_nodes_ipv4 tcp dport @prometheus_ports ct state new counter accept
-        ip6 saddr @prometheus_nodes_ipv6 tcp dport @prometheus_ports ct state new counter accept
+        ip saddr @prometheus_nodes_ipv4 ct state new counter accept
+        ip6 saddr @prometheus_nodes_ipv6 ct state new counter accept
     }
 
     chain output {

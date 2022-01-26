@@ -1,8 +1,1 @@
-prometheus_ports:
- # node exporter
- - 9100
- # rsyslog exporter
- - 9105
- # nic saturation exporter
- - 9710
 profile::contacts::role_contacts: ['WMCS SREs']

@@ -3,7 +3,6 @@ class profile::nftables::basefirewall (
     Array[Stdlib::IP::Address] $bastion_hosts    = lookup('bastion_hosts', {default_value => []}),
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Array[Stdlib::Fqdn]        $prometheus_nodes = lookup('prometheus_nodes', {default_value => []}),
-    Array[Stdlib::Port]        $prometheus_ports = lookup('prometheus_ports', {default_value => []}),
 ) {
     $bastion_hosts_ipv4 = filter($bastion_hosts) |$addr| { $addr =~ Stdlib::IP::Address::V4 }
     $bastion_hosts_ipv6 = filter($bastion_hosts) |$addr| { $addr =~ Stdlib::IP::Address::V6 }
