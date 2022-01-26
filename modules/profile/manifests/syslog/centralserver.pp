@@ -1,8 +1,21 @@
+# == Define: profile::syslog::centralserver
+#
 # Setup rsyslog as a receiver of cluster wide syslog messages.
 #
+# [*log_retention_days*]
+#   number of days to keep logs before they are rotated
+#
+# [*log_deletion_grace_days*]
+#   grace period between max retention time and deletion of logs (for cleanup of inactive hosts)
+#
+# [*use_kafka_relay*]
+#   enables the syslog -> kafka relay compatability layer, used by devices without native
+#   kafka output support
+#
 class profile::syslog::centralserver (
-    Integer $log_retention_days = lookup('profile::syslog::centralserver::log_retention_days'),
-    Boolean $use_kafka_relay = lookup('profile::syslog::centralserver::use_kafka_relay', {'default_value' => true}),
+    Integer $log_retention_days      = lookup('profile::syslog::centralserver::log_retention_days'),
+    Integer $log_deletion_grace_days = lookup('profile::syslog::centralserver::log_deletion_grace_days', {'default_value' => 45}),
+    Boolean $use_kafka_relay         = lookup('profile::syslog::centralserver::use_kafka_relay', {'default_value' => true}),
 ){
 
     ferm::service { 'rsyslog-receiver_udp':
@@ -21,6 +34,18 @@ class profile::syslog::centralserver (
 
     class { 'rsyslog::receiver':
         log_retention_days => $log_retention_days,
+    }
+
+    # Prune old /srv/syslog/host directories on disk (from decommed hosts, etc.) after grace period expires
+    $log_deletion_days = $log_retention_days + $log_deletion_grace_days
+
+    systemd::timer::job { 'prune_old_srv_syslog_directories':
+        ensure             => 'present',
+        user               => 'root',
+        description        => 'clean up logs from old hosts',
+        command            => "/usr/bin/find /srv/syslog/ -mtime +${log_deletion_days} -delete",
+        interval           => { 'start' => 'OnCalendar', 'interval' => 'daily' },
+        monitoring_enabled => true,
     }
 
     if $use_kafka_relay {
