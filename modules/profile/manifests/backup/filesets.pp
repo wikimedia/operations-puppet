@@ -94,9 +94,6 @@ class profile::backup::filesets() {
     bacula::director::fileset { 'mysql-srv-backups-snapshots-latest':
         includes => [ '/srv/backups/snapshots/latest' ]
     }
-    bacula::director::fileset { 'bugzilla-static':
-        includes => [ '/srv/org/wikimedia/static-bugzilla' ]
-    }
     bacula::director::fileset { 'static-codereview':
         includes => [ '/srv/org/wikimedia/static-codereview' ]
     }
