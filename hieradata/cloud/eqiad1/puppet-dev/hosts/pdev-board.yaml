@@ -3,10 +3,10 @@ apereo_cas:
     login_url: 'https://idp.wmcloud.org/login'
     validate_url: 'https://idp.wmcloud.org/serviceValidate'
 profile::puppetboard::vhost: 'pdev-puppetboard.wmcloud.org'
+profile::puppetboard::vhost_staging: ~
 profile::puppetboard::puppetdb_host: 'pdev-pdb.puppet-dev.eqiad1.wikimedia.cloud'
 profile::puppetboard::puppetdb_port: 443
 profile::puppetboard::puppetdb_proto: 'https'
-profile::puppetboard::vhost: pdev-puppetboard.wmcloud.org
 profile::puppetboard:page_title: 'WMF Puppetboard (development)'
 profile::puppetboard::localise_timestamp: true
 profile::puppetboard::graph_type: 'donut'

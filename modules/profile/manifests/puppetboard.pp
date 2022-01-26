@@ -12,6 +12,7 @@
 class profile::puppetboard (
     Wmflib::Ensure                  $ensure                   = lookup('profile::puppetboard::ensure'),
     Stdlib::Fqdn                    $vhost                    = lookup('profile::puppetboard::vhost'),
+    Optional[Stdlib::Fqdn]          $vhost_staging            = lookup('profile::puppetboard::vhost_staging'),
     # puppet db settings
     Stdlib::Host                    $puppetdb_host            = lookup('profile::puppetboard::puppetdb_host'),
     Stdlib::Port                    $puppetdb_port            = lookup('profile::puppetboard::puppetdb_port'),
@@ -105,5 +106,19 @@ class profile::puppetboard (
         ],
         proxied_as_https => true,
         vhost_settings   => {'uwsgi_port' => $uwsgi_port},
+    }
+
+    if $vhost_staging {
+        profile::idp::client::httpd::site { $vhost_staging:
+            # TODO: move template to hiera config
+            vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
+            required_groups  => [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
+            ],
+            proxied_as_https => true,
+            vhost_settings   => {'uwsgi_port' => $uwsgi_port},
+            environment      => 'staging',
+        }
     }
 }
