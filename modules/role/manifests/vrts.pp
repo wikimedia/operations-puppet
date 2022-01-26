@@ -8,6 +8,6 @@ class role::vrts {
     }
     include ::profile::base::production
     include ::profile::base::firewall
-    include ::profile::otrs
+    include ::profile::vrts
     include ::profile::tlsproxy::envoy # TLS termination
 }

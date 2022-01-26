@@ -1,15 +1,15 @@
 # vim: set ts=4 et sw=4:
-# sets up an instance of the 'Open-source Ticket Request System'
-# https://en.wikipedia.org/wiki/OTRS
-class profile::otrs(
-    Stdlib::Fqdn $otrs_database_host = lookup('profile::otrs::database_host'),
-    String $otrs_database_name       = lookup('profile::otrs::database_name'),
-    String $otrs_database_user       = lookup('profile::otrs::database_user'),
-    String $otrs_database_pw         = lookup('profile::otrs::database_pass'),
-    Boolean $otrs_daemon             = lookup('profile::otrs::daemon'),
-    String $exim_database_name       = lookup('profile::otrs::exim_database_name'),
-    String $exim_database_user       = lookup('profile::otrs::exim_database_user'),
-    String $exim_database_pass       = lookup('profile::otrs::exim_database_pass'),
+# sets up an instance of the 'Volunteer Response Team System'
+# https://wikitech.wikimedia.org/wiki/VRT_System
+class profile::vrts(
+    Stdlib::Fqdn $otrs_database_host = lookup('profile::vrts::database_host'),
+    String $otrs_database_name       = lookup('profile::vrts::database_name'),
+    String $otrs_database_user       = lookup('profile::vrts::database_user'),
+    String $otrs_database_pw         = lookup('profile::vrts::database_pass'),
+    Boolean $otrs_daemon             = lookup('profile::vrts::daemon'),
+    String $exim_database_name       = lookup('profile::vrts::exim_database_name'),
+    String $exim_database_user       = lookup('profile::vrts::exim_database_user'),
+    String $exim_database_pass       = lookup('profile::vrts::exim_database_pass'),
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter
