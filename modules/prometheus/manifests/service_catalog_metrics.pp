@@ -5,14 +5,19 @@ class prometheus::service_catalog_metrics (
 ) {
 
   # Iterate over services
-  $state_by_service = $services_config.reduce({}) |$memo, $el| {
+  $info_by_service = $services_config.reduce({}) |$memo, $el| {
     $service_name = $el[0]
     $service_config = $el[1]
 
     $port = $service_config['port']
+    $state = $service_config['state']
+    $page = pick($service_config['page'], true)
 
     $memo.merge({
-      "${service_name}:${port}" => $service_config['state']
+      "${service_name}:${port}" => {
+        'state' => $state,
+        'page'  => Integer($page),
+      }
     })
   }
 

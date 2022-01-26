@@ -1,5 +1,10 @@
 # HELP service_catalog_info State information for service::catalog
 # TYPE service_catalog_info gauge
-<% @state_by_service.sort.each do |service, state| -%>
-service_catalog_info{instance="<%= service %>", state="<%= state %>"} 1
+<% @info_by_service.sort.each do |service, info| -%>
+service_catalog_info{instance="<%= service %>", state="<%= info['state'] %>"} 1
+<% end %>
+# HELP service_catalog_page Paging information for service::catalog
+# TYPE service_catalog_page gauge
+<% @info_by_service.sort.each do |service, info| -%>
+service_catalog_page{instance="<%= service %>"} <%= info['page'] %>
 <% end %>

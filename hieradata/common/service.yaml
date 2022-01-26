@@ -32,7 +32,6 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
-      critical: true
       sites:
         codfw:
           hostname: appservers.svc.codfw.wmnet
@@ -64,12 +63,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /listPairs
     monitoring:
       check_command: check_https_lvs_on_port!apertium.discovery.wmnet!4737!/listPairs
-      critical: false
       sites:
         codfw:
           hostname: apertium.svc.codfw.wmnet
@@ -109,7 +108,6 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
-      critical: true
       sites:
         codfw:
           hostname: api.svc.codfw.wmnet
@@ -146,7 +144,6 @@ service::catalog:
         host: en.wikipedia.org
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
-      critical: true
       sites:
         codfw:
           hostname: api.svc.codfw.wmnet
@@ -192,7 +189,6 @@ service::catalog:
         host: en.wikipedia.org
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
-      critical: true
       sites:
         codfw:
           hostname: appservers.svc.codfw.wmnet
@@ -236,7 +232,6 @@ service::catalog:
       - type: http
     monitoring:
       check_command: check_http_lvs_on_port!aqs.svc.eqiad.wmnet!7232!/
-      critical: true
       sites:
         eqiad:
           hostname: aqs.svc.eqiad.wmnet
@@ -265,12 +260,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /?spec
     monitoring:
       check_command: check_https_port_status!4666!200!/?spec
-      critical: false
       sites:
         codfw:
           hostname: blubberoid.svc.codfw.wmnet
@@ -311,7 +306,6 @@ service::catalog:
     monitoring:
       check_command: check_https_lvs_on_port!citoid.discovery.wmnet!4003!/_info
       contact_group: admins,parsoid
-      critical: true
       sites:
         codfw:
           hostname: citoid.svc.codfw.wmnet
@@ -515,7 +509,6 @@ service::catalog:
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!cxserver.discovery.wmnet!4002!/_info
-      critical: true
       sites:
         codfw:
           hostname: cxserver.svc.codfw.wmnet
@@ -555,7 +548,6 @@ service::catalog:
         path: /v2/
     monitoring:
       check_command: check_https_url!docker-registry.discovery.wmnet!/v2/
-      critical: true
       sites:
         codfw:
           hostname: docker-registry.svc.codfw.wmnet
@@ -591,12 +583,12 @@ service::catalog:
           url:
             - http://localhost/status
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /status
     monitoring:
       check_command: check_http_lvs_on_port!druid-public-broker.svc.eqiad.wmnet!8082!/status
-      critical: false
       sites:
         eqiad:
           hostname: druid-public-broker.svc.eqiad.wmnet
@@ -625,12 +617,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /healthz
     monitoring:
       check_command: check_https_port_status!8082!200!/healthz
-      critical: false
       sites:
         codfw:
           hostname: echostore.svc.codfw.wmnet
@@ -670,7 +662,6 @@ service::catalog:
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-analytics.discovery.wmnet!4592!/_info
-      critical: true
       sites:
         codfw:
           hostname: eventgate-analytics.svc.codfw.wmnet
@@ -705,12 +696,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-logging-external.discovery.wmnet!4392!/_info
-      critical: false
       sites:
         codfw:
           hostname: eventgate-logging-external.svc.codfw.wmnet
@@ -746,12 +737,12 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-analytics-external.discovery.wmnet!4692!/_info
-      critical: false
       sites:
         codfw:
           hostname: eventgate-analytics-external.svc.codfw.wmnet
@@ -791,7 +782,6 @@ service::catalog:
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventgate-main.discovery.wmnet!4492!/_info
-      critical: true
       sites:
         codfw:
           hostname: eventgate-main.svc.codfw.wmnet
@@ -826,12 +816,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventstreams.discovery.wmnet!4892!/_info
-      critical: false
       sites:
         codfw:
           hostname: eventstreams.svc.codfw.wmnet
@@ -866,12 +856,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!eventstreams-internal.discovery.wmnet!4992!/_info
-      critical: false
       sites:
         codfw:
           hostname: eventstreams-internal.svc.codfw.wmnet
@@ -942,7 +932,6 @@ service::catalog:
         path: /w/health-check.php
     monitoring:
       check_command: check_https_url!jobrunner.discovery.wmnet!/w/health-check.php
-      critical: true
       sites:
         codfw:
           hostname: jobrunner.svc.codfw.wmnet
@@ -977,9 +966,9 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     monitoring:
       check_command: check_http_lvs_on_port!kartotherian.discovery.wmnet!6533!/osm-intl/6/23/24.png
-      critical: false
       sites:
         codfw:
           hostname: kartotherian.svc.codfw.wmnet
@@ -1014,12 +1003,12 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /osm-intl/6/23/24.png
     monitoring:
       check_command: check_https_url!kartotherian.discovery.wmnet!/osm-intl/6/23/24.png
-      critical: false
       sites:
         codfw:
           hostname: kartotherian.svc.codfw.wmnet
@@ -1063,7 +1052,6 @@ service::catalog:
         host: logstash.wikimedia.org
     monitoring:
       check_command: check_https_url!logstash.wikimedia.org!/api/status
-      critical: true
       sites:
         codfw:
           hostname: kibana7.svc.codfw.wmnet
@@ -1125,9 +1113,9 @@ service::catalog:
           url:
             - http://localhost
       scheduler: wrr
+    page: false
     monitoring:
       check_command: check_http_on_port!80
-      critical: false
       sites:
         eqiad:
           hostname: labweb.svc.eqiad.wmnet
@@ -1242,7 +1230,6 @@ service::catalog:
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!mathoid.discovery.wmnet!4001!/_info
-      critical: true
       sites:
         codfw:
           hostname: mathoid.svc.codfw.wmnet
@@ -1278,11 +1265,11 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
     monitoring:
       check_command: check_https_lvs_on_port!miscweb.discovery.wmnet!4111!/
-      critical: false # don't enable paging while testing
       sites:
         codfw:
           hostname: miscweb.svc.codfw.wmnet
@@ -1351,7 +1338,6 @@ service::catalog:
     monitoring:
       check_command: check_https_lvs_on_port!mobileapps.discovery.wmnet!4102!/_info
       contact_group: mobileapps
-      critical: true
       sites:
         codfw:
           hostname: mobileapps.svc.codfw.wmnet
@@ -1387,13 +1373,13 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
         path: /wiki/Special:BlankPage
         host: en.wikipedia.org
     monitoring:
       check_command: check_https_lvs_on_port!en.wikipedia.org!4444!/wiki/Special:BlankPage
-      critical: false # don't enable paging while testing
       sites:
         codfw:
           hostname: mwdebug.svc.codfw.wmnet
@@ -1444,7 +1430,6 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs!en.wikipedia.com!/_status
-      critical: true
       sites:
         codfw:
           hostname: ncredir-lb.codfw.wikimedia.org
@@ -1486,7 +1471,6 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_https_url!en.wikipedia.com!/_status
-      critical: true
       sites:
         codfw:
           hostname: ncredir-lb.codfw.wikimedia.org
@@ -1538,7 +1522,6 @@ service::catalog:
         path: /v2/scores/
     monitoring:
       check_command: check_https_url!ores.discovery.wmnet!/v2/scores/
-      critical: true
       sites:
         codfw:
           hostname: ores.svc.codfw.wmnet
@@ -1582,7 +1565,6 @@ service::catalog:
         host: en.wikipedia.org
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
-      critical: true
       sites:
         codfw:
           hostname: parsoid.svc.codfw.wmnet
@@ -1626,7 +1608,6 @@ service::catalog:
       - type: http
     monitoring:
       check_command: check_http_lvs_on_port!prometheus!80!/
-      critical: true
       sites:
         codfw:
           hostname: prometheus.svc.codfw.wmnet
@@ -1660,12 +1641,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!proton.discovery.wmnet!4030!/_info
-      critical: false
       sites:
         codfw:
           hostname: proton.svc.codfw.wmnet
@@ -1700,12 +1681,12 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!push-notifications.discovery.wmnet!4104!/_info
-      critical: false #change to true when in production
       sites:
         codfw:
           hostname: push-notifications.svc.codfw.wmnet
@@ -1745,7 +1726,6 @@ service::catalog:
         path: /robots.txt
     monitoring:
       check_command: check_https_lvs_on_port!recommendation-api.discovery.wmnet!4632!/robots.txt
-      critical: true
       sites:
         codfw:
           hostname: recommendation-api.svc.codfw.wmnet
@@ -1816,7 +1796,6 @@ service::catalog:
       - type: http
     monitoring:
       check_command: check_https_lvs_on_port!restbase.discovery.wmnet!7443!/
-      critical: true
       sites:
         codfw:
           hostname: restbase.svc.codfw.wmnet
@@ -1856,12 +1835,12 @@ service::catalog:
           url:
             - https://localhost/repositories/
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /repositories/
     monitoring:
       check_command: check_https_lvs_on_port!schema.discovery.wmnet!443!/repositories/
-      critical: false
       sites:
         codfw:
           hostname: schema.svc.codfw.wmnet
@@ -1901,7 +1880,6 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_http_on_port!9200
-      critical: true
       sites:
         codfw:
           hostname: search.svc.codfw.wmnet
@@ -1940,7 +1918,6 @@ service::catalog:
       - type: http
     monitoring:
       check_command: check_https_on_port!9243
-      critical: true
       sites:
         codfw:
           hostname: search.svc.codfw.wmnet
@@ -1982,7 +1959,6 @@ service::catalog:
       - type: http
     monitoring:
       check_command: check_https_on_port!9443
-      critical: true
       sites:
         codfw:
           hostname: search.svc.codfw.wmnet
@@ -2023,7 +1999,6 @@ service::catalog:
       - type: http
     monitoring:
       check_command: check_https_on_port!9643
-      critical: true
       sites:
         codfw:
           hostname: search.svc.codfw.wmnet
@@ -2062,7 +2037,6 @@ service::catalog:
         path: /healthz
     monitoring:
       check_command: check_https_port_status!8081!200!/healthz
-      critical: true
       sites:
         codfw:
           hostname: sessionstore.svc.codfw.wmnet
@@ -2103,7 +2077,6 @@ service::catalog:
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox.discovery.wmnet!4008!/healthz
-      critical: true
       sites:
         codfw:
           hostname: shellbox.svc.codfw.wmnet
@@ -2144,7 +2117,6 @@ service::catalog:
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-constraints.discovery.wmnet!4010!/healthz
-      critical: true
       sites:
         codfw:
           hostname: shellbox-constraints.svc.codfw.wmnet
@@ -2185,7 +2157,6 @@ service::catalog:
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-media.discovery.wmnet!4015!/healthz
-      critical: true
       sites:
         codfw:
           hostname: shellbox-media.svc.codfw.wmnet
@@ -2226,7 +2197,6 @@ service::catalog:
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-syntaxhighlight.discovery.wmnet!4014!/healthz
-      critical: true
       sites:
         codfw:
           hostname: shellbox-syntaxhighlight.svc.codfw.wmnet
@@ -2267,7 +2237,6 @@ service::catalog:
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!shellbox-timeline.discovery.wmnet!4012!/healthz
-      critical: true
       sites:
         codfw:
           hostname: shellbox-timeline.svc.codfw.wmnet
@@ -2307,7 +2276,6 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs!localhost!/monitoring/frontend
-      critical: true
       sites:
         codfw:
           hostname: ms-fe.svc.codfw.wmnet
@@ -2347,7 +2315,6 @@ service::catalog:
         path: /monitoring/frontend
     monitoring:
       check_command: check_https_url!localhost!/monitoring/frontend
-      critical: true
       sites:
         codfw:
           hostname: ms-fe.svc.codfw.wmnet
@@ -2389,12 +2356,12 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
         path: /capabilities
     monitoring:
       check_command: check_https_lvs_on_port!tegola-vector-tiles.discovery.wmnet!4105!/capabilities
-      critical: false # don't enable paging while testing
       sites:
         codfw:
           hostname: tegola-vector-tiles.svc.codfw.wmnet
@@ -2437,7 +2404,6 @@ service::catalog:
         path: /-/ready
     monitoring:
       check_command: check_https_url!thanos-query.discovery.wmnet!/-/ready
-      critical: true
       sites:
         codfw:
           hostname: thanos-query.svc.codfw.wmnet
@@ -2485,7 +2451,6 @@ service::catalog:
         host: thanos-swift.discovery.wmnet
     monitoring:
       check_command: check_https_url!thanos-swift.discovery.wmnet!/healthcheck
-      critical: true
       sites:
         codfw:
           hostname: thanos-swift.svc.codfw.wmnet
@@ -2526,7 +2491,6 @@ service::catalog:
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!termbox.discovery.wmnet!4004!/_info
-      critical: true
       sites:
         codfw:
           hostname: termbox.svc.codfw.wmnet
@@ -2589,7 +2553,6 @@ service::catalog:
       scheduler: sh
     monitoring:
       check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
-      critical: true
       sites:
         codfw:
           hostname: text-lb.codfw.wikimedia.org
@@ -2640,7 +2603,6 @@ service::catalog:
       scheduler: sh
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
-      critical: true
       sites:
         codfw:
           hostname: text-lb.codfw.wikimedia.org
@@ -2693,7 +2655,6 @@ service::catalog:
         path: /healthcheck
     monitoring:
       check_command: check_http_lvs_on_port_timeout!thumbor.discovery.wmnet!8800!/healthcheck!20
-      critical: true
       sites:
         codfw:
           hostname: thumbor.svc.codfw.wmnet
@@ -2726,12 +2687,12 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!toolhub.discovery.wmnet!4011!/healthz
-      critical: false # don't enable paging while testing
       sites:
         codfw:
           hostname: toolhub.svc.codfw.wmnet
@@ -2782,7 +2743,6 @@ service::catalog:
       scheduler: sh
     monitoring:
       check_command: check_http_lvs!upload.wikimedia.org!/monitoring/backend
-      critical: true
       sites:
         codfw:
           hostname: upload-lb.codfw.wikimedia.org
@@ -2833,7 +2793,6 @@ service::catalog:
       scheduler: sh
     monitoring:
       check_command: check_https_url!upload.wikimedia.org!/monitoring/backend
-      critical: true
       sites:
         codfw:
           hostname: upload-lb.codfw.wikimedia.org
@@ -2885,7 +2844,6 @@ service::catalog:
         path: /w/health-check.php
     monitoring:
       check_command: check_https_url!videoscaler.discovery.wmnet!/w/health-check.php
-      critical: true
       sites:
         codfw:
           hostname: videoscaler.svc.codfw.wmnet
@@ -2923,12 +2881,12 @@ service::catalog:
           url:
             - https://localhost/readiness-probe
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /readiness-probe
     monitoring:
       check_command: check_https_url!wcqs.discovery.wmnet!/readiness-probe
-      critical: false # don't enable paging while testing
       sites:
         codfw:
           hostname: wcqs.svc.codfw.wmnet
@@ -2968,7 +2926,6 @@ service::catalog:
       scheduler: wrr
     monitoring:
       check_command: check_http_lvs_on_port!wdqs.discovery.wmnet!80!/readiness-probe
-      critical: true
       sites:
         codfw:
           hostname: wdqs.svc.codfw.wmnet
@@ -3037,7 +2994,6 @@ service::catalog:
         path: /readiness-probe
     monitoring:
       check_command: check_http_lvs_on_port!wdqs-internal.discovery.wmnet!80!/readiness-probe
-      critical: true
       sites:
         codfw:
           hostname: wdqs-internal.svc.codfw.wmnet
@@ -3080,7 +3036,6 @@ service::catalog:
         path: /readiness-probe
     monitoring:
       check_command: check_https_url!wdqs.discovery.wmnet!/readiness-probe
-      critical: true
       sites:
         codfw:
           hostname: wdqs.svc.codfw.wmnet
@@ -3120,7 +3075,6 @@ service::catalog:
         path: /_info
     monitoring:
       check_command: check_https_lvs_on_port!wikifeeds.discovery.wmnet!4101!/_info
-      critical: true
       sites:
         codfw:
           hostname: wikifeeds.svc.codfw.wmnet
@@ -3161,7 +3115,6 @@ service::catalog:
         path: /export?format=wikipedia
     monitoring:
       check_command: check_https_zotero_lvs_on_port!zotero.discovery.wmnet!4969!/export?format=wikipedia
-      critical: true
       sites:
         codfw:
           hostname: zotero.svc.codfw.wmnet
@@ -3186,6 +3139,7 @@ service::catalog:
         default: 10.192.48.159
       eqiad:
         default: 10.64.48.26
+    page: false
     probes:
       - type: http
         path: /health
@@ -3193,7 +3147,6 @@ service::catalog:
     monitoring:
       check_command: check_https_url_for_string!helm-charts.discovery.wmnet!/health!true
       notes_url: "https://wikitech.wikimedia.org/wiki/ChartMuseum"
-      critical: false
       sites:
         codfw:
           hostname: chartmuseum2001
@@ -3218,6 +3171,7 @@ service::catalog:
         default: 10.192.16.180
       eqiad:
         default: 10.64.48.17
+    page: false
     probes:
       - type: http
         path: /mediawiki
@@ -3226,7 +3180,6 @@ service::catalog:
     monitoring:
       check_command: check_https_url_for_string!releases.wikimedia.org!/mediawiki/!MediaWiki
       notes_url: "https://wikitech.wikimedia.org/wiki/Releases.wikimedia.org"
-      critical: false
       sites:
         codfw:
           hostname: releases2002
@@ -3262,12 +3215,12 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!api-gateway.discovery.wmnet!8087!/healthz
-      critical: false # don't enable paging while testing
       sites:
         codfw:
           hostname: api-gateway.svc.codfw.wmnet
@@ -3303,12 +3256,12 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!similar-users.discovery.wmnet!4110!/healthz
-      critical: false # don't enable paging while testing
       sites:
         codfw:
           hostname: similar-users.svc.codfw.wmnet
@@ -3344,12 +3297,12 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!linkrecommendation.discovery.wmnet!4005!/healthz
-      critical: false # don't enable paging while setting up
       sites:
         codfw:
           hostname: linkrecommendation.svc.codfw.wmnet
@@ -3381,12 +3334,12 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
+    page: false
     probes:
       - type: http
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!linkrecommendation.discovery.wmnet!4006!/healthz
-      critical: false # don't enable paging while setting up
       sites:
         codfw:
           hostname: linkrecommendation.svc.codfw.wmnet
@@ -3427,7 +3380,6 @@ service::catalog:
         path: /healthz
     monitoring:
       check_command: check_https_lvs_on_port!apple-search.discovery.wmnet!4013!/healthz
-      critical: true
       sites:
         codfw:
           hostname: apple-search.svc.codfw.wmnet
@@ -3569,6 +3521,7 @@ service::catalog:
         default: 10.192.0.147
       eqiad:
         default: 10.64.32.80
+    page: false
     probes:
       - type: http
         valid_status_codes:
@@ -3576,7 +3529,6 @@ service::catalog:
     monitoring:
       check_command: "check_https_on_port!8090"
       notes_url: "https://wikitech.wikimedia.org/wiki/Puppet#Micro_Service"
-      critical: false
       sites:
         codfw:
           hostname: puppetdb1002
@@ -3616,12 +3568,12 @@ service::catalog:
     public_endpoint: "graphite"
     port: 443
     description: Graphite metrics platform
+    page: false
     probes:
       - type: http
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/Graphite"
-      critical: false
       sites:
         codfw:
           hostname: graphite2003
@@ -3645,12 +3597,12 @@ service::catalog:
       - "grafana-rw"
     port: 443
     description: Graphing and dashboarding
+    page: false
     probes:
       - type: http
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org"
-      critical: false
       sites:
         codfw:
           hostname: grafana2001
@@ -3672,12 +3624,12 @@ service::catalog:
     public_endpoint: "librenms"
     port: 443
     description: Network device observability
+    page: false
     probes:
       - type: http
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/LibreNMS"
-      critical: false
       sites:
         codfw:
           hostname: netmon2001
@@ -3722,13 +3674,13 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
+    page: false
     probes:
       - type: http
         valid_status_codes:
           - 404
     monitoring:
       check_command: check_tcp_ssl!inference.discovery.wmnet!30443
-      critical: false
       sites:
         eqiad:
           hostname: inference.svc.eqiad.wmnet
@@ -3760,7 +3712,6 @@ service::catalog:
     monitoring:
       check_command: "check_http_url!apt.wikimedia.org!/wikimedia/"
       notes_url: "https://wikitech.wikimedia.org/wiki/APT_repository"
-      critical: true
       sites:
         codfw:
           hostname: apt2001
@@ -3785,6 +3736,7 @@ service::catalog:
         default: 10.192.32.30
       eqiad:
         default: 10.64.48.59
+    page: false
     probes:
       - type: http
         host: puppetboard.wikimedia.org
@@ -3792,7 +3744,6 @@ service::catalog:
     monitoring:
       check_command: "check_https_sso_redirect!puppetboard.wikimedia.org!/"
       notes_url: "https://wikitech.wikimedia.org/wiki/Puppet"
-      critical: false  # update this to true after testing complete
       sites:
         codfw:
           hostname: puppetboard2002

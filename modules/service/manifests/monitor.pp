@@ -45,9 +45,10 @@ class service::monitor() {
     $monitored_services.each |$n, $data| {
         $is_lvs = has_key($data, 'lvs')
         $monitoring = $data['monitoring']
+        $page = pick($data['page'], true)
         $critical = $data['state'] ? {
             'monitoring_setup' => false,
-            default            => $monitoring['critical']
+            default            => $page,
         }
         $monitoring['sites'].each |$sitename, $host| {
             $hostname = $host['hostname']
