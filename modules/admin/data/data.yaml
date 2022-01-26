@@ -4851,7 +4851,8 @@ users:
     uid: 32643
     gid: 500
     krb: present
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINSGlZdKKkUD0ra0jpnABXYQXRLowZe/q3fm49cDVGkM nrodriguez@wikimedia.org
   ihurbain:
     ensure: present
     realname: Isabelle Hurbain-Palatin
