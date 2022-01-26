@@ -45,3 +45,9 @@ profile::lvs::realserver::pools:
 # profile::kubernetes::master::controllermanager_token:
 # profile::kubernetes::master::infrastructure_users:
 profile::contacts::role_contacts: ['ServiceOps SREs']
+
+# We want to use docker with overlayfs on masters.
+# Enable the module early as doing so together with the
+# docker setup might make docker fall back to devicemapper
+# depending on the order in which puppet changes are applied
+profile::base::overlayfs: true
