@@ -48,6 +48,26 @@
       retcode: 0
       stderr: ""
 
+- name: verify default grid exec node release (stretch) if no release requested with jsub
+  tests:
+    # another cleanup
+    - cmd: $SUDO rm -fv ${JOB_NAME}.err ${JOB_NAME}.out
+    # run the job
+    - cmd: $SUDO jsub ${JOB_SCRIPT} | grep ${JOB_NAME} | grep "has been submitted"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the job
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! $SUDO grep ^9. ${JOB_NAME}.out
+           ; do sleep 0.5 ; done'
+      retcode: 0
+      stderr: ""
+    # we should have no error messages
+    - cmd: $SUDO cat ${JOB_NAME}.err | wc -l
+      retcode: 0
+      stderr: ""
+      stdout: "0"
+
 - name: run a basic jsub job in the BUSTER grid reading /etc/debian_version of the exec node
   tests:
     # another cleanup
