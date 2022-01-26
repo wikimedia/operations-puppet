@@ -27,7 +27,7 @@ class query_service::updater(
     String $journal,
     Boolean $log_sparql = false,
 ) {
-    file { "/etc/default/${deploy_name}-updater":
+    file { '/etc/default/query-service-updater':
         ensure  => present,
         content => template('query_service/updater-default.erb'),
         owner   => 'root',
