@@ -2480,6 +2480,9 @@ service::catalog:
     probes:
       - type: http
         path: /healthcheck
+        # Force Host: header to not include the port.
+        # See also https://phabricator.wikimedia.org/T300119
+        host: thanos-swift.discovery.wmnet
     monitoring:
       check_command: check_https_url!thanos-swift.discovery.wmnet!/healthcheck
       critical: true
