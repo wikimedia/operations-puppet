@@ -5,11 +5,6 @@ profile::docker::engine::version: "18.06.3~ce~3-0~debian"
 profile::docker::engine::packagename: "docker-ce"
 profile::docker::engine::declare_service: true
 profile::kubernetes::master_fqdn: "kubemaster.svc.%{::site}.wmnet"
-profile::kubernetes::master_hosts:
-- kubemaster1001.eqiad.wmnet
-- kubemaster1002.eqiad.wmnet
-- kubemaster2001.codfw.wmnet
-- kubemaster2002.codfw.wmnet
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
 profile::kubernetes::node::packages_from_future: true

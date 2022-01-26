@@ -18,6 +18,9 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes2017.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
+profile::kubernetes::master_hosts:
+- kubemaster2001.codfw.wmnet
+- kubemaster2002.codfw.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.72.3"
 profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
 # Define in the private repo
