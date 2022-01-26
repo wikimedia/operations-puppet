@@ -67,7 +67,7 @@ class profile::wmcs::monitoring (
         command                   => "/usr/bin/rsync --delete --delete-after -aSOrd ${monitoring_master}:${whisper_dir} ${whisper_dir}",
         interval                  => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* 00/1:00:00', # Every 8 hours
+            'interval' => '*-*-* 00/1:00:00', # Every hour
         },
         logging_enabled           => false,
         monitoring_enabled        => true,
