@@ -9,10 +9,12 @@
 # - $port: Port for web serving.
 # - $data_dir: Path to a directory for the sqlite database. Directory is managed by this module.
 # - $kubernetes_clusters: For each cluster to be monitored, its name and the path to a kubeconfig file.
+# - $ensure: Whether to run the image catalog. Should be "present" only on the active deployment host.
 class imagecatalog(
     Stdlib::Port $port,
     Stdlib::Unixpath $data_dir,
     Array[Tuple[String, Stdlib::Unixpath]] $kubernetes_clusters,
+    Wmflib::Ensure $ensure,
 ) {
   ensure_packages(['gunicorn3', 'python3-imagecatalog'])
 
@@ -45,7 +47,7 @@ class imagecatalog(
   }
 
   systemd::service { 'imagecatalog':
-      ensure  => present,
+      ensure  => $ensure,
       content => systemd_template('imagecatalog'),
       restart => true,
   }
@@ -57,7 +59,7 @@ class imagecatalog(
   }.join(',')
 
   systemd::timer::job { 'imagecatalog_record':
-      ensure      => present,
+      ensure      => $ensure,
       description => 'update the image catalog with all images running in prod',
       command     => "/usr/bin/imagecatalog --database=${db_path} --clusters=${clusters_flag} record",
       interval    => {
