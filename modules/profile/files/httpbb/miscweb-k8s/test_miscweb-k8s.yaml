@@ -1,0 +1,7 @@
+https://static-bugzilla.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Deprecated Bugzilla - Wikimedia
+- path: /bug1.html
+  assert_status: 200
+  assert_body_contains: Documentation is out of date
