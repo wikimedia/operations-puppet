@@ -3,16 +3,18 @@
 # Manages the postgresql configuration commone to master and replicas.
 #
 # == Parameters:
-# - $shared_buffers: postgresql shared buffer. Default: 7680MB (should only be
-#                    overriden for tests or VMs on lab).
+# - $shared_buffers: postgresql shared buffer. Default: 7680MB
 # - $maintenance_work_mem: postgresql maintenance work mem. Default: 4GB
 #                    (should only be overriden for tests or VMs on lab).
+# - $max_worker_processes: maximum worker processes - can be up to numcpus
 # - $chgrp_log: chgrp the postgresql log to maps-admin group. Disable in
 #                    deployment-prep.
 class profile::maps::postgresql_common(
-    String $shared_buffers       = lookup('profile::maps::postgresql_common::shared_buffers', { 'default_value' => '7680MB' }),
-    String $maintenance_work_mem = lookup('profile::maps::postgresql_common::maintenance_work_mem', { 'default_value' => '4GB' }),
-    Boolean $chgrp_log = lookup('profile::maps::postgresql_common::chown_logfile', {'default_value' => true}),
+    String  $shared_buffers        = lookup('profile::maps::postgresql_common::shared_buffers', { 'default_value' => '7680MB' }),
+    String  $effective_cache_size  = lookup('profile::maps::postgresql_common::effective_cache_size', { 'default_value' => '22GB' }),
+    String  $maintenance_work_mem  = lookup('profile::maps::postgresql_common::maintenance_work_mem', { 'default_value' => '4GB' }),
+    Integer $max_worker_processes  = lookup('profile::maps::postgresql_common::max_worker_processes', { 'default_value' => 8 }),
+    Boolean $chgrp_log             = lookup('profile::maps::postgresql_common::chown_logfile', {'default_value' => true}),
 ){
 
     class { '::postgresql::postgis': }

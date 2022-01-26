@@ -1,7 +1,7 @@
 checkpoint_completion_target = 0.9
-effective_cache_size = 22GB
+effective_cache_size = <%= @effective_cache_size %>
 work_mem = 192MB
-wal_buffers = 8MB
+wal_buffers = 16MB
 shared_buffers = <%= @shared_buffers %>
 max_connections = 120
 track_activity_query_size = 16384
@@ -17,12 +17,11 @@ cpu_tuple_cost = 0.05
 maintenance_work_mem = <%= @maintenance_work_mem %>
 autovacuum_work_mem = 1GB
 
-<% if @pgversion.to_f > 9.5 %>
-# increase WAL size to correspond with large data loads (this should be enabled when migrating to postgresql >= 9.5)
-# TODO: clean up this when migration to pg 9.6 is complete
-max_wal_size = 4GB
-min_wal_size = 1GB
-<% end %>
+max_wal_size = 16GB
+min_wal_size = 4GB
 
 # SSDs have better random performance than spinning rust
 random_page_cost = 2.0
+
+max_worker_processes = <%= @max_worker_processes %>
+max_parallel_workers = <%= @max_worker_processes %>
