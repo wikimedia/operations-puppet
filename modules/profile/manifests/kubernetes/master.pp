@@ -7,7 +7,6 @@ class profile::kubernetes::master(
     String $service_cluster_ip_range=lookup('profile::kubernetes::master::service_cluster_ip_range'),
     Optional[String] $service_node_port_range=lookup('profile::kubernetes::master::service_node_port_range', {'default_value' => undef}),
     Integer $apiserver_count=lookup('profile::kubernetes::master::apiserver_count'),
-    Boolean $expose_puppet_certs=lookup('profile::kubernetes::master::expose_puppet_certs', { 'default_value' => false }),
     Optional[Stdlib::Fqdn] $service_cert=lookup('profile::kubernetes::master::service_cert', {'default_value' => undef}),
     Boolean $use_cergen=lookup('profile::kubernetes::master::use_cergen', { default_value => false }),
     Stdlib::Unixpath $ssl_cert_path=lookup('profile::kubernetes::master::ssl_cert_path'),
@@ -25,17 +24,6 @@ class profile::kubernetes::master(
     Optional[Array[Hash]] $admission_configuration = lookup('profile::kubernetes::master::admission_configuration', {default_value => undef})
 
 ){
-    # Exposing puppet certificates is not needed in the general prod use case
-    # since more specific certificates (see profile::kubernetes::master::ssl_*_path)
-    # are being used.
-    if $expose_puppet_certs {
-        base::expose_puppet_certs { '/etc/kubernetes':
-            provide_private => true,
-            user            => 'kube',
-            group           => 'kube',
-        }
-    }
-
     if $service_cert {
         sslcert::certificate { $service_cert:
             ensure       => present,
