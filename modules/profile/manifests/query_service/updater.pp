@@ -16,6 +16,7 @@ class profile::query_service::updater (
     Boolean $fetch_constraints = lookup('profile::query_service::fetch_constraints', {'default_value' => true}),
     Boolean $enable_rdf_dump = lookup('profile::query_service::enable_rdf_dump', {'default_value' => false}),
     Boolean $use_revisions = lookup('profile::query_service::use_revisions'),
+    String $journal = lookup('profile::query_service::legacy_updater::journal'),
 ) {
     require ::profile::query_service::common
 
@@ -81,6 +82,7 @@ class profile::query_service::updater (
         extra_jvm_opts         => $default_jvm_options + $kafka_jvm_opts,
         updater_startup_script => 'runUpdate.sh',
         updater_service_desc   => 'Query Service Updater',
+        journal                => $journal,
         log_sparql             => $log_sparql,
     }
 
