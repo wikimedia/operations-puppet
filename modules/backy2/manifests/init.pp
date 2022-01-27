@@ -42,13 +42,19 @@ class backy2(
         'python3-shortuuid',
         'python3-sqlalchemy',
         'python3-lz4',
-        'python3-crypto',
         'python3-pycryptodome',
     ]
     ensure_packages($packages)
     ensure_packages('backy2')
     $packages.each |String $package| {
       Package[$package] -> Package['backy2']
+    }
+
+    # python3-crypto is not included in bullseye, not sure if it's needed in Buster or not
+    # let's include on buster until it's gone so that the existing hosts don't break
+    if debian::codename::le('buster') {
+        ensure_packages(['python3-crypto'])
+        Package['python3-crypto'] -> Package['backy2']
     }
 
     file {
