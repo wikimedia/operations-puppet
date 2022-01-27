@@ -97,6 +97,7 @@ class profile::elasticsearch(
         '5.5'  => 'elastic55',
         '5.6'  => 'elastic56',
         '6.5'  => 'elastic65',
+        '6.8'  => 'elastic68',
         '7.4'  => 'elastic74',
         '7.8'  => 'elastic78',
         '7.9'  => 'elastic79',
