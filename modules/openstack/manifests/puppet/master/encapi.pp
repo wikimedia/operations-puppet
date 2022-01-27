@@ -30,8 +30,9 @@ class openstack::puppet::master::encapi(
                     'python-pymysql'])
 
     $python_version = $::lsbdistcodename ? {
-        'stretch' => 'python3.5',
-        'buster'  => 'python3.7',
+        'stretch'  => 'python3.5',
+        'buster'   => 'python3.7',
+        'bullseye' => 'python3.9',
     }
 
     file { "/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py":

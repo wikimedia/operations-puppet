@@ -9,6 +9,7 @@ class openstack::util::admin_scripts(
     $libvirt = $facts['lsbdistcodename'] ? {
         'stretch' => 'libvirt-clients',
         'buster' => 'libvirt-clients',
+        'bullseye' => 'libvirt-clients',
     }
 
     package{ $libvirt :
