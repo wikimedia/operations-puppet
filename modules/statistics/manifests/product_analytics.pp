@@ -41,7 +41,7 @@ class statistics::product_analytics {
         ensure                    => 'present',
         description               => 'Product Analytics monthly Movement Metrics run',
         command                   => "${jobs_dir}/movement_metrics/main.sh",
-        interval                  => '*-*-9 00:00:00',
+        interval                  => '*-*-7 00:00:00',
         user                      => $user,
         logfile_basedir           => $log_dir,
         logfile_name              => 'monthly_movement_metrics.log',
