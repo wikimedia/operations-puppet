@@ -1424,16 +1424,10 @@ node 'lists1001.wikimedia.org' {
     role(lists)
 }
 
-# New ganeti hosts for eqiad T283036 and T293909
-node 'ganeti1028.eqiad.wmnet' {
-    role(insetup)
-}
-
-# Ganeti virtualization hosts - eqiad
-node /^ganeti10(0[5-9]|1[0-9]|2[0-7])\.eqiad\.wmnet$/ {
+node /^ganeti10(0[5-9]|1[0-9]|2[0-8])\.eqiad\.wmnet$/ {
     role(ganeti)
 }
-# Ganeti virtualization hosts - codfw
+
 node /^ganeti20(0[7-9]|1[0-9]|2[0-8])\.codfw\.wmnet$/ {
     role(ganeti)
 }
