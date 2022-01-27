@@ -2,7 +2,7 @@ class mediawiki::logging::yaml_defs(
     Stdlib::Unixpath $path,
     Array[String] $kafka_brokers,
     String $udp2log,
-    String $ca_cert_path = '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt',
+    String $ca_cert_path = '/etc/ssl/certs/wmf-ca-certificates.crt',
 ) {
     $kb = $kafka_brokers.map |$broker| { {'host' => $broker, 'port' => 9093}}
     $logging_data = {
