@@ -13,6 +13,7 @@ profile::idp::cors_allowed_origins:
   - 'https://alerts.wikimedia.org'
   - 'https://thanos.wikimedia.org'
   - 'https://grafana-rw.wikimedia.org'
+  - 'https://grafana-next-rw.wikimedia.org'
 profile::idp::services:
   icinga:
     id: 1
@@ -124,7 +125,7 @@ profile::idp::services:
       - wmf
   grafana:
     id: 16
-    service_id: 'https://grafana(-rw)?.wikimedia.org(/.*)?'
+    service_id: 'https://grafana(-next)?(-rw)?.wikimedia.org(/.*)?'
     required_groups:
       - ops
       - nda

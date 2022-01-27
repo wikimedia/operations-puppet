@@ -75,6 +75,15 @@ profile::idp::client::httpd::sites:
     proxied_as_https: true
     vhost_settings:
       ro_vhost: "grafana.%{lookup('public_domain')}"
+  "grafana-next-rw.%{lookup('public_domain')}":
+    vhost_content: 'profile/idp/client/httpd-grafana.erb'
+    document_root: '/usr/share/grafana/public'
+    required_groups:
+      - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+      - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
+    proxied_as_https: true
+    vhost_settings:
+      ro_vhost: "grafana-next.%{lookup('public_domain')}"
 
 profile::grafana::active_host: 'grafana1002.eqiad.wmnet'
 profile::grafana::standby_host: 'grafana2001.codfw.wmnet'
