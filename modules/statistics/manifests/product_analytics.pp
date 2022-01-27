@@ -40,7 +40,7 @@ class statistics::product_analytics {
     kerberos::systemd_timer { 'product-analytics-movement-metrics':
         ensure                    => 'present',
         description               => 'Product Analytics monthly Movement Metrics run',
-        command                   => "${jobs_dir}/movement_metrics/main.sh",
+        command                   => "exec -a product-analytics-movement-metrics ${jobs_dir}/movement_metrics/main.sh",
         interval                  => '*-*-9 00:00:00',
         user                      => $user,
         logfile_basedir           => $log_dir,
