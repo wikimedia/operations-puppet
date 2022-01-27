@@ -3595,6 +3595,8 @@ service::catalog:
     public_endpoint: "grafana"
     public_aliases:
       - "grafana-rw"
+      - "grafana-next"
+      - "grafana-next-rw"
     port: 443
     description: Graphing and dashboarding
     page: false
