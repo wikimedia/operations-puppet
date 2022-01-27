@@ -15,8 +15,9 @@ class prometheus::haproxy_exporter (
     ensure_packages('prometheus-haproxy-exporter')
 
     $exec_binary = $::lsbdistcodename ? {
-        buster  => '/usr/bin/prometheus-haproxy-exporter',
-        stretch => '/usr/bin/haproxy_exporter',
+        bullseye => '/usr/bin/prometheus-haproxy-exporter',
+        buster   => '/usr/bin/prometheus-haproxy-exporter',
+        stretch  => '/usr/bin/haproxy_exporter',
     }
 
     systemd::service { 'prometheus-haproxy-exporter':
