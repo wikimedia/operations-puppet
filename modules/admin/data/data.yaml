@@ -3352,9 +3352,11 @@ users:
     realname: Joseph Seddon
     name: seddon
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO67q9JInjvpeJa6U3Xx00zvPqOpHjgylaQmo9J0X19m seddon@wikimedia.org
     uid: 16261
     email: jseddon@wikimedia.org
+    krb: present
   mbsantos:
     ensure: present
     realname: Mateus Batista Santos
