@@ -9,6 +9,10 @@ class profile::ci::slave::labs::common (
     # needed by the slave agent, eg the java jre.
     include profile::java
 
+    # Anything that needs publishing to doc.wikimedia.org relies on rsync to
+    # fetch files from the agents.
+    ensure_packages('rsync')
+
     if $manage_srv {
         # Need the labs instance extended disk space. T277078.
         include profile::wmcs::lvm
