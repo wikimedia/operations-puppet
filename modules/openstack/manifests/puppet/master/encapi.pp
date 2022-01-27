@@ -25,9 +25,7 @@ class openstack::puppet::master::encapi(
 
     ensure_packages(['python3-pymysql',
                     'python3-flask',
-                    'python3-yaml',
-                    'python-flask',
-                    'python-pymysql'])
+                    'python3-yaml'])
 
     $python_version = $::lsbdistcodename ? {
         'stretch'  => 'python3.5',

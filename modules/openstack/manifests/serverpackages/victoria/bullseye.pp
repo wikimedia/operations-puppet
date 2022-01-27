@@ -4,8 +4,6 @@ class openstack::serverpackages::victoria::bullseye(
       'librados2',
       'librgw2',
       'librbd1',
-      'python-rados',
-      'python-rbd',
       'ceph-common',
       'python3-ceph',
       'python3-cephfs',
@@ -28,7 +26,6 @@ class openstack::serverpackages::victoria::bullseye(
     $bullseye_bpo_nochange_packages = [
       'uwsgi-plugin-python3',
       'uwsgi-core',
-      'uwsgi-plugin-python',
       'librdkafka1',
     ]
 

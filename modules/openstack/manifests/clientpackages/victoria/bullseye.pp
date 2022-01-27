@@ -18,7 +18,6 @@ class openstack::clientpackages::victoria::bullseye(
 
     $otherpackages = [
         'ebtables',
-        'python-netaddr',
     ]
 
     package { $otherpackages:
