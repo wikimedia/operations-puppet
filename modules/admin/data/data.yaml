@@ -587,7 +587,7 @@ groups:
   aqs-admins:
     description: Group of admins for the Analytics Query Service
     gid: 764
-    members: [*analytics_admins_members, mobrovac]
+    members: [*analytics_admins_members, mobrovac, frankie]
     approval:
       - Olja Dimitrjevic
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
@@ -4990,6 +4990,14 @@ users:
     realname: Margeigh Novotny
     email: mnovotny@wikimedia.org
     ssh_keys: []
+  frankie:
+    ensure: present
+    gid: 500
+    uid: 32680
+    realname: Frances Goodwin
+    email: fgoodwin@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKjq66tT5dFSw6grzRDb0W6oQsBtIIPDVhiHlV3g3PaN
 
 ldap_only_users:
   abartov:
@@ -5693,10 +5701,6 @@ ldap_only_users:
     ensure: present
     realname: Thomas Chin
     email: tchin@wikimedia.org
-  frankie:
-    ensure: present
-    realname: Frances Goodwin
-    email: fgoodwin@wikimedia.org
   elal:
     ensure: present
     realname: Elena Aleynikova
