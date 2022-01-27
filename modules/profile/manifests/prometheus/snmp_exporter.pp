@@ -1,4 +1,8 @@
-class profile::prometheus::snmp_exporter {
+class profile::prometheus::snmp_exporter (
+  # As of Jan 2022 all SNMP polling happens from codfw/eqiad netmon
+  # hosts, therefore allow all Prometheus hosts to talk to snmp_exporter
+    Array[Stdlib::Host] $prometheus_all_nodes = lookup('prometheus_all_nodes'),
+) {
     include passwords::network
 
     class { '::prometheus::snmp_exporter': }
@@ -44,10 +48,15 @@ class profile::prometheus::snmp_exporter {
     }
 
     if $::realm == 'labs' {
-        ferm::service { 'prometheus-snmp-exporter':
-            proto  => 'tcp',
-            port   => '9116',
-            srange => '$LABS_NETWORKS'
-        }
+        $ferm_srange = '$LABS_NETWORKS'
+    } else {
+        $prometheus_ferm_nodes = join($prometheus_all_nodes, ' ')
+        $ferm_srange = "@resolve((${prometheus_ferm_nodes}))"
+    }
+
+    ferm::service { 'prometheus-snmp-exporter':
+        proto  => 'tcp',
+        port   => '9116',
+        srange => $ferm_srange,
     }
 }
