@@ -23,7 +23,7 @@ profile::idp::services:
       - wmf
   puppetboard:
     id: 3
-    service_id: 'https://(cas-)?puppetboard.wikimedia.org(/.*)?'
+    service_id: 'https://puppetboard-idptest.wikimedia.org(/.*)?'
     required_groups:
       - ops
       - sre-admins
