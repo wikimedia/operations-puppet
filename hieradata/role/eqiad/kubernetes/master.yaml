@@ -3,3 +3,30 @@ profile::kubernetes::master::etcd_urls:
  - https://kubetcd1004.eqiad.wmnet:2379
  - https://kubetcd1005.eqiad.wmnet:2379
  - https://kubetcd1006.eqiad.wmnet:2379
+
+profile::calico::kubernetes::bgp_peers:
+- kubemaster1001.eqiad.wmnet
+- kubemaster1002.eqiad.wmnet
+- kubernetes1001.eqiad.wmnet
+- kubernetes1002.eqiad.wmnet
+- kubernetes1003.eqiad.wmnet
+- kubernetes1004.eqiad.wmnet
+- kubernetes1005.eqiad.wmnet
+- kubernetes1006.eqiad.wmnet
+- kubernetes1007.eqiad.wmnet
+- kubernetes1008.eqiad.wmnet
+- kubernetes1009.eqiad.wmnet
+- kubernetes1010.eqiad.wmnet
+- kubernetes1011.eqiad.wmnet
+- kubernetes1012.eqiad.wmnet
+- kubernetes1013.eqiad.wmnet
+- kubernetes1014.eqiad.wmnet
+- kubernetes1015.eqiad.wmnet
+- kubernetes1016.eqiad.wmnet
+- kubernetes1017.eqiad.wmnet
+- cr1-eqiad.wikimedia.org
+- cr2-eqiad.wikimedia.org
+profile::kubernetes::master_hosts:
+- kubemaster1001.eqiad.wmnet
+- kubemaster1002.eqiad.wmnet
+profile::kubernetes::node::kubelet_cluster_dns: "10.64.72.3"

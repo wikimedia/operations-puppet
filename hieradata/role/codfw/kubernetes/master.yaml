@@ -31,8 +31,3 @@ profile::kubernetes::master_hosts:
 - kubemaster2001.codfw.wmnet
 - kubemaster2002.codfw.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.72.3"
-
-# TODO: re-evaluate this parameter since it is probably not needed
-# when using ssl_*_path settings.
-# See role/common/kubernetes/master.yaml
-profile::kubernetes::master::expose_puppet_certs: false
