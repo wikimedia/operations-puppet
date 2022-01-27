@@ -7,6 +7,7 @@ describe 'elasticsearch', :type => :class do
 
       describe 'when GC logging is enabled' do
         let(:params) { {
+          :apt_component => 'elastic65',
           :default_instance_params => {
             :cluster_name => 'my_cluster_name',
             :short_cluster_name => 'the_short_cluster_name',

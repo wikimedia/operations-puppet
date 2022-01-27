@@ -33,7 +33,7 @@ class elasticsearch::log::hot_threads {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:00/5:00', # every 5 min
             },
-        require            => [Package['elasticsearch'], File[$script]],
+        require            => [Package['elasticsearch-oss'], File[$script]],
     }
 
     # The logrotate configuration for Elasticsearch will roll these logs just
