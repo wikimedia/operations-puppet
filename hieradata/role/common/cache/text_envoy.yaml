@@ -55,6 +55,8 @@ cache::alternate_domains:
     caching: 'pass'
   grafana-rw.wikimedia.org:
     caching: 'pass'
+  grafana-next-rw.wikimedia.org:
+    caching: 'pass'
   grafana.wikimedia.org:
     caching: 'pass'
   graphite-labs.wikimedia.org:
