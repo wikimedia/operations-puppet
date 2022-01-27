@@ -19,7 +19,7 @@
 class profile::graphite::base(
     $storage_dir      = '/var/lib/carbon',
     $hostname         = 'graphite.wikimedia.org',
-    $cors_origins     = [ 'https://grafana.wikimedia.org', 'https://grafana-next.wikimedia.org', 'https://grafana-rw.wikimedia.org' ],
+    $cors_origins     = [ 'https://grafana.wikimedia.org', 'https://grafana-next.wikimedia.org', 'https://grafana-rw.wikimedia.org', 'https://grafana-next-rw.wikimedia.org' ],
     $c_relay_settings = {},
     $cluster_servers  = lookup('profile::graphite::base::cluster_servers'),
     $uwsgi_processes  = lookup('profile::graphite::base::uwsgi_processes'),
