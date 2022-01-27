@@ -8,13 +8,23 @@
     JOB_NAME: grid-test-script
     JOB_SCRIPT: ./grid-test-script.sh
     SCRIPT_FULLPATH: /data/project/automated-toolforge-tests/grid-test-script.sh
+    WEBGENCODE_FULLPATH: /data/project/automated-toolforge-tests/www/python/src/app.py
+    WEBGENCODE_ROOT: ./www
+    WEBGENCODE_VENV: ./www/python/venv
+    WEBGENCODE_SRC_DIR: ./www/python/src
+    WEBGENCODE_URL_COMPONENT: app
+    WEBLIGHTCODE_FULLPATH: /data/project/automated-toolforge-tests/public_html/app.py
+    WEBLIGHTCODE_ROOT: ./public_html
+    WEBLIGHTCODE_URL_COMPONENT: app.py
     VERIFY_TIMEOUT: "30"
 <% if @labsproject == 'toolsbeta' -%>
     # toolsbeta using special cloudstore VM NFS server
     NFS_PATH: /mnt/nfs/nfs-01-toolsbeta-project/automated-toolforge-tests
+    TOOLFORGE_DOMAIN: toolsbeta.wmflabs.org
 <% end -%>
 <% if @labsproject == 'tools' -%>
     NFS_PATH: /mnt/nfs/labstore-secondary-tools-project/automated-toolforge-tests
+    TOOLFORGE_DOMAIN: toolforge.org
 <% end -%>
 <% @envvars.each do |key, value| -%>
     <%= key %>: <%= value %>
@@ -23,6 +33,114 @@
 - name: verify the grid knows about this tool account
   tests:
     - cmd: $SUDO pwd | grep -q ${NFS_PATH}
+      retcode: 0
+      stderr: ""
+
+- name: setup python webservice environment for the weblight grid
+  tests:
+    # cleanup
+    - cmd: $SUDO rm -frv ${WEBLIGHTCODE_ROOT}
+    - cmd: $SUDO mkdir -p ${WEBLIGHTCODE_ROOT}
+      retcode: 0
+      stderr: ""
+      stdout: ""
+    # create web app
+    - cmd: |
+           cat << EOF > ${WEBLIGHTCODE_FULLPATH}
+           print(open('/etc/debian_version', 'r').read())
+           EOF
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    # ensure proper permissions
+    - cmd: chown ${PROJECT}.${TOOLNAME}:${PROJECT}.${TOOLNAME} $WEBLIGHTCODE_FULLPATH
+      retcode: 0
+      stderr: ""
+    - cmd: chmod ug+x $WEBLIGHTCODE_FULLPATH
+      retcode: 0
+      stderr: ""
+
+- name: basic python webservice in the stretch weblight grid reading /etc/debian_version
+  tests:
+    - cmd: $SUDO webservice stop --backend gridengine || true
+      retcode: 0
+    # run the webapp (default is web light grid)
+    - cmd: $SUDO webservice --backend gridengine --release stretch start | grep "Starting webservice"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the webservice.
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! curl -s https://${TOOLNAME}.${TOOLFORGE_DOMAIN}/${WEBLIGHTCODE_URL_COMPONENT} | grep ^9.
+           ; do sleep 0.5 ; done'
+      retcode: 0
+      stderr: ""
+
+- name: basic python webservice in the buster weblight grid reading /etc/debian_version
+  tests:
+    - cmd: $SUDO webservice stop --backend gridengine || true
+      retcode: 0
+    # leave room for the grid to stop stuff
+    - cmd: sleep 10
+    # run the webapp (default is web light grid)
+    - cmd: $SUDO webservice --backend gridengine --release buster start | grep "Starting webservice"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the webservice.
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! curl -s https://${TOOLNAME}.${TOOLFORGE_DOMAIN}/${WEBLIGHTCODE_URL_COMPONENT} | grep ^10.
+           ; do sleep 0.5 ; done'
+      retcode: 0
+      stderr: ""
+
+# because the python venv, we can only schedule a flask webapp in this fashion:
+#  * from a buster bastion into the buster grid
+#  * from a stretch bastion into the stretch grid
+- name: setup python webservice environment for the <%= @facts['os']['distro']['codename'] -%> webgen grid
+  tests:
+    - cmd: $SUDO rm -frv ${WEBGENCODE_ROOT}
+    - cmd: $SUDO mkdir -p ${WEBGENCODE_SRC_DIR}
+      retcode: 0
+      stderr: ""
+      stdout: ""
+    # create python venv
+    - cmd: $SUDO bash -c -- 'python3 -m venv ${WEBGENCODE_VENV} ; source ${WEBGENCODE_VENV}/bin/activate ; pip install flask'
+      retcode: 0
+      stderr: ""
+    # create web app
+    - cmd: |
+           cat << EOF > ${WEBGENCODE_FULLPATH}
+           from flask import Flask, Response
+           app = Flask(__name__)
+           @app.route('/')
+           def home():
+             with open('/etc/debian_version', 'r') as f:
+               return Response(f.read(), content_type="text/plain")
+           app.run()
+           EOF
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    # ensure proper permissions
+    - cmd: chown ${PROJECT}.${TOOLNAME}:${PROJECT}.${TOOLNAME} $WEBGENCODE_FULLPATH
+      retcode: 0
+      stderr: ""
+    - cmd: chmod ug+x $WEBGENCODE_FULLPATH
+      retcode: 0
+      stderr: ""
+
+- name: basic python webservice in the <%= @facts['os']['distro']['codename'] -%> webgen grid reading /etc/debian_version
+  tests:
+    # cleanup
+    - cmd: $SUDO webservice stop --backend gridengine || true
+      retcode: 0
+    # run the webapp
+    - cmd: $SUDO webservice --backend gridengine --release stretch uwsgi-python start | grep "Starting webservice"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the webservice.
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! curl -s https://${TOOLNAME}.${TOOLFORGE_DOMAIN}/${WEBGENCODE_URL_COMPONENT} | grep ^<%= @facts['operatingsystemmajrelease'] -%>.
+           ; do sleep 0.5 ; done'
       retcode: 0
       stderr: ""
 
