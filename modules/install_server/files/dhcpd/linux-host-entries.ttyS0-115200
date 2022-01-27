@@ -250,6 +250,11 @@ host doh5002 {
     fixed-address doh5002.wikimedia.org;
 }
 
+host doh6001 {
+    hardware ethernet aa:00:00:7f:7b:87;
+    fixed-address doh6001.wikimedia.org;
+}
+
 host dragonfly-supernode1001 {
     hardware ethernet aa:00:00:6e:67:63;
     fixed-address dragonfly-supernode1001.eqiad.wmnet;
