@@ -355,7 +355,7 @@ groups:
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars]
+              aniketars, tandic]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5017,6 +5017,17 @@ users:
     krb: present
     expiry_date: 2022-06-30
     expiry_contact: miriam@wikimedia.org
+  tandic:
+    ensure: present
+    gid: 500
+    uid: 33473
+    realname: Tanja Anđić
+    email: tandic-ctr@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhg5l9FdMRyic4YF1+EDVbxatxyEhn6K8SGwIBpAY9V tandic-ctr@wikimedia.org
+    krb: present
+    expiry_date: 2022-06-30
+    expiry_contact: janstee@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -5724,12 +5735,6 @@ ldap_only_users:
     ensure: present
     realname: Elena Aleynikova
     email: elena.aleynikova@wikimedia.de
-  tandic:
-    ensure: present
-    realname: Tanja Andic
-    email: tandic-ctr@wikimedia.org
-    expiry_date: 2022-06-30
-    expiry_contact: janstee@wikimedia.org
   simone-this-dot:
     ensure: present
     realname: Simone Cuomo
