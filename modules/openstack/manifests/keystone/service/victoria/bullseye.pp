@@ -10,7 +10,6 @@ class openstack::keystone::service::victoria::bullseye(
         'python3-ldap3',
         'ruby-ldap',
         'python3-mwclient',
-        'libapache2-mod-wsgi-py3',
     ]
 
     package { $packages:
@@ -22,9 +21,5 @@ class openstack::keystone::service::victoria::bullseye(
     service {'keystone':
         ensure  => 'running',
         require => Package['keystone'];
-    }
-    service {'apache2':
-        ensure  => 'stopped',
-        require => Package['apache2'];
     }
 }
