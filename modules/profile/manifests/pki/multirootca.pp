@@ -4,13 +4,20 @@
 # @param db_pass The db pass to use
 # @param db_name The db name to use
 # @param db_host The db host to use
+# @param root_ca_cn The CN of the root ca used for creating the ocsp responder
+# @param root_ca_cert The Root certificate cert
 # @param root_ocsp_cert The Root CA ocsp signing certificate as a string passed to the file command
 # @param root_ocsp_key The Root CA ocsp signing key as a string passed to secret
 # @param root_ocsp_port the ocsp listening port
-# @param root_ca_cn The CN of the root ca used for creating the ocsp responder
-# @param $enable_client_auth if true make sure connections authenticate with TLS client auth
+# @param client_ca_source the source location of the trusted client auth CAs
+# @param enable_client_auth if true make sure connections authenticate with TLS client auth
+# @param enable_monitoring if true create icinga checks
 # @param maintenance_jobs this parameter controls where maintenance jobs run e.g. ocsp generation cleaning expired certs
-# @param $client_ca_source the CA bundle to use for TLS client auth connections
+# @param enable_k8s_vhost enable the specific vhost to serve k8s
+# @param public_cert_base the locations in puppet to find public certs
+# @param private_cert_base the locations in the private repo to find private keys
+# @param prometheus_nodes list of prometheus hosts
+# @param default_usages list of default usages
 # @param default_nets a array of networks used by the multirootca as an ACL.  Access is configured
 #   via apache so this config is not useful and should be left at the default
 # @param default_auth_keys a Hash of default_auth_keys
@@ -33,13 +40,14 @@ class profile::pki::multirootca (
     Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
     Boolean                       $maintenance_jobs   = lookup('profile::pki::multirootca::maintenance_jobs'),
     Boolean                       $enable_k8s_vhost   = lookup('profile::pki::multirootca::enable_k8s_vhost'),
+    String[1]                     $public_cert_base   = lookup('profile::pki::multirootca::public_cert_base'),
+    String[1]                     $private_cert_base  = lookup('profile::pki::multirootca::private_cert_base'),
     Array[Stdlib::Host]           $prometheus_nodes   = lookup('profile::pki::multirootca::prometheus_nodes'),
     Array[Cfssl::Usage]           $default_usages     = lookup('profile::pki::multirootca::default_usages'),
     Array[Stdlib::IP::Address]    $default_nets       = lookup('profile::pki::multirootca::default_nets'),
     Hash[String, Cfssl::Auth_key] $default_auth_keys  = lookup('profile::pki::multirootca::default_auth_keys'),
     Hash[String, Cfssl::Profile]  $default_profiles   = lookup('profile::pki::multirootca::default_profiles'),
     Hash[String, Profile::Pki::Intermediate] $intermediates = lookup('profile::pki::multirootca::intermediates'),
-
 ) {
     # we need to include this as we use some of the variables
     include cfssl  # lint:ignore:wmf_styleguide
@@ -107,8 +115,8 @@ class profile::pki::multirootca (
         $_default_usages = pick($config['default_usages'], $default_usages)
         $ca_key_file     = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
         $ca_file         = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
-        $key_content     = "pki/intermediates/${intermediate}.pem"
-        $cert_content    ="profile/pki/intermediates/${intermediate}.pem"
+        $key_content     = "${private_cert_base}/${intermediate}.pem"
+        $cert_content    = "${public_cert_base}/${intermediate}.pem"
         $int_ca_content  = file($cert_content)
 
         cfssl::signer {$intermediate:
@@ -126,8 +134,6 @@ class profile::pki::multirootca (
             manage_db        => false,
             manage_services  => false,
         }
-        # this value is unlikely to need change much if ever so its not a parameter
-
         cfssl::ocsp{$intermediate:
             listen_port        => $config['ocsp_port'],
             db_conf_file       => $db_conf_file,
@@ -165,7 +171,7 @@ class profile::pki::multirootca (
     class { 'sslcert::dhparam': }
     # CRL and OCSP responder
     class {'httpd':
-        modules => ['proxy_http', 'ssl', 'headers']
+        modules => ['proxy_http', 'ssl', 'headers'],
     }
     # TODO: probably replace this with acmechief
     $tls_termination_cert = $facts['puppet_config']['hostcert']
@@ -184,7 +190,7 @@ class profile::pki::multirootca (
 
     httpd::site{$vhost:
         ensure  => present,
-        content => template('profile/pki/multirootca/vhost.conf.erb')
+        content => template('profile/pki/multirootca/vhost.conf.erb'),
     }
     ferm::service{'csr_and_ocsp_responder':
         proto  => 'tcp',
