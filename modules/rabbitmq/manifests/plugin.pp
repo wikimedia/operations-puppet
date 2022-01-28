@@ -6,6 +6,5 @@ define rabbitmq::plugin () {
         unless      => "/usr/sbin/rabbitmq-plugins list -E | grep ${title}",
         logoutput   => true,
         require     => Service['rabbitmq-server'],
-        notify      => Service['rabbitmq-server'],
     }
 }
