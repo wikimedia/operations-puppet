@@ -49,6 +49,7 @@ class profile::apifeatureusage::logstash (
     logstash_package    => 'logstash-oss',
     logstash_version    => 7,
     log_format          => 'json',
+    gc_log              => false,
   }
 
   # Ship logstash service logs to ELK
