@@ -40,6 +40,11 @@ profile::pki::multirootca::intermediates:
       - 'server auth'
       - 'client auth'
     profiles:
+      ocsp:
+        usages:
+          - 'digital signature'
+          - 'ocsp signing'
+        expiry: '43800h'
       kafka_11:
         # Kafka 1.1 supports dynamic reload of the TLS keystore (that contains
         # the certificate that the broker uses) but in order to work it needs
