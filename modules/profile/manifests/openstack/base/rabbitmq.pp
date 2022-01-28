@@ -44,8 +44,10 @@ class profile::openstack::base::rabbitmq(
         tls_ca_file   => $rabbitmq_tls_ca_file,
     }
     contain '::rabbitmq'
-    class{'::rabbitmq::plugins':}
-    contain '::rabbitmq::plugins'
+
+    # https://www.rabbitmq.com/management.html
+    # Needed for https://www.rabbitmq.com/management-cli.html
+    rabbitmq::plugin { 'rabbitmq_management': }
 
     file { '/etc/rabbitmq/rabbitmq-env.conf':
         owner   => 'rabbitmq',
@@ -70,18 +72,22 @@ class profile::openstack::base::rabbitmq(
     }
     contain '::openstack::nova::rabbit'
 
-    rabbitmq::user{"${monitor_user}-rabbituser":
-      username      => $monitor_user,
-      password      => $monitor_password,
-      administrator => true,
-      require       => Class['::rabbitmq'],
-    }
+    if debian::codename::ge('bullseye') {
+        rabbitmq::plugin { 'rabbitmq_prometheus': }
+    } else {
+        rabbitmq::user{"${monitor_user}-rabbituser":
+            username      => $monitor_user,
+            password      => $monitor_password,
+            administrator => true,
+            require       => Class['::rabbitmq'],
+        }
 
-    class { '::profile::prometheus::rabbitmq_exporter':
-        rabbit_monitor_username => $monitor_user,
-        rabbit_monitor_password => $monitor_password,
+        class { '::profile::prometheus::rabbitmq_exporter':
+            rabbit_monitor_username => $monitor_user,
+            rabbit_monitor_password => $monitor_password,
+        }
+        contain '::profile::prometheus::rabbitmq_exporter'
     }
-    contain '::profile::prometheus::rabbitmq_exporter'
 
     ferm::rule{'rabbit_for_designate':
         ensure => 'present',
