@@ -4,7 +4,13 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::base::firewall
     include profile::openstack::codfw1dev::observerenv
     include profile::openstack::codfw1dev::rabbitmq
-    include profile::openstack::codfw1dev::keystone::apache
+
+    # Don't include apache on Bullseye for now; keystone and mod_wsgi don't get along
+    # AGB 2022-01-28
+    if debian::codename::le('buster') {
+        include profile::openstack::codfw1dev::keystone::apache
+    }
+
     include profile::openstack::codfw1dev::keystone::service
     include profile::openstack::codfw1dev::keystone::fernet_keys
     include profile::openstack::codfw1dev::envscripts
