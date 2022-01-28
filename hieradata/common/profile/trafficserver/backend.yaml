@@ -160,6 +160,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://puppetboard.wikimedia.org
       replacement: https://puppetboard.discovery.wmnet
     - type: map
+      target: http://puppetboard-idptest.wikimedia.org
+      replacement: https://puppetboard.discovery.wmnet
+    - type: map
       target: http://query-preview.wikidata.org/bigdata
       replacement: https://wdqs1009.eqiad.wmnet/bigdata
     - type: map

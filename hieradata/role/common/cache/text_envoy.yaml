@@ -108,6 +108,8 @@ cache::alternate_domains:
     caching: 'normal'
   puppetboard.wikimedia.org:
     caching: 'pass'
+  puppetboard-idptest.wikimedia.org:
+    caching: 'pass'
   query.wikidata.org:
     caching: 'normal'
   racktables.wikimedia.org:
