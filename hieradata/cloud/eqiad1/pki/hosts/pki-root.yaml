@@ -2,6 +2,10 @@ profile::pki::root_ca::intermediates:
   - WMF_test_intermediate_ca
   - WMF_test2_intermediate_ca
   - deployment-prep.eqiad1.wikimedia.cloud
+  - debmonitor
+  - discovery
+  - kafka
+  - cloud_wmnet_ca
 profile::pki::root_ca::common_name: 'WMF_TEST_CA'
 # This is the vhost used for the ocsp/crl responder
 profile::pki::root_ca::vhost: 'pki-intermediate.pki.eqiad1.wikimedia.cloud'
