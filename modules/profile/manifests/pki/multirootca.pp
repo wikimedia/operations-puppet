@@ -109,7 +109,10 @@ class profile::pki::multirootca (
         $intermediate    = $value[0]
         $config          = $value[1]
         $safe_title      = $intermediate.regsubst('\W', '_', 'G')
-        $profiles        = pick($config['profiles'], $default_profiles)
+        $profiles        = 'profiles' in $config ? {
+            true    => $config['profiles'] + $default_profiles,
+            default => $default_profiles,
+        }
         $auth_keys       = pick($config['auth_keys'], $default_auth_keys)
         $nets            = pick($config['nets'], $default_nets)
         $_default_usages = pick($config['default_usages'], $default_usages)

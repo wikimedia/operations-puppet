@@ -14,13 +14,6 @@ profile::pki::multirootca::intermediates:
       - 'key encipherment'
       - 'server auth'
     profiles:
-      # ocsp and server is from profile::pki::multirootca::default_profiles.
-      ocsp:
-        usages:
-          - 'digital signature'
-          - 'ocsp signing'
-        expiry: '43800h'
-      server: {}
       k8s_staging:
         # Short expiry for staging to regularly test cert refresh
         expiry: '24h'
