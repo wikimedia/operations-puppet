@@ -1132,7 +1132,7 @@ node /^(doh[123456]00[12])\.wikimedia\.org$/ {
 }
 
 # durum for Wikidough (T289536)
-node /^durum[12345]00[12]\.(eqiad|codfw|esams|ulsfo|eqsin)\.wmnet$/ {
+node /^durum[123456]00[12]\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs)\.wmnet$/ {
     role(durum)
 }
 
