@@ -17,6 +17,10 @@ set -e
 # read the value from adduser.conf again
 LAST_SYSTEM_UID=999
 
+# UIDs >= 50000 are currently either Toolforge tools (< 60000, should never be used in production)
+# or system users as assigned by Debian (https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes)
+LAST_USER_UID=49999
+
 ARCHIVE_DIR='/var/userarchive'
 EXCLUDE=("nobody" \
          "l10nupdate" \
@@ -62,19 +66,17 @@ do
         continue
     fi
 
-    if [[ "$uid" -gt "$LAST_SYSTEM_UID" ]]; then
+    if [[ "$uid" -gt "$LAST_SYSTEM_UID" && "$uid" -lt "$LAST_USER_UID" ]]; then
         if [[ `/usr/bin/id $username` != *","* ]]; then
-            if [ "${1}" == "dryrun" ]
-                then
-                    exit 1
+            if [ "${1}" == "dryrun" ]; then
+                exit 1
             fi
 
-        log "${0} removing user/id: ${username}/${uid}"
-        if [ -f /etc/sudoers.d/$username ]; then
-            mv /etc/sudoers.d/$username /home/$username
-        fi
-        /usr/sbin/deluser --remove-home --backup-to=$ARCHIVE_DIR $username &> /dev/null
-
+            log "${0} removing user/id: ${username}/${uid}"
+            if [ -f /etc/sudoers.d/$username ]; then
+                mv /etc/sudoers.d/$username /home/$username
+            fi
+            /usr/sbin/deluser --remove-home --backup-to=$ARCHIVE_DIR $username &> /dev/null
         fi
     fi
 done

@@ -38,6 +38,10 @@ class DataTest(unittest.TestCase):
     system_uid_min = 900
     system_uid_max = 950
 
+    # This should never happen (as user IDs are originally assigned on LDAP account creation),
+    # but let's enforce this here just in case
+    user_uid_max = 49999
+
     @classmethod
     def setUpClass(cls):
         with open(os.path.join(os.path.dirname(__file__), 'data.yaml')) as f:
@@ -136,11 +140,14 @@ class DataTest(unittest.TestCase):
         users = ['%s (uid: %s)' % (user, config.get('uid'))
                  for user, config in self.admins['users'].items()
                  if not config.get('system')
-                 and self.system_gid_min <= config.get('uid') <= self.system_gid_max]
+                 and (
+                    self.system_gid_min <= config.get('uid') <= self.system_gid_max
+                    or config.get('uid') > self.user_uid_max
+                 )]
         self.assertEqual(
             [], users,
-            'Standard user UIDs must not be in system groups range [%s-%s]: %r' % (
-                self.system_uid_min, self.system_uid_max, users))
+            'Standard user UIDs must not be in system groups range [%s-%s, >%s]: %r' % (
+                self.system_uid_min, self.system_uid_max, self.user_uid_max, users))
 
     def test_absent_members(self):
         """Ensure absent users in the absent group and have ensure => absent"""
