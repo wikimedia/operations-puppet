@@ -42,4 +42,16 @@ class openstack::keystone::service::victoria::buster(
     package { $packages:
         ensure  => 'present',
     }
+
+    # Keystone is managed via apache/wsgi on buster so we don't
+    #  want the systemd unit running.
+    exec { 'mask_keystone_service':
+        command => '/bin/systemctl mask keystone.service',
+        creates => '/etc/systemd/system/keystone.service',
+        require => Package['keystone'];
+    }
+    service {'keystone':
+        ensure  => 'stopped',
+        require => Package['keystone'];
+    }
 }

@@ -16,4 +16,15 @@ class openstack::keystone::service::victoria::bullseye(
     package { $packages:
         ensure  => 'present',
     }
+
+    # Temporary (?) time-out for apache + mod_wsgi which don't work with Keystone
+    # on bullseye
+    service {'keystone':
+        ensure  => 'running',
+        require => Package['keystone'];
+    }
+    service {'apache2':
+        ensure  => 'stopped',
+        require => Package['apache2'];
+    }
 }

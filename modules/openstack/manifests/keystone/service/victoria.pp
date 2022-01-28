@@ -119,17 +119,4 @@ class openstack::keystone::service::victoria(
             mode   => '0644',
             notify => Service[$wsgi_server],
     }
-
-
-    # Keystone is managed via apache/wsgi so we don't
-    #  want the systemd unit running.
-    exec { 'mask_keystone_service':
-        command => '/bin/systemctl mask keystone.service',
-        creates => '/etc/systemd/system/keystone.service',
-        require => Package['keystone'];
-    }
-    service {'keystone':
-        ensure  => 'stopped',
-        require => Package['keystone'];
-    }
 }
