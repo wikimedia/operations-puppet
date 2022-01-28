@@ -30,6 +30,16 @@ class zuul::merger (
 
     require ::zuul
 
+    git::userconfig { '.gitconfig for Zuul merger':
+        homedir  => '/var/lib/zuul',
+        settings => {
+            'core' => {
+                # No need for reflog which is the default for bare repos
+                'logAllRefUpdates' => 'false',
+            }
+        }
+    }
+
     exec { 'zuul merger recursive mkdir of git_dir':
         command => "/bin/mkdir -p ${git_dir}",
         creates => $git_dir,
