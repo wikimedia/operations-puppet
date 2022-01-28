@@ -40,6 +40,8 @@ class openstack::keystone::service(
     Array[String] $labs_networks,
     Boolean $enforce_policy_scope,
     Boolean $enforce_new_policy_defaults,
+    Stdlib::Port $public_bind_port,
+    Stdlib::Port $admin_bind_port,
 ) {
     class { "openstack::keystone::service::${version}":
         controller_hosts            => $controller_hosts,
@@ -77,6 +79,8 @@ class openstack::keystone::service(
         labs_networks               => $labs_networks,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
+        public_bind_port            => $public_bind_port,
+        admin_bind_port             => $admin_bind_port,
     }
 
     group { 'keystone':

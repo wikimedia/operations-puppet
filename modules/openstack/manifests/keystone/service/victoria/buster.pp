@@ -1,4 +1,6 @@
 class openstack::keystone::service::victoria::buster(
+    Stdlib::Port $public_bind_port,
+    Stdlib::Port $admin_bind_port,
 ) {
     require ::openstack::serverpackages::victoria::buster
 

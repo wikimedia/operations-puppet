@@ -32,6 +32,8 @@ class openstack::keystone::service::ussuri(
     String $bastion_project_id,
     Array[String] $prod_networks,
     Array[String] $labs_networks,
+    Stdlib::Port $public_bind_port,
+    Stdlib::Port $admin_bind_port,
 ) {
     class { "openstack::keystone::service::ussuri::${::lsbdistcodename}": }
 

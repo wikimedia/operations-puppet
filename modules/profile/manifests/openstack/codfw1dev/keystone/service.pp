@@ -32,6 +32,8 @@ class profile::openstack::codfw1dev::keystone::service(
     String $bastion_project_id = lookup('profile::openstack::codfw1dev::keystone::bastion_project_id'),
     Boolean $enforce_policy_scope = lookup('profile::openstack::codfw1dev::keystone::enforce_policy_scope'),
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults'),
+    Stdlib::Port $admin_bind_port = lookup('profile::openstack::codfw1dev::keystone::admin_bind_port'),
+    Stdlib::Port $public_bind_port = lookup('profile::openstack::codfw1dev::keystone::public_bind_port'),
     ) {
 
     class {'::profile::openstack::base::keystone::service':
@@ -65,6 +67,8 @@ class profile::openstack::codfw1dev::keystone::service(
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
         keystone_fqdn               => $keystone_fqdn,
+        public_bind_port            => $public_bind_port,
+        admin_bind_port             => $admin_bind_port,
     }
     contain '::profile::openstack::base::keystone::service'
 

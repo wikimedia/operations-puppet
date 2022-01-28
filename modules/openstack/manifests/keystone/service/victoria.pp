@@ -34,8 +34,13 @@ class openstack::keystone::service::victoria(
     Array[String] $labs_networks,
     Boolean $enforce_policy_scope,
     Boolean $enforce_new_policy_defaults,
+    Stdlib::Port $public_bind_port,
+    Stdlib::Port $admin_bind_port,
 ) {
-    class { "openstack::keystone::service::victoria::${::lsbdistcodename}": }
+    class { "openstack::keystone::service::victoria::${::lsbdistcodename}":
+        public_bind_port => $public_bind_port,
+        admin_bind_port  => $admin_bind_port,
+    }
 
     # Fernet key count.  We rotate once per day on each host.  That means that
     #  for our keys to live a week, we need at least 7*(number of hosts) keys

@@ -34,6 +34,8 @@ class profile::openstack::eqiad1::keystone::service(
     String $bastion_project_id = lookup('profile::openstack::eqiad1::keystone::bastion_project_id'),
     Boolean $enforce_policy_scope = lookup('profile::openstack::eqiad1::keystone::enforce_policy_scope'),
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::eqiad1::keystone::enforce_new_policy_defaults'),
+    Stdlib::Port $admin_bind_port = lookup('profile::openstack::eqiad1::keystone::admin_bind_port'),
+    Stdlib::Port $public_bind_port = lookup('profile::openstack::eqiad1::keystone::public_bind_port'),
     ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -68,6 +70,8 @@ class profile::openstack::eqiad1::keystone::service(
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
         keystone_fqdn               => $keystone_fqdn,
+        public_bind_port            => $public_bind_port,
+        admin_bind_port             => $admin_bind_port,
     }
     contain '::profile::openstack::base::keystone::service'
 
