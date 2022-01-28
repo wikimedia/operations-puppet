@@ -33,9 +33,22 @@ class zuul::merger (
     git::userconfig { '.gitconfig for Zuul merger':
         homedir  => '/var/lib/zuul',
         settings => {
-            'core' => {
+            'core'  => {
                 # No need for reflog which is the default for bare repos
                 'logAllRefUpdates' => 'false',
+            },
+            'fetch' => {
+                # Keep us in sync with Gerrit heads and tags
+                #
+                # The local branches accumulate and slow down zuul-merger when
+                # it resets a repository. It recreates origin branches based on
+                # local one which is kind of slow.  Since we don't care about
+                # obsolete branches, get them pruned. (T220606).
+                'prune'     => 'true',
+                # Some repos might well delete tags and some definitely modify
+                # them. Although we force fetch (T252310), it is good to keep
+                # the state clean.
+                'pruneTags' => 'true',
             }
         }
     }
