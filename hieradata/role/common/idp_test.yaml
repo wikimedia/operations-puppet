@@ -12,48 +12,9 @@ profile::idp::cors_allow_credentials: true
 profile::idp::cors_allowed_origins:
   - 'https://alerts.wikimedia.org'
 profile::idp::services:
-  icinga:
-    id: 1
-    service_id: 'https://(cas-)?icinga.wikimedia.org(/.*)?'
-  debmonitor:
-    id: 2
-    service_id: '^https://debmonitor.wikimedia.org(/.*)?'
-    required_groups:
-      - nda
-      - wmf
   puppetboard:
-    id: 3
+    id: 1
     service_id: 'https://puppetboard-idptest.wikimedia.org(/.*)?'
-    required_groups:
-      - ops
-      - sre-admins
-  graphite:
-    id: 4
-    service_id: 'https://(cas-)?graphite.wikimedia.org(/.*)?'
-    required_groups:
-      - ops
-      - nda
-      - wmf
-  tendril:
-    id: 5
-    service_id: '^https://tendril-legacy.wikimedia.org(/.*)?'
-    required_groups:
-      - ops
-      - nda
-      - wmf
-  logstash:
-    id: 6
-    service_id: 'https://(cas-)?logstash.wikimedia.org(/.*)?'
-    required_groups:
-      - ops
-      - nda
-      - wmf
-  people:
-    id: 7
-    service_id: 'https://people.wikimedia.org(/.*)?'
-  librenms:
-    id: 8
-    service_id: 'https://librenms.wikimedia.org(/.*)?'
     required_groups:
       - ops
       - sre-admins
