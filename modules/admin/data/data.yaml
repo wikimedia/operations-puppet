@@ -354,7 +354,8 @@ groups:
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
-              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan]
+              mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
+              aniketars]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5005,6 +5006,17 @@ users:
     realname: Madalina Ana
     email: mana@wikimedia.org
     ssh_keys: []
+  aniketars:
+    ensure: present
+    gid: 500
+    uid: 37173
+    realname: Aniket Bharti
+    email: aniket.code.ars@gmail.com
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGk3CgXqD8AxkboJ22zxWQ1CYDhaRuSgiV2A32G+Z9SL aniket@ars
+    krb: present
+    expiry_date: 2022-06-30
+    expiry_contact: miriam@wikimedia.org
 
 ldap_only_users:
   abartov:
