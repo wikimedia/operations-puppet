@@ -31,6 +31,7 @@ class profile::openstack::base::pdns::auth::db(
 
     # this override/split should probably go elsewhere, but hey
     $mysql_client_pkg = case $::lsbdistcodename {
+        'bullseye': { 'default-mysql-client' }
         'buster': { 'default-mysql-client' }
         'stretch': { 'mysql-client' }
         default: { fail("Unsupported distro ${::lsbdistcodename}") }
