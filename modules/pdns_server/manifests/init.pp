@@ -25,10 +25,14 @@ class pdns_server(
         ensure => 'present',
     }
 
+    # PowerDNS version in bullseye reads the config file as the pdns user,
+    # while the version in buster reads it as root.
+    $group = debian::codename::ge('bullseye').bool2str('pdns', 'root')
+
     file { '/etc/powerdns/pdns.conf':
         ensure  => 'present',
         owner   => 'root',
-        group   => 'root',
+        group   => $group,
         mode    => '0440',
         content => template('pdns_server/pdns.conf.erb'),
         require => Package['pdns-server'],

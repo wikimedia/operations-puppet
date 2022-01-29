@@ -80,6 +80,13 @@ class dnsrecursor(
         }
     }
 
+    # the location of the socket-dir was changed in 4.3.0
+    if debian::codename::ge('bullseye') or (debian::codename::eq('buster') and $install_from_component) {
+        $socket_dir = '/var/run/pdns-recursor/'
+    } else {
+        $socket_dir = '/var/run/'
+    }
+
     file { '/etc/powerdns/recursor.conf':
         ensure  => 'present',
         require => Package['pdns-recursor'],
