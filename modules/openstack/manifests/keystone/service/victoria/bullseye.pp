@@ -20,15 +20,22 @@ class openstack::keystone::service::victoria::bullseye(
 
     # Temporary (?) time-out for apache + mod_wsgi which don't work with Keystone
     # on bullseye
-    file { '/etc/default/keystone':
-        owner   => 'keystone',
-        group   => 'keystone',
-        mode    => '0555',
-        content => template('openstack/victoria/keystone/bullseye/default.erb'),
-        notify  => Service['keystone'],
+    file { '/etc/init.d/keystone':
+        mode    => '0755',
+        content => template('openstack/victoria/keystone/keystone-public-service.erb'),
+        require => Package['keystone'];
+    }
+    file { '/etc/init.d/keystone-admin':
+        mode    => '0755',
+        content => template('openstack/victoria/keystone/keystone-admin-service.erb'),
+        require => Package['keystone'];
     }
     service {'keystone':
         ensure  => 'running',
-        require => Package['keystone'];
+        require => File['/etc/init.d/keystone'];
+    }
+    service {'keystone-admin':
+        ensure  => 'running',
+        require => File['/etc/init.d/keystone-admin'];
     }
 }
