@@ -65,17 +65,12 @@ class profile::openstack::base::galera::node(
                           ) proto tcp dport (3306) ACCEPT;",
     }
 
-    # monitoring::service doesn't take a bool
-    if $enabled {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
-    nrpe::monitor_service { 'check_galera_mysqld_process':
-        ensure        => $ensure,
+    $galera_proc = debian::codename::ge('bullseye').bool2str('mariadbd', 'mysqld')
+
+    nrpe::monitor_service { "check_galera_${galera_proc}_process":
+        ensure        => $enabled.bool2str('present', 'absent'),
         description   => 'mysql (galera) process',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
+        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C ${galera_proc}",
         contact_group => 'wmcs-bots',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
     }
