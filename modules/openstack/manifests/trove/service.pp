@@ -49,17 +49,17 @@ class openstack::trove::service(
     }
 
     service { 'trove-api':
-        ensure  => true,
+        ensure  => running,
         require => Package['trove-api'],
     }
 
     service { 'trove-taskmanager':
-        ensure  => true,
+        ensure  => running,
         require => Package['trove-taskmanager'],
     }
 
     service { 'trove-conductor':
-        ensure  => true,
+        ensure  => running,
         require => Package['trove-conductor'],
     }
 }

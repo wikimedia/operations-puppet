@@ -23,6 +23,7 @@ class openstack::barbican::service(
     }
 
     service { 'barbican-api':
+        ensure  => running,
         require => Package['barbican-api'],
     }
 }
