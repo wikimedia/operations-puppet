@@ -18,8 +18,12 @@ class profile::openstack::base::envscripts(
         os_password            => $ldap_user_pass,
         os_project             => 'admin',
         os_db_password         => $nova_db_pass,
-        scriptpath             => '/usr/local/bin/novaenv.sh',
+        scriptpath             => '/root/novaenv.sh',
         yaml_mode              => '0440',
+    }
+
+    file { '/usr/local/bin/novaenv.sh':
+        ensure => absent,
     }
 
     openstack::util::envscript { 'wmflabsorg-domainadminenv':
