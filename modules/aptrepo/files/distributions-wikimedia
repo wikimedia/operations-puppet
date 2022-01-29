@@ -200,6 +200,7 @@ Update:
 # sorted list, leading whitespace matters!
  elastic65
  elastic68
+ hp-mcp-bullseye
  hwraid-stretch
  routinator
  thirdparty/ceph-octopus-bullseye

@@ -39,6 +39,17 @@ Architectures: amd64
 VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
 
+Name: hp-mcp-bullseye
+Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Components: non-free>thirdparty/hwraid
+UDebComponents:
+GetInRelease: no
+Suite: bullseye/current
+Architectures: amd64
+# Multiple keys in use: https://downloads.linux.hpe.com/SDR/keys.html
+VerifyRelease: FADD8D64B1275EA3|C208ADDE26C2B797
+ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
+
 Name: elastic55
 Method: https://artifacts.elastic.co/packages/5.x/apt
 Components: main>thirdparty/elastic55
