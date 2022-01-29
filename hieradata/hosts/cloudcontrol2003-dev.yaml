@@ -21,3 +21,7 @@ profile::backup::enable: true
 profile::wmcs::backy2::backup_time: '*-*-* 9:00:00'
 
 profile::wmcs::backy2::backup_glance_images::enabled: true
+
+# Temporary override; once everything is on bullseye this can be
+#  set profile-wide
+profile::openstack::codfw1dev::keystone::wsgi_server: 'keystone'

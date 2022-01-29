@@ -32,3 +32,7 @@ profile::openstack::codfw1dev::cinder_backup_volumes:
     PURGE_AFTER: 7
   trove:
     volumes: [ALL]
+
+# Temporary override; once everything is on bullseye this can be
+#  set profile-wide
+profile::openstack::codfw1dev::keystone::wsgi_server: 'keystone'
