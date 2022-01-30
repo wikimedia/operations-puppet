@@ -15,14 +15,6 @@ describe 'openstack::puppet::master::encapi' do
           'mysql_db'              => 'testdb',
           'mysql_username'        => 'dummyuser',
           'mysql_password'        => 'dummypass',
-          'puppetmasters'         => {
-            'dummy.puppetmaster' => [
-              {
-                'worker'     => 'dummy.worker',
-                'loadfactor' => 10,
-              }
-            ]
-          },
           'labweb_hosts'          => ['labweb.sample.localhost'],
           'openstack_controllers' => ['controller.sample.localhost'],
           'designate_hosts'       => ['designate.sample.localhost'],

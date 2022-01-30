@@ -1,7 +1,6 @@
 class profile::openstack::base::puppetmaster::common(
     Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::puppetmaster::common::openstack_controllers'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::puppetmaster::common::designate_hosts'),
-    $puppetmasters = lookup('profile::openstack::base::puppetmaster::common::puppetmasters'),
     $encapi_db_host = lookup('profile::openstack::base::puppetmaster::common::encapi_db_host'),
     $encapi_db_name = lookup('profile::openstack::base::puppetmaster::common::encapi_db_name'),
     $encapi_db_user = lookup('profile::openstack::base::puppetmaster::common::encapi_db_user'),
@@ -10,16 +9,12 @@ class profile::openstack::base::puppetmaster::common(
 ) {
     include profile::openstack::base::puppetmaster::enc_client
 
-    # array of puppetmasters
-    $all_puppetmasters = inline_template('<%= @puppetmasters.values.flatten(1).map { |p| p[\'worker\'] }.sort.join(\' \')%>')
-
     $labs_networks = join($network::constants::labs_networks, ' ')
     class { '::openstack::puppet::master::encapi':
         mysql_host            => $encapi_db_host,
         mysql_db              => $encapi_db_name,
         mysql_username        => $encapi_db_user,
         mysql_password        => $encapi_db_pass,
-        puppetmasters         => $puppetmasters,
         labweb_hosts          => $labweb_hosts,
         openstack_controllers => $openstack_controllers,
         designate_hosts       => $designate_hosts,
@@ -36,7 +31,6 @@ class profile::openstack::base::puppetmaster::common(
     ferm::rule{'puppetmaster':
         ensure => 'present',
         rule   => "saddr (${labs_networks}
-                          @resolve((${all_puppetmasters}))
                           @resolve((${join($labweb_hosts,' ')}))
                           @resolve((${join($labweb_hosts,' ')}), AAAA))
                           proto tcp dport 8141 ACCEPT;",
@@ -58,7 +52,6 @@ class profile::openstack::base::puppetmaster::common(
         rule   => "saddr (${labs_networks}
                           @resolve((${join($labweb_hosts,' ')}))
                           @resolve((${join($labweb_hosts,' ')}), AAAA)
-                          @resolve((${all_puppetmasters})) @resolve((${all_puppetmasters}), AAAA))
                           proto tcp dport 8100 ACCEPT;",
     }
 }

@@ -3,7 +3,6 @@ class openstack::puppet::master::encapi(
     String $mysql_db,
     String $mysql_username,
     String $mysql_password,
-    Hash[Stdlib::Fqdn, Puppetmaster::Backends] $puppetmasters,
     Array[Stdlib::Fqdn] $labweb_hosts,
     Array[Stdlib::Fqdn] $openstack_controllers,
     Array[Stdlib::Fqdn] $designate_hosts,
