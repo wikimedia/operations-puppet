@@ -32,6 +32,21 @@ puppet_compiler::uploader::realms:
       Z2wTK1Jvcet458vmj3SA2jFxessEdPsIp6vK/x7onc5TJcjLPnnXvIrcrKtyV4nY
       HDi/OSkn4TkA9IpiqeUaFocCAwEAAQ==
       -----END PUBLIC KEY-----
+    cloudinfra-internal-puppetmaster-02: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAvLbVSxOsgcn9uIIEqwHg
+      /QgwoEhH1Y2CwtNftV9014L06W2zsyb+xJt0rRKquPQoIM+pu+VAjcNogUM4nV/9
+      EKRidrZWU/UHeRPwlpBisoWnjOP+1b2ZhTXkM13vP+lp+WB6jHzRpvAl3DCWNj7M
+      5MxWABL4Xc4jRAVy2eaqtQd8H3FoiRjJB7l1Qclpe2GeAjd8LLvxGQvWdGa7+OEf
+      QXUfMSYGYPcn7wqMMUzTgGH095v+50U6wRUpQoF4SAiX9gvHN9nlDLnE+wXPYmLw
+      yuLLaTaU4XCM+bonCcl8eEc1XQ7QGIGAOvVgTR/KLd543JpX7eoG21xuGMkWauoC
+      Dq94IT/VQvHCntOh8lMoYtPifGFc7BmYNE6TWHVYhcBb2brmBdhg3Um7JJhtYV57
+      aRjTUIDEOg0I5a3m8l6vN+ORrQL0miiX0MohUW69Q+nUm9X3DUbBucNyJI6QJRMU
+      xlMdBMbD/U1QAMrOaPdxsndiB+y2ibUZH/fBCiOhAffJHdWXuZxtjsTrF7Afh17A
+      YXST8nkxg4tDn+dKAsilJDqLCOqyh+ak7/QLAnvJJAsYaTY5QVE5hrW8zAuoTFDp
+      iR0ttBXSjneJNzTIkR3jI1qDxq6aFeigemEpwWC5aosrO24ZbbOWDfVDnBCWcYGb
+      6sAol1F1shyssGN5zg7EnLcCAwEAAQ==
+      -----END PUBLIC KEY-----
   deployment-prep:
     deployment-puppetmaster04: |
       -----BEGIN PUBLIC KEY-----
