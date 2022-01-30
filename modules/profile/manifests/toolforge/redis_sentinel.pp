@@ -124,6 +124,7 @@ class profile::toolforge::redis_sentinel (
         mode   => '0550',
     }
 
+    $interface = $::facts['networking']['primary']
     $keepalived_peers = delete($redis_hosts, $::fqdn)
     class { 'keepalived':
         peers     => [],        # overriden by config template

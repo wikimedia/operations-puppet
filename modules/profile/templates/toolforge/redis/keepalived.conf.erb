@@ -15,7 +15,7 @@ vrrp_script redis_failover_track {
 
 vrrp_instance VRRP1 {
   state BACKUP
-  interface eth0
+  interface <%= @interface %>
   virtual_router_id 30
   priority <%= scope.call_function('fqdn_rand', [100]) %>
   advert_int 1
