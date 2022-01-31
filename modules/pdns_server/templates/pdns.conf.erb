@@ -19,7 +19,11 @@ query-local-address=<% if has_variable?("dns_auth_query_address") then %><%= @dn
 # dig SOA wmflabs.org
 # dig SOA eqiad.wmflabs
 # Note: Make this per deployment
+<% if ['buster', 'stretch'].include? @facts['os']['distro']['codename'] -%>
 default-soa-name=ns0.openstack.eqiad1.wikimediacloud.org
+<% else -%>
+default-soa-content=ns0.openstack.eqiad1.wikimediacloud.org
+<% end -%>
 
 receiver-threads=8
 distributor-threads=4
