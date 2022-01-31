@@ -12,7 +12,6 @@ class openstack::designate::service::victoria
         'designate-api',
         'designate-doc',
         'designate-central',
-        'python-git',
         'python3-git',
     ]
 
