@@ -337,6 +337,12 @@ host etherpad1002 {
     fixed-address etherpad1002.eqiad.wmnet;
 }
 
+host etherpad1003 {
+    hardware ethernet aa:00:00:f6:a7:f2;
+    fixed-address etherpad1003.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host eventlog1003 {
     hardware ethernet aa:00:00:d7:bf:73;
     fixed-address eventlog1003.eqiad.wmnet;
