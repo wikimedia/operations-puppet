@@ -6,7 +6,11 @@ class role::wmcs::openstack::eqiad1::services {
     include ::profile::openstack::eqiad1::pdns::auth::service
     include ::profile::openstack::eqiad1::pdns::recursor::service
     include ::profile::openstack::eqiad1::designate::service
-    include ::profile::prometheus::pdns_exporter
-    include ::profile::prometheus::pdns_rec_exporter
+
+    if debian::codename::le('buster') {
+        include ::profile::prometheus::pdns_exporter
+        include ::profile::prometheus::pdns_rec_exporter
+    }
+
     include ::profile::ldap::client::labs
 }
