@@ -134,7 +134,7 @@
     - cmd: $SUDO webservice stop --backend gridengine || true
       retcode: 0
     # run the webapp
-    - cmd: $SUDO webservice --backend gridengine --release stretch uwsgi-python start | grep "Starting webservice"
+    - cmd: $SUDO webservice --backend gridengine --release <%= @facts['os']['distro']['codename'] -%> uwsgi-python start | grep "Starting webservice"
       retcode: 0
       stderr: ""
     # verify: wait for the grid to schedule & run the webservice.
