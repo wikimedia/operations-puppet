@@ -243,7 +243,7 @@ override	careers.wikipedia.org/	https://wikimediafoundation.org/about/jobs/
 override	jobs.wikimedia.org/	https://wikimediafoundation.org/about/jobs/
 override	jobs.wikipedia.org/	https://wikimediafoundation.org/about/jobs/
 
-# w.wiki - upcoming URL shortener
+# w.wiki - our URL shortener
 funnel	*w.wiki	https://meta.wikimedia.org/wiki/Special:UrlShortener
 
 # T264367
