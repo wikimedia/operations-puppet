@@ -70,15 +70,15 @@ class logstash (
             ],
             default          => fail("java_package: ${java_package} not yet supported"),
         }
+
+        # JVM command line flags to be applied to logstash.service only
+        # TODO: move to java_version
+        $service_java_opts = $java_package ? {
+            'openjdk-11-jdk' => '-Xlog:safepoint',
+            default          => '',
+        }
     } else {
         $gc_log_flags = []
-    }
-
-    # JVM command line flags to be applied to logstash.service only
-    # TODO: move to java_version
-    $service_java_opts = $java_package ? {
-        'openjdk-11-jdk' => '-Xlog:safepoint',
-        default          => '',
     }
 
     if $logstash_version == 5 {
