@@ -7,11 +7,8 @@ daemon_args = [
   "--logtostderr=#{@logtostderr}",
   "--v=#{@v_log_level}",
   "--address=#{@listen_address}",
+  "--hostname-override=#{@fqdn}",
 ]
-
-if @fqdn_as_hostname
-  daemon_args.push("--hostname-override=#{@fqdn}")
-end
 
 if @listen_port
   daemon_args.push("--port=#{@listen_port}")

@@ -7,6 +7,7 @@ class k8s::proxy(
     Integer $v_log_level = 0,
     Boolean $packages_from_future = false,
     Optional[String] $metrics_bind_address = undef,
+    Optional[K8s::ClusterCIDR] $cluster_cidr = undef,
 ) {
     if $packages_from_future {
         apt::package_from_component { 'proxy-kubernetes-future':

@@ -20,6 +20,7 @@ class profile::kubernetes::node(
     Optional[String] $kubeproxy_metrics_bind_address = lookup('profile::kubernetes::node::kubeproxy_metrics_bind_address', {default_value => undef}),
     Boolean $kubelet_ipv6 = lookup('profile::kubernetes::node::kubelet_ipv6', {default_value => false}),
     Optional[String] $docker_kubernetes_user_password = lookup('profile::kubernetes::node::docker_kubernetes_user_password', {default_value => undef}),
+    Optional[K8s::ClusterCIDR] $cluster_cidr = lookup('profile::kubernetes::cluster_cidr', {default_value => undef}),
 ) {
     require ::profile::rsyslog::kubernetes
 
@@ -88,6 +89,7 @@ class profile::kubernetes::node(
         metrics_bind_address => $kubeproxy_metrics_bind_address,
         kubeconfig           => $kubeproxy_config,
         packages_from_future => $packages_from_future,
+        cluster_cidr         => $cluster_cidr,
     }
 
     # Set the host as a router for IPv6 in order to allow pods to have an IPv6
