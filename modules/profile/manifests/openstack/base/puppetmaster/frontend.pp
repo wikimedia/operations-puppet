@@ -30,7 +30,6 @@ class profile::openstack::base::puppetmaster::frontend(
     class {'profile::openstack::base::puppetmaster::common':
         openstack_controllers => $openstack_controllers,
         designate_hosts       => $designate_hosts,
-        puppetmasters         => $puppetmasters,
         encapi_db_host        => $encapi_db_host,
         encapi_db_name        => $encapi_db_name,
         encapi_db_user        => $encapi_db_user,
