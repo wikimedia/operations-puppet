@@ -260,6 +260,9 @@ override	wikimedia.org/stopsurveillance	https://policy.wikimedia.org/stopsurveil
 # T239141
 funnel	fixcopyright.wikimedia.org	https://policy.wikimedia.org/policy-landing/copyright/
 
+# T300398
+funnel  unseen.wikimedia.org      https://wikimediafoundation.org/participate/unseen/
+
 # rewrite old-bugzilla to the static version
 rewrite	old-bugzilla.wikimedia.org	https://static-bugzilla.wikimedia.org
 rewrite	bug-attachment.wikimedia.org	https://static-bugzilla.wikimedia.org
