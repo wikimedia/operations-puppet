@@ -113,7 +113,7 @@
 
 - name: VM (no floating IP) can contact recursor DNS server
   tests:
-    - cmd: $SSH $NO_FLOATING_VM "dig +short www.basket.com @${DNS_RECURSOR_IP} | wc -l"
+    - cmd: $SSH $NO_FLOATING_VM "dig +short basket.com @${DNS_RECURSOR_IP} | wc -l"
       stdout: "1"
       retcode: 0
       stderr: ""
@@ -127,7 +127,7 @@
 
 - name: VM (using floating IP) can contact recursor DNS server
   tests:
-    - cmd: $SSH $FLOATING_VM_FQDN "dig +short www.basket.com @${DNS_RECURSOR_IP} | wc -l"
+    - cmd: $SSH $FLOATING_VM_FQDN "dig +short basket.com @${DNS_RECURSOR_IP} | wc -l"
       # this a somewhat random IPv4 on the internet, so only check that we get "something"
       stdout: "1"
       retcode: 0
