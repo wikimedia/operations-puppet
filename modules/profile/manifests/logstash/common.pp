@@ -39,6 +39,7 @@ class profile::logstash::common (
     java_package        => 'openjdk-11-jdk',
     logstash_package    => 'logstash-oss',
     logstash_version    => 7,
+    gc_log              => false,
   }
 
   package { 'logstash-plugins':
