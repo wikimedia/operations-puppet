@@ -116,6 +116,10 @@ class profile::hadoop::spark2(
         $hive_enabled = false
     }
 
+    # Set Spark spark.sql.files.maxPartitionBytes to the dfs_block_size.
+    # https://phabricator.wikimedia.org/T300299
+    $sql_files_max_partition_bytes = $::profile::hadoop::common::dfs_block_size
+
     file { '/etc/spark2/conf/spark-defaults.conf':
         content => template('profile/hadoop/spark2-defaults.conf.erb'),
     }

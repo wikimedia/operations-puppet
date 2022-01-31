@@ -202,7 +202,7 @@ class profile::hadoop::common (
     $hadoop_default_config = {
         'hadoop_var_directory' => '/var/lib/hadoop',
         'java_home'            => '/usr/lib/jvm/java-8-openjdk-amd64/jre',
-
+        'dfs_block_size'       => 268435456, # 256M
     }
 
     # The final Hadoop configuration is obtained merging three hashes:
@@ -227,6 +227,7 @@ class profile::hadoop::common (
     $dfs_namenode_handler_count               = $hadoop_config['dfs_namenode_handler_count']
     $dfs_namenode_service_handler_count       = $hadoop_config['dfs_namenode_service_handler_count']
     $dfs_namenode_service_port                = $hadoop_config['dfs_namenode_service_port']
+    $dfs_block_size                           = $hadoop_config['dfs_block_size']
     $yarn_heapsize                            = $hadoop_config['yarn_heapsize']
     $yarn_nodemanager_opts                    = $hadoop_config['yarn_nodemanager_opts']
     $yarn_resourcemanager_opts                = $hadoop_config['yarn_resourcemanager_opts']
