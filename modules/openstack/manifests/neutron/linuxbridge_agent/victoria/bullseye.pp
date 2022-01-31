@@ -10,6 +10,11 @@ class openstack::neutron::linuxbridge_agent::victoria::bullseye(
         ensure => 'present',
     }
 
+    # Not installed by default, but still available on Bullseye
+    package { 'iptables':
+        ensure => 'present',
+    }
+
     alternatives::select { 'iptables':
         path => '/usr/sbin/iptables-legacy',
     }
