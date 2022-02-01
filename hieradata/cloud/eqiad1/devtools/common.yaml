@@ -236,7 +236,7 @@ profile::gitlab::enable_restore: false
 profile::contacts::role_contacts: ['ServiceOps SREs']
 
 # service IP for public https and ssh (T276148)
-# profile::gitlab::service_ip_v4: '127.0.0.1' TODO: floating IP needed
+profile::gitlab::service_ip_v4: '185.15.56.79'
 profile::gitlab::service_ip_v6: '::1'
 profile::gitlab::service_name: 'gitlab-test.wmcloud.org'
 
