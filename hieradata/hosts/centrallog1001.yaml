@@ -1,0 +1,1 @@
+profile::syslog::centralserver::log_deletion_grace_days: 15
