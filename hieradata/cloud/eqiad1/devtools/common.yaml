@@ -243,3 +243,5 @@ profile::gitlab::service_name: 'gitlab-test.wmcloud.org'
 # Content-Security-Policy
 profile::gitlab::csp_enabled: false
 profile::gitlab::csp_report_only: false
+
+profile::gitlab::monitoring_whitelist: ['127.0.0.1/32']
