@@ -2001,6 +2001,10 @@ node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
 }
+# new servers for task T294137
+node /ms-fe10(0[9]|1[0-2]).eqiad.wmnet/ {
+    role(insetup)
+}
 
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
 node /^ms-be1\d\d\d\.eqiad\.wmnet$/ {
