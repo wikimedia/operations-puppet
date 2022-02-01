@@ -49,6 +49,7 @@ class ores::web(
             need-plugins         => 'python3,stats_pusher_statsd',
             venv                 => $ores::base::venv_path,
             logformat            => '[pid: %(pid)] %(addr) (%(user)) {%(vars) vars in %(pktsize) bytes} [%(ctime)] %(method) %(uri) => generated %(rsize) bytes in %(msecs) msecs (%(proto) %(status)) %(headers) headers in %(hsize) bytes (%(switches) switches on core %(core)) user agent "%(uagent)"',
+            log-x-forwarded-for  => true,
             processes            => $web_workers,
             add-header           => [ 'Access-Control-Allow-Origin: *', "Server: ${::fqdn}", 'Access-Control-Allow-Headers: X-Wikimedia-Debug' ],
             max-requests         => 100,
