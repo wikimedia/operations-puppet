@@ -12,7 +12,6 @@
     WEBGENCODE_ROOT: ./www
     WEBGENCODE_VENV: ./www/python/venv
     WEBGENCODE_SRC_DIR: ./www/python/src
-    WEBGENCODE_URL_COMPONENT: app
     WEBLIGHTCODE_FULLPATH: /data/project/automated-toolforge-tests/public_html/app.py
     WEBLIGHTCODE_ROOT: ./public_html
     WEBLIGHTCODE_URL_COMPONENT: app.py
@@ -60,7 +59,7 @@
       retcode: 0
       stderr: ""
 
-- name: basic python webservice in the stretch weblight grid reading /etc/debian_version
+- name: stretch python weblight grid reading /etc/debian_version (ws type lighttpd)
   tests:
     - cmd: $SUDO webservice stop --backend gridengine || true
       retcode: 0
@@ -75,7 +74,7 @@
       retcode: 0
       stderr: ""
 
-- name: basic python webservice in the buster weblight grid reading /etc/debian_version
+- name: buster python weblight grid reading /etc/debian_version (ws type lighttpd)
   tests:
     - cmd: $SUDO webservice stop --backend gridengine || true
       retcode: 0
@@ -97,11 +96,27 @@
 #  * from a stretch bastion into the stretch grid
 - name: setup python webservice environment for the <%= @facts['os']['distro']['codename'] -%> webgen grid
   tests:
-    - cmd: $SUDO rm -frv ${WEBGENCODE_ROOT}
+    - cmd: $SUDO rm -frv ${WEBGENCODE_ROOT} /data/project/${TOOLNAME}/uwsgi.ini
     - cmd: $SUDO mkdir -p ${WEBGENCODE_SRC_DIR}
       retcode: 0
       stderr: ""
       stdout: ""
+    # create uwsgi.ini config file
+    - cmd: |
+           cat << EOF > /data/project/${TOOLNAME}/uwsgi.ini
+           [uwsgi]
+           plugin = python3
+           socket = /data/project/${TOOLNAME}/${TOOLNAME}.sock
+           chdir = /data/project/${TOOLNAME}/www/python/src
+           venv = /data/project/${TOOLNAME}/www/python/venv
+           module = app
+           callable = app
+           manage-script-name = true
+           mount = /=app:app
+           EOF
+      stdout: ""
+      retcode: 0
+      stderr: ""
     # create python venv
     - cmd: $SUDO bash -c -- 'python3 -m venv ${WEBGENCODE_VENV} ; source ${WEBGENCODE_VENV}/bin/activate ; pip install flask'
       retcode: 0
@@ -115,31 +130,30 @@
            def home():
              with open('/etc/debian_version', 'r') as f:
                return Response(f.read(), content_type="text/plain")
-           app.run()
            EOF
       stdout: ""
       retcode: 0
       stderr: ""
     # ensure proper permissions
-    - cmd: chown ${PROJECT}.${TOOLNAME}:${PROJECT}.${TOOLNAME} $WEBGENCODE_FULLPATH
+    - cmd: chown ${PROJECT}.${TOOLNAME}:${PROJECT}.${TOOLNAME} $WEBGENCODE_FULLPATH /data/project/${TOOLNAME}/uwsgi.ini
       retcode: 0
       stderr: ""
     - cmd: chmod ug+x $WEBGENCODE_FULLPATH
       retcode: 0
       stderr: ""
 
-- name: basic python webservice in the <%= @facts['os']['distro']['codename'] -%> webgen grid reading /etc/debian_version
+- name: <%= @facts['os']['distro']['codename'] -%> python webgen grid reading /etc/debian_version (ws type uwsgi-plain)
   tests:
     # cleanup
     - cmd: $SUDO webservice stop --backend gridengine || true
       retcode: 0
     # run the webapp
-    - cmd: $SUDO webservice --backend gridengine --release <%= @facts['os']['distro']['codename'] -%> uwsgi-python start | grep "Starting webservice"
+    - cmd: $SUDO webservice --backend gridengine --release <%= @facts['os']['distro']['codename'] -%> uwsgi-plain start | grep "Starting webservice"
       retcode: 0
       stderr: ""
     # verify: wait for the grid to schedule & run the webservice.
     - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
-           while ! curl -s https://${TOOLNAME}.${TOOLFORGE_DOMAIN}/${WEBGENCODE_URL_COMPONENT} | grep ^<%= @facts['operatingsystemmajrelease'] -%>.
+           while ! curl -s https://${TOOLNAME}.${TOOLFORGE_DOMAIN}/ | grep ^<%= @facts['operatingsystemmajrelease'] -%>.
            ; do sleep 0.5 ; done'
       retcode: 0
       stderr: ""
