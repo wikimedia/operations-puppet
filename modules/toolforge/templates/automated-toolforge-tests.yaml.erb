@@ -37,7 +37,7 @@
 
 - name: setup python webservice environment for the weblight grid
   tests:
-    # cleanup
+    # cleanup previous executions
     - cmd: $SUDO rm -frv ${WEBLIGHTCODE_ROOT}
     - cmd: $SUDO mkdir -p ${WEBLIGHTCODE_ROOT}
       retcode: 0
@@ -61,8 +61,8 @@
 
 - name: stretch python weblight grid reading /etc/debian_version (ws type lighttpd)
   tests:
-    - cmd: $SUDO webservice stop --backend gridengine || true
-      retcode: 0
+    # cleanup previous executions
+    - cmd: $SUDO webservice stop --backend gridengine
     # run the webapp (default is web light grid)
     - cmd: $SUDO webservice --backend gridengine --release stretch start | grep "Starting webservice"
       retcode: 0
@@ -76,8 +76,8 @@
 
 - name: buster python weblight grid reading /etc/debian_version (ws type lighttpd)
   tests:
-    - cmd: $SUDO webservice stop --backend gridengine || true
-      retcode: 0
+    # cleanup previous executions
+    - cmd: $SUDO webservice stop --backend gridengine
     # leave room for the grid to stop stuff
     - cmd: sleep 10
     # run the webapp (default is web light grid)
@@ -96,7 +96,7 @@
 #  * from a stretch bastion into the stretch grid
 - name: setup python webservice environment for the <%= @facts['os']['distro']['codename'] -%> webgen grid
   tests:
-    - cmd: $SUDO rm -frv ${WEBGENCODE_ROOT} /data/project/${TOOLNAME}/uwsgi.ini
+    - cmd: $SUDO rm -frv ${WEBGENCODE_ROOT} uwsgi.ini
     - cmd: $SUDO mkdir -p ${WEBGENCODE_SRC_DIR}
       retcode: 0
       stderr: ""
@@ -145,8 +145,7 @@
 - name: <%= @facts['os']['distro']['codename'] -%> python webgen grid reading /etc/debian_version (ws type uwsgi-plain)
   tests:
     # cleanup
-    - cmd: $SUDO webservice stop --backend gridengine || true
-      retcode: 0
+    - cmd: $SUDO webservice stop --backend gridengine
     # run the webapp
     - cmd: $SUDO webservice --backend gridengine --release <%= @facts['os']['distro']['codename'] -%> uwsgi-plain start | grep "Starting webservice"
       retcode: 0
