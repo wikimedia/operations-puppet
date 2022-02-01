@@ -1960,6 +1960,11 @@ node /^ml-serve100[1234]\.eqiad\.wmnet/ {
     role(ml_k8s::worker)
 }
 
+# New ml-staging nodes T294946 
+node /^ml-staging200[12]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # RT, replaced ununpentium
 node 'moscovium.eqiad.wmnet' {
     role(requesttracker)
