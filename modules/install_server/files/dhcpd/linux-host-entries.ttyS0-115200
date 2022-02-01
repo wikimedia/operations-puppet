@@ -322,6 +322,11 @@ host durum5002 {
     fixed-address durum5002.eqsin.wmnet;
 }
 
+host durum6001 {
+    hardware ethernet aa:00:00:61:7c:e7;
+    fixed-address durum6001.drmrs.wmnet;
+}
+
 host cloudbackup1001-dev {
     hardware ethernet aa:00:00:e8:f2:d5;
     fixed-address cloudbackup1001-dev.eqiad.wmnet;
