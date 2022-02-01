@@ -19,7 +19,6 @@
 #   }
 #
 class elasticsearch (
-    String $apt_component,
     Optional[Hash[String, Elasticsearch::InstanceParams]] $instances = undef,
     Elasticsearch::InstanceParams $default_instance_params           = {},
     Enum['5', '6', '7'] $version                                     = '5',
@@ -66,7 +65,6 @@ class elasticsearch (
 
     class { '::elasticsearch::packages':
         package_name          => $package_name,
-        apt_component         => $apt_component,
         # Hack to be resolved in followup patch
         send_logs_to_logstash => $configured_instances.reduce(false) |Boolean $agg, $kv_pair| {
             $agg or pick_default($kv_pair[1]['send_logs_to_logstash'], true)
@@ -83,7 +81,7 @@ class elasticsearch (
         group   => 'root',
         mode    => '0444',
         content => file('elasticsearch/elasticsearch.env'),
-        require => Package['elasticsearch-oss'],
+        require => Package['elasticsearch']
     }
 
     # main elasticsearch dir, purge it to ensure any undefined config file is removed
@@ -116,7 +114,7 @@ class elasticsearch (
         owner   => 'elasticsearch',
         group   => 'elasticsearch',
         mode    => '0755',
-        require => Package['elasticsearch-oss'],
+        require => Package['elasticsearch'],
     }
 
     logrotate::rule { 'elasticsearch':
@@ -135,7 +133,7 @@ class elasticsearch (
     service { 'elasticsearch':
         ensure  => stopped,
         enable  => false,
-        require => Package['elasticsearch-oss'],
+        require => Package['elasticsearch'],
     }
 
     systemd::unit { "elasticsearch_${version}@.service":

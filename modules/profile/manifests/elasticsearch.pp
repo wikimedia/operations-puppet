@@ -104,6 +104,20 @@ class profile::elasticsearch(
         '7.10' => 'elastic710',
     }
 
+    apt::repository { 'wikimedia-elastic':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => "component/${apt_component} thirdparty/${apt_component}",
+        before     => Class['::elasticsearch'],
+    }
+
+    apt::repository { 'wikimedia-curator':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => 'thirdparty/elasticsearch-curator5',
+        before     => Class['::elasticsearch::curator'],
+    }
+
     # Originally added as part of T265113 - userland util to interact with kernel EDAC drivers
     package { 'edac-utils':
         ensure => latest,
@@ -114,7 +128,6 @@ class profile::elasticsearch(
 
     # Install
     class { '::elasticsearch':
-        apt_component         => $apt_component,
         version               => $config_version,
         instances             => $filtered_instances,
         base_data_dir         => $base_data_dir,

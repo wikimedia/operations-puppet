@@ -5,9 +5,7 @@
 # elasticsearch::curator::cluster.
 #
 class elasticsearch::curator {
-    apt::package_from_component { 'elasticsearch-curator':
-        component => 'thirdparty/elasticsearch-curator5',
-    }
+    ensure_packages('elasticsearch-curator')
 
     file { '/etc/curator/':
         ensure  => directory,
