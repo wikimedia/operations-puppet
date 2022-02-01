@@ -4,17 +4,17 @@
 #
 class elasticsearch::packages (
     String $package_name,
+    String $apt_component,
     Boolean $send_logs_to_logstash,
 ) {
     include ::java::tools
 
-    package { 'elasticsearch':
-        ensure => present,
-        name   => $package_name,
-    }
-
     # library for elasticsearch
     ensure_packages(['python3-elasticsearch'])
+
+    apt::package_from_component { 'elasticsearch-oss':
+        component => "component/${apt_component}",
+    }
 
     ### install and link additional log4j appender to send logs over GELF
 

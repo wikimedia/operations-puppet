@@ -228,7 +228,7 @@ define elasticsearch::instance(
         group   => 'root',
         content => template("elasticsearch/elasticsearch_${version}.yml.erb"),
         mode    => '0444',
-        require => Package['elasticsearch'],
+        require => Package['elasticsearch-oss'],
     }
 
     file { "${config_dir}/logging.yml":
@@ -240,7 +240,7 @@ define elasticsearch::instance(
         group   => 'root',
         content => template("elasticsearch/log4j2_${version}.properties.erb"),
         mode    => '0444',
-        require => Package['elasticsearch'],
+        require => Package['elasticsearch-oss'],
     }
     file { "${config_dir}/jvm.options":
         ensure  => file,
@@ -248,7 +248,7 @@ define elasticsearch::instance(
         group   => 'root',
         content => template('elasticsearch/jvm.options.erb'),
         mode    => '0444',
-        require => Package['elasticsearch'],
+        require => Package['elasticsearch-oss'],
     }
 
     # elasticsearch refuses to start without the "scripts" directory, even if
@@ -258,7 +258,7 @@ define elasticsearch::instance(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package['elasticsearch'],
+        require => Package['elasticsearch-oss'],
     }
 
     $ensure_keystore = $version ? {
@@ -271,7 +271,7 @@ define elasticsearch::instance(
             command     => '/usr/share/elasticsearch/bin/elasticsearch-keystore create',
             environment => ["ES_PATH_CONF=${config_dir}"],
             creates     => "${config_dir}/elasticsearch.keystore",
-            require     => Package['elasticsearch'],
+            require     => Package['elasticsearch-oss'],
             before      => File["${config_dir}/elasticsearch.keystore"],
         }
     }
@@ -288,7 +288,7 @@ define elasticsearch::instance(
       owner   => 'elasticsearch',
       group   => 'elasticsearch',
       mode    => '0755',
-      require => Package['elasticsearch'],
+      require => Package['elasticsearch-oss'],
     }
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This systemd timer takes care of cleaning up
@@ -314,7 +314,7 @@ define elasticsearch::instance(
         restart    => '/bin/true',
         tag        => 'elasticsearch_services',
         require    => [
-            Package['elasticsearch'],
+            Package['elasticsearch-oss'],
             Systemd::Unit["elasticsearch_${version}@.service"],
             File["${config_dir}/elasticsearch.yml"],
             File["${config_dir}/logging.yml"],
