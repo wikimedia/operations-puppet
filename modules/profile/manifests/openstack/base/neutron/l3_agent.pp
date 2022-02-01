@@ -25,6 +25,9 @@ class profile::openstack::base::neutron::l3_agent(
     class {'::openstack::neutron::l3_agent':
         version         => $version,
         report_interval => $report_interval,
+        nic_dataplane   => $base_interface,
+        wan_vlan        => $network_flat_interface_vlan_external,
+        virt_vlan       => $network_flat_interface_vlan,
     }
     contain '::openstack::neutron::l3_agent'
 
