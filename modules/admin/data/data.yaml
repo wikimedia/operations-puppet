@@ -20,7 +20,8 @@ groups:
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
-              mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk]
+              mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
+              bumeh-ctr]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -348,7 +349,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
               matmarex, kharlan, nikkin, bpirkle, clarakosi, rmaung, lilients, ppel, seve-kim, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, bumeh-ctr, cmadeo,
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
@@ -882,7 +883,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl, bumeh-ctr, iflorez, echetty]
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl, iflorez, echetty]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
   peek-admins:
@@ -4569,17 +4570,13 @@ users:
     uid: 28580
     krb: absent
   bumeh-ctr:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bumeh-ctr
     realname: Benjamin Umeh
-    expiry_date: 2022-01-31
-    expiry_contact: janstee@wikimedia.org
-    ssh_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBam9QwFHv3+Mt0Sai36wBlKhf0VG1pyuHpd+jcCtUJI benjamin@Benjamins-MacBook-Pro.local
+    ssh_keys: []
     uid: 31961
-    krb: present
-    email: bumeh-ctr@wikimedia.org
+    krb: absent
   jmixter:
     ensure: absent
     gid: 500
