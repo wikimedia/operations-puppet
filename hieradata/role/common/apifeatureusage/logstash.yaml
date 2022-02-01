@@ -1,6 +1,9 @@
 
 cluster: apifeatureusage
 # profile::contacts::role_contacts: ['TBD']
+
+logstash::heap_memory: '2G'
+
 profile::apifeatureusage::logstash::targets:
   - search.svc.codfw.wmnet
   - search.svc.eqiad.wmnet
