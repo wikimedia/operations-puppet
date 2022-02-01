@@ -50,14 +50,17 @@ use strict;
 use 5.10.0;
 use utf8;
 
-use open ':encoding(UTF-8)';
+use open ':std', ':encoding(UTF-8)';
 
-use Encode qw(decode encode);
+use Fcntl qw(SEEK_SET SEEK_CUR SEEK_END);
 use List::Util qw(min max);
 use Time::Piece;
 use Time::Seconds;
 use Getopt::Long;
 use Pod::Usage;
+
+# YYYY-MM-DD HH:MM:SS [requestid] host wiki version ......
+my $header_pat = qr{^([\d-]{10} [\d:]{8}) \[\S+\] (\S+)};
 
 # Silence rare but irritating UTF-8 warnings.  You may wish to disable this for
 # development purposes:
@@ -66,17 +69,32 @@ local $SIG{__WARN__} = sub {
   warn($message) unless $message =~ m/^utf.*/i;
 };
 
-my $window = 0; # minutes.  0 means no window defined
+my $window = 1440; # minutes. Default is 24 hour window.
 my $minimum_hits = 0;
+my $debug = 0;
+my $cat_mode = 0;
 
 GetOptions(
+  'cat'            => \$cat_mode,
+  'debug'          => \$debug,
   'window=i'       => \$window,
   'minimum-hits=i' => \$minimum_hits,
   help             => sub { pod2usage(0) },
 ) or pod2usage();
 
+my $orig_window = $window;
+
 # Convert minutes to seconds
 $window *= 60;
+
+# This is an undocumented mode used internally by this script.
+if ($cat_mode) {
+  my $cutoff = localtime() - $window;
+  for my $file (@ARGV) {
+      cat_window($file, $cutoff);
+  }
+  exit(0);
+}
 
 # By default, match all errors:
 my $filter_pattern = qr/.*/;
@@ -103,7 +121,7 @@ my $mw_log_dir = '/srv/mw-log';
 $mw_log_dir = $ENV{MW_LOG_DIRECTORY}
   if defined $ENV{MW_LOG_DIRECTORY};
 
-my $cat_files_cmd = "cat ${mw_log_dir}/exception.log ${mw_log_dir}/error.log";
+my $cat_files_cmd = "$0 --cat --window $orig_window ${mw_log_dir}/exception.log ${mw_log_dir}/error.log";
 
 open (my $logstream, "$cat_files_cmd |")
   or die("$0: Failed to run '$cat_files_cmd'\n$!\n");
@@ -115,9 +133,6 @@ my %consolidate_patterns = (
   qr/Cannot access the database:/                          => '[db]',
   qr/max_statement_time exceeded/                          => '[db]',
 );
-
-# YYYY-MM-DD HH:MM:SS [requestid] host wiki version ......
-my $header_pat = qr{^([\d-]{10} [\d:]{8}) \[\S+\] (\S+)};
 
 # A pattern for extracting exception names and the invariant error messages /
 # stack traces from errors looking like so:
@@ -151,10 +166,6 @@ my $timestamp;
 my $host;
 
 while (my $line = <$logstream>) {
-  # Encode log lines as UTF-8 - not totally clear why this is needed despite
-  # the `use open` pragma:
-  $line = encode('UTF-8', $line);
-
   if ($line =~ /$header_pat/) {
     # Set timestamp then skip ahead to look for Exception:
     $timestamp = Time::Piece->strptime($1, "%Y-%m-%d %T");
@@ -240,7 +251,7 @@ foreach (keys %error_count) {
   # of sort(1) / cut(1) / awk(1) and friends:
   say join "\t", (
     $error_count{$_},
-    encode('UTF-8', $histograms{$_}->($max_bin_height)),
+    $histograms{$_}->($max_bin_height),
     display_time($first_dates{$_}, $last_dates{$_}),
     pad_exception($exception),
     substr($trace, 0, $trace_width),
@@ -351,7 +362,9 @@ sub display_time {
     $glyph = '◍' if $age < 150; # 2.5 min
     $glyph = '●' if $age < 60;  # 1 min
 
-    $t->strftime("%H%M $glyph");
+    # $glyph is concat'd here instead of included in the format string because
+    # this strftime() doesn't play well with utf8:
+    $t->strftime("%H%M ") . $glyph;
   } @_;
 }
 
@@ -424,6 +437,96 @@ sub histogram {
   };
 
   return ($renderer, $biggest_bin);
+}
+
+=item grok_nearest_timestamp($fh)
+
+Reads lines from $fh until a line is read which has a parseable
+timestamp.  Returns two values:
+1) a Time::Piece representing the timestamp
+2) the file position of the line
+
+If EOF is reached, returns undef and the position of the end of file
+(i.e, the file length).
+
+=cut
+
+sub grok_nearest_timestamp {
+  my ($fh) = @_;
+
+  my $pos = tell($fh);
+
+  while (my $line = <$fh>) {
+    if ($line =~ /$header_pat/) {
+      return Time::Piece->strptime($1, "%Y-%m-%d %T"), $pos;
+    }
+    $pos = tell($fh);
+  }
+
+  return undef, $pos;
+}
+
+=item cat_window($filename, $cutoff)
+
+Print the tail end of $filename to stdout, starting with log entries
+with a timestamp near $cutoff.  All entries on or after $cutoff will
+be printed.  There may also be a few earlier entries printed.
+
+=cut
+
+sub cat_window {
+  my ($filename, $cutoff) = @_;
+
+  my $fh;
+  open($fh, $filename) || die("$0: Failed to open $filename: $!\n");
+
+  my $low = 0;
+  my $high = -s $filename;
+
+  my $pos=0;
+  my $probes=0;
+
+  while ($low < $high) {
+    $pos = int ( ($high + $low) / 2 );
+
+    $probes++;
+    my $width = $high - $low;
+    print("$probes: [$low, $high] Width $width, Mid: $pos, ") if $debug;
+    seek($fh, $pos, SEEK_SET) || die("$0: failed to seek to position $pos: $!\n");
+
+    my ($ts, $actual_pos) = grok_nearest_timestamp($fh);
+    print("(actual $actual_pos) $ts") if $debug;
+
+    if ($actual_pos >= $high) {
+      print(" No more progress. Using low position\n") if $debug;
+      $pos = $low;
+      last;
+    }
+
+    $pos=$actual_pos;
+
+    if ($ts >= $cutoff) {
+      print(" <<<<\n") if $debug;
+      # We're within the data we want. Back up to make sure we
+      # didn't miss anything.
+      $high = $pos;
+    } else {
+      print(" >>>>\n") if $debug;
+      # We're in too-old data.  No need to go further back.
+      $low = $pos;
+    }
+  }
+
+  if ($debug) {
+    print("Would start reading the file at position $pos\n");
+  } else {
+    seek($fh, $pos, SEEK_SET) || die("$0: failed to seek to position $pos: $!\n");
+
+    while (<$fh>) {
+      print;
+    }
+  }
+  close($fh);
 }
 
 =back
