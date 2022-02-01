@@ -200,7 +200,7 @@ while [ -z "$quit" ]; do
 
   if [ ! -z "$input" ]; then
     case "$input" in
-      [12345])
+      [123456])
         # If we're already sorting on this column, flip the direction:
         if [ "$input" == "$sort_key" ]; then
           flip_sort
