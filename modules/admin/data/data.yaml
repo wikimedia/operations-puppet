@@ -696,7 +696,9 @@ groups:
   deploy-phabricator:
     gid: 778
     description: Group of phabricator deployers
-    members: [twentyafterfour, thcipriani]
+    members: [twentyafterfour, thcipriani, brennen]
+    approval:
+      - Tyler Cipriani
   sc-admins:
     description: General service cluster admins - sc(a|b)
     gid: 779
