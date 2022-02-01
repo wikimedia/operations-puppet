@@ -20,3 +20,10 @@ profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_replica::master: 'maps1009.eqiad.wmnet'
 
 cassandra::target_version: '3.x'
+
+# Could be as high as 32GB
+profile::maps::postgresql_common::shared_buffers: '16GB'
+# Can be ncpu
+profile::maps::postgresql_common::max_worker_processes: 48
+# With current spec could be as high as 96GB
+profile::maps::postgresql_common::effective_cache_size: '64GB'

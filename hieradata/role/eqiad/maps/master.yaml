@@ -52,3 +52,10 @@ profile::maps::osm_master::replicas:
 profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.eqiad.wmnet:4492/v1/events"
 
 cassandra::target_version: '3.x'
+
+# Could be as high as 32GB
+profile::maps::postgresql_common::shared_buffers: '16GB'
+# Can be ncpu
+profile::maps::postgresql_common::max_worker_processes: 48
+# With current spec could be as high as 96GB
+profile::maps::postgresql_common::effective_cache_size: '64GB'
