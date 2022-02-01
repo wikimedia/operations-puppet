@@ -356,7 +356,7 @@ groups:
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars, tandic]
+              aniketars, tandic, dannyh]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5024,6 +5024,13 @@ users:
     krb: present
     expiry_date: 2022-06-30
     expiry_contact: janstee@wikimedia.org
+  dannyh:
+    ensure: present
+    uid: 12078
+    gid: 500
+    realname: Danny Horn
+    email: dhorn@wikimedia.org
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
@@ -5510,10 +5517,6 @@ ldap_only_users:
     ensure: present
     realname: NDA On File
     email: wikitech.rxy@rxy.jp
-  dannyh:
-    ensure: present
-    realname: Danny Horn
-    email: dhorn@wikimedia.org
   rudolphampofo:
     ensure: present
     realname: Rudolph Ampofo
