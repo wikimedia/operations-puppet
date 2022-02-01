@@ -981,6 +981,12 @@ host netflow5002 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
+host netflow6001 {
+    hardware ethernet aa:00:00:06:1e:35;
+    fixed-address netflow6001.drmrs.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host orespoolcounter1003 {
     hardware ethernet aa:00:00:79:14:8b;
     fixed-address orespoolcounter1003.eqiad.wmnet;
