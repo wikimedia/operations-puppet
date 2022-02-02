@@ -908,12 +908,12 @@ node 'db2132.codfw.wmnet' {
 # See also multiinstance misc hosts db1117 and db2078 below
 
 # m2 eqiad master
-node 'db1183.eqiad.wmnet' {
+node 'db1159.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
-# m2 future master T300243
-node 'db1159.eqiad.wmnet' {
+# m2 old master T300243
+node 'db1183.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
