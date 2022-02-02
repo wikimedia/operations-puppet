@@ -9,7 +9,8 @@
 # has $monitoring_enabled => true.
 #
 class airflow {
-    ensure_packages(['airflow'])
+    # (mariadb-client needed to run airflow db shell.)
+    ensure_packages(['airflow', 'wmf-mariadb104-client'])
 
     # Path to where airflow conda env is installed
     $airflow_prefix = '/usr/lib/airflow'
