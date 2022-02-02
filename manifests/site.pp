@@ -366,8 +366,13 @@ node /^(contint1001|contint2001)\.wikimedia\.org$/ {
 
 }
 
-node /^cp10(7[579]|8[1357])\.eqiad\.wmnet$/ {
+node /^cp10(7[579]|8[135])\.eqiad\.wmnet$/ {
     role(cache::text)
+}
+
+# Envoy test T271421
+node 'cp1087.eqiad.wmnet' {
+    role(cache::text_envoy)
 }
 
 # HAproxy test T290005
