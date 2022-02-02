@@ -140,6 +140,7 @@ class profile::toolforge::grid::exec_environ {
         'automake',                    # T119870
         'build-essential',
         'bundler',                    # T120287
+        'clang',                     # T300469
         'cmake',
         'cython',
         'libdjvulibre-dev',          # T58972
