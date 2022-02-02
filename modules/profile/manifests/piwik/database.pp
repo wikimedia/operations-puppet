@@ -18,6 +18,7 @@ class profile::piwik::database(
 
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
+    include profile::mariadb::monitor::prometheus
 
     class { '::mariadb::config':
         config    => 'profile/piwik/my.cnf.erb',
@@ -42,9 +43,5 @@ class profile::piwik::database(
             port   => $database_port,
             srange => $backup_hosts_ferm_range,
         }
-    }
-
-    profile::prometheus::mysqld_exporter_instance {'matomo':
-        socket => $mariadb_socket,
     }
 }

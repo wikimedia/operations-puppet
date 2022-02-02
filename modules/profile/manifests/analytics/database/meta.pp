@@ -18,6 +18,7 @@ class profile::analytics::database::meta(
     require profile::mariadb::packages_wmf
     $basedir = $profile::mariadb::packages_wmf::basedir
     include profile::mariadb::wmfmariadbpy
+    include profile::mariadb::monitor::prometheus
 
     $mariadb_socket = '/run/mysqld/mysqld.sock'
 
@@ -64,11 +65,6 @@ class profile::analytics::database::meta(
         manage  => true,
         enable  => true,
         require => Class['mariadb::config'],
-    }
-
-
-    profile::prometheus::mysqld_exporter_instance {'analytics-meta':
-        socket => $mariadb_socket,
     }
 
     # Allow access to this analytics mysql instance from analytics networks.

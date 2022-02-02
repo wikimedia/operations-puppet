@@ -112,13 +112,13 @@ class profile::prometheus::analytics (
     prometheus::class_config{ "matomo_mysql_${::site}":
         dest       => "${targets_path}/mysql_analytics_matomo_${::site}.yaml",
         class_name => 'role::piwik',
-        port       => 13306,
+        port       => 9104,
     }
 
     prometheus::class_config{ "analyics_meta_mysql_${::site}":
         dest       => "${targets_path}/mysql_analytics_meta_${::site}.yaml",
         class_name => 'profile::analytics::database::meta',
-        port       => 13306,
+        port       => 9104,
     }
 
     prometheus::jmx_exporter_config{ "hadoop_worker_${::site}":
