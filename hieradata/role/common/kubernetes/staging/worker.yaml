@@ -38,3 +38,7 @@ profile::dragonfly::dfdaemon::ensure: present
 profile::rsyslog::kubernetes::kubernetes_url: https://kubestagemaster.svc.%{::site}.wmnet:6443
 profile::kubernetes::master_fqdn: kubestagemaster.svc.%{::site}.wmnet
 profile::kubernetes::node::prometheus_url: http://prometheus.svc.%{::site}.wmnet/k8s-staging
+# We don't need conftool safe restart scripts on k8s.
+profile::lvs::realserver::use_conftool: false
+profile::lvs::realserver::pools:
+  k8s-ingress-staging: {}

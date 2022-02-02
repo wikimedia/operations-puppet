@@ -14,6 +14,8 @@ class role::kubernetes::staging::worker {
     include profile::calico::kubernetes
     # Pull MW image regularly (T284628)
     include profile::kubernetes::mwautopull
+    # Setup LVS
+    include profile::lvs::realserver
 
     system::role { 'kubernetes::staging::worker':
         description => 'Kubernetes worker node (staging setup)',
