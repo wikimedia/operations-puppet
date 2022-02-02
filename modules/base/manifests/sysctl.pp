@@ -91,15 +91,29 @@ class base::sysctl {
         }
     }
 
-    # Up to Buster Debian disabled unprivileged user namespaces in the default kernel config
-    # This changed in Bullseye mostly to allow Chromium and Firefox to setup sandboxing via namespaces
-    # But for a server deployment like ours, we have no use for it and it widens the attack surface,
-    # so we disable it. Apply this to kernels starting with 5.10 (where it was enabled in Debian)
     if (versioncmp($::kernelversion, '5.10') >= 0) {
+        # Up to Buster Debian disabled unprivileged user namespaces in the default kernel config
+        # This changed in Bullseye mostly to allow Chromium and Firefox to setup sandboxing via namespaces
+        # But for a server deployment like ours, we have no use for it and it widens the attack surface,
+        # so we disable it. Apply this to kernels starting with 5.10 (where it was enabled in Debian)
         sysctl::parameters { 'disable_unprivileged_ns':
             values => {
             'kernel.unprivileged_userns_clone' => '0',
             },
+        }
+
+        # Kernels prior to v5.10.54 had this value set to 3600 as a defense
+        # mechanism against faulty middle boxes which do not support TCP
+        # fast open. The value was changed to 0 in v5.10.54. Unfortunately,
+        # we do have faulty middle boxes in our path and the new value of 0
+        # results in our mail queues backing up, as connections to Google's
+        # mail servers sometimes timeout. This setting should not be
+        # reverted without monitoring our mail queues. We are applying it
+        # globally since it may be the source of other problems and there
+        # is little downside for our workloads.
+        # https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v5.10.96&id=164294d09c47b9a6c6160b08c43d74ae93c82758
+        sysctl::parameters { 'fastopen':
+            values   => { 'net.ipv4.tcp_fastopen_blackhole_timeout_sec' => 3600 },
         }
     }
 
