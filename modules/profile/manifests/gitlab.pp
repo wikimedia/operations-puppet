@@ -19,6 +19,7 @@ class profile::gitlab(
     Stdlib::Unixpath $cert_path = lookup('profile::gitlab::cert_path'),
     Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
     Boolean $enable_restore = lookup('profile::gitlab::enable_restore', {default_value => false}),
+    Boolean $use_acmechief = lookup('profile::gitlab::use_acmechief'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -36,10 +37,21 @@ class profile::gitlab(
       refreshonly => true,
     }
 
-    # Certificates will be available under:
-    # /etc/acmecerts/<%= @acme_chief_cert %>/live/
-    acme_chief::cert { $acme_chief_cert:
-        puppet_rsc => Exec['Reload nginx'],
+    if $use_acmechief {
+        # Certificates will be available under:
+        # /etc/acmecerts/<%= @acme_chief_cert %>/live/
+        acme_chief::cert { $acme_chief_cert:
+            puppet_rsc => Exec['Reload nginx'],
+        }
+    } else {
+        ensure_packages('certbot')
+        systemd::timer::job { 'certbot-renew':
+            ensure      => present,
+            user        => 'root',
+            description => 'renew TLS certificate using certbot',
+            command     => "/usr/bin/certbot -q renew --post-hook \"/usr/bin/gitlab-ctl hup nginx\"",
+            interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 05:05:00'},
+        }
     }
 
     # add a service IP to the NIC - T276148

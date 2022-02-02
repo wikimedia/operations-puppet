@@ -51,7 +51,7 @@ phabricator_cluster_search:
   type: elasticsearch
   version: 5
 
-# Deployment server, scap, acme-chief
+# Deployment server, scap
 
 deployment_hosts:
 - '172.16.0.238'
@@ -150,6 +150,7 @@ profile::base::ssh_server_settings:
     - '/etc/ssh/userkeys/%u.d/gerrit-scap'
 
 ## TLS
+## to get certificates from LE we use acmechief in production and certbot in cloud
 profile::gerrit::use_acmechief: false
 profile::tlsproxy::envoy::header_key_format: 'proper_case'
 sslcert::certificate::skip_private: true
@@ -227,6 +228,9 @@ profile::gitlab::cas_auto_create_users: false
 
 profile::gitlab::smtp_enabled: false
 
+# TLS, we use certbot in cloud and acmechief in prod
+# both of them are getting us Letsencrypt certs.
+profile::gitlab::use_acmechief: false
 profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.crt'
 profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
 
