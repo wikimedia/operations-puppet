@@ -50,6 +50,7 @@ class statistics::product_analytics {
         monitoring_enabled        => true,
         monitoring_contact_groups => 'team-product-analytics',
         syslog_force_stop         => true,
+        syslog_identifier         => 'product-analytics-movement-metrics',
         slice                     => 'user.slice',
         require                   => [
             Class['::statistics::compute'],
