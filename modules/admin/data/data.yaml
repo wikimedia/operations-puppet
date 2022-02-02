@@ -700,12 +700,10 @@ groups:
     approval:
       - Tyler Cipriani
   sc-admins:
-    description: General service cluster admins - sc(a|b)
+    description: General service cluster admins - sc(a|b) (Deprecated)
     gid: 779
-    members: [eevans, mobrovac, ppchelko]
-    privileges: ['ALL = NOPASSWD: /usr/bin/puppet agent *',
-               'ALL = (proton) NOPASSWD: ALL',
-               'ALL = NOPASSWD: /usr/bin/firejail --join=*']
+    members: []
+    privileges: []
   notebook-roots:
     description: root access on experimental notebook servers (Deprecated)
     gid: 780
