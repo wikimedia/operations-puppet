@@ -35,6 +35,7 @@ class profile::gitlab::runner (
     Boolean                                $run_untagged       = lookup('profile::gitlab::runner::run_untagged'),
     Array[String]                          $tags               = lookup('profile::gitlab::runner::tags'),
     Boolean                                $enable_exporter    = lookup('profile::gitlab::runner::enable_exporter', {default_value => false}),
+    String                                 $gitlab_runner_user = lookup('profile::gitlab::runner::user'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -60,6 +61,13 @@ class profile::gitlab::runner (
         ensure => $ensure,
         prio   => 20,
         source => 'puppet:///modules/profile/ci/docker-ferm',
+    }
+
+    if $gitlab_runner_user != 'root' {
+        systemd::sysuser { $gitlab_runner_user:
+            description => 'used by gitlab-runner',
+            home_dir    => "/home/${gitlab_runner_user}",
+        }
     }
 
     apt::package_from_component{ 'gitlab-runner':
@@ -90,13 +98,14 @@ class profile::gitlab::runner (
         runner_name             => $runner_name,
         exporter_listen_address => $exporter_listen_address,
         enable_exporter         => $enable_exporter,
+        gitlab_runner_user      => $gitlab_runner_user,
     }
 
     if $ensure == 'present' {
         $tag_list = join($tags, ',')
 
         exec { 'gitlab-register-runner':
-            user    => 'root',
+            user    => $gitlab_runner_user,
             command => @("CMD"/L$)
                 /usr/bin/gitlab-runner register \
                 --template-config /etc/gitlab-runner/config-template.toml \
@@ -118,10 +127,15 @@ class profile::gitlab::runner (
 
     } else {
         exec { 'gitlab-unregister-runner':
-            user    => 'root',
+            user    => $gitlab_runner_user,
             command => "/usr/bin/gitlab-runner unregister --name '${runner_name}'",
             onlyif  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name} '",
             before  =>  Package['gitlab-runner'],
         }
+    }
+
+    service { 'gitlab-runner':
+        ensure  => present,
+        require => Package['gitlab-runner'],
     }
 }
