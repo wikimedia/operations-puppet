@@ -1457,6 +1457,11 @@ node /^ganeti20(0[7-9]|1[0-9]|2[0-8])\.codfw\.wmnet$/ {
     role(ganeti)
 }
 
+# New ganeti nodes T298998
+node /^(ganeti2029|ganeti2030)\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # Ganeti test cluster
 node /^ganeti-test200[123]\.codfw\.wmnet/ {
     role(ganeti_test)
