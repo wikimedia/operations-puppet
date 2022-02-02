@@ -366,6 +366,10 @@ eqiad:
     kubernetes1015.eqiad.wmnet: [kubesvc]
     kubernetes1016.eqiad.wmnet: [kubesvc]
     kubernetes1017.eqiad.wmnet: [kubesvc]
+  kubernetes-staging:
+    kubestagemaster1001.eqiad.wmnet: [kubemaster]
+    kubestage1003.eqiad.wmnet: [kubesvc]
+    kubestage1004.eqiad.wmnet: [kubesvc]
   druid-public:
     druid1004.eqiad.wmnet: [druid-public-broker]
     druid1005.eqiad.wmnet: [druid-public-broker]
