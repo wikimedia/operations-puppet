@@ -60,6 +60,10 @@ class role::puppetmaster::standalone(
     Hash[String, Puppetmaster::R10k::Source]             $r10k_sources  = {},
     Optional[Variant[Array[Stdlib::Host], Stdlib::Host]] $puppetdb_host = undef,
 ) {
+    system::role { 'puppetmaster::standalone':
+        description => 'Cloud VPS project puppetmaster',
+    }
+
     include profile::openstack::base::puppetmaster::enc_client
 
     $puppetdb_hosts = ($puppetdb_host =~ Stdlib::Host) ? {
