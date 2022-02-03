@@ -4,7 +4,7 @@ describe 'prometheus::server', :type => :define do
   on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     context "On #{os}" do
       let(:facts) { os_facts }
-      let(:params) { { 'listen_address' => '10.2.3.4' } }
+      let(:params) { { 'listen_address' => '10.2.3.4:666' } }
       let(:title) { 'my_prometheus_server' }
 
       context 'when only passing listen_addres' do

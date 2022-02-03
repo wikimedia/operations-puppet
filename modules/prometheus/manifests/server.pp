@@ -19,7 +19,7 @@
 # = Parameters
 #
 # [*listen_address*]
-#   Address to listen on, in the form [address]:port. Required to support
+#   Address to listen on, in the form address:port. Required to support
 #   multiple instances listening on disjoint ports.
 #
 # [*scrape_interval*]
@@ -63,7 +63,7 @@
 #   Thanos only)
 
 define prometheus::server (
-    String                     $listen_address,
+    Pattern[/.+:[0-9]+$/]      $listen_address,
     String                     $scrape_interval        = '60s',
     Stdlib::Unixpath           $base_path              = "/srv/prometheus/${title}",
     String                     $storage_retention      = '730h',
@@ -93,13 +93,20 @@ define prometheus::server (
     $service_name = "prometheus@${title}"
     $rules_path = "${base_path}/rules"
 
+    $port = split($listen_address, ':')[1]
+
     $scrape_configs_default = [
       {
         'job_name'      => 'prometheus',
         'metrics_path'  => "/${title}/metrics",
         'static_configs' => [
             { 'targets'  => [ $listen_address ] },
-        ]
+        ],
+        'relabel_configs' => [
+          { 'target_label' => 'instance',
+            'replacement'  => "${::hostname}:${port}",
+          },
+        ],
       },
       {
         'job_name'      => 'node',
