@@ -28,7 +28,7 @@ class profile::elasticsearch::cirrus(
 
     package {'wmf-elasticsearch-search-plugins':
         ensure  => present,
-        require => Class['Java'],
+        require => [Class['Java'], Package['elasticsearch-oss']],
     }
 
     # Since the elasticsearch service is dynamically named after the cluster

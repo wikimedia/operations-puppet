@@ -27,12 +27,14 @@ class elasticsearch::packages (
 
     # symlinks are removed if log shipping is disabled
     file { '/usr/share/elasticsearch/lib/logstash-gelf.jar':
-        ensure => stdlib::ensure($send_logs_to_logstash, 'link'),
-        target => '/usr/share/java/logstash-gelf.jar',
+        ensure  => stdlib::ensure($send_logs_to_logstash, 'link'),
+        target  => '/usr/share/java/logstash-gelf.jar',
+        require => 'Package[elasticsearch-oss]',
     }
     file { '/usr/share/elasticsearch/lib/json-simple.jar':
-        ensure => stdlib::ensure($send_logs_to_logstash, 'link'),
-        target => '/usr/share/java/json-simple.jar',
+        ensure  => stdlib::ensure($send_logs_to_logstash, 'link'),
+        target  => '/usr/share/java/json-simple.jar',
+        require => 'Package[elasticsearch-oss]',
     }
 
 }
