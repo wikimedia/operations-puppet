@@ -266,3 +266,5 @@ profile::docker::engine::settings:
   iptables: false
   storage-driver: "overlay2"
 profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
+
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
