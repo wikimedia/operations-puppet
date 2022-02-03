@@ -1,4 +1,4 @@
-cluster: kubernetes
+cluster: kubernetes-staging
 
 profile::etcd::v3::cluster_name: "k8s3-staging.%{::site}"
 profile::etcd::v3::cluster_bootstrap: true

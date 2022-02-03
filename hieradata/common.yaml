@@ -583,6 +583,12 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+  kubernetes-staging:
+    description: "Kubernetes staging"
+    id: 101
+    sites:
+      eqiad: []
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet

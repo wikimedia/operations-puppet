@@ -1,4 +1,4 @@
-cluster: kubernetes
+cluster: kubernetes-staging
 profile::kubernetes::master::cluster_group: main
 profile::kubernetes::master::packages_from_future: true
 profile::kubernetes::client::packages_from_future: true
