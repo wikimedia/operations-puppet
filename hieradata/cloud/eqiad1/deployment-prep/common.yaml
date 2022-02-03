@@ -137,6 +137,7 @@ scap::dsh::groups:
     mediawiki-installation:
         hosts:
             - deployment-jobrunner04.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud
