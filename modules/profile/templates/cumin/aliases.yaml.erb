@@ -67,7 +67,7 @@ conf-eqiad: A:conf and A:eqiad
 contint: P{O:ci::master}
 cp: A:cp-upload or A:cp-text
 cp-upload: P{O:cache::upload or O:cache::upload_haproxy or O:cache::upload_envoy}
-cp-text: P{O:cache::text or O:cache::text_haproxy}
+cp-text: P{O:cache::text or O:cache::text_haproxy or O:cache::text_envoy}
 <% @datacenters.each do |dc| -%>
 cp-<%= dc %>: A:cp and A:<%= dc %>
 <% [ 'text', 'upload' ].each do |cache| -%>
