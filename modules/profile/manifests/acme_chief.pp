@@ -40,7 +40,7 @@ class profile::acme_chief (
     String $active_host = lookup('profile::acme_chief::active'),
     String $passive_host = lookup('profile::acme_chief::passive'),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
-    Integer $watchdog_sec = lookup('profile::acme_chief::watchdog_sec', {default_value => 0}),
+    Integer $watchdog_sec = lookup('profile::acme_chief::watchdog_sec', {default_value => 600}),
 ) {
     if(!empty($shared_acme_certificates)) {
         $acme_chief_certificates = $certificates + $shared_acme_certificates
