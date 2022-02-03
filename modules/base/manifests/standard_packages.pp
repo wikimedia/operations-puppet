@@ -109,7 +109,10 @@ class base::standard_packages {
         # should be replaced with a parse of the dmi fact (which will be a map not
         # a string).
         if $facts['manufacturer'] == 'HP' {
-            ensure_packages('hp-health')
+            # this package doesn't seem to exists for debian bullseye, see T300438
+            if debian::codename::lt('bullseye') {
+                ensure_packages('hp-health')
+            }
         }
     }
 
