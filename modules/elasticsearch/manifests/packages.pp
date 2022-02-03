@@ -13,7 +13,7 @@ class elasticsearch::packages (
     ensure_packages(['python3-elasticsearch'])
 
     apt::package_from_component { 'elasticsearch-oss':
-        component => "component/${apt_component}",
+        component => "component/${apt_component} thirdparty/${apt_component}",
     }
 
     ### install and link additional log4j appender to send logs over GELF
