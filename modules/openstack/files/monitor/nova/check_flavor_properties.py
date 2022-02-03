@@ -55,11 +55,14 @@ def check_flavors():
                         ceph_flavors_without_write_iops.append(flavor.name)
                         for throttlekey in keys:
                             if throttlekey.startswith("quota:disk_total_bytes_sec"):
-                                ceph_flavors_without_bytes_sec.remove(flavor.name)
+                                if flavor.name in ceph_flavors_without_bytes_sec:
+                                    ceph_flavors_without_bytes_sec.remove(flavor.name)
                             elif throttlekey.startswith("quota:disk_read_iops_sec"):
-                                ceph_flavors_without_read_iops.remove(flavor.name)
+                                if flavor.name in ceph_flavors_without_read_iops:
+                                    ceph_flavors_without_read_iops.remove(flavor.name)
                             elif throttlekey.startswith("quota:disk_write_iops_sec"):
-                                ceph_flavors_without_write_iops.remove(flavor.name)
+                                if flavor.name in ceph_flavors_without_write_iops:
+                                    ceph_flavors_without_write_iops.remove(flavor.name)
 
                     break
 
