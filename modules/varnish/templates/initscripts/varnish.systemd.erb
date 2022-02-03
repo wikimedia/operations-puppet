@@ -55,7 +55,7 @@ ExecStart=/usr/sbin/varnishd \
 -S /etc/varnish/secret \
 <%= @storage -%> \
 -p thread_pool_stack=131072 \
--p listen_depth=4096 -p vcc_err_unref=off \
+-p listen_depth=16384 -p vcc_err_unref=off \
 -p http_req_size=24576 \
 -p gzip_level=8 \
 -p gzip_memlevel=9 \
