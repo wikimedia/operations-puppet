@@ -15,6 +15,7 @@
 # - $jmx_exporter_config: if defined, what's the path to jmx_exporter's config
 # - $enable_dlq: enables the dead letter queue
 # - $dlq_max_bytes: maximum size of each dead letter queue
+# - $java_home: overrides java home directory. Runtime defaults to bundled jdk.
 #
 # == Sample usage:
 #
@@ -39,9 +40,8 @@ class logstash (
     Boolean $enable_dlq                   = false,
     String $dlq_max_bytes                 = '1024mb',
     Array[Stdlib::Fqdn] $dlq_hosts        = [],
+    Optional[Stdlib::Unixpath] $java_home = undef,
 ) {
-    #TODO: fully remove when java installed with ::profile::java
-    #ensure_packages($java_package)
 
     package { 'logstash':
         ensure  => 'present',

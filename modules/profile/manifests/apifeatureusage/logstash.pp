@@ -4,12 +4,13 @@
 # MediaWiki Extension:ApiFeatureUsage
 #
 class profile::apifeatureusage::logstash (
-  Array[Stdlib::Host]    $targets                              = lookup('profile::apifeatureusage::logstash::targets'),
-  Hash                   $curator_actions                      = lookup('profile::apifeatureusage::logstash::curator_actions'),
-  Hash[String, String]   $input_kafka_ssl_truststore_passwords = lookup('profile::apifeatureusage::logstash::input_kafka_ssl_truststore_passwords'),
-  Optional[String]       $input_kafka_consumer_group_id        = lookup('profile::apifeatureusage::logstash::input_kafka_consumer_group_id', { default_value => undef }),
-  Optional[Stdlib::Fqdn] $jobs_host                            = lookup('profile::apifeatureusage::logstash::jobs_host',                     { default_value => undef }),
-  Stdlib::Port           $jmx_exporter_port                    = lookup('profile::apifeatureusage::logstash::jmx_exporter_port',             { default_value => 7800  }),
+  Array[Stdlib::Host]        $targets                              = lookup('profile::apifeatureusage::logstash::targets'),
+  Hash                       $curator_actions                      = lookup('profile::apifeatureusage::logstash::curator_actions'),
+  Hash[String, String]       $input_kafka_ssl_truststore_passwords = lookup('profile::apifeatureusage::logstash::input_kafka_ssl_truststore_passwords'),
+  Optional[String]           $input_kafka_consumer_group_id        = lookup('profile::apifeatureusage::logstash::input_kafka_consumer_group_id', { default_value => undef }),
+  Optional[Stdlib::Fqdn]     $jobs_host                            = lookup('profile::apifeatureusage::logstash::jobs_host',                     { default_value => undef }),
+  Stdlib::Port               $jmx_exporter_port                    = lookup('profile::apifeatureusage::logstash::jmx_exporter_port',             { default_value => 7800  }),
+  Optional[Stdlib::Unixpath] $java_home                            = lookup('profile::apifeatureusage::logstash::java_home',                     { default_value => undef }),
 ) {
   require ::profile::java
 
@@ -50,6 +51,7 @@ class profile::apifeatureusage::logstash (
     logstash_version    => 7,
     log_format          => 'json',
     gc_log              => false,
+    java_home           => pick($java_home, $profile::java::default_java_home),
   }
 
   # Ship logstash service logs to ELK

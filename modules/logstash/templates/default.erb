@@ -4,4 +4,6 @@
 # invocations, resulting in attempts to double-bind while e.g. launching logstash-plugin.
 LS_JAVA_OPTS="<%= @service_java_opts %> -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=<%= "#{scope.lookupvar('::ipaddress')}:#{@jmx_exporter_port}" %>:<%= @jmx_exporter_config %>"
 <% end -%>
-
+<% if @java_home -%>
+LS_JAVA_HOME=<%= @java_home %>
+<% end -%>
