@@ -16,10 +16,6 @@ profile::admin::groups:
   - logstash-roots
   - elasticsearch-roots
 
-profile::java::java_packages:
-  - version: '11'
-    variant: 'jdk'
-
 # OpenSearch Dashboards
 profile::opensearch::dashboards::httpd_proxy::vhost: logstash.wikimedia.org
 profile::opensearch::dashboards::httpd_proxy::serveradmin: noc@wikimedia.org
@@ -35,7 +31,6 @@ profile::opensearch::dashboards::httpd_proxy::ldap_groups:
 
 # OpenSearch
 # NOTE: short_cluster_name must be kept in sync with the data role (logging/opensearch/data.yaml)
-profile::opensearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
 profile::opensearch::instances: {}

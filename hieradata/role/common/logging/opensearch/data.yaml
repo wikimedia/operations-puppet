@@ -6,17 +6,8 @@ profile::admin::groups:
   - logstash-roots
   - elasticsearch-roots
 
-# Install openjdk-8 using ::profile::java
-# TODO: Install openjdk-8 and openjdk-11 at the same time
-profile::java::java_packages:
-  - version: '8'
-    variant: 'jdk'
-  - version: '11'
-    variant: 'jdk'
-
 # OpenSearch
 # NOTE: short_cluster_name must be kept in sync with the collector role (logging/opensearch/collector.yaml)
-profile::opensearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
 profile::opensearch::instances: {}

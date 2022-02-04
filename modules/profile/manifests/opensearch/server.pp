@@ -117,6 +117,6 @@ class profile::opensearch::server(
         logstash_transport    => $logstash_transport,
         rack                  => $rack,
         row                   => $row,
-        java_home             => $java_home,
+        java_home             => pick($java_home, $profile::java::default_java_home),
     }
 }
