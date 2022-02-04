@@ -66,6 +66,7 @@ profile::opensearch::common_settings:
   curator_uses_unicast_hosts: false
   filter_cache_size: '10%'
   holds_data: false
+  gc_log: false
   compatibility_mode: true
 
 profile::opensearch::logstash::jobs_host: 'logging-logstash-01.logging.eqiad1.wikimedia.cloud'
