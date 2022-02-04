@@ -180,7 +180,8 @@ def stage_generate_node_list():
         try:
             f = open(ctx.args.file)
             for line in f.readlines():
-                ctx.node_list.append(line[:-1])  # clean '\n'
+                if line.strip() != '':
+                    ctx.node_list.append(line.strip())
         except OSError as e:
             logging.warning("can't open file: {}".format(e))
 
