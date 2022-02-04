@@ -24,7 +24,6 @@ profile::elasticsearch::instances:
           - elastic2032.codfw.wmnet
           - elastic2033.codfw.wmnet
           - elastic2034.codfw.wmnet
-          - elastic2035.codfw.wmnet
           - elastic2036.codfw.wmnet
           - elastic2037.codfw.wmnet
           - elastic2038.codfw.wmnet
@@ -153,7 +152,6 @@ profile::elasticsearch::instances:
           - elastic2060.codfw.wmnet
 
           # row D
-          - elastic2035.codfw.wmnet
           - elastic2036.codfw.wmnet
           - elastic2053.codfw.wmnet
           - elastic2054.codfw.wmnet
