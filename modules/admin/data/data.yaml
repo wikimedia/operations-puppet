@@ -127,7 +127,7 @@ groups:
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
               jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe,
-              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi]
+              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -5031,6 +5031,14 @@ users:
     realname: Danny Horn
     email: dhorn@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  bwang:
+    ensure: present
+    realname: Bernard Wang
+    uid: 30831
+    gid: 500
+    email: bwang@wikimedia.org
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGtXuZDl5axMRtOYQE0LKb68neuEObpZpqrfatTFgo3RZ9cTrxHKhtDMF7GzdtcWA2tJUAduP35R8R5GhAR1lkv5KjfDqjG5l8YczhTVMYSwXuWt0J4MiPP7pEaG7OFGSOq/t2+5Y8fwbGJVK/j6sgZdlR/ncPM6d/nWO0C8RTtX1srK3WfYNprPRY+9ueWJ0/woTL4nxqkFkGvFSSYzyN0StlReBZci4TYe3LoAnkA1TJIztl8h818sIOg/J9ZIbTnWVo1iJowyRVvDy8sndQq0h8aGuK5MfWvitSDVNzrvgTdnHsxrdJObzg/+IjcnBtdMVSr4Lz1Ur97mvFEJ5NkoYhT2tf5vvYnHfKv9D0dxR0k9K7tG5dYiHpIB33JZpQ+i+s5rqfKs+AxxLTAXsdZvXUQhkv1v1RGahfhuPmCDa37fYhNX/ot/P0G0lusw5wWdAfBn09pMvPkAxRy77+76iiWth1uMCRA8wKXpV9bkCuzQQMd5o+1gfFeNwcf6HNkUkMG5/7s1RHnpfegHeGK0yCC6vlDgjQ8Lg1yInuDLcGTknGRQp5sIPOanyrQdo9hOWN3p37niFvovLpiXTzrA4y2ezW9qZFW7YqajL9EsbltG+iKf+egarMG4unnVxZz/fh+8ExcRBFcAm1cpBTUsEyCdfFDR1ws8CQzLjL3w== bernardwang@wmf2866
 
 ldap_only_users:
   abartov:
@@ -5665,10 +5673,6 @@ ldap_only_users:
     ensure: present
     realname: Uzoma Ozurumba
     email: uozurumba-ctr@wikimedia.org
-  bwang:
-    ensure: present
-    realname: Bernard Wang
-    email: bwang@wikimedia.org
   lmeintrup:
     ensure: present
     realname: Lena Meintrup
