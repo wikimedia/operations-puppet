@@ -34,7 +34,7 @@ class openstack::nova::compute::service::victoria::bullseye() {
     #  - start libvirtd-tls.socket
     #  - start libvirtd
     exec {'stop-libvirtd-so-we-can-start-it':
-        command     => 'systemctl stop libvirtd',
+        command     => '/usr/bin/systemctl stop libvirtd',
         refreshonly => true,
         require     => Package[libvirt-daemon-system],
     }
