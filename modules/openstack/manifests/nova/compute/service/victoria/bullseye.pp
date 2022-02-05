@@ -39,6 +39,12 @@ class openstack::nova::compute::service::victoria::bullseye() {
         ensure  => 'running',
         enable  => true,
         require => Package[libvirt-daemon-system],
+        before  => Service['libvirtd'],
     }
 
+    service { 'libvirtd-tcp.socket':
+        ensure  => 'stopped',
+        require => Package[libvirt-daemon-system],
+        before  => Service['libvirtd-tls.socket'],
+    }
 }
