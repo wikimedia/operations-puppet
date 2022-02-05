@@ -53,8 +53,14 @@ class ceph::config (
     }
 
     if $enable_libvirt_rbd {
+
+        if debian::codename::le('buster') {
+            ensure_packages([
+              'python-rbd',
+            ])
+        }
+
         ensure_packages([
-          'python-rbd',
           # Enable rbd support in qemu
           'qemu-block-extra',
         ])

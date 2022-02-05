@@ -27,7 +27,6 @@ class openstack::nova::compute::service::victoria::bullseye() {
     package { $packages:
         ensure  => 'present',
         require => Package['busybox'],
-        before  => Package['virt-top'],
     }
 
     # install this later, once the right version of libvirt0 is already present
