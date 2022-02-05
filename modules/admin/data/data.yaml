@@ -358,7 +358,7 @@ groups:
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars, tandic, dannyh]
+              aniketars, tandic, dannyh, auglnkv]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5039,6 +5039,13 @@ users:
     email: bwang@wikimedia.org
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGtXuZDl5axMRtOYQE0LKb68neuEObpZpqrfatTFgo3RZ9cTrxHKhtDMF7GzdtcWA2tJUAduP35R8R5GhAR1lkv5KjfDqjG5l8YczhTVMYSwXuWt0J4MiPP7pEaG7OFGSOq/t2+5Y8fwbGJVK/j6sgZdlR/ncPM6d/nWO0C8RTtX1srK3WfYNprPRY+9ueWJ0/woTL4nxqkFkGvFSSYzyN0StlReBZci4TYe3LoAnkA1TJIztl8h818sIOg/J9ZIbTnWVo1iJowyRVvDy8sndQq0h8aGuK5MfWvitSDVNzrvgTdnHsxrdJObzg/+IjcnBtdMVSr4Lz1Ur97mvFEJ5NkoYhT2tf5vvYnHfKv9D0dxR0k9K7tG5dYiHpIB33JZpQ+i+s5rqfKs+AxxLTAXsdZvXUQhkv1v1RGahfhuPmCDa37fYhNX/ot/P0G0lusw5wWdAfBn09pMvPkAxRy77+76iiWth1uMCRA8wKXpV9bkCuzQQMd5o+1gfFeNwcf6HNkUkMG5/7s1RHnpfegHeGK0yCC6vlDgjQ8Lg1yInuDLcGTknGRQp5sIPOanyrQdo9hOWN3p37niFvovLpiXTzrA4y2ezW9qZFW7YqajL9EsbltG+iKf+egarMG4unnVxZz/fh+8ExcRBFcAm1cpBTUsEyCdfFDR1ws8CQzLjL3w== bernardwang@wmf2866
+  auglnkv:
+    ensure: present
+    uid: 37151
+    gid: 500
+    realname: Alexandra Ugolnikova
+    email: augolnikova@wikimedia.org
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
