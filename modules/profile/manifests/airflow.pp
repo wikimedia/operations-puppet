@@ -129,6 +129,14 @@ class profile::airflow(
                         'description' => 'Local filesystem on the Airflow Scheduler node',
                     },
                 },
+                'environment_extra' => {
+                    # data-engineering/airflow-dags has custom airflow hooks that can use
+                    # Skein to launch jobs in yarn. Skein will be default write runtime
+                    # config files into ~/.skein.  A home dir might not exist for the
+                    # user running airflow, so set SKEIN_CONFIG to write into AIRFLOW_HOME/.skein
+                    # (/srv/airflow-$instance_name is default airflow home in airflow::instance)
+                    'SKEIN_CONFIG' => "/srv/airflow-${instance_name}/.skein"
+                }
             }
 
             # Merge this instance's params with the smart wmf defaults we just constructed.
