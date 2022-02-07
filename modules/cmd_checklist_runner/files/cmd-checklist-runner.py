@@ -31,21 +31,70 @@
 #
 
 import os
+import socket
+import platform
 import sys
 import argparse
 import subprocess
 import yaml
 import logging
+from dataclasses import dataclass
+from enum import Enum, auto
+from typing import Optional, List
+
+
+class InvalidConfigError(Exception):
+    """Class to represent an invalid configuration error."""
+
+
+class TestResult(Enum):
+    """Class to represent a test result."""
+
+    NOTRUN = auto()
+    OK = auto()
+    FAILED = auto()
+
+
+@dataclass(frozen=True)
+class Command:
+    """Class to represent a command to be executed."""
+
+    cmd: str
+    retcode: Optional[int]
+    stdout: Optional[str]
+    stderr: Optional[str]
+
+
+@dataclass()
+class Test:
+    """Class to represent a test to be executed."""
+
+    name: str
+    spec: List[Command]
+    result: Optional[TestResult]
+
+
+@dataclass(frozen=True)
+class Envvar:
+    """Class to represent an envvar."""
+
+    key: str
+    value: str
+
+
+@dataclass(frozen=True)
+class Config:
+    """Class to represent user configuration."""
+
+    envvars: Optional[List[Envvar]]
+    tests: List[Test]
+    exit_code_fail: Optional[bool] = False
 
 
 def read_yaml_file(file):
     try:
         with open(file, "r") as stream:
-            try:
-                return [doc for doc in yaml.safe_load_all(stream)]
-            except yaml.YAMLError as e:
-                logging.error(e)
-                exit(2)
+            return [doc for doc in yaml.safe_load_all(stream)]
     except FileNotFoundError as e:
         logging.error(e)
         exit(2)
@@ -53,55 +102,65 @@ def read_yaml_file(file):
 
 def validate_dictionary(dictionary, keys):
     if not isinstance(dictionary, dict):
-        logging.error(f"not a dictionary:\n{dictionary}")
-        return False
+        raise InvalidConfigError(f"not a dictionary:\n{dictionary}")
     for key in keys:
         if dictionary.get(key) is None:
-            logging.error(f"missing key '{key}' in dictionary:\n{dictionary}")
-            return False
-    return True
+            raise InvalidConfigError(f"missing key '{key}' in dictionary:\n{dictionary}")
 
 
-def load_envs(envvars_dict):
-    for envvars in envvars_dict:
-        logging.debug(envvars.items())
-        for envvar in envvars.items():
-            key = envvar[0]
-            value = envvar[1]
-            logging.debug(f"will try to set envvar: {key}={value}")
-            os.environ[key] = os.getenv(key, value)
+def load_envs(config: Config):
+    for envvar in config.envvars:
+        key = envvar.key
+        value = envvar.value
+        logging.debug(f"will try to set envvar: {key}={value}")
+        os.environ[key] = os.getenv(key, value)
 
 
-def stage_validate_config(args):
+def stage_validate_config(args) -> Config:
+    envvars = []
+    tests = []
+
     docs = read_yaml_file(args.config_file)
     for doc in docs:
         logging.debug(f"validating doc {doc}")
 
         for definition in doc:
             if definition.get("envvars", None):
-                load_envs(definition["envvars"])
+                for envvar in definition["envvars"]:
+                    for key, value in envvar.items():
+                        new_envvar = Envvar(key=key, value=value)
+                        envvars.append(new_envvar)
 
             if definition.get("name", None):
-                if not validate_dictionary(definition, ["name", "tests"]):
-                    logging.error(f"couldn't validate file '{args.config_file}'")
-                    return False
-                for test in definition["tests"]:
-                    if not validate_dictionary(test, ["cmd"]):
-                        logging.error(f"couldn't validate file '{args.config_file}'")
-                        return False
+                validate_dictionary(definition, ["name", "tests"])
 
-                ctx.checklist_dict = doc
+                test_cmds = []
+                for test in definition["tests"]:
+                    validate_dictionary(test, ["cmd"])
+                    cmd = Command(
+                        cmd=test.get("cmd"),
+                        retcode=test.get("retcode", None),
+                        stdout=test.get("stdout", None),
+                        stderr=test.get("stderr", None),
+                    )
+
+                    test_cmds.append(cmd)
+
+                test = Test(name=definition.get("name"), spec=test_cmds, result=TestResult.NOTRUN)
+                tests.append(test)
 
     logging.debug(f"'{args.config_file}' seems valid")
-    return True
+    return Config(envvars=envvars, tests=tests, exit_code_fail=args.exit_code_fail)
 
 
-def cmd_run(cmd, expected_retcode, expected_stdout, expected_stderr):
+def cmd_run(command: Command) -> bool:
     success = True
-    expanded_cmd = os.path.expandvars(cmd)
+
+    expanded_cmd = os.path.expandvars(command.cmd)
     logging.debug(f"running command: {expanded_cmd}")
     r = subprocess.run(expanded_cmd, capture_output=True, shell=True)
 
+    expected_retcode = command.retcode
     if expected_retcode is not None:
         if r.returncode != expected_retcode:
             logging.warning(
@@ -112,6 +171,7 @@ def cmd_run(cmd, expected_retcode, expected_stdout, expected_stderr):
     else:
         logging.debug("no retcode defined for command, ignoring")
 
+    expected_stdout = command.stdout
     if expected_stdout is not None:
         stdout = r.stdout.decode("utf-8").strip()
         if stdout != expected_stdout:
@@ -122,6 +182,7 @@ def cmd_run(cmd, expected_retcode, expected_stdout, expected_stderr):
     else:
         logging.debug("no stdout defined for command, ignoring")
 
+    expected_stderr = command.stderr
     if expected_stderr is not None:
         stderr = r.stderr.decode("utf-8").strip()
         if stderr != expected_stderr:
@@ -135,39 +196,44 @@ def cmd_run(cmd, expected_retcode, expected_stdout, expected_stderr):
     return success
 
 
-def test_run(test_definition):
-    logging.info("running test: {}".format(test_definition["name"]))
+def test_run(test: Test):
+    logging.info(f"running: {test.name}")
 
-    for test in test_definition["tests"]:
-        if cmd_run(
-            test["cmd"],
-            test.get("retcode", None),
-            test.get("stdout", None),
-            test.get("stderr", None),
-        ):
+    for command in test.spec:
+        if cmd_run(command):
             continue
 
-        logging.warning("failed test: {}".format(test_definition["name"]))
-        ctx.counter_test_failed += 1
+        logging.warning(f"failed test: {test.name}")
+        test.result = TestResult.FAILED
         return
 
-    ctx.counter_test_ok += 1
+    test.result = TestResult.OK
 
 
-def stage_run_tests(args):
-    for test_definition in ctx.checklist_dict:
-        test_run(test_definition)
+def stage_run_tests(config: Config):
+    load_envs(config)
+
+    for test in config.tests:
+        test_run(test)
 
 
-def stage_report(args):
+def stage_report(config: Config):
+
+    tests_ok = 0
+    tests_failed = 0
+    for test in config.tests:
+        if test.result == TestResult.OK:
+            tests_ok += 1
+        elif test.result == TestResult.FAILED:
+            tests_failed += 1
+
     logging.info("---")
-    total = ctx.counter_test_ok + ctx.counter_test_failed
-    logging.info("--- passed tests: {}".format(ctx.counter_test_ok))
-    logging.info("--- failed tests: {}".format(ctx.counter_test_failed))
-    logging.info("--- total tests: {}".format(total))
+    logging.info(f"--- passed tests: {tests_ok}")
+    logging.info(f"--- failed tests: {tests_failed}")
+    logging.info(f"--- total tests: {tests_ok + tests_failed}")
 
     exit_code = 0
-    if args.exit_code_fail and ctx.counter_test_failed > 0:
+    if config.exit_code_fail and tests_failed > 0:
         exit_code = 1
 
     sys.exit(exit_code)
@@ -191,21 +257,30 @@ def parse_args():
     return parser.parse_args()
 
 
-class Context:
-    def __init__(self):
-        self.checklist_dict = None
-        self.counter_test_failed = 0
-        self.counter_test_ok = 0
+def stage_report_node_info():
+    hostname = socket.gethostname()
 
+    os = "[unknown OS]"
+    try:
+        with open("/etc/os-release", "r") as f:
+            for line in f.readlines():
+                if line.startswith("PRETTY_NAME="):
+                    os = line.split("PRETTY_NAME=")[1].strip().strip('"')
+                    break
+    except Exception:
+        pass
 
-# global data
-ctx = Context()
+    release = platform.release()
+
+    logging.info(f"--- {hostname} {os} {release}")
+    logging.info("---")
 
 
 def main():
     args = parse_args()
 
-    logging_format = "[%(filename)s] %(levelname)s: %(message)s"
+    logging_format = "[%(asctime)s] %(levelname)s: %(message)s"
+    date_format = "%Y-%m-%d %H:%M:%S"
     if args.debug:
         logging_level = logging.DEBUG
     else:
@@ -216,12 +291,19 @@ def main():
     logging.addLevelName(
         logging.ERROR, "\033[1;31m%s\033[1;0m" % logging.getLevelName(logging.ERROR)
     )
-    logging.basicConfig(format=logging_format, level=logging_level, stream=sys.stdout)
+    logging.basicConfig(
+        format=logging_format, level=logging_level, stream=sys.stdout, datefmt=date_format
+    )
 
-    if not stage_validate_config(args):
+    try:
+        config = stage_validate_config(args)
+    except InvalidConfigError as e:
+        logging.error(f"couldn't validate file '{args.config_file}': {e}")
         sys.exit(1)
-    stage_run_tests(args)
-    stage_report(args)
+
+    stage_report_node_info()
+    stage_run_tests(config)
+    stage_report(config)
 
 
 if __name__ == "__main__":
