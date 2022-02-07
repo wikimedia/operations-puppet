@@ -5835,3 +5835,7 @@ ldap_only_users:
     ensure: present
     realname: Sérgio Lopes
     email: slopes@wikimedia.org
+  jnuche:
+    ensure: present
+    realname: Jaime Nuche
+    email: jnuche@wikimedia.org
