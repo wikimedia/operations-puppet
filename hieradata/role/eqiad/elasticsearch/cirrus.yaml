@@ -159,9 +159,9 @@ profile::elasticsearch::instances:
         # ES-specific: Not default
         # We want each master on a different row
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic1070.eqiad.wmnet # Row A7
-          - elastic1055.eqiad.wmnet # Row B1
-          - elastic1082.eqiad.wmnet # Row C7
+          - elastic1073.eqiad.wmnet # Row A7
+          - elastic1075.eqiad.wmnet # Row B2
+          - elastic1083.eqiad.wmnet # Row C7
 
         # We want roughly half of hosts to be in omega and half to be in psi
         cluster_hosts:
