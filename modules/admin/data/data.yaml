@@ -516,22 +516,11 @@ groups:
   maps-admins:
     gid: 753
     description: admin for maps clusters
-    members: [sbisson, catrope]
+    members: []
     approval:
       - Subramanya Sastry
-    # TODO: Revisit this when moving into production
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
-                 'ALL = NOPASSWD: /bin/systemctl mask cassandra.service',
-                 'ALL = NOPASSWD: /bin/systemctl unmask cassandra.service',
-                 'ALL = NOPASSWD: /bin/systemctl mask postgresql.service',
-                 'ALL = NOPASSWD: /bin/systemctl unmask postgresql.service',
-                 'ALL = NOPASSWD: /bin/systemctl mask redis-server.service',
-                 'ALL = NOPASSWD: /bin/systemctl unmask redis-server.service',
-                 'ALL = NOPASSWD: /usr/sbin/service redis-server *',
-                 'ALL = NOPASSWD: /usr/sbin/service postgresql *',
-                 'ALL = (postgres) NOPASSWD: ALL',
-                 'ALL = (osmupdater) NOPASSWD: ALL',
-                 'ALL = (cassandra) NOPASSWD: ALL']
+    privileges: []
+    deprecated: true
   maps-roots:
     gid: 752
     description: Root level access for Maps servers
@@ -590,16 +579,9 @@ groups:
   tilerator-admin:
     description: Group of tilerator admins
     gid: 758
-    members: [sbisson, catrope, mbsantos, jgiannelos]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service tilerator *',
-                 'ALL = NOPASSWD: /bin/systemctl mask tilerator.service',
-                 'ALL = NOPASSWD: /bin/systemctl unmask tilerator.service',
-                 'ALL = (tilerator) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /usr/sbin/service tileratorui *',
-                 'ALL = NOPASSWD: /bin/systemctl mask tileratorui.service',
-                 'ALL = NOPASSWD: /bin/systemctl unmask tileratorui.service',
-                 'ALL = (tileratorui) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl *']
+    members: []
+    privileges: []
+    deprecated: true
   mw-log-readers:
     gid: 760
     description: users who can login on mwlog hosts and read mediawiki logs

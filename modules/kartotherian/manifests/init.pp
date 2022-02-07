@@ -25,7 +25,6 @@
 class kartotherian(
     String $pgsql_pass,
     String $storage_id,
-    String $tilerator_storage_id,
     String $wikidata_query_service,
     String  $contact_groups = 'admins',
     Stdlib::Port $port      = 6533,
@@ -45,7 +44,6 @@ class kartotherian(
             osmdb_password         => $pgsql_pass,
             osmdb_user             => $pgsql_user,
             storage_id             => $storage_id,
-            tilerator_storage_id   => $tilerator_storage_id,
             wikidata_query_service => $wikidata_query_service,
         },
         has_spec          => true,

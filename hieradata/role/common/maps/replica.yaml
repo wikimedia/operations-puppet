@@ -1,8 +1,10 @@
 # the following passwords are defined in private repo:
 #profile::maps::osm_master::kartotherian_pass: some_password
-#profile::maps::osm_master::tilerator_pass: some_password
-#profile::maps::osm_master::tileratorui_pass: some_password
 #profile::maps::osm_master::replication_pass: some_password
+
+#Tilerator password is actually for the tilerator user, used by the
+#tegola service. The tilerator service is no longer in use.
+#profile::maps::osm_master::tilerator_pass: some_password
 
 profile::lvs::realserver::pools:
   kartotherian:
@@ -13,14 +15,10 @@ profile::admin::groups:
   - maps-roots
   - maps-admins
   - kartotherian-admin
-  - tilerator-admin
 
 cluster: 'maps'
 
 profile::maps::apps::kartotherian_storage_id: v4
-profile::maps::apps::tilerator_storage_id: v4
-
-profile::maps::apps::tilerator_ncpu_ratio: 0.3
 
 profile::maps::apps::use_proxy: true
 

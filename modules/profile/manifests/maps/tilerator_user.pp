@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Create postgresql users for tilerator
+# Create postgresql users for tilerator and tegola
 #
 # This is extracted to reduce a bit of duplication and to be used as a pseudo
 # loop with `create_resources`. It might make sense to refactor this once we

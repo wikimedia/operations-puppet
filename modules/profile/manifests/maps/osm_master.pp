@@ -7,7 +7,6 @@ class profile::maps::osm_master (
     Array[Stdlib::Host] $maps_hosts              = lookup('profile::maps::hosts'),
     String $kartotherian_pass                    = lookup('profile::maps::osm_master::kartotherian_pass'),
     String $tilerator_pass                       = lookup('profile::maps::osm_master::tilerator_pass'),
-    String $tileratorui_pass                     = lookup('profile::maps::osm_master::tileratorui_pass'),
     String $replication_pass                     = lookup('profile::maps::osm_master::replication_pass'),
     String $swift_key_id                         = lookup('profile::maps::osm_master::swift_key_id'),
     String $swift_password                       = lookup('profile::maps::osm_master::swift_password'),
@@ -86,11 +85,6 @@ class profile::maps::osm_master (
     postgresql::user { 'kartotherian':
         user     => 'kartotherian',
         password => $kartotherian_pass,
-        database => $db_name,
-    }
-    postgresql::user { 'tileratorui':
-        user     => 'tileratorui',
-        password => $tileratorui_pass,
         database => $db_name,
     }
     postgresql::user { 'osmimporter@localhost':
@@ -178,13 +172,6 @@ class profile::maps::osm_master (
         create_resources(postgresql::slave_users, $postgres_replicas, $postgres_replicas_defaults)
     }
 
-    sudo::user { 'tilerator-notification':
-        user       => 'osmupdater',
-        privileges => [
-            'ALL = (tileratorui) NOPASSWD: /usr/local/bin/notify-tilerator',
-        ],
-    }
-
     osm::planet_sync { $db_name:
         ensure                       => present,
         engine                       => $osm_engine,
@@ -198,8 +185,6 @@ class profile::maps::osm_master (
         day                          => $planet_sync_day,
         hours                        => $planet_sync_hours,
         minute                       => $planet_sync_minute,
-        postreplicate_command        => '/usr/local/bin/notify-tilerator',
-        postreplicate_user           => 'tileratorui',
         disable_replication_cron     => $disable_replication_cron,
         disable_tile_generation_cron => $disable_tile_generation_cron,
         eventgate_endpoint           => $eventgate_endpoint,

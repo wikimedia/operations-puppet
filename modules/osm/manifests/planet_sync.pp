@@ -136,18 +136,17 @@ define osm::planet_sync (
         }
         'osm2pgsql': {
             class { 'osm::osm2pgsql':
-                use_proxy             => $use_proxy,
-                proxy_host            => $proxy_host,
-                proxy_port            => $proxy_port,
-                osm_log_dir           => $osm_log_dir,
-                flat_nodes            => $flat_nodes,
-                period                => $period,
-                expire_dir            => $expire_dir,
-                expire_levels         => $expire_levels,
-                memory_limit          => $memory_limit,
-                num_threads           => $num_threads,
-                input_reader_format   => $input_reader_format,
-                postreplicate_command => $postreplicate_command,
+                use_proxy           => $use_proxy,
+                proxy_host          => $proxy_host,
+                proxy_port          => $proxy_port,
+                osm_log_dir         => $osm_log_dir,
+                flat_nodes          => $flat_nodes,
+                period              => $period,
+                expire_dir          => $expire_dir,
+                expire_levels       => $expire_levels,
+                memory_limit        => $memory_limit,
+                num_threads         => $num_threads,
+                input_reader_format => $input_reader_format,
             }
         }
         default: {
@@ -162,19 +161,21 @@ define osm::planet_sync (
         mode   => '0755',
     }
 
-    $ensure_timer = $disable_tile_generation_cron ? {
-        true    => absent,
-        default => $ensure,
-    }
+    if $tile_generation_command {
+        $ensure_timer = $disable_tile_generation_cron ? {
+            true    => absent,
+            default => $ensure,
+        }
 
-    systemd::timer::job { "planet_sync_tile_generation-${name}":
-        ensure          => $ensure_timer,
-        description     => "Run plant sync tile generation for ${name}",
-        user            => $postreplicate_user,
-        command         => $tile_generation_command,
-        logfile_basedir => $osm_log_dir,
-        logfile_name    => $osm_log_file,
-        interval        => {'start' => 'OnCalendar', 'interval' => "*-*-${day} ${hours}:${minute}:00"},
+        systemd::timer::job { "planet_sync_tile_generation-${name}":
+            ensure          => $ensure_timer,
+            description     => "Run plant sync tile generation for ${name}",
+            user            => $postreplicate_user,
+            command         => $tile_generation_command,
+            logfile_basedir => $osm_log_dir,
+            logfile_name    => $osm_log_file,
+            interval        => {'start' => 'OnCalendar', 'interval' => "*-*-${day} ${hours}:${minute}:00"},
+        }
     }
 
     systemd::timer::job { "expire_old_planet_syncs-${name}":
