@@ -51,7 +51,7 @@ class profile::openstack::base::puppetmaster::common(
         ensure => 'present',
         rule   => "saddr (${labs_networks}
                           @resolve((${join($labweb_hosts,' ')}))
-                          @resolve((${join($labweb_hosts,' ')}), AAAA)
+                          @resolve((${join($labweb_hosts,' ')}), AAAA))
                           proto tcp dport 8100 ACCEPT;",
     }
 }
