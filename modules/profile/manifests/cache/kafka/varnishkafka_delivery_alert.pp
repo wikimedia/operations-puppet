@@ -58,5 +58,14 @@ define profile::cache::kafka::varnishkafka_delivery_alert(
         contact_group   => 'analytics',
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
     }
-    # DRMRS-TODO: add vk delivery alert once cps are configured, etc
+    monitoring::check_prometheus { "varnishkafka-${instance}-${cache_segment}-drmrs-kafka_drerr":
+        description     => "cache_${cache_segment}: Varnishkafka ${instance} Delivery Errors per second (drmrs)",
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000253/varnishkafka?panelId=20&fullscreen&orgId=1&var-datasource=drmrs prometheus/ops&var-source=${instance}&var-cp_cluster=cache_${cache_segment}&var-instance=All"],
+        query           => "scalar(sum(irate(varnishkafka_delivery_errors_total{cluster=\"cache_${cache_segment}\", source=\"${instance}\"}[5m])))",
+        prometheus_url  => 'http://prometheus.svc.drmrs.wmnet/ops',
+        warning         => 1,
+        critical        => 5,
+        contact_group   => 'analytics',
+        notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
+    }
 }
