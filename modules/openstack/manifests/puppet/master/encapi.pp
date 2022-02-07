@@ -91,6 +91,7 @@ class openstack::puppet::master::encapi(
             },
         },
         subscribe => File["/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py"],
+        require   => File['/var/log/labspuppetbackend.log'],
     }
 
     nginx::site { 'default': # otherwise we'll cause nginx to be installed with the default port 80 config which will conflict with apache used by the puppetmaster itself
