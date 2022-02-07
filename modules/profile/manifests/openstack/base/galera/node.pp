@@ -6,7 +6,6 @@ class profile::openstack::base::galera::node(
     Array[Stdlib::Fqdn]    $openstack_controllers  = lookup('profile::openstack::base::openstack_controllers'),
     Array[Stdlib::Fqdn]    $designate_hosts        = lookup('profile::openstack::base::designate_hosts'),
     Array[Stdlib::Fqdn]    $labweb_hosts           = lookup('profile::openstack::base::labweb_hosts'),
-    Stdlib::Fqdn           $puppetmaster           = lookup('profile::openstack::base::puppetmaster::web_hostname'),
     Array[Stdlib::Fqdn]    $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
     ) {
 
@@ -58,7 +57,6 @@ class profile::openstack::base::galera::node(
                           @resolve((${join($openstack_controllers,' ')}), AAAA)
                           @resolve((${join($designate_hosts,' ')}))
                           @resolve((${join($designate_hosts,' ')}), AAAA)
-                          @resolve(${puppetmaster}) @resolve(${puppetmaster}, AAAA)
                           @resolve((${join($cinder_backup_nodes,' ')}))
                           @resolve((${join($cinder_backup_nodes,' ')}), AAAA)
                           ${labweb_ips} ${labweb_ip6s}
