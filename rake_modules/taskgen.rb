@@ -146,7 +146,12 @@ class TaskGen < ::Rake::TaskLib
       config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'.red
       config.pattern = changed
     end
-    [:puppet_lint]
+    PuppetLint::RakeTask.new :puppet_lint_fix do |config|
+      config.fail_on_warnings = true  # be strict
+      config.fix = true
+      config.pattern = changed
+    end
+    [:puppet_lint, :puppet_lint_fix]
   end
 
   def setup_dhcp

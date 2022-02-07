@@ -5,7 +5,7 @@ class profile::sretest {
     }
 
     profile::contact { $title:
-        contacts => ['jbond', 'jmm']
+        contacts => ['jbond', 'jmm'],
     }
     $cache_nodes = lookup('cache::nodes')  # lint:ignore:wmf_styleguide
     file {'/var/tmp/testing':
@@ -17,7 +17,7 @@ class profile::sretest {
     }
     file {'/var/tmp/testing/cache.nodes.eqsin.hiera':
         ensure  => file,
-        content => $cache_nodes['upload']['eqsin'].to_yaml
+        content => $cache_nodes['upload']['eqsin'].to_yaml,
     }
     file {'/var/tmp/testing/cache.nodes.eq.pdb':
         ensure  => file,
@@ -25,7 +25,7 @@ class profile::sretest {
     }
     file {'/var/tmp/testing/cache.nodes.eq.hiera':
         ensure  => file,
-        content => ($cache_nodes['upload']['eqsin'] + $cache_nodes['upload']['eqiad']).to_yaml
+        content => ($cache_nodes['upload']['eqsin'] + $cache_nodes['upload']['eqiad']).to_yaml,
     }
     file {'/var/tmp/testing/cache.nodes.pdb':
         ensure  => file,
@@ -33,6 +33,6 @@ class profile::sretest {
     }
     file {'/var/tmp/testing/cache.nodes.hiera':
         ensure  => file,
-        content => $cache_nodes['upload'].to_yaml
+        content => $cache_nodes['upload'].to_yaml,
     }
 }

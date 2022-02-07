@@ -1,4 +1,8 @@
 require 'puppetlabs_spec_helper/rake_tasks'
+# This is disabled by lib/puppetlabs_spec_helper/rake_tasks.rb
+# https://github.com/tphoney/puppetlabs_spec_helper/blob/master/lib/puppetlabs_spec_helper/rake_tasks.rb#L160
+# but its quite usefull so we re-enable it
+PuppetLint.configuration.send('enable_single_quote_string_with_variables')
 private_repo = 'https://gerrit.wikimedia.org/r/labs/private'
 fixture_path = File.join(__dir__, '..', 'spec', 'fixtures')
 private_modules_path = File.join(fixture_path, 'private')
