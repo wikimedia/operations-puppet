@@ -701,11 +701,6 @@ groups:
     members: [twentyafterfour, thcipriani, brennen]
     approval:
       - Tyler Cipriani
-  sc-admins:
-    description: General service cluster admins - sc(a|b) (Deprecated)
-    gid: 779
-    members: []
-    privileges: []
   notebook-roots:
     description: root access on experimental notebook servers (Deprecated)
     gid: 780
