@@ -64,9 +64,8 @@ class profile::toolforge::grid::base (
         require => File[$store],
     }
 
-    if $::labsproject == 'tools' {
+    if ! $::use_puppetdb {
         # The following conflicts with the ssh-known-hosts stuff with puppetdb
-        # TODO: Remove when adding puppetdb to tools
         exec { 'make_known_hosts':
             command => "/bin/cat ${store}/hostkey-* >/etc/ssh/ssh_known_hosts~",
             onlyif  => "/usr/bin/test -n \"\$(/usr/bin/find ${store} -maxdepth 1 \\( -type d -or -type f -name hostkey-\\* \\) -newer /etc/ssh/ssh_known_hosts~)\" -o ! -s /etc/ssh/ssh_known_hosts~",
