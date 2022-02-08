@@ -6,36 +6,10 @@ class testreduce(
     Boolean $install_node,
 ){
 
-    if debian::codename::eq('stretch') {
-
-        apt::repository { 'stretch-node10':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'stretch-wikimedia',
-            components => 'component/node10',
-            before     => Package['nodejs'],
-        }
-
-        $node_packages = ['nodejs', 'nodejs-dev', 'node-abbrev', 'node-ansi-regex',
-                      'node-cacache', 'node-config-chain', 'node-glob', 'node-hosted-git-info',
-                      'node-ini node-npm-package-arg', 'node-jsonstream',
-                      'node-libnpx', 'node-lockfile', 'node-lru-cache',
-                      'node-move-concurrently', 'node-normalize', 'package-data',
-                      'node-gyp', 'node-resolve-from', 'node-npmlog', 'node-osenv',
-                      'node-read-package-json', 'node-request', 'node-retry',
-                      'node-rimraf', 'node-semver', 'node-sha', 'node-slide',
-                      'node-strip-ansi', 'node-tar', 'node-boxen', 'node-which']
-
-        $pinned_packages = join($node_packages, ' ')
-
-        apt::pin { 'node10-stretch-wikimedia':
-            package  => $pinned_packages,
-            pin      => 'release a=stretch-wikimedia',
-            priority => 1005,
-            before   => Package['nodejs'],
-        }
-    }
-
     if $install_node {
+        if debian::codename::eq('stretch') {
+            fail('Should not be installing nodejs on Debian Stretch.')
+        }
         ensure_packages(['nodejs', 'npm'])
     }
 
