@@ -156,6 +156,12 @@ https://ombuds.wikimedia.org:
   assert_status: 200
   assert_body_contains: Ombuds
 
+https://ombudsmen.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 301
+  assert_headers:
+    Location: https://ombuds.wikimedia.org/wiki/Main_Page
+
 https://projectcom.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 200

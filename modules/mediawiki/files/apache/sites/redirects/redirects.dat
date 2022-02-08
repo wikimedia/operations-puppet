@@ -171,6 +171,9 @@ rewrite	wiki.mediawiki.org	https://www.mediawiki.org
 # VRT wiki was previously at otrs-wiki.wikimedia.org (T280400)
 rewrite	otrs-wiki.wikimedia.org	https://vrt-wiki.wikimedia.org
 
+# ombuds wiki was previously at ombudsmen.wikimedia.org (T273323)
+rewrite ombudsmen.wikimedia.org https://ombuds.wikimedia.org
+
 # Continuous Integration T83381, T83399
 rewrite	doc.mediawiki.org	https://doc.wikimedia.org
 rewrite	integration.mediawiki.org	https://integration.wikimedia.org
