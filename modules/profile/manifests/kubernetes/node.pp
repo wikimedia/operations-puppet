@@ -160,7 +160,9 @@ class profile::kubernetes::node(
                 'libnfnetlink0', 'libnftnl11', 'netbase'
             ],
         }
+    }
 
+    if debian::codename::ge('buster') {
         # This is needed to allow ferm to run properly, since
         # from 1.8.3 the default backend is nftables.
         alternatives::select { 'iptables':
