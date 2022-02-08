@@ -65,7 +65,7 @@ class tendril::maintenance (
     }
 
     systemd::timer::job { 'tendril-5m':
-        ensure      => $ensure,
+        ensure      => absent,
         description => 'Regular jobs to refresh some statistics about tendril',
         user        => 'tendril',
         command     => '/usr/local/bin/tendril-cron-5m.pl /etc/mysql/tendril.cnf',
@@ -77,7 +77,7 @@ class tendril::maintenance (
     }
 
     systemd::timer::job { 'tendril-queries':
-        ensure      => $ensure,
+        ensure      => absent,
         description => 'Regular jobs to refresh some statistics about tendril',
         user        => 'tendril',
         command     => '/usr/local/bin/tendril-queries.pl /etc/mysql/tendril.cnf',
