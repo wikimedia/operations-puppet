@@ -26,6 +26,10 @@ wikimail_smarthost:
 # See also https://phabricator.wikimedia.org/T296373 for more context
 profile::mail::default_mail_relay::template: 'profile/mail/default_mail_relay/exim4.minimal.blackhole.erb'
 
+profile::systemd::timesyncd::ntp_servers:
+    - 'ntp-01.cloudinfra.wmflabs.org'
+    - 'ntp-02.cloudinfra.wmflabs.org'
+
 ntp_peers:
     eqiad:
     - 'ntp-01.cloudinfra.wmflabs.org'
