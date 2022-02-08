@@ -58,4 +58,3 @@ profile::contacts::role_contacts: ['ServiceOps SREs']
 
 # SSL/TLS certs - in prod use acmechief, in cloud use certbot to get them
 profile::gitlab::use_acmechief: true
-

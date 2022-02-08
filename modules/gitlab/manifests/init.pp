@@ -2,7 +2,8 @@
 class gitlab (
     Wmflib::Ensure   $ensure                            = 'present',
     Stdlib::Host     $gitlab_domain                     = $facts['networking']['fqdn'],
-    Stdlib::Port     $listen_port                       = 443,
+    Stdlib::Port     $nginx_listen_port                 = 443,
+    Array[Stdlib::IP::Address] $nginx_listen_addresses  = ['0.0.0.0'],
     Stdlib::Httpurl  $external_url                      = "https://${gitlab_domain}/",
     Stdlib::Unixpath $config_dir                        = '/etc/gitlab',
     Stdlib::Unixpath $data_dir                          = '/var/opt/gitlab/git-data',
@@ -45,7 +46,7 @@ class gitlab (
     Boolean          $smtp_enabled                      = true,
     Integer          $smtp_port                         = 25,
     Stdlib::IP::Address $exporter_default_listen        = '127.0.0.1',
-    Array[Stdlib::IP::Address] $listen_addresses        = ['127.0.0.1', '::1'],
+    Array[Stdlib::IP::Address] $ssh_listen_addresses    = ['127.0.0.1', '::1'],
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = {},
     Array[Stdlib::IP::Address] $monitoring_whitelist    = ['127.0.0.1/32'],
     Boolean          $enable_secondary_sshd             = true,
@@ -127,8 +128,8 @@ class gitlab (
     # enable dedicated sshd for GitLab
     $ensure_sshd = $enable_secondary_sshd.bool2str('present','absent')
     class { 'gitlab::ssh' :
-        ensure           => $ensure_sshd,
-        listen_addresses => $listen_addresses,
+        ensure               => $ensure_sshd,
+        ssh_listen_addresses => $ssh_listen_addresses,
     }
 
     if $install_restore_script or $enable_restore {

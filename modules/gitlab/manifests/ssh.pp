@@ -1,26 +1,26 @@
 # @summary configuer gitlab ssh daemon
-# @param listen_addresses the addresses to listen on
+# @param ssh_listen_addresses the addresses to listen on
 # @param ssh_port the port to listen on
 class gitlab::ssh (
-    Wmflib::Ensure             $ensure           = 'present',
-    Array[Stdlib::IP::Address] $listen_addresses = ['127.0.0.1', '::1'],
-    Stdlib::Port               $listen_port      = 22,
-    Stdlib::Unixpath           $base_dir         = '/etc/ssh-gitlab',
-    String                     $syslog_facility  = 'AUTH',
-    String                     $syslog_level     = 'VERBOSE',
-    Integer[1]                 $login_grace_time = 60,
-    String                     $max_start_ups    = '10:30:60',
-    Integer[1]                 $max_sessions     = 10,
-    Integer[1]                 $max_auth_tries   = 3,
-    Array[String]              $accept_env       = ['LANG', 'LC_*'],
-    Array[String]              $host_key_algos   = ['ecdsa', 'ed25519', 'rsa'],
-    Array[String]              $kex_algorithms   = ['curve25519-sha256@libssh.org', 'diffie-hellman-group-exchange-sha256'],
-    Array[String]              $sshd_options     = [],
-    Array[String]              $ciphers          = [
+    Wmflib::Ensure             $ensure               = 'present',
+    Array[Stdlib::IP::Address] $ssh_listen_addresses = ['127.0.0.1', '::1'],
+    Stdlib::Port               $listen_port          = 22,
+    Stdlib::Unixpath           $base_dir             = '/etc/ssh-gitlab',
+    String                     $syslog_facility      = 'AUTH',
+    String                     $syslog_level         = 'VERBOSE',
+    Integer[1]                 $login_grace_time     = 60,
+    String                     $max_start_ups        = '10:30:60',
+    Integer[1]                 $max_sessions         = 10,
+    Integer[1]                 $max_auth_tries       = 3,
+    Array[String]              $accept_env           = ['LANG', 'LC_*'],
+    Array[String]              $host_key_algos       = ['ecdsa', 'ed25519', 'rsa'],
+    Array[String]              $kex_algorithms       = ['curve25519-sha256@libssh.org', 'diffie-hellman-group-exchange-sha256'],
+    Array[String]              $sshd_options         = [],
+    Array[String]              $ciphers              = [
         'chacha20-poly1305@openssh.com', 'aes256-gcm@openssh.com', 'aes128-gcm@openssh.com',
         'aes256-ctr', 'aes192-ctr', 'aes128-ctr'
     ],
-    Array[String]              $macs             = [
+    Array[String]              $macs                 = [
         'hmac-sha2-512-etm@openssh.com', 'hmac-sha2-256-etm@openssh.com', 'umac-128-etm@openssh.com',
         'hmac-sha2-512', 'hmac-sha2-256', 'umac-128@openssh.com'
     ],

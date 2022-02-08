@@ -6,7 +6,7 @@
 # What ports, IPs and protocols we listen for
 Port <%= @listen_port %>
 # Use these options to restrict which interfaces/protocols sshd will bind to
-<%- @listen_addresses.each do |listen_addr| %>
+<%- @ssh_listen_addresses.each do |listen_addr| %>
 ListenAddress <%= listen_addr %>
 <%- end -%>
 Protocol 2

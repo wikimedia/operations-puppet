@@ -1,3 +1,18 @@
+
+<%-
+# IPv6 addresses have to be escaped with [] for gitlab.rb config file
+nginx_listen_addresses_escaped = []
+
+@nginx_listen_addresses.each do | nginx_listen_address |
+  if nginx_listen_address.include?(':')
+      nginx_listen_addresses_escaped.push("[#{nginx_listen_address}]")
+  else
+    nginx_listen_addresses_escaped.push("#{nginx_listen_address}")
+  end
+end
+
+-%>
+
 # The URL through which GitLab will be accessed.
 external_url "<%= @external_url %>"
 
@@ -55,7 +70,7 @@ gitlab_rails['content_security_policy'] = {
 
 
 # nginx and TLS configuration
-nginx['listen_port'] = <%= @listen_port %>
+nginx['listen_port'] = <%= @nginx_listen_port %>
 <%- if @listent_https -%>
 # Whether to redirect http to https.
 nginx['listen_https'] = true
@@ -65,6 +80,7 @@ nginx['ssl_certificate_key'] = "<%= @key_path %>"
 <%- else -%>
 nginx['listen_https'] = false
 <%- end -%>
+nginx['listen_addresses'] = <%= nginx_listen_addresses_escaped %>
 
 # Nginx access logging in JSON - see https://phabricator.wikimedia.org/T274462
 #
