@@ -24,3 +24,8 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - scratch
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
+  maps:
+    volumes:
+      - maps
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
