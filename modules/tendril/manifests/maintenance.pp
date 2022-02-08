@@ -63,28 +63,4 @@ class tendril::maintenance (
         mode    => '0640',
         content => template('tendril/tendril.cnf.erb'),
     }
-
-    systemd::timer::job { 'tendril-5m':
-        ensure      => absent,
-        description => 'Regular jobs to refresh some statistics about tendril',
-        user        => 'tendril',
-        command     => '/usr/local/bin/tendril-cron-5m.pl /etc/mysql/tendril.cnf',
-        require     => [
-            File['/usr/local/bin/tendril-cron-5m.pl'],
-            File['/etc/mysql/tendril.cnf'],
-        ],
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
-    }
-
-    systemd::timer::job { 'tendril-queries':
-        ensure      => absent,
-        description => 'Regular jobs to refresh some statistics about tendril',
-        user        => 'tendril',
-        command     => '/usr/local/bin/tendril-queries.pl /etc/mysql/tendril.cnf',
-        require     => [
-            File['/usr/local/bin/tendril-queries.pl'],
-            File['/etc/mysql/tendril.cnf'],
-        ],
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
-    }
 }
