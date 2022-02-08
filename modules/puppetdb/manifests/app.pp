@@ -33,6 +33,7 @@ class puppetdb::app(
     Pattern[/\d+[dhms]/]          $report_ttl                 = '1d',
     Stdlib::Host                  $db_rw_host                 = $facts['fqdn'],
     Optional[Stdlib::IP::Address] $bind_ip                    = undef,
+    Optional[Stdlib::IP::Address] $bind_ip_insecure           = undef,
     Optional[String]              $db_ro_host                 = undef,
     Optional[String]              $db_password                = undef,
     Optional[String]              $db_ro_password             = undef,
@@ -140,20 +141,24 @@ class puppetdb::app(
         ssldir          => $ssldir,
     }
 
+    $_bind_ip = $bind_ip ? {
+        undef   => {},
+        default => {'ssl-host' => $bind_ip}
+    }
+    $_bind_ip_insecure = $bind_ip_insecure ? {
+        undef   => {},
+        default => {'host' => $bind_ip_insecure}
+    }
     $jetty_settings = {
         'port'        => 8080,
         'ssl-port'    => 8081,
         'ssl-key'     => '/etc/puppetdb/ssl/server.key',
         'ssl-cert'    => '/etc/puppetdb/ssl/cert.pem',
         'ssl-ca-cert' => $ca_path,
-    }
-    $actual_jetty_settings = $bind_ip ? {
-        undef   => $jetty_settings,
-        default => merge($jetty_settings, {'ssl-host' => $bind_ip}),
-    }
+    } + $_bind_ip + $_bind_ip_insecure
 
     puppetdb::config { 'jetty':
-        settings => $actual_jetty_settings,
+        settings => $jetty_settings,
         require  => Base::Expose_puppet_certs['/etc/puppetdb'],
     }
 

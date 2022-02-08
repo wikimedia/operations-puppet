@@ -1,9 +1,15 @@
-# Installs the puppet compiler and all the other software we need.
+# @summary Installs the puppet compiler and all the other software we need.
+# @param ensure ensurable parameter
+# @param version the version of puppet compiler to install
+# @param workdir main working directory
+# @param libdir main software directory
+# @param user the user to run daemons
+# @param homedir the useres home dir
 class puppet_compiler(
-    String           $version    = '2.0.1',  # can and often is overridden in horizon
+    Wmflib::Ensure   $ensure     = 'present',
+    String           $version    = '2.1.0',  # can and often is overridden in horizon
     Stdlib::Unixpath $workdir    = '/srv/jenkins-workspace/puppet-compiler',
     Stdlib::Unixpath $libdir     = '/var/lib/catalog-differ',
-    Wmflib::Ensure   $ensure     = 'present',
     String           $user       = 'jenkins-deploy',
     Stdlib::Unixpath $homedir    = '/srv/home/jenkins-deploy',
 ) {
@@ -17,7 +23,7 @@ class puppet_compiler(
         'nginx', 'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', 'ruby-multi-json',
     ])
     file {'/usr/lib/ruby/vendor_ruby/puppet/application/master.rb':
-        ensure  => present,
+        ensure  => stdlib::ensure($ensure, 'file'),
         content => file('puppet_compiler/puppet_master_pup-8187.rb.nocheck'),
     }
 
@@ -106,11 +112,11 @@ class puppet_compiler(
     # fake it with a file on disk
     file { '/etc/conftool-state':
         ensure => directory,
-        mode   => '0755'
+        mode   => '0755',
     }
     file { '/etc/conftool-state/mediawiki.yaml':
-        ensure => present,
+        ensure => stdlib::ensure($ensure, 'file'),
         mode   => '0444',
-        source => 'puppet:///modules/puppet_compiler/mediawiki.yaml'
+        source => 'puppet:///modules/puppet_compiler/mediawiki.yaml',
     }
 }

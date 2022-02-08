@@ -1,7 +1,13 @@
 # @summary class to install the puppet uploader
 # @param ensure ensurable parameter
+# @param port the port the service listens on
 # @param app_dir location to install the flask app
 # @param upload_dir location to store uploaded files
+# @param webroot the docuemtn root of the website
+# @param jenkins_user user jenkis process uses
+# @param jenkins_group group jenkis process uses
+# @param web_user user web process uses
+# @param web_group group web process uses
 # @param max_content_length The maximum upload size
 # @param realms a hash of realms and the ip addresses that are allowed to make submissions
 class puppet_compiler::uploader (
@@ -59,8 +65,8 @@ class puppet_compiler::uploader (
                 'socket'      => "127.0.0.1:${port}",
                 'wsgi-file'   => $wsgi_file,
                 'die-on-term' => true,
-            }
-        }
+            },
+        },
     }
     file {'/usr/local/sbin/pcc_facts_processor':
         ensure => stdlib::ensure($ensure, 'file'),

@@ -13,8 +13,9 @@ from pathlib import Path
 import pypuppetdb
 import requests
 
+from puppet_compiler import prepare
 from puppet_compiler.config import ControllerConfig
-from puppet_compiler import directories, prepare, puppet, utils
+from puppet_compiler.populate_puppetdb import populate_node, setup_environment
 
 
 def get_args() -> Namespace:
@@ -41,53 +42,20 @@ def get_log_level(args_level: int) -> int:
     }.get(args_level, logging.DEBUG)
 
 
-def prepare_dir(basedir: Path, config: ControllerConfig) -> prepare.ManageCode:
-    """Prepare the puppet_compiler directory"""
-    # TODO: we should have a helper method like this in puppet_compiler
-    jobid = 1
-    directories.FHS.setup(jobid, basedir)
-    managecode = prepare.ManageCode(config, jobid, None)
-    managecode = prepare.ManageCode(config, jobid, None)
-    managecode.base_dir.mkdir(mode=0o755)
-    managecode.prod_dir.mkdir(mode=0o755, parents=True)
-    managecode._prepare_dir(managecode.prod_dir)  # pylint: disable=protected-access
-    return managecode
-
-
-def compile_node(config: ControllerConfig, node: str) -> None:
-    """Compile the catalog for a node"""
-    logging.debug('processing facts file for: %s', node)
-    try:
-        utils.refresh_yaml_date(utils.facts_file(config.puppet_var, node))
-    except utils.FactsFileNotFound as error:
-        logging.error(error)
-        return
-    for manifest_dir in [Path("/dev/null"), None]:
-        dir_str = manifest_dir if manifest_dir is not None else 'default'
-        logging.debug(f"manifest_dir: {dir_str}")
-        succ, _, err = puppet.compile_storeconfigs(
-            node, config.puppet_var, manifest_dir
-        )
-        if succ:
-            logging.info("%s: OK", node)
-        else:
-            logging.error(err.read())
-
-
 def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
     """Update puppetdb with node facts"""
     tmpdir = tempfile.mkdtemp(prefix=__name__)
     environment = 'production' if facts_dir.name == 'production' else 'labs'
-    managecode = prepare_dir(tmpdir, config)
+    managecode = setup_environment(tmpdir, config)
     srcdir = managecode.prod_dir / "src"
     pdb = pypuppetdb.connect()
     with prepare.pushd(srcdir):
-        managecode._copy_hiera(
+        managecode._copy_hiera(  # pylint: disable=protected-access
             managecode.prod_dir, environment
-        )  # pylint: disable=protected-access
-        managecode._create_puppetconf(
+        )
+        managecode._create_puppetconf(  # pylint: disable=protected-access
             managecode.prod_dir, environment
-        )  # pylint: disable=protected-access
+        )
         for fact_file in facts_dir.glob('**/*.yaml'):
             node = fact_file.with_suffix('').name
             try:
@@ -97,7 +65,7 @@ def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
             except requests.exceptions.HTTPError:
                 # dont have info yet
                 pass
-            compile_node(config, node)
+            populate_node(node, config)
     shutil.rmtree(tmpdir)
 
 
