@@ -62,7 +62,7 @@ profile::openstack::base::keystone::auth_protocol: https
 profile::openstack::base::keystone::public_port: 25000
 
 profile::mariadb::cloudinfra::puppetmasters:
-- puppetmaster-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
+- puppetmaster-02.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 profile::mariadb::cloudinfra::cloudinfra_dbs:
 - cloudinfra-db-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 

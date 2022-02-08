@@ -338,7 +338,7 @@ wikimedia_clusters:
 
 profile::mariadb::cloudinfra::puppetmasters:
 - cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
-- cloud-puppetmaster-04.cloudinfra.eqiad.wmflabs
+- cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud
 profile::mariadb::cloudinfra::cloudinfra_dbs:
 - cloudinfra-db01.cloudinfra.eqiad.wmflabs
 - cloudinfra-db02.cloudinfra.eqiad.wmflabs
