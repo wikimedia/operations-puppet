@@ -7,11 +7,12 @@ import json
 from argparse import ArgumentParser
 from configparser import ConfigParser
 from os import access, environ, R_OK
-from textwrap import dedent
-from typing import Dict
+from textwrap import dedent, indent
 
 from apiclient.discovery import build
 from google.oauth2 import service_account
+from requests import get
+from requests.exceptions import RequestException
 from spicerack import Spicerack
 from spicerack.remote import RemoteExecutionError
 
@@ -84,34 +85,74 @@ class GsuiteUsers:
         return self.service.users().get(userKey=email).execute()
 
 
-def get_wikitech_user(email: str) -> Dict:
+def get_wikitech_user(email: str) -> None:
     """Get the wikitech username, email and authenticated_email attributes from wikitech
 
     Arguments:
         email (str):  The email to query
 
-    Returns:
-        dict: Representing the user
     """
     spicerack = Spicerack(dry_run=False)
     confctl = spicerack.confctl('mwconfig')
     primary_site = next(confctl.get(scope='common', name='WMFMasterDatacenter')).val
     mwmaint = spicerack.remote().query(f'A:mw-maintenance and A:{primary_site}')
-    command = ('mwscript extensions/WikimediaMaintenance/getUsersByEmail.php '
-               f'--wiki=labswiki --email {email}')
+    command = (
+        'mwscript extensions/WikimediaMaintenance/getUsersByEmail.php '
+        f'--wiki=labswiki --email {email}'
+    )
     if len(mwmaint) > 1:
         raise ValueError('to many mwmaint hosts')
     print('WikiTech Users:')
     try:
-        _, results = next(mwmaint.run_sync(command, print_output=False, print_progress_bars=False))
+        _, results = next(
+            mwmaint.run_sync(command, print_output=False, print_progress_bars=False)
+        )
     except RemoteExecutionError:
         print(f'\tno user found with {email}')
         return
 
     results = json.loads(results.message().decode())
     for user in results:
-        verified = user['email_authenticated_date'] if user['email_authenticated_date'] else '*NO*'
-        print(f'\tUsername:\t{user["username"]}\n\tVerified Email:\t{verified}')
+        verified = (
+            user['email_authenticated_date']
+            if user['email_authenticated_date']
+            else '*NO*'
+        )
+        print(f'\tUsername:\t{user["username"]}\n\tVerified Email:\t{verified}\n')
+
+
+def get_namely_users(api_key: str, email: str) -> int:
+    """Get the c$user details from namely API.
+
+    Arguments:
+        api_key (str):  The api key
+        email (str):  The email to query
+
+    Returns:
+        int: exit code
+
+    """
+    api_url = 'https://wikimedia.namely.com/api/v1/profiles'
+    headers = {'Authorization': f"Bearer {api_key}", 'Accept': 'application/json'}
+    params = {'filter[email]': email}
+    print('Namely Users:')
+    try:
+        response = get(api_url, headers=headers, params=params)
+        response.raise_for_status()
+    except RequestException as error:
+        print(f"\tError fetching namley data: {error}")
+        return 1
+    json_resp = response.json()
+    for user in json_resp['profiles']:
+        msg = f"""
+        Name:\t\t{user['preferred_name']}
+        Groups:\t\t{', '.join(r['name'] for r in user['links']['groups'])}
+        Title:\t\t{user['job_title']['title']}
+        Type:\t\t{user['employee_type']['title']}
+        Status:\t\t{user['user_status']}
+        Reports to:\t{', '.join(r['preferred_name'] for r in user['reports_to'])}"""
+        print(indent(dedent(msg), '\t'))
+    return 0
 
 
 def get_args():
@@ -128,6 +169,7 @@ def get_args():
         '-K', '--key-file', help='The path to a valid service account JSON key file'
     )
     parser.add_argument('-p', '--proxy-host', help='The proxy host to use')
+    parser.add_argument('-A', '--namely-api-key', help='Api key for namely server')
     parser.add_argument('email', help='The primary email address of the user')
     return parser.parse_args()
 
@@ -136,6 +178,7 @@ def main():
     """Main entry point"""
     args = get_args()
     config = ConfigParser()
+    exit_code = 0
     if access(args.config, R_OK):
         config.read(args.config)
     # prefer arguments to config file
@@ -149,6 +192,11 @@ def main():
             if args.proxy_host
             else config['DEFAULT'].get('proxy_host', None)
         )
+        namely_api_key = (
+            args.namely_api_key
+            if args.namely_api_key
+            else config['DEFAULT'].get('namely_api_key')
+        )
     except KeyError as error:
         return 'no {} specified'.format(error)
     if not access(key_file, R_OK):
@@ -160,6 +208,8 @@ def main():
         # the google api libraries use httplib2 which by default
         # looks in the environment for proxy servers
         environ['https_proxy'] = proxy
+    if namely_api_key is not None:
+        exit_code = get_namely_users(namely_api_key, args.email)
 
     users = GsuiteUsers(key_file, impersonate)
     user = users.get_user(args.email)
@@ -185,7 +235,7 @@ def main():
     \tagreedToTerms:\t{user['agreedToTerms']}
     """
     print(dedent(msg))
-    return 0
+    return exit_code
 
 
 if __name__ == '__main__':

@@ -4,9 +4,10 @@
 # @param service_file_source the location in the secret module of the service account json file
 # @param proxy_server the proxy server to use
 class profile::sre::check_user (
-    String          $super_admin         = lookup('profile::sre::check_user::super_admin'),
-    String          $service_file_source = lookup('profile::sre::check_user::service_file'),
-    Stdlib::HTTPUrl $proxy_server        = lookup('profile::sre::check_user::proxy_server'),
+    String               $super_admin         = lookup('profile::sre::check_user::super_admin'),
+    String               $service_file_source = lookup('profile::sre::check_user::service_file'),
+    Sensitive[String[1]] $namely_api_key      = lookup('profile::sre::check_user::namely_api_key'),
+    Stdlib::HTTPUrl      $proxy_server        = lookup('profile::sre::check_user::proxy_server'),
 ) {
     # python3-google-auth-httplib2 is also required
     # https://github.com/googleapis/google-auth-library-python/issues/190#issuecomment-322837328
@@ -25,6 +26,7 @@ class profile::sre::check_user (
     impersonate: ${super_admin}
     key_file: ${service_file_path}
     proxy_host: ${proxy_server}
+    namely_api_key: ${namely_api_key.unwrap}
     | CONFIG
     file{
         default:
@@ -33,9 +35,13 @@ class profile::sre::check_user (
             group  => 'root',
             mode   => '0440';
         $service_file_path:
-            content => secret($service_file_source);
+            show_diff => false,
+            backup    => false,
+            content   => secret($service_file_source);
         '/etc/check_user.conf':
-            content => $config;
+            show_diff => false,
+            backup    => false,
+            content   => $config;
         '/usr/local/sbin/check_user':
             mode   => '0550',
             source => 'puppet:///modules/profile/sre/check_user.py';

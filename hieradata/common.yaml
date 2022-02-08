@@ -11,6 +11,8 @@ lookup_options:
     convert_to: 'Sensitive'
   profile::pki::client::auth_key:
     convert_to: 'Sensitive'
+  profile::sre::check_user::namely_api_key:
+    convert_to: 'Sensitive'
   profile::cache::varnish::frontend::runtime_params:
     merge: deep
   profile::cache::varnish::frontend::fe_vcl_config:
