@@ -151,7 +151,7 @@ https://steward.wikimedia.org:
   assert_status: 200
   assert_body_contains: Steward Wiki
 
-https://ombudsmen.wikimedia.org:
+https://ombuds.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 200
   assert_body_contains: Ombuds
