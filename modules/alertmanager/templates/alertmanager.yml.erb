@@ -31,6 +31,11 @@ route:
         alertname: '^Icinga/.*'
       receiver: 'irc-spam'
 
+    # Watchrat alerts are routed to irc #wm-operations and noc@wm.o
+    - match:
+        job: 'blackbox/watchrat'
+      receiver: 'noc-ircmail'
+
     # Team routes
     - match:
         team: 'sre'
