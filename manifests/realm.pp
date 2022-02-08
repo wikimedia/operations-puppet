@@ -24,9 +24,9 @@ $site = $facts['ipaddress'] ? {
 # trusted facts are not always available with puppet master --compile (used by pcc)
 # or puppet lookup --compile.  As such we use the fqdn when the trusted facts are
 # not available T248169
-$_trusted_certname = $trusted['certname'] ? {
-    undef   => $facts['fqdn'],
-    default => $trusted['certname'],
+$_trusted_certname = $trusted['certname'].lest || { $facts['fqdn'] }
+unless($_trusted_certname) {
+    fail("unable to determine \$_trusted_certname: from trusted (${trusted['certname']} or facts (${facts['fqdn']})")
 }
 if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.cloud$' {
     $realm = 'labs'
