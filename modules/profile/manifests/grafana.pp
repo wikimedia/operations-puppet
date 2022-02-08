@@ -3,6 +3,7 @@
 # @param admin_password the admin password
 # @param config a hash of config settings.  This paramater uses a 'deep' merge strategy
 # @param ldap a Hash of ldap servers
+# @param execute_alerts boolean enable alert execution engine
 # @param wpt_graphite_proxy_port If set  Configure a local Apache which will serve as
 #        a reverse proxy for WebPageTest's external Graphite instance.
 class profile::grafana (
@@ -13,6 +14,7 @@ class profile::grafana (
     Hash         $config             = lookup('profile::grafana::config'),
     Hash         $ldap               = lookup('profile::grafana::ldap', {'default_value' => undef}),
     Boolean      $enable_cas         = lookup('profile::grafana::enable_cas'),
+    Boolean      $execute_alerts     = lookup('profile::grafana::execute_alerts', {'default_value' => true}),
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port',
                                                             {'default_value' => undef}),
     Array[Stdlib::Fqdn] $server_aliases = lookup('profile::grafana::server_aliases'),
@@ -61,6 +63,10 @@ class profile::grafana (
 
         'auth.proxy' => {
             enabled      => false,
+        },
+
+        'alerting' => {
+            execute_alerts => $execute_alerts
         },
 
         # Since we require users to be members of a trusted LDAP group

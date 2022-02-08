@@ -1,1 +1,2 @@
 profile::grafana::domainrw: "grafana-next-rw.%{lookup('public_domain')}"
+profile::grafana::execute_alerts: false
