@@ -353,3 +353,4 @@ codfw:
     ml-serve2002.codfw.wmnet: [kubesvc]
     ml-serve2003.codfw.wmnet: [kubesvc]
     ml-serve2004.codfw.wmnet: [kubesvc]
+    ml-serve2005.codfw.wmnet: [kubesvc]

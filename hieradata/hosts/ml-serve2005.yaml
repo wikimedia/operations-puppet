@@ -1,0 +1,3 @@
+# See https://phabricator.wikimedia.org/T300744
+profile::base::overlayfs: true
+profile::docker::engine::force_default_docker_storage: true
