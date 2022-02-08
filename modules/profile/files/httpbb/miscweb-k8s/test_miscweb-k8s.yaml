@@ -6,3 +6,11 @@ https://static-bugzilla.wikimedia.org:
 - path: /bug1.html
   assert_status: 200
   assert_body_contains: Documentation is out of date
+
+https://15.wikipedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikipedia is why
+- path: /people.html
+  assert_status: 200
+  assert_body_contains: People make Wikipedia great

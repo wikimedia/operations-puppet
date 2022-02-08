@@ -38,14 +38,6 @@ https://dbtree.wikimedia.org:
   assert_status: 200
   assert_body_contains: 'tendril and dbtree'
 
-https://15.wikipedia.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: Wikipedia is why
-- path: /people.html
-  assert_status: 200
-  assert_body_contains: People make Wikipedia great
-
 https://annual.wikimedia.org:
 - path: /
   assert_status: 302
