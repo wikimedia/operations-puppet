@@ -4,7 +4,7 @@ profile::trafficserver::backend::monitor_enable: true
 profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://15.wikipedia.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://analytics.wikimedia.org
       replacement: https://analytics-web.discovery.wmnet:8443
