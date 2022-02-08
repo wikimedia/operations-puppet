@@ -10,7 +10,7 @@ profile::resolving::domain_search:
   - ulsfo.wmnet
   - eqsin.wmnet
   - drmrs.wmnet
-prometheus::server::mysqld_exporter::mysql::host: db1115.eqiad.wmnet
+prometheus::server::mysqld_exporter::mysql::host: db2093.codfw.wmnet
 prometheus::server::mysqld_exporter::mysql::port: 3306
 prometheus::server::mysqld_exporter::mysql::database: zarcillo
 prometheus::server::mysqld_exporter::mysql::user: prometheus-mysqld-exporter
