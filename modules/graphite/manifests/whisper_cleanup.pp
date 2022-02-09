@@ -24,8 +24,4 @@ define graphite::whisper_cleanup (
             File['/usr/local/bin/whisper-cleanup']
         ],
     }
-    cron { $title:
-        ensure => absent,
-        user   => $user,
-    }
 }
