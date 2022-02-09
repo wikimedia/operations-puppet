@@ -6,4 +6,7 @@ LS_JAVA_OPTS="<%= @service_java_opts %> -javaagent:/usr/share/java/prometheus/jm
 <% end -%>
 <% if @java_home -%>
 LS_JAVA_HOME=<%= @java_home %>
+
+# deprecated in 7.16
+JAVA_HOME=<%= @java_home %>
 <% end -%>
