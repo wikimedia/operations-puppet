@@ -46,6 +46,7 @@ profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 profile::airflow::instances:
   # airflow@analytics-test instance.
   analytics-test:
+    ensure: 'absent' # temporarily ensure absent, we need to rename this without a hyphen for python import issues
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics
     service_group: analytics
