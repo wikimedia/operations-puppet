@@ -15,3 +15,13 @@ profile::admin::groups:
 # See T224828
 raid::md::cron_ensure: absent
 profile::contacts::role_contacts: ['WMCS SREs']
+
+# prometheus-pdns-exporter is scraped by cloudmetrics
+# prometheus-node-exporter by prod servers
+prometheus_nodes:
+    - cloudmetrics1003.eqiad.wmnet
+    - cloudmetrics1004.eqiad.wmnet
+    - prometheus2003.codfw.wmnet
+    - prometheus2004.codfw.wmnet
+    - prometheus2005.codfw.wmnet
+    - prometheus2006.codfw.wmnet

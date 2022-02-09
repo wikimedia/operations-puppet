@@ -1,13 +1,3 @@
-# prometheus-node-exporter by prod servers
-# prometheus-openstack-exporter by cloud servers
-prometheus_nodes:
-    - cloudmetrics1003.eqiad.wmnet
-    - cloudmetrics1004.eqiad.wmnet
-    - prometheus1003.eqiad.wmnet
-    - prometheus1004.eqiad.wmnet
-    - prometheus1005.eqiad.wmnet
-    - prometheus1006.eqiad.wmnet
-
 profile::openstack::eqiad1::fernet_key_rotate_time: '08:00:00'
 profile::openstack::eqiad1::fernet_key_sync_time: '09:00:00'
 

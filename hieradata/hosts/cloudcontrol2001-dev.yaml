@@ -2,16 +2,6 @@ labsldapconfig:
   hostname: cloudservices2002-dev.wikimedia.org
   secondary_hostname: cloudservices2002-dev.wikimedia.org
 
-# prometheus-node-exporter by prod servers
-# prometheus-openstack-exporter by cloud servers
-prometheus_nodes:
-    - cloudmetrics1003.eqiad.wmnet
-    - cloudmetrics1004.eqiad.wmnet
-    - prometheus2003.codfw.wmnet
-    - prometheus2004.codfw.wmnet
-    - prometheus2005.codfw.wmnet
-    - prometheus2006.codfw.wmnet
-
 profile::openstack::codfw1dev::fernet_key_rotate_time: '00:00:00'
 profile::openstack::codfw1dev::fernet_key_sync_time: '01:00:00'
 
