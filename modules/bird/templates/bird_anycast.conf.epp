@@ -34,9 +34,8 @@ function match_route()
 <% } -%>
 
 <% if $do_ipv6 { -%>
-# TODO: update and replace net with the IPv6 address of the first service that uses it.
 filter vips_filter{
-    if ( net.len = 128 && ( net ~ 2620:0:860::/46 ) && match_route6() ) then {
+    if ( net.len = 128 && ( net ~ 2001:67c:930::/48 ) && match_route6() ) then {
         accept;
     }
     else {
