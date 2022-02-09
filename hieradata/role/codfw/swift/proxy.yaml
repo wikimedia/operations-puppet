@@ -6,4 +6,4 @@ profile::admin::groups:
   - swift-roots
 profile::swift::proxy::use_tls: true
 profile::swift::cluster: codfw-prod
-profile::swift::stats_reporter_host: 'ms-fe2005.codfw.wmnet'
+profile::swift::stats_reporter_host: 'ms-fe2009.codfw.wmnet'
