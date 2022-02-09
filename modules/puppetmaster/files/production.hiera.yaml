@@ -19,13 +19,6 @@ hierarchy:
     path: 'regex.yaml'
     options:
       node: "%{::fqdn}"
-  - name: "private site"
-    lookup_key: 'wmflib::expand_path'
-    datadir: "/etc/puppet/private/hieradata"
-    path: "%{::site}"
-  - name: "expand_path site"
-    path: "%{::site}"
-    lookup_key: 'wmflib::expand_path'
   - name: "role"
     paths:
       - "role/%{::site}/%{::_role}.yaml"
@@ -35,6 +28,13 @@ hierarchy:
     paths:
       - "role/%{::site}/%{::_role}.yaml"
       - "role/common/%{::_role}.yaml"
+  - name: "private site"
+    lookup_key: 'wmflib::expand_path'
+    datadir: "/etc/puppet/private/hieradata"
+    path: "%{::site}"
+  - name: "expand_path site"
+    path: "%{::site}"
+    lookup_key: 'wmflib::expand_path'
   - name: "common"
     lookup_key: 'wmflib::expand_path'
     path: "common"
