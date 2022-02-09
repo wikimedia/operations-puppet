@@ -129,9 +129,9 @@ scap::sources:
     repository: data-engineering/airflow-dags
     scap_repository: data-engineering/airflow-dags-scap-analytics
     origin: gitlab
-  airflow-dags/analytics-test:
+  airflow-dags/analytics_test:
     repository: data-engineering/airflow-dags
-    scap_repository: data-engineering/airflow-dags-scap-analytics-test
+    scap_repository: data-engineering/airflow-dags-scap-analytics_test
     origin: gitlab
 
   analytics/refinery:
