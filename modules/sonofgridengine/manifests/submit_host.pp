@@ -5,7 +5,7 @@ class sonofgridengine::submit_host {
     include ::sonofgridengine
 
     package { [ 'jobutils' ]:
-        ensure => present,
+        ensure => latest,
     }
 
     package { 'gridengine-client':
