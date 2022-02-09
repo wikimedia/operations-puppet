@@ -1,6 +1,0 @@
-profile::elasticsearch::dc_settings:
-    cluster_name: production-logstash-codfw
-    cluster_hosts:
-      - logstash2004.codfw.wmnet
-      - logstash2005.codfw.wmnet
-      - logstash2006.codfw.wmnet

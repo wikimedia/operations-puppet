@@ -1,2 +1,0 @@
-profile::cescout::postgres::metadb_dir: '/srv/metadb-data'
-profile::cescout::postgres::version: '9.6'

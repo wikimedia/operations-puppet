@@ -1,6 +1,0 @@
-profile::admin::groups:
-  - udp2log-users
-  - deployment
-  - snapshot-admins
-  - snapshot-users
-  - dumps-roots

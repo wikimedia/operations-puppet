@@ -1,3 +1,0 @@
-cluster: analytics
-profile::admin::groups:
-  - analytics-admins

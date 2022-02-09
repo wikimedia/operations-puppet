@@ -1,4 +1,0 @@
-profile::admin::groups:
-    - wmcs-admin
-contactgroups: wmcs-team-email
-mgmt_contactgroups: wmcs-team-email
