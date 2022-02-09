@@ -115,7 +115,7 @@ class profile::wmcs::nfsclient(
             project     => $::labsproject,
             options     => ['rw', $home_mode],  # Careful with mode on maps - /home is there
             mount_path  => '/mnt/nfs/secondary-maps',
-            server      => 'nfs-maps.wikimedia.org',
+            server      => 'maps-nfs.svc.maps.eqiad1.wikimedia.cloud',
             share_path  => '/srv/maps',
             nfs_version => $nfs_version,
         }
