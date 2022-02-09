@@ -16,11 +16,17 @@ class calico(
 
     case $calico_version {
         '3': {
-            apt::package_from_component { 'calico-future':
-                component => 'component/calico-future',
-                packages  => ['calicoctl', 'calico-cni'],
+            if debian::codename::le('buster') {
+                apt::package_from_component { 'calico-future':
+                    component => 'component/calico-future',
+                    packages  => ['calicoctl', 'calico-cni'],
+                }
+            } else {
+                apt::package_from_component { 'calico317':
+                    component => 'component/calico317',
+                    packages  => ['calicoctl', 'calico-cni'],
+                }
             }
-
             # Create a kubeconfig for calicoctl to use.
             $kubeconfig = '/etc/calico/calicoctl-kubeconfig'
             k8s::kubeconfig { $kubeconfig:

@@ -4,9 +4,16 @@ class k8s::client(
 ) {
 
     if $packages_from_future {
-        apt::package_from_component { 'kubectl-kubernetes-future':
-            component => 'component/kubernetes-future',
-            packages  => ['kubernetes-client'],
+        if debian::codename::le('buster'){
+            apt::package_from_component { 'kubectl-kubernetes-future':
+                component => 'component/kubernetes-future',
+                packages  => ['kubernetes-client'],
+            }
+        } else {
+            apt::package_from_component { 'kubectl-kubernetes116':
+                component => 'component/kubernetes116',
+                packages  => ['kubernetes-client'],
+            }
         }
     } else {
         ensure_packages('kubernetes-client')

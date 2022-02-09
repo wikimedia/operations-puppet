@@ -7,9 +7,16 @@ class k8s::scheduler(
 ) {
 
     if $packages_from_future {
-        apt::package_from_component { 'scheduler-kubernetes-future':
-            component => 'component/kubernetes-future',
-            packages  => ['kubernetes-master'],
+        if debian::codename::le('buster'){
+            apt::package_from_component { 'scheduler-kubernetes-future':
+                component => 'component/kubernetes-future',
+                packages  => ['kubernetes-master'],
+            }
+        } else {
+            apt::package_from_component { 'scheduler-kubernetes116':
+                component => 'component/kubernetes116',
+                packages  => ['kubernetes-master'],
+            }
         }
     } else {
         ensure_packages('kubernetes-master')

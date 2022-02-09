@@ -187,8 +187,11 @@ Version: 11
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
- component/jdk8
+ component/calico317
  component/elastic68
+ component/jdk8
+ component/kubernetes116
+ component/rsyslog-k8s
  thirdparty/ceph-octopus
  thirdparty/elastic65
  thirdparty/elastic68
