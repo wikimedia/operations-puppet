@@ -253,7 +253,7 @@
     # a basic cron file
     - cmd: |
            cat << EOF > ${CRON_FILE}
-           * * * * * ${SCRIPT_FULLPATH}
+           * * * * * jsub ${SCRIPT_FULLPATH}
            EOF
       retcode: 0
       stderr: ""
