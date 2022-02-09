@@ -17,7 +17,7 @@
 
 type Wmflib::Service::Probes = Array[
   Struct[{
-    'type'                => Enum['http'],
+    'type'                => Enum['http', 'tcp', 'tcp-notls'],
     'path'                => Optional[String],
     'host'                => Optional[String],
     'post_json'           => Optional[String],

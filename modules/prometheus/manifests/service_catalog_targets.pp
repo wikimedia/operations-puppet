@@ -64,6 +64,29 @@ class prometheus::service_catalog_targets (
         ]
       }
 
+      if $el['type'] == 'tcp' or $el['type'] == 'tcp-notls' {
+        # Auto-detect TLS from service configuration, and force-disable
+        # when tcp-notls is used.
+        $module = $service_config['encryption'] ? {
+          false   => 'tcp_ip4',
+          default => $el['type'] == 'tcp-notls' ? {
+            true    => 'tcp_ip4',
+            default => 'tcp_tls_ip4',
+          }
+        }
+
+        $res = [
+          {
+            'labels'  => { 'module' => $module },
+            'targets' => [ "${service_name}:${port}@${name_or_address}:${port}" ]
+          },
+          {
+            'labels'  => { 'module' => 'icmp_ip4' },
+            'targets' => [ "${service_name}:${port}@${name_or_address}" ]
+          },
+        ]
+      }
+
       $memo + $res
     }
 
