@@ -14,7 +14,7 @@ profile::idp::cors_allowed_origins:
 profile::idp::services:
   puppetboard:
     id: 1
-    service_id: 'https://puppetboard-idptest.wikimedia.org(/.*)?'
+    service_id: 'https://puppetboard-(idp|saml)test.wikimedia.org(/.*)?'
     required_groups:
       - ops
       - sre-admins

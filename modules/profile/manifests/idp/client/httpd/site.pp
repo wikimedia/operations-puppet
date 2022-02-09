@@ -1,20 +1,21 @@
 # @summary private define used to configure an apache vhost using mod_auth_cas
 # @param vhost_content an erb template file to use for the apache vhost configuration
+# @param virtual_host FQDN of vhost
 # @param server_aliases an array of additional server aliases
 # @param document_root the document root to configure for the apache vhost
-# @param cookie_path The location where cas stores information relating to authentication cookies issued
-# @param certificate_path the SSL certificate path used for validation
-# @param apereo_cas hash holding the login and validation
+# @param cookie_scope The location where cas stores information relating to authentication cookies issued
 # @param authn_header The prefix to use when adding CAS or SAML attributes to the HTTP headers
+# @param attribute_prefix string to use as a prefix for header attribute mapping
 # @param debug Enable cas debug
 # @param priority the priority of the vhost site.  default: 99
 # @param validate_saml if true set CASValidateSAML On
 # @param enable_monitor if true an icinga check to make sure the site correctly redirects
 # @param protected_uri The protected URI endpoint which is validated if "enable_monitor" is set.  default: '/'
 # @param required_groups An array of LDAP groups allowed to access this resource
-# @param acme_chief_cert the name of the acme chief certificate to use
 # @param vhost_settings Allows to pass settings to the vhost config which are unrelated to the IDP setup
 # @param proxied_as_https if true set the proxied_as address to https://${vhost}/
+# @param attribute_delimiter delimeter to use when mapping lists
+# @param environment either production or staging environment
 # @param enable_slo enable the Single Logout (SLO) endpoint, this is called by CAS when someone logs out of the sso session
 # @attribute_delimiter mod_auth_cas will set the value of the attribute header (as described in CASAttributePrefix)
 #   to <attrvalue><CASAttributeDelimiter><attrvalue> in the case of multiple attribute values.
@@ -25,6 +26,7 @@
 #    cookies from being sent over an unencrypted HTTP connection. By default, mod_auth_cas sets the
 #    'Secure' attribute depending on information about the connection (the 'Auto' option).
 #    The options 'On' and 'Off' can be used to override the automatic behaviour.
+# @param acme_chief_cert the name of the acme chief certificate to use
 define profile::idp::client::httpd::site (
     String[1]                     $vhost_content,
     Stdlib::Host                  $virtual_host         = $title,
@@ -44,8 +46,8 @@ define profile::idp::client::httpd::site (
     Boolean                       $enable_slo          = true,
     Enum['None', 'Lax', 'Strict'] $cookie_same_site    = 'Lax',
     Enum['Auto', 'On', 'Off']     $cookie_secure       = 'Auto',
-    Optional[Hash[String,Any]]    $vhost_settings      = {},
-    Optional[Array[String[1]]]    $required_groups     = [],
+    Hash[String,Any]              $vhost_settings      = {},
+    Array[String[1]]              $required_groups     = [],
     Optional[String[1]]           $acme_chief_cert     = undef,
 ) {
     include profile::idp::client::httpd
@@ -59,9 +61,11 @@ define profile::idp::client::httpd::site (
         true    => "https://${title}",
         default => undef,
     }
+    $validate_url_key = $validate_saml.bool2str('validate_url_saml', 'validate_url')
+    $validate_url = $apereo_cas[$environment][$validate_url_key]
     $cas_settings = {
         'CASLoginURL'           => $apereo_cas[$environment]['login_url'],
-        'CASValidateURL'        => $apereo_cas[$environment]['validate_url'],
+        'CASValidateURL'        => $validate_url,
         'CASDebug'              => $debug.bool2str('On', 'Off'),
         'CASRootProxiedAs'      => $proxied_as,
         'CASVersion'            => 2,

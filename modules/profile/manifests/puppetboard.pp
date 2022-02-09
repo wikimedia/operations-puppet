@@ -8,11 +8,29 @@
 #
 # Sample Usage:
 #       include profile::puppetboard
-#
+# @param ensure ensureable
+# @param vhost the fqdn to use for the vhost
+# @param vhost_staging vhost for use in the idp staging environment
+# @param vhost_saml saml vhost for use in the idp staging environment
+# @param puppetdb_host the puppetdb host
+# @param puppetdb_port the puppetdb port
+# @param puppetdb_ssl_verify how we should verify the puppetdb host
+# @param puppetdb_cert the puppetdb certificate
+# @param puppetdb_key the puppetdb key
+# @param puppetdb_proto the protocol to use when connecting to puppetdb
+# @param page_title the html title to use
+# @param localise_timestamp wether to use localised time
+# @param enable_catalog enable the catalog endpoint (could contain sensitive data)
+# @param graph_type the graph type to use
+# @param graph_facts_override list of facts to graph
+# @param query_endpoints_override list of enabled query endpoints
+# @param inventory_facts_override list of inventory facts
+# @param secret_key the django secret key
 class profile::puppetboard (
     Wmflib::Ensure                  $ensure                   = lookup('profile::puppetboard::ensure'),
     Stdlib::Fqdn                    $vhost                    = lookup('profile::puppetboard::vhost'),
     Optional[Stdlib::Fqdn]          $vhost_staging            = lookup('profile::puppetboard::vhost_staging'),
+    Optional[Stdlib::Fqdn]          $vhost_saml               = lookup('profile::puppetboard::vhost_saml'),
     # puppet db settings
     Stdlib::Host                    $puppetdb_host            = lookup('profile::puppetboard::puppetdb_host'),
     Stdlib::Port                    $puppetdb_port            = lookup('profile::puppetboard::puppetdb_port'),
@@ -110,7 +128,6 @@ class profile::puppetboard (
 
     if $vhost_staging {
         profile::idp::client::httpd::site { $vhost_staging:
-            # TODO: move template to hiera config
             vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
             required_groups  => [
                 'cn=ops,ou=groups,dc=wikimedia,dc=org',
@@ -119,6 +136,20 @@ class profile::puppetboard (
             ],
             proxied_as_https => true,
             vhost_settings   => {'uwsgi_port' => $uwsgi_port},
+            environment      => 'staging',
+        }
+    }
+    if $vhost_saml {
+        profile::idp::client::httpd::site { $vhost_saml:
+            vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
+            required_groups  => [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
+                'cn=idptest-users,ou=groups,dc=wikimedia,dc=org',
+            ],
+            proxied_as_https => true,
+            vhost_settings   => {'uwsgi_port' => $uwsgi_port},
+            validate_saml    => true,
             environment      => 'staging',
         }
     }
