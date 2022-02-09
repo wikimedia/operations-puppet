@@ -634,31 +634,6 @@ class profile::prometheus::ops (
         labels     => {}
     }
 
-    # Job definition for atskafka
-    $atskafka_jobs = [
-      {
-        'job_name'        => 'atskafka',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/atskafka_*.yaml"] },
-        ],
-        # rdkafka produces lots of metrics, keep only those we are interested in for atskafka
-        'metric_relabel_configs' => [
-          { 'source_labels' => ['__name__'],
-            'regex'         => '^(atskafka_|go_|process_|rdkafka_producer_(topics_partitions_msgs|topics_batch|msg_cnt|replyq|msg_size|brokers_txbytes|brokers_req_timeouts|brokers_txerrs|brokers_txretries|brokers_rxbytes|brokers_rxerrs|brokers_rtt_min|brokers_rtt_avg|brokers_rtt_max)).*$',
-            'action'        => 'keep'
-          },
-        ]
-      },
-    ]
-
-    # List of hosts running atskafka
-    prometheus::class_config{ "atskafka_${::site}":
-        dest       => "${targets_path}/atskafka_${::site}.yaml",
-        class_name => 'atskafka',
-        port       => 2113,
-        labels     => {}
-    }
-
     # Job definition for memcache_exporter
     $memcached_jobs = [
       {
@@ -2282,7 +2257,7 @@ class profile::prometheus::ops (
         max_block_duration     => $max_block_duration,
         alertmanagers          => $alertmanagers.map |$a| { "${a}:9093" },
         scrape_configs_extra   => [
-            $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $atskafka_jobs, $memcached_jobs,
+            $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $ml_etcd_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $blackbox_service_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $pdns_rec_jobs,
