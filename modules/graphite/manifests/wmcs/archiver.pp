@@ -39,10 +39,6 @@ class graphite::wmcs::archiver {
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 13:00:00'},
         require         => File['/usr/local/bin/archive-instances'],
     }
-    cron { 'archive-deleted-instances':
-        ensure => absent,
-        user   => '_graphite',
-    }
 
     # Clean up archives more than a 90 days old
     systemd::timer::job { 'delete-old-instance-archives':
@@ -51,9 +47,5 @@ class graphite::wmcs::archiver {
         user        => '_graphite',
         command     => '/usr/bin/find /srv/carbon/whisper/archived_metrics -mindepth 2 -maxdepth 2 -mtime +90 -type d -exec /bin/rm -rf \'{}\' \;',
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 12:00:00'},
-    }
-    cron { 'delete-old-instance-archives':
-        ensure => absent,
-        user   => '_graphite',
     }
 }
