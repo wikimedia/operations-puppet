@@ -11,7 +11,7 @@ class profile::wmcs::nfs::standalone(
 
     class {'cloudnfs': }
 
-    $nfs_service_name = "${volumes[0]}.svc.${::labsproject}.${::wmcs_deployment}.wikimedia.cloud"
+    $nfs_service_name = "${volumes[0]}-nfs.svc.${::labsproject}.${::wmcs_deployment}.wikimedia.cloud"
 
     if ($cinder_attached) {
         $nfs_service_ip = ipresolve($nfs_service_name, 4)
