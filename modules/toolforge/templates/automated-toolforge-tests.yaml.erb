@@ -157,6 +157,10 @@
       retcode: 0
       stderr: ""
 
+- name: cleanup any remaining webservice in the grid
+  tests:
+    - cmd: $SUDO webservice stop --backend gridengine
+
 - name: setup jsub env for later tests
   tests:
     # cleanup
