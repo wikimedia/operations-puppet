@@ -1,4 +1,4 @@
-profile::query_service::blazegraph_options:
+profile::query_service::blazegraph_extra_jvm_opts:
   - '-Dhttp.proxyHost=webproxy.codfw.wmnet'
   - '-Dhttp.proxyPort=8080'
   - '-XX:+ExitOnOutOfMemoryError'

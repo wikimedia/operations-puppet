@@ -12,11 +12,9 @@
 # - $username: Username owning the service
 # - $deploy_user: username of deploy user
 # - $use_deployed_config: Whether we should use config in deployed repo or our own
-# - $options: options for Blazegraph startup script
 # - $extra_jvm_opts: Extra JVM configs for blazegraph
 # - $use_geospatial: Turn on blazegraph geospatial features
 # - $journal: Name to assign instance journal. Must be unique per data_dir.
-# - $oauth_settings: should oauth proxy be run along side blazegraph (to be used by nginx)
 define query_service::blazegraph(
     Stdlib::Port $port,
     String $config_file_name,
@@ -28,14 +26,12 @@ define query_service::blazegraph(
     String $heap_size,
     String $username,
     Boolean $use_deployed_config,
-    Array[String] $options,
     Array[String] $extra_jvm_opts,
     Boolean $use_geospatial,
     String $journal,
     String $blazegraph_main_ns,
     String $federation_user_agent,
     String $prefixes_file,
-    Optional[Query_service::OAuthSettings] $oauth_settings = undef
 ) {
     $data_file = "${data_dir}/${journal}.jnl"
 

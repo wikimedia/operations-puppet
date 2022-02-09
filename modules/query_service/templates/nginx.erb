@@ -75,7 +75,6 @@ server {
 
     location /_oauth_token_verify {
       error_page 403 = /error403;
-      proxy_set_header 'X-redirect-url' '<%= @oauth_success_redirect_url %>';
       proxy_pass http://127.0.0.1:9999/oauth/oauth_verify$is_args$args;
       proxy_set_header Host $http_host;
     }

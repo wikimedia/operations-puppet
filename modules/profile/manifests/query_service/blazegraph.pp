@@ -7,7 +7,6 @@ define profile::query_service::blazegraph (
     Stdlib::Port $logstash_logback_port,
     String $heap_size,
     Boolean $use_deployed_config,
-    Array[String] $options,
     Array[String] $extra_jvm_opts,
     String $contact_groups,
     Boolean $monitoring_enabled,
@@ -24,7 +23,7 @@ define profile::query_service::blazegraph (
     String $blazegraph_main_ns,
     String $federation_user_agent,
     String $instance_name = $title,
-    Optional[Query_service::OAuthSettings] $oauth_settings = undef,
+    Boolean $use_oauth = false,
 
 ) {
     require ::profile::query_service::common
@@ -63,7 +62,8 @@ define profile::query_service::blazegraph (
         blazegraph_port    => $blazegraph_port,
         prometheus_port    => $prometheus_port,
         blazegraph_main_ns => $blazegraph_main_ns,
-        collect_via_nginx  => $oauth_settings == undef
+        # The auth flow blocks the exporter from talking through nginx
+        collect_via_nginx  => !$use_oauth,
     }
 
     query_service::blazegraph { $instance_name:
@@ -74,14 +74,12 @@ define profile::query_service::blazegraph (
         log_dir               => $log_dir,
         deploy_name           => $deploy_name,
         username              => $username,
-        options               => $options,
         use_deployed_config   => $use_deployed_config,
         port                  => $blazegraph_port,
         config_file_name      => $config_file_name,
         heap_size             => $heap_size,
         extra_jvm_opts        => $default_extra_jvm_opts + $event_service_jvm_opts + $extra_jvm_opts + "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}",
         use_geospatial        => $use_geospatial,
-        oauth_settings        => $oauth_settings,
         blazegraph_main_ns    => $blazegraph_main_ns,
         prefixes_file         => $prefixes_file,
         federation_user_agent => $federation_user_agent

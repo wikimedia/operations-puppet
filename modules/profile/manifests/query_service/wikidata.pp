@@ -18,7 +18,6 @@ class profile::query_service::wikidata(
     Stdlib::Port $logstash_logback_port = lookup('logstash_logback_port'),
     String $heap_size = lookup('profile::query_service::blazegraph_heap_size', {'default_value' => '31g'}),
     Boolean $use_deployed_config = lookup('profile::query_service::blazegraph_use_deployed_config', {'default_value' => false}),
-    Array[String] $options = lookup('profile::query_service::blazegraph_options'),
     Array[String] $extra_jvm_opts = lookup('profile::query_service::blazegraph_extra_jvm_opts'),
     String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     Boolean $monitoring_enabled = lookup('profile::query_service::blazegraph::monitoring_enabled', {'default_value' => false}),
@@ -53,7 +52,6 @@ class profile::query_service::wikidata(
         logstash_logback_port  => $logstash_logback_port,
         heap_size              => $heap_size,
         use_deployed_config    => $use_deployed_config,
-        options                => $options,
         extra_jvm_opts         => $extra_jvm_opts,
         contact_groups         => $contact_groups,
         monitoring_enabled     => $monitoring_enabled,
@@ -66,6 +64,7 @@ class profile::query_service::wikidata(
         config_file_name       => 'RWStore.wikidata.properties',
         prefixes_file          => 'prefixes.conf',
         use_geospatial         => true,
+        use_oauth              => false,
         federation_user_agent  => $federation_user_agent,
     }
 

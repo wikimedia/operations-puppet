@@ -11,13 +11,11 @@ class profile::query_service::wcqs(
     Stdlib::Port $logstash_logback_port = lookup('logstash_logback_port'),
     String $heap_size = lookup('profile::query_service::blazegraph_heap_size'),
     Boolean $use_deployed_config = lookup('profile::query_service::blazegraph_use_deployed_config'),
-    Array[String] $options = lookup('profile::query_service::blazegraph_options'),
     Array[String] $extra_jvm_opts = lookup('profile::query_service::blazegraph_extra_jvm_opts'),
     String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     Boolean $monitoring_enabled = lookup('profile::query_service::blazegraph::monitoring_enabled'),
     Optional[String] $sparql_query_stream = lookup('profile::query_service::sparql_query_stream', {'default_value' => undef}),
     Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
-    Hash $oauth_settings = lookup('profile::query_service::oauth_settings'),
     String $oauth_access_token_secret = lookup('profile::query_service::oauth_access_token_secret'),
     String $oauth_consumer_secret = lookup('profile::query_service::oauth_consumer_secret'),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
@@ -37,6 +35,11 @@ class profile::query_service::wcqs(
     $uri_scheme_options = ['-DwikibaseConceptUri=http://www.wikidata.org', '-DcommonsConceptUri=https://commons.wikimedia.org']
     $data_options = ['-DwikibaseSomeValueMode=skolem']
 
+    $private_jvm_opts = [
+        "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.accessTokenSecret=${oauth_access_token_secret}",
+        "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.consumerSecret=${oauth_consumer_secret}",
+    ]
+
     profile::query_service::blazegraph { $instance_name:
         username               => $username,
         package_dir            => $package_dir,
@@ -46,8 +49,7 @@ class profile::query_service::wcqs(
         logstash_logback_port  => $logstash_logback_port,
         heap_size              => $heap_size,
         use_deployed_config    => $use_deployed_config,
-        options                => $options,
-        extra_jvm_opts         => $extra_jvm_opts + $uri_scheme_options + $data_options,
+        extra_jvm_opts         => $extra_jvm_opts + $private_jvm_opts + $uri_scheme_options + $data_options,
         contact_groups         => $contact_groups,
         monitoring_enabled     => $monitoring_enabled,
         sparql_query_stream    => $sparql_query_stream,
@@ -61,10 +63,7 @@ class profile::query_service::wcqs(
         use_geospatial         => true,
         journal                => 'wcqs',
         blazegraph_main_ns     => $blazegraph_main_ns,
-        oauth_settings         => $oauth_settings + {
-            'oauth_consumer_secret'     => $oauth_consumer_secret,
-            'oauth_access_token_secret' => $oauth_access_token_secret,
-        },
+        use_oauth              => true,
         federation_user_agent  => $federation_user_agent,
     }
 }

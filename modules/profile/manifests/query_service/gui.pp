@@ -10,24 +10,22 @@ class profile::query_service::gui (
     Boolean $high_query_time_port = lookup('profile::query_service::high_query_time_port', {default_value => false}),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
     Boolean $oauth = lookup('profile::query_service::oauth'),
-    Optional[Hash] $oauth_settings = lookup('profile::query_service::oauth_settings', {default_value => {}}),
     Optional[Stdlib::HTTPSUrl] $gui_url = lookup('profile::query_service::gui_url', {default_value => undef})
 ) {
     require ::profile::query_service::common
 
     class { 'query_service::gui':
-        deploy_mode                => $deploy_mode,
-        package_dir                => $package_dir,
-        data_dir                   => $data_dir,
-        log_dir                    => $log_dir,
-        deploy_name                => $deploy_name,
-        username                   => $username,
-        enable_ldf                 => $enable_ldf,
-        max_query_time_millis      => $max_query_time_millis,
-        blazegraph_main_ns         => $blazegraph_main_ns,
-        oauth                      => $oauth,
-        gui_url                    => $gui_url,
-        oauth_success_redirect_url => $oauth_settings['oauth_success_redirect_url']
+        deploy_mode           => $deploy_mode,
+        package_dir           => $package_dir,
+        data_dir              => $data_dir,
+        log_dir               => $log_dir,
+        deploy_name           => $deploy_name,
+        username              => $username,
+        enable_ldf            => $enable_ldf,
+        max_query_time_millis => $max_query_time_millis,
+        blazegraph_main_ns    => $blazegraph_main_ns,
+        oauth                 => $oauth,
+        gui_url               => $gui_url,
     }
 
     if $high_query_time_port {

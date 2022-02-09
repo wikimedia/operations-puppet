@@ -17,7 +17,6 @@ class profile::query_service::categories(
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     Stdlib::Port $logstash_logback_port = lookup('logstash_logback_port'),
     Boolean $use_deployed_config = lookup('profile::query_service::blazegraph_use_deployed_config', {'default_value' => false}),
-    Array[String] $options = lookup('profile::query_service::blazegraph_options'),
     Array[String] $extra_jvm_opts = lookup('profile::query_service::blazegraph_extra_jvm_opts'),
     String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
@@ -45,7 +44,6 @@ class profile::query_service::categories(
         logstash_logback_port  => $logstash_logback_port,
         heap_size              => '8g',
         use_deployed_config    => $use_deployed_config,
-        options                => $options,
         extra_jvm_opts         => $extra_jvm_opts,
         contact_groups         => $contact_groups,
         monitoring_enabled     => true, # ????
@@ -58,6 +56,7 @@ class profile::query_service::categories(
         config_file_name       => 'RWStore.categories.properties',
         prefixes_file          => 'prefixes.conf',
         use_geospatial         => false,
+        use_oauth              => false,
         federation_user_agent  => $federation_user_agent,
     }
 }
