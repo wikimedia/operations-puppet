@@ -72,6 +72,10 @@ class profile::airflow(
         true    => $airflow_instances.reduce({}) |$instances_accumulator, $key_value| {
             $instance_name = $key_value[0]
             $instance_params = $key_value[1]
+            $airflow_home = "/srv/airflow-${instance_name}"
+            # This is where scap will deploy
+            $deployment_dir = "/srv/deployment/airflow-dags/${instance_name}"
+
 
             # Used in places where '-', etc. won't work, like database names.
             $instance_name_normalized = regsubst($instance_name, '\W', '_', 'G')
@@ -107,8 +111,10 @@ class profile::airflow(
                 }
             }
 
+
             # Default WMF (analytics cluster, for now) specific instance params.
             $default_wmf_instance_params = {
+                'airflow_home' => $airflow_home,
                 'ferm_srange' => '$ANALYTICS_NETWORKS',
                 'scap_targets' => $default_scap_targets,
                 'airflow_config' => {
@@ -135,7 +141,11 @@ class profile::airflow(
                     # config files into ~/.skein.  A home dir might not exist for the
                     # user running airflow, so set SKEIN_CONFIG to write into AIRFLOW_HOME/.skein
                     # (/srv/airflow-$instance_name is default airflow home in airflow::instance)
-                    'SKEIN_CONFIG' => "/srv/airflow-${instance_name}/.skein"
+                    'SKEIN_CONFIG' => "${airflow_home}/.skein",
+                    # By putting $deployment_dir on python path, it lets dags .py files
+                    # import python modules from there, e.g. import wmf_airflow_common
+                    # or import $instance_name/conf/dag_config.py
+                    'PYTHONPATH' => $deployment_dir,
                 }
             }
 
