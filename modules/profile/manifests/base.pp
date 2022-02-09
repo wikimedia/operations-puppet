@@ -8,6 +8,7 @@ class profile::base(
     String $cluster           = lookup('cluster'),
     Boolean $enable_contacts  = lookup('profile::base::enable_contacts'),
     String $core_dump_pattern = lookup('profile::base::core_dump_pattern'),
+    Boolean $manage_ssh_keys  = lookup('profile::base::manage_ssh_keys', {default_value => true}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -55,7 +56,9 @@ class profile::base(
         core_dump_pattern => $core_dump_pattern,
     }
 
-    class { 'ssh::client': }
+    class { 'ssh::client':
+        manage_ssh_keys => $manage_ssh_keys,
+    }
 
     # # TODO: create profile::ssh::server
     # Ssh server default settings are good for most installs, but some overrides
