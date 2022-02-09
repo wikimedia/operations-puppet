@@ -135,6 +135,7 @@ class profile::puppetboard (
                 'cn=idptest-users,ou=groups,dc=wikimedia,dc=org',
             ],
             proxied_as_https => true,
+            cookie_secure    => 'On',
             vhost_settings   => {'uwsgi_port' => $uwsgi_port},
             environment      => 'staging',
         }
@@ -148,6 +149,7 @@ class profile::puppetboard (
                 'cn=idptest-users,ou=groups,dc=wikimedia,dc=org',
             ],
             proxied_as_https => true,
+            cookie_secure    => 'On',
             vhost_settings   => {'uwsgi_port' => $uwsgi_port},
             validate_saml    => true,
             environment      => 'staging',
