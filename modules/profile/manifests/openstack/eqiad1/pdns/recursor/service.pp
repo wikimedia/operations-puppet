@@ -10,7 +10,8 @@ class profile::openstack::eqiad1::pdns::recursor::service(
     $aliaser_extra_records = lookup('profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records'),
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::eqiad1::pdns::extra_allow_from', {default_value => []}),
     Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::eqiad1::openstack_controllers',  {default_value => []}),
-    ) {
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
+) {
 
     # This iterates on $hosts and returns the entry in $hosts with the same
     #  ipv4 as $::fqdn
@@ -21,6 +22,9 @@ class profile::openstack::eqiad1::pdns::recursor::service(
             $memo
         }
     }
+
+    # for now only prometheus metrics are needed.. maybe something else in the future?
+    $api_allow_hosts = $prometheus_nodes
 
     class {'::profile::openstack::base::pdns::recursor::service':
         keystone_api_fqdn     => $keystone_api_fqdn,
@@ -33,6 +37,11 @@ class profile::openstack::eqiad1::pdns::recursor::service(
         aliaser_extra_records => $aliaser_extra_records,
         extra_allow_from      => $extra_allow_from,
         controllers           => $controllers,
+        pdns_api_allow_from   => flatten([
+            '127.0.0.1',
+            $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 4) },
+            $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 6) }
+        ]),
     }
 
     class{'::profile::openstack::base::pdns::recursor::monitor::rec_control':}

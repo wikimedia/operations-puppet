@@ -1780,7 +1780,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "cloud-dev-pdns-rec_${::site}":
         dest       => "${targets_path}/cloud-dev-pdns-rec_${::site}.yaml",
         class_name => 'role::wmcs::openstack::codfw1dev::services',
-        port       => 9199,
+        port       => 8082,
     }
 
     # jobs for the bacula exporter (stats about executed production backups,

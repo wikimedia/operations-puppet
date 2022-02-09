@@ -141,3 +141,10 @@ dot-to-port-853=yes
 dot-to-auth-names=ns0.wikimedia.org,ns1.wikimedia.org,ns2.wikimedia.org
 <% end -%>
 <% end -%>
+
+<%- if @enable_webserver -%>
+webserver=yes
+webserver-port=8082
+webserver-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
+webserver-allow-from=<%= flatten_ips(@api_allow_from).sort.join(" ") %>
+<%- end -%>

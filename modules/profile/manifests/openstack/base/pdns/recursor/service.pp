@@ -32,7 +32,8 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::base::pdns::extra_allow_from', {default_value => []}),
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::base::openstack_controllers',  {default_value => []}),
-    ) {
+    Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
+) {
 
     include ::network::constants
     $allow_from = flatten([$::network::constants::labs_networks, $extra_allow_from, $monitoring_hosts,
@@ -89,7 +90,9 @@ class profile::openstack::base::pdns::recursor::service(
             max_cache_entries        => 3000000,
             client_tcp_timeout       => 1,
             dnssec                   => 'off',  # T226088 - off until 4.1.x
-            require                  => Interface::Alias[$title]
+            require                  => Interface::Alias[$title],
+            enable_webserver         => debian::codename::ge('bullseye'),
+            api_allow_from           => $pdns_api_allow_from,
     }
 
     class { '::dnsrecursor::labsaliaser':
