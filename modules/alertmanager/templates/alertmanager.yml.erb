@@ -31,7 +31,13 @@ route:
         alertname: '^Icinga/.*'
       receiver: 'irc-spam'
 
-    # Watchrat alerts are routed to irc #wm-operations and noc@wm.o
+    # Fundraising watchrat alerts are routed to irc #wm-operations and fr-tech@wm.o
+    - match:
+        instance: 'https://donate.wikimedia.org/'
+        job: 'blackbox/watchrat'
+      receiver: 'fr-ircmail'
+
+    # Generic Watchrat alerts are routed to irc #wm-operations and noc@wm.o
     - match:
         job: 'blackbox/watchrat'
       receiver: 'noc-ircmail'
@@ -289,6 +295,12 @@ receivers:
     # #ops-eqsin
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7ooh7jsiccviqsicgfzy'
       send_resolved: false
+
+- name: 'fr-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+  email_configs:
+    - to: 'fr-tech@<%= scope.lookupvar('::domain') %>'
 
 inhibit_rules:
   # When ICMP has failed, inhibit TCP/UDP/HTTP since we know they can't
