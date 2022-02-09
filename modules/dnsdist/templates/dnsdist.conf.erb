@@ -48,8 +48,8 @@ setSecurityPollSuffix("")
 -- let queries for the check service go through as they would to pdns-recursor
 addAction(QNameRule("check.wikimedia-dns.org."), PoolAction(""))
 -- to make a distinction between DoH and DoT, add a rule to check where the query was received
-addAction(AndRule({DSTPortRule(443), RegexRule("\\.check\\.wikimedia-dns\\.org$")}), SpoofAction("185.71.138.140"))
-addAction(AndRule({DSTPortRule(853), RegexRule("\\.check\\.wikimedia-dns\\.org$")}), SpoofAction("185.71.138.142"))
+addAction(AndRule({DSTPortRule(443), RegexRule("\\.check\\.wikimedia-dns\\.org$")}), SpoofAction({"185.71.138.140", "2001:67c:930::3"}))
+addAction(AndRule({DSTPortRule(853), RegexRule("\\.check\\.wikimedia-dns\\.org$")}), SpoofAction({"185.71.138.142", "2001:67c:930::5"}))
 
 addAction(AndRule({QNameRule('dough.wikimedia-dns.org.'), QTypeRule(DNSQType.TXT)}), SpoofRawAction("\027Be\032excellent\032to\032each\032other\033", {ttl=2022}))
 <% end -%>
