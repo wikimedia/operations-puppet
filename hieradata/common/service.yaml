@@ -990,7 +990,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: monitoring_setup
+    state: production
     discovery:
       - dnsdisc: k8s-ingress-staging
         active_active: false
