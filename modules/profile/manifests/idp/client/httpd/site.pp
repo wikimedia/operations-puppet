@@ -45,7 +45,7 @@ define profile::idp::client::httpd::site (
     Enum['staging', 'production'] $environment         = 'production',
     Boolean                       $enable_slo          = true,
     Enum['None', 'Lax', 'Strict'] $cookie_same_site    = 'Lax',
-    Enum['Auto', 'On', 'Off']     $cookie_secure       = 'Auto',
+    Enum['Auto', 'On', 'Off']     $cookie_secure       = 'On',
     Hash[String,Any]              $vhost_settings      = {},
     Array[String[1]]              $required_groups     = [],
     Optional[String[1]]           $acme_chief_cert     = undef,
