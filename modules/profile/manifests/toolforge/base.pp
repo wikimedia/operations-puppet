@@ -3,9 +3,6 @@ class profile::toolforge::base(
     $active_mail_relay = lookup('profile::toolforge::active_mail_relay', {default_value => 'tools-mail-02.tools.eqiad.wmflabs'}),
     $mail_domain       = lookup('profile::toolforge::mail_domain', {default_value => 'tools.wmflabs.org'}),
 ){
-
-    require ::profile::toolforge::clush::target
-
     # T292289
     class { 'sslcert::ca_deselect_dstx3': }
 
