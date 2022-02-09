@@ -4,6 +4,7 @@
 #
 class profile::wmcs::nfs::standalone(
     Boolean $cinder_attached = lookup('profile::wcms::nfs::standalone::cinder_attached'),
+    Boolean $host_scratch    = lookup('profile::wcms::nfs::standalone::host_scratch', {'default_value' => false}),
     Array[String] $volumes   = lookup('profile::wcms::nfs::standalone::volumes'),
 ) {
     require profile::openstack::eqiad1::observerenv
@@ -39,6 +40,7 @@ class profile::wmcs::nfs::standalone(
     class {'cloudnfs::fileserver::exports':
         server_vols     => $volumes,
         cinder_attached => $cinder_attached,
+        host_scratch    => $host_scratch,
     }
 
     # state manually managed

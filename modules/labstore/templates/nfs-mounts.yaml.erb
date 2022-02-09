@@ -4,8 +4,10 @@ volumes_served:
   - <%= vol %>
   <% end %>
 <% end -%>
+<% if @host_scratch -%>
 public:
   scratch: '/srv/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
+<% end -%>
 private:
   account-creation-assistance:
     gid: 50088

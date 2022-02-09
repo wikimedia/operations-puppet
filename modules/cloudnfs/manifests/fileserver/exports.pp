@@ -2,6 +2,7 @@
 class cloudnfs::fileserver::exports(
     Array[String] $server_vols,
     Boolean $cinder_attached = true,
+    Boolean $host_scratch = false,
 ){
     ensure_packages(['python3-yaml'])
 
