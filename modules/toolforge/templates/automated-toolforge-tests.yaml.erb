@@ -1,5 +1,5 @@
 # this file is managed by puppet:
-# modules/toolforge/templates/tests.yaml.erb
+# modules/toolforge/templates/automated-toolfoge-tests.yaml.erb
 ---
 - envvars:
   - PROJECT: <%= @labsproject %>
@@ -33,6 +33,116 @@
 - name: verify the grid knows about this tool account
   tests:
     - cmd: $SUDO pwd | grep -q ${NFS_PATH}
+      retcode: 0
+      stderr: ""
+
+- name: jsub using implicit path, buster bastion --> buster grid
+  tests:
+    # cleanup
+    - cmd: $SUDO rm -fv path.err path.out
+    # schedule job
+    - cmd: $SUDO jsub -release buster -N path echo WORKS_BUSTER | grep "has been submitted"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the job
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! $SUDO grep ^WORKS_BUSTER$ path.out
+           ; do sleep 0.5 ; done'
+      retcode: 0
+      stderr: ""
+    # we should have no error messages
+    - cmd: $SUDO cat path.err | wc -l
+      retcode: 0
+      stderr: ""
+      stdout: "0"
+
+- name: jsub using implicit path, buster bastion --> stretch grid (fails)
+  tests:
+    # cleanup
+    - cmd: $SUDO rm -fv path.err path.out
+    # schedule job
+    - cmd: $SUDO jsub -release stretch -N path echo WORKS_STRETCH | grep "has been submitted"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the job (fails)
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! $SUDO grep "No such file or directory" path.err
+           ; do sleep 0.5 ; done'
+      retcode: 0
+      stderr: ""
+
+- name: jsub using explicit path (/bin), buster bastion --> buster grid
+  tests:
+    # cleanup
+    - cmd: $SUDO rm -fv path.err path.out
+    # schedule job
+    - cmd: $SUDO jsub -release buster -N path /bin/echo WORKS_BUSTER | grep "has been submitted"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the job
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! $SUDO grep ^WORKS_BUSTER$ path.out
+           ; do sleep 0.5 ; done'
+      retcode: 0
+      stderr: ""
+    # we should have no error messages
+    - cmd: $SUDO cat path.err | wc -l
+      retcode: 0
+      stderr: ""
+      stdout: "0"
+
+- name: jsub using explicit path (/bin), buster bastion --> stretch grid
+  tests:
+    # cleanup
+    - cmd: $SUDO rm -fv path.err path.out
+    # schedule job
+    - cmd: $SUDO jsub -release stretch -N path /bin/echo WORKS_STRETCH | grep "has been submitted"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the job
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! $SUDO grep ^WORKS_STRETCH$ path.out
+           ; do sleep 0.5 ; done'
+      retcode: 0
+      stderr: ""
+    # we should have no error messages
+    - cmd: $SUDO cat path.err | wc -l
+      retcode: 0
+      stderr: ""
+      stdout: "0"
+
+- name: jsub using explicit path (/usr/bin), buster bastion --> buster grid
+  tests:
+    # cleanup
+    - cmd: $SUDO rm -fv path.err path.out
+    # schedule job
+    - cmd: $SUDO jsub -release buster -N path /usr/bin/echo WORKS_BUSTER | grep "has been submitted"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the job
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! $SUDO grep ^WORKS_BUSTER$ path.out
+           ; do sleep 0.5 ; done'
+      retcode: 0
+      stderr: ""
+    # we should have no error messages
+    - cmd: $SUDO cat path.err | wc -l
+      retcode: 0
+      stderr: ""
+      stdout: "0"
+
+- name: jsub using explicit path (/usr/bin), buster bastion --> stretch grid (fails)
+  tests:
+    # cleanup
+    - cmd: $SUDO rm -fv path.err path.out
+    # schedule job
+    - cmd: $SUDO jsub -release stretch -N path /usr/bin/echo WORKS_STRETCH | grep "has been submitted"
+      retcode: 0
+      stderr: ""
+    # verify: wait for the grid to schedule & run the job
+    - cmd: timeout $VERIFY_TIMEOUT bash -c -- '
+           while ! $SUDO grep "No such file or directory" path.err
+           ; do sleep 0.5 ; done'
       retcode: 0
       stderr: ""
 
