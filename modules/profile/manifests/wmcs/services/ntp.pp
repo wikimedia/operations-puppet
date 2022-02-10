@@ -14,10 +14,12 @@ class profile::wmcs::services::ntp(
     $query_acl = []
     $server_upstreams = []
 
+    $peers = $server_peers.filter |Stdlib::Host $host| { $host != $::facts['networking']['fqdn'] }
+
     ntp::daemon { 'server':
         servers      => $server_upstreams,
         pools        => $server_upstream_pools,
-        peers        => $server_peers,
+        peers        => $peers,
         time_acl     => $networks_acl,
         extra_config => $extra_config,
         query_acl    => $query_acl,
