@@ -98,7 +98,7 @@ groups:
     gid: 703
     description: manage gerrit server
     # qchris is T252194
-    members: &gerrit_root_members [twentyafterfour, hashar, thcipriani, qchris, brennen, dancy]
+    members: &gerrit_root_members [twentyafterfour, hashar, thcipriani, qchris, brennen, dancy, jnuche]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -127,7 +127,7 @@ groups:
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
               jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe,
-              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang]
+              hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
@@ -243,7 +243,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, twentyafterfour, jhuneidi, dancy]
+    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, twentyafterfour, jhuneidi, dancy, jnuche]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -254,7 +254,7 @@ groups:
       - Tyler Cipriani
     members: &contint_admins_members [*ops_members, *contint_roots_members,
               bd808, cscott, krinkle, reedy, marktraceur,
-              gjg, addshore, jhuneidi, dancy]
+              gjg, addshore, jhuneidi, dancy, jnuche]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-slave) NOPASSWD: ALL',
                  'ALL = (doc-uploader) NOPASSWD: ALL',
@@ -457,7 +457,7 @@ groups:
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
-    members: [twentyafterfour, thcipriani, brennen]
+    members: [twentyafterfour, thcipriani, brennen, jnuche]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -816,7 +816,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy]
+    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy, jnuche]
     system_members: [jenkins-slave]
   builder-docker:
     # There is no gid on purpose, same as above
@@ -905,7 +905,7 @@ groups:
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
-    members: [brennen, dancy]
+    members: [brennen, dancy, jnuche]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Lukasz Sobanski
@@ -5043,6 +5043,14 @@ users:
     realname: Alexandra Ugolnikova
     email: augolnikova@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  jnuche:
+    ensure: present
+    uid: 37672
+    gid: 500
+    realname: Jaime Nuche
+    email: jnuche@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnCekTO59nMcPp2rFMzBW/epGzGldjTNLDwi3sGKQPJ jnuche@wikimedia.org
 
 ldap_only_users:
   abartov:
@@ -5832,7 +5840,3 @@ ldap_only_users:
     ensure: present
     realname: Sérgio Lopes
     email: slopes@wikimedia.org
-  jnuche:
-    ensure: present
-    realname: Jaime Nuche
-    email: jnuche@wikimedia.org
