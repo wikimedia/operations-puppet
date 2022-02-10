@@ -1,5 +1,7 @@
 # sets up an Etherpad lite server
-class profile::etherpad {
+class profile::etherpad(
+    Stdlib::IP::Address $listen_ip = lookup('profile::etherpad::listen_ip'),
+){
 
     include ::passwords::etherpad_lite
     include ::profile::prometheus::etherpad_exporter
@@ -9,6 +11,7 @@ class profile::etherpad {
         etherpad_db_host => $passwords::etherpad_lite::etherpad_db_host,
         etherpad_db_name => $passwords::etherpad_lite::etherpad_db_name,
         etherpad_db_pass => $passwords::etherpad_lite::etherpad_db_pass,
+        etherpad_ip      => $listen_ip,
     }
 
     # Icinga process monitoring, T82936
