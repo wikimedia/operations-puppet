@@ -25,15 +25,6 @@ class profile::puppet_compiler::puppetdb (
         master => $master,
     }
 
-    # TODO: convert to systemd::timer::job
-    # periodic script to populate puppetdb. Run at 4 AM every sunday.
-    cron { 'Populate puppetdb':
-        command => "/usr/local/bin/puppetdb-populate --basedir ${puppet_compiler::libdir} > ${puppet_compiler::homedir}/puppetdb-populate.log 2>&1",
-        user    => $puppet_compiler::user,
-        hour    => 4,
-        minute  => 0,
-        weekday => 0,
-    }
     class {'puppet_compiler::uploader':
         max_content_length => $max_content_length,
     }
