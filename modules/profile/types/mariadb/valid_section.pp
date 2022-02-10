@@ -17,6 +17,6 @@ type Profile::Mariadb::Valid_section = Enum[
     'test-s1', 'test-s4', 'test-pc1',
     # Analytics
     'analytics_meta', 'matomo', 'staging',
-    # Zarcillo
-    'zarcillo',
+    # Tendril/Zarcillo
+    'tendril', 'zarcillo',
 ]
