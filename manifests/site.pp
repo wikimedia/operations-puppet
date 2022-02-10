@@ -1440,7 +1440,7 @@ node 'etherpad1002.eqiad.wmnet' {
 
 # Etherpad on bullseye (virtual machine) (T300568)
 node 'etherpad1003.eqiad.wmnet' {
-    role(etherpad)
+    role(insetup)
 }
 
 # Receives log data from Kafka processes it, and broadcasts
