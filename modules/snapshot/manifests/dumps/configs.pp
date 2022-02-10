@@ -27,6 +27,7 @@ class snapshot::dumps::configs(
             global => {
                 dblist        => "${apachedir}/dblists/all.dblist",
                 skipdblist    => "${dblistsdir}/skip.dblist",
+                flowlist      => "${apachedir}/dblists/flow.dblist",
                 keep          => '10',
                 chunksEnabled => '0',
                 adminmail     => 'ops-dumps@wikimedia.org',
@@ -170,7 +171,7 @@ class snapshot::dumps::configs(
             global => {
                 dblist        => "${apachedir}/dblists/all-labs.dblist",
                 closedlist    => "${apachedir}/dblists/closed-labs.dblist",
-                flowlist      => "${apachedir}/dblists/flow_only_labs.dblist",
+                flowlist      => "${apachedir}/dblists/flow-labs.dblist",
                 skipdblist    => "${dblistsdir}/skip-labs.dblist",
                 keep          => '2',
                 chunksEnabled => '0',
@@ -181,7 +182,6 @@ class snapshot::dumps::configs(
             big => {
                 dblist            => "${dblistsdir}/bigwikis-labs.dblist",
                 closedlist        => "${apachedir}/dblists/closed-labs.dblist",
-                flowlist          => "${apachedir}/dblists/flow_only_labs.dblist",
                 skipdblist        => "${dblistsdir}/skipmonitor.dblist",
                 keep              => '2',
                 chunksEnabled     => '1',

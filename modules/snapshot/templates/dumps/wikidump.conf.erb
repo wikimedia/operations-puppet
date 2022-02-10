@@ -8,7 +8,7 @@ dblist=<%= @config[@configtype]['global']['dblist'] %>
 privatelist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/private.dblist
 closedlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/closed.dblist
 skipdblist=<%= @config[@configtype]['global']['skipdblist'] %>
-flowlist=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') -%>/dblists/flow.dblist
+flowlist=<%= @config[@configtype]['global']['flowlist'] %>
 dir=<%= scope.lookupvar('snapshot::dumps::dirs::apachedir') %>
 adminsettings=private/PrivateSettings.php
 tablejobs=<%= scope.lookupvar('snapshot::dumps::dirs::confsdir') -%>/table_jobs.yaml
