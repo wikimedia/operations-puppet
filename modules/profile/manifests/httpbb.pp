@@ -60,9 +60,6 @@ class profile::httpbb (
     httpbb::test_suite {'appserver/test_main.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_main.yaml'
     }
-    httpbb::test_suite {'appserver/test_nonexistent.yaml':
-        source => 'puppet:///modules/profile/httpbb/appserver/test_nonexistent.yaml'
-    }
     httpbb::test_suite {'appserver/test_redirects.yaml':
         source => 'puppet:///modules/profile/httpbb/appserver/test_redirects.yaml'
     }
