@@ -1,39 +1,11 @@
 #!/bin/bash
-# Update facts from all puppet masters to the puppet compiler machine
-#
-# This script must be run from the root of the operations/puppet repository
-# locally from a computer that has root access to all puppet masters and the
-# puppet compiler machine.
-
-set -eu
-
-COMPILERS=${PUPPET_COMPILERS:-pcc-worker1003.puppet-diffs.eqiad1.wikimedia.cloud pcc-worker1002.puppet-diffs.eqiad1.wikimedia.cloud pcc-worker1001.puppet-diffs.eqiad1.wikimedia.cloud}
-RUBY_SCRIPT=$(cat <<'RUBY_SCRIPT'
-require 'safe_yaml'
-SafeYAML::OPTIONS[:default_mode] = :safe
-a = YAML.load(STDIN.read)['puppetmaster::servers']
-puts a.map{|k, v| a[k].map {|v| v['worker']}}.flatten()[0]
-RUBY_SCRIPT
-)
-
-# Check we'll be able to upload facts before the export itself
-for COMPILER in $COMPILERS
-do
-  ssh "$COMPILER" true
-done
-
-# Gather all the facts from one of the masters.
-master=${PUPPET_MASTER:-$(ruby -e "${RUBY_SCRIPT}" < hieradata/common/puppetmaster.yaml)}
-printf "\\n### Syncing facts from %s\\n" "${master}"
-ssh "$master" 'sudo /usr/local/bin/puppet-facts-export'
-# tunnel via your localhost without ever the file touching the disk
-for COMPILER in $COMPILERS
-do
-  printf "copy facts to: %s\\n" "${COMPILER}"
-  scp -3 "$master":/tmp/puppet-facts-export.tar.xz "${COMPILER}":puppet-facts-export.tar.xz
-  ssh "$COMPILER" 'sudo rm -rf /tmp/facts; sudo mkdir -p /tmp/facts'
-  ssh "$COMPILER" 'sudo tar Jxf puppet-facts-export.tar.xz --directory /tmp/facts && sudo chown -R jenkins-deploy:wikidev /tmp/facts/yaml'
-  # Finally, copy all the facts to destination and cleanup
-  ssh "$COMPILER" "sudo rsync --delete -au /tmp/facts/yaml/ /var/lib/catalog-differ/puppet/yaml/${master} && sudo rm -rf /tmp/facts"
-done
-ssh "$master" 'sudo rm /tmp/puppet-facts-export.tar.xz'
+printf "%0.s#" {1..80}
+printf '\n'
+printf "  This script is no longer used to upload facts\n"
+printf "  Please check the following wikitech page for update information:\n"
+printf "    https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Updating_nodes\n\n"
+printf "  For the simple case to update production simply run\n"
+printf "  \$ ./utils/pcc_update_facts.py\n"
+printf "%0.s#" {1..80}
+printf '\n'
+exit 1
