@@ -6,4 +6,4 @@ profile::tlsproxy::envoy::tls_port: 7443
 profile::tlsproxy::envoy::websockets: true
 
 profile::contacts::role_contacts: ['ServiceOps SREs']
-profile::etherpad::listen_ip: '0.0.0.0'
+profile::etherpad::listen_ip: '::'
