@@ -125,6 +125,7 @@ scap::sources:
   # scap deployment source and target. Each
   # of these uses the same source repo, but an
   # instances specific scap repo.
+  # See: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
   airflow-dags/analytics:
     repository: data-engineering/airflow-dags
     scap_repository: data-engineering/airflow-dags-scap-analytics
@@ -132,6 +133,10 @@ scap::sources:
   airflow-dags/analytics_test:
     repository: data-engineering/airflow-dags
     scap_repository: data-engineering/airflow-dags-scap-analytics_test
+    origin: gitlab
+  airflow-dags/research:
+    repository: data-engineering/airflow-dags
+    scap_repository: data-engineering/airflow-dags-scap-research
     origin: gitlab
 
   analytics/refinery:

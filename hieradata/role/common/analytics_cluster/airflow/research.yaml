@@ -30,14 +30,6 @@ profile::airflow::instances:
     service_user: analytics-research
     service_group: analytics-research
     monitoring_enabled: false
-    airflow_config:
-      core:
-        security: kerberos
-        executor: LocalExecutor
-        # This can be an ERB template that will be rendered in airflow::instance.
-        # db_user and db_password params should be set in puppet private
-        # in profile::airflow::instances_secrets.
-        sql_alchemy_conn: mysql://<%= @db_user %>:<%= @db_password %>@an-coord1001.eqiad.wmnet/airflow_research?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
     connections:
       analytics-hive:
         conn_type: hive_metastore
@@ -45,8 +37,5 @@ profile::airflow::instances:
         port: 9083
         extra_dejson: {'authMechanism': 'GSSAPI'}
 
-# TODO: remove this override to automatically deploy and use
-# airflow-dags/platform_eng/dags from data-engineering/airflow-dags
-# repository once we are ready.
-# https://phabricator.wikimedia.org/T295380
-profile::airflow::use_wmf_defaults: false
+
+profile::airflow::database_host_default: an-coord1001.eqiad.wmnet
