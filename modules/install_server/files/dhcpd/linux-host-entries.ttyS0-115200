@@ -337,11 +337,6 @@ host cloudbackup1002-dev {
     fixed-address cloudbackup1002-dev.eqiad.wmnet;
 }
 
-host etherpad1002 {
-    hardware ethernet aa:00:00:70:0e:8b;
-    fixed-address etherpad1002.eqiad.wmnet;
-}
-
 host etherpad1003 {
     hardware ethernet aa:00:00:f6:a7:f2;
     fixed-address etherpad1003.eqiad.wmnet;
