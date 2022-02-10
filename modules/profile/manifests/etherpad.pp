@@ -14,7 +14,7 @@ class profile::etherpad {
     # Icinga process monitoring, T82936
     nrpe::monitor_service { 'etherpad-lite-proc':
         description  => 'etherpad_lite_process_running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^/usr/bin/node /usr/share/etherpad-lite/node_modules/ep_etherpad-lite/node/server.js'",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^/usr/bin/nodejs /usr/share/etherpad-lite/node_modules/ep_etherpad-lite/node/server.js'",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Etherpad.wikimedia.org',
     }
 
