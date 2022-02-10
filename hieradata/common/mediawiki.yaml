@@ -297,8 +297,6 @@ mediawiki::sites:
       - name: quality.wikimedia.org
         params:
           short_urls: true
-      - name: otrs-wiki.wikimedia.org
-        params: *private_wiki
       - name: vrt-wiki.wikimedia.org
         params: *private_wiki
       - name: exec.wikimedia.org
