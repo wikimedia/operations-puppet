@@ -147,6 +147,10 @@ class profile::kubernetes::node(
     # https://phabricator.wikimedia.org/T287238
     # issue: https://github.com/kubernetes/kubernetes/issues/82361
     # fix for k8s 1.17+: https://github.com/kubernetes/kubernetes/pull/81517
+    # Note:
+    # For Bullseye this is not needed anymore, we set iptables-legacy via ferm's
+    # defaults and the Debian upstream version of iptables
+    # is already the one that we need.
     if debian::codename::eq('buster') {
         # We need iptables 1.8.3+ from buster-backports as indicated
         # in https://github.com/kubernetes/kubernetes/issues/82361
@@ -160,9 +164,7 @@ class profile::kubernetes::node(
                 'libnfnetlink0', 'libnftnl11', 'netbase'
             ],
         }
-    }
 
-    if debian::codename::ge('buster') {
         # This is needed to allow ferm to run properly, since
         # from 1.8.3 the default backend is nftables.
         alternatives::select { 'iptables':
