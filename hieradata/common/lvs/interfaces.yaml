@@ -17,6 +17,7 @@ lvs::interfaces::vlan_data:
     netmask: 255.255.252.0
     iface:
       'lvs1013': 'enp4s0f1:10.64.17.13'
+      'lvs1017': 'eno2np1:10.64.17.18'
       'lvs1015': 'enp4s0f1:10.64.17.15'
       'lvs1020': 'ens1f0np0:10.64.17.17'
   private1-c-eqiad:
@@ -24,6 +25,7 @@ lvs::interfaces::vlan_data:
     netmask: 255.255.252.0
     iface:
       'lvs1013': 'enp5s0f0:10.64.33.13'
+      'lvs1017': 'ens1f0np0:10.64.33.18'
       'lvs1014': 'enp5s0f0:10.64.33.14'
       'lvs1020': 'ens1f1np1:10.64.33.17'
   private1-d-eqiad:
@@ -31,6 +33,7 @@ lvs::interfaces::vlan_data:
     netmask: 255.255.252.0
     iface:
       'lvs1013': 'enp5s0f1:10.64.49.13'
+      'lvs1017': 'ens1f1np1:10.64.49.17'
       'lvs1014': 'enp5s0f1:10.64.49.14'
       'lvs1015': 'enp5s0f1:10.64.49.15'
   public1-a-eqiad:
@@ -38,6 +41,7 @@ lvs::interfaces::vlan_data:
     netmask: "255.255.255.192"
     iface:
       'lvs1013': 'enp4s0f0:208.80.154.51'
+      'lvs1017': 'eno1np0:208.80.154.59'
       'lvs1014': 'enp4s0f1:208.80.154.53'
       'lvs1015': 'enp5s0f0:208.80.154.54'
       'lvs1020': 'eno2np1:208.80.154.62'
@@ -46,6 +50,7 @@ lvs::interfaces::vlan_data:
     netmask: "255.255.255.192"
     iface:
       'lvs1013': 'enp4s0f1:208.80.154.167'
+      'lvs1017': 'ens1f0np0:208.80.154.107'
       'lvs1014': 'enp4s0f0:208.80.154.168'
       'lvs1015': 'enp4s0f1:208.80.154.169'
       'lvs1020': 'ens1f0np0:208.80.154.171'
@@ -54,6 +59,7 @@ lvs::interfaces::vlan_data:
     netmask: "255.255.255.192"
     iface:
       'lvs1013': 'enp5s0f0:208.80.154.102'
+      'lvs1017': 'eno2np1:208.80.154.172'
       'lvs1014': 'enp5s0f0:208.80.154.103'
       'lvs1015': 'enp4s0f0:208.80.154.104'
       'lvs1020': 'ens1f1np1:208.80.154.106'
@@ -62,6 +68,7 @@ lvs::interfaces::vlan_data:
     netmask: "255.255.255.224"
     iface:
       'lvs1013': 'enp5s0f1:208.80.155.121'
+      'lvs1017': 'ens1f1np1:208.80.155.114'
       'lvs1014': 'enp5s0f1:208.80.155.122'
       'lvs1015': 'enp5s0f1:208.80.155.123'
       'lvs1020': 'eno1np0:208.80.155.113'
