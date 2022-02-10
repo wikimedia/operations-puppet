@@ -1973,12 +1973,12 @@ node /^ml-serve-ctrl200[12]\.codfw\.wmnet/ {
     role(ml_k8s::master)
 }
 
-node /^ml-serve200[12345]\.codfw\.wmnet/ {
+node /^ml-serve200[123456]\.codfw\.wmnet/ {
     role(ml_k8s::worker)
 }
 
 # New ml-serve nodes T294945
-node /^ml-serve200[678]\.codfw\.wmnet/ {
+node /^ml-serve200[78]\.codfw\.wmnet/ {
     role(insetup)
 }
 
