@@ -1109,10 +1109,6 @@ node 'dbproxy1019.eqiad.wmnet' {
     role(mariadb::proxy::replicas)
 }
 
-node 'dbmonitor1002.wikimedia.org' {
-    role(tendril)
-}
-
 node /^debmonitor[12]002\.(codfw|eqiad)\.wmnet$/ {
     role(debmonitor::server)
 }

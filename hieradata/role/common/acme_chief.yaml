@@ -215,13 +215,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^netmon(1002|2001)\.wikimedia\.org$'
-    tendril:
-        CN: 'tendril-legacy.wikimedia.org'
-        SNI:
-        - 'tendril-legacy.wikimedia.org'
-        challenge: dns-01
-        authorized_hosts:
-        - 'dbmonitor1002.wikimedia.org'
     unified:
         CN: '*.wikipedia.org'
         SNI:
