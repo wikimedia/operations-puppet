@@ -5,7 +5,7 @@ class lvs::configuration {
     $lvs_class_hosts = {
         'high-traffic1' => $::realm ? {
             'production' => $::site ? {
-                'eqiad' => [ 'lvs1013', 'lvs1017', 'lvs1020' ],
+                'eqiad' => [ 'lvs1017', 'lvs1020' ],
                 'codfw' => [ 'lvs2007', 'lvs2010' ],
                 'esams' => [ 'lvs3005', 'lvs3007' ],
                 'ulsfo' => [ 'lvs4005', 'lvs4007' ],
@@ -54,7 +54,6 @@ class lvs::configuration {
     # This is technically redundant information from $lvs_class_hosts, but
     # transforming one into the other in puppet is a huge PITA.
     $lvs_class = $::hostname ? {
-        'lvs1013'      => 'high-traffic1',
         'lvs1014'      => 'high-traffic2',
         'lvs1015'      => 'low-traffic',
         'lvs1017'      => 'high-traffic1',
