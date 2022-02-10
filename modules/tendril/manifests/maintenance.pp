@@ -44,6 +44,7 @@ class tendril::maintenance (
     }
 
     file { '/usr/local/bin/tendril-cron-5m.pl':
+        ensure => absent,
         owner  => 'tendril',
         group  => 'tendril',
         mode   => '0750',
@@ -51,6 +52,7 @@ class tendril::maintenance (
     }
 
     file { '/usr/local/bin/tendril-queries.pl':
+        ensure => absent,
         owner  => 'tendril',
         group  => 'tendril',
         mode   => '0750',
@@ -58,6 +60,7 @@ class tendril::maintenance (
     }
 
     file { '/etc/mysql/tendril.cnf':
+        ensure  => absent,
         owner   => 'tendril',
         group   => 'tendril',
         mode    => '0640',
