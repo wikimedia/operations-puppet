@@ -1425,10 +1425,6 @@ node /^kubemaster[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(kubernetes::master)
 }
 
-# Etherpad on buster (virtual machine)
-node 'etherpad1002.eqiad.wmnet' {
-    role(insetup)
-}
 
 # Etherpad on bullseye (virtual machine) (T300568)
 node 'etherpad1003.eqiad.wmnet' {
