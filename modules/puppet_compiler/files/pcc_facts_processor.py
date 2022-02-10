@@ -48,6 +48,10 @@ def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
     environment = 'production' if facts_dir.name == 'production' else 'labs'
     managecode = setup_environment(tmpdir, config)
     srcdir = managecode.prod_dir / "src"
+    # skip the following hosts as they are quite noisy
+    ignore_filter = [
+        re.compile(r'^fullstackd-\d+.admin-monitoring\.eqiad1\.wikimedia\.cloud$')
+    ]
     pdb = pypuppetdb.connect()
     with prepare.pushd(srcdir):
         managecode._copy_hiera(  # pylint: disable=protected-access
@@ -58,6 +62,9 @@ def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
         )
         for fact_file in facts_dir.glob('**/*.yaml'):
             node = fact_file.with_suffix('').name
+            if any(regex.search(node) for regex in ignore_filter):
+                logging.debug('ignoring node: %s', node)
+                continue
             try:
                 pdb.node(node)
                 logging.debug('skipping node: %s', node)
@@ -65,7 +72,9 @@ def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
             except requests.exceptions.HTTPError:
                 # dont have info yet
                 pass
-            populate_node(node, config)
+            # As we are just using the root logger the following logging check should be fine
+            # at least until volans sees it ...
+            populate_node(node, config, logging.root.level == logging.DEBUG)
     shutil.rmtree(tmpdir)
 
 
