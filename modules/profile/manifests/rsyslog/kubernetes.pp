@@ -9,7 +9,7 @@ class profile::rsyslog::kubernetes (
 ) {
     include profile::rsyslog::shellbox
 
-    if debian::codename::eq('buster') {
+    if debian::codename::ge('buster') {
         apt::package_from_component { 'rsyslog_kubernetes':
             component => 'component/rsyslog-k8s',
             packages  => ['rsyslog-kubernetes'],
