@@ -83,7 +83,7 @@ class profile::gitlab::runner (
         docker_image            => $docker_image,
         gitlab_url              => $gitlab_url,
         runner_name             => $runner_name,
-        exporter_listen_address => $facts['ipaddress'],
+        exporter_listen_address => $facts['ipaddress6'],
         enable_exporter         => $enable_exporter,
     }
 

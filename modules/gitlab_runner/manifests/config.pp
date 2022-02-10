@@ -32,7 +32,7 @@ class gitlab_runner::config (
     file_line { 'gitlab-runner-config-exporter':
         ensure => $enable_exporter.bool2str('present','absent'),
         path   => '/etc/gitlab-runner/config.toml',
-        line   => "listen_address = \"${exporter_listen_address}:${exporter_listen_port}\"",
+        line   => "listen_address = \"[${exporter_listen_address}]:${exporter_listen_port}\"",
         notify => Exec['gitlab-runner-restart'],
     }
 
