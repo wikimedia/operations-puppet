@@ -60,6 +60,14 @@ define puppetmaster::web_frontend(
         # the private repository.
         # We use the private repo for the public key as well as it gets
         # generated on the puppet ca server.
+        #
+        # NOTE: I (AGB) have found that often this class leaves clients rejecting
+        #  a master built this way with complaints about self-signed certs.
+        #  I resolved that issue by copying one additional cert into the 'server'
+        #  subdirectory: 
+        #
+        #  cp /var/lib/puppet/ssl/certs/<fqdn>.pem /var/lib/puppet/server/ssl/certs/<fqdn>.pem
+        #
         file { "${facts['puppet_config']['ssldir']}/certs/${server_name}.pem":
             content   => secret("${cert_secret_path}/${server_name}_pubkey.pem"),
             owner     => 'puppet',
