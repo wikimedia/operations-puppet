@@ -10,8 +10,8 @@ class profile::wmcs::nfsclient(
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers', {'default_value' => []}),
     Stdlib::Fqdn $project_nfs_server_fqdn = lookup('profile::wmcs::nfsclient::project_nfs_server', {'default_value' => 'nfs-tools-project.svc.eqiad.wmnet'}),
     Stdlib::Fqdn $home_nfs_server_fqdn = lookup('profile::wmcs::nfsclient::home_nfs_server', {'default_value' => 'nfs-tools-project.svc.eqiad.wmnet'}),
-    Optional[Stdlib::Unixpath] $project_nfs_server_path = lookup('profile::wmcs::nfsclient::project_nfs_server', {'default_value' => undef}),
-    Optional[Stdlib::Unixpath] $home_nfs_server_path = lookup('profile::wmcs::nfsclient::home_nfs_server', {'default_value' => undef}),
+    Optional[Stdlib::Unixpath] $project_nfs_server_path = lookup('profile::wmcs::nfsclient::project_nfs_server_path', {'default_value' => undef}),
+    Optional[Stdlib::Unixpath] $home_nfs_server_path = lookup('profile::wmcs::nfsclient::home_nfs_server_path', {'default_value' => undef}),
 ) {
     $project_path = $project_nfs_server_path ? {
         undef   => "/srv/misc/shared/${::labsproject}/project",
