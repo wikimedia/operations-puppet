@@ -1,4 +1,4 @@
-# tendril.wikimedia.org -- write heavy!
+# zarcillo database
 
 # Please use separate .cnf templates for each type of server.
 
@@ -40,23 +40,13 @@ connect_timeout    = 3
 max_connect_errors = 1000000000
 query_cache_size   = 0
 query_cache_type   = 0
-<% if @basedir == '/opt/wmf-mariadb104' %>
-# Disable TokuDB for Mariadb 10.4 and Buster #T249085
-# plugin-load        = ha_tokudb
-# tokudb_cache_size              = 30G
-<% else -%>
-plugin-load        = ha_tokudb
-tokudb_cache_size              = 30G
-<% end %>
-#plugin-load        = connect
-#plugin-load        = federated
 open-files-limit   = 100000
 
 table_open_cache       = 5000
 table_definition_cache = 5000
-default-storage-engine = Aria
+default-storage-engine = InnoDB 
 
-transaction-isolation          = READ-COMMITTED
+transaction-isolation          = REPEATABLE-READ
 innodb_file_per_table          = 1
 <% if @innodb_pool_size.nil? -%>
 innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
@@ -68,11 +58,7 @@ innodb_flush_log_at_trx_commit = 0
 innodb_flush_method            = O_DIRECT
 innodb_file_format             = barracuda
 aria_pagecache_buffer_size     = 2G
-<% if @hostname == 'db1115' %>
-event_scheduler = 1
-<% else %>
-event_scheduler = 0
-<% end %>
+event_scheduler = 1 
 
 # T287244
 innodb_checksum_algorithm = full_crc32
@@ -86,10 +72,6 @@ binlog-format                  = <%= @binlog_format %>
 binlog_cache_size              = 1M
 expire_logs_days               = 7
 slave_transaction_retries      = 4294967295
-# Do not enable replication of tendril; the large number of writes cause major issues:
-# T184704#4005398
-binlog-do-db                   = zarcillo
-binlog-do-db                   = heartbeat
 
 # dump and load innodb buffer at start and stop
 innodb_buffer_pool_load_at_startup  = 1
