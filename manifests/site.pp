@@ -1435,7 +1435,7 @@ node /^kubemaster[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
 
 # Etherpad on buster (virtual machine)
 node 'etherpad1002.eqiad.wmnet' {
-    role(etherpad)
+    role(insetup)
 }
 
 # Etherpad on bullseye (virtual machine) (T300568)
