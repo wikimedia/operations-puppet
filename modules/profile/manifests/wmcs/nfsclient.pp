@@ -8,7 +8,19 @@ class profile::wmcs::nfsclient(
     Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_vps'),
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers', {'default_value' => []}),
+    Stdlib::Fqdn $project_nfs_server_fqdn = lookup('profile::wmcs::nfsclient::project_nfs_server', {'default_value' => 'nfs-tools-project.svc.eqiad.wmnet'}),
+    Stdlib::Fqdn $home_nfs_server_fqdn = lookup('profile::wmcs::nfsclient::home_nfs_server', {'default_value' => 'nfs-tools-project.svc.eqiad.wmnet'}),
+    Optional[Stdlib::Unixpath] $project_nfs_server_path = lookup('profile::wmcs::nfsclient::project_nfs_server', {'default_value' => undef}),
+    Optional[Stdlib::Unixpath] $home_nfs_server_path = lookup('profile::wmcs::nfsclient::home_nfs_server', {'default_value' => undef}),
 ) {
+    $project_path = $project_nfs_server_path ? {
+        undef   => "/srv/misc/shared/${::labsproject}/project",
+        default => $project_nfs_server_path
+    }
+    $home_path = $home_nfs_server_path ? {
+        undef   => "/srv/misc/shared/${::labsproject}/home",
+        default => $home_nfs_server_path
+    }
 
     # TODO: Change these "secondary" mentions to "primary"
     # The primary cluster is mounted as secondary for historical reasons and
@@ -18,8 +30,8 @@ class profile::wmcs::nfsclient(
         project     => $::labsproject,
         options     => ['rw', $mode],
         mount_path  => '/mnt/nfs/labstore-secondary-project',
-        share_path  => "/srv/misc/shared/${::labsproject}/project",
-        server      => 'nfs-tools-project.svc.eqiad.wmnet',
+        share_path  => $project_path,
+        server      => $project_nfs_server_fqdn,
         nfs_version => $nfs_version,
     }
 
@@ -28,8 +40,8 @@ class profile::wmcs::nfsclient(
         project     => $::labsproject,
         options     => ['rw', $home_mode],
         mount_path  => '/mnt/nfs/labstore-secondary-home',
-        share_path  => "/srv/misc/shared/${::labsproject}/home",
-        server      => 'nfs-tools-project.svc.eqiad.wmnet',
+        share_path  => $home_path,
+        server      => $project_nfs_server_fqdn,
         nfs_version => $nfs_version,
     }
 
@@ -149,7 +161,7 @@ class profile::wmcs::nfsclient(
             project     => $::labsproject,
             options     => ['rw', $mode],
             mount_path  => '/mnt/nfs/labstore-secondary-tools-home',
-            server      => 'nfs-tools-project.svc.eqiad.wmnet',
+            server      => $project_nfs_server_fqdn,
             share_path  => '/srv/tools/shared/tools/home',
             nfs_version => $nfs_version,
         }
@@ -159,7 +171,7 @@ class profile::wmcs::nfsclient(
             project     => $::labsproject,
             options     => ['rw', $home_mode],
             mount_path  => '/mnt/nfs/labstore-secondary-tools-project',
-            server      => 'nfs-tools-project.svc.eqiad.wmnet',
+            server      => $project_nfs_server_fqdn,
             share_path  => '/srv/tools/shared/tools/project',
             nfs_version => $nfs_version,
         }
