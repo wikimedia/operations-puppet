@@ -78,12 +78,17 @@ class profile::gitlab::runner (
 
     $runner_name = "${::hostname}.${::domain}"
 
+    $exporter_listen_address = $::realm ? {
+        'production' => $facts['ipaddress6'], # export metrics on IPv6 in production
+        default      => $facts['ipaddress'],  # export metrics on IPv4 everywhere else
+    }
+
     class { 'gitlab_runner::config':
         concurrent              => $concurrent,
         docker_image            => $docker_image,
         gitlab_url              => $gitlab_url,
         runner_name             => $runner_name,
-        exporter_listen_address => $facts['ipaddress6'],
+        exporter_listen_address => $exporter_listen_address,
         enable_exporter         => $enable_exporter,
     }
 

@@ -162,7 +162,7 @@ class profile::gitlab(
         smtp_enabled           => $smtp_enabled,
         enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
         ssh_listen_addresses   => [$service_ip_v4, $service_ip_v6],
-        nginx_listen_addresses => [$service_ip_v4, $service_ip_v6], # nginx listen on IPv4 and IPv6, IPv6 has to be in []
+        nginx_listen_addresses => [$service_ip_v4, $service_ip_v6], # nginx listen on IPv4 and IPv6
         install_restore_script => $active_host != $facts['fqdn'], # install restore script on passive GitLab server
         enable_restore         => $enable_restore,
         cert_path              => $cert_path,
