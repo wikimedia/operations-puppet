@@ -969,12 +969,12 @@ node /^db2(094|095)\.codfw\.wmnet/ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-# tendril db + zarcillo master
+# zarcillo master
 node 'db1115.eqiad.wmnet' {
     role(mariadb::misc::db_inventory)
 }
 
-# zarcillo slave / standby tendril host
+# zarcillo slave
 # Active master for orchestrator DB
 node 'db2093.codfw.wmnet' {
     role(mariadb::misc::db_inventory)
