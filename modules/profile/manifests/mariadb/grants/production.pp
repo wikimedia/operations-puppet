@@ -1,4 +1,4 @@
-# root, repl, nagios, tendril, prometheus
+# root, repl, nagios, prometheus
 # WARNING: any root user will have access to these files
 # Do not apply to hosts with users with arbitrary roots
 # or any non-production mysql, such as labs-support hosts,
@@ -10,7 +10,6 @@ class profile::mariadb::grants::production(
     ) {
 
     include passwords::misc::scripts
-    include passwords::tendril
     include passwords::openstack::keystone
     include passwords::testreduce::mysql
     include passwords::racktables
@@ -25,8 +24,6 @@ class profile::mariadb::grants::production(
     $root_pass       = $passwords::misc::scripts::mysql_root_pass
     $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
     $nagios_pass     = $passwords::misc::scripts::nagios_sql_pass
-    $tendril_user    = $passwords::tendril::db_user
-    $tendril_pass    = $passwords::tendril::db_pass
     $prometheus_pass = $passwords::prometheus::db_pass
 
     file { '/etc/mysql/production-grants.sql':
