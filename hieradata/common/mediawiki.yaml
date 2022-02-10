@@ -316,8 +316,6 @@ mediawiki::sites:
         params: *private_wiki
       - name: ombuds.wikimedia.org
         params: *private_wiki
-      - name: ombudsmen.wikimedia.org
-        params: *private_wiki
       - name: projectcom.wikimedia.org
         params: *private_wiki
       - name: techconduct.wikimedia.org
