@@ -9,6 +9,7 @@ import tempfile
 
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
+from subprocess import CalledProcessError, run
 
 import pypuppetdb
 import requests
@@ -141,6 +142,13 @@ def main():
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
     config = ControllerConfig.from_file(args.config, dict())
+    logging.debug('update git repo: %s', config.puppet_src)
+    try:
+        # As we only use this repo for pcc we can just pull origin
+        run('git -C {config.puppet_src} pull', check=True)
+    except CalledProcessError as error:
+        logging.error('Failed to refresh local git repo: %s', error)
+        return 1
     for sub_dir in args.upload_dir.iterdir():
         if sub_dir.is_dir():
             process_dir(sub_dir, args.all, config, args.webroot_dir)
