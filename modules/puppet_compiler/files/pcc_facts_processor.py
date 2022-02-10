@@ -145,7 +145,7 @@ def main():
     logging.debug('update git repo: %s', config.puppet_src)
     try:
         # As we only use this repo for pcc we can just pull origin
-        run('git -C {config.puppet_src} pull', check=True)
+        run(f'git -C {config.puppet_src} pull', check=True)
     except CalledProcessError as error:
         logging.error('Failed to refresh local git repo: %s', error)
         return 1
