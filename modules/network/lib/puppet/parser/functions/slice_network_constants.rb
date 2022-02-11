@@ -42,7 +42,7 @@ module Puppet::Parser::Functions
             "Wrong number of arguments given (#{args.length})")
     end
 
-    all_network_subnets = lookupvar('all_network_subnets')
+    all_network_subnets = lookupvar('network::constants::all_network_subnets')
     realm = args[0]
     options = args[1] if args.length > 1
     requested_site = options['site'] if options

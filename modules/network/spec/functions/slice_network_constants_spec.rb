@@ -6,7 +6,7 @@ describe "slice_network_constants" do
   all_network_subnets = YAML.load_file(File.dirname(__FILE__) + "/../../data/data.yaml")['network::subnets']
 
   before :each do
-    allow(scope).to receive(:lookupvar).with('all_network_subnets').and_return(all_network_subnets)
+    allow(scope).to receive(:lookupvar).with('network::constants::all_network_subnets').and_return(all_network_subnets)
   end
   it "should exist" do
     expect(Puppet::Parser::Functions.function("slice_network_constants")).to eq "function_slice_network_constants"
