@@ -59,11 +59,9 @@ def find_setting(setting, settings):
 
 
 def is_setting_value_matched(expected, actual):
-    if not (type(expected) in (dict, list)):
-        return expected == actual
+    if type(expected) in (dict, list):
+        return expected.sort() == actual.sort()
     else:
-        expected.sort()
-        actual.sort()
         return expected == actual
 
 
