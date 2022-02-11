@@ -3,6 +3,11 @@ class role::prometheus {
         description => 'Prometheus server (main data centres)',
     }
 
+    include ::profile::base::production
+    include ::profile::base::firewall
+
+    include ::profile::lvs::realserver
+
     include ::profile::prometheus::k8s
     include ::profile::prometheus::analytics
     include ::profile::prometheus::services
@@ -14,11 +19,6 @@ class role::prometheus {
     include ::profile::prometheus::pushgateway
 
     include ::profile::alerts::deploy::prometheus
-
-    include ::profile::base::production
-    include ::profile::base::firewall
-
-    include ::profile::lvs::realserver
 
     include ::profile::prometheus::rsyncd
 
