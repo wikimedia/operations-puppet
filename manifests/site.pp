@@ -202,10 +202,6 @@ node 'archiva1002.wikimedia.org' {
     role(archiva)
 }
 
-node 'auth2001.codfw.wmnet' {
-    role(test)
-}
-
 node /^authdns[12]001\.wikimedia\.org$/ {
     role(dns::auth)
 }
