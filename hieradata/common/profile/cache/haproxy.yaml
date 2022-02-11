@@ -218,11 +218,19 @@ profile::cache::haproxy::unified_certs:
     - digicert-2021-ecdsa-unified
     - digicert-2021-rsa-unified
 profile::cache::haproxy::varnish_socket:
-    - /run/varnish-frontend-0.socket
-    - /run/varnish-frontend-1.socket
-    - /run/varnish-frontend-2.socket
-    - /run/varnish-frontend-3.socket
-    - /run/varnish-frontend-4.socket
-    - /run/varnish-frontend-5.socket
-    - /run/varnish-frontend-6.socket
-    - /run/varnish-frontend-7.socket
+    - prefix: unix
+      address: /run/varnish-frontend-0.socket
+    - prefix: unix
+      address: /run/varnish-frontend-1.socket
+    - prefix: unix
+      address: /run/varnish-frontend-2.socket
+    - prefix: unix
+      address: /run/varnish-frontend-3.socket
+    - prefix: unix
+      address: /run/varnish-frontend-4.socket
+    - prefix: unix
+      address: /run/varnish-frontend-5.socket
+    - prefix: unix
+      address: /run/varnish-frontend-6.socket
+    - prefix: unix
+      address: /run/varnish-frontend-7.socket

@@ -72,8 +72,12 @@ listen tls
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
 <%- end -%>
 
-<%- @backend_socket.each_with_index do |socket_path, socket_index| -%>
-    server backend_server_<%= socket_index %> unix@<%= socket_path %>
+<%- @backends.each_with_index do |backend, backend_index| -%>
+<%- if backend['prefix'] == 'unix' -%>
+    server backend_server_<%= backend_index %> unix@<%= backend['address'] %>
+<%- else -%>
+    server backend_server_<%= backend_index %> <%= backend['prefix'] %>@<%= backend['address'] %>:<%= backend['port'] %>
+<%- end -%>
 <%- end -%>
     option forwardfor
 
