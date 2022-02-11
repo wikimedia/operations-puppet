@@ -41,6 +41,19 @@ class profile::prometheus::ops (
         http_proxy => $http_proxy,
     }
 
+    # Blackbox jobs share the same relabel config
+    $blackbox_relabel_configs = [
+      { 'source_labels' => ['__address__'],
+        'target_label'  => '__param_target',
+      },
+      { 'source_labels' => ['__param_target'],
+        'target_label'  => 'instance',
+      },
+      { 'target_label' => '__address__',
+        'replacement'  => '127.0.0.1:9115',
+      },
+    ]
+
     $blackbox_jobs = [
       {
         'job_name'        => 'blackbox/icmp',
@@ -51,17 +64,7 @@ class profile::prometheus::ops (
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/blackbox_icmp_*.yaml" ] }
         ],
-        'relabel_configs' => [
-          { 'source_labels' => ['__address__'],
-            'target_label'  => '__param_target',
-          },
-          { 'source_labels' => ['__param_target'],
-            'target_label'  => 'instance',
-          },
-          { 'target_label' => '__address__',
-            'replacement'  => '127.0.0.1:9115',
-          },
-        ],
+        'relabel_configs' => $blackbox_relabel_configs,
       },
       {
         'job_name'        => 'blackbox/ssh',
@@ -72,17 +75,7 @@ class profile::prometheus::ops (
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/blackbox_ssh_*.yaml" ] }
         ],
-        'relabel_configs' => [
-          { 'source_labels' => ['__address__'],
-            'target_label'  => '__param_target',
-          },
-          { 'source_labels' => ['__param_target'],
-            'target_label'  => 'instance',
-          },
-          { 'target_label' => '__address__',
-            'replacement'  => '127.0.0.1:9115',
-          },
-        ],
+        'relabel_configs' => $blackbox_relabel_configs,
       },
       {
         'job_name'        => 'blackbox/tcp',
@@ -93,17 +86,7 @@ class profile::prometheus::ops (
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/blackbox_tcp_*.yaml" ] }
         ],
-        'relabel_configs' => [
-          { 'source_labels' => ['__address__'],
-            'target_label'  => '__param_target',
-          },
-          { 'source_labels' => ['__param_target'],
-            'target_label'  => 'instance',
-          },
-          { 'target_label' => '__address__',
-            'replacement'  => '127.0.0.1:9115',
-          },
-        ],
+        'relabel_configs' => $blackbox_relabel_configs,
       },
       {
         'job_name'        => 'blackbox/http',
@@ -114,17 +97,7 @@ class profile::prometheus::ops (
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/blackbox_http_*.yaml" ] }
         ],
-        'relabel_configs' => [
-          { 'source_labels' => ['__address__'],
-            'target_label'  => '__param_target',
-          },
-          { 'source_labels' => ['__param_target'],
-            'target_label'  => 'instance',
-          },
-          { 'target_label' => '__address__',
-            'replacement'  => '127.0.0.1:9115',
-          },
-        ],
+        'relabel_configs' => $blackbox_relabel_configs,
       },
       {
         'job_name'        => 'blackbox/https',
@@ -135,17 +108,7 @@ class profile::prometheus::ops (
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/blackbox_https_*.yaml" ] }
         ],
-        'relabel_configs' => [
-          { 'source_labels' => ['__address__'],
-            'target_label'  => '__param_target',
-          },
-          { 'source_labels' => ['__param_target'],
-            'target_label'  => 'instance',
-          },
-          { 'target_label' => '__address__',
-            'replacement'  => '127.0.0.1:9115',
-          },
-        ],
+        'relabel_configs' => $blackbox_relabel_configs,
       },
       {
         'job_name'        => 'blackbox/watchrat',
@@ -156,98 +119,107 @@ class profile::prometheus::ops (
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/blackbox_watchrat_http_check_urls.yaml" ] }
         ],
-        'relabel_configs' => [
-          { 'source_labels' => ['__address__'],
-            'target_label'  => '__param_target',
-          },
-          { 'source_labels' => ['__param_target'],
-            'target_label'  => 'instance',
-          },
-          { 'target_label' => '__address__',
-            'replacement'  => '127.0.0.1:9115',
-          },
-        ],
+        'relabel_configs' => $blackbox_relabel_configs,
       },
     ]
 
-    # Local blackbox_exporter configuration
+    # Local blackbox_exporter needs configuration (modules) generated from service::catalog
     class { '::prometheus::blackbox::modules::service_catalog':
         services_config => wmflib::service::fetch(),
     }
 
-    # Generate target files for blackbox_service jobs below.
-    $probe_services = wmflib::service::fetch().filter |$name, $config| {
-        ('probes' in $config and
-          'discovery' in $config and
-          $config['state'] in ['production', 'monitoring_setup'])
-    }
+    # Relabel configuration to support for targets in the following forms to
+    # keep 'instance' label readable:
+    # - bare target (i.e. no @) -> copy unmodified to 'instance'
+    # - target in the form of foo@bar -> use foo as 'instance' and 'bar' as target
 
-    # Restrict discovery probes to run from "main sites" since this
-    # profile is used in PoPs as well.
-    if ($::site in ['eqiad', 'codfw']) {
-        class { '::prometheus::service_catalog_metrics':
-            services_config => wmflib::service::fetch(),
-            outfile         => '/var/lib/prometheus/mini-textfile.d/service_catalog_metrics.prom',
-        }
+    # This allows targets in the form of e.g.:
+    # - target: 'foo:443@https://foo.discovery.wmnet:443/path'
+    # will become:
+    # - instance: 'foo:443' (for usage as metric label)
+    # - target: 'https://foo.discovery.wmnet:443/path' (full url for blackbox to probe)
 
-        class { '::prometheus::service_catalog_targets':
-            services_config => $probe_services,
-            targets_path    => $targets_path,
-        }
-    }
+    # Note that all regex here are implicitly anchored (^<regex>$)
+    $probes_relabel_configs = [
+      { 'source_labels' => ['__address__'],
+        'regex'         => '([^@]+)',
+        'target_label'  => 'instance',
+      },
+      { 'source_labels' => ['__address__'],
+        'regex'         => '([^@]+)',
+        'target_label'  => '__param_target',
+      },
+      { 'source_labels' => ['__address__'],
+        'regex'         => '(.+)@(.+)',
+        'target_label'  => 'instance',
+        'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
+      },
+      { 'source_labels' => ['__address__'],
+        'regex'         => '(.+)@(.+)',
+        'target_label'  => '__param_target',
+        'replacement'   => '${2}', # lint:ignore:single_quote_string_with_variables
+      },
+      { 'source_labels' => ['module'],
+        'target_label'  => '__param_module',
+      },
+      { 'target_label' => '__address__',
+        'replacement'  => '127.0.0.1:9115',
+      },
+    ]
 
-    $blackbox_service_jobs = [
-      # Jobs for blackbox probing of discovery services (HTTP/TCP/ICMP)
-      # The scrape interval is 15s since we'd like to have higher
-      # resolution probe status (e.g. to see recovery faster)
+    # Jobs for network probes. One job per network 'sphere', as of Feb 2022
+    # service::catalog is probed, though the same jobs can be reused for any
+    # network endpoint. Targets in these jobs are expected to contain the
+    # following labels:
+    # - address => the endpoint address
+    # - family  => ip4/ip6
+    # - module  => the blackbox-exporter module to use
+
+    # The scrape interval is 15s since we'd like to have higher
+    # resolution probe status (e.g. to see recovery faster)
+    $probes_jobs = [
       {
-        'job_name'        => 'blackbox/discovery',
+        'job_name'        => 'probes/public',
         'metrics_path'    => '/probe',
         'scrape_interval' => '15s',
         'scrape_timeout'  => '3s',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/blackbox_discovery.yaml" ] }
+          { 'files' => [ "${targets_path}/probes-public_*.yaml" ] }
         ],
-        # Relabel configuration to support for targets in the following forms to
-        # keep 'instance' label readable:
-        # - bare target (i.e. no @) -> copy unmodified to 'instance'
-        # - target in the form of foo@bar -> use foo as 'instance' and 'bar' as target
-
-        # This allows targets in the form of e.g.:
-        # - target: 'foo:443@https://foo.discovery.wmnet:443/path'
-        # will become:
-        # - instance: 'foo:443' (for usage as metric label)
-        # - target: 'https://foo.discovery.wmnet:443/path' (full url for bb to probe)
-
-        # Note that all regex here are implicitly anchored (^<regex>$)
-        'relabel_configs' => [
-          { 'source_labels' => ['__address__'],
-            'regex'         => '([^@]+)',
-            'target_label'  => 'instance',
-          },
-          { 'source_labels' => ['__address__'],
-            'regex'         => '([^@]+)',
-            'target_label'  => '__param_target',
-          },
-          { 'source_labels' => ['__address__'],
-            'regex'         => '(.+)@(.+)',
-            'target_label'  => 'instance',
-            'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
-          },
-          { 'source_labels' => ['__address__'],
-            'regex'         => '(.+)@(.+)',
-            'target_label'  => '__param_target',
-            'replacement'   => '${2}', # lint:ignore:single_quote_string_with_variables
-          },
-          { 'source_labels' => ['module'],
-            'target_label'  => '__param_module',
-          },
-          { 'target_label' => '__address__',
-            'replacement'  => '127.0.0.1:9115',
-          },
+        'relabel_configs' => $probes_relabel_configs,
+      },
+      {
+        'job_name'        => 'probes/private',
+        'metrics_path'    => '/probe',
+        'scrape_interval' => '15s',
+        'scrape_timeout'  => '3s',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/probes-private_*.yaml" ] }
         ],
+        'relabel_configs' => $probes_relabel_configs,
       },
     ]
+
+    $probe_services = wmflib::service::fetch().filter |$name, $config| {
+        ('probes' in $config and
+          $::site in $config['sites'] and
+          $config['state'] in ['production', 'monitoring_setup'])
+    }
+
+    # Populate target files for probes jobs defined above
+    if !empty($probe_services) {
+      prometheus::service_catalog_targets { 'public':
+        services_config => $probe_services,
+        targets_file    => "${targets_path}/probes-public_catalog.yaml",
+        networks        => slice_network_constants('production', { 'sphere' => 'public', 'site' => $::site }),
+      }
+
+      prometheus::service_catalog_targets { 'private':
+        services_config => $probe_services,
+        targets_file    => "${targets_path}/probes-private_catalog.yaml",
+        networks        => slice_network_constants('production', { 'sphere' => 'private', 'site' => $::site }),
+      }
+    }
 
     # Export local textfile metrics.
     # Restricted to localhost (i.e. Prometheus hosts) and used to export
@@ -262,6 +234,12 @@ class profile::prometheus::ops (
         ],
       },
     ]
+
+    # Export service status from service::catalog info
+    class { '::prometheus::service_catalog_metrics':
+        services_config => wmflib::service::fetch(),
+        outfile         => '/var/lib/prometheus/mini-textfile.d/service_catalog_metrics.prom',
+    }
 
 
     # Special setup for Gerrit, internal hostnames don't serve data, thus limit polling gerrit
@@ -2259,7 +2237,7 @@ class profile::prometheus::ops (
         scrape_configs_extra   => [
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $memcached_jobs,
             $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $ml_etcd_jobs, $mcrouter_jobs, $pdu_jobs,
-            $pybal_jobs, $blackbox_jobs, $blackbox_service_jobs, $jmx_exporter_jobs,
+            $pybal_jobs, $blackbox_jobs, $probes_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
             $blazegraph_jobs, $nutcracker_jobs, $postgresql_jobs, $ipsec_jobs,
