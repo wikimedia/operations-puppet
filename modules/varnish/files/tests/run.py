@@ -11,7 +11,7 @@ DC = ("eqiad", "codfw", "esams", "ulsfo", "eqsin", "drmrs")
 CLUSTERS = ("text", "upload")
 PATH_RE = re.compile("^(/etc/varnish/|/usr/share/varnish/)")
 COMPILER_RE = re.compile(
-    ".*(https://puppet-compiler.wmflabs.org/compiler[0-9]{4}/[0-9]+/)"
+    ".*(https://puppet-compiler.wmflabs.org/(compiler|pcc-worker)[0-9]{4}/[0-9]+/)"
 )
 TIMEOUT = 30
 
