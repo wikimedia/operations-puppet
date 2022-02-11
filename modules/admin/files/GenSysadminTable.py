@@ -82,7 +82,7 @@ dataOut = {}
 for userName, userData in d['users'].items():
     if userName in groups['absent'] or userData['ensure'] == 'absent':
         continue
-    if len(userData['ssh_keys']) == 0 or userName not in sysadmins:
+    if len(userData.get('ssh_keys', [])) == 0 or userName not in sysadmins:
         continue
     realName = userData['realname']
     link, ircnick, affiliation, groupWikitext = '', '', '', ''
