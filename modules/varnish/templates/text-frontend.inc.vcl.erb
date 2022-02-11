@@ -290,6 +290,10 @@ sub cluster_fe_recv_pre_purge {
 	} else {
 		call normalize_mediawiki_path;
 	}
+
+	if (req.url ~ "^/\?q=[^&]*$") {
+		set req.url = "/";
+	}
 }
 
 sub evaluate_cookie {
