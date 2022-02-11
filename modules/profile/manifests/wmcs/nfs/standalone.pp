@@ -45,7 +45,7 @@ class profile::wmcs::nfs::standalone(
 
     # state manually managed
     service { 'nfs-server':
-        enable => false,
+        ensure => running,
     }
 
     file {'/usr/local/sbin/logcleanup':
