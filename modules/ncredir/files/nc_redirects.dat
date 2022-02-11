@@ -220,10 +220,10 @@ rewrite	voyagewiki.com	https://www.wikivoyage.org
 rewrite	voyagewiki.org	https://www.wikivoyage.org
 
 # wikimediafoundation
-rewrite	*wikimediafoundation.com	https://foundation.wikimedia.org
-rewrite	*wikimediafoundation.net	https://foundation.wikimedia.org
-rewrite	*wikimediafoundation.info	https://foundation.wikimedia.org
-rewrite	*wikipediafoundation.org	https://foundation.wikimedia.org
+rewrite	*wikimediafoundation.com	https://wikimediafoundation.org
+rewrite	*wikimediafoundation.net	https://wikimediafoundation.org
+rewrite	*wikimediafoundation.info	https://wikimediafoundation.org
+rewrite	*wikipediafoundation.org	https://wikimediafoundation.org
 
 # Commons
 
