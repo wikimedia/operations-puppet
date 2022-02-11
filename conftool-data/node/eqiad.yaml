@@ -281,12 +281,6 @@ eqiad:
   phabricator:
     phab1001-vcs.eqiad.wmnet: [git-ssh]
   aqs:
-    aqs1004.eqiad.wmnet: [aqs]
-    aqs1005.eqiad.wmnet: [aqs]
-    aqs1006.eqiad.wmnet: [aqs]
-    aqs1007.eqiad.wmnet: [aqs]
-    aqs1008.eqiad.wmnet: [aqs]
-    aqs1009.eqiad.wmnet: [aqs]
     aqs1010.eqiad.wmnet: [aqs]
     aqs1011.eqiad.wmnet: [aqs]
     aqs1012.eqiad.wmnet: [aqs]
