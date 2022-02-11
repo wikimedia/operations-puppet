@@ -1,10 +1,10 @@
-# This role is to be used for the `cloudinfra` labs project instances.
-# This is going to hold the labspuppet database previously housed on the
-# production m5 shard, and may hold others in future.
+# This role is to be used for the `cloudinfra` VPS project instances.
+# It currently hosts the labspuppet database used for Cloud VPS Puppet
+# ENC API, and may hold others in future.
 class role::mariadb::cloudinfra (
     Boolean $master = false,
 ) {
-    system::role { 'mariadb::misc':
+    system::role { 'mariadb::cloudinfra':
         description => 'Cloudinfra database',
     }
 
