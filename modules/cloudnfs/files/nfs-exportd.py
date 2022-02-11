@@ -24,8 +24,11 @@ import yaml
 import os
 import time
 import logging
+from netifaces import interfaces, ifaddresses, AF_INET
 import sys
+import socket
 import subprocess
+
 
 from keystoneauth1.exceptions.http import Unauthorized
 from keystoneauth1.identity.v3 import Password as KeystonePassword
@@ -53,34 +56,27 @@ class Project:
     """
 
     EXPORTS_TEMPLATE = (
-        "/srv/{vol}/shared/{name} "
+        "{mountpoint} "
         + "-rw,nohide,no_subtree_check,async,no_root_squash "
         + "{instance_ips}"
     )
 
-    def __init__(self, name, gid, instance_ips, volume):
+    def __init__(self, name, gid, instance_ips, mountpoints):
         self.name = name
         self.instance_ips = instance_ips
-        self.volume = volume
+        self.mountpoints = mountpoints
         self.gid = gid
 
     def get_exports(self):
-        if self.name == "maps":
-            return (
-                "/srv/{name} "
-                + "-rw,nohide,no_subtree_check,async,no_root_squash "
-                + "{instance_ips}"
-            ).format(
-                name=self.name,
-                gid=self.gid,
-                instance_ips=" ".join(self.instance_ips),
+        exportlines = []
+        for mountpoint in self.mountpoints:
+            exportlines.append(
+                Project.EXPORTS_TEMPLATE.format(
+                    mountpoint=mountpoint, instance_ips=" ".join(self.instance_ips)
+                )
             )
-        return Project.EXPORTS_TEMPLATE.format(
-            vol=self.volume,
-            name=self.name,
-            gid=self.gid,
-            instance_ips=" ".join(self.instance_ips),
-        )
+
+        return "\n".join(exportlines)
 
 
 def get_instance_ips(project, observer_pass, regions, auth_url):
@@ -103,9 +99,7 @@ def get_instance_ips(project, observer_pass, regions, auth_url):
     ips = []
     for region in regions:
         try:
-            client = novaclient.Client(
-                "2.0", session=session, region_name=region
-            )
+            client = novaclient.Client("2.0", session=session, region_name=region)
             for instance in client.servers.list():
                 for value in instance.addresses.values():
                     for ip in value:
@@ -120,6 +114,24 @@ def get_instance_ips(project, observer_pass, regions, auth_url):
             raise
 
     return ips
+
+
+# Check a given fqdn to see if it refers to the current host.
+# This is complicated because the fqdn will almost certainly refer
+# to a service name that points to a service IP that is not
+# our primary IP.
+def fqdn_is_us(fqdn):
+    ip_for_fqdn = socket.gethostbyname(fqdn)
+    for ifaceName in interfaces():
+        addresses = [
+            i["addr"]
+            for i in ifaddresses(ifaceName).setdefault(
+                AF_INET, [{"addr": "No IP addr"}]
+            )
+        ]
+        if ip_for_fqdn in addresses:
+            return True
+    return False
 
 
 def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
@@ -145,34 +157,43 @@ def get_projects_with_nfs(mounts_config, observer_pass, auth_url):
     region_recs = keystoneclient.regions.list()
     regions = [region.id for region in region_recs]
 
-    public_vols = mounts_config["public"]
-    server_vols = mounts_config["volumes_served"]
-    private_vols = set(server_vols) - set(public_vols)
-    for name, config in mounts_config["private"].items():
+    for projectname, config in mounts_config["private"].items():
         if "mounts" in config:
-            mounts = [
-                k for k, v in config["mounts"].items() if k in private_vols and v
-            ]
-            if len(mounts) == 0:
+            mountpoints = []
+            for mount, target in config["mounts"].items():
+                if mount == "dumps":
+                    # We can ignore this, dumps are handled in
+                    # a totally different way.
+                    pass
+                elif ":" in target:
+                    host = target.split(":")[0]
+                    path = target.split(":")[1]
+                    if fqdn_is_us(host):
+                        mountpoints.append(path)
+                else:
+                    logging.warning(
+                        "Found illformed mount entry for project %s" % projectname
+                    )
+                    # This and the following are legacy special cases;
+                    #  once they move off of the metal labstore hosts
+                    #  they can become generic cases with a :
+                    mountpoints.append("/srv/tools/shared/tools")
+
+            if len(mountpoints) == 0:
                 # Skip project if it has no private mounts
-                logging.debug(
-                    "skipping exports for %s, no private mounts", name
-                )
+                logging.debug("skipping exports for %s, no private mounts", projectname)
                 continue
         else:
             continue
-        ips = get_instance_ips(name, observer_pass, regions, auth_url)
+        ips = get_instance_ips(projectname, observer_pass, regions, auth_url)
         if ips:
-            vol = "misc"
-            if name == "tools":
-                vol = "tools"
-            project = Project(name, config["gid"], ips, vol)
+            project = Project(projectname, config["gid"], ips, mountpoints)
             projects.append(project)
             logging.debug(
-                "project %s has %s instances", name, len(project.instance_ips)
+                "project %s has %s instances", projectname, len(project.instance_ips)
             )
         else:
-            logging.warning("project %s has no instances; skipping.", name)
+            logging.warning("project %s has no instances; skipping.", projectname)
 
     # Validate that there are no duplicate gids
     gids = [p.gid for p in projects]
@@ -207,17 +228,14 @@ def write_public_exports(public_exports, exports_d_path):
         public_paths.append(path)
 
         # Make sure that the public mount is actually public
-        make_public = ["/usr/bin/sudo", "/usr/bin/chmod", "1777",
-                       f"/srv/{name}"]
+        make_public = ["/usr/bin/sudo", "/usr/bin/chmod", "1777", f"/srv/{name}"]
         logging.warning(" ".join(make_public))
         subprocess.call(make_public)
     logging.warning("found %s public NFS exports" % (len(public_paths)))
     return public_paths
 
 
-def write_project_exports(
-    mounts_config, exports_d_path, observer_pass, auth_url
-):
+def write_project_exports(mounts_config, exports_d_path, observer_pass, auth_url):
     """ output project export definitions
     :param mounts_config: dict of defined exports
     """
@@ -262,9 +280,7 @@ def do_fix_and_export(existing_wo_all):
             try:
                 with open(unmanaged_export) as f:
                     logging.warning(
-                        "deleting %s with contents: %s",
-                        unmanaged_export,
-                        f.read(),
+                        "deleting %s with contents: %s", unmanaged_export, f.read()
                     )
                 os.remove(unmanaged_export)
             except OSError:
@@ -307,9 +323,7 @@ def main():
         help="Set interval to rerun at.  Default is 0 which means run once.",
     )
 
-    argparser.add_argument(
-        "--debug", help="Turn on debug logging", action="store_true"
-    )
+    argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
 
     argparser.add_argument(
         "--no-exports-is-ok",
@@ -363,7 +377,7 @@ def main():
             for filename in os.listdir(exports_d_path)
         ]
 
-        if 'public' not in config:
+        if "public" not in config:
             # Putting an empty dict in here is easier than constantly checking
             #  to see if the key is defined.
             config["public"] = {}

@@ -12,21 +12,16 @@ class profile::wmcs::nfsclient(
     Array[Stdlib::Host] $dumps_servers = lookup('dumps_dist_nfs_servers'),
     Stdlib::Host $dumps_active_server = lookup('dumps_dist_active_vps'),
     Array[Stdlib::Host] $secondary_servers = lookup('secondary_nfs_servers', {'default_value' => []}),
-    Stdlib::Fqdn $project_nfs_server_fqdn = lookup('profile::wmcs::nfsclient::project_nfs_server', {'default_value' => 'nfs-tools-project.svc.eqiad.wmnet'}),
-    Stdlib::Fqdn $home_nfs_server_fqdn = lookup('profile::wmcs::nfsclient::home_nfs_server', {'default_value' => 'nfs-tools-project.svc.eqiad.wmnet'}),
-    Optional[Stdlib::Unixpath] $project_nfs_server_path = lookup('profile::wmcs::nfsclient::project_nfs_server_path', {'default_value' => undef}),
-    Optional[Stdlib::Unixpath] $home_nfs_server_path = lookup('profile::wmcs::nfsclient::home_nfs_server_path', {'default_value' => undef}),
 ) {
-    $project_path = $project_nfs_server_path ? {
-        undef   => "/srv/misc/shared/${::labsproject}/project",
-        default => $project_nfs_server_path
-    }
-    $home_path = $home_nfs_server_path ? {
-        undef   => "/srv/misc/shared/${::labsproject}/home",
-        default => $home_nfs_server_path
-    }
+    $project_hostpath = mount_nfs_volume($::labsproject, 'project')
+    $home_hostpath = mount_nfs_volume($::labsproject, 'home')
+    $scratch_hostpath = mount_nfs_volume($::labsproject, 'scratch')
+    $maps_hostpath = mount_nfs_volume($::labsproject, 'maps')
 
-    if mount_nfs_volume($::labsproject, 'project') {
+    if $project_hostpath {
+        $project_host = split($project_hostpath, ':')[0]
+        $project_path = split($project_hostpath, ':')[1]
+
         # TODO: Change these "secondary" mentions to "primary"
         # The primary cluster is mounted as secondary for historical reasons and
         # changing this would be quite disruptive so put off for a while.
@@ -36,7 +31,7 @@ class profile::wmcs::nfsclient(
             options     => ['rw', $mode],
             mount_path  => '/mnt/nfs/labstore-secondary-project',
             share_path  => $project_path,
-            server      => $project_nfs_server_fqdn,
+            server      => $project_host,
             nfs_version => $nfs_version,
         }
 
@@ -48,14 +43,17 @@ class profile::wmcs::nfsclient(
         }
     }
 
-    if mount_nfs_volume($::labsproject, 'home') {
+    if $home_hostpath {
+        $home_host = split($home_hostpath, ':')[0]
+        $home_path = split($home_hostpath, ':')[1]
+
         labstore::nfs_mount { 'home-on-labstore-secondary':
             mount_name  => 'home',
             project     => $::labsproject,
             options     => ['rw', $home_mode],
             mount_path  => '/mnt/nfs/labstore-secondary-home',
             share_path  => $home_path,
-            server      => $project_nfs_server_fqdn,
+            server      => $home_host,
             nfs_version => $nfs_version,
         }
 
@@ -67,14 +65,17 @@ class profile::wmcs::nfsclient(
         }
     }
 
-    if mount_nfs_volume($::labsproject, 'scratch') {
+    if $scratch_hostpath {
+        $scratch_host = split($scratch_hostpath, ':')[0]
+        $scratch_path = split($scratch_hostpath, ':')[1]
+
         labstore::nfs_mount { 'scratch-on-secondary':
             mount_name  => 'scratch',
             project     => $::labsproject,
             options     => ['rw', 'soft', 'timeo=300', 'retrans=3'],
             mount_path  => '/mnt/nfs/secondary-scratch',
-            server      => 'scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud',
-            share_path  => '/srv/scratch',
+            server      => $scratch_host,
+            share_path  => $scratch_path,
             nfs_version => $nfs_version,
         }
 
@@ -124,15 +125,19 @@ class profile::wmcs::nfsclient(
             }
         }
     }
+
     if $::labsproject == 'maps' {
-        if mount_nfs_volume($::labsproject, 'maps') {
+        if $maps_hostpath {
+            $maps_host = split($maps_hostpath, ':')[0]
+            $maps_path = split($maps_hostpath, ':')[1]
+
             labstore::nfs_mount { 'maps-on-secondary':
                 mount_name  => 'maps',
                 project     => $::labsproject,
                 options     => ['rw', $home_mode],  # Careful with mode on maps - /home is there
                 mount_path  => '/mnt/nfs/secondary-maps',
-                server      => 'maps-nfs.svc.maps.eqiad1.wikimedia.cloud',
-                share_path  => '/srv/maps',
+                server      => $maps_host,
+                share_path  => $maps_path,
                 nfs_version => $nfs_version,
             }
 
@@ -142,7 +147,6 @@ class profile::wmcs::nfsclient(
                 target  => '/mnt/nfs/secondary-maps/project',
                 require => Labstore::Nfs_mount['maps-on-secondary'],
             }
-
             file { '/home':
                 ensure  => 'link',
                 force   => true,
@@ -157,7 +161,6 @@ class profile::wmcs::nfsclient(
     # be set on the grid or most worker nodes. Only set that to soft when it is
     # a special purpose instance that uses it for backup or similar.
     if $::labsproject == 'tools' {
-
         # Sets up symlinks from new tools mounts to /data/project and /home
         if mount_nfs_volume($::labsproject, 'tools-project') {
             labstore::nfs_mount { 'tools-project-on-labstore-secondary':
@@ -165,7 +168,7 @@ class profile::wmcs::nfsclient(
                 project     => $::labsproject,
                 options     => ['rw', $home_mode],
                 mount_path  => '/mnt/nfs/labstore-secondary-tools-project',
-                server      => $project_nfs_server_fqdn,
+                server      => 'nfs-tools-project.svc.eqiad.wmnet',
                 share_path  => '/srv/tools/shared/tools/project',
                 nfs_version => $nfs_version,
             }
@@ -183,7 +186,7 @@ class profile::wmcs::nfsclient(
                 project     => $::labsproject,
                 options     => ['rw', $mode],
                 mount_path  => '/mnt/nfs/labstore-secondary-tools-home',
-                server      => $project_nfs_server_fqdn,
+                server      => 'nfs-tools-project.svc.eqiad.wmnet',
                 share_path  => '/srv/tools/shared/tools/home',
                 nfs_version => $nfs_version,
             }

@@ -1,33 +1,53 @@
 <% if @server_vols -%>
+# A list of 'private' volumes hosted on this server. In this case,
+# 'private' means they have specific exports rather than just being
+# visible to anyone who wants to attach.
 volumes_served:
   <% @server_vols.each do |vol| -%>
   - <%= vol %>
   <% end %>
 <% end -%>
+
 <% if @host_scratch -%>
+# A list of 'public' volumes hosted on this server. Public volumes
+# have permissive exports that let anyone attach.
 public:
   scratch: '/srv/scratch *(rw,sec=sys,sync,no_subtree_check,root_squash)'
 <% end -%>
+
+# Configuration per wmcs project.
+# Most mounts are specified as
+#
+#  mountname: hostname:/path/to/volume/on/server
+#
+# Where 'mountname' is hardcoded terminology referring
+# to specific NFS use cases in the cloud. This data
+# is consumed by both server and client, so on any given
+# server there will be a lot more information in this section
+# than the specific server needs.
+#
+# Note that 'dumps' is a special case handled by totally
+# different code paths.
 private:
   account-creation-assistance:
     gid: 50088
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/account-creation-assistance/project
   cvn:
     gid: 50116
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/cvn/project
   dumps:
     gid: 50124
     mounts:
       dumps: true
-      home: true
-      project: true
-      scratch: true
+      home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/dumps/home
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/dumps/project
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
   puppet-diffs:
     gid: 53809
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/puppet-diffs/project
   etytree:  # T151933
     gid: 53231
     mounts:
@@ -35,8 +55,8 @@ private:
   fastcci:
     gid: 50983
     mounts:
-      home: true
-      project: true
+      home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/fastcci/home
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/fastcci/project
   gratitude:  # T240737
     gid: 54032
     mounts:
@@ -44,28 +64,28 @@ private:
   huggle:
     gid: 50168
     mounts:
-      home: true
-      project: true
+      home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/huggle/home
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/huggle/project
   language:  # T242187
     gid: 50794
     mounts:
-      scratch: true
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
   maps:
     gid: 50196
     mounts:
       dumps: true
-      scratch: true
-      maps: true
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
+      maps: maps-nfs.svc.maps.eqiad1.wikimedia.cloud:/srv/maps
   math:  # T134026
     gid: 50398
     mounts:
-      project: true
-      scratch: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/math/project
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
       dumps: true
   mwoffliner:
     gid: 52376
     mounts:
-      scratch: true
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
   ores-staging:  # T252204
     gid: 52938
     mounts:
@@ -78,17 +98,17 @@ private:
     gid: 52863
     mounts:
       dumps: true
-      scratch: true
-      home: true
-      project: true
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
+      home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/paws/home
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/paws/project
   project-proxy:
     gid: 50254
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/project-proxy/project
   quarry:
     gid: 52243
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/quarry/project
   research-collaborations-api:  # T286635
     gid: 54650
     mounts:
@@ -109,23 +129,23 @@ private:
     gid: 50302
     mounts:
       dumps: true
-      home: true
-      project: true
-      scratch: true
+      home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/testlabs/home
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/testlabs/project
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
   tools:
     gid: 50380
     mounts:
       dumps: true
-      scratch: true
-      tools-home: true
-      tools-project: true
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
+      tools-home: nfs-tools-project.svc.eqiad.wmnet:/srv/tools/shared/tools/home
+      tools-project: nfs-tools-project.svc.eqiad.wmnet:/srv/tools/shared/tools/project
   toolsbeta:
     gid: 50610
     mounts:
       dumps: true
-      toolsbeta-home: true
-      toolsbeta-project: true
-      scratch: true
+      toolsbeta-home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/toolsbeta/home
+      toolsbeta-project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/toolsbeta/project
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
   tools-codfw1dev:
     gid: 52918
     mounts:
@@ -133,18 +153,18 @@ private:
   twl:
     gid: 52777
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/twl/project
   utrs:
     gid: 50318
     mounts:
-      home: true
+      home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/utrs/home
   video:
     gid: 52318
     mounts:
       dumps: true
-      home: true
-      project: true
-      scratch: true
+      home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/video/home
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/video/project
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
   wcdo:  # T228450
     gid: 53693
     mounts:
@@ -152,27 +172,27 @@ private:
   wikidata-query:  # T128815, T135205
     gid: 52354
     mounts:
-      scratch: true
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
       dumps: true
   wikidumpparse:
     gid: 51824
     mounts:
       dumps: true
-      home: true
-      project: true
-      scratch: true
+      home: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/wikidumpparse/home
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/wikidumpparse/project
+      scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
   wikilink:  # T264107
     gid: 54031
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/wikilink/project
   wikipathways:  # T276141
     gid: 54611
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/wikipathways/project
   wmde-templates-alpha:  # T259254
     gid: 54456
     mounts:
-      project: true
+      project: nfs-tools-project.svc.eqiad.wmnet:/srv/misc/shared/wmde-templates-alpha/project
   wikicommunityhealth:  # T279558
     gid: 54564
     mounts:

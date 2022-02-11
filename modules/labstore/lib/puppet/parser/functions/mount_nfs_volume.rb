@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2015 Wikimedia Foundation Inc.
 #
-# Returns true if the mount should be mounted in
+# Returns server mount path if the mount should be mounted in
 # instance of the project
 #
 # Reads this information from labstore/files/nfs-mounts-config.yaml
