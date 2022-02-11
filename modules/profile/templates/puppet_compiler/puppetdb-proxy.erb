@@ -32,6 +32,19 @@ server {
     }
 }
 server {
+  listen 8080;
+  server_name localhost;
+
+  root /dev/null;
+
+  location / {
+    proxy_pass http://<%= @puppetdb_host %>:<%= @puppetdb_port %>/;
+    proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header    X-Real-IP $remote_addr;
+    client_max_body_size 60m;
+  }
+}
+server {
   listen 80;
   server_name localhost puppet-compiler.wmflabs.org <%= @fqdn -%>;
 
