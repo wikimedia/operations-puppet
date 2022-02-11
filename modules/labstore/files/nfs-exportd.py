@@ -235,12 +235,8 @@ def check_exports(no_exports_is_ok, project_paths, public_paths):
 
     msg = "This could be an error somewhere, so doing nothing. Override with `--no-exports-is-ok'"
 
-    if len(project_paths) == 0:
-        logging.warning("no projects with NFS exports. {}".format(msg))
-        return False
-
-    if len(public_paths) == 0:
-        logging.warning("no public NFS exports. {}".format(msg))
+    if len(project_paths) == 0 and len(public_paths) == 0:
+        logging.warning("nothing to export. {}".format(msg))
         return False
 
     return True
