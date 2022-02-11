@@ -1479,6 +1479,10 @@ service::catalog:
           url:
             - http://en.wikipedia.com/_status
       scheduler: wrr
+    probes:
+      - type: http
+        host: en.wikipedia.com
+        path: /_status
     monitoring:
       check_command: check_http_lvs!en.wikipedia.com!/_status
       sites:
@@ -1520,6 +1524,10 @@ service::catalog:
           url:
             - https://en.wikipedia.com/_status
       scheduler: wrr
+    probes:
+      - type: http
+        host: en.wikipedia.com
+        path: /_status
     monitoring:
       check_command: check_https_url!en.wikipedia.com!/_status
       sites:
@@ -2602,6 +2610,10 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: sh
+    probes:
+      - type: http
+        host: en.wikipedia.org
+        path: /wiki/Special:BlankPage
     monitoring:
       check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
       sites:
@@ -2652,6 +2664,10 @@ service::catalog:
           url:
             - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: sh
+    probes:
+      - type: http
+        host: en.wikipedia.org
+        path: /wiki/Special:BlankPage
     monitoring:
       check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
       sites:
@@ -2792,6 +2808,10 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: sh
+    probes:
+      - type: http
+        host: upload.wikimedia.org
+        path: /monitoring/backend
     monitoring:
       check_command: check_http_lvs!upload.wikimedia.org!/monitoring/backend
       sites:
@@ -2842,6 +2862,10 @@ service::catalog:
           url:
             - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: sh
+    probes:
+      - type: http
+        host: upload.wikimedia.org
+        path: /monitoring/backend
     monitoring:
       check_command: check_https_url!upload.wikimedia.org!/monitoring/backend
       sites:
