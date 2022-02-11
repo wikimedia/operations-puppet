@@ -24,6 +24,7 @@ class ores::base(
     ensure_packages([
         'aspell-ar',
         'aspell-el',
+        'aspell-hi',
         'aspell-pl',
         'aspell-sv',
         'aspell-ro',
