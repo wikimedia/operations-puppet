@@ -2,7 +2,7 @@
 
 """
 This script generates the prometheus-mysqld-exporter targets from the
-zarcillo database (tendril replacement) so it doesn't have to be maintained
+zarcillo database so it doesn't have to be maintained
 manually on different places
 """
 

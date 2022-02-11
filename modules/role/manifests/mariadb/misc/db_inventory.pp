@@ -1,7 +1,7 @@
 class role::mariadb::misc::db_inventory {
 
     system::role { 'mariadb::db_inventory':
-        description => 'tendril+zarcillo database server',
+        description => 'zarcillo database server',
     }
 
     include profile::base::production

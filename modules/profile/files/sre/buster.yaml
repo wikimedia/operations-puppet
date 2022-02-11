@@ -34,8 +34,6 @@ role::dumps::distribution::server:
   target-q: TBD
 role::webperf::xhgui:
   target-q: TBD
-role::tendril:
-  target-q: TBD
 role::backup::offsite:
   target-q: TBD
 role::pybaltest:
@@ -179,10 +177,6 @@ role::mariadb::misc:
 role::mariadb::misc::analytics::backup:
   target-q: TBD
 role::mariadb::core_test:
-  target-q: TBD
-role::mariadb::misc::tendril:
-  target-q: TBD
-role::mariadb::misc::tendril_and_zarcillo:
   target-q: TBD
 role::mariadb::misc::phabricator:
   target-q: TBD

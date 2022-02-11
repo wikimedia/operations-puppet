@@ -48,13 +48,6 @@ profile::idp::services:
       - ops
       - nda
       - wmf
-  tendril:
-    id: 5
-    service_id: '^https://tendril-legacy.wikimedia.org(/.*)?'
-    required_groups:
-      - ops
-      - nda
-      - wmf
   logstash:
     id: 6
     service_id: 'https://(cas-)?logstash.wikimedia.org(/.*)?'

@@ -4,7 +4,6 @@ class profile::mariadb::misc::db_inventory(
     include passwords::misc::scripts
 
     include profile::mariadb::mysql_role
-    include profile::mariadb::misc::tendril
     include profile::mariadb::misc::zarcillo
 
     $id = 'db_inventory'
