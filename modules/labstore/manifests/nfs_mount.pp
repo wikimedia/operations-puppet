@@ -1,12 +1,9 @@
 # Manage NFS mounts
 #
 # This module is somewhat backwards from existing
-# practice concerning application.  It relies on mount_nfs_volume.rb
-# which whitelists hosts and mounts via yaml defined explicitly
-# by project. This same yaml file is used server side to determine
-# share setup in exports.d.
+# practice concerning application.
 #
-# Because of this we use defined() instead of hiera to apply
+# We use defined() instead of hiera to apply
 # resources associated with the mounts in one place.
 #
 # [*project]
@@ -95,7 +92,7 @@ define labstore::nfs_mount(
         }
     }
 
-    if ($ensure == 'absent') and mount_nfs_volume($project, $mount_name) {
+    if ($ensure == 'absent') {
 
         exec { "cleanup-${mount_path}":
             command   => "/usr/local/sbin/nfs-mount-manager umount ${mount_path}",
@@ -117,7 +114,7 @@ define labstore::nfs_mount(
         }
     }
 
-    if ($ensure == 'present') and mount_nfs_volume($project, $mount_name) {
+    if ($ensure == 'present') {
 
         # 'present' is meant to manage only the status of entries in /etc/fstab
         # a notable exception to this is in the case of an entry managed as 'present'
