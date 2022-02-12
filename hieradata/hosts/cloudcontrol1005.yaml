@@ -19,3 +19,18 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - maps
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
+  dumps:
+    volumes:
+      - dumps
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  puppet-diffs:
+    volumes:
+      - dumps
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  quarry:
+    volumes:
+      - dumps
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
