@@ -3,6 +3,11 @@ class profile::mariadb::cloudinfra (
     Array[Stdlib::Fqdn] $puppetmasters = lookup('profile::mariadb::cloudinfra::puppetmasters'),
     Array[Stdlib::Fqdn] $cloudinfra_dbs = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
 ) {
+    if debian::codename::ge('bullseye') {
+        # for bullseye and newer (cloudinfra-db03+), use a Cinder volume for MariaDB storage
+        include ::profile::labs::cindermount::srv
+    }
+
     $read_only = $master ? {
         true  => 0,
         false => 1,
