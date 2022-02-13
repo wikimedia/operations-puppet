@@ -1,18 +1,15 @@
 -- Grants for replication user
+<%- @repl_ips.each do |ip| -%>
 GRANT REPLICATION SLAVE
-    ON *.* TO 'repl'@'172.16.4.93'
+    ON *.* TO 'repl'@'<%= ip %>'
     IDENTIFIED BY '<%= @repl_pass %>';
 
-GRANT REPLICATION SLAVE
-    ON *.* TO 'repl'@'172.16.4.96'
-    IDENTIFIED BY '<%= @repl_pass %>';
+<%- end -%>
 
--- labspuppetbackend user, will run on the labs puppetmaster host --
-
+-- labspuppetbackend user, for the enc api hosts (currently on the cloud-wide puppetmasters)
+<%- @labspuppet_client_ips.each do |ip| -%>
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `labspuppet`.* TO 'labspuppet'@'172.16.4.166'
-IDENTIFIED BY '<%= @labspuppet_pass %>';
+    ON `labspuppet`.* TO 'labspuppet'@'<%= ip %>'
+    IDENTIFIED BY '<%= @labspuppet_pass %>';
 
-GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
-ON `labspuppet`.* TO 'labspuppet'@'172.16.4.167'
-IDENTIFIED BY '<%= @labspuppet_pass %>';
+<%- end -%>
