@@ -9,6 +9,11 @@ class profile::wmcs::nfs::standalone(
 ) {
     require profile::openstack::eqiad1::observerenv
 
+    motd::script { 'nfs-standalone-banner':
+        ensure => present,
+        source => 'puppet:///modules/profile/wmcs/nfs/standalone/motd.sh',
+    }
+
     class {'cloudnfs': }
 
     $nfs_service_name = "${volumes[0]}-nfs.svc.${::labsproject}.${::wmcs_deployment}.wikimedia.cloud"
