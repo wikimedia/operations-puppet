@@ -14,14 +14,19 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - scratch
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
-  maps:
+  cvn:
     volumes:
-      - maps
+      - cvn-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
   dumps:
     volumes:
       - dumps-nfs
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  maps:
+    volumes:
+      - maps
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
   puppet-diffs:
@@ -32,5 +37,10 @@ profile::openstack::eqiad1::cinder_backup_volumes:
   quarry:
     volumes:
       - quarry-nfs
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  twl:
+    volumes:
+      - twl-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
