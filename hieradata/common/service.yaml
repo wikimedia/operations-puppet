@@ -1483,7 +1483,6 @@ service::catalog:
       - type: http
         host: en.wikipedia.com
         path: /_status
-        expect_redirect: true
     monitoring:
       check_command: check_http_lvs!en.wikipedia.com!/_status
       sites:
