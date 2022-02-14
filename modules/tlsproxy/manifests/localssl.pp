@@ -10,7 +10,7 @@
 #   List of server aliases, host names also served.
 #
 # [*certs*]
-#   Optional - specify either this or acme_subjects.
+#   Optional - specify either this or cfssl_paths.
 #   Array of certs, normally just one.  If more than one, special patched nginx
 #   support is required.  This is intended to support duplicate keys with
 #   differing crypto (e.g. ECDSA + RSA).
@@ -22,7 +22,7 @@
 #   to serve traffic.  Defaults to the entire set from "certs".
 #
 # [*acme_chief*]
-#   Optional - specify either this or acme_subjects.
+#   Optional - specify either this or cfssl_paths.
 #   If true, download, and potentially use, certificates from acme-chief.
 #   If $certs is empty, acme-chief certificates will be used to serve traffic.
 #   When used in conjunction with certs, acme-chief certificate will be deployed on
@@ -30,15 +30,6 @@
 
 # [*acme_certname*]
 #   Optional - specify this if title of the resource and the acme-chief certname differs.
-#
-# [*acme_subjects*]
-#   Optional - Enable the old LE puppetization. specify either this or certs.
-#   This is also incompatible with using acme_chief
-#   Array of certificate subjects, beginning with the canonical one - the rest
-#   will be listed as Subject Alternative Names.
-#   There should be no more than 100 entries in this.
-#   This option will be removed in following changes. If you need to use LE certificates
-#   please migrate to acme-chief ASAP.
 #
 # [*upstream_ports*]
 #   TCP ports array to proxy to. Defaults to ['80']
@@ -93,33 +84,36 @@
 #  this on public facing instances since in internal services (even if proxied
 #  by the edge cache) it adds 1 more moving part without providing considerable
 #  benefits
+# [*cfssl_certs*]
+#   A hash of paths pointing to ssl certificate files,  created by profile::pki::get_cert
+#   if this is present it takes precedence
 
 define tlsproxy::localssl(
-    Array                  $certs              = [],
-    Array                  $certs_active       = [],
-    Array                  $acme_subjects      = [],
-    Boolean                $acme_chief         = false,
-    String[1]              $acme_certname      = $title,
-    Stdlib::Host           $server_name        = $::fqdn,
-    Array[Stdlib::Host]    $server_aliases     = [],
-    Boolean                $default_server     = false,
-    Stdlib::IP::Address    $upstream_ip        = $::ipaddress,
-    Array[Stdlib::Port]    $upstream_ports     = [80],
-    Stdlib::Port           $tls_port           = 443,
-    Optional[Stdlib::Port] $redir_port         = undef,
-    Boolean                $do_ocsp            = false,
-    Boolean                $skip_private       = false,
-    Boolean                $access_log         = false,
-    Integer                $keepalive_timeout  = 60,
-    Integer                $keepalive_requests = 100,
-    Integer                $read_timeout       = 180,
-    String                 $ocsp_proxy         = '',
-    Boolean                $only_get_requests  = false,
-    Boolean                $ssl_ecdhe_curve    = true,
-    Boolean                $enable_http2       = false,
+    Array                             $certs              = [],
+    Array                             $certs_active       = [],
+    Boolean                           $acme_chief         = false,
+    String[1]                         $acme_certname      = $title,
+    Stdlib::Host                      $server_name        = $::fqdn,
+    Array[Stdlib::Host]               $server_aliases     = [],
+    Boolean                           $default_server     = false,
+    Stdlib::IP::Address               $upstream_ip        = $::ipaddress,
+    Array[Stdlib::Port]               $upstream_ports     = [80],
+    Stdlib::Port                      $tls_port           = 443,
+    Optional[Stdlib::Port]            $redir_port         = undef,
+    Boolean                           $do_ocsp            = false,
+    Boolean                           $skip_private       = false,
+    Boolean                           $access_log         = false,
+    Integer                           $keepalive_timeout  = 60,
+    Integer                           $keepalive_requests = 100,
+    Integer                           $read_timeout       = 180,
+    String                            $ocsp_proxy         = '',
+    Boolean                           $only_get_requests  = false,
+    Boolean                           $ssl_ecdhe_curve    = true,
+    Boolean                           $enable_http2       = false,
+    Hash[String[1], Stdlib::Unixpath] $cfssl_paths        = {}
 ) {
-    if (!empty($certs) and !empty($acme_subjects)) or ($acme_chief and !empty($acme_subjects)) or (empty($certs) and empty($acme_subjects) and !$acme_chief) {
-        fail('Specify exactly one of certs (and optionally acme_chief) or acme_subjects')
+    if $cfssl_paths.empty and $certs.empty and !acme_chief {
+        fail('Must provide exactly one of certs, cfssl_paths or acme_chief')
     }
 
     if $redir_port != undef and $tls_port != 443 {
@@ -163,9 +157,6 @@ define tlsproxy::localssl(
             }
         }
     }
-    if !empty($acme_subjects) {
-        fail('This code path is no longer supported. Certs must be managed using acme_chief.')
-    }
 
     if $do_ocsp {
         require tlsproxy::ocsp
@@ -189,6 +180,9 @@ define tlsproxy::localssl(
         if $do_ocsp {
             File["/etc/acmecerts/${acme_certname}"] ~> Exec['nginx-reload']
         }
+    }
+    unless $cfssl_paths.empty {
+        File[$cfssl_paths] ~> Exec['nginx-reload']
     }
 
     # used in localssl.erb to template upstream definition name

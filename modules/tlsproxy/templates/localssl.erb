@@ -19,6 +19,10 @@ server {
 	error_log   /var/log/nginx/<%= @name %>.error.log;
 	access_log   <% if @access_log %>/var/log/nginx/<%= @name %>.access.log<% else %>off<% end %>;
 
+    <%- unless @cfssl_paths.empty? -%>
+    ssl_certificate <%= @cfssl_paths['chained'] %>;
+    ssl_certificate_key <%= @cfssl_paths['key'] %>;
+    <%- end -%>
 	<%- @certs_nginx.each do |cert| -%>
 	ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
 	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
@@ -28,10 +32,6 @@ server {
 	ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.key;
 	ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
 	ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.key;
-	<%- end -%>
-	<%- if !@acme_subjects.empty? -%>
-	ssl_certificate /etc/acme/cert/<%= @server_name.gsub(/\W/, '_') %>.chained.crt;
-	ssl_certificate_key /etc/acme/key/<%= @server_name.gsub(/\W/, '_') %>.key;
 	<%- end -%>
 	<%- if @do_ocsp -%>
 	ssl_stapling on;
@@ -47,9 +47,6 @@ server {
 	keepalive_timeout <%= @keepalive_timeout %>;
 	keepalive_requests <%= @keepalive_requests %>;
 
-<% if !@acme_subjects.empty? -%>
-	include /etc/acme/challenge-nginx.conf;
-<% end -%>
 	location / {
 <% if @only_get_requests -%>
 		limit_except GET {
