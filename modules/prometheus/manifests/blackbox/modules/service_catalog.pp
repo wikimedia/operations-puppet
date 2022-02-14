@@ -36,6 +36,12 @@ class prometheus::blackbox::modules::service_catalog (
       'tls_config'      => { 'server_name' => $tls_server_name },
     } + $probe_options
 
+    # Remove once stretch/buster migrations are complete
+    $icmp_options = debian::codename::ge('bullseye') ? {
+      false => {},
+      true  => { 'ip_protocol_fallback' => true },
+    }
+
     $memo + {
       "http_${service_name}_ip4" => {
         'prober' => 'http',
@@ -48,6 +54,20 @@ class prometheus::blackbox::modules::service_catalog (
         'http'   => {
           'preferred_ip_protocol' => 'ip6',
         } + $http_options,
+      },
+      # These modules don't have any per-service customisation, however
+      # they come handy to filter logs by service.
+      "icmp_${service_name}_ip4" => {
+        'prober' => 'icmp',
+        'icmp'   => {
+          'preferred_ip_protocol' => 'ip4',
+        } + $icmp_options,
+      },
+      "icmp_${service_name}_ip6" => {
+        'prober' => 'icmp',
+        'icmp'   => {
+          'preferred_ip_protocol' => 'ip6',
+        } + $icmp_options,
       },
     }
   }
