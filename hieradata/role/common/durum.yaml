@@ -1,37 +1,61 @@
 cluster: 'durum'
 
 profile::durum::service::domain: 'check.wikimedia-dns.org'
-profile::durum::service::ip: &landing_ip 185.71.138.139
+profile::durum::service::ipv4: &landing_ipv4 185.71.138.139
+profile::durum::service::ipv6: &landing_ipv6 2001:67c:930::2
 
 profile::durum::service::ips:
-  landing: *landing_ip
-  success_doh: &successdoh_ip 185.71.138.140
-  failure: &failure_ip 185.71.138.141
-  success_dot: &successdot_ip 185.71.138.142
+  landing:
+    - *landing_ipv4
+    - *landing_ipv6
+  success_doh:
+    - &successdoh_ipv4
+      185.71.138.140
+    - &successdoh_ipv6
+      2001:67c:930::3
+  failure:
+    - &failure_ipv4
+      185.71.138.141
+    - &failure_ipv6
+      2001:67c:930::4
+  success_dot:
+    - &successdot_ipv4
+      185.71.138.142
+    - &successdot_ipv6
+      2001:67c:930::5
 
 profile::durum::service::common:
   durum_path: '/srv/durum'
 
+profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   check.wikimedia-dns.org:
     ensure: present
-    address: *landing_ip
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ip')} -u / -t 1"
+    address: *landing_ipv4
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv4')} -u / -t 1"
+    address_ipv6: *landing_ipv6
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv6')} -u / -t 1"
     service_type: durum
   yesdoh.check.wikimedia-dns.org:
     ensure: present
-    address: *successdoh_ip
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ip')} -u / -t 1"
+    address: *successdoh_ipv4
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv4')} -u / -t 1"
+    address_ipv6: *successdoh_ipv6
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv6')} -u / -t 1"
     service_type: durum
   no.check.wikimedia-dns.org:
     ensure: present
-    address: *failure_ip
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ip')} -u / -t 1"
+    address: *failure_ipv4
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv4')} -u / -t 1"
+    address_ipv6: *failure_ipv6
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv6')} -u / -t 1"
     service_type: durum
   yesdot.check.wikimedia-dns.org:
     ensure: present
-    address: *successdot_ip
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ip')} -u / -t 1"
+    address: *successdot_ipv4
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv4')} -u / -t 1"
+    address_ipv6: *successdot_ipv6
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv6')} -u / -t 1"
     service_type: durum
 
 profile::bird::anycasthc_logging:

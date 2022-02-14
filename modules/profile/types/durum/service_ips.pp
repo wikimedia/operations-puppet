@@ -1,22 +1,22 @@
 # == Type: Profile::Durum::Service_ips
 #
-# IP addresses used by the durum hosts.
+# IP addresses used by the durum hosts (IPv4 and IPv6).
 #
 #  [*landing*]
-#    [IP address] to listen on for the landing page.
+#    [tuple] (IPv4, IPv6) to listen on for the landing page.
 #
 #  [*success_doh*]
-#    [IP address] to listen on for when user is using Wikidough (DoH).
+#    [tuple] (IPv4, IPv6) to listen on for when user is using Wikidough (DoH).
 #
 #  [*failure*]
-#    [IP address] to listen on for when user is not using Wikidough.
+#    [tuple] (IPv4, IPv6) to listen on for when user is not using Wikidough.
 #
 #  [*success_dot*]
-#    [IP address] to listen on for when user is using Wikidough (DoT).
+#    [tuple] (IPv4, IPv6) to listen on for when user is using Wikidough (DoT).
 
 type Profile::Durum::Service_ips = Struct[{
-    landing     => Stdlib::IP::Address,
-    success_doh => Stdlib::IP::Address,
-    failure     => Stdlib::IP::Address,
-    success_dot => Stdlib::IP::Address,
+    landing     => Tuple[Stdlib::IP::Address::V4::Nosubnet, Stdlib::IP::Address::V6::Nosubnet],
+    success_doh => Tuple[Stdlib::IP::Address::V4::Nosubnet, Stdlib::IP::Address::V6::Nosubnet],
+    failure     => Tuple[Stdlib::IP::Address::V4::Nosubnet, Stdlib::IP::Address::V6::Nosubnet],
+    success_dot => Tuple[Stdlib::IP::Address::V4::Nosubnet, Stdlib::IP::Address::V6::Nosubnet],
 }]
