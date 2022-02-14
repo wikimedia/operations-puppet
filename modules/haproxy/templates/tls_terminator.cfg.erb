@@ -7,7 +7,7 @@ global
 -%>
     nbproc 1
     nbthread <%= num_threads %>
-    cpu-map auto:1/1-<%= num_threads %> <%= cpus %>
+    cpu-map 1/1- <%= cpus %>
 
 <%- if @lua_scripts -%>
 <%- @lua_scripts.each do |lua_script| -%>
