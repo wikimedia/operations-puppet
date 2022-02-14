@@ -208,7 +208,7 @@ prometheus_nodes:
 
 # GitLab
 profile::gitlab::active_host: 'gitlab1001.wikimedia.org'
-profile::gitlab::passive_host: 'gitlab-test.wmcloud.org'
+profile::gitlab::passive_host: 'gitlab.devtools.wmflabs.org'
 
 profile::base::ssh_server_settings:
     listen_addresses:
@@ -231,8 +231,8 @@ profile::gitlab::smtp_enabled: false
 # TLS, we use certbot in cloud and acmechief in prod
 # both of them are getting us Letsencrypt certs.
 profile::gitlab::use_acmechief: false
-profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.crt'
-profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
+profile::gitlab::cert_path: '/etc/letsencrypt/live/gitlab.devtools.wmflabs.org/fullchain.pem'
+profile::gitlab::key_path: '/etc/letsencrypt/live/gitlab.devtools.wmflabs.org/privkey.pem'
 
 # Disable restore backup sync on cloud test instance
 profile::gitlab::enable_restore: false
@@ -242,7 +242,7 @@ profile::contacts::role_contacts: ['ServiceOps SREs']
 # service IP for public https and ssh (T276148)
 profile::gitlab::service_ip_v4: '185.15.56.79'
 profile::gitlab::service_ip_v6: '::1'
-profile::gitlab::service_name: 'gitlab-test.wmcloud.org'
+profile::gitlab::service_name: 'gitlab.devtools.wmflabs.org'
 
 # Content-Security-Policy
 profile::gitlab::csp_enabled: false
