@@ -18,7 +18,13 @@ class profile::docker::engine(
     # loaded by the role.
     Boolean $force_default_docker_storage = lookup('profile::docker::engine::force_default_docker_storage', { 'default_value' => false }),
 ) {
-    require ::profile::base::memory_cgroup
+
+    if debian::codename::le('buster') {
+        # See https://docs.docker.com/engine/install/linux-postinstall/#your-kernel-does-not-support-cgroup-swap-limit-capabilities
+        # This seems not needed on Bullseye since Docker is provided.
+        require ::profile::base::memory_cgroup
+    }
+
     # On Buster and later we use Docker from Debian
     if debian::codename::lt('buster') {
         apt::repository { 'thirdparty-k8s':
