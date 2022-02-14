@@ -3706,6 +3706,8 @@ service::catalog:
     page: false
     probes:
       - type: http
+        host: librenms.wikimedia.org
+        expect_sso: true
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/LibreNMS"
