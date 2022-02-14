@@ -1199,6 +1199,7 @@ service::catalog:
       scheduler: wrr
     probes:
       - type: http
+        expect_redirect: true
     port: 7443
     sites:
       - eqiad
