@@ -22,6 +22,7 @@ class profile::wmcs::proxy::static(
         content => template('profile/wmcs/proxy/static.conf.erb'),
     }
 
+    class { '::sslcert::dhparam': }
     $acme_chief_certs.each |String $certname| {
         acme_chief::cert { $certname:
             puppet_rsc => Exec['nginx-reload'],
