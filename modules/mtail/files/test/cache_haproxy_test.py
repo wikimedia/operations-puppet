@@ -15,12 +15,14 @@ class CacheHAProxyTest(unittest.TestCase):
         s = self.store.get_samples('haproxy_client_ttfb')
         s_dict = dict(s)
 
-        count_2xx = s_dict['http_status_family=2']['count']
-        self.assertEqual(count_2xx, 2)
-        count_4xx = s_dict['http_status_family=4']['count']
+        count_2xx = s_dict['cache_status=hit,http_status_family=2']['count']
+        self.assertEqual(count_2xx, 1)
+        count_2xx = s_dict['cache_status=miss,http_status_family=2']['count']
+        self.assertEqual(count_2xx, 1)
+        count_4xx = s_dict['cache_status=int-front,http_status_family=4']['count']
         self.assertEqual(count_4xx, 2)
 
-        print(s_dict['http_status_family=2']['buckets'])
-        self.assertEqual(s_dict['http_status_family=4']['buckets']['0.045'], 2)
-        self.assertEqual(s_dict['http_status_family=2']['buckets']['0.07'], 1)
-        self.assertEqual(s_dict['http_status_family=2']['buckets']['0.15'], 1)
+        self.assertEqual(s_dict['cache_status=int-front,http_status_family=4']['buckets']['0.045'],
+                         2)
+        self.assertEqual(s_dict['cache_status=hit,http_status_family=2']['buckets']['0.07'], 1)
+        self.assertEqual(s_dict['cache_status=miss,http_status_family=2']['buckets']['0.15'], 1)
