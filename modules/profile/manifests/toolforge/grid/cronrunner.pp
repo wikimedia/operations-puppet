@@ -9,12 +9,17 @@ class profile::toolforge::grid::cronrunner(
 
     $is_active = $active_host == $::facts['fqdn']
 
-    # With Puppet-managed infra crons moved to systemd services,
-    # we can disable the cron service if we don't want tool crons running,
-    # for example for replacing the crontab host with another
     service { 'cron':
-        ensure => $is_active.bool2str('running', 'stopped'),
-        enable => $is_active,
+        ensure => running,
+        enable => true,
+    }
+
+    # if this is not the active cron runner, block tool crons for easier migration between nodes,
+    # but allow root owned crons (most imporantly puppet runs) to still run as intended
+    # for more details, see crontab(1)
+    file { '/etc/cron.allow':
+        ensure  => $is_active.bool2str('absent', 'file'),
+        content => "root\n",
     }
 
     motd::script { 'submithost-banner':
