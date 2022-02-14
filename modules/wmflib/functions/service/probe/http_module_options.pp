@@ -64,5 +64,15 @@ function wmflib::service::probe::http_module_options(
     $expect_sso = {}
   }
 
-  return deep_merge($compat, $match, $post_json, $host_header, $valid_status_codes, $expect_sso)
+  if 'expect_redirect' in $probe {
+    $expect_redirect = {
+      'valid_status_codes'  => [ 301, 302 ],
+      'no_follow_redirects' => true,
+    }
+  } else {
+    $expect_redirect = {}
+  }
+
+  return deep_merge($compat, $match, $post_json, $host_header,
+    $valid_status_codes, $expect_sso, $expect_redirect)
 }

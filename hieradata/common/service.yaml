@@ -1483,8 +1483,7 @@ service::catalog:
       - type: http
         host: en.wikipedia.com
         path: /_status
-        valid_status_codes:
-          - 301
+        expect_redirect: true
     monitoring:
       check_command: check_http_lvs!en.wikipedia.com!/_status
       sites:
@@ -2616,8 +2615,7 @@ service::catalog:
       - type: http
         host: en.wikipedia.org
         path: /wiki/Special:BlankPage
-        valid_status_codes:
-          - 301
+        expect_redirect: true
     monitoring:
       check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
       sites:
@@ -2816,8 +2814,7 @@ service::catalog:
       - type: http
         host: upload.wikimedia.org
         path: /monitoring/backend
-        valid_status_codes:
-          - 301
+        expect_redirect: true
     monitoring:
       check_command: check_http_lvs!upload.wikimedia.org!/monitoring/backend
       sites:

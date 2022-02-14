@@ -16,11 +16,12 @@
 #     Expect a SSO login from the endpoint (default false)
 
 type Wmflib::Service::Probe = Struct[{
-    'type'                => Enum['http', 'tcp', 'tcp-notls'],
-    'path'                => Optional[String],
-    'host'                => Optional[String],
-    'post_json'           => Optional[String],
-    'must_contain_regexp' => Optional[String],
-    'valid_status_codes'  => Optional[Array[Stdlib::HttpStatus]],
-    'expect_sso'          => Optional[Boolean],
+    'type'                  => Enum['http', 'tcp', 'tcp-notls'],
+    'path'                  => Optional[String],
+    'host'                  => Optional[String],
+    'post_json'             => Optional[String],
+    'must_contain_regexp'   => Optional[String],
+    'valid_status_codes'    => Optional[Array[Stdlib::HttpStatus]],
+    'expect_sso'            => Optional[Boolean],
+    'expect_redirect'       => Optional[Boolean],
 }]
