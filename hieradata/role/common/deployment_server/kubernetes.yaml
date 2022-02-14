@@ -236,7 +236,7 @@ profile::kubernetes::deployment_server::general:
       image_version: 1.15.4-1
     # prometheus-statsd-exporter
     monitoring:
-      image_version: 0.0.9
+      image_version: 0.0.10
     # This can be used to override standard environment
     # variables pointing to k8s apiserver so that TLS
     # certs can be validated.
