@@ -140,6 +140,16 @@ class profile::cache::haproxy(
         content => file('profile/cache/haproxy-tls.lua'),
     }
 
+    # If numa_networking is turned on, use interface_primary for NUMA hinting,
+    # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
+    # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
+    # in turn consumed by the systemd unit and config templates.
+    if $::numa_networking != 'off' {
+        $numa_iface = $facts['interface_primary']
+    } else {
+        $numa_iface = 'lo'
+    }
+
     haproxy::tls_terminator { 'tls':
         port                 => $tls_port,
         backends             => $varnish_socket,
@@ -158,6 +168,7 @@ class profile::cache::haproxy(
         add_headers          => $add_headers,
         del_headers          => $del_headers,
         prometheus_port      => $prometheus_port,
+        numa_iface           => $numa_iface,
     }
 
     profile::cache::haproxy::monitoring { 'haproxy_tls_monitoring':

@@ -21,6 +21,9 @@
 # @param http_reuse
 #   HTTP connection reuse policy.
 #   Defaults to safe
+# @param numa_iface
+#   Network interface used to bound HAProxy to a NUMA node.
+#   Defaults to lo
 # @param tls_ciphers
 #   Allowed ciphersuites for <= TLSv1.2
 # @param tls13_ciphers
@@ -66,6 +69,7 @@ define haproxy::tls_terminator(
     Integer[0] $tls_cachesize = 20000,
     Integer[0] $tls_session_lifetime = 300,
     Haproxy::Httpreuse $http_reuse = 'safe',
+    String $numa_iface = 'lo',
     Optional[Stdlib::Unixpath] $tls_ticket_keys_path = undef,
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = undef,
     Optional[Array[Stdlib::Unixpath]] $lua_scripts = undef,

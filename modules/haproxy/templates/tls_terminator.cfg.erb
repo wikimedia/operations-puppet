@@ -1,5 +1,14 @@
 global
 
+<%
+    htsets = @facts['numa']['device_to_htset'][@numa_iface]
+    cpus = htsets.flatten.join(' ')
+    num_threads = htsets.flatten.size
+-%>
+    nbproc 1
+    nbthread <%= num_threads %>
+    cpu-map auto:1/1-<%= num_threads %> <%= cpus %>
+
 <%- if @lua_scripts -%>
 <%- @lua_scripts.each do |lua_script| -%>
     lua-load <%= lua_script %>
