@@ -1203,6 +1203,8 @@ service::catalog:
     sites:
       - eqiad
     state: production
+    aliases:
+      - "labweb"
 
   ldap-ro:
     description: Ldap for cloud and developer accounts
@@ -3648,6 +3650,8 @@ service::catalog:
     page: false
     probes:
       - type: http
+        host: graphite.wikimedia.org
+        expect_sso: true
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/Graphite"
@@ -3679,6 +3683,7 @@ service::catalog:
     page: false
     probes:
       - type: http
+        host: grafana.wikimedia.org
     monitoring:
       check_command: "check_https_on_port!443"
       notes_url: "https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org"
