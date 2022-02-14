@@ -56,19 +56,18 @@ class dynamicproxy::api (
         notify  => Uwsgi::App['invisible-unicorn'],
     }
 
-    file { '/data/project/backup':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+    cinderutils::ensure { 'db_backups':
+            min_gb      => 1,
+            max_gb      => 20,
+            mount_point => '/srv/backup',
+            before      => File['/srv/backup/README'],
     }
 
-    file { '/data/project/backup/README':
-        source  => 'puppet:///modules/dynamicproxy/BackupReadme',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => File['/data/project/backup'],
+    file { '/srv/backup/README':
+        source => 'puppet:///modules/dynamicproxy/BackupReadme',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
     }
 
     file { '/usr/local/sbin/proxydb-bak.sh':
@@ -86,7 +85,6 @@ class dynamicproxy::api (
         interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
         monitoring_enabled => false,
         logging_enabled    => false,
-        require            => File['/data/project/backup'],
     }
 
     # Create initial db file if it doesn't exist, but don't clobber if it does.
