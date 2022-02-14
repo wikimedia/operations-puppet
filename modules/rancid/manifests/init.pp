@@ -67,6 +67,14 @@ class rancid (
         source  => 'puppet:///modules/rancid/core',
     }
 
+    file { '/var/lib/rancid/core/configs':
+        ensure  => 'directory',
+        require => [ Package['rancid'], User['rancid'] ],
+        owner   => 'rancid',
+        group   => 'rancid',
+        mode    => '0774',
+    }
+
     file { '/var/lib/rancid/.cloginrc':
         require => Package['rancid'],
         owner   => 'rancid',
