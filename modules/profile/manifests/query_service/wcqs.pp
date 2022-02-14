@@ -38,6 +38,7 @@ class profile::query_service::wcqs(
     $private_jvm_opts = [
         "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.accessTokenSecret=${oauth_access_token_secret}",
         "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.consumerSecret=${oauth_consumer_secret}",
+        "-Dwdqs.jwt-identity-filter.jwt-identity-secret=${oauth_access_token_secret}",
     ]
 
     profile::query_service::blazegraph { $instance_name:
