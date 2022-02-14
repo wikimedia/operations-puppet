@@ -891,7 +891,7 @@ groups:
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
-    members: &ml-team-admins [accraze, chrisalbon, kevinbazira]
+    members: &ml-team-admins [accraze, chrisalbon, kevinbazira, aikochou]
     privileges: []
     approval:
       - Chris Albon
@@ -4380,14 +4380,12 @@ users:
   aikochou:
     ensure: present
     realname: Ai-Jou Chou
-    email: qwanqwanro@gmail.com
+    email: achou@wikimedia.org
     uid: 22731
     gid: 500
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICft3iBlNm+b0OoW7LoITaG1+5X5S02pQVdRwQfEzaTE arielchou@AIJOUde-MacBook-Pro.local
-    expiry_date: 2022-06-30
-    expiry_contact: mredi@wikimedia.org
   paragon:
     ensure: present
     realname: Pablo Aragon
