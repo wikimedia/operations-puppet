@@ -1,1 +1,3 @@
 prometheus::replica_label: 'b'
+profile::prometheus::enable_thanos_upload: false
+alertmanagers: []
