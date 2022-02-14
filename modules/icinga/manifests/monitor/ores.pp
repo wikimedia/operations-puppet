@@ -5,30 +5,7 @@ class icinga::monitor::ores (
 ){
 
     @monitoring::host { 'ores.wikimedia.org':
-        host_fqdn => 'ores.wikimedia.org',
-    }
-
-    monitoring::service { 'ores_main_page':
-        ensure        => 'absent',
-        description   => 'ORES home page',
-        check_command => 'check_http',
-        host          => 'ores.wmflabs.org',
-        contact_group => 'team-scoring',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
-    }
-
-    $web_nodes = [ 'ores-web-04', 'ores-web-05', 'ores-web-06' ]
-
-    icinga::monitor::ores_labs_web_node { $web_nodes: }
-
-    # T121656
-    monitoring::service { 'ores_worker_labs':
-        ensure        => 'absent',
-        description   => 'ORES worker labs',
-        check_command => 'check_ores_workers!oresweb',
-        host          => 'ores.wmflabs.org',
-        contact_group => 'team-scoring',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/ORES',
+        host_fqdn => 'ores.discovery.wmnet',
     }
 
     monitoring::service { 'ores_worker_production':
