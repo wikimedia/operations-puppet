@@ -153,6 +153,11 @@ host cuminunpriv1001 {
     fixed-address cuminunpriv1001.eqiad.wmnet;
 }
 
+host datahub1001 {
+    hardware ethernet aa:00:00:35:3d:f1;
+    fixed-address datahub1001.eqiad.wmnet;
+}
+
 host dborch1001 {
     hardware ethernet aa:00:00:a1:94:8f;
     fixed-address dborch1001.wikimedia.org;

@@ -1161,6 +1161,10 @@ node /^druid100[4-8]\.eqiad\.wmnet$/ {
     role(druid::public::worker)
 }
 
+node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # nfs server for xml dumps generation, also rsyncs xml dumps
 # data to fallback nfs server(s)
 node /^dumpsdata1003\.eqiad\.wmnet$/ {
