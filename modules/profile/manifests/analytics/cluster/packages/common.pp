@@ -50,7 +50,11 @@ class profile::analytics::cluster::packages::common {
         # with this one.  It is easier to maintain this single anaconda
         # based package than many different python debian packages.
         # See: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Anaconda
-        'anaconda-wmf',
+        # anaconda-wmf-base contains the /usr/lib/anaconda-wmf conda env,
+        # but does not contain conda pkgs dir or the conda-create-stacked script.
+        # anaconda-wmf-base should be installed on all worker nodes.
+        # anaconda-wmf is installed only on client nodes (AKA stat boxes).
+        'anaconda-wmf-base',
     ])
 
     # ores::base for ORES packages

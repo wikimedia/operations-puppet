@@ -34,5 +34,13 @@ class profile::analytics::cluster::client {
         'kafkacat',
         'jupyter-notebook',
         's-nail',
+        # We hope to eventually replace all python packages installed for use by users
+        # with this one.  It is easier to maintain this single anaconda
+        # based package than many different python debian packages.
+        # See: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Anaconda
+        # anaconda-wmf depends on anaconda-wmf-base, but also includes conda pkgs dir
+        # and conda-create-stacked script.  anconda-wmf-base is installed on all nodes, including
+        # workers, wheras anaconda-wmf is installed only on client nodes (AKA stat boxes).
+        'anaconda-wmf',
     ])
 }
