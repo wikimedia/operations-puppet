@@ -27,20 +27,6 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
             ports  => $ports,
         }
 
-        # Alert on mjolnir daemons - T214494
-        monitoring::check_prometheus { "mjolnir_bulk_update_failure_${site}":
-            description     => "Mjolnir bulk update failure check - ${site}",
-            dashboard_links => ['https://grafana.wikimedia.org/d/000000591/elasticsearch-mjolnir-bulk-updates?orgId=1&from=now-7d&to=now&panelId=1&fullscreen'],
-            query           => 'sum(irate(mjolnir_bulk_action_total{result="failed"}[5m]))/sum(irate(mjolnir_bulk_action_total[5m]))',
-            prometheus_url  => "http://prometheus.svc.${site}.wmnet/ops",
-            nan_ok          => true,
-            method          => 'gt',
-            critical        => 0.01, # 1%
-            warning         => 0.005, # 0.5%
-            contact_group   => 'admins,team-discovery',
-            notes_link      => 'https://phabricator.wikimedia.org/T214494',
-        }
-
         # this is checking for update rate over the last 60 minutes. Ideally, we'd like a shorter window for this
         # check, but T224425 makes it generate too much noise.
         # FIXME: reduce moving average to 10 minutes once T224425 is fixed.

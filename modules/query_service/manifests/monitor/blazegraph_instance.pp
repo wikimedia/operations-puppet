@@ -16,17 +16,4 @@ define  query_service::monitor::blazegraph_instance (
         nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u ${username} --ereg-argument-array '^java .* --port ${port} .* blazegraph-service-.*war'",
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
     }
-
-    monitoring::check_prometheus { "blazegraph_allocators_${title}":
-        description     => "Free Blazegraph allocators ${title}",
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000489/wikidata-query-service?orgId=1&panelId=32&fullscreen'],
-        query           => "blazegraph_free_allocators{instance=\"${::hostname}:${prometheus_port}\"}",
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        method          => 'lt',
-        warning         => 1000,
-        critical        => 800,
-        contact_group   => $contact_groups,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook'
-    }
-
 }
