@@ -14,7 +14,7 @@ class profile::mirrors::serve {
     Package['nginx-light'] ~> Package['apache2']
 
     class { '::httpd':
-        modules => ['ssl', 'macro' ],
+        modules => ['ssl', 'macro', 'headers'],
     }
 
     httpd::site { 'mirrors':
