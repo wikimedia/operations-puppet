@@ -23,9 +23,18 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - dumps-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
+  fastcci:
+    volumes:
+      - fastcci-nfs
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
   maps:
     volumes:
       - maps
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  project-proxy:
+    volumes: [ALL]
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
   puppet-diffs:
@@ -38,8 +47,23 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - quarry-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
+  testlabs:
+    volumes:
+      - testlabs-nfs
+    FULL_FREQUENCY: 10
+    PURGE_AFTER: 21
   twl:
     volumes:
       - twl-nfs
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  wikidumpparse:
+    volumes:
+      - wikidumpparse-nfs
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  wikilink:
+    volumes:
+      - wikilink-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
