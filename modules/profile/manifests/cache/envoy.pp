@@ -68,6 +68,26 @@ class profile::cache::envoy(
         notify  => Exec['systemd daemon-reload for envoyproxy.service'],
     }
 
+    # If numa_networking is turned on, use interface_primary for NUMA hinting,
+    # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
+    # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
+    # in turn consumed by the systemd unit and config templates.
+    if $::numa_networking != 'off' {
+        $numa_iface = $facts['interface_primary']
+    } else {
+        $numa_iface = 'lo'
+    }
+
+    $cpu_list = join(flatten($facts['numa']['device_to_htset'][$numa_iface]), ' ')
+
+    file { '/etc/systemd/system/envoyproxy.service.d/cpuaffinity.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        content => "[Service]\nCPUAffinity=${cpu_list}\n",
+        notify  => Exec['systemd daemon-reload for envoyproxy.service'],
+    }
+
     unless empty($unified_certs) {
         $unified_certs.each |String $cert| {
             sslcert::certificate { $cert:
