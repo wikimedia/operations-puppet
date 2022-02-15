@@ -1,3 +1,4 @@
 # db2135
 mariadb::shard: 'm5'
 profile::mariadb::mysql_role: 'master'
+profile::monitoring::notifications_enabled: false
