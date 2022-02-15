@@ -11,6 +11,7 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs1015': 'enp5s0f0:10.64.1.15'
       'lvs1018': 'eno2np1:10.64.1.18'
+      'lvs1019': 'eno2np1:10.64.1.19'
       'lvs1020': 'eno2np1:10.64.1.17'
   private1-b-eqiad:
     id: "1018"
@@ -18,6 +19,7 @@ lvs::interfaces::vlan_data:
     iface:
       'lvs1017': 'eno2np1:10.64.17.18'
       'lvs1015': 'enp4s0f1:10.64.17.15'
+      'lvs1019': 'ens1f0np0:10.64.17.19'
       'lvs1020': 'ens1f0np0:10.64.17.17'
   private1-c-eqiad:
     id: "1019"
@@ -33,6 +35,7 @@ lvs::interfaces::vlan_data:
       'lvs1017': 'ens1f1np1:10.64.49.17'
       'lvs1015': 'enp5s0f1:10.64.49.15'
       'lvs1018': 'ens1f1np1:10.64.49.18'
+      'lvs1019': 'ens1f1np1:10.64.49.19'
   public1-a-eqiad:
     id: "1001"
     netmask: "255.255.255.192"
@@ -40,6 +43,7 @@ lvs::interfaces::vlan_data:
       'lvs1017': 'eno1np0:208.80.154.59'
       'lvs1015': 'enp5s0f0:208.80.154.54'
       'lvs1018': 'eno2np1:208.80.154.60'
+      'lvs1019': 'eno2np1:208.80.154.61'
       'lvs1020': 'eno2np1:208.80.154.62'
   public1-b-eqiad:
     id: "1002"
@@ -48,6 +52,7 @@ lvs::interfaces::vlan_data:
       'lvs1017': 'eno2np1:208.80.154.172'
       'lvs1015': 'enp4s0f1:208.80.154.169'
       'lvs1018': 'eno1np0:208.80.154.173'
+      'lvs1019': 'ens1f0np0:208.80.154.174'
       'lvs1020': 'ens1f0np0:208.80.154.171'
   public1-c-eqiad:
     id: "1003"
@@ -56,6 +61,7 @@ lvs::interfaces::vlan_data:
       'lvs1017': 'ens1f0np0:208.80.154.107'
       'lvs1015': 'enp4s0f0:208.80.154.104'
       'lvs1018': 'ens1f0np0:208.80.154.108'
+      'lvs1019': 'eno1np0:208.80.154.109'
       'lvs1020': 'ens1f1np1:208.80.154.106'
   public1-d-eqiad:
     id: "1004"
@@ -64,6 +70,7 @@ lvs::interfaces::vlan_data:
       'lvs1017': 'ens1f1np1:208.80.155.114'
       'lvs1015': 'enp5s0f1:208.80.155.123'
       'lvs1018': 'ens1f1np1:208.80.155.115'
+      'lvs1019': 'ens1f1np1:208.80.155.116'
       'lvs1020': 'eno1np0:208.80.155.113'
   public1-a-codfw:
     id: "2001"

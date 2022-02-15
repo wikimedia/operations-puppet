@@ -1855,13 +1855,8 @@ node /^logstash100[7-9]\.eqiad\.wmnet$/ {
     role(spare::system)
 }
 
-# new lvs servers T295804 (still insetup)
-node 'lvs1019.eqiad.wmnet' {
-    role(insetup_noferm)
-}
-
 # new lvs servers T295804 (in prod use)
-node /^lvs10(1[78]|20)\.eqiad\.wmnet$/ {
+node /^lvs10(1[789]|20)\.eqiad\.wmnet$/ {
     role(lvs::balancer)
 }
 
