@@ -4738,7 +4738,8 @@ users:
     realname: Sai Suman Cherukuwada
     email: scherukuwada@wikimedia.org
     uid: 34007
-    ssh_keys: []
+    ssh_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEQxRR4Wt7HJsEYRiWrHGwBPK4L8xbFC6IDy4dOPFahk
   swak:
     ensure: present
     gid: 500
