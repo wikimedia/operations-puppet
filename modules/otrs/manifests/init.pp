@@ -1,38 +1,38 @@
 # Class: otrs
 #
-# This class installs all the prerequisite packages for OTRS
+# This class installs all the prerequisite packages for VRTS
 #
 # Parameters:
-#   $otrs_database_host,
-#       The MySQL OTRS database host
-#   $otrs_database_name,
-#       The MySQL OTRS database name
-#   $otrs_database_user,
-#       The MySQL OTRS database user
-#   $otrs_database_pw,
-#       The MySQL OTRS database pass
-#   $otrs_daemon,
+#   $vrts_database_host,
+#       The MySQL VRTS database host
+#   $vrts_database_name,
+#       The MySQL VRTS database name
+#   $vrts_database_user,
+#       The MySQL VRTS database user
+#   $vrts_database_pw,
+#       The MySQL VRTS database pass
+#   $vrts_daemon,
 #       Whether to run the daemon. NOTE: only 1 daemon MUST run at time
 #   $exim_database_name,
-#       The MySQL OTRS database name (probably the same)
+#       The MySQL VRTS database name (probably the same)
 #   $exim_database_user,
-#       The MySQL OTRS database user (probably not the same)
+#       The MySQL VRTS database user (probably not the same)
 #   $exim_database_pass,
-#       The MySQL OTRS database pass (probably not the same)
+#       The MySQL VRTS database pass (probably not the same)
 #   $trusted_networks,
-#       The trusted by OTRS networks
+#       The trusted by VRTS networks
 #
 # Actions:
-#       Install OTRS and prerequisites
+#       Install VRTS and prerequisites
 #
 # Requires:
 #
 #  class {'::otrs':
-#      otrs_database_host => 'host1',
-#      otrs_database_name => 'otrs',
-#      otrs_database_user => 'user',
-#      otrs_database_pw   => 'pass',
-#      otrs_daemon        => true,
+#      vrts_database_host => 'host1',
+#      vrts_database_name => 'otrs',
+#      vrts_database_user => 'user',
+#      vrts_database_pw   => 'pass',
+#      vrts_daemon        => true,
 #      exim_database_name => 'otrs',
 #      exim_database_user => 'eximuser',
 #      exim_database_pass => 'eximpass',
@@ -40,11 +40,11 @@
 #  }
 #
 class otrs(
-    Stdlib::Host $otrs_database_host,
-    String $otrs_database_name,
-    String $otrs_database_user,
-    String $otrs_database_pw,
-    Boolean $otrs_daemon,
+    Stdlib::Host $vrts_database_host,
+    String $vrts_database_name,
+    String $vrts_database_user,
+    String $vrts_database_pw,
+    Boolean $vrts_daemon,
     String $exim_database_name,
     String $exim_database_user,
     String $exim_database_pass,
@@ -149,7 +149,7 @@ class otrs(
         source => 'puppet:///modules/otrs/loginlogo_wmf.png',
     }
 
-    $daemon_ensure = $otrs_daemon ? {
+    $daemon_ensure = $vrts_daemon ? {
         true    => present,
         default => absent,
     }
