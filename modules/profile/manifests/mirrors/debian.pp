@@ -12,8 +12,8 @@
 # Sample Usage:
 #   include mirrors::debian
 
-class mirrors::debian {
-    require mirrors
+class profile::mirrors::debian {
+    require profile::mirrors
     include passwords::mirrors
 
     file { '/srv/mirrors/debian':
@@ -41,7 +41,7 @@ class mirrors::debian {
         owner   => 'mirror',
         group   => 'mirror',
         mode    => '0444',
-        content => template('mirrors/ftpsync.conf.erb'),
+        content => template('profile/mirrors/ftpsync.conf.erb'),
     }
 
     file { '/var/log/ftpsync':
@@ -53,7 +53,14 @@ class mirrors::debian {
 
     # allow the Debian syncproxy to trigger ftpsync runs over ssh
     ssh::userkey { 'mirror':
-        source => 'puppet:///modules/mirrors/ssh-debian-archvsync.pub',
+        source => 'puppet:///modules/profile/mirrors/ssh-debian-archvsync.pub',
+    }
+
+    ferm::service { 'mirrors_ssh':
+        proto  => 'tcp',
+        port   => 'ssh',
+        # syncproxy2.wna.debian.org; ferm can't do both IPv4/IPv6 with @resolve
+        srange => '(149.20.4.16 2001:4f8:1:c::16)',
     }
 
     # serve via rsync
@@ -64,4 +71,9 @@ class mirrors::debian {
         gid       => 'nogroup',
     }
 
+    nrpe::monitor_service {'check_debian_mirror':
+        description  => 'Debian mirror in sync with upstream',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/debian',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mirrors',
+    }
 }

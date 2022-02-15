@@ -1,4 +1,10 @@
-class mirrors {
+class profile::mirrors {
+    include profile::mirrors::serve
+    include profile::mirrors::debian
+    include profile::mirrors::openstack
+    include profile::mirrors::tails
+    include profile::mirrors::ubuntu
+
     $homedir = '/var/lib/mirror'
 
     user { 'mirror':
@@ -29,6 +35,6 @@ class mirrors {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/mirrors/check_apt_mirror';
+        source => 'puppet:///modules/profile/mirrors/check_apt_mirror';
     }
 }

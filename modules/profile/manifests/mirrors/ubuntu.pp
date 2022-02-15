@@ -12,8 +12,8 @@
 # Sample Usage:
 #   include mirrors::ubuntu
 
-class mirrors::ubuntu {
-    require mirrors
+class profile::mirrors::ubuntu {
+    include profile::mirrors
 
     file { '/srv/mirrors/ubuntu':
         ensure => directory,
@@ -28,7 +28,7 @@ class mirrors::ubuntu {
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/mirrors/update-ubuntu-mirror',
+        source => 'puppet:///modules/profile/mirrors/update-ubuntu-mirror',
     }
 
     systemd::timer::job { 'update-ubuntu-mirror':
@@ -48,4 +48,9 @@ class mirrors::ubuntu {
         gid       => 'nogroup',
     }
 
+    nrpe::monitor_service {'check_ubuntu_mirror':
+        description  => 'Ubuntu mirror in sync with upstream',
+        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/ubuntu',
+        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mirrors',
+    }
 }

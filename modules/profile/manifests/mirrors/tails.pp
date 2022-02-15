@@ -12,8 +12,8 @@
 # Sample Usage:
 #   include mirrors::tails
 
-class mirrors::tails {
-    require mirrors
+class profile::mirrors::tails {
+    include profile::mirrors
 
     $local_dir = '/srv/mirrors/tails'
     $remote_path = 'mirrors.rsync.tails.boum.org::amnesia-archive/tails/'

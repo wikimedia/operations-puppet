@@ -1,6 +1,6 @@
 # Contact in the remote end: "zigo" Thomas Goirand <zigo@debian.org>
-class mirrors::openstack {
-    require mirrors
+class profile::mirrors::openstack {
+    include profile::mirrors
 
     $local_dir = '/srv/mirrors/osbpo'
     $remote_path = 'osbpo.debian.net::osbpo/'
