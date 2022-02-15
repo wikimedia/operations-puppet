@@ -83,6 +83,23 @@ class profile::gitlab(
         drange => "(${service_ip_v4} ${service_ip_v6})",
     }
 
+    # http traffic is handled different on WMCS floating IPs
+    if $::realm != 'production' {
+      # world -> service IP, HTTPS on WMCS/labs
+      ferm::service { 'gitlab-https-public-labs':
+          proto  => 'tcp',
+          port   => 443,
+          drange => "(${facts['ipaddress']})",
+      }
+
+      # world -> service IP, HTTPS on WMCS/labs
+      ferm::service { 'gitlab-http-public-labs':
+          proto  => 'tcp',
+          port   => 80,
+          drange => "(${facts['ipaddress']})",
+      }
+    }
+
     # JSON Logs
     rsyslog::input::file { 'gitlab-gitaly-json':
       path => '/var/log/gitlab/gitaly/current',
@@ -149,6 +166,13 @@ class profile::gitlab(
         ensure       => $enable_backup_sync.bool2str('present','absent')
     }
 
+    $ssh_listen_addresses = [$service_ip_v4, $service_ip_v6]
+
+    $nginx_listen_addresses = $::realm ? {
+        'labs'  => [$service_ip_v4, $facts['ipaddress']], # no IPv6 support in WMCS/labs, workaround for floating IP
+        default => [$service_ip_v4, $service_ip_v6], # nginx listens on IPv4 and IPv6 by default
+    }
+
     class { 'gitlab':
         backup_dir             => $backup_dir_data,
         exporters              => $exporters,
@@ -161,8 +185,8 @@ class profile::gitlab(
         backup_keep_time       => $backup_keep_time,
         smtp_enabled           => $smtp_enabled,
         enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
-        ssh_listen_addresses   => [$service_ip_v4, $service_ip_v6],
-        nginx_listen_addresses => [$service_ip_v4, $service_ip_v6], # nginx listen on IPv4 and IPv6
+        ssh_listen_addresses   => $ssh_listen_addresses,
+        nginx_listen_addresses => $nginx_listen_addresses,
         install_restore_script => $active_host != $facts['fqdn'], # install restore script on passive GitLab server
         enable_restore         => $enable_restore,
         cert_path              => $cert_path,

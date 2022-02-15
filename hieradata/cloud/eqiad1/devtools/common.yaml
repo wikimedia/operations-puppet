@@ -241,7 +241,7 @@ profile::contacts::role_contacts: ['ServiceOps SREs']
 
 # service IP for public https and ssh (T276148)
 profile::gitlab::service_ip_v4: '185.15.56.79'
-profile::gitlab::service_ip_v6: '::1'
+profile::gitlab::service_ip_v6: '::'
 profile::gitlab::service_name: 'gitlab.devtools.wmflabs.org'
 
 # Content-Security-Policy
