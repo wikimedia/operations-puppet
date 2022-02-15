@@ -102,6 +102,9 @@ aria_pagecache_buffer_size     = 512M
 # T287244
 innodb_checksum_algorithm = full_crc32
 
+# T268869
+innodb_adaptive_hash_index=OFF
+
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 
 #
