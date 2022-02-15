@@ -1,11 +1,16 @@
 class dynamicproxy::api (
-    Stdlib::HTTPUrl         $keystone_api_url,
-    String[1]               $token_validator_username,
-    String[1]               $token_validator_password,
-    String[1]               $token_validator_project,
-    Optional[String]        $acme_certname = undef,
-    Optional[Array[String]] $ssl_settings = undef,
-    Boolean                 $read_only = false,
+    Stdlib::HTTPUrl                   $keystone_api_url,
+    String[1]                         $dns_updater_username,
+    String[1]                         $dns_updater_password,
+    String[1]                         $dns_updater_project,
+    String[1]                         $token_validator_username,
+    String[1]                         $token_validator_password,
+    String[1]                         $token_validator_project,
+    Stdlib::IP::Address::V4::Nosubnet $proxy_dns_ipv4,
+    Hash[String, Dynamicproxy::Zone]  $supported_zones,
+    Optional[String]                  $acme_certname = undef,
+    Optional[Array[String]]           $ssl_settings = undef,
+    Boolean                           $read_only = false,
 ) {
     # for new enough python3-keystonemiddleware versions
     debian::codename::require('bullseye', '>=')
@@ -48,19 +53,28 @@ class dynamicproxy::api (
         group  => 'www-data',
     }
 
-    file { '/etc/dynamicproxy-api/config.ini':
-        content => template('dynamicproxy/invisible-unicorn.ini.erb'),
+    file { '/etc/dynamicproxy-api/zones.json':
+        content => $supported_zones.to_json_pretty(),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         notify  => Uwsgi::App['invisible-unicorn'],
     }
 
+    file { '/etc/dynamicproxy-api/config.ini':
+        content   => template('dynamicproxy/invisible-unicorn.ini.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0444',
+        show_diff => false,
+        notify    => Uwsgi::App['invisible-unicorn'],
+    }
+
     cinderutils::ensure { 'db_backups':
-            min_gb      => 1,
-            max_gb      => 20,
-            mount_point => '/srv/backup',
-            before      => File['/srv/backup/README'],
+        min_gb      => 1,
+        max_gb      => 20,
+        mount_point => '/srv/backup',
+        before      => File['/srv/backup/README'],
     }
 
     file { '/srv/backup/README':
