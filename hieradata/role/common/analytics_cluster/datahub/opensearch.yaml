@@ -1,0 +1,30 @@
+# TODO all of this was taken from hieradata/role/common/logging/opensearch/data.yaml
+# and modified a bit, but more of these options may need modifications
+profile::opensearch::rack: ''
+profile::opensearch::row: ''
+profile::opensearch::instances: {}
+profile::opensearch::base_data_dir: '/srv/opensearch'
+profile::opensearch::common_settings:
+  awareness_attributes: ''
+  auto_create_index: true
+  short_cluster_name: datahub
+  expected_nodes: 1  # 1 node to start, will eventually be 3
+  heap_memory: '4G'
+  minimum_master_nodes: 1  # eventually this will be 2
+  recover_after_nodes: 1
+  recover_after_time: '1m'
+  send_logs_to_logstash: true
+  curator_uses_unicast_hosts: true
+  http_port: 9200
+  transport_tcp_port: 9300
+  disktype: 'sdd'
+  compatibility_mode: false
+
+profile::opensearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
+profile::opensearch::dc_settings:
+  cluster_name: 'datahub'
+  short_cluster_name: 'datahub'
+  cluster_hosts:
+    - datahubsearch1001.eqiad.wmnet
+  unicast_hosts:
+    - datahubsearch1001.eqiad.wmnet

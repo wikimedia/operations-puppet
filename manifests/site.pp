@@ -543,6 +543,10 @@ node 'cuminunpriv1001.eqiad.wmnet' {
     role(cluster::unprivmanagement)
 }
 
+node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
+    role(analytics_cluster::datahub::opensearch)
+}
+
 # MariaDB 10
 
 # s1 (enwiki) core production dbs on eqiad
@@ -1163,10 +1167,6 @@ node /^an-test-druid1001\.eqiad\.wmnet$/ {
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid100[4-8]\.eqiad\.wmnet$/ {
     role(druid::public::worker)
-}
-
-node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
-    role(insetup)
 }
 
 # nfs server for xml dumps generation, also rsyncs xml dumps
