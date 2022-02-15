@@ -20,6 +20,7 @@ class profile::gitlab(
     Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
     Boolean $enable_restore = lookup('profile::gitlab::enable_restore', {default_value => false}),
     Boolean $use_acmechief = lookup('profile::gitlab::use_acmechief'),
+    String $ferm_drange = lookup('profile::gitlab::ferm_drange'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -63,41 +64,25 @@ class profile::gitlab(
     # open ports in firewall - T276144
 
     # world -> service IP, HTTP
+    # http traffic is handled different on WMCS floating IPs
     ferm::service { 'gitlab-http-public':
         proto  => 'tcp',
         port   => 80,
-        drange => "(${service_ip_v4} ${service_ip_v6})",
+        drange => $ferm_drange,
     }
 
     # world -> service IP, HTTPS
     ferm::service { 'gitlab-https-public':
         proto  => 'tcp',
         port   => 443,
-        drange => "(${service_ip_v4} ${service_ip_v6})",
+        drange => $ferm_drange,
     }
 
     # world -> service IP, SSH
     ferm::service { 'gitlab-ssh-public':
         proto  => 'tcp',
         port   => 22,
-        drange => "(${service_ip_v4} ${service_ip_v6})",
-    }
-
-    # http traffic is handled different on WMCS floating IPs
-    if $::realm != 'production' {
-      # world -> service IP, HTTPS on WMCS/labs
-      ferm::service { 'gitlab-https-public-labs':
-          proto  => 'tcp',
-          port   => 443,
-          drange => "(${facts['ipaddress']})",
-      }
-
-      # world -> service IP, HTTPS on WMCS/labs
-      ferm::service { 'gitlab-http-public-labs':
-          proto  => 'tcp',
-          port   => 80,
-          drange => "(${facts['ipaddress']})",
-      }
+        drange => $ferm_drange,
     }
 
     # JSON Logs

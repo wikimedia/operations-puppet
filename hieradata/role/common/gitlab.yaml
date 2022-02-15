@@ -58,3 +58,6 @@ profile::contacts::role_contacts: ['ServiceOps SREs']
 
 # SSL/TLS certs - in prod use acmechief, in cloud use certbot to get them
 profile::gitlab::use_acmechief: true
+
+# firewalling - destination range - different in prod vs cloud due to floating IP setup
+profile::gitlab::ferm_drange: "(%{lookup('profile::gitlab::service_ip_v4')} %{lookup('profile::gitlab::service_ip_v6')})"
