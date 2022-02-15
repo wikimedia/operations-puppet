@@ -6,7 +6,7 @@ ADDRESS="rancid-core@wikimedia.org"
 INFO="To see the actual diff for a given set of devices, from a cumin host run: homer DEVICES diff"
 
 set +e
-DIFF="$(/usr/local/bin/homer --quiet '*' diff --omit-diff 2>&1)"
+DIFF="$(/usr/local/bin/homer --quiet 'status:active' diff --omit-diff 2>&1)"
 EXIT="${?}"
 set -e
 
