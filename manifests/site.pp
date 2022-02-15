@@ -1860,13 +1860,8 @@ node /^lvs10(1[789]|20)\.eqiad\.wmnet$/ {
     role(lvs::balancer)
 }
 
-# old lvs servers T295804 (in prod use)
-node 'lvs1015.eqiad.wmnet' {
-    role(lvs::balancer)
-}
-
 # old lvs servers T295804 (insetup for future experimentation!)
-node /^lvs101[346].eqiad.wmnet$/ {
+node /^lvs101[3456].eqiad.wmnet$/ {
     role(insetup_noferm)
 }
 
