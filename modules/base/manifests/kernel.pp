@@ -19,6 +19,18 @@ class base::kernel(
         kmod::blacklist { 'wmf_overlay':
             ensure => absent,
         }
+
+        # On a fresh node overlay may be unloaded automatically by the OS
+        # if no fs needs it. In this case the kern.log should look like:
+        # kernel: request_module fs-overlay succeeded, but still no fs?
+        # This may lead to unwanted side effects, like Docker not finding
+        # the overlay kernel module loaded and falling back to
+        # the device-mapper storage driver.
+        # Therefore we explicitly load the overlay module when the overlayfs
+        # option is true.
+        kmod::module { 'overlay':
+            ensure => 'present',
+        }
     }
 
     kmod::blacklist { 'wmf':
