@@ -15,11 +15,13 @@ define prometheus::service_catalog_targets (
     $service_name = $el[0]
     $service_config = $el[1]
 
-    if $service_ips_override {
-      $service_ips = $service_ips_override
+    $all_ips = wmflib::service::get_ips_for_services($service_name => $service_config, $::site)
+    $network_ips = filter($all_ips) |$addr| { stdlib::ip_in_range($addr, $networks) }
+
+    if length($network_ips) > 0 and $service_ips_override {
+      $service_ips = [ $service_ips_override ]
     } else {
-      $ips = wmflib::service::get_ips_for_services($service_name => $service_config, $::site)
-      $service_ips = filter($ips) |$addr| { stdlib::ip_in_range($addr, $networks) }
+      $service_ips = $network_ips
     }
 
     # Iterate over this service's probes and collect targets.
