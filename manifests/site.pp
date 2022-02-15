@@ -2591,16 +2591,7 @@ node /poolcounter[12]00[345]\.(codfw|eqiad)\.wmnet/ {
     role(poolcounter::server)
 }
 
-node /^prometheus200[34]\.codfw\.wmnet$/ {
-    role(prometheus)
-}
-
-# New prometheus node for codfw T294302
 node /^prometheus200[56]\.codfw\.wmnet$/ {
-    role(prometheus)
-}
-
-node /^prometheus100[34]\.eqiad\.wmnet$/ {
     role(prometheus)
 }
 

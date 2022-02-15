@@ -302,7 +302,6 @@ eqiad:
     thumbor1005.eqiad.wmnet: [thumbor]
     thumbor1006.eqiad.wmnet: [thumbor]
   prometheus:
-    prometheus1004.eqiad.wmnet: [prometheus]
     prometheus1005.eqiad.wmnet: [prometheus]
     prometheus1006.eqiad.wmnet: [prometheus]
   wcqs:

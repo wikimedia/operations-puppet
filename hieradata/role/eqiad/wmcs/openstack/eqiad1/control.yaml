@@ -6,7 +6,6 @@ profile::admin::groups:
 prometheus_nodes:
     - cloudmetrics1003.eqiad.wmnet
     - cloudmetrics1004.eqiad.wmnet
-    - prometheus1004.eqiad.wmnet
     - prometheus1005.eqiad.wmnet
     - prometheus1006.eqiad.wmnet
 

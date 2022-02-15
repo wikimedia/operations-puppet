@@ -89,8 +89,6 @@ netbox_frontend:
 
 # List of all prometheus nodes (ops instance)
 prometheus_all_nodes:
-  - prometheus1004.eqiad.wmnet
-  - prometheus2004.codfw.wmnet
   - prometheus3001.esams.wmnet
   - prometheus4001.ulsfo.wmnet
   - prometheus5001.eqsin.wmnet

@@ -21,6 +21,5 @@ profile::contacts::role_contacts: ['WMCS SREs']
 prometheus_nodes:
     - cloudmetrics1003.eqiad.wmnet
     - cloudmetrics1004.eqiad.wmnet
-    - prometheus2004.codfw.wmnet
     - prometheus2005.codfw.wmnet
     - prometheus2006.codfw.wmnet
