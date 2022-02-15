@@ -71,7 +71,7 @@ EOF
     $init || true # XXX catch failures?
 
   # Solve race on hieradata/auto.yaml
-  install -o puppet -g puppet /dev/null /etc/puppet/hieradata/auto.yaml
+  install -o puppet -g puppet -m 644 /dev/null /etc/puppet/hieradata/auto.yaml
 }
 
 init_ssl() {
