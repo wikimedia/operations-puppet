@@ -129,6 +129,7 @@ Components: main
  thirdparty/ceph-octopus
  thirdparty/ci
  thirdparty/confluent
+ thirdparty/docker-ci-buster
  thirdparty/elastic710
  thirdparty/elastic74
  thirdparty/elastic78
