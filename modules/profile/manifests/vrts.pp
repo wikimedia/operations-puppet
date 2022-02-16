@@ -19,11 +19,11 @@ class profile::vrts(
     }
 
     class { '::otrs':
-        vrts_database_host => $vrts_database_host,
-        vrts_database_name => $vrts_database_name,
-        vrts_database_user => $vrts_database_user,
-        vrts_database_pw   => $vrts_database_pw,
-        vrts_daemon        => $vrts_daemon,
+        otrs_database_host => $vrts_database_host,
+        otrs_database_name => $vrts_database_name,
+        otrs_database_user => $vrts_database_user,
+        otrs_database_pw   => $vrts_database_pw,
+        otrs_daemon        => $vrts_daemon,
         exim_database_name => $exim_database_name,
         exim_database_user => $exim_database_user,
         exim_database_pass => $exim_database_pass,
