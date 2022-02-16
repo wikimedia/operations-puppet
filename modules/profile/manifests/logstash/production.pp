@@ -4,12 +4,15 @@
 # Provisions a Logstash collector instance for the production environment
 #
 class profile::logstash::production (
-  Hash[String, String] $input_kafka_ssl_truststore_passwords = lookup('profile::logstash::collector::input_kafka_ssl_truststore_passwords'),
   String               $input_kafka_consumer_group_id        = lookup('profile::logstash::collector::input_kafka_consumer_group_id', { 'default_value' => 'logstash' }),
   Array[Stdlib::Host]  $maintenance_hosts                    = lookup('maintenance_hosts', { 'default_value' => [] }),
 ) {
 
   include profile::logstash::common
+  include profile::base::certificates
+  $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
+  $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
+  $manage_truststore = false
 
   # Allow logstash_checker.py from maintenance hosts.
   $maintenance_hosts_str = join($maintenance_hosts, ' ')
@@ -32,7 +35,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-rsyslog-shipper', 'rsyslog-shipper', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -45,7 +50,9 @@ class profile::logstash::production (
     tags                                  => ['rsyslog-shipper','kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
   }
 
@@ -57,7 +64,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
   }
 
@@ -69,7 +78,9 @@ class profile::logstash::production (
     tags                                  => ['rsyslog-udp-localhost','kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -82,7 +93,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-rsyslog-logback', 'kafka-logging-eqiad', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -94,7 +107,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-deprecated', 'kafka-logging-eqiad', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -107,7 +122,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-rsyslog-logback', 'kafka-logging-codfw', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -120,7 +137,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-clienterror-eqiad', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -133,7 +152,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-clienterror-codfw', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -145,7 +166,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-networkerror-eqiad', 'kafka', 'throttle-exempt'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-eqiad'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -157,7 +180,9 @@ class profile::logstash::production (
     tags                                  => ['input-kafka-networkerror-codfw', 'kafka', 'throttle-exempt'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
-    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-codfw'],
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
   }
@@ -215,7 +240,9 @@ class profile::logstash::production (
       tags                                  => ["input-kafka-${input_title}", 'kafka', 'es', 'eventgate'],
       codec                                 => 'json',
       security_protocol                     => 'SSL',
-      ssl_truststore_password               => $input_kafka_ssl_truststore_passwords[$input_params['kafka_cluster_name']],
+      ssl_truststore_location               => $ssl_truststore_location,
+      ssl_truststore_password               => $ssl_truststore_password,
+      manage_truststore                     => $manage_truststore,
       ssl_endpoint_identification_algorithm => '',
       consumer_threads                      => 3,
     }
