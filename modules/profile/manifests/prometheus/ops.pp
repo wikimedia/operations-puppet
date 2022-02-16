@@ -2297,16 +2297,16 @@ class profile::prometheus::ops (
         # Ping and SSH probes for all bastions from all machines running
         # prometheus::ops
         "${targets_path}/blackbox_icmp_bastions.yaml":
-            content => ordered_yaml([{'targets' => $bastion_hosts}]);
+            content => to_yaml([{'targets' => $bastion_hosts}]);
         "${targets_path}/blackbox_ssh_bastions.yaml":
-            content => ordered_yaml([{
+            content => to_yaml([{
                 'targets' => regsubst($bastion_hosts, '(.*)', '[\0]:22')
             }]);
         "${targets_path}/gerrit.yaml":
-            content => ordered_yaml([$gerrit_targets]);
+            content => to_yaml([$gerrit_targets]);
         # Generic HTTPS probes for a static list of urls defined in hiera
         "${targets_path}/blackbox_watchrat_http_check_urls.yaml":
-            content => ordered_yaml([{'targets' => $blackbox_watchrat_http_check_urls}]);
+            content => to_yaml([{'targets' => $blackbox_watchrat_http_check_urls}]);
     }
 
     prometheus::rule { 'rules_ops.yml':

@@ -40,7 +40,7 @@ class profile::thanos::query (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => ordered_yaml($rule_targets),
+        content => to_yaml($rule_targets),
     }
 
     # Talk to local store for historical data
@@ -50,7 +50,7 @@ class profile::thanos::query (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => ordered_yaml($local_store),
+        content => to_yaml($local_store),
     }
 
     ferm::service { 'thanos_query':

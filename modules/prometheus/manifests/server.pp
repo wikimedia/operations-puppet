@@ -169,7 +169,7 @@ define prometheus::server (
         owner        => 'root',
         group        => 'root',
         notify       => Exec["${service_name}-reload"],
-        content      => ordered_yaml($prometheus_config),
+        content      => to_yaml($prometheus_config),
         validate_cmd => $validate_config_cmd,
     }
 

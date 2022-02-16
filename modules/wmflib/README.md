@@ -90,21 +90,6 @@ resources on every run.
     }
 
 
-## ordered_yaml
-
-`ordered_yaml( mixed $data )`
-
-Emit a hash as YAML with keys (both shallow and deep) in sorted order.
-
-### Examples
-
-    # Render a Puppet hash as a configuration file:
-    $options = { 'useGraphite' => true, 'minVal' => '0.1' }
-    file { '/etc/kibana/config.yaml':
-        content => ordered_yaml($options),
-    }
-
-
 ## php_ini
 
 `php_ini( hash $ini_settings [, hash $... ] )`

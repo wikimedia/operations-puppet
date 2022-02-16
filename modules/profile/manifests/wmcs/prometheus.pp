@@ -101,7 +101,7 @@ class profile::wmcs::prometheus(
     ]
 
     file { "${targets_path}/blackbox_http_keystone.yaml":
-      content => ordered_yaml([{
+      content => to_yaml([{
         'targets' => ['openstack.eqiad1.wikimediacloud.org:5000/v3', # keystone
                       'openstack.eqiad1.wikimediacloud.org:9292', # glance
                       'openstack.eqiad1.wikimediacloud.org:8774', # nova
@@ -138,7 +138,7 @@ class profile::wmcs::prometheus(
     }
 
     file { "${targets_path}/redis_toolforge_hosts.yaml":
-        content => ordered_yaml([{
+        content => to_yaml([{
             'targets' => regsubst($toolforge_redis_hosts, '(.*)', '[\0]:9121')
         }]);
     }

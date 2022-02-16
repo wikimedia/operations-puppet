@@ -21,7 +21,7 @@ class prometheus::varnishkafka_exporter(
   file { '/etc/prometheus-varnishkafka-exporter.yaml':
     ensure  => 'present',
     mode    => '0444',
-    content => ordered_yaml($config_real),
+    content => to_yaml($config_real),
     require => [ Package['prometheus-varnishkafka-exporter'] ],
     notify  => [ Service['prometheus-varnishkafka-exporter'] ],
   }

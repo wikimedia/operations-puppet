@@ -72,7 +72,7 @@ define service::docker(
     if $volume == false {
         file { "/etc/${title}/config.yaml":
             ensure  => $ensure,
-            content => ordered_yaml($config),
+            content => to_yaml($config),
             owner   => 'root',
             group   => 'root',
             mode    => '0444',

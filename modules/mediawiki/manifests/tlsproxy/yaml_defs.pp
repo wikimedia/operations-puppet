@@ -6,7 +6,7 @@ class mediawiki::tlsproxy::yaml_defs (
     ensure  => present,
     owner   => 'root',
     group   => 'root',
-    content => ordered_yaml({'discovery' => {'listeners' => $listeners}}),
+    content => to_yaml({'discovery' => {'listeners' => $listeners}}),
     mode    => '0444',
   }
 }

@@ -603,7 +603,7 @@ class profile::toolforge::prometheus (
     }
 
     file { "${targets_path}/toolsdb-mariadb.yml":
-      content => ordered_yaml([{
+      content => to_yaml([{
         'targets' => ['clouddb1001.clouddb-services.eqiad.wmflabs:9104',
                       'clouddb1002.clouddb-services.eqiad.wmflabs:9104',
             ]
@@ -611,7 +611,7 @@ class profile::toolforge::prometheus (
     }
 
     file { "${targets_path}/toolsdb-node.yml":
-      content => ordered_yaml([{
+      content => to_yaml([{
         'targets' => ['clouddb1001.clouddb-services.eqiad.wmflabs:9100',
                       'clouddb1002.clouddb-services.eqiad.wmflabs:9100',
             ]

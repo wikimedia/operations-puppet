@@ -10,7 +10,7 @@ class profile::openstack::base::puppetmaster::enc_client (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => ordered_yaml({
+        content => to_yaml({
             api_endpoint => $api_endpoint,
         }),
     }

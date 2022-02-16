@@ -64,7 +64,7 @@ class profile::acme_chief::cloud (
         owner   => 'acme-chief',
         group   => 'acme-chief',
         mode    => '0400',
-        content => ordered_yaml({
+        content => to_yaml({
             'OS_AUTH_URL'      => $designate_sync_auth_url,
             'OS_USERNAME'      => $designate_sync_username,
             'OS_PASSWORD'      => $designate_sync_password,

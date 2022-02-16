@@ -48,7 +48,7 @@ class pontoon::service_certs (
     $cergen_manifest = "${secrets_base}/certificates/certificates.manifests.d/pontoon.yaml"
 
     file { $cergen_manifest:
-        content => ordered_yaml($services_manifest + $ca_manifest),
+        content => to_yaml($services_manifest + $ca_manifest),
         notify  => [Exec['cergen pontoon'], Exec['git-commit secrets pontoon']],
     }
 

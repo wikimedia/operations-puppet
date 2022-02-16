@@ -202,7 +202,7 @@ class profile::netbox (
         owner   => 'root',
         group   => 'nagios',
         mode    => '0440',
-        content => ordered_yaml({
+        content => to_yaml({
             url   => $nb_api,
             token => $nb_token,
         })

@@ -75,7 +75,7 @@ class acme_chief::server (
         owner   => 'acme-chief',
         group   => 'acme-chief',
         mode    => '0444',
-        content => ordered_yaml($config),
+        content => to_yaml($config),
         notify  => [
             Base::Service_unit['uwsgi-acme-chief'],
             Service['acme-chief'],

@@ -87,7 +87,7 @@ class thanos::rule (
         mode    => '0444',
         owner   => 'thanos',
         group   => 'root',
-        content => ordered_yaml($am_config),
+        content => to_yaml($am_config),
     }
 
     if $ensure != present {

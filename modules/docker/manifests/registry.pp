@@ -63,7 +63,7 @@ class docker::registry(
         #   merged.
         # * When there is a duplicate key that is not a hash, the key in the
         #   rightmost hash will "win."
-        content => ordered_yaml(deep_merge($base_config, $config)),
+        content => to_yaml(deep_merge($base_config, $config)),
         owner   => 'docker-registry',
         group   => 'docker-registry',
         mode    => '0440',

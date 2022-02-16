@@ -14,6 +14,6 @@ class ldap::yamlcreds {
     }
 
     file { '/etc/ldap.yaml':
-        content => ordered_yaml($client_readable_config),
+        content => to_yaml($client_readable_config),
     }
 }

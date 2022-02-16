@@ -73,7 +73,7 @@ class prometheus::blackbox::modules::service_catalog (
   }
 
   file { '/etc/prometheus/blackbox.yml.d/service_catalog.yml':
-    content => ordered_yaml({'modules' => $modules}),
+    content => to_yaml({'modules' => $modules}),
     mode    => '0444',
     owner   => 'root',
     group   => 'root',

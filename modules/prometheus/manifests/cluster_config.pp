@@ -47,6 +47,6 @@ define prometheus::cluster_config(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => "# This file is managed by puppet\n${data.ordered_yaml}\n"
+        content => "# This file is managed by puppet\n${data.to_yaml}\n"
     }
 }

@@ -60,7 +60,7 @@ class thanos::query_frontend (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => ordered_yaml($cache_config),
+        content => to_yaml($cache_config),
         notify  => Service[$service_name],
     }
 

@@ -159,7 +159,7 @@ class profile::toolforge::checker {
         owner   => 'root',
         group   => 'www-data',
         mode    => '0440',
-        content => ordered_yaml($config),
+        content => to_yaml($config),
         notify  => Uwsgi::App[$check_names],
     }
 

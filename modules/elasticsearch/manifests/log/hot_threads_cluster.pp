@@ -13,7 +13,7 @@ define elasticsearch::log::hot_threads_cluster(
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        content => ordered_yaml({
+        content => to_yaml({
             port     => $http_port,
             log_file => "/var/log/elasticsearch/elasticsearch_hot_threads-${cluster_name}.log",
         }),

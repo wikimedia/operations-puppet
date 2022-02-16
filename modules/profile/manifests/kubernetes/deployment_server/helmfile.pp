@@ -65,7 +65,7 @@ class profile::kubernetes::deployment_server::helmfile(
                         owner   => $permissions['owner'],
                         group   => $permissions['group'],
                         mode    => $permissions['mode'],
-                        content => ordered_yaml($secret_data),
+                        content => to_yaml($secret_data),
                         require => "File[${private_dir}/${svcname}]"
                     }
                 }

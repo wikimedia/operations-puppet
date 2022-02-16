@@ -44,6 +44,6 @@ define prometheus::service_catalog_targets (
   }
 
   file { $targets_file:
-    content => ordered_yaml($targets),
+    content => to_yaml($targets),
   }
 }

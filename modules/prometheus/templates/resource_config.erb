@@ -1,4 +1,6 @@
 <%-
+require 'yaml'
+
 # All labels / targets list
 all = []
 
@@ -23,4 +25,4 @@ all = []
 end
 -%>
 # This file is managed by puppet
-<%= scope.function_ordered_yaml([all]) %>
+<%= all.to_yaml %>

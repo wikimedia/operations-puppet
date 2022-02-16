@@ -1,4 +1,6 @@
 <%-
+require 'yaml'
+
 # All labels / targets list
 static_configs = []
 
@@ -44,4 +46,4 @@ static_configs = []
 
 -%>
 # This file is managed by puppet
-<%= scope.function_ordered_yaml([static_configs]) %>
+<%= static_configs.to_yaml %>

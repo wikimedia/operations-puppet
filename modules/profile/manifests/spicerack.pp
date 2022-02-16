@@ -90,7 +90,7 @@ class profile::spicerack(
         owner   => 'root',
         group   => 'ops',
         mode    => '0440',
-        content => ordered_yaml($redis_sessions_data),
+        content => to_yaml($redis_sessions_data),
     }
 
     # Install Ganeti RAPI configuration
@@ -110,7 +110,7 @@ class profile::spicerack(
         owner   => 'root',
         group   => 'ops',
         mode    => '0440',
-        content => ordered_yaml($ganeti_auth_data),
+        content => to_yaml($ganeti_auth_data),
     }
     # Install Netbox backend configuration
     file { '/etc/spicerack/netbox':
@@ -129,7 +129,7 @@ class profile::spicerack(
         owner   => 'root',
         group   => 'ops',
         mode    => '0440',
-        content => ordered_yaml($netbox_config_data),
+        content => to_yaml($netbox_config_data),
     }
 
     # Install Kafka cluster brokers configuration
@@ -159,7 +159,7 @@ class profile::spicerack(
         owner   => 'root',
         group   => 'ops',
         mode    => '0440',
-        content => ordered_yaml($kafka_config_data),
+        content => to_yaml($kafka_config_data),
     }
 
     file { '/etc/spicerack/cookbooks':

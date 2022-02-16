@@ -49,7 +49,7 @@ class prometheus::statsd_exporter (
     }
 
     file { $config:
-        content => ordered_yaml({'defaults' => $defaults, 'mappings' => $mappings}),
+        content => to_yaml({'defaults' => $defaults, 'mappings' => $mappings}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

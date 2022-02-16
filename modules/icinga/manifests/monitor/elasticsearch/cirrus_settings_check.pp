@@ -23,7 +23,7 @@ define icinga::monitor::elasticsearch::cirrus_settings_check(
         ensure  => file,
         owner   => 'root',
         group   => 'root',
-        content => ordered_yaml($extracted_settings),
+        content => to_yaml($extracted_settings),
         mode    => '0444',
     }
 

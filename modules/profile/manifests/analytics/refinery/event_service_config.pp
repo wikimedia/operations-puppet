@@ -54,7 +54,7 @@ class profile::analytics::refinery::event_service_config(
     file { $event_intake_service_url_config_file:
         # $event_service_name_to_uri should be a key val Hash, so we can just
         # render our config file the Hash converted to Yaml.
-        content => ordered_yaml($event_service_name_to_uri),
+        content => to_yaml($event_service_name_to_uri),
     }
 
 }

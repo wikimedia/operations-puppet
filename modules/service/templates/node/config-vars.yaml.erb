@@ -1,6 +1,8 @@
 # This file is managed by Puppet
 # Do not modify it by hand
 <%-
+require 'yaml'
+
 cvars = {
   'mwapi'        => scope.lookupvar('service::configuration::mwapi_host'),
   'restbase'     => scope.lookupvar('service::configuration::restbase_uri'),
@@ -42,7 +44,7 @@ mw_resource_loader_uri: <%= cvars['mwapi'] %>/w/load.php
 restbase_uri: <%= cvars['restbase'] %>
 <%- unless @deployment_vars.empty? -%>
 # deployment variables
-<%= scope.function_ordered_yaml([@deployment_vars]) %>
+<%= @deployment_vars.to_yaml %>
 <% end -%>
 <%- if @discovery && @confd_template -%>
 <%= @confd_template %>

@@ -86,7 +86,7 @@ class profile::wmcs::nfs::maintain_dbusers (
     }
 
     file { '/etc/dbusers.yaml':
-        content => ordered_yaml($creds),
+        content => to_yaml($creds),
         owner   => 'root',
         group   => 'root',
         mode    => '0400',

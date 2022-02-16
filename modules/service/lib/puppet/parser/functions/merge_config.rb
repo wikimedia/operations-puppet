@@ -18,6 +18,6 @@ module Puppet::Parser::Functions
     rescue
       fail('Badly formatted configuration.')
     end
-    function_ordered_yaml([main_conf])
+    call_function('to_yaml', [main_conf])
   end
 end

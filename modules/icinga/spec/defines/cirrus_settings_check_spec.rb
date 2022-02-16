@@ -14,7 +14,7 @@ describe 'icinga::monitor::elasticsearch::cirrus_settings_check', :type => :defi
         :enable_remote_search => false,
       } }
 
-      it { is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/cirrus_check_settings.yaml').with_content(/^\n$/)}
+      it { is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/cirrus_check_settings.yaml').with_content("--- \n") }
   end
 
   describe 'when remote search is enabled' do
@@ -43,13 +43,13 @@ describe 'icinga::monitor::elasticsearch::cirrus_settings_check', :type => :defi
       } }
 
       it { is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/cirrus_check_settings.yaml')
-            .with_content(<<-EOM
+          .with_content(<<-EOM
+---
 - "$.(cluster|search).remote.gamma.seeds":
   - host1:9900
   - host2:9900
-
-EOM
-            )
+          EOM
+          )
       }
   end
 end
