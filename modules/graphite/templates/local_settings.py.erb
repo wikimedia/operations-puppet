@@ -1,3 +1,6 @@
+<%-
+require 'json'
+-%>
 #      ______                 __    _ __
 #     / ____/________ _____  / /_  (_) /____
 #    / / __/ ___/ __ `/ __ \/ __ \/ / __/ _ \
@@ -53,7 +56,7 @@ DATABASES = {
   <% @non_local_servers = @cluster_servers.select { |x| \
        x != @hostname && x != @fqdn && x != @ipaddress }
   %>
-CLUSTER_SERVERS = <%= scope.function_ordered_json([@non_local_servers]) %>
+CLUSTER_SERVERS = <%= @non_local_servers.to_json %>
 <%- end -%>
 
 <%- carbon_settings = scope.lookupvar('::graphite::carbon_settings'); if carbon_settings.key? 'relay' -%>

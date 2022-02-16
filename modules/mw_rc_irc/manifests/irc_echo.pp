@@ -9,7 +9,7 @@ class mw_rc_irc::irc_echo(
     ensure_packages(['python-prometheus-client'])
 
     file { '/etc/udpmxircecho-config.json':
-        content => ordered_json({
+        content => to_json_pretty({
             irc_oper_pass => $ircpassword,
             irc_nickname  => 'rc-pmtpa',
             irc_server    => 'localhost',

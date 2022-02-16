@@ -14,7 +14,7 @@ class base::phaste( $ensure = present ) {
 
     file { '/etc/phaste.conf':
         ensure  => $ensure,
-        content => ordered_json($conf),
+        content => to_json_pretty($conf),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

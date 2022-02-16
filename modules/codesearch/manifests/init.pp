@@ -106,7 +106,7 @@ class codesearch(
 
     file { '/etc/codesearch_ports.json':
         ensure  => present,
-        content => ordered_json($ports),
+        content => to_json_pretty($ports),
         owner   => 'codesearch',
         require => User['codesearch'],
     }

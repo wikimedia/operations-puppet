@@ -91,7 +91,7 @@ class mcrouter(
 
     file { '/etc/mcrouter/config.json':
         ensure       => $ensure,
-        content      => ordered_json($config),
+        content      => to_json_pretty($config),
         owner        => 'root',
         group        => 'root',
         mode         => '0444',

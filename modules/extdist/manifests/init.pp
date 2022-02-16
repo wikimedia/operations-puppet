@@ -89,14 +89,14 @@ class extdist(
 
     file { '/etc/extdist.conf':
         ensure  => present,
-        content => ordered_json($ext_settings),
+        content => to_json_pretty($ext_settings),
         owner   => 'extdist',
         require => User['extdist'],
     }
 
     file { '/etc/skindist.conf':
         ensure  => present,
-        content => ordered_json($skin_settings),
+        content => to_json_pretty($skin_settings),
         owner   => 'extdist',
         require => User['extdist'],
     }

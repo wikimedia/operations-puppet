@@ -22,7 +22,7 @@ class docker::configuration(
     }
     file { $location:
         ensure  => present,
-        content => ordered_json($settings),
+        content => to_json_pretty($settings),
         owner   => 'root',
         group   => 'root',
         mode    => '0440',

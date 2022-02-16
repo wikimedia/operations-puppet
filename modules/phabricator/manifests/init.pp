@@ -204,7 +204,7 @@ class phabricator (
     }
 
     file { "${confdir}/local/local.json":
-        content => template('phabricator/local.json.erb'),
+        content => to_json_pretty($phab_settings),
         require => $base_requirements,
         owner   => 'root',
         group   => 'www-data',
