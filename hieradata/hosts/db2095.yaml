@@ -5,3 +5,4 @@ profile::mariadb::sanitarium_multiinstance::instances:
   s4: 46G
   s6: 30G
   s7: 38G
+profile::monitoring::notifications_enabled: false
