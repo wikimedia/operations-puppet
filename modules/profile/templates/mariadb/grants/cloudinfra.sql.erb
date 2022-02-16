@@ -6,6 +6,14 @@ GRANT REPLICATION SLAVE
 
 <%- end -%>
 
+-- Grants for Prometheus monitoring
+GRANT PROCESS, REPLICATION CLIENT
+    ON *.* TO 'prometheus'@'localhost'
+    IDENTIFIED VIA unix_socket
+    WITH MAX_USER_CONNECTIONS 5;
+GRANT SELECT
+    ON heartbeat.heartbeat TO 'prometheus'@'localhost';
+
 -- labspuppetbackend user, for the enc api hosts (currently on the cloud-wide puppetmasters)
 <%- @labspuppet_client_ips.each do |ip| -%>
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER
