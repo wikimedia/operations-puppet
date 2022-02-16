@@ -48,8 +48,10 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
+    # Temporarily disable webrequest deletion while investigating T300164
     kerberos::systemd_timer { 'refinery-drop-webrequest-refined-partitions':
-        ensure      => $ensure_timers,
+        # ensure      => $ensure_timer,
+        ensure      => absent,
         description => 'Drop Webrequest refined data imported on HDFS following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest' --base-path='/wmf/data/wmf/webrequest' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='cf16215b8158e765b623db7b3f345d36'",
         interval    => '*-*-* 00/4:45:00',
@@ -68,8 +70,10 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
+    # Temporarily disable pageview_actor deletion while investigating T300164
     kerberos::systemd_timer { 'refinery-drop-pageview-actor-hourly-partitions':
-        ensure      => $ensure_timers,
+        # ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Drop pageview_actor_hourly data from HDFS following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='pageview_actor' --base-path='/wmf/data/wmf/pageview/actor' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --skip-trash --execute='da789e9fea7e42f2f9db1d28c508321e'",
         interval    => '*-*-* 00/4:50:00',
