@@ -7,6 +7,7 @@ class prometheus::icinga_exporter(
     Struct[
       Optional[alertname] => Array[String[1]],
       Optional[instance]  => Array[String[1]]]]] $label_teams_config = undef,
+  Optional[Stdlib::HTTPSUrl] $extinfo_url = undef,
 ) {
   package { 'prometheus-icinga-exporter':
     ensure => $ensure,
