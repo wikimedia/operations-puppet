@@ -1500,7 +1500,16 @@ class ImageBackupsState:
             "NOOP:" if noop else "",
             len(all_images),
         )
-        for image_id in get_images_info(from_cache):
+        for image_id, image_info in get_images_info(from_cache).items():
+            if 'shelved' in image_info.get("name", "no_name"):
+                # We don't want to back up shelved servers. For one thing they can't
+                #  be snapshotted as far as I can see.
+                logging.info(
+                    "Skipping shelved instance %s %s",
+                    image_id,
+                    image_info.get("name", "no_name"),
+                )
+                continue
             self.create_image_backup(
                 image_id=image_id, noop=noop, from_cache=True
             )
