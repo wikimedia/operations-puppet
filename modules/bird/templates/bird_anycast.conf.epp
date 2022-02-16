@@ -71,7 +71,11 @@ protocol bgp {
     import none;
     multihop 2;
     export filter vips_filter;
+<% if $do_ipv6 { -%>
+    local <%= $bird::ipv6_local_addr %> as 64605;
+<% } else { -%>
     local <%= $bird::routerid %> as 64605;
+<%- } -%>
     neighbor <%= $neighbor %> as 14907;
     <%- if $bird::bfd { -%>
     bfd yes;

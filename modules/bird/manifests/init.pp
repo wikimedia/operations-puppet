@@ -23,6 +23,9 @@
 # [*routerid*]
 #   The router ID of the bird instance
 #
+# [*ipv6_local_addr*]
+#   The local IPv6 address, used by bird6.conf if IPv6 is enabled.
+#
 # [*do_ipv6*]
 #   Whether to enable IPv6 support. default: false.
 
@@ -33,6 +36,7 @@ class bird(
   Optional[String]           $bind_service    = undef,
   Boolean                    $do_ipv6         = false,
   Stdlib::IP::Address        $routerid        = $facts['ipaddress'],
+  Stdlib::IP::Address        $ipv6_local_addr = $facts['ipaddress6'],
   ){
 
   ensure_packages(['bird', 'prometheus-bird-exporter'])
