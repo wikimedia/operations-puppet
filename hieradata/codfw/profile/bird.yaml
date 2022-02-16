@@ -1,3 +1,5 @@
 profile::bird::neighbors_list:
-  - 208.80.153.192 # cr1-codfw loopback
-  - 208.80.153.193 # cr2-codfw loopback
+  - 208.80.153.192 # cr1-codfw loopback v4
+  - 2620:0:860:ffff::1 # cr1-codfw loopback v6
+  - 208.80.153.193 # cr2-codfw loopback v4
+  - 2620:0:860:ffff::2 # cr2-codfw loopback v6

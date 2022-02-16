@@ -1,3 +1,5 @@
 profile::bird::neighbors_list:
-  - 198.35.26.192 # cr3-ulsfo loopback
-  - 198.35.26.193 # cr4-ulsfo loopback
+  - 198.35.26.192 # cr3-ulsfo loopback v4
+  - 2620:0:863:ffff::1 # cr3-ulsfo loopback v6
+  - 198.35.26.193 # cr4-ulsfo loopback v4
+  - 2620:0:863:ffff::2 # cr4-ulsfo loopback v6
