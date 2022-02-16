@@ -9,7 +9,7 @@ class profile::ci::docker(
     # Let us elevate permissions to the user running a containerized process
     ensure_packages('acl')
 
-    if debian::codename::lt('bullseye') {
+    if debian::codename::lt('buster') {
         apt::repository { 'thirdparty-ci':
             uri        => 'http://apt.wikimedia.org/wikimedia',
             dist       => "${::lsbdistcodename}-wikimedia",
@@ -21,27 +21,23 @@ class profile::ci::docker(
         settings => $settings,
     }
 
-    # TODO: Drop the entire version-specific pinning once buster is gone
+    # TODO: Drop the entire version-specific pinning once stretch is gone
     $docker_version = $::lsbdistcodename ? {
-        'stretch' => '5:19.03.5~3-0~debian-stretch',
-        'buster'  => '5:20.10.9~3-0~debian-buster',
-        # Docker version is ignored starting with Bullseye
-        default   => 'present',
+        'stretch'  => '5:19.03.5~3-0~debian-stretch',
+        # Docker version is ignored starting with Buster
+        default    => '',
     }
 
     $docker_package = $::lsbdistcodename ? {
         'stretch'  => 'docker-ce',
-        'buster'   => 'docker-ce',
+        'buster'   => 'docker.io',
         'bullseye' => 'docker.io',
     }
 
-    ensure_packages(
-        $docker_package,
-        {
-            'ensure'  => $docker_version,
-            'require' => Class['docker::configuration'],
-        },
-    )
+    class { 'docker':
+        package_name => $docker_package,
+        version      => $docker_version,
+    }
 
     file { '/usr/local/bin/docker-credential-environment':
         source => 'puppet:///modules/docker/docker-credential-environment.py',
