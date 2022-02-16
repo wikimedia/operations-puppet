@@ -10,8 +10,15 @@ hierarchy:
     glob: "pontoon/*.yaml"
   - name: "Pontoon"
     path: "pontoon.yaml"
-  - name: "node hierarchy"
+  - name: "Pontoon node hierarchy"
     path: "pontoon/hosts/%{::hostname}.yaml"
+
+# Production hiera
+  - name: "private node"
+    datadir: "/etc/puppet/private/hieradata"
+    path: "hosts/%{::hostname}.yaml"
+  - name: "node hierarchy"
+    path: "hosts/%{::hostname}.yaml"
   - name: "netbox node hierarchy"
     path: "hosts/%{::hostname}"
     datadir: "/etc/puppet/netbox/hieradata"
@@ -20,16 +27,6 @@ hierarchy:
     path: 'regex.yaml'
     options:
       node: "%{::fqdn}"
-  - name: "private site"
-    lookup_key: 'wmflib::expand_path'
-    datadir: "/etc/puppet/private/hieradata"
-    path: "%{::site}"
-  - name: "private node"
-    datadir: "/etc/puppet/private/hieradata"
-    path: "hosts/%{::hostname}.yaml" # Currently only used for labtest hosts
-  - name: "expand_path site"
-    path: "%{::site}"
-    lookup_key: 'wmflib::expand_path'
   - name: "role"
     paths:
       - "role/%{::site}/%{::_role}.yaml"
@@ -39,6 +36,13 @@ hierarchy:
     paths:
       - "role/%{::site}/%{::_role}.yaml"
       - "role/common/%{::_role}.yaml"
+  - name: "private site"
+    lookup_key: 'wmflib::expand_path'
+    datadir: "/etc/puppet/private/hieradata"
+    path: "%{::site}"
+  - name: "expand_path site"
+    path: "%{::site}"
+    lookup_key: 'wmflib::expand_path'
   - name: "common"
     lookup_key: 'wmflib::expand_path'
     path: "common"
@@ -49,5 +53,7 @@ hierarchy:
     lookup_key: 'wmflib::expand_path'
     datadir: "/etc/puppet/private/hieradata"
     path: "common"
+
+
   - name: "Pontoon - realm.pp workarounds"
     path: "auto.yaml"
