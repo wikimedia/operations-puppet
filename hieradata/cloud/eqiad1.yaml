@@ -195,7 +195,7 @@ profile::base::ssh_server_settings:
   challenge_response_auth: false
 
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
-puppet_ca_source: puppet:///files/puppet/ca.labs.pem
+puppet_ca_source: puppet:///modules/profile/puppet/ca.labs.pem
 
 keystone_public_port: '25000'
 

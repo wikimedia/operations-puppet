@@ -4,7 +4,7 @@ require 'rspec-puppet/cache'
 describe 'openstack::puppet::master::encapi' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "On #{os}" do
-      let(:pre_condition) { "class {'base::puppet': ca_source => 'puppet:///files/puppet/ca.production.pem'}" }
+      let(:pre_condition) { "class {'base::puppet': ca_source => 'puppet:///modules/profile/puppet/ca.production.pem'}" }
       before(:each) do
         Puppet::Parser::Functions.newfunction(:ipresolve, :type => :rvalue) { |_| '127.0.0.10' }
       end

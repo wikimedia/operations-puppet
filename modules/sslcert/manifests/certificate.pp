@@ -76,7 +76,7 @@ define sslcert::certificate(
         $cert_source = undef
     } else {
         $cert_content = undef
-        $cert_source = "puppet:///files/ssl/${title}.crt" # lint:ignore:puppet_url_without_modules
+        $cert_source = "puppet:///modules/profile/ssl/${title}.crt"
     }
 
     if $ensure != 'absent' {

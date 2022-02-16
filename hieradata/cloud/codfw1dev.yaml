@@ -52,7 +52,7 @@ profile::openstack::base::puppetmaster::enc_client::api_endpoint: "http://puppet
 profile::openstack::codfw1dev::cumin::project_masters: []
 profile::openstack::codfw1dev::cumin::project_pub_key: undef
 
-puppet_ca_source: puppet:///files/puppet/ca.labs.codfw1dev.pem
+puppet_ca_source: puppet:///modules/profile/puppet/ca.labs.codfw1dev.pem
 
 bastion_hosts:
 - 172.16.128.14 # bastion-codfw1dev-01.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
