@@ -69,7 +69,7 @@ class php(
             # Merge the basic configuration with the sapi-specific one, if present.
             file { "${config_dir}/${sapi}/php.ini":
                 ensure  => $ensure,
-                content => php_ini($base_config, pick($config_by_sapi[$sapi], {})),
+                content => wmflib::php_ini($base_config, pick($config_by_sapi[$sapi], {})),
                 owner   => 'root',
                 group   => 'root',
                 mode    => '0444',

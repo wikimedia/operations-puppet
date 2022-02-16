@@ -93,7 +93,7 @@ class profile::toolforge::grid::exec_environ::buster {
     }
     file { "${php_config_dir}/cli/php.ini":
         ensure  => present,
-        content => php_ini($php_config, {}),
+        content => wmflib::php_ini($php_config, {}),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

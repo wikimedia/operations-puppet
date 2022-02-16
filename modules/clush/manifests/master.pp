@@ -68,6 +68,6 @@ class clush::master(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => ini($config),
+        content => wmflib::ini($config),
     }
 }

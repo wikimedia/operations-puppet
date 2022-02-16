@@ -6,7 +6,7 @@ define puppetdb::config($settings) {
     $config_dir = '/etc/puppetdb/conf.d'
 
     file { "/etc/puppetdb/conf.d/${title}.ini":
-        content => ini($ini),
+        content => wmflib::ini($ini),
         owner   => 'puppetdb',
         group   => 'root',
         mode    => '0640',

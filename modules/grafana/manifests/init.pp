@@ -43,7 +43,7 @@ class grafana(
     }
 
     file { '/etc/grafana/grafana.ini':
-        content => ini($defaults, $config),
+        content => wmflib::ini($defaults, $config),
         owner   => 'root',
         group   => 'grafana',
         mode    => '0440',

@@ -68,7 +68,7 @@ class profile::toolforge::clush::master(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => ini($groups_config),
+        content => wmflib::ini($groups_config),
     }
 
     # Usage: `clush --hostfile /etc/clustershell/toolforge_canary_list.txt 'cmd'`

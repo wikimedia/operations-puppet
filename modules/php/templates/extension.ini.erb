@@ -2,4 +2,4 @@
 ;
 ; configuration for the <%= @name %> PHP extension
 ; priority=<%= @priority %>
-<%= scope.call_function(:php_ini, [@_config]) %>
+<%= scope.call_function('wmflib::php_ini', [@_config]) %>

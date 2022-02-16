@@ -142,8 +142,8 @@ class striker::uwsgi(
 
     profile::auto_restarts::service { 'uwsgi-striker': }
 
-    # Our ini() function does a shallow merge rather than a deep merge, so
-    # merge the config sections before passing to ini() below.
+    # Our wmflib::ini() function does a shallow merge rather than a deep merge, so
+    # merge the config sections before passing to wmflib::ini() below.
     $complete_config = deep_merge($config, $secret_config)
 
     file { '/etc/striker/striker.ini':
@@ -151,7 +151,7 @@ class striker::uwsgi(
         owner   => 'root',
         group   => 'www-data',
         mode    => '0440',
-        content => ini($complete_config),
+        content => wmflib::ini($complete_config),
         notify  => Uwsgi::App['striker'],
     }
 }
