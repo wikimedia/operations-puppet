@@ -32,6 +32,9 @@
 #   must be set to SSL for ssl_truststore* configs to be set
 #   see https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html#plugins-inputs-kafka-security_protocol
 #
+# [*ssl_truststore_location*]
+#   jks truststore location value. Default: none. Requires $security_protocol = 'SSL'
+#
 # [*ssl_truststore_password*]
 #   jks truststore password value. Default: none. Requires $security_protocol = 'SSL'
 #
@@ -71,6 +74,7 @@ define logstash::input::kafka(
     Optional[String] $topics_pattern                                                 = undef,
     Optional[String] $group_id                                                       = undef,
     Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,
+    Optional[String] $ssl_truststore_location                                        = undef,
     Optional[String] $ssl_truststore_password                                        = undef,
     Optional[String] $ssl_endpoint_identification_algorithm                          = undef,
     Boolean $manage_truststore                                                       = true,
@@ -94,31 +98,32 @@ define logstash::input::kafka(
         }
 
         $bootstrap_servers = $kafka_config['brokers']['ssl_string']
-        $ssl_truststore_location = "/etc/logstash/kafka_${kafka_cluster_name_full}.truststore.jks"
+        $_ssl_truststore_location = $ssl_truststore_location ? {
+            undef   => "/etc/logstash/kafka_${kafka_cluster_name_full}.truststore.jks",
+            default => $ssl_truststore_location,
+        }
 
-        if !defined(File[$ssl_truststore_location]) and $manage_truststore {
-            file { $ssl_truststore_location:
-                content => secret("certificates/kafka_${kafka_cluster_name_full}_broker/truststore.jks"),
-                owner   => 'logstash',
-                group   => 'logstash',
-                mode    => '0440',
+        if $manage_truststore {
+            if !defined(File[$_ssl_truststore_location]){
+                file { $_ssl_truststore_location:
+                    content => secret("certificates/kafka_${kafka_cluster_name_full}_broker/truststore.jks"),
+                    owner   => 'logstash',
+                    group   => 'logstash',
+                    mode    => '0440',
+                }
             }
+            # If using SSL, the Kafka input logstash conf
+            # should depend on File $ssl_truststore_location.
+            Logstash::Conf[$logstash_conf_title] { require => File[$_ssl_truststore_location] }
         }
     }
     else {
         $bootstrap_servers = $kafka_config['brokers']['string']
-        $ssl_truststore_location = undef
     }
 
     logstash::conf { $logstash_conf_title:
         ensure   => $ensure,
         content  => template('logstash/input/kafka.erb'),
         priority => $priority,
-    }
-
-    # If using SSL, the Kafka input logstash conf
-    # should depend on File $ssl_truststore_location.
-    if ($security_protocol == 'SSL' and $manage_truststore) {
-        Logstash::Conf[$logstash_conf_title] { require => File[$ssl_truststore_location] }
     }
 }
