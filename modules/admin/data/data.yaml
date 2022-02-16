@@ -5727,7 +5727,7 @@ ldap_only_users:
       ensure: present
       realname: Satdeep Gill
       email: sgill@wikimedia.org
-  kgordon:
+  kinneretgordon:
     ensure: present
     realname: Kinneret Gordon
     email: kgordon@wikimedia.org
