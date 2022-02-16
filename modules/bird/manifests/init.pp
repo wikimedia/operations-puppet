@@ -20,11 +20,11 @@
 # [*bind_service*]
 #   Allows to bind the bird service to another service (watchdog-like)
 #
-# [*routerid*]
-#   The router ID of the bird instance
+# [*ipv4_src*]
+#   IPv4 address to use for BGP session, also used as router ID
 #
-# [*ipv6_local_addr*]
-#   The local IPv6 address, used by bird6.conf if IPv6 is enabled.
+# [*ipv6_src*]
+#   IPv6 address to use for BGP session
 #
 # [*do_ipv6*]
 #   Whether to enable IPv6 support. default: false.
@@ -35,8 +35,8 @@ class bird(
   Boolean                    $bfd             = true,
   Optional[String]           $bind_service    = undef,
   Boolean                    $do_ipv6         = false,
-  Stdlib::IP::Address        $routerid        = $facts['ipaddress'],
-  Stdlib::IP::Address        $ipv6_local_addr = $facts['ipaddress6'],
+  Stdlib::IP::Address        $ipv4_src        = $facts['ipaddress'],
+  Stdlib::IP::Address        $ipv6_src        = $facts['ipaddress6'],
   ){
 
   ensure_packages(['bird', 'prometheus-bird-exporter'])
