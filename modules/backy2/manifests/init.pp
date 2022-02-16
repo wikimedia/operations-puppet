@@ -68,7 +68,7 @@ class backy2(
             command   => '/usr/bin/sed -i s/Crypto\./Cryptodome\./g /usr/lib/python3/dist-packages/backy2/crypt.py /usr/lib/python3/dist-packages/backy2/aes_keywrap.py',
             logoutput => true,
             require   => Package['backy2'],
-            unless    => 'grep Cryptodome /usr/lib/python3/dist-packages/backy2/crypt.py && grep Cryptodome /usr/lib/python3/dist-packages/backy2/aes_keywrap.py',
+            unless    => '/usr/bin/grep Cryptodome /usr/lib/python3/dist-packages/backy2/crypt.py && /usr/bin/grep Cryptodome /usr/lib/python3/dist-packages/backy2/aes_keywrap.py',
         }
     }
 
