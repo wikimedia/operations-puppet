@@ -398,6 +398,7 @@ groups:
     members: [*platform_engineering_members, hoo]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
+      - Atieno Njira
       - Will Doran
       - Mat Nadrofsky
   dumpsdata-admins:
@@ -406,6 +407,7 @@ groups:
     members: [*platform_engineering_members]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
+      - Atieno Njira
       - Will Doran
       - Mat Nadrofsky
   dumps-roots:
@@ -414,6 +416,7 @@ groups:
     members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
+      - Atieno Njira
       - Will Doran
       - Mat Nadrofsky
   restbase-roots:
@@ -797,6 +800,7 @@ groups:
     description: People who have shell access to snapshot hosts and bastions only.
     members: [springle]
     approval:
+      - Atieno Njira
       - Will Doran
       - Mat Nadrofsky
   wdqs-test-roots:
