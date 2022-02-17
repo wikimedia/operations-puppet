@@ -140,6 +140,9 @@ edns-padding-from=<%= @edns_padding_from %>
 dot-to-port-853=yes
 dot-to-auth-names=ns0.wikimedia.org,ns1.wikimedia.org,ns2.wikimedia.org
 <% end -%>
+<% if @do_ipv6 -%>
+query-local-address=0.0.0.0,[::]
+<% end -%>
 <% end -%>
 
 <%- if @enable_webserver -%>

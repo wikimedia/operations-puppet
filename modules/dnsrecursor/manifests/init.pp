@@ -32,6 +32,7 @@ class dnsrecursor(
     $allow_edns_padding       = false,
     $edns_padding_mode        = undef,
     $edns_padding_from        = undef,
+    $do_ipv6                  = false,
     $install_from_component   = false, # for buster, enable pdns-recursor from component
     Boolean $enable_webserver                  = false,
     Array[Stdlib::IP::Address] $api_allow_from = [],
