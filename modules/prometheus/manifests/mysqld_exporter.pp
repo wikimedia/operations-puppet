@@ -62,6 +62,7 @@ define prometheus::mysqld_exporter (
 --collect.global_variables \
 --collect.info_schema.processlist \
 --collect.slave_status \
+--collect.heartbeat \
 --no-collect.info_schema.tables"
         } else {
             $options = "-collect.global_status \
@@ -69,6 +70,7 @@ define prometheus::mysqld_exporter (
 -collect.info_schema.processlist \
 -collect.info_schema.processlist.min_time 0 \
 -collect.slave_status \
+-collect.heartbeat \
 -collect.info_schema.tables false"
         }
     } else {
