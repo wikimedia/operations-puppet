@@ -77,7 +77,7 @@ groups:
     gid: 824
     # ariel, hnowlan, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese, clarakosi,
-              daniel, eevans, kevinbazira, ppchelko, nikkin, gmodena]
+              daniel, eevans, kevinbazira, ppchelko, nikkin, gmodena, hokwelum]
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -5055,6 +5055,14 @@ users:
     email: jnuche@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPnCekTO59nMcPp2rFMzBW/epGzGldjTNLDwi3sGKQPJ jnuche@wikimedia.org
+  hokwelum:
+    ensure: present
+    uid: 35880
+    gid: 500
+    realname: Hannah Okwelum
+    email: hokwelum@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBVyQpwHszMYsZmG1ydOvIigJhTwAI9CHhSrmShhLwsS hannah@Hannahs-MacBook-Pro.local
 
 ldap_only_users:
   abartov:
