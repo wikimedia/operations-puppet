@@ -48,6 +48,22 @@ puppet_compiler::uploader::realms:
       iR0ttBXSjneJNzTIkR3jI1qDxq6aFeigemEpwWC5aosrO24ZbbOWDfVDnBCWcYGb
       6sAol1F1shyssGN5zg7EnLcCAwEAAQ==
       -----END PUBLIC KEY-----
+  clouddb-services:
+    clouddb-services-puppetmaster-01: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoWTpieoXsznvbwdHAkIS
+      btNqkD+bGm2Vgnla+S62iRU0FexFgxMfpwP8XsQq5+oJepif6W6GSPd6u3q+EVLy
+      T3Q0yWVqPTm5v6OSpRSdb9+K7GeKdTqSxsQuRZYD6rnU95sotSA0L6zJFGVVcfy1
+      riAkoj1mANn24ep7gY/aR+YstYgu1lec1LXkOlzTSz3Uk5SOC6njDlPHRDmUwarI
+      IgkOiUxZiMn+r7jqyjhdPZkABEq/9aVhHebNo9GLRW1FTTTYXMat3OXkGs+wDx51
+      TXfL7O3JwSl2cii9KeoqSzrisNRPdyUO1jBRzkRTcNYjyG9JAaenschimP8FwZPU
+      elzOwxnqKfRQ7hQnpwjsCzgJwpPNpe2/EzaJQytCYYPIoZFTgxc5fQSj7HLwIY+a
+      ZPXSAjIHzeVDZF6SmJkg9+h4GJ8c/LRZN9WAoXmqecIcI/9CNINA2FF5p8iKUMEb
+      yldhE0nZxqE7FYpLwph3FUy3bGLwN3b92hTm7/l4XJmR59ONSUc3pftI+p5qJRvM
+      JmAma6U1O3SSX0jg6COSzLg8AeIoC+JIft++FHv83ybQ92UKwYaVGMB7uqjqL+9R
+      FBYHXOjH6zWefBJvWotzzDmz0eRqdR6Iq/D0yl8bJdDg2mbWdLgN6QZjgGpn4u30
+      lUIDvyMUduD2wyrH2lQ5mIMCAwEAAQ==
+      -----END PUBLIC KEY-----
   deployment-prep:
     deployment-puppetmaster04: |
       -----BEGIN PUBLIC KEY-----
