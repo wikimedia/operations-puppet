@@ -245,6 +245,12 @@ sub cluster_fe_ratelimit {
 		if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 10s)) {
 			return (synth(429, "Too Many Requests"));
 		}
+		<%- if @etcd_filters -%>
+		// These are the ratelimits generated from etcd
+		// They only apply to non-wikimedia networks and come after all of the above rules.
+		// our goal would be to move most of these rules to etcd long-term.
+		include "dynamic.actions.inc.vcl";
+		<%- end -%>
 	}
 }
 

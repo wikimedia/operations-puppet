@@ -5,7 +5,7 @@ ARG C_USER=wikimedia
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN set -e; \
-    BASE_PACKAGES="wget gnupg2 geoip-database geoip-database-extra sudo"; \
+    BASE_PACKAGES="wget gnupg2 geoip-database geoip-database-extra sudo python3-toml"; \
     REPO_DIR="/etc/apt/sources.list.d"; \
     REPO="buster-wikimedia"; \
     WIKIMEDIA_REPO="deb http://apt.wikimedia.org/wikimedia ${REPO}"; \

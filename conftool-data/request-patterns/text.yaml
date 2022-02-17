@@ -15,6 +15,8 @@ sites:
 req:
   - specific_page # pattern to modify depending on the current abuse pattern
   - cache_buster_q # a common pattern we've seen
-  - cache_buster # a pattern to modify depending on the current abuse pattern 
+  - cache_buster # a pattern to modify depending on the current abuse pattern
+queries:
+  - random_q
 
 

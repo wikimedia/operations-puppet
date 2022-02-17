@@ -10,6 +10,7 @@ define varnish::wikimedia_vcl(
     $is_separate_vcl=false,
     $wikimedia_nets=[],
     $wikimedia_trust=[],
+    $etcd_filters=false,
 ) {
     if $varnish_testing  {
         $netmapper_dir = '/usr/share/varnish/tests'

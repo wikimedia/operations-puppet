@@ -19,6 +19,7 @@ class profile::cache::varnish::frontend (
     String $uds_owner = lookup('profile::cache::varnish::frontend::uds_owner', {'default_value' => 'root'}),
     String $uds_group = lookup('profile::cache::varnish::frontend::uds_group', {'default_value' => 'root'}),
     Stdlib::Filemode $uds_mode = lookup('profile::cache::varnish::frontend::uds_mode', {'default_value' => '700'}),
+    Boolean $use_etcd_req_filters = lookup('profile::cache::varnish::frontend::use_etcd_req_filters', {'default_value' => false}),
 ) {
     require ::profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -28,6 +29,11 @@ class profile::cache::varnish::frontend (
         require ::profile::lvs::realserver
     }
 
+    # Defaults for the vcl files
+    # TODO: pass it down once we've refactored the varnish classes.
+    Varnish::Wikimedia_vcl {
+        etcd_filters  => $use_etcd_req_filters,
+    }
     $packages = [
         'varnish',
         'varnish-modules',
@@ -138,6 +144,19 @@ class profile::cache::varnish::frontend (
             group   => 'root',
             mode    => '0444',
         }
+    }
+
+    # Request filter actions based on the content of the
+    # /request-actions tree in conftool.
+    # Only enabled if $use_etcd_req_filters is true.
+    $req_keyspaces = ['/request-patterns', "/request-actions/cache-${cache_cluster}"]
+    confd::file { '/etc/varnish/dynamic.actions.inc.vcl':
+        ensure     => $use_etcd_req_filters.bool2str('present', 'absent'),
+        reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
+        prefix     => $conftool_prefix,
+        before     => Service['varnish-frontend'],
+        watch_keys => $req_keyspaces,
+        content    => template('profile/cache/varnish-frontend-dynamic-actions.vcl.tpl.erb'),;
     }
 
     # Transient storage limits T164768

@@ -10,6 +10,8 @@ import subprocess
 
 from pathlib import Path
 
+import toml
+
 DC = ("eqiad", "codfw", "esams", "ulsfo", "eqsin", "drmrs")
 CLUSTERS = ("text", "upload")
 PATH_RE = re.compile("^(/etc/varnish/|/usr/share/varnish/|/etc/confd/.*_etc_varnish.*)")
@@ -74,6 +76,7 @@ def dump_files(url, hostname):
 
 def run_confd():
     """Run confd to generate the files."""
+    confd_output_files = []
     # TODO: convert all the file to use Path.
     parent = Path(PARENT_DIR)
     config_path = parent / "etc/confd/conf.d"
@@ -82,12 +85,19 @@ def run_confd():
         if config_file.match("*varnish_directors*.vcl.toml"):
             config_file.unlink()
         else:
-            # Patch the paths.
-            content = config_file.read_text().replace(
-                "/etc/varnish", str(parent / "etc/varnish")
-            )
-            config_file.write_text(content)
+            # Parse the file as toml
+            config = toml.loads(config_file.read_text())
+            try:
+                destination = config["template"]["dest"].replace(
+                    "/etc/varnish", str(parent / "etc/varnish")
+                )
+                confd_output_files.append(Path(destination))
+                config["template"]["dest"] = destination
 
+                # Patch the paths.
+                config_file.write_text(toml.dumps(config))
+            except KeyError:
+                print(f"ERROR: file {config_file} doesn't contain a valid dest entry.")
     # Now run confd.
     subprocess.run(
         [
@@ -99,13 +109,25 @@ def run_confd():
             "-file",
             str(parent / "confd_stub_data.yaml"),
             "-onetime",
-        ], check=True
+        ],
+        check=True,
     )
+    for output in confd_output_files:
+        print(f"== Content of {output.name}:")
+        print("")
+        print(output.read_text())
+        print("")
+        print("=" * 30)
+        print("")
 
 
-def main(hostname, patch_id, pcc):
-    print("[*] running PCC for change {}...".format(patch_id))
-    pcc_url = get_pcc_url(hostname, patch_id, pcc)
+def main(hostname, patch_or_url, pcc):
+    if patch_or_url.startswith("https://"):
+        pcc_url = patch_or_url
+    else:
+        patch_id = patch_or_url
+        print("[*] running PCC for change {}...".format(patch_id))
+        pcc_url = get_pcc_url(hostname, patch_id, pcc)
     print("\tPCC URL: {}\n".format(pcc_url))
 
     print("[*] Dumping files...")
@@ -132,11 +154,15 @@ def main(hostname, patch_id, pcc):
     with open(t[1], "w") as f:
         f.write(os.popen(cmd).read())
     print("Test output saved to {}".format(t[1]))
+    print(
+        "If you want to fix your tests and re-run without recompiling pcc, run as follows:"
+    )
+    print(f"python3 run.py {hostname} {pcc_url}")
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: {} hostname patch_id [pcc_path]".format(sys.argv[0]))
+        print("Usage: {} hostname patch_or_pcc_url [pcc_path]".format(sys.argv[0]))
         sys.exit(1)
 
     if len(sys.argv) == 4:

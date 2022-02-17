@@ -17,16 +17,76 @@ conftool:
         wiki_page: |-
           {"method": "", "url_path": "^(/wiki|/w/index.php)", "header": "",
           "header_value": "", "query_parameter": "", "query_parameter_value": ""}
+      "header":
+        no_xwmd: |-
+          {"method": "", "url_path": "", "header": "X-Wikimedia-Debug",
+          "header_value": "", "query_parameter": "", "query_parameter_value": ""}
+        #
+        any_cloud: |-
+          {"method": "", "url_path": "", "header": "X-Public-Cloud",
+          "header_value": ".*", "query_parameter": "", "query_parameter_value": ""}
+      "query":
+        nocache: |-
+          {"method": "", "url_path": "", "header": "",
+          "header_value": "", "query_parameter": "nocache", "query_parameter_value": "^.*$"}
+      "method":
+        post: |-
+          {"method": "POST", "url_path": "", "header": "",
+          "header_value": "", "query_parameter": "", "query_parameter_value": ""}
     request-actions:
+      cache-upload:
+        rate_limit_aws: |-
+          {
+            "enabled": true,
+            "cache_miss_only": true,
+            "comment": "A comment",
+            "expression": "ipblock@cloud/test-cloud-provider",
+            "resp_status": 429,
+            "resp_reason": "Too Many Requests. Please contact noc@wikimedia.org.",
+            "sites": [],
+            "do_throttle": true,
+            "throttle_requests": 1000,
+            "throttle_interval": 10,
+            "throttle_duration": 100,
+            "throttle_per_ip": true
+          }
       cache-text:
-        wiki_aws: |-
+        # Tests: pattern/url, pattern/header empty, ipblock/cloud and AND logic.
+        # Bans all requests from the test_cloud_provider ip space that are for a wiki page and have
+        # no X-Wikimedia-Debug header.
+        wiki_cloud_bot: |-
           {
             "enabled": true,
             "cache_miss_only": true,
             "comment": "wiki_aws",
-            "expression": "ipblock@cloud/aws AND pattern@url/wiki_page",
-            "resp_status": 429,
-            "resp_reason": "Too Many Requests",
+            "expression": "ipblock@cloud/test-cloud-provider AND pattern@url/wiki_page AND pattern@header/no_xwmd",
+            "resp_status": 403,
+            "resp_reason": "Forbidden.",
             "sites": [],
-            "do_throttle": false,
+            "do_throttle": false
+          }
+        # Tests: pattern/{query,method}, ipblock/abuse, AND/OR, grouping logic
+        # Bans all the requests with a "nocache" parameter or with method POST from text_abuse_networks
+        abuse_block: |-
+          {
+            "enabled": true,
+            "cache_miss_only": true,
+            "comment": "wiki_abuse",
+            "expression": "ipblock@abuse/text_abuse_nets AND ( pattern@query/nocache OR pattern@method/post )",
+            "resp_status": 403,
+            "resp_reason": "Forbidden.",
+            "sites": [],
+            "do_throttle": false
+          }
+        # Tests: disabled doesn't make it to vcl
+        invalid_but_disabled: |-
+          {
+            "enabled": false,
+            "cache_miss_only": true,
+            "comment": "wiki_abuse",
+            "expression": "ipblock@abuse/text_abuse_nets AND INVALID ( pattern@query/nocache OR pattern@method/post )",
+            "resp_status": 403,
+            "resp_reason": "Forbidden.",
+            "sites": [],
+            "do_throttle": false
           }
