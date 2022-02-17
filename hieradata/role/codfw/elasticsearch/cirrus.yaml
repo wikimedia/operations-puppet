@@ -1,3 +1,4 @@
+profile::elasticsearch::version: '6.8'
 profile::elasticsearch::instances:
     production-search-codfw:
         # codfw prod name
