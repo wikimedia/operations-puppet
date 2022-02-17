@@ -58,6 +58,9 @@ multitask :parallel => t.tasks
 desc 'Run all actual tests in parallel for changes in HEAD'
 task :test => [:parallel, :wmf_styleguide_delta]
 
+task :static => t.tasks - [:spec, :tox, :per_module_tox, :dhcp]
+task :unit => [:spec, :tox, :per_module_tox]
+
 # Show what we would run
 task :debug do
   puts "Tasks that would be run: "
