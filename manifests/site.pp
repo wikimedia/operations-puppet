@@ -2688,6 +2688,11 @@ node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
 }
 
+# New restbase dev nodes T299437
+node /^restbase-dev200[1-3]\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # virtual machines for https://wikitech.wikimedia.org/wiki/RPKI#Validation
 node /^rpki[12]00[12]\.(eqiad|codfw)\.wmnet$/ {
     role(rpkivalidator)
