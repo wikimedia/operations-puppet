@@ -63,4 +63,15 @@ class profile::openstack::base::cinder(
         db_user      => $db_user,
         db_pass      => $db_pass,
     }
+
+    if debian::codename::eq('bullseye') {
+        grub::bootparam { 'disable_unified_cgroup_hierarchy':
+            key   => 'systemd.unified_cgroup_hierarchy',
+            value => '0',
+        }
+        grub::bootparam { 'disable_legacy_systemd_cgroup_controller':
+            key   => 'systemd.legacy_systemd_cgroup_controller',
+            value => '0',
+        }
+    }
 }
