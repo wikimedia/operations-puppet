@@ -1,0 +1,20 @@
+url:
+  - page # pattern for wiki pages, as opposed to api calls etc
+  - api # pattern for apis
+  - docroot # the document root
+  - semicolon_page # Special pages
+ua:
+  - requests
+  - curl
+  - urllib3
+  - MediaWiki
+sites:
+  - enwiki # english wikipedia
+  - commonswiki # commons
+  - wikidata # wikidata
+req:
+  - specific_page # pattern to modify depending on the current abuse pattern
+  - cache_buster_q # a common pattern we've seen
+  - cache_buster # a pattern to modify depending on the current abuse pattern 
+
+

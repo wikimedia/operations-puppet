@@ -1,0 +1,19 @@
+# Here we should have one key per
+# cloud, or if we want multiple keys
+# for specific regions.
+# Data will be filled from private sources in production.
+abuse:
+  - blocked_nets
+  - text_abuse_nets
+  - bot_blocked_nets
+  - bot_posts_blocked_nets
+cloud:
+  - public_cloud_nets # legacy for compatibility with what we currently have in puppet.
+# TODO: import all of the clouds below.
+#  - aws
+#  - azure
+#  - google
+#  - hetzner
+#  - ovh
+#  - linode
+#  - digitalocean
