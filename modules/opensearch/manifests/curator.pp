@@ -5,9 +5,15 @@
 # opensearch::curator::cluster.
 #
 class opensearch::curator {
-    # TODO: use fork when available
+    if debian::codename::le('buster') {
+        $curator_version = '5.8.1'  # ensure version compatible with announced version 7.10.0
+    } else {
+        $curator_version = '5.8.1-1'
+    }
+
+    # TODO: use fork when available (T301017)
     package { 'elasticsearch-curator':
-      ensure => '5.8.1'  # ensure version compatible with announced version 7.10.0
+        ensure => $curator_version
     }
 
     file { '/etc/curator/':
@@ -25,4 +31,3 @@ class opensearch::curator {
             source => 'puppet:///modules/opensearch/curator/enable-shard-allocation.yaml';
     }
 }
-
