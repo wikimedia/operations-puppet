@@ -17,7 +17,7 @@ profile::opensearch::common_settings:
   curator_uses_unicast_hosts: true
   http_port: 9200
   transport_tcp_port: 9300
-  disktype: 'sdd'
+  disktype: 'ssd'
   compatibility_mode: false
 
 profile::opensearch::java_home: '/usr/lib/jvm/java-1.11.0-openjdk-amd64'
