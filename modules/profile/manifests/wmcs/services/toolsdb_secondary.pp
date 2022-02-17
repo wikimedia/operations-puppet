@@ -43,6 +43,11 @@ class profile::wmcs::services::toolsdb_secondary (
         socket        => $socket,
     }
 
+    class { 'mariadb::heartbeat':
+        datacenter => $::site,
+        enabled    => false,
+    }
+
     class { 'profile::mariadb::monitor::prometheus':
         socket => $socket,
     }

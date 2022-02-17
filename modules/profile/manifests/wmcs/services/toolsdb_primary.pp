@@ -41,6 +41,12 @@ class profile::wmcs::services::toolsdb_primary (
         read_only     => 'ON',
         socket        => $socket,
     }
+
+    class { 'mariadb::heartbeat':
+        datacenter => $::site,
+        enabled    => true,
+    }
+
     if $rebuild {
         rsync::quickdatacopy { 'srv-labsdb-backup1':
             ensure      => present,
