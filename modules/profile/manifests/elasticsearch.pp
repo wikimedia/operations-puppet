@@ -29,7 +29,7 @@ class profile::elasticsearch(
     Enum['Gelf', 'syslog'] $logstash_transport = lookup('profile::elasticsearch::logstash_transport', {'default_value' => 'Gelf'}),
     String $rack = lookup('profile::elasticsearch::rack'),
     String $row = lookup('profile::elasticsearch::row'),
-    Enum['5.5', '5.6', '6.5', '7.4', '7.8', '7.9', '7.10'] $version = lookup('profile::elasticsearch::version', {'default_value' => '5.5'}),
+    Enum['5.5', '5.6', '6.5', '6.8', '7.4', '7.8', '7.9', '7.10'] $version = lookup('profile::elasticsearch::version', {'default_value' => '5.5'}),
     Enum['5', '6', '7'] $config_version = lookup('profile::elasticsearch::config_version', {'default_value' => '5'}),
     Optional[String] $java_home = lookup('profile::elasticsearch::java_home', { 'default_value' => undef }),
 ) {
