@@ -38,7 +38,7 @@ class profile::wmcs::services::toolsdb_primary (
         tmpdir        => '/srv/labsdb/tmp',
         ssl           => 'puppet-cert',
         binlog_format => 'ROW',
-        read_only     => 'OFF',
+        read_only     => 'ON',
         socket        => $socket,
     }
     if $rebuild {
