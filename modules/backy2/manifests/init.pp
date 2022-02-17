@@ -72,6 +72,13 @@ class backy2(
         }
     }
 
+    # Initialize backy2 db if it isn't already present
+    exec {'initialize-backy2-database':
+        command   => '/usr/bin/backy2 initdb',
+        logoutput => true,
+        require   => Package['backy2'],
+        creates   => '/var/lib/backy2/backy.sqlite'
+    }
 
     file {
         '/srv/backy2':
