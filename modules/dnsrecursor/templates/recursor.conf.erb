@@ -148,6 +148,6 @@ query-local-address=0.0.0.0,[::]
 <%- if @enable_webserver -%>
 webserver=yes
 webserver-port=8082
-webserver-address=<%= flatten_ips(@listen_addresses).sort.join(" ") %>
+webserver-address=<%= @ipaddress %>
 webserver-allow-from=<%= flatten_ips(@api_allow_from).sort.join(" ") %>
 <%- end -%>
