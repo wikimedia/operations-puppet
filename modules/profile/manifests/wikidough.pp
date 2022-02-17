@@ -48,6 +48,7 @@ class profile::wikidough (
         allow_qname_minimisation => true,
         allow_dot_to_auth        => true,
         install_from_component   => true,
+        do_ipv6                  => true,
         allow_edns_padding       => true,
         edns_padding_from        => '127.0.0.0/8',
         edns_padding_mode        => 'padded-queries-only',
