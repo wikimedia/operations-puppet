@@ -33,12 +33,11 @@ class openstack::designate::dns_floating_ip_updater(
     }
 
     file { '/usr/local/sbin/wmcs-dns-floating-ip-updater':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => 'puppet:///modules/openstack/designate/wmcs-dns-floating-ip-updater.py',
-        require => Package['python-ipaddress']
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/openstack/designate/wmcs-dns-floating-ip-updater.py',
     }
 
     systemd::timer::job { 'designate_floating_ip_ptr_records_updater':
