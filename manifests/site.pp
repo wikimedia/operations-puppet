@@ -1948,6 +1948,11 @@ node /^mc-gp200[1-3]\.codfw\.wmnet/ {
     role(mediawiki::memcached::gutter)
 }
 
+# New ml-cache node T299433
+node /^ml-cache200[123]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 node /^ml-etcd100[123]\.eqiad\.wmnet/ {
     role(etcd::v3::ml_etcd)
 }
