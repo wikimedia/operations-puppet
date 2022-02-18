@@ -34,7 +34,7 @@ mobile_privacy = (r'<a\shref="(https:)?\/\/foundation\.wikimedia\.org\/wiki\/Pri
 copyright = (r'Text\sis\savailable\sunder\sthe\s<a\srel="license"\s+'
              r'href="(https:)?\/\/en.wikipedia.org\/wiki\/Wikipedia:'
              r'Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">'
-             r'Creative\sCommons\sAttribution-ShareAlike\sLicense</a>'
+             r'Creative\sCommons\sAttribution-ShareAlike\sLicense 3.0</a>'
              r'<a\srel="license"\shref="\/\/creativecommons.org\/licenses\/by-sa\/3\.0/"')
 
 terms = (r'additional\sterms\smay\sapply\.  '
