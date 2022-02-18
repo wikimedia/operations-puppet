@@ -36,14 +36,19 @@ if [[ -n "$1" && "$1" == "-h" ]]; then
     usage
 fi
 
-# Verify that docker is installed, and that the current user has
-# permissions to operate on it.
-if ! command -v docker > /dev/null; then
-    echo "'docker' was not found in your $PATH. Please install docker"
-    exit 1
-fi
-if ! (docker info > /dev/null); then
-    echo "Your current user ($USER) is not authorized to operate on the docker daemon. Please fix that."
+# Verify that docker or podman is installed, prefer podman
+if command -v podman >/dev/null; then
+    oci_runtime='podman'
+elif command -v docker >/dev/null; then
+    oci_runtime='docker'
+    # If using docker verify that the current user has permissions to operate
+    # on it.
+    if ! docker info >/dev/null; then
+        echo "Your current user ($USER) is not authorized to operate on the docker daemon. Please fix that."
+        exit 1
+    fi
+else
+    echo "Neither 'docker' nor 'podman' were found in your PATH: '$PATH'. Please install one of them"
     exit 1
 fi
 
@@ -56,19 +61,30 @@ SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 if [ "$IMG_VERSION" = "latest" ]
 then
   echo "Using 'latest' image tag, set IMG_VERSION to use a specific version"
-  docker pull $IMG_NAME
+  $oci_runtime pull "$IMG_NAME"
 fi
 
 pushd "${SCRIPT_DIR}/.."
+oci_run_args=(
+  '--rm'
+  '--env'
+  ZUUL_REF=""
+  '--env'
+  RAKE_TARGET="$*"
+  '--name'
+  "$CONT_NAME"
+  '--volume'
+  "$PWD":/src
+)
 if [ "${INTERACTIVE}" == "yes" ]
 then
-  echo "starting docker in interactive mode."
+  echo "starting $oci_runtime in interactive mode."
   echo "you will most likely want to run the following steps"
   echo "bundle update"
   echo "run your custom rspec debug steps e.g."
   echo "cd modules/wmflib && bundle exec rake spec"
-  docker run --rm -it --user root --entrypoint bash --workdir /src --name "$CONT_NAME" --volume /"$(pwd)"://src "$IMG_NAME"
+  $oci_runtime run "${oci_run_args[@]}" -it --workdir /src --entrypoint bash "$IMG_NAME"
 else
-  docker run --rm --env ZUUL_REF="" --env RAKE_TARGET="$*" --name "$CONT_NAME" --volume /"$(pwd)"://src "$IMG_NAME"
+  $oci_runtime run "${oci_run_args[@]}" "$IMG_NAME"
 fi
 popd
