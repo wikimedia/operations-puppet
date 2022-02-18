@@ -51,6 +51,11 @@ class thanos::rule (
         true  => $rule_hosts[$::fqdn]['replica'],
         false => 'unset'
     }
+    $relabel_config_file = '/etc/thanos-rule/relabel.yaml'
+    $relabel_config = [
+      # Add 'source' label
+      { 'target_label' => 'source', 'replacement' => 'thanos', 'action' => 'replace' },
+    ]
 
     file { $data_dir:
         ensure => directory,
@@ -88,6 +93,14 @@ class thanos::rule (
         owner   => 'thanos',
         group   => 'root',
         content => to_yaml($am_config),
+    }
+
+    file { $relabel_config_file:
+        ensure  => $ensure,
+        mode    => '0444',
+        owner   => 'thanos',
+        group   => 'root',
+        content => to_yaml($relabel_config),
     }
 
     if $ensure != present {
