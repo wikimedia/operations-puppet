@@ -18,8 +18,8 @@ class graphite::monitoring::graphite (
         'carbon-frontend-relay_drops':
             description     => 'carbon-frontend-relay metric drops',
             dashboard_links => [
-                'https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&panelId=21&fullscreen',
-                'https://grafana.wikimedia.org/d/000000337/graphite-codfw?orgId=1&panelId=21&fullscreen',
+                'https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&viewPanel=21',
+                'https://grafana.wikimedia.org/d/000000337/graphite-codfw?orgId=1&viewPanel=21',
             ],
             metric          => 'sumSeries(transformNull(perSecond(carbon.relays.graphite*_frontend.destinations.*.dropped)))',
             from            => '5minutes',
@@ -28,8 +28,8 @@ class graphite::monitoring::graphite (
         'carbon-local-relay_drops':
             description     => 'carbon-local-relay metric drops',
             dashboard_links => [
-                'https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&panelId=29&fullscreen',
-                'https://grafana.wikimedia.org/d/000000337/graphite-codfw?orgId=1&panelId=29&fullscreen',
+                'https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&viewPanel=29',
+                'https://grafana.wikimedia.org/d/000000337/graphite-codfw?orgId=1&viewPanel=29',
             ],
             metric          => 'sumSeries(transformNull(perSecond(carbon.relays.graphite*_local.destinations.*.dropped)))',
             from            => '5minutes',
@@ -38,7 +38,7 @@ class graphite::monitoring::graphite (
         # is carbon-cache able to write to disk (e.g. permissions)
         'carbon-cache_write_error':
             description     => 'carbon-cache write error',
-            dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&panelId=30&fullscreen'],
+            dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&viewPanel=30'],
             metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1004-*.errors))',
             from            => '10minutes',
             warning         => 1,
@@ -46,7 +46,7 @@ class graphite::monitoring::graphite (
         # are carbon-cache queues overflowing their capacity?
         'carbon-cache_overflow':
             description     => 'carbon-cache queues overflow',
-            dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&panelId=8&fullscreen'],
+            dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&viewPanel=8'],
             metric          => 'secondYAxis(sumSeries(carbon.agents.graphite1004-*.cache.overflow))',
             from            => '10minutes',
             warning         => 1,
@@ -54,7 +54,7 @@ class graphite::monitoring::graphite (
         # are we creating too many metrics?
         'carbon-cache_many_creates':
             description     => 'carbon-cache too many creates',
-            dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&panelId=9&fullscreen'],
+            dashboard_links => ['https://grafana.wikimedia.org/d/000000020/graphite-eqiad?orgId=1&viewPanel=9'],
             metric          => 'sumSeries(carbon.agents.graphite1004-*.creates)',
             from            => '30min',
             warning         => 500,
