@@ -58,7 +58,7 @@ class profile::kafka::broker::monitoring (
     # Alert if there are consistent under replicated partitions in the last 10 minutes.
     monitoring::check_prometheus { 'kafka_broker_under_replicated_partitions':
         description     => 'Kafka Broker Under Replicated Partitions',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000027/kafka?panelId=29&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000027/kafka?orgId=1&viewPanel=29&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
         query           => "scalar(min_over_time(kafka_server_ReplicaManager_UnderReplicatedPartitions{${prometheus_labels}}[10m]))",
         warning         => 1,
         critical        => 10,
@@ -70,7 +70,7 @@ class profile::kafka::broker::monitoring (
     # Alert if replica lag is increasing (positive slope) for multiple after multiple retries.
     monitoring::check_prometheus { 'kafka_broker_replica_lag_increasing':
         description     => 'Kafka Broker Replica Max Lag is increasing',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000027/kafka?panelId=16&fullscreen&orgId=1&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000027/kafka?orgId=1&viewPanel=16&var-datasource=${::site} prometheus/ops&var-kafka_cluster=${kafka_cluster}&var-kafka_broker=${::hostname}"],
         query           => "scalar(deriv(kafka_server_ReplicaFetcherManager_MaxLag{${prometheus_labels}}[5m]))",
         # I really just want an alert if lag slope is positive over a time range, but
         # check_prometheus_metric.py requires that critical is > warning if method is 'gt'.
