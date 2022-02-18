@@ -1408,8 +1408,8 @@ node /^kubernetes10(1[8-9]|2[0-2])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
-#New Kubernetes node for codfw T294299
-node 'kubernetes2018.codfw.wmnet' {
+#New Kubernetes node for codfw T294299 and T299470
+node /^kubernetes20(1[8-9]|2[0-2])\.codfw\.wmnet$/ {
     role(insetup)
 }
 
