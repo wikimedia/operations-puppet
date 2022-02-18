@@ -19,7 +19,7 @@ class netops::monitoring(
     # core routers
     $routers_defaults = {
         snmp_community => $passwords::network::snmp_ro_community,
-        alarms         => true,
+        alarms         => false,
         critical       => true,
         interfaces     => true,
         bfd            => true,
@@ -39,30 +39,30 @@ class netops::monitoring(
     #############################################################################################################
     $routers = {
         # eqiad
-        'cr1-eqiad'  => { ipv4 => '208.80.154.196',  ipv6 => '2620:0:861:ffff::1',  vrrp_peer => 'cr2-eqiad.wikimedia.org'},
-        'cr2-eqiad'  => { ipv4 => '208.80.154.197',  ipv6 => '2620:0:861:ffff::2' },
-        'pfw3-eqiad'  => { ipv4 => '208.80.154.219', parents => ['cr1-eqiad', 'cr2-eqiad'], bfd => false, alarms => false, },
+        'cr1-eqiad'  => { ipv4 => '208.80.154.196',  ipv6 => '2620:0:861:ffff::1', vrrp_peer => 'cr2-eqiad.wikimedia.org', alarms => true},
+        'cr2-eqiad'  => { ipv4 => '208.80.154.197',  ipv6 => '2620:0:861:ffff::2', alarms => true},
+        'pfw3-eqiad'  => { ipv4 => '208.80.154.219', parents => ['cr1-eqiad', 'cr2-eqiad'], bfd => false},
         # eqord
-        'cr2-eqord'  => { ipv4 => '208.80.154.198',  ipv6 => '2620:0:861:ffff::5', alarms => false,},
+        'cr2-eqord'  => { ipv4 => '208.80.154.198',  ipv6 => '2620:0:861:ffff::5'},
         # codfw
-        'cr1-codfw'  => { ipv4 => '208.80.153.192',  ipv6 => '2620:0:860:ffff::1', vrrp_peer => 'cr2-codfw.wikimedia.org'},
-        'cr2-codfw'  => { ipv4 => '208.80.153.193',  ipv6 => '2620:0:860:ffff::2', },
-        'pfw3-codfw' => { ipv4 => '208.80.153.197',  parents => ['cr1-codfw', 'cr2-codfw'], bfd => false, alarms => false, },
+        'cr1-codfw'  => { ipv4 => '208.80.153.192',  ipv6 => '2620:0:860:ffff::1', vrrp_peer => 'cr2-codfw.wikimedia.org', alarms => true},
+        'cr2-codfw'  => { ipv4 => '208.80.153.193',  ipv6 => '2620:0:860:ffff::2', alarms => true},
+        'pfw3-codfw' => { ipv4 => '208.80.153.197',  parents => ['cr1-codfw', 'cr2-codfw'], bfd => false},
         # eqdfw
-        'cr2-eqdfw'  => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5', alarms => false, },
+        'cr2-eqdfw'  => { ipv4 => '208.80.153.198',  ipv6 => '2620:0:860:ffff::5'},
         # esams
-        'cr3-esams'  => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', vrrp_peer => 'cr2-esams.wikimedia.org'},
-        'cr2-esams'  => { ipv4 => '91.198.174.244',  ipv6 => '2620:0:862:ffff::3' },
-        'cr3-knams'  => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4', alarms => false, },
+        'cr3-esams'  => { ipv4 => '91.198.174.245',  ipv6 => '2620:0:862:ffff::5', vrrp_peer => 'cr2-esams.wikimedia.org', alarms => true},
+        'cr2-esams'  => { ipv4 => '91.198.174.244',  ipv6 => '2620:0:862:ffff::3', alarms => true},
+        'cr3-knams'  => { ipv4 => '91.198.174.246',  ipv6 => '2620:0:862:ffff::4'},
         # ulsfo
-        'cr3-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', alarms => false, vrrp_peer => 'cr4-ulsfo.wikimedia.org'},
-        'cr4-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2', alarms => false, },
+        'cr3-ulsfo'  => { ipv4 => '198.35.26.192',   ipv6 => '2620:0:863:ffff::1', vrrp_peer => 'cr4-ulsfo.wikimedia.org'},
+        'cr4-ulsfo'  => { ipv4 => '198.35.26.193',   ipv6 => '2620:0:863:ffff::2'},
         # eqsin
-        'cr2-eqsin'  => { ipv4 => '103.102.166.130', ipv6 => '2001:df2:e500:ffff::3', alarms => false, },
-        'cr3-eqsin'  => { ipv4 => '103.102.166.131', ipv6 => '2001:df2:e500:ffff::4', alarms => false, vrrp_peer => 'cr2-eqsin.wikimedia.org'},
+        'cr2-eqsin'  => { ipv4 => '103.102.166.130', ipv6 => '2001:df2:e500:ffff::3'},
+        'cr3-eqsin'  => { ipv4 => '103.102.166.131', ipv6 => '2001:df2:e500:ffff::4', vrrp_peer => 'cr2-eqsin.wikimedia.org'},
         # drmrs
-        'cr1-drmrs'  => { ipv4 => '185.15.58.128', ipv6 => '2a02:ec80:600:ffff::1', alarms => false, },
-        'cr2-drmrs'  => { ipv4 => '185.15.58.129', ipv6 => '2a02:ec80:600:ffff::2', alarms => false, },
+        'cr1-drmrs'  => { ipv4 => '185.15.58.128', ipv6 => '2a02:ec80:600:ffff::1'},
+        'cr2-drmrs'  => { ipv4 => '185.15.58.129', ipv6 => '2a02:ec80:600:ffff::2'},
     }
     create_resources(netops::check, $routers, $routers_defaults)
 
