@@ -146,6 +146,8 @@ define prometheus::server (
           'alert_relabel_configs' => [
             # Drop 'replica' label to get proper deduplication of alerts from HA pairs
             { 'regex' => 'replica', 'action' => 'labeldrop' },
+            # Add 'source' label
+            { 'target_label' => 'source', 'replacement' => 'prometheus', 'action' => 'replace' },
           ],
         }
       }
