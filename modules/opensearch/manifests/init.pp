@@ -6,7 +6,6 @@
 # - $default_instance_params: Parameter overrides for ::opensearch::instance
 # - $version: Version of opensearch to configure. Either 5 or 6. Default: 5.
 # - $logstash_host: Host to send logs to
-# - $logstash_gelf_port: Tcp port on $logstash_host to send gelf formatted logs to.
 # - $logstash_logback_port: Tcp port on localhost to send structured logs to.
 # - $logstash_transport: Transport mechanism for logs.
 #
@@ -24,9 +23,7 @@ class opensearch (
     Enum['1']                                          $version                 = '1',
     Stdlib::Absolutepath                               $base_data_dir           = '/srv/opensearch',
     Optional[String]                                   $logstash_host           = undef,
-    Optional[Stdlib::Port]                             $logstash_gelf_port      = 12201,
     Optional[Stdlib::Port]                             $logstash_logback_port   = 11514,
-    Enum['Gelf', 'syslog']                             $logstash_transport      = 'Gelf',
     Optional[String]                                   $rack                    = undef,
     Optional[String]                                   $row                     = undef,
     Optional[String]                                   $java_home               = undef,
@@ -141,9 +138,7 @@ class opensearch (
             version               => $version,
             base_data_dir         => $base_data_dir,
             logstash_host         => $logstash_host,
-            logstash_gelf_port    => $logstash_gelf_port,
             logstash_logback_port => $logstash_logback_port,
-            logstash_transport    => $logstash_transport,
             rack                  => $rack,
             row                   => $row,
             *                     => $instance_params

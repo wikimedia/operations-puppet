@@ -5,7 +5,6 @@
 # - $dc_settings: data center specific overrides for ::opensearch::instance
 # - $common_settings: global overrides for ::opensearch::instance
 # - $logstash_host: Host to send logs to
-# - $logstash_gelf_port: Tcp port on $logstash_host to send gelf formatted logs to.
 # - $logstash_logback_port: Tcp port on localhost to send structured logs to.
 # - $logstash_transport: Transport mechanism for logs.
 # - $rack: Rack server is in. Used for allocation awareness.
@@ -20,9 +19,7 @@ class profile::opensearch::server(
     Opensearch::InstanceParams               $common_settings       = lookup('profile::opensearch::common_settings'),
     Stdlib::AbsolutePath                     $base_data_dir         = lookup('profile::opensearch::base_data_dir'),
     String                                   $logstash_host         = lookup('logstash_host'),
-    Stdlib::Port                             $logstash_gelf_port    = lookup('logstash_gelf_port'),
     Stdlib::Port                             $logstash_logback_port = lookup('logstash_logback_port'),
-    Enum['Gelf', 'syslog']                   $logstash_transport    = lookup('profile::opensearch::logstash_transport', { 'default_value' => 'Gelf' }),
     String                                   $rack                  = lookup('profile::opensearch::rack'),
     String                                   $row                   = lookup('profile::opensearch::row'),
     Enum['1.0.0']                            $version               = lookup('profile::opensearch::version',            { 'default_value' => '1.0.0' }),
@@ -112,9 +109,7 @@ class profile::opensearch::server(
         instances             => $filtered_instances,
         base_data_dir         => $base_data_dir,
         logstash_host         => $logstash_host,
-        logstash_gelf_port    => $logstash_gelf_port,
         logstash_logback_port => $logstash_logback_port,
-        logstash_transport    => $logstash_transport,
         rack                  => $rack,
         row                   => $row,
         java_home             => pick($java_home, $profile::java::default_java_home),
