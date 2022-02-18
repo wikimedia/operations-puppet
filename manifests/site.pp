@@ -1227,6 +1227,11 @@ node /^(elastic206[1-9]|elastic207[0-2])\.codfw\.wmnet$/ {
     role(insetup)
 }
 
+# new eqiad row e-f elastic servers T299609
+node /^(elastic1089|elastic109[0-9]|elastic110[0-2])\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # External Storage, Shard 1 (es1) databases
 
 ## eqiad servers
