@@ -54,7 +54,7 @@ define varnish::instance(
 
     monitoring::check_prometheus { 'varnish-frontend-check-child-start':
         description     => 'Varnish frontend child restarted',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000330/varnish-machine-stats?panelId=66&fullscreen&orgId=1&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000330/varnish-machine-stats?orgId=1&viewPanel=66&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
         query           => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
         method          => 'ge',
         warning         => 2,

@@ -15,7 +15,7 @@ define monitoring::alerts::traffic_drop(
         retries         => 2,
         warning         => 70,
         critical        => 60,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000180/varnish-http-requests?panelId=6&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000180/varnish-http-requests?orgId=1&viewPanel=6'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
 }

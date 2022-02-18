@@ -149,7 +149,7 @@ class profile::cache::varnish::frontend (
         critical        => $vm_max_map_count - 1000,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
-        dashboard_links => ["https://grafana.wikimedia.org/d/wiU3SdEWk/cache-host-drilldown?fullscreen&orgId=1&panelId=76&var-site=${::site} prometheus/ops&var-instance=${::hostname}"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/wiU3SdEWk/cache-host-drilldown?orgId=1&viewPanel=76&var-site=${::site} prometheus/ops&var-instance=${::hostname}"],
     }
 
     # Monitor number of varnish file descriptors. Initially added to track
