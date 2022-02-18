@@ -2,6 +2,7 @@
 # and modified a bit, but more of these options may need modifications
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
+profile::opensearch::logstash_transport: syslog
 profile::opensearch::instances: {}
 profile::opensearch::base_data_dir: '/srv/opensearch'
 profile::opensearch::common_settings:
