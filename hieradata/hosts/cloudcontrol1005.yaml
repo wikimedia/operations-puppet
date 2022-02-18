@@ -67,3 +67,8 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - wikilink-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
+
+
+# Temporary override; once everything is on bullseye this can be
+#  set profile-wide
+profile::openstack::eqiad1::keystone::wsgi_server: 'keystone'
