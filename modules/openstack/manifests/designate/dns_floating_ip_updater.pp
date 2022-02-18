@@ -16,10 +16,6 @@ class openstack::designate::dns_floating_ip_updater(
     String         $floating_ip_ptr_fqdn_matching_regex,
     String         $floating_ip_ptr_fqdn_replacement_pattern,
 ) {
-
-    # Also requires openstack::clientpackages
-    ensure_packages('python-ipaddress')
-
     $config = {
         'floating_ip_ptr_zone'                     => $floating_ip_ptr_zone,
         'floating_ip_ptr_fqdn_matching_regex'      => $floating_ip_ptr_fqdn_matching_regex,
