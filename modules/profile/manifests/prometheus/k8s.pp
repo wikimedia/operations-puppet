@@ -340,7 +340,7 @@ class profile::prometheus::k8s (
             critical        => 5,
             # Check each Prometheus server host individually, not through the LVS service IP
             prometheus_url  => "http://${::fqdn}/${k8s_cluster}",
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Prometheus#k8s_cache_not_updating',
         }
     }
