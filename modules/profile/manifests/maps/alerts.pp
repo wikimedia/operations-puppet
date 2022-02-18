@@ -5,7 +5,7 @@ class profile::maps::alerts(
 
     monitoring::graphite_threshold { 'tilerator-tile-generation':
         description     => 'Maps tiles generation',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000305/maps-performances?panelId=8&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000305/maps-performances?orgId=1&viewPanel=8'],
         metric          => 'transformNull(sumSeries(tilerator.gen.*.*.*.done.sample_rate),0)',
         # Tilerator should be generating tiles at least 2 hours per day
         # Values need to be adjusted if synchronization frequency is changed
@@ -20,7 +20,7 @@ class profile::maps::alerts(
 
     monitoring::check_prometheus { 'maps-osm-sync-lag-eqiad':
       description     => 'Maps - OSM synchronization lag - eqiad',
-      dashboard_links => ['https://grafana.wikimedia.org/d/000000305/maps-performances?panelId=11&fullscreen&orgId=1'],
+      dashboard_links => ['https://grafana.wikimedia.org/d/000000305/maps-performances?orgId=1&viewPanel=11'],
       query           => 'scalar(max(time()-osm_sync_timestamp{cluster="maps"}))',
       warning         => 49 * 3600, # 49 hours
       critical        => 3 * 24 * 3600, # 3 days
@@ -29,7 +29,7 @@ class profile::maps::alerts(
     }
     monitoring::check_prometheus { 'maps-osm-sync-lag-codf':
         description     => 'Maps - OSM synchronization lag - codfw',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000305/maps-performances?panelId=12&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000305/maps-performances?orgId=1&viewPanel=12'],
         query           => 'scalar(max(time()-osm_sync_timestamp{cluster="maps"}))',
         warning         => 49 * 3600, # 49 hours
         critical        => 3 * 24 * 3600, # 3 days
