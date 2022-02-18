@@ -31,6 +31,8 @@ asw-b-codfw.mgmt.codfw.wmnet;juniper;up;
 asw-c-codfw.mgmt.codfw.wmnet;juniper;up;
 asw-d-codfw.mgmt.codfw.wmnet;juniper;up;
 msw1-codfw.mgmt.codfw.wmnet;juniper;up;
+cr1-drmrs.wikimedia.org;juniper;up;
+cr2-drmrs.wikimedia.org;juniper;up;
 asw1-b12-drmrs.mgmt.drmrs.wmnet;juniper;up;
 asw1-b13-drmrs.mgmt.drmrs.wmnet;juniper;up;
 mr1-eqiad.wikimedia.org;juniper;up;

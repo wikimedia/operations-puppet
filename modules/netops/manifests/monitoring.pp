@@ -60,6 +60,9 @@ class netops::monitoring(
         # eqsin
         'cr2-eqsin'  => { ipv4 => '103.102.166.130', ipv6 => '2001:df2:e500:ffff::3', alarms => false, },
         'cr3-eqsin'  => { ipv4 => '103.102.166.131', ipv6 => '2001:df2:e500:ffff::4', alarms => false, vrrp_peer => 'cr2-eqsin.wikimedia.org'},
+        # drmrs
+        'cr1-drmrs'  => { ipv4 => '185.15.58.128', ipv6 => '2a02:ec80:600:ffff::1', alarms => false, },
+        'cr2-drmrs'  => { ipv4 => '185.15.58.129', ipv6 => '2a02:ec80:600:ffff::2', alarms => false, },
     }
     create_resources(netops::check, $routers, $routers_defaults)
 
@@ -154,11 +157,11 @@ class netops::monitoring(
         # drmrs
         'asw1-b12-drmrs.wikimedia.org' => { ipv4 => '185.15.58.131',
                                             ipv6 => '2a02:ec80:600:ffff::4',
-                                            # parents => ['cr1-drmrs', 'cr2-drmrs'],
+                                            parents => ['cr1-drmrs', 'cr2-drmrs'],
                                             vcp => false },
         'asw1-b13-drmrs.wikimedia.org' => { ipv4 => '185.15.58.132',
                                             ipv6 => '2a02:ec80:600:ffff::5',
-                                            # parents => ['cr1-drmrs', 'cr2-drmrs'],
+                                            parents => ['cr1-drmrs', 'cr2-drmrs'],
                                             vcp => false },
     }
     create_resources(netops::check, $switches, $switches_defaults)
