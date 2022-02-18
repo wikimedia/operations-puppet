@@ -14,9 +14,6 @@ class profile::statistics::explorer::misc_jobs(
 ) {
 
     if $::hostname in $hosts_with_jobs {
-        # Discovery team statistics scripts and cron jobs
-        class { 'statistics::discovery': }
-
         # Performance team statistics scripts and cron jobs
         class { 'statistics::performance': }
 
