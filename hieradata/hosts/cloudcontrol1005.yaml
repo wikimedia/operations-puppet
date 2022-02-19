@@ -7,6 +7,9 @@ profile::openstack::eqiad1::galera::server_id: 3
 profile::wmcs::backy2::backup_time: '*-*-* 17:00:00'
 profile::wmcs::backy2::backup_glance_images::enabled: true
 
+
+# 'maps' is huge and sometimes doesn't finish; make sure
+# other smaller volumes get done first.
 profile::openstack::eqiad1::cinder_backup_volumes:
   cloudinfra-nfs:
     volumes:
@@ -28,9 +31,9 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - fastcci-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
-  maps:
+  huggle:
     volumes:
-      - maps
+      - huggle-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
   project-proxy:
@@ -57,6 +60,11 @@ profile::openstack::eqiad1::cinder_backup_volumes:
       - twl-nfs
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
+  utrs:
+    volumes:
+      - utrs-nfs
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
   wikidumpparse:
     volumes:
       - wikidumpparse-nfs
@@ -65,6 +73,16 @@ profile::openstack::eqiad1::cinder_backup_volumes:
   wikilink:
     volumes:
       - wikilink-nfs
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  wmde-templates-alpha:
+    volumes:
+      - wmde-templates-alpha-nfs
+    FULL_FREQUENCY: 7
+    PURGE_AFTER: 30
+  maps:
+    volumes:
+      - maps
     FULL_FREQUENCY: 7
     PURGE_AFTER: 30
 
