@@ -152,11 +152,6 @@ sub cluster_fe_vcl_switch {
 }
 
 sub cluster_fe_recv_pre_purge {
-	// T302047
-	if (req.method == "POST" && req.url !~ "^/w/rest.php/oauth2" && req.http.user-agent ~ "^python-requests/[\d.]+$") {
-		return (synth(403, "Your scripted requests have been blocked, please see https://meta.wikimedia.org/wiki/User-Agent_policy. In case of further questions, please contact noc@wikimedia.org."));
-    }
-
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ text_abuse_nets) {
 		return (synth(403, "Abuse"));
 	}
