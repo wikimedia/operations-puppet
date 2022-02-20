@@ -57,32 +57,13 @@ define cfssl::cert (
         default => $outdir,
     }
 
-    $_names = $names.map |Cfssl::Name $name| {
-        {
-            'C'  => $name['country'],
-            'L'  => $name['locality'],
-            'O'  => $name['organisation'],
-            'OU' => $name['organisational_unit'],
-            'S'  => $name['state'],
-        }
+    cfssl::csr { $csr_json_path:
+        common_name => $common_name,
+        key         => $key,
+        names       => $names,
+        hosts       => $hosts,
     }
-    $_hosts = $common_name in $hosts ? {
-        true    => $hosts,
-        default => $hosts + [$common_name],
-    }
-    $csr = {
-        'CN'    => $common_name,
-        'hosts' => $_hosts,
-        'key'   => $key,
-        'names' => $_names,
-    }
-    file{$csr_json_path:
-        ensure  => stdlib::ensure($ensure, 'file'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => $csr.to_json_pretty(),
-    }
+
     unless defined(File[$_outdir]) {
         file {$_outdir:
             ensure  => stdlib::ensure($ensure, 'directory'),
@@ -146,6 +127,7 @@ define cfssl::cert (
             environment => $environment,
             unless      => $test_command,
             notify      => $_notify_service,
+            require     => Cfssl::Csr[$csr_json_path],
         }
         exec{"Generate cert ${title} refresh":
             command     => $gen_command,
