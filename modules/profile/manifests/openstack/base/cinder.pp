@@ -47,6 +47,10 @@ class profile::openstack::base::cinder(
         cinder_backup_volumes => $cinder_backup_volumes,
     }
 
+    class { '::openstack::cinder::monitor':
+        active                => $active,
+    }
+
     include ::network::constants
     $prod_networks = join($network::constants::production_networks, ' ')
     $labs_networks = join($network::constants::labs_networks, ' ')
