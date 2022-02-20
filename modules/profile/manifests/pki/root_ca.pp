@@ -45,6 +45,13 @@ class profile::pki::root_ca(
         auth_keys        => $auth_keys,
         manage_services  => false,
     }
+
+    cfssl::csr { "${cfssl::csr_dir}/${safe_title}.csr":
+        common_name => $common_name,
+        names       => $names,
+        key         => $key_params,
+    }
+
     cfssl::cert {"${common_name}_ocsp_signing_cert":
         names         => $names,
         signer_config => {'config_dir' => "${cfssl::signer_dir}/${safe_title}"},
