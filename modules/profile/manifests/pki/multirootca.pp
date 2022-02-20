@@ -119,7 +119,7 @@ class profile::pki::multirootca (
         $_default_usages = pick($config['default_usages'], $default_usages)
         $ca_key_file     = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
         $ca_file         = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
-        $key_content     = "${private_cert_base}/${intermediate}.pem"
+        $key_content     = "${private_cert_base}/${intermediate}-key.pem"
         $cert_content    = "${public_cert_base}/${intermediate}.pem"
         $int_ca_content  = file($cert_content)
 
