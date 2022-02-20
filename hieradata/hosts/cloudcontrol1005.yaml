@@ -84,6 +84,7 @@ profile::openstack::eqiad1::cinder_backup_volumes:
     volumes:
       - maps
     FULL_FREQUENCY: 7
+    FULL_FREQUENCY_OFFSET: 1
     PURGE_AFTER: 30
 
 

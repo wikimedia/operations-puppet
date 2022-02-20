@@ -69,6 +69,10 @@ if __name__ == "__main__":
         all_volumes = cinderclient.volumes.list()
         volume_ids = []
         full_frequency = int(conf[project].get("FULL_FREQUENCY", "7"))
+
+        # FULL_FREQUENCY_OFFSET lets us stagger full backups for big projects
+        full_frequency_offset = int(conf[project].get("FULL_FREQUENCY_OFFSET", "0"))
+
         purge_after = int(conf[project].get("PURGE_AFTER", "30"))
         volumes = conf[project].get("volumes")
         if "ALL" in volumes:
@@ -99,7 +103,7 @@ if __name__ == "__main__":
                 backupargs = [backup_tool, volume_id, "--timeout", str(args.timeout)]
                 if (
                     datetime.datetime.now() - datetime.datetime.min
-                ).days % full_frequency == 0:
+                ).days % full_frequency == full_frequency_offset:
                     backupargs.append("--full")
 
                 r = subprocess.call(backupargs)
