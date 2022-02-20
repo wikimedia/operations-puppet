@@ -123,11 +123,17 @@ class profile::pki::multirootca (
         $cert_content    = "${public_cert_base}/${intermediate}.pem"
         $int_ca_content  = file($cert_content)
 
+        if find_file($key_content) {
+            $int_ca_key_content = file($key_content)
+        } else {
+            $int_ca_key_content = secret($key_content)
+        }
+
         cfssl::signer {$intermediate:
             profiles         => $profiles,
             ca_key_file      => $ca_key_file,
             ca_file          => $ca_file,
-            ca_key_content   => Sensitive(secret($key_content)),
+            ca_key_content   => Sensitive($int_ca_key_content),
             ca_cert_content  => $int_ca_content,
             auth_keys        => $auth_keys,
             default_crl_url  => "${crl_base_url}/${safe_title}",
