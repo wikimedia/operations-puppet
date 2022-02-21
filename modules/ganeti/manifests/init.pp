@@ -15,19 +15,15 @@
 class ganeti(
     String $certname,
     Boolean $with_drbd=true,
-    Boolean $ganeti216=false,
+    Boolean $ganeti3=false,
 ) {
     include ::ganeti::kvm
 
-    if $ganeti216 and debian::codename::eq('stretch') {
-        # apt::package_from_component { 'ganeti216':
-        #     component => 'component/ganeti216',
-        #     packages  => ['ganeti', 'ganeti-2.16', 'ganeti-haskell-2.16', 'ganeti-htools-2.16'],
-        # }
-        apt::repository { 'repository_ganeti216':
+    if $ganeti3 and debian::codename::eq('buster') {
+        apt::repository { 'repository_ganeti3':
             uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'stretch-wikimedia',
-            components => 'component/ganeti216',
+            dist       => 'buster-wikimedia',
+            components => 'component/ganeti3',
         }
     } else {
         ensure_packages('ganeti')
