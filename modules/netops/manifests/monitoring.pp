@@ -104,8 +104,8 @@ class netops::monitoring(
         're0.cr4-ulsfo' => { ipv4 => '10.128.128.5',    parents => ['mr1-ulsfo'] },
         're0.cr3-eqsin' => { ipv4 => '10.132.128.7',    parents => ['mr1-eqsin'] },
         're0.cr2-eqsin' => { ipv4 => '10.132.128.6',    parents => ['mr1-eqsin'] },
-        'asw1-b12-drmrs' => { ipv4 => '10.136.128.3',   parents => ['mr1-drmrs'] },
-        'asw1-b13-drmrs' => { ipv4 => '10.136.128.4',   parents => ['mr1-drmrs'] },
+        'asw1-b12-drmrs.mgmt' => { ipv4 => '10.136.128.3',   parents => ['mr1-drmrs'] },
+        'asw1-b13-drmrs.mgmt' => { ipv4 => '10.136.128.4',   parents => ['mr1-drmrs'] },
     }
     create_resources(netops::check, $oob)
 
@@ -128,14 +128,8 @@ class netops::monitoring(
         'msw1-eqiad'    => { ipv4 => '10.65.0.10',   parents => ['mr1-eqiad'], vcp => false },
         'msw2-eqiad'    => { ipv4 => '10.65.0.5',    parents => ['msw1-eqiad'], vcp => false },
         'fasw-c-eqiad'  => { ipv4 => '10.65.0.30',   parents => ['pfw3-eqiad'] },
-        'cloudsw1-c8-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.7',
-                                                  parents => ['cr1-eqiad', 'cr2-eqiad'],
-                                                  vcp => false },
         'cloudsw2-c8-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.1.197',
                                                   parents => ['cloudsw1-c8-eqiad.mgmt.eqiad.wmnet'],
-                                                  vcp => false },
-        'cloudsw1-d5-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.6',
-                                                  parents => ['cr1-eqiad', 'cr2-eqiad'],
                                                   vcp => false },
         'cloudsw2-d5-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.1.198',
                                                   parents => ['cloudsw1-d5-eqiad.mgmt.eqiad.wmnet'],
@@ -154,17 +148,40 @@ class netops::monitoring(
         'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr3-ulsfo', 'cr4-ulsfo'] },
         # eqsin
         'asw1-eqsin'    => { ipv4 => '10.132.128.4', parents => ['cr2-eqsin', 'cr3-eqsin'] },
+    }
+    create_resources(netops::check, $switches, $switches_defaults)
+
+    $l3_switches_defaults = {
+        snmp_community => $passwords::network::snmp_ro_community,
+        alarms         => true,
+        bgp            => true,
+        bfd            => true,  # Will report as OK if no BFD is in use
+        os             => 'Junos',
+
+    }
+
+    $l3_switches = {
+        # eqiad
+        'cloudsw1-c8-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.7',
+                                                  parents => ['cr1-eqiad', 'cr2-eqiad'],
+                                                  ospf => true},
+        'cloudsw1-d5-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.6',
+                                                  parents => ['cr1-eqiad', 'cr2-eqiad'],
+                                                  ospf => true},
+        'lsw1-e3-eqiad.mgmt.eqiad.wmnet'     => { ipv4    => '10.65.1.230',
+                                                  #  parents => ['cr1-eqiad', 'cr2-eqiad'],
+                                                  ospf => true},
         # drmrs
         'asw1-b12-drmrs.wikimedia.org' => { ipv4 => '185.15.58.131',
                                             ipv6 => '2a02:ec80:600:ffff::4',
-                                            parents => ['cr1-drmrs', 'cr2-drmrs'],
-                                            vcp => false },
+                                            parents => ['cr1-drmrs', 'cr2-drmrs'] },
         'asw1-b13-drmrs.wikimedia.org' => { ipv4 => '185.15.58.132',
                                             ipv6 => '2a02:ec80:600:ffff::5',
-                                            parents => ['cr1-drmrs', 'cr2-drmrs'],
-                                            vcp => false },
+                                            parents => ['cr1-drmrs', 'cr2-drmrs'] },
     }
-    create_resources(netops::check, $switches, $switches_defaults)
+
+    create_resources(netops::check, $l3_switches, $l3_switches_defaults)
+
 
     # RIPE Atlases -- no SNMP for these
     $atlas = {
