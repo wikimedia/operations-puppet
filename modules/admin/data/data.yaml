@@ -29,7 +29,7 @@ groups:
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
-              tnegrin, josepita, marcella, srodlund]
+              tnegrin, josepita, marcella, srodlund, delphinepro]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5138,9 +5138,8 @@ ldap_only_users:
     realname: Deborah Tankersley
     email: dtankersley@wikimedia.org
   delphinepro:
-    ensure: present
+    ensure: absent
     realname: Delphine Menard
-    email: dmenard@wikimedia.org
   dstrine:
     ensure: present
     realname: David Strine
