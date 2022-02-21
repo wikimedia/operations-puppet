@@ -38,14 +38,6 @@ class r_lang (
         mode   => '0644',
         source => 'puppet:///modules/r_lang/update-library.R',
     }
-    # R script for installing packages from Bioconductor:
-    file { '/etc/R/biocLite.R':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        source => 'puppet:///modules/r_lang/biocLite.R',
-    }
 
     if $devtools {
         $devtools_essentials = [
