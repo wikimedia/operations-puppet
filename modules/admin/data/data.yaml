@@ -21,7 +21,7 @@ groups:
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
-              bumeh-ctr, seve-kim]
+              bumeh-ctr, seve-kim, rhuang-ctr]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -353,7 +353,7 @@ groups:
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, amuigai, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
-              katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, rhuang-ctr, swak,
+              katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
@@ -4752,14 +4752,12 @@ users:
     uid: 34598
     ssh_keys: []
   rhuang-ctr:
-    ensure: present
+    ensure: absent
     gid: 500
     realname: Rui Huang
-    email: rhuang-ctr@wikimedia.org
     uid: 34282
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQsGZ2Mw1RosGOH8zIqb9iUDZZMl4C/Pg+RhBxlA/NA ruihuang@Ruis-Pro-2020.local
+    krb: absent
+    ssh_keys: []
   ifried:
     ensure: present
     gid: 500
@@ -5775,12 +5773,6 @@ ldap_only_users:
     ensure: present
     realname: Jess Klien
     email: jklein@wikimedia.org
-  rhuang-ctr:
-    ensure: present
-    realname: Rui Huang
-    email: rhuang-ctr@wikimedia.org
-    expiry_date: 2022-05-02
-    expiry_contact: cmacholan@wikimedia.org
   cblanton:
     ensure: present
     realname: Cai Blanton
