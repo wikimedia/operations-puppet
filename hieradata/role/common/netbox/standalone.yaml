@@ -21,6 +21,3 @@ profile::netbox::cas_group_required:
 
 profile::netbox::db::frontends:
   - "%{facts.networking.fqdn}"
-# TODO: leave in so pcc looks healthy remove in the next ps
-profile::netbox::db::replicas:
-  - netboxdb2001.codfw.wmnet
