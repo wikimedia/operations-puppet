@@ -30,6 +30,9 @@ route:
     - match_re:
         alertname: '^Icinga/.*'
       receiver: 'irc-spam'
+    - match:
+        source: 'icinga'
+      receiver: 'irc-spam'
 
     # Fundraising watchrat alerts are routed to irc #wm-operations and fr-tech@wm.o
     - match:
