@@ -1,25 +1,25 @@
-# Class: profile::netbox::automation
-#
-# This profile creates and exposes git repositories created by automation.
+# @summary This profile creates and exposes git repositories created by automation.
 #
 # Actions:
 #       Initialize git repositories
 #       Create an apache site to expose these repositories.
 #
-# Requires:
-#
-# Sample Usage:
+# @example
 #       include profile::netbox::automation
-#
+# @param git_hostname the hostname of the git endpoint
+# @param dns_min_records the minimum number of dns records required
+# @param frontends list of netbox frontends
 class profile::netbox::automation (
-    Stdlib::Fqdn $automation_service_hostname = lookup('profile::netbox::automation::git_hostname'),
-    Array[Stdlib::Fqdn] $frontends = lookup('netbox_frontend', {'default_value' => []}),
-    Boolean $has_acme = lookup('profile::netbox::acme', {'default_value' => true}),
-    Stdlib::HTTPSUrl $nb_api = lookup('profile::netbox::netbox_api'),
-    String $nb_ro_token = lookup('profile::netbox::tokens::read_only'),
-    Integer $dns_min_records = lookup('profile::netbox::automation::dns_min_records'),
-    Stdlib::Fqdn $active_server = lookup('profile::netbox::active_server'),
+    Stdlib::Fqdn        $git_hostname     = lookup('profile::netbox::automation::git_hostname'),
+    Integer             $dns_min_records  = lookup('profile::netbox::automation::dns_min_records'),
+    Array[Stdlib::Fqdn] $frontends        = lookup('profile::netbox::automation::frontend'),
 ) {
+    include profile::netbox
+    $use_acme      = $profile::netbox::use_acme
+    $netbox_api    = $profile::netbox::netbox_api
+    $ro_token      = $profile::netbox::ro_token
+    $active_ensure = $profile::netbox::active_ensure
+
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     # Create automation git repositories
@@ -35,7 +35,7 @@ class profile::netbox::automation (
 
     # Expose automation git repositories
     # (this reuses the Netbox certificates).
-    httpd::site { $automation_service_hostname:
+    httpd::site { $git_hostname:
         content => template('profile/netbox/netbox-exports.wikimedia.org.erb'),
         require => Acme_chief::Cert['netbox'],
     }
@@ -51,16 +51,10 @@ class profile::netbox::automation (
     }
 
     file { $icinga_state_file:
-        ensure => 'present',
+        ensure => 'file',
         owner  => 'netbox',
         group  => 'netbox',
         mode   => '0644',
-    }
-
-    if $active_server == $::fqdn {
-        $active_ensure = 'present'
-    } else {
-        $active_ensure = 'absent'
     }
 
     systemd::timer::job { 'check_netbox_uncommitted_dns_changes':

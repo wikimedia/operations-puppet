@@ -13,12 +13,12 @@
 #
 
 class role::netbox::standalone {
-    include ::profile::base::production
+    include profile::base::production
     system::role { 'netbox::standalone': description => 'Netbox frontend and database in one box' }
 
-    include ::profile::netbox
-    include ::profile::netbox::scripts
-    include ::profile::netbox::postgres
-    include ::profile::prometheus::postgres_exporter
-    include ::profile::base::firewall
+    include profile::netbox
+    include profile::netbox::scripts
+    include profile::netbox::db
+    include profile::prometheus::postgres_exporter
+    include profile::base::firewall
 }

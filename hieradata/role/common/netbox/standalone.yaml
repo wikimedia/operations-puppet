@@ -1,2 +1,26 @@
-profile::netbox::authentication_provider: cas
 profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::monitoring::notifications_enabled: false
+
+# Netbox
+profile::netbox::service_hostname: netbox-next.wikimedia.org
+profile::netbox::do_backup: false
+profile::netbox::acme_certificate: netbox-dev
+
+profile::netbox::cas_rename_attributes:
+  cn: 'first_name'
+  mail: 'email'
+profile::netbox::cas_group_attribute_mapping:
+  is_active: ['wmf']
+  is_staff: ['ops']
+  is_superuser: ['ops']
+profile::netbox::cas_group_mapping:
+  'cn=wmf,ou=groups,dc=wikimedia,dc=org': ['wmf']
+  'cn=ops,ou=groups,dc=wikimedia,dc=org': ['ops']
+profile::netbox::cas_group_required:
+  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+
+profile::netbox::db::frontends:
+  - "%{facts.networking.fqdn}"
+# TODO: leave in so pcc looks healthy remove in the next ps
+profile::netbox::db::replicas:
+  - netboxdb2001.codfw.wmnet

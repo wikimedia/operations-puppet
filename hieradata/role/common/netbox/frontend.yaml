@@ -1,4 +1,102 @@
 # Ship logs to logging pipeline local shim
+# TODO: need to remove the following key
 service::configuration::logstash_host: localhost
-profile::netbox::authentication_provider: cas
 profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+
+# Netbox
+profile::netbox::automation::git_hostname: netbox-exports.wikimedia.org
+profile::netbox::automation::frontends:
+  - netbox1001.wikimedia.org
+  - netbox2001.wikimedia.org
+
+profile::netbox::swift_auth_url: "https://swift.svc.%{::site}.wmnet"
+profile::netbox::active_server: netbox1001.wikimedia.org
+profile::netbox::service_hostname: netbox.wikimedia.org
+profile::netbox::db_primary: netboxdb1001.eqiad.wmnet
+profile::netbox::do_backups: true
+
+profile::netbox::cas_rename_attributes:
+  cn: 'first_name'
+  mail: 'email'
+profile::netbox::cas_group_attribute_mapping:
+  is_active: ['wmf']
+  is_staff: ['ops']
+  is_superuser: ['ops']
+profile::netbox::cas_group_mapping:
+  'cn=wmf,ou=groups,dc=wikimedia,dc=org': ['wmf']
+  'cn=ops,ou=groups,dc=wikimedia,dc=org': ['ops']
+profile::netbox::cas_group_required:
+  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
+
+profile::netbox::report_checks:
+    -   name: puppetdb_physical
+        class: 'puppetdb.PhysicalHosts'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:06/30:00' # every 30 minutes
+    -   name: puppetdb_virtual
+        class: 'puppetdb.VirtualMachines'
+        alert: false
+        check_interval: 5
+        run_interval: '*-*-* *:08/30:00' # every 30 minutes
+    -   name: coherence
+        class: 'coherence.Coherence'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:10/30:00' # every 30 minutes
+    -   name: coherence_rack
+        class: 'coherence.Rack'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:11/30:00' # every 30 minutes
+    -   name: management
+        class: 'management.ManagementConsole'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:12/30:00' # every 30 minutes
+    -   name: accounting
+        class: 'accounting.Accounting'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:14/30:00' # every 30 minutes
+    -   name: cables
+        class: 'cables.Cables'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:16/30:00' # every 30 minutes
+    -   name: librenms
+        class: 'librenms.LibreNMS'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:18/30:00' # every 30 minutes
+    -   name: network
+        class: 'network.Network'
+        alert: true
+        check_interval: 5
+        run_interval: '*-*-* *:20/30:00' # every 30 minutes
+
+profile::netbox::ganeti_sync_profiles:
+    - profile: eqiad
+      url: ganeti01.svc.eqiad.wmnet
+      port: 5080
+    - profile: codfw
+      url: ganeti01.svc.codfw.wmnet
+      port: 5080
+    - profile: ulsfo
+      url: ganeti01.svc.ulsfo.wmnet
+      port: 5080
+    - profile: esams
+      url: ganeti01.svc.esams.wmnet
+      port: 5080
+    - profile: eqsin
+      url: ganeti01.svc.eqsin.wmnet
+      port: 5080
+    - profile: drmrs01
+      url: ganeti01.svc.drmrs.wmnet
+      port: 5080
+    - profile: drmrs02
+      url: ganeti02.svc.drmrs.wmnet
+      port: 5080
+    - profile: codfw_test
+      url: ganeti-test01.svc.codfw.wmnet
+      port: 5080

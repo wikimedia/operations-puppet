@@ -6,10 +6,10 @@
 Listen <%= @apache_port %>
 
 <VirtualHost *:<%= @apache_port %>>
-    ServerName <%= @fqdn %>
+    ServerName <%= @facts['networking']['fqdn'] %>
     ServerAdmin noc@wikimedia.org
 
-<%- if @deploy_acme -%>
+<%- if @use_acme -%>
     SSLEngine on
     SSLCertificateFile /etc/acmecerts/<%= @acme_certificate %>/live/ec-prime256v1.crt
     SSLCertificateChainFile /etc/acmecerts/<%= @acme_certificate %>/live/ec-prime256v1.chain.crt
@@ -31,6 +31,6 @@ Listen <%= @apache_port %>
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
-    CustomLog /var/log/apache2/<%= @fqdn %>scripts-access.log wmf
-    ErrorLog /var/log/apache2/<%= @fqdn %>-error.log
+    CustomLog /var/log/apache2/<%= @facts['networking']['fqdn'] %>scripts-access.log wmf
+    ErrorLog /var/log/apache2/<%= @facts['networking']['fqdn'] %>-error.log
 </VirtualHost>

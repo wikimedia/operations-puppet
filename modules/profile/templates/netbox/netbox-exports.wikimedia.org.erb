@@ -3,7 +3,7 @@
 #####################################################################
 # vim: filetype=apache
 
-<%- if @has_acme -%>
+<%- if @use_acme -%>
 <VirtualHost *:443>
     SSLEngine on
     SSLCertificateFile /etc/acmecerts/netbox/live/ec-prime256v1.crt
@@ -16,8 +16,8 @@
 <%- else -%>
 <VirtualHost *:80>
 <%- end -%>
-    ServerName <%= @automation_service_hostname %>
-    ServerAlias <%= @fqdn %>
+    ServerName <%= @git_hostname %>
+    ServerAlias <%= @facts['networking']['fqdn'] %>
     ServerAdmin noc@wikimedia.org
 
     DocumentRoot <%= @repo_path %>
@@ -29,6 +29,6 @@
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
-    CustomLog /var/log/apache2/<%= @automation_service_hostname %>-access.log wmf
-    ErrorLog /var/log/apache2/<%= @automation_service_hostname %>-error.log
+    CustomLog /var/log/apache2/<%= @git_hostname %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @git_hostname %>-error.log
 </VirtualHost>

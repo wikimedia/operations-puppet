@@ -1,1 +1,9 @@
 profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+
+profile::netbox::db::do_backup: true
+profile::netbox::db::primary: netboxdb1001.eqiad.wmnet
+profile::netbox::db::frontends:
+  - netbox1001.wikimedia.org
+  - netbox2001.wikimedia.org
+profile::netbox::db::replicas:
+    - netboxdb2001.codfw.wmnet

@@ -1,15 +1,15 @@
 # Managed by Puppet
 
 [auth]
-netbox_token=<%= @nb_token %>
+netbox_token=<%= @rw_token %>
 ganeti_user=<%= @ganeti_user %>
 ganeti_password=<%= @ganeti_password %>
-ca_cert=<%= @nb_ganeti_ca_cert %>
+ca_cert=<%= @ganeti_ca_cert %>
 
 [netbox]
-api=<%= @nb_api %>
+api=<%= @netbox_api %>
 
-<%  @nb_ganeti_profiles.each do |profile| -%>
+<%  @ganeti_sync_profiles.each do |profile| -%>
 [profile:<%= profile['profile'] %>]
 api=https://<%= profile['url'] %>:<%= profile['port'] %>/
 cluster=<%= profile['url'] %>

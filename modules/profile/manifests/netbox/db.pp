@@ -1,4 +1,4 @@
-# Class: profile::netbox::postgres
+# Class: profile::netbox::db
 #
 # This profile installs all the Netbox related database things.
 #
@@ -8,21 +8,19 @@
 # Requires:
 #
 # Sample Usage:
-#       include profile::netbox::postgres
+#       include profile::netbox::db
 #
-class profile::netbox::postgres (
-    String $db_primary = lookup('profile::netbox::db::primary'),
-    # private data
-    String $db_password = lookup('profile::netbox::db::password'),
-    String $replication_password = lookup('profile::netbox::db::replication_password'),
-    #
-    Array[Stdlib::Host] $db_secondaries = lookup('profile::netbox::db::secondaries', {'default_value' => []}),
-    Array[Stdlib::Host] $frontends = lookup('profile::netbox::frontends', {'default_value' => []}),
-    Boolean $ipv6_ok = lookup('profile::netbox::db::ipv6_ok', {'default_value' => true}),
-    Boolean $do_backups = lookup('profile::netbox::backup', {'default_value' => true})
+class profile::netbox::db (
+    String              $primary              = lookup('profile::netbox::db::primary'),
+    String              $password             = lookup('profile::netbox::db::password'),
+    String              $replication_password = lookup('profile::netbox::db::replication_password'),
+    Array[Stdlib::Host] $replicas             = lookup('profile::netbox::db::replicas'),
+    Array[Stdlib::Host] $frontends            = lookup('profile::netbox::db::frontends'),
+    Boolean             $ipv6_ok              = lookup('profile::netbox::db::ipv6_ok'),
+    Boolean             $do_backups           = lookup('profile::netbox::db::do_backup'),
 ) {
     # Inspired by modules/puppetprimary/manifests/puppetdb/database.pp
-    if $db_primary == $::fqdn {
+    if $primary == $facts['networking']['fqdn'] {
         # We do this for the require in postgres::db
         $require_class = 'postgresql::master'
         class { '::postgresql::master':
@@ -31,7 +29,7 @@ class profile::netbox::postgres (
         }
         $on_primary = true
 
-        $db_secondaries.each |$secondary| {
+        $replicas.each |$secondary| {
             $sec_ip4 = ipresolve($secondary, 4)
 
             # Main replication user
@@ -50,7 +48,7 @@ class profile::netbox::postgres (
                 ensure   => present,
                 user     => 'netbox',
                 database => 'netbox',
-                password => $db_password,
+                password => $password,
                 cidr     => "${sec_ip4}/32",
                 master   => $on_primary,
             }
@@ -98,7 +96,7 @@ class profile::netbox::postgres (
                 ensure   => present,
                 user     => 'netbox',
                 database => 'netbox',
-                password => $db_password,
+                password => $password,
                 cidr     => "${fe_ip4}/32",
                 master   => $on_primary,
             }
@@ -108,7 +106,7 @@ class profile::netbox::postgres (
                     ensure   => present,
                     user     => 'netbox',
                     database => 'netbox',
-                    password => $db_password,
+                    password => $password,
                     cidr     => "${fe_ip6}/128",
                     master   => $on_primary,
                 }
@@ -121,7 +119,7 @@ class profile::netbox::postgres (
             ensure   => present,
             user     => 'netbox',
             database => 'netbox',
-            password => $db_password,
+            password => $password,
             master   => $on_primary,
         }
 
@@ -137,19 +135,19 @@ class profile::netbox::postgres (
             method   => 'peer',
         }
 
-        if !empty($db_secondaries) {
-            $secondaries_ferm = join($db_secondaries, ' ')
-            # Access to postgres primary from postgres secondaries
+        if !empty($replicas) {
+            $replicas_ferm = join($replicas, ' ')
+            # Access to postgres primary from postgres replicas
             ferm::service { 'netbox_postgres':
                 proto  => 'tcp',
                 port   => '5432',
-                srange => "(@resolve((${secondaries_ferm})) @resolve((${secondaries_ferm}), AAAA))",
+                srange => "(@resolve((${replicas_ferm})) @resolve((${replicas_ferm}), AAAA))",
             }
         }
     } else {
         $require_class = 'postgresql::slave'
         class { '::postgresql::slave':
-            master_server    => $db_primary,
+            master_server    => $primary,
             root_dir         => '/srv/postgres',
             replication_pass => $replication_password,
             use_ssl          => true,
@@ -158,7 +156,7 @@ class profile::netbox::postgres (
         $on_primary = false
 
         class { '::postgresql::slave::monitoring':
-            pg_master   => $db_primary,
+            pg_master   => $primary,
             pg_user     => 'replication',
             pg_password => $replication_password,
             pg_database => 'netbox',

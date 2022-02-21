@@ -5,12 +5,12 @@
 
 
 <VirtualHost *:80>
-    ServerName <%= @nb_service_hostname %>
+    ServerName <%= @service_hostname %>
     ServerAdmin noc@wikimedia.org
 
-<%- if @deploy_acme -%>
+<%- if @use_acme -%>
     RewriteEngine on
-    RewriteRule ^/(.*)$ https://<%= @nb_service_hostname %>/$1 [L,R=301]
+    RewriteRule ^/(.*)$ https://<%= @service_hostname %>/$1 [L,R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -53,6 +53,7 @@
     <%- if @swift_auth_url -%>
     # Proxy swift image store temporary URLs.
     # FIXME update for other site(s) that frontend runs on once we figure out syncing.
+    # TODO: we should use profile::netbox::swift_auth_url below (but its currently https)
     ProxyPassMatch ^(/v1/AUTH_netbox/<%= @swift_container %>/.*) http://swift.svc.eqiad.wmnet$1
     <Location /v1/AUTH_netbox/>
        # We strip Content-disposition to make images viewable, since swift sets this header.
@@ -71,7 +72,7 @@
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
-    CustomLog /var/log/apache2/<%= @nb_service_hostname %>-access.log wmf
-    ErrorLog /var/log/apache2/<%= @nb_service_hostname %>-error.log
+    CustomLog /var/log/apache2/<%= @service_hostname %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @service_hostname %>-error.log
 
 </VirtualHost>

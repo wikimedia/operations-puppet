@@ -12,13 +12,13 @@
 #
 
 class role::netbox::database {
-    include ::profile::base::production
+    include profile::base::production
 
     system::role { 'netbox::database': description => 'Netbox database server' }
 
-    include ::profile::netbox::postgres
-    include ::profile::prometheus::postgres_exporter
-    include ::profile::base::firewall
+    include profile::netbox::db
+    include profile::prometheus::postgres_exporter
+    include profile::base::firewall
     # Fixme consider adding this later
     # include ::profile::backup::host
 }

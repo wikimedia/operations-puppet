@@ -1,2 +1,4 @@
-profile::netbox::automation::git_hostname: netbox-exports.wikimedia.org
+profile::netbox::automation::git_hostname: "%{facts.networking.fqdn}"
 profile::netbox::automation::dns_min_records: 2000
+profile::netbox::automation::frontends:
+  - "%{facts.networking.fqdn}"

@@ -1,100 +1,50 @@
-profile::netbox::authentication_provider: 'ldap'
-profile::netbox::cas_rename_attributes:
-  cn: 'first_name'
-  mail: 'email'
-profile::netbox::cas_group_attribute_mapping:
-  is_active: ['wmf']
-  is_staff: ['ops']
-  is_superuser: ['ops']
-profile::netbox::cas_group_mapping:
-  'cn=wmf,ou=groups,dc=wikimedia,dc=org': ['wmf']
-  'cn=ops,ou=groups,dc=wikimedia,dc=org': ['ops']
-profile::netbox::cas_group_required:
-  - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
-profile::netbox::cas_server_url: "%{lookup('apereo_cas.production.base_url')}"
-profile::netbox::cas_username_attribute: 'uid'
-profile::netbox::active_server: netbox1001.wikimedia.org
-profile::netbox::service_hostname: netbox.wikimedia.org
-profile::netbox::netbox_api: "https://%{lookup('profile::netbox::service_hostname')}/"
-
-profile::netbox::frontends: "%{alias('netbox_frontend')}"
-
-profile::netbox::ganeti_sync_interval: 15
-profile::netbox::netbox_report_checks:
-    -   name: puppetdb_physical
-        class: 'puppetdb.PhysicalHosts'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:06/30:00' # every 30 minutes
-    -   name: puppetdb_virtual
-        class: 'puppetdb.VirtualMachines'
-        alert: false
-        check_interval: 5
-        run_interval: '*-*-* *:08/30:00' # every 30 minutes
-    -   name: coherence
-        class: 'coherence.Coherence'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:10/30:00' # every 30 minutes
-    -   name: coherence_rack
-        class: 'coherence.Rack'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:11/30:00' # every 30 minutes
-    -   name: management
-        class: 'management.ManagementConsole'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:12/30:00' # every 30 minutes
-    -   name: accounting
-        class: 'accounting.Accounting'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:14/30:00' # every 30 minutes
-    -   name: cables
-        class: 'cables.Cables'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:16/30:00' # every 30 minutes
-    -   name: librenms
-        class: 'librenms.LibreNMS'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:18/30:00' # every 30 minutes
-    -   name: network
-        class: 'network.Network'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:20/30:00' # every 30 minutes
-
-profile::netbox::ganeti_sync_profiles:
-    - profile: eqiad
-      url: ganeti01.svc.eqiad.wmnet
-      port: 5080
-    - profile: codfw
-      url: ganeti01.svc.codfw.wmnet
-      port: 5080
-    - profile: ulsfo
-      url: ganeti01.svc.ulsfo.wmnet
-      port: 5080
-    - profile: esams
-      url: ganeti01.svc.esams.wmnet
-      port: 5080
-    - profile: eqsin
-      url: ganeti01.svc.eqsin.wmnet
-      port: 5080
-    - profile: drmrs01
-      url: ganeti01.svc.drmrs.wmnet
-      port: 5080
-    - profile: drmrs02
-      url: ganeti02.svc.drmrs.wmnet
-      port: 5080
-    - profile: codfw_test
-      url: ganeti-test01.svc.codfw.wmnet
-      port: 5080
-
+profile::netbox::active_server: "%{facts.networking.fqdn}"
+profile::netbox::service_hostname: "%{facts.networking.fqdn}"
+profile::netbox::slaves: []
+# profile::netbox::rw_tokens: === private repo ===
+# profile::netbox::ro_token: === private repo ===
 profile::netbox::dump_interval: '*-*-* *:32:00'
+profile::netbox::db_primary: "%{facts.networking.fqdn}"
+# profile::netbox::db_password: === private repo ===
+# profile::netbox::secret_key: === private repo ===
+profile::netbox::authentication_provider: 'cas'
+profile::netbox::use_acme: true
+profile::netbox::acme_cetificate: netbox
+profile::netbox::netbox_api: "https://%{lookup('profile::netbox::service_hostname')}/"
+profile::netbox::do_backup: false
+profile::netbox::report_checks: []
 
-# private:
-# profile::netbox::secret_key
-# profile::netbox::tokens::read_write
+# Ganeti config
+profile::netbox::ganeti_user: "%{alias('profile::ganeti::rapi::ro_user')}"
+profile::netbox::ganeti_password: "%{alias('profile::ganeti::rapi::ro_password')}"
+profile::netbox::ganeti_sync_interval: 15
+profile::netbox::ganeti_sync_profiles: []
+
+# puppetDB settings
+profile::netbox::puppetdb_host: "%{alias('puppetdb_host')}"
+profile::netbox::puppetdb_microservice_port: "%{alias('profile::puppetdb::microservice::port')}"
+
+# librenms
+profile::netbox::librenms_db_user: "%{alias('profile::librenms::dbuser')}"
+profile::netbox::librenms_db_password: "%{alias('profile::librenms::dbpassword')}"
+profile::netbox::librenms_db_host: "%{alias('profile::librenms::dbhost')}"
+profile::netbox::librenms_db_name: "%{alias('profile::librenms::dbname')}"
+
+# swift config
+profile::netbox::swift_user: 'netbox:attachments'
+profile::netbox::swift_container: 'netbox.attachments'
+profile::netbox::swift_auth_url: ~
+# netbox::swift_key: === private repo ===
+# netbox::swift_url_key: === private repo ===
+
+# Redis config
+profile::netbox::redis_port: 6380
+profile::netbox::redis_maxmem: 1610612736
+
+# CAS settings
+profile::netbox::cas_rename_attributes: {}
+profile::netbox::cas_group_attribute_mapping: {}
+profile::netbox::cas_group_mapping: {}
+profile::netbox::cas_group_required: []
+profile::netbox::cas_username_attribute: 'uid'
+profile::netbox::cas_server_url: "%{lookup('apereo_cas.production.base_url')}"

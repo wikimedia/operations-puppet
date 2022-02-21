@@ -115,6 +115,7 @@ profile::gitlab::runner::tags: []
 
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 
+profile::netbox::slaves: []
 profile::netbox::authentication_provider: 'ldap'
 profile::netbox::cas_rename_attributes:
   cn: 'first_name'

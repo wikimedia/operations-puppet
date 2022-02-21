@@ -11,10 +11,11 @@
 # Sample Usage:
 #       include profile::netbox::scripts
 #
-class profile::netbox::scripts (
-    Boolean $deploy_acme      = lookup('profile::netbox::acme', {'default_value' => true}),
-    String  $acme_certificate = lookup('profile::netbox::acme_certificate', {'default_value' => 'netbox'}),
-) {
+class profile::netbox::scripts {
+
+    include profile::netbox
+    $use_acme         = $profile::netbox::use_acme
+    $acme_certificate = $profile::netbox::acme_certificate
     $uwsgi_environ=[
         'LANG=C.UTF-8',
         'PYTHONENCODING=utf-8',
@@ -58,7 +59,7 @@ class profile::netbox::scripts (
         content => template('profile/netbox/netbox-scripts.erb'),
     }
 
-    if !defined(Acme_chief::Cert[$acme_certificate]) and $deploy_acme {
+    if !defined(Acme_chief::Cert[$acme_certificate]) and $use_acme {
       acme_chief::cert { $acme_certificate:
             puppet_svc => 'apache2',
         }
