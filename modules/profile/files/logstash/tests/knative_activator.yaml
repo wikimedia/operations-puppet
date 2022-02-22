@@ -14,6 +14,12 @@ testcases:
           "kubernetes": {
               "namespace_name": "knative-serving"
           },
+          "knative_dev/key": {
+              "knative.dev/key": "revscoring-editquality/hewiki-damaging-predictor-default-652jl"
+          },
+          "knative.dev/key": {
+              "knative.dev/key": "revscoring-editquality/hewiki-damaging-predictor-default-652jl"
+          },
           "error": "error roundtripping http://10.64.77.193:80/healthz: context deadline exceeded",
           "program": "input-file-kubernetes",
           "level": "ERROR",
