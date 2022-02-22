@@ -1,14 +1,11 @@
 # == Class: bird
 #
-# Installs Bird
-#
-# Only supports v4 Bird instance but can be extended to support v6 when the need arises.
-# Installs its prometheus metrics exporter
+# Installs Bird and its prometheus metrics exporter
 #
 # === Parameters
 #
 # [*neighbors*]
-#   List of directly connected BGP neighbors (no-multihop)
+#   List of BGP neighbors
 #
 # [*config_template*]
 #   Specifiy which Bird config to use.
@@ -28,6 +25,9 @@
 #
 # [*do_ipv6*]
 #   Whether to enable IPv6 support. default: false.
+#
+# [*multihop*]
+#   If he neighbors are direct or not. default: true.
 
 class bird(
   Array[Stdlib::IP::Address] $neighbors,
@@ -35,6 +35,7 @@ class bird(
   Boolean                    $bfd             = true,
   Optional[String]           $bind_service    = undef,
   Boolean                    $do_ipv6         = false,
+  Boolean                    $multihop        = true,
   Stdlib::IP::Address        $ipv4_src        = $facts['ipaddress'],
   Stdlib::IP::Address        $ipv6_src        = $facts['ipaddress6'],
   ){

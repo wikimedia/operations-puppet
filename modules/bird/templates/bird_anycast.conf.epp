@@ -59,17 +59,21 @@ protocol bfd {
         interval 300 ms;
         multiplier 3;
     };
+<%- if $bird::multihop { -%>
     multihop {
         interval 300 ms;
         multiplier 3;
     };
+<%- } -%>
 }
 <%- } -%>
 
 <%- $neighbors.each |$neighbor| { -%>
 protocol bgp {
     import none;
+    <%- if $bird::multihop { -%>
     multihop 2;
+    <%- } -%>
     export filter vips_filter;
 <% if $do_ipv6 { -%>
     local <%= $bird::ipv6_src %> as 64605;

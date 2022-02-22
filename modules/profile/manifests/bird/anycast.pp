@@ -11,6 +11,7 @@ class profile::bird::anycast(
   Optional[String]                               $bind_anycast_service = lookup('profile::bird::bind_anycast_service', {'default_value' => undef}),
   Optional[Hash[String, Wmflib::Advertise_vip]]  $advertise_vips       = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
   Optional[Boolean]                              $do_ipv6              = lookup('profile::bird::do_ipv6', {'default_value' => false}),
+  Optional[Boolean]                              $multihop             = lookup('profile::bird::multihop', {'default_value' => true}),
   Optional[Bird::Anycasthc_logging]              $anycasthc_logging    = lookup('profile::bird::anycasthc_logging', {'default_value' => undef}),
 ){
 
@@ -27,6 +28,7 @@ class profile::bird::anycast(
         true    => [$facts['default_routes']['ipv4'], $facts['default_routes']['ipv6']],
         default => [$facts['default_routes']['ipv4']],
     }
+    $multihop = false
   }
 
   $neighbors_for_ferm = join($_neighbors_list, ' ')
@@ -52,11 +54,13 @@ class profile::bird::anycast(
         srange => "(${neighbors_for_ferm})",
         before => Class['::bird'],
     }
-    ferm::service { 'bird-bfd-multi-ctl':  # Multihop BFD
-        proto  => 'udp',
-        port   => '4784',
-        srange => "(${neighbors_for_ferm})",
-        before => Class['::bird'],
+    if $multihop {
+      ferm::service { 'bird-bfd-multi-ctl':  # Multihop BFD
+          proto  => 'udp',
+          port   => '4784',
+          srange => "(${neighbors_for_ferm})",
+          before => Class['::bird'],
+      }
     }
   }
 
@@ -73,6 +77,7 @@ class profile::bird::anycast(
       bind_service => 'anycast-healthchecker.service',
       bfd          => $bfd,
       do_ipv6      => $do_ipv6,
+      multihop     => $multihop,
       require      => Class['::bird::anycast_healthchecker'],
   }
 
