@@ -30,7 +30,7 @@ class profile::mariadb::core_test (
 
     if $profile::mariadb::packages_wmf::mariadb_package in [
             'wmf-mariadb', 'wmf-mariadb10', 'wmf-mariadb101',
-            'wmf-mariadb102', 'wmf-mariadb103', 'wmf-mariadb104'
+            'wmf-mariadb102', 'wmf-mariadb103', 'wmf-mariadb104', 'wmf-mariadb106'
     ] {
         $config_template = 'production.my.cnf.erb'
     } else {
