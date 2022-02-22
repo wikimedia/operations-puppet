@@ -21,7 +21,7 @@ groups:
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
-              bumeh-ctr, seve-kim, rhuang-ctr]
+              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -49,7 +49,7 @@ groups:
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
-              mdipietro, mvernon, ladsgroup, aokoth, jhathaway, bking]
+              rook, mvernon, ladsgroup, aokoth, jhathaway, bking]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -3289,15 +3289,22 @@ users:
     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8mCQQmAnqIJvvANonRbREzfJ0hi34IqfFtE++PjwT0oYcNnZKSjj/T3kRvZ+L29VgfE6+U7oEtAzgdTIe1o+CLLdtX0n0FQArjD94XxSboZwe0UlnqJSWuP2GKIaYPjaNUOROfEMpJ1C4mvoHaJRZPaUZJXKeuDvAx3wjrpoeSYZhPlQfXzEbMwUos16ycKiawCgMrtQ9JdrYclOyJXJj3RjWfqdvrP/lNHOJ3UsJu0BBQNWTQDX8oDCozGEHlXvQX0wL5IZcxfVTg13al3yqRzRssQgZLVYWtDi1wNUjUdACxYV8Bu36G+B7tUqVH3EHzuMJSeYQWNhcth9sy403vq34I1zYUVcIOPsm9VEzvQJdbQZ1shRAoS2aA5dpThnVn0dv9YwgjZF4lb8M2EIvT0MoKlEcFFCS92yklrtfvo7mgmxuL+pRDNHSz+sL7W34ObneUURgbLhqeKpGfpUaFUh449Kq32WCGrTApu9x+iaHKdzuunOoIN+p4Ib+Hkd9JobL7ivrFA6I70eQfajgu/xq/zhH5tNjJdFjJU/kONO2IqSZd/x+wpj4ZNdTKA2hY6WCCG6Ge9sZlyH5BQMWBiofSUrsk5S4r9/DoK2isMJIw/mxJzEmCOFiVk57yhLr94gvzgPEEZlyDEx/IJBfLYok9Lf/Y/mZeEYEG/2tKQ== bstorm@wikimedia.org
     uid: 18713
     email: bastorm@pm.me
-  mdipietro:
+  rook:
     ensure: present
+    gid: 500
+    name: rook
+    realname: Vivian Rook
+    ssh_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGHA0G2dUTOKhsPqDB8spMTE4GHR1s0jfw5BWsHf3jQP rook@mouseprod
+    uid: 38011
+    email: vrook@wikimedia.org
+  mdipietro:
+    ensure: absent
     gid: 500
     name: mdipietro
     realname: Michael DiPietro
-    ssh_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3xenp/i5Yv06X5KIEPPwpLSqE8d0KPCHHa/M8IgH4I mdipietro
+    ssh_keys: []
     uid: 32260
-    email: mdipietro@wikimedia.org
   gtirloni:
     ensure: absent
     gid: 500
