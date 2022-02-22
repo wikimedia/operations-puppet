@@ -1866,6 +1866,7 @@ ldap:
   proxypass: "%{lookup('labsldapconfig.proxypass')}"
   script_user_dn: 'cn=scriptuser,ou=profile,dc=wikimedia,dc=org'
   script_user_pass: "%{lookup('labsldapconfig.script_user_pass')}"
+netbox_api_url: https://netbox.wikimedia.org/
 apereo_cas:
   production:
     base_url: 'https://idp.wikimedia.org/'

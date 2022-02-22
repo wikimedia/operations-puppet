@@ -29,7 +29,7 @@ class profile::spicerack(
     String $ganeti_user = lookup('profile::ganeti::rapi::ro_user'),
     String $ganeti_password = lookup('profile::ganeti::rapi::ro_password'),
     Integer $ganeti_timeout = lookup('profile::spicerack::ganeti_rapi_timeout', {'default_value' => 30}),
-    Stdlib::HTTPUrl $netbox_api = lookup('profile::spicerack::netbox_api'),
+    Stdlib::HTTPUrl $netbox_api = lookup('netbox_api_url'),
     String $netbox_token_ro = lookup('profile::netbox::ro_token'),
     String $netbox_token_rw = lookup('profile::netbox::rw_token'),
     String $http_proxy = lookup('http_proxy'),

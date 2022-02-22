@@ -4,8 +4,8 @@
 
 class profile::homer (
     Stdlib::Host $private_git_peer = lookup('profile::homer::private_git_peer'),
-    String $nb_ro_token = lookup('profile::netbox::tokens::read_only'),
-    Stdlib::HTTPSUrl $nb_api = lookup('profile::netbox::netbox_api'),
+    String $nb_ro_token = lookup('profile::netbox::ro_token'),
+    Stdlib::HTTPSUrl $nb_api = lookup('netbox_api_url'),
     Optional[String[1]] $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
 ){
 
