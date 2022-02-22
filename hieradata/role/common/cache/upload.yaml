@@ -58,7 +58,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     # By setting 'public_clouds_shutdown' to true, all non-API requests from
     # IPs belonging to public clouds like EC2 get blocked with a 429 response
     # at the varnish-fe layer.
-    public_clouds_shutdown: true
+    public_clouds_shutdown: false
     # By setting 'attack_mode' to true, all requests are ratelimited per-IP to
     # levels that will allow a couple human users but block anything in excess.
     attack_mode: false
