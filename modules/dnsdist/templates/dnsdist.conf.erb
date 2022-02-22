@@ -15,7 +15,7 @@ getPool(""):setCache(pc)
 
 -- downstream backend recursor (running pdns-recursor)
 -- ECS is only enabled for queries to WMF authoritative nameservers; see `edns-subnet-whitelist' in dnsrecursor/recursor.conf.erb
-newServer({address='<%= @resolver['host'] %>:<%= @resolver['port'] %>', name='<%= @resolver['name'] %>', useClientSubnet=<%= @enable_ecs ? true : false %>})
+newServer({address='<%= @resolver['ip'] %>:<%= @resolver['port'] %>', name='<%= @resolver['name'] %>', useClientSubnet=<%= @enable_ecs ? true : false %>})
 
 <% if @enable_console -%>
 -- control socket access (default port is 5199)

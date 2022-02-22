@@ -1,17 +1,15 @@
 class profile::wikidough (
-    Stdlib::Fqdn              $wikidough_domain = lookup('profile::wikidough::service_domain'),
-    Stdlib::IP::Address::V4   $wikidough_ipv4   = lookup('profile::wikidough::service_ipv4'),
+    Stdlib::Fqdn              $service_domain   = lookup('profile::wikidough::service_domain'),
     Dnsdist::Resolver         $resolver         = lookup('profile::wikidough::dnsdist::resolver'),
-    Dnsdist::TLS_common       $tls_common       = lookup('profile::wikidough::dnsdist::tls::common'),
-    Dnsdist::TLS_config       $tls_config_doh   = lookup('profile::wikidough::dnsdist::tls::doh'),
-    Dnsdist::TLS_config       $tls_config_dot   = lookup('profile::wikidough::dnsdist::tls::dot'),
-    Dnsdist::Webserver_config $webserver_config = lookup('profile::wikidough::dnsdist::webserver', {'merge' => hash}),
+    Dnsdist::TLS_common       $tls_common       = lookup('profile::wikidough::dnsdist::tls_common'),
+    Dnsdist::TLS_config       $tls_doh          = lookup('profile::wikidough::dnsdist::tls_doh'),
+    Dnsdist::TLS_config       $tls_dot          = lookup('profile::wikidough::dnsdist::tls_dot'),
+    Dnsdist::Webserver_config $webserver_config = lookup('profile::wikidough::dnsdist::webserver_config', {'merge' => hash}),
     Dnsdist::Http_headers     $custom_headers   = lookup('profile::wikidough::dnsdist::custom_headers'),
 ) {
 
     include network::constants
     include passwords::wikidough::dnsdist
-
 
     motd::script { 'root-commands-warning':
         ensure   => 'present',
@@ -38,7 +36,7 @@ class profile::wikidough (
     }
 
     class { 'dnsrecursor':
-        listen_addresses         => [$resolver['host']],
+        listen_addresses         => [$resolver['ip']],
         allow_from               => ['127.0.0.0/8'],
         max_tcp_per_client       => 0,
         client_tcp_timeout       => 5,
@@ -62,8 +60,8 @@ class profile::wikidough (
     class { 'dnsdist':
         resolver         => $resolver,
         tls_common       => $tls_common,
-        tls_config_doh   => $tls_config_doh,
-        tls_config_dot   => $tls_config_dot,
+        tls_config_doh   => $tls_doh,
+        tls_config_dot   => $tls_dot,
         enable_console   => true,
         console_key      => $passwords::wikidough::dnsdist::console_key,
         enable_webserver => true,
@@ -74,15 +72,27 @@ class profile::wikidough (
         require          => Class['dnsrecursor'],
     }
 
-    monitoring::service { 'check_wikidough_doh':
-        description   => 'Wikidough DoH Check',
-        check_command => "check_https_url_custom_ip!${wikidough_domain}!${facts['ipaddress']}!/",
+    monitoring::service { 'check_wikidough_doh_ipv4':
+        description   => 'Wikidough DoH Check (IPv4)',
+        check_command => "check_https_url_custom_ip!${service_domain}!${facts['ipaddress']}!/",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
 
-    monitoring::service { 'check_wikidough_dot':
-        description   => 'Wikidough DoT Check',
+    monitoring::service { 'check_wikidough_dot_ipv4':
+        description   => 'Wikidough DoT Check (IPv4)',
         check_command => "check_tcp_ssl!${facts['ipaddress']}!853",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+    }
+
+    monitoring::service { 'check_wikidough_doh_ipv6':
+        description   => 'Wikidough DoH Check (IPv6)',
+        check_command => "check_https_url_custom_ip!${service_domain}!${facts['ipaddress6']}!/",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+    }
+
+    monitoring::service { 'check_wikidough_dot_ipv6':
+        description   => 'Wikidough DoT Check (IPv6)',
+        check_command => "check_tcp_ssl!${facts['ipaddress6']}!853",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
     }
 

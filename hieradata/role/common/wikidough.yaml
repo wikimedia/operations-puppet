@@ -6,22 +6,22 @@ profile::wikidough::service_ipv6: &ipv6 '2001:67c:930::1'
 
 profile::wikidough::dnsdist::resolver:
   name: 'resolver-1'
-  host: 127.0.0.1
+  ip: 127.0.0.1
   port: 53
 
-profile::wikidough::dnsdist::tls::common:
+profile::wikidough::dnsdist::tls_common:
   cert_chain_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.alt.chained.crt'
   cert_privkey_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.alt.chained.crt.key'
   ocsp_response_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.ocsp'
 
-profile::wikidough::dnsdist::tls::doh:
+profile::wikidough::dnsdist::tls_doh:
   min_tls_version: 'tls1.3'
   ciphers_tls13:
     - 'TLS_AES_256_GCM_SHA384'
     - 'TLS_CHACHA20_POLY1305_SHA256'
     - 'TLS_AES_128_GCM_SHA256'
 
-profile::wikidough::dnsdist::tls::dot:
+profile::wikidough::dnsdist::tls_dot:
   min_tls_version: 'tls1.2'
   ciphers:
     - 'ECDHE-ECDSA-AES256-GCM-SHA384'
@@ -38,7 +38,7 @@ profile::wikidough::dnsdist::custom_headers:
     default-src 'none'; script-src 'self'; style-src 'self'; frame-src 'none'; frame-ancestors 'none';
 
 # password and api_key are defined in the private repo.
-profile::wikidough::dnsdist::webserver:
+profile::wikidough::dnsdist::webserver_config:
   host: 0.0.0.0
   port: 8083
 # password:
