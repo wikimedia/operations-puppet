@@ -28,6 +28,10 @@ profile::pki::multirootca::intermediates:
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
         auth_key: 'k8s_staging'
+      k8s_wikikube:
+        # this is not the actual key but a reference to private puppet:
+        # profile::pki::multirootca::default_auth_keys
+        auth_key: 'k8s_wikikube'
       k8s_mlserve:
         # this is not the actual key but a reference to private puppet:
         # profile::pki::multirootca::default_auth_keys
