@@ -196,14 +196,15 @@ class profile::mail::mx (
         source => 'puppet:///modules/profile/mail/otrs_aliases.py',
     }
     systemd::timer::job {'generate_otrs_aliases':
-        ensure        => 'present',
-        description   => 'Generate OTRS aliases file for Exim',
-        command       => '/usr/local/bin/otrs_aliases',
-        user          => 'root',
-        ignore_errors => true,
+        ensure              => 'present',
+        description         => 'Generate OTRS aliases file for Exim',
+        command             => '/usr/local/bin/otrs_aliases',
+        user                => 'root',
+        ignore_errors       => true,
         # We should set this to true once T284145 is resolved
-        send_mail     => false,
-        interval      => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
+        send_mail           => false,
+        interval            => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
+        max_runtime_seconds => 1800,
     }
 
     ensure_packages(['swaks'])
