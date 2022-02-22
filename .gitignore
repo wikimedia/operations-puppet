@@ -49,3 +49,16 @@ hieradata/auto.yaml
 
 # files created by shared spec_helper
 /spec/fixtures
+
+# Puppet Bolt Hacks
+## Bolt Files
+/.rerun.json
+/bolt-debug.log
+/bolt-project.yaml
+/hiera.yaml
+/inventory.yaml
+## Puppet 6.0 dropped the nagios modules, so we clone our own copy
+/bolt/modules/nagios_core
+/bolt/modules/mailalias_core
+## Clone of git@github.com:wikimedia/labs-private.git
+/private
