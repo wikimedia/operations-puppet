@@ -53,7 +53,7 @@ class profile::netbox (
     Stdlib::Fqdn               $active_server               = lookup('profile::netbox::active_server'),
     Stdlib::Fqdn               $service_hostname            = lookup('profile::netbox::service_hostname'),
     Array[String]              $slaves                      = lookup('profile::netbox::slaves'),
-    String                     $rw_token                    = lookup('profile::netbox::rw_tokens'),
+    String                     $rw_token                    = lookup('profile::netbox::rw_token'),
     String                     $ro_token                    = lookup('profile::netbox::ro_token'),
     String                     $dump_interval               = lookup('profile::netbox::dump_interval'),
     Stdlib::Fqdn               $db_primary                  = lookup('profile::netbox::db_primary'),
