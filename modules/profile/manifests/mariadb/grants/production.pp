@@ -8,6 +8,8 @@ class profile::mariadb::grants::production(
     $prompt   = '',
     $password = 'undefined',
     $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
+    $vrts_database_pw = lookup('profile::vrts::database_pass'),
+    $vrts_exim_database_pass = lookup('profile::vrts::exim_database_pass'),
     ) {
 
     include passwords::misc::scripts
