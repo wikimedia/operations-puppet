@@ -669,7 +669,8 @@ mediawiki::sites:
               "meta.wikimedia.beta.wmflabs.org",
               "api.wikimedia.beta.wmflabs.org",
               "vote.wikimedia.beta.wmflabs.org",
-              "foundation.wikimedia.beta.wmflabs.org"
+              "foundation.wikimedia.beta.wmflabs.org",
+              "incubator.wikimedia.beta.wmflabs.org"
             ]
           variant_aliases: []
       - name: wikivoyage
