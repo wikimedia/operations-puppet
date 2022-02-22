@@ -22,4 +22,7 @@ class role::prometheus {
 
     include profile::prometheus::rsyncd
     include profile::prometheus::web
+
+    include profile::prometheus::web_idp
+
 }

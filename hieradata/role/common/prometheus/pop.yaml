@@ -12,3 +12,18 @@ profile::resolving::domain_search:
   - eqsin.wmnet
   - drmrs.wmnet
 prometheus::server::storage_retention_size: 80GB
+
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+   - server_names:
+     - 'prometheus'
+     - 'prometheus.eqiad.wikimedia.org'
+     - 'prometheus.codfw.wikimedia.org'
+     - 'prometheus.esams.wikimedia.org'
+     - 'prometheus.ulsfo.wikimedia.org'
+     - 'prometheus.eqsin.wikimedia.org'
+     - 'prometheus.drmrs.wikimedia.org'
+     port: 80
+     cert_name: 'prometheus.wikimedia.org'
+profile::tlsproxy::envoy::use_remote_address: true
+profile::tlsproxy::envoy::sni_support: 'strict'

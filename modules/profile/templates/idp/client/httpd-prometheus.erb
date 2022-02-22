@@ -1,0 +1,29 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<VirtualHost *:80>
+    ServerName <%= @virtual_host %>
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? or setting == :undef -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+
+    # disable golang debugging from outside localhost
+    <Location /debug >
+        Require all denied
+    </Location>
+    <Location / >
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+          <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+          <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+    </Location>
+
+    # Reverse proxy for public facing access e.g. http(s)://prometheus.site.wm.o/ops/ to http://prometheus.svc.site.wmnet/ops/
+    # Prometheus instance paths are not matched individually here, they are simply passed onward to the backend.
+    ProxyPass / http://prometheus.svc.<%= @site %>.wmnet/
+</VirtualHost>
