@@ -1,5 +1,6 @@
 define profile::mjolnir::kafka_msearch_daemon_instance(
   $ensure,
+  $prometheus_port,  # Referenced by puppetdb query from prometheus::resource_config
 ) {
     $service_name = "mjolnir-kafka-msearch-daemon@${title}"
 

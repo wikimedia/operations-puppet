@@ -28,7 +28,8 @@ class profile::mjolnir::kafka_msearch_daemon(
     range('0', $num_running_daemons - 1).each |$i| {
       $title = String($i)
       profile::mjolnir::kafka_msearch_daemon_instance { $title:
-        ensure => $ensure,
+        ensure          => $ensure,
+        prometheus_port => $prometheus_port + $i,
       }
     }
 }
