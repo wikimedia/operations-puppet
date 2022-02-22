@@ -1043,7 +1043,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: k8s-ingress-wikikube
         active_active: true
