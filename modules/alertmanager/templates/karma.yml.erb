@@ -70,8 +70,8 @@ ui:
 
 history:
   rewrite:
-    # Fetching history doesn't work on librenms/grafana alerts.
-    - source: 'https://(librenms|grafana)\..*'
+    # Fetching history doesn't work on librenms/grafana/icinga alerts.
+    - source: 'https://(librenms|grafana|icinga)\..*'
       uri: ''
 
 # Start with 'description' label collapsed
