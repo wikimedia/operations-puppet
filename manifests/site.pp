@@ -1223,7 +1223,7 @@ node 'elastic2060.codfw.wmnet' {
 }
 
 # new codfw elastic servers T294154
-node /^(elastic206[1-9]|elastic207[0-2])\.codfw\.wmnet$/ {
+node /^(elastic206[1-9]|elastic207[0-9]|elastic208[0-2])\.codfw\.wmnet$/ {
     role(insetup)
 }
 
