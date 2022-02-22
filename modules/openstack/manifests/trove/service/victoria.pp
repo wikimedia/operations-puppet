@@ -62,12 +62,10 @@ class openstack::trove::service::victoria(
         # This file is not used as far as I know, but the bullseye/victoria package post-install
         #  fails if it is not present.
         '/usr/share/trove-common/api-paste.ini':
-            source  => 'puppet:///modules/openstack/victoria/trove/api-paste.ini',
-            owner   => 'trove',
-            group   => 'trove',
-            mode    => '0644',
-            notify  => Service['trove-api'],
-            require => Package['trove-api'];
+            source => 'puppet:///modules/openstack/victoria/trove/api-paste.ini',
+            owner  => 'trove',
+            group  => 'trove',
+            mode   => '0644';
         '/usr/lib/python3/dist-packages/trove/taskmanager/models.py':
             source  => 'puppet:///modules/openstack/victoria/trove/hacks/taskmanager/models.py',
             owner   => 'root',
