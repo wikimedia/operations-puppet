@@ -2209,6 +2209,7 @@ users:
     email: bmansurov@wikimedia.org
     expiry_date: 2022-06-30
     expiry_contact: leila@wikimedia.org
+    krb: present
   west1:
     ensure: present
     gid: 500
