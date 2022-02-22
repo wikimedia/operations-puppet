@@ -86,6 +86,8 @@ class profile::analytics::refinery::job::druid_load(
     # Note that this data set does not belong to EventLogging, but the
     # eventlogging_to_druid_job wrapper is compatible and very convenient!
     profile::analytics::refinery::job::eventlogging_to_druid_job { 'network_flows_internal':
+        # Temporarily absenting due to errors when no data is present - See T302263
+        ensure            => 'absent',
         job_config        => {
             database         => 'event',
             druid_datasource => 'network_flows_internal',
