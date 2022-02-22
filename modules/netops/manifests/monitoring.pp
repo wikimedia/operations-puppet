@@ -163,14 +163,10 @@ class netops::monitoring(
     $l3_switches = {
         # eqiad
         'cloudsw1-c8-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.7',
-                                                  parents => ['cr1-eqiad', 'cr2-eqiad'],
-                                                  ospf => true},
+                                                  parents => ['cr1-eqiad', 'cr2-eqiad']},
         'cloudsw1-d5-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.6',
-                                                  parents => ['cr1-eqiad', 'cr2-eqiad'],
-                                                  ospf => true},
-        'lsw1-e3-eqiad.mgmt.eqiad.wmnet'     => { ipv4    => '10.65.1.230',
-                                                  #  parents => ['cr1-eqiad', 'cr2-eqiad'],
-                                                  ospf => true},
+                                                  parents => ['cr1-eqiad', 'cr2-eqiad']},
+        'lsw1-e3-eqiad.mgmt.eqiad.wmnet'     => { ipv4    => '10.65.1.230'},
         # drmrs
         'asw1-b12-drmrs.wikimedia.org' => { ipv4 => '185.15.58.131',
                                             ipv6 => '2a02:ec80:600:ffff::4',
