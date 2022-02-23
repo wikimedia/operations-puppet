@@ -226,7 +226,7 @@ class profile::ganeti (
         # This should only be run on the master and absented from all other
         # nodes
         $hbal_presence = $facts['ganeti_master'] ? {
-            $facts['fqdn'] => absent,
+            $facts['fqdn'] => present,
             default        => absent,
         }
         systemd::timer::job { 'monthly_ganeti_rebalance':
