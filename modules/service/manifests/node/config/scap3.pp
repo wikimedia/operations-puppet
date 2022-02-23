@@ -41,9 +41,39 @@ define service::node::config::scap3 (
         mode    => '0755',
     }
 
+    $mwapi_host = pick($::service::configuration::mwapi_host, '')
+    $config_base = {
+        # general
+        num_workers => $no_workers,
+        worker_heap_limit_mb => $heap_limit,
+        worker_heartbeat_timeout => $heartbeat_to,
+        # log-related variables
+        log_name => $logging_name,
+        logstash_host => pick($::service::configuration::logstash_host, ''),
+        logstash_port => pick($::service::configuration::logstash_port, ''),
+        log_file => $local_logfile,
+        rsyslog_port => pick($::service::configuration::rsyslog_udp_port, ''),
+        # metrics
+        metrics_name => $statsd_prefix,
+        metrics_host => pick($::service::configuration::statsd_host, ''),
+        metrics_port => pick($::service::configuration::statsd_port, ''),
+        # service
+        name => $title,
+        module => $starter_module,
+        entrypoint => $entrypoint,
+        port => $port,
+        proxy => pick($::service::configuration::http_proxy, ''),
+        mwapi_host => $mwapi_host,
+        mwapi_uri => "${mwapi_host}/w/api.php",
+        mw_resource_loader_uri => "${mwapi_host}/w/load.php",
+        restbase_uri => pick($::service::configuration::restbase_uri, ''),
+    }
+
+    $config = merge($config_base, $deployment_vars)
+
     file { "/etc/${title}/config-vars.yaml":
         ensure    => present,
-        content   => template('service/node/config-vars.yaml.erb'),
+        content   => $config.to_yaml,
         owner     => $deployment_user,
         group     => $deployment_user,
         mode      => $mode,
