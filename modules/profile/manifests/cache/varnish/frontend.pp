@@ -10,7 +10,7 @@ class profile::cache::varnish::frontend (
     Array[String] $runtime_params = lookup('profile::cache::varnish::frontend::runtime_params'),
     Profile::Cache::Sites $req_handling = lookup('cache::req_handling'),
     Profile::Cache::Sites $alternate_domains = lookup('cache::alternate_domains', {'default_value' => {}}),
-    String $packages_component = lookup('profile::cache::varnish::frontend::packages_component', {'default_value' => 'component/varnish6'}),
+    String $packages_component = lookup('profile::cache::varnish::frontend::packages_component', {'default_value' => 'main'}),
     Array[String] $separate_vcl = lookup('profile::cache::varnish::separate_vcl', {'default_value' =>  []}),
     Integer $fe_transient_gb = lookup('profile::cache::varnish::frontend::transient_gb', {'default_value' => 0}),
     Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
