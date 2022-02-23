@@ -137,6 +137,7 @@ Components: main
  thirdparty/gitlab
  thirdparty/gitlab-runner
  thirdparty/grafana
+ thirdparty/haproxy24
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-20
  thirdparty/kubeadm-k8s-1-21
@@ -168,6 +169,7 @@ Update:
  thirdparty/ceph-octopus
  thirdparty/gitlab
  thirdparty/gitlab-runner
+ thirdparty/haproxy24
  thirdparty/helm3
  thirdparty/kubeadm-k8s-kubernetes.io-1-20
  thirdparty/kubeadm-k8s-kubernetes.io-1-21

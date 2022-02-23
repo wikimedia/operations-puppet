@@ -350,3 +350,12 @@ Architectures: amd64
 GetInRelease: no
 VerifyRelease: 94E92A0708C4CC43
 ListShellHook: grep-dctrl -X -S routinator || [ $? -eq 1 ]
+
+Name: thirdparty/haproxy24
+Method: http://haproxy.debian.net
+Components: main>thirdparty/haproxy24
+UDebComponents:
+Suite: buster-backports-2.4
+Architectures: amd64
+VerifyRelease: 95A42FE8353525F9
+ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
