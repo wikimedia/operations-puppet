@@ -358,7 +358,7 @@ groups:
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars, tandic, dannyh, auglnkv, rzl]
+              aniketars, tandic, dannyh, auglnkv, rzl, mhay]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5069,6 +5069,17 @@ users:
     email: hokwelum@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBVyQpwHszMYsZmG1ydOvIigJhTwAI9CHhSrmShhLwsS hannah@Hannahs-MacBook-Pro.local
+  mhay:
+    ensure: present
+    uid: 37778
+    gid: 500
+    realname: Michael Hay
+    email: michael@tmlt.io
+    krb: present
+    expiry_date: 2022-09-13
+    expiry_contact: htriedman@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDn47QmSyOAeYM5foeXneTjTX/LW5KCDdYYx3e4Ca2AP mhay@Blizzard.local
 
 ldap_only_users:
   abartov:
