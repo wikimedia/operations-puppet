@@ -30,14 +30,14 @@ class prometheus::statsd_exporter (
     $defaults = {
       'timer_type' => 'summary',
       'quantiles'  => [
-        { 'quantile' => '0.99',
-          'error'    => '0.001' },
-        { 'quantile' => '0.95',
-          'error'    => '0.001' },
-        { 'quantile' => '0.75',
-          'error'    => '0.001' },
-        { 'quantile' => '0.50',
-          'error'    => '0.005' },
+        { 'quantile' => 0.99,
+          'error'    => 0.001  },
+        { 'quantile' => 0.95,
+          'error'    => 0.001  },
+        { 'quantile' => 0.75,
+          'error'    => 0.001  },
+        { 'quantile' => 0.50,
+          'error'    => 0.005  },
       ],
     }
 
