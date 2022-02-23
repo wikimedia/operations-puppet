@@ -150,12 +150,6 @@ profile::kubernetes::deployment_server::services:
         - name: apple-search
         - name: apple-search-deploy
   ml-serve:
-    revscoring-editquality:
-      usernames:
-        - name: revscoring-editquality
-        - name: revscoring-editquality-deploy
-          owner: root
-          group: deploy-ml-service
     revscoring-editquality-goodfaith:
       usernames:
         - name: revscoring-editquality-goodfaith
