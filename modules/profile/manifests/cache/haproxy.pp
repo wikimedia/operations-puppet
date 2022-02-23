@@ -35,13 +35,11 @@ class profile::cache::haproxy(
     $pid = '/run/haproxy/haproxy.pid'
     $exec_start = '/usr/sbin/haproxy -Ws'
 
-
-    # Use HAProxy 2.2 from buster-backports
-    apt::pin { 'haproxy-buster-bpo':
-        package  => 'haproxy',
-        pin      => 'release n=buster-backports',
-        priority => 1002,
-        before   => Class['::haproxy'],
+    apt::package_from_component { 'haproxy':
+        component       => 'thirdparty/haproxy24',
+        before          => Class['::haproxy'],
+        priority        => 1002, # Take precedence over main
+        ensure_packages => false, # this is handled by ::haproxy
     }
 
     class { '::haproxy':
