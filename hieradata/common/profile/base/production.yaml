@@ -1,2 +1,3 @@
 profile::base::production::enable: true
 profile::base::production::enable_ip6_mapped: true
+profile::base::production::role_description: ~
