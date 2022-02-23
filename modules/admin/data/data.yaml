@@ -358,7 +358,7 @@ groups:
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars, tandic, dannyh, auglnkv, rzl, mhay]
+              aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5080,6 +5080,17 @@ users:
     expiry_contact: htriedman@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDn47QmSyOAeYM5foeXneTjTX/LW5KCDdYYx3e4Ca2AP mhay@Blizzard.local
+  skyenet:
+    ensure: present
+    uid: 37818
+    gid: 500
+    realname: Skye Berghel
+    email: sberghel@gmail.com
+    krb: present
+    expiry_date: 2022-09-13
+    expiry_contact: jbennett@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFR6HVVjTuiJM6r8Zl12+41Pef80nk/zhchCW3mTzoMx skye@Neikos.local
 
 ldap_only_users:
   abartov:
