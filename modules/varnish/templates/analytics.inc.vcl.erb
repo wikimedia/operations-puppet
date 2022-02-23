@@ -162,6 +162,46 @@ sub analytics_provenance_deliver_ {
     }
 }
 
+/**
+ * If the request was made over a secure transport, then set the Accept-CH
+ * response header such that the following high-entropy client hints [0][1]
+ * may be sent with subsequent requests by the UA:
+ *
+ * - Sec-CH-UA-Arch
+ * - Sec-CH-UA-Bitness
+ * - Sec-CH-UA-Full-Version-List
+ * - Sec-CH-UA-Model
+ * - Sec-CH-UA-Platform-Version
+ *
+ * Further, set the Permissions-Policy response header such that those
+ * hints may also sent with requests to intake-analytics.wikimedia.org.
+ *
+ * [0] https://developer.mozilla.org/en-US/docs/Web/HTTP/Client_hints#user-agent_client_hints
+ * [1] The Sec-CH-UA* client hints token names _not_ listed in
+ */
+sub analytics_client_hints_deliver_ {
+    if (req.http.X-Forwarded-Proto == "https") {
+        set resp.http.Accept-CH = "Sec-CH-UA-Arch,"
+            + "Sec-CH-UA-Bitness,"
+            + "Sec-CH-UA-Full-Version-List,"
+            + "Sec-CH-UA-Model,"
+            + "Sec-CH-UA-Platform-Version"
+            ;
+
+        if (!resp.http.Permissions-Policy) {
+            set resp.http.Permissions-Policy = "";
+        }
+
+        set resp.http.Permissions-Policy = resp.http.Permissions-Policy
+            + {",ch-ua-arch=(self "intake-analytics.wikimedia.org")"}
+            + {",ch-ua-bitness=(self "intake-analytics.wikimedia.org")"}
+            + {",ch-ua-full-version-list=(self "intake-analytics.wikimedia.org")"}
+            + {",ch-ua-model=(self "intake-analytics.wikimedia.org")"}
+            + {",ch-ua-platform-version=(self "intake-analytics.wikimedia.org")"}
+            ;
+    }
+}
+
 /*****************************************************************************
  * Combined analytics recv and deliver hooks, to be included directly in
  * vcl_recv and vcl_deliver in common wikimedia.vcl - these are the only
@@ -196,6 +236,7 @@ sub analytics_deliver {
 
     call analytics_last_access_deliver_;
     call analytics_provenance_deliver_;
+    call analytics_client_hints_deliver_;
 
     # We check allowed values inbound in X-Analytics header
     #

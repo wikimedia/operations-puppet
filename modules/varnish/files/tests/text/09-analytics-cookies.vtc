@@ -60,6 +60,30 @@ client c1 {
     expect resp.http.X-Analytics == "https=1"
 } -run
 
+client c2 {
+    txreq -url "/" -hdr "Host: en.wikipedia.org"
+    rxresp
+
+    expect resp.http.Accept-CH == ""
+}
+
+client c3 {
+    txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+
+    # The Accept-CH response header should only be set when the request was made over a secure
+    # transport.
+    expect resp.http.Accept-CH == "Sec-CH-UA-Arch,Sec-CH-UA-Bitness,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Model,Sec-CH-UA-Platform-Version"
+
+    # The Permissions-Policy response header should contain a policy for each high-entropy client
+    # hint in the Accept-CH response header.
+    expect resp.http.Permissions-Policy ~ "ch-ua-arch=\(self \"intake-analytics\.wikimedia\.org\"\)"
+    expect resp.http.Permissions-Policy ~ "ch-ua-bitness=\(self \"intake-analytics\.wikimedia\.org\"\)"
+    expect resp.http.Permissions-Policy ~ "ch-ua-full-version-list=\(self \"intake-analytics\.wikimedia\.org\"\)"
+    expect resp.http.Permissions-Policy ~ "ch-ua-model=\(self \"intake-analytics\.wikimedia\.org\"\)"
+    expect resp.http.Permissions-Policy ~ "ch-ua-platform-version=\(self \"intake-analytics\.wikimedia\.org\"\)"
+}
+
 logexpect l1 -wait
 logexpect l2 -wait
 logexpect l3 -wait
