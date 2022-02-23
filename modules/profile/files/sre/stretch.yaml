@@ -286,6 +286,7 @@ role::druid::test_analytics::worker:
   phab-task: 234629
 role::wmcs::openstack::codfw1dev::db:
   target-q: TBD
+  phab-task: 301719
 role::wmcs::openstack::eqiad1::services:
   target-q: 2020-4
 role::wmcs::openstack::codfw1dev::services:
