@@ -156,6 +156,24 @@ profile::kubernetes::deployment_server::services:
         - name: revscoring-editquality-deploy
           owner: root
           group: deploy-ml-service
+    revscoring-editquality-goodfaith:
+      usernames:
+        - name: revscoring-editquality-goodfaith
+        - name: revscoring-editquality-goodfaith-deploy
+          owner: root
+          group: deploy-ml-service
+    revscoring-editquality-damaging:
+      usernames:
+        - name: revscoring-editquality-damaging
+        - name: revscoring-editquality-damaging-deploy
+          owner: root
+          group: deploy-ml-service
+    revscoring-editquality-reverted:
+      usernames:
+        - name: revscoring-editquality-reverted
+        - name: revscoring-editquality-reverted-deploy
+          owner: root
+          group: deploy-ml-service
     revscoring-draftquality:
       usernames:
         - name: revscoring-draftquality
