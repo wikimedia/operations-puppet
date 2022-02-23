@@ -3,7 +3,7 @@
 #   Installs Debian package creation/building tools and creates environments to
 #   help with easy package building.
 # @param basepath the base path to use
-# @params extra_packages A hash of extrabackes to add to the base image i.e. distro => [packages]}
+# @param extra_packages A hash of extrabackes to add to the base image i.e. distro => [packages]}
 # @example
 #   include package_builder
 #   class {'package_builder':
@@ -28,7 +28,7 @@ class package_builder(
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 02:00:00',  # Every day at 2:00
-        }
+        },
     }
     systemd::timer::job { 'package_builder_Clean_up_result_directory':
         ensure      => present,
@@ -38,13 +38,13 @@ class package_builder(
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 03:00:00',  # Every day at 3:00
-        }
+        },
     }
 
     # Install lintian from backports to make sure it checks the latest version
     # of the Debian Policy
     apt::pin { 'lintian':
-        pin      => "release a=${::lsbdistcodename}-backports",
+        pin      => "release a=${debian::codename()}-backports",
         package  => 'lintian',
         priority => 1001,
         before   => Package['lintian'],
@@ -84,7 +84,6 @@ class package_builder(
         'libdistro-info-perl',
         'maven-debian-helper',
         'maven-repo-helper',
-        'node-babel7',
         'openstack-pkg-tools',
         'patchutils',
         'php-dev',
@@ -103,9 +102,12 @@ class package_builder(
         'wdiff',
         'zip',
     ])
+    if debian::codename::ge('bullseye') {
+        ensure_packages(['node-babel7'])
+    }
 
     file { '/etc/pbuilderrc':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -120,7 +122,7 @@ class package_builder(
     }
 
     file { '/usr/share/lintian/profiles/wikimedia/main.profile':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -170,7 +172,7 @@ class package_builder(
     }
 
     file { '/etc/lintianrc':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
