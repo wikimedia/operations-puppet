@@ -7,3 +7,5 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   ens1f1np1:
     txqlen: 10000
+  ens2f0np0:
+    txqlen: 10000

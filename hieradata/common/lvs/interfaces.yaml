@@ -33,6 +33,70 @@ lvs::interfaces::vlan_data:
       'lvs1017': 'ens1f1np1:10.64.49.17'
       'lvs1018': 'ens1f1np1:10.64.49.18'
       'lvs1019': 'ens1f1np1:10.64.49.19'
+  private1-e1-eqiad:
+    id: "1031"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'ens2f0np0:10.64.130.17'
+      'lvs1018': 'ens2f0np0:10.64.130.18'
+      'lvs1019': 'ens2f0np0:10.64.130.19'
+      'lvs1020': 'ens2f0np0:10.64.130.20'
+  private1-e2-eqiad:
+    id: "1032"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'ens2f0np0:10.64.131.17'
+      'lvs1018': 'ens2f0np0:10.64.131.18'
+      'lvs1019': 'ens2f0np0:10.64.131.19'
+      'lvs1020': 'ens2f0np0:10.64.131.20'
+  private1-e3-eqiad:
+    id: "1033"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'ens2f0np0:10.64.132.17'
+      'lvs1018': 'ens2f0np0:10.64.132.18'
+      'lvs1019': 'ens2f0np0:10.64.132.19'
+      'lvs1020': 'ens2f0np0:10.64.132.20'
+  private1-e4-eqiad:
+    id: "1034"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'ens2f0np0:10.64.133.17'
+      'lvs1018': 'ens2f0np0:10.64.133.18'
+      'lvs1019': 'ens2f0np0:10.64.133.19'
+      'lvs1020': 'ens2f0np0:10.64.133.20'
+  private1-f1-eqiad:
+    id: "1035"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'ens2f0np0:10.64.134.17'
+      'lvs1018': 'ens2f0np0:10.64.134.18'
+      'lvs1019': 'ens2f0np0:10.64.134.19'
+      'lvs1020': 'ens2f0np0:10.64.134.20'
+  private1-f2-eqiad:
+    id: "1036"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'ens2f0np0:10.64.135.17'
+      'lvs1018': 'ens2f0np0:10.64.135.18'
+      'lvs1019': 'ens2f0np0:10.64.135.19'
+      'lvs1020': 'ens2f0np0:10.64.135.20'
+  private1-f3-eqiad:
+    id: "1037"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'ens2f0np0:10.64.136.17'
+      'lvs1018': 'ens2f0np0:10.64.136.18'
+      'lvs1019': 'ens2f0np0:10.64.136.19'
+      'lvs1020': 'ens2f0np0:10.64.136.20'
+  private1-f4-eqiad:
+    id: "1038"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'ens2f0np0:10.64.137.17'
+      'lvs1018': 'ens2f0np0:10.64.137.18'
+      'lvs1019': 'ens2f0np0:10.64.137.19'
+      'lvs1020': 'ens2f0np0:10.64.137.20'
   public1-a-eqiad:
     id: "1001"
     netmask: "255.255.255.192"
