@@ -63,6 +63,7 @@ if __name__ == "__main__":
         exit(1)
 
     osclients = mwopenstackclients.clients(envfile='/etc/novaadmin.yaml')
+    total_errors = 0
 
     for project in conf:
         cinderclient = osclients.cinderclient(project=project)
@@ -109,6 +110,7 @@ if __name__ == "__main__":
                 r = subprocess.call(backupargs)
                 if r:
                     logging.warning("Failed to backup volume %s" % volume_id)
+                    total_errors += 1
                 logging.info("Purging old backups of %s" % volume_id)
 
                 # Purge old backups
@@ -121,3 +123,7 @@ if __name__ == "__main__":
                 r = subprocess.call(purgeargs)
                 if r:
                     logging.warning("Failed to purge backups for volume %s" % volume_id)
+
+    if total_errors > 0:
+        logging.error("Got %d errors, see logs for details.", total_errors)
+        exit(1)
