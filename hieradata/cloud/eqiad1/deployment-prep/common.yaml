@@ -14,7 +14,7 @@ profile::lvs::realserver::use_conftool: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
 service::configuration::mwapi_host: http://deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
-service::configuration::restbase_uri: http://deployment-restbase03.deployment-prep.eqiad.wmflabs:7231
+service::configuration::restbase_uri: http://deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud:7231
 #service::configuration::http_proxy:
 service::configuration::statsd_host: cloudmetrics1003.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
