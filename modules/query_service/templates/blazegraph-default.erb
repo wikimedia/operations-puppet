@@ -11,7 +11,7 @@ EXTRA_JVM_OPTS="
 <%- if @prefixes_file -%>
 PREFIXES_FILE="<%= @prefixes_file %>"
 <%- end -%>
-<%- if @oauth -%>
+<%- if @use_oauth -%>
 OAUTH_RUN=" mw-oauth-proxy-*.war"
 <%- end -%>
 

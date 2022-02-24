@@ -82,7 +82,8 @@ define profile::query_service::blazegraph (
         use_geospatial        => $use_geospatial,
         blazegraph_main_ns    => $blazegraph_main_ns,
         prefixes_file         => $prefixes_file,
-        federation_user_agent => $federation_user_agent
+        federation_user_agent => $federation_user_agent,
+        use_oauth             => $use_oauth,
     }
 
     if $monitoring_enabled {
