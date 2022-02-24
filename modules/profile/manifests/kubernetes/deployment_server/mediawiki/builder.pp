@@ -13,6 +13,7 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
     user { 'mwbuilder':
         ensure     => present,
         gid        => 'mwbuilder',
+        groups     => ['docker'],
         shell      => '/bin/false',
         comment    => '',
         home       => '/srv/mwbuilder',
