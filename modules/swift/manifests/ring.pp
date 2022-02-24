@@ -1,52 +1,27 @@
 class swift::ring (
     String $swift_cluster,
-    Boolean $storage_policies = true,
 ) {
+    file { '/usr/local/bin/swift_check_ring_tarball.sh':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => "puppet:///modules/${module_name}/swift_check_ring_tarball.sh",
+    }
+
+    wmflib::dir::mkdir_p('/var/spool/swift_ring')
+
     # lint:ignore:puppet_url_without_modules
-    file { '/etc/swift/account.builder':
-        ensure    => present,
-        source    => "puppet:///volatile/swift/${swift_cluster}/account.builder",
-        show_diff => false,
+    file { '/var/spool/swift_ring/rings.tar.bz2':
+        ensure       => present,
+        source       => "puppet:///volatile/swift/${swift_cluster}/new_rings.tar.bz2",
+        show_diff    => false,
+        validate_cmd => '/usr/local/bin/swift_check_ring_tarball.sh %',
     }
-
-    file { '/etc/swift/account.ring.gz':
-        ensure => present,
-        source => "puppet:///volatile/swift/${swift_cluster}/account.ring.gz",
-    }
-
-    file { '/etc/swift/container.builder':
-        ensure    => present,
-        source    => "puppet:///volatile/swift/${swift_cluster}/container.builder",
-        show_diff => false,
-    }
-
-    file { '/etc/swift/container.ring.gz':
-        ensure => present,
-        source => "puppet:///volatile/swift/${swift_cluster}/container.ring.gz",
-    }
-
-    file { '/etc/swift/object.builder':
-        ensure    => present,
-        source    => "puppet:///volatile/swift/${swift_cluster}/object.builder",
-        show_diff => false,
-    }
-
-    file { '/etc/swift/object.ring.gz':
-        ensure => present,
-        source => "puppet:///volatile/swift/${swift_cluster}/object.ring.gz",
-    }
-
-    if $storage_policies {
-        file { '/etc/swift/object-1.builder':
-            ensure    => present,
-            source    => "puppet:///volatile/swift/${swift_cluster}/object-1.builder",
-            show_diff => false,
-        }
-
-        file { '/etc/swift/object-1.ring.gz':
-            ensure => present,
-            source => "puppet:///volatile/swift/${swift_cluster}/object-1.ring.gz",
-        }
+    exec { 'tar -xf /var/spool/swift_ring/rings.tar.bz2 --one-top-level=/etc/swift':
+        path        => '/usr/bin:/bin',
+        refreshonly => true,
+        subscribe   => File['/var/spool/swift_ring/rings.tar.bz2'],
     }
     # lint:endignore
 }
