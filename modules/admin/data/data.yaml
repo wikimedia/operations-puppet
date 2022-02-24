@@ -5107,6 +5107,10 @@ ldap_only_users:
     ensure: absent
     realname: Aleksey Bekh-Ivanov
     email: aleksey.bekh-ivanov@wikimedia.de
+  ammarpad:
+    ensure: present
+    realname: (known to legal)
+    email: ammarpad@yahoo.com
   amy-wmde:
     ensure: absent
     realname: Amrutha Varshini Chandra
