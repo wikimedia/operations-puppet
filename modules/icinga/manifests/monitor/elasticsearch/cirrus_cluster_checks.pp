@@ -76,6 +76,5 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
         warning         => 100000,
         critical        => 250000,
         contact_group   => 'admins,team-discovery',
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Saneitizer_(background_repair_process)',
     }
 }
