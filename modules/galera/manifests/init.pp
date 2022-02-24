@@ -31,12 +31,8 @@ class galera(
     #  galera components.
     apt::package_from_component { 'openstack-db-galera':
         component => 'thirdparty/openstack-db',
-        packages  => {
-            'mariadb-server' => 'present',
-            'mariadb-backup' => 'present',
-            'galera-4'       => 'present',
-        },
-        priority  => '1002',  # to always prefer this vs debian archive
+        packages  => ['mariadb-server', 'mariadb-backup', 'galera-4'],
+        priority  => 1002,  # to always prefer this vs debian archive
     }
 
     $service_ensure = $enabled ? {
