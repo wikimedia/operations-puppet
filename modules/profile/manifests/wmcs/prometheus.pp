@@ -4,7 +4,15 @@ class profile::wmcs::prometheus(
     Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::wmcs::prometheus::storage_retention_size',   {default_value => undef}),
-){
+    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
+) {
+    $config_extra = {
+        'external_labels' => {
+            # right now cloudmetrics hardware only exists on eqiad1, make sure to update this if that changes
+            'deployment' => 'eqiad1',
+            'prometheus' => 'cloud',
+        },
+    }
 
     include ::prometheus::blackbox_exporter
     $blackbox_jobs = [
@@ -155,11 +163,13 @@ class profile::wmcs::prometheus(
         storage_retention_size => $storage_retention_size,
         max_chunks_to_persist  => $max_chunks_to_persist,
         memory_chunks          => $memory_chunks,
+        alertmanagers          => $alertmanagers.map |$a| { "${a}:9093" },
         scrape_configs_extra   => [
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $ceph_jobs,
             $galera_jobs,
         ].flatten,
+        global_config_extra    => $config_extra,
     }
 
     httpd::site{ 'prometheus':
@@ -171,7 +181,6 @@ class profile::wmcs::prometheus(
         proxy_pass => 'http://localhost:9900/labs',
         require    => Httpd::Site['prometheus'],
     }
-
 
     ferm::service { 'prometheus-web':
         proto  => 'tcp',
