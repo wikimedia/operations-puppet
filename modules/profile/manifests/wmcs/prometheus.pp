@@ -96,7 +96,7 @@ class profile::wmcs::prometheus(
     prometheus::class_config{ "rabbitmq_${::site}":
         dest       => "${targets_path}/rabbitmq_${::site}.yaml",
         class_name => 'role::wmcs::openstack::eqiad1::control',
-        port       => 9195,
+        port       => 15692,
     }
 
     prometheus::class_config{ "pdns_${::site}":
