@@ -2,34 +2,16 @@ require 'facter'
 
 firmware = {
   'idrac' => nil,
-  'bios' => nil,
   'ilo' => nil,
 }
-bios_info = nil
-if Facter::Core::Execution.which('dmidecode')
-  # Capture this here to save us calling dmidecode twice
-  bios_info = Facter::Core::Execution.execute('dmidecode -t bios')
-end
-Facter.add(:firmware_bios) do
-  confine :kernel => 'Linux'
-  confine :is_virtual => false
-  setcode do
-    unless bios_info.nil?
-      bios_matcher = /^\s+Version:\s+(?<bios_version>.+)$/
-      if matches = bios_info.match(bios_matcher) # rubocop:disable AssignmentInCondition
-        firmware['bios'] = matches['bios_version']
-      end
-    end
-    firmware['bios']
-  end
-end
 Facter.add(:firmware_ilo) do
   confine :kernel => 'Linux'
   confine :is_virtual => false
   confine :manufacturer => %w{HP HPE}
   setcode do
-    unless bios_info.nil?
+    if Facter::Core::Execution.which('dmidecode')
       # https://support.hpe.com/hpesc/public/docDisplay?docId=kc0120268en_us&docLocale=en_US
+      bios_info = Facter::Core::Execution.execute('dmidecode -t bios')
       ilo_matcher = /\s+Firmware\s+Revision:\s+(?<ilo_version>.+)/
       if matches = bios_info.match(ilo_matcher) # rubocop:disable AssignmentInCondition
           firmware['ilo'] = matches['ilo_version']

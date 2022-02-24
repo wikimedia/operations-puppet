@@ -32,7 +32,6 @@ profile::puppetboard::graph_facts_override:
 - boardmanufacturer
 - domain
 - facterversion
-- firmware_bios
 - firmware_idrac
 - firmware_ilo
 - has_ipmi
