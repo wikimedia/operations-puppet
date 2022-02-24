@@ -2,6 +2,13 @@
 auth_strategy=keystone
 
 [dynamicproxy]
+dns_updater_keystone_api_url = '<%= @keystone_api_url %>'
+dns_updater_username = <%= @dns_updater_username %>
+dns_updater_password = '<%= @dns_updater_password %>'
+dns_updater_project = <%= @dns_updater_project %>
+
+zones_json_file = '/etc/dynamicproxy-api/zones.json'
+proxy_dns_ipv4 = <%= @proxy_dns_ipv4 %>
 sqlalchemy_uri = 'sqlite:////etc/dynamicproxy-api/data.db'
 
 [keystone_authtoken]
@@ -26,5 +33,5 @@ service_type = proxy
 delay_auth_decision = True
 
 [flask_keystone]
-# this does not matter for now, will be filled in when we add policy enforcement
+# this can be empty, we're using a different mechanism (oslo.policy) for role checks
 roles = ""

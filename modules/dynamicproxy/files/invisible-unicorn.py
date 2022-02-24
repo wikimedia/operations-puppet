@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# ^ above line exists purely to make Jenkins test this using Python 3
+#
 #   Copyright 2013 Yuvi Panda <yuvipanda@gmail.com>
 #   Copyright 2021 Taavi Väänänen <hi@taavi.wtf>
 #
@@ -24,9 +27,12 @@ Redis until the data has been commited to the database. Hence it is possible
 for the db call to succeed and the redis call to fail, causing the db and
 redis to be out of sync. Currently this is not really handled by the API."""
 import flask
+import json
+import mwopenstackclients
 import redis
 import re
 
+from designateclient.v2 import client as designateclient
 from flask_keystone import FlaskKeystone
 from flask_oslolog import OsloLog
 from flask_sqlalchemy import SQLAlchemy
@@ -37,7 +43,13 @@ from werkzeug.exceptions import HTTPException
 
 cfgGroup = cfg.OptGroup('dynamicproxy')
 opts = [
-    cfg.StrOpt('sqlalchemy_uri'),
+    cfg.StrOpt('dns_updater_keystone_api_url'),
+    cfg.StrOpt('dns_updater_username'),
+    cfg.StrOpt('dns_updater_password', secret=True),
+    cfg.StrOpt('dns_updater_project'),
+    cfg.StrOpt('zones_json_file'),
+    cfg.StrOpt('proxy_dns_ipv4'),
+    cfg.StrOpt('sqlalchemy_uri', secret=True),
 ]
 
 key = FlaskKeystone()
@@ -69,11 +81,12 @@ log.init_app(app)
 
 
 class Project(db.Model):
-    """Represents a Wikitech Project.
+    """
+    Represents a Keystone project.
     Primary unit of access control.
-    Note: No access control implemented yet :P
 
-    Not represented at the Redis level at all"""
+    Not represented at the Redis level at all
+    """
     id = db.Column(db.Integer, primary_key=True)
     # this is actually what openstack calls "project id"
     name = db.Column(db.String(256), unique=True)
@@ -110,7 +123,7 @@ class Backend(db.Model):
         self.url = url
 
 
-class RedisStore(object):
+class RedisStore:
     """Represents a redis instance that has routing info that the proxy reads"""
     def __init__(self, redis_conn):
         self.redis = redis_conn
@@ -136,7 +149,114 @@ class RedisStore(object):
         pipeline.delete(key).sadd(key, *backends).execute()
 
 
+class Dns:
+    """Deals with any DNS writes."""
+    def __init__(self, zones: dict, target_ipv4: str, clients: mwopenstackclients.Clients):
+        self.zones = zones
+        self.target_ipv4 = target_ipv4
+        self.clients = clients
+
+    def designateclient(self, project) -> designateclient.Client:
+        return designateclient.Client(session=self.clients.session(project))
+
+    def should_do_anything(self) -> bool:
+        """Checks if we should even do any DNS writes."""
+        if not flask.has_request_context():
+            return True
+        return flask.request.headers.get("X-Novaproxy-Edit-Dns", "true") != "false"
+
+    def get_zone(self, project: str, hostname: str):
+        """Determines the Keystone project and DNS zone to use for a particular hostname."""
+        if hostname[-1] != ".":
+            hostname += "."
+
+        hostname_parent = hostname[hostname.index(".") + 1:]
+
+        # For now, regardless if the project owns that zone, ensure that
+        # the used parent zone is explicitely allowed by the admins
+        if hostname_parent in self.zones:
+            for zone in self.designateclient(project).zones.list():
+                # we don't have multi-level wildcard certs
+                if zone["name"] == hostname:
+                    return (hostname, project, zone["id"])
+
+            # TODO: check for conflicting other projects' zones?
+
+            return (
+                hostname,
+                self.zones[hostname_parent]["project"],
+                self.zones[hostname_parent]["id"]
+            )
+
+        log.logger.info(
+            "Did not find zone for hostname %s (parent %s, supported zones %s)",
+            hostname, hostname_parent, ', '.join(self.zones.keys())
+        )
+        return None
+
+    def can_use_hostname(self, project: str, hostname: str) -> bool:
+        """Checks if the given project can use the given hostname."""
+        zone = self.get_zone(project, hostname)
+        if zone is None:
+            return False
+
+        hostname, project, zone_id = zone
+        client = self.designateclient(project)
+
+        existing_records = client.recordsets.list(
+            zone_id,
+            criterion={"name": hostname, "type": "A"}
+        )
+        if len(existing_records) != 0:
+            log.logger.info(
+                "Rejecting can_use_hostname (%s %s), found existing records: %s",
+                project, hostname, ", ".join([record["name"] for record in existing_records])
+            )
+
+            # temporary 'if' case, in the future this should be a hard fail
+            # for now, horizon and similar tools create the record before creating the proxy,
+            # meaning that the record exists when we ensure that it does not exist
+            if self.should_do_anything():
+                return False
+
+        return True
+
+    def add_records_for(self, project: str, hostname: str):
+        if not self.should_do_anything():
+            return
+
+        hostname, project, zone_id = self.get_zone(project, hostname)
+        client = self.designateclient(project)
+
+        if not client.recordsets.list(zone_id, criterion={"name": hostname, "type": "A"}):
+            client.recordsets.create(zone_id, hostname, "A", [self.target_ipv4])
+
+    def delete_records_for(self, project: str, hostname: str):
+        if not self.should_do_anything():
+            return
+
+        hostname, project, zone_id = self.get_zone(project, hostname)
+        client = self.designateclient(project)
+
+        a_recordsets = client.recordsets.list(zone_id, criterion={"name": hostname, "type": "A"})
+        if not a_recordsets:
+            client.recordsets.delete(zone_id, a_recordsets[0]["id"])
+
+
+with open(cfg.CONF.dynamicproxy.zones_json_file, "r") as f:
+    zones = json.load(f)
+
 redis_store = RedisStore(redis.Redis())
+dns = Dns(
+    zones,
+    cfg.CONF.dynamicproxy.proxy_dns_ipv4,
+    mwopenstackclients.Clients(
+        username=cfg.CONF.dynamicproxy.dns_updater_username,
+        password=cfg.CONF.dynamicproxy.dns_updater_password,
+        project=cfg.CONF.dynamicproxy.dns_updater_project,
+        url=cfg.CONF.dynamicproxy.dns_updater_keystone_api_url,
+    )
+)
 
 
 class Forbidden(HTTPException):
@@ -154,7 +274,7 @@ def is_valid_domain(hostname):
     if hostname[-1] == ".":
         # strip exactly one dot from the right, if present
         hostname = hostname[:-1]
-    allowed = re.compile("(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
+    allowed = re.compile("(?!-)[A-Z\\d-]{1,63}(?<!-)$", re.IGNORECASE)
     return all(allowed.match(x) for x in hostname.split("."))
 
 
@@ -170,7 +290,16 @@ def enforce_policy(rule, project_id):
     # if the project in the url is for a different project than what
     # the keystone token is, error out early.
     if ctx.project_id != project_id:
+        log.logger.warning(
+            "Encountered project id %s but keystone token was for project %s",
+            project_id, ctx.project_id
+        )
         raise Forbidden("Invalid project id.")
+
+    log.logger.info(
+        "Enforcing policy %s for user %s (%s) and project %s",
+        rule, ctx.user_id, ', '.join(ctx.roles), ctx.project_id
+    )
 
     enforcer.authorize(
         rule,
@@ -218,6 +347,10 @@ def create_mapping(project_name):
     route = Route.query.filter_by(domain=domain).first()
     if route is None:
         enforce_policy('proxy:create', project_name)
+        if not dns.can_use_hostname(project_name, domain):
+            return flask.jsonify({"error": f"Can't use domain {domain}"}), 403
+
+        dns.add_records_for(project_name, domain)
         route = Route(domain)
         route.project = project
         db.session.add(route)
@@ -255,6 +388,8 @@ def delete_mapping(project_name, domain):
     db.session.commit()
 
     redis_store.delete_route(route)
+
+    dns.delete_records_for(project, domain)
 
     return "deleted", 200
 
