@@ -23,12 +23,13 @@ class profile::bird::anycast(
 
   if $neighbors_list {
     $_neighbors_list = $neighbors_list
+    $_multihop = $multihop
   } else {
     $_neighbors_list = $do_ipv6 ? {
         true    => [$facts['default_routes']['ipv4'], $facts['default_routes']['ipv6']],
         default => [$facts['default_routes']['ipv4']],
     }
-    $multihop = false
+    $_multihop = false
   }
 
   $neighbors_for_ferm = join($_neighbors_list, ' ')
@@ -54,7 +55,7 @@ class profile::bird::anycast(
         srange => "(${neighbors_for_ferm})",
         before => Class['::bird'],
     }
-    if $multihop {
+    if $_multihop {
       ferm::service { 'bird-bfd-multi-ctl':  # Multihop BFD
           proto  => 'udp',
           port   => '4784',
@@ -77,7 +78,7 @@ class profile::bird::anycast(
       bind_service => 'anycast-healthchecker.service',
       bfd          => $bfd,
       do_ipv6      => $do_ipv6,
-      multihop     => $multihop,
+      multihop     => $_multihop,
       require      => Class['::bird::anycast_healthchecker'],
   }
 
