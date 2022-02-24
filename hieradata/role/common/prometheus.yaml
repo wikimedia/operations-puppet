@@ -38,3 +38,4 @@ profile::lvs::realserver::pools:
       - prometheus@k8s-mlserve
       - prometheus@ops
       - prometheus@services
+      - apache2
