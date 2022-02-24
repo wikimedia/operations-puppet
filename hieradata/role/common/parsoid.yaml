@@ -12,6 +12,7 @@ profile::lvs::realserver::pools:
       - nginx
       - mcrouter
       - nutcracker
+      - apache2
 
 has_lvs: true
 profile::mediawiki::webserver::has_tls: true
