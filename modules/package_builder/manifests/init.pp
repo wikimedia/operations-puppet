@@ -87,7 +87,6 @@ class package_builder(
         'openstack-pkg-tools',
         'patchutils',
         'php-dev',
-        'pkg-js-tools',
         'pkg-kde-tools',
         'pkg-php-tools',
         'postgresql-server-dev-all',
@@ -102,9 +101,6 @@ class package_builder(
         'wdiff',
         'zip',
     ])
-    if debian::codename::ge('bullseye') {
-        ensure_packages(['node-babel7'])
-    }
 
     file { '/etc/pbuilderrc':
         ensure  => file,
