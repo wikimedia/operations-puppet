@@ -359,3 +359,12 @@ Suite: buster-backports-2.4
 Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
+
+Name: thirdparty/openstack-db
+Method: https://mirrors.xtom.com/mariadb/repo/10.5/debian/
+Suite: bullseye
+Components: main>thirdparty/openstack-db
+UDebComponents:
+Architectures: amd64
+VerifyRelease: F1656F24C74CD1D8
+ListShellHook: grep-dctrl \( -S mariadb-10.5 \) -o \( -e galera-4 \) || [ $? -eq 1 ]

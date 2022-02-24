@@ -199,6 +199,7 @@ Components: main
  thirdparty/elastic68
  thirdparty/hwraid
  thirdparty/opensearch1
+ thirdparty/openstack-db
  thirdparty/routinator
 UDebComponents: main
 Update:
@@ -209,6 +210,7 @@ Update:
  hwraid-stretch
  routinator
  thirdparty/ceph-octopus-bullseye
+ thirdparty/openstack-db
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
