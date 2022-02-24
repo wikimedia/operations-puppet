@@ -80,7 +80,11 @@ protocol bgp {
 <% } else { -%>
     local <%= $bird::ipv4_src %> as 64605;
 <%- } -%>
+<%- if $do_ipv6 and ! $bird::multihop { -%>
+    neighbor <%= $neighbor %>%<%= $facts['networking']['primary'] %> as 14907;
+<% } else { -%>
     neighbor <%= $neighbor %> as 14907;
+<%- } -%>
     <%- if $bird::bfd { -%>
     bfd yes;
     <%- } -%>
