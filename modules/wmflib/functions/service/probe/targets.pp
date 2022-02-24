@@ -51,10 +51,5 @@ function wmflib::service::probe::targets(
     ]
   }
 
-  $icmp_probes = [{
-    'labels'  => $common_labels + { 'module' => "icmp_${service_name}_${af}" },
-    'targets' => [ "${service_name}:${port}@${address}" ],
-  }]
-
-  return flatten($probes, $icmp_probes)
+  return flatten($probes)
 }
