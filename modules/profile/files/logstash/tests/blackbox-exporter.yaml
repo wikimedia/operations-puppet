@@ -1,0 +1,43 @@
+fields:
+  service.type: "prometheus-blackbox-exporter"
+  host.name: "prometheus4001"
+  log.syslog.severity.code: "6"
+  log.syslog.severity.name: "informational"
+  log.syslog.facility.code: "23"
+  log.syslog.facility.name: "local7"
+  log.syslog.priority: "190"
+  log.level: "info"
+  ecs.version: "1.7.0"
+codec: "json_lines"
+ignore:
+  - "host"
+  - "normalized"
+testcases:
+  - input:
+      - >
+        {
+          "message": "ts=2022-02-28T10:25:49.203643345Z caller=main.go:169 module=icmp_librenms_ip4 target=208.80.153.110 level=debug msg=\"Creating socket\""
+        }
+    expected:
+      - ecs:
+          version: "1.7.0"
+        service:
+          type: "prometheus-blackbox-exporter"
+          name: "icmp_librenms_ip4"
+        server:
+          address: "208.80.153.110"
+        log:
+          level: "DEBUG"
+          syslog:
+            facility:
+              code: 23
+              name: "local7"
+            priority: 191
+            severity:
+              code: 7
+              name: "debug"
+        labels:
+          caller: "main.go:169"
+        message: "target=208.80.153.110 msg=\"Creating socket\""
+        '@timestamp': "2022-02-28T10:25:49.203Z"
+
