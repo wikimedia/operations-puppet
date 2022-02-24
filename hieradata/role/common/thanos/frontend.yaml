@@ -15,6 +15,7 @@ profile::lvs::realserver::pools:
     services:
       - thanos-query
       - thanos-query-frontend
+      - apache2
   thanos-swift:
     services:
       - swift-proxy
