@@ -24,11 +24,20 @@ class galera(
     Stdlib::Unixpath    $basedir         = '/usr',
     Stdlib::Unixpath    $datadir         = '/var/lib/mysql',
     Stdlib::Unixpath    $tmpdir          = '/tmp',
-    ) {
+) {
+    debian::codename::require('bullseye', '==', 'likely missing reprepro packages')
 
     # This will install the latest mariadb + required
     #  galera components.
-    ensure_packages(['mariadb-server', 'mariadb-backup'])
+    apt::package_from_component { 'openstack-db-galera':
+        component => 'thirdparty/openstack-db',
+        packages  => {
+            'mariadb-server' => 'present',
+            'mariadb-backup' => 'present',
+            'galera-4'       => 'present',
+        },
+        priority  => '1002',  # to always prefer this vs debian archive
+    }
 
     $service_ensure = $enabled ? {
         true => present,
