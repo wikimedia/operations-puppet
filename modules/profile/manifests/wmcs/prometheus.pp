@@ -170,6 +170,12 @@ class profile::wmcs::prometheus(
             $galera_jobs,
         ].flatten,
         global_config_extra    => $config_extra,
+        rule_files_extra       => ['/srv/alerts/cloud/*.yaml'],
+    }
+
+    class { 'alerts::deploy::prometheus':
+        # let's not introduce new uses of the 'labs' term in operations/alerts.git
+        instances => ['cloud'],
     }
 
     httpd::site{ 'prometheus':
