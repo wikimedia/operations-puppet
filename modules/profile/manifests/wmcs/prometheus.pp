@@ -3,7 +3,6 @@ class profile::wmcs::prometheus(
     String $storage_retention = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
     Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
-    Array[Stdlib::Host] $toolforge_redis_hosts = lookup('profile::wmcs::prometheus::toolforge_redis_hosts', {'default_value' => []}),
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::wmcs::prometheus::storage_retention_size',   {default_value => undef}),
 ){
 
@@ -72,24 +71,6 @@ class profile::wmcs::prometheus(
         },
     ]
 
-    $redis_jobs = [
-        {
-            'job_name'        => 'redis_toolforge',
-            'scheme'          => 'http',
-            'file_sd_configs' => [
-                { 'files' => [ "${targets_path}/redis_toolforge_*.yaml" ] }
-            ],
-            'metric_relabel_configs' => [
-                # redis_exporter runs alongside each redis instance, thus drop
-                # the (uninteresting in this case) 'addr' and 'alias' labels
-                {
-                    'regex'  => '(addr|alias)',
-                    'action' => 'labeldrop',
-                },
-            ],
-        },
-    ]
-
     $ceph_jobs = [
       {
         'job_name'        => "ceph_${::site}",
@@ -138,9 +119,7 @@ class profile::wmcs::prometheus(
     }
 
     file { "${targets_path}/redis_toolforge_hosts.yaml":
-        content => to_yaml([{
-            'targets' => regsubst($toolforge_redis_hosts, '(.*)', '[\0]:9121')
-        }]);
+        ensure => absent,
     }
 
     prometheus::class_config{ "ceph_${::site}":
@@ -178,8 +157,8 @@ class profile::wmcs::prometheus(
         memory_chunks          => $memory_chunks,
         scrape_configs_extra   => [
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
-            $pdns_rec_jobs, $openstack_jobs, $redis_jobs,
-            $ceph_jobs, $galera_jobs,
+            $pdns_rec_jobs, $openstack_jobs, $ceph_jobs,
+            $galera_jobs,
         ].flatten,
     }
 
