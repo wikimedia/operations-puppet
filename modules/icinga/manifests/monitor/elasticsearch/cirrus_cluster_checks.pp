@@ -67,14 +67,4 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
         contact_group   => 'admins,team-discovery',
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Pool_Counter_rejections_(search_is_currently_too_busy)',
     }
-
-    # Background repair process finding lots of bad documents - T295365
-    monitoring::graphite_threshold { 'mediawiki_cirrussearch_indices_high_fix_rate':
-        description     => 'Mediawiki CirrusSearch Saneitizer Weekly Fix Rate',
-        dashboard_links => ['https://grafana.wikimedia.org/d/JLK3I_siz/elasticsearch-indexing?viewPanel=35&orgId=1&from=now-6M&to=now'],
-        metric          => "smartSummarize(transformNull(MediaWiki.CirrusSearch.{eqiad,codfw,cloudelastic}.sanitization.fixed.sum, 0), '1wk', 'sum')",
-        warning         => 100000,
-        critical        => 250000,
-        contact_group   => 'admins,team-discovery',
-    }
 }
