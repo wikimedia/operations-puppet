@@ -8,12 +8,7 @@ class mjolnir(
     Stdlib::Port $logstash_port
 ) {
 
-    # Vary libsnappy package on  debian version.
-    $libsnappy = debian::codename::lt('stretch') ? {
-        true    => 'libsnappy1',
-        default => 'libsnappy1v5',
-    }
-    ensure_packages(['virtualenv', 'zip', 'python3-swiftclient', $libsnappy])
+    ensure_packages(['virtualenv', 'zip', 'python3-swiftclient', 'libsnappy1v5'])
 
     file { '/etc/mjolnir':
         ensure => 'directory',
