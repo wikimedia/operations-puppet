@@ -1190,18 +1190,30 @@ node /^dumpsdata100[4-5]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
-# new elastic servers T281989
-node /^(elastic106[8-9]|elastic107[0-9]|elastic108[0-3])\.eqiad\.wmnet$/ {
-    role(elasticsearch::cirrus)
-}
+# being decom'd in T302517
 node /^elastic103[2-9]\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+
+# being decom'd in T302517
+node /^elastic104[0-7]\.eqiad\.wmnet/ {
+    role(spare::system)
+}
+
+node /^elastic104[8-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
-node /^elastic10[4-5][0-9]\.eqiad\.wmnet/ {
+
+node /^elastic105[0-9]\.eqiad\.wmnet/ {
     role(elasticsearch::cirrus)
 }
 
 node /^elastic106[0-7]\.eqiad\.wmnet/ {
+    role(elasticsearch::cirrus)
+}
+
+# new elastic servers T281989
+node /^(elastic106[8-9]|elastic107[0-9]|elastic108[0-3])\.eqiad\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
