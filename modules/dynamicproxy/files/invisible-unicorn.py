@@ -389,7 +389,7 @@ def delete_mapping(project_name, domain):
 
     redis_store.delete_route(route)
 
-    dns.delete_records_for(project, domain)
+    dns.delete_records_for(project_name, domain)
 
     return "deleted", 200
 
