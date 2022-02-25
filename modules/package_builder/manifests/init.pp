@@ -110,6 +110,10 @@ class package_builder(
         content => template('package_builder/pbuilderrc.erb'),
     }
 
+    if debian::codename::ge('bullseye') {
+        ensure_packages(['node-babel7', 'pkg-js-tools'])
+    }
+
     file { '/usr/share/lintian/profiles/wikimedia':
         ensure  => directory,
         owner   => 'root',
