@@ -438,13 +438,8 @@ node /^cp30(5[13579]|6[1])\.esams\.wmnet$/ {
     role(cache::upload)
 }
 
-# Envoy test T271421
-node 'cp3063.esams.wmnet' {
-    role(cache::upload_envoy)
-}
-
 # HAProxy test T290005
-node 'cp3065.esams.wmnet' {
+node /^cp306[35]\.esams\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
