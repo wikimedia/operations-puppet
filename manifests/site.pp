@@ -479,13 +479,8 @@ node /^cp50(0[1-4]|1[34])\.eqsin\.wmnet$/ {
     role(cache::upload)
 }
 
-# Envoy test - T271421
-node 'cp5005.eqsin.wmnet' {
-    role(cache::upload_envoy)
-}
-
 # HAProxy test T290005
-node 'cp5006.eqsin.wmnet' {
+node /^cp500[56]\.eqsin\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
