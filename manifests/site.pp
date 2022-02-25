@@ -462,23 +462,13 @@ node /^cp40(2[1-4]|3[34])\.ulsfo\.wmnet$/ {
     role(cache::upload)
 }
 
-# Envoy test - T271421
-node 'cp4025.ulsfo.wmnet' {
-    role(cache::upload_envoy)
-}
-
 # HAProxy test
-node 'cp4026.ulsfo.wmnet' {
+node /^cp402[56]\.ulsfo\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
 node /^cp40(2[789]|3[056])\.ulsfo\.wmnet$/ {
     role(cache::text)
-}
-
-# Envoy test - T271421
-node 'cp4031.ulsfo.wmnet' {
-    role(cache::text_envoy)
 }
 
 # HAProxy test - T290005
