@@ -195,4 +195,12 @@ class profile::cache::haproxy(
         destination => $mtail_dir,
         notify      => Service['haproxy-mtail@tls'],
     }
+
+    file { '/usr/local/sbin/haproxy-restart':
+        ensure  => present,
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        content => file('profile/cache/haproxy_restart.sh'),
+    }
 }
