@@ -16,7 +16,7 @@ RUN set -e; \
     apt-get install -y ${BASE_PACKAGES}; \
     adduser --home /${C_USER} --disabled-password --gecos "" ${C_USER}; \
     echo "${C_USER} ALL=(ALL) NOPASSWD: ALL" > ${SUDOERS_FILE}; \
-    echo "${WIKIMEDIA_REPO} main\n${WIKIMEDIA_REPO} component/varnish6" > ${WIKIMEDIA_REPO_FILE}; \
+    echo "${WIKIMEDIA_REPO} main" > ${WIKIMEDIA_REPO_FILE}; \
     wget --quiet "https://wikitech.wikimedia.org/w/index.php?title=APT_repository/Stretch-Key&action=raw" -O - | apt-key add -; \
     apt-get update; \
     apt-get install --no-install-recommends -t "${REPO}" -y ${VARNISH_BASE}; \
