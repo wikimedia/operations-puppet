@@ -76,6 +76,8 @@ class profile::openstack::base::galera::node(
     prometheus::mysqld_exporter { 'default':
         client_password => $prometheus_db_pass,
         client_socket   => $socket,
+    } -> service { 'prometheus-mysqld-exporter':
+        ensure => 'running',
     }
 
     openstack::db::project_grants { 'prometheus':
