@@ -1,6 +1,11 @@
 # Docker Script
 You can run your Varnish tests inside a docker container by executing the [docker_run.sh](docker_run.sh) file. For the script to run, you will have to pass 2 mandatory arguments as depicted below. You are also required to export your `Jenkins` credentials that will in turn be used inside the container.
-*  Export your Jenkins credentials i.e username and token.
+
+* Install Docker. (Note that `apt install docker` is incorrect.)
+```bash
+sudo apt install docker.io
+```
+* Export your Jenkins credentials i.e username and token.
 ```bash
 export JENKINS_USERNAME=<YOUR_JENKINS_USERNAME>
 export JENKINS_API_TOKEN=<YOUR_JENKINS_API_TOKEN>
@@ -9,7 +14,7 @@ export JENKINS_API_TOKEN=<YOUR_JENKINS_API_TOKEN>
 ```
 ./docker_run.sh HOSTNAME CHANGE_ID
 ```
-The above command will build a test image, if it does not already exits, then it starts a container in which the varnish tests will be run. When done running the tests successfully, a copy the test results is dumped into your local `tmp` folder for your review. Also printed on your screen is summary of the test results.
+The above command will build a test image. If it does not already exist, then it starts a container in which the varnish tests will be run. When done running the tests successfully, a copy the test results is dumped into your local `tmp` folder for your review. Also printed on your screen is summary of the test results.
 
 ### Examples
 ```
