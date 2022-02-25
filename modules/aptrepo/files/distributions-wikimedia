@@ -102,6 +102,7 @@ Components: main
  component/ci
  component/dnsdist
  component/envoy-future
+ component/ganeti3
  component/idp-test
  component/iptables185
  component/jdk8
