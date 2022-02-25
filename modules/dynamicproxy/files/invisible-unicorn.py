@@ -239,7 +239,7 @@ class Dns:
         client = self.designateclient(project)
 
         a_recordsets = client.recordsets.list(zone_id, criterion={"name": hostname, "type": "A"})
-        if not a_recordsets:
+        if a_recordsets:
             client.recordsets.delete(zone_id, a_recordsets[0]["id"])
 
 
