@@ -14,6 +14,7 @@
 #   but is required as a security measure in case the API service is started by accident
 # @param intermedites An array of intermediate certificates to create.  This profile ensures the certificates are
 #   created however you will need to manually copy the created certificate to the puppet repo
+# @param bootstrap Whether or not to attempt to bootstrap the root CA
 class profile::pki::root_ca(
     String                        $common_name    = lookup('profile::pki::root_ca::common_name'),
     String                        $vhost          = lookup('profile::pki::root_ca::vhost'),
@@ -27,6 +28,7 @@ class profile::pki::root_ca(
     Hash[String, Cfssl::Profile]  $profiles       = lookup('profile::pki::root_ca::profiles'),
     Hash[String, Cfssl::Auth_key] $auth_keys      = lookup('profile::pki::root_ca::auth_keys'),
     Array[String[3]]              $intermediates  = lookup('profile::pki::root_ca::intermediates'),
+    Boolean                       $bootstrap      = lookup('profile::pki::root_ca::bootstrap'),
 ) {
     $safe_title   = $common_name.regsubst('\W', '_', 'G')
     $crl_base_url = "http://${vhost}/crl/${safe_title}"
@@ -46,15 +48,28 @@ class profile::pki::root_ca(
         manage_services  => false,
     }
 
-    cfssl::csr { "${cfssl::csr_dir}/${safe_title}.csr":
+    $root_csr = "${cfssl::csr_dir}/${safe_title}.csr"
+    $root_dir = "${cfssl::signer_dir}/${safe_title}"
+
+    cfssl::csr { $root_csr:
         common_name => $common_name,
         names       => $names,
         key         => $key_params,
     }
 
+    if ($bootstrap) {
+        exec { 'initca':
+            cwd      => "${root_dir}/ca",
+            command  => "cfssl genkey -initca ${root_csr} | cfssljson -bare ca",
+            provider => 'shell',
+            creates  => "${root_dir}/ca/ca-key.pem",
+            require  => Cfssl::Csr[$root_csr],
+        }
+    }
+
     cfssl::cert {"${common_name}_ocsp_signing_cert":
         names         => $names,
-        signer_config => {'config_dir' => "${cfssl::signer_dir}/${safe_title}"},
+        signer_config => {'config_dir' => $root_dir},
         profile       => 'ocsp',
         require       => Cfssl::Signer[$common_name],
     }
@@ -62,7 +77,7 @@ class profile::pki::root_ca(
         cfssl::cert {$intermediate:
             key           => $key_params,
             names         => $names,
-            signer_config => {'config_dir' => "${cfssl::signer_dir}/${safe_title}"},
+            signer_config => {'config_dir' => $root_dir},
             profile       => 'intermediate',
             require       => Cfssl::Signer[$common_name],
         }

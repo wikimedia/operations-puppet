@@ -1,1 +1,2 @@
 profile::pki::root_ca::enable_backups: true
+profile::pki::root_ca::bootstrap: false

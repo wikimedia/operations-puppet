@@ -5,6 +5,7 @@ profile::puppetmaster::pontoon::pki_enabled: true
 # Needs overwrite
 profile::pki::root_ca::db_driver: 'sqlite3'
 profile::pki::root_ca::db_host: 'localhost'
+profile::pki::root_ca::bootstrap: true
 
 # Should be in common profile in hiera
 profile::pki::root_ca::intermediates:

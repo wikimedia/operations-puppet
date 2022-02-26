@@ -505,6 +505,7 @@ profile::pki::server::root_ca_profiles: {}
 profile::pki::server::default_profiles: {}
 profile::pki::server::vhost: "%{facts.networking.fqdn}"
 profile::pki::root_ca::enable_backups: false
+profile::pki::root_ca::bootstrap: false
 
 profile::pki::client::root_ca_cn: WMF_TEST_CA
 profile::pki::client::root_ca_source: "puppet:///modules/profile/pki/ROOT/WMF_TEST_CA.pem"
