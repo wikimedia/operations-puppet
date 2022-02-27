@@ -149,6 +149,13 @@ server {
         }
     }
 
+    # Publish SSH fingerprints from PuppetDB under a path controlled by the 'admin' tool
+    location ~ ^/admin/fingerprints(/.*)?$ {
+        autoindex on;
+        alias <%= @fingerprints_dir %>$1;
+        default_type text/plain;
+    }
+
     location ~ ^/([^/]+)(/.*)?$ {
         autoindex on;
         add_header Access-Control-Allow-Origin '*';
