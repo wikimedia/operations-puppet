@@ -1,15 +1,10 @@
 class profile::configmaster(
-    $conftool_prefix = lookup('conftool_prefix'),
-    $abuse_networks  = lookup('abuse_networks')
+    $conftool_prefix                    = lookup('conftool_prefix'),
+    $abuse_networks                     = lookup('abuse_networks'),
+    Stdlib::Host $server_name           = lookup('profile::configmaster::server_name'),
+    Array[Stdlib::Host] $server_aliases = lookup('profile::configmaster::server_aliases'),
 ) {
-
-    $server_aliases = [
-        'config-master.eqiad.wmnet',
-        'config-master.codfw.wmnet',
-        'config-master.esams.wmnet',
-        'config-master.ulsfo.wmnet',
-        'config-master.eqsin.wmnet',
-        'config-master.drmrs.wmnet',
+    $real_server_aliases = $server_aliases + [
         'pybal-config',
     ]
 
@@ -76,9 +71,9 @@ class profile::configmaster(
     httpd::conf { 'configmaster_port':
         content => "Listen 80\n"
     }
-    profile::idp::client::httpd::site{'config-master.wikimedia.org':
+    profile::idp::client::httpd::site{ $server_name:
         document_root    => $document_root,
-        server_aliases   => $server_aliases,
+        server_aliases   => $real_server_aliases,
         protected_uri    => $protected_uri,
         vhost_content    => 'profile/configmaster/config-master.conf.erb',
         proxied_as_https => true,
