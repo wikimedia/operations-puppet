@@ -57,14 +57,6 @@ lvs::interfaces::vlan_data:
       'lvs1018': 'ens2f0np0:10.64.132.18'
       'lvs1019': 'ens2f0np0:10.64.132.19'
       'lvs1020': 'ens2f0np0:10.64.132.20'
-  private1-e4-eqiad:
-    id: "1034"
-    netmask: 255.255.255.0
-    iface:
-      'lvs1017': 'ens2f0np0:10.64.133.17'
-      'lvs1018': 'ens2f0np0:10.64.133.18'
-      'lvs1019': 'ens2f0np0:10.64.133.19'
-      'lvs1020': 'ens2f0np0:10.64.133.20'
   private1-f1-eqiad:
     id: "1035"
     netmask: 255.255.255.0
@@ -89,14 +81,6 @@ lvs::interfaces::vlan_data:
       'lvs1018': 'ens2f0np0:10.64.136.18'
       'lvs1019': 'ens2f0np0:10.64.136.19'
       'lvs1020': 'ens2f0np0:10.64.136.20'
-  private1-f4-eqiad:
-    id: "1038"
-    netmask: 255.255.255.0
-    iface:
-      'lvs1017': 'ens2f0np0:10.64.137.17'
-      'lvs1018': 'ens2f0np0:10.64.137.18'
-      'lvs1019': 'ens2f0np0:10.64.137.19'
-      'lvs1020': 'ens2f0np0:10.64.137.20'
   public1-a-eqiad:
     id: "1001"
     netmask: "255.255.255.192"
