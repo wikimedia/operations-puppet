@@ -478,13 +478,8 @@ node /^cp50(0[789]|1[056])\.eqsin\.wmnet$/ {
     role(cache::text)
 }
 
-# Envoy test - T271421
-node 'cp5011.eqsin.wmnet' {
-    role(cache::text_envoy)
-}
-
 # HAProxy test - T290005
-node 'cp5012.eqsin.wmnet' {
+node /^cp501[12]\.eqsin\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
