@@ -302,6 +302,12 @@ define elasticsearch::instance(
         command     => "/usr/bin/find /var/log/elasticsearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00'},
     }
+
+    systemd::tmpfile {"elasticsearch-${cluster_name}.conf":
+        ensure  => present,
+        content => "d    /var/run/elasticsearch-${cluster_name}  0755 elasticsearch elasticsearch - -",
+    }
+
     # Note that we don't notify the Elasticsearch service of changes to its
     # config files because you need to be somewhat careful when restarting it.
     # So, for now at least, we'll be restarting it manually.

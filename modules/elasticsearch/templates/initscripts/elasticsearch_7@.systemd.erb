@@ -12,7 +12,7 @@ PrivateTmp=true
 Environment=ES_HOME=/usr/share/elasticsearch
 Environment=ES_PATH_CONF=/etc/elasticsearch/%i
 Environment=ES_JVM_OPTIONS=/etc/elasticsearch/%i/jvm.options
-Environment=PID_DIR=/var/run/elasticsearch
+Environment=PID_DIR=/var/run/elasticsearch-%i
 Environment=ES_SD_NOTIFY=true
 
 <% if @java_home -%>
@@ -24,10 +24,11 @@ WorkingDirectory=/usr/share/elasticsearch
 User=elasticsearch
 Group=elasticsearch
 
+
 # Force creation of /var/run/elasticsearch (see T276198)
-ExecStartPre=/bin/systemd-tmpfiles --create /usr/lib/tmpfiles.d/elasticsearch.conf
+ExecStartPre=/bin/systemd-tmpfiles --create /etc/tmpfiles.d/elasticsearch-%i.conf
 ExecStart=/usr/share/elasticsearch/bin/elasticsearch \
-        -p /var/run/elasticsearch/%i.pid \
+        -p ${PID_DIR}/%i.pid \
         --quiet \
         -Epath.logs=/var/log/elasticsearch \
         -Epath.data=/srv/elasticsearch/%i
