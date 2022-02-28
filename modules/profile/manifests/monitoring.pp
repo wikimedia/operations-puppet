@@ -246,22 +246,25 @@ class profile::monitoring(
     }
 
     # Alert on reported fs available being bigger than fs size
-    # Ideally this would be in check_disk instead, see also https://phabricator.wikimedia.org/T199436
-    monitoring::check_prometheus { 'filesystem_avail_bigger_than_size':
-        description     => 'Filesystem available is greater than filesystem size',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
-        contact_group   => $contact_group,
-        query           => "node_filesystem_avail_bytes{instance=\"${facts['hostname']}:9100\"} > node_filesystem_size_bytes",
-        # The query returns node_filesystem_avail_bytes metrics that match the condition. warning/critical
-        # are required but placeholders in this case.
-        warning         => 1,
-        critical        => 2,
-        check_interval  => 60,
-        retry_interval  => 5,
-        retries         => 3,
-        method          => 'ge',
-        prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-        notes_link      => 'https://phabricator.wikimedia.org/T199436',
+    # This check is only relavant on Stretch and older, remove after Stretch is gone:
+    # https://phabricator.wikimedia.org/T302687
+    if debian::codename::le('stretch') {
+        monitoring::check_prometheus { 'filesystem_avail_bigger_than_size':
+            description     => 'Filesystem available is greater than filesystem size',
+            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
+            contact_group   => $contact_group,
+            query           => "node_filesystem_avail_bytes{instance=\"${facts['hostname']}:9100\"} > node_filesystem_size_bytes",
+            # The query returns node_filesystem_avail_bytes metrics that match the condition. warning/critical
+            # are required but placeholders in this case.
+            warning         => 1,
+            critical        => 2,
+            check_interval  => 60,
+            retry_interval  => 5,
+            retries         => 3,
+            method          => 'ge',
+            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
+            notes_link      => 'https://phabricator.wikimedia.org/T199436',
+        }
     }
     if $facts['has_ipmi'] {
         class { 'ipmi::monitor': ensure => $hardware_monitoring }
