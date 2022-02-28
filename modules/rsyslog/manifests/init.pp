@@ -30,12 +30,5 @@ class rsyslog {
         notify => Service['rsyslog'],
     }
 
-    # load modules from a single file fleet wide to avoid 'module already loaded' errors
-    rsyslog::conf { 'load_modules':
-        ensure   => present,
-        priority => 00,
-        content  => template('rsyslog/load_modules.conf.erb'),
-    }
-
     profile::auto_restarts::service { 'rsyslog': }
 }
