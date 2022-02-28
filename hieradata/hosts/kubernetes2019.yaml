@@ -1,0 +1,2 @@
+# See https://phabricator.wikimedia.org/T302208
+profile::base::overlayfs: true
