@@ -117,7 +117,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
 
   api-https:
     description: MediaWiki API cluster, api.svc.%{::site}.wmnet
