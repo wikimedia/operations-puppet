@@ -54,6 +54,7 @@ listen tls
 
     # TODO: refactor to a more configurable approach
     capture response header X-Cache-Status len 10
+    capture request header Host len 25
 
 <%- if @vars -%>
 <%- @vars.each do |var| -%>
