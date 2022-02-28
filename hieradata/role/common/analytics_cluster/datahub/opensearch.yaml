@@ -6,10 +6,10 @@ profile::opensearch::common_settings:
   awareness_attributes: ''
   auto_create_index: true
   short_cluster_name: datahub
-  expected_nodes: 2 # will eventually be 3
+  expected_nodes: 3
   heap_memory: '4G'
-  minimum_master_nodes: 1  # eventually this will be 2
-  recover_after_nodes: 1
+  minimum_master_nodes: 2
+  recover_after_nodes: 2
   recover_after_time: '1m'
   send_logs_to_logstash: true
   curator_uses_unicast_hosts: true
@@ -25,6 +25,8 @@ profile::opensearch::dc_settings:
   cluster_hosts:
     - datahubsearch1001.eqiad.wmnet
     - datahubsearch1002.eqiad.wmnet
+    - datahubsearch1003.eqiad.wmnet
   unicast_hosts:
     - datahubsearch1001.eqiad.wmnet
     - datahubsearch1002.eqiad.wmnet
+    - datahubsearch1003.eqiad.wmnet
