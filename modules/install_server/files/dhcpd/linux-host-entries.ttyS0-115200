@@ -159,6 +159,12 @@ host datahubsearch1001 {
     option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
+host datahubsearch1002 {
+    hardware ethernet aa:00:00:ad:42:5e;
+    fixed-address datahubsearch1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host dborch1001 {
     hardware ethernet aa:00:00:a1:94:8f;
     fixed-address dborch1001.wikimedia.org;
