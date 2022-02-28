@@ -383,13 +383,8 @@ node /^cp10(7[68]|8[0246])\.eqiad\.wmnet$/ {
     role(cache::upload)
 }
 
-# Envoy test T271421
-node 'cp1088.eqiad.wmnet' {
-    role(cache::upload_envoy)
-}
-
 # HAProxy test T290005
-node 'cp1090.eqiad.wmnet' {
+node /^cp10(88|90)\.eqiad\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
