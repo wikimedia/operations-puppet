@@ -48,4 +48,5 @@ class auditd (
         hasrestart => true,
     }
 
+    profile::auto_restarts::service { 'auditd': }
 }
