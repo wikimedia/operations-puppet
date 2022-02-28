@@ -88,14 +88,13 @@ class wikistats (
         source => 'puppet:///modules/wikistats/deploy-wikistats.sh',
     }
 
-    # FIXME rename repo, it was a deb in the past
-    # but not anymore and also not operations
-    git::clone { 'operations/debs/wikistats':
+    git::clone { 'repos/cloud/wikistats':
         ensure    => 'latest',
         directory => '/srv/wikistats',
         branch    => 'master',
         owner     => 'wikistatsuser',
         group     => 'wikistatsuser',
+        source    => 'gitlab',
     }
 
     $db_pass = fqdn_rand_string(23, 'Random9Fn0rd8Seed')

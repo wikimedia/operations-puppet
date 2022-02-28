@@ -21,7 +21,7 @@ any issues for production wikis. Just some outdated tables.
 
 
 The matching software is in another repo:
-operations/debs/wikistats
+https://gitlab.wikimedia.org/repos/cloud/wikistats
 
 It started out as an external project to create
 wiki syntax tables for pages like "List of largest wikis"
