@@ -49,6 +49,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/parse',
             '/srv/deployment/httpbb-tests/thumbor',
             '/srv/deployment/httpbb-tests/docker-registry',
+            '/srv/deployment/httpbb-tests/ores',
         ]:
             ensure => directory,
             purge  => true
@@ -101,6 +102,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'thumbor/test_thumbor.yaml':
         source => 'puppet:///modules/profile/httpbb/thumbor/test_thumbor.yaml'
+    }
+    httpbb::test_suite {'ores/test_ores.yaml':
+        source => 'puppet:///modules/profile/httpbb/ores/test_ores.yaml'
     }
 
     if $basicauth_credentials and $basicauth_credentials['docker-registry'] {
