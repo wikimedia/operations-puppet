@@ -3,6 +3,9 @@ class ipmi::monitor (
 ) {
     ensure_packages(['freeipmi-tools'])
 
+    # install ipmiseld on hardware to log ipmi system event log entries to syslog
+    ensure_packages('freeipmi-ipmiseld')
+
     # ipmi_devintf needs to be loaded for the checks to work properly (T167121)
     file { '/usr/local/lib/nagios/plugins/check_ipmi_sensor':
         ensure => present,
