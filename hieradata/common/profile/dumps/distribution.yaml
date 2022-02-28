@@ -140,7 +140,7 @@ profile::dumps::distribution::mirrors:
     active: 'yes'
   - url: 'https://wikimedia.bringyour.com'
     hostname: 'wikimedia.bringyour.com'
-    ipv4: ['172.28.224.55', 'wikimedia.bringyour.com']
+    ipv4: ['65.19.157.35', 'wikimedia.bringyour.com']
     ipv6: ['wikimedia.bringyour.com']
     contactname: 'Brien'
     contactaddy: 'brien@bringyour.com'
