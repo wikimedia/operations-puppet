@@ -50,8 +50,8 @@ class openstack::cinder::service(
             logging_enabled           => true,
             logfile_name              => 'wmcs-cinder-backup-manager.log',
             interval                  => {
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* 10:30:00', # daily at 10:30 UTC
+                'start'    => 'OnCalendar',
+                'interval' => 'Mon,Wed,Fri *-*-* 10:30:00', # The closer to every two days I could get
             },
             monitoring_enabled        => true,
             monitoring_contact_groups => 'wmcs-team-email',
