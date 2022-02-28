@@ -27,13 +27,6 @@ profile::services_proxy::envoy::listen_ipv6: true
 profile::mediawiki::httpd::logrotate_retention: 12
 
 profile::lvs::realserver::pools:
-  api:
-    services:
-      - php7.2-fpm
-      - apache2
-      - mcrouter
-      - nutcracker
-      - envoyproxy
   "api-https":
     services:
       - php7.2-fpm
