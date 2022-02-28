@@ -30,7 +30,7 @@
 # $+ssh+:: SSH command/wrapper to use when checking out, default: ''
 # $+timeout+:: Time out in seconds for the exec command, default: 300
 # $+source+:: Where to request the repo from, if $origin isn't specified
-#             'phabricator', 'github' and 'gerrit' accepted, default is 'gerrit'
+#             'phabricator', 'github', 'gitlab' and 'gerrit' accepted, default is 'gerrit'
 # $+environment_variables+:: An array of additional environment variables to pass
 #                           to the git exec.
 #
@@ -47,7 +47,13 @@
 #
 #   # Example: check out from gerrit:
 #   git::clone { 'analytics/wikistats2':
-#       directory = '/srv/wikistats2',
+#       directory => '/srv/wikistats2',
+#   }
+#
+#   # Example: check out from gitlab:
+#   git::clone { 'repos/cloud/wikistats':
+#       directory => '/srv/wikistats',
+#       source    => 'gitlab',
 #   }
 #
 define git::clone(
@@ -75,6 +81,7 @@ define git::clone(
         'phabricator' => 'https://phabricator.wikimedia.org/diffusion/%.git',
         'github'      => 'https://github.com/wikimedia/%s.git',
         'gerrit'      => 'https://gerrit.wikimedia.org/r/%s',
+        'gitlab'      => 'https://gitlab.wikimedia.org/%s',
         default       => 'https://gerrit.wikimedia.org/r/%s',
     }
 
