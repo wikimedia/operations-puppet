@@ -153,6 +153,10 @@ profile::services_proxy::envoy::listeners:
     timeout: "60s"
     service: shellbox-timeline
     keepalive: "4s"
+  - name: linkrecommendation
+    port: 6029
+    service: linkrecommendation
+    timeout: "10s"
   # Non-discovery records
   # Eqiad ports are at 61xx
   # Codfw ports are at 62xx
@@ -275,3 +279,4 @@ profile::services_proxy::envoy::enabled_listeners:
   - cloudelastic-omega-eqiad
   - cloudelastic-psi-eqiad
   - mwapi
+  - linkrecommendation
