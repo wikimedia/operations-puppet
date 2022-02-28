@@ -31,12 +31,6 @@ profile::services_proxy::envoy::listen_ipv6: true
 profile::mediawiki::httpd::logrotate_retention: 12
 
 profile::lvs::realserver::pools:
-  apaches:
-    services:
-      - php7.2-fpm
-      - apache2
-      - mcrouter
-      - nutcracker
   appservers-https:
     services:
       - php7.2-fpm

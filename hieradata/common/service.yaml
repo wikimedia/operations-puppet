@@ -6,43 +6,6 @@
 # Please keep entries separated by an empty line to allow for easy navigation of the file.
 
 service::catalog:
-  apaches: # TODO: rename to "appservers"
-    description: Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
-    encryption: false
-    ip: &appservers_ips
-      codfw:
-        default: 10.2.1.1
-      eqiad:
-        default: 10.2.2.1
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: appserver
-        service: apache2
-      depool_threshold: ".7"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - http://www.wikidata.org/wiki/Special:BlankPage
-          http_status: 302
-      scheduler: wrr
-    monitoring:
-      check_command: check_http_lvs!en.wikipedia.org!/wiki/Special:BlankPage
-      sites:
-        codfw:
-          hostname: appservers.svc.codfw.wmnet
-        eqiad:
-          hostname: appservers.svc.eqiad.wmnet
-    port: 80
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-
   apertium:
     description: Machine Translation service. apertium.svc.%{::site}.wmnet
     encryption: true
@@ -135,7 +98,11 @@ service::catalog:
       Main MediaWiki application server cluster, appservers.svc.%{::site}.wmnet
       (https)
     encryption: true
-    ip: *appservers_ips
+    ip:
+      codfw:
+        default: 10.2.1.1
+      eqiad:
+        default: 10.2.2.1
     lvs:
       class: low-traffic
       conftool:
