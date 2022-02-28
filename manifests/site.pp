@@ -1436,7 +1436,7 @@ node /^ganeti10(0[5-9]|1[0-9]|2[0-8])\.eqiad\.wmnet$/ {
     role(ganeti)
 }
 
-node /^ganeti20(0[7-9]|1[0-9]|2[0-9]|30)\.codfw\.wmnet$/ {
+node /^ganeti20(0[8-9]|1[0-9]|2[0-9]|30)\.codfw\.wmnet$/ {
     role(ganeti)
 }
 
