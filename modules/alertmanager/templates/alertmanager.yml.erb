@@ -86,6 +86,13 @@ route:
         team: 'dcops'
       receiver: 'dcops-mail'
       routes:
+        # Open tasks per-device for librenms https://phabricator.wikimedia.org/T300836
+        - match:
+            source: 'librenms'
+            severity: 'task'
+            team: 'dcops'
+          group_by: ['alertname', 'instance']
+          receiver: 'dcops-librenms-task'
         - match:
             severity: 'task'
           receiver: 'dcops-task'
@@ -267,6 +274,14 @@ receivers:
   webhook_configs:
     # #dcops
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-guqp46cxa2rgti2tqgv5'
+      send_resolved: false
+
+# Tasks from librenms will be grouped by alertname + instance (i.e. device)
+- name: 'dcops-librenms-task'
+  webhook_configs:
+    # #dcops
+    # title={{groupLabels.alertname}} {{groupLabels.instance}}
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-guqp46cxa2rgti2tqgv5&title=%7B%7BgroupLabels.alertname%7D%7D%20%7B%7BgroupLabels.instance%7D%7D'
       send_resolved: false
 
 - name: 'dcops-eqiad-task'
