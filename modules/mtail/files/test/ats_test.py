@@ -89,3 +89,9 @@ class ATSTLSTest(unittest.TestCase):
                          1)
         self.assertEqual(s_dict['cache_status=hit,http_status_family=2']['buckets']['0.07'], 1)
         self.assertEqual(s_dict['cache_status=miss,http_status_family=4']['buckets']['0.25'], 1)
+
+        s = self.store.get_samples('trafficserver_tls_client_healthcheck_ttfb')
+        s_dict = dict(s)
+
+        count_2xx = s_dict['cache_status=int-front,http_status_family=2']['count']
+        self.assertEqual(count_2xx, 1)
