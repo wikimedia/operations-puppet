@@ -52,6 +52,8 @@ class profile::puppetdb::microservice (
         },
     }
 
+    profile::auto_restarts::service { 'uwsgi-puppetdb-microservice': }
+
     ferm::service { 'puppetdb-microservice':
         ensure => $ferm_ensure,
         proto  => 'tcp',
@@ -59,4 +61,3 @@ class profile::puppetdb::microservice (
         srange => "@resolve((${allowed_hosts.join(' ')}))",
     }
 }
-
