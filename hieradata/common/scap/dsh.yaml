@@ -32,7 +32,7 @@ scap::dsh::groups:
       - {'cluster': 'appserver', 'service': 'nginx'}
       - {'cluster': 'api_appserver', 'service': 'nginx'}
       - {'cluster': 'jobrunner', 'service': 'nginx'}
-      - {'cluster': 'testserver', 'service': 'nginx'}
+      - {'cluster': 'testserver', 'service': 'apache2'}
       - {'cluster': 'parsoid', 'service': 'parsoid-php'}
     hosts:
       - cloudweb2001-dev.wikimedia.org
