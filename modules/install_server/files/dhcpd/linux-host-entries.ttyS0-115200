@@ -847,6 +847,21 @@ host ml-serve-ctrl2002 {
     fixed-address ml-serve-ctrl2002.codfw.wmnet;
 }
 
+host ml-staging-etcd2001 {
+    hardware ethernet aa:00:00:75:35:eb;
+    fixed-address ml-staging-etcd2001.codfw.wmnet;
+}
+
+host ml-staging-etcd2002 {
+    hardware ethernet aa:00:00:7f:9e:0b;
+    fixed-address ml-staging-etcd2002.codfw.wmnet;
+}
+
+host ml-staging-etcd2003 {
+    hardware ethernet aa:00:00:d9:29:b1;
+    fixed-address ml-staging-etcd2003.codfw.wmnet;
+}
+
 host moscovium {
     hardware ethernet aa:00:00:b5:db:29;
     fixed-address moscovium.eqiad.wmnet;
