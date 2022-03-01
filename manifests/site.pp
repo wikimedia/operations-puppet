@@ -1934,6 +1934,11 @@ node /^ml-serve100[1234]\.eqiad\.wmnet/ {
     role(ml_k8s::worker)
 }
 
+# New ml-staging etcd T302503
+node /^ml-staging-etcd200[123]\.codfw.wmnet/ {
+    role(insetup)
+}
+
 # New ml-staging nodes T294946
 node /^ml-staging200[12]\.codfw\.wmnet/ {
     role(insetup)
