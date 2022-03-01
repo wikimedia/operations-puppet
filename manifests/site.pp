@@ -369,13 +369,8 @@ node /^cp10(7[579]|8[135])\.eqiad\.wmnet$/ {
     role(cache::text)
 }
 
-# Envoy test T271421
-node 'cp1087.eqiad.wmnet' {
-    role(cache::text_envoy)
-}
-
 # HAproxy test T290005
-node 'cp1089.eqiad.wmnet' {
+node /^cp108[79]\.eqiad\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
