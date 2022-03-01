@@ -120,6 +120,16 @@ class profile::mediawiki::deployment::server(
         group  => $deployment_group,
     }
 
+    # This is symlink is accessed indirectly by
+    # modules/profile/files/mediawiki/monitor_versions/check_mw_versions.py
+    file { '/srv/deployment/mediawiki-staging':
+        ensure  => link,
+        target  => '/srv/mediawiki-staging',
+        owner   => 'trebuchet',
+        group   => $deployment_group,
+        require => File['/srv/deployment'],
+    }
+
     httpd::site { 'deployment':
         content => template('role/deployment/apache-vhost.erb'),
         require => File['/srv/deployment'],

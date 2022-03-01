@@ -23,7 +23,7 @@ DEFAULT_WINDOW = 60
 
 DEFAULT_DEPLOY_HOST = "deployment.eqiad.wmnet"
 # Path on the deploy host to query for the production wikiversions
-DEPLOYMENTS_PATH = "/mediawiki/mediawiki/wikiversions.json"
+DEPLOYMENTS_PATH = "/mediawiki-staging/wikiversions.json"
 LOCAL_VERSIONS_FILE = "/srv/mediawiki/wikiversions.json"
 
 
