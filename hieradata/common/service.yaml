@@ -982,7 +982,7 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
-    page: false
+    page: true
     # The ingressgateway does not accept connections on 30443 if no backend is
     # configured (which is fine from ingressgateways POV). That means PyBal might
     # see all hosts as down during initial setup of ingressgateway.
