@@ -21,7 +21,7 @@ groups:
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
-              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai]
+              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -123,7 +123,7 @@ groups:
               aaron, sbassett, tarrow, lucaswerkmeister-wmde,
               jhuneidi, wmde-fisch, mvolz, brennen, cparle,
               urbanecm, awight, jakob, accraze, andrew-wmde,
-              mstyles, zpapierski, dpifke,
+              mstyles, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
               jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe,
@@ -161,7 +161,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [ebernhardson, dcausse, zpapierski]
+    members: [ebernhardson, dcausse]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -213,7 +213,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, zpapierski, nskaggs, ejoseph]
+    members: [ebernhardson, dcausse, bd808, nskaggs, ejoseph]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -344,7 +344,7 @@ groups:
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, snowick,
-              aarora, zpapierski, knissen, jiawang, tarrow,
+              aarora, knissen, jiawang, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, razzi, cparle, klausman, sbisson, fab, cwhite,
@@ -513,7 +513,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, zpapierski, addshore]
+    members: [smalyshev, hoo, ebernhardson, dcausse, addshore]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -537,7 +537,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, zpapierski, addshore]
+    members: [smalyshev, hoo, ebernhardson, dcausse, addshore]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -655,7 +655,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, zpapierski, tjones, akhatun]
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, tjones, akhatun]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -858,7 +858,7 @@ groups:
   airflow-search-admins:
     gid: 816
     description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, bearloga, chelsyx, zpapierski, tjones]
+    members: [ebernhardson, dcausse, bearloga, chelsyx, tjones]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos *',
@@ -2470,15 +2470,13 @@ users:
     email: mstyles@wikimedia.org
     krb: present
   zpapierski:
-    ensure: present
+    ensure: absent
     gid: 500
     name: zpapierski
     realname: Zbyszko Papierski
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIFsAtt8oG1cK305mcCEonMHtUPzxQvVK/W5Zz0TLpxW zbyszkopapierski@Zbyszkos-MacBook-Pro.local
+    ssh_keys: []
     uid: 22656
-    email: zpapierski@wikimedia.org
-    krb: present
+    krb: absent
   tjones:
     ensure: present
     gid: 500
