@@ -1,0 +1,12 @@
+type: 'snapshot'
+rotate: True
+retention: 5
+archive: False
+compress: True
+stats_file: '/etc/wmfbackups/statistics.cnf'
+sections:
+  x1:
+    host: 'db2101.codfw.wmnet'
+    port: 3320
+    destination: 'dbprov2003.codfw.wmnet'
+    order: 1
