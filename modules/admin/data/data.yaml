@@ -358,7 +358,7 @@ groups:
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager]
+              aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5095,6 +5095,17 @@ users:
     expiry_contact: jbennett@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILpX/tkSGrfKB7+S4fkCOz5ivRxmR5TymsNzn90iZlP5 tom@tumult-tjm-dev
+  damiendf:
+    ensure: present
+    uid: 37889
+    gid: 500
+    realname: Damien Desfontaines
+    email: damien+wikimedia@tmlt.io
+    krb: present
+    expiry_date: 2022-09-13
+    expiry_contact: jbennett@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETNJbuSzSjngqw7YMt5kv6+iIfWqx43a0OQC1Loa8bZ damien@cyclone.local
 
 ldap_only_users:
   abartov:
