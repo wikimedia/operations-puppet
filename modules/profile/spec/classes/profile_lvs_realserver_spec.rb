@@ -26,7 +26,7 @@ describe 'profile::lvs::realserver' do
         let(:params) {
           {
             'pools' => {
-              'apaches' => {'services' => ['apache2', 'php', 'mcrouter']},
+              'api-https' => {'services' => ['apache2', 'php', 'mcrouter']},
               'appservers-https' => {'services' => ['apache2', 'php', 'mcrouter', 'nginx']},
             },
             'use_conftool' => true,
@@ -42,13 +42,13 @@ describe 'profile::lvs::realserver' do
         }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('lvs::realserver')
-                              .with_realserver_ips(['10.2.2.1'].sort)
+                              .with_realserver_ips(['10.2.2.1', '10.2.2.22'].sort)
         }
         it { is_expected.to contain_conftool__scripts__safe_service_restart('nginx')
                               .with_lvs_pools(['appservers-https'])
         }
         it { is_expected.to contain_file('/usr/local/sbin/restart-apache2')
-                              .with_content(/--pools apaches appservers-https --services apache2/)
+                              .with_content(/--pools api-https appservers-https --services apache2/)
                               .with_content(/--max-concurrency [1-9]/)
         }
         it { is_expected.to contain_class('poolcounter::client::python')
