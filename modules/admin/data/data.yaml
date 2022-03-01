@@ -21,7 +21,7 @@ groups:
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
-              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski]
+              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -44,7 +44,7 @@ groups:
     description: include everywhere ops folks
     members: &ops_members [filippo, jgreen, bblack, andrew, faidon, oblivian,
               akosiaris, mark, ariel, cmjohnson, otto, robh, tstarling,
-              ori, jmm, jynus, ema, elukey, gehel, volans, marostegui,
+              ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
@@ -338,7 +338,7 @@ groups:
               bmansurov, amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, chelsyx, ovasileva, filippo, pmiazga, faidon,
               piccardi, eevans, ladsgroup, musikanimal,
-              goransm, ema, dsaez, rho, mirrys, slaporte, jk,
+              goransm, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
@@ -2662,17 +2662,13 @@ users:
     ssh_keys: []
     uid: 12179
   ema:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ema
     realname: Emanuele Rocca
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfoCT4+pXcLRk3jsZsxFsAtVP38Rs4pfdxSS05+hkMcN1yxi2R1ZeNFkQkCPo6s25Gq863ru5E/vxSjy9mDS4HeaxNSJlPPWD0iEmGdyCg+wEGAZ01n1muFDyb+oiSNy5JcgOk0ZqAPNPYlISKVp+vLro5txdEK8cySy4BIbiM5ygKIjmq1xP+dM9zVdd/UbVQPPBFS2UDBzLX3AeYen4biMx2GkHBpZ/nJLqtb9JE4LLzQAtrqi4+J9jKQGepeTemVQ/n3lbheiGmTDZbRsUx7GTXmdIOPqN4k6FEXEgMIe5plxV8YeAoWqMsGpln4J4bz9HCtM1dL5mdLsa7tkq/ ema@orion
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCZ4V90QtsYJ4QuykOcVJQPJ64S5wkQdus7N4W8km9LChzvD/dgu/K2NbvRpUSVki+JGGIi8rPyUpGi+ELYd0E6ul3izSnIsMfyTSHqM/craBe8CPmoiFEHKIkXmOGvl1HHczaeziotFVkBm6D5e7MEuz2QJc83XT95trwjZW+e8Cz6f6xW+SGcWDCqOceI6n3wc0PwnWUKZVum2nU71FFZlcCg/fL5srLPis3GWU3zfTmZpvHmXnBE5fFEd6wzQOoSNPHVpehtbgIIrFh5KU5j5HhksHyRZAez+LM19VuZyYOeqUkmIiGq/3hHn+npCOR/r51Lf1Smua+GPyEQNqbn ema@newbikey
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcFTbrXApTHE4JCwPjX/Tp5KyLzGrCr/UtXetFN+wtVBfPtpaCgL94vgLNXYTuXw8wTb+112rmSJkhMyN6URTkWj21taDtteWFgQmA2k2l0owuEoJ/xrwK2SUlaLw1pXKvhkUIY9KzuLChgmsCjfZZVLf2v2GG1w3/NCaik1dqy3mb8bXFc9oeATfr0hTMJxNcGrhTbAI0n7vFAwQOnRJ1XFWYQv6Zui2QafQRsj8F04hNkfooIw3KaZfWGXTzCzwXB8/stSPFuAS1pi3ogvTVOeVgdzrJUtrds/GMqCk/FnTfP2usWiauv6+BXPITRkNVQUNaJ5IRkuoIyVmWKyKfadnceD2cW8k4I6RhK2zoNbtjP4U+hTyn4fiJSf4EMiWeJDJUPAUEZNXLzCPLpqjNGT5ieyjMK/AEky5YxC2fX187NiATlNEZhmDX6Ei3kQfq2Qi09vkGPFH13PS2mdfADkf0NBHsRPBewsdk/gR2lZvqtlBlFq09GqmPFT4DkYeM+gjSwf//DpPm3Fno5zULs3onYPXsXHSC6Y+Bbl7BLiCO9BaLmN4AtOBk2S2KELRxLkOzzIIACQbuw76A5/6yuJsRDB5R7hI87Gqn+C4izYTSs23sI9d3RjYzL3UZ3yGrlmOXj4YfilbREKO/sJRFHcDw9MbYi7pAKMKIzgPR3Q== openpgp:0x55BFFACF
+    ssh_keys: []
     uid: 4565
-    email: erocca@wikimedia.org
-    krb: present
+    krb: absent
   elukey:
     ensure: present
     gid: 500
