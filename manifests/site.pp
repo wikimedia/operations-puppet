@@ -392,13 +392,8 @@ node /^cp20(2[79]|3[1357])\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
-# Envoy test T271421
-node 'cp2039.codfw.wmnet' {
-    role(cache::text_envoy)
-}
-
 # HAProxy test T290005
-node 'cp2041.codfw.wmnet' {
+node /^cp20(39|41)\.codfw\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
@@ -407,7 +402,7 @@ node /^cp20(28|3[02468])\.codfw\.wmnet$/ {
 }
 
 # HAProxy test T290005
-node /^cp204[02].codfw.wmnet$/ {
+node /^cp204[02]\.codfw\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
