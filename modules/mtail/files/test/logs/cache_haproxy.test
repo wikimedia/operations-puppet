@@ -1,5 +1,5 @@
-Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 1 1 400 {int-front|en.wikipedia.org}
-Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 2 1 400 {int-front|en.wikipedia.org}
-Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 3 50 200 {hit|en.wikipedia.org}
-Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 4 120 200 {miss|en.wikipedia.org}
-Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 5 1 200 {int-front|healthcheck.wikimedia.org}
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 1 1 400 {en.wikipedia.org} {int-front}
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 2 1 400 {en.wikipedia.org} {int-front}
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 3 50 200 {en.wikipedia.org} {hit}
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 4 120 200 {en.wikipedia.org} {miss}
+Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 5 1 200 {healthcheck.wikimedia.org} {int-front}
