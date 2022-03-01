@@ -74,16 +74,18 @@ class ATSTLSTest(unittest.TestCase):
                 os.path.join(test_dir, 'logs/atstls.test'))
 
     def testClientMetrics(self):
-        s = self.store.get_samples('trafficserver_tls_client_ttfb_count')
-        self.assertIn(('cache_status=int-front,http_status_family=2', 1), s)
-        self.assertIn(('cache_status=hit,http_status_family=2', 1), s)
-        self.assertIn(('cache_status=miss,http_status_family=4', 1), s)
+        s = self.store.get_samples('trafficserver_tls_client_ttfb')
+        s_dict = dict(s)
+        self.assertIn('cache_status=int-front,http_status_family=2', s_dict)
+        self.assertIn('cache_status=hit,http_status_family=2', s_dict)
+        self.assertIn('cache_status=miss,http_status_family=4', s_dict)
 
-        s = self.store.get_samples('trafficserver_tls_client_ttfb_sum')
-        self.assertIn(('cache_status=int-front,http_status_family=2', 0), s)
-        self.assertIn(('cache_status=hit,http_status_family=2', 50), s)
+        values = s_dict['cache_status=int-front,http_status_family=2']
+        self.assertEqual(values['sum'], 0.001)
+        values = s_dict['cache_status=hit,http_status_family=2']
+        self.assertEqual(values['sum'], 0.05)
 
-        s = self.store.get_samples('trafficserver_tls_client_ttfb_bucket')
-        self.assertIn((u'le=0.045,cache_status=int-front,http_status_family=2', 1), s)
-        self.assertIn((u'le=0.07,cache_status=hit,http_status_family=2', 1), s)
-        self.assertIn((u'le=0.25,cache_status=miss,http_status_family=4', 1), s)
+        self.assertEqual(s_dict['cache_status=int-front,http_status_family=2']['buckets']['0.045'],
+                         1)
+        self.assertEqual(s_dict['cache_status=hit,http_status_family=2']['buckets']['0.07'], 1)
+        self.assertEqual(s_dict['cache_status=miss,http_status_family=4']['buckets']['0.25'], 1)
