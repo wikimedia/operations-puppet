@@ -17,7 +17,7 @@ profile::idp::cors_allowed_origins:
 profile::idp::services:
   icinga:
     id: 1
-    service_id: 'https://icinga.wikimedia.org(/.*)?'
+    service_id: 'https://icinga\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
@@ -31,94 +31,94 @@ profile::idp::services:
           - ["false"]
   debmonitor:
     id: 2
-    service_id: '^https://debmonitor.wikimedia.org(/.*)?'
+    service_id: '^https://debmonitor\.wikimedia\.org(/.*)?'
     required_groups:
       - wmf
       - nda
   puppetboard:
     id: 3
-    service_id: 'https://puppetboard.wikimedia.org(/.*)?'
+    service_id: 'https://puppetboard\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - sre-admins
   graphite:
     id: 4
-    service_id: 'https://graphite.wikimedia.org(/.*)?'
+    service_id: 'https://graphite\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   logstash:
     id: 6
-    service_id: 'https://(cas-)?logstash.wikimedia.org(/.*)?'
+    service_id: 'https://(cas-)?logstash\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   people:
     id: 7
-    service_id: 'https://people.wikimedia.org(/.*)?'
+    service_id: 'https://people\.wikimedia\.org(/.*)?'
     # No required_groups is defined for people.wikimedia.org as access is
     # controlled via local .htaccess files for specific sub pages
   librenms:
     id: 8
-    service_id: 'https://librenms.wikimedia.org(/.*)?'
+    service_id: 'https://librenms\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   piwik:
     id: 9
-    service_id: 'https://piwik.wikimedia.org(/.*)?'
+    service_id: 'https://piwik\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   yarn:
     id: 10
-    service_id: 'https://yarn.wikimedia.org(/.*)?'
+    service_id: 'https://yarn\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   turnilo:
     id: 11
-    service_id: 'https://turnilo.wikimedia.org(/.*)?'
+    service_id: 'https://turnilo\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   superset:
     id: 12
-    service_id: 'https://superset.wikimedia.org(/.*)?'
+    service_id: 'https://superset\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   thanos:
     id: 13
-    service_id: 'https://thanos.wikimedia.org(/.*)?'
+    service_id: 'https://thanos\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   hue:
     id: 14
-    service_id: 'https://hue.wikimedia.org(/.*)?'
+    service_id: 'https://hue\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   alerts:
     id: 15
-    service_id: 'https://alerts.wikimedia.org(/.*)?'
+    service_id: 'https://alerts\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   grafana:
     id: 16
-    service_id: 'https://grafana(-next)?(-rw)?.wikimedia.org(/.*)?'
+    service_id: 'https://grafana(-next)?(-rw)?\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
@@ -126,7 +126,7 @@ profile::idp::services:
       - grafana-admin
   orchestrator:
     id: 17
-    service_id: '^https://orchestrator.wikimedia.org(/.*)?'
+    service_id: '^https://orchestrator\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - sre-admins
@@ -134,43 +134,43 @@ profile::idp::services:
       - wmf
   racktables:
     id: 18
-    service_id: 'https://racktables.wikimedia.org(/.*)?'
+    service_id: 'https://racktables\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
   rt:
     id: 19
-    service_id: 'https://rt.wikimedia.org(/.*)?'
+    service_id: 'https://rt\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
   config-master:
     id: 20
-    service_id: 'https://config-master.wikimedia.org(/.*)?'
+    service_id: 'https://config-master\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - nda
       - wmf
   klaxon:
     id: 21
-    service_id: 'https://klaxon.wikimedia.org(/.*)?'
+    service_id: 'https://klaxon\.wikimedia\.org(/.*)?'
     # No required_groups is defined for klaxon.wikimedia.org as access is
     # controlled via local mod_auth_cas Apache config for specific subtrees
   netbox:
     id: 22
-    service_id: 'https://netbox(-next)?.wikimedia.org(/.*)?'
+    service_id: 'https://netbox(-next)?\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - wmf
   gitlab:
     id: 23
-    service_id: 'https://gitlab.wikimedia.org(/.*)?'
+    service_id: 'https://gitlab\.wikimedia\.org(/.*)?'
     # No required_groups defined for gitlab.wm.o as GitLab should be open to
     # any user with a Wikimedia developer account
   wmcs_idp:
     id: 24
-    service_id: 'https://idp.wmcloud.org(/.*)?'
+    service_id: 'https://idp\.wmcloud\.org(/.*)?'
   gitlab-replica:
     id: 25
-    service_id: 'https://gitlab-replica.wikimedia.org(/.*)?'
+    service_id: 'https://gitlab-replica\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
       - wmf
