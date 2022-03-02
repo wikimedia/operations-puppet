@@ -1140,6 +1140,10 @@ node /^dumpsdata100[4-5]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
+node /^dumpsdata1007\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # being decom'd in T302517
 node /^elastic103[2-9]\.eqiad\.wmnet/ {
     role(spare::system)
