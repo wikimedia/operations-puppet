@@ -26,6 +26,10 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes2016.codfw.wmnet
 - kubernetes2017.codfw.wmnet
 - kubernetes2018.codfw.wmnet
+- kubernetes2019.codfw.wmnet
+- kubernetes2020.codfw.wmnet
+- kubernetes2021.codfw.wmnet
+- kubernetes2022.codfw.wmnet
 - cr1-codfw.wikimedia.org
 - cr2-codfw.wikimedia.org
 profile::kubernetes::master_hosts:
