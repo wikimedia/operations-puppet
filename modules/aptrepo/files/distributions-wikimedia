@@ -204,6 +204,7 @@ Components: main
  thirdparty/conda
  thirdparty/elastic65
  thirdparty/elastic68
+ thirdparty/gitlab-runner
  thirdparty/hwraid
  thirdparty/opensearch1
  thirdparty/openstack-db
@@ -218,6 +219,7 @@ Update:
  routinator
  thirdparty/ceph-octopus-bullseye
  thirdparty/conda
+ thirdparty/gitlab-runner
  thirdparty/openstack-db
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
