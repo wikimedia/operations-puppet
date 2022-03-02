@@ -80,6 +80,7 @@ class geoip::data::maxmind::ipinfo(
       user               => 'root',
       description        => 'download geoip database for IP Info from MaxMind',
       command            => $geoipupdate_command,
+      syslog_identifier  => 'geoip_update',
       interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 4:30:0'},
       monitoring_enabled => false,
       logging_enabled    => true,

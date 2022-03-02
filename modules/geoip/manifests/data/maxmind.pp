@@ -75,6 +75,7 @@ class geoip::data::maxmind(
       user               => 'root',
       description        => 'download geoip database from MaxMind',
       command            => $geoipupdate_command,
+      syslog_identifier  => 'geoip_update_legacy',
       interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:30:0'},
       monitoring_enabled => true,
       logging_enabled    => true,
