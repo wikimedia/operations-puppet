@@ -21,6 +21,8 @@ class profile::gitlab(
     Boolean $enable_restore = lookup('profile::gitlab::enable_restore', {default_value => false}),
     Boolean $use_acmechief = lookup('profile::gitlab::use_acmechief'),
     String $ferm_drange = lookup('profile::gitlab::ferm_drange'),
+    Array[Stdlib::IP::Address] $ssh_listen_addresses = lookup('profile::gitlab::ssh_listen_addresses'),
+    Array[Stdlib::IP::Address] $nginx_listen_addresses = lookup('profile::gitlab::nginx_listen_addresses'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -149,13 +151,6 @@ class profile::gitlab(
         active_host  => $active_host,
         passive_host => $passive_host,
         ensure       => $enable_backup_sync.bool2str('present','absent')
-    }
-
-    $ssh_listen_addresses = [$service_ip_v4, $service_ip_v6]
-
-    $nginx_listen_addresses = $::realm ? {
-        'labs'  => [$service_ip_v4, $facts['ipaddress']], # no IPv6 support in WMCS/labs, workaround for floating IP
-        default => [$service_ip_v4, $service_ip_v6], # nginx listens on IPv4 and IPv6 by default
     }
 
     class { 'gitlab':
