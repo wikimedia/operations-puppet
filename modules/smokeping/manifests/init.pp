@@ -45,4 +45,6 @@ class smokeping(
             File['/etc/smokeping/config.d'],
         ],
     }
+
+    profile::auto_restarts::service { 'smokeping': }
 }
