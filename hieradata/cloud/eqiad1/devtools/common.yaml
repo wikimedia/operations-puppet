@@ -240,7 +240,7 @@ profile::gitlab::enable_restore: false
 profile::contacts::role_contacts: ['ServiceOps SREs']
 
 # service IP for public https and ssh (T276148)
-profile::gitlab::service_ip_v4: '185.15.56.79'
+profile::gitlab::service_ip_v4: '172.16.7.146'
 profile::gitlab::service_ip_v6: '::'
 profile::gitlab::service_name: 'gitlab.devtools.wmcloud.org'
 
@@ -250,5 +250,5 @@ profile::gitlab::csp_report_only: false
 
 profile::gitlab::monitoring_whitelist: ['127.0.0.1/32']
 
-# firewalling - destination range - different in prod vs cloud due to floating IP setup
-profile::gitlab::ferm_drange: '%{::facts.ipaddress}'
+# firewalling - destination range - different in prod vs cloud due to floating IP setup and no IPv6 support
+profile::gitlab::ferm_drange: "(%{lookup('profile::gitlab::service_ip_v4')})"
