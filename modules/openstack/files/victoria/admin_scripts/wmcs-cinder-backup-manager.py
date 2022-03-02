@@ -38,7 +38,7 @@ if __name__ == "__main__":
         "--timeout",
         help="Max time allowed for backup to run, in seconds",
         type=int,
-        default=60 * 60 * 22,
+        default=60 * 60 * 30,
     )
     argparser.add_argument(
         "--config",
