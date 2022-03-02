@@ -199,7 +199,7 @@ define opensearch::instance(
         content => template('opensearch/curator_cluster.yaml.erb'),
     }
 
-    # These are implied by the systmed unit
+    # These are implied by the systemd unit
     $config_dir = "/etc/opensearch/${cluster_name}"
     $data_dir = "${base_data_dir}/${cluster_name}"
 
@@ -290,6 +290,11 @@ define opensearch::instance(
       description => 'Cleanup GC logs',
       command     => "/usr/bin/find /var/log/opensearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
       interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00'},
+    }
+
+    systemd::tmpfile {"opensearch-${cluster_name}":
+      ensure  => present,
+      content => "d    /var/run/opensearch-${cluster_name}  0755 opensearch opensearch - -",
     }
 
     # Note that we don't notify the OpenSearch service of changes to its

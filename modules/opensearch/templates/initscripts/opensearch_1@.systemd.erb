@@ -12,7 +12,7 @@ PrivateTmp=true
 Environment=OPENSEARCH_HOME=/usr/share/opensearch
 Environment=OPENSEARCH_PATH_CONF=/etc/opensearch/%i
 Environment=OPENSEARCH_JVM_OPTIONS=/etc/opensearch/%i/jvm.options
-Environment=PID_DIR=/var/run/opensearch
+Environment=PID_DIR=/var/run/opensearch-%i
 Environment=OPENSEARCH_SD_NOTIFY=true
 
 <% if @java_home -%>
@@ -25,9 +25,9 @@ User=opensearch
 Group=opensearch
 
 # Force creation of /var/run/opensearch (see T276198)
-ExecStartPre=systemd-tmpfiles --create /usr/lib/tmpfiles.d/opensearch.conf
+ExecStartPre=/bin/systemd-tmpfiles --create /etc/tmpfiles.d/opensearch-%i.conf
 ExecStart=/usr/share/opensearch/bin/opensearch \
-        -p /var/run/opensearch/%i.pid \
+        -p ${PID_DIR}/%i.pid \
         --quiet \
         -Epath.logs=/var/log/opensearch \
         -Epath.data=/srv/opensearch/%i
