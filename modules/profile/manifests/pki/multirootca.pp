@@ -176,6 +176,9 @@ class profile::pki::multirootca (
     class {'httpd':
         modules => ['proxy_http', 'ssl', 'headers'],
     }
+
+    profile::auto_restarts::service { 'apache2': }
+
     # TODO: probably replace this with acmechief
     $tls_termination_cert = $facts['puppet_config']['hostcert']
     $tls_termination_key = $facts['puppet_config']['hostprivkey']
