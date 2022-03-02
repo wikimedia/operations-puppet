@@ -122,12 +122,55 @@ class profile::airflow(
                         'dags_folder' => "/srv/deployment/airflow-dags/${instance_name}/${instance_name}/dags",
                         'security' => 'kerberos',
                         'executor' => 'LocalExecutor',
+
                         # NOTE: @db_user and @db_password should be provided via
                         # $airflow_instances_secrets as the $db_user and $db_password params.
                         # This ERb template string will be rendered in airflow::instance
                         # with those values.
                         'sql_alchemy_conn' => "mysql://<%= @db_user %>:<%= @db_password %>@${airflow_database_host_default}/airflow_${instance_name_normalized}?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem",
+
+                        # The amount of parallelism as a setting to the executor. This defines
+                        # the max number of task instances that should run simultaneously
+                        # on this airflow installation.
+                        # This value was 32 by default, but we have decided to increase it to
+                        # backfill more quickly, and globally run more concurrent jobs. But, by doing
+                        # so, we assume that most tasks are low intensive in resources.
+                        # You can always set some restriction per dag with max_active_tasks, and per
+                        # task with max_active_tis_per_dag. Example: a task using a significative
+                        # amount of memory from the cluster should set its max_active_tis_per_dag to 1.
+                        # This would be recommanded for intensive
+                        # tasks for example.
+                        'parallelism' => '64',
+
+                        # The maximum number of task instances allowed to run concurrently in each DAG.
+                        # To calculate the number of tasks that is running concurrently for a DAG, add
+                        # up the number of running tasks for all DAG runs of the DAG.
+                        # This value has been set lower than the default (16). An example scenario when
+                        # this would be useful is when you want to stop a new dag with an early start
+                        # date from stealing all the executor slots in a cluster.
+                        # Currently, dag_concurrency = 2 * max_active_runs_per_dag
+                        # This is configurable at the DAG level with max_active_tasks.
+                        # TODO Rename me max_active_tasks_per_dag after Airflow is upgraded to 2.2.0.
+                        'dag_concurrency' => '6',
+
+                        # The maximum number of active DAG runs per DAG. The scheduler will not create
+                        # more DAG runs if it reaches the limit. This is configurable at the DAG level
+                        # with max_active_runs, which is defaulted as max_active_runs_per_dag.
+                        # The goal is to avoid 1 dag to take all resources. But in the same time, to
+                        # keep some parallelism:
+                        #   - for faster backfill
+                        #   - for faster backfill
+                        'max_active_runs_per_dag' => '3',
+
+                        # The number of retries each task is going to have by default. Can be
+                        # overridden at dag or task level.
+                        # It is increased from 0 to 5 to let a chance for closing minor problems like
+                        # db connection problems.
+                        # It could be modified per task with the `retries` parameter. For example, to
+                        # avoid a very compute-intensive (large) task to retry.
+                        'default_task_retries' => '5',
                     },
+
                 },
                 'connections' => {
                     'fs_local' => {
