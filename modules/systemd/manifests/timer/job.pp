@@ -33,6 +33,10 @@
 #   The monitoring's contact group to send the alarm to.
 #   Default: admins
 #
+#  [*monitoring_notes_url*]
+#   URL of the troubleshooting notes for this alert.
+#   Default: https://wikitech.wikimedia.org/wiki/Analytics/Systems/Managing_systemd_timers
+#
 #  [*logging_enabled*]
 #   If true, log directories are created, rsyslog/logrotate rules are created.
 #   Default: true
@@ -122,6 +126,7 @@ define systemd::timer::job(
     Hash[String, String]                    $environment               = {},
     Boolean                                 $monitoring_enabled        = false,
     String                                  $monitoring_contact_groups = 'admins',
+    Stdlib::HTTPSUrl                        $monitoring_notes_url      = 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Managing_systemd_timers',
     Boolean                                 $logging_enabled           = true,
     String                                  $logfile_basedir           = '/var/log',
     String                                  $logfile_name              = 'syslog.log',
@@ -219,7 +224,7 @@ define systemd::timer::job(
     if $monitoring_enabled {
         systemd::monitor { $title:
             ensure        => $ensure,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Managing_systemd_timers',
+            notes_url     => $monitoring_notes_url,
             contact_group => $monitoring_contact_groups,
         }
     }
