@@ -358,7 +358,7 @@ groups:
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf]
+              aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5106,6 +5106,13 @@ users:
     expiry_contact: jbennett@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETNJbuSzSjngqw7YMt5kv6+iIfWqx43a0OQC1Loa8bZ damien@cyclone.local
+  aminalhazwani:
+    ensure: present
+    uid: 36110
+    gid: 500
+    realname: Amin Al Hazwani
+    email: aalhazwani@wikimedia.org
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   abartov:
