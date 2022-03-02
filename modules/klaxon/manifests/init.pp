@@ -52,4 +52,6 @@ class klaxon(
           User['klaxon'],
         ],
     }
+
+    profile::auto_restarts::service { 'klaxon': }
 }
