@@ -303,7 +303,7 @@ define elasticsearch::instance(
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00'},
     }
 
-    systemd::tmpfile {"elasticsearch-${cluster_name}.conf":
+    systemd::tmpfile {"elasticsearch-${cluster_name}":
         ensure  => present,
         content => "d    /var/run/elasticsearch-${cluster_name}  0755 elasticsearch elasticsearch - -",
     }
