@@ -28,10 +28,10 @@
   {@param authorUsername: string}
   {@param uploaderName: string}
   {@param uploaderUsername: string}
-  {@param escapedSubject: string}
+  {@param subject: string}
 
   Change {$changeNumber} had a related patch set uploaded (by {$uploaderName ? $uploaderName : $uploaderUsername}; author: {$authorName ? $authorName : $authorUsername}):{\n}
-  %%%[{$project}@{$branch}] {$escapedSubject}%%%{\n}
+  %%%[{$project}@{$branch}] {$subject}%%%{\n}
 
   https://<%= @host %>/r/{$changeNumber}
 {/template}

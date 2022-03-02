@@ -25,10 +25,10 @@
   {@param project: string}
   {@param branch: string}
   {@param restorerName: string}
-  {@param escapedSubject: string}
+  {@param subject: string}
 
   Change {$changeNumber} **restored** by {$restorerName}:{\n}
-  %%%[{$project}@{$branch}] {$escapedSubject}%%%{\n}
+  %%%[{$project}@{$branch}] {$subject}%%%{\n}
 
   https://<%= @host %>/r/{$changeNumber}
 {/template}

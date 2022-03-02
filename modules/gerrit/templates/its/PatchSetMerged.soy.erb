@@ -25,10 +25,10 @@
   {@param project: string}
   {@param branch: string}
   {@param submitterName: string}
-  {@param escapedSubject: string}
+  {@param subject: string}
 
   Change {$changeNumber} **merged** by {$submitterName}:{\n}
-  %%%[{$project}@{$branch}] {$escapedSubject}%%%{\n}
+  %%%[{$project}@{$branch}] {$subject}%%%{\n}
 
   https://<%= @host %>/r/{$changeNumber}
 {/template}
