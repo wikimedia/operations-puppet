@@ -74,6 +74,19 @@ kubernetes_cluster_groups:
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
 
+# Swift cluster metadata
+# The keys here are called "cluster_label" in puppet code
+# This is an instance of the Swift::Clusters type
+swift_clusters:
+  codfw:
+    cluster_name: 'codfw-prod'
+    ring_manager: 'ms-fe2009.codfw.wmnet'
+  eqiad:
+    cluster_name: 'eqiad-prod'
+    ring_manager: 'ms-fe1009.eqiad.wmnet'
+  thanos:
+    cluster_name: 'thanos-prod'
+    ring_manager: 'thanos-fe1001.eqiad.wmnet'
 
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125

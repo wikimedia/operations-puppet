@@ -1,0 +1,65 @@
+---
+# yamllint disable rule:line-length
+schemes:
+  prod:
+    objects: [sdc1, sdd1, sde1, sdf1, sdg1, sdh1, sdi1, sdj1, sdk1, sdl1, sdm1, sdn1]
+    accounts: &ap [sda3, sdb3]
+    containers: *ap
+    ssds: &sp [sda4, sdb4]
+    weight:
+      objects: 4000
+      accounts: &acw 92
+      containers: *acw
+      ssds: 311
+  prod24:
+    objects: [sdc1, sdd1, sde1, sdf1, sdg1, sdh1, sdi1, sdj1, sdk1, sdl1, sdm1, sdn1, sdo1, sdp1, sdq1, sdr1, sds1, sdt1, sdu1, sdv1, sdw1, sdx1, sdy1, sdz1]
+    accounts: *ap
+    containers: *ap
+    ssds: *sp
+    weight:
+      objects: 8000
+      accounts: *acw
+      containers: *acw
+      ssds: 311
+
+hosts:
+  prod:
+    - ms-be2028
+    - ms-be2029
+    - ms-be2030
+    - ms-be2031
+    - ms-be2032
+    - ms-be2033
+    - ms-be2034
+    - ms-be2035
+    - ms-be2036
+    - ms-be2037
+    - ms-be2038
+    - ms-be2039
+    - ms-be2040
+    - ms-be2041
+    - ms-be2042
+    - ms-be2043
+    - ms-be2044
+    - ms-be2045
+    - ms-be2046
+    - ms-be2047
+    - ms-be2048
+    - ms-be2049
+    - ms-be2050
+    - ms-be2051
+    - ms-be2052
+    - ms-be2053
+    - ms-be2054
+    - ms-be2055
+    - ms-be2056
+  prod24:
+    - ms-be2057
+    - ms-be2058
+    - ms-be2059
+    - ms-be2060
+    - ms-be2061
+    - ms-be2062
+    - ms-be2063
+    - ms-be2064
+    - ms-be2065

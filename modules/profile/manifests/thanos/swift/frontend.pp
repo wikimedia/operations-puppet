@@ -1,7 +1,8 @@
 class profile::thanos::swift::frontend (
     Array $thanos_backends                   = lookup('profile::thanos::backends'),
     Array $thanos_frontends                  = lookup('profile::thanos::frontends'),
-    String $swift_cluster                    = lookup('profile::thanos::swift::cluster'),
+    Swift::Clusters $swift_clusters          = lookup('swift_clusters'),
+    String $swift_cluster_label              = lookup('profile::thanos::swift::cluster_label'),
     Stdlib::Fqdn $service_host               = lookup('profile::thanos::swift::proxy_service_host'),
     Array $memcached_servers                 = lookup('profile::thanos::swift::memcached_servers'),
     Integer $memcached_size_mb               = lookup('profile::thanos::swift::memcached_size_mb'),
@@ -10,6 +11,7 @@ class profile::thanos::swift::frontend (
     Hash[String, String] $swift_keys         = lookup('profile::thanos::swift::accounts_keys'),
     String $stats_reporter_host              = lookup('profile::swift::stats_reporter_host'),
     Array[String] $shard_container_list      = lookup('profile::swift::proxy::shard_container_list'),
+    Hash[String, Puppetmaster::Backends] $puppet_servers = lookup('puppetmaster::servers'),
     Optional[Stdlib::Host] $statsd_host      = lookup('profile::swift::proxy::statsd_host'),
     Optional[Stdlib::Port] $statsd_port      = lookup('profile::swift::proxy::statsd_port'),
     Optional[String] $dispersion_account     = lookup('profile::swift::proxy::dispersion_account'),
@@ -24,13 +26,15 @@ class profile::thanos::swift::frontend (
         hash_path_suffix => $hash_path_suffix,
     }
 
-    class { '::swift::ring':
-        swift_cluster => $swift_cluster,
+    $swift_cluster_name = $swift_clusters[$swift_cluster_label]['cluster_name']
+
+    class { 'swift::ring':
+        swift_cluster => $swift_cluster_name,
     }
 
-    class { '::swift::proxy':
+    class { 'swift::proxy':
         shard_container_list   => $shard_container_list,
-        statsd_metric_prefix   => "swift.${swift_cluster}.${::hostname}",
+        statsd_metric_prefix   => "swift.${swift_cluster_name}.${facts['networking']['hostname']}",
         bind_port              => '8888',
         enable_wmf_filters     => false,
         memcached_servers      => $memcached_servers,
@@ -61,14 +65,11 @@ class profile::thanos::swift::frontend (
         relay_address => '',
     }
 
-    $stats_ensure = $stats_reporter_host == $::fqdn ? {
-        true  => present,
-        false => absent,
-    }
+    $stats_ensure = ($stats_reporter_host == $facts['networking']['fqdn']).bool2str('present','absent')
 
-    class { '::profile::swift::stats_reporter':
+    class { 'swift::stats_reporter':
         ensure        => $stats_ensure,
-        swift_cluster => $swift_cluster,
+        swift_cluster => $swift_cluster_name,
         accounts      => $swift_accounts,
         credentials   => $swift_keys,
     }
@@ -112,5 +113,15 @@ class profile::thanos::swift::frontend (
         description   => 'Thanos swift https',
         check_command => "check_https_url!${service_host}!/healthcheck",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Thanos',
+    }
+
+    $ring_manager_ensure = $swift_clusters[$swift_cluster_label]['ring_manager'] ? {
+        $facts['networking']['fqdn'] => 'present',
+        default => 'absent',
+    }
+    class { 'swift::ring_manager':
+        ensure        => $ring_manager_ensure,
+        swift_cluster => $swift_cluster_name,
+        puppetmasters => keys($puppet_servers),
     }
 }

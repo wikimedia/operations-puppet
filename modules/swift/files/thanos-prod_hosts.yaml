@@ -1,0 +1,24 @@
+---
+# yamllint disable rule:line-length
+schemes:
+  prod:
+    objects: [sdc1, sdd1, sde1, sdf1, sdg1, sdh1, sdi1, sdj1, sdk1, sdl1, sdm1, sdn1]
+    accounts: &ap [sda3, sdb3]
+    containers: *ap
+    ssds: &sp [sda4, sdb4]
+    weight:
+      objects: 4000
+      accounts: &acw 100
+      containers: *acw
+      ssds: 300
+
+hosts:
+  prod:
+    - thanos-be1001
+    - thanos-be1002
+    - thanos-be1003
+    - thanos-be1004
+    - thanos-be2001
+    - thanos-be2002
+    - thanos-be2003
+    - thanos-be2004

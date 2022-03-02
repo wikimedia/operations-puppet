@@ -5,5 +5,5 @@ lvs::realserver::realserver_ips:
 profile::admin::groups:
   - swift-roots
 profile::swift::proxy::use_tls: true
-profile::swift::cluster: eqiad-prod
+profile::swift::cluster_label: eqiad
 profile::swift::stats_reporter_host: 'ms-fe1009.eqiad.wmnet'

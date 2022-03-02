@@ -1,3 +1,0 @@
-profile::swift::stats_reporter::ensure: present
-profile::swift::stats_reporter::statsd_host: localhost
-profile::swift::stats_reporter::statsd_port: 9125

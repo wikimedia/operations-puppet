@@ -5,12 +5,14 @@ class profile::swift::proxy (
     Hash[String, Hash] $replication_keys       = lookup('profile::swift::replication_keys'),
     String $hash_path_suffix                   = lookup('profile::swift::hash_path_suffix'),
     String $stats_reporter_host                = lookup('profile::swift::stats_reporter_host'),
-    String $swift_cluster                      = lookup('profile::swift::cluster'),
+    Swift::Clusters $swift_clusters            = lookup('swift_clusters'),
+    String $swift_cluster_label                = lookup('profile::swift::cluster_label'),
     Array[Stdlib::Host] $swift_backends        = lookup('profile::swift::storagehosts'),
     Array[Stdlib::Host] $swift_frontends       = lookup('profile::swift::proxyhosts'),
     Boolean $use_tls                           = lookup('profile::swift::proxy::use_tls'),
     String $proxy_service_host                 = lookup('profile::swift::proxy::proxy_service_host'),
     Array[String] $shard_container_list        = lookup('profile::swift::proxy::shard_container_list'),
+    Hash[String, Puppetmaster::Backends] $puppet_servers = lookup('puppetmaster::servers'),
     Optional[Stdlib::Host] $statsd_host        = lookup('profile::swift::proxy::statsd_host'),
     Optional[Stdlib::Port] $statsd_port        = lookup('profile::swift::proxy::statsd_port'),
     Optional[String] $dispersion_account       = lookup('profile::swift::proxy::dispersion_account'),
@@ -30,20 +32,19 @@ class profile::swift::proxy (
         keys     => $replication_keys,
     }
 
+    $swift_cluster_name = $swift_clusters[$swift_cluster_label]['cluster_name']
+
     class { 'swift::ring':
-        swift_cluster => $swift_cluster,
+        swift_cluster => $swift_cluster_name,
     }
 
     class { 'conftool::scripts': }
 
-    $stats_ensure = $stats_reporter_host == $::fqdn ? {
-        true  => present,
-        false => absent,
-    }
+    $stats_ensure = ($stats_reporter_host == $facts['networking']['fqdn']).bool2str('present','absent')
 
-    class { 'profile::swift::stats_reporter':
+    class { 'swift::stats_reporter':
         ensure        => $stats_ensure,
-        swift_cluster => $swift_cluster,
+        swift_cluster => $swift_cluster_name,
         accounts      => $accounts,
         credentials   => $accounts_keys,
     }
@@ -54,13 +55,13 @@ class profile::swift::proxy (
         container_set => 'mw-media',
         statsd_host   => $statsd_host,
         statsd_port   => $statsd_port,
-        statsd_prefix => "swift.${swift_cluster}.containers.mw-media",
+        statsd_prefix => "swift.${swift_cluster_name}.containers.mw-media",
     }
 
     class { 'swift::proxy':
         proxy_service_host     => $proxy_service_host,
         shard_container_list   => $shard_container_list,
-        statsd_metric_prefix   => "swift.${swift_cluster}.${::hostname}",
+        statsd_metric_prefix   => "swift.${swift_cluster_name}.${facts['networking']['hostname']}",
         accounts               => $accounts,
         credentials            => $accounts_keys,
         statsd_host            => $statsd_host,
@@ -147,5 +148,17 @@ class profile::swift::proxy (
         description   => "Swift ${http_s} backend",
         check_command => "check_${http_s}_url!${::swift::proxy::proxy_service_host}!/monitoring/backend",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
+    }
+
+
+    $ring_manager_ensure = $swift_clusters[$swift_cluster_label]['ring_manager'] ? {
+        $facts['networking']['fqdn'] => 'present',
+        default => 'absent',
+    }
+
+    class { 'swift::ring_manager':
+        ensure        => $ring_manager_ensure,
+        swift_cluster => $swift_cluster_name,
+        puppetmasters => keys($puppet_servers),
     }
 }
