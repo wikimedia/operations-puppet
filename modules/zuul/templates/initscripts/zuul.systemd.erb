@@ -15,7 +15,7 @@ ExecStart=/srv/deployment/zuul/venv/bin/zuul-server -d -c /etc/zuul/zuul-server.
 ExecStart=/usr/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
 <%- end -%>
 ExecReload=/bin/kill -HUP $MAINPID
-KillSignal=SIGUSR1
+ExecStop=/bin/kill -USR1 $MAINPID
 TimeoutStopSec=infinity
 
 [Install]
