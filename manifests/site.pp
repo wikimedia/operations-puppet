@@ -1371,7 +1371,7 @@ node /^kubernetes10(1[8-9]|2[0-2])\.eqiad\.wmnet$/ {
 }
 
 #New Kubernetes node for codfw T294299 and T299470
-node /^kubernetes20(1[8-9]|2[0-2])\.codfw\.wmnet$/ {
+node /^kubernetes20(19|2[0-2])\.codfw\.wmnet$/ {
     role(insetup)
 }
 
@@ -1659,6 +1659,10 @@ node 'krb2001.codfw.wmnet' {
 }
 
 node /kubernetes[12]0(0[1-9]|1[0-7])\.(codfw|eqiad)\.wmnet/ {
+    role(kubernetes::worker)
+}
+
+node 'kubernetes2018.codfw.wmnet' {
     role(kubernetes::worker)
 }
 
