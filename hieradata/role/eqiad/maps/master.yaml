@@ -59,3 +59,5 @@ profile::maps::postgresql_common::shared_buffers: '16GB'
 profile::maps::postgresql_common::max_worker_processes: 48
 # With current spec could be as high as 96GB
 profile::maps::postgresql_common::effective_cache_size: '64GB'
+
+profile::maps::osm_master::log_min_duration_statement: 10000 # 10 seconds

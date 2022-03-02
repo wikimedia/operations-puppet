@@ -17,7 +17,8 @@ class profile::maps::osm_master (
     Boolean $disable_admin_cron                 = lookup('profile::maps::osm_master::disable_admin_cron', { 'default_value' => false }),
     String $tilerator_storage_id                = lookup('profile::maps::apps::tilerator_storage_id'),
     Boolean $use_proxy                          = lookup('profile::maps::apps::use_proxy'),
-    String $eventgate_endpoint                  = lookup('profile::maps::osm_master::eventgate_endpoint'),
+    String $eventgate_endpoint                         = lookup('profile::maps::osm_master::eventgate_endpoint'),
+    Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_master::log_min_duration_statement', { 'default_value' => undef })
 ) {
 
     require profile::maps::postgresql_common
@@ -45,11 +46,12 @@ class profile::maps::osm_master (
     $max_senders = length($maps_hosts) + 6
 
     class { 'postgresql::master':
-        root_dir            => '/srv/postgresql',
-        includes            => [ 'tuning.conf', 'logging.conf' ],
-        checkpoint_segments => 768,
-        wal_keep_segments   => 768,
-        max_wal_senders     => $max_senders,
+        root_dir                   => '/srv/postgresql',
+        includes                   => [ 'tuning.conf', 'logging.conf' ],
+        checkpoint_segments        => 768,
+        wal_keep_segments          => 768,
+        max_wal_senders            => $max_senders,
+        log_min_duration_statement => $log_min_duration_statement,
     }
 
     class { '::osm': }
