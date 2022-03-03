@@ -128,6 +128,9 @@ route:
     - match:
         team: 'search-platform'
       receiver: 'search-platform-ircmail'
+    - match:
+        team: 'wmcs'
+      receiver: 'wmcs-irc'
 
     # Default routing for page/critical alerts, if no team could be routed
     - match:
@@ -244,6 +247,10 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
     - to: 'discovery-alerts@lists.wikimedia.org'
+
+- name: 'wmcs-irc'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
 
 # Receivers to open Phabricator tasks. Naming convention is '<team-and-subteam>-task'
 - name: 'sre-o11y-task'
