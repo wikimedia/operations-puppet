@@ -1,0 +1,40 @@
+<%- | Array[String] $ssl_settings,
+| -%>
+<Macro Mirrors>
+    ServerName mirrors.wikimedia.org
+    ServerAdmin noc@wikimedia.org
+
+    DocumentRoot /srv/mirrors
+
+    <Directory /srv/mirrors>
+        Options +Indexes +SymlinksIfOwnerMatch
+        IndexOptions NameWidth=* +SuppressDescription
+        Require all granted
+    </Directory>
+
+    # Per Tails' request
+    <Directory /srv/mirrors/tails>
+        FileETag None
+    </Directory>
+
+    LogLevel warn
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</Macro>
+
+<VirtualHost *:80>
+    Use Mirrors
+</VirtualHost>
+
+<VirtualHost *:443>
+    SSLEngine on
+    SSLCertificateFile /etc/acmecerts/mirrors/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/mirrors/live/ec-prime256v1.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/mirrors/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/mirrors/live/rsa-2048.crt
+    SSLCertificateChainFile /etc/acmecerts/mirrors/live/rsa-2048.chain.crt
+    SSLCertificateKeyFile /etc/acmecerts/mirrors/live/rsa-2048.key
+    <%= $ssl_settings.join("\n    ") %>
+    Use Mirrors
+</VirtualHost>

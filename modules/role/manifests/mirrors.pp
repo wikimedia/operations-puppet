@@ -8,6 +8,5 @@ class role::mirrors {
 
     include profile::base::production
     include profile::base::firewall
-    include profile::nginx
     include profile::mirrors
 }
