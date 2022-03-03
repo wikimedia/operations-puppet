@@ -75,6 +75,7 @@ class profile::logstash::common (
     recurse => true,
     purge   => true,
     force   => true,
+    notify  => Service['logstash'],
   }
 
   # Custom Filter Scripts Directory
@@ -87,6 +88,7 @@ class profile::logstash::common (
     recurse => true,
     purge   => true,
     force   => true,
+    notify  => Service['logstash'],
   }
 
   # Index Templates Directory
