@@ -128,8 +128,8 @@ def main():
     try:
         local_wikiversions = load_local_wikiversions(LOCAL_VERSIONS_FILE)
     except LocalDeploymentException:
-        print("CRITICAL: Couldn't load local wikiversions file at {}".format(LOCAL_VERSIONS_FILE))
-        sys.exit(2)
+        print("WARNING: Couldn't load local wikiversions file at {}".format(LOCAL_VERSIONS_FILE))
+        sys.exit(1)
 
     failed = False
     nagios_message = ""
@@ -169,8 +169,8 @@ def main():
                     nagios_message))
             sys.exit(0)
         else:
-            print("CRITICAL: {}".format(nagios_message))
-            sys.exit(2)
+            print("WARNING: {}".format(nagios_message))
+            sys.exit(1)
     else:
         print("OKAY: wikiversions in sync")
         sys.exit(0)
