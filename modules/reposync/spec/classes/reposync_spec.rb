@@ -48,7 +48,7 @@ describe 'reposync' do
         it do
           is_expected.to contain_file('/srv/reposync/foobar/config')
             .with_ensure('file')
-            .with_mode('0550')
+            .with_mode('0440')
             .with_content(
               %r{\[remote\s+"git\.example\.org"\]\s+
                 url\s+=\s+ssh://root@git\.example\.org/srv/reposync/foobar/\s+

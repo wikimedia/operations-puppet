@@ -30,16 +30,19 @@ class reposync (
         }
         file { "${repo_path}/hooks":
             ensure  => stdlib::ensure($ensure, 'directory'),
+            require => Git::Clone[$repo],
         }
         file { "${repo_path}/hooks/post-update":
             ensure  => stdlib::ensure($ensure, 'file'),
             mode    => '0550',
             content => "#!/bin/sh\nexec /usr/bin/git update-server-info\n",
+            require => Git::Clone[$repo],
         }
         file { "${repo_path}/config":
             ensure  => stdlib::ensure($ensure, 'file'),
-            mode    => '0550',
+            mode    => '0440',
             content => epp('reposync/config.epp', {'repo_path' => $repo_path, 'remotes' => $remotes}),
+            require => Git::Clone[$repo],
         }
     }
 }
