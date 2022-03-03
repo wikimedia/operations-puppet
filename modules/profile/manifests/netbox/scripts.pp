@@ -44,6 +44,8 @@ class profile::netbox::scripts {
         require         => [Scap::Target['netbox/deploy'], Git::Clone['operations/software/netbox-extras']],
     }
 
+    profile::auto_restarts::service { 'uwsgi-netbox-scriptproxy': }
+
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     $ferm_nodes = wmflib::role_hosts('cluster::management').sort.join(' ')
