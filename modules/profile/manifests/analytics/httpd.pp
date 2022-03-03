@@ -13,4 +13,5 @@ class profile::analytics::httpd {
                     'alias']
     }
 
+    profile::auto_restarts::service { 'apache2': }
 }
