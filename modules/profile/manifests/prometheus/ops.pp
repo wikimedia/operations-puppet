@@ -179,22 +179,12 @@ class profile::prometheus::ops (
     # resolution probe status (e.g. to see recovery faster)
     $probes_jobs = [
       {
-        'job_name'        => 'probes/public',
+        'job_name'        => 'probes/service',
         'metrics_path'    => '/probe',
         'scrape_interval' => '15s',
         'scrape_timeout'  => '3s',
         'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/probes-public_*.yaml" ] }
-        ],
-        'relabel_configs' => $probes_relabel_configs,
-      },
-      {
-        'job_name'        => 'probes/private',
-        'metrics_path'    => '/probe',
-        'scrape_interval' => '15s',
-        'scrape_timeout'  => '3s',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/probes-private_*.yaml" ] }
+          { 'files' => [ "${targets_path}/probes-service_*.yaml" ] }
         ],
         'relabel_configs' => $probes_relabel_configs,
       },
@@ -210,13 +200,13 @@ class profile::prometheus::ops (
     if !empty($probe_services) {
       prometheus::service_catalog_targets { 'public':
         services_config => $probe_services,
-        targets_file    => "${targets_path}/probes-public_catalog.yaml",
+        targets_file    => "${targets_path}/probes-service_catalog_public.yaml",
         networks        => slice_network_constants('production', { 'sphere' => 'public', 'site' => $::site }),
       }
 
       prometheus::service_catalog_targets { 'private':
         services_config => $probe_services,
-        targets_file    => "${targets_path}/probes-private_catalog.yaml",
+        targets_file    => "${targets_path}/probes-service_catalog_private.yaml",
         networks        => slice_network_constants('production', { 'sphere' => 'private', 'site' => $::site }),
       }
     }
