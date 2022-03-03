@@ -2613,8 +2613,7 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
     role(pybaltest)
 }
 
-# New rdb servers T206450
-node /^rdb100[59]\.eqiad\.wmnet$/ {
+node /^(rdb100[59]|rdb1011)\.eqiad\.wmnet$/ {
     role(redis::misc::master)
 }
 
@@ -2623,7 +2622,7 @@ node /^rdb1006\.eqiad\.wmnet$/ {
     role(system::spare)
 }
 
-node /^rdb101[012]\.eqiad\.wmnet$/ {
+node /^rdb101[02]\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
