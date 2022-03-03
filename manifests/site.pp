@@ -2613,13 +2613,8 @@ node /^pybal-test200[123]\.codfw\.wmnet$/ {
     role(pybaltest)
 }
 
-node /^(rdb100[59]|rdb1011)\.eqiad\.wmnet$/ {
+node /^rdb10(09|11)\.eqiad\.wmnet$/ {
     role(redis::misc::master)
-}
-
-# being decommed. T281217
-node /^rdb1006\.eqiad\.wmnet$/ {
-    role(system::spare)
 }
 
 node /^rdb101[02]\.eqiad\.wmnet$/ {
