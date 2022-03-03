@@ -18,6 +18,7 @@ Components: main
  component/elastic56
  component/elastic65
  component/elastic68
+ component/elastic710
  component/facter3
  component/ganeti216
  component/git
