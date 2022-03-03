@@ -23,26 +23,29 @@ class reposync (
     }
     $repos.each |$repo| {
         $repo_path = "${base_dir}/${repo}"
-        git::clone { $repo:
-            ensure    => $ensure,
-            directory => "${base_dir}/${repo}",
-            bare      => true,
+        file { $repo_path:
+            ensure  => stdlib::ensure($ensure, 'directory'),
+        }
+        exec { "git_init_${repo}":
+            command => "/usr/bin/git --bare -C ${repo_path} init",
+            creates => "${repo_path}/HEAD",
+            require => File[$repo_path],
         }
         file { "${repo_path}/hooks":
             ensure  => stdlib::ensure($ensure, 'directory'),
-            require => Git::Clone[$repo],
+            require => Exec["git_init_${repo}"],
         }
         file { "${repo_path}/hooks/post-update":
             ensure  => stdlib::ensure($ensure, 'file'),
             mode    => '0550',
             content => "#!/bin/sh\nexec /usr/bin/git update-server-info\n",
-            require => Git::Clone[$repo],
+            require => Exec["git_init_${repo}"],
         }
         file { "${repo_path}/config":
             ensure  => stdlib::ensure($ensure, 'file'),
             mode    => '0440',
             content => epp('reposync/config.epp', {'repo_path' => $repo_path, 'remotes' => $remotes}),
-            require => Git::Clone[$repo],
+            require => Exec["git_init_${repo}"],
         }
     }
 }

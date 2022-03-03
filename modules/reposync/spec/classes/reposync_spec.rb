@@ -38,7 +38,7 @@ describe 'reposync' do
             .with_content(/repos:\n-\sfoobar/)
             .with_content(/remotes:\n-\s+git\.example\.org\n-\s+remote\.example\.org/)
         end
-        it { is_expected.to contain_git__clone('foobar') }
+        it { is_expected.to contain_exec('git_init_foobar') }
         it do
           is_expected.to contain_file('/srv/reposync/foobar/hooks/post-update')
             .with_ensure('file')
