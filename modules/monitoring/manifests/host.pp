@@ -87,10 +87,16 @@ define monitoring::host (
         } else {
             $hostgroups = $hostgroup
         }
-    } else {
-        $icon_image      = undef
-        $vrml_image      = undef
-        $statusmap_image = undef
+    } else {  # Network devices are defined in this section
+        if $os == 'Junos' {
+            $icon_image      = 'vendors/juniper.png'
+            $vrml_image      = 'vendors/juniper.png'
+            $statusmap_image = 'vendors/juniper.gd2'
+        } else {
+            $icon_image      = undef
+            $vrml_image      = undef
+            $statusmap_image = undef
+        }
         $real_parents    = $parents
         $mgmt_host = undef
         $hostgroups = $hostgroup

@@ -27,7 +27,7 @@ profile::monitoring::services:
     check_command: 'check_ssh'
     notes_url: 'https://wikitech.wikimedia.org/wiki/SSH/monitoring'
 profile::monitoring::mgmt_parents:
-  eqiad: msw1-eqiad
+  eqiad: msw1-eqiad  # FIXME: eqiad expansion uses msw2, connected to msw1
   codfw: msw1-codfw
   ulsfo: mr1-ulsfo
   esams: mr1-esams
