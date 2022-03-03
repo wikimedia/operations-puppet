@@ -26,11 +26,18 @@ class profile::netbox::automation (
     $repo_path = '/srv/netbox-exports'
     $repos = ['dns']
 
+    # TODO: migrate netbox::autogit to reposync
     $repos.each |String $repo| {
         netbox::autogit { $repo:
             repo_path => $repo_path,
             frontends => $frontends,
         }
+    }
+    class { 'reposync':
+        base_dir    => $repo_path,
+        manage_base => false,
+        target_only => true,
+        repos       => ['netbox-hiera'],
     }
 
     # Expose automation git repositories

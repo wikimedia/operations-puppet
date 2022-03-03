@@ -1,25 +1,33 @@
 # @summary class to configure the primary reposync server
 # @param ensure ensureable parameter
 # @param base_dir The base directory to store config
+# @param manage_base set to false if the base directory is managed else where
+# @param target_only only configure repos dont install spicerack config
 # @param repos list of repositories
 # @param remotes list of remotes
 class reposync (
-    Wmflib::Ensure      $ensure   = 'present',
-    Stdlib::Unixpath    $base_dir = '/srv/reposync',
-    Array[String[1]]    $repos    = [],
-    Array[Stdlib::Host] $remotes  = [],
+    Wmflib::Ensure      $ensure      = 'present',
+    Stdlib::Unixpath    $base_dir    = '/srv/reposync',
+    Boolean             $manage_base = true,
+    Boolean             $target_only = false,
+    Array[String[1]]    $repos       = [],
+    Array[Stdlib::Host] $remotes     = [],
 ) {
 
     # config file used by spicerack
     $config_file = '/etc/spicerack/reposync/config.yaml'
     $config = {'base_dir' => $base_dir, 'repos' => $repos, 'remotes' => $remotes}
 
-    wmflib::dir::mkdir_p([$base_dir, $config_file.dirname])
-
-    file {$config_file:
-        ensure  => stdlib::ensure($ensure, 'file'),
-        owner   => 'root',
-        content => $config.to_yaml,
+    if $manage_base {
+        wmflib::dir::mkdir_p([$base_dir])
+    }
+    unless $target_only {
+        wmflib::dir::mkdir_p([$config_file.dirname])
+        file {$config_file:
+            ensure  => stdlib::ensure($ensure, 'file'),
+            owner   => 'root',
+            content => $config.to_yaml,
+        }
     }
     $repos.each |$repo| {
         $repo_path = "${base_dir}/${repo}"
