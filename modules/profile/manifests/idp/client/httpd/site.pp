@@ -44,7 +44,7 @@ define profile::idp::client::httpd::site (
     String[1,1]                   $attribute_delimiter = ':',
     Enum['staging', 'production'] $environment         = 'production',
     Boolean                       $enable_slo          = true,
-    Enum['None', 'Lax', 'Strict'] $cookie_same_site    = 'Lax',
+    Wmflib::HTTP::SameSite        $cookie_same_site    = 'Lax',
     Enum['Auto', 'On', 'Off']     $cookie_secure       = 'On',
     Hash[String,Any]              $vhost_settings      = {},
     Array[String[1]]              $required_groups     = [],
