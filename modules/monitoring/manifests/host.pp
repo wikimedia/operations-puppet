@@ -51,7 +51,9 @@ define monitoring::host (
             # still alert for each individual VM when the hosts die, as:
             # a) just a host DOWN alert for the VM node is too inconspicuous,
             # b) it's usually the case that VMs can be relocated to other nodes
-            $real_parents = $facts['lldp']['parent']
+            #
+            # Old Juniper switches advertise their short name, while new ones advertise their FQDN
+            $real_parents = $facts['lldp']['parent'].split('\.')[0]
         } else {
             $real_parents = undef
         }
@@ -82,8 +84,8 @@ define monitoring::host (
         }
         # Populate a network related hostgroup for directly connected to switches
         # hosts
-        if $facts['lldp'] and $facts['lldp']['parent'] =~ /asw|cloudsw/ {
-            $hostgroups = "${hostgroup},${facts['lldp']['parent']}"
+        if $facts['lldp'] and $facts['lldp']['parent'] =~ /asw|cloudsw|lsw/ {
+            $hostgroups = "${hostgroup},${facts['lldp']['parent'].split('\.')[0]}"
         } else {
             $hostgroups = $hostgroup
         }

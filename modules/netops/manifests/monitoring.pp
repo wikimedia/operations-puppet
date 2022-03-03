@@ -77,11 +77,11 @@ class netops::monitoring(
     $mgmt_routers = {
         'mr1-eqiad'  => { ipv4 => '208.80.154.199',  ipv6 => '2620:0:861:ffff::6', parents => ['asw2-a-eqiad'] },
         'mr1-codfw'  => { ipv4 => '208.80.153.196',  ipv6 => '2620:0:860:ffff::6', parents => ['asw-a-codfw'] },
-        'mr1-esams'  => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1', parents => ['asw2-esams.mgmt.esams.wmnet'] },
+        'mr1-esams'  => { ipv4 => '91.198.174.247',  ipv6 => '2620:0:862:ffff::1', parents => ['asw2-esams'] },
         'mr1-ulsfo'  => { ipv4 => '198.35.26.194',   ipv6 => '2620:0:863:ffff::6', parents => ['asw2-ulsfo'] },
         'mr1-eqsin'  => { ipv4 => '103.102.166.128', ipv6 => '2001:df2:e500:ffff::1', parents => ['asw1-eqsin'] },
-        'mr1-drmrs'  => { ipv4 => '185.15.58.130', ipv6 => '2a02:ec80:600:ffff::3', parents => ['asw1-b12-drmrs.wikimedia.org',
-                                                                                                'asw1-b13-drmrs.wikimedia.org'] },
+        'mr1-drmrs'  => { ipv4 => '185.15.58.130', ipv6 => '2a02:ec80:600:ffff::3', parents => ['asw1-b12-drmrs',
+                                                                                                'asw1-b13-drmrs'] },
 
     }
     create_resources(netops::check, $mgmt_routers, $mgmt_routers_defaults)
@@ -130,12 +130,8 @@ class netops::monitoring(
         'msw1-eqiad'    => { ipv4 => '10.65.0.10',   parents => ['mr1-eqiad'], vcp => false },
         'msw2-eqiad'    => { ipv4 => '10.65.0.5',    parents => ['msw1-eqiad'], vcp => false },
         'fasw-c-eqiad'  => { ipv4 => '10.65.0.30',   parents => ['pfw3-eqiad'] },
-        'cloudsw2-c8-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.1.197',
-                                                  parents => ['cloudsw1-c8-eqiad.mgmt.eqiad.wmnet'],
-                                                  vcp => false },
-        'cloudsw2-d5-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.1.198',
-                                                  parents => ['cloudsw1-d5-eqiad.mgmt.eqiad.wmnet'],
-                                                  vcp => false },
+        'cloudsw2-c8-eqiad' => { ipv4 => '10.65.1.197', parents => ['cloudsw1-c8-eqiad'], vcp => false },
+        'cloudsw2-d5-eqiad' => { ipv4 => '10.65.1.198', parents => ['cloudsw1-d5-eqiad'], vcp => false },
         # codfw
         'asw-a-codfw'   => { ipv4 => '10.193.0.16',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'asw-b-codfw'   => { ipv4 => '10.193.0.17',  parents => ['cr1-codfw', 'cr2-codfw'] },
@@ -144,8 +140,7 @@ class netops::monitoring(
         'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['mr1-codfw'], vcp => false },
         'fasw-c-codfw'  => { ipv4 => '10.193.0.57',  parents => ['pfw3-codfw'] },
         # esams
-        # fully qualified due to a more recent JunOS; see PR1383295
-        'asw2-esams.mgmt.esams.wmnet' => { ipv4 => '10.21.0.8',  parents => ['cr3-esams', 'cr2-esams'] },
+        'asw2-esams' => { ipv4 => '10.21.0.8',  parents => ['cr3-esams', 'cr2-esams'] },
         # ulsfo
         'asw2-ulsfo'    => { ipv4 => '10.128.128.7', parents => ['cr3-ulsfo', 'cr4-ulsfo'] },
         # eqsin
@@ -164,18 +159,14 @@ class netops::monitoring(
 
     $l3_switches = {
         # eqiad
-        'cloudsw1-c8-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.7',
-                                                  parents => ['cr1-eqiad', 'cr2-eqiad']},
-        'cloudsw1-d5-eqiad.mgmt.eqiad.wmnet' => { ipv4    => '10.65.0.6',
-                                                  parents => ['cr1-eqiad', 'cr2-eqiad']},
-        'lsw1-e3-eqiad.mgmt.eqiad.wmnet'     => { ipv4    => '10.65.1.230'},
+        'cloudsw1-c8-eqiad' => { ipv4 => '10.65.0.7', parents => ['cr1-eqiad', 'cr2-eqiad']},
+        'cloudsw1-d5-eqiad' => { ipv4 => '10.65.0.6', parents => ['cr1-eqiad', 'cr2-eqiad']},
+        'lsw1-e3-eqiad'     => { ipv4 => '10.65.1.230'},
         # drmrs
-        'asw1-b12-drmrs.wikimedia.org' => { ipv4 => '185.15.58.131',
-                                            ipv6 => '2a02:ec80:600:ffff::4',
-                                            parents => ['cr1-drmrs', 'cr2-drmrs'] },
-        'asw1-b13-drmrs.wikimedia.org' => { ipv4 => '185.15.58.132',
-                                            ipv6 => '2a02:ec80:600:ffff::5',
-                                            parents => ['cr1-drmrs', 'cr2-drmrs'] },
+        'asw1-b12-drmrs' => { ipv4 => '185.15.58.131', ipv6 => '2a02:ec80:600:ffff::4',
+                              parents => ['cr1-drmrs', 'cr2-drmrs'] },
+        'asw1-b13-drmrs' => { ipv4 => '185.15.58.132', ipv6 => '2a02:ec80:600:ffff::5',
+                              parents => ['cr1-drmrs', 'cr2-drmrs'] },
     }
 
     create_resources(netops::check, $l3_switches, $l3_switches_defaults)
@@ -185,7 +176,7 @@ class netops::monitoring(
     $atlas = {
         'ripe-atlas-eqiad' => { ipv4 => '208.80.155.69',  ipv6 => '2620:0:861:202:208:80:155:69', parents => ['asw2-b-eqiad'] },
         'ripe-atlas-codfw' => { ipv4 => '208.80.152.244', ipv6 => '2620:0:860:201:208:80:152:244', parents => ['asw-a-codfw'] },
-        'ripe-atlas-esams' => { ipv4 => '91.198.174.132', ipv6 => '2620:0:862:201:91:198:174:132', parents => ['asw2-esams.mgmt.esams.wmnet'] },
+        'ripe-atlas-esams' => { ipv4 => '91.198.174.132', ipv6 => '2620:0:862:201:91:198:174:132', parents => ['asw2-esams'] },
         'ripe-atlas-ulsfo' => { ipv4 => '198.35.26.244',  ipv6 => '2620:0:863:201:198:35:26:244', parents => ['asw2-ulsfo'] },
         'ripe-atlas-eqsin' => { ipv4 => '103.102.166.20', ipv6 => '2001:df2:e500:201:103:102:166:20', parents => ['asw1-eqsin'] },
     }
