@@ -2618,7 +2618,12 @@ node /^rdb100[59]\.eqiad\.wmnet$/ {
     role(redis::misc::master)
 }
 
-node /^(rdb1006|rdb101[012])\.eqiad\.wmnet$/ {
+# being decommed. T281217
+node /^rdb1006\.eqiad\.wmnet$/ {
+    role(system::spare)
+}
+
+node /^rdb101[012]\.eqiad\.wmnet$/ {
     role(redis::misc::slave)
 }
 
