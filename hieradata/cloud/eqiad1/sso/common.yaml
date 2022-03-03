@@ -1,3 +1,5 @@
+profile::idp::tgc_cookie_same_site: 'none'
+profile::idp::tgc_cookie_pin_to_session: false
 profile::idp::log_level: 'DEBUG'
 apereo_cas:
   production:

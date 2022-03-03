@@ -79,6 +79,9 @@ cas.ticket.tgt.remember-me.time-to-kill-in-seconds=<%= @max_rememberme_session_l
 cas.ticket.tgt.primary.time-to-kill-in-seconds=<%= @session_inactivity_timeout %>
 cas.ticket.tgt.primary.max-time-to-live-in-seconds=<%= @max_session_length %>
 
+cas.tgc.same-site-policy=<%= @tgc_cookie_same_site %>
+cas.tgc.pin-to-session=<%= @tgc_cookie_pin_to_session.to_s %>
+
 <%- if @enable_ldap -%>
 cas.authn.ldap[0].principal-attribute-list=<%= @ldap_attribute_list.join(',') %>
 cas.authn.ldap[0].type=<%= @ldap_auth %>

@@ -1,1 +1,1 @@
-type Wmflib::HTTP::SameSite = Enum['None', 'Lax', 'Strict']
+type Wmflib::HTTP::SameSite = Enum['None', 'none', 'Lax', 'lax', 'Strict', 'strict']

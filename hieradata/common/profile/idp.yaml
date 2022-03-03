@@ -6,6 +6,8 @@ profile::idp::key_password: changeit
 profile::idp::keystore_password: changeit
 profile::idp::tgc_encryption_key: changeit
 profile::idp::tgc_signing_key: changeit
+profile::idp::tgc_cookie_same_site: 'none'
+profile::idp::tgc_cookie_pin_to_session: true
 profile::idp::webflow_encryption_key: changeit
 profile::idp::webflow_signing_key: changeit
 profile::idp::u2f_encryption_key: changeit

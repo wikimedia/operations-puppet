@@ -2,6 +2,8 @@
 # @param idp_nodes list of idp nodes
 # @param tgc_signing_key the tgc signing key
 # @param tgc_encryption_key the tgc encyption key
+# @param tgc_cookie_same_site set the SameSite policy for the TGC cookie
+# @param tgc_cookie_pin_to_session If true the TGC cookie is pined to the users IP address and user agent
 # @param webflow_signing_key the webflow signing key
 # @param webflow_encryption_key the webflow encyption key
 # @param enable_u2f If to enable u2f
@@ -61,6 +63,8 @@ class apereo_cas (
     Array[Stdlib::Fqdn]               $idp_nodes,
     Optional[String[1]]               $tgc_signing_key               = undef,
     Optional[String[1]]               $tgc_encryption_key            = undef,
+    Wmflib::HTTP::SameSite            $tgc_cookie_same_site          = 'none',
+    Boolean                           $tgc_cookie_pin_to_session     = true,
     Optional[String[1]]               $webflow_signing_key           = undef,
     Optional[String[1]]               $webflow_encryption_key        = undef,
     Boolean                           $enable_u2f                    = true,
