@@ -5,6 +5,12 @@ profile::prometheus::icinga_exporter::label_teams_config:
     instance:
       - '.*cloud.*'
       - '.*labs.*'
+
+  dcops:
+    # tag all but 'physical' netbox report with 'team=dcops'
+    alertname:
+      - '^Netbox report(?!.*physical)'
+
   # this is the default team, must be the last in the definition.
   sre:
     alertname:
