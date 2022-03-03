@@ -92,6 +92,7 @@ define netops::check(
         @monitoring::host { "${title} IPv6":
             ip_address => $ipv6,
             group      => $group,
+            os         => $os,
         }
     }
 
