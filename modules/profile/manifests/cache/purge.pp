@@ -113,7 +113,7 @@ class profile::cache::purge(
         critical        => 5000, # 5 seconds
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Purged#Alerts',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/RvscY1CZk/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
     }
 
     monitoring::check_prometheus { 'purged-backlog':
@@ -124,6 +124,6 @@ class profile::cache::purge(
         critical        => 10000,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Purged#Alerts',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/RvscY1CZk/purged?var-datasource=${::site} prometheus/ops&var-instance=${::hostname}"],
     }
 }

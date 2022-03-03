@@ -46,7 +46,7 @@ class profile::aqs (
         }
         #TODO: add monitoring once we figure out what metrics we want
         #monitoring::graphite_threshold { 'restbase_analytics_<<some-metric-name>>':
-            #description   => 'Analytics RESTBase req/s returning 5xx http://grafana.wikimedia.org/#/dashboard/db/restbase',
+            #description   => 'Analytics RESTBase req/s returning 5xx http://grafana.wikimedia.org/d/000000068/restbase',
             #metric        => '<<the metric and any transformations>>',
             #from          => '10min',
             #warning       => <<warning threshold>>, # <<explain>>

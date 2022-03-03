@@ -110,7 +110,7 @@ class profile::monitoring(
         critical        => $nrpe_check_disk_critical,
         nrpe_command    => "/usr/lib/nagios/plugins/check_disk ${nrpe_check_disk_options}",
         notes_url       => 'https://wikitech.wikimedia.org/wiki/Monitoring/Disk_space',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         check_interval  => 20,
         retry_interval  => 5,
     }
@@ -185,7 +185,7 @@ class profile::monitoring(
         monitoring::check_prometheus { 'smart_healthy':
             ensure          => $hardware_monitoring,
             description     => 'Device not healthy (SMART)',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
             contact_group   => $contact_group,
             query           => "device_smart_healthy{instance=\"${facts['hostname']}:9100\"}",
             method          => 'le',
@@ -212,7 +212,7 @@ class profile::monitoring(
     monitoring::check_prometheus { 'edac_correctable_errors':
         ensure          => $hardware_monitoring,
         description     => 'Memory correctable errors (EDAC)',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         contact_group   => $contact_group,
         query           => "sum(increase(node_edac_correctable_errors_total{instance=\"${facts['hostname']}:9100\"}[4d]))",
         warning         => 2,
@@ -232,7 +232,7 @@ class profile::monitoring(
     monitoring::check_prometheus { 'edac_syslog_events':
         ensure          => $hardware_monitoring,
         description     => 'EDAC syslog messages',
-        dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         contact_group   => $contact_group,
         query           => "sum(increase(edac_events{hostname=\"${facts['hostname']}\"}[4d]))",
         warning         => 2,
@@ -251,7 +251,7 @@ class profile::monitoring(
     if debian::codename::le('stretch') {
         monitoring::check_prometheus { 'filesystem_avail_bigger_than_size':
             description     => 'Filesystem available is greater than filesystem size',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?orgId=1&var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
             contact_group   => $contact_group,
             query           => "node_filesystem_avail_bytes{instance=\"${facts['hostname']}:9100\"} > node_filesystem_size_bytes",
             # The query returns node_filesystem_avail_bytes metrics that match the condition. warning/critical

@@ -66,7 +66,7 @@ class profile::zookeeper::server (
             critical        => $max_client_connections,
             method          => 'ge',
             contact_group   => $monitoring_contact_group,
-            dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/zookeeper?refresh=5m&orgId=1&panelId=6&fullscreen'],
+            dashboard_links => ['https://grafana.wikimedia.org/d/000000261/zookeeper?refresh=5m&orgId=1&panelId=6&fullscreen'],
             notes_link      => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
         }
     }

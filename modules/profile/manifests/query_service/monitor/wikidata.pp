@@ -22,7 +22,7 @@ class profile::query_service::monitor::wikidata (
         'regular': {
             monitoring::check_prometheus { 'WDQS_Lag':
                 description     => 'WDQS high update lag',
-                dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
+                dashboard_links => ['https://grafana.wikimedia.org/d/000000489/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
                 query           => "scalar(time() - blazegraph_lastupdated{instance=\"${::hostname}:9193\"})",
                 prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
                 warning         => $lag_warning,
@@ -34,7 +34,7 @@ class profile::query_service::monitor::wikidata (
         'streaming': {
             monitoring::check_prometheus { 'WDQS_Lag_Streaming':
                 description     => 'WDQS high update lag',
-                dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
+                dashboard_links => ['https://grafana.wikimedia.org/d/000000489/wikidata-query-service?orgId=1&panelId=8&fullscreen'],
                 query           => "scalar(wdqs_streaming_updater_kafka_stream_consumer_lag_Value{instance=\"${::hostname}:9101\"})",
                 prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
                 warning         => $lag_warning * 1000, # the metric is in ms

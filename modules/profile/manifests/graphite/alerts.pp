@@ -13,11 +13,11 @@ class profile::graphite::alerts(
     }
 
     # Monitor MediaWiki session failures
-    # See https://grafana.wikimedia.org/dashboard/db/edit-count
+    # See https://grafana.wikimedia.org/d/000000208/edit-count
     monitoring::graphite_threshold { 'mediawiki_session_loss':
         description     => 'MediaWiki edit session loss',
         graphite_url    => $graphite_url,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/edit-count?panelId=13&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000208/edit-count?panelId=13&fullscreen&orgId=1'],
         metric          => 'transformNull(scale(consolidateBy(MediaWiki.edit.failures.session_loss.rate, "max"), 60), 0)',
         warning         => 10,
         critical        => 50,
@@ -29,7 +29,7 @@ class profile::graphite::alerts(
     monitoring::graphite_threshold { 'mediawiki_bad_token':
         description     => 'MediaWiki edit failure due to bad token',
         graphite_url    => $graphite_url,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/edit-count?panelId=13&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000208/edit-count?panelId=13&fullscreen&orgId=1'],
         metric          => 'transformNull(scale(consolidateBy(MediaWiki.edit.failures.bad_token.rate, "max"), 60), 0)',
         warning         => 10,
         critical        => 50,

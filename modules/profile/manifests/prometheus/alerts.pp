@@ -48,7 +48,7 @@ class profile::prometheus::alerts (
         critical        => 30,
         method          => 'ge',
         contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=13&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000505/eventlogging?panelId=13&fullscreen&orgId=1'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration',
     }
 
@@ -63,7 +63,7 @@ class profile::prometheus::alerts (
         critical        => 0,
         method          => 'le',
         contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000505/eventlogging?panelId=6&fullscreen&orgId=1'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration',
     }
 
@@ -78,7 +78,7 @@ class profile::prometheus::alerts (
         critical        => 8000,
         method          => 'ge',
         contact_group   => 'analytics',
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/eventlogging?panelId=6&fullscreen&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000505/eventlogging?panelId=6&fullscreen&orgId=1'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging/Administration',
     }
 

@@ -13,7 +13,7 @@ define monitoring::alerts::http_availability(
         warning         => $warning,
         critical        => $critical,
         nagios_critical => true,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/frontend-traffic?panelId=3&fullscreen&refresh=1m&orgId=1',
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000479/frontend-traffic?panelId=3&fullscreen&refresh=1m&orgId=1',
                             'https://logstash.wikimedia.org/goto/fe494e83d04fee66c8f0958bfc28451f'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish#Diagnosing_Varnish_alerts',
     }
@@ -28,7 +28,7 @@ define monitoring::alerts::http_availability(
         warning         => $warning,
         critical        => $critical,
         nagios_critical => true,
-        dashboard_links => ['https://grafana.wikimedia.org/dashboard/db/frontend-traffic?panelId=13&fullscreen&refresh=1m&orgId=1'],
+        dashboard_links => ['https://grafana.wikimedia.org/d/000000479/frontend-traffic?panelId=13&fullscreen&refresh=1m&orgId=1'],
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Cache_TLS_termination',
     }
 }

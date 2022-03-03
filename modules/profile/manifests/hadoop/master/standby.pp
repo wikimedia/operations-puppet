@@ -45,7 +45,7 @@ class profile::hadoop::master::standby(
         # if the usage stays above 90% over time to see if anything is happening.
         monitoring::check_prometheus { 'hadoop-hdfs-namenode-heap-usage':
             description     => 'HDFS active Namenode JVM Heap usage',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=4&fullscreen&orgId=1"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/000000585/hadoop?var-hadoop_cluster=${cluster_name}&panelId=4&fullscreen&orgId=1"],
             query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10080\",area=\"heap\"}[60m]))",
             warning         => 0.9,
             critical        => 0.95,
@@ -61,7 +61,7 @@ class profile::hadoop::master::standby(
     if $monitoring_enabled {
         monitoring::check_prometheus { 'hadoop-yarn-resourcemananager-heap-usage':
             description     => 'YARN active ResourceManager JVM Heap usage',
-            dashboard_links => ["https://grafana.wikimedia.org/dashboard/db/hadoop?var-hadoop_cluster=${cluster_name}&panelId=12&fullscreen&orgId=1"],
+            dashboard_links => ["https://grafana.wikimedia.org/d/000000585/hadoop?var-hadoop_cluster=${cluster_name}&panelId=12&fullscreen&orgId=1"],
             query           => "scalar(avg_over_time(jvm_memory_bytes_used{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}[60m])/avg_over_time(jvm_memory_bytes_max{hadoop_cluster=\"${cluster_name}\",instance=\"${::hostname}:10083\",area=\"heap\"}[60m]))",
             warning         => 0.7,
             critical        => 0.9,
