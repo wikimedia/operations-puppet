@@ -2218,11 +2218,6 @@ node 'mw1318.eqiad.wmnet' {
     role(mediawiki::jobrunner)
 }
 
-# rack B6
-node /^mw1(30[0-6])\.eqiad\.wmnet$/ {
-    role(mediawiki::jobrunner)
-}
-
 # Row C
 
 # rack C6
