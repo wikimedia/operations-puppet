@@ -106,29 +106,45 @@ class netops::monitoring(
         'cr2-eqsin.mgmt' => { ipv4 => '10.132.128.6',    parents => ['mr1-eqsin'] },
         'cr1-drmrs.mgmt' => { ipv4 => '10.136.128.6',    parents => ['mr1-drmrs'] },
         'cr2-drmrs.mgmt' => { ipv4 => '10.136.128.7',    parents => ['mr1-drmrs'] },
-        'asw1-b12-drmrs.mgmt' => { ipv4 => '10.136.128.3',   parents => ['mr1-drmrs'] },
-        'asw1-b13-drmrs.mgmt' => { ipv4 => '10.136.128.4',   parents => ['mr1-drmrs'] },
     }
     create_resources(netops::check, $oob)
 
-    # access/management/peering switches
+    #
+    # Management switches
+    #
+    $mgmt_switches_defaults = {
+        snmp_community => $passwords::network::snmp_ro_community,
+        alarms         => true,
+        os             => 'Junos',
+    }
+    $mgmt_switches = {
+        # eqiad
+        'msw1-eqiad'    => { ipv4 => '10.65.0.10',   parents => ['mr1-eqiad']},
+        'msw2-eqiad'    => { ipv4 => '10.65.0.5',    parents => ['msw1-eqiad']},
+        # codfw
+        'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['mr1-codfw']},
+    }
+    create_resources(netops::check, $mgmt_switches, $mgmt_switches_defaults)
+
+    #
+    # L2 only "legacy" switches
+    #
+    # Note: The parents attribute is used to capture a view of the network
+    # topology. It is not complete on purpose as icinga is not able to
+    # work well with loops.
+    #
     $switches_defaults = {
         snmp_community => $passwords::network::snmp_ro_community,
         alarms         => true,
         os             => 'Junos',
         vcp            => true,
     }
-    # Note: The parents attribute is used to capture a view of the network
-    # topology. It is not complete on purpose as icinga is not able to
-    # work well with loops
     $switches = {
         # eqiad
         'asw2-a-eqiad'  => { ipv4 => '10.65.0.21',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-b-eqiad'  => { ipv4 => '10.65.0.25',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-c-eqiad'  => { ipv4 => '10.65.0.26',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
         'asw2-d-eqiad'  => { ipv4 => '10.65.0.27',   parents => ['cr1-eqiad', 'cr2-eqiad'] },
-        'msw1-eqiad'    => { ipv4 => '10.65.0.10',   parents => ['mr1-eqiad'], vcp => false },
-        'msw2-eqiad'    => { ipv4 => '10.65.0.5',    parents => ['msw1-eqiad'], vcp => false },
         'fasw-c-eqiad'  => { ipv4 => '10.65.0.30',   parents => ['pfw3-eqiad'] },
         'cloudsw2-c8-eqiad' => { ipv4 => '10.65.1.197', parents => ['cloudsw1-c8-eqiad'], vcp => false },
         'cloudsw2-d5-eqiad' => { ipv4 => '10.65.1.198', parents => ['cloudsw1-d5-eqiad'], vcp => false },
@@ -137,7 +153,6 @@ class netops::monitoring(
         'asw-b-codfw'   => { ipv4 => '10.193.0.17',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'asw-c-codfw'   => { ipv4 => '10.193.0.18',  parents => ['cr1-codfw', 'cr2-codfw'] },
         'asw-d-codfw'   => { ipv4 => '10.193.0.19',  parents => ['cr1-codfw', 'cr2-codfw'] },
-        'msw1-codfw'    => { ipv4 => '10.193.0.3',   parents => ['mr1-codfw'], vcp => false },
         'fasw-c-codfw'  => { ipv4 => '10.193.0.57',  parents => ['pfw3-codfw'] },
         # esams
         'asw2-esams' => { ipv4 => '10.21.0.8',  parents => ['cr3-esams', 'cr2-esams'] },
@@ -148,7 +163,46 @@ class netops::monitoring(
     }
     create_resources(netops::check, $switches, $switches_defaults)
 
+    #
+    # L3 switches (data plane interface)
+    #
+    # Those devices have both mgmt and data plane IPs (usually loopback)
+    # The dataplane IP is used for parent/child relationship, as well as checking basic connectivity.
+    # This is also the name automatically used for servers' parents using LLDP.
+    #
     $l3_switches_defaults = {
+        os => 'Junos',
+    }
+    $l3_switches = {
+        # eqiad cloud
+        'cloudsw1-c8-eqiad' => { ipv4 => '185.15.56.252', parents => ['cr1-eqiad', 'cr2-eqiad']},
+        'cloudsw1-d5-eqiad' => { ipv4 => '185.15.56.253', parents => ['cr1-eqiad', 'cr2-eqiad']},
+        # eqiad prod
+        'lsw1-e1-eqiad' => { ipv4 => '10.64.146.3', ipv6 => '2620:0:861:11b::3',
+                              parents => ['cr1-eqiad', 'cr2-eqiad']},
+        'lsw1-e2-eqiad' => { ipv4 => '10.64.146.4', ipv6 => '2620:0:861:11b::4',
+                              parents => ['lsw1-e1-eqiad', 'lsw1-f1-eqiad']},
+        'lsw1-e3-eqiad' => { ipv4 => '10.64.146.5', ipv6 => '2620:0:861:11b::5',
+                              parents => ['lsw1-e1-eqiad', 'lsw1-f1-eqiad']},
+        'lsw1-f1-eqiad' => { ipv4 => '10.64.146.7', ipv6 => '2620:0:861:11b::7',
+                              parents => ['cr1-eqiad', 'cr2-eqiad']},
+        'lsw1-f2-eqiad' => { ipv4 => '10.64.146.8', ipv6 => '2620:0:861:11b::8',
+                              parents => ['lsw1-e1-eqiad', 'lsw1-f1-eqiad']},
+        'lsw1-f3-eqiad' => { ipv4 => '10.64.146.9', ipv6 => '2620:0:861:11b::9',
+                              parents => ['lsw1-e1-eqiad', 'lsw1-f1-eqiad']},
+        # drmrs
+        'asw1-b12-drmrs' => { ipv4 => '185.15.58.131', ipv6 => '2a02:ec80:600:ffff::4',
+                              parents => ['cr1-drmrs', 'cr2-drmrs'] },
+        'asw1-b13-drmrs' => { ipv4 => '185.15.58.132', ipv6 => '2a02:ec80:600:ffff::5',
+                              parents => ['cr1-drmrs', 'cr2-drmrs'] },
+    }
+    create_resources(netops::check, $l3_switches, $l3_switches_defaults)
+    #
+    # L3 switches (mgmt interface)
+    #
+    # The mgmt IP is used to run extra checks via SNMP in adition to checking mgmt reachability.
+    #
+    $l3_switches_mgmt_defaults = {
         snmp_community => $passwords::network::snmp_ro_community,
         alarms         => true,
         bgp            => true,
@@ -156,20 +210,22 @@ class netops::monitoring(
         os             => 'Junos',
 
     }
-
-    $l3_switches = {
-        # eqiad
-        'cloudsw1-c8-eqiad' => { ipv4 => '10.65.0.7', parents => ['cr1-eqiad', 'cr2-eqiad']},
-        'cloudsw1-d5-eqiad' => { ipv4 => '10.65.0.6', parents => ['cr1-eqiad', 'cr2-eqiad']},
-        'lsw1-e3-eqiad'     => { ipv4 => '10.65.1.230'},
+    $l3_switches_mgmt = {
+        # eqiad cloud
+        'cloudsw1-c8-eqiad.mgmt' => { ipv4 => '10.65.0.7', parents => ['msw1-eqiad']},
+        'cloudsw1-d5-eqiad.mgmt' => { ipv4 => '10.65.0.6', parents => ['msw1-eqiad']},
+        # eqiad prod
+        'lsw1-e1-eqiad.mgmt' => { ipv4 => '10.65.1.228', parents => ['msw2-eqiad'] },
+        'lsw1-e2-eqiad.mgmt' => { ipv4 => '10.65.1.229', parents => ['msw2-eqiad'] },
+        'lsw1-e3-eqiad.mgmt' => { ipv4 => '10.65.1.230', parents => ['msw2-eqiad'] },
+        'lsw1-f1-eqiad.mgmt' => { ipv4 => '10.65.1.232', parents => ['msw2-eqiad'] },
+        'lsw1-f2-eqiad.mgmt' => { ipv4 => '10.65.1.233', parents => ['msw2-eqiad'] },
+        'lsw1-f3-eqiad.mgmt' => { ipv4 => '10.65.1.234', parents => ['msw2-eqiad'] },
         # drmrs
-        'asw1-b12-drmrs' => { ipv4 => '185.15.58.131', ipv6 => '2a02:ec80:600:ffff::4',
-                              parents => ['cr1-drmrs', 'cr2-drmrs'] },
-        'asw1-b13-drmrs' => { ipv4 => '185.15.58.132', ipv6 => '2a02:ec80:600:ffff::5',
-                              parents => ['cr1-drmrs', 'cr2-drmrs'] },
+        'asw1-b12-drmrs.mgmt' => { ipv4 => '10.136.128.3',   parents => ['mr1-drmrs'] },
+        'asw1-b13-drmrs.mgmt' => { ipv4 => '10.136.128.4',   parents => ['mr1-drmrs'] },
     }
-
-    create_resources(netops::check, $l3_switches, $l3_switches_defaults)
+    create_resources(netops::check, $l3_switches_mgmt, $l3_switches_mgmt_defaults)
 
 
     # RIPE Atlases -- no SNMP for these
