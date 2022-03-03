@@ -27,7 +27,7 @@ class reposync (
             ensure  => stdlib::ensure($ensure, 'directory'),
         }
         exec { "git_init_${repo}":
-            command => "/usr/bin/git --bare -C ${repo_path} init",
+            command => "/usr/bin/git -C ${repo_path} init --bare",
             creates => "${repo_path}/HEAD",
             require => File[$repo_path],
         }
