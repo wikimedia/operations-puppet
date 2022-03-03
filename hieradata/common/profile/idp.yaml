@@ -1,3 +1,4 @@
+profile::idp::log_level: 'WARN'
 profile::idp::ldap_schema: ldaps
 profile::idp::ldap_start_tls: false
 profile::idp::enable_ldap: true

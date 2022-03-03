@@ -1,4 +1,62 @@
-#
+# @summary Class to configure Apero CAS
+# @param idp_nodes list of idp nodes
+# @param tgc_signing_key the tgc signing key
+# @param tgc_encryption_key the tgc encyption key
+# @param webflow_signing_key the webflow signing key
+# @param webflow_encryption_key the webflow encyption key
+# @param enable_u2f If to enable u2f
+# @param u2f_signing_key the utf signing key
+# @param u2f_encryption_key the utf encyption key
+# @param keystore_source the keystore source location.  only one of keystore_source and keystore_content can be presetn
+# @param keystore_content the keystore content.  only one of keystore_source and keystore_content can be presetn
+# @param max_session_length maximum session length in seconds. https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration#Session_timeout_handling
+# @param max_rememberme_session_length maximum rember me session length: https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration#Session_timeout_handling
+# @param session_inactivity_timeout session inactivity time out https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration#Session_timeout_handling
+# @param groovy_source source of groovy authentication script
+# @param prometheus_nodes list of preometheus nodes
+# @param actuators list of actuators
+# @param base_dir base directory for config
+# @param log_dir logging directory
+# @param tomcat_basedir tomecat base directory
+# @param keystore_path path to store the keystore
+# @param keystore_password keystore password
+# @param key_password key password
+# @param server_name the location of the idp site
+# @param server_port port cas will listen on
+# @param server_prefix URL path cas app will be deployed to
+# @param server_enable_ssl if ssl is enabled
+# @param tomcat_proxy if using external tomecat proxy
+# @param enable_ldap configure cas to authenticate agains ldap
+# @param ldap_attribute_list list of ldap attributes to fetch
+# @param ldap_uris list of ldap uris to use for authentication
+# @param ldap_auth ldap authentication method to use
+# @param ldap_connection ldap connection type to maintain
+# @param ldap_start_tls use STARTLS for ldap connections
+# @param ldap_base_dn ldap base dn
+# @param ldap_group_cn ldap groups cn
+# @param ldap_search_filter ldap filter to use when searching useres
+# @param ldap_bind_dn bind dn to use to search ldap
+# @param ldap_bind_pass bind password to use to search ldap
+# @param log_level log level to configure
+# @param daemon_user system useres used to run the daemon
+# @param services list of trusted services
+# @param java_opts java options
+# @param memcached_enable if we should use memcached
+# @param memcached_port memcached port
+# @param memcached_server memcached address
+# @param memcached_transcoder memcached encoder to use
+# @param u2f_jpa_enable use JPA for utf token storage
+# @param u2f_jpa_username u2f JPA username
+# @param u2f_jpa_password u2f JPA password
+# @param u2f_jpa_server u2f JPA server
+# @param u2f_jpa_db u2f JPA database name
+# @param u2f_token_expiry_days number of days of inactivity before u2f tokens are automatically removed
+# @param enable_cors Enable CORS protection
+# @param cors_allow_credentials if we shuold allow authentication credentials with CORS
+# @param cors_allowed_origins list of origins allowed to use CORS
+# @param cors_allowed_headers list of headers allowed to in CORS requests
+# @param cors_allowed_methods list of methods allowed with CORS
+# @param delegated_authenticators list of delegated authenticators
 class apereo_cas (
     Array[Stdlib::Fqdn]               $idp_nodes,
     Optional[String[1]]               $tgc_signing_key               = undef,
@@ -8,24 +66,21 @@ class apereo_cas (
     Boolean                           $enable_u2f                    = true,
     Optional[String[1]]               $u2f_signing_key               = undef,
     Optional[String[1]]               $u2f_encryption_key            = undef,
-    Boolean                           $enable_totp                   = false,
-    Optional[String[1]]               $totp_signing_key              = undef,
-    Optional[String[1]]               $totp_encryption_key           = undef,
     Optional[Stdlib::Filesource]      $keystore_source               = undef,
     Optional[String[1]]               $keystore_content              = undef,
     Integer[60,604800]                $max_session_length            = 604800,
     Integer[60,604800]                $max_rememberme_session_length = $max_session_length,
     Integer[60,86400]                 $session_inactivity_timeout    = 3600,
     Optional[Stdlib::Filesource]      $groovy_source                 = undef,
-    Optional[Array[Stdlib::Host]]     $prometheus_nodes              = [],
-    Optional[Array[String]]           $actuators                     = [],
+    Array[Stdlib::Host]               $prometheus_nodes              = [],
+    Array[String]                     $actuators                     = [],
     Stdlib::Unixpath                  $base_dir                      = '/etc/cas',
     Stdlib::Unixpath                  $log_dir                       = '/var/log/cas',
     Stdlib::Unixpath                  $tomcat_basedir                = "${log_dir}/tomcat",
     Stdlib::Unixpath                  $keystore_path                 = "${base_dir}/thekeystore",
     String[1]                         $keystore_password             = 'changeit',
     String[1]                         $key_password                  = 'changeit',
-    Stdlib::HTTPSUrl                  $server_name                   = "https://${facts['fqdn']}:8443",
+    Stdlib::HTTPSUrl                  $server_name                   = "https://${facts['networking']['fqdn']}:8443",
     Stdlib::Port                      $server_port                   = 8443,
     Stdlib::Unixpath                  $server_prefix                 = '/cas',
     Boolean                           $server_enable_ssl             = true,
@@ -42,9 +97,6 @@ class apereo_cas (
     String                            $ldap_bind_dn                  = 'cn=user,dc=example,dc=org',
     String                            $ldap_bind_pass                = 'changeme',
     Apereo_cas::LogLevel              $log_level                     = 'WARN',
-    Boolean                           $enable_mfa                    = true,
-    String                            $mfa_attribute_trigger         = 'memberOf',
-    Array[String[1]]                  $mfa_attribut_value            = ['mfa'],
     String                            $daemon_user                   = 'cas',
     Hash[String, Hash]                $services                      = {},
     Optional[String[1]]               $java_opts                     = undef,
@@ -126,7 +178,7 @@ class apereo_cas (
     }
 
     file { '/usr/local/sbin/memcached-dump':
-        ensure => present,
+        ensure => file,
         mode   => '0550',
         owner  => 'root',
         group  => 'root',
@@ -134,14 +186,14 @@ class apereo_cas (
     }
 
     file { '/usr/local/sbin/return-tgt-for-user':
-        ensure => present,
+        ensure => file,
         mode   => '0550',
         owner  => 'root',
         group  => 'root',
         source => 'puppet:///modules/apereo_cas/return-tgt-for-user.py',
     }
     file { '/usr/local/sbin/cas-remove-u2f':
-        ensure => present,
+        ensure => file,
         mode   => '0550',
         owner  => 'root',
         group  => 'root',
@@ -150,7 +202,7 @@ class apereo_cas (
 
     $services.each |String $service, Hash $config| {
         apereo_cas::service {$service:
-            * => $config
+            * => $config,
         }
     }
 }

@@ -1,3 +1,5 @@
+# TODO: we should possibly lower the level for production
+profile::idp::log_level: 'DEBUG'
 profile::tlsproxy::envoy::floc_opt_out: true
 profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
 profile::tlsproxy::envoy::use_remote_address: true

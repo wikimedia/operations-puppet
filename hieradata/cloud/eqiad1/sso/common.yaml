@@ -1,3 +1,4 @@
+profile::idp::log_level: 'DEBUG'
 apereo_cas:
   production:
     login_url: 'https://idp.wmcloud.org/login'

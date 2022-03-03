@@ -47,13 +47,11 @@ management.endpoints.web.exposure.include=<%= @actuators.join(',') %>
 management.endpoint.<%= actuator %>.enabled=true
 <% end -%>
 
-<%- if @actuators.include?('prometheus') -%>
-<%- unless @prometheus_nodes.empty? %>
+<%- if @actuators.include?('prometheus') and !@prometheus_nodes.empty? %>
 management.metrics.tags.application=${spring.application.name}
 management.metrics.export.prometheus.enabled=true
 cas.monitor.endpoints.endpoint.prometheus.access[0]=IP_ADDRESS
 cas.monitor.endpoints.endpoint.prometheus.required-ip-addresses[0]=::1,127.0.0.1,<%= get_addresses(@prometheus_nodes).join(',') %>
-<%- end -%>
 <%- end -%>
 
 # This only returns a result for a session of an authenticated
@@ -93,13 +91,8 @@ cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
 cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
 <%- end -%>
 
-<%- if @enable_mfa -%>
-  <%- if @groovy_source -%>
+<%- if @groovy_source -%>
 cas.authn.mfa.triggers.principal.global-principal-attribute-predicate.location=file:<%= @groovy_file -%>
-  <%- else -%>
-cas.authn.mfa.triggers.principal.global-principal-attribute-name-triggers=<%= @mfa_attribute_trigger %>
-cas.authn.mfa.triggers.principal.global-principal-attribute-value-regex=<%= @mfa_attribut_value.join('|') %>
-  <%- end -%>
 <%- end -%>
 
 <%- if @enable_u2f -%>
