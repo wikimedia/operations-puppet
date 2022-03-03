@@ -68,6 +68,15 @@ release_repo_dir: /srv/mwbuilder/release
 release_repo_update_cmd: sudo -u mwbuilder /usr/local/bin/update-mediawiki-tools-release
 release_repo_build_and_push_images_cmd: sudo -u mwbuilder /usr/bin/make -C /srv/mwbuilder/release/make-container-image -f Makefile build-and-push-all-images http_proxy=http://webproxy.eqiad.wmnet:8080 https_proxy=http://webproxy.eqiad.wmnet:8080
 
+<%- if @deploy_k8s -%>
+## Settings for deploying mediawiki to kubernetes
+# The directory where to save the releases files
+k8s_releases_dir: <%= @k8s_releases_dir %>
+# Comma separated list of the clusters we will deploy to
+k8s_clusters: <%= @k8s_clusters.join(",") %>
+k8s_deployments_file: <%= @k8s_deployments_file %>
+<%- end -%>
+
 [eqiad.wmnet]
 # Wikimedia Foundation production eqiad datacenter
 datacenter: eqiad
