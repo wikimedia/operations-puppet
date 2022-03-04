@@ -458,6 +458,36 @@ service::catalog:
       - dnsdisc: cxserver
         active_active: true
 
+  datahubsearch:
+    description: Search cluster serving DataHub
+    encryption: false
+    ip:
+      eqiad:
+        default: 10.2.2.71
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: datahubsearch
+        service: opensearch
+      depool_threshold: ".5"
+      enabled: false
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    probes:
+      - type: http
+    monitoring:
+      check_command: check_https_url!datahubsearch.discovery.wmnet!9200
+      sites:
+        eqiad:
+          hostname: datahubsearch.svc.eqiad.wmnet
+    port: 9200
+    sites:
+      - eqiad
+    state: service_setup
+
   docker-registry:
     description: docker registry service
     encryption: true

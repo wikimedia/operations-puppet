@@ -8,4 +8,5 @@ class role::analytics_cluster::datahub::opensearch {
     include ::profile::opensearch::datahubsearch
     include ::profile::rsyslog::udp_json_logback_compat
     include ::profile::opensearch::monitoring::base_checks
+    include ::profile::lvs::realserver
 }

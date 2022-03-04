@@ -30,3 +30,8 @@ profile::opensearch::dc_settings:
     - datahubsearch1001.eqiad.wmnet
     - datahubsearch1002.eqiad.wmnet
     - datahubsearch1003.eqiad.wmnet
+
+profile::lvs::realserver::pools:
+  datahubsearch:
+    services:
+      - opensearch_1@datahub
