@@ -5903,3 +5903,7 @@ ldap_only_users:
     ensure: present
     realname: Stefania Hart
     email: sthart@wikimedia.org
+  otich:
+    ensure: present
+    realname: Olga Tichonova
+    email: otichonova@wikimedia.org
