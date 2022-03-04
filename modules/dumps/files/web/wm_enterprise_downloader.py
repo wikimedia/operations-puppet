@@ -431,6 +431,7 @@ class Downloader():
             return "dummymd5", "dummydate"
         md5sum = None
         last_modified = None
+        response = None
 
         try:
             response = requests.get(
@@ -447,9 +448,14 @@ class Downloader():
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             LOG.error(repr(traceback.format_exception(exc_type, exc_value, exc_traceback)))
-            LOG.error("Failed to retrieve dump file info "
-                      "for wiki %s and namespace %s, got: %s",
-                      wiki, namespace_id, response.content)
+            if response is not None:
+                LOG.error("Failed to retrieve dump file info "
+                          "for wiki %s and namespace %s, got: %s",
+                          wiki, namespace_id, response.content)
+            else:
+                LOG.error("Failed to retrieve dump file info "
+                          "for wiki %s and namespace %s",
+                          wiki, namespace_id)
             return md5sum, last_modified
 
         try:
@@ -647,16 +653,19 @@ class Downloader():
                 wikis[ns_id_todo] = wikis[ns_id_todo][start:end]
 
             for wiki_todo in wikis[ns_id_todo]:
+                # if run for a date where some files are already downloaded, skip those and just do
+                # backfill of the missing ones
+                if self.dump_done(wiki_todo, ns_id_todo):
+                    continue
+
                 if not dryrun:
                     LOG.debug("retrieving dump for %s", wiki_todo)
+
                 if first:
                     first = False
                 else:
                     if not dryrun:
                         time.sleep(self.settings['wait'])
-
-                if self.dump_done(wiki_todo, ns_id_todo):
-                    continue
 
                 if not self.get_wiki_dump_and_info(wiki_todo, ns_id_todo, dryrun):
                     consecutive_fails += 1
@@ -674,7 +683,8 @@ def usage(message=None):
         print(message)
     usage_message = """Usage: wm_enterprise_downloader.py [--wiki name]
          [--creds path-to-creds-file] [--settings path-to-settings-file]
-         [--retries num] [--test num,num] [--maxfails num] [--dryrun] [--verbose]| --help
+         [--retries num] [--backfill YYYYMMDD] [--test num,num] [--maxfails num]
+         [--dryrun] [--verbose]| --help
 
 Arguments:
 
@@ -693,6 +703,9 @@ Arguments:
                      default: wm_enterprise_downloader_settings in current working directory
   --retries   (-r):  number of retries in case downloads fail
                      default: 0 (don't retry)
+  --backfill  (-b):  date of run for which to backfill wikis (download any that are missing);
+                     (format: YYYYMMDD)
+                     this argument cannot be used with --wiki.
   --maxfails  (-m):  the maximum number of consecutive wikis for which the dump download may
                      fail before the script exits
   --test      (-t):  a start and end index, comma-separated; only the wiki dump files corresponding
@@ -708,6 +721,7 @@ Example usage:
    python ./wm_enterprise_downloader.py --wiki elwiki --namespace 0 --verbose
    python ./wm_enterprise_downloader.py --verbose
    python ./wm_enterprise_downloader.py --namespace 0 --test 5,10 --dryrun
+   python ./wm_enterprise_downloader.py --verbose --backfill 20220301
 
 """
     print(usage_message)
@@ -750,7 +764,9 @@ def fillin_args(options, args):
     walk through all the provided options and stuff the appropriate values in the args
     '''
     for (opt, val) in options:
-        if opt in ["-c", "--creds"]:
+        if opt in ["-b", "--backfill"]:
+            args['backfill'] = val
+        elif opt in ["-c", "--creds"]:
             args['creds'] = val
         elif opt in ["-n", "--namespace"]:
             args['ns_id'] = val
@@ -774,21 +790,36 @@ def fillin_args(options, args):
     check_test_args(args)
 
 
+def check_is_date(date):
+    '''
+    check a string to make sure it is nominally in YYYYMMDD format,
+    return True if so, False otherwise
+    '''
+    if date is None:
+        return False
+    if not date.isdigit():
+        return False
+    if len(date) != 8:
+        return False
+    return True
+
+
 def get_args():
     '''
     get and validate command-line args and return them
     '''
     try:
         (options, remainder) = getopt.gnu_getopt(
-            sys.argv[1:], "c:m:n:r:s:t:w:dvh", [
-                "creds=", "namespace=", "settings=", "retries=", "maxfails=", "wiki=", "test=",
+            sys.argv[1:], "b:c:m:n:r:s:t:w:dvh", [
+                "backfill=", "creds=", "namespace=", "settings=", "retries=",
+                "maxfails=", "wiki=", "test=",
                 "dryrun", "verbose", "help"])
 
     except getopt.GetoptError as err:
         usage("Unknown option specified: " + str(err))
 
     args = {'namespace:': None, 'retries': 0, 'maxfails': 5, 'ns_id': None,
-            'wiki': None, 'test': None, 'dryrun': False, 'verbose': False}
+            'wiki': None, 'backfill': None, 'test': None, 'dryrun': False, 'verbose': False}
     args['settings'] = os.path.join(os.getcwd(), 'wm_enterprise_downloader_settings')
     args['creds'] = os.path.join(os.getcwd(), '.wm_enterprise_creds')
 
@@ -797,8 +828,14 @@ def get_args():
     if remainder:
         usage("Unknown option(s) specified: {opt}".format(opt=remainder[0]))
 
+    if args['wiki'] and args['backfill']:
+        usage("You may not use the 'backfill' argument if you specify a wiki")
+
     if args['wiki'] and not args['ns_id']:
         usage("You must specify a numeric namespace id if you specify a wiki")
+
+    if args['backfill'] is not None:
+        check_is_date(args['backfill'])
 
     return args
 
@@ -889,7 +926,7 @@ def do_main():
     setup_logging(args)
     settings = get_settings(args)
     auth_mgr = AuthManager(args['creds'], settings)
-    downloader = Downloader(auth_mgr, settings, args['maxfails'])
+    downloader = Downloader(auth_mgr, settings, args['maxfails'], args['backfill'])
 
     retries = 0
     while retries <= args['retries']:
