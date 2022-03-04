@@ -5899,3 +5899,7 @@ ldap_only_users:
     ensure: present
     realname: Sérgio Lopes
     email: slopes@wikimedia.org
+  sthart:
+    ensure: present
+    realname: Stefania Hart
+    email: sthart@wikimedia.org
