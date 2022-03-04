@@ -1,3 +1,0 @@
-profile::pki::client::signer_host: pki-proxy.pki.eqiad1.wikimedia.cloud
-profile::pki::client::mutual_tls_client_cert: ~
-profile::pki::client::mutual_tls_client_key: ~

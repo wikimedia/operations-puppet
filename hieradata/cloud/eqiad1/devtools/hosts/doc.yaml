@@ -1,5 +1,0 @@
-puppetmaster: puppetmaster-1001.devtools.eqiad1.wikimedia.cloud
-
-# Use integration/docroot.git development files to emulate CI published
-# documents.
-profile::doc::wmf_doc_path: /srv/deployment/integration/docroot/dev/wmf_doc_path

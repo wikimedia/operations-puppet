@@ -1,4 +1,0 @@
-cassandra::seeds:
-  - deployment-aqs01.deployment-prep.eqiad.wmflabs
-  - deployment-aqs02.deployment-prep.eqiad.wmflabs
-  - deployment-aqs03.deployment-prep.eqiad.wmflabs

@@ -1,2 +1,0 @@
-profile::wikistats::jobs_ensure: 'absent'
-profile::base::labs::cleanup_puppet_client_bucket: true

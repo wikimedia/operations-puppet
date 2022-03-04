@@ -1,6 +1,0 @@
-role::logging::mediawiki::monitor: false
-role::logging::mediawiki::log_directory: /srv/mw-log
-role::logging::mediawiki::count: 100
-
-profile::webperf::arclamp::redis_host: '127.0.0.1'
-profile::webperf::arclamp::redis_port: 6379
