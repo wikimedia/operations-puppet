@@ -75,6 +75,7 @@ profile::cassandra::settings:
     permissions_validity_in_ms: 600000
   users:
     - aqs
+    - image_suggestions
 
 
 #
