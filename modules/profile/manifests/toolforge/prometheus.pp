@@ -336,7 +336,7 @@ class profile::toolforge::prometheus (
                     {
                         'role'              => 'instance',
                         'region'            => 'eqiad1-r',
-                        'identity_endpoint' => "http://${keystone_api_fqdn}:5000/v3",
+                        'identity_endpoint' => "https://${keystone_api_fqdn}:25000/v3",
                         'username'          => $observer_user,
                         'password'          => $observer_password,
                         'domain_name'       => 'default',

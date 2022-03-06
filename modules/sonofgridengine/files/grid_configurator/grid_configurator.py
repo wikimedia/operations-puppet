@@ -636,7 +636,7 @@ def get_args():
     argparser.add_argument(
         "--keystone-url",
         help="Endpoint for openstack keystone. Only for hosts. Defaults to '%(default)s'",
-        default="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
+        default="https://openstack.eqiad1.wikimediacloud.org:25000/v3",
     )
 
     argparser.add_argument(

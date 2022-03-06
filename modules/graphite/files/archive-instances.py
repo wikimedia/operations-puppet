@@ -37,7 +37,7 @@ def get_keystone_session(project_name):
         observer_pass = nova_observer['OS_PASSWORD']
 
     return KeystoneSession(auth=KeystonePassword(
-        auth_url="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
+        auth_url="https://openstack.eqiad1.wikimediacloud.org:25000/v3",
         username="novaobserver",
         password=observer_pass,
         project_name=project_name,
@@ -106,7 +106,7 @@ def get_projects_list():
     '''
     keystone_client = KeystoneClient(
         session=get_keystone_session('observer'),
-        endpoint="http://openstack.eqiad1.wikimediacloud.org:5000/v3",
+        endpoint="https://openstack.eqiad1.wikimediacloud.org:25000/v3",
         interface='public'
     )
     return [project.name for project in keystone_client.projects.list()]
