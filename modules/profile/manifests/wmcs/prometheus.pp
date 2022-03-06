@@ -35,7 +35,28 @@ class profile::wmcs::prometheus(
                 { 'target_label' => '__address__',
                     'replacement'  => '127.0.0.1:9115',
                 },
-              ],
+            ],
+        },
+        {
+            'job_name'        => 'blackbox_https',
+            'metrics_path'    => '/probe',
+            'params'          => {
+                'module' => [ 'https_200_300_connect' ],
+            },
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/blackbox_https_*.yaml" ] }
+            ],
+            'relabel_configs' => [
+                { 'source_labels' => ['__address__'],
+                    'target_label'  => '__param_target',
+                },
+                { 'source_labels' => ['__param_target'],
+                    'target_label'  => 'instance',
+                },
+                { 'target_label' => '__address__',
+                    'replacement'  => '127.0.0.1:9115',
+                },
+            ],
         },
     ]
 
@@ -90,14 +111,27 @@ class profile::wmcs::prometheus(
     ]
 
     file { "${targets_path}/blackbox_http_keystone.yaml":
-      content => to_yaml([{
-        'targets' => ['openstack.eqiad1.wikimediacloud.org:5000/v3', # keystone
-                      'openstack.eqiad1.wikimediacloud.org:9292', # glance
-                      'openstack.eqiad1.wikimediacloud.org:8774', # nova
-                      'openstack.eqiad1.wikimediacloud.org:9001', # designate
-                      'openstack.eqiad1.wikimediacloud.org:9696', # neutron
-                      'proxy-eqiad1.wmflabs.org:5668', # proxy
-            ]
+        content => to_yaml([{
+            'targets' => [
+                'openstack.eqiad1.wikimediacloud.org:5000/v3', # keystone
+                'puppetmaster.cloudinfra.wmflabs.org:8101', # puppet enc
+            ],
+        }]),
+    }
+
+    file { "${targets_path}/blackbox_https_keystone.yaml":
+        content => to_yaml([{
+            'targets' => [
+                'openstack.eqiad1.wikimediacloud.org:25000/v3', # keystone
+                'openstack.eqiad1.wikimediacloud.org:28774', # nova
+                'openstack.eqiad1.wikimediacloud.org:28776', # cinder
+                'openstack.eqiad1.wikimediacloud.org:28778', # placement
+                'openstack.eqiad1.wikimediacloud.org:28779', # trove
+                'openstack.eqiad1.wikimediacloud.org:29001', # designate
+                'openstack.eqiad1.wikimediacloud.org:29292', # glance
+                'openstack.eqiad1.wikimediacloud.org:29696', # neutron
+                'proxy-eqiad1.wmflabs.org:5668', # proxy
+            ],
         }]),
     }
 
