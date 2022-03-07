@@ -19,10 +19,16 @@ class gitlab_runner::config (
         content => template('gitlab_runner/config-template.toml.erb'),
     }
 
+    # config.toml configuration file has different path for non-root users
+    $config_path = $gitlab_runner_user ? {
+        'root' => '/etc/gitlab-runner',
+        default => "/home/${gitlab_runner_user}/.gitlab-runner"
+    }
+
     # Believe it or not, there's no config template or CLI to modifying
     # the global concurrent Runner settings.
     file_line { 'gitlab-runner-config-concurrent':
-        path   => '/etc/gitlab-runner/config.toml',
+        path   => "${config_path}/config.toml",
         match  => '^concurrent *=',
         line   => "concurrent = ${concurrent}",
         notify => Service['gitlab-runner'],
@@ -32,7 +38,7 @@ class gitlab_runner::config (
     # the global Prometheus listener settings.
     file_line { 'gitlab-runner-config-exporter':
         ensure => $enable_exporter.bool2str('present','absent'),
-        path   => '/etc/gitlab-runner/config.toml',
+        path   => "${config_path}/config.toml",
         line   => "listen_address = \"[${exporter_listen_address}]:${exporter_listen_port}\"",
         notify => Service['gitlab-runner'],
     }

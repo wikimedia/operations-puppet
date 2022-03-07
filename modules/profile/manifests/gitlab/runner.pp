@@ -64,9 +64,19 @@ class profile::gitlab::runner (
     }
 
     if $gitlab_runner_user != 'root' {
+
+        # setup dedicated gitlab-runner user
         systemd::sysuser { $gitlab_runner_user:
-            description => 'used by gitlab-runner',
-            home_dir    => "/home/${gitlab_runner_user}",
+            description       => 'used by gitlab-runner',
+            home_dir          => "/home/${gitlab_runner_user}",
+            additional_groups => ['docker'],
+        }
+
+        # grant read-only access to /etc/gitlab-runner folder
+        file { '/etc/gitlab-runner/':
+            ensure => 'directory',
+            owner  => $gitlab_runner_user,
+            mode   => '0400',
         }
     }
 
