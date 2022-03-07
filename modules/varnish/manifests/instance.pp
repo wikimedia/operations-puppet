@@ -1,26 +1,48 @@
+# @summary configuera a varnish instance
+# @param vcl_config A hash if vcl config
+# @param ports a list of ports to listen on
+# @param admin_port the port for admin operations
+# @param runtime_params A hash of runtime parameters
+# @param instance_name the name of the varnish instance
+# @param vcl name of the VCL to use
+# @param storage The varnish daemon storage parameters
+# @param jemalloc_conf jemalloc configuration
+# @param backend_caches list of backend caches
+# @param backend_options hash of backend configs
+# @param backends_in_etcd indicate if backends are in etcd
+# @param extra_vcl list of extra VCLs
+# @param separate_vcl list of addtional VCLs
+# @param wikimedia_nets wikimedia owned networks
+# @param wikimedia_trust wikimedia owned truested
+# @param listen_uds list of uds for varnish
+# @param uds_owner The owner of the uds sockets
+# @param uds_group The group of the uds sockets
+# @param uds_mode The mode of the uds sockets
 define varnish::instance(
-    $vcl_config,
-    $ports,
-    $admin_port,
-    $runtime_params,
-    $instance_name='',
-    $vcl = '',
-    $storage='-s malloc,1G',
-    $jemalloc_conf=undef,
-    $backend_caches=[],
-    $backend_options={},
-    $backends_in_etcd=true,
-    $extra_vcl = [],
-    $separate_vcl = [],
-    $wikimedia_nets = [],
-    $wikimedia_trust = [],
-    $listen_uds = undef,
-    $uds_owner = 'root',
-    $uds_group = 'root',
-    $uds_mode = '700',
+    Hash                    $vcl_config,
+    Array[Stdlib::Port]     $ports,
+    Stdlib::Port            $admin_port,
+    String                  $runtime_params,
+    # TODO: change this to Optional[String]
+    String                  $instance_name='',
+    # TODO: I think we can make this mandatory?
+    String                  $vcl              = '',
+    String                  $storage          = '-s malloc,1G',
+    Optional[String]        $jemalloc_conf    = undef,
+    Array                   $backend_caches   = [],
+    Hash                    $backend_options  = {},
+    Boolean                 $backends_in_etcd = true,
+    Array                   $extra_vcl        = [],
+    Array                   $separate_vcl     = [],
+    Array                   $wikimedia_nets   = [],
+    Array                   $wikimedia_trust  = [],
+    Array[Stdlib::Unixpath] $listen_uds       = [],
+    String                  $uds_owner        = 'root',
+    String                  $uds_group        = 'root',
+    Stdlib::Filemode        $uds_mode         = '700',
 ) {
 
-    include ::varnish::common
+    include varnish::common
 
     if $instance_name == '' {
         $instancesuffix = ''
@@ -37,7 +59,7 @@ define varnish::instance(
                                                 $vcl)
 
     # Install VCL include files shared by all instances
-    require ::varnish::common::vcl
+    include varnish::common::vcl
 
     $extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
     varnish::wikimedia_vcl { $extra_vcl_variable_to_make_puppet_parser_happy:
@@ -50,11 +72,12 @@ define varnish::instance(
     # Raise an icinga critical if the Varnish child process has been started
     # more than once; that means it has died unexpectedly. If the metric has
     # value 1, it means that everything is fine.
-    $prometheus_labels = "instance=~\"${::hostname}:.*\",layer=\"frontend\""
+    $_hostname = $facts['networking']['hostname']
+    $prometheus_labels = "instance=~\"${_hostname}:.*\",layer=\"frontend\""
 
     monitoring::check_prometheus { 'varnish-frontend-check-child-start':
         description     => 'Varnish frontend child restarted',
-        dashboard_links => ["https://grafana.wikimedia.org/d/000000330/varnish-machine-stats?orgId=1&viewPanel=66&var-server=${::hostname}&var-datasource=${::site} prometheus/ops"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/000000330/varnish-machine-stats?orgId=1&viewPanel=66&var-server=${_hostname}&var-datasource=${::site} prometheus/ops"],
         query           => "scalar(varnish_mgt_child_start{${prometheus_labels}})",
         method          => 'ge',
         warning         => 2,
@@ -141,7 +164,7 @@ define varnish::instance(
                 Package['varnish'],
                 Mount['/var/lib/varnish'],
                 File[$vcl_files],
-            ]
+            ],
         },
     }
 
@@ -154,10 +177,10 @@ define varnish::instance(
             enable  => true,
         },
         require        => File['/usr/local/bin/varnishslowlog'],
-        subscribe      => [
-            File['/usr/local/bin/varnishslowlog'],
-            File["/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py"],
-        ]
+        subscribe      => File[
+            '/usr/local/bin/varnishslowlog',
+            "/usr/local/lib/python${varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py",
+        ],
     }
 
     profile::auto_restarts::service { "varnish${instancesuffix}-slowlog": }
@@ -170,10 +193,10 @@ define varnish::instance(
             require => Service["varnish${instancesuffix}"],
             enable  => true,
         },
-        subscribe      => [
-            File['/usr/local/bin/varnishospital'],
-            File["/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py"],
-        ]
+        subscribe      => File[
+            '/usr/local/bin/varnishospital',
+            "/usr/local/lib/python${varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py",
+        ],
     }
 
     profile::auto_restarts::service { "varnish${instancesuffix}-hospital": }
@@ -186,10 +209,10 @@ define varnish::instance(
             require => Service["varnish${instancesuffix}"],
             enable  => true,
         },
-        subscribe      => [
-            File['/usr/local/bin/varnishfetcherr'],
-            File["/usr/local/lib/python${::varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py"],
-        ]
+        subscribe      => File[
+            '/usr/local/bin/varnishfetcherr',
+            "/usr/local/lib/python${varnish::common::python_version}/dist-packages/wikimedia_varnishlogconsumer.py",
+        ],
     }
 
     profile::auto_restarts::service { "varnish${instancesuffix}-fetcherr": }
@@ -222,7 +245,7 @@ define varnish::instance(
 
     # TODO/puppet4: convert this to be a define that uses instance name as title and ports as a parameter
     # to allow having non-strigified port numbers.
-    varnish::monitoring::instance { $ports:
+    varnish::monitoring::instance { $ports.map |$port| { String($port) }:
         instance => $title,
     }
 

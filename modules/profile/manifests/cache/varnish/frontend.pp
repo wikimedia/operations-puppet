@@ -1,32 +1,54 @@
+# @summary profile to configure frontend varnis cache
+# @param cache_nodes list of all cache nodes
+# @param cache_cluster name of cache cluster e.g. upload or text
+# @param conftool_prefix the prefix to use for conftool
+# @param fe_vcl_config A hash if vcl config
+# @param runtime_params A hash of runtime parameters
+# @param fe_jemalloc_conf jemalloc configuration
+# @param fe_cache_be_opts hash of backend configs
+# @param backends_in_etcd indicate if backends are in etcd
+# @param fe_extra_vcl list of extra VCLs
+# @param req_handling hash of domains request handling config
+# @param alternate_domains List of domains handled by misc
+# @param packages_component The package component to use for apt
+# @param fe_transient_gb Amount of Transient=malloc to configure in GB
+# @param separate_vcl list of addtional VCLs
+# @param has_lvs Indicate of cache is behind LVS
+# @param single_backend_experiment Feature flag to test single backend
+# @param listen_uds list of uds for varnish
+# @param uds_owner The owner of the uds sockets
+# @param uds_group The group of the uds sockets
+# @param uds_mode The mode of the uds sockets
+# @param use_etcd_req_filters use confd dynamically generated rules
 class profile::cache::varnish::frontend (
-    Hash[String, Hash] $cache_nodes = lookup('cache::nodes'),
-    String $cache_cluster = lookup('cache::cluster'),
-    String $conftool_prefix = lookup('conftool_prefix'),
-    Hash[String, Any] $fe_vcl_config = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
-    Hash[String, Any] $fe_cache_be_opts = lookup('profile::cache::varnish::cache_be_opts'),
-    Boolean $backends_in_etcd = lookup('profile::cache::varnish::frontend::backends_in_etcd', {'default_value' => true}),
-    String $fe_jemalloc_conf = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf'),
-    Array[String] $fe_extra_vcl = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
-    Array[String] $runtime_params = lookup('profile::cache::varnish::frontend::runtime_params'),
-    Profile::Cache::Sites $req_handling = lookup('cache::req_handling'),
-    Profile::Cache::Sites $alternate_domains = lookup('cache::alternate_domains', {'default_value' => {}}),
-    String $packages_component = lookup('profile::cache::varnish::frontend::packages_component', {'default_value' => 'main'}),
-    Array[String] $separate_vcl = lookup('profile::cache::varnish::separate_vcl', {'default_value' =>  []}),
-    Integer $fe_transient_gb = lookup('profile::cache::varnish::frontend::transient_gb', {'default_value' => 0}),
-    Boolean $has_lvs = lookup('has_lvs', {'default_value' => true}),
-    Optional[Array[Stdlib::Unixpath]] $listen_uds = lookup('profile::cache::varnish::frontend::listen_uds', {'default_value' => undef}),
-    Optional[Stdlib::Fqdn] $single_backend_experiment = lookup('cache::single_backend_fqdn', {'default_value' => undef}),
-    String $uds_owner = lookup('profile::cache::varnish::frontend::uds_owner', {'default_value' => 'root'}),
-    String $uds_group = lookup('profile::cache::varnish::frontend::uds_group', {'default_value' => 'root'}),
-    Stdlib::Filemode $uds_mode = lookup('profile::cache::varnish::frontend::uds_mode', {'default_value' => '700'}),
-    Boolean $use_etcd_req_filters = lookup('profile::cache::varnish::frontend::use_etcd_req_filters', {'default_value' => false}),
+    Hash[String, Hash]      $cache_nodes = lookup('cache::nodes'),
+    String                  $cache_cluster = lookup('cache::cluster'),
+    String                  $conftool_prefix = lookup('conftool_prefix'),
+    Hash[String, Any]       $fe_vcl_config = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
+    Hash[String, Any]       $fe_cache_be_opts = lookup('profile::cache::varnish::cache_be_opts'),
+    Boolean                 $backends_in_etcd = lookup('profile::cache::varnish::frontend::backends_in_etcd', {'default_value' => true}),
+    String                  $fe_jemalloc_conf = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf'),
+    Array[String]           $fe_extra_vcl = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
+    Array[String]           $runtime_params = lookup('profile::cache::varnish::frontend::runtime_params'),
+    Profile::Cache::Sites   $req_handling = lookup('cache::req_handling'),
+    Profile::Cache::Sites   $alternate_domains = lookup('cache::alternate_domains', {'default_value' => {}}),
+    String                  $packages_component = lookup('profile::cache::varnish::frontend::packages_component', {'default_value' => 'main'}),
+    Array[String]           $separate_vcl = lookup('profile::cache::varnish::separate_vcl', {'default_value' =>  []}),
+    Integer                 $fe_transient_gb = lookup('profile::cache::varnish::frontend::transient_gb', {'default_value' => 0}),
+    Boolean                 $has_lvs = lookup('has_lvs', {'default_value' => true}),
+    Optional[Stdlib::Fqdn]  $single_backend_experiment = lookup('cache::single_backend_fqdn', {'default_value' => undef}),
+    Array[Stdlib::Unixpath] $listen_uds = lookup('profile::cache::varnish::frontend::listen_uds', {'default_value' => []}),
+    String                  $uds_owner = lookup('profile::cache::varnish::frontend::uds_owner', {'default_value' => 'root'}),
+    String                  $uds_group = lookup('profile::cache::varnish::frontend::uds_group', {'default_value' => 'root'}),
+    Stdlib::Filemode        $uds_mode = lookup('profile::cache::varnish::frontend::uds_mode', {'default_value' => '700'}),
+    Boolean                 $use_etcd_req_filters = lookup('profile::cache::varnish::frontend::use_etcd_req_filters', {'default_value' => false}),
 ) {
-    require ::profile::cache::base
+    include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
     $wikimedia_trust = $profile::cache::base::wikimedia_trust
 
     if $has_lvs {
-        require ::profile::lvs::realserver
+        include profile::lvs::realserver
     }
 
     # Defaults for the vcl files
@@ -79,7 +101,8 @@ class profile::cache::varnish::frontend (
     }
 
     # Frontend memory cache sizing
-    $mem_gb = $::memorysize_mb / 1024.0
+    # TODO: possibly convert this to facts['memory']['system']['total_bytes']
+    $mem_gb = $facts['memorysize_mb'] / 1024.0
     if ($mem_gb < 90.0) {
         # virtuals, test hosts, etc...
         $fe_mem_gb = 1
@@ -105,8 +128,8 @@ class profile::cache::varnish::frontend (
 
     # Experiment with single backend CDN nodes T288106
     if $single_backend_experiment {
-        if $::fqdn == $single_backend_experiment {
-            $backend_caches = [ $::fqdn ]
+        if $facts['networking']['fqdn'] == $single_backend_experiment {
+            $backend_caches = [ $facts['networking']['fqdn'] ]
             $etcd_backends = false
         } else {
             $backend_caches = $cache_nodes[$cache_cluster][$::site] - $single_backend_experiment
@@ -181,7 +204,7 @@ class profile::cache::varnish::frontend (
     sysctl::parameters { 'maximum map count':
         values => {
             'vm.max_map_count' => $vm_max_map_count,
-        }
+        },
     }
 
     class { 'prometheus::node_varnishd_mmap_count':
@@ -190,13 +213,13 @@ class profile::cache::varnish::frontend (
 
     monitoring::check_prometheus { 'varnishd-mmap-count':
         description     => 'Varnish number of memory map areas',
-        query           => "scalar(varnishd_mmap_count{instance=\"${::hostname}:9100\"})",
+        query           => "scalar(varnishd_mmap_count{instance=\"${facts['networking']['hostname']}:9100\"})",
         method          => 'gt',
         warning         => $vm_max_map_count - 5000,
         critical        => $vm_max_map_count - 1000,
         prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Varnish',
-        dashboard_links => ["https://grafana.wikimedia.org/d/wiU3SdEWk/cache-host-drilldown?orgId=1&viewPanel=76&var-site=${::site} prometheus/ops&var-instance=${::hostname}"],
+        dashboard_links => ["https://grafana.wikimedia.org/d/wiU3SdEWk/cache-host-drilldown?orgId=1&viewPanel=76&var-site=${::site} prometheus/ops&var-instance=${facts['networking']['hostname']}"],
     }
 
     # Monitor number of varnish file descriptors. Initially added to track
@@ -207,27 +230,25 @@ class profile::cache::varnish::frontend (
         metric  => 'node_varnish_filedescriptors_total',
     }
 
-    # lint:ignore:arrow_alignment
     varnish::instance { "${cache_cluster}-frontend":
-        instance_name      => 'frontend',
-        vcl                => "${cache_cluster}-frontend",
-        separate_vcl       => $separate_vcl_frontend,
-        extra_vcl          => $fe_extra_vcl,
-        ports              => [ '80', '3120', '3121', '3122', '3123', '3124', '3125', '3126', '3127' ],
-        admin_port         => 6082,
-        runtime_params     => join(prefix($runtime_params, '-p '), ' '),
-        storage            => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
-        jemalloc_conf      => $fe_jemalloc_conf,
-        backend_caches     => $backend_caches,
-        backend_options    => $fe_cache_be_opts,
-        backends_in_etcd   => $etcd_backends,
-        vcl_config         => $vcl_config,
-        wikimedia_nets     => $wikimedia_nets,
-        wikimedia_trust    => $wikimedia_trust,
-        listen_uds         => $listen_uds,
-        uds_owner          => $uds_owner,
-        uds_group          => $uds_group,
-        uds_mode           => $uds_mode,
+        instance_name    => 'frontend',
+        vcl              => "${cache_cluster}-frontend",
+        separate_vcl     => $separate_vcl_frontend,
+        extra_vcl        => $fe_extra_vcl,
+        ports            => [ 80, 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ],
+        admin_port       => 6082,
+        runtime_params   => join(prefix($runtime_params, '-p '), ' '),
+        storage          => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
+        jemalloc_conf    => $fe_jemalloc_conf,
+        backend_caches   => $backend_caches,
+        backend_options  => $fe_cache_be_opts,
+        backends_in_etcd => $etcd_backends,
+        vcl_config       => $vcl_config,
+        wikimedia_nets   => $wikimedia_nets,
+        wikimedia_trust  => $wikimedia_trust,
+        listen_uds       => $listen_uds,
+        uds_owner        => $uds_owner,
+        uds_group        => $uds_group,
+        uds_mode         => $uds_mode,
     }
-    # lint:endignore
 }
