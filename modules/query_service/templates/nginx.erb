@@ -62,6 +62,7 @@ server {
       proxy_pass http://127.0.0.1:9999/oauth/check_login;
       proxy_set_header 'X-redirect-url' https://$host$request_uri;
       proxy_set_header Host $http_host;
+      add_header Cache-Control "no-store";
     }
 
     location /_check_auth {
