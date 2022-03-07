@@ -110,13 +110,13 @@ class profile::wmcs::prometheus(
     prometheus::class_config{ "pdns_${::site}":
         dest       => "${targets_path}/pdns_${::site}.yaml",
         class_name => 'role::wmcs::openstack::eqiad1::services',
-        port       => 9192,
+        port       => 8081,
     }
 
     prometheus::class_config{ "pdns-rec_${::site}":
         dest       => "${targets_path}/pdns-rec_${::site}.yaml",
         class_name => 'role::wmcs::openstack::eqiad1::services',
-        port       => 9199,
+        port       => 8082,
     }
 
     prometheus::class_config{ "openstack_${::site}":
