@@ -437,12 +437,12 @@ node /^cp40(2[4-6]|34)\.ulsfo\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
-node /^cp40(2[789]|3[05])\.ulsfo\.wmnet$/ {
+node /^cp40(2[789]|35)\.ulsfo\.wmnet$/ {
     role(cache::text)
 }
 
 # HAProxy test - T290005
-node /^cp403[26].ulsfo.wmnet$/ {
+node /^cp403[026].ulsfo.wmnet$/ {
     role(cache::text_haproxy)
 }
 
