@@ -615,3 +615,13 @@ profile::ssh::client::manage_ssh_config: false
 profile::ssh::client::hash_known_hosts: true
 profile::ssh::client::gss_api_authentication: true
 profile::ssh::client::send_env: ['LANG', 'LC_*']
+
+profile::cache::varnish::frontend::backends_in_etcd: true
+profile::cache::varnish::frontend::packages_component: main
+profile::cache::varnish::frontend::transient_gb: 0
+profile::cache::varnish::frontend::listen_uds: []
+profile::cache::varnish::frontend::uds_owner: root
+profile::cache::varnish::frontend::uds_group: root
+profile::cache::varnish::frontend::uds_mode: '700'
+profile::cache::varnish::frontend::separate_vcl: []
+profile::cache::varnish::frontend::use_etcd_req_filters: false

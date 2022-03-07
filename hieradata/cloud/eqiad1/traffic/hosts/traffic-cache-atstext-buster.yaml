@@ -70,7 +70,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
 profile::cache::varnish::frontend::fe_extra_vcl:
 - normalize_path
 - geoip
-profile::cache::varnish::separate_vcl:
+profile::cache::varnish::frontend::separate_vcl:
 - misc
 profile::trafficserver::backend::default_lua_scripts:
 - set-x-cache

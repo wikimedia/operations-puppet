@@ -21,27 +21,30 @@
 # @param uds_mode The mode of the uds sockets
 # @param use_etcd_req_filters use confd dynamically generated rules
 class profile::cache::varnish::frontend (
-    Hash[String, Hash]      $cache_nodes = lookup('cache::nodes'),
-    String                  $cache_cluster = lookup('cache::cluster'),
-    String                  $conftool_prefix = lookup('conftool_prefix'),
-    Hash[String, Any]       $fe_vcl_config = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
-    Hash[String, Any]       $fe_cache_be_opts = lookup('profile::cache::varnish::cache_be_opts'),
-    Boolean                 $backends_in_etcd = lookup('profile::cache::varnish::frontend::backends_in_etcd', {'default_value' => true}),
-    String                  $fe_jemalloc_conf = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf'),
-    Array[String]           $fe_extra_vcl = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
-    Array[String]           $runtime_params = lookup('profile::cache::varnish::frontend::runtime_params'),
-    Profile::Cache::Sites   $req_handling = lookup('cache::req_handling'),
-    Profile::Cache::Sites   $alternate_domains = lookup('cache::alternate_domains', {'default_value' => {}}),
-    String                  $packages_component = lookup('profile::cache::varnish::frontend::packages_component', {'default_value' => 'main'}),
-    Array[String]           $separate_vcl = lookup('profile::cache::varnish::separate_vcl', {'default_value' =>  []}),
-    Integer                 $fe_transient_gb = lookup('profile::cache::varnish::frontend::transient_gb', {'default_value' => 0}),
-    Boolean                 $has_lvs = lookup('has_lvs', {'default_value' => true}),
+    # Globals
+    String                  $conftool_prefix           = lookup('conftool_prefix'),
+    Boolean                 $has_lvs                   = lookup('has_lvs', {'default_value' => true}),
+    # TODO: fix theses so they re under the profile namespace
+    Hash[String, Hash]      $cache_nodes               = lookup('cache::nodes'),
+    String                  $cache_cluster             = lookup('cache::cluster'),
+    Profile::Cache::Sites   $req_handling              = lookup('cache::req_handling'),
+    Profile::Cache::Sites   $alternate_domains         = lookup('cache::alternate_domains', {'default_value' => {}}),
     Optional[Stdlib::Fqdn]  $single_backend_experiment = lookup('cache::single_backend_fqdn', {'default_value' => undef}),
-    Array[Stdlib::Unixpath] $listen_uds = lookup('profile::cache::varnish::frontend::listen_uds', {'default_value' => []}),
-    String                  $uds_owner = lookup('profile::cache::varnish::frontend::uds_owner', {'default_value' => 'root'}),
-    String                  $uds_group = lookup('profile::cache::varnish::frontend::uds_group', {'default_value' => 'root'}),
-    Stdlib::Filemode        $uds_mode = lookup('profile::cache::varnish::frontend::uds_mode', {'default_value' => '700'}),
-    Boolean                 $use_etcd_req_filters = lookup('profile::cache::varnish::frontend::use_etcd_req_filters', {'default_value' => false}),
+    # locals
+    Hash[String, Any]       $fe_vcl_config             = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
+    Hash[String, Any]       $fe_cache_be_opts          = lookup('profile::cache::varnish::frontend::cache_be_opts'),
+    Boolean                 $backends_in_etcd          = lookup('profile::cache::varnish::frontend::backends_in_etcd'),
+    String                  $fe_jemalloc_conf          = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf'),
+    Array[String]           $fe_extra_vcl              = lookup('profile::cache::varnish::frontend::fe_extra_vcl'),
+    Array[String]           $runtime_params            = lookup('profile::cache::varnish::frontend::runtime_params'),
+    String                  $packages_component        = lookup('profile::cache::varnish::frontend::packages_component'),
+    Array[String]           $separate_vcl              = lookup('profile::cache::varnish::frontend::separate_vcl'),
+    Integer                 $fe_transient_gb           = lookup('profile::cache::varnish::frontend::transient_gb'),
+    Array[Stdlib::Unixpath] $listen_uds                = lookup('profile::cache::varnish::frontend::listen_uds'),
+    String                  $uds_owner                 = lookup('profile::cache::varnish::frontend::uds_owner'),
+    String                  $uds_group                 = lookup('profile::cache::varnish::frontend::uds_group'),
+    Stdlib::Filemode        $uds_mode                  = lookup('profile::cache::varnish::frontend::uds_mode'),
+    Boolean                 $use_etcd_req_filters      = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets

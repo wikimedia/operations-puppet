@@ -20,7 +20,7 @@ profile::cache::purge::kafka_topics:
   - eqiad.resource-purge
   - codfw.resource-purge
 profile::cache::purge::kafka_tls: true
-profile::cache::varnish::cache_be_opts:
+profile::cache::varnish::frontend::cache_be_opts:
     port: 3128
     connect_timeout: '5s'
     first_byte_timeout: '35s'

@@ -168,7 +168,7 @@ profile::base::systemd::cpu_accounting: 'yes'
 profile::base::systemd::blockio_accounting: 'yes'
 profile::base::systemd::memory_accounting: 'yes'
 # Profile::cache::base
-profile::cache::varnish::cache_be_opts:
+profile::cache::varnish::frontend::cache_be_opts:
     port: 3128
     connect_timeout: '3s'
     first_byte_timeout: '65s'
@@ -205,7 +205,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     # By setting 'attack_mode' to true, all requests are ratelimited per-IP to
     # levels that will allow a couple human users but block anything in excess.
     attack_mode: false
-profile::cache::varnish::separate_vcl: ['misc']
+profile::cache::varnish::frontend::separate_vcl: ['misc']
 profile::cache::varnish::frontend::fe_jemalloc_conf: 'lg_dirty_mult:8,lg_chunk:16'
 profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path', 'geoip']
 profile::cache::varnish::frontend::transient_gb: 5

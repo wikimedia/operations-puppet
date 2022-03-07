@@ -78,7 +78,7 @@ jupyterhub::authenticator: dummy
 profile::cache::base::performance_tweaks: false
 profile::cache::purge::kafka_topics:
   - eqiad.resource-purge
-profile::cache::varnish::cache_be_opts:
+profile::cache::varnish::frontend::cache_be_opts:
     port: 3128
     connect_timeout: '3s'
     first_byte_timeout: '65s'
