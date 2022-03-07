@@ -405,12 +405,12 @@ node /^cp20(3[68]|4[02])\.codfw\.wmnet$/ {
 # esams caches
 #
 
-node /^cp30(5[02468]|6[0])\.esams\.wmnet$/ {
+node /^cp305[02468]\.esams\.wmnet$/ {
     role(cache::text)
 }
 
 # HAProxy test - T290005
-node /^cp306[24]\.esams\.wmnet$/ {
+node /^cp306[024]\.esams\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
