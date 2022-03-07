@@ -1732,7 +1732,7 @@ class profile::prometheus::ops (
     prometheus::class_config{ "cloud_dev_pdns_${::site}":
         dest       => "${targets_path}/cloud-dev-pdns_${::site}.yaml",
         class_name => 'role::wmcs::openstack::codfw1dev::services',
-        port       => 8101,
+        port       => 8081,
     }
 
     $cloud_dev_pdns_rec_jobs = [
