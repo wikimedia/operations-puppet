@@ -1,0 +1,61 @@
+[composite:osapi_dns]
+use = egg:Paste#urlmap
+/: osapi_dns_versions
+/v2: osapi_dns_v2
+/admin: osapi_dns_admin
+
+[composite:osapi_dns_versions]
+use = call:designate.api.middleware:auth_pipeline_factory
+noauth = http_proxy_to_wsgi cors maintenance faultwrapper osapi_dns_app_versions
+keystone = http_proxy_to_wsgi cors maintenance faultwrapper osapi_dns_app_versions
+
+[app:osapi_dns_app_versions]
+paste.app_factory = designate.api.versions:factory
+
+
+[composite:osapi_dns_v2]
+use = call:designate.api.middleware:auth_pipeline_factory
+noauth = http_proxy_to_wsgi cors request_id faultwrapper validation_API_v2 noauthcontext maintenance normalizeuri osapi_dns_app_v2
+keystone = http_proxy_to_wsgi cors request_id faultwrapper validation_API_v2 authtoken keystonecontext maintenance normalizeuri osapi_dns_app_v2
+
+[app:osapi_dns_app_v2]
+paste.app_factory = designate.api.v2:factory
+
+[composite:osapi_dns_admin]
+use = call:designate.api.middleware:auth_pipeline_factory
+noauth = http_proxy_to_wsgi cors request_id faultwrapper noauthcontext maintenance normalizeuri osapi_dns_app_admin
+keystone = http_proxy_to_wsgi cors request_id faultwrapper authtoken keystonecontext maintenance normalizeuri osapi_dns_app_admin
+
+[app:osapi_dns_app_admin]
+paste.app_factory = designate.api.admin:factory
+
+[filter:cors]
+paste.filter_factory = oslo_middleware.cors:filter_factory
+oslo_config_project = designate
+
+[filter:request_id]
+paste.filter_factory = oslo_middleware:RequestId.factory
+
+[filter:http_proxy_to_wsgi]
+paste.filter_factory = oslo_middleware:HTTPProxyToWSGI.factory
+
+[filter:noauthcontext]
+paste.filter_factory = designate.api.middleware:NoAuthContextMiddleware.factory
+
+[filter:authtoken]
+paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+
+[filter:keystonecontext]
+paste.filter_factory = designate.api.middleware:KeystoneContextMiddleware.factory
+
+[filter:maintenance]
+paste.filter_factory = designate.api.middleware:MaintenanceMiddleware.factory
+
+[filter:normalizeuri]
+paste.filter_factory = designate.api.middleware:NormalizeURIMiddleware.factory
+
+[filter:faultwrapper]
+paste.filter_factory = designate.api.middleware:FaultWrapperMiddleware.factory
+
+[filter:validation_API_v2]
+paste.filter_factory = designate.api.middleware:APIv2ValidationErrorMiddleware.factory
