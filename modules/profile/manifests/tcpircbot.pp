@@ -27,8 +27,6 @@ class profile::tcpircbot(
             '2620:0:860:101:10:192:0:27/128',   # puppetmaster2001.codfw.wmnet
             '::ffff:10.64.32.25/128',           # cumin1001.eqiad.wmnet
             '2620:0:861:103:10:64:32:25/64',    # cumin1001.eqiad.wmnet
-            '::ffff:10.192.48.16/128',          # cumin2001.codfw.wmnet
-            '2620:0:860:101:10:192:48:16/64',   # cumin2001.codfw.wmnet
             '::ffff:10.192.32.49/128',          # cumin2002.codfw.wmnet
             '2620:0:860:103:10:192:32:49/64',   # cumin2002.codfw.wmnet
         ],
