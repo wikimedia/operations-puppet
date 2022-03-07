@@ -42,6 +42,9 @@ def _summary_stats(puppet_state_dir, registry):
     resources_failed = Gauge('resources_failed', 'Number of failed resources on last run',
                              namespace='puppet_agent', registry=registry)
     resources_failed.set(0)
+    resources_changed = Gauge('resources_changed', 'Number of resources changed on last run',
+                              namespace='puppet_agent', registry=registry)
+    resources_changed.set(-1)
     resources_total = Gauge('resources_total', 'Number of total resources on last run',
                             namespace='puppet_agent', registry=registry)
     resources_total.set(0)
@@ -74,6 +77,8 @@ def _summary_stats(puppet_state_dir, registry):
     if 'resources' in summary_yaml:
         resources_failed.set(summary_yaml['resources'].get('failed', 1))
         resources_total.set(summary_yaml['resources'].get('total', -1))
+    if 'changes' in summary_yaml:
+        resources_changed.set(summary_yaml['changes'].get('total', -1))
     if 'events' in summary_yaml:
         failures = summary_yaml['events'].get('failure', 1)
         if failures > 0:
