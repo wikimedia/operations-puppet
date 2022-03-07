@@ -23,25 +23,4 @@ class profile::opensearch::logstash(
             }
         }
     }
-
-    file { '/usr/share/opensearch/plugins':
-        ensure => 'directory',
-        force  => true,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    } -> Class['opensearch']
-
-    # TODO: use fork when available
-    $::profile::opensearch::server::configured_instances.reduce(9108) |$prometheus_port, $kv_pair| {
-        $cluster_name = $kv_pair[0]
-        $cluster_params = $kv_pair[1]
-        $http_port = $cluster_params['http_port']
-
-        profile::prometheus::elasticsearch_exporter { "${::hostname}:${http_port}":
-            prometheus_port    => $prometheus_port,
-            elasticsearch_port => $http_port,
-        }
-        $prometheus_port + 1
-    }
 }
