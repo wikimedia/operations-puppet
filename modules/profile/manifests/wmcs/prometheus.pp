@@ -153,11 +153,16 @@ class profile::wmcs::prometheus(
         port       => 8082,
     }
 
-    prometheus::class_config{ "openstack_${::site}":
-        dest       => "${targets_path}/openstack_${::site}.yaml",
-        class_name => 'role::wmcs::openstack::eqiad1::control',
-        # see profile::openstack::eqiad1::metrics
-        port       => 12345,
+    file { "${targets_path}/openstack_${::site}.yaml":
+        content => to_yaml([{
+            'labels'  => {
+                'cluster' => 'wmcs',
+                'site'    => 'eqiad',
+            },
+            'targets' => [
+                'openstack.eqiad1.wikimediacloud.org:12345',
+            ]
+        }]),
     }
 
     file { "${targets_path}/redis_toolforge_hosts.yaml":
