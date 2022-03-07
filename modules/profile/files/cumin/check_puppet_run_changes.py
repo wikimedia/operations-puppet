@@ -150,14 +150,14 @@ def main():
     if len(failed_nodes) >= args.critical:
         print(
             'CRITICAL: the following ({}) node(s) change every puppet run: {}'.format(
-                len(failed_nodes), ', '.join(failed_nodes)
+                len(failed_nodes), ', '.join(sorted(failed_nodes))
             )
         )
         return 2
     if len(failed_nodes) >= args.warning:
         print(
             'WARNING: the following ({}) node(s) change every puppet run: {}'.format(
-                len(failed_nodes), ', '.join(failed_nodes)
+                len(failed_nodes), ', '.join(sorted(failed_nodes))
             )
         )
         return 1
