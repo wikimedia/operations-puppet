@@ -15,6 +15,8 @@ class profile::cache::base(
     Boolean $allow_iptables                          = lookup('profile::cache::base::allow_iptables', {'default_value' => false}),
     Boolean $performance_tweaks                      = lookup('profile::cache::base::performance_tweaks', {'default_value' => true}),
     Array $extra_trust                               = lookup('profile::cache::base::extra_trust', {'default_value' => []}),
+    Array[Stdlib::Fqdn] $wikimedia_domains           = lookup('profile::cache::base::wikimedia_domains'),
+    Array[Stdlib::Fqdn] $wmcs_domains                = lookup('profile::cache::base::wmcs_domains'),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
     String $conftool_prefix                          = lookup('conftool_prefix'),
 ){

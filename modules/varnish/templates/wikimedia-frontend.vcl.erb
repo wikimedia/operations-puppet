@@ -177,7 +177,7 @@ sub https_error_redirect {
 // *** HTTPS deliver code - domain-based HSTS headers
 sub https_deliver_hsts {
 	if (req.http.X-Forwarded-Proto == "https") {
-		if (req.http.Host ~ "((^|\.)(wikipedia|wikimedia|wikibooks|wikinews|wikiquote|wikisource|wikiversity|wikivoyage|wikidata|wikimediafoundation|wiktionary|mediawiki|wmfusercontent|wikiworkshop)\.org|^w\.wiki)$") {
+		if (req.http.Host ~ "((^|\.)(<%= @wikimedia_domains_regex %>)$") {
 			set resp.http.Strict-Transport-Security = "max-age=106384710; includeSubDomains; preload";
 		}
 	}
