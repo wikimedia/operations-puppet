@@ -162,6 +162,38 @@ class profile::spicerack(
         content => to_yaml($kafka_config_data),
     }
 
+    $elasticsearch_config_data = {
+      'search' => {
+        'search_eqiad' => {
+          'production-search-eqiad' => 'https://search.svc.eqiad.wmnet:9243',
+          'production-search-omega-eqiad' => 'https://search.svc.eqiad.wmnet:9443',
+          'production-search-psi-eqiad' => 'https://search.svc.eqiad.wmnet:9643',
+        },
+        'search_codfw' => {
+          'production-search-codfw' => 'https://search.svc.codfw.wmnet:9243',
+          'production-search-omega-codfw' => 'https://search.svc.codfw.wmnet:9443',
+          'production-search-psi-codfw' => 'https://search.svc.codfw.wmnet:9643',
+        },
+        'relforge' => {
+          'relforge-eqiad' => 'https://relforge1004.eqiad.wmnet:9243',
+          'relforge-eqiad-small-alpha' => 'https://relforge1004.eqiad.wmnet:9443',
+        },
+        'cloudelastic' => {
+          'cloudelastic-chi-https' => 'https://cloudelastic.wikimedia.org:9243',
+          'cloudelastic-omega-https' => 'https://cloudelastic.wikimedia.org:9443',
+          'cloudelastic-psi-https' => 'https://cloudelastic.wikimedia.org:9643',
+        }
+      }
+    }
+
+    file { '/etc/spicerack/elasticsearch/config.yaml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+        content => to_yaml($elasticsearch_config_data),
+    }
+
     file { '/etc/spicerack/cookbooks':
         ensure => directory,
         owner  => 'root',
