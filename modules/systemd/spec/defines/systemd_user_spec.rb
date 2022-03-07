@@ -41,6 +41,15 @@ describe 'systemd::sysuser' do
           it { is_expected.to contain_user('dummy').with_uid(999).with_gid('foobar') }
           it { is_expected.not_to contain_group('dummy') }
         end
+        context "id -:groupname" do
+          let(:params) { {id: '-:foobar'} }
+
+          it do is_expected.to contain_file('/etc/sysusers.d/dummy.conf')
+            .with_content("u\tdummy\t-:foobar\t-\t-\t-\n")
+          end
+          it { is_expected.to contain_user('dummy').without_uid.with_gid('foobar') }
+          it { is_expected.not_to contain_group('dummy') }
+        end
         context "id /some/path" do
           let(:params) { {id: '/some/path'} }
 
@@ -85,6 +94,12 @@ describe 'systemd::sysuser' do
             .with_content("u\tdummy\t-\t-\t-\t/bin/sh\n")
           end
           it { is_expected.to contain_user('dummy').with_shell('/bin/sh') }
+          it { is_expected.not_to contain_group('dummy') }
+        end
+        context "additional_groups" do
+          let(:params) { {additional_groups: ['foo', 'bar']} }
+
+          it { is_expected.to contain_user('dummy').with_groups(['foo', 'bar']) }
           it { is_expected.not_to contain_group('dummy') }
         end
       end

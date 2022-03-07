@@ -17,14 +17,15 @@
 # @param home_dir home directory
 # @param shell shell
 define systemd::sysuser (
-    Wmflib::Ensure             $ensure      = present,
-    String                     $username    = $title,
-    Systemd::Sysuser::Usertype $usertype    = 'user',
-    Systemd::Sysuser::Id       $id          = '-',
-    Boolean                    $allow_login = false,
-    Optional[String[1]]        $description = undef,
-    Optional[Stdlib::Unixpath] $home_dir    = undef,
-    Optional[Stdlib::Unixpath] $shell       = undef,
+    Wmflib::Ensure             $ensure            = present,
+    String                     $username          = $title,
+    Systemd::Sysuser::Usertype $usertype          = 'user',
+    Systemd::Sysuser::Id       $id                = '-',
+    Boolean                    $allow_login       = false,
+    Array[String]              $additional_groups = [],
+    Optional[String[1]]        $description       = undef,
+    Optional[Stdlib::Unixpath] $home_dir          = undef,
+    Optional[Stdlib::Unixpath] $shell             = undef,
 ) {
     $id_type = $id ? {
         '-'                       => 'default',
@@ -37,8 +38,8 @@ define systemd::sysuser (
         Pattern[/\A[\w-]+\z/]     => 'groupname',
     }
 
-    if $usertype != 'user' and ($description or $home_dir or $shell) {
-        fail("usertype: ${usertype} does not support \$description, \$home_dir or \$shell")
+    if $usertype != 'user' and ($description or $home_dir or $shell or (!empty($additional_groups)) ) {
+        fail("usertype: ${usertype} does not support \$description, \$home_dir, \$shell or \$additional_groups")
     }
     if $usertype ==  'user' and $id_type in ['groupname', 'range'] {
         fail("usertype: ${usertype} does not support ${id_type} id's")
@@ -82,7 +83,7 @@ define systemd::sysuser (
             system => true,
         }
     }
-    if $usertype == 'user' and (!($id_type in ['default', 'path']) or $home_dir or $shell) {
+    if $usertype == 'user' and (!($id_type in ['default', 'path']) or $home_dir or $shell or !$additional_groups.empty) {
         case $id {
             Integer: {
                 $uid = $id
@@ -121,6 +122,7 @@ define systemd::sysuser (
             system   => true,
             uid      => $uid,
             password => $password,
+            groups   => $additional_groups,
         }
     }
 }
