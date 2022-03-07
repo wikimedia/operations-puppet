@@ -7,6 +7,15 @@
 #   usertype => 'user',
 #   'foo daemon',
 # }
+# @param ensure ensurable parameter
+# @param username user username
+# @param usertype eiether 'user', 'group', 'modify' or 'range'
+# @param id This parameter is dependednt on the usertype value see:
+#  https://www.freedesktop.org/software/systemd/man/sysusers.d.html
+# @param allow_login allow the user to perform loggins
+# @param description description
+# @param home_dir home directory
+# @param shell shell
 define systemd::sysuser (
     Wmflib::Ensure             $ensure      = present,
     String                     $username    = $title,
@@ -24,6 +33,7 @@ define systemd::sysuser (
         Pattern[/\A\d+:\d+\z/]    => 'uid:gid',
         Pattern[/\A\d+-\d+\z/]    => 'range',
         Pattern[/\A\d+:[\w-]+\z/] => 'uid:groupname',
+        Pattern[/\A\-:[\w-]+\z/]  => 'uid:groupname',
         Pattern[/\A[\w-]+\z/]     => 'groupname',
     }
 
@@ -83,6 +93,10 @@ define systemd::sysuser (
                 $data = $id.split(':')
                 $uid = $data[0]
                 $gid = $data[1]
+            }
+            Pattern[/\A\-:[\w-]+\z/]: {
+                $uid = undef
+                $gid = $id.split(':')[1]
             }
             default: {
                 $uid = undef

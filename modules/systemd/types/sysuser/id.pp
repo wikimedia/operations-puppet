@@ -4,6 +4,7 @@ type Systemd::Sysuser::Id = Variant[
     Stdlib::Unixpath,          # pathname: valid for user and group
     Pattern[/\A\d+:\d+\z/],    # uid:gid: valid for users
     Pattern[/\A\d+:[\w-]+\z/], # uid:groupname valid for users
-    Pattern[/\A[\w-]+\z/],      # groupname: valid for modify
+    Pattern[/\A\-:[\w-]+\z/],  # -:groupname valid for users
+    Pattern[/\A[\w-]+\z/],     # groupname: valid for modify
     Pattern[/\A\d+\-\d+\z/]    # $lowuid-$highuid: valid for range
 ]
