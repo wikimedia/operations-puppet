@@ -143,15 +143,4 @@ class profile::gitlab::runner (
             before  =>  Package['gitlab-runner'],
         }
     }
-
-    $ensure_service   = $ensure ? {
-        'present' => 'running',
-        'absent'  => 'stopped',
-        default   => 'stopped'
-    }
-
-    service { 'gitlab-runner':
-        ensure  => $ensure_service,
-        require => Package['gitlab-runner'],
-    }
 }

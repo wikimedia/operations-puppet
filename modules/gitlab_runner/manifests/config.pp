@@ -31,7 +31,7 @@ class gitlab_runner::config (
         path   => "${config_path}/config.toml",
         match  => '^concurrent *=',
         line   => "concurrent = ${concurrent}",
-        notify => Service['gitlab-runner'],
+        notify => Systemd::Service['gitlab-runner'],
     }
 
     # Believe it or not, there's no config template or CLI to modifying
@@ -40,6 +40,12 @@ class gitlab_runner::config (
         ensure => $enable_exporter.bool2str('present','absent'),
         path   => "${config_path}/config.toml",
         line   => "listen_address = \"[${exporter_listen_address}]:${exporter_listen_port}\"",
-        notify => Service['gitlab-runner'],
+        notify => Systemd::Service['gitlab-runner'],
+    }
+
+    systemd::service{ 'gitlab-runner':
+        ensure         => 'present',
+        content        => template('gitlab_runner/gitlab-runner.service.erb'),
+        service_params => {'restart' => 'systemctl restart gitlab-runner'},
     }
 }
