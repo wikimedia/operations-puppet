@@ -59,7 +59,6 @@ table_definition_cache         = 4000
 default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
 innodb_buffer_pool_size        = <%= (Float(@memorysize.split[0]) * 0.5).round %>G
-innodb_buffer_pool_instances   = 1
 innodb_log_file_size           = 128M
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = O_DIRECT
