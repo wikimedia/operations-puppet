@@ -1,4 +1,5 @@
 import unittest
+from unittest import mock
 import subprocess
 try:
     import smart_data_dump
@@ -34,6 +35,7 @@ class TestSmartDataDump(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             smart_data_dump._check_output('nonexistentcommand')
 
+    @mock.patch.dict('os.environ', {'LC_MESSAGES': 'C'})
     def test_suppressed_errors_cmd(self):
         output = smart_data_dump._check_output('nonexistentcommand', suppress_errors=True)
         self.assertRegex(
