@@ -15,14 +15,12 @@
 #    under the License.
 
 import copy
-import re
 
 from oslo_log import log as logging
 import oslo_messaging as messaging
 from oslo_utils import strutils
 from oslo_utils import timeutils
 from oslo_utils import uuidutils
-import six
 import webob
 from webob import exc
 
@@ -59,6 +57,8 @@ INVALID_FLAVOR_IMAGE_EXCEPTIONS = (
     exception.BadRequirementEmulatorThreadsPolicy,
     exception.CPUThreadPolicyConfigurationInvalid,
     exception.FlavorImageConflict,
+    exception.FlavorDiskTooSmall,
+    exception.FlavorMemoryTooSmall,
     exception.ImageCPUPinningForbidden,
     exception.ImageCPUThreadPolicyForbidden,
     exception.ImageNUMATopologyAsymmetric,
@@ -86,9 +86,10 @@ INVALID_FLAVOR_IMAGE_EXCEPTIONS = (
     exception.PciRequestAliasNotDefined,
     exception.RealtimeConfigurationInvalid,
     exception.RealtimeMaskNotFoundOrInvalid,
+    exception.RequiredMixedInstancePolicy,
+    exception.RequiredMixedOrRealtimeCPUMask,
+    exception.InvalidMixedInstanceDedicatedMask,
 )
-
-MIN_COMPUTE_MOVE_BANDWIDTH = 39
 
 
 class ServersController(wsgi.Controller):
@@ -102,7 +103,8 @@ class ServersController(wsgi.Controller):
         if 'server' not in robj.obj:
             return robj
 
-        link = [l for l in robj.obj['server']['links'] if l['rel'] == 'self']
+        link = [link for link in robj.obj['server'][
+            'links'] if link['rel'] == 'self']
         if link:
             robj['Location'] = link[0]['href']
 
@@ -402,7 +404,7 @@ class ServersController(wsgi.Controller):
         # Starting in the 2.37 microversion, requested_networks is either a
         # list or a string enum with value 'auto' or 'none'. The auto/none
         # values are verified via jsonschema so we don't check them again here.
-        if isinstance(requested_networks, six.string_types):
+        if isinstance(requested_networks, str):
             return objects.NetworkRequestList(
                 objects=[objects.NetworkRequest(
                     network_id=requested_networks)])
@@ -544,6 +546,84 @@ class ServersController(wsgi.Controller):
         create_kwargs['requested_networks'] = requested_networks
 
     @staticmethod
+    def _validate_host_availability_zone(context, availability_zone, host):
+        """Ensure the host belongs in the availability zone.
+
+        This is slightly tricky and it's probably worth recapping how host
+        aggregates and availability zones are related before reading. Hosts can
+        belong to zero or more host aggregates, but they will always belong to
+        exactly one availability zone. If the user has set the availability
+        zone key on one of the host aggregates that the host is a member of
+        then the host will belong to this availability zone. If the user has
+        not set the availability zone key on any of the host aggregates that
+        the host is a member of or the host is not a member of any host
+        aggregates, then the host will belong to the default availability zone.
+        Setting the availability zone key on more than one of host aggregates
+        that the host is a member of is an error and will be rejected by the
+        API.
+
+        Given the above, our host-availability zone check needs to vary
+        behavior based on whether we're requesting the default availability
+        zone or not. If we are not, then we simply ask "does this host belong
+        to a host aggregate and, if so, do any of the host aggregates have the
+        requested availability zone metadata set". By comparison, if we *are*
+        requesting the default availability zone then we want to ask the
+        inverse, or "does this host not belong to a host aggregate or, if it
+        does, is the availability zone information unset (or, naughty naughty,
+        set to the default) for each of the host aggregates". If both cases, if
+        the answer is no then we warn about the mismatch and then use the
+        actual availability zone of the host to avoid mismatches.
+
+        :param context: The nova auth request context
+        :param availability_zone: The name of the requested availability zone
+        :param host: The name of the requested host
+        :returns: The availability zone that should actually be used for the
+            request
+        """
+        aggregates = objects.AggregateList.get_by_host(context, host=host)
+        if not aggregates:
+            # a host is assigned to the default availability zone if it is not
+            # a member of any host aggregates
+            if availability_zone == CONF.default_availability_zone:
+                return availability_zone
+
+            LOG.warning(
+                "Requested availability zone '%s' but forced host '%s' "
+                "does not belong to any availability zones; ignoring "
+                "requested availability zone to avoid bug #1934770",
+                availability_zone, host,
+            )
+            return None
+
+        # only one host aggregate will have the availability_zone field set so
+        # use the first non-null value
+        host_availability_zone = next(
+            (a.availability_zone for a in aggregates if a.availability_zone),
+            None,
+        )
+
+        if availability_zone == host_availability_zone:
+            # if there's an exact match, use what the user requested
+            return availability_zone
+
+        if (
+            availability_zone == CONF.default_availability_zone and
+            host_availability_zone is None
+        ):
+            # special case the default availability zone since this won't (or
+            # rather shouldn't) be explicitly stored on any host aggregate
+            return availability_zone
+
+        # no match, so use the host's availability zone information, if any
+        LOG.warning(
+            "Requested availability zone '%s' but forced host '%s' "
+            "does not belong to this availability zone; overwriting "
+            "requested availability zone to avoid bug #1934770",
+            availability_zone, host,
+        )
+        return None
+
+    @staticmethod
     def _process_hosts_for_create(
             context, target, server_dict, create_kwargs, host, node):
         """Processes hosts request parameter for server create
@@ -665,9 +745,12 @@ class ServersController(wsgi.Controller):
             availability_zone, host, node = parse_az(context,
                                                      availability_zone)
         except exception.InvalidInput as err:
-            raise exc.HTTPBadRequest(explanation=six.text_type(err))
+            raise exc.HTTPBadRequest(explanation=str(err))
         if host or node:
-            context.can(server_policies.SERVERS % 'create:forced_host', {})
+            context.can(server_policies.SERVERS % 'create:forced_host',
+                        target=target)
+            availability_zone = self._validate_host_availability_zone(
+                context, availability_zone, host)
 
         if api_version_request.is_supported(req, min_version='2.74'):
             self._process_hosts_for_create(context, target, server_dict,
@@ -731,8 +814,6 @@ class ServersController(wsgi.Controller):
                 exception.ImageUnacceptable,
                 exception.FixedIpNotFoundForAddress,
                 exception.FlavorNotFound,
-                exception.FlavorDiskTooSmall,
-                exception.FlavorMemoryTooSmall,
                 exception.InvalidMetadata,
                 exception.InvalidVolume,
                 exception.MismatchVolumeAZException,
@@ -772,7 +853,8 @@ class ServersController(wsgi.Controller):
         except (exception.PortInUse,
                 exception.InstanceExists,
                 exception.NetworkAmbiguous,
-                exception.NoUniqueMatch) as error:
+                exception.NoUniqueMatch,
+                exception.MixedInstanceNotSupportByComputeService) as error:
             raise exc.HTTPConflict(explanation=error.format_message())
 
         # If the caller wanted a reservation_id, return it
@@ -947,18 +1029,6 @@ class ServersController(wsgi.Controller):
                     target={'user_id': instance.user_id,
                             'project_id': instance.project_id})
 
-        if common.instance_has_port_with_resource_request(
-                instance_id, self.network_api):
-            # TODO(gibi): Remove when nova only supports compute newer than
-            # Train
-            source_service = objects.Service.get_by_host_and_binary(
-                context, instance.host, 'nova-compute')
-            if source_service.version < MIN_COMPUTE_MOVE_BANDWIDTH:
-                msg = _("The resize action on a server with ports having "
-                        "resource requests, like a port with a QoS "
-                        "minimum bandwidth policy, is not yet supported.")
-                raise exc.HTTPConflict(explanation=msg)
-
         try:
             self.compute_api.resize(context, instance, flavor_id,
                                     auto_disk_config=auto_disk_config)
@@ -966,9 +1036,13 @@ class ServersController(wsgi.Controller):
                 exception.ForbiddenWithAccelerators) as error:
             raise exc.HTTPForbidden(
                 explanation=error.format_message())
-        except (exception.InstanceIsLocked,
-                exception.InstanceNotReady,
-                exception.ServiceUnavailable) as e:
+        except (
+            exception.OperationNotSupportedForVDPAInterface,
+            exception.InstanceIsLocked,
+            exception.InstanceNotReady,
+            exception.MixedInstanceNotSupportByComputeService,
+            exception.ServiceUnavailable,
+        ) as e:
             raise exc.HTTPConflict(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
@@ -1116,7 +1190,11 @@ class ServersController(wsgi.Controller):
                                      image_href,
                                      password,
                                      **kwargs)
-        except exception.InstanceIsLocked as e:
+        except (
+            exception.InstanceIsLocked,
+            exception.OperationNotSupportedForVTPM,
+            exception.OperationNotSupportedForVDPAInterface,
+        ) as e:
             raise exc.HTTPConflict(explanation=e.format_message())
         except exception.InstanceInvalidState as state_error:
             common.raise_http_conflict_for_instance_invalid_state(state_error,
@@ -1135,8 +1213,6 @@ class ServersController(wsgi.Controller):
             raise exc.HTTPForbidden(explanation=error.format_message())
         except (exception.AutoDiskConfigDisabledByImage,
                 exception.CertificateValidationFailed,
-                exception.FlavorDiskTooSmall,
-                exception.FlavorMemoryTooSmall,
                 exception.ImageNotActive,
                 exception.ImageUnacceptable,
                 exception.InvalidMetadata,
