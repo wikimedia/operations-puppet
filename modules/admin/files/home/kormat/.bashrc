@@ -30,9 +30,9 @@ esac
 # History
 # Ignore duplicate commands
 HISTCONTROL=ignoredups
-# Save decent amounts of history
-HISTSIZE=10000
-HISTFILESIZE=10000
+# Save indecent amounts of history
+HISTSIZE=-1
+HISTFILESIZE=-1
 # Add timestamp to history
 HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # Save multi-line commands into a single history entry, for easier editing.
