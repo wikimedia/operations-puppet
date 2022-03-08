@@ -894,12 +894,12 @@ node 'db1108.eqiad.wmnet' {
 ## m5 shard
 # See also multiinstance misc hosts db1117 and db2078 below
 
-# m5 eqiad master
+# m5 old eqiad master - to be moved somewhere else
 node 'db1132.eqiad.wmnet' {
     role(mariadb::misc)
 }
 
-# m5 future eqiad master T301654
+# m5 eqiad master T301654
 node 'db1107.eqiad.wmnet' {
     role(mariadb::misc)
 }
