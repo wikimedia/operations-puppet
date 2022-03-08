@@ -40,7 +40,7 @@ class profile::netbox::automation (
     }
     file { "${repo_path}/netbox-hiera":
         ensure => link,
-        target => "${reposync::base_path}/netbox-hiera",
+        target => "${reposync::base_dir}/netbox-hiera",
     }
 
     # Expose automation git repositories
