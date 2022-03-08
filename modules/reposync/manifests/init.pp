@@ -1,13 +1,11 @@
 # @summary class to configure the primary reposync server
 # @param ensure ensureable parameter
-# @param base_dir The base directory to store config
 # @param manage_base set to false if the base directory is managed else where
 # @param target_only only configure repos dont install spicerack config
 # @param repos list of repositories
 # @param remotes list of remotes
 class reposync (
     Wmflib::Ensure      $ensure      = 'present',
-    Stdlib::Unixpath    $base_dir    = '/srv/reposync',
     Boolean             $manage_base = true,
     Boolean             $target_only = false,
     Array[String[1]]    $repos       = [],
@@ -16,6 +14,7 @@ class reposync (
 
     # config file used by spicerack
     $config_file = '/etc/spicerack/reposync/config.yaml'
+    $base_dir = '/srv/reposync'
     $config = {'base_dir' => $base_dir, 'repos' => $repos, 'remotes' => $remotes}
 
     if $manage_base {

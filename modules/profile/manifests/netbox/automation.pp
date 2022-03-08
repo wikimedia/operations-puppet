@@ -34,10 +34,12 @@ class profile::netbox::automation (
         }
     }
     class { 'reposync':
-        base_dir    => $repo_path,
-        manage_base => false,
         target_only => true,
         repos       => ['netbox-hiera'],
+    }
+    file { "${repo_path}/netbox-hiera":
+        ensure => link,
+        target => "${reposync::base_path}/netbox-hiera",
     }
 
     # Expose automation git repositories
