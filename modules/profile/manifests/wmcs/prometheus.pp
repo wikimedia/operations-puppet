@@ -28,6 +28,7 @@ class profile::wmcs::prometheus(
             'relabel_configs' => [
                 { 'source_labels' => ['__address__'],
                     'target_label'  => '__param_target',
+                    'replacement' => 'http://$1/',
                 },
                 { 'source_labels' => ['__param_target'],
                     'target_label'  => 'instance',
@@ -49,6 +50,7 @@ class profile::wmcs::prometheus(
             'relabel_configs' => [
                 { 'source_labels' => ['__address__'],
                     'target_label'  => '__param_target',
+                    'replacement' => 'https://$1/',
                 },
                 { 'source_labels' => ['__param_target'],
                     'target_label'  => 'instance',
