@@ -1,23 +1,21 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
-
+# @summray  config puppetmaster backends
+# @param config addtional config to use
+# @param secure_private If false, /etc/puppet/private will be labs/private.git.
+#   Otherwise, some magic is done to have local repositories and sync between puppetmasters.
+# @param ca_server the CA server
+# @param prevent_cherrypicks disable cherry picks
+# @param allow_from A list of hosts for the allowed from list
+# @param extra_auth_rules Addtional auth rules
+# @param servers list of puppetmaster backend servers with wieghts
 class profile::puppetmaster::backend(
-    Hash $config = lookup('profile::puppetmaster::backend::config', {'default_value' => {}}),
-    # should $secure_priviate really get its config from the same
-    # place as $config?
-    $secure_private = lookup('profile::puppetmaster::backend::config', {'default_value' => true}),
-    Boolean $prevent_cherrypicks = lookup('profile::puppetmaster::backend::prevent_cherrypicks', {'default_value' =>  true }),
-    Stdlib::Host $ca_server = lookup('puppet_ca_server'),
-    Hash[String, Puppetmaster::Backends] $servers = lookup(puppetmaster::servers),
-    Array[String] $allow_from = [
-      '*.wikimedia.org',
-      '*.eqiad.wmnet',
-      '*.ulsfo.wmnet',
-      '*.esams.wmnet',
-      '*.codfw.wmnet',
-      '*.eqsin.wmnet',
-      '*.drmrs.wmnet'],
-    String $extra_auth_rules = '',
-
+    Stdlib::Host                         $ca_server           = lookup('puppet_ca_server'),
+    Hash[String, Puppetmaster::Backends] $servers             = lookup('puppetmaster::servers'),
+    Hash                                 $config              = lookup('profile::puppetmaster::backend::config'),
+    Boolean                              $secure_private      = lookup('profile::puppetmaster::backend::secure_private'),
+    Boolean                              $prevent_cherrypicks = lookup('profile::puppetmaster::backend::prevent_cherrypicks'),
+    Array[String]                        $allow_from          = lookup('profile::puppetmaster::backend::allow_from'),
+    Optional[String]                     $extra_auth_rules    = lookup('profile::puppetmaster::backend::extra_auth_rules'),
 ) {
 
     ensure_packages(['libapache2-mod-passenger'])
@@ -40,7 +38,7 @@ class profile::puppetmaster::backend(
 
     class { 'puppetmaster':
         server_type         => 'backend',
-        config              => $::profile::puppetmaster::common::config,
+        config              => $profile::puppetmaster::common::config,
         secure_private      => $secure_private,
         prevent_cherrypicks => $prevent_cherrypicks,
         allow_from          => $allow_from,
@@ -49,16 +47,15 @@ class profile::puppetmaster::backend(
         servers             => $servers,
     }
 
-    $puppetmaster_frontend_ferm = join(keys($servers), ' ')
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
+        srange => "(@resolve((${$servers.keys.join(' ')})))",
     }
     ferm::service { 'puppetmaster-backend':
         proto  => 'tcp',
         port   => 8141,
-        srange => "(@resolve((${puppetmaster_frontend_ferm})) @resolve((${puppetmaster_frontend_ferm}), AAAA))"
+        srange => "(@resolve((${$servers.keys.join(' ')})))",
     }
-    require profile::conftool::client
+    include profile::conftool::client
 }

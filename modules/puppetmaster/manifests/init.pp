@@ -1,41 +1,30 @@
-# Class: puppetmaster
+# @summry This class installs a Puppetmaster
 #
-# This class installs a Puppetmaster
-#
-# Parameters
-#    - $bind_address:
-#        The IP address Apache will bind to
-#    - $verify_client:
-#        Whether apache mod_ssl will verify the client (SSLVerifyClient option)
-#    - $allow_from:
-#        Adds an Allow from statement (order Allow,Deny), limiting access
-#        to the passenger service.
-#    - $deny_from:
-#        Adds a Deny from statement (order Allow,Deny), limiting access
-#        to the passenger service.
-#    - $config:
-#        Hash containing all config settings for the [master] section of
-#        puppet.conf (ini-style)
-#    - $hiera_config:
-#        Specifies which file to use for hiera.yaml.  Defaults to $::realm
-#    - $is_git_master:
-#        If True, the git private repository here will be considered a master
-#    - $secure_private:
-#        If true, some magic is done to have local repositories and sync between puppetmasters.
+# @param server_name name of the server
+# @param bind_address The IP address Apache will bind to
+# @param verify_client Whether apache mod_ssl will verify the client (SSLVerifyClient option)
+# @param allow_from Adds an Allow from statement (order Allow,Deny), limiting access to the passenger service.
+# @param deny_from Adds a Deny from statement (order Allow,Deny), limiting access to the passenger service.
+# @param server_type frontend, backend or standalone
+# @param config Hash containing all config settings for the [master] section of puppet.conf (ini-style)
+# @param hiera_config Specifies which file to use for hiera.yaml.  Defaults to $::realm
+# @param is_git_master If True, the git private repository here will be considered a master
+# @param secure_private If true, some magic is done to have local repositories and sync between puppetmasters.
 #        Otherwise, /etc/puppet/private will be labs/private.git.
-#    - $extra_auth_rules:
-#        String - extra authentication rules to add before the default policy.
-#    - $prevent_cherrypicks:
-#        Bool - use git hooks to prevent cherry picking on top of the git repo
-#    - $git_user
-#        String - name of user who should own the git repositories
-#    - $git_group
-#        String - name of group which should own the git repositories
-#    - $enable_geoip
-#        Bool - Provision ::puppetmaster::geoip for serving clients who use
-#        the ::geoip::data::puppet class in their manifests
-#    - $servers
-#        Hash - Hash of puppetmaster servers, their workers and loadfactors
+# @param extra_auth_rules extra authentication rules to add before the default policy.
+# @param prevent_cherrypicks use git hooks to prevent cherry picking on top of the git repo
+# @param git_user name of user who should own the git repositories
+# @param git_group name of group which should own the git repositories
+# @param enable_geoip Provision puppetmaster::geoip for serving clients who use the
+#         geoip::data::puppet class in their manifests
+# @param ca_server FQDN of the CA server
+# @param ssl_verify_depth Depth to verify client certificates
+# @param use_r10k Weather to use r10k
+# @param upload_facts weather to upload facts to pcc
+#   https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Updating_nodes
+# @param r10k_sources the r10k sources to configure
+# @param servers Hash of puppetmaster servers, their workers and loadfactors
+# @param http_proxy The http_proxy to use if required
 #
 class puppetmaster(
     String[1]                                $server_name        = 'puppet',
@@ -56,18 +45,18 @@ class puppetmaster(
     Boolean                                  $is_git_master       = false,
     String[1]                                $hiera_config        = $::realm,
     Boolean                                  $secure_private      = true,
-    String                                   $extra_auth_rules    = '',
     Boolean                                  $prevent_cherrypicks = true,
     String[1]                                $git_user            = 'gitpuppet',
     String[1]                                $git_group           = 'gitpuppet',
     Boolean                                  $enable_geoip        = true,
-    Stdlib::Host                             $ca_server           = $facts['fqdn'],
+    Stdlib::Host                             $ca_server           = $facts['networking']['fqdn'],
     Integer[1,2]                             $ssl_verify_depth    = 1,
     Boolean                                  $use_r10k            = false,
     Boolean                                  $upload_facts        = false,
     Hash[String, Puppetmaster::R10k::Source] $r10k_sources        = {},
     Hash[String, Puppetmaster::Backends]     $servers             = {},
-    Optional[Stdlib::HTTPUrl]                $http_proxy            = undef,
+    Optional[Stdlib::HTTPUrl]                $http_proxy          = undef,
+    Optional[String]                         $extra_auth_rules    = undef
 ){
 
     $workers = $servers[$facts['fqdn']]

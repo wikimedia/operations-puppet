@@ -48,7 +48,7 @@ class role::puppetmaster::standalone(
     Boolean                            $prevent_cherrypicks = false,
     Array[Stdlib::IP::Address]         $allow_from          = ['10.0.0.0/8', '172.16.0.0/21'],
     Integer[1,30]                      $git_sync_minutes    = 10,
-    String                             $extra_auth_rules    = '',
+    Optional[String]                   $extra_auth_rules    = undef,
     Stdlib::Host                       $server_name         = $facts['fqdn'],
     Variant[Boolean, ENUM['puppetdb']] $storeconfigs        = false,
     Boolean                            $enable_geoip        = false,

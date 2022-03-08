@@ -103,7 +103,6 @@ class profile::puppetmaster::pontoon (
         allow_from          => ['10.0.0.0/8', '172.16.0.0/21'],
         secure_private      => false,
         prevent_cherrypicks => false,
-        extra_auth_rules    => '',
         config              => $config,
         enable_geoip        => false,
         hiera_config        => 'pontoon',

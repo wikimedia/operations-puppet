@@ -233,11 +233,12 @@ profile::puppetmaster::frontend::allow_from:
   - '*.wikimedia.cloud'
 profile::puppetmaster::frontend: chain
 puppetmaster::servers: {}
-profile::puppetmaster::frontend::extra_auth_rules: ''
+profile::puppetmaster::frontend::extra_auth_rules: ~
 profile::puppetmaster::frontend::canary_hosts: []
 profile::puppetmaster::frontend::monitor_signed_certs: false
 profile::puppetmaster::frontend::signed_certs_warning: 2419200  # 4 weeks
 profile::puppetmaster::frontend::signed_certs_critical: 604800  # 1 weeks
+profile::puppetmaster::frontend::mcrouter_ca_secret: ~
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::ssl_verify_depth: 1
@@ -567,3 +568,15 @@ profile::docker::reporter::generate_reports: false
 profile::syslog::centralserver::use_kafka_relay: false
 
 profile::prometheus::ops::blackbox_watchrat_http_check_urls: []
+profile::puppetmaster::backend::config: {}
+profile::puppetmaster::backend::secure_private: false
+profile::puppetmaster::backend::prevent_cherrypicks: true
+profile::puppetmaster::backend::allow_from:
+- '*.wikimedia.org'
+- '*.eqiad.wmnet'
+- '*.ulsfo.wmnet'
+- '*.esams.wmnet'
+- '*.codfw.wmnet'
+- '*.eqsin.wmnet'
+- '*.drmrs.wmnet'
+profile::puppetmaster::backend::extra_auth_rules: ~

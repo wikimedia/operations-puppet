@@ -120,7 +120,9 @@ auth any
 method find, save
 allow *
 
+<%- unless @extra_auth_rules.nil? -%>
 <%= @extra_auth_rules -%>
+<%- end -%>
 
 # deny everything else; this ACL is not strictly necessary, but
 # illustrates the default policy.

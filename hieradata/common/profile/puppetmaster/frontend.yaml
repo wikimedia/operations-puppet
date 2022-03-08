@@ -11,7 +11,7 @@ profile::puppetmaster::frontend::allow_from:
   - '*.eqsin.wmnet'
   - '*.drmrs.wmnet'
 profile::puppetmaster::frontend: chain
-profile::puppetmaster::frontend::extra_auth_rules: ''
+profile::puppetmaster::frontend::extra_auth_rules: ~
 profile::puppetmaster::frontend::secure_private: true
 profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
 profile::puppetmaster::frontend::monitor_signed_certs: true
