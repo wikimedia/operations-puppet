@@ -1,7 +1,7 @@
 # @summary class to configure a server as a reposync receiver
 # @param ensure ensureable parameter
 # @param repos list of repos to configure
-# @param remotes list of remote servers
+# @param remotes list of remote servers by default all cumin and netbox frontend hosts
 class profile::spicerack::reposync (
     Wmflib::Ensure      $ensure  = lookup('profile::spicerack::reposync::ensure'),
     Array[String[1]]    $repos   = lookup('profile::spicerack::reposync::repos'),
@@ -9,7 +9,7 @@ class profile::spicerack::reposync (
 ) {
     $_remotes = $remotes.empty ? {
         false   => $remotes,
-        default => wmflib::role_hosts('cluster::management') + $facts['networking']['fqdn'],
+        default => wmflib::role_hosts('cluster::management') + $facts['networking']['fqdn'] + wmflib::role_hosts('netbox::frontend'),
     }.sort.unique
     class {'reposync':
         ensure  => $ensure,

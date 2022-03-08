@@ -9,3 +9,7 @@
     url = ssh://root@<%= $remote %><%= $repo_path %>/
     fetch = +refs/heads/*:refs/remotes/<%= $remote %>/*
 <%- } -%>
+# Avoid avoid having to set-upstream on initial push
+[push]
+        default = current
+
