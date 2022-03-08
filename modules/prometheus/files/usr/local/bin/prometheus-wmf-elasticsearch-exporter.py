@@ -81,6 +81,12 @@ def fq_name(*args):
     return 'elasticsearch_' + '_'.join(args)
 
 
+def days_since(timestamp_ms):
+    """Returns the number of days since the millisecond precision unix timestamp"""
+    sec_ago = time.time() - (timestamp_ms / 1000)
+    return sec_ago / (24 * 60 * 60)
+
+
 class PrometheusWMFElasticsearchExporter(object):
     scrape_duration = Summary(
         'wmf_elasticsearch_scrape_duration_seconds', 'WMF Elasticsearch exporter scrape duration')
@@ -92,6 +98,8 @@ class PrometheusWMFElasticsearchExporter(object):
         if indices:
             self.indices = indices
             self.index_stats_path = '/{indices}/_stats'.format(
+                indices=','.join(indices))
+            self.index_settings_path = '/{indices}/_settings'.format(
                 indices=','.join(indices))
         else:
             self.indices = None
@@ -113,8 +121,9 @@ class PrometheusWMFElasticsearchExporter(object):
         done for consistency, but due to our customization involving alias
         handling we can likely never switch this back.
         """
-        if self.index_stats_path is None:
+        if not self.indices:
             return
+
         # This script runs on all nodes, but we don't want to collect many
         # copies of this data. We also don't want to create a ticking time bomb
         # by assigning a single machine to collect this data. The strategy is
@@ -124,21 +133,26 @@ class PrometheusWMFElasticsearchExporter(object):
         if not conn.is_master:
             return
 
-        indices = conn.request(self.index_stats_path)['indices']
+        # Source data metrics will be derived from
+        index_stats = conn.request(self.index_stats_path)['indices']
+        index_settings = conn.request(self.index_settings_path)
+
+        # Mapping from index name to the alias we record metrics against
         aliases = conn.alias_map(self.indices)
+
         # Shared labels for all metrics
         global_label_names = ['cluster']
         global_label_values = [conn.cluster_name]
 
-        def populate(metric_kind, name, desc, value_fn):
+        def populate(metric_kind, name, desc, value_fn, source_data=index_stats):
             metric = metric_kind(
                 fq_name('indices', name), desc,
                 labels=global_label_names + ['index'])
-            for index_name, stats in indices.items():
+            for index_name, values in source_data.items():
                 # Resolve any aliases we found, to log against consistent names
                 index_alias = aliases.get(index_name, index_name)
                 try:
-                    value = value_fn(stats)
+                    value = value_fn(values)
                 except KeyError:
                     log.warning(
                         ('No metric returned for %s in index %s, '
@@ -149,6 +163,13 @@ class PrometheusWMFElasticsearchExporter(object):
                     global_label_values + [index_alias],
                     value)
             return metric
+
+        yield populate(
+            GaugeMetricFamily,
+            "age_days",
+            "The number of days since the index was created",
+            lambda x: days_since(int(x['settings']['index']['creation_date'])),
+            source_data=index_settings)
 
         yield populate(
             GaugeMetricFamily,
