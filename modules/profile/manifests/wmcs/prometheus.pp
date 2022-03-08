@@ -116,7 +116,6 @@ class profile::wmcs::prometheus(
         content => to_yaml([{
             'targets' => [
                 'openstack.eqiad1.wikimediacloud.org:5000/v3', # keystone
-                'puppetmaster.cloudinfra.wmflabs.org:8101', # puppet enc
             ],
         }]),
     }
@@ -132,7 +131,6 @@ class profile::wmcs::prometheus(
                 'openstack.eqiad1.wikimediacloud.org:29001', # designate
                 'openstack.eqiad1.wikimediacloud.org:29292', # glance
                 'openstack.eqiad1.wikimediacloud.org:29696', # neutron
-                'proxy-eqiad1.wmflabs.org:5668', # proxy
             ],
         }]),
     }
