@@ -294,6 +294,10 @@ sub cluster_fe_recv_pre_purge {
 	if (req.url ~ "^/\?q=[^&]*$") {
 		set req.url = "/";
 	}
+	// This could be merged with the case above, but it makes the regex harder to read.
+	if (req.url ~ "^/wiki/[^/?]*\?q=[^&]*$") {
+		set req.url = regsub(req.url, "^([^?]*)\?q=.*", "\1");
+	}
 }
 
 sub evaluate_cookie {
