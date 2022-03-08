@@ -127,7 +127,11 @@ route:
       receiver: 'wikidata-mail'
     - match:
         team: 'search-platform'
-      receiver: 'search-platform-ircmail'
+      routes:
+        - match:
+            severity: task
+          receiver: 'search-platform-task'
+        - receiver: 'search-platform-ircmail'
     - match:
         team: 'wmcs'
       receiver: 'wmcs-irc'
@@ -325,6 +329,12 @@ receivers:
   webhook_configs:
     # #ops-drmrs
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-2p7htqghb5al4xwyb2nj'
+      send_resolved: false
+
+- name: 'search-platform-task'
+  webhook_configs:
+    # #discovery-search
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-bhjb6gromuy5lppbjsut'
       send_resolved: false
 
 - name: 'fr-ircmail'
