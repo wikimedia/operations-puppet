@@ -51,6 +51,9 @@
 #   https://prometheus.io/docs/alerting/rules/. Note that defining alerting
 #   rules won't trigger any notifications of any kind.
 #
+# [*alerting_relabel_configs_extra*]
+#   A list of additional rempa rules applied to alerts sent to Alertmanager.
+#
 # [*alertmanagers*]
 #   A list of host:port of alertmanagers to send alerts to.
 #
@@ -64,21 +67,22 @@
 
 define prometheus::server (
     Pattern[/.+:[0-9]+$/]      $listen_address,
-    String                     $scrape_interval        = '60s',
-    Stdlib::Unixpath           $base_path              = "/srv/prometheus/${title}",
-    String                     $storage_retention      = '730h',
-    Optional[Stdlib::Datasize] $storage_retention_size = undef,
-    String                     $storage_encoding       = '2',
-    Integer                    $max_chunks_to_persist  = 524288,
-    Integer                    $memory_chunks          = 1048576,
-    Hash                       $global_config_extra    = {},
-    Array                      $scrape_configs_extra   = [],
-    Array                      $rule_files_extra       = [],
-    Stdlib::HTTPUrl            $external_url           = "http://prometheus.svc.${::site}.wmnet/${title}",
-    String                     $min_block_duration     = '2h',
-    String                     $max_block_duration     = '24h',
-    Array                      $alertmanagers          = [],
-    String                     $alerts_deploy_path     = '/srv/alerts',
+    String                     $scrape_interval                = '60s',
+    Stdlib::Unixpath           $base_path                      = "/srv/prometheus/${title}",
+    String                     $storage_retention              = '730h',
+    Optional[Stdlib::Datasize] $storage_retention_size         = undef,
+    String                     $storage_encoding               = '2',
+    Integer                    $max_chunks_to_persist          = 524288,
+    Integer                    $memory_chunks                  = 1048576,
+    Hash                       $global_config_extra            = {},
+    Array                      $scrape_configs_extra           = [],
+    Array                      $rule_files_extra               = [],
+    Array                      $alerting_relabel_configs_extra = [],
+    Stdlib::HTTPUrl            $external_url                   = "http://prometheus.svc.${::site}.wmnet/${title}",
+    String                     $min_block_duration             = '2h',
+    String                     $max_block_duration             = '24h',
+    Array                      $alertmanagers                  = [],
+    String                     $alerts_deploy_path             = '/srv/alerts',
 ) {
     include prometheus
 
@@ -138,17 +142,20 @@ define prometheus::server (
       $alertmanager_config = [
         { 'targets' => $alertmanagers },
       ]
+
+      $alert_relabel_configs = [
+        # Drop 'replica' label to get proper deduplication of alerts from HA pairs
+        { 'regex' => 'replica', 'action' => 'labeldrop' },
+        # Add 'source' label
+        { 'target_label' => 'source', 'replacement' => 'prometheus', 'action' => 'replace' },
+      ] + $alerting_relabel_configs_extra
+
       $prometheus_config = $common_config + {
         'alerting' => {
           'alertmanagers'         => [
             { 'static_configs' => $alertmanager_config }
           ],
-          'alert_relabel_configs' => [
-            # Drop 'replica' label to get proper deduplication of alerts from HA pairs
-            { 'regex' => 'replica', 'action' => 'labeldrop' },
-            # Add 'source' label
-            { 'target_label' => 'source', 'replacement' => 'prometheus', 'action' => 'replace' },
-          ],
+          'alert_relabel_configs' => $alert_relabel_configs,
         }
       }
     } else {

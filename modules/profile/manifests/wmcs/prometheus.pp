@@ -192,19 +192,23 @@ class profile::wmcs::prometheus(
     ]
 
     prometheus::server { 'labs':
-        listen_address         => '127.0.0.1:9900',
-        storage_retention      => $storage_retention,
-        storage_retention_size => $storage_retention_size,
-        max_chunks_to_persist  => $max_chunks_to_persist,
-        memory_chunks          => $memory_chunks,
-        alertmanagers          => $alertmanagers.map |$a| { "${a}:9093" },
-        scrape_configs_extra   => [
+        listen_address                 => '127.0.0.1:9900',
+        storage_retention              => $storage_retention,
+        storage_retention_size         => $storage_retention_size,
+        max_chunks_to_persist          => $max_chunks_to_persist,
+        memory_chunks                  => $memory_chunks,
+        alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
+        alerting_relabel_configs_extra => [
+            # Add 'team' label, https://phabricator.wikimedia.org/T302493#7759642
+            { 'target_label' => 'team', 'replacement' => 'wmcs', 'action' => 'replace' },
+        ],
+        scrape_configs_extra           => [
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $ceph_jobs,
             $galera_jobs,
         ].flatten,
-        global_config_extra    => $config_extra,
-        rule_files_extra       => ['/srv/alerts/cloud/*.yaml'],
+        global_config_extra            => $config_extra,
+        rule_files_extra               => ['/srv/alerts/cloud/*.yaml'],
     }
 
     class { 'alerts::deploy::prometheus':
