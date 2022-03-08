@@ -12,7 +12,7 @@ import sys
 import uuid
 
 import ldap
-import requests
+from wmflib.requests import http_session
 
 LOG = logging.getLogger(__name__)
 GRAFANA_ORG = 1
@@ -26,6 +26,7 @@ GROUP_ROLES = [
     {"group": "wmf", "role": "Editor"},
     {"group": "nda", "role": "Editor"},
 ]
+RETRY_METHODS = ("PUT", "POST", "PATCH", "DELETE")
 
 
 class WikimediaLDAP(object):
@@ -63,9 +64,15 @@ class WikimediaLDAP(object):
 
 
 class GrafanaAPI(object):
-    def __init__(self, url, auth):
+    def __init__(self, url, auth, timeout=10.0, tries=3, backoff=1.0):
         self.url = url
-        self.session = requests.Session()
+        self.session = http_session(
+            __file__,
+            timeout=timeout,
+            tries=tries,
+            backoff=backoff,
+            retry_methods=RETRY_METHODS
+        )
         self.session.auth = auth
 
     def get(self, path, *args, **kwargs):
@@ -219,6 +226,24 @@ def parse_args():
         default=False,
     )
     parser.add_argument(
+        "--timeout",
+        help="Request timeout",
+        type=float,
+        default=10.0,
+    )
+    parser.add_argument(
+        "--retry",
+        help="How many retries to attempt",
+        type=int,
+        default=3,
+    )
+    parser.add_argument(
+        "--retry-backoff-factor",
+        help="Retry backoff factor",
+        type=float,
+        default=1.0,
+    )
+    parser.add_argument(
         "--commit", help="Commit changes to Grafana", action="store_true", default=False
     )
     parser.add_argument(
@@ -247,7 +272,10 @@ def main():
     grafana_password = grafana_cfg.get("security", "admin_password")
     grafana_port = grafana_cfg.getint("server", "http_port", fallback=3000)
     grafana_api = GrafanaAPI(
-        f"http://localhost:{grafana_port}", ("admin", grafana_password)
+        f"http://localhost:{grafana_port}", ("admin", grafana_password),
+        timeout=opts.timeout,
+        tries=opts.retry,
+        backoff=opts.retry_backoff_factor
     )
 
     syncer = GrafanaSyncer(grafana_api, ldap_api, commit=opts.commit, orgid=GRAFANA_ORG)
