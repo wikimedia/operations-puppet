@@ -440,6 +440,14 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
                 self.reset_task_status()
             TroveInstanceCreate(instance=self,
                                 instance_size=flavor['ram']).notify()
+        except exception.ComputeInstanceNotFound:
+            # Check if the instance has been deleted by another request.
+            instance = DBInstance.find_by(id=self.id)
+            if (instance.deleted or
+                    instance.task_status == InstanceTasks.DELETING):
+                LOG.warning(f"Instance {self.id} has been deleted during "
+                            f"waiting for creation")
+                return
         except (TroveError, PollTimeOut) as ex:
             LOG.error("Failed to create instance %s, error: %s.",
                       self.id, str(ex))
@@ -472,7 +480,8 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
                 is_public=is_public,
                 subnet_id=network_info.get('subnet_id'),
                 ip=network_info.get('ip_address'),
-                is_mgmt=is_mgmt
+                is_mgmt=is_mgmt,
+                project_id=self.tenant_id
             )
         except Exception as e:
             self.update_db(
@@ -785,11 +794,15 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
         try:
             server = self.nova_client.servers.get(c_id)
         except Exception as e:
-            raise TroveError(
-                _("Failed to get server %(server)s for instance %(instance)s, "
-                  "error: %(error)s"),
-                server=c_id, instance=self.id, error=str(e)
-            )
+            if getattr(e, 'message', '') == 'Not found':
+                raise exception.ComputeInstanceNotFound(instance_id=self.id,
+                                                        server_id=c_id)
+            else:
+                raise TroveError(
+                    _("Failed to get server %(server)s for instance "
+                      "%(instance)s, error: %(error)s"),
+                    server=c_id, instance=self.id, error=str(e)
+                )
 
         server_status = server.status
         if server_status in [InstanceStatus.ERROR,
@@ -821,9 +834,11 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
                               volume_type, scheduler_hints):
         LOG.debug("Begin _create_server_volume for id: %s", self.id)
         server = None
-        volume_info = self._build_volume_info(datastore_manager,
-                                              volume_size=volume_size,
-                                              volume_type=volume_type)
+        volume_info = self._build_volume_info(
+            datastore_manager,
+            volume_size=volume_size,
+            volume_type=volume_type,
+            availability_zone=availability_zone)
         block_device_mapping_v2 = volume_info['block_device']
         try:
             server = self._create_server(
@@ -845,7 +860,7 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
         return volume_info
 
     def _build_volume_info(self, datastore_manager, volume_size=None,
-                           volume_type=None):
+                           volume_type=None, availability_zone=None):
         volume_info = None
         volume_support = self.volume_support
         device_path = self.device_path
@@ -854,7 +869,8 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
         if volume_support:
             try:
                 volume_info = self._create_volume(
-                    volume_size, volume_type, datastore_manager)
+                    volume_size, volume_type, datastore_manager,
+                    availability_zone)
             except Exception as e:
                 log_fmt = "Failed to create volume for instance %s"
                 exc_fmt = _("Failed to create volume for instance %s")
@@ -889,14 +905,19 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
         full_message = "%s%s" % (exc_fmt % fmt_content, exc_message)
         raise TroveError(message=full_message)
 
-    def _create_volume(self, volume_size, volume_type, datastore_manager):
+    def _create_volume(self, volume_size, volume_type, datastore_manager,
+                       availability_zone):
         LOG.debug("Begin _create_volume for id: %s", self.id)
         volume_client = create_cinder_client(self.context, self.region_name)
         volume_desc = ("datastore volume for %s" % self.id)
-        volume_ref = volume_client.volumes.create(
-            volume_size, name="trove-%s" % self.id,
-            description=volume_desc,
-            volume_type=volume_type)
+        volume_kwargs = {
+            'size': volume_size,
+            'name': "trove-%s" % self.id,
+            'description': volume_desc,
+            'volume_type': volume_type}
+        if CONF.enable_volume_az:
+            volume_kwargs['availability_zone'] = availability_zone
+        volume_ref = volume_client.volumes.create(**volume_kwargs)
 
         # Record the volume ID in case something goes wrong.
         self.update_db(volume_id=volume_ref.id)
@@ -958,6 +979,9 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
                        block_device_mapping_v2, availability_zone,
                        nics, files={}, scheduler_hints=None):
         userdata = self.prepare_userdata(datastore_manager)
+        metadata = {'trove_project_id': self.tenant_id,
+                    'trove_user_id': self.context.user,
+                    'trove_instance_id': self.id}
         bdmap_v2 = block_device_mapping_v2
         config_drive = CONF.use_nova_server_config_drive
         key_name = CONF.nova_keypair
@@ -968,6 +992,7 @@ class FreshInstanceTasks(FreshInstance, NotifyMixin, ConfigurationMixin):
             files=files, userdata=userdata,
             availability_zone=availability_zone,
             config_drive=config_drive, scheduler_hints=scheduler_hints,
+            meta=metadata,
         )
         LOG.debug("Created new compute instance %(server_id)s "
                   "for database instance %(id)s",
@@ -1366,11 +1391,11 @@ class BuiltInstanceTasks(BuiltInstance, NotifyMixin, ConfigurationMixin):
 
         if is_public != new_is_public:
             for port in ports:
-                if 'User port' in port['description']:
+                if port['network_id'] not in CONF.management_networks:
                     LOG.debug(f"Updating port {port['id']}, is_public: "
                               f"{new_is_public}")
                     neutron.ensure_port_access(self.neutron_client, port['id'],
-                                               new_is_public)
+                                               new_is_public, self.tenant_id)
 
         if CONF.trove_security_groups_support:
             if allowed_cidrs != new_allowed_cidrs:
@@ -1444,8 +1469,7 @@ class BackupTasks(object):
         def _delete(backup):
             backup.deleted = True
             backup.deleted_at = timeutils.utcnow()
-            # Set datastore_version_id to None so that datastore_version could
-            # be deleted.
+            # Set datastore_version_id to None to remove dependency.
             backup.datastore_version_id = None
             backup.save()
 
@@ -1453,7 +1477,9 @@ class BackupTasks(object):
         backup = bkup_models.Backup.get_by_id(context, backup_id)
         try:
             filename = backup.filename
-            if filename:
+            # Do not remove the object if the backup was restored from remote
+            # location.
+            if filename and backup.state != bkup_models.BackupState.RESTORED:
                 BackupTasks.delete_files_from_swift(context,
                                                     backup.container_name,
                                                     filename)
@@ -1863,7 +1889,7 @@ class ResizeActionBase(object):
         """Initiates the action."""
         try:
             LOG.debug("Instance %s calling stop_db...", self.instance.id)
-            self.instance.guest.stop_db()
+            self.instance.guest.stop_db(do_not_start_on_reboot=True)
         except Exception as e:
             if self.ignore_stop_error:
                 LOG.warning(f"Failed to stop db {self.instance.id}, error: "
@@ -2086,7 +2112,7 @@ class RebuildAction(ResizeActionBase):
 
         LOG.info(f"Sending rebuild request to the instance {self.instance.id}")
         self.instance.guest.rebuild(
-            self.instance.datastore_version.name,
+            self.instance.datastore_version.version,
             config_contents=config_contents, config_overrides=overrides)
 
         LOG.info(f"Waiting for instance {self.instance.id} healthy")
