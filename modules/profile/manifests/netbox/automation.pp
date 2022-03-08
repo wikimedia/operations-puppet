@@ -35,6 +35,7 @@ class profile::netbox::automation (
     }
     class { 'reposync':
         target_only => true,
+        group       => 'www-data',
         repos       => ['netbox-hiera'],
     }
     file { "${repo_path}/netbox-hiera":
