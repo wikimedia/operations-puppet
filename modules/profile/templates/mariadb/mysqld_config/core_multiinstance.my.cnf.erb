@@ -138,6 +138,9 @@ innodb_checksum_algorithm = full_crc32
 innodb_buffer_pool_load_at_startup  = 1
 innodb_buffer_pool_dump_at_shutdown = 1
 
+# T268869
+innodb_adaptive_hash_index=OFF
+
 skip-slave-start
 slave_transaction_retries = 4294967295
 
