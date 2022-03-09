@@ -260,7 +260,7 @@ profile::trafficserver::tls::extra_certs:
     sni: [
       'wikiworkshop.org', 'www.wikiworkshop.org'
     ]
-    warning_threshold: 21 
+    warning_threshold: 21
     critical_threshold: 15
 profile::lvs::realserver::pools:
   text-https:
@@ -271,3 +271,4 @@ profile::lvs::realserver::pools:
     services:
       - varnish-fe
 profile::contacts::role_contacts: ['Traffic SREs']
+profile::cache::varnish::frontend::use_etcd_req_filters: true
