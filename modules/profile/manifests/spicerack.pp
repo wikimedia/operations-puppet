@@ -186,6 +186,13 @@ class profile::spicerack(
       }
     }
 
+    file {'/etc/spicerack/elasticsearch':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'ops',
+        mode   => '0550',
+    }
+
     file { '/etc/spicerack/elasticsearch/config.yaml':
         ensure  => present,
         owner   => 'root',
