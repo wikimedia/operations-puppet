@@ -5,6 +5,8 @@ global
     group haproxy
     stats socket <%= @socket %> mode 600 expose-fd listeners level admin
     log /var/lib/haproxy/dev/log local0 info
+    # do not keep old processes longer than 5m after a reload
+    hard-stop-after 5m
 
 
 defaults
