@@ -514,6 +514,12 @@ host kafkamon2002 {
     fixed-address kafkamon2002.codfw.wmnet;
 }
 
+host karapace1001 {
+    hardware ethernet aa:00:00:60:b8:15;
+    fixed-address karapace1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host kubemaster1001 {
     hardware ethernet aa:00:00:6c:c2:aa;
     fixed-address kubemaster1001.eqiad.wmnet;
