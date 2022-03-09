@@ -8,4 +8,3 @@ profile::cache::varnish::frontend::listen_uds:
   - /run/varnish-frontend-6.socket
   - /run/varnish-frontend-7.socket
 profile::cache::varnish::frontend::uds_owner: haproxy
-profile::cache::varnish::frontend::use_etcd_req_filters: true
