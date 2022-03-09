@@ -1992,13 +1992,6 @@ node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     include ::lvs::realserver
 }
 
-# new node being setup in T294137,
-# networking issues (this is a more specific host definition
-# to avoid the catch-all above).
-node 'ms-fe1012.eqiad.wmnet' {
-    role(insetup)
-}
-
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
 node /^ms-be1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::storage)
