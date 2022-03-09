@@ -107,31 +107,7 @@ rewrite	zh-tw.wikipedia.org	https://zh.wikipedia.org
 
 funnel	educacao.wikimedia.org	https://pt.wikipedia.org/wiki/Wikip%C3%A9dia:WU
 
-override	education.wikimedia.org/evaluating	https://commons.wikimedia.org/wiki/File:Evaluating_Wikipedia_brochure.pdf
-override	education.wikimedia.org/illustrating	https://commons.wikimedia.org/wiki/File:Illustrating_Wikipedia_brochure.pdf
-
-override	education.wikimedia.org/casestudies	https://outreach.wikimedia.org/wiki/Education/Case_Studies
-
-override	education.wikimedia.org/content	https://outreach.wikimedia.org/wiki/Education/Case_Studies/content
-override	education.wikimedia.org/copyediting	https://outreach.wikimedia.org/wiki/Education/Case_Studies/copyediting
-override	education.wikimedia.org/definitions	https://outreach.wikimedia.org/wiki/Education/Case_Studies/definitions
-override	education.wikimedia.org/featuredarticle	https://outreach.wikimedia.org/wiki/Education/Case_Studies/featuredarticle
-override	education.wikimedia.org/fivecriteria	https://outreach.wikimedia.org/wiki/Special:MyLanguage/Education/Case_Studies/fivecriteria
-override	education.wikimedia.org/illustrations	https://outreach.wikimedia.org/wiki/Education/Case_Studies/illustrations
-override	education.wikimedia.org/milestones	https://outreach.wikimedia.org/wiki/Education/Case_Studies/milestones
-override	education.wikimedia.org/peerreviews	https://outreach.wikimedia.org/wiki/Education/Case_Studies/peerreviews
-override	education.wikimedia.org/photos	https://outreach.wikimedia.org/wiki/Education/Case_Studies/photos
 override	education.wikimedia.org/readingwikipedia	https://meta.wikimedia.org/wiki/Education/Reading_Wikipedia_in_the_Classroom
-override	education.wikimedia.org/reflectivepapers	https://outreach.wikimedia.org/wiki/Education/Case_Studies/reflectivepapers
-override	education.wikimedia.org/translationarabic	https://outreach.wikimedia.org/wiki/Education/Case_Studies/translationarabic
-override	education.wikimedia.org/translationspanish	https://outreach.wikimedia.org/wiki/Education/Case_Studies/translationspanish
-override	education.wikimedia.org/videos	https://outreach.wikimedia.org/wiki/Education/Case_Studies/videos
-override	education.wikimedia.org/writearticle	https://outreach.wikimedia.org/wiki/Education/Case_Studies/writearticle
-
-override	education.wikimedia.org/syllabus	https://outreach.wikimedia.org/wiki/Education/Syllabi
-override	education.wikimedia.org/welcometowikipedia	https://commons.wikimedia.org/wiki/File:Welcome_to_Wikipedia_brochure_EN.pdf
-override	education.wikimedia.org/instructorbasics	https://commons.wikimedia.org/wiki/File:Instructor_Basics_How_to_Use_Wikipedia_as_a_Teaching_Tool.pdf
-
 funnel	education.wikimedia.org	https://meta.wikimedia.org/wiki/Special:MyLanguage/Education
 
 # Wikibooks - T87039
