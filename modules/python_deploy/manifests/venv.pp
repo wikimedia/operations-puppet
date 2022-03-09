@@ -13,14 +13,7 @@ class python_deploy::venv (
     String $project_name,
     String $deploy_user,
 ) {
-
-    user { $deploy_user:
-        ensure     => present,
-        shell      => '/bin/bash',
-        gid        => $deploy_user,
-        system     => true,
-        managehome => false,
-    }
+    systemd::sysuser { $deploy_user: }
 
     file { "/srv/deployment/${project_name}":
         ensure => directory,
