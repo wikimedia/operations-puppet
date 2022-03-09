@@ -486,7 +486,7 @@ service::catalog:
     port: 9200
     sites:
       - eqiad
-    state: lvs_setup
+    state: monitoring_setup
 
   docker-registry:
     description: docker registry service
