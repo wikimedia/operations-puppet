@@ -121,6 +121,7 @@ override	education.wikimedia.org/illustrations	https://outreach.wikimedia.org/wi
 override	education.wikimedia.org/milestones	https://outreach.wikimedia.org/wiki/Education/Case_Studies/milestones
 override	education.wikimedia.org/peerreviews	https://outreach.wikimedia.org/wiki/Education/Case_Studies/peerreviews
 override	education.wikimedia.org/photos	https://outreach.wikimedia.org/wiki/Education/Case_Studies/photos
+override	education.wikimedia.org/readingwikipedia	https://meta.wikimedia.org/wiki/Education/Reading_Wikipedia_in_the_Classroom
 override	education.wikimedia.org/reflectivepapers	https://outreach.wikimedia.org/wiki/Education/Case_Studies/reflectivepapers
 override	education.wikimedia.org/translationarabic	https://outreach.wikimedia.org/wiki/Education/Case_Studies/translationarabic
 override	education.wikimedia.org/translationspanish	https://outreach.wikimedia.org/wiki/Education/Case_Studies/translationspanish
@@ -131,7 +132,7 @@ override	education.wikimedia.org/syllabus	https://outreach.wikimedia.org/wiki/Ed
 override	education.wikimedia.org/welcometowikipedia	https://commons.wikimedia.org/wiki/File:Welcome_to_Wikipedia_brochure_EN.pdf
 override	education.wikimedia.org/instructorbasics	https://commons.wikimedia.org/wiki/File:Instructor_Basics_How_to_Use_Wikipedia_as_a_Teaching_Tool.pdf
 
-funnel	education.wikimedia.org	https://outreach.wikimedia.org/wiki/Special:MyLanguage/Education
+funnel	education.wikimedia.org	https://meta.wikimedia.org/wiki/Special:MyLanguage/Education
 
 # Wikibooks - T87039
 
