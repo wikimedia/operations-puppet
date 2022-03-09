@@ -11,16 +11,9 @@ class profile::homer (
 
     ensure_packages(['virtualenv', 'make'])
 
-    # Only use scap up to Buster, deployment will switch to a cookbook
-    if debian::codename::le('buster') {
-        scap::target { 'homer/deploy':
-            deploy_user => 'deploy-homer',
-        }
-    } else {
-        class { 'python_deploy::venv':
-            project_name => 'homer',
-            deploy_user  => 'deploy-homer',
-        }
+    class { 'python_deploy::venv':
+        project_name => 'homer',
+        deploy_user  => 'deploy-homer',
     }
 
     keyholder::agent { 'homer':

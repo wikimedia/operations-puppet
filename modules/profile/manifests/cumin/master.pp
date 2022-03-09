@@ -66,14 +66,6 @@ class profile::cumin::master (
         require => File['/etc/cumin'],
     }
 
-    if debian::codename::eq('buster') {
-        apt::package_from_component { 'spicerack':
-            component => 'component/spicerack',
-            packages  => ['python3-tqdm'],
-            priority  => 1002,
-        }
-    }
-
     file { '/usr/local/sbin/check-cumin-aliases':
         ensure => present,
         source => 'puppet:///modules/profile/cumin/check_cumin_aliases.py',
