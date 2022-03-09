@@ -1,23 +1,14 @@
-# Class: puppetmaster::gitclone
+# @summary This class handles the repositories from which the puppetmasters pull
 #
-# This class handles the repositories from which the puppetmasters pull
-#
-# === Parameters
-# [*secure_private*]
-# If false, /etc/puppet/private will be labs/private.git.
-# Otherwise, some magic is done to have local repositories and sync between puppetmasters.
-#
-# [*is_git_master*]
-# If True, the git private repository here will be considered a master.
-#
-# [*prevent_cherrypicks*]
-# If true, setup git hooks to prevent manual modification of the git repos.
-#
-# [*user*]
-# The user which should own the git repositories
-#
-# [*group*]
-# The group which should own the git repositories
+# @param secure_private If false, /etc/puppet/private will be labs/private.git.
+#         Otherwise, some magic is done to have local repositories and sync between puppetmasters.
+# @param is_git_master If True, the git private repository here will be considered a master.
+# @param prevent_cherrypicks If true, setup git hooks to prevent manual modification of the git repos.
+# @param use_r10k If true, use r10k
+# @param user The user which should own the git repositories
+# @param group The group which should own the git repositories
+# @param servers list of puppetmaster backend servers
+# @param r10k_sources r10k_sources configuration
 class puppetmaster::gitclone(
     Boolean                                  $secure_private      = true,
     Boolean                                  $is_git_master       = false,
@@ -30,16 +21,11 @@ class puppetmaster::gitclone(
 ){
 
     include puppetmaster
-    $is_master = $servers.has_key($facts['fqdn'])
+    $is_master = $servers.has_key($facts['networking']['fqdn'])
 
     class  { 'puppetmaster::base_repo':
         gitdir   => $puppetmaster::gitdir,
         gitowner => $user,
-    }
-
-    $cherrypick_hook_ensure = $prevent_cherrypicks ? {
-        true    => file,
-        default => absent,
     }
 
     file {"${puppetmaster::gitdir}/operations/puppet/.git/hooks/post-merge":
@@ -47,7 +33,7 @@ class puppetmaster::gitclone(
     }
     file {
         default:
-            ensure  => $cherrypick_hook_ensure,
+            ensure  => stdlib::ensure($prevent_cherrypicks, 'file'),
             owner   => $user,
             group   => $group,
             mode    => '0550',
@@ -103,7 +89,7 @@ class puppetmaster::gitclone(
             }
             # Ssh wrapper to use the gitpuppet private key
             file { "${private_repo_dir}/.git/ssh_wrapper.sh":
-                ensure  => present,
+                ensure  => file,
                 source  => 'puppet:///modules/puppetmaster/git/private/ssh_wrapper.sh',
                 owner   => 'root',
                 group   => 'root',
@@ -119,7 +105,7 @@ class puppetmaster::gitclone(
                 source => 'puppet:///modules/puppetmaster/git/yamllint.yaml',
             }
             file { "${private_repo_dir}/.git/hooks/pre-commit":
-                ensure  => present,
+                ensure  => file,
                 owner   => $user,
                 group   => $group,
                 mode    => '0550',
@@ -128,7 +114,7 @@ class puppetmaster::gitclone(
             }
 
             file { "${private_repo_dir}/.git/hooks/commit-msg":
-                ensure  => present,
+                ensure  => file,
                 source  => 'puppet:///modules/puppetmaster/git/private/commit-msg-master',
                 owner   => $user,
                 group   => $group,
@@ -139,7 +125,7 @@ class puppetmaster::gitclone(
             # Syncing hooks
             # This hook updates /var/lib and pushes changes to the backend workers
             file { "${private_repo_dir}/.git/hooks/post-commit":
-                ensure  => present,
+                ensure  => file,
                 content => template('puppetmaster/git-master-postcommit.erb'),
                 owner   => $user,
                 group   => $group,
@@ -252,7 +238,7 @@ class puppetmaster::gitclone(
             }
         }
         class { 'puppetmaster::r10k':
-            sources => $r10k_sources
+            sources => $r10k_sources,
         }
     } else {
         # These symlinks will allow us to use /etc/puppet for the puppetmaster to
