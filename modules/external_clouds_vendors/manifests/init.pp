@@ -26,23 +26,26 @@ class external_clouds_vendors (
     }
     if !defined($outfile.dirname) {
         file { $outfile.dirname():
-            ensure => stdlib::ensure($ensure, 'directory'),
-            owner  => $user,
-            group  => $group,
+            ensure  => stdlib::ensure($ensure, 'directory'),
+            owner   => $user,
+            group   => $group,
+            require => Systemd::Sysuser[$user],
         }
     }
     file { '/usr/local/bin/fetch-external-clouds-vendors-nets':
-        ensure => stdlib::ensure($ensure, 'file'),
-        mode   => '0554',
-        owner  => $user,
-        group  => $group,
-        source => 'puppet:///modules/external_clouds_vendors/fetch_external_clouds_vendors_nets.py',
+        ensure  => stdlib::ensure($ensure, 'file'),
+        mode    => '0554',
+        owner   => $user,
+        group   => $group,
+        source  => 'puppet:///modules/external_clouds_vendors/fetch_external_clouds_vendors_nets.py',
+        require => Systemd::Sysuser[$user],
     }
     file { $outfile:
-        ensure => stdlib::ensure($ensure, 'file'),
-        mode   => '0444',
-        owner  => $user,
-        group  => $group,
+        ensure  => stdlib::ensure($ensure, 'file'),
+        mode    => '0444',
+        owner   => $user,
+        group   => $group,
+        require => Systemd::Sysuser[$user],
     }
     $command = "/usr/local/bin/fetch-external-clouds-vendors-nets -v ${outfile}"
     systemd::timer::job { 'dump_cloud_ip_ranges':
@@ -53,6 +56,7 @@ class external_clouds_vendors (
         logging_enabled => true,
         environment     => $environment,
         interval        => {'start' => 'OnCalendar', 'interval' => 'daily'},
+        require         => Systemd::Sysuser[$user],
     }
 }
 
