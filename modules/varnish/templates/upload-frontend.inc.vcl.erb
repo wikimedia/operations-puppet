@@ -237,7 +237,7 @@ sub cluster_fe_ratelimit {
 		}
 
 		// General public_cloud rate limiting: 100/10s (10/s long term, with 100 burst)
-		if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets && vsthrottle.is_denied("public_cloud:" + req.http.X-Client-IP, 100, 10s)) {
+		if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud:" + req.http.X-Client-IP, 100, 10s)) {
 			return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
 		}
 

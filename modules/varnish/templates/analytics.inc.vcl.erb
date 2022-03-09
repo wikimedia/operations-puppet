@@ -251,7 +251,8 @@ sub analytics_deliver {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";nocookies=1";
     }
 
-    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ public_cloud_nets) {
+    if (req.http.X-Public-Cloud) {
+        // do we still need this considering req.http.X-Public-Cloud?
         set resp.http.X-Analytics = resp.http.X-Analytics + ";public_cloud=1";
     }
 
