@@ -6,7 +6,7 @@ class profile::pwstore(
 ) {
     # Base directory for the pwstore repository
     file { '/srv/pwstore':
-        ensure => present,
+        ensure => directory,
         owner  => 'root',
         group  => 'ops',
         mode   => '0770',
