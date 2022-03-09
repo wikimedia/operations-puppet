@@ -191,7 +191,7 @@ def main() -> int:
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
     data = dict()
-    error = False
+    runtime_error = False
 
     providers = [
         ExternalCloudVendor(
@@ -209,7 +209,11 @@ def main() -> int:
 
     datafile = args.datafile
     if datafile.is_file():
-        data = json.loads(datafile.read_text())
+        try:
+            data = json.loads(datafile.read_text())
+        except json.JSONDecodeError as error:
+            logging.error('unable to parse current data, deleting: %s', error)
+            datafile.unlink()
     session = http_session("dump-cloud-ip-ranges")
     for provider in providers:
         try:
@@ -217,22 +221,21 @@ def main() -> int:
             old_nets = data.get(provider.name, [])
             nets = list(merge_adjacent(provider.get_networks(session)))
             if len(nets) == 0:
-                logging.error("Recived 0 nets from %s, not updating")
-                error = True
+                logging.error("Received 0 nets from %s, not updating", provider.name)
+                runtime_error = True
                 continue
             data[provider.name] = nets
             logging.debug("%s nets: %s", provider.name, data[provider.name])
             logging.info(
                 "%s new nets: %d, old nets %d",
-                provider,
+                provider.name,
                 len(data[provider.name]),
                 len(old_nets),
             )
         except RequestException as error:
             logging.error("%s: %s", provider.name, error)
-            error = True
+            runtime_error = True
 
-    datafile.write_text(json.dumps(data, indent=4, sort_keys=True))
     if args.conftool:
         schema = setup_conftool()
         for cloud_name, cidrs in data.items():
@@ -246,7 +249,7 @@ def main() -> int:
                     "Please add it to conftool-data.",
                     name
                 )
-                error = True
+                runtime_error = True
                 continue
             obj.update(
                 {
@@ -255,7 +258,10 @@ def main() -> int:
                 }
             )
 
-    return int(error)
+    temp_datafile = Path(f'{datafile}.tmp')
+    temp_datafile.write_text(json.dumps(data, indent=4, sort_keys=True))
+    temp_datafile.rename(datafile)
+    return int(runtime_error)
 
 
 if __name__ == "__main__":

@@ -52,16 +52,17 @@ class external_clouds_vendors (
         require => Systemd::Sysuser[$user],
     }
     $opts = $conftool.bool2str('-c', '')
-    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets ${opts} -v ${outfile}"
+    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets ${opts} -vc ${outfile}"
     systemd::timer::job { 'dump_cloud_ip_ranges':
-        ensure          => $ensure,
-        command         => $command,
-        description     => 'Job to update list of cloud ip ranges',
-        user            => $user,
-        logging_enabled => true,
-        environment     => $environment,
-        interval        => {'start' => 'OnCalendar', 'interval' => 'daily'},
-        require         => Systemd::Sysuser[$user],
+        ensure            => $ensure,
+        command           => $command,
+        description       => 'Job to update list of cloud ip ranges',
+        user              => $user,
+        logging_enabled   => true,
+        syslog_identifier => 'fetch-external-clouds-vendors-nets',
+        environment       => $environment,
+        interval          => {'start' => 'OnCalendar', 'interval' => 'daily'},
+        require           => Systemd::Sysuser[$user],
     }
 }
 
