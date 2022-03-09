@@ -5,15 +5,22 @@
 # @param is_git_master If True, the git private repository here will be considered a master.
 # @param prevent_cherrypicks If true, setup git hooks to prevent manual modification of the git repos.
 # @param use_r10k If true, use r10k
+# @param enable_netbox If true, enable netbox repos
 # @param user The user which should own the git repositories
 # @param group The group which should own the git repositories
+# @param netbox_hiera_enable add the netbox-hiera repo
+# @param netbox_hiera_source The git source of the nebox hiera repo
+# @param netbox_hiera_path The repo path pf the nebox hiera repo
 # @param servers list of puppetmaster backend servers
 # @param r10k_sources r10k_sources configuration
 class puppetmaster::gitclone(
     Boolean                                  $secure_private      = true,
     Boolean                                  $is_git_master       = false,
     Boolean                                  $prevent_cherrypicks = true,
-    Boolean                                  $use_r10k    = false,
+    Boolean                                  $use_r10k            = false,
+    Boolean                                  $netbox_hiera_enable = false,
+    Stdlib::HTTPUrl                          $netbox_hiera_source = 'https://netbox-exports.wikimedia.org/netbox-hiera',
+    Stdlib::Unixpath                         $netbox_hiera_path   = '/srv/netbox-hiera',
     String[1]                                $user                = 'gitpuppet',
     String[1]                                $group               = 'gitpuppet',
     Hash[String, Puppetmaster::Backends]     $servers             = {},
@@ -249,6 +256,19 @@ class puppetmaster::gitclone(
                 target => "${puppetmaster::gitdir}/operations/puppet/${sub_dir}",
                 force  => true,
             }
+        }
+    }
+    if $netbox_hiera_enable {
+        git::clone {'netbox-hiera':
+            owner     => $user,
+            group     => $group,
+            directory => $netbox_hiera_path,
+            origin    => $netbox_hiera_source,
+        }
+        # TODO: we should template the hiera yaml file to avoid this
+        file { '/etc/puppet/netbox':
+            ensure => link,
+            target => $netbox_hiera_path,
         }
     }
 }

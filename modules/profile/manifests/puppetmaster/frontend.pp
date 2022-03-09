@@ -136,6 +136,7 @@ class profile::puppetmaster::frontend(
         servers             => $servers,
         upload_facts        => $ca, # We only want to upload from one place
         http_proxy          => $http_proxy,
+        netbox_hiera_enable => $profile::puppetmaster::common::netbox_hiera_enable,
     }
 
     $workers = $servers[$facts['networking']['fqdn']]

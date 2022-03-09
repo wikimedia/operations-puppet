@@ -242,6 +242,7 @@ profile::puppetmaster::frontend::mcrouter_ca_secret: ~
 profile::puppetmaster::common::puppetdb_hosts: []
 profile::puppetmaster::common::command_broadcast: false
 profile::puppetmaster::common::ssl_verify_depth: 1
+profile::puppetmaster::common::netbox_hiera_enable: true
 profile::puppetmaster::common::reports:
   - puppetdb
 

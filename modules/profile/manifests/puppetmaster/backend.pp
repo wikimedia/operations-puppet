@@ -43,6 +43,7 @@ class profile::puppetmaster::backend(
         prevent_cherrypicks => $prevent_cherrypicks,
         allow_from          => $allow_from,
         extra_auth_rules    => $extra_auth_rules,
+        netbox_hiera_enable => $profile::puppetmaster::common::netbox_hiera_enable,
         ca_server           => $ca_server,
         servers             => $servers,
     }

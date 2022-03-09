@@ -19,6 +19,7 @@
 #         geoip::data::puppet class in their manifests
 # @param ca_server FQDN of the CA server
 # @param ssl_verify_depth Depth to verify client certificates
+# @param netbox_hiera_enable add the netbox-hiera repo
 # @param use_r10k Weather to use r10k
 # @param upload_facts weather to upload facts to pcc
 #   https://wikitech.wikimedia.org/wiki/Help:Puppet-compiler#Updating_nodes
@@ -52,6 +53,7 @@ class puppetmaster(
     Stdlib::Host                             $ca_server           = $facts['networking']['fqdn'],
     Integer[1,2]                             $ssl_verify_depth    = 1,
     Boolean                                  $use_r10k            = false,
+    Boolean                                  $netbox_hiera_enable = false,
     Boolean                                  $upload_facts        = false,
     Hash[String, Puppetmaster::R10k::Source] $r10k_sources        = {},
     Hash[String, Puppetmaster::Backends]     $servers             = {},
@@ -128,6 +130,7 @@ class puppetmaster(
         user                => $git_user,
         group               => $git_group,
         servers             => $servers,
+        netbox_hiera_enable => $netbox_hiera_enable,
         use_r10k            => $use_r10k,
         r10k_sources        => $r10k_sources,
     }

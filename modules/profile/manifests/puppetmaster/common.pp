@@ -1,17 +1,23 @@
-# Shared profile for front- and back-end puppetmasters.
+# @summary Shared profile for front- and back-end puppetmasters.
 #
-# $config:  Dict merged with front- or back- specifics and then passed
+# @base_param config:  Dict merged with front- or back- specifics and then passed
 #           to ::puppetmaster as $config
 #
-# $storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
+# @param storeconfigs: Accepts values of 'puppetdb', 'activerecord', and 'none'
+# @param puppetdb_hosts list of puppetdb hosts
+# @param command_broadcast 
+# @param ssl_verify_depth ssl verify depth
+# @param netbox_hiera_enable add the netbox-hiera repo
+# @param reports list of puppet reports
 #
 class profile::puppetmaster::common (
                                 $base_config,
-                                $storeconfigs      = lookup('profile::puppetmaster::common::storeconfigs'),
-    Array[Stdlib::Host]         $puppetdb_hosts    = lookup('profile::puppetmaster::common::puppetdb_hosts'),
-    Boolean                     $command_broadcast = lookup('profile::puppetmaster::common::command_broadcast'),
-    Integer[1,2]                $ssl_verify_depth  = lookup('profile::puppetmaster::common::ssl_verify_depth'),
-    Array[Puppetmaster::Report] $reports   = lookup('profile::puppetmaster::common::reports'),
+                                $storeconfigs        = lookup('profile::puppetmaster::common::storeconfigs'),
+    Array[Stdlib::Host]         $puppetdb_hosts      = lookup('profile::puppetmaster::common::puppetdb_hosts'),
+    Boolean                     $command_broadcast   = lookup('profile::puppetmaster::common::command_broadcast'),
+    Integer[1,2]                $ssl_verify_depth    = lookup('profile::puppetmaster::common::ssl_verify_depth'),
+    Boolean                     $netbox_hiera_enable = lookup('profile::puppetmaster::common::netbox_hiera_enable'),
+    Array[Puppetmaster::Report] $reports             = lookup('profile::puppetmaster::common::reports'),
 ) {
     include passwords::puppet::database
 

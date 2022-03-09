@@ -13,7 +13,7 @@ hierarchy:
     path: "hosts/%{::hostname}.yaml"
   - name: "netbox node hierarchy"
     path: "hosts/%{::hostname}"
-    datadir: "/etc/puppet/netbox/hieradata"
+    datadir: "/etc/puppet/netbox"
   - name: "Regex lookup"
     lookup_key: 'wmflib::regex_data'
     path: 'regex.yaml'
