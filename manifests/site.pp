@@ -1991,8 +1991,11 @@ node /^ms-fe1\d\d\d\.eqiad\.wmnet$/ {
     role(swift::proxy)
     include ::lvs::realserver
 }
-# new servers for task T294137
-node /ms-fe10(0[9]|1[0-2]).eqiad.wmnet/ {
+
+# new node being setup in T294137,
+# networking issues (this is a more specific host definition
+# to avoid the catch-all above).
+node 'ms-fe1012.eqiad.wmnet' {
     role(insetup)
 }
 
