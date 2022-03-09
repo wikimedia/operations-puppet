@@ -5,27 +5,25 @@
 #
 # === Parameters
 #
-# [*domains*]
-#   An array of domains to monitor certificates for.
-#
-# [*address*]
+# [*alert_email*]
 #   An email address to send alerts to.
+#
+# [*monitor_domains*]
+#   An array of domains to monitor certificates for.
 #
 # === Examples
 #
 #  class { 'certspotter':
-#      domains => [ 'example.com', 'example.org' ],
-#      address => 'webmaster@example.org',
+#      alert_email     => 'webmaster@example.org',
+#      monitor_domains => [ 'example.com', 'example.org' ],
 #  }
-#
 
 class certspotter(
-  $domains,
-  $address,
+  String              $alert_email,
+  Array[Stdlib::Fqdn] $monitor_domains,
 ) {
-    package { 'certspotter':
-        ensure => present,
-    }
+
+    ensure_packages(['certspotter'])
 
     $homedir = '/var/lib/certspotter'
     $statedir = "${homedir}/state"
@@ -60,19 +58,20 @@ class certspotter(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => inline_template("<%= @domains.join(\"\n\") %>\n"),
+        content => template('certspotter/watchlist.erb'),
     }
 
     # 20180423 - cron disabled (with ensure => absent) to squelch cron errors
     # until certspotter can be upgraded -herron
     $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -state_dir ${statedir}"
-    cron { 'certspotter':
-        ensure      => absent,
+    systemd::timer::job { 'certspotter':
+        ensure      => present,
+        description => 'Run certspotter periodically to monitor for issuance of certificates',
         command     => $cmd,
-        environment => "MAILTO=${address}",
+        environment => { 'MAILTO' => $alert_email },
         user        => 'certspotter',
-        minute      => fqdn_rand(30, 'certspotter'),
-        hour        => '*',
+        interval    => {'start' => 'OnUnitActiveSec', 'interval' => '30min'},
+        splay       => fqdn_rand(300, 'certspotter'),
         require     => [
             User['certspotter'],
             Package['certspotter'],

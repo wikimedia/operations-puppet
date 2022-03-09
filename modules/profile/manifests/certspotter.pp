@@ -1,27 +1,15 @@
 # = Class: profile::certspotter
 #
-# Sets up certspotter for Wikimedia prod
-#
-class profile::certspotter {
-    class { '::certspotter':
-        address => 'noc@wikimedia.org',
-        # cf. role::cache::ssl::unified
-        # prefix with a dot to monitor domain + all subdomains
-        domains => [
-            '.wikipedia.org',
-            '.wikimedia.org',
-            '.mediawiki.org',
-            '.wikibooks.org',
-            '.wikidata.org',
-            '.wikinews.org',
-            '.wikiquote.org',
-            '.wikisource.org',
-            '.wikiversity.org',
-            '.wikivoyage.org',
-            '.wiktionary.org',
-            '.wikimediafoundation.org',
-            '.wmfusercontent.org',
-            '.w.wiki',
-        ],
+# Sets up certspotter for Wikimedia prod.
+
+class profile::certspotter (
+    String              $alert_email     = lookup('profile::certspotter::alert_email'),
+    Array[Stdlib::Fqdn] $monitor_domains = lookup('profile::certspotter::monitor_domains'),
+) {
+
+    class { 'certspotter':
+        alert_email     => $alert_email,
+        monitor_domains => $monitor_domains,
     }
+
 }
