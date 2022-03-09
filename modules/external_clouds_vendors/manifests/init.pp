@@ -19,7 +19,6 @@ class external_clouds_vendors (
             description => 'User used for downloading external cloud vendor networks',
         }
     }
-    ['http_proxy',  ].map |$env| { [$env, $http_proxy] }
     $environment = $http_proxy ? {
         undef   => {},
         default => Hash( ['http_proxy', 'https_proxy' ].map |$env| {[$env, $http_proxy, $env.upcase, $http_proxy]}.flatten)
@@ -42,9 +41,12 @@ class external_clouds_vendors (
     }
     file { $outfile:
         ensure  => stdlib::ensure($ensure, 'file'),
-        mode    => '0444',
+        mode    => '0644',
         owner   => $user,
         group   => $group,
+        # set replace false to ensure we only create content if no file already exists
+        replace => false,
+        content => '{}',
         require => Systemd::Sysuser[$user],
     }
     $command = "/usr/local/bin/fetch-external-clouds-vendors-nets -v ${outfile}"
