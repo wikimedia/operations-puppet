@@ -76,10 +76,17 @@ class profile::cache::base(
     # This file is loaded in wikimedia-frontend.vcl.erb
     confd::file { '/var/netmapper/public_clouds.json':
         ensure     => present,
-        watch_keys => ['/request-ipblocks'],
+        watch_keys => ['/request-ipblocks/cloud'],
         prefix     => $conftool_prefix,
         before     => Service['varnish-frontend'],
         content    => template('profile/cache/public_clouds.json.tpl.erb')
+    }
+    confd::file { '/var/netmapper/abuse_networks.json':
+        ensure     => present,
+        watch_keys => ['/request-ipblocks/abuse'],
+        prefix     => $conftool_prefix,
+        before     => Service['varnish-frontend'],
+        content    => template('profile/cache/abuse_networks.json.tpl.erb')
     }
 
     ###########################################################################

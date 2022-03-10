@@ -1,0 +1,20 @@
+{{/* go text/template cannot output proper json arrays, so we are extracting one element to insert at the end of any json list / dictionary **/}}
+{{- define "cidr.list" -}}
+{{- $last := index . (sub (len .) 1) }}
+{{- range $n := . }}
+    "{{ $n }}"{{ if (ne $n $last) }},{{ end }}
+{{- end }}
+{{- end -}}
+{{/* get the names of all cloud providers **/}}
+{{-  $all := ls "/request-ipblocks/abuse/" -}}
+{{- $last := index $all (sub (len $all) 1) -}}
+{
+{{- range $all }}
+{{- $cloud := json (getv (printf "/request-ipblocks/abuse/%s" .)) }}
+{{- if $cloud.cidrs }}
+  "{{  . }}": [
+{{- template "cidr.list" $cloud.cidrs }}
+  ]{{- if (ne . $last) -}},{{ end }}
+{{- end }}
+{{- end }}
+}
