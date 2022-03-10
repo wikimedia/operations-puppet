@@ -32,6 +32,9 @@ class profile::parsoid::testing (
         }
     }
 
+    profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'php7.2-fpm': }
+
     nginx::site { 'nginx-parsoid-testing':
         content => template('parsoid/parsoid-testing.nginx.conf.erb'),
         notify  => Service['nginx'],
