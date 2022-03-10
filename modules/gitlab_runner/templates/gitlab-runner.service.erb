@@ -1,8 +1,8 @@
 [Unit]
 Description=GitLab Runner
 ConditionFileIsExecutable=/usr/bin/gitlab-runner
- 
-After=syslog.target network.target 
+
+After=syslog.target network.target
 
 [Service]
 StartLimitInterval=5
@@ -13,7 +13,6 @@ ExecStart=/usr/bin/gitlab-runner "run" "--working-directory" "/home/gitlab-runne
 Restart=always
 
 RestartSec=120
-EnvironmentFile=-/etc/sysconfig/gitlab-runner
 
 [Install]
 WantedBy=multi-user.target
