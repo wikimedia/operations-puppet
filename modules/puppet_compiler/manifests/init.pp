@@ -87,7 +87,7 @@ class puppet_compiler(
     git::clone { 'netbox-hiera':
         ensure    => $ensure,
         origin    => 'https://netbox-exports.wikimedia.org/netbox-hiera',
-        directory => "${libdir}/private",
+        directory => "${libdir}/netbox-hiera",
         owner     => $user,
         mode      => '0755',
         require   => File[$libdir],
