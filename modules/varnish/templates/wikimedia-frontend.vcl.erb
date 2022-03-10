@@ -524,6 +524,7 @@ include "directors.frontend.vcl";
 	// TODO: We no longer use carriers, will remove this in a follow up patch - jbond 10-03-2022
 	netmapper.init("carriers", "<%= @netmapper_dir %>/carriers.json", 89);
 	netmapper.init("public_clouds", "<%= @netmapper_dir %>/public_clouds.json", 89);
+	netmapper.init("abuse_networks", "<%= @netmapper_dir %>/abuse_networks.json", 89);
 }
 
 sub wm_recv_early {
