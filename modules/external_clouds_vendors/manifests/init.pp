@@ -19,6 +19,10 @@ class external_clouds_vendors (
     if $manage_user {
         systemd::sysuser { $user:
             description => 'User used for downloading external cloud vendor networks',
+            before      => [
+                File[$outfile.dirname(), $outfile, '/usr/local/bin/fetch-external-clouds-vendors-nets'],
+                Systemd::Timer::Job['dump_cloud_ip_ranges']
+            ],
         }
     }
     $environment = $http_proxy ? {
@@ -27,19 +31,18 @@ class external_clouds_vendors (
     }
     if !defined($outfile.dirname) {
         file { $outfile.dirname():
-            ensure  => stdlib::ensure($ensure, 'directory'),
-            owner   => $user,
-            group   => $group,
-            require => Systemd::Sysuser[$user],
+            ensure => stdlib::ensure($ensure, 'directory'),
+            owner  => $user,
+            group  => $group,
         }
     }
     file { '/usr/local/bin/fetch-external-clouds-vendors-nets':
-        ensure  => stdlib::ensure($ensure, 'file'),
-        mode    => '0554',
-        owner   => $user,
-        group   => $group,
-        source  => 'puppet:///modules/external_clouds_vendors/fetch_external_clouds_vendors_nets.py',
-        require => Systemd::Sysuser[$user],
+        ensure => stdlib::ensure($ensure, 'file'),
+        mode   => '0554',
+        owner  => $user,
+        group  => $group,
+        source => 'puppet:///modules/external_clouds_vendors/fetch_external_clouds_vendors_nets.py',
+
     }
     file { $outfile:
         ensure  => stdlib::ensure($ensure, 'file'),
@@ -49,10 +52,9 @@ class external_clouds_vendors (
         # set replace false to ensure we only create content if no file already exists
         replace => false,
         content => '{}',
-        require => Systemd::Sysuser[$user],
     }
     $opts = $conftool.bool2str('-c', '')
-    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets ${opts} -vc ${outfile}"
+    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets ${opts} -vv ${outfile}"
     systemd::timer::job { 'dump_cloud_ip_ranges':
         ensure            => $ensure,
         command           => $command,
@@ -62,7 +64,6 @@ class external_clouds_vendors (
         syslog_identifier => 'fetch-external-clouds-vendors-nets',
         environment       => $environment,
         interval          => {'start' => 'OnCalendar', 'interval' => 'daily'},
-        require           => Systemd::Sysuser[$user],
     }
 }
 

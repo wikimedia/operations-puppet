@@ -196,5 +196,16 @@ class profile::puppetmaster::frontend(
         port   => 8141,
         srange => "(@resolve((${servers.keys.join(' ')})))",
     }
+
+    # Let's download the public cloud IP ranges, save them to etcd.
+    # This will only upload to conftool on the CA puppetmaster.
+    class { 'external_clouds_vendors':
+        ensure      => 'present',
+        user        => 'root',
+        manage_user => false,
+        conftool    => $ca,
+        outfile     => '/var/lib/puppet/volatile/external_cloud_vendors/public_clouds.json',
+        http_proxy  => $http_proxy,
+    }
 }
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab
