@@ -2,7 +2,8 @@
 # @param ensure ensurable
 # @param user user to use for downloading file
 # @param group to use for file permissions
-# @param manage_user set to false if user managed elses where
+# @param manage_user set to false if the user is managed elsewhere
+# @param conftool set to true if you want to upload data to etcd.
 # @param outfile location to write the results
 # @param http_proxy http proxy server to use will be used for both http and https
 class external_clouds_vendors (
@@ -10,6 +11,7 @@ class external_clouds_vendors (
     String[1]                 $user        = 'external-clouds-fetcher',
     String[1]                 $group       = 'root',
     Boolean                   $manage_user = true,
+    Boolean                   $conftool    = false,
     Stdlib::Unixpath          $outfile     = '/srv/external_clouds_vendors/public_clouds.json',
     Optional[Stdlib::HTTPUrl] $http_proxy  = undef,
 ) {
@@ -49,7 +51,8 @@ class external_clouds_vendors (
         content => '{}',
         require => Systemd::Sysuser[$user],
     }
-    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets -v ${outfile}"
+    $opts = $conftool.bool2str('-c', '')
+    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets ${opts} -v ${outfile}"
     systemd::timer::job { 'dump_cloud_ip_ranges':
         ensure          => $ensure,
         command         => $command,

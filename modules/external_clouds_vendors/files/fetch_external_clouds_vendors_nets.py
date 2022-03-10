@@ -15,6 +15,10 @@ from requests.exceptions import RequestException
 from lxml import html
 from wmflib.requests import http_session
 
+from conftool import configuration as confctl_cfg
+from conftool.kvobject import KVObject
+from conftoool.loader import Schema
+
 
 @dataclass
 class ExternalCloudVendor:
@@ -156,6 +160,12 @@ def get_args() -> Namespace:
         default=0,
         help="Can be passed multiple times to encrease log level",
     )
+    parser.add_argument(
+        "--conftool",
+        "-c",
+        action="store_true",
+        help="If this is provided, the data will be saved to conftool and not just to file.",
+    )
     return parser.parse_args()
 
 
@@ -167,6 +177,13 @@ def get_log_level(args_level: int) -> int:
         2: logging.INFO,
         3: logging.DEBUG,
     }.get(args_level, logging.DEBUG)
+
+
+def setup_conftool() -> Schema:
+    """Get a conftool entity class correctly configured."""
+    KVObject.setup(confctl_cfg.get("/etc/conftool/config.yaml"))
+    schema = Schema.from_file("/etc/conftool/schema.yaml")
+    return schema
 
 
 def main() -> int:
@@ -216,6 +233,26 @@ def main() -> int:
             error = True
 
     datafile.write_text(json.dumps(data, indent=4, sort_keys=True))
+    if args.conftool:
+        schema = setup_conftool()
+        for cloud_name, cidrs in data.items():
+            obj = schema.entities["request-ipblocks"]("cloud", cloud_name)
+            # We don't want to mess with conftool-sync that would remove entries
+            # not present in conftool-data. Once we have reqctl, we won't need this.
+            if not obj.exists:
+                logging.warning(
+                    "Not importing data for cloud %s, not in conftool. "
+                    "Please add it to conftool-data."
+                )
+                error = True
+                continue
+            obj.update(
+                {
+                    "cidrs": cidrs,
+                    "comment": f"Automatically generated IPs for {cloud_name}",
+                }
+            )
+
     return int(error)
 
 
