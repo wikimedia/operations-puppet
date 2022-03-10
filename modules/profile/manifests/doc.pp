@@ -65,6 +65,8 @@ class profile::doc (
         srange => '($CACHES $DEPLOYMENT_HOSTS)',
     }
 
+    profile::auto_restarts::service { 'apache2': }
+
     user { 'doc-uploader':
         ensure => present,
         shell  => '/bin/false',
