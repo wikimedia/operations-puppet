@@ -5,8 +5,6 @@ class profile::mirrors::serve {
         puppet_svc => 'apache2',
     }
 
-    $ssl_settings = ssl_ciphersuite('nginx', 'mid', true)
-
     # Remove former nginx server, before installing apache
     package { 'nginx-light':
       ensure => absent,
@@ -20,7 +18,7 @@ class profile::mirrors::serve {
     httpd::site { 'mirrors':
         content => epp(
             'profile/mirrors/mirrors.wikimedia.org.conf.epp',
-            { 'ssl_settings' => ssl_ciphersuite('apache', 'mid', true) },
+            { 'ssl_settings' => ssl_ciphersuite('apache', 'strong', true) },
         ),
     }
 
