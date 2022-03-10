@@ -17,7 +17,7 @@ from wmflib.requests import http_session
 
 from conftool import configuration as confctl_cfg
 from conftool.kvobject import KVObject
-from conftoool.loader import Schema
+from conftool.loader import Schema
 
 
 @dataclass
@@ -236,13 +236,15 @@ def main() -> int:
     if args.conftool:
         schema = setup_conftool()
         for cloud_name, cidrs in data.items():
-            obj = schema.entities["request-ipblocks"]("cloud", cloud_name)
+            name = cloud_name.lower()
+            obj = schema.entities["request-ipblocks"]("cloud", name)
             # We don't want to mess with conftool-sync that would remove entries
             # not present in conftool-data. Once we have reqctl, we won't need this.
             if not obj.exists:
                 logging.warning(
                     "Not importing data for cloud %s, not in conftool. "
-                    "Please add it to conftool-data."
+                    "Please add it to conftool-data.",
+                    name
                 )
                 error = True
                 continue
