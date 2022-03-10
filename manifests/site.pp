@@ -479,10 +479,6 @@ node /^cp60(09|1[0-6])\.drmrs\.wmnet$/ {
     role(cache::text)
 }
 
-node 'cumin2001.codfw.wmnet' {
-    role(insetup)
-}
-
 node 'cumin1001.eqiad.wmnet' {
     role(cluster::management)
 }
