@@ -9,10 +9,11 @@ define prometheus::wmf_elasticsearch_exporter(
 
     $service_name = "prometheus-wmf-elasticsearch-exporter-${elasticsearch_port}"
     systemd::service { $service_name:
-        ensure  => present,
-        restart => true,
-        content => systemd_template('prometheus-wmf-elasticsearch-exporter'),
-        require => File['/usr/local/bin/prometheus-wmf-elasticsearch-exporter'],
+        ensure    => present,
+        restart   => true,
+        content   => systemd_template('prometheus-wmf-elasticsearch-exporter'),
+        require   => File['/usr/local/bin/prometheus-wmf-elasticsearch-exporter'],
+        subscribe => File['/usr/local/bin/prometheus-wmf-elasticsearch-exporter'],
     }
 
     profile::auto_restarts::service { $service_name: }
