@@ -2618,12 +2618,8 @@ node /^rdb101[02]\.eqiad\.wmnet$/ {
 node /^rdb200[79]\.codfw\.wmnet$/ {
     role(redis::misc::master)
 }
-# New rdb node T251626
-node /^rdb2008\.codfw\.wmnet$/ {
-    role(redis::misc::slave)
-}
 
-node /^rdb2010\.codfw\.wmnet$/ {
+node /^rdb20(08|10)\.codfw\.wmnet$/ {
     role(redis::misc::slave)
 }
 
