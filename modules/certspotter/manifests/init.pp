@@ -68,6 +68,7 @@ class certspotter(
         ensure      => present,
         description => 'Run certspotter periodically to monitor for issuance of certificates',
         command     => $cmd,
+        send_mail   => true,
         environment => { 'MAILTO' => $alert_email },
         user        => 'certspotter',
         interval    => {'start' => 'OnUnitActiveSec', 'interval' => '30min'},
