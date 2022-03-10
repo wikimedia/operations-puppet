@@ -508,7 +508,7 @@ node 'db1118.eqiad.wmnet' {
 }
 # eqiad replicas
 # See also db1099 and db1105 below
-node /^db1(119|134|135|163|164|169|184)\.eqiad\.wmnet/ {
+node /^db1(119|132|134|135|163|164|169|184)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
@@ -893,11 +893,6 @@ node 'db1108.eqiad.wmnet' {
 
 ## m5 shard
 # See also multiinstance misc hosts db1117 and db2078 below
-
-# m5 old eqiad master - to be moved somewhere else
-node 'db1132.eqiad.wmnet' {
-    role(mariadb::misc)
-}
 
 # m5 eqiad master T301654
 node 'db1107.eqiad.wmnet' {
