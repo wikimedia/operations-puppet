@@ -230,8 +230,14 @@ class profile::mediawiki::php(
         'xmlreader',
         'xmlwriter',
         'xsl',
-        'wddx',
     ]:
+        install_packages => false,
+    }
+    # MediaWiki does not use wddx since 2015 and it is no longer bundled with PHP >=7.4
+    # Keep it for older versions, though.
+    # https://phabricator.wikimedia.org/T295725
+    php::extension{ 'wddx':
+        versions         => $php_versions.filter |$v| { versioncmp($v, '7.4') < 0},
         install_packages => false,
     }
 
