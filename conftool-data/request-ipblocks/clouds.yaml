@@ -9,11 +9,11 @@ abuse:
   - bot_posts_blocked_nets
 cloud:
   - public_cloud_nets # legacy for compatibility with what we currently have in puppet.
-# TODO: import all of the clouds below.
-#  - aws
-#  - azure
-#  - google
+  - aws
+  - azure
+  - digitalocean
+  - gcp
+  - oci
 #  - hetzner
 #  - ovh
 #  - linode
-#  - digitalocean
