@@ -32,7 +32,7 @@ mlserve_kubepods_networks = scope.lookupvar('network::constants::mlserve_kubepod
 # Point of contact: Faidon/Otto/Luca
 @def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%> 10.64.48.112/32 10.192.16.65/32 );
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
-@def $SERVICES_KUBEPODS_NETWORKS  = (<%- services_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
+@def $WIKIKUBE_KUBEPODS_NETWORKS  = (<%- services_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 @def $STAGING_KUBEPODS_NETWORKS  = (<%- staging_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 @def $MLSERVE_KUBEPODS_NETWORKS = (<%- mlserve_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 

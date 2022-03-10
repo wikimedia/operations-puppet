@@ -70,7 +70,7 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '$KAFKA_BROKERS_JUMBO'
   - '$FRACK_NETWORKS'
   - '$CACHES'
-  - '$SERVICES_KUBEPODS_NETWORKS'
+  - '$WIKIKUBE_KUBEPODS_NETWORKS'
   - '$STAGING_KUBEPODS_NETWORKS'
   - '(@resolve((centrallog1001.eqiad.wmnet)) 2620:0:861:107:10:64:48:113)' # FIXME: the raw IPv6 IP is added since there is no AAAA record yet (it is not trivial to be added).
   - '(@resolve((centrallog2002.codfw.wmnet)) @resolve((centrallog2002.codfw.wmnet), AAAA))'
