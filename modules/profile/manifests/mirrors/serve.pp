@@ -6,7 +6,10 @@ class profile::mirrors::serve {
     }
 
     # Remove former nginx server, before installing apache
-    package { 'nginx-light':
+    package {[
+      'nginx-light',
+      'nginx-common',
+    ]:
       ensure => absent,
     }
     Package['nginx-light'] ~> Package['apache2']
