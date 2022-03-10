@@ -16,6 +16,7 @@ class profile::cache::base(
     Boolean $performance_tweaks                      = lookup('profile::cache::base::performance_tweaks', {'default_value' => true}),
     Array $extra_trust                               = lookup('profile::cache::base::extra_trust', {'default_value' => []}),
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
+    String $conftool_prefix                          = lookup('conftool_prefix'),
 ){
 
     require network::constants
@@ -71,6 +72,15 @@ class profile::cache::base(
 
     class { '::varnish::netmapper_update_common': }
     class { 'varnish::trusted_proxies': }
+    # Add /var/netmapper/public_clouds.json from etcd.
+    # This file is loaded in wikimedia-frontend.vcl.erb
+    confd::file { '/var/netmapper/public_clouds.json':
+        ensure     => present,
+        watch_keys => ['/request-ipblocks'],
+        prefix     => $conftool_prefix,
+        before     => Service['varnish-frontend'],
+        content    => template('profile/cache/public_clouds.json.tpl.erb')
+    }
 
     ###########################################################################
     # Analytics/Logging stuff
