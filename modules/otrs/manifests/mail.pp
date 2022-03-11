@@ -3,14 +3,14 @@
 # This class installs/configures the exim part of the WMF OTRS installation
 #
 # Parameters:
-#   $otrs_mysql_database
-#       The name of the OTRS database
-#   $otrs_mysql_user
-#       The user for exim to connect to the OTRS database
-#   $otrs_mysql_password
-#       The password for exim to connect to the OTRS database
+#   $vrts_mysql_database
+#       The name of the VRTS database
+#   $vrts_mysql_user
+#       The user for exim to connect to the VRTS database
+#   $vrts_mysql_password
+#       The password for exim to connect to the VRTS database
 #   $trusted_networks
-#       OTRS trusted networks by exim/spamassasin
+#       VRTS trusted networks by exim/spamassasin
 #
 # Actions:
 #       Install/configure exim/spamassasin
@@ -19,16 +19,16 @@
 #
 # Sample Usage:
 #   class { 'otrs::mail'
-#       otrs_mysql_database => 'otrs',
-#       otrs_mysql_user => 'exim',
-#       otrs_mysql_password => 'pass',
+#       vrts_mysql_database => 'otrs',
+#       vrts_mysql_user => 'exim',
+#       vrts_mysql_password => 'pass',
 #       trusted_networks => [],
 #   }
 #
 class otrs::mail(
-    String $otrs_mysql_database,
-    String $otrs_mysql_user,
-    String $otrs_mysql_password,
+    String $vrts_mysql_database,
+    String $vrts_mysql_user,
+    String $vrts_mysql_password,
     Array $trusted_networks,
 ){
     class { '::clamav':

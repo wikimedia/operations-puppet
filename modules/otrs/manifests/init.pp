@@ -53,9 +53,9 @@ class otrs(
     # Implementation classes
     include ::otrs::web
     class { '::otrs::mail':
-        otrs_mysql_database => $exim_database_name,
-        otrs_mysql_user     => $exim_database_user,
-        otrs_mysql_password => $exim_database_pass,
+        vrts_mysql_database => $exim_database_name,
+        vrts_mysql_user     => $exim_database_user,
+        vrts_mysql_password => $exim_database_pass,
         trusted_networks    => $trusted_networks,
     }
 
