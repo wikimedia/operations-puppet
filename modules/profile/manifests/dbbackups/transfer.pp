@@ -50,7 +50,7 @@ class profile::dbbackups::transfer (
             ensure      => 'present',
             user        => 'root',
             description => 'Generate mysql snapshot backup batch',
-            command     => '/usr/bin/remote-backup-mariadb',
+            command     => '/usr/bin/remote-backup-mariadb all',
             interval    => {
                 'start'    => 'OnCalendar',
                 'interval' => 'Sun,Tue,Wed,Fri *-*-* 19:00:00',
@@ -70,7 +70,7 @@ class profile::dbbackups::transfer (
             ensure      => absent,
             description => 'Generate mysql snapshot backup batch',
             user        => 'root',
-            command     => '/usr/bin/remote-backup-mariadb',
+            command     => '/usr/bin/remote-backup-mariadb all',
             interval    => {
                 'start'    => 'OnCalendar',
                 'interval' => 'Sun,Tue,Wed,Fri *-*-* 19:00:00',
