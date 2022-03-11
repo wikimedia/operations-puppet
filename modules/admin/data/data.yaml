@@ -358,7 +358,8 @@ groups:
               statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
-              aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani]
+              aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
+              shubhankar]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5113,6 +5114,17 @@ users:
     realname: Amin Al Hazwani
     email: aalhazwani@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  shubhankar:
+    ensure: present
+    uid: 38373
+    gid: 500
+    krb: present
+    realname: Shubhankar Patankar
+    email: spatank@seas.upenn.edu
+    expiry_date: 2022-07-21
+    expiry_contact: mgerlach@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAlEIMQQGbuyTAod+ev+GLFEhBYnaXuXI+t7iWVVDoSn spatank@seas.upenn.edu
 
 ldap_only_users:
   abartov:
