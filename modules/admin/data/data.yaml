@@ -359,7 +359,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
-              shubhankar, dalezhou]
+              shubhankar, dalezhou, nokafor]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -372,7 +372,7 @@ groups:
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
-    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu, ntsako]
+    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu, ntsako, nokafor]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = NOPASSWD: /bin/journalctl *',
@@ -4956,6 +4956,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILdxCaU2CJ8Q+P8lJgbodjK5HijU24+XuihTLdUYvU/Z sandra
     krb: present
+  nokafor:
+    ensure: present
+    gid: 500
+    realname: Njideka Okafor
+    email: nokafor@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIpgIm/yQ9198tNv8OTfMKVsncHMBx9GybxmuLolKYlJ njideka
+    krb: present
+    uid: 38462
   ntsako:
     ensure: present
     gid: 500
