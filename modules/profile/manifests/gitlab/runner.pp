@@ -14,28 +14,35 @@
 # @param registration_token Token used to register the runner with the GitLab instance.
 # @param run_untagged Whether the runner should also run untagged jobs
 # @param tags Tags used to schedule matching jobs to this runner
+# @param enable_exporter Enable Prometheus metrics exporter
+# @param gitlab_runner_user User which is used to execute gitlab-runner daemon
+# @param restrict_firewall Enable default REJECT rule for all egress Docker traffic to wmnet
+# @param allowed_services List of TCP services (host and port) which can be accessed from Docker
+# with restricted firewall enabled. Only used when restrict_firewall is True.
 class profile::gitlab::runner (
-    Wmflib::Ensure                         $ensure             = lookup('profile::gitlab::runner::ensure'),
-    Enum['not_protected', 'ref_protected'] $access_level       = lookup('profile::gitlab::runner::access_level'),
-    Integer                                $concurrent         = lookup('profile::gitlab::runner::concurrent'),
-    String                                 $docker_image       = lookup('profile::gitlab::runner::docker_image'),
-    Boolean                                $docker_volume      = lookup('profile::gitlab::runner::docker_volume'),
-    Integer                                $docker_volume_min  = lookup('profile::gitlab::runner::docker_volume_min'),
-    Integer                                $docker_volume_max  = lookup('profile::gitlab::runner::docker_volume_max'),
-    Hash                                   $docker_settings    = lookup('profile::gitlab::runner::docker_settings'),
-    String                                 $docker_version     = lookup('profile::gitlab::runner::docker_version'),
-    String                                 $docker_gc_interval = lookup('profile::gitlab::runner::docker_gc_interval'),
-    String                                 $docker_gc_images_high_water_mark  = lookup('profile::gitlab::runner::docker_gc_images_high_water_mark'),
-    String                                 $docker_gc_images_low_water_mark   = lookup('profile::gitlab::runner::docker_gc_images_low_water_mark'),
-    String                                 $docker_gc_volumes_high_water_mark = lookup('profile::gitlab::runner::docker_gc_volumes_high_water_mark'),
-    String                                 $docker_gc_volumes_low_water_mark  = lookup('profile::gitlab::runner::docker_gc_volumes_low_water_mark'),
-    Stdlib::HTTPSUrl                       $gitlab_url         = lookup('profile::gitlab::runner::gitlab_url'),
-    Boolean                                $locked             = lookup('profile::gitlab::runner::locked'),
-    String                                 $registration_token = lookup('profile::gitlab::runner::registration_token'),
-    Boolean                                $run_untagged       = lookup('profile::gitlab::runner::run_untagged'),
-    Array[String]                          $tags               = lookup('profile::gitlab::runner::tags'),
-    Boolean                                $enable_exporter    = lookup('profile::gitlab::runner::enable_exporter', {default_value => false}),
-    String                                 $gitlab_runner_user = lookup('profile::gitlab::runner::user'),
+    Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
+    Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
+    Integer                                     $concurrent         = lookup('profile::gitlab::runner::concurrent'),
+    String                                      $docker_image       = lookup('profile::gitlab::runner::docker_image'),
+    Boolean                                     $docker_volume      = lookup('profile::gitlab::runner::docker_volume'),
+    Integer                                     $docker_volume_min  = lookup('profile::gitlab::runner::docker_volume_min'),
+    Integer                                     $docker_volume_max  = lookup('profile::gitlab::runner::docker_volume_max'),
+    Hash                                        $docker_settings    = lookup('profile::gitlab::runner::docker_settings'),
+    String                                      $docker_version     = lookup('profile::gitlab::runner::docker_version'),
+    String                                      $docker_gc_interval = lookup('profile::gitlab::runner::docker_gc_interval'),
+    String                                      $docker_gc_images_high_water_mark  = lookup('profile::gitlab::runner::docker_gc_images_high_water_mark'),
+    String                                      $docker_gc_images_low_water_mark   = lookup('profile::gitlab::runner::docker_gc_images_low_water_mark'),
+    String                                      $docker_gc_volumes_high_water_mark = lookup('profile::gitlab::runner::docker_gc_volumes_high_water_mark'),
+    String                                      $docker_gc_volumes_low_water_mark  = lookup('profile::gitlab::runner::docker_gc_volumes_low_water_mark'),
+    Stdlib::HTTPSUrl                            $gitlab_url         = lookup('profile::gitlab::runner::gitlab_url'),
+    Boolean                                     $locked             = lookup('profile::gitlab::runner::locked'),
+    String                                      $registration_token = lookup('profile::gitlab::runner::registration_token'),
+    Boolean                                     $run_untagged       = lookup('profile::gitlab::runner::run_untagged'),
+    Array[String]                               $tags               = lookup('profile::gitlab::runner::tags'),
+    Boolean                                     $enable_exporter    = lookup('profile::gitlab::runner::enable_exporter', {default_value => false}),
+    String                                      $gitlab_runner_user = lookup('profile::gitlab::runner::user'),
+    Boolean                                     $restrict_firewall  = lookup('profile::gitlab::runner::restrict_firewall'),
+    Hash[String, Gitlab_runner::AllowedService] $allowed_services   = lookup('profile::gitlab::runner::allowed_services'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -57,10 +64,9 @@ class profile::gitlab::runner (
         }
     }
 
-    ferm::conf { 'docker-ferm':
-        ensure => $ensure,
-        prio   => 20,
-        source => 'puppet:///modules/profile/ci/docker-ferm',
+    class {'gitlab_runner::firewall':
+        restrict_firewall => $restrict_firewall,
+        allowed_services  => $allowed_services,
     }
 
     if $gitlab_runner_user != 'root' {
