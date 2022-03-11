@@ -35,7 +35,7 @@ class TestEnvoyConfig:
         ep = envoy.EnvoyConfig(os.path.join(fixtures, "good"))
         ep.populate_config()
         # Check that admin gets populated
-        assert ep.config["admin"]["access_log_path"] == "/tmp/test.log"
+        assert ep.config["admin"]["access_log"]["typed_config"]["path"] == "/tmp/test.log"
         # Check listeners are loaded in order
         resources = ep.config["static_resources"]["listeners"]
         assert resources[0]["address"]["socket_address"]["port_value"] == 443
