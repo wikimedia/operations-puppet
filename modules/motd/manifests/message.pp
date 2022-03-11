@@ -1,10 +1,10 @@
 # @summary define to add some text to the motd
 # @param ensure ensureable param
-# @param message the message to add
+# @param message the message to add, use title by default
 # @param priority the motd priority
 define motd::message (
-    String[1]      $message,
     Wmflib::Ensure $ensure   = present,
+    String[1]      $message  = $title,
     Integer[0, 99] $priority = 50,
 ) {
 
