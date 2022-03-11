@@ -8,6 +8,7 @@ class role::builder {
     include profile::docker::ferm
     include profile::docker::reporter
     include profile::systemtap::devserver
+    include profile::java
 
     system::role { 'builder':
         description => 'Docker images builder',
