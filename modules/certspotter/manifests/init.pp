@@ -65,7 +65,7 @@ class certspotter(
     # until certspotter can be upgraded -herron
     $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -start_at_end -state_dir ${statedir}"
     systemd::timer::job { 'certspotter':
-        ensure      => absent,
+        ensure      => present,
         description => 'Run certspotter periodically to monitor for issuance of certificates',
         command     => $cmd,
         send_mail   => true,
