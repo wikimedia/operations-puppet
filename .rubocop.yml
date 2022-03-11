@@ -11,12 +11,6 @@ AllCops:
     # not a Ruby script
     - 'modules/smokeping/files/smokeping.fcgi'
     # third party modules
-    - 'modules/mysql/**/*'
-    - 'modules/concat/**/*'
-    - 'modules/rsync/**/*'
-    - 'modules/stdlib/**/*'
-    - 'modules/puppetdbquery/**/*'
-    - 'modules/lvm/**/*'
     - 'vendor_modules/**/*'
     # bundler installation files
     - 'vendor/**/*'

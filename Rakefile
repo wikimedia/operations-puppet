@@ -66,7 +66,6 @@ task :debug do
   puts "Tasks that would be run: "
   puts t.tasks
 end
-thirdparty_modules = ['stdlib', 'lvm', 'puppetdbquery', 'concat']
 # Global tasks. Only the ones deemed useful are added here.
 namespace :global do
   desc "Build documentation"
@@ -85,8 +84,6 @@ namespace :global do
     FileList['modules/*/spec'].each do |path|
       next unless path.match('modules/(.+)/')
       module_name = Regexp.last_match(1)
-      # don't test the puppetlabs modules
-      next if thirdparty_modules.include?(module_name)
       task module_name do
         if File.exist?("modules/#{module_name}/Rakefile")
           spec_result = system("cd 'modules/#{module_name}' && rake parallel_spec")
@@ -109,8 +106,6 @@ namespace :global do
     FileList['modules/**/spec'].each do |path|
       next unless path.match('modules/([^\/]+)/')
       module_name = Regexp.last_match(1)
-      # don't test the puppetlabs modules
-      next if thirdparty_modules.include?(module_name)
       spec_modules << module_name
     end
     pattern = "modules/{#{spec_modules.to_a.join(',')}}/#{pattern_end}"
