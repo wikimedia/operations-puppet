@@ -433,6 +433,10 @@ sub cluster_fe_ratelimit {
 		return (synth(403, "Forbidden; please contact noc@wikimedia.org"));
 	}
 
+	// Temporary: Allow injecting rate-limit rules
+	// from the private repository.
+	// T303534
+	<%= scope.call_function('lookup', ['cache::text::fe_ratelimit', {'default_value' => ''}]) %>
 
 	// Ratelimit miss/pass requests per IP:
 	//   * Excluded for now:
