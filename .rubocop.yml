@@ -17,6 +17,7 @@ AllCops:
     - 'modules/stdlib/**/*'
     - 'modules/puppetdbquery/**/*'
     - 'modules/lvm/**/*'
+    - 'vendor_modules/**/*'
     # bundler installation files
     - 'vendor/**/*'
     - '**/Vagrantfile'

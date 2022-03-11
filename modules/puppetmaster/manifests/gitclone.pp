@@ -237,7 +237,7 @@ class puppetmaster::gitclone(
         origin    => 'https://gerrit.wikimedia.org/r/operations/software';
     }
 
-    $link_sub_dirs = [ 'templates', 'files', 'manifests', 'modules', 'hieradata', 'environments']
+    $link_sub_dirs = [ 'templates', 'files', 'manifests', 'modules', 'vendor_modules', 'hieradata', 'environments']
     if $use_r10k {
         $link_sub_dirs.each |$sub_dir| {
             file { "/etc/puppet/${sub_dir}":

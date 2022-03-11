@@ -36,6 +36,7 @@ RSpec.configure do |c|
   c.default_facts = default_facts
   c.module_path = [
     File.join(__dir__, '..', 'modules'),
+    File.join(__dir__, '..', 'vendor_modules'),
     File.join(private_modules_path, 'modules')
   ].join(':')
   c.hiera_config = File.join(__dir__, 'hiera.yaml')

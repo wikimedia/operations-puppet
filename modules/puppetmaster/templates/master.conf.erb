@@ -1,7 +1,7 @@
 
 [master]
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
-basemodulepath = /etc/puppet/private/modules:/etc/puppet/modules
+basemodulepath = /etc/puppet/private/modules:/etc/puppet/modules:/etc/puppet/vendor_modules
 
 # puppetmaster($config) settings
 <% @config.sort.each do |setting, value| -%>

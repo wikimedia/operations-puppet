@@ -37,10 +37,12 @@ class TaskGen < ::Rake::TaskLib
       :per_module_tox,
     ]
     @git = GitOps.new(path)
-    @changed_files = @git.changes_in_head
+    @changed_files_with_vendored = @git.changes_in_head
+    vendor_paths = ['vendor/**/*', 'vendor_modules/**/*']
+    @changed_files = FileList[@changed_files_with_vendored].exclude(vendor_paths).to_a
+    PuppetSyntax.exclude_paths = vendor_paths
     @tasks = setup_tasks
     @failed_specs = []
-    PuppetSyntax.exclude_paths = ['vendor/**/*']
   end
 
   def setup_wmf_lint_check
