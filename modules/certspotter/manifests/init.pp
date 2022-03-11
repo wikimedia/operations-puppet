@@ -63,7 +63,7 @@ class certspotter(
 
     # 20180423 - cron disabled (with ensure => absent) to squelch cron errors
     # until certspotter can be upgraded -herron
-    $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -state_dir ${statedir}"
+    $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -start_at_end -state_dir ${statedir}"
     systemd::timer::job { 'certspotter':
         ensure      => absent,
         description => 'Run certspotter periodically to monitor for issuance of certificates',
