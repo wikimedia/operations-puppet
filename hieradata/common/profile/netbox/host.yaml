@@ -1,0 +1,2 @@
+profile::netbox::host::status: 'unknown'
+profile::netbox::host::location: ~

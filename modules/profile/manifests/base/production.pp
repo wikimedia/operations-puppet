@@ -7,6 +7,8 @@ class profile::base::production (
     Boolean $enable_ip6_mapped = lookup('profile::base::production::enable_ip6_mapped'),
 ) {
     if $enable {
+        # include this early so we can use the data elsewhere
+        include profile::netbox::host
         include profile::base
         # Contain the profile::admin module so we create all the required groups before
         # something else creates a system group with one of our GID's

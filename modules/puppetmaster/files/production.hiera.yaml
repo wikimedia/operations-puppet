@@ -12,7 +12,7 @@ hierarchy:
   - name: "node hierarchy"
     path: "hosts/%{::hostname}.yaml"
   - name: "netbox node hierarchy"
-    path: "hosts/%{::hostname}"
+    path: "hosts/%{::hostname}.yaml"
     datadir: "/etc/puppet/netbox"
   - name: "Regex lookup"
     lookup_key: 'wmflib::regex_data'
@@ -39,7 +39,7 @@ hierarchy:
     lookup_key: 'wmflib::expand_path'
     path: "common"
   - name: "netbox common hierarchy"
-    path: "hosts/%{::hostname}"
+    path: "common.yaml"
     datadir: "/etc/puppet/netbox/hieradata"
   - name: "private common"
     lookup_key: 'wmflib::expand_path'

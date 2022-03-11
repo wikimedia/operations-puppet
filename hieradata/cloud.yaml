@@ -587,3 +587,5 @@ profile::puppetmaster::backend::allow_from:
 - '*.eqsin.wmnet'
 - '*.drmrs.wmnet'
 profile::puppetmaster::backend::extra_auth_rules: ~
+profile::netbox::host::status: 'unknown'
+profile::netbox::host::location: ~
