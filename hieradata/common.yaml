@@ -580,6 +580,11 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+  ml_staging_etcd:
+    description: "ML Team staging etcd clusters"
+    id: 102
+    sites:
+      codfw: []
 
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet

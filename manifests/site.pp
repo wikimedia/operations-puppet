@@ -1939,7 +1939,7 @@ node /^ml-serve100[1234]\.eqiad\.wmnet/ {
 
 # New ml-staging etcd T302503
 node /^ml-staging-etcd200[123]\.codfw.wmnet/ {
-    role(insetup)
+    role(etcd::v3::staging::ml_etcd)
 }
 
 # New ml-staging ctrl T302503
