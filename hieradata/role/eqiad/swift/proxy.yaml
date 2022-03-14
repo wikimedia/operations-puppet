@@ -6,4 +6,4 @@ profile::admin::groups:
   - swift-roots
 profile::swift::proxy::use_tls: true
 profile::swift::cluster: eqiad-prod
-profile::swift::stats_reporter_host: 'ms-fe1005.eqiad.wmnet'
+profile::swift::stats_reporter_host: 'ms-fe1009.eqiad.wmnet'

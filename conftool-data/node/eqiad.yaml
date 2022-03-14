@@ -268,10 +268,6 @@ eqiad:
     cloudelastic1006.wikimedia.org: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
 
   swift:
-    ms-fe1005.eqiad.wmnet: [swift-fe, nginx]
-    ms-fe1006.eqiad.wmnet: [swift-fe, nginx]
-    ms-fe1007.eqiad.wmnet: [swift-fe, nginx]
-    ms-fe1008.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1009.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1010.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1011.eqiad.wmnet: [swift-fe, nginx]

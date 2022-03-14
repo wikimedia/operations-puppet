@@ -83,10 +83,6 @@ profile::swift::replication_accounts:
 #       key2: 'bar'
 # used by ferm
 profile::swift::proxyhosts:
-  - ms-fe1005.eqiad.wmnet
-  - ms-fe1006.eqiad.wmnet
-  - ms-fe1007.eqiad.wmnet
-  - ms-fe1008.eqiad.wmnet
   - ms-fe1009.eqiad.wmnet
   - ms-fe1010.eqiad.wmnet
   - ms-fe1011.eqiad.wmnet
