@@ -65,15 +65,16 @@ class certspotter(
     # until certspotter can be upgraded -herron
     $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -start_at_end -state_dir ${statedir}"
     systemd::timer::job { 'certspotter':
-        ensure      => present,
-        description => 'Run certspotter periodically to monitor for issuance of certificates',
-        command     => $cmd,
-        send_mail   => true,
-        environment => { 'MAILTO' => $alert_email },
-        user        => 'certspotter',
-        interval    => {'start' => 'OnUnitActiveSec', 'interval' => '30min'},
-        splay       => fqdn_rand(300, 'certspotter'),
-        require     => [
+        ensure                  => present,
+        description             => 'Run certspotter periodically to monitor for issuance of certificates',
+        command                 => $cmd,
+        send_mail               => true,
+        send_mail_only_on_error => false,
+        environment             => { 'MAILTO' => $alert_email },
+        user                    => 'certspotter',
+        interval                => {'start' => 'OnUnitActiveSec', 'interval' => '30min'},
+        splay                   => fqdn_rand(300, 'certspotter'),
+        require                 => [
             User['certspotter'],
             Package['certspotter'],
             File[$watchlist],
