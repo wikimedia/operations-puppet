@@ -508,6 +508,7 @@ node 'db1118.eqiad.wmnet' {
 }
 # eqiad replicas
 # See also db1099 and db1105 below
+# db1132 is a testing mariadb 10.6 host T303395
 node /^db1(119|132|134|135|163|164|169|184)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
