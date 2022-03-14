@@ -118,6 +118,13 @@
 # [*log_message_format_version*]
 #   Default: undef
 #
+# [*max_incremental_fetch_session_cache_slots*]
+#   The maximum number of incremental fetch sessions that we will maintain.
+#   Scale this if you consistently have more than the default (1000) number
+#   of client connections
+#   (consistently == within the min.incremental.fetch.session.eviction.ms default of 120 seconds).
+#   Default: undef (1000).
+#
 # [*message_max_bytes*]
 #   The largest record batch size allowed by Kafka.
 #   If this is increased and there are consumers older
@@ -144,40 +151,41 @@
 #   Default: 1
 #
 class profile::kafka::broker(
-    String $kafka_cluster_name                             = lookup('profile::kafka::broker::kafka_cluster_name'),
-    String $statsd                                         = lookup('statsd'),
+    String $kafka_cluster_name                                   = lookup('profile::kafka::broker::kafka_cluster_name'),
+    String $statsd                                               = lookup('statsd'),
 
-    Boolean $plaintext                                     = lookup('profile::kafka::broker::plaintext', {'default_value' => true}),
+    Boolean $plaintext                                           = lookup('profile::kafka::broker::plaintext', {'default_value' => true}),
 
-    Boolean $ssl_enabled                                   = lookup('profile::kafka::broker::ssl_enabled', {'default_value' => false}),
-    Optional[String] $ssl_password                         = lookup('profile::kafka::broker::ssl_password', {'default_value' => undef}),
-    Boolean $ssl_generate_certificates                     = lookup('profile::kafka::broker::ssl_generate_certificates', {'default_value' => false}),
-    Optional[Boolean] $inter_broker_ssl_enabled            = lookup('profile::kafka::broker::inter_broker_ssl_enabled', {'default_value' => undef}),
-    Boolean $use_pki_migration_settings                    = lookup('profile::kafka::broker:use_pki_migration_settings', {'default_value' => false}),
-    Array[Stdlib::Unixpath] $log_dirs                      = lookup('profile::kafka::broker::log_dirs', {'default_value' => ['/srv/kafka/data']}),
-    Boolean $auto_leader_rebalance_enable                  = lookup('profile::kafka::broker::auto_leader_rebalance_enable', {'default_value' => true}),
-    Integer $log_retention_hours                           = lookup('profile::kafka::broker::log_retention_hours', {'default_value' => 168}),
-    Optional[Integer] $log_retention_bytes                 = lookup('profile::kafka::broker::log_retention_bytes', {'default_value' => undef}),
-    Optional[Integer] $log_segment_bytes                   = lookup('profile::kafka::broker::log_segment_bytes', {'default_value' => undef}),
-    Optional[Integer] $num_recovery_threads_per_data_dir   = lookup('profile::kafka::broker::num_recovery_threads_per_data_dir', {'default_value' => undef}),
-    Integer $num_io_threads                                = lookup('profile::kafka::broker::num_io_threads', {'default_value' => 1}),
-    Optional[Integer] $num_replica_fetchers                = lookup('profile::kafka::broker::num_replica_fetchers', {'default_value' => undef}),
-    Integer $nofiles_ulimit                                = lookup('profile::kafka::broker::nofiles_ulimit', {'default_value' => 128000}),
-    Optional[String] $inter_broker_protocol_version        = lookup('profile::kafka::broker::inter_broker_protocol_version', {'default_value' => undef}),
-    Optional[Integer] $group_initial_rebalance_delay       = lookup('profile::kafka::broker::group_initial_rebalance_delay', {'default_value' => undef}),
-    Optional[String] $log_message_format_version           = lookup('profile::kafka::broker::log_message_format_version', {'default_value' => undef}),
+    Boolean $ssl_enabled                                         = lookup('profile::kafka::broker::ssl_enabled', {'default_value' => false}),
+    Optional[String] $ssl_password                               = lookup('profile::kafka::broker::ssl_password', {'default_value' => undef}),
+    Boolean $ssl_generate_certificates                           = lookup('profile::kafka::broker::ssl_generate_certificates', {'default_value' => false}),
+    Optional[Boolean] $inter_broker_ssl_enabled                  = lookup('profile::kafka::broker::inter_broker_ssl_enabled', {'default_value' => undef}),
+    Boolean $use_pki_migration_settings                          = lookup('profile::kafka::broker:use_pki_migration_settings', {'default_value' => false}),
+    Array[Stdlib::Unixpath] $log_dirs                            = lookup('profile::kafka::broker::log_dirs', {'default_value' => ['/srv/kafka/data']}),
+    Boolean $auto_leader_rebalance_enable                        = lookup('profile::kafka::broker::auto_leader_rebalance_enable', {'default_value' => true}),
+    Integer $log_retention_hours                                 = lookup('profile::kafka::broker::log_retention_hours', {'default_value' => 168}),
+    Optional[Integer] $log_retention_bytes                       = lookup('profile::kafka::broker::log_retention_bytes', {'default_value' => undef}),
+    Optional[Integer] $log_segment_bytes                         = lookup('profile::kafka::broker::log_segment_bytes', {'default_value' => undef}),
+    Optional[Integer] $num_recovery_threads_per_data_dir         = lookup('profile::kafka::broker::num_recovery_threads_per_data_dir', {'default_value' => undef}),
+    Integer $num_io_threads                                      = lookup('profile::kafka::broker::num_io_threads', {'default_value' => 1}),
+    Optional[Integer] $num_replica_fetchers                      = lookup('profile::kafka::broker::num_replica_fetchers', {'default_value' => undef}),
+    Integer $nofiles_ulimit                                      = lookup('profile::kafka::broker::nofiles_ulimit', {'default_value' => 128000}),
+    Optional[String] $inter_broker_protocol_version              = lookup('profile::kafka::broker::inter_broker_protocol_version', {'default_value' => undef}),
+    Optional[Integer] $group_initial_rebalance_delay             = lookup('profile::kafka::broker::group_initial_rebalance_delay', {'default_value' => undef}),
+    Optional[String] $log_message_format_version                 = lookup('profile::kafka::broker::log_message_format_version', {'default_value' => undef}),
+    Optional[Integer] $max_incremental_fetch_session_cache_slots = lookup('profile::kafka::broker::max_incremental_fetch_session_cache_slots', {'default_value' => undef}),
 
     # This is set via top level hiera variable so it can be synchronized between roles and clients.
-    Integer $message_max_bytes                             = lookup('kafka_message_max_bytes', {'default_value' => 1048576}),
-    Boolean $auth_acls_enabled                             = lookup('profile::kafka::broker::auth_acls_enabled', {'default_value' => false}),
-    Boolean $monitoring_enabled                            = lookup('profile::kafka::broker::monitoring_enabled', {'default_value' => false}),
+    Integer $message_max_bytes                                   = lookup('kafka_message_max_bytes', {'default_value' => 1048576}),
+    Boolean $auth_acls_enabled                                   = lookup('profile::kafka::broker::auth_acls_enabled', {'default_value' => false}),
+    Boolean $monitoring_enabled                                  = lookup('profile::kafka::broker::monitoring_enabled', {'default_value' => false}),
 
-    String $scala_version                                  = lookup('profile::kafka::broker::scala_version', {'default_value' => '2.11'}),
+    String $scala_version                                        = lookup('profile::kafka::broker::scala_version', {'default_value' => '2.11'}),
 
-    Optional[String] $max_heap_size                        = lookup('profile::kafka::broker::max_heap_size', {'default_value' => undef}),
-    Integer $num_partitions                                = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
-    Optional[Array[String]] $custom_ferm_srange_components = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
-    Boolean $use_fixed_uid_gid                             = lookup('profile::kafka::broker::use_fixed_uid_gid', { 'default_value' => false }),
+    Optional[String] $max_heap_size                              = lookup('profile::kafka::broker::max_heap_size', {'default_value' => undef}),
+    Integer $num_partitions                                      = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
+    Optional[Array[String]] $custom_ferm_srange_components       = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
+    Boolean $use_fixed_uid_gid                                   = lookup('profile::kafka::broker::use_fixed_uid_gid', { 'default_value' => false }),
 ) {
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
@@ -404,42 +412,43 @@ class profile::kafka::broker(
     }
 
     class { '::confluent::kafka::broker':
-        log_dirs                         => $log_dirs,
-        brokers                          => $config['brokers']['hash'],
-        zookeeper_connect                => $config['zookeeper']['url'],
-        nofiles_ulimit                   => $nofiles_ulimit,
-        default_replication_factor       => min(3, $config['brokers']['size']),
-        offsets_topic_replication_factor => min(3, $config['brokers']['size']),
-        inter_broker_protocol_version    => $inter_broker_protocol_version,
-        group_initial_rebalance_delay    => $group_initial_rebalance_delay,
-        log_message_format_version       => $log_message_format_version,
+        log_dirs                                  => $log_dirs,
+        brokers                                   => $config['brokers']['hash'],
+        zookeeper_connect                         => $config['zookeeper']['url'],
+        nofiles_ulimit                            => $nofiles_ulimit,
+        default_replication_factor                => min(3, $config['brokers']['size']),
+        offsets_topic_replication_factor          => min(3, $config['brokers']['size']),
+        inter_broker_protocol_version             => $inter_broker_protocol_version,
+        group_initial_rebalance_delay             => $group_initial_rebalance_delay,
+        log_message_format_version                => $log_message_format_version,
 
-        jvm_performance_opts             => $jvm_performance_opts,
-        java_opts                        => $java_opts,
-        heap_opts                        => $heap_opts,
-        listeners                        => $listeners,
+        jvm_performance_opts                      => $jvm_performance_opts,
+        java_opts                                 => $java_opts,
+        heap_opts                                 => $heap_opts,
+        listeners                                 => $listeners,
 
-        security_inter_broker_protocol   => $security_inter_broker_protocol,
-        ssl_keystore_location            => $ssl_keystore_location,
-        ssl_keystore_password            => $ssl_password,
-        ssl_key_password                 => $ssl_password,
-        ssl_truststore_location          => $ssl_truststore_location,
-        ssl_truststore_password          => $ssl_truststore_password,
-        ssl_client_auth                  => $ssl_client_auth,
-        ssl_enabled_protocols            => $ssl_enabled_protocols,
-        ssl_cipher_suites                => $ssl_cipher_suites,
+        security_inter_broker_protocol            => $security_inter_broker_protocol,
+        ssl_keystore_location                     => $ssl_keystore_location,
+        ssl_keystore_password                     => $ssl_password,
+        ssl_key_password                          => $ssl_password,
+        ssl_truststore_location                   => $ssl_truststore_location,
+        ssl_truststore_password                   => $ssl_truststore_password,
+        ssl_client_auth                           => $ssl_client_auth,
+        ssl_enabled_protocols                     => $ssl_enabled_protocols,
+        ssl_cipher_suites                         => $ssl_cipher_suites,
 
-        log_retention_hours              => $log_retention_hours,
-        log_retention_bytes              => $log_retention_bytes,
-        log_segment_bytes                => $log_segment_bytes,
-        auto_leader_rebalance_enable     => $auto_leader_rebalance_enable,
-        num_replica_fetchers             => $num_replica_fetchers,
-        message_max_bytes                => $message_max_bytes,
-        authorizer_class_name            => $authorizer_class_name,
-        super_users                      => $super_users,
-        num_partitions                   => $num_partitions,
+        log_retention_hours                       => $log_retention_hours,
+        log_retention_bytes                       => $log_retention_bytes,
+        log_segment_bytes                         => $log_segment_bytes,
+        auto_leader_rebalance_enable              => $auto_leader_rebalance_enable,
+        num_replica_fetchers                      => $num_replica_fetchers,
+        max_incremental_fetch_session_cache_slots => $max_incremental_fetch_session_cache_slots,
+        message_max_bytes                         => $message_max_bytes,
+        authorizer_class_name                     => $authorizer_class_name,
+        super_users                               => $super_users,
+        num_partitions                            => $num_partitions,
         # Make sure that java is installed and configured before the kafka broker service.
-        require                          => Class['::profile::java'],
+        require                                   => Class['::profile::java'],
     }
 
     if $custom_ferm_srange_components {

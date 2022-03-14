@@ -115,6 +115,10 @@
 #   partition in the fetch requests the replicas send to the leader.
 #   Default: undef (1048576)
 #
+# [*max_incremental_fetch_session_cache_slots*]
+#   The maximum number of incremental fetch sessions that we will maintain.
+#   Default: undef (1000).
+#
 # [*num_network_threads*]
 #   The number of threads handling network requests.  Default: undef (3)
 #
@@ -248,80 +252,81 @@ class confluent::kafka::broker(
             'port' => 9092,
         },
     },
-    $listeners                           = ['PLAINTEXT://:9092'],
+    $listeners                                 = ['PLAINTEXT://:9092'],
 
-    $security_inter_broker_protocol      = undef,
+    $security_inter_broker_protocol            = undef,
 
-    $ssl_keystore_location               = undef,
-    $ssl_keystore_password               = undef,
-    $ssl_key_password                    = undef,
-    $ssl_truststore_location             = undef,
-    $ssl_truststore_password             = undef,
-    $ssl_client_auth                     = undef,
-    $ssl_enabled_protocols               = undef,
-    $ssl_cipher_suites                   = undef,
+    $ssl_keystore_location                     = undef,
+    $ssl_keystore_password                     = undef,
+    $ssl_key_password                          = undef,
+    $ssl_truststore_location                   = undef,
+    $ssl_truststore_password                   = undef,
+    $ssl_client_auth                           = undef,
+    $ssl_enabled_protocols                     = undef,
+    $ssl_cipher_suites                         = undef,
 
-    $log_dirs                            = ['/var/spool/kafka'],
+    $log_dirs                                  = ['/var/spool/kafka'],
 
-    $zookeeper_connect                   = 'localhost:2181',
-    $zookeeper_connection_timeout_ms     = undef,
-    $zookeeper_session_timeout_ms        = undef,
+    $zookeeper_connect                         = 'localhost:2181',
+    $zookeeper_connection_timeout_ms           = undef,
+    $zookeeper_session_timeout_ms              = undef,
 
-    $auto_create_topics_enable           = true,
-    $auto_leader_rebalance_enable        = true,
+    $auto_create_topics_enable                 = true,
+    $auto_leader_rebalance_enable              = true,
 
-    $num_partitions                      = 1,
-    $default_replication_factor          = 1,
-    $delete_topic_enable                 = true,
-    $offsets_topic_replication_factor    = undef,
-    $min_insync_replicas                 = 1,
-    $replica_lag_time_max_ms             = undef,
-    $num_recovery_threads_per_data_dir   = undef,
-    $replica_socket_timeout_ms           = undef,
-    $replica_socket_receive_buffer_bytes = undef,
-    $num_replica_fetchers                = 1,
-    $replica_fetch_max_bytes             = undef,
+    $num_partitions                            = 1,
+    $default_replication_factor                = 1,
+    $delete_topic_enable                       = true,
+    $offsets_topic_replication_factor          = undef,
+    $min_insync_replicas                       = 1,
+    $replica_lag_time_max_ms                   = undef,
+    $num_recovery_threads_per_data_dir         = undef,
+    $replica_socket_timeout_ms                 = undef,
+    $replica_socket_receive_buffer_bytes       = undef,
+    $num_replica_fetchers                      = 1,
+    $replica_fetch_max_bytes                   = undef,
+    $max_incremental_fetch_session_cache_slots = undef,
 
-    $num_network_threads                 = undef,
-    $num_io_threads                      = size($log_dirs),
-    $socket_send_buffer_bytes            = 1048576,
-    $socket_receive_buffer_bytes         = 1048576,
-    $socket_request_max_bytes            = undef,
+    $num_network_threads                       = undef,
+    $num_io_threads                            = size($log_dirs),
+    $socket_send_buffer_bytes                  = 1048576,
+    $socket_receive_buffer_bytes               = 1048576,
+    $socket_request_max_bytes                  = undef,
 
-    $log_message_timestamp_type          = 'CreateTime',
-    $log_flush_interval_messages         = undef,
-    $log_flush_interval_ms               = undef,
+    $log_message_timestamp_type                = 'CreateTime',
+    $log_flush_interval_messages               = undef,
+    $log_flush_interval_ms                     = undef,
 
-    $log_retention_hours                 = 168,     # 1 week
-    $log_retention_bytes                 = undef,
-    $log_segment_bytes                   = undef,
+    $log_retention_hours                       = 168,     # 1 week
+    $log_retention_bytes                       = undef,
+    $log_segment_bytes                         = undef,
 
-    $log_retention_check_interval_ms     = undef,
-    $log_cleanup_policy                  = undef,
+    $log_retention_check_interval_ms           = undef,
+    $log_cleanup_policy                        = undef,
 
-    $offsets_retention_minutes           = 10080,   # 1 week
+    $offsets_retention_minutes                 = 10080,   # 1 week
 
-    $inter_broker_protocol_version       = undef,
-    $group_initial_rebalance_delay       = undef,
-    $log_message_format_version          = undef,
-    $nofiles_ulimit                      = 8192,
-    $java_opts                           = undef,
-    $classpath                           = undef,
-    $jmx_port                            = 9999,
-    $heap_opts                           = undef,
-    $log_max_backup_index                = 4,
-    $jvm_performance_opts                = undef,
+    $inter_broker_protocol_version             = undef,
+    $group_initial_rebalance_delay             = undef,
+    $log_message_format_version                = undef,
+    $nofiles_ulimit                            = 8192,
+    $java_opts                                 = undef,
+    $classpath                                 = undef,
+    $jmx_port                                  = 9999,
+    $heap_opts                                 = undef,
+    $log_max_backup_index                      = 4,
+    $jvm_performance_opts                      = undef,
 
-    $server_properties_template          = 'confluent/kafka/server.properties.erb',
-    $default_template                    = 'confluent/kafka/kafka.default.erb',
-    $log4j_properties_template           = 'confluent/kafka/log4j.properties.erb',
+    $server_properties_template                = 'confluent/kafka/server.properties.erb',
+    $default_template                          = 'confluent/kafka/kafka.default.erb',
+    $log4j_properties_template                 = 'confluent/kafka/log4j.properties.erb',
 
-    $message_max_bytes                   = 1048576,
+    $message_max_bytes                         = 1048576,
 
-    $allow_everyone_if_no_acl_found      = true,
-    $super_users                         = undef,
-    $authorizer_class_name               = undef,
-    $authorizer_log_level                = 'INFO',
+    $allow_everyone_if_no_acl_found            = true,
+    $super_users                               = undef,
+    $authorizer_class_name                     = undef,
+    $authorizer_log_level                      = 'INFO',
 ) {
     # confluent::kafka::common installs the kafka package
     # and a handy wrapper script.

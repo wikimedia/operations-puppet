@@ -187,6 +187,11 @@ replica.socket.timeout.ms=<%= @replica_socket_timeout_ms %>
 replica.socket.receive.buffer.bytes=<%= @replica_socket_receive_buffer_bytes %>
 
 <% end -%>
+<% if @max_incremental_fetch_session_cache_slots -%>
+# The maximum number of incremental fetch sessions that we will maintain.
+max.incremental.fetch.session.cache.slots=<%= @max_incremental_fetch_session_cache_slots %>
+<% end -%>
+
 # Number of threads used to replicate messages from leaders. Increasing this
 # value can increase the degree of I/O parallelism in the follower broker.
 # This is useful to temporarily increase if you have a broker that needs

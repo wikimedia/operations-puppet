@@ -25,6 +25,9 @@ profile::kafka::broker::num_replica_fetchers: 12
 profile::kafka::broker::num_recovery_threads_per_data_dir: 12
 profile::kafka::broker::num_io_threads: 12
 
+# Increase this because the cache slots are consistenly full.
+# https://phabricator.wikimedia.org/T303324
+profile::kafka::broker::max_incremental_fetch_session_cache_slots: 2000
 
 # To be changed during Kafka broker version upgrades
 profile::kafka::broker::inter_broker_protocol_version: 1.1.0
