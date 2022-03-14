@@ -479,7 +479,7 @@ service::catalog:
     probes:
       - type: http
     monitoring:
-      check_command: check_http_url_for_regexp_on_port!datahubsearch.svc.eqiad.wmnet!9200!/_cluster/health!"status":"green"
+      check_command: check_http_url_for_regexp_on_port!datahubsearch.svc.eqiad.wmnet!9200!/_cluster/health!'"status":"green"'
       sites:
         eqiad:
           hostname: datahubsearch.svc.eqiad.wmnet
