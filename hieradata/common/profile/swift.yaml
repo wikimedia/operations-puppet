@@ -87,6 +87,10 @@ profile::swift::proxyhosts:
   - ms-fe1006.eqiad.wmnet
   - ms-fe1007.eqiad.wmnet
   - ms-fe1008.eqiad.wmnet
+  - ms-fe1009.eqiad.wmnet
+  - ms-fe1010.eqiad.wmnet
+  - ms-fe1011.eqiad.wmnet
+  - ms-fe1012.eqiad.wmnet
   - ms-fe2009.codfw.wmnet
   - ms-fe2010.codfw.wmnet
   - ms-fe2011.codfw.wmnet
