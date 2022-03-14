@@ -23,4 +23,6 @@ class profile::ci::httpd {
                     'proxy_http'
         ],
     }
+
+    profile::auto_restarts::service { 'apache2': }
 }
