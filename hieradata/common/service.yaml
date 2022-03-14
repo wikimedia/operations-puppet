@@ -965,7 +965,7 @@ service::catalog:
   k8s-ingress-wikikube:
     description: istio-ingresscontroller on kubernetes. k8s-ingress-wikikube.svc.%{::site}.wmnet
     encryption: true
-    ip:
+    ip: &k8s-ingress-wikikube_ips
       codfw:
         default: 10.2.1.70
       eqiad:
@@ -1317,24 +1317,7 @@ service::catalog:
   miscweb:
     description: Misc static sites, miscweb.svc.%{::site}.wmnet
     encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.58
-      eqiad:
-        default: 10.2.2.58
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: kubernetes
-        service: kubesvc
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-      scheduler: wrr
-      protocol: tcp
+    ip: *k8s-ingress-wikikube_ips
     page: false
     probes:
       - type: http
