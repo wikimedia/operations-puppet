@@ -72,7 +72,7 @@ class certspotter(
         send_mail_only_on_error => false,
         environment             => { 'MAILTO' => $alert_email },
         user                    => 'certspotter',
-        interval                => {'start' => 'OnUnitActiveSec', 'interval' => '30min'},
+        interval                => {'start' => 'OnUnitInactiveSec', 'interval' => '30min'},
         splay                   => fqdn_rand(300, 'certspotter'),
         require                 => [
             User['certspotter'],
