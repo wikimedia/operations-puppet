@@ -13,7 +13,7 @@ class profile::mediawiki::maintenance::wikidata {
     # Logs are saved to /var/log/mediawiki/mediawiki_job_wikidata-updateQueryServiceLag/syslog.log and properly rotated.
     # CODFW temp removed because of https://phabricator.wikimedia.org/T302330
     profile::mediawiki::periodic_job { 'wikidata-updateQueryServiceLag':
-        command  => '/usr/local/bin/mwscript extensions/Wikidata.org/maintenance/updateQueryServiceLag.php --wiki wikidatawiki --cluster wdqs --prometheus prometheus.svc.eqiad.wmnet',
+        command  => '/usr/local/bin/mwscript extensions/Wikidata.org/maintenance/updateQueryServiceLag.php --wiki wikidatawiki --cluster wdqs --prometheus prometheus.svc.codfw.wmnet',
         interval => '*-*-* *:*:00'
     }
 }
