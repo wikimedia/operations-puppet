@@ -15,14 +15,18 @@ nodes = {
     <%= @net_topology.map { |host, rack| "'#{host}':  '#{rack}'" }.sort.join(",\n    ") %>
 }
 
+def print_rack(node):
+    # If the node doesn't have a key in nodes, perhaps it is a
+    # short hostname or IP address.  Look it up!
+    if node not in nodes:
+        node = socket.getfqdn(node)
+
+    print(nodes.get(node, '/<%= @site %>/default/rack'))
+
+
 if len(argv) < 2:
-    node = 'default'
+    print_rack('default')
 else:
-    node = argv[1]
+    for arg in argv[1:]:
+        print_rack(arg)
 
-# If the node doesn't have a key in nodes, perhaps it is a
-# short hostname or IP address.  Look it up!
-if node not in nodes:
-    node = socket.getfqdn(node)
-
-print(nodes.get(node, '/<%= @site %>/default/rack'))
