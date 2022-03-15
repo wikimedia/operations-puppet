@@ -1,10 +1,7 @@
 # @summary a define to add a certificate to the system java truststore
 # or to a custom one.
 # @param path the location of the CA pem file to add to the truststore
-# @param ensure ensurable
 # @param storepass the keystore password
-# @param owner user to use for file permissions
-# @param group group to use for file permissions
 # @param keystore_path optional, the keystore to create (instead of using
 # the system one).
 define java::cacert (
@@ -15,7 +12,7 @@ define java::cacert (
     String                     $group         = 'root',
     Optional[Stdlib::Unixpath] $keystore_path = undef,
 ) {
-    Class['java'] -> Java::Cacert<| |>
+    include java
 
     if $keystore_path != undef {
         $keystore = "-keystore ${keystore_path}"
