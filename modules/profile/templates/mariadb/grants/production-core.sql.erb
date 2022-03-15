@@ -24,35 +24,35 @@ GRANT SELECT
 -- wikiuser 10.64.%
 
 GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO 'wikiuser'@'10.64.%'
+    ON *.* TO '<%= @wikiuser_username %>'@'10.64.%'
     IDENTIFIED BY '<%= @wikiuser_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `%wik%`.* TO 'wikiuser'@'10.64.%';
+    ON `%wik%`.* TO '<%= @wikiuser_username %>'@'10.64.%';
 
 <% if @section == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `centralauth`.* TO 'wikiuser'@'10.64.%';
+    ON `centralauth`.* TO '<%= @wikiuser_username %>'@'10.64.%';
 
 <% end %>
 GRANT SELECT
-    ON `heartbeat`.`heartbeat` TO 'wikiuser'@'10.64.%';
+    ON `heartbeat`.`heartbeat` TO '<%= @wikiuser_username %>'@'10.64.%';
 
 -- wikiuser 10.192.%
 
 GRANT PROCESS, REPLICATION CLIENT
-    ON *.* TO 'wikiuser'@'10.192.%'
+    ON *.* TO '<%= @wikiuser_username %>'@'10.192.%'
     IDENTIFIED BY '<%= @wikiuser_pass %>';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `%wik%`.* TO 'wikiuser'@'10.192.%';
+    ON `%wik%`.* TO '<%= @wikiuser_username %>'@'10.192.%';
 
 <% if @section == 's7' %>
 GRANT SELECT, INSERT, UPDATE, DELETE
-    ON `centralauth`.* TO 'wikiuser'@'10.192.%';
+    ON `centralauth`.* TO '<%= @wikiuser_username %>'@'10.192.%';
 
 <% end -%>
 
 GRANT SELECT
-    ON `heartbeat`.`heartbeat` TO 'wikiuser'@'10.192.%';
+    ON `heartbeat`.`heartbeat` TO '<%= @wikiuser_username %>'@'10.192.%';
 

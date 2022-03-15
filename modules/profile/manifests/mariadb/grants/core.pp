@@ -1,6 +1,7 @@
 # wikiadmin, wikiuser
 define profile::mariadb::grants::core(
     String                          $wikiadmin_pass = '',
+    String                          $wikiuser_username = '',
     String                          $wikiuser_pass  = '',
 ){
     file { "/etc/mysql/production-grants-core-${title}.sql":

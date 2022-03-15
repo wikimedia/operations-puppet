@@ -101,14 +101,14 @@ GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'208.80.153.60';
 GRANT USAGE ON *.* TO 'wikiadmin'@'2620:0:861:102:10:64:16:77' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
 GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'2620:0:861:102:10:64:16:77';
 -- Grants for 'wikiuser'@'10.64.16.77'
-GRANT USAGE ON *.* TO 'wikiuser'@'10.64.16.77' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'10.64.16.77';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO 'wikiuser'@'10.64.16.77';
+GRANT USAGE ON *.* TO '<%= wikiuser_username %>'@'10.64.16.77' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO '<%= wikiuser_username %>'@'10.64.16.77';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO '<%= wikiuser_username %>'@'10.64.16.77';
 -- Grants for 'wikiuser'@'208.80.153.60'
-GRANT USAGE ON *.* TO 'wikiuser'@'208.80.153.60' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'208.80.153.60';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO 'wikiuser'@'208.80.153.60';
+GRANT USAGE ON *.* TO '<%= wikiuser_username %>'@'208.80.153.60' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO '<%= wikiuser_username %>'@'208.80.153.60';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO '<%= wikiuser_username %>'@'208.80.153.60';
 -- Grants for 'wikiuser'@'2620:0:861:102:10:64:16:77'
-GRANT USAGE ON *.* TO 'wikiuser'@'2620:0:861:102:10:64:16:77' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO 'wikiuser'@'2620:0:861:102:10:64:16:77';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO 'wikiuser'@'2620:0:861:102:10:64:16:77';
+GRANT USAGE ON *.* TO '<%= wikiuser_username %>'@'2620:0:861:102:10:64:16:77' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO '<%= wikiuser_username %>'@'2620:0:861:102:10:64:16:77';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO '<%= wikiuser_username %>'@'2620:0:861:102:10:64:16:77';

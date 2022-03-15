@@ -7,6 +7,7 @@ class profile::mariadb::grants::production(
     $shard    = false,
     $prompt   = '',
     $password = 'undefined',
+    $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
     ) {
 
     include passwords::misc::scripts

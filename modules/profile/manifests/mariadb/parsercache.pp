@@ -2,7 +2,8 @@
 # These are mariadb servers acting as on-disk cache for parsed wikitext
 
 class profile::mariadb::parsercache (
-    $shard = lookup('mariadb::parsercache::shard')
+    $shard = lookup('mariadb::parsercache::shard'),
+    $wikiuser_username = lookup('profile::mariadb::wikiuser_username')
 ) {
     $mw_primary = mediawiki::state('primary_dc')
 
@@ -22,8 +23,9 @@ class profile::mariadb::parsercache (
     class { 'mariadb::service': }
 
     profile::mariadb::grants::core { $shard:
-        wikiadmin_pass => $passwords::misc::scripts::wikiadmin_pass,
-        wikiuser_pass  => $passwords::misc::scripts::wikiuser_pass,
+        wikiadmin_pass    => $passwords::misc::scripts::wikiadmin_pass,
+        wikiuser_username => $wikiuser_username,
+        wikiuser_pass     => $passwords::misc::scripts::wikiuser_pass,
     }
     class { 'profile::mariadb::grants::production':
         shard    => 'parsercache',

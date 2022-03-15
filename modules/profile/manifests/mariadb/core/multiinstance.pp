@@ -1,6 +1,7 @@
 class profile::mariadb::core::multiinstance(
     Hash[String, Stdlib::Datasize] $instances = lookup('profile::mariadb::core::multiinstance::instances'),
     Hash[String, Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports'),
+    String $wikiuser_username = lookup('profile::mariadb::wikiuser_username'),
 ) {
     require profile::mariadb::packages_wmf
     class { 'mariadb::service':
@@ -47,8 +48,9 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         profile::prometheus::mysqld_exporter_instance { $section: port => $prom_port }
         profile::mariadb::replication_lag { $section: prom_port => $prom_port }
         profile::mariadb::grants::core { $section:
-            wikiadmin_pass => $passwords::misc::scripts::wikiadmin_pass,
-            wikiuser_pass  => $passwords::misc::scripts::wikiuser_pass,
+            wikiadmin_pass    => $passwords::misc::scripts::wikiadmin_pass,
+            wikiuser_username => $wikiuser_username,
+            wikiuser_pass     => $passwords::misc::scripts::wikiuser_pass,
         }
 
         # hack; remove after wikitech moves to a standard app server
