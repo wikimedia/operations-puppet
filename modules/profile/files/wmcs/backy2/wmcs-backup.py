@@ -382,7 +382,7 @@ class ImageBackups:
         ):
             if (
                 last_backup_with_snapshot
-                and not last_backup_with_snapshot.valid
+                and not last_backup_with_snapshot.backup_entry.valid
             ):
                 logging.info(
                     "Forcing a full backup as the previous one is not valid."
@@ -687,7 +687,7 @@ class VMBackups:
         ):
             if (
                 last_backup_with_snapshot
-                and not last_backup_with_snapshot.valid
+                and not last_backup_with_snapshot.backup_entry.valid
             ):
                 logging.info(
                     "Forcing a full backup as the previous one is not valid."
