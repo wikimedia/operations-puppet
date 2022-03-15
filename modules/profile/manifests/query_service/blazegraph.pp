@@ -24,7 +24,9 @@ define profile::query_service::blazegraph (
     String $federation_user_agent,
     String $instance_name = $title,
     Boolean $use_oauth = false,
-
+    Optional[String] $jvmquake_options = undef,
+    Optional[Integer] $jvmquake_warn_threshold = undef,
+    String $jvmquake_warn_file = "/tmp/jvmquake_warn_gc_${title}",
 ) {
     require ::profile::query_service::common
 
@@ -48,7 +50,32 @@ define profile::query_service::blazegraph (
         undef   => []
     }
 
+    if $jvmquake_warn_threshold and $jvmquake_options {
+        $jvmquake_combined_options = "${jvmquake_options},warn=${jvmquake_warn_threshold},touch=${jvmquake_warn_file}"
+        prometheus::node_file_flag { "jvmquake_${instance_name}":
+          paths   => [ $jvmquake_warn_file ],
+          outfile => "/var/lib/prometheus/node.d/jvmquake_${instance_name}_file_flag.prom",
+          metric  => "jvmquake_${instance_name}_warn_gc",
+        }
+    } else {
+        $jvmquake_combined_options = $jvmquake_options
+    }
+
+    $jvmquake_jvm_opts = $jvmquake_combined_options ? {
+        default => [
+            "-agentpath:/usr/lib/libjvmquake.so=${jvmquake_combined_options}",
+        ],
+        undef   => []
+    }
+
+    if $jvmquake_jvm_opts != [] {
+        ensure_packages('jvmquake')
+    }
+
     $prometheus_agent_config = "/etc/${deploy_name}/${instance_name}-prometheus-jmx.yaml"
+
+    $prometheus_jvm_opts = ["-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}"]
+
     profile::prometheus::jmx_exporter { $instance_name:
         hostname    => $::hostname,
         port        => $prometheus_agent_port,
@@ -78,7 +105,11 @@ define profile::query_service::blazegraph (
         port                  => $blazegraph_port,
         config_file_name      => $config_file_name,
         heap_size             => $heap_size,
-        extra_jvm_opts        => $default_extra_jvm_opts + $event_service_jvm_opts + $extra_jvm_opts + "-javaagent:${prometheus_agent_path}=${prometheus_agent_port}:${prometheus_agent_config}",
+        extra_jvm_opts        => $default_extra_jvm_opts
+                                    + $event_service_jvm_opts
+                                    + $extra_jvm_opts
+                                    + $prometheus_jvm_opts
+                                    + $jvmquake_jvm_opts,
         use_geospatial        => $use_geospatial,
         blazegraph_main_ns    => $blazegraph_main_ns,
         prefixes_file         => $prefixes_file,

@@ -52,3 +52,10 @@ profile::query_service::legacy_updater::journal: 'wikidata'
 # Proxy non-blazegraph requests to the microsites
 profile::query_service::gui_url: https://webserver-misc-apps.discovery.wmnet
 profile::contacts::role_contacts: ['Search Platform SREs']
+
+
+# 1000 here to prevent to actually prevent the actual OOM from happening
+# ref: https://github.com/Netflix-Skunkworks/jvmquake
+profile::query_service::jvmquake_options: "1000,1,0"
+# Touch a file in /tmp/ when we get a 10sec GC deficit
+profile::query_service::jvmquake_warn_threshold: 10
