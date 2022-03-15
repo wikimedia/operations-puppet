@@ -15,9 +15,7 @@ define java::cacert (
     String                     $group         = 'root',
     Optional[Stdlib::Unixpath] $keystore_path = undef,
 ) {
-    unless defined(Class['java']) {
-        fail('java must be defined before using java::cacert')
-    }
+    Class['java'] -> Java::Cacert<| |>
 
     if $keystore_path != undef {
         $keystore = "-keystore ${keystore_path}"

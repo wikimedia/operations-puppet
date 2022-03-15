@@ -84,9 +84,14 @@ class profile::java (
         java_packages => $_java_packages,
         hardened_tls  => $hardened_tls,
         egd_source    => $egd_source,
-        cacerts       => $cacerts,
         enable_dbg    => $enable_dbg,
         require       => $java_require,
+    }
+    $cacerts.each |$title, $config| {
+        java::cacert {$title:
+            require => Alternatives::Java[$java::default_java_package['version']],
+            *       => $config,
+        }
     }
 
 
