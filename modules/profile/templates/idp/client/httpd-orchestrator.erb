@@ -42,6 +42,12 @@
     <%- end -%>
     </Location>
 
+    <LocationMatch "/api/(.*)">
+        <%- @vhost_settings['cumin_servers'].each do |server| -%>
+        Require ip <%= server %>
+        <%- end -%>
+    </LocationMatch>
+
     ProxyPreserveHost On
     ProxyPass / http://localhost:3000/
     ProxyPassReverse / http://localhost:3000/
