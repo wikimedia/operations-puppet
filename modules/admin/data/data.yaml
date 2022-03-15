@@ -823,6 +823,12 @@ groups:
     description: Allow releng team to be in the docker group for contint. No gid on purpose
     members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy, jnuche]
     system_members: [jenkins-slave]
+  deployment-docker:
+    # See the comment above regarding both security and the use of the posix name instead than the gid.
+    # Might be removed in the future if there is no more need. See T303450
+    posix_name: docker
+    description: Allow releng team to be in the docker group on deployment servers. No gid on purpose
+    members: [*ops_members, dancy, dduvall, hashar, jhuneidi, jnuche, thcipriani]
   builder-docker:
     # There is no gid on purpose, same as above
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
