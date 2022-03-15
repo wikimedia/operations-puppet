@@ -16,8 +16,6 @@ describe 'query_service::updater', :type => :class do
         :deploy_name => 'wdqs',
         :logstash_logback_port => 11_514,
         :extra_jvm_opts => [],
-        :updater_startup_script => 'runUpdate.sh',
-        :updater_service_desc => 'Query Service Updater',
         :journal => 'wikidata',
         }
    }
@@ -29,6 +27,6 @@ describe 'query_service::updater', :type => :class do
         :lsbdistid => 'Debian',
     } }
 
-    it { is_expected.to contain_file('/lib/systemd/system/wdqs-updater.service').with_content(/runUpdate.sh -opt/) }
+    it { is_expected.to contain_file('/lib/systemd/system/wdqs-updater.service').with_content(/runStreamingUpdater.sh -opt/) }
   end
 end

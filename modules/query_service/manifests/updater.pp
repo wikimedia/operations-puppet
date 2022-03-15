@@ -10,8 +10,9 @@
 # - $log_dir: Directory where the logs go.
 # - $logstash_logback_port: port which rsyslog server is listening on
 # - $username: Username owning the service.
+# - $deploy_name: Name of the deployment (e.g. wdqs or wcqs)
 # - $extra_jvm_opts: extra JVM options for updater.
-# - $journal: Name to assign instance journal. Must be unique per data_dir.
+# - $journal: Name to assign instance journal. Must be unique per data_dir (used by updater.systemd.erb).
 # - $log_sparql: enable SPARQL logging.
 class query_service::updater(
     Array[String] $options,
@@ -22,11 +23,12 @@ class query_service::updater(
     String $username,
     String $deploy_name,
     Array[String] $extra_jvm_opts,
-    String $updater_startup_script,
-    String $updater_service_desc,
     String $journal,
     Boolean $log_sparql = false,
 ) {
+    $updater_startup_script = 'runStreamingUpdater.sh'
+    $updater_service_desc = 'Query Service Streaming Updater'
+
     file { '/etc/default/query-service-updater':
         ensure  => present,
         content => template('query_service/updater-default.erb'),

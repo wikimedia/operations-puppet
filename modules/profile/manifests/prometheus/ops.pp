@@ -1282,12 +1282,6 @@ class profile::prometheus::ops (
         instance_selector => 'wdqs-blazegraph',
     }
 
-    prometheus::jmx_exporter_config { "wdqs_updater_${::site}":
-        dest              => "${targets_path}/jmx_wdqs_updater_${::site}.yaml",
-        class_name        => 'profile::query_service::updater',
-        instance_selector => 'wdqs-updater',
-    }
-
     prometheus::jmx_exporter_config { "query_service_streaming_updater_${::site}":
         dest              => "${targets_path}/jmx_query_service_streaming_updater_${::site}.yaml",
         class_name        => 'profile::query_service::streaming_updater',

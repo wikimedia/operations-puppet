@@ -24,15 +24,10 @@ class profile::query_service::wikidata(
     Optional[String] $sparql_query_stream = lookup('profile::query_service::sparql_query_stream', {'default_value' => undef}),
     Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
-    String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
-    Enum['regular','streaming'] $updater_type = lookup('profile::query_service::updater_type', {'default_value' => 'streaming'})
+    String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns')
 ) {
     require ::profile::query_service::common
-    case $updater_type {
-        'regular': { require ::profile::query_service::updater }
-        'streaming': { require ::profile::query_service::streaming_updater }
-        default: { fail("Unsupported updater_type: ${updater_type}") }
-    }
+    require ::profile::query_service::streaming_updater
     require ::profile::query_service::gui
 
     $instance_name = "${deploy_name}-blazegraph"

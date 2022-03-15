@@ -35,17 +35,15 @@ class profile::query_service::streaming_updater (
     ]
 
     class { 'query_service::updater':
-        package_dir            => $package_dir,
-        data_dir               => $data_dir,
-        log_dir                => $log_dir,
-        deploy_name            => $deploy_name,
-        username               => $username,
-        logstash_logback_port  => $logstash_logback_port,
-        options                => ['-n', $blazegraph_main_ns, '--'] + $kafka_options,
-        extra_jvm_opts         => $default_jvm_options,
-        updater_startup_script => 'runStreamingUpdater.sh',
-        updater_service_desc   => 'Query Service Streaming Updater',
-        journal                => $journal,
+        package_dir           => $package_dir,
+        data_dir              => $data_dir,
+        log_dir               => $log_dir,
+        deploy_name           => $deploy_name,
+        username              => $username,
+        logstash_logback_port => $logstash_logback_port,
+        options               => ['-n', $blazegraph_main_ns, '--'] + $kafka_options,
+        extra_jvm_opts        => $default_jvm_options,
+        journal               => $journal,
     }
 
     class { 'query_service::monitor::updater':
