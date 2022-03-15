@@ -7,3 +7,4 @@ profile::nginx::variant: 'light'
 profile::base::ssh_server_settings:
   enable_kerberos: true
 profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::installserver::proxy::structured_logs: true
