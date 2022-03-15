@@ -30,6 +30,7 @@ role::backup::offsite:
   target-q: 2020-1
 role::pybaltest:
   target-q: TBD
+  phab-task: 297187
 role::ci::master:
   target-q: 2020-2
 role::mw_rc_irc:
@@ -60,7 +61,6 @@ role::wdqs::test:
 role::thumbor::mediawiki:
   target-q: TBD
 role::sessionstore:
-  target-q: TBD
   target-q: 2022-1
 role::dumps::generation::worker::dumper:
   target-q: TBD
@@ -79,6 +79,7 @@ role::restbase::production:
   target-q: 2022-1
 role::ores:
   target-q: 2022-2
+  phab-task: 303801
 role::mariadb::parsercache:
   target-q: 2021-3
 role::ncredir:
@@ -163,7 +164,8 @@ role::mariadb::proxy::replicas:
 role::debmonitor::server:
   target-q: 2020-3
 role::doc:
-  target-q: TBD
+  target-q: 2022-2
+  phab-task: 247653
 role::druid::analytics::worker:
   target-q: 2020-3
   phab-task: 234629
@@ -216,7 +218,7 @@ role::kafka::main::logging:
 role::kafka::logging:
   target-q: 2020-2
 role::kubernetes::worker:
-  target-q: TBD
+  target-q: 2022-2
   phab-task: 245272
 role::kubernetes::staging::worker:
   target-q: TBD
@@ -357,7 +359,7 @@ role::analytics_test_cluster::hadoop::worker:
 role::wmcs::openstack::eqiad1::virt_ceph:
   target-q: 2020-4
 role::insetup:
-  target-q: 2021-4
+  target-q: 2022-2
 role::mariadb::misc::db_inventory:
   target-q: TBD
 role::dbbackups::metadata:
