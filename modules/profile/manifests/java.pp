@@ -41,7 +41,6 @@ class profile::java (
     Boolean                  $trust_puppet_ca = lookup('profile::java::trust_puppet_ca'),
     Boolean                  $enable_dbg      = lookup('profile::java::enable_dbg'),
 ) {
-    Class['profile::java'] -> Class['java']
 
     $default_java_packages = $facts['os']['distro']['codename'] ? {
         'stretch'   => [{'version' => '8', 'variant' => 'jdk'}],

@@ -67,6 +67,7 @@ class sslcert::trusted_ca (
                     storepass     => $truststore_password,
                     keystore_path => $jks_truststore_path,
                     subscribe     => $res_subscribe,
+                    require       => Class['java'],
                 }
             }
         }
