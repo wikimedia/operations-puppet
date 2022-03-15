@@ -13,7 +13,8 @@ role::etcd::kubernetes:
 role::lists:
   target-q: 2020-2
 role::configcluster:
-  target-q: TBD
+  target-q: 2022-2
+  phab-task: 301272
 role::wmcs::nfs::primary:
   target-q: TBD
 role::installserver:
@@ -117,7 +118,7 @@ role::analytics_cluster::hadoop::worker:
   phab-task: 234629
 role::aqs:
   target-q: 2022-1
-  phab-task: 234629
+  phab-task: 302277
 role::bastionhost::pop:
   target-q: 2020-2
 role::bastionhost::general:
@@ -181,8 +182,6 @@ role::wmcs::openstack::eqiad1::virt:
   target-q: 2020-4
 role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: 2020-4
-role::configcluster_stretch:
-  target-q: TBD
 role::deployment_server:
   target-q: TBD
 role::wmcs::nfs::secondary:
