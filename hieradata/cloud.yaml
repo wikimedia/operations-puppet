@@ -113,9 +113,7 @@ profile::gitlab::runner::locked: false
 profile::gitlab::runner::run_untagged: true
 profile::gitlab::runner::tags: []
 profile::gitlab::runner::user: 'root'
-# restricted firewall is not used in cloud
 profile::gitlab::runner::restrict_firewall: false
-profile::gitlab::runner::allowed_services: []
 
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 
