@@ -1,6 +1,7 @@
 profile::openstack::base::nova::instance_dev: 'thinvirt'
 profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: enp175s0f1np1
-profile::openstack::eqiad1::nova::network_flat_interface: 'enp175s0f1np1.1105'
+profile::openstack::eqiad1::nova::network_flat_interface: 'vlan1105'
 profile::openstack::eqiad1::nova::physical_interface_mappings:
-  cloudinstances2b: 'enp175s0f1np1.1105'
+  cloudinstances2b: 'vlan1105'
+legacy_vlan_naming: false
 profile::wmcs::backy2::backup_time: '*-*-* 14:00:00'
