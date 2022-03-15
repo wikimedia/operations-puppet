@@ -77,7 +77,7 @@ class backy2(
         command   => '/usr/bin/backy2 initdb',
         logoutput => true,
         require   => Package['backy2'],
-        creates   => '/var/lib/backy2/backy.sqlite'
+        creates   => '/srv/backy2/backy.sqlite'
     }
 
     file {
