@@ -17,3 +17,4 @@ profile::codesearch::ports:
     analytics: 6094
     puppet: 6095
     shouthow: 6096
+    wmcs: 6097
