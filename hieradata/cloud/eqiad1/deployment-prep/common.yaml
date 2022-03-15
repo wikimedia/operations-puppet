@@ -281,30 +281,10 @@ profile::keyholder::server::agents:
 scap::sources:
   3d2png/deploy: {}
 
-  phabricator/deployment:
-    repository: phabricator/deployment
-
   # eventlogging/analytics is the original EventLogging server deployment.
   eventlogging/analytics:
     repository: eventlogging
     scap_repository: eventlogging/scap/analytics
-
-  # Public EventStreams service
-  eventstreams/deploy:
-    repository: mediawiki/services/eventstreams/deploy
-
-  # Superset
-  analytics/superset/deploy:
-    repository: analytics/superset/deploy
-
-  # Superset
-  analytics/turnilo/deploy:
-    repository: analytics/turnilo/deploy
-
-  # IEG grant review
-  iegreview/iegreview:
-    repository: iegreview
-    origin: phabricator
 
   # webperf
   statsv/statsv:
