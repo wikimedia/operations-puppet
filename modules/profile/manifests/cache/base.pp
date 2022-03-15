@@ -82,7 +82,7 @@ class profile::cache::base(
         content    => template('profile/cache/public_clouds.json.tpl.erb')
     }
     confd::file { '/var/netmapper/abuse_networks.json':
-        ensure     => present,
+        ensure     => absent,
         watch_keys => ['/request-ipblocks/abuse'],
         prefix     => $conftool_prefix,
         before     => Service['varnish-frontend'],

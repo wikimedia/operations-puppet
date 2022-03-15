@@ -1,0 +1,32 @@
+conftool:
+  v1:
+    request-ipblocks:
+      abuse:
+        blocked_nets: |-
+          {"cidrs": ["93.184.216.34/32"], "comment": "test"}
+        text_abuse_nets: |-
+          {"cidrs": ["192.0.2.0/24"], "comment": "test"}
+        bot_blocked_nets: |-
+          {"cidrs": ["192.241.194.113/32"], "comment": "test"}
+        bot_posts_blocked_nets: |-
+          {"cidrs": ["192.241.194.113/32"], "comment": "test"}
+        phabricator_abusers: |-
+          {"cidrs": ["192.0.2.42/32", "198.51.100.0/24", "2001:db8::/64"], "comment": "test"}
+    request-patterns:
+      url:
+        wiki_page: |-
+          {"method": "", "url_path": "^(/wiki|/w/index.php)", "header": "",
+          "header_value": "", "query_parameter": "", "query_parameter_value": ""}
+    request-actions:
+      cache-text:
+        wiki_aws: |-
+          {
+            "enabled": true,
+            "cache_miss_only": true,
+            "comment": "wiki_aws",
+            "expression": "ipblock@cloud/aws AND pattern@url/wiki_page",
+            "resp_status": 429,
+            "resp_reason": "Too Many Requests",
+            "sites": [],
+            "do_throttle": false,
+          }

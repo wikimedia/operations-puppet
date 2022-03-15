@@ -6,10 +6,13 @@ import sys
 import tempfile
 
 import requests
+import subprocess
+
+from pathlib import Path
 
 DC = ("eqiad", "codfw", "esams", "ulsfo", "eqsin", "drmrs")
 CLUSTERS = ("text", "upload")
-PATH_RE = re.compile("^(/etc/varnish/|/usr/share/varnish/)")
+PATH_RE = re.compile("^(/etc/varnish/|/usr/share/varnish/|/etc/confd/.*_etc_varnish.*)")
 COMPILER_RE = re.compile(
     ".*(https://puppet-compiler.wmflabs.org/(compiler|pcc-worker)[0-9]{4}/[0-9]+/)"
 )
@@ -41,7 +44,7 @@ def find_cluster(hostname):
 
 
 def get_pcc_url(hostname, patch_id, pcc):
-    cmd = " ".join((pcc, '-N', patch_id, hostname))
+    cmd = " ".join((pcc, "-N", patch_id, hostname))
     for line in os.popen(cmd).readlines():
         match = COMPILER_RE.match(line)
         if match:
@@ -69,6 +72,37 @@ def dump_files(url, hostname):
             f.write(resource["parameters"]["content"].encode("utf-8"))
 
 
+def run_confd():
+    """Run confd to generate the files."""
+    # TODO: convert all the file to use Path.
+    parent = Path(PARENT_DIR)
+    config_path = parent / "etc/confd/conf.d"
+    for config_file in config_path.iterdir():
+        # Remove the directors configuration, we don't need it.
+        if config_file.match("*varnish_directors*.vcl.toml"):
+            config_file.unlink()
+        else:
+            # Patch the paths.
+            content = config_file.read_text().replace(
+                "/etc/varnish", str(parent / "etc/varnish")
+            )
+            config_file.write_text(content)
+
+    # Now run confd.
+    subprocess.run(
+        [
+            "/usr/bin/confd",
+            "-confdir",
+            str(parent / "etc/confd"),
+            "-backend",
+            "file",
+            "-file",
+            str(parent / "confd_stub_data.yaml"),
+            "-onetime",
+        ], check=True
+    )
+
+
 def main(hostname, patch_id, pcc):
     print("[*] running PCC for change {}...".format(patch_id))
     pcc_url = get_pcc_url(hostname, patch_id, pcc)
@@ -78,12 +112,17 @@ def main(hostname, patch_id, pcc):
     dump_files(pcc_url, hostname)
     print()
 
+    print("[*] Running confd...")
+    run_confd()
+
     print("[*] Finding cluster...")
     cluster = find_cluster(hostname)
     print("\t{} is a cache_{} host\n".format(hostname, cluster))
 
     print("[*] Running varnishtest (this might take a while)...")
-    vcl_path = "{}/usr/share/varnish/tests:{}/etc/varnish".format(PARENT_DIR, PARENT_DIR)
+    vcl_path = "{}/usr/share/varnish/tests:{}/etc/varnish".format(
+        PARENT_DIR, PARENT_DIR
+    )
     cluster_vtc_path = os.path.join(CWD, cluster)
     cmd = "{} -Dcc_command='{}' -Dbasepath={} -Dvcl_path={} {}/*.vtc".format(
         "sudo varnishtest -k", CC_COMMAND, PARENT_DIR, vcl_path, cluster_vtc_path

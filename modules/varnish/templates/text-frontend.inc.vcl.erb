@@ -5,7 +5,7 @@ include "normalize_path.inc.vcl";
 
 # Temporary hack to patch T284479
 # Not a complete list.
-# Should eventually be comprehensive & included in public_cloud_nets; see also T270391
+# Do not use; use X-Public-Cloud == "gcp" instead; see also T270391
 acl google_cloud_nets {
 	"2600:1900::0"/28;
 }

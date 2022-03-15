@@ -115,6 +115,29 @@ class profile::cache::varnish::frontend (
             reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
             before     => Service['varnish-frontend'],
         }
+        # blocked-nets used to be included in varnish::common::vcl.
+        # ACL blocked_nets is defined in hiera in the private puppet repo under
+        # /srv/private/hieradata/common.yaml. It is synced to etcd with a script.
+        # We use confd here so that any change to our configuration can be reflected
+        # in varnish without the need for a puppet run.
+        confd::file { '/etc/varnish/blocked-nets.inc.vcl':
+            ensure     => present,
+            watch_keys => ['/request-ipblocks/abuse'],
+            prefix     => $conftool_prefix,
+            before     => Service['varnish-frontend'],
+            content    => template('profile/cache/blocked-nets.inc.vcl.tpl.erb'),
+            reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
+        }
+    } else {
+        # deployment-prep still uses the old template.
+        $abuse_networks = network::parse_abuse_nets('varnish')
+        file { '/etc/varnish/blocked-nets.inc.vcl':
+            ensure  => present,
+            content => template('profile/cache/blocked-nets.inc.vcl.erb'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+        }
     }
 
     # Transient storage limits T164768

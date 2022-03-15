@@ -11,7 +11,7 @@ RUN set -e; \
     WIKIMEDIA_REPO="deb http://apt.wikimedia.org/wikimedia ${REPO}"; \
     WIKIMEDIA_REPO_FILE="${REPO_DIR}/wikimedia.list"; \
     SUDOERS_FILE="/etc/sudoers.d/varnish_test_nopasswd"; \
-    VARNISH_BASE="varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python3-pip"; \
+    VARNISH_BASE="varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python3-pip confd"; \
     apt-get update; \
     apt-get install -y ${BASE_PACKAGES}; \
     adduser --home /${C_USER} --disabled-password --gecos "" ${C_USER}; \
@@ -21,6 +21,7 @@ RUN set -e; \
     apt-get update; \
     apt-get install --no-install-recommends -t "${REPO}" -y ${VARNISH_BASE}; \
     pip3 install --no-cache-dir jenkinsapi; \
+    ln -s /bin/true /usr/local/bin/confd-reload-vcl; \
     apt-get purge -y wget; \
     apt-get -y clean; \
     apt-get -y autoremove; \
@@ -29,6 +30,7 @@ RUN set -e; \
 USER ${C_USER}
 
 COPY --chown=${C_USER}:${C_USER} public_clouds.json carriers.json trusted_proxies.json /usr/share/varnish/tests/
+COPY --chown=${C_USER}:${C_USER} confd_stub_data.yaml /${C_USER}/
 
 WORKDIR /${C_USER}
 
