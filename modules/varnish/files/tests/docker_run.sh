@@ -37,13 +37,6 @@ build_image() {
     fi
 }
 
-check_image_exists() {
-    if ! (docker image ls ${IMAGE_NAME} | grep -q ${IMAGE_NAME})
-    then
-        build_image
-    fi
-}
-
 check_jenkins_env_vars() {
 
     if [ -z "${JENKINS_USERNAME}" ] || [ -z "${JENKINS_API_TOKEN}" ]
@@ -75,7 +68,7 @@ clean_up() {
 main() {
     check_docker
     check_jenkins_env_vars
-    check_image_exists
+    build_image
 
     docker run -it --name ${CONTAINER_NAME} \
     --env JENKINS_USERNAME="${JENKINS_USERNAME}" \
