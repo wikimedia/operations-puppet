@@ -30,6 +30,7 @@
 # @param java_packages Array of Java::PackageInfo describing what to install and configure
 # @param extra_args A string of extra arguments to use
 # @param hardened_tls if true enable a hardened security profile
+# @param egd_source securerandom source location
 # @param trust_puppet_ca if true add the puppet ca to the java trust store
 # @param enable_dbg Install debug packages (off by default)
 class profile::java (
@@ -40,6 +41,7 @@ class profile::java (
     Boolean                  $trust_puppet_ca = lookup('profile::java::trust_puppet_ca'),
     Boolean                  $enable_dbg      = lookup('profile::java::enable_dbg'),
 ) {
+    Class['Profile::Java'] -> Class['Java']
 
     $default_java_packages = $facts['os']['distro']['codename'] ? {
         'stretch'   => [{'version' => '8', 'variant' => 'jdk'}],
@@ -67,15 +69,15 @@ class profile::java (
             'wmf:Wikimedia_Internal_Root_CA' => {
                 'ensure' => $cacerts_ensure,
                 'path'   => '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt',
-            }
+            },
         }
         $java_require = Package['wmf-certificates']
     } else {
         $cacerts = {
             'wmf:puppetca.pem' => {
                 'ensure' => $cacerts_ensure,
-                'path'   => $facts['puppet_config']['localcacert']
-            }
+                'path'   => $facts['puppet_config']['localcacert'],
+            },
         }
         $java_require = undef
     }
