@@ -1,11 +1,9 @@
 // ACLs defined in puppet, sourced from etcd.
 {{- range gets "/request-ipblocks/abuse/*" }}
   {{- $ipblock := json .Value }}
-  {{- if $ipblock.cidrs }}
 acl {{ base .Key }} {
-    {{- range $cidr:= $ipblock.cidrs }}
+  {{- range $cidr:= $ipblock.cidrs }}
     "{{ $cidr }}";
-    {{- end }}
-}
   {{- end }}
+}
 {{- end }}
