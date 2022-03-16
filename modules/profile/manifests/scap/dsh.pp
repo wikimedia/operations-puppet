@@ -14,8 +14,13 @@ class profile::scap::dsh(
         srv_dns  => "${::site}.wmnet",
     }
 
+    $scap_targets = {
+        'scap_targets' => {
+            'hosts' => (wmflib::class_hosts('mediawiki::scap') + wmflib::resource_hosts('scap::target')).sort.unique,
+        },
+    }
     class { '::scap::dsh':
-        groups       => $groups,
+        groups       => $groups + $scap_targets,
         scap_proxies => $proxies,
         scap_masters => $masters,
     }
