@@ -21,7 +21,7 @@ groups:
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
-              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema]
+              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -77,7 +77,7 @@ groups:
     gid: 824
     # ariel, hnowlan, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese, clarakosi,
-              daniel, eevans, kevinbazira, ppchelko, nikkin, gmodena, hokwelum]
+              daniel, eevans, kevinbazira, nikkin, gmodena, hokwelum]
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -88,7 +88,7 @@ groups:
   parsoid-admin:
     gid: 702
     description: RT 5934
-    members: [ssastry, cscott, arlolra, eevans, ppchelko, mobrovac]
+    members: [ssastry, cscott, arlolra, eevans, mobrovac]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                  'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
                  'ALL = (mwdeploy) NOPASSWD: /usr/bin/scap pull']
@@ -327,7 +327,7 @@ groups:
                  In case of doubt, please ask to the Analytics team.
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
     members: &analytics_privatedata_users [milimetric, aude, jforrester,
-              halfak, dr0ptp4kt, bearloga, elukey, ppchelko, mneisler,
+              halfak, dr0ptp4kt, bearloga, elukey, mneisler,
               nuria, otto, jgreen, sguebo, zxane,
               dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
@@ -423,7 +423,7 @@ groups:
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
-    members: [eevans, mobrovac, ppchelko]
+    members: [eevans, mobrovac]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   phabricator-admin:
     gid: 746
@@ -574,7 +574,7 @@ groups:
   deploy-service:
     gid: 763
     description: Service deploy users
-    members: [bd808, eevans, mobrovac, ppchelko, twentyafterfour, thcipriani, dduvall,
+    members: [bd808, eevans, mobrovac, twentyafterfour, thcipriani, dduvall,
               kartik, halfak, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
@@ -846,7 +846,7 @@ groups:
   sessionstore-roots:
     gid: 811
     description: people who have full root on session storage cluster nodes
-    members: [eevans, mobrovac, ppchelko]
+    members: [eevans, mobrovac]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   analytics-deployers:
     gid: 812
@@ -2710,15 +2710,13 @@ users:
     uid: 13593
     email: glederrey@wikimedia.org
   ppchelko:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ppchelko
     realname: Petr Pchelko
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHNR+XRCk117WXwM2NO9aW3g/xHHMVmO0NuxmXpA1luZorUWw314CwcUXfny49jen4V6o0jVFbeDi8xov/CfFbFjvSN09i/BbcR+lOk39MFlK/hLcXnnzJ4cJeU4svWYpNkGwNkc2L1riJVS4sGwqZXJKgQz5WkRV7ZLzey8R20C9wfkShGbk3Gjj9rmsRKZrTfBtW7BbVWZq7a7LOIOWVon+uWsekloguioYxPn3boZMyobxAsRyNe19XzAN9/xls+io0rAa3h2ywd6onl3Fgw+1O7rdYMQvq6W5C/w94AInkd+vsYmis07yqGmDLi6KQF260b5XGkAJXSz55QXrV pchelko@Petrs-MacBook-Pro.local
+    ssh_keys: []
     uid: 12460
-    email: ppchelko@wikimedia.org
-    krb: present
+    krb: absent
   akumar:
     ensure: absent
     gid: 500
