@@ -68,9 +68,11 @@ def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
                 logging.debug('ignoring node: %s', node)
                 continue
             try:
-                pdb.node(node)
-                logging.debug('skipping node: %s', node)
-                continue
+                pdb_node = pdb.node(node)
+                if not pdb_node.expired:
+                    logging.debug('skipping node: %s', node)
+                    continue
+                logging.warning('Refreshing expired node: %s', node)
             except requests.exceptions.HTTPError:
                 # dont have info yet
                 pass
