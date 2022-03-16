@@ -21,7 +21,7 @@ groups:
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
-              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko]
+              bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -122,7 +122,7 @@ groups:
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
               aaron, sbassett, tarrow, lucaswerkmeister-wmde,
               jhuneidi, wmde-fisch, mvolz, brennen, cparle,
-              urbanecm, awight, jakob, accraze, andrew-wmde,
+              urbanecm, awight, jakob, andrew-wmde,
               mstyles, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
@@ -343,7 +343,7 @@ groups:
               cicalese, gbirke, isaacj, sbassett, jdl,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
-              kevinbazira, keepit-ssh, jiji, cohi, mstyles, accraze, snowick,
+              kevinbazira, keepit-ssh, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
@@ -577,7 +577,7 @@ groups:
     members: [bd808, eevans, mobrovac, twentyafterfour, thcipriani, dduvall,
               kartik, halfak, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
-              pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit, accraze,
+              pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit,
               kevinbazira, clarakosi, chrisalbon, jgiannelos]
     privileges: []
   deploy-aqs:
@@ -717,7 +717,7 @@ groups:
   ores-admin:
     description: ORES admins
     gid: 782
-    members: [halfak, accraze, kevinbazira, chrisalbon]
+    members: [halfak, kevinbazira, chrisalbon]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
                  'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
                  'ALL = NOPASSWD: /usr/bin/lsof *']
@@ -902,7 +902,7 @@ groups:
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
-    members: &ml-team-admins [accraze, chrisalbon, kevinbazira, aikochou]
+    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou]
     privileges: []
     approval:
       - Chris Albon
@@ -3741,15 +3741,13 @@ users:
     uid: 21436
     email: jason@latigid.net
   accraze:
-    ensure: present
+    ensure: absent
     gid: 500
     name: accraze
     realname: Andy Craze
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDXA9CvE7dcs4WAy9fvVwS9FfUurxyrxRmayXHv74oO7RBUGiigp5JzRxEPDFJC4uzf+ESiNkeJrmz9QBYESM2/ALdQga+2ChVGrEC5e3OCE8cLQpuM+sGoq3mFfq4dBQVM18UDIQ50+M7Ya5OFXqjI5c/3R4N+A8qvepkqMuCagr/exM9eIc5ZhYLiy40yUTJCvsbF0GeDLoMeBl80Iqd/JUxLTGJvyDXL2q78ek3Ou5tiX8rJj8B9Yvy2cV/zd8EYKzGiiQTlZoXCAMhFlRB8FIFzPChSzpvKt6IPYGVluxbrbS3WxoWVYh2/gaXmp+ueJVPZOQTU8PoHWln6eCcVukW6ZIAoNjicsbD0VhOWo3Zw8I4DeEHB8YtsUOOhTUZHDlfyap74wWWTkFZxj3lnP97fNEpzTUnfuMaQ4fKzv7bnR+nydXs6B4ht5uK6ss1V3ETV20QHq3GjUaRc6CXOymATdHg8/vL5Y+bDWn+AfOt8lA1ulNqAnNEp12XLADIw7nNntKsJnHlHbscL0n6WLEjar1Y0/PLJ8jJYYg1C6/qv3spfu0ycO4ukMVNSkXolaCuwMeiHotCIUMT5NLdos175bmwUwduSOt3+FwfR5vnYTC3CeCtvYbKEOHWJLpIu9i0QJqmggl8DQ+LtYSwUpYr9i8K1a5DyowM9D3Sgzw== acraze@earth-coincidence-control-office
+    ssh_keys: []
     uid: 21437
-    email: acraze@wikimedia.org
-    krb: present
+    krb: absent
   jakob:
     ensure: present
     gid: 500
