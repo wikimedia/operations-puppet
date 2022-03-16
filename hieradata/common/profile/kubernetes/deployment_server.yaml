@@ -149,6 +149,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: apple-search
         - name: apple-search-deploy
+    datahub:
+      usernames:
+        - name: datahub
+        - name: datahub-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
