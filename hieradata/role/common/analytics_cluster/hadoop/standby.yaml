@@ -54,7 +54,8 @@ profile::kerberos::keytabs::keytabs_metadata:
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
-profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
+profile::java::extra_args:
+  JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 # Hadoop Services must be in this srange to be part of Hadoop.
 profile::hadoop::firewall::master::cluster_ferm_srange: '$ANALYTICS_NETWORKS'

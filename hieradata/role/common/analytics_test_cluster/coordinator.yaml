@@ -149,7 +149,8 @@ profile::monitoring::notifications_enabled: false
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
-profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
+profile::java::extra_args:
+  JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 profile::java::trust_puppet_ca: true
 
 profile::debdeploy::client::exclude_mounts:

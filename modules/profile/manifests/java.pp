@@ -28,18 +28,18 @@
 # jvm's home directory.
 #
 # @param java_packages Array of Java::PackageInfo describing what to install and configure
-# @param extra_args A string of extra arguments to use
+# @param extra_args A dict of extra arguments to use
 # @param hardened_tls if true enable a hardened security profile
 # @param egd_source securerandom source location
 # @param trust_puppet_ca if true add the puppet ca to the java trust store
 # @param enable_dbg Install debug packages (off by default)
 class profile::java (
-    Array[Java::PackageInfo] $java_packages   = lookup('profile::java::java_packages'),
-    Optional[String]         $extra_args      = lookup('profile::java::extra_args'),
-    Boolean                  $hardened_tls    = lookup('profile::java::hardened_tls'),
-    Java::Egd_source         $egd_source      = lookup('profile::java::egd_source'),
-    Boolean                  $trust_puppet_ca = lookup('profile::java::trust_puppet_ca'),
-    Boolean                  $enable_dbg      = lookup('profile::java::enable_dbg'),
+    Array[Java::PackageInfo]   $java_packages   = lookup('profile::java::java_packages'),
+    Hash[String[1], String[1]] $extra_args      = lookup('profile::java::extra_args'),
+    Boolean                    $hardened_tls    = lookup('profile::java::hardened_tls'),
+    Java::Egd_source           $egd_source      = lookup('profile::java::egd_source'),
+    Boolean                    $trust_puppet_ca = lookup('profile::java::trust_puppet_ca'),
+    Boolean                    $enable_dbg      = lookup('profile::java::enable_dbg'),
 ) {
 
     $default_java_packages = $facts['os']['distro']['codename'] ? {
@@ -98,14 +98,10 @@ class profile::java (
     $default_java_home = $java::java_home
     $default_package_name = "openjdk-${java::default_java_package['version']}-${java::default_java_package['variant']}"
 
-    if $extra_args {
-
-        file { '/etc/environment.d':
-            ensure => 'directory',
-        }
-
-        file { '/etc/environment.d/10openjdk.conf':
-            content => $extra_args,
+    unless $extra_args.empty {
+        systemd::environment { 'openjdk':
+            priority  => 10,
+            variables => $extra_args,
         }
     }
 }

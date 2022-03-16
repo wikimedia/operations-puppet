@@ -71,7 +71,8 @@ profile::monitoring::notifications_enabled: false
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
-profile::java::extra_args: 'JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"'
+profile::java::extra_args:
+  JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 profile::hadoop::common::use_puppet_ssl_certs: true
 profile::contacts::role_contacts: ['Analytics SREs']
