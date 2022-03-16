@@ -98,7 +98,7 @@ groups:
     gid: 703
     description: manage gerrit server
     # qchris is T252194
-    members: &gerrit_root_members [twentyafterfour, hashar, thcipriani, qchris, brennen, dancy, jnuche]
+    members: &gerrit_root_members [hashar, thcipriani, qchris, brennen, dancy, jnuche]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -115,7 +115,7 @@ groups:
               gjg, halfak, hashar, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
               andyrussg, nikerabbit, reedy, ssastry, phedenskog,
-              tgr, ejegg, twentyafterfour, catrope,
+              tgr, ejegg, catrope,
               mobrovac, nuria, thcipriani, joal,
               mforns, dcausse, dduvall,
               addshore, niharika29,
@@ -172,7 +172,7 @@ groups:
   releasers-mediawiki:
     gid: 711
     description: people who upload mediawiki releases
-    members: [catrope, hashar, reedy, thcipriani, twentyafterfour, brennen,
+    members: [catrope, hashar, reedy, thcipriani, brennen,
               jforrester]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
@@ -243,7 +243,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, twentyafterfour, jhuneidi, dancy, jnuche]
+    members: &contint_roots_members [dduvall, hashar, thcipriani, brennen, jforrester, jhuneidi, dancy, jnuche]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -574,7 +574,7 @@ groups:
   deploy-service:
     gid: 763
     description: Service deploy users
-    members: [bd808, eevans, mobrovac, twentyafterfour, thcipriani, dduvall,
+    members: [bd808, eevans, mobrovac, thcipriani, dduvall,
               kartik, halfak, smalyshev, hoo, tgr,
               ssastry, cscott, arlolra, jdlrobson, jforrester, bmansurov,
               pmiazga, phuedx, mbsantos, mvolz, santhosh, nikerabbit,
@@ -590,7 +590,7 @@ groups:
   deploy-design:
     gid: 815
     description: Deployers for content on design.wikimedia.org
-    members: [volker-e, jdrewniak, twentyafterfour]
+    members: [volker-e, jdrewniak]
     privileges: []
   aqs-admins:
     description: Group of admins for the Analytics Query Service
@@ -821,7 +821,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, dduvall, gjg, hashar, thcipriani, twentyafterfour, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy, jnuche]
+    members: [*ops_members, dduvall, gjg, hashar, thcipriani, addshore, reedy, jhuneidi, krinkle, brennen, jforrester, dancy, jnuche]
     system_members: [jenkins-slave]
   deployment-docker:
     # See the comment above regarding both security and the use of the posix name instead than the gid.
@@ -2140,7 +2140,7 @@ users:
     realname: Mukunda Modell
     ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDtjIbmBa1rAlQzNsJmXoU1pEd75rXZGvl6xOcEpKdaGM97737m74O5bSvzWctuQGCQywt0ACmou2ETIo0cw5TuZqO6BypC2b0k70ufos9Jaq88ssiXfhPbR1JoL1DTQXtBNn3Q4qDXrtlQHxH/NdlnZWpsUUbOXXXs4H518FFT63p3BhJZnX3hucdWT3okRvYdkE5LWbGJn8SR+0aXdq5F/8E3f5QGyd/7OnZhmhJkUa4EyiUaTIaQWhuAdd6XLtFjes/66dHqyh31ITps/ZVZvOdAyxTnDrT+uu04otYxtJ0qRHNSzVfspG7cxfyAQcR2Xuzf1VbA/hw2LL7v/AXh twentyafterfour@wmnet]
     uid: 4967
-    email: mmodell@wikimedia.org
+    email: twentyafterfour@gmail.com
   declerambaul:
     ensure: absent
     gid: 500
