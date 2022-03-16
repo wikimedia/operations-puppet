@@ -11,6 +11,9 @@ profile::statograph::proxies:
   statograph:
     http: http://webproxy:8080
     https: http://webproxy:8080
+
+# When editing these metrics, make sure to also edit the matching Grafana dashboard:
+# https://grafana-rw.wikimedia.org/d/3u6RLsL7k/status-page
 profile::statograph::metrics:
   - statuspage_id: wtbz5cdhk8rl # Total Request Volume
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
