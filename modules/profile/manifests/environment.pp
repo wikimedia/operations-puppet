@@ -1,8 +1,4 @@
-# == Class profile::environment
-#
-# Sets up the base environment for all hosts (profile, editor, sysctl, etc)
-#
-# === Parameters
+# @summary Sets up the base environment for all hosts (profile, editor, sysctl, etc)
 # @param ls_aliases if true, will setup the ll/la aliases
 # @param export_systemd_env if true, add login scripts to ensure systemd environment.d variables are exported
 # @param custom_bashrc when set, will replace the system bashrc with the given template (as a path)
@@ -10,15 +6,17 @@
 # @param custom_skel_zshrc when set, will replace the system skel zshrc with the given template (as a path)
 # @param editor choose the default editor, if 'use_default' will use the system's default
 # @param profile_scripts list of script names to be added to /etc/profile.d and their source
+# @param variables a list of environment variables to set globally
 #
 class profile::environment (
-    Boolean                    $ls_aliases         = lookup('profile::environment::ls_aliases'),
-    Boolean                    $export_systemd_env = lookup('profile::environment::export_systemd_env'),
-    Optional[String[1]]        $custom_skel_bashrc = lookup('profile::environment::custom_skel_bashrc'),
-    Optional[String[1]]        $custom_skel_zshrc  = lookup('profile::environment::custom_skel_zshrc'),
-    Optional[String[1]]        $custom_bashrc      = lookup('profile::environment::custom_bashrc'),
-    Enum['vim', 'use_default'] $editor             = lookup('profile::environment::editor'),
-    Hash[String, Stdlib::Filesource] $profile_scripts = lookup('profile::environment::profile_scripts'),
+    Boolean                          $ls_aliases         = lookup('profile::environment::ls_aliases'),
+    Boolean                          $export_systemd_env = lookup('profile::environment::export_systemd_env'),
+    Enum['vim', 'use_default']       $editor             = lookup('profile::environment::editor'),
+    Optional[String[1]]              $custom_skel_bashrc = lookup('profile::environment::custom_skel_bashrc'),
+    Optional[String[1]]              $custom_skel_zshrc  = lookup('profile::environment::custom_skel_zshrc'),
+    Optional[String[1]]              $custom_bashrc      = lookup('profile::environment::custom_bashrc'),
+    Hash[String, Stdlib::Filesource] $profile_scripts    = lookup('profile::environment::profile_scripts'),
+    Hash[String[1], String[1]]       $variables          = lookup('profile::environment::variables'),
 ) {
     if $ls_aliases {
         exec { 'uncomment root bash aliases':
@@ -119,5 +117,13 @@ class profile::environment (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/base/environment/vimrc.local',
+    }
+
+    # Global environment variables
+    unless $variables.empty {
+        systemd::environment { 'base-wmf-environment':
+            priority  => 10,
+            variables => $variables,
+        }
     }
 }

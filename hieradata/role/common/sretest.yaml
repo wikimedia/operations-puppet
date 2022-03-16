@@ -2,3 +2,7 @@ profile::contacts::role_contacts:
   - 'Infrastructure Foundations SREs'
 profile::admin::groups:
   - sretest-roots
+profile::environment::variables:
+  NO_PROXY: '127.0.0.1,::1,localhost,.wmnet,.wikimedia.org,.wikipedia.org'
+  no_proxy: '127.0.0.1,::1,localhost,.wmnet,.wikimedia.org,.wikipedia.org'
+

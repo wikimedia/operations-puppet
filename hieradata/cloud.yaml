@@ -533,6 +533,7 @@ profile::environment::custom_skel_zshrc: 'base/environment/skel/zshrc.erb'
 profile::environment::editor: 'use_default'
 profile::environment::profile_scripts:
   field.sh: 'puppet:///modules/base/environment/field.sh'
+profile::environment::variables: {}
 
 profile::systemd::timesyncd::ensure: present
 profile::systemd::timesyncd::ntp_servers: []
