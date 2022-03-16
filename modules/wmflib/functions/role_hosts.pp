@@ -8,24 +8,11 @@
 function wmflib::role_hosts (
     String[1]                                    $role,
     Variant[Wmflib::Sites, Array[Wmflib::Sites]] $location = [],
-) {
+) >> Array[Stdlib::Host] {
 
     $_role = $role.capitalize.stdlib::start_with('Role::') ? {
         true    => $role,
         default => "Role::${role}",
-    }.split('::').capitalize.join('::')
-
-    # TODO: need a better way to determin site
-    # this doesn't work for wikimedia.org domains
-    $_location = Array($location, true)
-    $site_constraint = $_location.empty ? {
-        true    => '',
-        default => " and certname ~ \"${_location.join('|')}\"",
     }
-    $pql = @("PQL")
-    resources[certname] {
-        type = "Class" and title = "${_role}"${site_constraint}
-    }
-    | PQL
-    puppetdb_query($pql).map |$resource| { $resource['certname'] }.sort
+    wmflib::class_hosts($_role, $location)
 }
