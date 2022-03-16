@@ -166,3 +166,6 @@ profile::base::certificates::include_bundle_jks: true
 # (see https://issues.apache.org/jira/browse/BIGTOP-3619).
 profile::hadoop::common::config_override:
   enable_log4j_extras: false
+
+# Versioned gobblin-wmf shaded to use for gobblin ingestion jobs.
+profile::analytics::refinery::job::test::gobblin::gobblin_shaded_jar: /srv/deployment/analytics/refinery/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-0.16.0-wmf1-all.jar

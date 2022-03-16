@@ -48,6 +48,8 @@ profile::analytics::refinery::ensure_hdfs_dirs: true
 
 profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: present
 
+# Versioned gobblin-wmf shaded to use for gobblin ingestion jobs.
+profile::analytics::refinery::job::gobblin::gobblin_shaded_jar: /srv/deployment/analytics/refinery/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-0.16.0-wmf1-all.jar
 
 # Set up airflow instances.
 profile::airflow::instances:

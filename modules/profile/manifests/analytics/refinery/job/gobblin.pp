@@ -21,15 +21,28 @@
 #   Ingests legacy EventLogging streams. (No datacenter topic prefixes, topics start with
 #   'eventlogging_'.)
 #
-class profile::analytics::refinery::job::gobblin {
+#
+# == Parameters
+#
+# [*gobblin_shaded_jar*]
+#   Path to shaded jar that will be used to launch gobblin.
+#   You should set this in your role hiera to a versioned gobblin-wmf jar.
+#   Usually this is deployed alongside of analytics/refinery artifacts.
+#
+class profile::analytics::refinery::job::gobblin(
+    Stdlib::Unixpath $gobblin_shaded_jar = lookup('profile::analytics::refinery::job::test::gobblin'),
+) {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path
 
+
+
     # analytics-hadoop gobblin jobs should all use analytics-hadoop.sysconfig.properties.
     Profile::Analytics::Refinery::Job::Gobblin_job {
-        sysconfig_properties_file => "${refinery_path}/gobblin/common/analytics-hadoop.sysconfig.properties"
+        sysconfig_properties_file => "${refinery_path}/gobblin/common/analytics-hadoop.sysconfig.properties",
         # By default, gobblin_job will use a jobconfig_properties_file of
         # ${refinery_path}/gobblin/jobs/${title}.pull
+        gobblin_jar_file          => $gobblin_shaded_jar,
     }
 
 
