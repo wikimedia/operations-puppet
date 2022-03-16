@@ -242,48 +242,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 zone = proxy['domain']
 
                 proxy_url, session = self._get_proxy_client(project)
-                session.delete(
-                    "{}/mapping/{}".format(proxy_url, zone),
-                    headers={
-                        "X-Novaproxy-Edit-Dns": "false"
-                    }
-                )
-
-                LOG.warning("We also need to delete the dns entry for %s" % proxy)
-                self._delete_proxy_dns_record(project, proxy['domain'])
-
-    def _delete_proxy_dns_record(self, project, proxyzone):
-        if not proxyzone.endswith('.'):
-            proxyzone += '.'
-        context = DesignateContext().elevated()
-        context.all_tenants = True
-        context.edit_managed_records = True
-
-        # These gymnastics are to handle the case where the
-        #  parent zone == the proxy zone.
-        if proxyzone.split('.')[0] == project:
-            parentzone = proxyzone
-        else:
-            parentzone = '.'.join(proxyzone.split('.')[1:])
-        crit = {'name': parentzone}
-
-        zonerecords = central_api.find_zones(context, crit)
-        if len(zonerecords) != 1:
-            LOG.warning("Unable to clean up this DNS proxy record. "
-                        "Looked for zone %s and found %s" % (parentzone,
-                                                             zonerecords))
-            return
-
-        crit = {'zone_id': zonerecords[0].id, 'name': proxyzone, 'type': "A"}
-        recordsets = central_api.find_recordsets(context, crit)
-        if len(recordsets) != 1:
-            LOG.warning("Unable to clean up this DNS proxy record. "
-                        "Looked for recordsets for %s and found %s" (proxyzone,
-                                                                     recordsets))
-            return
-
-        LOG.warning("Deleting DNS entry for proxy: %s" % recordsets[0])
-        central_api.delete_recordset(context, zonerecords[0].id, recordsets[0].id)
+                session.delete("{}/mapping/{}".format(proxy_url, zone))
 
     def _get_proxy_list_for_project(self, project):
         proxy_url, session = self._get_proxy_client(project)

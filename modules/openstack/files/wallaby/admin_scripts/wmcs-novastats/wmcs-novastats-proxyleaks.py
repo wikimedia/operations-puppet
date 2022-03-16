@@ -62,12 +62,7 @@ def delete_mapping(project, domain):
     """Delete a single proxy
     """
     proxy_url, session = proxy_client(project)
-    session.delete(
-        f"{proxy_url}/mapping/{domain}",
-        headers={
-            "X-Novaproxy-Edit-Dns": "false"
-        }
-    )
+    session.delete(f"{proxy_url}/mapping/{domain}")
 
 
 def get_project_dns_zones(project_id):
@@ -146,20 +141,12 @@ def purge_leaks(delete=False):
                         "%s: proxy mapping outside of its project: %s"
                         % (project.id, mapping)
                     )
+
             searchname = mapping["domain"]
             if not searchname.endswith("."):
                 searchname += "."
-            if searchname.count(".") > 3:
-                print("ignoring outlier %s" % searchname)
-                # These are old leftovers in a different domain, hard to deal with automatically
-                continue
-            if (
-                searchname not in proxy_recordsets
-                and searchname not in project_recordsets
-            ):
-                print("No dns recordset found for %s" % searchname)
-            else:
-                proxy_recordsets.pop(searchname, None)
+
+            proxy_recordsets.pop(searchname, None)
 
     session = clients.session("wmflabsdotorg")
     dotorgclient = designateclientv2.Client(session=session)

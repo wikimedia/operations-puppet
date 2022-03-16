@@ -18,8 +18,6 @@ import argparse
 import json
 import logging
 import operator
-import socket
-from urllib.parse import urlparse
 
 import mwopenstackclients
 
@@ -47,30 +45,17 @@ def proxy_client(client, project):
 def add_proxy(args):
     """Setup DNS and dynamicproxy mapping from a host to a URL."""
     client = mwopenstackclients.Clients(envfile=args.envfile)
-
     proxy_url, session = proxy_client(client, args.project)
 
-    dns = mwopenstackclients.DnsManager(client, tenant=TENANT)
-    proxyip = socket.gethostbyname(urlparse(proxy_url).hostname)
-    z = dns.zones(name=ZONE)[0]  # blow up if zone doesn't exist
-    zone_id = z['id']
     fqdn = '{}.{}'.format(args.host, ZONE)
-    dns.ensure_recordset(zone_id, fqdn, 'A', [proxyip])
 
-    resp = session.put(
+    session.put(
         f"{proxy_url}/mapping",
         data=json.dumps({
             'backends': [args.target_url],
             'domain': fqdn.rstrip('.')
-        }),
-        headers={
-            "X-Novaproxy-Edit-Dns": "false"
-        }
+        })
     )
-    if not resp:
-        raise Exception(
-            'HTTP {} response from dynamicproxy: {}'.format(
-                resp.status_code, resp.text))
 
 
 def list_proxies(args):
@@ -94,29 +79,11 @@ def list_proxies(args):
 def delete_proxy(args):
     """Delete a proxy."""
     client = mwopenstackclients.Clients(envfile=args.envfile)
+    proxy_url, session = proxy_client(client, args.project)
 
-    dns = mwopenstackclients.DnsManager(client, tenant=TENANT)
-    z = dns.zones(name=ZONE)[0]  # blow up if zone doesn't exist
-    zone_id = z['id']
     fqdn = '{}.{}'.format(args.host, ZONE)
 
-    # Remove proxy
-    proxy_url, session = proxy_client(client, args.project)
-    resp = session.delete(
-        f"{proxy_url}/mapping/{fqdn.rstrip('.')}",
-        headers={
-            "X-Novaproxy-Edit-Dns": "false"
-        }
-    )
-
-    if resp:
-        # Remove DNS
-        rs = dns.recordsets(zone_id, name=fqdn)[0]
-        dns.delete_recordset(zone_id, rs['id'])
-    else:
-        raise Exception(
-            'HTTP {} response from dynamicproxy: {}'.format(
-                resp.status_code, resp.text))
+    session.delete(f"{proxy_url}/mapping/{fqdn.rstrip('.')}")
 
 
 def main():
