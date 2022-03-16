@@ -67,4 +67,6 @@ class gitlab::ssh (
         content        => template('gitlab/sshd.service.erb'),
         service_params => {'restart' => 'systemctl reload sshd-gitlab'},
     }
+
+    profile::auto_restarts::service { 'ssh-gitlab': }
 }
