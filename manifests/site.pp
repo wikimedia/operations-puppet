@@ -1135,7 +1135,7 @@ node /^dumpsdata100[4-5]\.eqiad\.wmnet/ {
     role(insetup)
 }
 
-node /^dumpsdata1007\.eqiad\.wmnet$/ {
+node /^dumpsdata100[67]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
