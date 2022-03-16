@@ -1618,7 +1618,7 @@ node /kafkamon[12]002\.(codfw|eqiad)\.wmnet/ {
 
 # Karapace VM in support of DataHub
 node /karapace1001\.eqiad\.wmnet/ {
-    role(insetup)
+    role(karapace)
 }
 
 # virtual machines for misc. applications and static sites
