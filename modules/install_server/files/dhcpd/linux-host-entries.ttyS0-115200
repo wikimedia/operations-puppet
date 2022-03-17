@@ -613,25 +613,25 @@ host kubestagemaster2001 {
 host kubernetes1005 {
     hardware ethernet aa:00:00:46:b6:6f;
     fixed-address kubernetes1005.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host kubernetes1006 {
     hardware ethernet aa:00:00:08:91:88;
     fixed-address kubernetes1006.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host kubernetes1015 {
     hardware ethernet aa:00:00:b4:92:c3;
     fixed-address kubernetes1015.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host kubernetes1016 {
     hardware ethernet aa:00:00:5d:00:4a;
     fixed-address kubernetes1016.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host kubernetes2005 {
