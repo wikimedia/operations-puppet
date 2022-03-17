@@ -79,6 +79,13 @@ class profile::environment (
         path   => '/etc/zsh/zshenv',
         line   => $export_command,
     }
+    $content = @("CONTENT"/$)
+    systemd_vars=\$(${export_command})
+    if [ -n "\${systemd_vars}" ]
+    then
+        export \$systemd_vars
+    fi
+    | CONTENT
 
     file { '/etc/profile.d/systemd-environment.sh':
         ensure  => stdlib::ensure($export_systemd_env, 'file'),
