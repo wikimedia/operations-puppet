@@ -15,6 +15,16 @@ class openstack::neutron::service::wallaby(
             ],
     }
 
+    service {'neutron-rpc-server':
+        ensure    => $active,
+        require   => Package['neutron-server'],
+        subscribe => [
+                      File['/etc/neutron/neutron.conf'],
+                      File['/etc/neutron/policy.yaml'],
+                      File['/etc/neutron/plugins/ml2/ml2_conf.ini'],
+            ],
+    }
+
     package { 'neutron-server':
         ensure => 'present',
     }
