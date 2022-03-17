@@ -11,6 +11,7 @@ class profile::logstash::beta (
   # The environment certificate authority is tied to the environment's puppetmaster.
   # Until this is no longer the case, don't overwrite the truststore.
   $manage_truststore = false
+  $ssl_truststore_location = '/etc/ssl/localcerts/wmf-java-cacerts'
 
   # Allow API access to LABS_NETWORKS via ferm, but control access via "scap-access" security group.
   # Will be obseleted by T216141.
@@ -57,6 +58,7 @@ filter {
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
     manage_truststore                     => $manage_truststore,
+    ssl_truststore_location               => $ssl_truststore_location,
   }
 
   logstash::input::kafka { 'rsyslog-udp-localhost-eqiad':
@@ -70,6 +72,7 @@ filter {
     ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-beta'],
     ssl_endpoint_identification_algorithm => '',
     manage_truststore                     => $manage_truststore,
+    ssl_truststore_location               => $ssl_truststore_location,
   }
 
   logstash::input::kafka { 'rsyslog-logback-eqiad':
@@ -84,6 +87,7 @@ filter {
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
     manage_truststore                     => $manage_truststore,
+    ssl_truststore_location               => $ssl_truststore_location,
   }
 
   logstash::input::kafka { 'deprecated-eqiad':
@@ -97,6 +101,7 @@ filter {
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
     manage_truststore                     => $manage_truststore,
+    ssl_truststore_location               => $ssl_truststore_location,
   }
 
   logstash::input::kafka { 'clienterror-eqiad':
@@ -111,6 +116,7 @@ filter {
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
     manage_truststore                     => $manage_truststore,
+    ssl_truststore_location               => $ssl_truststore_location,
   }
 
   logstash::input::kafka { 'networkerror-eqiad':
@@ -124,6 +130,7 @@ filter {
     ssl_endpoint_identification_algorithm => '',
     consumer_threads                      => 3,
     manage_truststore                     => $manage_truststore,
+    ssl_truststore_location               => $ssl_truststore_location,
   }
 
   # Outputs (90)

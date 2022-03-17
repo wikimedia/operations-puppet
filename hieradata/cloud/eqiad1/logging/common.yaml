@@ -17,7 +17,7 @@ prometheus_nodes:
 
 # known public
 profile::logstash::collector::input_kafka_ssl_truststore_passwords:
-  logging-beta: qwerty
+  logging-beta: 'changeit'
 profile::logstash::collector::input_kafka_consumer_group_id: 'logging-logstash'
 
 profile::java::java_packages:
