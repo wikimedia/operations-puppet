@@ -168,4 +168,5 @@ profile::hadoop::common::config_override:
   enable_log4j_extras: false
 
 # Versioned gobblin-wmf shaded to use for gobblin ingestion jobs.
-profile::analytics::refinery::job::test::gobblin::gobblin_shaded_jar: /srv/deployment/analytics/refinery/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-0.16.0-wmf1-all.jar
+# Bump the version in the jar path here after deploying new versions of gobblin-wmf-core shaded jar.
+profile::analytics::refinery::job::test::gobblin::gobblin_jar_file: /srv/deployment/analytics/refinery/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-core-1.0.0-jar-with-dependencies.jar

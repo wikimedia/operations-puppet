@@ -30,7 +30,7 @@
 #   Usually this is deployed alongside of analytics/refinery artifacts.
 #
 class profile::analytics::refinery::job::gobblin(
-    Stdlib::Unixpath $gobblin_shaded_jar = lookup('profile::analytics::refinery::job::test::gobblin'),
+    Stdlib::Unixpath $gobblin_jar_file = lookup('profile::analytics::refinery::job::test::gobblin_jar_file'),
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path
@@ -42,7 +42,7 @@ class profile::analytics::refinery::job::gobblin(
         sysconfig_properties_file => "${refinery_path}/gobblin/common/analytics-hadoop.sysconfig.properties",
         # By default, gobblin_job will use a jobconfig_properties_file of
         # ${refinery_path}/gobblin/jobs/${title}.pull
-        gobblin_jar_file          => $gobblin_shaded_jar,
+        gobblin_jar_file          => $gobblin_jar_file,
     }
 
 
