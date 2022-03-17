@@ -21,18 +21,8 @@ class mediabackup::storage (
 ) {
     ensure_packages(['minio', ])
 
-    group { 'minio-user':
-        ensure => present,
-        system => true,
-    }
-    user { 'minio-user':
-        ensure     => present,
-        gid        => 'minio-user',
-        shell      => '/bin/false',
-        home       => $storage_path,
-        system     => true,
-        managehome => false,
-        require    => Group['minio-user'],
+    systemd::sysuser { 'minio-user':
+        home_dir => $storage_path,
     }
 
     file { $storage_path:
@@ -40,7 +30,7 @@ class mediabackup::storage (
         mode    => '0750',
         owner   => 'minio-user',
         group   => 'minio-user',
-        require => [ User['minio-user'], Group['minio-user'] ],
+        require => User['minio-user'],
     }
     # Please note that config dir option is deprecated:
     # https://docs.min.io/docs/minio-server-configuration-guide.html
@@ -49,7 +39,7 @@ class mediabackup::storage (
         mode    => '0440',
         owner   => 'minio-user',
         group   => 'minio-user',
-        require => [ User['minio-user'], Group['minio-user'] ],
+        require => User['minio-user'],
     }
 
     file { "${config_dir}/ssl":
@@ -57,7 +47,7 @@ class mediabackup::storage (
         mode    => '0700',
         owner   => 'minio-user',
         group   => 'minio-user',
-        require => [ File[$config_dir], User['minio-user'], Group['minio-user'] ],
+        require => [ File[$config_dir], User['minio-user'] ],
     }
 
     file { "${storage_path}/.minio":
@@ -100,7 +90,7 @@ class mediabackup::storage (
         group     => 'minio-user',
         content   => template('mediabackup/default_minio.erb'),
         show_diff => false,
-        require   => [ User['minio-user'], Group['minio-user'] ],
+        require   => User['minio-user'],
     }
 
     service { 'minio':
