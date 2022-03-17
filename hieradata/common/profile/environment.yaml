@@ -1,4 +1,5 @@
 profile::environment::ls_aliases: true
+profile::environment::export_systemd_env: true
 profile::environment::custom_bashrc: null
 profile::environment::custom_skel_bashrc: null
 profile::environment::custom_skel_zshrc: null
