@@ -336,6 +336,11 @@ eqiad:
     kubernetes1015.eqiad.wmnet: [kubesvc]
     kubernetes1016.eqiad.wmnet: [kubesvc]
     kubernetes1017.eqiad.wmnet: [kubesvc]
+    kubernetes1018.eqiad.wmnet: [kubesvc]
+    kubernetes1019.eqiad.wmnet: [kubesvc]
+    kubernetes1020.eqiad.wmnet: [kubesvc]
+    kubernetes1021.eqiad.wmnet: [kubesvc]
+    kubernetes1022.eqiad.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster1001.eqiad.wmnet: [kubemaster]
     kubestage1003.eqiad.wmnet: [kubesvc]

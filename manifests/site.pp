@@ -1364,11 +1364,6 @@ node 'furud.codfw.wmnet' {
     role(analytics_cluster::hadoop::client)
 }
 
-# New Kubernetes host T290202  - eqiad
-node /^kubernetes10(1[8-9]|2[0-2])\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
 # Etcd clusters for kubernetes, v3
 node /^kubetcd[12]00[456]\.(eqiad|codfw)\.wmnet$/ {
     role(etcd::v3::kubernetes)
@@ -1661,7 +1656,8 @@ node /kubernetes[12]0(0[1-9]|1[0-7])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 
-node /kubernetes20(1[89]|2[0-2])\.codfw\.wmnet/ {
+# TODO: Merge with the entry above once T293728 is resolved
+node /kubernetes[12]0(1[89]|2[0-2])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 

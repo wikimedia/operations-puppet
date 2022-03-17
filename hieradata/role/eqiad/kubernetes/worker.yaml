@@ -18,6 +18,11 @@ profile::calico::kubernetes::bgp_peers:
 - kubernetes1015.eqiad.wmnet
 - kubernetes1016.eqiad.wmnet
 - kubernetes1017.eqiad.wmnet
+- kubernetes1018.eqiad.wmnet
+- kubernetes1019.eqiad.wmnet
+- kubernetes1020.eqiad.wmnet
+- kubernetes1021.eqiad.wmnet
+- kubernetes1022.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
 profile::kubernetes::master_hosts:
