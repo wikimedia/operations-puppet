@@ -526,7 +526,7 @@ profile::monitoring::raid_write_cache_policy: ~
 profile::auto_restarts::with_debdeploy: false
 
 profile::environment::ls_aliases: false
-profile::environment::export_systemd_env: false
+profile::environment::export_systemd_env: true
 profile::environment::custom_bashrc: 'base/environment/bash.bashrc.erb'
 profile::environment::custom_skel_bashrc: 'base/environment/skel/bashrc.erb'
 profile::environment::custom_skel_zshrc: 'base/environment/skel/zshrc.erb'
