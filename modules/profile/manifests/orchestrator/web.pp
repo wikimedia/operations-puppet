@@ -1,6 +1,6 @@
 class profile::orchestrator::web {
-    class { '::httpd':
-        modules => ['headers', 'proxy', 'proxy_http', 'rewrite', 'ssl']
+    class { 'httpd':
+        modules => ['headers', 'proxy', 'proxy_http', 'rewrite', 'ssl', 'macro'],
     }
     class { 'sslcert::dhparam': }
 
