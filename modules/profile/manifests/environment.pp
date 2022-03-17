@@ -73,11 +73,11 @@ class profile::environment (
                 source => $source,
         }
     }
-    $export_command = 'export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)'
+    $export_command = '/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator'
     file_line { 'zsh_export_systemd_env':
         ensure => $export_systemd_env.bool2str('present', 'absent'),
         path   => '/etc/zsh/zshenv',
-        line   => $export_command,
+        line   => "export (${export_command})",
     }
     # We should probably ove this to profile_scripts
     $content = @("CONTENT"/$)
