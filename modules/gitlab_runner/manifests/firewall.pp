@@ -26,7 +26,7 @@ class gitlab_runner::firewall (
             ferm::rule { "docker-allow-${$name}":
                 ensure => $ensure,
                 prio   => 18,
-                rule   => "daddr (@resolve((${allowed_service['host']})) @resolve((${allowed_service['host']}),AAAA)) proto tcp dport ${allowed_service['port']} ACCEPT;",
+                rule   => "daddr (@resolve(${allowed_service['host']})) proto tcp dport ${allowed_service['port']} ACCEPT;",
                 desc   => "allow traffic to ${name} from docker",
                 chain  => 'DOCKER-ISOLATION',
             }
