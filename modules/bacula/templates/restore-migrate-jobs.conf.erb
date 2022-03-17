@@ -7,6 +7,7 @@ Job {
   Messages = Standard
   Where = /var/tmp/bacula-restores
   Priority = 1
+  Allow Mixed Priority = yes
 }
 
 Job {
@@ -20,6 +21,7 @@ Job {
   Selection Type = SQLQuery
   Selection Pattern = "SELECT 15515"
   Priority = 20
+  Allow Mixed Priority = yes
 }
 
 Job {
@@ -33,4 +35,5 @@ Job {
   Messages = Standard
   Selection Type = PoolUncopiedJobs
   Priority = 20
+  Allow Mixed Priority = yes
 }
