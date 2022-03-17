@@ -79,6 +79,7 @@ class profile::environment (
         path   => '/etc/zsh/zshenv',
         line   => $export_command,
     }
+    # We should probably ove this to profile_scripts
     $content = @("CONTENT"/$)
     systemd_vars=\$(${export_command})
     if [ -n "\${systemd_vars}" ]
@@ -92,7 +93,7 @@ class profile::environment (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => $export_command,
+        content => $content,
     }
 
     ### Settings commons to all realms
