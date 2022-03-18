@@ -117,6 +117,7 @@ Components: main
  component/php74
  component/postgis
  component/pygments
+ component/python35
  component/redis2
  component/rsyslog
  component/rsyslog-k8s
