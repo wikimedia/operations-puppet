@@ -12,7 +12,6 @@ class openstack::nova::compute::service::victoria::bullseye() {
     ensure_packages(['libvirt-clients'])
 
     $packages = [
-        'libvirt-daemon-system',
         'python3-libvirt',
         'qemu-system',
         'spice-html5',
@@ -29,6 +28,13 @@ class openstack::nova::compute::service::victoria::bullseye() {
         require => Package['busybox'],
     }
 
+    # Once libvirt-daemon-system is installed, stop the service started
+    #  by the package so we can manage it with puppet
+    package {'libvirt-daemon-system':
+        ensure => 'present',
+        notify => Exec['stop-libvirtd-so-we-can-start-it'],
+    }
+
     # The only reliable order to get this working is:
     #  - stop libvirtd
     #  - start libvirtd-tls.socket
@@ -36,7 +42,6 @@ class openstack::nova::compute::service::victoria::bullseye() {
     exec {'stop-libvirtd-so-we-can-start-it':
         command     => '/usr/bin/systemctl stop libvirtd',
         refreshonly => true,
-        require     => Package[libvirt-daemon-system],
     }
 
     service { 'libvirtd':
