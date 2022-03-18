@@ -2,18 +2,6 @@
 ### THIS FILE IS MANAGED BY PUPPET
 #####################################################################
 # vim: filetype=apache
-<Macro Cas_auth>
-    <%- @cas_auth_settings.each_pair do |key, setting| -%>
-      <%- if setting.is_a?(Array) -%>
-        <%- setting.each do |_setting| -%>
-      <%= key %> <%= _setting %>
-        <%- end -%>
-      <%- else -%>
-      <%= key %> <%= setting %>
-      <%- end -%>
-    <%- end -%>
-</Macro>
-
 <VirtualHost *:443>
     ServerName <%= @virtual_host %>
     ServerAdmin noc@wikimedia.org
@@ -42,15 +30,31 @@
     <%-end -%>
 
     <Location />
-      Use Cas_auth
+    <%- @cas_auth_settings.each_pair do |key, setting| -%>
+      <%- if setting.is_a?(Array) -%>
+        <%- setting.each do |_setting| -%>
+      <%= key %> <%= _setting %>
+        <%- end -%>
+      <%- else -%>
+      <%= key %> <%= setting %>
+      <%- end -%>
+    <%- end -%>
     </Location>
 
     <LocationMatch "^/api/">
-      Use Cas_auth
+    <%- @cas_auth_settings.each_pair do |key, setting| -%>
+      <%- if setting.is_a?(Array) -%>
+        <%- setting.each do |_setting| -%>
+      <%= key %> <%= _setting %>
+        <%- end -%>
+      <%- else -%>
+      <%= key %> <%= setting %>
+      <%- end -%>
+    <%- end -%>
       <%- (@vhost_settings['mysql_root_clients'] + @vhost_settings['cumin_masters']).sort.uniq.each do |ip| -%>
       Require ip <%= ip %>
       <%- end -%>
-    </Location>
+    </LocationMatch>
 
     ProxyPreserveHost On
     ProxyPass / http://localhost:3000/
