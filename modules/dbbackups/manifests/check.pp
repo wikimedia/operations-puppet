@@ -29,6 +29,6 @@ define dbbackups::check (
         contact_group  => 'admins',
         check_interval => 30,  # Don't check too often
         require        => Package['wmfbackups-check'],
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Alerting',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Rerun_a_failed_backup',
     }
 }
