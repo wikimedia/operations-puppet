@@ -32,7 +32,7 @@ msg_template: >-
   {{ if (index .CommonAnnotations "runbook") }}- {{ .CommonAnnotations.runbook }}{{ end }}
   {{ if (index .CommonAnnotations "dashboard") }}- {{ .CommonAnnotations.dashboard }}{{ end }}
   -
-  <%= @dashboard_url %>
+  <%= @dashboard_url %>/?q={{ .GroupLabels.alertname | printf "alertname=%s" | QueryEscape }}
 
 # For libera.chat's services, can be removed after 0.4.2 upgrade
 nickserv_identify_patterns:
