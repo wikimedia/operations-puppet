@@ -1649,12 +1649,7 @@ node 'krb2001.codfw.wmnet' {
     role(kerberos::kdc)
 }
 
-node /kubernetes[12]0(0[1-9]|1[0-7])\.(codfw|eqiad)\.wmnet/ {
-    role(kubernetes::worker)
-}
-
-# TODO: Merge with the entry above once T293728 is resolved
-node /kubernetes[12]0(1[89]|2[0-2])\.(codfw|eqiad)\.wmnet/ {
+node /kubernetes[12]0(0[5-9]|1[0-9]|2[0-2])\.(codfw|eqiad)\.wmnet/ {
     role(kubernetes::worker)
 }
 

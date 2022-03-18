@@ -1,10 +1,6 @@
 profile::calico::kubernetes::bgp_peers:
 - kubemaster1001.eqiad.wmnet
 - kubemaster1002.eqiad.wmnet
-- kubernetes1001.eqiad.wmnet
-- kubernetes1002.eqiad.wmnet
-- kubernetes1003.eqiad.wmnet
-- kubernetes1004.eqiad.wmnet
 - kubernetes1005.eqiad.wmnet
 - kubernetes1006.eqiad.wmnet
 - kubernetes1007.eqiad.wmnet
