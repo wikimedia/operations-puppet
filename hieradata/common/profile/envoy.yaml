@@ -1,3 +1,1 @@
 profile::envoy::ensure: present
-# Default api version.
-profile::envoy::api_version: 3

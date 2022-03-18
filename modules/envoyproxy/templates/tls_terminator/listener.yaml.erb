@@ -26,7 +26,7 @@ filter_chains:
     name: envoy.transport_sockets.tls
     typed_config:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
-<%- if @stek_files -%>
+<%- unless @stek_files.empty? -%>
       session_ticket_keys:
         keys:
 <% @stek_files.each do |stek_file| -%>
@@ -144,7 +144,7 @@ filter_chains:
               cluster: local_path_<%= upstream['upstream']['path'] %>
 <%- end -%>
               timeout: <%= @upstream_response_timeout %>s
-              <%- if @retry_policy != nil -%>
+              <%- unless @retry_policy.empty? -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>
@@ -164,13 +164,13 @@ filter_chains:
       server_header_transformation: APPEND_IF_ABSENT
 <%- end -%>
 <%- end -%>
-<%- if @global_certs != nil -%>
+<%- unless @global_certs.empty? -%>
 # Non-SNI support
 - transport_socket:
     name: envoy.transport_sockets.tls
     typed_config:
       '@type': type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
-<%- if @stek_files -%>
+<%- unless @stek_files.empty? -%>
       session_ticket_keys:
         keys:
 <% @stek_files.each do |stek_file| -%>
@@ -283,7 +283,7 @@ filter_chains:
               cluster: local_path_<%= upstream['upstream']['path'] %>
 <%- end -%>
               timeout: <%= @upstream_response_timeout %>s
-              <%- if @retry_policy != nil -%>
+              <%- unless @retry_policy.empty? -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>

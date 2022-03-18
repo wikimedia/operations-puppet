@@ -1,25 +1,19 @@
-# == Class profile::services_proxy::envoy
-#
-# This class sets up a simple nginx proxy to remote services.
-#
-# === Parameters
-#
-# [*ensure*] Whether the proxy should be present or not. We don't use it in deployment-prep.
-#
-# [*listeners*] A hash of listener definitions.
-#
-# Each listener should have the following structure:
-# name - the name of the listener
-# port - the local port to listen on
-# timeout - the time after which we timeout on a call
-# service - The label for the service we're connecting to in service::catalog in hiera
-# http_host - optional http Host: header to add to the request
-# upstream - upstream host to contact. If unspecified, <service>.discovery.wmnet will be assumed.
-# retry - The retry policy, if any. See the envoy docs for RetryPolicy for details.
-# keepalive - keepalive timeout. If not specified, the default envoy value will be used.
+# @summary This class sets up a simple nginx proxy to remote services.
+# @param ensure Whether the proxy should be present or not. We don't use it in deployment-prep.
+# @param all_listeners A hash of listener definitions.
+#   Each listener should have the following structure:
+#   name - the name of the listener
+#   port - the local port to listen on
+#   timeout - the time after which we timeout on a call
+#   service - The label for the service we're connecting to in service::catalog in hiera
+#   http_host - optional http Host: header to add to the request
+#   upstream - upstream host to contact. If unspecified, <service>.discovery.wmnet will be assumed.
+#   retry - The retry policy, if any. See the envoy docs for RetryPolicy for details.
+#   keepalive - keepalive timeout. If not specified, the default envoy value will be used.
 #             For nodejs applications assume the right value is 5 seconds (see T247484)
-# xfp - Set an explicit value for X-Forwarded-Proto, instead of letting envoy inject it (see T249535)
-# [*enabled_listeners*] Optional list of listeners we want to install locally.
+#   xfp - Set an explicit value for X-Forwarded-Proto, instead of letting envoy inject it (see T249535)
+# @param enabled_listeners Optional list of listeners we want to install locally.
+# @param listen_ipv6 listent on ipv6
 class profile::services_proxy::envoy(
     Wmflib::Ensure                   $ensure            = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
     Array[Profile::Service_listener] $all_listeners     = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
@@ -36,7 +30,7 @@ class profile::services_proxy::envoy(
         if $listeners == [] {
             fail('You must declare services if the proxy is to be present')
         }
-        require ::profile::envoy
+        require profile::envoy
 
     }
     $all_services = wmflib::service::fetch()
@@ -71,7 +65,7 @@ class profile::services_proxy::envoy(
         }
         if !defined(Envoyproxy::Cluster["${svc_name}_cluster"]) {
             envoyproxy::cluster { "${svc_name}_cluster":
-                content => template('profile/services_proxy/envoy_service_cluster.yaml.erb')
+                content => template('profile/services_proxy/envoy_service_cluster.yaml.erb'),
             }
         }
 
@@ -83,7 +77,7 @@ class profile::services_proxy::envoy(
         }
 
         envoyproxy::listener { $listener['name']:
-            content => template('profile/services_proxy/envoy_service_listener.yaml.erb')
+            content => template('profile/services_proxy/envoy_service_listener.yaml.erb'),
         }
     }
 }
