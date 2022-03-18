@@ -73,13 +73,16 @@ class profile::environment (
                 source => $source,
         }
     }
+
+    # /usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator only present in Buster and later
+    $_export_systemd_env = $export_systemd_env and debian::codename::ge('buster')
     $export_command = '/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator'
     file_line { 'zsh_export_systemd_env':
-        ensure => $export_systemd_env.bool2str('present', 'absent'),
+        ensure => $_export_systemd_env.bool2str('present', 'absent'),
         path   => '/etc/zsh/zshenv',
         line   => "export (${export_command})",
     }
-    # We should probably ove this to profile_scripts
+    # We should probably move this to profile_scripts
     $content = @("CONTENT"/$)
     systemd_vars=\$(${export_command})
     if [ -n "\${systemd_vars}" ]
@@ -89,7 +92,7 @@ class profile::environment (
     | CONTENT
 
     file { '/etc/profile.d/systemd-environment.sh':
-        ensure  => stdlib::ensure($export_systemd_env, 'file'),
+        ensure  => stdlib::ensure($_export_systemd_env, 'file'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
