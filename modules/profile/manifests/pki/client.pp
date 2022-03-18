@@ -6,6 +6,7 @@
 # @param enable_proxy if tru start the proxy service
 # @param listen_addr for the proxy service
 # @param listen_port for the proxy service
+# @param bundles_source puppet source location of intermidate certificates
 # @param root_ca_cn cn of the root ca
 # @param root_ca_source puppet source location of root ca
 # @param mutual_tls_client_cert location of client auth tls cert
@@ -21,6 +22,7 @@ class profile::pki::client (
     Boolean                      $enable_proxy           = lookup('profile::pki::client::enable_proxy'),
     Stdlib::IP::Address          $listen_addr            = lookup('profile::pki::client::listen_addr'),
     Stdlib::Port                 $listen_port            = lookup('profile::pki::client::listen_port'),
+    Stdlib::Filesource           $bundles_source         = lookup('profile::pki::client::bundles_source'),
     String                       $root_ca_cn             = lookup('profile::pki::client::root_ca_cn'),
     Optional[Stdlib::Filesource] $root_ca_source         = lookup('profile::pki::client::root_ca_source'),
     Optional[Stdlib::Unixpath]   $mutual_tls_client_cert = lookup('profile::pki::client::mutual_tls_client_cert'),
@@ -30,7 +32,6 @@ class profile::pki::client (
     Hash                         $certs                  = lookup('profile::pki::client::certs'),
 ) {
     $signer = "https://${signer_host}:${signer_port}"
-    $bundles_source = 'puppet:///modules/profile/pki/intermediates'
     if $root_ca_source {
         file { "/etc/ssl/certs/${root_ca_cn}.pem":
             ensure => file,
