@@ -36,7 +36,7 @@ class profile::environment (
                 content => template($custom_bashrc),
                 owner   => 'root',
                 group   => 'root',
-                mode    => '0444',
+                mode    => '0644',
         }
     }
     if $custom_skel_bashrc {
