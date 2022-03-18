@@ -36,7 +36,7 @@ define motd::script (
     if $source == undef and $content == undef  { fail('you must provide either "source" or "content"') }
     if $source != undef and $content != undef  { fail('"source" and "content" are mutually exclusive') }
 
-    $safe_name = regsubst($title, '[\W_]', '-', 'G')
+    $safe_name = regsubst($title, '[\W_]', '-', 'G').downcase
     $script    = sprintf('%02d-%s', $priority, $safe_name)
 
     file { "/etc/update-motd.d/${script}":
