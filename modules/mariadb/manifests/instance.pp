@@ -24,6 +24,7 @@ define mariadb::instance(
     $template = 'mariadb/instance.cnf.erb',
     $is_critical = false,
     $read_only = 1,
+    $event_scheduler         = 1,
     $source_dc = mediawiki::state('primary_dc'),
     $mysqld_extra_configs = {},
 ) {
