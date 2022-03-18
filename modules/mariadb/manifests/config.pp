@@ -34,6 +34,7 @@ class mariadb::config(
     $max_allowed_packet      = '16M',
     $innodb_pool_size        = undef,
     $innodb_change_buffering = 'none',
+    $event_scheduler         = 1,
     ) {
 
     $server_id = inline_template(
