@@ -76,27 +76,19 @@ class profile::environment (
 
     # /usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator only present in Buster and later
     $_export_systemd_env = $export_systemd_env and debian::codename::ge('buster')
-    $export_command = '/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator'
-    file_line { 'zsh_export_systemd_env':
-        ensure => $_export_systemd_env.bool2str('present', 'absent'),
-        path   => '/etc/zsh/zshenv',
-        line   => "export (${export_command})",
+    file { '/etc/zsh/zshenv':
+        ensure => stdlib::ensure($_export_systemd_env, 'file'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/environment/zshrc',
     }
-    # We should probably move this to profile_scripts
-    $content = @("CONTENT"/$)
-    systemd_vars=\$(${export_command})
-    if [ -n "\${systemd_vars}" ]
-    then
-        export \$systemd_vars
-    fi
-    | CONTENT
-
     file { '/etc/profile.d/systemd-environment.sh':
-        ensure  => stdlib::ensure($_export_systemd_env, 'file'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => $content,
+        ensure => stdlib::ensure($_export_systemd_env, 'file'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/environment/systemd-environment.sh',
     }
 
     ### Settings commons to all realms
