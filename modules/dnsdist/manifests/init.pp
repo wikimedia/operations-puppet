@@ -26,6 +26,9 @@
 #  [*doh_paths*]
 #    [array] URL paths to accept queries on. default: /, /dns-query.
 #
+#  [*enable_qps_max*]
+#    [bool] whether to restrict queries allowed per second. default: false.
+#
 #  [*qps_max*]
 #    [int] maximum number of queries allowed per second from an IP. default: 40.
 #
@@ -76,6 +79,7 @@ class dnsdist (
     Dnsdist::TLS_config                 $tls_config_dot,
     Boolean                             $enable_wikidough       = true,
     Array[String[1]]                    $doh_paths              = ['/', '/dns-query'],
+    Boolean                             $enable_qps_max         = false,
     Integer[1]                          $qps_max                = 40,
     Boolean                             $enable_packetcache     = true,
     Integer[1]                          $packetcache_max        = 10000000,
