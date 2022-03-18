@@ -316,7 +316,7 @@ def validate_duplicated_ops_permissions(users):
                                           'ops-adm-group', 'gpu-users', 'contint-admins',
                                           'contint-docker', 'builder-docker',
                                           'deploy-phabricator', 'analytics-search-users',
-                                          'deployment-ci-admins'])
+                                          'deployment-ci-admins', 'deployment-docker'])
                 if len(set(groups)) > 0:
                     log += "Malformed membership for ops user " + i + ", has additional group(s): "
                     log += str(groups) + "\n"
