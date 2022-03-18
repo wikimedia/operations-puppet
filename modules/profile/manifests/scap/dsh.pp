@@ -1,11 +1,12 @@
-# == Class profile::scap::dsh
-#
-# Installs the dsh files used by scap on a host
+# @summary Installs the dsh files used by scap on a host
+# @param groups dict of dsh groups
+# @param proxies list of scap proxies
+# @param masters list of scap masters
 class profile::scap::dsh(
-    Hash $groups = lookup('scap::dsh::groups'),
+    Hash                $groups  = lookup('scap::dsh::groups'),
     Array[Stdlib::Host] $proxies = lookup('scap::dsh::scap_proxies', {'default_value' => []}),
     Array[Stdlib::Host] $masters = lookup('scap::dsh::scap_masters', {'default_value' => []}),
-){
+) {
 
     $instances = {
         'main' => {
@@ -21,7 +22,7 @@ class profile::scap::dsh(
             'hosts' => (wmflib::class::hosts('mediawiki::scap') + wmflib::resource::hosts('scap::target')).sort.unique,
         },
     }
-    class { '::scap::dsh':
+    class { 'scap::dsh':
         groups       => $groups + $scap_targets,
         scap_proxies => $proxies,
         scap_masters => $masters,
