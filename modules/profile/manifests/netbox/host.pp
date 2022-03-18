@@ -15,7 +15,9 @@ class profile::netbox::host (
             Netbox::Host::Location::Virtual => "Virtual Machine on cluster: ${location['cluster']}",
             default                         => "Bare Metal Rack: ${location['rack']}",
         }
-        motd::message { $message: }
+        motd::message { 'netbox location':
+            message => $message,
+        }
     }
 }
 
