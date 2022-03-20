@@ -123,7 +123,7 @@ service::catalog:
         path: /wiki/Special:Blankpage
         host: en.wikipedia.org
     monitoring:
-      check_command: check_https_url!en.wikipedia.org!/wiki/Special:BlankPage
+      check_command: check_https_url_tmp!en.wikipedia.org!/wiki/Special:BlankPage
       sites:
         codfw:
           hostname: appservers.svc.codfw.wmnet
