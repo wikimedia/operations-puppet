@@ -74,7 +74,7 @@ service::catalog:
         path: /w/api.php?action=query&meta=siteinfo
         host: en.wikipedia.org
     monitoring:
-      check_command: check_https_url!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
+      check_command: check_https_url_tmp!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo
       sites:
         codfw:
           hostname: api.svc.codfw.wmnet

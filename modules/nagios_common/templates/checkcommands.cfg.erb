@@ -359,6 +359,8 @@ define command {
 
 # TODO: verify if it's actually checking the URL, --help says:
 # (when this option is used the URL is not checked.)
+# TODO: add quoted to ARG2 to ensure the URL is quoted and prevent unwanted
+# results (see T304237)
 define command {
     command_name    check_https_url
     command_line    $USER1$/check_http -H $ARG1$ -C9,7 --ssl --sni -I $HOSTADDRESS$ -u $ARG2$
@@ -368,7 +370,7 @@ define command {
 # (2022-03-20 volans)
 define command {
     command_name    check_https_url_tmp
-    command_line    $USER1$/check_http -H $ARG1$ -C9,5 --ssl --sni -I $HOSTADDRESS$ -u $ARG2$
+    command_line    $USER1$/check_http -H $ARG1$ -C9,5 --ssl --sni -I $HOSTADDRESS$ -u "$ARG2$"
     }
 
 define command {
