@@ -107,34 +107,35 @@ class profile::cache::varnish::frontend (
         $confd_experiment_fqdn = ''
     }
 
-    if $etcd_backends {
+    # Dynamic configuration sourced from etcd.
+    $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
+        $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
+
+    $directors_keyspaces = [ "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be" ]
+    $req_keyspaces = ['/request-patterns', "/request-actions/cache-${cache_cluster}"]
+    confd::file {
+        default:
+            ensure => $etcd_backends.bool2str('present', 'absent'),
+            reload => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
+            before => Service['varnish-frontend'],;
         # Backend caches used by this Frontend from Etcd
-        $reload_vcl_opts = varnish::reload_vcl_opts($vcl_config['varnish_probe_ms'],
-            $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
-
-        $keyspaces = [ "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be" ]
-
-        confd::file { '/etc/varnish/directors.frontend.vcl':
-            ensure     => present,
-            watch_keys => $keyspaces,
-            content    => template('profile/cache/varnish-frontend.directors.vcl.tpl.erb'),
-            reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
-            before     => Service['varnish-frontend'],
-        }
-        # blocked-nets used to be included in varnish::common::vcl.
-        # ACL blocked_nets is defined in hiera in the private puppet repo under
-        # /srv/private/hieradata/common.yaml. It is synced to etcd with a script.
-        # We use confd here so that any change to our configuration can be reflected
-        # in varnish without the need for a puppet run.
-        confd::file { '/etc/varnish/blocked-nets.inc.vcl':
-            ensure     => present,
+        '/etc/varnish/directors.frontend.vcl':
+            watch_keys => $directors_keyspaces,
+            content    => template('profile/cache/varnish-frontend.directors.vcl.tpl.erb'),;
+        # Abuse networks
+        '/etc/varnish/blocked-nets.inc.vcl':
             watch_keys => ['/request-ipblocks/abuse'],
-            prefix     => $conftool_prefix,
-            before     => Service['varnish-frontend'],
             content    => template('profile/cache/blocked-nets.inc.vcl.tpl.erb'),
-            reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
-        }
-    } else {
+            prefix     => $conftool_prefix,;
+        # Request filter actions based on the content of the
+        # /request-actions tree in conftool.
+        # Only enabled if $use_etcd_req_filters is true.
+        '/etc/varnish/dynamic.actions.inc.vcl':
+            watch_keys => $req_keyspaces,
+            content    => template('profile/cache/varnish-frontend-dynamic-actions.vcl.tpl.erb'),
+            prefix     => $conftool_prefix,;
+    }
+    unless $etcd_backends {
         # deployment-prep still uses the old template.
         $abuse_networks = network::parse_abuse_nets('varnish')
         file { '/etc/varnish/blocked-nets.inc.vcl':
@@ -144,19 +145,6 @@ class profile::cache::varnish::frontend (
             group   => 'root',
             mode    => '0444',
         }
-    }
-
-    # Request filter actions based on the content of the
-    # /request-actions tree in conftool.
-    # Only enabled if $use_etcd_req_filters is true.
-    $req_keyspaces = ['/request-patterns', "/request-actions/cache-${cache_cluster}"]
-    confd::file { '/etc/varnish/dynamic.actions.inc.vcl':
-        ensure     => $use_etcd_req_filters.bool2str('present', 'absent'),
-        reload     => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
-        prefix     => $conftool_prefix,
-        before     => Service['varnish-frontend'],
-        watch_keys => $req_keyspaces,
-        content    => template('profile/cache/varnish-frontend-dynamic-actions.vcl.tpl.erb'),;
     }
 
     # Transient storage limits T164768
