@@ -26,5 +26,8 @@ class dumps::web::htmldumps(
         content => template('dumps/web/htmldumps/nginx.conf.erb'),
         notify  => Service['nginx'],
     }
+
+    profile::auto_restarts::service { 'nginx': }
+
     include dumps::web::nginx_logrot
 }
