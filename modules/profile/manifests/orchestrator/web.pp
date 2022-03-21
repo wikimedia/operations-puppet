@@ -11,4 +11,6 @@ class profile::orchestrator::web {
         proto => 'tcp',
         port  =>  '(http https)',
     }
+
+    profile::auto_restarts::service { 'apache2': }
 }
