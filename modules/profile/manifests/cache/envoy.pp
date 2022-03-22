@@ -166,7 +166,6 @@ class profile::cache::envoy(
     }
 
     envoyproxy::tls_terminator { "${tls_port}": # lint:ignore:only_variable_string
-        api_version               => $profile::envoy::api_version,
         upstreams                 => $upstreams,
         websockets                => $websockets,
         fast_open_queue           => 150,

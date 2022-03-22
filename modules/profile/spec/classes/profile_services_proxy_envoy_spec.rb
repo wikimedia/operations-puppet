@@ -6,13 +6,9 @@ describe 'profile::services_proxy::envoy' do
 
     context "on #{os}" do
       context 'with ensure present' do
-        let(:pre_condition) {
-          'class { "profile::envoy": api_version => 3 }'
-        }
         let(:params) {
           {
             ensure: 'present',
-            api_version: 3,
             all_listeners: [
               {
                 name: 'commons',
