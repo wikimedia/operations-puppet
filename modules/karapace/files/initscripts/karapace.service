@@ -6,7 +6,7 @@ User=karapace
 Group=karapace
 Type=notify
 Restart=always
-ExecStart=/usr/bin/karapace /etc/karapace/karapace.config.json
+ExecStart=/usr/lib/karapace/bin/python /usr/lib/karapace/bin/karapace /etc/karapace/karapace.config.json
 ExecReload=/bin/kill -HUP $MAINPID
 WorkingDirectory=/var/lib
 
