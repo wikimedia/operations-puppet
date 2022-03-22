@@ -40,7 +40,7 @@ class openstack::monitor::networktests (
     # it was also created in codfw1dev. Same user with different ssh key
     $sshuser = 'srv-networktests'
 
-    $ssh_hostkey = '-o UserKnownHostFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=ERROR'
+    $ssh_hostkey = '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=ERROR'
     $ssh_identity = "-i ${sshkeyfile} -o User=${sshuser}"
     $ssh_opts = "-q -o ConnectTimeout=5 -o NumberOfPasswordPrompts=0 ${ssh_hostkey}"
     $ssh_proxy = "-o Proxycommand=\"ssh ${ssh_hostkey} -i ${sshkeyfile} -W %h:%p ${sshuser}@${sshbastion}\""
