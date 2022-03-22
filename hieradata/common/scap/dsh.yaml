@@ -17,13 +17,13 @@ scap::dsh::scap_masters:
 scap::dsh::groups:
   jobrunner:
     conftool:
-      - {'cluster': 'jobrunner', 'service': 'apache2'}
+      - {'cluster': 'jobrunner', 'service': 'nginx'}
   appserver:
     conftool:
-      - {'cluster': 'appserver', 'service': 'apache2'}
+      - {'cluster': 'appserver', 'service': 'nginx'}
   api_appserver:
     conftool:
-      - {'cluster': 'api_appserver', 'service': 'apache2'}
+      - {'cluster': 'api_appserver', 'service': 'nginx'}
   testserver:
     conftool:
       - {'cluster': 'testserver', 'service': 'apache2'}
