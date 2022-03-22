@@ -365,12 +365,12 @@ node /^(contint2002|gerrit2002)\.wikimedia\.org$/ {
 
 }
 
-node /^cp10(7[9]|81)\.eqiad\.wmnet$/ {
+node /^cp1081\.eqiad\.wmnet$/ {
     role(cache::text)
 }
 
 # HAproxy test T290005
-node /^cp10(7[57]|8[3579])\.eqiad\.wmnet$/ {
+node /^cp10(7[579]|8[3579])\.eqiad\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
