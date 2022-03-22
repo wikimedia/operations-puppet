@@ -28,7 +28,7 @@ import subprocess
 clients = mwopenstackclients.clients()
 
 puppetmaster = "puppetmaster.cloudinfra.wmflabs.org"
-bastion_ip = "185.15.56.13"
+bastion_ip = "185.15.56.87"
 puppetmaster_username = "osstackcanary"
 puppetmaster_keyfile = "/var/lib/osstackcanary/osstackcanary_id"
 
