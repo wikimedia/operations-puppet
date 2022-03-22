@@ -11,6 +11,7 @@ class profile::calico::kubernetes(
     String $calicoctl_token = lookup('profile::calico::kubernetes::calicoctl::token'),
     Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
+    Hash $calico_cni_config = lookup('profile::calico::kubernetes::cni_config'),
 ){
 
     class { '::calico':
@@ -20,10 +21,16 @@ class profile::calico::kubernetes(
         calico_version     => $calico_version,
     }
 
-    class { '::calico::cni':
-        master_fqdn         => $master_fqdn,
-        calico_cni_username => $calico_cni_username,
-        calico_cni_token    => $calico_cni_token,
+    k8s::kubelet::cni { 'calico':
+        priority => 10,
+        config   => $calico_cni_config,
+    }
+
+    k8s::kubeconfig { '/etc/cni/net.d/calico-kubeconfig':
+        master_host => $master_fqdn,
+        username    => $calico_cni_username,
+        token       => $calico_cni_token,
+        require     => File['/etc/cni/net.d'],
     }
 
     # TODO: We need to configure BGP peers in calico datastore (helm chart) as well.
