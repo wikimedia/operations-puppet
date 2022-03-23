@@ -26,8 +26,11 @@ define profile::pki::multirootca::monitoring(
         'check_https_client_auth_puppet_post',
         $vhost,
         '/api/v1/cfssl/info',
-        "{\\\"label\\\":\\\"${intermediate}\\\"}",
-        '\"success\":true',
+        # Triple escape.  We have to first escape for puppet so the nagios command definition
+        # escapes the forward slash.  i.e. the command definitions should be
+        # {\\"label\\":\\"$intermediate}\\"
+        "{\\\\\"label\\\\\":\\\\\"${intermediate}\\\\\"}",
+        '\\\\"success\\\\":true',
     ].join('!')
     monitoring::service {"https_pki_signer_${intermediate}":
         ensure        => $ensure,
