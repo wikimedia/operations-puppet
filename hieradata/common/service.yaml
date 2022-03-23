@@ -2412,6 +2412,7 @@ service::catalog:
         active_active: true
     aliases:
       - "ms-fe"
+    role: "swift::proxy"
 
   tegola-vector-tiles:
     description: Tegola Vector Tiles, tegola-vector-tiles.svc.%{::site}.wmnet
