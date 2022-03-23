@@ -3,7 +3,7 @@ class kubeadm::helm (
 ) {
     require ::kubeadm::repo
 
-    package { [ 'helm', 'helm-diff' ]:
+    package { [ 'helm', 'hemlfile', 'helm-diff' ]:
         ensure => 'present',
         tag    => 'kubeadm-k8s',
     }
