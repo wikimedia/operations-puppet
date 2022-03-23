@@ -114,6 +114,12 @@ class profile::docker_registry_ha::registry(
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker',
     }
 
+    monitoring::service { 'check_docker_registry_https_expiry':
+        description   => 'Docker registry HTTPS interface',
+        check_command => "check_https_expiry!${facts['networking']['fqdn']}!443",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker',
+    }
+
     # This will query /debug/health registry endpoint on 5001 debug server
     monitoring::service { 'check_docker_registry_health':
         description   => 'Docker registry health',
