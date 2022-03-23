@@ -576,3 +576,10 @@ define command {
     command_line    $USER1$/check_http --ssl --sni -C7,10 -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -P '[{"itemType":"journalArticle"}]' -T 'application/json' -u "$ARG3$"
 }
 
+# Perform only certificate expiration check at TLS level (i.e. no HTTP whatsoever)
+# See also https://phabricator.wikimedia.org/T304321
+define command {
+    command_name    check_https_expiry
+    command_line    $USER1$/check_http --ssl --sni --certificate 9,7 -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$
+}
+
