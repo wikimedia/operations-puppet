@@ -14,7 +14,12 @@ class kubeadm::helm (
             # Helm (per-user caches and repositories), but still load plugins
             # installed from Apt and (as a side effect) block non-roots from
             # manually installing plugins.
-            'HELM_PLUGINS' => '/etc/helm/plugins',
+            'HELM_PLUGINS'         => '/etc/helm/plugins',
+            # Configure the default Helmfile 'environment' to the current VPS project,
+            # so that we can more easily apply per-project (tools, toolsbeta, paws, ...)
+            # settings in our Helmfiles
+            # for more details, see: https://github.com/roboll/helmfile#environment
+            'HELMFILE_ENVIRONMENT' => $::labsproject,
         },
     }
 
