@@ -17,21 +17,19 @@ class openstack::keystone::monitor::services(
         $ensure = 'absent'
     }
 
-    monitoring::service { "keystone-http-${auth_port}":
-        ensure        => $ensure,
-        critical      => $critical,
-        description   => "keystone admin endpoint port ${auth_port}",
-        check_command => "check_https_on_port!${auth_port}",
-        contact_group => $contact_groups,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
-    }
-
-    monitoring::service { "keystone-http-${public_port}": # v2 api is limited here
-        ensure        => $ensure,
-        critical      => $critical,
-        description   => "keystone public endoint port ${public_port}",
-        check_command => "check_https_on_port!${public_port}",
-        contact_group => $contact_groups,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+    [$auth_port, $public_port].each |$port| {
+        monitoring::service {
+            default:
+                ensure        => $ensure,
+                critical      => $critical,
+                contact_group => $contact_groups,
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting';
+            "keystone-http-${port}":
+                description   => "keystone endpoint port ${port}",
+                check_command => "check_https_on_port!${port}";
+            "keystone-http-${port}-ssl-expiry":
+                description   => "keystone endpoint port ${port} SSL Expiry",
+                check_command => "check_https_expiry!${port}";
+        }
     }
 }
