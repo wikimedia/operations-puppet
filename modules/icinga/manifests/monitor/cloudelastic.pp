@@ -13,37 +13,28 @@ class icinga::monitor::cloudelastic {
         contact_group => 'admins,team-discovery',
     }
 
-    monitoring::service {
-        default:
-            host          => 'cloudelastic.wikimedia.org',
-            group         => 'lvs',
-            critical      => false,
-            contact_group => 'admins,team-discovery',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
-        ;
-        'cloudelastic_chi_https':
-            description   => 'WMF Cloud (Chi Cluster) - Prod MW AppServer Port - HTTPS',
-            check_command => 'check_https_lvs_on_port!cloudelastic.wikimedia.org!9243!/',
-        ;
-        'cloudelastic_chi_https_public':
-            description   => 'WMF Cloud (Chi Cluster) - Public Internet Port - HTTPS',
-            check_command => 'check_https_lvs_on_port!cloudelastic.wikimedia.org!8243!/',
-        ;
-        'cloudelastic_omega_https':
-            description   => 'WMF Cloud (Omega Cluster) - Prod MW AppServer Port - HTTPS',
-            check_command => 'check_https_lvs_on_port!cloudelastic.wikimedia.org!9443!/',
-        ;
-        'cloudelastic_omega_https_public':
-            description   => 'WMF Cloud (Omega Cluster) - Public Internet Port - HTTPS',
-            check_command => 'check_https_lvs_on_port!cloudelastic.wikimedia.org!8443!/',
-        ;
-        'cloudelastic_psi_https':
-            description   => 'WMF Cloud (Psi Cluster) - Prod MW AppServer Port - HTTPS',
-            check_command => 'check_https_lvs_on_port!cloudelastic.wikimedia.org!9643!/',
-        ;
-        'cloudelastic_psi_https_public':
-            description   => 'WMF Cloud (Psi Cluster) - Public Internet Port - HTTPS',
-            check_command => 'check_https_lvs_on_port!cloudelastic.wikimedia.org!8643!/',
-        ;
+    $services = {
+        'chi'   => { 'public_port' => 8243, 'private_port' => 9243},
+        'omega' => { 'public_port' => 8443, 'private_port' => 9443},
+        'psi'   => { 'public_port' => 8643, 'private_port' => 9643},
+    }
+    $services.each |$cluster, $ports| {
+        monitoring::service {
+            default:
+                host          => 'cloudelastic.wikimedia.org',
+                group         => 'lvs',
+                critical      => false,
+                contact_group => 'admins,team-discovery',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
+            ;
+            "cloudelastic_${cluster}_https":
+                description   => "WMF Cloud (${cluster.capitalize} Cluster) - Prod MW AppServer Port - HTTPS",
+                check_command => "check_https_lvs_on_port!cloudelastic.wikimedia.org!${ports['private_port']}!/",
+            ;
+            "cloudelastic_${cluster}_https_public":
+                description   => "WMF Cloud (${cluster.capitalize} Cluster) - Public Internet Port - HTTPS",
+                check_command => "check_https_lvs_on_port!cloudelastic.wikimedia.org!${ports['public_port']}!/",
+            ;
+        }
     }
 }
