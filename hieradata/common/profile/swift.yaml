@@ -9,6 +9,12 @@ profile::swift::accounts:
         account_name: 'AUTH_mw'
         auth:         'http://ms-fe.svc.%{::site}.wmnet'
         user:         'mw:media'
+    mw_backup:
+        access:       ''
+        account_name: 'AUTH_mw'
+        auth:         'http://ms-fe.svc.%{::site}.wmnet'
+        user:         'mw:backup'
+        stats_enabled: 'no'
     mw_thumbor:
         access:       ''
         account_name: 'AUTH_mw'
