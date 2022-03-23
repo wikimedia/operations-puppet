@@ -65,11 +65,16 @@ class openstack::nova::fullstack::service(
     }
 
     systemd::service { 'nova-fullstack':
-        ensure  => $ensure,
-        content => systemd_template('nova-fullstack'),
-        restart => true,
-        require => [
-                    File['/usr/local/bin/nova-fullstack'],
-                    ],
+        ensure    => $ensure,
+        content   => systemd_template('nova-fullstack'),
+        restart   => true,
+        require   => [
+            File['/usr/local/bin/nova-fullstack'],
+            File['/usr/local/sbin/nova-fullstack'],
+        ],
+        subscribe => [
+            File['/usr/local/bin/nova-fullstack'],
+            File['/usr/local/sbin/nova-fullstack'],
+        ],
     }
 }
