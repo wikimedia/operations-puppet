@@ -124,14 +124,19 @@ class lvs::monitor_services(
                 notes_url   => 'https://wikitech.wikimedia.org/wiki/Event_Platform/Instrumentation_How_To#In_production',
                 ;
         }
-        monitoring::service { "check_docker_registry_cluster_${dc}":
-            host          => "docker-registry.svc.${dc}.wmnet",
-            description   => "docker-registry LVS ${dc}",
-            check_command => "check_https_url!docker-registry.svc.${dc}.wmnet!/v2/",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
-            critical      => $critical,
-            contact_group => $contacts,
-            group         => 'lvs'
+        monitoring::service {
+            default:
+                host          => "docker-registry.svc.${dc}.wmnet",
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker-registry-runbook',
+                critical      => $critical,
+                contact_group => $contacts,
+                group         => 'lvs';
+            "check_docker_registry_cluster_${dc}":
+                description   => "docker-registry LVS ${dc}",
+                check_command => "check_https_url!docker-registry.svc.${dc}.wmnet!/v2/";
+            "check_docker_registry_cluster_${dc}_ssl_expiry":
+                description   => "docker-registry LVS SSL Expiry ${dc}",
+                check_command => "check_https_expiry!docker-registry.svc.${dc}.wmnet!443";
         }
     }
 
