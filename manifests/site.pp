@@ -380,12 +380,12 @@ node /^cp10(7[68]|8[02468]|90)\.eqiad\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
-node /^cp20(2[79])\.codfw\.wmnet$/ {
+node /^cp2027\.codfw\.wmnet$/ {
     role(cache::text)
 }
 
 # HAProxy test T290005
-node /^cp20(3[13579]|41)\.codfw\.wmnet$/ {
+node /^cp20(2[9]|3[13579]|41)\.codfw\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
