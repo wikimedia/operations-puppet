@@ -19,6 +19,8 @@ class profile::rsyslog::netdev_kafka_relay (
         false => 0,
     }
 
+    include profile::base::certificates
+    $trusted_ca_path = $profile::base::certificates::trusted_ca_path
     rsyslog::conf { 'netdev_kafka_relay':
         content  => template('profile/rsyslog/netdev_kafka_relay.conf.erb'),
         priority => 50,

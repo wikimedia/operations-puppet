@@ -17,6 +17,8 @@ class profile::rsyslog::udp_json_logback_compat(
         false => 0,
     }
 
+    include profile::base::certificates
+    $trusted_ca_path = $profile::base::certificates::trusted_ca_path
     rsyslog::conf { 'udp_json_logback_compat':
         content  => template('profile/rsyslog/udp_json_logback_compat.conf.erb'),
         priority => 50,

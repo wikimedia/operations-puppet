@@ -26,7 +26,7 @@ ruleset(name="udp_localhost_to_kafka" queue.type="LinkedList") {
          queue.checkpointInterval="5"
      <%- end -%>
          confParam=[ "security.protocol=ssl",
-                     "ssl.ca.location=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                     "ssl.ca.location=<%= @trusted_ca_path %>",
                      "compression.codec=snappy",
                      "socket.timeout.ms=60000",
                      "socket.keepalive.enable=true",
