@@ -147,6 +147,8 @@ class graphite::web(
         require  => File['/var/log/graphite-web'],
     }
 
+    profile::auto_restarts::service { 'uwsgi-graphite-web': }
+
     file { '/usr/local/sbin/graphite-index':
         source  => "puppet:///modules/graphite/graphite-index.${::lsbdistcodename}.py",
         mode    => '0555',
