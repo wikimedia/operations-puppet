@@ -7,17 +7,18 @@ class icinga::monitor::gitlab {
         host_fqdn => 'gitlab.wikimedia.org',
     }
 
-    monitoring::service { 'gitlab-https':
-        description   => 'Gitlab HTTPS healthcheck',
-        check_command => 'check_https_url!gitlab.wikimedia.org!/explore',
-        host          => 'gitlab.wikimedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/GitLab#Monitoring',
-    }
-
-    monitoring::service { 'gitlab-ssh':
-        description   => 'Gitlab SSH healthcheck git daemon',
-        check_command => 'check_ssh_port_ip!22!gitlab.wikimedia.org',
-        host          => 'gitlab.wikimedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/GitLab#Monitoring',
+    monitoring::service {
+        default:
+            host      => 'gitlab.wikimedia.org',
+            notes_url => 'https://wikitech.wikimedia.org/wiki/GitLab#Monitoring';
+        'gitlab-https':
+            description   => 'Gitlab HTTPS healthcheck',
+            check_command => 'check_https_url!gitlab.wikimedia.org!/explore';
+        'gitlab-https-expiry':
+            description   => 'Gitlab HTTPS SSL Expiry',
+            check_command => 'check_https_expiry!gitlab.wikimedia.org!443';
+        'gitlab-ssh':
+            description   => 'Gitlab SSH healthcheck git daemon',
+            check_command => 'check_ssh_port_ip!22!gitlab.wikimedia.org';
     }
 }
