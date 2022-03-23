@@ -1,7 +1,6 @@
 <?php
 // Monitoring helper for PHP-FPM 7.x
-// We need to tag the prometheus metrics with the php version as well.
-define('PHP_VERSION', phpversion());
+
 // Only consider blocks <5M for the fragmentation
 define('BLOCK_SIZE', 5*1024*1024);
 
@@ -82,6 +81,7 @@ class PrometheusMetric {
 		$this->key = $key;
 		$this->description = $description;
 		// Set labels empty
+		// We need to tag the prometheus metrics with the php version as well.
 		$this->labels = ['php_version="' . PHP_VERSION . '"'];
 		$this->type = $type;
 	}
