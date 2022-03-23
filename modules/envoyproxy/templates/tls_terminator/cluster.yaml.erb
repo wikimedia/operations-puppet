@@ -1,8 +1,11 @@
 name: <%= @upstream_name %>
 connect_timeout: <%= @connect_timeout %>s
 <%- if @idle_timeout -%>
-common_http_protocol_options:
-  idle_timeout: <%= @idle_timeout %>s
+typed_extension_protocol_options:
+  envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+    "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+    common_http_protocol_options:
+      idle_timeout: <%= @idle_timeout %>s
 <%- end -%>
 <%- if @upstream['upstream'].include? 'port' -%>
 type: strict_dns

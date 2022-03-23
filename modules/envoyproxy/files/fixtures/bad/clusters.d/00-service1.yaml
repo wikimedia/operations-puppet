@@ -2,7 +2,10 @@ name: service1
 connect_timeout: 0.25s
 type: strict_dns
 lb_policy: round_robin
-http2_protocol_options: {}
+typed_extension_protocol_options:
+  envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+    "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+    http2_protocol_options: {}
 hosts:
 - socket_address:
     address: service1
