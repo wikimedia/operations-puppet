@@ -60,4 +60,10 @@ class noc {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Noc.wikimedia.org',
     }
 
+    monitoring::service { 'https-noc-ssl-expiry':
+        description   => 'HTTPS-noc SSL Expiry',
+        check_command => 'check_https_expiry!noc.wikimedia.org!443',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Noc.wikimedia.org',
+    }
+
 }
