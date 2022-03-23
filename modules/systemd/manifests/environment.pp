@@ -1,4 +1,4 @@
-# @summery add a set of environment variables for use by systemd user services.
+# @summary add a set of environment variables for use by systemd user services.
 #   WMF specific: if profile::environment::export_systemd_env: true theses variables will also
 #   get injected into user shells.
 # @param ensure ensureable
