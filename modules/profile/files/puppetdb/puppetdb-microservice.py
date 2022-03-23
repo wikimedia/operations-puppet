@@ -66,6 +66,25 @@ def _puppetdb_request(*paths, json=None, redacted=False):
     return results.json()
 
 
+@app.route("/")
+def health_check():
+    """Call the /status/v1/services/puppetdb-status api and indicate if puppetdb is healthy."""
+    url = 'http://localhost:8080/status/v1/services/puppetdb-status'
+    result = requests.get(url)
+    if result.status_code != 200:
+        abort(result.status_code)
+    result = result.json()
+    status = result['status']
+    if (
+        result['state'] == 'running'
+        and status['read_db_up?']
+        and status['write_db_up?']
+        and not status['maintenance_mode?']
+    ):
+        return jsonify({'status': 'OK'})
+    return jsonify(result), 503
+
+
 @app.route("/v1/facts/<fact_name>")
 def fact(fact_name):
     """Accepts a single fact name and returns a dict of {hostname: value}.
@@ -101,7 +120,7 @@ def host_fact(fact_name, host_name):
 
     pdb_query = {"query": ["~", "certname", "^{}\\.".format(host_name)]}
     results = _puppetdb_request('facts', fact_name, json=pdb_query)
-    if (len(results) == 1):
+    if len(results) == 1:
         result_value = results[0]["value"]
         if result_value == "Not Specified":
             result_value = None
@@ -114,6 +133,7 @@ def host_fact(fact_name, host_name):
 # ------------------------------------------------------------------
 # Redacted proxy to PuppetDB API endpoints, URIs must be unmodified.
 # ------------------------------------------------------------------
+
 
 @app.route("/pdb/query/v4/nodes", methods=["POST"])
 def nodes():
