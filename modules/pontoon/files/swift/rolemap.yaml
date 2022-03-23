@@ -14,3 +14,6 @@ thanos::frontend:
 
 thanos::backend:
   - thanos-be-01.swift.eqiad1.wikimedia.cloud # bullseye
+
+pontoon::lb:
+  - lb-02.swift.eqiad1.wikimedia.cloud
