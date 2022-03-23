@@ -35,6 +35,14 @@ class icinga::monitor::cloudelastic {
                 description   => "WMF Cloud (${cluster.capitalize} Cluster) - Public Internet Port - HTTPS",
                 check_command => "check_https_lvs_on_port!cloudelastic.wikimedia.org!${ports['public_port']}!/",
             ;
+            "cloudelastic_${cluster}_https_expiry":
+                description   => "WMF Cloud (${cluster.capitalize} Cluster) - Prod MW AppServer Port - SSL Expiry",
+                check_command => "check_https_expiry!cloudelastic.wikimedia.org!${ports['private_port']}!/",
+            ;
+            "cloudelastic_${cluster}_https_public_expiry":
+                description   => "WMF Cloud (${cluster.capitalize} Cluster) - Public Internet Port - SSL Expiry",
+                check_command => "check_https_expiry!cloudelastic.wikimedia.org!${ports['public_port']}!/",
+            ;
         }
     }
 }
