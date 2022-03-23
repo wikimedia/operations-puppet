@@ -154,5 +154,6 @@ class profile::hue (
         }
     }
 
+    profile::auto_restarts::service { 'hue': }
     profile::auto_restarts::service { 'apache2': }
 }
