@@ -153,6 +153,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: datahub
         - name: datahub-deploy
+    developer-portal:
+      usernames:
+        - name: developer-portal
+        - name: developer-portal-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
