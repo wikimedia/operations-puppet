@@ -42,7 +42,7 @@ mediabackup:
   mw_db_port: 3313
   mw_db_user: 'mediabackup'
   # please note mw_db_password is setup on the secret puppet repo
-  dblist: 's3.dblist'
+  wiki: 'testwiki'
   db_host: 'db1176.eqiad.wmnet'
   db_port: 3306
   db_user: 'mediabackup'
