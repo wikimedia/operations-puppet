@@ -360,7 +360,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
-              shubhankar, dalezhou, nokafor, otich]
+              shubhankar, dalezhou, nokafor, otich, sgimeno]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5159,6 +5159,15 @@ users:
     uid: 30182
     gid: 500
     ssh_keys: []
+  sgimeno:
+    ensure: present
+    realname: Sergio Gimeno
+    email: sgimeno@wikimedia.org
+    uid: 34724
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZfnjboIHwyJ849bMbH9NspXL6dTjMkoZHflvrMLcvt sergio@wmf2988
+    krb: present
 
 ldap_only_users:
   abartov:
