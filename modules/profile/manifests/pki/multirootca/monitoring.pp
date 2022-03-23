@@ -26,7 +26,7 @@ define profile::pki::multirootca::monitoring(
         'check_https_client_auth_puppet_post',
         $vhost,
         '/api/v1/cfssl/info',
-        "{\\\"label\\\":\\\"${intermediate}\\\"",
+        "{\\\"label\\\":\\\"${intermediate}\\\"}",
         '\"success\":true',
     ].join('!')
     monitoring::service {"https_pki_signer_${intermediate}":
