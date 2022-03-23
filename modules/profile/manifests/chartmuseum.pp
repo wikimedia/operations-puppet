@@ -56,6 +56,11 @@ class profile::chartmuseum(
         notes_url     => $monitoring_notes_url,
     }
 
+    monitoring::service { 'check_chartmuseum_https_expiry':
+        description   => 'ChartMuseum HTTP',
+        check_command => "check_https_expiry!${hostname}!443",
+        notes_url     => $monitoring_notes_url,
+    }
 
     # Setup a to package and sync (new) charts automatically
     #
