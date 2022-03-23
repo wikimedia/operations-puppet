@@ -199,6 +199,12 @@ class profile::debmonitor::server (
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
         }
 
+        monitoring::service { 'debmonitor-cdn-https-expiry':
+            description   => 'debmonitor.wikimedia.org:7443 CDN SSL Expiry',
+            check_command => 'check_https_expiry!debmonitor.wikimedia.org!7443',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
+        }
+
         monitoring::service { 'debmonitor-https':
             description   => 'debmonitor.discovery.wmnet:443 internal',
             check_command => 'check_https_client_auth_puppet!debmonitor.discovery.wmnet!/client!200!HEAD',
