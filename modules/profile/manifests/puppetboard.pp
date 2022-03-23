@@ -138,6 +138,7 @@ class profile::puppetboard (
             cookie_secure    => 'On',
             vhost_settings   => {'uwsgi_port' => $uwsgi_port},
             environment      => 'staging',
+            enable_monitor   => false,
         }
     }
     if $vhost_saml {
@@ -153,6 +154,7 @@ class profile::puppetboard (
             vhost_settings   => {'uwsgi_port' => $uwsgi_port},
             validate_saml    => true,
             environment      => 'staging',
+            enable_monitor   => false,
         }
     }
 }
