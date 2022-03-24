@@ -17,7 +17,7 @@ class icinga::monitor::debmonitor {
             check_command => 'check_https_redirect!443!debmonitor.wikimedia.org!/!302!https://idp.wikimedia.org/';
         'debmonitor-healthcheck-expiry':
             description   => 'Debmonitor Health Check Expiry',
-            check_command => 'check_https_expiry!debmonitor.wikimedia.org!/!443';
+            check_command => 'check_https_expiry!debmonitor.wikimedia.org!443';
     }
 
 }
