@@ -4,7 +4,6 @@ Description=Your Kafka essentials in one tool
 [Service]
 User=karapace
 Group=karapace
-Type=notify
 Restart=always
 ExecStart=/usr/lib/karapace/bin/python /usr/lib/karapace/bin/karapace /etc/karapace/karapace.config.json
 ExecReload=/bin/kill -HUP $MAINPID
