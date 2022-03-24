@@ -79,14 +79,8 @@ class profile::cache::base(
         watch_keys => ['/request-ipblocks/cloud'],
         prefix     => $conftool_prefix,
         before     => Service['varnish-frontend'],
-        content    => template('profile/cache/public_clouds.json.tpl.erb')
-    }
-    confd::file { '/var/netmapper/abuse_networks.json':
-        ensure     => absent,
-        watch_keys => ['/request-ipblocks/abuse'],
-        prefix     => $conftool_prefix,
-        before     => Service['varnish-frontend'],
-        content    => template('profile/cache/abuse_networks.json.tpl.erb')
+        content    => template('profile/cache/public_clouds.json.tpl.erb'),
+        check      => '/usr/bin/vnm_validate {{.src}}'
     }
 
     ###########################################################################
