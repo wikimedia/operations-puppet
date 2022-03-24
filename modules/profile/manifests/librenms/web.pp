@@ -40,4 +40,10 @@ class profile::librenms::web {
         check_command => "check_https_url!${sitename}!http://${sitename}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/LibreNMS',
     }
+    monitoring::service { 'librenms-ssl-expiry':
+        ensure        => $monitoring_ensure,
+        description   => 'LibreNMS HTTPS sl expiry',
+        check_command => "check_https_expiry!${sitename}!443",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/LibreNMS',
+    }
 }
