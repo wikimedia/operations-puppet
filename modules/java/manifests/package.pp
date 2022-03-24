@@ -25,7 +25,7 @@ define java::package(
 
     $package_name = "openjdk-${package_info['version']}-${package_info['variant']}"
 
-    if $package_info['version'] == '8' and debian::codename::eq('buster') {
+    if $package_info['version'] == '8' and debian::codename::ge('buster') {
         apt::package_from_component { $package_name:
             component => 'component/jdk8',
             packages  => [$package_name],
