@@ -26,12 +26,6 @@
 #  [*doh_paths*]
 #    [array] URL paths to accept queries on. default: /, /dns-query.
 #
-#  [*enable_qps_max*]
-#    [bool] whether to restrict queries allowed per second. default: false.
-#
-#  [*qps_max*]
-#    [int] maximum number of queries allowed per second from an IP. default: 40.
-#
 #  [*enable_packetcache*]
 #    [bool] whether to enable dnsdist's packet cache. default: true.
 #
