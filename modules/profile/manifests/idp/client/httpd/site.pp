@@ -114,7 +114,7 @@ define profile::idp::client::httpd::site (
         }
         monitoring::service {"https-${title}-expiry":
             description   => "${title} tls expiry",
-            check_command => "check_https_expiry!${title}!${protected_uri}",
+            check_command => "check_https_expiry!${title}!443",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
         }
     }
