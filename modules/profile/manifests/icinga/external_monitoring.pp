@@ -36,4 +36,9 @@ class profile::icinga::external_monitoring (
         check_command => "check_https_unauthorized!${vhost}!/cgi-bin/icinga/extinfo.cgi?type=0!403",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/https_unauthorized',
     }
+    monitoring::service {"https-${vhost}-expiry":
+        description   => "${vhost} SSL Expiry",
+        check_command => "check_https_expiry!${vhost}!443",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/https_unauthorized',
+    }
 }
