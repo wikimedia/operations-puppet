@@ -33,13 +33,18 @@ class profile::phabricator::monitoring (
             host_fqdn => 'phabricator.wikimedia.org',
         }
 
-        monitoring::service { 'phabricator-https':
-            description   => 'https://phabricator.wikimedia.org',
-            check_command => 'check_https_phabricator',
-            contact_group => $phab_contact_groups,
-            critical      => true,
-            host          => 'phabricator.wikimedia.org',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator',
+        monitoring::service {
+            default:
+                contact_group => $phab_contact_groups,
+                critical      => true,
+                host          => 'phabricator.wikimedia.org',
+                notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator';
+            'phabricator-https':
+                description   => 'https://phabricator.wikimedia.org',
+                check_command => 'check_https_phabricator';
+            'phabricator-https-expiry':
+                description   => 'https://phabricator.wikimedia.org',
+                check_command => 'check_https_expiry!phabricator.wikimedia.org!443';
         }
     }
 }
