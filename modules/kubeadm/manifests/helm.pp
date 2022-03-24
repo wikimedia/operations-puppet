@@ -22,8 +22,4 @@ class kubeadm::helm (
             'HELMFILE_ENVIRONMENT' => $::labsproject,
         },
     }
-
-    file { '/etc/profile.d/helm-config.sh':
-        ensure => absent,
-    }
 }
