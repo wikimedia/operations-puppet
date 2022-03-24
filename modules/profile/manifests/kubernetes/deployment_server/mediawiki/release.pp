@@ -21,7 +21,7 @@ class profile::kubernetes::deployment_server::mediawiki::release (
 
     # Although it can be recreated somehow by scap, we don't want
     # to lose history.
-    backup::set { $kubernetes_release_dir: }
+    backup::set { 'mediawiki-k8s-releases-repository': }
 
     # Mediawiki deployment configuration
     file { "${general_dir}/mediawiki-deployments.yaml":

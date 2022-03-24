@@ -1,5 +1,7 @@
 # List of available backup filesets
-class profile::backup::filesets() {
+class profile::backup::filesets(
+    Stdlib::Unixpath $helmfile_general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     # This has been taken straight from old files/backup/disklist-*
     bacula::director::fileset { 'root':
         includes     => [ '/' ]
@@ -200,5 +202,9 @@ class profile::backup::filesets() {
 
     bacula::director::fileset { 'pki-root-cfssl':
         includes => [ '/etc/cfssl' ]
+    }
+    # Kubernetes mediawiki releases repository. See T299648
+    bacula::director::fileset { 'mediawiki-k8s-releases-repository':
+        includes => [ "${helmfile_general_dir}/mediawiki/release"]
     }
 }
