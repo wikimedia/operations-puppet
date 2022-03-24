@@ -185,6 +185,13 @@ class profile::netbox (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
     }
 
+    monitoring::service { 'netbox-https-expiry':
+        ensure        => $active_ensure,
+        description   => 'netbox HTTPS expiry',
+        check_command => 'check_https_expiry!netbox.wikimedia.org!443',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Netbox',
+    }
+
 
     # Report Deployment
     #
