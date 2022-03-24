@@ -7,6 +7,7 @@ class role::builder {
     include profile::docker::builder
     include profile::docker::ferm
     include profile::docker::reporter
+    include profile::docker::prune
     include profile::systemtap::devserver
     include profile::java
 

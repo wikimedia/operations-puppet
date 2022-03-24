@@ -42,31 +42,6 @@ class package_builder(
         },
     }
 
-    # Purge images on a weekly basis to avoid partition filling up
-    systemd::timer::job { 'docker-system-prune-all':
-        ensure      => present,
-        description => 'Prune all Docker images and volumes',
-        user        => 'root',
-        command     => '/usr/bin/docker system prune --all --volumes --force',
-        splay       => 3600,  # seconds
-        interval    => {
-            'start'    => 'OnCalendar',
-            'interval' => 'Sunday 3:00 UTC',
-        },
-    }
-
-    systemd::timer::job { 'docker-system-prune-dangling':
-        ensure      => present,
-        description => 'Prune dangling Docker images',
-        user        => 'root',
-        command     => '/usr/bin/docker system prune --force',
-        splay       => 3600,  # seconds
-        interval    => {
-            'start'    => 'OnCalendar',
-            'interval' => 'Mon-Sat 3:00 UTC',
-        },
-    }
-
     # Install lintian from backports to make sure it checks the latest version
     # of the Debian Policy
     apt::pin { 'lintian':
