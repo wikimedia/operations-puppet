@@ -1,10 +1,15 @@
 cluster: kubernetes-staging
 profile::kubernetes::node::packages_from_future: true
 profile::calico::kubernetes::calico_version: '3'
-profile::docker::storage::physical_volumes: "/dev/md1"
-profile::docker::storage::vg_to_remove: 'todelete'
-profile::docker::engine::version: "18.06.3~ce~3-0~debian"
-profile::docker::engine::packagename: "docker-ce"
+profile::base::overlayfs: true
+profile::docker::engine::force_default_docker_storage: true
+profile::docker::storage::physical_volumes: ~
+profile::docker::storage::vg_to_remove: ~
+# FIXME: this parameter is not needed anymore, since the docker class
+#        doesn't use the version for Buster+.
+#        We need to change the related profile and then drop the version.
+profile::docker::engine::version: '20.10.5+dfsg1-1+deb11u1'
+profile::docker::engine::packagename: "docker.io"
 profile::docker::engine::declare_service: true
 profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
 profile::kubernetes::use_cni: true
