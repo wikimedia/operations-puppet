@@ -16,6 +16,10 @@ class openstack::keystone::monitor::services(
     else {
         $ensure = 'absent'
     }
+    $vhost = $::site ? {
+        'codfw' => 'openstack.codfw1dev.wikimediacloud.org',
+        default => 'openstack.eqiad1.wikimediacloud.org',
+    }
 
     [$auth_port, $public_port].each |$port| {
         monitoring::service {
@@ -29,7 +33,7 @@ class openstack::keystone::monitor::services(
                 check_command => "check_https_on_port!${port}";
             "keystone-http-${port}-ssl-expiry":
                 description   => "keystone endpoint port ${port} SSL Expiry",
-                check_command => "check_https_expiry!${port}";
+                check_command => "check_https_expiry!${vhost}!${port}";
         }
     }
 }
