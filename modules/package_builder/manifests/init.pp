@@ -20,6 +20,7 @@ class package_builder(
         basepath       => $basepath,
         extra_packages => $extra_packages,
     }
+
     systemd::timer::job { 'package_builder_Clean_up_build_directory':
         ensure      => present,
         user        => 'root',
@@ -38,6 +39,31 @@ class package_builder(
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 03:00:00',  # Every day at 3:00
+        },
+    }
+
+    # Purge images on a weekly basis to avoid partition filling up
+    systemd::timer::job { 'docker-system-prune-all':
+        ensure      => present,
+        description => 'Prune all Docker images and volumes',
+        user        => 'root',
+        command     => '/usr/bin/docker system prune --all --volumes --force',
+        splay       => 3600,  # seconds
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => 'Sunday 3:00 UTC',
+        },
+    }
+
+    systemd::timer::job { 'docker-system-prune-dangling':
+        ensure      => present,
+        description => 'Prune dangling Docker images',
+        user        => 'root',
+        command     => '/usr/bin/docker system prune --force',
+        splay       => 3600,  # seconds
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => 'Mon-Sat 3:00 UTC',
         },
     }
 
