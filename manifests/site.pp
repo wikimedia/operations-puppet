@@ -2647,6 +2647,11 @@ node /^restbase20(09|1[0-9]|2[0-6])\.codfw\.wmnet$/ {
     role(restbase::production)
 }
 
+# codfw new restbase host T301399 
+node 'restbase2027.codfw.wmnet' {
+    role(insetup)
+}
+
 # cassandra/restbase dev cluster
 node /^restbase-dev100[4-6]\.eqiad\.wmnet$/ {
     role(restbase::dev_cluster)
