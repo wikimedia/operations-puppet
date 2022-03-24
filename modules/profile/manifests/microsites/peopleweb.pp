@@ -60,6 +60,12 @@ class profile::microsites::peopleweb (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/People.wikimedia.org',
     }
 
+    monitoring::service { 'https-peopleweb-expiry':
+        description   => 'HTTPS-peopleweb SSL expiry',
+        check_command => "check_https_expiry!${sitename}!443",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/People.wikimedia.org',
+    }
+
     # warn users on servers that are NOT the active backend and source of rsync
     if $::fqdn == $rsync_src_host {
         $motd_content = "#!/bin/sh\necho '\nThis is people.wikimedia.org.\nFiles you put in 'public_html' in your home dir will be accessible on the web.\nMore info on https://wikitech.wikimedia.org/wiki/People.wikimedia.org.\n'"
