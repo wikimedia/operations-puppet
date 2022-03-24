@@ -92,6 +92,12 @@ class profile::lists::monitoring (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
     }
 
+    monitoring::service { 'mailman_listinfo_ssl_expiry':
+        description   => 'mailman list info ssl expiry',
+        check_command => "check_https_expiry!${lists_servername}!443",
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+    }
+
     monitoring::check_prometheus { 'mailman_hours_until_empty_outbound_queue':
         description     => 'Mailman outbound queue hours until empty.',
         dashboard_links => ['https://grafana.wikimedia.org/d/nULM0E1Wk/mailman'],
