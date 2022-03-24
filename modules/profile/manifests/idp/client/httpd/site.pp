@@ -112,5 +112,10 @@ define profile::idp::client::httpd::site (
             check_command => "check_https_sso_redirect!${title}!${protected_uri}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
         }
+        monitoring::service {"https-${title}-expiry":
+            description   => "${title} tls expiry",
+            check_command => "check_https_expiry!${title}!${protected_uri}",
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
+        }
     }
 }
