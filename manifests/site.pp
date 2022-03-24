@@ -87,6 +87,11 @@ node 'an-test-presto1001.eqiad.wmnet' {
     role(analytics_test_cluster::presto::server)
 }
 
+# new an-worker hosts T293922
+node /^an-worker114[2-8]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
 # analytics1058-analytics1077 and an-worker10XX
 # are Analytics Hadoop worker nodes.
 #
