@@ -28,6 +28,25 @@ class keepalived(
     Integer             $virtual_router_id    = 51,
     String              $config               = '',
 ) {
+    if debian::codename::eq('bullseye') {
+        # default keepalived in bullseye seems broken, see
+        # https://bugs.debian.org/1008222
+        apt::pin { 'keepalived-bullseye-bpo':
+            pin      => 'release a=bullseye-backports',
+            package  => 'keepalived',
+            priority => 1001,
+            before   => Package['keepalived'],
+            notify   => Exec['keepalived-apt-get-update'],
+        }
+
+        exec { 'keepalived-apt-get-update':
+            command     => '/usr/bin/apt-get update',
+            refreshonly => true,
+        }
+
+        Exec['keepalived-apt-get-update'] -> Package <| |>
+    }
+
     package { 'keepalived':
         ensure => present,
     }
