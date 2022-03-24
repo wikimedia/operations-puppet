@@ -145,7 +145,6 @@ fullviews:
   - global_user_groups
   - globalblocks
   - wikiset
-  - wb_changes_dispatch
   - wb_changes_subscription
   - wb_id_counters
   - wb_items_per_site
@@ -846,4 +845,3 @@ customviews:
         condition: on rev_id = change_revision_id
       - table: archive
         condition: on ar_rev_id = change_revision_id
-
