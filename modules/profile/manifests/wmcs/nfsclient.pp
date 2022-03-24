@@ -94,8 +94,8 @@ class profile::wmcs::nfsclient(
                 project     => $::labsproject,
                 options     => ['rw', $home_mode],
                 mount_path  => '/mnt/nfs/nfs-01-toolsbeta-project',
-                server      => 'nfs-01.cloudstore.wmcloud.org',
-                share_path  => '/srv/misc/shared/toolsbeta/project',
+                server      => 'toolsbeta-nfs.svc.toolsbeta.eqiad1.wikimedia.cloud',
+                share_path  => '/srv/toolsbeta/misc/shared/toolsbeta/project/',
                 nfs_version => $nfs_version,
             }
 
@@ -112,8 +112,8 @@ class profile::wmcs::nfsclient(
                 project     => $::labsproject,
                 options     => ['rw', $mode],
                 mount_path  => '/mnt/nfs/nfs-01-toolsbeta-home',
-                server      => 'nfs-01.cloudstore.wmcloud.org',
-                share_path  => '/srv/misc/shared/toolsbeta/home',
+                server      => 'toolsbeta-nfs.svc.toolsbeta.eqiad1.wikimedia.cloud',
+                share_path  => '/srv/toolsbeta/misc/shared/toolsbeta/home/',
                 nfs_version => $nfs_version,
             }
 
