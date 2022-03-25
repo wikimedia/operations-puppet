@@ -3,7 +3,7 @@ groups:
   absent:
     description: meta group for absented users with previous cluster shell access, it removes the account from /etc/passwd on all production hosts running puppet
     members: [ananthrk, avar, bsitu, cmcmahon, csalvia, diederik, edenhill, erik, gage,
-              handrade, howief, jdouglas, jgonera, jsahleen, mah, maryana, mglaser,
+              handrade, howief, jdouglas, jgonera, jsahleen, maryana, mglaser,
               mwalker, nimishg, rainman, ssmith, swalling, sumanah, werdna, rmoen,
               johnflewis, marc, jkrauska, akumar, mnoushad, spage, tnegrin, msyed, kleduc,
               manybubbles, haithams, jzerebecki, ashwinpp, robla, asherman, dbarratt,
@@ -174,7 +174,7 @@ groups:
     gid: 711
     description: people who upload mediawiki releases
     members: [catrope, hashar, reedy, thcipriani, brennen,
-              jforrester]
+              jforrester, mah]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
   releasers-mobile:
@@ -2017,12 +2017,13 @@ users:
     ssh_keys: []
     uid: 1229
   mah:
-    ensure: absent
+    ensure: present
     gid: 500
     name: mah
     realname: Mark Hershberger
-    ssh_keys: []
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxsWf0h3IWL8we3b2WynSYIn4xJMu+tP1/e4GHxVnGf]
     uid: 1232
+    email: mah@nichework.com
   kleduc:
     ensure: absent
     gid: 500
