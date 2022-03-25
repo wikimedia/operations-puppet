@@ -89,13 +89,4 @@ class geoip::data::maxmind::ipinfo(
           File[$config_file, $data_directory]
       ],
   }
-
-  # clean up old resources
-  logrotate::rule { 'geoipupdate_log':
-    ensure    => absent,
-    file_glob => 'foobar', # required parameter for absent
-  }
-  file { ['/etc/geoipupdate_job', '/usr/local/bin/geoipupdate_job']:
-      ensure => absent,
-  }
 }

@@ -84,14 +84,4 @@ class geoip::data::maxmind(
         File[$config_file, $data_directory]
       ],
   }
-
-  # Clean up old resources
-  logrotate::rule { 'geoipupdate_log_legacy':
-    ensure    => absent,
-    file_glob => 'foobar', # required parameter for absent
-  }
-  file { ['/usr/local/bin/geoipupdate_job_legacy', '/etc/geoipupdate_job_legacy']:
-      ensure => absent,
-  }
-
 }
