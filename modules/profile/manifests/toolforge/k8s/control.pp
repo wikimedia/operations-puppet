@@ -9,7 +9,6 @@ class profile::toolforge::k8s::control (
     Integer             $typha_replicas = lookup('profile::toolforge::k8s::typha_replicas', {default_value => 3}),
     Optional[String]    $encryption_key = lookup('profile::toolforge::k8s::encryption_key', {default_value => undef}),
     String              $kubernetes_version = lookup('profile::toolforge::k8s::kubernetes_version', {default_value => '1.15.5'}),
-    Integer             $ingress_replicas   = lookup('profile::toolforge::k8s::ingress_replicas',   {default_value => 2}),
 ) {
     class { '::profile::wmcs::kubeadm::control':
         etcd_hosts         => $etcd_hosts,
@@ -24,7 +23,5 @@ class profile::toolforge::k8s::control (
     contain '::profile::wmcs::kubeadm::control'
 
     class { '::toolforge::k8s::config': }
-    class { '::toolforge::k8s::nginx_ingress_yaml':
-        ingress_replicas => $ingress_replicas,
-    }
+    class { '::toolforge::k8s::nginx_ingress_yaml': }
 }
