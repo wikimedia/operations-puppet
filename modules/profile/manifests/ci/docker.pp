@@ -6,6 +6,8 @@ class profile::ci::docker(
     $jenkins_agent_username = lookup('jenkins_agent_username'),
     $settings = lookup('profile::ci::docker::settings'),
 ) {
+    include profile::docker::prune
+
     # Let us elevate permissions to the user running a containerized process
     ensure_packages('acl')
 
@@ -59,9 +61,6 @@ class profile::ci::docker(
                 Package[ $docker_package ],
             ],
         }
-
-        include profile::docker::prune
-
     }
 
     # Ship the entire docker iptables configuration via ferm
