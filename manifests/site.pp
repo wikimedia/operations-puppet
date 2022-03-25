@@ -337,7 +337,7 @@ node /^cloudcephmon200[2-4]-dev\.codfw\.wmnet$/ {
 }
 
 node /^cloudstore100[89]\.wikimedia\.org/ {
-    role(wmcs::nfs::secondary)
+    role(spare::system)
 }
 
 # All gerrit servers (swap master status in hiera)
