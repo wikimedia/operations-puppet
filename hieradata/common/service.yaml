@@ -3620,8 +3620,6 @@ service::catalog:
     page: false
     probes:
       - type: http
-        valid_status_codes:
-          - 404
     monitoring:
       check_command: "check_https_on_port!8090"
       notes_url: "https://wikitech.wikimedia.org/wiki/Puppet#Micro_Service"
