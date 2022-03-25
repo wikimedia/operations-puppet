@@ -19,18 +19,9 @@ class klaxon(
         branch    => 'master',
     }
 
-    group { 'klaxon':
-        ensure => present,
-        system => true,
-    }
-
-    user { 'klaxon':
-        gid        => 'klaxon',
-        shell      => '/bin/bash',
-        system     => true,
-        managehome => true,
-        home       => '/var/lib/klaxon',
-        require    => Group['klaxon'],
+    systemd::sysuser { 'klaxon':
+        home_dir => '/var/lib/klaxon',
+        shell    => '/bin/bash',
     }
 
     file { $environ_file:
