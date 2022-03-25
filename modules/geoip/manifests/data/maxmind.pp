@@ -71,11 +71,19 @@ class geoip::data::maxmind(
   # weekly on Tuesdays, but there is no guarantee as to the precise timing in
   # the long term.
   systemd::timer::job { 'geoip_update_legacy':
+      ensure      => 'absent',
+      user        => 'root',
+      description => 'download geoip database from MaxMind',
+      command     => $geoipupdate_command,
+      interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:30:0'},
+  }
+
+  systemd::timer::job { 'geoip_update_main':
       ensure             => 'present',
       user               => 'root',
-      description        => 'download geoip database from MaxMind',
+      description        => 'download geoip databases from MaxMind',
       command            => $geoipupdate_command,
-      syslog_identifier  => 'geoip_update_legacy',
+      syslog_identifier  => 'geoip_update_main',
       interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:30:0'},
       monitoring_enabled => true,
       logging_enabled    => true,

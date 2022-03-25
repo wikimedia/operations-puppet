@@ -76,11 +76,19 @@ class geoip::data::maxmind::ipinfo(
   # weekly on Tuesdays, but there is no gaurantee as to the precise timing in
   # the long term.
   systemd::timer::job { 'geoip_update':
+      ensure      => 'absent',
+      user        => 'root',
+      description => 'download geoip databases for IP Info from MaxMind',
+      command     => $geoipupdate_command,
+      interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 4:30:0'},
+  }
+
+  systemd::timer::job { 'geoip_update_ipinfo':
       ensure             => 'present',
       user               => 'root',
-      description        => 'download geoip database for IP Info from MaxMind',
+      description        => 'download geoip databases for the IPInfo extension from MaxMind',
       command            => $geoipupdate_command,
-      syslog_identifier  => 'geoip_update',
+      syslog_identifier  => 'geoip_update_ipinfo',
       interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 4:30:0'},
       monitoring_enabled => false,
       logging_enabled    => true,
