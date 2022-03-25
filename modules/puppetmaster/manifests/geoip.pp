@@ -33,12 +33,6 @@ class puppetmaster::geoip(
             user_id        => $passwords::geoip::user_id,
             license_key    => $passwords::geoip::license_key,
             product_ids    => [
-                '106', # GeoIP.dat
-                '115', # GeoIPRegion.dat
-                '132', # GeoIPCity.dat
-                '133', # GeoIPCity.dat
-                '171', # GeoIPNetSpeed.dat
-                '177', # GeoIPNetSpeedCell.dat
                 'GeoIP2-City',
                 'GeoIP2-Connection-Type',
                 'GeoIP2-Country',
