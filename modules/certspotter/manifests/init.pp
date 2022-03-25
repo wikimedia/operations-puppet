@@ -30,20 +30,10 @@ class certspotter(
     $configdir = '/etc/certspotter'
     $watchlist = "${configdir}/watchlist"
 
-    user { 'certspotter':
-        ensure     => present,
-        home       => $homedir,
-        shell      => '/bin/sh',
-        comment    => 'certspotter user',
-        gid        => 'certspotter',
-        system     => true,
-        managehome => true,
-        require    => Group['certspotter'],
-    }
-
-    group { 'certspotter':
-        ensure => present,
-        system => true,
+    systemd::sysuser { 'certspotter':
+        home_dir    => $homedir,
+        shell       => '/bin/sh',
+        description => 'certspotter user',
     }
 
     file { $configdir:
