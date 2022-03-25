@@ -1,0 +1,5 @@
+profile::openstack::base::nova::instance_dev: 'thinvirt'
+profile::openstack::eqiad1::nova::network_flat_tagged_base_interface: eno2np1
+profile::openstack::eqiad1::nova::network_flat_interface: 'eno2np1.1105'
+profile::openstack::eqiad1::nova::physical_interface_mappings:
+  cloudinstances2b: 'eno2np1.1105'
