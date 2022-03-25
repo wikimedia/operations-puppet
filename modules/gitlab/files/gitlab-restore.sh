@@ -1,16 +1,28 @@
 #!/usr/bin/env bash
 
+LOGFILE=/var/log/gitlab-restore-backup.log
+CONFIG_FILE=/etc/gitlab/gitlab.rb
+SECRETS_FILE=/etc/gitlab/gitlab-secrets.json
+OLD_BACKUP_FILE=/srv/gitlab-backup/latest/latest.tar
+NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
+CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
+
+# check if installed GitLab version matches backup version
+installed_version=$(dpkg -l gitlab-ce | grep -Po "\\d*\.\\d*\.\\d*")
+backup_version=$(tar -axf $OLD_BACKUP_FILE backup_information.yml -O | grep gitlab_version  | grep -Po "\\d*\.\\d\.\\d")
+
+if [ $installed_version != $backup_version ]; then
+    /usr/bin/echo "Installed GitLab version $installed_version doesn't match backup GitLab version $backup_version" >> $LOGFILE
+    exit 1
+fi
+
 # disable puppet to prevent stopped services from restart
 # during the backup restoration process
 /usr/local/sbin/disable-puppet "Running Backup Restore"
 
-LOGFILE=/var/log/gitlab-restore-backup.log
-
 echo "Running Pre-requisites..." >> $LOGFILE
 
 # Create Backup Configuration Files
-CONFIG_FILE=/etc/gitlab/gitlab.rb
-SECRETS_FILE=/etc/gitlab/gitlab-secrets.json
 
 if [ -f "$CONFIG_FILE" ] && [ -f "$SECRETS_FILE" ]; then
     /usr/bin/echo "Creating backup of $CONFIG_FILE and $SECRETS_FILE" >> $LOGFILE
@@ -21,8 +33,6 @@ else
     exit 1
 fi
 
-OLD_BACKUP_FILE=/srv/gitlab-backup/latest/latest.tar
-NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
 if [ -f "$OLD_BACKUP_FILE" ]; then
     echo "Moving $OLD_BACKUP_FILE to $NEW_BACKUP_FILE"  >> $LOGFILE
     /usr/bin/cp $OLD_BACKUP_FILE $NEW_BACKUP_FILE  >> $LOGFILE
@@ -30,9 +40,6 @@ else
     echo "Backup File $OLD_BACKUP_FILE Not Found"  >> $LOGFILE
     exit 1
 fi
-
-
-CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
 
 # Change Permissions
 echo "changing permissions - chmod 600"  >> $LOGFILE
