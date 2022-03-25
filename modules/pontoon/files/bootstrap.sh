@@ -66,7 +66,7 @@ EOF
   systemctl mask puppet-master
 
   puppet apply --hiera_config $init/hiera.yaml \
-    --modulepath $git/puppet/modules:$git/private/modules \
+    --modulepath $git/puppet/modules:$git/puppet/vendor_modules:$git/private/modules \
     --verbose --detailed-exitcodes \
     $init || true # XXX catch failures?
 
