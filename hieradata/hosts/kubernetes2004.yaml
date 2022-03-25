@@ -1,3 +1,9 @@
 profile::kubernetes::node::kubelet_node_labels:
   - failure-domain.beta.kubernetes.io/region=codfw
   - failure-domain.beta.kubernetes.io/zone=row-d
+
+profile::docker::storage::physical_volumes: "/dev/md1"
+profile::docker::storage::vg_to_remove: 'todelete'
+profile::docker::engine::version: "18.06.3~ce~3-0~debian"
+profile::docker::engine::packagename: "docker-ce"
+profile::base::overlayfs: false
