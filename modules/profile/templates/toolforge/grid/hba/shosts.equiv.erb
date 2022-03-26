@@ -1,0 +1,7 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- @bastions.each do |host| -%>
+<%= host %>
+<%- if host.end_with? '.eqiad.wmflabs' -%>
+<%= host.sub('.eqiad.wmflabs', '.eqiad1.wikimedia.cloud') %>
+<%- end -%>
+<%- end -%>
