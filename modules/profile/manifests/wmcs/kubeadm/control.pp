@@ -5,7 +5,6 @@ class profile::wmcs::kubeadm::control (
     Array[Stdlib::Fqdn] $etcd_hosts = lookup('profile::wmcs::kubeadm::etcd_nodes',     {default_value => ['localhost']}),
     Stdlib::Fqdn        $apiserver  = lookup('profile::wmcs::kubeadm::apiserver_fqdn', {default_value => 'k8s.example.com'}),
     String              $node_token = lookup('profile::wmcs::kubeadm::node_token',     {default_value => 'example.token'}),
-    String              $component  = lookup('profile::wmcs::kubeadm::component',      {default_value => 'thirdparty/kubeadm-k8s-1-20'}),
     String              $kubernetes_version = lookup('profile::wmcs::kubeadm::kubernetes_version', {default_value => '1.20.11'}),
     String              $calico_version = lookup('profile::wmcs::kubeadm::calico_version', {default_value => 'v3.21.0'}),
     Boolean             $typha_enabled = lookup('profile::wmcs::kubeadm::typha_enabled', {default_value => false}),
@@ -69,11 +68,9 @@ class profile::wmcs::kubeadm::control (
         directory => '/srv/git/maintain-kubeusers',
     }
 
-    class { '::kubeadm::repo':
-        component => $component,
-    }
-    class { '::kubeadm::core': }
-    class { '::kubeadm::docker': }
+    include ::profile::wmcs::kubeadm::core
+    contain ::profile::wmcs::kubeadm::core
+
     class { '::kubeadm::helm': }
 
     # TODO: eventually we may need overriding this CIDR
@@ -101,8 +98,6 @@ class profile::wmcs::kubeadm::control (
         typha_enabled  => $typha_enabled,
         typha_replicas => $typha_replicas,
     }
-
-    class { '::kubeadm::calico_workaround': }
 
     class { '::kubeadm::admin_scripts': }
 

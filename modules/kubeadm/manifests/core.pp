@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # main kubeadm packages and setup
 class kubeadm::core (
+    Array[String] $extra_labels = [],
 ) {
     require ::kubeadm::repo
     include ::kubeadm::kubectl
@@ -30,11 +31,17 @@ class kubeadm::core (
         priority => 90,
     }
 
+    if $extra_labels != [] {
+        $extra_labels_joined = " --node-labels='${extra_labels.join(',')}'"
+    } else {
+        $extra_labels_joined = ''
+    }
+
     file { '/etc/default/kubelet':
         ensure  => 'present',
         mode    => '0444',
         notify  => Service['kubelet'],
-        content => @(ARGS/L),
+        content => @("ARGS"/L),
         KUBELET_EXTRA_ARGS="--read-only-port=0 --protect-kernel-defaults=true\
          --tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE\
         _RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,\
@@ -43,6 +50,7 @@ class kubeadm::core (
         TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,\
         TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256 \
         --pod-infra-container-image=docker-registry.tools.wmflabs.org/pause:3.1\
+        ${extra_labels_joined}\
         "
         |-ARGS
     }
