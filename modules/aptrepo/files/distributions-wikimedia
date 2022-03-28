@@ -130,6 +130,7 @@ Components: main
  thirdparty/ceph-nautilus-buster
  thirdparty/ceph-octopus
  thirdparty/ci
+ thirdparty/conda
  thirdparty/confluent
  thirdparty/docker-ci-buster
  thirdparty/elastic710
@@ -169,6 +170,7 @@ Update:
  pyall
  thirdparty/ceph-nautilus-buster
  thirdparty/ceph-octopus
+ thirdparty/conda
  thirdparty/gitlab
  thirdparty/gitlab-runner
  thirdparty/haproxy24
@@ -199,6 +201,7 @@ Components: main
  component/kubernetes116
  component/rsyslog-k8s
  thirdparty/ceph-octopus
+ thirdparty/conda
  thirdparty/elastic65
  thirdparty/elastic68
  thirdparty/hwraid
@@ -214,6 +217,7 @@ Update:
  hwraid-stretch
  routinator
  thirdparty/ceph-octopus-bullseye
+ thirdparty/conda
  thirdparty/openstack-db
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB

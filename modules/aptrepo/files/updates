@@ -368,3 +368,12 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: F1656F24C74CD1D8
 ListShellHook: grep-dctrl \( -S mariadb-10.5 \) -o \( -e galera-4 \) || [ $? -eq 1 ]
+
+Name: conda
+Method: https://repo.anaconda.com/pkgs/misc/debrepo/conda
+Components: contrib>thirdparty/conda
+UDebComponents:
+Suite: conda
+Architectures: amd64
+VerifyRelease: 8AEB4F8B29D82806
+ListShellHook: grep-dctrl -X -S 'conda' || [ $? -eq 1 ]
