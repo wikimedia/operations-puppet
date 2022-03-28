@@ -3795,7 +3795,7 @@ users:
     name: jclark
     krb: present
     ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+1duGbT11VE4IV3KKFzdmHhSl2fAA0CkL93edalw2yqroMxzHjah7GwKB5csjrrbqhn+po0478jsU8OG8hgJBRKSq2cG04ryQk8MVSIy6gnqQ75/5gC4U6wJ50y8MKeMyZCHzMsjs+4xdh9WvJH4cfliPRWYp1JBJpE6E22KE+HK07HYX0TkvyfMf2cLaA0pz1Ovbll8gWb9L9vyKDRmv8+NkaJcLTuKoqSFpxz/UCjVGyBJckDyJbX9FEUyjjMclg+c6C8s2aNgfe3gMKmkKxSEfEqbXuNWfJEVAqJ667MhtsGV92pp6rSWdtAgm6IqGE19hUNFqAy3XiX8vEQY3 jclark@LoanerWMF1953
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAT4FRcxa8eUFu4TTi0Xr258p6OYrbAFYvz6xyZuh79P jclark@wmf1953
   abi:
     ensure: present
     realname: Abijeet Patro
