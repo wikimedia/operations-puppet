@@ -159,10 +159,10 @@ scap::dsh::groups:
           - deployment-netbox.deployment-prep.eqiad.wmflabs
     webperf:
         hosts:
-          - deployment-webperf11.deployment-prep.eqiad.wmflabs
+          - deployment-webperf21.deployment-prep.eqiad1.wikimedia.cloud
     arclamp:
         hosts:
-          - deployment-webperf12.deployment-prep.eqiad.wmflabs
+          - deployment-webperf22.deployment-prep.eqiad1.wikimedia.cloud
 
 
 # Etcd client global configuration
@@ -319,7 +319,7 @@ scap::sources:
 prometheus_nodes:
   - deployment-prometheus02.deployment-prep.eqiad.wmflabs
 
-arclamp_host: deployment-webperf12.deployment-prep.eqiad.wmflabs
+arclamp_host: deployment-webperf22.deployment-prep.eqiad1.wikimedia.cloud
 
 profile::recommendation_api::wdqs_uri: http://wdqs-test.wmflabs.org
 
