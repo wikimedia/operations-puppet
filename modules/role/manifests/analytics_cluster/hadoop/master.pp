@@ -21,6 +21,5 @@ class role::analytics_cluster::hadoop::master {
     include ::profile::kerberos::client
     include ::profile::kerberos::keytabs
     include ::profile::base::firewall
-    include ::profile::base::linux419
     include ::profile::base::production
 }

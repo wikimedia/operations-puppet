@@ -13,8 +13,6 @@ profile::admin::groups_no_ssh:
 # This is needed here because we deploy TLS keys by setting ensure_ssl_config: true.
 profile::java::hardened_tls: true
 
-profile::base::linux419::enable: true
-
 # We add hive settings to this node since:
 # 1) it is one of the few with a hdfs keytab
 # 2) the hive-site.xml does not contain the password for the hive db (like on an-test-coord)
