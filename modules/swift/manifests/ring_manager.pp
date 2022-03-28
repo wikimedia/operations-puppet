@@ -51,7 +51,7 @@ class swift::ring_manager (
     file { '/usr/local/bin/swift_ring_manager':
         ensure  => file,
         mode    => '0555',
-        content => "#!bin/sh\n/usr/bin/${python} ${install_dir}/swift_ring_manager.py \"$@\"",
+        content => "#!/bin/sh\n/usr/bin/${python} ${install_dir}/swift_ring_manager.py \"$@\"",
     }
 
     systemd::timer::job { 'swift_ring_manager':
