@@ -14,6 +14,7 @@ class role::puppetmaster::frontend {
 
     include ::profile::conftool::client
     include ::profile::conftool::master
+    include ::profile::conftool::requestctl_client
     # This profile is needed for puppet to access state stored in etcd
     require ::profile::conftool::state
 
