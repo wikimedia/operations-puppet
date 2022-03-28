@@ -1,15 +1,18 @@
 # @summary manage backup timers
 class gitlab::backup (
-    Wmflib::Ensure $ensure                  = 'present',
-    Wmflib::Ensure $full_ensure             = 'present',
-    Wmflib::Ensure $partial_ensure          = 'present',
-    Wmflib::Ensure $config_ensure           = 'present',
-    Boolean        $rsyncable_gzip          = true,
-    Integer[1]     $max_concurrency         = 4,
-    Integer[1]     $max_storage_concurrency = 1,
-    Integer[1]     $backup_keep_time        = 3,
-    Stdlib::Unixpath $backup_dir_data       = '/srv/gitlab-backup',
-    Stdlib::Unixpath $backup_dir_config     = '/etc/gitlab/config_backup',
+    Wmflib::Ensure           $ensure                  = 'present',
+    Wmflib::Ensure           $full_ensure             = 'present',
+    Wmflib::Ensure           $partial_ensure          = 'present',
+    Wmflib::Ensure           $config_ensure           = 'present',
+    Boolean                  $rsyncable_gzip          = true,
+    Integer[1]               $max_concurrency         = 4,
+    Integer[1]               $max_storage_concurrency = 1,
+    Integer[1]               $backup_keep_time        = 3,
+    Stdlib::Unixpath         $backup_dir_data         = '/srv/gitlab-backup',
+    Stdlib::Unixpath         $backup_dir_config       = '/etc/gitlab/config_backup',
+    Systemd::Timer::Schedule $full_backup_interval    = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+    Systemd::Timer::Schedule $config_backup_interval  = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+    Systemd::Timer::Schedule $partial_backup_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
 ) {
 
     # install backup script
@@ -27,7 +30,7 @@ class gitlab::backup (
         user        => 'root',
         description => 'GitLab full data backup',
         command     => "${backup_dir_data}/gitlab-backup.sh full",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:04:00'},
+        interval    => $full_backup_interval,
     }
 
     # systemd timer for partial backups
@@ -36,7 +39,7 @@ class gitlab::backup (
         user        => 'root',
         description => 'GitLab partial data backup',
         command     => "${backup_dir_data}/gitlab-backup.sh partial",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 19:07:00'},
+        interval    => $partial_backup_interval,
     }
 
     # systemd timer for config backups
@@ -45,7 +48,7 @@ class gitlab::backup (
         user        => 'root',
         description => 'GitLab config backup',
         command     => "${backup_dir_data}/gitlab-backup.sh config",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+        interval    => $config_backup_interval,
     }
 
     # make sure only root can access backup folders

@@ -1,3 +1,4 @@
+# TODO: add profile and parameter description.
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Stdlib::Fqdn $passive_host = lookup('profile::gitlab::passive_host'),
@@ -23,6 +24,11 @@ class profile::gitlab(
     String $ferm_drange = lookup('profile::gitlab::ferm_drange'),
     Array[Stdlib::IP::Address] $ssh_listen_addresses = lookup('profile::gitlab::ssh_listen_addresses'),
     Array[Stdlib::IP::Address] $nginx_listen_addresses = lookup('profile::gitlab::nginx_listen_addresses'),
+    Systemd::Timer::Schedule $full_backup_interval = lookup('profile::gitlab::full_backup_interval'),
+    Systemd::Timer::Schedule $partial_backup_interval = lookup('profile::gitlab::partial_backup_interval'),
+    Systemd::Timer::Schedule $config_backup_interval = lookup('profile::gitlab::config_backup_interval'),
+    Systemd::Timer::Schedule $restore_interval = lookup('profile::gitlab::restore_interval:'),
+    Systemd::Timer::Schedule $rsync_interval = lookup('profile::gitlab::rsync_interval:'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -148,29 +154,34 @@ class profile::gitlab(
     }
 
     class { 'gitlab::rsync':
-        active_host  => $active_host,
-        passive_host => $passive_host,
-        ensure       => $enable_backup_sync.bool2str('present','absent')
+        active_host    => $active_host,
+        passive_host   => $passive_host,
+        ensure         => $enable_backup_sync.bool2str('present','absent'),
+        rsync_interval => $rsync_interval,
     }
 
     class { 'gitlab':
-        backup_dir             => $backup_dir_data,
-        exporters              => $exporters,
-        monitoring_whitelist   => $monitoring_whitelist,
-        cas_label              => $cas_label,
-        cas_url                => $cas_url,
-        cas_auto_create_users  => $cas_auto_create_users,
-        csp_enabled            => $csp_enabled,
-        csp_report_only        => $csp_report_only,
-        backup_keep_time       => $backup_keep_time,
-        smtp_enabled           => $smtp_enabled,
-        enable_backup          => $active_host == $facts['fqdn'], # enable backups on active GitLab server
-        ssh_listen_addresses   => $ssh_listen_addresses,
-        nginx_listen_addresses => $nginx_listen_addresses,
-        install_restore_script => $active_host != $facts['fqdn'], # install restore script on passive GitLab server
-        enable_restore         => $enable_restore,
-        cert_path              => $cert_path,
-        key_path               => $key_path,
-        gitlab_domain          => $service_name,
+        backup_dir              => $backup_dir_data,
+        exporters               => $exporters,
+        monitoring_whitelist    => $monitoring_whitelist,
+        cas_label               => $cas_label,
+        cas_url                 => $cas_url,
+        cas_auto_create_users   => $cas_auto_create_users,
+        csp_enabled             => $csp_enabled,
+        csp_report_only         => $csp_report_only,
+        backup_keep_time        => $backup_keep_time,
+        smtp_enabled            => $smtp_enabled,
+        enable_backup           => $active_host == $facts['fqdn'], # enable backups on active GitLab server
+        ssh_listen_addresses    => $ssh_listen_addresses,
+        nginx_listen_addresses  => $nginx_listen_addresses,
+        install_restore_script  => $active_host != $facts['fqdn'], # install restore script on passive GitLab server
+        enable_restore          => $enable_restore,
+        cert_path               => $cert_path,
+        key_path                => $key_path,
+        gitlab_domain           => $service_name,
+        full_backup_interval    => $full_backup_interval,
+        partial_backup_interval => $partial_backup_interval,
+        config_backup_interval  => $config_backup_interval,
+        restore_interval        => $restore_interval,
     }
 }

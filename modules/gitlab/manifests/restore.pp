@@ -1,8 +1,9 @@
 # install restore script on secondary gitlab host
 class gitlab::restore(
-    Wmflib::Ensure   $ensure_restore_script = 'present',
-    Wmflib::Ensure   $ensure_restore        = 'absent',
-    Stdlib::Unixpath $restore_dir_data      = '/srv/gitlab-backup',
+    Wmflib::Ensure           $ensure_restore_script = 'present',
+    Wmflib::Ensure           $ensure_restore        = 'absent',
+    Stdlib::Unixpath         $restore_dir_data      = '/srv/gitlab-backup',
+    Systemd::Timer::Schedule $restore_interval      =  {'start' => 'OnCalendar', 'interval' => '*-*-* 01:30:00'},
 ){
 
     file {"${restore_dir_data}/gitlab-restore.sh":
@@ -26,6 +27,6 @@ class gitlab::restore(
         user        => 'root',
         description => 'GitLab Backup Restore',
         command     => "${restore_dir_data}/gitlab-restore.sh",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 01:30:00'},
+        interval    => $restore_interval,
     }
 }

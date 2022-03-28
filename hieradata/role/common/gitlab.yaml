@@ -67,3 +67,20 @@ profile::gitlab::ssh_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v
 
 # listen on IPv4 and IPv6
 profile::gitlab::nginx_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}", "%{lookup('profile::gitlab::service_ip_v6')}"]
+
+# backup and restore intervals
+profile::gitlab::full_backup_interval:
+  start: 'OnCalendar'
+  interval: '*-*-* 00:04:00'
+profile::gitlab::partial_backup_interval: # currently not used
+  start: 'OnCalendar'
+  interval: '*-*-* 19:07:00'
+profile::gitlab::config_backup_interval:
+  start: 'OnCalendar'
+  interval: '*-*-* 00:00:00'
+profile::gitlab::rsync_interval:
+  start: 'OnCalendar'
+  interval: '*-*-* 01:00:00'
+profile::gitlab::restore_interval:
+  start: 'OnCalendar'
+  interval: '*-*-* 01:30:00'

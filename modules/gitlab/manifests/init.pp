@@ -54,6 +54,10 @@ class gitlab (
     Boolean          $enable_restore                    = false,
     Stdlib::Unixpath $backup_dir_data                   = '/srv/gitlab-backup',
     Stdlib::Unixpath $backup_dir_config                 = '/etc/gitlab/config_backup',
+    Systemd::Timer::Schedule $full_backup_interval      = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+    Systemd::Timer::Schedule $config_backup_interval    = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+    Systemd::Timer::Schedule $partial_backup_interval   = {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+    Systemd::Timer::Schedule $restore_interval          = {'start' => 'OnCalendar', 'interval' => '*-*-* 01:30:00'},
 ) {
 
     systemd::sysuser { 'git':
@@ -104,12 +108,16 @@ class gitlab (
     # enable backups on active GitLab server
     $ensure_backup = $enable_backup.bool2str('present','absent')
     class { 'gitlab::backup':
-        full_ensure       => $ensure_backup,
-        partial_ensure    => 'absent',
-        config_ensure     => $ensure_backup,
-        backup_dir_data   => $backup_dir_data,
-        backup_dir_config => $backup_dir_config,
-        backup_keep_time  => $backup_keep_time,
+        full_ensure             => $ensure_backup,
+        partial_ensure          => 'absent',
+        config_ensure           => $ensure_backup,
+        backup_dir_data         => $backup_dir_data,
+        backup_dir_config       => $backup_dir_config,
+        backup_keep_time        => $backup_keep_time,
+        full_backup_interval    => $full_backup_interval,
+        partial_backup_interval => $partial_backup_interval,
+        config_backup_interval  => $config_backup_interval,
+
     }
 
     # Theses parameters are installed by gitlab when the package is updated

@@ -4,7 +4,8 @@
 class gitlab::rsync (
     $active_host,
     $passive_host,
-    $ensure
+    $ensure,
+    Systemd::Timer::Schedule $rsync_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* 01:00:00'},
 ){
     # only activate rsync/firewall hole on the server that is NOT active
     if $ensure != 'present' {
@@ -42,13 +43,13 @@ class gitlab::rsync (
         user        => 'root',
         description => 'rsync GitLab data backup primary to a secondary server',
         command     => "/usr/bin/rsync -avp --delete /srv/gitlab-backup/latest/ rsync://${passive_host}/data-backup",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 01:00:00'},
+        interval    => $rsync_interval,
     }
     systemd::timer::job { 'rsync-config-backup':
         ensure      => $ensure_job,
         user        => 'root',
         description => 'rsync GitLab config backup primary to a secondary server',
         command     => "/usr/bin/rsync -avp --delete /etc/gitlab/config_backup/latest/ rsync://${passive_host}/config-backup",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 01:00:00'},
+        interval    => $rsync_interval,
     }
 }
