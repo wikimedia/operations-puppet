@@ -132,14 +132,12 @@ class gitlab (
         ssh_listen_addresses => $ssh_listen_addresses,
     }
 
-    if $install_restore_script or $enable_restore {
-        # enable automated restore from backup (for replica)
-        $ensure_restore_script = $install_restore_script.bool2str('present','absent')
-        $ensure_restore = $enable_restore.bool2str('present','absent')
-        class { 'gitlab::restore' :
-            ensure_restore_script => $ensure_restore_script,
-            ensure_restore        => $ensure_restore,
-            restore_dir_data      => $backup_dir_data,
-        }
+    # enable automated restore from backup (for replica)
+    $ensure_restore_script = $install_restore_script.bool2str('present','absent')
+    $ensure_restore = $enable_restore.bool2str('present','absent')
+    class { 'gitlab::restore' :
+        ensure_restore_script => $ensure_restore_script,
+        ensure_restore        => $ensure_restore,
+        restore_dir_data      => $backup_dir_data,
     }
 }
