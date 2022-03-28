@@ -18,7 +18,7 @@ class profile::wmcs::paws::prometheus (
         storage_retention_size => $storage_retention_size,
         scrape_configs_extra   => [
             {
-                'job_name'             => 'node',
+                'job_name'             => 'node-exporter',
                 'openstack_sd_configs' => [
                     {
                         'role'              => 'instance',
@@ -64,45 +64,12 @@ class profile::wmcs::paws::prometheus (
                 'relabel_configs'      => [
                     {
                         'source_labels' => ['__meta_openstack_instance_name'],
-                        'target_label'  => 'instance',
-                    },
-                    {
-                        'source_labels' => ['__meta_openstack_instance_name'],
                         'action'        => 'keep',
-                        'regex'         => 'haproxy',
+                        'regex'         => 'paws-k8s-haproxy-\\d+',
                     },
-                    {
-                        'source_labels' => ['__meta_openstack_instance_status'],
-                        'action'        => 'keep',
-                        'regex'         => 'ACTIVE',
-                    },
-                ]
-            },
-            {
-                'job_name'             => 'prometheus',
-                'openstack_sd_configs' => [
-                    {
-                        'role'              => 'instance',
-                        'region'            => $region,
-                        'identity_endpoint' => "https://${keystone_api_fqdn}:25000/v3",
-                        'username'          => $observer_user,
-                        'password'          => $observer_password,
-                        'domain_name'       => 'default',
-                        'project_name'      => $::labsproject,
-                        'all_tenants'       => false,
-                        'refresh_interval'  => '5m',
-                        'port'              => 9903,
-                    }
-                ],
-                'relabel_configs'      => [
                     {
                         'source_labels' => ['__meta_openstack_instance_name'],
                         'target_label'  => 'instance',
-                    },
-                    {
-                        'source_labels' => ['__meta_openstack_instance_name'],
-                        'action'        => 'keep',
-                        'regex'         => 'prometheus',
                     },
                     {
                         'source_labels' => ['__meta_openstack_instance_status'],
