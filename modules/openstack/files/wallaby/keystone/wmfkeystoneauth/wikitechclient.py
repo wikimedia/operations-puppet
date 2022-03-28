@@ -14,6 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import json
 import mwclient
 
 from oslo_log import log
@@ -53,9 +54,10 @@ class WikitechClient(object):
     def oathvalidate(self, username, totp):
         token = self.site.get_token('csrf', force=True)
         result = self.site.api(
-            'oathvalidate', formatversion=2,
+            'oathvalidate',
+            formatversion=2,
             user=username,
-            totp=totp,
+            data=json.dumps({'totp': totp}),
             token=token
         )
         return result['oathvalidate']
