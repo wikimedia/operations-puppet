@@ -49,13 +49,13 @@ dbconfig-instance:
     base_path: "/etc/conftool/json-schema/dbconfig"
     rules:
       catchall:
-        selector: 'name=.*'
-        schema: 'instance.schema'
+        selector: "name=.*"
+        schema: "instance.schema"
   schema:
     host_ip:
       default: "0.0.0.0"
     port:
-      default: 3306  # This must be the same as assumed default by MediaWiki!
+      default: 3306 # This must be the same as assumed default by MediaWiki!
     sections:
       default: {}
     note:
@@ -68,8 +68,8 @@ dbconfig-section:
     base_path: "/etc/conftool/json-schema/dbconfig"
     rules:
       catchall:
-        selector: 'name=.*'
-        schema: 'section.schema'
+        selector: "name=.*"
+        schema: "section.schema"
   schema:
     master:
       default: "PLACEHOLDER"
@@ -81,125 +81,3 @@ dbconfig-section:
       default: "PLACEHOLDER"
     flavor:
       default: "regular"
-
-# Request identifiers for abuse
-# These values are used by the various layers of the infrastructure to tag requests as
-# suspicious and take consequent actions
-# These patterns can be combined with OR or AND logic in request-actions below
-# Ipblocks will always use an OR logic between them, and an AND logic in combining with patterns.
-request-patterns:
-  path: "request-patterns"
-  # rules are supposed to be per-cluster, but "scope" here is just a convenient way to group
-  # rules.
-  tags:
-  - scope
-  schema:
-    method:
-      type: "string"
-      default: ""
-    url_path:
-      type: "string"
-      default: ""
-    header:
-      type: "string"
-      default: ""
-    header_value:
-      type: "string"
-      default: ""
-    query_parameter:
-      type: "string"
-      default: ""
-    query_parameter_value:
-      type: "string"
-      default: ""
-    request_body:
-      type: "string"
-      default: ""
-# Define a list of ipblocks to apply an action to
-request-ipblocks:
-  path: "request-ipblocks"
-  tags:
-  - scope
-  schema:
-    cidrs:
-      type: list
-      default: []
-    comment:
-      type: "string"
-      default: ""
-request-actions:
-  path: "request-actions"
-  # here we want to separate per cluster right now.
-  # datacenters to select are indicated below
-  tags:
-    - cluster
-  schema:
-    enabled:
-      type: "bool"
-      default: false
-    # Should this filtering rule only be applied to cache misses
-    # (the default) or be applied to all requests at the edge?
-    # BEWARE: expensive rules like matching of the request body
-    # should not be done outside of cache misses.
-    cache_miss_only:
-      type: "bool"
-      default: true
-    comment:
-      type: "string"
-      default: ""
-    ## Request identifiers
-    # This expression is a combination of references to
-    # patterns, with the form "pattern@scope/name", ipblocks
-    # with the form "ipblock@scope/name", AND/OR logical connections,
-    # and grouping parentheses. All tokens need to be properly spaced.
-    # Any non-parsed word will be re-printed verbatim.
-    # Example: "( pattern@a AND pattern@b ) OR ( pattern@c AND ipblock@d )"
-    expression:
-      type: "string"
-      default: ""
-    ## Action details
-    # response status and reason. Please remember these might
-    # have logic attached in vcl
-    resp_status:
-      type: int
-      default: 429
-    resp_reason:
-      type: "string"
-      default: "Too many requests"
-    # Which datacenter to apply the ban to. If it wants to be global,
-    # leave the list empty
-    sites:
-      type: list
-      default: []
-    # If do_throttle is true, we rate-limit globally this type of requests,
-    # instead of outright banning them. The next arguments are the same of the
-    # ones used by the vsthrottle varnish vmod.
-    do_throttle:
-      type: "bool"
-      default: true
-    throttle_requests:
-      type: "int"
-      default: 500
-    throttle_interval:
-      type: "int"
-      default: 30
-    throttle_duration:
-      type: "int"
-      default: 1000
-    # Do we throttle per ip or globally?
-    throttle_per_ip:
-      type: "bool"
-      default: False
-# As an example:
-# "Ban all api requests to wikidata from aws with a 429 response"
-# # patterns:
-# - "text/api": { url_path: ^/w/api.php }
-# - "text/wikidata": { header: Host, header_value: www.wikidata.org }
-# # Ipblocks:
-# - "clouds/aws": [cidr1, cidr2, ...]
-# # actions
-# - "global/aws_wikidata_api": {"expression": "pattern@text/api AND pattern@text/wikidata AND ipblock@aws" "enabled": true, do_throttle: false}
-#
-# Another example: throttle  all requests using a generic user agent, from a cloud
-# # patterns: [ "ua/requests": {"header": "user-agent", "header_value": "python-requests/.*"}, "ua/curl": ...]
-# # actions: ["global/ban_generic_ua": {"expression", "( pattern@ua/requests OR pattern@ua/curl ) AND ipblock@cloud/aws" "resp_reason": <link to ua policy>}]
