@@ -57,7 +57,7 @@ class profile::chartmuseum(
     }
 
     monitoring::service { 'check_chartmuseum_https_expiry':
-        description   => 'ChartMuseum HTTP',
+        description   => 'ChartMuseum HTTP certificate expiry',
         check_command => "check_https_expiry!${hostname}!443",
         notes_url     => $monitoring_notes_url,
     }
