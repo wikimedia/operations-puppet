@@ -2,6 +2,8 @@
 #
 # Installs calico for use in a kubernetes cluster.
 # This follows https://docs.projectcalico.org/getting-started/kubernetes/#manual-installation
+# It also optionally deploys Istio CNI configurations, since (Istio) upstream
+# suggests to use a chained config with Calico.
 
 class profile::calico::kubernetes(
     String $calico_version = lookup('profile::calico::kubernetes::calico_version'),
@@ -12,6 +14,10 @@ class profile::calico::kubernetes(
     Stdlib::Host $master_fqdn = lookup('profile::kubernetes::master_fqdn'),
     Array[Stdlib::Host] $bgp_peers = lookup('profile::calico::kubernetes::bgp_peers'),
     Hash $calico_cni_config = lookup('profile::calico::kubernetes::cni_config'),
+    String $istio_cni_username = lookup('profile::calico::kubernetes::istio_cni_username', {default_value => 'istio-cni'}),
+    Optional[String] $istio_cni_token = lookup('profile::calico::kubernetes::istio_cni_token', {default_value => undef}),
+    String $istio_cni_version = lookup('profile::calico::kubernetes::istio_cni_version', {default_value => '1.9.5'}),
+    Wmflib::Ensure $ensure_istio_cni = lookup('profile::calico::kubernetes::ensure_istio_cni', {default_value => 'present'}),
 ){
 
     class { '::calico':
@@ -31,6 +37,22 @@ class profile::calico::kubernetes(
         username    => $calico_cni_username,
         token       => $calico_cni_token,
         require     => File['/etc/cni/net.d'],
+    }
+
+
+    if $istio_cni_token {
+        $istio_cni_version_safe = regsubst($istio_cni_version, '\.', '', 'G')
+        apt::package_from_component { "istio${istio_cni_version_safe}":
+            component => "component/istio${istio_cni_version_safe}",
+            packages  => {'istio-cni' => $ensure_istio_cni},
+        }
+        k8s::kubeconfig { '/etc/cni/net.d/istio-kubeconfig':
+            ensure      => $ensure_istio_cni,
+            master_host => $master_fqdn,
+            username    => $istio_cni_username,
+            token       => $istio_cni_token,
+            require     => File['/etc/cni/net.d'],
+        }
     }
 
     # TODO: We need to configure BGP peers in calico datastore (helm chart) as well.
