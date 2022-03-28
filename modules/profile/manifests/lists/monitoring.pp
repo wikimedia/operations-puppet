@@ -82,13 +82,13 @@ class profile::lists::monitoring (
 
     monitoring::service { 'mailman_listinfo':
         description   => 'mailman list info',
-        check_command => "check_https_url_for_string!${lists_servername}!/postorius/lists/wikimedia-l.lists.wikimedia.org/!\'Wikimedia Mailing List\'",
+        check_command => "check_https_url_for_string!${lists_servername}!/postorius/lists/wikimedia-l.lists.wikimedia.org/!Wikimedia Mailing List",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
     }
 
     monitoring::service { 'mailman_archives':
         description   => 'mailman archives',
-        check_command => "check_https_url_for_string!${lists_servername}!/hyperkitty/list/wikimedia-l@lists.wikimedia.org/!\'Wikimedia Mailing List\'",
+        check_command => "check_https_url_for_string!${lists_servername}!/hyperkitty/list/wikimedia-l@lists.wikimedia.org/!Wikimedia Mailing List",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
     }
 
