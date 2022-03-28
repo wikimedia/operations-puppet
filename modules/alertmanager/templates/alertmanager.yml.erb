@@ -86,16 +86,16 @@ route:
         team: 'dcops'
       receiver: 'dcops-mail'
       routes:
-        # Open tasks per-device for librenms https://phabricator.wikimedia.org/T300836
-        - match:
-            source: 'librenms'
-            severity: 'task'
-            team: 'dcops'
-          group_by: ['alertname', 'instance']
-          receiver: 'dcops-librenms-task'
         - match:
             severity: 'task'
+          # Default to #dcops project if none of the site routes match
           receiver: 'dcops-task'
+          routes:
+<% ["eqiad", "eqord", "codfw", "eqdfw", "esams", "knams", "ulsfo", "drmrs"].each do |site| -%>
+            - match_re:
+                instance: '^.*<%= site %>.*$'
+              receiver: 'dcops-<%= site %>-task'
+<% end -%>
     - match:
         team: 'noc'
       receiver: 'noc-ircmail'
@@ -287,14 +287,6 @@ receivers:
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-guqp46cxa2rgti2tqgv5'
       send_resolved: false
 
-# Tasks from librenms will be grouped by alertname + instance (i.e. device)
-- name: 'dcops-librenms-task'
-  webhook_configs:
-    # #dcops
-    # title={{groupLabels.alertname}} {{groupLabels.instance}}
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-guqp46cxa2rgti2tqgv5&title=%7B%7BgroupLabels.alertname%7D%7D%20%7B%7BgroupLabels.instance%7D%7D'
-      send_resolved: false
-
 - name: 'dcops-eqiad-task'
   webhook_configs:
     # #ops-eqiad
@@ -329,6 +321,24 @@ receivers:
   webhook_configs:
     # #ops-drmrs
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-2p7htqghb5al4xwyb2nj'
+      send_resolved: false
+
+- name: 'dcops-eqord-task'
+  webhook_configs:
+    # #ops-eqord
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-5lcm6o3fjplvaqf4epr6'
+      send_resolved: false
+
+- name: 'dcops-eqdfw-task'
+  webhook_configs:
+    # #ops-eqdfw
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-xjetsywotsnrlml3xpok'
+      send_resolved: false
+
+- name: 'dcops-knams-task'
+  webhook_configs:
+    # #ops-esams (no ops-knams project)
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-yyw3x6n3sdjeyzq3xbmo'
       send_resolved: false
 
 - name: 'search-platform-task'
