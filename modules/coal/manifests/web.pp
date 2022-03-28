@@ -10,6 +10,12 @@ class coal::web {
 
     ensure_packages(['python3-flask', 'python3-numpy', 'python3-requests'])
 
+    # The classes from this package were part of python3-workzeug prior to
+    # bullseye:
+    if debian::codename::ge('bullseye') {
+        ensure_packages(['python3-cachelib'])
+    }
+
     file { '/var/cache/coal_web':
         ensure => directory,
         owner  => 'www-data',
@@ -24,7 +30,7 @@ class coal::web {
     uwsgi::app { 'coal':
         settings         => {
             uwsgi => {
-                'plugins'   => 'python',
+                'plugins'   => 'python3',
                 'socket'    => '/run/uwsgi/coal.sock',
                 'wsgi-file' => '/srv/deployment/performance/coal/coal/coal_web.py',
                 'callable'  => 'app',
