@@ -29,6 +29,10 @@ class profile::wmcs::nfs::standalone(
             address   => $nfs_service_ip,
             interface => $facts['interface_primary'],
         }
+
+        $server_running = true
+    } else {
+        $server_running = false
     }
 
     sysctl::parameters { 'cloudstore base':
@@ -53,7 +57,7 @@ class profile::wmcs::nfs::standalone(
 
     # state manually managed
     service { 'nfs-server':
-        ensure => running,
+        ensure => $server_running;
     }
 
     file {'/usr/local/sbin/logcleanup':
