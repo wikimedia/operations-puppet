@@ -107,7 +107,7 @@ profile::opensearch::logstash::curator_actions:
         unit_count: 2
 
   '05':
-    description: 'ecs-1.7.0 alerts: delete older than 53 weeks'
+    description: 'ecs-1.7.0 alerts: delete older than 106 weeks'
     action: delete_indices
     options:
       ignore_empty_list: true
@@ -120,7 +120,7 @@ profile::opensearch::logstash::curator_actions:
         direction: older
         timestring: '%Y.%W'
         unit: weeks
-        unit_count: 53
+        unit_count: 106
 
   '06':
     description: 'w3creportingapi-1.0.0: delete older than 3 months'
