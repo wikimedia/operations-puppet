@@ -371,7 +371,7 @@ ListShellHook: grep-dctrl \( -S mariadb-10.5 \) -o \( -e galera-4 \) || [ $? -eq
 
 Name: thirdparty/conda
 Method: https://repo.anaconda.com/pkgs/misc/debrepo/conda
-Components: contrib>thirdparty/conda
+Components: main>thirdparty/conda
 UDebComponents:
 Suite: stable
 Architectures: amd64
