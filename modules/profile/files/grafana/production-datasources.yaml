@@ -250,6 +250,19 @@ datasources:
    withCredentials: false
    version: 1
 
+# External JSON used by Performance Team for showing meta data from
+# synthetic tests.
+# See also https://phabricator.wikimedia.org/T304583.
+ - name: json-synthetic-testing
+   type: marcusolsson-json-datasource
+   orgId: 1
+   url: http://127.0.0.1:33334  # Must match profile::grafana::wpt_json_proxy_port
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+
  - name: thanos
    type: prometheus
    access: proxy
