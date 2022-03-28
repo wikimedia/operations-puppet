@@ -59,7 +59,7 @@ class swift::ring_manager (
         command                   => "/usr/local/bin/swift_ring_manager -o ${ring_dir} --doit --syslog",
         interval                  => {'start' => 'OnCalendar', 'interval' => '*:10:00'},
         monitoring_enabled        => true,
-        monitoring_contact_groups => 'data-persistence',
+        monitoring_contact_groups => 'irc-databases',
         logfile_name              => 'swift_ring_manager.log',
         logfile_owner             => 'swift',
         user                      => 'root',
