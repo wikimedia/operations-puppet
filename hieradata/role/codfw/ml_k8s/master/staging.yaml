@@ -1,0 +1,20 @@
+profile::kubernetes::master::service_cluster_ip_range: 10.194.62.0/23
+profile::kubernetes::master::etcd_urls:
+ - https://ml-staging-etcd2001.codfw.wmnet:2379
+ - https://ml-staging-etcd2002.codfw.wmnet:2379
+ - https://ml-staging-etcd2003.codfw.wmnet:2379
+
+# Needed to run a kubelet on the master node
+# See T285927
+profile::kubernetes::node::kubelet_cluster_dns: "10.194.62.3"
+profile::kubernetes::master_hosts:
+- ml-staging-ctrl2001.codfw.wmnet
+- ml-staging-ctrl2002.codfw.wmnet
+
+profile::calico::kubernetes::bgp_peers:
+- ml-staging2001.codfw.wmnet
+- ml-staging2002.codfw.wmnet
+- ml-staging-ctrl2001.codfw.wmnet
+- ml-staging-ctrl2002.codfw.wmnet
+- cr1-codfw.wikimedia.org
+- cr2-codfw.wikimedia.org

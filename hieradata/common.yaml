@@ -73,6 +73,10 @@ kubernetes_cluster_groups:
     "ml-serve-codfw":
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
+  "ml-staging":
+    "ml-staging-codfw":
+      dc: codfw
+      master: ml-staging-ctrl.svc.codfw.wmnet
 
 # Swift cluster metadata
 # The keys here are called "cluster_label" in puppet code
@@ -596,6 +600,11 @@ wikimedia_clusters:
   ml_staging_etcd:
     description: "ML Team staging etcd clusters"
     id: 102
+    sites:
+      codfw: []
+  ml_staging:
+    description: "ML Team staging clusters"
+    id: 103
     sites:
       codfw: []
 

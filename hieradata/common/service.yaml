@@ -1356,6 +1356,29 @@ service::catalog:
       - codfw
     state: lvs_setup
 
+  ml-staging-ctrl:
+    description: Kubernetes master service for ML staging cluster. ml-staging-ctrl.svc.%{::site}.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.72
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: ml_staging
+        service: kubemaster
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    port: 6443
+    sites:
+      - codfw
+    state: lvs_setup
+
   mobileapps:
     description:
       A service for use by mobile apps. Provides DOM manipulation, aggregation,

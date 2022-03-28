@@ -1929,7 +1929,7 @@ node /^ml-staging-etcd200[123]\.codfw.wmnet/ {
 
 # New ml-staging ctrl T302503
 node /^ml-staging-ctrl200[12]\.codfw.wmnet/ {
-    role(insetup)
+    role(ml_k8s::master::staging)
 }
 
 # New ml-staging nodes T294946
