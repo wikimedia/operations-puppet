@@ -373,7 +373,7 @@ Name: thirdparty/conda
 Method: https://repo.anaconda.com/pkgs/misc/debrepo/conda
 Components: contrib>thirdparty/conda
 UDebComponents:
-Suite: conda
+Suite: stable
 Architectures: amd64
 VerifyRelease: 8AEB4F8B29D82806
 ListShellHook: grep-dctrl -X -S 'conda' || [ $? -eq 1 ]
