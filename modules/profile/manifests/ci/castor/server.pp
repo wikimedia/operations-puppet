@@ -23,10 +23,9 @@ class profile::ci::castor::server {
     }
 
     file { '/srv/jenkins-workspace/caches':
-        ensure  => directory,
-        owner   => 'jenkins-deploy',
-        group   => 'wikidev',
-        mode    => '0775',
-        require => Mount['/srv'],
+        ensure => directory,
+        owner  => 'jenkins-deploy',
+        group  => 'wikidev',
+        mode   => '0775',
     }
 }
