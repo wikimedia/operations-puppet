@@ -91,7 +91,7 @@ route:
           # Default to #dcops project if none of the site routes match
           receiver: 'dcops-task'
           routes:
-<% ["eqiad", "eqord", "codfw", "eqdfw", "esams", "knams", "ulsfo", "drmrs"].each do |site| -%>
+<% ["eqiad", "eqord", "codfw", "eqdfw", "esams", "knams", "ulsfo", "drmrs", "eqsin"].each do |site| -%>
             - match_re:
                 instance: '^.*<%= site %>.*$'
               receiver: 'dcops-<%= site %>-task'
