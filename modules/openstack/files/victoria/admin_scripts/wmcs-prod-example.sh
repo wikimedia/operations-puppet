@@ -7,7 +7,7 @@ SERVICE_ENDPOINT=https://openstack.eqiad1.wikimediacloud.org:25357/v2.0/
 SERVICE_TOKEN='<redacted>'
 
 # ENDPOINT URLS
-NOVA_PUBLIC_URL="https://cloudcontrol1003.eqiad.wmnet:28774/v2.0/\$(tenant_id)s"
+NOVA_PUBLIC_URL="https://openstack.eqiad1.wikimediacloud.org:28774/v2.0/\$(tenant_id)s"
 NOVA_ADMIN_URL=$NOVA_PUBLIC_URL
 NOVA_INTERNAL_URL=$NOVA_PUBLIC_URL
 
