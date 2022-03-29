@@ -19,17 +19,9 @@ class imagecatalog(
 ) {
   ensure_packages(['gunicorn3', 'python3-imagecatalog'])
 
-  group { 'imagecatalog':
-      ensure => present,
-      system => true,
-  }
-
-  user { 'imagecatalog':
-      gid        => 'imagecatalog',
-      shell      => '/bin/bash',
-      system     => true,
-      managehome => true,
-      home       => '/var/lib/imagecatalog',
+  systemd::sysuser { 'imagecatalog':
+      home_dir => '/var/lib/imagecatalog',
+      shell    => '/bin/bash',
   }
 
   file { $data_dir:
