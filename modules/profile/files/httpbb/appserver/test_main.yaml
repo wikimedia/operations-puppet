@@ -75,6 +75,23 @@ https://www.mediawiki.org:
   assert_status: 301
   assert_headers:
     Location: https://static-codereview.wikimedia.org/MediaWiki/1.html
+- path: /wiki/Special:CodeReview/MediaWiki/r1
+  assert_status: 301
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org/MediaWiki/1.html
+- path: /w/index.php?title=Special:CodeReview
+  assert_status: 301
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org
+- path: /w/index.php?title=Special:CodeReview&path=foo
+  assert_status: 301
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org
+- path: /w/index.php?title=Special:CodeReview/pywikipedia/r3
+  assert_status: 301
+  assert_headers:
+    Location: https://static-codereview.wikimedia.org/pywikipedia/3.html
+
 
 https://upload.wikimedia.org:
 - path: /mediawiki/test
