@@ -28,7 +28,8 @@ class swift::ring_manager (
     $yaml_package = "${python}-yaml"
     ensure_packages($yaml_package)
 
-    wmflib::dir::mkdir_p([$install_dir, $ring_dir])
+    # install_dir is managed by git::clone
+    wmflib::dir::mkdir_p([$install_dir.dirname(), $ring_dir])
 
     $git_ensure = $ensure ? {
         absent  => 'absent',
