@@ -3,21 +3,23 @@
 import csv
 import json
 import logging
-
 from argparse import ArgumentParser, Namespace
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Set
 
-from netaddr import cidr_merge, IPNetwork
+import yaml
+from conftool.extensions.reqconfig import (
+    Requestctl,
+    RequestctlError,
+    parse_args as reqctl_args,
+)
+from git import Repo
+from lxml import html
+from netaddr import IPNetwork, cidr_merge
 from requests import Session
 from requests.exceptions import RequestException
-from lxml import html
 from wmflib.requests import http_session
-
-from conftool import configuration as confctl_cfg
-from conftool.kvobject import KVObject
-from conftool.loader import Schema
 
 
 @dataclass
@@ -166,6 +168,12 @@ def get_args() -> Namespace:
         action="store_true",
         help="If this is provided, the data will be saved to conftool and not just to file.",
     )
+    parser.add_argument(
+        "--repo",
+        "-r",
+        help="The puppet private repository path.",
+        default="/srv/private",
+    )
     return parser.parse_args()
 
 
@@ -177,13 +185,6 @@ def get_log_level(args_level: int) -> int:
         2: logging.INFO,
         3: logging.DEBUG,
     }.get(args_level, logging.DEBUG)
-
-
-def setup_conftool() -> Schema:
-    """Get a conftool entity class correctly configured."""
-    KVObject.setup(confctl_cfg.get("/etc/conftool/config.yaml"))
-    schema = Schema.from_file("/etc/conftool/schema.yaml")
-    return schema
 
 
 def main() -> int:
@@ -212,7 +213,7 @@ def main() -> int:
         try:
             data = json.loads(datafile.read_text())
         except json.JSONDecodeError as error:
-            logging.error('unable to parse current data, deleting: %s', error)
+            logging.error("unable to parse current data, deleting: %s", error)
             datafile.unlink()
     session = http_session("dump-cloud-ip-ranges")
     for provider in providers:
@@ -237,28 +238,55 @@ def main() -> int:
             runtime_error = True
 
     if args.conftool:
-        schema = setup_conftool()
+        repo_base = Path(args.repo)
+        requestctl_path = repo_base / "requestctl"
+        cloud_path = requestctl_path / "request-ipblocks" / "cloud"
+        git_repo = Repo(repo_base)
         for cloud_name, cidrs in data.items():
             name = cloud_name.lower()
-            obj = schema.entities["request-ipblocks"]("cloud", name)
-            # We don't want to mess with conftool-sync that would remove entries
-            # not present in conftool-data. Once we have reqctl, we won't need this.
-            if not obj.exists:
-                logging.warning(
-                    "Not importing data for cloud %s, not in conftool. "
-                    "Please add it to conftool-data.",
-                    name
-                )
-                runtime_error = True
-                continue
-            obj.update(
-                {
-                    "cidrs": cidrs,
-                    "comment": f"Automatically generated IPs for {cloud_name}",
-                }
+            # Save the data to a file on disk:
+            file_path = cloud_path / f"{name}.yaml"
+            to_update = {
+                "cidrs": cidrs,
+                "comment": f"Automatically generated IPs for {cloud_name}",
+            }
+            file_path.write_text(yaml.dump(to_update))
+        # safety measure: if there is an uncommitted object added to the index of the
+        # repository, we won't add what follows to git. We will still sync it though.
+        if git_repo.index.diff("HEAD"):
+            logging.error(
+                "The git index of %s is dirty, not adding/committing cloud ipblocks.",
+                repo_base,
             )
+            runtime_error = True
+        else:
+            # Add and commit to the private repo if anything
+            git_repo.index.add([str(cloud_path)])
+            # We check the added stuff to HEAD, so that spurious changes leftover
+            # in the repo won't create an issue.
+            if git_repo.index.diff("HEAD"):
+                git_repo.index.commit(
+                    "Automatic commit of cloud IP ranges (dump_cloud_ip_ranges)"
+                )
+        # now sync it. The fastest way is to just pass an
+        # argparse.Namespace to Requestctl.
+        try:
+            Requestctl(
+                reqctl_args(
+                    [
+                        "-c",
+                        "/etc/conftool/config.yaml",
+                        "sync",
+                        "-g",
+                        str(requestctl_path),
+                        "ipblock",
+                    ]
+                )
+            ).run()
+        except RequestctlError:
+            runtime_error = True
 
-    temp_datafile = Path(f'{datafile}.tmp')
+    temp_datafile = Path(f"{datafile}.tmp")
     temp_datafile.write_text(json.dumps(data, indent=4, sort_keys=True))
     temp_datafile.rename(datafile)
     return int(runtime_error)
