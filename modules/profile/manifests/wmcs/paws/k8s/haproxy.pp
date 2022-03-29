@@ -13,7 +13,7 @@ class profile::wmcs::paws::k8s::haproxy (
     Stdlib::Port        $ingress_bind_http_port = lookup('profile::wmcs::paws::ingress_bind_http_port',{default_value => 80}),
     Array[Stdlib::Fqdn] $control_nodes          = lookup('profile::wmcs::paws::control_nodes',         {default_value => ['localhost']}),
     Stdlib::Port        $api_port               = lookup('profile::wmcs::paws::apiserver_port',        {default_value => 6443}),
-    Array[Stdlib::Fqnd] $prometheus_nodes       = lookup('profile::wmcs::paws::prometheus_nodes',      {default_value => []}),
+    Array[Stdlib::Fqdn] $prometheus_nodes       = lookup('profile::wmcs::paws::prometheus_nodes',      {default_value => []}),
     Array[Stdlib::Fqdn] $keepalived_vips        = lookup('profile::wmcs::paws::keepalived::vips',      {default_value => ['localhost']}),
     Array[Stdlib::Fqdn] $keepalived_peers       = lookup('profile::wmcs::paws::keepalived::peers',     {default_value => ['localhost']}),
     String              $keepalived_password    = lookup('profile::wmcs::paws::keepalived::password',  {default_value => 'notarealpassword'}),
