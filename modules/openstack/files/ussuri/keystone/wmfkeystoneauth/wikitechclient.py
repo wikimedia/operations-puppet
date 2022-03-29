@@ -57,7 +57,7 @@ class WikitechClient(object):
             'oathvalidate',
             formatversion=2,
             user=username,
-            data=json.dumps({'totp': totp}),
+            data=json.dumps({'token': totp}),
             token=token
         )
         return result['oathvalidate']
