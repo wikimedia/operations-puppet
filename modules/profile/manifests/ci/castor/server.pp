@@ -13,16 +13,16 @@ class profile::ci::castor::server {
     }
 
     rsync::server::module { 'caches':
-        path      => '/srv/jenkins-workspace/caches',
+        path      => '/srv/castor',
         read_only => 'yes',
         uid       => 'jenkins-deploy',
         gid       => 'wikidev',
         require   => [
-            File['/srv/jenkins-workspace/caches'],
+            File['/srv/castor'],
         ],
     }
 
-    file { '/srv/jenkins-workspace/caches':
+    file { '/srv/castor':
         ensure => directory,
         owner  => 'jenkins-deploy',
         group  => 'wikidev',
