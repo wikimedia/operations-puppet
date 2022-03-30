@@ -220,7 +220,7 @@ def main() -> int:
         try:
             logging.info("fetching ranges for %s", provider.name)
             old_nets = data.get(provider.name, [])
-            nets = list(merge_adjacent(provider.get_networks(session)))
+            nets = sorted(merge_adjacent(provider.get_networks(session)))
             if len(nets) == 0:
                 logging.error("Received 0 nets from %s, not updating", provider.name)
                 runtime_error = True
