@@ -198,6 +198,9 @@ class profile::analytics::refinery::job::refine(
         'TranslationRecommendationUserAction',
         'TranslationRecommendationUIRequests',
         'TranslationRecommendationAPIRequests',
+
+        # Readers Web schemas
+        'WikipediaPortal',
     ]
     $eventlogging_legacy_table_include_regex = downcase("^(${join($eventlogging_legacy_table_include_list, '|')})$")
 
