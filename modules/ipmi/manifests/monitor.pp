@@ -6,6 +6,8 @@ class ipmi::monitor (
     # install ipmiseld on hardware to log ipmi system event log entries to syslog
     ensure_packages('freeipmi-ipmiseld')
 
+    profile::auto_restarts::service { 'ipmiseld': }
+
     file { '/var/cache/ipmiseld':
         ensure => directory,
         owner  => 'root',
