@@ -88,4 +88,6 @@ class ulogd (
     ensure => 'running',
     enable => true,
   }
+
+  profile::auto_restarts::service { 'ulogd2': }
 }
