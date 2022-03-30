@@ -254,8 +254,6 @@ flaggedrevs_tracking,ftr_from,K
 flaggedrevs_tracking,ftr_namespace,K
 flaggedrevs_tracking,ftr_title,K
 flaggedtemplates,ft_rev_id,K
-flaggedtemplates,ft_namespace,K
-flaggedtemplates,ft_title,K
 flaggedtemplates,ft_tmp_rev_id,K
 geo_killlist,gk_id,K
 geo_killlist,gk_killed_id,K
