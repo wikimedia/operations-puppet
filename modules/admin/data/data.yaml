@@ -830,6 +830,7 @@ groups:
     posix_name: docker
     description: Allow releng team to be in the docker group on deployment servers. No gid on purpose
     members: [*ops_members, dancy, dduvall, hashar, jhuneidi, jnuche, thcipriani]
+    system_members: [mwbuilder]
   builder-docker:
     # There is no gid on purpose, same as above
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
