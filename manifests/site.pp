@@ -464,8 +464,14 @@ node /^cp600[1-8]\.drmrs\.wmnet$/ {
     role(cache::upload)
 }
 
-node /^cp60(09|1[0-6])\.drmrs\.wmnet$/ {
+node /^cp60(09|1[0-5])\.drmrs\.wmnet$/ {
     role(cache::text)
+}
+
+# HAProxy test T290005
+
+node /^cp601[6]\.drmrs\.wmnet$/ {
+    role(cache::text_haproxy)
 }
 
 node 'cumin1001.eqiad.wmnet' {
