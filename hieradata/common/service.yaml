@@ -1321,14 +1321,7 @@ service::catalog:
     page: false
     probes:
       - type: http
-    monitoring:
-      check_command: check_https_lvs_on_port!miscweb.discovery.wmnet!4111!/
-      sites:
-        codfw:
-          hostname: miscweb.svc.codfw.wmnet
-        eqiad:
-          hostname: miscweb.svc.eqiad.wmnet
-    port: 4111
+    port: 30443
     sites:
       - eqiad
       - codfw
