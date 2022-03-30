@@ -55,7 +55,7 @@ profile::contacts::role_contacts: ['Search Platform SREs']
 
 
 # 1000 here to prevent to actually prevent the actual OOM from happening
-# ref: https://github.com/Netflix-Skunkworks/jvmquake
-profile::query_service::jvmquake_options: "1000,1,0"
-# Touch a file in /tmp/ when we get a 10sec GC deficit
-profile::query_service::jvmquake_warn_threshold: 10
+# ref: https://github.com/Netflix-Skunkworks/jvmquake#knobs-and-options
+profile::query_service::jvmquake_options: "1000,5,0"
+# Touch a file in /tmp/ when we get 30secs of GC time vs 1sec*5 of runtime
+profile::query_service::jvmquake_warn_threshold: 30
