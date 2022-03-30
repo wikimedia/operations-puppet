@@ -79,6 +79,8 @@ class routinator(
         },
     }
 
+    profile::auto_restarts::service { 'routinator': }
+
     nrpe::monitor_service { 'routinator-process':
         description  => 'Routinator process',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C routinator',
