@@ -47,6 +47,10 @@ class profile::kerberos::replication (
             require => Package['krb5-kpropd'],
         }
 
+        profile::auto_restarts::service { 'krb5-kpropd':
+            ensure => present,
+        }
+
         $ensure_replication_timer = 'absent'
 
         if $monitoring_enabled {
@@ -66,6 +70,10 @@ class profile::kerberos::replication (
 
         service { 'krb5-kpropd':
             ensure => stopped,
+        }
+
+        profile::auto_restarts::service { 'krb5-kpropd':
+            ensure => absent,
         }
 
         file { '/etc/krb5kdc/kpropd.acl':
