@@ -65,4 +65,6 @@ class prometheus::blackbox_exporter(
         override => true,
         restart  => true,
     }
+
+    profile::auto_restarts::service { 'prometheus-blackbox-exporter': }
 }
