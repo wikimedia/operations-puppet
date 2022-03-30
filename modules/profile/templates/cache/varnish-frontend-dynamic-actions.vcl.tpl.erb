@@ -43,7 +43,7 @@ vsthrottle.is_denied("global:{{ index . "label" }}{{ if $throttle.throttle_per_i
 // FILTER: {{ $name }}
 // {{ $action.comment }}
 // This filter is generated from data in etcd. If you want to disable it, run the following command:
-// confctl --object-type request-actions select 'name={{ $name }},cluster={{ $cluster }}' set/enabled=false
+// sudo requestctl disable '{{ $cluster}}/{{ $name }}'
 if ({{ range split $action.expression " " }}{{ template "vcl_from_expr" . }} {{ end }}{{ if $action.do_throttle }} && {{ template "vcl_from_throttle" (map "label" $name "action" $action)}}{{- end -}}) {
         return (synth({{$action.resp_status}}, "{{$action.resp_reason}}"));
 }
