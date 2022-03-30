@@ -27,6 +27,7 @@ class openstack::serverpackages::wallaby::bullseye(
       'uwsgi-plugin-python3',
       'uwsgi-core',
       'librdkafka1',
+      'python3-eventlet',
     ]
 
     apt::pin { 'openstack-wallaby-bullseye-bpo-nochange':
