@@ -12,10 +12,7 @@ class profile::mariadb::misc::db_inventory(
     # profile::mariadb::section_params use 'tendril' as the name.
     $shard = 'tendril'
     $mysql_role = $profile::mariadb::mysql_role::role
-    $binlog_format = $mysql_role == 'master' ? {
-        true    => 'STATEMENT',
-        default => 'ROW',
-    }
+    $binlog_format = 'ROW'
     $is_writeable_dc = profile::mariadb::section_params::is_writeable_dc($shard)
 
     require profile::mariadb::packages_wmf
