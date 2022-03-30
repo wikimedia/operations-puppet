@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Script to download addresses anges for various cloud provideres and store them in a json file"""
+"""Script to download address ranges for various cloud providers and store them in a json file"""
 import csv
 import json
 import logging
@@ -109,16 +109,15 @@ class ExternalCloudVendorAzure:
         return nets
 
 
-class ExternalCloudVendorDigitalOcean:
-    """Class to fetch data from  DigitalOcean"""
+@dataclass
+class CSVExternalCloudVendor:
+    """Class to fetch networks from a CSV file formatted to RFC 8805"""
 
-    name: str = "DigitalOcean"
-    # This is the file linked from the digitalocean platform documentation website:
-    # https://www.digitalocean.com/docs/platform/
-    url: str = "http://digitalocean.com/geo/google.csv"
+    name: str
+    url: str
 
     def get_networks(self, session: Session) -> Set[str]:
-        """Fetch Azure networks
+        """Fetch networks in CSV format
 
         Arguments:
             session: A request session to use for fetching data
@@ -127,9 +126,12 @@ class ExternalCloudVendorDigitalOcean:
             set[str]: A set of network prefixes
         """
         ips_request = session.get(self.url, allow_redirects=True)
-
+        lines = (
+            line for line in ips_request.text.splitlines()
+            if not line.startswith("#")
+        )
         ips = csv.DictReader(
-            ips_request.content.decode("utf-8").splitlines(),
+            lines,
             fieldnames=["range", "country", "region", "city", "postcode"],
         )
         nets = {item["range"] for item in ips}
@@ -205,7 +207,13 @@ def main() -> int:
         ),
         ExternalCloudVendorOci(),
         ExternalCloudVendorAzure(),
-        ExternalCloudVendorDigitalOcean(),
+        CSVExternalCloudVendor(
+            "DigitalOcean",
+            # This is the file linked from the digitalocean platform documentation website:
+            # https://www.digitalocean.com/docs/platform/
+            "http://digitalocean.com/geo/google.csv"
+        ),
+        CSVExternalCloudVendor("Linode", "https://geoip.linode.com/"),
     ]
 
     datafile = args.datafile
