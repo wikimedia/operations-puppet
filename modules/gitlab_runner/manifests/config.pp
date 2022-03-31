@@ -47,6 +47,5 @@ class gitlab_runner::config (
         ensure         => 'present',
         content        => template('gitlab_runner/gitlab-runner.service.erb'),
         service_params => {'restart' => 'systemctl restart gitlab-runner'},
-        override       => true, # overwrite default unit file
     }
 }
