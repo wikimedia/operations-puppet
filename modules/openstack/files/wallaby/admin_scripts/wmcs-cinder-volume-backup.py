@@ -89,12 +89,10 @@ class CinderBackup(object):
         )
         to_delete = {}
         for backup in existing_backups:
-            # Use updated_at rather than created_at in the interest of purging too few things
-            # rather than too many.
-            updated_at = datetime.datetime.strptime(
-                backup.updated_at, "%Y-%m-%dT%H:%M:%S.%f"
+            created_at = datetime.datetime.strptime(
+                backup.created_at, "%Y-%m-%dT%H:%M:%S.%f"
             )
-            if updated_at < datetime.datetime.now() - datetime.timedelta(days=days):
+            if created_at < (datetime.datetime.now() - datetime.timedelta(days=days)):
                 to_delete[backup.id] = backup
 
         # Here is where it gets messy:
