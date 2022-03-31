@@ -40,10 +40,7 @@ class profile::mariadb::misc::db_inventory(
     if profile::mariadb::section_params::is_repl_client($shard, $mysql_role) {
         $source_dc = profile::mariadb::section_params::get_repl_src_dc($mysql_role)
         mariadb::monitor_replication { $id:
-            # Ignore $is_writeable_dc for now, as both hosts are writeable.
-            # See T266003 for context.
-            #is_critical => $is_writeable_dc,
-            is_critical => true,
+            is_critical => $is_writeable_dc,
             source_dc   => $source_dc
         }
         profile::mariadb::replication_lag { $id: }
@@ -53,10 +50,7 @@ class profile::mariadb::misc::db_inventory(
     $is_read_only = profile::mariadb::section_params::is_read_only($shard, $mysql_role)
     $is_critical = profile::mariadb::section_params::is_alert_critical($shard, $mysql_role)
     mariadb::monitor_readonly { $id:
-        # Ignore $is_writeable_dc for now, as both hosts are writeable.
-        # See T266003 for context.
-        #read_only   => $is_read_only,
-        read_only   => false,
+        read_only   => $is_read_only,
         is_critical => true,
     }
     class { 'mariadb::monitor_disk':

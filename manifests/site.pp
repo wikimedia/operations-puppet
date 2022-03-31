@@ -900,7 +900,6 @@ node 'db1115.eqiad.wmnet' {
 }
 
 # zarcillo slave
-# Active master for orchestrator DB
 node 'db2093.codfw.wmnet' {
     role(mariadb::misc::db_inventory)
 }
