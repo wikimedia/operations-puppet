@@ -21,7 +21,7 @@ class openstack::nova::api::service::wallaby(
     $file_to_patch = '/usr/lib/python3/dist-packages/nova/api/openstack/compute/servers.py'
     $patch_file = "${file_to_patch}.patch"
     file {$patch_file:
-        source => 'puppet:///modules/openstack/wallaby/nova/hacks/server.py.patch',
+        source => 'puppet:///modules/openstack/wallaby/nova/hacks/servers.py.patch',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
