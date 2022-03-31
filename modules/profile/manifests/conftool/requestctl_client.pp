@@ -9,12 +9,12 @@ class profile::conftool::requestctl_client(
     }
 
     # Install the per-cluster test files.
-    ['text', 'cache'].each |$cache_cluster| {
+    ['text', 'upload'].each |$cache_cluster| {
         $is_test = true
         confd::file { "/var/lib/requestctl/tests/${cache_cluster}-actions.inc.vcl":
             ensure     => 'present',
             watch_keys => ['/request-patterns', "/request-actions/cache-${cache_cluster}"],
-            content    => template('profile/cache/blocked-nets.inc.vcl.tpl.erb'),
+            content    => template('profile/cache/varnish-frontend-dynamic-actions.vcl.tpl.erb'),
         }
     }
     # TODO: add an alert if there are uncommitted changes
