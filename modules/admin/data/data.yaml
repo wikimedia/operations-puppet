@@ -78,7 +78,7 @@ groups:
     gid: 824
     # ariel, hnowlan, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese,
-              daniel, eevans, kevinbazira, nikkin, gmodena, hokwelum]
+              daniel, eevans, kevinbazira, nikkin, gmodena, hokwelum, tchin]
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -360,7 +360,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
-              shubhankar, dalezhou, nokafor, otich, sgimeno]
+              shubhankar, dalezhou, nokafor, otich, sgimeno, tchin]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5170,6 +5170,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZfnjboIHwyJ849bMbH9NspXL6dTjMkoZHflvrMLcvt sergio@wmf2988
     krb: present
+  tchin:
+    ensure: present
+    realname: Thomas Chin
+    email: tchin@wikimedia.org
+    uid: 32581
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2PJMFqjSDz8l2fnhsLCYqJ1gDRs/cMF1ds4yd5a+Yb tchin@wikimedia.org
+    krb: present
 
 ldap_only_users:
   abartov:
@@ -5862,10 +5871,6 @@ ldap_only_users:
     ensure: present
     realname: Kara Lynne Payne
     email: kara.payne@wikimedia.de
-  tchin:
-    ensure: present
-    realname: Thomas Chin
-    email: tchin@wikimedia.org
   elal:
     ensure: present
     realname: Elena Aleynikova
