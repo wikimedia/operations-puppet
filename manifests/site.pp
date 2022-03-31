@@ -1934,7 +1934,7 @@ node /^ml-staging-ctrl200[12]\.codfw.wmnet/ {
 
 # New ml-staging nodes T294946
 node /^ml-staging200[12]\.codfw\.wmnet/ {
-    role(insetup)
+    role(ml_k8s::worker::staging)
 }
 
 # RT, replaced ununpentium

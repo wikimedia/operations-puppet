@@ -1,0 +1,47 @@
+cluster: ml_staging
+profile::kubernetes::node::packages_from_future: true
+profile::base::overlayfs: true
+profile::docker::engine::force_default_docker_storage: true
+profile::docker::storage::physical_volumes: ~
+profile::docker::storage::vg_to_remove: ~
+profile::docker::engine::declare_service: true
+profile::docker::engine::packagename: 'docker.io'
+# TODO: This option is not needed on Bullseye nodes,
+# remove when the related profile has been refactored.
+profile::docker::engine::version: "18.09.1+dfsg1-7.1+deb10u3"
+profile::kubernetes::infra_pod: 'docker-registry.discovery.wmnet/pause'
+profile::kubernetes::use_cni: true
+profile::docker::engine::settings:
+  bridge: none
+  iptables: false
+  ip-masq: false
+  log-opts:
+    max-size: 100m
+  live-restore: true
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
+profile::calico::kubernetes::calico_version: '3'
+# Tokens for the calico kubernetes users in private repo at:
+#profile::calico::kubernetes::calico_cni::token
+#profile::calico::kubernetes::calicoctl::token
+profile::kubernetes::node::masquerade_all: false
+# Defined in the private repo
+#profile::kubernetes::node::kubelet_token:
+# Defined in the private repo
+#profile::kubernetes::node::kubeproxy_token:
+profile::kubernetes::node::kubeproxy_metrics_bind_address: 0.0.0.0
+profile::kubernetes::node::kubelet_cluster_domain: 'cluster.local'
+profile::rsyslog::kubernetes::kubernetes_url: https://ml-staging-ctrl.svc.%{::site}.wmnet:6443
+profile::rsyslog::kubernetes::enable: true
+profile::kubernetes::master_fqdn: ml-staging-ctrl.svc.%{::site}.wmnet
+# Define in the private repo
+# profile::rsyslog::kubernetes::token
+prometheus::node_exporter::collectors_extra:
+  - processes
+# We don't need conftool safe restart scripts on k8s.
+profile::lvs::realserver::use_conftool: false
+profile::lvs::realserver::pools:
+  inference: {}
+
+profile::admin::groups:
+  - ml-team-admins
+profile::contacts::role_contacts: ['Machine Learning SREs']
