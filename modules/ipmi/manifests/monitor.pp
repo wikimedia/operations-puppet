@@ -10,6 +10,14 @@ class ipmi::monitor (
         ensure => absent,
     }
 
+    # ensure service only on buster as other OS versions are conigured properly by the package
+    if debian::codename::eq('buster') {
+        service { 'ipmiseld':
+            ensure => running,
+            enable => true,
+        }
+    }
+
     file { '/var/cache/ipmiseld':
         ensure => directory,
         owner  => 'root',
