@@ -69,7 +69,7 @@ class profile::wmcs::backy2(
         logging_enabled           => true,
         monitoring_enabled        => true,
         monitoring_contact_groups => 'wmcs-team-email',
-        monitoring_notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Runbooks/Check_unit_status_of_backup_vm',
+        monitoring_notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Runbooks/Check_unit_status_of_backup_vms',
         user                      => 'root',
     }
 
