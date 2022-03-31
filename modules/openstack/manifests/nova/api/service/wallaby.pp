@@ -6,9 +6,6 @@ class openstack::nova::api::service::wallaby(
     require "openstack::serverpackages::wallaby::${::lsbdistcodename}"
 
     ensure_packages(['nova-api', 'patch'])
-    package { 'nova-api':
-        ensure => 'present',
-    }
 
     file { '/etc/init.d/nova-api':
         content => template('openstack/wallaby/nova/api/nova-api'),
