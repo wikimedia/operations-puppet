@@ -35,4 +35,6 @@ class netops::atlasexporter(
         require => [ Package['prometheus-atlas-exporter'], File[$config_file] ],
         restart => true,
     }
+
+    profile::auto_restarts::service { 'prometheus-atlas-exporter': }
 }
