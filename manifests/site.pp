@@ -2677,7 +2677,7 @@ node /sessionstore[1-2]00[1-3].(eqiad|codfw).wmnet/ {
 
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\.org$/ {
-    role(openldap::labs)
+    role(openldap::rw)
 }
 
 node 'mirror1001.wikimedia.org' {

@@ -67,7 +67,7 @@ role::dumps::generation::worker::dumper:
   target-q: TBD
 role::dumps::generation::worker::testbed:
   target-q: TBD
-role::openldap::labs:
+role::openldap::rw:
   target-q: 2020-3
 role::rpkivalidator:
   target-q: 2020-1

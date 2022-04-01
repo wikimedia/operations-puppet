@@ -76,7 +76,7 @@ role::dumps::generation::server::misccrons:
   target-q: TBD
 role::dumps::generation::server::xmlfallback:
   target-q: TBD
-role::openldap::labs:
+role::openldap::rw:
   target-q: TBD
 role::rpkivalidator:
   target-q: TBD

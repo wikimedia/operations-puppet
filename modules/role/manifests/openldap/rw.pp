@@ -1,6 +1,6 @@
-# LDAP servers for labs (based on OpenLDAP)
+# Writable LDAP servers (based on OpenLDAP)
 
-class role::openldap::labs {
+class role::openldap::rw {
     include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::backup::host
@@ -8,7 +8,7 @@ class role::openldap::labs {
 
     include ::profile::openldap
 
-    system::role { 'openldap::labs':
-        description => 'LDAP servers for labs (based on OpenLDAP)'
+    system::role { 'openldap::rw':
+        description => 'Writable LDAP servers (based on OpenLDAP)'
     }
 }
