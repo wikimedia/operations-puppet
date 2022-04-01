@@ -132,7 +132,7 @@ profile::dbbackups::check::backups:
     dump:
     - eqiad
     - codfw
-  zarcillo:
+  db_inventory:
     dump:
     - eqiad
     - codfw
