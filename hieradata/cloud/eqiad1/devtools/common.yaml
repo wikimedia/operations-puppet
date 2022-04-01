@@ -216,7 +216,7 @@ profile::base::ssh_server_settings:
 #    - "%{facts.ipaddress6}" # no ipv6 on cloud test instance
 
 
-profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
+profile::gitlab::backup_dir_data: '/mnt/gitlab-backup'
 profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
 profile::gitlab::backup_keep_time: 259200
 # Disable sync on cloud test instance

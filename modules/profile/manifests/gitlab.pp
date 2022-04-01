@@ -154,10 +154,12 @@ class profile::gitlab(
     }
 
     class { 'gitlab::rsync':
-        active_host    => $active_host,
-        passive_host   => $passive_host,
-        ensure         => $enable_backup_sync.bool2str('present','absent'),
-        rsync_interval => $rsync_interval,
+        active_host       => $active_host,
+        passive_host      => $passive_host,
+        ensure            => $enable_backup_sync.bool2str('present','absent'),
+        rsync_interval    => $rsync_interval,
+        backup_dir_data   => $backup_dir_data,
+        backup_dir_config => $backup_dir_config,
     }
 
     class { 'gitlab':

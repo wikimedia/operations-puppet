@@ -3,8 +3,8 @@
 LOGFILE=/var/log/gitlab-restore-backup.log
 CONFIG_FILE=/etc/gitlab/gitlab.rb
 SECRETS_FILE=/etc/gitlab/gitlab-secrets.json
-OLD_BACKUP_FILE=/srv/gitlab-backup/latest/latest.tar
-NEW_BACKUP_FILE=/srv/gitlab-backup/latest_gitlab_backup.tar
+OLD_BACKUP_FILE=/mnt/gitlab-backup/latest/latest.tar
+NEW_BACKUP_FILE=/mnt/gitlab-backup/latest_gitlab_backup.tar
 CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
 
 # check if installed GitLab version matches backup version

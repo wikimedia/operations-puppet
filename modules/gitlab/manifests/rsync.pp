@@ -5,7 +5,9 @@ class gitlab::rsync (
     $active_host,
     $passive_host,
     $ensure,
-    Systemd::Timer::Schedule $rsync_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* 01:00:00'},
+    Systemd::Timer::Schedule $rsync_interval    = {'start' => 'OnCalendar', 'interval' => '*-*-* 01:00:00'},
+    Stdlib::Unixpath         $backup_dir_data   = '/srv/gitlab-backup',
+    Stdlib::Unixpath         $backup_dir_config = '/etc/gitlab/config_backup',
 ){
     # only activate rsync/firewall hole on the server that is NOT active
     if $ensure != 'present' {
@@ -22,7 +24,7 @@ class gitlab::rsync (
 
     rsync::server::module { 'data-backup':
         ensure         => $ensure_sync,
-        path           => '/srv/gitlab-backup/latest/',
+        path           => "${backup_dir_data}/latest/",
         read_only      => 'no',
         hosts_allow    => [$active_host],
         auto_ferm      => true,
@@ -31,7 +33,7 @@ class gitlab::rsync (
 
     rsync::server::module { 'config-backup':
         ensure         => $ensure_sync,
-        path           => '/etc/gitlab/config_backup/latest/',
+        path           => "${backup_dir_config}/latest/",
         read_only      => 'no',
         hosts_allow    => [$active_host],
         auto_ferm      => true,
@@ -42,14 +44,14 @@ class gitlab::rsync (
         ensure      => $ensure_job,
         user        => 'root',
         description => 'rsync GitLab data backup primary to a secondary server',
-        command     => "/usr/bin/rsync -avp --delete /srv/gitlab-backup/latest/ rsync://${passive_host}/data-backup",
+        command     => "/usr/bin/rsync -avp --delete ${backup_dir_data}/latest/ rsync://${passive_host}/data-backup",
         interval    => $rsync_interval,
     }
     systemd::timer::job { 'rsync-config-backup':
         ensure      => $ensure_job,
         user        => 'root',
         description => 'rsync GitLab config backup primary to a secondary server',
-        command     => "/usr/bin/rsync -avp --delete /etc/gitlab/config_backup/latest/ rsync://${passive_host}/config-backup",
+        command     => "/usr/bin/rsync -avp --delete ${backup_dir_config}/latest/ rsync://${passive_host}/config-backup",
         interval    => $rsync_interval,
     }
 }
