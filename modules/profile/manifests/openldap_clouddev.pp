@@ -29,8 +29,8 @@ class profile::openldap_clouddev (
         key            => "/etc/acmecerts/${certname}/live/rsa-2048.key",
         extra_schemas  => ['dnsdomain2.schema', 'nova_sun.schema', 'openssh-ldap.schema',
                           'puppet.schema', 'sudo.schema', 'wmf-user.schema'],
-        extra_indices  => 'openldap/labs-indices.erb',
-        extra_acls     => template('openldap/labs-acls.erb'),
+        extra_indices  => 'openldap/main-indices.erb',
+        extra_acls     => template('openldap/main-acls.erb'),
         mirrormode     => $mirror_mode,
         master         => $master,
         hash_passwords => $hash_passwords,
@@ -38,15 +38,15 @@ class profile::openldap_clouddev (
     }
 
     # Ldap services are used all over the place, including within
-    #  labs and on various prod hosts.
-    ferm::service { 'labs_ldap':
+    # WMCS and on various prod hosts.
+    ferm::service { 'ldap':
         proto  => 'tcp',
         port   => '(389 636)',
         srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
     }
 
-    monitoring::service { 'labs_ldap_check':
-        description   => 'Labs LDAP ',
+    monitoring::service { 'ldap':
+        description   => 'LDAP WMCS test cluster',
         check_command => 'check_ldap!dc=wikimedia,dc=org',
         critical      => false,
         notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
@@ -61,6 +61,6 @@ class profile::openldap_clouddev (
     }
 
     if $backup {
-        backup::openldapset {'openldap_labs':}
+        backup::openldapset { 'openldap': }
     }
 }

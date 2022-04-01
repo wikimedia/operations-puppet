@@ -1,5 +1,4 @@
-define backup::openldapset(){
-
+define backup::openldapset () {
     file { '/etc/bacula/scripts/openldap-pre':
         ensure => present,
         owner  => 'root',
@@ -20,7 +19,7 @@ define backup::openldapset(){
         'ClientRunBeforeJob' => '/etc/bacula/scripts/openldap-pre',
         'ClientRunAfterJob' => '/etc/bacula/scripts/openldap-post',
     }
-    backup::set { 'openldap':
+    backup::set { $title:
         extras      => $run_scripts,
     }
 }
