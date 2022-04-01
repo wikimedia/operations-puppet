@@ -147,5 +147,6 @@ class gitlab (
         ensure_restore_script => $ensure_restore_script,
         ensure_restore        => $ensure_restore,
         restore_dir_data      => $backup_dir_data,
+        restore_interval      => $restore_interval,
     }
 }
