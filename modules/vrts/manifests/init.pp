@@ -1,6 +1,6 @@
-# Class: otrs
+# Class: vrts
 #
-# This class installs all the prerequisite packages for OTRS
+# This class installs all the prerequisite packages for VRTS
 #
 # Parameters:
 #   $vrts_database_host,
@@ -27,7 +27,7 @@
 #
 # Requires:
 #
-#  class {'::otrs':
+#  class {'::vrts':
 #      vrts_database_host => 'host1',
 #      vrts_database_name => 'otrs',
 #      vrts_database_user => 'user',
@@ -39,7 +39,7 @@
 #      trusted_networks =>  [],
 #  }
 #
-class otrs(
+class vrts(
     Stdlib::Host $vrts_database_host,
     String $vrts_database_name,
     String $vrts_database_user,
@@ -51,8 +51,8 @@ class otrs(
     Array $trusted_networks,
 ) {
     # Implementation classes
-    include ::otrs::web
-    class { '::otrs::mail':
+    include ::vrts::web
+    class { '::vrts::mail':
         vrts_mysql_database => $exim_database_name,
         vrts_mysql_user     => $exim_database_user,
         vrts_mysql_password => $exim_database_pass,
@@ -107,7 +107,7 @@ class otrs(
         owner   => 'otrs',
         group   => 'www-data',
         mode    => '0440',
-        content => template('otrs/Config.pm.erb'),
+        content => template('vrts/Config.pm.erb'),
     }
 
     file { '/opt/otrs/bin/otrs.TicketExport2Mbox.pl':
@@ -115,7 +115,7 @@ class otrs(
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0755',
-        source => 'puppet:///modules/otrs/otrs.TicketExport2Mbox.pl',
+        source => 'puppet:///modules/vrts/otrs.TicketExport2Mbox.pl',
     }
 
     file { '/opt/otrs/bin/cgi-bin/idle_agent_report':
@@ -123,7 +123,7 @@ class otrs(
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0755',
-        source => 'puppet:///modules/otrs/idle_agent_report',
+        source => 'puppet:///modules/vrts/idle_agent_report',
     }
 
     # WMF skin customizations
@@ -132,21 +132,21 @@ class otrs(
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0664',
-        source => 'puppet:///modules/otrs/wmf.ico',
+        source => 'puppet:///modules/vrts/wmf.ico',
     }
     file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/logo_bg_wmf.png':
         ensure => 'file',
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0664',
-        source => 'puppet:///modules/otrs/logo_bg_wmf.png',
+        source => 'puppet:///modules/vrts/logo_bg_wmf.png',
     }
     file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/loginlogo_wmf.png':
         ensure => 'file',
         owner  => 'otrs',
         group  => 'www-data',
         mode   => '0664',
-        source => 'puppet:///modules/otrs/loginlogo_wmf.png',
+        source => 'puppet:///modules/vrts/loginlogo_wmf.png',
     }
 
     $daemon_ensure = $vrts_daemon ? {

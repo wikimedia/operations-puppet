@@ -18,7 +18,7 @@ class profile::vrts(
         $x !~ /127.0.0.0|::1/
     }
 
-    class { '::otrs':
+    class { '::vrts':
         vrts_database_host => $vrts_database_host,
         vrts_database_name => $vrts_database_name,
         vrts_database_user => $vrts_database_user,

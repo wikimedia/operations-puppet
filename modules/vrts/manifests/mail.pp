@@ -1,4 +1,4 @@
-# Class: otrs::mail
+# Class: vrts::mail
 #
 # This class installs/configures the exim part of the WMF OTRS installation
 #
@@ -18,14 +18,14 @@
 # Requires:
 #
 # Sample Usage:
-#   class { 'otrs::mail'
+#   class { 'vrts::mail'
 #       vrts_mysql_database => 'otrs',
 #       vrts_mysql_user => 'exim',
 #       vrts_mysql_password => 'pass',
 #       trusted_networks => [],
 #   }
 #
-class otrs::mail(
+class vrts::mail(
     String $vrts_mysql_database,
     String $vrts_mysql_user,
     String $vrts_mysql_password,
@@ -37,8 +37,8 @@ class otrs::mail(
 
     class { '::exim4':
         variant => 'heavy',
-        config  => template('otrs/exim4.conf.otrs.erb'),
-        filter  => template('otrs/system_filter.conf.otrs.erb'),
+        config  => template('vrts/exim4.conf.otrs.erb'),
+        filter  => template('vrts/system_filter.conf.otrs.erb'),
         require => [
             Class['spamassassin'],
             Class['clamav'],
@@ -77,7 +77,7 @@ class otrs::mail(
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/otrs/train_spamassassin',
+        source => 'puppet:///modules/vrts/train_spamassassin',
     }
 
     systemd::timer::job { 'otrs_train_spamassassin':

@@ -1,4 +1,4 @@
-# Class: otrs::web
+# Class: vrts::web
 #
 # This class configures the apache part of the otrs WMF installation
 #
@@ -10,9 +10,9 @@
 # Requires:
 #
 # Sample Usage:
-#   include otrs::web
+#   include vrts::web
 #
-class otrs::web {
+class vrts::web {
 
     # We override the default mpm_prefork to set the apache setting for
     # MaxConnectionsPerChild. The chosen number is experimentally derived from
@@ -26,6 +26,6 @@ class otrs::web {
     }
 
     httpd::site { 'ticket.wikimedia.org':
-        content => template('otrs/ticket.wikimedia.org.erb'),
+        content => template('vrts/ticket.wikimedia.org.erb'),
     }
 }
