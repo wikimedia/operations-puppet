@@ -29,6 +29,7 @@ class certspotter(
     $statedir = "${homedir}/state"
     $configdir = '/etc/certspotter'
     $watchlist = "${configdir}/watchlist"
+    $ctlogslist = "${configdir}/ctlogslist.json"
 
     systemd::sysuser { 'certspotter':
         home_dir    => $homedir,
@@ -51,9 +52,15 @@ class certspotter(
         content => template('certspotter/watchlist.erb'),
     }
 
-    # 20180423 - cron disabled (with ensure => absent) to squelch cron errors
-    # until certspotter can be upgraded -herron
-    $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -start_at_end -state_dir ${statedir}"
+    file { $ctlogslist:
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => file('certspotter/ctlogslist.json'),
+    }
+
+    $cmd = "/usr/bin/certspotter -watchlist ${watchlist} -start_at_end -logs ${ctlogslist} -state_dir ${statedir}"
     systemd::timer::job { 'certspotter':
         ensure                  => present,
         description             => 'Run certspotter periodically to monitor for issuance of certificates',

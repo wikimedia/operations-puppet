@@ -1,0 +1,190 @@
+{
+  "operators": [
+    {
+      "logs": [
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHWlePwrycXfNnV3DNEkA7mB34XJ2dKh8XH0J8jIdBX4u/lsx1Tr9czRuSRROUFiWWsTH9L4FZKT31+WxbTMMww==",
+          "mmd": 86400,
+          "url": "https://yeti2022-2.ct.digicert.com/log/",
+          "log_id": "BZwB0yDgB4QTlYBJjRF8kDJmr69yULWvO0akPhGEDUo=",
+          "description": "DigiCert Yeti 2022 #2",
+          "temporal_interval": {
+            "end_exclusive": "2023-01-01T00:00:00+00:00",
+            "start_inclusive": "2022-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAETtK8v7MICve56qTHHDhhBOuV4IlUaESxZryCfk9QbG9co/CqPvTsgPDbCpp6oFtyAHwlDhnvr7JijXRD9Cb2FA==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/icarus/",
+          "log_id": "KTxRllTIOWW6qlD8WAfUt2+/WHopctykwwz05UVH9Hg=",
+          "description": "Google Icarus"
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEeIPc6fGmuBg6AJkv/z7NFckmHvf/OqmjchZJ6wm2qN200keRDg352dWpi7CHnSV51BpQYAj1CQY5JuRAwrrDwg==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/logs/argon2022/",
+          "log_id": "KXm+8J45OSHwVnOfY6V35b5XfZxgCvj5TV0mXCVdx4Q=",
+          "description": "Google Argon 2022",
+          "temporal_interval": {
+            "end_exclusive": "2023-01-01T00:00:00+00:00",
+            "start_inclusive": "2022-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfQ0DsdWYitzwFTvG3F4Nbj8Nv5XIVYzQpkyWsU4nuSYlmcwrAp6m092fsdXEw6w1BAeHlzaqrSgNfyvZaJ9y0Q==",
+          "mmd": 86400,
+          "url": "https://yeti2023.ct.digicert.com/log/",
+          "log_id": "Nc8ZG7+xbFe/D61MbULLu7YnICZR6j/hKu+oA8M71kw=",
+          "description": "DigiCert Yeti 2023",
+          "temporal_interval": {
+            "end_exclusive": "2024-01-01T00:00:00+00:00",
+            "start_inclusive": "2023-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESLJHTlAycmJKDQxIv60pZG8g33lSYxYpCi5gteI6HLevWbFVCdtZx+m9b+0LrwWWl/87mkNN6xE0M4rnrIPA/w==",
+          "mmd": 86400,
+          "url": "https://ct.cloudflare.com/logs/nimbus2022/",
+          "log_id": "QcjKsd8iRkoQxqE6CUKHXk4xixsD6+tLx2jwkGKWBvY=",
+          "description": "Cloudflare Nimbus 2022",
+          "temporal_interval": {
+            "end_exclusive": "2023-01-01T00:00:00+00:00",
+            "start_inclusive": "2022-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+WS9FSxAYlCVEzg8xyGwOrmPonoV14nWjjETAIdZvLvukPzIWBMKv6tDNlQjpIHNrUcUt1igRPpqoKDXw2MeKw==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/logs/xenon2022/",
+          "log_id": "RqVV63X6kSAwtaKJafTzfREsQXS+/Um4havy/HD+bUc=",
+          "description": "Google Xenon 2022",
+          "temporal_interval": {
+            "end_exclusive": "2023-01-01T00:00:00+00:00",
+            "start_inclusive": "2022-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEJyTdaAMoy/5jvg4RR019F2ihEV1McclBKMe2okuX7MCv/C87v+nxsfz1Af+p+0lADGMkmNd5LqZVqxbGvlHYcQ==",
+          "mmd": 86400,
+          "url": "https://nessie2022.ct.digicert.com/log/",
+          "log_id": "UaOw9f0BeZxWbbg3eI8MpHrMGyfL956IQpoN/tSLBeU=",
+          "description": "DigiCert Nessie 2022",
+          "temporal_interval": {
+            "end_exclusive": "2023-01-01T00:00:00+00:00",
+            "start_inclusive": "2022-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8m/SiQ8/xfiHHqtls9m7FyOMBg4JVZY9CgiixXGz0akvKD6DEL8S0ERmFe9U4ZiA0M4kbT5nmuk3I85Sk4bagA==",
+          "mmd": 86400,
+          "url": "https://sabre.ct.comodo.com/",
+          "log_id": "VYHUwhaQNgFK6gubVzxT8MDkOHhwJQgXL6OqHQcT0ww=",
+          "description": "Sectigo Sabre"
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1/TMabLkDpCjiupacAlP7xNi0I1JYP8bQFAHDG1xhtolSY1l4QgNRzRrvSe8liE+NPWHdjGxfx3JhTsN9x8/6Q==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/aviator/",
+          "log_id": "aPaY+B9kgr46jO65KB1M/HFRXWeT1ETRCmesu09P+8Q=",
+          "description": "Google Aviator"
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7+R9dC4VFbbpuyOL+yy14ceAmEf7QGlo/EmtYU6DRzwat43f/3swtLr/L8ugFOOt1YU/RFmMjGCL17ixv66MZw==",
+          "mmd": 86400,
+          "url": "https://mammoth.ct.comodo.com/",
+          "log_id": "b1N2rDHwMRnYmQCkURX/dxUcEdkCwQApBo2yCJo32RM=",
+          "description": "Sectigo Mammoth"
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEi/8tkhjLRp0SXrlZdTzNkTd6HqmcmXiDJz3fAdWLgOhjmv4mohvRhwXul9bgW0ODgRwC9UGAgH/vpGHPvIS1qA==",
+          "mmd": 86400,
+          "url": "https://ct.cloudflare.com/logs/nimbus2023/",
+          "log_id": "ejKMVNi3LbYg6jjgUh7phBZwMhOFTTvSK8E6V6NS61I=",
+          "description": "Cloudflare Nimbus 2023",
+          "temporal_interval": {
+            "end_exclusive": "2024-01-01T00:00:00+00:00",
+            "start_inclusive": "2023-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfahLEimAoz2t01p3uMziiLOl/fHTDM0YDOhBRuiBARsV4UvxG2LdNgoIGLrtCzWE0J5APC2em4JlvR8EEEFMoA==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/pilot/",
+          "log_id": "pLkJkLQYWBSHuxOizGdwCjw1mAT5G9+443fNDsgN3BA=",
+          "description": "Google Pilot"
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEchY+C+/vzj5g3ZXLY3q5qY1Kb2zcYYCmRV4vg6yU84WI0KV00HuO/8XuQqLwLZPjwtCymeLhQunSxgAnaXSuzg==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/logs/xenon2023/",
+          "log_id": "rfe++nz/EMiLnT2cHj4YarRnKV3PsQwkyoWGNOvcgoo=",
+          "description": "Google Xenon 2023",
+          "temporal_interval": {
+            "end_exclusive": "2024-01-01T00:00:00+00:00",
+            "start_inclusive": "2023-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEXu8iQwSCRSf2CbITGpUpBtFVt8+I0IU0d1C36Lfe1+fbwdaI0Z5FktfM2fBoI1bXBd18k2ggKGYGgdZBgLKTg==",
+          "mmd": 86400,
+          "url": "https://nessie2023.ct.digicert.com/log/",
+          "log_id": "s3N3B+GEUPhjhtYFqdwRCUp5LbFnDAuH3PADDnk2pZo=",
+          "description": "DigiCert Nessie 2023",
+          "temporal_interval": {
+            "end_exclusive": "2024-01-01T00:00:00+00:00",
+            "start_inclusive": "2023-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEsz0OeL7jrVxEXJu+o4QWQYLKyokXHiPOOKVUL3/TNFFquVzDSer7kZ3gijxzBp98ZTgRgMSaWgCmZ8OD74mFUQ==",
+          "mmd": 86400,
+          "url": "https://oak.ct.letsencrypt.org/2023/",
+          "log_id": "tz77JN+cTbp18jnFulj0bF38Qs96nzXEnh0JgSXttJk=",
+          "description": "Let's Encrypt Oak 2023",
+          "temporal_interval": {
+            "end_exclusive": "2024-01-07T00:00:00+00:00",
+            "start_inclusive": "2023-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEmyGDvYXsRJsNyXSrYc9DjHsIa2xzb4UR7ZxVoV6mrc9iZB7xjI6+NrOiwH+P/xxkRmOFG6Jel20q37hTh58rA==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/skydiver/",
+          "log_id": "u9nfvB+KcbWTlCOXqpJ7RzhXlQqrUugakJZkNo4e0YU=",
+          "description": "Google Skydiver"
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhjyxDVIjWt5u9sB/o2S8rcGJ2pdZTGA8+IpXhI/tvKBjElGE5r3de4yAfeOPhqTqqc+o7vPgXnDgu/a9/B+RLg==",
+          "mmd": 86400,
+          "url": "https://oak.ct.letsencrypt.org/2022/",
+          "log_id": "36Veq2iCTx9sre64X04+WurNohKkal6OOxLAIERcKnM=",
+          "description": "Let's Encrypt Oak 2022",
+          "temporal_interval": {
+            "end_exclusive": "2023-01-07T00:00:00+00:00",
+            "start_inclusive": "2022-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0JCPZFJOQqyEti5M8j13ALN3CAVHqkVM4yyOcKWCu2yye5yYeqDpEXYoALIgtM3TmHtNlifmt+4iatGwLpF3eA==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/logs/argon2023/",
+          "log_id": "6D7Q2j71BjUy51covIlryQPTy9ERa+zraeF3fW0GvW4=",
+          "description": "Google Argon 2023",
+          "temporal_interval": {
+            "end_exclusive": "2024-01-01T00:00:00+00:00",
+            "start_inclusive": "2023-01-01T00:00:00+00:00"
+          }
+        },
+        {
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEIFsYyDzBi7MxCAC/oJBXK7dHjG+1aLCOkHjpoHPqTyghLpzA9BYbqvnV16mAw04vUjyYASVGJCUoI3ctBcJAeg==",
+          "mmd": 86400,
+          "url": "https://ct.googleapis.com/rocketeer/",
+          "log_id": "7ku9t3XOYLrhQmkfq+GeZqMPfl+wctiDAMR7iXqo/cs=",
+          "description": "Google Rocketeer"
+        }
+      ],
+      "name": "Unspecified operator"
+    }
+  ]
+}
