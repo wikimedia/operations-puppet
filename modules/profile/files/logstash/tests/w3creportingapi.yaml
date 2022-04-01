@@ -12,6 +12,7 @@ testcases:
   - input:
       - >
         {
+          "$schema": "/w3c/reportingapi/network_error/1.0.0",
           "http": {
             "client_ip": "127.0.0.1",
             "request_headers": {
@@ -40,7 +41,8 @@ testcases:
           }
         }
     expected:
-      - http:
+      - '$schema': '/w3c/reportingapi/network_error/1.0.0'
+        http:
           client_ip: "127.0.0.1"
           request_headers:
             user-agent: "Mozilla/0.0 (Linux) AppleWebKit/000.00 (KHTML, like Gecko) Chrome/00.0.0000.000 Mobile Safari/000.00"
