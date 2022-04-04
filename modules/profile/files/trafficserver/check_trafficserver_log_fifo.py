@@ -20,7 +20,6 @@ import subprocess
 
 OK = 0
 CRITICAL = 2
-UNKNOWN = 3
 
 
 def critical_exit(msg):
@@ -58,8 +57,8 @@ def main():
 
     pooled = subprocess.run(["ispooled", args.service])
     if pooled.returncode == 1:
-        print("UNKNOWN: service {} is not pooled".format(args.service))
-        sys.exit(UNKNOWN)
+        print("OK: service {} is not pooled".format(args.service))
+        sys.exit(OK)
 
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.settimeout(args.timeout)
