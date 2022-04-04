@@ -230,10 +230,10 @@ network::subnets:
           ipv4: 10.192.76.0/24
           ipv6: 2620:0:860:babf::/64
         private1-mlserve-kubepods-codfw:
-          ipv4: 10.192.78.0/23
+          ipv4: 10.194.16.0/21
           ipv6: 2620:0:860:300::/64
         private1-mlserve-kubesvc-codfw:
-          ipv4: 10.192.77.0/24
+          ipv4: 10.194.0.0/20
           ipv6: 2620:0:860:301::/64
     esams:
       public:
