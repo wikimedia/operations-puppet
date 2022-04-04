@@ -18,6 +18,7 @@ class profile::prometheus::ops (
     Array[Stdlib::HTTPUrl] $blackbox_watchrat_http_check_urls = lookup('profile::prometheus::ops::blackbox_watchrat_http_check_urls', { 'default_value' => [] }),
     Array[Stdlib::HTTPUrl] $blackbox_watchrat_proxied_urls    = lookup('profile::prometheus::ops::blackbox_watchrat_proxied_urls', { 'default_value' => [] }),
     Optional[Stdlib::HTTPUrl] $http_proxy                     = lookup('http_proxy', {default_value => undef}),
+    Wmflib::Infra::Devices $infra_devices                     = lookup('infra_devices'),
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -179,9 +180,9 @@ class profile::prometheus::ops (
       },
     ]
 
-    # Jobs for network probes. One job per network 'sphere', as of Feb 2022
-    # service::catalog is probed, though the same jobs can be reused for any
-    # network endpoint. Targets in these jobs are expected to contain the
+    # Jobs for network probes. As of Feb 2022 service::catalog is probed,
+    # though the same jobs can be reused for any network endpoint.
+    # Targets in these jobs are expected to contain the
     # following labels:
     # - address => the endpoint address
     # - family  => ip4/ip6
@@ -197,6 +198,16 @@ class profile::prometheus::ops (
         'scrape_timeout'  => '3s',
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/probes-service_*.yaml" ] }
+        ],
+        'relabel_configs' => $probes_relabel_configs,
+      },
+      {
+        'job_name'        => 'smoke/icmp',
+        'metrics_path'    => '/probe',
+        'scrape_interval' => '15s',
+        'scrape_timeout'  => '3s',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/smoke-icmp_*.yaml" ] }
         ],
         'relabel_configs' => $probes_relabel_configs,
       },
@@ -221,6 +232,17 @@ class profile::prometheus::ops (
         targets_file    => "${targets_path}/probes-service_catalog_private.yaml",
         networks        => slice_network_constants('production', { 'sphere' => 'private', 'site' => $::site }),
       }
+    }
+
+    # Write targets for Prometheus to ping core routers, targeting all sites.
+    # The 'ops' Prometheus instance is deployed to all sites, therefore giving full mesh ping
+    $core_routers = $infra_devices.filter |$device, $config| {
+      $config['role'] == 'cr'
+    }
+
+    netops::prometheus::icmp { 'core-routers':
+      targets      => $core_routers,
+      targets_file => "${targets_path}/smoke-icmp_core-routers.yaml",
     }
 
     # Export local textfile metrics.
