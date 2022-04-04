@@ -17,3 +17,5 @@ profile::debdeploy::client::filter_services:
     - '*'
   (sd-pam):
     - '*'
+  mdadm:
+    - '*'
