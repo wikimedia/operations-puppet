@@ -115,15 +115,7 @@ class profile::httpbb (
     }
 
     systemd::timer::job { 'git_pull_httpbb':
-        ensure          => present,
-        description     => 'Pull changes from operations/software/httpbb',
-        command         => '/bin/bash -c "cd /srv/deployment/httpbb && /usr/bin/git pull >/dev/null 2>&1"',
-        interval        => {
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:00:00', # every hour
-        },
-        logging_enabled => false,
-        user            => 'root',
+        ensure          => absent,
     }
 
     $hourly_tests.each |String $test_dir, Array[String] $hosts| {
@@ -135,7 +127,7 @@ class profile::httpbb (
         systemd::timer::job { "httpbb_hourly_${test_dir}":
             ensure             => $ensure,
             description        => "Run httpbb ${test_dir}/ tests hourly on ${joined_hosts}",
-            command            => "/bin/sh -c '/usr/local/bin/httpbb /srv/deployment/httpbb-tests/${test_dir}/*.yaml --hosts ${joined_hosts}'",
+            command            => "/bin/sh -c '/usr/bin/httpbb /srv/deployment/httpbb-tests/${test_dir}/*.yaml --hosts ${joined_hosts}'",
             interval           => {
                 'start'    => 'OnUnitActiveSec',
                 'interval' => '1 hour',

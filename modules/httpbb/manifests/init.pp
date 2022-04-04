@@ -10,20 +10,14 @@ class httpbb(
     Stdlib::Unixpath $install_dir = '/srv/deployment/httpbb',
     Stdlib::Unixpath $tests_dir = '/srv/deployment/httpbb-tests',
 ){
-    ensure_packages(['python3-attr', 'python3-clustershell', 'python3-jsonschema',
-                    'python3-requests', 'python3-requests-toolbelt', 'python3-yaml'])
+    ensure_packages('httpbb')
 
-    git::clone { 'operations/software/httpbb':
-        directory => $install_dir,
-        branch    => 'master',
+    file { $install_dir:
+        ensure => absent,
     }
 
     file { '/usr/local/bin/httpbb':
-        ensure  => file,
-        content => "#!/bin/sh\ncd ${install_dir}\npython3 -m httpbb.main \"$@\"",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
+        ensure => absent,
     }
 
     file { $tests_dir:
