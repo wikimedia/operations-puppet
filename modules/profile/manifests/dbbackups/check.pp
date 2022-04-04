@@ -14,6 +14,9 @@ class profile::dbbackups::check (
     $db_database          = lookup('profile::dbbackups::check::db_database', String, ),
 ) {
     require ::profile::mariadb::wmfmariadbpy
+    class { 'dbbackups::check_common':
+        valid_sections_file => 'puppet:///modules/profile/dbbackups/valid_sections.txt',
+    }
 
     $backups.each |String $section, Hash $section_hash| {
         $section_hash.each |String $type, Array[String] $type_array| {

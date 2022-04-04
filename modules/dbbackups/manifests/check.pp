@@ -13,9 +13,6 @@ define dbbackups::check (
     $warn_size_percentage = 5,
     $crit_size_percentage = 15,
 ) {
-    # require ::profile::mariadb::wmfmariadbpy
-    ensure_packages('wmfbackups-check')
-
     $check_command = "check-mariadb-backups \
 --host='${db_host}' --user='${db_user}' --password='${db_password}' --database='${db_database}' \
 --section='${section}' --datacenter='${datacenter}' \
@@ -28,7 +25,7 @@ define dbbackups::check (
         critical       => false,
         contact_group  => 'admins',
         check_interval => 30,  # Don't check too often
-        require        => Package['wmfbackups-check'],
+        require        => [ Package['wmfbackups-check'], File['/etc/wmfbackups/valid_sections.txt'] ],
         notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Rerun_a_failed_backup',
     }
 }
