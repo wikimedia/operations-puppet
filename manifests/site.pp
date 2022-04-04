@@ -403,12 +403,12 @@ node /^cp30(5[468]|6[024])\.esams\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
-node /^cp305[135]\.esams\.wmnet$/ {
+node /^cp305[13]\.esams\.wmnet$/ {
     role(cache::upload)
 }
 
 # HAProxy test T290005
-node /^cp30(5[79]|6[135])\.esams\.wmnet$/ {
+node /^cp30(5[579]|6[135])\.esams\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
