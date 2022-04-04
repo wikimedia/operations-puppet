@@ -47,9 +47,6 @@ class profile::logstash::collector7 (
         },
     }
 
-    # Logstash will prevent shutdown indefinitely if elasticsearch is stopped before it.
-    # Set systemd ordering to manage logstash after ES startup and before ES shutdown
-    $systemd_after = "elasticsearch_7@${dc_settings['cluster_name']}"
     systemd::service { 'logstash':
         ensure   => present,
         content  => init_template('logstash', 'systemd_override'),

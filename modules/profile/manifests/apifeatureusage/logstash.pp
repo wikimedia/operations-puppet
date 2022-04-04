@@ -52,6 +52,14 @@ class profile::apifeatureusage::logstash (
     log_format          => 'json',
     gc_log              => false,
     java_home           => pick($java_home, $profile::java::default_java_home),
+    manage_service      => false,
+  }
+
+  systemd::service { 'logstash':
+      ensure   => present,
+      content  => init_template('logstash', 'systemd_override'),
+      override => true,
+      restart  => true,
   }
 
   # Ship logstash service logs to ELK
