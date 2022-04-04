@@ -1,6 +1,7 @@
 [Unit]
 Description=HAProxy mtail instance %i
 After=haproxy-mtail@%i.socket
+Requires=haproxy-mtail@%i.socket
 
 [Service]
 Type=simple
