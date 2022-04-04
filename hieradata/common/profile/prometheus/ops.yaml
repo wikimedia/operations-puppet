@@ -18,9 +18,11 @@ profile::prometheus::ops::blackbox_watchrat_http_check_urls:
 - https://payments-listener.wikimedia.org/globalcollect
 - https://payments.wikimedia.org/index.php/Special:SystemStatus
 - https://secure.wikimedia.org/wikipedia/en/wiki/Main_Page
-- https://store.wikimedia.org
 - https://uk.wikipedia.org/wiki/Main_Page
 - https://wikimedia.org
-- https://wikimediafoundation.org/wiki/Home
 - https://www.mediawiki.org/wiki/MediaWiki
 - https://www.wiktionary.org
+# NOTE: These URLs need outgoing proxy support as they are not in our infra T303803
+profile::prometheus::ops::blackbox_watchrat_proxied_urls:
+- https://store.wikimedia.org
+- https://wikimediafoundation.org/wiki/Home

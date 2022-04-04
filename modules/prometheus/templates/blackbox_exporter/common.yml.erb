@@ -32,6 +32,13 @@ modules:
       proxy_url: <%= @http_proxy %>
 <% end -%>
 
+  http_connect_23xx:
+    prober: http
+    timeout: 15s
+    http:
+      valid_status_codes: [200, 201, 202, 203, 204, 205, 206, 207, 208, 226,
+                           300, 301, 302, 303, 304, 305, 306, 307, 308]
+
   http_200_300_connect:
     prober: http
     timeout: 5s

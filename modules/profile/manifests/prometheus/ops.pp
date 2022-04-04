@@ -16,6 +16,7 @@ class profile::prometheus::ops (
     Array $alertmanagers                                      = lookup('alertmanagers', {'default_value' => []}),
     Boolean $disable_compaction                               = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
     Array[Stdlib::HTTPUrl] $blackbox_watchrat_http_check_urls = lookup('profile::prometheus::ops::blackbox_watchrat_http_check_urls', { 'default_value' => [] }),
+    Array[Stdlib::HTTPUrl] $blackbox_watchrat_proxied_urls    = lookup('profile::prometheus::ops::blackbox_watchrat_proxied_urls', { 'default_value' => [] }),
     Optional[Stdlib::HTTPUrl] $http_proxy                     = lookup('http_proxy', {default_value => undef}),
 ){
     include ::passwords::gerrit
@@ -114,10 +115,21 @@ class profile::prometheus::ops (
         'job_name'        => 'blackbox/watchrat',
         'metrics_path'    => '/probe',
         'params'          => {
-          'module' => [ 'http_connect_23xx_proxied' ],
+          'module' => [ 'http_connect_23xx' ],
         },
         'file_sd_configs' => [
           { 'files' => [ "${targets_path}/blackbox_watchrat_http_check_urls.yaml" ] }
+        ],
+        'relabel_configs' => $blackbox_relabel_configs,
+      },
+      {
+        'job_name'        => 'blackbox/watchrat_proxied',
+        'metrics_path'    => '/probe',
+        'params'          => {
+          'module' => [ 'http_connect_23xx_proxied' ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/blackbox_watchrat_proxied_urls.yaml" ] }
         ],
         'relabel_configs' => $blackbox_relabel_configs,
       },
@@ -2291,6 +2303,9 @@ class profile::prometheus::ops (
         # Generic HTTPS probes for a static list of urls defined in hiera
         "${targets_path}/blackbox_watchrat_http_check_urls.yaml":
             content => to_yaml([{'targets' => $blackbox_watchrat_http_check_urls}]);
+        # Same, but needing outproxy proxy support
+        "${targets_path}/blackbox_watchrat_proxied_urls.yaml":
+            content => to_yaml([{'targets' => $blackbox_watchrat_proxied_urls}]);
     }
 
     prometheus::rule { 'rules_ops.yml':
