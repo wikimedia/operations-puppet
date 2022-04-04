@@ -30,7 +30,7 @@ groups:
               bitpogo, petarpetkovic, ha78na, sebastianbergmann, spriebsch, theseer, kuz, cgauthier,
               pgrass, moushirael, evanp, dz1, risler, aezell, amooney, heather, amy-wmde, criley,
               jbol, nnair, jkroll, johlig, ataherivand, bteshome, greta, mraish, ebjune, tonina, lzaman,
-              tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd]
+              tnegrin, josepita, marcella, srodlund, delphinepro, coreyfloyd, jrobell]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5314,9 +5314,8 @@ ldap_only_users:
     ensure: absent
     realname: James Matazzoni
   jrobell:
-    ensure: present
+    ensure: absent
     realname: Jessica Robell
-    email: jrobell@wikimedia.org
   jvargas:
     ensure: present
     realname: Jorge Vargas
