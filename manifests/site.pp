@@ -469,12 +469,12 @@ node /^cp600[8]\.drmrs\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
-node /^cp60(09|1[0-5])\.drmrs\.wmnet$/ {
+node /^cp60(09|1[0-4])\.drmrs\.wmnet$/ {
     role(cache::text)
 }
 
 # HAProxy test T290005
-node /^cp601[6]\.drmrs\.wmnet$/ {
+node /^cp601[5-6]\.drmrs\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
