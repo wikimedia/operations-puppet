@@ -4,10 +4,17 @@
 class toil::systemd_scope_cleanup (
     Wmflib::Ensure $ensure = 'present',
 ) {
+    $minute = fqdn_rand(59, "toil_${title}")
+
+    systemd::timer::job { 'systemd_scope_cleanup':
+        ensure      => $ensure,
+        description => 'Regular jobs to cleanup systemd session scope',
+        user        => 'root',
+        command     => '/bin/systemctl reset-failed \*.scope',
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* *:${minute}:00"},
+    }
+
     cron { 'systemd_scope_cleanup':
-        ensure  => $ensure,
-        minute  => fqdn_rand(59, "toil_${title}"),
-        hour    => '*',
-        command => 'systemctl reset-failed \*.scope',
+        ensure => absent,
     }
 }
