@@ -25,6 +25,7 @@ class profile::icinga(
     Wmflib::Ensure                $ircbot_ensure         = lookup('profile::icinga::ircbot::ensure'),
     Array[String]                 $datacenters           = lookup('datacenters'),
     Hash[String, Hash]            $atlas_measurements    = lookup('ripeatlas_measurements'),
+    Wmflib::Infra::Devices        $infra_devices         = lookup('infra_devices'),
     Integer[1]                    $logs_keep_days        = lookup('profile::icinga::logs_keep_days'),
     Hash[String, String]          $mgmt_parents          = lookup('profile::icinga::mgmt_parents'),
     Boolean                       $stub_contactgroups    = lookup('profile::icinga::stub_contactgroups', {'default_value' => false}),
@@ -45,6 +46,7 @@ class profile::icinga(
 
     class { 'netops::monitoring':
         atlas_measurements => $atlas_measurements,
+        infra_devices      => $infra_devices,
     }
     class { 'facilities':
         mgmt_parents => $mgmt_parents
