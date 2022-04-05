@@ -21,7 +21,7 @@ class gitlab::backup (
         mode    => '0744',
         owner   => 'root',
         group   => 'root',
-        content => template('gitlab/gitlab-backup.sh.erb')
+        content => template('gitlab/gitlab-backup.sh.erb') # TODO: remove, T254480
     }
 
     # systemd timer for full backups

@@ -163,7 +163,7 @@ class profile::gitlab(
     }
 
     class { 'gitlab':
-        backup_dir              => $backup_dir_data,
+        backup_dir_data         => $backup_dir_data,
         exporters               => $exporters,
         monitoring_whitelist    => $monitoring_whitelist,
         cas_label               => $cas_label,

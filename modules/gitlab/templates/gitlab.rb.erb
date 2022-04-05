@@ -122,7 +122,7 @@ gitlab_rails['gitlab_default_projects_features_<%= project %>'] = <%= @project_f
 git_data_dirs({"default" => {"path" => "<%= @data_dir %>"} })
 
 # The directory where Gitlab backups will be stored
-gitlab_rails['backup_path'] = "<%= @backup_dir %>"
+gitlab_rails['backup_path'] = "<%= @backup_dir_data %>"
 
 # These settings are documented in more detail at
 # https://gitlab.com/gitlab-org/gitlab-ce/blob/master/config/gitlab.yml.example#L118

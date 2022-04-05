@@ -7,7 +7,6 @@ class gitlab (
     Stdlib::Httpurl  $external_url                      = "https://${gitlab_domain}/",
     Stdlib::Unixpath $config_dir                        = '/etc/gitlab',
     Stdlib::Unixpath $data_dir                          = '/var/opt/gitlab/git-data',
-    Stdlib::Unixpath $backup_dir                        = '/var/opt/gitlab/backups',
     Stdlib::Unixpath $cert_path                         = "${config_dir}/ssl/${gitlab_domain}.pem",
     Stdlib::Unixpath $key_path                          = "${config_dir}/ssl/${gitlab_domain}.key",
     Boolean          $listent_https                     = true,
