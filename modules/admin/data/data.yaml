@@ -360,7 +360,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
-              shubhankar, dalezhou, nokafor, otich, sgimeno, tchin]
+              shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5178,6 +5178,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB2PJMFqjSDz8l2fnhsLCYqJ1gDRs/cMF1ds4yd5a+Yb tchin@wikimedia.org
+    krb: present
+  paramd:
+    ensure: present
+    realname: Paramita Das
+    email: dasparamita1708@gmail.com
+    uid: 38767
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPeBt7k/eGE1vzrFGbQBNMv0wKtsv+4zIuwMSNYnK3EO dasparamita1708@gmail.com
     krb: present
 
 ldap_only_users:
