@@ -6,25 +6,25 @@
 # $::zookeeper::hosts array.
 #
 # == Parameters
-# $jmx_port            - JMX port.    Set this to false if you don't want to expose JMX.
-# $java_opts           - JAVA_OPTS optional argument to pass to the JVM.
-# $cleanup_script      - Full path of the cleanup script to execute.
-#                        Default: /usr/share/zookeeper/bin/zkCleanup.sh
-# $cleanup_script_args - Arguments to pass to the script (or the shell)
-#                        Default: '-n 10 > /dev/null'
-# $cleanup_cron_deploy - If true it installs a daily cron that runs
-#                        the cleanup_script with the provided arguments.
-#                        Default: true
+# $jmx_port             - JMX port.    Set this to false if you don't want to expose JMX.
+# $java_opts            - JAVA_OPTS optional argument to pass to the JVM.
+# $cleanup_script       - Full path of the cleanup script to execute.
+#                         Default: /usr/share/zookeeper/bin/zkCleanup.sh
+# $cleanup_script_args  - Arguments to pass to the script (or the shell)
+#                         Default: '-n 10 > /dev/null'
+# $cleanup_timer_deploy - If true it installs a daily systemd timer job that runs
+#                         the cleanup_script with the provided arguments.
+#                         Default: true
 
 class zookeeper::server(
-    $jmx_port            = 9998,
-    $java_opts           = undef,
-    $cleanup_script      = '/usr/share/zookeeper/bin/zkCleanup.sh',
-    $cleanup_script_args = '-n 10 > /dev/null',
-    $cleanup_cron_deploy = true,
-    $default_template    = 'zookeeper/zookeeper.default.erb',
-    $log4j_template      = 'zookeeper/log4j.properties.erb',
-    $java_home           = undef,
+    $jmx_port             = 9998,
+    $java_opts            = undef,
+    $cleanup_script       = '/usr/share/zookeeper/bin/zkCleanup.sh',
+    $cleanup_script_args  = '-n 10 > /dev/null',
+    $cleanup_timer_deploy = true,
+    $default_template     = 'zookeeper/zookeeper.default.erb',
+    $log4j_template       = 'zookeeper/log4j.properties.erb',
+    $java_home            = undef,
 ) {
     # need zookeeper common package and config.
     Class['zookeeper'] -> Class['zookeeper::server']
@@ -76,17 +76,22 @@ class zookeeper::server(
         hasstatus  => true,
     }
 
-    $cleanup_cron_ensure = $cleanup_cron_deploy ? {
+    $cleanup_timer_ensure = $cleanup_timer_deploy ? {
         true    => 'present',
         default => 'absent',
     }
 
+    systemd::timer::job { 'zookeeper-cleanup':
+        ensure      => $cleanup_timer_ensure,
+        description => 'Regular jobs for running the cleanup script',
+        user        => 'zookeeper',
+        command     => "${cleanup_script} ${cleanup_script_args}",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 0:10:00'},
+        require     => Service['zookeeper'],
+    }
+
     cron { 'zookeeper-cleanup':
-        ensure  => $cleanup_cron_ensure,
-        command => "${cleanup_script} ${cleanup_script_args}",
-        minute  => 10,
-        hour    => 0,
-        user    => 'zookeeper',
-        require => Service['zookeeper'],
+        ensure => absent,
+        user   => 'zookeeper',
     }
 }
