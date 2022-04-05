@@ -15,6 +15,11 @@ profile::kafka::broker::monitoring::is_critical: false
 
 profile::kafka::broker::max_heap_size: '2g'
 
+profile::kafka::broker::custom_ferm_srange_components:
+  - '$STAGING_KUBEPODS_NETWORKS'
+  - '$PRODUCTION_NETWORKS'
+  - '$FRACK_NETWORKS'
+
 profile::kafka::mirror::source_cluster_name: jumbo-eqiad
 profile::kafka::mirror::destination_cluster_name: test-eqiad
 
