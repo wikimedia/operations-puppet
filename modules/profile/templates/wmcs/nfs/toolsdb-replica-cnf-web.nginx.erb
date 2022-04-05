@@ -1,0 +1,32 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+upstream toolsdb_replica_cnf {
+    server unix:/run/uwsgi/toolsdb-replica-cnf-web.sock;
+}
+
+server {
+    listen 80;
+
+    # Specify Content-Security-Policy policy.
+    # Website fonts and part of the scripts are loaded from https://tools-static.wmflabs.org/, so these paths must be specified in the whitelist.
+    add_header Content-Security-Policy "default-src 'none'; connect-src 'self'; font-src data: https://tools-static.wmflabs.org; img-src 'self'; script-src 'self' 'unsafe-inline'";
+
+    # Disable content-type sniffing on some browsers.
+    add_header X-Content-Type-Options nosniff;
+
+    # Set custom error pages
+    error_page 500 /static/error/500.html;
+    error_page 502 /static/error/502.html;
+
+    auth_basic "Restricted Content";
+    auth_basic_user_file /etc/nginx/toolsdb-replica-cnf.htpasswd;
+
+    # Enforce HTTPS only
+    if ($http_x_forwarded_proto != "https") {
+          rewrite ^(.*)$ https://$http_host$1 permanent;
+    }
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass toolsdb_replica_cnf;
+    }
+}
