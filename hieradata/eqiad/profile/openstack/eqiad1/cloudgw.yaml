@@ -72,7 +72,7 @@ profile::openstack::eqiad1::cloudgw::virt_subnet_cidr: 172.16.0.0/21
 
 profile::openstack::eqiad1::cloudgw::conntrackd:
   cloudgw1001:
-    nic: 'ens2f0np0'
+    nic: 'enp101s0f0np0'
     local_addr: cloudgw1001.eqiad.wmnet
     remote_addr: cloudgw1002.eqiad.wmnet
     filter_ipv4:
