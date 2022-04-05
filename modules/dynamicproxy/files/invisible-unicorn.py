@@ -64,6 +64,7 @@ enforcer = policy.Enforcer(cfg.CONF)
 enforcer.register_defaults([
     policy.RuleDefault('admin', 'role:admin'),
     policy.RuleDefault('admin_or_projectadmin', 'rule:admin or role:projectadmin'),
+    policy.RuleDefault('proxy:zones:index', ''),
     policy.RuleDefault('proxy:index', ''),
     policy.RuleDefault('proxy:view', ''),
     policy.RuleDefault('proxy:create', 'rule:admin_or_projectadmin'),
@@ -292,6 +293,13 @@ def enforce_policy(rule, project_id):
         do_raise=True,
         exc=Forbidden,
     )
+
+
+@app.route('/v1/<project_name>/zones', methods=['GET'])
+def list_zones(project_name):
+    enforce_policy('proxy:zones:index', project_name)
+
+    return flask.jsonify([zone.rstrip('.') for zone in zones])
 
 
 @app.route('/v1/<project_name>/mapping', methods=['GET'])
