@@ -32,5 +32,3 @@ profile::kubernetes::master_hosts:
 - kubemaster2001.codfw.wmnet
 - kubemaster2002.codfw.wmnet
 profile::kubernetes::node::kubelet_cluster_dns: "10.192.72.3"
-
-profile::docker::engine::version: "20.10.5+dfsg1-1+deb11u1"
