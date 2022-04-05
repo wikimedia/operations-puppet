@@ -6,7 +6,7 @@ class openstack::puppet::master::encapi(
     Array[Stdlib::Fqdn] $labweb_hosts,
     Array[Stdlib::Fqdn] $openstack_controllers,
     Array[Stdlib::Fqdn] $designate_hosts,
-    Array[String] $labs_instance_ranges = $network::constants::labs_networks
+    Array[String] $labs_instance_ranges
 ) {
     $exposed_certs_dir = '/etc/nginx'
     $puppet_cert_pub  = "${exposed_certs_dir}/ssl/cert.pem"

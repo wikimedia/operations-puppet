@@ -4,10 +4,6 @@ class profile::openstack::base::puppetmaster::frontend(
     $puppetmasters = lookup('profile::openstack::base::puppetmaster::servers'),
     $puppetmaster_ca = lookup('profile::openstack::base::puppetmaster::ca'),
     $puppetmaster_webhostname = lookup('profile::openstack::base::puppetmaster::web_hostname'),
-    $encapi_db_host = lookup('profile::openstack::base::puppetmaster::encapi::db_host'),
-    $encapi_db_name = lookup('profile::openstack::base::puppetmaster::encapi::db_name'),
-    $encapi_db_user = lookup('profile::openstack::base::puppetmaster::encapi::db_user'),
-    $encapi_db_pass = lookup('profile::openstack::base::puppetmaster::encapi::db_pass'),
     $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     $cert_secret_path = lookup('profile::openstack::base::puppetmaster::cert_secret_path'),
     ) {
@@ -28,13 +24,7 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class {'profile::openstack::base::puppetmaster::common':
-        openstack_controllers => $openstack_controllers,
-        designate_hosts       => $designate_hosts,
-        encapi_db_host        => $encapi_db_host,
-        encapi_db_name        => $encapi_db_name,
-        encapi_db_user        => $encapi_db_user,
-        encapi_db_pass        => $encapi_db_pass,
-        labweb_hosts          => $labweb_hosts,
+        labweb_hosts => $labweb_hosts,
     }
 
     $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
@@ -100,16 +90,9 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     file {'/etc/labspuppet':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
-    openstack::db::project_grants { 'labspuppet':
-        access_hosts => flatten([$openstack_controllers, keys($puppetmasters)]),
-        db_name      => $encapi_db_name,
-        db_user      => $encapi_db_user,
-        db_pass      => $encapi_db_pass,
+        ensure  => absent,
+        recurse => true,
+        purge   => true,
+        force   => true,
     }
 }

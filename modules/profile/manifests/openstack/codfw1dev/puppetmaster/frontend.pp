@@ -4,10 +4,6 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
     $puppetmasters = lookup('profile::openstack::codfw1dev::puppetmaster::servers'),
     $puppetmaster_ca = lookup('profile::openstack::codfw1dev::puppetmaster::ca'),
     $puppetmaster_webhostname = lookup('profile::openstack::codfw1dev::puppetmaster::web_hostname'),
-    $encapi_db_host = lookup('profile::openstack::codfw1dev::puppetmaster::encapi::db_host'),
-    $encapi_db_name = lookup('profile::openstack::codfw1dev::puppetmaster::encapi::db_name'),
-    $encapi_db_user = lookup('profile::openstack::codfw1dev::puppetmaster::encapi::db_user'),
-    $encapi_db_pass = lookup('profile::openstack::codfw1dev::puppetmaster::encapi::db_pass'),
     $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
     $cert_secret_path = lookup('profile::openstack::codfw1dev::puppetmaster::cert_secret_path'),
     ) {
@@ -23,10 +19,6 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
         puppetmasters            => $puppetmasters,
         puppetmaster_ca          => $puppetmaster_ca,
         puppetmaster_webhostname => $puppetmaster_webhostname,
-        encapi_db_host           => $encapi_db_host,
-        encapi_db_name           => $encapi_db_name,
-        encapi_db_user           => $encapi_db_user,
-        encapi_db_pass           => $encapi_db_pass,
         labweb_hosts             => $labweb_hosts,
         cert_secret_path         => $cert_secret_path,
     }
