@@ -1,0 +1,39 @@
+# NOTE: This project hosts the Puppet ENC API. To avoid chicken-and-egg
+# problems, the hiera data required to set up the puppet and enc servers
+# is kept here.
+
+profile::openstack::eqiad1::designate_hosts:
+  - cloudservices1003.wikimedia.org
+  - cloudservices1004.wikimedia.org
+profile::openstack::eqiad1::openstack_controllers:
+  - cloudcontrol1003.wikimedia.org
+  - cloudcontrol1004.wikimedia.org
+  - cloudcontrol1005.wikimedia.org
+profile::openstack::eqiad1::labweb_hosts:
+  - labweb1001.wikimedia.org
+  - labweb1002.wikimedia.org
+
+profile::mariadb::cloudinfra::puppetmasters:
+- cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
+- cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud
+profile::mariadb::cloudinfra::cloudinfra_dbs:
+- cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud
+- cloudinfra-db04.cloudinfra.eqiad1.wikimedia.cloud
+profile::mariadb::cloudinfra::enc_servers: []
+
+profile::openstack::eqiad1::puppetmaster::encapi::db_host: cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud
+profile::openstack::eqiad1::puppetmaster::encapi::db_name: labspuppet
+profile::openstack::eqiad1::puppetmaster::encapi::db_user: labspuppet
+
+profile::conftool::master::sync_dir: /etc/conftool/data
+profile::openstack::eqiad1::puppetmaster::ca: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
+profile::openstack::eqiad1::puppetmaster::cert_secret_path: puppetmaster
+profile::openstack::eqiad1::puppetmaster::servers:
+  cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs:
+    - {loadfactor: 10, worker: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs}
+    - {loadfactor: 20, worker: cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud}
+profile::puppetmaster::frontend::allow_from: [.wmflabs]
+profile::openstack::eqiad1::puppetmaster::web_hostname: puppetmaster.cloudinfra.wmflabs.org
+
+puppetmaster::enable_geoip: false
+puppetmaster::hiera_config: labs

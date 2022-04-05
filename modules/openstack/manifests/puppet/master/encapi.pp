@@ -55,8 +55,10 @@ class openstack::puppet::master::encapi(
 
     # Make sure we can write to our logfile
     file { "/var/log/${service_name}.log":
-        owner => 'www-data',
-        group => 'www-data',
+        ensure  => file,
+        owner   => 'www-data',
+        group   => 'www-data',
+        replace => false,
     }
 
     # The app will check that the requesting IP is in  ALLOWED_WRITERS

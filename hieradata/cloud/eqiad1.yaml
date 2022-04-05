@@ -331,11 +331,4 @@ wikimedia_clusters:
       eqiad: []
       codfw: []
 
-profile::mariadb::cloudinfra::puppetmasters:
-- cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
-- cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud
-profile::mariadb::cloudinfra::cloudinfra_dbs:
-- cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud
-- cloudinfra-db04.cloudinfra.eqiad1.wikimedia.cloud
-
 labs_site: "eqiad1"

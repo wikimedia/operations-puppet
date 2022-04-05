@@ -1,6 +1,7 @@
 class profile::mariadb::cloudinfra (
     Boolean $master = lookup('profile::mariadb::cloudinfra::master'),
-    Array[Stdlib::Fqdn] $puppetmasters = lookup('profile::mariadb::cloudinfra::puppetmasters'),
+    Array[Stdlib::Fqdn] $puppetmasters  = lookup('profile::mariadb::cloudinfra::puppetmasters'),
+    Array[Stdlib::Fqdn] $enc_servers    = lookup('profile::mariadb::cloudinfra::enc_servers'),
     Array[Stdlib::Fqdn] $cloudinfra_dbs = lookup('profile::mariadb::cloudinfra::cloudinfra_dbs'),
 ) {
     if debian::codename::ge('bullseye') {
@@ -13,20 +14,18 @@ class profile::mariadb::cloudinfra (
         false => 1,
     }
 
-    $puppetmasters_joined = join($puppetmasters.map |$puppetmaster| { "@resolve(${$puppetmaster})" }, ' ')
-    ferm::service { 'wmcs_puppetmasters':
+    ferm::service { 'enc-clients':
         proto   => 'tcp',
         port    => 3306,
         notrack => true,
-        srange  => "(${$puppetmasters_joined})",
+        srange  => "(@resolve((${puppetmasters.join(' ')} ${enc_servers.join(' ')})))",
     }
 
-    $cloudinfra_dbs_joined = join($cloudinfra_dbs.map |$db| { "@resolve(${$db})" }, ' ')
     ferm::service { 'mariadb_replication':
         proto   => 'tcp',
         port    => 3306,
         notrack => true,
-        srange  => "(${$cloudinfra_dbs_joined})",
+        srange  => "(@resolve((${cloudinfra_dbs.join(' ')})))",
     }
 
     require profile::mariadb::packages_wmf
