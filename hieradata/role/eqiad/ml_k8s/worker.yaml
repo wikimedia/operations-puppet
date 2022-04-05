@@ -7,7 +7,7 @@ profile::calico::kubernetes::bgp_peers:
 - ml-serve-ctrl1002.eqiad.wmnet
 - cr1-eqiad.wikimedia.org
 - cr2-eqiad.wikimedia.org
-profile::kubernetes::node::kubelet_cluster_dns: "10.64.77.3"
+profile::kubernetes::node::kubelet_cluster_dns: "10.67.0.3"
 profile::kubernetes::master_hosts:
 - ml-serve-ctrl1001.eqiad.wmnet
 - ml-serve-ctrl1002.eqiad.wmnet
