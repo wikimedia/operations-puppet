@@ -159,12 +159,6 @@ class Dns:
     def designateclient(self, project) -> designateclient.Client:
         return designateclient.Client(session=self.clients.session(project))
 
-    def should_do_anything(self) -> bool:
-        """Checks if we should even do any DNS writes."""
-        if not flask.has_request_context():
-            return True
-        return flask.request.headers.get("X-Novaproxy-Edit-Dns", "true") != "false"
-
     def get_zone(self, project: str, hostname: str):
         """Determines the Keystone project and DNS zone to use for a particular hostname."""
         if hostname[-1] != ".":
@@ -213,18 +207,11 @@ class Dns:
                 project, hostname, ", ".join([record["name"] for record in existing_records])
             )
 
-            # temporary 'if' case, in the future this should be a hard fail
-            # for now, horizon and similar tools create the record before creating the proxy,
-            # meaning that the record exists when we ensure that it does not exist
-            if self.should_do_anything():
-                return False
+            return False
 
         return True
 
     def add_records_for(self, project: str, hostname: str):
-        if not self.should_do_anything():
-            return
-
         hostname, project, zone_id = self.get_zone(project, hostname)
         client = self.designateclient(project)
 
@@ -232,9 +219,6 @@ class Dns:
             client.recordsets.create(zone_id, hostname, "A", [self.target_ipv4])
 
     def delete_records_for(self, project: str, hostname: str):
-        if not self.should_do_anything():
-            return
-
         hostname, project, zone_id = self.get_zone(project, hostname)
         client = self.designateclient(project)
 
