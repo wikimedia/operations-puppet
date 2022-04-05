@@ -110,6 +110,15 @@ begin acl
 
 acl_check_rcpt:
 
+	# If the recipient is a mailing list addressed to the legacy domain
+	# names, log a message indicating the new domain name.
+	warn
+		local_parts = ${if exists{CONFDIR/legacy_mailing_lists}\
+			{CONFDIR/legacy_mailing_lists}\
+			{}}
+		domains = +legacy_mailman_domains
+		log_message = 551 User <$local_part_data@$domain_data> not local; please try <$local_part_data@lists.wikimedia.org>
+
 	# If there have been ~4 times as many previous RCPT rejects than
 	# accepts, drop the connection
 	drop message = Too many ($rcpt_fail_count) rejected recipients, good bye
