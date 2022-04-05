@@ -448,12 +448,8 @@ node /^cp50(0[3-6]|1[34])\.eqsin\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
-node /^cp5007\.eqsin\.wmnet$/ {
-    role(cache::text)
-}
-
 # HAProxy test - T290005
-node /^cp50(0[89]|1[01256])\.eqsin\.wmnet$/ {
+node /^cp50(0[7-9]|1[01256])\.eqsin\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
