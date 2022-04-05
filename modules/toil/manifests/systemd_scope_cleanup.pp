@@ -13,8 +13,4 @@ class toil::systemd_scope_cleanup (
         command     => '/bin/systemctl reset-failed \*.scope',
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* *:${minute}:00"},
     }
-
-    cron { 'systemd_scope_cleanup':
-        ensure => absent,
-    }
 }
