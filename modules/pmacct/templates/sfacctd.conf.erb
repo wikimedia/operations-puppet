@@ -22,7 +22,7 @@ pre_tag_map: /etc/pmacct/pretag-sfacctd.map
 sfacctd_pipe_size: <%= @rcvbuf_size %>
 
 <% if @kafka_brokers -%>
-plugins: kafka
+plugins: kafka[kafka]
 kafka_output: json
 kafka_topic: network_flows_internal
 kafka_broker_host: <%= @kafka_brokers %>
