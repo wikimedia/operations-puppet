@@ -603,13 +603,11 @@ host kubestagetcd2003 {
 host kubestagemaster1001 {
     hardware ethernet aa:00:00:b1:33:17;
     fixed-address kubestagemaster1001.eqiad.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host kubestagemaster2001 {
     hardware ethernet aa:00:00:85:fe:67;
     fixed-address kubestagemaster2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host kubernetes1005 {
