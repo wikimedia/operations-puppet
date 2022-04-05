@@ -3806,6 +3806,7 @@ service::catalog:
         default: 208.80.153.42
       eqiad:
         default: 208.80.154.30
+    page: false
     probes:
       - type: http
         host: apt.wikimedia.org
