@@ -14,6 +14,7 @@ class httpbb(
 
     file { $install_dir:
         ensure => absent,
+        force  => true,
     }
 
     file { '/usr/local/bin/httpbb':
