@@ -360,7 +360,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
-              shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd]
+              shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -5187,6 +5187,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPeBt7k/eGE1vzrFGbQBNMv0wKtsv+4zIuwMSNYnK3EO dasparamita1708@gmail.com
+    krb: present
+  aitolkyn:
+    ensure: present
+    realname: Bai Aitolkyn
+    email: baiaitolkyn@gmail.com
+    uid: 30692
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFUWkbN5/6nDSKi4x+wvs5bo1wt6KmwBinBrYYB8SfT5 baiaitolkyn@gmail.com
     krb: present
 
 ldap_only_users:
