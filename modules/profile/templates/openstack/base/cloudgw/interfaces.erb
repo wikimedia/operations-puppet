@@ -2,8 +2,17 @@
 
 # the data plane uses a VRF (l3mdev) + vlan trunk
 
+# Can't set these sysctl via sysctl::parameters because we may be renaming the interface
+# and there is a race condition between systemd-udev and systemd-sysctl
+# resulting in sysctl trying to configure this before the interface exists
+# See T305494 for details.
+
 auto <%= @nic_dataplane %>
 iface <%= @nic_dataplane %> inet manual
+    post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>.forwarding=1
+    post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>.rp_filter=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>.accept_ra=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>.forwarding=1
 
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
@@ -14,6 +23,10 @@ iface <%= @nic_dataplane %>.<%= @virt_vlan %> inet manual
     # no address given the VIP is handle by keepalived / VRRP
     # hook this interface to the VRF
     post-up ip link set <%= @nic_dataplane %>.<%= @virt_vlan %> master vrf-cloudgw
+    post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>/<%= @virt_vlan %>.forwarding=1
+    post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>/<%= @virt_vlan %>.rp_filter=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>/<%= @virt_vlan %>.accept_ra=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>/<%= @virt_vlan %>.forwarding=1
 
 auto <%= @nic_dataplane %>.<%= @wan_vlan %>
 iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet static
@@ -23,3 +36,7 @@ iface <%= @nic_dataplane %>.<%= @wan_vlan %> inet static
     post-up ip link set <%= @nic_dataplane %>.<%= @wan_vlan %> master vrf-cloudgw
     # route default to the core router
     post-up ip route add table cloudgw default via <%= @wan_gw %> dev <%= @nic_dataplane %>.<%= @wan_vlan %> onlink
+    post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>/<%= @wan_vlan %>.forwarding=1
+    post-up sysctl -w net.ipv4.conf.<%= @nic_dataplane %>/<%= @wan_vlan %>.rp_filter=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>/<%= @wan_vlan %>.accept_ra=0
+    post-up sysctl -w net.ipv6.conf.<%= @nic_dataplane %>/<%= @wan_vlan %>.forwarding=1

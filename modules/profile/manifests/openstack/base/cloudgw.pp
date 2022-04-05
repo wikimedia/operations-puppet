@@ -77,36 +77,22 @@ class profile::openstack::base::cloudgw (
     }
 
     sysctl::parameters { 'cloudgw':
+        # NOTE: additional sysctl params are present in ifupdown template, see
+        # modules/profile/templates/openstack/base/cloudgw/interfaces.erb for details.
+        # It can't live here because race condition between systemd-udev and systemd-sysctl
+        # See T305494 for details.
         values   => {
-            # Turn off IP filter, only on dataplane
-            "net.ipv4.conf.${nic_dataplane}.rp_filter"               => 0,
-            "net.ipv4.conf.${nic_dataplane}/${virt_vlan}.rp_filter"  => 0,
-            "net.ipv4.conf.${nic_dataplane}/${wan_vlan}.rp_filter"   => 0,
-
-            # Enable IP forwarding, only on dataplane
-            "net.ipv4.conf.${nic_dataplane}.forwarding"              => 1,
-            "net.ipv4.conf.${nic_dataplane}/${virt_vlan}.forwarding" => 1,
-            "net.ipv4.conf.${nic_dataplane}/${wan_vlan}.forwarding"  => 1,
-            "net.ipv6.conf.${nic_dataplane}.forwarding"              => 1,
-            "net.ipv6.conf.${nic_dataplane}/${virt_vlan}.forwarding" => 1,
-            "net.ipv6.conf.${nic_dataplane}/${wan_vlan}.forwarding"  => 1,
-
-            # Disable RA, only on dataplane
-            "net.ipv6.conf.${nic_dataplane}.accept_ra"               => 0,
-            "net.ipv6.conf.${nic_dataplane}/${virt_vlan}.accept_ra"  => 0,
-            "net.ipv6.conf.${nic_dataplane}/${wan_vlan}.accept_ra"   => 0,
-
             # Enable TCP be liberal option. This increases chances of a NAT
             # flow surviving a failover scenario
-            'net.netfilter.nf_conntrack_tcp_be_liberal'              => 1,
+            'net.netfilter.nf_conntrack_tcp_be_liberal' => 1,
 
             # Increase connection tracking size
             # and bucket since all of CloudVPS VM instances ingress/egress
             # are flowing through cloudgw servers
             # default buckets is 65536. Let's use x8; 65536 * 8 = 524288
             # default max is buckets x4; 524288 * 4 = 2097152
-            'net.netfilter.nf_conntrack_buckets'                     => 524288,
-            'net.netfilter.nf_conntrack_max'                         => 2097152,
+            'net.netfilter.nf_conntrack_buckets'        => 524288,
+            'net.netfilter.nf_conntrack_max'            => 2097152,
         },
         priority => 50,
     }
