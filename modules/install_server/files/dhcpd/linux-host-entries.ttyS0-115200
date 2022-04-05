@@ -533,13 +533,11 @@ host kubemaster1002 {
 host kubemaster2001 {
     hardware ethernet aa:00:00:ea:9a:30;
     fixed-address kubemaster2001.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host kubemaster2002 {
     hardware ethernet aa:00:00:f5:7b:b9;
     fixed-address kubemaster2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host kubetcd1004 {
