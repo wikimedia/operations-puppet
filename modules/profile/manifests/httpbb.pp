@@ -116,6 +116,14 @@ class profile::httpbb (
 
     systemd::timer::job { 'git_pull_httpbb':
         ensure          => absent,
+        description     => 'Pull changes from operations/software/httpbb',
+        command         => '/bin/bash -c "cd /srv/deployment/httpbb && /usr/bin/git pull >/dev/null 2>&1"',
+        interval        => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* *:00:00', # every hour
+        },
+        logging_enabled => false,
+        user            => 'root',
     }
 
     $hourly_tests.each |String $test_dir, Array[String] $hosts| {
