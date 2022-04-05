@@ -47,11 +47,6 @@ class postgresql::backup(
         },
     }
 
-    cron { 'postgres-dump':
-        ensure => 'absent',
-        user   => 'postgres',
-    }
-
     $clean_hour = fqdn_rand(23, 'pgclean')
     $clean_minute = fqdn_rand(59, 'pgclean')
 
@@ -64,10 +59,5 @@ class postgresql::backup(
             'start'    => 'OnCalendar',
             'interval' => "*-*-* ${clean_hour}:${clean_minute}:00",
         },
-    }
-
-    cron { 'rotate-postgres-dump':
-        ensure => 'absent',
-        user   => 'postgres',
     }
 }
