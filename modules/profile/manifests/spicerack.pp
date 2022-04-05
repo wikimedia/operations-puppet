@@ -183,6 +183,10 @@ class profile::spicerack(
           'cloudelastic-omega-https' => 'https://cloudelastic.wikimedia.org:9443',
           'cloudelastic-psi-https' => 'https://cloudelastic.wikimedia.org:9643',
         }
+      },
+      'logging' => {
+          'logging-eqiad' => 'http://logstash1010.eqiad.wmnet:9200',
+          'logging-codfw' => 'http://logstash2001.codfw.wmnet:9200',
       }
     }
 
