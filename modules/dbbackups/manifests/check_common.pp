@@ -8,7 +8,7 @@ class dbbackups::check_common (
     file { '/etc/wmfbackups/valid_sections.txt':
         ensure  => present,
         source  => $valid_sections_file,
-        mode    => '0750',
+        mode    => '0644',
         owner   => 'root',
         group   => 'root',
         require => [ Package['wmfbackups-check'] ],
