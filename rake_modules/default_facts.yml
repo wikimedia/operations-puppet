@@ -15,8 +15,8 @@ ipaddress6: 2001:db8::42
 initsystem: systemd
 ntp_peers:
   eqiad:
-    - ntp-03.cloudinfra.wmflabs.org
-    - ntp-04.cloudinfra.wmflabs.org
+    - ntp-03.cloudinfra.eqiad1.wikimedia.cloud
+    - ntp-04.cloudinfra.eqiad1.wikimedia.cloud
   codfw: []
   ulsfo: []
   eqsin: []
