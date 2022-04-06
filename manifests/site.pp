@@ -2883,14 +2883,28 @@ node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
 }
 
-# VMs for performance team replacing hafnium (T179036)
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
     role(webperf::processors_and_site)
 }
 
-# VMs for performance team profiling tools (T194390)
+node 'webperf1003.eqiad.wmnet' {
+    role(insetup)
+}
+
+node 'webperf1004.eqiad.wmnet' {
+    role(insetup)
+}
+
 node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
     role(webperf::profiling_tools)
+}
+
+node 'webperf2003.codfw.wmnet' {
+    role(insetup)
+}
+
+node 'webperf2004.codfw.wmnet' {
+    role(insetup)
 }
 
 # https://www.mediawiki.org/wiki/Parsoid - new machines are called parse*
