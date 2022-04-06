@@ -24,7 +24,3 @@ profile::openstack::eqiad1::cloudgw::wan_gw: 185.15.56.241
 
 # cloudgw1002 is our VRRP peer
 profile::openstack::eqiad1::cloudgw::vrrp_peer: 185.15.56.246
-
-profile::openstack::eqiad1::cloudgw::vrrp_vips:
- - 185.15.56.237/30 dev dataplane.1107
- - 185.15.56.244/29 dev dataplane.1120
