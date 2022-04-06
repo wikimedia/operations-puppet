@@ -42,9 +42,9 @@ else
 fi
 
 # Change Permissions
-echo "changing permissions - chmod 600"  >> $LOGFILE
+echo "changing access permissions of backups"  >> $LOGFILE
 /usr/bin/chmod 600 $NEW_BACKUP_FILE $CONFIG_BACKUP
-
+/usr/bin/chown git.git $NEW_BACKUP_FILE $CONFIG_BACKUP
 
 # Extract Configuration Backup
 /usr/bin/tar -xvf $CONFIG_BACKUP --strip-components=2 -C /etc/gitlab/
