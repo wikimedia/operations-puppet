@@ -61,6 +61,13 @@ define base::expose_puppet_certs (
         mode   => '0555',
     }
 
+    if $ensure == 'absent' {
+        File["${target_basedir}/ssl"] {
+            recurse => true,
+            force   => true,
+        }
+    }
+
     $pem_ensure = $ensure ? {
         'present' => $provide_pem ? {
             true    => 'present',

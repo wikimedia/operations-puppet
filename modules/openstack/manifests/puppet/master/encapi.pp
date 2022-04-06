@@ -6,7 +6,8 @@ class openstack::puppet::master::encapi(
     Array[Stdlib::Fqdn] $labweb_hosts,
     Array[Stdlib::Fqdn] $openstack_controllers,
     Array[Stdlib::Fqdn] $designate_hosts,
-    Array[String] $labs_instance_ranges
+    Array[String] $labs_instance_ranges,
+    Wmflib::Ensure $ensure = present,
 ) {
     $exposed_certs_dir = '/etc/nginx'
     $puppet_cert_pub  = "${exposed_certs_dir}/ssl/cert.pem"
@@ -14,21 +15,30 @@ class openstack::puppet::master::encapi(
     $puppet_cert_ca   = "${exposed_certs_dir}/ssl/ca.pem"
 
     base::expose_puppet_certs { $exposed_certs_dir:
+        ensure          => $ensure,
         provide_private => true,
+        require         => Package['nginx-common'],
     }
 
-    file { $puppet_cert_ca:
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => $facts['puppet_config']['localcacert'],
-    }
+    if $ensure == present {
+        file { $puppet_cert_ca:
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            source => $facts['puppet_config']['localcacert'],
+        }
 
-    ensure_packages([
-        'python3-pymysql',
-        'python3-flask',
-        'python3-yaml'
-    ])
+        # make sure that the nginx service gets notified when the certs change
+        File[$puppet_cert_pub] ~> Service['nginx']
+        File[$puppet_cert_priv] ~> Service['nginx']
+        File[$puppet_cert_ca] ~> Service['nginx']
+
+        ensure_packages([
+            'python3-pymysql',
+            'python3-flask',
+            'python3-yaml'
+        ])
+    }
 
     $python_version = $::lsbdistcodename ? {
         'stretch'  => 'python3.5',
@@ -39,6 +49,7 @@ class openstack::puppet::master::encapi(
     $service_name = debian::codename::ge('bullseye').bool2str('puppet-enc', 'labspuppetbackend')
 
     file { "/usr/local/lib/${python_version}/dist-packages/${service_name}.py":
+        ensure => stdlib::ensure($ensure, 'file'),
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
@@ -46,7 +57,7 @@ class openstack::puppet::master::encapi(
     }
 
     file {'/etc/logrotate.d/puppet-enc':
-        ensure => 'present',
+        ensure => stdlib::ensure($ensure, 'file'),
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
@@ -55,7 +66,7 @@ class openstack::puppet::master::encapi(
 
     # Make sure we can write to our logfile
     file { "/var/log/${service_name}.log":
-        ensure  => file,
+        ensure  => stdlib::ensure($ensure, 'file'),
         owner   => 'www-data',
         group   => 'www-data',
         replace => false,
@@ -80,6 +91,7 @@ class openstack::puppet::master::encapi(
     # We override service_settings because the default includes autoload
     #  which insists on using python2
     uwsgi::app { $service_name:
+        ensure    => $ensure,
         settings  => {
             uwsgi => {
                 plugins             => 'python3',
@@ -112,11 +124,7 @@ class openstack::puppet::master::encapi(
     #  open this up to the public even though the actual API has no
     #  auth protections.
     nginx::site { $public_site_name:
+        ensure  => $ensure,
         content => template('openstack/puppet/master/encapi/nginx-puppet-enc-public.conf.erb'),
     }
-
-    # make sure that the nginx service gets notified when the certs change
-    File[$puppet_cert_pub] ~> Service['nginx']
-    File[$puppet_cert_priv] ~> Service['nginx']
-    File[$puppet_cert_ca] ~> Service['nginx']
 }

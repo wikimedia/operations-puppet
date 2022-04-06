@@ -35,11 +35,12 @@ define systemd::tmpfile(
         group   => $group,
     }
 
-    exec { "Refresh tmpfile ${name}":
-        command     => "/bin/systemd-tmpfiles --create --remove '${conf_path}'",
-        user        => 'root',
-        refreshonly => true,
-        subscribe   => File[$conf_path],
+    if $ensure == 'present' {
+        exec { "Refresh tmpfile ${name}":
+            command     => "/bin/systemd-tmpfiles --create --remove '${conf_path}'",
+            user        => 'root',
+            refreshonly => true,
+            subscribe   => File[$conf_path],
+        }
     }
-
 }
