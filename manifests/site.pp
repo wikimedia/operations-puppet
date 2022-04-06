@@ -1915,6 +1915,11 @@ node /^ml-serve200[1-8]\.codfw\.wmnet/ {
     role(ml_k8s::worker)
 }
 
+# new ml-serve hosts T294949
+node /^ml-serve100[5-8]\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 node /^ml-serve100[1234]\.eqiad\.wmnet/ {
     role(ml_k8s::worker)
 }
