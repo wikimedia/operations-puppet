@@ -137,10 +137,10 @@ network::subnets:
           ipv4: 10.64.76.0/24
           ipv6: 2620:0:861:babf::/64
         private1-mlserve-kubepods-eqiad:
-          ipv4: 10.64.78.0/23
+          ipv4: 10.67.16.0/21
           ipv6: 2620:0:861:300::/64
         private1-mlserve-kubesvc-eqiad:
-          ipv4: 10.64.77.0/24
+          ipv4: 10.67.0.0/20
           ipv6: 2620:0:861:301::/64
         private1-e1-eqiad:
           ipv4: 10.64.130.0/24
