@@ -196,25 +196,27 @@ def main() -> int:
     data = dict()
     runtime_error = False
 
-    providers = [
-        ExternalCloudVendor(
-            "AWS", "https://ip-ranges.amazonaws.com/ip-ranges.json", {"ip_prefix"}
-        ),
-        ExternalCloudVendor(
-            "GCP",
-            "https://www.gstatic.com/ipranges/cloud.json",
-            {"ipv4Prefix", "ipv6Prefix"},
-        ),
-        ExternalCloudVendorOci(),
-        ExternalCloudVendorAzure(),
-        CSVExternalCloudVendor(
-            "DigitalOcean",
-            # This is the file linked from the digitalocean platform documentation website:
-            # https://www.digitalocean.com/docs/platform/
-            "http://digitalocean.com/geo/google.csv"
-        ),
-        CSVExternalCloudVendor("Linode", "https://geoip.linode.com/"),
-    ]
+    providers = {
+        "cloud": [
+            ExternalCloudVendor(
+                "AWS", "https://ip-ranges.amazonaws.com/ip-ranges.json", {"ip_prefix"}
+            ),
+            ExternalCloudVendor(
+                "GCP",
+                "https://www.gstatic.com/ipranges/cloud.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            ),
+            ExternalCloudVendorOci(),
+            ExternalCloudVendorAzure(),
+            CSVExternalCloudVendor(
+                "DigitalOcean",
+                # This is the file linked from the digitalocean platform documentation website:
+                # https://www.digitalocean.com/docs/platform/
+                "http://digitalocean.com/geo/google.csv"
+            ),
+            CSVExternalCloudVendor("Linode", "https://geoip.linode.com/"),
+        ],
+    }
 
     datafile = args.datafile
     if datafile.is_file():
@@ -223,53 +225,63 @@ def main() -> int:
         except json.JSONDecodeError as error:
             logging.error("unable to parse current data, deleting: %s", error)
             datafile.unlink()
+
+    # Temporary for T305581 - migrate from the old datafile format (only one ipblock_type, not
+    # named in the JSON) to the new one (ipblock_type as the top-level dict key). This can be
+    # removed after the script runs once.
+    if "cloud" not in data:
+        data = {"cloud": data}
+
     session = http_session("dump-cloud-ip-ranges")
-    for provider in providers:
-        try:
-            logging.info("fetching ranges for %s", provider.name)
-            old_nets = data.get(provider.name, [])
-            nets = sorted(merge_adjacent(provider.get_networks(session)))
-            if len(nets) == 0:
-                logging.error("Received 0 nets from %s, not updating", provider.name)
+    for ipblock_type, entities in providers.items():
+        for entity in entities:
+            try:
+                logging.info("fetching ranges for %s", entity.name)
+                old_nets = data.get(ipblock_type, {}).get(entity.name, [])
+                nets = sorted(merge_adjacent(entity.get_networks(session)))
+                if len(nets) == 0:
+                    logging.error("Received 0 nets from %s, not updating", entity.name)
+                    runtime_error = True
+                    continue
+                data.setdefault(ipblock_type, {})[entity.name] = nets
+                logging.debug("%s nets: %s", entity.name, data[ipblock_type][entity.name])
+                logging.info(
+                    "%s new nets: %d, old nets %d",
+                    entity.name,
+                    len(data[ipblock_type][entity.name]),
+                    len(old_nets),
+                )
+            except RequestException as error:
+                logging.error("%s: %s", entity.name, error)
                 runtime_error = True
-                continue
-            data[provider.name] = nets
-            logging.debug("%s nets: %s", provider.name, data[provider.name])
-            logging.info(
-                "%s new nets: %d, old nets %d",
-                provider.name,
-                len(data[provider.name]),
-                len(old_nets),
-            )
-        except RequestException as error:
-            logging.error("%s: %s", provider.name, error)
-            runtime_error = True
 
     if args.conftool:
         repo_base = Path(args.repo)
         requestctl_path = repo_base / "requestctl"
-        cloud_path = requestctl_path / "request-ipblocks" / "cloud"
+        ipblocks_path = requestctl_path / "request-ipblocks"
         git_repo = Repo(repo_base)
-        for cloud_name, cidrs in data.items():
-            name = cloud_name.lower()
-            # Save the data to a file on disk:
-            file_path = cloud_path / f"{name}.yaml"
-            to_update = {
-                "cidrs": cidrs,
-                "comment": f"Automatically generated IPs for {cloud_name}",
-            }
-            file_path.write_text(yaml.dump(to_update))
+        for ipblock_type, ipblocks in data.items():
+            (ipblocks_path / ipblock_type).mkdir(exist_ok=True)
+            for ipblock_name, cidrs in ipblocks.items():
+                name = ipblock_name.lower()
+                # Save the data to a file on disk:
+                file_path = ipblocks_path / ipblock_type / f"{name}.yaml"
+                to_update = {
+                    "cidrs": cidrs,
+                    "comment": f"Automatically generated IPs for {ipblock_name}",
+                }
+                file_path.write_text(yaml.dump(to_update))
         # safety measure: if there is an uncommitted object added to the index of the
         # repository, we won't add what follows to git. We will still sync it though.
         if git_repo.index.diff("HEAD"):
             logging.error(
-                "The git index of %s is dirty, not adding/committing cloud ipblocks.",
+                "The git index of %s is dirty, not adding/committing ipblocks.",
                 repo_base,
             )
             runtime_error = True
         else:
             # Add and commit to the private repo if anything
-            git_repo.index.add([str(cloud_path)])
+            git_repo.index.add([str(ipblocks_path / ipblock_type) for ipblock_type in data])
             # We check the added stuff to HEAD, so that spurious changes leftover
             # in the repo won't create an issue.
             if git_repo.index.diff("HEAD"):
