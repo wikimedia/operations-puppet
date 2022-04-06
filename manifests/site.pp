@@ -1100,6 +1100,12 @@ node /^druid100[4-8]\.eqiad\.wmnet$/ {
     role(druid::public::worker)
 }
 
+# new dse-k8s-workers T291579
+node /^dse-k8s-worker100[1-4]\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
+
 # nfs server for xml dumps generation, also rsyncs xml dumps
 # data to fallback nfs server(s)
 node /^dumpsdata1003\.eqiad\.wmnet$/ {
