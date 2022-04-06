@@ -6,3 +6,12 @@
     minsize 100k
     copytruncate
 }
+
+/var/log/puppet-enc.log {
+    daily
+    missingok
+    rotate 5
+    compress
+    minsize 100k
+    copytruncate
+}

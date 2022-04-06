@@ -1,5 +1,5 @@
 class openstack::puppet::master::encapi(
-    String $mysql_host,
+    Stdlib::Host $mysql_host,
     String $mysql_db,
     String $mysql_username,
     String $mysql_password,
@@ -12,19 +12,23 @@ class openstack::puppet::master::encapi(
     $puppet_cert_pub  = "${exposed_certs_dir}/ssl/cert.pem"
     $puppet_cert_priv = "${exposed_certs_dir}/ssl/server.key"
     $puppet_cert_ca   = "${exposed_certs_dir}/ssl/ca.pem"
+
     base::expose_puppet_certs { $exposed_certs_dir:
-      provide_private => true,
-    }
-    file { $puppet_cert_ca:
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => $facts['puppet_config']['localcacert'],
+        provide_private => true,
     }
 
-    ensure_packages(['python3-pymysql',
-                    'python3-flask',
-                    'python3-yaml'])
+    file { $puppet_cert_ca:
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => $facts['puppet_config']['localcacert'],
+    }
+
+    ensure_packages([
+        'python3-pymysql',
+        'python3-flask',
+        'python3-yaml'
+    ])
 
     $python_version = $::lsbdistcodename ? {
         'stretch'  => 'python3.5',
@@ -32,11 +36,13 @@ class openstack::puppet::master::encapi(
         'bullseye' => 'python3.9',
     }
 
-    file { "/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py":
+    $service_name = debian::codename::ge('bullseye').bool2str('puppet-enc', 'labspuppetbackend')
+
+    file { "/usr/local/lib/${python_version}/dist-packages/${service_name}.py":
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/openstack/puppet/master/encapi/labspuppetbackend.py',
+        source => 'puppet:///modules/openstack/puppet/master/encapi/puppet-enc.py',
     }
 
     file {'/etc/logrotate.d/puppet-enc':
@@ -48,7 +54,7 @@ class openstack::puppet::master::encapi(
     }
 
     # Make sure we can write to our logfile
-    file { '/var/log/labspuppetbackend.log':
+    file { "/var/log/${service_name}.log":
         owner => 'www-data',
         group => 'www-data',
     }
@@ -71,16 +77,16 @@ class openstack::puppet::master::encapi(
 
     # We override service_settings because the default includes autoload
     #  which insists on using python2
-    uwsgi::app { 'labspuppetbackend':
+    uwsgi::app { $service_name:
         settings  => {
             uwsgi => {
                 plugins             => 'python3',
-                'wsgi-file'         => "/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py",
+                'wsgi-file'         => "/usr/local/lib/${python_version}/dist-packages/${service_name}.py",
                 callable            => 'app',
                 master              => true,
                 http-socket         => '0.0.0.0:8101',
                 reload-on-exception => true,
-                logto               => '/var/log/labspuppetbackend.log',
+                logto               => "/var/log/${service_name}.log",
                 env                 => [
                     "MYSQL_HOST=${mysql_host}",
                     "MYSQL_DB=${mysql_db}",
@@ -90,20 +96,21 @@ class openstack::puppet::master::encapi(
                 ],
             },
         },
-        subscribe => File["/usr/local/lib/${python_version}/dist-packages/labspuppetbackend.py"],
-        require   => File['/var/log/labspuppetbackend.log'],
+        subscribe => File["/usr/local/lib/${python_version}/dist-packages/${service_name}.py"],
+        require   => File["/var/log/${service_name}.log"],
     }
 
+    $public_site_name = debian::codename::ge('bullseye').bool2str('puppet-enc-public', 'labspuppetbackendgetter')
     nginx::site { 'default': # otherwise we'll cause nginx to be installed with the default port 80 config which will conflict with apache used by the puppetmaster itself
         ensure => absent,
-        before => Nginx::Site['labspuppetbackendgetter'],
+        before => Nginx::Site[$public_site_name],
     }
 
     # This is a GET-only front end that sits on port 8100.  We can
     #  open this up to the public even though the actual API has no
     #  auth protections.
-    nginx::site { 'labspuppetbackendgetter':
-        content => template('openstack/puppet/master/encapi/labspuppetbackendgetter.conf.erb'),
+    nginx::site { $public_site_name:
+        content => template('openstack/puppet/master/encapi/nginx-puppet-enc-public.conf.erb'),
     }
 
     # make sure that the nginx service gets notified when the certs change
