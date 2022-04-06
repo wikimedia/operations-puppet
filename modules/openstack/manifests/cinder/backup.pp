@@ -6,7 +6,7 @@ class openstack::cinder::backup (
     require "openstack::cinder::config::${version}"
 
     ensure_packages(['cinder-backup', 'patch'])
-    if $version in ['victoria'] {
+    if $version in ['victoria', 'wallaby'] {
         $file_to_patch = '/usr/lib/python3/dist-packages/cinder/backup/chunkeddriver.py'
         $patch_file = "${file_to_patch}.patch"
         file {$patch_file:
