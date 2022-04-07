@@ -32,12 +32,19 @@ https://en.wikipedia.org:
 - path: /w/COPYING
   assert_status: 200
   assert_body_contains: License and copyright information
-# Verify that php URLs accessed via /static/current/ are not reachable.
-# This returns a 404 on k8s (which is better! and a 200 'Not an entry point'
-# on the legacy appservers.
-# TODO: uncomment this once the move to k8s is complete
-#- path: /static/current/resources/Resources.php
-#  assert_status: 404
+- path: /w/skins/Timeless/resources/print.css
+  assert_status: 200
+  request_headers:
+    Accept-Encoding: "deflate, gzip"
+  assert_headers_absent:
+    - Content-Encoding
+    - Vary
+  assert_headers_regex:
+    Content-Type: ^text/css
+# Verify that php URLs accessed via /w/ are not reachable.
+# https://phabricator.wikimedia.org/T106732
+- path: /w/resources/Resources.php
+  assert_status: 404
 
 https://www.mediawiki.org:
 - path: /wiki/User_hub
