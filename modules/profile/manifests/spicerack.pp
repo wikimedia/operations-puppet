@@ -146,6 +146,7 @@ class profile::spicerack(
         'kafka' => { 'config.yaml' => $kafka_config_data },
         'netbox' => { 'config.yaml' => $netbox_config_data },
         'redis_cluster' => { 'sessions.yaml' => $redis_sessions_data },
+        'service' => { 'service.yaml' => wmflib::service::fetch() },
     }.each | $dir, $file_data | {
         file { "/etc/spicerack/${dir}":
             ensure => directory,
