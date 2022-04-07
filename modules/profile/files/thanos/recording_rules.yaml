@@ -46,11 +46,11 @@ groups:
           sum(mysql_up) without (instance) / count(mysql_up) without (instance),
           "exporter", "mysql",
           "", ""
-        )
+          )
 
       - record: exporter:up:avail
         expr: label_replace(
           sum(apache_up) without (instance) / count(apache_up) without (instance),
           "exporter", "apache",
           "", ""
-        )
+          )
