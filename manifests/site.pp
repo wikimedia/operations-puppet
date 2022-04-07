@@ -422,7 +422,7 @@ node /^cp40(2[789]|3[0256])\.ulsfo.wmnet$/ {
 # eqsin caches
 #
 
-node /^cp5002\.eqsin\.wmnet$/ {
+node 'cp5002.eqsin.wmnet' {
     role(cache::upload)
 }
 
@@ -448,12 +448,12 @@ node /^cp600[4-8]\.drmrs\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
-node /^cp60(09|1[0-1])\.drmrs\.wmnet$/ {
+node /^cp60(09|10)\.drmrs\.wmnet$/ {
     role(cache::text)
 }
 
 # HAProxy test T290005
-node /^cp601[2-6]\.drmrs\.wmnet$/ {
+node /^cp601[1-6]\.drmrs\.wmnet$/ {
     role(cache::text_haproxy)
 }
 
