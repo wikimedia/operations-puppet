@@ -1148,8 +1148,8 @@ node /^(elastic106[8-9]|elastic107[0-9]|elastic108[0-3])\.eqiad\.wmnet$/ {
     role(elasticsearch::cirrus)
 }
 
-# new eqiad elastic servers T291655
-node /^(elastic108[4-8])\.eqiad\.wmnet$/ {
+# new elastic servers T291655 and T299609
+node /^(elastic108[4-9]|elastic109[0-9]|elastic110[0-2])\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
