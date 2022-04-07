@@ -64,7 +64,6 @@ class profile::spicerack(
         require => Package['spicerack'],
     }
 
-
     file { '/etc/spicerack/config.yaml':
         ensure  => present,
         owner   => 'root',
@@ -73,73 +72,29 @@ class profile::spicerack(
         content => template('profile/spicerack/config.yaml.erb'),
     }
 
-    # Install the Redis-specific configuration
-    file { '/etc/spicerack/redis_cluster':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'ops',
-        mode   => '0550',
-    }
+    ### SPICERACK MODULES CONFIGURATION FILES
 
+    # Redis-specific configuration
     $redis_sessions_data = {
         'password' => $passwords::redis::main_password,
         'shards' => $redis_shards['sessions'],
     }
-    file { '/etc/spicerack/redis_cluster/sessions.yaml':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0440',
-        content => to_yaml($redis_sessions_data),
-    }
 
-    # Install Ganeti RAPI configuration
-    file { '/etc/spicerack/ganeti':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'ops',
-        mode   => '0550',
-    }
+    # Ganeti RAPI configuration
     $ganeti_auth_data = {
         'username' => $ganeti_user,
         'password' => $ganeti_password,
         'timeout'  => $ganeti_timeout,
     }
-    file { '/etc/spicerack/ganeti/config.yaml':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0440',
-        content => to_yaml($ganeti_auth_data),
-    }
-    # Install Netbox backend configuration
-    file { '/etc/spicerack/netbox':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'ops',
-        mode   => '0550',
-    }
+
+    # Netbox backend configuration
     $netbox_config_data = {
         'api_url'   => $netbox_api,
         'api_token_ro' => $netbox_token_ro,
         'api_token_rw' => $netbox_token_rw,
     }
-    file { '/etc/spicerack/netbox/config.yaml':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0440',
-        content => to_yaml($netbox_config_data),
-    }
 
-    # Install Kafka cluster brokers configuration
-    file { '/etc/spicerack/kafka':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'ops',
-        mode   => '0550',
-    }
-
+    # Kafka cluster brokers configuration
     $kafka_config_data = {
         'main'   => {
             'eqiad' => kafka_config('main', 'eqiad'),
@@ -154,14 +109,7 @@ class profile::spicerack(
         }
     }
 
-    file { '/etc/spicerack/kafka/config.yaml':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0440',
-        content => to_yaml($kafka_config_data),
-    }
-
+    # Elasticsearch cluster configuration
     $elasticsearch_config_data = {
       'search' => {
         'search_eqiad' => {
@@ -190,20 +138,33 @@ class profile::spicerack(
       }
     }
 
-    file {'/etc/spicerack/elasticsearch':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'ops',
-        mode   => '0550',
+    # Install all configuration files
+    # Semicolon needed for https://tickets.puppetlabs.com/browse/PUP-10782
+    ;{
+        'elasticsearch' => { 'config.yaml' => $elasticsearch_config_data },
+        'ganeti' => { 'config.yaml' => $ganeti_auth_data },
+        'kafka' => { 'config.yaml' => $kafka_config_data },
+        'netbox' => { 'config.yaml' => $netbox_config_data },
+        'redis_cluster' => { 'sessions.yaml' => $redis_sessions_data },
+    }.each | $dir, $file_data | {
+        file { "/etc/spicerack/${dir}":
+            ensure => directory,
+            owner  => 'root',
+            group  => 'ops',
+            mode   => '0550',
+        }
+        $file_data.each | $filename, $content | {
+            file { "/etc/spicerack/${dir}/${filename}":
+                ensure  => present,
+                owner   => 'root',
+                group   => 'ops',
+                mode    => '0440',
+                content => to_yaml($content),
+            }
+        }
     }
 
-    file { '/etc/spicerack/elasticsearch/config.yaml':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'ops',
-        mode    => '0440',
-        content => to_yaml($elasticsearch_config_data),
-    }
+    ### COOKBOOKS CONFIGURATION FILES
 
     file { '/etc/spicerack/cookbooks':
         ensure => directory,
