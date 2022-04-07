@@ -15,7 +15,7 @@ class role::logging::mediawiki::udp2log(
     include ::profile::base::production
     include ::profile::base::firewall
     include ::profile::mediawiki::mwlog
-
+    include ::profile::mediawiki::system_users
     # Include geoip databases and CLI.
     class { '::geoip': }
 

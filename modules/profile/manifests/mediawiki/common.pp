@@ -8,6 +8,8 @@ class profile::mediawiki::common(
 ){
     # Enable the memory cgroup
     require ::profile::base::memory_cgroup
+    # Require system users that might be used by scap or other processes
+    require ::profile::mediawiki::system_users
     # GeoIP is needed for MW
     class { '::geoip':
         fetch_ipinfo_dbs => $fetch_ipinfo_dbs,

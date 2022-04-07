@@ -6,21 +6,7 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
 ) {
     # Create the mwbuilder user. This is the user that is allowed to run docker-pusher to publish
     # the images, and that should run the tasks in mediawiki/tools/release.
-    group { 'mwbuilder':
-        ensure => present,
-        system => true,
-    }
-    user { 'mwbuilder':
-        ensure     => present,
-        gid        => 'mwbuilder',
-        shell      => '/bin/false',
-        comment    => '',
-        home       => '/srv/mwbuilder',
-        managehome => true,
-        system     => true,
-        require    => File['/srv/deployment']
-    }
-
+    require profile::mediawiki::system_users
 
     # provide the docker-pusher wrapper and relative credentials
     class { 'docker_pusher':
