@@ -2,6 +2,7 @@
 # Define all data pertaining to a service.
 # Of specific interest might be the "state", which represent the status in a
 # state machine of the specific service we're declaring.
+# If modified, update also spicerack.service.Service.
 # @param [String] description
 #     The description of the service
 # @param Array[String] sites

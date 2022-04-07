@@ -43,6 +43,7 @@ lvs = service['lvs']
 <% else -%>
 [<%= subservicename %>_<%= service['port'] %>]
 <% end -%>
+<%# IF MODIFYING THE DEFAULT, MODIFY ALSO spicerack.service.ServiceLVS -%>
 protocol = <%= lvs.fetch('protocol', "tcp") %>
 ip = <%= subserviceip %>
 port = <%= service['port'] %>

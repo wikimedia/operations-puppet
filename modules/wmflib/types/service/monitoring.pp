@@ -1,4 +1,5 @@
 # Describes the monitoring we want to apply to a service, at the load-balancer
+# If modified, update also spicerack.service.Monitoring.
 # layer.
 # @param [String] check_command
 #     The check to perform on the LVS IP of the service
