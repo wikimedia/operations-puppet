@@ -19,6 +19,7 @@ groups:
         labels:
           service: "etcd"
         expr: 0.1
+
   - name: traffic
     rules:
       - record: site_cluster:haproxy_requests:avail2m
@@ -27,3 +28,29 @@ groups:
       - record: global_job:haproxy_requests:avail2m
         expr: sum by(cluster) (cluster_code:haproxy_frontend_http_responses_total:rate2m{code="5xx"})
           / sum by(cluster) (cluster_code:haproxy_frontend_http_responses_total:rate2m{code=~"[12345]xx"})
+
+  # Aggregated exporter metrics.
+  #
+  # The "<service>_up" metrics are exported by Prometheus sidecar exporter (e.g. mysql-exporter,
+  # when the service itself doesn't support Prometheus natively).
+  #
+  # Such metrics are used to catch conditions such as the following:
+  # * the exporter itself is up and able to export metrics to Prometheus (therefore the "up" metric is 1)
+  # * the exporter can't talk to the underlying service (e.g. mysql is down, thus "mysql_up" is 0)
+  #
+  # The label_replace function is used to attach a new "exporter" label to the aggregated metric.
+  - name: exporters
+    rules:
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(mysql_up) without (instance) / count(mysql_up) without (instance),
+          "exporter", "mysql",
+          "", ""
+        )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(apache_up) without (instance) / count(apache_up) without (instance),
+          "exporter", "apache",
+          "", ""
+        )
