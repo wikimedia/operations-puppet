@@ -439,12 +439,12 @@ node /^cp50(0[7-9]|1[01256])\.eqsin\.wmnet$/ {
 #
 # cp drmrs nodes
 #
-node /^cp600[1-2]\.drmrs\.wmnet$/ {
+node 'cp6001.drmrs.wmnet' {
     role(cache::upload)
 }
 
 # HAProxy test T290005
-node /^cp600[3-8]\.drmrs\.wmnet$/ {
+node /^cp600[2-8]\.drmrs\.wmnet$/ {
     role(cache::upload_haproxy)
 }
 
