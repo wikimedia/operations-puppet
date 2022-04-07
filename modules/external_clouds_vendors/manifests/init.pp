@@ -15,7 +15,7 @@ class external_clouds_vendors (
     Stdlib::Unixpath          $outfile     = '/srv/external_clouds_vendors/public_clouds.json',
     Optional[Stdlib::HTTPUrl] $http_proxy  = undef,
 ) {
-    ensure_packages(['python3-lxml', 'python3-netaddr', 'python3-requests', 'python3-wmflib', 'python3-conftool'])
+    ensure_packages(['python3-lxml', 'python3-netaddr', 'python3-requests', 'python3-wmflib', 'python3-conftool', 'python3-git'])
     if $manage_user {
         systemd::sysuser { $user:
             description => 'User used for downloading external cloud vendor networks',
