@@ -15,22 +15,26 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
 
     # Now install the credentials for the kubernetes docker user so that we can list tags
     # in the restricted namespace. This is ok since the credentials will be guarded by
-    # being ran as root, and that is more restrictive than access to the stuff contained
-    # in the restricted images.
-    docker::credentials { '/root/.docker/config.json':
-        owner             => 'root',
-        group             => 'root',
+    # being ran as mwbuilder, and that is the user that builds the images in the first
+    # place.
+    docker::credentials { '/srv/mwbuilder/.docker/config.json':
+        owner             => 'mwbuilder',
+        group             => 'mwbuilder',
         registry          => $docker_registry,
         registry_username => 'kubernetes',
         registry_password => $docker_password,
         allow_group       => false,
     }
+    # TODO: remove once done.
+    file { '/root/.docker/config.json':
+        ensure => absent,
+    }
     # Directory where the file lock and error file are stored.
     file { '/var/lib/deploy-mwdebug':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0700'
+        owner  => 'mwbuilder',
+        group  => 'mwdeploy',
+        mode   => '0755'
     }
 
     # Add a script that updates the mediawiki images.
@@ -38,7 +42,7 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
         source => 'puppet:///modules/profile/kubernetes/deployment_server/deploy-mwdebug.py',
         owner  => 'root',
         group  => 'root',
-        mode   => '0550',
+        mode   => '0555',
     }
     $ensure_deploy = $deployment_server ? {
         $facts['networking']['fqdn'] => 'present',
@@ -49,7 +53,7 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
         ensure            => $ensure_deploy,
         description       => 'Deploy the latest available set of images to mw on k8s',
         command           => '/usr/local/sbin/deploy-mwdebug --noninteractive',
-        user              => 'root',
+        user              => 'mwbuilder',
         interval          => {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '300s',

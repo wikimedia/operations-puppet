@@ -4,7 +4,7 @@ Temporary script to keep the mwdebug deployment up to date with
 the scap-released version. Given its temporary nature, the script
 will hardcode most values.
 
-Copyright (c) 2021 Giuseppe Lavagetto <joe@wikimedia.org>
+Copyright (c) 2021- Giuseppe Lavagetto <joe@wikimedia.org>
 """
 import argparse
 import fcntl
@@ -23,7 +23,9 @@ logger = logging.getLogger()
 
 # Default values we don't expect to change
 REGISTRY = "docker-registry.discovery.wmnet"
-VALUES_FILE = pathlib.Path("/etc/helmfile-defaults/mediawiki/releases.yaml")
+VALUES_FILE = pathlib.Path(
+    "/etc/helmfile-defaults/mediawiki/release/mwdebug-pinkunicorn.yaml"
+)
 DEPLOY_DIR = "/srv/deployment-charts/helmfile.d/services/mwdebug"
 good_tag_regex = re.compile(r"\d{4}-\d{2}-\d{2}-\d{6}-(publish|webserver)")
 
@@ -102,7 +104,10 @@ def values_file_update(maxtag_mw: str, maxtag_web: str) -> bool:
     except FileNotFoundError:
         logger.info("Creating the releases file")
     VALUES_FILE.write_text(values)
-
+    # Commit the file to the repository
+    repo = str(VALUES_FILE.absolute().parent)
+    subprocess.run(["git", "add", "mwdebug-pinkunicorn.yaml"], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-m", "'Updating release'"], cwd=repo, check=True)
     return True
 
 
