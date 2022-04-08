@@ -53,7 +53,7 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
         ensure            => $ensure_deploy,
         description       => 'Deploy the latest available set of images to mw on k8s',
         command           => '/usr/local/sbin/deploy-mwdebug --noninteractive',
-        user              => 'mwbuilder',
+        user              => 'root',
         interval          => {
             'start'    => 'OnUnitInactiveSec',
             'interval' => '300s',
