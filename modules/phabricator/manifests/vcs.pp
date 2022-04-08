@@ -20,7 +20,6 @@ class phabricator::vcs (
     Array $listen_addresses   = [],
     Integer $ssh_port         = 22,
     String $proxy             = "http://url-downloader.${::site}.wikimedia.org:8080",
-    Wmflib::Ensure $ssh_phab_service_ensure = absent,
 ) {
 
     $phd_user = $settings['phd.user']
@@ -111,7 +110,7 @@ class phabricator::vcs (
         }
 
         systemd::service { 'ssh-phab':
-            ensure  => $ssh_phab_service_ensure,
+            ensure  => 'present',
             content => systemd_template('ssh-phab'),
             require => Package['openssh-server'],
         }
