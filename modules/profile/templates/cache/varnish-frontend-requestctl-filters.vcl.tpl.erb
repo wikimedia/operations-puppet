@@ -1,0 +1,12 @@
+{{- $path := "/request-vcl/cache-<%= @cache_cluster %>" -}}
+{{- $global := printf "%s/global" $path }}{{ $local := printf "%s/<%= @site %>" $path }}
+// Actions generated from etcd rules, if any.
+{{- if exists $global }}
+// Actions enabled globally
+{{ $value := json getv $global }}{{ $value.vcl }}
+{{- end }}
+{{- if exists $local}}
+// Site-specific actions
+{{ $value := json getv $local }}{{ $value.vcl }}
+{{- end }}
+

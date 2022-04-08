@@ -116,7 +116,7 @@ class profile::cache::varnish::frontend (
     if $etcd_backends {
         confd::file {
             default:
-                ensure => $etcd_backends.bool2str('present', 'absent'),
+                ensure => present,
                 reload => "/usr/local/bin/confd-reload-vcl varnish-frontend ${reload_vcl_opts}",
                 before => Service['varnish-frontend'],;
             # Backend caches used by this Frontend from Etcd
@@ -135,6 +135,13 @@ class profile::cache::varnish::frontend (
                 watch_keys => $req_keyspaces,
                 content    => template('profile/cache/varnish-frontend-dynamic-actions.vcl.tpl.erb'),
                 prefix     => $conftool_prefix,;
+            # New request filter actions based on the content of the
+            # /request-vcl tree in conftool.
+            # Not enabled right now, will be in a future patchset.
+            '/etc/varnish/requestctl-filters.inc.vcl':
+                watch_keys => ["/request-vcl/cache-${cache_cluster}"],
+                content    => template('profile/cache/varnish-frontend-requestctl-filters.vcl.tpl.erb'),
+                prefix     => $conftool_prefix,;
         }
     } else {
         # deployment-prep still uses the old template.
@@ -147,7 +154,7 @@ class profile::cache::varnish::frontend (
             mode    => '0444',
         }
 
-        file { [ '/etc/varnish/directors.frontend.vcl', '/etc/varnish/dynamic.actions.inc.vcl' ]:
+        file { [ '/etc/varnish/directors.frontend.vcl', '/etc/varnish/dynamic.actions.inc.vcl', '/etc/varnish/requestctl-filters.inc.vcl' ]:
             ensure => absent,
         }
     }
