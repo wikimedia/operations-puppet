@@ -7,4 +7,4 @@ profile::openstack::codfw1dev::horizon::proxy_zone_dict:
     default: true
 
 profile::openstack::codfw1dev::horizon::puppet_api_endpoint: "https://puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8140/future"
-profile::openstack::codfw1dev::horizon::puppet_enc_endpoint: "http://puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8101/v1"
+profile::openstack::codfw1dev::horizon::puppet_enc_endpoint: "http://puppet-enc.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8101/v1"

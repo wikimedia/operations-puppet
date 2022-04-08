@@ -47,7 +47,7 @@ profile::openstack::codfw1dev::keystone_host: 'openstack.codfw1dev.wikimediaclou
 profile::openstack::codfw1dev::observer_password: 'lt-RiBeyokCO81bVvcX'
 profile::openstack::codfw1dev::version: 'victoria'
 
-profile::openstack::base::puppetmaster::enc_client::api_endpoint: "http://puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8100"
+profile::openstack::base::puppetmaster::enc_client::api_endpoint: "http://puppet-enc.cloudinfra-codfw1dev.codfw1dev.wmcloud.org:8100"
 
 profile::openstack::codfw1dev::cumin::project_masters: []
 profile::openstack::codfw1dev::cumin::project_pub_key: undef
