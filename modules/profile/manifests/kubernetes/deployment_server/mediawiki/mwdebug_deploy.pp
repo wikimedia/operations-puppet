@@ -25,8 +25,8 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
         registry_password => $docker_password,
         allow_group       => false,
     }
-    # TODO: remove once done.
-    file { '/root/.docker/config.json':
+    # TODO: remove once T305729 is resolved.
+    docker::credentials { '/root/.docker/config.json':
         owner             => 'root',
         group             => 'root',
         registry          => $docker_registry,
