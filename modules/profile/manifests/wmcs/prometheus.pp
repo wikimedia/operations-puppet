@@ -156,7 +156,7 @@ class profile::wmcs::prometheus(
     prometheus::class_config{ "openstack_${::site}":
         dest       => "${targets_path}/openstack_${::site}.yaml",
         class_name => 'role::wmcs::openstack::eqiad1::control',
-        # same as profile::openstack::eqiad1::metrics::prometheus_listen_port and friends
+        # see profile::openstack::eqiad1::metrics
         port       => 12345,
     }
 

@@ -1,15 +1,5 @@
-listen_port: <%= @listen_port %>
-cache_refresh_interval: <%= @cache_refresh_interval %>
-cache_file: <%= @cache_file %>
-cloud: <%= @region %>
-openstack_allocation_ratio_vcpu: <%= @cpu_allocation_ratio %>
-openstack_allocation_ratio_ram: <%= @ram_allocation_ratio %>
-openstack_allocation_ratio_disk: <%= @disk_allocation_ratio %>
-
-# To export hypervisor_schedulable_instances metric set desired instance size
-schedulable_instance_size:
-    ram_mbs: <%= @sched_ram_mbs %>
-    vcpu: <%= @sched_vcpu %>
-    disk_gbs: <%= @sched_disk_gbs %>
-
-use_nova_volumes: False
+# file managed by puppet: modules/profile/templates/prometheus/openstack-exporter.yaml.erb
+# created by: modules/profile/manifests/prometheus/openstack_exporter.pp
+clouds:
+ <%= @cloud %>:
+   # nothing required, all config loaded by means of novaenv.sh in our custom wrapper

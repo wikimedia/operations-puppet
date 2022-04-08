@@ -1,20 +1,18 @@
 class profile::prometheus::openstack_exporter (
-    Float               $cpu_allocation_ratio   = lookup('profile::prometheus::cpu_allocation_ratio'),
-    Float               $ram_allocation_ratio   = lookup('profile::prometheus::ram_allocation_ratio'),
-    Float               $disk_allocation_ratio  = lookup('profile::prometheus::disk_allocation_ratio'),
-    Stdlib::Port        $listen_port            = lookup('profile::prometheus::listen_port'),
-    Integer             $cache_refresh_interval = lookup('profile::prometheus::cache_refresh_interval'),
-    Stdlib::Unixpath    $cache_file             = lookup('profile::prometheus::cache_file'),
-    Integer             $sched_ram_mbs          = lookup('profile::prometheus::sched_ram_mbs'),
-    Integer             $sched_vcpu             = lookup('profile::prometheus::sched_vcpu'),
-    Integer             $sched_disk_gbs         = lookup('profile::prometheus::sched_disk_gbs'),
-    String              $region                 = lookup('profile::prometheus::region'),
-    String              $observer_password      = lookup('profile::prometheus::observer_password'),
+    Stdlib::Port $listen_port = lookup('profile::prometheus::openstack_exporter::listen_port', {default_value => 12345}),
+    String[1]    $cloud       = lookup('profile::prometheus::openstack_exporter::cloud',       {default_value => 'eqiad1'}),
 ){
+    # package only available on bullseye
+    debian::codename::require::min('bullseye')
 
-    ensure_packages('prometheus-openstack-exporter')
+    apt::package_from_component { 'prometheus-openstack-exporter':
+        component => 'component/prometheus-openstack-exporter',
+        packages  => { 'prometheus-openstack-exporter' => 'present'}
+    }
 
-    file { '/etc/prometheus-openstack-exporter.yaml':
+    $config_file = '/etc/prometheus-openstack-exporter.yaml'
+
+    file { $config_file:
         ensure  => 'present',
         owner   => 'prometheus',
         group   => 'prometheus',
@@ -23,12 +21,8 @@ class profile::prometheus::openstack_exporter (
     }
 
     file { '/usr/local/sbin/prometheus-openstack-exporter-wrapper':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0554',
-        source  => 'puppet:///modules/profile/prometheus/prometheus-openstack-exporter-wrapper.sh',
-        require => File['/etc/prometheus-openstack-exporter.yaml'],
+        ensure => 'present',
+        source => 'puppet:///modules/profile/prometheus/prometheus-openstack-exporter-wrapper.sh',
     }
 
     systemd::service { 'prometheus-openstack-exporter':
@@ -36,22 +30,17 @@ class profile::prometheus::openstack_exporter (
         content        => systemd_template('prometheus-openstack-exporter'),
         restart        => true,
         override       => false,
-        require        => File['/usr/local/sbin/prometheus-openstack-exporter-wrapper'],
+        require        => File[$config_file],
         service_params => {
             ensure     => 'running',
         },
         subscribe      => [
-            File['/etc/prometheus-openstack-exporter.yaml'],
-            File['/usr/local/sbin/prometheus-openstack-exporter-wrapper'],
+            File[$config_file],
         ],
     }
 
-    # perhaps this should go in the package
+    # TODO: delete after a few puppet runs
     file { '/var/cache/prometheus-openstack-exporter':
-        ensure => directory,
-        force  => true,
-        mode   => '0775',
-        owner  => 'prometheus',
-        group  => 'prometheus',
+        ensure => absent,
     }
 }

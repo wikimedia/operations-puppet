@@ -11,4 +11,5 @@ fi
 
 set -e
 source /root/novaenv.sh
-sudo -E -u prometheus /usr/bin/prometheus-openstack-exporter /etc/prometheus-openstack-exporter.yaml
+unset OS_USER_DOMAIN_ID
+sudo -E -u prometheus /usr/bin/prometheus-openstack-exporter "$@"

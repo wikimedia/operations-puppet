@@ -1,11 +1,11 @@
-# Managed by puppet: a replacement to the file shipped with the package
+# file managed by puppet: modules/profile/templates/initscripts/prometheus-openstack-exporter.systemd.erb
 [Unit]
-Description=Prometheus Openstack exporter
+Description=prometheus openstack exporter
 
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/local/sbin/prometheus-openstack-exporter-wrapper
+ExecStart=/usr/local/sbin/prometheus-openstack-exporter-wrapper --web.listen-address=":<%= @listen_port %>" --os-client-config=<%= @config_file %> <%= @cloud %> 
 ProtectSystem=full
 ProtectHome=read-only
 PrivateTmp=true
