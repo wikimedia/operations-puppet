@@ -34,8 +34,6 @@ mediawiki::sites:
     vhosts:
       # The vhosts are ordered from top to bottom.
       - name: mediawiki.org
-        k8s_only_params:
-          rewrite_static_assets: true
         params:
           server_name: "www.mediawiki.org"
           docroot: "/srv/mediawiki/docroot/mediawiki.org"
