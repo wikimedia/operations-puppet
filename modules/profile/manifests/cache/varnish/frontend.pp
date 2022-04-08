@@ -128,14 +128,6 @@ class profile::cache::varnish::frontend (
                 watch_keys => ['/request-ipblocks/abuse'],
                 content    => template('profile/cache/blocked-nets.inc.vcl.tpl.erb'),
                 prefix     => $conftool_prefix,;
-            # Request filter actions based on the content of the
-            # /request-actions tree in conftool.
-            # Only enabled if $use_etcd_req_filters is true.
-            '/etc/varnish/dynamic.actions.inc.vcl':
-                ensure     => absent,
-                watch_keys => [],
-                content    => '',
-                prefix     => $conftool_prefix,;
             # New request filter actions based on the content of the
             # /request-vcl tree in conftool.
             # Not enabled right now, will be in a future patchset.
@@ -155,7 +147,7 @@ class profile::cache::varnish::frontend (
             mode    => '0444',
         }
 
-        file { [ '/etc/varnish/directors.frontend.vcl', '/etc/varnish/dynamic.actions.inc.vcl', '/etc/varnish/requestctl-filters.inc.vcl' ]:
+        file { [ '/etc/varnish/directors.frontend.vcl', '/etc/varnish/requestctl-filters.inc.vcl' ]:
             ensure => absent,
         }
     }
