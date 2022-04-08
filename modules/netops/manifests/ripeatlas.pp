@@ -24,7 +24,7 @@ define netops::ripeatlas(
     Optional[Tuple[String,1]] $ipv6=undef,
     Integer[0,100] $loss_allow=50,
     Integer $ipv4_failures=35,
-    Integer $ipv6_failures=65,
+    Integer $ipv6_failures=90,
     $group='network',
 ) {
     $notes_url = monitoring::build_notes_url(
