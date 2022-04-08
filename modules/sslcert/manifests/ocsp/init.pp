@@ -34,6 +34,14 @@ class sslcert::ocsp::init(
         source => 'puppet:///modules/sslcert/update-ocsp-all',
     }
 
+    file { '/usr/local/sbin/update-ocsp-all.sh':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/sslcert/update-ocsp-all.sh',
+    }
+
     file { '/etc/update-ocsp.d':
         ensure => 'directory',
         owner  => 'root',
@@ -57,14 +65,27 @@ class sslcert::ocsp::init(
 
     # Twice a day, 12h apart
     $cron_h12 = fqdn_rand(12, 'e663dd38dd6d3384')
-    cron { 'update-ocsp-all':
-        command => '/usr/local/sbin/update-ocsp-all 2>&1 | logger -t update-ocsp-all',
-        minute  => fqdn_rand(60, '1adf3dd699e51805'),
-        hour    => [ $cron_h12, $cron_h12 + 12 ],
-        require => [
+    $minute = fqdn_rand(60, '1adf3dd699e51805')
+
+    systemd::timer::job { 'update-ocsp-all':
+        ensure            => present,
+        description       => 'Regular jobs to update all OCSP stapling files',
+        user              => 'root',
+        command           => '/usr/local/sbin/update-ocsp-all.sh',
+        syslog_identifier => 'timer-update-ocsp-all',
+        interval          => {
+            'start'    => 'OnCalendar',
+            'interval' => "*-*-* ${cron_h12}/12:${minute}:00"
+        },
+        require           => [
+            File['/usr/local/sbin/update-ocsp-all.sh'],
             File['/usr/local/sbin/update-ocsp-all'],
             File['/etc/update-ocsp.d'],
         ],
+    }
+
+    cron { 'update-ocsp-all':
+        ensure => absent,
     }
 
     rsyslog::conf { 'update-ocsp-all':
