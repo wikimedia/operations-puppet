@@ -38,9 +38,5 @@ define swift::stats::stats_account (
                 File['/usr/local/bin/swift-account-stats-timer.sh']
             ],
         }
-
-        cron { "swift-account-stats_${user}":
-            ensure => absent,
-        }
     }
 }
