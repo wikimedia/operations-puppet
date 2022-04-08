@@ -4,13 +4,7 @@ require 'rspec-puppet/cache'
 describe 'openstack::cinder::backup' do
   on_supported_os(WMFConfig.test_on(10)).each do |os, facts|
     context "On #{os}" do
-      case os
-      when "bullseye"
-        # To be added once tests support bullseye
-        supported_openstacks = ["victoria", "wallaby"]
-      else
-        supported_openstacks = ["victoria"]
-      end
+      supported_openstacks = ["victoria"]
       supported_openstacks.each do |openstack_version|
         context "On openstack #{openstack_version}" do
           let(:pre_condition) {
