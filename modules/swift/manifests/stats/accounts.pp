@@ -23,6 +23,14 @@ class swift::stats::accounts(
         require => $required_packages,
     }
 
+    file { '/usr/local/bin/swift-account-stats-timer.sh':
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/swift/swift-account-stats-timer.sh'
+    }
+
     # report container stats to graphite
     file { '/usr/local/bin/swift-container-stats':
         ensure  => $ensure,
