@@ -84,10 +84,6 @@ class sslcert::ocsp::init(
         ],
     }
 
-    cron { 'update-ocsp-all':
-        ensure => absent,
-    }
-
     rsyslog::conf { 'update-ocsp-all':
         source   => 'puppet:///modules/sslcert/update-ocsp-all.rsyslog.conf',
     }
