@@ -112,7 +112,7 @@ class profile::cache::varnish::frontend (
         $separate_vcl_frontend, 'frontend', "${cache_cluster}-frontend")
 
     $directors_keyspaces = [ "${conftool_prefix}/pools/${::site}/cache_${cache_cluster}/ats-be" ]
-    $req_keyspaces = ['/request-patterns', "/request-actions/cache-${cache_cluster}"]
+
     if $etcd_backends {
         confd::file {
             default:
@@ -132,8 +132,9 @@ class profile::cache::varnish::frontend (
             # /request-actions tree in conftool.
             # Only enabled if $use_etcd_req_filters is true.
             '/etc/varnish/dynamic.actions.inc.vcl':
-                watch_keys => $req_keyspaces,
-                content    => template('profile/cache/varnish-frontend-dynamic-actions.vcl.tpl.erb'),
+                ensure     => absent,
+                watch_keys => [],
+                content    => '',
                 prefix     => $conftool_prefix,;
             # New request filter actions based on the content of the
             # /request-vcl tree in conftool.
