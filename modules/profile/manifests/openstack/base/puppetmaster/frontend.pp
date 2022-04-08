@@ -4,7 +4,6 @@ class profile::openstack::base::puppetmaster::frontend(
     $puppetmasters = lookup('profile::openstack::base::puppetmaster::servers'),
     $puppetmaster_ca = lookup('profile::openstack::base::puppetmaster::ca'),
     $puppetmaster_webhostname = lookup('profile::openstack::base::puppetmaster::web_hostname'),
-    $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     $cert_secret_path = lookup('profile::openstack::base::puppetmaster::cert_secret_path'),
     ) {
 
@@ -23,9 +22,7 @@ class profile::openstack::base::puppetmaster::frontend(
         source => 'puppet:///modules/puppetmaster/validatelabsfqdn.py',
     }
 
-    class {'profile::openstack::base::puppetmaster::common':
-        labweb_hosts => $labweb_hosts,
-    }
+    class { 'profile::openstack::base::puppetmaster::common': }
 
     $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
     $designate_ips_v6 = $designate_hosts.map |$host| { ipresolve($host, 6) }
@@ -51,12 +48,11 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     class { '::profile::puppetmaster::frontend':
-        ca_server        => $puppetmaster_ca,
-        web_hostname     => $puppetmaster_webhostname,
-        config           => $config,
-        secure_private   => false,
-        servers          => $puppetmasters,
-        extra_auth_rules => template('profile/openstack/base/puppetmaster/extra_auth_rules.conf.erb'),
+        ca_server      => $puppetmaster_ca,
+        web_hostname   => $puppetmaster_webhostname,
+        config         => $config,
+        secure_private => false,
+        servers        => $puppetmasters,
     }
 
     # The above profile will make a standard vhost for $web_hostname.
@@ -73,12 +69,9 @@ class profile::openstack::base::puppetmaster::frontend(
     }
 
     $labs_networks = join($network::constants::labs_networks, ' ')
-    $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
-    $labweb_ips_v6 = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>), AAAA)")
     ferm::rule{'puppetmaster_balancer':
         ensure => 'present',
-        rule   => "saddr (${labs_networks}
-                          ${labweb_ips} ${labweb_ips_v6})
+        rule   => "saddr (${labs_networks})
                           proto tcp dport 8140 ACCEPT;",
     }
 

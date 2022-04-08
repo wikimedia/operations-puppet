@@ -4,7 +4,6 @@ class profile::openstack::eqiad1::puppetmaster::frontend(
     $puppetmasters = lookup('profile::openstack::eqiad1::puppetmaster::servers'),
     $puppetmaster_ca = lookup('profile::openstack::eqiad1::puppetmaster::ca'),
     $puppetmaster_webhostname = lookup('profile::openstack::eqiad1::puppetmaster::web_hostname'),
-    $labweb_hosts = lookup('profile::openstack::eqiad1::labweb_hosts'),
     $cert_secret_path = lookup('profile::openstack::eqiad1::puppetmaster::cert_secret_path'),
     ) {
     class {'::profile::openstack::base::puppetmaster::frontend':
@@ -13,7 +12,6 @@ class profile::openstack::eqiad1::puppetmaster::frontend(
         puppetmasters            => $puppetmasters,
         puppetmaster_ca          => $puppetmaster_ca,
         puppetmaster_webhostname => $puppetmaster_webhostname,
-        labweb_hosts             => $labweb_hosts,
         cert_secret_path         => $cert_secret_path,
     }
 }

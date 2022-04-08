@@ -29,7 +29,6 @@ class openstack::horizon::source_deploy(
     String          $secret_key,
     Hash            $proxy_zone_dict,
     Hash            $proxy_zone_passwords,
-    Stdlib::HTTPUrl $puppet_api_endpoint,
     Stdlib::HTTPUrl $puppet_enc_endpoint,
     String          $venv_dir           = '/srv/deployment/horizon/venv',
     Stdlib::Fqdn    $webserver_hostname = 'horizon.wikimedia.org',

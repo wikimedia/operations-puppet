@@ -1,6 +1,4 @@
-class profile::openstack::base::puppetmaster::common(
-    Array[Stdlib::Host] $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
-) {
+class profile::openstack::base::puppetmaster::common () {
     include profile::openstack::base::puppetmaster::enc_client
 
     # Update Puppet git repositories
@@ -11,6 +9,6 @@ class profile::openstack::base::puppetmaster::common(
     ferm::service { 'puppetmaster':
         proto  => 'tcp',
         port   => '8141',
-        srange => "(\$LABS_NETWORKS @resolve((${labweb_hosts.join(' ')})))",
+        srange => '$LABS_NETWORKS',
     }
 }

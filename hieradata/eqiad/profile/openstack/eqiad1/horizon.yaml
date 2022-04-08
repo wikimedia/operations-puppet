@@ -10,5 +10,4 @@ profile::openstack::eqiad1::horizon::proxy_zone_dict:
     username: project-proxy-dns-manager
     default: true
 
-profile::openstack::eqiad1::horizon::puppet_api_endpoint: "https://puppetmaster.cloudinfra.wmflabs.org:8140/future"
 profile::openstack::eqiad1::horizon::puppet_enc_endpoint: "http://puppet-enc.cloudinfra.wmcloud.org:8101/v1"
