@@ -1325,7 +1325,7 @@ users:
     name: ariel
     realname: Ariel T. Glenn
     ssh_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCu28GiEBr28g/13mYO+IbqmXNcq3wqwpLC9E5d02ueQg5WiEe4TKfs15Gtnsl3k2HYQ3wtu8fDiKdKI7oUVz1O/6h0MkroPVOgVVs9s9FthoDj7uQaAHNU01w7FT3BANOzRNFNc6o9CZZhqx8ojloozYOsIVSh9Llyz3lVBEmBufm3Nk4q0Yf97oNts6bg6Bq51upwqpaCO9VjrFjoqpuapJuJx4j0DZFIvKS62uq3wrBhrrdBKI42wk8ECBytyPWOJ3MZRgoV00E3KJf/G+DuWGWz5KvgLYoXZzRqVXi4rAMkBbth9SGGhwgS4hE1RX9pses0d7rD5OcOQJCrc/HB ariel@neo
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCu28GiEBr28g/13mYO+IbqmXNcq3wqwpLC9E5d02ueQg5WiEe4TKfs15Gtnsl3k2HYQ3wtu8fDiKdKI7oUVz1O/6h0MkroPVOgVVs9s9FthoDj7uQaAHNU01w7FT3BANOzRNFNc6o9CZZhqx8ojloozYOsIVSh9Llyz3lVBEmBufm3Nk4q0Yf97oNts6bg6Bq51upwqpaCO9VjrFjoqpuapJuJx4j0DZFIvKS62uq3wrBhrrdBKI42wk8ECBytyPWOJ3MZRgoV00E3KJf/G+DuWGWz5KvgLYoXZzRqVXi4rAMkBbth9SGGhwgS4hE1RX9pses0d7rD5OcOQJCrc/HB ariel@neo
     uid: 543
     email: aglenn@wikimedia.org
   otto:
@@ -1334,8 +1334,8 @@ users:
     name: otto
     realname: Andrew Otto
     ssh_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyYwXitC3hSK+Gwfq3y0PlGlQMRHaqsTtJcDbgoxuE0kzEEKwSVpyXIxoUdUK0Luh2eVkR+CZ8+5lLVDJOhrGpBT6r/Z9p+o+9rVopNEkHM8QxqbhDoS5gbSEngISM+Zcyo1wTK+bB4tbzCcX7eJEVlxmPv4Tb85zDcMWSR2ZWV+jPMai9/3uO61Q3n9GOX94+3qIWmZE55AIjLT/lw3iGffwSMffO9/8UC9U2sVW3v3daXuvDgmjKkAiGaJp+Evq82ahQEOgOWPDuLXYo1DyFuqsL67CDA1hYZfA9FJRfUhOW9I32mGmFpjdJsFeWSU4VIOHO//Blpy0j6h4IPacJ otto@klein.local
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3UFojv43WYMDf9WoD18t5tKosJE5liMQp2w3ibTiuXUuj6c67E9g2UqNNK9O2hej2vo7KYsLG5VmguzhHYLxFRWKHflicrgDWEdMIiR2lxUtcUDJggwcS0PGnocstiYNFNQRCcvC/XbqW7k2741V5UsVoE4MIe+e0a3KiHGN3HLbkStz/07I1r8e0H16fbJUwfKE95gtzI/rOGT9J9LBjuS5QBuWyPk2dv5HSaRlQp83L3KeVBUUZgN82TnNj/QSLH7bmK0/5L6bLof+UnYPiA6teJAKpB9RlwO9z3DQIVnjO3TDo9MHZct3kob1YWm1uLoz+rKoBtD6E5rLJH8Tj otto@kleiner.local
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyYwXitC3hSK+Gwfq3y0PlGlQMRHaqsTtJcDbgoxuE0kzEEKwSVpyXIxoUdUK0Luh2eVkR+CZ8+5lLVDJOhrGpBT6r/Z9p+o+9rVopNEkHM8QxqbhDoS5gbSEngISM+Zcyo1wTK+bB4tbzCcX7eJEVlxmPv4Tb85zDcMWSR2ZWV+jPMai9/3uO61Q3n9GOX94+3qIWmZE55AIjLT/lw3iGffwSMffO9/8UC9U2sVW3v3daXuvDgmjKkAiGaJp+Evq82ahQEOgOWPDuLXYo1DyFuqsL67CDA1hYZfA9FJRfUhOW9I32mGmFpjdJsFeWSU4VIOHO//Blpy0j6h4IPacJ otto@klein.local
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3UFojv43WYMDf9WoD18t5tKosJE5liMQp2w3ibTiuXUuj6c67E9g2UqNNK9O2hej2vo7KYsLG5VmguzhHYLxFRWKHflicrgDWEdMIiR2lxUtcUDJggwcS0PGnocstiYNFNQRCcvC/XbqW7k2741V5UsVoE4MIe+e0a3KiHGN3HLbkStz/07I1r8e0H16fbJUwfKE95gtzI/rOGT9J9LBjuS5QBuWyPk2dv5HSaRlQp83L3KeVBUUZgN82TnNj/QSLH7bmK0/5L6bLof+UnYPiA6teJAKpB9RlwO9z3DQIVnjO3TDo9MHZct3kob1YWm1uLoz+rKoBtD6E5rLJH8Tj otto@kleiner.local
     uid: 2129
     email: aotto@wikimedia.org
     krb: present
@@ -1345,7 +1345,7 @@ users:
     name: cmjohnson
     realname: Chris Johnson
     ssh_keys:
-         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRcpxRnwLHjFjOuadfyyQB2CEFArfVzXA9gGZ0yI+zgF7tTfqj0vpAJpo4y8II7RayRuYbMQNMKdSdcHkg0qWrcljaLmkgMxg4eUNSHWWdBuGDKIFKH9Rj7vU7WKK/jmXGf1Slt2h7oFakRUp4p6u1kb4+P2yJwrYyQFXaCmiIQ9elEkkij7fEY2o1BZQ7S9MmmyQwbfg/cw1DShoQJkHlAm6ZG4m4fzYU2z8z+Pgm6d86QsEa8rEBf6GgwMcSon/b7fsXBc/XL0VV9CZOQ6Z5qkSe7ccOlhjS1wSRq6O4IdkxfSgVHAi00HsUZPlMoueB7hX1d9UQOxSMja48Pwklc7XarkuENZdVWu7b7CoJrQ2bSYDky19mKwU5iTZlm/843yE4MtnM8pqq2mx8+onQTAK0Fnmb+cqt8wEz3PAImC0cMnPscmUWYWC2z+2eeOsKUdNe3WyA4wbnR+hRqeUAYHUHEpQobpKHWhOFIh3kIns/WprJj+ezL2jcJRev12qhIoDW3b/VDhkU/Hx22qFHraT6i91j2/qtxNnwInlhQbQ6POCXYaGSTe4BViUAu7T7/OCL6Tx7WW5TCrEeBRKtOqNI3/Un8eob90GdQQ4PzAyEznHRqv5XmgR988WrDtsvR11DgN3benu9GJYFZZJwkt6BvEJDT+W+hlAbc0Rq6Q== cmjohnson@wikimedia.org
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRcpxRnwLHjFjOuadfyyQB2CEFArfVzXA9gGZ0yI+zgF7tTfqj0vpAJpo4y8II7RayRuYbMQNMKdSdcHkg0qWrcljaLmkgMxg4eUNSHWWdBuGDKIFKH9Rj7vU7WKK/jmXGf1Slt2h7oFakRUp4p6u1kb4+P2yJwrYyQFXaCmiIQ9elEkkij7fEY2o1BZQ7S9MmmyQwbfg/cw1DShoQJkHlAm6ZG4m4fzYU2z8z+Pgm6d86QsEa8rEBf6GgwMcSon/b7fsXBc/XL0VV9CZOQ6Z5qkSe7ccOlhjS1wSRq6O4IdkxfSgVHAi00HsUZPlMoueB7hX1d9UQOxSMja48Pwklc7XarkuENZdVWu7b7CoJrQ2bSYDky19mKwU5iTZlm/843yE4MtnM8pqq2mx8+onQTAK0Fnmb+cqt8wEz3PAImC0cMnPscmUWYWC2z+2eeOsKUdNe3WyA4wbnR+hRqeUAYHUHEpQobpKHWhOFIh3kIns/WprJj+ezL2jcJRev12qhIoDW3b/VDhkU/Hx22qFHraT6i91j2/qtxNnwInlhQbQ6POCXYaGSTe4BViUAu7T7/OCL6Tx7WW5TCrEeBRKtOqNI3/Un8eob90GdQQ4PzAyEznHRqv5XmgR988WrDtsvR11DgN3benu9GJYFZZJwkt6BvEJDT+W+hlAbc0Rq6Q== cmjohnson@wikimedia.org
     uid: 2399
     email: cjohnson@wikimedia.org
     krb: present
@@ -1355,9 +1355,9 @@ users:
     name: andrew
     realname: Andrew Bogott
     ssh_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw== andrew@AndrewMacbook-6.local
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbWwOolgMepvvtX9wloNTgIkAwgOEFuc4gSq3PxiT7R5tDIw8gYb+m34GGyLzp/rIbRm6UsvDwmjDj+z5PdQHQxY2muZ+fkilmwA5XvujE1iHvLvfti5des7ABTBztzlOkvGDfMESVdSvXGzWnx3yeK2cjo8ckCHhLgdfHFNVkJggaIVSXUFoKAV4YvzXm/bSoT6PMGs6W3k556I5OcndPKPOqL/W/BGvi9LOQm2QqOdw0XGFZCwnOmxiHBkRHk2SC1r5zq8dbZAqRE7RE3i66TCLtLlXgDVVsFcRK9LNcKkubkAKD77pYFzsXu3hpWKGSAs6/GWUHwOZ72YXOyP2V andrew@yubi
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBWzbT3m1UNA38W/3Swsfu1KaeSJulw6H8GGzbL8pcm+ andrew@buster
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAo94dwMdsdm0Q39cGgGu+9Vq1ROf43/dym/0kWyzX5tT9SaPM3RjuHukiXRFgVtSW6SNyPTFxjU2dUoWeGrolNLZudHlCPLFTU1d5BIzLnDJmjcqgm76D2na4KrhnH8JZ24PM2iur08SnDr33AU/xETCVoG/7DcTXzeWxBnnMBUa9Lo55NALEN9v/rJbFa4/1ah4PzFUSxO+IWHl7bxFFWRBd2vErbVgYBbdmt9p8WePxZWHczkZ3oSM4s+/C1ydoXcpdV35f8/XcINsC28WLIqnyeZUCzgBli13/R6dB3Kk3xVqnFFQqATNYrs3MIj/vt2JBV7kZcKkmVm2d36KnHw== andrew@AndrewMacbook-6.local
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbWwOolgMepvvtX9wloNTgIkAwgOEFuc4gSq3PxiT7R5tDIw8gYb+m34GGyLzp/rIbRm6UsvDwmjDj+z5PdQHQxY2muZ+fkilmwA5XvujE1iHvLvfti5des7ABTBztzlOkvGDfMESVdSvXGzWnx3yeK2cjo8ckCHhLgdfHFNVkJggaIVSXUFoKAV4YvzXm/bSoT6PMGs6W3k556I5OcndPKPOqL/W/BGvi9LOQm2QqOdw0XGFZCwnOmxiHBkRHk2SC1r5zq8dbZAqRE7RE3i66TCLtLlXgDVVsFcRK9LNcKkubkAKD77pYFzsXu3hpWKGSAs6/GWUHwOZ72YXOyP2V andrew@yubi
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBWzbT3m1UNA38W/3Swsfu1KaeSJulw6H8GGzbL8pcm+ andrew@buster
     uid: 2093
     email: abogott@wikimedia.org
   gwicke:
@@ -1418,7 +1418,7 @@ users:
     name: awight
     realname: Adam Wight
     ssh_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2DQMRhYwQcHRwDopD5i7Q4WmltU4YUnh6KviEB+m0+aOuD9B9+4W8/H0HQ2NHUcuGurnRUP4rKs/p7BaUgQ7XI01sopjD9gEGRM0GOu+2NE0qdSXMcrlfkcqDh8XwdT1mcUkgIEIHyG/Wn7MyHlbG+23QEzJij56sgdpUzMKDR1lGQxlFSkWvuzZuMCjZ+U3iasOLXlKcvTzsnAEGy6r4g0Kww4HkpKmIx75MbbQrDLEqdLOUdVq1qe3lLLIJtaBcClthyoeXZNKBtmd4Z25FNO3+mLF60SQ0SZDp6JarUJOgiUgKhdTvu/Bw9kRRdsfQvfUUukkX3PIeCM7Zzz6QMPJ+1nN/XavYRkzSXEze2uDTQkFTEEFJgOebgBg06a0/0CaFib2b22bBlMRRUpAKogdXkbSvDmDNz55/cyFMCrgDt5Htu93xBJ8aTg6KP9BcjynmtVZ+Yi7gQTzFaf/uJwfW1tF6C91zml14a1d2IOvzSxuja/kj/AF5LYILhXk= production-yubi
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2DQMRhYwQcHRwDopD5i7Q4WmltU4YUnh6KviEB+m0+aOuD9B9+4W8/H0HQ2NHUcuGurnRUP4rKs/p7BaUgQ7XI01sopjD9gEGRM0GOu+2NE0qdSXMcrlfkcqDh8XwdT1mcUkgIEIHyG/Wn7MyHlbG+23QEzJij56sgdpUzMKDR1lGQxlFSkWvuzZuMCjZ+U3iasOLXlKcvTzsnAEGy6r4g0Kww4HkpKmIx75MbbQrDLEqdLOUdVq1qe3lLLIJtaBcClthyoeXZNKBtmd4Z25FNO3+mLF60SQ0SZDp6JarUJOgiUgKhdTvu/Bw9kRRdsfQvfUUukkX3PIeCM7Zzz6QMPJ+1nN/XavYRkzSXEze2uDTQkFTEEFJgOebgBg06a0/0CaFib2b22bBlMRRUpAKogdXkbSvDmDNz55/cyFMCrgDt5Htu93xBJ8aTg6KP9BcjynmtVZ+Yi7gQTzFaf/uJwfW1tF6C91zml14a1d2IOvzSxuja/kj/AF5LYILhXk= production-yubi
     uid: 4974
     email: adam.wight@wikimedia.de
     krb: present
@@ -1551,8 +1551,8 @@ users:
     name: hashar
     realname: Antoine Musso
     ssh_keys:
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnt2jjOD9gZC0zH4N305VE9Z/9M5wNXt1qwW8lxshF4JZ/8ArOK6DbHMaWwEdQO773C3+LXtnoYvYvCr3rco/ZF2hw+5UPooN+cKinv5EtQJ11WIcDz1Tr2WqKbkJtPZ1ckcVGYlAUcmG9rGG/2snag0wX4ozv21NzGIBSEbO8E53slFcLCDAeadz1f+86ClLn+xGQdR4UVrZXWPvsX6jH0vCQQWvKg0nbe2YgPCXg6njtwBNNx3Q3v7Z5q4VIkHXle85R8ugDME+5Z/A8/BxCkOfNs0yI7LwTuezjJnF5C0ZxZsup54zVQ3nD130CAhDeAWAUomzdrMI9/9zOU44b hashar@postwater_wmf
-        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQ1Wsgsz66ap9MPJwb+VzfcME4b6BSqbT2PGVLt6qdTxVKsO8m/RYXPTjX5TeSNJq3WZNZpQja5u92+AAy15cOD0Zo0Gr8mEqz++uN4ciE5g4ys77C1M1nDltxuyBPQ7cBq41bgytGqxOJA1+c0SOmGnnX4QQ4tn+kg0L/HS4m+9AHMr8TUZwa+3Mw5NQWECL0L4hGLaVzXN/FuKbHEB2un4P7lWSZhcYtibmT73UH9rbeqePRlH8vCsOYzJoWmWdeGn5E6XFQxjsM5tlXQ7MR0Wiz1zfHDct2DOwM9goxYkWTGX8zUNF5UWA14p3hVrxwLc6NWu6DNen3mX80ow0l hashar@femto-wmf
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnt2jjOD9gZC0zH4N305VE9Z/9M5wNXt1qwW8lxshF4JZ/8ArOK6DbHMaWwEdQO773C3+LXtnoYvYvCr3rco/ZF2hw+5UPooN+cKinv5EtQJ11WIcDz1Tr2WqKbkJtPZ1ckcVGYlAUcmG9rGG/2snag0wX4ozv21NzGIBSEbO8E53slFcLCDAeadz1f+86ClLn+xGQdR4UVrZXWPvsX6jH0vCQQWvKg0nbe2YgPCXg6njtwBNNx3Q3v7Z5q4VIkHXle85R8ugDME+5Z/A8/BxCkOfNs0yI7LwTuezjJnF5C0ZxZsup54zVQ3nD130CAhDeAWAUomzdrMI9/9zOU44b hashar@postwater_wmf
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQ1Wsgsz66ap9MPJwb+VzfcME4b6BSqbT2PGVLt6qdTxVKsO8m/RYXPTjX5TeSNJq3WZNZpQja5u92+AAy15cOD0Zo0Gr8mEqz++uN4ciE5g4ys77C1M1nDltxuyBPQ7cBq41bgytGqxOJA1+c0SOmGnnX4QQ4tn+kg0L/HS4m+9AHMr8TUZwa+3Mw5NQWECL0L4hGLaVzXN/FuKbHEB2un4P7lWSZhcYtibmT73UH9rbeqePRlH8vCsOYzJoWmWdeGn5E6XFQxjsM5tlXQ7MR0Wiz1zfHDct2DOwM9goxYkWTGX8zUNF5UWA14p3hVrxwLc6NWu6DNen3mX80ow0l hashar@femto-wmf
     uid: 1010
     email: amusso@wikimedia.org
   hoo:
@@ -1561,8 +1561,8 @@ users:
     name: hoo
     realname: Marius Hoch
     ssh_keys:
-       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCcNLT7ND174wiCEzvGm3xVNyhn/PiBURvMD5SofUN2sY505IY2+X2tayZl+ASp3fqRxMXRJS3UcT3Pi3bI2i3RNjCJCryx4YL09w/KcuhsJjGgRIdV9o+ZLjD3V0+B0xt/igTQwxq3UepQzzZIbGGkRf3iJVRFqjmdW8iwg49MMG0hsmu6dTvf3lGLgm2pihbXYIDDTCOAFhpDjGkLGeygp9tymAnxByUDyRW5sclu0Q9ftkCKlRwj79gFP4f9UeroOXG2UOqB+E0nc/9HyX5lGbGU54Q35iwAczWf0taw4lGXwxZfBWwsai9eGzt+4JlPwf/s/8gA7KWcz3LS/qKja8/xhcOcUgr+B/Lv3LgwutgCMYmORDtEQgzXhc8IDABZp6kb7wSYzxEQ/c2JhzPub257+l3r1WPIZKvi6DKHznHE+4lHsD8G0zzW9ZRyrchn4KXFiUzSSaqdvoT6rb1zV5UANIrlz6ndPSgLkra/dwinru1WzwJDZtBWMaP9GVCOSWxWWFwS0PEqo9FOj/exVgEU2NiqzhKZ3Zi4dbJOB5S6h/oTXf0zHtULclXgnd+S8Z86oXjcJmh61LmOVkETEc/ydZnw5P9AOs1Xq7FTDQtCzZziahjRgZcsPaJz0m026tR3qEI3AVulQ2kcuj5QVx1ZO5ogAjeCxvHLV4FQWw== hoch_m@marius-notebook
-       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJWiqRWxcuL4waqckHygYI5QANx3g4srb71i3w1zIwfnDrxa4z35WB9UBK5s3XpxkJZ4d4nCOFWhTerzjkoSd8zzllD90Ucrk87kgsP5ad2mjtV8ofTU099fWIMvGY3BlxTgZCdhAGABCYTt13IHgCBtNxhCwx3MJ7tCQqcuxGzcjf0R+AvCHj342K4QkfCgM8iEdG0ld3I/P2kK4O99Ep5IZfQEK801bS6Uly7vP7dX//izcIFt5y1/nK/vvEVF9gx/JF0soorKXKGwpnJEkpg2v1DSWsI1HYoPgdUDa1eA4GUQK2d+jsnTPR6eirMQCsmtsSCUJVB+cL/1eNxk3cEAvdg71n375onMQbPqFML/iiMV0rGPV/xH/7pdDUh8St8aa0v7DOWt4HDrKwPVXLqd0KwBJJClty5prr/H+sx6B+o/bwxpYZVpKy3rfQDumBciW63l7ZPCWWgcZajBmsbxIFK5n8kRkfSUw39y0pONjNb83Y4Zm1/4l++k0uzKxlz+DdG2pNUsNmtgN9kA25CDH1HNjSv0nc3T90It56W7twF6ZgPSeZcsbzKYFPHDJeSSXjkOjA4AKJQ1cYarKKrETEukgytcVFkrHJDKwXTkkgKMtEqGFxXIPy+nJeRxhzPiZZudpdM9cci7F4N0edcFRv7Fla1937HStH6V0KEw== hoch_m@marius-latitude
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCcNLT7ND174wiCEzvGm3xVNyhn/PiBURvMD5SofUN2sY505IY2+X2tayZl+ASp3fqRxMXRJS3UcT3Pi3bI2i3RNjCJCryx4YL09w/KcuhsJjGgRIdV9o+ZLjD3V0+B0xt/igTQwxq3UepQzzZIbGGkRf3iJVRFqjmdW8iwg49MMG0hsmu6dTvf3lGLgm2pihbXYIDDTCOAFhpDjGkLGeygp9tymAnxByUDyRW5sclu0Q9ftkCKlRwj79gFP4f9UeroOXG2UOqB+E0nc/9HyX5lGbGU54Q35iwAczWf0taw4lGXwxZfBWwsai9eGzt+4JlPwf/s/8gA7KWcz3LS/qKja8/xhcOcUgr+B/Lv3LgwutgCMYmORDtEQgzXhc8IDABZp6kb7wSYzxEQ/c2JhzPub257+l3r1WPIZKvi6DKHznHE+4lHsD8G0zzW9ZRyrchn4KXFiUzSSaqdvoT6rb1zV5UANIrlz6ndPSgLkra/dwinru1WzwJDZtBWMaP9GVCOSWxWWFwS0PEqo9FOj/exVgEU2NiqzhKZ3Zi4dbJOB5S6h/oTXf0zHtULclXgnd+S8Z86oXjcJmh61LmOVkETEc/ydZnw5P9AOs1Xq7FTDQtCzZziahjRgZcsPaJz0m026tR3qEI3AVulQ2kcuj5QVx1ZO5ogAjeCxvHLV4FQWw== hoch_m@marius-notebook
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJWiqRWxcuL4waqckHygYI5QANx3g4srb71i3w1zIwfnDrxa4z35WB9UBK5s3XpxkJZ4d4nCOFWhTerzjkoSd8zzllD90Ucrk87kgsP5ad2mjtV8ofTU099fWIMvGY3BlxTgZCdhAGABCYTt13IHgCBtNxhCwx3MJ7tCQqcuxGzcjf0R+AvCHj342K4QkfCgM8iEdG0ld3I/P2kK4O99Ep5IZfQEK801bS6Uly7vP7dX//izcIFt5y1/nK/vvEVF9gx/JF0soorKXKGwpnJEkpg2v1DSWsI1HYoPgdUDa1eA4GUQK2d+jsnTPR6eirMQCsmtsSCUJVB+cL/1eNxk3cEAvdg71n375onMQbPqFML/iiMV0rGPV/xH/7pdDUh8St8aa0v7DOWt4HDrKwPVXLqd0KwBJJClty5prr/H+sx6B+o/bwxpYZVpKy3rfQDumBciW63l7ZPCWWgcZajBmsbxIFK5n8kRkfSUw39y0pONjNb83Y4Zm1/4l++k0uzKxlz+DdG2pNUsNmtgN9kA25CDH1HNjSv0nc3T90It56W7twF6ZgPSeZcsbzKYFPHDJeSSXjkOjA4AKJQ1cYarKKrETEukgytcVFkrHJDKwXTkkgKMtEqGFxXIPy+nJeRxhzPiZZudpdM9cci7F4N0edcFRv7Fla1937HStH6V0KEw== hoch_m@marius-latitude
     uid: 2133
     email: marius.hoch@wikimedia.de
   kaldari:
@@ -1969,8 +1969,8 @@ users:
     name: jforrester
     realname: James D. Forrester
     ssh_keys:
-     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsgEkgi7ceiRLCeBABExyA1qiFS7t0Lxs+vQndqRTukAooT16araiKSudavjr78qUAXeerSvuNm2dlQR2Bv6DZLumwPi2mFZA52LhlCm5Bj8GKSpwc9lVVWrrtjwCb8Qv+cZXquhvxMj3L0prfeMbXzkpbOBVK8J5bVIRSewVBsammz5nzd6myqeL0Z1BXiX6ihKeIjSyyiy6REWuIO5cBt3IJn6o/9IKei+Fm2UbXKegRFyOPPjXOiTItLG7iR0DI3PNT+FFAqjMXQKzQMbm8Lj0/hQIq8ViyA6xai6VDPtnFsmvKi+z8q6jZP/Omvf+5TKF5evttguYF9SrbmUrb jforrester@wikimedia.org
-     - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpfy2Q900mt7wLuoC6YzicWIeu5hfpsltKbN46xPoeK jamesforrester@charm.local
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsgEkgi7ceiRLCeBABExyA1qiFS7t0Lxs+vQndqRTukAooT16araiKSudavjr78qUAXeerSvuNm2dlQR2Bv6DZLumwPi2mFZA52LhlCm5Bj8GKSpwc9lVVWrrtjwCb8Qv+cZXquhvxMj3L0prfeMbXzkpbOBVK8J5bVIRSewVBsammz5nzd6myqeL0Z1BXiX6ihKeIjSyyiy6REWuIO5cBt3IJn6o/9IKei+Fm2UbXKegRFyOPPjXOiTItLG7iR0DI3PNT+FFAqjMXQKzQMbm8Lj0/hQIq8ViyA6xai6VDPtnFsmvKi+z8q6jZP/Omvf+5TKF5evttguYF9SrbmUrb jforrester@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpfy2Q900mt7wLuoC6YzicWIeu5hfpsltKbN46xPoeK jamesforrester@charm.local
     uid: 2417
     email: jforrester@wikimedia.org
   jmorgan:
@@ -2397,8 +2397,8 @@ users:
     name: jmm
     realname: Moritz Muehlenhoff
     ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZnM4K3crGB7rmCfrDbUgivp+lUlOTBQfW++9igVSbV1b7RYzzWri/LDLkfi4cstEccGIV+4s/V9P7UoV++EWH6+qoUZk6pkSwZS5sqjN1DE41kskzuA07G0w1xot/Wf4JzBSJRvZrQ/9VLTe2/OUaFTnZYzoMT+1gRSkEEt7SaEFPIQ2Vh0Hc0Y3vORfYj4IG6gC7qA4vqb/LqvhpfFIj9MlgMIgTfv94sqnAlXyrWydsrVdUvqiB2pdAyfX1XKa5Ysa4abbE2pzduy/UfQmxMbEJUQDfU+N5WhFzyfsVdtv0ZEHcZFkCaJSnEM7UeDBz623FTqhrop3pUMNg5r1v Moritz Muehlenhoff production key
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCQoCbWXpMPwiJa8zQPFpUKP9hgtAxeMa6Eol3SBxqUC5hspYZ9fgYLMB2HlqSNrGdMopMltMBDOi3/90NZQ32vZVrK0KZt04icPINibgjUBzHdI0xlvurgE2AOdVUuswDDsUzFk0eUInCrymZ13mKC7dS9IE+lqbIxM0VIHgctI/dW5rATnDDsRv/L68tpsZtoZlOunomR6uqWGws99TZm/652wikMpmjUy4Gb1ruvuOwbJUQp7erb+V5+zq6JzuCwuJQzwscz1lg4qwPZ9din2CKNn8ZfMgQ8LtZyrBOVVrSTS/DB0H4JdILJUtaqc7HOhGC7w1wN+tYyD1Xj/MYJ Moritz Muehlenhoff production NEO key
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZnM4K3crGB7rmCfrDbUgivp+lUlOTBQfW++9igVSbV1b7RYzzWri/LDLkfi4cstEccGIV+4s/V9P7UoV++EWH6+qoUZk6pkSwZS5sqjN1DE41kskzuA07G0w1xot/Wf4JzBSJRvZrQ/9VLTe2/OUaFTnZYzoMT+1gRSkEEt7SaEFPIQ2Vh0Hc0Y3vORfYj4IG6gC7qA4vqb/LqvhpfFIj9MlgMIgTfv94sqnAlXyrWydsrVdUvqiB2pdAyfX1XKa5Ysa4abbE2pzduy/UfQmxMbEJUQDfU+N5WhFzyfsVdtv0ZEHcZFkCaJSnEM7UeDBz623FTqhrop3pUMNg5r1v Moritz Muehlenhoff production key
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCQoCbWXpMPwiJa8zQPFpUKP9hgtAxeMa6Eol3SBxqUC5hspYZ9fgYLMB2HlqSNrGdMopMltMBDOi3/90NZQ32vZVrK0KZt04icPINibgjUBzHdI0xlvurgE2AOdVUuswDDsUzFk0eUInCrymZ13mKC7dS9IE+lqbIxM0VIHgctI/dW5rATnDDsRv/L68tpsZtoZlOunomR6uqWGws99TZm/652wikMpmjUy4Gb1ruvuOwbJUQp7erb+V5+zq6JzuCwuJQzwscz1lg4qwPZ9din2CKNn8ZfMgQ8LtZyrBOVVrSTS/DB0H4JdILJUtaqc7HOhGC7w1wN+tYyD1Xj/MYJ Moritz Muehlenhoff production NEO key
     uid: 11984
     email: mmuhlenhoff@wikimedia.org
     krb: present
@@ -2462,8 +2462,8 @@ users:
     name: jynus
     realname: Jaime Crespo
     ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYXTjhdJPeTbKhlLn4c4iem8qOZ6EhHWiT3mKBhAJf9/hUnrIV9u5QTDo3Fdkz/d7ydiTYDx1Aem24sqg1mZtu16L3o9L7ixciuXAfxgHHBSQRKThO1Ts+qGHpPmDo0xBNLGPaKXxOhOogqw0+DN/NePfvW+iHk0kMBhQP+TZcLdV0zoylthwllavd/X3MQersYG+LyaBrLXxnjd3p1JcitDi/NKE6xtJG20zQ26115i95co8j9iuuGjHNF8bSSjICgUO3PU5/vWmTXNF4iL1SLAWCVwMchMynEn76XxKfG6l39tH3OaqyydTWICSWtzGgGOQREx5HC0dbdkPHWtix jynus@seul
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWNAMYh92QyZNjHcTyoapyWSKkQBSFJVgKWNW+5of3fiJ0frczz9R+MW2RiRPjdh2VoOzEdMboRogr7O5I1D2x07cVYpTNYEx4cPmzg7xLKUqPY0zxJGZz7g2zlXr1RtiM21MTNiG+tF1ndnB3KYa1LB9fA8pSgQkGz+UjFWGg2/LD6tLzNA8yB+MjV0X+nEtC+i58L5nchMN/m3RsyfCGOnJxPAsOCbQpolITCKSVceRPI/FvBAbaaUidL7MvfkgFTUjf+NX2b25ZdIVYD4BVGHrkw3fFQpPYdidEyLMN/wnu5leZskoOnuMzn2AgHQEBdsrKeV/umdFq3SjGJkkR jynus@yuvi
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYXTjhdJPeTbKhlLn4c4iem8qOZ6EhHWiT3mKBhAJf9/hUnrIV9u5QTDo3Fdkz/d7ydiTYDx1Aem24sqg1mZtu16L3o9L7ixciuXAfxgHHBSQRKThO1Ts+qGHpPmDo0xBNLGPaKXxOhOogqw0+DN/NePfvW+iHk0kMBhQP+TZcLdV0zoylthwllavd/X3MQersYG+LyaBrLXxnjd3p1JcitDi/NKE6xtJG20zQ26115i95co8j9iuuGjHNF8bSSjICgUO3PU5/vWmTXNF4iL1SLAWCVwMchMynEn76XxKfG6l39tH3OaqyydTWICSWtzGgGOQREx5HC0dbdkPHWtix jynus@seul
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWNAMYh92QyZNjHcTyoapyWSKkQBSFJVgKWNW+5of3fiJ0frczz9R+MW2RiRPjdh2VoOzEdMboRogr7O5I1D2x07cVYpTNYEx4cPmzg7xLKUqPY0zxJGZz7g2zlXr1RtiM21MTNiG+tF1ndnB3KYa1LB9fA8pSgQkGz+UjFWGg2/LD6tLzNA8yB+MjV0X+nEtC+i58L5nchMN/m3RsyfCGOnJxPAsOCbQpolITCKSVceRPI/FvBAbaaUidL7MvfkgFTUjf+NX2b25ZdIVYD4BVGHrkw3fFQpPYdidEyLMN/wnu5leZskoOnuMzn2AgHQEBdsrKeV/umdFq3SjGJkkR jynus@yuvi
     uid: 12161
     email: jcrespo@wikimedia.org
   moushira:
@@ -3300,7 +3300,7 @@ users:
     name: mneisler
     realname: Megan Neisler
     ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCyCPFZyyNoNnyQH0dk/+XYmVpnxri8Z5nOg1vW6r82UAPjtquqAp79a6XEs28F5yRDob9z3wtqK1U9seVt6wf3t5+4k4B0cBR8oplLPBfI/CTAKdqugI0XwvjYxEp3KV77sF9SVOfFexhs1vOD5WRnJnQ3WpBkCo9bW7X/xq+oMchz8knCvHQ7NqAe+poJLHjMjJnaRSnZviQn5RSyset13c0kzevxDzvE7BugYR3p329ZrKpp17wPVOt4lnoXnokItZF9WqY4/nLaZIAieCuXLrA8rNIvsciNvKeMuWhaPd1v5UdFMG/jQ2jaHA74Sxxds7VgCrhJK9YHtyXV4JYmbiDGbh4nIsgpSd3w8dnRM/6TcxWMmnLkePS1uzYOfaTp/SONFoNqwPrF3hsm9Pg9O4f4vdSxoZ/3B7hO7yD/BlYrYVU7UDOgwuxjBTX2JhnZpCgmAX9P9sNMprHrcGDrLpeqGBH6E6Vx/z6QwBpatf/Q8WVJJU2Q5wqBvqEibl5rmDE8b+Eyw/k1gRoxNYp7bV81e5ht4e7hLbXkFVdn64JCavKur6mXCbGFPlklgCA/svpJLUl7dcdm+s67V615r8CzIyDwl7e8sGc+586X4zM1Uqvy84xL5l/ASLTObSkU5p3xgNWyEWYm+fTu0l0PdgoOxtEFg8nM89N/XdAFHw== mneisler@wikimedia.org
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCyCPFZyyNoNnyQH0dk/+XYmVpnxri8Z5nOg1vW6r82UAPjtquqAp79a6XEs28F5yRDob9z3wtqK1U9seVt6wf3t5+4k4B0cBR8oplLPBfI/CTAKdqugI0XwvjYxEp3KV77sF9SVOfFexhs1vOD5WRnJnQ3WpBkCo9bW7X/xq+oMchz8knCvHQ7NqAe+poJLHjMjJnaRSnZviQn5RSyset13c0kzevxDzvE7BugYR3p329ZrKpp17wPVOt4lnoXnokItZF9WqY4/nLaZIAieCuXLrA8rNIvsciNvKeMuWhaPd1v5UdFMG/jQ2jaHA74Sxxds7VgCrhJK9YHtyXV4JYmbiDGbh4nIsgpSd3w8dnRM/6TcxWMmnLkePS1uzYOfaTp/SONFoNqwPrF3hsm9Pg9O4f4vdSxoZ/3B7hO7yD/BlYrYVU7UDOgwuxjBTX2JhnZpCgmAX9P9sNMprHrcGDrLpeqGBH6E6Vx/z6QwBpatf/Q8WVJJU2Q5wqBvqEibl5rmDE8b+Eyw/k1gRoxNYp7bV81e5ht4e7hLbXkFVdn64JCavKur6mXCbGFPlklgCA/svpJLUl7dcdm+s67V615r8CzIyDwl7e8sGc+586X4zM1Uqvy84xL5l/ASLTObSkU5p3xgNWyEWYm+fTu0l0PdgoOxtEFg8nM89N/XdAFHw== mneisler@wikimedia.org
     uid: 18650
     email: mneisler@wikimedia.org
     krb: present
@@ -3318,7 +3318,7 @@ users:
     name: bstorm
     realname: Brooke Storm
     ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8mCQQmAnqIJvvANonRbREzfJ0hi34IqfFtE++PjwT0oYcNnZKSjj/T3kRvZ+L29VgfE6+U7oEtAzgdTIe1o+CLLdtX0n0FQArjD94XxSboZwe0UlnqJSWuP2GKIaYPjaNUOROfEMpJ1C4mvoHaJRZPaUZJXKeuDvAx3wjrpoeSYZhPlQfXzEbMwUos16ycKiawCgMrtQ9JdrYclOyJXJj3RjWfqdvrP/lNHOJ3UsJu0BBQNWTQDX8oDCozGEHlXvQX0wL5IZcxfVTg13al3yqRzRssQgZLVYWtDi1wNUjUdACxYV8Bu36G+B7tUqVH3EHzuMJSeYQWNhcth9sy403vq34I1zYUVcIOPsm9VEzvQJdbQZ1shRAoS2aA5dpThnVn0dv9YwgjZF4lb8M2EIvT0MoKlEcFFCS92yklrtfvo7mgmxuL+pRDNHSz+sL7W34ObneUURgbLhqeKpGfpUaFUh449Kq32WCGrTApu9x+iaHKdzuunOoIN+p4Ib+Hkd9JobL7ivrFA6I70eQfajgu/xq/zhH5tNjJdFjJU/kONO2IqSZd/x+wpj4ZNdTKA2hY6WCCG6Ge9sZlyH5BQMWBiofSUrsk5S4r9/DoK2isMJIw/mxJzEmCOFiVk57yhLr94gvzgPEEZlyDEx/IJBfLYok9Lf/Y/mZeEYEG/2tKQ== bstorm@wikimedia.org
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8mCQQmAnqIJvvANonRbREzfJ0hi34IqfFtE++PjwT0oYcNnZKSjj/T3kRvZ+L29VgfE6+U7oEtAzgdTIe1o+CLLdtX0n0FQArjD94XxSboZwe0UlnqJSWuP2GKIaYPjaNUOROfEMpJ1C4mvoHaJRZPaUZJXKeuDvAx3wjrpoeSYZhPlQfXzEbMwUos16ycKiawCgMrtQ9JdrYclOyJXJj3RjWfqdvrP/lNHOJ3UsJu0BBQNWTQDX8oDCozGEHlXvQX0wL5IZcxfVTg13al3yqRzRssQgZLVYWtDi1wNUjUdACxYV8Bu36G+B7tUqVH3EHzuMJSeYQWNhcth9sy403vq34I1zYUVcIOPsm9VEzvQJdbQZ1shRAoS2aA5dpThnVn0dv9YwgjZF4lb8M2EIvT0MoKlEcFFCS92yklrtfvo7mgmxuL+pRDNHSz+sL7W34ObneUURgbLhqeKpGfpUaFUh449Kq32WCGrTApu9x+iaHKdzuunOoIN+p4Ib+Hkd9JobL7ivrFA6I70eQfajgu/xq/zhH5tNjJdFjJU/kONO2IqSZd/x+wpj4ZNdTKA2hY6WCCG6Ge9sZlyH5BQMWBiofSUrsk5S4r9/DoK2isMJIw/mxJzEmCOFiVk57yhLr94gvzgPEEZlyDEx/IJBfLYok9Lf/Y/mZeEYEG/2tKQ== bstorm@wikimedia.org
     uid: 18713
     email: bastorm@pm.me
   rook:
@@ -3350,8 +3350,8 @@ users:
     name: vgutierrez
     realname: Valentin Gutierrez
     ssh_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7kVBeBx3ecxOKoWSeCEZHFe2QZ0be09uQ6JjsoaBnm2LHNRg3+0ju0drSdRlnHNmfL8S8NKzSD2SFLHwXGqd4pj8IGQRApJLbHjzT2oiNAylYQeEjSJKFjsC812tnzfa3yu7EGPuwuiz5WGBeNWemugDaGy78UTVdgwe46fSkCmYSrfOrYgCYRhgLUO4s0Jm/pH7u+q0iGzNflpcCGz8QgfZ2Dd5loumpMmmswDT9xe9+wyjyZmYqvRlH1KVbK19BSJhKdTwV8C617+6X/psdPVu9nOIUaHEJ6X0ByaiQvIvnRHIu6MKTssfPwkMEa2Ga6I7bVbiO/igeCaOunz7i+sPLupz6pwlxTPqS15cu3KIgJxwgwdsCJLyrQ1yJ2jaWVN3PKhBzlJaAcfn9hEGGlFTtEgx4jkay8xPaHpgQ8Qfi+aDDF6XggdtFa2Gxb8pb2FSrxuoFoTNdiLnB2xDI4qMF211uyRoX684M9WXNm4LdNucA52kDCXJC7DOyejp7ToaFyKgZAWWASYHset6nIvFy8ciAiVS0tfjMevJ1GwFy0znb7Hx2YzmADgInCYNcaT9RKNz/3ObFaBvlbAwcCeKB34gOyftTwZvX1T3G49XGQX54M7eq8tIlTXn8CaL8Vf/q1D8BoskbQfNXypLs7pJNgrpeKcaGMIwEsvcJ7Q== vgutierrez@yubikey4nano
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCly+c4m/Uisbks7GqWOcaixtAaQz1s5RLIv3N77OeuB7B/1p899dyz49YkGWeasJesja63I5yJFWGaXqeL70USpxpPACu3NzHak4vmdhFbqo7g54WDcoEtHfV6il/FzQWyVoiaatuetg4DYA4m5/hvbfktiGzQVZeqtKCdTOunOmLjsUPJOvDZyzfsRP8rw7AFwenhLmdHbGUUmgTQOVszwJTUSItjfiAdV131w+wiwxoWswwnCIeSRSoV02H/Qw36zoEee59vdTdXnDbxXWlvpPnHwi6GcBgpPtyATkremGtremSva98GWpZnfFwliOiOhlHt8a8JdijdOEHUlYv4bNqtqw+5QiWVyK+FDJ9CsceO/st6GHdslw2nHPQkK8DMClYI/pjtAqWL8GxxfUkuEpFNJBW0GDV4PQV7CpOdZ23m7GOAozDF236Ye2W6OBEMgmxLNvvrQlyNfYeQvCUj1UZ53DMrUzOuzgdGy6/xpDPgB+IBqXxdyTFikrAeXEc9y6PBVB1fhZXG5iQxFOWVWvc6NP8wodCIU7kmqE9WrgDvZ1fQ+3NVhgqMKs7+BWw0yaXNSpmx3kBwW+BrGEXWV/GigyBy9HvsqQvAIHbF1pPin1Zh2+lxH6dI7B+ekg93aSH03MXtoJSIKf378Pw65od4HWr8aGCFjk7RpykN4w== vgutierrez@yubikey5nano
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7kVBeBx3ecxOKoWSeCEZHFe2QZ0be09uQ6JjsoaBnm2LHNRg3+0ju0drSdRlnHNmfL8S8NKzSD2SFLHwXGqd4pj8IGQRApJLbHjzT2oiNAylYQeEjSJKFjsC812tnzfa3yu7EGPuwuiz5WGBeNWemugDaGy78UTVdgwe46fSkCmYSrfOrYgCYRhgLUO4s0Jm/pH7u+q0iGzNflpcCGz8QgfZ2Dd5loumpMmmswDT9xe9+wyjyZmYqvRlH1KVbK19BSJhKdTwV8C617+6X/psdPVu9nOIUaHEJ6X0ByaiQvIvnRHIu6MKTssfPwkMEa2Ga6I7bVbiO/igeCaOunz7i+sPLupz6pwlxTPqS15cu3KIgJxwgwdsCJLyrQ1yJ2jaWVN3PKhBzlJaAcfn9hEGGlFTtEgx4jkay8xPaHpgQ8Qfi+aDDF6XggdtFa2Gxb8pb2FSrxuoFoTNdiLnB2xDI4qMF211uyRoX684M9WXNm4LdNucA52kDCXJC7DOyejp7ToaFyKgZAWWASYHset6nIvFy8ciAiVS0tfjMevJ1GwFy0znb7Hx2YzmADgInCYNcaT9RKNz/3ObFaBvlbAwcCeKB34gOyftTwZvX1T3G49XGQX54M7eq8tIlTXn8CaL8Vf/q1D8BoskbQfNXypLs7pJNgrpeKcaGMIwEsvcJ7Q== vgutierrez@yubikey4nano
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCly+c4m/Uisbks7GqWOcaixtAaQz1s5RLIv3N77OeuB7B/1p899dyz49YkGWeasJesja63I5yJFWGaXqeL70USpxpPACu3NzHak4vmdhFbqo7g54WDcoEtHfV6il/FzQWyVoiaatuetg4DYA4m5/hvbfktiGzQVZeqtKCdTOunOmLjsUPJOvDZyzfsRP8rw7AFwenhLmdHbGUUmgTQOVszwJTUSItjfiAdV131w+wiwxoWswwnCIeSRSoV02H/Qw36zoEee59vdTdXnDbxXWlvpPnHwi6GcBgpPtyATkremGtremSva98GWpZnfFwliOiOhlHt8a8JdijdOEHUlYv4bNqtqw+5QiWVyK+FDJ9CsceO/st6GHdslw2nHPQkK8DMClYI/pjtAqWL8GxxfUkuEpFNJBW0GDV4PQV7CpOdZ23m7GOAozDF236Ye2W6OBEMgmxLNvvrQlyNfYeQvCUj1UZ53DMrUzOuzgdGy6/xpDPgB+IBqXxdyTFikrAeXEc9y6PBVB1fhZXG5iQxFOWVWvc6NP8wodCIU7kmqE9WrgDvZ1fQ+3NVhgqMKs7+BWw0yaXNSpmx3kBwW+BrGEXWV/GigyBy9HvsqQvAIHbF1pPin1Zh2+lxH6dI7B+ekg93aSH03MXtoJSIKf378Pw65od4HWr8aGCFjk7RpykN4w== vgutierrez@yubikey5nano
     uid: 18837
     email: vgutierrez@wikimedia.org
   katie:
@@ -3367,7 +3367,7 @@ users:
     name: samwilson
     realname: Sam Wilson
     ssh_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMoKvEnqjEQ1oanSYN/p+7Qx5tVOgRoVawGIu4Lo57+f samwilson
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMoKvEnqjEQ1oanSYN/p+7Qx5tVOgRoVawGIu4Lo57+f samwilson
     uid: 3205
     email: swilson@wikimedia.org
   mepps:
@@ -3376,7 +3376,7 @@ users:
     name: mepps
     realname: Margaret Epps
     ssh_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDohDQkFG5FrhN50ZtS1MGd1xiY0D2OO9yzn8Y31xqVq mepps@wmf2679
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDohDQkFG5FrhN50ZtS1MGd1xiY0D2OO9yzn8Y31xqVq mepps@wmf2679
     uid: 16947
     email: mepps@wikimedia.org
     krb: present
@@ -4594,7 +4594,7 @@ users:
     uid: 20909
     gid: 500
     ssh_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoWmCHXYuC9R6RitTH0foWVly74G9LneFjt8phVZkmS egardner@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoWmCHXYuC9R6RitTH0foWVly74G9LneFjt8phVZkmS egardner@wikimedia.org
   kaywong:
     ensure: absent
     gid: 500
@@ -4766,7 +4766,7 @@ users:
     gid: 500
     realname: Mew Ophaswongse
     ssh_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGokQOi31ziMwiAy8AsY2SJ49n+WDC+tajTsZb7LzMWC mophaswongse@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGokQOi31ziMwiAy8AsY2SJ49n+WDC+tajTsZb7LzMWC mophaswongse@wikimedia.org
     uid: 29526
     email: mophaswongse@wikimedia.org
     krb: present
@@ -4777,7 +4777,7 @@ users:
     email: scherukuwada@wikimedia.org
     uid: 34007
     ssh_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEQxRR4Wt7HJsEYRiWrHGwBPK4L8xbFC6IDy4dOPFahk
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEQxRR4Wt7HJsEYRiWrHGwBPK4L8xbFC6IDy4dOPFahk
   swak:
     ensure: present
     gid: 500
@@ -5902,9 +5902,9 @@ ldap_only_users:
     realname: Jessica Stephenson
     email: jstephenson@wikimedia.org
   satdeep:
-      ensure: present
-      realname: Satdeep Gill
-      email: sgill@wikimedia.org
+    ensure: present
+    realname: Satdeep Gill
+    email: sgill@wikimedia.org
   kinneretg:
     ensure: present
     realname: Kinneret Gordon
