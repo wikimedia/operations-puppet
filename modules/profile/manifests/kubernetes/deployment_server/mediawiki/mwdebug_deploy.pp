@@ -27,7 +27,12 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
     }
     # TODO: remove once done.
     file { '/root/.docker/config.json':
-        ensure => absent,
+        owner             => 'root',
+        group             => 'root',
+        registry          => $docker_registry,
+        registry_username => 'kubernetes',
+        registry_password => $docker_password,
+        allow_group       => false,
     }
     # Directory where the file lock and error file are stored.
     file { '/var/lib/deploy-mwdebug':
