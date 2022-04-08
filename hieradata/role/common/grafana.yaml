@@ -6,6 +6,7 @@ profile::grafana::domainrw: "grafana-rw.%{lookup('public_domain')}"
 profile::grafana::server_aliases:
   - "grafana-next.%{lookup('public_domain')}"
 profile::grafana::wpt_graphite_proxy_port: 33333
+profile::grafana::wpt_json_proxy_port: 33334
 profile::grafana::enable_cas: true
 profile::grafana::config:
   auth.basic:

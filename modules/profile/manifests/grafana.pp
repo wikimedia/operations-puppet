@@ -17,6 +17,8 @@ class profile::grafana (
     Boolean      $execute_alerts     = lookup('profile::grafana::execute_alerts', {'default_value' => true}),
     Optional[Stdlib::Port] $wpt_graphite_proxy_port = lookup('profile::grafana::wpt_graphite_proxy_port',
                                                             {'default_value' => undef}),
+    Optional[Stdlib::Port] $wpt_json_proxy_port = lookup('profile::grafana::wpt_json_proxy_port',
+                                                            {'default_value' => undef}),
     Array[Stdlib::Fqdn] $server_aliases = lookup('profile::grafana::server_aliases'),
 ) {
 
@@ -149,6 +151,17 @@ class profile::grafana (
     if $wpt_graphite_proxy_port {
         httpd::site { 'proxy-wpt-graphite':
             content => template('profile/apache/sites/grafana-wpt-graphite-proxy.erb'),
+        }
+    }
+
+    # Configure a local Apache which will serve as a reverse proxy for Performance Team's
+    # JSON meta data used for WebPageTest and WebPageReplay tests. That Apache uses our
+    # outbound proxy as its forward proxy for those requests.
+    # https://phabricator.wikimedia.org/T304583
+    # Could be retired if https://github.com/grafana/grafana/issues/15045 is implemented.
+    if $wpt_json_proxy_port {
+        httpd::site { 'proxy-wpt-json':
+            content => template('profile/apache/sites/grafana-wpt-json-proxy.erb'),
         }
     }
 
