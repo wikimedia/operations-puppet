@@ -251,7 +251,7 @@ sub cluster_fe_ratelimit {
 		// These are the ratelimits generated from etcd
 		// They only apply to non-wikimedia networks and come after all of the above rules.
 		// our goal would be to move most of these rules to etcd long-term.
-		include "dynamic.actions.inc.vcl";
+		include "requestctl-filters.inc.vcl";
 		<%- end -%>
 	}
 }

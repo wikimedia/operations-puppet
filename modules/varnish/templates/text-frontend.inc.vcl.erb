@@ -457,7 +457,7 @@ sub cluster_fe_ratelimit {
 	// These are the ratelimits generated from etcd
 	// They're only applied to external clients
 	if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-		include "dynamic.actions.inc.vcl";
+		include "requestctl-filters.inc.vcl";
 	}
 	<%- end -%>
 
