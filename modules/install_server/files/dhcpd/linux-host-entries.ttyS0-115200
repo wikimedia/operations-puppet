@@ -348,11 +348,13 @@ host durum6002 {
 host cloudbackup1001-dev {
     hardware ethernet aa:00:00:e8:f2:d5;
     fixed-address cloudbackup1001-dev.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host cloudbackup1002-dev {
     hardware ethernet aa:00:00:8e:ac:c7;
     fixed-address cloudbackup1002-dev.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host etherpad1003 {
