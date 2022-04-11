@@ -161,12 +161,18 @@ class graphite::web(
         require => Uwsgi::App['graphite-web'],
     }
 
+    systemd::timer::job { 'update_graphite_index':
+        ensure      => present,
+        description => 'Regular jobs to generate the index file',
+        user        => 'www-data',
+        command     => '/usr/local/sbin/graphite-index',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:00'},
+        require     => File['/usr/local/sbin/graphite-index'],
+    }
+
     cron { 'update_graphite_index':
-        command => '/usr/local/sbin/graphite-index',
-        user    => 'www-data',
-        hour    => '*',
-        minute  => '*/5',
-        require => File['/usr/local/sbin/graphite-index'],
+        ensure => absent,
+        user   => 'www-data',
     }
 
     exec { 'create_graphite_admin':
