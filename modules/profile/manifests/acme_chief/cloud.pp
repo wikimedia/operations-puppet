@@ -43,20 +43,34 @@ class profile::acme_chief::cloud (
         ],
         source  => 'puppet:///modules/acme_chief/designate-tidyup.py'
     }
+
+    file { '/usr/local/bin/acme-chief-designate-tidyup.sh':
+        ensure => present,
+        owner  => 'acme-chief',
+        group  => 'acme-chief',
+        mode   => '0544',
+        source => 'puppet:///modules/acme_chief/designate-tidyup.sh'
+    }
+
     $ensure_tidyup = ($designate_sync_tidyup_enabled and $::fqdn == $active_host)? {
         true    => present,
         default => absent,
     }
+    systemd::timer::job { 'acme-chief-designate-tidyup':
+        ensure      => $ensure_tidyup,
+        description => 'Regular jobs to run the designate tidyup script',
+        user        => 'acme-chief',
+        command     => '/usr/local/bin/acme-chief-designate-tidyup.sh',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:00:00'},
+        require     => [
+            File['/usr/local/bin/acme-chief-designate-tidyup.py'],
+            File['/usr/local/bin/acme-chief-designate-tidyup.sh'],
+        ],
+    }
+
     cron { 'acme-chief-designate-tidyup':
-        ensure   => $ensure_tidyup,
-        command  => '/usr/local/bin/acme-chief-designate-tidyup.py | logger -t acme-chief-designate-tidyup',
-        user     => 'acme-chief',
-        minute   => '0',
-        hour     => '*',
-        weekday  => '*',
-        month    => '*',
-        monthday => '*',
-        require  => File['/usr/local/bin/acme-chief-designate-tidyup.py'],
+        ensure => absent,
+        user   => 'acme-chief',
     }
 
     file { '/etc/acme-chief/designate-sync-config.yaml':
