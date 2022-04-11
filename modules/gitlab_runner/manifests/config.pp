@@ -17,6 +17,7 @@ class gitlab_runner::config (
         owner   => $gitlab_runner_user,
         mode    => '0400',
         content => template('gitlab_runner/config-template.toml.erb'),
+        require => Package['gitlab-runner'],
     }
 
     # config.toml configuration file has different path for non-root users
@@ -28,19 +29,21 @@ class gitlab_runner::config (
     # Believe it or not, there's no config template or CLI to modifying
     # the global concurrent Runner settings.
     file_line { 'gitlab-runner-config-concurrent':
-        path   => "${config_path}/config.toml",
-        match  => '^concurrent *=',
-        line   => "concurrent = ${concurrent}",
-        notify => Systemd::Service['gitlab-runner'],
+        path    => "${config_path}/config.toml",
+        match   => '^concurrent *=',
+        line    => "concurrent = ${concurrent}",
+        notify  => Systemd::Service['gitlab-runner'],
+        require => Package['gitlab-runner'],
     }
 
     # Believe it or not, there's no config template or CLI to modifying
     # the global Prometheus listener settings.
     file_line { 'gitlab-runner-config-exporter':
-        ensure => $enable_exporter.bool2str('present','absent'),
-        path   => "${config_path}/config.toml",
-        line   => "listen_address = \"[${exporter_listen_address}]:${exporter_listen_port}\"",
-        notify => Systemd::Service['gitlab-runner'],
+        ensure  => $enable_exporter.bool2str('present','absent'),
+        path    => "${config_path}/config.toml",
+        line    => "listen_address = \"[${exporter_listen_address}]:${exporter_listen_port}\"",
+        notify  => Systemd::Service['gitlab-runner'],
+        require => Package['gitlab-runner'],
     }
 
     systemd::service{ 'gitlab-runner':
@@ -48,5 +51,6 @@ class gitlab_runner::config (
         content        => template('gitlab_runner/gitlab-runner.service.erb'),
         service_params => {'restart' => 'systemctl restart gitlab-runner'},
         override       => true, #override default unit file for non-root user
+        require        => Package['gitlab-runner'],
     }
 }
