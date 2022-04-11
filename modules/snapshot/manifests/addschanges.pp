@@ -29,13 +29,19 @@ class snapshot::addschanges(
     }
 
     if !$filesonly {
+        systemd::timer::job { 'adds-changes':
+            ensure       => 'present',
+            description  => 'Regular jobs to generate misc dumps',
+            user         => $user,
+            command      => "/usr/bin/python3 ${repodir}/generatemiscdumps.py --configfile ${confsdir}/addschanges.conf --dumptype incrdumps --quiet",
+            send_mail    => true,
+            send_mail_to => 'ops-dumps@wikimedia.org',
+            interval     => {'start' => 'OnCalendar', 'interval' => '*-*-* 20:50:00'},
+        }
+
         cron { 'adds-changes':
-            ensure      => 'present',
-            environment => 'MAILTO=ops-dumps@wikimedia.org',
-            user        => $user,
-            command     => "python3 ${repodir}/generatemiscdumps.py --configfile ${confsdir}/addschanges.conf --dumptype incrdumps --quiet",
-            minute      => '50',
-            hour        => '20',
+            ensure => 'absent',
+            user   => $user,
         }
     }
 }
