@@ -23,10 +23,6 @@ class profile::ci::gitcache {
         require     => Git::Clone['operations/puppet'],
     }
 
-    cron { 'operations/puppet git cron':
-        ensure => absent,
-    }
-
     file { '/srv/git/mediawiki':
         ensure => directory,
     }
@@ -54,10 +50,6 @@ class profile::ci::gitcache {
         command     => '/usr/bin/git -C /srv/git/mediawiki/core.git fetch origin --prune +refs/heads/*:refs/heads/*',
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* 3:${minute_core}:00"},
         require     => Git::Clone['mediawiki/core'],
-    }
-
-    cron { 'mediawiki/core git cron':
-        ensure => absent,
     }
 
     git::clone { 'mediawiki/vendor':
