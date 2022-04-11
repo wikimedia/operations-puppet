@@ -31,7 +31,7 @@ ldap_default_servers = ldap-corp.<%= @site %>.wikimedia.org : ldap-corp.<%= @oth
 LDAPPASSWORD=<%= @smtp_ldap_password %>
 
 domainlist system_domains = @
-domainlist local_domains = +system_domains : +wikimedia_domains : +legacy_mailman_domains : +verp_domains
+domainlist local_domains = +system_domains : +wikimedia_domains : +verp_domains
 domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
 domainlist verp_domains = <%= @verp_domains.join(" : ") %>
 domainlist relay_domains = +wikimedia_domains
@@ -111,13 +111,13 @@ begin acl
 acl_check_rcpt:
 
 	# If the recipient is a mailing list addressed to the legacy domain
-	# names, log a message indicating the new domain name.
-	warn
+	# names, return an error indicating the new domain name.
+	deny
 		local_parts = ${if exists{CONFDIR/legacy_mailing_lists}\
 			{CONFDIR/legacy_mailing_lists}\
 			{}}
 		domains = +legacy_mailman_domains
-		log_message = 551 User <$local_part_data@$domain_data> not local; please try <$local_part_data@lists.wikimedia.org>
+		message = 551 User <$local_part_data@$domain_data> not local; please try <$local_part_data@lists.wikimedia.org>
 
 	# If there have been ~4 times as many previous RCPT rejects than
 	# accepts, drop the connection
@@ -276,18 +276,6 @@ aliases:
 	forbid_file
 	include_directory = CONFDIR
 	pipe_transport = address_pipe
-
-# Alias old mailing list addresses to @lists.wikimedia.org
-legacy_mailing_lists:
-	driver = redirect
-	domains = +legacy_mailman_domains
-	data = $local_part$local_part_suffix@lists.wikimedia.org
-	local_parts = lsearch;CONFDIR/legacy_mailing_lists
-	local_part_suffix = -bounces : -bounces+* : \
-				-confirm+* : -join : -leave : \
-				-owner : -request : -admin : \
-				-subscribe : -unsubscribe
-	local_part_suffix_optional
 
 # send phabricator.wm.org emails to Phabricator
 phabricator:
