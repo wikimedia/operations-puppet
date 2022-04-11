@@ -112,7 +112,8 @@ groups:
   deployment:
     gid: 705
     description: replaces 'mortals' for software deployment
-    members: [*platform_engineering_members, bd808, brion, cscott, ebernhardson,
+    members: [*platform_engineering_members, *ops_members,
+              bd808, brion, cscott, ebernhardson,
               gjg, halfak, hashar, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
               andyrussg, nikerabbit, reedy, ssastry, phedenskog,
