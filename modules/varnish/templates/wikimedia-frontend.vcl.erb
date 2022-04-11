@@ -486,7 +486,7 @@ sub recv_fe_ip_processing {
 	if (req.http.X-Public-Cloud == "") {
 		unset req.http.X-Public-Cloud;
 	}
-	set req.http.X-Abuse-Netowrk = netmapper.map("abuse_networks", req.http.X-Client-IP);
+	set req.http.X-Abuse-Network = netmapper.map("abuse_networks", req.http.X-Client-IP);
 	// normalize to boolean post-netmapper
 	if (req.http.X-Abuse-Network == "") {
 		unset req.http.X-Abuse-Network;
