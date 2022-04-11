@@ -32,7 +32,7 @@ LDAPPASSWORD=<%= @smtp_ldap_password %>
 
 domainlist system_domains = @
 domainlist local_domains = +system_domains : +wikimedia_domains : +verp_domains
-domainlist wikimedia_domains = lsearch;CONFDIR/wikimedia_domains
+domainlist wikimedia_domains = lsearch,ret=key;CONFDIR/wikimedia_domains
 domainlist verp_domains = <%= @verp_domains.join(" : ") %>
 domainlist relay_domains = +wikimedia_domains
 
@@ -268,8 +268,8 @@ system_aliases:
 aliases:
 	driver = redirect
 	domains = +local_domains
-	require_files = CONFDIR/aliases/$domain
-	data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/$domain}}
+	require_files = CONFDIR/aliases/$domain_data
+	data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/$domain_data}}
 	qualify_preserve_domain
 	allow_fail
 	allow_defer
