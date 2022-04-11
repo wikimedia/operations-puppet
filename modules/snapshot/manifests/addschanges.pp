@@ -38,10 +38,5 @@ class snapshot::addschanges(
             send_mail_to => 'ops-dumps@wikimedia.org',
             interval     => {'start' => 'OnCalendar', 'interval' => '*-*-* 20:50:00'},
         }
-
-        cron { 'adds-changes':
-            ensure => 'absent',
-            user   => $user,
-        }
     }
 }
