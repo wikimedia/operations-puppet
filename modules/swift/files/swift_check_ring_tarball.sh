@@ -39,12 +39,15 @@ for r in "${SWIFTDIR}/"*.ring.gz ; do
     fi
 done
 
-#Finally, check every ring file in the tarball has a corresponding
-#ring in SWIFTDIR
-for r in "${td}/"*.ring.gz ; do
-    rn=$(basename "$r")
-    if ! [ -f "${SWIFTDIR}/${rn}" ]; then
-        echo "Ring file $rn in tarball but not $SWIFTDIR"
-        exit 1
-    fi
-done
+#Finally, if there are any rings in SWIFTDIR (i.e. this isn't a
+#freshly-installed system), check that every ring file in the tarball
+#has a corresponding ring in SWIFTDIR
+if [ -n "$(find ${SWIFTDIR} -name '*.ring.gz' -print -quit)" ]; then
+    for r in "${td}/"*.ring.gz ; do
+        rn=$(basename "$r")
+        if ! [ -f "${SWIFTDIR}/${rn}" ]; then
+            echo "Ring file $rn in tarball but not $SWIFTDIR"
+            exit 1
+        fi
+    done
+fi
