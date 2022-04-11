@@ -12,12 +12,19 @@ class profile::ci::gitcache {
         require   => File['/srv/git/operations'],
     }
 
+    $minute_puppet = fqdn_rand(60, 'operations-puppet')
+
+    systemd::timer::job { 'operations-puppet':
+        ensure      => present,
+        description => 'Regular jobs to update gitcache for operations/puppet',
+        user        => 'root',
+        command     => '/usr/bin/git -C /srv/git/operations/puppet.git fetch origin --prune +refs/heads/*:refs/heads/*',
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* 4:${minute_puppet}:00"},
+        require     => Git::Clone['operations/puppet'],
+    }
+
     cron { 'operations/puppet git cron':
-        user    => 'root',
-        command => '/usr/bin/git -C /srv/git/operations/puppet.git fetch origin --prune +refs/heads/*:refs/heads/*',
-        hour    => '4',
-        minute  => fqdn_rand(60, 'operations/puppet git cron'),
-        require => Git::Clone['operations/puppet'],
+        ensure => absent,
     }
 
     file { '/srv/git/mediawiki':
@@ -38,12 +45,19 @@ class profile::ci::gitcache {
         require   => File['/srv/git/mediawiki'],
     }
 
+    $minute_core = fqdn_rand(60, 'mediawiki-core')
+
+    systemd::timer::job { 'mediawiki-core':
+        ensure      => present,
+        description => 'Regular jobs to update gitcache for mediawiki/core',
+        user        => 'root',
+        command     => '/usr/bin/git -C /srv/git/mediawiki/core.git fetch origin --prune +refs/heads/*:refs/heads/*',
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* 3:${minute_core}:00"},
+        require     => Git::Clone['mediawiki/core'],
+    }
+
     cron { 'mediawiki/core git cron':
-        user    => 'root',
-        command => '/usr/bin/git -C /srv/git/mediawiki/core.git fetch origin --prune +refs/heads/*:refs/heads/*',
-        hour    => '3',
-        minute  => fqdn_rand(60, 'mediawiki/core git cron'),
-        require => Git::Clone['mediawiki/core'],
+        ensure => absent,
     }
 
     git::clone { 'mediawiki/vendor':
