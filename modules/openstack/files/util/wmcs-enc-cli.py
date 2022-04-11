@@ -151,10 +151,10 @@ if __name__ == "__main__":
     ]
     parser.add_argument(
         "--enc-url",
-        default="http://puppetmaster.cloudinfra.wmflabs.org:8101/v1",
+        default="http://puppet-enc.cloudinfra.wmcloud.org:8101/v1",
         help=(
             "Full url to the enc, for example "
-            "http://puppetmaster.cloudinfra.wmflabs.org:8101/v1"
+            "http://puppet-enc.cloudinfra.wmcloud.org:8101/v1"
         ),
     )
     parser.add_argument("--openstack-project")
