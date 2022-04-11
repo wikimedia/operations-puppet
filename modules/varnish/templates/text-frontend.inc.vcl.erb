@@ -415,8 +415,11 @@ sub cluster_fe_ratelimit {
 		}
 	}
 
-	// Rate limit public cloud to 100/s with bursts of 1000
-	if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud_cached:" + req.http.X-Client-IP, 1000, 10s)) {
+	// Rate limit public cloud to 100/s with bursts of 1000 (excluding
+	// cloud IPs included in wikimedia_nets)
+	if (req.http.X-Public-Cloud
+		&& std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets
+		&& vsthrottle.is_denied("public_cloud_all:" + req.http.X-Client-IP, 1000, 10s)) {
 		return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
 	}
 
