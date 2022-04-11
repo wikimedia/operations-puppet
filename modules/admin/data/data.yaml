@@ -5980,7 +5980,7 @@ ldap_only_users:
     email: slopes@wikimedia.org
   sthart:
     ensure: present
-    realname: Stefania Hart
+    realname: STHart
     email: sthart@wikimedia.org
   hartman:
     ensure: present
