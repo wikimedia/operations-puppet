@@ -1,4 +1,4 @@
-profile::openldap::master: ldap-labs.eqiad.wikimedia.org
+profile::openldap::master: ldap-rw.eqiad.wikimedia.org
 profile::openldap::hostname: ldap-ro.eqiad.wikimedia.org
 profile::openldap::mirror_mode: false
 profile::openldap::backup: false
