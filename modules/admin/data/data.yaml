@@ -949,7 +949,7 @@ groups:
   analytics-research-admins:
     gid: 830
     description: Group of users for managing research related analytics/data jobs.
-    members: [fab, bmansurov]
+    members: [fab, bmansurov, gmodena]
     privileges: [
       'ALL = (analytics-research) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
