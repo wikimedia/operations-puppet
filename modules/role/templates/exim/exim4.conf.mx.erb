@@ -20,6 +20,19 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 # Main configuration settings #
 ###############################
 
+# 2022-05-09: Disable RFC1830 CHUNKING. Starting on 05-04 we began bouncing
+# some messages from Gmail with the following error:
+#
+#     2022-05-04 01:28:33 SMTP protocol error in "BDAT 18942 LAST"
+#     H=mail-lj1-x236.google.com [2a00:1450:4864:20::236]:33303
+#     I=[2620:0:861:3:208:80:154:76]:25 BDAT command used when
+#     CHUNKING not advertised
+#
+# Why exim began rejecting these mails is unclear, Google confirmed that they
+# do not believe a change was made on their side. But, until we understand the
+# root cause, keep chunking disabled, as it is enabled by default, T307873
+chunking_advertise_hosts =
+
 <% if @disable_taint_check -%>
 allow_insecure_tainted_data = yes
 <%- end -%>
