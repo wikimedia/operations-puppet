@@ -33,9 +33,6 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 # root cause, keep chunking disabled, as it is enabled by default, T307873
 chunking_advertise_hosts =
 
-<% if @disable_taint_check -%>
-allow_insecure_tainted_data = yes
-<%- end -%>
 # MySQL lookups (OTRS)
 hide mysql_servers =  <%= @otrs_mysql_server %>/<%= @otrs_mysql_dbname %>/<%= @otrs_mysql_user %>/<%= @otrs_mysql_password %>
 

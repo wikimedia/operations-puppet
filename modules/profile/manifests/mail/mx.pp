@@ -47,10 +47,6 @@ class profile::mail::mx (
     $otrs_mysql_password = $passwords::exim::otrs_mysql_password
     $smtp_ldap_password  = $passwords::exim::smtp_ldap_password
 
-    # Exim 4.94 introduces a new tainting mechanism. We're not adapting our configs
-    # to his new scheme since the mail servers will be switched to Postfix anyway
-    $disable_taint_check = true
-
     # enable dkim_verbose logs, needed for mtail metric collection
     $log_selector_extra = '+dkim_verbose'
 
