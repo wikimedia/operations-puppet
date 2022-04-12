@@ -5989,3 +5989,7 @@ ldap_only_users:
     ensure: present
     realname: Derk-Jan Hartman
     email: hartman.wiki@gmail.com
+  vyuen:
+    ensure: present
+    realname: Vanessa Yuen
+    email: vyuen@wikimedia.org
