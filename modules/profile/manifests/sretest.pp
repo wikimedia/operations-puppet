@@ -12,6 +12,7 @@ class profile::sretest (
         contacts => ['jbond', 'jmm'],
     }
     class { 'external_clouds_vendors':
+        ensure     => absent,
         http_proxy => $http_proxy,
     }
 
