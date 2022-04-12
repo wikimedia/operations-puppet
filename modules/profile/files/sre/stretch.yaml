@@ -184,8 +184,6 @@ role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: 2020-4
 role::deployment_server:
   target-q: TBD
-role::wmcs::nfs::secondary:
-  target-q: TBD
 role::wmcs::openstack::codfw1dev::net:
   target-q: 2020-4
 role::wmcs::openstack::eqiad1::net:
