@@ -216,6 +216,14 @@ def main() -> int:
             ),
             CSVExternalCloudVendor("Linode", "https://geoip.linode.com/"),
         ],
+        "known-clients": [
+            ExternalCloudVendor(
+                "Googlebot",
+                # https://developers.google.com/search/docs/advanced/crawling/verifying-googlebot
+                "https://developers.google.com/search/apis/ipranges/googlebot.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            )
+        ],
     }
 
     datafile = args.datafile
