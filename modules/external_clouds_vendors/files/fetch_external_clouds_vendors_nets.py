@@ -264,7 +264,7 @@ def main() -> int:
                     "cidrs": cidrs,
                     "comment": f"Automatically generated IPs for {ipblock_name}",
                 }
-                file_path.write_text(yaml.dump(to_update))
+                file_path.write_text(yaml.dump(to_update, default_flow_style=False))
         # safety measure: if there is an uncommitted object added to the index of the
         # repository, we won't add what follows to git. We will still sync it though.
         if git_repo.index.diff("HEAD"):
