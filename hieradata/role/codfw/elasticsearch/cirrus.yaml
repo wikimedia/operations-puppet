@@ -149,12 +149,12 @@ profile::elasticsearch::instances:
           - elastic2033.codfw.wmnet
           - elastic2048.codfw.wmnet
           - elastic2049.codfw.wmnet
-          - elastic2060.codfw.wmnet
 
           # row D
           - elastic2036.codfw.wmnet
           - elastic2053.codfw.wmnet
           - elastic2054.codfw.wmnet
+          - elastic2060.codfw.wmnet
 
         expected_nodes: 18
 
