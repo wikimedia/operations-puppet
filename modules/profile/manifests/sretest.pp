@@ -1,8 +1,5 @@
 # @summary profile for sretest hosts
-# @param http_proxy the http proxy to use
-class profile::sretest (
-    Optional[Stdlib::HTTPUrl] $http_proxy = lookup('http_proxy'),
-) {
+class profile::sretest {
     if debian::codename::eq('buster') {
         include profile::docker::firewall
         include profile::base::cuminunpriv
@@ -10,10 +7,6 @@ class profile::sretest (
 
     profile::contact { $title:
         contacts => ['jbond', 'jmm'],
-    }
-    class { 'external_clouds_vendors':
-        ensure     => absent,
-        http_proxy => $http_proxy,
     }
 
     $cache_nodes = lookup('cache::nodes')  # lint:ignore:wmf_styleguide
