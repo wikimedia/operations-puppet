@@ -230,61 +230,73 @@ host doc2001 {
 host doh1001 {
     hardware ethernet aa:00:00:88:47:67;
     fixed-address doh1001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh1002 {
     hardware ethernet aa:00:00:4d:f8:15;
     fixed-address doh1002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh2001 {
     hardware ethernet aa:00:00:b8:bd:f9;
     fixed-address doh2001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh2002 {
     hardware ethernet aa:00:00:99:be:5a;
     fixed-address doh2002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh3001 {
     hardware ethernet aa:00:00:d7:fa:04;
     fixed-address doh3001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh3002 {
     hardware ethernet aa:00:00:16:90:03;
     fixed-address doh3002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh4001 {
     hardware ethernet aa:00:00:09:33:79;
     fixed-address doh4001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh4002 {
     hardware ethernet aa:00:00:eb:dd:61;
     fixed-address doh4002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh5001 {
     hardware ethernet aa:00:00:9b:11:b0;
     fixed-address doh5001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh5002 {
     hardware ethernet aa:00:00:7d:bb:99;
     fixed-address doh5002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh6001 {
     hardware ethernet aa:00:00:7f:7b:87;
     fixed-address doh6001.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host doh6002 {
     hardware ethernet aa:00:00:53:5f:15;
     fixed-address doh6002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host dragonfly-supernode1001 {
@@ -300,63 +312,73 @@ host dragonfly-supernode2001 {
 host durum1001 {
     hardware ethernet aa:00:00:06:72:7b;
     fixed-address durum1001.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum1002 {
     hardware ethernet aa:00:00:42:25:81;
     fixed-address durum1002.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum2001 {
     hardware ethernet aa:00:00:14:a0:19;
     fixed-address durum2001.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum2002 {
     hardware ethernet aa:00:00:a5:c8:5d;
     fixed-address durum2002.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum3001 {
     hardware ethernet aa:00:00:50:cd:70;
     fixed-address durum3001.esams.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum3002 {
     hardware ethernet aa:00:00:f8:91:f8;
     fixed-address durum3002.esams.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum4001 {
     hardware ethernet aa:00:00:bc:fe:30;
     fixed-address durum4001.ulsfo.wmnet;
-
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum4002 {
     hardware ethernet aa:00:00:c5:bd:4f;
     fixed-address durum4002.ulsfo.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum5001 {
     hardware ethernet aa:00:00:4e:87:11;
     fixed-address durum5001.eqsin.wmnet;
-
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum5002 {
     hardware ethernet aa:00:00:57:45:31;
     fixed-address durum5002.eqsin.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum6001 {
     hardware ethernet aa:00:00:61:7c:e7;
     fixed-address durum6001.drmrs.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host durum6002 {
     hardware ethernet aa:00:00:61:a9:db;
     fixed-address durum6002.drmrs.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host cloudbackup1001-dev {
