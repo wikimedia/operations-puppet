@@ -336,6 +336,11 @@ node /^cloudcephmon200[2-4]-dev\.codfw\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
 
+# new cloudstore hosts T302981
+node /^cloudstore1001[01]\.wikimedia\.org/ {
+    role(insetup)
+}
+
 node /^cloudstore100[89]\.wikimedia\.org/ {
     role(spare::system)
 }
