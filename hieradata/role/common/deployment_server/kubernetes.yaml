@@ -107,8 +107,8 @@ profile::keyholder::server::agents:
   deploy_airflow:
     trusted_groups:
       - analytics-deployers
+      - analytics-research-admins
       # TODO:
-      # - analytics-research-admins
       # - analytics-platform-eng-admins
 
 
