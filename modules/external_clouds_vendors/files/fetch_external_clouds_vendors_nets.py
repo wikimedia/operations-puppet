@@ -226,12 +226,6 @@ def main() -> int:
             logging.error("unable to parse current data, deleting: %s", error)
             datafile.unlink()
 
-    # Temporary for T305581 - migrate from the old datafile format (only one ipblock_type, not
-    # named in the JSON) to the new one (ipblock_type as the top-level dict key). This can be
-    # removed after the script runs once.
-    if "cloud" not in data:
-        data = {"cloud": data}
-
     session = http_session("dump-cloud-ip-ranges")
     for ipblock_type, entities in providers.items():
         for entity in entities:
