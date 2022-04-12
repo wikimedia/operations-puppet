@@ -32,7 +32,7 @@ GIT_PS1_SHOWUPSTREAM="auto verbose"
 . /etc/bash_completion.d/git-prompt
 #PS1='[\u@\h \w$(__git_ps1 " (%s)")]\$ '
 #PS1='\[\033[01;34m\]\D{%H:%M} [\u@\h \w$(__git_ps1 " (%s)")]\$\[\033[0m\] '
-PS1='\[\033[01;34m\]\D{%H:%M} \[\033[01;31m\]\u@\h\[\033[01;32m\]$(__git_ps1 " [%s]") \[\033[01;34m\]\w>\[\033[0m\]'
+PS1='\[\033[01;34m\]\D{%H:%M} \[\033[01;31m\]\u@\h\[\033[01;32m\]$(__git_ps1 " [%s]") \[\033[01;34m\]\w>\[\033[0m\] '
 
 # set proxy variables
 export HTTP_PROXY=http://webproxy:8080
