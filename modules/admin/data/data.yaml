@@ -949,7 +949,7 @@ groups:
   analytics-research-admins:
     gid: 830
     description: Group of users for managing research related analytics/data jobs.
-    members: [fab, bmansurov, gmodena]
+    members: &analytics_research_admins_members [fab, bmansurov, gmodena]
     privileges: [
       'ALL = (analytics-research) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
@@ -971,7 +971,7 @@ groups:
   analytics-platform-eng-admins:
     gid: 831
     description: Group of users for managing Platform Engineering related analytics/data jobs.
-    members: [*platform_engineering_members, lbowmaker]
+    members: &analytics_platform_eng_admins_members [*platform_engineering_members, lbowmaker]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
@@ -990,6 +990,16 @@ groups:
       'ALL = NOPASSWD: /bin/journalctl *'
     ]
     system_members: [analytics-platform-eng]
+  research-deployers:
+    gid: 835
+    description: Created for deploying airflow-dags/research
+    members: [*analytics_research_admins_members]
+  # TODO: (otto, gmodena)
+  # platform-eng-deployers:
+  #   gid: 836
+  #   description: Created for deploying airflow-dags/platform_eng
+  #   members: [*analytics_platform_eng_admins_members]
+
   reprepro:
     gid: 901
     system: true
@@ -5993,7 +6003,3 @@ ldap_only_users:
     ensure: present
     realname: Vanessa Yuen
     email: vyuen@wikimedia.org
-  nathillard:
-    ensure: present
-    realname: Nathaniel Hillard
-    email: nhillard@wikimedia.org

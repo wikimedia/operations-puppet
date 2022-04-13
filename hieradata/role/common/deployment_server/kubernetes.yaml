@@ -21,6 +21,9 @@ profile::admin::groups:
   - zuul-deployers
   - deployment-ci-admins
   - deployment-docker
+  - research-deployers
+  # TODO: (otto, gmodena)
+  # - platform-eng-deployers
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
@@ -107,11 +110,9 @@ profile::keyholder::server::agents:
   deploy_airflow:
     trusted_groups:
       - analytics-deployers
-      - analytics-research-admins
-      # TODO:
-      # - analytics-platform-eng-admins
-
-
+      - research-deployers
+      # TODO: (otto, gmodena)
+      # - platform-eng-deployers
 
 
 # scap::source declarations.  These are created

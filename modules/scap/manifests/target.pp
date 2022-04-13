@@ -16,7 +16,7 @@
 # [*key_name*]
 #   The name of a keyholder ssh key used to access this deployment target.
 #   This should correspond to a key which is defined in keyholder::agent
-#   (which are defined by hiera data in common::scap::server)
+#   (which for prod are defined in hieradata/role/common/deployment_server/kubernetes.yaml)
 #   Warning: If key_name is left undefined, then you must define the correct
 #   ssh::userkey for your deploy_user so that scap can connect to the target
 #   from the deployment server with a corresponding key in keyholder.
