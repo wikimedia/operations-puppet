@@ -71,10 +71,17 @@ class profile::webperf::site (
         require => Git::Clone['performance/docroot'],
     }
 
+    systemd::timer::job { 'warm_up_coal_cache':
+        ensure      => present,
+        description => 'Regular jobs to keep coal cache warm',
+        user        => 'nobody',
+        command     => "/bin/bash -c 'for period in day week month year ; do /usr/bin/curl -s -H ${server_name} -o /dev/null \"${::fqdn}/coal/v1/metrics?period=\$period\" ; done'",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/30:00'},
+    }
+
     cron { 'warm_up_coal_cache':
-        command => "/bin/bash -c 'for period in day week month year ; do /usr/bin/curl -s -H ${server_name} -o /dev/null \"${::fqdn}/coal/v1/metrics?period=\$period\" ; done'",
-        minute  => [0, 30],
-        user    => 'nobody',
+        ensure => absent,
+        user   => 'nobody',
     }
 
     ensure_packages(['libapache2-mod-uwsgi'])
