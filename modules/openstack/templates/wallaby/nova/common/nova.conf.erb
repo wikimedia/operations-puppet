@@ -13,8 +13,8 @@ pybasedir = /usr/lib/python2.7/dist-packages
 
 use_syslog = True
 syslog_log_facility = LOG_LOCAL0
-default_log_levels = nova=DEBUG
-debug = true
+default_log_levels = nova=WARN
+#debug = true
 
 transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5672" }.join(',') %>
 
