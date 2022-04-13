@@ -372,7 +372,9 @@ eqiad:
     cloudcephmon1003.eqiad.wmnet: [cloudceph]
   wikireplicas-a:
     dbproxy1018.eqiad.wmnet: [wikireplicas-a]
+    dbproxy1019.eqiad.wmnet: [wikireplicas-a]
   wikireplicas-b:
+    dbproxy1018.eqiad.wmnet: [wikireplicas-b]
     dbproxy1019.eqiad.wmnet: [wikireplicas-b]
   thanos:
     thanos-fe1001.eqiad.wmnet: [thanos-query, thanos-swift]

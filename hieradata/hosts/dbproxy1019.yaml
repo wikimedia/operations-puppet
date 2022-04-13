@@ -7,6 +7,7 @@ profile::mariadb::proxy::multiinstance_replicas::replica_type: 'web'
 profile::lvs::realserver::pools:
   wikireplicas-b-s1:
     services:
+      - wikireplicas-a
       - wikireplicas-b
 
 # Example multi-instance wikireplicas depooling, inserting the entry for the
