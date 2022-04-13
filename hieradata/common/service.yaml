@@ -3204,7 +3204,6 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
-    page: false
     probes:
       - type: http
         post_json: '[{"itemType":"journalArticle"}]'
