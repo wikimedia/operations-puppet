@@ -95,5 +95,8 @@ define keyholder::agent(
         owner   => 'root',
         group   => 'keyholder',
         mode    => '0440',
+        # keyholder-proxy needs to be bounced when group -> key access mapping changes.
+        # (keyholder-proxy is declared in keyholder/init.pp)
+        notify  => Systemd::Service['keyholder-proxy'],
     }
 }
