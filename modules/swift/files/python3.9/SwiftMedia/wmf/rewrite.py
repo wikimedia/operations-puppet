@@ -214,10 +214,22 @@ class _WMFRewriteContext(WSGIContext):
             return resp(env, start_response)
 
     def _handle_request(self, env, start_response):
+        # In python3, we have to care about bytes vs strings
+        # req.path_info is url-encoded ASCII
+        # req.path is the byte stream resulting from url-decoding path_info
+        # turned into a string using the latin1 encoding (even though mw
+        # uses utf-8); essentially req.path contains "mojibake" and if we
+        # need to manipulate it, we have to re-decode-and-encode back into
+        # utf-8.
+        # Similarly, when setting path_info, we have to be sure to set
+        # it to either a byte sequence of valid utf-8 codepoints, or a
+        # latin1 encoding of the desired byte sequence.
+
         req = swob.Request(env)
 
         # Double (or triple, etc.) slashes in the URL should be ignored;
         # collapse them. fixes T34864
+        # mojibake-safe since 0x2F is / in all relevant encodings
         req.path_info = re.sub(r'/{2,}', '/', req.path_info)
 
         # Keep a copy of the original request so we can ask the scalers for it
@@ -375,7 +387,12 @@ class _WMFRewriteContext(WSGIContext):
             req.host = '127.0.0.1:%s' % port
             url = req.url[:]
             # Create a path to our object's name.
-            req.path_info = "/v1/%s/%s/%s" % (self.account, container, urllib.parse.unquote(obj))
+            # Make the correct unicode string we want
+            newpath = "/v1/%s/%s/%s" % (self.account, container,
+                                        urllib.parse.unquote(obj,
+                                                             errors='strict'))
+            # Then encode to a byte sequence using utf-8
+            req.path_info = newpath.encode('utf-8')
             # self.logger.warn("new path is %s" % req.path_info)
 
             # do_start_response just remembers what it got called with,
