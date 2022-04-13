@@ -79,11 +79,6 @@ class profile::webperf::site (
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/30:00'},
     }
 
-    cron { 'warm_up_coal_cache':
-        ensure => absent,
-        user   => 'nobody',
-    }
-
     ensure_packages(['libapache2-mod-uwsgi'])
 
     profile::auto_restarts::service { 'apache2': }
