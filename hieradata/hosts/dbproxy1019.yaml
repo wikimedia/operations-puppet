@@ -26,18 +26,18 @@ profile::lvs::realserver::pools:
 #   s3:
 #     clouddb1017.eqiad.wmnet:
 #       ipaddress: 10.64.32.61
-#   s4:
-#     clouddb1019.eqiad.wmnet:
-#       ipaddress: 10.64.48.9
-#   s5:
-#     clouddb1020.eqiad.wmnet:
-#       ipaddress: 10.64.48.11
-#   s6:
-#     clouddb1019.eqiad.wmnet:
-#       ipaddress: 10.64.48.9
+  s4:
+    clouddb1019.eqiad.wmnet:
+      ipaddress: 10.64.48.9
+  s5:
+    clouddb1020.eqiad.wmnet:
+      ipaddress: 10.64.48.11
+  s6:
+    clouddb1019.eqiad.wmnet:
+      ipaddress: 10.64.48.9
 #   s7:
 #     clouddb1018.eqiad.wmnet:
 #       ipaddress: 10.64.32.62
-#   s8:
-#     clouddb1020.eqiad.wmnet:
-#       ipaddress: 10.64.48.11
+  s8:
+    clouddb1020.eqiad.wmnet:
+      ipaddress: 10.64.48.11
