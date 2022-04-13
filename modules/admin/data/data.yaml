@@ -4354,7 +4354,7 @@ users:
     krb: present
   stran:
     ensure: present
-    realname: Stephanie Tran
+    realname: Tran
     email: stran@wikimedia.org
     uid: 27904
     gid: 500
