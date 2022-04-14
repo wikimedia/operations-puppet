@@ -50,8 +50,4 @@ class osm::import_waterlines (
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-01 9:13:00'},
     }
 
-    cron { 'import_waterlines':
-        ensure => absent,
-        user   => 'postgres',
-    }
 }
