@@ -6004,3 +6004,7 @@ ldap_only_users:
     ensure: present
     realname: Vanessa Yuen
     email: vyuen@wikimedia.org
+  nathillard:
+    ensure: present
+    realname: Nat Hillard
+    email: nhillard@wikimedia.org
