@@ -239,8 +239,8 @@ def lsscsi_parse(response):
 def noraid_list_pd():
     """List all physical disks. Generator to yield PD objects."""
     try:
-        # Could be ported to lsblk --json at some point
-        raw_output = _check_output('/bin/lsblk --noheadings --output NAME,TYPE --raw')
+        # We use --nodeps to exclude paritions or dependent devices
+        raw_output = _check_output('/bin/lsblk --nodeps --output NAME,TYPE --json')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for directly attached physical disks')
         return
@@ -248,14 +248,14 @@ def noraid_list_pd():
 
 
 def noraid_parse(response):
-    for line in response.splitlines():
-        name, disk_type = line.split(' ', 1)
-        if disk_type != 'disk':
+    blk_devs = json.loads(response)['blockdevices']
+    for blk_dev in blk_devs:
+        if blk_dev['type'] != 'disk':
             continue
-        if name.startswith('drbd') or name.startswith('nbd'):
+        if blk_dev['name'].startswith('drbd') or blk_dev['name'].startswith('nbd'):
             continue
         # lsblk will report "nvme0n1", but smartctl wants the base "nvme0" device
-        name = re.sub(r'^(nvme[0-9])n[0-9]$', r'\1', name)
+        name = re.sub(r'^(nvme[0-9])n[0-9]$', r'\1', blk_dev['name'])
         yield DISK(name=name, target='/dev/{}'.format(name), type=None)
 
 

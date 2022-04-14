@@ -1,0 +1,7 @@
+{
+   "blockdevices": [
+      {"name":"sda", "type":"disk"},
+      {"name":"sdb", "type":"disk"},
+      {"name":"nvme0n1", "type":"disk"}
+   ]
+}

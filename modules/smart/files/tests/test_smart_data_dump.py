@@ -18,7 +18,7 @@ class TestSmartDataDump(unittest.TestCase):
         with open('modules/smart/files/tests/fixtures/hpssacli_show_all_config_detail.txt',
                   'r') as f:
             self.hpssacli_all_config_raw = f.read()
-        with open('modules/smart/files/tests/fixtures/lsblk.txt', 'r') as f:
+        with open('modules/smart/files/tests/fixtures/lsblk.json', 'r') as f:
             self.lsblk_raw = f.read()
         with open('modules/smart/files/tests/fixtures/smartctl_info.txt', 'r') as f:
             self.smartctl_info = f.read()
@@ -71,10 +71,16 @@ class TestSmartDataDump(unittest.TestCase):
 
     def test_noraid_parse(self):
         output = smart_data_dump.noraid_parse(self.lsblk_raw)
-        for gd in output:
-            self.assertIn(gd.target, ['/dev/sda', '/dev/sdb'])
-            self.assertIn(gd.name, ['sda', 'sdb'])
-            self.assertEqual(gd.type, None)
+        exp_blk_devs = [
+            smart_data_dump.DISK(name="sda", target="/dev/sda", type=None),
+            smart_data_dump.DISK(name="sdb", target="/dev/sdb", type=None),
+            smart_data_dump.DISK(name="nvme0", target="/dev/nvme0", type=None),
+        ]
+        blk_dev_count = 0
+        for i, gd in enumerate(output):
+            self.assertEqual(exp_blk_devs[i], gd)
+            blk_dev_count += 1
+        self.assertEqual(blk_dev_count, len(exp_blk_devs))
 
     def test_parse_smart_info(self):
         smart_healthy, model, firmware, serial = smart_data_dump \
