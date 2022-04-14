@@ -32,8 +32,9 @@ class TestSmartDataDump(unittest.TestCase):
         self.assertEqual(output, 'this is a test')
 
     def test_bad_cmd(self):
-        with self.assertRaises(subprocess.CalledProcessError):
-            smart_data_dump._check_output('nonexistentcommand')
+        with self.assertLogs('smart_data_dump', level='DEBUG'):
+            with self.assertRaises(subprocess.CalledProcessError):
+                smart_data_dump._check_output('nonexistentcommand')
 
     @mock.patch.dict('os.environ', {'LC_MESSAGES': 'C'})
     def test_suppressed_errors_cmd(self):
@@ -44,8 +45,9 @@ class TestSmartDataDump(unittest.TestCase):
             ' .nonexistentcommand.: No such file or directory')
 
     def test_timeout(self):
-        with self.assertRaises(subprocess.CalledProcessError):
-            smart_data_dump._check_output('/usr/bin/sleep 2', 1)
+        with self.assertLogs('smart_data_dump', level='DEBUG'):
+            with self.assertRaises(subprocess.CalledProcessError):
+                smart_data_dump._check_output('/usr/bin/sleep 2', 1)
 
     def test_megaraid_parse(self):
         output = smart_data_dump.megaraid_parse(self.smartctl_scan_open)
