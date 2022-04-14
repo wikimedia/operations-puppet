@@ -19,13 +19,19 @@ class openstack::wikitech::wikitech_static_sync {
             source => 'puppet:///modules/openstack/wikitech/mw-xml.sh';
     }
 
-    cron {
-        'mw-xml':
-            ensure  => 'present',
-            user    => 'root',
-            hour    => 1,
-            minute  => fqdn_rand(60),
-            command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
-            require => File['/srv/backup/public'];
+    $minute = fqdn_rand(60)
+
+    systemd::timer::job { 'mw-xml':
+        ensure          => 'present',
+        description     => 'Regular jobs to generate xml dumps',
+        user            => 'root',
+        command         => '/usr/local/sbin/mw-xml.sh',
+        interval        => {'start' => 'OnCalendar', 'interval' => "*-*-* 1:${minute}:00"},
+        logging_enabled => false,
+        require         => File['/srv/backup/public'];
+    }
+
+    cron { 'mw-xml':
+        ensure => absent,
     }
 }
