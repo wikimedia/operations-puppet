@@ -272,16 +272,22 @@ class profile::icinga(
         srange => '($DOMAIN_NETWORKS $FRACK_NETWORKS)',
     }
 
-    # We absent the cron on active hosts, should only exist on passive ones
-    $cron_presence = $is_passive ? {
+    # We absent the timer job on active hosts, should only exist on passive ones
+    $timer_job_presence = $is_passive ? {
         true  => 'present',
         false => 'absent',
     }
 
+    systemd::timer::job { 'sync-icinga-state':
+        ensure      => $timer_job_presence,
+        description => 'Regular jobs to sync icinga state between hosts',
+        user        => 'root',
+        command     => "/usr/bin/systemd-cat -t 'sync_icinga_state' /usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:33:00'},
+    }
+
     cron { 'sync-icinga-state':
-        ensure  => $cron_presence,
-        minute  => '33',
-        command => "/usr/bin/systemd-cat -t 'sync_icinga_state' /usr/local/sbin/run-no-puppet /usr/local/sbin/sync_icinga_state",
+        ensure => absent,
     }
 
     # On the passive host, replace the downtime script with a warning.
