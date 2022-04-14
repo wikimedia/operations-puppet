@@ -2,6 +2,7 @@ profile::wmcs::nfs::primary_backup::misc::backup_interval: 'Tue *-*-* 20:00:00'
 profile::openstack::codfw1dev::cinder::backup::active: true
 profile::openstack::codfw1dev::cinder::backup::path: /srv/cinder-backups/
 profile::openstack::codfw1dev::cinder::backup::lvm::pv_units:
+  - /dev/sdb5
   - /dev/sdc1
   - /dev/sda1
 profile::openstack::codfw1dev::cinder::backup::lvm::vg_name: backup
