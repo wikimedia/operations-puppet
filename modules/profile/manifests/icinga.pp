@@ -286,10 +286,6 @@ class profile::icinga(
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:33:00'},
     }
 
-    cron { 'sync-icinga-state':
-        ensure => absent,
-    }
-
     # On the passive host, replace the downtime script with a warning.
     $absent_script = @("SCRIPT")
     #!/bin/sh
