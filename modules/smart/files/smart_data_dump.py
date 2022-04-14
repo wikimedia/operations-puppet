@@ -240,7 +240,7 @@ def noraid_list_pd():
     """List all physical disks. Generator to yield PD objects."""
     try:
         # We use --nodeps to exclude paritions or dependent devices
-        raw_output = _check_output('/bin/lsblk --nodeps --output NAME,TYPE --json')
+        raw_output = _check_output('/bin/lsblk --nodeps --output NAME,TYPE,VENDOR --json')
     except subprocess.CalledProcessError:
         log.exception('Failed to scan for directly attached physical disks')
         return
@@ -253,6 +253,12 @@ def noraid_parse(response):
         if blk_dev['type'] != 'disk':
             continue
         if blk_dev['name'].startswith('drbd') or blk_dev['name'].startswith('nbd'):
+            continue
+        # The vendor value returned by lsblk is a fixed width string of 8 chars,
+        # with space padding on the right.
+        # iDRAC may expose USB block devices to the host, but we do not care
+        # about their smart status
+        if blk_dev['vendor'] is not None and blk_dev['vendor'].rstrip() == 'iDRAC':
             continue
         # lsblk will report "nvme0n1", but smartctl wants the base "nvme0" device
         name = re.sub(r'^(nvme[0-9])n[0-9]$', r'\1', blk_dev['name'])

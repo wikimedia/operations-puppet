@@ -1,7 +1,9 @@
 {
    "blockdevices": [
-      {"name":"sda", "type":"disk"},
-      {"name":"sdb", "type":"disk"},
-      {"name":"nvme0n1", "type":"disk"}
+      {"name":"sda", "type":"disk", "vendor":"ATA     "},
+      {"name":"sdb", "type":"disk", "vendor":"DELL    "},
+      {"name":"nvme0n1", "type":"disk", "vendor":null},
+      {"name":"sdh", "type":"disk", "vendor":"iDRAC   "},
+      {"name":"sdm", "type":"disk", "vendor":"iDRAC   "}
    ]
 }
