@@ -30,8 +30,4 @@ class openstack::wikitech::wikitech_static_sync {
         logging_enabled => false,
         require         => File['/srv/backup/public'];
     }
-
-    cron { 'mw-xml':
-        ensure => absent,
-    }
 }
