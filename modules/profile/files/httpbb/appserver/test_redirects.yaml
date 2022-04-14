@@ -34,3 +34,15 @@ https://zero.wikipedia.org:
   assert_status: 301
   assert_headers:
       Location: https://www.wikipedia.org/
+
+https://otrs-wiki.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 301
+  assert_headers:
+    Location: https://vrt-wiki.wikimedia.org/wiki/Main_Page
+
+https://ombudsmen.wikimedia.org:
+- path: /wiki/Main_Page
+  assert_status: 301
+  assert_headers:
+    Location: https://ombuds.wikimedia.org/wiki/Main_Page

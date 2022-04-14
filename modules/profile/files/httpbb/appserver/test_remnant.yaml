@@ -110,12 +110,6 @@ https://quality.wikimedia.org:
   assert_status: 200
   assert_body_contains: Wikimedia Quality
 
-https://otrs-wiki.wikimedia.org:
-- path: /wiki/Main_Page
-  assert_status: 301
-  assert_headers:
-    Location: https://vrt-wiki.wikimedia.org/wiki/Main_Page
-
 https://vrt-wiki.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 200
@@ -155,12 +149,6 @@ https://ombuds.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 200
   assert_body_contains: Ombuds
-
-https://ombudsmen.wikimedia.org:
-- path: /wiki/Main_Page
-  assert_status: 301
-  assert_headers:
-    Location: https://ombuds.wikimedia.org/wiki/Main_Page
 
 https://projectcom.wikimedia.org:
 - path: /wiki/Main_Page
