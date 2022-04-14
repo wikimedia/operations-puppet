@@ -12,7 +12,8 @@ class osm::import_waterlines (
     String $database = 'gis',
 ) {
 
-    $log_dir = '/var/log/waterlines'
+    $logfile_basedir = '/var/log'
+    $log_dir = "${logfile_basedir}/waterlines"
 
     $proxy_opt = $use_proxy ? {
         false   => '',
@@ -39,12 +40,18 @@ class osm::import_waterlines (
         content => template('osm/waterlines.logrotate.erb'),
     }
 
+    systemd::timer::job { 'waterlines':
+        ensure          => present,
+        description     => 'Regular jobs to set up the waterlines',
+        user            => 'postgres',
+        command         => '/usr/local/bin/import_waterlines',
+        logfile_basedir => $logfile_basedir,
+        logfile_name    => 'import.log',
+        interval        => {'start' => 'OnCalendar', 'interval' => '*-*-01 9:13:00'},
+    }
+
     cron { 'import_waterlines':
-        ensure   => present,
-        hour     => 9,
-        minute   => 13,
-        monthday => 1,
-        user     => 'postgres',
-        command  => "/usr/local/bin/import_waterlines >> ${log_dir}/import.log 2>&1",
+        ensure => absent,
+        user   => 'postgres',
     }
 }
