@@ -37,6 +37,7 @@ central_api = central_rpcapi.CentralAPI()
 
 class BaseAddressWMFHandler(BaseAddressHandler):
     proxy_endpoint = ""
+    enc_endpoint = ""
 
     def _delete(self, extra, managed=True, resource_id=None,
                 resource_type='instance', criterion={}):
@@ -153,14 +154,13 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                         (ssh_command, out, error))
         return out, error, rcode
 
-    def _delete_puppet_config(self, projectid, fqdn):
-        endpoint = cfg.CONF[self.name].puppet_config_backend
-        url = "%s/%s/prefix/%s" % (endpoint, projectid, fqdn)
-        try:
-            requests.delete(url, verify=False)
-        except requests.exceptions.ConnectionError:
-            # No prefix, no problem!
-            pass
+    def _delete_puppet_config(self, project, fqdn):
+        enc_url, session = self._get_enc_client(project)
+
+        response = session.delete("{}/prefix/{}".format(enc_url, fqdn), raise_exc=False)
+        # no prefix, no problem!
+        if response.status != 404:
+            response.raise_for_status()
 
     def _get_repo(self):
         repo_path = tempfile.mkdtemp(prefix="instance-puppet")
@@ -294,3 +294,19 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 raise Exception("Can't find the public proxy service endpoint.")
 
         return self.proxy_endpoint
+
+    def _get_enc_client(self, project):
+        proxy_url = self._get_enc_endpoint().replace("$(project_id)s", project)
+        session = self._get_keystone_session(project)
+        return proxy_url, session
+
+    def _get_enc_endpoint(self):
+        if not self.enc_endpoint:
+            keystone = keystone_client.Client(
+                session=self._get_keystone_session(), interface='public', connect_retries=5)
+            service = keystone.services.list(type="puppet-enc")[0]
+
+            self.enc_endpoint = keystone.endpoints.list(
+                service=service.id, interface="public", enabled=True)[0].url
+
+        return self.enc_endpoint
