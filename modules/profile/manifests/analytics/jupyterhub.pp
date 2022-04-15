@@ -60,9 +60,15 @@ class profile::analytics::jupyterhub(
 
     # Files deleted via the notebook interface are moved to a special
     # Trash directory and never removed.
+    systemd::timer::job { 'clean_jupyter_user_local_trash':
+        ensure      => present,
+        description => 'Regular jobs to clear the trash directory',
+        user        => 'root',
+        command     => '/bin/bash -c \'for user in $(ls /srv/home); do rm -rf /srv/home/$user/.local/share/Trash/*; done\'',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
+    }
+
     cron { 'clean_jupyter_user_local_trash':
-        command => 'for user in $(ls /srv/home); do rm -rf /srv/home/$user/.local/share/Trash/*; done',
-        hour    => 0,
-        minute  => 0,
+        ensure => absent,
     }
 }
