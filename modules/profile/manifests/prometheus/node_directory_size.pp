@@ -47,8 +47,4 @@ class profile::prometheus::node_directory_size (
     command     => '/usr/local/bin/prometheus-directory-size -c /etc/default/prometheus-directory-size',
     interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:30:00'},
   }
-
-  cron { 'prometheus_directorysize':
-    ensure => absent,
-  }
 }
