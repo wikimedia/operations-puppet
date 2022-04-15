@@ -80,6 +80,22 @@ puppet_compiler::uploader::realms:
       C0gyRPFAn46QOzOJQgzMneMSVp7IN05i4IYW/1kiQOT7Ks22UEJyZhXYpTkTnuQ6
       2jK3v7JNqnd3yHHg/iCdroUCAwEAAQ==
       -----END PUBLIC KEY-----
+  project-proxy:
+    project-proxy-puppetmaster-01: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA1UoXDvt3SuDOIXpMQZ5z
+      LAP2RZt/7Da9bP3JHL/NJ9WjTYDt833Sgpr53WRfik5wSQXfmPH6aOmXtzGBJAwy
+      O5KtGcJdkLInEB0hbf+U1/hHHkEO439iSdSyk9YO2FFOMutcCINToalBEe8/Ytek
+      /2wBuE47q6rNzQ6gXx4x59hMN/nRadCMttKSt+pA4k2yipQ4D97R1999zAy2Bzcy
+      txrbBNFlnMYC501SLtOR5TiISCtTtFxQuhMhLT2mzJgjbkIeSOPdTX9vyPTkdeLn
+      KkGMpjSDw+ZXEhFIk2kMv9W1AZy82TDrxRA/WOhFRNNAhxlC8tpiDlMMTU7e2ZYq
+      IadXbsaxegHSYD7ReEc4uNM9B6imXNahI9GHdvYzg7FYS+quuOH19MXGftCSz1rq
+      jdjiOIvCRfGB5Ly7+tN+tguLmSqi80piiUuRxgSjCHUcwzZwpEAmOFFX5rd8dv9B
+      2ddQzZMDSyOO7GlrKCEbxHXBCkjhJ+kqfd26sr8nrraZveC0ch+udJpPC3dql9kB
+      NJOCKpR1KaHg728oQxNl5KBT2diw2WatiUNBioXgdcmD6zLVPLtZKyVHs6bMf9ON
+      /HZojrBrVSYLgtrBfcOvaCQUgKqZdubathediBQM5VmR7OhoRzd1fEv5poYSCZLi
+      PDzM2kwACOStn19KOskEfe8CAwEAAQ==
+      -----END PUBLIC KEY-----
   tools:
     tools-puppetmaster-02: |
       -----BEGIN PUBLIC KEY-----
