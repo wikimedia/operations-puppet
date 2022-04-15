@@ -808,9 +808,9 @@ customviews:
     source: user
     view: >
       select user_id, user_name, user_real_name, NULL as user_password, NULL as user_newpassword,
-      NULL as user_email, NULL as user_options, NULL as user_touched, NULL as user_token,
-      NULL as user_email_authenticated, NULL as user_email_token, NULL as user_email_token_expires,
-      user_registration, NULL as user_newpass_time, user_editcount, NULL as user_password_expires
+      NULL as user_email, NULL as user_touched, NULL as user_token, NULL as user_email_authenticated,
+      NULL as user_email_token, NULL as user_email_token_expires, user_registration,
+      NULL as user_newpass_time, user_editcount, NULL as user_password_expires
     where: (SELECT 1 from ipblocks where ipb_auto=0 AND ipb_deleted=1 AND ipb_user=user_id) is NULL
   user_old:
     source: user_old
