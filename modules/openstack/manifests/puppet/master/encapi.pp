@@ -9,6 +9,9 @@ class openstack::puppet::master::encapi(
     Array[String] $labs_instance_ranges,
     Wmflib::Ensure $ensure = present,
 ) {
+    # for new enough python3-keystonemiddleware versions
+    debian::codename::require('bullseye', '>=')
+
     $exposed_certs_dir = '/etc/nginx'
     $puppet_cert_pub  = "${exposed_certs_dir}/ssl/cert.pem"
     $puppet_cert_priv = "${exposed_certs_dir}/ssl/server.key"
@@ -41,14 +44,10 @@ class openstack::puppet::master::encapi(
     }
 
     $python_version = $::lsbdistcodename ? {
-        'stretch'  => 'python3.5',
-        'buster'   => 'python3.7',
         'bullseye' => 'python3.9',
     }
 
-    $service_name = debian::codename::ge('bullseye').bool2str('puppet-enc', 'labspuppetbackend')
-
-    file { "/usr/local/lib/${python_version}/dist-packages/${service_name}.py":
+    file { "/usr/local/lib/${python_version}/dist-packages/puppet-enc.py":
         ensure => stdlib::ensure($ensure, 'file'),
         owner  => 'root',
         group  => 'root',
@@ -65,7 +64,7 @@ class openstack::puppet::master::encapi(
     }
 
     # Make sure we can write to our logfile
-    file { "/var/log/${service_name}.log":
+    file { '/var/log/puppet-enc.log':
         ensure  => stdlib::ensure($ensure, 'file'),
         owner   => 'www-data',
         group   => 'www-data',
@@ -90,17 +89,17 @@ class openstack::puppet::master::encapi(
 
     # We override service_settings because the default includes autoload
     #  which insists on using python2
-    uwsgi::app { $service_name:
+    uwsgi::app { 'puppet-enc':
         ensure    => $ensure,
         settings  => {
             uwsgi => {
                 plugins             => 'python3',
-                'wsgi-file'         => "/usr/local/lib/${python_version}/dist-packages/${service_name}.py",
+                'wsgi-file'         => "/usr/local/lib/${python_version}/dist-packages/puppet-enc.py",
                 callable            => 'app',
                 master              => true,
                 http-socket         => '0.0.0.0:8101',
                 reload-on-exception => true,
-                logto               => "/var/log/${service_name}.log",
+                logto               => '/var/log/puppet-enc.log',
                 env                 => [
                     "MYSQL_HOST=${mysql_host}",
                     "MYSQL_DB=${mysql_db}",
@@ -110,20 +109,19 @@ class openstack::puppet::master::encapi(
                 ],
             },
         },
-        subscribe => File["/usr/local/lib/${python_version}/dist-packages/${service_name}.py"],
-        require   => File["/var/log/${service_name}.log"],
+        subscribe => File["/usr/local/lib/${python_version}/dist-packages/puppet-enc.py"],
+        require   => File['/var/log/puppet-enc.log'],
     }
 
-    $public_site_name = debian::codename::ge('bullseye').bool2str('puppet-enc-public', 'labspuppetbackendgetter')
-    nginx::site { 'default': # otherwise we'll cause nginx to be installed with the default port 80 config which will conflict with apache used by the puppetmaster itself
+    nginx::site { 'default':
         ensure => absent,
-        before => Nginx::Site[$public_site_name],
+        before => Nginx::Site['puppet-enc-public'],
     }
 
     # This is a GET-only front end that sits on port 8100.  We can
     #  open this up to the public even though the actual API has no
     #  auth protections.
-    nginx::site { $public_site_name:
+    nginx::site { 'puppet-enc-public':
         ensure  => $ensure,
         content => template('openstack/puppet/master/encapi/nginx-puppet-enc-public.conf.erb'),
     }
