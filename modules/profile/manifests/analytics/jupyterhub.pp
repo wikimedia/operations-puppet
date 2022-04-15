@@ -67,8 +67,4 @@ class profile::analytics::jupyterhub(
         command     => '/bin/bash -c \'for user in $(ls /srv/home); do rm -rf /srv/home/$user/.local/share/Trash/*; done\'',
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00:00:00'},
     }
-
-    cron { 'clean_jupyter_user_local_trash':
-        ensure => absent,
-    }
 }
