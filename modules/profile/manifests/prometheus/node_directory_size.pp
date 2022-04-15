@@ -40,11 +40,15 @@ class profile::prometheus::node_directory_size (
   }
 
   # Collect once a day
+  systemd::timer::job { 'prometheus_directorysize':
+    ensure      => $ensure,
+    description => 'Regular jobs to export directory sizes',
+    user        => 'root',
+    command     => '/usr/local/bin/prometheus-directory-size -c /etc/default/prometheus-directory-size',
+    interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:30:00'},
+  }
+
   cron { 'prometheus_directorysize':
-    ensure  => $ensure,
-    user    => 'root',
-    hour    => '3',
-    minute  => '30',
-    command => '/usr/local/bin/prometheus-directory-size -c /etc/default/prometheus-directory-size',
+    ensure => absent,
   }
 }
