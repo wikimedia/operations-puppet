@@ -34,7 +34,6 @@ except ImportError:
     sys.exit(1)
 
 base_dn = "dc=wikimedia,dc=org"
-projects_dn = "ou=projects," + base_dn
 groups_dn = "ou=groups," + base_dn
 servicegroups_dn = "ou=servicegroups," + base_dn
 
@@ -181,10 +180,9 @@ delete: userPassword
 
     user_dn = ldapdata[0][0]
 
-    group_ous = [projects_dn, groups_dn, servicegroups_dn]
+    group_ous = [groups_dn, servicegroups_dn]
 
     memberships = []
-    project_admins = []
 
     for ou in group_ous:
         while True:
@@ -208,21 +206,11 @@ delete: userPassword
             if not cookie:
                 break
 
-    ldapdata = ldap_conn.search_s(
-        projects_dn,
-        ldap.SCOPE_SUBTREE,
-        "(&(objectclass=organizationalrole)(cn=projectadmin))",
-        attrlist=['roleOccupant'],
-    )
-
-    for i in ldapdata:
-        if 'roleOccupant' in i[1]:
-            if user_dn.encode() in i[1]['roleOccupant']:
-                project_admins.append(i[0])
-
     print("User DN:", user_dn)
     member_set = set(memberships)
     priv_set = set(privileged_groups)
+
+    has_openstack_projects = False
 
     if len(memberships) == 0:
         print("Is not member of any LDAP group")
@@ -231,21 +219,21 @@ delete: userPassword
         for group in memberships:
             if group not in priv_set:
                 if remove_all_groups:
-                    ldif += REMOVE_GROUP.format(group_name=group, user_dn=user_dn)
-                    print(" ", group, "(removing)")
+                    if group.startswith("cn=project-"):
+                        print(" ", group, "(Cloud VPS project, must be removed manually)")
+                        has_openstack_projects = True
+                    else:
+                        ldif += REMOVE_GROUP.format(group_name=group, user_dn=user_dn)
+                        print(" ", group, "(removing)")
                 else:
                     print(" ", group, "(can be retained)")
 
-    if len(project_admins) == 0:
-        print("Is not a project admin in Nova")
-    else:
-        print("Is project admin of the following projects:")
-        for group in project_admins:
-            if remove_all_groups:
-                ldif += REMOVE_GROUP.format(group_name=group, user_dn=user_dn)
-                print(" ", group, "(removing)")
-            else:
-                print(" ", group, "(can be retained)")
+    if has_openstack_projects:
+        print("To remove membership in Cloud VPS projects mentioned above, please see:")
+        print(
+            "  https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/"
+            "Admin/Projects_lifecycle#Manage_project_access"
+        )
 
     if len(member_set & priv_set) > 0:
         print("Privileged groups:")
