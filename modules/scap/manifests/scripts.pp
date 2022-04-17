@@ -108,12 +108,4 @@ class scap::scripts (
         mode    => '0444',
         content => template('scap/mw-deployment-vars.erb'),
     }
-
-    # Clean up old cruft
-    file { '/usr/local/bin/clear-profile':
-        ensure => 'absent',
-    }
-    file { '/usr/local/bin/udprec':
-        ensure => 'absent',
-    }
 }
