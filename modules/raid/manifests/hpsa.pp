@@ -3,9 +3,9 @@ class raid::hpsa {
   include raid
 
   if debian::codename::ge('bullseye')  {
-      ensure_packages(['hpssacli', 'hpssaducli', 'lsscsi'])
-  } else {
       ensure_packages(['ssacli', 'lsscsi'])
+  } else {
+      ensure_packages(['hpssacli', 'hpssaducli', 'lsscsi'])
   }
 
   file { '/usr/local/lib/nagios/plugins/check_hpssacli':
