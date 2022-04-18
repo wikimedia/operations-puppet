@@ -1,7 +1,12 @@
 # HP Raid controller
 class raid::hpsa {
   include raid
-  ensure_packages(['hpssacli', 'hpssaducli', 'lsscsi'])
+
+  if debian::codename::ge('bullseye')  {
+      ensure_packages(['hpssacli', 'hpssaducli', 'lsscsi'])
+  } else {
+      ensure_packages(['ssacli', 'lsscsi'])
+  }
 
   file { '/usr/local/lib/nagios/plugins/check_hpssacli':
     ensure => present,
