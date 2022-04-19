@@ -28,8 +28,12 @@ server {
    root <%= @xmldumpsdir %>;
 
    if ($http_user_agent ~* "<%= @blocked_user_agent_regex -%>") {
-        return 403 "Blocked user agent";
+      return 403 "Blocked user agent";
    }
+   if ($http_user_agent = "python-requests/2.25.1") {
+      return 429;
+   }
+
 
    location / {
       index index.html index.htm;
