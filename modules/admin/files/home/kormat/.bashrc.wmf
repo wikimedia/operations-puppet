@@ -1,3 +1,6 @@
+# Stop losing state when away for more than 5 days. Grr.
+unset TMOUT
+
 set_proxies() {
     export http_proxy="http://webproxy:8080"
     export https_proxy="$http_proxy"
