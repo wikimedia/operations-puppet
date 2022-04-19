@@ -3,6 +3,10 @@ profile::contacts::role_contacts:
 
 cluster: thanos
 
+# Temporary to allow tegola container deletion/cleanup
+# https://phabricator.wikimedia.org/T306424
+profile::swift::storage::disable_fallocate: true
+
 profile::prometheus::statsd_exporter::mappings:
   # Account-related services
   - match: swift.*.*.account-auditor.passes
