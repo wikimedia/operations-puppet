@@ -1183,7 +1183,6 @@ host pybal-test2001 {
 host pybal-test2002 {
     hardware ethernet aa:00:00:f8:8d:e1;
     fixed-address pybal-test2002.codfw.wmnet;
-    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/stretch-installer/";
 }
 
 host pybal-test2003 {
