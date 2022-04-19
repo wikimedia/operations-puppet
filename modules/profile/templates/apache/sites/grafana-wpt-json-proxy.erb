@@ -6,7 +6,7 @@
 Listen <%= @wpt_json_proxy_port %>
 <VirtualHost *:<%= @wpt_json_proxy_port %>>
   <Location "/">
-    ProxyPass "https://synthetic-tests-result-wikimedia.s3.amazonaws.com/"
+    ProxyPass "http://synthetic-tests-result-wikimedia.s3.amazonaws.com/"
   </Location>
   ProxyRemote "*" "http://webproxy.<%= @site %>.wmnet:8080"
 </VirtualHost>
