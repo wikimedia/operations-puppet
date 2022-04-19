@@ -44,10 +44,6 @@ class profile::memcached::memkeys {
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* ${hour}:${minute}:00"},
     }
 
-    cron { 'memkeys':
-        ensure => absent,
-    }
-
     rsyslog::conf { 'memkeys':
         content  => template('role/memcached/rsyslog.conf.erb'),
         priority => 40,
