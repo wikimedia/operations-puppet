@@ -22,7 +22,7 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi]
+              clarakosi, jdl]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -128,7 +128,7 @@ groups:
               mstyles, dpifke,
               phuedx, samwilson, dmaza, tchanders,
               wikigit, arlolra, dancy, chrisalbon,
-              jdl, annet, jgiannelos, kharlan, stran, jhernandez, sihe,
+              annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche]
     system_members: [mwbuilder]
     privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
@@ -343,7 +343,7 @@ groups:
               piccardi, eevans, ladsgroup, musikanimal,
               goransm, dsaez, rho, mirrys, slaporte, jk,
               ayounsi, mepps, mmiller, seddon, tstarling, karen,
-              cicalese, gbirke, isaacj, sbassett, jdl,
+              cicalese, gbirke, isaacj, sbassett,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, keepit-ssh, jiji, cohi, mstyles, snowick,
@@ -895,7 +895,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, jdl, iflorez, echetty]
+    members: [bearloga, neilpquinn-wmf, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, echetty]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
   peek-admins:
@@ -3576,15 +3576,13 @@ users:
     email: sbassett@wikimedia.org
     krb: present
   jdl:
-    ensure: present
+    ensure: absent
     realname: Jason David Linehan
     name: jdl
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZcJ3VhuvTvkRNYmNB6RW4GInY8RQOdjjXSEz9UDS27
+    ssh_keys: []
     uid: 20295
-    email: jlinehan@wikimedia.org
-    krb: present
+    krb: absent
   fsero:
     ensure: present
     realname: Fabian Selles Rosa
