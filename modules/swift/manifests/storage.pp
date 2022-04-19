@@ -15,6 +15,7 @@ class swift::storage (
     $replication_limit_memory_percent = 0,
     $loopback_device_size             = undef,
     $loopback_device_count            = 0,
+    Boolean $disable_fallocate        = false,
 ) {
     package {
         [ 'swift-account',

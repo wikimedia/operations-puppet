@@ -364,6 +364,7 @@ profile::swift::storage::object_replicator_concurrency: 1
 profile::swift::storage::replication_limit_memory_percent: 0
 profile::swift::storage::loopback_device_size: 2G
 profile::swift::storage::loopback_device_count: 0
+profile::swift::storage::disable_fallocate: false
 profile::swift::proxy::use_tls: false
 profile::swift::proxy::statsd_host: ~
 profile::swift::proxy::statsd_port: 8125

@@ -9,3 +9,4 @@ profile::swift::storage::container_replicator_interval: ~
 profile::swift::storage::replication_limit_memory_percent: 0
 profile::swift::storage::loopback_device_size: 2G
 profile::swift::storage::loopback_device_count: 0
+profile::swift::storage::disable_fallocate: false

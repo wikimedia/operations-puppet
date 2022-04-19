@@ -5,6 +5,7 @@ devices = /srv/swift-storage/
 <% if @object_server_default_workers -%>
 workers = <%= @object_server_default_workers %>
 <% end -%>
+disable_fallocate = <%= @disable_fallocate %>
 <% if @statsd_host -%>
 log_statsd_host = <%= @statsd_host %>
 log_statsd_port = <%= @statsd_port %>

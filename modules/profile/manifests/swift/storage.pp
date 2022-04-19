@@ -19,6 +19,7 @@ class profile::swift::storage (
     Optional[Integer] $replication_limit_memory_percent = lookup('profile::swift::storage::replication_limit_memory_percent'),
     Optional[String] $loopback_device_size              = lookup('profile::swift::storage::loopback_device_size'),
     Optional[Integer] $loopback_device_count            = lookup('profile::swift::storage::loopback_device_count'),
+    Boolean $disable_fallocate                          = lookup('profile::swift::storage::disable_fallocate'),
 ){
 
     $site_backends = $swift_backends.filter |$host| { $host =~ Regexp("${::domain}$") }
@@ -46,6 +47,7 @@ class profile::swift::storage (
         replication_limit_memory_percent => $replication_limit_memory_percent,
         loopback_device_size             => $loopback_device_size,
         loopback_device_count            => $loopback_device_count,
+        disable_fallocate                => $disable_fallocate,
     }
 
     class { 'swift::container_sync':
