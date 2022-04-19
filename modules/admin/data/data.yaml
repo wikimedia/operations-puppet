@@ -22,7 +22,7 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi, jdl]
+              clarakosi, jdl, keepit-ssh]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -346,7 +346,7 @@ groups:
               cicalese, gbirke, isaacj, sbassett,
               niharika29, ryanmax, afandian2, jgleeson, toddleroux, srishakatux, dsharpe, eyener,
               esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
-              kevinbazira, keepit-ssh, jiji, cohi, mstyles, snowick,
+              kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
               itamar, phedenskog, aaron, dpifke, aklapper, andrew-wmde, daniram,
               chrisalbon, wikigit, nahidunlimited, swagoel,
@@ -3899,14 +3899,12 @@ users:
     ssh_keys: []
     krb: absent
   keepit-ssh:
-    ensure: present
+    ensure: absent
     realname: CherRaye Glenn
-    email: cglenn@wikimedia.org
     uid: 22337
     gid: 500
     name: keepit-ssh
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMeWCU/+GVgchiMCFDFlT+SS2M7xRWtKwuiV31HDz7AU cglenn@CherRayes-MacBook-Pro.local
+    ssh_keys: []
   kevinbazira:
     ensure: present
     realname: Kevin Bazira
