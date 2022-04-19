@@ -336,6 +336,11 @@ node /^cloudcephmon200[2-4]-dev\.codfw\.wmnet$/ {
     role(wmcs::ceph::mon)
 }
 
+#New cloudcephmon node T304881 
+node /^cloudcephmon200[5-6]-dev\.codfw\.wmnet$/ {
+    role(insetup)
+}
+
 # new cloudstore hosts T302981
 node /^cloudstore1001[01]\.wikimedia\.org/ {
     role(insetup)
@@ -1477,8 +1482,18 @@ node 'cloudweb2001-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::cloudweb)
 }
 
+# New cloudweb node T304881
+node 'cloudweb2002-dev.wikimedia.org' {
+    role(insetup)
+}
+
 node /^cloudnet200[24]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::net)
+}
+
+#New cloudnet node T304881
+node /^cloudnet200[5-6]-dev\.codfw\.wmnet$/ {
+    role(insetup)
 }
 
 node 'clouddb2001-dev.codfw.wmnet' {
@@ -1495,6 +1510,11 @@ node 'cloudcontrol2004-dev.wikimedia.org' {
 
 node 'cloudservices2002-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::services)
+}
+
+#New cloudservices node T304881
+node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
+    role(insetup)
 }
 
 node 'cloudservices2003-dev.wikimedia.org' {
