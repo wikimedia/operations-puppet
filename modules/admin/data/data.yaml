@@ -5983,7 +5983,7 @@ ldap_only_users:
   zabe:
     ensure: present
     realname: Alexander Vorwerk
-    email: alexander.vorwerk@stud.uni-goettingen.de
+    email: zabe@avorwerk.net
   mfossati:
     ensure: present
     realname: Marco Fossati
