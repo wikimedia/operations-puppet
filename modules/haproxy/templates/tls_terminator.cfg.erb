@@ -28,6 +28,14 @@ global
     tune.h2.initial-window-size <%= @h2settings['initial_window_size'] %>
     tune.h2.max-concurrent-streams <%= @h2settings['max_concurrent_streams'] %>
 
+<%- if @sticktables -%>
+# Pseudo-backends used only for statistics tracking.
+<%- @sticktables.each do |table| -%>
+backend <%= table['name'] %>
+    stick-table type <%= table['type'] %> size <%= table['size'] %> <%= table['expire'] ? "expire " + table['expire'] : "" %> <%= table['store'] ? "store " + table['store'].join(',') : "" %>
+<%- end -%>
+<%- end -%>
+
 listen tls
     log global
     maxconn 199000
@@ -73,6 +81,12 @@ listen tls
 <%- if var['acl'] -%>
     http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %> if <%= var['acl'] %>
 <%- end -%>
+<%- end -%>
+<%- end -%>
+
+<%- if @stickycounters -%>
+<%- @stickycounters.each_with_index do |counter, index| -%>
+    <%= counter['context'] %> track-sc<%= index %> <%= counter['table'] ? "table " + counter['table'] : "" %> <%= counter['condition'] or "" %>
 <%- end -%>
 <%- end -%>
 

@@ -17,6 +17,8 @@ class profile::cache::haproxy(
     Array[Haproxy::Acl] $acls = lookup('profile::cache::haproxy::acls'),
     Array[Haproxy::Header] $add_headers = lookup('profile::cache::haproxy::add_headers'),
     Array[Haproxy::Header] $del_headers = lookup('profile::cache::haproxy::del_headers'),
+    Optional[Array[Haproxy::Sticktable]] $sticktables = lookup('profile::cache::haproxy::sticktables', {'default_value' => undef}),
+    Optional[Array[Haproxy::Stickycounter]] $stickycounters = lookup('profile::cache::haproxy::stickycounters', {'default_value' => undef}),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     String $ocsp_proxy = lookup('http_proxy'),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
@@ -167,6 +169,8 @@ class profile::cache::haproxy(
         del_headers          => $del_headers,
         prometheus_port      => $prometheus_port,
         numa_iface           => $numa_iface,
+        sticktables          => $sticktables,
+        stickycounters       => $stickycounters,
     }
 
     profile::cache::haproxy::monitoring { 'haproxy_tls_monitoring':
