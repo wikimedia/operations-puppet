@@ -1,4 +1,11 @@
-$AddUnixListenSocket /var/lib/haproxy/dev/log
-# forward haproxy logs to the FIFO and stop them from being logged on disk
-if $programname == "haproxy" then |<%= @mtail_fifo %>
-& stop
+input(type="imuxsock"
+      Socket="/var/lib/haproxy/dev/log"
+      CreatePath="on"
+)
+# forward haproxy logs to the FIFO and stop them from being logged on disk if severity is lower than emergency
+if $programname == "haproxy" then {
+    action(type="ompipe" Pipe="<%= @mtail_fifo %>")
+    if $syslogseverity > 0 then {
+        stop
+    }
+}
