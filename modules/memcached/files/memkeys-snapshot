@@ -1,6 +1,6 @@
 #!/bin/bash
 # Log 10 seconds of memcached activity to a file.
-# Meant to be invoked by cron.
+# Meant to be invoked by a systemd timer job.
 set -e
 set -u
 TIMESTAMP="$(/bin/date +"%Y_%m_%d")"
