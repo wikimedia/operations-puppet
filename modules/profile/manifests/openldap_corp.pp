@@ -41,5 +41,5 @@ class profile::openldap_corp (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
     }
 
-    backup::openldapset {'openldap_oit':}
+    backup::openldapset { 'openldap' :}
 }
