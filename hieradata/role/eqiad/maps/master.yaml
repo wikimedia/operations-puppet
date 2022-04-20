@@ -32,7 +32,7 @@ profile::cassandra::single_instance::seeds:
 
 profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_master::planet_sync_hours: '*/12'
-profile::maps::osm_master::disable_replication_cron: false
+profile::maps::osm_master::disable_replication_cron: true
 profile::maps::osm_master::disable_tile_generation_cron: true
 profile::maps::osm_master::disable_admin_cron: true
 profile::maps::osm_master::replicas:
@@ -54,10 +54,10 @@ profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.eqiad
 cassandra::target_version: '3.x'
 
 # Could be as high as 32GB
-profile::maps::postgresql_common::shared_buffers: '16GB'
+# profile::maps::postgresql_common::shared_buffers: '16GB'
 # Can be ncpu
-profile::maps::postgresql_common::max_worker_processes: 48
+# profile::maps::postgresql_common::max_worker_processes: 48
 # With current spec could be as high as 96GB
-profile::maps::postgresql_common::effective_cache_size: '64GB'
+# profile::maps::postgresql_common::effective_cache_size: '64GB'
 
 profile::maps::osm_master::log_min_duration_statement: 10000 # 10 seconds
