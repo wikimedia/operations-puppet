@@ -6012,3 +6012,15 @@ ldap_only_users:
     ensure: present
     realname: Nat Hillard
     email: nhillard@wikimedia.org
+  maryyang:
+    ensure: present
+    realname: Mary Yang
+    email: myang-ctr@wikimedia.org
+    expiry_date: 2022-09-30
+    expiry_contact: abaso@wikimedia.org
+  aassaf:
+    ensure: present
+    realname: A. Assaf
+    email: aassaf-ctr@wikimedia.org
+    expiry_date: 2022-10-10
+    expiry_contact: abaso@wikimedia.org
