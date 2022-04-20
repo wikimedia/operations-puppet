@@ -9,6 +9,11 @@ class ceph::mon (
     Ceph::Auth::Keyring["mon.${::hostname}"] -> Class['ceph::mon']
     Class['ceph::config'] -> Class['ceph::mon']
 
+    ensure_packages([
+      'ceph-mon',
+      'ceph-mgr',
+    ])
+
     file { "${data_dir}/mon/ceph-${::hostname}":
         ensure => 'directory',
         owner  => 'ceph',
