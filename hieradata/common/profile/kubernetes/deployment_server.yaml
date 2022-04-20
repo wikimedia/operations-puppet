@@ -157,6 +157,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: developer-portal
         - name: developer-portal-deploy
+    image-suggestion:
+      usernames:
+        - name: image-suggestion
+        - name: image-suggestion-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
