@@ -39,6 +39,10 @@ groups:
   # * the exporter can't talk to the underlying service (e.g. mysql is down, thus "mysql_up" is 0)
   #
   # The label_replace function is used to attach a new "exporter" label to the aggregated metric.
+  #
+  # The following query will list all the "up style" metrics:
+  #   count by (__name__) ({__name__=~".*_up$"})
+
   - name: exporters
     rules:
       - record: exporter:up:avail
@@ -52,5 +56,96 @@ groups:
         expr: label_replace(
           sum(apache_up) without (instance) / count(apache_up) without (instance),
           "exporter", "apache",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(etherpad_up) without (instance) / count(etherpad_up) without (instance),
+          "exporter", "etherpad",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(haproxy_up) without (instance) / count(haproxy_up) without (instance),
+          "exporter", "haproxy",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(pg_up) without (instance) / count(pg_up) without (instance),
+          "exporter", "postgres",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(varnish_up) without (instance) / count(varnish_up) without (instance),
+          "exporter", "varnish",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(openldap_up) without (instance) / count(openldap_up) without (instance),
+          "exporter", "openldap",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(memcached_up) without (instance) / count(memcached_up) without (instance),
+          "exporter", "memcached",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(mcrouter_up) without (instance) / count(mcrouter_up) without (instance),
+          "exporter", "mcrouter",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(phpfpm_up) without (instance) / count(phpfpm_up) without (instance),
+          "exporter", "phpfpm",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(nutcracker_up) without (instance) / count(nutcracker_up) without (instance),
+          "exporter", "nutcracker",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(redis_up) without (instance) / count(redis_up) without (instance),
+          "exporter", "redis",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(ipsec_up) without (instance) / count(ipsec_up) without (instance),
+          "exporter", "ipsec",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(elasticsearch_node_stats_up) without (instance) / count(elasticsearch_node_stats_up) without (instance),
+          "exporter", "elasticsearch",
+          "", ""
+          )
+
+      - record: exporter:up:avail
+        expr: label_replace(
+          sum(squid_up) without (instance) / count(squid_up) without (instance),
+          "exporter", "squid",
           "", ""
           )
