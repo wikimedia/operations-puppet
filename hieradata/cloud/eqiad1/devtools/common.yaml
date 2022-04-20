@@ -55,8 +55,8 @@ phabricator_cluster_search:
 
 deployment_hosts:
 - '172.16.0.238'
-deployment_server: deploy-1004.devtools.eqiad.wmflabs
-scap::deployment_server: deploy-1004.devtools.eqiad.wmflabs
+deployment_server: deploy-1004.devtools.eqiad1.wikimedia.cloud
+scap::deployment_server: deploy-1004.devtools.eqiad1.wikimedia.cloud
 
 has_lvs: false
 has_tls: false
@@ -68,7 +68,7 @@ profile::kubernetes::deployment_server::user_defaults:
   mode: '0640'
   owner: mwdeploy
 profile::mediawiki::apc_shm_size: 128M
-profile::mediawiki::deployment::server::rsync_host: deploy-1004.devtools.eqiad.wmflabs
+profile::mediawiki::deployment::server::rsync_host: deploy-1004.devtools.eqiad1.wikimedia.cloud
 profile::mediawiki::php::enable_fpm: true
 profile::rsyslog::kafka_shipper::kafka_brokers: []
 redis::shards:
@@ -140,7 +140,7 @@ profile::gerrit::bacula: gerrit-repo-data
 profile::gerrit::java_version: 8
 
 ## Deployment
-scap::wmflabs_master: deploy-1004.devtools.eqiad.wmflabs
+scap::wmflabs_master: deploy-1004.devtools.eqiad1.wikimedia.cloud
 profile::gerrit::scap_user: 'gerrit2'
 profile::gerrit::scap_key_name: 'gerrit'
 profile::base::ssh_server_settings:
