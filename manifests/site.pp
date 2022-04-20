@@ -1503,16 +1503,7 @@ node 'cloudcontrol2004-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
 }
 
-node 'cloudservices2002-dev.wikimedia.org' {
-    role(wmcs::openstack::codfw1dev::services)
-}
-
-#New cloudservices node T304881
-node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
-    role(insetup)
-}
-
-node 'cloudservices2003-dev.wikimedia.org' {
+node /^cloudservices200[2-5]-dev\.wikimedia\.org$/ {
     role(wmcs::openstack::codfw1dev::services)
 }
 
