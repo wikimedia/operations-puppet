@@ -1072,6 +1072,12 @@ groups:
     system: true
     members: []
   # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in mediabackups::storage.
+  # minio-user:
+  #   gid: 914
+  #   system: true
+  #   members: []
+  # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet.
   # kafka:
   #   gid: 916
