@@ -75,6 +75,7 @@ profile::trafficserver::tls::logs:
     format: wmf-analytics
     mode: ascii_pipe
     ensure: present
+profile::trafficserver::tls::monitor_enable: false
 profile::trafficserver::backend::log_formats:
   - name: wmf
     # TTFetchHeaders is the amount of time between the first origin server
