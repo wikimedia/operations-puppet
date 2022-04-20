@@ -1477,9 +1477,8 @@ node 'cloudweb2001-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::cloudweb)
 }
 
-# New cloudweb node T304881
 node 'cloudweb2002-dev.wikimedia.org' {
-    role(insetup)
+    role(wmcs::openstack::codfw1dev::cloudweb)
 }
 
 node /^cloudnet200[24]-dev\.codfw\.wmnet$/ {
