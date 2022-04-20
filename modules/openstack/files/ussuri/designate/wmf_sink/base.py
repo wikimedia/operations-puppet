@@ -158,7 +158,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
 
         response = session.delete("{}/prefix/{}".format(enc_url, fqdn), raise_exc=False)
         # no prefix, no problem!
-        if response.status != 404:
+        if response.status_code != 404:
             response.raise_for_status()
 
     def _get_repo(self):
