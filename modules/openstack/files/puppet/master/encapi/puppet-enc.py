@@ -390,14 +390,16 @@ def delete_prefix(project, prefix):
         cur.execute("""
             SELECT id  FROM prefix WHERE project = %s and prefix = %s
         """, (project, prefix))
-        prefix_id = cur.fetchone()[0]
+        row = cur.fetchone()
 
-        if not prefix_id:
+        if not row:
             return Response(
                 yaml.dump({'status': 'notfound'}),
                 status=404,
                 mimetype='application/x-yaml'
             )
+
+        prefix_id = row[0]
 
         g.db.begin()
         cur.execute("""
