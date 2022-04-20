@@ -19,7 +19,7 @@ groups:
               drossi, fsalutari, demon, lulu, jkumalah, nathante, shiladsen, leila, rush, niedzielski,
               dstrine, kaldari, dcipoletti, mhurd, mattflaschen, daisy, lexnasser,
               risler, jdittrich, debt, bsitzmann, zfilipin, agaduran, dedcode, phamhi, olykalinichenko,
-              crusnov, liw, jkatz, gsingers, toberto, holger, jmads, fdans, gilles, kaywong,
+              crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
               clarakosi, jdl, keepit-ssh]
@@ -363,7 +363,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
               shubhankar, dalezhou, nokafor, otich, sgimeno, tchin, paramd, aitolkyn, drochford,
-              essexigyan]
+              essexigyan, jmads]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -4080,12 +4080,16 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC70NjTsRUjZxH7bWPpRdaV8z9jD3RGnP25YbA4/DdN3 tklausmann@wikimedia.org-prod'
     krb: present
   jmads:
-    ensure: absent
+    ensure: present
     realname: Jim Maddock
-    ssh_keys: []
+    email: jmaddock-ctr@wikimedia.org
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII7ZsgXpcVy8P3a5jyg3+hlVbxpAHFw8wuXuB0IKSWD9 klogg@Jims-MacBook-Pro-2.local'
     uid: 24076
     gid: 500
-    krb: absent
+    expiry_date: 2022-06-30
+    expiry_contact: bgerdemann@wikimedia.org
+    krb: present
   wkandek:
     ensure: absent
     realname: Wolfgang Kandek
