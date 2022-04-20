@@ -86,7 +86,7 @@ listen tls
 
 <%- if @stickycounters -%>
 <%- @stickycounters.each_with_index do |counter, index| -%>
-    <%= counter['context'] %> track-sc<%= index %> <%= counter['table'] ? "table " + counter['table'] : "" %> <%= counter['condition'] or "" %>
+    <%= counter['context'] %> track-sc<%= index %> <%= counter['key'] %> <%= counter['table'] ? "table " + counter['table'] : "" %> <%= counter['condition'] or "" %>
 <%- end -%>
 <%- end -%>
 
