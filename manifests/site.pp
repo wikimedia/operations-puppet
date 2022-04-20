@@ -1919,12 +1919,7 @@ node /^ml-serve200[1-8]\.codfw\.wmnet/ {
     role(ml_k8s::worker)
 }
 
-# new ml-serve hosts T294949
-node /^ml-serve100[5-8]\.eqiad\.wmnet/ {
-    role(insetup)
-}
-
-node /^ml-serve100[1234]\.eqiad\.wmnet/ {
+node /^ml-serve100[1-8]\.eqiad\.wmnet/ {
     role(ml_k8s::worker)
 }
 
@@ -2640,7 +2635,7 @@ node /^restbase20(09|1[0-9]|2[0-6])\.codfw\.wmnet$/ {
     role(restbase::production)
 }
 
-# codfw new restbase host T301399 
+# codfw new restbase host T301399
 node 'restbase2027.codfw.wmnet' {
     role(insetup)
 }
