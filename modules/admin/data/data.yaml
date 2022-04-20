@@ -5598,10 +5598,12 @@ ldap_only_users:
     ensure: present
     realname: Thea Skaff
     email: tskaff@wikimedia.org
-  samtar:
+  samtar:  # Was previously in the NDA group, same account, personal email.
     ensure: present
     realname: Sam Tarling
-    email: sam@theresnotime.co.uk
+    email: starling-ctr@wikimedia.org
+    expiry_date: 2022-10-17
+    expiry_contact: ksiebert@wikimedia.org
   cgauthier:
     ensure: absent
     realname: Charlotte Gauthier
