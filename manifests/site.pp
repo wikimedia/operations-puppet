@@ -332,13 +332,8 @@ node /^cloudcephosd200[123]-dev\.codfw\.wmnet/ {
     role(wmcs::ceph::osd)
 }
 
-node /^cloudcephmon200[2-4]-dev\.codfw\.wmnet$/ {
+node /^cloudcephmon200[2-6]-dev\.codfw\.wmnet$/ {
     role(wmcs::ceph::mon)
-}
-
-#New cloudcephmon node T304881 
-node /^cloudcephmon200[5-6]-dev\.codfw\.wmnet$/ {
-    role(insetup)
 }
 
 # new cloudstore hosts T302981
