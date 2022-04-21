@@ -177,10 +177,11 @@ class mediabackup::worker (
     }
 
     file { '/root/.mc/config.json':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0750',
-        content => template('mediabackup/mc_config.json.erb'),
+        ensure    => present,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0750',
+        show_diff => false,
+        content   => template('mediabackup/mc_config.json.erb'),
     }
 }

@@ -1,7 +1,7 @@
 {
     "version": "10",
     "aliases": {
-    <%  @storage_hosts.each do |host| -%>
+    <%  @storage_hosts.each do |host| %>
         "<%= host.split('.', 2)[0] %>": {
             "url": "https://<%= host %>:9000",
             "accessKey": "<%= @storage_root_user %>",
@@ -9,6 +9,6 @@
             "api": "s3v4",
             "path": "auto"
         }<%= host.equal?(@storage_hosts.last) ? "" : "," -%>
-    <% end -%>
+    <% end %>
     }
 }
