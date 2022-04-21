@@ -58,10 +58,16 @@ profile::openstack::base::nutcracker::redis::shards:
       cloudweb2001-dev:
         host: 208.80.153.60
         port: 6378
+      cloudweb2002-dev:
+        host: 208.80.153.41
+        port: 6378
   sessions:
     eqiad:
       cloudweb2001-dev:
         host: 208.80.153.60
+        port: 6378
+      cloudweb2002-dev:
+        host: 208.80.153.41
         port: 6378
 
 
