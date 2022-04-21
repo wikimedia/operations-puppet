@@ -2921,8 +2921,9 @@ node /^wdqs10(09|10)\.eqiad\.wmnet$/ {
     role(wdqs::test)
 }
 
+# Old Coal VMs, pending decom
 node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
-    role(webperf::processors_and_site)
+    role(insetup)
 }
 
 node 'webperf1003.eqiad.wmnet' {
