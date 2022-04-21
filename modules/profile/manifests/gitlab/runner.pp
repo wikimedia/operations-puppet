@@ -72,7 +72,10 @@ class profile::gitlab::runner (
     if $gitlab_runner_user != 'root' {
 
         # setup dedicated gitlab-runner user
-        wmflib::dir::mkdir_p(["/home/${gitlab_runner_user}/.${gitlab_runner_user}"])
+        wmflib::dir::mkdir_p(
+            ["/home/${gitlab_runner_user}/.${gitlab_runner_user}"],
+            {owner => $gitlab_runner_user},
+        )
         systemd::sysuser { $gitlab_runner_user:
             description       => 'used by gitlab-runner',
             home_dir          => "/home/${gitlab_runner_user}",
