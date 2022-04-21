@@ -24,6 +24,10 @@
 #                 to allow for multiplexing with multiple services per host
 # * encryption_key: String used for encryption and decryption of private files
 #                   Can be an age secret key or an ssh file
+# * storage_root_user: identifier to authenticate on the s3-compatible api for
+#                      the admin account (all privileges)
+# * storage_root_password: password to authenticate on the s3-compatible api for
+#                          the admin user
 # * access_key: identifier to authenticate on the s3-compatible api to store
 #               the backup files (it has both read and write permissions)
 # * secret_key: password to authenticate on the s3-compatible api for backing
@@ -48,6 +52,8 @@ class mediabackup::worker (
     Array[Stdlib::Fqdn] $storage_hosts,
     Stdlib::Port        $storage_port,
     String              $encryption_key,
+    String              $storage_root_user,
+    String              $storage_root_password,
     String              $access_key,
     String              $secret_key,
     String              $recovery_access_key,
@@ -160,5 +166,21 @@ class mediabackup::worker (
             File['/srv/mediabackup'],
             File['/etc/mediabackup/readandlist.json'],
         ],
+    }
+
+    # setup mc client server aliases for admin convenience
+    file { '/root/.mc':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0750',
+    }
+
+    file { '/root/.mc/config.json':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0750',
+        content => template('mediabackup/mc_config.json.erb'),
     }
 }

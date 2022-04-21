@@ -1,0 +1,14 @@
+{
+    "version": "10",
+    "aliases": {
+    <%  @storage_hosts.each do |host| -%>
+        "<%= host.split('.', 2)[0] %>": {
+            "url": "https://<%= host %>:9000",
+            "accessKey": "<%= @storage_root_user %>",
+            "secretKey": "<%= @storage_root_password %>",
+            "api": "s3v4",
+            "path": "auto"
+        },
+    <% end -%>
+    }
+}
