@@ -2207,11 +2207,6 @@ node /^mw133[4-8]\.eqiad\.wmnet$/ {
     role(mediawiki::jobrunner)
 }
 
-# new mw hosts via T273915
-node /^mw14(5[1-6])\.eqiad\.wmnet$/ {
-    role(insetup)
-}
-
 ## DATACENTER: CODFW
 
 # Debug servers
@@ -2306,9 +2301,16 @@ node /^mw23(3[5-9])\.codfw\.wmnet$/ {
     role(mediawiki::appserver)
 }
 
-# New appserver T290192
-node /^mw24(1[2-9])\.codfw\.wmnet$/ {
-    role(insetup)
+node /^mw24(1[2-5])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver)
+}
+
+node /^mw24(1[6-8])\.codfw\.wmnet$/ {
+    role(mediawiki::appserver::api)
+}
+
+node /^mw2419\.codfw\.wmnet$/ {
+    role(mediawiki::jobrunner)
 }
 
 # Row D
