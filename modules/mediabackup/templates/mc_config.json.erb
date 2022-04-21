@@ -8,7 +8,7 @@
             "secretKey": "<%= @storage_root_password %>",
             "api": "s3v4",
             "path": "auto"
-        },
+        }<%= host.equal?(@storage_hosts.last) ? "" : "," -%>
     <% end -%>
     }
 }
