@@ -2533,7 +2533,7 @@ node 'pc2013.codfw.wmnet' {
 
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
-node /^ping[123]00[12]\.(eqiad|codfw|esams)\.wmnet$/ {
+node /^ping[123]002\.(eqiad|codfw|esams)\.wmnet$/ {
     role(ping_offload)
 }
 
