@@ -1,0 +1,39 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[DEFAULT]
+auth_strategy=keystone
+
+[enc]
+mysql_host = <%= @mysql_host %>
+mysql_db = <%= @mysql_db %>
+mysql_username = <%= @mysql_username %>
+mysql_password = <%= @mysql_password %>
+
+allowed_writers = <%= @allowed_writers.join(',') %>
+
+[keystone_authtoken]
+identity_uri = <%= @keystone_api_url %>
+www_authenticate_uri = <%= @keystone_api_url %>
+
+http_connect_timeout = 5
+
+interface = public
+auth_type = password
+auth_url = <%= @keystone_api_url %>
+username = <%= @token_validator_username %>
+user_domain_id = default
+password = <%= @token_validator_password %>
+project_name = <%= @token_validator_project %>
+project_domain_id = default
+
+auth_version = 3.14
+
+service_type = puppet-enc
+
+delay_auth_decision = True
+
+[flask_keystone]
+# this can be empty, we're using a different mechanism (oslo.policy) for role checks
+roles = ""
+
+# endpoints queried by puppetmasters don't use keystone
+allow_anonymous_access = True

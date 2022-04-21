@@ -1,12 +1,37 @@
-from flask import Flask, request, g, Response
-import pymysql
-import os
 import re
+
+import pymysql
 import yaml
+
+from flask import Flask, request, g, Response
+from flask_keystone import FlaskKeystone
+from flask_oslolog import OsloLog
+from oslo_config import cfg
+
+cfgGroup = cfg.OptGroup('enc')
+opts = [
+    cfg.StrOpt('mysql_host'),
+    cfg.StrOpt('mysql_db'),
+    cfg.StrOpt('mysql_username', secret=True),
+    cfg.StrOpt('mysql_password'),
+    cfg.StrOpt('allowed_writers'),
+]
+
+key = FlaskKeystone()
+log = OsloLog()
+
+cfg.CONF.register_group(cfgGroup)
+cfg.CONF.register_opts(opts, group=cfgGroup)
+
+cfg.CONF(default_config_files=['/etc/puppet-enc-api/config.ini'])
 
 app = Flask(__name__)
 # Propogate exceptions to the uwsgi log
 app.config['PROPAGATE_EXCEPTIONS'] = True
+
+
+key.init_app(app)
+log.init_app(app)
 
 
 def _preprocess_prefix(prefix):
@@ -30,13 +55,16 @@ def _preprocess_prefix(prefix):
 @app.before_request
 def before_request():
     g.db = pymysql.connect(
-        host=os.environ['MYSQL_HOST'],
-        db=os.environ['MYSQL_DB'],
-        user=os.environ['MYSQL_USERNAME'],
-        passwd=os.environ['MYSQL_PASSWORD'],
+        host=cfg.CONF.enc.mysql_host,
+        db=cfg.CONF.enc.mysql_db,
+        user=cfg.CONF.enc.mysql_username,
+        passwd=cfg.CONF.enc.mysql_password,
         charset='utf8'
     )
-    g.allowed_writers = os.environ['ALLOWED_WRITERS'].strip().split(',')
+
+    g.allowed_writers = [
+        writer.strip() for writer in cfg.CONF.enc.allowed_writers.split(',')
+    ]
 
 
 @app.teardown_request
@@ -47,6 +75,7 @@ def teardown_request(exception):
 
 
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['GET'])
+@key.login_required
 def get_roles(project, prefix):
     prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
@@ -73,6 +102,7 @@ def get_roles(project, prefix):
 
 
 @app.route('/v1/roles', methods=['GET'])
+@key.login_required
 def get_all_roles():
     cur = g.db.cursor()
     try:
@@ -96,6 +126,7 @@ def get_all_roles():
 
 
 @app.route('/v1/projects', methods=['GET'])
+@key.login_required
 def get_all_projects():
     cur = g.db.cursor()
     try:
@@ -119,8 +150,8 @@ def get_all_projects():
 
 
 @app.route('/v1/<string:project>/prefix/<string:prefix>/roles', methods=['POST'])
+@key.login_required
 def set_roles(project, prefix):
-
     if request.remote_addr not in g.allowed_writers:
         return Response(
             yaml.dump({'status': 'forbidden'}),
@@ -180,6 +211,7 @@ def set_roles(project, prefix):
 
 
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['GET'])
+@key.login_required
 def get_hiera(project, prefix):
     prefix = _preprocess_prefix(prefix)
     cur = g.db.cursor()
@@ -206,6 +238,7 @@ def get_hiera(project, prefix):
 
 
 @app.route('/v1/<string:project>/prefix/<string:prefix>/hiera', methods=['POST'])
+@key.login_required
 def set_hiera(project, prefix):
 
     if request.remote_addr not in g.allowed_writers:
@@ -261,6 +294,7 @@ def set_hiera(project, prefix):
     )
 
 
+# No @key.login_required, since this one is queried by Puppetmasters
 @app.route('/v1/<string:project>/node/<string:fqdn>', methods=['GET'])
 def get_node_config(project, fqdn):
 
@@ -308,6 +342,7 @@ def get_node_config(project, fqdn):
 
 
 @app.route('/v1/<string:project>/prefix', methods=['GET'])
+@key.login_required
 def get_prefixes(project):
     cur = g.db.cursor()
     try:
@@ -328,6 +363,7 @@ def get_prefixes(project):
 
 
 @app.route('/v1/<string:project>/prefix/<string:role>', methods=['GET'])
+@key.login_required
 def get_prefixes_for_project_and_role(project, role):
     cur = g.db.cursor()
     try:
@@ -351,6 +387,7 @@ def get_prefixes_for_project_and_role(project, role):
 
 
 @app.route('/v1/prefix/<string:role>', methods=['GET'])
+@key.login_required
 def get_prefixes_for_role(role):
     cur = g.db.cursor()
     try:
@@ -376,6 +413,7 @@ def get_prefixes_for_role(role):
 
 
 @app.route('/v1/<string:project>/prefix/<string:prefix>', methods=['DELETE'])
+@key.login_required
 def delete_prefix(project, prefix):
 
     if request.remote_addr not in g.allowed_writers:

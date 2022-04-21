@@ -1,14 +1,18 @@
 class openstack::puppet::master::encapi(
-    Stdlib::Host $mysql_host,
-    String $mysql_db,
-    String $mysql_username,
-    String $mysql_password,
-    String $acme_certname,
-    Array[Stdlib::Fqdn] $labweb_hosts,
-    Array[Stdlib::Fqdn] $openstack_controllers,
-    Array[Stdlib::Fqdn] $designate_hosts,
-    Array[String] $labs_instance_ranges,
-    Wmflib::Ensure $ensure = present,
+    Stdlib::Host                         $mysql_host,
+    String[1]                            $mysql_db,
+    String[1]                            $mysql_username,
+    String[1]                            $mysql_password,
+    String[1]                            $acme_certname,
+    Stdlib::HTTPSUrl                     $keystone_api_url,
+    String[1]                            $token_validator_username,
+    String[1]                            $token_validator_password,
+    String[1]                            $token_validator_project,
+    Array[Stdlib::Fqdn]                  $labweb_hosts,
+    Array[Stdlib::Fqdn]                  $openstack_controllers,
+    Array[Stdlib::Fqdn]                  $designate_hosts,
+    Array[Stdlib::IP::Address::V4::CIDR] $labs_instance_ranges,
+    Wmflib::Ensure                       $ensure = present,
 ) {
     # for new enough python3-keystonemiddleware versions
     debian::codename::require('bullseye', '>=')
@@ -18,14 +22,16 @@ class openstack::puppet::master::encapi(
     }
 
     acme_chief::cert { $acme_certname:
+        ensure     => $ensure,
         puppet_svc => 'nginx',
     }
 
     if $ensure == 'present' {
         ensure_packages([
-            'python3-pymysql',
             'python3-flask',
-            'python3-yaml'
+            'python3-flask-keystone',  # this one is built and maintained by us
+            'python3-pymysql',
+            'python3-yaml',
         ])
     }
 
@@ -59,19 +65,27 @@ class openstack::puppet::master::encapi(
 
     # The app will check that the requesting IP is in  ALLOWED_WRITERS
     #  before writing or deleting.
-    $labweb_ips = $labweb_hosts.map |$host| { ipresolve($host, 4) }
-    $labweb_ips_v6 = $labweb_hosts.map |$host| { ipresolve($host, 6) }
-    $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
-    $designate_ips_v6 = $designate_hosts.map |$host| { ipresolve($host, 6) }
-    $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
-    $openstack_controller_ips_v6 = $openstack_controllers.map |$host| { ipresolve($host, 6) }
-    $allowed_writers = flatten([
-      $labweb_ips,
-      $labweb_ips_v6,
-      $designate_ips,
-      $designate_ips_v6,
-      $openstack_controller_ips,
-      $openstack_controller_ips_v6,])
+    $allowed_writers = ($labweb_hosts + $designate_hosts + $openstack_controllers).reduce([]) |Array $accumulate, Stdlib::Fqdn $host| {
+        $accumulate + [
+            ipresolve($host, 4),
+            ipresolve($host, 6),
+        ]
+    }
+
+    file { '/etc/puppet-enc-api':
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'www-data',
+    }
+
+    file { '/etc/puppet-enc-api/config.ini':
+        content   => template('openstack/puppet/master/encapi/config.ini.erb'),
+        owner     => 'root',
+        group     => 'www-data',
+        mode      => '0440',
+        show_diff => false,
+        notify    => Uwsgi::App['puppet-enc'],
+    }
 
     # We override service_settings because the default includes autoload
     #  which insists on using python2
@@ -86,13 +100,6 @@ class openstack::puppet::master::encapi(
                 socket              => '/run/uwsgi/puppet-enc.sock',
                 reload-on-exception => true,
                 logto               => '/var/log/puppet-enc.log',
-                env                 => [
-                    "MYSQL_HOST=${mysql_host}",
-                    "MYSQL_DB=${mysql_db}",
-                    "MYSQL_USERNAME=${mysql_username}",
-                    "MYSQL_PASSWORD=${mysql_password}",
-                    "ALLOWED_WRITERS=${allowed_writers.join(',')}",
-                ],
             },
         },
         subscribe => File["/usr/local/lib/${python_version}/dist-packages/puppet-enc.py"],
