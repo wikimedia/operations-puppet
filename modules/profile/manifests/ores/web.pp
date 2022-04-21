@@ -12,6 +12,7 @@ class profile::ores::web(
     String $statsd = lookup('statsd'),
     String $ores_config_user = lookup('profile::ores::web::ores_config_user', {'default_value' => 'deploy-service'}),
     String $ores_config_group = lookup('profile::ores::web::ores_config_group', {'default_value' => 'deploy-service'}),
+    Integer $celery_version = lookup('profile::ores::web::celery_version', {'default_value' => 4 }),
 ){
     $statsd_parts = split($statsd, ':')
     # NOTE: The following is an include to avoid duplicate declaration issues
@@ -39,6 +40,7 @@ class profile::ores::web(
         statsd_port          => $statsd_parts[1],
         ores_config_user     => $ores_config_user,
         ores_config_group    => $ores_config_group,
+        celery_version       => $celery_version,
     }
 
     ferm::service { 'ores':

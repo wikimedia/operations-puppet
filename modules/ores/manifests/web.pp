@@ -18,6 +18,7 @@ class ores::web(
     $poolcounter_nodes = [],
     $logstash_host = undef,
     $logstash_port = undef,
+    $celery_version = 4,
 ) {
     require ::ores::base
 
@@ -58,6 +59,13 @@ class ores::web(
         },
     }
 
+    # Temporary needed to support both Celery 4 and Celery 5 configs
+    # T303801
+    $worker_max_tasks_per_child = $celery_version <= 4 ? {
+        false => 100,
+        true  => '100',
+    }
+
     $base_config = {
         'metrics_collectors' => {
             'wmflabs_statsd' => {
@@ -96,7 +104,7 @@ class ores::web(
                     '87.77.0.0/16',
                     '160.45.0.0/16',
                 ],
-                'worker_max_tasks_per_child' => '100',
+                'worker_max_tasks_per_child' => $worker_max_tasks_per_child,
             },
         },
         'lock_managers' => {
