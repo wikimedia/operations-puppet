@@ -46,6 +46,8 @@ profile::openstack::codfw1dev::glance_backends:
 profile::openstack::codfw1dev::designate_hosts:
   - cloudservices2003-dev.wikimedia.org
   - cloudservices2002-dev.wikimedia.org
+  - cloudservices2004-dev.wikimedia.org
+  - cloudservices2005-dev.wikimedia.org
 profile::openstack::codfw1dev::puppetmaster_hostname: 'puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org'
 profile::openstack::codfw1dev::labs_hosts_range: '10.192.20.0/24'
 profile::openstack::codfw1dev::labs_hosts_range_v6: '2620:0:860:118::/64'
