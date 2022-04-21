@@ -12,8 +12,8 @@ labsdnsconfig:
 sudo_flavor: 'sudoldap'
 
 labsldapconfig:
-  hostname: "cloudservices2002-dev.wikimedia.org"
-  secondary_hostname: "cloudservices2002-dev.wikimedia.org"
+  hostname: "cloudservices2004-dev.wikimedia.org"
+  secondary_hostname: "cloudservices2004-dev.wikimedia.org"
 
 ldap:
   ro-server: ldap-ro.codfw.wikimedia.org

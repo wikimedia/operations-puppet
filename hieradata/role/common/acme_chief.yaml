@@ -122,29 +122,21 @@ profile::acme_chief::certificates:
         - '^ldap-replica100[34]\.wikimedia\.org$'
         - '^ldap-replica200[56]\.wikimedia\.org$'
     ldap-codfw1dev:
-        CN: 'cloudservices2002-dev.wikimedia.org'
+        CN: 'cloudservices2004-dev.wikimedia.org'
         SNI:
-        - 'cloudservices2002-dev.wikimedia.org'
-        - 'cloudservices2003-dev.wikimedia.org'
         - 'cloudservices2004-dev.wikimedia.org'
         - 'cloudservices2005-dev.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
-        - 'cloudservices2002-dev.wikimedia.org'
-        - 'cloudservices2003-dev.wikimedia.org'
         - 'cloudservices2004-dev.wikimedia.org'
         - 'cloudservices2005-dev.wikimedia.org'
     ldap-labtest:
-        CN: 'cloudservices2002-dev.wikimedia.org'
+        CN: 'cloudservices2004-dev.wikimedia.org'
         SNI:
-        - 'cloudservices2002-dev.wikimedia.org'
-        - 'cloudservices2003-dev.wikimedia.org'
         - 'cloudservices2004-dev.wikimedia.org'
         - 'cloudservices2005-dev.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^cloudservices2002-dev\.wikimedia\.org$'
-        - '^cloudservices2003-dev\.wikimedia\.org$'
         - '^cloudservices2004-dev\.wikimedia\.org$'
         - '^cloudservices2005-dev\.wikimedia\.org$'
     librenms:

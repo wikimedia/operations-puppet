@@ -1502,7 +1502,11 @@ node 'cloudcontrol2004-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::control)
 }
 
-node /^cloudservices200[2-5]-dev\.wikimedia\.org$/ {
+node /^cloudservices200[2-3]-dev\.wikimedia\.org$/ {
+    role(spare::system)
+}
+
+node /^cloudservices200[4-5]-dev\.wikimedia\.org$/ {
     role(wmcs::openstack::codfw1dev::services)
 }
 

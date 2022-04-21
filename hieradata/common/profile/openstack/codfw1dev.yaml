@@ -44,8 +44,6 @@ profile::openstack::codfw1dev::glance_backends:
 #  running on the first host in this list will be used
 #  as the tooz coordinator.  T250087
 profile::openstack::codfw1dev::designate_hosts:
-  - cloudservices2003-dev.wikimedia.org
-  - cloudservices2002-dev.wikimedia.org
   - cloudservices2004-dev.wikimedia.org
   - cloudservices2005-dev.wikimedia.org
 profile::openstack::codfw1dev::puppetmaster_hostname: 'puppetmaster.cloudinfra-codfw1dev.codfw1dev.wmcloud.org'
@@ -54,7 +52,7 @@ profile::openstack::codfw1dev::labs_hosts_range_v6: '2620:0:860:118::/64'
 profile::openstack::codfw1dev::rabbit_monitor_user: 'monitoring'
 profile::openstack::codfw1dev::rabbit_file_handles: 8192
 profile::openstack::codfw1dev::osm_host: 'labtestwikitech.wikimedia.org'
-profile::openstack::codfw1dev::ldap_hosts: ['cloudservices2002-dev.wikimedia.org', 'cloudservices2003-dev.wikimedia.org']
+profile::openstack::codfw1dev::ldap_hosts: ['cloudservices2004-dev.wikimedia.org', 'cloudservices2005-dev.wikimedia.org']
 profile::openstack::codfw1dev::ldap_proxyuser_pass: 'Eche0ieng8UaNoo'
 profile::openstack::codfw1dev::labweb_hosts:
   - cloudweb2001-dev.wikimedia.org

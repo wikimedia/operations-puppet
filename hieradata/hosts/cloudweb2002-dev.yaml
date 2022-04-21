@@ -33,7 +33,7 @@ striker::uwsgi::config:
   debug:
     DEBUG: false
   ldap:
-    SERVER_URI: ldap://cloudservices2002-dev.wikimedia.org:389
+    SERVER_URI: ldap://cloudservices2004-dev.wikimedia.org:389
     BIND_USER: uid=novaadmin,ou=people,dc=wikimedia,dc=org
     TLS: true
   oauth:
@@ -67,5 +67,5 @@ striker::uwsgi::config:
 profile::mediawiki::apc_shm_size: 128M
 
 labsldapconfig:
-  hostname: cloudservices2002-dev.wikimedia.org
-  secondary_hostname: cloudservices2002-dev.wikimedia.org
+  hostname: cloudservices2004-dev.wikimedia.org
+  secondary_hostname: cloudservices2004-dev.wikimedia.org

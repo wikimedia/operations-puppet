@@ -1,6 +1,0 @@
-profile::openstack::codfw1dev::pdns::recursor_service_name: ns-recursor1.openstack.codfw1dev.wikimediacloud.org
-
-profile::openldap::master: cloudservices2002-dev.wikimedia.org
-profile::openldap::server_id: 2
-
-profile::openstack::codfw1dev::version: 'wallaby'
