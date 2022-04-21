@@ -2930,7 +2930,7 @@ node /^webperf[12]001\.(codfw|eqiad)\.wmnet/ {
 }
 
 node 'webperf1003.eqiad.wmnet' {
-    role(insetup)
+    role(webperf::processors_and_site)
 }
 
 node 'webperf1004.eqiad.wmnet' {
@@ -2942,7 +2942,7 @@ node /^webperf[12]002\.(codfw|eqiad)\.wmnet/ {
 }
 
 node 'webperf2003.codfw.wmnet' {
-    role(insetup)
+    role(webperf::processors_and_site)
 }
 
 node 'webperf2004.codfw.wmnet' {

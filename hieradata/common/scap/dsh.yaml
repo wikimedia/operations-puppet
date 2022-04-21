@@ -105,7 +105,9 @@ scap::dsh::groups:
   webperf:
     hosts:
       - webperf1001.eqiad.wmnet
+      - webperf1003.eqiad.wmnet
       - webperf2001.codfw.wmnet
+      - webperf2003.codfw.wmnet
   arclamp:
     hosts:
       - webperf1002.eqiad.wmnet
