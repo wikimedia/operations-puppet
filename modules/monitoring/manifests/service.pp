@@ -6,9 +6,9 @@ define monitoring::service(
     Integer                           $retries               = 3,
     Boolean                           $critical              = false,
     Boolean                           $passive               = false,
-    Integer                           $freshness             = 36000,
-    Integer                           $check_interval        = 1,
-    Integer                           $retry_interval        = 1,
+    Integer                           $freshness             = 36000, # sec
+    Integer                           $check_interval        = 1, # min
+    Integer                           $retry_interval        = 1, # min
     Stdlib::Unixpath                  $config_dir            = '/etc/nagios',
     Variant[Stdlib::Host,String]      $host                  = $facts['hostname'],
     Optional[String]                  $contact_group         = undef,
