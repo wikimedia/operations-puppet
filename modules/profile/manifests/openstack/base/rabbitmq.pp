@@ -18,6 +18,7 @@ class profile::openstack::base::rabbitmq(
             $rabbit_cfssl_label,
             $facts['networking']['fqdn'],
             {
+                outdir        => '/etc/rabbitmq/ssl',
                 provide_chain => true,
                 owner         => 'rabbitmq',
                 group         => 'rabbitmq',
