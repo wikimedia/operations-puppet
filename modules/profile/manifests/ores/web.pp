@@ -2,7 +2,7 @@ class profile::ores::web(
     Stdlib::Host $redis_host = lookup('profile::ores::web::redis_host'),
     Stdlib::Port $redis_queue_port = lookup('profile::ores::web::redis_queue_port', {'default_value' => 6379}),
     Stdlib::Port $redis_cache_port = lookup('profile::ores::web::redis_cache_port', {'default_value' => 6380}),
-    String $redis_password = lookup('profile::ores::web::redis_password', {'default_value' => undef}),
+    Optional[String] $redis_password = lookup('profile::ores::web::redis_password', {'default_value' => undef}),
     Integer $web_workers = lookup('profile::ores::web::workers'),
     Integer $celery_workers = lookup('profile::ores::celery::workers'),
     Integer $celery_queue_maxsize = lookup('profile::ores::celery::queue_maxsize'),
