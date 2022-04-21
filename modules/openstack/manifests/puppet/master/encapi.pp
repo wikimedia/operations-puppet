@@ -3,6 +3,7 @@ class openstack::puppet::master::encapi(
     String $mysql_db,
     String $mysql_username,
     String $mysql_password,
+    String $acme_certname,
     Array[Stdlib::Fqdn] $labweb_hosts,
     Array[Stdlib::Fqdn] $openstack_controllers,
     Array[Stdlib::Fqdn] $designate_hosts,
@@ -12,30 +13,15 @@ class openstack::puppet::master::encapi(
     # for new enough python3-keystonemiddleware versions
     debian::codename::require('bullseye', '>=')
 
-    $exposed_certs_dir = '/etc/nginx'
-    $puppet_cert_pub  = "${exposed_certs_dir}/ssl/cert.pem"
-    $puppet_cert_priv = "${exposed_certs_dir}/ssl/server.key"
-    $puppet_cert_ca   = "${exposed_certs_dir}/ssl/ca.pem"
-
-    base::expose_puppet_certs { $exposed_certs_dir:
-        ensure          => $ensure,
-        provide_private => true,
-        require         => Package['nginx-common'],
+    base::expose_puppet_certs { '/etc/nginx':
+        ensure => absent,
     }
 
-    if $ensure == present {
-        file { $puppet_cert_ca:
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => $facts['puppet_config']['localcacert'],
-        }
+    acme_chief::cert { $acme_certname:
+        puppet_svc => 'nginx',
+    }
 
-        # make sure that the nginx service gets notified when the certs change
-        File[$puppet_cert_pub] ~> Service['nginx']
-        File[$puppet_cert_priv] ~> Service['nginx']
-        File[$puppet_cert_ca] ~> Service['nginx']
-
+    if $ensure == 'present' {
         ensure_packages([
             'python3-pymysql',
             'python3-flask',
@@ -79,13 +65,13 @@ class openstack::puppet::master::encapi(
     $designate_ips_v6 = $designate_hosts.map |$host| { ipresolve($host, 6) }
     $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
     $openstack_controller_ips_v6 = $openstack_controllers.map |$host| { ipresolve($host, 6) }
-    $allowed_writers = join(flatten([
+    $allowed_writers = flatten([
       $labweb_ips,
       $labweb_ips_v6,
       $designate_ips,
       $designate_ips_v6,
       $openstack_controller_ips,
-      $openstack_controller_ips_v6,]),',')
+      $openstack_controller_ips_v6,])
 
     # We override service_settings because the default includes autoload
     #  which insists on using python2
@@ -97,7 +83,7 @@ class openstack::puppet::master::encapi(
                 'wsgi-file'         => "/usr/local/lib/${python_version}/dist-packages/puppet-enc.py",
                 callable            => 'app',
                 master              => true,
-                http-socket         => '0.0.0.0:8101',
+                socket              => '/run/uwsgi/puppet-enc.sock',
                 reload-on-exception => true,
                 logto               => '/var/log/puppet-enc.log',
                 env                 => [
@@ -105,7 +91,7 @@ class openstack::puppet::master::encapi(
                     "MYSQL_DB=${mysql_db}",
                     "MYSQL_USERNAME=${mysql_username}",
                     "MYSQL_PASSWORD=${mysql_password}",
-                    "ALLOWED_WRITERS=${allowed_writers}",
+                    "ALLOWED_WRITERS=${allowed_writers.join(',')}",
                 ],
             },
         },
@@ -116,6 +102,13 @@ class openstack::puppet::master::encapi(
     nginx::site { 'default':
         ensure => absent,
         before => Nginx::Site['puppet-enc-public'],
+    }
+
+    $ssl_settings  = ssl_ciphersuite('nginx', 'strong')
+
+    nginx::site { 'puppet-enc':
+        ensure  => $ensure,
+        content => template('openstack/puppet/master/encapi/nginx-puppet-enc.conf.erb'),
     }
 
     # This is a GET-only front end that sits on port 8100.  We can

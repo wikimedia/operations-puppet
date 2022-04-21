@@ -23,6 +23,7 @@ profile::mariadb::cloudinfra::enc_servers:
   - enc-1.cloudinfra.eqiad1.wikimedia.cloud
   - enc-2.cloudinfra.eqiad1.wikimedia.cloud
 
+profile::openstack::eqiad1::puppetmaster::encapi::acme_certname: enc
 profile::openstack::eqiad1::puppetmaster::encapi::db_host: cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud
 profile::openstack::eqiad1::puppetmaster::encapi::db_name: labspuppet
 profile::openstack::eqiad1::puppetmaster::encapi::db_user: labspuppet

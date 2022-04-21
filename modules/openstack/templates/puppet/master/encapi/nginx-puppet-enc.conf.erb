@@ -1,25 +1,24 @@
 server {
-    listen [::]:8100 ipv6only=off;
-    listen [::]:8143 ssl ipv6only=off;
+    # TODO: remove after migration
+    listen 8101;
+
+    listen 443 ssl;
 
     ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.chained.crt;
     ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.key;
     <%= @ssl_settings.join("\n    ") %>
 
-    # Wrap the normal API but only allow GETs.
+    # keep in sync with puppet-enc-public until the
+    # two endpoints have been merged together
     location / {
         include uwsgi_params;
         uwsgi_pass unix:/run/uwsgi/puppet-enc.sock;
 
-        limit_except GET {
-            deny all;
-        }
-
         allow 127.0.0.0/8;
         allow ::1;
-<% @labs_instance_ranges.each do |range| -%>
-        allow <%= range %>;
-<% end -%>
+<%- @allowed_writers.each do |writer| -%>
+        allow <%= writer %>;
+<%- end -%>
         deny all;
     }
 }
