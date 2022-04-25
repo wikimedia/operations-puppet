@@ -1489,9 +1489,8 @@ node /^cloudnet200[24]-dev\.codfw\.wmnet$/ {
     role(wmcs::openstack::codfw1dev::net)
 }
 
-#New cloudnet node T304881
 node /^cloudnet200[5-6]-dev\.codfw\.wmnet$/ {
-    role(insetup)
+    role(wmcs::openstack::codfw1dev::net)
 }
 
 node 'clouddb2001-dev.codfw.wmnet' {
