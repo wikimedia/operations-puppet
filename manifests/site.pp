@@ -1477,10 +1477,6 @@ node /^cloudservices100[34]\.wikimedia\.org$/ {
     role(wmcs::openstack::eqiad1::services)
 }
 
-node 'cloudweb2001-dev.wikimedia.org' {
-    role(spare::system)
-}
-
 node 'cloudweb2002-dev.wikimedia.org' {
     role(wmcs::openstack::codfw1dev::cloudweb)
 }
