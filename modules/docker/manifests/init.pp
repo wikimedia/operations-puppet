@@ -11,18 +11,31 @@
 #
 # [*package_name*] Docker is going through various transitions changing package
 # names multiple times already. Support that so we can choose which one we want.
-# Defaults to docker-engine currently, but is subject to change
+# Defaults to docker-engine on < Buster, docker.io >= Buster (but this is subject to change).
 class docker(
     Optional[String] $version = undef,
-    String $package_name = 'docker-engine',
+    Optional[String] $package_name = undef,
 ){
     require ::docker::configuration
 
+
+        # If not set, pick a smart default value for docker packagename.
+    if $package_name == undef {
+        if debian::codename::lt('buster') {
+            $_package_name = 'docker-engine'
+        } else {
+            $_package_name = 'docker.io'
+        }
+    } else {
+        $_package_name = $package_name
+    }
+
+
     if debian::codename::lt('buster') {
-        package { $package_name:
+        package { $_package_name:
             ensure => $version,
         }
     } else {
-        ensure_packages($package_name)
+        ensure_packages($_package_name)
     }
 }

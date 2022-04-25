@@ -10,10 +10,12 @@ class profile::docker::engine(
     # Version to install; the default is not to pick one.
     # NOTE: this must be set on OS < buster.
     Optional[String] $version = lookup('profile::docker::engine::version', { 'default_value' => undef }),
-    String $packagename = lookup('profile::docker::engine::packagename'),
+    # Override the default docker engine package name.  See docker/init.pp for
+    # default names on different Debian OS versions.
+    Optional[String] $packagename = lookup('profile::docker::engine::packagename', { 'default_value' => undef }),
     # Set to false if we don't want to declare the docker service here
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
-    Boolean $declare_service = lookup('profile::docker::engine::declare_service'),
+    Boolean $declare_service = lookup('profile::docker::engine::declare_service', { 'default_value' => true }),
     # To ease the migration to overlayfs, we want to selectively ignore
     # settings offered by the profile::docker::storage class, even if it is
     # loaded by the role.
