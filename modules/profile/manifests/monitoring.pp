@@ -37,7 +37,6 @@ class profile::monitoring(
     Boolean             $monitor_systemd            = lookup('profile::monitoring::monitor_systemd'),
     String              $nrpe_check_disk_options    = lookup('profile::monitoring::nrpe_check_disk_options'),
     Boolean             $nrpe_check_disk_critical   = lookup('profile::monitoring::nrpe_check_disk_critical'),
-    Boolean             $check_smart                = lookup('profile::monitoring::check_smart'),
     Boolean             $raid_check                 = lookup('profile::monitoring::raid_check'),
     Integer             $raid_check_interval        = lookup('profile::monitoring::raid_check_interval'),
     Integer             $raid_retry_interval        = lookup('profile::monitoring::raid_retry_interval'),
@@ -182,26 +181,8 @@ class profile::monitoring(
 
 
     if ! $facts['is_virtual'] {
-        monitoring::check_prometheus { 'smart_healthy':
-            ensure          => $hardware_monitoring,
-            description     => 'Device not healthy (SMART)',
-            dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
-            contact_group   => $contact_group,
-            query           => "device_smart_healthy{instance=\"${facts['hostname']}:9100\"}",
-            method          => 'le',
-            warning         => 0,
-            critical        => 0,
-            check_interval  => 30,
-            retry_interval  => 5,
-            retries         => 3,
-            prometheus_url  => "http://prometheus.svc.${::site}.wmnet/ops",
-            notes_link      => 'https://wikitech.wikimedia.org/wiki/SMART#Alerts',
-        }
         include profile::prometheus::nic_saturation_exporter
         class { 'prometheus::node_nic_firmware': }
-        if $check_smart {
-            class { '::smart': }
-        }
         if $::processor0 !~ /AMD/ {
             class { 'prometheus::node_intel_microcode': }
         }

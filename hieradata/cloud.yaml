@@ -512,7 +512,6 @@ profile::monitoring::nrpe_check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A 
 profile::monitoring::nrpe_check_disk_critical: false
 profile::monitoring::raid_check_interval: 10
 profile::monitoring::raid_retry_interval: 10
-profile::monitoring::check_smart: true
 profile::monitoring::notifications_enabled: true
 profile::monitoring::is_critical: false
 profile::monitoring::monitor_systemd: true

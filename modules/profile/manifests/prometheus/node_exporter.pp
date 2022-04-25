@@ -7,4 +7,9 @@
 class profile::prometheus::node_exporter {
     # We will fix the style break in a later PS
     include prometheus::node_exporter  # lint:ignore:wmf_styleguide
+
+    if ! $facts['is_virtual'] {
+        # Adds smart_data_dump.py for SMART metrics
+        class { '::smart': }
+    }
 }
