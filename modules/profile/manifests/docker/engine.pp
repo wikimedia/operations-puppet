@@ -6,10 +6,10 @@
 class profile::docker::engine(
     # We want to get settings across the hierarchy, some per host, some fleet
     # wide. So use hash merge behavior to merge keys across the hierarchy
-    Hash $settings = lookup('profile::docker::engine::settings'),
+    Hash $settings = lookup('profile::docker::engine::settings', { 'default_value' => {}} ),
     # Version to install; the default is not to pick one.
     # NOTE: this must be set on OS < buster.
-    String $version = lookup('profile::docker::engine::version', { 'default_value' => undef }),
+    Optional[String] $version = lookup('profile::docker::engine::version', { 'default_value' => undef }),
     String $packagename = lookup('profile::docker::engine::packagename'),
     # Set to false if we don't want to declare the docker service here
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
