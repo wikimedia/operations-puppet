@@ -1,0 +1,1 @@
+profile::openstack::eqiad1::rabbitmq::rabbit_cfssl_label: "cloud_wmnet_ca"
