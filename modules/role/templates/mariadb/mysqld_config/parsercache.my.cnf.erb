@@ -137,12 +137,8 @@ performance_schema_max_table_instances                 = 1000
 performance_schema                                     = 0 
 userstat                                               = 1
 <% end %>
-<% if @basedir == '/opt/wmf-mariadb104' -%>
 # Disable rowid_filter on 10.4 optimizer - T245489
 optimizer_switch               = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,rowid_filter=off'
-<% else %>
-optimizer_switch               = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
-<% end -%>
 
 [mysqldump]
 
