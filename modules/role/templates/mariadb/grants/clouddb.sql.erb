@@ -36,12 +36,12 @@ GRANT ALL PRIVILEGES ON `keystone`.* TO 'keystone'@'localhost';
 -- Grants for 'labspuppet'@'208.80.153.108'
 GRANT USAGE ON *.* TO 'labspuppet'@'208.80.153.108' IDENTIFIED BY PASSWORD '<%= labspuppet_pass %>';
 GRANT ALTER, DELETE, INSERT, SELECT, UPDATE ON `labspuppet`.* TO 'labspuppet'@'208.80.153.108';
--- Grants for 'labspuppet'@'208.80.153.60'
-GRANT USAGE ON *.* TO 'labspuppet'@'208.80.153.60' IDENTIFIED BY PASSWORD '<%= labspuppet_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labspuppet`.* TO 'labspuppet'@'208.80.153.60';
--- Grants for 'labspuppet'@'2620:0:860:2:208:80:153:60'
-GRANT USAGE ON *.* TO 'labspuppet'@'2620:0:860:2:208:80:153:60' IDENTIFIED BY PASSWORD '<%= labspuppet_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labspuppet`.* TO 'labspuppet'@'2620:0:860:2:208:80:153:60';
+-- Grants for 'labspuppet'@'208.80.153.41'
+GRANT USAGE ON *.* TO 'labspuppet'@'208.80.153.41' IDENTIFIED BY PASSWORD '<%= labspuppet_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labspuppet`.* TO 'labspuppet'@'208.80.153.41';
+-- Grants for 'labspuppet'@'2620:0:860:2:208:80:153:41'
+GRANT USAGE ON *.* TO 'labspuppet'@'2620:0:860:2:208:80:153:41' IDENTIFIED BY PASSWORD '<%= labspuppet_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labspuppet`.* TO 'labspuppet'@'2620:0:860:2:208:80:153:41';
 -- Grants for 'labspuppet'@'2620:0:860:4:208:80:153:108'
 GRANT USAGE ON *.* TO 'labspuppet'@'2620:0:860:4:208:80:153:108' IDENTIFIED BY PASSWORD '<%= labspuppet_pass %>';
 GRANT ALTER, DELETE, INSERT, SELECT, UPDATE ON `labspuppet`.* TO 'labspuppet'@'2620:0:860:4:208:80:153:108';
@@ -94,9 +94,9 @@ GRANT PROXY ON ''@'%' TO 'root'@'localhost' WITH GRANT OPTION;
 -- Grants for 'wikiadmin'@'10.64.16.77'
 GRANT USAGE ON *.* TO 'wikiadmin'@'10.64.16.77' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
 GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'10.64.16.77';
--- Grants for 'wikiadmin'@'208.80.153.60'
-GRANT USAGE ON *.* TO 'wikiadmin'@'208.80.153.60' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
-GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'208.80.153.60';
+-- Grants for 'wikiadmin'@'208.80.153.41'
+GRANT USAGE ON *.* TO 'wikiadmin'@'208.80.153.41' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
+GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'208.80.153.41';
 -- Grants for 'wikiadmin'@'2620:0:861:102:10:64:16:77'
 GRANT USAGE ON *.* TO 'wikiadmin'@'2620:0:861:102:10:64:16:77' IDENTIFIED BY PASSWORD '<%= wikiadmin_pass %>';
 GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'2620:0:861:102:10:64:16:77';
@@ -104,10 +104,10 @@ GRANT ALL PRIVILEGES ON `labtestwiki`.* TO 'wikiadmin'@'2620:0:861:102:10:64:16:
 GRANT USAGE ON *.* TO '<%= wikiuser_username %>'@'10.64.16.77' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO '<%= wikiuser_username %>'@'10.64.16.77';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO '<%= wikiuser_username %>'@'10.64.16.77';
--- Grants for 'wikiuser'@'208.80.153.60'
-GRANT USAGE ON *.* TO '<%= wikiuser_username %>'@'208.80.153.60' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO '<%= wikiuser_username %>'@'208.80.153.60';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO '<%= wikiuser_username %>'@'208.80.153.60';
+-- Grants for 'wikiuser'@'208.80.153.41'
+GRANT USAGE ON *.* TO '<%= wikiuser_username %>'@'208.80.153.41' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO '<%= wikiuser_username %>'@'208.80.153.41';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `labtestwiki`.* TO '<%= wikiuser_username %>'@'208.80.153.41';
 -- Grants for 'wikiuser'@'2620:0:861:102:10:64:16:77'
 GRANT USAGE ON *.* TO '<%= wikiuser_username %>'@'2620:0:861:102:10:64:16:77' IDENTIFIED BY PASSWORD '<%= wikiuser_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `labswiki`.* TO '<%= wikiuser_username %>'@'2620:0:861:102:10:64:16:77';
