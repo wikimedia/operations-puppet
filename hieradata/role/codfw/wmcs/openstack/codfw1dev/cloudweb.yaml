@@ -55,17 +55,11 @@ profile::openstack::codfw1dev::cloudweb::mcrouter_port: 11213
 profile::openstack::base::nutcracker::redis::shards:
   jobqueue:
     eqiad:
-      cloudweb2001-dev:
-        host: 208.80.153.60
-        port: 6378
       cloudweb2002-dev:
         host: 208.80.153.41
         port: 6378
   sessions:
     eqiad:
-      cloudweb2001-dev:
-        host: 208.80.153.60
-        port: 6378
       cloudweb2002-dev:
         host: 208.80.153.41
         port: 6378
@@ -81,7 +75,7 @@ profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 profile::mediawiki::apc_shm_size: 128M
 
 lvs::realserver::realserver_ips:
-    - '208.80.153.60' # cloudweb2001-dev.wikimedia.org
+    - '208.80.153.41' # cloudweb2002-dev.wikimedia.org
 profile::base::firewall::block_abuse_nets: true
 profile::contacts::role_contacts: ['WMCS SREs']
 

@@ -254,7 +254,7 @@ def main():
         read_list("visualeditor-nondefault", "has_visualeditor", False)
         read_list("wikidataclient", "has_wikidata", True)
 
-        # TODO: cloudweb2001-dev
+        # TODO: cloudweb2002-dev
         for slice in ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]:
             read_list(slice, "slice", slice)
 
