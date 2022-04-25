@@ -203,6 +203,7 @@ Components: main
  component/rsyslog-k8s
  thirdparty/ceph-octopus
  thirdparty/conda
+ thirdparty/confluent
  thirdparty/elastic65
  thirdparty/elastic68
  thirdparty/gitlab-runner
