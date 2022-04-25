@@ -8,7 +8,8 @@ class profile::docker::engine(
     # wide. So use hash merge behavior to merge keys across the hierarchy
     Hash $settings = lookup('profile::docker::engine::settings'),
     # Version to install; the default is not to pick one.
-    String $version = lookup('profile::docker::engine::version'),
+    # NOTE: this must be set on OS < buster.
+    String $version = lookup('profile::docker::engine::version', { 'default_value' => undef }),
     String $packagename = lookup('profile::docker::engine::packagename'),
     # Set to false if we don't want to declare the docker service here
     # We want this to be on if we want to use a different docker systemd service (with flannel support, for eg.)
@@ -56,7 +57,7 @@ class profile::docker::engine(
     }
 
     # Install docker, we should remove the "version" parameter when everything
-    # is using Buster/Docker as packaged by Debian
+    # is using Buster/Docker as packaged by Debian.
     class { 'docker':
         version      => $version,
         package_name => $packagename,
