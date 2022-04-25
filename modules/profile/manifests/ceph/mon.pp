@@ -86,4 +86,18 @@ class profile::ceph::mon(
     class { 'prometheus::node_pinger':
         nodes_to_ping => $osd_hosts.keys() + $mon_hosts.keys(),
     }
+
+    # Allow ceph user to collect device health metrics
+    # We don't actually want to do this on a mon node,
+    # but for now this patch will keep us from getting emails
+    # about sudo violations
+    #  Upstream bug: https://tracker.ceph.com/issues/50657
+    # This sudo change can be removed when ^ is fixed (in v15.2.16)
+    sudo::user { 'ceph-smartctl':
+      user       => 'ceph',
+      privileges => [
+        'ALL=NOPASSWD: /usr/sbin/smartctl -a --json=o /dev/*',
+        'ALL=NOPASSWD: /usr/sbin/nvme * smart-log-add --json /dev/*',
+      ],
+    }
 }
