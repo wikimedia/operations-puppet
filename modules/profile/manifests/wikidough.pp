@@ -77,25 +77,25 @@ class profile::wikidough (
     monitoring::service { 'check_wikidough_doh_ipv4':
         description   => 'Wikidough DoH Check (IPv4)',
         check_command => "check_https_url_custom_ip!${service_domain}!${facts['ipaddress']}!/",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
     }
 
     monitoring::service { 'check_wikidough_dot_ipv4':
         description   => 'Wikidough DoT Check (IPv4)',
         check_command => "check_tcp_ssl!${facts['ipaddress']}!853",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
     }
 
     monitoring::service { 'check_wikidough_doh_ipv6':
         description   => 'Wikidough DoH Check (IPv6)',
         check_command => "check_https_url_custom_ip!${service_domain}!${facts['ipaddress6']}!/",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
     }
 
     monitoring::service { 'check_wikidough_dot_ipv6':
         description   => 'Wikidough DoT Check (IPv6)',
         check_command => "check_tcp_ssl!${facts['ipaddress6']}!853",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Wikidough_Basic_Check',
     }
 
     $service_check_file = '/usr/lib/nagios/plugins/service_restart_check'
@@ -126,7 +126,7 @@ class profile::wikidough (
           nrpe_command   => "/usr/bin/sudo ${service_check_file} --service ${service} --file ${conf_file}",
           check_interval => 360,  # 6h
           retry_interval => 60,   # 1h
-          notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough',
+          notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Service_Restart_Check',
           require        => [
               File[$service_check_file],
               Sudo::User['nagios_service_restart_check'],
