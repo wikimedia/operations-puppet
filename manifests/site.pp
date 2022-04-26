@@ -2501,7 +2501,7 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
 # parser cache databases
 # eqiad
 # pc1
-node /^pc10(11|14)\.eqiad\.wmnet$/ {
+node 'pc1011.eqiad.wmnet' {
     role(mariadb::parsercache)
 }
 # pc2
@@ -2512,19 +2512,26 @@ node 'pc1012.eqiad.wmnet' {
 node 'pc1013.eqiad.wmnet' {
     role(mariadb::parsercache)
 }
-
-# codfw
-# pc1
-node /^pc20(11|14)\.codfw\.wmnet$/ {
+# floating spare
+node 'pc1014.eqiad.wmnet' {
     role(mariadb::parsercache)
 }
 
+# codfw
+# pc1
+node 'pc2011.codfw.wmnet' {
+    role(mariadb::parsercache)
+}
 # pc2
 node 'pc2012.codfw.wmnet' {
     role(mariadb::parsercache)
 }
 # pc3
 node 'pc2013.codfw.wmnet' {
+    role(mariadb::parsercache)
+}
+# floating spare
+node 'pc2014.codfw.wmnet' {
     role(mariadb::parsercache)
 }
 
