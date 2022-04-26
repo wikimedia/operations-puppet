@@ -114,7 +114,7 @@ class _WMFRewriteContext(WSGIContext):
 
         # get the Content-Type.
         uinfo = upcopy.info()
-        c_t = uinfo.gettype()
+        c_t = uinfo.get_content_type()
 
         resp = swob.Response(app_iter=upcopy, content_type=c_t)
 
@@ -136,8 +136,8 @@ class _WMFRewriteContext(WSGIContext):
 
         # add in the headers if we've got them
         for header in headers_whitelist:
-            if(uinfo.getheader(header) != ''):
-                resp.headers[header] = uinfo.getheader(header)
+            if uinfo.get(header) is not None:
+                resp.headers[header] = uinfo.get(header)
 
         # also add CORS; see also our CORS middleware
         resp.headers['Access-Control-Allow-Origin'] = '*'
