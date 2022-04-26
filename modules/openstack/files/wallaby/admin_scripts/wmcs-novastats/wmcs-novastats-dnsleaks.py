@@ -201,6 +201,18 @@ def purge_duplicates(project_id, delete=False):
                 originalrecords = recordset["records"]
                 goodrecords = []
                 for record in originalrecords:
+
+                    if "svc." in record:
+                        # We don't want to mess with service records
+                        print("skipping ptr record for %s" % record)
+                        goodrecords += [record]
+                        continue
+
+                    if record.endswith(".org."):
+                        print("skipping ptr record for %s" % record)
+                        goodrecords += [record]
+                        continue
+
                     if record.lower() in all_possible_names:
                         goodrecords += [record]
 
@@ -261,4 +273,5 @@ requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
 purge_duplicates("cloudinfra", args.delete)
+purge_duplicates("cloudinfra-codfw1dev", args.delete)
 purge_duplicates("noauth-project", args.delete)
