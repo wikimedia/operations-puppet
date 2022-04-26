@@ -1295,6 +1295,12 @@ host testvm2003 {
     fixed-address testvm2003.codfw.wmnet;
 }
 
+host testvm2004 {
+    hardware ethernet aa:00:00:be:9b:fd;
+    fixed-address testvm2004.codfw.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host urldownloader1001.wikimedia.org {
     hardware ethernet aa:00:00:d2:7d:c6;
     fixed-address urldownloader1001.wikimedia.org;
