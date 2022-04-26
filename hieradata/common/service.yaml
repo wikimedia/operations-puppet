@@ -1377,7 +1377,7 @@ service::catalog:
     port: 6443
     sites:
       - codfw
-    state: service_setup
+    state: lvs_setup
 
   mobileapps:
     description:
