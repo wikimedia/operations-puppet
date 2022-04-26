@@ -1004,7 +1004,7 @@ service::catalog:
           hostname: k8s-ingress-wikikube.svc.eqiad.wmnet
         codfw:
           hostname: k8s-ingress-wikikube.svc.codfw.wmnet
-    port: 30443
+    port: &k8s-ingress-wikikube_port 30443
     sites:
       - codfw
       - eqiad
@@ -1321,14 +1321,11 @@ service::catalog:
     page: false
     probes:
       - type: http
-    port: 30443
+    port: *k8s-ingress-wikikube_port
     sites:
       - eqiad
       - codfw
     state: monitoring_setup
-    discovery:
-      - dnsdisc: miscweb
-        active_active: true
 
   ml-ctrl:
     description: Kubernetes master service for ML cluster. ml-ctrl.svc.%{::site}.wmnet
