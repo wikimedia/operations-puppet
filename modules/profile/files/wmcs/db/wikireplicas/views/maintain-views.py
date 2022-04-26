@@ -199,7 +199,12 @@ class SchemaOperations:
             # Ignore custom views which have a limit number greater
             # than the size ID set by the read_list calls for
             # size.dblist above.
-            logging.warning("Too big for this database")
+            logging.info(
+                "Skipping %s: DB size %d < required %d.",
+                view_name,
+                self.db_size,
+                view_details["limit"],
+            )
             return
 
         sources = view_details["source"]
