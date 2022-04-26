@@ -184,4 +184,11 @@ class mediabackup::worker (
         show_diff => false,
         content   => template('mediabackup/mc_config.json.erb'),
     }
+
+    git::clone { 'operations/mediawiki-config':
+        ensure    => present,
+        directory => '/srv/mediawiki-config',
+        owner     => 'mediabackup',
+        group     => 'mediabackup',
+    }
 }
