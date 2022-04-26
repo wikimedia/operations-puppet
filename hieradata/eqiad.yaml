@@ -34,8 +34,8 @@ public_tls_unified_cert_vendor: "lets-encrypt"
 ldap:
   ro-server: ldap-ro.eqiad.wikimedia.org
   ro-server-fallback: ldap-ro.codfw.wikimedia.org
-  rw-server: ldap-labs.eqiad.wikimedia.org
-  rw-server-fallback: ldap-labs.codfw.wikimedia.org
+  rw-server: ldap-rw.eqiad.wikimedia.org
+  rw-server-fallback: ldap-rw.codfw.wikimedia.org
 
 mediabackup:
   mw_db_host: 'db1145.eqiad.wmnet'

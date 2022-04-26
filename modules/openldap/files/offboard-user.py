@@ -114,7 +114,7 @@ def set_cookie(lc_object, pctrls, pagesize):
 
 
 def does_user_attr_exist(uid, attribute):
-    ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
+    ldap_conn = ldap.initialize('ldaps://ldap-rw.eqiad.wikimedia.org:636')
     ldap_conn.protocol_version = ldap.VERSION3
     ldapdata = ldap_conn.search_s(
         base_dn,
@@ -130,7 +130,7 @@ def does_user_attr_exist(uid, attribute):
 
 
 def offboard_ldap(uid, remove_all_groups, turn_volunteer, dry_run, disable_user):
-    ldap_conn = ldap.initialize('ldaps://ldap-labs.eqiad.wikimedia.org:636')
+    ldap_conn = ldap.initialize('ldaps://ldap-rw.eqiad.wikimedia.org:636')
     ldap_conn.protocol_version = ldap.VERSION3
     ldif = ""
 
@@ -277,7 +277,7 @@ delete: userPassword
             if disable_user:
                 cmd += 'ldapsearch -x -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W uid='
                 cmd += uid + ' > disable-' + uid + '.pre.ldif\n'
-            cmd += 'ldapmodify -h ldap-labs.eqiad.wikimedia.org -p 389 -x'
+            cmd += 'ldapmodify -h ldap-rw.eqiad.wikimedia.org -p 389 -x'
             cmd += ' -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W -f ' + uid + ".ldif\n"
             if disable_user:
                 cmd += 'ldapsearch -x -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W uid='

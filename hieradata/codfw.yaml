@@ -14,7 +14,7 @@ labsdnsconfig:
   recursor_secondary: 'ns-recursor1.openstack.codfw1dev.wikimediacloud.org'
 
 labsldapconfig:
-  hostname: ldap-labs.codfw.wikimedia.org
+  hostname: ldap-rw.codfw.wikimedia.org
 
 # /> Cloud Services
 #
@@ -40,8 +40,8 @@ wikimail_smarthost:
 ldap:
   ro-server: ldap-ro.codfw.wikimedia.org
   ro-server-fallback: ldap-ro.eqiad.wikimedia.org
-  rw-server: ldap-labs.codfw.wikimedia.org
-  rw-server-fallback: ldap-labs.eqiad.wikimedia.org
+  rw-server: ldap-rw.codfw.wikimedia.org
+  rw-server-fallback: ldap-rw.eqiad.wikimedia.org
 
 mediabackup:
   mw_db_host: 'db2099.codfw.wmnet'

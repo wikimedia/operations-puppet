@@ -18,8 +18,8 @@ labsldapconfig:
 ldap:
   ro-server: ldap-ro.codfw.wikimedia.org
   ro-server-fallback: ldap-ro.eqiad.wikimedia.org
-  ro-server: ldap-labs.codfw.wikimedia.org
-  ro-server-fallback: ldap-labs.eqiad.wikimedia.org
+  ro-server: ldap-rw.codfw.wikimedia.org
+  ro-server-fallback: ldap-rw.eqiad.wikimedia.org
 
 labs_site: "codfw1dev"
 
