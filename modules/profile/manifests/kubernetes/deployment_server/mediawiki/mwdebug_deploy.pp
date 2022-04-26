@@ -67,7 +67,6 @@ class profile::kubernetes::deployment_server::mediawiki::mwdebug_deploy(
             'HELM_CONFIG_HOME' => '/etc/helm',
             'HELM_CACHE_HOME'  => '/var/cache/helm',
             'HELM_DATA_HOME'   => '/usr/share/helm',
-            'HELM_HOME'        => '/etc/helm',
             # This is what will get to SAL
             'SUDO_USER'        => 'mwdebug-deploy',
         },

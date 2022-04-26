@@ -53,21 +53,17 @@ class helm(
     }
 
     $repositories.each |$name, $url| {
-        # Ensure we don't overwrite local.
         # "helm repo add" will change the URL if a repository with ${name} already exists.
-        if ($name != 'local') {
-            # With helm 3, there is no such thing as local repository anymore
-            exec { "helm3-repo-add-${name}":
-                command     => "/usr/bin/helm3 repo add ${name} ${url}",
-                environment => [
-                    "HELM_CONFIG_HOME=${helm_home}",
-                    "HELM_DATA_HOME=${helm_data}",
-                    "HELM_CACHE_HOME=${helm_cache}",
-                ],
-                unless      => "/usr/bin/helm3 repo list | /bin/grep -E -q '^${name}\\s+${url}'",
-                user        => 'helm',
-                require     => [User['helm'], File[$helm_home], File[$helm_cache]]
-            }
+        exec { "helm3-repo-add-${name}":
+            command     => "/usr/bin/helm3 repo add ${name} ${url}",
+            environment => [
+                "HELM_CONFIG_HOME=${helm_home}",
+                "HELM_DATA_HOME=${helm_data}",
+                "HELM_CACHE_HOME=${helm_cache}",
+            ],
+            unless      => "/usr/bin/helm3 repo list | /bin/grep -E -q '^${name}\\s+${url}'",
+            user        => 'helm',
+            require     => [User['helm'], File[$helm_home], File[$helm_cache]]
         }
     }
 
@@ -77,7 +73,6 @@ class helm(
         description     => 'Update helm repositories indices',
         command         => '/usr/bin/helm3 repo update',
         environment     => {
-            'HELM_HOME'        => $helm_home,
             'HELM_CONFIG_HOME' => $helm_home,
             'HELM_DATA_HOME'   => $helm_data,
             'HELM_CACHE_HOME'  => $helm_cache,
@@ -85,19 +80,6 @@ class helm(
         user            => 'helm',
         logging_enabled => false,
         interval        => {
-            # We don't care about when this runs, as long as it runs every minute.
-            'start'    => 'OnUnitInactiveSec',
-            'interval' => '60s',
-        },
-    }
-
-    # make sure helm2 repo update are disabled
-    systemd::timer::job { 'helm-repo-update':
-        ensure      => absent,
-        description => 'Update helm repositories indices',
-        command     => '/usr/bin/helm repo update',
-        user        => 'helm',
-        interval    => {
             # We don't care about when this runs, as long as it runs every minute.
             'start'    => 'OnUnitInactiveSec',
             'interval' => '60s',
