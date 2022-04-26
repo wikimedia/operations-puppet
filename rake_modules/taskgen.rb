@@ -16,6 +16,7 @@ require 'rubocop/rake_task'
 require 'rake_modules/monkey_patch'
 require 'rake_modules/git'
 require 'rake_modules/specdeps'
+require 'rake_modules/tasks/spdx'
 
 class TaskGen < ::Rake::TaskLib
   attr_accessor :tasks, :failed_specs
@@ -41,7 +42,7 @@ class TaskGen < ::Rake::TaskLib
     vendor_paths = ['vendor/**/*', 'vendor_modules/**/*']
     @changed_files = FileList[@changed_files_with_vendored].exclude(vendor_paths).to_a
     PuppetSyntax.exclude_paths = vendor_paths
-    @tasks = setup_tasks
+    @tasks = setup_tasks + setup_spdx(@git)
     @failed_specs = []
   end
 
