@@ -227,6 +227,14 @@ class _WMFRewriteContext(WSGIContext):
 
         req = swob.Request(env)
 
+        # If the client has sent us URL-encoded invalid utf-8, then say
+        # 400 immediately and don't log a backtrace
+        try:
+            urllib.parse.unquote(req.path, errors="strict")
+        except UnicodeDecodeError:
+            resp = swob.HTTPBadRequest('Failed to decode request')
+            return resp(env, start_response)
+
         # Double (or triple, etc.) slashes in the URL should be ignored;
         # collapse them. fixes T34864
         # mojibake-safe since 0x2F is / in all relevant encodings
