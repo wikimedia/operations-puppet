@@ -3,10 +3,10 @@
 // Actions generated from etcd rules, if any.
 {{- if exists $global }}
 // Actions enabled globally
-{{ $value := json getv $global }}{{ $value.vcl }}
+{{ $value := json (getv $global) }}{{ $value.vcl }}
 {{- end }}
 {{- if exists $local}}
 // Site-specific actions
-{{ $value := json getv $local }}{{ $value.vcl }}
+{{ $value := json (getv $local) }}{{ $value.vcl }}
 {{- end }}
 
