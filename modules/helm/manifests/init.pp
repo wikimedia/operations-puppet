@@ -27,27 +27,27 @@ class helm(
         system     => true,
     }
 
-    # Make sure things are group wikidev and nice permissions
     file { $helm_home:
         ensure  => directory,
         owner   => 'helm',
-        group   => 'wikidev',
-        mode    => '0775',
+        group   => 'helm',
+        mode    => '0755',
         recurse => true,
     }
     # HELM_DATA_HOME for helm 3
     file { $helm_data:
         ensure  => directory,
         owner   => 'helm',
-        group   => 'wikidev',
-        mode    => '0775',
+        group   => 'helm',
+        mode    => '0755',
         recurse => true,
     }
     # HELM_CACHE_HOME for helm 3
+    # This needs to be writeable by users of helm
     file { $helm_cache:
         ensure  => directory,
         owner   => 'helm',
-        group   => 'wikidev',
+        group   => 'deployment',
         mode    => '0775',
         recurse => true,
     }
