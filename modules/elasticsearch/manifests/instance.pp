@@ -170,9 +170,10 @@ define elasticsearch::instance(
 
     $master_eligible = $::fqdn in $unicast_hosts
 
+
     if $gc_log == true {
-        $gc_log_flags = $version ? {
-            /(5|6)/   => [
+        $gc_log_flags = $facts['operatingsystemmajrelease'] ? {
+            '9'  => [
                 "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
                 '-XX:+PrintGCDetails',
                 '-XX:+PrintGCDateStamps',
@@ -184,12 +185,17 @@ define elasticsearch::instance(
                 '-XX:NumberOfGCLogFiles=10',
                 '-XX:GCLogFileSize=20M',
             ],
-            '7' => [
+
+            # the above GC flags are no longer valid as of Java 11, which is the default
+            # Java for Debian 10 and 11.
+            /(10|11)/  => [
                 "-Xlog:gc*:file=/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20000",
                 '-Xlog:gc+age=trace',
                 '-Xlog:safepoint',
             ],
+            default          => fail("OS major version: (${facts['operatingsystemmajrelease']}) not yet supported"),
         }
+
     } else {
         $gc_log_flags = []
     }
