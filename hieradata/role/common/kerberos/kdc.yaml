@@ -20,4 +20,4 @@ profile::kerberos::replication::monitoring_enabled: true
 # TODO: Revisit this when upgrading to Debian 11.
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations SREs'
-  - 'Analytics SREs'
+  - 'Data Engineering SREs'
