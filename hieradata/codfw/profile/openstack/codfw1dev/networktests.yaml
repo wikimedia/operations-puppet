@@ -19,7 +19,7 @@ profile::openstack::codfw1dev::networktests::envvars:
     NEUTRON_WAN_FQDN: cloudinstances2b-gw.openstack.codfw1dev.wikimediacloud.org
     NEUTRON_VIRT_IP: 172.16.128.1
     NEUTRON_VIRT_FQDN: cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
-    DNS_RECURSOR_IP: 208.80.153.47
+    DNS_RECURSOR_IP: 208.80.153.78
     DNS_AUTH_IP: 208.80.153.43
     DNS_AUTH_DOMAIN: bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
     DNS_AUTH_DOMAIN_A_RECORD: 185.15.57.2
