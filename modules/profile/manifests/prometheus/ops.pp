@@ -205,6 +205,19 @@ class profile::prometheus::ops (
         'relabel_configs' => $probes_relabel_configs,
       },
       {
+        'job_name'        => 'probes/custom',
+        'metrics_path'    => '/probe',
+        'scrape_interval' => '15s',
+        # blackbox-exporter will use the lower value between this and
+        # the module configured timeout. We want the latter, therefore
+        # set a high timeout here (but no longer than scrape_interval)
+        'scrape_timeout'  => '15s',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/probes-custom_*.yaml" ] }
+        ],
+        'relabel_configs' => $probes_relabel_configs,
+      },
+      {
         'job_name'        => 'smoke/icmp',
         'metrics_path'    => '/probe',
         'scrape_interval' => '15s',
@@ -247,6 +260,14 @@ class profile::prometheus::ops (
       targets      => $core_routers,
       targets_file => "${targets_path}/smoke-icmp_core-routers.yaml",
     }
+
+    # Checks for custom probes, defined in puppet
+    wmflib::resource::import('file', undef, { tag => "prometheus::blackbox::check::http::${::site}::module" })
+    wmflib::resource::import('file', undef, { tag => "prometheus::blackbox::check::http::${::site}::alert" })
+    # TODO: the following will concatenate all content simlar to the puppetlabs::concat module
+    # We need to check if we need to inser addtional line breaks (\n)
+    # also if we want to do something similar for alert files?
+    wmflib::resource::import('file', undef, { tag => "prometheus::blackbox::check::http::${::site}::target" }, true)
 
     # Export local textfile metrics.
     # Restricted to localhost (i.e. Prometheus hosts) and used to export
