@@ -34,6 +34,10 @@ LOCK_FILE = pathlib.Path("/var/lib/deploy-mwdebug/flock")
 # Error file, created when a deployment fails.
 # Further deployments can only happen if we set --force
 ERROR_FILE = pathlib.Path("/var/lib/deploy-mwdebug/error")
+# Pause file, to cause this script to exit happily without doing any work, regardless
+# of --force.
+PAUSE_FILE = pathlib.Path("/var/lib/deploy-mwdebug/pause")
+
 # Clusters to deploy to
 CLUSTERS = ["eqiad", "codfw"]
 
@@ -129,7 +133,7 @@ def deployment(noninteractive: bool):
             except AbortError:
                 logger.warning(f"Skipping {env}")
             except subprocess.CalledProcessError as e:
-                logger.error(f"Deploiying to {env} failed: {e}")
+                logger.error(f"Deploying to {env} failed: {e}")
 
 
 def main():
@@ -137,9 +141,16 @@ def main():
         fd = LOCK_FILE.open("w+")
         fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
         logging.basicConfig(level=logging.INFO)
-        # Before we try anything else: check if there is an error file.
-        # If it does, exit with status code 2, unless --force is set on the command line
         opts = parse_args()
+
+        try:
+            pause_message = PAUSE_FILE.read_text().strip() or "<no explanation provided>"
+            logging.info(f"This script has been paused by {PAUSE_FILE}: {pause_message}")
+            if opts.force:
+                logging.warning(f"--force is ignored when {PAUSE_FILE} exists")
+            return
+        except FileNotFoundError:
+            pass
 
         if opts.force:
             ERROR_FILE.unlink()
