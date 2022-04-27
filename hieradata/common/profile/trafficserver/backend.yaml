@@ -224,7 +224,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://webserver-misc-apps.discovery.wmnet
     - type: map
       target: http://static-bugzilla.wikimedia.org
-      replacement: https://k8s-ingress-wikikube.discovery.wmnet:30443
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://static-codereview.wikimedia.org
       replacement: https://webserver-misc-apps.discovery.wmnet
