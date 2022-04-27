@@ -1482,7 +1482,7 @@ node 'cloudweb2002-dev.wikimedia.org' {
 }
 
 node /^cloudnet200[24]-dev\.codfw\.wmnet$/ {
-    role(spare::system)
+    role(wmcs::openstack::codfw1dev::net)
 }
 
 node /^cloudnet200[5-6]-dev\.codfw\.wmnet$/ {
