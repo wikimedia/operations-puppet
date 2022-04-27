@@ -73,73 +73,42 @@ class profile::openstack::base::rabbitmq(
     }
     contain '::openstack::nova::rabbit'
 
-    if debian::codename::ge('bullseye') {
-        rabbitmq::plugin { 'rabbitmq_prometheus': }
-    } else {
-        rabbitmq::user{"${monitor_user}-rabbituser":
-            username      => $monitor_user,
-            password      => $monitor_password,
-            administrator => true,
-            require       => Class['::rabbitmq'],
-        }
+    rabbitmq::plugin { 'rabbitmq_prometheus': }
 
-        class { '::profile::prometheus::rabbitmq_exporter':
-            rabbit_monitor_username => $monitor_user,
-            rabbit_monitor_password => $monitor_password,
-        }
-        contain '::profile::prometheus::rabbitmq_exporter'
+    ferm::service { 'rabbitmq-internals':
+        proto  => 'tcp',
+        port   => '(4369 5671 5672)',
+        # TODO: change openstack_controllers to something else when we have dedicated rabbit nodes
+        srange => "(@resolve((${openstack_controllers.join(' ')})))",
     }
 
-    ferm::rule{'rabbit_for_designate':
-        ensure => 'present',
-        rule   =>  "saddr (@resolve((${join($designate_hosts,' ')})) @resolve((${join($designate_hosts,' ')}), AAAA))
-                    proto tcp dport (5671 5672) ACCEPT;",
-    }
-
-    ferm::rule{'beam_nova':
-        ensure => 'present',
-        rule   =>  "saddr (${labs_hosts_range} ${labs_hosts_range_v6}) proto tcp dport (5672 56918) ACCEPT;",
-    }
-
-    ferm::rule { 'rabbit_for_standby_node':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
-                          @resolve((${join($openstack_controllers,' ')}), AAAA))
-                   proto tcp dport (5671 5672) ACCEPT;",
-    }
-
-    # Rabbit uses epmd for clustering
-    ferm::rule { 'epmd_for_rabbit':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
-                          @resolve((${join($openstack_controllers,' ')}), AAAA))
-                   proto tcp dport 4369 ACCEPT;",
-    }
-
-    ferm::rule { 'rabbit_internode':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${join($openstack_controllers,' ')}))
-                          @resolve((${join($openstack_controllers,' ')}), AAAA))
-                   proto tcp dport 25672 ACCEPT;",
-    }
-
-    # Allow labs instances to talk to rabbitmq.
-    # We need this because Trove instances are orchestrated
-    #  via rabbitmq.
-    include network::constants
-    $labs_networks = join($network::constants::labs_networks, ' ')
-
-    ferm::service { 'rabbitmq-access-for-cloud-vps-instances':
+    ferm::service { 'rabbitmq-nova-hosts':
         proto  => 'tcp',
         port   => '(5671 5672)',
-        srange => "(${labs_networks})",
+        srange => "(${labs_hosts_range} ${labs_hosts_range_v6})",
     }
 
-    # cinder-backup requires access to rabbit
-    ferm::rule { 'rabbit_for_cinder_backup_nodes':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${join($cinder_backup_nodes,' ')}))
-                          @resolve((${join($cinder_backup_nodes,' ')}), AAAA))
-                   proto tcp dport (5671 5672) ACCEPT;",
+    ferm::service { 'rabbitmq-openstack-control':
+        proto  => 'tcp',
+        port   => '(5671 5672)',
+        srange => "(@resolve((${openstack_controllers.join(' ')})))",
+    }
+
+    ferm::service { 'rabbitmq-designate':
+        proto  => 'tcp',
+        port   => '(5671 5672)',
+        srange => "(@resolve((${designate_hosts.join(' ')})))",
+    }
+
+    ferm::service { 'rabbitmq-cinder-backup':
+        proto  => 'tcp',
+        port   => '(5671 5672)',
+        srange => "(@resolve((${cinder_backup_nodes.join(' ')})))",
+    }
+
+    ferm::service { 'rabbitmq-cloud-vps-instances':
+        proto  => 'tcp',
+        port   => '(5671 5672)',
+        srange => '$LABS_NETWORKS',
     }
 }
