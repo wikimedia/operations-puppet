@@ -27,5 +27,6 @@ defaults
 listen stats
     bind 127.0.0.1:9900
     mode http
+    http-request use-service prometheus-exporter if { path /metrics }
     stats enable
     stats uri /stats
