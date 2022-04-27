@@ -52,6 +52,10 @@
     # changes, we turn it off for now. Once it has been discussed if
     # we want it, we can still turn it on.
     move = false
+    # Populate whether a change in mergeable in ChangeInfo objects
+    # Causes all open changes to be reindexed when the target reference
+    # advances.
+    mergeabilityComputationBehavior = API_REF_UPDATED_AND_CHANGE_REINDEX
 [changeCleanup]
     # Not actually used, but Gerrit complains if unset
     interval = 1 week
