@@ -5,15 +5,10 @@
 # opensearch::curator::cluster.
 #
 class opensearch::curator {
-    if debian::codename::le('buster') {
-        $curator_version = '5.8.1'  # ensure version compatible with announced version 7.10.0
-    } else {
-        $curator_version = '5.8.1-1'
-    }
 
     # TODO: use fork when available (T301017)
     package { 'elasticsearch-curator':
-        ensure => $curator_version
+        ensure => '>=5.8.1'
     }
 
     file { '/etc/curator/':
