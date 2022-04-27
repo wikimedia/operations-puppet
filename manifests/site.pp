@@ -1440,9 +1440,19 @@ node 'gitlab2001.wikimedia.org' {
     role(gitlab)
 }
 
+# New gitlab nodes T301183$
+node /^gitlab200[23]\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 # T295481
 node 'gitlab-runner2001.codfw.wmnet' {
     role(gitlab_runner)
+}
+
+# New gitlab-runner nodes T301183$
+node /^gitlab-runner200[234]\.codfw\.wmnet$/ {
+    role(insetup)
 }
 
 # Virtual machines for Grafana 6.x (T220838, T244357)
