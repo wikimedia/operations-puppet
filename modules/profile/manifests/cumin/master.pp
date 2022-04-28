@@ -1,3 +1,9 @@
+# @summary profile to manage cumin masters
+# @param puppetdb_host the host running puppetdb
+# @param datacenters list of datacenters
+# @param kerberos_kadmin_host the host running kerberos kadmin
+# @param monitor_agentrun weather to monitor agent runs
+# @param email_alerts whether to send email alerts
 class profile::cumin::master (
     Stdlib::Host  $puppetdb_host        = lookup('puppetdb_host'),
     Array[String] $datacenters          = lookup('datacenters'),
@@ -9,7 +15,7 @@ class profile::cumin::master (
     $cumin_log_path = '/var/log/cumin'
     $ssh_config_path = '/etc/cumin/ssh_config'
     # Ensure to add FQDN of the current host also the first time the role is applied
-    $cumin_masters = unique(concat(query_nodes('Class[Role::Cluster::Management]'), [$::fqdn]))
+    $cumin_masters = (wmflib::role_hosts('cluster::management]') << $facts['networking']['fqdn']).sort.unique
     $mariadb_roles = Profile::Mariadb::Role
     $mariadb_sections = Profile::Mariadb::Valid_section
 
@@ -40,7 +46,7 @@ class profile::cumin::master (
     }
 
     file { '/etc/cumin/config.yaml':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0640',
@@ -49,7 +55,7 @@ class profile::cumin::master (
     }
 
     file { '/etc/cumin/config-installer.yaml':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0640',
@@ -58,7 +64,7 @@ class profile::cumin::master (
     }
 
     file { '/etc/cumin/aliases.yaml':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
@@ -67,7 +73,7 @@ class profile::cumin::master (
     }
 
     file { '/usr/local/sbin/check-cumin-aliases':
-        ensure => present,
+        ensure => file,
         source => 'puppet:///modules/profile/cumin/check_cumin_aliases.py',
         mode   => '0544',
         owner  => 'root',
@@ -75,7 +81,7 @@ class profile::cumin::master (
     }
 
     file { '/usr/local/bin/secure-cookbook':
-        ensure => present,
+        ensure => file,
         source => 'puppet:///modules/profile/cumin/secure_cookbook.py',
         mode   => '0555',
         owner  => 'root',
@@ -83,7 +89,7 @@ class profile::cumin::master (
     }
 
     file { $ssh_config_path:
-        ensure => present,
+        ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0640',
@@ -100,7 +106,7 @@ class profile::cumin::master (
         command       => '/usr/local/sbin/check-cumin-aliases',
         send_mail     => $email_alerts,
         ignore_errors => true,
-        interval      => {'start' => 'OnCalendar', 'interval' => $times['OnCalendar']}
+        interval      => { 'start' => 'OnCalendar', 'interval' => $times['OnCalendar'] },
     }
 
     class { 'phabricator::bot':
