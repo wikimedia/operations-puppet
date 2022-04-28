@@ -1,14 +1,26 @@
-# Class: profile::debmonitor::server
-#
-# This profile installs all the Debmonitor server related parts as WMF requires it
-#
+# @summary This profile installs all the Debmonitor server related parts as WMF requires it
 # Actions:
 #       Deploy Debmonitor
 #       Install nginx, uwsgi, configure reverse proxy to uwsgi
-#
-# Sample Usage:
+# @example
 #       include ::profile::debmonitor::server
 #
+# @param internal_server_name the discovery domain used for debmonitor
+# @param ldap_config The ldap configuration
+# @param public_server_name The public domain to use
+# @param django_secret_key The Django secret key
+# @param django_mysql_db_host the Django mysql host
+# @param django_mysql_db_password The Django mysql password
+# @param django_log_db_queries Whether to log DB queries
+# @param django_require_login whether to disable logins
+# @param settings_module the settings module to use
+# @param app_deployment How to deploy the APP
+# @param enable_logback Enable logback
+# @param enable_monitoring Enable monitoring
+# @param ssl_certs Indicate how sslcerts are managed
+# @param cfssl_label CFSSL label to use when requesting ssl certs.  Only valid if ssl_certs = 'cfssl'
+# @param required_groups A list of ldap groups allowed to login
+# @param trusted_ca_source Path to CA files used for MTLS truststore
 class profile::debmonitor::server (
     String                             $internal_server_name     = lookup('debmonitor'),
     Hash                               $ldap_config              = lookup('ldap', Hash, hash, {}),
@@ -45,7 +57,6 @@ class profile::debmonitor::server (
         class { 'profile::rsyslog::udp_json_logback_compat': }
     }
 
-
     $ldap_password = $passwords::ldap::production::proxypass
     $port = 8001
     $deploy_user = 'deploy-debmonitor'
@@ -57,15 +68,15 @@ class profile::debmonitor::server (
     $directory = "${deploy_path}/src"
     $ssl_config = ssl_ciphersuite('apache', 'strong')
     # Ensure to add FQDN of the current host also the first time the role is applied
-    $hosts = unique(concat(query_nodes('Class[Role::Debmonitor::Server]'), [$::fqdn]))
-    $proxy_hosts = query_nodes('Class[Role::Cluster::Management]')
-    $proxy_images = query_nodes('Class[Role::Builder]')
+    $hosts = (wmflib::role_hosts('debmonitor::server') << $facts['networking']['fqdn']).sort.unique
+    $proxy_hosts = wmflib::role_hosts('cluster::management')
+    $proxy_images = wmflib::role_hosts('builder')
     $ldap_server_primary = $ldap_config['ro-server']
     $ldap_server_fallback = $ldap_config['ro-server-fallback']
 
     # Configuration file for the Django-based WebUI and API
     file { $config_path:
-        ensure  => present,
+        ensure  => file,
         owner   => $deploy_user,
         group   => 'www-data',
         mode    => '0440',
@@ -122,10 +133,10 @@ class profile::debmonitor::server (
     }
 
     class { 'httpd':
-        modules => ['proxy_http', 'proxy', 'proxy_uwsgi', 'auth_basic', 'ssl', 'headers']
+        modules => ['proxy_http', 'proxy', 'proxy_uwsgi', 'auth_basic', 'ssl', 'headers'],
     }
 
-    profile::idp::client::httpd::site {$public_server_name:
+    profile::idp::client::httpd::site { $public_server_name:
         vhost_content    => 'profile/idp/client/httpd-debmonitor.erb',
         proxied_as_https => true,
         vhost_settings   => {
@@ -139,7 +150,7 @@ class profile::debmonitor::server (
     }
 
     $trusted_ca_file = "/etc/ssl/localcerts/${internal_server_name}.trusted_ca.pem"
-    file {$trusted_ca_file:
+    file { $trusted_ca_file:
         ensure => file,
         mode   => '0444',
         source => $trusted_ca_source,
@@ -167,13 +178,13 @@ class profile::debmonitor::server (
             fail("unsupported ssl provider: ${ssl_certs}")
         }
     }
-    httpd::site{$internal_server_name:
-        content => template('profile/debmonitor/internal_client_auth_endpoint.conf.erb')
+    httpd::site { $internal_server_name:
+        content => template('profile/debmonitor/internal_client_auth_endpoint.conf.erb'),
     }
 
     # Maintenance script
     file { "${base_path}/run-django-command":
-        ensure  => present,
+        ensure  => file,
         owner   => $deploy_user,
         group   => $deploy_user,
         mode    => '0554',
@@ -181,7 +192,7 @@ class profile::debmonitor::server (
     }
 
     $times = cron_splay($hosts, 'weekly', 'debmonitor-maintenance-gc')
-    systemd::timer::job {'debmonitor-maintenance-gc':
+    systemd::timer::job { 'debmonitor-maintenance-gc':
         ensure      => present,
         command     => "${base_path}/run-django-command debmonitorgc",
         user        => $deploy_user,
@@ -189,7 +200,7 @@ class profile::debmonitor::server (
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => $times['OnCalendar'],
-        }
+        },
     }
 
     if $enable_monitoring {
