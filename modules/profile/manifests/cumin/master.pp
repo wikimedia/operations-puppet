@@ -18,6 +18,7 @@ class profile::cumin::master (
     $cumin_masters = (wmflib::role_hosts('cluster::management]') << $facts['networking']['fqdn']).sort.unique
     $mariadb_roles = Profile::Mariadb::Role
     $mariadb_sections = Profile::Mariadb::Valid_section
+    $owners = profile::contacts::get_owners().values.flatten.unique
 
     keyholder::agent { 'cumin_master':
         trusted_groups => ['root'],
