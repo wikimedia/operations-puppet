@@ -2504,6 +2504,12 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\.wmnet$/ {
     role(parsoid)
 }
 
+# new parsoid nodes - eqiad T299573
+node /^parse10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
+    role(insetup)
+}
+
+
 # parser cache databases
 # eqiad
 # pc1
