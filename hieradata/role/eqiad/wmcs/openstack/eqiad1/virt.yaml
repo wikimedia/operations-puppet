@@ -30,4 +30,4 @@ contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 
 profile::openstack::eqiad1::nova::common::is_control_node: false
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']

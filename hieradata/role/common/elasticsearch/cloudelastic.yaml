@@ -112,6 +112,6 @@ profile::lvs::realserver::pools:
 profile::lvs::realserver::use_conftool: true
 
 profile::tlsproxy::instance::nginx_variant: 'light'
-profile::contacts::role_contacts: ['Search Platform SREs']
+profile::contacts::role_contacts: ['Search Platform']
 
 logstash_host: 'localhost'

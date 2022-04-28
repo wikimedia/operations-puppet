@@ -44,4 +44,4 @@ profile::lvs::realserver::pools:
 
 profile::admin::groups:
   - ml-team-admins
-profile::contacts::role_contacts: ['Machine Learning SREs']
+profile::contacts::role_contacts: ['Machine Learning']

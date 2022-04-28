@@ -57,4 +57,4 @@ prometheus::node_exporter::collectors_extra:
 
 contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']

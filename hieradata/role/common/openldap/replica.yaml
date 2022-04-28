@@ -4,4 +4,4 @@ profile::lvs::realserver::pools:
   ldap-ro:
     services:
       - slapd
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

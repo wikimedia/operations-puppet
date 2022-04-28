@@ -9,4 +9,4 @@ profile::resolving::domain_search:
   - drmrs.wmnet
 profile::admin::groups:
   - all-users
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

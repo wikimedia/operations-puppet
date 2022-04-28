@@ -52,4 +52,4 @@ profile::airflow::instances:
 # https://phabricator.wikimedia.org/T295380
 profile::airflow::use_wmf_defaults: false
 
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

@@ -63,4 +63,4 @@ profile::bird::anycasthc_logging:
 
 profile::base::firewall::enable_logging: false
 
-profile::contacts::role_contacts: ['Traffic SREs']
+profile::contacts::role_contacts: ['Traffic']

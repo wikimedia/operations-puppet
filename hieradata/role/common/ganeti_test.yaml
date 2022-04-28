@@ -25,4 +25,4 @@ profile::ganeti::nodes:
   - ganeti-test2002.codfw.wmnet
   - ganeti-test2003.codfw.wmnet
 profile::ganeti::rapi::certificate: ganeti-test01.svc.codfw.wmnet
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

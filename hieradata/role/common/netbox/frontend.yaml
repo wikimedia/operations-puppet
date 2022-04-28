@@ -1,7 +1,7 @@
 # Ship logs to logging pipeline local shim
 # TODO: need to remove the following key
 service::configuration::logstash_host: localhost
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']
 
 # Netbox
 profile::netbox::automation::git_hostname: netbox-exports.wikimedia.org

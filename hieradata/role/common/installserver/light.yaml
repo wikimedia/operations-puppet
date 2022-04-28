@@ -6,5 +6,5 @@ profile::installserver::proxy::ensure: 'present'
 profile::nginx::variant: 'light'
 profile::base::ssh_server_settings:
   enable_kerberos: true
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::installserver::proxy::structured_logs: true

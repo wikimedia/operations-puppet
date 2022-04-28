@@ -1,5 +1,5 @@
 profile::contacts::role_contacts:
-  - 'Observability SREs'
+  - 'Observability'
 
 profile::lvs::realserver::pools:
   kibana7:

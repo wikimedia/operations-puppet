@@ -78,6 +78,6 @@ profile::elasticsearch::cirrus::enable_remote_search: false
 profile::kibana::enable_phatality: false
 
 profile::tlsproxy::instance::nginx_variant: 'light'
-profile::contacts::role_contacts: ['Search Platform SREs']
+profile::contacts::role_contacts: ['Search Platform']
 
 logstash_host: 'localhost'

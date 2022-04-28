@@ -70,4 +70,4 @@ profile::kubernetes::master_fqdn: ml-ctrl.svc.%{::site}.wmnet
 # profile::rsyslog::kubernetes::token
 prometheus::node_exporter::collectors_extra:
   - processes
-profile::contacts::role_contacts: ['Machine Learning SREs']
+profile::contacts::role_contacts: ['Machine Learning']

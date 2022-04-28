@@ -25,4 +25,4 @@ profile::lvs::realserver::pools:
 
 profile::nginx::variant: 'light'
 profile::nginx::tmpfs_size: '2g'
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

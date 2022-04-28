@@ -6,4 +6,4 @@ profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
 profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
 profile::zookeeper::monitoring_contact_group: 'admins,analytics'
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

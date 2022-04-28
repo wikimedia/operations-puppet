@@ -12,4 +12,4 @@ profile::debdeploy::client::filter_services:
     - '*'
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
-profile::contacts::role_contacts: ['CPT SREs']
+profile::contacts::role_contacts: ['Core Platform']

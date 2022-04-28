@@ -11,7 +11,7 @@ profile::admin::groups:
 
 profile::monitoring::notifications_enabled: false
 
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']
 profile::ceph::auth::deploy::enabled: true
 
 profile::ceph::auth::deploy::configuration:

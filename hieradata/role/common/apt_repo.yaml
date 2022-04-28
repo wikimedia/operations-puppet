@@ -8,4 +8,4 @@ profile::admin::groups:
   - datacenter-ops
 profile::base::ssh_server_settings:
   enable_kerberos: true
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

@@ -1,2 +1,2 @@
 profile::url_downloader::url_downloader_port: 8080
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

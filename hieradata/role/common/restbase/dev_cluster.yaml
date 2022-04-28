@@ -146,7 +146,7 @@ service::configuration::log_dir: "/var/log"
 profile::admin::groups:
   - restbase-roots
   - restbase-admins
-profile::contacts::role_contacts: ['CPT SREs']
+profile::contacts::role_contacts: ['Core Platform']
 
 profile::java::java_packages:
   - version: '8'

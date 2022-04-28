@@ -54,7 +54,7 @@ profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
 # Disable Restore-Backup Timer Job
 profile::gitlab::enable_restore: false
 
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']
 
 # SSL/TLS certs - in prod use acmechief, in cloud use certbot to get them
 profile::gitlab::use_acmechief: true

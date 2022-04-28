@@ -12,4 +12,4 @@ mgmt_contactgroups: wmcs-team-email
 
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold: 98
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold: 95
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']

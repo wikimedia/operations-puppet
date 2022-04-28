@@ -226,4 +226,4 @@ profile::elasticsearch::logstash::curator_actions:
         unit: days
         unit_count: 2
 
-profile::contacts::role_contacts: ['Observability SREs']
+profile::contacts::role_contacts: ['Observability']

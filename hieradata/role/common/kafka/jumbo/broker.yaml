@@ -125,4 +125,4 @@ profile::kafka::broker::custom_ferm_srange_components:
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

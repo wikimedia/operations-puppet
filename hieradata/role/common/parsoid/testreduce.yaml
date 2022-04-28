@@ -33,4 +33,4 @@ profile::tlsproxy::envoy::services:
 
 profile::nginx::variant: 'light'
 
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

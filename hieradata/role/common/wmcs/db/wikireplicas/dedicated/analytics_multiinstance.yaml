@@ -2,4 +2,4 @@ profile::admin::groups:
     - wmcs-admin
 contactgroups: wmcs-team-email
 mgmt_contactgroups: wmcs-team-email
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']

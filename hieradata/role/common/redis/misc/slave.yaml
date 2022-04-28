@@ -19,4 +19,4 @@ profile::redis::slave::instance_overrides:
     appendonly: false
   '6382':
     maxmemory-policy: 'allkeys-lru'
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

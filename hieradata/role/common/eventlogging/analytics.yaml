@@ -21,4 +21,4 @@ profile::eventlogging::analytics::processor::client_side_processors:
     - client-side-09
     - client-side-10
     - client-side-11
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

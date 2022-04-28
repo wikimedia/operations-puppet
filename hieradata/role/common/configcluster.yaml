@@ -30,4 +30,4 @@ profile::zookeeper::monitoring_enabled: true
 profile::zookeeper::is_critical: true
 
 profile::tlsproxy::instance::nginx_variant: 'light'
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

@@ -119,4 +119,4 @@ profile::prometheus::statsd_exporter::mappings:
 mtail::logs:
   - /var/log/haproxy/haproxy.log
 mtail::group: 'adm'
-profile::contacts::role_contacts: ['CPT SREs']
+profile::contacts::role_contacts: ['Core Platform']

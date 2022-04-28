@@ -48,4 +48,4 @@ profile::prometheus::memcached_exporter::arguments: '--memcached.address=localho
 profile::java::hardened_tls: true
 profile::java::egd_source: '/dev/urandom'
 profile::idp::u2f_token_expiry_days: 3650
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

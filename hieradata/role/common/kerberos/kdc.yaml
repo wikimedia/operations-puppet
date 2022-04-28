@@ -19,5 +19,5 @@ profile::kerberos::replication::monitoring_enabled: true
 # Don't add back dns_canonicalize_hostname=false!
 # TODO: Revisit this when upgrading to Debian 11.
 profile::contacts::role_contacts:
-  - 'Infrastructure Foundations SREs'
-  - 'Data Engineering SREs'
+  - 'Infrastructure Foundations'
+  - 'Data Engineering'

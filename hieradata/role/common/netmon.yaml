@@ -6,5 +6,5 @@ profile::idp::client::httpd::sites:
     vhost_content: 'profile/idp/client/httpd-librenms.erb'
 rsync::server::wrap_with_stunnel: true
 profile::contacts::role_contacts:
-  - 'Infrastructure Foundations SREs'
-  - 'Observability SREs'
+  - 'Infrastructure Foundations'
+  - 'Observability'

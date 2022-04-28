@@ -62,4 +62,4 @@ profile::hadoop::firewall::master::client_ferm_srange: '(($ANALYTICS_NETWORKS $D
 
 profile::hadoop::common::config_override:
   hadoop_var_directory: '/srv/hadoop'
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

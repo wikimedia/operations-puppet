@@ -72,4 +72,4 @@ profile::java::extra_args:
 profile::monitoring::notifications_enabled: false
 
 profile::hadoop::common::use_puppet_ssl_certs: true
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

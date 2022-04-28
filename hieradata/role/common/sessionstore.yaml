@@ -70,7 +70,7 @@ profile::cassandra::settings:
 #
 profile::admin::groups:
   - sessionstore-roots
-profile::contacts::role_contacts: ['CPT SREs']
+profile::contacts::role_contacts: ['Core Platform']
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'

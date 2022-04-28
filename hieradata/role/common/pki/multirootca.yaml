@@ -58,4 +58,4 @@ profile::pki::multirootca::root_ocsp_key: 'pki/ROOT/Wikimedia_Internal_Root_CA_o
 # This is the vhost used for the ocsp/crl responder
 profile::pki::multirootca::vhost: 'pki.discovery.wmnet'
 profile::pki::multirootca::db_host: 'm1-master.eqiad.wmnet'
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

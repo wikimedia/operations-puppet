@@ -1,4 +1,4 @@
 cluster: backup
 
 profile::mariadb::wmfmariadbpy::role: 'library'
-profile::contacts::role_contacts: ['Data Persistence SREs']
+profile::contacts::role_contacts: ['Data Persistence']

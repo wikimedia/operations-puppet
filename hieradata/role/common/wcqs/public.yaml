@@ -58,4 +58,4 @@ profile::nginx::variant: 'full'
 # Proxy non-blazegraph requests to the gui hosted on microsites
 profile::query_service::gui_url: https://webserver-misc-apps.discovery.wmnet
 
-profile::contacts::role_contacts: ['Search Platform SREs']
+profile::contacts::role_contacts: ['Search Platform']

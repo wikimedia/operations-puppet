@@ -14,7 +14,7 @@ profile::admin::groups:
   - labtest-roots
 # See T224828
 raid::md::cron_ensure: absent
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']
 
 # prometheus-pdns-exporter is scraped by cloudmetrics
 # prometheus-node-exporter by prod servers

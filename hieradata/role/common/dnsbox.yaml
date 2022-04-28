@@ -26,4 +26,4 @@ profile::dns::auth::gitrepo: 'https://gerrit.wikimedia.org/r/operations/dns.git'
 profile::bird::bind_anycast_service: 'pdns-recursor.service'
 
 profile::systemd::timesyncd::ensure: absent
-profile::contacts::role_contacts: ['Traffic SREs']
+profile::contacts::role_contacts: ['Traffic']

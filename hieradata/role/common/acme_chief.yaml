@@ -303,4 +303,4 @@ profile::acme_chief::accounts:
 profile::acme_chief::active: acmechief1001.eqiad.wmnet
 profile::acme_chief::passive: acmechief2001.codfw.wmnet
 profile::nginx::variant: 'light'
-profile::contacts::role_contacts: ['Traffic SREs']
+profile::contacts::role_contacts: ['Traffic']

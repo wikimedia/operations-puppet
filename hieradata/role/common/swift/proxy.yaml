@@ -173,4 +173,4 @@ profile::prometheus::statsd_exporter::mappings:
       storage_policy: "$2"
 
 profile::tlsproxy::instance::nginx_variant: 'light'
-profile::contacts::role_contacts: ['Data Persistence SREs']
+profile::contacts::role_contacts: ['Data Persistence']

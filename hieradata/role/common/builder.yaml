@@ -12,7 +12,7 @@ profile::docker::builder::docker_pkg: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
 profile::docker::builder::prune_images: true
 #profile::docker::builder::prod_build_password: defined in the private repo
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']
 # we need overlayfs
 profile::base::overlayfs: true
 

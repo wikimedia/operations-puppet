@@ -34,4 +34,4 @@ profile::pki::root_ca::profiles:
       - 'digital signature'
       - 'ocsp signing'
     expiry: '43800h'
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

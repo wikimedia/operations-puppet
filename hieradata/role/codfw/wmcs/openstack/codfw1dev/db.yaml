@@ -1,4 +1,4 @@
 profile::monitoring::notifications_enabled: false
 profile::admin::groups:
   - labtest-roots
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']

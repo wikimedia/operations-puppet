@@ -60,4 +60,4 @@ profile::mediawiki::php::icu63: true
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true
 
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

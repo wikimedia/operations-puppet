@@ -16,4 +16,4 @@ profile::tlsproxy::envoy::services:
 
 profile::tlsproxy::envoy::tls_port: 8443
 profile::tlsproxy::envoy::global_cert_name: "yarn.wikimedia.org"
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

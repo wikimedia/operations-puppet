@@ -65,6 +65,6 @@ profile::monitoring::notifications_enabled: false
 profile::hadoop::common::use_puppet_ssl_certs: true
 
 profile::hadoop::worker::check_mountpoints_disk_space: false
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']
 
 profile::base::certificates::include_bundle_jks: true

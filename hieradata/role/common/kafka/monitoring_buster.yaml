@@ -17,4 +17,4 @@ profile::kafka::monitoring::config:
     burrow_port: 8101
     burrow_exporter_port: 9501
 profile::contacts::role_contacts:
-  - 'Observability SREs'
+  - 'Observability'

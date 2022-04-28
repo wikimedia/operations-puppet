@@ -2,4 +2,4 @@ contactgroups: wmcs-team
 mgmt_contactgroups: wmcs-team-email
 
 profile::wmcs::nfs::primary_backup::misc::backup_interval: 'Wed *-*-* 20:00:00'
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']

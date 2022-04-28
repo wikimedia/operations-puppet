@@ -17,4 +17,4 @@ profile::idp::client::httpd::sites:
     vhost_settings:
       mysql_root_clients: "%{alias('mysql_root_clients')}"
       cumin_masters: "%{alias('cumin_masters')}"
-profile::contacts::role_contacts: ['Data Persistence SREs']
+profile::contacts::role_contacts: ['Data Persistence']

@@ -177,4 +177,4 @@ profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 profile::monitoring::notifications_enabled: false
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

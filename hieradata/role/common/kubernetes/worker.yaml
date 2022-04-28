@@ -78,4 +78,4 @@ profile::lvs::realserver::pools:
   k8s-ingress-wikikube: {}
 prometheus::node_exporter::collectors_extra:
   - processes
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

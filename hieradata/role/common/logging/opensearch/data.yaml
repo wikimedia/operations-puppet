@@ -1,5 +1,5 @@
 # General configs
-profile::contacts::role_contacts: ['Observability SREs']
+profile::contacts::role_contacts: ['Observability']
 cluster: logstash
 
 profile::admin::groups:

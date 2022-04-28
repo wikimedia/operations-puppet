@@ -1,2 +1,2 @@
 profile::openldap_corp::master_server: ldap1.corp.wikimedia.org
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

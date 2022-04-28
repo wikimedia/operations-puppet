@@ -9,4 +9,4 @@ profile::java::java_packages:
     variant: 'jdk'
 
 profile::nginx::variant: 'light'
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

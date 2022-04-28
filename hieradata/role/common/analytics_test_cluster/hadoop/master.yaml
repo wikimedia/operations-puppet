@@ -73,4 +73,4 @@ profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 profile::hadoop::common::use_puppet_ssl_certs: true
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

@@ -38,7 +38,7 @@ profile::maps::apps::tilerator_enable: false
 profile::maps::apps::wikidata_query_service: http://wdqs.discovery.wmnet/bigdata/namespace/wdq/sparql
 profile::maps::tlsproxy::servicename: kartotherian.discovery.wmnet
 profile::tlsproxy::instance::nginx_variant: 'light'
-profile::contacts::role_contacts: ['CPT SREs']
+profile::contacts::role_contacts: ['Core Platform']
 
 profile::maps::cassandra::enable: false
 

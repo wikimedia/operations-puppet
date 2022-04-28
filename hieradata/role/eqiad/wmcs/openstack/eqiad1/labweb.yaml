@@ -106,4 +106,4 @@ profile::prometheus::memcached_exporter::arguments: '--memcached.address=localho
 profile::tlsproxy::envoy::global_cert_name: "labweb.discovery.wmnet"
 profile::tlsproxy::envoy::tls_port: 7443
 profile::base::firewall::block_abuse_nets: true
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']

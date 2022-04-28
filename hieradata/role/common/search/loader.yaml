@@ -34,4 +34,4 @@ profile::mjolnir::kafka_bulk_daemon::priority_topics:
 profile::mjolnir::kafka_bulk_daemon::es_cluster_endpoint: 'https://search.svc.%{::site}.wmnet:9243'
 profile::mjolnir::kafka_msearch_daemon::es_cluster_endpoint: 'https://search.svc.%{::site}.wmnet:9243'
 
-profile::contacts::role_contacts: ['Search Platform SREs']
+profile::contacts::role_contacts: ['Search Platform']

@@ -1,5 +1,5 @@
 profile::contacts::role_contacts:
-  - 'Observability SREs'
+  - 'Observability'
 
 cluster: thanos
 profile::resolving::domain_search:

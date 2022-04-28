@@ -35,4 +35,4 @@ profile::java::java_packages:
   - version: '11'
     variant: 'jre-headless'
 profile::tlsproxy::envoy::global_cert_name: "config-master.discovery.wmnet"
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

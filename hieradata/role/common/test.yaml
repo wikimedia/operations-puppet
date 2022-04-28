@@ -1,2 +1,2 @@
 profile::monitoring::notifications_enabled: false
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

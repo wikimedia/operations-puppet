@@ -32,7 +32,7 @@ profile::admin::groups:
 raid::md::cron_ensure: absent
 
 profile::openstack::eqiad1::nova::common::is_control_node: true
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']
 
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:

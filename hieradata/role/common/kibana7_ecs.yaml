@@ -66,4 +66,4 @@ profile::elasticsearch::monitor::threshold: '>=0.34'
 # reusing kibana.discovery.wmnet to squelch PCC missing secret() errors
 profile::tlsproxy::envoy::global_cert_name: "kibana.discovery.wmnet"
 
-profile::contacts::role_contacts: ['Observability SREs']
+profile::contacts::role_contacts: ['Observability']

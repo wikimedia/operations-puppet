@@ -14,4 +14,4 @@ profile::memcached::ssl_cert: "%{facts.puppet_config.hostcert}"
 profile::memcached::ssl_key: "%{facts.puppet_config.hostprivkey}"
 profile::memcached::notls_port: 11211
 profile::memcached::port: 11214
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

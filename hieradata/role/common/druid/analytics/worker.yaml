@@ -212,4 +212,4 @@ profile::java::java_packages:
     variant: 'jdk'
 profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

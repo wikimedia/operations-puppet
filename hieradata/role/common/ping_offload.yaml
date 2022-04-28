@@ -4,4 +4,4 @@ profile::ping_offload::target_ips:
   text-lb-codfw-vip: 208.80.153.224
   text-lb-esams-vip: 91.198.174.192
 profile::contacts::role_contacts:
-  - 'Infrastructure Foundations SREs'
+  - 'Infrastructure Foundations'

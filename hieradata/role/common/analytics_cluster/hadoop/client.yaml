@@ -5,4 +5,4 @@ profile::hive::client::hive_service_name: 'analytics-hive'
 # Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
 profile::kerberos::client::show_krb_ticket_info: true
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

@@ -2,4 +2,4 @@ cluster: dumps
 profile::admin::groups:
   - htmldumps-admin
 profile::nginx::variant: 'light'
-profile::contacts::role_contacts: ['CPT SREs']
+profile::contacts::role_contacts: ['Core Platform']

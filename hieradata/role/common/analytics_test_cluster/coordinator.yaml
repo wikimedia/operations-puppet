@@ -157,7 +157,7 @@ profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
 
 profile::hadoop::common::use_puppet_ssl_certs: true
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']
 
 profile::base::certificates::include_bundle_jks: true
 

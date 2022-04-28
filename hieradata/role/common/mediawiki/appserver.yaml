@@ -52,7 +52,7 @@ profile::mediawiki::php::restarts::ensure: present
 profile::mediawiki::php::restarts::opcache_limit: 200
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']
 
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true

@@ -1,2 +1,2 @@
 karapace::bootstrap_uri: kafka-test1006.eqiad.wmnet:9092
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

@@ -77,7 +77,7 @@ profile::mediawiki::apc_shm_size: 128M
 lvs::realserver::realserver_ips:
     - '208.80.153.41' # cloudweb2002-dev.wikimedia.org
 profile::base::firewall::block_abuse_nets: true
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']
 
 # TLS for caches -> web interfaces
 profile::tlsproxy::envoy::tls_port: 7443

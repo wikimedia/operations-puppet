@@ -40,4 +40,4 @@ profile::memcached::size: 256
 profile::memcached::extended_options:
   - 'modern'
 
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

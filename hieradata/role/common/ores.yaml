@@ -169,4 +169,4 @@ profile::tlsproxy::envoy::sni_support: "no"
 profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::enabled_listeners:
  - mwapi-async
-profile::contacts::role_contacts: ['Machine Learning SREs']
+profile::contacts::role_contacts: ['Machine Learning']

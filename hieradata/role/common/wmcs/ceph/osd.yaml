@@ -1,2 +1,2 @@
 profile::monitoring::nrpe_check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" -I "/ceph/" --exclude-type=fuse.fuse_dfs --exclude-type=tracefs'
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']

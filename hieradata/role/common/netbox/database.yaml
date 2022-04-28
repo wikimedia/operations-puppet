@@ -1,4 +1,4 @@
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']
 
 profile::netbox::db::do_backup: true
 profile::netbox::db::primary: netboxdb1001.eqiad.wmnet

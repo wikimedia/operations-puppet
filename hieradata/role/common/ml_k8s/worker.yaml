@@ -73,4 +73,4 @@ profile::calico::kubernetes::cni_config:
 
 profile::admin::groups:
   - ml-team-admins
-profile::contacts::role_contacts: ['Machine Learning SREs']
+profile::contacts::role_contacts: ['Machine Learning']

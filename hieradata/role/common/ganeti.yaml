@@ -18,4 +18,4 @@ profile::debdeploy::client::filter_services:
 # Disable setting the IPv6 token on ganeti hosts
 # T233906
 profile::base::production::enable_ip6_mapped: false
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

@@ -237,7 +237,7 @@ profile::gitlab::key_path: '/etc/letsencrypt/live/gitlab.devtools.wmcloud.org/pr
 # Disable restore backup sync on cloud test instance
 profile::gitlab::enable_restore: false
 
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']
 
 # service IP for public https and ssh (T276148)
 profile::gitlab::service_ip_v4: '172.16.7.146'

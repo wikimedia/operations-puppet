@@ -1,5 +1,5 @@
 profile::contacts::role_contacts:
-  - 'Observability SREs'
+  - 'Observability'
 cluster: logstash
 
 profile::lvs::realserver::pools:

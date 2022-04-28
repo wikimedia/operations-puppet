@@ -9,7 +9,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - puppetboard-samltest.wikimedia.org
 # Ship logs to logging pipeline local shim
 service::configuration::logstash_host: localhost
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::puppetboard::vhost: 'puppetboard.wikimedia.org'
 profile::puppetboard::vhost_staging: 'puppetboard-idptest.wikimedia.org'
 profile::puppetboard::vhost_saml: 'puppetboard-samltest.wikimedia.org'

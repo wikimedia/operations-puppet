@@ -13,4 +13,4 @@ profile::mail::mx::verp_bounce_post_url: https://api-rw.discovery.wmnet/w/api.ph
 profile::mail::mx::alias_file: /etc/exim4/aliases/wikimedia.org
 profile::mail::mx::alias_file_mail_rcpt: its@wikimedia.org
 profile::mail::mx::alias_file_mail_subject: wikimedia.org mail aliases
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

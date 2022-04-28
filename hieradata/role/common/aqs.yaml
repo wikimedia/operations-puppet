@@ -120,7 +120,7 @@ profile::lvs::realserver::pools:
   aqs:
     services:
       - aqs
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']
 
 profile::java::java_packages:
   - version: '8'

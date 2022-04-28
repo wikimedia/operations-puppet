@@ -62,4 +62,4 @@ profile::tlsproxy::envoy::ferm_srange: "$DOMAIN_NETWORKS"
 profile::services_proxy::envoy::listen_ipv6: true
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

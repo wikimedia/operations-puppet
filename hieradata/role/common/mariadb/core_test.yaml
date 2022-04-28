@@ -1,4 +1,4 @@
 mariadb::monitor_process::is_critical: false
 mariadb::monitor_disk::is_critical: false
 
-profile::contacts::role_contacts: ['Data Persistence SREs']
+profile::contacts::role_contacts: ['Data Persistence']

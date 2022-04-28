@@ -278,7 +278,7 @@ profile::mediawiki::php::icu63: true
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M
 
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']
 
 # enable docker at the correct version with the desired settings
 profile::docker::engine::packagename: "docker.io"

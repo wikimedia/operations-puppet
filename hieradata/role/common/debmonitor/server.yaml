@@ -14,4 +14,4 @@ profile::tlsproxy::envoy::cfssl_label: 'discovery'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - debmonitor.wikimedia.org
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

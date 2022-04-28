@@ -1,2 +1,2 @@
 cluster: poolcounter
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

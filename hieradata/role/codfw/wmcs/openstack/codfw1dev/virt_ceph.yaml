@@ -22,7 +22,7 @@ profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
 profile::openstack::eqiad1::nova::common::is_control_node: false
-profile::contacts::role_contacts: ['WMCS SREs']
+profile::contacts::role_contacts: ['WMCS']
 
 profile::ceph::auth::deploy::enabled: true
 profile::ceph::auth::deploy::selected_creds:

@@ -4,4 +4,4 @@ profile::planet::meta_link: 'https://meta.wikimedia.org/wiki/Planet_Wikimedia'
 profile::planet::https_proxy: "https://url-downloader.%{::site}.wikimedia.org:8080"
 profile::tlsproxy::envoy::global_cert_name: "planet.discovery.wmnet"
 
-profile::contacts::role_contacts: ['ServiceOps SREs']
+profile::contacts::role_contacts: ['ServiceOps']

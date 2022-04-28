@@ -193,4 +193,4 @@ profile::prometheus::statsd_exporter::mappings:
     labels:
       method: "$3"
       status: "$4"
-profile::contacts::role_contacts: ['Data Persistence SREs']
+profile::contacts::role_contacts: ['Data Persistence']

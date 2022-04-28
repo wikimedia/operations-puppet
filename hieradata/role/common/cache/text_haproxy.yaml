@@ -264,5 +264,5 @@ profile::lvs::realserver::pools:
   text:
     services:
       - varnish-fe
-profile::contacts::role_contacts: ['Traffic SREs']
+profile::contacts::role_contacts: ['Traffic']
 profile::cache::varnish::frontend::use_etcd_req_filters: true

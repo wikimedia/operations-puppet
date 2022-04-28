@@ -1,2 +1,2 @@
 mariadb::binlog_format: 'ROW'
-profile::contacts::role_contacts: ['Data Persistence SREs']
+profile::contacts::role_contacts: ['Data Persistence']

@@ -68,6 +68,6 @@ profile::airflow::instances:
         port: 9083
         extra_dejson: {'authMechanism': 'GSSAPI'}
 
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']
 
 profile::base::certificates::include_bundle_jks: true

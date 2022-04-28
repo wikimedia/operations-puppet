@@ -13,4 +13,4 @@ profile::tlsproxy::envoy::services:
     port: 8190
 profile::tlsproxy::envoy::global_cert_name: "schema.discovery.wmnet"
 profile::nginx::variant: 'light'
-profile::contacts::role_contacts: ['Data Engineering SREs']
+profile::contacts::role_contacts: ['Data Engineering']

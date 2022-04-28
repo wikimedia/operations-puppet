@@ -1,2 +1,2 @@
 profile::nginx::variant: 'light'
-profile::contacts::role_contacts: ['Infrastructure Foundations SREs']
+profile::contacts::role_contacts: ['Infrastructure Foundations']

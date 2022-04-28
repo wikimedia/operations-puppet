@@ -64,4 +64,4 @@ profile::bird::anycasthc_logging:
 
 profile::nginx::variant: 'light'
 
-profile::contacts::role_contacts: ['Traffic SREs']
+profile::contacts::role_contacts: ['Traffic']
