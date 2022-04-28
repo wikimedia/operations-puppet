@@ -2,7 +2,7 @@
 class ssh::publish_fingerprints (
     Stdlib::Unixpath $document_root,
 ) {
-    $ssh_fingerprints = query_facts('', ['ssh', 'networking'])
+    $ssh_fingerprints = puppetdb::query_facts(['ssh', 'networking'])
 
     file{"${document_root}/ssh-fingerprints.txt":
         ensure  => file,
