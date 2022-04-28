@@ -2,7 +2,7 @@ class prometheus::node_cloudvirt_ceph_network (
     Wmflib::Ensure $ensure  = 'present',
 ) {
     $nodelist_file = '/etc/prometheus-cloudvirt-ceph-network-nodelist.txt'
-    $nodes = sort(query_nodes('Class[Role::Wmcs::Ceph::Osd] or Class[Role::Wmcs::Ceph::Mon]'))
+    $nodes = sort(wmflib::role_hosts('wmcs::ceph::osd') + wmflib::role_hosts('wmcs::ceph::mon')).unique
     file { $nodelist_file:
         ensure  => $ensure,
         mode    => '0444',

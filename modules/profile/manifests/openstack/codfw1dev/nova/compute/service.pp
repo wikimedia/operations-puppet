@@ -16,12 +16,15 @@ class profile::openstack::codfw1dev::nova::compute::service(
     contain '::profile::openstack::base::neutron::linuxbridge_agent'
 
     require ::profile::openstack::codfw1dev::nova::common
+    $all_cloudvirts = unique(
+        wmflib::class_hosts('profile::openstack::codfw1dev::nova::compute::service') << $facts['networking']['fqdn']
+    ).sort
     class {'::profile::openstack::base::nova::compute::service':
         version                            => $version,
         network_flat_interface             => $network_flat_interface,
         network_flat_tagged_base_interface => $network_flat_tagged_base_interface,
         network_flat_interface_vlan        => $network_flat_interface_vlan,
-        all_cloudvirts                     => unique(concat(query_nodes('Class[profile::openstack::codfw1dev::nova::compute::service]'), [$::fqdn])),
+        all_cloudvirts                     => $all_cloudvirts,
         libvirt_cpu_model                  => $libvirt_cpu_model,
         require                            => Class['::profile::openstack::base::neutron::linuxbridge_agent'],
     }
