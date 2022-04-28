@@ -122,7 +122,7 @@ class dnsdist (
             File['/etc/dnsdist/dnsdist.conf'],
         ],
         service_params => {
-            restart => 'systemctl reload dnsdist.service',
+            restart => '/bin/systemctl reload dnsdist.service',
             enable  => true,
         },
     }
