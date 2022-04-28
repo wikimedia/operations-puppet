@@ -26,10 +26,11 @@ class profile::kubernetes::deployment_server::helmfile(
         $merged_services = deep_merge($service_data, $services_secrets[$service_group])
         $private_dir = "${general_private_dir}/${service_group}_services"
 
+        # Per "service_group" private directory
         file { $private_dir:
             ensure => directory,
             owner  => 'root',
-            group  => 'wikidev',
+            group  => 'deployment',
             mode   => '0750',
         }
 

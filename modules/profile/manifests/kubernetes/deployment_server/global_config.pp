@@ -16,12 +16,12 @@ class profile::kubernetes::deployment_server::global_config(
     }
 
     # directory holding private data for services
-    # This is only writable by root, and readable by group wikidev
+    # This is only writable by root, and readable by group deployment
     $general_private_dir = "${general_dir}/private"
     file { $general_private_dir:
         ensure => directory,
         owner  => 'root',
-        group  => 'wikidev',
+        group  => 'deployment',
         mode   => '0750'
     }
 
