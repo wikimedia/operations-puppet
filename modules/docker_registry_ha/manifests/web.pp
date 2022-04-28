@@ -81,7 +81,15 @@ class docker_registry_ha::web (
     }
 
     # Find k8s nodes that have auth credentials (for restricted/)
-    $k8s_authenticated_nodes = query_facts("Class[k8s::kubelet] and File['/var/lib/kubelet/config.json']", ['fqdn', 'ipaddress'])
+    # TODO: Use inventory[certname, facts.networking.ip] when we have puppetdb >= 6.7
+    $pql = @(PQL)
+    facts[certname, value] {
+        name = 'ipaddress' and
+        resources { type = 'File' and title = '/var/lib/kubelet/config.json' } and
+        resources { type = 'Class' and title = 'K8s::Kubelet' }
+    }
+    | PQL
+    $k8s_authenticated_nodes = Hash(puppetdb_query($pql).map |$res| { [$res['certname'], $res['value']] }.sort)
 
     # Create a directory for nginx cache if enabled
     if $nginx_cache {

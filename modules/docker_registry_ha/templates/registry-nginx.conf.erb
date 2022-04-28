@@ -93,8 +93,8 @@ server {
       deny <%= ip %>;
       <%- end -%>
       # IPs that pull restricted/ images
-      <%- @k8s_authenticated_nodes.sort.each do |node| -%>
-      deny <%= node[1]['ipaddress'] %>; # <%= node[1]['fqdn'] %>
+      <%- @k8s_authenticated_nodes.each_pair do |fqdn, ip| -%>
+      deny <%= ip %>; # <%= fqdn %>
       <%- end -%>
       # deployment hosts need to query /restricted/ to get image tags
       <%- @deployment_hosts.each do |ip| -%>
