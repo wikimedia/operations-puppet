@@ -23,6 +23,7 @@ class profile::openstack::base::cinder::backup (
     String[1]               $lvm_lv_size             = lookup('profile::openstack::base::cinder::backup::lvm::lv_size'),
     String[1]               $lvm_lv_format           = lookup('profile::openstack::base::cinder::backup::lvm::lv_format'),
     String[1]               $user                    = lookup('profile::openstack::base::cinder::backup::user'),
+    Boolean                 $vg_createonly           = lookup('profile::openstack::base::cinder::backup::vg_createonly'),
 ) {
     $keystone_admin_uri = "https://${keystone_fqdn}:${auth_port}"
 
@@ -52,11 +53,12 @@ class profile::openstack::base::cinder::backup (
     ensure_packages(['lvm2'])
 
     lvm::volume { $lvm_lv_name :
-        ensure => present,
-        vg     => $lvm_vg_name,
-        pv     => $lvm_pv_units,
-        fstype => $lvm_lv_format,
-        size   => $lvm_lv_size,
+        ensure     => present,
+        vg         => $lvm_vg_name,
+        pv         => $lvm_pv_units,
+        fstype     => $lvm_lv_format,
+        size       => $lvm_lv_size,
+        createonly => $vg_createonly
     }
 
     file { $backup_path :

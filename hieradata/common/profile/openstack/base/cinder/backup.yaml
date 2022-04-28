@@ -1,2 +1,4 @@
 profile::openstack::base::cinder::backup::path: /srv/cinder-backups/
 profile::openstack::base::cinder::backup::user: cinder
+# Note: The drives device names might change after reboot, so only done at creation
+profile::openstack::base::cinder::backup::vg_createonly: true

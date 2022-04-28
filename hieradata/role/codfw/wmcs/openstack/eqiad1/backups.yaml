@@ -39,6 +39,7 @@ profile::ceph::client::rbd::libvirt_rbd_cinder_uuid: f83e2286-bff1-47bf-bf6d-109
 
 profile::openstack::eqiad1::cinder::backup::active: true
 profile::openstack::eqiad1::cinder::backup::path: /srv/cinder-backups/
+# NOTE: these names might change after rebooting
 profile::openstack::eqiad1::cinder::backup::lvm::pv_units:
   - /dev/sdb5
   - /dev/sdc1

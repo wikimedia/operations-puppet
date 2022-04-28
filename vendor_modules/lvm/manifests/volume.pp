@@ -20,6 +20,8 @@
 # <code>physical_volume</code> provided by the <code>pv</code> parameter.
 # [*fstype*] The type of <code>filesystem</code> to create on the logical
 # volume.  [*size*] The size the <code>logical_voluem</code> should be.
+# [*createonly*] If set, it will not try to create any physical volumes if
+# the given volum group already exists (preventing data loss).
 #
 # === Examples
 #
@@ -59,7 +61,8 @@ define lvm::volume (
   $fstype  = undef,
   $size    = undef,
   $extents = undef,
-  $initial_size = undef
+  $initial_size = undef,
+  Boolean $createonly = false,
 ) {
 
   if ($name == undef) {
@@ -108,14 +111,19 @@ define lvm::volume (
     'present': {
       # This may only need to exist once.  Requires stdlib 4.1 to
       # handle $pv as an array.
-      ensure_resource('physical_volume', $pv, { 'ensure' => $ensure })
+      if $createonly {
+        ensure_resource('physical_volume', $pv, { 'ensure' => $ensure, 'unless_vg' => $vg })
+      } else {
+        ensure_resource('physical_volume', $pv, { 'ensure' => $ensure})
+      }
 
       # This may only need to exist once
       if ! defined(Volume_group[$vg]) {
         volume_group { $vg:
           ensure           => present,
           physical_volumes => $pv,
-          require          => Physical_volume[$pv]
+          createonly       => $createonly,
+          require          => Physical_volume[$pv],
         }
       }
 
@@ -124,10 +132,10 @@ define lvm::volume (
         volume_group => $vg,
         size         => $size,
         extents      => $extents,
-        require      => Volume_group[$vg]
+        require      => Volume_group[$vg],
       }
 
-      if $fstype != undef {
+      if ($fstype != undef and ! $createonly) {
         filesystem { "/dev/${vg}/${name}":
           ensure  => present,
           fs_type => $fstype,
