@@ -111,12 +111,8 @@ rpl_semi_sync_slave_enabled        = 1
 
 # optimizer options
 #sql-mode                       = IGNORE_BAD_TABLE_OPTIONS
-<% if @basedir == '/opt/wmf-mariadb104' -%>
 # Disable rowid_filter on 10.4 optimizer - T245489
 #optimizer_switch               = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,rowid_filter=off'
-<% else %>
-#optimizer_switch               = 'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on'
-<% end -%>
 #use-stat-tables                = preferably
 
 # charsets and collations
