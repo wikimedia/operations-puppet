@@ -3249,8 +3249,7 @@ users:
     gid: 500
     name: phedenskog
     realname: Peter Hedenskog
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxyWdrsYsbZuCFvBYGJAc/dhzp1Jfg0il+FFux+LB8F2iJ6jSA46LGT2JPPGumx72+ArGkr+xddgnzBfyutrkrRRTRI30yszFXJsm07GG9I8mAdj/6UXhWsNDBJy7xTvUYMD8TTbtXCT7dTdAg8BxpwKEvW04wZX2HIVDcwDBIMfxRvsvSS352FmfQ7OSytW9/82egMZlcbF6GDJytV6Sk8Zbh5EldtA5EH7pLexlSR8FFSi88h2NF+c6I8rHPpiorbB1jqA2b3krbMhe8vp13VS319L+b6VfsS4OgR5XUnFVHr3SiQ/eqtGwivOnXVFZBngpqzeat7AxPlDMl93l1 phedenskog@WMF1412
+    ssh_keys: []
     uid: 12719
     email: phedenskog@wikimedia.org
     krb: present
