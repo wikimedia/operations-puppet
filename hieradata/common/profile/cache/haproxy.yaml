@@ -86,6 +86,9 @@ profile::cache::haproxy::del_headers:
       name: 'X-Envoy-Upstream-Service-Time'
       acl: missing_xwd
     - direction: response
+      name: 'X-OpenStack-Request-ID'
+      acl: missing_xwd
+    - direction: response
       name: 'X-Powered-By'
       acl: missing_xwd
     - direction: response

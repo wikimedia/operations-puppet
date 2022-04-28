@@ -77,6 +77,7 @@ function do_global_send_response()
         -- X-Cache-Status is used by WikibaseQualityConstraints
         --ts.client_response.header['X-Cache-Status'] = nil
         ts.client_response.header['X-Envoy-Upstream-Service-Time'] = nil
+        ts.client_response.header['X-OpenStack-Request-ID'] = nil
         ts.client_response.header['X-Powered-By'] = nil
         ts.client_response.header['X-Request-Id'] = nil
         ts.client_response.header['X-Timestamp '] = nil
