@@ -25,27 +25,27 @@ class profile::wmcs::nfs::maintain_dbusers (
     include passwords::mysql::labsdb
     include passwords::labsdbaccounts
 
-    $multiinstance_collected = $section_ports.keys.reduce({}) |$memo, $section|{
-        $memo + {
-            $section =>  query_nodes(
-                @("QUERY")
-                (Class['role::wmcs::db::wikireplicas::web_multiinstance'] or
-                Class['role::wmcs::db::wikireplicas::analytics_multiinstance'] or
-                Class['role::wmcs::db::wikireplicas::dedicated::analytics_multiinstance'])
-                and Profile::Mariadb::Section[${section}]
-                | QUERY
-            )
-        }
-    }
-    $multiinstance_filtered = $multiinstance_collected.filter | $section, $hosts | {
-        !empty($hosts)
-    }
+    $multiinstance_connect_addresses = $section_ports.keys.reduce({}) |$memo, $section| {
+        $pql = @("QUERY")
+        nodes[certname] {
+            resources {
+                type = "Class" and title in [
+                    'Role::Wmcs::Db::Wikireplicas::Web_multiinstance',
+                    'Role::Wmcs::Db::Wikireplicas::Analytics_multiinstance',
+                    'Role::Wmcs::Db::Wikireplicas::Dedicated::Analytics_multiinstance'
 
-    $multiinstance_connect_addresses = $multiinstance_filtered.map |$section, $hosts| {
-        $hosts.map | $host | {
+                ]
+            } and resources { type = 'Profile::Mariadb::Section' and title = "${section}" }
+        }
+        |QUERY
+        $memo + {
+            $section => puppetdb_query($pql).map |$resource| { $resource['certname'] }
+        }
+    }.filter | $section, $hosts | { !$hosts.empty }.map |$section, $hosts| {
+        $hosts.map |$host| {
             "${host}:${section_ports[$section]}"
         }
-    }
+    }.flatten.unique
 
     $legacy_hosts = {
         '172.16.7.153' => {
@@ -54,7 +54,7 @@ class profile::wmcs::nfs::maintain_dbusers (
     }
 
     if !empty($multiinstance_connect_addresses) {
-        $multiinstance_hosts = $multiinstance_connect_addresses.flatten().unique().reduce({}) | $memo, $conn_str | {
+        $multiinstance_hosts = $multiinstance_connect_addresses.reduce({}) | $memo, $conn_str | {
             $memo + {$conn_str => {'grant-type' => 'role'}}
         }
         $all_hosts = $legacy_hosts + $multiinstance_hosts
