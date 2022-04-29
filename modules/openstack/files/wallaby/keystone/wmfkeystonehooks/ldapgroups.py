@@ -35,18 +35,18 @@ def _open_ldap():
         ds.simple_bind_s(binddn, bindpw)
         return ds
     except ldap.CONSTRAINT_VIOLATION:
-        LOG.debug("LDAP bind failure:  Too many failed attempts.\n")
+        LOG.warning("LDAP bind failure:  Too many failed attempts.\n")
     except ldap.INVALID_DN_SYNTAX:
-        LOG.debug("LDAP bind failure:  The bind DN is incorrect... \n")
+        LOG.warning("LDAP bind failure:  The bind DN is incorrect... \n")
     except ldap.NO_SUCH_OBJECT:
-        LOG.debug("LDAP bind failure:  "
-                  "Unable to locate the bind DN account.\n")
+        LOG.warning("LDAP bind failure:  "
+                    "Unable to locate the bind DN account.\n")
     except ldap.UNWILLING_TO_PERFORM as msg:
-        LOG.debug("LDAP bind failure:  "
-                  "The LDAP server was unwilling to perform the action"
-                  " requested.\nError was: %s\n" % msg[0]["info"])
+        LOG.warning("LDAP bind failure:  "
+                    "The LDAP server was unwilling to perform the action"
+                    " requested.\nError was: %s\n" % msg[0]["info"])
     except ldap.INVALID_CREDENTIALS:
-        LOG.debug("LDAP bind failure:  Password incorrect.\n")
+        LOG.warning("LDAP bind failure:  Password incorrect.\n")
 
     return None
 
