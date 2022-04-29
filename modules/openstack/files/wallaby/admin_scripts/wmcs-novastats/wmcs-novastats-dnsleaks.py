@@ -202,7 +202,7 @@ def purge_duplicates(project_id, delete=False):
                 goodrecords = []
                 for record in originalrecords:
 
-                    if "svc." in record:
+                    if ".svc." in record:
                         # We don't want to mess with service records
                         print("skipping ptr record for %s" % record)
                         goodrecords += [record]
