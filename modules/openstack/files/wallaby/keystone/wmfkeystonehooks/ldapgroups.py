@@ -91,7 +91,7 @@ def delete_ldap_project_group(project_id):
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; Leak a project group.")
-        raise exception.ValidationError()
+        raise exception.ValidationError(message='Failed to connect to ldap; Leak a project group.')
 
     try:
         ds.delete_s(dn)
@@ -124,7 +124,8 @@ def sync_ldap_project_group(project_id, keystone_assignments):
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; cannot set up new project.")
-        raise exception.ValidationError()
+        raise exception.ValidationError(message='Failed to connect to ldap; '
+                                        'cannot set up new project.')
 
     allusers = set()
     for key in keystone_assignments:
@@ -176,7 +177,8 @@ def create_sudo_defaults(project_id):
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; Unable to create sudo rules.")
-        raise exception.ValidationError()
+        raise exception.ValidationError(message='Failed to connect to ldap; '
+                                        'Unable to create sudo rules.')
 
     userbasedn = cfg.CONF.wmfhooks.ldap_user_base_dn
     basedn = cfg.CONF.wmfhooks.ldap_project_base_dn
