@@ -4,11 +4,17 @@
 # actions. Individual clusters to manage must be defined with
 # opensearch::curator::cluster.
 #
-class opensearch::curator {
-    if debian::codename::le('buster') {
-        $curator_version = '5.8.1'  # ensure version compatible with announced version 7.10.0
+class opensearch::curator (
+    Optional[String] $version = undef
+) {
+    if $version {
+        $curator_version = $version
     } else {
-        $curator_version = '5.8.1-1'
+        if debian::codename::le('buster') {
+            $curator_version = '5.8.1'  # ensure version compatible with announced version 7.10.0
+        } else {
+            $curator_version = '5.8.1-1'
+        }
     }
 
     # TODO: use fork when available (T301017)

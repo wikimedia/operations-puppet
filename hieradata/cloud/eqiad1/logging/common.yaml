@@ -53,6 +53,9 @@ profile::opensearch::dc_settings:
     - logging-opensearch-ssd-03.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-hdd-01.logging.eqiad1.wikimedia.cloud
 
+# unset the explicit version setting
+opensearch::curator::version: 'present'
+
 profile::opensearch::common_settings:
   auto_create_index: true
   awareness_attributes: ''
