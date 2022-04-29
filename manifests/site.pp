@@ -201,6 +201,11 @@ node /aqs101[0-5]\.eqiad\.wmnet/ {
     role(aqs_next)
 }
 
+# New aqs nodes in codfw T305568
+node /^aqs200[1-9]|aqs201[0-2]\.codfw\.wmnet/ {
+    role(insetup)
+}
+
 # New Archiva host on Buster
 # T254890
 node 'archiva1002.wikimedia.org' {
