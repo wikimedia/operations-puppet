@@ -69,7 +69,7 @@ profile::opensearch::common_settings:
   gc_log: false
   compatibility_mode: true
 
-#profile::opensearch::logstash::jobs_host: 'logging-logstash-01.logging.eqiad1.wikimedia.cloud'
+profile::opensearch::logstash::jobs_host: 'logging-logstash-01.logging.eqiad1.wikimedia.cloud'
 profile::opensearch::logstash::curator_actions:
   '01':
     description: 'logstash: delete older than 14 days'
