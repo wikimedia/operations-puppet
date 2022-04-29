@@ -1010,8 +1010,6 @@ service::catalog:
       - eqiad
     state: production
     discovery:
-      - dnsdisc: k8s-ingress-wikikube
-        active_active: true
       - dnsdisc: k8s-ingress-wikikube-ro
         active_active: true
       - dnsdisc: k8s-ingress-wikikube-rw
