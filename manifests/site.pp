@@ -1446,7 +1446,7 @@ node 'gitlab-runner1001.eqiad.wmnet' {
 }
 
 # New gitlab-runner nodes T301177
-node /^gitlab-runner100[23]\.eqiad\.wmnet$/ {
+node /^gitlab-runner100[234]\.eqiad\.wmnet$/ {
     role(insetup)
 }
 
