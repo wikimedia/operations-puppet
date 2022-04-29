@@ -50,24 +50,26 @@ esac
 # (present on all the relevant hosts) and inspecting the ownership of
 # objects therein. Once everything is standard, all this bodgery can go.
 case `hostname` in \
-	ms-be[12]*)
-		mp=$(mktemp -d)
-		if [ -b /dev/sde1 ] && mount -t xfs -o ro /dev/sde1 "$mp"; then
-			swiftuid=$(stat -c %u "${mp}/objects") || swiftuid=""
-			swiftgid=$(stat -c %g "${mp}/objects") || swiftgid=""
-			umount "$mp"
-		fi
-		rmdir "$mp"
+    ms-be[12]*)
+	# needed for stat
+	apt-install coreutils
+	mp=$(mktemp -d)
+	if [ -b /dev/sde1 ] && mount -t xfs -o ro /dev/sde1 "$mp"; then
+	    swiftuid=$(/target/usr/bin/stat -c %u "${mp}/objects") || swiftuid=""
+	    swiftgid=$(/target/usr/bin/stat -c %g "${mp}/objects") || swiftgid=""
+	    umount "$mp"
+	fi
+	rmdir "$mp"
 	;;
 esac
 case $(hostname) in \
-	ms-be[12]*|ms-fe[12]*|thanos-fe[12]*|thanos-be[12]*)
-		[ -z "$swiftuid" ] && swiftuid=902
-		[ -z "$swiftgid" ] && swiftgid=902
-		in-target /usr/sbin/groupadd --gid "$swiftgid" --system swift
-		in-target /usr/sbin/useradd --gid "$swiftgid" --uid "$swiftuid" --system --shell /bin/false \
-			--create-home --home /var/lib/swift swift
-	;; \
+    ms-be[12]*|ms-fe[12]*|thanos-fe[12]*|thanos-be[12]*)
+	[ -z "$swiftuid" ] && swiftuid=902
+	[ -z "$swiftgid" ] && swiftgid=902
+	in-target /usr/sbin/groupadd --gid "$swiftgid" --system swift
+	in-target /usr/sbin/useradd --gid "$swiftgid" --uid "$swiftuid" --system --shell /bin/false \
+		  --create-home --home /var/lib/swift swift
+	;;
 esac
 
 in-target /usr/bin/puppet config set --section main vardir /var/lib/puppet
