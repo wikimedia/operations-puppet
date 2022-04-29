@@ -1467,7 +1467,11 @@ node 'gitlab-runner2001.codfw.wmnet' {
 }
 
 # New gitlab-runner nodes T301183$
-node /^gitlab-runner200[234]\.codfw\.wmnet$/ {
+node 'gitlab-runner2002.codfw.wmnet' {
+    role(gitlab_runner)
+}
+
+node /^gitlab-runner200[34]\.codfw\.wmnet$/ {
     role(insetup)
 }
 
