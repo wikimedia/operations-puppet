@@ -4,7 +4,7 @@
 function puppetdb::query_facts(
     Array[String[1]]    $filter,
     Optional[String[1]] $subquery = undef,
-) >> Hash[Stdlib::Fqdn, Hash[String[1], String[1]]] {
+) >> Hash[Stdlib::Fqdn, Hash] {
     $_subquery = $subquery ? {
         undef   => '',
         default => " and ${subquery}"
