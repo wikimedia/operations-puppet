@@ -4816,9 +4816,7 @@ users:
   kcv-wikimf:
     ensure: present
     realname: Krishna Velaga
-    email: kcvelaga-ctr@wikimedia.org
-    expiry_date: 2022-05-02
-    expiry_contact: janstee@wikimedia.org
+    email: kcvelaga@wikimedia.org
     gid: 500
     uid: 34397
     krb: present
