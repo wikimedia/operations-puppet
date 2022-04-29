@@ -1435,9 +1435,19 @@ node 'gitlab1001.wikimedia.org' {
     role(gitlab)
 }
 
+# New gitlab nodes T301177
+node /^gitlab100[34]\.wikimedia\.org$/ {
+    role(insetup)
+}
+
 # T295481
 node 'gitlab-runner1001.eqiad.wmnet' {
     role(gitlab_runner)
+}
+
+# New gitlab-runner nodes T301177
+node /^gitlab-runner100[23]\.eqiad\.wmnet$/ {
+    role(insetup)
 }
 
 # T285867
