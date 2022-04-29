@@ -11,7 +11,5 @@ function puppetdb::query_facts(
     }
     $filter_str = $filter.map |$filter| { "\"${filter}\"" }.join(',')
     $pql = "facts[certname, name, value] { name in [${filter_str}] ${_subquery} }"
-    puppetdb_query($pql).reduce( {}) |$memo, $value| {
-        deep_merge($memo, {$value['certname'] => { $value['name'] => $value['value']}})
-    }
+    puppetdb::munge_facts(puppetdb_query($pql))
 }
