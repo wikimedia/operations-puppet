@@ -1012,6 +1012,10 @@ service::catalog:
     discovery:
       - dnsdisc: k8s-ingress-wikikube
         active_active: true
+      - dnsdisc: k8s-ingress-wikikube-ro
+        active_active: true
+      - dnsdisc: k8s-ingress-wikikube-rw
+        active_active: false
 
   kartotherian:
     description: Kartotherian, kartotherian.svc.%{::site}.wmnet
