@@ -1,6 +1,12 @@
 labsldapconfig:
   hostname: cloudservices2004-dev.wikimedia.org
-  secondary_hostname: cloudservices2004-dev.wikimedia.org
+  secondary_hostname: cloudservices2005-dev.wikimedia.org
+
+ldap:
+  ro-server: cloudservices2004-dev.wikimedia.org
+  ro-server-fallback: cloudservices2005-dev.wikimedia.org
+  rw-server: cloudservices2004-dev.wikimedia.org
+  rw-server-fallback: cloudservices2005-dev.wikimedia.org
 
 profile::openstack::codfw1dev::fernet_key_rotate_time: '08:00:00'
 profile::openstack::codfw1dev::fernet_key_sync_time: '09:00:00'
