@@ -3,17 +3,6 @@
     {
       "logs": [
         {
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHWlePwrycXfNnV3DNEkA7mB34XJ2dKh8XH0J8jIdBX4u/lsx1Tr9czRuSRROUFiWWsTH9L4FZKT31+WxbTMMww==",
-          "mmd": 86400,
-          "url": "https://yeti2022-2.ct.digicert.com/log/",
-          "log_id": "BZwB0yDgB4QTlYBJjRF8kDJmr69yULWvO0akPhGEDUo=",
-          "description": "DigiCert Yeti 2022 #2",
-          "temporal_interval": {
-            "end_exclusive": "2023-01-01T00:00:00+00:00",
-            "start_inclusive": "2022-01-01T00:00:00+00:00"
-          }
-        },
-        {
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAETtK8v7MICve56qTHHDhhBOuV4IlUaESxZryCfk9QbG9co/CqPvTsgPDbCpp6oFtyAHwlDhnvr7JijXRD9Cb2FA==",
           "mmd": 86400,
           "url": "https://ct.googleapis.com/icarus/",
