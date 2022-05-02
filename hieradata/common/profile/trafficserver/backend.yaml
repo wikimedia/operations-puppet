@@ -245,6 +245,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://superset.wikimedia.org
       replacement: https://an-tool1010.eqiad.wmnet
     - type: map
+      target: http://superset-next.wikimedia.org
+      replacement: https://an-tool1005.eqiad.wmnet
+    - type: map
       target: http://thanos.wikimedia.org
       replacement: https://thanos-sso.discovery.wmnet
     - type: map

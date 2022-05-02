@@ -7,6 +7,7 @@ class role::analytics_cluster::ui::staging {
     }
 
     include ::profile::superset
+    include ::profile::tlsproxy::envoy
     include ::profile::druid::turnilo
     include ::profile::base::firewall
     include ::profile::base::production

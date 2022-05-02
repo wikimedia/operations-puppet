@@ -179,6 +179,14 @@ profile::idp::services:
       - ops
       - wmf
       - nda
+  superset-next:
+    id: 26
+    service_id: 'https://superset-next\.wikimedia\.org(/.*)?'
+    require_u2f: true
+    required_groups:
+      - ops
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf

@@ -147,6 +147,8 @@ cache::alternate_domains:
     caching: 'normal'
   tendril.wikimedia.org:
     caching: 'pass'
+  superset-next.wikimedia.org:
+    caching: 'normal'
   thanos.wikimedia.org:
     caching: 'pass'
   ticket.wikimedia.org:

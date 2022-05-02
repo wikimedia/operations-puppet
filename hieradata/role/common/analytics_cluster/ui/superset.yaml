@@ -12,6 +12,7 @@ profile::superset::enable_cas: true
 # Temporary disabled, see https://phabricator.wikimedia.org/T273850
 #profile::superset::data_cache_uri: 'localhost'
 profile::superset::metadata_cache_uri: 'localhost'
+profile::superset::server_name: 'superset.wikimedia.org'
 
 # TLS Terminator settings
 # Please note: the service name is used to pick up the

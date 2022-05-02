@@ -6,7 +6,8 @@ class profile::superset::proxy (
     Hash $ldap_config          = lookup('ldap', Hash, hash, {}),
     String $x_forwarded_proto  = lookup('profile::superset::proxy::x_forwarded_proto', {'default_value' => 'https'}),
     Boolean $enable_cas        = lookup('profile::superset::enable_cas'),
-    String $ferm_srange        = lookup('profile::superset::proxy::ferm_srange', {'default_value' => '$CACHES'})
+    String $ferm_srange        = lookup('profile::superset::proxy::ferm_srange', {'default_value' => '$CACHES'}),
+    String $server_name        = lookup('profile::superset::server_name'),
 ) {
 
     require ::profile::analytics::httpd::utils
@@ -22,7 +23,7 @@ class profile::superset::proxy (
     }
 
     if $enable_cas {
-        profile::idp::client::httpd::site {'superset.wikimedia.org':
+        profile::idp::client::httpd::site { $server_name:
             vhost_content    => 'profile/idp/client/httpd-superset.erb',
             proxied_as_https => true,
             vhost_settings   => { 'x-forwarded-proto' => $x_forwarded_proto },
@@ -38,7 +39,7 @@ class profile::superset::proxy (
         $ldap_server_primary = $ldap_config['ro-server']
         $ldap_server_fallback = $ldap_config['ro-server-fallback']
 
-        httpd::site { 'superset.wikimedia.org':
+        httpd::site { $server_name:
             content => template('profile/superset/proxy/superset.wikimedia.org.erb'),
             require => File['/var/www/health_check'],
         }

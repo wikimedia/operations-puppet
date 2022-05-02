@@ -8,12 +8,28 @@ profile::admin::groups:
 profile::superset::database_uri: mysql://superset_staging@an-coord1001.eqiad.wmnet/superset_staging?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
+profile::superset::enable_cas: true
+profile::superset::server_name: 'superset-next.wikimedia.org'
+
 profile::superset::proxy::x_forwarded_proto: 'http'
 profile::superset::proxy::ferm_srange: '($CACHES $ANALYTICS_NETWORKS)'
-profile::superset::enable_cas: false
 # Disabling due to permission issue https://phabricator.wikimedia.org/T273850
 # profile::superset::data_cache_uri: 'localhost'
 profile::superset::metadata_cache_uri: 'localhost'
+
+# TLS Terminator settings
+# Please note: the service name is used to pick up the
+# TLS certificate that envoy will use. Since the Analytics
+# team has only one certificate for its UIs, then the service
+# name listed does not reflect how the envoy proxy is set up.
+# superset-next.wikimedia.org is a SAN of the yarn.wikimedia.org
+# TLS certificate.
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+   - server_names: ['*']
+     port: 80
+
+profile::tlsproxy::envoy::global_cert_name: "yarn.wikimedia.org"
 
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters:
