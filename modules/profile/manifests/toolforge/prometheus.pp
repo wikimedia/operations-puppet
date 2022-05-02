@@ -14,10 +14,6 @@ class profile::toolforge::prometheus (
     require ::profile::labs::lvm::srv
     include ::profile::prometheus::blackbox_exporter
 
-    class { '::prometheus::wmcs_scripts':
-        ensure => absent,
-    }
-
     $targets_path = '/srv/prometheus/tools/targets'
 
     class { '::httpd':
@@ -35,10 +31,6 @@ class profile::toolforge::prometheus (
         group   => 'prometheus',
         require => Package['prometheus'], # group is defined by the package?
         notify  => Service['prometheus@tools'],
-    }
-
-    sslcert::certificate { 'paws-k8s-prometheus':
-        ensure  => absent,
     }
 
     $k8s_tls_config = {
@@ -298,33 +290,5 @@ class profile::toolforge::prometheus (
 
     prometheus::web { 'tools':
         proxy_pass => 'http://localhost:9902/tools',
-    }
-
-    file { "${targets_path}/toolsdb-mariadb.yml":
-        ensure => absent,
-    }
-
-    file { "${targets_path}/toolsdb-node.yml":
-        ensure => absent,
-    }
-
-    cron { 'prometheus_tools_project_targets':
-        ensure => absent,
-        user   => 'prometheus',
-    }
-
-    cron { 'prometheus_paws_k8s_etcd_targets':
-        ensure => absent,
-        user   => 'prometheus',
-    }
-
-    cron { 'prometheus_tools_project_ssh_targets':
-        ensure => absent,
-        user   => 'prometheus',
-    }
-
-    cron { 'prometheus_tools_k8s_etcd_targets':
-        ensure => absent,
-        user   => 'prometheus',
     }
 }
