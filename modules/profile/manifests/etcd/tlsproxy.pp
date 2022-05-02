@@ -53,6 +53,7 @@ class profile::etcd::tlsproxy(
     }
     sslcert::certificate { $cert_name:
         skip_private => false,
+        use_cergen   => true,
         before       => Service['nginx'],
     }
 
