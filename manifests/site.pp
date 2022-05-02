@@ -2827,10 +2827,7 @@ node /^cloudvirt101[6-7]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
-# Soon to be decommissioned, T296790
-node 'cloudvirt1018.eqiad.wmnet' {
-    role(spare::system)
-}
+# cloudvirt1018 doesn't exist.
 
 # Cloudvirt1019 and 1020 are special hypervisors;
 #  they host giant database servers using local storage.
