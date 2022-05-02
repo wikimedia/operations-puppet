@@ -1594,6 +1594,11 @@ node /^pki[12]001\.(eqiad|codfw)\.wmnet/ {
     role(pki::multirootca)
 }
 
+# New pki node # T305489
+node 'pki2002.codfw.wmnet' {
+    role(insetup)
+}
+
 # pki-root server T276625
 node 'pki-root1001.eqiad.wmnet' {
     role(pki::root)
@@ -1661,6 +1666,11 @@ node 'krb1001.eqiad.wmnet' {
 # It is part of the Kerberos eqiad/codfw infrastructure.
 node 'krb2001.codfw.wmnet' {
     role(kerberos::kdc)
+}
+
+# New pki node # T305488
+node 'krb2002.codfw.wmnet' {
+    role(insetup)
 }
 
 node /kubernetes[12]0(0[5-9]|1[0-9]|2[0-2])\.(codfw|eqiad)\.wmnet/ {
