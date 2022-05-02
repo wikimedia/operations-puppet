@@ -2823,7 +2823,7 @@ node /^urldownloader[12]00[12]\.wikimedia\.org/ {
     role(url_downloader)
 }
 
-node /^cloudvirt101[2-7]\.eqiad\.wmnet$/ {
+node /^cloudvirt101[6-7]\.eqiad\.wmnet$/ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
