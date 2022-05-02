@@ -343,6 +343,9 @@ langlinks,ll_lang,K
 langlinks,ll_title,K
 links,l_from,K
 links,l_to,K
+linktarget,lt_id,K
+linktarget,lt_namespace,K
+linktarget,lt_title,K
 localisation,lo_key,K
 localisation,lo_language,K
 localisation,lo_value,K

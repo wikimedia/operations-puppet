@@ -561,6 +561,10 @@ customviews:
       ipb_create_account, ipb_expiry, ipb_range_start, ipb_range_end, ipb_enable_autoblock, ipb_deleted,
       ipb_block_email, ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id, ipb_sitewide
     where: ipb_deleted=0 and ipb_auto=0
+  linktarget:
+    source: linktarget
+    view: select lt_id, lt_namespace, lt_title
+    where: exists( select 1 from templatelinks where tl_target_id = lt_id )
   localuser:
     source:
       - localuser
