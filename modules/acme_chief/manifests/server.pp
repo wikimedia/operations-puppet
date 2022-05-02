@@ -140,7 +140,7 @@ class acme_chief::server (
         ensure             => $ensure,
         description        => 'reload the acme-chief service',
         user               => 'root',
-        monitoring_enabled => false,
+        monitoring_enabled => true,
         send_mail          => true,
         environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
         command            => '/bin/systemctl reload acme-chief',
