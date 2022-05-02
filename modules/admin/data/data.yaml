@@ -4904,6 +4904,14 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxzkpwZTCnNAt+68xnpk0tWVkioq0jP6Y66/uiGZylm jhathaway-prod
     uid: 35873
     email: jhathaway@wikimedia.org
+  denisse:
+    ensure: present
+    gid: 500
+    realname: Andrea Denisse Gómez-Martínez
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBy7t7sasxRNXjTggqFcobmsM7r/54lW/0nJo2y0CKPN denisse@blossom-prod
+    uid: 39041
+    email: adenisse@wikimedia.org
   rosalie-wmde:
     ensure: present
     gid: 500
