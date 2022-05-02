@@ -22,7 +22,17 @@ class profile::toolforge::prometheus (
 
     # the certs are used by prometheus to auth to the k8s API and are
     # generated in the k8s control nodes using the wmcs-k8s-get-cert script
-    $toolforge_certname  = 'toolforge-k8s-prometheus'
+    $toolforge_certname = $::labsproject ? {
+        'tools'     => 'toolforge-k8s-prometheus',
+        'toolsbeta' => 'toolsbeta-k8s-prometheus',
+    }
+
+    $instance_prefix = $::labsproject
+    $instance_prefix_k8s = $::labsproject ? {
+        'toolsbeta' => 'toolsbeta-test',
+        default     => $::labsproject,
+    }
+
     $cert_pub  = "/etc/ssl/localcerts/${toolforge_certname}.crt"
     $cert_priv = "/etc/ssl/private/${toolforge_certname}.key"
     sslcert::certificate { $toolforge_certname:
@@ -80,27 +90,27 @@ class profile::toolforge::prometheus (
         {
             name            => 'frontproxy-nginx',
             port            => 9113,
-            instance_filter => 'tools-proxy-\\d+',
+            instance_filter => "${instance_prefix}-proxy-\\d+",
         },
         {
             name            => 'haproxy',
             port            => 9901,
-            instance_filter => 'tools-k8s-haproxy-\\d+',
+            instance_filter => "${instance_prefix_k8s}-k8s-haproxy-\\d+",
         },
         {
             name            => 'exim',
             port            => 3903,
-            instance_filter => 'tools-mail-\\d+',
+            instance_filter => "${instance_prefix}-mail-\\d+",
         },
         {
             name            => 'k8s-etcd',
             port            => 9051,
-            instance_filter => 'tools-k8s-etcd-\\d+',
+            instance_filter => "${instance_prefix_k8s}-k8s-etcd-\\d+",
         },
         {
             name            => 'k8s-apiserver',
             port            => 6443,
-            instance_filter => 'tools-k8s-control-\\d+',
+            instance_filter => "${instance_prefix_k8s}-k8s-control-\\d+",
             extra_config    => {
                 scheme     => 'https',
                 tls_config => $k8s_tls_config,
@@ -118,7 +128,17 @@ class profile::toolforge::prometheus (
             project         => 'clouddb-services',
             instance_filter => 'clouddb100[12]',
         },
-    ].map |Hash $job| {
+    ].filter |Hash $job| {
+        # TODO: clouddb-services should not be scraped at all by toolforge
+        # for now, limit this to the real toolforge only
+        if $job['project'] == 'clouddb-services' {
+            $result = $::labsproject == 'tools'
+        } else {
+            $result = true
+        }
+
+        $result
+    }.map |Hash $job| {
         if $job['instance_filter'] {
             $relabel_configs = [
                 {
@@ -160,7 +180,7 @@ class profile::toolforge::prometheus (
                     'username'          => $observer_user,
                     'password'          => $observer_password,
                     'domain_name'       => 'default',
-                    'project_name'      => pick($job['project'], $::labsproject, 'fallback-for-ci'),
+                    'project_name'      => pick($job['project'], $::labsproject),
                     'all_tenants'       => false,
                     'refresh_interval'  => '5m',
                     'port'              => $job['port'],
