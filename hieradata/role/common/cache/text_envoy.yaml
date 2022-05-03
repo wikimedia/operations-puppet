@@ -143,6 +143,8 @@ cache::alternate_domains:
         caching: 'pipe'
   superset.wikimedia.org:
     caching: 'normal'
+  superset-next.wikimedia.org:
+    caching: 'normal'
   tendril.wikimedia.org:
     caching: 'pass'
   thanos.wikimedia.org:
