@@ -50,7 +50,7 @@ groups:
               cdanis, fsero, jbond, jeh, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               razzi, dcaro, legoktm, mmandere, cmooney, joanna, jelto, btullis,
-              rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse]
+              rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
