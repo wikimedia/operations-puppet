@@ -9,7 +9,7 @@ class profile::openstack::codfw1dev::db(
     Array[String] $maintenance_hosts = lookup('maintenance_hosts'),
 ) {
 
-    package {'mysql-server':
+    package {'mariadb-server':
         ensure => 'present',
     }
 
