@@ -1,4 +1,7 @@
 # @summary profiletp configure the compiler nodes
+# @param puppetdb_proxy if we proxy db queries
+# @param puppetdb_host puppetdb host
+# @param puppetdb_port puppetdb port
 class profile::puppet_compiler (
     Boolean                $puppetdb_proxy = lookup('profile::puppet_compiler::puppetdb_proxy'),
     Optional[Stdlib::Host] $puppetdb_host  = lookup('profile::puppet_compiler::puppetdb_host'),
@@ -9,7 +12,7 @@ class profile::puppet_compiler (
     include profile::openstack::base::puppetmaster::enc_client
     class {'puppet_compiler': }
     class { 'puppetmaster::puppetdb::client':
-        hosts => [$facts['fqdn']],
+        hosts => [$facts['networking']['fqdn']],
     }
     # puppetdb configuration
     file { "${puppet_compiler::vardir}/puppetdb.conf":
@@ -21,7 +24,7 @@ class profile::puppet_compiler (
         port   => 'http',
         prio   => '30',
         # TODO: could restrict this to just the db1001 and localhost
-        srange => '$LABS_NETWORKS'
+        srange => '$LABS_NETWORKS',
     }
     if $puppetdb_proxy {
         $ssldir = "${puppet_compiler::vardir}/ssl"

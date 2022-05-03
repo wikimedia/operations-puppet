@@ -6,12 +6,12 @@
 # @param user the user to run daemons
 # @param homedir the useres home dir
 class puppet_compiler(
-    Wmflib::Ensure   $ensure     = 'present',
-    String           $version    = '2.3.0',  # can and often is overridden in horizon
-    Stdlib::Unixpath $workdir    = '/srv/jenkins-workspace/puppet-compiler',
-    Stdlib::Unixpath $libdir     = '/var/lib/catalog-differ',
-    String           $user       = 'jenkins-deploy',
-    Stdlib::Unixpath $homedir    = '/srv/home/jenkins-deploy',
+    Wmflib::Ensure   $ensure  = 'present',
+    String           $version = '2.3.0',  # can and often is overridden in horizon
+    Stdlib::Unixpath $workdir = '/srv/jenkins-workspace/puppet-compiler',
+    Stdlib::Unixpath $libdir  = '/var/lib/catalog-differ',
+    String           $user    = 'jenkins-deploy',
+    Stdlib::Unixpath $homedir = '/srv/home/jenkins-deploy',
 ) {
 
     $vardir = "${libdir}/puppet"
@@ -128,5 +128,8 @@ class puppet_compiler(
         ensure => stdlib::ensure($ensure, 'file'),
         mode   => '0444',
         source => 'puppet:///modules/puppet_compiler/mediawiki.yaml',
+    }
+    file { '/opt/puppetlabs/facter/cache/cached_facts/':
+        owner => $user,
     }
 }
