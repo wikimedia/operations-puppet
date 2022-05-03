@@ -76,14 +76,15 @@ class dnsrecursor (
     }
 
     # the location of the socket-dir was changed in 4.3.0
+    # 4.3.0 also updates the service to run as pdns from the start, instead of starting as root
+    # and then dropping access
     if debian::codename::ge('bullseye') or (debian::codename::ge('buster') and $install_from_component) {
         $socket_dir = '/var/run/pdns-recursor/'
+        $group = 'pdns'
     } else {
         $socket_dir = '/var/run/'
+        $group = 'root'
     }
-
-    # The version installed from component uses the pdns group.
-    $group = $install_from_component.bool2str('pdns', 'root')
 
     if $restart_service {
       $service = Service['pdns-recursor']
