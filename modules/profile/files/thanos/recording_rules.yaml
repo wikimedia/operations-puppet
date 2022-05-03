@@ -25,9 +25,14 @@ groups:
       - record: site_cluster:haproxy_requests:avail2m
         expr: sum by(site, cluster) (cluster_code:haproxy_frontend_http_responses_total:rate2m{code="5xx"})
           / sum by(site, cluster) (cluster_code:haproxy_frontend_http_responses_total:rate2m{code=~"[12345]xx"})
+
       - record: global_job:haproxy_requests:avail2m
         expr: sum by(cluster) (cluster_code:haproxy_frontend_http_responses_total:rate2m{code="5xx"})
           / sum by(cluster) (cluster_code:haproxy_frontend_http_responses_total:rate2m{code=~"[12345]xx"})
+
+      - record: global_job:varnish_requests:avail2m
+        expr: sum by(job) (job_method_status:varnish_requests:rate2m{status=~"5.."})
+          / sum by(job) (job_method_status:varnish_requests:rate2m{status=~"[12345].."})
 
   # Aggregated exporter metrics.
   #
