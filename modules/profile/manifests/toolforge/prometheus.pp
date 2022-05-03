@@ -11,7 +11,11 @@ class profile::toolforge::prometheus (
     String                     $observer_user          = lookup('profile::openstack::base::observer_user'),
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::toolforge::prometheus::storage_retention_size',   {default_value => undef}),
 ) {
-    require ::profile::labs::lvm::srv
+    # Bullseye VMs (currently only in toolsbeta) have their storage mounted via Cinder
+    if debian::codename::le('buster') {
+        require ::profile::labs::lvm::srv
+    }
+
     include ::profile::prometheus::blackbox_exporter
 
     $targets_path = '/srv/prometheus/tools/targets'
