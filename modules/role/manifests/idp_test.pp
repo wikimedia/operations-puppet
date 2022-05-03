@@ -4,8 +4,9 @@ class role::idp_test {
 
     system::role { 'idp': description => 'CAS Identity provider (staging setup)' }
 
-    include ::profile::base::production
-    include ::profile::base::firewall
-    include ::profile::idp
-    include ::profile::java
+    include profile::base::production
+    include profile::base::firewall
+    include profile::idp
+    include profile::idp::build
+    include profile::java
 }
