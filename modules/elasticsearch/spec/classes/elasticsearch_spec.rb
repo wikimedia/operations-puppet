@@ -17,16 +17,36 @@ describe 'elasticsearch', :type => :class do
           },
         } }
         if os == '9'
+          let(:facts) do
+            super().merge(
+              {
+                :java => {
+                  :version => {
+                    :major => 8
+                  }
+                }
+              })
+          end
           it {
             is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/jvm.options')
-              .with_content(/-XX:\+PrintGCDetails$/)
-              .with_content(/-XX:\+PrintGCDateStamps$/)
+                             .with_content(/-XX:\+PrintGCDetails$/)
+                             .with_content(/-XX:\+PrintGCDateStamps$/)
           }
         elsif os.match?(/(10|11)/)
-            it {
-              is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/jvm.options')
-                .with_content(/-Xlog:gc\+age=trace$/)
-            }
+          let(:facts) do
+            super().merge(
+              {
+                :java => {
+                  :version => {
+                    :major => 11
+                  }
+                }
+              })
+          end
+          it {
+            is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/jvm.options')
+                             .with_content(/-Xlog:gc\+age=trace$/)
+          }
         end
       end
     end

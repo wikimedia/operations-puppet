@@ -3,7 +3,17 @@ require_relative '../../../../rake_modules/spec_helper'
 describe 'elasticsearch', :type => :class do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
     context "on #{os}" do
-      let(:facts) { facts }
+      let(:facts) do
+        facts.merge(
+          {
+            :java => {
+              :version => {
+                :major => 11
+              }
+            }
+          })
+      end
+
       describe 'when NOT sending logs to logstash' do
         let(:params) { {
           :apt_component => 'elastic65',

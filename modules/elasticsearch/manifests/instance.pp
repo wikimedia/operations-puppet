@@ -114,12 +114,13 @@ define elasticsearch::instance(
     Optional[String] $logstash_host                          = undef,
     Optional[Stdlib::Port] $logstash_gelf_port               = 12201,
     Optional[Stdlib::Port] $logstash_logback_port            = 11514,
-    Enum['Gelf', 'syslog']  $logstash_transport              = 'Gelf',
+    Enum['Gelf', 'syslog'] $logstash_transport               = 'Gelf',
     Optional[String] $row                                    = undef,
     Optional[String] $rack                                   = undef,
 
     # the following parameters have defaults that are sane both for single
     # and multi-instances
+    String $java_major_version                               = String($facts['java']['version']['major']),
     String $node_name                                        = "${::hostname}-${cluster_name}",
     Boolean $send_logs_to_logstash                           = true,
     String $heap_memory                                      = '2G',
@@ -152,11 +153,11 @@ define elasticsearch::instance(
 
     # Dummy parameters consumed upstream of elasticsearch::instance,
     # but convenient to unify per-cluster configuration
-    Optional[String] $certificate_name = undef,
-    Array[String] $cluster_hosts       = [],
-    Optional[Stdlib::Port] $tls_port = undef,
-    Optional[Stdlib::Port] $tls_ro_port = undef,
-    Optional[Array[String]] $indices_to_monitor = undef,
+    Optional[String] $certificate_name                       = undef,
+    Array[String] $cluster_hosts                             = [],
+    Optional[Stdlib::Port] $tls_port                         = undef,
+    Optional[Stdlib::Port] $tls_ro_port                      = undef,
+    Optional[Array[String]] $indices_to_monitor              = undef,
 ) {
 
     # Check arguments
@@ -170,10 +171,9 @@ define elasticsearch::instance(
 
     $master_eligible = $::fqdn in $unicast_hosts
 
-
     if $gc_log == true {
-        $gc_log_flags = $facts['operatingsystemmajrelease'] ? {
-            '9'  => [
+        $gc_log_flags = $java_major_version ? {
+            '8'       => [
                 "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
                 '-XX:+PrintGCDetails',
                 '-XX:+PrintGCDateStamps',
@@ -185,15 +185,14 @@ define elasticsearch::instance(
                 '-XX:NumberOfGCLogFiles=10',
                 '-XX:GCLogFileSize=20M',
             ],
-
             # the above GC flags are no longer valid as of Java 11, which is the default
             # Java for Debian 10 and 11.
-            /(10|11)/  => [
+            /(10|11)/ => [
                 "-Xlog:gc*:file=/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20000",
                 '-Xlog:gc+age=trace',
                 '-Xlog:safepoint',
             ],
-            default          => fail("OS major version: (${facts['operatingsystemmajrelease']}) not yet supported"),
+            default   => fail("Java version ${facts['java']['version']['major']} not supported"),
         }
 
     } else {
