@@ -168,9 +168,16 @@ def get_domain_stats() -> Dict[str, Tuple[libvirt.virDomain, Dict[str, Any]]]:
 
 
 def get_nova_info(domain: libvirt.virDomain) -> NovaInfo:
-    raw_nova_metadata = domain.metadata(
-        libvirt.VIR_DOMAIN_METADATA_ELEMENT, "http://openstack.org/xmlns/libvirt/nova/1.0"
-    )
+    # Recently created VMs have their data under version 1.1, older ones under 1.0.
+    # metadata() raises an exception if it doesn't find the requested key.
+    try:
+        raw_nova_metadata = domain.metadata(
+            libvirt.VIR_DOMAIN_METADATA_ELEMENT, "http://openstack.org/xmlns/libvirt/nova/1.1"
+        )
+    except libvirt.libvirtError:
+        raw_nova_metadata = domain.metadata(
+            libvirt.VIR_DOMAIN_METADATA_ELEMENT, "http://openstack.org/xmlns/libvirt/nova/1.0"
+        )
     try:
         return NovaInfo.from_xml_string(xml_string=raw_nova_metadata)
     except Exception as error:
