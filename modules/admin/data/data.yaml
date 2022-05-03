@@ -22,7 +22,7 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi, jdl, keepit-ssh]
+              clarakosi, jdl, keepit-ssh, nikkin]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -78,7 +78,7 @@ groups:
     gid: 824
     # ariel, hnowlan, tstarling not included because of ops membership
     members: &platform_engineering_members [bpirkle, cicalese,
-              daniel, eevans, kevinbazira, nikkin, gmodena, hokwelum, tchin]
+              daniel, eevans, kevinbazira, gmodena, hokwelum, tchin]
   parsoid-roots:
     gid: 701
     description: RT 5934
@@ -150,7 +150,7 @@ groups:
     members: [bearloga, tjones, cparle, pearley, ktsouroupidou,
               ezachte, jamesur, jdlrobson, sguebo, zxane,
               santhosh, amire80, foks, chelsyx, karen,
-              kharlan, abi, nikkin, bmansurov, musikanimal, nahidunlimited,
+              kharlan, abi, bmansurov, musikanimal, nahidunlimited,
               daimona, mepps, jabrams, nforrester, katelevan, cmaslak, mewoph,
               komla]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
@@ -352,7 +352,7 @@ groups:
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, razzi, cparle, klausman, sbisson, fab, cwhite,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, toan, mttp,
-              matmarex, kharlan, nikkin, bpirkle, rmaung, lilients, ppel, aikochou,
+              matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, mattcleinman, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
@@ -3926,15 +3926,13 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEET3VFgjju54aZ7Ok8vdeQ7j45Js52GWNw/BxTxZ1+2 kbazira@wikimedia.org
     krb: present
   nikkin:
-    ensure: present
+    ensure: absent
     realname: Nikki Nikkhoui
-    email: nnikkhoui@wikimedia.org
     uid: 22261
     gid: 500
     name: nikkin
-    krb: present
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjpUNj7h4VqfTXaV30XanPldBV8IW1tb8LGEkv8eYn7TXW/LhOnUsx5ql9pQBoXP6yZN/ijDsbAaUOucJzrgh321WokoJGasUAQmfRbOA2yzNWBn1D4PFqBruzFtgM9gsHjPO0JVHfAOvH2ugklLEEhOav3ZzACtykNqPJDJ6v5kq+lCJzr9Dg11tjeNZ/QcaImOT7DuUMNcKxu7rF/Ju9sTsoy4R0G0CQjervTA1SPt1kLXEqBCWeg8b21zal701chFnCPnZFp0xou5+jrWih3x5TgTKTkBqGF+TPfmTNAij5mwWGc9a9Ywum7zGWwagJ1ZgyEqNKQelZgXZ0Q3Vl3qWaAzMWN8Ut6YtfjU/QSjG9in2lRzrbh8HfHrbTO9vgPgmxtFXdpVYQLzP6V5R/v/BFHvoHsivnARQXSlPdCOevdclPfCIdUZ1UegZGuUP4CQhnBO/vgX4daYNRcBNU6yWXp+WL/ptBQn5R7TTbXXQIXL2653PikrciJ10/lQ91bLs86SugpPWsk5c+NmYe+jwcua30JS8qgdkYZeBK4xlbDaVFvv6oOq7mIHNoWav4IHhUDw57YRaYn6Q6brNEgg9sjOkv0fJ/tLFLgqlUiKSgLQh7JhMuKB3q0CVwCMYCwPLhttRg7DTYgWRzHI3PZxToXvRs+gCsxpq3JIGbgw== nnikkhoui@wikimedia.org
+    krb: absent
+    ssh_keys: []
   kzeta:
     ensure: present
     realname: Kate Zimmerman
