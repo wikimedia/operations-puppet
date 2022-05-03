@@ -33,7 +33,7 @@ class profile::openstack::base::puppetmaster::encapi (
 
     ferm::service { 'enc-reads':
         proto  => 'tcp',
-        port   => '8100',
+        port   => '(8100 8143)',
         srange => '$LABS_NETWORKS',
     }
 }
