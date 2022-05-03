@@ -5238,6 +5238,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdz3pfyoY/88GQ8ko2qic58wZneZYVpsaf4BusiPxYg essexigyan@wmf2920
+  slyngshede:
+    ensure: present
+    realname: Simon Lyngshede
+    email: slyngshede@wikimedia.org
+    uid: 39083
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIkEHqOsDdEDuSuBX7YnBXXmkolpCBU3in/0m2cgcvD slyngshede
 
 ldap_only_users:
   abartov:
