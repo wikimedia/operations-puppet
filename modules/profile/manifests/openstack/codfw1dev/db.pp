@@ -18,7 +18,7 @@ class profile::openstack::codfw1dev::db(
         group   => 'root',
         mode    => '0644',
         source  => 'puppet:///modules/profile/openstack/codfw1dev/db/my.cnf',
-        require => Package['mysql-server'],
+        require => Package['mariadb-server'],
     }
 
     prometheus::mysqld_exporter { 'default':
