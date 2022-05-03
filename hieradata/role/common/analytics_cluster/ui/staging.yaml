@@ -11,7 +11,7 @@ profile::superset::ldap_proxy_enabled: true
 profile::superset::enable_cas: true
 profile::superset::server_name: 'superset-next.wikimedia.org'
 
-profile::superset::proxy::x_forwarded_proto: 'http'
+profile::superset::proxy::x_forwarded_proto: 'https'
 profile::superset::proxy::ferm_srange: '($CACHES $ANALYTICS_NETWORKS)'
 # Disabling due to permission issue https://phabricator.wikimedia.org/T273850
 # profile::superset::data_cache_uri: 'localhost'
