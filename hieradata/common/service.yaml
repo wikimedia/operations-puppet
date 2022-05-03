@@ -3862,3 +3862,16 @@ service::catalog:
     discovery:
       - dnsdisc: puppetboard
         active_active: true
+
+  image-suggestion:
+    description: image suggestion service, image-suggestion.svc.%{::site}.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    probes:
+      - type: http
+    port: *k8s-ingress-wikikube_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
