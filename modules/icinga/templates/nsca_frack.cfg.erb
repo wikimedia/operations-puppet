@@ -1123,6 +1123,18 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_cert_clientcert_ca
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_cert_puppet_ca
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
     service_description      check_disk
     hostgroup_name           fundraising-build
 }
