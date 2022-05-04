@@ -1441,14 +1441,14 @@ node /^gitlab100[34]\.wikimedia\.org$/ {
     role(insetup)
 }
 
-# T295481
+# T295481 - gitlab-runner virtual machine
 node 'gitlab-runner1001.eqiad.wmnet' {
     role(gitlab_runner)
 }
 
-# New gitlab-runner nodes T301177
+# T301177 - gitlab-runner physical machines
 node /^gitlab-runner100[234]\.eqiad\.wmnet$/ {
-    role(insetup)
+    role(gitlab_runner)
 }
 
 # T285867
