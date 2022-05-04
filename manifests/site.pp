@@ -1461,18 +1461,14 @@ node /^gitlab200[23]\.wikimedia\.org$/ {
     role(insetup)
 }
 
-# T295481
+# T295481 - gitlab-runner virtual machine
 node 'gitlab-runner2001.codfw.wmnet' {
     role(gitlab_runner)
 }
 
-# New gitlab-runner nodes T301183$
-node 'gitlab-runner2002.codfw.wmnet' {
+# T3011183 - gitlab-runner physical machines
+node /^gitlab-runner200[234]\.codfw\.wmnet$/ {
     role(gitlab_runner)
-}
-
-node /^gitlab-runner200[34]\.codfw\.wmnet$/ {
-    role(insetup)
 }
 
 # Virtual machines for Grafana 6.x (T220838, T244357)
