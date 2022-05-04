@@ -1,12 +1,14 @@
 # client<->haproxy metrics
 # histogram haproxy_client_ttfb
 # histogram haproxy_client_healthcheck_ttfb
+# counter haproxy_termination_states_total
 
 histogram haproxy_client_ttfb by cache_status, http_status_family buckets 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
 histogram haproxy_client_healthcheck_ttfb by cache_status, http_status_family buckets 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
+counter haproxy_termination_states_total by termination_state
 hidden text cstatus
 
-/ \d+ (?P<client_ttfb>\d+) (?P<http_status_family>[1-5])\d\d {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)}$/ {
+/ \d+ (?P<client_ttfb>\d+) (?P<http_status_family>[1-5])\d\d {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})$/ {
   len($cache_status) == 0 {
     cstatus = "none"
   } else {
@@ -16,4 +18,5 @@ hidden text cstatus
   $host =~ /^healthcheck\.wikimedia\.org$/ {
     haproxy_client_healthcheck_ttfb[cstatus][$http_status_family] = float($client_ttfb) * 0.001
   }
+  haproxy_termination_states_total[$termination_state]++
 }

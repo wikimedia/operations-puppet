@@ -36,3 +36,7 @@ class CacheHAProxyTest(unittest.TestCase):
 
         count_2xx = s_dict['cache_status=int-front,http_status_family=2']['count']
         self.assertEqual(count_2xx, 1)
+
+        s = self.store.get_samples('haproxy_termination_states_total')
+        self.assertIn(('termination_state=--', 5), s)
+        self.assertIn(('termination_state=IH', 1), s)
