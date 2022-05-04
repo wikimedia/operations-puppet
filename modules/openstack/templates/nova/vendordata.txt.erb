@@ -93,6 +93,8 @@ package_upgrade: true
 # This configures puppet and starts the puppet agent (which we don't want).
 #  When the boot script starts we'll kill the agent and run puppet synchronously.
 puppet:
+    start_service: false
+    exec: false
     conf:
         agent:
             server: 'puppet'
