@@ -5,6 +5,7 @@ class scap::master(
     Stdlib::Unixpath $common_path        = '/srv/mediawiki',
     Stdlib::Unixpath $common_source_path = '/srv/mediawiki-staging',
     Stdlib::Unixpath $patches_path       = '/srv/patches',
+    Stdlib::Unixpath $scap_source_path   = '/srv/deployment/scap',
     String $deployment_group             = 'wikidev',
     Array[String] $deployment_hosts      = [],
 ){
@@ -28,6 +29,14 @@ class scap::master(
         recurse_submodules => true,
     }
 
+    git::clone { 'mediawiki/tools/scap':
+        ensure    => present,
+        directory => $scap_source_path,
+        owner     => 'scap',
+        group     => $deployment_group,
+        shared    => true,
+    }
+
     # Install the commit-msg hook from gerrit
 
     file { "${common_source_path}/.git/hooks/commit-msg":
@@ -47,6 +56,12 @@ class scap::master(
 
     rsync::server::module { 'patches':
         path        => $patches_path,
+        read_only   => 'yes',
+        hosts_allow => $deployment_hosts
+    }
+
+    rsync::server::module { 'scap-source':
+        path        => $scap_source_path,
         read_only   => 'yes',
         hosts_allow => $deployment_hosts
     }
