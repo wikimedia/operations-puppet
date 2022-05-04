@@ -19,6 +19,7 @@ class scap (
     Optional[Hash] $k8s_deployments                 = {},
 ) {
     require git::lfs
+    include scap::user
 
     package { 'scap':
         ensure => $version,

@@ -45,6 +45,12 @@ class scap::master(
         hosts_allow => $deployment_hosts
     }
 
+    rsync::server::module { 'scap-install-staging':
+        path        => '/var/lib/scap',
+        read_only   => 'yes',
+        hosts_allow => join($::network::constants::deployable_networks, ' ')
+    }
+
     class { 'scap::l10nupdate':
         deployment_group => $deployment_group,
         run_l10nupdate   => false,

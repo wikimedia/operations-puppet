@@ -133,7 +133,7 @@ groups:
               annet, jgiannelos, kharlan, stran, jhernandez, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang, jnuche]
     system_members: [mwbuilder]
-    privileges: ['ALL = (www-data,mwdeploy,l10nupdate) NOPASSWD: ALL',
+    privileges: ['ALL = (www-data,mwdeploy,l10nupdate,scap) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
                  'ALL = NOPASSWD: /usr/bin/renice',
@@ -1091,6 +1091,12 @@ groups:
   #   gid: 918
   #   system: true
   #   members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in statistics::user
+  # scap:
+  #   gid: 919
+  #   system: true
+  #   members: []
 
 users:
   reprepro:
@@ -1202,6 +1208,15 @@ users:
   #   gid: 915
   #   home_dir: /var/opt/gitlab
   #   shell: /bin/sh
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # scap:
+  #   ensure: present
+  #   system: true
+  #   uid: 919
+  #   gid: 919
+  #   home_dir: /var/lib/scap
+  #   shell: /bin/false
   rush:
     ensure: absent
     gid: 500
