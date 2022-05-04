@@ -33,8 +33,8 @@
 
 class profile::acme_chief (
     Hash[String, Hash[String, String]] $accounts = lookup('profile::acme_chief::accounts'),
-    Hash[String, Hash[String, Any]] $certificates = lookup('profile::acme_chief::certificates'),
-    Optional[Hash[String, Hash[String, Any]]] $shared_acme_certificates = lookup('shared_acme_certificates', {default_value => undef}),
+    Hash[String, Acme_chief::Certificate] $certificates = lookup('profile::acme_chief::certificates'),
+    Hash[String, Acme_chief::Certificate] $shared_acme_certificates = lookup('shared_acme_certificates', {default_value => {}}),
     Hash[String, Hash[String, Any]] $challenges = lookup('profile::acme_chief::challenges'),
     String $http_proxy = lookup('http_proxy'),
     String $active_host = lookup('profile::acme_chief::active'),
@@ -42,10 +42,17 @@ class profile::acme_chief (
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
     Integer $watchdog_sec = lookup('profile::acme_chief::watchdog_sec', {default_value => 600}),
 ) {
-    if(!empty($shared_acme_certificates)) {
-        $acme_chief_certificates = $certificates + $shared_acme_certificates
-    } else {
-        $acme_chief_certificates = $certificates
+    $internal_domains = ['wmnet']
+    $acme_chief_certificates = $certificates + $shared_acme_certificates
+    $acme_chief_certificates.each |$cert, $config| {
+        if $config['CN'].stdlib::end_with($internal_domains) {
+            fail("${cert} CN (${config['CN']}) contains internal domain")
+        }
+        $config['SNI'].each |$sni| {
+            if $sni.stdlib::end_with($internal_domains) {
+                fail("${cert} SNI (${sni}) contains internal domain")
+            }
+        }
     }
 
     class { '::acme_chief::server':

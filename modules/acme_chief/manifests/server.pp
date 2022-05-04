@@ -1,6 +1,6 @@
 class acme_chief::server (
     Hash[String, Hash[String, String]] $accounts = {},
-    Hash[String, Hash[String, Any]] $certificates = {},
+    Hash[String, Acme_chief::Certificate] $certificates = {},
     Hash[String, Hash[String, Any]] $challenges = {},
     String $http_proxy = '',
     Wmflib::Ensure $http_challenge_support = absent,
