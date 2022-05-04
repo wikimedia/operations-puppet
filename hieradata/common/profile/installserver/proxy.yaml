@@ -2,7 +2,7 @@ profile::installserver::proxy::ensure: 'present'
 profile::installserver::proxy::structured_logs: false
 profile::installserver::proxy::ssl_ports:
   - 443
+  - 873  # rsync used by rpki
 profile::installserver::proxy::safe_ports:
   - 80
-  - 873  # rsync used by rpki
   - 8080 # http://wpt-graphite.wmftest.org:8080/
