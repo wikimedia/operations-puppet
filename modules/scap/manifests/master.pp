@@ -10,7 +10,13 @@ class scap::master(
 ){
     include network::constants
 
-    ensure_packages(['python3-service-checker', 'python3-pygerrit2'])
+    # Required git package is provided by base::standard_packages class
+    # Required bash-completion package is a standard priority Debian package and therefore installed by default
+    ensure_packages([
+        'python3-venv',
+        'python3-service-checker',
+        'python3-pygerrit2',
+    ])
 
     git::clone { 'operations/mediawiki-config':
         ensure             => present,

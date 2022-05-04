@@ -21,6 +21,9 @@ class scap (
     require git::lfs
     include scap::user
 
+    # Required python3 package is provided by base::standard_packages class
+    ensure_packages(['rsync'])
+
     package { 'scap':
         ensure => $version,
     }
