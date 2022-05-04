@@ -21,8 +21,9 @@ class profile::base(
 
     contain profile::base::puppet
     contain profile::base::certificates
+    # Contain apt to ensure all apt settings are install before and packages
+    contain profile::apt
     include profile::systemd::timesyncd
-    include profile::apt
     class {'adduser': }
 
     class { 'grub::defaults': }
