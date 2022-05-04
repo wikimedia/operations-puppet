@@ -6048,3 +6048,9 @@ ldap_only_users:
     email: aassaf-ctr@wikimedia.org
     expiry_date: 2022-10-10
     expiry_contact: abaso@wikimedia.org
+  relgu:
+    ensure: present
+    realname: Ariel Gutman
+    email: agutman-ctr@wikimedia.org
+    expiry_date: 2022-12-31
+    expiry_contact: abaso@wikimedia.org
