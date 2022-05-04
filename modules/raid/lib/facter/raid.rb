@@ -4,6 +4,7 @@ Facter.add('raid') do
   confine :kernel => :linux
   # ref: http://pci-ids.ucw.cz/v2.2/pci.ids
   pci_ids = {
+    # TODO: this is a bit of a hack the driver is still hpsa, but we need to use the newer ssacli tool
     '9005028f' => 'ssacli' # Smart Storage PQI 12G SAS/PCIe 3
   }
   setcode do
