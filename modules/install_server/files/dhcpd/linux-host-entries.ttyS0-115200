@@ -1016,6 +1016,11 @@ host netbox-dev2001 {
    fixed-address netbox-dev2001.wikimedia.org;
 }
 
+host netbox-dev2002 {
+   hardware ethernet aa:00:00:d8:a8:d5;
+   fixed-address netbox-dev2002.codfw.wmnet;
+}
+
 host netflow1002 {
     hardware ethernet aa:00:00:08:ac:4b;
     fixed-address netflow1002.eqiad.wmnet;

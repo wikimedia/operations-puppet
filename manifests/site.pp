@@ -2503,6 +2503,10 @@ node /^netbox-dev2001\.wikimedia\.org$/ {
     role(netbox::standalone)
 }
 
+node /^netbox-dev2002\.codfw\.wmnet$/ {
+    role(netbox::standalone)
+}
+
 # network monitoring tools, stretch (T125020, T166180)
 node /^netmon(1002|2001)\.wikimedia\.org$/ {
     role(netmon)

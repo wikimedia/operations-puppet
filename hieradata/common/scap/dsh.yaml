@@ -121,6 +121,7 @@ scap::dsh::groups:
   netbox:
     hosts:
       - netbox-dev2001.wikimedia.org
+      - netbox-dev2002.codfw.wmnet
       - netbox1001.wikimedia.org
       - netbox2001.wikimedia.org
   ores:
