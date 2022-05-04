@@ -56,6 +56,10 @@ class profile::mariadb::parsercache (
         is_critical   => $is_primary_master,
     }
 
+    mariadb::monitor_eventscheduler { [ $shard ]:
+        is_critical => false,
+    }
+
     mariadb::monitor_readonly { [ $shard ]:
         read_only   => false,
         # XXX(kormat): Deliberately using $is_primary_master here rather than $is_master,
