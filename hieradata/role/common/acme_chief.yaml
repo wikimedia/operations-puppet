@@ -183,7 +183,6 @@ profile::acme_chief::certificates:
         SNI:
         - 'netbox-next.wikimedia.org'
         - 'netbox-dev2001.wikimedia.org'
-        - 'netbox-dev2002.codfw.wmnet'
         challenge: dns-01
         authorized_hosts:
         - 'netbox-dev2001.wikimedia.org'
