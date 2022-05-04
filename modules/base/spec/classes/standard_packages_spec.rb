@@ -5,6 +5,10 @@ describe 'base::standard_packages' do
     context "On #{os}" do
       let(:facts) { facts}
       case facts[:os]['distro']['codename']
+      when 'bullseye'
+        let(:installed_packages) { ['ack'] }
+        let(:absent_packages) { ['python2.7'] }
+        let(:purged_packages) { [] }
       when 'buster'
         let(:installed_packages) { ['ack'] }
         let(:absent_packages) { ['libbind9-140'] }

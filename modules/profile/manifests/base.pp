@@ -19,12 +19,20 @@ class profile::base(
         fail("Site ${::site} not found in cluster ${cluster}")
     }
 
+    # create standard directories
+    # perform this here and early to avoid dependency cycles
+    file { ['/usr/local/sbin', '/usr/local/share/bash']:
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     contain profile::base::puppet
     contain profile::base::certificates
-    # Contain apt to ensure all apt settings are install before and packages
-    contain profile::apt
+    include profile::apt
     include profile::systemd::timesyncd
-    class {'adduser': }
+    class { 'adduser': }
 
     class { 'grub::defaults': }
 
@@ -52,6 +60,7 @@ class profile::base(
     class { 'base::sysctl': }
     class { 'motd': }
     class { 'base::standard_packages': }
+    Class['profile::apt'] -> Class['base::standard_packages']
     include profile::environment
     class { 'base::sysctl::core_dumps':
         core_dump_pattern => $core_dump_pattern,

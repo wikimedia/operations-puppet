@@ -15,4 +15,5 @@ class profile::apt(
         mirror                  => $mirror,
         install_audit_installed => $install_audit_installed,
     }
+    contain apt  # lint:ignore:wmf_styleguide
 }

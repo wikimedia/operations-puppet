@@ -1,13 +1,5 @@
 class base::standard_packages {
 
-    # create standard directories
-    file { ['/usr/local/sbin', '/usr/local/share/bash']:
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    }
-
     ensure_packages ([
         'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils', 'dstat',
         'ethtool', 'gdb', 'gdisk', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',

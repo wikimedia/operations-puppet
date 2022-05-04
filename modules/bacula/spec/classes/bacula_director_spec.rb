@@ -14,10 +14,10 @@ describe 'bacula::director', :type => :class do
         }
       end
 
-      context "when buster", if: facts[:os]['distro']['codename'] == 'buster' do
+      context "when not stretch buster", if: facts[:os]['distro']['codename'] != 'stretch' do
         it { is_expected.to contain_package('bacula-director') }
       end
-      context "when not buster", if: facts[:os]['distro']['codename'] != 'buster' do
+      context "when stretch", if: facts[:os]['distro']['codename'] == 'stretch' do
         it { is_expected.not_to contain_package('bacula-director') }
       end
       it { should contain_package('bacula-director-testsql') }

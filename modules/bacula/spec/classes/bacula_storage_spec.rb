@@ -14,10 +14,10 @@ describe 'bacula::storage', :type => :class do
       }
       }
 
-      context "when buster", if: facts[:os]['distro']['codename'] == 'buster' do
+      context "when not stretch", if: facts[:os]['distro']['codename'] != 'stretch' do
         it { is_expected.to contain_package('bacula-sd') }
       end
-      context "when not buster", if: facts[:os]['distro']['codename'] != 'buster' do
+      context "when stretch", if: facts[:os]['distro']['codename'] == 'stretch' do
         it { is_expected.to contain_package('bacula-sd-testsql') }
       end
       it { should contain_service('bacula-sd') }
