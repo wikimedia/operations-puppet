@@ -120,7 +120,6 @@ define elasticsearch::instance(
 
     # the following parameters have defaults that are sane both for single
     # and multi-instances
-    String $java_major_version                               = String($facts['java']['version']['major']),
     String $node_name                                        = "${::hostname}-${cluster_name}",
     Boolean $send_logs_to_logstash                           = true,
     String $heap_memory                                      = '2G',
@@ -172,6 +171,7 @@ define elasticsearch::instance(
     $master_eligible = $::fqdn in $unicast_hosts
 
     if $gc_log == true {
+        $java_major_version = String($facts['java']['version']['major'])
         $gc_log_flags = $java_major_version ? {
             '8'       => [
                 "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
@@ -192,7 +192,7 @@ define elasticsearch::instance(
                 '-Xlog:gc+age=trace',
                 '-Xlog:safepoint',
             ],
-            default   => fail("Java version ${facts['java']['version']['major']} not supported"),
+            default   => fail("Java version ${java_major_version} not supported"),
         }
 
     } else {
