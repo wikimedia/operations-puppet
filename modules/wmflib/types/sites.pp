@@ -1,1 +1,1 @@
-type Wmflib::Sites = Enum['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin']
+type Wmflib::Sites = Enum['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin', 'drmrs']
