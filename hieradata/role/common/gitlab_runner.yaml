@@ -28,3 +28,4 @@ profile::gitlab::runner::allowed_services:
   gitlab-replica-https: # for failover between instances without restarting ferm on runners
     host: 'gitlab-replica.wikimedia.org'
     port: 443
+profile::base::overlayfs: true
