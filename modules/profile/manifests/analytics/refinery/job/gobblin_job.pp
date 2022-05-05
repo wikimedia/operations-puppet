@@ -21,7 +21,7 @@ define profile::analytics::refinery::job::gobblin_job (
     $environment                = {},
     $monitoring_enabled         = true,
     $monitoring_contact_groups  = 'analytics',
-    $ensure                     = 'absent',
+    $ensure                     = 'present',
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path
