@@ -18,6 +18,16 @@ class profile::openstack::codfw1dev::horizon::dashboard_source_deploy(
     Stdlib::HTTPUrl $puppet_enc_endpoint = lookup('profile::openstack::codfw1dev::horizon::puppet_enc_endpoint'),
     ) {
 
+    # Including serverpackages will set up the BPOs for the current openstack version;
+    #  that will get up-to-date client packages which may be used by Horizon.
+    #
+    # Until we move this host to Bullseye (which means moving Wikitech to Bullseye) we can't
+    #  actually install upstream packages past Victoria here
+    #
+    # This is a codfw1dev experiment, if it goes well this should be moved into base.
+    require "openstack::serverpackages::victoria::${::lsbdistcodename}"
+
+
     require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::horizon::dashboard_source_deploy':
         horizon_version      => $horizon_version,
