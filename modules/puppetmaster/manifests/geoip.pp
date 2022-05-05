@@ -66,9 +66,6 @@ class puppetmaster::geoip(
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
             product_ids    => [
-                '506', # GeoLite Legacy Country
-                '517', # GeoLite ASN
-                '533', # GeoLite Legacy City
                 'GeoLite2-Country',
                 'GeoLite2-City',
                 ],
