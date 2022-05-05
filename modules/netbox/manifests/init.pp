@@ -1,78 +1,35 @@
-# == Class: netbox::base
-#
-# Installs Netbox
-#
-# === Parameters
-#
-# [*service_hostname*]
-#  The external hostname for this service.
-#
-# [*secret_key*]
-#   Django secret key
-#
-# [*ldap_password*]
-#   Password of the LDAP bind user
-#
-# [*db_host*]
-#    The database host address.
-#
-# [*db_password*]
-#   Password of the database user
-#
-# [*db_port*]
-#    The port on which the database is listening.
-#
-# [*db_user*]
-#    The user to connect to the database as.
-#
-# [*debug*]
-#   Turn on django debugging
-#
-# [*port*]
-#   Port the python app listen on
-#
-# [*config_path*]
-#   Path to the deploy directory
-#
-# [*venv_path*]
-#   Path to the python virtualenv
-#
-# [*directory*]
-#   Path to the netbox app
-#
-# [*extras_path*]
-#   The path which the extras repository will be cloned to
-#
-# [*ensure*]
-#   installs/removes config files
-#
-# [*local_redis_port*]
-#   The port (as a string) that the required local Redis instance should listen on
-#
-# [*local_redis_maxmem*]
-#   The amount of memory in bytes that the local Redis instance should use
-#
-# [*ldap_server*]
-#   The LDAP server to specify in the configuration
-#
-# [*include_ldap*]
-#   Enable/disable LDAP authentication
-#
-# [*swift_auth_url*]
-#   The authentication URL to be used for image storage.
-#   Setting this to undef or false will prevent swift form being configured.
-#
-# [*swift_user*]
-#   The user to connect to SWIFT for image storage as.
-#
-# [*swift_key*]
-#   The key for the above user.
-#
-# [*swift_container*]
-#   The name of the SWIFT container to store images to
-#
-# [*ca_certs*]
-# The path to the CA certificates that signs internal certs.
+# @summary Installs Netbox
+# @param service_hostname The external hostname for this service.
+# @param secret_key Django secret key
+# @param ldap_password Password of the LDAP bind user
+# @param db_host The database host address.
+# @param db_password Password of the database user
+# @param db_port The port on which the database is listening.
+# @param db_user The user to connect to the database as.
+# @param debug Turn on django debugging
+# @param port Port the python app listen on
+# @param config_path Path to the deploy directory
+# @param venv_path Path to the python virtualenv
+# @param directory Path to the netbox app
+# @param extras_path The path which the extras repository will be cloned to
+# @param ensure installs/removes config files
+# @param local_redis_port The port (as a string) that the required local Redis instance should listen on
+# @param local_redis_maxmem The amount of memory in bytes that the local Redis instance should use
+# @param ldap_server The LDAP server to specify in the configuration
+# @param enable_ldap Enable/disable LDAP authentication
+# @param authentication_provider which auth provider to use ldap/cas
+# @param swift_auth_url The authentication URL to be used for image storage.
+# @param cas_rename_attributes hash of attributes to rename
+# @param cas_group_attribute_mapping hash of cas attributes to map
+# @param cas_group_mapping hash of nextbox group mappings
+# @param cas_group_required list of required groups
+# @param cas_server_url The cas service url
+# @param cas_username_attribute The cas username attribute
+# @param swift_user The user to connect to SWIFT for image storage as.
+# @param swift_key The key for the above user.
+# @param swift_container The name of the SWIFT container to store images to
+# @param swift_url_key The swift url key
+# @param ca_certs The path to the CA certificates that signs internal certs.
 #
 class netbox(
     Stdlib::Fqdn                  $service_hostname,
@@ -137,16 +94,16 @@ class netbox(
         protected-mode           => 'yes',
         dbfilename               => '""',
         appendfilename           => '""',
-      }
+      },
     }
-    ::prometheus::redis_exporter { String($local_redis_port): }
+    prometheus::redis_exporter { String($local_redis_port): }
 
     user { 'netbox':
         ensure  => $ensure,
         comment => 'This is the global owner for all Netbox things.',
         system  => true,
         home    => $home_path,
-        shell   => '/bin/bash'
+        shell   => '/bin/bash',
     }
 
     file { '/etc/netbox/configuration.py':
