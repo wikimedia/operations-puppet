@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::wmcs::services::toolsdb_primary (
+# = Class: profile::wmcs::services::toolsdb
+class profile::wmcs::services::toolsdb (
     Stdlib::Unixpath $socket = lookup('profile::wmcs::services::toolsdb::socket', {default_value => '/var/run/mysqld/mysqld.sock'}),
+    Stdlib::Fqdn $primary_server = lookup('profile::wmcs::services::toolsdb::primary_server'),
     Boolean $rebuild = lookup('profile::wmcs::services::toolsdb::rebuild', {default_value => false}),
-    Optional[Stdlib::Fqdn] $primary_server = lookup('profile::wmcs::services::toolsdb::rebuild_primary'),
-    Optional[Stdlib::Fqdn] $secondary_server = lookup('profile::wmcs::services::toolsdb::rebuild_secondary'),
-    Boolean $legacy_config = lookup('profile::wmcs::services::toolsdb::legacy_config', {default_value => true}),
 ) {
     require profile::wmcs::services::toolsdb_apt_pinning
 
@@ -13,7 +12,7 @@ class profile::wmcs::services::toolsdb_primary (
     class { '::mariadb::service': }
 
     class { 'profile::mariadb::monitor::prometheus':
-        socket      => $socket,
+        socket => $socket,
     }
 
     # This should depend on labs_lvm::srv but the /srv/ vols were hand built
@@ -33,36 +32,22 @@ class profile::wmcs::services::toolsdb_primary (
         group  => 'mysql',
     }
 
-    if $legacy_config {
-      $config_file_template = 'role/mariadb/mysqld_config/tools_legacy.my.cnf.erb'
-    } else {
-      $config_file_template = 'role/mariadb/mysqld_config/tools.my.cnf.erb'
-    }
+    $config_file_template = 'role/mariadb/mysqld_config/tools.my.cnf.erb'
 
     class { 'mariadb::config':
         config        => $config_file_template,
         datadir       => '/srv/labsdb/data',
-        basedir       => $profile::mariadb::packages_wmf::basedir,
         tmpdir        => '/srv/labsdb/tmp',
+        basedir       => $profile::mariadb::packages_wmf::basedir,
+        read_only     => 'ON',
         ssl           => 'puppet-cert',
         binlog_format => 'ROW',
-        read_only     => 'ON',
         socket        => $socket,
     }
 
     class { 'mariadb::heartbeat':
         datacenter => $::site,
-        enabled    => true,
+        enabled    => $primary_server == $::facts['networking']['fqdn'],
         shard      => 'toolsdb',
-    }
-
-    if $rebuild {
-        rsync::quickdatacopy { 'srv-labsdb-backup1':
-            ensure      => present,
-            auto_sync   => false,
-            source_host => $primary_server,
-            dest_host   => $secondary_server,
-            module_path => '/srv/labsdb',
-        }
     }
 }
