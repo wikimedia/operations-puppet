@@ -44,15 +44,16 @@ class statistics::rsync::published(
     # /srv/published-rsynced/$hostname, and then the hardsync script
     # will sync them into /srv/analytics.wikimedia.org/published.
     # See: statistics::sites::analytics.
+    systemd::timer::job { 'rsync-published':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'Rsync push to analytics.wikimedia.org web host',
+        command     => '/usr/local/bin/published-sync -q',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*:0/15'},
+    }
+
     cron { 'rsync-published':
-        # -gp preserve group (wikidev, usually) and permissions, but not
-        # ownership, as the owner users might not exist on the destination.
-        command => '/usr/local/bin/published-sync -q',
-        user    => 'root',
-        minute  => '*/15',
-        require => [
-            File['/usr/local/bin/published-sync'],
-            File[$source],
-        ],
+        ensure => 'absent',
+        user   => 'root',
     }
 }
