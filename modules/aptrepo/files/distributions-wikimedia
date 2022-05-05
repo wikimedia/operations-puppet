@@ -208,6 +208,7 @@ Components: main
  thirdparty/elastic68
  thirdparty/gitlab-runner
  thirdparty/hwraid
+ thirdparty/node14
  thirdparty/opensearch1
  thirdparty/openstack-db
  thirdparty/routinator

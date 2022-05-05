@@ -377,3 +377,12 @@ Suite: stable
 Architectures: amd64
 VerifyRelease: 8AEB4F8B29D82806
 ListShellHook: grep-dctrl -X -S 'conda' || [ $? -eq 1 ]
+
+Name: node14-bullseye
+Method: https://deb.nodesource.com/node_14.x
+Components: main>thirdparty/node14
+UDebComponents:
+Suite: bullseye
+Architectures: amd64
+VerifyRelease: 1655A0AB68576280
+ListShellHook: grep-dctrl -X -S 'nodejs' || [ $? -eq 1 ]
