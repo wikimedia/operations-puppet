@@ -20,6 +20,7 @@
 #
 class elasticsearch (
     String $apt_component,
+    Integer[8,17] $java_vers,
     Optional[Hash[String, Elasticsearch::InstanceParams]] $instances = undef,
     Elasticsearch::InstanceParams $default_instance_params           = {},
     Enum['5', '6', '7'] $version                                     = '5',
@@ -153,7 +154,8 @@ class elasticsearch (
             logstash_transport    => $logstash_transport,
             rack                  => $rack,
             row                   => $row,
-            *                     => $instance_params
+            java_vers             => $java_vers,
+            *                     => $instance_params,
         }
     }
 

@@ -107,6 +107,7 @@ define elasticsearch::instance (
     # the following parameters are injected by the main elasticsearch class
     String $cluster_name,
     String $version,
+    Integer[8,17] $java_vers,
     Stdlib::Port $http_port,
     Stdlib::Port $transport_tcp_port,
     Stdlib::Absolutepath $base_data_dir,
@@ -171,9 +172,8 @@ define elasticsearch::instance (
     $master_eligible = $::fqdn in $unicast_hosts
 
     if $gc_log == true {
-        $java_major_version = String($facts['java']['version']['major'])
-        $gc_log_flags = $java_major_version ? {
-            '8'       => [
+        $gc_log_flags = $java_vers ? {
+            8 => [
                 "-Xloggc:/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log",
                 '-XX:+PrintGCDetails',
                 '-XX:+PrintGCDateStamps',
@@ -187,12 +187,12 @@ define elasticsearch::instance (
             ],
             # the above GC flags are no longer valid as of Java 11, which is the default
             # Java for Debian 10 and 11.
-            /(10|11)/ => [
+            11 => [
                 "-Xlog:gc*:file=/var/log/elasticsearch/${cluster_name}_jvm_gc.%p.log::filecount=10,filesize=20000",
                 '-Xlog:gc+age=trace',
                 '-Xlog:safepoint',
             ],
-            default   => fail("Java version ${java_major_version} not supported"),
+            default   => fail("Java version ${java_vers} not supported"),
         }
 
     } else {

@@ -32,10 +32,11 @@ class profile::elasticsearch(
     Enum['5.5', '5.6', '6.5', '6.8', '7.4', '7.8', '7.9', '7.10'] $version = lookup('profile::elasticsearch::version', {'default_value' => '5.5'}),
     Enum['5', '6', '7'] $config_version = lookup('profile::elasticsearch::config_version', {'default_value' => '5'}),
     Optional[String] $java_home = lookup('profile::elasticsearch::java_home', { 'default_value' => undef }),
+
 ) {
 
-    require ::profile::java
-
+    require profile::java
+    $java_vers = Integer($profile::java::_java_packages[0]['version'])
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
     # defaults. Per cluster overrides are then provided in $instances.
@@ -122,5 +123,6 @@ class profile::elasticsearch(
         rack                  => $rack,
         row                   => $row,
         java_home             => $java_home,
+        java_vers             => $java_vers,
     }
 }
