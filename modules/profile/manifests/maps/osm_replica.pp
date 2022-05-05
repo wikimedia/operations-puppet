@@ -4,6 +4,7 @@ class profile::maps::osm_replica(
     # readable by superuser or replication user. This prevents using a
     # dedicated user for monitoring.
     String $replication_pass = lookup('postgresql::slave::replication_pass'),
+    Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_replica::log_min_duration_statement', { 'default_value' => undef })
 ){
 
     require ::profile::maps::postgresql_common
@@ -20,9 +21,10 @@ class profile::maps::osm_replica(
 
 
     class { '::postgresql::slave':
-        master_server => $master,
-        root_dir      => '/srv/postgresql',
-        includes      => ['tuning.conf'],
+        master_server              => $master,
+        root_dir                   => '/srv/postgresql',
+        includes                   => ['tuning.conf'],
+        log_min_duration_statement => $log_min_duration_statement,
     }
 
     class { 'postgresql::slave::monitoring':

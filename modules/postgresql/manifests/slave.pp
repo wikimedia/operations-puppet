@@ -41,6 +41,7 @@ class postgresql::slave(
     Optional[String]           $rep_app         = undef,
     Optional[Numeric]          $pgversion       = undef,
     Optional[Stdlib::Unixpath] $ssldir          = undef,
+    Optional[Integer[250]]     $log_min_duration_statement  = undef,
 ) {
 
     $_pgversion = $pgversion ? {
@@ -55,12 +56,13 @@ class postgresql::slave(
     $data_dir = "${root_dir}/${_pgversion}/main"
 
     class { '::postgresql::server':
-        ensure    => $ensure,
-        pgversion => $_pgversion,
-        includes  => $includes + ['slave.conf'],
-        root_dir  => $root_dir,
-        use_ssl   => $use_ssl,
-        ssldir    => $ssldir,
+        ensure                     => $ensure,
+        pgversion                  => $_pgversion,
+        includes                   => $includes + ['slave.conf'],
+        root_dir                   => $root_dir,
+        use_ssl                    => $use_ssl,
+        ssldir                     => $ssldir,
+        log_min_duration_statement => $log_min_duration_statement,
     }
 
     file { '/usr/local/bin/resync_replica':

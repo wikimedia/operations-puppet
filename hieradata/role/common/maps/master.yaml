@@ -45,3 +45,5 @@ profile::maps::cassandra::enable: false
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
+
+profile::maps::osm_master::log_min_duration_statement: 10000 # 10 seconds
