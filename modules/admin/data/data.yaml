@@ -976,7 +976,7 @@ groups:
     members: &analytics_platform_eng_admins_members [
       *platform_engineering_members, lbowmaker,
       # https://phabricator.wikimedia.org/T306057
-      cparle, mfossati
+      cparle, mfossati, fab
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
