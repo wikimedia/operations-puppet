@@ -40,12 +40,17 @@ class statistics::published(
     }
 
     # Merge files in published-rsynced/* via hardlinks into $document_root/published
+    systemd::timer::job { 'hardsync-published':
+        ensure      => present,
+        user        => 'root',
+        description => 'Merge files in published-rsynced/* via hardlinks into $document_root/published',
+        command     => "/usr/local/bin/hardsync -t ${temp_dir} ${source}/* ${destination} 2>&1 > /dev/null",
+        interval    => {'start' => 'OnCalendar', 'interval' => '*:0/15'},
+    }
+
     cron { 'hardsync-published':
-        # This script is installed by ::statistics::web.
-        command => "/usr/local/bin/hardsync -t ${temp_dir} ${source}/* ${destination} 2>&1 > /dev/null",
-        user    => 'root',
-        minute  => '*/15',
-        require => File[$source],
+        ensure => absent,
+        user   => 'root',
     }
 
 }
