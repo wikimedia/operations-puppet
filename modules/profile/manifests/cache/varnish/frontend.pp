@@ -41,16 +41,28 @@ class profile::cache::varnish::frontend (
         'libvmod-re2',
     ]
 
+    # We need these two services disabled as we don't use them.
+    systemd::mask { 'varnishncsa.service': }
+    systemd::mask { 'varnishlog.service': }
+
     if $packages_component == 'main' {
         package { $packages:
-            ensure => installed,
-            before => Mount['/var/lib/varnish'],
+            ensure  => installed,
+            before  => Mount['/var/lib/varnish'],
+            require => [
+                Systemd::Mask['varnishncsa.service'],
+                Systemd::Mask['varnishlog.service'],
+            ],
         }
     } else {
         apt::package_from_component { 'varnish':
             component => $packages_component,
             packages  => $packages,
             before    => Mount['/var/lib/varnish'],
+            require   => [
+                Systemd::Mask['varnishncsa.service'],
+                Systemd::Mask['varnishlog.service'],
+            ],
             priority  => 1002, # Take precedence over main
         }
     }

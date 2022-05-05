@@ -77,17 +77,6 @@ class varnish::common(
         force   => true,
     }
 
-    # We are not using varnishncsa, make sure it's stopped
-    service { 'varnishncsa':
-        ensure => 'stopped',
-        enable => false,
-    }
-
-    # We don't use varnishlog at all, and it can become an issue, see T135700
-    service { 'varnishlog':
-        ensure => 'stopped',
-    }
-
     file { '/usr/local/lib/python2.7/dist-packages/varnishapi.py':
         ensure => absent,
     }
