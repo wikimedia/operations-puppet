@@ -93,6 +93,8 @@ cache::alternate_domains:
     caching: 'normal'
   ores.wikimedia.org:
     caching: 'normal'
+  parsoid-rt-tests.wikimedia.org:
+    caching: 'pass'
   people.wikimedia.org:
     caching: 'pass'
   performance.wikimedia.org:
