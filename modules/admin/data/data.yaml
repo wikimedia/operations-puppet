@@ -5247,6 +5247,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIkEHqOsDdEDuSuBX7YnBXXmkolpCBU3in/0m2cgcvD slyngshede
+  brett:
+    ensure: present
+    realname: Brett Cornwall
+    email: bcornwall@wikimedia.org
+    uid: 39104
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEFLtrYyCR39Na6/jOeIv0V7sANQpCKAwYjp+TDnVIfF bcornwall@wikimedia.org
 
 ldap_only_users:
   abartov:
