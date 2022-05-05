@@ -103,7 +103,7 @@
 #       cluster_name = 'labs-search'
 #   }
 #
-define elasticsearch::instance(
+define elasticsearch::instance (
     # the following parameters are injected by the main elasticsearch class
     String $cluster_name,
     String $version,
@@ -146,7 +146,7 @@ define elasticsearch::instance(
     Optional[String] $ltr_cache_size                         = undef,
     Boolean $curator_uses_unicast_hosts                      = true,
     Optional[Integer] $tune_gc_new_size_ratio                = undef,
-    Optional[Enum['ssd','hdd']] $disktype                    = undef,
+    Optional[Enum['ssd', 'hdd']] $disktype                   = undef,
     Boolean $use_cms_gc                                      = false,
     Integer $cms_gc_init_occupancy_fraction                  = 75,
 
@@ -282,18 +282,18 @@ define elasticsearch::instance(
     }
 
     file { "${config_dir}/elasticsearch.keystore":
-            ensure => $ensure_keystore,
-            owner  => 'root',
-            group  => 'elasticsearch',
-            mode   => '0640',
+        ensure => $ensure_keystore,
+        owner  => 'root',
+        group  => 'elasticsearch',
+        mode   => '0640',
     }
 
     file { $data_dir:
-      ensure  => directory,
-      owner   => 'elasticsearch',
-      group   => 'elasticsearch',
-      mode    => '0755',
-      require => Package['elasticsearch-oss'],
+        ensure  => directory,
+        owner   => 'elasticsearch',
+        group   => 'elasticsearch',
+        mode    => '0755',
+        require => Package['elasticsearch-oss'],
     }
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
     # the previous instance are left alone. This systemd timer takes care of cleaning up
@@ -305,10 +305,10 @@ define elasticsearch::instance(
         user        => 'root',
         description => 'Cleanup GC logs',
         command     => "/usr/bin/find /var/log/elasticsearch -name '${cluster_name}_jvm_gc.*.log*' -mtime +30 -delete",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00'},
+        interval    => { 'start' => 'OnCalendar', 'interval' => '*-*-* 02:12:00' },
     }
 
-    systemd::tmpfile {"elasticsearch-${cluster_name}":
+    systemd::tmpfile { "elasticsearch-${cluster_name}":
         ensure  => present,
         content => "d    /var/run/elasticsearch-${cluster_name}  0755 elasticsearch elasticsearch - -",
     }
