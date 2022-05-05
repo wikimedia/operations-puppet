@@ -219,6 +219,7 @@ Update:
  elastic68
  hp-mcp-bullseye
  hwraid-stretch
+ node14-bullseye
  routinator
  thirdparty/ceph-octopus-bullseye
  thirdparty/conda
