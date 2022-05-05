@@ -12,6 +12,7 @@
 # @param active_server the active netbox server
 # @param service_hostname the active netbox server
 # @param slaves list of secondery netbox serveres
+# @param scap_repo The repo to use for scap deploys
 # @param rw_token api read write token key
 # @param ro_token api read only token key
 # @param dump_interval how often to prefrom dumps
@@ -53,6 +54,7 @@ class profile::netbox (
     Stdlib::Fqdn               $active_server               = lookup('profile::netbox::active_server'),
     Stdlib::Fqdn               $service_hostname            = lookup('profile::netbox::service_hostname'),
     Array[String]              $slaves                      = lookup('profile::netbox::slaves'),
+    String                     $scap_repo                   = lookup('profile::netbox::scap_repo'),
     String                     $rw_token                    = lookup('profile::netbox::rw_token'),
     String                     $ro_token                    = lookup('profile::netbox::ro_token'),
     String                     $dump_interval               = lookup('profile::netbox::dump_interval'),
@@ -127,6 +129,7 @@ class profile::netbox (
         secret_key                  => $secret_key,
         ldap_password               => $proxypass,
         extras_path                 => $extras_path,
+        scap_repo                   => $scap_repo,
         swift_auth_url              => $swift_auth_url,
         swift_user                  => $swift_user,
         swift_key                   => $swift_key,

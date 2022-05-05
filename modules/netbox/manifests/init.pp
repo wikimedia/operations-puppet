@@ -12,6 +12,7 @@
 # @param venv_path Path to the python virtualenv
 # @param directory Path to the netbox app
 # @param extras_path The path which the extras repository will be cloned to
+# @param scap_repo The repo to use for scap deploys
 # @param ensure installs/removes config files
 # @param local_redis_port The port (as a string) that the required local Redis instance should listen on
 # @param local_redis_maxmem The amount of memory in bytes that the local Redis instance should use
@@ -46,6 +47,7 @@ class netbox(
     Stdlib::Unixpath              $venv_path                   = '/srv/deployment/netbox/venv',
     Stdlib::Unixpath              $directory                   = '/srv/deployment/netbox/deploy/src',
     Stdlib::Unixpath              $extras_path                 = '/srv/deployment/netbox-extras',
+    String                        $scap_repo                   = 'netbox/deploy',
     Stdlib::Port                  $local_redis_port            = 6380,
     Integer                       $local_redis_maxmem          = 1610612736,  # 1.5Gb
     Optional[Stdlib::Fqdn]        $ldap_server                 = undef,
@@ -112,8 +114,7 @@ class netbox(
         group   => 'www-data',
         mode    => '0440',
         content => template('netbox/configuration.py.erb'),
-        require => [Scap::Target['netbox/deploy'],
-                    User['netbox']],
+        require => Scap::Target[$scap_repo],
         before  => Uwsgi::App['netbox'],
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
@@ -124,7 +125,7 @@ class netbox(
         group   => 'www-data',
         mode    => '0440',
         content => template('netbox/ldap_config.py.erb'),
-        require => Scap::Target['netbox/deploy'],
+        require => Scap::Target[$scap_repo],
         before  => Uwsgi::App['netbox'],
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
@@ -134,7 +135,7 @@ class netbox(
         group   => 'www-data',
         mode    => '0440',
         content => template('netbox/cas_configuration.py.erb'),
-        require => Scap::Target['netbox/deploy'],
+        require => Scap::Target[$scap_repo],
         before  => Uwsgi::App['netbox'],
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
@@ -154,6 +155,7 @@ class netbox(
   service::uwsgi { 'netbox':
       port            => $port,
       deployment_user => 'netbox',
+      repo            => $scap_repo,
       config          => {
           need-plugins => 'python3',
           chdir        => "${directory}/netbox",

@@ -1,6 +1,7 @@
 profile::netbox::active_server: "%{facts.networking.fqdn}"
 profile::netbox::service_hostname: "%{facts.networking.fqdn}"
 profile::netbox::slaves: []
+profile::netbox::scap_repo: 'netbox/deploy'
 # profile::netbox::rw_tokens: === private repo ===
 # profile::netbox::ro_token: === private repo ===
 profile::netbox::dump_interval: '*-*-* *:32:00'

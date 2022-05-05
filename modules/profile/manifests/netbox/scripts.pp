@@ -41,7 +41,10 @@ class profile::netbox::scripts {
         },
         icinga_check    => false,
         core_limit      => '30G',
-        require         => [Scap::Target['netbox/deploy'], Git::Clone['operations/software/netbox-extras']],
+        require         => [
+            Scap::Target[$profile::netbox::scap_repo],
+            Git::Clone['operations/software/netbox-extras']
+        ],
     }
 
     profile::auto_restarts::service { 'uwsgi-netbox-scriptproxy': }
@@ -57,7 +60,7 @@ class profile::netbox::scripts {
         srange => "(@resolve((${ferm_nodes})) @resolve((${ferm_nodes}), AAAA))",
     }
 
-    httpd::site { $::fqdn:
+    httpd::site { $facts['networking']['fqdn']:
         content => template('profile/netbox/netbox-scripts.erb'),
     }
 
