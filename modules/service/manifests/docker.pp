@@ -55,10 +55,6 @@ define service::docker(
         default => "${registry}/${namespace}/${image_name}"
     }
 
-    if $version == 'latest' {
-        fail('Meta tags like "latest" are not allowed')
-    }
-
     $fqin = "${image_full_name}:${version}"
 
     # The config file will be mounted as a read-only volume inside the container
