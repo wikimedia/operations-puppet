@@ -150,8 +150,9 @@ class profile::netbox (
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }
 
+    ensure_packages('libapache2-mod-wsgi-py3')
     class { 'httpd':
-        modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'ssl'],
+        modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'ssl', 'wsgi'],
     }
 
     ferm::service { 'netbox_https':
