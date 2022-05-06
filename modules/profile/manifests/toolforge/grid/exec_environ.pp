@@ -208,6 +208,7 @@ class profile::toolforge::grid::exec_environ {
         'libirc-utils-perl',
         'libjson-perl',
         'libjson-xs-perl',
+        'liblocale-codes-perl',  # T307812
         'liblog-log4perl-perl',        # T76974
         'liblwp-protocol-https-perl',
         'libmediawiki-api-perl',
