@@ -11,13 +11,17 @@ class dumps::generation::server::jobswatcher(
         source => 'puppet:///modules/dumps/generation/job_watcher.sh',
     }
 
-    cron { 'dumps-jobs-watcher':
+    systemd::timer::job { 'dump-jobs-watcher':
         ensure      => 'present',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        description => 'Watch for stalled XML dumps',
+        environment => {'MAILTO' => 'ops-dumps@wikimedia.org'},
         command     => "/bin/bash /usr/local/bin/job_watcher.sh --dumpsbasedir ${dumpsbasedir} --locksbasedir ${locksbasedir}",
         user        => $user,
-        minute      => '10',
-        hour        => '*/8',
-        require     => File['/usr/local/bin/job_watcher.sh'],
+        interval    => {'start' => 'OnCalendar', 'interval' => '00/8:10'}
+    }
+
+    cron { 'dumps-jobs-watcher':
+        ensure => 'absent',
+        user   => $user,
     }
 }
