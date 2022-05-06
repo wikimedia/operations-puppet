@@ -1,25 +1,98 @@
 # SPDX-License-Identifier: Apache-2.0
+require 'rake_modules/monkey_patch'
 
 SPDX_GLOB = "{modules,manifests,rake_module,utils}/{**/*,*}"
-SPDX_HEADER = "# SPDX-License-Identifier: Apache-2.0\n"
-SPDX_LICENCE_PATH = 'rake_modules/resources/APACHE-2.0'
+SPDX_TAG = "SPDX-License-Identifier: Apache-2.0"
+class UnknownExtensionError < StandardError
+  attr_reader :filename
+  def initialize(filename, msg = "Unknown Extension")
+    @filename = filename
+    super(msg)
+  end
+end
+
+class NoCommentSupoportError < StandardError
+end
 
 def check_spdx_licence(file_list)
   # Check a list of files for an spdx licence header
   missing_licence = []
   file_list.each do |filename|
-    missing_licence << filename unless File.foreach(filename).grep(/SPDX-License-Identifier:/).any?
+    next unless File.file?(filename)
+    if File.binary?(filename)
+      puts 'skipping ' + filename
+      next
+    end
+    begin
+      missing_licence << filename unless File.foreach(filename).grep(/SPDX-License-Identifier:/).any?
+    rescue ArgumentError => error
+      STDERR.puts "Error Could not read #{filename}: #{error}".red
+    end
   end
   missing_licence
+end
+
+def comment_line(filename, line)
+  # format a line as a comment using the file type specific comment
+  # filetype is calculated based on the file extension
+  case filename.split('.')[-1]
+  when /erb|epp/
+    "<%#- #{line} -%>\n"
+  when /jinja/
+    "{# #{line} #}\n"
+  when /html|md|markdown|xml/
+    "<!-- #{line} -->\n"
+  when /css/
+    "/* #{line} */\n"
+  when /vcl|php|groovy|js/
+    "// #{line}\n"
+  when /cf|cfg|csh|ini|pl|pp|properties|py|R|rb|rc|service|sh|stp|vtc|yaml|yml/
+    "# #{line}\n"
+  when /lua|sql/
+    "-- #{line}\n"
+  when /json|pem|key/
+    # Theses files don't support comments so skip them
+    raise NoCommentSupoportError
+  else
+    raise UnknownExtensionError, filename
+  end
+end
+
+def add_spdx_tags(files)
+  # Add the SPDX_TAGS near the top of a each file passed
+  unknown_files = []
+  files.each do |filename|
+    puts "#{filename}: adding spdx licence"
+    begin
+      tag = comment_line(filename, SPDX_TAG)
+    rescue UnknownExtensionError => error
+      unknown_files << error.filename
+      next
+    rescue NoCommentSupoportError
+      next
+    end
+    File.open(filename, 'r+') do |fh|
+      while line = fh.readline  # rubocop:disable Lint/AssignmentInCondition
+        break unless line[0..1] == '#!'
+      end
+      rewind_pos = fh.pos - line.size
+      file_end = line + fh.read
+      fh.seek(rewind_pos)
+      fh.write(tag)
+      fh.write(file_end)
+    end
+  end
+  unless unknown_files.empty?
+    puts(("Unable to add tag to the following files:\n" + unknown_files.join("\n")).yellow)
+  end
 end
 
 def setup_spdx(git)
   changed_files = git.changes_in_head.select{ |f| File.fnmatch(SPDX_GLOB, f, File::FNM_EXTGLOB) }
   new_files = git.new_files_in_head.select{ |f| File.fnmatch(SPDX_GLOB, f, File::FNM_EXTGLOB) }
   tasks = []
-
-  namespace :'spdx:check' do
-    unless changed_files.empty?
+  unless changed_files.empty?
+    namespace :'spdx:check' do
       desc "Check changed files"
       task :changed do
         missing_licence = check_spdx_licence(changed_files)
@@ -29,27 +102,40 @@ def setup_spdx(git)
         puts 'SPDX licence: OK'.green
       end
     end
-    unless new_files.empty?
+  end
+  unless new_files.empty?
+    missing_licence = check_spdx_licence(new_files)
+    namespace :'spdx:check' do
       desc "Check changed files"
       task :new_files do
-        missing_licence = check_spdx_licence(new_files)
         unless missing_licence.empty?
           msg = <<~ERROR
           The following are missing a SPDX licence header:
 
           #{missing_licence.join("\n")}
 
-          Please add a header like the following:
+          Use the following command to automatically add tags
 
-          #{SPDX_HEADER}
+            `bundle exec rake spdx:convert:new_files`
 
           ERROR
           abort(msg.red)
         end
         puts 'SPDX licence: OK'.green
       end
-      tasks << 'spdx:check:new_files'
     end
+    tasks << 'spdx:check:new_files'
+    namespace :'spdx:convert' do
+      desc "Convert a module to SPDX"
+      task :new_files do
+        if missing_licence.empty?
+          puts 'OK: all new files an spdx header'
+          exit
+        end
+        add_spdx_tags(missing_licence)
+      end
+    end
+    tasks << 'spdx:check:new_files'
   end
   tasks
 end
@@ -61,6 +147,16 @@ namespace :spdx do
       missing_licence = check_spdx_licence(FileList[SPDX_GLOB])
       abort("The following are missing a SPDX licence header:\n#{missing_licence}".red) unless missing_licence.empty?
       puts 'SPDX licence: OK'.green
+    end
+  end
+  namespace :convert do
+    desc "Convert a module to SPDX"
+    task :module, [:module] do |_t, args|
+      module_path = "modules/#{args[:module]}"
+      abort("#{args[:module]}: does not exist".red) unless File.directory?(module_path)
+      glob = "#{module_path}/**/*"
+      missing_licence = check_spdx_licence(FileList[glob])
+      add_spdx_tags(missing_licence)
     end
   end
 end

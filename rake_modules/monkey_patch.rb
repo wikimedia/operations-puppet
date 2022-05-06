@@ -38,3 +38,23 @@ class String
     colorize("\033[34m")
   end
 end
+
+# Create a binary? function to test if a file is binary or not
+# https://www.ruby-forum.com/t/test-if-file-is-binary/112595
+class File
+  def self.binary?(name)
+    ascii = control = binary = 0
+    # Sample the first 1k of the file and calculate number of ascii chars
+    File.open(name, 'rb') {|io| io.read(1024)}.each_byte do |byte|
+      case byte
+      when 0...32
+        control += 1
+      when 32...128
+        ascii += 1
+      else
+        binary += 1
+      end
+    end
+    control.to_f / ascii > 0.1 || binary.to_f / ascii > 0.05
+  end
+end
