@@ -1019,6 +1019,7 @@ host netbox-dev2001 {
 host netbox-dev2002 {
    hardware ethernet aa:00:00:d8:a8:d5;
    fixed-address netbox-dev2002.codfw.wmnet;
+   option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host netflow1002 {
