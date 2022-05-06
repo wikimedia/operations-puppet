@@ -61,6 +61,7 @@ profile::gerrit::replication:
         replicateProjectDeletions: true
         replicateHiddenProjects: true
         defaultForceUpdate: true
+        threads: 4
         replicationDelay: 5
         rescheduleDelay: 5
 
