@@ -13,14 +13,17 @@ class dumps::generation::server::statsender(
         source => 'puppet:///modules/dumps/generation/get_dump_stats.sh',
     }
 
-    cron { 'dumps-stats-sender':
+    systemd::timer::job { 'dumps-stats-sender':
         ensure      => 'present',
-        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        description => 'Collect monthly statistics for XML dumps',
+        environment => {'MAILTO' => 'ops-dumps@wikimedia.org'},
         command     => "/bin/bash /usr/local/bin/get_dump_stats.sh --dumpsbasedir ${dumpsbasedir} --sender_address ${sender_address}",
         user        => $user,
-        minute      => '30',
-        hour        => '1',
-        monthday    => '26',
-        require     => File['/usr/local/bin/get_dump_stats.sh'],
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-26 01:30'},
+    }
+
+    cron { 'dumps-stats-sender':
+        ensure => 'absent',
+        user   => $user,
     }
 }
