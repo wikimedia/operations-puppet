@@ -1,0 +1,1 @@
+profile::netbox::scap_repo: 'netbox-dev/deploy'
