@@ -206,8 +206,6 @@ scap::sources:
   # Netbox software
   netbox/deploy:
     repository: operations/software/netbox-deploy
-  netbox-dev/deploy:
-    repository: operations/software/netbox-deploy
   search/mjolnir/deploy:
     repository: search/MjoLniR/deploy
   statsv/statsv:
