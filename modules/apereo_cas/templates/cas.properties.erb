@@ -94,11 +94,9 @@ cas.authn.ldap[0].binddn=<%= @ldap_bind_dn %>
 cas.authn.ldap[0].bindcredential=<%= @ldap_bind_pass %>
 <%- end -%>
 
-<%- if @groovy_source -%>
-cas.authn.mfa.triggers.principal.global-principal-attribute-predicate.location=file:<%= @groovy_file -%>
-<%- end -%>
 
 <%- if @enable_u2f -%>
+cas.authn.mfa.triggers.principal.global-principal-attribute-predicate.location=file:<%= @groovy_file -%>
 <% if @u2f_signing_key %>cas.authn.mfa.u2f.crypto.signing.key=<%= @u2f_signing_key %><% end %>
 <% if @u2f_encryption_key %>cas.authn.mfa.u2f.crypto.encryption.key=<%= @u2f_encryption_key %><% end %>
   <%- if @u2f_jpa_enable -%>
@@ -109,11 +107,11 @@ cas.authn.mfa.u2f.jpa.driver-class=org.mariadb.jdbc.Driver
 cas.authn.mfa.u2f.jpa.url=jdbc:mysql://<%= @u2f_jpa_server %>/<%= @u2f_jpa_db %><% unless @u2f_jpa_server == '127.0.0.1' %>?useSSL=true&disableSslHostnameVerification=true<% end %>
 cas.authn.mfa.u2f.jpa.dialect=org.hibernate.dialect.MariaDBDialect
   <%- end -%>
-<%- end -%>
 
-<%- if @u2f_token_expiry_days -%>
+  <%- if @u2f_token_expiry_days -%>
 cas.authn.mfa.u2f.core.expire-devices=<%= @u2f_token_expiry_days %>
 cas.authn.mfa.u2f.core.expire-devices-time-unit=DAYS
+  <%- end -%>
 <%- end -%>
 <% if @tgc_signing_key %>cas.tgc.crypto.signing.key=<%= @tgc_signing_key %><% end %>
 <% if @tgc_encryption_key %>cas.tgc.crypto.encryption.key=<%= @tgc_encryption_key %><% end %>
