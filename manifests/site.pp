@@ -201,6 +201,11 @@ node /aqs101[0-5]\.eqiad\.wmnet/ {
     role(aqs_next)
 }
 
+# New aqs nodes in eqiad T305570
+node /^aqs100(1[6-9]|2[0-1])\.eqiad\.wmnet/ {
+    role(insetup)
+}
+
 # New aqs nodes in codfw T305568
 node /^aqs200[1-9]|aqs201[0-2]\.codfw\.wmnet/ {
     role(insetup)
