@@ -209,6 +209,7 @@ Components: main
  thirdparty/gitlab-runner
  thirdparty/hwraid
  thirdparty/node14
+ thirdparty/node16
  thirdparty/opensearch1
  thirdparty/openstack-db
  thirdparty/routinator
@@ -220,6 +221,7 @@ Update:
  hp-mcp-bullseye
  hwraid-stretch
  node14-bullseye
+ node16-bullseye
  routinator
  thirdparty/ceph-octopus-bullseye
  thirdparty/conda
