@@ -54,20 +54,11 @@ class profile::kubernetes::deployment_server(
                 }
             }
         }
-        # Now if we're including the admin account, add it for every cluster in the cluster
-        # group.
-        if $include_admin {
-            $clusters.each |$cluster, $cluster_data| {
-                k8s::kubeconfig { "/etc/kubernetes/admin-${cluster}.config":
-                    master_host => $cluster_data['master'],
-                    username    => 'client-infrastructure',
-                    token       => $_tokens['client-infrastructure']['token'],
-                    group       => 'root',
-                    owner       => 'root',
-                    mode        => '0400'
-                }
-            }
-        }
+    }
+    # Now if we're including the admin account, add it for every cluster in the cluster
+    # group.
+    if $include_admin {
+        class { '::profile::kubernetes::kubeconfig::admin': }
     }
 
 
