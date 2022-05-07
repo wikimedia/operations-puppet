@@ -14,7 +14,7 @@ glance = clients.glanceclient()
 
 if False:
     # codfw1dev
-    flavorid = "74307309-258b-435c-a1b0-3d684bb0062c"
+    flavorid = "d1549480-83ee-4293-8f25-9724a054111d"
     networkid = "05a5494a-184f-4d5c-9e98-77ae61c56daa"
 else:
     # eqiad1
