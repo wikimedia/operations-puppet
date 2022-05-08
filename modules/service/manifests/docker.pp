@@ -58,11 +58,13 @@ define service::docker(
     $fqin = "${image_full_name}:${version}"
 
     # The config file will be mounted as a read-only volume inside the container
-    file { "/etc/${title}":
-        ensure => stdlib::ensure($ensure, 'directory'),
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
+    if !defined(File["/etc/${title}"]) {
+        file { "/etc/${title}":
+            ensure => stdlib::ensure($ensure, 'directory'),
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
     }
 
     if $volume == false {

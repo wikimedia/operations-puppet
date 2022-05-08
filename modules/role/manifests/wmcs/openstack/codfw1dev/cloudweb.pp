@@ -23,6 +23,7 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
 
     # Striker:
     include ::profile::wmcs::striker::web
+    include ::profile::wmcs::striker::docker
 
     # TLS termination
     include profile::tlsproxy::envoy

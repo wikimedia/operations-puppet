@@ -48,6 +48,39 @@ striker::uwsgi::config:
 
 # striker::uwsgi::secret_config: exists in private repo
 
+profile::base::overlayfs: true
+
+profile::wmcs::striker::docker::port: 8080
+profile::wmcs::striker::docker::version: 2022-05-09-172811-production
+profile::wmcs::striker::docker::env:
+  LOGGING_HANDLERS: cee
+  DB_ENGINE: striker.db
+  DB_NAME: striker
+  DB_USER: striker
+  DB_HOST: m5-master.eqiad.wmnet
+  DB_PORT: 3306
+  LDAP_SERVER_URI: ldaps://ldap-rw.eqiad.wikimedia.org:636
+  LDAP_BIND_USER:  uid=novaadmin,ou=people,dc=wikimedia,dc=org
+  CACHE_LOCATION: 127.0.0.1:11212 # FIXME: will this work?
+  REQUIRE_HTTPS: true
+  USE_XFF_HEADER: true
+  # CIDR not supported, but substring/prefix match is
+  # Should match IPs presented by the CDN edge servers + 127.0.0.1
+  TRUSTED_PROXY_LIST: "127.0.0.1,10.,208.80.152.,208.80.153.,208.80.154.,208.80.155.,91.198.174.,103.102.166.,198.35.26.,185.15.58."
+  OAUTH_CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
+
+# The following values should be set in the private repo
+## profile::wmcs::striker::docker::secret_env:
+##   DJANGO_SECRET_KEY:
+##   DB_PASSWORD:
+##   LDAP_BIND_PASSWORD:
+##   OAUTH_CONSUMER_SECRET:
+##   PHABRICATOR_TOKEN:
+##   WIKITECH_CONSUMER_TOKEN:
+##   WIKITECH_CONSUMER_SECRET:
+##   WIKITECH_ACCESS_TOKEN:
+##   WIKITECH_ACCESS_SECRET:
+##   OPENSTACK_PASSWORD:
 
 #lvs::realserver::realserver_ips:
 #    - '10.2.2.40' # labweb.svc.eqiad.wmnet

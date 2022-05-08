@@ -28,6 +28,7 @@ profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
 
 profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::apc_shm_size: 128M
+
 # Striker things
 striker::uwsgi::config:
   debug:
@@ -64,7 +65,44 @@ striker::uwsgi::config:
   wikitech:
     SERVER_URL: https://labtestwikitech.wikimedia.org
     USER: Striker
-profile::mediawiki::apc_shm_size: 128M
+
+profile::base::overlayfs: true
+
+profile::wmcs::striker::docker::port: 8080
+profile::wmcs::striker::docker::version: 2022-05-09-172811-production
+profile::wmcs::striker::docker::env:
+  LOGGING_HANDLERS: cee
+  DB_ENGINE: striker.db
+  DB_NAME: striker
+  DB_USER: striker
+  DB_HOST: cloudweb2002-dev.wikimedia.org
+  DB_PORT: 3306
+  LDAP_SERVER_URI: ldap://cloudservices2004-dev.wikimedia.org:389
+  LDAP_BIND_USER:  uid=novaadmin,ou=people,dc=wikimedia,dc=org
+  CACHE_LOCATION: 127.0.0.1:11212 # FIXME: will this work?
+  REQUIRE_HTTPS: true
+  USE_XFF_HEADER: true
+  # CIDR not supported, but substring/prefix match is
+  # Should match IPs presented by the CDN edge servers + 127.0.0.1
+  TRUSTED_PROXY_LIST: "127.0.0.1,10.,208.80.152.,208.80.153.,208.80.154.,208.80.155.,91.198.174.,103.102.166.,198.35.26.,185.15.58."
+  OAUTH_CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
+  SSL_CANONICAL_HOST: labtesttoolsadmin.wikimedia.org
+  WIKITECH_URL: https://labtestwikitech.wikimedia.org
+  WIKITECH_USER: Striker
+  OPENSTACK_URL: https://openstack.codfw1dev.wikimediacloud.org:25000/v3
+
+# The following values should be set in the private repo
+## profile::wmcs::striker::docker::secret_env:
+##   DJANGO_SECRET_KEY:
+##   DB_PASSWORD:
+##   LDAP_BIND_PASSWORD:
+##   OAUTH_CONSUMER_SECRET:
+##   PHABRICATOR_TOKEN:
+##   WIKITECH_CONSUMER_TOKEN:
+##   WIKITECH_CONSUMER_SECRET:
+##   WIKITECH_ACCESS_TOKEN:
+##   WIKITECH_ACCESS_SECRET:
+##   OPENSTACK_PASSWORD:
 
 labsldapconfig:
   hostname: cloudservices2004-dev.wikimedia.org
