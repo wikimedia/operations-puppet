@@ -1,5 +1,4 @@
-<% @section_servers.keys.each do |section| -%>
-<% if !@section_servers[section].empty? %>
+<%- @section_servers.each_pair do |section, servers| -%>
 listen mariadb-<%= section %>
     bind 0.0.0.0:<%= @section_ports[section] %>
     mode tcp
@@ -9,14 +8,13 @@ listen mariadb-<%= section %>
     log /dev/log local0 crit
     option tcpka
     option mysql-check user haproxy
-<% @section_servers[section].each_pair do |name, backend| -%>
-<% unless backend.key?("depooled") -%>
-<% if backend.key?("standby") -%>
-    server <%= name %> <%= backend["ipaddress"] %>:<%= @section_ports[section] %> check backup
-<% else -%>
-    server <%= name %> <%= backend["ipaddress"] %>:<%= @section_ports[section] %> weight <%= backend.key?("weight") ? backend["weight"] : 1 %> check inter 3s fall 20 rise 99999999
-<% end -%>
-<% end -%>
-<% end -%>
-<% end -%>
-<% end -%>
+  <%- servers.each_pair do |name, config| -%>
+    <%- unless config.key?("depooled") -%>
+      <%- if config.key?("standby") -%>
+    server <%= name %> <%= config["ipaddress"] %>:<%= @section_ports[section] %> check backup
+      <%- else -%>
+    server <%= name %> <%= config["ipaddress"] %>:<%= @section_ports[section] %> weight <%= config.key?("weight") ? config["weight"] : 1 %> check inter 3s fall 20 rise 99999999
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
