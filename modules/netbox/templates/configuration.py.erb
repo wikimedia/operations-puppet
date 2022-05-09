@@ -64,6 +64,9 @@ BANNER_LOGIN = 'Use LDAP <b>uid</b> field as Username.'
 # BASE_PATH = 'netbox/'
 BASE_PATH = ''
 
+# Cache timeout in seconds. Defaults to zero (disabled).
+CACHE_TIMEOUT = 0
+
 # Retain changelog events for 2 years (in days).
 CHANGELOG_RETENTION = 730
 
@@ -151,12 +154,19 @@ LOGGING = {
         }
 }
 
+# Automatically reset the lifetime of a valid session upon each authenticated request. Enables users to remain
+# authenticated to NetBox indefinitely.
+LOGIN_PERSISTENCE = False
+
 # Setting this to True will permit only authenticated users to access any part of NetBox. By default, anonymous users
 # are permitted to access most data in NetBox (excluding secrets) but not make any changes.
 LOGIN_REQUIRED = True
 
 # Setting this to True will display a "maintenance mode" banner at the top of every page.
 MAINTENANCE_MODE = False
+
+# The URL to use when mapping physical addresses or GPS coordinates
+MAPS_URL = 'https://maps.google.com/?q='
 
 # An API consumer can request an arbitrary number of objects =by appending the "limit" parameter to the URL (e.g.
 # "?limit=1000"). This setting defines the maximum limit. Setting it to 0 or None will allow an API consumer to request
@@ -223,6 +233,9 @@ PASSTHROUGH = {
 }
 
 RQ_DEFAULT_TIMEOUT = 300
+
+SESSION_COOKIE_NAME = 'sessionid'
+
 WEBHOOKS_ENABLED = True
 REDIS = {
     'webhooks': {
