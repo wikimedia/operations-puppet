@@ -19,6 +19,7 @@ class prometheus::node_cloudvirt_libvirt_stats(
         description    => 'Generate cloudvirt specific libvirt statistics.',
         command        => $script,
         stdout         => "file:${outfile}",
+        stderr         => 'journal',
         exec_start_pre => "/usr/bin/rm -f ${outfile}",
         interval       => {
             'start'    => 'OnCalendar',
