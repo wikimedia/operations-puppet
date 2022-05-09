@@ -44,6 +44,7 @@ class gitlab_runner::config (
         line    => "listen_address = \"[${exporter_listen_address}]:${exporter_listen_port}\"",
         notify  => Systemd::Service['gitlab-runner'],
         require => Package['gitlab-runner'],
+        after   => "concurrent = ${concurrent}", # make sure changes happen in global section
     }
 
     systemd::service{ 'gitlab-runner':
