@@ -33,9 +33,10 @@ class zuul::merger (
     git::userconfig { '.gitconfig for Zuul merger':
         homedir  => '/var/lib/zuul',
         settings => {
-            'core'  => {
-                # No need for reflog which is the default for bare repos
-                'logAllRefUpdates' => 'false',
+            # Let us override git clone default settings set in the repository
+            # $GIT_DIR/config when cloning
+            'init'  => {
+                'templateDir' => '/var/lib/zuul/git-template-dir',
             },
             'fetch' => {
                 # Keep us in sync with Gerrit heads and tags
@@ -49,6 +50,22 @@ class zuul::merger (
                 # them. Although we force fetch (T252310), it is good to keep
                 # the state clean.
                 'pruneTags' => 'true',
+            }
+        }
+    }
+
+    file { '/var/lib/zuul/git-template-dir':
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
+
+    git::config { '/var/lib/zuul/git-template-dir/config':
+        settings => {
+            'core'  => {
+                # No need for reflog which is the default for bare repos
+                'logAllRefUpdates' => 'false',
             }
         }
     }
