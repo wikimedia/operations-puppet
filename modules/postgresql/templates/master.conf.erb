@@ -7,7 +7,7 @@ checkpoint_segments = <%= @checkpoint_segments %>
 <%- if @_pgversion < 13 -%>
 wal_keep_segments = <%= @wal_keep_segments %>
 <%- else -%>
-<%# config option renamed in postgress 13 use the following foruymuler to calculate new size
+<%# config option renamed in postgress 13 use the following formula to calculate new size
     wal_keep_size = wal_keep_segments * wal_segment_size (typically 16MB) %>
 wal_keep_size = <%= @wal_keep_segments.to_i * 16 %>
 <%- end -%>
