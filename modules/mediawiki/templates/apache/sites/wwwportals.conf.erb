@@ -100,6 +100,7 @@ end
 
     # Front page...
     RewriteRule ^/$ /portal/wiktionary.org/index.html [L]
+    RewriteRule ^/portal/.*$ - [L]
 
     # We need to be able to update HTML on short notice
     <Location ~ "^/$">
