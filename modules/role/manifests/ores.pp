@@ -9,6 +9,7 @@ class role::ores {
     include ::profile::base::firewall
     include ::profile::lvs::realserver
 
+    include ::profile::ores::git
     include ::profile::ores::worker
     include ::profile::ores::web
     include ::profile::tlsproxy::envoy # TLS termination

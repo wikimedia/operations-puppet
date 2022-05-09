@@ -14,11 +14,9 @@ class profile::ores::web(
     String $ores_config_group = lookup('profile::ores::web::ores_config_group', {'default_value' => 'deploy-service'}),
     Integer $celery_version = lookup('profile::ores::web::celery_version', {'default_value' => 4 }),
 ){
+    require profile::ores::git
+
     $statsd_parts = split($statsd, ':')
-    # NOTE: The following is an include to avoid duplicate declaration issues
-    # when both profile::ores::worker and profile::ores::web are included in the
-    # same role class. scap::target also ends up using it
-    include ::git::lfs # lint:ignore:wmf_styleguide
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { '::profile::rsyslog::udp_json_logback_compat':
