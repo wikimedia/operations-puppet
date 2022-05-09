@@ -20,7 +20,7 @@ class CacheHAProxyTest(unittest.TestCase):
         count_2xx = s_dict['cache_status=miss,http_status_family=2']['count']
         self.assertEqual(count_2xx, 1)
         count_2xx = s_dict['cache_status=int-front,http_status_family=2']['count']
-        self.assertEqual(count_2xx, 1)
+        self.assertEqual(count_2xx, 2)
         count_4xx = s_dict['cache_status=int-front,http_status_family=4']['count']
         self.assertEqual(count_4xx, 2)
         count_5xx = s_dict['cache_status=none,http_status_family=5']['count']
@@ -35,8 +35,15 @@ class CacheHAProxyTest(unittest.TestCase):
         s_dict = dict(s)
 
         count_2xx = s_dict['cache_status=int-front,http_status_family=2']['count']
-        self.assertEqual(count_2xx, 1)
+        self.assertEqual(count_2xx, 2)
 
         s = self.store.get_samples('haproxy_termination_states_total')
-        self.assertIn(('termination_state=--', 5), s)
+        self.assertIn(('termination_state=--', 6), s)
         self.assertIn(('termination_state=IH', 1), s)
+
+    def testSLI(self):
+        sli_total = self.store.get_samples('haproxy_sli_total')
+        self.assertIn(('', 7), sli_total)
+
+        sli_good = self.store.get_samples('haproxy_sli_good')
+        self.assertIn(('', 5), sli_good)

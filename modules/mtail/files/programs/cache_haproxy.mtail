@@ -2,21 +2,48 @@
 # histogram haproxy_client_ttfb
 # histogram haproxy_client_healthcheck_ttfb
 # counter haproxy_termination_states_total
+# counter haproxy_sli_total
+# counter haproxy_sli_good
 
 histogram haproxy_client_ttfb by cache_status, http_status_family buckets 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
 histogram haproxy_client_healthcheck_ttfb by cache_status, http_status_family buckets 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
 counter haproxy_termination_states_total by termination_state
+counter haproxy_sli_total
+counter haproxy_sli_good
 hidden text cstatus
+hidden gauge process_time
 
-/ \d+ (?P<client_ttfb>\d+) (?P<http_status_family>[1-5])\d\d {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})$/ {
+/ \d+ (?P<client_ttfb>\-?\d+) (?P<queue_time>\-?\d+) (?P<server_connection_time>\-?\d+) (?P<http_status_family>[1-5])\d\d {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})$/ {
+  haproxy_sli_total++
+  process_time = 0
+
   len($cache_status) == 0 {
     cstatus = "none"
   } else {
     cstatus = $cache_status
   }
-  haproxy_client_ttfb[cstatus][$http_status_family] = float($client_ttfb) * 0.001
-  $host =~ /^healthcheck\.wikimedia\.org$/ {
-    haproxy_client_healthcheck_ttfb[cstatus][$http_status_family] = float($client_ttfb) * 0.001
+  $client_ttfb >= 0 {
+      haproxy_client_ttfb[cstatus][$http_status_family] = float($client_ttfb) * 0.001
+      $host =~ /^healthcheck\.wikimedia\.org$/ {
+        haproxy_client_healthcheck_ttfb[cstatus][$http_status_family] = float($client_ttfb) * 0.001
+      }
   }
   haproxy_termination_states_total[$termination_state]++
+  $queue_time > 0 {
+    process_time += $queue_time
+  }
+  $server_connection_time > 0 {
+    process_time += $server_connection_time
+  }
+  # We are excluding the following states:
+  # More details on http://docs.haproxy.org/2.4/configuration.html#8.5
+  # R --> Resource on the proxy has been exhausted
+  # I --> Internal error
+  # D --> Session killed by HAProxy
+  # U --> Session killed by HAProxy (this shouldn't happen here)
+  # K --> Session actively killed by an admin operating on HAProxy (HAProxy config/TLS material reloads would trigger this one)
+  # L --> Session was locally processed by HAProxy and was not passed to a server (this shouldn't happen here)
+  $termination_state =~ /^[\-CSPcs]/ && process_time < 50 {
+    haproxy_sli_good++
+  }
 }
