@@ -59,17 +59,14 @@ profile::restbase::cassandra_password: cassandra
 profile::restbase::monitor_domain: en.wikipedia.org
 profile::restbase::cassandra_tls: {}
 profile::restbase::hosts:
-  - deployment-restbase03.deployment-prep.eqiad.wmflabs
   - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
 profile::restbase::seeds_ng:
-  - deployment-restbase03.deployment-prep.eqiad.wmflabs
   - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
 # Cassandra (profile::cassandra)
 graphite_host: cloudmetrics1003.eqiad.wmnet
 profile::cassandra::allow_analytics: false
 profile::cassandra::rack: rack1
 profile::cassandra::instances:
-  "deployment-restbase03.deployment-prep.eqiad.wmflabs": {}
   "deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud": {}
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
@@ -152,7 +149,6 @@ scap::dsh::groups:
         hosts: []
     restbase-betacluster:
         hosts:
-            - deployment-restbase03.deployment-prep.eqiad.wmflabs
             - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
     librenms:
         hosts:
