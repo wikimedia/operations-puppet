@@ -207,6 +207,13 @@ def get_libvirt_stats() -> Dict[str, Dict[str, int]]:
 @click.command()
 @click.option("-v", "--verbose", is_flag=True)
 def main(verbose: bool) -> None:
+    # This avoids libvirt from internally printing to stdout when an exception
+    # happens
+    def libvirt_callback(userdata, err):
+        pass
+
+    libvirt.registerErrorHandler(f=libvirt_callback, ctx=None)
+
     logging.basicConfig(level=logging.DEBUG if verbose else logging.INFO)
     stats = get_libvirt_stats()
     click.echo("\n".join(str(stat) for stat in stats))
