@@ -9,19 +9,21 @@ class prometheus::blackbox::modules::service_catalog (
 
     $http_options = wmflib::service::probe::http_module_options($service_name, $service_config)
 
+    $module_options = wmflib::service::probe::module_options($service_name, $service_config)
+
     $memo + {
       "http_${service_name}_ip4" => {
         'prober' => 'http',
         'http'   => {
           'preferred_ip_protocol' => 'ip4',
         } + $http_options,
-      },
+      } + $module_options,
       "http_${service_name}_ip6" => {
         'prober' => 'http',
         'http'   => {
           'preferred_ip_protocol' => 'ip6',
         } + $http_options,
-      },
+      } + $module_options,
     }
   }
 

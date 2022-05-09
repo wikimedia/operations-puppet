@@ -14,6 +14,10 @@
 #     Accept these HTTP statuses as valid (default 200-299)
 # @param [Optional[Boolean] expect_sso
 #     Expect a SSO login from the endpoint (default false)
+# @param [Optional[Integer] timeout
+#     How long the probe will wait before giving up (in seconds).
+#     This value is set by Prometheus' job configuration via 'scrape_timeout' and defaults to 10s.
+#     It can be overridden here.
 
 type Wmflib::Service::Probe = Struct[{
     'type'                  => Enum['http', 'tcp', 'tcp-notls'],
@@ -24,4 +28,5 @@ type Wmflib::Service::Probe = Struct[{
     'valid_status_codes'    => Optional[Array[Stdlib::HttpStatus]],
     'expect_sso'            => Optional[Boolean],
     'expect_redirect'       => Optional[Boolean],
+    'timeout'               => Optional[Integer],
 }]
