@@ -1496,6 +1496,7 @@ service::catalog:
           url:
             - http://en.wikipedia.com/_status
       scheduler: wrr
+    page: false
     probes:
       - type: http
         host: en.wikipedia.com
