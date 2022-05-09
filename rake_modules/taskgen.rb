@@ -219,8 +219,7 @@ class TaskGen < ::Rake::TaskLib
   end
 
   def setup_wmf_styleguide_delta
-    changed = @git.changes
-    if puppet_changed_files(changed.values.flatten.uniq).empty?
+    if puppet_changed_files(@git.changes.values.flatten.uniq).empty?
       task :wmf_styleguide do
         puts "wmf-style: no files to check"
       end
@@ -229,7 +228,7 @@ class TaskGen < ::Rake::TaskLib
       desc 'Check wmf styleguide violations in the current commit'
       task :wmf_styleguide do
         setup_wmf_lint_check
-        problems = linter_problems changed[:new]
+        problems = linter_problems @git.changes_in_head
         print_wmf_style_violations(problems)
         abort("wmf-styleguide: NOT OK".red)
       end
@@ -243,10 +242,10 @@ class TaskGen < ::Rake::TaskLib
           next
         end
         # Only enable the wmf_styleguide
-        new_problems = linter_problems changed[:new]
+        new_problems = linter_problems @git.changes_in_head
         old_problems = nil
         @git.exec_in_rewind do
-          old_problems = linter_problems changed[:old]
+          old_problems = linter_problems @git.changed_files_in_last
         end
         delta = new_problems.length - old_problems.length
         puts "wmf-style: total violations delta #{delta}"

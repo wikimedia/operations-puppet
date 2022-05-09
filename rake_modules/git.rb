@@ -5,16 +5,17 @@ class GitOps
   # Helper class to perform the git operations we use in the rakefile
   def initialize(path)
     @git = Git.open(path)
+    @changed = {deleted_files: [], changed_files: [], new_files: [], rename_new: [], rename_old: []}
+    process
   end
 
   def changes
-    # Set of files that have changed between the current revision and the
-    # first parent in the git tree.
-    # Returns a hash with :old and :new holding lists of files
-    # changed between the old revision and the new one.
-    changed = {old: [], new: []}
-    old = changed[:old]
-    new = changed[:new]
+    # Geter for changed hash
+    @changed
+  end
+
+  def process
+    # Process the current diff and populate @changed
     diffs = @git.diff('HEAD^')
     # Support fully ignoring paths
     data = YAML.safe_load(File.open("#{@git.dir.path}/.ignored.yaml"))
@@ -22,29 +23,39 @@ class GitOps
     diffs.each do |diff|
       # Ignore upstream modules
       next unless ignored_modules.select { |m| %r'^modules/#{m}/' =~ diff.path }.empty?
+      next if diff.path.start_with?('vendor_modules/')
       name_status = diffs.name_status[diff.path]
       case name_status
       when 'A'
-        new << diff.path
+        @changed[:new_files] << diff.path
       when 'C', 'M'
-        new << diff.path
-        old << diff.path
+        @changed[:changed_files] << diff.path
       when 'D'
-        old << diff.path
+        @changed[:deleted_files] << diff.path
       when /R\d+/
-        old << diff.path
+        # This is a rename but i think its fine to also consider it a delete
+        @changed[:rename_old] << diff.path
         regex = Regexp.new "^diff --git a/#{Regexp.escape(diff.path)} b/(.+)"
         if diff.patch =~ regex
-          new << Regexp.last_match[1]
+          @changed[:rename_new] << Regexp.last_match[1]
         end
       end
     end
-    changed
+  end
+
+  def new_files_in_head
+    # Files added in the current revision, as an array. Includes renames.
+    @changed[:new_files]
   end
 
   def changes_in_head
     # Files modified in the current revision, as an array. Includes renames.
-    changes[:new]
+    @changed[:changed_files] + @changed[:new_files] + @changed[:rename_new]
+  end
+
+  def changed_files_in_last
+    # Produce a list of changed files that also exists in HEAD~1
+    @changed[:changed_files] + @changed[:deleted_files] + @changed[:rename_old]
   end
 
   def uncommitted_changes?
