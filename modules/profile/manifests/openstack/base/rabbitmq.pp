@@ -77,7 +77,7 @@ class profile::openstack::base::rabbitmq(
 
     ferm::service { 'rabbitmq-internals':
         proto  => 'tcp',
-        port   => '(4369 5671 5672)',
+        port   => '(4369 5671 5672 25672)',
         # TODO: change openstack_controllers to something else when we have dedicated rabbit nodes
         srange => "(@resolve((${openstack_controllers.join(' ')})))",
     }
