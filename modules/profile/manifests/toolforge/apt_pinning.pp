@@ -1,19 +1,8 @@
 # This class holds all the apt pinning for key packages in the Toolforge cluster
 
 class profile::toolforge::apt_pinning {
-    #
-    # linux kernel
-    #
-    # virtual meta-package, they usually have 3 levels of indirection:
-    # linux-meta -> linux-meta-4.9 -> linux-image-4.9-xx
-    $linux_meta_pkg =  'linux-image-amd64'
     case debian::codename() {
         'bullseye': {
-            $linux_meta_pkg_version   = 'version 5.10.46-4'
-            # actual kernel package. Pinning only this is not enough, given that the meta-package
-            # could be upgraded pointing to another version and then you would have a pending reboot
-            $linux_pkg                = 'linux-image-5.10.0-8-amd64'
-            $linux_pkg_version        = 'version 5.10.46-4'
             $libpam_pkg_version       = 'version 1.4.0-9'
             $libpam_ldapd_pkg_version = 'version 0.9.11-1'
             $ldap_utils_pkg_version   = 'version 2.4.57+dfsg-3'
@@ -29,11 +18,6 @@ class profile::toolforge::apt_pinning {
         }
 
         'buster': {
-            $linux_meta_pkg_version   = 'version 4.19+105+deb10u1'
-            # actual kernel package. Pinning only this is not enough, given that the meta-package
-            # could be upgraded pointing to another version and then you would have a pending reboot
-            $linux_pkg                = 'linux-image-4.19.0-5-amd64'
-            $linux_pkg_version        = 'version 4.19.37-5+deb10u2'
             $libpam_pkg_version       = 'version 1.3.1-5'
             $libpam_ldapd_pkg_version = 'version 0.9.10-2'
             $ldap_utils_pkg_version   = 'version 2.4.47+dfsg-3+deb10u1'
@@ -51,15 +35,12 @@ class profile::toolforge::apt_pinning {
             fail("${debian::codename()}: not supported")
         }
     }
+
     apt::pin { 'toolforge-linux-meta-pinning':
-        package  => $linux_meta_pkg,
-        pin      => $linux_meta_pkg_version,
-        priority => 1001,
+        ensure => absent,
     }
     apt::pin { 'toolforge-linux-pinning':
-        package  => $linux_pkg,
-        pin      => $linux_pkg_version,
-        priority => 1001,
+        ensure => absent,
     }
 
     apt::pin { 'toolforge-libpam-pinning':
