@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Apereo_cas::Delegate::Cas = Struct[{
     provider      => Enum['cas'],
     login_url     => Stdlib::HTTPSUrl,

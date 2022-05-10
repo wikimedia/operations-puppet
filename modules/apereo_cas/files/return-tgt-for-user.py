@@ -1,4 +1,5 @@
 #!/bin/python3
+# SPDX-License-Identifier: Apache-2.0
 
 # Return the latest TGT for a user based in audit.log data
 # The audit log only contains slightly anonymised TGT lists, but we can

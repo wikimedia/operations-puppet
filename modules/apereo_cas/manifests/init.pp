@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary Class to configure Apero CAS
 # @param idp_nodes list of idp nodes
 # @param tgc_signing_key the tgc signing key

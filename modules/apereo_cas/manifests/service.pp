@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 define apereo_cas::service (
   Integer                              $id,
   String                               $service_id,

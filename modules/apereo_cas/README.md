@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Apereo Cas module
 
 Acceptance testing can be performed with the following command
