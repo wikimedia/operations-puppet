@@ -192,8 +192,6 @@ class profile::prometheus::alerts (
         }
     }
 
-    monitoring::alerts::http_availability{'global_availability':}
-
     monitoring::alerts::traffic_drop{'traffic_drop_eqiad': site => 'eqiad'}
     monitoring::alerts::traffic_drop{'traffic_drop_codfw': site => 'codfw'}
     monitoring::alerts::traffic_drop{'traffic_drop_esams': site => 'esams'}
