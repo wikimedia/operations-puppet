@@ -55,12 +55,25 @@ class profile::openldap (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
     }
 
+    file { '/usr/local/sbin/restart_openldap':
+        source => 'puppet:///modules/ldap/restart_openldap',
+        mode   => '0554',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    $minutes = fqdn_rand(60, $title)
+    systemd::timer::job { 'restart_slapd':
+        ensure      => 'present',
+        user        => 'root',
+        description => 'Restart slapd when using more than 50% of memory',
+        command     => '/usr/local/sbin/restart_openldap',
+        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* *:0/${minutes}:00"},
+    }
+
     # restart slapd if it uses more than 50% of memory (T130593)
     cron { 'restart_slapd':
-        ensure  => present,
-        minute  => fqdn_rand(60, $title),
-        command => "/bin/ps -C slapd -o pmem= | awk '{sum+=\$1} END { if (sum <= 50.0) exit 1 }' \
-        && /bin/systemctl restart slapd >/dev/null 2>/dev/null",
+        ensure => 'absent',
     }
 
     if $backup {
