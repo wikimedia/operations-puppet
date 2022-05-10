@@ -1,6 +1,9 @@
 class osm::imposm3 (
     String $proxy_host,
     Stdlib::Port $proxy_port,
+    String $swift_key_id,
+    String $swift_password,
+    String $tegola_swift_container,
     Wmflib::Ensure $ensure            = present,
     String $upstream_url_path         = 'planet.openstreetmap.org',
     String $osm_log_dir               = '/srv/osm/log',
@@ -89,6 +92,12 @@ class osm::imposm3 (
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 13:00:00',
+        },
+        environment => {
+            'ST_AUTH'         => 'https://thanos-swift.discovery.wmnet/auth/v1.0',
+            'ST_USER'         => $swift_key_id,
+            'ST_KEY'          => $swift_password,
+            'CACHE_CONTAINER' => $tegola_swift_container
         },
         user        => 'osmupdater',
         command     => "/usr/local/bin/send-tile-expiration-events ${imposm_dir} ${expire_dir} ${min_expire_level} ${expire_levels} ${eventgate_endpoint}"

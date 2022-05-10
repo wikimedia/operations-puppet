@@ -26,8 +26,10 @@ done
 
 if [ "${#expired_tile_dirs[@]}" -ne 0 ]; then
   # Deduplicate and send tile state change events (100 tiles per event)
-  find "${expired_tile_dirs[@]}" -type f -exec cat {} + |
-    maps-deduped-tilelist "$minzoom" "$maxzoom" |
+   { find "${expired_tile_dirs[@]}" -type f -exec cat {} + |
+      maps-deduped-tilelist "$minzoom" "$maxzoom" ;
+      swift -A "$ST_AUTH" -U "$ST_USER" -K "$ST_KEY" list "$CACHE_CONTAINER" | grep -o -E "[0-9]+\/[0-9]+\/[0-9]+" ; } |
+    sort | uniq -d |
     xargs --max-lines=100 |
     xargs -I {} jq -c --arg hostname "$(hostname -f)" --arg tiles "{}" \
       '.meta.domain |= $hostname | .changes |= ($tiles | split(" ") | map({"tile": . , "state": "expired"}))' \

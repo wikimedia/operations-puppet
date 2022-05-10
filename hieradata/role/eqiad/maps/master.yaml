@@ -50,6 +50,7 @@ profile::maps::osm_master::replicas:
     ip_address: '10.64.48.6'
 
 profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.eqiad.wmnet:4492/v1/events"
+profile::maps::osm_master::tegola_swift_container: "tegola-swift-new"
 
 cassandra::target_version: '3.x'
 

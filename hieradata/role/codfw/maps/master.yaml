@@ -51,5 +51,6 @@ profile::maps::osm_master::replicas:
     ip_address: 10.192.48.166
 
 profile::maps::osm_master::eventgate_endpoint: "https://eventgate-main.svc.codfw.wmnet:4492/v1/events"
+profile::maps::osm_master::tegola_swift_container: "tegola-swift-new"
 
 cassandra::target_version: '3.x'

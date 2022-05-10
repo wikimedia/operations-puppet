@@ -64,6 +64,9 @@ define osm::planet_sync (
     Enum['osm2pgsql', 'imposm3'] $engine,
     Boolean $use_proxy,
     String $proxy_host,
+    String $swift_key_id,
+    String $swift_password,
+    String $tegola_swift_container,
     Stdlib::Port $proxy_port,
     Wmflib::Ensure $ensure                  = present,
     String $expire_dir                      = '/srv/osm_expire',
@@ -119,6 +122,9 @@ define osm::planet_sync (
                 expire_levels            => $expire_levels,
                 disable_replication_cron => $disable_replication_cron,
                 eventgate_endpoint       => $eventgate_endpoint,
+                swift_key_id             => $swift_key_id,
+                swift_password           => $swift_password,
+                tegola_swift_container   => $tegola_swift_container
             }
         }
         'osm2pgsql': {

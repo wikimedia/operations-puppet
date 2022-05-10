@@ -30,14 +30,17 @@ class profile::wmcs::services::postgres::osm_primary (
     # Create the spatialdb
     postgresql::spatialdb { 'gis': }
     osm::planet_sync { 'gis':
-        engine      => 'osm2pgsql',
-        use_proxy   => false,
-        proxy_host  => "webproxy.${::site}.wmnet",
-        proxy_port  => 8080,
-        period      => 'day',
-        num_threads => 4,
-        hours       => [1],
-        minute      => '17',
+        engine                 => 'osm2pgsql',
+        use_proxy              => false,
+        proxy_host             => "webproxy.${::site}.wmnet",
+        proxy_port             => 8080,
+        period                 => 'day',
+        num_threads            => 4,
+        hours                  => [1],
+        minute                 => '17',
+        swift_key_id           => '',
+        swift_password         => '',
+        tegola_swift_container => ''
     }
     # Add coastlines
     osm::shapefile_import { 'gis-coastlines':
