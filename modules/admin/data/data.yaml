@@ -6053,3 +6053,7 @@ ldap_only_users:
     email: agutman-ctr@wikimedia.org
     expiry_date: 2022-12-31
     expiry_contact: abaso@wikimedia.org
+  esther-akinloose:
+    ensure: present
+    realname: Esther Akinloose
+    email: eakinloose@wikimedia.org  # In LDAP with a gmail address
