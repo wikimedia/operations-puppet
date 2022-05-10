@@ -16,6 +16,19 @@ define host {
 }
 
 define host {
+    host_name                civi1002
+    address                  10.64.40.115
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-civicrm
+}
+
+define host {
     host_name                civi2001
     address                  10.195.0.37
     check_command            check_ping!500,20%!2000,100%
@@ -44,6 +57,19 @@ define host {
 define host {
     host_name                frauth1001
     address                  10.64.40.68
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-auth
+}
+
+define host {
+    host_name                frauth1002
+    address                  10.64.40.69
     check_command            check_ping!500,20%!2000,100%
     max_check_attempts       2
     notification_options     d,u,r,f
@@ -263,6 +289,19 @@ define host {
 }
 
 define host {
+    host_name                frdev1002
+    address                  10.64.40.116
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-misc
+}
+
+define host {
     host_name                frlog1001
     address                  10.64.40.72
     check_command            check_ping!500,20%!2000,100%
@@ -382,6 +421,19 @@ define host {
 define host {
     host_name                frpm1001
     address                  10.64.40.70
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech-ops
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-build
+}
+
+define host {
+    host_name                frpm1002
+    address                  10.64.40.71
     check_command            check_ping!500,20%!2000,100%
     max_check_attempts       2
     notification_options     d,u,r,f
