@@ -20,8 +20,4 @@ define swift::stats::stats_container (
             File['/usr/local/bin/swift-container-stats']
         ],
     }
-
-    cron { "swift-container-stats_${title}":
-        ensure => absent,
-    }
 }
