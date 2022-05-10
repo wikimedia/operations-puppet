@@ -22,7 +22,7 @@ groups:
               crusnov, liw, jkatz, gsingers, toberto, holger, fdans, gilles, kaywong,
               mholloway-shell, tonina, eugene-chernov, strofimovsky01, il, wkandek, jmixter, christinedk,
               bumeh-ctr, seve-kim, rhuang-ctr, mdipietro, amuigai, zpapierski, ema, ppchelko, accraze,
-              clarakosi, jdl, keepit-ssh, nikkin]
+              clarakosi, jdl, keepit-ssh, nikkin, statwithlatte]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -358,7 +358,7 @@ groups:
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, mewoph, saisuman, gehel, swak,
               ifried, cmacholan, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
-              statwithlatte, effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
+              effeietsanders, echetty, ejoseph, natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, ntsako, nray, mfossati, skvjold, madasan,
               aniketars, tandic, dannyh, auglnkv, rzl, mhay, skyenet, tmlt-tmager, damiendf, aminalhazwani,
@@ -4842,16 +4842,12 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIDFAMA39ztgFi5ECZb5JUN8BEUNR6UdckIzZBP8gQq9 lbowmaker@wikimedia.org
   statwithlatte:
-    ensure: present
-    email: naray-ctr@wikimedia.org
+    ensure: absent
     realname: Namrata Ray
     gid: 500
     uid: 34473
-    expiry_date: 2022-05-09
-    expiry_contact: janstee@wikimedia.org
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHikH6sYbvJhMy3+y80QcS6lt9ZkJz9GvTFy3+G8aXBw naray-ctr@wikimedia.org
+    krb: absent
+    ssh_keys: []
   echetty:
     ensure: present
     email: echetty@wikimedia.org
@@ -5966,12 +5962,6 @@ ldap_only_users:
     ensure: present
     realname: Cai Blanton
     email: cblanton@wikimedia.org
-  statwithlatte:
-    ensure: present
-    realname: NaRay
-    email: naray-ctr@wikimedia.org
-    expiry_date: 2022-05-09
-    expiry_contact: janstee@wikimedia.org
   erayfield:
     ensure: present
     realname: Ellen Rayfield
