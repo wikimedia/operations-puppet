@@ -1,2 +1,0 @@
-profile::ores::web::celery_version: 5
-profile::ores::worker::celery_version: 5

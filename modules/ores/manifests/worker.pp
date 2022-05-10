@@ -1,6 +1,6 @@
 class ores::worker(
     $log_level = 'ERROR',
-    $celery_version = 4,
+    $celery_version = 5,
 ) {
     require ::ores::base
 

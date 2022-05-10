@@ -12,7 +12,7 @@ class profile::ores::web(
     String $statsd = lookup('statsd'),
     String $ores_config_user = lookup('profile::ores::web::ores_config_user', {'default_value' => 'deploy-service'}),
     String $ores_config_group = lookup('profile::ores::web::ores_config_group', {'default_value' => 'deploy-service'}),
-    Integer $celery_version = lookup('profile::ores::web::celery_version', {'default_value' => 4 }),
+    Integer $celery_version = lookup('profile::ores::web::celery_version', {'default_value' => 5 }),
 ){
     require profile::ores::git
 

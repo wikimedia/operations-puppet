@@ -1,5 +1,5 @@
 class profile::ores::worker (
-    Integer $celery_version = lookup('profile::ores::worker::celery_version', {'default_value' => 4 }),
+    Integer $celery_version = lookup('profile::ores::worker::celery_version', {'default_value' => 5 }),
 ) {
     require profile::ores::git
 

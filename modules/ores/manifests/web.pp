@@ -18,7 +18,7 @@ class ores::web(
     $poolcounter_nodes = [],
     $logstash_host = undef,
     $logstash_port = undef,
-    $celery_version = 4,
+    $celery_version = 5,
 ) {
     require ::ores::base
 
