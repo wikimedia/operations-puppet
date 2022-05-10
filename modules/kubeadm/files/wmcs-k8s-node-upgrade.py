@@ -14,8 +14,10 @@
 import sys
 import argparse
 import subprocess
+import time
 import logging
 import yaml
+from datetime import datetime, timedelta
 
 DEFAULT_SRC_VERSION = "1.16.10"
 DEFAULT_DST_VERSION = "1.17.13"
@@ -131,6 +133,12 @@ def parse_args():
         "--dry-run",
         action="store_true",
         help="Dry run: only show what this script would do, but don't do it for real",
+    )
+    parser.add_argument(
+        "-r",
+        "--reboot",
+        action="store_true",
+        help="Reboot the node to have kernel upgrades and similar applied",
     )
     parser.add_argument(
         "--debug",
@@ -335,6 +343,40 @@ def stage_drain():
     ssh(ctx.control_fqdn, cmd)
 
 
+def stage_reboot():
+    if ctx.skip is True:
+        return
+
+    logging.info("stage: rebooting node {}".format(ctx.current_node))
+
+    reboot_time = datetime.utcnow()
+
+    ssh(ctx.current_node_fqdn, "sudo systemctl stop kubelet.service docker.service")
+
+    # reboot-host is a WMF specific wrapper: https://wikitech.wikimedia.org/wiki/Cumin#Reboot
+    ssh(ctx.current_node_fqdn, "sudo reboot-host")
+    if ctx.skip is True or ctx.args.dry_run is True:
+        return
+
+    for _ in range(30):
+        time.sleep(10)
+        output = ssh(ctx.current_node_fqdn, "cat /proc/uptime", capture_output=True)
+
+        # ssh failed: node unreachable
+        if ctx.skip is True:
+            ctx.skip = False
+            continue
+
+        # been up too long: did not reboot yet
+        up_seconds = float(output.split(" ")[0])
+        if timedelta(seconds=up_seconds) > (datetime.utcnow() - reboot_time):
+            continue
+
+        return
+
+    logging.warning("node {} did not reboot in 5 minutes, aborting".format(ctx.current_node))
+
+
 def stage_upgrade():
     # actually do the upgrade!
     if ctx.skip is True:
@@ -437,6 +479,8 @@ def main():
         stage_refresh()
         stage_prechecks()
         stage_drain()
+        if args.reboot:
+            stage_reboot()
         stage_upgrade()
         stage_postchecks()
         stage_uncordon()
