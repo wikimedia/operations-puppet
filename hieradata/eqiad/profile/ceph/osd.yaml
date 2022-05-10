@@ -5,6 +5,15 @@
 #  but rather the ceph 'public' address which is used by clients
 #  (in the near-term, hypervisors) to access storage.  Do not be
 #  alarmed that the public addresses are on private IPs.
+#
+# Cloud switches in Eqiad participate in this network also, and will
+# use the following 3 addresses which should not be assigned to end 
+# hosts:
+#
+# 192.168.4.252
+# 192.168.4.253
+# 192.168.4.254
+#
 profile::ceph::osd::hosts:
   'cloudcephosd1001.eqiad.wmnet':
     public:

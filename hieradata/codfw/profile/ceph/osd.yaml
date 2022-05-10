@@ -6,6 +6,14 @@
 #  (in the near-term, hypervisors) to access storage.  Do not be
 #  alarmed that the public addresses are on private IPs.
 #
+# Please be aware the last 3 IPs on the first /24 in the storage
+# subnet are reserved for network equipment (top-of-rack switches)
+# so please do not assign to end hosts:
+#
+# 192.168.4.252
+# 192.168.4.253
+# 192.168.4.254
+#
 profile::ceph::osd::hosts:
   'cloudcephosd2001-dev.codfw.wmnet':
     public:
