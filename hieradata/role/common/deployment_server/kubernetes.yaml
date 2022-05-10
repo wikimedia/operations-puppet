@@ -114,6 +114,10 @@ profile::keyholder::server::agents:
       # TODO: (otto, gmodena)
       # - platform-eng-deployers
 
+  scap:
+    trusted_groups:
+      - deployment
+
 
 # scap::source declarations.  These are created
 # by the profile::mediawiki::deployment::server class.
