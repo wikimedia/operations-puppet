@@ -8,13 +8,20 @@ define swift::stats::stats_container (
 ) {
     $account_file = "/etc/swift/account_${account_name}.env"
 
+    systemd::timer::job { "swift-container-stats_${title}":
+        ensure          => $ensure,
+        description     => 'Regular jobs to report container statistics',
+        user            => 'root',
+        command         => "/usr/local/bin/swift-container-stats-timer.sh ${account_file} ${statsd_prefix} ${statsd_host} ${statsd_port} ${container_set}",
+        logging_enabled => false,
+        interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/10:00'},
+        require         => [
+            File[$account_file],
+            File['/usr/local/bin/swift-container-stats']
+        ],
+    }
+
     cron { "swift-container-stats_${title}":
-        ensure  => $ensure,
-        command => ". ${account_file} && /usr/local/bin/swift-container-stats --prefix ${statsd_prefix} --statsd-host ${statsd_host} --statsd-port ${statsd_port} --ignore-unknown --container-set ${container_set} 1>/dev/null",
-        user    => 'root',
-        hour    => '*',
-        minute  => '*/10',
-        require => [File[$account_file],
-                    File['/usr/local/bin/swift-container-stats']],
+        ensure => absent,
     }
 }

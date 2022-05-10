@@ -41,6 +41,14 @@ class swift::stats::accounts(
         require => $required_packages,
     }
 
+    file { '/usr/local/bin/swift-container-stats-timer.sh':
+        ensure => $ensure,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/swift/swift-container-stats-timer.sh'
+    }
+
     $account_names = sort(keys($accounts))
     swift::stats::stats_account { $account_names:
         ensure        => $ensure,
