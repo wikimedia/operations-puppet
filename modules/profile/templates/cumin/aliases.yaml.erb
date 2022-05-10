@@ -191,11 +191,20 @@ kafka-mirror-maker-main-eqiad: A:kafka-main-eqiad and A:kafka-mirror-maker
 kafka-mirror-maker-test-eqiad: A:kafka-test-eqiad and A:kafka-mirror-maker
 kerberos: P{O:kerberos::kdc}
 kerberos-kadmin: P{<%= @kerberos_kadmin_host %>}
-kubernetes-etcd: P{O:etcd::v3::kubernetes}
-kubernetes-masters: P{O:kubernetes::master}
-kubernetes-staging: P{O:etcd::v3::kubernetes::staging or O:kubernetes::staging::master or O:kubernetes::staging::worker}
-kubernetes-workers: P{O:kubernetes::worker}
-kubernetes-all: A:kubernetes-etcd or A:kubernetes-masters or A:kubernetes-staging or A:kubernetes-workers
+wikikube-etcd: P{O:etcd::v3::kubernetes}
+wikikube-master: P{O:kubernetes::master}
+wikikube-worker: P{O:kubernetes::worker}
+wikikube-staging-etcd: P{O:etcd::v3::kubernetes::staging}
+wikikube-staging-master: P{O:kubernetes::staging::master}
+wikikube-staging-worker: P{O:kubernetes::staging::worker}
+<% ['eqiad', 'codfw'].each do |dc| -%>
+wikikube-etcd-<%= dc %>: A:wikikube-etcd and A:<%= dc %>
+wikikube-master-<%= dc %>: A:wikikube-master and A:<%= dc %>
+wikikube-worker-<%= dc %>: A:wikikube-worker and A:<%= dc %>
+wikikube-staging-etcd-<%= dc %>: A:wikikube-staging-etcd and A:<%= dc %>
+wikikube-staging-master-<%= dc %>: A:wikikube-staging-master and A:<%= dc %>
+wikikube-staging-worker-<%= dc %>: A:wikikube-staging-worker and A:<%= dc %>
+<% end -%>
 cloudmetrics: P{O:wmcs::monitoring}
 wmcs-nfs: P{O:wmcs::nfs::primary or O:dumps::distribution::server or O:wmcs::nfs::primary_backup::tools or O:wmcs::nfs::primary_backup::misc}
 labweb: P{O:wmcs::openstack::eqiad1::labweb}
