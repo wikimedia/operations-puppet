@@ -12,5 +12,29 @@
     image = '<%= @docker_image %>'
     # Disable to run container in privileged mode, for security reasons.
     privileged = false
-#    TODO T291978
-#    allowed_images = ["ruby:*", "python:*", "php:*"]
+
+    # Allowed images - T291978
+    allowed_images = [
+      # Everything in Wikimedia registry:
+      "docker-registry.wikimedia.org/*",
+
+      # Distributions:
+      "centos/*:*",
+      "debian:*",
+      "fedora:*",
+      "opensuse/*:*",
+      "ubuntu:*",
+
+      # Language-specific:
+      "python:*",
+      "ruby:*",
+      "rust:*",
+      "rustlang/rust:nightly",
+
+      # GitLab upstream - includes security analyzers and terraform images:
+      "registry.gitlab.com/gitlab-org/*",
+    ]
+
+    allowed_services = [
+      "docker-registry.wikimedia.org/*",
+    ]
