@@ -207,7 +207,7 @@ prometheus_nodes:
 
 # GitLab
 profile::gitlab::active_host: 'gitlab1001.wikimedia.org'
-profile::gitlab::passive_host: 'gitlab.devtools.wmcloud.org'
+profile::gitlab::passive_hosts: ['gitlab.devtools.wmcloud.org']
 
 profile::base::ssh_server_settings:
     listen_addresses:

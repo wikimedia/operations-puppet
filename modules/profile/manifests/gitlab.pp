@@ -1,7 +1,7 @@
 # TODO: add profile and parameter description.
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
-    Stdlib::Fqdn $passive_host = lookup('profile::gitlab::passive_host'),
+    Array[Stdlib::Fqdn] $passive_hosts = lookup('profile::gitlab::passive_hosts'),
     Boolean $enable_backup_sync = lookup('profile::gitlab::enable_backup_sync'),
     Stdlib::IP::Address::V4 $service_ip_v4 = lookup('profile::gitlab::service_ip_v4'),
     Stdlib::IP::Address::V6 $service_ip_v6 = lookup('profile::gitlab::service_ip_v6'),
@@ -155,7 +155,7 @@ class profile::gitlab(
 
     class { 'gitlab::rsync':
         active_host       => $active_host,
-        passive_host      => $passive_host,
+        passive_hosts     => $passive_hosts,
         ensure            => $enable_backup_sync.bool2str('present','absent'),
         rsync_interval    => $rsync_interval,
         backup_dir_data   => $backup_dir_data,
