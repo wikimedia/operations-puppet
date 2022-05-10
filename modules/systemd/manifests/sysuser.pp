@@ -14,7 +14,8 @@
 #  https://www.freedesktop.org/software/systemd/man/sysusers.d.html
 # @param allow_login allow the user to perform loggins
 # @param description description
-# @param home_dir home directory
+# @param home_dir home directory, must be pre-existing and does not
+#        get added by the define
 # @param shell shell
 define systemd::sysuser (
     Wmflib::Ensure             $ensure            = present,
