@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/usr/bin/rsync -rt <%= @delete_option %><%= @exclude_option %> --chmod=go-w <%= @source %>/ <%= @destination %>

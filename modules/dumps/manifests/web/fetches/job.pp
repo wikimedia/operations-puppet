@@ -13,10 +13,10 @@ define dumps::web::fetches::job(
     $exclude     = undef,
     $user        = undef,
     $mailto      = 'ops-dumps@wikimedia.org',
-    $hour        = undef,
-    $minute      = undef,
-    $month       = undef,
-    $monthday    = undef,
+    $hour        = '*',
+    $minute      = '*',
+    $month       = '*',
+    $monthday    = '*',
     $weekday     = undef,
     $ensure      = 'present',
 ) {
@@ -36,18 +36,35 @@ define dumps::web::fetches::job(
         default => " --exclude ${exclude}"
     }
 
-    cron { "dumps-fetch-${title}":
+    # The rsync options, and paths can be so complex to just parse to the systemd service, so
+    # we'll need to wrap the command in a script, which the service can then run.
+    file { "/usr/local/bin/dump-fetch-${title}.sh":
+        ensure  => $ensure,
+        owner   => $user,
+        group   => 'root',
+        mode    => '0554',
+        content => template('dumps/rsync/run_rsync.erb'),
+    }
+
+    # Construct interval variable. The systemd calendar "parser" will complain about
+    # * for weekdays.
+    if ($weekday) {
+        $interval = "${weekday} *-${month}-${monthday} ${hour}:${minute}:00"
+    } else {
+        $interval = "*-${month}-${monthday} ${hour}:${minute}:00"
+    }
+
+    systemd::timer::job { "dumps-fetch-${title}":
         ensure      => $ensure,
-        # Run command via bash instead of sh so that $source can be fancier
-        # wildcards or globs (e.g. /path/to/{dir1,dir1}/ok/data/ )
-        command     => "bash -c '/usr/bin/rsync -rt ${delete_option}${exclude_option} --chmod=go-w ${source}/ ${destination}/'",
-        environment => "MAILTO=${mailto}",
+        description => "${title} rsync job",
+        command     => "/usr/local/bin/dump-fetch-${title}.sh",
         user        => $user,
-        require     => File[$destination],
-        minute      => $minute,
-        hour        => $hour,
-        month       => $month,
-        monthday    => $monthday,
-        weekday     => $weekday,
+        environment => {'MAILTO' => $mailto},
+        interval    => {'start' => 'OnCalendar', 'interval' => $interval},
+    }
+
+    cron { "dumps-fetch-${title}":
+        ensure => 'absent',
+        user   => $user,
     }
 }
