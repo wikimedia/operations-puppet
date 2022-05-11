@@ -63,15 +63,18 @@ class tilerator::regen (
         no_create    => true,
     }
 
-    # Notify tilerator to regenerate zoom levels 0-9 monthly
     $regen_options = "${osm_dir} ${zoom} ${from_zoom} ${before_zoom} ${generator_id} ${storage_id} ${delete_empty}"
-    cron { "regen-zoom-level-${title}":
-        ensure   => present,
-        command  => "/usr/local/bin/notify-tilerator-regen ${regen_options} >> ${tilerator_log_dir}/regen-zoom-level.log 2>&1",
-        user     => 'tileratorui',
-        hour     => '12',
-        minute   => '0',
-        monthday => '3',
+    systemd::timer::job { "regen-zoom-level-${title}":
+        ensure      => 'present',
+        description => 'Notify Tilerator to regenerate zoom levels 0 - 9',
+        command     => "/usr/local/bin/notify-tilerator-regen ${regen_options} >> ${tilerator_log_dir}/regen-zoom-level.log",
+        user        => 'tileratorui',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-3 12:00:00'},
     }
 
+    # Notify tilerator to regenerate zoom levels 0-9 monthly
+    cron { "regen-zoom-level-${title}":
+        ensure => 'absent',
+        user   => 'tileratorui',
+    }
 }
