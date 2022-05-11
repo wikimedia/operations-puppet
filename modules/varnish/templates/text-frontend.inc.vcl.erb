@@ -349,11 +349,6 @@ sub cluster_fe_recv {
 		return (synth(421, "Misdirected Request"));
 	}
 
-	// Experiment on dealing with a buggy UA that's spamming requests in T141786
-	if (req.http.User-Agent ~ "Windows NT .*Chrome/41\.0\.2272\.76" && req.url == "/" && req.http.X-Connection-Properties ~ "SSL=TLSv1.1; C=ECDHE-ECDSA-AES128-SHA;") {
-		return (synth(401, "Buggy request, please report at https://phabricator.wikimedia.org/T141786"));
-	}
-
 	if (req.http.Host ~ "^(www\.)?wikimediafoundation\.org$") {
 		set req.http.Location = "https://foundation.wikimedia.org" + req.url;
 		return (synth(302, "Foundation Wiki Moved"));
@@ -597,12 +592,6 @@ sub cluster_fe_err_synth {
 
 	if (resp.reason ~ "^Too Many Requests") {
 		set resp.http.Retry-After = 1;
-	}
-
-	// Chrome/41-on-Windows: T141786
-	if (resp.reason == "Buggy request, please report at https://phabricator.wikimedia.org/T141786") {
-		set resp.http.WWW-Authenticate = {"Basic realm="Buggy request, please report at https://phabricator.wikimedia.org/T141786""};
-		return (deliver);
 	}
 }
 # vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:
