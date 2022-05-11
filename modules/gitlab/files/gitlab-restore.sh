@@ -9,7 +9,7 @@ CONFIG_BACKUP=/etc/gitlab/config_backup/latest/latest.tar
 
 # check if installed GitLab version matches backup version
 installed_version=$(dpkg -l gitlab-ce | grep -Po "\\d*\.\\d*\.\\d*")
-backup_version=$(tar -axf $OLD_BACKUP_FILE backup_information.yml -O | grep gitlab_version  | grep -Po "\\d*\.\\d\.\\d")
+backup_version=$(tar -axf $OLD_BACKUP_FILE backup_information.yml -O | grep gitlab_version  | grep -Po "\\d*\.\\d*\.\\d*")
 
 if [ $installed_version != $backup_version ]; then
     /usr/bin/echo "Installed GitLab version $installed_version doesn't match backup GitLab version $backup_version" >> $LOGFILE
