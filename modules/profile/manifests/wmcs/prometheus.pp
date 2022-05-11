@@ -99,6 +99,8 @@ class profile::wmcs::prometheus(
             'file_sd_configs' => [
                 { 'files' => [ "${targets_path}/openstack_*.yaml" ] }
             ],
+            'scrape_interval' => '15m',
+            'scrape_timeout'  => '120s',
         },
     ]
 
