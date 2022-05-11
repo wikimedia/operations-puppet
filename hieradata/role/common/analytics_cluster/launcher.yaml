@@ -60,7 +60,7 @@ profile::airflow::instances:
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics
     service_group: analytics
-    monitoring_enabled: false
+    monitoring_enabled: true
     connections:
       analytics-hive:
         conn_type: hive_metastore
