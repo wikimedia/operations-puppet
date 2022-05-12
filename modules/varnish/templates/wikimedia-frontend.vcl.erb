@@ -378,6 +378,11 @@ sub recv_fe_ip_processing {
 	// it. We don't set or use this header internally (we use X-Client-IP)
 	unset req.http.X-Real-IP;
 
+	// unset two request headers that are usually set by requestctl:
+	// X-Requestctl and Retry-After.
+	unset req.http.X-Requestctl;
+	unset req.http.Retry-After;
+
 	if (client.ip !~ wikimedia_trust && remote.ip !~ local_tls_terminator) {
 		// Ensure we only accept XFP from our own networks.  Ideally
 		// it should only be set by our nginx TLS terminator

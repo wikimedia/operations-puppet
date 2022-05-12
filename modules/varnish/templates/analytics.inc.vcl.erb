@@ -202,6 +202,7 @@ sub analytics_client_hints_deliver_ {
     }
 }
 
+
 /*****************************************************************************
  * Combined analytics recv and deliver hooks, to be included directly in
  * vcl_recv and vcl_deliver in common wikimedia.vcl - these are the only
@@ -295,6 +296,11 @@ sub analytics_deliver {
     if (req.http.X-Public-Cloud) {
         // do we still need this considering req.http.X-Public-Cloud?
         set resp.http.X-Analytics = resp.http.X-Analytics + ";public_cloud=1";
+    }
+
+    // Add to X-Analytics the matching requestctl patterns, comma separated. T305582
+    if (req.http.X-Requestctl) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";requestctl=" + req.http.X-Requestctl;
     }
 
     // Clean up header from setting to empty at the start...
