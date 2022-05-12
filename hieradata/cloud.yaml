@@ -21,7 +21,6 @@ profile::admin::groups: []
 profile::admin::groups_no_ssh: []
 profile::admin::managehomehome: false
 
-profile::base::ssh_server_settings: {}
 profile::base::overlayfs: false
 profile::base::manage_ssh_keys: true
 profile::base::remote_syslog_send_logs: standard
@@ -594,3 +593,19 @@ profile::puppetmaster::backend::allow_from:
 profile::puppetmaster::backend::extra_auth_rules: ~
 profile::netbox::host::status: 'unknown'
 profile::netbox::host::location: ~
+profile::ssh::server::listen_port: 22
+profile::ssh::server::listen_addresses: []
+profile::ssh::server::permit_root: true
+profile::ssh::server::authorized_keys_file:
+  - '/etc/ssh/userkeys/%u'
+  - '/etc/ssh/userkeys/%u.d/cumin'
+profile::ssh::server::authorized_keys_command: /usr/sbin/ssh-key-ldap-lookup
+profile::ssh::server::disable_nist_kex: true
+profile::ssh::server::explicit_macs: true
+profile::ssh::server::enable_hba: false
+profile::ssh::server::enable_kerberos: false
+profile::ssh::server::disable_agent_forwarding: true
+profile::ssh::server::challenge_response_auth: true
+profile::ssh::server::max_sessions: ~
+profile::ssh::server::max_startups: ~
+profile::ssh::server::gateway_ports: false

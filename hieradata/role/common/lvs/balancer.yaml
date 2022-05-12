@@ -1,7 +1,7 @@
 cluster: lvs
 # don't bind sshd on INADDR_ANY, cf. T100519, T114979
-profile::base::ssh_server_settings:
-  listen_addresses: ["%{::ipaddress}"]
+profile::ssh::server::listen_addresses:
+  - "%{facts.ipaddress}"
 # don't bind prometheus-node-exporter on INADDR_ANY, cf. T176182
 prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
 prometheus::node_exporter::collectors_extra:

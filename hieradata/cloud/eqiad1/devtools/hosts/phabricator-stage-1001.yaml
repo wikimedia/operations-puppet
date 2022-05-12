@@ -6,8 +6,7 @@ phabricator_servers:
 
 # this provides the listen_address for sshd_config, used for admin logins
 # all other IPs are used by phabricator::vcs (aka git-ssh.wikimedia.org)
-profile::base::ssh_server_settings:
-  listen_addresses: ["172.16.0.185"]
+profile::ssh::server::listen_addresses: ["172.16.0.185"]
 
 phabricator::vcs::address::v4: "172.16.0.189"
 phabricator::vcs::address::v6: "fe80::f816:3eff:fe41:b78e"

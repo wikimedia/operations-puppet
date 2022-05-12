@@ -3,7 +3,7 @@
 # @example
 #   file { '/etc/foo/config.yaml':
 #     ensure => file,
-#     content => extlib::dump_params.to_yaml
+#     content => wmflib::dump_params.to_yaml
 #   }
 Puppet::Functions.create_function(:'wmflib::dump_params', Puppet::Functions::InternalFunction) do
   # @param filter_keys an optional parameters of keys to filter out

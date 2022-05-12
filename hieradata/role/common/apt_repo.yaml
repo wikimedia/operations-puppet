@@ -6,6 +6,5 @@ profile::aptrepo::wikimedia::gpg_secring: 'apt/secring.gpg'
 profile::nginx::variant: 'light'
 profile::admin::groups:
   - datacenter-ops
-profile::base::ssh_server_settings:
-  enable_kerberos: true
+profile::ssh::server::enable_kerberos: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']

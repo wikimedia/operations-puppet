@@ -3,8 +3,8 @@ profile::admin::groups:
 
 # routing and nat host with lots of addresses
 # lock down SSH to administrative IP only
-profile::base::ssh_server_settings:
-  listen_addresses: ["%{::ipaddress}"]
+profile::ssh::server::listen_addresses:
+  - "%{facts.ipaddress}"
 
 prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
 

@@ -2,7 +2,6 @@
 # @param remote_syslog Central syslog servers
 # @param remote_syslog_tls Central TLS enabled syslog servers
 # @param remote_syslog_send_logs config for send logs
-# @param ssh_server_settings ssh server config
 # @param overlayfs if to use overlays
 # @param wikimedia_clusters the wikimedia clusters
 # @param cluster the cluster
@@ -19,7 +18,6 @@ class profile::base(
     Boolean $manage_ssh_keys         = lookup('profile::base::manage_ssh_keys'),
     Array   $remote_syslog           = lookup('profile::base::remote_syslog'),
     Hash    $remote_syslog_tls       = lookup('profile::base::remote_syslog_tls'),
-    Hash    $ssh_server_settings     = lookup('profile::base::ssh_server_settings'),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -81,12 +79,7 @@ class profile::base(
         manage_ssh_keys => $manage_ssh_keys,
     }
 
-    # # TODO: create profile::ssh::server
-    # Ssh server default settings are good for most installs, but some overrides
-    # might be needed
-    class {'ssh::server':
-        * => $ssh_server_settings,
-    }
+    include profile::ssh::server
 
     class { 'base::kernel':
         overlayfs => $overlayfs,

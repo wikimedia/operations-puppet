@@ -1,2 +1,1 @@
-profile::base::ssh_server_settings:
-  enable_kerberos: true
+profile::ssh::server::enable_kerberos: true

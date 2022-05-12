@@ -143,11 +143,10 @@ profile::gerrit::java_version: 8
 scap::wmflabs_master: deploy-1004.devtools.eqiad1.wikimedia.cloud
 profile::gerrit::scap_user: 'gerrit2'
 profile::gerrit::scap_key_name: 'gerrit'
-profile::base::ssh_server_settings:
-  authorized_keys_file:
-    - '/etc/ssh/userkeys/%u'
-    - '/etc/ssh/userkeys/%u.d/cumin'
-    - '/etc/ssh/userkeys/%u.d/gerrit-scap'
+profile::ssh::server::authorized_keys_file:
+  - '/etc/ssh/userkeys/%u'
+  - '/etc/ssh/userkeys/%u.d/cumin'
+  - '/etc/ssh/userkeys/%u.d/gerrit-scap'
 
 ## TLS
 ## to get certificates from LE we use acmechief in production and certbot in cloud

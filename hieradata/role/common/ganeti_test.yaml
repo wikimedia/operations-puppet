@@ -1,5 +1,4 @@
-profile::base::ssh_server_settings:
-  authorized_keys_file:
+profile::ssh::server::authorized_keys_file:
     - '/etc/ssh/userkeys/%u'
     - '/etc/ssh/userkeys/%u.d/cumin'
     - '/etc/ssh/userkeys/%u.d/ganeti'
