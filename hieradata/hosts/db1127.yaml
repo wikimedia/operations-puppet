@@ -1,3 +1,4 @@
 # db1127
 mariadb::shard: 's7'
 profile::monitoring::notifications_enabled: false
+mariadb::package: 'wmf-mariadb106'
