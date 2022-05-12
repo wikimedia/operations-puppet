@@ -1,9 +1,12 @@
 # == git::systemconfig
 #
 # Generate /etc/gitconfig based on a hash of gitconfig values.
+#
 # Should be the same as executing git config --system. It is useful for use
 # cases like the Analytics hosts whithin the related VLAN, that needs a common
 # shared http[s].proxy configuration to be applied for each user.
+#
+# The file will be owned by root since it is fully managed by puppet.
 #
 # Parameters:
 #  [*settings*]
