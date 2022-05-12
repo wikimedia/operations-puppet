@@ -109,6 +109,14 @@ class profile::hadoop::spark3(
     # https://phabricator.wikimedia.org/T300299
     $sql_files_max_partition_bytes = $::profile::hadoop::common::dfs_block_size
 
+
+    file { ['/etc/spark3', '/etc/spark3/conf']:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/etc/spark3/conf/spark-defaults.conf':
         content => template('profile/hadoop/spark3-defaults.conf.erb'),
     }
