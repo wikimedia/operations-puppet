@@ -13,6 +13,7 @@ class profile::cumin::unprivmaster (
 
     $cumin_log_path = '~/.cumin'
     $ssh_config_path = '/etc/cumin/ssh_config'
+    $owners = profile::contacts::get_owners().values.flatten.unique
 
     ensure_packages([
         'clustershell',  # Installs nodeset CLI that is useful to mangle host lists.
