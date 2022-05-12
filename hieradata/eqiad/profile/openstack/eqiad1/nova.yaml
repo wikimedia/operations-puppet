@@ -16,7 +16,7 @@ profile::openstack::eqiad1::nova::physical_interface_mappings:
 profile::openstack::eqiad1::nova::libvirt_cpu_model: 'Haswell-noTSX-IBRS'
 
 # bastion-eqiad1-03.bastion.eqiad1.wikimedia.cloud
-profile::openstack::eqiad1::nova::fullstack_bastion_ip: 185.15.56.87
+profile::openstack::eqiad1::nova::fullstack_bastion_ip: 185.15.56.40
 
 # The behavior formerly managed by the scheduler_pool is now
 # handled by novas host aggregates.  Documentation can
