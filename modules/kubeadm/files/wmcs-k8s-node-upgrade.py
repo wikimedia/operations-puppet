@@ -169,6 +169,10 @@ def refresh_current_node_yaml(version):
     output = ssh(ctx.control_fqdn, cmd, capture_output=True)
     if ctx.args.dry_run:
         output = ctx.example1_yaml if version in ctx.args.src_version else ctx.example2_yaml
+        logging.warning(
+            "DRY: assuming node info: "
+            f"{ctx.example1_yaml if version in ctx.args.src_version else ctx.example2_yaml}"
+        )
     if output is None:
         logging.error("unable to get node yaml for {}, skipping".format(ctx.current_node))
         ctx.skip = True
@@ -282,8 +286,14 @@ def check_current_node_versions(version):
         return  # OK
 
     logging.warning(
-        "current node {} does not match a component version in k8s, skipping".format(
-            ctx.current_node
+        (
+            "current node {} does not match a component version in k8s, skipping. Version={}, "
+            "kubelet version={}, kubeproxy version={}"
+        ).format(
+            ctx.current_node,
+            version,
+            info["kubeletVersion"],
+            info["kubeProxyVersion"],
         )
     )
     ctx.skip = True
