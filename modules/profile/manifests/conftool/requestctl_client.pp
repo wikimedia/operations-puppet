@@ -13,7 +13,7 @@ class profile::conftool::requestctl_client(
         ensure => file,
         owner  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/profile/conftool/requestctl-checkip.py',
+        source => 'puppet:///modules/profile/conftool/requestctl_checkip.py',
     }
     # TODO: add an alert if there are uncommitted changes
 }
