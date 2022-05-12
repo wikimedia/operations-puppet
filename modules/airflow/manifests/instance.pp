@@ -408,9 +408,21 @@ define airflow::instance(
     }
     $airflow_cmd = "/usr/bin/env AIRFLOW_HOME=${airflow_home} ${airflow_prefix}/bin/airflow"
     # See: https://airflow.apache.org/docs/apache-airflow/stable/logging-monitoring/check-health.html
+
+    $check_scheduler_command = "/usr/local/bin/check_cmd ${airflow_cmd} jobs check --job-type SchedulerJob --hostname ${::fqdn}"
+    $check_db_command = "/usr/local/bin/check_cmd ${airflow_cmd} db check"
+
+    sudo::user { "airflow_checks_${title}":
+        ensure     => $monitoring_ensure,
+        user       => $service_user,
+        privileges => [
+            "nagios ALL = (${service_user}) NOPASSWD: ${check_scheduler_command}",
+            "nagios ALL = (${service_user}) NOPASSWD: ${check_db_command}",
+            ],
+    }
     nrpe::monitor_service { "airflow@${title}_check_scheduler":
         ensure       => $monitoring_ensure,
-        nrpe_command => "/usr/local/bin/check_cmd ${airflow_cmd} jobs check --job-type SchedulerJob --hostname ${::fqdn}",
+        nrpe_command => "/usr/bin/sudo -u ${service_user} ${check_scheduler_command}",
         description  => "Checks that the local airflow scheduler for airflow @${title} is working properly",
         # contact_group => 'victorops-analytics', TODO
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
@@ -418,13 +430,12 @@ define airflow::instance(
     }
     nrpe::monitor_service { "airflow@${title}_check_db":
         ensure       => $monitoring_ensure,
-        nrpe_command => "/usr/local/bin/check_cmd ${airflow_cmd} db check",
+        nrpe_command => "/usr/bin/sudo -u ${service_user} ${check_db_command}",
         description  => "Checks that the airflow database for airflow ${title} is working properly",
         # contact_group => 'victorops-analytics', TODO
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
         require      => File[$airflow_config_file],
     }
-
 
     # Set up clean logs job if $clean_logs_older_than_days is set and $ensure == present
     if $clean_logs_older_than_days and $ensure == 'present' {
