@@ -378,9 +378,10 @@ sub recv_fe_ip_processing {
 	// it. We don't set or use this header internally (we use X-Client-IP)
 	unset req.http.X-Real-IP;
 
-	// unset two request headers that are usually set by requestctl:
-	// X-Requestctl and Retry-After.
+	// unset the X-Requestctl request header. This should be handled by the
+	// VCL fragments coming from requestctl and not be in the request.
 	unset req.http.X-Requestctl;
+	// Same for the *request* header Retry-After, also managed by requestctl.
 	unset req.http.Retry-After;
 
 	if (client.ip !~ wikimedia_trust && remote.ip !~ local_tls_terminator) {
@@ -1159,6 +1160,14 @@ sub vcl_synth {
 		call deliver_synth_;
 		call https_error_redirect;
 		call cluster_fe_err_synth;
+
+		// Set Retry-After for requests throttled by requestctl.
+		// Please note: this request header is only set for requests that are
+		// being throttled, so even if non-standard, it never leaves varnish.
+		// see T305824.
+		if (req.http.Retry-After) {
+			set resp.http.Retry-After = req.http.Retry-After;
+		}
 
 		// This is for 421 Misdirected for bad HTTP/2 coalescing
 		// between text and upload cluster IPs:

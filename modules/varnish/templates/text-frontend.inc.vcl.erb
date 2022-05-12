@@ -590,8 +590,12 @@ sub cluster_fe_err_synth {
 		set resp.http.Content-Length = "0"; // BZ #62245
 	}
 
+	// Set a generic Retry-After of 1 for any response matching the string.
+	// If we have a request Retry-After header (added by requestctl)
+	// we will use its value instead.
 	if (resp.reason ~ "^Too Many Requests") {
 		set resp.http.Retry-After = 1;
 	}
+
 }
 # vim: set autoindent noexpandtab tabstop=4 shiftwidth=4:
