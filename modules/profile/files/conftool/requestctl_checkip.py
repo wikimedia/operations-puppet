@@ -53,11 +53,12 @@ def main() -> int:
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
     exit_code = 1
+    ip = ip_address(args.ip)
     for ipblock in (args.requestctl_dir / "request-ipblocks").glob("**/*.yaml"):
         logging.debug("checking: {ipblock}")
         for network in yaml.load(ipblock.read_text())["cidrs"]:
-            if ip_address(args.ip) in ip_network(network):
-                print(f"{args.ip} in {ipblock}")
+            if ip in ip_network(network):
+                print(f"{ip} in {ipblock}")
                 exit_code = 0
 
     return exit_code
