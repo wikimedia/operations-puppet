@@ -1,0 +1,12 @@
+<%-
+  def bool2yes_no(value)
+    value ? 'yes' : 'no'
+  end
+-%>
+
+Hosts *
+<%- unless @send_env.empty? -%>
+  SendEnv <%= @send_env.join(' ') %>
+<%- end -%>
+  HashKnownHosts <%= bool2yes_no(@hash_known_hosts) %>
+  GSSAPIAuthentication <%= bool2yes_no(@gss_api_authentication) %>

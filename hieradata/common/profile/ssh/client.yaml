@@ -1,1 +1,5 @@
 profile::ssh::client::manage_ssh_keys: true
+profile::ssh::client::manage_ssh_config: true
+profile::ssh::client::hash_known_hosts: true
+profile::ssh::client::gss_api_authentication: true
+profile::ssh::client::send_env: []

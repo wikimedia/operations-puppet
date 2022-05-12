@@ -22,7 +22,6 @@ profile::admin::groups_no_ssh: []
 profile::admin::managehomehome: false
 
 profile::base::overlayfs: false
-profile::ssh::client::manage_ssh_keys: true
 profile::base::remote_syslog_send_logs: standard
 profile::base::remote_syslog_tls: {}
 profile::base::remote_syslog: []
@@ -610,3 +609,9 @@ profile::ssh::server::max_sessions: ~
 profile::ssh::server::max_startups: ~
 profile::ssh::server::gateway_ports: false
 profile::ssh::server::accept_env: ['LANG', 'LC_*']
+
+profile::ssh::client::manage_ssh_keys: true
+profile::ssh::client::manage_ssh_config: false
+profile::ssh::client::hash_known_hosts: true
+profile::ssh::client::gss_api_authentication: true
+profile::ssh::client::send_env: ['LANG', 'LC_*']
