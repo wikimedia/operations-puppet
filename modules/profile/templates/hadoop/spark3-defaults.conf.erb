@@ -1,0 +1,79 @@
+# NOTE: This file is managed by Puppet.
+
+# Default system properties included when running spark-submit.
+# This is useful for setting default environmental settings.
+
+# Example:
+# spark.master                     spark://master:7077
+# spark.eventLog.enabled           true
+# spark.eventLog.dir               hdfs://namenode:8021/directory
+# spark.serializer                 org.apache.spark.serializer.KryoSerializer
+# spark.driver.memory              5g
+# spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
+
+# Dynamic allocation allows Spark to dynamically scale the cluster resources
+# allocated for an application based on the workload. Only available in YARN mode.
+# More info: https://spark.apache.org/docs/2.1.2/configuration.html#dynamic-allocation
+spark.dynamicAllocation.enabled                     true
+spark.shuffle.service.enabled                       true
+# Needed for spark3 to work with spark 2.4 shuffle service
+# To be removed when we migrate to spark3 shuffle service
+spark.shuffle.useOldFetchProtocol                   true
+spark.dynamicAllocation.executorIdleTimeout         60s
+spark.dynamicAllocation.cachedExecutorIdleTimeout   3600s
+spark.shuffle.io.maxRetries                         10
+spark.shuffle.io.retryWait                          10s
+<% if @executor_env_ld_lib_path -%>
+spark.executorEnv.LD_LIBRARY_PATH                   <%= @executor_env_ld_lib_path %>
+<% end -%>
+<% if @hive_enabled -%>
+spark.sql.catalogImplementation                     hive
+<% end -%>
+<% if @driver_port -%>
+spark.driver.port                                   <%= @driver_port %>
+<% end -%>
+<% if @port_max_retries -%>
+spark.port.maxRetries                               <%= @port_max_retries %>
+<% end -%>
+<% if @ui_port -%>
+spark.ui.port                                       <%= @ui_port %>
+<% end -%>
+<% if @local_dir -%>
+spark.local.dir                                     <%= @local_dir %>
+<% end -%>
+<% if @driver_blockmanager_port -%>
+spark.driver.blockManager.port                      <%= @driver_blockmanager_port %>
+<% end -%>
+<% if @sql_files_max_partition_bytes -%>
+spark.sql.files.maxPartitionBytes                   <%= @sql_files_max_partition_bytes %>
+<% end -%>
+# Disabling using the spark-assembly until we have one set up on HDFS
+# spark.yarn.archive                                  hdfs:///user/spark/share/lib/spark-<%= @spark_version %>-assembly.zip
+
+# JVMs should use system proxy settings.
+# The system proxy settings are configured via the env vars http_proxy, https_proxy, and no_proxy.
+spark.driver.defaultJavaOptions                     -Djava.net.useSystemProxies=True
+spark.executor.defaultJavaOptions                   -Djava.net.useSystemProxies=True
+
+<% @extra_settings.sort.each do |key, value| -%>
+<%= key %>   <%= value %>
+<% end -%>
+
+<% if @encryption_enabled -%>
+spark.authenticate                                  true
+# Spark IO encryption settings are not enabled (but listed anyway)
+# since in some use cases (like Refine) they caused exceptions like
+# 'java.io.IOException: Stream is corrupted' when shuffle files were
+# compressed with lz4.
+# spark.io.encryption.enabled                         true
+# spark.io.encryption.keySizeBits                     256
+# spark.io.encryption.keygen.algorithm                HmacSHA256
+spark.network.crypto.enabled                        true
+spark.network.crypto.keyFactoryAlgorithm            PBKDF2WithHmacSHA256
+spark.network.crypto.keyLength                      256
+spark.network.crypto.saslFallback                   false
+<% end -%>
+
+# Ensure that Python requests lib always use system CA certificates.
+spark.yarn.appMasterEnv.REQUESTS_CA_BUNDLE          /etc/ssl/certs/ca-certificates.crt
+spark.executorEnv.REQUESTS_CA_BUNDLE                /etc/ssl/certs/ca-certificates.crt
