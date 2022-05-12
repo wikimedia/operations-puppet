@@ -14,3 +14,4 @@ profile::ssh::server::challenge_response_auth: true
 profile::ssh::server::max_sessions: ~
 profile::ssh::server::max_startups: ~
 profile::ssh::server::gateway_ports: false
+profile::ssh::server::accept_env: []

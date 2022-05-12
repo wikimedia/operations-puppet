@@ -103,8 +103,9 @@ MaxStartups <%= @max_startups %>
 <%- end -%>
 #Banner /etc/issue.net
 
-# Allow client to pass locale environment variables
-AcceptEnv LANG LC_*
+<%- unless @accept_env.empty? -%>
+AcceptEnv <%= @accept_env.join(' ') %>
+<%- end -%>
 
 Subsystem sftp /usr/lib/openssh/sftp-server
 

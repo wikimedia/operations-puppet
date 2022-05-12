@@ -13,6 +13,7 @@
 # @param max_sessions allow users to override the maximum number ops sessions
 # @param max_startups allow users to override the maximum number ops startups
 # @param gateway_ports if true set sshd_config GatewayPorts to yes
+# @param accept_env array of elements for AcceptEnv config
 class profile::ssh::server (
     Stdlib::Port                 $listen_port              = lookup('profile::ssh::server::listen_port'),
     Array[Stdlib::IP::Address]   $listen_addresses         = lookup('profile::ssh::server::listen_addresses'),
@@ -28,6 +29,7 @@ class profile::ssh::server (
     Optional[Integer]            $max_sessions             = lookup('profile::ssh::server::max_sessions'),
     Optional[String[1]]          $max_startups             = lookup('profile::ssh::server::max_startups'),
     Boolean                      $gateway_ports            = lookup('profile::ssh::server::gateway_ports'),
+    Array[String[1]]             $accept_env               = lookup('profile::ssh::server::accept_env'),
 ) {
     class {'ssh::server':
         * => wmflib::dump_params(),

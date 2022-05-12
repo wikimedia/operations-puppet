@@ -13,6 +13,7 @@
 # @param max_sessions allow users to override the maximum number ops sessions
 # @param max_startups allow users to override the maximum number ops startups
 # @param gateway_ports if true set sshd_config GatewayPorts to yes
+# @param accept_env array of elements for AcceptEnv config
 class ssh::server (
     Stdlib::Port                 $listen_port              = 22,
     Array[Stdlib::IP::Address]   $listen_addresses         = [],
@@ -27,7 +28,8 @@ class ssh::server (
     Boolean                      $challenge_response_auth  = true,
     Optional[Integer]            $max_sessions             = undef,
     Optional[String[1]]          $max_startups             = undef,
-    Boolean                      $gateway_ports            = false
+    Boolean                      $gateway_ports            = false,
+    Array[String[1]]             $accept_env               = ['LANG', 'LC_*'],
 ) {
     $_permit_root = $permit_root ? {
         String  => $permit_root,
