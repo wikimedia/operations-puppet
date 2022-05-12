@@ -272,6 +272,10 @@ node 'backup2008.codfw.wmnet' {
     role(insetup)
 }
 
+node 'backupmon1001.eqiad.wmnet' {
+    role(dbbackups::monitoring)
+}
+
 # New bastion in Virginia T276396
 node 'bast1003.wikimedia.org' {
     role(bastionhost)

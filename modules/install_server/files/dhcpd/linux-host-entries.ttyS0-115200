@@ -119,6 +119,11 @@ host apt2001 {
     fixed-address apt2001.wikimedia.org;
 }
 
+host backupmon1001 {
+    hardware ethernet aa:00:00:27:e1:89;
+    fixed-address backupmon1001.eqiad.wmnet;
+}
+
 host bast3005 {
     hardware ethernet AA:00:00:62:97:9B;
     fixed-address bast3005.wikimedia.org;

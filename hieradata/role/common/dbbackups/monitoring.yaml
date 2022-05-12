@@ -1,0 +1,110 @@
+cluster: backup
+profile::contacts::role_contacts: ['Data Persistence']
+profile::mariadb::wmfmariadbpy::role: 'library'
+profile::dbbackups::check::backups:
+  s1:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s2:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s3:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s4:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s5:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s6:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s7:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  s8:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  x1:
+    dump:
+    - eqiad
+    - codfw
+    snapshot:
+    - eqiad
+    - codfw
+  es4:
+    dump:
+    - eqiad
+    - codfw
+  es5:
+    dump:
+    - eqiad
+    - codfw
+  m1:
+    dump:
+    - eqiad
+    - codfw
+  m2:
+    dump:
+    - eqiad
+    - codfw
+  m3:
+    dump:
+    - eqiad
+    - codfw
+  m5:
+    dump:
+    - eqiad
+    - codfw
+  db_inventory:
+    dump:
+    - eqiad
+    - codfw
+  matomo:
+    dump:
+    - eqiad
+  analytics_meta:
+    dump:
+    - eqiad
+profile::dbbackups::check::freshness:
+  dump: 691200
+  snapshot: 259200
+# db_host is handed on each dc separatelly
+profile::dbbackups::check::db_user: backupcheck
+profile::dbbackups::check::db_database: dbbackups
+# db_password is on the private repo
+profile::dbbackups::check::warn_size_percentage: 5
+profile::dbbackups::check::crit_size_percentage: 15

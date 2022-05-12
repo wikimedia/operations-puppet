@@ -170,6 +170,13 @@ GRANT USAGE
 GRANT SELECT
     ON `dbbackups`.* TO 'backupcheck'@'208.80.153.84';
 
+GRANT USAGE
+    ON *.* TO 'backupcheck'@'10.64.48.150'
+    IDENTIFIED BY '<%=@backupcheck_pass%>';
+
+GRANT SELECT
+    ON `dbbackups`.* TO 'backupcheck'@'10.64.48.150';
+
 -- stats @ dbbackups
 
 GRANT USAGE ON *.* TO `stats`@`10.192.0.114` IDENTIFIED BY '<%=@backup_stats_pass%>';
