@@ -232,8 +232,8 @@ funnel	20.wikipedia.org	https://wikimediafoundation.org/wikipedia20
 # T84277, T259979
 override	wikimedia.org/research	https://research.wikimedia.org
 
-# dev.wikimedia.org - T372
-funnel	dev.wikimedia.org	https://www.mediawiki.org/wiki/API:Data_and_developer_hub
+# dev.wikimedia.org - T372, T265018
+funnel	dev.wikimedia.org	https://developer.wikimedia.org
 
 # T97341
 override	wikimedia.org/stopsurveillance	https://policy.wikimedia.org/stopsurveillance/
