@@ -48,7 +48,13 @@
 #   Whether to perform Virtual Chassis Ports checks. Defaults to false.
 #
 # [*vrrp_peer*]
-#   IP or FQDN of the VRRP peer, enables VRRP checks. Defaults to false.
+#   IP or FQDN of the VRRP peer, enables VRRP checks. Defaults to undef.
+#
+# [*site*]
+#   The device' site
+#
+# [*role*]
+#   The device's role
 #
 # === Examples
 #
@@ -58,20 +64,22 @@
 #  }
 
 define netops::check(
-    $ipv4,
-    $ipv6=undef,
-    $snmp_community=undef,
-    $group='network',
-    $alarms=false,
-    $bfd=false,
-    $bgp=false,
-    $critical=false,
-    $interfaces=false,
-    $parents=undef,
-    $os=undef,
-    $ospf=false,
-    $vcp=false,
-    $vrrp_peer=false,
+    Stdlib::IP::Address::V4 $ipv4,
+    Optional[Stdlib::IP::Address::V6] $ipv6 = undef,
+    Optional[String] $snmp_community        = undef,
+    String $group                           = 'network',
+    Boolean $alarms                         = false,
+    Boolean $bfd                            = false,
+    Boolean $bgp                            = false,
+    Boolean $critical                       = false,
+    Boolean $interfaces                     = false,
+    Optional[Array[Stdlib::Host]] $parents  = undef,
+    Optional[String] $os                    = undef,
+    Boolean $ospf                           = false,
+    Boolean $vcp                            = false,
+    Optional[String] $vrrp_peer             = undef,
+    Optional[Wmflib::Sites] $site           = undef,
+    Optional[String] $role                  = undef,
 ) {
 
     # If we get an array convert it to a comma separated string
