@@ -22,7 +22,7 @@ profile::admin::groups_no_ssh: []
 profile::admin::managehomehome: false
 
 profile::base::overlayfs: false
-profile::base::manage_ssh_keys: true
+profile::ssh::client::manage_ssh_keys: true
 profile::base::remote_syslog_send_logs: standard
 profile::base::remote_syslog_tls: {}
 profile::base::remote_syslog: []

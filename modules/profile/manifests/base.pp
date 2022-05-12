@@ -7,7 +7,6 @@
 # @param cluster the cluster
 # @param enable_contacts use the contacts module
 # @param core_dump_pattern the core dump pattern
-# @param manage_ssh_keys if we shold managed ssh keys
 class profile::base(
     Hash    $wikimedia_clusters      = lookup('wikimedia_clusters'),
     String  $cluster                 = lookup('cluster'),
@@ -15,7 +14,6 @@ class profile::base(
     Boolean $overlayfs               = lookup('profile::base::overlayfs'),
     Boolean $enable_contacts         = lookup('profile::base::enable_contacts'),
     String  $core_dump_pattern       = lookup('profile::base::core_dump_pattern'),
-    Boolean $manage_ssh_keys         = lookup('profile::base::manage_ssh_keys'),
     Array   $remote_syslog           = lookup('profile::base::remote_syslog'),
     Hash    $remote_syslog_tls       = lookup('profile::base::remote_syslog_tls'),
 ) {
@@ -75,10 +73,7 @@ class profile::base(
         core_dump_pattern => $core_dump_pattern,
     }
 
-    class { 'ssh::client':
-        manage_ssh_keys => $manage_ssh_keys,
-    }
-
+    include profile::ssh::client
     include profile::ssh::server
 
     class { 'base::kernel':
