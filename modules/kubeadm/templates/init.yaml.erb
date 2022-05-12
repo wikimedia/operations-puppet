@@ -30,7 +30,6 @@ apiServer:
     profiling: "false"
     enable-admission-plugins: PodSecurityPolicy,EventRateLimit,NodeRestriction
     admission-control-config-file: /etc/kubernetes/admission/admission.yaml
-    feature-gates: TTLAfterFinished=true
     <% if @encryption_key %>encryption-provider-config: /etc/kubernetes/admission/encryption-conf.yaml<% end %>
   extraVolumes:
     - name: admission-config-dir
@@ -48,7 +47,6 @@ controller-manager:
   extraArgs:
     profiling: "false"
     terminated-pod-gc-threshold: 5000  # Default is 12500
-    feature-gates: TTLAfterFinished=true
 scheduler:
   extraArgs:
     profiling: "false"
