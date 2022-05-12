@@ -1,68 +1,64 @@
-# == Class: dnsdist
-#
-# Install and configure dnsdist with DNS-over-HTTPS and DNS-over-TLS support.
+# @summary: install and configure dnsdist with DoH and DoT support
 #
 # This class configures a dnsdist installation to act as a DoH and DoT resolver
 # with a single backend recursor. It sets up a basic configuration to run a
 # public DoH/DoT service with safe secure defaults but without any UDP support.
 #
-# == Parameters:
-#
-#  [*resolver*]
+# @param resolver
 #    [Dnsdist::Resolver] downstream recursive resolver options. required.
 #
-#  [*tls_common*]
+# @param tls_common
 #    [Dnsdist::TLS_common] Common TLS configuration (certificates). required.
 #
-#  [*tls_config_doh*]
+# @param tls_config_doh
 #    [Dnsdist::TLS_config] TLS configuration for DoH. required.
 #
-#  [*tls_config_dot*]
+# @param tls_config_dot
 #    [Dnsdist::TLS_config] TLS configuration for DoT. required.
 #
-#  [*enable_wikidough*]
+# @param enable_wikidough
 #    [bool] whether Wikidough-specific settings are enabled. default: true.
 #
-#  [*doh_paths*]
+# @param doh_paths
 #    [array] URL paths to accept queries on. default: /, /dns-query.
 #
-#  [*enable_packetcache*]
+# @param enable_packetcache
 #    [bool] whether to enable dnsdist's packet cache. default: true.
 #
-#  [*packetcache_max*]
+# @param packetcache_max
 #    [int] maximum number of entries in the cache. default: 10,000,000.
 #
-#  [*ringbuffer_max*]
+# @param ringbuffer_max
 #    [int] maximum number of entries in the ring buffer. default: 10.
 #
-#  [*tcp_client_threads_max*]
+# @param tcp_client_threads_max
 #    [int] maximum number of TCP client threads. default: 20.
 #
-#  [*enable_console*]
+# @param enable_console
 #    [bool] whether to enable dnsdist's console. default: false.
 #
-#  [*console_key*]
+# @param console_key
 #    [string] key to use for dnsdist's console access. default: undef.
 #
-#  [*enable_webserver*]
+# @param enable_webserver
 #    [bool] whether to enable dnsdist's web server. default: false.
 #
-#  [*drop_querytype_any*]
+# @param drop_querytype_any
 #    [bool] whether to drop queries with qtype=ANY. default: true.
 #
-#  [*webserver*]
+# @param webserver
 #    [Dnsdist::Webserver_config] web server configuration. default: undef.
 #
-#  [*enable_ecs*]
+# @param enable_ecs
 #    [bool] whether to enable EDNS Client Subnet. default: true.
 #
-#  [*enable_landing*]
+# @param enable_landing
 #    [bool] whether to enable the landing page (/). default: false.
 #
-#  [*landing_text*]
+# @param landing_text
 #    [string] text on the landing page. default: undef.
 #
-#  [*custom_headers*]
+# @param custom_headers
 #    [Dnsdist::Http_headers] custom HTTP headers. default: {}.
 
 

@@ -1,16 +1,13 @@
-# == Type: Dnsdist::Resolver
+# @summary dnsdist's recursive resolver and its configuration
 #
-# dnsdist's recursive resolver and its configuration. In the current setup,
-# there is only a single backend recursor.
+# @param name
+#   name of the backend recursor. required.
 #
-#  [*name*]
-#    [string] name of the backend recursor. required.
+# @param ip
+#   IP address the recursor listens on. required.
 #
-#  [*ip*]
-#    [IP adddress] IP address the recursor listens on. required.
-#
-#  [*port*]
-#    [port] port the recursor listens on. required.
+# @param port
+#   port the recursor listens on. required.
 
 type Dnsdist::Resolver = Struct[{
     name => String,

@@ -1,21 +1,16 @@
-# == Type: Dnsdist::Webserver_config
+# @summary configuration for dnsdist's webserver.
 #
-# Configuration for dnsdist's webserver.
+# @param host/port
+#    address to listen on. required.
 #
-# The webserver is primarily enabled for its API endpoint, used for exporting
-# metrics to Prometheus.
+# @param password
+#    password to access the server. required.
 #
-#  [*host/port*]
-#    [host/port] address to listen on. required.
+# @param api_key
+#    API access key (/metrics). required.
 #
-#  [*password*]
-#    [string] password to access the server. required.
-#
-#  [*api_key*]
-#    [string] API access key (/metrics). required.
-#
-#  [*acl*]
-#    [array] list of IP addresses allowed to access the webserver. required.
+# @param acl
+#    list of IP addresses allowed to access the webserver. required.
 
 type Dnsdist::Webserver_config = Struct[{
     host     => Stdlib::Host,

@@ -1,15 +1,13 @@
-# == Type: Dnsdist::TLS_config
+# @summary TLS configuration for dnsdist's DoH and DoT frontends
 #
-# TLS configuration for dnsdist's DoH and DoT frontends.
+# @param min_tls_version
+#   the minimum version of TLS protocol to support. required.
 #
-#  [*min_tls_version*]
-#    [string] the minimum version of TLS protocol to support. required.
+# @param ciphers_tls13
+#   TLS ciphers to use for TLSv1.3. optional.
 #
-#  [*ciphers_tls13*]
-#    [array] TLS ciphers to use for TLSv1.3. optional.
-#
-#  [*ciphers*]
-#    [array] TLS ciphers to use. optional.
+# @param ciphers
+#   TLS ciphers to use. optional.
 
 type Dnsdist::TLS_config = Struct[{
     min_tls_version => Enum['tls1.2', 'tls1.3'],
