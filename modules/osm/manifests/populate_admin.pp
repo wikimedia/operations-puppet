@@ -1,16 +1,17 @@
 define osm::populate_admin (
-    Wmflib::Ensure $ensure      = present,
-    Boolean $disable_admin_cron = false,
-    Integer $hour               = 0,
-    Integer $minute             = 1,
-    String $weekday             = 'Tuesday',
-    String $log_dir             = '/var/log/osm'
+    Wmflib::Ensure $ensure       = present,
+    Boolean $disable_admin_timer = false,
+    Integer $hour                = 0,
+    Integer $minute              = 1,
+    String $weekday              = 'Tue',
+    String $log_dir              = '/var/log/osm'
 ) {
 
-    $ensure_cron = $disable_admin_cron ? {
+    $ensure_timer = $disable_admin_timer ? {
         true    => absent,
         default => $ensure,
     }
+
     file { $log_dir:
         ensure => directory,
         owner  => 'postgres',
@@ -18,18 +19,29 @@ define osm::populate_admin (
         mode   => '0755',
     }
 
-    $populate_admin_cmd = "/usr/bin/psql -1Xq -d ${title} -c 'SELECT populate_admin();'"
-    $grant_admin_cmd = "/usr/bin/psql -1Xq -d ${title} -f /usr/local/bin/grants-populate-admin.sql"
-    cron { "populate_admin-${title}":
-        ensure  => $ensure_cron,
-        command => "(${populate_admin_cmd}; ${grant_admin_cmd}) >> ${log_dir}/populate_admin.log 2>&1",
-        user    => 'postgres',
-        weekday => $weekday,
-        hour    => $hour,
-        minute  => $minute,
+    file { '/usr/local/bin/osm_populate_admin.sh':
+        ensure  => directory,
+        owner   => 'postgres',
+        group   => 'postgres',
+        mode    => '0755',
+        content => template('osm/osm_populate_admin'),
     }
+
+    systemd::timer::job { "populate_admin-${title}":
+        ensure      => $ensure_timer,
+        description => 'Ensure correct grants in Postgresql for OSM',
+        command     => '/usr/local/bin/osm_populate_admin.sh',
+        user        => 'postgres',
+        interval    => {'start' => 'OnCalendar', 'interval' => "${weekday} *-*-* ${hour}:${minute}:00"}
+    }
+
+    cron { "populate_admin-${title}":
+        ensure => 'absent',
+        user   => 'postgres',
+    }
+
     logrotate::rule { "populate_admin-${title}":
-        ensure     => $ensure_cron,
+        ensure     => $ensure_timer,
         file_glob  => "${log_dir}/populate_admin.log",
         frequency  => 'weekly',
         missing_ok => true,

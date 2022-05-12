@@ -1,0 +1,5 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+#!/bin/bash
+
+/usr/bin/psql -1Xq -d <%= @title %> -c 'SELECT populate_admin();' >> <%= @log_dir %>/populate_admin.log 2>&1
+/usr/bin/psql -1Xq -d <%= @title %> -f /usr/local/bin/grants-populate-admin.sql  >> <%= @log_dir %>/populate_admin.log 2>&1

@@ -34,7 +34,7 @@ profile::maps::osm_master::engine: "imposm3"
 profile::maps::osm_master::planet_sync_hours: '*/12'
 profile::maps::osm_master::disable_replication_cron: true
 profile::maps::osm_master::disable_tile_generation_cron: true
-profile::maps::osm_master::disable_admin_cron: true
+profile::maps::osm_master::disable_admin_timer: true
 profile::maps::osm_master::replicas:
   maps1005:
     ip_address: '10.64.0.12'

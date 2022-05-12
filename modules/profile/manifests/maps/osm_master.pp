@@ -1,22 +1,22 @@
 class profile::maps::osm_master (
-    String $planet_sync_period                  = lookup('profile::maps::osm_master::planet_sync_period', { 'default_value' => 'hour' }),
-    String $planet_sync_day                     = lookup('profile::maps::osm_master::planet_sync_day', { 'default_value' => '*' }),
-    Variant[String,Integer]$planet_sync_hours   = lookup('profile::maps::osm_master::planet_sync_hours', { 'default_value' => '*' }),
-    Variant[String,Integer] $planet_sync_minute = lookup('profile::maps::osm_master::planet_sync_minute', { 'default_value' => 0 }),
-    Array[Stdlib::Host] $maps_hosts             = lookup('profile::maps::hosts'),
-    String $kartotherian_pass                   = lookup('profile::maps::osm_master::kartotherian_pass'),
-    String $tilerator_pass                      = lookup('profile::maps::osm_master::tilerator_pass'),
-    String $tileratorui_pass                    = lookup('profile::maps::osm_master::tileratorui_pass'),
-    String $replication_pass                    = lookup('profile::maps::osm_master::replication_pass'),
-    String $swift_key_id                        = lookup('profile::maps::osm_master::swift_key_id'),
-    String $swift_password                      = lookup('profile::maps::osm_master::swift_password'),
+    String $planet_sync_period                   = lookup('profile::maps::osm_master::planet_sync_period', { 'default_value' => 'hour' }),
+    String $planet_sync_day                      = lookup('profile::maps::osm_master::planet_sync_day', { 'default_value' => '*' }),
+    Variant[String,Integer]$planet_sync_hours    = lookup('profile::maps::osm_master::planet_sync_hours', { 'default_value' => '*' }),
+    Variant[String,Integer] $planet_sync_minute  = lookup('profile::maps::osm_master::planet_sync_minute', { 'default_value' => 0 }),
+    Array[Stdlib::Host] $maps_hosts              = lookup('profile::maps::hosts'),
+    String $kartotherian_pass                    = lookup('profile::maps::osm_master::kartotherian_pass'),
+    String $tilerator_pass                       = lookup('profile::maps::osm_master::tilerator_pass'),
+    String $tileratorui_pass                     = lookup('profile::maps::osm_master::tileratorui_pass'),
+    String $replication_pass                     = lookup('profile::maps::osm_master::replication_pass'),
+    String $swift_key_id                         = lookup('profile::maps::osm_master::swift_key_id'),
+    String $swift_password                       = lookup('profile::maps::osm_master::swift_password'),
     Hash[String, Struct[{ip_address => Stdlib::IP::Address}]] $postgres_replicas = lookup('profile::maps::osm_master::replicas', { 'default_value' => {}}),
-    String $osm_engine                          = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
-    Boolean $disable_replication_cron           = lookup('profile::maps::osm_master::disable_replication_cron', { 'default_value' => false }),
-    Boolean $disable_tile_generation_cron       = lookup('profile::maps::osm_master::disable_tile_generation_cron', { 'default_value' => false }),
-    Boolean $disable_admin_cron                 = lookup('profile::maps::osm_master::disable_admin_cron', { 'default_value' => false }),
-    String $tilerator_storage_id                = lookup('profile::maps::apps::tilerator_storage_id'),
-    Boolean $use_proxy                          = lookup('profile::maps::apps::use_proxy'),
+    String $osm_engine                           = lookup('profile::maps::osm_master::engine', { 'default_value' => 'osm2pgsql' }),
+    Boolean $disable_replication_cron            = lookup('profile::maps::osm_master::disable_replication_cron', { 'default_value' => false }),
+    Boolean $disable_tile_generation_cron        = lookup('profile::maps::osm_master::disable_tile_generation_cron', { 'default_value' => false }),
+    Boolean $disable_admin_timer                 = lookup('profile::maps::osm_master::disable_admin_timer', { 'default_value' => false }),
+    String $tilerator_storage_id                 = lookup('profile::maps::apps::tilerator_storage_id'),
+    Boolean $use_proxy                           = lookup('profile::maps::apps::use_proxy'),
     String $eventgate_endpoint                         = lookup('profile::maps::osm_master::eventgate_endpoint'),
     Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_master::log_min_duration_statement', { 'default_value' => undef })
 ) {
@@ -191,8 +191,8 @@ class profile::maps::osm_master (
             source => 'puppet:///modules/profile/maps/grants-populate-admin.sql',
         }
         osm::populate_admin { $db_name:
-            ensure             => present,
-            disable_admin_cron => $disable_admin_cron,
+            ensure              => present,
+            disable_admin_timer => $disable_admin_timer,
         }
     }
 
