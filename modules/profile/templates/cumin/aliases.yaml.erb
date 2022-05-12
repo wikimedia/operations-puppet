@@ -10,6 +10,8 @@ edges: A:esams or A:ulsfo or A:eqsin or A:drmrs
 <%= distro %>: P{F:lsbdistcodename = <%= distro %>}
 <% end -%>
 
+vms: P{F:virtual=kvm}
+
 # Server group definitions
 acmechief: P{O:acme_chief}
 all-mw: A:mw-api or A:mw or A:mw-jobrunner or A:parsoid
