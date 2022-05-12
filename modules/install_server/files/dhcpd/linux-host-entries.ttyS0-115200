@@ -432,9 +432,21 @@ host idp-test1001 {
     fixed-address idp-test1001.wikimedia.org;
 }
 
+host idp-test1002 {
+    hardware ethernet aa:00:00:c7:ed:79;
+    fixed-address idp-test1002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
+}
+
 host idp-test2001 {
     hardware ethernet aa:00:00:b8:4a:97;
     fixed-address idp-test2001.wikimedia.org;
+}
+
+host idp-test2002 {
+    hardware ethernet aa:00:00:4e:27:77;
+    fixed-address idp-test2002.wikimedia.org;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host install1003 {
