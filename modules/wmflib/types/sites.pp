@@ -1,1 +1,12 @@
-type Wmflib::Sites = Enum['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin', 'drmrs']
+# Sorted list of valid sites
+type Wmflib::Sites = Enum[
+  'codfw',
+  'drmrs',
+  'eqdfw',
+  'eqiad',
+  'eqord',
+  'eqsin',
+  'esams',
+  'knams',
+  'ulsfo',
+]
