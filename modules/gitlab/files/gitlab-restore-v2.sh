@@ -119,7 +119,7 @@ if [ "${SSH_GITLAB_STATUS}" = "running" ]; then
     exit 1
 fi
 
-if /usr/bin/gitlab-ctl stop puma && /usr/bin/gitlab-ctl stop sidekiq; then
+if /usr/bin/gitlab-ctl graceful-kill puma && /usr/bin/gitlab-ctl stop sidekiq; then
     echo "stopped puma & sidekiq service" >> $LOGFILE
 else
     echo "something went wrong stopping /usr/bin/gitlab-ctl services" >> $LOGFILE
