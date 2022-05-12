@@ -21,6 +21,13 @@ profile::admin::groups: []
 profile::admin::groups_no_ssh: []
 profile::admin::managehomehome: false
 
+profile::base::ssh_server_settings: {}
+profile::base::overlayfs: false
+profile::base::manage_ssh_keys: true
+profile::base::remote_syslog_send_logs: standard
+profile::base::remote_syslog_tls: {}
+profile::base::remote_syslog: []
+
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::certificates::puppet_ca_content: {}
 profile::base::certificates::include_bundle_jks: false

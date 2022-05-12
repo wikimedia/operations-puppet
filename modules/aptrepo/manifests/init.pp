@@ -167,8 +167,10 @@ class aptrepo (
         require => User['reprepro'],
     }
 
-    ssh::userkey { 'reprepro':
-        content => template('aptrepo/authorized_keys.erb'),
+    unless $authorized_keys.empty {
+        ssh::userkey { 'reprepro':
+            content => template('aptrepo/authorized_keys.erb'),
+        }
     }
 
     file { '/usr/local/bin/reprepro-ssh-upload':

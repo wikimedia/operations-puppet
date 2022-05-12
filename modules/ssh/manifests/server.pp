@@ -55,7 +55,7 @@ class ssh::server (
     }
 
     file { '/etc/ssh/sshd_config':
-        ensure  => present,
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',

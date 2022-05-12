@@ -1,14 +1,25 @@
+# @summary profile to configure base config
+# @param remote_syslog Central syslog servers
+# @param remote_syslog_tls Central TLS enabled syslog servers
+# @param remote_syslog_send_logs config for send logs
+# @param ssh_server_settings ssh server config
+# @param overlayfs if to use overlays
+# @param wikimedia_clusters the wikimedia clusters
+# @param cluster the cluster
+# @param enable_contacts use the contacts module
+# @param core_dump_pattern the core dump pattern
+# @param manage_ssh_keys if we shold managed ssh keys
 class profile::base(
-    Array $remote_syslog      = lookup('profile::base::remote_syslog', {default_value => []}),
-    Hash  $remote_syslog_tls  = lookup('profile::base::remote_syslog_tls', {default_value => {}}),
-    String $remote_syslog_send_logs = lookup('profile::base::remote_syslog_send_logs', {default_value => 'standard'}),
-    Hash $ssh_server_settings = lookup('profile::base::ssh_server_settings', {default_value => {}}),
-    Boolean $overlayfs        = lookup('profile::base::overlayfs', {default_value => false}),
-    Hash $wikimedia_clusters  = lookup('wikimedia_clusters'),
-    String $cluster           = lookup('cluster'),
-    Boolean $enable_contacts  = lookup('profile::base::enable_contacts'),
-    String $core_dump_pattern = lookup('profile::base::core_dump_pattern'),
-    Boolean $manage_ssh_keys  = lookup('profile::base::manage_ssh_keys', {default_value => true}),
+    Hash    $wikimedia_clusters      = lookup('wikimedia_clusters'),
+    String  $cluster                 = lookup('cluster'),
+    String  $remote_syslog_send_logs = lookup('profile::base::remote_syslog_send_logs'),
+    Boolean $overlayfs               = lookup('profile::base::overlayfs'),
+    Boolean $enable_contacts         = lookup('profile::base::enable_contacts'),
+    String  $core_dump_pattern       = lookup('profile::base::core_dump_pattern'),
+    Boolean $manage_ssh_keys         = lookup('profile::base::manage_ssh_keys'),
+    Array   $remote_syslog           = lookup('profile::base::remote_syslog'),
+    Hash    $remote_syslog_tls       = lookup('profile::base::remote_syslog_tls'),
+    Hash    $ssh_server_settings     = lookup('profile::base::ssh_server_settings'),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -56,7 +67,7 @@ class profile::base(
         }
     }
 
-    #TODO: make base::sysctl a profile itself?
+    # TODO: make base::sysctl a profile itself?
     class { 'base::sysctl': }
     class { 'motd': }
     class { 'base::standard_packages': }
@@ -73,8 +84,9 @@ class profile::base(
     # # TODO: create profile::ssh::server
     # Ssh server default settings are good for most installs, but some overrides
     # might be needed
-
-    create_resources('class', {'ssh::server' => $ssh_server_settings})
+    class {'ssh::server':
+        * => $ssh_server_settings,
+    }
 
     class { 'base::kernel':
         overlayfs => $overlayfs,

@@ -1,3 +1,5 @@
+# @summary class to managed ssh client config
+# @param manage_ssh_keys indicate if we should manage the known_hosts file
 class ssh::client (
     Boolean $manage_ssh_keys = true,
 ) {

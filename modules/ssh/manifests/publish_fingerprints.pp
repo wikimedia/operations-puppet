@@ -1,4 +1,5 @@
-# Provisions a directory for publishing SSH fingerprints collected from PuppetDB
+# @summary Provisions a directory for publishing SSH fingerprints collected from PuppetDB
+# @param document_root the document root to right fingerprints
 class ssh::publish_fingerprints (
     Stdlib::Unixpath $document_root,
 ) {
@@ -10,7 +11,7 @@ class ssh::publish_fingerprints (
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-        content => template('ssh/publish_fingerprints/ssh-fingerprints.txt.erb')
+        content => template('ssh/publish_fingerprints/ssh-fingerprints.txt.erb'),
     }
 
     ['ecdsa', 'ed25519', 'rsa'].each |String $type| {
@@ -20,7 +21,7 @@ class ssh::publish_fingerprints (
             mode    => '0644',
             owner   => 'root',
             group   => 'root',
-            content => template('ssh/publish_fingerprints/known_hosts.erb')
+            content => template('ssh/publish_fingerprints/known_hosts.erb'),
         }
     }
 }

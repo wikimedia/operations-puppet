@@ -9,3 +9,8 @@ profile::base::remote_syslog_tls:
   esams: *default
   ulsfo: *default
   drmrs: *default
+profile::base::ssh_server_settings: {}
+profile::base::overlayfs: false
+profile::base::manage_ssh_keys: true
+profile::base::remote_syslog_send_logs: standard
+profile::base::remote_syslog: []

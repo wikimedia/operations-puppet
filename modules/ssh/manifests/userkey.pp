@@ -1,35 +1,30 @@
-# == Define: ssh::userkey
+# @summary
+#   Manages an SSH user (authorized) key. Unlike the native ssh_authorized_keys
+#   type, it doesn't try to be smart about the arguments and only takes a
+#   $content or $source argument, allowing e.g. forced command configurations.
 #
-# Manages an SSH user (authorized) key. Unlike the native ssh_authorized_keys
-# type, it doesn't try to be smart about the arguments and only takes a
-# $content or $source argument, allowing e.g. forced command configurations.
-#
-# Additionally, it does not try to coexist with preexisting, manual keys on the
-# system. The key file is managed in its entirety; if multiple keys are needed,
-# these need to be supplied in one go, in $content or $source, joined by
-# newlines.
-#
-# === Parameters
-#
-# [*ensure*]
+#   Additionally, it does not try to coexist with preexisting, manual keys on the
+#   system. The key file is managed in its entirety; if multiple keys are needed,
+#   these need to be supplied in one go, in $content or $source, joined by
+#   newlines.
+# @param ensure
 #   If 'present', config will be enabled; if 'absent', disabled.
 #   The default is 'present'.
-#
-# [*content*]
+# @param user
+#   The user key to configure defaults to title
+# @param content
 #   If defined, will be used as the content of the configuration
 #   file. Undefined by default. Mutually exclusive with 'source'.
-#
-# [*source*]
+# @param source
 #   Path to file containing configuration directives. Undefined by
 #   default. Mutually exclusive with 'content'.
-#
-# [*skey*]
+# @param skey
 #   If defined, a supplemental key for a user will be defined. The key will be
 #   stored in a file named ${user}.d/skey. ${user.d} will be created as well if
 #   it is not already defined. You probably don't want to use this for most
 #   cases.
 #
-# === Examples
+# @example Examples
 #
 #  ssh::userkey { 'john'
 #    ensure => present,
@@ -37,11 +32,11 @@
 #  }
 #
 define ssh::userkey(
-  $ensure  = present,
-  $user    = $title,
-  $skey    = undef,
-  $source  = undef,
-  $content = undef,
+  Wmflib::Ensure               $ensure  = present,
+  String[1]                    $user    = $title,
+  Optional[String[1]]          $skey    = undef,
+  Optional[Stdlib::Filesource] $source  = undef,
+  Optional[String[1]]          $content = undef,
 
 ) {
     if $skey {
@@ -60,7 +55,7 @@ define ssh::userkey(
     }
 
     file { $path:
-        ensure    => $ensure,
+        ensure    => stdlib::ensure($ensure, 'file'),
         force     => true,
         owner     => 'root',
         group     => 'root',
