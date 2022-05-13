@@ -1442,7 +1442,10 @@ node 'gitlab1001.wikimedia.org' {
 }
 
 # New gitlab nodes T301177
-node /^gitlab100[34]\.wikimedia\.org$/ {
+node 'gitlab1003.wikimedia.org' {
+    role(gitlab)
+}
+node 'gitlab1004.wikimedia.org' {
     role(insetup)
 }
 
