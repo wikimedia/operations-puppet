@@ -150,4 +150,8 @@ class profile::lists::monitoring (
         source => 'puppet:///modules/mtail/programs/exim.mtail',
         notify => Service['mtail'],
     }
+
+    class { 'prometheus::node_exim_queue':
+        ensure => present,
+    }
 }

@@ -187,6 +187,10 @@ class profile::mail::mx (
         dashboard_links => ['https://grafana.wikimedia.org/d/000000451/mail'],
     }
 
+    class { 'prometheus::node_exim_queue':
+        ensure => present,
+    }
+
     mtail::program { 'exim':
         ensure => present,
         notify => Service['mtail'],
