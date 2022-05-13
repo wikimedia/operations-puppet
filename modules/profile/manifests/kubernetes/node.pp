@@ -34,6 +34,8 @@ class profile::kubernetes::node (
     Integer[1800] $pki_renew_seconds = lookup('profile::kubernetes::pki::renew_seconds', { default_value => 952200 })
 ) {
     require profile::rsyslog::kubernetes
+    # Using netbox to know where we are situated in the datacenter
+    require profile::netbox::host
     $k8s_le_116 = versioncmp($version, '1.16') <= 0
 
     rsyslog::input::file { 'kubernetes-json':
@@ -136,7 +138,39 @@ class profile::kubernetes::node (
         }
     }
 
-    $node_labels = concat($kubelet_node_labels, "node.kubernetes.io/disk-type=${disk_type}")
+    # Get typology info from netbox data
+    $location = $profile::netbox::host::location
+    $region = $location['site']
+    $zone = $location ? {
+        # Ganeti instances will have their ganeti cluster and group as zone, like "ganeti-eqiad-a"
+        Netbox::Host::Location::Virtual   => "ganeti-${location['ganeti_cluster']}-${location['ganeti_group']}",
+        # The zone of metal instances depends on the layout of the row they are in
+        Netbox::Host::Location::BareMetal => if $location['rack'] =~ /^[A-D]\d$/ {
+                # The old row setup follows a per row redundancy model, therefore we
+                # expect zone to include the row without rack number, like "row-a".
+                regsubst($location['row'], "${region}-", '')
+            } else {
+                # With the new row setup (rows E and F currently) we include the rack number
+                # (like "row-e2") as we moved to a per rack redundancy model. We also need calico
+                # to select hosts in specific racks to BGP pair with their ToR switch.
+                # See: https://phabricator.wikimedia.org/T306649
+                "row-${location['rack']}"
+            },
+    }
+
+    if $k8s_le_116 {
+        $topology_labels = [
+            "failure-domain.beta.kubernetes.io/region=${downcase($region)}",
+            "failure-domain.beta.kubernetes.io/zone=${downcase($zone)}",
+        ]
+    } else {
+        $topology_labels = [
+            "topology.kubernetes.io/region=${downcase($region)}",
+            "topology.kubernetes.io/zone=${downcase($zone)}",
+        ]
+    }
+
+    $node_labels = concat($kubelet_node_labels, $topology_labels, "node.kubernetes.io/disk-type=${disk_type}")
     class { 'k8s::kubelet':
         cni                             => $use_cni,
         cluster_domain                  => $kubelet_cluster_domain,
