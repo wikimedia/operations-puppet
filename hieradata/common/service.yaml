@@ -3885,3 +3885,34 @@ service::catalog:
       - eqiad
       - codfw
     state: service_setup
+  # Netbox is not an LVS service. However it does warrant using discovery DC records for it.
+  # Note the lack of an 'lvs' stanza in the configuration below.
+  netbox:
+    description: Netbox Frontend
+    encryption: true
+    ip:
+      codfw:
+        default: 10.192.0.96
+      eqiad:
+        default: 10.64.0.186
+    page: true
+    probes:
+      - type: https
+        host: netbox.wikimedia.org
+        expect_sso: true
+    monitoring:
+      check_command: "check_https_sso_redirect!netbox.wikimedia.org!/"
+      notes_url: "https://wikitech.wikimedia.org/wiki/Netbox"
+      sites:
+        codfw:
+          hostname: netbox2002
+        eqiad:
+          hostname: netbox1002
+    sites:
+      - eqiad
+      - codfw
+    port: 443
+    state: service_setup
+    discovery:
+      - dnsdisc: netbox
+        active_active: false
