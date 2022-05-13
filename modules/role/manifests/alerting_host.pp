@@ -21,8 +21,6 @@ class role::alerting_host {
     include profile::scap::dsh
 
     include profile::dns::auth::monitoring::global
-    # temporary clean up of db backups check
-    include profile::dbbackups::check_cleanup
     include profile::statograph
 
     # Temporary until all hosts are on Buster

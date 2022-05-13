@@ -157,20 +157,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `cas`.* TO 'cas'@'10.192.0
 -- backupcheck @ dbbackups
 
 GRANT USAGE
-    ON *.* TO 'backupcheck'@'208.80.154.88'
-    IDENTIFIED BY '<%=@backupcheck_pass%>';
-
-GRANT SELECT
-    ON `dbbackups`.* TO 'backupcheck'@'208.80.154.88';
-
-GRANT USAGE
-    ON *.* TO 'backupcheck'@'208.80.153.84'
-    IDENTIFIED BY '<%=@backupcheck_pass%>';
-
-GRANT SELECT
-    ON `dbbackups`.* TO 'backupcheck'@'208.80.153.84';
-
-GRANT USAGE
     ON *.* TO 'backupcheck'@'10.64.48.150'
     IDENTIFIED BY '<%=@backupcheck_pass%>';
 
