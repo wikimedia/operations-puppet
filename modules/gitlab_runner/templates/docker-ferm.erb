@@ -1,0 +1,44 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+domain ip {
+	table filter {
+		chain FORWARD {
+			policy ACCEPT;
+			jump DOCKER-ISOLATION;
+			outerface docker0 jump DOCKER;
+			outerface docker0 mod conntrack ctstate (ESTABLISHED RELATED) ACCEPT;
+			interface docker0 outerface !docker0 ACCEPT;
+			# I am currently missing the point of this, just porting it
+			interface docker0 outerface docker0 ACCEPT;
+		}
+		chain OUTPUT {
+			policy ACCEPT;
+		}
+		# Empty chain in our case, just port it
+		chain DOCKER {
+		}
+		# Mostly empty chain, just port it
+		chain DOCKER-ISOLATION {
+			RETURN;
+		}
+	}
+	table nat {
+		chain PREROUTING {
+			policy ACCEPT;
+			mod addrtype dst-type LOCAL jump DOCKER;
+		}
+		chain INPUT {
+			policy ACCEPT;
+		}
+		chain OUTPUT {
+			policy ACCEPT;
+			mod addrtype dst-type LOCAL daddr !127.0.0.0/8 jump DOCKER;
+		}
+		chain POSTROUTING {
+			policy ACCEPT;
+                        outerface !docker0 saddr <%= @subnet %> MASQUERADE;
+		}
+		chain DOCKER {
+			interface docker0 RETURN;
+		}
+	}
+}

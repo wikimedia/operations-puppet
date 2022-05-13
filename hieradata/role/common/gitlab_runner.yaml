@@ -5,6 +5,8 @@ profile::gitlab::runner::docker_image: docker-registry.discovery.wmnet/buster:la
 profile::gitlab::runner::docker_volume: false
 profile::gitlab::runner::docker_volume_min: 40
 profile::gitlab::runner::docker_volume_max: 40
+profile::gitlab::runner::docker_network: gitlab-runner
+profile::gitlab::runner::docker_subnet: '172.20.0.0/16'
 profile::gitlab::runner::docker_settings: {}
 profile::gitlab::runner::docker_version: '18.09.1+dfsg1-7.1+deb10u3'
 profile::gitlab::runner::docker_gc_interval: 5m
@@ -28,4 +30,6 @@ profile::gitlab::runner::allowed_services:
   gitlab-replica-https: # for failover between instances without restarting ferm on runners
     host: 'gitlab-replica.wikimedia.org'
     port: 443
+profile::gitlab::runner::ensure_buildkitd: present
+profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/buildkitd:0.10.3
 profile::base::overlayfs: true
