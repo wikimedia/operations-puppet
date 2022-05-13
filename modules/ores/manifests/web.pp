@@ -30,7 +30,6 @@ class ores::web(
         'ALL=(root) NOPASSWD: /usr/sbin/service celery-ores-worker *',
     ]
 
-
     # Ores is controlled via a custom systemd unit (uwsgi-ores),
     # so avoid the generic uwsgi sysvinit script shipped in the
     # Debian package
@@ -57,13 +56,6 @@ class ores::web(
             stats-push           => "statsd:${statsd_host}:${statsd_port},ores.${::hostname}.uwsgi",
             skip-atexit-teardown => true,
         },
-    }
-
-    # Temporary needed to support both Celery 4 and Celery 5 configs
-    # T303801
-    $worker_max_tasks_per_child = $celery_version <= 4 ? {
-        false => 100,
-        true  => '100',
     }
 
     $base_config = {
@@ -104,7 +96,7 @@ class ores::web(
                     '87.77.0.0/16',
                     '160.45.0.0/16',
                 ],
-                'worker_max_tasks_per_child' => $worker_max_tasks_per_child,
+                'worker_max_tasks_per_child' => 100,
             },
         },
         'lock_managers' => {
@@ -157,5 +149,4 @@ class ores::web(
         owner    => $ores_config_user,
         group    => $ores_config_group,
     }
-
 }
