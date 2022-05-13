@@ -1,26 +1,31 @@
 #!/bin/bash
 
-set -e
+set -eu
+set -o pipefail
 
-OUTFILE='/var/lib/prometheus/node.d/exim_queue.prom'
+outfile="$(realpath "${1:-/var/lib/prometheus/node.d/exim_queue.prom}")"
+tmpoutfile="${outfile}.$$"
+function cleanup {
+    rm -f "$tmpoutfile"
+}
+trap cleanup EXIT
 
 if [ "$(id -u)"  != "0" ] ; then
-	echo "root required!" >&2
-	exit 1
+    echo "root required!" >&2
+    exit 1
 fi
 
-queue_length=$(mailq 2>/dev/null | grep '<' | wc -l || echo 0)
-frozen_length=$(mailq 2>/dev/null | grep '<' | grep '\*\*\* frozen \*\*\*' | wc -l || echo 0)
+queue_length=$(mailq | grep -c '<')
+frozen_length=$(mailq | grep -c '<.* \*\*\* frozen \*\*\*')
 
-echo "
+cat <<EOF >"$tmpoutfile"
 # HELP exim_queue_length Exim queue length
 # TYPE exim_queue_length gauge
 exim_queue_length $queue_length
 # HELP exim_queue_length_frozen Exim queue length for frozen messages
 # TYPE exim_queue_length_frozen gauge
 exim_queue_length_frozen $frozen_length
-" > $OUTFILE.$$
+EOF
 
-# lets try to be atomic
-chown prometheus:prometheus $OUTFILE.$$ 2>/dev/null
-mv $OUTFILE.$$ $OUTFILE 2>/dev/null
+mv "$tmpoutfile" "$outfile"
+chmod a+r "$outfile"
