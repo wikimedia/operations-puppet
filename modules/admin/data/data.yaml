@@ -6083,3 +6083,7 @@ ldap_only_users:
     ensure: present
     realname: Esther Akinloose
     email: eakinloose@wikimedia.org  # In LDAP with a gmail address
+  dmantena:
+    ensure: present
+    realname: Deepak Mantena
+    email: dmantena@wikimedia.org
