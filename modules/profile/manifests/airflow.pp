@@ -61,6 +61,15 @@ class profile::airflow(
     String  $airflow_database_host_default = lookup('profile::airflow::database_host_default', { 'default_value' => 'an-coord1001.eqiad.wmnet' })
 ) {
 
+    # Need to make sure a few packages exist. Some airflow code
+    # (like Hive sensors) depends on these.
+    # TODO: consider using conda deps to install these in the airflow conda env instead.
+    ensure_packages([
+        'sasl2-bin',
+        'libsasl2-dev',
+        'libsasl2-modules-gssapi-mit',
+    ])
+
     # If use_wmf_defaults, merge in smart per instance wmf defaults.
     $airflow_instances_with_defaults = $use_wmf_defaults ? {
         # Not $use_wmf_defaults, keep $airflow_instances as provided.
