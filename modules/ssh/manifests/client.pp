@@ -4,13 +4,15 @@
 #   most other parameters are only valid if this is true
 # @param hash_known_hosts HashKnownHosts value
 # @param gss_api_authentication GSSAPIAuthentication value
+# @param gss_api_delegate_credentials GSSAPIDelegateCredentials value
 # @param send_env list of environment variables to send
 class ssh::client (
-    Boolean          $manage_ssh_keys        = true,
-    Boolean          $manage_ssh_config      = true,
-    Boolean          $hash_known_hosts       = true,
-    Boolean          $gss_api_authentication = true,
-    Array[String[1]] $send_env               = ['LANG', 'LC_*'],
+    Boolean          $manage_ssh_keys              = true,
+    Boolean          $manage_ssh_config            = true,
+    Boolean          $hash_known_hosts             = true,
+    Boolean          $gss_api_authentication       = true,
+    Boolean          $gss_api_delegate_credentials = false,
+    Array[String[1]] $send_env                     = ['LANG', 'LC_*'],
 ) {
     ensure_packages('openssh-client')
 

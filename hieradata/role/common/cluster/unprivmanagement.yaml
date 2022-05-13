@@ -1,4 +1,5 @@
 profile::admin::groups:
   - datacenter-ops
 profile::kerberos::client::show_krb_ticket_info: true
+profile::ssh::client::gss_api_delegate_credentials: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']

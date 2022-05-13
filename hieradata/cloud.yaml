@@ -616,6 +616,7 @@ profile::ssh::client::manage_ssh_keys: true
 profile::ssh::client::manage_ssh_config: false
 profile::ssh::client::hash_known_hosts: true
 profile::ssh::client::gss_api_authentication: true
+profile::ssh::client::gss_api_delegate_credentials: false
 profile::ssh::client::send_env: ['LANG', 'LC_*']
 
 profile::cache::varnish::frontend::backends_in_etcd: true
