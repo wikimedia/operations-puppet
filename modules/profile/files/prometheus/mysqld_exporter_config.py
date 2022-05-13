@@ -9,8 +9,9 @@ manually on different places
 import argparse
 import logging
 import os
-import pymysql
 import sys
+
+import pymysql
 import yaml
 
 TLS_TRUSTED_CA = '/etc/ssl/certs/Puppet_Internal_CA.pem'
@@ -26,13 +27,16 @@ def get_socket(instance):
     profile::mariadb::*multiinstance if you change this.
     """
     if ':' not in instance:
-        return instance + ':9104'
-    else:
-        port = int(instance.split(':')[1]) + 10000
-        return instance.split(':')[0] + ':' + str(port)
+        return f'{instance}:9104'
+    host, port = instance.rsplit(':', 1)
+    return f'{host}:{int(port) + 10000}'
 
 
 def get_options():
+    """
+    Return an object with the datacenter to be monitored and the path of the prometheus job
+    configuration as read from the command line arguments
+    """
     parser = argparse.ArgumentParser(description='Generate mysql prometheus exporter targets.')
     parser.add_argument('dc', choices=DATACENTERS,
                         help='Datacenter to generate files for.')
@@ -43,9 +47,12 @@ def get_options():
 
 
 def get_db_config():
+    """
+    Read from a local file and return the database configuration parameters
+    """
     logger = logging.getLogger('prometheus')
     try:
-        config = yaml.load(open(DB_CONFIG_FILE))
+        config = yaml.safe_load(open(DB_CONFIG_FILE))
     except yaml.YAMLError:
         logger.exception('Error opening or parsing the YAML config file')
         sys.exit(1)
@@ -61,13 +68,17 @@ def get_db_config():
 
 
 def get_data(host, port, database, user, password, dc):
+    """
+    Connect to the database, query all needed data, do basic checks (e.g. no empty results)
+    and return it as is.
+    """
     logger = logging.getLogger('prometheus')
     try:
         db = pymysql.connect(host=host, port=port, database=database,
                              user=user, password=password,
                              ssl={'ca': TLS_TRUSTED_CA}, connect_timeout=10)
     except pymysql.err.OperationalError:
-        logger.exception('We could not connect to {} to store the stats'.format(host))
+        logger.exception('We could not connect to %s to store the stats', host)
         sys.exit(4)
 
     # query instances and its sections, groups and if they are masters or not
@@ -102,6 +113,10 @@ def get_data(host, port, database, user, password, dc):
 
 
 def transform_data_to_prometheus(data):
+    """
+    Transforms the data as received in the database format to the one
+    expected by the prometheus job configuration
+    """
     # convert database format to dictionary. Eg.:
     # core:                <-- group
     #   s1:                <-- section (shard)
@@ -168,7 +183,7 @@ def check_and_write_to_disk(prometheus, dc, config_path):
     """
     logger = logging.getLogger('prometheus')
     for group, sections in sorted(prometheus.items()):
-        filename = 'mysql-{}_{}.yaml'.format(group, dc)
+        filename = f'mysql-{group}_{dc}.yaml'
         path = os.path.join(config_path, filename)
         try:
             previous_config = open(path, 'r').read()
@@ -180,19 +195,23 @@ def check_and_write_to_disk(prometheus, dc, config_path):
             sys.exit(8)
         new_config = yaml.dump(sections, default_flow_style=False)
         if previous_config == new_config:
-            logger.debug('{} is identical to the new one queries, '
-                         'skiping overwrite'.format(filename))
+            logger.debug('%s is identical to the new one queries, '
+                         'skiping overwrite', filename)
         else:
             try:
                 with open(path, 'w') as outfile:
                     yaml.dump(sections, outfile, default_flow_style=False)
             except IOError:
-                logger.exception('Error updating file {}'.format(filename))
+                logger.exception('Error updating file %s', filename)
                 sys.exit(9)
-            logger.info('{} was modified'.format(filename))
+            logger.info('%s was modified', filename)
 
 
 def main():
+    """
+    Reads the instance configuration from the database and, if it changed,
+    overwrite the prometheus mysqld exporter job scheduling config.
+    """
     # get datacenter and prometheus config path from command line
     options = get_options()
     dc = options.dc
