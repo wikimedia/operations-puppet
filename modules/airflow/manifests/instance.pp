@@ -414,10 +414,10 @@ define airflow::instance(
 
     sudo::user { "airflow_checks_${title}":
         ensure     => $monitoring_ensure,
-        user       => $service_user,
+        user       => nagios,
         privileges => [
-            "nagios ALL = (${service_user}) NOPASSWD: ${check_scheduler_command}",
-            "nagios ALL = (${service_user}) NOPASSWD: ${check_db_command}",
+            "ALL = (${service_user}) NOPASSWD: ${check_scheduler_command}",
+            "ALL = (${service_user}) NOPASSWD: ${check_db_command}",
             ],
     }
     nrpe::monitor_service { "airflow@${title}_check_scheduler":
