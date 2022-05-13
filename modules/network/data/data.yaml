@@ -45,7 +45,8 @@ network::infrastructure:
   eqiad:
     - 208.80.154.192/27
     - 2620:0:861:fe00::/55
-    - 10.64.146.0/24
+    - 10.64.146.0/24 # Overlay and Switch Loopbacks
+    - 10.64.147.0/24 # Private link addressing
   eqsin:
     - 103.102.166.128/27
     - 2001:df2:e500:fe00::/55
@@ -99,7 +100,7 @@ network::subnets:
         private1-d-eqiad:
           ipv4: 10.64.48.0/22
           ipv6: 2620:0:861:107::/64
-        labs-hosts1-b-eqiad:
+        cloud-hosts1-eqiad:
           ipv4: 10.64.20.0/24
           ipv6: 2620:0:861:118::/64
         labs-hosts1-d-eqiad:
@@ -178,6 +179,12 @@ network::subnets:
         analytics1-f3-eqiad:
           ipv4: 10.64.144.0/24
           ipv6: 2620:0:861:116::/64
+        cloud-hosts1-e4-eqiad:
+          ipv4: 10.64.148.0/24
+          ipv6: 2620:0:861:11c::/64
+        cloud-hosts1-f4-eqiad:
+          ipv4: 10.64.149.0/24
+          ipv6: 2620:0:861:11d::/64
 
     codfw:
       public:
@@ -209,7 +216,7 @@ network::subnets:
         private1-d-codfw:
           ipv4: 10.192.48.0/22
           ipv6: 2620:0:860:104::/64
-        labs-hosts1-b-codfw:
+        cloud-hosts1-codfw:
           ipv4: 10.192.20.0/24
           ipv6: 2620:0:860:118::/64
         labs-support1-b-codfw:

@@ -18,8 +18,10 @@ class profile::ceph::mon(
     include network::constants
 
     $client_networks = [
-        $network::constants::all_network_subnets['production']['eqiad']['private']['labs-hosts1-b-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['codfw']['private']['labs-hosts1-b-codfw']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-e4-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-f4-eqiad']['ipv4'],
+        $network::constants::all_network_subnets['production']['codfw']['private']['cloud-hosts1-codfw']['ipv4'],
     ]
 
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
