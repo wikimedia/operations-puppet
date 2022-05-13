@@ -1,3 +1,4 @@
+profile::kubernetes::deployment_server::helm_user_group: wikidev
 profile::admin::groups:
   - releasers-blubber
   - releasers-mediawiki

@@ -625,3 +625,5 @@ profile::cache::varnish::frontend::uds_group: root
 profile::cache::varnish::frontend::uds_mode: '700'
 profile::cache::varnish::frontend::separate_vcl: []
 profile::cache::varnish::frontend::use_etcd_req_filters: false
+
+profile::kubernetes::deployment_server::helm_user_group: deployment

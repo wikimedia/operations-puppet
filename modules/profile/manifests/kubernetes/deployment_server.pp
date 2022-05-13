@@ -1,4 +1,11 @@
-# Class makes sure we got a deployment server ready
+# @summary Profile to make sure we got a deployment server ready
+# @param kubernetes_cluster_groups dict of kubernetes cluster groups
+# @param user_defaults user group and mode defaults
+# @param services Dict of services
+# @param tokens dict of tokens
+# @param packages_from_future packages to install from component/kubernetes-future
+# @param include_admin if true include profile::kubernetes::kubeconfig::admin
+# @param helm_user_group the group used for the helm cache directory
 class profile::kubernetes::deployment_server(
     Hash[String, Hash] $kubernetes_cluster_groups                      = lookup('kubernetes_cluster_groups'),
     Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
@@ -6,10 +13,13 @@ class profile::kubernetes::deployment_server(
     Hash[String, Hash[String, Hash]] $tokens                           = lookup('profile::kubernetes::infrastructure_users', {default_value => {}}),
     Boolean $packages_from_future                                      = lookup('profile::kubernetes::deployment_server::packages_from_future', {default_value => false}),
     Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', {default_value => false}),
+    String $helm_user_group                                            = lookup('profile::kubernetes::helm_user_group')
 ){
 
-    class { '::helm': }
-    class { '::k8s::client':
+    class { 'helm':
+        helm_user_group => $helm_user_group,
+    }
+    class { 'k8s::client':
         packages_from_future => $packages_from_future,
     }
 
@@ -58,7 +68,7 @@ class profile::kubernetes::deployment_server(
     # Now if we're including the admin account, add it for every cluster in the cluster
     # group.
     if $include_admin {
-        class { '::profile::kubernetes::kubeconfig::admin': }
+        class { 'profile::kubernetes::kubeconfig::admin': }
     }
 
 
@@ -79,7 +89,7 @@ class profile::kubernetes::deployment_server(
     }.flatten().unique()
     # Add a script to profile.d with functions to set the configuration for kubernetes.
     file { '/etc/profile.d/kube-env.sh':
-        ensure  => present,
+        ensure  => file,
         content => template('profile/kubernetes/kube-env.sh.erb'),
         mode    => '0555',
     }

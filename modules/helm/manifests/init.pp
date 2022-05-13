@@ -1,8 +1,18 @@
+# @summary configure helm
+# @param helm_home helm home directory
+# @param helm_data helm data directory
+# @param helm_cache helm cache directory
+# @param helm_user_group the group used by helm users, will be used for helm_cache
+# @param repositories repo config
 class helm(
-    Stdlib::Unixpath $helm_home='/etc/helm',
-    Stdlib::Unixpath $helm_data='/usr/share/helm',
-    Stdlib::Unixpath $helm_cache='/var/cache/helm',
-    Hash[String[1], Stdlib::Httpurl] $repositories={'stable' => 'https://helm-charts.wikimedia.org/stable/', 'wmf-stable' => 'https://helm-charts.wikimedia.org/stable'},
+    Stdlib::Unixpath $helm_home       = '/etc/helm',
+    Stdlib::Unixpath $helm_data       = '/usr/share/helm',
+    Stdlib::Unixpath $helm_cache      = '/var/cache/helm',
+    String[1]        $helm_user_group = 'wikidev',
+    Hash[String[1], Stdlib::Httpurl] $repositories = {
+        'stable' => 'https://helm-charts.wikimedia.org/stable/',
+        'wmf-stable' => 'https://helm-charts.wikimedia.org/stable',
+    },
 ) {
     package { [ 'helm3' ]:
         ensure => installed,
@@ -47,7 +57,7 @@ class helm(
     file { $helm_cache:
         ensure  => directory,
         owner   => 'helm',
-        group   => 'deployment',
+        group   => $helm_user_group,
         mode    => '0775',
         recurse => true,
     }
@@ -63,7 +73,10 @@ class helm(
             ],
             unless      => "/usr/bin/helm3 repo list | /bin/grep -E -q '^${name}\\s+${url}'",
             user        => 'helm',
-            require     => [User['helm'], File[$helm_home], File[$helm_cache]]
+            require     => [
+                User['helm'],
+                File[$helm_home, $helm_cache],
+            ],
         }
     }
 

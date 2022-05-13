@@ -1,3 +1,4 @@
+profile::kubernetes::deployment_server::helm_user_group: contint-admins
 profile::admin::groups:
   - contint-users
   - contint-admins

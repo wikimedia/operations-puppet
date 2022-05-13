@@ -1,3 +1,4 @@
+profile::kubernetes::deployment_server::helm_user_group: deployment
 profile::kubernetes::deployment_server::user_defaults:
   owner: mwdeploy
   group: deployment
