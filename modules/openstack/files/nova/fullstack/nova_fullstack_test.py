@@ -63,6 +63,9 @@ class Timer:
 class ECSFormatter(logging.Formatter):
     """ECS 1.7.0 logging formatter"""
 
+    def __init__(self):
+        self.hostname = ""
+
     def format(self, record):
         ecs_message = {
             "ecs.version": "1.7.0",
@@ -71,6 +74,7 @@ class ECSFormatter(logging.Formatter):
             "log.origin.file.name": record.filename,
             "log.origin.file.path": record.pathname,
             "log.origin.function": record.funcName,
+            "log.test.hostname": self.hostname,
             "message": str(record.msg),
             "process.name": record.processName,
             "process.thread.id": record.process,
@@ -83,6 +87,9 @@ class ECSFormatter(logging.Formatter):
             ecs_message["error.stack"] = record.exc_text
         # Prefix "@cee" cookie indicating rsyslog should parse the message as JSON
         return "@cee: %s" % json.dumps(ecs_message)
+
+    def set_hostname(self, hostname):
+        self.hostname = hostname
 
 
 def log_unhandled_exception(exc_type, exc_value, exc_traceback):
@@ -592,7 +599,8 @@ def main():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG if args.debug else logging.INFO)
     logHandler = logging.StreamHandler()
-    logHandler.setFormatter(ECSFormatter())
+    logformatter = ECSFormatter()
+    logHandler.setFormatter(logformatter)
     logger.addHandler(logHandler)
 
     if args.adhoc_command and args.skip_ssh:
@@ -637,6 +645,7 @@ def main():
         prepend = args.prepend
         date = int(datetime.today().strftime("%Y%m%d%H%M%S"))
         name = "{}-{}".format(prepend, date)
+        logformatter.set_hostname(name)
 
         exist = nova_conn.servers.list()
         logging.debug(exist)
