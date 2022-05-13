@@ -180,6 +180,11 @@
 #   Enable client-side encryption
 #   Default: false
 #
+# [*client_encryption_optional*]
+#   Controls whether client encryption is optional (only relevant when encryption is enabled,
+#   see: client_encryption_enabled)
+#   Default: false
+#
 # [*auto_bootstrap*]
 #   Control whether new nodes joining the cluster will get data they own.
 #   Default: true
@@ -253,6 +258,7 @@ define cassandra::instance(
     Integer                               $key_cache_size_in_mb             = 400,
     Enum['all','dc', 'none']              $internode_encryption             = 'none',
     Boolean                               $client_encryption_enabled        = false,
+    Boolean                               $client_encryption_optional       = false,
     Boolean                               $auto_bootstrap                   = true,
     Boolean                               $monitor_enabled                  = true,
 ) {

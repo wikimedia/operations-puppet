@@ -1066,7 +1066,7 @@ server_encryption_options:
 client_encryption_options:
     enabled: <%= @client_encryption_enabled %>
     # If enabled and optional is set to true encrypted and unencrypted connections are handled.
-    optional: false
+    optional: <%= @client_encryption_optional %>
     keystore: <%= @config_directory %>/tls/server.key
     keystore_password: placeholder
     # require_client_auth: false

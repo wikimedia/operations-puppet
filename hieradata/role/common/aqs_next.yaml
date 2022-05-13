@@ -50,6 +50,7 @@ profile::cassandra::instances:
 profile::cassandra::settings:
   dc: "%{::site}"
   cluster_name: "Analytics Query Service Storage"
+  tls_cluster_name: aqs
   start_rpc: false
   target_version: 'dev'
   default_instance_params:
@@ -73,6 +74,13 @@ profile::cassandra::settings:
     # so we need to increase caching to allow better performances
     # (default value 2s).
     permissions_validity_in_ms: 600000
+
+    # Enable node-to-node encryption only between datacenters.
+    internode_encryption: dc
+
+    # Enable client encryption, though optional for the time being (see: T307798).
+    client_encryption_enabled: true
+    client_encryption_optional: true
   users:
     - aqs
     - image_suggestions
