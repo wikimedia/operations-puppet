@@ -62,7 +62,6 @@ def add_spdx_tags(files)
   # Add the SPDX_TAGS near the top of a each file passed
   unknown_files = []
   files.each do |filename|
-    puts "#{filename}: adding spdx licence"
     begin
       tag = comment_line(filename, SPDX_TAG)
     rescue UnknownExtensionError => error
@@ -71,6 +70,7 @@ def add_spdx_tags(files)
     rescue NoCommentSupoportError
       next
     end
+    puts "#{filename}: adding spdx licence"
     File.open(filename, 'r+') do |fh|
       while line = fh.readline  # rubocop:disable Lint/AssignmentInCondition
         break unless line[0..1] == '#!'
