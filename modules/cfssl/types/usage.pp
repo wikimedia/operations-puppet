@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # https://github.com/cloudflare/cfssl/blob/master/config/config.go#L639
 type Cfssl::Usage = Enum[
     'any',

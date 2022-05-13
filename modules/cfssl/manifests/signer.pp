@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure cfssl api service
 # @param ca_key_content content of the CA private key
 # @param ca_cert_content content of the CA public key

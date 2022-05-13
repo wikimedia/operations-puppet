@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 HOSTS:
   debian-10-x64:
     platform: debian-10-amd64

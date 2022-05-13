@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Title should match the cfssl::signer title
 # @param ocsprefresh_update if true update the ocsp response table otherwise just check for updates
 define cfssl::ocsp (

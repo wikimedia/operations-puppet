@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Cfssl::Profile = Struct[{
     usages        => Optional[Array[Cfssl::Usage]],
     expiry        => Optional[Cfssl::Expiry],

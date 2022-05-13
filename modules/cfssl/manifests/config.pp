@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary create a cfssl json config file
 # @param ensure ensurable parameter
 # @param default_auth_key the default key to use if none specified

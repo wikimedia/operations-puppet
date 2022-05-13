@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary a resource for creating csr json files
 define cfssl::cert (
     String                         $common_name    = $title,

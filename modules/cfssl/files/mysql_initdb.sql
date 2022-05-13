@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: Apache-2.0
 -- https://github.com/cloudflare/cfssl/blob/1.3.0/certdb/mysql/migrations/001_CreateCertificates.sql
 CREATE TABLE certificates (
   serial_number            varbinary(128) NOT NULL,

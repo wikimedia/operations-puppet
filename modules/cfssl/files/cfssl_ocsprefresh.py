@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Script used to refresh the ocsp database and regenerate the ocsp responses
 This script will regenerate the OCSP responses for a specific CA if any CA has
 issued a new certificate.  This means that there will be spurious updates however

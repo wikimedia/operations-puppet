@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure cfssl api service
 # @param conf_dir location of the configuration directory
 class cfssl (

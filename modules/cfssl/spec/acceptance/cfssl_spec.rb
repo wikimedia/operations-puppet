@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # frozen_string_literal: true
 
 require 'spec_helper_acceptance'

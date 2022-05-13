@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure cfssl multirootca
 # @param ensure whether to ensure this class
 # @param host the host address to listen on

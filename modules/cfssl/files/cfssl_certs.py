@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Script used to insert manually generated scripts into the database and also
 via nrpe to check certificate expiry
 """

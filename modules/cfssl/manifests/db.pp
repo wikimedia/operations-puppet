@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary rceate a cfssl dg config file
 # @param driver which sql driver to use
 # @param username the username to use for the specified driver

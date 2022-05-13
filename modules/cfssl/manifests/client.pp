@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary configure cfssl client
 # @param ensure whether to ensure the resource
 # @param conf_dir location of the configuration directory

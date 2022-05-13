@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Cfssl::Key = Struct[{
     algo => Cfssl::Algo,
     size => Variant[
