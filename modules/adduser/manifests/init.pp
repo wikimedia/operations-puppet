@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class adduser (
     Stdlib::Unixpath           $default_shell     = '/bin/bash',
     Stdlib::Unixpath           $default_home      = '/home',

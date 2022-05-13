@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: debdeploy::client
 #
 # debdeploy, used to rollout software updates. Updates are initiated via
