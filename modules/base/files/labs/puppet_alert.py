@@ -245,14 +245,14 @@ def main():
         )
     elif too_old and has_errors:
         first_line = (
-            "Puppet did not run in the last {} seconds, and the last run was "
+            "Puppet did not run in the last {:.0f} seconds, and the last run was "
             "a failure.".format(last_success_elapsed)
         )
 
     elif too_old:
         first_line = (
-            "Puppet did not run in the last {}, though the last run was a "
-            "success.".format(last_success_elapsed)
+            "Puppet did not run in the last {:.0f} seconds, though the last run was "
+            "a success.".format(last_success_elapsed)
         )
 
     elif has_errors:
