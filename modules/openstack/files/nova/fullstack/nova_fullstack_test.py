@@ -74,7 +74,7 @@ class ECSFormatter(logging.Formatter):
             "log.origin.file.name": record.filename,
             "log.origin.file.path": record.pathname,
             "log.origin.function": record.funcName,
-            "log.test.hostname": self.hostname,
+            "labels": {"test_hostname": self.hostname},
             "message": str(record.msg),
             "process.name": record.processName,
             "process.thread.id": record.process,
