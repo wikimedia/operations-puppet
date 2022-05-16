@@ -9,10 +9,13 @@ define graphite::carbon_cache_instance {
         require  => File['/lib/systemd/system/carbon-cache@.service'],
     }
 
+    systemd::tmpfile{ "${service_name}-logs-cleanup":
+      ensure  => 'present',
+      content => "e ${log_dir} - - - 15d",
+    }
+
     cron { "${service_name}-cleanup":
-        command => "[ -d ${log_dir} ] && find ${log_dir} -type f -mtime +15 -iname '*.log.*' -delete",
-        user    => '_graphite',
-        hour    => fqdn_rand(24, $title),
-        minute  => fqdn_rand(60, $title),
+        ensure => 'absent',
+        user   => '_graphite',
     }
 }
