@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Checks the metadata database backups of a particular section, datacenter
 # and type, and sets up an icinga alert about it
 define dbbackups::check (

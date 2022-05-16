@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Common setup for the database backups check:
 # package installation and config file
 class dbbackups::check_common (
