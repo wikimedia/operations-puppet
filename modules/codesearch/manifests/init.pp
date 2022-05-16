@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: codesearch
 #
 # This class sets up the basics needed for MediaWiki code search
