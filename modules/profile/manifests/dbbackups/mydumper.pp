@@ -82,16 +82,23 @@ class profile::dbbackups::mydumper {
         mode   => '0740',
     }
 
+    systemd::timer::job { 'dumps-sections':
+        ensure        => 'present',
+        description   => 'MariaDB backups',
+        command       => '/usr/bin/backup-mariadb --config-file=/etc/wmfbackups/backups.cnf',
+        user          => 'dump',
+        interval      => { 'start' => 'OnCalendar', 'interval' => 'Tue *-*-* 00:00:00'},
+        # Ignore any errors to avoid triggering Icinga alerts
+        # if one or several of the backups fail.
+        # Backup status notifications are handled in the backup check script.
+        # Once 820664 has been merged, we will remove ignore_errors,
+        # to ensure that we're notified about any other potential errors.
+        ignore_errors => true,
+    }
+
     cron { 'dumps-sections':
-        minute  => 0,
-        hour    => 0,
-        weekday => 2,
-        user    => 'dump',
-        command => 'backup-mariadb --config-file=/etc/wmfbackups/backups.cnf >/dev/null 2>&1',
-        require => [Package['wmfbackups'],
-                    File['/etc/wmfbackups/backups.cnf'],
-                    File['/srv/backups/dumps/ongoing'],
-        ],
+        ensure => 'absent',
+        user   => 'dump',
     }
 
     class { 'toil::systemd_scope_cleanup': }  # T265323
