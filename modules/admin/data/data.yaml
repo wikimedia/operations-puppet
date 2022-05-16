@@ -467,7 +467,7 @@ groups:
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
-    members: [twentyafterfour, thcipriani, brennen, jnuche]
+    members: [twentyafterfour, thcipriani, brennen, jnuche, hashar]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
