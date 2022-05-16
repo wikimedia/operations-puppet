@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: libraryupgrader
 #
 # This class sets up libraryupgrader aka LibUp
