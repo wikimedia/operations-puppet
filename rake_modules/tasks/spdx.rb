@@ -35,23 +35,25 @@ end
 def comment_line(filename, line)
   # format a line as a comment using the file type specific comment
   # filetype is calculated based on the file extension
-  case filename.split('.')[-1]
-  when /erb|epp/
+  ext = filename.split('.')[-1].downcase.strip
+  case ext
+  when /\A(?:erb|epp)\z/
     "<%#- #{line} -%>\n"
-  when /jinja/
+  when /\A(?:jinja)\z/
     "{# #{line} #}\n"
-  when /html|md|markdown|xml/
+  when /\A(?:html|md|markdown|xml)\z/
     "<!-- #{line} -->\n"
-  when /css/
+  when /\A(?:css)\z/
     "/* #{line} */\n"
-  when /vcl|php|groovy|js/
+  when /\A(?:vcl|php|groovy|js)\z/
     "// #{line}\n"
-  when /cf|cfg|csh|ini|pl|pp|properties|py|R|rb|rc|service|sh|stp|vtc|yaml|yml/
+  when /\A(?:cf|cfg|csh|ini|pl|pp|properties|py|R|rb|rc|service|sh|stp|vtc|yaml|yml)\z/
     "# #{line}\n"
-  when /lua|sql/
+  when /\A(?:lua|sql)\z/
     "-- #{line}\n"
-  when /json|pem|key/
+  when /\A(?:json|pem|key)\z/
     # Theses files don't support comments so skip them
+    puts 'HERE'
     raise NoCommentSupoportError
   else
     raise UnknownExtensionError, filename
@@ -68,6 +70,7 @@ def add_spdx_tags(files)
       unknown_files << error.filename
       next
     rescue NoCommentSupoportError
+      puts 'HERE'
       next
     end
     puts "#{filename}: adding spdx licence"
