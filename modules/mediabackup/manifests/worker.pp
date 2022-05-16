@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Media backups worker: Install required packages and configures
 # them.
 # * mw_db_host: fqdn pf the mediawiki core database used to read the image metadata

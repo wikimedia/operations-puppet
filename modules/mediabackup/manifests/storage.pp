@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Media backups storage: Install required packages and configures
 # them.
 #
