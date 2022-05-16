@@ -51,13 +51,19 @@ class scap::l10nupdate(
         ],
     }
 
+    systemd::timer::job { 'l10nupdate':
+        ensure          => $ensure_l10nupdate_cron,
+        description     => 'l10nupdate',
+        user            => 'l10nupdate',
+        command         => '/usr/local/bin/l10nupdate-1 --verbose',
+        logfile_basedir => '/var/log/l10nupdatelog/',
+        logfile_name    => 'l10nupdate.log',
+        interval        => { 'start' => 'OnCalendar', 'interval' => 'Mon,Tue,Wed,Thu *-*-* 02:00:00'},
+    }
+
     cron { 'l10nupdate':
-        ensure  => $ensure_l10nupdate_cron,
-        command => '/usr/local/bin/l10nupdate-1 --verbose >> /var/log/l10nupdatelog/l10nupdate.log 2>&1',
-        user    => 'l10nupdate',
-        weekday => ['1', '2', '3', '4'],
-        hour    => '2',
-        minute  => '0',
+        ensure => 'absent',
+        user   => 'l10nupdate',
     }
 
     file { '/usr/local/bin/l10nupdate':
@@ -117,11 +123,6 @@ class scap::l10nupdate(
         owner  => $::mediawiki::users::web,
         group  => $::mediawiki::users::web,
         mode   => '0755',
-    }
-
-    logrotate::conf { 'l10nupdate':
-        ensure => present,
-        source => 'puppet:///modules/scap/l10nupdate.logrotate'
     }
 
     # Git clones for the l10update git job
