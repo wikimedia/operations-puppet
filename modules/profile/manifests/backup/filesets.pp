@@ -207,4 +207,11 @@ class profile::backup::filesets(
     bacula::director::fileset { 'mediawiki-k8s-releases-repository':
         includes => [ "${helmfile_general_dir}/mediawiki/release"]
     }
+    # Cumin/Spicerack/Cookbooks logs. See T304497
+    bacula::director::fileset { 'cluster-management-logs':
+        includes => [
+            '/var/log/cumin',
+            '/var/log/spicerack',
+        ]
+    }
 }
