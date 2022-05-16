@@ -5,7 +5,6 @@ profile::ssh::server::authorized_keys_file:
 profile::ganeti::rapi_nodes:
     - netbox1001.wikimedia.org
     - netbox2001.wikimedia.org
-    - netbox-dev2001.wikimedia.org
     - netbox-dev2002.codfw.wmnet
     - netmon1002.wikimedia.org
     - netmon2001.wikimedia.org

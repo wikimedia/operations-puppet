@@ -1025,11 +1025,6 @@ host netboxdb2001 {
    fixed-address netboxdb2001.codfw.wmnet;
 }
 
-host netbox-dev2001 {
-   hardware ethernet aa:00:00:df:15:1f;
-   fixed-address netbox-dev2001.wikimedia.org;
-}
-
 host netbox-dev2002 {
    hardware ethernet aa:00:00:d8:a8:d5;
    fixed-address netbox-dev2002.codfw.wmnet;

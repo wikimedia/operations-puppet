@@ -2515,10 +2515,6 @@ node /^netboxdb(1001|2001)\.(eqiad|codfw)\.wmnet$/ {
     role(netbox::database)
 }
 
-node /^netbox-dev2001\.wikimedia\.org$/ {
-    role(netbox::standalone)
-}
-
 node /^netbox-dev2002\.codfw\.wmnet$/ {
     role(netbox::standalone)
 }

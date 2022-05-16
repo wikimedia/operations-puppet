@@ -4,7 +4,6 @@ profile::puppetdb::microservice::uwsgi_port: 8091
 profile::puppetdb::microservice::allowed_hosts:
   - netbox1001.wikimedia.org
   - netbox2001.wikimedia.org
-  - netbox-dev2001.wikimedia.org
   - netbox-dev2002.codfw.wmnet
   - cuminunpriv1001.eqiad.wmnet
   - pki1001.eqiad.wmnet

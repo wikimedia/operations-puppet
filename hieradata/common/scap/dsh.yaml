@@ -120,7 +120,6 @@ scap::dsh::groups:
       - maps2009.codfw.wmnet
   netbox:
     hosts:
-      - netbox-dev2001.wikimedia.org
       - netbox-dev2002.codfw.wmnet
       - netbox1001.wikimedia.org
       - netbox2001.wikimedia.org
