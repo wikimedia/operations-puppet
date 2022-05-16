@@ -4,7 +4,7 @@ profile::monitoring::notifications_enabled: false
 # Netbox
 profile::netbox::service_hostname: netbox-next.wikimedia.org
 profile::netbox::do_backup: false
-profile::netbox::acme_certificate: netbox-dev
+profile::netbox::ssl_provider: 'cfssl'
 
 profile::netbox::cas_rename_attributes:
   cn: 'first_name'
