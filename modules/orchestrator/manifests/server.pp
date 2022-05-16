@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 class orchestrator::server (
     Enum['mysql', 'sqlite'] $db_backend,
     String[1] $db_topology_password,
