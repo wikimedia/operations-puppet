@@ -117,7 +117,7 @@
     </logger>
     <%- end -%>
 
-    <root level="warn">
+    <root level="info">
         <appender-ref ref="async-file"/>
         <appender-ref ref="async-stdout"/>
         <appender-ref ref="async-logstash"/>
@@ -125,6 +125,7 @@
 
     <logger name="org.wikidata.query.rdf" level="info"/>
     <logger name="org.wikidata.query.rdf.blazegraph.inline.literal.AbstractMultiTypeExtension" level="error"/>
+    <logger name="com.bigdata" level="warn"/>
     <logger name="com.bigdata.util.concurrent.Haltable" level="off"/>
     <logger name="com.bigdata.rdf.internal.LexiconConfiguration" level="off"/> <!-- disabled temp. ref: T207643 -->
 
