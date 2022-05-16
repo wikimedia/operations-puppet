@@ -640,7 +640,9 @@ def main():
         )
 
         sess = keystone_session.Session(auth=auth)
-        nova_conn = nova_client.Client("2", session=sess, region_name=region)
+        # We specify 2.19 because that's the earliest version that supports
+        # updating VM description
+        nova_conn = nova_client.Client("2.19", session=sess, region_name=region)
 
         prepend = args.prepend
         date = int(datetime.today().strftime("%Y%m%d%H%M%S"))
@@ -688,6 +690,7 @@ def main():
                 args.virthost,
             )
             stat("verify.creation", vc)
+            server.update(description="Running tests...")
 
             if "public" in server.addresses:
                 addr = server.addresses["public"][0]["addr"]
@@ -763,9 +766,16 @@ def main():
                 return
 
             stat("verify.success", 1)
-        except:  # noqa: E722
+        except Exception as e:
             logging.exception("{} failed, leaking".format(name))
             stat("verify.success", 0)
+            try:
+                # Update VM with a hint about why it leaked. Of course
+                #  if things are truly broken this will also fail, so
+                #  swallow any failures
+                server.update(description=str(e))
+            except:  # noqa: E722
+                logging.warning("Failed to annotate VM with failure condition")
 
         time.sleep(args.interval)
 
