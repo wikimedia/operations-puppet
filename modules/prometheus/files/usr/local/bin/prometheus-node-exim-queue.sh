@@ -15,8 +15,10 @@ if [ "$(id -u)"  != "0" ] ; then
     exit 1
 fi
 
-queue_length=$(mailq | grep -c '<')
-frozen_length=$(mailq | grep -c '<.* \*\*\* frozen \*\*\*')
+# Report zero messages on 'grep -c' not matching anything (and other
+# errors)
+queue_length=$(mailq | grep -c '<' || echo 0)
+frozen_length=$(mailq | grep -c '<.* \*\*\* frozen \*\*\*' || echo 0)
 
 cat <<EOF >"$tmpoutfile"
 # HELP exim_queue_length Exim queue length
