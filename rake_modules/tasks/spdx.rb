@@ -53,7 +53,6 @@ def comment_line(filename, line)
     "-- #{line}\n"
   when /\A(?:json|pem|key)\z/
     # Theses files don't support comments so skip them
-    puts 'HERE'
     raise NoCommentSupoportError
   else
     raise UnknownExtensionError, filename
@@ -70,7 +69,6 @@ def add_spdx_tags(files)
       unknown_files << error.filename
       next
     rescue NoCommentSupoportError
-      puts 'HERE'
       next
     end
     puts "#{filename}: adding spdx licence"
