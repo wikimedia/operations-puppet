@@ -51,11 +51,17 @@ class profile::maps::osm_replica(
         }
     }
 
-
     $prometheus_command = "/usr/bin/prometheus_postgresql_replication_lag -m ${master} -P ${replication_pass}"
+    systemd::timer::job { 'prometheus-pg-replication-lag':
+        ensure      => 'present',
+        description => 'Postgresql replication lag to Prometheus metrics',
+        command     => $prometheus_command,
+        user        => 'root',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:*:00'},
+    }
+
     cron { 'prometheus-pg-replication-lag':
-        ensure  => present,
-        command => "${prometheus_command} >/dev/null 2>&1",
+        ensure  => 'absent',
     }
 
 }
