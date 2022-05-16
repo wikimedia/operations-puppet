@@ -11,13 +11,14 @@
 # Read the docs here:
 # TODO: https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Kubernetes/Upgrading_Kubernetes
 
-import sys
 import argparse
-import subprocess
-import time
 import logging
-import yaml
+import subprocess
+import sys
+import time
 from datetime import datetime, timedelta
+
+import yaml
 
 DEFAULT_SRC_VERSION = "1.16.10"
 DEFAULT_DST_VERSION = "1.17.13"
@@ -73,9 +74,7 @@ ctx = Context()
 
 
 def parse_args():
-    description = (
-        "Utility to automate upgrading a k8s node in our kubeadm-based deployments"
-    )
+    description = "Utility to automate upgrading a k8s node in our kubeadm-based deployments"
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
         "--control",
@@ -169,13 +168,9 @@ def refresh_current_node_yaml(version):
     cmd = "sudo -i kubectl get node {} -o yaml".format(ctx.current_node)
     output = ssh(ctx.control_fqdn, cmd, capture_output=True)
     if ctx.args.dry_run:
-        output = (
-            ctx.example1_yaml if version in ctx.args.src_version else ctx.example2_yaml
-        )
+        output = ctx.example1_yaml if version in ctx.args.src_version else ctx.example2_yaml
     if output is None:
-        logging.error(
-            "unable to get node yaml for {}, skipping".format(ctx.current_node)
-        )
+        logging.error("unable to get node yaml for {}, skipping".format(ctx.current_node))
         ctx.skip = True
         return
 
@@ -188,7 +183,7 @@ def stage_generate_node_list():
         try:
             f = open(ctx.args.file)
             for line in f.readlines():
-                if line.strip() != '':
+                if line.strip() != "":
                     ctx.node_list.append(line.strip())
         except OSError as e:
             logging.warning("can't open file: {}".format(e))
@@ -217,9 +212,7 @@ def check_package_versions(node_fqdn, package, already_dst_ok=False):
     cmd = "apt-cache policy {} | egrep Installed\\|Candidate".format(package)
     output = ssh(node_fqdn, cmd, capture_output=True)
     if ctx.args.dry_run:
-        output = "Installed: {}\nCandidate: {}".format(
-            ctx.args.src_version, ctx.args.dst_version
-        )
+        output = "Installed: {}\nCandidate: {}".format(ctx.args.src_version, ctx.args.dst_version)
     if output is None:
         logging.warning("couldn't check {} version in {}".format(package, node_fqdn))
         ctx.skip = True
@@ -240,9 +233,7 @@ def check_package_versions(node_fqdn, package, already_dst_ok=False):
 
     if already_dst_ok and ctx.args.dst_version in version:
         # the installed version is the dst version and that's OK!
-        logging.debug(
-            "{}: {} installed in dst version already".format(ctx.current_node, package)
-        )
+        logging.debug("{}: {} installed in dst version already".format(ctx.current_node, package))
         return
 
     if ctx.args.src_version not in version:
@@ -286,9 +277,7 @@ def check_current_node_ready():
 def check_current_node_versions(version):
     # validate that kubernetes sees the right version of kubelet and kube-proxy
     info = ctx.current_node_yaml["status"]["nodeInfo"]
-    if version in info.get("kubeletVersion") and version in info.get(
-        "kubeProxyVersion"
-    ):
+    if version in info.get("kubeletVersion") and version in info.get("kubeProxyVersion"):
         logging.debug("node {} matches version {}".format(ctx.current_node, version))
         return  # OK
 
@@ -385,12 +374,8 @@ def stage_upgrade():
     logging.info("stage: upgrade for node {}".format(ctx.current_node))
 
     pkgs = "kubeadm"
-    noprompt = (
-        '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold"'
-    )
-    cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} -y".format(
-        pkgs, noprompt
-    )
+    noprompt = '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold"'
+    cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} -y".format(pkgs, noprompt)
     ssh(ctx.current_node_fqdn, cmd)
     if ctx.skip is True:
         return
@@ -402,9 +387,7 @@ def stage_upgrade():
 
     # TODO: verify candidate versions for docker and containerd.io
     pkgs = "kubectl kubelet docker-ce containerd.io"
-    noprompt = (
-        '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold"'
-    )
+    noprompt = '-o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold"'
     force = "-y --allow-downgrades"
     cmd = "sudo DEBIAN_FRONTEND=noninteractive apt-get install {} {} {}".format(
         pkgs, noprompt, force
@@ -457,9 +440,7 @@ def main():
 
     bold_start = "\033[1m"
     bold_end = "\033[0m"
-    logging_format = "{}[%(filename)s]{} %(levelname)s: %(message)s".format(
-        bold_start, bold_end
-    )
+    logging_format = "{}[%(filename)s]{} %(levelname)s: %(message)s".format(bold_start, bold_end)
     if args.debug:
         logging_level = logging.DEBUG
     else:
@@ -470,9 +451,7 @@ def main():
 
     stage_generate_node_list()
     for node_hostname in ctx.node_list:
-        ctx.current_node_fqdn = "{}.{}.{}".format(
-            node_hostname, args.project, args.domain
-        )
+        ctx.current_node_fqdn = "{}.{}.{}".format(node_hostname, args.project, args.domain)
         ctx.current_node = node_hostname
         ctx.skip = False
 
