@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class zookeeper::server
 # Configures a zookeeper server.
 # This requires that zookeeper is installed

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class zookeeper
 # Installs common zookeeper package and configs.
 #
