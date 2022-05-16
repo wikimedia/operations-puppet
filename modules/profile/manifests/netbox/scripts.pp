@@ -14,8 +14,7 @@
 class profile::netbox::scripts {
 
     include profile::netbox
-    $use_acme         = $profile::netbox::use_acme
-    $acme_certificate = $profile::netbox::acme_certificate
+    $ssl_paths = $profile::netbox::ssl_paths
     $uwsgi_environ=[
         'LANG=C.UTF-8',
         'PYTHONENCODING=utf-8',
@@ -62,12 +61,6 @@ class profile::netbox::scripts {
 
     httpd::site { $facts['networking']['fqdn']:
         content => template('profile/netbox/netbox-scripts.erb'),
-    }
-
-    if !defined(Acme_chief::Cert[$acme_certificate]) and $use_acme {
-      acme_chief::cert { $acme_certificate:
-            puppet_svc => 'apache2',
-        }
     }
 
 }

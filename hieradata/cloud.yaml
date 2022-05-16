@@ -124,6 +124,8 @@ profile::gitlab::runner::allowed_services: {}
 
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 
+profile::netbox::discovery_name: "%{facts.networking.fqdn}"
+profile::netbox::ssl_provider: acme
 profile::netbox::slaves: []
 profile::netbox::authentication_provider: 'ldap'
 profile::netbox::cas_rename_attributes:

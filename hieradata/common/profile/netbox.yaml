@@ -1,5 +1,6 @@
 profile::netbox::active_server: "%{facts.networking.fqdn}"
 profile::netbox::service_hostname: "%{facts.networking.fqdn}"
+profile::netbox::discovery_name: "%{facts.networking.fqdn}"
 profile::netbox::slaves: []
 profile::netbox::scap_repo: 'netbox/deploy'
 # profile::netbox::rw_tokens: === private repo ===
@@ -9,7 +10,7 @@ profile::netbox::db_primary: "%{facts.networking.fqdn}"
 # profile::netbox::db_password: === private repo ===
 # profile::netbox::secret_key: === private repo ===
 profile::netbox::authentication_provider: 'cas'
-profile::netbox::use_acme: true
+profile::netbox::ssl_provider: 'acme'
 profile::netbox::acme_cetificate: netbox
 profile::netbox::netbox_api: "https://%{lookup('profile::netbox::service_hostname')}/"
 profile::netbox::do_backup: false

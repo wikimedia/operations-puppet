@@ -9,16 +9,11 @@ Listen <%= @apache_port %>
     ServerName <%= @facts['networking']['fqdn'] %>
     ServerAdmin noc@wikimedia.org
 
-<%- if @use_acme -%>
     SSLEngine on
-    SSLCertificateFile /etc/acmecerts/<%= @acme_certificate %>/live/ec-prime256v1.crt
-    SSLCertificateChainFile /etc/acmecerts/<%= @acme_certificate %>/live/ec-prime256v1.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_certificate %>/live/ec-prime256v1.key
-    SSLCertificateFile /etc/acmecerts/<%= @acme_certificate %>/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/<%= @acme_certificate %>/live/rsa-2048.chain.crt
-    SSLCertificateKeyFile /etc/acmecerts/<%= @acme_certificate %>/live/rsa-2048.key
+    SSLCertificateFile <%= @ssl_paths['cert'] %>
+    SSLCertificateChainFile <%= @ssl_paths['chain'] %>
+    SSLCertificateKeyFile <%= @ssl_paths['key'] %>
     <%= @ssl_settings.join("\n    ") %>
-<%- end -%>
 
     # https://httpoxy.org/
     RequestHeader unset Proxy early

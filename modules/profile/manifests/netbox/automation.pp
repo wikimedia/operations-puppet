@@ -15,7 +15,7 @@ class profile::netbox::automation (
     Array[Stdlib::Fqdn] $frontends        = lookup('profile::netbox::automation::frontend'),
 ) {
     include profile::netbox
-    $use_acme      = $profile::netbox::use_acme
+    $ssl_paths     = $profile::netbox::ssl_paths
     $netbox_api    = $profile::netbox::netbox_api
     $ro_token      = $profile::netbox::ro_token
     $active_ensure = $profile::netbox::active_ensure

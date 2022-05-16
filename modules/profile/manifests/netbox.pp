@@ -10,17 +10,18 @@
 # @example
 #       include profile::netbox
 # @param active_server the active netbox server
-# @param service_hostname the active netbox server
-# @param slaves list of secondery netbox serveres
+# @param service_hostname the fqdn of the service
+# @param discovery_name The fqdn name used internally
+# @param slaves list of secondary netbox serveres
 # @param scap_repo The repo to use for scap deploys
 # @param rw_token api read write token key
 # @param ro_token api read only token key
-# @param dump_interval how often to prefrom dumps
+# @param dump_interval how often to perform dumps
 # @param db_primary primary database name
 # @param db_password primary database name
 # @param secret_key django secret key
 # @param authentication_provider Either ldap or cas
-# @param use_acme use acme certificates
+# @param ssl_provider Either cfssl or acme
 # @param acme_certificate acme certificate name
 # @param netbox_api netbox api url
 # @param ganeti_user The ganeti user
@@ -43,30 +44,31 @@
 # @param redis_maxmem redis maximum memory
 # @param ldap_config the ldap config for cas
 # @param do_backups if we should perform backups
-# @param cas_rename_attributes a mapping of attibutes that should be renamed
-# @param cas_group_attribute_mapping a mapping of attibutes to netbox groups
+# @param cas_rename_attributes a mapping of attributes that should be renamed
+# @param cas_group_attribute_mapping a mapping of attributes to netbox groups
 # @param cas_group_mapping a mapping of ldap groups to local groups
 # @param cas_group_required list of required groups
 # @param cas_username_attribute cas attribute to use as a username
 # @param cas_server_url the location of the cas server
 class profile::netbox (
-    Hash                       $ldap_config                 = lookup('ldap', Hash, hash, {}),
-    Stdlib::Fqdn               $active_server               = lookup('profile::netbox::active_server'),
-    Stdlib::Fqdn               $service_hostname            = lookup('profile::netbox::service_hostname'),
-    Array[String]              $slaves                      = lookup('profile::netbox::slaves'),
-    String                     $scap_repo                   = lookup('profile::netbox::scap_repo'),
-    String                     $rw_token                    = lookup('profile::netbox::rw_token'),
-    String                     $ro_token                    = lookup('profile::netbox::ro_token'),
-    String                     $dump_interval               = lookup('profile::netbox::dump_interval'),
-    Stdlib::Fqdn               $db_primary                  = lookup('profile::netbox::db_primary'),
-    String                     $db_password                 = lookup('profile::netbox::db_password'),
-    String                     $secret_key                  = lookup('profile::netbox::secret_key'),
-    Enum['ldap', 'cas']        $authentication_provider     = lookup('profile::netbox::authentication_provider'),
-    Boolean                    $use_acme                    = lookup('profile::netbox::use_acme'),
-    String                     $acme_certificate            = lookup('profile::netbox::acme_cetificate'),
-    Stdlib::HTTPSUrl           $netbox_api                  = lookup('profile::netbox::netbox_api'),
-    Boolean                    $do_backups                  = lookup('profile::netbox::do_backup'),
-    Array[Profile::Netbox::Report_check] $report_checks     = lookup('profile::netbox::report_checks'),
+    Hash                             $ldap_config             = lookup('ldap', Hash, hash, {}),
+    Stdlib::Fqdn                     $active_server           = lookup('profile::netbox::active_server'),
+    Stdlib::Fqdn                     $service_hostname        = lookup('profile::netbox::service_hostname'),
+    Stdlib::Fqdn                     $discovery_name          = lookup('profile::netbox::discovery_name'),
+    Array[String]                    $slaves                  = lookup('profile::netbox::slaves'),
+    String                           $scap_repo               = lookup('profile::netbox::scap_repo'),
+    String                           $rw_token                = lookup('profile::netbox::rw_token'),
+    String                           $ro_token                = lookup('profile::netbox::ro_token'),
+    String                           $dump_interval           = lookup('profile::netbox::dump_interval'),
+    Stdlib::Fqdn                     $db_primary              = lookup('profile::netbox::db_primary'),
+    String                           $db_password             = lookup('profile::netbox::db_password'),
+    String                           $secret_key              = lookup('profile::netbox::secret_key'),
+    Enum['ldap', 'cas']              $authentication_provider = lookup('profile::netbox::authentication_provider'),
+    Enum['sslcert', 'acme', 'cfssl'] $ssl_provider            = lookup('profile::netbox::ssl_provider'),
+    Optional[String[1]]              $acme_certificate        = lookup('profile::netbox::acme_cetificate'),
+    Stdlib::HTTPSUrl                 $netbox_api              = lookup('profile::netbox::netbox_api'),
+    Boolean                          $do_backups              = lookup('profile::netbox::do_backup'),
+    Array[Profile::Netbox::Report_check] $report_checks       = lookup('profile::netbox::report_checks'),
 
     #ganeti config
     Optional[String]           $ganeti_user                 = lookup('profile::netbox::ganeti_user'),
@@ -105,6 +107,9 @@ class profile::netbox (
     Optional[String]           $cas_username_attribute      = lookup('profile::netbox::cas_username_attribute'),
     Optional[Stdlib::HTTPSUrl] $cas_server_url              = lookup('profile::netbox::cas_server_url'),
 ) {
+    if $ssl_provider == 'acme' and !$acme_certificate {
+        fail('must provide \$acme_certificate when using \$ssl_provider acme')
+    }
     $ca_certs = '/etc/ssl/certs/ca-certificates.crt'
     # TODO: bring this in from profile::certificates
     $ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
@@ -149,6 +154,28 @@ class profile::netbox (
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }
+    case $ssl_provider {
+        'acme': {
+            acme_chief::cert { $acme_certificate:
+                puppet_svc => 'apache2',
+            }
+            # Only use the ec certs this allows us to match cfssl behaviour
+            $ssl_paths = {
+                'cert'    => "/etc/acmecerts/${acme_certificate}/live/ec-prime256v1.crt",
+                'chain'   => "/etc/acmecerts/${acme_certificate}/live/ec-prime256v1.chain.crt",
+                'chained' => "/etc/acmecerts/${acme_certificate}/live/ec-prime256v1.chained.crt",
+                'key'     => "/etc/acmecerts/${acme_certificate}/live/ec-prime256v1.key",
+            }
+        }
+        'cfssl': {
+            $ssl_paths = profile::pki::get_cert('discovery', $service_hostname, {
+                'hosts'  => [$facts['networking']['fqdn'], $discovery_name].unique,
+                'notify' => Service['apache2'],
+            })
+        }
+        default: { fail("unsuupported ssl_provider: ${ssl_provider}") }
+    }
+
 
     ensure_packages('libapache2-mod-wsgi-py3')
     class { 'httpd':
@@ -166,12 +193,6 @@ class profile::netbox (
     }
 
     profile::auto_restarts::service { 'apache2': }
-
-    if $use_acme {
-        acme_chief::cert { $acme_certificate:
-            puppet_svc => 'apache2',
-        }
-    }
 
     $active_ensure = ($active_server == $facts['networking']['fqdn']).bool2str('present', 'absent')
 
