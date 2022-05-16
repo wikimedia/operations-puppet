@@ -65,12 +65,17 @@ profile::acme_chief::certificates:
         CN: 'gitlab.wikimedia.org'
         SNI:
         - 'gitlab.wikimedia.org'
+        - 'gitlab-new.wikimedia.org'
         - 'gitlab-replica.wikimedia.org'
+        - 'gitlab-replica-new.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
         - 'gitlab1001.wikimedia.org'
-        - 'gitlab1002.wikimedia.org'
+        - 'gitlab1003.wikimedia.org'
+        - 'gitlab1004.wikimedia.org'
         - 'gitlab2001.wikimedia.org'
+        - 'gitlab2002.wikimedia.org'
+        - 'gitlab2003.wikimedia.org'
     icinga:
         CN: 'icinga.wikimedia.org'
         SNI:
