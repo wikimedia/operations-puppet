@@ -52,15 +52,9 @@ class profile::openldap_clouddev (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
     }
 
-    # restart slapd if it uses more than 50% of memory (T130593)
-    cron { 'restart_slapd':
-        ensure  => present,
-        minute  => fqdn_rand(60, $title),
-        command => "/bin/ps -C slapd -o pmem= | awk '{sum+=\$1} END { if (sum <= 50.0) exit 1 }' \
-        && /bin/systemctl restart slapd >/dev/null 2>/dev/null",
-    }
-
     if $backup {
         backup::openldapset { 'openldap': }
     }
+
+    include profile::openldap::restarts
 }

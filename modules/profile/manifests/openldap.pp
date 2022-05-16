@@ -55,23 +55,9 @@ class profile::openldap (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
     }
 
-    file { '/usr/local/sbin/restart_openldap':
-        source => 'puppet:///modules/ldap/restart_openldap',
-        mode   => '0554',
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    $minutes = fqdn_rand(60, $title)
-    systemd::timer::job { 'restart_slapd':
-        ensure      => 'present',
-        user        => 'root',
-        description => 'Restart slapd when using more than 50% of memory',
-        command     => '/usr/local/sbin/restart_openldap',
-        interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* *:0/${minutes}:00"},
-    }
-
     if $backup {
         backup::openldapset { 'openldap': }
     }
+
+    include profile::openldap::restarts
 }
