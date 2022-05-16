@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# SPDX-License-Identifier: Apache-2.0
+
+set -e
+set -u
+
+targets_file=${1:-}
+
+if [ -z "$targets_file" ]; then
+  echo "usage: $0 <target file>"
+  echo
+  echo "Generate Prometheus targets configuration for a given project from nova API"
+  echo
+  exit 1
+fi
+
+if [ -d "${targets_file}" ]; then
+    /usr/local/bin/prometheus-labs-targets > ${targets_file}.$$ && mv ${targets_file}.$$ ${targets_file}
+fi

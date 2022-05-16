@@ -150,11 +150,16 @@ class profile::prometheus::beta (
 
     include ::prometheus::wmcs_scripts
 
+    systemd::timer::job { 'prometheus_labs_project_targets':
+        ensure      => 'present',
+        description => 'Generate Prometheus targets configuration for a given project from nova API',
+        command     => '/usr/local/bin/prometheus-labs-targets.sh',
+        user        => 'prometheus',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*:0/10:00'},
+    }
+
     cron { 'prometheus_labs_project_targets':
-        ensure  => present,
-        command => "/usr/local/bin/prometheus-labs-targets > ${targets_file}.$$ && mv ${targets_file}.$$ ${targets_file}",
-        minute  => '*/10',
-        hour    => '*',
-        user    => 'prometheus',
+        ensure => 'absent',
+        user   => 'prometheus',
     }
 }

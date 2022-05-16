@@ -15,4 +15,12 @@ class prometheus::wmcs_scripts (
         group  => 'root',
         source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-labs-targets.py',
     }
+
+    file { '/usr/local/bin/prometheus-labs-targets.sh':
+        ensure => stdlib::ensure($ensure, 'file'),
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-labs-targets-timer',
+    }
 }
