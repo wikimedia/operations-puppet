@@ -332,6 +332,15 @@ Architectures: amd64
 VerifyRelease: 3F01618A51312F3F
 ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 14.11 -a -FVersion --ge 14.10 \) || [ $? -eq 1 ]
 
+Name: thirdparty/gitlab-bullseye
+Method: https://packages.gitlab.com/gitlab/gitlab-ce/debian/
+Components: main>thirdparty/gitlab-bullseye
+UDebComponents:
+Suite: bullseye
+Architectures: amd64
+VerifyRelease: 3F01618A51312F3F
+ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 14.11 -a -FVersion --ge 14.10 \) || [ $? -eq 1 ]
+
 Name: thirdparty/gitlab-runner
 Method: https://packages.gitlab.com/runner/gitlab-runner/debian/
 Components: main>thirdparty/gitlab-runner

@@ -206,6 +206,7 @@ Components: main
  thirdparty/confluent
  thirdparty/elastic65
  thirdparty/elastic68
+ thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/hwraid
  thirdparty/node14
@@ -225,6 +226,7 @@ Update:
  routinator
  thirdparty/ceph-octopus-bullseye
  thirdparty/conda
+ thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
  thirdparty/openstack-db
 Description: Wikimedia packages for Debian bullseye
