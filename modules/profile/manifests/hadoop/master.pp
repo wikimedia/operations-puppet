@@ -45,14 +45,28 @@ class profile::hadoop::master(
         require => Class['bigtop::hadoop::master'],
     }
 
+    file { '/usr/local/sbin/hadoop_fairscheduler_log_cleaner.sh':
+        ensure => present,
+        source => 'puppet:///modules/profile/hadoop/hadoop_fairscheduler_log_cleaner.sh',
+        mode   => '0550',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    systemd::timer::job { 'hadoop-clean-fairscheduler-event-logs':
+        ensure      => 'present',
+        description => 'Cleanup FairScheduler event logs older than 14 days',
+        command     => '/usr/local/sbin/hadoop_fairscheduler_log_cleaner.sh',
+        user        => 'root',
+        interval    => { 'start' => 'OnCalendar', 'interval' => '00:05:00'},
+        require     => Class['bigtop::hadoop::master'],
+    }
+
     # FairScheduler is creating event logs in hadoop.log.dir/fairscheduler/
     # It rotates them but does not delete old ones.  Set up cronjob to
     # delete old files in this directory.
     cron { 'hadoop-clean-fairscheduler-event-logs':
-        command => 'test -d /var/log/hadoop-yarn/fairscheduler && /usr/bin/find /var/log/hadoop-yarn/fairscheduler -type f -mtime +14 -exec rm {} >/dev/null \;',
-        minute  => 5,
-        hour    => 0,
-        require => Class['bigtop::hadoop::master'],
+        ensure => 'absent',
     }
 
     nrpe::plugin { 'check_hdfs_topology':
