@@ -493,13 +493,13 @@ node /^datahubsearch100[1-3]\.eqiad\.wmnet$/ {
 
 # s1 (enwiki) core production dbs on eqiad
 # eqiad master
-node 'db1118.eqiad.wmnet' {
+node 'db1163.eqiad.wmnet' {
     role(mariadb::core)
 }
 # eqiad replicas
 # See also db1099 and db1105 below
 # db1132 is a testing mariadb 10.6 host T303395
-node /^db1(119|132|134|135|163|164|169|184)\.eqiad\.wmnet/ {
+node /^db1(118|119|132|134|135|164|169|184)\.eqiad\.wmnet/ {
     role(mariadb::core)
 }
 
