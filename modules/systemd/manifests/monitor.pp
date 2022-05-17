@@ -14,12 +14,8 @@ define systemd::monitor (
     Boolean         $critical       = false,
 ) {
     # T225268 - always provision NRPE plugin script
-    ensure_resource('file', '/usr/local/lib/nagios/plugins/check_systemd_unit_status', {
-        ensure => present,
+    ensure_resource('nrpe::plugin', 'check_systemd_unit_status', {
         source => 'puppet:///modules/systemd/check_systemd_unit_status',
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
     })
 
     nrpe::monitor_service { "check_${title}_status":

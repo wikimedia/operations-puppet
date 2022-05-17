@@ -101,18 +101,14 @@ class base::kernel(
     file { '/usr/lib/nagios/plugins/check_microcode':
         ensure => absent,
     }
-    file { '/usr/local/lib/nagios/plugins/check_microcode':
+    nrpe::plugin { 'check_microcode':
         source => 'puppet:///modules/base/check-microcode.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     nrpe::monitor_service { 'cpu_microcode_status':
         ensure         => 'present',
         description    => 'Check whether microcode mitigations for CPU vulnerabilities are applied',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_microcode',
-        require        => File['/usr/local/lib/nagios/plugins/check_microcode'],
         contact_group  => 'admins',
         check_interval => 1440,
         retry_interval => 5,

@@ -27,10 +27,9 @@ class profile::puppet::client_bucket(
     printf "WARNING: large files in client bucket\n"
     exit 2
     | SCRIPT
-    $check_command = '/usr/local/lib/nagios/plugins/check_client_bucket'
-    file {$check_command:
-        ensure  => file,
-        mode    => '0555',
+    $check_name = 'check_client_bucket'
+    $check_command = "/usr/local/lib/nagios/plugins/${check_name}"
+    nrpe::plugin { $check_name:
         content => $script,
     }
     sudo::user { 'nrpe_check_client_bucket_large_file':

@@ -86,16 +86,22 @@ class profile::monitoring(
     }
     # the nrpe class installs monitoring-plugins-* which creates the following directory
     contain nrpe  # lint:ignore:wmf_styleguide
+
+    nrpe::plugin { 'check_puppetrun':
+        source => 'puppet:///modules/base/monitoring/check_puppetrun.rb',
+    }
+
+    nrpe::plugin { 'check_eth':
+        content => template('base/check_eth.erb'),
+    }
+
+    # TODO: move these to nrpe::plugin (/usr/local/lib/nagios/plugins/ not /usr/lib/...)
     file {
         default:
             ensure => present,
             owner  => 'root',
             group  => 'root',
             mode   => '0555';
-        '/usr/local/lib/nagios/plugins/check_puppetrun':
-            source => 'puppet:///modules/base/monitoring/check_puppetrun.rb';
-        '/usr/local/lib/nagios/plugins/check_eth':
-            content => template('base/check_eth.erb');
         '/usr/lib/nagios/plugins/check_sysctl':
             source => 'puppet:///modules/base/check_sysctl';
         '/usr/lib/nagios/plugins/check_established_connections':
@@ -147,12 +153,9 @@ class profile::monitoring(
 
     $ensure_monitor_systemd = $monitor_systemd.bool2str('present','absent')
 
-    file { '/usr/local/lib/nagios/plugins/check_systemd_state':
+    nrpe::plugin { 'check_systemd_state':
         ensure => $ensure_monitor_systemd,
         source => 'puppet:///modules/base/check_systemd_state.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     nrpe::monitor_service { 'check_systemd_state':
@@ -164,12 +167,8 @@ class profile::monitoring(
 
     if $facts['productname'] == 'PowerEdge R320' {
 
-        file { '/usr/local/lib/nagios/plugins/check_cpufreq':
-            ensure => present,
+        nrpe::plugin { 'check_cpufreq':
             source => 'puppet:///modules/base/monitoring/check_cpufreq',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
         }
 
         nrpe::monitor_service { 'check_cpufreq':

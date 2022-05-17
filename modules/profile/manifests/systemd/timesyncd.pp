@@ -20,19 +20,15 @@ class profile::systemd::timesyncd (
     }
     # /usr/local/lib/nagios/plugins is managed by the nrpe module
     # and dependencies will be handled via auto requires
-    file { '/usr/local/lib/nagios/plugins/check_timedatectl':
-        ensure => stdlib::ensure($ensure, file),
+    nrpe::plugin { 'check_timedatectl':
+        ensure => $ensure,
         source => 'puppet:///modules/profile/systemd/check_timedatectl',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
     }
 
     nrpe::monitor_service { 'timesynd_ntp_status':
         ensure         => $ensure,
         description    => 'Check the NTP synchronisation status of timesyncd',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_timedatectl',
-        require        => File['/usr/local/lib/nagios/plugins/check_timedatectl'],
         contact_group  => 'admins',
         check_interval => 30,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP',
