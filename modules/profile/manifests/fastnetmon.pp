@@ -8,7 +8,7 @@ class profile::fastnetmon (
 
     ensure_resource('class', 'geoip')
 
-    $icinga_dir = '/run/fastnetmon_icinga'
+    $icinga_dir = '/run/fastnetmon-actions'
 
     class { '::fastnetmon':
         networks             => $::network::constants::external_networks,
@@ -31,6 +31,12 @@ class profile::fastnetmon (
         dashboard_links => [ 'https://w.wiki/8oU', ],
         retries         => 15,
         critical        => true,
+    }
+
+    # Export notifications count as a metric for alerting purposes.
+    prometheus::node_file_count { 'fastnetmon notifications':
+        paths   => [ $icinga_dir ],
+        outfile => '/var/lib/prometheus/node.d/fastnetmon.prom'
     }
 
     ferm::service { 'FNM-netflow':
