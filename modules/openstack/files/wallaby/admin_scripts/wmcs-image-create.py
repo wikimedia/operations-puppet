@@ -347,7 +347,7 @@ def main(args: argparse.Namespace) -> None:
                 upstream_image = upload_image(
                     image_url=args.image_url, upstream_image_path=upstream_image_path
                 )
-                instance = create_puppetized_vm(upstream_image=upstream_image)
+                instance = create_puppetized_vm(upstream_image, networkid, flavorid)
                 vm_snap = get_snapshot(instance_id=instance.id, snapshot_path=snapshot_path)
 
         disable_puppet_on_image(workdir=workdir, snapshot_path=snapshot_path, run=run)
