@@ -81,25 +81,37 @@ class base::firewall (
         srange => '$CUMIN_MASTERS',
     }
 
+    # TODO: change to ensure => absent after a full puppet cycle, then remove completely after another
     file { '/usr/lib/nagios/plugins/check_conntrack':
         source => 'puppet:///modules/base/firewall/check_conntrack.py',
         mode   => '0755',
     }
 
+    nrpe::plugin { 'check_conntrack':
+        source => 'puppet:///modules/base/firewall/check_conntrack.py',
+    }
+
     nrpe::monitor_service { 'conntrack_table_size':
         description   => 'Check size of conntrack table',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_conntrack 80 90',
-        require       => File['/usr/lib/nagios/plugins/check_conntrack'],
+        nrpe_command  => '/usr/local/lib/nagios/plugins/check_conntrack 80 90',
         contact_group => 'admins',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_conntrack',
     }
 
     sudo::user { 'nagios_check_ferm':
         user       => 'nagios',
-        privileges => [ 'ALL = NOPASSWD: /usr/lib/nagios/plugins/check_ferm' ],
-        require    => File['/usr/lib/nagios/plugins/check_ferm'],
+        privileges => [
+            'ALL = NOPASSWD: /usr/local/lib/nagios/plugins/check_ferm',
+            'ALL = NOPASSWD: /usr/lib/nagios/plugins/check_ferm',
+        ],
     }
 
+    nrpe::plugin { 'check_ferm':
+        source => 'puppet:///modules/base/firewall/check_ferm',
+    }
+
+    # TODO: change to ensure => absent after a full puppet cycle (and remove the sudo rule),
+    # then remove completely after another
     file { '/usr/lib/nagios/plugins/check_ferm':
         source => 'puppet:///modules/base/firewall/check_ferm',
         owner  => 'root',
@@ -109,8 +121,7 @@ class base::firewall (
 
     nrpe::monitor_service { 'ferm_active':
         description    => 'Check whether ferm is active by checking the default input chain',
-        nrpe_command   => '/usr/bin/sudo /usr/lib/nagios/plugins/check_ferm',
-        require        => [File['/usr/lib/nagios/plugins/check_ferm'], Sudo::User['nagios_check_ferm']],
+        nrpe_command   => '/usr/bin/sudo /usr/local/lib/nagios/plugins/check_ferm',
         contact_group  => 'admins',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
         check_interval => 30,
