@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Profile to setup and configure wmfmariadbpy libraries and
 # utilities.
 class wmfmariadbpy (
