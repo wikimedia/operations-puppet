@@ -31,14 +31,6 @@ profile::tlsproxy::envoy::services:
 
 profile::tlsproxy::envoy::global_cert_name: "yarn.wikimedia.org"
 
-profile::druid::turnilo::port: 9091
-profile::druid::turnilo::druid_clusters:
-  - name: druid-analytics-eqiad
-    host: 'an-druid1001.eqiad.wmnet:8082'
-    sourceListRefreshInterval: 15000
-    sourceReintrospectInterval: 120000
-    type: druid
-
 profile::monitoring::notifications_enabled: false
 
 profile::kerberos::keytabs::keytabs_metadata:

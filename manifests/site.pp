@@ -123,7 +123,7 @@ node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[01])\.eqiad\.wmnet$/ {
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo
 node 'an-tool1005.eqiad.wmnet' {
-    role(analytics_cluster::ui::staging)
+    role(analytics_cluster::ui::superset::staging)
 }
 
 # turnilo.wikimedia.org
@@ -147,7 +147,7 @@ node 'an-tool1010.eqiad.wmnet' {
 }
 
 node 'an-tool1011.eqiad.wmnet' {
-    role(insetup)
+    role(analytics_cluster::turnilo::staging)
 }
 
 # analytics-search instance of Apache Airflow
