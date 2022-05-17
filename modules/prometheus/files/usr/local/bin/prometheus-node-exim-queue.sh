@@ -15,10 +15,9 @@ if [ "$(id -u)"  != "0" ] ; then
     exit 1
 fi
 
-# Report zero messages on 'grep -c' not matching anything (and other
-# errors)
-queue_length=$(mailq | grep -c '<' || echo 0)
-frozen_length=$(mailq | grep -c '<.* \*\*\* frozen \*\*\*' || echo 0)
+# 'grep -c' returns 0 on no matches and exits 1, thus "|| true"
+queue_length=$(mailq | grep -c '<' || true)
+frozen_length=$(mailq | grep -c '<.* \*\*\* frozen \*\*\*' || true)
 
 cat <<EOF >"$tmpoutfile"
 # HELP exim_queue_length Exim queue length
