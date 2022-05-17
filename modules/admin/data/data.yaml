@@ -923,11 +923,10 @@ groups:
   gitlab-roots:
     gid: 826
     description: Group of users with full root access on gitlab machines
-    members: [brennen, dancy, jnuche]
+    members: *contint_roots_members
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Lukasz Sobanski
-      - Alexandros Kosiaris
+      - Tyler Cipriani
   vrts-roots:
     gid: 834
     description: Group of users with full root access on VRTS (formerly OTRS) machines
