@@ -1,3 +1,4 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Unit]
 Description=VarnishKafka <%= @name.gsub(/^varnishkafka-/, '') %>
 After=network.target local-fs.target <%= @varnish_svc_name %>.service

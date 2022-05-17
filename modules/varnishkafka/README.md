@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # varnishkafka puppet module
 
 Puppet module for [varnishkafka](https://github.com/wikimedia/varnishkafka).

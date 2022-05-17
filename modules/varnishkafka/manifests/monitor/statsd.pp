@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # === Define varnishkafka::monitor::statsd
 #
 # Configures Logster to parse Varnishkafka stats JSON files, extract metrics

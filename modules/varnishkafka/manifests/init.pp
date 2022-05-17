@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class varnishkafka
 # Configures and runs varnishkafka Varnish to Kafka producer.
 # See: https://github.com/wikimedia/varnishkafka
