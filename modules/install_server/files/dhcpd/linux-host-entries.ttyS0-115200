@@ -82,6 +82,7 @@ host an-tool1009 {
 host an-tool1011 {
     hardware ethernet aa:00:00:c6:ed:9f;
     fixed-address an-tool1011.eqiad.wmnet;
+    option pxelinux.pathprefix "http://apt.wikimedia.org/tftpboot/bullseye-installer/";
 }
 
 host an-airflow1001 {
