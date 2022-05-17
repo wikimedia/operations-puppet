@@ -2,8 +2,8 @@
   const testUUID = uuidv4();
   const testTime = new Date().toLocaleTimeString();
   const checkURL = `https://${testUUID}.check.wikimedia-dns.org/check/`;
-  const dcToLoc = {"eqiad": "(US) Virginia", "codfw": "(US) Texas", "esams": "The Netherlands",
-                   "ulsfo": "(US) California", "eqsin": "Singapore", "drmrs": "France"}
+  const dcToLoc = {"eqiad": "US (Virginia)", "codfw": "US (Texas)", "esams": "The Netherlands",
+                   "ulsfo": "US (California)", "eqsin": "Singapore", "drmrs": "France"}
 
   fetch(checkURL)
   .then((response) => response.json())
