@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Report::Params = Variant[
     Bgpalerter::Report::Params::Email,
     Bgpalerter::Report::Params::File,

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: diffscan
 #
 # This class installs & manages diffscan,

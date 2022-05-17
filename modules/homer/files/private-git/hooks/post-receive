@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
 unset GIT_DIR # Otherwise git commands will work on the wrong place
 cd ../
 git reset --hard HEAD --

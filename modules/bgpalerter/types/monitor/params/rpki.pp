@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Monitor::Params::Rpki = Struct[{
     checkUncovered            => Boolean,
     checkDisappearing         => Boolean,

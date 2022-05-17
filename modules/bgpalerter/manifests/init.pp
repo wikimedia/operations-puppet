@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # @summary imanage BGPalerter
 # @url https://github.com/nttgin/BGPalerter/blob/main/docs/configuration.md
 # @param monitors array of monitors to configure

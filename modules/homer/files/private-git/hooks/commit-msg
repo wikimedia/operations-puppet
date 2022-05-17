@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
 
 # Audit the committer adding it's login to the message
 if [ -n "${SUDO_USER}" ]; then

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Rpki = Struct[{
     vrpProvider                 => Enum['ntt', 'cloudflare', 'rpkiclient', 'ripe', 'external', 'api'],
     preCacheROAs                => Optional[Boolean],

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Report::Params::Telegram = Struct[{
     showPaths         => Integer[0],
     botUrl            => Stdlib::HTTPSUrl,

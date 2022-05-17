@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Report::Params::Syslog = Struct[{
     showPaths => Integer[0],
     host      => Stdlib::Host,

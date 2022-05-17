@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Report::Params::Alerta = Struct[{
     severity          => Hash[Bgpalerter::Report::Channel, String[1]],
     environment       => Optional[String[1]],

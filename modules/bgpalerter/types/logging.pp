@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Logging = Struct[{
   directory          => String[1],
   logRotatePattern   => String[1],

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: gobgpd
 #
 # Install and manage gobgp: https://github.com/osrg/gobgp/

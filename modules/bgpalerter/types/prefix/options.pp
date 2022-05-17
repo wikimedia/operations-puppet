@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Prefix::Options = Struct[{
     monitorASns => Hash[String, Struct[{
         group       => String[1],

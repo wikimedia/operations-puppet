@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 type Bgpalerter::Monitor::Params::Roas = Struct[{
     enableDiffAlerts        => Optional[Boolean],
     enableExpirationAlerts  => Optional[Boolean],
