@@ -44,7 +44,7 @@ class statistics::published(
         ensure      => present,
         user        => 'root',
         description => 'Merge files in published-rsynced/* via hardlinks into $document_root/published',
-        command     => "/usr/local/bin/hardsync -t ${temp_dir} ${source}/* ${destination} 2>&1 > /dev/null",
+        command     => "/usr/local/bin/hardsync -t ${temp_dir} ${source}/* ${destination}",
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/15'},
     }
 
