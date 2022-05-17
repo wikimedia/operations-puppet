@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: vagrant::lxc
 #
 # Provision LXC for use as a Vagrant container.
