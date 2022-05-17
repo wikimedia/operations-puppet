@@ -164,23 +164,13 @@ class profile::mail::mx (
 
     # monitor mail queue size (T133110)
     nrpe::plugin { 'check_exim_queue':
-        source => 'puppet:///modules/icinga/check_exim_queue.sh',
+        ensure => absent,
     }
 
     sudo::user { 'nagios_exim_queue':
+        ensure     => absent,
         user       => 'nagios',
         privileges => ['ALL = NOPASSWD: /usr/sbin/exipick -bpc -o [[\:digit\:]][[\:digit\:]][mh]'],
-    }
-
-    nrpe::monitor_service { 'check_exim_queue':
-        description     => 'exim queue',
-        nrpe_command    => '/usr/local/lib/nagios/plugins/check_exim_queue -w 2000 -c 4000',
-        critical        => true,
-        check_interval  => 30,
-        retry_interval  => 10,
-        timeout         => 20,
-        notes_url       => 'https://wikitech.wikimedia.org/wiki/Exim',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000451/mail'],
     }
 
     class { 'prometheus::node_exim_queue':
