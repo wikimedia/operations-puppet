@@ -1438,18 +1438,13 @@ node /^ganeti300[123]\.esams\.wmnet$/ {
     role(ganeti)
 }
 
-node /^ganeti400[123]\.ulsfo\.wmnet$/ {
+node /^ganeti400[1234]\.ulsfo\.wmnet$/ {
     role(ganeti)
-}
-
-node 'ganeti4004.ulsfo.wmnet' {
-    role(insetup)
 }
 
 node /^ganeti500[123]\.eqsin\.wmnet$/ {
     role(ganeti)
 }
-
 
 node /^ganeti600[1234]\.drmrs\.wmnet$/ {
     role(ganeti)
