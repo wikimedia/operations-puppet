@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # == Class: wikilabels::session
 #
 # Defines how sessions are managed

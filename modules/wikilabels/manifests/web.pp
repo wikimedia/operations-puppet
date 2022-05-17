@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # = Class: wiklabels::web
 # Sets up a uwsgi based web server for Wikilabels running python3
 #
