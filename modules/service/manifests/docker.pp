@@ -76,9 +76,11 @@ define service::docker(
     }
 
     # Make sure the image has been pulled before starting the service
+    # docker pull does not support a --dry-run. Therefore the actual pull is
+    # done via the `unless` command.
     exec { "docker pull of ${fqin} for ${title}":
-        command => "/usr/bin/docker pull '${fqin}'",
-        unless  => "/usr/bin/docker image inspect '${fqin}' >/dev/null",
+        command => '/usr/bin/true',
+        unless  => "/usr/bin/docker pull '${fqin}' | grep -q 'up to date'",
         notify  => Systemd::Service[$title],
     }
 
