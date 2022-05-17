@@ -44,7 +44,7 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"wikidough": true, "service": "doh"}';
+    return 200   '{"wikidough": true, "service": "doh", "site": "<%= scope.lookupvar('::site') %>"}';
   }
 
 }
@@ -82,7 +82,7 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"wikidough": true, "service": "dot"}';
+    return 200   '{"wikidough": true, "service": "dot", "site": "<%= scope.lookupvar('::site') %>"}';
   }
 
 }
